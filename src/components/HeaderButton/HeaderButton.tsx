@@ -1,14 +1,14 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
-import styles from './Button.module.css';
+import styles from './HeaderButton.module.css';
 
 interface Props extends PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>> {}
 
-const Button = ({ children, ...props }: Props) => {
+const HeaderButton = ({ children, ...props }: Props) => {
   return (
-    <button className={styles.buttonContent} {...props}>
+    <button className={styles.headerButtonWrapper} {...props}>
       {children}
     </button>
   );
 };
 
-export default Button;
+export default HeaderButton;

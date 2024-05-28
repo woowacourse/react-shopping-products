@@ -1,4 +1,4 @@
-import Button from '../../../components/Button/Button';
+import HeaderButton from '../../../components/HeaderButton/HeaderButton';
 import Header from '../../../components/Header/Header';
 import cartIcon from '../../../assets/cartIcon.png';
 
@@ -6,10 +6,10 @@ const ProductListHeader = () => {
   return (
     <div>
       <Header>
-        <Button>SHOP</Button>
-        <Button>
+        <HeaderButton>SHOP</HeaderButton>
+        <HeaderButton>
           <img src={cartIcon} width={20} height={24} />
-        </Button>
+        </HeaderButton>
       </Header>
     </div>
   );
