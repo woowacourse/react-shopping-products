@@ -51,4 +51,14 @@ describe('productList', () => {
       expect(result.current.page).toBe(8);
     });
   });
+
+  it('상품 목록 데이터를 불러오기 전 로딩 화면이 표시된다.', async () => {
+    const { result } = renderHook(() => useProductList());
+
+    expect(result.current.isLoading).toBeTruthy();
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBeFalsy();
+    });
+  });
 });
