@@ -29,7 +29,7 @@
 ## 기능 구현 목록
 
 1. UI
-   - [ ] Product
+   - [x] Product
    - [ ] Dropdown
    - [ ] Header
 2. Test

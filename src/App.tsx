@@ -1,11 +1,20 @@
-import { useState } from "react";
+import ProductCard from "./components/product/ProductCard";
+import { Global } from "@emotion/react";
+import { reset } from "./style/reset";
 
 function App() {
-  const [count, setCount] = useState(0);
-
+  const product = {
+    id: 0,
+    name: "스마트폰",
+    price: 699,
+    imageUrl: "https://via.placeholder.com/150/0000FF/808080?text=스마트폰",
+    category: "Electronics",
+    description: "hi",
+  };
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <Global styles={reset} />
+      <ProductCard product={product} />
     </>
   );
 }
