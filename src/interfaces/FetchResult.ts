@@ -1,4 +1,4 @@
-export interface ProductList {
+export interface FetchResult<T> {
   totalPages: number;
   totalElements: number;
   sort: Sort;
@@ -8,7 +8,7 @@ export interface ProductList {
   number: number;
   numberOfElements: number;
   size: number;
-  content: Content[];
+  content: T[];
   empty: boolean;
 }
 
@@ -25,12 +25,4 @@ export interface Pageable {
   paged: boolean;
   unpaged: boolean;
   offset: number;
-}
-
-export interface Content {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
 }
