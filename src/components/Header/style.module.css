@@ -9,7 +9,7 @@
   background-color: var(--black);
   padding: 1.5rem;
   width: var(--desktop-width);
-  height: var(----header-height);
+  height: var(--header-height);
 }
 
 @media screen and (max-width: 768px) {
