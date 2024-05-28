@@ -1,5 +1,5 @@
 const useProducts = () => {
-  return { products: [], isLoading: false, error: null };
+  return { products: [], page: 1, isLoading: false, error: null, fetchNextPage: () => {} };
 };
 
 export default useProducts;
