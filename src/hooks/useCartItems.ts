@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { fetchCartItems } from '../api/cart';
+import { fetchCartItems, deleteCartItem, addCartItem } from '../api/cart';
 import { CartItem } from '../types/CartItem.type';
 
 interface UseCartItemsResult {
+  cartItems: CartItem[];
   counts: number;
   loading: boolean;
   error: unknown;
+  handleAddCartItem: (productId: number) => Promise<void>;
+  handleDeleteCartItem: (productId: number) => Promise<void>;
 }
 
 export default function useCartItems(): UseCartItemsResult {
@@ -14,19 +17,40 @@ export default function useCartItems(): UseCartItemsResult {
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
-    const getCartItems = async () => {
-      try {
-        const data = await fetchCartItems();
-        setCartItems((prevCartItems) => [...prevCartItems, ...data]);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     getCartItems();
   }, []);
 
-  return { counts: cartItems.length, loading, error };
+  const getCartItems = async () => {
+    try {
+      const data = await fetchCartItems();
+      setCartItems(data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddCartItem = async (productId: number) => {
+    await addCartItem(productId);
+    getCartItems();
+  };
+
+  const handleDeleteCartItem = async (productId: number) => {
+    const cartItem = cartItems.find((item) => item.product.id === productId);
+
+    if (cartItem) {
+      await deleteCartItem(cartItem.id);
+      getCartItems();
+    }
+  };
+
+  return {
+    cartItems,
+    counts: cartItems.length,
+    loading,
+    error,
+    handleAddCartItem,
+    handleDeleteCartItem,
+  };
 }

@@ -1,14 +1,18 @@
 import { Product } from '../../types/Product.type';
 import AddCart from '../../assets/AddCart.svg';
+import RemoveCart from '../../assets/RemoveCart.svg';
 import Button from '../Button/Button';
 import * as S from './ProductItem.style';
 
 interface ProductItemProps {
   product: Product;
+  isAdded: boolean;
+  onAddCartItem: (productId: number) => Promise<void>;
+  onDeleteCartItem: (productId: number) => Promise<void>;
 }
 
-const ProductItem = ({ product }: ProductItemProps) => {
-  const { name, price, imageUrl } = product;
+const ProductItem = ({ product, isAdded, onAddCartItem, onDeleteCartItem }: ProductItemProps) => {
+  const { id, name, price, imageUrl } = product;
 
   return (
     <S.Layout>
@@ -20,10 +24,17 @@ const ProductItem = ({ product }: ProductItemProps) => {
           <p>{price}원</p>
         </S.TextContainer>
         <S.CartButtonContainer>
-          <Button>
-            <img src={AddCart} alt="장바구니 담기" />
-            <p>담기</p>
-          </Button>
+          {isAdded ? (
+            <Button variant="secondary" onClick={() => onDeleteCartItem(id)}>
+              <S.Icon src={RemoveCart} alt="장바구니 빼기" />
+              <p>빼기</p>
+            </Button>
+          ) : (
+            <Button onClick={() => onAddCartItem(id)}>
+              <S.Icon src={AddCart} alt="장바구니 담기" />
+              <p>담기</p>
+            </Button>
+          )}
         </S.CartButtonContainer>
       </S.Container>
     </S.Layout>

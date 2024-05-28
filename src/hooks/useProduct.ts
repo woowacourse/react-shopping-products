@@ -19,7 +19,7 @@ export default function useProducts(): UseProductsResult {
     const getProducts = async () => {
       try {
         const data = await fetchProducts();
-        setProducts((prevProducts) => [...prevProducts, ...data]);
+        setProducts(data);
       } catch (error) {
         setError(error);
       } finally {

@@ -3,6 +3,8 @@ import styled from 'styled-components';
 export const Layout = styled.button<{ $isActive: boolean; $variant: string }>`
   display: flex;
   align-items: center;
+  width: 65px;
+  height: 26px;
   column-gap: 5px;
   padding: 5px 10px;
   border-radius: 4px;

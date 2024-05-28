@@ -54,3 +54,8 @@ export const CartButton = styled.button`
   font-size: 12px;
   font-weight: 700;
 `;
+
+export const Icon = styled.img`
+  width: 16px;
+  height: 16px;
+`;
