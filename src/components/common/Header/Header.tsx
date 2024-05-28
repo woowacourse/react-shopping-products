@@ -1,4 +1,5 @@
 import { LogoIcon, ShoppingCart } from '../../../asset';
+import CartBadge from '../../CartBadge/CartBadge';
 import { HeaderContainer, HeaderIcon } from './Header.style';
 
 interface HeaderProps {
@@ -21,7 +22,9 @@ function Header({ headerIconType = 'home' }: HeaderProps) {
   return (
     <HeaderContainer>
       <HeaderIcon $width={front.width} src={front.icon} />
-      <HeaderIcon $width={back.width} src={back.icon} />
+      <CartBadge>
+        <HeaderIcon $width={back.width} src={back.icon} />
+      </CartBadge>
     </HeaderContainer>
   );
 }
