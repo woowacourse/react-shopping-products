@@ -114,4 +114,116 @@ describe('useProductList', () => {
       });
     });
   });
+
+  describe('상품 정렬 조회 테스트', () => {
+    it('초기 렌더링시 상품 목록은 기본으로 낮은 가격 순(오름차순)으로 정렬 조회된다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      const isAscPrice = result.current.products.reduce(
+        (acc, cur, index, array) => {
+          if (index === 0) return true;
+          if (cur.price < array[index - 1].price) return false;
+          return acc;
+        },
+        true
+      );
+
+      expect(isAscPrice).toBe(true);
+    });
+
+    it('다음 페이지의 가져오는 4개의 상품 목록은 기본으로 낮은 가격 순(오름차순)으로 정렬 조회된다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      await waitFor(() => {
+        expect(result.current.page).toBe(1);
+        expect(result.current.products).toHaveLength(24);
+      });
+
+      const isAscPrice = result.current.products.reduce(
+        (acc, cur, index, array) => {
+          if (index === 0) return true;
+          if (cur.price < array[index - 1].price) return false;
+          return acc;
+        },
+        true
+      );
+
+      expect(isAscPrice).toBe(true);
+    });
+
+    it('`높은 가격순` 버튼을 누르면 높은 가격 순(내림차순)으로 정렬 조회된다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.handleChangeSort();
+      });
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      const isDescPrice = result.current.products.reduce(
+        (acc, cur, index, array) => {
+          if (index === 0) return true;
+          if (cur.price > array[index - 1].price) return false;
+          return acc;
+        },
+        true
+      );
+
+      expect(isDescPrice).toBe(true);
+    });
+
+    it('다음 페이지의 가져오는 4개의 상품 목록은 기본으로 높은 가격 순(내림차순)으로 정렬 조회된다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.handleChangeSort();
+      });
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      await waitFor(() => {
+        expect(result.current.page).toBe(1);
+        expect(result.current.products).toHaveLength(24);
+      });
+
+      const isDescPrice = result.current.products.reduce(
+        (acc, cur, index, array) => {
+          if (index === 0) return true;
+          if (cur.price > array[index - 1].price) return false;
+          return acc;
+        },
+        true
+      );
+
+      expect(isDescPrice).toBe(true);
+    });
+  });
 });
