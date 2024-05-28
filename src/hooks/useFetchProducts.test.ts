@@ -126,7 +126,7 @@ describe('fetchProducts', () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.products).toEqual(FILTERED_MOCK_PRODUCTS);
+        expect(result.current.products).toStrictEqual(FILTERED_MOCK_PRODUCTS);
       });
     },
   );
