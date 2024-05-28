@@ -12,7 +12,7 @@
     - [x] Dropdown
     - [ ] ProductBody
     - [ ] ProductList
-    - [ ] ProductItem
+    - [x] ProductItem
     - [x] CartActionButton(담기 / 빼기)
   - [ ] Spinner : 로딩 상태 UI(스피너)
   - [ ] ErrorToast : 에러 발생 UI(toastUI)
