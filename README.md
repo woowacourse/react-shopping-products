@@ -8,7 +8,7 @@
     - [x] ShopButton
     - [x] CartButton
   - [ ] Product
-    - [ ] ProductHeader
+    - [x] ProductHeader
     - [x] Dropdown
     - [ ] ProductBody
     - [ ] ProductList
