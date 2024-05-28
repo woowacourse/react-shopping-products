@@ -25,9 +25,11 @@
       "@components/*": ["./src/components/*"],
       "@styles/*": ["./src/styles/*"],
       "@utils/*": ["./src/utils/*"],
+      "@mocks/*": ["./src/mocks/*"],
       "@assets/*": ["./src/assets/*"],
       "@constants/*": ["./src/constants/*"],
       "@hooks/*": ["./src/hooks/*"],
+      "@pages/*": ["./src/pages/*"],
       "@apis/*": ["./src/apis/*"],
       "@appTypes/*": ["./src/appTypes/*"]
     }
