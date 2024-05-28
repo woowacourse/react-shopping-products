@@ -1,8 +1,15 @@
+.wrapper {
+  margin-top: 1.75rem;
+  width: 100%;
+  max-height: calc(100vh - var(--header-height) - 159px);
+  overflow-x: hidden;
+}
+
 .productList {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.25rem 1rem;
-  margin-top: 1.75rem;
+  padding-right: 0.5rem;
   width: 100%;
 }
 
