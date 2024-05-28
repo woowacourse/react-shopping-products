@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { UpArrow } from '@assets/svg';
+import { Global } from '@emotion/react';
+import { resetCSS } from '@styles/resetCSS';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <Global styles={resetCSS} />
+      <UpArrow />
     </>
   );
 }
