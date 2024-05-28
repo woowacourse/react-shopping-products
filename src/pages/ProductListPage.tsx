@@ -1,11 +1,14 @@
 import Header from "../components/Header/Header";
-import ProductItem from "../components/ProductItem/ProductItem";
+import ProductList from "../components/ProductList/ProductList";
 
 const ProductListPage = () => {
   return (
     <>
       <Header />
-      <ProductItem />
+      {/* TODO: padding 25px 주기 */}
+      <>
+        <ProductList />
+      </>
     </>
   );
 };

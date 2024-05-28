@@ -1,5 +1,5 @@
 import * as PI from "./ProductItem.style";
-import CartControlButton from "../Button/CartControlButton";
+import CartControlButton from "../../Button/CartControlButton";
 
 const ProductItem = () => {
   return (
