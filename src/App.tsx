@@ -1,21 +1,10 @@
-import useProducts from './hooks/useProducts';
+import './reset.css';
+import './index.css';
+
+import ProductPage from './page/ProductPage';
 
 function App() {
-  const { products, fetchNextPage, loading } = useProducts();
-  if (loading) {
-    return <div>로딩</div>;
-  }
-
-  return (
-    <>
-      <ul>
-        {products.map((product) => (
-          <li key={product.id}>{product.name}</li> // key 추가 및 return 명시
-        ))}
-      </ul>
-      <button onClick={fetchNextPage}>다음 페이지</button>
-    </>
-  );
+  return <ProductPage />;
 }
 
 export default App;
