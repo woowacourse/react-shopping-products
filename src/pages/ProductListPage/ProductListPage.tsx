@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import CartIcon from '../../assets/CartIcon.svg';
 import TitleContainer from '../../components/TitleContainer/TitleContainer';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Header from '../../components/Header/Header';
 import ProductItem from '../../components/ProductItem/ProductItem';
 import useProducts from '../../hooks/useProduct';
+import useCartItems from '../../hooks/useCartItems';
 import * as S from './ProductListPage.style';
 
 const CATEGORY_LIST = {
@@ -25,6 +27,7 @@ const ProductListPage = () => {
   const sortingList = Object.values(SORTING_LIST);
 
   const { products } = useProducts();
+  const { counts } = useCartItems();
 
   const [category, setCategory] = useState(categoryList[0]);
   const [sorting, setSorting] = useState(sortingList[0]);
@@ -34,7 +37,12 @@ const ProductListPage = () => {
 
   return (
     <div>
-      <Header />
+      <Header>
+        <S.CartIconWrapper>
+          <img src={CartIcon} alt="장바구니 아이콘" />
+          <S.CartNumber>{counts}</S.CartNumber>
+        </S.CartIconWrapper>
+      </Header>
       <S.Layout>
         <TitleContainer title="bpple 상품 목록" />
         <S.DropdownContainer>

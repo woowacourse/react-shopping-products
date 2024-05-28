@@ -19,3 +19,28 @@ export const ProductList = styled.div`
   gap: 20px;
   flex-wrap: wrap;
 `;
+
+export const CartIconWrapper = styled.div`
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CartNumber = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 19px;
+  background-color: white;
+  bottom: 0px;
+  right: 0px;
+  padding-top: 1px;
+  font-size: 11px;
+  font-weight: 700;
+`;
