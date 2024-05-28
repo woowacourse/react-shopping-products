@@ -13,6 +13,7 @@ const useProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   useEffect(() => {
     if (page > 1) setSize(MORE_LOAD_ITEM_COUNT);
@@ -22,6 +23,8 @@ const useProductList = () => {
       try {
         const data = await getProductList({ page, size });
         setProducts((prev) => [...prev, ...data.content]);
+
+        if (data.last) setHasNextPage((prev) => !prev);
       } catch (error) {
         setError(true);
       } finally {
@@ -33,10 +36,12 @@ const useProductList = () => {
   }, [page]);
 
   const fetchNextPage = () => {
-    setPage((prev) => prev + 1);
+    if (hasNextPage) {
+      setPage((prev) => prev + 1);
+    }
   };
 
-  return { page, products, loading, error, fetchNextPage };
+  return { page, products, loading, error, fetchNextPage, hasNextPage };
 };
 
 export default useProductList;
