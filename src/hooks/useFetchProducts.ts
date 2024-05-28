@@ -6,13 +6,16 @@ const useFetchProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+
+  const size = page === 1 ? 20 : 4;
 
   useEffect(() => {
     const getProducts = async () => {
       try {
         setIsPending(true);
-        const fetchedProducts = await fetchProducts();
-        setProducts(fetchedProducts);
+        const fetchedProducts = await fetchProducts(page, size);
+        setProducts((prevState) => [...prevState, ...fetchedProducts]);
       } catch (error) {
         setIsError(true);
       } finally {
@@ -20,7 +23,7 @@ const useFetchProducts = () => {
       }
     };
     getProducts();
-  }, []);
+  }, [page]);
 
   return { products, isError, isPending };
 };

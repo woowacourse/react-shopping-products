@@ -1,14 +1,18 @@
-import { Product, ProductResponse } from "../types/fetch";
-import { ENDPOINTS_PRODUCTS } from "./endpoints";
+import { Product, ProductResponse } from '../types/fetch';
+import { ENDPOINTS_PRODUCTS } from './endpoints';
 
-export const fetchProducts = async (): Promise<Product[]> => {
-  const response = await fetch(ENDPOINTS_PRODUCTS);
+export const fetchProducts = async (
+  page: number,
+  size: number,
+): Promise<Product[]> => {
+  const response = await fetch(
+    `${ENDPOINTS_PRODUCTS}?page=${page}&size=${size}`,
+  );
 
   if (!response.ok) {
-    throw new Error("200~299 이외의 응답이 발생하였습니다.");
+    throw new Error(`200~299 이외의 응답이 발생하였습니다.${response.body}`);
   }
 
   const data = (await response.json()) as ProductResponse;
-  const content = data.content;
-  return content;
+  return data.content;
 };
