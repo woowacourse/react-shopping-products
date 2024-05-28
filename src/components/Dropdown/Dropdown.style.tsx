@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const Layout = styled.div`
   position: relative;
-  padding-bottom: 22px;
 `;
 
 export const Container = styled.div<{ $isDefault: boolean }>`

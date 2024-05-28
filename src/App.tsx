@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ProductListPage from './pages/ProductListPage';
+import ProductListPage from './pages/ProductListPage/ProductListPage';
 
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './styles/Global.style';
