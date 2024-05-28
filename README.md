@@ -1,5 +1,9 @@
 # 🎯1단계 기능 요구사항
 
+### step 2 - 상태 관리
+
+- [x] 선택된 상품 ID 목록 상태
+
 ### step 1 - ProductListPage UI 작업
 
 - [x] Header 공용 컴포넌트

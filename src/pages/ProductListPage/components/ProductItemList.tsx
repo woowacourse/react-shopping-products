@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ProductItem from './ProductItem';
 import styles from '../ProductListPage.module.css';
 
@@ -161,10 +162,32 @@ const mock = [
 ];
 
 const ProductItemList = () => {
+  const [selectedItems, setSelectedItems] = useState(new Set());
+
+  const handleSelect = (itemId: number) => {
+    setSelectedItems((prev) => {
+      const newSelectedItems = new Set(prev);
+      if (selectedItems.has(itemId)) {
+        newSelectedItems.delete(itemId);
+      } else {
+        newSelectedItems.add(itemId);
+      }
+      return newSelectedItems;
+    });
+  };
+
   return (
     <div className={styles.productItemListContainer}>
       {mock.map((item) => {
-        return <ProductItem item={item} />;
+        return (
+          <ProductItem
+            item={item}
+            isSelected={selectedItems.has(item.id)}
+            onSelect={() => {
+              handleSelect(item.id);
+            }}
+          />
+        );
       })}
     </div>
   );
