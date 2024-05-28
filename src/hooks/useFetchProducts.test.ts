@@ -4,6 +4,9 @@ import { ENDPOINTS_PRODUCTS } from '../api/endpoints';
 import { server } from '../mocks/node';
 import useFetchProducts from './useFetchProducts';
 
+import MOCK_PRODUCTS from '../mocks/products.json';
+import { SortingParam } from '../types/sort';
+
 describe('fetchProducts', () => {
   it('상품 목록 첫 조회시에는 20개의 아이템을 가져온다.', async () => {
     const { result } = renderHook(() => useFetchProducts());
@@ -63,6 +66,77 @@ describe('fetchProducts', () => {
 
     await waitFor(() => {
       expect(result.current.page).toBe(21);
+    });
+  });
+
+  // [id, asc] 정렬
+
+  it('정렬 기준이 id, 내림차순일 때 정렬된 결과가 나와야 한다.', async () => {
+    const sorting: SortingParam[] = [{ name: 'id', order: 'desc' }];
+    const { result } = renderHook(() => useFetchProducts(sorting));
+
+    const mockProducts = MOCK_PRODUCTS.content;
+    mockProducts.sort((a, b) => b.id - a.id);
+    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
+    await waitFor(() => {
+      expect(result.current.products).toHaveLength(20);
+      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
+    });
+  });
+
+  it('정렬 기준이 id, 오름차순일 때 정렬된 결과가 나와야 한다.', async () => {
+    const sorting: SortingParam[] = [{ name: 'id', order: 'asc' }];
+    const { result } = renderHook(() => useFetchProducts(sorting));
+
+    const mockProducts = MOCK_PRODUCTS.content;
+    mockProducts.sort((a, b) => a.id - b.id);
+    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
+    await waitFor(() => {
+      expect(result.current.products).toHaveLength(20);
+      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
+    });
+  });
+
+  it('정렬 기준이 id, 내림차순일 때 정렬된 결과가 나와야 한다.', async () => {
+    const sorting: SortingParam[] = [{ name: 'id', order: 'desc' }];
+    const { result } = renderHook(() => useFetchProducts(sorting));
+
+    const mockProducts = MOCK_PRODUCTS.content;
+    mockProducts.sort((a, b) => b.id - a.id);
+    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
+    await waitFor(() => {
+      expect(result.current.products).toHaveLength(20);
+      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
+    });
+  });
+
+  it('정렬 기준이 name, 오름차순일 때 정렬된 결과가 나와야 한다.', async () => {
+    const sorting: SortingParam[] = [{ name: 'name', order: 'asc' }];
+    const { result } = renderHook(() => useFetchProducts(sorting));
+
+    const mockProducts = MOCK_PRODUCTS.content;
+    mockProducts.sort((a, b) => a.name.localeCompare(b.name));
+    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
+    await waitFor(() => {
+      expect(result.current.products).toHaveLength(20);
+      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
+    });
+  });
+
+  it('정렬 기준이 (name, 오름차순),(id, 내림차순)일 때 정렬된 결과가 나와야 한다.', async () => {
+    const sorting: SortingParam[] = [
+      { name: 'name', order: 'asc' },
+      { name: 'id', order: 'desc' },
+    ];
+    const { result } = renderHook(() => useFetchProducts(sorting));
+
+    const mockProducts = MOCK_PRODUCTS.content;
+    mockProducts.sort((a, b) => a.name.localeCompare(b.name));
+    mockProducts.sort((a, b) => b.id - a.id);
+    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
+    await waitFor(() => {
+      expect(result.current.products).toHaveLength(20);
+      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
     });
   });
 });
