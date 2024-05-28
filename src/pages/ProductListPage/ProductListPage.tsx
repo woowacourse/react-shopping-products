@@ -3,6 +3,7 @@ import TitleContainer from '../../components/TitleContainer/TitleContainer';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Header from '../../components/Header/Header';
 import ProductItem from '../../components/ProductItem/ProductItem';
+import useProducts from '../../hooks/useProduct';
 import * as S from './ProductListPage.style';
 
 const CATEGORY_LIST = {
@@ -23,13 +24,7 @@ const ProductListPage = () => {
   const categoryList = Object.values(CATEGORY_LIST);
   const sortingList = Object.values(SORTING_LIST);
 
-  const product = {
-    id: 0,
-    name: '스마트폰',
-    price: 699,
-    imageUrl: 'https://via.placeholder.com/150/0000FF/808080?text=스마트폰',
-    category: 'Electronics',
-  };
+  const { products } = useProducts();
 
   const [category, setCategory] = useState(categoryList[0]);
   const [sorting, setSorting] = useState(sortingList[0]);
@@ -46,7 +41,11 @@ const ProductListPage = () => {
           <Dropdown options={categoryList} selectedOption={category} updateOption={handleCategoryOption} />
           <Dropdown options={sortingList} selectedOption={sorting} updateOption={handleSortingOption} />
         </S.DropdownContainer>
-        <ProductItem product={product} />
+        <S.ProductList>
+          {products.map((product) => (
+            <ProductItem product={product} />
+          ))}
+        </S.ProductList>
       </S.Layout>
     </div>
   );
