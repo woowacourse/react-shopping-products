@@ -39,3 +39,5 @@ export const theme = {
   COLOR,
   TEXT,
 };
+
+export type ThemeType = typeof theme;
