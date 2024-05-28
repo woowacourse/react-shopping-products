@@ -11,7 +11,7 @@
     - [x] ProductHeader
     - [x] Dropdown
     - [ ] ProductBody
-    - [ ] ProductList
+    - [x] ProductList
     - [x] ProductItem
     - [x] CartActionButton(담기 / 빼기)
   - [ ] Spinner : 로딩 상태 UI(스피너)
