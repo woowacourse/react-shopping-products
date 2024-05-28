@@ -1,6 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ProductListPage from './pages/ProductListPage';
 
+import { ThemeProvider } from 'styled-components';
+import GlobalStyles from './styles/Global.style';
+import theme from './styles/theme';
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -9,7 +13,12 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
 }
 
 export default App;
