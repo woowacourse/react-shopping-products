@@ -19,7 +19,7 @@ export default function useCartItemList(): UseCartItemListResult {
       try {
         setLoading(true);
         const data = await fetchCartItemList();
-        setCartItemList(data);
+        setCartItemList(data.content);
       } catch (error) {
         setError(error);
       } finally {
