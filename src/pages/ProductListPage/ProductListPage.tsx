@@ -6,14 +6,19 @@ import ProductListTitle from './components/ProductListTitle';
 import styles from './ProductListPage.module.css';
 
 const ProductListPage = () => {
-  const [cartItemCount, setCartItemCount] = useState(1);
+  const [cartItemCount, setCartItemCount] = useState(0);
+
+  const handleCount = (cartItemCount: number) => {
+    setCartItemCount(cartItemCount);
+  };
+
   return (
     <div>
       <ProductListHeader cartItemCount={cartItemCount} />
       <div className={styles.productContentContainer}>
         <ProductListTitle />
         <ProductListSelectBar />
-        <ProductItemList />
+        <ProductItemList handleCount={handleCount} />
       </div>
     </div>
   );

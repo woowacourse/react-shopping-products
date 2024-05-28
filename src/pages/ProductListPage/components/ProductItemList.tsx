@@ -161,8 +161,14 @@ const mock = [
   },
 ];
 
-const ProductItemList = () => {
+interface Props {
+  handleCount: (cartItemCount: number) => void;
+}
+
+const ProductItemList = ({ handleCount }: Props) => {
   const [selectedItems, setSelectedItems] = useState(new Set());
+
+  handleCount(selectedItems.size);
 
   const handleSelect = (itemId: number) => {
     setSelectedItems((prev) => {

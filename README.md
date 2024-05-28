@@ -3,6 +3,7 @@
 ### step 2 - 상태 관리
 
 - [x] 선택된 상품 ID 목록 상태
+- [x] 장바구니 담긴 상품 갯수 상태
 
 ### step 1 - ProductListPage UI 작업
 
