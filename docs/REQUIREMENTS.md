@@ -35,7 +35,7 @@
 
 3. 기능 구현
    1. 상품 리스트
-   - [ ] list, item, select UI 레이아웃
+   - [x] list, item, select UI 레이아웃
    - [ ] useProducts
      - [ ] msw
        - [ ] product GET
