@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: [
+      { find: "@", replacement: "/src" },
       { find: "@/config", replacement: "/src/config" },
       { find: "@/mocks", replacement: "/src/mocks" },
       { find: "@/types", replacement: "/src/types" },
@@ -16,6 +17,7 @@ export default defineConfig({
       { find: "@/utils", replacement: "/src/utils" },
       { find: "@/constants", replacement: "/src/constants" },
       { find: "@/mocks", replacement: "/src/mocks" },
+      { find: "@/styles", replacement: "/src/styles" },
     ],
   },
 });
