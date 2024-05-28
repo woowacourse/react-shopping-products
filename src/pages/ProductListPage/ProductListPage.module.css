@@ -3,3 +3,10 @@
   flex-direction: column;
   padding: 36px 25px 0 25px;
 }
+
+.productSelectContainer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 24px;
+  padding-bottom: 28px;
+}
