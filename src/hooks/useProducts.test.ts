@@ -4,6 +4,7 @@ import useProducts from "./useProducts";
 
 import { server } from "../mocks/server";
 import { HttpResponse, http } from "msw";
+import { PRODUCTS_ENDPOINT } from "../api/endPoint";
 
 describe("useProduct 훅 테스트", () => {
   describe("상품 목록 조회", () => {
@@ -31,7 +32,7 @@ describe("useProduct 훅 테스트", () => {
 
     it("상품 목록을 조회 중 에러가 발생하면 error값이 반환된다", async () => {
       server.use(
-        http.get("https://api.example.com/products", () => {
+        http.get(PRODUCTS_ENDPOINT, () => {
           return new HttpResponse(null, { status: 500 });
         })
       );
