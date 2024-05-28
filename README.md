@@ -4,7 +4,8 @@
 
 - [x] Header 공용 컴포넌트
 - [x] Button 공용 컴포넌트
-- [ ] Title 공용 컴포넌트
+- [x] Title 공용 컴포넌트
+- [x] Select 공용 컴포넌트
 
 - [x] ProductListPage 컴포넌트 생성
 - [x] reset.css, app 레이아웃 index.css 적용
