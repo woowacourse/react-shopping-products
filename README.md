@@ -7,10 +7,9 @@
   - [x] Header
     - [x] ShopButton
     - [x] CartButton
-  - [ ] Product
+  - [x] Product
     - [x] ProductHeader
     - [x] Dropdown
-    - [ ] ProductBody
     - [x] ProductList
     - [x] ProductItem
     - [x] CartActionButton(담기 / 빼기)
