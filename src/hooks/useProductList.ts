@@ -15,15 +15,17 @@ const useProductList = () => {
   const [error, setError] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isDesc, setIsDesc] = useState(false);
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
     if (page > 1) setSize(MORE_LOAD_ITEM_COUNT);
 
     const fetchData = async () => {
       setLoading(true);
+
       try {
         const sortOrder = isDesc ? 'desc' : 'asc';
-        const data = await getProductList({ page, size, sortOrder });
+        const data = await getProductList({ page, size, category, sortOrder });
         setProducts((prev) => [...prev, ...data.content]);
 
         if (data.last) setHasNextPage((prev) => !prev);
@@ -35,7 +37,7 @@ const useProductList = () => {
     };
 
     fetchData();
-  }, [page, isDesc]);
+  }, [page, isDesc, category]);
 
   const fetchNextPage = () => {
     if (hasNextPage && page === 1) {
@@ -54,6 +56,12 @@ const useProductList = () => {
     setPage(0);
   };
 
+  const handleChangeCategory = (category: string) => {
+    setCategory(category);
+    setProducts([]);
+    setPage(0);
+  };
+
   return {
     page,
     products,
@@ -62,6 +70,7 @@ const useProductList = () => {
     fetchNextPage,
     hasNextPage,
     handleChangeSort,
+    handleChangeCategory,
   };
 };
 
