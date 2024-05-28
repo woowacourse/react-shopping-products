@@ -5,10 +5,12 @@ import { server } from '../mocks/node';
 import useFetchProducts from './useFetchProducts';
 
 describe('fetchProducts', () => {
-  it('상품 목록 조회 성공', async () => {
-    const { result } = renderHook(useFetchProducts);
+  it('상품 목록 첫 조회시에는 20개의 아이템을 가져온다.', async () => {
+    const { result } = renderHook(() => useFetchProducts());
 
-    await waitFor(() => expect(result.current.products).toHaveLength(100));
+    await waitFor(() => {
+      expect(result.current.products).toHaveLength(20);
+    });
   });
 
   it('상품 목록 조회 시 에러', async () => {
@@ -26,4 +28,6 @@ describe('fetchProducts', () => {
       expect(result.current.isError).toBe(true);
     });
   });
+
+  //
 });
