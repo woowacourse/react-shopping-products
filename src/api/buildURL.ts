@@ -1,17 +1,39 @@
-import { API_URL } from './endpoints';
+import { getProductListProps } from './product';
 
-interface Params {
-  [key: string]: string | number | undefined;
+interface buildURLProps extends getProductListProps {
+  baseUrl: string;
 }
 
-export const buildURL = (path: string, params: Params = {}) => {
-  const url = new URL(`${API_URL}${path}`);
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined) {
-      url.searchParams.append(key, String(value));
-    }
-  });
+const buildURL = ({
+  baseUrl,
+  category,
+  page,
+  size,
+  sortOrder,
+}: buildURLProps) => {
+  const params = [];
 
-  console.log('url ', url.toString());
-  return url.toString();
+  if (category) {
+    params.push(`category=${encodeURIComponent(category)}`);
+  }
+  if (page !== undefined) {
+    params.push(`page=${page}`);
+  }
+  if (size !== undefined) {
+    params.push(`size=${size}`);
+  }
+
+  if (sortOrder === 'desc') {
+    params.push(`sort=price%2C${sortOrder}&sort=name`);
+  } else {
+    params.push('sort=price&sort=name');
+  }
+
+  if (params.length > 0) {
+    baseUrl += `?${params.join('&')}`;
+  }
+
+  return baseUrl;
 };
+
+export default buildURL;

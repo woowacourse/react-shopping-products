@@ -4,17 +4,17 @@ export interface getProductListProps {
   page?: number;
   size?: number;
   category?: string;
-  sort?: string;
+  sortOrder?: string;
 }
 
 export const getProductList = async ({
   page,
   size,
   category,
-  sort,
+  sortOrder,
 }: getProductListProps) => {
   const response = await fetch(
-    ENDPOINT.product.getList({ page, size, category, sort })
+    ENDPOINT.product.getList({ page, size, category, sortOrder })
   );
 
   if (!response.ok) {
