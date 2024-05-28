@@ -1,4 +1,15 @@
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --gray: #eaeaea;
+  --pink: #ffc9c9;
+  --mobile-width: 100vw;
+  --desktop-width: 768px;
+  --header-height: 4rem;
+}
+
 :global(.logo) {
+  color: var(--white);
   font-weight: 800;
   font-size: 1.25rem;
   line-height: 1rem;
@@ -38,11 +49,4 @@
   font-size: 0.75rem;
   line-height: 0.9375rem;
   font-family: Noto Sans;
-}
-
-:root {
-  --black: #000000;
-  --white: #ffffff;
-  --gray: #eaeaea;
-  --pink: #ffc9c9;
 }

@@ -1,11 +1,12 @@
-import { useState } from "react";
+import '@styles/App.css';
+import '@styles/reset.css';
+import '@styles/global.module.css';
+import { Header } from './components';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <Header />
     </>
   );
 }

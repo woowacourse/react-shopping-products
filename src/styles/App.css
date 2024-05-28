@@ -1,0 +1,21 @@
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  margin: 0 auto;
+  width: var(--desktop-width);
+  min-width: 325px;
+  height: 100vh;
+}
+
+@media screen and (max-width: 768px) {
+  #root {
+    width: var(--mobile-width);
+  }
+}
