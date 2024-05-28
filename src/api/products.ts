@@ -1,10 +1,10 @@
 import { PRODUCTS_ENDPOINT, token } from "./config";
 
-export async function fetchProducts(page: number, limit: number) {
+export async function fetchProductList(page: number, limit: number) {
   const response = await fetch(
     `${PRODUCTS_ENDPOINT}?page=${page}&limit=${limit}`,
     {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
