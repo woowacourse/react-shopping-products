@@ -19,3 +19,19 @@ export const HeaderStyle = styled.header`
     width: 32px;
   }
 `;
+
+export const CartCount = styled.div`
+  background-color: #ffffff;
+  border-radius: 999px;
+  width: 19px;
+  height: 19px;
+  font-size: 10px;
+  font-weight: 700;
+  position: absolute;
+  right: 24px;
+  bottom: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

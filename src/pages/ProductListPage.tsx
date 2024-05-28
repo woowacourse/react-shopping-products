@@ -8,7 +8,7 @@ const ProductListPage = () => {
   return (
     <>
       <PLP.Top>
-        <Header />
+        <Header cartCount={1} />
         <ErrorToast />
       </PLP.Top>
 
