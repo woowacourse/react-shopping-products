@@ -1,0 +1,26 @@
+p {
+}
+
+.size-s {
+  font-size: 12px;
+}
+
+.size-m {
+  font-size: 14px;
+}
+
+.size-l {
+  font-size: 24px;
+}
+
+.weight-s {
+  font-weight: 300;
+}
+
+.weight-m {
+  font-weight: 500;
+}
+
+.weight-l {
+  font-weight: 700;
+}
