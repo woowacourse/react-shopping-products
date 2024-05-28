@@ -10,3 +10,60 @@
   padding-top: 24px;
   padding-bottom: 28px;
 }
+
+.productItemListContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: auto;
+  row-gap: 20px;
+  column-gap: 16px;
+}
+
+.productItemContainer {
+  position: relative;
+  width: 182px;
+  height: 224px;
+}
+
+.productItemInfoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.productItemName {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.productItemLabel {
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.productCartButton {
+  display: flex;
+  align-items: center;
+  width: 60px;
+  height: 24px;
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  gap: 6px;
+  padding: 4px 8px 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.add {
+  background-color: black;
+  color: white;
+}
+
+.remove {
+  background-color: rgba(234, 234, 234, 1);
+  color: black;
+}

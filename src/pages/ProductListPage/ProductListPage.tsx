@@ -1,3 +1,4 @@
+import ProductItemList from './components/ProductItemList';
 import ProductListHeader from './components/ProductListHeader';
 import ProductListSelectBar from './components/ProductListSelectBar';
 import ProductListTitle from './components/ProductListTitle';
@@ -10,6 +11,7 @@ const ProductListPage = () => {
       <div className={styles.productContentContainer}>
         <ProductListTitle />
         <ProductListSelectBar />
+        <ProductItemList />
       </div>
     </div>
   );

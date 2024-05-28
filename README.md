@@ -14,6 +14,7 @@
 - [x] ProductListSelectBar 컴포넌트 생성
 - [x] ProductSelectButton 컴포넌트 생성
 - [x] ProductItem 컴포넌트 생성
+- [x] ProductItemList 컴포넌트 생성
 
 ### 컨벤션
 
