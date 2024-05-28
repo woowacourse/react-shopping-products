@@ -1,8 +1,8 @@
 import { MouseEventHandler, useState } from "react";
 
-const useSelect = <T>(initialSelected?: T) => {
+const useSelect = (initialSelected?: string) => {
   const [isDropdown, setIsDropdown] = useState(false);
-  const [selected, setSelected] = useState<T | undefined>(initialSelected);
+  const [selected, setSelected] = useState<string | undefined>(initialSelected);
 
   const handleDropdown: MouseEventHandler<HTMLUListElement> = (e) => {
     if (e.target !== e.currentTarget) return;
@@ -16,7 +16,7 @@ const useSelect = <T>(initialSelected?: T) => {
     const { textContent } = e.currentTarget;
     if (!textContent) return;
 
-    setSelected(textContent as T);
+    setSelected(textContent);
     setIsDropdown(false);
   };
 
