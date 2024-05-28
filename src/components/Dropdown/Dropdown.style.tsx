@@ -12,7 +12,7 @@ export const Container = styled.div<{ $isDefault: boolean }>`
   width: 125px;
   height: 36px;
   padding: 8px;
-  border-radius: 2px;
+  border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.color.primary.light};
   font-size: ${({ theme }) => theme.fontSize.base};
   cursor: pointer;
@@ -29,7 +29,7 @@ export const OptionList = styled.ul`
   top: 38px;
   width: 125px;
   border: 1px solid ${({ theme }) => theme.color.primary.light};
-  border-radius: 2px;
+  border-radius: 8px;
   background: #ffffff;
   font-size: ${({ theme }) => theme.fontSize.base};
 `;
