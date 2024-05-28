@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const HeaderStyle = styled.section`
+export const HeaderStyle = styled.header`
   display: flex;
   background-color: #000000;
   justify-content: space-between;
