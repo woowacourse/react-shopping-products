@@ -1,12 +1,23 @@
 import { ProductResponse } from '../types/fetch';
+import { SortingParam } from '../types/sort';
 import { ENDPOINTS_PRODUCTS } from './endpoints';
 
 export const fetchProducts = async (
   page: number,
   size: number,
+  sortings: SortingParam[] = [],
+  category: string = '',
 ): Promise<ProductResponse> => {
+  const results = sortings.map(
+    (sorting) => `${sorting.name}%2C${sorting.order}`,
+  );
+  const sortingParams =
+    results.length > 0 ? '&sort=' + results.join('&sort=') : '';
+
+  const categoryParam = category ? `&category=${category}` : '';
+
   const response = await fetch(
-    `${ENDPOINTS_PRODUCTS}?page=${page}&size=${size}`,
+    `${ENDPOINTS_PRODUCTS}?page=${page}&size=${size}${sortingParams}${categoryParam}`,
   );
 
   if (!response.ok) {

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
+import { SortingParam } from '../types/sort';
 
-const useFetchProducts = () => {
+const useFetchProducts = (sortings: SortingParam[] = []) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isError, setIsError] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -20,7 +21,7 @@ const useFetchProducts = () => {
     const getProducts = async () => {
       try {
         setIsPending(true);
-        const fetchedProducts = await fetchProducts(fetchPage, size);
+        const fetchedProducts = await fetchProducts(fetchPage, size, sortings);
         setProducts((prevState) => [...prevState, ...fetchedProducts.content]);
         setIsLast(fetchedProducts.last);
       } catch (error) {
