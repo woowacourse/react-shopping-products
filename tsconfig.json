@@ -36,7 +36,8 @@
       "@errors/*": ["errors/*"],
       "@appTypes/*": ["appTypes/*"],
       "@recoil/*": ["recoil/*"],
-      "@validation/*": ["validation/*"]
+      "@validation/*": ["validation/*"],
+      "@mocks/*": ["mocks/*"]
     },
     "types": ["vite-plugin-svgr/client", "vite/client"]
   },

@@ -18,6 +18,7 @@ export default defineConfig({
       { find: '@apis', replacement: resolve(__dirname, 'src/apis') },
       { find: '@appTypes', replacement: resolve(__dirname, 'src/appTypes') },
       { find: '@errors', replacement: resolve(__dirname, 'src/errors') },
+      { find: '@mocks', replacement: resolve(__dirname, 'src/mocks') },
     ],
   },
 });
