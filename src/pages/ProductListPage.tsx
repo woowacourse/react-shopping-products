@@ -1,16 +1,21 @@
+import ErrorToast from "../components/ErrorToast/ErrorToast";
 import Header from "../components/Header/Header";
 import ProductList from "../components/ProductList/ProductList";
 import ProductListHeader from "../components/ProductListHeader/ProductListHeader";
-import { ProductListPageStyle } from "./ProductListPage.style";
+import * as PLP from "./ProductListPage.style";
 
 const ProductListPage = () => {
   return (
     <>
-      <Header />
-      <ProductListPageStyle>
+      <PLP.Top>
+        <Header />
+        <ErrorToast />
+      </PLP.Top>
+
+      <PLP.Body>
         <ProductListHeader />
         <ProductList />
-      </ProductListPageStyle>
+      </PLP.Body>
     </>
   );
 };
