@@ -2,19 +2,21 @@ import { Product, ProductResponse } from '../types/fetch';
 import { Order } from '../types/sort';
 
 const productSorter = (sortings: string[], productCopy: ProductResponse) => {
+  const products = [...productCopy.content];
   sortings.forEach((sorting) => {
     const [name, order] = sorting.split(',') as [keyof Product, Order];
     if (name === 'name' || name === 'imageUrl' || name === 'category') {
-      productCopy.content.sort((a, b) => a[name].localeCompare(b[name]));
+      products.sort((a, b) => a[name].localeCompare(b[name]));
     } else {
-      productCopy.content.sort((a, b) => a[name] - b[name]);
+      products.sort((a, b) => a[name] - b[name]);
     }
     if (order === 'desc') {
-      productCopy.content.reverse();
+      products.reverse();
     }
   });
-
-  return productCopy;
+  const result = Object.assign({}, productCopy);
+  result.content = products;
+  return result;
 };
 
 export default productSorter;
