@@ -1,5 +1,6 @@
 import { Product } from '../../types/Product.type';
 import AddCart from '../../assets/AddCart.svg';
+import Button from '../Button/Button';
 import * as S from './ProductItem.style';
 
 interface ProductItemProps {
@@ -19,10 +20,10 @@ const ProductItem = ({ product }: ProductItemProps) => {
           <p>{price}원</p>
         </S.TextContainer>
         <S.CartButtonContainer>
-          <S.CartButton>
+          <Button>
             <img src={AddCart} alt="장바구니 담기" />
             <p>담기</p>
-          </S.CartButton>
+          </Button>
         </S.CartButtonContainer>
       </S.Container>
     </S.Layout>
