@@ -6,6 +6,7 @@
   --mobile-width: 100vw;
   --desktop-width: 768px;
   --header-height: 4rem;
+  --header-z-index: 100;
 }
 
 :global(.logo) {
