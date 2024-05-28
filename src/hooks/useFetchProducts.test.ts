@@ -5,6 +5,7 @@ import { server } from '../mocks/node';
 import useFetchProducts from './useFetchProducts';
 
 import MOCK_PRODUCTS from '../mocks/products.json';
+import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
 
 describe('fetchProducts', () => {
@@ -69,74 +70,46 @@ describe('fetchProducts', () => {
     });
   });
 
-  // [id, asc] 정렬
+  test.each([
+    [
+      [{ name: 'id', order: 'desc' }] as SortingParam[],
+      [(a: Product, b: Product) => b.id - a.id],
+    ],
+    [
+      [{ name: 'id', order: 'asc' }] as SortingParam[],
+      [(a: Product, b: Product) => a.id - b.id],
+    ],
+    [
+      [{ name: 'name', order: 'asc' }] as SortingParam[],
+      [(a: Product, b: Product) => a.name.localeCompare(b.name)],
+    ],
+    [
+      [
+        { name: 'name', order: 'asc' },
+        { name: 'id', order: 'desc' },
+      ] as SortingParam[],
+      [
+        (a: Product, b: Product) => a.name.localeCompare(b.name),
+        (a: Product, b: Product) => b.id - a.id,
+      ],
+    ],
+  ])(
+    '정렬 기준이 %s일 때 정렬된 결과가 나와야 한다.',
+    async (
+      sortings: SortingParam[],
+      sortingFuncs: ((a: Product, b: Product) => number)[],
+    ) => {
+      const { result } = renderHook(() => useFetchProducts(sortings));
 
-  it('정렬 기준이 id, 내림차순일 때 정렬된 결과가 나와야 한다.', async () => {
-    const sorting: SortingParam[] = [{ name: 'id', order: 'desc' }];
-    const { result } = renderHook(() => useFetchProducts(sorting));
-
-    const mockProducts = MOCK_PRODUCTS.content;
-    mockProducts.sort((a, b) => b.id - a.id);
-    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
-    await waitFor(() => {
-      expect(result.current.products).toHaveLength(20);
-      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
-    });
-  });
-
-  it('정렬 기준이 id, 오름차순일 때 정렬된 결과가 나와야 한다.', async () => {
-    const sorting: SortingParam[] = [{ name: 'id', order: 'asc' }];
-    const { result } = renderHook(() => useFetchProducts(sorting));
-
-    const mockProducts = MOCK_PRODUCTS.content;
-    mockProducts.sort((a, b) => a.id - b.id);
-    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
-    await waitFor(() => {
-      expect(result.current.products).toHaveLength(20);
-      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
-    });
-  });
-
-  it('정렬 기준이 id, 내림차순일 때 정렬된 결과가 나와야 한다.', async () => {
-    const sorting: SortingParam[] = [{ name: 'id', order: 'desc' }];
-    const { result } = renderHook(() => useFetchProducts(sorting));
-
-    const mockProducts = MOCK_PRODUCTS.content;
-    mockProducts.sort((a, b) => b.id - a.id);
-    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
-    await waitFor(() => {
-      expect(result.current.products).toHaveLength(20);
-      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
-    });
-  });
-
-  it('정렬 기준이 name, 오름차순일 때 정렬된 결과가 나와야 한다.', async () => {
-    const sorting: SortingParam[] = [{ name: 'name', order: 'asc' }];
-    const { result } = renderHook(() => useFetchProducts(sorting));
-
-    const mockProducts = MOCK_PRODUCTS.content;
-    mockProducts.sort((a, b) => a.name.localeCompare(b.name));
-    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
-    await waitFor(() => {
-      expect(result.current.products).toHaveLength(20);
-      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
-    });
-  });
-
-  it('정렬 기준이 (name, 오름차순),(id, 내림차순)일 때 정렬된 결과가 나와야 한다.', async () => {
-    const sorting: SortingParam[] = [
-      { name: 'name', order: 'asc' },
-      { name: 'id', order: 'desc' },
-    ];
-    const { result } = renderHook(() => useFetchProducts(sorting));
-
-    const mockProducts = MOCK_PRODUCTS.content;
-    mockProducts.sort((a, b) => a.name.localeCompare(b.name));
-    mockProducts.sort((a, b) => b.id - a.id);
-    const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
-    await waitFor(() => {
-      expect(result.current.products).toHaveLength(20);
-      expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
-    });
-  });
+      const mockProducts = MOCK_PRODUCTS.content;
+      sortingFuncs.forEach((sortingFunc) => {
+        mockProducts.sort(sortingFunc);
+      });
+      const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
+      });
+    },
+  );
 });
