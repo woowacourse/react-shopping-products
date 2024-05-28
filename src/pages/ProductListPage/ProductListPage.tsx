@@ -1,9 +1,11 @@
-import Header from '../../components/Header/Header';
+import ProductListHeader from './components/ProductListHeader';
 
-export default function ProductListPage() {
+const ProductListPage = () => {
   return (
     <div>
-      <Header>sunday Hi</Header>
+      <ProductListHeader />
     </div>
   );
-}
+};
+
+export default ProductListPage;
