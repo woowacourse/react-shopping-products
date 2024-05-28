@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState } from 'react';
+import ProductListPage from './pages/ProductListPage/ProductListPage';
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <ProductListPage />
     </>
   );
 }
