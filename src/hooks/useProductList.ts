@@ -20,7 +20,7 @@ const useProductList = () => {
       try {
         setIsLoading(true);
         const limit = page === 0 ? 20 : 4;
-        const productData = await fetchProductList(page, limit);
+        const productData = await fetchProductList({ size: limit });
         if (productData.last) {
           setIsLastPage(true);
         }
