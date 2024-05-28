@@ -4,14 +4,10 @@ import { Order } from '../types/sort';
 const productSorter = (sortings: string[], productCopy: ProductResponse) => {
   sortings.forEach((sorting) => {
     const [name, order] = sorting.split(',') as [keyof Product, Order];
-    if (['name', 'imageUrl', 'category'].includes(name)) {
-      productCopy.content.sort((a, b) =>
-        (a[name] as string).localeCompare(b[name] as string),
-      );
+    if (name === 'name' || name === 'imageUrl' || name === 'category') {
+      productCopy.content.sort((a, b) => a[name].localeCompare(b[name]));
     } else {
-      productCopy.content.sort(
-        (a, b) => (a[name] as number) - (b[name] as number),
-      );
+      productCopy.content.sort((a, b) => a[name] - b[name]);
     }
     if (order === 'desc') {
       productCopy.content.reverse();

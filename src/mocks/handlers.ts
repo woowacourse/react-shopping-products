@@ -5,8 +5,6 @@ import products from './products.json';
 
 export const handlers = [
   http.get(ENDPOINTS_PRODUCTS, ({ request }) => {
-    //http://www.api주소/products?page=1&size=3
-    //http://54.180.95.212:8080/products?page=1&size=50&sort=category%2Casc&sort=name%2Cdesc
     const url = new URL(request.url);
     const page = Number(url.searchParams.get('page'));
     const size = Number(url.searchParams.get('size'));
