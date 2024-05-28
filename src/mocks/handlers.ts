@@ -19,6 +19,10 @@ export const handlers = [
       content,
     };
 
+    if (page === 8) {
+      result.last = true;
+    }
+
     return HttpResponse.json(result);
   }),
 ];
