@@ -20,6 +20,8 @@ export const ProductImg = styled.img`
 export const ProductGroup = styled.div`
   padding: 15px 8px 8px;
   position: relative;
+  box-sizing: border-box;
+  height: 112px;
 `;
 
 export const ProductContent = styled.div`

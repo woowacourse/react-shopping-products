@@ -14,7 +14,7 @@ export const CartControlButtonStyle = styled(ButtonStyle)`
   border-radius: 4px;
   padding: 4px 8px;
   gap: 1px;
-
+  bottom: 15px;
   font-weight: 600;
   font-size: 12px;
 

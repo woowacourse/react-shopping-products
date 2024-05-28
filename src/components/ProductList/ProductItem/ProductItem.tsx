@@ -12,7 +12,6 @@ const ProductItem = () => {
       <PI.ProductGroup>
         <PI.ProductContent>
           <PI.ProductName>상품 이름</PI.ProductName>
-          <span>상품 설명 텍스트</span>
           <span>35,000원</span>
         </PI.ProductContent>
         <CartControlButton onClick={() => {}} isInCart />
