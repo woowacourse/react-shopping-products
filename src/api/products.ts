@@ -1,10 +1,10 @@
-import { Product, ProductResponse } from '../types/fetch';
+import { ProductResponse } from '../types/fetch';
 import { ENDPOINTS_PRODUCTS } from './endpoints';
 
 export const fetchProducts = async (
   page: number,
   size: number,
-): Promise<Product[]> => {
+): Promise<ProductResponse> => {
   const response = await fetch(
     `${ENDPOINTS_PRODUCTS}?page=${page}&size=${size}`,
   );
@@ -14,5 +14,5 @@ export const fetchProducts = async (
   }
 
   const data = (await response.json()) as ProductResponse;
-  return data.content;
+  return data;
 };

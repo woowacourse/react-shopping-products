@@ -9,12 +9,16 @@ export const handlers = [
     const page = Number(url.searchParams.get('page'));
     const size = Number(url.searchParams.get('size'));
 
-    const start = (page - 1) * size;
-    const end = page * size;
+    const start = page * size;
+    const end = (page + 1) * size;
 
+    const productCopy = Object.assign({}, products);
     const slicedProducts = products.content.slice(start, end);
-    products.content = slicedProducts;
-    return HttpResponse.json(products);
+
+    productCopy.content = slicedProducts;
+    productCopy.last = productCopy.content.at(-1)!.id === 127;
+
+    return HttpResponse.json(productCopy);
   }),
   http.post(`${ENDPOINTS_ADD_CART}`, () => {
     return HttpResponse.json();

@@ -4,18 +4,25 @@ import { Product } from '../types/fetch';
 
 const useFetchProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [isPending, setIsPending] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(1);
+  const [isError, setIsError] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const [isLast, setIsLast] = useState(false);
+  const [page, setPage] = useState(0);
 
-  const size = page === 1 ? 20 : 4;
+  const size = page === 0 ? 20 : 4;
+  const fetchPage = page === 0 ? page : page + 4;
+  const fetchNextPage = () => {
+    if (isLast) return;
+    setPage((page) => page + 1);
+  };
 
   useEffect(() => {
     const getProducts = async () => {
       try {
         setIsPending(true);
-        const fetchedProducts = await fetchProducts(page, size);
-        setProducts((prevState) => [...prevState, ...fetchedProducts]);
+        const fetchedProducts = await fetchProducts(fetchPage, size);
+        setProducts((prevState) => [...prevState, ...fetchedProducts.content]);
+        setIsLast(fetchedProducts.last);
       } catch (error) {
         setIsError(true);
       } finally {
@@ -25,7 +32,7 @@ const useFetchProducts = () => {
     getProducts();
   }, [page]);
 
-  return { products, isError, isPending };
+  return { products, isError, isPending, fetchNextPage, page };
 };
 
 export default useFetchProducts;

@@ -56,13 +56,13 @@ describe('fetchProducts', () => {
     }
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(100);
+      expect(result.current.page).toBe(21);
     });
 
     act(() => result.current.fetchNextPage());
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(100);
+      expect(result.current.page).toBe(21);
     });
   });
 });
