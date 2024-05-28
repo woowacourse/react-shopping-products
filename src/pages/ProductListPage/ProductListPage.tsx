@@ -35,8 +35,6 @@ const ProductListPage = () => {
   const handleCategoryOption = (option: string) => setCategory(option);
   const handleSortingOption = (option: string) => setSorting(option);
 
-  console.log(cartItems);
-
   return (
     <div>
       <Header>
@@ -52,15 +50,16 @@ const ProductListPage = () => {
           <Dropdown options={sortingList} selectedOption={sorting} updateOption={handleSortingOption} />
         </S.DropdownContainer>
         <S.ProductList>
-          {products.map((product) => (
-            <ProductItem
-              key={product.id}
-              product={product}
-              isAdded={cartItems.some((item) => item.product.id === product.id)}
-              onAddCartItem={handleAddCartItem}
-              onDeleteCartItem={handleDeleteCartItem}
-            />
-          ))}
+          {products &&
+            products.map((product) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                isAdded={cartItems.some((item) => item.product.id === product.id)}
+                onAddCartItem={handleAddCartItem}
+                onDeleteCartItem={handleDeleteCartItem}
+              />
+            ))}
         </S.ProductList>
       </S.Layout>
     </div>

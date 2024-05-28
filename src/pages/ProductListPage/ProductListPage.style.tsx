@@ -14,10 +14,24 @@ export const DropdownContainer = styled.div`
 `;
 
 export const ProductList = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
   gap: 20px;
-  flex-wrap: wrap;
+
+  /* 데스크톱 */
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  /* 태블릿 */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* 모바일 */
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  }
 `;
 
 export const CartIconWrapper = styled.div`
