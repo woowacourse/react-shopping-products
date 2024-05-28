@@ -14,6 +14,7 @@ const useProductList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
+  const [isDesc, setIsDesc] = useState(false);
 
   useEffect(() => {
     if (page > 1) setSize(MORE_LOAD_ITEM_COUNT);
@@ -21,7 +22,8 @@ const useProductList = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await getProductList({ page, size });
+        const sortOrder = isDesc ? 'desc' : 'asc';
+        const data = await getProductList({ page, size, sortOrder });
         setProducts((prev) => [...prev, ...data.content]);
 
         if (data.last) setHasNextPage((prev) => !prev);
@@ -33,15 +35,34 @@ const useProductList = () => {
     };
 
     fetchData();
-  }, [page]);
+  }, [page, isDesc]);
 
   const fetchNextPage = () => {
+    if (hasNextPage && page === 1) {
+      const SKIP_PAGES = FIRST_PAGE_ITEM_COUNT / MORE_LOAD_ITEM_COUNT;
+      setPage((prev) => prev + SKIP_PAGES);
+    }
+
     if (hasNextPage) {
       setPage((prev) => prev + 1);
     }
   };
 
-  return { page, products, loading, error, fetchNextPage, hasNextPage };
+  const handleChangeSort = () => {
+    setIsDesc((prev) => !prev);
+    setProducts([]);
+    setPage(0);
+  };
+
+  return {
+    page,
+    products,
+    loading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    handleChangeSort,
+  };
 };
 
 export default useProductList;
