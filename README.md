@@ -9,6 +9,7 @@
 - [x] ProductListPage 컴포넌트 생성
 - [x] reset.css, app 레이아웃 index.css 적용
 - [x] ProductListHeader 컴포넌트 생성
+- [x] ProductListTitle 컴포넌트 생성
 
 ### 컨벤션
 
