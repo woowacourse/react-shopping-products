@@ -7,9 +7,13 @@ import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropd
 import { useState } from 'react';
 import { Product } from '@appTypes/product';
 import SortDropdown from '@components/product/SortDropdown/SortDropdown';
-import useToggleShoppingCartItem from '@hooks/product/useCheckedIds';
 
-const ProductPage = () => {
+interface ProductPageProps extends React.PropsWithChildren {
+  toggleId: (id: number) => void;
+  getIsCheckedId: (id: number) => boolean;
+}
+
+const ProductPage = ({ toggleId, getIsCheckedId }: ProductPageProps) => {
   const { products } = useProducts();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -17,8 +21,6 @@ const ProductPage = () => {
 
   const [isSortTypeDropdownOpen, setIsSortTypeDropdownOpen] = useState(false);
   const [sortType, setSortType] = useState<'row' | 'high'>('row');
-
-  const { toggleId, getIsCheckedId } = useToggleShoppingCartItem();
 
   return (
     <>

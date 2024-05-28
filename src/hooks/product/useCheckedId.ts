@@ -3,28 +3,25 @@ import { useState } from 'react';
 const useCheckedIds = () => {
   const [checkedItemIds, setCheckedItemIds] = useState<number[]>([]);
 
-  const checkId = (id: number) => {
-    setCheckedItemIds((prev) => {
-      if (prev.includes(id)) return prev;
-      return prev.concat(id);
-    });
+  const addCheckId = (id: number) => {
+    setCheckedItemIds((prevCheckedItemIds) => [...prevCheckedItemIds, id]);
   };
 
-  const uncheckId = (id: number) => {
-    setCheckedItemIds((prev) => {
-      const idIndex = prev.indexOf(id);
-      if (idIndex === -1) return prev;
-
-      const next = [...prev];
-      next.splice(idIndex, 1);
-      return next;
-    });
+  const removeCheckId = (id: number) => {
+    setCheckedItemIds((prevCheckedItemIds) =>
+      prevCheckedItemIds.filter((checkedId) => checkedId !== id)
+    );
   };
 
   const toggleId = (id: number) => {
     const isCheckedId = getIsCheckedId(id);
-    if (isCheckedId) return uncheckId(id);
-    checkId(id);
+
+    if (isCheckedId) {
+      removeCheckId(id);
+      return;
+    }
+
+    addCheckId(id);
   };
 
   const getIsCheckedId = (id: number) => checkedItemIds.includes(id);
