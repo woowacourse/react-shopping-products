@@ -66,5 +66,52 @@ describe('useProductList', () => {
         expect(result.current.products).toHaveLength(24);
       });
     });
+
+    it('마지막 페이지일 시 다음 페이지가 존재하지 않는다고 알려준다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      await waitFor(() => {
+        expect(result.current.page).toBe(0);
+        expect(result.current.products).toHaveLength(20);
+        expect(result.current.hasNextPage).toBe(true);
+      });
+
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      await waitFor(() => {
+        expect(result.current.page).toBe(1);
+        expect(result.current.products).toHaveLength(24);
+        expect(result.current.hasNextPage).toBe(false);
+      });
+
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(24);
+        expect(result.current.hasNextPage).toBe(false);
+      });
+    });
+
+    it('페이지네이션으로 추가 데이터를 불러올 때 로딩 상태를 표시한다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      expect(result.current.loading).toBe(true);
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+    });
   });
 });
