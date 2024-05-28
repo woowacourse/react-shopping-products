@@ -5,7 +5,8 @@
 - UI
 
   - [ ] Header
-    - [ ] CartButton
+    - [x] ShopButton
+    - [x] CartButton
   - [ ] Product
     - [ ] ProductHedaer
     - [ ] Dropdown
