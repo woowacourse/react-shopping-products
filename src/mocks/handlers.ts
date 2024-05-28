@@ -1,9 +1,10 @@
 import { http, HttpResponse } from 'msw';
 import products from './products.json';
-import { BASE_URL } from '@constants/baseUrl';
+
+import APIClient from '@apis/APIClient';
 
 export const handlers = [
-  http.get(`${BASE_URL}/products`, () => {
+  http.get(`${APIClient.API_URL}/products`, () => {
     // const url = new URL(request.url);
 
     // const page = Number(url.searchParams.get('page') || '1');

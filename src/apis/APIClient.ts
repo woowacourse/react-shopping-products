@@ -1,8 +1,7 @@
-import { BASE_URL } from '@constants/baseUrl';
 import HTTPError from '@errors/HTTPError';
 
 export default class APIClient {
-  private static API_URL = BASE_URL;
+  static API_URL = import.meta.env.VITE_API_URL;
 
   static validateResponse(response: Response, errorMessage: string) {
     if (!response.ok) {
