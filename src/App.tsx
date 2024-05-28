@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ProductListPage from './pages/ProductListPage';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <ProductListPage />,
+    },
+  ]);
 
-  return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
