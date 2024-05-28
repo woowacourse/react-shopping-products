@@ -1,9 +1,9 @@
-import { ENDPOINT } from "@/config/endPoint";
+import { END_POINT } from "@/config/endPoint";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { ResponseProduct } from "@/types/products";
 
 export const getProducts = async (): Promise<ResponseProduct> => {
-  const response = await fetch(ENDPOINT.products);
+  const response = await fetch(END_POINT.products);
 
   if (!response.ok) {
     throw new Error(ERROR_MESSAGES.failGetProducts);
