@@ -26,11 +26,13 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
 
   const handleOnToggle = async () => {
     setIsClicked(true);
+
     if (cartItem) {
       await deleteCartItem(cartItem.id);
     } else {
       await addCartItem(id);
     }
+
     setIsClicked(false);
   };
 

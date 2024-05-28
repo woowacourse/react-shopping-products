@@ -16,7 +16,7 @@ export async function fetchProducts(
   params.append('sort', `price,${priceOrder}`);
   params.append('sort', 'name,asc');
 
-  const response = await fetch(`${PRODUCTS_ENDPOINT}?${params.toString()}`);
+  const response = await fetch(`${PRODUCTS_ENDPOINT}?${String(params)}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch products');
