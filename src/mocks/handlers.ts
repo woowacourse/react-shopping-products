@@ -9,6 +9,7 @@ export const handlers = [
     const page = Number(url.searchParams.get('page'));
     const size = Number(url.searchParams.get('size'));
     const sortings = url.searchParams.getAll('sort');
+    const category = url.searchParams.getAll('category');
 
     const productCopy = Object.assign({}, products);
     const productSorted = productSorter(sortings, productCopy);

@@ -106,9 +106,27 @@ describe('fetchProducts', () => {
         mockProducts.sort(sortingFunc);
       });
       const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
+
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
         expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
+      });
+    },
+  );
+  test.each([['fashion']])(
+    '필터가 %s 일 때 필터링 된 결과가 나와야 한다.',
+    async (category) => {
+      const { result } = renderHook(() => useFetchProducts([], category));
+
+      const mockProducts = MOCK_PRODUCTS.content;
+      const filteredMockProducts = mockProducts.filter(
+        (product) => product.category === category,
+      );
+      const FILTERED_MOCK_PRODUCTS = filteredMockProducts.slice(0, 20);
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toEqual(FILTERED_MOCK_PRODUCTS);
       });
     },
   );

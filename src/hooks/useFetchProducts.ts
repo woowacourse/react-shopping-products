@@ -3,7 +3,10 @@ import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
 
-const useFetchProducts = (sortings: SortingParam[] = []) => {
+const useFetchProducts = (
+  sortings: SortingParam[] = [],
+  filter: string | '' = '',
+) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isError, setIsError] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -21,7 +24,12 @@ const useFetchProducts = (sortings: SortingParam[] = []) => {
     const getProducts = async () => {
       try {
         setIsPending(true);
-        const fetchedProducts = await fetchProducts(fetchPage, size, sortings);
+        const fetchedProducts = await fetchProducts(
+          fetchPage,
+          size,
+          sortings,
+          filter,
+        );
         setProducts((prevState) => [...prevState, ...fetchedProducts.content]);
         setIsLast(fetchedProducts.last);
       } catch (error) {
