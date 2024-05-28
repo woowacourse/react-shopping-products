@@ -1,0 +1,57 @@
+{
+  "content": [
+    {
+      "id": 142,
+      "name": "캐주얼 후드티",
+      "price": 40000,
+      "imageUrl": "https://images.unsplash.com/photo-1623998021450-85c29c644e0d?q=80&w=3357&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fashion"
+    },
+    {
+      "id": 134,
+      "name": "라이트 데님 청바지",
+      "price": 45000,
+      "imageUrl": "https://images.unsplash.com/photo-1591348278863-a8fb3887e2aa?q=80&w=2735&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fashion"
+    },
+    {
+      "id": 140,
+      "name": "남성용 스니커즈",
+      "price": 50000,
+      "imageUrl": "https://images.unsplash.com/3/www.madebyvadim.com.jpg?q=80&w=3282&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fashion"
+    },
+    {
+      "id": 59,
+      "name": "스웨터",
+      "price": 50000,
+      "imageUrl": "https://images.unsplash.com/photo-1695073621086-aa692bc32a3d?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fashion"
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "sorted": true,
+      "unsorted": false,
+      "empty": false
+    },
+    "pageNumber": 5,
+    "pageSize": 4,
+    "offset": 20,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": false,
+  "totalPages": 9,
+  "totalElements": 36,
+  "sort": {
+    "sorted": true,
+    "unsorted": false,
+    "empty": false
+  },
+  "first": false,
+  "number": 5,
+  "numberOfElements": 4,
+  "size": 4,
+  "empty": false
+}

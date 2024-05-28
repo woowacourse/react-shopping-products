@@ -6,8 +6,8 @@ import { act } from 'react';
 import { server } from '@/mocks/server';
 import useProductList from '@/hooks/useProductList';
 
-describe('useProductList', () => {
-  describe('상품 목록 조회', () => {
+describe('useProductList 테스트', () => {
+  describe('상품 목록 조회 테스트', () => {
     it('상품 목록을 조회한다.', async () => {
       const { result } = renderHook(() => useProductList());
 
@@ -39,7 +39,7 @@ describe('useProductList', () => {
     });
   });
 
-  describe('페이지네이션', () => {
+  describe('페이지네이션 테스트', () => {
     it('초기 랜더링시 첫 페이지의 상품 20개를 불러온다.', async () => {
       const { result } = renderHook(() => useProductList());
 
@@ -224,6 +224,122 @@ describe('useProductList', () => {
       );
 
       expect(isDescPrice).toBe(true);
+    });
+  });
+
+  describe('상품 카테고리 필터링 테스트', () => {
+    it('`fashion` 카테고리 선택시 패션 카테고리 상품 목록만 필터링되어 보여준다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      const SELECTED_CATEGORY = 'fashion';
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.handleChangeCategory(SELECTED_CATEGORY);
+      });
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      const isAllFashion = result.current.products.some(
+        (item) => item.category === SELECTED_CATEGORY
+      );
+
+      expect(isAllFashion).toBe(true);
+    });
+
+    it('`fashion` 카테고리 선택 후 다음 페이지 로드시 패션 카테고리 상품 목록만 필터링되어 보여준다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      const SELECTED_CATEGORY = 'fashion';
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.handleChangeCategory(SELECTED_CATEGORY);
+      });
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      await waitFor(() => {
+        expect(result.current.page).toBe(1);
+        expect(result.current.products).toHaveLength(24);
+      });
+
+      const isAllFashion = result.current.products.some(
+        (item) => item.category === SELECTED_CATEGORY
+      );
+
+      expect(isAllFashion).toBe(true);
+    });
+
+    it('`fitness` 카테고리 선택시 피트니스 카테고리 상품 목록만 필터링되어 보여준다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      const SELECTED_CATEGORY = 'fitness';
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.handleChangeCategory(SELECTED_CATEGORY);
+      });
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      const isAllFashion = result.current.products.some(
+        (item) => item.category === SELECTED_CATEGORY
+      );
+
+      expect(isAllFashion).toBe(true);
+    });
+
+    it('`fitness` 카테고리 선택 후 다음 페이지 로드시 해당 카테고리 상품 목록만 필터링되어 보여준다.', async () => {
+      const { result } = renderHook(() => useProductList());
+
+      const SELECTED_CATEGORY = 'fitness';
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.handleChangeCategory(SELECTED_CATEGORY);
+      });
+
+      await waitFor(() => {
+        expect(result.current.products).toHaveLength(20);
+      });
+
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      await waitFor(() => {
+        expect(result.current.page).toBe(1);
+        expect(result.current.products).toHaveLength(24);
+      });
+
+      const isAllFashion = result.current.products.some(
+        (item) => item.category === SELECTED_CATEGORY
+      );
+
+      expect(isAllFashion).toBe(true);
     });
   });
 });
