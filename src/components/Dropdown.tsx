@@ -6,7 +6,7 @@ import ChevronUp from "./icons/ChevronUp";
 
 const S = {
   DropdownContainer: styled.div`
-    width: 150px;
+    width: 125px;
     position: relative;
     border: 1px solid #ccc;
     border-radius: 8px;

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 
-export const reset = css`
+const reset = css`
   html,
   body,
   div,
@@ -124,5 +124,14 @@ export const reset = css`
   table {
     border-collapse: collapse;
     border-spacing: 0;
+  }
+`;
+
+export const baseStyle = css`
+  ${reset}
+  body {
+    width: 430px;
+    height: 100vh;
+    margin: auto;
   }
 `;
