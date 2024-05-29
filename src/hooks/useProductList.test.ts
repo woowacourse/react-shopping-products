@@ -171,7 +171,7 @@ describe('useProductList 테스트', () => {
       });
 
       act(() => {
-        result.current.handleChangeSort();
+        result.current.handleChangeOrder('desc');
       });
 
       await waitFor(() => {
@@ -198,7 +198,7 @@ describe('useProductList 테스트', () => {
       });
 
       act(() => {
-        result.current.handleChangeSort();
+        result.current.handleChangeOrder('desc');
       });
 
       await waitFor(() => {
