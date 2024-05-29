@@ -1,30 +1,23 @@
 import { Product } from '../../../types/product';
-import AddCartButton from '../AddCartButton';
+import CartButton from '../CartButton';
 import * as S from './style';
 
 interface ProductItemProps {
-  imageUrl: Product['imageUrl'];
-  // description?: Product['description'];
-  name: Product['name'];
-  price: Product['price'];
+  product: Product;
 }
 
 export default function ProductItem({
-  imageUrl,
-  // description = '설명',
-  name,
-  price,
+  product: { imageUrl, name, price, id },
 }: ProductItemProps) {
   return (
     <S.Container>
       <S.Image src={imageUrl} alt={name} />
       <S.Information>
         <S.Name>{name}</S.Name>
-        {/* <S.Description>{description}</S.Description> */}
         <S.Price>{price}</S.Price>
       </S.Information>
 
-      <AddCartButton />
+      <CartButton productId={id} />
     </S.Container>
   );
 }

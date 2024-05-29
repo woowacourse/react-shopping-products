@@ -1,18 +1,20 @@
-import { Product } from '../../../types/product';
-import ProductItem from '../ProductItem';
-
+import APIErrorFallback from '../../common/APIErrorFallback';
+import { LoadingSpinner } from '../../common/LoadingBox/style';
 import * as S from './style';
 
 interface ProductListProps {
-  items: Product[];
+  loading: boolean;
+  error: Error | null;
 }
 
-export default function ProductList({ items }: ProductListProps) {
+export default function ProductList({
+  children,
+}: React.PropsWithChildren<ProductListProps>) {
   return (
-    <S.Container>
-      {items.map(({ imageUrl, name, price }) => (
-        <ProductItem imageUrl={imageUrl} name={name} price={price} />
-      ))}
-    </S.Container>
+    <S.Grid>
+
+      {children}
+
+    </S.Grid>
   );
 }
