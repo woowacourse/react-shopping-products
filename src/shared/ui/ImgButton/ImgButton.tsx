@@ -1,13 +1,9 @@
-import { ReactElement } from 'react';
-
-import { TextProps } from '../Text/Text';
-
 import css from './ImgButton.module.css';
 
 type ButtonType = 'button' | 'submit' | 'reset';
 
 interface ImgButtonProps {
-  children?: ReactElement<TextProps>;
+  children?: string;
   className?: string;
   alt: string;
   src: string;
