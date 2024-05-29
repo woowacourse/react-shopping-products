@@ -10,17 +10,17 @@
 
 ### 2. 상품 정렬 및 필터링
 
-- [ ] 상품 필터링
-  - [ ] 카테고리 따라 filter된 상품 목록을 보여준다.
-    - [ ] fashion : 의류
-    - [ ] beverage : 음료
-    - [ ] electronics : 전자기기
-    - [ ] kitchen : 주방용품
-    - [ ] fitness : 피트니스
-    - [ ] books : 도서
+- [x] 상품 필터링
+  - [x] 카테고리 따라 filter된 상품 목록을 보여준다.
+    - [x] fashion : 의류
+    - [x] beverage : 음료
+    - [x] electronics : 전자기기
+    - [x] kitchen : 주방용품
+    - [x] fitness : 피트니스
+    - [x] books : 도서
 - 상품 정렬
-  - [ ] 낮은 가격 순
-  - [ ] 높은 가격 순
+  - [x] 낮은 가격 순
+  - [x] 높은 가격 순
 
 ### 3. 상품 장바구니 담기
 
