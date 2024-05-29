@@ -30,5 +30,5 @@ export const Content = styled.main`
   padding: 36px 24px;
   margin-top: 64px;
   overflow-y: auto;
-  min-height: calc(100vh - 128px);
+  min-height: calc(100vh - 64px);
 `;
