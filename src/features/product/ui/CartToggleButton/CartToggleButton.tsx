@@ -1,4 +1,4 @@
-import { assets, ImgButton } from '../../../../shared/index';
+import { assets, ImgButton } from '@/shared';
 import css from './CartToggleButton.module.css';
 
 interface CartToggleButtonProps {
