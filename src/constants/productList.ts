@@ -34,10 +34,10 @@ export const CATEGORY_OPTIONS: DropdownOption[] = [
 export const PRICE_SORT_OPTIONS: DropdownOption[] = [
   {
     label: '낮은 가격순',
-    value: 'asc',
+    value: 'price,asc',
   },
   {
     label: '높은 가격순',
-    value: 'desc',
+    value: 'price,desc',
   },
 ];

@@ -9,8 +9,8 @@ function ProductListPage() {
     <div>
       <h1 className="page__title">bpple 상품 목록</h1>
       <div className={style.dropdownGroup}>
-        <Dropdown label="카테고리" options={CATEGORY_OPTIONS} onChange={() => console.log('')} />
-        <Dropdown label="가격순" options={PRICE_SORT_OPTIONS} onChange={() => console.log('')} />
+        <Dropdown label="카테고리" name="category" options={CATEGORY_OPTIONS} onChange={handleChangeOption} />
+        <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
       <ProductList />
     </div>

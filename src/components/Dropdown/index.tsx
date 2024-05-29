@@ -8,7 +8,7 @@ interface DropdownProps extends Omit<React.HTMLProps<HTMLSelectElement>, 'onChan
   label: string;
 }
 
-function Dropdown({ options, label, onChange, ...rest }: DropdownProps) {
+function Dropdown({ options, label, onChange, name, ...rest }: DropdownProps) {
   const selectId = `select-${label}`;
 
   return (
@@ -16,7 +16,7 @@ function Dropdown({ options, label, onChange, ...rest }: DropdownProps) {
       <label className="scr-only" htmlFor={selectId}>
         {label}
       </label>
-      <select id={selectId} className={style.select} onChange={onChange} {...rest}>
+      <select id={selectId} name={name} className={style.select} onChange={onChange} {...rest}>
         {options.map((item) => (
           <option key={item.value} value={item.value}>
             {item.label}

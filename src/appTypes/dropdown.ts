@@ -1,6 +1,6 @@
-import { Category, Sort } from './product';
+import { Category, PriceSort } from './product';
 
 export interface DropdownOption {
   label: string;
-  value: Sort | Category;
+  value: PriceSort | Category;
 }
