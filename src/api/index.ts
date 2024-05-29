@@ -1,8 +1,12 @@
 import { CategoryType, SortType } from '../constants';
-import { PRODUCTS_ENDPOINT } from './endpoints';
+import {
+  CART_ITEMS_COUNT_ENDPOINT,
+  // CART_ITEMS_ENDPOINT,
+  PRODUCTS_ENDPOINT,
+} from './endpoints';
 
-const USERNAME = import.meta.env.VITE_USERNAME;
-const PASSWORD = import.meta.env.VITE_PASSWORD;
+const USERNAME = import.meta.env.VITE_USER_ID;
+const PASSWORD = import.meta.env.VITE_USER_PASSWORD;
 function generateBasicToken(userId: string, userPassword: string): string {
   const token = btoa(`${userId}:${userPassword}`);
   return `Basic ${token}`;
@@ -39,6 +43,22 @@ export async function fetchProducts(
   const data = await response.json();
   return data;
 }
+export const addCartItem = async (itemId: number) => {
+  // const response = await fetch(CART_ITEMS_ENDPOINT, {
+  const response = await fetch('/', {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({
+      productId: itemId,
+      quantity: 1,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch Items');
+  }
+};
+
 export const fetchShoppingCartQuantity = async () => {
   const response = await fetch(CART_ITEMS_COUNT_ENDPOINT, {
     method: 'GET',
