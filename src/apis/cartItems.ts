@@ -32,3 +32,9 @@ export async function fetchGetCartItems(totalNumbers: number = 20) {
   };
 }
 
+export async function fetchDeleteCartItems({ cartItemId }: { cartItemId: number }) {
+  await fetchWithToken({
+    url: `${END_POINTS.cartItems}/${cartItemId}`,
+    method: 'DELETE',
+  });
+}

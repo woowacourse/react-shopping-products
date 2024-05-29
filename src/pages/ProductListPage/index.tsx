@@ -1,5 +1,5 @@
 import { fetchProduct } from '@apis/index';
-import { Filtering, Product } from '@appTypes/index';
+import { CartItem, Filtering, Product } from '@appTypes/index';
 import { Dropdown, IntersectionObserverArea } from '@components/index';
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@constants/index';
 import useFetch from '@hooks/useFetch';
@@ -8,7 +8,12 @@ import { useEffect, useRef, useState } from 'react';
 import ProductList from './ProductList';
 import style from './style.module.css';
 
-function ProductListPage() {
+interface ProductListPageProps {
+  cartItems: CartItem[];
+  getCartItemList: () => Promise<void>;
+}
+
+function ProductListPage({ cartItems, getCartItemList }: ProductListPageProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
@@ -24,7 +29,7 @@ function ProductListPage() {
   const getStackedProducts = async () => {
     const newPage = page + 1;
     const result = await fetch({ filtering, page: newPage });
-    console.log('length', result?.products.length);
+
     if (result === undefined) return;
     setIsLastPage(result.isLast);
     setProducts((prev) => [...prev, ...result.products]);
@@ -73,7 +78,13 @@ function ProductListPage() {
         <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
       <IntersectionObserverArea callback={observerCallback} targetRef={targetRef}>
-        <ProductList products={products} targetRef={targetRef} loading={loading} />
+        <ProductList
+          products={products}
+          targetRef={targetRef}
+          loading={loading}
+          cartItems={cartItems}
+          getCartItemList={getCartItemList}
+        />
       </IntersectionObserverArea>
     </div>
   );

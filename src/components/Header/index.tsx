@@ -6,7 +6,11 @@ import CartBadgeButton from './CartBadgeButton';
 import Logo from './Logo';
 import style from './style.module.css';
 
-function Header() {
+interface HeaderProps {
+  cartItemsLength: number;
+}
+
+function Header({ cartItemsLength }: HeaderProps) {
   const [error, setError] = useState(false);
 
   const handleClick = () => {
@@ -17,7 +21,7 @@ function Header() {
     <>
       <header className={style.header}>
         <Logo />
-        <CartBadgeButton handleClick={handleClick} />
+        <CartBadgeButton handleClick={handleClick} cartItemsLength={cartItemsLength} />
       </header>
       {error && <CartAction />}
     </>
