@@ -10,10 +10,12 @@ export const ToastContext = createContext<ToastContextType>({ showToast: () => {
 const ToastProvider = ({ children }: React.PropsWithChildren) => {
   const [message, setMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [isRemove, setIsRemove] = useState(true);
 
   const toastTimer = useRef<NodeJS.Timeout>();
 
   const showToast = (message: string) => {
+    setIsRemove(false);
     setIsOpen(true);
     setMessage(message);
 
@@ -23,7 +25,11 @@ const ToastProvider = ({ children }: React.PropsWithChildren) => {
 
     const timer = setTimeout(() => {
       setIsOpen(false);
-      setMessage('');
+
+      setTimeout(() => {
+        setIsRemove(true);
+        setMessage('');
+      }, 400);
     }, 3000);
 
     toastTimer.current = timer;
@@ -32,7 +38,7 @@ const ToastProvider = ({ children }: React.PropsWithChildren) => {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {isOpen && <ErrorToast message={message} isOpen={isOpen} />}
+      {!isRemove && <ErrorToast message={message} isOpen={isOpen} />}
     </ToastContext.Provider>
   );
 };
