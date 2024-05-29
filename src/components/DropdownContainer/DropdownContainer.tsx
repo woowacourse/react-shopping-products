@@ -3,8 +3,15 @@ import { Sorting } from "../../interfaces/Sorting";
 import Dropdown from "../common/Dropdown/Dropdown";
 import * as S from "./DropdownContainer.style";
 
-function DropdownContainer() {
-  const categoryOptions = [["all", "전체"]];
+interface DropdownContainerProps {
+  category: Category;
+  onChangeCategory : (e:React.ChangeEvent<HTMLSelectElement>) => void;
+  sortingOption: Sorting;
+  onChangeSortingOption : (e:React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+function DropdownContainer({category, onChangeCategory, sortingOption, onChangeSortingOption}:DropdownContainerProps) {
+  const categoryOptions = [["", "전체"]];
   categoryOptions.push(
     ...Object.entries(Category).map(([key, value]) => [key, `${value}`])
   );
@@ -13,8 +20,8 @@ function DropdownContainer() {
   
   return (
     <S.Container>
-      <Dropdown optionList={categoryOptions} type="category"></Dropdown>
-      <Dropdown optionList={sortingOptions} type="sort"></Dropdown>
+      <Dropdown optionList={categoryOptions} value={category} onChange={onChangeCategory} type="category"></Dropdown>
+      <Dropdown optionList={sortingOptions} value={sortingOption} onChange={onChangeSortingOption} type="sort"></Dropdown>
     </S.Container>
   );
 }
