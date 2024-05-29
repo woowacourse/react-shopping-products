@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { CartItems, fetchItems } from '../api';
 import ItemCard from '../components/ItemCard/ItemCard';
 import ItemList from '../components/ItemList/ItemList';
 import Dropdown from '../components/common/Dropdown/Dropdown';
@@ -16,6 +18,24 @@ function ProductPage() {
   const { products, fetchNextPage, loading, changeCategory, changeSorting } =
     useProducts();
   const { lastProductElementRef } = useInfinityScroll(fetchNextPage);
+  const [cartItemIds, setCartItem] = useState<number[]>([]);
+
+  useEffect(() => {
+    const dd = async () => {
+      try {
+        const cartItems = await fetchItems();
+        const newCartItemIds = cartItems.map((cartItem) => cartItem.product.id);
+        setCartItem(newCartItemIds);
+      } catch (error) {
+        console.log('sdf');
+      }
+    };
+    dd();
+  }, []);
+
+  const isInCart = (productId: number) => {
+    return cartItemIds.includes(productId);
+  };
 
   return (
     <Container>
@@ -38,8 +58,14 @@ function ProductPage() {
         </DropBoxContainer>
 
         <ItemList>
-          {products.map((product) => {
-            return <ItemCard key={product.id} {...product} />;
+          {products.map((product, index) => {
+            return (
+              <ItemCard
+                key={`${product.id}${index}`}
+                initIsInCart={isInCart(product.id)}
+                {...product}
+              />
+            );
           })}
         </ItemList>
         {loading && (

@@ -1,7 +1,7 @@
 import { CategoryType, SortType } from '../constants';
 import {
   CART_ITEMS_COUNT_ENDPOINT,
-  // CART_ITEMS_ENDPOINT,
+  CART_ITEMS_ENDPOINT,
   PRODUCTS_ENDPOINT,
 } from './endpoints';
 
@@ -43,9 +43,9 @@ export async function fetchProducts(
   const data = await response.json();
   return data;
 }
+
 export const addCartItem = async (itemId: number) => {
-  // const response = await fetch(CART_ITEMS_ENDPOINT, {
-  const response = await fetch('/', {
+  const response = await fetch(CART_ITEMS_ENDPOINT, {
     method: 'POST',
     headers: HEADERS,
     body: JSON.stringify({
@@ -59,6 +59,31 @@ export const addCartItem = async (itemId: number) => {
   }
 };
 
+export const deleteCartItem = async (productId: number) => {
+  const cartItemId = await findCartItemIdByProductId(productId);
+  if (cartItemId !== undefined) {
+    const response = await fetch(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
+      method: 'DELETE',
+      headers: HEADERS,
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch Items');
+    }
+  }
+};
+
+export const findCartItemIdByProductId = async (productId: number) => {
+  const response = await fetchItems();
+
+  const cartItem = response.find((cartItem) => {
+    if (cartItem.product.id === productId) {
+      return cartItem.id;
+    }
+  });
+
+  return cartItem && cartItem.id;
+};
+
 export const fetchShoppingCartQuantity = async () => {
   const response = await fetch(CART_ITEMS_COUNT_ENDPOINT, {
     method: 'GET',
@@ -70,6 +95,31 @@ export const fetchShoppingCartQuantity = async () => {
   }
 
   const data = await response.json();
-  console.log(data);
   return data.quantity;
 };
+
+export interface Item {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+}
+
+export interface CartItems {
+  id: number;
+  quantity: number;
+  product: Item;
+}
+export async function fetchItems(): Promise<CartItems[]> {
+  const response = await fetch(`${CART_ITEMS_ENDPOINT}`, {
+    method: 'GET',
+    headers: HEADERS,
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch Items');
+  }
+  const data = await response.json();
+  return data.content;
+}

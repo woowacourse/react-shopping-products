@@ -15,6 +15,7 @@ interface ItemCardProps {
   price: number;
   imageUrl: string;
   category: string;
+  initIsInCart: boolean;
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({
@@ -23,6 +24,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
   name,
   price,
   imageUrl,
+  initIsInCart,
 }) => {
   return (
     <li key={id} ref={ref ?? ref}>
@@ -38,7 +40,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
             <ButtonImg src={Cart} />
             <span>{isInCart ? '빼기' : '담기'}</span>
           </Button> */}
-          <CartButton itemId={id} />
+          <CartButton itemId={id} initIsInCart={initIsInCart} />
         </ItemCardBottom>
       </ItemCardSection>
     </li>
