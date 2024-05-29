@@ -1,4 +1,4 @@
-import { PRODUCTS } from './endpoints';
+import { END_POINT } from './endpoints';
 import fetcher from './fetcher';
 
 import { ProductCategory, ProductResponse, Sort } from '@/types/product';
@@ -18,7 +18,7 @@ const covertUrlFormat = ({ category, page, size, sortOptions }: FetchProductList
   const categoryQuery = category ? `&category=${category}` : '';
   const sizeQuery = size ? `&size=${size}` : '';
   const sortQuery = sortOptions ? `&sort=${encodedSort}` : '';
-  return `${PRODUCTS}${pageQuery}${categoryQuery}${sizeQuery}${sortQuery}`;
+  return `${END_POINT.products}${pageQuery}${categoryQuery}${sizeQuery}${sortQuery}`;
 };
 
 export const fetchProductList = async ({
