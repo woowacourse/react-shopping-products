@@ -9,6 +9,7 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import * as S from './ProductListPage.style';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
 import Loading from '../../assets/loading.gif';
+import EmptyCart from '../../assets/EmptyCart.png';
 
 const ProductListPage = () => {
   const { products, category, sort, loading, isLast, handleCategory, handleSort, fetchNextPage } = useProducts(
@@ -23,7 +24,7 @@ const ProductListPage = () => {
       <Header>
         <S.CartIconWrapper>
           <img src={CartIcon} alt="장바구니 아이콘" />
-          <S.CartNumber>{counts}</S.CartNumber>
+          <S.CartNumber>{counts <= 9 ? counts : `9+`}</S.CartNumber>
         </S.CartIconWrapper>
       </Header>
       <S.Layout>
@@ -32,9 +33,9 @@ const ProductListPage = () => {
           <Dropdown options={CATEGORY_LIST} selectedOption={category} updateOption={handleCategory} />
           <Dropdown options={SORTING_LIST} selectedOption={sort} updateOption={handleSort} />
         </S.DropdownContainer>
-        <S.ProductList>
-          {products &&
-            products.map((product) => (
+        {products ? (
+          <S.ProductList>
+            {products.map((product) => (
               <ProductItem
                 key={product.id}
                 product={product}
@@ -43,7 +44,13 @@ const ProductListPage = () => {
                 onDeleteCartItem={handleDeleteCartItem}
               />
             ))}
-        </S.ProductList>
+          </S.ProductList>
+        ) : (
+          <S.EmptyProductContainer>
+            <img src={EmptyCart} alt="빈 상품 목록" />
+            <p>표시할 상품이 없습니다.</p>
+          </S.EmptyProductContainer>
+        )}
         {!isLast && (
           <S.LoadingWrapper ref={targetRef}>
             {loading && <S.LoadingSpinner src={Loading} alt="로딩 스피너" />}
