@@ -11,11 +11,11 @@ function Header() {
         <S.ShoppingCartIconContainer
           src={ShoppingCartIcon}
         ></S.ShoppingCartIconContainer>
-        {quantity > 0 && (
-          <S.ShoppingCartQuantityContainer>
-            <S.ShoppingCartQuantity>{quantity}</S.ShoppingCartQuantity>
-          </S.ShoppingCartQuantityContainer>
-        )}
+        {/* {quantity > 0 && ( */}
+        <S.ShoppingCartQuantityContainer>
+          <S.ShoppingCartQuantity>{quantity}</S.ShoppingCartQuantity>
+        </S.ShoppingCartQuantityContainer>
+        {/* )} */}
       </S.ShoppingCartButton>
     </S.HeaderWrapper>
   );
