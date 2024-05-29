@@ -1,4 +1,5 @@
 import { ENDPOINT } from './endpoints';
+import { fetchWithoutAuth } from './utils/fetchClient';
 
 export interface getProductListProps {
   page?: number;
@@ -13,14 +14,10 @@ export const getProductList = async ({
   category,
   sortOrder,
 }: getProductListProps) => {
-  const response = await fetch(
-    ENDPOINT.product.getList({ page, size, category, sortOrder })
+  const response = await fetchWithoutAuth(
+    ENDPOINT.product.getList({ page, size, category, sortOrder }),
+    { method: 'GET' }
   );
-
-  if (!response.ok) {
-    // TODO: 에러메세지 변경 필요
-    throw new Error('Failed to fetch products');
-  }
 
   return response.json();
 };
