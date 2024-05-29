@@ -13,8 +13,8 @@
     - [x] ProductList
     - [x] ProductItem
     - [x] CartActionButton(담기 / 빼기)
-  - [x] Spinner : 로딩 상태 UI(스피너)
-  - [x] ErrorToast : 에러 발생 UI(toastUI)
+  - [x] LoadingSpinner : 로딩 상태 UI(스피너)
+  - [x] ToastNotification : 에러 발생 UI(toastUI)
 
 - 기능
 
