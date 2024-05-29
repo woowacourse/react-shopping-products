@@ -1,4 +1,5 @@
 import { Product } from '@src/appTypes/product';
+import { useEffect, useRef } from 'react';
 
 import ProductCard from '../ProductCard';
 
@@ -9,8 +10,16 @@ interface ProductListProps {
   targetRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 function ProductList({ products, targetRef }: ProductListProps) {
+  const productListRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (products.length <= 20) {
+      productListRef.current?.scrollTo({ top: 0 });
+    }
+  }, [productListRef, products]);
+
   return (
-    <section className={style.wrapper}>
+    <section ref={productListRef} className={style.wrapper}>
       <ul className={style.productList}>
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
