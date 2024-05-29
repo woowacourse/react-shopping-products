@@ -43,19 +43,19 @@ const apiClient = {
   },
 
   async fetchWithErrorHandling(endpoint: string, requestInit: RequestInit) {
-    try {
-      const response = await fetch(`${API_URL}${endpoint}`, requestInit);
+    const response = await fetch(`${API_URL}${endpoint}`, requestInit);
 
-      const text = await response.text();
-
-      if (text === '') return;
-
-      const data = await JSON.parse(text);
-
-      return data;
-    } catch (error) {
-      return error;
+    if (!response.ok) {
+      throw new Error();
     }
+
+    const text = await response.text();
+
+    if (text === '') return;
+
+    const data = await JSON.parse(text);
+
+    return data;
   },
 };
 

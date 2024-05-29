@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { fetchProducts } from '../api/product';
 import { Product } from '../types/Product.type';
 import { Option } from '../utils/option';
+import { ToastContext } from '../context/ToastProvider';
 
 interface UseProductsResult {
   products: Product[];
@@ -22,9 +23,11 @@ export default function useProducts(initialCategory: Option, initialSorting: Opt
   const [sort, setSort] = useState(initialSorting);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<unknown>(null);
+  const [error, setError] = useState<boolean>(false);
   const [page, setPage] = useState(0);
   const [isLast, setIsLast] = useState(false);
+
+  const { showToast } = useContext(ToastContext);
 
   useEffect(() => {
     getProducts(category, sort);
@@ -37,7 +40,10 @@ export default function useProducts(initialCategory: Option, initialSorting: Opt
       setProducts(page === 0 ? data : [...products, ...data]);
       setIsLast(isLast);
     } catch (error) {
-      setError(error);
+      if (error instanceof Error) {
+        setError(true);
+        showToast('상품 목록을 불러오는 과정에서 에러가 발생했습니다.');
+      }
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ProductListPage from './pages/ProductListPage/ProductListPage';
+import ToastProvider from './context/ToastProvider';
 
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './styles/Global.style';
@@ -16,7 +17,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <RouterProvider router={router} />
+      <ToastProvider>
+        <RouterProvider router={router} />
+      </ToastProvider>
     </ThemeProvider>
   );
 }
