@@ -102,3 +102,16 @@ export const getCartItemsCount = async () => {
 
   return data;
 };
+
+export const getCartItems = async (): Promise<CartItem[]> => {
+  const response = await fetchWithAuth(CART_ITEMS_ENDPOINT, {
+    method: "GET",
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error("Failed to get cart items count");
+  }
+
+  return data.content;
+};

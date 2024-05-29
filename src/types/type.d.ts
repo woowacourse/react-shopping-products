@@ -15,3 +15,9 @@ interface Product {
   imageUrl: string;
   category: string;
 }
+
+interface CartItem {
+  id: number;
+  quantity: number;
+  product: Product;
+}
