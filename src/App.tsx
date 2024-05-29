@@ -1,6 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import AddCartItemButton from './AddCartItemButton';
+import { fetchCartItems } from './api/cart';
 import useProductList from './hooks/useProductList';
+import { CartItemInfo } from './types/cartItem';
 
 function App() {
   const {
@@ -13,6 +16,17 @@ function App() {
     category,
   } = useProductList();
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const [cartItems, setCartItems] = useState<CartItemInfo[]>([]);
+
+  useEffect(() => {
+    const getCartItem = async () => {
+      const data = await fetchCartItems();
+      setCartItems(data);
+    };
+
+    getCartItem();
+  }, []);
 
   useEffect(() => {
     const onIntersect = (entries: IntersectionObserverEntry[]) => {
@@ -61,6 +75,11 @@ function App() {
             <img src={product.imageUrl} width={100} height={100} />
             <div>{product.name}</div>
             <div>{product.price}</div>
+            <AddCartItemButton
+              productId={product.id}
+              cartItems={cartItems}
+              setCartItems={setCartItems}
+            />
             <hr></hr>
           </div>
         ))}
