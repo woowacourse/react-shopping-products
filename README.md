@@ -56,3 +56,6 @@
     - [x] 장바구니에 아이템을 삭제할 때 로딩 상태를 표시한다
 
 3. Logic
+
+- [x] useProduct
+- [ ] useToggleCartItem
