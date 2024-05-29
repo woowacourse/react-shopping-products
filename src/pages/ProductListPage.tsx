@@ -3,8 +3,8 @@ import Header from "@/components/Header";
 import TextBox from "@/components/_common/TextBox";
 import styled from "styled-components";
 import SelectBox from "@/components/SelectBox";
-
-const menu = ["메뉴1", "메뉴2", "메뉴3"];
+import { CATEGORY, SORT } from "@/constants/selectOption";
+import ItemCardList from "@/components/ItemCardList";
 
 const ProductListPage = () => {
   return (
@@ -17,10 +17,11 @@ const ProductListPage = () => {
         <ItemInfoWrapper>
           <TextBox type="xLarge" text="bpple 상품 목록" />
           <SelectBoxWrapper>
-            <SelectBox optionsContents={menu} />
-            <SelectBox optionsContents={menu} />
+            <SelectBox optionsContents={Object.values(CATEGORY)} />
+            <SelectBox optionsContents={Object.values(SORT)} />
           </SelectBoxWrapper>
         </ItemInfoWrapper>
+        <ItemCardList />
       </Wrapper>
     </>
   );
@@ -33,8 +34,8 @@ const Wrapper = styled.div`
 `;
 
 const SelectBoxWrapper = styled.div`
-  gap: 132px;
   display: flex;
+  justify-content: space-between;
 `;
 
 const ItemInfoWrapper = styled.div`
