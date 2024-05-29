@@ -1,0 +1,28 @@
+.cartButtonContainer {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.button {
+  border: none;
+  height: 24px;
+}
+
+.countWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  bottom: 20px;
+  left: 8px;
+  width: 19px;
+  height: 19px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.count {
+  font-size: 10px;
+  font-weight: 700;
+}
