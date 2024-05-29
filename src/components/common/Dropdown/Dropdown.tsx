@@ -1,19 +1,17 @@
-/**
- * 리스트
- * value,
- * onChange
- */
+import { OptionItem } from '@/types';
+import { ChangeEvent } from 'react';
+
 type DropdownProps = {
-  optionList: string[];
-  onChange: () => void;
+  optionList: OptionItem[];
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
 
 export default function Dropdown({ optionList, onChange }: DropdownProps) {
   return (
     <select onChange={onChange}>
-      {optionList.map((option) => (
-        <option key={option} value={option}>
-          {option}
+      {optionList.map((optionItem, index) => (
+        <option key={index} value={optionItem.value}>
+          {optionItem.option}
         </option>
       ))}
     </select>
