@@ -12,7 +12,7 @@ interface UseProductsResult {
 
 export default function useProducts(): UseProductsResult {
   const [products, setProducts] = useState<Product[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const isMounted = useRef(false);
   const [category, setCategory] = useState<Category | "all">("all");
@@ -36,7 +36,7 @@ export default function useProducts(): UseProductsResult {
     if (isMounted.current) {
       const fetchProducts = async () => {
         try {
-          const size = page === 1 ? 20 : 4;
+          const size = page === 0 ? 20 : 4;
           const responseData = await getProducts({
             category: category === "all" ? undefined : category,
             sort,
@@ -47,6 +47,7 @@ export default function useProducts(): UseProductsResult {
             ...prevProducts,
             ...responseData.content,
           ]);
+
           if (responseData.content.length < size) {
             setHasMore(false);
           }
@@ -64,13 +65,13 @@ export default function useProducts(): UseProductsResult {
   const handleCategory = (category: Category | "all") => {
     setProducts([]);
     setCategory(category);
-    setPage(1);
+    setPage(0);
   };
 
   const handleSort = (sort: Sort) => {
     setProducts([]);
     setSort(sort);
-    setPage(1);
+    setPage(0);
   };
 
   return {

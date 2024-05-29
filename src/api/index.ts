@@ -39,7 +39,7 @@ const createQueryString = (params: QueryParams): string => {
 
 export const getProducts = async ({
   category,
-  page = 1,
+  page = 0,
   size = 20,
   sort = "asc",
 }: GetProductsParams = {}) => {
