@@ -9,6 +9,7 @@ import { useRef } from 'react';
 import { useObserver } from '@/hooks/useObserver';
 import styles from './ProductListPage.module.css';
 import CartIcon from '@/components/CartIcon/CartIcon';
+import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 
 export default function ProductListPage() {
   const { productList, handleCategory, handleSortType, loading, error, fetchNextPage, page } =
@@ -27,22 +28,21 @@ export default function ProductListPage() {
   return (
     <div className={styles.container}>
       <Header leftComponent={<h1>SHOP</h1>} rightComponent={<CartIcon />} />
-      <Flex gap={20} direction="column">
-        <Title title="안녕하세요 나는 타이틀" />
-        <Flex gap={24} direction={'row'}>
-          <Dropdown optionList={CATEGORY_OPTION_LIST} onChange={handleCategory} />
-          <Dropdown optionList={FILTER_OPTION_LIST} onChange={handleSortType} />
-        </Flex>
+
+      <Flex gap={20} direction="column" style={{ margin: 'auto' }}>
+        <div className={styles.title_select_container}>
+          <Title title="안녕하세요 나는 타이틀" />
+
+          <Flex gap={24} direction={'row'} style={{ justifyContent: 'space-between' }}>
+            <Dropdown optionList={CATEGORY_OPTION_LIST} onChange={handleCategory} />
+            <Dropdown optionList={FILTER_OPTION_LIST} onChange={handleSortType} />
+          </Flex>
+        </div>
         <ProductList productList={productList} />
       </Flex>
-      <div
-        style={{
-          height: '200px',
-          backgroundColor: 'pink',
-        }}
-        ref={bottom}
-      />
-      <div>{loading ? 'true' : 'false'}</div>
+
+      <div ref={bottom} />
+      {loading && <LoadingSpinner />}
     </div>
   );
 }
