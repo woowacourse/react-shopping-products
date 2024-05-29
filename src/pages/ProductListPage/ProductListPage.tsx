@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import CartIcon from '../../assets/CartIcon.svg';
 import TitleContainer from '../../components/TitleContainer/TitleContainer';
 import Dropdown from '../../components/Dropdown/Dropdown';
@@ -7,33 +6,11 @@ import ProductItem from '../../components/ProductItem/ProductItem';
 import useProducts from '../../hooks/useProduct';
 import useCartItems from '../../hooks/useCartItems';
 import * as S from './ProductListPage.style';
-
-const CATEGORY_LIST = {
-  FASHION: '패션',
-  BEVERAGE: '음료',
-  ELECTRONICS: '전자제품',
-  KITCHEN: '주방용품',
-  FITNESS: '운동',
-  BOOKS: '책',
-};
-
-const SORTING_LIST = {
-  DESC: '낮은 가격순',
-  ASC: '높은 가격순',
-};
+import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
 
 const ProductListPage = () => {
-  const categoryList = Object.values(CATEGORY_LIST);
-  const sortingList = Object.values(SORTING_LIST);
-
-  const { products } = useProducts();
+  const { products, category, sort, handleCategory, handleSort } = useProducts(CATEGORY_LIST[0], SORTING_LIST[0]);
   const { cartItems, counts, handleAddCartItem, handleDeleteCartItem } = useCartItems();
-
-  const [category, setCategory] = useState(categoryList[0]);
-  const [sorting, setSorting] = useState(sortingList[0]);
-
-  const handleCategoryOption = (option: string) => setCategory(option);
-  const handleSortingOption = (option: string) => setSorting(option);
 
   return (
     <div>
@@ -46,8 +23,8 @@ const ProductListPage = () => {
       <S.Layout>
         <TitleContainer title="bpple 상품 목록" />
         <S.DropdownContainer>
-          <Dropdown options={categoryList} selectedOption={category} updateOption={handleCategoryOption} />
-          <Dropdown options={sortingList} selectedOption={sorting} updateOption={handleSortingOption} />
+          <Dropdown options={CATEGORY_LIST} selectedOption={category} updateOption={handleCategory} />
+          <Dropdown options={SORTING_LIST} selectedOption={sort} updateOption={handleSort} />
         </S.DropdownContainer>
         <S.ProductList>
           {products &&
