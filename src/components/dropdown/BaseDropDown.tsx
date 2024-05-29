@@ -62,8 +62,10 @@ const S = {
     border: 1px solid ${theme.color.blackWithOpacity};
     box-sizing: border-box;
     border-radius: 4px;
+    position: relative;
   `,
   OptionList: styled.ul`
+    position: absolute;
     ${FlexColumn}
     width: 125px;
     max-height: 250px;
