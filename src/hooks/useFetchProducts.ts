@@ -30,7 +30,14 @@ const useFetchProducts = (
           sortings,
           filter,
         );
-        setProducts((prevState) => [...prevState, ...fetchedProducts.content]);
+        if (page === 0) {
+          setProducts(fetchedProducts.content);
+        } else {
+          setProducts((prevState) => [
+            ...prevState,
+            ...fetchedProducts.content,
+          ]);
+        }
         setIsLast(fetchedProducts.last);
       } catch (error) {
         setIsError(true);
@@ -39,7 +46,7 @@ const useFetchProducts = (
       }
     };
     getProducts();
-  }, [page]);
+  }, [page, sortings, filter]);
 
   return { products, isError, isPending, fetchNextPage, page };
 };

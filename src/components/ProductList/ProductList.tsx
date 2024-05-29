@@ -1,16 +1,17 @@
 import React from 'react';
-import useFetchProducts from '../../hooks/useFetchProducts';
 import ProductCard from '../ProductCard/ProductCard';
 import * as S from './ProductList.styled';
+import { Product } from '../../types/fetch';
 
-function ProductList() {
-  const { products, isError, isPending, fetchNextPage, page } =
-    useFetchProducts();
+interface ProductListProps {
+  products: Product[];
+}
 
+function ProductList({ products }: ProductListProps) {
   return (
     <S.ProductListContainer>
-      {products.map((product) => {
-        return <ProductCard key={product.id} product={product} />;
+      {products.map((product, i) => {
+        return <ProductCard key={i} product={product} />;
       })}
     </S.ProductListContainer>
   );

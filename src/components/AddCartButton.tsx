@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-
+import * as S from './AddCartButton.styled';
 function AddCartButton() {
   const [isClicked, setIsClicked] = useState(false);
   const handleClick = () => {
     setIsClicked(!isClicked);
   };
   return isClicked ? (
-    <button onClick={handleClick}>빼기</button>
+    <S.DeleteButton onClick={handleClick}>빼기</S.DeleteButton>
   ) : (
-    <button onClick={handleClick}>담기</button>
+    <S.AddButton onClick={handleClick}>담기</S.AddButton>
   );
 }
-
-
 
 export default AddCartButton;
