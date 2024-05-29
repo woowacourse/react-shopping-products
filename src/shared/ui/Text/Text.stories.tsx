@@ -5,7 +5,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof Text> = {
   title: '5. shared/Text',
   component: Text,
+  decorators: [
+    (Story) => (
+      <div style={{ color: 'white' }}>
+        <Story />
+      </div>
+    ),
+  ],
   args: {
+    tag: 'p',
     children: 'text',
   },
 };
@@ -35,10 +43,10 @@ export const TypeB1: Story = {
 export const TagP: Story = {
   render: () => (
     <div>
-      <Text tag={'p'} type={'b1'}>
+      <Text tag={'p'} type={'h1'}>
         text
       </Text>
-      <Text tag={'p'} type={'b1'}>
+      <Text tag={'p'} type={'h1'}>
         text
       </Text>
     </div>
@@ -48,10 +56,10 @@ export const TagP: Story = {
 export const TagSpan: Story = {
   render: () => (
     <div>
-      <Text tag={'span'} type={'b1'}>
+      <Text tag={'span'} type={'h1'}>
         text
       </Text>
-      <Text tag={'span'} type={'b1'}>
+      <Text tag={'span'} type={'h1'}>
         text
       </Text>
     </div>
