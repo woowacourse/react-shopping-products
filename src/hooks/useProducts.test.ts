@@ -1,10 +1,10 @@
-import { describe, it, expect } from "vitest";
-import { act, renderHook, waitFor } from "@testing-library/react";
-import useProducts from "./useProducts";
-
-import { server } from "../mocks/server";
 import { HttpResponse, http } from "msw";
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+
 import { PRODUCTS_ENDPOINT } from "../api/endPoint";
+import { server } from "../mocks/server";
+import useProducts from "./useProducts";
 
 describe("useProduct 훅 테스트", () => {
   describe("상품 목록 조회", () => {
@@ -101,7 +101,8 @@ describe("useProduct 훅 테스트", () => {
           result.current.fetchNextPage();
         });
 
-        const expectedProductsCount = expectedInitProductsCount + (page - 3) * 4;
+        const expectedProductsCount =
+          expectedInitProductsCount + (page - 3) * 4;
 
         await waitFor(() => {
           expect(result.current.page).toBe(page);
@@ -114,7 +115,7 @@ describe("useProduct 훅 테스트", () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(23);
+        expect(result.current.page).toBe(23);
         expect(result.current.products).toHaveLength(100);
       });
     });
