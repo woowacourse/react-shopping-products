@@ -11,7 +11,8 @@ export default function usePagination() {
   }, []);
 
   const resetPage = () => setPage(0);
-  const setNextPage = () => setPage((prevPage) => prevPage + 1);
+
+  const setNextPage = useCallback(() => setPage((prevPage) => prevPage + 1), [setPage]);
 
   return {
     page,

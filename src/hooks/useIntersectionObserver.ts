@@ -8,10 +8,8 @@ const useIntersectionObserver = <T extends HTMLElement>(callback: () => void) =>
 
     const observer = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
-        console.log(entries.length);
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log('exec callback');
             callback();
           }
         });

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { CategoryQueryString, PRODUCTS_SIZE, SortOptionQueryString } from '../constants/products';
-import { PRODUCTS_ENDPOINT } from '../constants/apis';
+import { CategoryQueryString, SortOptionQueryString } from '../constants/products';
 
 import useFetch from './useFetch';
 import { Product } from '../types/products';
 import usePagination from './usePagination';
+import createUrl from '../utils/createUrl';
 
 interface UseProductResult {
   products: Product[];
@@ -29,9 +29,7 @@ export default function useProducts(): UseProductResult {
   const [category, setCategory] = useState<CategoryQueryString>('all');
   const [sortOption, setSortOption] = useState<SortOptionQueryString>('asc');
 
-  const pageNumberForRequest = page === 0 ? page : page + PRODUCTS_SIZE.perRequest;
-  const url = `${PRODUCTS_ENDPOINT}?page=${pageNumberForRequest}&size=${PRODUCTS_SIZE.perRequest}&category=${category}&sort=${sortOption}`;
-
+  const url = createUrl({ page, category, sortOption });
   const { data, error, isLoading } = useFetch<ProductRequestResult>({ url, method: 'GET' });
 
   useEffect(() => {
@@ -41,17 +39,17 @@ export default function useProducts(): UseProductResult {
     }
   }, [data, handleLastPage]);
 
-  const fetchNextPage = () => {
+  const fetchNextPage = useCallback(() => {
     if (isLastPage) return;
-    setNextPage();
-  };
 
-  const handleChangeCategory = (selectedCategory: CategoryQueryString) => {
-    if (category === selectedCategory) return;
+    setNextPage();
+  }, [isLastPage, setNextPage]);
+  const handleChangeCategory = (value: CategoryQueryString) => {
+    if (category === value) return;
 
     setProducts([]);
     resetPage();
-    setCategory(selectedCategory);
+    setCategory(value);
   };
 
   const handleChangeSortOption = (selectedSortOption: SortOptionQueryString) => {

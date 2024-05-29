@@ -146,7 +146,7 @@ describe('useProducts', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(PRODUCTS_SIZE.initial); // length : 20
+        expect(result.current.products).toHaveLength(PRODUCTS_SIZE.initial);
 
         const PRODUCTS_PRICE_ARRAY = result.current.products.map((product) => product.price);
         const SORTED_PRODUCT_PRICE_ARRAY = [...PRODUCTS_PRICE_ARRAY].sort((a, b) => b - a);
