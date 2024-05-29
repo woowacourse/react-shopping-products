@@ -3,7 +3,7 @@ import { HttpResponse, http } from 'msw';
 import { ENDPOINTS_PRODUCTS } from '../api/endpoints';
 import { server } from '../mocks/node';
 import useFetchProducts from './useFetchProducts';
-import MOCK_PRODUCTS from '../mocks/products.json';
+import {mockProductsResponse} from '../mocks/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
 
@@ -104,7 +104,7 @@ describe('fetchProducts', () => {
     ) => {
       const { result } = renderHook(() => useFetchProducts(sortings));
 
-      const mockProducts = MOCK_PRODUCTS.content;
+      const mockProducts = mockProductsResponse.content;
       sortingFuncs.forEach((sortingFunc) => {
         mockProducts.sort(sortingFunc);
       });
@@ -122,7 +122,7 @@ describe('fetchProducts', () => {
     async (category) => {
       const { result } = renderHook(() => useFetchProducts([], category));
 
-      const mockProducts = MOCK_PRODUCTS.content;
+      const mockProducts = mockProductsResponse.content;
       const filteredMockProducts = mockProducts.filter(
         (product) => product.category === category,
       );
