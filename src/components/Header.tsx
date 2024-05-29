@@ -1,8 +1,7 @@
-import styled from "@emotion/styled";
-import { useState } from "react";
 import COLOR_PALETTE from "../style/colorPalette";
-import Logo from "./icons/Logo";
 import CartIcon from "./icons/CartIcon";
+import Logo from "./icons/Logo";
+import styled from "@emotion/styled";
 
 const S = {
   HeaderContainer: styled.div`
@@ -52,9 +51,7 @@ const S = {
   `,
 };
 
-function Header() {
-  const [itemCount, setItemCount] = useState(13);
-
+function Header({ itemCount }: { itemCount: number }) {
   return (
     <S.HeaderContainer>
       <Logo />

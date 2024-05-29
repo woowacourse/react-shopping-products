@@ -3,17 +3,24 @@ import { useEffect, useState } from "react";
 
 import { CartItem } from "../types/cartItems";
 
+export interface HandleCartItems {
+  addToCart: (id: number) => void;
+  removeFromCart: (id: number) => void;
+  isLoading: boolean;
+}
+
 const useToggleCartItem = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
   const fetchCartItems = async () => {
+    if (isLoading) return;
     try {
       setIsLoading(true);
 
       const data = await getCartItems();
-      setCartItems(data);
+      setCartItems(data.content);
     } catch (error) {
       setError(error);
     } finally {
@@ -26,6 +33,7 @@ const useToggleCartItem = () => {
   }, []);
 
   const addToCart = async (productId: number) => {
+    if (isLoading) return;
     try {
       setIsLoading(true);
       await postCartItems({ productId, quantity: 1 });
@@ -38,6 +46,7 @@ const useToggleCartItem = () => {
   };
 
   const removeFromCart = async (productId: number) => {
+    if (isLoading) return;
     try {
       setIsLoading(true);
       const targetCartItemIndex = cartItems.findIndex(
@@ -45,7 +54,6 @@ const useToggleCartItem = () => {
       );
       const targetCartItemId = cartItems[targetCartItemIndex].id;
       await deleteCartItems(targetCartItemId);
-
       setCartItems((cartItems) => {
         const newCartItems = cartItems.filter(
           (cartItem) => cartItem.id !== targetCartItemId

@@ -9,6 +9,7 @@ import MainTitle from "../components/MainTitle";
 import { baseStyle } from "../style/baseStyle";
 import styled from "@emotion/styled";
 import useProducts from "../hooks/useProducts";
+import useToggleCartItem from "../hooks/useToggleCartItem";
 
 const S = {
   MainMall: styled.div`
@@ -32,17 +33,25 @@ const S = {
 const Mall = () => {
   const {
     products,
-    isLoading,
-    error,
+    isLoading: isProductLoading,
+    error: productError,
     fetchNextPage,
     handleCategoryChange,
     handleSortChange,
   } = useProducts();
 
+  const {
+    cartItems,
+    addToCart,
+    removeFromCart,
+    isLoading: isToggleCartItemLoading,
+    error: toggleCartItemError,
+  } = useToggleCartItem();
+
   return (
     <>
       <Global styles={baseStyle} />
-      <Header />
+      <Header itemCount={cartItems.length} />
 
       <S.MainMall>
         <MainTitle>러기의 쇼핑몰</MainTitle>
@@ -60,7 +69,17 @@ const Mall = () => {
         </S.Toolbar>
         <S.ProductList>
           <InfiniteScrollComponent
-            productObject={{ products, isLoading, error, fetchNextPage }}
+            handleCartItems={{
+              addToCart,
+              removeFromCart,
+              isLoading: isToggleCartItemLoading,
+            }}
+            productObject={{
+              products,
+              isLoading: isProductLoading,
+              error: productError,
+              fetchNextPage,
+            }}
           />
         </S.ProductList>
       </S.MainMall>

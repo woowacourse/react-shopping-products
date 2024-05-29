@@ -58,4 +58,4 @@
 3. Logic
 
 - [x] useProduct
-- [ ] useToggleCartItem
+- [x] useToggleCartItem

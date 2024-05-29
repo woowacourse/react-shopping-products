@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { HandleCartItems } from "../hooks/useToggleCartItem";
 import { Product } from "../types/products";
 import ProductCard from "./product/ProductCard";
 
@@ -10,10 +11,12 @@ interface InfiniteProductsScrollComponentProps {
     error: unknown;
     fetchNextPage: () => void;
   };
+  handleCartItems: HandleCartItems;
 }
 
 const InfiniteProductsScrollComponent = ({
   productObject,
+  handleCartItems,
 }: InfiniteProductsScrollComponentProps) => {
   const { products, isLoading, error, fetchNextPage } = productObject;
   const loaderRef = useRef(null);
@@ -46,7 +49,11 @@ const InfiniteProductsScrollComponent = ({
   return (
     <>
       {products.map((product, index) => (
-        <ProductCard key={`${index}${product.id}`} product={product} />
+        <ProductCard
+          key={`${index}${product.id}`}
+          product={product}
+          handleCartItems={handleCartItems}
+        />
       ))}
       {error! && <div>Error loading products!</div>}
       <div ref={loaderRef}>{isLoading && "Loading more products..."}</div>
