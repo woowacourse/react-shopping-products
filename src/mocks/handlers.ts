@@ -1,12 +1,6 @@
 import { HttpResponse, http } from 'msw';
 
 import products from './products.json';
-import electronics from './electronics.json';
-import beverages from './beverages.json';
-import fashions from './fashions.json';
-import books from './books.json';
-import fitness from './fitness.json';
-import kitchens from './kitchens.json';
 
 import { PRODUCTS_ENDPOINT } from '../api/endpoints';
 import {
@@ -16,25 +10,13 @@ import {
   MOCK_PRODUCTS_LAST_PAGE,
   SIZE_PER_PAGE,
 } from '../constants/pagination';
-import { Category } from '../types/product';
+import { Category, Order, Product } from '../types/product';
 
-const filterByCategory = (category: Category) => {
-  switch (category) {
-    case 'electronics':
-      return electronics;
-    case 'beverage':
-      return beverages;
-    case 'fashion':
-      return fashions;
-    case 'books':
-      return books;
-    case 'fitness':
-      return fitness;
-    case 'kitchen':
-      return kitchens;
-
-    default:
-      return products;
+const orderByPrice = (products: Product[], order: Order) => {
+  if (order === 'asc') {
+    return [...products].sort((prevProduct, nextProduct) => prevProduct.price - nextProduct.price);
+  } else {
+    return [...products].sort((prevProduct, nextProduct) => nextProduct.price - prevProduct.price);
   }
 };
 
@@ -44,6 +26,8 @@ export const handlers = [
 
     const page = Number(url.searchParams.get('page') || '0');
     const category = (url.searchParams.get('category') || '') as Category;
+    const sort = url.searchParams.get('sort');
+    const [, order] = sort ? sort.split(',') : ['price', 'asc'];
     const size = page === FIRST_PAGE ? FIRST_PAGE_SIZE : SIZE_PER_PAGE;
 
     const start =
@@ -53,9 +37,12 @@ export const handlers = [
     const end = start + size;
     const last = page === MOCK_PRODUCTS_LAST_PAGE;
 
-    const filteredProducts = filterByCategory(category);
+    const filteredProducts =
+      category !== '' ? products.filter((product) => product.category === category) : products;
 
-    const paginatedProducts = filteredProducts.slice(start, end);
+    const sortedProducts = orderByPrice(filteredProducts, order as Order);
+
+    const paginatedProducts = sortedProducts.slice(start, end);
 
     return HttpResponse.json({ content: paginatedProducts, last });
   }),
