@@ -1,12 +1,15 @@
-import useProducts from '@hooks/product/useProductItems';
+import { useState } from 'react';
 
 import Card from '@components/product/Card/Card';
+import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropdown';
+import SortDropdown from '@components/product/SortDropdown/SortDropdown';
+
+import { Product } from '@appTypes/product';
+
+import useProducts from '@hooks/product/useProductItems';
+import useIntersectionObserver from '@hooks/useIntersectionObserver';
 
 import * as Styled from './ProductPage.styled';
-import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropdown';
-import { useState } from 'react';
-import { Product } from '@appTypes/product';
-import SortDropdown from '@components/product/SortDropdown/SortDropdown';
 
 interface ProductPageProps extends React.PropsWithChildren {
   toggleId: (id: number) => void;
@@ -14,7 +17,7 @@ interface ProductPageProps extends React.PropsWithChildren {
 }
 
 const ProductPage = ({ toggleId, getIsCheckedId }: ProductPageProps) => {
-  const { products } = useProducts();
+  const { products, updateNextPage } = useProducts();
 
   const [isOpen, setIsOpen] = useState(false);
   const [category, setCategory] = useState<Product['category'] | 'all'>('all');
@@ -22,14 +25,14 @@ const ProductPage = ({ toggleId, getIsCheckedId }: ProductPageProps) => {
   const [isSortTypeDropdownOpen, setIsSortTypeDropdownOpen] = useState(false);
   const [sortType, setSortType] = useState<'row' | 'high'>('row');
 
+  const targetRef = useIntersectionObserver<HTMLDivElement>({ onIntersect: updateNextPage });
+
   return (
     <>
       <Styled.ProductPageTitle>bapple 상품 목록</Styled.ProductPageTitle>
       <Styled.ProductDropdownWrapper>
         <CategoryDropdown
-          onSelectCategoryOption={(value) => {
-            setCategory(value);
-          }}
+          onSelectCategoryOption={setCategory}
           onToggleDropdown={() => setIsOpen((prev) => !prev)}
           isOpen={isOpen}
           category={category}
@@ -37,22 +40,25 @@ const ProductPage = ({ toggleId, getIsCheckedId }: ProductPageProps) => {
         <SortDropdown
           isOpen={isSortTypeDropdownOpen}
           sortType={sortType}
-          onSelectSortTypeOption={(value) => {
-            setSortType(value);
-          }}
+          onSelectSortTypeOption={setSortType}
           onToggleDropdown={() => setIsSortTypeDropdownOpen((prev) => !prev)}
         />
       </Styled.ProductDropdownWrapper>
       <Styled.ProductPageListWrapper>
-        {products.map((product) => (
-          <Card
-            key={product.id}
-            onToggleCart={() => toggleId(product.id)}
-            isAddedCart={!getIsCheckedId(product.id)}
-            product={product}
-          />
-        ))}
+        {products.length === 0 ? (
+          <div style={{ width: '100%', height: '100vh' }}>상품 목록이 없어용 ㅜ</div>
+        ) : (
+          products.map((product, index) => (
+            <Card
+              key={`${product.id}-${index}`}
+              product={product}
+              onToggleCart={() => toggleId(product.id)}
+              isAddedCart={!getIsCheckedId(product.id)}
+            />
+          ))
+        )}
       </Styled.ProductPageListWrapper>
+      <div style={{ height: '1px', width: '100%' }} ref={targetRef} />
     </>
   );
 };
