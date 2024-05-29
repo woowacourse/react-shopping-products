@@ -12,6 +12,7 @@ import {
   MOCK_PRODUCTS_TOTAL_SIZE,
   SIZE_PER_PAGE,
 } from '../constants/pagination';
+import { Category } from '../types/product';
 
 describe('useProducts', () => {
   describe('첫 페이지 상품 목록 조회', () => {
@@ -137,6 +138,38 @@ describe('useProducts', () => {
         expect(result.current.products).toHaveLength(20);
         expect(result.current.loading).toEqual(false);
         expect(result.current.error).not.toBeNull();
+      });
+    });
+  });
+
+  describe('카테고리', () => {
+    const CATEGORIES: Category[] = [
+      'fashion',
+      'beverage',
+      'books',
+      'electronics',
+      'fitness',
+      'kitchen',
+    ];
+
+    it.each(CATEGORIES)('카테고리가 "%s"인 상품만 불러온다.', async (selectedCategory: string) => {
+      const { result } = renderHook(() => useProducts());
+
+      await waitFor(() => {
+        expect(
+          result.current.products.every(({ category }) => category === selectedCategory),
+        ).toBeFalsy();
+      });
+
+      act(() => {
+        result.current.filterByCategory(selectedCategory);
+      });
+
+      await waitFor(() => {
+        expect(
+          result.current.products.length &&
+            result.current.products.every(({ category }) => selectedCategory === category),
+        ).toBeTruthy();
       });
     });
   });
