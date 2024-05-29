@@ -1,15 +1,20 @@
+import useProducts from "../../hooks/useProducts";
 import ProductItem from "./ProductItem/ProductItem";
 import { ProductListStyle } from "./ProductList.style";
 
-interface ProductListProps {
-  products: Product[];
-}
+const ProductList = () => {
+  const { products, lastProductElementRef } = useProducts();
 
-const ProductList = ({ products }: ProductListProps) => {
   return (
     <ProductListStyle>
-      {products.map((item) => {
-        return <ProductItem product={item} key={item.id} />;
+      {products.map((item, index) => {
+        return (
+          <ProductItem
+            product={item}
+            key={item.id}
+            ref={index === products.length - 1 ? lastProductElementRef : null}
+          />
+        );
       })}
     </ProductListStyle>
   );

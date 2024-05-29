@@ -22,7 +22,6 @@ interface RequestOptions {
 
 export const fetchWithAuth = async (path: string, options: RequestOptions) => {
   const requestInit = requestBuilder(options);
-  console.log("fetchWithAuth:", path);
   const response = await fetch(path, requestInit);
 
   if (!response.ok) {
