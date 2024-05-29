@@ -1,8 +1,8 @@
 import { fetchProduct } from '@apis/index';
 import { Filtering, Product } from '@appTypes/index';
-import { Dropdown } from '@components/index';
+import { Dropdown, IntersectionObserverArea } from '@components/index';
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@constants/index';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import ProductList from './ProductList';
 import style from './style.module.css';
@@ -10,11 +10,36 @@ import style from './style.module.css';
 function ProductListPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(0);
+  const [isLastPage, setIsLastPage] = useState(false);
   const [filtering, setFiltering] = useState<Filtering>({ category: '', sort: 'price,asc' });
 
-  const getProducts = async () => {
+  const targetRef = useRef<HTMLDivElement | null>(null);
+
+  /**
+   * 무한 스크롤 시 상품 목록을 추가해서 넣어주는 기능
+   */
+  const getStackedProducts = async () => {
     const result = await fetchProduct({ filtering, page });
+
+    setIsLastPage(result.isLast);
+    setProducts((prev) => [...prev, ...result.products]);
+    setPage((prev) => prev + 1);
+  };
+
+  /**
+   * 필터링이 변했을 때 상품 목록을 가져오는 기능
+   */
+  const getFilteredProducts = async () => {
+    const result = await fetchProduct({ filtering });
+    setIsLastPage(result.isLast);
+    setPage(0);
     setProducts(result.products);
+  };
+
+  const observerCallback = (entries: IntersectionObserverEntry[]) => {
+    if (!entries[0].isIntersecting || isLastPage || !products.length) return;
+
+    getStackedProducts();
   };
 
   const handleChangeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -24,8 +49,8 @@ function ProductListPage() {
   };
 
   useEffect(() => {
-    getProducts();
-  }, [filtering, page]);
+    getFilteredProducts();
+  }, [filtering]);
 
   return (
     <div>
@@ -34,7 +59,9 @@ function ProductListPage() {
         <Dropdown label="카테고리" name="category" options={CATEGORY_OPTIONS} onChange={handleChangeOption} />
         <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
-      <ProductList products={products} />
+      <IntersectionObserverArea callback={observerCallback} targetRef={targetRef}>
+        <ProductList products={products} targetRef={targetRef} />
+      </IntersectionObserverArea>
     </div>
   );
 }
