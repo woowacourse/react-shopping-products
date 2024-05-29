@@ -1,11 +1,15 @@
 import ProductItem from "./ProductItem/ProductItem";
 import { ProductListStyle } from "./ProductList.style";
 
-const ProductList = () => {
+interface ProductListProps {
+  products: Product[];
+}
+
+const ProductList = ({ products }: ProductListProps) => {
   return (
     <ProductListStyle>
-      {Array.from({ length: 21 }, (_, index) => {
-        return <ProductItem key={index} />;
+      {products.map((item) => {
+        return <ProductItem product={item} key={item.id} />;
       })}
     </ProductListStyle>
   );

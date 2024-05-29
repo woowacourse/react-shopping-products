@@ -19,8 +19,10 @@ export const handlers = [
       const start = page === 1 ? 0 : (page - 2) * 4 + 20;
       const end = start + limit;
 
-      const paginatedProducts = products.slice(start, end);
-
+      const paginatedProducts = {
+        ...products,
+        content: products.content.slice(start, end),
+      };
       return HttpResponse.json(paginatedProducts);
     }
   ),

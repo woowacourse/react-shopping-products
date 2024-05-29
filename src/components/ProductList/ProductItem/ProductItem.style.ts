@@ -15,6 +15,7 @@ export const ProductImg = styled.img`
   width: inherit;
   height: 112px;
   box-sizing: border-box;
+  object-fit: cover;
 `;
 
 export const ProductGroup = styled.div`
