@@ -34,7 +34,7 @@ export const Button = styled.button<ButtonProps>`
       case "s":
         return `
           height: 24px;
-          padding: ${square ? "4px 4px" : "4px 8px"};
+          padding:  4px 4px ;
         `;
       case "l":
         return `
