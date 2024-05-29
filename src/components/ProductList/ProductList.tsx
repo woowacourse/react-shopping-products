@@ -5,8 +5,6 @@ import { StyledProductList } from "./ProductList.styled";
 export const ProductList = () => {
   const { products } = useProducts();
 
-  console.log(products);
-
   return (
     <StyledProductList>
       {products.map((product) => (
