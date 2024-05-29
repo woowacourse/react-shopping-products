@@ -11,6 +11,12 @@ export interface ProductsResponseData {
   last: boolean;
 }
 
+export type Order = 'asc' | 'desc';
+
+export interface Sort {
+  [key: string]: Order;
+}
+
 export type Category =
   | 'fashion'
   | 'electronics'
