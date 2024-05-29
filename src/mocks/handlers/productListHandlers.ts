@@ -3,7 +3,7 @@ import { http, HttpResponse } from "msw";
 import { PRODUCTS_ENDPOINT } from "../../api/config";
 import { PRODUCT_LIST } from "../../constants/productList";
 import { Product } from "../../interfaces/Product";
-import productListData from "../productsListData.json";
+import productListData from "../productListData/defaultData.json";
 
 export const productListHandlers = [
   http.get(PRODUCTS_ENDPOINT, ({ request }) => {
@@ -12,7 +12,7 @@ export const productListHandlers = [
     const page = Number(url.searchParams.get("page") || "0");
     const category = url.searchParams.get("category") || "";
 
-    const sort = url.searchParams.getAll("sort") || "id,asc";
+    const sort = url.searchParams.getAll("sort") || "price,asc";
     const isValidSortParams = !sort.some((option) => {
       const [sortType, sortProperty] = option.split(",");
       !Object.keys(initialData[0]).includes(sortType) ||
@@ -47,10 +47,10 @@ export const productListHandlers = [
       for (const option of sort) {
         const [sortType, sortProperty] = option.split(",");
         const sortKey = sortType as keyof Product;
-        const sortOrder = sortProperty === "asc" ? 1 : -1;
+        const sortOrder = sortProperty === "asc" ? -1 : 1;
 
-        if (a[sortKey] < b[sortKey]) return -1 * sortOrder;
-        if (a[sortKey] > b[sortKey]) return 1 * sortOrder;
+        if (a[sortKey] < b[sortKey]) return 1 * sortOrder;
+        if (a[sortKey] > b[sortKey]) return -1 * sortOrder;
       }
       return 0;
     });

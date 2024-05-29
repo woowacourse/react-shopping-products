@@ -5,3 +5,11 @@ export interface Product {
   imageUrl: string;
   category: string;
 }
+
+export type Category =
+  | "books"
+  | "electronics"
+  | "kitchen"
+  | "fashion"
+  | "fitness"
+  | "beverage";

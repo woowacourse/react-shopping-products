@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { fetchProductList } from "../api/products";
+import { fetchProductList, SortOption } from "../api/products";
 import { PRODUCT_LIST } from "../constants/productList";
-import { Product } from "../interfaces/Product";
+import { Category, Product } from "../interfaces/Product";
 
 interface UseProductListResult {
   productList: Product[];
@@ -12,7 +12,10 @@ interface UseProductListResult {
   fetchNextPage: () => void;
 }
 
-export default function useProductList(): UseProductListResult {
+export default function useProductList(
+  category?: Category,
+  sortOptionList?: SortOption[]
+): UseProductListResult {
   const [productList, setProductList] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
@@ -27,7 +30,9 @@ export default function useProductList(): UseProductListResult {
           page,
           page === 0
             ? PRODUCT_LIST.initialPageProductQuantity
-            : PRODUCT_LIST.additionalPageProductQuantity
+            : PRODUCT_LIST.additionalPageProductQuantity,
+          category,
+          sortOptionList
         );
         setProductList((prevProductList) => [
           ...prevProductList,

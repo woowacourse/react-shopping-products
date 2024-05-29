@@ -4,6 +4,8 @@ import { act } from "react";
 import { renderHook, waitFor } from "@testing-library/react";
 
 import { PRODUCTS_ENDPOINT } from "../api/config";
+import expectedDefaultParamsData from "../mocks/productListData/expectedDefaultParamsData.json";
+import expectedFitnessPriceDescData from "../mocks/productListData/expectedFitnessPriceDescData.json";
 import { server } from "../mocks/server";
 import useProductList from "./useProductList";
 
@@ -115,6 +117,53 @@ describe("useProductList", () => {
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
+      });
+    });
+  });
+
+  describe("상품 목록 카테고리 필터 및 정렬", () => {
+    it("기본 값은 전체 카테고리를 낮은 가격순으로 정렬한다.", async () => {
+      const { result } = renderHook(() => useProductList());
+      await waitFor(() => {
+        expect(result.current.productList).toHaveLength(20);
+        expect(result.current.productList).toStrictEqual(
+          expectedDefaultParamsData
+        );
+      });
+    });
+
+    it("전달된 category의 product만을 필터링한 후 전달된 sort 옵션에 따라 정렬하여 보여준다.", async () => {
+      const { result } = renderHook(() =>
+        useProductList("fitness", [["price", "desc"]])
+      );
+      await waitFor(() => {
+        expect(result.current.productList).toHaveLength(20);
+        expect(result.current.productList).toStrictEqual(
+          expectedFitnessPriceDescData.slice(0, 20)
+        );
+      });
+    });
+
+    it("전달된 category의 product만을 필한 후 전달된 sort 옵션에 따라 정렬하여 보여준다.", async () => {
+      const { result } = renderHook(() =>
+        useProductList("fitness", [["price", "desc"]])
+      );
+      await waitFor(() => {
+        expect(result.current.productList).toHaveLength(20);
+        expect(result.current.productList).toStrictEqual(
+          expectedFitnessPriceDescData.slice(0, 20)
+        );
+      });
+
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      await waitFor(() => {
+        expect(result.current.productList).toHaveLength(24);
+        expect(result.current.productList).toStrictEqual(
+          expectedFitnessPriceDescData
+        );
       });
     });
   });
