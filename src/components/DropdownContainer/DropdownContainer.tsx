@@ -9,10 +9,8 @@ function DropdownContainer() {
     ...Object.entries(Category).map(([key, value]) => [key, `${value}`])
   );
 
-  const sortingOptions = Object.entries(Sorting).map(([key, value]) => [
-    key,
-    `${value}`,
-  ]);
+  const sortingOptions = Object.entries(Sorting).map(([key,value]) => [key,value as string])
+  
   return (
     <S.Container>
       <Dropdown optionList={categoryOptions} type="category"></Dropdown>
