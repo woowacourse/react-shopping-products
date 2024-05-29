@@ -5,6 +5,6 @@ export const CartContext = createContext<ReturnType<typeof useFetchAddCart>>({
   cartIdSet: new Set(),
   setCartIdSet: () => {},
   patchToAddCart: () => {},
-  patchToRemoveCart: (id: number) => {},
+  patchToRemoveCart: async () => {},
   fetchCart: async () => [],
 });

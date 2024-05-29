@@ -13,10 +13,9 @@ const useFetchAddCart = () => {
 
   const patchToRemoveCart = async (id: number) => {
     const cartItems = await fetchCart();
-    // 상품을 받고 -> cartItems.product.id를 필터링
-    // 필터링한 값의 바깥 id를 가져옴
-    const filteredCartItems = cartItems.find((item) => item.id === id);
+    const filteredCartItems = cartItems.find((item) => item.product.id === id);
     if (!filteredCartItems) return;
+
     deleteItem(filteredCartItems.id);
     const newCartIdSet = new Set(cartIdSet);
     newCartIdSet.delete(id);
