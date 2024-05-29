@@ -2,10 +2,10 @@ import { http, HttpResponse } from 'msw';
 
 import productList from './products.json';
 
-import { PRODUCTS } from '@/api/endpoints';
+import { END_POINT } from '@/api/endpoints';
 
 export const handlers = [
-  http.get(PRODUCTS, ({ request }) => {
+  http.get(END_POINT.products, ({ request }) => {
     const url = new URL(request.url);
 
     const page = Number(url.searchParams.get('page')) || 0;
