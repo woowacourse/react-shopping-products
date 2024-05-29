@@ -19,6 +19,9 @@ interface Colors {
 
   btnBgColor: string;
   btnActiveBgColor: string;
+
+  errorFallback: string;
+  spinnerColor: string;
 }
 
 declare module '@emotion/react' {
@@ -48,6 +51,9 @@ const colors: Colors = {
 
   btnBgColor: '#000000',
   btnActiveBgColor: '#eaeaea',
+
+  errorFallback: '#ffc9c9B3',
+  spinnerColor: '#CA5514',
 };
 
 const theme: Theme = {
