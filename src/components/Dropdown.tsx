@@ -1,8 +1,7 @@
-import styled from "@emotion/styled";
-import { useState } from "react";
-
 import ChevronDown from "./icons/ChevronDown";
 import ChevronUp from "./icons/ChevronUp";
+import styled from "@emotion/styled";
+import { useState } from "react";
 
 const S = {
   DropdownContainer: styled.div`
@@ -44,32 +43,45 @@ const S = {
   `,
 };
 
-interface DropdownProps {
-  options: string[];
+interface DropdownProps<T extends string> {
+  options: T[];
+  engToKor: Record<T, string>;
+  handleChange: (option: T) => void;
 }
 
-function Dropdown({ options }: DropdownProps) {
+function Dropdown<T extends string>({
+  options,
+  engToKor,
+  handleChange,
+}: DropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLabel, setSelectedLabel] = useState(options[0]);
+  const [selectedLabel, setSelectedLabel] = useState<T>(options[0]);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const handleSelect = (option: string) => {
+  const handleSelect = (option: T) => {
     setSelectedLabel(option);
     setIsOpen(false);
+
+    handleChange(option);
   };
 
   return (
     <S.DropdownContainer onClick={toggleDropdown}>
       <S.DropdownLabel>
-        {selectedLabel}
+        {engToKor[selectedLabel]}
         {isOpen ? <ChevronUp /> : <ChevronDown />}
       </S.DropdownLabel>
       {isOpen && (
         <S.DropdownList>
-          {options.map((option) => (
-            <S.DropdownOption key={`dropdown-${option}`} onClick={() => handleSelect(option)}>
-              {option}
+          {options.map((option: T) => (
+            <S.DropdownOption
+              key={`dropdown-${option}`}
+              onClick={() => {
+                handleSelect(option);
+              }}
+            >
+              {engToKor[option]}
             </S.DropdownOption>
           ))}
         </S.DropdownList>

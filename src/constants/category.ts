@@ -1,4 +1,5 @@
 export const CATEGORY = {
+  all: "전체",
   fashion: "패션",
   beverage: "음료",
   electronics: "전자",
@@ -7,4 +8,6 @@ export const CATEGORY = {
   books: "책",
 } as const;
 
-export const CATEGORY_LIST = Object.values(CATEGORY);
+export type Category = keyof typeof CATEGORY;
+
+export const CATEGORY_LIST = Object.keys(CATEGORY) as Category[];
