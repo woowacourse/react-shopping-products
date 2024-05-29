@@ -4,9 +4,12 @@ import App from './App.tsx';
 
 import './styles/reset.css';
 import './styles/index.css';
+import { ToastProvider } from './context/ToastProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <ToastProvider>
+      <App />
+    </ToastProvider>
   </React.StrictMode>,
 );
