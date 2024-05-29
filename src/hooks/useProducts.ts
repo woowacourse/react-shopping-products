@@ -1,16 +1,14 @@
 import { Product, getProducts } from "../api/products";
 import { useEffect, useState } from "react";
 
-interface FetchNextPageParams {
-  category: string;
-  sort: SortOption;
-}
-
 interface UseFetchReturn {
   products: Product[];
   loading: boolean;
   error: unknown;
-  fetchNextPage: (params: FetchNextPageParams) => void;
+  fetchNextPage: () => void;
+  resetPage: () => void;
+  setCategoryFilter: (category: string) => void;
+  setPriceSort: (sort: SortOption) => void;
 }
 
 const INITIAL_PAGE_SIZE = 20;
@@ -38,6 +36,7 @@ export default function useProducts(): UseFetchReturn {
   useEffect(() => {
     const fetch = async () => {
       try {
+        setLoading(true);
         const { data, isLastPage } = await getProducts(
           currentPage,
           currentPageSize,
@@ -58,14 +57,18 @@ export default function useProducts(): UseFetchReturn {
     fetch();
   }, [page, categoryFilter, priceSort]);
 
-  const fetchNextPage = ({ category, sort }: FetchNextPageParams) => {
-    if (!isLastPage) {
-      setLoading(true);
-      setCategoryFilter(category);
-      setPriceSort(sort);
+  const fetchNextPage = () => {
+    if (!isLastPage && !loading && !error) {
+      setCategoryFilter(categoryFilter);
+      setPriceSort(priceSort);
       setPage((prevPage) => prevPage + 1);
     }
   };
 
-  return { products, loading, error, fetchNextPage };
+  const resetPage = () => {
+    setProducts([]);
+    setPage(0);
+  };
+
+  return { products, loading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort };
 }
