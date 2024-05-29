@@ -1,33 +1,34 @@
 import { PRODUCTS } from './endpoints';
 import fetcher from './fetcher';
 
-import { ProductResponse } from '@/types/product';
-
-type Sort = 'asc' | 'desc';
+import { ProductCategory, ProductResponse, Sort } from '@/types/product';
 
 interface FetchProductListProps {
-  size: number;
+  size?: number;
+  category?: ProductCategory;
   page?: number;
   sortOptions?: Sort;
 }
 
-const covertUrlFormat = ({ page, size, sortOptions }: FetchProductListProps) => {
+const covertUrlFormat = ({ category, page, size, sortOptions }: FetchProductListProps) => {
   const priceSort = `price,${sortOptions}`;
   const encodedSort = encodeURIComponent(priceSort);
 
-  const pageQuery = page ? `?page=${page}` : '';
+  const pageQuery = `?page=${page}`;
+  const categoryQuery = category ? `&category=${category}` : '';
   const sizeQuery = size ? `&size=${size}` : '';
   const sortQuery = sortOptions ? `&sort=${encodedSort}` : '';
-  return `${PRODUCTS}${pageQuery}${sizeQuery}${sortQuery}`;
+  return `${PRODUCTS}${pageQuery}${categoryQuery}${sizeQuery}${sortQuery}`;
 };
 
 export const fetchProductList = async ({
+  category,
   size,
-  page,
+  page = 0,
   sortOptions,
 }: FetchProductListProps): Promise<ProductResponse> => {
   const response = await fetcher.get({
-    url: covertUrlFormat({ page, size, sortOptions }),
+    url: covertUrlFormat({ category, page, size, sortOptions }),
     errorMessage: '상품 리스트 불러오기에 실패했습니다🥹',
   });
 

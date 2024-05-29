@@ -4,7 +4,7 @@ export interface ProductResponse {
   last: boolean;
   totalPages: number;
   totalElements: number;
-  sort: Sort;
+  sort: SortResponse;
   first: boolean;
   number: number;
   numberOfElements: number;
@@ -21,7 +21,7 @@ export interface Product {
 }
 
 export interface Pageable {
-  sort: Sort;
+  sort: SortResponse;
   pageNumber: number;
   pageSize: number;
   offset: number;
@@ -29,10 +29,18 @@ export interface Pageable {
   unpaged: boolean;
 }
 
-export interface Sort {
+export interface SortResponse {
   sorted: boolean;
   unsorted: boolean;
   empty: boolean;
 }
 
-type ProductCategory = 'fashion' | 'beverage' | 'electronics' | 'kitchen' | 'fitness' | 'books';
+export type ProductCategory =
+  | 'fashion'
+  | 'beverage'
+  | 'electronics'
+  | 'kitchen'
+  | 'fitness'
+  | 'books';
+
+export type Sort = 'asc' | 'desc';

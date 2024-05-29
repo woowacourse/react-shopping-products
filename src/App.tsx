@@ -42,6 +42,29 @@ function App() {
   return (
     <>
       <h1>React Shopping Products</h1>
+      <select value={category} onChange={handleChangeCategory}>
+        <option value="fashion">fashion</option>
+        <option value="beverage">beverage</option>
+        <option value="electronics">electronics</option>
+        <option value="kitchen">kitchen</option>
+        <option value="fitness">fitness</option>
+        <option value="books">books</option>
+      </select>
+      <select value={order} onChange={handleChangeSort}>
+        <option value="asc">가격 낮은 순</option>
+        <option value="desc">가격 높은 순</option>
+      </select>
+      <div>
+        {productList.map((product, idx) => (
+          <div key={idx}>
+            <div>{product.category}</div>
+            <img src={product.imageUrl} width={100} height={100} />
+            <div>{product.name}</div>
+            <div>{product.price}</div>
+            <hr></hr>
+          </div>
+        ))}
+      </div>
       <div ref={bottomRef} style={{ height: 100, backgroundColor: 'red' }}></div>
     </>
   );
