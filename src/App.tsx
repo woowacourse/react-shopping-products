@@ -55,6 +55,7 @@ function App() {
 
   return (
     <>
+      <p>{cartItems.length}</p>
       <h1>React Shopping Products</h1>
       <select value={category} onChange={handleChangeCategory}>
         <option value="fashion">fashion</option>
