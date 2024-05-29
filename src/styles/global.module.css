@@ -5,7 +5,7 @@
   --pink: #ffc9c9;
   --border-color: #0000001a;
   --mobile-width: 100vw;
-  --desktop-width: 768px;
+  --desktop-width: 64rem;
   --header-height: 4rem;
   --header-z-index: 100;
 }
