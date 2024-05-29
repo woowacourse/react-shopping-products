@@ -1,3 +1,5 @@
+import CustomError from '@/utils/error';
+
 interface RequestProps {
   url: string;
   method: 'GET' | 'POST' | 'DELETE' | 'PATCH' | 'PUT';
@@ -10,17 +12,30 @@ type FetchProps = Omit<RequestProps, 'method'>;
 
 const fetcher = {
   async request({ url, method, errorMessage, body, headers }: RequestProps) {
-    const response = await fetch(url, {
-      method,
-      body: body && JSON.stringify(body),
-      headers: headers && headers,
-    });
+    try {
+      const response = await fetch(url, {
+        method,
+        body: body && JSON.stringify(body),
+        headers: headers && headers,
+      });
+      if (response.status === 400)
+        throw new CustomError({ name: 'BAD_REQUEST_ERROR', message: errorMessage });
+      if (response.status === 401)
+        throw new CustomError({ name: 'AUTHORIZED_ERROR', message: errorMessage });
+      if (response.status === 404)
+        throw new CustomError({ name: 'NOT_FOUND_ERROR', message: errorMessage });
+      if (response.status === 500) {
+        throw new CustomError({ name: 'SERVER_ERROR', message: errorMessage });
+      }
 
-    if (!response.ok) {
-      throw new Error(errorMessage);
+      return response;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new CustomError({ name: 'NETWORK_ERROR', message: errorMessage });
+      }
+
+      throw error;
     }
-
-    return response;
   },
 
   get({ url, headers, errorMessage }: FetchProps) {

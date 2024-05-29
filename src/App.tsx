@@ -14,6 +14,7 @@ function App() {
     handleChangeSort,
     order,
     category,
+    errorState,
   } = useProductList();
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +32,7 @@ function App() {
   useEffect(() => {
     const onIntersect = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting && !isLoading) {
+      if (target.isIntersecting && !isLoading && !errorState.errorMessage) {
         fetchNextPage();
       }
     };
@@ -58,6 +59,7 @@ function App() {
       <p>{cartItems.length}</p>
       <h1>React Shopping Products</h1>
       <select value={category} onChange={handleChangeCategory}>
+        <option value="none">전체</option>
         <option value="fashion">fashion</option>
         <option value="beverage">beverage</option>
         <option value="electronics">electronics</option>
@@ -71,7 +73,7 @@ function App() {
       </select>
       <div>
         {productList.map((product, idx) => (
-          <div key={idx}>
+          <div key={`${product.id}_${idx}`}>
             <div>{product.category}</div>
             <img src={product.imageUrl} width={100} height={100} />
             <div>{product.name}</div>
@@ -85,7 +87,7 @@ function App() {
           </div>
         ))}
       </div>
-      <div ref={bottomRef} style={{ height: 100, backgroundColor: 'red' }}></div>
+      <div ref={bottomRef} style={{ height: 100 }}></div>
     </>
   );
 }
