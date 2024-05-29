@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = ({ children, variant = 'primary', ...rest }: React.PropsWithChildren<ButtonProps>) => {
   return (
-    <S.Layout $isActive={!rest.disabled} $variant={variant} {...rest}>
+    <S.Layout type="button" $isActive={!rest.disabled} $variant={variant} {...rest}>
       {children}
     </S.Layout>
   );

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchProducts } from '../api/product';
 import { Product } from '../types/Product.type';
-import { Option } from '../utils/option';
+import { Option } from '../types/Option.type';
 import usePagination from './usePagination';
 import useFetcher from './useFetcher';
 
@@ -17,7 +17,7 @@ interface UseProductsResult {
   handlePage: () => void;
 }
 
-export default function useProducts(initialCategory: Option, initialSorting: Option): UseProductsResult {
+const useProduct = (initialCategory: Option, initialSorting: Option): UseProductsResult => {
   const [products, setProducts] = useState<Product[]>([]);
   const [category, setCategory] = useState(initialCategory);
   const [sort, setSort] = useState(initialSorting);
@@ -60,4 +60,6 @@ export default function useProducts(initialCategory: Option, initialSorting: Opt
     handleSort,
     handlePage,
   };
-}
+};
+
+export default useProduct;

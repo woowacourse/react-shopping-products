@@ -1,7 +1,4 @@
-export type Option = {
-  key: string;
-  name: string;
-};
+import { Option } from '../types/Option.type';
 
 export const findByKey = (key: string, list: Option[]) => list.find((item) => item.key === key);
 

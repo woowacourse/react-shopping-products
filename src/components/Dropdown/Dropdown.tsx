@@ -2,7 +2,8 @@ import { useState } from 'react';
 import UpIcon from '../../assets/UpIcon.svg';
 import DownIcon from '../../assets/DownIcon.svg';
 import * as S from '../Dropdown/Dropdown.style';
-import { Option, findByName } from '../../utils/option';
+import { Option } from '../../types/Option.type';
+import { findByName } from '../../utils/option';
 
 interface DropdownProps {
   options: Option[];

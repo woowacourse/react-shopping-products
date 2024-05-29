@@ -11,7 +11,7 @@ interface UseCartItemsResult {
   handleDeleteCartItem: (productId: number) => void;
 }
 
-export default function useCartItems(): UseCartItemsResult {
+const useCartItems = (): UseCartItemsResult => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const { loading, error, fetcher } = useFetcher();
 
@@ -49,4 +49,6 @@ export default function useCartItems(): UseCartItemsResult {
     handleAddCartItem,
     handleDeleteCartItem,
   };
-}
+};
+
+export default useCartItems;

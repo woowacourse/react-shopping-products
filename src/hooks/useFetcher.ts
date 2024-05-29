@@ -7,7 +7,7 @@ interface UseFetcherResult {
   fetcher: (callback: () => Promise<void>) => Promise<void>;
 }
 
-export default function useFetcher(): UseFetcherResult {
+const useFetcher = (): UseFetcherResult => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
@@ -26,4 +26,6 @@ export default function useFetcher(): UseFetcherResult {
   };
 
   return { loading, error, fetcher };
-}
+};
+
+export default useFetcher;
