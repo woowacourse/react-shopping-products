@@ -1,0 +1,93 @@
+[
+  {
+    "id": 75,
+    "name": "믹서기",
+    "price": 70000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1664372599576-ea88152cda2b?q=80&w=3538&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 76,
+    "name": "토스터기",
+    "price": 40000,
+    "imageUrl": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=3264&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 77,
+    "name": "전자레인지",
+    "price": 120000,
+    "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 78,
+    "name": "커피메이커",
+    "price": 80000,
+    "imageUrl": "https://images.unsplash.com/photo-1501924497965-792fefaea3dc?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 79,
+    "name": "에어프라이어",
+    "price": 100000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1682092150898-2b7dfefd2abe?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 80,
+    "name": "냉장고",
+    "price": 500000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1664372599576-ea88152cda2b?q=80&w=3538&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 81,
+    "name": "믹서볼",
+    "price": 25000,
+    "imageUrl": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=3264&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 82,
+    "name": "조리도구세트",
+    "price": 50000,
+    "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 83,
+    "name": "냄비",
+    "price": 35000,
+    "imageUrl": "https://images.unsplash.com/photo-1501924497965-792fefaea3dc?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 84,
+    "name": "프라이팬",
+    "price": 40000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1682092150898-2b7dfefd2abe?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 85,
+    "name": "밥솥",
+    "price": 150000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1664372599576-ea88152cda2b?q=80&w=3538&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 86,
+    "name": "오븐",
+    "price": 300000,
+    "imageUrl": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=3264&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  },
+  {
+    "id": 87,
+    "name": "식기세척기",
+    "price": 400000,
+    "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "kitchen"
+  }
+]
