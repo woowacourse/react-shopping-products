@@ -22,12 +22,13 @@ function ProductListPage() {
    * 무한 스크롤 시 상품 목록을 추가해서 넣어주는 기능
    */
   const getStackedProducts = async () => {
-    const result = await fetch({ filtering, page });
-
+    const newPage = page + 1;
+    const result = await fetch({ filtering, page: newPage });
+    console.log('length', result?.products.length);
     if (result === undefined) return;
     setIsLastPage(result.isLast);
     setProducts((prev) => [...prev, ...result.products]);
-    setPage((prev) => prev + 1);
+    setPage(newPage);
   };
 
   /**

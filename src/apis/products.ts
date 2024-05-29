@@ -18,6 +18,10 @@ const getSearchParams = ({ filtering, page }: FetchProductParameter): URLSearchP
   searchParams.append('sort', filtering.sort);
   searchParams.append('page', String(page));
 
+  if (page !== 0) {
+    searchParams.append('size', '4');
+  }
+
   return searchParams;
 };
 
