@@ -3,7 +3,7 @@ import { FilterButton } from './FilterButton';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof FilterButton> = {
-  title: '4. entities/FilterButton',
+  title: '4. entities/product/FilterButton',
   component: FilterButton,
   args: {
     options: [

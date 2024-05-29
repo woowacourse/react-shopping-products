@@ -6,7 +6,7 @@ interface FilterButtonProps {
   className?: string;
   options: SelectOption[];
   value: string;
-  onClick: () => void;
+  onChange: (value: string) => void;
 }
 
 export const FilterButton = ({ className, options, value, onClick }: FilterButtonProps) => {
