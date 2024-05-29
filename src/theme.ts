@@ -42,6 +42,11 @@ const theme: Theme = {
       line-height: 0.9375rem;
       text-align: left;
     `,
+    cartLabel: `
+      font-family: Montserrat;
+      font-weight: 700;
+      font-size: 0.625rem;
+    `,
   },
   color: {
     black: '#000000',

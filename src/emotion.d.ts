@@ -11,6 +11,7 @@ declare module '@emotion/react' {
         toggleButton: string;
       };
       toast: string;
+      cartLabel: string;
     };
     color: {
       black: string;
