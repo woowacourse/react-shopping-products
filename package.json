@@ -11,6 +11,8 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -32,5 +34,10 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vitest": "^1.6.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
