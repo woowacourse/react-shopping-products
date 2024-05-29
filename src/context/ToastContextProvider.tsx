@@ -1,0 +1,52 @@
+import { useState, PropsWithChildren, createContext } from 'react';
+import { createPortal } from 'react-dom';
+import Toast from '../components/common/Toast/Toast';
+
+interface Toast {
+  id: string;
+  message: string;
+}
+
+interface ToastContextType {
+  setToast: React.Dispatch<React.SetStateAction<Toast | null>>;
+}
+
+export const ToastContext = createContext<ToastContextType | undefined>(
+  undefined,
+);
+
+export function ToastContextProvider({ children }: PropsWithChildren) {
+  const [toast, setToast] = useState<Toast | null>(null);
+
+  return (
+    <ToastContext.Provider value={{ setToast }}>
+      {children}
+      {toast && createPortal(<ToastComponent toast={toast} />, document.body)}
+    </ToastContext.Provider>
+  );
+}
+
+const ToastComponent: React.FC<{ toast: Toast }> = ({ toast }) => {
+  return <Toast>{toast.message}</Toast>;
+};
+
+// export function useToast() {
+//   const context = useContext(ToastContext);
+
+//   if (!context) {
+//     throw new Error('Toast provider를 추가해주세요');
+//   }
+
+//   const { setToast } = context;
+
+//   const createToast = (message: string) => {
+//     const newToast: Toast = { id: Date.now().toString(), message };
+//     setToast(newToast);
+
+//     setTimeout(() => {
+//       setToast(null);
+//     }, 3000);
+//   };
+
+//   return { createToast };
+// }
