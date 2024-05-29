@@ -1,8 +1,8 @@
 import { assets, ImgButton } from '@/shared';
 
-import css from './LogoButton.module.css';
+import css from './HeaderLogoButton.module.css';
 
-export const LogoButton = () => {
+export const HeaderLogoButton = () => {
   // FIXME: This will route to home page
   const handleOnClick = () => {
     console.log('clicked');

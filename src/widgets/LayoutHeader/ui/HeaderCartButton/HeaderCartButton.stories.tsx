@@ -1,10 +1,10 @@
-import { CartButton } from './CartButton';
+import { HeaderCartButton } from './HeaderCartButton';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof CartButton> = {
-  title: '2. Widgets/LayoutHeader/CartButton',
-  component: CartButton,
+const meta: Meta<typeof HeaderCartButton> = {
+  title: '2. Widgets/LayoutHeader/HeaderCartButton',
+  component: HeaderCartButton,
   decorators: [
     (Story) => {
       return (
@@ -18,7 +18,7 @@ const meta: Meta<typeof CartButton> = {
 
 export default meta;
 
-type Story = StoryObj<typeof CartButton>;
+type Story = StoryObj<typeof HeaderCartButton>;
 
 export const Common: Story = {
   args: {

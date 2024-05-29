@@ -1,12 +1,12 @@
 import { ImgButton, assets } from '@/shared';
 
-import css from './CartButton.module.css';
+import css from './HeaderCartButton.module.css';
 
 interface CartButtonProps {
   cartItemCount: number;
 }
 
-export const CartButton = ({ cartItemCount }: CartButtonProps) => {
+export const HeaderCartButton = ({ cartItemCount }: CartButtonProps) => {
   // FIXME: This will route to home page
   const handleOnClick = () => {
     console.log('clicked');

@@ -1,3 +1,3 @@
-export { CartButton } from './ui/CartButton/CartButton';
+export { HeaderCartButton } from './ui/HeaderCartButton/HeaderCartButton';
 export { LayoutHeader } from './ui/LayoutHeader/LayoutHeader';
-export { LogoButton } from './ui/LogoButton/LogoButton';
+export { HeaderLogoButton } from './ui/HeaderLogoButton/HeaderLogoButton';

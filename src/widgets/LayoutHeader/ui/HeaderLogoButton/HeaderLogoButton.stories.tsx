@@ -1,10 +1,10 @@
-import { LogoButton } from './LogoButton';
+import { HeaderLogoButton } from './HeaderLogoButton';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof LogoButton> = {
-  title: '2. Widgets/LayoutHeader/LogoButton',
-  component: LogoButton,
+const meta: Meta<typeof HeaderLogoButton> = {
+  title: '2. Widgets/LayoutHeader/HeaderLogoButton',
+  component: HeaderLogoButton,
   decorators: [
     (Story) => {
       return (
@@ -18,6 +18,6 @@ const meta: Meta<typeof LogoButton> = {
 
 export default meta;
 
-type Story = StoryObj<typeof LogoButton>;
+type Story = StoryObj<typeof HeaderLogoButton>;
 
 export const Common: Story = {};
