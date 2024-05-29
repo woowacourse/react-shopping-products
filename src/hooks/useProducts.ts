@@ -1,5 +1,5 @@
 import { Product } from "@/types/products";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getProducts } from "@/apis/product";
 import { Category, Sort } from "@/constants/selectOption";
 
@@ -46,11 +46,7 @@ const useProducts = () => {
     }
   };
 
-  useEffect(() => {
-    fetchFirstPage("전체", currentPage, "낮은 가격순");
-  }, []);
-
-  return { products, fetchNextPage, loading, error, currentPage };
+  return { products, fetchNextPage, fetchFirstPage, loading, error, currentPage };
 };
 
 export default useProducts;
