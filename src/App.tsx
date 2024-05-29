@@ -1,5 +1,4 @@
 import ProductListPage from './pages/ProductListPage';
-import './index.css';
 import './reset.css';
 
 function App() {
