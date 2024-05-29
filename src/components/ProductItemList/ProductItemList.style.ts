@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const ProductListContainer = styled.div`
+display: flex;
+flex-direction: column;
+gap:28px;
+`
+
+export const ProductList = styled.div`
   display: grid;
 
   flex-direction: column;
