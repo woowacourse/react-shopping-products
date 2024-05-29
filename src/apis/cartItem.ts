@@ -2,9 +2,10 @@ import { END_POINT } from "@/config/endPoint";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { basicToken } from "@/utils/auth";
 import { CartItems } from "@/types/products";
+import SERVER_URL from "@/config/serverUrl";
 
 export const getCartItems = async (): Promise<CartItems[]> => {
-  const response = await fetch(END_POINT.cartItems);
+  const response = await fetch(SERVER_URL.apiUrl + END_POINT.cartItems);
 
   if (!response.ok) {
     throw new Error(ERROR_MESSAGES.failPostCartItem);
@@ -21,7 +22,7 @@ export async function postCartItem({
   productId: number;
   quantity: number;
 }): Promise<Response> {
-  const response = await fetch(`${END_POINT.cartItems}`, {
+  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}`, {
     method: "POST",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
     body: JSON.stringify({ productId, quantity }),
@@ -35,7 +36,7 @@ export async function postCartItem({
 }
 
 export async function deleteCartItem({ productId }: { productId: number }): Promise<Response> {
-  const response = await fetch(`${END_POINT.cartItems}`, {
+  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}`, {
     method: "DELETE",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
     body: JSON.stringify({ productId }),
