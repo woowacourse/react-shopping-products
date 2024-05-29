@@ -1,0 +1,9 @@
+.layoutHeaderContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  width: 100%;
+  height: 64px;
+  background-color: var(--primary-color);
+}
