@@ -4,7 +4,7 @@ export const Select = styled.ul`
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 125px;
   height: 36px;
   font-size: 10px;
 
