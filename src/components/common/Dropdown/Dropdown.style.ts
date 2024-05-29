@@ -33,5 +33,12 @@ export const ChevronDownIcon = styled.img`
 export const Select = styled.select`
   background-color: white;
   color: black;
+
+font-family: Inter;
+font-size: 14px;
+font-weight: 500;
+line-height: 20px;
+text-align: left;
+
 `;
 export const Option = styled.option``;
