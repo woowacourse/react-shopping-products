@@ -2,14 +2,25 @@ import { useEffect, useRef, useState } from 'react';
 import { LowerArrow, UpperArrow } from '../Arrows';
 import * as S from './style';
 
+type Option = {
+  content: string;
+  value: string;
+};
+
 interface DropdownProps {
   size: S.Size;
-  value: string;
-  options: string[];
+  options: Option[];
+  defaultContent: string;
   onSelect: (value: string) => void;
 }
 
-const Dropdown = ({ size, value, options, onSelect }: DropdownProps) => {
+const Dropdown = ({
+  size,
+  options,
+  defaultContent,
+  onSelect,
+}: DropdownProps) => {
+  const [curContent, setCurContent] = useState<string>(defaultContent);
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -17,8 +28,9 @@ const Dropdown = ({ size, value, options, onSelect }: DropdownProps) => {
     setIsOpened((prev) => !prev);
   };
 
-  const handleOptionSelect = (value: string) => {
-    onSelect(value);
+  const handleOptionSelect = (option: Option) => {
+    onSelect(option.value);
+    setCurContent(option.content);
     setIsOpened(false);
   };
 
@@ -41,8 +53,8 @@ const Dropdown = ({ size, value, options, onSelect }: DropdownProps) => {
   return (
     <S.Container ref={dropdownRef}>
       <S.Dropdown size={size} onClick={handleDropdownClick}>
-        <S.DropdownText selectedOption={value}>
-          {value === '' ? '전체' : value}
+        <S.DropdownText selectedOption={curContent}>
+          {curContent}
         </S.DropdownText>
         {isOpened ? <UpperArrow /> : <LowerArrow />}
       </S.Dropdown>
@@ -51,13 +63,11 @@ const Dropdown = ({ size, value, options, onSelect }: DropdownProps) => {
           {options.map((option, index) => {
             return (
               <S.Option
-                key={index}
-                id={option}
-                onClick={(e) =>
-                  handleOptionSelect((e.target as HTMLButtonElement).id)
-                }
+                key={`${option.content}_${index}`}
+                id={option.value}
+                onClick={() => handleOptionSelect(option)}
               >
-                {option}
+                {option.content}
               </S.Option>
             );
           })}
