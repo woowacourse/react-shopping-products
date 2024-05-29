@@ -62,7 +62,7 @@
 
   - [ ] 담기 요청 중, 에러가 발생할 경우 ErrorToast 출력
     - [ ] (일단 후순위) 3초 뒤에 ErrorToast 삭제
-  - [ ] header의 장바구니에 상품 종류 갯수 반영 (props: cartCount)
+  - [x] header의 장바구니에 상품 종류 갯수 반영 (props: cartCount)
   - [x] 상품 장바구니 추가
   - [x] 상품 장바구니에서 제거
     - TODO: 추가 -> 제거 연속으로 하면 에러 발생 (이유: cartItemId를 알 수 없음)

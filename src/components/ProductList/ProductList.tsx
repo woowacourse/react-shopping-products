@@ -13,6 +13,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       const cartItems = await getCartItems();
+      console.log(cartItems.length);
       setCartItems(cartItems);
     };
 
