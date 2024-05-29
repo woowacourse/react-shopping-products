@@ -1,9 +1,11 @@
 import ItemCard from '../components/ItemCard/ItemCard';
 import ItemList from '../components/ItemList/ItemList';
+import Dropdown from '../components/common/Dropdown/Dropdown';
 import Header from '../components/common/Header/Header';
+import { CATEGORY } from '../constants';
 import useInfinityScroll from '../hooks/useInfinityScroll';
 import useProducts from '../hooks/useProducts';
-import { Container } from './ProductPage.style';
+import { Container, Title } from './ProductPage.style';
 
 function ProductPage() {
   const { products, fetchNextPage, loading } = useProducts();
@@ -12,6 +14,11 @@ function ProductPage() {
   return (
     <Container>
       <Header />
+      <Title>상품 목록</Title>
+      <Dropdown
+        onChange={() => {}}
+        options={Object.values(CATEGORY)}
+      ></Dropdown>
       <ItemList>
         {products.map((product) => {
           return <ItemCard key={product.id} {...product} />;
