@@ -43,7 +43,13 @@ interface FetchProductsParams {
  */
 export async function fetchProducts(params: FetchProductsParams = {}): Promise<ProductType[]> {
   const queryString = Object.entries(params)
-    .map(([key, value]) => `${key}=${value}`)
+    .map(([key, value]) => {
+      if (key === 'category' && value === 'all') {
+        return;
+      } else {
+        return `${key}=${value}`;
+      }
+    })
     .join('&');
 
   const response = await makeRequest(`/products?${queryString}`, {

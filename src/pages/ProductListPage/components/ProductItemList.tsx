@@ -1,16 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductItem from './ProductItem';
 import useProducts from '../../../hooks/useProducts';
 import styles from '../ProductListPage.module.css';
+import { useInfinityScroll } from '../../../hooks/useInfinityScroll';
 
 interface Props {
   handleCount: (cartItemCount: number) => void;
+  selectBarCondition: Record<string, string>;
 }
 
-const ProductItemList = ({ handleCount }: Props) => {
+const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
   const [selectedItems, setSelectedItems] = useState(new Set());
-  const { products, setPage, hasMore } = useProducts();
-  const observer = useRef<IntersectionObserver | null>(null);
+  const { products, setPage, hasMore } = useProducts({ selectBarCondition });
+  const { lastProductElementRef } = useInfinityScroll({ hasMore, setPage });
 
   useEffect(() => {
     handleCount(selectedItems.size);
@@ -27,19 +29,6 @@ const ProductItemList = ({ handleCount }: Props) => {
       return newSelectedItems;
     });
   };
-
-  const lastProductElementRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setPage((prevPage) => prevPage + 1);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [hasMore, setPage],
-  );
 
   return (
     <div className={styles.productItemListContainer}>

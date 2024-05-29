@@ -4,12 +4,11 @@ import ProductListHeader from './components/ProductListHeader';
 import ProductListSelectBar from './components/ProductListSelectBar';
 import ProductListTitle from './components/ProductListTitle';
 import styles from './ProductListPage.module.css';
-import { productCategories } from '../../constant/products';
 
 const ProductListPage = () => {
   const [cartItemCount, setCartItemCount] = useState(0);
   const [selectBarCondition, setSelectBarCondition] = useState({
-    category: productCategories['all'],
+    category: 'all',
     sort: '낮은 가격순',
   });
 
@@ -28,7 +27,7 @@ const ProductListPage = () => {
       <div className={styles.productContentContainer}>
         <ProductListTitle />
         <ProductListSelectBar handleSelectBarCondition={handleSelectBarCondition} />
-        <ProductItemList handleCount={handleCount} />
+        <ProductItemList selectBarCondition={selectBarCondition} handleCount={handleCount} />
       </div>
     </div>
   );
