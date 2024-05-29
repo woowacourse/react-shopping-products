@@ -1,10 +1,16 @@
-import { Dropdown } from '@src/components';
-import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@src/constants';
+import { fetchProduct } from '@apis/index';
+import { Dropdown } from '@components/index';
 
 import ProductList from './ProductList';
 import style from './style.module.css';
 
 function ProductListPage() {
+  const getProducts = async () => {
+    const result = await fetchProduct(filtering);
+
+    return result;
+  };
+
   return (
     <div>
       <h1 className="page__title">bpple 상품 목록</h1>
