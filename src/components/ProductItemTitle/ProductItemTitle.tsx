@@ -1,10 +1,15 @@
 import * as S from "./ProductItemTitle.style";
 
-const ProductItemTitle = () => {
+interface ProductItemTitleProps {
+  title: string;
+  price: number;
+}
+
+const ProductItemTitle = ({ title, price }: ProductItemTitleProps) => {
   return (
     <S.ProductTitle>
-      <S.ProductName> 상품이름 </S.ProductName>
-      <S.ProductPrice> 상품가격 </S.ProductPrice>
+      <S.ProductName>{title}</S.ProductName>
+      <S.ProductPrice>{price}원</S.ProductPrice>
     </S.ProductTitle>
   );
 };
