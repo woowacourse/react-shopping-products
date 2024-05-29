@@ -3,7 +3,6 @@ import { HttpResponse, http } from 'msw';
 import { ENDPOINTS_PRODUCTS } from '../api/endpoints';
 import { server } from '../mocks/node';
 import useFetchProducts from './useFetchProducts';
-
 import MOCK_PRODUCTS from '../mocks/products.json';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
@@ -55,18 +54,22 @@ describe('fetchProducts', () => {
     });
 
     act(() => result.current.fetchNextPage());
-    for (let i = 2; i <= 21; i++) {
-      act(() => result.current.fetchNextPage());
+    for (let i = 2; i <= 25; i++) {
+      await waitFor(() => {
+        act(() => {
+          result.current.fetchNextPage();
+        });
+      });
     }
 
     await waitFor(() => {
-      expect(result.current.page).toBe(21);
+      expect(result.current.page).toBe(20);
     });
 
     act(() => result.current.fetchNextPage());
 
     await waitFor(() => {
-      expect(result.current.page).toBe(21);
+      expect(result.current.page).toBe(20);
     });
   });
 
@@ -113,7 +116,8 @@ describe('fetchProducts', () => {
       });
     },
   );
-  test.each([['fashion']])(
+
+  test.each([['fashion'], ['electronics']])(
     '필터가 %s 일 때 필터링 된 결과가 나와야 한다.',
     async (category) => {
       const { result } = renderHook(() => useFetchProducts([], category));

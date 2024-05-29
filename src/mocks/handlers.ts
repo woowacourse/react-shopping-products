@@ -37,12 +37,11 @@ export const handlers = [
 
     const start = page * size;
     const end = (page + 1) * size;
-    const slicedProducts = productSorted.content.slice(start, end);
+    const productSliced = Object.assign({}, productSorted);
+    productSliced.content = productSorted.content.slice(start, end);
+    productSliced.last = productSliced.content.at(-1)!.id === 127;
 
-    productSorted.content = slicedProducts;
-    productSorted.last = productSorted.content.at(-1)!.id === 127;
-
-    return HttpResponse.json(productSorted);
+    return HttpResponse.json(productSliced);
   }),
   http.post(`${ENDPOINTS_ADD_CART}`, () => {
     return HttpResponse.json();

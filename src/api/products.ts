@@ -15,7 +15,7 @@ export const fetchProducts = async (
     results.length > 0 ? '&sort=' + results.join('&sort=') : '';
 
   const categoryParam = category ? `&category=${category}` : '';
-  console.log(categoryParam);
+
   const response = await fetch(
     `${ENDPOINTS_PRODUCTS}?page=${page}&size=${size}${sortingParams}${categoryParam}`,
   );
