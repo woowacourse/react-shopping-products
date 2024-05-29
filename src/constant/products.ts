@@ -10,3 +10,7 @@ export const productCategories = {
 } as const;
 
 export const sortOptions = { asc: '낮은 가격순', desc: '높은 가격순' } as const;
+
+export const FIRST_FETCH_PAGE = 0;
+export const FIRST_FETCH_SIZE = 20;
+export const AFTER_FETCH_SIZE = 4;
