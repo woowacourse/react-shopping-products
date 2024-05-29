@@ -4,11 +4,12 @@ import ProductListHeader from './components/ProductListHeader';
 import ProductListSelectBar from './components/ProductListSelectBar';
 import ProductListTitle from './components/ProductListTitle';
 import styles from './ProductListPage.module.css';
+import { productCategories } from '../../constant/products';
 
 const ProductListPage = () => {
   const [cartItemCount, setCartItemCount] = useState(0);
   const [selectBarCondition, setSelectBarCondition] = useState({
-    category: 'all',
+    category: productCategories['all'],
     sort: '낮은 가격순',
   });
 
