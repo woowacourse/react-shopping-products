@@ -1,12 +1,14 @@
-import { Global } from "@emotion/react";
-import { baseStyle } from "../style/baseStyle";
+import { CATEGORY, CATEGORY_LIST } from "../constants/category";
+import { SORT, SORT_LIST } from "../constants/sort";
 
-import styled from "@emotion/styled";
-
-import Header from "../components/Header";
-import ProductCard from "../components/product/ProductCard";
 import Dropdown from "../components/Dropdown";
+import { Global } from "@emotion/react";
+import Header from "../components/Header";
+import InfiniteScrollComponent from "../components/InfiniteProductsScrollComponent";
 import MainTitle from "../components/MainTitle";
+import { baseStyle } from "../style/baseStyle";
+import styled from "@emotion/styled";
+import useProducts from "../hooks/useProducts";
 
 const S = {
   MainMall: styled.div`
@@ -28,18 +30,14 @@ const S = {
 };
 
 const Mall = () => {
-  const options = ["전체", "러기", "헤인"];
-
-  const product = {
-    id: 0,
-    name: "스마트폰",
-    price: 699,
-    imageUrl: "https://via.placeholder.com/150/0000FF/808080?text=스마트폰",
-    category: "Electronics",
-    description: "hi",
-  };
-
-  const productList = Array.from({ length: 8 }, (_, idx) => ({ ...product, name: product.name + idx }));
+  const {
+    products,
+    isLoading,
+    error,
+    fetchNextPage,
+    handleCategoryChange,
+    handleSortChange,
+  } = useProducts();
 
   return (
     <>
@@ -49,13 +47,21 @@ const Mall = () => {
       <S.MainMall>
         <MainTitle>러기의 쇼핑몰</MainTitle>
         <S.Toolbar>
-          <Dropdown options={options} />
-          <Dropdown options={options} />
+          <Dropdown
+            options={CATEGORY_LIST}
+            engToKor={CATEGORY}
+            handleChange={handleCategoryChange}
+          />
+          <Dropdown
+            options={SORT_LIST}
+            engToKor={SORT}
+            handleChange={handleSortChange}
+          />
         </S.Toolbar>
         <S.ProductList>
-          {productList.map((product) => (
-            <ProductCard key={product.name} product={product} />
-          ))}
+          <InfiniteScrollComponent
+            productObject={{ products, isLoading, error, fetchNextPage }}
+          />
         </S.ProductList>
       </S.MainMall>
     </>
