@@ -1,8 +1,9 @@
-import { HttpResponse, http } from 'msw';
-import { ENDPOINTS_ADD_CART, ENDPOINTS_PRODUCTS } from '../api/endpoints';
+import { HttpResponse, http, StrictRequest } from 'msw';
+import { ENDPOINTS_CART, ENDPOINTS_PRODUCTS } from '../api/endpoints';
 import { ProductResponse } from '../types/fetch';
 import productSorter from '../utils/productSorter';
-import products from './products.json';
+import { mockCart } from './cart';
+import { mockProductsResponse } from './products';
 
 const filterProductHandler = (
   productCopy: ProductResponse,
@@ -30,7 +31,7 @@ export const handlers = [
     const sortings = url.searchParams.getAll('sort');
     const category = url.searchParams.get('category');
 
-    const productCopy = Object.assign({}, products);
+    const productCopy = Object.assign({}, mockProductsResponse);
     productCopy.content = filterProductHandler(productCopy, category);
 
     const productSorted = sortProductHandler(sortings, productCopy);
@@ -43,7 +44,36 @@ export const handlers = [
 
     return HttpResponse.json(productSliced);
   }),
-  http.post(`${ENDPOINTS_ADD_CART}`, () => {
-    return HttpResponse.json();
+
+  // 카트에 상품 담기
+  // 상품 담는 api 호출
+  // -> cart-items (GET) 호출 대신 cart.json에 mock data 추가
+  // -> mock data에서 id값이 같은 것 찾기
+  http.post(
+    `${ENDPOINTS_CART}`,
+    async ({ request }: { request: StrictRequest<number> }) => {
+      const id = await request.json();
+      const findProduct = mockProductsResponse.content.find(
+        (product) => product.id === id,
+      );
+      if (findProduct) {
+        mockCart.content = [...mockCart.content, findProduct];
+        // mockCart.content.push(findProduct);
+      }
+      return HttpResponse.json(mockCart);
+    },
+  ),
+  http.get(`${ENDPOINTS_CART}`, async () => {
+    return HttpResponse.json(mockCart);
+  }),
+
+  // 카트에서 상품 제거
+  http.delete(`${ENDPOINTS_CART}/:id`, ({ params }) => {
+    const id = Number(params.id);
+    const filteredProduct = mockProductsResponse.content.filter(
+      (product) => product.id !== id,
+    );
+    mockCart.content = [...filteredProduct];
+    return HttpResponse.json(mockCart);
   }),
 ];

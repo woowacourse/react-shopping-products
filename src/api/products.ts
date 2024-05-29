@@ -3,7 +3,7 @@ import { SortingParam } from '../types/sort';
 import { generateBasicToken } from '../utils/auth';
 import {
   ENDPOINTS_PRODUCTS,
-  ENDPOINTS_ADD_CART,
+  ENDPOINTS_CART,
   ENDPOINTS_REMOVE_CART,
 } from './endpoints';
 
@@ -38,7 +38,7 @@ export const fetchProducts = async (
 };
 
 export const postAddItems = async (id: number) => {
-  const response = await fetch(`${ENDPOINTS_ADD_CART}`, {
+  const response = await fetch(`${ENDPOINTS_CART}`, {
     method: 'POST',
     headers: { Authorization: token, 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -53,7 +53,7 @@ export const postAddItems = async (id: number) => {
 };
 
 export const deleteItem = async (id: number) => {
-  const response = await fetch(`${ENDPOINTS_REMOVE_CART(id)}}`, {
+  const response = await fetch(`${ENDPOINTS_REMOVE_CART(id)}`, {
     method: 'DELETE',
     headers: { Authorization: token, 'Content-Type': 'application/json' },
   });
@@ -61,4 +61,18 @@ export const deleteItem = async (id: number) => {
   if (!response.ok) {
     throw new Error(`200~299 이외의 응답이 발생하였습니다.${response.body}`);
   }
+};
+
+export const fetchCartItems = async () => {
+  const response = await fetch(`${ENDPOINTS_CART}`, {
+    method: 'GET',
+    headers: { Authorization: token, 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) {
+    throw new Error(`200~299 이외의 응답이 발생하였습니다.${response.body}`);
+  }
+
+  const data = (await response.json()) as ProductResponse;
+  return data;
 };
