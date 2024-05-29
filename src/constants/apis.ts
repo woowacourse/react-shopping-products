@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://harryareu.com';
+export const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const PRODUCTS_ENDPOINT = `${BASE_URL}/products`;
 
