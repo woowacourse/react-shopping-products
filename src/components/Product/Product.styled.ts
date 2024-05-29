@@ -7,5 +7,6 @@ export const StyledProduct = styled.section`
   position: absolute;
   top: 64px;
 
+  width: 100%;
   padding: 36px 24px 0px 24px;
 `;
