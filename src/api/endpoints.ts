@@ -3,13 +3,13 @@ import { getProductListProps } from './product';
 
 export const ENDPOINT = {
   product: {
-    getList: ({ page, size, category, sortOrder }: getProductListProps) => {
+    getList: ({ page, size, category, order }: getProductListProps) => {
       return buildURL({
         baseUrl: `/products`,
         page,
         size,
         category,
-        sortOrder,
+        order,
       });
     },
     postItem: `/products`,

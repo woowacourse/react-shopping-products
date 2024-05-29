@@ -2,7 +2,7 @@ import BaseDropDown from './BaseDropDown';
 import { SORT_ORDER } from '@/constants/sortOrder';
 
 interface Props {
-  onChangeOrder: () => void;
+  onChangeOrder: (order: string) => void;
 }
 
 const SortOrder = ({ onChangeOrder }: Props) => {

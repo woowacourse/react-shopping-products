@@ -7,6 +7,7 @@ import { getProductList } from '@/api/product';
 const FIRST_PAGE_ITEM_COUNT = 20;
 const MORE_LOAD_ITEM_COUNT = 4;
 
+// TODO: hook 리팩터링 (분리)
 const useProductList = () => {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(FIRST_PAGE_ITEM_COUNT);
@@ -14,7 +15,7 @@ const useProductList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
-  const [isDesc, setIsDesc] = useState(false);
+  const [order, setOrder] = useState<string>('asc');
   const [category, setCategory] = useState('');
 
   useEffect(() => {
@@ -24,11 +25,12 @@ const useProductList = () => {
       setLoading(true);
 
       try {
-        const sortOrder = isDesc ? 'desc' : 'asc';
-        const data = await getProductList({ page, size, category, sortOrder });
+        const data = await getProductList({ page, size, category, order });
         setProducts((prev) => [...prev, ...data.content]);
 
-        if (data.last) setHasNextPage((prev) => !prev);
+        if (data.last) {
+          setHasNextPage((prev) => !prev);
+        }
       } catch (error) {
         setError(true);
       } finally {
@@ -37,7 +39,7 @@ const useProductList = () => {
     };
 
     fetchData();
-  }, [page, isDesc, category]);
+  }, [page, order, category]);
 
   const fetchNextPage = () => {
     if (hasNextPage && page === 1) {
@@ -50,14 +52,16 @@ const useProductList = () => {
     }
   };
 
-  const handleChangeSort = () => {
-    setIsDesc((prev) => !prev);
+  const handleChangeOrder = (newOrder: string) => {
+    if (order === newOrder) return;
+    setOrder(newOrder);
     setProducts([]);
     setPage(0);
   };
 
-  const handleChangeCategory = (category: string) => {
-    setCategory(category);
+  const handleChangeCategory = (newCategory: string) => {
+    if (category === newCategory) return;
+    setCategory(newCategory);
     setProducts([]);
     setPage(0);
   };
@@ -69,7 +73,7 @@ const useProductList = () => {
     error,
     fetchNextPage,
     hasNextPage,
-    handleChangeSort,
+    handleChangeOrder,
     handleChangeCategory,
   };
 };

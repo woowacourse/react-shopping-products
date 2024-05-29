@@ -4,13 +4,8 @@ interface buildURLProps extends getProductListProps {
   baseUrl: string;
 }
 
-const buildURL = ({
-  baseUrl,
-  category,
-  page,
-  size,
-  sortOrder,
-}: buildURLProps) => {
+// TODO: 리팩터링
+const buildURL = ({ baseUrl, category, page, size, order }: buildURLProps) => {
   const params = [];
 
   if (category) {
@@ -23,8 +18,8 @@ const buildURL = ({
     params.push(`size=${size}`);
   }
 
-  if (sortOrder === 'desc') {
-    params.push(`sort=price%2C${sortOrder}&sort=name`);
+  if (order === 'desc') {
+    params.push(`sort=price%2C${order}&sort=name`);
   } else {
     params.push('sort=price&sort=name');
   }
