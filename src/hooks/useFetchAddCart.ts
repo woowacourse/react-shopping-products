@@ -26,6 +26,7 @@ const useFetchAddCart = () => {
 
   return {
     cartIdSet,
+    setCartIdSet,
     patchToAddCart,
     patchToRemoveCart,
     fetchCart,

@@ -1,16 +1,6 @@
-import useFetchProducts from './hooks/useFetchProducts';
-
+import Product from './pages/Product';
 function App() {
-  const { products, isError, isPending } = useFetchProducts();
-
-  return (
-    <>
-      <h1>React Shopping Products</h1>
-      <div>
-        isError:{isError}, isPending:{isPending}
-      </div>
-    </>
-  );
+  return <Product />;
 }
 
 export default App;
