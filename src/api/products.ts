@@ -1,26 +1,11 @@
 import { PRODUCTS_ENDPOINT } from "./endPoint";
-import { generateToken } from "./auth";
+import { fetchWithToken } from "./fetchWithToken";
 
-const USER_ID = import.meta.env.VITE_API_USER_ID;
-const USER_PASSWORD = import.meta.env.VITE_API_USER_PASSWORD;
-
-export async function fetchProducts(page: number, size: number) {
-  const token = generateToken(USER_ID, USER_PASSWORD);
-
-  const response = await fetch(
-    `${PRODUCTS_ENDPOINT}?page=${page}&size=${size}`,
-    {
-      headers: {
-        Authentication: token,
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch products");
-  }
-
-  const data = await response.json();
+export async function getProducts(page: number, size: number) {
+  const data = await fetchWithToken({
+    url: `${PRODUCTS_ENDPOINT}?page=${page}&size=${size}`,
+    errorMessage: "Failed to fetch products",
+  });
 
   return data;
 }

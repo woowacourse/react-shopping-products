@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Product } from "../types/products";
-import { fetchProducts } from "../api/products";
+import { getProducts } from "../api/products";
 
 const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -13,10 +13,12 @@ const useProducts = () => {
   useEffect(() => {
     const size = page === 0 ? 20 : 4;
 
-    const getProducts = async () => {
+    const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const { content, last } = await fetchProducts(page, size);
+
+        const { content, last } = await getProducts(page, size);
+
         setProducts((prevProducts) => [...prevProducts, ...content]);
         setIsLastPage(last);
       } catch (error) {
@@ -26,7 +28,7 @@ const useProducts = () => {
       }
     };
 
-    getProducts();
+    fetchProducts();
   }, [page]);
 
   const fetchNextPage = () => {
