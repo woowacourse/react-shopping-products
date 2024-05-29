@@ -8,8 +8,9 @@ import style from './style.module.css';
 interface ProductListProps {
   products: Product[];
   targetRef: React.MutableRefObject<HTMLDivElement | null>;
+  loading: boolean;
 }
-function ProductList({ products, targetRef }: ProductListProps) {
+function ProductList({ products, targetRef, loading }: ProductListProps) {
   const productListRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ function ProductList({ products, targetRef }: ProductListProps) {
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
+        {loading && <div>로딩중....</div>}
         <div className={style.target} ref={targetRef}>
           <span>target</span>
         </div>
