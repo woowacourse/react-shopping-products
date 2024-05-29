@@ -1,47 +1,44 @@
-import Button from "../common/Button/Button";
-import Text from "../common/Text/Text";
-import ImageBox from "../common/ImageBox/ImageBox";
-import Flex from "../common/Flex/Flex";
-import AddProductItemIcon from "@/assets/AddShoppingCart.svg";
-// import { ReactComponent as RemoveProductItemIcon } from "@/assets/RemoveProductItemIcon.svg";
+import Button from '../common/Button/Button';
+import Text from '../common/Text/Text';
+import ImageBox from '../common/ImageBox/ImageBox';
+import Flex from '../common/Flex/Flex';
+import AddProductItemIcon from '@/assets/AddShoppingCart.svg';
+import RemoveShoppingCartIcon from '@/assets/RemoveShoppingCart.svg';
+import styles from './ProductItem.module.css';
+import { Product } from '@/types';
+import { useState } from 'react';
 
-export type ProductItemProps = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-};
+export default function ProductItem({ id, name, price, imageUrl, category }: Product) {
+  const [isCart, setIsCart] = useState(false);
 
-export default function ProductItem({
-  id,
-  name,
-  price,
-  imageUrl,
-  category,
-}: ProductItemProps) {
+  const handleIsCart = () => {
+    setIsCart((prev) => !prev);
+  };
+
   return (
-    <Flex gap={20}>
+    <div className={styles.container}>
       <ImageBox width={182} height={112} src={imageUrl} />
       <Flex gap={8}>
         <Text size="m" weight="l">
           {name}
         </Text>
-        <Text size="s">{price.toLocaleString("ko-KR")}원</Text>
+        <Text size="s">{price.toLocaleString('ko-KR')}원</Text>
       </Flex>
-      <Flex
-        direction="row"
-        style={{ width: "100%", justifyContent: "flex-end" }}
-      >
+      <Flex direction="row" style={{ width: '100%', justifyContent: 'flex-end' }}>
         <Button
-          color="primary"
+          color={isCart ? 'default' : 'primary'}
           startContent={
-            <ImageBox width={16} height={16} src={AddProductItemIcon} />
+            <ImageBox
+              width={16}
+              height={16}
+              src={isCart ? RemoveShoppingCartIcon : AddProductItemIcon}
+            />
           }
+          onClick={handleIsCart}
         >
-          담기
+          {isCart ? '빼기' : '담기'}
         </Button>
       </Flex>
-    </Flex>
+    </div>
   );
 }

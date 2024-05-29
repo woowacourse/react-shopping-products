@@ -1,5 +1,5 @@
-import { PropsWithChildren, ReactElement } from "react";
-import styles from "./Header.module.css";
+import { PropsWithChildren, ReactElement } from 'react';
+import styles from './Header.module.css';
 
 type HeaderProps = {
   leftComponent?: ReactElement;
@@ -7,10 +7,7 @@ type HeaderProps = {
 };
 
 // TODO: 뒤로가기, 로고 합성 컴포넌트를 구현하기
-export default function Header({
-  leftComponent,
-  rightComponent,
-}: PropsWithChildren<HeaderProps>) {
+export default function Header({ leftComponent, rightComponent }: PropsWithChildren<HeaderProps>) {
   return (
     <header className={styles.headerContainer}>
       {leftComponent || <p></p>}
