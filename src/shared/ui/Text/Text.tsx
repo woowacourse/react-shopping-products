@@ -6,7 +6,7 @@ type Tag = 'p' | 'span' | 'pre';
 
 type Type = 'h1' | 'h2' | 'b1';
 
-interface TextProps {
+export interface TextProps {
   children: Children;
   className?: string;
   tag: Tag;
