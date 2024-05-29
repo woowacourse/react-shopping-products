@@ -9,6 +9,6 @@ interface FilterButtonProps {
   onChange: (value: string) => void;
 }
 
-export const FilterButton = ({ className, options, value, onClick }: FilterButtonProps) => {
-  return <Select className={`${css.filterButton} ${className}`} options={options} value={value} onChange={onClick} />;
+export const FilterButton = ({ className, options, value, onChange }: FilterButtonProps) => {
+  return <Select className={`${css.filterButton} ${className}`} options={options} value={value} onChange={onChange} />;
 };
