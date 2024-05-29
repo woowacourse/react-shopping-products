@@ -1,11 +1,14 @@
-import ProductListPage from "./pages/ProductListPage";
-import "./index.css";
+import ProductListPage from './pages/ProductListPage';
+import './index.css';
+import './reset.css';
 
 function App() {
   return (
-    <>
-      <ProductListPage />
-    </>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ width: '472px' }}>
+        <ProductListPage />
+      </div>
+    </div>
   );
 }
 

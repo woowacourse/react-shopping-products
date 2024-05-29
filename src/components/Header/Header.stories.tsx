@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import Header from "./Header";
+import type { Meta, StoryObj } from '@storybook/react';
+import Header from './Header';
 
 const meta = {
-  title: "Components/Header",
+  title: 'Components/Header',
   component: Header,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 
   args: {},
 } satisfies Meta<typeof Header>;
@@ -33,11 +33,6 @@ export const Right: Story = {
 
 export const Dual: Story = {
   render: () => {
-    return (
-      <Header
-        leftComponent={<div>LOGO</div>}
-        rightComponent={<div>Right</div>}
-      />
-    );
+    return <Header leftComponent={<div>LOGO</div>} rightComponent={<div>Right</div>} />;
   },
 };

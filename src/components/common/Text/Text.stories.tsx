@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import Text from "./Text";
+import type { Meta, StoryObj } from '@storybook/react';
+import Text from './Text';
 
 const meta = {
-  title: "Components/Text",
+  title: 'Components/Text',
   component: Text,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 
   args: {},
 } satisfies Meta<typeof Text>;

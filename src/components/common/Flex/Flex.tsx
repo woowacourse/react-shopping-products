@@ -1,20 +1,20 @@
-import styles from "./Flex.module.css";
-import { HTMLAttributes, PropsWithChildren } from "react";
+import styles from './Flex.module.css';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   gap?: number;
-  direction?: "row" | "column";
+  direction?: 'row' | 'column';
 }
 
 export default function Flex({
   children,
   gap,
-  direction = "column",
+  direction = 'column',
   ...rest
 }: PropsWithChildren<Props>) {
   const getGap = () => {
-    if (direction === "column") return { rowGap: gap };
-    if (direction === "row") return { columnGap: gap };
+    if (direction === 'column') return { rowGap: gap };
+    if (direction === 'row') return { columnGap: gap };
   };
 
   return (

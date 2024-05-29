@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import Dropdown from "./Dropdown";
+import type { Meta, StoryObj } from '@storybook/react';
+import Dropdown from './Dropdown';
 
 const meta = {
-  title: "Components/Dropdown",
+  title: 'Components/Dropdown',
   component: Dropdown,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 
   args: {},
 } satisfies Meta<typeof Dropdown>;
@@ -15,6 +15,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
   render: () => {
-    return <Dropdown optionList={["a", "b", "c"]} />;
+    return <Dropdown optionList={['a', 'b', 'c']} />;
   },
 };
