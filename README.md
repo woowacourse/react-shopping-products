@@ -25,10 +25,10 @@
 
   - fashion
   - electronics
-  - clothing
   - books
   - fitness
   - kitchen
+  - beverage
 
 - [ ] 상품을 가격 순으로 정렬할 수 있다.
   - 낮은 가격 순
