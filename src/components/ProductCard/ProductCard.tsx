@@ -9,15 +9,21 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  const { cartIdSet, patchToAddCart, patchToRemoveCart } =
-    useContext(CartContext);
+  const { patchToAddCart, patchToRemoveCart } = useContext(CartContext);
 
   return (
     <div>
       <S.ProductImage src={product.imageUrl} />
       <div>{product.name}</div>
       <div>{product.price}</div>
-      <AddCartButton onClick={() => {}} />
+      <AddCartButton
+        onAddClick={() => {
+          patchToAddCart(product.id);
+        }}
+        onDeleteClick={() => {
+          patchToRemoveCart(product.id);
+        }}
+      />
     </div>
   );
 }

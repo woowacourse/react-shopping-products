@@ -1,4 +1,4 @@
-import { ProductResponse } from '../types/fetch';
+import { CartResponse, ProductResponse } from '../types/fetch';
 import { SortingParam } from '../types/sort';
 import { generateBasicToken } from '../utils/auth';
 import {
@@ -73,6 +73,6 @@ export const fetchCartItems = async () => {
     throw new Error(`200~299 이외의 응답이 발생하였습니다.${response.body}`);
   }
 
-  const data = (await response.json()) as ProductResponse;
+  const data = (await response.json()) as CartResponse;
   return data;
 };

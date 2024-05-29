@@ -5,7 +5,6 @@ import Dropdown from '../components/Dropdown/Dropdown';
 import * as S from './Product.styled';
 import useFetchAddCart from '../hooks/useFetchAddCart';
 import ProductList from '../components/ProductList/ProductList';
-import AddCartButton from '../components/AddCartButton';
 import useFetchProducts from '../hooks/useFetchProducts';
 import { SortingParam } from '../types/sort';
 
@@ -27,7 +26,6 @@ function Product() {
         setFilter={setFilter}
       />
       <ProductList products={products} />
-      <AddCartButton />
     </CartContext.Provider>
   );
 }
