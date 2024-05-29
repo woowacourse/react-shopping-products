@@ -1,6 +1,6 @@
 import * as S from "@/components/_common/TextBox/style";
 
-export type TextType = "xLarge" | "large" | "medium" | "small" | "xSmall";
+export type TextType = "xLarge" | "large" | "medium" | "small" | "xSmall" | "semiSmall";
 
 interface TextBoxProps {
   asset?: () => JSX.Element;
