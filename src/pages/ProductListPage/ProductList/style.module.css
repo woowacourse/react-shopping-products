@@ -1,7 +1,7 @@
 .wrapper {
   margin-top: 1.75rem;
   width: 100%;
-  max-height: calc(100vh - var(--header-height) - 159px);
+  max-height: calc(100vh - var(--header-height) - 9.9375rem - 1rem);
   overflow-x: hidden;
 }
 
