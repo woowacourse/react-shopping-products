@@ -1,2 +1,2 @@
-export { cartItemListHandlers } from "./cartItemListHandlers";
-export { productListHandlers } from "./productListHandlers";
+export { cartItemListHandlers } from "./cartItemList/cartItemListHandlers";
+export { productListHandlers } from "./productList/productListHandlers";

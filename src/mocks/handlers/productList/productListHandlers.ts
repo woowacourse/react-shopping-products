@@ -1,9 +1,9 @@
 import { http, HttpResponse } from "msw";
 
-import { PRODUCTS_ENDPOINT } from "../../api/config";
-import { PRODUCT_LIST } from "../../constants/productList";
-import { Product } from "../../interfaces/Product";
-import productListData from "../productListData/defaultData.json";
+import { PRODUCTS_ENDPOINT } from "../../../api/config";
+import { PRODUCT_LIST } from "../../../constants/productList";
+import { Product } from "../../../interfaces/Product";
+import productListData from "./defaultData.json";
 
 export const productListHandlers = [
   http.get(PRODUCTS_ENDPOINT, ({ request }) => {
