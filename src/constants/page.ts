@@ -1,0 +1,7 @@
+export const PAGE = {
+  FIRST_PAGE: 1,
+  FIRST_PAGE_LIMIT: 20,
+  OTHER_PAGE_LIMIT: 4,
+  FIRST_PAGE_START: 0,
+  OTHER_PAGE_START: 2,
+};
