@@ -50,7 +50,7 @@ const useProducts = () => {
     fetchFirstPage("전체", currentPage, "낮은 가격순");
   }, []);
 
-  return { products, fetchFirstPage, fetchNextPage, loading, error, currentPage };
+  return { products, fetchNextPage, loading, error, currentPage };
 };
 
 export default useProducts;
