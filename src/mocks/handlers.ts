@@ -1,20 +1,11 @@
-import { http, HttpResponse } from "msw";
-import { BASE_URL } from "@/apis/baseUrl";
-import { ENDPOINT } from "@/apis/endpoints";
-import products from "./productList.json";
+import { http, HttpResponse } from 'msw';
+import { BASE_URL } from '@/apis/baseUrl';
+import { ENDPOINT } from '@/apis/endpoints';
+import products from './productList.json';
+import { Category } from '@/types';
 
-type Category =
-  | "all"
-  | "fashion"
-  | "beverage"
-  | "electronics"
-  | "kitchen"
-  | "fitness"
-  | "books"
-  | "wooteco";
-
-type SortBase = "price";
-type SortOrder = "asce" | "desc";
+type SortBase = 'price';
+type SortOrder = 'asce' | 'desc';
 
 const FIRST_LENGTH = 20;
 
@@ -23,20 +14,16 @@ export const handlers = [
     const url = new URL(request.url);
 
     // TODO as 타입 선언 대체하기
-    const category: Category = url.searchParams.get("category") as Category;
-    const page = Number(url.searchParams.get("page") || "1");
-    const size = Number(url.searchParams.get("size") || "4");
-    const [sortBase, sortOrder]: [SortBase, SortOrder] = url.searchParams
-      .get("sort")
-      ?.split(",");
+    const category: Category = url.searchParams.get('category') as Category;
+    const page = Number(url.searchParams.get('page') || '1');
+    const size = Number(url.searchParams.get('size') || '4');
+    const [sortBase, sortOrder]: [SortBase, SortOrder] = url.searchParams.get('sort')?.split(',');
 
     const productListFilteredCategory =
-      category === "all"
-        ? products
-        : products.filter((product) => product.category === category);
+      category === 'all' ? products : products.filter((product) => product.category === category);
 
     const sortedProductList = productListFilteredCategory.sort((a, b) =>
-      sortOrder === "asce" ? a.price - b.price : b.price - a.price
+      sortOrder === 'asce' ? a.price - b.price : b.price - a.price,
     );
 
     const limit = page === 1 ? FIRST_LENGTH : size; // 첫 시도에는 20개, 그 이후부턴 4개씩
