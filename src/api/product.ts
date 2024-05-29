@@ -24,7 +24,7 @@ export const fetchProducts = async (
 
   const endpoint = `/products?${queryParameters.toString()}`;
 
-  const data = await apiClient.get({ endpoint });
+  const data = await apiClient.get({ endpoint, errorMessage: '상품 목록을 불러오는 중 에러가 발생했습니다.' });
 
   return { data: data.content, isLast: data.last };
 };

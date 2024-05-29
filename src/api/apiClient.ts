@@ -10,6 +10,7 @@ interface ApiProps {
   endpoint: string;
   headers?: Record<string, string>;
   body?: object | null;
+  errorMessage?: string;
 }
 
 interface RequestProps extends ApiProps {
@@ -17,20 +18,20 @@ interface RequestProps extends ApiProps {
 }
 
 const apiClient = {
-  get({ endpoint, headers = {} }: ApiProps) {
-    return this.request({ method: 'GET', endpoint, headers });
+  get({ endpoint, headers = {}, errorMessage = '' }: ApiProps) {
+    return this.request({ method: 'GET', endpoint, headers, errorMessage });
   },
-  post({ endpoint, headers = {}, body = {} }: ApiProps) {
-    return this.request({ method: 'POST', endpoint, headers, body });
+  post({ endpoint, headers = {}, body = {}, errorMessage = '' }: ApiProps) {
+    return this.request({ method: 'POST', endpoint, headers, body, errorMessage });
   },
-  patch({ endpoint, headers = {}, body = {} }: ApiProps) {
-    return this.request({ method: 'PATCH', endpoint, headers, body });
+  patch({ endpoint, headers = {}, body = {}, errorMessage = '' }: ApiProps) {
+    return this.request({ method: 'PATCH', endpoint, headers, body, errorMessage });
   },
-  delete({ endpoint, headers = {} }: ApiProps) {
-    return this.request({ method: 'DELETE', endpoint, headers });
+  delete({ endpoint, headers = {}, errorMessage = '' }: ApiProps) {
+    return this.request({ method: 'DELETE', endpoint, headers, errorMessage });
   },
 
-  request({ method, endpoint, headers = {}, body = null }: RequestProps) {
+  request({ method, endpoint, headers = {}, body = null, errorMessage = '' }: RequestProps) {
     const token = generateBasicToken(USER_ID, USER_PASSWORD);
 
     const requestInit = {
@@ -39,14 +40,14 @@ const apiClient = {
       body: body ? JSON.stringify(body) : null,
     };
 
-    return this.fetchWithErrorHandling(endpoint, requestInit);
+    return this.fetchWithErrorHandling(endpoint, requestInit, errorMessage);
   },
 
-  async fetchWithErrorHandling(endpoint: string, requestInit: RequestInit) {
+  async fetchWithErrorHandling(endpoint: string, requestInit: RequestInit, errorMessage: string) {
     const response = await fetch(`${API_URL}${endpoint}`, requestInit);
 
     if (!response.ok) {
-      throw new Error();
+      throw new Error(errorMessage);
     }
 
     const text = await response.text();
