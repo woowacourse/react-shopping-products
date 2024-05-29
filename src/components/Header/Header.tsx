@@ -5,6 +5,7 @@ import * as S from "./Header.style";
 function Header() {
   const { quantity } = useCartItemList();
   return (
+    <S.HeaderBackground>
     <S.HeaderWrapper>
       <S.MainLogo src={MainLogo} alt="메인 로고" />
       <S.ShoppingCartButton>
@@ -18,6 +19,7 @@ function Header() {
         {/* )} */}
       </S.ShoppingCartButton>
     </S.HeaderWrapper>
+    </S.HeaderBackground>
   );
 }
 

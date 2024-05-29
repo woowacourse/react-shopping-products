@@ -8,7 +8,7 @@ function App() {
       <GlobalStyles />
       {/* createPortal(
       <Toast message={""} />, document.body) */}
-      <Header></Header>
+      <Header />
       <Product />
     </>
   );

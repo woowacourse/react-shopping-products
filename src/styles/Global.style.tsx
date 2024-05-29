@@ -117,6 +117,12 @@ const GlobalStyles = createGlobalStyle`
     input[type='number'] {
     -moz-appearance: textfield;
     }
+
+    #root {
+        display: flex;
+        justify-content: center;
+        background-color: #EEEEEE;
+    }
 `;
 
 export default GlobalStyles;
