@@ -7,8 +7,8 @@ import * as S from './ProductItem.style';
 interface ProductItemProps {
   product: Product;
   isAdded: boolean;
-  onAddCartItem: (productId: number) => Promise<void>;
-  onDeleteCartItem: (productId: number) => Promise<void>;
+  onAddCartItem: (productId: number) => void;
+  onDeleteCartItem: (productId: number) => void;
 }
 
 const ProductItem = ({ product, isAdded, onAddCartItem, onDeleteCartItem }: ProductItemProps) => {

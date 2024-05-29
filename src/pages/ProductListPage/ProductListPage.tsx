@@ -12,19 +12,19 @@ import Loading from '../../assets/loading.gif';
 import EmptyCart from '../../assets/EmptyCart.png';
 
 const ProductListPage = () => {
-  const { products, category, sort, loading, error, isLast, handleCategory, handleSort, fetchNextPage } = useProducts(
+  const { products, category, sort, loading, error, isLast, handleCategory, handleSort, handlePage } = useProducts(
     CATEGORY_LIST[0],
     SORTING_LIST[0],
   );
-  const { cartItems, counts, handleAddCartItem, handleDeleteCartItem } = useCartItems();
-  const targetRef = useIntersectionObserver(fetchNextPage);
+  const { cartItems, handleAddCartItem, handleDeleteCartItem } = useCartItems();
+  const targetRef = useIntersectionObserver(handlePage);
 
   return (
     <div>
       <Header>
         <S.CartIconWrapper>
           <img src={CartIcon} alt="장바구니 아이콘" />
-          <S.CartNumber>{counts <= 9 ? counts : `9+`}</S.CartNumber>
+          <S.CartNumber>{cartItems.length <= 9 ? cartItems.length : `9+`}</S.CartNumber>
         </S.CartIconWrapper>
       </Header>
       <S.Layout>
