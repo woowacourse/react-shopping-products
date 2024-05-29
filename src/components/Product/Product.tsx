@@ -8,6 +8,7 @@ import { StyledProduct } from "./Product.styled";
 export const Product = () => {
   const { isLoading } = useProducts();
   const { errorStatus } = useError();
+
   return (
     <StyledProduct>
       {isLoading ? (
