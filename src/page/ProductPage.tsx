@@ -5,7 +5,12 @@ import Header from '../components/common/Header/Header';
 import { CATEGORY, SORT } from '../constants';
 import useInfinityScroll from '../hooks/useInfinityScroll';
 import useProducts from '../hooks/useProducts';
-import { Container, Title } from './ProductPage.style';
+import {
+  Container,
+  Title,
+  DropBoxContainer,
+  ContentWrapper,
+} from './ProductPage.style';
 
 function ProductPage() {
   const { products, fetchNextPage, loading, changeCategory, changeSorting } =
@@ -15,33 +20,39 @@ function ProductPage() {
   return (
     <Container>
       <Header />
-      <Title>상품 목록</Title>
-      <Dropdown
-        onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-          changeCategory(e.target.value);
-        }}
-        options={Object.entries(CATEGORY)}
-      ></Dropdown>
-      <Dropdown
-        onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-          changeSorting(e.target.value);
-        }}
-        options={Object.entries(SORT)}
-      ></Dropdown>
-      <ItemList>
-        {products.map((product) => {
-          return <ItemCard key={product.id} {...product} />;
-        })}
-      </ItemList>
-      {loading && (
-        <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
-      )}
-      {!loading && (
-        <div
-          ref={lastProductElementRef}
-          style={{ height: '30px', fontSize: '5rem' }}
-        ></div>
-      )}
+      <ContentWrapper>
+        <Title>bpple 상품 목록</Title>
+        <DropBoxContainer>
+          <Dropdown
+            onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              changeCategory(e.target.value);
+            }}
+            options={Object.entries(CATEGORY)}
+          ></Dropdown>
+          <Dropdown
+            onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              changeSorting(e.target.value);
+            }}
+            options={Object.entries(SORT)}
+          ></Dropdown>
+        </DropBoxContainer>
+
+        <ItemList>
+          {products.map((product) => {
+            return <ItemCard key={product.id} {...product} />;
+          })}
+        </ItemList>
+        {loading && (
+          <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
+        )}
+
+        {!loading && (
+          <div
+            ref={lastProductElementRef}
+            style={{ height: '30px', fontSize: '5rem' }}
+          ></div>
+        )}
+      </ContentWrapper>
     </Container>
   );
 }
