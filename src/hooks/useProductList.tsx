@@ -3,7 +3,11 @@ import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
 import { Category, SortType, Product } from '@/types';
 import { requestProductList } from '@/apis/request/product';
 
-const START_PAGE = 1;
+export const PAGE = {
+  START: 1,
+  START_SIZE: 20,
+  SIZE: 4,
+};
 
 const useProductList = () => {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -21,11 +25,12 @@ const useProductList = () => {
     const getProducts = async () => {
       try {
         setLoading(true);
+        const size = page === 1 ? PAGE.START_SIZE : PAGE.SIZE;
         const { paginatedProducts, totalPages: curTotalPage } = await requestProductList({
           page,
           category,
           sortType,
-          size: 10,
+          size,
         });
         if (curTotalPage !== totalPage) setTotalPage(curTotalPage);
 
@@ -51,7 +56,7 @@ const useProductList = () => {
     }
 
     setSortType(sortType.value);
-    setPage(START_PAGE);
+    setPage(PAGE.START);
     setProductList([]);
   };
 
@@ -66,7 +71,7 @@ const useProductList = () => {
     }
 
     setCategory(category.value);
-    setPage(START_PAGE);
+    setPage(PAGE.START);
     setProductList([]);
   };
 
@@ -86,6 +91,7 @@ const useProductList = () => {
     productList,
     loading,
     error,
+    page,
   };
 };
 
