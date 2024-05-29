@@ -28,6 +28,11 @@ const TEXT = {
     line-height: 18px;
     font-weight: 700;
   `,
+  semiSmall: css`
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 700;
+  `,
   xSmall: css`
     font-size: 12px;
     line-height: 18px;
