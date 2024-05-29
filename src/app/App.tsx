@@ -1,9 +1,7 @@
+import { ProductPage } from '../pages/product/ProductPage/ProductPage';
+
 function App() {
-  return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
-  );
+  return <ProductPage />;
 }
 
 export default App;

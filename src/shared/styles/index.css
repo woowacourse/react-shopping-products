@@ -1,13 +1,15 @@
-/* Bg-color outside of the page */
-body,
-#root {
-  background-color: black;
-}
-
-/* Hide Scrollbar */
 body {
+  display: flex;
+  justify-content: center;
+  background-color: black;
   -ms-overflow-style: none;
 }
 ::-webkit-scrollbar {
   display: none;
+}
+
+#root {
+  background-color: white;
+  width: 430px;
+  height: 100vh;
 }
