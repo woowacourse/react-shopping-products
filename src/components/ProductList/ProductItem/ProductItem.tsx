@@ -2,6 +2,7 @@ import { forwardRef, useState } from "react";
 import * as PI from "./ProductItem.style";
 import CartControlButton from "../../Button/CartControlButton";
 import { deleteProductInCart, postProductInCart } from "../../../api";
+import { useError } from "../../../hooks/useError";
 
 interface ProductProps {
   product: Product;
@@ -13,17 +14,24 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
     const cartItemIds = cartItems.map((item) => item.product.id);
     const initialIsInCart = cartItemIds.includes(product.id);
     const [isInCart, setIsInCart] = useState(initialIsInCart);
+    const { showError } = useError();
 
     const handleIsInCart = async () => {
-      if (isInCart) {
-        setIsInCart(!isInCart);
-        const filtered = cartItems.filter(
-          (item) => item.product.id === product.id
-        );
-        deleteProductInCart(filtered[0].id);
-      } else {
-        setIsInCart(!isInCart);
-        postProductInCart(product.id);
+      try {
+        if (isInCart) {
+          const filtered = cartItems.filter(
+            (item) => item.product.id === product.id
+          );
+          await deleteProductInCart(filtered[0].id);
+          setIsInCart(!isInCart);
+        } else {
+          await postProductInCart(product.id);
+          setIsInCart(!isInCart);
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          showError(error.message);
+        }
       }
     };
 

@@ -4,21 +4,29 @@ import useProducts from "../../hooks/useProducts";
 import ProductListHeader from "../ProductListHeader/ProductListHeader";
 import ProductItem from "./ProductItem/ProductItem";
 import { ProductListStyle } from "./ProductList.style";
+import { useError } from "../../hooks/useError";
 
 const ProductList = () => {
   const { products, lastProductElementRef, handleCategory, handleSort } =
     useProducts();
 
+  const { showError } = useError();
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   useEffect(() => {
     const fetchCartItems = async () => {
-      const cartItems = await getCartItems();
-      console.log(cartItems.length);
-      setCartItems(cartItems);
+      try {
+        const cartItems = await getCartItems();
+        setCartItems(cartItems);
+      } catch (error) {
+        if (error instanceof Error) {
+          showError(error.message);
+        }
+      }
     };
 
     fetchCartItems();
-  }, []);
+  }, [showError]);
 
   return (
     <>

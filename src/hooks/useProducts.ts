@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getProducts } from "../api";
+import { useError } from "./useError";
 
 interface UseProductsResult {
   products: Product[];
@@ -17,6 +18,7 @@ export default function useProducts(): UseProductsResult {
   const isMounted = useRef(false);
   const [category, setCategory] = useState<Category | "all">("all");
   const [sort, setSort] = useState<Sort>("asc");
+  const { showError } = useError();
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastProductElementRef = useCallback(
@@ -52,7 +54,9 @@ export default function useProducts(): UseProductsResult {
             setHasMore(false);
           }
         } catch (error) {
-          console.error(error);
+          if (error instanceof Error) {
+            showError(error.message);
+          }
         }
       };
 
@@ -60,7 +64,7 @@ export default function useProducts(): UseProductsResult {
     } else {
       isMounted.current = true;
     }
-  }, [page, category, sort]);
+  }, [page, category, sort, showError]);
 
   const handleCategory = (category: Category | "all") => {
     setProducts([]);

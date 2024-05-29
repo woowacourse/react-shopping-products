@@ -3,18 +3,26 @@ import Cart from "../../assets/cart.svg";
 import { HeaderStyle, CartCount } from "./Header.style";
 import { useEffect, useState } from "react";
 import { getCartItems } from "../../api";
+import { useError } from "../../hooks/useError";
 
 export default function Header() {
   const [quantityInCart, setQuantityInCart] = useState(0);
+  const { showError } = useError();
 
   useEffect(() => {
     const fetchCartItemsCount = async () => {
-      const quantityInCart = await getCartItems();
-      setQuantityInCart(quantityInCart.length);
+      try {
+        const quantityInCart = await getCartItems();
+        setQuantityInCart(quantityInCart.length);
+      } catch (error) {
+        if (error instanceof Error) {
+          showError(error.message);
+        }
+      }
     };
 
     fetchCartItemsCount();
-  }, []);
+  }, [showError]);
 
   return (
     <HeaderStyle>
