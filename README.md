@@ -20,7 +20,7 @@
   - [x] products를 GET 해오는 fetchProducts 함수 작성
   - [x] useProducts - products 상태를 갖고 fetchProducts 하는 커스텀 훅 작성
   - [x] fetch 요청을 MSW로 모킹 후, 20개의 상품 목록을 가져오는 test 파일 작성
-- [ ] useProducts 커스텀 훅을 ProductItemList 컴포넌트에서 mock데이터를 대체
+- [x] useProducts 커스텀 훅을 ProductItemList 컴포넌트에서 mock데이터를 대체
 
 ### step 2 - 상태 관리
 
