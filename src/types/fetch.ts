@@ -21,8 +21,7 @@ export interface ProductPageableOption {
   unpaged: boolean;
 }
 
-export interface ProductResponse {
-  content: Product[];
+interface ProductResponseWithoutContent {
   pageable: ProductPageableOption;
   last: boolean;
   totalPages: number;
@@ -33,4 +32,26 @@ export interface ProductResponse {
   numberOfElements: number;
   size: number;
   empty: boolean;
+}
+
+export interface ProductResponse extends ProductResponseWithoutContent {
+  content: Product[];
+}
+
+export interface Cart {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+}
+
+export interface Carts {
+  id: number;
+  quantity: number;
+  product: Cart;
+}
+
+export interface CartResponse extends ProductResponseWithoutContent {
+  content: Carts[];
 }
