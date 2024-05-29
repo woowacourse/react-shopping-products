@@ -1,32 +1,31 @@
 import styled from 'styled-components';
 
-const roundButtonCSS = `
-display: flex;
-align-items: center;
-justify-content: center;
+const roundButtonCSS = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-width: 59px;
-height: 24px;
-padding: 4px 8px;
-gap: 4px;
-border-radius: 4px;
+  width: 5.9rem;
+  height: 2.4rem;
+  padding: 0.4rem 0.8rem;
+  gap: 0.4rem;
+  border-radius: 0.4rem;
+  box-sizing: border-box;
 
-font-family: Noto Sans;
-font-size: 12px;
-font-weight: 600;
-line-height: 15px;
-text-align: left;
-`;
-export const AddButton = styled.button`
-  ${roundButtonCSS}
-
-  background: #000000;
-  color: #ffffff;
+  font-weight: 600;
+  line-height: 1.5rem;
 `;
 
-export const DeleteButton = styled.button`
-  ${roundButtonCSS}
+export const AddButton = styled(roundButtonCSS)`
+  // ${roundButtonCSS}
 
-  background: #eaeaea;
-  color: #000000;
+  background: var(--black-color-1);
+  color: var(--white-color-1);
+`;
+
+export const DeleteButton = styled(roundButtonCSS)`
+  // ${roundButtonCSS}
+
+  background: var(--gray-color-1);
+  color: var(--black-color-1);
 `;

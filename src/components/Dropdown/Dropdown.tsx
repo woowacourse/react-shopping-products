@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { SortingParam } from '../../types/sort';
+import * as S from './Dropdown.styled';
 
 interface DropdownProps {
   sortings: SortingParam[];
@@ -14,7 +15,7 @@ function Dropdown({ sortings, filter, setSortings, setFilter }: DropdownProps) {
   };
 
   return (
-    <div>
+    <S.DropdownContainer>
       <select
         onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
           setFilter(event.target.value);
@@ -40,7 +41,7 @@ function Dropdown({ sortings, filter, setSortings, setFilter }: DropdownProps) {
         <option value={'asc'}>낮은 가격 순</option>
         <option value={'desc'}>높은 가격 순</option>
       </select>
-    </div>
+    </S.DropdownContainer>
   );
 }
 

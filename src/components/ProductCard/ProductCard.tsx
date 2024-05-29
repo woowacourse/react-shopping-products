@@ -12,10 +12,14 @@ function ProductCard({ product }: ProductCardProps) {
   const { patchToAddCart, patchToRemoveCart } = useContext(CartContext);
 
   return (
-    <div>
+    <S.ProductCardContainer>
       <S.ProductImage src={product.imageUrl} />
-      <div>{product.name}</div>
-      <div>{product.price}</div>
+      
+      <S.InfoWrapper>
+        <S.ProductName>{product.name}</S.ProductName>
+        <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
+      </S.InfoWrapper>
+
       <AddCartButton
         onAddClick={() => {
           patchToAddCart(product.id);
@@ -24,7 +28,7 @@ function ProductCard({ product }: ProductCardProps) {
           patchToRemoveCart(product.id);
         }}
       />
-    </div>
+    </S.ProductCardContainer>
   );
 }
 

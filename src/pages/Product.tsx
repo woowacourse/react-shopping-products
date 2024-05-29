@@ -16,17 +16,21 @@ function Product() {
     useFetchProducts(sortings, filter);
 
   return (
-    <CartContext.Provider value={fetchAddCartState}>
-      <Header />
-      <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
-      <Dropdown
-        sortings={sortings}
-        filter={filter}
-        setSortings={setSortings}
-        setFilter={setFilter}
-      />
-      <ProductList products={products} />
-    </CartContext.Provider>
+    <>
+      <CartContext.Provider value={fetchAddCartState}>
+        <Header />
+        <S.ProductContentWrapper>
+          <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
+          <Dropdown
+            sortings={sortings}
+            filter={filter}
+            setSortings={setSortings}
+            setFilter={setFilter}
+          />
+          <ProductList products={products} />
+        </S.ProductContentWrapper>
+      </CartContext.Provider>
+    </>
   );
 }
 
