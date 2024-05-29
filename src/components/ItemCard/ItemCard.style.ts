@@ -31,11 +31,6 @@ export const ItemInfo = styled.div`
   gap: 8px;
 `;
 
-export const ButtonImg = styled.img`
-  width: 1.6rem;
-  height: 1.6rem;
-`;
-
 export const ItemCardBottom = styled.div`
   width: 100%;
   display: flex;
