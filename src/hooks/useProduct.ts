@@ -10,8 +10,10 @@ interface UseProductsResult {
   page: number;
   category: Option;
   sort: Option;
+  isLast: boolean;
   handleCategory: (category: Option) => void;
   handleSort: (sort: Option) => void;
+  fetchNextPage: () => void;
 }
 
 export default function useProducts(initialCategory: Option, initialSorting: Option): UseProductsResult {
@@ -22,15 +24,18 @@ export default function useProducts(initialCategory: Option, initialSorting: Opt
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
   const [page, setPage] = useState(0);
+  const [isLast, setIsLast] = useState(false);
 
   useEffect(() => {
     getProducts(category, sort);
-  }, [page]);
+  }, [page, category, sort]);
 
   const getProducts = async (category: Option, sort: Option) => {
     try {
-      const data = await fetchProducts(category.key, page, 4, sort.key);
-      setProducts(data);
+      const { data, isLast } = await fetchProducts(category.key, page, 4, sort.key);
+
+      setProducts(page === 0 ? data : [...products, ...data]);
+      setIsLast(isLast);
     } catch (error) {
       setError(error);
     } finally {
@@ -40,20 +45,22 @@ export default function useProducts(initialCategory: Option, initialSorting: Opt
 
   const handleCategory = (category: Option) => {
     setCategory(category);
-    getProducts(category, sort);
+    setPage(0);
   };
 
   const handleSort = (sort: Option) => {
     setSort(sort);
-    getProducts(category, sort);
+    setPage(0);
   };
 
-  //   const fetchNextPage = () => {
-  //     if (page < 21) {
-  //       setPage((prevPage) => prevPage + 1);
-  //       setLoading(true);
-  //     }
-  //   };
+  const fetchNextPage = () => {
+    if (!loading && !isLast) {
+      const pageUnit = page === 0 ? 5 : 1;
 
-  return { products, loading, error, page, category, handleCategory, sort, handleSort };
+      setPage((prevPage) => prevPage + pageUnit);
+      setLoading(true);
+    }
+  };
+
+  return { products, loading, error, page, category, sort, isLast, handleCategory, handleSort, fetchNextPage };
 }

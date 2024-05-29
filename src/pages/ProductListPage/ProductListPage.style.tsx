@@ -58,3 +58,13 @@ export const CartNumber = styled.div`
   font-size: 11px;
   font-weight: 700;
 `;
+
+export const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 40px 0px;
+`;
+
+export const LoadingSpinner = styled.img`
+  width: 40px;
+`;

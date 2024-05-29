@@ -1,7 +1,17 @@
 import apiClient from './apiClient';
 import { Product } from '../types/Product.type';
 
-export const fetchProducts = async (category: string, page: number, size: number, sort: string): Promise<Product[]> => {
+interface ProductApi {
+  data: Product[];
+  isLast: boolean;
+}
+
+export const fetchProducts = async (
+  category: string,
+  page: number,
+  size: number,
+  sort: string,
+): Promise<ProductApi> => {
   const queryParameters = new URLSearchParams({
     page: page.toString(),
     size: (page === 0 ? 20 : size).toString(),
@@ -14,5 +24,7 @@ export const fetchProducts = async (category: string, page: number, size: number
 
   const endpoint = `/products?${queryParameters.toString()}`;
 
-  return apiClient.get({ endpoint }).then((data) => data.content);
+  const data = await apiClient.get({ endpoint });
+
+  return { data: data.content, isLast: data.last };
 };
