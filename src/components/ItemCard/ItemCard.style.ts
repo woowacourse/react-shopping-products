@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 
 export const ItemCardSection = styled.section`
-  width: 18.2rem;
+  width: 100%;
   height: 22.4rem;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding: 8px;
 
   h3 {
     font-size: 1.4rem;
