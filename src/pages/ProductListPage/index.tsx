@@ -1,5 +1,5 @@
 import { fetchProduct } from '@apis/index';
-import { Filtering } from '@appTypes/index';
+import { Filtering, Product } from '@appTypes/index';
 import { Dropdown } from '@components/index';
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@constants/index';
 import { useEffect, useState } from 'react';
@@ -8,12 +8,13 @@ import ProductList from './ProductList';
 import style from './style.module.css';
 
 function ProductListPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [page, setPage] = useState(0);
   const [filtering, setFiltering] = useState<Filtering>({ category: '', sort: 'price,asc' });
 
   const getProducts = async () => {
-    const result = await fetchProduct(filtering);
-
-    return result;
+    const result = await fetchProduct({ filtering, page });
+    setProducts(result.products);
   };
 
   const handleChangeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -24,7 +25,7 @@ function ProductListPage() {
 
   useEffect(() => {
     getProducts();
-  }, [filtering]);
+  }, [filtering, page]);
 
   return (
     <div>

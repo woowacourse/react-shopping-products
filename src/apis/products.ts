@@ -3,11 +3,29 @@ import { fetchWithToken } from '@utils/index';
 
 import { END_POINTS } from './endPoints';
 
-export async function fetchProduct(filtering: Filtering): Promise<{ products: Product[]; isLast: boolean }> {
-  const params = '?' + new URLSearchParams(filtering.category ? { ...filtering } : { sort: filtering.sort });
+interface FetchProductParameter {
+  filtering: Filtering;
+  page?: number;
+}
+
+const getSearchParams = ({ filtering, page }: FetchProductParameter): URLSearchParams => {
+  const searchParams = new URLSearchParams();
+
+  if (filtering.category !== '') {
+    searchParams.append('category', filtering.category);
+  }
+
+  searchParams.append('sort', filtering.sort);
+  searchParams.append('page', String(page));
+
+  return searchParams;
+};
+
+export async function fetchProduct(params: FetchProductParameter): Promise<{ products: Product[]; isLast: boolean }> {
+  const searchParams = '?' + getSearchParams({ ...params, page: params.page ?? 0 }).toString();
 
   const data = await fetchWithToken<ServerResponse<Product[]>>({
-    url: END_POINTS.products + params,
+    url: END_POINTS.products + searchParams,
     method: 'GET',
   });
 
