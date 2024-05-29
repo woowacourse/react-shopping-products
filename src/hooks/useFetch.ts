@@ -14,23 +14,17 @@ const useFetch = <T>(url: string) => {
       return data;
     }
 
-    let ignore = false;
-
     try {
       // setIsLoading(true);
 
       fetchData(url).then((data: T) => {
-        if (!ignore) setData(data);
+        setData(data);
       });
     } catch (error) {
       // setError(error);
     } finally {
       // setIsLoading(false);
     }
-
-    return () => {
-      ignore = true;
-    };
   }, [url]);
 
   return { data };
