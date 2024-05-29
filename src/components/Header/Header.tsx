@@ -1,11 +1,12 @@
 import React from 'react';
-import { LogoIcon } from '../../assets';
+import { CartIcon, LogoIcon } from '../../assets';
 import * as S from './Header.styled';
 
 function Header() {
   return (
     <S.HeaderContainer>
-      <S.HeaderIcon src={LogoIcon} />
+      <S.LogoIcon src={LogoIcon} />
+      <S.CartIcon src={CartIcon} />
     </S.HeaderContainer>
   );
 }
