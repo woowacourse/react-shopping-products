@@ -28,10 +28,11 @@ const getSearchParams = ({ filtering, page }: FetchProductParameter): URLSearchP
 export async function fetchProduct(params: FetchProductParameter): Promise<{ products: Product[]; isLast: boolean }> {
   const searchParams = '?' + getSearchParams({ ...params, page: params.page ?? 0 }).toString();
 
-  const data = await fetchWithToken<ServerResponse<Product[]>>({
+  const data = await fetchWithToken({
     url: END_POINTS.products + searchParams,
     method: 'GET',
   });
+  const result = (await data.json()) as ServerResponse<Product[]>;
 
-  return { products: data.content, isLast: data.last };
+  return { products: result.content, isLast: result.last };
 }

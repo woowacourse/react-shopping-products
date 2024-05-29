@@ -8,20 +8,20 @@ interface FetchWithTokenParameter {
   body?: BodyInit;
 }
 
-export async function fetchWithToken<T>({ url, method, body }: FetchWithTokenParameter): Promise<T> {
+export async function fetchWithToken({ url, method, body }: FetchWithTokenParameter) {
   const token = generateBasicToken(ID, PASSWORD);
   const response = await fetch(url, {
     method,
+
     body,
     headers: {
       Authorization: token,
+      'Content-Type': 'application/json',
     },
   });
 
   if (!response.ok) {
     throw new Error('Failed to fetch data');
   }
-
-  const data = (await response.json()) as T;
-  return data;
+  return response;
 }
