@@ -10,26 +10,20 @@ describe('useFetchAddCart', () => {
     const { result } = renderHook(() => useFetchAddCart());
 
     act(() => {
-      result.current.toggleIsAdded(PRODUCT_ID);
+      result.current.patchToAddCart(PRODUCT_ID);
     });
 
     expect(result.current.cartIdSet.has(PRODUCT_ID)).toBe(true);
   });
 
-  // TODO: 장바구니에서 삭제하는 API 적용하기
-  it('장바구니서 빼는 API를 호출하면 해당 제품의 id는 cartIdSet에 포함되어야 한다.', () => {
+  it('장바구니에서 삭제하는 API를 호출하면 해당 제품의 id는 cartIdSet에서 삭제되어야 한다.', () => {
     const PRODUCT_ID = 3;
     const { result } = renderHook(() => useFetchAddCart());
 
     act(() => {
-      result.current.toggleIsAdded(PRODUCT_ID);
+      result.current.patchToRemoveCart(PRODUCT_ID);
     });
 
-    expect(result.current.cartIdSet.has(PRODUCT_ID)).toBe(true);
-
-    act(() => {
-      result.current.toggleIsAdded(PRODUCT_ID);
-    });
     expect(result.current.cartIdSet.has(PRODUCT_ID)).toBe(false);
   });
 });
