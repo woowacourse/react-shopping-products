@@ -33,7 +33,7 @@ function ProductListPage() {
         <Dropdown label="카테고리" name="category" options={CATEGORY_OPTIONS} onChange={handleChangeOption} />
         <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
-      <ProductList />
+      <ProductList products={products} />
     </div>
   );
 }
