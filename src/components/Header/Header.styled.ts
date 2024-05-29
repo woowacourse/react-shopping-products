@@ -6,7 +6,7 @@ export const StyledHeader = styled.div`
   align-items: center;
   position: fixed;
   top: 0;
-  z-index: 1;
+  z-index: 111;
 
   width: inherit;
   height: 64px;
