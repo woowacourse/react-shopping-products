@@ -1,7 +1,7 @@
 const INITIAL_DATA_LOAD_COUNT = 20;
 const SUBSEQUENT_DATA_LOAD_COUNT = 4;
 
-const CATEGORY = {
+const CATEGORY: Record<string, string> = {
   all: '전체',
   fashion: '의류',
   beverage: '음료',
@@ -11,6 +11,6 @@ const CATEGORY = {
   books: '도서',
 } as const;
 
-export type CategoryType = (typeof CATEGORY)[keyof typeof CATEGORY];
+export type CategoryType = keyof typeof CATEGORY;
 
 export { INITIAL_DATA_LOAD_COUNT, SUBSEQUENT_DATA_LOAD_COUNT, CATEGORY };

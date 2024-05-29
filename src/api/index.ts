@@ -1,3 +1,4 @@
+import { CategoryType } from '../constants';
 import { PRODUCTS_ENDPOINT } from './endpoints';
 
 const USERNAME = import.meta.env.VITE_USERNAME;
@@ -12,9 +13,15 @@ const HEADERS = {
   'Content-Type': 'application/json',
 };
 
-export async function fetchProducts(page: number, limit: number) {
+export async function fetchProducts(
+  page: number,
+  limit: number,
+  category: CategoryType,
+) {
+  const categoryQuery = category === 'all' ? '' : `category=${category}`;
+
   const response = await fetch(
-    `${PRODUCTS_ENDPOINT}?page=${page}&size=${limit}`,
+    `${PRODUCTS_ENDPOINT}?${categoryQuery}&page=${page}&size=${limit}`,
 
     {
       method: 'GET',

@@ -8,7 +8,7 @@ import useProducts from '../hooks/useProducts';
 import { Container, Title } from './ProductPage.style';
 
 function ProductPage() {
-  const { products, fetchNextPage, loading } = useProducts();
+  const { products, fetchNextPage, loading, changeCategory } = useProducts();
   const { lastProductElementRef } = useInfinityScroll(fetchNextPage);
 
   return (
@@ -16,8 +16,10 @@ function ProductPage() {
       <Header />
       <Title>상품 목록</Title>
       <Dropdown
-        onChange={() => {}}
-        options={Object.values(CATEGORY)}
+        onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+          changeCategory(e.target.value);
+        }}
+        options={Object.entries(CATEGORY)}
       ></Dropdown>
       <ItemList>
         {products.map((product) => {
