@@ -33,9 +33,14 @@ function ProductPage() {
           return <ItemCard key={product.id} {...product} />;
         })}
       </ItemList>
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
+      )}
       {!loading && (
-        <div ref={lastProductElementRef} style={{ height: '10px' }}></div>
+        <div
+          ref={lastProductElementRef}
+          style={{ height: '30px', fontSize: '5rem' }}
+        ></div>
       )}
     </Container>
   );
