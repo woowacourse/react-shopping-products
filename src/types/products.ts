@@ -16,5 +16,3 @@ export interface ResponseProduct {
   content: Product[];
   last: boolean;
 }
-
-export type Category = "fashion" | "fitness" | "eletronics" | "kitchen" | "beverage" | "books";
