@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+
 import { fetchProducts } from '../api/products';
+
 import { Product } from '../types/product';
 import {
   FIRST_PAGE,
@@ -9,7 +11,8 @@ import {
 } from '../constants/pagination';
 
 export default function useProducts() {
-  const [page, setPage] = useState(FIRST_PAGE);
+  const [page, setPage] = useState(0);
+  const [category, setCategory] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
@@ -20,9 +23,10 @@ export default function useProducts() {
       try {
         setLoading(true);
         const size = page === FIRST_PAGE ? FIRST_PAGE_SIZE : SIZE_PER_PAGE;
-        const data = await fetchProducts(page, size);
+        const data = await fetchProducts(page, size, category);
 
         if (data.last) setIsLastPage(true);
+
         setProducts((prevProducts) => [...prevProducts, ...data.content]);
       } catch (error) {
         setPage((prevPage) =>
@@ -35,7 +39,14 @@ export default function useProducts() {
     };
 
     if (!isLastPage && !error) getProducts();
-  }, [page]);
+  }, [page, category]);
+
+  const filterByCategory = (selectedCategory: string) => {
+    setPage(0);
+    setProducts([]);
+    setIsLastPage(false);
+    setCategory(selectedCategory);
+  };
 
   const fetchNextPage = () => {
     if (!isLastPage)
@@ -44,5 +55,5 @@ export default function useProducts() {
       );
   };
 
-  return { products, loading, error, page, fetchNextPage };
+  return { products, loading, error, page, fetchNextPage, filterByCategory };
 }
