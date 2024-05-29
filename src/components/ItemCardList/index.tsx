@@ -6,7 +6,7 @@ import { Product } from "@/types/products";
 const ItemCardList = ({ products }: { products: Product[] }) => {
   return (
     <ItemCardWrapper>
-      {products && products.map((product) => <ItemCard key={product.id} product={product} />)}
+      {products && products.map((product) => <ItemCard key={Math.random() * 1000} product={product} />)}
     </ItemCardWrapper>
   );
 };
