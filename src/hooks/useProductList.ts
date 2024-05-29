@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { fetchProductList, SortOption } from "../api/products";
+import { fetchProductList, SortOption } from "../apis/products";
 import { PRODUCT_LIST } from "../constants/productList";
 import { Category, Product } from "../interfaces/Product";
 
 interface UseProductListResult {
   productList: Product[];
-  loading: boolean;
-  error: unknown;
+  productListLoading: boolean;
+  productListError: unknown;
   page: number;
   fetchNextPage: () => void;
 }
@@ -17,15 +17,15 @@ export default function useProductList(
   sortOptionList?: SortOption[]
 ): UseProductListResult {
   const [productList, setProductList] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<unknown>(null);
+  const [productListLoading, setProductListLoading] = useState<boolean>(true);
+  const [productListError, setproductListError] = useState<unknown>(null);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
     const getProductList = async () => {
       try {
-        setLoading(true);
+        setProductListLoading(true);
         const data = await fetchProductList(
           page,
           page === 0
@@ -39,10 +39,10 @@ export default function useProductList(
           ...data.content,
         ]);
         setIsLastPage(data.last);
-      } catch (error) {
-        setError(error);
+      } catch (productListError) {
+        setproductListError(productListError);
       } finally {
-        setLoading(false);
+        setProductListLoading(false);
       }
     };
     getProductList();
@@ -59,5 +59,11 @@ export default function useProductList(
     }
   };
 
-  return { productList, loading, error, page, fetchNextPage };
+  return {
+    productList,
+    productListLoading,
+    productListError,
+    page,
+    fetchNextPage,
+  };
 }

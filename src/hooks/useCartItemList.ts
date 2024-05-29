@@ -4,14 +4,14 @@ import {
   requestAddCartItem,
   requestDeleteCartItem,
   requestFetchCartItemList,
-} from "../api/carItems";
+} from "../apis/carItems";
 import { CartItem } from "../interfaces/CartItem";
 import { Product } from "../interfaces/Product";
 
 interface UseCartItemListResult {
   cartItemList: CartItem[];
-  loading: boolean;
-  error: unknown;
+  cartItemListLoading: boolean;
+  cartItemListError: unknown;
   quantity: number;
   isInCart: (productId: number) => boolean;
   addCartItem: (product: Product) => Promise<void>;
@@ -21,8 +21,8 @@ interface UseCartItemListResult {
 
 export default function useCartItemList(): UseCartItemListResult {
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<unknown>(null);
+  const [cartItemListLoading, setCartItemListLoading] = useState<boolean>(true);
+  const [cartItemListError, setCartItemListError] = useState<unknown>(null);
 
   const quantity = cartItemList.length;
 
@@ -44,9 +44,9 @@ export default function useCartItemList(): UseCartItemListResult {
     try {
       await requestAddCartItem(product.id, 1);
     } catch (error) {
-      setError(error);
+      setCartItemListError(error);
     } finally {
-      setLoading(false);
+      setCartItemListLoading(false);
     }
   };
 
@@ -61,9 +61,9 @@ export default function useCartItemList(): UseCartItemListResult {
     try {
       await requestDeleteCartItem(target?.id);
     } catch (error) {
-      setError(error);
+      setCartItemListError(error);
     } finally {
-      setLoading(false);
+      setCartItemListLoading(false);
     }
   };
 
@@ -76,13 +76,13 @@ export default function useCartItemList(): UseCartItemListResult {
   useEffect(() => {
     const getCartItemList = async () => {
       try {
-        setLoading(true);
+        setCartItemListLoading(true);
         const data = await requestFetchCartItemList();
         setCartItemList(data.content);
       } catch (error) {
-        setError(error);
+        setCartItemListError(error);
       } finally {
-        setLoading(false);
+        setCartItemListLoading(false);
       }
     };
     getCartItemList();
@@ -90,8 +90,8 @@ export default function useCartItemList(): UseCartItemListResult {
 
   return {
     cartItemList,
-    loading,
-    error,
+    cartItemListLoading,
+    cartItemListError,
     quantity,
     isInCart,
     addCartItem,

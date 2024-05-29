@@ -3,7 +3,7 @@ import { act } from "react";
 
 import { renderHook, waitFor } from "@testing-library/react";
 
-import { PRODUCTS_ENDPOINT } from "../api/config";
+import { PRODUCTS_ENDPOINT } from "../apis/config";
 import expectedDefaultParamsData from "../mocks/handlers/productList/expectedDefaultParamsData.json";
 import expectedFitnessPriceDescData from "../mocks/handlers/productList/expectedFitnessPriceDescData.json";
 import { server } from "../mocks/server";
@@ -21,7 +21,7 @@ describe("useProductList", () => {
     it("상품 목록 조회 중 로딩 상태", () => {
       const { result } = renderHook(() => useProductList());
 
-      expect(result.current.loading).toBe(true);
+      expect(result.current.productListLoading).toBe(true);
     });
 
     it("상품 목록 조회 중 에러 상태", async () => {
@@ -35,8 +35,8 @@ describe("useProductList", () => {
 
       await waitFor(() => {
         expect(result.current.productList).toEqual([]);
-        expect(result.current.loading).toBe(false);
-        expect(result.current.error).toBeTruthy();
+        expect(result.current.productListLoading).toBe(false);
+        expect(result.current.productListError).toBeTruthy();
       });
     });
   });
@@ -106,17 +106,17 @@ describe("useProductList", () => {
       const { result } = renderHook(() => useProductList());
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.productListLoading).toBe(false);
       });
 
       act(() => {
         result.current.fetchNextPage();
       });
 
-      expect(result.current.loading).toBe(true);
+      expect(result.current.productListLoading).toBe(true);
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.productListLoading).toBe(false);
       });
     });
   });
