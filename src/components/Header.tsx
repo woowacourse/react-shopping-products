@@ -16,7 +16,7 @@ const S = {
     display: flex;
     align-items: center;
     height: 64px;
-    padding: 0 24px;
+    padding: 0 20px;
     background-color: ${theme.color.black};
     color: ${theme.color.white};
     font-weight: ${theme.fontWeight.extraBold};

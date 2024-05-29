@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
 export const WhiteSpace = css`
-  padding-right: 16px;
-  padding-left: 16px;
+  padding-right: 20px;
+  padding-left: 20px;
   box-sizing: border-box;
 `;
 
