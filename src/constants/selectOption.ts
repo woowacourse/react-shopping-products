@@ -1,17 +1,18 @@
-export enum CATEGORY {
-  "all" = "전체",
-  "fashion" = "패션",
-  "fitness" = "건강",
-  "eletronics" = "전자제품",
-  "kitchen" = "주방",
-  "beverage" = "음료",
-  "books" = "도서",
-}
+export const CATEGORY = {
+  전체: "all",
+  패션: "fashion",
+  건강: "fitness",
+  전자제품: "electronics",
+  주방: "kitchen",
+  음료: "beverage",
+  도서: "books",
+};
+
 export type Category = keyof typeof CATEGORY;
 
-export enum SORT {
-  "priceAsc" = "낮은 가격순",
-  "priceDesc" = "높은 가격순",
-}
+export const SORT = {
+  "낮은 가격순": "asc",
+  "높은 가격순": "desc",
+};
 
 export type Sort = keyof typeof SORT;
