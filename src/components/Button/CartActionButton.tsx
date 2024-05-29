@@ -1,6 +1,6 @@
+import { MinusShoppingCartIcon, PlusShoppingCartIcon } from "../../assets";
 import { BaseButton } from "./BaseButton";
 import { StyledActionImg, StyledActionTitle, StyledContainer } from "./CartActionButton.styled";
-import { MinusShoppingCartIcon, PlusShoppingCartIcon } from "../../assets";
 
 export type CartActionButtonType = {
   actionType: "add" | "abstract";

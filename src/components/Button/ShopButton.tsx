@@ -1,5 +1,5 @@
-import { BaseButton } from './BaseButton';
-import { StyledShopButton } from './ShopButton.styled';
+import { BaseButton } from "./BaseButton";
+import { StyledShopButton } from "./ShopButton.styled";
 
 export const ShopButton = ({ onClick }: { onClick: () => void }) => {
   return (

@@ -1,6 +1,6 @@
-import { ShopButton } from '../Button';
-import { CartButton } from '../Button/CartButton';
-import { StyledHeader } from './Header.styled';
+import { ShopButton } from "../Button";
+import { CartButton } from "../Button/CartButton";
+import { StyledHeader } from "./Header.styled";
 
 export const Header = () => {
   return (
