@@ -13,11 +13,15 @@ function ProductItem({ product }: ProductItemProps) {
   return (
     <S.ProductItem>
       <S.ProductImage src={product.imageUrl} alt={product.name} />
+      <S.ProductDescription>
       <ProductItemTitle title={product.name} price={product.price} />
+      <S.ToggleCartItemButtonWrapper>
       <ToggleCartItemButton
         isInCart={isInCart(product.id)}
         onClick={() => toggleCartItem(product)}
       />
+      </S.ToggleCartItemButtonWrapper>
+      </S.ProductDescription>
     </S.ProductItem>
   );
 }
