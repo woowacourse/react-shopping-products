@@ -1,20 +1,30 @@
 import { forwardRef, useState } from "react";
 import * as PI from "./ProductItem.style";
 import CartControlButton from "../../Button/CartControlButton";
-import { postProductInCart } from "../../../api";
+import { deleteProductInCart, postProductInCart } from "../../../api";
 
 interface ProductProps {
   product: Product;
-  initialIsInCart: boolean;
+  cartItems: CartItem[];
 }
 
 const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
-  ({ product, initialIsInCart }, ref) => {
+  ({ product, cartItems }, ref) => {
+    const cartItemIds = cartItems.map((item) => item.product.id);
+    const initialIsInCart = cartItemIds.includes(product.id);
     const [isInCart, setIsInCart] = useState(initialIsInCart);
 
-    const handleIsInCart = () => {
-      setIsInCart(!isInCart);
-      postProductInCart(product.id);
+    const handleIsInCart = async () => {
+      if (isInCart) {
+        setIsInCart(!isInCart);
+        const filtered = cartItems.filter(
+          (item) => item.product.id === product.id
+        );
+        deleteProductInCart(filtered[0].id);
+      } else {
+        setIsInCart(!isInCart);
+        postProductInCart(product.id);
+      }
     };
 
     return (

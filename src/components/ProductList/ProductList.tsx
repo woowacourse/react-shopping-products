@@ -9,17 +9,16 @@ const ProductList = () => {
   const { products, lastProductElementRef, handleCategory, handleSort } =
     useProducts();
 
-  const [cartItemIds, setCartItemIds] = useState<number[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   useEffect(() => {
     const fetchCartItems = async () => {
-      const fetchCartItems = await getCartItems();
-
-      const cartItemIds = fetchCartItems.map((item) => item.product.id);
-      setCartItemIds(cartItemIds);
+      const cartItems = await getCartItems();
+      setCartItems(cartItems);
     };
 
     fetchCartItems();
   }, []);
+
   return (
     <>
       <ProductListHeader
@@ -30,7 +29,7 @@ const ProductList = () => {
         {products.map((item, index) => {
           return (
             <ProductItem
-              initialIsInCart={cartItemIds.includes(item.id)}
+              cartItems={cartItems}
               product={item}
               key={item.id}
               ref={index === products.length - 1 ? lastProductElementRef : null}
