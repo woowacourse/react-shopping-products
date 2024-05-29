@@ -1,15 +1,36 @@
+import { FILTER_CATEGORIES, SORT_PRICE } from "../../constants/rules";
 import * as PLH from "./ProductListHeader.style";
 
-const ProductListHeader = () => {
+interface ProductListHeaderProps {
+  handleCategory: (category: Category | "all") => void;
+  handleSort: (sort: Sort) => void;
+}
+
+const ProductListHeader = ({
+  handleCategory,
+  handleSort,
+}: ProductListHeaderProps) => {
   return (
     <PLH.Header>
       <h2>bpple 상품 목록</h2>
       <PLH.SelectBoxGroup>
-        <PLH.SelectBox name="" id="">
-          <option value="">전체</option>
+        <PLH.SelectBox
+          name=""
+          id=""
+          onChange={(e) => handleCategory(e.target.value as Category | "all")}
+        >
+          {Object.entries(FILTER_CATEGORIES).map(([key, value]) => (
+            <option value={key}>{value}</option>
+          ))}
         </PLH.SelectBox>
-        <PLH.SelectBox name="" id="">
-          <option value="">낮은 가격순</option>
+        <PLH.SelectBox
+          name=""
+          id=""
+          onChange={(e) => handleSort(e.target.value as Sort)}
+        >
+          {Object.entries(SORT_PRICE).map(([key, value]) => (
+            <option value={key}>{value}</option>
+          ))}
         </PLH.SelectBox>
       </PLH.SelectBoxGroup>
     </PLH.Header>

@@ -6,6 +6,8 @@ interface UseProductsResult {
   hasMore: boolean;
   loadMore: () => void;
   lastProductElementRef: (node: HTMLDivElement) => void;
+  handleCategory: (category: Category | "all") => void;
+  handleSort: (sort: Sort) => void;
 }
 
 export default function useProducts(): UseProductsResult {
@@ -13,6 +15,8 @@ export default function useProducts(): UseProductsResult {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const isMounted = useRef(false);
+  const [category, setCategory] = useState<Category | "all">("all");
+  const [sort, setSort] = useState<Sort>("asc");
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastProductElementRef = useCallback(
@@ -33,7 +37,12 @@ export default function useProducts(): UseProductsResult {
       const fetchProducts = async () => {
         try {
           const size = page === 1 ? 20 : 4;
-          const responseData = await getProducts({ page, size });
+          const responseData = await getProducts({
+            category: category === "all" ? undefined : category,
+            sort,
+            page,
+            size,
+          });
           setProducts((prevProducts) => [
             ...prevProducts,
             ...responseData.content,
@@ -50,12 +59,26 @@ export default function useProducts(): UseProductsResult {
     } else {
       isMounted.current = true;
     }
-  }, [page]);
+  }, [page, category, sort]);
+
+  const handleCategory = (category: Category | "all") => {
+    setProducts([]);
+    setCategory(category);
+    setPage(1);
+  };
+
+  const handleSort = (sort: Sort) => {
+    setProducts([]);
+    setSort(sort);
+    setPage(1);
+  };
 
   return {
     products,
     loadMore: () => setPage((prevPage) => prevPage + 1),
     hasMore,
     lastProductElementRef,
+    handleCategory,
+    handleSort,
   };
 }
