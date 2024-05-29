@@ -4,6 +4,7 @@
 
 - [x] 선택된 상품 ID 목록 상태
 - [x] 장바구니 담긴 상품 갯수 상태
+- [x] SelectBar category, sort 조건 상태
 
 ### step 1 - ProductListPage UI 작업
 

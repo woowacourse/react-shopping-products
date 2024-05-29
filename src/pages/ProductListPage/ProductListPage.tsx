@@ -7,9 +7,18 @@ import styles from './ProductListPage.module.css';
 
 const ProductListPage = () => {
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [selectBarCondition, setSelectBarCondition] = useState({
+    category: 'all',
+    sort: '낮은 가격순',
+  });
 
   const handleCount = (cartItemCount: number) => {
     setCartItemCount(cartItemCount);
+  };
+
+  const handleSelectBarCondition = (filter: string, condition: string) => {
+    const newCondition = { ...selectBarCondition, [filter]: condition };
+    setSelectBarCondition(newCondition);
   };
 
   return (
@@ -17,7 +26,7 @@ const ProductListPage = () => {
       <ProductListHeader cartItemCount={cartItemCount} />
       <div className={styles.productContentContainer}>
         <ProductListTitle />
-        <ProductListSelectBar />
+        <ProductListSelectBar handleSelectBarCondition={handleSelectBarCondition} />
         <ProductItemList handleCount={handleCount} />
       </div>
     </div>

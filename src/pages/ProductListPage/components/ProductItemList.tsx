@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductItem from './ProductItem';
 import styles from '../ProductListPage.module.css';
 
@@ -168,7 +168,9 @@ interface Props {
 const ProductItemList = ({ handleCount }: Props) => {
   const [selectedItems, setSelectedItems] = useState(new Set());
 
-  handleCount(selectedItems.size);
+  useEffect(() => {
+    handleCount(selectedItems.size);
+  }, [selectedItems, handleCount]);
 
   const handleSelect = (itemId: number) => {
     setSelectedItems((prev) => {
@@ -187,6 +189,7 @@ const ProductItemList = ({ handleCount }: Props) => {
       {mock.map((item) => {
         return (
           <ProductItem
+            key={`item-${item.id}`}
             item={item}
             isSelected={selectedItems.has(item.id)}
             onSelect={() => {

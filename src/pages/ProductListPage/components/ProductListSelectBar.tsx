@@ -2,15 +2,25 @@ import Select from '../../../components/Select/Select';
 import { productCategories, sortOptions } from '../../../constant/products';
 import styles from '../ProductListPage.module.css';
 
-const ProductListSelectBar = () => {
+interface Props {
+  handleSelectBarCondition: (filter: string, condition: string) => void;
+}
+
+const ProductListSelectBar = ({ handleSelectBarCondition }: Props) => {
   return (
     <div className={styles.productSelectContainer}>
-      <Select options={productCategories} defaultValue={'all'}>
-        <option key="all" value="all">
-          전체
-        </option>
-      </Select>
-      <Select options={sortOptions} defaultValue={'낮은 가격순'} />
+      <Select
+        options={productCategories}
+        defaultValue={Object.keys(productCategories)[0]}
+        onChange={(e) => {
+          handleSelectBarCondition('category', e.target.value);
+        }}
+      ></Select>
+      <Select
+        options={sortOptions}
+        defaultValue={Object.keys(sortOptions)[0]}
+        onChange={(e) => handleSelectBarCondition('sort', e.target.value)}
+      />
     </div>
   );
 };
