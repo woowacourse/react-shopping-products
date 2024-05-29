@@ -9,6 +9,12 @@ export const HeaderLogoButton = () => {
   };
 
   return (
-    <ImgButton className={css.logoButton} alt={'cart'} src={assets.logo} type={'button'} onClick={handleOnClick} />
+    <ImgButton
+      className={css.headerLogoButton}
+      alt={'cart'}
+      src={assets.logo}
+      type={'button'}
+      onClick={handleOnClick}
+    />
   );
 };
