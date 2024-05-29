@@ -39,3 +39,17 @@ export async function fetchProducts(
   const data = await response.json();
   return data;
 }
+export const fetchShoppingCartQuantity = async () => {
+  const response = await fetch(CART_ITEMS_COUNT_ENDPOINT, {
+    method: 'GET',
+    headers: HEADERS,
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch Items');
+  }
+
+  const data = await response.json();
+  console.log(data);
+  return data.quantity;
+};
