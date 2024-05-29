@@ -23,7 +23,7 @@ export const fetchWithToken = async ({
   const response = await fetch(url, {
     method,
     headers: {
-      Authentication: token,
+      Authorization: token,
       ...headers,
     },
     body,
@@ -33,7 +33,10 @@ export const fetchWithToken = async ({
     throw new Error(errorMessage);
   }
 
-  const data = await response.json();
+  if (method !== "GET") {
+    return response;
+  }
 
+  const data = await response.json();
   return data;
 };
