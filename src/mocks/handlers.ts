@@ -1,7 +1,33 @@
+import { CART_ITEMS_ENDPOINT, PRODUCTS_ENDPOINT } from "../api/endPoint";
+import { CartItem, isValidCartItemRequestBody } from "../types/cartItems";
 import { HttpResponse, http } from "msw";
 
-import { PRODUCTS_ENDPOINT } from "../api/endPoint";
+import cartItemMockData from "./cartItems.json";
 import productsMockData from "./products.json";
+
+function CartMockClosure() {
+  let cartMockData = cartItemMockData.content;
+
+  const getCartMockData = () => {
+    return cartMockData;
+  };
+
+  const pushCartItem = (mockCartItem: CartItem) => {
+    cartMockData = [...cartMockData, mockCartItem];
+  };
+
+  const deleteCartItem = (id: number) => {
+    cartMockData = cartMockData.filter((el) => el.id !== id);
+  };
+
+  const resetCartItems = () => {
+    cartMockData = cartItemMockData.content;
+  };
+
+  return { getCartMockData, pushCartItem, deleteCartItem, resetCartItems };
+}
+
+export const cartMockClosure = CartMockClosure();
 
 export const handlers = [
   http.get(PRODUCTS_ENDPOINT, ({ request }) => {
@@ -17,5 +43,34 @@ export const handlers = [
     const last = page === 23;
 
     return HttpResponse.json({ content: paginatedProducts, last });
+  }),
+
+  http.get(CART_ITEMS_ENDPOINT, () =>
+    HttpResponse.json(cartMockClosure.getCartMockData())
+  ),
+
+  http.post(CART_ITEMS_ENDPOINT, async ({ request }) => {
+    const body = await request.json();
+
+    if (!isValidCartItemRequestBody(body)) {
+      throw new Error(
+        "body로 주어진 값이 { productId, quantity} 형식이 아닙니다."
+      );
+    }
+
+    cartMockClosure.pushCartItem(body);
+    return HttpResponse.json({ status: 201 });
+  }),
+
+  http.delete(`${CART_ITEMS_ENDPOINT}/:id`, ({ params }) => {
+    const { id } = params;
+    const numberId = Number(id);
+
+    if (Number.isNaN(numberId)) {
+      throw new Error(`값이 숫자가 아닙니다.`);
+    }
+
+    cartMockClosure.deleteCartItem(numberId);
+    return HttpResponse.json({ status: 204 });
   }),
 ];
