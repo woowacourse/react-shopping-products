@@ -74,11 +74,11 @@
 
 - usePagination 커스텀 훅 구현
 
-> **페이지 상태 관리 책임을 가지는 커스텀 훅**
+> **페이지 상태 관리 책임을 가지는 커스텀 훅** ✅
 
-- [page, setPage]
-- [isLastPage, setIsLastPage]
-- setNextPage : () ⇒ void
+- 페이지 상태
+- 마지막 페이지 상태
+- 다음 페이지 이동 함수
 
 - [ ] MSW를 이용하여 /products API를 모킹하고 상품 목록 데이터를 가져온다.
 
