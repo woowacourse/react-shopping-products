@@ -4,8 +4,8 @@ import { act } from "react";
 import { renderHook, waitFor } from "@testing-library/react";
 
 import { PRODUCTS_ENDPOINT } from "../api/config";
-import expectedDefaultParamsData from "../mocks/productListData/expectedDefaultParamsData.json";
-import expectedFitnessPriceDescData from "../mocks/productListData/expectedFitnessPriceDescData.json";
+import expectedDefaultParamsData from "../mocks/handlers/productList/expectedDefaultParamsData.json";
+import expectedFitnessPriceDescData from "../mocks/handlers/productList/expectedFitnessPriceDescData.json";
 import { server } from "../mocks/server";
 import useProductList from "./useProductList";
 
