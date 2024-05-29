@@ -5,14 +5,17 @@ import { CartItems } from "@/types/products";
 import SERVER_URL from "@/config/serverUrl";
 
 export const getCartItems = async (): Promise<CartItems[]> => {
-  const response = await fetch(SERVER_URL.apiUrl + END_POINT.cartItems);
+  const response = await fetch(SERVER_URL.apiUrl + END_POINT.cartItems, {
+    method: "get",
+    headers: { Authorization: basicToken },
+  });
 
   if (!response.ok) {
-    throw new Error(ERROR_MESSAGES.failPostCartItem);
+    throw new Error(ERROR_MESSAGES.failGetCartItems);
   }
 
   const data = await response.json();
-  return data;
+  return data.content;
 };
 
 export async function postCartItem({
@@ -35,11 +38,10 @@ export async function postCartItem({
   return response;
 }
 
-export async function deleteCartItem({ productId }: { productId: number }): Promise<Response> {
-  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}`, {
+export async function deleteCartItem({ itemId }: { itemId: number }): Promise<Response> {
+  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${itemId}`, {
     method: "DELETE",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
-    body: JSON.stringify({ productId }),
   });
 
   if (!response.ok) {

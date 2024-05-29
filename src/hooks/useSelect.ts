@@ -5,7 +5,8 @@ const useSelect = <T>(initialSelected: T) => {
   const [selected, setSelected] = useState<T>(initialSelected);
 
   const handleDropdown: MouseEventHandler<HTMLUListElement> = () => {
-    setIsDropdown((prevState) => !prevState);
+    if (isDropdown) return setIsDropdown(false);
+    setIsDropdown(true);
   };
 
   const handleSelected: MouseEventHandler<HTMLLIElement> = (e) => {
