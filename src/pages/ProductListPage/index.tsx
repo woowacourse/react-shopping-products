@@ -2,6 +2,7 @@ import { fetchProduct } from '@apis/index';
 import { Filtering, Product } from '@appTypes/index';
 import { Dropdown, IntersectionObserverArea } from '@components/index';
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@constants/index';
+import useFetch from '@hooks/useFetch';
 import { useEffect, useRef, useState } from 'react';
 
 import ProductList from './ProductList';
@@ -12,42 +13,33 @@ function ProductListPage() {
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
   const [filtering, setFiltering] = useState<Filtering>({ category: '', sort: 'price,asc' });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const targetRef = useRef<HTMLDivElement | null>(null);
+
+  const { fetch, loading, error } = useFetch<typeof fetchProduct>(fetchProduct);
+
   // TODO : 반복된느 로직 훅으로 빼기
   /**
    * 무한 스크롤 시 상품 목록을 추가해서 넣어주는 기능
    */
   const getStackedProducts = async () => {
-    try {
-      setLoading(true);
-      const result = await fetchProduct({ filtering, page });
-      setIsLastPage(result.isLast);
-      setProducts((prev) => [...prev, ...result.products]);
-      setPage((prev) => prev + 1);
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+    const result = await fetch({ filtering, page });
+
+    if (result === undefined) return;
+    setIsLastPage(result.isLast);
+    setProducts((prev) => [...prev, ...result.products]);
+    setPage((prev) => prev + 1);
   };
 
   /**
    * 필터링이 변했을 때 상품 목록을 가져오는 기능
    */
   const getFilteredProducts = async () => {
-    try {
-      setLoading(true);
-      const result = await fetchProduct({ filtering });
-      setIsLastPage(result.isLast);
-      setPage(0);
-      setProducts(result.products);
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+    const result = await fetch({ filtering });
+    if (result === undefined) return;
+
+    setIsLastPage(result.isLast);
+    setPage(0);
+    setProducts(result.products);
   };
 
   const observerCallback = (entries: IntersectionObserverEntry[]) => {
