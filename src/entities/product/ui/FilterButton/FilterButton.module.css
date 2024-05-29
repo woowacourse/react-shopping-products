@@ -1,0 +1,10 @@
+.filterButton {
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  width: 125px;
+  height: 36px;
+  background-color: white;
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+}
