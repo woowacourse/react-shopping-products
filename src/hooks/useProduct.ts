@@ -8,11 +8,10 @@ import useFetcher from './useFetcher';
 interface UseProductsResult {
   products: Product[];
   loading: boolean;
-  error: unknown;
+  isAvailable: boolean;
   page: number;
   category: Option;
   sort: Option;
-  isLast: boolean;
   handleCategory: (category: Option) => void;
   handleSort: (sort: Option) => void;
   handlePage: () => void;
@@ -27,7 +26,7 @@ export default function useProducts(initialCategory: Option, initialSorting: Opt
   const { loading, error, fetcher } = useFetcher();
 
   useEffect(() => {
-    fetcher(() => getProducts(category, sort));
+    fetcher(handleProducts);
   }, [page, category, sort]);
 
   const getProducts = async (category: Option, sort: Option) => {
@@ -35,6 +34,8 @@ export default function useProducts(initialCategory: Option, initialSorting: Opt
     setProducts(page === 0 ? data : [...products, ...data]);
     setIsLast(isLast);
   };
+
+  const handleProducts = () => getProducts(category, sort);
 
   const handleCategory = (category: Option) => {
     setCategory(category);
@@ -48,5 +49,15 @@ export default function useProducts(initialCategory: Option, initialSorting: Opt
 
   const handlePage = () => moveNextPage(loading, isLast);
 
-  return { products, loading, error, page, category, sort, isLast, handleCategory, handleSort, handlePage };
+  return {
+    products,
+    loading,
+    isAvailable: !isLast && !error,
+    page,
+    category,
+    sort,
+    handleCategory,
+    handleSort,
+    handlePage,
+  };
 }

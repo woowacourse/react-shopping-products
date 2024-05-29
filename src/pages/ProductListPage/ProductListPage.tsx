@@ -12,7 +12,7 @@ import Loading from '../../assets/loading.gif';
 import EmptyCart from '../../assets/EmptyCart.png';
 
 const ProductListPage = () => {
-  const { products, category, sort, loading, error, isLast, handleCategory, handleSort, handlePage } = useProducts(
+  const { products, category, sort, loading, isAvailable, handleCategory, handleSort, handlePage } = useProducts(
     CATEGORY_LIST[0],
     SORTING_LIST[0],
   );
@@ -51,7 +51,7 @@ const ProductListPage = () => {
             <p>표시할 상품이 없습니다.</p>
           </S.EmptyProductContainer>
         )}
-        {!isLast && !error && (
+        {isAvailable && (
           <S.LoadingWrapper ref={targetRef}>
             {loading && <S.LoadingSpinner src={Loading} alt="로딩 스피너" />}
           </S.LoadingWrapper>
