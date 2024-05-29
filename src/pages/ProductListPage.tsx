@@ -6,18 +6,27 @@ import SelectBox from "@/components/SelectBox";
 import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
 import ItemCardList from "@/components/ItemCardList";
 import useSelect from "@/hooks/useSelect";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import useProducts from "@/hooks/useProducts";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 
 const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
   const useSortSelect = useSelect<Sort>("낮은 가격순");
 
-  const { products, fetchFirstPage } = useProducts();
+  const { products, fetchNextPage, currentPage } = useProducts();
+  const ref = useRef<HTMLDivElement>(null);
+
+  const { isIntersecting } = useInfiniteScroll({ threshold: 0.25, rootMargin: "80px" }, ref);
+
+  const category = useCategorySelect.selected;
+  const sort = useSortSelect.selected;
 
   useEffect(() => {
-    fetchFirstPage(useCategorySelect.selected, 0, useSortSelect.selected);
-  }, [useCategorySelect.selected, useSortSelect.selected]);
+    if (isIntersecting) {
+      fetchNextPage(category, currentPage, sort);
+    }
+  }, [isIntersecting]);
 
   return (
     <>
@@ -35,6 +44,7 @@ const ProductListPage = () => {
         </ItemInfoWrapper>
         <ItemCardList products={products} />
       </Wrapper>
+      <div ref={ref}></div>
     </>
   );
 };
