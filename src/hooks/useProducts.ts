@@ -6,6 +6,8 @@ import {
   INITIAL_DATA_LOAD_COUNT,
   SUBSEQUENT_DATA_LOAD_COUNT,
   CATEGORY,
+  SORT,
+  SortType,
 } from '../constants';
 
 interface Product {
@@ -23,6 +25,7 @@ interface UseProductsResult {
   page: number;
   fetchNextPage: () => void;
   changeCategory: (dropboxOption: string) => void;
+  changeSorting: (dropboxOption: string) => void;
 }
 
 export default function useProducts(): UseProductsResult {
@@ -32,10 +35,19 @@ export default function useProducts(): UseProductsResult {
   const [page, setPage] = useState(1);
   const [isLast, setIsLast] = useState(false);
   const [category, setCategory] = useState<CategoryType>('all');
+  const [sorting, setSorting] = useState<SortType>('priceAsc');
 
   const changeCategory = (category: string) => {
     if (Object.keys(CATEGORY).includes(category)) {
       setCategory(category as CategoryType);
+      setProducts([]);
+      setPage(1);
+    }
+  };
+
+  const changeSorting = (sort: string) => {
+    if (Object.keys(SORT).includes(sort)) {
+      setSorting(sort as SortType);
       setProducts([]);
       setPage(1);
     }
@@ -47,7 +59,7 @@ export default function useProducts(): UseProductsResult {
       try {
         const limit =
           page === 1 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
-        const data = await fetchProducts(page - 1, limit, category);
+        const data = await fetchProducts(page - 1, limit, category, sorting);
         if (data.last) {
           setIsLast(true);
         }
@@ -69,5 +81,13 @@ export default function useProducts(): UseProductsResult {
     });
   };
 
-  return { products, loading, error, page, fetchNextPage, changeCategory };
+  return {
+    products,
+    loading,
+    error,
+    page,
+    fetchNextPage,
+    changeCategory,
+    changeSorting,
+  };
 }

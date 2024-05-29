@@ -1,4 +1,4 @@
-import { CategoryType } from '../constants';
+import { CategoryType, SortType } from '../constants';
 import { PRODUCTS_ENDPOINT } from './endpoints';
 
 const USERNAME = import.meta.env.VITE_USERNAME;
@@ -17,11 +17,14 @@ export async function fetchProducts(
   page: number,
   limit: number,
   category: CategoryType,
+  sorting: SortType,
 ) {
   const categoryQuery = category === 'all' ? '' : `category=${category}`;
+  const sortingQuery =
+    sorting === 'priceAsc' ? `sort=price%2Casc` : `sort=price%2Cdesc`;
 
   const response = await fetch(
-    `${PRODUCTS_ENDPOINT}?${categoryQuery}&page=${page}&size=${limit}`,
+    `${PRODUCTS_ENDPOINT}?${categoryQuery}&page=${page}&size=${limit}&${sortingQuery}`,
 
     {
       method: 'GET',
