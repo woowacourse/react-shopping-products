@@ -141,6 +141,14 @@ export const globalStyles = css`
   }
 
   button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+
+    background-color: inherit;
+
     cursor: pointer;
   }
 `;
