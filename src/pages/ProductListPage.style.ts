@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Body = styled.section`
   padding: 28px 25px;
   padding-top: 100px;
+  min-height: 85vh;
 `;
 
 export const Top = styled.div`
