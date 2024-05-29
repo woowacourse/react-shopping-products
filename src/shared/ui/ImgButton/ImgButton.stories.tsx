@@ -4,12 +4,13 @@ import { Text } from '../Text/Text';
 import { ImgButton } from './ImgButton';
 
 import type { Meta, StoryObj } from '@storybook/react';
-import css from './ImgButton.storibook.module.css';
+import css from './ImgButton.storybook.module.css';
 
 const meta: Meta<typeof ImgButton> = {
   title: '5. shared/ImgButton',
   component: ImgButton,
   args: {
+    className: css.imgButton,
     alt: 'button',
     src: assets.cart,
     type: 'button',
@@ -30,13 +31,5 @@ export const WithText: Story = {
         text
       </Text>
     ),
-    className: css.imgButton,
   },
-  decorators: [
-    (Story) => (
-      <div style={{ border: '1px solid white' }}>
-        <Story />
-      </div>
-    ),
-  ],
 };

@@ -2,6 +2,9 @@
   position: relative;
   width: 32px;
   height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button {
@@ -13,10 +16,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  bottom: 20px;
-  left: 8px;
+  position: absolute;
+  top: 12px;
   width: 19px;
+  right: 2px;
   height: 19px;
   background-color: white;
   border-radius: 50%;

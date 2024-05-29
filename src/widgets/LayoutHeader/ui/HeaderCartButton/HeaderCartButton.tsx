@@ -13,7 +13,7 @@ export const HeaderCartButton = ({ cartItemCount }: CartButtonProps) => {
   };
 
   return (
-    <div className={css.cartButtonContainer}>
+    <div className={css.headerCartButtonContainer}>
       <ImgButton className={css.button} alt='cart' src={assets.cart} type={'button'} onClick={handleOnClick} />;
       <div className={css.countWrapper}>
         <p className={css.count}>{cartItemCount}</p>
