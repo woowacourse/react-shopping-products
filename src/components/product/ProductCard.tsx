@@ -1,6 +1,7 @@
-import styled from "@emotion/styled";
+import { Product } from "../../types/products";
 import { PropsWithChildren } from "react";
 import ToggleItemButton from "./ToggleItemButton";
+import styled from "@emotion/styled";
 
 const S = {
   ProductCard: styled.div`
@@ -27,11 +28,6 @@ const S = {
     font-size: 14px;
     font-weight: 700;
   `,
-  ProductDescription: styled.div`
-    font-size: 12px;
-    font-weight: 500;
-    color: #666;
-  `,
   Price: styled.div`
     font-size: 12px;
     font-weight: 500;
@@ -39,14 +35,7 @@ const S = {
 };
 
 interface ProductCardProps extends PropsWithChildren {
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-    category: string;
-    description?: string;
-  };
+  product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
@@ -55,7 +44,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <S.ProductImage src={product.imageUrl} alt={product.name} />
       <S.ProductInfo>
         <S.ProductName>{product.name}</S.ProductName>
-        <S.ProductDescription>{product.description}</S.ProductDescription>
         <S.Price>{`${product.price.toLocaleString()}원`}</S.Price>
         <ToggleItemButton id={product.id} />
       </S.ProductInfo>
