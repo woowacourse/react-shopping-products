@@ -1,5 +1,5 @@
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { addCartItem, fetchCartItem, fetchProducts } from '../api';
+import { addCartItem, deleteCartItem, fetchCartItem, fetchProducts } from '../api';
 import { CartItemType, ProductType } from '../types';
 import { useToast } from './useToast';
 import { formattedKey } from './useProducts.util';
@@ -32,6 +32,8 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
   const { showToast } = useToast();
 
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const [idMap, setIdMap] = useState<Record<number, number>>({});
+  // {productId : cartId}
   const [selectedItems, setSelectedItems] = useState<Set<number>>(new Set());
 
   useEffect(() => {
@@ -48,13 +50,24 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
     setSelectedItems(new Set(newSelectedItems));
   }, [products, cartItems]);
 
+  // idMap 만드는 것
+  useEffect(() => {
+    const newIdMap: Record<number, number> = {};
+
+    cartItems.forEach((cartItem) => {
+      newIdMap[cartItem.product.id] = cartItem.id;
+    });
+    setIdMap(newIdMap);
+  }, [cartItems]);
+
   const handleSelect = async (itemId: number) => {
     const newSelectedItems = new Set(selectedItems);
     if (selectedItems.has(itemId)) {
       newSelectedItems.delete(itemId);
+      popCartItem(idMap[itemId]);
     } else {
       newSelectedItems.add(itemId);
-      postCartItem(itemId);
+      pushCartItem(itemId);
     }
     setSelectedItems(newSelectedItems);
   };
@@ -62,7 +75,6 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
   useEffect(() => {
     const getCartItems = async () => {
       const cartItems = await fetchCartItem();
-
       setCartItems(cartItems);
     };
 
@@ -102,11 +114,19 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
     setFetchedProducts();
   }, [page, selectBarCondition]);
 
-  const postCartItem = async (itemId: number) => {
+  const pushCartItem = async (itemId: number) => {
     try {
       await addCartItem(itemId);
     } catch (error) {
-      showToast('상품 추가에 실패했습니다.');
+      showToast('상품 담기에 실패했습니다.');
+    }
+  };
+
+  const popCartItem = async (itemId: number) => {
+    try {
+      await deleteCartItem(itemId);
+    } catch (error) {
+      showToast('상품 빼기에 실패했습니다.');
     }
   };
 

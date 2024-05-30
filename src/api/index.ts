@@ -83,3 +83,13 @@ export async function fetchCartItem(): Promise<CartItemType[]> {
 
   return data.content;
 }
+
+/**
+ * deleteCartItem - 선택한 상품을 장바구니에서 삭제합니다.
+ * @returns {Promise<void>}
+ */
+export async function deleteCartItem(cartItemId: number): Promise<void> {
+  await makeRequest(`/cart-items/${cartItemId}`, {
+    method: 'DELETE',
+  });
+}
