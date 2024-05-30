@@ -48,7 +48,7 @@ const useFetchProducts = (
     getProducts();
   }, [page, sortings, filter]);
 
-  return { products, isError, isPending, fetchNextPage, page };
+  return { products, isError, isPending, isLast, fetchNextPage, page };
 };
 
 export default useFetchProducts;

@@ -12,7 +12,7 @@ function Product() {
   const fetchAddCartState = useFetchAddCart();
   const [sortings, setSortings] = useState<SortingParam[]>([]);
   const [filter, setFilter] = useState('');
-  const { products, isError, isPending, fetchNextPage, page } =
+  const { products, isError, isPending, isLast, fetchNextPage, page } =
     useFetchProducts(sortings, filter);
 
   return (
@@ -27,7 +27,14 @@ function Product() {
             setSortings={setSortings}
             setFilter={setFilter}
           />
-          <ProductList products={products} />
+          <ProductList
+            page={page}
+            products={products}
+            fetchNextPage={fetchNextPage}
+            isError={isError}
+            isPending={isPending}
+            isLast={isLast}
+          />
         </S.ProductContentWrapper>
       </CartContext.Provider>
     </>
