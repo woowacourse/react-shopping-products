@@ -25,7 +25,7 @@ export const handlers = [
     const url = new URL(request.url);
 
     const page = Number(url.searchParams.get('page') || '0');
-    const category = (url.searchParams.get('category') || '') as Category;
+    const category = (url.searchParams.get('category') || 'all') as Category;
     const sort = url.searchParams.get('sort');
     const [, order] = sort ? sort.split(',') : ['price', 'asc'];
     const size = page === FIRST_PAGE ? FIRST_PAGE_SIZE : SIZE_PER_PAGE;
