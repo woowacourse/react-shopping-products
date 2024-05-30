@@ -2,6 +2,7 @@ import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { fetchProducts } from '../api';
 import { ProductType } from '../types';
 import { useToast } from './useToast';
+import { formattedKey } from './useProducts.util';
 import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
 
 interface Product {
@@ -46,7 +47,7 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
           page: queryPage,
           size,
           category: selectBarCondition.category,
-          sort: 'price,asc',
+          sort: formattedKey(selectBarCondition.sort),
         });
         setProducts((prev) => [...prev, ...newProducts]);
         setHasMore(newProducts.length > 0);

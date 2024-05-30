@@ -9,7 +9,7 @@ const ProductListPage = () => {
   const [cartItemCount, setCartItemCount] = useState(0);
   const [selectBarCondition, setSelectBarCondition] = useState({
     category: 'all',
-    sort: '낮은 가격순',
+    sort: 'priceAsc',
   });
 
   const handleCount = (cartItemCount: number) => {
