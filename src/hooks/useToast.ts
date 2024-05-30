@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { ToastContext } from '../context/ToastContextProvider';
 
 export function useToast() {
@@ -10,14 +10,17 @@ export function useToast() {
 
   const { setToast } = context;
 
-  const createToast = (message: string) => {
-    const newToast = { id: Date.now().toString(), message };
-    setToast(newToast);
+  const createToast = useCallback(
+    (message: string) => {
+      const newToast = { id: Date.now().toString(), message };
+      setToast(newToast);
 
-    setTimeout(() => {
-      setToast(null);
-    }, 3000);
-  };
+      setTimeout(() => {
+        setToast(null);
+      }, 3000);
+    },
+    [setToast],
+  );
 
   return { createToast };
 }
