@@ -6,30 +6,30 @@ import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.
 import { Product } from '@appTypes/product';
 import useFetch from '@hooks/useFetch';
 import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
+import usePagination from '@hooks/usePagination';
 
 const useProducts = (): {
   products: Product[];
   page: number;
   sortType: keyof typeof PRODUCT_SORT_MAP;
   category: Product['category'] | 'all';
-  updateNextPage: () => void;
+  isLoading: boolean;
+  updateNextProductItem: () => void;
   onSelectSortTypeOption: (sortType: keyof typeof PRODUCT_SORT_MAP) => void;
   onSelectCategoryOption: (category: keyof typeof PRODUCT_CATEGORY_MAP) => void;
 } => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [page, setPage] = useState(0);
+  const { page, resetPage, updateNextPage } = usePagination();
 
   const { category, sortType, onSelectCategoryOption, onSelectSortTypeOption } =
-    useSelectProductDropdown(
-      () => setPage(0),
-      () => setProducts([])
-    );
+    useSelectProductDropdown(resetPage, () => setProducts([]));
+
+  const [products, setProducts] = useState<Product[]>([]);
 
   const endpoint = `products?${category === 'all' ? '' : `category=${category}&`}page=${
     page && page + 4
   }&size=${page === 0 ? 20 : 4}&sort=price,${sortType}`;
 
-  const { data } = useFetch<BaseResponse<Product[]>>(endpoint);
+  const { data, isLoading } = useFetch<BaseResponse<Product[]>>(endpoint);
 
   useEffect(() => {
     if (!data) return;
@@ -37,19 +37,20 @@ const useProducts = (): {
     setProducts((prev) => [...prev, ...data.content]);
   }, [data]);
 
-  const updateNextPage = useCallback(() => {
+  const updateNextProductItem = useCallback(() => {
     if (data?.last) return;
     if (data && data.content.length === 0) return;
 
-    setPage((prev) => prev + 1);
-  }, [data]);
+    updateNextPage();
+  }, [updateNextPage, data]);
 
   return {
     products,
     page,
     sortType,
     category,
-    updateNextPage,
+    isLoading,
+    updateNextProductItem,
     onSelectSortTypeOption,
     onSelectCategoryOption,
   };
