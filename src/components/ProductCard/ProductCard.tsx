@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../../CartContext';
 import { Product } from '../../types/fetch';
-import AddCartButton from '../AddCartButton';
 import * as S from './ProductCard.styled';
+import AddCartButton from '../AddCartButton/AddCartButton';
 
 interface ProductCardProps {
   product: Product;
