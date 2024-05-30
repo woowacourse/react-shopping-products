@@ -1,8 +1,9 @@
+import { Product } from '@/entities/product';
+import products from '@/shared/mocks/products.json';
+
 import { ProductList } from './ProductList';
 
 import type { Meta, StoryObj } from '@storybook/react';
-import products from '@/shared/mocks/products.json';
-import { Product } from '@/entities/product';
 
 const meta: Meta<typeof ProductList> = {
   title: '2. Widgets/ProductList/ProductList',

@@ -1,6 +1,6 @@
-import { FilterButton } from '@/entities/product';
+import { FilterButton, Category } from '@/entities/product';
+
 import { CATEGORY_OPTIONS, ALL, ALL_KR } from '../../model/constants';
-import { Category } from '@/entities/product';
 
 const allOption = { value: ALL, label: ALL_KR };
 

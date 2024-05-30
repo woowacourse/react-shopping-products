@@ -1,5 +1,4 @@
 import { assets } from '../../assets/assets';
-import { Text } from '../Text/Text';
 
 import { ImgButton } from './ImgButton';
 
@@ -26,10 +25,6 @@ export const OnlyImage: Story = {};
 
 export const WithText: Story = {
   args: {
-    children: (
-      <Text tag={'p'} type={'h1'}>
-        text
-      </Text>
-    ),
+    children: 'text',
   },
 };

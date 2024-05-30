@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { ProductCard } from '@/entities/product';
+
+import { ProductCard, Product, Category, SortOrder } from '@/entities/product';
+import {
+  FilterCategoryButton,
+  FilterSortOrderButton,
+  DEFAULT_CATEGORY,
+  DEFAULT_SORT_ORDER,
+  ALL,
+} from '@/features/product';
 import { CartToggleButton } from '@/features/product/ui/CartToggleButton/CartToggleButton';
-import { FilterCategoryButton, FilterSortOrderButton } from '@/features/product';
-import { DEFAULT_CATEGORY, DEFAULT_SORT_ORDER } from '@/features/product';
-import { Product, Category, SortOrder } from '@/entities/product';
 
 import css from './ProductList.module.css';
-import { ALL } from '@/features/product';
 
 interface ProductListProps {
   products: Product[];

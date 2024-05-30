@@ -1,4 +1,5 @@
 import { CATEGORIES } from '../../model/constants';
+
 import { ProductCard } from './ProductCard';
 
 import type { Meta, StoryObj } from '@storybook/react';

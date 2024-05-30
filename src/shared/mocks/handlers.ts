@@ -1,6 +1,9 @@
 import { http, HttpResponse } from 'msw';
 
 import { Product, SortOrder } from '@/entities/product';
+import { ALL } from '@/features/product';
+
+import { PRODUCTS_ENDPOINT } from '../api/endpoints';
 
 import products from './products.json';
 
@@ -18,7 +21,7 @@ export const handlers = [
   http.get(PRODUCTS_ENDPOINT, ({ request }) => {
     const url = new URL(request.url);
 
-    const category = url.searchParams.get('category') || 'all';
+    const category = url.searchParams.get('category') || ALL;
     const page = Number(url.searchParams.get('page') || '1');
     const sort = (url.searchParams.get('sort') || 'ascByPrice') as SortOrder;
 
@@ -26,13 +29,13 @@ export const handlers = [
     const start = page === 1 ? 0 : (page - 2) * 4 + 20;
     const end = start + size;
     let paginatedProducts;
-    if (category === 'all') {
+    if (category === ALL) {
       paginatedProducts = products.slice(start, end);
     } else {
       paginatedProducts = products.filter((product) => product.category === category).slice(start, end);
     }
 
-    paginatedProducts = sortByPrice(paginatedProducts, sort);
+    paginatedProducts = sortByPrice(paginatedProducts as Product[], sort);
 
     return HttpResponse.json(paginatedProducts);
   }),

@@ -1,4 +1,5 @@
 import { FilterButton, SortOrder } from '@/entities/product';
+
 import { SORT_ORDER_OPTIONS } from '../../model/constants';
 
 interface FilterSortOrderButtonProps {
