@@ -1,50 +1,8 @@
-import { Category, PriceSort, Product, ServerResponse } from '@appTypes/index';
+import { END_POINTS } from '@apis/endPoints';
+import { Category, PriceSort, Product } from '@appTypes/index';
 import products from '@mocks/data/products.json';
+import { makeServerResponse } from '@mocks/utils/serverResponse';
 import { http, HttpResponse } from 'msw';
-
-import { END_POINTS } from './../../apis/endPoints';
-
-interface MakeServerResponseParams<T> {
-  page: number;
-  size: number;
-  last?: boolean;
-  content: T;
-}
-const makeServerResponse = <T>({
-  page,
-  size,
-  last = false,
-  content,
-}: MakeServerResponseParams<T>): ServerResponse<T> => {
-  return {
-    content,
-    pageable: {
-      sort: {
-        sorted: false,
-        unsorted: true,
-        empty: true,
-      },
-      pageNumber: page,
-      pageSize: size,
-      offset: 0,
-      paged: true,
-      unpaged: false,
-    },
-    last,
-    totalPages: 100,
-    totalElements: 100,
-    sort: {
-      sorted: false,
-      unsorted: true,
-      empty: true,
-    },
-    first: true,
-    number: 0,
-    numberOfElements: 100,
-    size,
-    empty: false,
-  };
-};
 
 const filterProducts = (category: Category | null, products: Product[]) => {
   if (!category) return products;
