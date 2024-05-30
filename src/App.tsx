@@ -1,7 +1,7 @@
 import '@styles/App.css';
 import '@styles/reset.css';
 import '@styles/global.module.css';
-import { CartAction } from '@components/Fallbacks';
+import { CartAction, PageRequest } from '@components/Fallbacks';
 import { Header, Layout, ToastModal } from '@components/index';
 import { useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -40,7 +40,7 @@ function App() {
     <>
       <Header cartItemsLength={cartItems.length} headerRef={headerRef} />
       <Layout>
-        <ErrorBoundary fallback={<div> 오류.....</div>}>
+        <ErrorBoundary FallbackComponent={({ error }) => <PageRequest error={error} />}>
           <CartItemsContext.Provider value={{ handleCartAction }}>
             <ProductListPage cartItems={cartItems} />
           </CartItemsContext.Provider>
