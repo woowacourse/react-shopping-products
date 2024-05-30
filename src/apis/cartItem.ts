@@ -45,7 +45,7 @@ export async function deleteCartItem({ itemId }: { itemId: number }): Promise<Re
   });
 
   if (!response.ok) {
-    throw new Error(ERROR_MESSAGES.deleteCartItem);
+    throw new Error(ERROR_MESSAGES.failDeleteCartItem);
   }
 
   return response;

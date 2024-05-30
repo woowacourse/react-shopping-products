@@ -6,16 +6,16 @@ import SelectBox from "@/components/SelectBox";
 import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
 import ItemCardList from "@/components/ItemCardList";
 import useSelect from "@/hooks/useSelect";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import useProducts from "@/hooks/useProducts";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
-import { CartItemContext } from "@/provider/cartItemProvider";
+import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
 
 const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
   const useSortSelect = useSelect<Sort>("낮은 가격순");
 
-  const { products, fetchFirstPage, fetchNextPage, currentPage } = useProducts();
+  const { products, fetchFirstPage, fetchNextPage, currentPage, loading, isLastPage } = useProducts();
   const ref = useRef<HTMLDivElement>(null);
 
   const { isIntersecting } = useInfiniteScroll({ threshold: 0.25, rootMargin: "80px" }, ref);
@@ -24,7 +24,7 @@ const ProductListPage = () => {
   const sort = useSortSelect.selected;
 
   useEffect(() => {
-    if (isIntersecting) {
+    if (isIntersecting && !isLastPage) {
       fetchNextPage(category, currentPage, sort);
     }
   }, [isIntersecting]);
@@ -32,6 +32,8 @@ const ProductListPage = () => {
   useEffect(() => {
     fetchFirstPage(category, 0, sort);
   }, [category, sort]);
+
+  const isAbleFetchNextPage = !loading && !isLastPage;
 
   return (
     <>
@@ -48,8 +50,9 @@ const ProductListPage = () => {
           </SelectBoxWrapper>
         </ItemInfoWrapper>
         <ItemCardList products={products} />
+        {isAbleFetchNextPage && <div ref={ref}></div>}
+        {loading && <ItemCartListSkeleton />}
       </Wrapper>
-      <div ref={ref}></div>
     </>
   );
 };
