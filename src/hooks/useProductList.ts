@@ -1,7 +1,9 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import useDropdown from './useDropdown';
 
 import { fetchProductList } from '@/api/product';
-import { Product, ProductCategory, Sort } from '@/types/product';
+import { Product } from '@/types/product';
 import CustomError from '@/utils/error';
 
 const useProductList = () => {
@@ -9,23 +11,11 @@ const useProductList = () => {
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorState, setErrorState] = useState({ name: '', errorMessage: '' });
+  const [errorState, setErrorState] = useState({ name: '', isError: false, errorMessage: '' });
 
-  const [category, setCategory] = useState<ProductCategory>('fashion');
-  const [order, setOrder] = useState<Sort>('asc');
-
-  const handleChangeCategory = async (e: ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value as ProductCategory;
-
-    setCategory(value);
-    setPage(0);
-  };
-  const handleChangeSort = async (e: ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value as Sort;
-
-    setOrder(value);
-    setPage(0);
-  };
+  const { category, order, handleChangeCategory, handleChangeSort } = useDropdown({
+    resetPage: () => setPage(0),
+  });
 
   const fetchNextPage = () => {
     const nextPage = page === 0 ? 5 : 1;
@@ -36,7 +26,7 @@ const useProductList = () => {
 
   useEffect(() => {
     window.addEventListener('online', () => {
-      setErrorState({ name: '', errorMessage: '' });
+      setErrorState({ name: '', isError: false, errorMessage: '' });
     });
   }, []);
 
@@ -47,9 +37,9 @@ const useProductList = () => {
         const limit = page === 0 ? 20 : 4;
         const { content, last } = await fetchProductList({
           page,
-          category,
+          category: category.value,
           size: limit,
-          sortOptions: order,
+          sortOptions: order.value,
         });
         if (last) {
           setIsLastPage(true);
@@ -57,11 +47,13 @@ const useProductList = () => {
           setIsLastPage(false);
         }
         page === 0 ? setProductList(content) : setProductList((prev) => [...prev, ...content]);
-        setErrorState({ name: '', errorMessage: '' });
+        setErrorState({ name: '', errorMessage: '', isError: false });
       } catch (error) {
         if (error instanceof CustomError) {
           const message = error.message;
-          setErrorState((prev) => ({ ...prev, errorMessage: message }));
+          const name = error.name;
+
+          setErrorState({ name, isError: true, errorMessage: message });
         }
       } finally {
         setIsLoading(false);
