@@ -53,6 +53,7 @@ const theme: Theme = {
     pink: '#FFC9C9',
     gray: '#EAEAEA',
     borderGray: '#0000001A',
+    red: '#f33f3f',
   },
 };
 
