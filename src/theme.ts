@@ -16,31 +16,29 @@ const theme: Theme = {
     `,
     product: {
       name: `
-      font-family: Inter;
-        font-size: 0.875rem;
+        font-family: Inter;
         font-weight: 700;
+        font-size: 0.875rem;
         line-height: 1.25rem;
         `,
       price: `
         font-family: Noto Sans;
-        font-size: 12px;
         font-weight: 500;
+        font-size: 0.75rem;
         line-height: 0.9375rem;
-        text-align: left;
       `,
       toggleButton: `
         font-family: Noto Sans;
-        font-size: 0.75rem;
         font-weight: 600;
+        font-size: 0.75rem;
         line-height: 0.9375rem;
       `,
     },
     toast: `
       font-family: Noto Sans;
-      font-size: 12px;
       font-weight: 500;
+      font-size: 0.75rem;
       line-height: 0.9375rem;
-      text-align: left;
     `,
     cartLabel: `
       font-family: Montserrat;
