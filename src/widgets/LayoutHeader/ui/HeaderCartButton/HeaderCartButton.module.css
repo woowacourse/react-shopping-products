@@ -10,6 +10,7 @@
 .button {
   border: none;
   height: 24px;
+  background-color: transparent;
 }
 
 .countWrapper {

@@ -1,3 +1,5 @@
+import { DEFAULT_SORT_ORDER } from '../../model/constants';
+
 import { FilterSortOrderButton } from './FilterSortOrderButton';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -6,7 +8,7 @@ const meta: Meta<typeof FilterSortOrderButton> = {
   title: '3. features/product/FilterSortOrderButton',
   component: FilterSortOrderButton,
   args: {
-    value: 'ascByPrice',
+    value: DEFAULT_SORT_ORDER,
   },
 };
 
