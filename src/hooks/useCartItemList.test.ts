@@ -1,11 +1,12 @@
 import { http, HttpResponse } from "msw";
 
 import { renderHook, waitFor } from "@testing-library/react";
-
+import additionalProduct from "../mocks/handlers/cartItemList/additionalProductData.json";
 import { CART_ITEMS_ENDPOINT } from "../apis/config";
 import defaultData from "../mocks/handlers/cartItemList/defaultData.json";
 import { server } from "../mocks/server";
 import useCartItemList from "./useCartItemList";
+import { act, useState } from "react";
 
 describe("useCartItemList", () => {
   describe("장바구니 아이템 목록 조회", () => {
@@ -44,7 +45,7 @@ describe("useCartItemList", () => {
     it("장바구니에 담겨있는 item 갯수 반환", async () => {
       const { result } = renderHook(() => useCartItemList());
       await waitFor(() => {
-        expect(result.current.quantity).toEqual(defaultData.length);
+        expect(result.current.cartItemList.length).toEqual(defaultData.length);
       });
     });
   });
@@ -73,14 +74,12 @@ describe("useCartItemList", () => {
   //     });
 
   //     await act(async () => {
-  //       // await result.current.toggleCartItem(defaultData[0].product);
-  //       await result.current.deleteCartItem(defaultData[0].product);
+  //       await result.current.toggleCartItem(defaultData[0].product);
   //     });
-  //     await waitFor(() => {
-  //       expect(result.current.cartItemList).toStrictEqual(
-  //         defaultData.slice(1, defaultData.length)
-  //       );
-  //     });
+
+  //     expect(result.current.cartItemList).toStrictEqual(
+  //       defaultData.slice(1, defaultData.length)
+  //     );
   //   });
 
   //   it("장바구니에 담겨있지 않은 item이면 toggleCartItem 시 아이템 추가", async () => {
@@ -89,12 +88,13 @@ describe("useCartItemList", () => {
   //     await act(async () => {
   //       await result.current.toggleCartItem(additionalProduct);
   //     });
-  //     await waitFor(() => {
-  //       expect(result.current.cartItemList).toStrictEqual([
-  //         ...defaultData,
-  //         { id: 3098, product: additionalProduct, quantity: 1 },
-  //       ]);
-  //     });
+
+  //     expect(result.current.cartItemList).toStrictEqual([
+  //       ...defaultData,
+  //       { id: 3098, product: additionalProduct, quantity: 1 },
+  //     ]);
   //   });
   // });
+
+  // 제대로 동작하지 않는 테스트
 });
