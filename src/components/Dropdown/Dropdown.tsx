@@ -14,6 +14,7 @@ interface DropdownProps {
 
 const Dropdown = ({ options, selectedOption, placeholder, updateOption }: DropdownProps) => {
   const [isOptionListOpen, setIsOptionListOpen] = useState(false);
+
   const toggleOptionList = () => setIsOptionListOpen((prev) => !prev);
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -18,12 +18,12 @@ export const ProductList = styled.div`
   gap: 20px;
 
   /* 데스크톱 */
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
     grid-template-columns: repeat(6, 1fr);
   }
 
   /* 태블릿 */
-  @media (min-width: 768px) and (max-width: 1023px) {
+  @media (min-width: 768px) and (max-width: 1199px) {
     grid-template-columns: repeat(4, 1fr);
   }
 

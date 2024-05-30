@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import products from './products.json';
-import { API_URL } from '../../api/apiClient';
+import { API_URL } from '../../constants/api';
 
 export const handlers = [
   http.get(`${API_URL}/products`, ({ request }) => {

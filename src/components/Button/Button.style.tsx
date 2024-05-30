@@ -3,9 +3,9 @@ import styled from 'styled-components';
 export const Layout = styled.button<{ $isActive: boolean; $variant: string }>`
   display: flex;
   align-items: center;
+  column-gap: 5px;
   width: 65px;
   height: 26px;
-  column-gap: 5px;
   padding: 5px 10px;
   border-radius: 4px;
   background-color: ${(props) => (props.$variant === 'primary' ? 'black' : 'lightgrey')};
