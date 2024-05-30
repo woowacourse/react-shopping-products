@@ -5,10 +5,21 @@ import ProductListHeader from "../ProductListHeader/ProductListHeader";
 import ProductItem from "./ProductItem/ProductItem";
 import { ProductListStyle } from "./ProductList.style";
 import { useError } from "../../hooks/useError";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import usePagination from "../../hooks/usePagination";
 
 const ProductList = () => {
-  const { products, lastProductElementRef, handleCategory, handleSort } =
-    useProducts();
+  const { page, nextPage, resetPage } = usePagination();
+
+  const { products, handleCategory, handleSort, hasMore } = useProducts({
+    page,
+    resetPage,
+  });
+
+  const { lastElementRef: lastProductElementRef } = useInfiniteScroll({
+    hasMore,
+    nextPage,
+  });
 
   const { showError } = useError();
 

@@ -1,27 +1,17 @@
-import { useState, useCallback, useRef } from "react";
+import { useCallback, useState } from "react";
 
 interface UsePaginationResult {
   page: number;
-  lastElementRef: (node: HTMLDivElement) => void;
+  nextPage: () => void;
   resetPage: () => void;
 }
 
-export default function usePagination(hasMore: boolean): UsePaginationResult {
+export default function usePagination(): UsePaginationResult {
   const [page, setPage] = useState(0);
 
-  const observer = useRef<IntersectionObserver | null>(null);
-  const lastElementRef = useCallback(
-    (node: HTMLDivElement) => {
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setPage((prevPage) => prevPage + 1);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [hasMore]
-  );
+  const nextPage = useCallback(() => {
+    setPage((prevPage) => prevPage + 1);
+  }, []);
 
   const resetPage = () => {
     setPage(0);
@@ -29,7 +19,7 @@ export default function usePagination(hasMore: boolean): UsePaginationResult {
 
   return {
     page,
-    lastElementRef,
+    nextPage,
     resetPage,
   };
 }

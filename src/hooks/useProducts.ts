@@ -1,28 +1,36 @@
 import { useState, useEffect } from "react";
 import { getProducts } from "../api";
 import { useError } from "./useError";
-import usePagination from "./usePagination";
 
 interface UseProductsResult {
   products: Product[];
   loading: boolean;
-  lastProductElementRef: (node: HTMLDivElement) => void;
+  hasMore: boolean;
   handleCategory: (category: Category | "all") => void;
   handleSort: (sort: Sort) => void;
 }
 
-export default function useProducts(): UseProductsResult {
+interface UseProductsProps {
+  page: number;
+  resetPage: () => void;
+}
+
+export default function useProducts({
+  page,
+  resetPage,
+}: UseProductsProps): UseProductsResult {
   const [products, setProducts] = useState<Product[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [category, setCategory] = useState<Category | "all">("all");
   const [sort, setSort] = useState<Sort>("asc");
-  const { showError } = useError();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const { page, lastElementRef, resetPage } = usePagination(hasMore);
+  const { showError } = useError();
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
+
       try {
         const size = page === 0 ? 20 : 4;
         const responseData = await getProducts({
@@ -35,7 +43,6 @@ export default function useProducts(): UseProductsResult {
           ...prevProducts,
           ...responseData.content,
         ]);
-        setLoading(false);
 
         if (responseData.content.length < size) {
           setHasMore(false);
@@ -44,6 +51,8 @@ export default function useProducts(): UseProductsResult {
         if (error instanceof Error) {
           showError(error.message);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -65,7 +74,7 @@ export default function useProducts(): UseProductsResult {
   return {
     products,
     loading,
-    lastProductElementRef: lastElementRef,
+    hasMore,
     handleCategory,
     handleSort,
   };

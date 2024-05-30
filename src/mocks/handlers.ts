@@ -12,7 +12,6 @@ export const handlers = [
   http.get<PathParams, GetProductsParams>(
     PRODUCTS_ENDPOINT,
     async ({ request }) => {
-      // TODO: 요청 안 감
       const url = new URL(request.url);
 
       const page = Number(url.searchParams.get("page") || "0");
