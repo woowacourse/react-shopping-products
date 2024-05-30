@@ -1,32 +1,16 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 import { addCartItem, deleteCartItem, fetchCartItem, fetchProducts } from '../api';
 import { CartItemType, ProductType } from '../types';
 import { useToast } from './useToast';
 import { formattedKey } from './useProducts.util';
 import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
-
 interface Props {
   selectBarCondition: Record<string, string>;
   handleCount: (cartItemCount: number) => void;
 }
 
-interface UseProductsResult {
-  products: Product[];
-  setPage: Dispatch<SetStateAction<number>>;
-  hasMore: boolean;
-  selectedItems: Set<number>;
-  handleSelect: (itemId: number) => void;
-}
-
-export default function useProducts({ selectBarCondition, handleCount }: Props): UseProductsResult {
+export default function useProducts({ selectBarCondition, handleCount }: Props) {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
