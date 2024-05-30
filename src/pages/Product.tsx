@@ -24,8 +24,6 @@ function Product() {
         <S.ProductContentWrapper>
           <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
           <Dropdown
-            sortings={sortings}
-            filter={filter}
             setSortings={setSortings}
             setFilter={setFilter}
           />
@@ -33,7 +31,6 @@ function Product() {
             page={page}
             products={products}
             fetchNextPage={fetchNextPage}
-            isError={isError}
             isPending={isPending}
             isLast={isLast}
           />

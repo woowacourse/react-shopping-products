@@ -7,7 +7,6 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 interface ProductListProps {
   products: Product[];
   page: number;
-  isError: boolean;
   isPending: boolean;
   isLast: boolean;
   fetchNextPage: () => void;
@@ -16,7 +15,6 @@ interface ProductListProps {
 function ProductList({
   products,
   page,
-  isError,
   isPending,
   isLast,
   fetchNextPage,

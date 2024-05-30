@@ -3,13 +3,11 @@ import { SortingParam } from '../../types/sort';
 import * as S from './Dropdown.styled';
 
 interface DropdownProps {
-  sortings: SortingParam[];
-  filter: string;
   setSortings: Dispatch<SetStateAction<SortingParam[]>>;
   setFilter: Dispatch<SetStateAction<string>>;
 }
 
-function Dropdown({ sortings, filter, setSortings, setFilter }: DropdownProps) {
+function Dropdown({ setSortings, setFilter }: DropdownProps) {
   (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.target.value;
   };
