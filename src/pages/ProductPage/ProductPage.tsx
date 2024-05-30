@@ -34,7 +34,7 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
 
   return (
     <>
-      <Styled.ProductPageTitle>bapple 상품 목록</Styled.ProductPageTitle>
+      <Styled.ProductPageTitle>bpple 상품 목록</Styled.ProductPageTitle>
       <Styled.ProductDropdownWrapper>
         <CategoryDropdown
           isOpen={isCategoryDropdownOpen}
