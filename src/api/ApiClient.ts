@@ -2,6 +2,8 @@ type URLString = string;
 
 interface ApiClientInterface {
   get<T>(path: string, params: URLSearchParams): Promise<T>;
+  post(path: string, body: object): Promise<void>;
+  delete(path: string): Promise<void>;
 }
 
 export default class ApiClient implements ApiClientInterface {
