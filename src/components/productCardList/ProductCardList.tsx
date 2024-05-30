@@ -1,5 +1,6 @@
 import * as Styled from './ProductCardList.styled';
 import CartToggleButton from '../addCartItemButton/CartToggleButton';
+import Spinner from '../common/spinner/Spinner';
 import ProductCard from '../productCard/ProductCard';
 
 import { CartItemInfo } from '@/types/cartItem';
@@ -21,21 +22,23 @@ const ProductCardList = ({
   isLoading,
 }: ProductCardListProp) => {
   return (
-    <Styled.ProductCardListWrapper>
-      {productList.map((product, idx) => (
-        <div key={`${product.id}_${idx}`}>
-          <ProductCard imageUrl={product.imageUrl} name={product.name} price={product.price}>
-            <CartToggleButton
-              productId={product.id}
-              handleAddCartItem={handleAddCartItem}
-              handleDeleteCartItem={handleDeleteCartItem}
-              matchedCartItem={matchCartItem(product.id)}
-            />
-          </ProductCard>
-        </div>
-      ))}
-      {isLoading && <div>loading</div>}
-    </Styled.ProductCardListWrapper>
+    <>
+      <Styled.ProductCardListWrapper>
+        {productList.map((product, idx) => (
+          <div key={`${product.id}_${idx}`}>
+            <ProductCard imageUrl={product.imageUrl} name={product.name} price={product.price}>
+              <CartToggleButton
+                productId={product.id}
+                handleAddCartItem={handleAddCartItem}
+                handleDeleteCartItem={handleDeleteCartItem}
+                matchedCartItem={matchCartItem(product.id)}
+              />
+            </ProductCard>
+          </div>
+        ))}
+      </Styled.ProductCardListWrapper>
+      {isLoading && <Spinner />}
+    </>
   );
 };
 
