@@ -1,10 +1,11 @@
 import { http, HttpResponse } from 'msw';
 import products from '../product/products.json';
+import cartItemsData from '../cartItem/cartItem.json';
 import { API_URL } from '../../constants/api';
 import { CartItem } from '../../types/CartItem.type';
 import { Product } from '../../types/Product.type';
 
-let cartItems: CartItem[] = [];
+let cartItems: CartItem[] = cartItemsData;
 
 export const handlers = [
   http.get(`${API_URL}/cart-items`, () => HttpResponse.json({ content: cartItems })),
