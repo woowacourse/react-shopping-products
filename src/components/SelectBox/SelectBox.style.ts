@@ -40,7 +40,7 @@ export const SelectButton = styled.button<{
     transform: translateY(-50%);
     width: 20px;
     height: 20px;
-    background-image: url('${(props) => (props.$isOpened ? SelectArrowUp : SelectArrowDown)}');
+    background-image: url(${(props) => (props.$isOpened ? SelectArrowUp : SelectArrowDown)});
     background-repeat: no-repeat;
     background-position: center;
   }
