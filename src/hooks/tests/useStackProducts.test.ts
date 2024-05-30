@@ -1,8 +1,8 @@
 import { fetchProduct } from '@src/apis';
 import { renderHook, waitFor } from '@testing-library/react';
 
-import useFetch from './useFetch';
-import useStackProducts from './useStackProducts';
+import useFetch from '../useFetch';
+import useStackProducts from '../useStackProducts';
 
 describe('상품 목록 무한 스크롤 테스트', () => {
   it('다음 목록을 불러올 때 상품 4개를 불러오게 된다.', async () => {
