@@ -13,8 +13,7 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, useCartProp, imageUrl, name, price }: ProductItemProps) => {
-  const { cartItems, isInCarts, addCart, deleteCart, CartItemsLoading, CartItemsError } =
-    useCartProp();
+  const { cartItems, addCart, deleteCart } = useCartProp();
   const cartItem = cartItems.find(({ product }) => id === product.id);
 
   const [isInCart, setIsInCart] = useState(false);
