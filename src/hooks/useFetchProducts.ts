@@ -40,6 +40,7 @@ const useFetchProducts = (
           ]);
         }
         setIsLast(fetchedProducts.last);
+        setIsError(false);
       } catch (error) {
         setIsError(true);
       } finally {
