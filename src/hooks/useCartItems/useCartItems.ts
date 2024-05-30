@@ -23,7 +23,7 @@ const useCartItems = (): UseCartItemsResult => {
   const getCartItems = async () => {
     const { data: initialData, totalElements } = await fetchCartItems(20);
 
-    if (totalElements <= SIZE.ADDITIONAL) {
+    if (totalElements <= SIZE.DEFAULT) {
       setCartItems(initialData);
       return;
     }
