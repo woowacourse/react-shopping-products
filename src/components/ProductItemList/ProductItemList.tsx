@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { QuantityContext } from "../../store/QuantityContext";
 import useProductList from "../../hooks/useProductList";
 import useCartItemList from "../../hooks/useCartItemList";
@@ -6,6 +6,7 @@ import ProductItem from "../ProductItem/ProductItem";
 import * as S from "./ProductItemList.style";
 import { Category } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
+import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 
 interface ProductItemListProp {
   category: Category;
@@ -18,13 +19,38 @@ function ProductItemList({
   sortOption,
   onError,
 }: ProductItemListProp) {
-  const { productList, productListError } = useProductList({
+  const {
+    productList,
+    productListError,
+    page,
+    fetchNextPage,
+    isLastPage,
+    setPage,
+  } = useProductList({
     category,
     sortOption,
   });
   const { cartItemList, isInCart, toggleCartItem, cartItemListError } =
     useCartItemList();
+  const target = useRef(null);
+  const [observe, unobserve] = useIntersectionObserver(() => {
+    fetchNextPage();
+  });
 
+  useEffect(() => {
+    setPage(0);
+  }, [category, sortOption]);
+
+  useEffect(() => {
+    if (page === -1 || target.current === null) return;
+    observe(target.current);
+
+    const N = productList.length;
+
+    if (0 === N || isLastPage) {
+      unobserve(target.current);
+    }
+  }, [productList, page, observe, unobserve]);
   const quantityContext = useContext(QuantityContext);
   const setQuantity = quantityContext ? quantityContext.setQuantity : () => {};
   setQuantity(cartItemList.length);
@@ -48,6 +74,7 @@ function ProductItemList({
           />
         );
       })}
+      <div ref={target} style={{ height: "1px" }}></div>
     </S.ProductList>
   );
 }

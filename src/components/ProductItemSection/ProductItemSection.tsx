@@ -13,18 +13,18 @@ function ProductItemSection({ onError }: ProductItemSectionProps) {
   const [sortingOption, setSortingOption] = useState<Sorting>(
     "price,asc" as Sorting
   );
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setCategory(e.target.value as Category);
+  const handleSortingChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setSortingOption(e.target.value as Sorting);
 
   return (
     <S.ProductSectionContainer>
       <DropdownContainer
         category={category}
-        onChangeCategory={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          setCategory(e.target.value as Category)
-        }
+        onChangeCategory={handleCategoryChange}
         sortingOption={sortingOption}
-        onChangeSortingOption={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          setSortingOption(e.target.value as Sorting)
-        }
+        onChangeSortingOption={handleSortingChange}
       />
       <ProductItemList
         category={category}

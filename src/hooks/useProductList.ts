@@ -11,6 +11,8 @@ interface UseProductListResult {
   productListError: unknown;
   page: number;
   fetchNextPage: () => void;
+  isLastPage: boolean;
+  setPage: () => void;
 }
 
 interface UseProductListProps {
@@ -69,10 +71,12 @@ export default function useProductList(
   };
 
   return {
+    setPage,
     productList,
     productListLoading,
     productListError,
     page,
     fetchNextPage,
+    isLastPage,
   };
 }

@@ -4,12 +4,11 @@ import * as S from "./Dropdown.style";
 interface DropdownProps {
   optionList: string[][];
   value: string;
-  onChange: (e:React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   type: "category" | "sort";
 }
 
-const Dropdown = ({ optionList = [[]], value,onChange, type }: DropdownProps) => {
-
+const Dropdown = ({ optionList, value, onChange, type }: DropdownProps) => {
   return (
     <S.DropdownLabel htmlFor={type}>
       <S.Dropdown>
