@@ -1,4 +1,5 @@
 import { ENDPOINT } from './endpoints';
+import { ERROR_MESSAGES } from '@/constants/error';
 import { fetchWithoutAuth } from './utils/fetchClient';
 
 export interface getProductListProps {
@@ -8,6 +9,9 @@ export interface getProductListProps {
   order?: string;
 }
 
+/**
+ * 가게 상품 목록 조회
+ */
 export const getProductList = async ({
   page,
   size,
@@ -20,7 +24,7 @@ export const getProductList = async ({
   );
 
   if (!response.ok) {
-    throw new Error('상품 정보 불러오기를 실패했습니다. 다시 시도해 주세요.');
+    throw new Error(ERROR_MESSAGES.getProductList);
   }
 
   return response.json();

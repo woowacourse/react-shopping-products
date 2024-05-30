@@ -1,5 +1,6 @@
 import { CartItem } from '@/types/cartItem.type';
 import { ENDPOINT } from './endpoints';
+import { ERROR_MESSAGES } from '@/constants/error';
 import { fetchWithAuth } from './utils/fetchClient';
 
 /**
@@ -11,9 +12,7 @@ export const getCartList = async (): Promise<CartItem[]> => {
   });
 
   if (!response.ok) {
-    throw new Error(
-      '장바구니 정보 불러오기를 실패했습니다. 다시 시도해 주세요.'
-    );
+    throw new Error(ERROR_MESSAGES.getCartList);
   }
 
   const data = await response.json();
@@ -33,9 +32,7 @@ export const postCartItem = async (productId: number) => {
   });
 
   if (!response.ok) {
-    throw new Error(
-      '해당 아이템을 장바구니에 담기 실패 했습니다. 다시 시도해 주세요.'
-    );
+    throw new Error(ERROR_MESSAGES.postCartItem);
   }
 };
 
@@ -51,8 +48,6 @@ export const deleteCartItem = async (productId: number): Promise<void> => {
   );
 
   if (!response.ok) {
-    throw new Error(
-      '해당 아이템을 장바구니에서 삭제 실패 했습니다. 다시 시도해 주세요. '
-    );
+    throw new Error(ERROR_MESSAGES.deleteCartItem);
   }
 };
