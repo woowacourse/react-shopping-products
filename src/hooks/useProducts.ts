@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction, useRef } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { fetchProducts } from '../api';
 import { ProductType } from '../types';
 import { useToast } from './useToast';
@@ -28,15 +28,14 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
   const [hasMore, setHasMore] = useState(true);
   const { showToast } = useToast();
 
-  const previousSelectBarCondition = useRef(selectBarCondition);
+  useEffect(() => {
+    setProducts([]);
+    setPage(0);
+    setHasMore(true);
+  }, [selectBarCondition.category, selectBarCondition.sort]);
 
   useEffect(() => {
     const setFetchedProducts = async () => {
-      if (previousSelectBarCondition.current !== selectBarCondition) {
-        setProducts([]);
-        setPage(0);
-        setHasMore(true);
-      }
       try {
         const size = page === FIRST_FETCH_PAGE ? FIRST_FETCH_SIZE : AFTER_FETCH_SIZE;
         const queryPage =
