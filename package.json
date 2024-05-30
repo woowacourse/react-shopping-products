@@ -11,9 +11,11 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@svgr/rollup": "^8.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^6.1.11"
+    "styled-components": "^6.1.11",
+    "styled-reset": "^4.5.2"
   },
   "devDependencies": {
     "@testing-library/react": "^15.0.7",
@@ -32,5 +34,10 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vitest": "^1.6.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
