@@ -41,7 +41,7 @@ export default function useProducts(): UseProductsResult {
     if (Object.keys(CATEGORY).includes(category)) {
       setCategory(category as CategoryType);
       setProducts([]);
-      setPage(1);
+      setPage(0);
     }
   };
 
@@ -49,7 +49,7 @@ export default function useProducts(): UseProductsResult {
     if (Object.keys(SORT).includes(sort)) {
       setSorting(sort as SortType);
       setProducts([]);
-      setPage(1);
+      setPage(0);
     }
   };
 
@@ -60,9 +60,11 @@ export default function useProducts(): UseProductsResult {
         const limit =
           page === 0 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
         const data = await fetchProducts(page, limit, category, sorting);
+
         if (data.last) {
           setIsLast(true);
         }
+
         setProducts((prevProducts) => [...prevProducts, ...data.content]);
       } catch (error) {
         if (error instanceof Error) {
