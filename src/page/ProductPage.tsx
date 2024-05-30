@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-import { fetchItems } from '../api';
 import ItemCard from '../components/ItemCard/ItemCard';
 import ItemList from '../components/ItemList/ItemList';
 import Dropdown from '../components/common/Dropdown/Dropdown';
@@ -13,29 +11,13 @@ import {
   DropBoxContainer,
   ContentWrapper,
 } from './ProductPage.style';
+import useCartItems from '../hooks/useCartItem';
 
 function ProductPage() {
   const { products, fetchNextPage, loading, changeCategory, changeSorting } =
     useProducts();
   const { lastProductElementRef } = useInfinityScroll(fetchNextPage);
-  const [cartItemIds, setCartItem] = useState<number[]>([]);
-
-  useEffect(() => {
-    const dd = async () => {
-      try {
-        const cartItems = await fetchItems();
-        const newCartItemIds = cartItems.map((cartItem) => cartItem.product.id);
-        setCartItem(newCartItemIds);
-      } catch (error) {
-        console.log('sdf');
-      }
-    };
-    dd();
-  }, []);
-
-  const isInCart = (productId: number) => {
-    return cartItemIds.includes(productId);
-  };
+  const { cartItemIds, isInCart } = useCartItems();
 
   return (
     <Container>
@@ -57,17 +39,19 @@ function ProductPage() {
           ></Dropdown>
         </DropBoxContainer>
 
-        <ItemList>
-          {products.map((product, index) => {
-            return (
-              <ItemCard
-                key={`${product.id}${index}`}
-                initIsInCart={isInCart(product.id)}
-                {...product}
-              />
-            );
-          })}
-        </ItemList>
+        {cartItemIds !== null && (
+          <ItemList>
+            {products.map((product, index) => {
+              return (
+                <ItemCard
+                  key={`${product.id}${index}`}
+                  initIsInCart={isInCart(product.id)}
+                  {...product}
+                />
+              );
+            })}
+          </ItemList>
+        )}
         {loading && (
           <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
         )}
