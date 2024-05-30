@@ -1,5 +1,6 @@
 import { HttpResponse, http } from 'msw';
 
+import { API_URL } from '@/api/config';
 import { ENDPOINT } from '@/api/endpoints';
 import fashionProductListWith20Items from '@/mocks/data//productList/category/20ItemsFashion.json';
 import fashionProductListWith4Items from '@/mocks/data/productList/category/4ItemsFashion.json';
@@ -11,7 +12,7 @@ import productListWith4Items from '@/mocks/data/productList/default/4Items.json'
 import productListWith4ItemsDesc from '@/mocks/data/productList/sort/4ItemsDesc.json';
 
 export const getProductListHandler = [
-  http.get(ENDPOINT.product.getList({}), ({ request }) => {
+  http.get(`${API_URL}${ENDPOINT.product.getList({})}`, ({ request }) => {
     const url = new URL(request.url);
 
     const page = Number(url.searchParams.get('page'));

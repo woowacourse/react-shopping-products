@@ -1,3 +1,19 @@
+export const FETCH_SIZE = {
+  firstPageItemCount: 20,
+  moreLoadItemCount: 4,
+};
+
+export const SORT_ORDER = [
+  {
+    key: 'asc',
+    value: '낮은 가격순',
+  },
+  {
+    key: 'desc',
+    value: '높은 가격순',
+  },
+];
+
 export const CATEGORY_LIST = [
   { key: '', value: '전체' },
   { key: 'fashion', value: '패션류' },

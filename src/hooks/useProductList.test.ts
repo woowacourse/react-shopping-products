@@ -1,6 +1,7 @@
 import { HttpResponse, http } from 'msw';
 import { renderHook, waitFor } from '@testing-library/react';
 
+import { API_URL } from '@/api/config';
 import { ENDPOINT } from '@/api/endpoints';
 import { act } from 'react';
 import { server } from '@/mocks/server';
@@ -24,7 +25,7 @@ describe('useProductList 테스트', () => {
 
     it('상품 목록 조회 중 에러 발생시 에러 상태를 가진다.', async () => {
       server.use(
-        http.get(ENDPOINT.product.getList({}), () => {
+        http.get(`${API_URL}${ENDPOINT.product.getList({})}`, () => {
           return new HttpResponse(null, { status: 500 });
         })
       );
@@ -62,7 +63,7 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(5);
         expect(result.current.products).toHaveLength(24);
       });
     });
@@ -81,7 +82,7 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(5);
         expect(result.current.products).toHaveLength(24);
         expect(result.current.hasNextPage).toBe(false);
       });
@@ -147,7 +148,7 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(5);
         expect(result.current.products).toHaveLength(24);
       });
 
@@ -210,7 +211,7 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(5);
         expect(result.current.products).toHaveLength(24);
       });
 
@@ -274,7 +275,7 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(5);
         expect(result.current.products).toHaveLength(24);
       });
 
@@ -331,7 +332,7 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(5);
         expect(result.current.products).toHaveLength(24);
       });
 

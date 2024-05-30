@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import { FETCH_SIZE } from '@/constants/productList';
 import { Product } from '@/types/product.type';
 import { getProductList } from '@/api/product';
 
-// TODO: 상수처리 파일로 옮기기
-const FIRST_PAGE_ITEM_COUNT = 20;
-const MORE_LOAD_ITEM_COUNT = 4;
-
-// TODO: hook 분리
 const useProductList = () => {
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(FIRST_PAGE_ITEM_COUNT);
+  const [size, setSize] = useState(FETCH_SIZE.firstPageItemCount);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -36,10 +32,16 @@ const useProductList = () => {
     fetchData();
   }, [page, size, category, order]);
 
+  const resetProductState = () => {
+    setProducts([]);
+    setPage(0);
+    setSize(FETCH_SIZE.firstPageItemCount);
+  };
+
   const fetchNextPage = () => {
     if (page === 0) {
-      setPage(FIRST_PAGE_ITEM_COUNT / MORE_LOAD_ITEM_COUNT); // 20 / 4 = 5
-      setSize(MORE_LOAD_ITEM_COUNT);
+      setPage(FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount); // 20 / 4 = 5
+      setSize(FETCH_SIZE.moreLoadItemCount);
     } else {
       setPage((prev) => prev + 1);
     }
@@ -48,17 +50,13 @@ const useProductList = () => {
   const handleChangeOrder = (newOrder: string) => {
     if (order === newOrder) return;
     setOrder(newOrder);
-    setProducts([]);
-    setPage(0);
-    setSize(FIRST_PAGE_ITEM_COUNT);
+    resetProductState();
   };
 
   const handleChangeCategory = (newCategory: string) => {
     if (category === newCategory) return;
     setCategory(newCategory);
-    setProducts([]);
-    setPage(0);
-    setSize(FIRST_PAGE_ITEM_COUNT);
+    resetProductState();
   };
 
   return {
