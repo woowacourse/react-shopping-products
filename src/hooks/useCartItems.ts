@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { addCartItem, deleteCartItem, fetchCartItem } from '../api';
 import { CartItemType } from '../types';
 import { useToast } from './useToast';
+import { ERROR } from '../constant/message';
 
 export function useCartItems() {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
@@ -27,7 +28,7 @@ export function useCartItems() {
       getCartItems();
       return true;
     } catch (error) {
-      showToast('상품 담기에 실패했습니다.');
+      showToast(ERROR.addProduct);
       return false;
     }
   };
@@ -38,7 +39,7 @@ export function useCartItems() {
       getCartItems();
       return true;
     } catch (error) {
-      showToast('상품 빼기에 실패했습니다.');
+      showToast(ERROR.deleteProduct);
       return false;
     }
   };

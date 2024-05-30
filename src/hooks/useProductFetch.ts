@@ -4,6 +4,7 @@ import { ProductType } from '../types';
 import { formattedKey } from './useProducts.util';
 import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
 import { useToast } from './useToast';
+import { ERROR } from '../constant/message';
 
 interface Props {
   selectBarCondition: Record<string, string>;
@@ -11,14 +12,14 @@ interface Props {
 
 export function useProductFetch({ selectBarCondition }: Props) {
   const [products, setProducts] = useState<ProductType[]>([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(FIRST_FETCH_PAGE);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => {
     setProducts([]);
-    setPage(0);
+    setPage(FIRST_FETCH_PAGE);
     setHasMore(true);
   }, [selectBarCondition.category, selectBarCondition.sort]);
 
@@ -43,7 +44,7 @@ export function useProductFetch({ selectBarCondition }: Props) {
       } catch (error) {
         if (error instanceof Error) {
           console.error(error.message);
-          showToast('상품 목록을 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.');
+          showToast(ERROR.fetchProductList);
         }
       } finally {
         setIsLoading(false);
