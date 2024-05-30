@@ -27,4 +27,35 @@ export const handlers = [
 
     return HttpResponse.json({ content: paginatedProducts, last: isLast });
   }),
+
+  http.post(`${CART_ITEMS_ENDPOINT}`, () => {
+    return HttpResponse.json({
+      productId: 10,
+      quantity: 1,
+    });
+  }),
+
+  http.get(`${CART_ITEMS_COUNT_ENDPOINT}`, () => {
+    return HttpResponse.json({
+      quantity: 8,
+    });
+  }),
+
+  http.get(CART_ITEMS_ENDPOINT, () => {
+    return HttpResponse.json({
+      content: [
+        { id: 10, product: { id: 12 } },
+        { id: 12, product: { id: 14 } },
+      ],
+    });
+  }),
+
+  http.delete(`${CART_ITEMS_ENDPOINT}/10`, () => {
+    return HttpResponse.json(
+      {
+        itemId: 10,
+      },
+      { status: 200 },
+    );
+  }),
 ];
