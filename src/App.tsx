@@ -1,12 +1,12 @@
-import { useState } from "react";
-import ProductList from "./component/ProductList";
+import ProductList from "./components/ProductList";
+import { CartItemsProvider } from "./store/cartItems";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <ProductList />
+      <CartItemsProvider>
+        <ProductList />
+      </CartItemsProvider>
     </>
   );
 }
