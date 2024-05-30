@@ -1,5 +1,5 @@
 import * as Styled from './ProductCardList.styled';
-import CartToggleButton from '../addCartItemButton/CartToggleButton';
+import CartToggleButton from '../cartToggleButton/CartToggleButton';
 import Spinner from '../common/spinner/Spinner';
 import ProductCard from '../productCard/ProductCard';
 
