@@ -1,5 +1,4 @@
-import { CartProvider } from './contexts/CartContext';
-// CartContext 경로에 맞게 수정
+import { CartProvider } from '@/contexts/CartContext';
 import { Global } from '@emotion/react';
 import Products from '@/pages/Products';
 import baseStyle from '@/style/base.style';

@@ -24,7 +24,7 @@ export const CartProvider = ({ children }: Props) => {
       const cartList = await getCartList();
       setCartList(cartList);
     } catch (error) {
-      console.error('Error fetching cart items:', error);
+      console.error(error);
     }
   };
 

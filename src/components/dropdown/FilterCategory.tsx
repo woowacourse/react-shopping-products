@@ -1,5 +1,5 @@
 import BaseDropDown from './BaseDropDown';
-import { CATEGORY_LIST } from '@/constants/category';
+import { CATEGORY_LIST } from '@/constants/productList';
 
 interface Props {
   onChangeCategory: (category: string) => void;

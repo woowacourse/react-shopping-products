@@ -1,5 +1,5 @@
 import BaseDropDown from './BaseDropDown';
-import { SORT_ORDER } from '@/constants/sortOrder';
+import { SORT_ORDER } from '@/constants/productList';
 
 interface Props {
   onChangeOrder: (order: string) => void;

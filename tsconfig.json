@@ -33,13 +33,13 @@
       "@/utils": ["src/utils/*"],
       "@/constants": ["src/constants/*"],
       "@/assets": ["src/assets/*"],
-      "@/store": ["src/store/*"],
       "@/style": ["src/style/*"],
       "@/api": ["src/api/*"],
       "@/hooks": ["src/hooks/*"],
-      "@/mocks": ["src/mocks/*"]
+      "@/mocks": ["src/mocks/*"],
+      "@/contexts": ["src/contexts/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
