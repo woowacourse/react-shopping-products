@@ -1,6 +1,7 @@
+import { Sorting } from "./../interfaces/Sorting";
 import { useEffect, useState } from "react";
 
-import { fetchProductList, SortOption } from "../apis/products";
+import { fetchProductList } from "../apis/products";
 import { PRODUCT_LIST } from "../constants/productList";
 import { Category, Product } from "../interfaces/Product";
 
@@ -14,7 +15,7 @@ interface UseProductListResult {
 
 interface UseProductListProps {
   category?: Category;
-  sortOption?: SortOption;
+  sortOption?: Sorting;
 }
 
 export default function useProductList(
@@ -27,7 +28,6 @@ export default function useProductList(
   const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
-    console.log(option);
     const getProductList = async () => {
       try {
         setProductListLoading(true);
