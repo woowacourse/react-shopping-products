@@ -46,7 +46,8 @@ export const Option = styled.li`
   padding: 8px;
 
   &:hover {
-    background: grey;
+    background: hotpink;
+    color: white;
     transition: 0.1s;
   }
 `;

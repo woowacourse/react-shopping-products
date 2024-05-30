@@ -15,6 +15,16 @@ export const Header = styled.header`
 
   display: flex;
   justify-content: space-between;
+  position: fixed;
+  top: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    width: 429px;
+  }
 `;
 
 export const Title = styled.span`

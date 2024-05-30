@@ -21,7 +21,7 @@ export const getProducts = async ({ category, page, size, sort }: getProductsPro
   };
 
   const searchParams = new URLSearchParams(params);
-  searchParams.append("sort", `price,${convertedSort}`);
+  searchParams.append("sort", `price,id,${convertedSort}`);
 
   if (category !== "전체") {
     searchParams.append("category", convertedCategory);
