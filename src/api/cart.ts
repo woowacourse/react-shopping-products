@@ -1,9 +1,10 @@
-import { CartItem } from '../types';
+import { generateQueryParams } from '../utils/generateQueryParams';
 import { HEADERS } from './common';
 import { CART_ITEMS_ENDPOINT } from './endpoints';
 
-export const fetchCartItems = async (): Promise<CartItem[]> => {
-  const response = await fetch(`${CART_ITEMS_ENDPOINT}`, {
+export const fetchCartItems = async () => {
+  const params = generateQueryParams({ size: 100 });
+  const response = await fetch(`${CART_ITEMS_ENDPOINT}?${params}`, {
     method: 'GET',
     headers: HEADERS,
   });

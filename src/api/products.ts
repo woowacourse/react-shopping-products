@@ -1,11 +1,12 @@
 import { SortType } from '../components/hooks/useProducts';
+import { generateQueryParams } from '../utils/generateQueryParams';
 import { HEADERS } from './common';
 import { PRODUCTS_ENDPOINT } from './endpoints';
 
-interface ProductArgs {
-  page?: number;
-  size?: number;
-  sort?: SortType;
+interface ProductQueryParams {
+  page: number;
+  size: number;
+  sort: SortType;
   category?: string;
 }
 
@@ -14,17 +15,17 @@ export async function fetchProducts({
   size,
   sort,
   category,
-}: ProductArgs) {
-  // URLSearchParams로 리팩토링?
-  const response = await fetch(
-    `${PRODUCTS_ENDPOINT}?page=${page}&size=${size}&sort=price,${sort}${
-      category !== '' ? `&category=${category}` : ''
-    }`,
-    {
-      method: 'GET',
-      headers: HEADERS,
-    }
-  );
+}: ProductQueryParams) {
+  const params = generateQueryParams({
+    page,
+    size,
+    sort: `price,${sort}`,
+    category,
+  });
+  const response = await fetch(`${PRODUCTS_ENDPOINT}?${params}`, {
+    method: 'GET',
+    headers: HEADERS,
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch products');
