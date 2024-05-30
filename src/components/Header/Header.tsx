@@ -1,4 +1,3 @@
-import React from 'react';
 import { Badge, CartIcon, LogoIcon } from '../../assets';
 import * as S from './Header.styled';
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
 import * as S from './ProductList.styled';
 import { Product } from '../../types/fetch';
