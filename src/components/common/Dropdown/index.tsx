@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { LowerArrow, UpperArrow } from '../Arrows';
+import { LowerArrow, UpperArrow } from './Arrows';
 import * as S from './style';
 
 type Option = {
