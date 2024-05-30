@@ -24,7 +24,7 @@ const useIntersectionObserver = <T extends HTMLElement>(callback: () => void) =>
       if (!observerRef.current) return;
       observer.unobserve(observerRef.current);
     };
-  }, [callback]);
+  }, [callback, observerRef.current]);
 
   return observerRef;
 };
