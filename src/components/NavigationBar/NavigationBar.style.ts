@@ -7,6 +7,7 @@ export const NavigationBar = styled.header`
   height: 64px;
   padding: 0 24px;
   background: #000000;
+  z-index: 100;
 
   display: flex;
   align-items: center;
