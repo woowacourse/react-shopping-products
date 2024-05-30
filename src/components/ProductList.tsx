@@ -3,7 +3,6 @@ import ProductItem from "./ProductItem";
 import Select from "./Select";
 import useProducts from "../hooks/useProducts";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import { v4 as uuid } from "uuid";
 import ShopHeader from "./ShopHeader";
 import ErrorToast from "./ErrorToast";
 import useToast from "../hooks/useToast";
@@ -51,13 +50,13 @@ const ProductList = () => {
     }
   };
 
-  const onIntersect: IntersectionObserverCallback = (entry) => {
+  const handleIntersection: IntersectionObserverCallback = (entry) => {
     if (entry[0].isIntersecting && !loading) {
       fetchNextPage();
     }
   };
 
-  const { setTarget } = useIntersectionObserver<HTMLDivElement>(onIntersect);
+  const { setTarget } = useIntersectionObserver<HTMLDivElement>(handleIntersection);
 
   return (
     <>
@@ -71,8 +70,14 @@ const ProductList = () => {
             <Select onChange={handleSortChange} options={PRICE_SORT_OPTIONS} />
           </S.SelectContainer>
           <S.ItemContainer>
-            {products.map(({ name, price, imageUrl }) => (
-              <ProductItem key={uuid()} name={name} price={price} imageUrl={imageUrl} />
+            {products.map(({ id, name, price, imageUrl }) => (
+              <ProductItem
+                key={crypto.randomUUID()}
+                id={id}
+                name={name}
+                price={price}
+                imageUrl={imageUrl}
+              />
             ))}
             {loading && <S.Spinner />}
             <div ref={setTarget}></div>
