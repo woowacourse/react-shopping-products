@@ -7,6 +7,7 @@ import useFetchAddCart from '../hooks/useFetchAddCart';
 import ProductList from '../components/ProductList/ProductList';
 import useFetchProducts from '../hooks/useFetchProducts';
 import { SortingParam } from '../types/sort';
+import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
 
 function Product() {
   const fetchAddCartState = useFetchAddCart();
@@ -19,6 +20,7 @@ function Product() {
     <>
       <CartContext.Provider value={fetchAddCartState}>
         <Header badgeCount={fetchAddCartState.cartIdSet.size} />
+        {isError && <ErrorMessage />}
         <S.ProductContentWrapper>
           <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
           <Dropdown
