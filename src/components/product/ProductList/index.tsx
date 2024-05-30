@@ -1,4 +1,4 @@
-import APIErrorFallback from '../../common/APIErrorFallback';
+import APIErrorFallbackModal from '../../common/APIErrorFallbackModal';
 import { LoadingSpinner } from '../../common/LoadingSpinner/style';
 import * as S from './style';
 
@@ -14,7 +14,7 @@ export default function ProductList({
 }: React.PropsWithChildren<ProductListProps>) {
   return (
     <S.Grid>
-      {error && <APIErrorFallback errorMessage={error.message} />}
+      {error && <APIErrorFallbackModal errorMessage={error.message} />}
 
       {children}
 
