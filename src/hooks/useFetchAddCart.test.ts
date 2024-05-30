@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import useFetchAddCart from './useFetchAddCart';
 
 describe('useFetchAddCart', () => {
@@ -36,7 +36,7 @@ describe('useFetchAddCart', () => {
     expect(result.current.cartIdSet.size).toBe(1);
   });
 
-  it('장바구니에 담겨있는 제품을 삭제하면 장바구니에 담긴 제품 종류 개수가 감소되어야 한다.', () => {
+  it('장바구니에 담겨있는 제품을 삭제하면 장바구니에 담긴 제품 종류 개수가 감소되어야 한다.', async () => {
     const { result } = renderHook(() => useFetchAddCart());
 
     act(() => {
@@ -45,7 +45,7 @@ describe('useFetchAddCart', () => {
 
     expect(result.current.cartIdSet.size).toBe(1);
 
-    act(() => {
+    await waitFor(() => {
       result.current.patchToRemoveCart(3);
     });
 

@@ -38,18 +38,11 @@ export interface ProductResponse extends ProductResponseWithoutContent {
   content: Product[];
 }
 
-export interface Cart {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
 
 export interface Carts {
   id: number;
   quantity: number;
-  product: Cart;
+  product: Product;
 }
 
 export interface CartResponse extends ProductResponseWithoutContent {

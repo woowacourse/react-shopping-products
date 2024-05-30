@@ -2,7 +2,7 @@ import { HttpResponse, http, StrictRequest } from 'msw';
 import { ENDPOINTS_CART, ENDPOINTS_PRODUCTS } from '../api/endpoints';
 import { ProductResponse } from '../types/fetch';
 import productSorter from '../utils/productSorter';
-import { mockCart } from './cart';
+import { mockCart as mockCartResponse } from './cart';
 import { mockProductsResponse } from './products';
 
 const filterProductHandler = (
@@ -57,23 +57,26 @@ export const handlers = [
         (product) => product.id === id,
       );
       if (findProduct) {
-        mockCart.content = [...mockCart.content, findProduct];
-        // mockCart.content.push(findProduct);
+        const data = {
+          id: Math.random() * 1000,
+          quantity: 1,
+          product: findProduct,
+        };
+        mockCartResponse.content = [...mockCartResponse.content, data];
       }
-      return HttpResponse.json(mockCart);
+      return HttpResponse.json(mockCartResponse);
     },
   ),
   http.get(`${ENDPOINTS_CART}`, async () => {
-    return HttpResponse.json(mockCart);
+    return HttpResponse.json(mockCartResponse);
   }),
 
   // 카트에서 상품 제거
   http.delete(`${ENDPOINTS_CART}/:id`, ({ params }) => {
     const id = Number(params.id);
-    const filteredProduct = mockProductsResponse.content.filter(
-      (product) => product.id !== id,
+    const newMockCart = mockCartResponse.content.filter(
+      (cart) => cart.id !== id,
     );
-    mockCart.content = [...filteredProduct];
-    return HttpResponse.json(mockCart);
+    mockCartResponse.content = newMockCart;
   }),
 ];
