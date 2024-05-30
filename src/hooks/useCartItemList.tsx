@@ -1,84 +1,116 @@
-import { createContext, useState, useContext, ReactNode, useMemo } from 'react';
+import { createContext, useState, useContext, ReactNode, useMemo, useEffect } from 'react';
 import { CartItem } from '@/types';
 import {
   requestCartItemList,
   requestAddCartItem,
   requestDeleteCartItem,
-} from '@/apis/request/CartItem';
+} from '@/apis/request/cartItem';
+import { useToast } from './useToast';
 
 const BASE_PAGE_SIZE = 20;
 
 interface CartItemListContextType {
+  loading: boolean;
   cartItemList: CartItem[];
   toggleCartItem: (cartItemId: number) => void;
-  updateCartItemList: (page: number) => void;
-  handleDeleteCartItem: (cartItemId: number) => void;
+  isInCart: (productId: number) => boolean;
+  error: null | Error;
 }
 
-const getPageForCartItem = (cartItemId: number, cartItems: CartItem[], pageSize: number) => {
-  const index = cartItems.findIndex((item) => item.id === cartItemId);
-  if (index === -1) return -1;
-  return Math.floor(index / pageSize) + 1;
-};
-
-const CartItemListContext = createContext<CartItemListContextType | undefined>(undefined);
+export const CartItemListContext = createContext<CartItemListContextType | undefined>(undefined);
 
 export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
-  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const { showToast } = useToast();
 
-  const updateCartItemList = async (page: number) => {
-    const cartItems = await requestCartItemList(page);
-    setCartItemList(cartItems);
-    setPage(page);
+  const updateCartItemListForAllPage = async () => {
+    try {
+      setLoading(true);
+      const { content, totalPages } = await requestCartItemList(1, BASE_PAGE_SIZE);
+
+      for (let i = 2; i <= totalPages; i++) {
+        const { content: curCartItemList } = await requestCartItemList(i, BASE_PAGE_SIZE);
+        content.push(...curCartItemList);
+      }
+
+      setCartItemList(content);
+    } catch (error) {
+      setError(error as Error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const addCartItem = async (productId: number) => {
     await requestAddCartItem(productId, 1);
-    updateCartItemList(page);
-  };
 
-  const handleDeleteCartItem = async (cartItemId: number) => {
-    const page = getPageForCartItem(cartItemId, cartItemList, BASE_PAGE_SIZE);
+    const prevPage = Math.ceil(cartItemList.length / BASE_PAGE_SIZE);
+    const ItemCountInLastPage = cartItemList.length % BASE_PAGE_SIZE;
 
-    if (page === -1) {
-      alert('아이템을 찾을 수 없습니다.');
+    let curPage;
+    if (ItemCountInLastPage < BASE_PAGE_SIZE) curPage = prevPage;
+    else curPage = prevPage + 1;
+
+    const { content } = await requestCartItemList(curPage, BASE_PAGE_SIZE);
+    const curCartItem = content.find(({ product }) => product.id === productId);
+
+    if (!curCartItem) {
+      showToast('system error. 관리자에게 문의하십시오.');
       return;
     }
 
-    await deleteCartItem(cartItemId, page);
+    setCartItemList((prev) => [...prev, curCartItem]);
   };
 
-  const deleteCartItem = async (cartItemId: number, page: number) => {
+  const deleteCartItem = async (cartItemId: number) => {
     await requestDeleteCartItem(cartItemId);
-    updateCartItemList(page);
+
+    const updatedCartItemList = cartItemList.filter(({ id }) => id !== cartItemId);
+
+    setCartItemList(updatedCartItemList);
   };
 
-  const toggleCartItem = (productId: number) => {
+  const toggleCartItem = async (productId: number) => {
     const cartItem = cartItemList.find(({ product }) => product.id === productId);
 
-    if (!cartItem) {
-      alert('존재하지 않는 아이템입니다.');
-      return;
+    try {
+      if (cartItem) await deleteCartItem(cartItem.id);
+      else await addCartItem(productId);
+    } catch (error) {
+      showToast('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
     }
-
-    if (cartItemList.some(({ id }) => id === cartItem.id)) deleteCartItem(cartItem.id, page);
-    else addCartItem(productId);
-
-    updateCartItemList(page);
   };
+
+  const isInCart = (productId: number) => {
+    return cartItemList.some(({ product }) => product.id === productId);
+  };
+
+  useEffect(() => {
+    updateCartItemListForAllPage();
+  }, []);
 
   const value = useMemo(
     () => ({
+      loading,
       cartItemList,
       toggleCartItem,
-      updateCartItemList,
-      handleDeleteCartItem,
+      isInCart,
+      error,
     }),
-    [cartItemList, toggleCartItem, updateCartItemList, handleDeleteCartItem],
+    [cartItemList, toggleCartItem, isInCart],
   );
 
   return <CartItemListContext.Provider value={value}>{children}</CartItemListContext.Provider>;
 };
 
-export const useCartItemList = () => useContext(CartItemListContext);
+export const useCartItemListContext = () => {
+  const context = useContext(CartItemListContext);
+
+  if (!context) {
+    throw new Error('useCartItemListContext는 CartItemListProvider 내부에서 사용되어야 합니다.');
+  }
+
+  return context;
+};

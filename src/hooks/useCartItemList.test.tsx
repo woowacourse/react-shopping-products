@@ -1,24 +1,49 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { useCartItemList, CartItemListProvider } from './useCartItemList';
+import { CartItemListProvider, useCartItemListContext } from './useCartItemList';
 import { BASE_URL } from '@/apis/baseUrl';
 import { ENDPOINT } from '@/apis/endpoints';
+import cartItemList from '@/mocks/cartItemList.json';
+import ToastProvider from './useToast';
 
 describe('useCartItemList에 대한 테스트 코드', () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <CartItemListProvider>{children}</CartItemListProvider>
+    <ToastProvider>
+      <CartItemListProvider>{children}</CartItemListProvider>
+    </ToastProvider>
   );
 
   it('초기에 장바구니 아이템을 fetch 해온다.', async () => {
-    const { result } = renderHook(() => useCartItemList(), { wrapper });
+    const { result } = renderHook(() => useCartItemListContext(), { wrapper });
 
     await waitFor(() => {
-      expect(result.current?.cartItemList).toHaveLength(2);
+      expect(result.current.cartItemList).toHaveLength(cartItemList.length);
     });
   });
 
-  it('장바구니의 아이템 개수를 반환한다.', () => {});
+  it('장바구니에 아이템을 추가 할 수 있다.', async () => {
+    const { result } = renderHook(() => useCartItemListContext(), { wrapper });
 
-  it('장바구니에 아이템을 추가 할 수 있다.', () => {});
+    await act(async () => {
+      await result.current.toggleCartItem(3);
+    });
 
-  it('장바구니에 아이템을 제거 할 수 있다.', () => {});
+    await waitFor(() => {
+      expect(result.current.cartItemList).toHaveLength(cartItemList.length);
+      expect(result.current.isInCart(3)).toBe(true);
+    });
+  });
+
+  it('장바구니에 아이템을 제거 할 수 있다.', async () => {
+    const { result } = renderHook(() => useCartItemListContext(), { wrapper });
+
+    const initialItem = cartItemList[0];
+    await act(async () => {
+      await result.current.toggleCartItem(initialItem.product.id);
+    });
+
+    await waitFor(() => {
+      expect(result.current.cartItemList).toHaveLength(cartItemList.length - 1);
+      expect(result.current.isInCart(initialItem.product.id)).toBe(false);
+    });
+  });
 });
