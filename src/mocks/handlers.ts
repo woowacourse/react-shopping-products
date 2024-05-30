@@ -6,7 +6,7 @@ import cartItemMockData from "./cartItems.json";
 import productsMockData from "./products.json";
 
 function CartMockClosure() {
-  let cartMockData = cartItemMockData;
+  let cartMockData = JSON.parse(JSON.stringify(cartItemMockData));
 
   const getCartMockData = () => {
     return cartMockData;
@@ -17,11 +17,11 @@ function CartMockClosure() {
   };
 
   const deleteCartItem = (id: number) => {
-    cartMockData.content = cartMockData.content.filter((el) => el.id !== id);
+    cartMockData.content = cartMockData.content.filter((el: CartItem) => el.id !== id);
   };
 
   const resetCartItems = () => {
-    cartMockData = cartItemMockData;
+    cartMockData = JSON.parse(JSON.stringify(cartItemMockData));
   };
 
   return { getCartMockData, pushCartItem, deleteCartItem, resetCartItems };
