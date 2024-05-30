@@ -6,7 +6,17 @@ import { ProductList } from "../ProductList/ProductList";
 import { StyledProduct } from "./Product.styled";
 
 export const Product = () => {
-  const { isLoading } = useProducts();
+  const {
+    isLoading,
+    products,
+    isLastPage,
+    fetchNextPage,
+    resetPage,
+    setCategory,
+    setSortOption,
+    selectedCategory,
+    selectedSort,
+  } = useProducts();
   const { errorStatus } = useError();
 
   return (
@@ -16,8 +26,19 @@ export const Product = () => {
       ) : (
         !errorStatus && (
           <>
-            <ProductHeader />
-            <ProductList />
+            <ProductHeader
+              resetPage={resetPage}
+              setCategory={setCategory}
+              setSortOption={setSortOption}
+              selectedCategory={selectedCategory}
+              selectedSort={selectedSort}
+            />
+            <ProductList
+              products={products}
+              isLoading={isLoading}
+              isLastPage={isLastPage}
+              fetchNextPage={fetchNextPage}
+            />
           </>
         )
       )}

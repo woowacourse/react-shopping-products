@@ -10,7 +10,17 @@ interface UseProductsResult {
   page: number;
   fetchNextPage: () => void;
   isLastPage: boolean;
+  setSortOption: (sortOption: string) => void;
+  setCategory: (category: string) => void;
+  resetPage: () => void;
+  selectedCategory: string;
+  selectedSort: string;
 }
+
+const sortOptionsMap: { [key: string]: string } = {
+  "price,asc": "낮은 가격순",
+  "price,desc": "높은 가격순",
+};
 
 export default function useProducts(): UseProductsResult {
   const [products, setProducts] = useState<ProductProps[]>([]);
@@ -19,38 +29,62 @@ export default function useProducts(): UseProductsResult {
   const { setErrorStatus } = useError();
   const [page, setPage] = useState<number>(1);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
+  const [sortOption, setSortOption] = useState<string>("price,asc");
+  const [category, setCategory] = useState<string>("전체");
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setIsLoading(true);
-      try {
-        const size = page === PAGE.FIRST_PAGE ? PAGE.FIRST_PAGE_LIMIT : PAGE.OTHER_PAGE_LIMIT;
-        const response = await fetch(`${PRODUCTS_ENDPOINT}?page=${page}&size=${size}`);
+  const fetchProducts = async () => {
+    setIsLoading(true);
+    try {
+      const size = page === PAGE.FIRST_PAGE ? PAGE.FIRST_PAGE_LIMIT : PAGE.OTHER_PAGE_LIMIT;
+      const categoryQuery = category === "전체" ? "" : `category=${category}`;
 
-        if (!response.ok) {
-          setErrorStatus(response.status);
-          throw new Error("에러 발생");
-        }
-        const data = await response.json();
-        setProducts((prevProducts) => [...prevProducts, ...data.content]);
+      const response = await fetch(
+        `${PRODUCTS_ENDPOINT}?${categoryQuery}&page=${page}&size=${size}&sort=${sortOption}`
+      );
 
-        if (data.content.length < size) {
-          setIsLastPage(true);
-          setPage((prevPage) => prevPage - 1);
-        }
-      } catch (error) {
-        setError(error as Error);
-      } finally {
-        setIsLoading(false);
+      if (!response.ok) {
+        setErrorStatus(response.status);
+        throw new Error("에러 발생");
       }
-    };
+      const data = await response.json();
 
-    if (!isLastPage) fetchProducts();
-  }, [setErrorStatus, page, isLastPage]);
+      setProducts((prevProducts) =>
+        page === 1 ? data.content : [...prevProducts, ...data.content]
+      );
 
-  const fetchNextPage = () => {
-    if (!isLastPage) setPage((prevPage) => prevPage + 1);
+      setIsLastPage(data.last);
+    } catch (error) {
+      setError(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  return { products, isLoading, error, page, isLastPage, fetchNextPage };
+  useEffect(() => {
+    fetchProducts();
+  }, [setErrorStatus, page, sortOption, category]);
+
+  const fetchNextPage = () => {
+    if (!isLastPage && !isLoading) setPage((prevPage) => prevPage + 1);
+  };
+
+  const resetPage = () => {
+    setProducts([]);
+    setPage(1);
+    setIsLastPage(false);
+  };
+
+  return {
+    products,
+    isLoading,
+    error,
+    page,
+    isLastPage,
+    fetchNextPage,
+    setSortOption,
+    setCategory,
+    resetPage,
+    selectedCategory: category,
+    selectedSort: sortOptionsMap[sortOption],
+  };
 }

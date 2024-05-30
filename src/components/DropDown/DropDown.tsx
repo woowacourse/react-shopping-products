@@ -1,13 +1,18 @@
 import { StyledOption, StyledSelect } from "./DropDown.styled";
 
 interface DropDownProps {
-  onClick: () => void;
+  value: string;
+  onChange: (value: string) => void;
   options: string[];
 }
 
-export const DropDown = ({ onClick, options }: DropDownProps) => {
+export const DropDown = ({ value, onChange, options }: DropDownProps) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onChange(e.target.value);
+  };
+
   return (
-    <StyledSelect onClick={onClick} name="category" id="category">
+    <StyledSelect value={value} onChange={handleChange}>
       {options.map((opt) => (
         <StyledOption key={opt} value={opt}>
           {opt}

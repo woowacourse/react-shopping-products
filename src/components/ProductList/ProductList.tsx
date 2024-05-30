@@ -1,14 +1,24 @@
 import { useCallback, useRef } from "react";
-import useProducts from "../../hooks/useProducts";
 import { ProductItem } from "../ProductItem/ProductItem";
 import { StyledProductList } from "./ProductList.styled";
 
-export const ProductList = () => {
-  const { products, fetchNextPage, isLoading, isLastPage } = useProducts();
+interface ProductListProps {
+  products: ProductProps[];
+  isLoading: boolean;
+  fetchNextPage: () => void;
+  isLastPage: boolean;
+}
+
+export const ProductList = ({
+  products,
+  isLoading,
+  isLastPage,
+  fetchNextPage,
+}: ProductListProps) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastProductElementRef = useCallback(
-    (node) => {
+    (node: HTMLElement | null) => {
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();
 
