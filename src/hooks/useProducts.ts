@@ -9,6 +9,7 @@ import {
   SORT,
   SortType,
 } from '../constants';
+import { useToast } from './useToast';
 
 interface Product {
   id: number;
@@ -36,6 +37,7 @@ export default function useProducts(): UseProductsResult {
   const [isLast, setIsLast] = useState(false);
   const [category, setCategory] = useState<CategoryType>('all');
   const [sorting, setSorting] = useState<SortType>('priceAsc');
+  const { createToast } = useToast();
 
   const changeCategory = (category: string) => {
     if (Object.keys(CATEGORY).includes(category)) {
@@ -65,7 +67,10 @@ export default function useProducts(): UseProductsResult {
         }
         setProducts((prevProducts) => [...prevProducts, ...data.content]);
       } catch (error) {
-        setError(error);
+        if (error instanceof Error) {
+          setError(error);
+          createToast('⛔️ 장바구니 상품을 가져오는데 실. 다시 시도해 주세요.');
+        }
       } finally {
         setLoading(false);
       }
