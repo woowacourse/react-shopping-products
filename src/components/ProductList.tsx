@@ -1,29 +1,19 @@
 import styled, { keyframes } from "styled-components";
 import ProductItem from "./ProductItem";
 import Select from "./Select";
-import useProducts from "../hooks/useProducts";
-import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import ShopHeader from "./ShopHeader";
 import ErrorToast from "./ErrorToast";
+import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import useProducts from "../hooks/useProducts";
 import useToast from "../hooks/useToast";
 import { useEffect } from "react";
-
-const CATEGORY_OPTIONS = [
-  { value: "all", label: "전체" },
-  { value: "electronics", label: "전자제품" },
-  { value: "books", label: "도서" },
-  { value: "fashion", label: "패션" },
-  {
-    value: "kitchen",
-    label: "주방용품",
-  },
-  { value: "fitness", label: "운동기구" },
-];
-
-const PRICE_SORT_OPTIONS = [
-  { value: "asc", label: "낮은 가격순" },
-  { value: "desc", label: "높은 가격순" },
-];
+import {
+  CATEGORY_SELECT_OPTIONS,
+  PRICE_SORT_SELECT_OPTIONS,
+  SORT_OPTIONS,
+} from "../constants/products";
+import { isIncludedInList } from "../utils/isIncludedInList";
+import { SortOption } from "../types/sortOption";
 
 const ProductList = () => {
   const { products, loading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort } =
@@ -44,9 +34,10 @@ const ProductList = () => {
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!loading) {
+    const value = e.target.value;
+    if (!loading && isIncludedInList<SortOption>(value, Object.values(SORT_OPTIONS))) {
       resetPage();
-      setPriceSort(e.target.value as "asc" | "desc");
+      setPriceSort(value);
     }
   };
 
@@ -66,8 +57,8 @@ const ProductList = () => {
         <S.ShopBody>
           <S.Title>bpple 상품 목록</S.Title>
           <S.SelectContainer>
-            <Select onChange={handleCategoryChange} options={CATEGORY_OPTIONS} />
-            <Select onChange={handleSortChange} options={PRICE_SORT_OPTIONS} />
+            <Select onChange={handleCategoryChange} options={CATEGORY_SELECT_OPTIONS} />
+            <Select onChange={handleSortChange} options={PRICE_SORT_SELECT_OPTIONS} />
           </S.SelectContainer>
           <S.ItemContainer>
             {products.map(({ id, name, price, imageUrl }) => (
