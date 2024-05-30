@@ -5,6 +5,7 @@ export const ProductsContent = styled.ul`
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem 1rem;
 
-  max-height: 70vh;
+  height: 100%;
+
   overflow-y: scroll;
 `;
