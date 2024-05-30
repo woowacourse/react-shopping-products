@@ -1,6 +1,11 @@
 export const BASE_URL = import.meta.env.VITE_API_URL;
 
-export const PRODUCTS_ENDPOINT = `${BASE_URL}/products`;
+export const ENDPOINT = {
+  PRODUCT: `${BASE_URL}/products`,
+  CART_ITEMS: `${BASE_URL}/cart-items`,
+  CART_ITEMS_COUNT: `${BASE_URL}/cart-items/count`,
+  DELETE_CART_ITEM: (cartItemId: number) => `${BASE_URL}/cart-items/${cartItemId}`,
+} as const;
 
 export const ERROR_MESSAGE = {
   SERVER_ERROR: '서버에 일시적인 문제가 생겼습니다. 잠시 후에 다시 접속해 주세요.',

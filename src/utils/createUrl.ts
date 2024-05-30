@@ -1,4 +1,4 @@
-import { PRODUCTS_ENDPOINT } from '../constants/apis';
+import { ENDPOINT } from '../constants/apis';
 import { CategoryQueryString, PRODUCTS_SIZE, SortOptionQueryString } from '../constants/products';
 
 interface CreateUrlProps {
@@ -12,5 +12,5 @@ export default function createUrl({ page, category, sortOption }: CreateUrlProps
   const categoryString = category === 'all' ? '' : `&category=${category}`;
   const productSizeForRequest = page === 0 ? 20 : PRODUCTS_SIZE.perRequest;
 
-  return `${PRODUCTS_ENDPOINT}?page=${pageNumberForRequest}&size=${productSizeForRequest}${categoryString}&sort=price,${sortOption}`;
+  return `${ENDPOINT.PRODUCT}?page=${pageNumberForRequest}&size=${productSizeForRequest}${categoryString}&sort=price,${sortOption}`;
 }
