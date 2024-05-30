@@ -33,9 +33,6 @@ export async function requestAddCartItem(productId: number, quantity: number) {
   });
 
   if (!response.ok) {
-    const errorMessage = await response.text();
-    console.log(errorMessage);
-    // 여기는 그냥 에러 체크용 코드
     throw new Error("Failed to add cart item");
   }
 }
@@ -50,9 +47,6 @@ export async function requestDeleteCartItem(cartItemId: number | undefined) {
   });
 
   if (!response.ok) {
-    const errorMessage = await response.text();
-    console.log(errorMessage);
-    // 여기도 그냥 에러 체크용 코드
     throw new Error("Failed to delete cart item");
   }
 }

@@ -1,32 +1,21 @@
-import { Category, Product } from "../interfaces/Product";
+import { Category } from "../interfaces/Product";
+import { Sorting } from "../interfaces/Sorting";
 import { PRODUCTS_ENDPOINT, token } from "./config";
-
-export type SortProperty = "asc" | "desc";
-
-export type SortOption = [keyof Product, SortProperty];
 
 export async function fetchProductList(
   page: number,
   limit: number,
   category?: Category,
-  sortOptionList?: SortOption[]
+  sortOption: Sorting = "price%2Casc" as Sorting
 ) {
-  const requiredQuery = `&page=${page}&limit=${limit}`;
+  const requiredQuery = `page=${page}&size=${limit}`;
 
-  const categoryQuery = category ? `category=${category}` : "";
+  const categoryQuery = category ? `category=${category}&` : "";
 
-  const sortOptionListQuery = sortOptionList
-    ? sortOptionList.reduce(
-        (query, sortOption) =>
-          `${query}&sort=${sortOption[0]},${sortOption[1]}`,
-        ""
-      )
-    : "";
-  console.log(
-    `${PRODUCTS_ENDPOINT}?${categoryQuery}&${requiredQuery}&${sortOptionListQuery}`
-  );
+  const sortOptionQuery = sortOption ? `sort=${sortOption}` : "";
+
   const response = await fetch(
-    `${PRODUCTS_ENDPOINT}?${categoryQuery}&${requiredQuery}&${sortOptionListQuery}`,
+    `${PRODUCTS_ENDPOINT}?${categoryQuery}${requiredQuery}&${sortOptionQuery}`,
     {
       method: "GET",
       headers: {

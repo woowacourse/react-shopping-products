@@ -17,7 +17,9 @@ const ToggleCartItemButton = ({
       size="s"
       radius="s"
       color={isInCart ? "secondary" : "primary"}
-      onClick={onClick}
+      onClick={() => {
+        onClick();
+      }}
     >
       <S.ButtonContent>
         <S.Icon src={isInCart ? RemoveFromCartIcon : AddToCartIcon} />

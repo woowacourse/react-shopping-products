@@ -12,17 +12,22 @@ interface UseProductListResult {
   fetchNextPage: () => void;
 }
 
+interface UseProductListProps {
+  category?: Category;
+  sortOption?: SortOption;
+}
+
 export default function useProductList(
-  category?: Category,
-  sortOptionList?: SortOption[]
+  option: UseProductListProps
 ): UseProductListResult {
   const [productList, setProductList] = useState<Product[]>([]);
   const [productListLoading, setProductListLoading] = useState<boolean>(true);
-  const [productListError, setproductListError] = useState<unknown>(null);
+  const [productListError, setProductListError] = useState<unknown>(null);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
+    console.log(option);
     const getProductList = async () => {
       try {
         setProductListLoading(true);
@@ -31,22 +36,26 @@ export default function useProductList(
           page === 0
             ? PRODUCT_LIST.initialPageProductQuantity
             : PRODUCT_LIST.additionalPageProductQuantity,
-          category,
-          sortOptionList
+          option.category,
+          option.sortOption
         );
-        setProductList((prevProductList) => [
-          ...prevProductList,
-          ...data.content,
-        ]);
+        if (page === 0) {
+          setProductList(data.content);
+        } else {
+          setProductList((prevProductList) => [
+            ...prevProductList,
+            ...data.content,
+          ]);
+        }
         setIsLastPage(data.last);
       } catch (productListError) {
-        setproductListError(productListError);
+        setProductListError(productListError);
       } finally {
         setProductListLoading(false);
       }
     };
     getProductList();
-  }, [page]);
+  }, [page, option.category, option.sortOption]);
 
   const fetchNextPage = () => {
     if (!isLastPage) {
