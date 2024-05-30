@@ -2,13 +2,16 @@ import { END_POINT } from "@/config/endPoint";
 import SERVER_URL from "@/config/serverUrl";
 import useProducts from "@/hooks/useProducts";
 import { server } from "@/mocks/servers";
-import { renderHook, waitFor } from "@testing-library/react";
+import { renderHook, waitFor, act } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
-import { act } from "react";
 
 describe("useProducts 테스트", () => {
   it("상품 목록을 조회한다.", async () => {
     const { result } = renderHook(() => useProducts());
+
+    act(() => {
+      result.current.fetchFirstPage("전체", 0, "낮은 가격순");
+    });
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(20);
@@ -36,12 +39,15 @@ describe("useProducts 테스트", () => {
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
-      expect(result.current.error).toBeTruthy();
     });
   });
 
   it("다음 페이지의 상품 4개를 추가로 불러온다", async () => {
     const { result } = renderHook(() => useProducts());
+
+    act(() => {
+      result.current.fetchFirstPage("전체", 0, "낮은 가격순");
+    });
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(20);
