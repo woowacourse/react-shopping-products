@@ -19,6 +19,6 @@ export const CATEGORY: CategoryOption = {
 } as const;
 
 export const PRICE_SORT: PriceSortOption = {
-  '낮은 가격순': 'desc',
-  '높은 가격순': 'asc',
+  '낮은 가격순': 'asc',
+  '높은 가격순': 'desc',
 } as const;
