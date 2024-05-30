@@ -11,13 +11,9 @@ const CATEGORY: Record<string, string> = {
   books: '도서',
 } as const;
 
-export type CategoryType = keyof typeof CATEGORY;
-
 const SORT: Record<string, string> = {
   priceDecs: '높은 가격순',
   priceAsc: '낮은 가격순',
 } as const;
-
-export type SortType = keyof typeof SORT;
 
 export { INITIAL_DATA_LOAD_COUNT, SUBSEQUENT_DATA_LOAD_COUNT, CATEGORY, SORT };

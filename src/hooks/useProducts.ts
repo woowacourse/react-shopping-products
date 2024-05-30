@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
-
 import { fetchProducts } from '../api/index';
 import {
-  CategoryType,
   INITIAL_DATA_LOAD_COUNT,
   SUBSEQUENT_DATA_LOAD_COUNT,
   CATEGORY,
   SORT,
-  SortType,
 } from '../constants';
 import { useToast } from './useToast';
+import { CategoryType, SortType } from '../type';
 
 interface Product {
   id: number;
@@ -77,7 +75,7 @@ export default function useProducts(): UseProductsResult {
     };
 
     getProducts();
-  }, [page, category, sorting]);
+  }, [page, category, sorting, createToast]);
 
   const fetchNextPage = () => {
     setPage((prevPage) => {

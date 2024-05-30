@@ -1,4 +1,4 @@
-import { CategoryType, SortType } from '../constants';
+import { CartItems, CategoryType, SortType } from '../type';
 import {
   CART_ITEMS_COUNT_ENDPOINT,
   CART_ITEMS_ENDPOINT,
