@@ -27,7 +27,7 @@ const Toast = ({ id, message }: ToastType) => {
     };
   }, []);
 
-  return <S.Wrapper isClose={isClose}>{`${[...String(id)].slice(0, 4).join("")} ${message}`}</S.Wrapper>;
+  return <S.Wrapper isClose={isClose}>{message}</S.Wrapper>;
 };
 
 export default Toast;

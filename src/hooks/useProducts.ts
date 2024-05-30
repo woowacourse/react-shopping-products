@@ -21,7 +21,7 @@ const useProducts = () => {
 
       setProducts(res.content);
       setLoading(false);
-      setCurrentPage((prevPage) => prevPage + 1);
+      setCurrentPage(1);
     } catch (error) {
       if (error instanceof Error) {
         onAddToast(ERROR_MESSAGES.failGetProducts);
