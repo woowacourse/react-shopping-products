@@ -1,8 +1,11 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
-import useProducts from '../hooks/useProducts';
-
-import { PRODUCTS_SIZE } from '../constants/products';
+import { HttpResponse, http } from 'msw';
+import { server } from '../mocks/server';
 import { ProductsUnfilteredInitial, ProductsUnfilteredLast } from '../mocks/products';
+
+import { ENDPOINT } from '../constants/apis';
+import { PRODUCTS_SIZE } from '../constants/products';
+import useProducts from '../hooks/useProducts';
 
 describe('useProducts', () => {
   const INITIAL_PAGE = 0;
@@ -190,6 +193,40 @@ describe('useProducts', () => {
         expect(
           ADDITIONAL_PRODUCTS.every((product) => product.price <= LAST_PRODUCT_PRICE),
         ).toBeTruthy();
+      });
+    });
+  });
+
+  describe('상품 목록 조회 로딩 상태', () => {
+    it('상품 목록을 조회 할 때, 로딩 초기 상태는 true이다.', () => {
+      const { result } = renderHook(() => useProducts());
+
+      expect(result.current.isLoading).toBeTruthy();
+    });
+
+    it('상품 목록을 조회가 완료되면, 로딩 상태는 false이다.', async () => {
+      const { result } = renderHook(() => useProducts());
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBeFalsy();
+      });
+    });
+  });
+
+  describe('상품 목록 조회 에러 상태', () => {
+    it('상품 목록 조회 중 에러가 발생하면, 에러 상태는 true이다.', async () => {
+      server.use(
+        http.get(ENDPOINT.PRODUCT, () => {
+          return new HttpResponse(null, { status: 500 });
+        }),
+      );
+
+      const { result } = renderHook(() => useProducts());
+
+      await waitFor(() => {
+        expect(result.current.products).toEqual([]);
+        expect(result.current.isLoading).toBeFalsy();
+        expect(result.current.error).toBeInstanceOf(Error);
       });
     });
   });

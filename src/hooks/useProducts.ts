@@ -17,7 +17,7 @@ interface UseProductResult {
   fetchNextPage: () => void;
 }
 
-interface ProductRequestResult {
+export interface ProductRequestResult {
   content: Product[];
   last: boolean;
 }
@@ -44,6 +44,7 @@ export default function useProducts(): UseProductResult {
 
     setNextPage();
   }, [isLastPage, setNextPage]);
+
   const handleChangeCategory = (value: CategoryQueryString) => {
     if (category === value) return;
 
