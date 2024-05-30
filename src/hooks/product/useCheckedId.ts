@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import { CartItem } from '@appTypes/product';
+import HTTPError from '@errors/HTTPError';
 import ShoppingCartFetcher from '@apis/ShoppingCartFetcher';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
-import HTTPError from '@errors/HTTPError';
 
 const useCheckedIds = () => {
   const [checkedItemIds, setCheckedItemIds] = useState<number[]>([]);
@@ -29,16 +30,15 @@ const useCheckedIds = () => {
 
   const addCheckId = async (id: number) => {
     try {
-      setCheckedItemIds((prevCheckedItemIds) => [...prevCheckedItemIds, id]);
       await ShoppingCartFetcher.addProduct(id);
 
       const fetchedCartItems = await ShoppingCartFetcher.getCartItems();
+
+      setCheckedItemIds((prevCheckedItemIds) => [...prevCheckedItemIds, id]);
+
       setCartItems(fetchedCartItems);
     } catch (error) {
       if (error instanceof HTTPError) {
-        setCheckedItemIds((prevCheckedItemIds) =>
-          prevCheckedItemIds.filter((itemId) => itemId !== id)
-        );
         showToast(error.message);
       }
     }
@@ -61,27 +61,26 @@ const useCheckedIds = () => {
       setCartItems(fetchedCartItems);
     } catch (error) {
       if (error instanceof HTTPError) {
-        setCheckedItemIds((prevCheckedItemIds) =>
-          prevCheckedItemIds.includes(id) ? [...prevCheckedItemIds, id] : [...prevCheckedItemIds]
-        );
+        setCheckedItemIds((prevCheckedItemIds) => [...prevCheckedItemIds, id]);
+
         showToast(error.message);
       }
     }
   };
 
-  const toggleId = (id: number) => {
+  const toggleId = async (id: number) => {
     const isCheckedId = getIsCheckedId(id);
 
     if (isCheckedId) {
-      removeCheckId(id);
+      await removeCheckId(id);
       return;
     }
 
-    addCheckId(id);
+    await addCheckId(id);
   };
 
   const getIsCheckedId = (id: number) => checkedItemIds.includes(id);
-
+  console.log(checkedItemIds);
   return { toggleId, getIsCheckedId, length: checkedItemIds.length };
 };
 
