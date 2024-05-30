@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 
 import APIClient from '@apis/APIClient';
 
-const useFetch = <T>(url: string) => {
+const useFetch = <T>(url: string, showToast?: (message: string) => void) => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { showToast } = useToastContext();
+  const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
     async function fetchData(endpoint: string) {
@@ -24,14 +23,15 @@ const useFetch = <T>(url: string) => {
         setData(data);
       })
       .catch((error) => {
-        showToast(error.message);
+        if (showToast) showToast(error.message);
+        setError(error);
       })
       .finally(() => {
         setIsLoading(false);
       });
   }, [url, showToast]);
 
-  return { data, isLoading };
+  return { data, isLoading, error };
 };
 
 export default useFetch;
