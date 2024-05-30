@@ -28,24 +28,23 @@ export default class ApiClient implements ApiClientInterface {
     }
   }
 
-  async post<T>(path: string, body: BodyInit): Promise<T> {
+  async post(path: string, body: object): Promise<void> {
     const url = `${this.baseUrl.toString()}${path}`;
+
+    const parsedBody = JSON.stringify(body);
 
     const response = await fetch(url, {
       method: "POST",
       headers: this.header,
-      body,
+      body: parsedBody,
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
+    if (!response.ok) {
       throw new Error(response.statusText);
     }
   }
 
-  async delete<T>(path: string): Promise<T> {
+  async delete(path: string): Promise<void> {
     const url = `${this.baseUrl.toString()}${path}`;
 
     const response = await fetch(url, {
@@ -53,10 +52,7 @@ export default class ApiClient implements ApiClientInterface {
       headers: this.header,
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
+    if (!response.ok) {
       throw new Error(response.statusText);
     }
   }
