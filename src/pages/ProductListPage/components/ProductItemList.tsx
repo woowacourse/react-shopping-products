@@ -33,7 +33,7 @@ const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
           />
         );
       })}
-      {products.length !== 0 && <p ref={lastProductElementRef}></p>}
+      {products.length !== 0 && <p style={{ height: '10px' }} ref={lastProductElementRef}></p>}
     </div>
   );
 };

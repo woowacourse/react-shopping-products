@@ -58,26 +58,27 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
       newIdMap[cartItem.product.id] = cartItem.id;
     });
     setIdMap(newIdMap);
-  }, [cartItems]);
+  }, [cartItems, selectedItems]);
 
   const handleSelect = async (itemId: number) => {
     const newSelectedItems = new Set(selectedItems);
     if (selectedItems.has(itemId)) {
-      newSelectedItems.delete(itemId);
-      popCartItem(idMap[itemId]);
+      const result = await popCartItem(idMap[itemId]);
+      if (result) newSelectedItems.delete(itemId);
     } else {
-      newSelectedItems.add(itemId);
-      pushCartItem(itemId);
+      const result = await pushCartItem(itemId);
+      if (result) newSelectedItems.add(itemId);
     }
     setSelectedItems(newSelectedItems);
+    getCartItems();
+  };
+
+  const getCartItems = async () => {
+    const cartItems = await fetchCartItem();
+    setCartItems(cartItems);
   };
 
   useEffect(() => {
-    const getCartItems = async () => {
-      const cartItems = await fetchCartItem();
-      setCartItems(cartItems);
-    };
-
     getCartItems();
   }, []);
 
@@ -117,16 +118,20 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
   const pushCartItem = async (itemId: number) => {
     try {
       await addCartItem(itemId);
+      return true;
     } catch (error) {
       showToast('상품 담기에 실패했습니다.');
+      return false;
     }
   };
 
   const popCartItem = async (itemId: number) => {
     try {
       await deleteCartItem(itemId);
+      return true;
     } catch (error) {
       showToast('상품 빼기에 실패했습니다.');
+      return false;
     }
   };
 
