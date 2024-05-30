@@ -52,21 +52,22 @@ describe('useFetchAddCart', () => {
     expect(result.current.cartIdSet.size).toBe(0);
   });
 
+  // 해결하지 못한 테스트
   // it('장바구니에 제품을 추가하고 장바구니를 다시 불러왔을 때, 해당 제품이 포함되어 있어야한다.', async () => {
   //   const PRODUCT_ID = 3;
   //   const { result } = renderHook(() => useFetchAddCart());
 
-  //   act(() => {
+  //   await waitFor(() => {
   //     result.current.patchToAddCart(PRODUCT_ID);
   //   });
 
-  //   let a = [];
+  //   let cartItems = [];
   //   await waitFor(async () => {
-  //     a = await result.current.fetchCart();
-  //     console.log(a);
+  //     cartItems = await result.current.fetchCart();
+  //     console.log(cartItems);
   //     expect(
   //       (await result.current.fetchCart()).some(
-  //         (item) => item.id === PRODUCT_ID,
+  //         (item) => item.product.id === PRODUCT_ID,
   //       ),
   //     ).toBe(true);
   //   });
