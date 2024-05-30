@@ -4,13 +4,13 @@ import { PRODUCTS_ENDPOINT } from './endpoints';
 
 export async function fetchProducts(
   page: number,
-  category = '',
+  category = 'all',
   sort: Sort,
 ): Promise<ProductsResponseData> {
   const size = page === FIRST_PAGE ? FIRST_PAGE_SIZE : SIZE_PER_PAGE;
   const params = new URLSearchParams();
 
-  if (category !== '') params.append('category', category);
+  if (category !== 'all') params.append('category', category);
   params.append('page', String(page));
   params.append('size', String(size));
 
