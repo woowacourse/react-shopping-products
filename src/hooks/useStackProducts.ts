@@ -15,7 +15,7 @@ interface UseStackProductsProps {
   productLength: number;
 }
 
-function useStackProducts({ fetch, products, filtering, isLast, productLength }: UseStackProductsProps) {
+const useStackProducts = ({ fetch, products, filtering, isLast, productLength }: UseStackProductsProps) => {
   /**
    * 무한 스크롤 시 상품 목록을 추가해서 넣어주는 기능
    */
@@ -37,6 +37,6 @@ function useStackProducts({ fetch, products, filtering, isLast, productLength }:
   return {
     getStackedProducts,
   };
-}
+};
 
 export default useStackProducts;

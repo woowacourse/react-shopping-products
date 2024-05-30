@@ -2,7 +2,7 @@ import { fetchProduct } from '@apis/index';
 import { CartItem, Filtering, Product } from '@appTypes/index';
 import { Dropdown, IntersectionObserverArea } from '@components/index';
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@constants/index';
-import { useStackProducts } from '@hooks/index';
+import { useFilteredProducts, useStackProducts } from '@hooks/index';
 import useFetch from '@hooks/useFetch';
 import { useEffect, useRef, useState } from 'react';
 
@@ -23,14 +23,16 @@ function ProductListPage({ cartItems, getCartItemList }: ProductListPageProps) {
 
   const { fetch, loading, error } = useFetch<typeof fetchProduct>(fetchProduct);
 
-  // TODO : 반복된느 로직 훅으로 빼기
-
   const { getStackedProducts } = useStackProducts({
     fetch,
     products,
     filtering,
     isLast: isLastPage,
     productLength: products.length,
+  });
+  const { getFilteredProducts } = useFilteredProducts({
+    fetch,
+    filtering,
   });
 
   const updateState = ({
@@ -46,22 +48,18 @@ function ProductListPage({ cartItems, getCartItemList }: ProductListPageProps) {
     setProducts(newProducts);
     setPage(newPage);
   };
-  /**
-   * 필터링이 변했을 때 상품 목록을 가져오는 기능
-   */
-  const getFilteredProducts = async () => {
-    const result = await fetch({ filtering });
-    if (result === undefined) return;
-
-    setIsLastPage(result.isLast);
-    setPage(0);
-    setProducts(result.products);
-  };
 
   const observerCallback = async (entries: IntersectionObserverEntry[]) => {
     if (!entries[0].isIntersecting) return;
 
     const result = await getStackedProducts(page);
+    if (!result) return;
+
+    updateState(result);
+  };
+
+  const handleFilteringProducts = async () => {
+    const result = await getFilteredProducts();
     if (!result) return;
 
     updateState(result);
@@ -74,7 +72,7 @@ function ProductListPage({ cartItems, getCartItemList }: ProductListPageProps) {
   };
 
   useEffect(() => {
-    getFilteredProducts();
+    handleFilteringProducts();
   }, [filtering]);
 
   useEffect(() => {
