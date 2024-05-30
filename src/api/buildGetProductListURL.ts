@@ -1,11 +1,16 @@
 import { getProductListProps } from './product';
 
-interface buildURLProps extends getProductListProps {
+interface Props extends getProductListProps {
   baseUrl: string;
 }
 
-// TODO: 리팩터링
-const buildURL = ({ baseUrl, category, page, size, order }: buildURLProps) => {
+const buildGetProductListURL = ({
+  baseUrl,
+  category,
+  page,
+  size,
+  order,
+}: Props) => {
   const params = [];
 
   if (category) {
@@ -31,4 +36,4 @@ const buildURL = ({ baseUrl, category, page, size, order }: buildURLProps) => {
   return baseUrl;
 };
 
-export default buildURL;
+export default buildGetProductListURL;

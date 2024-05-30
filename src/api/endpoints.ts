@@ -1,10 +1,10 @@
-import buildURL from './buildURL';
+import buildGetProductListURL from './buildGetProductListURL';
 import { getProductListProps } from './product';
 
 export const ENDPOINT = {
   product: {
     getList: ({ page, size, category, order }: getProductListProps) => {
-      return buildURL({
+      return buildGetProductListURL({
         baseUrl: `/products`,
         page,
         size,
