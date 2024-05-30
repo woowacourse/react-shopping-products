@@ -37,7 +37,12 @@ export const ProductList = ({
     <StyledProductList>
       {products.map((product, index) => (
         <div ref={products.length === index + 1 ? lastProductElementRef : null} key={product.id}>
-          <ProductItem imageUrl={product.imageUrl} name={product.name} price={product.price} />
+          <ProductItem
+            id={product.id}
+            imageUrl={product.imageUrl}
+            name={product.name}
+            price={product.price}
+          />
         </div>
       ))}
       {isLoading && <div>Loading...</div>}

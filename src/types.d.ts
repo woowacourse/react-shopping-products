@@ -5,3 +5,9 @@ interface ProductProps {
   imageUrl: string;
   category: string;
 }
+
+interface CartItemProps {
+  id: number;
+  quantity: number;
+  product: ProductProps;
+}
