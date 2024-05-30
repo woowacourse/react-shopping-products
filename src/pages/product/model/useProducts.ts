@@ -28,6 +28,8 @@ export default function useProducts(): UseProductsResult {
   const [sortOrder, setSortOrder] = useState<SortOrder>(DEFAULT_SORT_ORDER);
 
   useEffect(() => {
+    if (error) return;
+
     const getProducts = async () => {
       const size = page === 0 ? FIRST_FETCH_COUNT : EXTRA_FETCH_COUNT;
       const requestPage = page === 0 ? 0 : page + SECONDARY_REQUEST_PAGE_GAP;
@@ -40,11 +42,14 @@ export default function useProducts(): UseProductsResult {
           category: category,
           sort: sortOrder,
         });
+
+        setError(null);
         setTotalPage(totalPages);
-        if (page === 0) setProducts([...content]);
-        else setProducts([...products, ...content]);
-      } catch (error) {
-        setError(error);
+        page === 0 ? setProducts([...content]) : setProducts([...products, ...content]);
+      } catch (error: unknown) {
+        if (error) {
+          setError(error);
+        }
       } finally {
         setLoading(false);
       }

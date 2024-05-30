@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 import { Product } from '@/entities/product';
-import { Layout, Spinner } from '@/shared';
+import { Layout, Spinner, Toast } from '@/shared';
 import { ContentHeader } from '@/widgets/ContentHeader';
 import { HeaderCartButton, HeaderLogoButton, LayoutHeader } from '@/widgets/LayoutHeader';
 import { ProductList } from '@/widgets/ProductList';
@@ -50,10 +50,13 @@ export const ProductPage = () => {
   return (
     <Layout
       headerSlot={
-        <LayoutHeader
-          leftSlot={<HeaderLogoButton />}
-          rightSlot={<HeaderCartButton cartItemCount={cartItems.length} />}
-        />
+        <>
+          <LayoutHeader
+            leftSlot={<HeaderLogoButton />}
+            rightSlot={<HeaderCartButton cartItemCount={cartItems.length} />}
+          />
+          {error && <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>}
+        </>
       }
       contentHeaderSlot={<ContentHeader title={'상품 목록'} />}
       contentBodySlot={
@@ -69,11 +72,11 @@ export const ProductPage = () => {
             />
             <div className={css.observationTarget} ref={observationTarget}></div>
           </div>
-          {
+          {loading && (
             <div className={css.spinnerWrapper}>
               <Spinner />
             </div>
-          }
+          )}
         </>
       }
       gap={{ top: 24 }}
