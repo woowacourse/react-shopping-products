@@ -14,9 +14,9 @@ const useFetchProducts = () => {
   const { products, addProducts, resetProducts } = useProducts();
   const { page, increasePage, decreasePage, resetPage } = usePage();
 
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('all');
   const [sort, setSort] = useState<Sort>({
-    price: 'asc',
+    price: 'desc',
   });
 
   const getProducts = async () => {
@@ -39,27 +39,46 @@ const useFetchProducts = () => {
     if (!isLastPage && !error) getProducts();
   }, [page, category, sort]);
 
-  const filterByCategory = (selectedCategory: string) => {
+  const reset = () => {
     resetPage();
     resetProducts();
     setIsLastPage(false);
-    setCategory(selectedCategory);
+  };
+
+  const filterByCategory = (selectedCategory: string) => {
+    if (selectedCategory !== category) {
+      reset();
+      setCategory(selectedCategory);
+    }
   };
 
   const setSorting = (condition: string, order: Order) => {
-    setSort((prevSort) => {
-      return {
-        ...prevSort,
-        [condition]: order,
-      };
-    });
+    if (sort.price !== order) {
+      reset();
+      setSort((prevSort) => {
+        return {
+          ...prevSort,
+          [condition]: order,
+        };
+      });
+    }
   };
 
   const fetchNextPage = () => {
     if (!isLastPage) increasePage();
   };
 
-  return { products, loading, error, page, fetchNextPage, filterByCategory, setSorting };
+  return {
+    products,
+    loading,
+    error,
+    page,
+    fetchNextPage,
+    category,
+    filterByCategory,
+    sort,
+    setSorting,
+  };
 };
 
 export default useFetchProducts;
