@@ -32,7 +32,7 @@ export default function useProducts(): UseProductsResult {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [isLast, setIsLast] = useState(false);
   const [category, setCategory] = useState<CategoryType>('all');
   const [sorting, setSorting] = useState<SortType>('priceAsc');
@@ -58,8 +58,8 @@ export default function useProducts(): UseProductsResult {
       setLoading(true);
       try {
         const limit =
-          page === 1 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
-        const data = await fetchProducts(page - 1, limit, category, sorting);
+          page === 0 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
+        const data = await fetchProducts(page, limit, category, sorting);
         if (data.last) {
           setIsLast(true);
         }
@@ -72,12 +72,12 @@ export default function useProducts(): UseProductsResult {
     };
 
     getProducts();
-  }, [page, category]);
+  }, [page, category, sorting]);
 
   const fetchNextPage = () => {
     setPage((prevPage) => {
       if (isLast) return prevPage;
-      if (page === 1) return prevPage + 5;
+      if (page === 0) return prevPage + 5;
       return prevPage + 1;
     });
   };
