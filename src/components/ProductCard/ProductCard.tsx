@@ -22,6 +22,7 @@ function ProductCard({ product }: ProductCardProps) {
 
         <S.ButtonContainer>
           <AddCartButton
+            id={product.id}
             onAddClick={() => {
               patchToAddCart(product.id);
             }}

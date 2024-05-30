@@ -1,9 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { deleteItem, fetchCartItems, postAddItems } from '../api/products';
 
 const useFetchAddCart = () => {
   const [cartIdSet, setCartIdSet] = useState<Set<number>>(new Set());
 
+  useEffect(() => {
+    const fetchInitialCartId = async () => {
+      const cartItems = await fetchCart();
+      const newCartIdSet = new Set(cartItems.map((item) => item.product.id));
+      setCartIdSet(newCartIdSet);
+    };
+    fetchInitialCartId();
+  }, []);
+  
   const patchToAddCart = (id: number) => {
     postAddItems(id);
     const newCartIdSet = new Set(cartIdSet);

@@ -18,7 +18,7 @@ function Product() {
   return (
     <>
       <CartContext.Provider value={fetchAddCartState}>
-        <Header />
+        <Header badgeCount={fetchAddCartState.cartIdSet.size} />
         <S.ProductContentWrapper>
           <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
           <Dropdown
