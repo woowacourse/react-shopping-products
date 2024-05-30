@@ -1,7 +1,5 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { CartItemListProvider, useCartItemListContext } from './useCartItemList';
-import { BASE_URL } from '@/apis/baseUrl';
-import { ENDPOINT } from '@/apis/endpoints';
 import cartItemList from '@/mocks/cartItemList.json';
 import ToastProvider from './useToast';
 
