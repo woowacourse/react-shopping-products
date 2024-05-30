@@ -14,6 +14,7 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
   const [products, setProducts] = useState<ProductType[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useToast();
 
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
@@ -78,6 +79,7 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
   useEffect(() => {
     const setFetchedProducts = async () => {
       try {
+        setIsLoading(true);
         const size = page === FIRST_FETCH_PAGE ? FIRST_FETCH_SIZE : AFTER_FETCH_SIZE;
         const queryPage =
           page === FIRST_FETCH_PAGE
@@ -96,6 +98,8 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
           console.error(error.message);
           showToast('상품 목록을 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.');
         }
+      } finally {
+        setIsLoading(false);
       }
     };
     setFetchedProducts();
@@ -121,5 +125,5 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     }
   };
 
-  return { products, setPage, hasMore, selectedItems, handleSelect };
+  return { products, setPage, hasMore, selectedItems, handleSelect, isLoading };
 }
