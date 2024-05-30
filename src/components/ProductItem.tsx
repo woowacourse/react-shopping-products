@@ -4,13 +4,17 @@ import { FlexRow } from '@/style/common.style';
 import { Product } from '@/types/product.type';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
+import useProductSelector from '@/hooks/useProductSelector';
 
 interface Props {
   item: Product;
-  isSelected: boolean;
 }
 
-const ProductItem = ({ item, isSelected }: Props) => {
+const ProductItem = ({ item }: Props) => {
+  const { isSelected, addCartItem, removeCartItem } = useProductSelector(
+    item.id
+  );
+
   return (
     <S.ItemCard>
       <S.Img src={item.imageUrl} alt={item.name} />
@@ -21,9 +25,9 @@ const ProductItem = ({ item, isSelected }: Props) => {
         </S.InfoText>
         <S.ButtonWrapper>
           {isSelected ? (
-            <CartOutButton onClick={() => {}} />
+            <CartOutButton onClick={removeCartItem} />
           ) : (
-            <CartInButton onClick={() => {}} />
+            <CartInButton onClick={addCartItem} />
           )}
         </S.ButtonWrapper>
       </S.InfoWrapper>
