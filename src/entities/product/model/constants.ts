@@ -11,9 +11,9 @@ export const CATEGORIES_KR: Record<Category, string> = {
   books: '도서',
 };
 
-export const SORT_ORDERS: SortOrder[] = ['ascByPrice', 'descByPrice'] as const;
+export const SORT_ORDERS: SortOrder[] = ['price,id,asc', 'price,id,desc'] as const;
 
 export const SORT_ORDERS_KR: Record<SortOrder, string> = {
-  ascByPrice: '낮은가격순',
-  descByPrice: '높은가격순',
+  'price,id,asc': '낮은가격순',
+  'price,id,desc': '높은가격순',
 };

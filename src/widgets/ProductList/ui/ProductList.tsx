@@ -1,25 +1,26 @@
 import { useState } from 'react';
 
 import { ProductCard, Product, Category, SortOrder } from '@/entities/product';
-import {
-  FilterCategoryButton,
-  FilterSortOrderButton,
-  DEFAULT_CATEGORY,
-  DEFAULT_SORT_ORDER,
-  ALL,
-} from '@/features/product';
-import { CartToggleButton } from '@/features/product/ui/CartToggleButton/CartToggleButton';
+import { FilterCategoryButton, FilterSortOrderButton, ALL, CartToggleButton } from '@/features/product';
 
 import css from './ProductList.module.css';
 
 interface ProductListProps {
   products: Product[];
+  category: typeof ALL | Category;
+  sortOrder: SortOrder;
+  onChangeCategory: (value: typeof ALL | Category) => void;
+  onChangeSortOrder: (value: SortOrder) => void;
 }
 
-export const ProductList = ({ products }: ProductListProps) => {
+export const ProductList = ({
+  products,
+  category,
+  sortOrder,
+  onChangeCategory,
+  onChangeSortOrder,
+}: ProductListProps) => {
   const [cartState, setCartState] = useState<{ [key: number]: boolean }>({});
-  const [category, setCategory] = useState<typeof ALL | Category>(DEFAULT_CATEGORY);
-  const [sortOrder, setSortOrder] = useState<SortOrder>(DEFAULT_SORT_ORDER);
 
   const handleCartToggle = (productId: number) => {
     setCartState((prevState) => ({
@@ -31,8 +32,8 @@ export const ProductList = ({ products }: ProductListProps) => {
   return (
     <div className={css.productListContainer}>
       <div className={css.filterWrapper}>
-        <FilterCategoryButton value={category} onChange={setCategory} />
-        <FilterSortOrderButton value={sortOrder} onChange={setSortOrder} />
+        <FilterCategoryButton value={category} onChange={onChangeCategory} />
+        <FilterSortOrderButton value={sortOrder} onChange={onChangeSortOrder} />
       </div>
       <div className={css.productList}>
         {products.map((product) => (
