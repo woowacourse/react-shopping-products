@@ -125,6 +125,14 @@ const reset = css`
     border-collapse: collapse;
     border-spacing: 0;
   }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+  }
 `;
 
 const GlobalStyle = () => {

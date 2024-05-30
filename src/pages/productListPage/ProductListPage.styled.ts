@@ -1,0 +1,24 @@
+import styled from '@emotion/styled';
+
+export const PageContainer = styled.section`
+  width: 26.875rem;
+  min-height: 100vh;
+  position: relative;
+
+  background-color: white;
+`;
+
+export const CommonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.8125rem;
+
+  padding: 2.25rem 1.5rem;
+  padding-bottom: 8rem;
+`;
+
+export const DropdownContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
+`;

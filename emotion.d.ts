@@ -1,7 +1,7 @@
 import '@emotion/react';
 
 declare module '@emotion/react' {
-  export interface DefaultTheme {
+  export interface Theme {
     typography: {
       header: string;
       title: string;
