@@ -7,7 +7,7 @@ import * as S from "./ProductItemList.style";
 import { Category } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
-import Spinner from "../common/Sipnner/Spinner";
+import Spinner from "../common/Spinner/Spinner";
 
 interface ProductItemListProp {
   category: Category;
