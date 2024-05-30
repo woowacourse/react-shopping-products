@@ -1,5 +1,5 @@
-import { ERROR_MESSAGE } from "../constants/message";
 import { CART_ITEMS_ENDPOINT } from "./endPoint";
+import { ERROR_MESSAGE } from "../constants/message";
 import { fetchWithToken } from "./fetchWithToken";
 
 export async function getCartItems(size: number = 20) {
@@ -11,7 +11,10 @@ export async function getCartItems(size: number = 20) {
   return data;
 }
 
-export async function postCartItems(body: { productId: number; quantity: number }) {
+export async function postCartItems(body: {
+  productId: number;
+  quantity: number;
+}) {
   const data = await fetchWithToken({
     method: "POST",
     url: `${CART_ITEMS_ENDPOINT}`,

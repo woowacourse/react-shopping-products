@@ -20,7 +20,13 @@ class CustomFetchError extends Error {
   }
 }
 
-export const fetchWithToken = async ({ url, headers, method = "GET", body, errorMessage }: Props) => {
+export const fetchWithToken = async ({
+  url,
+  headers,
+  method = "GET",
+  body,
+  errorMessage,
+}: Props) => {
   const token = generateToken(USER_ID, USER_PASSWORD);
 
   try {

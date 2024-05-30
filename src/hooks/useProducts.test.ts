@@ -101,7 +101,8 @@ describe("useProduct 훅 테스트", () => {
           result.current.fetchNextPage();
         });
 
-        const expectedProductsCount = expectedInitProductsCount + (page - 4) * 4;
+        const expectedProductsCount =
+          expectedInitProductsCount + (page - 4) * 4;
 
         await waitFor(() => {
           expect(result.current.page).toBe(page);

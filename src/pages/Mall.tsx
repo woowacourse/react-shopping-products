@@ -6,13 +6,13 @@ import { Global } from "@emotion/react";
 import Header from "../components/Header";
 import InfiniteScrollComponent from "../components/InfiniteProductsScrollComponent";
 import MainTitle from "../components/MainTitle";
+import { ToastContext } from "../components/Toasts/ToastProvider";
 import { baseStyle } from "../style/baseStyle";
 import styled from "@emotion/styled";
+import useCustomContext from "../hooks/useCustomContext";
+import { useEffect } from "react";
 import useProducts from "../hooks/useProducts";
 import useToggleCartItem from "../hooks/useToggleCartItem";
-import useCustomContext from "../hooks/useCustomContext";
-import { ToastContext } from "../components/Toasts/ToastProvider";
-import { useEffect } from "react";
 
 const S = {
   MainMall: styled.div`
@@ -73,8 +73,16 @@ const Mall = () => {
       <S.MainMall>
         <MainTitle>러기의 쇼핑몰</MainTitle>
         <S.Toolbar>
-          <Dropdown options={CATEGORY_LIST} engToKor={CATEGORY} handleChange={handleCategoryChange} />
-          <Dropdown options={SORT_LIST} engToKor={SORT} handleChange={handleSortChange} />
+          <Dropdown
+            options={CATEGORY_LIST}
+            engToKor={CATEGORY}
+            handleChange={handleCategoryChange}
+          />
+          <Dropdown
+            options={SORT_LIST}
+            engToKor={SORT}
+            handleChange={handleSortChange}
+          />
         </S.Toolbar>
         <S.ProductList>
           <InfiniteScrollComponent

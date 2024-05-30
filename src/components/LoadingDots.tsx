@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
 import COLOR_PALETTE from "../style/colorPalette";
+import React from "react";
+import { keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
 
 const blink = keyframes`
   0%, 100% { opacity: 0.2; }
@@ -17,7 +17,8 @@ const S = {
     justify-content: center;
   `,
   Dot: styled.div<{ type: "black" | "white" }>`
-    background-color: ${({ type }) => (type === "black" ? COLOR_PALETTE.black : COLOR_PALETTE.white)};
+    background-color: ${({ type }) =>
+      type === "black" ? COLOR_PALETTE.black : COLOR_PALETTE.white};
     width: 8px;
     aspect-ratio: 1/1;
     border-radius: 50%;

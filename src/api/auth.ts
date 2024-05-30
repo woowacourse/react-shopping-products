@@ -1,1 +1,2 @@
-export const generateToken = (userId: string, userPassword: string) => `Basic ${btoa(`${userId}:${userPassword}`)}`;
+export const generateToken = (userId: string, userPassword: string) =>
+  `Basic ${btoa(`${userId}:${userPassword}`)}`;

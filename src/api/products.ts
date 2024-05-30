@@ -1,7 +1,7 @@
 import { CATEGORY_LIST, Category } from "../constants/category";
-import { ERROR_MESSAGE } from "../constants/message";
 import { SORT_LIST, Sort } from "../constants/sort";
 
+import { ERROR_MESSAGE } from "../constants/message";
 import { PRODUCTS_ENDPOINT } from "./endPoint";
 import { fetchWithToken } from "./fetchWithToken";
 
@@ -12,7 +12,12 @@ interface GetProductsParams {
   sort: Sort;
 }
 
-export async function getProducts({ page, size, category, sort }: GetProductsParams) {
+export async function getProducts({
+  page,
+  size,
+  category,
+  sort,
+}: GetProductsParams) {
   let url = `${PRODUCTS_ENDPOINT}?page=${page}&size=${size}`;
   if (category !== CATEGORY_LIST[0]) {
     url += `&category=${encodeURIComponent(category)}`;

@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
 
+import { ERROR_MESSAGE } from "../constants/message";
 import { HandleCartItems } from "../hooks/useToggleCartItem";
+import LoadingDots from "./LoadingDots";
 import { Product } from "../types/products";
 import ProductCard from "./product/ProductCard";
-import LoadingDots from "./LoadingDots";
-
 import styled from "@emotion/styled";
-import { ERROR_MESSAGE } from "../constants/message";
 
 interface InfiniteProductsScrollComponentProps {
   productObject: {
@@ -25,7 +24,10 @@ const S = {
   `,
 };
 
-const InfiniteProductsScrollComponent = ({ productObject, handleCartItems }: InfiniteProductsScrollComponentProps) => {
+const InfiniteProductsScrollComponent = ({
+  productObject,
+  handleCartItems,
+}: InfiniteProductsScrollComponentProps) => {
   const { products, isLoading, error, fetchNextPage } = productObject;
   const loaderRef = useRef(null);
 
@@ -57,7 +59,11 @@ const InfiniteProductsScrollComponent = ({ productObject, handleCartItems }: Inf
   return (
     <>
       {products.map((product, index) => (
-        <ProductCard key={`${index}${product.id}`} product={product} handleCartItems={handleCartItems} />
+        <ProductCard
+          key={`${index}${product.id}`}
+          product={product}
+          handleCartItems={handleCartItems}
+        />
       ))}
       <S.FallbackContainer>
         {error! && <div>{ERROR_MESSAGE.getProducts}</div>}

@@ -1,5 +1,5 @@
-import { ToastProvider } from "./components/Toasts/ToastProvider";
 import Mall from "./pages/Mall";
+import { ToastProvider } from "./components/Toasts/ToastProvider";
 
 function App() {
   return (

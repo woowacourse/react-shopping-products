@@ -51,11 +51,15 @@ const useToggleCartItem = () => {
     if (isLoading) return;
     try {
       setIsLoading(true);
-      const targetCartItemIndex = cartItems.findIndex((item) => item.product.id === productId);
+      const targetCartItemIndex = cartItems.findIndex(
+        (item) => item.product.id === productId
+      );
       const targetCartItemId = cartItems[targetCartItemIndex].id;
       await deleteCartItems(targetCartItemId);
       setCartItems((cartItems) => {
-        const newCartItems = cartItems.filter((cartItem) => cartItem.id !== targetCartItemId);
+        const newCartItems = cartItems.filter(
+          (cartItem) => cartItem.id !== targetCartItemId
+        );
         return newCartItems;
       });
     } catch (error) {
@@ -65,7 +69,8 @@ const useToggleCartItem = () => {
     }
   };
 
-  const checkSelected = (id: number) => !!cartItems.find((item) => item.product.id === id);
+  const checkSelected = (id: number) =>
+    !!cartItems.find((item) => item.product.id === id);
 
   return {
     cartItems,

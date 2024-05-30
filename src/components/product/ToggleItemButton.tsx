@@ -1,10 +1,11 @@
+import { useEffect, useState } from "react";
+
 import AddToCart from "../icons/AddToCart";
 import COLOR_PALETTE from "../../style/colorPalette";
 import DeleteFromCart from "../icons/DeleteFromCart";
 import { HandleCartItems } from "../../hooks/useToggleCartItem";
-import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
 import LoadingDots from "../LoadingDots";
+import styled from "@emotion/styled";
 
 const S = {
   ToggleItemButton: styled.button<{ isSelected: boolean }>`
@@ -15,8 +16,10 @@ const S = {
     justify-content: center;
     gap: 4px;
 
-    background-color: ${({ isSelected }) => (isSelected ? COLOR_PALETTE.lightGrey : COLOR_PALETTE.black)};
-    color: ${({ isSelected }) => (isSelected ? COLOR_PALETTE.black : COLOR_PALETTE.white)};
+    background-color: ${({ isSelected }) =>
+      isSelected ? COLOR_PALETTE.lightGrey : COLOR_PALETTE.black};
+    color: ${({ isSelected }) =>
+      isSelected ? COLOR_PALETTE.black : COLOR_PALETTE.white};
     padding: 8px;
     margin: 4px;
     border: none;
