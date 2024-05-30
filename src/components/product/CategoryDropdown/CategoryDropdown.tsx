@@ -1,5 +1,6 @@
 import Dropdown from '@components/common/Dropdown/Dropdown';
 import { PRODUCT_CATEGORY_MAP } from '@components/product/CategoryDropdown/CategoryDropdown.constant';
+import { isValidCategory } from '@components/product/CategoryDropdown/CategoryDropdown.util';
 
 export interface CategoryDropdownProps {
   isOpen: boolean;
@@ -29,7 +30,9 @@ const CategoryDropdown: React.FC<CategoryDropdownProps> = ({
           <Dropdown.Option
             key={categoryKey}
             isSelected={category === categoryKey}
-            onSelectOption={() => onSelectOption(categoryKey as keyof typeof PRODUCT_CATEGORY_MAP)}
+            onSelectOption={() => {
+              if (isValidCategory(categoryKey)) onSelectOption(categoryKey);
+            }}
           >
             {categoryValue}
           </Dropdown.Option>

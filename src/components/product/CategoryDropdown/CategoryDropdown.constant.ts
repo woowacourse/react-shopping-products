@@ -7,13 +7,3 @@ export const PRODUCT_CATEGORY_MAP = {
   fitness: '피트니스',
   books: '도서',
 } as const;
-
-export const PRODUCT_SORT_MAP = {
-  price: '가격순',
-  name: '이름순',
-} as const;
-
-export const PRODUCT_TYPE_MAP = {
-  category: PRODUCT_CATEGORY_MAP,
-  sort: PRODUCT_SORT_MAP,
-} as const;

@@ -1,5 +1,6 @@
 import Dropdown from '@components/common/Dropdown/Dropdown';
 import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
+import { isValidSortType } from '@components/product/SortDropdown/SortDropdown.util';
 
 export interface SortDropdownProps {
   isOpen: boolean;
@@ -29,7 +30,9 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
           <Dropdown.Option
             key={sortTypeKey}
             isSelected={sortType === sortTypeKey}
-            onSelectOption={() => onSelectOption(sortTypeKey as keyof typeof PRODUCT_SORT_MAP)}
+            onSelectOption={() => {
+              if (isValidSortType(sortTypeKey)) onSelectOption(sortTypeKey);
+            }}
           >
             {sortTypeValue}
           </Dropdown.Option>
