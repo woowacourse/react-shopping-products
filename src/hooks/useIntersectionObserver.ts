@@ -10,12 +10,16 @@ const useIntersectionObserver = <T extends Element>(
   const [target, setTarget] = useState<Element | null>(null);
 
   useEffect(() => {
-    if (!target) return;
+    if (!target) {
+      return;
+    }
 
     const observer = new IntersectionObserver(callback);
     observer.observe(target);
 
-    return () => observer.unobserve(target);
+    return () => {
+      observer.unobserve(target);
+    };
   }, [callback, target]);
 
   return { setTarget: (target: T) => setTarget(target) };
