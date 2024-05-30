@@ -1,5 +1,5 @@
 import { act } from 'react';
-import useCartItem from '../src/hooks/useCartItemHandler';
+import useCartItemHandler from '../src/hooks/useCartItemHandler';
 import { renderHook, waitFor } from '@testing-library/react';
 import { server } from '../src/mocks/server';
 import { HttpResponse, http } from 'msw';
@@ -7,7 +7,7 @@ import { CART_ITEMS_ENDPOINT } from '../src/api/endpoints';
 import { wrapper } from './utils/test-utils';
 
 const renderUseCartItemHook = (initIsInCart) =>
-  renderHook(() => useCartItem({ productId: 10, initIsInCart }), {
+  renderHook(() => useCartItemHandler({ productId: 10, initIsInCart }), {
     wrapper: wrapper,
   });
 
