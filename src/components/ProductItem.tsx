@@ -4,6 +4,7 @@ import { ReactComponent as DeleteFromCartIcon } from "../assets/deleteFromCart.s
 import { addCartItem, deleteCartItem } from "../api/cartItems";
 import { useContext } from "react";
 import CartItemsContext from "../store/cartItems";
+import { MAX_CART_ITEM_COUNT } from "../constants/cartItems";
 
 interface ProductItemProps {
   id: number;
@@ -17,8 +18,12 @@ const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
 
   const handleAddToCart = async () => {
     try {
-      await addCartItem(id, 1);
-      await refetchCartItems();
+      if (cartItems.length < MAX_CART_ITEM_COUNT) {
+        await addCartItem(id, 1);
+        await refetchCartItems();
+      } else {
+        alert("장바구니에 담을 수 있는 상품의 개수는 20개까지입니다.");
+      }
     } catch {
       alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요,");
     }
