@@ -1,4 +1,4 @@
-import { forwardRef, useContext, useState } from "react";
+import { forwardRef, useContext } from "react";
 import * as PI from "./ProductItem.style";
 import CartControlButton from "../../Button/CartControlButton";
 import { deleteProductInCart, postProductInCart } from "../../../api";
@@ -14,8 +14,7 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
     const { cartItems, refreshCartItems } = useContext(CartItemsContext);
 
     const cartItemIds = cartItems.map((item) => item.product.id);
-    const initialIsInCart = cartItemIds.includes(product.id);
-    const [isInCart, setIsInCart] = useState(initialIsInCart);
+    const isInCart = cartItemIds.includes(product.id);
 
     const { showError } = useError();
 
@@ -27,11 +26,9 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
           );
           await deleteProductInCart(filtered[0].id);
           refreshCartItems();
-          setIsInCart(!isInCart);
         } else {
           await postProductInCart(product.id);
           refreshCartItems();
-          setIsInCart(!isInCart);
         }
       } catch (error) {
         if (error instanceof Error) {
