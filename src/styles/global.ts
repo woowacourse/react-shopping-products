@@ -6,6 +6,7 @@ ${resetStyle};
 
 #root {
     margin: 0 auto;
+    padding-top: 64px;
 }
 
 ::-webkit-scrollbar {
