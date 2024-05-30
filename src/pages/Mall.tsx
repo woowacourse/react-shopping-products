@@ -71,7 +71,7 @@ const Mall = () => {
       <Global styles={baseStyle} />
       <Header itemCount={cartItems.length} />
       <S.MainMall>
-        <MainTitle>러기의 쇼핑몰</MainTitle>
+        <MainTitle>피터의 쇼핑몰</MainTitle>
         <S.Toolbar>
           <Dropdown
             options={CATEGORY_LIST}
