@@ -8,7 +8,7 @@ interface CartApi {
   totalElements: number;
 }
 
-export const fetchCartItems = async (size: number = SIZE.ADDITIONAL): Promise<CartApi> => {
+export const fetchCartItems = async (size: number = SIZE.DEFAULT): Promise<CartApi> => {
   const data = await apiClient.get({
     endpoint: `/cart-items?size=${size}`,
     errorMessage: ERROR_MESSAGES.FETCH_CART_ITEMS,
