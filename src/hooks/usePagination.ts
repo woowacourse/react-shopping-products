@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { PAGE_INTERVAL } from '../constants/api';
 
 interface UsePaginationResult {
   page: number;
@@ -13,7 +14,7 @@ const usePagination = (): UsePaginationResult => {
 
   const moveNextPage = (loading: boolean, isLast: boolean) => {
     if (!loading && !isLast) {
-      setPage((prevPage) => (prevPage === 0 ? 5 : prevPage + 1));
+      setPage((prevPage) => (prevPage === 0 ? PAGE_INTERVAL.INITIAL : prevPage + PAGE_INTERVAL.DEFAULT));
     }
   };
 

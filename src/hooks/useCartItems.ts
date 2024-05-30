@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+import useFetcher from './useFetcher';
 import { fetchCartItems, deleteCartItem, addCartItem } from '../api/cart';
 import { CartItem } from '../types/CartItem.type';
-import useFetcher from './useFetcher';
+import { SIZE } from '../constants/api';
 
 interface UseCartItemsResult {
   cartItems: CartItem[];
@@ -22,7 +23,7 @@ const useCartItems = (): UseCartItemsResult => {
   const getCartItems = async () => {
     const { data: initialData, totalElements } = await fetchCartItems(20);
 
-    if (totalElements <= 20) {
+    if (totalElements <= SIZE.ADDITIONAL) {
       setCartItems(initialData);
       return;
     }

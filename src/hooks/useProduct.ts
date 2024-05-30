@@ -4,6 +4,7 @@ import { Product } from '../types/Product.type';
 import { Option } from '../types/Option.type';
 import usePagination from './usePagination';
 import useFetcher from './useFetcher';
+import { SIZE } from '../constants/api';
 
 interface UseProductsResult {
   products: Product[];
@@ -30,7 +31,7 @@ const useProduct = (initialCategory: Option, initialSorting: Option): UseProduct
   }, [page, category, sort]);
 
   const getProducts = async (category: Option, sort: Option) => {
-    const { data, isLast } = await fetchProducts(category.key, page, 4, sort.key);
+    const { data, isLast } = await fetchProducts(category.key, page, SIZE.ADDITIONAL, sort.key);
     setProducts(page === 0 ? data : [...products, ...data]);
     setIsLast(isLast);
   };

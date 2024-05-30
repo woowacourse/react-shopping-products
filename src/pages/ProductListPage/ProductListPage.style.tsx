@@ -34,13 +34,14 @@ export const ProductList = styled.div`
   }
 `;
 
-export const CartIconWrapper = styled.div`
+export const CartIconWrapper = styled.button`
   position: relative;
   width: 35px;
   height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const CartNumber = styled.div`

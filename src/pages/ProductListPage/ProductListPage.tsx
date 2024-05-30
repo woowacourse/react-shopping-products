@@ -9,6 +9,7 @@ import useCartItems from '../../hooks/useCartItems';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import * as S from './ProductListPage.style';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
+import { SIZE } from '../../constants/api';
 import Loading from '../../assets/loading.gif';
 import EmptyCart from '../../assets/EmptyCart.png';
 
@@ -25,11 +26,11 @@ const ProductListPage = () => {
       <Header>
         <S.CartIconWrapper>
           <img src={CartIcon} alt="장바구니 아이콘" />
-          <S.CartNumber>{cartItems.length <= 20 ? cartItems.length : `20+`}</S.CartNumber>
+          <S.CartNumber>{cartItems.length <= SIZE.DEFAULT ? cartItems.length : `${SIZE.DEFAULT}+`}</S.CartNumber>
         </S.CartIconWrapper>
       </Header>
       <S.Layout>
-        <TitleContainer title="bpple 상품 목록" />
+        <TitleContainer title="텐파의 쇼핑몰" />
         <S.DropdownContainer>
           <Dropdown options={CATEGORY_LIST} selectedOption={category} updateOption={handleCategory} />
           <Dropdown options={SORTING_LIST} selectedOption={sort} updateOption={handleSort} />

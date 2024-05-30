@@ -1,5 +1,6 @@
 import apiClient from './apiClient';
 import { Product } from '../types/Product.type';
+import { SIZE } from '../constants/api';
 
 interface ProductApi {
   data: Product[];
@@ -9,7 +10,7 @@ interface ProductApi {
 const makeParams = (category: string, page: number, size: number, sort: string): string => {
   const params = new URLSearchParams({
     page: page.toString(),
-    size: (page === 0 ? 20 : size).toString(),
+    size: (page === 0 ? SIZE.ADDITIONAL : size).toString(),
     sort: `price,${sort}`,
   });
 
