@@ -6,6 +6,8 @@ import router from "@/router.tsx";
 import { ThemeProvider } from "styled-components";
 import { theme } from "@/styles/theme.ts";
 import CartItemProvider from "@/provider/cartItemProvider.tsx";
+import ToastsProvider from "@/provider/toastProvider.tsx";
+import Toasts from "@/components/_common/Toasts/Toasts.tsx";
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== "development") {
@@ -22,8 +24,11 @@ enableMocking().then(() => {
     <React.StrictMode>
       <ThemeProvider theme={theme}>
         <CartItemProvider>
-          <RouterProvider router={router} />
-          <GlobalStyles />
+          <ToastsProvider>
+            <RouterProvider router={router} />
+            <GlobalStyles />
+            <Toasts />
+          </ToastsProvider>
         </CartItemProvider>
       </ThemeProvider>
     </React.StrictMode>
