@@ -11,4 +11,5 @@ if (!BASE_URL || !USERNAME || !USER_PASSWORD) {
 
 export const cartClient = new ApiClient(BASE_URL, {
   Authorization: generateBasicToken(USERNAME, USER_PASSWORD),
+  "Content-Type": "application/json",
 });
