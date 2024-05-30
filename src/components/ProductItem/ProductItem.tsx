@@ -6,9 +6,10 @@ import * as Styled from './ProductItem.style';
 interface ProductProps {
   product: Product;
   isInCart: boolean;
+  onClick: () => void;
 }
 
-export default function ProductItem({ product, isInCart }: ProductProps) {
+export default function ProductItem({ product, isInCart, onClick }: ProductProps) {
   return (
     <Styled.ProductItemBox>
       <Styled.ProductImage $imageUrl={product.imageUrl} />
@@ -18,9 +19,12 @@ export default function ProductItem({ product, isInCart }: ProductProps) {
           {product.price.toLocaleString('ko-KR')}원
         </Styled.ProductDescriptionBox>
         <Styled.ProductFooter>
-          <Styled.ProductCartButton $isInCart={isInCart}>
+          <Styled.ProductCartButton
+            $isInCart={isInCart}
+            onClick={onClick}
+          >
             <img src={isInCart ? RemoveFromCartIcon : AddToCartIcon} />
-            담기
+            {isInCart ? '빼기' : '담기'}
           </Styled.ProductCartButton>
         </Styled.ProductFooter>
       </Styled.ProductContentBox>

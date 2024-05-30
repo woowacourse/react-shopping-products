@@ -18,6 +18,23 @@ export const CartButton = styled.button`
   cursor: pointer;
 `;
 
+export const CartItemsNumber = styled.div`
+  position: absolute;
+  top: 27px;
+  right: 25px;
+  width: 19px;
+  height: 19px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 10px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
 export const ShopContent = styled.div`
   padding: 100px 24px 24px 24px;
 `;

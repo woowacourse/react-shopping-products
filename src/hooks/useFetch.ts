@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchClient } from '../apis/fetchClient';
 import { HTTPMethod } from '../types/apis';
 
-interface UseFetchResult<T> {
+export interface UseFetchResult<T> {
   error: unknown;
   isLoading: boolean;
   data: T | undefined;
@@ -11,10 +11,11 @@ interface UseFetchResult<T> {
 interface FetchOptions {
   url: string;
   method: HTTPMethod;
+  body?: object;
   token?: string;
 }
 
-export default function useFetch<T>({ url, method, token }: FetchOptions): UseFetchResult<T> {
+export default function useFetch<T>({ url, method, body, token }: FetchOptions): UseFetchResult<T> {
   const [data, setData] = useState<T>();
   const [error, setError] = useState<unknown>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -22,7 +23,8 @@ export default function useFetch<T>({ url, method, token }: FetchOptions): UseFe
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedData = await fetchClient(url, method, token);
+        setIsLoading(true);
+        const fetchedData = await fetchClient({ url, method, body, token });
         setData(fetchedData);
       } catch (error) {
         setError(error);
@@ -32,7 +34,7 @@ export default function useFetch<T>({ url, method, token }: FetchOptions): UseFe
     };
 
     fetchData();
-  }, [url, method, token]);
+  }, [url, method, body, token]);
 
   return {
     error,
