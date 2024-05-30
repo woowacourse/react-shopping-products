@@ -9,6 +9,4 @@ export const ProductListContainer = styled.div`
 export const ObserverContainer = styled.div`
   width: 100%;
   height: 1rem;
-
-  background-color: yellow;
 `;
