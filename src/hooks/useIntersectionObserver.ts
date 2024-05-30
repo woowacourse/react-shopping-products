@@ -17,7 +17,11 @@ const useIntersectionObserver = <T extends HTMLElement>({
     const observer: IntersectionObserver = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) onIntersect();
+          if (entry.isIntersecting) {
+            onIntersect();
+
+            observer.unobserve(entry.target);
+          }
         });
       },
       options
@@ -29,6 +33,7 @@ const useIntersectionObserver = <T extends HTMLElement>({
       if (!targetRef.current) return;
 
       observer.unobserve(targetRef.current);
+      observer.disconnect();
     };
   }, [options, onIntersect]);
 
