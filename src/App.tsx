@@ -34,18 +34,8 @@ export const CartItemContext = createContext(InitialState);
 
 function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const {
-    page,
-    error,
-    fetchNextPage,
-    category,
-    filterByCategory,
-    loading,
-    products,
-    sort,
-    setSorting,
-    observerRef,
-  } = useFetchProducts();
+  const { error, category, filterByCategory, loading, products, sort, setSorting, observerRef } =
+    useFetchProducts();
 
   const selectedCategoryOption = Object.entries(CATEGORY).find(
     ([, value]) => value === category,
