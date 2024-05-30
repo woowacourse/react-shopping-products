@@ -5,6 +5,7 @@ import { Header, Layout } from '@components/index';
 import { useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
+import { CartItemsContext } from './contexts';
 import { useCartAction } from './hooks';
 import { ProductListPage } from './pages';
 
@@ -35,7 +36,9 @@ function App() {
       <Header cartItemsLength={cartItems.length} />
       <Layout>
         <ErrorBoundary fallback={<div> 오류.....</div>}>
-          <ProductListPage cartItems={cartItems} getCartItemList={getCartItemList} />
+          <CartItemsContext.Provider value={{ handleCartAction }}>
+            <ProductListPage cartItems={cartItems} />
+          </CartItemsContext.Provider>
         </ErrorBoundary>
       </Layout>
     </>

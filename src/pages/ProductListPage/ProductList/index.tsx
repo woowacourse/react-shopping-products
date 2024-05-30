@@ -10,9 +10,8 @@ interface ProductListProps {
   targetRef: React.MutableRefObject<HTMLDivElement | null>;
   loading: boolean;
   cartItems: CartItem[];
-  getCartItemList: () => Promise<void>;
 }
-function ProductList({ products, targetRef, loading, cartItems, getCartItemList }: ProductListProps) {
+function ProductList({ products, targetRef, loading, cartItems }: ProductListProps) {
   const productListRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -25,7 +24,7 @@ function ProductList({ products, targetRef, loading, cartItems, getCartItemList 
     <section ref={productListRef} className={style.wrapper}>
       <ul className={style.productList}>
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} cartItems={cartItems} getCartItemList={getCartItemList} />
+          <ProductCard key={product.id} product={product} cartItems={cartItems} />
         ))}
         {loading && <div>로딩중....</div>}
         <div className={style.target} ref={targetRef}>

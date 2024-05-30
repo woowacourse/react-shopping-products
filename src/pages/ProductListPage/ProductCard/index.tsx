@@ -1,5 +1,6 @@
-import { fetchDeleteCartItems, fetchPostCartItems } from '@apis/index';
 import { CartItem, Product } from '@appTypes/index';
+import { CartItemsContext } from '@contexts/index';
+import { useTargetContext } from '@hooks/index';
 
 import CartActionButton from '../CartActionButton';
 
@@ -8,27 +9,16 @@ import style from './style.module.css';
 interface ProductCardProps {
   product: Product;
   cartItems: CartItem[];
-  getCartItemList: () => Promise<void>;
 }
 
-function ProductCard({ product, cartItems, getCartItemList }: ProductCardProps) {
+function ProductCard({ product, cartItems }: ProductCardProps) {
+  const { handleCartAction } = useTargetContext(CartItemsContext);
+
   const cartItem = cartItems.find((item) => item.product.id === product.id);
   const isInCart = cartItem !== undefined;
 
-  const addCartItem = async () => {
-    await fetchPostCartItems({ productId: product.id });
-    await getCartItemList();
-  };
-
-  const deleteCarItem = async () => {
-    if (!cartItem) return;
-    await fetchDeleteCartItems({ cartItemId: cartItem.id });
-    await getCartItemList();
-  };
-
   const handleCartActionButtonClick = () => {
-    if (isInCart) return deleteCarItem();
-    addCartItem();
+    handleCartAction({ isInCart, productId: product.id, cartItem });
   };
 
   return (

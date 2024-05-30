@@ -8,6 +8,7 @@ export default defineConfig({
     alias: [
       { find: '@src', replacement: resolve(__dirname, 'src') },
       { find: '@components', replacement: resolve(__dirname, 'src/components') },
+      { find: '@contexts', replacement: resolve(__dirname, 'src/contexts') },
       { find: '@styles', replacement: resolve(__dirname, 'src/styles') },
       { find: '@assets', replacement: resolve(__dirname, 'src/assets') },
       { find: '@constants', replacement: resolve(__dirname, 'src/constants') },

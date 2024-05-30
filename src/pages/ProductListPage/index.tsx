@@ -11,10 +11,9 @@ import style from './style.module.css';
 
 interface ProductListPageProps {
   cartItems: CartItem[];
-  getCartItemList: () => Promise<void>;
 }
 
-function ProductListPage({ cartItems, getCartItemList }: ProductListPageProps) {
+function ProductListPage({ cartItems }: ProductListPageProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
@@ -89,13 +88,7 @@ function ProductListPage({ cartItems, getCartItemList }: ProductListPageProps) {
         <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
       <IntersectionObserverArea callback={observerCallback} targetRef={targetRef}>
-        <ProductList
-          products={products}
-          targetRef={targetRef}
-          loading={loading}
-          cartItems={cartItems}
-          getCartItemList={getCartItemList}
-        />
+        <ProductList products={products} targetRef={targetRef} loading={loading} cartItems={cartItems} />
       </IntersectionObserverArea>
     </div>
   );
