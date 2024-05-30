@@ -1,7 +1,7 @@
 import { server } from '../../mocks/server';
 import { http, HttpResponse } from 'msw';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import useProduct from './useProduct';
+import useProduct from './useProducts';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
 import { API_URL } from '../../constants/api';
 
