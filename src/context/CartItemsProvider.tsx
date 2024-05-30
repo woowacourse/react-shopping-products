@@ -1,6 +1,6 @@
 import { SetStateAction, createContext, useEffect, useState } from 'react';
+import useCartItems from '../components/hooks/useCartItems';
 import { CartItem } from '../types';
-import { fetchCartItems } from '../api/cart';
 
 interface CartItemsContextValue {
   cartItems: CartItem[];
@@ -17,16 +17,13 @@ export const CartItemsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { cartItems, getCartItems } = useCartItems();
   const [refresh, setRefresh] = useState<boolean>(true);
 
   useEffect(() => {
     if (refresh) {
-      fetchCartItems()
-        .then((data) => {
-          setCartItems(data);
-        })
-        .finally(() => setRefresh(false));
+      getCartItems();
+      setRefresh(false);
     }
   }, [refresh]);
 

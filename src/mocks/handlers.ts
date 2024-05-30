@@ -18,7 +18,7 @@ export const handlers = [
     const start =
       page === START_PAGE_NUMBER
         ? page
-        : (page - 1) * PAGING_SIZE + INITIAL_PAGING_SIZE;
+        : (page - 5) * PAGING_SIZE + INITIAL_PAGING_SIZE;
     const end = start + size;
 
     const filterByCategory = category

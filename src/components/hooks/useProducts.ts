@@ -1,20 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
-import { fetchProducts } from '../../api/products';
+import { useCallback, useEffect, useState } from 'react';
+import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
 import {
   INITIAL_PAGING_SIZE,
   PAGING_SIZE,
   START_PAGE_NUMBER,
 } from '../../constants/api';
+import useFetch from './useFetch';
+import { Product } from '../../types';
 
 export type SortType = 'desc' | 'asc';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
 
 interface UseProductsResult {
   products: Product[];
@@ -28,43 +22,38 @@ interface UseProductsResult {
   setSort: React.Dispatch<React.SetStateAction<SortType>>;
 }
 
-// TODO: 리팩토링!! 책임 분리!!
+interface FetchProductsResponse {
+  last: boolean;
+  content: Product[];
+}
+
 export default function useProducts(): UseProductsResult {
+  const { error, loading, fetchData } = useFetch<FetchProductsResponse>({
+    url: PRODUCTS_ENDPOINT,
+  });
+
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState(0);
   const [sort, setSort] = useState<SortType>('asc');
   const [category, setCategory] = useState<string>('');
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
-  const getProducts = useCallback(
-    async (reset = false) => {
-      try {
-        setLoading(true);
+  const getProducts = useCallback(async () => {
+    fetchData({
+      page,
+      size: page === START_PAGE_NUMBER ? INITIAL_PAGING_SIZE : PAGING_SIZE,
+      sort: `price,${sort}`,
+      category,
+    }).then((response) => {
+      if (!response) return;
+      const { last, content } = response;
 
-        const { last, content } = await fetchProducts({
-          page: reset ? START_PAGE_NUMBER : page,
-          size: page === START_PAGE_NUMBER ? INITIAL_PAGING_SIZE : PAGING_SIZE,
-          sort,
-          category,
-        });
-
-        if (reset) {
-          setProducts(content);
-        } else {
-          setProducts((prevProducts) => [...prevProducts, ...content]);
-        }
-
-        setIsLastPage(last);
-      } catch (error) {
-        setError(error as Error);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [page, sort, category]
-  );
+      setIsLastPage(last);
+      setProducts((prevProducts) =>
+        page === START_PAGE_NUMBER ? content : [...prevProducts, ...content]
+      );
+    });
+  }, [page, sort, category]);
 
   useEffect(() => {
     if (!isLastPage) {
@@ -75,7 +64,7 @@ export default function useProducts(): UseProductsResult {
   useEffect(() => {
     setPage(START_PAGE_NUMBER);
     setIsLastPage(false);
-    getProducts(true);
+    getProducts();
   }, [category, sort]);
 
   const fetchNextPage = () => {
