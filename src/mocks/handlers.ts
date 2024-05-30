@@ -38,7 +38,7 @@ export const handlers = [
     const last = page === MOCK_PRODUCTS_LAST_PAGE;
 
     const filteredProducts =
-      category !== '' ? products.filter((product) => product.category === category) : products;
+      category !== 'all' ? products.filter((product) => product.category === category) : products;
 
     const sortedProducts = orderByPrice(filteredProducts, order as Order);
 
