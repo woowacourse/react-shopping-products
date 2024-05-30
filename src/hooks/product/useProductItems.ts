@@ -4,11 +4,13 @@ import { BaseResponse } from '@appTypes/response';
 import { PRODUCT_CATEGORY_MAP } from '@components/product/CategoryDropdown/CategoryDropdown.constant';
 import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
 import { Product } from '@appTypes/product';
+import { getProductEndpoint } from '@pages/ProductPage/ProductPage.util';
 import useFetch from '@hooks/useFetch';
-import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
 import usePagination from '@hooks/usePagination';
+import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
+import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 
-const useProducts = (): {
+interface UseProductResult {
   products: Product[];
   page: number;
   sortType: keyof typeof PRODUCT_SORT_MAP;
@@ -17,7 +19,9 @@ const useProducts = (): {
   updateNextProductItem: () => void;
   onSelectSortTypeOption: (sortType: keyof typeof PRODUCT_SORT_MAP) => void;
   onSelectCategoryOption: (category: keyof typeof PRODUCT_CATEGORY_MAP) => void;
-} => {
+}
+
+const useProducts = (): UseProductResult => {
   const { page, resetPage, updateNextPage } = usePagination();
 
   const { category, sortType, onSelectCategoryOption, onSelectSortTypeOption } =
@@ -25,11 +29,12 @@ const useProducts = (): {
 
   const [products, setProducts] = useState<Product[]>([]);
 
-  const endpoint = `products?${category === 'all' ? '' : `category=${category}&`}page=${
-    page && page + 4
-  }&size=${page === 0 ? 20 : 4}&sort=price,${sortType}`;
+  const { showToast } = useToastContext();
 
-  const { data, isLoading } = useFetch<BaseResponse<Product[]>>(endpoint);
+  const { data, isLoading } = useFetch<BaseResponse<Product[]>>(
+    getProductEndpoint({ category, page, sortType }),
+    showToast
+  );
 
   useEffect(() => {
     if (!data) return;
@@ -39,7 +44,6 @@ const useProducts = (): {
 
   const updateNextProductItem = useCallback(() => {
     if (data?.last) return;
-    if (data && data.content.length === 0) return;
 
     updateNextPage();
   }, [updateNextPage, data]);
