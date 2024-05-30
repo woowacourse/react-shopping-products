@@ -69,7 +69,7 @@ describe("useProduct 훅 테스트", () => {
 
       await waitFor(() => {
         expect(result.current.products.length).toBe(24);
-        expect(result.current.page).toBe(4);
+        expect(result.current.page).toBe(5);
       });
     });
 
@@ -96,13 +96,12 @@ describe("useProduct 훅 테스트", () => {
         expect(result.current.products).toHaveLength(expectedInitProductsCount);
       });
 
-      for (let page = 4; page < 24; page += 1) {
+      for (let page = 5; page < 25; page += 1) {
         act(() => {
           result.current.fetchNextPage();
         });
 
-        const expectedProductsCount =
-          expectedInitProductsCount + (page - 3) * 4;
+        const expectedProductsCount = expectedInitProductsCount + (page - 4) * 4;
 
         await waitFor(() => {
           expect(result.current.page).toBe(page);
@@ -115,7 +114,7 @@ describe("useProduct 훅 테스트", () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(23);
+        expect(result.current.page).toBe(24);
         expect(result.current.products).toHaveLength(100);
       });
     });

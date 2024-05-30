@@ -35,12 +35,12 @@ export const handlers = [
 
     const page = Number(url.searchParams.get("page") || "1");
     const limit = page === 0 ? 20 : 4;
-    const start = page === 0 ? 0 : (page - 4) * 4 + 20;
+    const start = page === 0 ? 0 : (page - 5) * 4 + 20;
     const end = start + limit;
 
     const paginatedProducts = productsMockData.slice(start, end);
 
-    const last = page === 23;
+    const last = page === 24;
 
     return HttpResponse.json({ content: paginatedProducts, last });
   }),

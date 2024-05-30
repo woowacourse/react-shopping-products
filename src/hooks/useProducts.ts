@@ -48,7 +48,7 @@ const useProducts = () => {
     }
 
     if (page === 0) {
-      setPage((page) => page + 4);
+      setPage((page) => page + 5);
       return;
     }
 
