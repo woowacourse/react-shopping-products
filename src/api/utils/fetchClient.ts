@@ -2,19 +2,9 @@ import { API_URL, USER_ID, USER_PASSWORD } from '@/api/config';
 
 import { generateBasicToken } from '@/utils/auth';
 
-const handleResponse = async (response: Response) => {
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      `HTTP error, status: ${response.status}, message: ${errorText}`
-    );
-  }
-  return response;
-};
-
 const fetchFromAPI = async (endpoint: string, options: RequestInit) => {
   const response = await fetch(`${API_URL}${endpoint}`, options);
-  return handleResponse(response);
+  return response;
 };
 
 export const fetchWithAuth = async (

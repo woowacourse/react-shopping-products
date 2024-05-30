@@ -19,5 +19,9 @@ export const getProductList = async ({
     { method: 'GET' }
   );
 
+  if (!response.ok) {
+    throw new Error('상품 정보 불러오기를 실패했습니다. 다시 시도해 주세요.');
+  }
+
   return response.json();
 };
