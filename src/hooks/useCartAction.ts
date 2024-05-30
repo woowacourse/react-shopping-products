@@ -1,15 +1,19 @@
 import { fetchDeleteCartItems, fetchGetCartItems, fetchPostCartItems } from '@apis/index';
 import { CartItem } from '@appTypes/index';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import useFetch from './useFetch';
 
 function useCartAction() {
-  const { fetch } = useFetch<typeof fetchGetCartItems>(fetchGetCartItems);
+  const getFetchResult = useFetch<typeof fetchGetCartItems>(fetchGetCartItems);
+  const postFetchResult = useFetch<typeof fetchPostCartItems>(fetchPostCartItems);
+  const deleteFetchResult = useFetch<typeof fetchDeleteCartItems>(fetchDeleteCartItems);
+
   const [cartItems, setCartItem] = useState<CartItem[]>([]);
+  const [cartActionError, setCartActionError] = useState(false);
 
   const getCartItemList = async () => {
-    const firstResult = await fetch();
+    const firstResult = await getFetchResult.fetch();
     if (!firstResult) return;
 
     const { totalNumbers, cartItems, isTotalCartItems } = firstResult;
@@ -18,21 +22,21 @@ function useCartAction() {
       return setCartItem(cartItems);
     }
     // page-0인 장바구니 목록외에 더 데이터를 불러와야 할 경우
-    const result = await fetch(totalNumbers);
+    const result = await getFetchResult.fetch(totalNumbers);
     if (!result) return;
 
     setCartItem(result.cartItems);
   };
 
   const addCartItem = async (productId: number) => {
-    await fetchPostCartItems({ productId });
+    await postFetchResult.fetch({ productId });
     await getCartItemList();
   };
 
   const deleteCarItem = async (cartItem: CartItem | undefined) => {
     if (!cartItem) return;
 
-    await fetchDeleteCartItems({ cartItemId: cartItem.id });
+    await deleteFetchResult.fetch({ cartItemId: cartItem.id });
     await getCartItemList();
   };
 
@@ -49,7 +53,18 @@ function useCartAction() {
     addCartItem(productId);
   };
 
-  return { cartItems, getCartItemList, handleCartAction };
+  useEffect(() => {
+    setCartActionError(getFetchResult.error || postFetchResult.error || deleteFetchResult.error);
+  }, [getFetchResult.error, postFetchResult.error, deleteFetchResult.error]);
+
+  return {
+    cartItems,
+    getCartItemList,
+    handleCartAction,
+    loading: getFetchResult.loading || postFetchResult.loading || deleteFetchResult.loading,
+    error: cartActionError,
+    setCartActionError,
+  };
 }
 
 export default useCartAction;

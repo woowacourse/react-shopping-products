@@ -1,29 +1,19 @@
-import { useState } from 'react';
-
-import { CartAction } from '../Fallbacks';
-
 import CartBadgeButton from './CartBadgeButton';
 import Logo from './Logo';
 import style from './style.module.css';
 
 interface HeaderProps {
   cartItemsLength: number;
+  headerRef: React.MutableRefObject<HTMLElement | null>;
 }
 
-function Header({ cartItemsLength }: HeaderProps) {
-  const [error, setError] = useState(false);
-
-  const handleClick = () => {
-    setError((prev) => !prev);
-  };
-
+function Header({ cartItemsLength, headerRef }: HeaderProps) {
   return (
     <>
-      <header className={style.header}>
+      <header ref={headerRef} className={style.header}>
         <Logo />
-        <CartBadgeButton handleClick={handleClick} cartItemsLength={cartItemsLength} />
+        <CartBadgeButton cartItemsLength={cartItemsLength} />
       </header>
-      {error && <CartAction />}
     </>
   );
 }

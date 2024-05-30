@@ -9,6 +9,8 @@ const useFetch = <T extends (...args: Parameters<T>) => ReturnType<T>>(
   const fetch = async (...args: Parameters<T>) => {
     try {
       setLoading(true);
+      setError(false);
+
       const result = await fetchFunction(...args);
       return result;
     } catch (error) {

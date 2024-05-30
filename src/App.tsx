@@ -1,39 +1,44 @@
 import '@styles/App.css';
 import '@styles/reset.css';
 import '@styles/global.module.css';
-import { Header, Layout } from '@components/index';
-import { useEffect } from 'react';
+import { CartAction } from '@components/Fallbacks';
+import { Header, Layout, ToastModal } from '@components/index';
+import { useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { CartItemsContext } from './contexts';
 import { useCartAction } from './hooks';
 import { ProductListPage } from './pages';
 
+interface HeaderPosition {
+  top: number;
+  left: number;
+}
+
 function App() {
-  const { cartItems, getCartItemList, handleCartAction } = useCartAction();
+  const { cartItems, getCartItemList, handleCartAction, error, setCartActionError } = useCartAction();
+  const [headerPosition, setHeaderPosition] = useState<HeaderPosition | null>(null);
 
-  // const getCartItemList = async () => {
-  //   const firstResult = await fetch();
-  //   if (!firstResult) return;
-  //   const { totalNumbers, cartItems, isTotalCartItems } = firstResult;
-
-  //   if (isTotalCartItems) {
-  //     return setCartItem(cartItems);
-  //   }
-  //   // page-0인 장바구니 목록외에 더 데이터를 불러와야 할 경우
-  //   const result = await fetch(totalNumbers);
-  //   if (!result) return;
-
-  //   setCartItem(result.cartItems);
-  // };
+  const headerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     getCartItemList();
   }, []);
 
+  useEffect(() => {
+    if (!headerRef.current) return;
+
+    const domRect = headerRef.current.getClientRects()[0];
+
+    setHeaderPosition({
+      top: domRect.top,
+      left: domRect.left,
+    });
+  }, [headerRef]);
+
   return (
     <>
-      <Header cartItemsLength={cartItems.length} />
+      <Header cartItemsLength={cartItems.length} headerRef={headerRef} />
       <Layout>
         <ErrorBoundary fallback={<div> 오류.....</div>}>
           <CartItemsContext.Provider value={{ handleCartAction }}>
@@ -41,6 +46,11 @@ function App() {
           </CartItemsContext.Provider>
         </ErrorBoundary>
       </Layout>
+      {headerPosition && (
+        <ToastModal isOpen={error} closeModal={() => setCartActionError(false)} position={headerPosition}>
+          <CartAction />
+        </ToastModal>
+      )}
     </>
   );
 }
