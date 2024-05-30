@@ -14,8 +14,14 @@ import {
 import useCartItems from '../hooks/useCartItem';
 
 function ProductPage() {
-  const { products, fetchNextPage, loading, changeCategory, changeSorting } =
-    useProducts();
+  const {
+    products,
+    fetchNextPage,
+    loading,
+    changeCategory,
+    changeSorting,
+    error,
+  } = useProducts();
   const { lastProductElementRef } = useInfinityScroll(fetchNextPage);
   const { cartItemIds, isInCart } = useCartItems();
 
@@ -56,7 +62,7 @@ function ProductPage() {
           <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
         )}
 
-        {!loading && (
+        {!loading && !error && (
           <div
             ref={lastProductElementRef}
             style={{ height: '30px', fontSize: '5rem' }}
