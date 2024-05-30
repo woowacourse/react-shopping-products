@@ -1,7 +1,7 @@
 import useProducts from "../../hooks/useProducts";
 import ProductListHeader from "../ProductListHeader/ProductListHeader";
 import ProductItem from "./ProductItem/ProductItem";
-import { ProductListStyle } from "./ProductList.style";
+import * as PL from "./ProductList.style";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import usePagination from "../../hooks/usePagination";
 
@@ -26,17 +26,25 @@ const ProductList = () => {
         handleCategory={handleCategory}
         handleSort={handleSort}
       />
-      <ProductListStyle>
-        {products.map((item, index) => {
-          return (
-            <ProductItem
-              product={item}
-              key={item.id}
-              ref={index === products.length - 1 ? lastProductElementRef : null}
-            />
-          );
-        })}
-      </ProductListStyle>
+      {loading ? (
+        <PL.Loading>로딩중! 💪</PL.Loading>
+      ) : products.length === 0 ? (
+        <PL.Empty>상품이 존재하지 않습니다! 🥲</PL.Empty>
+      ) : (
+        <PL.ProductListStyle>
+          {products.map((item, index) => {
+            return (
+              <ProductItem
+                product={item}
+                key={item.id}
+                ref={
+                  index === products.length - 1 ? lastProductElementRef : null
+                }
+              />
+            );
+          })}
+        </PL.ProductListStyle>
+      )}
     </>
   );
 };
