@@ -24,4 +24,4 @@ export type Category =
   | 'books'
   | 'fitness'
   | 'kitchen'
-  | '';
+  | 'all';
