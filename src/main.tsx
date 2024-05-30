@@ -1,17 +1,13 @@
-import ReactDOM from 'react-dom/client';
+import * as Styled from './main.styled';
+
 import App from './App.tsx';
-import ToastProvider from '@components/common/Toast/provider/ToastProvider.tsx';
-import { SIZE } from '@styles/style.constant.ts';
+import ReactDOM from 'react-dom/client';
+import ToastProvider from '@components/common/Toast/provider/ToastProvider';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <div
-    style={{
-      width: SIZE.layoutWidth,
-      margin: 'auto',
-    }}
-  >
+  <Styled.MainContainer>
     <ToastProvider>
       <App />
     </ToastProvider>
-  </div>
+  </Styled.MainContainer>
 );
