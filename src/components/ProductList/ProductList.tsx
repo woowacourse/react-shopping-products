@@ -22,18 +22,18 @@ function ProductList({
   fetchNextPage,
 }: ProductListProps) {
   const target = useRef(null);
-  const { observe, unobserve, disconnect } = useIntersectionObserver(() =>
+  const { observe, unobserve } = useIntersectionObserver(() =>
     fetchNextPage(),
   );
 
   useEffect(() => {
     if (!target.current || isPending || isLast) return;
-
-    observe(target.current);
+    const currentTarget = target.current;
+    observe(currentTarget);
 
     return () => {
-      if (target.current) {
-        unobserve(target.current);
+      if (currentTarget) {
+        unobserve(currentTarget);
       }
     };
   }, [page, isPending, isLast]);
