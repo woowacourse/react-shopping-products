@@ -5,5 +5,3 @@ interface ImportMetaEnv {
   readonly VITE_USERNAME: string;
   readonly VITE_PASSWORD: string;
 }
-
-declare module "*.svg";
