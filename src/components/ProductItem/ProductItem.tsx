@@ -7,23 +7,29 @@ import RemoveShoppingCartIcon from '@/assets/RemoveShoppingCart.svg';
 import styles from './ProductItem.module.css';
 import { Product } from '@/types';
 import { useState } from 'react';
+import { useCartItemListContext } from '@/hooks/useCartItemList';
 
-export default function ProductItem({ id, name, price, imageUrl, category }: Product) {
-  const [isCart, setIsCart] = useState(false);
+type ProductItemProps = Product & {};
 
-  const handleIsCart = () => {
+export default function ProductItem({ id, name, price, imageUrl, category }: ProductItemProps) {
+  const { toggleCartItem, isInCart } = useCartItemListContext();
+  const [isCart, setIsCart] = useState<boolean>(isInCart(id));
+
+  const handleIsCart = (id: number) => {
     setIsCart((prev) => !prev);
+
+    toggleCartItem(id);
   };
 
   return (
     <div className={styles.container}>
       <ImageBox width={182} height={112} src={imageUrl} />
-      <Flex gap={8}>
+      <div className={styles['description-container']}>
         <Text size="m" weight="l">
           {name}
         </Text>
         <Text size="s">{price.toLocaleString('ko-KR')}원</Text>
-      </Flex>
+      </div>
       <Flex direction="row" style={{ width: '100%', justifyContent: 'flex-end' }}>
         <Button
           color={isCart ? 'default' : 'primary'}
@@ -34,7 +40,7 @@ export default function ProductItem({ id, name, price, imageUrl, category }: Pro
               src={isCart ? RemoveShoppingCartIcon : AddProductItemIcon}
             />
           }
-          onClick={handleIsCart}
+          onClick={() => handleIsCart(id)}
         >
           {isCart ? '빼기' : '담기'}
         </Button>

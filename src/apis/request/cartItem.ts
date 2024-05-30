@@ -40,19 +40,17 @@ type QueryParams = {
 export const requestCartItemList = async (
   page: number = 0,
   size: number = 20,
-): Promise<CartItem[]> => {
+): Promise<ResponseCartItemList> => {
   const queryParams: QueryParams = {
     page,
     size,
   };
 
-  const data = await requestGet<ResponseCartItemList>({
+  return await requestGet<ResponseCartItemList>({
     baseUrl: BASE_URL.SHOP,
     endpoint: ENDPOINT.CART_LIST,
     queryParams,
   });
-
-  return data.content;
 };
 
 export const requestAddCartItem = async (productId: number, quantity: number = 1) => {

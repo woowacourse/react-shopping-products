@@ -5,9 +5,15 @@ import styles from './ProductList.module.css';
 export default function ProductList({ productList }: { productList: Product[] }) {
   return (
     <ul className={styles.ul}>
-      {productList.map((product) => (
-        <ProductItem {...product} />
-      ))}
+      {productList.length === 0 ? (
+        <div>목록이 비어있습니다.</div>
+      ) : (
+        <>
+          {productList.map((product) => (
+            <ProductItem {...product} />
+          ))}
+        </>
+      )}
     </ul>
   );
 }
