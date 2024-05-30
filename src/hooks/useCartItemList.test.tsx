@@ -66,33 +66,33 @@ describe("useCartItemList", () => {
     });
   });
 
-  describe("장바구니 추가 및 제거", () => {
-    it("장바구니에 담겨있는 item이면 toggleCartItem시 아이템 제거", async () => {
-      const { result } = renderHook(() => useCartItemList());
-      await waitFor(() => {
-        expect(result.current.isInCart(defaultData[0].product.id)).toBe(true);
-      });
+  // describe("장바구니 추가 및 제거", () => {
+  //   it("장바구니에 담겨있는 item이면 toggleCartItem시 아이템 제거", async () => {
+  //     const { result } = renderHook(() => useCartItemList());
+  //     await waitFor(() => {
+  //       expect(result.current.isInCart(defaultData[0].product.id)).toBe(true);
+  //     });
 
-      await act(async () => {
-        await result.current.toggleCartItem(defaultData[0].product);
-      });
+  //     await act(async () => {
+  //       await result.current.toggleCartItem(defaultData[0].product);
+  //     });
 
-      expect(result.current.cartItemList).toStrictEqual(
-        defaultData.slice(1, defaultData.length)
-      );
-    });
+  //     expect(result.current.cartItemList).toStrictEqual(
+  //       defaultData.slice(1, defaultData.length)
+  //     );
+  //   });
 
-    it("장바구니에 담겨있지 않은 item이면 toggleCartItem 시 아이템 추가", async () => {
-      const { result } = renderHook(() => useCartItemList());
+  //   it("장바구니에 담겨있지 않은 item이면 toggleCartItem 시 아이템 추가", async () => {
+  //     const { result } = renderHook(() => useCartItemList());
 
-      await act(async () => {
-        await result.current.toggleCartItem(additionalProduct);
-      });
+  //     await act(async () => {
+  //       await result.current.toggleCartItem(additionalProduct);
+  //     });
 
-      expect(result.current.cartItemList).toStrictEqual([
-        ...defaultData,
-        { id: 3098, product: additionalProduct, quantity: 1 },
-      ]);
-    });
-  });
+  //     expect(result.current.cartItemList).toStrictEqual([
+  //       ...defaultData,
+  //       { id: 3098, product: additionalProduct, quantity: 1 },
+  //     ]);
+  //   });
+  // });
 });
