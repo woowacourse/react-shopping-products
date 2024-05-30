@@ -12,7 +12,7 @@ interface UseProductListResult {
   page: number;
   fetchNextPage: () => void;
   isLastPage: boolean;
-  setPage: () => void;
+  setPage: (page: number) => void;
 }
 
 interface UseProductListProps {

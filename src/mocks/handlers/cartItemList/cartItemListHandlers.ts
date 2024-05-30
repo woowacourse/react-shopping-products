@@ -35,7 +35,7 @@ export const cartItemListHandlers = [
   http.delete(CART_ITEMS_ENDPOINT, ({ params }) => {
     const { id } = params;
     const index = mockCartItemList.findIndex(
-      (item) => item.id === parseInt(id as string)
+      (item) => item.id === parseInt(id as string, 10)
     );
     if (index === -1) {
       return HttpResponse.json("장바구니에 없는 상품입니다.", { status: 400 });
