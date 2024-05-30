@@ -6,11 +6,13 @@ interface UseInfiniteScrollResult {
 
 interface UseInfiniteScrollProps {
   hasMore: boolean;
+  loading: boolean;
   nextPage: () => void;
 }
 
 export default function useInfiniteScroll({
   hasMore,
+  loading,
   nextPage,
 }: UseInfiniteScrollProps): UseInfiniteScrollResult {
   const observer = useRef<IntersectionObserver | null>(null);
@@ -19,13 +21,13 @@ export default function useInfiniteScroll({
     (node: HTMLDivElement) => {
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
+        if (entries[0].isIntersecting && hasMore && !loading) {
           nextPage();
         }
       });
       if (node) observer.current.observe(node);
     },
-    [hasMore, nextPage]
+    [hasMore, nextPage, loading]
   );
 
   return { lastElementRef };

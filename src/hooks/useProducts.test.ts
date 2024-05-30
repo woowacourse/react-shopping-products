@@ -105,7 +105,7 @@ describe("useProducts", () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(24);
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(5);
       });
     });
 
@@ -140,7 +140,7 @@ describe("useProducts", () => {
 
         await waitFor(() => {
           expect(result.current.products).toHaveLength(expectedLength);
-          expect(result.current.page).toBe(i);
+          expect(result.current.page).toBe(i + 4);
         });
       }
 
@@ -150,7 +150,7 @@ describe("useProducts", () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(100);
-        expect(result.current.page).toBe(21);
+        expect(result.current.page).toBe(25);
       });
     });
 

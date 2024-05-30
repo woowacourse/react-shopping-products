@@ -23,7 +23,7 @@ export default function useProducts({
   const [hasMore, setHasMore] = useState(true);
   const [category, setCategory] = useState<Category | "all">("all");
   const [sort, setSort] = useState<Sort>("asc");
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { showError } = useError();
 
@@ -56,7 +56,9 @@ export default function useProducts({
       }
     };
 
-    fetchProducts();
+    if (!loading) {
+      fetchProducts();
+    }
   }, [page, category, sort, showError]);
 
   const handleCategory = (category: Category | "all") => {

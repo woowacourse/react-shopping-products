@@ -11,13 +11,15 @@ import usePagination from "../../hooks/usePagination";
 const ProductList = () => {
   const { page, nextPage, resetPage } = usePagination();
 
-  const { products, handleCategory, handleSort, hasMore } = useProducts({
-    page,
-    resetPage,
-  });
+  const { products, loading, hasMore, handleCategory, handleSort } =
+    useProducts({
+      page,
+      resetPage,
+    });
 
   const { lastElementRef: lastProductElementRef } = useInfiniteScroll({
     hasMore,
+    loading,
     nextPage,
   });
 

@@ -1,3 +1,4 @@
+import { RULE } from "../constants/rules";
 import {
   CART_ITEMS_COUNTS_ENDPOINT,
   CART_ITEMS_ENDPOINT,
@@ -49,7 +50,7 @@ export const getProducts = async ({
     size,
     sort: ["price", sort],
   };
-  const queryString = createQueryString(params);
+  const queryString = createQueryString(params) + RULE.sortQueryByIdAsc;
 
   const response = await fetchWithAuth(`${PRODUCTS_ENDPOINT}?${queryString}`, {
     method: "GET",
