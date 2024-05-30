@@ -7,7 +7,7 @@ import useProducts from './useProducts';
 import { Order, Sort } from '../types/product';
 
 const useFetchProducts = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [isLastPage, setIsLastPage] = useState(false);
 
@@ -16,7 +16,7 @@ const useFetchProducts = () => {
 
   const [category, setCategory] = useState('all');
   const [sort, setSort] = useState<Sort>({
-    price: 'desc',
+    price: 'asc',
   });
 
   const getProducts = async () => {
