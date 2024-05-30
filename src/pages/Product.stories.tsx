@@ -5,10 +5,6 @@ const meta = {
   title: "Page/Product",
   component: Product,
   tags: ["autodocs"],
-  args: {
-    title: "코카콜라",
-    price: 10000,
-  },
 } satisfies Meta<typeof Product>;
 
 export default meta;
