@@ -1,9 +1,11 @@
 import useProducts from '../hooks/useProducts';
+import useCartItem from '../hooks/useCartItem';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 import NavigationBar from '../components/NavigationBar/NavigationBar';
 import SelectBox from '../components/SelectBox/SelectBox';
 import ProductItemContainer from '../components/ProductItemContainer/ProductItemContainer';
+import APIErrorToast from '../components/APIErrorToast/APIErrorToast';
 
 import * as Styled from './ProductPage.style';
 
@@ -13,17 +15,24 @@ import {
   PRODUCT_CATEGORIES,
   PRODUCT_SORT_OPTIONS,
 } from '../constants/products';
-import APIErrorToast from '../components/APIErrorToast/APIErrorToast';
 
 export default function ProductPage() {
   const {
     products,
-    error,
-    isLoading,
+    error: productError,
+    isLoading: isProductLoading,
     fetchNextPage,
     handleChangeCategory,
     handleChangeSortOption,
   } = useProducts();
+
+  const {
+    error: cartItemError,
+    handleAddCartItem,
+    handleRemoveCartItem,
+    selectedCartItemsLength,
+    checkIsInCart,
+  } = useCartItem();
 
   const observerRef = useIntersectionObserver<HTMLDivElement>(fetchNextPage);
 
@@ -41,6 +50,9 @@ export default function ProductPage() {
         <Styled.ShopHeader>
           SHOP
           <Styled.CartButton />
+          {selectedCartItemsLength !== 0 && (
+            <Styled.CartItemsNumber>{selectedCartItemsLength}</Styled.CartItemsNumber>
+          )}
         </Styled.ShopHeader>
       </NavigationBar>
       <Styled.ShopContent>
@@ -57,10 +69,20 @@ export default function ProductPage() {
             placeholder="낮은 가격순"
           />
         </Styled.SelectBoxContainer>
-        <ProductItemContainer products={products} />
+        <ProductItemContainer
+          products={products}
+          onAddCartItem={handleAddCartItem}
+          onRemoveCartItem={handleRemoveCartItem}
+          checkIsInCart={checkIsInCart}
+        />
       </Styled.ShopContent>
-      {!isLoading && !error && <Styled.ObserverTarget ref={observerRef} />}
-      {error && error instanceof Error && <APIErrorToast message={error.message} />}
+      {!isProductLoading && !productError && <Styled.ObserverTarget ref={observerRef} />}
+      {productError && productError instanceof Error && (
+        <APIErrorToast message={productError.message} />
+      )}
+      {cartItemError && cartItemError instanceof Error && (
+        <APIErrorToast message={cartItemError.message} />
+      )}
     </>
   );
 }
