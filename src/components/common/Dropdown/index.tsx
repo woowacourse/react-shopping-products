@@ -24,7 +24,9 @@ const Dropdown = ({ optionArray, selectedOption, optionChange }: DropdownProps) 
   };
 
   const options = optionArray.map((option) => (
-    <S.Option onClick={() => handleOptionOnClick(option)}>{option}</S.Option>
+    <S.Option key={option} onClick={() => handleOptionOnClick(option)}>
+      {option}
+    </S.Option>
   ));
 
   return (
