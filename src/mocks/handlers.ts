@@ -6,22 +6,22 @@ import cartItemMockData from "./cartItems.json";
 import productsMockData from "./products.json";
 
 function CartMockClosure() {
-  let cartMockData = cartItemMockData.content;
+  let cartMockData = cartItemMockData;
 
   const getCartMockData = () => {
     return cartMockData;
   };
 
   const pushCartItem = (mockCartItem: CartItem) => {
-    cartMockData = [...cartMockData, mockCartItem];
+    cartMockData.content = [...cartMockData.content, mockCartItem];
   };
 
   const deleteCartItem = (id: number) => {
-    cartMockData = cartMockData.filter((el) => el.id !== id);
+    cartMockData.content = cartMockData.content.filter((el) => el.id !== id);
   };
 
   const resetCartItems = () => {
-    cartMockData = cartItemMockData.content;
+    cartMockData = cartItemMockData;
   };
 
   return { getCartMockData, pushCartItem, deleteCartItem, resetCartItems };
@@ -45,17 +45,13 @@ export const handlers = [
     return HttpResponse.json({ content: paginatedProducts, last });
   }),
 
-  http.get(CART_ITEMS_ENDPOINT, () =>
-    HttpResponse.json(cartMockClosure.getCartMockData())
-  ),
+  http.get(CART_ITEMS_ENDPOINT, () => HttpResponse.json(cartMockClosure.getCartMockData())),
 
   http.post(CART_ITEMS_ENDPOINT, async ({ request }) => {
     const body = await request.json();
 
     if (!isValidCartItemRequestBody(body)) {
-      throw new Error(
-        "body로 주어진 값이 { productId, quantity} 형식이 아닙니다."
-      );
+      throw new Error("body로 주어진 값이 { productId, quantity} 형식이 아닙니다.");
     }
 
     cartMockClosure.pushCartItem(body);
