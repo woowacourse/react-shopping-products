@@ -1,7 +1,11 @@
 import HTTPError from '@errors/HTTPError';
+import { generateBasicToken } from '@utils/auth';
 
 export default class APIClient {
   static API_URL = import.meta.env.VITE_API_URL;
+  private static USER_ID = import.meta.env.VITE_USER_ID;
+  private static USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;
+  private static TOKEN = generateBasicToken(this.USER_ID, this.USER_PASSWORD);
 
   static validateResponse(response: Response, errorMessage: string) {
     if (!response.ok) {
@@ -44,6 +48,7 @@ export default class APIClient {
     const options = {
       method,
       headers: {
+        Authorization: this.TOKEN,
         'Content-Type': 'application/json',
         ...headers,
       },

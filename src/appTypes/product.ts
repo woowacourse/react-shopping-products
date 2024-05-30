@@ -5,3 +5,9 @@ export interface Product {
   imageUrl: string;
   category: 'fashion' | 'beverage' | 'electronics' | 'kitchen' | 'fitness' | 'books';
 }
+
+export interface CartItem {
+  id: number;
+  quantity: number;
+  product: Product;
+}
