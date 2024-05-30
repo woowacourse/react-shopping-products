@@ -1,6 +1,6 @@
 import Logo from "../../assets/logo.svg";
 import Cart from "../../assets/cart.svg";
-import { HeaderStyle, CartCount } from "./Header.style";
+import { HeaderStyle, CartCount, LogoImg, CartImg } from "./Header.style";
 import { useEffect, useState } from "react";
 import { getCartItems } from "../../api";
 import { useError } from "../../hooks/useError";
@@ -26,8 +26,8 @@ export default function Header() {
 
   return (
     <HeaderStyle>
-      <img src={Logo} alt="로고" className="header_logo" />
-      <img src={Cart} alt="장바구니" className="header_cart" />
+      <LogoImg src={Logo} alt="로고" />
+      <CartImg src={Cart} alt="장바구니" />
       {quantityInCart && <CartCount>{quantityInCart}</CartCount>}
     </HeaderStyle>
   );
