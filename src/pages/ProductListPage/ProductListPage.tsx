@@ -2,6 +2,7 @@ import CartIcon from '../../assets/CartIcon.svg';
 import TitleContainer from '../../components/TitleContainer/TitleContainer';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Header from '../../components/Header/Header';
+import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import ProductItem from '../../components/ProductItem/ProductItem';
 import useProducts from '../../hooks/useProduct';
 import useCartItems from '../../hooks/useCartItems';
@@ -57,6 +58,7 @@ const ProductListPage = () => {
           </S.LoadingWrapper>
         )}
       </S.Layout>
+      <FloatingButton />
     </div>
   );
 };
