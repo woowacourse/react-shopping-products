@@ -68,9 +68,8 @@ const S = {
     position: absolute;
     ${FlexColumn}
     width: 125px;
-    max-height: 250px;
+    max-height: 260px;
     margin-top: 4px;
-    overflow: hidden;
     overflow-y: auto;
     border-radius: 8px;
     box-shadow: 0 0 10px 0 ${theme.color.blackWithOpacity};

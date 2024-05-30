@@ -14,7 +14,7 @@ export default Toast;
 const S = {
   Toast: styled.div`
     position: absolute;
-    top: 60px;
+    top: 64px;
     width: 100%;
     padding: 10px;
     background-color: ${theme.color.lightRed};

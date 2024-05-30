@@ -52,13 +52,13 @@ export default ProductList;
 const S = {
   ListContainer: styled.div`
     width: 100%;
-    height: calc(100vh - 210px);
+    height: calc(100vh - 230px);
     margin-top: 24px;
     z-index: -1;
     overflow-y: auto;
   `,
   GridContainer: styled.div`
-    min-height: calc(100vh - 210px);
+    min-height: calc(100vh - 230px);
     display: grid;
     grid-template-columns: 1fr 1fr;
     flex-grow: 1;

@@ -1,8 +1,8 @@
+import { FlexColumn, FlexRow, FlexSpaceBetween } from '@/style/common.style';
 import { useEffect, useState } from 'react';
 
 import CartInButton from './button/CartInButton';
 import CartOutButton from './button/CartOutButton';
-import { FlexRow } from '@/style/common.style';
 import { Product } from '@/types/product.type';
 import Toast from './Toast';
 import styled from '@emotion/styled';
@@ -57,8 +57,7 @@ export default ProductItem;
 
 const S = {
   ItemCard: styled.div`
-    display: flex;
-    flex-direction: column;
+    ${FlexColumn}
     width: 175px;
     height: 225px;
     border-radius: 8px;
@@ -73,18 +72,16 @@ const S = {
   `,
 
   InfoWrapper: styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    ${FlexColumn}
+    ${FlexSpaceBetween}
     height: calc(225px - 110px);
     margin-top: 7px;
     padding: 8px;
   `,
   InfoText: styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 38px;
+    ${FlexColumn}
+    ${FlexSpaceBetween}
+    height: 40px;
   `,
   Title: styled.div`
     font-size: ${theme.fontSize.small};
