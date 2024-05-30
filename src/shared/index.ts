@@ -1,3 +1,5 @@
+export { BASE_URL, PRODUCTS_ENDPOINT } from './api/endpoints';
+
 export { assets } from './assets/assets';
 
 export { ImgButton } from './ui/ImgButton/ImgButton';
