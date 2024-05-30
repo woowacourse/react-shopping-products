@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
 import { Category, SortType, Product } from '@/types';
 import { requestProductList } from '@/apis/request/product';
+import { useToast } from './useToast';
 
 export const PAGE = {
   START: 1,
@@ -12,12 +13,13 @@ export const PAGE = {
 const useProductList = () => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>(null);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState<number | null>(null);
 
   const [sortType, setSortType] = useState<SortType>('asc');
   const [category, setCategory] = useState<Category>('all');
+
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (page === 0) return;
@@ -36,7 +38,7 @@ const useProductList = () => {
 
         setProductList((prevProducts) => [...prevProducts, ...paginatedProducts]);
       } catch (error) {
-        setError(error);
+        showToast('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
       } finally {
         setLoading(false);
       }
@@ -45,13 +47,12 @@ const useProductList = () => {
     getProducts();
   }, [page, sortType, category]);
 
-  const handleSortType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const sortType = FILTER_OPTION_LIST.find(
-      (sortOptionItem) => sortOptionItem.value === e.target.value,
-    );
+  const handleSortType = (value: string) => {
+    const sortType = FILTER_OPTION_LIST.find((sortOptionItem) => sortOptionItem.value === value);
 
     if (!sortType) {
-      // TODO: 못찾았다는 alert
+      showToast('올바른 정렬 기준이 아닙니다.');
+
       return;
     }
 
@@ -60,13 +61,12 @@ const useProductList = () => {
     setProductList([]);
   };
 
-  const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const category = CATEGORY_OPTION_LIST.find(
-      (categoryItem) => categoryItem.value === e.target.value,
-    );
+  const handleCategory = (value: string) => {
+    const category = CATEGORY_OPTION_LIST.find((categoryItem) => categoryItem.value === value);
 
     if (!category) {
-      // TODO: 못찾았다는 alert
+      showToast('올바른 카테고리가 아닙니다.');
+
       return;
     }
 
@@ -90,7 +90,6 @@ const useProductList = () => {
     fetchNextPage,
     productList,
     loading,
-    error,
     page,
   };
 };

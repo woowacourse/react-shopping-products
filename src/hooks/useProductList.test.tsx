@@ -1,11 +1,15 @@
 import useProductList, { PAGE } from './useProductList';
 import { waitFor, renderHook, act } from '@testing-library/react';
 import { ChangeEvent } from 'react';
+import ToastProvider from './useToast';
 
 describe('useProductList', () => {
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <ToastProvider>{children}</ToastProvider>
+  );
   describe('상품 목록 조회', () => {
     it('상품 목록을 조회한다.', async () => {
-      const { result } = renderHook(() => useProductList());
+      const { result } = renderHook(() => useProductList(), { wrapper });
 
       act(() => result.current.fetchNextPage());
 
@@ -15,7 +19,7 @@ describe('useProductList', () => {
     });
 
     it('상품 목록 조회 중엔 로딩 상태가 된다.', () => {
-      const { result } = renderHook(() => useProductList());
+      const { result } = renderHook(() => useProductList(), { wrapper });
 
       act(() => result.current.fetchNextPage());
 
@@ -23,7 +27,7 @@ describe('useProductList', () => {
     });
 
     it('상품 목록 조회가 끝나면 로딩 상태도 끝난다.', async () => {
-      const { result } = renderHook(() => useProductList());
+      const { result } = renderHook(() => useProductList(), { wrapper });
 
       act(() => result.current.fetchNextPage());
 
@@ -35,7 +39,7 @@ describe('useProductList', () => {
 
   describe('페이지네이션', () => {
     it(`첫 페이지는 ${PAGE.START_SIZE}개의 상품 목록을 불러온다.`, async () => {
-      const { result } = renderHook(() => useProductList());
+      const { result } = renderHook(() => useProductList(), { wrapper });
 
       act(() => result.current.fetchNextPage());
 
@@ -45,7 +49,7 @@ describe('useProductList', () => {
     });
 
     it(`이후 페이지는 ${PAGE.SIZE}개의 상품 목록을 불러온다.`, async () => {
-      const { result } = renderHook(() => useProductList());
+      const { result } = renderHook(() => useProductList(), { wrapper });
 
       act(() => result.current.fetchNextPage());
 
@@ -65,7 +69,7 @@ describe('useProductList', () => {
 
   describe('필터 변경 발생', () => {
     it('정렬 기준이 바뀌면 1페이지부터 다시 받아온다.', async () => {
-      const { result } = renderHook(() => useProductList());
+      const { result } = renderHook(() => useProductList(), { wrapper });
 
       act(() => {
         result.current.fetchNextPage();
@@ -83,7 +87,7 @@ describe('useProductList', () => {
           },
         } as ChangeEvent<HTMLSelectElement>;
 
-        result.current.handleSortType(event);
+        result.current.handleSortType(event.target.value);
       });
 
       await waitFor(() => {
@@ -92,7 +96,8 @@ describe('useProductList', () => {
     });
 
     it('카테고리가 바뀌면 1페이지부터 다시 받아온다.', async () => {
-      const { result } = renderHook(() => useProductList());
+      const { result } = renderHook(() => useProductList(), { wrapper });
+
       const targetCategory = 'electronics';
 
       act(() => {
@@ -111,7 +116,7 @@ describe('useProductList', () => {
           },
         } as ChangeEvent<HTMLSelectElement>;
 
-        result.current.handleCategory(event);
+        result.current.handleCategory(event.target.value);
       });
 
       await waitFor(() => {
