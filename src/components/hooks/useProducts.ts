@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchProducts } from '../../api/products';
+import {
+  INITIAL_PAGING_SIZE,
+  PAGING_SIZE,
+  START_PAGE_NUMBER,
+} from '../../constants/api';
 
 export type SortType = 'desc' | 'asc';
 
@@ -39,8 +44,8 @@ export default function useProducts(): UseProductsResult {
         setLoading(true);
 
         const { last, content } = await fetchProducts({
-          page: reset ? 0 : page,
-          size: page === 0 ? 20 : 4,
+          page: reset ? START_PAGE_NUMBER : page,
+          size: page === START_PAGE_NUMBER ? INITIAL_PAGING_SIZE : PAGING_SIZE,
           sort,
           category,
         });
@@ -68,15 +73,16 @@ export default function useProducts(): UseProductsResult {
   }, [page]);
 
   useEffect(() => {
-    setPage(0);
+    setPage(START_PAGE_NUMBER);
     setIsLastPage(false);
     getProducts(true);
   }, [category, sort]);
 
   const fetchNextPage = () => {
     if (!isLastPage) {
-      if (page === 0) setPage((prevPage) => prevPage + 5);
-      else setPage((prevPage) => prevPage + 1);
+      if (page === START_PAGE_NUMBER)
+        setPage(page + INITIAL_PAGING_SIZE / PAGING_SIZE);
+      else setPage(page + 1);
     }
   };
 
