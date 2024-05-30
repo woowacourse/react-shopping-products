@@ -1,12 +1,43 @@
 import styled from "styled-components";
+import { ReactComponent as AddToCartIcon } from "../assets/addToCart.svg";
+import { ReactComponent as DeleteFromCartIcon } from "../assets/deleteFromCart.svg";
+import { addCartItem, deleteCartItem } from "../api/cartItems";
+import { useContext } from "react";
+import CartItemsContext from "../store/cartItems";
 
 interface ProductItemProps {
+  id: number;
   name: string;
   price: number;
   imageUrl: string;
 }
 
-const ProductItem = ({ name, price, imageUrl }: ProductItemProps) => {
+const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
+  const { cartItems, refetch: refetchCartItems } = useContext(CartItemsContext);
+
+  const handleAddToCart = async () => {
+    try {
+      await addCartItem(id, 1);
+      await refetchCartItems();
+    } catch {
+      alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요,");
+    }
+  };
+
+  const targetCartItemId = cartItems.find((cartItem) => cartItem.product.id === id)?.id;
+  const handleDeleteFromCart = async () => {
+    try {
+      if (targetCartItemId) {
+        await deleteCartItem(targetCartItemId);
+        await refetchCartItems();
+      } else {
+        alert("해당 상품이 장바구니에 없습니다.");
+      }
+    } catch {
+      alert("상품을 장바구니에서 빼는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    }
+  };
+
   return (
     <S.Container>
       <S.ProductImage src={imageUrl}></S.ProductImage>
@@ -14,6 +45,17 @@ const ProductItem = ({ name, price, imageUrl }: ProductItemProps) => {
         <S.ProductName>{name}</S.ProductName>
         <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
       </S.ProductInfo>
+      <S.ButtonWrapper>
+        {targetCartItemId ? (
+          <S.DeleteFromCartIcon
+            role="button"
+            aria-label="상품 빼기"
+            onClick={handleDeleteFromCart}
+          />
+        ) : (
+          <S.AddToCartIcon role="button" aria-label="상품 담기" onClick={handleAddToCart} />
+        )}
+      </S.ButtonWrapper>
     </S.Container>
   );
 };
@@ -41,12 +83,29 @@ const S = {
     align-items: flex-start;
     margin: 1.5rem 0.8rem;
   `,
+
   ProductName: styled.h3`
     font-size: 1.4rem;
     font-weight: bold;
     margin-bottom: 0.8rem;
   `,
+
   ProductPrice: styled.p`
     font-size: 1.2rem;
+  `,
+
+  ButtonWrapper: styled.div`
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    right: 0;
+  `,
+
+  AddToCartIcon: styled(AddToCartIcon)`
+    cursor: pointer;
+  `,
+
+  DeleteFromCartIcon: styled(DeleteFromCartIcon)`
+    cursor: pointer;
   `,
 };
