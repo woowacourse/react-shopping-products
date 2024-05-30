@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CartItems, fetchItems } from '../api';
+import { fetchItems } from '../api';
 import ItemCard from '../components/ItemCard/ItemCard';
 import ItemList from '../components/ItemList/ItemList';
 import Dropdown from '../components/common/Dropdown/Dropdown';
