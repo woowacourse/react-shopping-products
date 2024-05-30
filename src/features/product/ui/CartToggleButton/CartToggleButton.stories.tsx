@@ -3,7 +3,7 @@ import { CartToggleButton } from './CartToggleButton';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof CartToggleButton> = {
-  title: '4. features/product/CartToggleButton',
+  title: '3. features/product/CartToggleButton',
   component: CartToggleButton,
 };
 
