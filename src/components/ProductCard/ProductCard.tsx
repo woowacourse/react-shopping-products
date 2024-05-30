@@ -14,20 +14,23 @@ function ProductCard({ product }: ProductCardProps) {
   return (
     <S.ProductCardContainer>
       <S.ProductImage src={product.imageUrl} />
-      
-      <S.InfoWrapper>
-        <S.ProductName>{product.name}</S.ProductName>
-        <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
-      </S.InfoWrapper>
+      <S.ContentWrapper>
+        <S.InfoWrapper>
+          <S.ProductName>{product.name}</S.ProductName>
+          <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
+        </S.InfoWrapper>
 
-      <AddCartButton
-        onAddClick={() => {
-          patchToAddCart(product.id);
-        }}
-        onDeleteClick={() => {
-          patchToRemoveCart(product.id);
-        }}
-      />
+        <S.ButtonContainer>
+          <AddCartButton
+            onAddClick={() => {
+              patchToAddCart(product.id);
+            }}
+            onDeleteClick={() => {
+              patchToRemoveCart(product.id);
+            }}
+          />
+        </S.ButtonContainer>
+      </S.ContentWrapper>
     </S.ProductCardContainer>
   );
 }

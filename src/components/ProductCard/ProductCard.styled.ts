@@ -10,6 +10,16 @@ export const ProductImage = styled.img`
   object-fit: cover;
 `;
 
+export const ContentWrapper = styled.div`
+  height: 50%;
+  padding: 0.8rem;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 export const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,4 +36,9 @@ export const ProductName = styled.p`
 
 export const ProductPrice = styled.p`
   color: var(--black-color-2);
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
