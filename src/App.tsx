@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { useState } from "react";
 import Header from "./components/Header/Header";
 import Product from "./pages/Product";
 import GlobalStyles from "./styles/Global.style";
