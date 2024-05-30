@@ -50,9 +50,14 @@ const ProductPage = ({ toggleId, getIsCheckedId }: ProductPageProps) => {
         />
       </Styled.ProductDropdownWrapper>
 
-      <Styled.ProductPageListWrapper>
-        <CardList products={products} onToggleCart={toggleId} isAddedCart={getIsCheckedId} />
-      </Styled.ProductPageListWrapper>
+      {products.length === 0 ? (
+        <LoadingSpinner $width="100%" $height="80vh" />
+      ) : (
+        <Styled.ProductPageListWrapper>
+          <CardList products={products} onToggleCart={toggleId} isAddedCart={getIsCheckedId} />
+        </Styled.ProductPageListWrapper>
+      )}
+
       {isLoading && <LoadingSpinner $width="100%" $height="30vh" />}
 
       <div style={{ height: '1px', width: '100%' }} ref={targetRef} />
