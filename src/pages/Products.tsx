@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FlexColumn, FlexSpaceBetween, WhiteSpace } from '@/style/common.style';
 import { useEffect, useState } from 'react';
 
@@ -16,7 +15,6 @@ const Products = () => {
   const {
     page,
     products,
-    loading,
     error,
     fetchNextPage,
     hasNextPage,
@@ -42,7 +40,7 @@ const Products = () => {
       <S.Container>
         <Header>
           <S.HeaderContent>
-            <div>SHOP</div>
+            SHOP
             <CartCountIcon />
           </S.HeaderContent>
         </Header>
@@ -75,8 +73,7 @@ const S = {
     position: relative;
   `,
   HeaderContent: styled.div`
-    display: flex;
-    justify-content: space-between;
+    ${FlexSpaceBetween}
     align-items: center;
     width: 100%;
     height: 100%;
