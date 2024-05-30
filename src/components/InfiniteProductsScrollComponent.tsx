@@ -3,6 +3,9 @@ import { useEffect, useRef } from "react";
 import { HandleCartItems } from "../hooks/useToggleCartItem";
 import { Product } from "../types/products";
 import ProductCard from "./product/ProductCard";
+import LoadingDots from "./LoadingDots";
+
+import styled from "@emotion/styled";
 
 interface InfiniteProductsScrollComponentProps {
   productObject: {
@@ -14,10 +17,14 @@ interface InfiniteProductsScrollComponentProps {
   handleCartItems: HandleCartItems;
 }
 
-const InfiniteProductsScrollComponent = ({
-  productObject,
-  handleCartItems,
-}: InfiniteProductsScrollComponentProps) => {
+const S = {
+  FallbackContainer: styled.div`
+    width: calc(183px * 2 + 16px);
+    margin: 16px 0;
+  `,
+};
+
+const InfiniteProductsScrollComponent = ({ productObject, handleCartItems }: InfiniteProductsScrollComponentProps) => {
   const { products, isLoading, error, fetchNextPage } = productObject;
   const loaderRef = useRef(null);
 
@@ -49,14 +56,12 @@ const InfiniteProductsScrollComponent = ({
   return (
     <>
       {products.map((product, index) => (
-        <ProductCard
-          key={`${index}${product.id}`}
-          product={product}
-          handleCartItems={handleCartItems}
-        />
+        <ProductCard key={`${index}${product.id}`} product={product} handleCartItems={handleCartItems} />
       ))}
-      {error! && <div>Error loading products!</div>}
-      <div ref={loaderRef}>{isLoading && "Loading more products..."}</div>
+      <S.FallbackContainer>
+        {error! && <div>Error loading products!</div>}
+        <div ref={loaderRef}>{isLoading && <LoadingDots />}</div>
+      </S.FallbackContainer>
     </>
   );
 };

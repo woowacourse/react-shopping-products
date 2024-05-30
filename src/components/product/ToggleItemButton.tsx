@@ -3,23 +3,24 @@ import COLOR_PALETTE from "../../style/colorPalette";
 import DeleteFromCart from "../icons/DeleteFromCart";
 import { HandleCartItems } from "../../hooks/useToggleCartItem";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import LoadingDots from "../LoadingDots";
 
 const S = {
   ToggleItemButton: styled.button<{ isSelected: boolean }>`
+    width: 60px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
 
-    background-color: ${({ isSelected }) =>
-      isSelected ? COLOR_PALETTE.lightGrey : COLOR_PALETTE.black};
-    color: ${({ isSelected }) =>
-      isSelected ? COLOR_PALETTE.black : COLOR_PALETTE.white};
-    padding: 10px 15px;
+    background-color: ${({ isSelected }) => (isSelected ? COLOR_PALETTE.lightGrey : COLOR_PALETTE.black)};
+    color: ${({ isSelected }) => (isSelected ? COLOR_PALETTE.black : COLOR_PALETTE.white)};
+    padding: 8px;
+    margin: 4px;
     border: none;
     border-radius: 4px;
-    margin: 0 8px 8px 8px;
     cursor: pointer;
     align-self: flex-end;
     &:hover {
@@ -34,23 +35,38 @@ interface ToggleItemButtonProps {
 }
 
 const ToggleItemButton = ({ id, handleCartItems }: ToggleItemButtonProps) => {
-  //TODO: 이미 담긴 상태인지 아닌지 확인해줘야한다.
-  const [isSelected, setSelected] = useState(false);
-  const { addToCart, removeFromCart, isLoading } = handleCartItems;
+  const { addToCart, removeFromCart, checkSelected } = handleCartItems;
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSelected, setSelected] = useState(checkSelected(id));
 
-  const handleClick = () => {
-    setSelected((prev) => !prev);
+  useEffect(() => {
+    setSelected(checkSelected(id));
+  }, [checkSelected, id]);
 
-    if (isSelected) {
-      removeFromCart(id);
-      return;
+  const handleClick = async () => {
+    if (isLoading) return;
+
+    try {
+      setIsLoading(true);
+      setSelected((prev) => !prev);
+
+      if (isSelected) {
+        await removeFromCart(id);
+      }
+      if (!isSelected) {
+        await addToCart(id);
+      }
+    } catch (error) {
+      setSelected((prev) => !prev);
+    } finally {
+      setIsLoading(false);
     }
-    addToCart(id);
   };
+
   return (
     <S.ToggleItemButton key={id} onClick={handleClick} isSelected={isSelected}>
       {isLoading ? (
-        <div>Loading...</div>
+        <LoadingDots type={isSelected ? "black" : "white"} />
       ) : isSelected ? (
         <>
           <DeleteFromCart />

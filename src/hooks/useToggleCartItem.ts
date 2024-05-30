@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { CartItem } from "../types/cartItems";
 
 export interface HandleCartItems {
-  addToCart: (id: number) => void;
-  removeFromCart: (id: number) => void;
+  addToCart: (productId: number) => Promise<void>;
+  removeFromCart: (productId: number) => Promise<void>;
+  checkSelected: (id: number) => boolean;
   isLoading: boolean;
 }
 
@@ -18,8 +19,9 @@ const useToggleCartItem = () => {
     if (isLoading) return;
     try {
       setIsLoading(true);
-
-      const data = await getCartItems();
+      const prevData = await getCartItems();
+      const size = prevData.totalElements;
+      const data = await getCartItems(size);
       setCartItems(data.content);
     } catch (error) {
       setError(error);
@@ -49,15 +51,11 @@ const useToggleCartItem = () => {
     if (isLoading) return;
     try {
       setIsLoading(true);
-      const targetCartItemIndex = cartItems.findIndex(
-        (item) => item.product.id === productId
-      );
+      const targetCartItemIndex = cartItems.findIndex((item) => item.product.id === productId);
       const targetCartItemId = cartItems[targetCartItemIndex].id;
       await deleteCartItems(targetCartItemId);
       setCartItems((cartItems) => {
-        const newCartItems = cartItems.filter(
-          (cartItem) => cartItem.id !== targetCartItemId
-        );
+        const newCartItems = cartItems.filter((cartItem) => cartItem.id !== targetCartItemId);
         return newCartItems;
       });
     } catch (error) {
@@ -67,10 +65,13 @@ const useToggleCartItem = () => {
     }
   };
 
+  const checkSelected = (id: number) => !!cartItems.find((item) => item.product.id === id);
+
   return {
     cartItems,
     addToCart,
     removeFromCart,
+    checkSelected,
     isLoading,
     error,
   };

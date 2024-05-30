@@ -44,9 +44,12 @@ const Mall = () => {
     cartItems,
     addToCart,
     removeFromCart,
+    checkSelected,
     isLoading: isToggleCartItemLoading,
     error: toggleCartItemError,
   } = useToggleCartItem();
+
+  //TODO: Toast.error(toggleCartItemError)
 
   return (
     <>
@@ -56,21 +59,14 @@ const Mall = () => {
       <S.MainMall>
         <MainTitle>러기의 쇼핑몰</MainTitle>
         <S.Toolbar>
-          <Dropdown
-            options={CATEGORY_LIST}
-            engToKor={CATEGORY}
-            handleChange={handleCategoryChange}
-          />
-          <Dropdown
-            options={SORT_LIST}
-            engToKor={SORT}
-            handleChange={handleSortChange}
-          />
+          <Dropdown options={CATEGORY_LIST} engToKor={CATEGORY} handleChange={handleCategoryChange} />
+          <Dropdown options={SORT_LIST} engToKor={SORT} handleChange={handleSortChange} />
         </S.Toolbar>
         <S.ProductList>
           <InfiniteScrollComponent
             handleCartItems={{
               addToCart,
+              checkSelected,
               removeFromCart,
               isLoading: isToggleCartItemLoading,
             }}
