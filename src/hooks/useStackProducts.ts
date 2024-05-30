@@ -11,13 +11,17 @@ interface UseStackProductsProps {
   >;
   products: Product[];
   filtering: Filtering;
+  isLast: boolean;
+  productLength: number;
 }
 
-function useStackProducts({ fetch, products, filtering }: UseStackProductsProps) {
+function useStackProducts({ fetch, products, filtering, isLast, productLength }: UseStackProductsProps) {
   /**
    * 무한 스크롤 시 상품 목록을 추가해서 넣어주는 기능
    */
   const getStackedProducts = async (page: number) => {
+    if (isLast || !productLength) return;
+
     const newPage = page + 1;
     const result = await fetch({ filtering, page: newPage });
 

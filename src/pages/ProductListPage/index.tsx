@@ -29,6 +29,8 @@ function ProductListPage({ cartItems, getCartItemList }: ProductListPageProps) {
     fetch,
     products,
     filtering,
+    isLast: isLastPage,
+    productLength: products.length,
   });
 
   const updateState = ({
@@ -57,10 +59,11 @@ function ProductListPage({ cartItems, getCartItemList }: ProductListPageProps) {
   };
 
   const observerCallback = async (entries: IntersectionObserverEntry[]) => {
-    if (!entries[0].isIntersecting || isLastPage || !products.length) return;
+    if (!entries[0].isIntersecting) return;
 
     const result = await getStackedProducts(page);
     if (!result) return;
+
     updateState(result);
   };
 
