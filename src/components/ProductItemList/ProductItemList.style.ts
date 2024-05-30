@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const ProductListContainer = styled.div`
-display: flex;
-flex-direction: column;
-gap:28px;
-`
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+`;
 
 export const ProductList = styled.div`
   display: grid;
