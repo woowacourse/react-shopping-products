@@ -8,3 +8,4 @@ export { Layout } from './ui/Layout/Layout';
 export { Select, type SelectOption } from './ui/Select/Select';
 export { Spinner } from './ui/Spinner/Spinner';
 export { Text } from './ui/Text/Text';
+export { Toast } from './ui/Toast/Toast';
