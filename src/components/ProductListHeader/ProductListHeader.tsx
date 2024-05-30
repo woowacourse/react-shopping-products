@@ -20,7 +20,9 @@ const ProductListHeader = ({
           onChange={(e) => handleCategory(e.target.value as Category | "all")}
         >
           {Object.entries(FILTER_CATEGORIES).map(([key, value]) => (
-            <option value={key}>{value}</option>
+            <option value={key} key={key}>
+              {value}
+            </option>
           ))}
         </PLH.SelectBox>
         <PLH.SelectBox
@@ -29,7 +31,9 @@ const ProductListHeader = ({
           onChange={(e) => handleSort(e.target.value as Sort)}
         >
           {Object.entries(SORT_PRICE).map(([key, value]) => (
-            <option value={key}>{value}</option>
+            <option value={key} key={key}>
+              {value}
+            </option>
           ))}
         </PLH.SelectBox>
       </PLH.SelectBoxGroup>
