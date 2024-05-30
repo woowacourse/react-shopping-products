@@ -44,7 +44,7 @@ describe('useProducts', () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(0);
       });
     });
     it('다음 페이지의 상품 4개를 추가로 불러온다', async () => {
@@ -52,7 +52,7 @@ describe('useProducts', () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(0);
       });
 
       act(() => {
@@ -61,7 +61,7 @@ describe('useProducts', () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(24);
-        expect(result.current.page).toBe(2);
+        expect(result.current.page).toBe(5);
       });
     });
     it('모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.', async () => {
@@ -71,14 +71,14 @@ describe('useProducts', () => {
         expect(result.current.products).toHaveLength(20);
       });
 
-      for (let i = 2; i < 21; i++) {
+      for (let i = 5; i < 25; i++) {
         await waitFor(() => {
           act(() => {
             result.current.fetchNextPage();
           });
         });
 
-        const expectedLength = 20 + (i - 1) * 4;
+        const expectedLength = 20 + (i - 4) * 4;
 
         await waitFor(() => {
           expect(result.current.products).toHaveLength(expectedLength);
@@ -92,7 +92,7 @@ describe('useProducts', () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(100);
-        expect(result.current.page).toBe(21);
+        expect(result.current.page).toBe(24);
       });
     });
     it('페이지네이션으로 추가 데이터를 불러올 때 로딩 상태를 표시한다.', async () => {
