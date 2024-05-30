@@ -4,24 +4,26 @@ import { PRODUCTS_ENDPOINT } from '../src/api/endpoints';
 import useProducts from '../src/hooks/useProducts';
 import { renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
+import { wrapper } from './utils/test-utils';
+
+const renderUseProductsHook = () =>
+  renderHook(() => useProducts(), { wrapper: wrapper });
+
 describe('useProducts', () => {
   describe('상품 목록 조회', () => {
     it('상품 목록을 조회한다.', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderUseProductsHook();
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
       });
     });
-  });
-  describe('상품 목록 조회', () => {
-    it('상품 목록 조회 중 로딩 상태', () => {
-      const { result } = renderHook(() => useProducts());
 
+    it('상품 목록 조회 중 로딩 상태', () => {
+      const { result } = renderUseProductsHook();
       expect(result.current.loading).toBe(true);
     });
-  });
-  describe('상품 목록 조회', () => {
+
     it('상품 목록 조회 중 에러 상태', async () => {
       server.use(
         http.get(PRODUCTS_ENDPOINT, () => {
@@ -29,7 +31,7 @@ describe('useProducts', () => {
         }),
       );
 
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderUseProductsHook();
 
       await waitFor(() => {
         expect(result.current.products).toEqual([]);
@@ -38,17 +40,19 @@ describe('useProducts', () => {
       });
     });
   });
+
   describe('페이지네이션', () => {
     it('초기에 첫 페이지의 상품 20개를 불러온다', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderUseProductsHook();
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
         expect(result.current.page).toBe(0);
       });
     });
+
     it('다음 페이지의 상품 4개를 추가로 불러온다', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderUseProductsHook();
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
@@ -64,8 +68,9 @@ describe('useProducts', () => {
         expect(result.current.page).toBe(5);
       });
     });
+
     it('모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderUseProductsHook();
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
@@ -95,8 +100,9 @@ describe('useProducts', () => {
         expect(result.current.page).toBe(24);
       });
     });
+
     it('페이지네이션으로 추가 데이터를 불러올 때 로딩 상태를 표시한다.', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderUseProductsHook();
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
