@@ -1,4 +1,5 @@
-import { CartItems, CategoryType, SortType } from '../type';
+import { MAX_CART_ITEMS_COUNTS } from '../constants';
+import { CategoryType, SortType } from '../type';
 import {
   CART_ITEMS_COUNT_ENDPOINT,
   CART_ITEMS_ENDPOINT,
@@ -111,10 +112,13 @@ export interface CartItems {
   product: Item;
 }
 export async function fetchItems(): Promise<CartItems[]> {
-  const response = await fetch(`${CART_ITEMS_ENDPOINT}`, {
-    method: 'GET',
-    headers: HEADERS,
-  });
+  const response = await fetch(
+    `${CART_ITEMS_ENDPOINT}?size=${MAX_CART_ITEMS_COUNTS}`,
+    {
+      method: 'GET',
+      headers: HEADERS,
+    },
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch Items');
