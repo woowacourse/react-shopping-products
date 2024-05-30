@@ -1,6 +1,7 @@
 import apiClient from './apiClient';
 import { Product } from '../types/Product.type';
 import { SIZE } from '../constants/api';
+import { ERROR_MESSAGES } from '../constants/message';
 
 interface ProductApi {
   data: Product[];
@@ -28,7 +29,7 @@ export const fetchProducts = async (
   sort: string,
 ): Promise<ProductApi> => {
   const endpoint = `/products?${makeParams(category, page, size, sort)}`;
-  const data = await apiClient.get({ endpoint, errorMessage: '상품 목록을 불러오는 중 에러가 발생했습니다.' });
+  const data = await apiClient.get({ endpoint, errorMessage: ERROR_MESSAGES.FETCH_PRODUCT });
 
   return { data: data.content, isLast: data.last };
 };
