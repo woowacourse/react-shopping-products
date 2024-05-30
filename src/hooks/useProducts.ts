@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect } from "react";
 import { getProducts } from "../api";
 import { useError } from "./useError";
+import usePagination from "./usePagination";
 
 interface UseProductsResult {
   products: Product[];
-  hasMore: boolean;
-  loadMore: () => void;
+  loading: boolean;
   lastProductElementRef: (node: HTMLDivElement) => void;
   handleCategory: (category: Category | "all") => void;
   handleSort: (sort: Sort) => void;
@@ -13,25 +13,13 @@ interface UseProductsResult {
 
 export default function useProducts(): UseProductsResult {
   const [products, setProducts] = useState<Product[]>([]);
-  const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [category, setCategory] = useState<Category | "all">("all");
   const [sort, setSort] = useState<Sort>("asc");
   const { showError } = useError();
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const observer = useRef<IntersectionObserver | null>(null);
-  const lastProductElementRef = useCallback(
-    (node: HTMLDivElement) => {
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setPage((prevPage) => prevPage + 1);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [hasMore]
-  );
+  const { page, lastElementRef, resetPage } = usePagination(hasMore);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -47,6 +35,7 @@ export default function useProducts(): UseProductsResult {
           ...prevProducts,
           ...responseData.content,
         ]);
+        setLoading(false);
 
         if (responseData.content.length < size) {
           setHasMore(false);
@@ -64,20 +53,19 @@ export default function useProducts(): UseProductsResult {
   const handleCategory = (category: Category | "all") => {
     setProducts([]);
     setCategory(category);
-    setPage(0);
+    resetPage();
   };
 
   const handleSort = (sort: Sort) => {
     setProducts([]);
     setSort(sort);
-    setPage(0);
+    resetPage();
   };
 
   return {
     products,
-    loadMore: () => setPage((prevPage) => prevPage + 1),
-    hasMore,
-    lastProductElementRef,
+    loading,
+    lastProductElementRef: lastElementRef,
     handleCategory,
     handleSort,
   };
