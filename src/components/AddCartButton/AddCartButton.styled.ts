@@ -8,6 +8,7 @@ const roundButtonCSS = styled.button`
   padding: 0.4rem 0.8rem;
   gap: 0.4rem;
   border-radius: 0.4rem;
+  border: none;
   box-sizing: border-box;
 
   font-weight: 600;
