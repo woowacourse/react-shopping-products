@@ -2,7 +2,7 @@ import { isAscendingPrice, isDescendingPrice } from './utils/productPrice';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import { act } from 'react';
-import products from '../src/mocks/products';
+import products from '../src/mocks/handlers/products/mockData';
 import useProducts from '../src/hooks/product/useProductItems';
 
 describe('무한 스크롤 테스트', () => {
@@ -24,7 +24,7 @@ describe('무한 스크롤 테스트', () => {
     });
 
     act(() => {
-      result.current.updateNextPage();
+      result.current.updateNextProductItem();
     });
 
     await waitFor(() => {
@@ -43,7 +43,7 @@ describe('무한 스크롤 테스트', () => {
     for (let i = 1; i <= (products.length - 20) / 4; i++) {
       await waitFor(() => {
         act(() => {
-          result.current.updateNextPage();
+          result.current.updateNextProductItem();
         });
       });
 
@@ -54,7 +54,7 @@ describe('무한 스크롤 테스트', () => {
     }
 
     await act(async () => {
-      result.current.updateNextPage();
+      result.current.updateNextProductItem();
     });
 
     await waitFor(() => {
@@ -66,7 +66,7 @@ describe('무한 스크롤 테스트', () => {
     const { result } = renderHook(() => useProducts());
 
     act(() => {
-      result.current.updateNextPage();
+      result.current.updateNextProductItem();
     });
 
     await act(async () => result.current.onSelectSortTypeOption('desc'));
@@ -82,13 +82,13 @@ describe('무한 스크롤 테스트', () => {
     const { result } = renderHook(() => useProducts());
 
     act(() => {
-      result.current.updateNextPage();
+      result.current.updateNextProductItem();
     });
 
     await act(async () => result.current.onSelectSortTypeOption('desc'));
 
     act(() => {
-      result.current.updateNextPage();
+      result.current.updateNextProductItem();
     });
 
     await act(async () => result.current.onSelectSortTypeOption('asc'));
