@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { SelectArrowDown, SelectArrowUp } from '../../assets/';
+import { SelectArrowDown, SelectArrowUp } from "../../assets/";
 
 export const SelectBoxContainer = styled.div`
   width: 125px;
@@ -33,14 +33,14 @@ export const SelectButton = styled.button<{
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 50%;
     right: 5px;
     transform: translateY(-50%);
     width: 20px;
     height: 20px;
-    background-image: url('${(props) => (props.$isOpened ? SelectArrowUp : SelectArrowDown)}');
+    background-image: url("${(props) => (props.$isOpened ? SelectArrowUp : SelectArrowDown)}");
     background-repeat: no-repeat;
     background-position: center;
   }
@@ -63,7 +63,7 @@ export const SelectOption = styled.li<{ $isSelected: boolean }>`
   color: #666666;
   display: block;
   padding: 9px 11px;
-  background: ${(props) => (props.$isSelected ? '#F4F4F4' : '#FFFFFF')};
+  background: ${(props) => (props.$isSelected ? "#F4F4F4" : "#FFFFFF")};
 
   &:hover,
   &:focus {
