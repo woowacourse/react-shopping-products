@@ -2,6 +2,8 @@ type URLString = string;
 
 interface ApiClientInterface {
   get<T>(path: string, params: URLSearchParams): Promise<T>;
+  post(path: string, body: object): Promise<void>;
+  delete(path: string): Promise<void>;
 }
 
 export default class ApiClient implements ApiClientInterface {
@@ -14,7 +16,9 @@ export default class ApiClient implements ApiClientInterface {
   }
 
   async get<T>(path: string, params?: URLSearchParams): Promise<T> {
-    const url = `${this.baseUrl.toString()}${path}${params ? `?${params.toString()}` : ""}`;
+    const url = `${this.baseUrl.toString()}${path}${
+      params ? `?${params.toString()}` : ""
+    }`;
 
     const response = await fetch(url, {
       headers: this.header,
