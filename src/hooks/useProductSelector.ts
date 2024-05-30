@@ -27,6 +27,8 @@ import useCartItemFinder from './useCartItemFinder';
 import useCartListContext from './useCartListContext';
 
 const useProductSelector = (productId: number) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<unknown>(null);
   const { isInCart } = useCartItemFinder(productId);
   const [isSelected, setIsSelected] = useState(false);
 
@@ -38,27 +40,35 @@ const useProductSelector = (productId: number) => {
 
   const addCartItem = async () => {
     try {
+      setLoading(true);
       await postCartItem(productId);
       setIsSelected(true);
       fetchCartList();
     } catch (error) {
-      console.error('Error adding cart item:', error);
+      setError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const removeCartItem = async () => {
     try {
+      setLoading(true);
       const index = cartList.find((item) => item.product.id === productId);
       await deleteCartItem(index?.id as number);
       setIsSelected(false);
       fetchCartList();
     } catch (error) {
-      console.error('Error removing cart item:', error);
+      setError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return {
     isSelected,
+    loading,
+    error,
     addCartItem,
     removeCartItem,
   };

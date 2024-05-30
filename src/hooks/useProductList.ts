@@ -7,47 +7,40 @@ import { getProductList } from '@/api/product';
 const FIRST_PAGE_ITEM_COUNT = 20;
 const MORE_LOAD_ITEM_COUNT = 4;
 
-// TODO: hook 리팩터링 (분리)
+// TODO: hook 분리
 const useProductList = () => {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(FIRST_PAGE_ITEM_COUNT);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<unknown>(null);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [order, setOrder] = useState<string>('asc');
   const [category, setCategory] = useState('');
 
   useEffect(() => {
-    if (page > 1) setSize(MORE_LOAD_ITEM_COUNT);
-
     const fetchData = async () => {
       setLoading(true);
-
       try {
         const data = await getProductList({ page, size, category, order });
         setProducts((prev) => [...prev, ...data.content]);
 
-        if (data.last) {
-          setHasNextPage((prev) => !prev);
-        }
+        setHasNextPage(!data.last);
       } catch (error) {
-        setError(true);
+        setError(error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [page, order, category]);
+  }, [page, size, category, order]);
 
   const fetchNextPage = () => {
-    if (hasNextPage && page === 1) {
-      const SKIP_PAGES = FIRST_PAGE_ITEM_COUNT / MORE_LOAD_ITEM_COUNT;
-      setPage((prev) => prev + SKIP_PAGES);
-    }
-
-    if (hasNextPage) {
+    if (page === 0) {
+      setPage(FIRST_PAGE_ITEM_COUNT / MORE_LOAD_ITEM_COUNT); // 20 / 4 = 5
+      setSize(MORE_LOAD_ITEM_COUNT);
+    } else {
       setPage((prev) => prev + 1);
     }
   };
@@ -57,6 +50,7 @@ const useProductList = () => {
     setOrder(newOrder);
     setProducts([]);
     setPage(0);
+    setSize(FIRST_PAGE_ITEM_COUNT);
   };
 
   const handleChangeCategory = (newCategory: string) => {
@@ -64,6 +58,7 @@ const useProductList = () => {
     setCategory(newCategory);
     setProducts([]);
     setPage(0);
+    setSize(FIRST_PAGE_ITEM_COUNT);
   };
 
   return {

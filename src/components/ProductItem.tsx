@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import CartInButton from './button/CartInButton';
 import CartOutButton from './button/CartOutButton';
 import { FlexRow } from '@/style/common.style';
 import { Product } from '@/types/product.type';
+import Toast from './Toast';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
 import useProductSelector from '@/hooks/useProductSelector';
@@ -11,27 +14,42 @@ interface Props {
 }
 
 const ProductItem = ({ item }: Props) => {
-  const { isSelected, addCartItem, removeCartItem } = useProductSelector(
+  const [showToast, setShowToast] = useState(false);
+  const { isSelected, error, addCartItem, removeCartItem } = useProductSelector(
     item.id
   );
 
+  useEffect(() => {
+    if (error) {
+      setShowToast(true);
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   return (
-    <S.ItemCard>
-      <S.Img src={item.imageUrl} alt={item.name} />
-      <S.InfoWrapper>
-        <S.InfoText>
-          <S.Title>{item.name}</S.Title>
-          <S.Price>{item.price}</S.Price>
-        </S.InfoText>
-        <S.ButtonWrapper>
-          {isSelected ? (
-            <CartOutButton onClick={removeCartItem} />
-          ) : (
-            <CartInButton onClick={addCartItem} />
-          )}
-        </S.ButtonWrapper>
-      </S.InfoWrapper>
-    </S.ItemCard>
+    <>
+      <S.ItemCard>
+        <S.Img src={item.imageUrl} alt={item.name} />
+        <S.InfoWrapper>
+          <S.InfoText>
+            <S.Title>{item.name}</S.Title>
+            <S.Price>{item.price}</S.Price>
+          </S.InfoText>
+          <S.ButtonWrapper>
+            {isSelected ? (
+              <CartOutButton onClick={removeCartItem} />
+            ) : (
+              <CartInButton onClick={addCartItem} />
+            )}
+          </S.ButtonWrapper>
+        </S.InfoWrapper>
+      </S.ItemCard>
+      {showToast && <Toast message={(error as Error).message} />}
+    </>
   );
 };
 
