@@ -14,10 +14,12 @@ export default Header;
 const S = {
   Container: styled.header`
     display: flex;
+    justify-content: center;
     align-items: center;
     height: 64px;
-    padding: 0 20px;
+    width: 100%;
     background-color: ${theme.color.black};
+    box-sizing: border-box;
     color: ${theme.color.white};
     font-weight: ${theme.fontWeight.extraBold};
     font-size: ${theme.fontSize.large};

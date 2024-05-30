@@ -16,6 +16,7 @@ const baseStyle = css`
     height: 100vh;
     margin: auto;
     font-size: ${theme.fontSize.medium};
+    font-weight: ${theme.fontWeight.medium};
     box-shadow: 0 0 20px ${theme.color.blackWithOpacity};
   }
 

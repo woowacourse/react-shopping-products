@@ -5,6 +5,7 @@ export const theme = {
     gray: '#BEBEBE',
     black: '#000000',
     blackWithOpacity: 'rgba(0, 0, 0, 0.1)',
+    lightRed: '#FFC9C9',
   },
   fontSize: {
     xsmall: '1.2rem',

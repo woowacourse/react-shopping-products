@@ -8,7 +8,7 @@ const CartCountIcon = () => {
   return (
     <S.Container>
       <CartIcon />
-      {cartList.length && <S.Circle>{cartList.length}</S.Circle>}
+      {cartList.length !== 0 && <S.Circle>{cartList.length}</S.Circle>}
     </S.Container>
   );
 };
@@ -19,6 +19,7 @@ const S = {
   Container: styled.div`
     position: relative;
     display: inline-block;
+    width: 30px;
   `,
   Circle: styled.div`
     position: absolute;
