@@ -97,7 +97,6 @@ describe("useProductList", () => {
 
       await waitFor(() => {
         expect(result.current.productList).toHaveLength(154);
-        console.log(result.current.productList.length);
         expect(result.current.page).toBe(38);
       });
     });

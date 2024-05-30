@@ -7,6 +7,7 @@ import * as S from "./ProductItemList.style";
 import { Category } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
+import Spinner from "../common/Sipnner/Spinner";
 
 interface ProductItemListProp {
   category: Category;
@@ -22,6 +23,7 @@ function ProductItemList({
   const {
     productList,
     productListError,
+    productListLoading,
     page,
     fetchNextPage,
     isLastPage,
@@ -63,19 +65,22 @@ function ProductItemList({
   }
 
   return (
-    <S.ProductList>
-      {productList.map((product, idx) => {
-        return (
-          <ProductItem
-            key={`${idx}_${product.id}`}
-            product={product}
-            isInCart={isInCart(product.id)}
-            toggleCartItem={() => toggleCartItem(product)}
-          />
-        );
-      })}
+    <>
+      <S.ProductList>
+        {productList.map((product, idx) => {
+          return (
+            <ProductItem
+              key={`${idx}_${product.id}`}
+              product={product}
+              isInCart={isInCart(product.id)}
+              toggleCartItem={() => toggleCartItem(product)}
+            />
+          );
+        })}
+      </S.ProductList>
       <div ref={target} style={{ height: "1px" }}></div>
-    </S.ProductList>
+      {productListLoading && <Spinner />}
+    </>
   );
 }
 
