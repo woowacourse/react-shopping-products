@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import { COLOR } from '@styles/style.constant';
+import styled from '@emotion/styled';
 
 export const ProductPageTitle = styled.h1`
   font-size: 24px;
@@ -20,4 +20,9 @@ export const ProductPageListWrapper = styled.ul`
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   min-height: 100vh;
+`;
+
+export const ObserverTarget = styled.div`
+  height: 1px;
+  width: 100%;
 `;

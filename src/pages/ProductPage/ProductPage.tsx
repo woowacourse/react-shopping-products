@@ -60,7 +60,7 @@ const ProductPage = ({ toggleId, getIsCheckedId }: ProductPageProps) => {
 
       {isLoading && <LoadingSpinner $width="100%" $height="30vh" />}
 
-      <div style={{ height: '1px', width: '100%' }} ref={targetRef} />
+      <Styled.ObserverTarget ref={targetRef} />
     </>
   );
 };
