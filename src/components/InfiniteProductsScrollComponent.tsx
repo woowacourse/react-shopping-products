@@ -6,6 +6,7 @@ import ProductCard from "./product/ProductCard";
 import LoadingDots from "./LoadingDots";
 
 import styled from "@emotion/styled";
+import { ERROR_MESSAGE } from "../constants/message";
 
 interface InfiniteProductsScrollComponentProps {
   productObject: {
@@ -59,7 +60,7 @@ const InfiniteProductsScrollComponent = ({ productObject, handleCartItems }: Inf
         <ProductCard key={`${index}${product.id}`} product={product} handleCartItems={handleCartItems} />
       ))}
       <S.FallbackContainer>
-        {error! && <div>Error loading products!</div>}
+        {error! && <div>{ERROR_MESSAGE.getProducts}</div>}
         <div ref={loaderRef}>{isLoading && <LoadingDots />}</div>
       </S.FallbackContainer>
     </>

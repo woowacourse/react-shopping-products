@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from "../constants/message";
 import { generateToken } from "./auth";
 
 const USER_ID = import.meta.env.VITE_API_USER_ID;
@@ -11,32 +12,50 @@ interface Props {
   errorMessage: string;
 }
 
-export const fetchWithToken = async ({
-  url,
-  headers,
-  method = "GET",
-  body,
-  errorMessage,
-}: Props) => {
+class CustomFetchError extends Error {
+  message: string;
+  constructor(message: string) {
+    super();
+    this.message = message;
+  }
+}
+
+export const fetchWithToken = async ({ url, headers, method = "GET", body, errorMessage }: Props) => {
   const token = generateToken(USER_ID, USER_PASSWORD);
 
-  const response = await fetch(url, {
-    method,
-    headers: {
-      Authorization: token,
-      ...headers,
-    },
-    body,
-  });
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        Authorization: token,
+        ...headers,
+      },
+      body,
+    });
 
-  if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      throw new CustomFetchError(ERROR_MESSAGE.unauthorized);
+    }
+
+    if (response.status >= 500) {
+      throw new CustomFetchError(ERROR_MESSAGE.internalServerError);
+    }
+
+    if (!response.ok) {
+      throw new Error(errorMessage);
+    }
+
+    if (method !== "GET") {
+      return response;
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    if (error instanceof CustomFetchError) {
+      throw new Error(error.message);
+    }
     throw new Error(errorMessage);
   }
-
-  if (method !== "GET") {
-    return response;
-  }
-
-  const data = await response.json();
-  return data;
 };
