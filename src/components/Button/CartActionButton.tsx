@@ -3,12 +3,13 @@ import { BaseButton } from "./BaseButton";
 import { StyledActionImg, StyledActionTitle, StyledContainer } from "./CartActionButton.styled";
 
 export type CartActionButtonType = {
-  actionType: "add" | "abstract";
+  actionType: string;
+  onClick?: () => void;
 };
 
-export const CartActionButton = ({ actionType }: CartActionButtonType) => {
+export const CartActionButton = ({ actionType, onClick }: CartActionButtonType) => {
   return (
-    <BaseButton onClick={() => {}}>
+    <BaseButton onClick={onClick}>
       <StyledContainer actionType={actionType}>
         <StyledActionImg
           src={actionType === "add" ? PlusShoppingCartIcon : MinusShoppingCartIcon}

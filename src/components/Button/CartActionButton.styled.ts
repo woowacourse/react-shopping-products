@@ -8,8 +8,9 @@ export const StyledContainer = styled.div<CartActionButtonType>`
   width: 59px;
   height: 24px;
   border-radius: 4px;
-  background-color: ${({ actionType }) =>
-    actionType === "add" ? "rgba(0, 0, 0, 1)" : "rgba(234, 234, 234, 1)"};
+
+  background-color: ${(props) =>
+    props.actionType === "add" ? "rgba(0, 0, 0, 1)" : "rgba(234, 234, 234, 1)"};
 
   position: absolute;
   bottom: 0;
@@ -26,6 +27,6 @@ export const StyledActionImg = styled.img`
 export const StyledActionTitle = styled.span<CartActionButtonType>`
   font-size: 12px;
   font-weight: 600;
-  color: ${({ actionType }) =>
-    actionType === "add" ? "rgba(255, 255, 255, 1)" : "rgba(0, 0, 0, 1)"};
+
+  color: ${(props) => (props.actionType === "add" ? "rgba(255, 255, 255, 1)" : "rgba(0, 0, 0, 1)")};
 `;
