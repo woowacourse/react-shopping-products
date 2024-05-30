@@ -5,6 +5,7 @@ const meta = {
   title: "Components/PageTitle",
   component: PageTitle,
   tags: ["autodocs"],
+  args: {children: "타이틀입니다."}
 } satisfies Meta<typeof PageTitle>;
 
 export default meta;
