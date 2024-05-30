@@ -1,18 +1,16 @@
 import AppLayout from '@components/layout/AppLayout/AppLayout';
 import { Global } from '@emotion/react';
 import ProductPage from '@pages/ProductPage/ProductPage';
-
 import { resetCSS } from '@styles/resetCSS';
-
-import useCheckedIds from '@hooks/product/useCheckedId';
+import useToggleShoppingCart from '@hooks/product/useToggleShoppingCart';
 
 function App() {
-  const { length, getIsCheckedId, toggleId } = useCheckedIds();
+  const { addedShoppingCartLength: length, onToggleCart, isAddedCart } = useToggleShoppingCart();
   return (
     <>
       <Global styles={resetCSS} />
       <AppLayout itemCount={length}>
-        <ProductPage getIsCheckedId={getIsCheckedId} toggleId={toggleId} />
+        <ProductPage onToggleCart={onToggleCart} isAddedCart={isAddedCart} />
       </AppLayout>
     </>
   );

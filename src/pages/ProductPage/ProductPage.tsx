@@ -3,19 +3,19 @@ import * as Styled from './ProductPage.styled';
 import { lazy, useState } from 'react';
 
 import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropdown';
+import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import SortDropdown from '@components/product/SortDropdown/SortDropdown';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useProducts from '@hooks/product/useProductItems';
-import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 
 const CardList = lazy(() => import('@components/product/CardList/CardList'));
 
 interface ProductPageProps extends React.PropsWithChildren {
-  toggleId: (id: number) => void;
-  getIsCheckedId: (id: number) => boolean;
+  onToggleCart: (id: number) => void;
+  isAddedCart: (id: number) => boolean;
 }
 
-const ProductPage = ({ toggleId, getIsCheckedId }: ProductPageProps) => {
+const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
   const [isSortTypeDropdownOpen, setIsSortTypeDropdownOpen] = useState(false);
@@ -54,7 +54,7 @@ const ProductPage = ({ toggleId, getIsCheckedId }: ProductPageProps) => {
         <LoadingSpinner $width="100%" $height="80vh" />
       ) : (
         <Styled.ProductPageListWrapper>
-          <CardList products={products} onToggleCart={toggleId} isAddedCart={getIsCheckedId} />
+          <CardList products={products} onToggleCart={onToggleCart} isAddedCart={isAddedCart} />
         </Styled.ProductPageListWrapper>
       )}
 

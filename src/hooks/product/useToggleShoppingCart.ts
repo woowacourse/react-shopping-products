@@ -5,7 +5,7 @@ import HTTPError from '@errors/HTTPError';
 import ShoppingCartFetcher from '@apis/ShoppingCartFetcher';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 
-const useCheckedIds = () => {
+const useToggleShoppingCart = () => {
   const [checkedItemIds, setCheckedItemIds] = useState<number[]>([]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
@@ -68,8 +68,8 @@ const useCheckedIds = () => {
     }
   };
 
-  const toggleId = async (id: number) => {
-    const isCheckedId = getIsCheckedId(id);
+  const onToggleCart = async (id: number) => {
+    const isCheckedId = isAddedCart(id);
 
     if (isCheckedId) {
       await removeCheckId(id);
@@ -79,9 +79,9 @@ const useCheckedIds = () => {
     await addCheckId(id);
   };
 
-  const getIsCheckedId = (id: number) => checkedItemIds.includes(id);
-  console.log(checkedItemIds);
-  return { toggleId, getIsCheckedId, length: checkedItemIds.length };
+  const isAddedCart = (id: number) => checkedItemIds.includes(id);
+
+  return { onToggleCart, isAddedCart, addedShoppingCartLength: checkedItemIds.length };
 };
 
-export default useCheckedIds;
+export default useToggleShoppingCart;
