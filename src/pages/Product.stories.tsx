@@ -6,8 +6,7 @@ const meta = {
   component: Product,
   tags: ["autodocs"],
   args: {
-    title: "코카콜라",
-    price: 10000,
+    onError: () => {},
   },
 } satisfies Meta<typeof Product>;
 
