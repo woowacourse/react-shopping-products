@@ -36,6 +36,7 @@ export interface SortResponse {
 }
 
 export type ProductCategory =
+  | 'all'
   | 'fashion'
   | 'beverage'
   | 'electronics'
@@ -43,4 +44,23 @@ export type ProductCategory =
   | 'fitness'
   | 'books';
 
-export type Sort = 'asc' | 'desc';
+export type SortValue = 'asc' | 'desc';
+export type SortLabel = '낮은 가격순' | '높은 가격순';
+export type CategoryLabel =
+  | '전체'
+  | '패션'
+  | '음료'
+  | '전자기기'
+  | '주방제품'
+  | '운동기구'
+  | '책/도서';
+
+export interface SortOption {
+  label: SortLabel;
+  value: SortValue;
+}
+
+export interface Category {
+  label: CategoryLabel;
+  value: ProductCategory;
+}

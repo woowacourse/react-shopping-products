@@ -1,13 +1,13 @@
 import { END_POINT } from './endpoints';
 import fetcher from './fetcher';
 
-import { ProductCategory, ProductResponse, Sort } from '@/types/product';
+import { ProductCategory, ProductResponse, SortValue } from '@/types/product';
 
 interface FetchProductListProps {
   size?: number;
-  category?: ProductCategory;
+  category: ProductCategory;
   page?: number;
-  sortOptions?: Sort;
+  sortOptions?: SortValue;
 }
 
 const covertUrlFormat = ({ category, page, size, sortOptions }: FetchProductListProps) => {
@@ -15,7 +15,7 @@ const covertUrlFormat = ({ category, page, size, sortOptions }: FetchProductList
   const encodedSort = encodeURIComponent(priceSort);
 
   const pageQuery = `?page=${page}`;
-  const categoryQuery = category ? `&category=${category}` : '';
+  const categoryQuery = category !== 'all' ? `&category=${category}` : '';
   const sizeQuery = size ? `&size=${size}` : '';
   const sortQuery = sortOptions ? `&sort=${encodedSort}` : '';
   return `${END_POINT.products}${pageQuery}${categoryQuery}${sizeQuery}${sortQuery}`;
