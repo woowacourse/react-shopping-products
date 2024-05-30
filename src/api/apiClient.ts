@@ -1,5 +1,6 @@
 import { generateBasicToken } from '../utils/auth';
 import { API_URL } from '../constants/api';
+import { ERROR_MESSAGES } from '../constants/message';
 
 const USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;
 const USER_ID = import.meta.env.VITE_USER_ID;
@@ -28,6 +29,11 @@ const createRequestInit = (method: Method, headers: Record<string, string>, body
 };
 
 const fetchWithErrorHandling = async (endpoint: string, requestInit: RequestInit, errorMessage: string = '') => {
+  // 오프라인 확인
+  if (!navigator.onLine) {
+    throw new Error(ERROR_MESSAGES.OFFLINE);
+  }
+
   const response = await fetch(`${API_URL}${endpoint}`, requestInit);
 
   if (!response.ok) {
