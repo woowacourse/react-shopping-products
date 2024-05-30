@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
 import { Product, SORT_ORDERS, SortOrder } from '@/entities/product';
-import { ALL } from '@/features/product';
+import { ALL, DEFAULT_SORT_ORDER } from '@/features/product';
 
 import { PRODUCTS_ENDPOINT } from '../api/endpoints';
 
@@ -22,8 +22,8 @@ export const handlers = [
     const url = new URL(request.url);
 
     const category = url.searchParams.get('category') || ALL;
-    const page = Number(url.searchParams.get('page') || '1');
-    const sort = (url.searchParams.get('sort') || 'ascByPrice') as SortOrder;
+    const page = Number(url.searchParams.get('page') || '0');
+    const sort = (url.searchParams.get('sort') || DEFAULT_SORT_ORDER) as SortOrder;
 
     const size = page === 0 ? 20 : 4;
     const start = page === 0 ? 0 : (page - 2) * 4 + 20;
