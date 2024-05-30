@@ -11,7 +11,7 @@ import { useCartItemListContext } from '@/hooks/useCartItemList';
 
 type ProductItemProps = Product & {};
 
-export default function ProductItem({ id, name, price, imageUrl, category }: ProductItemProps) {
+export default function ProductItem({ id, name, price, imageUrl }: ProductItemProps) {
   const { toggleCartItem, isInCart } = useCartItemListContext();
   const [isCart, setIsCart] = useState<boolean>(isInCart(id));
 
