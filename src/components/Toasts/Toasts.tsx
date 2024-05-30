@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import COLOR_PALETTE from "../style/colorPalette";
+import COLOR_PALETTE from "../../style/colorPalette";
 
 const slideIn = keyframes`
   from {

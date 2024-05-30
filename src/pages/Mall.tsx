@@ -10,6 +10,9 @@ import { baseStyle } from "../style/baseStyle";
 import styled from "@emotion/styled";
 import useProducts from "../hooks/useProducts";
 import useToggleCartItem from "../hooks/useToggleCartItem";
+import useCustomContext from "../hooks/useCustomContext";
+import { ToastContext } from "../components/Toasts/ToastProvider";
+import { useEffect } from "react";
 
 const S = {
   MainMall: styled.div`
@@ -49,13 +52,24 @@ const Mall = () => {
     error: toggleCartItemError,
   } = useToggleCartItem();
 
-  //TODO: Toast.error(toggleCartItemError)
+  const { failAlert } = useCustomContext(ToastContext);
+
+  useEffect(() => {
+    if (toggleCartItemError && toggleCartItemError instanceof Error) {
+      failAlert(toggleCartItemError.message);
+    }
+  }, [toggleCartItemError]);
+
+  useEffect(() => {
+    if (productError && productError instanceof Error) {
+      failAlert(productError.message);
+    }
+  }, [productError]);
 
   return (
     <>
       <Global styles={baseStyle} />
       <Header itemCount={cartItems.length} />
-
       <S.MainMall>
         <MainTitle>러기의 쇼핑몰</MainTitle>
         <S.Toolbar>
