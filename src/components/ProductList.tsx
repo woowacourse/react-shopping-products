@@ -1,18 +1,26 @@
 import { useEffect, useRef } from 'react';
 
+import Loading from '@/assets/loading.gif';
 import { Product } from '@/types/product.type';
 import ProductItem from './ProductItem';
 import styled from '@emotion/styled';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 interface Props {
+  loading: boolean;
   products: Product[];
   page: number;
   getNextPage: () => void;
   hasNextPage: boolean;
 }
 
-const ProductList = ({ products, page, getNextPage, hasNextPage }: Props) => {
+const ProductList = ({
+  loading,
+  products,
+  page,
+  getNextPage,
+  hasNextPage,
+}: Props) => {
   const target = useRef<HTMLDivElement | null>(null);
   const [observe, unobserve] = useIntersectionObserver(getNextPage);
 
@@ -42,6 +50,7 @@ const ProductList = ({ products, page, getNextPage, hasNextPage }: Props) => {
           <ProductItem key={product.id} item={product} />
         ))}
       </S.GridContainer>
+      {loading && <S.LoadingImg src={Loading} alt="loading" />}
       {hasNextPage && <S.ObserverContainer ref={target} />}
     </S.ListContainer>
   );
@@ -68,5 +77,9 @@ const S = {
   ObserverContainer: styled.div`
     width: 100%;
     height: 20px;
+  `,
+  LoadingImg: styled.img`
+    width: 100%;
+    height: 50px;
   `,
 };

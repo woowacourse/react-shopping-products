@@ -15,6 +15,7 @@ const Products = () => {
   const {
     page,
     products,
+    loading,
     error,
     fetchNextPage,
     hasNextPage,
@@ -51,6 +52,7 @@ const Products = () => {
             <SortOrder onChangeOrder={handleChangeOrder} />
           </S.DropDownWrapper>
           <ProductList
+            loading={loading}
             products={products}
             page={page}
             getNextPage={fetchNextPage}
