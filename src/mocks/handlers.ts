@@ -10,7 +10,7 @@ export const handlers = [
 
     const page = Number(url.searchParams.get('page')) || 0;
     const limit = page === 0 ? 20 : 4;
-    const start = page === 0 ? 0 : (page - 1) * 4 + 20;
+    const start = page === 0 ? 0 : (page - 5) * 4 + 20;
     const end = start + limit;
     const content = productList.content.slice(start, end);
 
@@ -19,7 +19,7 @@ export const handlers = [
       content,
     };
 
-    if (page === 8) {
+    if (page === 9) {
       result.last = true;
     }
 

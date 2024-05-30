@@ -8,7 +8,7 @@ describe('productList', () => {
     const { result } = renderHook(() => useProductList());
 
     await waitFor(() => {
-      expect(result.current.productList.length).toBe(20);
+      expect(result.current.productList).toHaveLength(20);
       expect(result.current.page).toBe(0);
     });
   });
@@ -17,7 +17,7 @@ describe('productList', () => {
     const { result } = renderHook(() => useProductList());
 
     await waitFor(() => {
-      expect(result.current.productList.length).toBe(20);
+      expect(result.current.productList).toHaveLength(20);
       expect(result.current.page).toBe(0);
     });
 
@@ -26,8 +26,8 @@ describe('productList', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.productList.length).toBe(24);
-      expect(result.current.page).toBe(1);
+      expect(result.current.productList).toHaveLength(24);
+      expect(result.current.page).toBe(5);
     });
   });
   it('마지막 페이지 일 때 상품 목록을 불러오지 않아야 한다.', async () => {
@@ -38,17 +38,26 @@ describe('productList', () => {
       expect(result.current.page).toBe(0);
     });
 
-    for (let i = 0; i < 10; i++) {
+    for (let page = 5; page < 10; page += 1) {
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      const expectedProductsCount = 20 + (page - 4) * 4;
+
       await waitFor(() => {
-        act(() => {
-          result.current.fetchNextPage();
-        });
+        expect(result.current.page).toBe(page);
+        expect(result.current.productList).toHaveLength(expectedProductsCount);
       });
     }
 
+    await act(async () => {
+      result.current.fetchNextPage();
+    });
+
     await waitFor(() => {
-      expect(result.current.productList.length).toBe(50);
-      expect(result.current.page).toBe(8);
+      expect(result.current.productList.length).toBe(40);
+      expect(result.current.page).toBe(9);
     });
   });
 

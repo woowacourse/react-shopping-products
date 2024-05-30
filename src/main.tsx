@@ -23,7 +23,6 @@ enableMocking().then(() => {
         <GlobalStyle />
         <App />
       </ThemeProvider>
-      ,
     </React.StrictMode>,
   );
 });
