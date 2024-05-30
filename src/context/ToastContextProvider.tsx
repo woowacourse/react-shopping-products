@@ -29,24 +29,3 @@ export function ToastContextProvider({ children }: PropsWithChildren) {
 const ToastComponent: React.FC<{ toast: Toast }> = ({ toast }) => {
   return <Toast>{toast.message}</Toast>;
 };
-
-// export function useToast() {
-//   const context = useContext(ToastContext);
-
-//   if (!context) {
-//     throw new Error('Toast provider를 추가해주세요');
-//   }
-
-//   const { setToast } = context;
-
-//   const createToast = (message: string) => {
-//     const newToast: Toast = { id: Date.now().toString(), message };
-//     setToast(newToast);
-
-//     setTimeout(() => {
-//       setToast(null);
-//     }, 3000);
-//   };
-
-//   return { createToast };
-// }

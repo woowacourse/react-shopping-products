@@ -66,6 +66,7 @@ export const deleteCartItem = async (productId: number) => {
       method: 'DELETE',
       headers: HEADERS,
     });
+
     if (!response.ok) {
       throw new Error('Failed to fetch Items');
     }
@@ -74,13 +75,11 @@ export const deleteCartItem = async (productId: number) => {
 
 export const findCartItemIdByProductId = async (productId: number) => {
   const response = await fetchItems();
-
   const cartItem = response.find((cartItem) => {
     if (cartItem.product.id === productId) {
       return cartItem.id;
     }
   });
-
   return cartItem && cartItem.id;
 };
 

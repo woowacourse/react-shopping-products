@@ -36,11 +36,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
         </ItemInfo>
 
         <ItemCardBottom>
-          {/* <Button onClick={handleClick}>
-            <ButtonImg src={Cart} />
-            <span>{isInCart ? '빼기' : '담기'}</span>
-          </Button> */}
-          <CartButton itemId={id} initIsInCart={initIsInCart} />
+          <CartButton productId={id} initIsInCart={initIsInCart} />
         </ItemCardBottom>
       </ItemCardSection>
     </li>
