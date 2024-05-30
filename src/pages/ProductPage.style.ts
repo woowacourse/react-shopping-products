@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { CartItemIcon } from '../assets';
+import { CartItemIcon } from "../assets";
 
 export const ShopHeader = styled.div`
   width: 100%;
@@ -13,7 +13,7 @@ export const ShopHeader = styled.div`
 export const CartButton = styled.button`
   width: 32px;
   height: 32px;
-  background: url(${CartItemIcon}) no-repeat center 2px;
+  background: url("${CartItemIcon}") no-repeat center 2px;
   background-size: auto;
   cursor: pointer;
 `;
