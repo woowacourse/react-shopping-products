@@ -16,14 +16,12 @@ const useProducts = () => {
   const fetchFirstPage = async (category: Category, page: number, sort: Sort) => {
     try {
       setLoading(true);
-
-      const size = currentPage === 0 ? 20 : 4;
-      const res = await getProducts({ category, page, size, sort });
+      const res = await getProducts({ category, page, size: 20, sort });
       if (res.last) setIsLastPage(true);
 
       setProducts(res.content);
       setLoading(false);
-      setCurrentPage((prevPage) => prevPage + 1);
+      setCurrentPage(1);
     } catch (error) {
       if (error instanceof Error) {
         onAddToast(ERROR_MESSAGES.failGetProducts);
