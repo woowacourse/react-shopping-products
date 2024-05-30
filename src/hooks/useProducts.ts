@@ -24,8 +24,8 @@ export default function useProducts(): UseProductsResult {
     const fetchProducts = async () => {
       setIsLoading(true);
       try {
-        const limit = page === PAGE.FIRST_PAGE ? PAGE.FIRST_PAGE_LIMIT : PAGE.OTHER_PAGE_LIMIT;
-        const response = await fetch(`${PRODUCTS_ENDPOINT}?page=${page}&limit=${limit}`);
+        const size = page === PAGE.FIRST_PAGE ? PAGE.FIRST_PAGE_LIMIT : PAGE.OTHER_PAGE_LIMIT;
+        const response = await fetch(`${PRODUCTS_ENDPOINT}?page=${page}&size=${size}`);
 
         if (!response.ok) {
           setErrorStatus(response.status);
@@ -34,7 +34,7 @@ export default function useProducts(): UseProductsResult {
         const data = await response.json();
         setProducts((prevProducts) => [...prevProducts, ...data.content]);
 
-        if (data.content.length < limit) {
+        if (data.content.length < size) {
           setIsLastPage(true);
           setPage((prevPage) => prevPage - 1);
         }
