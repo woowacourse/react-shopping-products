@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { BadgeProps } from './Badge';
+import { BadgeProps } from '../../../type';
 
 export const BadgeContainer = styled.div<BadgeProps>`
   position: absolute;
