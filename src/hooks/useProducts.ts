@@ -15,6 +15,7 @@ interface Product {
 
 interface Props {
   selectBarCondition: Record<string, string>;
+  handleCount: (cartItemCount: number) => void;
 }
 
 interface UseProductsResult {
@@ -25,7 +26,7 @@ interface UseProductsResult {
   handleSelect: (itemId: number) => void;
 }
 
-export default function useProducts({ selectBarCondition }: Props): UseProductsResult {
+export default function useProducts({ selectBarCondition, handleCount }: Props): UseProductsResult {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -76,6 +77,7 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
   const getCartItems = async () => {
     const cartItems = await fetchCartItem();
     setCartItems(cartItems);
+    handleCount(cartItems.length);
   };
 
   useEffect(() => {

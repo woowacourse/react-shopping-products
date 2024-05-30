@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import ProductItem from './ProductItem';
 import useProducts from '../../../hooks/useProducts';
 import styles from '../ProductListPage.module.css';
@@ -12,12 +11,9 @@ interface Props {
 const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
   const { products, setPage, hasMore, selectedItems, handleSelect } = useProducts({
     selectBarCondition,
+    handleCount,
   });
   const { lastProductElementRef } = useInfinityScroll({ hasMore, setPage });
-
-  useEffect(() => {
-    handleCount(selectedItems.size);
-  }, [selectedItems, handleCount]);
 
   return (
     <div className={styles.productItemListContainer}>
