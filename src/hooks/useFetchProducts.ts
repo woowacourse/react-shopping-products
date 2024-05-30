@@ -15,6 +15,7 @@ const useFetchProducts = (
 
   const size = page === 0 ? 20 : 4;
   const fetchPage = page === 0 ? page : page + 4;
+  
   const fetchNextPage = () => {
     if (isLast) return;
     setPage((page) => page + 1);

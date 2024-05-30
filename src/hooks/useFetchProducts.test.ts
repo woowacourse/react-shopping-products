@@ -38,11 +38,13 @@ describe('fetchProducts', () => {
     await waitFor(() => {
       expect(result.current.products).toHaveLength(20);
     });
-
-    act(() => result.current.fetchNextPage());
-
+      
+    act(() =>  result.current.fetchNextPage());
+    
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(24);
+      act(() => 
+        {expect(result.current.products).toHaveLength(24);}
+      )
     });
   });
 
