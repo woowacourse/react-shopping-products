@@ -1,21 +1,17 @@
 import React, {
   createContext,
-  useContext,
   useState,
   useEffect,
   PropsWithChildren,
 } from 'react';
 import { fetchShoppingCartQuantity } from '../api';
-
-const CartContext = createContext<{
+export const CartContext = createContext<{
   counts: number;
   setCounts: React.Dispatch<React.SetStateAction<number>>;
 }>({
   counts: 0,
   setCounts: () => {},
 });
-
-export const useCart = () => useContext(CartContext);
 
 export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [counts, setCounts] = useState<number>(0);
