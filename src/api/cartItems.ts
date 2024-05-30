@@ -1,19 +1,16 @@
 import { CART_ITEMS_ENDPOINT } from "./endPoint";
 import { fetchWithToken } from "./fetchWithToken";
 
-export async function getCartItems() {
+export async function getCartItems(size: number = 20) {
   const data = await fetchWithToken({
-    url: `${CART_ITEMS_ENDPOINT}`,
+    url: `${CART_ITEMS_ENDPOINT}?size=${size}`,
     errorMessage: "Failed to fetch cart items",
   });
 
   return data;
 }
 
-export async function postCartItems(body: {
-  productId: number;
-  quantity: number;
-}) {
+export async function postCartItems(body: { productId: number; quantity: number }) {
   const data = await fetchWithToken({
     method: "POST",
     url: `${CART_ITEMS_ENDPOINT}`,
