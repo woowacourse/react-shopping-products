@@ -1,9 +1,10 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from '../App';
+import { PAGE_INFORMATION } from '../constants/page';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: PAGE_INFORMATION.main.path,
     element: <App />,
     children: [],
   },

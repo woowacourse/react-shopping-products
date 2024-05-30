@@ -10,6 +10,9 @@ import ProductItem from './components/product/ProductItem';
 import ProductList from './components/product/ProductList';
 import { CartItemsProvider } from './context/CartItemsProvider';
 
+import { CATEGORY, SORT } from './constants/filterOptions';
+import { PAGE_INFORMATION } from './constants/page';
+
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -37,30 +40,18 @@ function App() {
     <Wrapper>
       <CartItemsProvider>
         <Layout header={<Header />}>
-          <Title content={'bpple 상품 목록'} />
+          <Title content={PAGE_INFORMATION.main.title} />
           <FilterContainer>
             <Dropdown
               size="small"
-              defaultContent={'전체'}
-              // TODO: 상수화
-              options={[
-                { content: '전체', value: '' },
-                { content: '패션', value: 'fashion' },
-                { content: '음료', value: 'beverage' },
-                { content: '전자제품', value: 'electronics' },
-                { content: '주방가전', value: 'kitchen' },
-                { content: '운동', value: 'fitness' },
-                { content: '도서', value: 'books' },
-              ]}
+              defaultContent={CATEGORY.defaultContent}
+              options={CATEGORY.options}
               onSelect={onCategorySelect}
             />
             <Dropdown
               size="small"
-              defaultContent="낮은 가격 순"
-              options={[
-                { content: '낮은 가격 순', value: 'asc' },
-                { content: '높은 가격 순', value: 'desc' },
-              ]}
+              defaultContent={SORT.defaultContent}
+              options={SORT.options}
               onSelect={onSortSelect}
             />
           </FilterContainer>
