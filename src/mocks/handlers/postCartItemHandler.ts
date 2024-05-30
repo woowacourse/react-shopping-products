@@ -22,7 +22,6 @@ export const postCartItemHandler = [
         { status: 201 }
       );
     } else {
-      console.log('else');
       return HttpResponse.json(
         {
           message: `Product not found; productId=${productId}`,
