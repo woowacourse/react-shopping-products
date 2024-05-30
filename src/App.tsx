@@ -5,11 +5,11 @@ import { resetCSS } from '@styles/resetCSS';
 import useToggleShoppingCart from '@hooks/product/useToggleShoppingCart';
 
 function App() {
-  const { addedShoppingCartLength: length, onToggleCart, isAddedCart } = useToggleShoppingCart();
+  const { addedShoppingCartLength: itemCount, onToggleCart, isAddedCart } = useToggleShoppingCart();
   return (
     <>
       <Global styles={resetCSS} />
-      <AppLayout itemCount={length}>
+      <AppLayout itemCount={itemCount}>
         <ProductPage onToggleCart={onToggleCart} isAddedCart={isAddedCart} />
       </AppLayout>
     </>
