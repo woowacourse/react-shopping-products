@@ -11,7 +11,7 @@ interface ProductApi {
 const makeParams = (category: string, page: number, size: number, sort: string): string => {
   const params = new URLSearchParams({
     page: page.toString(),
-    size: (page === 0 ? SIZE.ADDITIONAL : size).toString(),
+    size: (page === 0 ? SIZE.DEFAULT : size).toString(),
     sort: `price,${sort}`,
   });
 

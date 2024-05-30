@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
-import { fetchProducts } from '../api/product';
-import { Product } from '../types/Product.type';
-import { Option } from '../types/Option.type';
-import usePagination from './usePagination';
-import useFetcher from './useFetcher';
-import { SIZE } from '../constants/api';
+import { fetchProducts } from '../../api/product';
+import { Product } from '../../types/Product.type';
+import { Option } from '../../types/Option.type';
+import usePagination from '../usePagination';
+import useFetcher from '../useFetcher';
+import { SIZE } from '../../constants/api';
 
 interface UseProductsResult {
   products: Product[];
   loading: boolean;
-  isAvailable: boolean;
+  error: unknown;
+  isLast: boolean;
   page: number;
   category: Option;
   sort: Option;
@@ -53,7 +54,8 @@ const useProduct = (initialCategory: Option, initialSorting: Option): UseProduct
   return {
     products,
     loading,
-    isAvailable: !isLast && !error,
+    error,
+    isLast,
     page,
     category,
     sort,

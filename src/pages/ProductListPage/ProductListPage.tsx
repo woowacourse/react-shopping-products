@@ -4,8 +4,8 @@ import Dropdown from '../../components/Dropdown/Dropdown';
 import Header from '../../components/Header/Header';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import ProductItem from '../../components/ProductItem/ProductItem';
-import useProducts from '../../hooks/useProduct';
-import useCartItems from '../../hooks/useCartItems';
+import useProducts from '../../hooks/useProduct/useProduct';
+import useCartItems from '../../hooks/useCartItem/useCartItems';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import * as S from './ProductListPage.style';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
@@ -14,7 +14,7 @@ import Loading from '../../assets/loading.gif';
 import EmptyCart from '../../assets/EmptyCart.png';
 
 const ProductListPage = () => {
-  const { products, category, sort, loading, isAvailable, handleCategory, handleSort, handlePage } = useProducts(
+  const { products, category, sort, loading, error, isLast, handleCategory, handleSort, handlePage } = useProducts(
     CATEGORY_LIST[0],
     SORTING_LIST[0],
   );
@@ -53,7 +53,7 @@ const ProductListPage = () => {
             <p>표시할 상품이 없습니다.</p>
           </S.EmptyProductContainer>
         )}
-        {isAvailable && (
+        {!error && !isLast && (
           <S.LoadingWrapper ref={targetRef}>
             {loading && <S.LoadingSpinner src={Loading} alt="로딩 스피너" />}
           </S.LoadingWrapper>

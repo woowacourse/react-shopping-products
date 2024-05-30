@@ -1,7 +1,6 @@
 export const CATEGORY_LIST = [
   { key: 'all', name: '전체' },
   { key: 'fashion', name: '패션' },
-  { key: 'beverage', name: '음료' },
   { key: 'electronics', name: '전자제품' },
   { key: 'kitchen', name: '주방용품' },
   { key: 'fitness', name: '운동' },
