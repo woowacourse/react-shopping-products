@@ -11,6 +11,7 @@ interface ProductListProps {
   sortOrder: SortOrder;
   onChangeCategory: (value: typeof ALL | Category) => void;
   onChangeSortOrder: (value: SortOrder) => void;
+  onToggleCartItem: (cartItemId: number) => void;
 }
 
 export const ProductList = ({
@@ -19,6 +20,7 @@ export const ProductList = ({
   sortOrder,
   onChangeCategory,
   onChangeSortOrder,
+  onToggleCartItem,
 }: ProductListProps) => {
   const [cartState, setCartState] = useState<{ [key: number]: boolean }>({});
 
@@ -27,6 +29,7 @@ export const ProductList = ({
       ...prevState,
       [productId]: !prevState[productId],
     }));
+    onToggleCartItem(productId);
   };
 
   return (

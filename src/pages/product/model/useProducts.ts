@@ -33,7 +33,6 @@ export default function useProducts(): UseProductsResult {
       const requestPage = page === 0 ? 0 : page + SECONDARY_REQUEST_PAGE_GAP;
 
       try {
-        console.log('로딩시작');
         setLoading(true);
         const { totalPages, content } = await fetchProducts({
           page: requestPage,
@@ -48,7 +47,6 @@ export default function useProducts(): UseProductsResult {
         setError(error);
       } finally {
         setLoading(false);
-        console.log('로딩끝');
       }
     };
 

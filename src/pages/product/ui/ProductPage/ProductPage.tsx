@@ -11,7 +11,7 @@ import useProducts from '../../model/useProducts';
 import css from './ProductPage.module.css';
 
 export const ProductPage = () => {
-  const [cartItemCount, setCartItemCount] = useState(0);
+  const [cartItems, setCartItems] = useState<number[]>([]);
 
   const { products, loading, error, category, sortOrder, fetchNextPage, handleChangeCategory, handleChangeSortOrder } =
     useProducts();
@@ -39,10 +39,21 @@ export const ProductPage = () => {
     };
   }, [fetchNextPage]);
 
+  const handleToggleCartItem = (productId: number) => {
+    if (cartItems.includes(productId)) {
+      setCartItems((prev) => prev.filter((itemId) => itemId !== productId));
+    } else {
+      setCartItems((prev) => [...prev, productId]);
+    }
+  };
+
   return (
     <Layout
       headerSlot={
-        <LayoutHeader leftSlot={<HeaderLogoButton />} rightSlot={<HeaderCartButton cartItemCount={cartItemCount} />} />
+        <LayoutHeader
+          leftSlot={<HeaderLogoButton />}
+          rightSlot={<HeaderCartButton cartItemCount={cartItems.length} />}
+        />
       }
       contentHeaderSlot={<ContentHeader title={'상품 목록'} />}
       contentBodySlot={
@@ -54,6 +65,7 @@ export const ProductPage = () => {
               sortOrder={sortOrder}
               onChangeCategory={handleChangeCategory}
               onChangeSortOrder={handleChangeSortOrder}
+              onToggleCartItem={handleToggleCartItem}
             />
             <div className={css.observationTarget} ref={observationTarget}></div>
           </div>
