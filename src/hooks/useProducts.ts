@@ -15,7 +15,6 @@ export default function useProducts(): UseProductsResult {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const isMounted = useRef(false);
   const [category, setCategory] = useState<Category | "all">("all");
   const [sort, setSort] = useState<Sort>("asc");
   const { showError } = useError();
@@ -35,35 +34,31 @@ export default function useProducts(): UseProductsResult {
   );
 
   useEffect(() => {
-    if (isMounted.current) {
-      const fetchProducts = async () => {
-        try {
-          const size = page === 0 ? 20 : 4;
-          const responseData = await getProducts({
-            category: category === "all" ? undefined : category,
-            sort,
-            page,
-            size,
-          });
-          setProducts((prevProducts) => [
-            ...prevProducts,
-            ...responseData.content,
-          ]);
+    const fetchProducts = async () => {
+      try {
+        const size = page === 0 ? 20 : 4;
+        const responseData = await getProducts({
+          category: category === "all" ? undefined : category,
+          sort,
+          page,
+          size,
+        });
+        setProducts((prevProducts) => [
+          ...prevProducts,
+          ...responseData.content,
+        ]);
 
-          if (responseData.content.length < size) {
-            setHasMore(false);
-          }
-        } catch (error) {
-          if (error instanceof Error) {
-            showError(error.message);
-          }
+        if (responseData.content.length < size) {
+          setHasMore(false);
         }
-      };
+      } catch (error) {
+        if (error instanceof Error) {
+          showError(error.message);
+        }
+      }
+    };
 
-      fetchProducts();
-    } else {
-      isMounted.current = true;
-    }
+    fetchProducts();
   }, [page, category, sort, showError]);
 
   const handleCategory = (category: Category | "all") => {
