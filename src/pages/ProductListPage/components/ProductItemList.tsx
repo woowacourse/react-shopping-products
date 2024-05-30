@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import ProductItem from './ProductItem';
 import useProducts from '../../../hooks/useProducts';
 import styles from '../ProductListPage.module.css';
@@ -10,25 +10,14 @@ interface Props {
 }
 
 const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
-  const [selectedItems, setSelectedItems] = useState(new Set());
-  const { products, setPage, hasMore } = useProducts({ selectBarCondition });
+  const { products, setPage, hasMore, selectedItems, handleSelect } = useProducts({
+    selectBarCondition,
+  });
   const { lastProductElementRef } = useInfinityScroll({ hasMore, setPage });
 
   useEffect(() => {
     handleCount(selectedItems.size);
   }, [selectedItems, handleCount]);
-
-  const handleSelect = (itemId: number) => {
-    setSelectedItems((prev) => {
-      const newSelectedItems = new Set(prev);
-      if (selectedItems.has(itemId)) {
-        newSelectedItems.delete(itemId);
-      } else {
-        newSelectedItems.add(itemId);
-      }
-      return newSelectedItems;
-    });
-  };
 
   return (
     <div className={styles.productItemListContainer}>

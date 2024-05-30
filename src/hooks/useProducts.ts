@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { fetchProducts } from '../api';
-import { ProductType } from '../types';
+import { addCartItem, fetchCartItem, fetchProducts } from '../api';
+import { CartItemType, ProductType } from '../types';
 import { useToast } from './useToast';
 import { formattedKey } from './useProducts.util';
 import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
@@ -21,6 +21,8 @@ interface UseProductsResult {
   products: Product[];
   setPage: Dispatch<SetStateAction<number>>;
   hasMore: boolean;
+  selectedItems: Set<number>;
+  handleSelect: (itemId: number) => void;
 }
 
 export default function useProducts({ selectBarCondition }: Props): UseProductsResult {
@@ -29,6 +31,45 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
   const [hasMore, setHasMore] = useState(true);
   const { showToast } = useToast();
 
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const [selectedItems, setSelectedItems] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const newSelectedItems: number[] = [];
+    const cartItemIds = cartItems.map((cartItem) => {
+      return cartItem.product.id;
+    });
+    products.forEach((product) => {
+      if (cartItemIds.includes(product.id)) {
+        newSelectedItems.push(product.id);
+      }
+    });
+
+    setSelectedItems(new Set(newSelectedItems));
+  }, [products, cartItems]);
+
+  const handleSelect = async (itemId: number) => {
+    const newSelectedItems = new Set(selectedItems);
+    if (selectedItems.has(itemId)) {
+      newSelectedItems.delete(itemId);
+    } else {
+      newSelectedItems.add(itemId);
+      postCartItem(itemId);
+    }
+    setSelectedItems(newSelectedItems);
+  };
+
+  useEffect(() => {
+    const getCartItems = async () => {
+      const cartItems = await fetchCartItem();
+
+      setCartItems(cartItems);
+    };
+
+    getCartItems();
+  }, []);
+
+  // 필터링 조건 바뀔 때, 초기화
   useEffect(() => {
     setProducts([]);
     setPage(0);
@@ -54,13 +95,20 @@ export default function useProducts({ selectBarCondition }: Props): UseProductsR
       } catch (error) {
         if (error instanceof Error) {
           console.error(error.message);
-          showToast('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+          showToast('상품 목록을 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.');
         }
       }
     };
-
     setFetchedProducts();
   }, [page, selectBarCondition]);
 
-  return { products, setPage, hasMore };
+  const postCartItem = async (itemId: number) => {
+    try {
+      await addCartItem(itemId);
+    } catch (error) {
+      showToast('상품 추가에 실패했습니다.');
+    }
+  };
+
+  return { products, setPage, hasMore, selectedItems, handleSelect };
 }
