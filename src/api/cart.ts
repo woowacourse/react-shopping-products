@@ -1,10 +1,18 @@
 import apiClient from './apiClient';
 import { CartItem } from '../types/CartItem.type';
 
-export const fetchCartItems = async (): Promise<CartItem[]> => {
-  return apiClient
-    .get({ endpoint: '/cart-items', errorMessage: '장바구니 요소를 불러오는 중 에러가 발생했습니다.' })
-    .then((data) => data.content);
+interface CartApi {
+  data: CartItem[];
+  totalElements: number;
+}
+
+export const fetchCartItems = async (size: number = 20): Promise<CartApi> => {
+  const data = await apiClient.get({
+    endpoint: `/cart-items?size=${size}`,
+    errorMessage: '장바구니 요소를 불러오는 중 에러가 발생했습니다.',
+  });
+
+  return { data: data.content, totalElements: data.totalElements };
 };
 
 export const addCartItem = async (productId: number): Promise<void> => {

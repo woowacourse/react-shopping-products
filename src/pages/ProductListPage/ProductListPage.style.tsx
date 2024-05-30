@@ -36,8 +36,8 @@ export const ProductList = styled.div`
 
 export const CartIconWrapper = styled.div`
   position: relative;
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,14 +48,14 @@ export const CartNumber = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 19px;
-  height: 19px;
-  border-radius: 19px;
+  width: 21px;
+  height: 21px;
+  border-radius: 22px;
   background-color: white;
   bottom: 0px;
   right: 0px;
   padding-top: 1px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
 `;
 

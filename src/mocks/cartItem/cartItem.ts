@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import products from '../product/products.json';
-import { API_URL } from '../../api/apiClient';
+import { API_URL } from '../../constants/api';
 import { CartItem } from '../../types/CartItem.type';
 import { Product } from '../../types/Product.type';
 

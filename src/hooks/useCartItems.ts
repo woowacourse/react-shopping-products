@@ -20,8 +20,15 @@ const useCartItems = (): UseCartItemsResult => {
   }, []);
 
   const getCartItems = async () => {
-    const data = await fetchCartItems();
-    setCartItems(data);
+    const { data: initialData, totalElements } = await fetchCartItems(20);
+
+    if (totalElements <= 20) {
+      setCartItems(initialData);
+      return;
+    }
+
+    const { data: totalData } = await fetchCartItems(totalElements);
+    setCartItems(totalData);
   };
 
   const handleAddCartItem = (productId: number) => {

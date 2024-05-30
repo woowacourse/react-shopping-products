@@ -24,7 +24,7 @@ const ProductListPage = () => {
       <Header>
         <S.CartIconWrapper>
           <img src={CartIcon} alt="장바구니 아이콘" />
-          <S.CartNumber>{cartItems.length <= 9 ? cartItems.length : `9+`}</S.CartNumber>
+          <S.CartNumber>{cartItems.length <= 20 ? cartItems.length : `20+`}</S.CartNumber>
         </S.CartIconWrapper>
       </Header>
       <S.Layout>
