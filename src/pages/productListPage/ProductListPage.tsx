@@ -2,12 +2,12 @@ import { useRef } from 'react';
 
 import * as Styled from './ProductListPage.styled';
 
+import Dropdown from '@/components/common/dropdown/Dropdown';
+import Header from '@/components/common/header/Header';
 import InfinityScrollContainer from '@/components/common/InfinityScrollContainer';
-import Dropdown from '@/components/dropdown/Dropdown';
-import Header from '@/components/header/Header';
+import Toast from '@/components/common/toast/Toast';
 import ProductCardList from '@/components/productCardList/ProductCardList';
 import Title from '@/components/title/Title';
-import Toast from '@/components/toast/Toast';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
 
 import useCartItems from '@/hooks/useCartItems';

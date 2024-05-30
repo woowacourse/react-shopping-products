@@ -11,10 +11,9 @@ export const PageContainer = styled.section`
 export const CommonContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2.8125rem;
+  gap: 1.5rem;
 
-  padding: 2.25rem 1.5rem;
-  padding-bottom: 8rem;
+  padding: 6rem 1.5rem 8rem 1.5rem;
 `;
 
 export const DropdownContainer = styled.div`

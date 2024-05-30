@@ -9,7 +9,9 @@ interface HeaderProp {
 const Header = ({ cartCount }: HeaderProp) => {
   return (
     <Styled.Header>
-      <Styled.AppTitle>SHOP</Styled.AppTitle>
+      <Styled.AppTitle onClick={() => scrollTo({ top: 0, left: 0, behavior: 'smooth' })}>
+        SHOP
+      </Styled.AppTitle>
       <div>
         {cartCount && <Styled.ShoppingCartCount>{cartCount}</Styled.ShoppingCartCount>}
         <img src={IMAGES.SHOPPING_CART} />

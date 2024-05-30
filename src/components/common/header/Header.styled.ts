@@ -4,11 +4,15 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
 
+  position: fixed;
+  width: 24.3rem;
   height: 4rem;
   align-items: center;
   padding: 0 1.3rem;
 
   background-color: ${(props) => props.theme.color.black};
+
+  z-index: 100;
 `;
 
 export const AppTitle = styled.button`
