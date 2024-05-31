@@ -1,4 +1,8 @@
 import Toast from '@components/common/Toast/Toast';
+import {
+  ANIMATION_DURATION,
+  TOAST_DISPLAY_DURATION,
+} from '@components/common/Toast/provider/ToastProvidet.constant';
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -32,8 +36,8 @@ const ToastProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setTimeout(() => {
         setMessage('');
         setIsRemove(true);
-      }, 500);
-    }, 1000);
+      }, ANIMATION_DURATION);
+    }, TOAST_DISPLAY_DURATION);
 
     toastTimer.current = timer;
   }, []);
