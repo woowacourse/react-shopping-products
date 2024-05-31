@@ -63,12 +63,14 @@ export default function useProducts({
     setProducts([]);
     setCategory(category);
     resetPage();
+    setHasMore(true);
   };
 
   const handleSort = (sort: Sort) => {
     setProducts([]);
     setSort(sort);
     resetPage();
+    setHasMore(true);
   };
 
   return {
