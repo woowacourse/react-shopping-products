@@ -20,8 +20,7 @@ const ProductItem = ({ product, isAdded, onAddCartItem, onDeleteCartItem }: Prod
       <S.Container>
         <S.TextContainer>
           <h2>{name}</h2>
-          <p>상품 설명</p>
-          <p>{price}원</p>
+          <p>{price.toLocaleString()}원</p>
         </S.TextContainer>
         <S.CartButtonContainer>
           {isAdded ? (
