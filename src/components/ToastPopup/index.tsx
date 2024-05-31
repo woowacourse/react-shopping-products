@@ -1,12 +1,12 @@
 import * as S from './style';
 
 interface ToastPopupProps {
-  isOpen: boolean;
+  isError: boolean;
   message: string;
 }
 
-const ToastPopup = ({ isOpen, message }: ToastPopupProps) => {
-  return isOpen && <S.ToastMessage $isOpen={isOpen}>{message}</S.ToastMessage>;
+const ToastPopup = ({ isError, message }: ToastPopupProps) => {
+  return isError && <S.ToastMessage>{message}</S.ToastMessage>;
 };
 
 export default ToastPopup;

@@ -72,7 +72,7 @@ function App() {
           <CartButton count={cartItems.length} onClick={() => {}} />
         </Header>
         <ToastPopup
-          isOpen={Boolean(error)}
+          isError={Boolean(error)}
           message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
         />
         <Main>
@@ -96,7 +96,7 @@ function App() {
               ))}
               <div ref={observerRef} id="observer" style={{ height: '10px' }} />
             </ProductsContent>
-            {loading && <Loading />}
+            <Loading isLoading={loading} />
           </ProductsContainer>
         </Main>
       </Container>
