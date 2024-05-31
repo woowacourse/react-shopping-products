@@ -27,7 +27,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
   initIsInCart,
 }) => {
   return (
-    <li key={id} ref={ref ?? ref}>
+    <li key={id} ref={ref}>
       <ItemCardSection>
         <ItemImage src={imageUrl} />
         <ItemInfo>
