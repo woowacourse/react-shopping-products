@@ -1,9 +1,9 @@
+import { CART_API_URL } from "./../../envVariables";
 import { renderHook, waitFor } from "@testing-library/react";
 import useProducts from ".";
 import { server } from "../../mocks/server";
 import { HttpResponse, http } from "msw";
 import { API_URL } from "../../constants/url";
-import { BASE_URL } from "../../api/cartClient";
 import { act } from "@testing-library/react";
 
 describe("useProducts", () => {
@@ -24,7 +24,7 @@ describe("useProducts", () => {
 
     it("초기 상품 목록을 불러올 때 에러가 발생하면 에러 객체를 받아온다", async () => {
       server.use(
-        http.get(BASE_URL + "/" + API_URL.products, () => {
+        http.get(CART_API_URL + "/" + API_URL.products, () => {
           return new HttpResponse(null, { status: 500 });
         })
       );

@@ -1,11 +1,11 @@
 import { http, HttpResponse } from "msw";
-import { BASE_URL } from "../api/cartClient";
+import { CART_API_URL } from "../envVariables";
 import { API_URL } from "../constants/url";
 import products from "./products.json";
 import { SORT_OPTIONS } from "../constants/products";
 
 export const handlers = [
-  http.get(BASE_URL + "/" + API_URL.products, ({ request }) => {
+  http.get(CART_API_URL + "/" + API_URL.products, ({ request }) => {
     const url = new URL(request.url);
 
     const page = Number(url.searchParams.get("page") || "0");
