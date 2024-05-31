@@ -4,7 +4,7 @@ import {
   requestAddCartItem,
   requestDeleteCartItem,
   requestFetchCartItemList,
-} from "../apis/carItems";
+} from "../apis/cartItems";
 import { CartItem } from "../interfaces/CartItem";
 import { Product } from "../interfaces/Product";
 import { QuantityContext } from "../store/QuantityContext";
