@@ -29,7 +29,7 @@ const useProducts = (): UseProductResult => {
 
   const [products, setProducts] = useState<Product[]>([]);
 
-  const { showToast } = useToastContext();
+  const showToast = useToastContext();
 
   const { data, isLoading } = useFetch<InfinityScrollResponse<Product[]>>(
     getProductEndpoint({ category, page, sortType }),

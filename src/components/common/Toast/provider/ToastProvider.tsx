@@ -2,7 +2,7 @@ import Toast from '@components/common/Toast/Toast';
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const ToastContext = createContext({ showToast: (_: string) => {} });
+export const ToastContext = createContext((_: string) => {});
 
 export const useToastContext = () => {
   const value = useContext(ToastContext);
@@ -39,7 +39,7 @@ const ToastProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={showToast}>
       {children}
       {!isRemove && <Toast isOpen={isOpenToast} message={message} />}
     </ToastContext.Provider>

@@ -10,7 +10,7 @@ const useToggleShoppingCart = () => {
   const [checkedItemIds, setCheckedItemIds] = useState<number[]>([]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const { showToast } = useToastContext();
+  const showToast = useToastContext();
 
   useEffect(() => {
     const fetchCartItem = async () => {

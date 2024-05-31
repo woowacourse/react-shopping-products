@@ -33,6 +33,7 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
 
   const targetRef = useIntersectionObserver<HTMLDivElement>({ onIntersect: updateNextProductItem });
 
+  console.log('zz');
   return (
     <>
       <Styled.ProductPageTitle>bpple 상품 목록</Styled.ProductPageTitle>
