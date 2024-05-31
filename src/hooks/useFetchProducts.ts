@@ -26,8 +26,7 @@ const useFetchProducts = () => {
       setLoading(true);
       const data = await fetchProducts(page, category, sort);
 
-      if (data.last) setIsLastPage(true);
-
+      setIsLastPage(data.last);
       addProducts(data.content);
     } catch (error) {
       decreasePage();
@@ -45,7 +44,6 @@ const useFetchProducts = () => {
   const reset = () => {
     resetPage();
     resetProducts();
-    setIsLastPage(false);
   };
 
   const filterByCategory = (selectedCategory: string) => {
