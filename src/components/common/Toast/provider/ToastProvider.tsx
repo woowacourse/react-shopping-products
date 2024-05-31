@@ -2,12 +2,12 @@ import Toast from '@components/common/Toast/Toast';
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const ToastContext = createContext({ showToast: (message: string) => {} });
+export const ToastContext = createContext({ showToast: (_: string) => {} });
 
 export const useToastContext = () => {
   const value = useContext(ToastContext);
 
-  if (!value) throw new Error('provider가 필요합니다.');
+  if (!value) throw new Error('ToastProvider 내부에서 사용해야 합니다.');
   return value;
 };
 
