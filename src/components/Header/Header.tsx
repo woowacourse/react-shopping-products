@@ -15,7 +15,7 @@ function Header() {
           <S.ShoppingCartIconContainer
             src={ShoppingCartIcon}
           ></S.ShoppingCartIconContainer>
-          {(quantity ?? 0) > 0 && (
+          {quantity && (
             <S.ShoppingCartQuantityContainer>
               <S.ShoppingCartQuantity>{quantity}</S.ShoppingCartQuantity>
             </S.ShoppingCartQuantityContainer>
