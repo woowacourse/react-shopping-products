@@ -1,12 +1,16 @@
 import * as S from './style';
 
 interface ToastPopupProps {
-  isError: boolean;
-  message: string;
+  error: Error;
 }
 
-const ToastPopup = ({ isError, message }: ToastPopupProps) => {
-  return isError && <S.ToastMessage>{message}</S.ToastMessage>;
+const ToastPopup = ({ error }: ToastPopupProps) => {
+  return error ? (
+    <S.ToastMessage>
+      {`${error.message} 오류가 발생하였습니다.`}
+      {<br />} {'잠시 후 다시 이용해주세요.'}
+    </S.ToastMessage>
+  ) : null;
 };
 
 export default ToastPopup;
