@@ -4,11 +4,11 @@ import { BaseResponse } from '@appTypes/response';
 import { PRODUCT_CATEGORY_MAP } from '@components/product/CategoryDropdown/CategoryDropdown.constant';
 import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
 import { Product } from '@appTypes/product';
-import { getProductEndpoint } from '@pages/ProductPage/ProductPage.util';
 import useFetch from '@hooks/useFetch';
 import usePagination from '@hooks/usePagination';
 import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
+import { getProductEndpoint } from '@hooks/product/useProductItems/useProductItems.util';
 
 interface UseProductResult {
   products: Product[];
