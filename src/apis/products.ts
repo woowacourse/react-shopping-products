@@ -1,6 +1,7 @@
+import { PRODUCTS_ENDPOINT } from "./config";
+import fetchWithAuth from "./fetchWithAuth";
 import { Category } from "../interfaces/Product";
 import { Sorting } from "../interfaces/Sorting";
-import { PRODUCTS_ENDPOINT, token } from "./config";
 
 export async function fetchProductList(
   page: number,
@@ -9,21 +10,11 @@ export async function fetchProductList(
   sortOption: Sorting = "price%2Casc" as Sorting
 ) {
   const requiredQuery = `page=${page}&size=${limit}`;
-
   const categoryQuery = category ? `category=${category}&` : "";
-
   const sortOptionQuery = sortOption ? `sort=${sortOption}` : "";
 
-  const response = await fetch(
-    `${PRODUCTS_ENDPOINT}?${categoryQuery}${requiredQuery}&${sortOptionQuery}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    }
-  );
+  const url = `${PRODUCTS_ENDPOINT}?${categoryQuery}${requiredQuery}&${sortOptionQuery}`;
+  const response = await fetchWithAuth(url, "GET");
 
   if (!response.ok) {
     throw new Error("Failed to fetch products");
