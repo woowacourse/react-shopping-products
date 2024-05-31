@@ -14,11 +14,9 @@ const useSelectProductDropdown = (onResetPage: () => void, onResetProducts: () =
     type: 'sort' | 'category',
     option: T
   ) => {
-    setDropdownOptions((prevDropdownOptions) =>
-      prevDropdownOptions[type] === option
-        ? prevDropdownOptions
-        : { ...prevDropdownOptions, [type]: option }
-    );
+    if (dropdownOptions[type] === option) return;
+
+    setDropdownOptions((prevDropdownOptions) => ({ ...prevDropdownOptions, [type]: option }));
     onResetPage();
     onResetProducts();
   };
