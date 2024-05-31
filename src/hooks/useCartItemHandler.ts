@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { addCartItem, deleteCartItem } from '../api';
-import { useCart } from '../context/CartContext';
+import { useCart } from './useCart';
 import { useToast } from './useToast';
 
 interface CartButtonProps {

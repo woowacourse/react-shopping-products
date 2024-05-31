@@ -1,4 +1,4 @@
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../hooks/useCart';
 import Badge from '../common/Badge/Badge';
 import { CartBadgeContainer } from './CartBadge.style';
 import { PropsWithChildren } from 'react';
