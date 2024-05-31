@@ -28,12 +28,6 @@ describe('useCartItemHandler', () => {
     });
 
     it('빼기 버튼을 누르면 장바구니에 상품이 삭제되어야한다.', async () => {
-      server.use(
-        http.delete(`${CART_ITEMS_ENDPOINT}/10`, () => {
-          return new HttpResponse(null, { status: 200 });
-        }),
-      );
-
       const { result } = renderUseCartItemHook(true);
 
       expect(result.current.isInCart).toBe(true);
@@ -47,19 +41,6 @@ describe('useCartItemHandler', () => {
       });
     });
 
-    it('아이템을 삭제하는지 확인한다.', async () => {
-      const { result } = renderUseCartItemHook(true);
-
-      await waitFor(async () => {
-        await act(async () => {
-          result.current.handleRemoveCartItem();
-        });
-      });
-
-      await waitFor(() => {
-        expect(result.current.isInCart).toBe(false);
-      });
-    });
 
     it('장바구니 목록을 가져오는데 실패했을 때, error 상태값이 true가 되야한다.', async () => {
       server.use(

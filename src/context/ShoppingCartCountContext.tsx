@@ -5,6 +5,7 @@ import React, {
   PropsWithChildren,
 } from 'react';
 import { fetchShoppingCartQuantity } from '../api';
+
 export const CartContext = createContext<{
   counts: number;
   setCounts: React.Dispatch<React.SetStateAction<number>>;
