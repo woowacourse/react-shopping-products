@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import Toast from '../components/common/Toast/Toast';
 
 interface Toast {
-  id: string;
   message: string;
 }
 

@@ -12,7 +12,7 @@ export function useToast() {
 
   const createToast = useCallback(
     (message: string) => {
-      const newToast = { id: Date.now().toString(), message };
+      const newToast = { message };
       setToast(newToast);
 
       setTimeout(() => {
