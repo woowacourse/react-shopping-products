@@ -1,4 +1,3 @@
-import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
 import { ProductCategory } from '@appTypes/product';
 import { generateQueryParams } from '@utils/queryString';
 import {
@@ -6,11 +5,12 @@ import {
   PAGE_OFFSET,
   PAGE_PER_SIZE,
 } from '@hooks/product/useProductItems/useProductItems.constant';
+import { PRODUCT_SORT_MAP } from '@components/product/ProductDropdown/ProductDropdown.constant';
 
 interface ProductEndpoint {
   page: number;
   category: ProductCategory | 'all';
-  sortType: keyof typeof PRODUCT_SORT_MAP;
+  sort: keyof typeof PRODUCT_SORT_MAP;
   sortBy?: string;
 }
 
@@ -18,7 +18,7 @@ export const getProductEndpoint = ({
   category,
   page,
   sortBy = 'price',
-  sortType,
+  sort,
 }: ProductEndpoint): string => {
   const baseEndpoint = 'products';
 
@@ -29,7 +29,7 @@ export const getProductEndpoint = ({
     category: category === 'all' ? null : category,
     page: adjustedPage,
     size,
-    sort: `${sortBy},${sortType}`,
+    sort: `${sortBy},${sort}`,
   };
 
   const queryString = generateQueryParams(queryParams).toString();

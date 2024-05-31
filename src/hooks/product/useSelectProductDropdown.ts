@@ -1,35 +1,31 @@
-import { PRODUCT_CATEGORY_MAP } from '@components/product/CategoryDropdown/CategoryDropdown.constant';
-import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
-import { ProductCategory } from '@appTypes/product';
+import {
+  ProductDropdownOptionKeys,
+  ProductDropdownOptions,
+} from '@components/product/ProductDropdown/ProductDropdown.type';
 import { useState } from 'react';
 
 const useSelectProductDropdown = (onResetPage: () => void, onResetProducts: () => void) => {
-  const [sortType, setSortType] = useState<keyof typeof PRODUCT_SORT_MAP>('asc');
-  const [category, setCategory] = useState<ProductCategory | 'all'>('all');
+  const [dropdownOptions, setDropdownOptions] = useState<ProductDropdownOptions>({
+    sort: 'asc',
+    category: 'all',
+  });
 
-  const onSelectSortTypeOption = (selectSortType: keyof typeof PRODUCT_SORT_MAP) => {
-    setSortType(selectSortType);
-
-    if (selectSortType === sortType) return;
-
-    onResetPage();
-    onResetProducts();
-  };
-
-  const onSelectCategoryOption = (selectCategory: keyof typeof PRODUCT_CATEGORY_MAP) => {
-    setCategory(selectCategory);
-
-    if (selectCategory === category) return;
-
+  const onSelectOption = <T extends ProductDropdownOptionKeys>(
+    type: 'sort' | 'category',
+    option: T
+  ) => {
+    setDropdownOptions((prevDropdownOptions) =>
+      prevDropdownOptions[type] === option
+        ? prevDropdownOptions
+        : { ...prevDropdownOptions, [type]: option }
+    );
     onResetPage();
     onResetProducts();
   };
 
   return {
-    sortType,
-    category,
-    onSelectSortTypeOption,
-    onSelectCategoryOption,
+    dropdownOptions,
+    onSelectOption,
   };
 };
 

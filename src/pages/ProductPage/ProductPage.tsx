@@ -1,15 +1,16 @@
 import * as Styled from './ProductPage.styled';
 
-import { useState } from 'react';
-
-import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropdown';
 import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
-import SortDropdown from '@components/product/SortDropdown/SortDropdown';
+
 import CardList from '@components/product/CardList/CardList';
 import NotProduct from '@components/product/NotProduct/NotProduct';
-
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useProducts from '@hooks/product/useProductItems/useProductItems';
+import ProductDropdown from '@components/product/ProductDropdown/ProductDropdown';
+import {
+  PRODUCT_CATEGORY_MAP,
+  PRODUCT_SORT_MAP,
+} from '@components/product/ProductDropdown/ProductDropdown.constant';
 
 interface ProductPageProps extends React.PropsWithChildren {
   onToggleCart: (id: number) => void;
@@ -17,38 +18,26 @@ interface ProductPageProps extends React.PropsWithChildren {
 }
 
 const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
-  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
-
-  const [isSortTypeDropdownOpen, setIsSortTypeDropdownOpen] = useState(false);
-
-  const {
-    products,
-    category,
-    sortType,
-    isLoading,
-    updateNextProductItem,
-    onSelectSortTypeOption,
-    onSelectCategoryOption,
-  } = useProducts();
+  const { products, dropdownOptions, isLoading, updateNextProductItem, onSelectOption } =
+    useProducts();
 
   const targetRef = useIntersectionObserver<HTMLDivElement>({ onIntersect: updateNextProductItem });
 
-  console.log('zz');
   return (
     <>
       <Styled.ProductPageTitle>bpple 상품 목록</Styled.ProductPageTitle>
       <Styled.ProductDropdownWrapper>
-        <CategoryDropdown
-          isOpen={isCategoryDropdownOpen}
-          category={category}
-          onSelectCategoryOption={onSelectCategoryOption}
-          onToggleDropdown={() => setIsCategoryDropdownOpen((prev) => !prev)}
+        <ProductDropdown<keyof typeof PRODUCT_CATEGORY_MAP>
+          options={PRODUCT_CATEGORY_MAP}
+          currentOption={dropdownOptions.category}
+          type="category"
+          onSelect={onSelectOption}
         />
-        <SortDropdown
-          isOpen={isSortTypeDropdownOpen}
-          sortType={sortType}
-          onSelectSortTypeOption={onSelectSortTypeOption}
-          onToggleDropdown={() => setIsSortTypeDropdownOpen((prev) => !prev)}
+        <ProductDropdown<keyof typeof PRODUCT_SORT_MAP>
+          options={PRODUCT_SORT_MAP}
+          currentOption={dropdownOptions.sort}
+          type="sort"
+          onSelect={onSelectOption}
         />
       </Styled.ProductDropdownWrapper>
 

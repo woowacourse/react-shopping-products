@@ -1,38 +1,42 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { InfinityScrollResponse } from '@appTypes/response';
-import { PRODUCT_CATEGORY_MAP } from '@components/product/CategoryDropdown/CategoryDropdown.constant';
-import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
-import { Product, ProductCategory } from '@appTypes/product';
+import { Product } from '@appTypes/product';
 import useFetch from '@hooks/useFetch';
 import usePagination from '@hooks/usePagination';
 import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 import { getProductEndpoint } from '@hooks/product/useProductItems/useProductItems.util';
+import { InfinityScrollResponse } from '@appTypes/response';
+import {
+  ProductDropdownOptionKeys,
+  ProductDropdownOptions,
+} from '@components/product/ProductDropdown/ProductDropdown.type';
 
 interface UseProductResult {
   products: Product[];
   page: number;
-  sortType: keyof typeof PRODUCT_SORT_MAP;
-  category: ProductCategory | 'all';
+  dropdownOptions: ProductDropdownOptions;
   isLoading: boolean;
   updateNextProductItem: () => void;
-  onSelectSortTypeOption: (sortType: keyof typeof PRODUCT_SORT_MAP) => void;
-  onSelectCategoryOption: (category: keyof typeof PRODUCT_CATEGORY_MAP) => void;
+  onSelectOption: <T extends ProductDropdownOptionKeys>(
+    type: 'sort' | 'category',
+    option: T
+  ) => void;
 }
 
 const useProducts = (): UseProductResult => {
   const { page, resetPage, updateNextPage } = usePagination();
 
-  const { category, sortType, onSelectCategoryOption, onSelectSortTypeOption } =
-    useSelectProductDropdown(resetPage, () => setProducts([]));
+  const resetProducts = () => setProducts([]);
+
+  const { dropdownOptions, onSelectOption } = useSelectProductDropdown(resetPage, resetProducts);
 
   const [products, setProducts] = useState<Product[]>([]);
 
   const showToast = useToastContext();
 
   const { data, isLoading } = useFetch<InfinityScrollResponse<Product[]>>(
-    getProductEndpoint({ category, page, sortType }),
+    getProductEndpoint({ ...dropdownOptions, page }),
     showToast
   );
 
@@ -51,12 +55,10 @@ const useProducts = (): UseProductResult => {
   return {
     products,
     page,
-    sortType,
-    category,
+    dropdownOptions,
     isLoading,
     updateNextProductItem,
-    onSelectSortTypeOption,
-    onSelectCategoryOption,
+    onSelectOption,
   };
 };
 
