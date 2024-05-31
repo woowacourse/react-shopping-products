@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 
-import { PRODUCT_CATEGORY_MAP } from '../src/components/product/CategoryDropdown/CategoryDropdown.constant';
+import { PRODUCT_CATEGORY_MAP } from '../src/components/product/ProductDropdown/ProductDropdown.constant';
 import useProducts from '../src/hooks/product/useProductItems/useProductItems';
 
 describe('상품 목록 카테고리 테스트', () => {

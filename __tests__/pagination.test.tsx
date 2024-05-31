@@ -69,7 +69,7 @@ describe('무한 스크롤 테스트', () => {
       result.current.updateNextProductItem();
     });
 
-    await act(async () => result.current.onSelectSortTypeOption('desc'));
+    await act(async () => result.current.onSelectOption('sort', 'desc'));
 
     const isSortedDescending = result.current.products.every(isDescendingPrice);
 
@@ -85,13 +85,13 @@ describe('무한 스크롤 테스트', () => {
       result.current.updateNextProductItem();
     });
 
-    await act(async () => result.current.onSelectSortTypeOption('desc'));
+    await act(async () => result.current.onSelectOption('sort', 'desc'));
 
     act(() => {
       result.current.updateNextProductItem();
     });
 
-    await act(async () => result.current.onSelectSortTypeOption('asc'));
+    await act(async () => result.current.onSelectOption('sort', 'asc'));
 
     const isSortedAscending = result.current.products.every(isAscendingPrice);
 

@@ -7,11 +7,11 @@ import { act } from 'react';
 import products from '../src/mocks/handlers/products/mockData';
 import { renderHook } from '@testing-library/react';
 import { server } from '../src/mocks/server';
-import useCheckedId from '../src/hooks/product/useToggleShoppingCart';
+import useToggleShoppingCart from '../src/hooks/product/useToggleShoppingCart';
 
 describe('장바구니 버튼 토글 테스트', () => {
   it('"담기" 버튼을 누르면 총 장바구니 갯수는 1개 증가한다.', async () => {
-    const { result } = renderHook(() => useCheckedId());
+    const { result } = renderHook(() => useToggleShoppingCart());
     const TARGET_MOCK_DATA: Product = products[0];
     const initShoppingCartItemLength = result.current.addedShoppingCartLength;
 
@@ -19,11 +19,13 @@ describe('장바구니 버튼 토글 테스트', () => {
       result.current.onToggleCart(TARGET_MOCK_DATA.id);
     });
 
+    console.log(result.current.addedShoppingCartLength, initShoppingCartItemLength);
+
     expect(result.current.addedShoppingCartLength).toBe(initShoppingCartItemLength + 1);
   });
 
   it('"담기" 버튼을 누르고 "빼기" 버튼을 누르면 총 장바구니 갯수는 0개다.', async () => {
-    const { result } = renderHook(() => useCheckedId());
+    const { result } = renderHook(() => useToggleShoppingCart());
     const TARGET_MOCK_DATA: Product = products[0];
     const initShoppingCartItemLength = result.current.addedShoppingCartLength;
 
@@ -47,7 +49,7 @@ describe('장바구니 버튼 토글 테스트', () => {
       })
     );
 
-    const { result } = renderHook(() => useCheckedId());
+    const { result } = renderHook(() => useToggleShoppingCart());
     const TARGET_MOCK_DATA: Product = products[0];
 
     await act(async () => {
