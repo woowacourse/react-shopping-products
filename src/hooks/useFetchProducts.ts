@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { fetchProducts } from '../api/products';
 import usePage from './usePage';
 import useProducts from './useProducts';
+import useIntersectionObserver from './useIntersectionObserver';
 
 import { Order, Sort } from '../types/product';
-import useIntersectionObserver from './useIntersectionObserver';
 
 const useFetchProducts = () => {
   const observerRef = useRef<HTMLDivElement | null>(null);
