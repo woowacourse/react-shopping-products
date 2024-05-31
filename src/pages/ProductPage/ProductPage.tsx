@@ -6,6 +6,7 @@ import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropd
 import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import SortDropdown from '@components/product/SortDropdown/SortDropdown';
 import CardList from '@components/product/CardList/CardList';
+import NotProduct from '@components/product/NotProduct/NotProduct';
 
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useProducts from '@hooks/product/useProductItems/useProductItems';
@@ -51,14 +52,14 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
       </Styled.ProductDropdownWrapper>
 
       {products.length === 0 ? (
-        <LoadingSpinner $width="100%" $height="80vh" />
+        <NotProduct />
       ) : (
         <Styled.ProductPageListWrapper>
           <CardList products={products} onToggleCart={onToggleCart} isAddedCart={isAddedCart} />
         </Styled.ProductPageListWrapper>
       )}
 
-      {isLoading && <LoadingSpinner $width="100%" $height="30vh" />}
+      {products.length !== 0 && isLoading && <LoadingSpinner $width="100%" $height="30vh" />}
 
       <Styled.ObserverTarget ref={targetRef} />
     </>
