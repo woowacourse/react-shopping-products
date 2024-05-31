@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 
 import { CartItem } from '@appTypes/product';
 import HTTPError from '@errors/HTTPError';
-import ShoppingCartFetcher from '@apis/ShoppingCartFetcher';
+
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
+import { addProduct, deleteCartItem, getCartItems } from '@apis/shoppingCart';
 
 const useToggleShoppingCart = () => {
   const [checkedItemIds, setCheckedItemIds] = useState<number[]>([]);
@@ -14,7 +15,7 @@ const useToggleShoppingCart = () => {
   useEffect(() => {
     const fetchCartItem = async () => {
       try {
-        const cartItems = await ShoppingCartFetcher.getCartItems();
+        const cartItems = await getCartItems();
 
         setCartItems(cartItems);
         setCheckedItemIds(cartItems.map((item) => item.product.id));
@@ -30,9 +31,9 @@ const useToggleShoppingCart = () => {
 
   const addCheckId = async (id: number) => {
     try {
-      await ShoppingCartFetcher.addProduct(id);
+      await addProduct(id);
 
-      const fetchedCartItems = await ShoppingCartFetcher.getCartItems();
+      const fetchedCartItems = await getCartItems();
 
       setCheckedItemIds((prevCheckedItemIds) => [...prevCheckedItemIds, id]);
 
@@ -54,9 +55,9 @@ const useToggleShoppingCart = () => {
         prevCheckedItemIds.filter((checkedId) => checkedId !== id)
       );
 
-      await ShoppingCartFetcher.deleteCartItem(cartItem.id);
+      await deleteCartItem(cartItem.id);
 
-      const fetchedCartItems = await ShoppingCartFetcher.getCartItems();
+      const fetchedCartItems = await getCartItems();
 
       setCartItems(fetchedCartItems);
     } catch (error) {
