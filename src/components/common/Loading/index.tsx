@@ -1,14 +1,22 @@
 import * as S from './style';
 
-export default function Loading() {
-  return (
-    <S.Container>
-      <S.LoadingContainer>
-        <S.Ball />
-        <S.Ball />
-        <S.Ball />
-      </S.LoadingContainer>
-      <span>Loading</span>
-    </S.Container>
-  );
+interface LoadingProps {
+  isLoading: boolean;
 }
+
+const Loading = ({ isLoading }: LoadingProps) => {
+  return (
+    isLoading && (
+      <S.Container>
+        <S.LoadingContainer>
+          <S.Ball />
+          <S.Ball />
+          <S.Ball />
+        </S.LoadingContainer>
+        <span>Loading</span>
+      </S.Container>
+    )
+  );
+};
+
+export default Loading;
