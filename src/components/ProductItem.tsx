@@ -14,10 +14,10 @@ interface Props {
 }
 
 const ProductItem = ({ item }: Props) => {
+  const { id, imageUrl, name, price } = item;
   const [showToast, setShowToast] = useState(false);
-  const { isSelected, error, addCartItem, removeCartItem } = useProductSelector(
-    item.id
-  );
+  const { isSelected, error, addCartItem, removeCartItem } =
+    useProductSelector(id);
 
   useEffect(() => {
     if (error) {
@@ -33,11 +33,11 @@ const ProductItem = ({ item }: Props) => {
   return (
     <>
       <S.ItemCard>
-        <S.Img src={item.imageUrl} alt={item.name} />
+        <S.Img src={imageUrl} alt={name} />
         <S.InfoWrapper>
           <S.InfoText>
-            <S.Title>{item.name}</S.Title>
-            <S.Price>{item.price}</S.Price>
+            <S.Title>{name}</S.Title>
+            <S.Price>{price.toLocaleString('ko-KR')}</S.Price>
           </S.InfoText>
           <S.ButtonWrapper>
             {isSelected ? (
