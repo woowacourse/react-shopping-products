@@ -17,29 +17,29 @@ const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
   const { cartItems, refetch: refetchCartItems } = useContext(CartItemsContext);
 
   const handleAddToCart = async () => {
-    try {
-      if (cartItems.length < MAX_CART_ITEM_COUNT) {
+    if (cartItems.length < MAX_CART_ITEM_COUNT) {
+      try {
         await addCartItem(id, 1);
         await refetchCartItems();
-      } else {
-        alert("장바구니에 담을 수 있는 상품의 개수는 20개까지입니다.");
+      } catch {
+        alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요,");
       }
-    } catch {
-      alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요,");
+    } else {
+      alert("장바구니에 담을 수 있는 상품의 개수는 20개까지입니다.");
     }
   };
 
   const targetCartItemId = cartItems.find((cartItem) => cartItem.product.id === id)?.id;
   const handleDeleteFromCart = async () => {
-    try {
-      if (targetCartItemId) {
+    if (targetCartItemId) {
+      try {
         await deleteCartItem(targetCartItemId);
         await refetchCartItems();
-      } else {
-        alert("해당 상품이 장바구니에 없습니다.");
+      } catch {
+        alert("상품을 장바구니에서 빼는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
       }
-    } catch {
-      alert("상품을 장바구니에서 빼는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    } else {
+      alert("해당 상품이 장바구니에 없습니다.");
     }
   };
 
