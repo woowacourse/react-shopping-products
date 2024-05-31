@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SCREEN_WIDTH_REM } from "../styles/GlobalStyle";
+import { SCREEN_WIDTH_REM } from "../../styles/GlobalStyle";
 
 const ErrorToast = () => {
   return <S.Container>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</S.Container>;

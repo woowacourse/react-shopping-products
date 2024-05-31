@@ -1,8 +1,8 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import ProductItem from "./ProductItem";
-import Select from "./Select";
+import Select from "./common/Select";
 import ShopHeader from "./ShopHeader";
-import ErrorToast from "./ErrorToast";
+import ErrorToast from "./common/ErrorToast";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import useProducts from "../hooks/useProducts";
 import useToast from "../hooks/useToast";
@@ -14,6 +14,7 @@ import {
 } from "../constants/products";
 import { isIncludedInList } from "../utils/isIncludedInList";
 import { SortOption } from "../types/sortOption";
+import LoadingSpinner from "./common/LoadingSpinner";
 
 const ProductList = () => {
   const { products, loading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort } =
@@ -70,7 +71,7 @@ const ProductList = () => {
                 imageUrl={imageUrl}
               />
             ))}
-            {loading && <S.Spinner />}
+            {loading && <LoadingSpinner />}
             <div ref={setTarget}></div>
           </S.ItemContainer>
         </S.ShopBody>
@@ -80,15 +81,6 @@ const ProductList = () => {
 };
 
 export default ProductList;
-
-const rotate360 = keyframes`
-from {
-  transform: rotate(0deg);
-}
-to {
-  transform: rotate(360deg);
-}
-`;
 
 const S = {
   Container: styled.main`
@@ -120,20 +112,5 @@ const S = {
     flex: 1 0 100%;
     gap: 2.6rem 1.6rem;
     margin-top: 1.1rem;
-  `,
-
-  Spinner: styled.div`
-    animation: ${rotate360} 1s linear infinite;
-    transform: translateZ(0);
-
-    border-top: 3px solid #d4d4d4;
-    border-right: 3px solid #d4d4d4;
-    border-bottom: 3px solid #d4d4d4;
-    border-left: 6px solid black;
-    background: transparent;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    margin: 0 auto;
   `,
 };
