@@ -97,48 +97,6 @@
       "price": 500000,
       "imageUrl": "https://images.unsplash.com/photo-1647503380147-e075b24f4cbe?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "category": "electronics"
-    },
-    {
-      "id": 42,
-      "name": "블루투스스피커",
-      "price": 150000,
-      "imageUrl": "https://plus.unsplash.com/premium_photo-1686069040492-1ac799fd3b01?q=80&w=3300&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "category": "electronics"
-    },
-    {
-      "id": 43,
-      "name": "모니터",
-      "price": 300000,
-      "imageUrl": "https://images.unsplash.com/photo-1555421689-3f034debb7a6?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "category": "electronics"
-    },
-    {
-      "id": 44,
-      "name": "외장하드",
-      "price": 100000,
-      "imageUrl": "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=3425&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "category": "electronics"
-    },
-    {
-      "id": 45,
-      "name": "전자책리더기",
-      "price": 200000,
-      "imageUrl": "https://images.unsplash.com/photo-1647503380147-e075b24f4cbe?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "category": "electronics"
-    },
-    {
-      "id": 46,
-      "name": "휴대용충전기",
-      "price": 50000,
-      "imageUrl": "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=3425&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "category": "electronics"
-    },
-    {
-      "id": 47,
-      "name": "무선마우스",
-      "price": 50000,
-      "imageUrl": "https://images.unsplash.com/photo-1638740396066-e5186f6dd452?q=80&w=3538&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "category": "electronics"
     }
   ],
   "pageable": {
@@ -153,9 +111,9 @@
     "paged": true,
     "unpaged": false
   },
-  "last": false,
-  "totalPages": 8,
-  "totalElements": 156,
+  "last": true,
+  "totalPages": 0,
+  "totalElements": 154,
   "sort": {
     "sorted": false,
     "unsorted": true,

@@ -18,13 +18,12 @@ export const getCartItems = async (): Promise<CartItems[]> => {
   return data.content;
 };
 
-export async function postCartItem({
-  productId,
-  quantity,
-}: {
+export interface PostCartItemParams {
   productId: number;
   quantity: number;
-}): Promise<Response> {
+}
+
+export async function postCartItem({ productId, quantity }: PostCartItemParams): Promise<Response> {
   const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}`, {
     method: "POST",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
@@ -38,7 +37,11 @@ export async function postCartItem({
   return response;
 }
 
-export async function deleteCartItem({ itemId }: { itemId: number }): Promise<Response> {
+export interface DeleteCartItemParams {
+  itemId: number;
+}
+
+export async function deleteCartItem({ itemId }: DeleteCartItemParams): Promise<Response> {
   const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${itemId}`, {
     method: "DELETE",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
