@@ -19,7 +19,7 @@ const ProductItem = ({ product, isAdded, onAddCartItem, onDeleteCartItem }: Prod
       <S.ImageWrapper src={imageUrl} alt={name} />
       <S.Container>
         <S.TextContainer>
-          <h1>{name}</h1>
+          <h2>{name}</h2>
           <p>상품 설명</p>
           <p>{price}원</p>
         </S.TextContainer>

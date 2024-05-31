@@ -6,7 +6,7 @@ export const TitleContainer = styled.div`
   row-gap: 12px;
 `;
 
-export const Title = styled.p`
+export const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
