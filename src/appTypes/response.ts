@@ -1,4 +1,4 @@
-export interface BaseResponse<T> {
+export interface InfinityScrollResponse<T> {
   content: T;
   last: boolean;
 }

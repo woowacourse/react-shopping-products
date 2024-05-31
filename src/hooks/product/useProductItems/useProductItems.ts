@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { BaseResponse } from '@appTypes/response';
+import { InfinityScrollResponse } from '@appTypes/response';
 import { PRODUCT_CATEGORY_MAP } from '@components/product/CategoryDropdown/CategoryDropdown.constant';
 import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
 import { Product, ProductCategory } from '@appTypes/product';
@@ -31,7 +31,7 @@ const useProducts = (): UseProductResult => {
 
   const { showToast } = useToastContext();
 
-  const { data, isLoading } = useFetch<BaseResponse<Product[]>>(
+  const { data, isLoading } = useFetch<InfinityScrollResponse<Product[]>>(
     getProductEndpoint({ category, page, sortType }),
     showToast
   );
