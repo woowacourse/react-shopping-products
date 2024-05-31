@@ -3,6 +3,11 @@ export const SORT_OPTIONS = {
   desc: "desc",
 } as const;
 
+export const PRICE_SORT_SELECT_OPTIONS = [
+  { value: SORT_OPTIONS.asc, label: "낮은 가격순" },
+  { value: SORT_OPTIONS.desc, label: "높은 가격순" },
+];
+
 export const CATEGORY_OPTIONS = {
   all: "all",
   electronics: "electronics",
@@ -22,9 +27,4 @@ export const CATEGORY_SELECT_OPTIONS = [
     label: "주방용품",
   },
   { value: CATEGORY_OPTIONS.fitness, label: "운동기구" },
-];
-
-export const PRICE_SORT_SELECT_OPTIONS = [
-  { value: SORT_OPTIONS.asc, label: "낮은 가격순" },
-  { value: SORT_OPTIONS.desc, label: "높은 가격순" },
 ];

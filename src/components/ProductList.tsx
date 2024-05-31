@@ -2,7 +2,6 @@ import styled from "styled-components";
 import ProductItem from "./ProductItem";
 import Select from "./common/Select";
 import ShopHeader from "./ShopHeader";
-import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import useProducts from "../hooks/useProducts";
 import { ErrorToastContext } from "../store/errorToastContext";
 import { useContext, useEffect } from "react";
@@ -14,6 +13,7 @@ import {
 import { isIncludedInList } from "../utils/isIncludedInList";
 import { SortOption } from "../types/sortOption";
 import LoadingSpinner from "./common/LoadingSpinner";
+import { IntersectionDetector } from "./common/IntersectionDetector";
 
 const ProductList = () => {
   const { products, loading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort } =
@@ -41,14 +41,6 @@ const ProductList = () => {
     }
   };
 
-  const handleIntersection: IntersectionObserverCallback = (entry) => {
-    if (entry[0].isIntersecting && !loading) {
-      fetchNextPage();
-    }
-  };
-
-  const { setTarget } = useIntersectionObserver<HTMLDivElement>(handleIntersection);
-
   return (
     <>
       <S.Container>
@@ -70,7 +62,7 @@ const ProductList = () => {
               />
             ))}
             {loading && <LoadingSpinner />}
-            <div ref={setTarget}></div>
+            <IntersectionDetector onIntersected={fetchNextPage} />
           </S.ItemContainer>
         </S.ShopBody>
       </S.Container>
