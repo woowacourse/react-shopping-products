@@ -21,7 +21,7 @@ export const fetchCartItems = async (): Promise<CartItem[]> => {
   return data.content;
 };
 
-export const addCartItem = async (productId: number): Promise<void> => {
+export const fetchAddCartItem = async (productId: number): Promise<void> => {
   const token = generateBasicToken(USER_ID, USER_PASSWORD);
 
   const response = await fetch(CART_ITEMS_ENDPOINT, {
@@ -38,7 +38,7 @@ export const addCartItem = async (productId: number): Promise<void> => {
   }
 };
 
-export const deleteCartItem = async (cartId: number) => {
+export const fetchDeleteCartItem = async (cartId: number) => {
   const token = generateBasicToken(USER_ID, USER_PASSWORD);
 
   const response = await fetch(`${CART_ITEMS_ENDPOINT}/${cartId}`, {
