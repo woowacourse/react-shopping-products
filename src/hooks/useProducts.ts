@@ -56,9 +56,7 @@ export default function useProducts({
       }
     };
 
-    if (!loading) {
-      fetchProducts();
-    }
+    fetchProducts();
   }, [page, category, sort, showError]);
 
   const handleCategory = (category: Category | "all") => {
