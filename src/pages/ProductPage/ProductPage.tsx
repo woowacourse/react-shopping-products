@@ -5,7 +5,7 @@ import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import CardList from '@components/product/CardList/CardList';
 import NotProduct from '@components/product/NotProduct/NotProduct';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
-import useProducts from '@hooks/product/useProductItems/useProductItems';
+import useProducts from '@hooks/product/useProducts/useProducts';
 import ProductDropdown from '@components/product/ProductDropdown/ProductDropdown';
 import {
   PRODUCT_CATEGORY_MAP,

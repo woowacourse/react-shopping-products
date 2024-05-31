@@ -4,7 +4,7 @@ import {
   DEFAULT_SIZE,
   PAGE_OFFSET,
   PAGE_PER_SIZE,
-} from '@hooks/product/useProductItems/useProductItems.constant';
+} from '@hooks/product/useProducts/useProducts.constant';
 import { PRODUCT_SORT_MAP } from '@components/product/ProductDropdown/ProductDropdown.constant';
 
 interface ProductEndpoint {

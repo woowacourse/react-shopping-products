@@ -5,7 +5,7 @@ import useFetch from '@hooks/useFetch';
 import usePagination from '@hooks/usePagination';
 import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
-import { getProductEndpoint } from '@hooks/product/useProductItems/useProductItems.util';
+import { getProductEndpoint } from '@hooks/product/useProducts/useProducts.util';
 import { InfinityScrollResponse } from '@appTypes/response';
 import {
   ProductDropdownOptionKeys,
