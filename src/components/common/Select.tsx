@@ -5,12 +5,12 @@ interface Option extends React.InputHTMLAttributes<HTMLSelectElement> {
   label: string;
 }
 
-export interface ISelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   placeholder?: string;
   options: Option[];
 }
 
-const Select = ({ placeholder, options, ...rest }: ISelectProps) => {
+const Select = ({ placeholder, options, ...rest }: SelectProps) => {
   return (
     <S.Select {...rest}>
       {placeholder && (
