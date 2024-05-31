@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 
 import { act } from 'react';
 import products from '../src/mocks/handlers/products/mockData';
-import useProducts from '../src/hooks/product/useProductItems';
+import useProducts from '../src/hooks/product/useProductItems/useProductItems';
 
 describe('무한 스크롤 테스트', () => {
   it('초기에 첫 페이지의 상품 20개를 불러온다', async () => {

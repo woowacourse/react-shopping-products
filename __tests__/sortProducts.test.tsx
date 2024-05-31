@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 
 import { PRODUCT_CATEGORY_MAP } from '../src/components/product/CategoryDropdown/CategoryDropdown.constant';
 import { act } from 'react';
-import useProducts from '../src/hooks/product/useProductItems';
+import useProducts from '../src/hooks/product/useProductItems/useProductItems';
 
 describe('상품 목록 정렬 테스트', () => {
   it('초기 상품 목록은 가격 오름차순으로 정렬된다.', async () => {
