@@ -3,7 +3,7 @@ import { Product } from '../types/Product.type';
 import { SIZE } from '../constants/api';
 import { ERROR_MESSAGES } from '../constants/message';
 
-interface ProductApi {
+interface ProductApiResponse {
   data: Product[];
   isLast: boolean;
 }
@@ -27,7 +27,7 @@ export const fetchProducts = async (
   page: number,
   size: number,
   sort: string,
-): Promise<ProductApi> => {
+): Promise<ProductApiResponse> => {
   const endpoint = `/products?${makeParams(category, page, size, sort)}`;
   const data = await apiClient.get({ endpoint, errorMessage: ERROR_MESSAGES.FETCH_PRODUCT });
 

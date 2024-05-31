@@ -3,12 +3,12 @@ import { CartItem } from '../types/CartItem.type';
 import { SIZE } from '../constants/api';
 import { ERROR_MESSAGES } from '../constants/message';
 
-interface CartApi {
+interface CartApiResponse {
   data: CartItem[];
   totalElements: number;
 }
 
-export const fetchCartItems = async (size: number = SIZE.DEFAULT): Promise<CartApi> => {
+export const fetchCartItems = async (size: number = SIZE.DEFAULT): Promise<CartApiResponse> => {
   const data = await apiClient.get({
     endpoint: `/cart-items?size=${size}`,
     errorMessage: ERROR_MESSAGES.FETCH_CART_ITEMS,
