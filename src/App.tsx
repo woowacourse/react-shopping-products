@@ -1,6 +1,6 @@
 import { Container } from './layouts/GlobalLayout/style';
 
-import { createContext, useState } from 'react';
+import { createContext, useRef, useState } from 'react';
 
 import CartButton from './components/CartButton';
 import HomeButton from './components/HomeButton';
@@ -15,6 +15,7 @@ import Title from './components/common/Title';
 import useFetchProducts from './hooks/useFetchProducts';
 import Loading from './components/common/Loading';
 import ToastPopup from './components/ToastPopup';
+import useIntersectionObserver from './hooks/useIntersectionObserver';
 
 import { CATEGORY, PRICE_SORT } from './constants/filter';
 import { CartItem } from './types/cart';
@@ -32,9 +33,18 @@ const InitialState: CartItemContextProps = {
 export const CartItemContext = createContext(InitialState);
 
 function App() {
+  const observerRef = useRef<HTMLDivElement | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const { error, category, filterByCategory, loading, products, sort, filterBySort, observerRef } =
-    useFetchProducts();
+  const {
+    error,
+    category,
+    filterByCategory,
+    loading,
+    products,
+    sort,
+    filterBySort,
+    fetchNextPage,
+  } = useFetchProducts();
 
   const selectedCategoryOption = Object.entries(CATEGORY).find(
     ([, value]) => value === category,
@@ -51,6 +61,8 @@ function App() {
   const handlePriceSortChange = (option: string) => {
     filterBySort('price', PRICE_SORT[option]);
   };
+
+  useIntersectionObserver(loading, observerRef, fetchNextPage, { threshold: 0.8 });
 
   return (
     <CartItemContext.Provider value={{ cartItems, setCartItems }}>

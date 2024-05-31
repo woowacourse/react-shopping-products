@@ -1,13 +1,10 @@
 import { useEffect, MutableRefObject } from 'react';
 
-type IntersectionObserverCallback = () => void;
-type IntersectionObserverOptions = IntersectionObserverInit;
-
 const useIntersectionObserver = (
   loading: boolean,
   targetRef: MutableRefObject<Element | null>,
-  callback: IntersectionObserverCallback,
-  options?: IntersectionObserverOptions,
+  callback: () => void,
+  options?: IntersectionObserverInit,
 ) => {
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
