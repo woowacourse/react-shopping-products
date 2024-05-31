@@ -10,6 +10,7 @@ import { useEffect, useRef } from "react";
 import useProducts from "@/hooks/useProducts";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
+import TopButton from "@/components/_common/TopButton";
 
 const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
@@ -40,6 +41,7 @@ const ProductListPage = () => {
       <Header>
         <Header.Title text="SHOP" />
         <CartBadge />
+        <TopButton />
       </Header>
       <Wrapper>
         <ItemInfoWrapper>
