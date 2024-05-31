@@ -1,8 +1,8 @@
 import { HttpResponse } from 'msw';
 
-export const getResponse404 = (text?: string) => {
+export const getHTTPResponseConfig = (status: number, text?: string) => {
   return new HttpResponse(null, {
-    status: 404,
+    status: status,
     statusText: text || '',
   });
 };
