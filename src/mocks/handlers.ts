@@ -1,7 +1,6 @@
 import { HttpResponse, http } from 'msw';
 
 import products from './products.json';
-
 import { PRODUCTS_ENDPOINT } from '../api/endpoints';
 import {
   FIRST_PAGE,
