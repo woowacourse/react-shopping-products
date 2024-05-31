@@ -18,11 +18,11 @@ import { IntersectionDetector } from "./common/IntersectionDetector";
 const ProductList = () => {
   const { products, loading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort } =
     useProducts();
-  const { showToast } = useContext(ErrorToastContext);
+  const { showErrorToast } = useContext(ErrorToastContext);
 
   useEffect(() => {
     if (error) {
-      showToast("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      showErrorToast("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   }, [error]);
 

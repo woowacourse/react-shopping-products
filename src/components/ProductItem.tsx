@@ -22,7 +22,7 @@ const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
         await addCartItem(id, 1);
         await refreshCartItems();
       } catch {
-        alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요,");
+        alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
       }
     } else {
       alert("장바구니에 담을 수 있는 상품의 개수는 20개까지입니다.");
@@ -80,6 +80,13 @@ const S = {
     height: 11rem;
     object-fit: cover;
     border-radius: 1.2rem 1.2rem 0 0;
+
+    // 이미지 드래그 방지
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   `,
 
   ProductInfo: styled.div`
