@@ -1,12 +1,11 @@
 import { useEffect, useContext, useState } from 'react';
 
-import { addCartItem, deleteCartItem, fetchCartItems } from '../api/cartItems';
+import { fetchAddCartItem, fetchDeleteCartItem, fetchCartItems } from '../api/cartItems';
 import { CartItemContext } from '../App';
 
-const useCart = () => {
+const useCartItems = () => {
   const { cartItems, setCartItems } = useContext(CartItemContext);
 
-  const [isInCarts, setIsInCarts] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
@@ -27,24 +26,20 @@ const useCart = () => {
     getCartItems();
   }, []);
 
-  const addCart = async (productId: number) => {
+  const addCartItem = async (productId: number) => {
     try {
-      await addCartItem(productId);
+      await fetchAddCartItem(productId);
 
-      setIsInCarts((prevIsInCarts) => [...prevIsInCarts, productId]);
       await getCartItems();
     } catch (error) {
       setError(error);
     }
   };
 
-  const deleteCart = async (cartId: number) => {
-    const filteredIsInCarts = isInCarts.filter((id) => id !== cartId);
-
+  const deleteCartItem = async (cartId: number) => {
     try {
-      await deleteCartItem(cartId);
+      await fetchDeleteCartItem(cartId);
 
-      setIsInCarts(filteredIsInCarts);
       await getCartItems();
     } catch (error) {
       setError(error);
@@ -53,12 +48,11 @@ const useCart = () => {
 
   return {
     cartItems,
-    isInCarts,
-    addCart,
-    deleteCart,
+    addCartItem,
+    deleteCartItem,
     CartItemsLoading: loading,
     CartItemsError: error,
   };
 };
 
-export default useCart;
+export default useCartItems;

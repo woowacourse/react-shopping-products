@@ -2,7 +2,7 @@ import * as S from './style';
 
 import { useEffect, useState } from 'react';
 
-import useCart from '../../hooks/useCart';
+import useCartItems from '../../hooks/useCartItems';
 
 import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
 
@@ -14,7 +14,7 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
-  const { cartItems, addCart, deleteCart } = useCart();
+  const { cartItems, addCartItem, deleteCartItem } = useCartItems();
   const [isInCart, setIsInCart] = useState(false);
 
   const cartItem = cartItems.find(({ product }) => id === product.id);
@@ -30,10 +30,10 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
 
   const handleOnToggle = () => {
     if (cartItem && isInCart) {
-      deleteCart(cartItem.id);
+      deleteCartItem(cartItem.id);
       setIsInCart(false);
     } else {
-      addCart(id);
+      addCartItem(id);
       setIsInCart(true);
     }
   };
