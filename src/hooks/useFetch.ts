@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import APIClient from '@apis/APIClient';
 
-async function fetchData(endpoint: string) {
+async function fetchData<T>(endpoint: string): Promise<T> {
   const response = await APIClient.get(endpoint);
   const data = await response.json();
 
@@ -19,8 +19,8 @@ const useFetch = <T>(url: string, showToast?: (message: string) => void) => {
   useEffect(() => {
     setIsLoading(true);
 
-    fetchData(url)
-      .then((data: T) => {
+    fetchData<T>(url)
+      .then((data) => {
         setData(data);
       })
       .catch((error) => {
