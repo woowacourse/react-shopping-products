@@ -26,9 +26,7 @@ const ProductList = () => {
         handleCategory={handleCategory}
         handleSort={handleSort}
       />
-      {loading ? (
-        <PL.Loading>로딩중! 💪</PL.Loading>
-      ) : products.length === 0 ? (
+      {!loading && products.length === 0 ? (
         <PL.Empty>상품이 존재하지 않습니다! 🥲</PL.Empty>
       ) : (
         <PL.ProductListStyle>
@@ -45,6 +43,7 @@ const ProductList = () => {
           })}
         </PL.ProductListStyle>
       )}
+      {loading && <PL.Loading>로딩중! 💪</PL.Loading>}
     </>
   );
 };
