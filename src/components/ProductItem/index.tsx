@@ -1,23 +1,23 @@
 import * as S from './style';
 
-import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
-import useCart from '../../hooks/useCart';
 import { useEffect, useState } from 'react';
+
+import useCart from '../../hooks/useCart';
+
+import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
 
 interface ProductItemProps {
   id: number;
   imageUrl: string;
   name: string;
   price: number;
-  useCartProp: () => ReturnType<typeof useCart>;
 }
 
-const ProductItem = ({ id, useCartProp, imageUrl, name, price }: ProductItemProps) => {
-  const { cartItems, isInCarts, addCart, deleteCart, CartItemsLoading, CartItemsError } =
-    useCartProp();
-  const cartItem = cartItems.find(({ product }) => id === product.id);
-
+const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
+  const { cartItems, addCart, deleteCart } = useCart();
   const [isInCart, setIsInCart] = useState(false);
+
+  const cartItem = cartItems.find(({ product }) => id === product.id);
 
   useEffect(() => {
     if (cartItem) {
@@ -28,7 +28,7 @@ const ProductItem = ({ id, useCartProp, imageUrl, name, price }: ProductItemProp
   const TOGGLE_BUTTON_ICON = isInCart ? REMOVE_TO_CART : ADD_TO_CART;
   const BUTTON_TEXT = isInCart ? '빼기' : '담기';
 
-  const onToggle = () => {
+  const handleOnToggle = () => {
     if (cartItem && isInCart) {
       deleteCart(cartItem.id);
       setIsInCart(false);
@@ -47,7 +47,7 @@ const ProductItem = ({ id, useCartProp, imageUrl, name, price }: ProductItemProp
           <S.Price>{price.toLocaleString('ko-KR')}원</S.Price>
         </S.Information>
         <S.ButtonContainer>
-          <S.ToggleButton onClick={onToggle} $isInCart={isInCart}>
+          <S.ToggleButton onClick={handleOnToggle} $isInCart={isInCart}>
             <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
             <span>{BUTTON_TEXT}</span>
           </S.ToggleButton>

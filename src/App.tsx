@@ -13,12 +13,11 @@ import Main from './components/common/Main';
 import Dropdown from './components/common/Dropdown';
 import Title from './components/common/Title';
 import useFetchProducts from './hooks/useFetchProducts';
-import useCart from './hooks/useCart';
+import Loading from './components/common/Loading';
+import ToastPopup from './components/ToastPopup';
 
 import { CATEGORY, PRICE_SORT } from './constants/filter';
 import { CartItem } from './types/cart';
-import Loading from './components/common/Loading';
-import ToastPopup from './components/ToastPopup';
 
 interface CartItemContextProps {
   cartItems: CartItem[];
@@ -81,7 +80,7 @@ function App() {
             </FilterContainer>
             <ProductsContent>
               {products.map((product) => (
-                <ProductItem key={product.id} {...product} useCartProp={useCart} />
+                <ProductItem key={product.id} {...product} />
               ))}
               {loading && <Loading />}
               <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
