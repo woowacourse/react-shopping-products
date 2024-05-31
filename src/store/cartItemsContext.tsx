@@ -1,13 +1,14 @@
 import React, { createContext, useState, useEffect } from "react";
 import { CartItem, getCartItems } from "../api/cartItems";
 
-// Context 생성
-export const CartItemsContext = createContext<{
+interface CartItemContextState {
   cartItems: CartItem[];
   refetch: () => Promise<void>;
   loading: boolean;
   error: Error | null;
-}>({
+}
+
+export const CartItemsContext = createContext<CartItemContextState>({
   cartItems: [],
   refetch: async () => {},
   loading: false,
@@ -52,5 +53,3 @@ export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
     </CartItemsContext.Provider>
   );
 };
-
-export default CartItemsContext;

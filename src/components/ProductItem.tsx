@@ -3,7 +3,7 @@ import { ReactComponent as AddToCartIcon } from "../assets/addToCart.svg";
 import { ReactComponent as DeleteFromCartIcon } from "../assets/deleteFromCart.svg";
 import { addCartItem, deleteCartItem } from "../api/cartItems";
 import { useContext } from "react";
-import CartItemsContext from "../store/cartItems";
+import { CartItemsContext } from "../store/cartItemsContext";
 import { MAX_CART_ITEM_COUNT } from "../constants/cartItems";
 
 interface ProductItemProps {

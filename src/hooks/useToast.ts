@@ -1,25 +1,34 @@
 import { useRef, useState } from "react";
 
-const TOAST_DURATION = 3000;
+interface UseToastReturn {
+  toastMessage: string | null;
+  showToast: (message: string) => void;
+}
 
-const useToast = () => {
-  const [isOpenToast, setIsOpenToast] = useState(false);
+/**
+ * Duration in milliseconds
+ * @default 3000
+ */
+type Duration = number;
+
+const useToast = (duration: Duration = 3000): UseToastReturn => {
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const toastTimer = useRef<NodeJS.Timeout>();
 
-  const showToast = () => {
-    setIsOpenToast(true);
+  const showToast = (message: string) => {
+    setToastMessage(message);
 
     if (toastTimer.current) {
       clearTimeout(toastTimer.current);
     }
 
     const timer = setTimeout(() => {
-      setIsOpenToast(false);
-    }, TOAST_DURATION);
+      setToastMessage(null);
+    }, duration);
     toastTimer.current = timer;
   };
 
-  return { isOpenToast, showToast };
+  return { toastMessage, showToast };
 };
 
 export default useToast;

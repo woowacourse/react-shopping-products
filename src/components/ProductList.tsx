@@ -2,11 +2,10 @@ import styled from "styled-components";
 import ProductItem from "./ProductItem";
 import Select from "./common/Select";
 import ShopHeader from "./ShopHeader";
-import ErrorToast from "./common/ErrorToast";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import useProducts from "../hooks/useProducts";
-import useToast from "../hooks/useToast";
-import { useEffect } from "react";
+import { ErrorToastContext } from "../store/errorToastContext";
+import { useContext, useEffect } from "react";
 import {
   CATEGORY_SELECT_OPTIONS,
   PRICE_SORT_SELECT_OPTIONS,
@@ -19,11 +18,11 @@ import LoadingSpinner from "./common/LoadingSpinner";
 const ProductList = () => {
   const { products, loading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort } =
     useProducts();
-  const { isOpenToast, showToast } = useToast();
+  const { showToast } = useContext(ErrorToastContext);
 
   useEffect(() => {
     if (error) {
-      showToast();
+      showToast("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   }, [error]);
 
@@ -54,7 +53,6 @@ const ProductList = () => {
     <>
       <S.Container>
         <ShopHeader />
-        {isOpenToast && <ErrorToast />}
         <S.ShopBody>
           <S.Title>bpple 상품 목록</S.Title>
           <S.SelectContainer>
