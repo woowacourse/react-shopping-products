@@ -3,6 +3,10 @@ import styled from '@emotion/styled';
 export const ProductItem = styled.li`
   width: 100%;
   height: 14rem;
+
+  border-radius: 8px;
+
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 `;
 
 export const Image = styled.img`
@@ -10,6 +14,8 @@ export const Image = styled.img`
   height: 7rem;
 
   border-radius: 8px 8px 0 0;
+
+  object-fit: cover;
 `;
 
 export const InformationContainer = styled.div`
@@ -61,6 +67,10 @@ export const ToggleButton = styled.button<{ $isInCart: boolean }>`
 
   ${(props) => props.theme.typography.product.toggleButton};
   color: ${(props) => (props.$isInCart ? props.theme.color.black : props.theme.color.white)};
+
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 export const ButtonImage = styled.img`

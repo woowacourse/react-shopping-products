@@ -7,5 +7,7 @@ export const ProductsContent = styled.ul`
 
   height: 100%;
 
+  padding: 0.5rem;
+
   overflow-y: scroll;
 `;
