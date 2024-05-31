@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { BaseResponse } from '@appTypes/response';
 import { PRODUCT_CATEGORY_MAP } from '@components/product/CategoryDropdown/CategoryDropdown.constant';
 import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
-import { Product } from '@appTypes/product';
+import { Product, ProductCategory } from '@appTypes/product';
 import useFetch from '@hooks/useFetch';
 import usePagination from '@hooks/usePagination';
 import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
@@ -14,7 +14,7 @@ interface UseProductResult {
   products: Product[];
   page: number;
   sortType: keyof typeof PRODUCT_SORT_MAP;
-  category: Product['category'] | 'all';
+  category: ProductCategory | 'all';
   isLoading: boolean;
   updateNextProductItem: () => void;
   onSelectSortTypeOption: (sortType: keyof typeof PRODUCT_SORT_MAP) => void;

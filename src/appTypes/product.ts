@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   price: number;
   imageUrl: string;
-  category: 'fashion' | 'beverage' | 'electronics' | 'kitchen' | 'fitness' | 'books';
+  category: ProductCategory;
 }
 
 export interface CartItem {
@@ -11,3 +11,11 @@ export interface CartItem {
   quantity: number;
   product: Product;
 }
+
+export type ProductCategory =
+  | 'fashion'
+  | 'beverage'
+  | 'electronics'
+  | 'kitchen'
+  | 'fitness'
+  | 'books';

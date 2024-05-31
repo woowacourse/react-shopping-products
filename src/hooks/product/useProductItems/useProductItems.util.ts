@@ -1,5 +1,5 @@
 import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
-import { Product } from '@appTypes/product';
+import { ProductCategory } from '@appTypes/product';
 import { generateQueryParams } from '@utils/queryString';
 import {
   DEFAULT_SIZE,
@@ -9,7 +9,7 @@ import {
 
 interface ProductEndpoint {
   page: number;
-  category: Product['category'] | 'all';
+  category: ProductCategory | 'all';
   sortType: keyof typeof PRODUCT_SORT_MAP;
   sortBy?: string;
 }
