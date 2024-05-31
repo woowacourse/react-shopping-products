@@ -3,16 +3,16 @@ import { CartItem, getCartItems } from "../api/cartItems";
 
 interface CartItemContextState {
   cartItems: CartItem[];
-  refetch: () => Promise<void>;
   loading: boolean;
   error: Error | null;
+  refreshCartItems: () => Promise<void>;
 }
 
 export const CartItemsContext = createContext<CartItemContextState>({
   cartItems: [],
-  refetch: async () => {},
   loading: false,
   error: null,
+  refreshCartItems: async () => {},
 });
 
 interface CartItemsProviderProps {
@@ -42,13 +42,13 @@ export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
     fetchData();
   }, []);
 
-  const refetch = async () => {
+  const refreshCartItems = async () => {
     const res = await getCartItems();
     setCartItems(res.data);
   };
 
   return (
-    <CartItemsContext.Provider value={{ cartItems, refetch, loading, error }}>
+    <CartItemsContext.Provider value={{ cartItems, refreshCartItems, loading, error }}>
       {children}
     </CartItemsContext.Provider>
   );

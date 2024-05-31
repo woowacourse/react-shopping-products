@@ -14,13 +14,13 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
-  const { cartItems, refetch: refetchCartItems } = useContext(CartItemsContext);
+  const { cartItems, refreshCartItems } = useContext(CartItemsContext);
 
   const handleAddToCart = async () => {
     if (cartItems.length < MAX_CART_ITEM_COUNT) {
       try {
         await addCartItem(id, 1);
-        await refetchCartItems();
+        await refreshCartItems();
       } catch {
         alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요,");
       }
@@ -34,7 +34,7 @@ const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
     if (targetCartItemId) {
       try {
         await deleteCartItem(targetCartItemId);
-        await refetchCartItems();
+        await refreshCartItems();
       } catch {
         alert("상품을 장바구니에서 빼는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
       }
