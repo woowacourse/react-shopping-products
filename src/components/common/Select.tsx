@@ -18,9 +18,9 @@ const Select = ({ placeholder, options, ...rest }: SelectProps) => {
           {placeholder}
         </option>
       )}
-      {options.map(({ value, label }) => {
+      {options.map(({ value, label }, index) => {
         return (
-          <option key={value} value={value}>
+          <option key={index} value={value}>
             {label}
           </option>
         );
