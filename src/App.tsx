@@ -33,7 +33,7 @@ export const CartItemContext = createContext(InitialState);
 
 function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const { error, category, filterByCategory, loading, products, sort, setSorting, observerRef } =
+  const { error, category, filterByCategory, loading, products, sort, filterBySort, observerRef } =
     useFetchProducts();
 
   const selectedCategoryOption = Object.entries(CATEGORY).find(
@@ -49,7 +49,7 @@ function App() {
   };
 
   const handlePriceSortChange = (option: string) => {
-    setSorting('price', PRICE_SORT[option]);
+    filterBySort('price', PRICE_SORT[option]);
   };
 
   return (

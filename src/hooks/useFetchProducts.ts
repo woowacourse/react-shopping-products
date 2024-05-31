@@ -53,7 +53,7 @@ const useFetchProducts = () => {
     }
   };
 
-  const setSorting = (condition: string, order: Order) => {
+  const filterBySort = (condition: string, order: Order) => {
     if (sort.price !== order) {
       reset();
       setSort((prevSort) => {
@@ -80,7 +80,7 @@ const useFetchProducts = () => {
     category,
     filterByCategory,
     sort,
-    setSorting,
+    filterBySort,
     observerRef,
   };
 };
