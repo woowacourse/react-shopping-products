@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface UseInfiniteScrollResult {
   lastElementRef: (node: HTMLDivElement) => void;
@@ -29,6 +29,12 @@ export default function useInfiniteScroll({
     },
     [hasMore, nextPage, loading]
   );
+
+  useEffect(() => {
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, []);
 
   return { lastElementRef };
 }
