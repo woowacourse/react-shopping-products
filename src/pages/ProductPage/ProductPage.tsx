@@ -1,14 +1,14 @@
 import * as Styled from './ProductPage.styled';
 
-import { lazy, useState } from 'react';
+import { useState } from 'react';
 
 import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropdown';
 import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import SortDropdown from '@components/product/SortDropdown/SortDropdown';
-import useIntersectionObserver from '@hooks/useIntersectionObserver';
-import useProducts from '@hooks/product/useProductItems';
+import CardList from '@components/product/CardList/CardList';
 
-const CardList = lazy(() => import('@components/product/CardList/CardList'));
+import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import useProducts from '@hooks/product/useProductItems/useProductItems';
 
 interface ProductPageProps extends React.PropsWithChildren {
   onToggleCart: (id: number) => void;
