@@ -94,9 +94,9 @@ function App() {
               {products.map((product) => (
                 <ProductItem key={product.id} {...product} />
               ))}
-              {loading && <Loading />}
-              <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
+              <div ref={observerRef} id="observer" style={{ height: '10px' }} />
             </ProductsContent>
+            {loading && <Loading />}
           </ProductsContainer>
         </Main>
       </Container>
