@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getProducts } from "../api";
-import { useError } from "./useError";
+import { useErrorContext } from "./useErrorContext";
 
 interface UseProductsResult {
   products: Product[];
@@ -25,7 +25,7 @@ export default function useProducts({
   const [sort, setSort] = useState<Sort>("asc");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { showError } = useError();
+  const { showError } = useErrorContext();
 
   useEffect(() => {
     const fetchProducts = async () => {

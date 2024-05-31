@@ -1,16 +1,21 @@
-import { createContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  ReactNode,
+  useEffect,
+  useCallback,
+} from "react";
 import { getCartItems } from "../api";
-import { useError } from "../hooks/useError";
+import { useErrorContext } from "../hooks/useErrorContext";
 
-interface CartItemsContextType {
+export interface CartItemsContextType {
   cartItems: CartItem[];
   refreshCartItems: () => void;
 }
 
-export const CartItemsContext = createContext<CartItemsContextType>({
-  cartItems: [],
-  refreshCartItems: () => {},
-});
+export const CartItemsContext = createContext<CartItemsContextType | undefined>(
+  undefined
+);
 
 interface CartItemsProviderProps {
   children: ReactNode;
@@ -19,15 +24,15 @@ interface CartItemsProviderProps {
 export const CartItemsProvider: React.FC<CartItemsProviderProps> = ({
   children,
 }) => {
-  const { showError } = useError();
+  const { showError } = useErrorContext();
 
   const [toggle, setToggle] = useState(false);
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const refreshCartItems = () => {
-    setToggle(!toggle);
-  };
+  const refreshCartItems = useCallback(() => {
+    setToggle((prev) => !prev);
+  }, []);
 
   useEffect(() => {
     const fetchCartItems = async () => {

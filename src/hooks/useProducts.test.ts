@@ -4,7 +4,7 @@ import { ErrorProvider } from "../context/ErrorContext";
 import { PRODUCTS_ENDPOINT } from "../api/endpoints";
 import { HttpResponse, http } from "msw";
 import { server } from "../mocks/server";
-import { useError } from "./useError";
+import { useErrorContext } from "./useErrorContext";
 import usePagination from "./usePagination";
 import { act } from "react";
 
@@ -42,7 +42,7 @@ describe("useProducts", () => {
       const { result } = renderHook(
         () => {
           const { products } = useProducts(initialParams);
-          const { error } = useError();
+          const { error } = useErrorContext();
           return {
             products,
             error,

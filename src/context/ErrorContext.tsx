@@ -1,6 +1,6 @@
 import { createContext, useState, ReactNode, useCallback } from "react";
 
-interface ErrorContextType {
+export interface ErrorContextType {
   error: string | null;
   showError: (message: string) => void;
   hideError: () => void;
