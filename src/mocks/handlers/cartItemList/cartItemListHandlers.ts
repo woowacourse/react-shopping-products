@@ -19,12 +19,11 @@ export const cartItemListHandlers = [
 
     const cartItemId =
       Math.max(0, ...cartItemListData.map((cartItem) => cartItem.id)) + 1;
-    console.log(product);
     if (product) {
       cartItemListData.push({ id: cartItemId, product, quantity: 1 });
     }
 
-    return HttpResponse.json({ content: cartItemListData, status: 201 });
+    return HttpResponse.json({ content: cartItemListData });
   }),
 
   http.delete(CART_ITEMS_ENDPOINT, ({ params }) => {
@@ -36,6 +35,6 @@ export const cartItemListHandlers = [
       return HttpResponse.json("장바구니에 없는 상품입니다.", { status: 400 });
     }
     cartItemListData.splice(index, 1);
-    return HttpResponse.json({ content: cartItemListData, status: 204 });
+    return HttpResponse.json({ content: cartItemListData });
   }),
 ];
