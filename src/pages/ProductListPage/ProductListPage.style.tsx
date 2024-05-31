@@ -34,7 +34,7 @@ export const ProductList = styled.div`
   }
 `;
 
-export const CartIconWrapper = styled.button`
+export const CartButtonWrapper = styled.button`
   position: relative;
   width: 35px;
   height: 35px;

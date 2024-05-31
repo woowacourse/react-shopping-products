@@ -24,10 +24,10 @@ const ProductListPage = () => {
   return (
     <div>
       <Header>
-        <S.CartIconWrapper>
+        <S.CartButtonWrapper>
           <img src={CartIcon} alt="장바구니 아이콘" />
           <S.CartNumber>{cartItems.length <= SIZE.DEFAULT ? cartItems.length : `${SIZE.DEFAULT}+`}</S.CartNumber>
-        </S.CartIconWrapper>
+        </S.CartButtonWrapper>
       </Header>
       <S.Layout>
         <TitleContainer title="텐파의 쇼핑몰" />

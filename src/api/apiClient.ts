@@ -6,14 +6,14 @@ const USER_ID = import.meta.env.VITE_USER_ID;
 
 type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
-interface ApiProps {
+interface ApiParams {
   endpoint: string;
   headers?: Record<string, string>;
   body?: object | null;
   errorMessage?: string;
 }
 
-interface RequestProps extends ApiProps {
+interface RequestParams extends ApiParams {
   method: Method;
 }
 
@@ -40,19 +40,19 @@ const fetchWithErrorHandling = async (endpoint: string, requestInit: RequestInit
 };
 
 const apiClient = {
-  get: ({ endpoint, headers = {}, errorMessage = '' }: ApiProps) => {
+  get: ({ endpoint, headers = {}, errorMessage = '' }: ApiParams) => {
     return apiClient.request({ method: 'GET', endpoint, headers, errorMessage });
   },
-  post: ({ endpoint, headers = {}, body = {}, errorMessage = '' }: ApiProps) => {
+  post: ({ endpoint, headers = {}, body = {}, errorMessage = '' }: ApiParams) => {
     return apiClient.request({ method: 'POST', endpoint, headers, body, errorMessage });
   },
-  patch: ({ endpoint, headers = {}, body = {}, errorMessage = '' }: ApiProps) => {
+  patch: ({ endpoint, headers = {}, body = {}, errorMessage = '' }: ApiParams) => {
     return apiClient.request({ method: 'PATCH', endpoint, headers, body, errorMessage });
   },
-  delete: ({ endpoint, headers = {}, errorMessage = '' }: ApiProps) => {
+  delete: ({ endpoint, headers = {}, errorMessage = '' }: ApiParams) => {
     return apiClient.request({ method: 'DELETE', endpoint, headers, errorMessage });
   },
-  request: async ({ method, endpoint, headers = {}, body = null, errorMessage = '' }: RequestProps) => {
+  request: async ({ method, endpoint, headers = {}, body = null, errorMessage = '' }: RequestParams) => {
     const requestInit = createRequestInit(method, headers, body);
     return await fetchWithErrorHandling(endpoint, requestInit, errorMessage);
   },
