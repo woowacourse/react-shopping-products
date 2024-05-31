@@ -1,6 +1,6 @@
 import { Product, getProducts } from "../../api/products";
 import { useEffect, useState } from "react";
-import { SortOption } from "../../types/sortOption";
+import { Category, SortOption } from "../../types/products";
 import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../../constants/products";
 
 interface UseProductsReturn {
@@ -9,7 +9,7 @@ interface UseProductsReturn {
   error: unknown;
   fetchNextPage: () => void;
   resetPage: () => void;
-  setCategoryFilter: (category: string) => void;
+  setCategoryFilter: (category: Category) => void;
   setPriceSort: (sort: SortOption) => void;
 }
 
@@ -23,7 +23,7 @@ export default function useProducts(): UseProductsReturn {
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
 
-  const [categoryFilter, setCategoryFilter] = useState<string>(CATEGORY_OPTIONS.all);
+  const [categoryFilter, setCategoryFilter] = useState<Category>(CATEGORY_OPTIONS.all);
   const [priceSort, setPriceSort] = useState<SortOption>(SORT_OPTIONS.asc);
 
   const currentPage = page === 0 ? 0 : page + PAGE_SIZE;

@@ -6,12 +6,13 @@ import useProducts from "../hooks/useProducts";
 import { ErrorToastContext } from "../store/errorToastContext";
 import { useContext, useEffect } from "react";
 import {
+  CATEGORY_OPTIONS,
   CATEGORY_SELECT_OPTIONS,
   PRICE_SORT_SELECT_OPTIONS,
   SORT_OPTIONS,
 } from "../constants/products";
 import { isIncludedInList } from "../utils/isIncludedInList";
-import { SortOption } from "../types/sortOption";
+import { Category, SortOption } from "../types/products";
 import LoadingSpinner from "./common/LoadingSpinner";
 import { IntersectionDetector } from "./common/IntersectionDetector";
 
@@ -27,7 +28,7 @@ const ProductList = () => {
   }, [error]);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!loading) {
+    if (!loading && isIncludedInList<Category>(e.target.value, Object.values(CATEGORY_OPTIONS))) {
       resetPage();
       setCategoryFilter(e.target.value);
     }
