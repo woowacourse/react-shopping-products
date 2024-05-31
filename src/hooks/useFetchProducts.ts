@@ -64,7 +64,7 @@ const useFetchProducts = () => {
   };
 
   const fetchNextPage = () => {
-    if (!isLastPage) increasePage();
+    if (!isLastPage && !error) increasePage();
   };
 
   return {
