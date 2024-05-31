@@ -5,5 +5,5 @@ export const ProductsContainer = styled.section`
   flex-direction: column;
   gap: 1.5rem;
 
-  height: 100%;
+  max-height: 100%;
 `;
