@@ -29,7 +29,6 @@ export async function fetchGetCartItems(totalNumbers: number = FIRST_LOAD_PRODUC
   return {
     totalNumbers: result.totalElements,
     cartItems: result.content,
-    isTotalCartItems: result.totalElements === result.content.length,
   };
 }
 
