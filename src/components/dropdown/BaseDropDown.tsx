@@ -1,9 +1,10 @@
-import { FlexColumn, FlexRow } from '@/style/common.style';
+import { useState } from 'react';
+
+import BaseButton from '../button/BaseButton';
 
 import DropDownIcon from '@/assets/dropdown.svg?react';
+
 import styled from '@emotion/styled';
-import { theme } from '@/style/theme.style';
-import { useState } from 'react';
 
 interface Option {
   [key: string]: string;
@@ -16,8 +17,8 @@ interface Props {
 }
 
 const BaseDropDown = ({ initialValue, options, onChangeSelect }: Props) => {
-  const [selectedValue, setSelectedValue] = useState(initialValue);
   const [showOptions, setShowOptions] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(initialValue);
 
   const handleOptionClick = (option: Option) => {
     setSelectedValue(option.value);
@@ -26,13 +27,13 @@ const BaseDropDown = ({ initialValue, options, onChangeSelect }: Props) => {
   };
 
   return (
-    <div>
-      <S.DropDownHeader onClick={() => setShowOptions((prev) => !prev)}>
+    <>
+      <BaseButton onClick={() => setShowOptions((prev) => !prev)}>
         <S.SelectedOption>
           {selectedValue}
           <DropDownIcon />
         </S.SelectedOption>
-      </S.DropDownHeader>
+      </BaseButton>
       {showOptions && (
         <S.OptionList>
           {options.map((option, index) => (
@@ -42,39 +43,39 @@ const BaseDropDown = ({ initialValue, options, onChangeSelect }: Props) => {
           ))}
         </S.OptionList>
       )}
-    </div>
+    </>
   );
 };
 
 export default BaseDropDown;
 
 const S = {
-  DropDownHeader: styled.div`
-    cursor: pointer;
-  `,
   SelectedOption: styled.label`
+    position: relative;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     width: 125px;
-    height: 30px;
-    padding: 0 10px;
+    height: 36px;
+    padding: 0 8px;
     border: 1px solid ${theme.color.blackWithOpacity};
     box-sizing: border-box;
     border-radius: 4px;
-    position: relative;
   `,
   OptionList: styled.ul`
     position: absolute;
     ${FlexColumn}
     width: 125px;
-    max-height: 260px;
-    margin-top: 4px;
-    overflow-y: auto;
+    max-height: 180px;
+    margin-top: 36px;
     border-radius: 8px;
     box-shadow: 0 0 10px 0 ${theme.color.blackWithOpacity};
     border-radius: 8px;
     background-color: ${theme.color.white};
+    font-size: ${theme.fontSize.small};
+    font-weight: ${theme.fontWeight.normal};
+    overflow-y: auto;
+    cursor: pointer;
   `,
   OptionItem: styled.li`
     ${FlexRow}
@@ -84,7 +85,6 @@ const S = {
     padding: 5px 10px;
     box-sizing: border-box;
     border-radius: 4px;
-    cursor: pointer;
 
     &:hover,
     &:active {
