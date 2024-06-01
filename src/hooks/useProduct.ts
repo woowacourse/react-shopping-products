@@ -1,6 +1,6 @@
 import useFetch from './useFetch';
 import { useEffect, useState } from 'react';
-import { BASE_URL } from '@/apis/baseUrl';
+import { BASE_URL } from '@/constants/baseUrl';
 import token from '@/api/token';
 import { API_ROUTES } from '@/constants/route';
 import usePagination from './usePagination';
