@@ -16,14 +16,12 @@ const useProducts = () => {
   const SIZE_PER_PAGE = 4;
   const SIZE_FIRST_PAGE = 20;
 
-  const fetchFirstPage = async (category: Category, page: number, sort: Sort) => {
+  const fetchFirstPage = async (category: Category, sort: Sort) => {
     try {
-      setLoading(true);
-      const res = await getProducts({ category, page, size: 20, sort });
+      const res = await getProducts({ category, page: 0, size: 20, sort });
       if (res.last) setIsLastPage(true);
 
       setProducts(res.content);
-      setLoading(false);
       setCurrentPage(1);
     } catch (error) {
       if (error instanceof Error) {
@@ -36,8 +34,6 @@ const useProducts = () => {
 
   const fetchNextPage = async (category: Category, page: number, sort: Sort) => {
     try {
-      setLoading(true);
-
       const size = currentPage === 0 ? SIZE_PER_PAGE : SIZE_FIRST_PAGE;
 
       const res = await getProducts({ category, page, size, sort });
@@ -56,6 +52,9 @@ const useProducts = () => {
 
   const resetToFirstPage = () => {
     setCurrentPage(0);
+    setProducts([]);
+    setIsLastPage(false);
+    setLoading(true);
   };
 
   return { products, fetchNextPage, fetchFirstPage, loading, currentPage, isLastPage, resetToFirstPage };

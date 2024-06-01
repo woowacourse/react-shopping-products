@@ -11,7 +11,7 @@ describe("useProducts 테스트", () => {
     const { result } = renderHook(() => useProducts());
 
     act(() => {
-      result.current.fetchFirstPage("전체", 0, "낮은 가격순");
+      result.current.fetchFirstPage("전체", "낮은 가격순");
     });
 
     const expectedLength = mockProducts.content.length;
@@ -37,7 +37,7 @@ describe("useProducts 테스트", () => {
     const { result } = renderHook(() => useProducts());
 
     act(() => {
-      result.current.fetchFirstPage("건강", 0, "낮은 가격순");
+      result.current.fetchFirstPage("건강", "낮은 가격순");
     });
 
     await waitFor(() => {
@@ -49,7 +49,7 @@ describe("useProducts 테스트", () => {
     const { result } = renderHook(() => useProducts());
 
     act(() => {
-      result.current.fetchFirstPage("전체", 0, "낮은 가격순");
+      result.current.fetchFirstPage("전체", "낮은 가격순");
     });
 
     await waitFor(() => {
@@ -58,7 +58,7 @@ describe("useProducts 테스트", () => {
     });
 
     act(() => {
-      result.current.fetchFirstPage("도서", 0, "낮은 가격순");
+      result.current.fetchFirstPage("도서", "낮은 가격순");
     });
 
     const expectedLength = mockProducts.content.length;

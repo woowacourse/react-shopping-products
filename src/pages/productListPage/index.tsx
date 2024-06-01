@@ -32,7 +32,7 @@ const ProductListPage = () => {
   }, [isIntersecting]);
 
   useEffect(() => {
-    fetchFirstPage(category, 0, sort);
+    fetchFirstPage(category, sort);
   }, [category, sort]);
 
   const isAbleFetchNextPage = !loading && !isLastPage;
