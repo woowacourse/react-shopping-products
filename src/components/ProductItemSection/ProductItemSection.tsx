@@ -4,11 +4,8 @@ import * as S from "./ProductItemSection.style";
 import { Category } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import ProductItemList from "../ProductItemList/ProductItemList";
-interface ProductItemSectionProps {
-  onError: (error: string) => void;
-}
 
-function ProductItemSection({ onError }: ProductItemSectionProps) {
+function ProductItemSection() {
   const [category, setCategory] = useState<Category>("" as Category);
   const [sortingOption, setSortingOption] = useState<Sorting>(
     Sorting.PRICE_ASC
@@ -25,11 +22,7 @@ function ProductItemSection({ onError }: ProductItemSectionProps) {
         sortingOption={sortingOption}
         onChangeSortingOption={handleSortingChange}
       />
-      <ProductItemList
-        category={category}
-        sortOption={sortingOption}
-        onError={onError}
-      />
+      <ProductItemList category={category} sortOption={sortingOption} />
     </S.ProductSectionContainer>
   );
 }

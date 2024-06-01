@@ -8,18 +8,15 @@ import { Category } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import Spinner from "../common/Spinner/Spinner";
+import { createPortal } from "react-dom";
+import Toast from "../common/Toast/Toast";
 
 interface ProductItemListProp {
   category: Category;
   sortOption: Sorting;
-  onError: (error: string) => void;
 }
 
-function ProductItemList({
-  category,
-  sortOption,
-  onError,
-}: ProductItemListProp) {
+function ProductItemList({ category, sortOption }: ProductItemListProp) {
   const {
     productList,
     productListError,
@@ -57,15 +54,23 @@ function ProductItemList({
   const setQuantity = quantityContext ? quantityContext.setQuantity : () => {};
   setQuantity(cartItemList.length);
 
-  if (productListError) {
-    onError("상품 목록 조회 실패");
-  }
-  if (cartItemListError) {
-    onError("장바구니 목록 조회 실패");
-  }
-
+  const renderToast = () => {
+    if (productListError) {
+      return createPortal(
+        <Toast message="상품 목록 조회 실패" />,
+        document.body
+      );
+    }
+    if (cartItemListError) {
+      return createPortal(
+        <Toast message="장바구니 목록 조회 실패" />,
+        document.body
+      );
+    }
+  };
   return (
     <>
+      {renderToast()}
       <S.ProductList>
         {productList.map((product, idx) => {
           return (
