@@ -24,10 +24,10 @@ interface UseProductResult {
 const useProducts = (): UseProductResult => {
   const { page, resetPage, updateNextPage } = usePagination();
 
+  const [products, setProducts] = useState<Product[]>([]);
+
   const { category, sortType, onSelectCategoryOption, onSelectSortTypeOption } =
     useSelectProductDropdown(resetPage, () => setProducts([]));
-
-  const [products, setProducts] = useState<Product[]>([]);
 
   const { showToast } = useToastContext();
 
@@ -39,7 +39,7 @@ const useProducts = (): UseProductResult => {
   useEffect(() => {
     if (!data) return;
 
-    setProducts((prev) => [...prev, ...data.content]);
+    setProducts(prev => [...prev, ...data.content]);
   }, [data]);
 
   const updateNextProductItem = useCallback(() => {
