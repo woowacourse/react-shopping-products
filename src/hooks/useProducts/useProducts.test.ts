@@ -19,7 +19,7 @@ describe("useProducts", () => {
     it("초기 상품 목록을 불러올 때 로딩 상태여야 한다", () => {
       const { result } = renderHook(() => useProducts());
 
-      expect(result.current.loading).toBe(true);
+      expect(result.current.isLoading).toBe(true);
     });
 
     it("초기 상품 목록을 불러올 때 에러가 발생하면 에러 객체를 받아온다", async () => {
@@ -34,7 +34,7 @@ describe("useProducts", () => {
       await waitFor(() => {
         expect(result.current.products).toEqual([]);
         expect(result.current.error).toBeTruthy();
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
       });
     });
   });
@@ -76,7 +76,11 @@ describe("useProducts", () => {
       });
 
       // NOTE : 마지막 페이지에 도달하기 위한 for문
-      for (let currentPage = FIRST_PAGE; currentPage <= LAST_PAGE; currentPage++) {
+      for (
+        let currentPage = FIRST_PAGE;
+        currentPage <= LAST_PAGE;
+        currentPage++
+      ) {
         await waitFor(() => {
           act(() => {
             result.current.fetchNextPage();
@@ -103,17 +107,17 @@ describe("useProducts", () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
       });
 
       act(() => {
         result.current.fetchNextPage();
       });
 
-      expect(result.current.loading).toBe(true);
+      expect(result.current.isLoading).toBe(true);
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
       });
     });
   });
@@ -129,9 +133,11 @@ describe("useProducts", () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products.every((product) => product.category === CATEGORY)).toBe(
-          true
-        );
+        expect(
+          result.current.products.every(
+            (product) => product.category === CATEGORY
+          )
+        ).toBe(true);
       });
     });
   });
@@ -145,9 +151,11 @@ describe("useProducts", () => {
         result.current.setPriceSort(PRICE_SORT);
       });
 
-      await waitFor(() => expect(result.current.loading).toBe(false));
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-      const sortedProducts = result.current.products.slice().sort((a, b) => b.price - a.price);
+      const sortedProducts = result.current.products
+        .slice()
+        .sort((a, b) => b.price - a.price);
 
       await waitFor(() => {
         expect(result.current.products).toEqual(sortedProducts);

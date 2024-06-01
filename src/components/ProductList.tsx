@@ -16,8 +16,15 @@ import { isIncludedInList } from "../utils/isIncludedInList";
 import { SortOption } from "../types/sortOption";
 
 const ProductList = () => {
-  const { products, loading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort } =
-    useProducts();
+  const {
+    products,
+    isLoading,
+    error,
+    fetchNextPage,
+    resetPage,
+    setCategoryFilter,
+    setPriceSort,
+  } = useProducts();
   const { isOpenToast, showToast } = useToast();
 
   useEffect(() => {
@@ -27,7 +34,7 @@ const ProductList = () => {
   }, [error]);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!loading) {
+    if (!isLoading) {
       resetPage();
       setCategoryFilter(e.target.value);
     }
@@ -35,19 +42,23 @@ const ProductList = () => {
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    if (!loading && isIncludedInList<SortOption>(value, Object.values(SORT_OPTIONS))) {
+    if (
+      !isLoading &&
+      isIncludedInList<SortOption>(value, Object.values(SORT_OPTIONS))
+    ) {
       resetPage();
       setPriceSort(value);
     }
   };
 
   const handleIntersection: IntersectionObserverCallback = (entry) => {
-    if (entry[0].isIntersecting && !loading) {
+    if (entry[0].isIntersecting && !isLoading) {
       fetchNextPage();
     }
   };
 
-  const { setTarget } = useIntersectionObserver<HTMLDivElement>(handleIntersection);
+  const { setTarget } =
+    useIntersectionObserver<HTMLDivElement>(handleIntersection);
 
   return (
     <>
@@ -57,8 +68,14 @@ const ProductList = () => {
         <S.ShopBody>
           <S.Title>bpple 상품 목록</S.Title>
           <S.SelectContainer>
-            <Select onChange={handleCategoryChange} options={CATEGORY_SELECT_OPTIONS} />
-            <Select onChange={handleSortChange} options={PRICE_SORT_SELECT_OPTIONS} />
+            <Select
+              onChange={handleCategoryChange}
+              options={CATEGORY_SELECT_OPTIONS}
+            />
+            <Select
+              onChange={handleSortChange}
+              options={PRICE_SORT_SELECT_OPTIONS}
+            />
           </S.SelectContainer>
           <S.ItemContainer>
             {products.map(({ id, name, price, imageUrl }) => (
@@ -70,7 +87,7 @@ const ProductList = () => {
                 imageUrl={imageUrl}
               />
             ))}
-            {loading && <S.Spinner />}
+            {isLoading && <S.Spinner />}
             <div ref={setTarget}></div>
           </S.ItemContainer>
         </S.ShopBody>

@@ -5,7 +5,7 @@ import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../../constants/products";
 
 interface UseProductsReturn {
   products: Product[];
-  loading: boolean;
+  isLoading: boolean;
   error: unknown;
   fetchNextPage: () => void;
   resetPage: () => void;
@@ -18,7 +18,7 @@ const PAGE_SIZE = 4;
 
 export default function useProducts(): UseProductsReturn {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
@@ -32,7 +32,7 @@ export default function useProducts(): UseProductsReturn {
   useEffect(() => {
     const fetch = async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         const { data, isLastPage } = await getProducts(
           currentPage,
           currentPageSize,
@@ -46,7 +46,7 @@ export default function useProducts(): UseProductsReturn {
           setError(error);
         }
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -54,7 +54,7 @@ export default function useProducts(): UseProductsReturn {
   }, [page, categoryFilter, priceSort]);
 
   const fetchNextPage = () => {
-    if (!isLastPage && !loading && !error) {
+    if (!isLastPage && !isLoading && !error) {
       setCategoryFilter(categoryFilter);
       setPriceSort(priceSort);
       setPage((prevPage) => prevPage + 1);
@@ -66,5 +66,5 @@ export default function useProducts(): UseProductsReturn {
     setPage(0);
   };
 
-  return { products, loading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort };
+  return { products, isLoading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort };
 }

@@ -5,7 +5,7 @@ import { useContext } from "react";
 import CartItemsContext from "../store/cartItems";
 
 const ShopHeader = () => {
-  const { cartItems, loading } = useContext(CartItemsContext);
+  const { cartItems, isLoading } = useContext(CartItemsContext);
 
   return (
     <S.Header>
@@ -13,7 +13,7 @@ const ShopHeader = () => {
       <S.CartButton role="button" aria-label="장바구니 이동">
         <CartIcon />
         <S.Badge>
-          <S.CircleContent>{loading || cartItems.length}</S.CircleContent>
+          <S.CircleContent>{isLoading || cartItems.length}</S.CircleContent>
         </S.Badge>
       </S.CartButton>
     </S.Header>

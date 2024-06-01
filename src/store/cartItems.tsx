@@ -5,12 +5,12 @@ import { CartItem, getCartItems } from "../api/cartItems";
 export const CartItemsContext = createContext<{
   cartItems: CartItem[];
   refetch: () => Promise<void>;
-  loading: boolean;
+  isLoading: boolean;
   error: Error | null;
 }>({
   cartItems: [],
   refetch: async () => {},
-  loading: false,
+  isLoading: false,
   error: null,
 });
 
@@ -20,13 +20,13 @@ interface CartItemsProviderProps {
 
 export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         const res = await getCartItems();
         setCartItems(res.data);
       } catch (error) {
@@ -34,7 +34,7 @@ export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
           setError(error);
         }
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -47,7 +47,7 @@ export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
   };
 
   return (
-    <CartItemsContext.Provider value={{ cartItems, refetch, loading, error }}>
+    <CartItemsContext.Provider value={{ cartItems, refetch, isLoading, error }}>
       {children}
     </CartItemsContext.Provider>
   );
