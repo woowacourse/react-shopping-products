@@ -22,7 +22,7 @@ const ProductListPage = () => {
   const targetRef = useIntersectionObserver(handlePage);
 
   return (
-    <div>
+    <>
       <Header>
         <S.CartIconWrapper>
           <img src={CartIcon} alt="장바구니 아이콘" />
@@ -60,7 +60,7 @@ const ProductListPage = () => {
         )}
       </S.Layout>
       <FloatingButton />
-    </div>
+    </>
   );
 };
 
