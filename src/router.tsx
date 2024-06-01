@@ -1,5 +1,5 @@
+import ProductListPage from "@/pages/productListPage";
 import { createBrowserRouter } from "react-router-dom";
-import ProductListPage from "@/pages/ProductListPage";
 
 const router = createBrowserRouter([
   {

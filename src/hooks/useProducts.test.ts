@@ -4,6 +4,7 @@ import useProducts from "@/hooks/useProducts";
 import { server } from "@/mocks/servers";
 import { renderHook, waitFor, act } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
+import mockProducts from "@/mocks/mockResponse/products.json";
 
 describe("useProducts 테스트", () => {
   it("상품 목록을 조회한다.", async () => {
@@ -13,8 +14,10 @@ describe("useProducts 테스트", () => {
       result.current.fetchFirstPage("전체", 0, "낮은 가격순");
     });
 
+    const expectedLength = mockProducts.content.length;
+
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(20);
+      expect(result.current.products).toHaveLength(expectedLength);
     });
   });
 
@@ -34,7 +37,7 @@ describe("useProducts 테스트", () => {
     const { result } = renderHook(() => useProducts());
 
     act(() => {
-      result.current.fetchFirstPage("건강", 1, "낮은 가격순");
+      result.current.fetchFirstPage("건강", 0, "낮은 가격순");
     });
 
     await waitFor(() => {
@@ -55,11 +58,13 @@ describe("useProducts 테스트", () => {
     });
 
     act(() => {
-      result.current.fetchNextPage("도서", 1, "낮은 가격순");
+      result.current.fetchFirstPage("도서", 0, "낮은 가격순");
     });
 
+    const expectedLength = mockProducts.content.length;
+
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(24);
+      expect(result.current.products).toHaveLength(expectedLength);
       expect(result.current.currentPage).toBe(2);
     });
   });

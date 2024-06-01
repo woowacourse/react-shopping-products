@@ -12,7 +12,7 @@ const CartActionButton = ({ isInCart, onClick }: CartActionButton) => {
   const buttonText = isInCart ? "빼기" : "담기";
 
   return (
-    <S.ButtonWrapper onClick={onClick} isInCart={isInCart}>
+    <S.ButtonWrapper onClick={onClick} $isInCart={isInCart}>
       <Icon kind={iconKind} />
       <TextBox text={buttonText} type="xSmall" />
     </S.ButtonWrapper>

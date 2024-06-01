@@ -1,7 +1,6 @@
 import CartBadge from "@/components/CartBadge";
 import Header from "@/components/Header";
 import TextBox from "@/components/_common/TextBox";
-import styled from "styled-components";
 import SelectBox from "@/components/SelectBox";
 import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
 import ItemCardList from "@/components/ItemCardList";
@@ -11,6 +10,7 @@ import useProducts from "@/hooks/useProducts";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
 import TopButton from "@/components/_common/TopButton";
+import * as S from "@/pages/productListPage/style";
 
 const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
@@ -19,7 +19,8 @@ const ProductListPage = () => {
   const { products, fetchFirstPage, fetchNextPage, currentPage, loading, isLastPage } = useProducts();
   const ref = useRef<HTMLDivElement>(null);
 
-  const { isIntersecting } = useInfiniteScroll({ threshold: 0.25, rootMargin: "80px" }, ref);
+  const infiniteScrollConfig = { threshold: 0.25, rootMargin: "80px" };
+  const { isIntersecting } = useInfiniteScroll(infiniteScrollConfig, ref);
 
   const category = useCategorySelect.selected;
   const sort = useSortSelect.selected;
@@ -43,35 +44,20 @@ const ProductListPage = () => {
         <CartBadge />
         <TopButton />
       </Header>
-      <Wrapper>
-        <ItemInfoWrapper>
+      <S.Wrapper>
+        <S.ItemInfoWrapper>
           <TextBox type="xLarge" text="bpple 상품 목록" />
-          <SelectBoxWrapper>
+          <S.SelectBoxWrapper>
             <SelectBox useSelector={useCategorySelect} optionsContents={Object.keys(CATEGORY)} />
             <SelectBox useSelector={useSortSelect} optionsContents={Object.keys(SORT)} />
-          </SelectBoxWrapper>
-        </ItemInfoWrapper>
+          </S.SelectBoxWrapper>
+        </S.ItemInfoWrapper>
         {products && <ItemCardList products={products} />}
         {isAbleFetchNextPage && <div ref={ref}></div>}
         {loading && <ItemCartListSkeleton />}
-      </Wrapper>
+      </S.Wrapper>
     </>
   );
 };
 
 export default ProductListPage;
-
-const Wrapper = styled.div`
-  padding: 36px 23.5px 36px;
-`;
-
-const SelectBoxWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ItemInfoWrapper = styled.div`
-  gap: 24px;
-  display: flex;
-  flex-direction: column;
-`;

@@ -11,7 +11,8 @@ const useToast = () => {
   };
 
   const onAddToast = (message: string) => {
-    const newToasts = [...toastList, { id: Math.random() * 1000, message }];
+    const newId = Date.now() + toastList.length;
+    const newToasts = [...toastList, { id: newId, message }];
     setToastList(newToasts);
   };
 

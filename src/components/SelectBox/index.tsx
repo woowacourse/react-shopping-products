@@ -12,9 +12,9 @@ const SelectBox = ({ useSelector, optionsContents }: SelectBoxProps) => {
 
   return (
     <S.Select onClick={handleDropdown}>
-      <S.Arrow isDropdown={!!isDropdown} />
+      <S.Arrow $isDropdown={!!isDropdown} />
       <S.SelectedCardWrapper>
-        <S.SelectedCardText isSelected={!!selected}>{selected}</S.SelectedCardText>
+        <S.SelectedCardText $isSelected={!!selected}>{selected}</S.SelectedCardText>
       </S.SelectedCardWrapper>
       {isDropdown && (
         <S.OptionWrapper>

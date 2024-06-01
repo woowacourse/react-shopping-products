@@ -20,10 +20,13 @@ export const cartItemsHandler = [
 
     if (!targetProduct) return new HttpResponse("아이디가 잘못된 아이디입니다.", { status: 404 });
 
+    const newId = Date.now() + products.content.length;
+    const cartId = Math.floor(newId);
+
     cartItemsData.content = [
       ...cartItemsData.content,
       {
-        id: Math.random() * 1000,
+        id: cartId,
         quantity: newProduct.quantity,
         product: targetProduct,
       },
@@ -35,10 +38,9 @@ export const cartItemsHandler = [
     const { id } = params;
 
     const targetIndex = cartItemsData.content.findIndex((item) => item.id === Number(id));
-
     if (!targetIndex) return new HttpResponse(null, { status: 404 });
 
-    cartItemsData.content = cartItemsData.content.splice(targetIndex, 1);
+    cartItemsData.content.splice(targetIndex, 1);
     return HttpResponse.json(null, { status: 201 });
   }),
 ];

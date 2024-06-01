@@ -13,6 +13,9 @@ const useProducts = () => {
 
   const { onAddToast } = useToast();
 
+  const SIZE_PER_PAGE = 4;
+  const SIZE_FIRST_PAGE = 20;
+
   const fetchFirstPage = async (category: Category, page: number, sort: Sort) => {
     try {
       setLoading(true);
@@ -35,7 +38,7 @@ const useProducts = () => {
     try {
       setLoading(true);
 
-      const size = currentPage === 0 ? 20 : 4;
+      const size = currentPage === 0 ? SIZE_PER_PAGE : SIZE_FIRST_PAGE;
 
       const res = await getProducts({ category, page, size, sort });
       if (res.last) setIsLastPage(true);

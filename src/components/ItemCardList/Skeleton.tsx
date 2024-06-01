@@ -7,8 +7,8 @@ const ItemCartListSkeleton = () => {
     <ItemCardWrapper>
       {Array.from({ length: 4 })
         .fill(0)
-        .map(() => (
-          <ItemCardSkeleton />
+        .map((_, i) => (
+          <ItemCardSkeleton key={i} />
         ))}
     </ItemCardWrapper>
   );

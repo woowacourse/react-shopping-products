@@ -22,10 +22,10 @@ export const SelectedCardWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const SelectedCardText = styled.p<{ isSelected: boolean }>`
+export const SelectedCardText = styled.p<{ $isSelected: boolean }>`
   display: flex;
   align-items: center;
-  color: ${(props) => (props.isSelected ? "black" : "grey")};
+  color: ${(props) => (props.$isSelected ? "black" : "grey")};
   font-size: 14px;
   line-height: 18px;
 `;
@@ -52,9 +52,9 @@ export const Option = styled.li`
   }
 `;
 
-export const Arrow = styled.div<{ isDropdown: boolean }>`
+export const Arrow = styled.div<{ $isDropdown: boolean }>`
   position: absolute;
-  top: ${({ isDropdown }) => (isDropdown ? "40%" : "30%")};
+  top: ${({ $isDropdown }) => ($isDropdown ? "40%" : "30%")};
   right: 10px;
   transform: translate(-50%, -50%);
   width: 8px;
@@ -62,6 +62,6 @@ export const Arrow = styled.div<{ isDropdown: boolean }>`
   box-sizing: border-box;
   border-top: 2px solid black;
   border-right: 2px solid black;
-  transform: ${(props) => (props.isDropdown ? "rotate(315deg)" : "rotate(135deg)")};
+  transform: ${(props) => (props.$isDropdown ? "rotate(315deg)" : "rotate(135deg)")};
   transition: 0.3s;
 `;
