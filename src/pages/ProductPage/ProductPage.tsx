@@ -5,6 +5,7 @@ import { lazy, useState } from 'react';
 import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropdown';
 import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import SortDropdown from '@components/product/SortDropdown/SortDropdown';
+import WrongCat from '@components/common/WrongCat/WrongCat';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import usePaginatedProducts from '@hooks/product/usePaginatedProducts';
 
@@ -34,6 +35,25 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
     onIntersect: updateNextProductPage,
   });
 
+  const itemElement =
+    products.length === 0 ? (
+      <WrongCat
+        $width='400px'
+        $height='400px'
+        message={
+          '그런 건 내가 다 먹어버렸다냥~\n(사실 등록된 물건이 없는거라고 하네요)'
+        }
+      />
+    ) : (
+      <Styled.ProductPageListWrapper>
+        <CardList
+          products={products}
+          onToggleCart={onToggleCart}
+          isAddedCart={isAddedCart}
+        />
+      </Styled.ProductPageListWrapper>
+    );
+
   return (
     <>
       <Styled.ProductPageTitle>bpple 상품 목록</Styled.ProductPageTitle>
@@ -52,19 +72,11 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
         />
       </Styled.ProductDropdownWrapper>
 
-      {products.length === 0 ? (
-        <LoadingSpinner $width='100%' $height='80vh' />
+      {isLoading ? (
+        <LoadingSpinner $width='100%' $height='30vh' />
       ) : (
-        <Styled.ProductPageListWrapper>
-          <CardList
-            products={products}
-            onToggleCart={onToggleCart}
-            isAddedCart={isAddedCart}
-          />
-        </Styled.ProductPageListWrapper>
+        itemElement
       )}
-
-      {isLoading && <LoadingSpinner $width='100%' $height='30vh' />}
 
       <Styled.ObserverTarget ref={targetRef} />
     </>
