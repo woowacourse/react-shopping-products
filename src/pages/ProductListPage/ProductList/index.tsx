@@ -1,7 +1,9 @@
 import { Product } from '@appTypes/index';
+import { LOAD_MORE_PRODUCTS_AMOUNT } from '@constants/index';
 import { useEffect, useRef } from 'react';
 
 import ProductCard from '../ProductCard';
+import { ProductListSkeleton } from '../Skeleton';
 
 import style from './style.module.css';
 import './ProductList.css';
@@ -26,11 +28,11 @@ function ProductList({ products, targetRef, loading }: ProductListProps) {
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-        {loading && <div>로딩중....</div>}
         <div className={style.target} ref={targetRef}>
           <span>target</span>
         </div>
       </ul>
+      {loading && <ProductListSkeleton productsLength={LOAD_MORE_PRODUCTS_AMOUNT} />}
     </section>
   );
 }

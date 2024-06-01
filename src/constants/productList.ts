@@ -41,3 +41,5 @@ export const PRICE_SORT_OPTIONS: DropdownOption[] = [
     value: 'price,desc',
   },
 ];
+
+export const LOAD_MORE_PRODUCTS_AMOUNT = 4;
