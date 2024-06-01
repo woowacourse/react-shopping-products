@@ -4,10 +4,10 @@ import { flexCenter } from "@/styles/common";
 import { Product } from "@/types/products";
 import SeaOtterVideo from "@/components/SeaOtterVideo";
 
-const ItemCardList = ({ products }: { products: Product[] }) => {
+const ItemCardList = ({ products, isLoading }: { products: Product[]; isLoading: boolean }) => {
   return (
     <ItemCardWrapper>
-      {products.length ? (
+      {products.length || isLoading ? (
         products.map((product) => <ItemCard key={Math.random() * 10000} product={product} />)
       ) : (
         <>

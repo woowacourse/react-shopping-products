@@ -47,7 +47,7 @@ const ProductListPage = () => {
             <SelectBox selectorHook={useSortSelect} optionsContents={Object.keys(SORT)} />
           </S.SelectBoxWrapper>
         </S.ItemInfoWrapper>
-        <ItemCardList products={products} />
+        <ItemCardList products={products} isLoading={isLoading} />
         {isAbleFetchNextPage && <div ref={ref}></div>}
         {isLoading && <ItemCartListSkeleton />}
       </S.Wrapper>
