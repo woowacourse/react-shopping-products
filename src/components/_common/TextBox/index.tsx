@@ -1,19 +1,21 @@
+import Icon from "@/components/_common/Icon";
 import * as S from "@/components/_common/TextBox/style";
+import { IconKind } from "@/types/IconKind";
 
 export type TextType = "xLarge" | "large" | "medium" | "small" | "xSmall" | "semiSmall";
 
 interface TextBoxProps {
-  asset?: () => JSX.Element;
+  iconKind?: IconKind;
   text: string;
   type: TextType;
   style?: React.CSSProperties;
   disabled?: boolean;
 }
 
-const TextBox = ({ asset, text, type, style, disabled = false }: TextBoxProps) => {
+const TextBox = ({ iconKind, text, type, style, disabled = false }: TextBoxProps) => {
   return (
     <S.CaptionText type={type} style={style} disabled={disabled}>
-      {asset && asset()}
+      {iconKind && <Icon kind={iconKind} />}
       {text}
     </S.CaptionText>
   );
