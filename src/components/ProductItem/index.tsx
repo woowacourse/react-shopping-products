@@ -1,6 +1,6 @@
 import * as S from './style';
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CartItemsContext } from '../../context/CartItemProvider';
 
 import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
@@ -18,7 +18,7 @@ interface ProductItemProps {
 const ProductItem = ({ id, imageUrl, name, price, cartItemId }: ProductItemProps) => {
   const { addCart, deleteCart } = useContext(CartItemsContext);
   const [loading, setLoading] = useState(false);
-  const [isInCart, setIsInCart] = useState(Boolean(cartItemId));
+  const [isInCart, setIsInCart] = useState(false);
 
   const TOGGLE_BUTTON_ICON = isInCart ? REMOVE_TO_CART : ADD_TO_CART;
   const BUTTON_TEXT = isInCart ? '빼기' : '담기';
@@ -45,6 +45,10 @@ const ProductItem = ({ id, imageUrl, name, price, cartItemId }: ProductItemProps
       }
     }
   };
+
+  useEffect(() => {
+    setIsInCart(Boolean(cartItemId));
+  }, [cartItemId]);
 
   return (
     <S.ProductItem>
