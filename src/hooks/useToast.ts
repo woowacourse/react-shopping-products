@@ -16,7 +16,7 @@ const useToast = () => {
     setToastList(newToasts);
   };
 
-  return { onCloseToast, onAddToast };
+  return { onCloseToast, onAddToast, toastList };
 };
 
 export default useToast;

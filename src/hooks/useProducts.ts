@@ -5,6 +5,9 @@ import { Category, Sort } from "@/constants/selectOption";
 import useToast from "@/hooks/useToast";
 import { ERROR_MESSAGES } from "@/constants/messages";
 
+export const SIZE_PER_PAGE = 4;
+export const SIZE_FIRST_PAGE = 20;
+
 const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -12,9 +15,6 @@ const useProducts = () => {
   const [isLastPage, setIsLastPage] = useState(false);
 
   const { onAddToast } = useToast();
-
-  const SIZE_PER_PAGE = 4;
-  const SIZE_FIRST_PAGE = 20;
 
   const fetchFirstPage = async (category: Category, sort: Sort) => {
     resetToFirstPage();
