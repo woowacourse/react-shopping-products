@@ -1,5 +1,5 @@
 import BaseButton from '@/components/button/BaseButton';
-import CartIn from '@/assets/cartIn.svg?react';
+import CartInImg from '@/assets/cartIn.svg?react';
 import { FlexSpaceBetween } from '@/style/common.style';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
@@ -12,7 +12,7 @@ const CartInButton = ({ onClick }: Props) => {
   return (
     <BaseButton $theme="dark" onClick={onClick}>
       <S.ButtonContent>
-        <CartIn />
+        <CartInImg />
         담기
       </S.ButtonContent>
     </BaseButton>
