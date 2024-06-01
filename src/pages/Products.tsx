@@ -38,38 +38,36 @@ const Products = () => {
   }, [error]);
 
   return (
-    <>
-      <S.Container>
-        <Header>
-          <S.HeaderContent>
-            SHOP
-            <CartCountIcon />
-          </S.HeaderContent>
-        </Header>
-        <S.Body>
-          <S.Title>우테코 상품 목록</S.Title>
-          <S.DropDownWrapper>
-            <BaseDropDown
-              initialValue="전체"
-              options={CATEGORY_LIST}
-              onChangeSelect={handleChangeCategory}
-            />
-            <BaseDropDown
-              initialValue="낮은 가격순"
-              options={PRICE_SORT}
-              onChangeSelect={handleChangeSort}
-            />
-          </S.DropDownWrapper>
-          <ProductList
-            products={products}
-            page={page}
-            getNextPage={fetchNextPage}
-            hasNextPage={hasNextPage}
+    <S.Container>
+      <Header>
+        <S.HeaderContent>
+          SHOP
+          <CartCountIcon />
+        </S.HeaderContent>
+      </Header>
+      <S.BodyContent>
+        <S.Title>우테코 상품 목록</S.Title>
+        <S.DropDownWrapper>
+          <BaseDropDown
+            initialValue="전체"
+            options={CATEGORY_LIST}
+            onChangeSelect={handleChangeCategory}
           />
-        </S.Body>
-        {showToast && <Toast message={(error as Error).message} />}
-      </S.Container>
-    </>
+          <BaseDropDown
+            initialValue="낮은 가격순"
+            options={PRICE_SORT}
+            onChangeSelect={handleChangeSort}
+          />
+        </S.DropDownWrapper>
+        <ProductList
+          products={products}
+          page={page}
+          getNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+        />
+      </S.BodyContent>
+      {showToast && <Toast message={(error as Error).message} />}
+    </S.Container>
   );
 };
 
@@ -88,20 +86,21 @@ const S = {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 100%;
     margin: 5%;
   `,
-  Body: styled.div`
+  BodyContent: styled.div`
+    width: 90%;
+    height: calc(100% - 107px); // 전체 y축에 스크롤이 안 생기는 높이
     padding: 5%;
-    height: 100%;
   `,
   Title: styled.h1`
     width: 100%;
-    margin: 20px 0;
+    padding: 5% 0;
     font-size: ${theme.fontSize.xl};
     font-weight: ${theme.fontWeight.extraBold};
   `,
   DropDownWrapper: styled.div`
+    width: 100%;
     display: flex;
     justify-content: space-between;
   `,

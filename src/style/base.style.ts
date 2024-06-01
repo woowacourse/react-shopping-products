@@ -12,7 +12,7 @@ const baseStyle = css`
   }
 
   body {
-    width: 430px;
+    max-width: 430px;
     height: 100vh;
     margin: auto;
     font-size: ${theme.fontSize.medium};

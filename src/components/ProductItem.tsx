@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 
-import CartInButton from './button/CartInButton';
-import CartOutButton from './button/CartOutButton';
+import useProductSelector from '@/hooks/useProductSelector';
+
+import CartInButton from '@/components/button/CartInButton';
+import CartOutButton from '@/components/button/CartOutButton';
+import Toast from '@/components/Toast';
+
 import { Product } from '@/types/product.type';
-import Toast from './Toast';
+
 import styled from '@emotion/styled';
 import theme from '@/style/theme.style';
-import useProductSelector from '@/hooks/useProductSelector';
 
 interface Props {
   item: Product;
@@ -58,15 +61,14 @@ const S = {
   ItemCard: styled.div`
     display: flex;
     flex-direction: column;
-    width: 175px;
-    height: 225px;
+    width: 95%;
+    height: 224px;
     border-radius: 8px;
     box-shadow: 0 0 10px 0 ${theme.color.blackWithOpacity};
     border-radius: 8px;
   `,
   Img: styled.img`
-    width: 175px;
-    height: 110px;
+    height: 112px;
     border-radius: 8px 8px 0 0;
     object-fit: cover;
   `,
@@ -75,14 +77,14 @@ const S = {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 224px;
+    height: 90px;
     padding: 15px 8px;
   `,
   InfoText: styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 40px;
+    height: 38px;
   `,
   Title: styled.div`
     font-size: ${theme.fontSize.small};

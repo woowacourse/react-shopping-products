@@ -70,7 +70,6 @@ const OptionList = styled.ul`
   justify-content: center;
   align-items: center;
   width: 125px;
-  max-height: 180px;
   border-radius: 8px;
   box-shadow: 0 0 10px 0 ${theme.color.blackWithOpacity};
   border-radius: 8px;
@@ -83,9 +82,8 @@ const OptionList = styled.ul`
 
 const OptionItem = styled.li`
   display: flex;
-  width: 90%;
-  margin: 5px 5%;
-  padding: 5px 10px;
+  width: 100%;
+  padding: 10px 10px;
   box-sizing: border-box;
   border-radius: 4px;
 

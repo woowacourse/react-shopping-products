@@ -27,14 +27,14 @@ const S = {
     top: 80%;
     right: 20%;
     transform: translate(50%, -50%);
-    background-color: ${theme.color.white};
-    color: ${theme.color.black};
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: ${theme.color.white};
+    color: ${theme.color.black};
     font-size: ${theme.fontSize.xs};
     font-weight: ${theme.fontWeight.bold};
   `,

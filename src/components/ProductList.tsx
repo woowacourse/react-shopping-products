@@ -52,21 +52,19 @@ export default ProductList;
 const S = {
   ListContainer: styled.div`
     width: 100%;
-    height: calc(100vh - 230px);
+    height: calc(85% - 24px);
     margin-top: 24px;
-    z-index: -1;
     overflow-y: auto;
   `,
+
   GridContainer: styled.div`
-    min-height: calc(100vh - 230px);
     display: grid;
     grid-template-columns: 1fr 1fr;
     flex-grow: 1;
-    gap: 20px;
+    gap: 16px;
     justify-items: center;
   `,
   ObserverContainer: styled.div`
     width: 100%;
-    height: 20px;
   `,
 };
