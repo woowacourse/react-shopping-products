@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import products from './products.json';
-import { API_URL } from '../../constants/api';
 import { Product } from '../../types/Product.type';
+import API_ENDPOINTS from '../../api/endpoints';
 
 const filterProducts = (products: Product[], category: string) => {
   return category === 'all' ? products : products.filter((product) => product.category === category);
@@ -13,7 +13,7 @@ const sortProducts = (products: Product[], sortOrder: string) => {
 };
 
 export const handlers = [
-  http.get(`${API_URL}/products`, ({ request }) => {
+  http.get(`${API_ENDPOINTS.PRODUCT}`, ({ request }) => {
     const url = new URL(request.url);
 
     const page = Number(url.searchParams.get('page') || '0');

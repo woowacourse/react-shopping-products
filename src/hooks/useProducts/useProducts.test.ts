@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import useProduct from './useProducts';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
-import { API_URL } from '../../constants/api';
+import API_ENDPOINTS from '../../api/endpoints';
 
 describe('useProduct', () => {
   describe('상품 목록 조회', () => {
@@ -23,7 +23,7 @@ describe('useProduct', () => {
 
     it('상품 목록 조회 중 에러가 발생하면 에러 상태가 된다.', async () => {
       server.use(
-        http.get(`${API_URL}/products`, () => {
+        http.get(`${API_ENDPOINTS.PRODUCT}`, () => {
           return new HttpResponse(null, { status: 500 });
         }),
       );

@@ -1,5 +1,4 @@
 import { generateBasicToken } from '../utils/auth';
-import { API_URL } from '../constants/api';
 import { ERROR_MESSAGES } from '../constants/message';
 
 const USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;
@@ -34,7 +33,7 @@ const fetchWithErrorHandling = async (endpoint: string, requestInit: RequestInit
     throw new Error(ERROR_MESSAGES.OFFLINE);
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, requestInit);
+  const response = await fetch(`${endpoint}`, requestInit);
 
   if (!response.ok) {
     throw new Error(errorMessage);
