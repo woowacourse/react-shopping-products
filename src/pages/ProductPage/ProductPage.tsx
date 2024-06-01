@@ -35,24 +35,26 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
     onIntersect: updateNextProductPage,
   });
 
-  const itemElement =
-    products.length === 0 ? (
-      <WrongCat
-        $width='400px'
-        $height='400px'
-        message={
-          '그런 건 내가 다 먹어버렸다냥~\n(사실 등록된 물건이 없는거라고 하네요)'
-        }
+  const wrongCatElement = (
+    <WrongCat
+      $width='400px'
+      $height='400px'
+      message={
+        '그런 건 내가 다 먹어버렸다냥~\n(사실 등록된 물건이 없는거라고 하네요)'
+      }
+    />
+  );
+  const loadingSpinnerElement = <LoadingSpinner $width='100%' $height='30vh' />;
+
+  const itemsElement = (
+    <Styled.ProductPageListWrapper>
+      <CardList
+        products={products}
+        onToggleCart={onToggleCart}
+        isAddedCart={isAddedCart}
       />
-    ) : (
-      <Styled.ProductPageListWrapper>
-        <CardList
-          products={products}
-          onToggleCart={onToggleCart}
-          isAddedCart={isAddedCart}
-        />
-      </Styled.ProductPageListWrapper>
-    );
+    </Styled.ProductPageListWrapper>
+  );
 
   return (
     <>
@@ -72,11 +74,10 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
         />
       </Styled.ProductDropdownWrapper>
 
-      {isLoading ? (
-        <LoadingSpinner $width='100%' $height='30vh' />
-      ) : (
-        itemElement
-      )}
+      {itemsElement}
+
+      {isLoading && products.length > 0 && loadingSpinnerElement}
+      {!isLoading && products.length === 0 && wrongCatElement}
 
       <Styled.ObserverTarget ref={targetRef} />
     </>
