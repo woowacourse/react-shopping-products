@@ -1,39 +1,38 @@
 import { deleteCartItem, getCartItems, postCartItem } from "@/apis/cartItem";
 import { ERROR_MESSAGES } from "@/constants/messages";
-import useToast from "@/hooks/useToast";
+import useMutation from "@/hooks/useMutation";
 import { CartItemContext, CartItemDispatchContext } from "@/provider/cartItemProvider";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 const useHandleCartItem = () => {
   const cartItems = useContext(CartItemContext);
   const setCartItems = useContext(CartItemDispatchContext);
-  const [loading, setLoading] = useState(false);
-  const { onAddToast } = useToast();
+
+  const { mutate: getCartItemsMutate } = useMutation<typeof getCartItems>(
+    getCartItems,
+    ERROR_MESSAGES.failGetCartItems
+  );
+  const { mutate: postCartItemMutate } = useMutation<typeof postCartItem>(
+    postCartItem,
+    ERROR_MESSAGES.failPostCartItem
+  );
+  const { mutate: deleteCartItemMutate } = useMutation<typeof deleteCartItem>(
+    deleteCartItem,
+    ERROR_MESSAGES.failDeleteCartItem
+  );
 
   const onAddCartItem = async (id: number) => {
-    try {
-      setLoading(true);
-      await postCartItem({ productId: id, quantity: 1 });
-      const fetchedItems = await getCartItems();
-      setCartItems(fetchedItems);
-    } catch (error) {
-      onAddToast(ERROR_MESSAGES.failPostCartItem);
-    } finally {
-      setLoading(false);
-    }
+    await postCartItemMutate({ productId: id, quantity: 1 });
+
+    const fetchedItems = await getCartItemsMutate();
+    if (fetchedItems) setCartItems(fetchedItems);
   };
 
   const onDeleteCartItem = async (id: number) => {
     const targetItem = cartItems.find((cartItem) => cartItem.product.id === id);
-    try {
-      setLoading(true);
-      await deleteCartItem({ itemId: targetItem!.id });
-      setCartItems((cartItems) => cartItems.filter((item) => item !== targetItem));
-    } catch (error) {
-      onAddToast(ERROR_MESSAGES.failDeleteCartItem);
-    } finally {
-      setLoading(false);
-    }
+
+    await deleteCartItemMutate({ itemId: targetItem!.id });
+    setCartItems((cartItems) => cartItems.filter((item) => item !== targetItem));
   };
 
   const isInCart = (id: number) => {
@@ -41,14 +40,11 @@ const useHandleCartItem = () => {
   };
 
   const onClickCartItem = (id: number) => {
-    if (isInCart(id)) {
-      onDeleteCartItem(id);
-    } else {
-      onAddCartItem(id);
-    }
+    if (isInCart(id)) onDeleteCartItem(id);
+    else onAddCartItem(id);
   };
 
-  return { onClickCartItem, isInCart, loading };
+  return { onClickCartItem, isInCart };
 };
 
 export default useHandleCartItem;
