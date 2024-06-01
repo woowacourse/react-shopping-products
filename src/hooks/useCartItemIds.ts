@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import useFetch from './useFetch';
 
-function useCartItemIds() {
+const useCartItemIds = () => {
   const { fetch, error } = useFetch<typeof fetchGetCartItems>(fetchGetCartItems);
   const [cartItemIds, setCartItemIds] = useState<Map<number, number> | null>(null);
 
@@ -37,6 +37,6 @@ function useCartItemIds() {
   }, []);
 
   return { cartItemIds, refreshCartItemIds, error };
-}
+};
 
 export default useCartItemIds;

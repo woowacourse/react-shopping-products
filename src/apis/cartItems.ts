@@ -1,4 +1,4 @@
-import { CartItem, ServerResponse } from '@appTypes/index';
+import { CartItem, ApiResponse } from '@appTypes/index';
 import { FIRST_LOAD_PRODUCTS_AMOUNT } from '@constants/index';
 import { fetchWithToken } from '@utils/index';
 
@@ -24,7 +24,7 @@ export async function fetchGetCartItems(totalNumbers: number = FIRST_LOAD_PRODUC
     method: 'GET',
   });
 
-  const result = (await data.json()) as ServerResponse<CartItem[]>;
+  const result = (await data.json()) as ApiResponse<CartItem[]>;
 
   return {
     totalNumbers: result.totalElements,

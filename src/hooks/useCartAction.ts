@@ -6,7 +6,7 @@ interface UseCartActionProps {
   refreshCartItemIds: () => Promise<void>;
 }
 
-function useCartAction({ refreshCartItemIds }: UseCartActionProps) {
+const useCartAction = ({ refreshCartItemIds }: UseCartActionProps) => {
   const postFetchResult = useFetch<typeof fetchPostCartItems>(fetchPostCartItems);
   const deleteFetchResult = useFetch<typeof fetchDeleteCartItems>(fetchDeleteCartItems);
 
@@ -27,6 +27,6 @@ function useCartAction({ refreshCartItemIds }: UseCartActionProps) {
     deleteCarItem,
     error: postFetchResult.error || deleteFetchResult.error,
   };
-}
+};
 
 export default useCartAction;

@@ -1,4 +1,4 @@
-import { Filtering, Product, ServerResponse } from '@appTypes/index';
+import { Filtering, Product, ApiResponse } from '@appTypes/index';
 import { LOAD_MORE_PRODUCTS_AMOUNT } from '@constants/index';
 import { fetchWithToken } from '@utils/index';
 
@@ -33,7 +33,7 @@ export async function fetchProduct(params: FetchProductParameter): Promise<{ pro
     url: END_POINTS.products + searchParams,
     method: 'GET',
   });
-  const result = (await data.json()) as ServerResponse<Product[]>;
+  const result = (await data.json()) as ApiResponse<Product[]>;
 
   return { products: result.content, isLast: result.last };
 }
