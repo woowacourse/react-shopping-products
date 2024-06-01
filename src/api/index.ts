@@ -1,5 +1,6 @@
 import { MAX_CART_ITEMS_COUNTS } from '../constants';
 import { CategoryType, SortType } from '../type';
+import { findCartItemIdByProductId } from '../util/findCartItemIdByProductId';
 import {
   CART_ITEMS_COUNT_ENDPOINT,
   CART_ITEMS_ENDPOINT,
@@ -30,7 +31,6 @@ export async function fetchProducts(
 
   const response = await fetch(
     `${PRODUCTS_ENDPOINT}?${categoryQuery}&page=${page}&size=${limit}&${sortingQuery}`,
-
     {
       method: 'GET',
       headers: HEADERS,
@@ -45,7 +45,7 @@ export async function fetchProducts(
   return data;
 }
 
-export const addCartItem = async (itemId: number) => {
+export const addCartIㅏtem = async (itemId: number) => {
   const response = await fetch(CART_ITEMS_ENDPOINT, {
     method: 'POST',
     headers: HEADERS,
@@ -59,6 +59,7 @@ export const addCartItem = async (itemId: number) => {
     throw new Error('Failed to fetch Items');
   }
 };
+
 
 export const deleteCartItem = async (productId: number) => {
   const cartItemId = await findCartItemIdByProductId(productId);
@@ -74,15 +75,6 @@ export const deleteCartItem = async (productId: number) => {
   }
 };
 
-export const findCartItemIdByProductId = async (productId: number) => {
-  const response = await fetchItems();
-  const cartItem = response.find((cartItem) => {
-    if (cartItem.product.id === productId) {
-      return cartItem.id;
-    }
-  });
-  return cartItem && cartItem.id;
-};
 
 export const fetchShoppingCartQuantity = async () => {
   const response = await fetch(CART_ITEMS_COUNT_ENDPOINT, {
@@ -111,6 +103,7 @@ export interface CartItems {
   quantity: number;
   product: Item;
 }
+
 export async function fetchItems(): Promise<CartItems[]> {
   const response = await fetch(
     `${CART_ITEMS_ENDPOINT}?size=${MAX_CART_ITEMS_COUNTS}`,
