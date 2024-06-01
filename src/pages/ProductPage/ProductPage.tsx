@@ -76,7 +76,7 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
 
       {itemsElement}
 
-      {isLoading && products.length > 0 && loadingSpinnerElement}
+      {isLoading && loadingSpinnerElement}
       {!isLoading && products.length === 0 && wrongCatElement}
 
       <Styled.ObserverTarget ref={targetRef} />
