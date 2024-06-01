@@ -7,7 +7,7 @@ export async function fetchProductList(
   page: number,
   limit: number,
   category?: Category,
-  sortOption: Sorting = "price%2Casc" as Sorting
+  sortOption: Sorting = "price,asc" as Sorting
 ) {
   const requiredQuery = `page=${page}&size=${limit}`;
   const categoryQuery = category ? `category=${category}&` : "";

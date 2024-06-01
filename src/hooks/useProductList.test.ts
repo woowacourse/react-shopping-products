@@ -17,7 +17,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price%2Casc"],
+          sortOption: Sorting["price,asc"],
         })
       );
       await waitFor(() => {
@@ -29,7 +29,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price%2Casc"],
+          sortOption: Sorting["price,asc"],
         })
       );
 
@@ -46,7 +46,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price%2Casc"],
+          sortOption: Sorting["price,asc"],
         })
       );
 
@@ -63,7 +63,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price%2Casc"],
+          sortOption: Sorting["price,asc"],
         })
       );
 
@@ -77,7 +77,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price%2Casc"],
+          sortOption: Sorting["price,asc"],
         })
       );
 
@@ -100,7 +100,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price%2Casc"],
+          sortOption: Sorting["price,asc"],
         })
       );
 
@@ -137,7 +137,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price%2Casc"],
+          sortOption: Sorting["price,asc"],
         })
       );
 
@@ -162,7 +162,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price%2Casc"],
+          sortOption: Sorting["price,asc"],
         })
       );
       await waitFor(() => {
