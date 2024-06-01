@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface UseIntersectionObserver<T> {
   setTarget: (target: T) => void;
@@ -7,9 +7,10 @@ interface UseIntersectionObserver<T> {
 const useIntersectionObserver = <T extends Element>(
   callback: IntersectionObserverCallback
 ): UseIntersectionObserver<T> => {
-  const [target, setTarget] = useState<Element | null>(null);
+  const targetRef = useRef<Element | null>(null);
 
   useEffect(() => {
+    const target = targetRef.current;
     if (!target) {
       return;
     }
@@ -20,9 +21,9 @@ const useIntersectionObserver = <T extends Element>(
     return () => {
       observer.unobserve(target);
     };
-  }, [callback, target]);
+  }, [callback, targetRef]);
 
-  return { setTarget: (target: T) => setTarget(target) };
+  return { setTarget: (target: T) => (targetRef.current = target) };
 };
 
 export default useIntersectionObserver;
