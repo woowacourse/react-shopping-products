@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { fetchProducts } from '../api/products';
 import usePage from './usePage';
@@ -38,37 +38,33 @@ const useFetchProducts = () => {
     }
   };
 
-  useEffect(() => {
-    if (!isLastPage && !error) getProducts();
-  }, [page, category, sort]);
-
   const reset = () => {
     resetPage();
     resetProducts();
     setIsLastPage(false);
   };
 
-  const filterByCategory = (selectedCategory: Category) => {
-    if (selectedCategory !== category) {
-      reset();
-      setCategory(selectedCategory);
-    }
+  const filterByCategory = async (selectedCategory: Category) => {
+    if (selectedCategory === category) return;
+
+    reset();
+    setCategory(selectedCategory);
+    await getProducts();
   };
 
-  const setSorting = (condition: string, order: Order) => {
-    if (sort.price !== order) {
-      reset();
-      setSort((prevSort) => {
-        return {
-          ...prevSort,
-          [condition]: order,
-        };
-      });
-    }
+  const setSorting = async (condition: string, order: Order) => {
+    if (sort.price == order) return;
+
+    reset();
+    setSort((prevSort) => ({ ...prevSort, [condition]: order }));
+    await getProducts();
   };
 
-  const fetchNextPage = () => {
-    if (!isLastPage) increasePage();
+  const fetchNextPage = async () => {
+    if (isLastPage || error) return;
+
+    increasePage();
+    await getProducts();
   };
 
   useIntersectionObserver(loading, observerRef, fetchNextPage, { threshold: 0.8 });
