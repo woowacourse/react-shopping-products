@@ -1,10 +1,10 @@
 import { useEffect, useContext, useState } from 'react';
 
 import { addCartItem, deleteCartItem, fetchCartItems } from '../api/cartItems';
-import { CartItemContext } from '../App';
+import { CartItemsContext } from '../context/CartItemProvider';
 
 const useCart = () => {
-  const { cartItems, setCartItems } = useContext(CartItemContext);
+  const { cartItems, setCartItems } = useContext(CartItemsContext);
 
   const [isInCarts, setIsInCarts] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);

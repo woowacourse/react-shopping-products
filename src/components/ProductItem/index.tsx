@@ -9,11 +9,10 @@ interface ProductItemProps {
   imageUrl: string;
   name: string;
   price: number;
-  useCartProp: () => ReturnType<typeof useCart>;
 }
 
-const ProductItem = ({ id, useCartProp, imageUrl, name, price }: ProductItemProps) => {
-  const { cartItems, addCart, deleteCart } = useCartProp();
+const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
+  const { cartItems, addCart, deleteCart } = useCart();
   const cartItem = cartItems.find(({ product }) => id === product.id);
 
   const [isInCart, setIsInCart] = useState(false);
@@ -22,7 +21,7 @@ const ProductItem = ({ id, useCartProp, imageUrl, name, price }: ProductItemProp
     if (cartItem) {
       setIsInCart(true);
     }
-  }, [cartItems]);
+  }, [cartItem]);
 
   const TOGGLE_BUTTON_ICON = isInCart ? REMOVE_TO_CART : ADD_TO_CART;
   const BUTTON_TEXT = isInCart ? '빼기' : '담기';
