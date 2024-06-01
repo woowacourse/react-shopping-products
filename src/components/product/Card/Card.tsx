@@ -1,6 +1,6 @@
 import * as Styled from './Card.styled';
 
-import { AddShoppingCartSvg, Svg } from '@assets/svg';
+import { AddShoppingCartSvg, RemoveShoppingCartSvg } from '@assets/svg';
 
 import { Product } from '@appTypes/product';
 import { formatKoreanCurrency } from '@utils/currency';
@@ -29,7 +29,7 @@ const Card: React.FC<CardProps> = ({ product, isAddedCart, onToggleCart }) => {
               </>
             ) : (
               <>
-                <Svg /> <span>빼기</span>
+                <RemoveShoppingCartSvg /> <span>빼기</span>
               </>
             )}
           </Styled.CardToggleButton>
