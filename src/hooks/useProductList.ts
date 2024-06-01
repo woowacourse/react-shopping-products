@@ -5,17 +5,20 @@ import { Product } from '@/types/product.type';
 import { getProductList } from '@/api/product';
 
 const useProductList = () => {
-  const [page, setPage] = useState(0);
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
-  const [hasNextPage, setHasNextPage] = useState(true);
+
+  const [page, setPage] = useState(0);
   const [order, setOrder] = useState<string>('asc');
   const [category, setCategory] = useState('');
 
+  const [hasNextPage, setHasNextPage] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setIsLoading(true);
       try {
         const size =
           page === 0
@@ -28,7 +31,7 @@ const useProductList = () => {
       } catch (error) {
         setError(error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -63,7 +66,7 @@ const useProductList = () => {
   return {
     page,
     products,
-    loading,
+    isLoading,
     error,
     fetchNextPage,
     hasNextPage,
