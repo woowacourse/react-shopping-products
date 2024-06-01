@@ -6,7 +6,6 @@ import { getProductList } from '@/api/product';
 
 const useProductList = () => {
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(FETCH_SIZE.firstPageItemCount);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -18,6 +17,10 @@ const useProductList = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
+        const size =
+          page === 0
+            ? FETCH_SIZE.firstPageItemCount
+            : FETCH_SIZE.moreLoadItemCount;
         const data = await getProductList({ page, size, category, order });
         setProducts((prev) => [...prev, ...data.content]);
 
@@ -30,18 +33,16 @@ const useProductList = () => {
     };
 
     fetchData();
-  }, [page, size, category, order]);
+  }, [page, category, order]);
 
   const resetProductState = () => {
     setProducts([]);
     setPage(0);
-    setSize(FETCH_SIZE.firstPageItemCount);
   };
 
   const fetchNextPage = () => {
     if (page === 0) {
       setPage(FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount); // 20 / 4 = 5
-      setSize(FETCH_SIZE.moreLoadItemCount);
     } else {
       setPage((prev) => prev + 1);
     }
