@@ -1,8 +1,7 @@
 import BaseButton from '@/components/button/BaseButton';
 import CartIn from '@/assets/cartIn.svg?react';
-import { FlexSpaceBetween } from '@/style/common.style';
 import styled from '@emotion/styled';
-import { theme } from '@/style/theme.style';
+import theme from '@/style/theme.style';
 
 interface Props {
   onClick: () => void;
@@ -23,10 +22,11 @@ export default CartInButton;
 
 const S = {
   ButtonContent: styled.div`
-    ${FlexSpaceBetween}
+    display: flex;
+    justify-content: space-between;
     gap: 5px;
     padding: 5px 10px;
-    font-size: ${theme.fontSize.xsmall};
+    font-size: ${theme.fontSize.xs};
     font-weight: ${theme.fontWeight.bold};
   `,
 };

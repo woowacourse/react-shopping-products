@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { reset } from '@/style/reset.style';
-import { theme } from '@/style/theme.style';
+import theme from '@/style/theme.style';
 
 const baseStyle = css`
   ${reset};

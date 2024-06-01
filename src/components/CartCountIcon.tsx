@@ -1,6 +1,6 @@
 import CartIcon from '@/assets/cart.svg?react';
 import styled from '@emotion/styled';
-import { theme } from '@/style/theme.style';
+import theme from '@/style/theme.style';
 import useCartListContext from '@/hooks/useCartListContext';
 
 const CartCountIcon = () => {
@@ -35,7 +35,7 @@ const S = {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: ${theme.fontSize.xsmall};
+    font-size: ${theme.fontSize.xs};
     font-weight: ${theme.fontWeight.bold};
   `,
 };

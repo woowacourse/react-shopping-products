@@ -1,4 +1,3 @@
-import { FlexColumn, FlexRow, FlexSpaceBetween } from '@/style/common.style';
 import { useEffect, useState } from 'react';
 
 import CartInButton from './button/CartInButton';
@@ -6,7 +5,7 @@ import CartOutButton from './button/CartOutButton';
 import { Product } from '@/types/product.type';
 import Toast from './Toast';
 import styled from '@emotion/styled';
-import { theme } from '@/style/theme.style';
+import theme from '@/style/theme.style';
 import useProductSelector from '@/hooks/useProductSelector';
 
 interface Props {
@@ -57,7 +56,8 @@ export default ProductItem;
 
 const S = {
   ItemCard: styled.div`
-    ${FlexColumn}
+    display: flex;
+    flex-direction: column;
     width: 175px;
     height: 225px;
     border-radius: 8px;
@@ -72,15 +72,16 @@ const S = {
   `,
 
   InfoWrapper: styled.div`
-    ${FlexColumn}
-    ${FlexSpaceBetween}
-    height: calc(225px - 110px);
-    margin-top: 7px;
-    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 224px;
+    padding: 15px 8px;
   `,
   InfoText: styled.div`
-    ${FlexColumn}
-    ${FlexSpaceBetween}
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     height: 40px;
   `,
   Title: styled.div`
@@ -88,10 +89,10 @@ const S = {
     font-weight: ${theme.fontWeight.bold};
   `,
   Price: styled.div`
-    font-size: ${theme.fontSize.xsmall};
+    font-size: ${theme.fontSize.xs};
   `,
   ButtonWrapper: styled.div`
-    ${FlexRow}
+    display: flex;
     justify-content: flex-end;
   `,
 };

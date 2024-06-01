@@ -1,10 +1,8 @@
 import { useState } from 'react';
-
-import BaseButton from '../button/BaseButton';
-
+import BaseButton from '@/components/button/BaseButton';
 import DropDownIcon from '@/assets/dropdown.svg?react';
-
 import styled from '@emotion/styled';
+import theme from '@/style/theme.style';
 
 interface Option {
   [key: string]: string;
@@ -27,68 +25,72 @@ const BaseDropDown = ({ initialValue, options, onChangeSelect }: Props) => {
   };
 
   return (
-    <>
+    <DropDownContainer>
       <BaseButton onClick={() => setShowOptions((prev) => !prev)}>
-        <S.SelectedOption>
+        <SelectedOption>
           {selectedValue}
           <DropDownIcon />
-        </S.SelectedOption>
+        </SelectedOption>
       </BaseButton>
       {showOptions && (
-        <S.OptionList>
+        <OptionList>
           {options.map((option, index) => (
-            <S.OptionItem key={index} onClick={() => handleOptionClick(option)}>
+            <OptionItem key={index} onClick={() => handleOptionClick(option)}>
               {option.value}
-            </S.OptionItem>
+            </OptionItem>
           ))}
-        </S.OptionList>
+        </OptionList>
       )}
-    </>
+    </DropDownContainer>
   );
 };
 
 export default BaseDropDown;
 
-const S = {
-  SelectedOption: styled.label`
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 125px;
-    height: 36px;
-    padding: 0 8px;
-    border: 1px solid ${theme.color.blackWithOpacity};
-    box-sizing: border-box;
-    border-radius: 4px;
-  `,
-  OptionList: styled.ul`
-    position: absolute;
-    ${FlexColumn}
-    width: 125px;
-    max-height: 180px;
-    margin-top: 36px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px 0 ${theme.color.blackWithOpacity};
-    border-radius: 8px;
-    background-color: ${theme.color.white};
-    font-size: ${theme.fontSize.small};
-    font-weight: ${theme.fontWeight.normal};
-    overflow-y: auto;
-    cursor: pointer;
-  `,
-  OptionItem: styled.li`
-    ${FlexRow}
-    align-items: center;
-    width: 90%;
-    margin: 5px 5%;
-    padding: 5px 10px;
-    box-sizing: border-box;
-    border-radius: 4px;
+const DropDownContainer = styled.div`
+  position: relative;
+`;
 
-    &:hover,
-    &:active {
-      background-color: ${theme.color.blackWithOpacity};
-    }
-  `,
-};
+const SelectedOption = styled.label`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 125px;
+  height: 36px;
+  padding: 0 8px;
+  border: 1px solid ${theme.color.blackWithOpacity};
+  box-sizing: border-box;
+  border-radius: 4px;
+`;
+
+const OptionList = styled.ul`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 125px;
+  max-height: 180px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 0 ${theme.color.blackWithOpacity};
+  border-radius: 8px;
+  background-color: ${theme.color.white};
+  font-size: ${theme.fontSize.small};
+  font-weight: ${theme.fontWeight.normal};
+  overflow-y: auto;
+  cursor: pointer;
+`;
+
+const OptionItem = styled.li`
+  display: flex;
+  width: 90%;
+  margin: 5px 5%;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  border-radius: 4px;
+
+  &:hover,
+  &:active {
+    background-color: ${theme.color.blackWithOpacity};
+  }
+`;

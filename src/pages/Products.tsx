@@ -1,4 +1,3 @@
-import { FlexColumn, FlexSpaceBetween, WhiteSpace } from '@/style/common.style';
 import { useEffect, useState } from 'react';
 
 import useProductList from '@/hooks/useProductList';
@@ -21,7 +20,7 @@ const Products = () => {
     error,
     fetchNextPage,
     hasNextPage,
-    handleChangeOrder,
+    handleChangeSort,
     handleChangeCategory,
   } = useProductList();
 
@@ -78,30 +77,32 @@ export default Products;
 
 const S = {
   Container: styled.div`
-    ${FlexColumn}
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     position: relative;
   `,
   HeaderContent: styled.div`
-    ${FlexSpaceBetween}
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 100%;
     margin: 5%;
   `,
   Body: styled.div`
-    ${WhiteSpace}
+    padding: 5%;
     height: 100%;
   `,
   Title: styled.h1`
     width: 100%;
-    margin-top: 36px;
-    font-size: ${theme.fontSize.xlarge};
+    margin: 20px 0;
+    font-size: ${theme.fontSize.xl};
     font-weight: ${theme.fontWeight.extraBold};
   `,
   DropDownWrapper: styled.div`
-    margin-top: 16px;
-    ${FlexSpaceBetween}
+    display: flex;
+    justify-content: space-between;
   `,
 };

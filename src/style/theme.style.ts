@@ -1,4 +1,4 @@
-export const theme = {
+const theme = {
   color: {
     white: '#ffffff',
     lightGray: '#EAEAEA',
@@ -8,11 +8,11 @@ export const theme = {
     lightRed: '#FFC9C9',
   },
   fontSize: {
-    xsmall: '1.2rem',
+    xs: '1.2rem',
     small: '1.4rem',
     medium: '1.6rem',
     large: '2rem',
-    xlarge: '2.4rem',
+    xl: '2.4rem',
   },
   fontWeight: {
     light: 300,
@@ -22,3 +22,5 @@ export const theme = {
     extraBold: 800,
   },
 };
+
+export default theme;
