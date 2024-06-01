@@ -24,16 +24,15 @@ const ProductList = ({
   const target = useRef<HTMLDivElement | null>(null);
   const [observe, unobserve] = useIntersectionObserver(getNextPage);
 
+  const listContainerRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     if (target.current) {
       observe(target.current);
     }
 
-    if (page === 0) {
-      const listContainer = document.getElementById('listContainer');
-      if (listContainer) {
-        listContainer.scrollTop = 0;
-      }
+    if (page === 0 && listContainerRef.current) {
+      listContainerRef.current.scrollTop = 0;
     }
 
     return () => {
@@ -44,7 +43,7 @@ const ProductList = ({
   }, [observe, unobserve, page]);
 
   return (
-    <S.ListContainer id="listContainer">
+    <S.ListContainer ref={listContainerRef}>
       <S.GridContainer>
         {products.map((product) => (
           <ProductItem key={product.id} item={product} />
