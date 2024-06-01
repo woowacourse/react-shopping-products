@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import APIClient from '@apis/APIClient';
 
-const useFetch = <T>(url: string, showToast?: (message: string) => void) => {
+const useFetch = <T>(url: string, errorHandler?: (message: string) => void) => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
@@ -23,13 +23,13 @@ const useFetch = <T>(url: string, showToast?: (message: string) => void) => {
         setData(data);
       })
       .catch(error => {
-        if (showToast) showToast(error.message);
+        if (errorHandler) errorHandler(error.message);
         setError(error);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [url, showToast]);
+  }, [url, errorHandler]);
 
   return { data, isLoading, error };
 };
