@@ -1,11 +1,6 @@
 import styled from '@emotion/styled';
 
 export const ToastContainer = styled.div`
-  /* background-color: red;
-  display: flex;
-  justify-content: center;
-  align-items: center; */
-
   position: fixed;
   min-width: 300px;
   width: fit-content;
