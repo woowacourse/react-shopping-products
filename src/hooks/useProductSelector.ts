@@ -14,7 +14,7 @@ const useProductSelector = (productId: number) => {
   useEffect(() => {
     const isInCart = cartList.some((item) => item.product.id === productId);
     setIsSelected(isInCart);
-  }, []);
+  }, [cartList, productId]);
 
   const addCartItem = async () => {
     try {
