@@ -6,15 +6,7 @@ import {
   ItemImage,
 } from './ItemCard.style';
 import CartButton from '../CartButton/CartButton';
-
-interface ItemCardProps {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-  initIsInCart: boolean;
-}
+import { ItemCardProps } from './ItemCard.type';
 
 const ItemCard: React.FC<ItemCardProps> = ({
   id,

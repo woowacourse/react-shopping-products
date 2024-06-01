@@ -1,9 +1,6 @@
 import React from 'react';
 import { ToastContainer } from './Toast.style';
-
-interface ToastProps {
-  children: React.ReactNode;
-}
+import { ToastProps } from './Toast.type';
 
 const Toast: React.FC<ToastProps> = ({ children }) => {
   return <ToastContainer> {children}</ToastContainer>;

@@ -1,9 +1,6 @@
-import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { ButtonWrapper } from './Button.style';
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  isGray?: boolean;
-}
+import { ButtonProps } from './Button.type';
 
 const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   onClick,

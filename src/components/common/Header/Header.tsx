@@ -1,12 +1,9 @@
 import { LogoIcon, ShoppingCart } from '../../../asset';
 import CartBadge from '../../CartBadge/CartBadge';
 import { HeaderContainer, HeaderIcon } from './Header.style';
+import { HeaderProps } from './Header.type';
 
-interface HeaderProps {
-  headerIconType?: 'home' | 'back';
-}
-
-function Header({ headerIconType = 'home' }: HeaderProps) {
+const Header: React.FC<HeaderProps> = ({ headerIconType = 'home' }) => {
   const handleHeaderIcon = ({ headerIconType }: HeaderProps) => {
     switch (headerIconType) {
       default:
@@ -27,6 +24,6 @@ function Header({ headerIconType = 'home' }: HeaderProps) {
       </CartBadge>
     </HeaderContainer>
   );
-}
+};
 
 export default Header;

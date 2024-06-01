@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { HeaderIconProps } from './Header.type';
 
 export const HeaderContainer = styled.header`
   position: sticky;
@@ -12,10 +13,6 @@ export const HeaderContainer = styled.header`
   width: 100%;
   height: 6.4rem;
 `;
-interface HeaderIconProps {
-  $width: string;
-}
-
 export const HeaderIcon = styled.img<HeaderIconProps>`
   width: ${(props) => props.$width};
   aspect-ratio: 1;

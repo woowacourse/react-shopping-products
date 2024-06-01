@@ -1,12 +1,7 @@
 import styled from '@emotion/styled';
+import { ButtonProps } from './Button.type';
 
-interface ButtonStyleProps {
-  color: string;
-  backgroundColor: string;
-  hasBorderRadius?: boolean;
-  isGray?: boolean;
-}
-export const ButtonWrapper = styled.button<ButtonStyleProps>`
+export const ButtonWrapper = styled.button<ButtonProps>`
   display: flex;
   gap: 4px;
   padding: 4px 8px;

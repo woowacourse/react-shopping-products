@@ -2,11 +2,7 @@ import Button from '../common/Button/Button';
 import { AddCart, MinusCart } from '../../asset';
 import { ButtonImg } from './CartButton.style';
 import useCartItem from '../../hooks/useCartItemHandler';
-
-interface CartButtonProps {
-  productId: number;
-  initIsInCart: boolean;
-}
+import { CartButtonProps } from './\bCardButton.type';
 
 const CartButton: React.FC<CartButtonProps> = ({ productId, initIsInCart }) => {
   const { isInCart, handleAddCartItem, handleRemoveCartItem } = useCartItem({

@@ -1,9 +1,5 @@
 import { DropdownButton, DropdownItem } from './Dropdown.style';
-
-interface DropdownProps {
-  options: [string, string][];
-  onchange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}
+import { DropdownProps } from './Dropdown.type';
 
 const Dropdown: React.FC<DropdownProps> = ({ options, onchange }) => {
   return (
