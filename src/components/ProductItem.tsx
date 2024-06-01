@@ -16,7 +16,7 @@ interface Props {
 const ProductItem = ({ item }: Props) => {
   const [showToast, setShowToast] = useState(false);
   const { isSelected, error, addCartItem, removeCartItem } = useProductSelector(
-    item.id
+    item.id,
   );
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const ProductItem = ({ item }: Props) => {
   return (
     <>
       <S.ItemCard>
-        <S.Img src={item.imageUrl} alt={item.name} />
+        <S.Img src={item.imageUrl} alt="" />
         <S.InfoWrapper>
           <S.InfoText>
             <S.Title>{item.name}</S.Title>
