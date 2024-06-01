@@ -17,7 +17,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price,asc"],
+          sortOption: Sorting.PRICE_ASC,
         })
       );
       await waitFor(() => {
@@ -29,7 +29,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price,asc"],
+          sortOption: Sorting.PRICE_ASC,
         })
       );
 
@@ -46,7 +46,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price,asc"],
+          sortOption: Sorting.PRICE_ASC,
         })
       );
 
@@ -63,7 +63,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price,asc"],
+          sortOption: Sorting.PRICE_ASC,
         })
       );
 
@@ -77,7 +77,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price,asc"],
+          sortOption: Sorting.PRICE_ASC,
         })
       );
 
@@ -100,7 +100,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price,asc"],
+          sortOption: Sorting.PRICE_ASC,
         })
       );
 
@@ -137,7 +137,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price,asc"],
+          sortOption: Sorting.PRICE_ASC,
         })
       );
 
@@ -162,7 +162,7 @@ describe("useProductList", () => {
       const { result } = renderHook(() =>
         useProductList({
           category: undefined,
-          sortOption: Sorting["price,asc"],
+          sortOption: Sorting.PRICE_ASC,
         })
       );
       await waitFor(() => {

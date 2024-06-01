@@ -7,10 +7,11 @@ export interface Product {
 }
 
 export enum Category {
-  books = "도서",
-  fitness = "운동용품",
-  beverage = "음료",
-  electronics = "전자제품",
-  kitchen = "주방용품",
-  fashion = "패션잡화",
+  전체 = "",
+  도서 = "books",
+  운동용품 = "fitness",
+  음료 = "beverage",
+  전자제품 = "electronics",
+  주방용품 = "kitchen",
+  패션잡화 = "fashion",
 }

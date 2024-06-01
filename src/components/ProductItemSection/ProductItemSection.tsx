@@ -11,13 +11,12 @@ interface ProductItemSectionProps {
 function ProductItemSection({ onError }: ProductItemSectionProps) {
   const [category, setCategory] = useState<Category>("" as Category);
   const [sortingOption, setSortingOption] = useState<Sorting>(
-    "price,asc" as Sorting
+    Sorting.PRICE_ASC
   );
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setCategory(e.target.value as Category);
   const handleSortingChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setSortingOption(e.target.value as Sorting);
-
   return (
     <S.ProductSectionContainer>
       <DropdownContainer

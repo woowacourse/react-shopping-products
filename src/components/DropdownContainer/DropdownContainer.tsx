@@ -10,22 +10,22 @@ interface DropdownContainerProps {
   onChangeSortingOption: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
+const categoryOptions = Object.entries(Category).map(([key, value]) => ({
+  key: key,
+  value: value,
+}));
+
+const sortingOptions = Object.entries(Sorting).map(([key, value]) => ({
+  key: key,
+  value: value,
+}));
+
 function DropdownContainer({
   category,
   onChangeCategory,
   sortingOption,
   onChangeSortingOption,
 }: DropdownContainerProps) {
-  const categoryOptions = [["", "전체"]];
-  categoryOptions.push(
-    ...Object.entries(Category).map(([key, value]) => [key, `${value}`])
-  );
-
-  const sortingOptions = Object.entries(Sorting).map(([key, value]) => [
-    key,
-    value as string,
-  ]);
-
   return (
     <S.Container>
       <Dropdown
@@ -33,13 +33,13 @@ function DropdownContainer({
         value={category}
         onChange={onChangeCategory}
         type="category"
-      ></Dropdown>
+      />
       <Dropdown
         optionList={sortingOptions}
         value={sortingOption}
         onChange={onChangeSortingOption}
         type="sort"
-      ></Dropdown>
+      />
     </S.Container>
   );
 }
