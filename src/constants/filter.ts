@@ -1,24 +1,17 @@
+import { Option } from '../components/common/Dropdown';
 import { Category, Order } from '../types/product';
 
-interface CategoryOption {
-  [key: string]: Category;
-}
+export const CATEGORIES: Option<Category>[] = [
+  { value: 'all', label: '전체' },
+  { value: 'fashion', label: '패션' },
+  { value: 'beverage', label: '음료' },
+  { value: 'books', label: '책' },
+  { value: 'electronics', label: '전자기기' },
+  { value: 'fitness', label: '생활' },
+  { value: 'kitchen', label: '주방용품' },
+] as const;
 
-interface PriceSortOption {
-  [key: string]: Order;
-}
-
-export const CATEGORY: CategoryOption = {
-  전체: 'all',
-  패션: 'fashion',
-  음료: 'beverage',
-  책: 'books',
-  전자기기: 'electronics',
-  생활: 'fitness',
-  주방용품: 'kitchen',
-} as const;
-
-export const PRICE_SORT: PriceSortOption = {
-  '낮은 가격순': 'asc',
-  '높은 가격순': 'desc',
-} as const;
+export const PRICE_SORT: Option<Order>[] = [
+  { value: 'asc', label: '낮은 가격순' },
+  { value: 'desc', label: '높은 가격순' },
+] as const;

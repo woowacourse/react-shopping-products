@@ -4,38 +4,43 @@ import { useState } from 'react';
 
 import { DOWN_ARROW, UP_ARROW } from '../../../assets/images';
 
-interface DropdownProps {
-  optionArray: string[];
-  selectedOption: string;
-  optionChange: (option: string) => void;
+export interface Option<T> {
+  value: T;
+  label: string;
 }
 
-const Dropdown = ({ optionArray, selectedOption, optionChange }: DropdownProps) => {
+interface DropdownProps<T> {
+  options: Option<T>[];
+  selectedOption: string;
+  optionChange: (option: T) => void;
+}
+
+const Dropdown = <T,>({ options, selectedOption, optionChange }: DropdownProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const DROPDOWN_ICON = isOpen ? UP_ARROW : DOWN_ARROW;
 
-  const handleToggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  const handleToggleDropdown = () => setIsOpen(!isOpen);
 
-  const handleOptionOnClick = (option: string) => {
+  const handleOptionOnClick = (option: T) => {
     optionChange(option);
     setIsOpen(false);
   };
 
-  const options = optionArray.map((option) => (
-    <S.Option key={option} onClick={() => handleOptionOnClick(option)}>
-      {option}
-    </S.Option>
-  ));
-
   return (
     <S.Dropdown $isOpen={isOpen}>
       <S.Select onClick={handleToggleDropdown}>
-        <p>{selectedOption}</p>
+        <p>{selectedOption as string}</p>
         <S.ArrowImage src={DROPDOWN_ICON} alt="열고 닫기 화살표" />
       </S.Select>
-      {isOpen && <S.Options>{options}</S.Options>}
+      {isOpen && (
+        <S.Options>
+          {options.map(({ value, label }) => (
+            <S.Option key={value as string} onClick={() => handleOptionOnClick(value)}>
+              {label}
+            </S.Option>
+          ))}
+        </S.Options>
+      )}
     </S.Dropdown>
   );
 };

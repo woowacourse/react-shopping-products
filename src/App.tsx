@@ -2,23 +2,25 @@ import { Container } from './layouts/GlobalLayout/style';
 
 import { createContext, useState } from 'react';
 
+import Header from './components/common/Header';
+import Main from './components/common/Main';
+import Dropdown from './components/common/Dropdown';
+import Title from './components/common/Title';
+import Loading from './components/common/Loading';
+
 import CartButton from './components/CartButton';
 import HomeButton from './components/HomeButton';
 import ProductsContainer from './components/ProductsContainer';
 import FilterContainer from './components/FilterContainer';
 import ProductsContent from './components/ProductsContent';
 import ProductItem from './components/ProductItem';
-import Header from './components/common/Header';
-import Main from './components/common/Main';
-import Dropdown from './components/common/Dropdown';
-import Title from './components/common/Title';
-import useFetchProducts from './hooks/useFetchProducts';
-import useCart from './hooks/useCart';
-
-import { CATEGORY, PRICE_SORT } from './constants/filter';
-import { CartItem } from './types/cart';
-import Loading from './components/common/Loading';
 import ToastPopup from './components/ToastPopup';
+
+import useFetchProducts from './hooks/useFetchProducts';
+
+import { CATEGORIES, PRICE_SORT } from './constants/filter';
+import { CartItem } from './types/cart';
+import { Category, Order } from './types/product';
 
 interface CartItemContextProps {
   cartItems: CartItem[];
@@ -37,20 +39,15 @@ function App() {
   const { error, category, filterByCategory, loading, products, sort, setSorting, observerRef } =
     useFetchProducts();
 
-  const selectedCategoryOption = Object.entries(CATEGORY).find(
-    ([, value]) => value === category,
-  )![0];
+  const selectedCategoryOption = CATEGORIES.find(({ value }) => value === category)!.label;
+  const selectedSortOption = PRICE_SORT.find(({ value }) => value === sort.price)!.label;
 
-  const selectedSortOption = Object.entries(PRICE_SORT).find(
-    ([, value]) => value === sort.price,
-  )![0];
-
-  const handleCategoryChange = (option: string) => {
-    filterByCategory(CATEGORY[option]);
+  const handleCategoryChange = (option: Category) => {
+    filterByCategory(option);
   };
 
-  const handlePriceSortChange = (option: string) => {
-    setSorting('price', PRICE_SORT[option]);
+  const handlePriceSortChange = (option: Order) => {
+    setSorting('price', option);
   };
 
   return (
@@ -69,19 +66,19 @@ function App() {
             <Title />
             <FilterContainer>
               <Dropdown
-                optionArray={Object.keys(CATEGORY)}
+                options={CATEGORIES}
                 selectedOption={selectedCategoryOption}
                 optionChange={handleCategoryChange}
               />
               <Dropdown
-                optionArray={Object.keys(PRICE_SORT)}
+                options={PRICE_SORT}
                 selectedOption={selectedSortOption}
                 optionChange={handlePriceSortChange}
               />
             </FilterContainer>
             <ProductsContent>
               {products.map((product) => (
-                <ProductItem key={product.id} {...product} useCartProp={useCart} />
+                <ProductItem key={product.id} {...product} />
               ))}
               {loading && <Loading />}
               <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>

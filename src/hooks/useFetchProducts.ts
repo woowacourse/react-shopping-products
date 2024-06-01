@@ -4,7 +4,7 @@ import { fetchProducts } from '../api/products';
 import usePage from './usePage';
 import useProducts from './useProducts';
 
-import { Order, Sort } from '../types/product';
+import { Category, Order, Sort } from '../types/product';
 import useIntersectionObserver from './useIntersectionObserver';
 
 const useFetchProducts = () => {
@@ -16,7 +16,7 @@ const useFetchProducts = () => {
   const { products, addProducts, resetProducts } = useProducts();
   const { page, increasePage, decreasePage, resetPage } = usePage();
 
-  const [category, setCategory] = useState('all');
+  const [category, setCategory] = useState<Category>('all');
   const [sort, setSort] = useState<Sort>({
     price: 'asc',
   });
@@ -48,7 +48,7 @@ const useFetchProducts = () => {
     setIsLastPage(false);
   };
 
-  const filterByCategory = (selectedCategory: string) => {
+  const filterByCategory = (selectedCategory: Category) => {
     if (selectedCategory !== category) {
       reset();
       setCategory(selectedCategory);
