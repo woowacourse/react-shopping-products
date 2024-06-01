@@ -1,17 +1,13 @@
 import './reset.css';
-import { CartItemListProvider } from './hooks/useCartItemList';
-import ProductListPageContainer from './pages/ProductListPageContainer';
-import ToastProvider from './hooks/useToast';
+import ToastContainer from './components/common/Toast/ToastContainer';
+import ProductListPage from './pages/ProductListPage';
 
 function App() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={{ width: '472px' }}>
-        <ToastProvider>
-          <CartItemListProvider>
-            <ProductListPageContainer />
-          </CartItemListProvider>
-        </ToastProvider>
+        <ProductListPage />
+        <ToastContainer />
       </div>
     </div>
   );

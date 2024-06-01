@@ -19,18 +19,18 @@ export default function DropdownUl({ optionList, bannerText, onChange }: Props) 
   const [selectedOption, setSelectedOption] = useState(bannerText);
   const selectRef = useRef<HTMLDivElement | null>(null);
 
-  const handleOptionClick = (value: string, option: string) => {
-    setSelectedOption(value);
+  const handleOptionClick = (option: string, value: string) => {
+    onChange(value);
+    setSelectedOption(option);
     setIsOpen(false);
-    onChange(option);
   };
 
   const handleSelectBoxToggle = () => {
     setIsOpen((prevState) => !prevState);
   };
 
-  const handleClickOutside = (event: any) => {
-    if (selectRef.current && !selectRef.current.contains(event.target)) {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
       setIsOpen(false);
     }
   };

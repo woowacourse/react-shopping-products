@@ -1,11 +1,11 @@
 import { SortType, Category } from '@/types';
 
-export type OptionItem<T> = {
+export type DropdownItem<T> = {
   option: string;
   value: T;
 };
 
-export const CATEGORY_OPTION_LIST: OptionItem<Category>[] = [
+export const CATEGORY_OPTION_LIST: DropdownItem<Category>[] = [
   { option: '전체', value: 'all' },
   { option: '패션', value: 'fashion' },
   { option: '음료', value: 'beverage' },
@@ -15,7 +15,7 @@ export const CATEGORY_OPTION_LIST: OptionItem<Category>[] = [
   { option: '도서', value: 'books' },
 ];
 
-export const FILTER_OPTION_LIST: OptionItem<SortType>[] = [
+export const FILTER_OPTION_LIST: DropdownItem<SortType>[] = [
   { option: '낮은 가격순', value: 'asc' },
   { option: '높은 가격순', value: 'desc' },
 ];
