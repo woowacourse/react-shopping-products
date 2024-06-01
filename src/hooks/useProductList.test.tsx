@@ -1,5 +1,6 @@
 import useProduct from './useProduct';
 import { waitFor, renderHook, act } from '@testing-library/react';
+import { ChangeEvent } from 'react';
 
 const INITIAL_PRODUCT_LENGTH = 20;
 const ADDITIONAL_PRODUCT_LENGTH = 4;
@@ -85,64 +86,64 @@ describe('useProduct에 대한 테스트 코드 작성', () => {
       });
     });
   });
-  // describe('필터 변경 발생', () => {
-  //   it('정렬 기준이 바뀌면 1페이지부터 다시 받아온다.', async () => {
-  //     const { result } = renderHook(() => useProductList());
+  describe('필터 변경 발생', () => {
+    it('정렬 기준이 바뀌면 1페이지부터 다시 받아온다.', async () => {
+      const { result } = renderHook(() => useProduct());
 
-  //     act(() => {
-  //       result.current.fetchNextPage();
-  //       result.current.fetchNextPage(); // 연속 페치가 될 지 확신 없음
-  //     });
+      act(() => {
+        result.current.handleNextPage();
+        result.current.handleNextPage();
+      });
 
-  //     await waitFor(() => {
-  //       expect(result.current.page).toBe(2);
-  //     });
+      await waitFor(() => {
+        expect(result.current.page).toBe(2);
+      });
 
-  //     act(() => {
-  //       const event = {
-  //         target: {
-  //           value: 'desc',
-  //         },
-  //       } as ChangeEvent<HTMLSelectElement>;
+      act(() => {
+        const event = {
+          target: {
+            value: 'desc',
+          },
+        } as ChangeEvent<HTMLSelectElement>;
 
-  //       result.current.handleSortType(event.target.value);
-  //     });
+        result.current.handleSortType(event.target.value);
+      });
 
-  //     await waitFor(() => {
-  //       expect(result.current.page).toBe(1);
-  //     });
-  //   });
+      await waitFor(() => {
+        expect(result.current.page).toBe(0);
+        expect(result.current.productList.length).toBeGreaterThan(0);
+      });
+    });
+    it('카테고리가 바뀌면 1페이지부터 다시 받아온다.', async () => {
+      const { result } = renderHook(() => useProduct());
 
-  //   it('카테고리가 바뀌면 1페이지부터 다시 받아온다.', async () => {
-  //     const { result } = renderHook(() => useProductList());
+      const targetCategory = 'electronics';
 
-  //     const targetCategory = 'electronics';
+      act(() => {
+        result.current.handleNextPage();
+        result.current.handleNextPage();
+      });
 
-  //     act(() => {
-  //       result.current.fetchNextPage();
-  //       result.current.fetchNextPage();
-  //     });
+      await waitFor(() => {
+        expect(result.current.page).toBe(2);
+      });
 
-  //     await waitFor(() => {
-  //       expect(result.current.page).toBe(2);
-  //     });
+      act(() => {
+        const event = {
+          target: {
+            value: targetCategory,
+          },
+        } as ChangeEvent<HTMLSelectElement>;
 
-  //     act(() => {
-  //       const event = {
-  //         target: {
-  //           value: 'electronics',
-  //         },
-  //       } as ChangeEvent<HTMLSelectElement>;
+        result.current.handleCategory(event.target.value);
+      });
 
-  //       result.current.handleCategory(event.target.value);
-  //     });
-
-  //     await waitFor(() => {
-  //       expect(result.current.page).toBe(1);
-  //       expect(
-  //         result.current.productList.every(({ category }) => category === targetCategory),
-  //       ).toBe(true);
-  //     });
-  //   });
-  // });
+      await waitFor(() => {
+        expect(result.current.page).toBe(0);
+        expect(
+          result.current.productList.every(({ category }) => category === targetCategory),
+        ).toBe(true);
+      });
+    });
+  });
 });
