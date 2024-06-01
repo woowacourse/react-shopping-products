@@ -1,5 +1,7 @@
 import { Container } from './layouts/GlobalLayout/style';
 
+import { useContext } from 'react';
+
 import Header from './components/common/Header';
 import Main from './components/common/Main';
 import Dropdown from './components/common/Dropdown';
@@ -16,10 +18,13 @@ import ToastPopup from './components/ToastPopup';
 
 import useFetchProducts from './hooks/useFetchProducts';
 
+import { CartItemsContext } from './context/CartItemProvider';
+
 import { CATEGORIES, PRICE_SORT } from './constants/filter';
 import { Category, Order } from './types/product';
 
 function App() {
+  const { cartItems } = useContext(CartItemsContext);
   const { error, category, filterByCategory, loading, products, sort, setSorting, observerRef } =
     useFetchProducts();
 
@@ -38,7 +43,7 @@ function App() {
     <Container>
       <Header>
         <HomeButton onClick={() => {}} />
-        <CartButton onClick={() => {}} />
+        <CartButton count={cartItems.length} onClick={() => {}} />
       </Header>
       <ToastPopup
         isOpen={Boolean(error)}
@@ -61,8 +66,13 @@ function App() {
           </FilterContainer>
           <ProductsContent>
             {products.map((product) => (
-              <ProductItem key={product.id} {...product} />
+              <ProductItem
+                key={product.id}
+                cartItemId={cartItems.find((cartItem) => product.id === cartItem.product.id)?.id}
+                {...product}
+              />
             ))}
+
             {loading && <Loading />}
             <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
           </ProductsContent>

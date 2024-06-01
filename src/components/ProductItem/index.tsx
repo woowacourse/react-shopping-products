@@ -1,38 +1,45 @@
 import * as S from './style';
 
 import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
-import useCart from '../../hooks/useCart';
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
+import { CartItemsContext } from '../../context/CartItemProvider';
 
 interface ProductItemProps {
   id: number;
   imageUrl: string;
   name: string;
   price: number;
+  cartItemId: number | undefined;
 }
 
-const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
-  const { cartItems, addCart, deleteCart } = useCart();
-  const cartItem = cartItems.find(({ product }) => id === product.id);
-
-  const [isInCart, setIsInCart] = useState(false);
-
-  useEffect(() => {
-    if (cartItem) {
-      setIsInCart(true);
-    }
-  }, [cartItem]);
+const ProductItem = ({ id, imageUrl, name, price, cartItemId }: ProductItemProps) => {
+  const { addCart, deleteCart } = useContext(CartItemsContext);
+  const [loading, setLoading] = useState(false);
+  const [isInCart, setIsInCart] = useState(Boolean(cartItemId));
 
   const TOGGLE_BUTTON_ICON = isInCart ? REMOVE_TO_CART : ADD_TO_CART;
   const BUTTON_TEXT = isInCart ? '빼기' : '담기';
 
-  const onToggle = () => {
-    if (cartItem && isInCart) {
-      deleteCart(cartItem.id);
-      setIsInCart(false);
+  const onToggle = async () => {
+    setLoading(true);
+    if (cartItemId) {
+      try {
+        await deleteCart(cartItemId);
+        setIsInCart(false);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     } else {
-      addCart(id);
-      setIsInCart(true);
+      try {
+        await addCart(id);
+        setIsInCart(true);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -45,10 +52,14 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
           <S.Price>{price.toLocaleString('ko-KR')}원</S.Price>
         </S.Information>
         <S.ButtonContainer>
-          <S.ToggleButton onClick={onToggle} $isInCart={isInCart}>
-            <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
-            <span>{BUTTON_TEXT}</span>
-          </S.ToggleButton>
+          {loading ? (
+            <span>loading...</span>
+          ) : (
+            <S.ToggleButton onClick={onToggle} $isInCart={isInCart}>
+              <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
+              <span>{BUTTON_TEXT}</span>
+            </S.ToggleButton>
+          )}
         </S.ButtonContainer>
       </S.InformationContainer>
     </S.ProductItem>
