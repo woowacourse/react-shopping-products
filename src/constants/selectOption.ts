@@ -11,8 +11,8 @@ export const CATEGORY = {
 export type Category = keyof typeof CATEGORY;
 
 export const SORT = {
-  "낮은 가격순": "asc",
-  "높은 가격순": "desc",
+  "낮은 가격순": "price,id,asc",
+  "높은 가격순": "price,id,desc",
 };
 
 export type Sort = keyof typeof SORT;
