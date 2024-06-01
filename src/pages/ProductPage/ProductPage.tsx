@@ -2,21 +2,24 @@ import * as Styled from './ProductPage.styled';
 
 import { lazy, useState } from 'react';
 
+import AppLayout from '@components/layout/AppLayout/AppLayout';
 import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropdown';
 import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import SortDropdown from '@components/product/SortDropdown/SortDropdown';
 import WrongCat from '@components/common/WrongCat/WrongCat';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import usePaginatedProducts from '@hooks/product/usePaginatedProducts';
+import useToggleShoppingCart from '@hooks/product/useToggleShoppingCart';
 
 const CardList = lazy(() => import('@components/product/CardList/CardList'));
 
-interface ProductPageProps extends React.PropsWithChildren {
-  onToggleCart: (id: number) => void;
-  isAddedCart: (id: number) => boolean;
-}
+const ProductPage = () => {
+  const {
+    addedShoppingCartLength: itemCount,
+    onToggleCart,
+    isAddedCart,
+  } = useToggleShoppingCart();
 
-const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
   const [isSortTypeDropdownOpen, setIsSortTypeDropdownOpen] = useState(false);
@@ -57,7 +60,7 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
   );
 
   return (
-    <>
+    <AppLayout itemCount={itemCount}>
       <Styled.ProductPageTitle>bpple 상품 목록</Styled.ProductPageTitle>
       <Styled.ProductDropdownWrapper>
         <CategoryDropdown
@@ -80,7 +83,7 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
       {!isLoading && products.length === 0 && wrongCatElement}
 
       {!isLoading && <Styled.ObserverTarget ref={targetRef} />}
-    </>
+    </AppLayout>
   );
 };
 
