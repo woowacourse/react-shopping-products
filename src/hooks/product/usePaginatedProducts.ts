@@ -1,52 +1,50 @@
+import { Category, SortType } from '@pages/ProductPage/Product.types';
 import { useCallback, useEffect, useState } from 'react';
 
 import { BaseResponse } from '@appTypes/response';
-import { PRODUCT_CATEGORY_MAP } from '@components/product/CategoryDropdown/CategoryDropdown.constant';
-import { PRODUCT_SORT_MAP } from '@components/product/SortDropdown/SortDropdown.constant';
 import { Product } from '@appTypes/product';
 import { getProductEndpoint } from '@pages/ProductPage/ProductPage.util';
 import useFetch from '@hooks/useFetch';
-import usePagination from '@hooks/usePagination';
-import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
-import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 
-interface UseProductResult {
-  products: Product[];
-  page: number;
-  sortType: keyof typeof PRODUCT_SORT_MAP;
-  category: Product['category'] | 'all';
-  isLoading: boolean;
-  updateNextProductPage: () => void;
-  onSelectSortTypeOption: (sortType: keyof typeof PRODUCT_SORT_MAP) => void;
-  onSelectCategoryOption: (category: keyof typeof PRODUCT_CATEGORY_MAP) => void;
+interface usePaginatedProductsProps {
+  errorHandler: (string: string) => void;
 }
-
-const usePaginatedProducts = (): UseProductResult => {
-  const { page, resetPage, updateNextPage } = usePagination();
-
+const usePaginatedProducts = ({ errorHandler }: usePaginatedProductsProps) => {
   const [products, setProducts] = useState<Product[]>([]);
 
-  const { category, sortType, onSelectCategoryOption, onSelectSortTypeOption } =
-    useSelectProductDropdown(resetPage, () => setProducts([]));
+  const [category, setCategory] = useState<Category>('전체');
+  const [sortType, setSortType] = useState<SortType>('낮은 가격순');
+  const [page, setPage] = useState(0);
 
-  const { showToast } = useToastContext();
+  const updateCategory = (nextCategory: Category) => {
+    if (nextCategory === category) return;
+    setCategory(nextCategory);
+    setPage(0);
+  };
+
+  const updateSortType = (nextSortType: SortType) => {
+    if (nextSortType === sortType) return;
+    setSortType(nextSortType);
+    setPage(0);
+  };
 
   const { data, isLoading } = useFetch<BaseResponse<Product[]>>(
     getProductEndpoint({ category, page, sortType }),
-    showToast
+    errorHandler
   );
 
   useEffect(() => {
     if (!data) return;
 
-    setProducts(prev => [...prev, ...data.content]);
-  }, [data]);
+    setProducts(prev =>
+      page === 0 ? [...data.content] : [...prev, ...data.content]
+    );
+  }, [page, data]);
 
   const updateNextProductPage = useCallback(() => {
     if (data?.last) return;
-
-    updateNextPage();
-  }, [updateNextPage, data]);
+    setPage(prev => prev + 1);
+  }, [data]);
 
   return {
     products,
@@ -55,8 +53,8 @@ const usePaginatedProducts = (): UseProductResult => {
     category,
     isLoading,
     updateNextProductPage,
-    onSelectSortTypeOption,
-    onSelectCategoryOption,
+    updateCategory,
+    updateSortType,
   };
 };
 
