@@ -3,6 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 
 import { API_URL } from '@/api/config';
 import { ENDPOINT } from '@/api/endpoints';
+import { FETCH_SIZE } from '@/constants/productList';
 import { act } from 'react';
 import { server } from '@/mocks/server';
 import useProductList from '@/hooks/useProductList';
@@ -13,14 +14,16 @@ describe('useProductList 테스트', () => {
       const { result } = renderHook(() => useProductList());
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
     });
 
     it('상품 목록 조회 전 로딩 상태를 가진다.', async () => {
       const { result } = renderHook(() => useProductList());
 
-      expect(result.current.loading).toBe(true);
+      expect(result.current.isLoading).toBe(true);
     });
 
     it('상품 목록 조회 중 에러 발생시 에러 상태를 가진다.', async () => {
@@ -34,28 +37,32 @@ describe('useProductList 테스트', () => {
 
       await waitFor(() => {
         expect(result.current.products).toEqual([]);
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
         expect(result.current.error).toBeTruthy();
       });
     });
   });
 
   describe('페이지네이션 테스트', () => {
-    it('초기 랜더링시 첫 페이지의 상품 20개를 불러온다.', async () => {
+    it(`초기 랜더링시 첫 페이지의 상품 ${FETCH_SIZE.firstPageItemCount}개를 불러온다.`, async () => {
       const { result } = renderHook(() => useProductList());
 
       await waitFor(() => {
         expect(result.current.page).toBe(0);
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
     });
 
-    it('스크롤 다운 시 다음 페이지의 상품 4개를 불러온다.', async () => {
+    it(`스크롤 다운 시 다음 페이지의 상품 ${FETCH_SIZE.moreLoadItemCount}개를 추가로 불러온다.`, async () => {
       const { result } = renderHook(() => useProductList());
 
       await waitFor(() => {
         expect(result.current.page).toBe(0);
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -63,8 +70,12 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(5);
-        expect(result.current.products).toHaveLength(24);
+        expect(result.current.page).toBe(
+          FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount
+        );
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount + FETCH_SIZE.moreLoadItemCount
+        );
       });
     });
 
@@ -73,7 +84,9 @@ describe('useProductList 테스트', () => {
 
       await waitFor(() => {
         expect(result.current.page).toBe(0);
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
         expect(result.current.hasNextPage).toBe(true);
       });
 
@@ -82,8 +95,12 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(5);
-        expect(result.current.products).toHaveLength(24);
+        expect(result.current.page).toBe(
+          FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount
+        );
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount + FETCH_SIZE.moreLoadItemCount
+        );
         expect(result.current.hasNextPage).toBe(false);
       });
 
@@ -92,7 +109,9 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(24);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount + FETCH_SIZE.moreLoadItemCount
+        );
         expect(result.current.hasNextPage).toBe(false);
       });
     });
@@ -101,17 +120,17 @@ describe('useProductList 테스트', () => {
       const { result } = renderHook(() => useProductList());
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
       });
 
       act(() => {
         result.current.fetchNextPage();
       });
 
-      expect(result.current.loading).toBe(true);
+      expect(result.current.isLoading).toBe(true);
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
       });
     });
   });
@@ -121,7 +140,9 @@ describe('useProductList 테스트', () => {
       const { result } = renderHook(() => useProductList());
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       const isAscPrice = result.current.products.reduce(
@@ -136,11 +157,13 @@ describe('useProductList 테스트', () => {
       expect(isAscPrice).toBe(true);
     });
 
-    it('다음 페이지의 가져오는 4개의 상품 목록은 기본으로 낮은 가격 순(오름차순)으로 정렬 조회된다.', async () => {
+    it(`다음 페이지의 가져오는 ${FETCH_SIZE.moreLoadItemCount}개의 상품 목록은 기본으로 낮은 가격 순(오름차순)으로 정렬 조회된다.`, async () => {
       const { result } = renderHook(() => useProductList());
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -148,8 +171,12 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(5);
-        expect(result.current.products).toHaveLength(24);
+        expect(result.current.page).toBe(
+          FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount
+        );
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount + FETCH_SIZE.moreLoadItemCount
+        );
       });
 
       const isAscPrice = result.current.products.reduce(
@@ -168,7 +195,9 @@ describe('useProductList 테스트', () => {
       const { result } = renderHook(() => useProductList());
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -176,7 +205,9 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       const isDescPrice = result.current.products.reduce(
@@ -195,7 +226,9 @@ describe('useProductList 테스트', () => {
       const { result } = renderHook(() => useProductList());
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -203,7 +236,9 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -211,8 +246,12 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(5);
-        expect(result.current.products).toHaveLength(24);
+        expect(result.current.page).toBe(
+          FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount
+        );
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount + FETCH_SIZE.moreLoadItemCount
+        );
       });
 
       const isDescPrice = result.current.products.reduce(
@@ -235,7 +274,9 @@ describe('useProductList 테스트', () => {
       const SELECTED_CATEGORY = 'fashion';
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -243,7 +284,9 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       const isAllFashion = result.current.products.some(
@@ -259,7 +302,9 @@ describe('useProductList 테스트', () => {
       const SELECTED_CATEGORY = 'fashion';
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -267,7 +312,9 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -275,8 +322,12 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(5);
-        expect(result.current.products).toHaveLength(24);
+        expect(result.current.page).toBe(
+          FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount
+        );
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount + FETCH_SIZE.moreLoadItemCount
+        );
       });
 
       const isAllFashion = result.current.products.some(
@@ -292,7 +343,9 @@ describe('useProductList 테스트', () => {
       const SELECTED_CATEGORY = 'fitness';
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -300,7 +353,9 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       const isAllFashion = result.current.products.some(
@@ -316,7 +371,9 @@ describe('useProductList 테스트', () => {
       const SELECTED_CATEGORY = 'fitness';
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -324,7 +381,9 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount
+        );
       });
 
       act(() => {
@@ -332,8 +391,12 @@ describe('useProductList 테스트', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(5);
-        expect(result.current.products).toHaveLength(24);
+        expect(result.current.page).toBe(
+          FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount
+        );
+        expect(result.current.products).toHaveLength(
+          FETCH_SIZE.firstPageItemCount + FETCH_SIZE.moreLoadItemCount
+        );
       });
 
       const isAllFashion = result.current.products.some(
