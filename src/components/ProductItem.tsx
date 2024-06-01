@@ -1,12 +1,12 @@
 import { FlexColumn, FlexRow, FlexSpaceBetween } from '@/style/common.style';
-import { useEffect, useState } from 'react';
 
 import CartInButton from './button/CartInButton';
 import CartOutButton from './button/CartOutButton';
 import { Product } from '@/types/product.type';
-import Toast from './Toast';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
+import { useEffect } from 'react';
+import useErrorContext from '@/hooks/useErrorContext';
 import useProductSelector from '@/hooks/useProductSelector';
 
 interface Props {
@@ -15,20 +15,15 @@ interface Props {
 
 const ProductItem = ({ item }: Props) => {
   const { id, imageUrl, name, price } = item;
-  const [showToast, setShowToast] = useState(false);
   const { isSelected, error, addCartItem, removeCartItem } =
     useProductSelector(id);
+  const { setError } = useErrorContext();
 
   useEffect(() => {
     if (error) {
-      setShowToast(true);
-      const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
-
-      return () => clearTimeout(timer);
+      setError(error as Error);
     }
-  }, [error]);
+  }, [error, setError]);
 
   return (
     <>
@@ -48,7 +43,6 @@ const ProductItem = ({ item }: Props) => {
           </S.ButtonWrapper>
         </S.InfoWrapper>
       </S.ItemCard>
-      {showToast && <Toast message={(error as Error).message} />}
     </>
   );
 };

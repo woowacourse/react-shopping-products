@@ -1,6 +1,5 @@
 import { CATEGORY_LIST, SORT_ORDER } from '@/constants/productList';
 import { FlexColumn, FlexSpaceBetween, WhiteSpace } from '@/style/common.style';
-import { useEffect, useState } from 'react';
 
 import BaseDropDown from '@/components/dropdown/BaseDropDown';
 import CartCountIcon from '@/components/CartCountIcon';
@@ -9,6 +8,8 @@ import ProductList from '@/components/ProductList';
 import Toast from '@/components/Toast';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
+import { useEffect } from 'react';
+import useErrorContext from '@/hooks/useErrorContext';
 import useProductList from '@/hooks/useProductList';
 
 const Products = () => {
@@ -22,22 +23,16 @@ const Products = () => {
     handleChangeOrder,
     handleChangeCategory,
   } = useProductList();
-
-  const [showToast, setShowToast] = useState(false);
-
-  const categoryOptions = CATEGORY_LIST;
-  const sortOptions = SORT_ORDER;
+  const { setError } = useErrorContext();
 
   useEffect(() => {
     if (error) {
-      setShowToast(true);
-      const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
-
-      return () => clearTimeout(timer);
+      setError(error as Error);
     }
-  }, [error]);
+  }, [error, setError]);
+
+  const categoryOptions = CATEGORY_LIST;
+  const sortOptions = SORT_ORDER;
 
   return (
     <>
@@ -70,7 +65,7 @@ const Products = () => {
             hasNextPage={hasNextPage}
           />
         </S.Body>
-        {showToast && <Toast message={(error as Error).message} />}
+        <Toast />
       </S.Container>
     </>
   );

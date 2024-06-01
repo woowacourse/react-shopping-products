@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
+import useToast from '@/hooks/useToast';
 
-interface Props {
-  message: string;
-}
+const Toast = () => {
+  const { showToast, error } = useToast();
 
-const Toast = ({ message }: Props) => {
-  return <S.Toast>{message}</S.Toast>;
+  return showToast ? <S.Toast>{error?.message}</S.Toast> : null;
 };
 
 export default Toast;
@@ -23,5 +22,6 @@ const S = {
     transition: opacity 0.5s ease-in-out;
     font-size: ${theme.fontSize.xsmall};
     font-weight: ${theme.fontWeight.normal};
+    opacity: 1;
   `,
 };
