@@ -8,17 +8,10 @@ import {
 } from '../constants';
 import { useToast } from './useToast';
 import { CategoryType, SortType } from '../type';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
+import { ProductItem } from '../type/ProductItem';
 
 interface UseProductsResult {
-  products: Product[];
+  products: ProductItem[];
   loading: boolean;
   error: unknown;
   page: number;
@@ -28,7 +21,7 @@ interface UseProductsResult {
 }
 
 export default function useProducts(): UseProductsResult {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
   const [page, setPage] = useState(0);

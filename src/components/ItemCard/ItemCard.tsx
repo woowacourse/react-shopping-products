@@ -1,4 +1,3 @@
-import { LegacyRef } from 'react';
 import formatPriceToKoreanWon from '../../util/formatPriceToKoreanWon';
 import {
   ItemCardSection,
@@ -9,7 +8,6 @@ import {
 import CartButton from '../CartButton/CartButton';
 
 interface ItemCardProps {
-  ref?: LegacyRef<HTMLLIElement> | undefined;
   id: number;
   name: string;
   price: number;
@@ -19,7 +17,6 @@ interface ItemCardProps {
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({
-  ref,
   id,
   name,
   price,
@@ -27,7 +24,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
   initIsInCart,
 }) => {
   return (
-    <li key={id} ref={ref ?? ref}>
+    <li key={id}>
       <ItemCardSection>
         <ItemImage src={imageUrl} />
         <ItemInfo>
