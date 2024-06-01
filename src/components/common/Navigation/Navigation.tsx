@@ -1,5 +1,6 @@
-import { ShoppingCart } from '@assets/svg';
 import * as Styled from './Navigation.styled';
+
+import { ShoppingCartSvg } from '@assets/svg';
 
 interface NavigationProps extends React.PropsWithChildren {
   itemCount?: number;
@@ -11,7 +12,7 @@ const Navigation: React.FC<NavigationProps> = ({ itemCount = 0 }) => {
       <Styled.NavigationWrapper>
         <Styled.NavigationButton>SHOP</Styled.NavigationButton>
         <Styled.NavigationButton style={{ position: 'relative' }} disabled>
-          <ShoppingCart />
+          <ShoppingCartSvg />
           {itemCount > 0 && <Styled.Circle>{itemCount}</Styled.Circle>}
         </Styled.NavigationButton>
       </Styled.NavigationWrapper>

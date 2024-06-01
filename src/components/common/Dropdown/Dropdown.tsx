@@ -1,8 +1,10 @@
-import { useDropdownContext, DropdownProvider } from './provider/DropdownProvider';
-
-import { DownArrow, UpArrow } from '@assets/svg';
-
 import * as Styled from './Dropdown.styled';
+
+import { DownArrowSvg, UpArrowSvg } from '@assets/svg';
+import {
+  DropdownProvider,
+  useDropdownContext,
+} from './provider/DropdownProvider';
 
 type OptionType = React.FC<
   React.PropsWithChildren<{
@@ -12,7 +14,9 @@ type OptionType = React.FC<
   }>
 >;
 type MenuType = React.FC<React.PropsWithChildren>;
-type TriggerType = React.FC<React.PropsWithChildren<{ placeholder: string; value?: string }>>;
+type TriggerType = React.FC<
+  React.PropsWithChildren<{ placeholder: string; value?: string }>
+>;
 
 const Dropdown: React.FC<
   React.PropsWithChildren<{ isOpen: boolean; onToggleDropdown: () => void }>
@@ -32,9 +36,13 @@ const Trigger: TriggerType = ({ placeholder, value }) => {
   const { isOpen, onToggleDropdown } = useDropdownContext()!;
 
   return (
-    <Styled.DropdownTriggerContainer $isOpen={isOpen} $value={value} onClick={onToggleDropdown}>
+    <Styled.DropdownTriggerContainer
+      $isOpen={isOpen}
+      $value={value}
+      onClick={onToggleDropdown}
+    >
       <span>{value || placeholder}</span>
-      {isOpen ? <DownArrow /> : <UpArrow />}
+      {isOpen ? <DownArrowSvg /> : <UpArrowSvg />}
     </Styled.DropdownTriggerContainer>
   );
 };
@@ -43,11 +51,18 @@ const Menu: MenuType = ({ children }) => {
   const { isOpen } = useDropdownContext()!;
 
   return isOpen ? (
-    <Styled.DropdownMenuContainer $isOpen={isOpen}>{children}</Styled.DropdownMenuContainer>
+    <Styled.DropdownMenuContainer $isOpen={isOpen}>
+      {children}
+    </Styled.DropdownMenuContainer>
   ) : null;
 };
 
-const Option: OptionType = ({ isSelected, onSelectOption, onHoverOption, children }) => {
+const Option: OptionType = ({
+  isSelected,
+  onSelectOption,
+  onHoverOption,
+  children,
+}) => {
   return (
     <Styled.DropdownOptionContainer
       $isSelected={isSelected}
