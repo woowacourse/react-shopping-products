@@ -1,10 +1,10 @@
 import { http, HttpResponse } from 'msw';
 import { PRODUCTS_ENDPOINT } from '../api/endpoints';
 import {
-  INITIAL_PAGING_SIZE,
-  PAGING_SIZE,
-  START_PAGE_NUMBER,
-} from '../constants/api';
+  PAGE_SIZE,
+  INITIAL_PAGE_SIZE,
+  INITIAL_PAGE_NUMBER,
+} from '../constants/paginationRules';
 import products from './products.json';
 
 export const handlers = [
@@ -14,11 +14,11 @@ export const handlers = [
     const category = url.searchParams.get('category');
     const page = Number(url.searchParams.get('page') || '0');
 
-    const size = page === START_PAGE_NUMBER ? INITIAL_PAGING_SIZE : PAGING_SIZE;
+    const size = page === INITIAL_PAGE_NUMBER ? INITIAL_PAGE_SIZE : PAGE_SIZE;
     const start =
-      page === START_PAGE_NUMBER
+      page === INITIAL_PAGE_NUMBER
         ? page
-        : (page - 5) * PAGING_SIZE + INITIAL_PAGING_SIZE;
+        : (page - 5) * PAGE_SIZE + INITIAL_PAGE_SIZE;
     const end = start + size;
 
     const filterByCategory = category

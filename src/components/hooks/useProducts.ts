@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
 import {
-  INITIAL_PAGING_SIZE,
-  PAGING_SIZE,
-  START_PAGE_NUMBER,
-} from '../../constants/api';
-import useFetch from './useFetch';
+  INITIAL_PAGE_NUMBER,
+  INITIAL_PAGE_SIZE,
+  PAGE_SIZE,
+} from '../../constants/paginationRules';
 import { Product } from '../../types';
+import useFetch from './useFetch';
 
 export type SortType = 'desc' | 'asc';
 
@@ -33,27 +33,28 @@ export default function useProducts(): UseProductsResult {
   });
 
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLastPage, setIsLastPage] = useState(false);
+
   const [page, setPage] = useState(0);
   const [sort, setSort] = useState<SortType>('asc');
-  const [category, setCategory] = useState<string>('');
-  const [isLastPage, setIsLastPage] = useState<boolean>(false);
+  const [category, setCategory] = useState('');
 
   const getProducts = useCallback(async () => {
     fetchData({
       page,
-      size: page === START_PAGE_NUMBER ? INITIAL_PAGING_SIZE : PAGING_SIZE,
-      sort: `price,${sort}`,
       category,
+      sort: `price,${sort}`,
+      size: page === INITIAL_PAGE_NUMBER ? INITIAL_PAGE_SIZE : PAGE_SIZE,
     }).then((response) => {
       if (!response) return;
       const { last, content } = response;
 
       setIsLastPage(last);
       setProducts((prevProducts) =>
-        page === START_PAGE_NUMBER ? content : [...prevProducts, ...content]
+        page === INITIAL_PAGE_NUMBER ? content : [...prevProducts, ...content]
       );
     });
-  }, [page, sort, category]);
+  }, [page, sort, category, fetchData]);
 
   useEffect(() => {
     if (!isLastPage) {
@@ -62,17 +63,18 @@ export default function useProducts(): UseProductsResult {
   }, [page]);
 
   useEffect(() => {
-    setPage(START_PAGE_NUMBER);
     setIsLastPage(false);
-    getProducts();
+    setPage(INITIAL_PAGE_NUMBER);
   }, [category, sort]);
 
   const fetchNextPage = () => {
-    if (!isLastPage) {
-      if (page === START_PAGE_NUMBER)
-        setPage(page + INITIAL_PAGING_SIZE / PAGING_SIZE);
-      else setPage(page + 1);
-    }
+    if (isLastPage) return;
+
+    setPage((prevPage) =>
+      prevPage !== INITIAL_PAGE_NUMBER
+        ? prevPage + 1
+        : prevPage + INITIAL_PAGE_SIZE / PAGE_SIZE
+    );
   };
 
   return {

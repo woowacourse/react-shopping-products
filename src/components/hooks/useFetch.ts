@@ -14,7 +14,7 @@ interface UseFetchProps {
 }
 
 export default function useFetch<T>({ url }: UseFetchProps): UseFetchResult<T> {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchData = async (queryParams?: CommonQueryParams) => {
