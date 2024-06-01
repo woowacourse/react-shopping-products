@@ -13,35 +13,18 @@ const useProducts = () => {
 
   const { onAddToast } = useToast();
 
-  const fetchFirstPage = async (category: Category, page: number, sort: Sort) => {
-    try {
-      setLoading(true);
-      const res = await getProducts({ category, page, size: 20, sort });
-      if (res.last) setIsLastPage(true);
-
-      setProducts(res.content);
-      setLoading(false);
-      setCurrentPage(1);
-    } catch (error) {
-      if (error instanceof Error) {
-        onAddToast(ERROR_MESSAGES.failGetProducts);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchNextPage = async (category: Category, page: number, sort: Sort) => {
+  const fetchProductPage = async (category: Category, page: number, sort: Sort) => {
     try {
       setLoading(true);
 
-      const size = currentPage === 0 ? 20 : 4;
+      const size = page === 0 ? 20 : 4;
 
       const res = await getProducts({ category, page, size, sort });
       if (res.last) setIsLastPage(true);
 
-      setProducts((prevProducts) => [...prevProducts, ...res.content]);
-      setCurrentPage((prevPage) => prevPage + 1);
+      page === 0 ? setProducts(res.content) : setProducts((prevProducts) => [...prevProducts, ...res.content]);
+
+      setCurrentPage(page + 1);
     } catch (error) {
       if (error instanceof Error) {
         onAddToast(ERROR_MESSAGES.failGetProducts);
@@ -51,7 +34,9 @@ const useProducts = () => {
     }
   };
 
-  return { products, fetchNextPage, fetchFirstPage, loading, currentPage, isLastPage };
+  const isAbleFetchNextPage = !loading && !isLastPage;
+
+  return { products, fetchProductPage, loading, currentPage, isLastPage, isAbleFetchNextPage };
 };
 
 export default useProducts;

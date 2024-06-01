@@ -15,9 +15,9 @@ const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
   const useSortSelect = useSelect<Sort>("낮은 가격순");
 
-  const { products, fetchFirstPage, fetchNextPage, currentPage, loading, isLastPage } = useProducts();
-  const ref = useRef<HTMLDivElement>(null);
+  const { products, fetchProductPage, currentPage, loading, isLastPage, isAbleFetchNextPage } = useProducts();
 
+  const ref = useRef<HTMLDivElement>(null);
   const { isIntersecting } = useInfiniteScroll({ threshold: 0.25, rootMargin: "80px" }, ref);
 
   const category = useCategorySelect.selected;
@@ -25,15 +25,13 @@ const ProductListPage = () => {
 
   useEffect(() => {
     if (isIntersecting && !isLastPage) {
-      fetchNextPage(category, currentPage, sort);
+      fetchProductPage(category, currentPage, sort);
     }
   }, [isIntersecting]);
 
   useEffect(() => {
-    fetchFirstPage(category, 0, sort);
+    fetchProductPage(category, 0, sort);
   }, [category, sort]);
-
-  const isAbleFetchNextPage = !loading && !isLastPage;
 
   return (
     <>

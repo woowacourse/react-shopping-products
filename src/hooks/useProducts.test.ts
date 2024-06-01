@@ -10,7 +10,7 @@ describe("useProducts 테스트", () => {
     const { result } = renderHook(() => useProducts());
 
     act(() => {
-      result.current.fetchFirstPage("전체", 0, "낮은 가격순");
+      result.current.fetchProductPage("전체", 0, "낮은 가격순");
     });
 
     await waitFor(() => {
@@ -34,7 +34,7 @@ describe("useProducts 테스트", () => {
     const { result } = renderHook(() => useProducts());
 
     act(() => {
-      result.current.fetchFirstPage("건강", 1, "낮은 가격순");
+      result.current.fetchProductPage("건강", 1, "낮은 가격순");
     });
 
     await waitFor(() => {
@@ -46,7 +46,7 @@ describe("useProducts 테스트", () => {
     const { result } = renderHook(() => useProducts());
 
     act(() => {
-      result.current.fetchFirstPage("전체", 0, "낮은 가격순");
+      result.current.fetchProductPage("전체", 0, "낮은 가격순");
     });
 
     await waitFor(() => {
@@ -55,7 +55,7 @@ describe("useProducts 테스트", () => {
     });
 
     act(() => {
-      result.current.fetchNextPage("도서", 1, "낮은 가격순");
+      result.current.fetchProductPage("도서", 1, "낮은 가격순");
     });
 
     await waitFor(() => {
