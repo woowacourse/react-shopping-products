@@ -79,7 +79,7 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
       {isLoading && loadingSpinnerElement}
       {!isLoading && products.length === 0 && wrongCatElement}
 
-      <Styled.ObserverTarget ref={targetRef} />
+      {!isLoading && <Styled.ObserverTarget ref={targetRef} />}
     </>
   );
 };
