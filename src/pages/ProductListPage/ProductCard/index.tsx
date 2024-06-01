@@ -1,6 +1,7 @@
-import { CartItem, Product } from '@appTypes/index';
+import { Product } from '@appTypes/index';
+import { CartActionErrorModal } from '@components/index';
 import { CartItemsContext } from '@contexts/index';
-import { useTargetContext } from '@hooks/index';
+import { useCartAction, useTargetContext } from '@hooks/index';
 
 import CartActionButton from '../CartActionButton';
 
@@ -8,17 +9,19 @@ import style from './style.module.css';
 
 interface ProductCardProps {
   product: Product;
-  cartItems: CartItem[];
 }
 
-function ProductCard({ product, cartItems }: ProductCardProps) {
-  const { handleCartAction } = useTargetContext(CartItemsContext);
+function ProductCard({ product }: ProductCardProps) {
+  const { refreshCartItemIds, cartItemIds } = useTargetContext(CartItemsContext);
+  const { addCartItem, deleteCarItem, error: cartActionError } = useCartAction({ refreshCartItemIds });
 
-  const cartItem = cartItems.find((item) => item.product.id === product.id);
-  const isInCart = cartItem !== undefined;
+  const cartItemId = cartItemIds?.get(product.id);
+  const isInCart = !!cartItemId;
 
   const handleCartActionButtonClick = () => {
-    handleCartAction({ isInCart, productId: product.id, cartItem });
+    if (isInCart) return deleteCarItem(cartItemId);
+
+    return addCartItem(product.id);
   };
 
   return (
@@ -28,6 +31,7 @@ function ProductCard({ product, cartItems }: ProductCardProps) {
         <p className="product-name">{product.name}</p>
         <p className="text">{product.price.toLocaleString()}원</p>
         <CartActionButton buttonType={isInCart ? 'delete' : 'add'} onClick={handleCartActionButtonClick} />
+        <CartActionErrorModal error={cartActionError} />
       </div>
     </li>
   );

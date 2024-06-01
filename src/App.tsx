@@ -1,56 +1,27 @@
 import '@styles/App.css';
 import '@styles/reset.css';
 import '@styles/global.css';
-import { CartAction, PageRequest } from '@components/Fallbacks';
-import { Header, Layout, ToastModal } from '@components/index';
-import { useEffect, useRef, useState } from 'react';
+import { Header, Layout, PageRequestError } from '@components/index';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { CartItemsContext } from './contexts';
-import { useCartAction } from './hooks';
+import { useCartItemIds } from './hooks';
 import { ProductListPage } from './pages';
 
-interface HeaderPosition {
-  top: number;
-  left: number;
-}
-
 function App() {
-  const { cartItems, getCartItemList, handleCartAction, error, setCartActionError } = useCartAction();
-  const [headerPosition, setHeaderPosition] = useState<HeaderPosition | null>(null);
+  const { cartItemIds, refreshCartItemIds, error: cartItemsFetchError } = useCartItemIds();
 
-  const headerRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    getCartItemList();
-  }, []);
-
-  useEffect(() => {
-    if (!headerRef.current) return;
-
-    const domRect = headerRef.current.getClientRects()[0];
-
-    setHeaderPosition({
-      top: domRect.top,
-      left: domRect.left,
-    });
-  }, [headerRef]);
-
+  const cartItemsLength = cartItemIds ? Array.from(cartItemIds).length : 0;
   return (
     <>
-      <Header cartItemsLength={cartItems.length} headerRef={headerRef} />
+      <Header cartItemsLength={cartItemsLength} cartItemsFetchError={cartItemsFetchError} />
       <Layout>
-        <ErrorBoundary FallbackComponent={({ error }) => <PageRequest error={error} />}>
-          <CartItemsContext.Provider value={{ handleCartAction }}>
-            <ProductListPage cartItems={cartItems} />
+        <ErrorBoundary FallbackComponent={({ error }) => <PageRequestError error={error} />}>
+          <CartItemsContext.Provider value={{ cartItemIds, refreshCartItemIds }}>
+            <ProductListPage />
           </CartItemsContext.Provider>
         </ErrorBoundary>
       </Layout>
-      {headerPosition && (
-        <ToastModal isOpen={error} closeModal={() => setCartActionError(false)} position={headerPosition}>
-          <CartAction />
-        </ToastModal>
-      )}
     </>
   );
 }

@@ -9,11 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import ProductList from './ProductList';
 import style from './style.module.css';
 
-interface ProductListPageProps {
-  cartItems: CartItem[];
-}
-
-function ProductListPage({ cartItems }: ProductListPageProps) {
+function ProductListPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
@@ -88,7 +84,7 @@ function ProductListPage({ cartItems }: ProductListPageProps) {
         <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
       <IntersectionObserverArea callback={observerCallback} targetRef={targetRef}>
-        <ProductList products={products} targetRef={targetRef} loading={loading} cartItems={cartItems} />
+        <ProductList products={products} targetRef={targetRef} loading={loading} />
       </IntersectionObserverArea>
     </div>
   );
