@@ -26,7 +26,7 @@ const BaseDropDown = ({ initialValue, options, onChangeSelect }: Props) => {
   };
 
   return (
-    <>
+    <div>
       <S.DropDownHeader onClick={() => setShowOptions((prev) => !prev)}>
         <S.SelectedOption>
           {selectedValue}
@@ -42,7 +42,7 @@ const BaseDropDown = ({ initialValue, options, onChangeSelect }: Props) => {
           ))}
         </S.OptionList>
       )}
-    </>
+    </div>
   );
 };
 
