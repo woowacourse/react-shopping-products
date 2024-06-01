@@ -1,10 +1,7 @@
 import { MAX_CART_ITEMS_COUNTS } from '../constants';
 import { CategoryType, SortType } from '../type';
-import {
-  CART_ITEMS_COUNT_ENDPOINT,
-  CART_ITEMS_ENDPOINT,
-  PRODUCTS_ENDPOINT,
-} from './endpoints';
+import { CartItems } from '../type/CartItem';
+import ENDPOINT from './endpoints';
 
 const USERNAME = import.meta.env.VITE_USER_ID;
 const PASSWORD = import.meta.env.VITE_USER_PASSWORD;
@@ -29,7 +26,7 @@ export async function fetchProducts(
     sorting === 'priceAsc' ? `sort=price%2Casc` : `sort=price%2Cdesc`;
 
   const response = await fetch(
-    `${PRODUCTS_ENDPOINT}?${categoryQuery}&page=${page}&size=${limit}&${sortingQuery}`,
+    `${ENDPOINT.PRODUCTS}?${categoryQuery}&page=${page}&size=${limit}&${sortingQuery}`,
 
     {
       method: 'GET',
@@ -46,7 +43,7 @@ export async function fetchProducts(
 }
 
 export const addCartItem = async (itemId: number) => {
-  const response = await fetch(CART_ITEMS_ENDPOINT, {
+  const response = await fetch(ENDPOINT.CART_ITEMS, {
     method: 'POST',
     headers: HEADERS,
     body: JSON.stringify({
@@ -63,7 +60,7 @@ export const addCartItem = async (itemId: number) => {
 export const deleteCartItem = async (productId: number) => {
   const cartItemId = await findCartItemIdByProductId(productId);
   if (cartItemId !== undefined) {
-    const response = await fetch(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
+    const response = await fetch(`${ENDPOINT.CART_ITEMS}/${cartItemId}`, {
       method: 'DELETE',
       headers: HEADERS,
     });
@@ -85,7 +82,7 @@ export const findCartItemIdByProductId = async (productId: number) => {
 };
 
 export const fetchShoppingCartQuantity = async () => {
-  const response = await fetch(CART_ITEMS_COUNT_ENDPOINT, {
+  const response = await fetch(ENDPOINT.CART_ITEMS_COUNT, {
     method: 'GET',
     headers: HEADERS,
   });
@@ -98,22 +95,9 @@ export const fetchShoppingCartQuantity = async () => {
   return data.quantity;
 };
 
-export interface Item {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
-
-export interface CartItems {
-  id: number;
-  quantity: number;
-  product: Item;
-}
 export async function fetchItems(): Promise<CartItems[]> {
   const response = await fetch(
-    `${CART_ITEMS_ENDPOINT}?size=${MAX_CART_ITEMS_COUNTS}`,
+    `${ENDPOINT.CART_ITEMS}?size=${MAX_CART_ITEMS_COUNTS}`,
     {
       method: 'GET',
       headers: HEADERS,
