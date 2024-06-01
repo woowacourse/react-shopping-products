@@ -1,7 +1,10 @@
 .product-list-wrapper {
-  margin-top: 1.75rem;
+  margin-top: var(--product-list-wrapper-margin-top);
   width: 100%;
-  max-height: calc(100vh - var(--header-height) - 9.9375rem - 1rem);
+  max-height: calc(
+    100vh - var(--layout-top-padding) - var(--page-title-height) - var(--page-title-margin-bottom) -
+      var(--product-list-wrapper-margin-top)
+  );
   overflow-x: hidden;
 }
 

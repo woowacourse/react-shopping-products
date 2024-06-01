@@ -8,6 +8,10 @@
   --desktop-width: 64rem;
   --header-height: 4rem;
   --header-z-index: 100;
+  --layout-top-padding: calc(var(--header-height) + 2.25rem);
+  --page-title-height: 2.1875rem;
+  --page-title-margin-bottom: 1.5rem;
+  --product-list-wrapper-margin-top: 1.75rem;
 }
 
 .skeleton {
@@ -43,7 +47,8 @@
 }
 
 .page__title {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--page-title-margin-bottom);
+  height: var(--page-title-height);
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 2.1719rem;
