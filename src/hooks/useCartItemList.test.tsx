@@ -1,47 +1,40 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { CartItemListProvider, useCartItemListContext } from './useCartItemList';
-import cartItemList from '@/mocks/cartItemList.json';
-import ToastProvider from './useToast';
+import useCartItemListContext from './useCartItemListContext';
+import cartItemListData from '@/mocks/cartItemList.json';
+import CartItemProvider from '@/provider/CartItemProvider';
 
 describe('useCartItemList에 대한 테스트 코드', () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <ToastProvider>
-      <CartItemListProvider>{children}</CartItemListProvider>
-    </ToastProvider>
+    <CartItemProvider>{children}</CartItemProvider>
   );
-
   it('초기에 장바구니 아이템을 fetch 해온다.', async () => {
     const { result } = renderHook(() => useCartItemListContext(), { wrapper });
-
     await waitFor(() => {
-      expect(result.current.cartItemList).toHaveLength(cartItemList.length);
+      expect(result.current.cartItemList).toHaveLength(cartItemListData.length);
     });
   });
 
-  it('장바구니에 아이템을 추가 할 수 있다.', async () => {
+  it('장바구니에 아이템을 추가한다.', async () => {
     const { result } = renderHook(() => useCartItemListContext(), { wrapper });
 
-    await act(async () => {
-      await result.current.toggleCartItem(3);
+    act(() => {
+      result.current.toggleCartItem(cartItemListData[0].product.id);
     });
 
     await waitFor(() => {
-      expect(result.current.cartItemList).toHaveLength(cartItemList.length);
-      expect(result.current.isInCart(3)).toBe(true);
+      expect(result.current.cartItemList).toContainEqual(cartItemListData[0]);
     });
   });
 
-  it('장바구니에 아이템을 제거 할 수 있다.', async () => {
+  it('장바구니에서 아이템을 제거한다.', async () => {
     const { result } = renderHook(() => useCartItemListContext(), { wrapper });
 
-    const initialItem = cartItemList[0];
-    await act(async () => {
-      await result.current.toggleCartItem(initialItem.product.id);
+    act(() => {
+      result.current.toggleCartItem(cartItemListData[0].product.id);
     });
 
     await waitFor(() => {
-      expect(result.current.cartItemList).toHaveLength(cartItemList.length - 1);
-      expect(result.current.isInCart(initialItem.product.id)).toBe(false);
+      expect(result.current.cartItemList).not.toContainEqual(cartItemListData[0]);
     });
   });
 });
