@@ -1,20 +1,20 @@
 import { deleteCartItem, postCartItem } from '@/api/cartItem';
 import { useEffect, useState } from 'react';
 
-import useCartItemFinder from '@/hooks/useCartItemFinder';
 import useCartListContext from '@/hooks/useCartListContext';
 
 const useProductSelector = (productId: number) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown>(null);
-  const { isInCart } = useCartItemFinder(productId);
-  const [isSelected, setIsSelected] = useState(false);
-
   const { cartList, fetchCartList } = useCartListContext();
 
+  const [isSelected, setIsSelected] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<unknown>(null);
+
   useEffect(() => {
+    const isInCart = cartList.some((item) => item.product.id === productId);
     setIsSelected(isInCart);
-  }, [isInCart]);
+  }, []);
 
   const addCartItem = async () => {
     try {
