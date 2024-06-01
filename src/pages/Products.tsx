@@ -1,11 +1,11 @@
+import { CATEGORY_LIST, SORT_ORDER } from '@/constants/productList';
 import { FlexColumn, FlexSpaceBetween, WhiteSpace } from '@/style/common.style';
 import { useEffect, useState } from 'react';
 
+import BaseDropDown from '@/components/dropdown/BaseDropDown';
 import CartCountIcon from '@/components/CartCountIcon';
-import FilterCategory from '@/components/dropdown/FilterCategory';
 import Header from '@/components/Header';
 import ProductList from '@/components/ProductList';
-import SortOrder from '@/components/dropdown/SortOrder';
 import Toast from '@/components/Toast';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
@@ -15,7 +15,6 @@ const Products = () => {
   const {
     page,
     products,
-    loading,
     isLoading,
     error,
     fetchNextPage,
@@ -25,6 +24,9 @@ const Products = () => {
   } = useProductList();
 
   const [showToast, setShowToast] = useState(false);
+
+  const categoryOptions = CATEGORY_LIST;
+  const sortOptions = SORT_ORDER;
 
   useEffect(() => {
     if (error) {
@@ -49,11 +51,18 @@ const Products = () => {
         <S.Body>
           <S.Title>우테코 상품 목록</S.Title>
           <S.DropDownWrapper>
-            <FilterCategory onChangeCategory={handleChangeCategory} />
-            <SortOrder onChangeOrder={handleChangeOrder} />
+            <BaseDropDown
+              initialValue="전체"
+              options={categoryOptions}
+              onChangeSelect={handleChangeCategory}
+            />
+            <BaseDropDown
+              initialValue="낮은 가격순"
+              options={sortOptions}
+              onChangeSelect={handleChangeOrder}
+            />
           </S.DropDownWrapper>
           <ProductList
-            loading={loading}
             isLoading={isLoading}
             products={products}
             page={page}
