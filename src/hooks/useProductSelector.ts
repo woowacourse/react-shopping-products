@@ -18,7 +18,7 @@ const useProductSelector = (productId: number) => {
 
   const addCartItem = async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
 
       await postCartItem(productId);
 
@@ -27,13 +27,13 @@ const useProductSelector = (productId: number) => {
     } catch (error) {
       setError(error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const removeCartItem = async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
 
       const index = cartList.find((item) => item.product.id === productId);
       await deleteCartItem(index?.id as number);
@@ -43,13 +43,13 @@ const useProductSelector = (productId: number) => {
     } catch (error) {
       setError(error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return {
     isSelected,
-    loading,
+    isLoading,
     error,
     addCartItem,
     removeCartItem,

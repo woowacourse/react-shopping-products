@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-import Loading from '@/assets/loading.gif';
+import LoadingImg from '@/assets/loading.gif';
 import { Product } from '@/types/product.type';
 import ProductItem from './ProductItem';
 import styled from '@emotion/styled';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 interface Props {
-  loading: boolean;
+  isLoading: boolean;
   products: Product[];
   page: number;
   getNextPage: () => void;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ProductList = ({
-  loading,
+  isLoading,
   products,
   page,
   getNextPage,
@@ -50,7 +50,8 @@ const ProductList = ({
           <ProductItem key={product.id} item={product} />
         ))}
       </S.GridContainer>
-      {loading && <S.LoadingImg src={Loading} alt="loading" />}
+
+      {isLoading && <S.LoadingImg src={LoadingImg} alt="loading" />}
       {hasNextPage && <S.ObserverContainer ref={target} />}
     </S.ListContainer>
   );
@@ -61,7 +62,7 @@ export default ProductList;
 const S = {
   ListContainer: styled.div`
     width: 100%;
-    height: calc(100vh - 230px);
+    height: calc(100vh - 230px); // 헤더 및 카테고리 드롭다운
     margin-top: 24px;
     z-index: -1;
     overflow-y: auto;

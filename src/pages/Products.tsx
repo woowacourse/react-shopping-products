@@ -16,6 +16,7 @@ const Products = () => {
     page,
     products,
     loading,
+    isLoading,
     error,
     fetchNextPage,
     hasNextPage,
@@ -53,6 +54,7 @@ const Products = () => {
           </S.DropDownWrapper>
           <ProductList
             loading={loading}
+            isLoading={isLoading}
             products={products}
             page={page}
             getNextPage={fetchNextPage}
