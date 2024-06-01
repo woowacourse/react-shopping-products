@@ -1,5 +1,5 @@
 import { Product } from '@appTypes/index';
-import { LOAD_MORE_PRODUCTS_AMOUNT } from '@constants/index';
+import { FIRST_LOAD_PRODUCTS_AMOUNT, LOAD_MORE_PRODUCTS_AMOUNT } from '@constants/index';
 import { useEffect, useRef } from 'react';
 
 import ProductCard from '../ProductCard';
@@ -17,7 +17,7 @@ function ProductList({ products, targetRef, loading }: ProductListProps) {
   const productListRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (products.length <= 20) {
+    if (products.length <= FIRST_LOAD_PRODUCTS_AMOUNT) {
       productListRef.current?.scrollTo({ top: 0 });
     }
   }, [productListRef, products]);
