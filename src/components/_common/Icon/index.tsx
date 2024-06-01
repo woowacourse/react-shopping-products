@@ -7,11 +7,7 @@ interface IconProps extends React.PropsWithChildren<React.ImgHTMLAttributes<HTML
 }
 
 const Icon = ({ kind, ...props }: IconProps) => {
-  return (
-    <>
-      <S.Img src={IMAGES[kind]} {...props} />
-    </>
-  );
+  return <S.Img src={IMAGES[kind]} {...props} />;
 };
 
 export default Icon;
