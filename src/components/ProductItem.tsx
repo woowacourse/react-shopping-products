@@ -33,7 +33,7 @@ const ProductItem = ({ item }: Props) => {
   return (
     <>
       <S.ItemCard>
-        <S.Img src={imageUrl} alt={name} />
+        <S.Img src={imageUrl} />
         <S.InfoWrapper>
           <S.InfoText>
             <S.Title>{name}</S.Title>
