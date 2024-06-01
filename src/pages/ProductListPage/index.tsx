@@ -15,7 +15,7 @@ const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
   const useSortSelect = useSelect<Sort>("낮은 가격순");
 
-  const { products, fetchProductPage, currentPage, loading, isLastPage, isAbleFetchNextPage } = useProducts();
+  const { products, fetchProductPage, currentPage, isLoading, isLastPage, isAbleFetchNextPage } = useProducts();
 
   const ref = useRef<HTMLDivElement>(null);
   const { isIntersecting } = useInfiniteScroll({ threshold: 0.25, rootMargin: "80px" }, ref);
@@ -49,7 +49,7 @@ const ProductListPage = () => {
         </S.ItemInfoWrapper>
         <ItemCardList products={products} />
         {isAbleFetchNextPage && <div ref={ref}></div>}
-        {loading && <ItemCartListSkeleton />}
+        {isLoading && <ItemCartListSkeleton />}
       </S.Wrapper>
     </>
   );

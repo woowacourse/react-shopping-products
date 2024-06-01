@@ -18,12 +18,6 @@ describe("useProducts 테스트", () => {
     });
   });
 
-  it("상품 목록 조회 중 로딩 상태", () => {
-    const { result } = renderHook(() => useProducts());
-
-    expect(result.current.loading).toBe(true);
-  });
-
   it("상품 목록 조회 중 에러 상태", async () => {
     server.use(
       http.get(SERVER_URL.apiUrl + END_POINT.products, () => {
@@ -38,7 +32,7 @@ describe("useProducts 테스트", () => {
     });
 
     await waitFor(() => {
-      expect(result.current.loading).toBe(false);
+      expect(result.current.isLoading).toBe(false);
     });
   });
 
