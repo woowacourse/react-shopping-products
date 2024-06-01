@@ -12,7 +12,7 @@ export default defineConfig({
     }),
     svgr(),
   ],
-  base: '/react-shopping-products/dist',
+  base: '/react-shopping-products',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
