@@ -16,12 +16,12 @@ interface UseProductResult {
   sortType: keyof typeof PRODUCT_SORT_MAP;
   category: Product['category'] | 'all';
   isLoading: boolean;
-  updateNextProductItem: () => void;
+  updateNextProductPage: () => void;
   onSelectSortTypeOption: (sortType: keyof typeof PRODUCT_SORT_MAP) => void;
   onSelectCategoryOption: (category: keyof typeof PRODUCT_CATEGORY_MAP) => void;
 }
 
-const useProducts = (): UseProductResult => {
+const usePaginatedProducts = (): UseProductResult => {
   const { page, resetPage, updateNextPage } = usePagination();
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -42,7 +42,7 @@ const useProducts = (): UseProductResult => {
     setProducts(prev => [...prev, ...data.content]);
   }, [data]);
 
-  const updateNextProductItem = useCallback(() => {
+  const updateNextProductPage = useCallback(() => {
     if (data?.last) return;
 
     updateNextPage();
@@ -54,10 +54,10 @@ const useProducts = (): UseProductResult => {
     sortType,
     category,
     isLoading,
-    updateNextProductItem,
+    updateNextProductPage,
     onSelectSortTypeOption,
     onSelectCategoryOption,
   };
 };
 
-export default useProducts;
+export default usePaginatedProducts;

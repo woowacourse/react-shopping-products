@@ -6,7 +6,7 @@ import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropd
 import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import SortDropdown from '@components/product/SortDropdown/SortDropdown';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
-import useProducts from '@hooks/product/useProductItems';
+import usePaginatedProducts from '@hooks/product/usePaginatedProducts';
 
 const CardList = lazy(() => import('@components/product/CardList/CardList'));
 
@@ -25,12 +25,14 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
     category,
     sortType,
     isLoading,
-    updateNextProductItem,
+    updateNextProductPage,
     onSelectSortTypeOption,
     onSelectCategoryOption,
-  } = useProducts();
+  } = usePaginatedProducts();
 
-  const targetRef = useIntersectionObserver<HTMLDivElement>({ onIntersect: updateNextProductItem });
+  const targetRef = useIntersectionObserver<HTMLDivElement>({
+    onIntersect: updateNextProductPage,
+  });
 
   return (
     <>
@@ -40,25 +42,29 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
           isOpen={isCategoryDropdownOpen}
           category={category}
           onSelectCategoryOption={onSelectCategoryOption}
-          onToggleDropdown={() => setIsCategoryDropdownOpen((prev) => !prev)}
+          onToggleDropdown={() => setIsCategoryDropdownOpen(prev => !prev)}
         />
         <SortDropdown
           isOpen={isSortTypeDropdownOpen}
           sortType={sortType}
           onSelectSortTypeOption={onSelectSortTypeOption}
-          onToggleDropdown={() => setIsSortTypeDropdownOpen((prev) => !prev)}
+          onToggleDropdown={() => setIsSortTypeDropdownOpen(prev => !prev)}
         />
       </Styled.ProductDropdownWrapper>
 
       {products.length === 0 ? (
-        <LoadingSpinner $width="100%" $height="80vh" />
+        <LoadingSpinner $width='100%' $height='80vh' />
       ) : (
         <Styled.ProductPageListWrapper>
-          <CardList products={products} onToggleCart={onToggleCart} isAddedCart={isAddedCart} />
+          <CardList
+            products={products}
+            onToggleCart={onToggleCart}
+            isAddedCart={isAddedCart}
+          />
         </Styled.ProductPageListWrapper>
       )}
 
-      {isLoading && <LoadingSpinner $width="100%" $height="30vh" />}
+      {isLoading && <LoadingSpinner $width='100%' $height='30vh' />}
 
       <Styled.ObserverTarget ref={targetRef} />
     </>
