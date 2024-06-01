@@ -4,6 +4,7 @@ import { getProducts } from "@/apis/product";
 import { Category, Sort } from "@/constants/selectOption";
 import useToast from "@/hooks/useToast";
 import { ERROR_MESSAGES } from "@/constants/messages";
+import PRODUCT from "@/constants/product";
 
 const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -17,7 +18,7 @@ const useProducts = () => {
     try {
       setLoading(true);
 
-      const size = page === 0 ? 20 : 4;
+      const size = page === 0 ? PRODUCT.firstPageItemCount : PRODUCT.subsequentPageItemCount;
 
       const res = await getProducts({ category, page, size, sort });
       if (res.last) setIsLastPage(true);
