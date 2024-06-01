@@ -6,6 +6,7 @@ import { getCartList } from '@/api/cartItem';
 interface CartContextType {
   cartList: CartItem[];
   fetchCartList: () => Promise<void>;
+  error: string | null;
 }
 
 export const CartContext = createContext<CartContextType | undefined>(
@@ -18,13 +19,14 @@ interface Props {
 
 export const CartProvider = ({ children }: Props) => {
   const [cartList, setCartList] = useState<CartItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchCartList = async () => {
     try {
       const cartList = await getCartList();
       setCartList(cartList);
     } catch (error) {
-      console.error(error);
+      setError('cart Item을 가져오는데 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -32,7 +34,7 @@ export const CartProvider = ({ children }: Props) => {
     fetchCartList();
   }, []);
 
-  const value: CartContextType = { cartList, fetchCartList };
+  const value: CartContextType = { cartList, fetchCartList, error };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
