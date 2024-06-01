@@ -11,7 +11,7 @@ const renderUseProductsHook = () =>
 
 describe('useProducts', () => {
   describe('상품 목록 조회', () => {
-    it('상품 목록을 조회한다.', async () => {
+    it('상품 목록을 조회하면 처음에는 20개의 상품이 반환된다 ', async () => {
       const { result } = renderUseProductsHook();
 
       await waitFor(() => {
