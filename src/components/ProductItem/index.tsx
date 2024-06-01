@@ -1,8 +1,11 @@
 import * as S from './style';
 
-import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
 import { useContext, useState } from 'react';
 import { CartItemsContext } from '../../context/CartItemProvider';
+
+import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
+
+import Spinner from '../common/Spinner';
 
 interface ProductItemProps {
   id: number;
@@ -52,14 +55,21 @@ const ProductItem = ({ id, imageUrl, name, price, cartItemId }: ProductItemProps
           <S.Price>{price.toLocaleString('ko-KR')}원</S.Price>
         </S.Information>
         <S.ButtonContainer>
-          {loading ? (
-            <span>loading...</span>
-          ) : (
-            <S.ToggleButton onClick={onToggle} $isInCart={isInCart}>
-              <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
-              <span>{BUTTON_TEXT}</span>
-            </S.ToggleButton>
-          )}
+          <S.ToggleButton
+            disabled={loading}
+            $loading={loading}
+            onClick={onToggle}
+            $isInCart={isInCart}
+          >
+            {loading ? (
+              <Spinner isInCart={isInCart} />
+            ) : (
+              <>
+                <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
+                <span>{BUTTON_TEXT}</span>
+              </>
+            )}
+          </S.ToggleButton>
         </S.ButtonContainer>
       </S.InformationContainer>
     </S.ProductItem>

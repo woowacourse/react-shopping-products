@@ -52,7 +52,7 @@ export const ButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-export const ToggleButton = styled.button<{ $isInCart: boolean }>`
+export const ToggleButton = styled.button<{ $isInCart: boolean; $loading: boolean }>`
   display: flex;
   gap: 0.25rem;
   align-items: center;
@@ -68,8 +68,10 @@ export const ToggleButton = styled.button<{ $isInCart: boolean }>`
   ${(props) => props.theme.typography.product.toggleButton};
   color: ${(props) => (props.$isInCart ? props.theme.color.black : props.theme.color.white)};
 
+  cursor: ${(props) => (props.$loading ? 'default' : 'pointer')};
+
   &:hover {
-    opacity: 0.7;
+    opacity: ${(props) => (props.$loading ? 1.0 : 0.7)};
   }
 `;
 
