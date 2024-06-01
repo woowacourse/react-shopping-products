@@ -45,3 +45,9 @@ export const PRICE_SORT_OPTIONS: DropdownOption[] = [
 export const FIRST_LOAD_PRODUCTS_AMOUNT = 20;
 
 export const LOAD_MORE_PRODUCTS_AMOUNT = 4;
+
+export const PRODUCT_LIST_PAGE = {
+  first: 0,
+  second: 5,
+  plus: 1,
+};

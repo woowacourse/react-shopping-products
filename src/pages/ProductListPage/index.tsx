@@ -11,7 +11,7 @@ import style from './style.module.css';
 
 function ProductListPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(PRODUCT_LIST_PAGE.first);
   const [isLastPage, setIsLastPage] = useState(false);
   const [filtering, setFiltering] = useState<Filtering>({ category: '', sort: 'price,asc' });
   const targetRef = useRef<HTMLDivElement | null>(null);

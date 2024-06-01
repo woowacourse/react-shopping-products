@@ -1,5 +1,6 @@
 import { fetchProduct } from '@src/apis';
 import { Filtering, Product } from '@src/appTypes';
+import { PRODUCT_LIST_PAGE } from '@src/constants';
 
 interface UseFilteredProductsProps {
   fetch: (...args: Parameters<typeof fetchProduct>) => Promise<
@@ -23,7 +24,7 @@ const useFilteredProducts = ({ fetch, filtering }: UseFilteredProductsProps) => 
     return {
       isLast: result.isLast,
       newProducts: result.products,
-      newPage: 0,
+      newPage: PRODUCT_LIST_PAGE.first,
     };
   };
 
