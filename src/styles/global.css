@@ -8,6 +8,7 @@
   --desktop-width: 64rem;
   --header-height: 4rem;
   --header-z-index: 100;
+  --modal-z-index: 9999;
   --layout-top-padding: calc(var(--header-height) + 2.25rem);
   --page-title-height: 2.1875rem;
   --page-title-margin-bottom: 1.5rem;
