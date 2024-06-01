@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://badahertz52.github.io/react-shopping-products",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
@@ -38,6 +39,5 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vitest": "^1.6.0"
-  },
-  "homepage": "https://badahertz52.github.io/react-shopping-products"
+  }
 }
