@@ -3,12 +3,12 @@ import * as S from "@/components/SelectBox/style";
 import { Category, Sort } from "@/constants/selectOption";
 
 interface SelectBoxProps {
-  useSelector: ReturnType<typeof useSelect<Category | Sort>>;
+  selectorHook: ReturnType<typeof useSelect<Category | Sort>>;
   optionsContents: string[];
 }
 
-const SelectBox = ({ useSelector, optionsContents }: SelectBoxProps) => {
-  const { isDropdown, handleDropdown, selected, handleSelected } = useSelector;
+const SelectBox = ({ selectorHook, optionsContents }: SelectBoxProps) => {
+  const { isDropdown, handleDropdown, selected, handleSelected } = selectorHook;
 
   return (
     <S.Select onClick={handleDropdown}>

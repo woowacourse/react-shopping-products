@@ -45,8 +45,8 @@ const ProductListPage = () => {
         <S.ItemInfoWrapper>
           <TextBox type="xLarge" text="bpple 상품 목록" />
           <S.SelectBoxWrapper>
-            <SelectBox useSelector={useCategorySelect} optionsContents={Object.keys(CATEGORY)} />
-            <SelectBox useSelector={useSortSelect} optionsContents={Object.keys(SORT)} />
+            <SelectBox selectorHook={useCategorySelect} optionsContents={Object.keys(CATEGORY)} />
+            <SelectBox selectorHook={useSortSelect} optionsContents={Object.keys(SORT)} />
           </S.SelectBoxWrapper>
         </S.ItemInfoWrapper>
         <ItemCardList products={products} />
