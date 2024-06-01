@@ -27,7 +27,7 @@ const Toast = ({ id, message }: ToastType) => {
     };
   }, []);
 
-  return <S.Wrapper isClose={isClose}>{message}</S.Wrapper>;
+  return <S.Wrapper $isClose={isClose}>{message}</S.Wrapper>;
 };
 
 export default Toast;

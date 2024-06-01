@@ -10,9 +10,14 @@ const useHandleCartItem = () => {
   const [loading, setLoading] = useState(false);
   const { onAddToast } = useToast();
 
+  const MAX_CART_COUNT = 20;
+
   const onAddCartItem = async (id: number) => {
+    if (cartItems.length === MAX_CART_COUNT) return onAddToast(ERROR_MESSAGES.failPushCart);
+
     try {
       setLoading(true);
+
       await postCartItem({ productId: id, quantity: 1 });
       const fetchedItems = await getCartItems();
       setCartItems(fetchedItems);
