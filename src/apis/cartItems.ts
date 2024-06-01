@@ -1,4 +1,5 @@
 import { CartItem, ServerResponse } from '@appTypes/index';
+import { FIRST_LOAD_PRODUCTS_AMOUNT } from '@constants/index';
 import { fetchWithToken } from '@utils/index';
 
 import { END_POINTS } from './endPoints';
@@ -14,7 +15,7 @@ export async function fetchPostCartItems({ productId }: { productId: number }) {
   });
 }
 
-export async function fetchGetCartItems(totalNumbers: number = 20) {
+export async function fetchGetCartItems(totalNumbers: number = FIRST_LOAD_PRODUCTS_AMOUNT) {
   const searchParams = new URLSearchParams({
     size: `${totalNumbers}`,
   });

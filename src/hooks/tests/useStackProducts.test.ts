@@ -1,4 +1,5 @@
-import { fetchProduct } from '@src/apis';
+import { fetchProduct } from '@apis/index';
+import { FIRST_LOAD_PRODUCTS_AMOUNT, LOAD_MORE_PRODUCTS_AMOUNT } from '@constants/index';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import useFetch from '../useFetch';
@@ -19,8 +20,8 @@ describe('상품 목록 무한 스크롤 테스트', () => {
     });
 
     await waitFor(async () => {
-      const response = await result.current.getStackedProducts(0);
-      expect(response?.newProducts.length).toBe(4);
+      const response = await result.current.getStackedProducts(FIRST_LOAD_PRODUCTS_AMOUNT);
+      expect(response?.newProducts.length).toBe(LOAD_MORE_PRODUCTS_AMOUNT);
     });
   });
   it('마지막 목록을 불러오고 다음 상품을 불러올 때 상품을 불러오지 않는다.', async () => {

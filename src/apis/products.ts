@@ -1,4 +1,5 @@
 import { Filtering, Product, ServerResponse } from '@appTypes/index';
+import { LOAD_MORE_PRODUCTS_AMOUNT } from '@constants/index';
 import { fetchWithToken } from '@utils/index';
 
 import { END_POINTS } from './endPoints';
@@ -19,7 +20,7 @@ const getSearchParams = ({ filtering, page }: FetchProductParameter): URLSearchP
   searchParams.append('page', String(page));
 
   if (page !== 0) {
-    searchParams.append('size', '4');
+    searchParams.append('size', LOAD_MORE_PRODUCTS_AMOUNT.toString());
   }
 
   return searchParams;
