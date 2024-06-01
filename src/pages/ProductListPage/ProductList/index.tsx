@@ -5,21 +5,24 @@ import { useEffect, useRef } from 'react';
 import ProductCard from '../ProductCard';
 import { ProductListSkeleton } from '../Skeleton';
 
-import style from './style.module.css';
 import './ProductList.css';
 
 interface ProductListProps {
   products: Product[];
-  targetRef: React.MutableRefObject<HTMLDivElement | null>;
   loading: boolean;
+  children: React.ReactNode;
 }
-function ProductList({ products, targetRef, loading }: ProductListProps) {
+function ProductList({ products, children, loading }: ProductListProps) {
   const productListRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
+  const handleScrollbar = () => {
     if (products.length <= FIRST_LOAD_PRODUCTS_AMOUNT) {
       productListRef.current?.scrollTo({ top: 0 });
     }
+  };
+
+  useEffect(() => {
+    handleScrollbar();
   }, [productListRef, products]);
 
   return (
@@ -28,9 +31,7 @@ function ProductList({ products, targetRef, loading }: ProductListProps) {
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-        <div className={style.target} ref={targetRef}>
-          <span>target</span>
-        </div>
+        {children}
       </ul>
       {loading && <ProductListSkeleton productsLength={LOAD_MORE_PRODUCTS_AMOUNT} />}
     </section>
