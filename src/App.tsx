@@ -2,11 +2,14 @@ import '@styles/App.css';
 import '@styles/reset.css';
 import '@styles/global.css';
 import { Header, Layout, PageRequestError } from '@components/index';
+import { lazy, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { CartItemsContext } from './contexts';
 import { useCartItemIds } from './hooks';
-import { ProductListPage } from './pages';
+import ProductListPageSkeleton from './pages/ProductListPage/Skeleton/ProductListPageSkeleton/index.';
+
+const ProductListPage = lazy(() => import('@pages/ProductListPage'));
 
 function App() {
   const { cartItemIds, refreshCartItemIds, error: cartItemsFetchError } = useCartItemIds();
@@ -18,7 +21,9 @@ function App() {
       <Layout>
         <ErrorBoundary FallbackComponent={({ error }) => <PageRequestError error={error} />}>
           <CartItemsContext.Provider value={{ cartItemIds, refreshCartItemIds }}>
-            <ProductListPage />
+            <Suspense fallback={<ProductListPageSkeleton />}>
+              <ProductListPage />
+            </Suspense>
           </CartItemsContext.Provider>
         </ErrorBoundary>
       </Layout>

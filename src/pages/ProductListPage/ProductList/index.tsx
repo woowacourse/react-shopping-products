@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import ProductCard from '../ProductCard';
 
 import style from './style.module.css';
+import './ProductList.css';
 
 interface ProductListProps {
   products: Product[];
@@ -20,8 +21,8 @@ function ProductList({ products, targetRef, loading }: ProductListProps) {
   }, [productListRef, products]);
 
   return (
-    <section ref={productListRef} className={style.wrapper}>
-      <ul className={style.productList}>
+    <section ref={productListRef} className="product-list-wrapper">
+      <ul className="product-list">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

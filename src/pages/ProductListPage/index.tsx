@@ -1,5 +1,5 @@
 import { fetchProduct } from '@apis/index';
-import { CartItem, Filtering, Product } from '@appTypes/index';
+import { Filtering, Product } from '@appTypes/index';
 import { Dropdown, IntersectionObserverArea } from '@components/index';
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@constants/index';
 import { useFilteredProducts, useStackProducts } from '@hooks/index';

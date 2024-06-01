@@ -5,8 +5,6 @@ import { useCartAction, useTargetContext } from '@hooks/index';
 
 import CartActionButton from '../CartActionButton';
 
-import style from './style.module.css';
-
 interface ProductCardProps {
   product: Product;
 }
@@ -25,9 +23,9 @@ function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <li className={style.productCard}>
-      <img src={product.imageUrl} alt="" className={style.image} />
-      <div className={style.contents}>
+    <li className="product-card">
+      <img src={product.imageUrl} alt="" className="product-card__image" />
+      <div className="product-card__contents">
         <p className="product-name">{product.name}</p>
         <p className="text">{product.price.toLocaleString()}원</p>
         <CartActionButton buttonType={isInCart ? 'delete' : 'add'} onClick={handleCartActionButtonClick} />
