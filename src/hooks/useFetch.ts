@@ -4,7 +4,7 @@ import APIClient from '@apis/APIClient';
 
 const useFetch = <T>(url: string, showToast?: (message: string) => void) => {
   const [data, setData] = useState<T | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const useFetch = <T>(url: string, showToast?: (message: string) => void) => {
       .then((data: T) => {
         setData(data);
       })
-      .catch((error) => {
+      .catch(error => {
         if (showToast) showToast(error.message);
         setError(error);
       })
