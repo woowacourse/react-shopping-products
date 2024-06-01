@@ -1,7 +1,9 @@
+import useFetch from "../useFetch";
 import { Product, getProducts } from "../../api/products";
-import { useEffect, useState } from "react";
 import { SortOption } from "../../types/sortOption";
 import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../../constants/products";
+import { FetchOptions } from "../useFetch";
+import { useEffect, useState, useCallback } from "react";
 
 interface UseProductsReturn {
   products: Product[];
@@ -18,53 +20,56 @@ const PAGE_SIZE = 4;
 
 export default function useProducts(): UseProductsReturn {
   const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
-
-  const [categoryFilter, setCategoryFilter] = useState<string>(CATEGORY_OPTIONS.all);
+  const [categoryFilter, setCategoryFilter] = useState<string>(
+    CATEGORY_OPTIONS.all
+  );
   const [priceSort, setPriceSort] = useState<SortOption>(SORT_OPTIONS.asc);
 
   const currentPage = page === 0 ? 0 : page + PAGE_SIZE;
   const currentPageSize = page === 0 ? INITIAL_PAGE_SIZE : PAGE_SIZE;
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        setIsLoading(true);
-        const { data, isLastPage } = await getProducts(
-          currentPage,
-          currentPageSize,
-          categoryFilter,
-          priceSort
-        );
-        setProducts([...products, ...data]);
-        setIsLastPage(isLastPage);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchFunction = useCallback(
+    (options?: FetchOptions) =>
+      getProducts(
+        currentPage,
+        currentPageSize,
+        options?.categoryFilter as string,
+        options?.priceSort as SortOption
+      ),
+    [currentPage, currentPageSize]
+  );
 
-    fetch();
-  }, [page, categoryFilter, priceSort]);
+  const { data, errorMessage, isLoading, refetch } = useFetch(fetchFunction);
+
+  useEffect(() => {
+    if (data) {
+      setProducts((prevProducts) => [...prevProducts, ...data.data]);
+      setIsLastPage(data.isLastPage);
+    }
+  }, [data]);
 
   const fetchNextPage = () => {
-    if (!isLastPage && !isLoading && !error) {
-      setCategoryFilter(categoryFilter);
-      setPriceSort(priceSort);
+    if (!isLastPage && !isLoading && !errorMessage) {
       setPage((prevPage) => prevPage + 1);
+      refetch({ categoryFilter, priceSort });
     }
   };
 
   const resetPage = () => {
     setProducts([]);
     setPage(0);
+    refetch({ categoryFilter, priceSort });
   };
 
-  return { products, isLoading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort };
+  return {
+    products,
+    isLoading,
+    error: errorMessage,
+    fetchNextPage,
+    resetPage,
+    setCategoryFilter,
+    setPriceSort,
+  };
 }

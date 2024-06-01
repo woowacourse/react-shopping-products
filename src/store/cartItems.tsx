@@ -1,17 +1,17 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext } from "react";
+import useFetch from "../hooks/useFetch";
 import { CartItem, getCartItems } from "../api/cartItems";
 
-// Context 생성
 export const CartItemsContext = createContext<{
   cartItems: CartItem[];
   refetch: () => Promise<void>;
   isLoading: boolean;
-  error: Error | null;
+  errorMessage: string;
 }>({
   cartItems: [],
   refetch: async () => {},
   isLoading: false,
-  error: null,
+  errorMessage: "",
 });
 
 interface CartItemsProviderProps {
@@ -19,35 +19,23 @@ interface CartItemsProviderProps {
 }
 
 export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const res = await getCartItems();
-        setCartItems(res.data);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const refetch = async () => {
-    const res = await getCartItems();
-    setCartItems(res.data);
+  // NOTE: 래퍼 함수를 사용해 getCartItems의 결과에서 CartItem[]만 추출
+  const fetchCartItems = async () => {
+    const result = await getCartItems();
+    return result.data;
   };
 
+  const {
+    data: cartItems,
+    isLoading,
+    errorMessage,
+    refetch,
+  } = useFetch<CartItem[]>(fetchCartItems);
+
   return (
-    <CartItemsContext.Provider value={{ cartItems, refetch, isLoading, error }}>
+    <CartItemsContext.Provider
+      value={{ cartItems: cartItems ?? [], refetch, isLoading, errorMessage }}
+    >
       {children}
     </CartItemsContext.Provider>
   );
