@@ -10,14 +10,13 @@ interface UseFilteredProductsProps {
       }>
     | undefined
   >;
-  filtering: Filtering;
 }
 
-const useFilteredProducts = ({ fetch, filtering }: UseFilteredProductsProps) => {
+const useFilteredProducts = ({ fetch }: UseFilteredProductsProps) => {
   /**
    * 필터링이 변했을 때 상품 목록을 가져오는 기능
    */
-  const getFilteredProducts = async () => {
+  const getFilteredProducts = async (filtering: Filtering) => {
     const result = await fetch({ filtering });
     if (result === undefined) return;
 
