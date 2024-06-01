@@ -3,26 +3,20 @@ import * as Styled from './ProductPage.styled';
 import { lazy, useState } from 'react';
 
 import AppLayout from '@components/layout/AppLayout/AppLayout';
-import CategoryDropdown from '@components/product/CategoryDropdown/CategoryDropdown';
+import Dropdown from '@components/common/Dropdown/Dropdown';
+import ITEM_CATEGORIES from '@constants/itemCategories';
+import ITEM_SORT_TYPE from '@constants/itemSortTypes';
 import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
-import SortDropdown from '@components/product/SortDropdown/SortDropdown';
 import WrongCat from '@components/common/WrongCat/WrongCat';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import usePaginatedProducts from '@hooks/product/usePaginatedProducts';
+import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 import useToggleShoppingCart from '@hooks/product/useToggleShoppingCart';
 
 const CardList = lazy(() => import('@components/product/CardList/CardList'));
 
 const ProductPage = () => {
-  const {
-    addedShoppingCartLength: itemCount,
-    onToggleCart,
-    isAddedCart,
-  } = useToggleShoppingCart();
-
-  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
-
-  const [isSortTypeDropdownOpen, setIsSortTypeDropdownOpen] = useState(false);
+  const { showToast } = useToastContext();
 
   const {
     products,
@@ -30,9 +24,16 @@ const ProductPage = () => {
     sortType,
     isLoading,
     updateNextProductPage,
-    onSelectSortTypeOption,
-    onSelectCategoryOption,
-  } = usePaginatedProducts();
+    updateCategory,
+    updateSortType,
+  } = usePaginatedProducts({ errorHandler: showToast });
+
+  const { addedShoppingCartLength, onToggleCart, isAddedCart } =
+    useToggleShoppingCart();
+
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+
+  const [isSortTypeDropdownOpen, setIsSortTypeDropdownOpen] = useState(false);
 
   const targetRef = useIntersectionObserver<HTMLDivElement>({
     onIntersect: updateNextProductPage,
@@ -60,20 +61,22 @@ const ProductPage = () => {
   );
 
   return (
-    <AppLayout itemCount={itemCount}>
+    <AppLayout itemCount={addedShoppingCartLength}>
       <Styled.ProductPageTitle>bpple 상품 목록</Styled.ProductPageTitle>
       <Styled.ProductDropdownWrapper>
-        <CategoryDropdown
+        <Dropdown
+          options={ITEM_CATEGORIES}
+          nowSelectedOption={category}
           isOpen={isCategoryDropdownOpen}
-          category={category}
-          onSelectCategoryOption={onSelectCategoryOption}
-          onToggleDropdown={() => setIsCategoryDropdownOpen(prev => !prev)}
+          setIsOpen={setIsCategoryDropdownOpen}
+          setOption={updateCategory}
         />
-        <SortDropdown
+        <Dropdown
+          options={ITEM_SORT_TYPE}
+          nowSelectedOption={sortType}
           isOpen={isSortTypeDropdownOpen}
-          sortType={sortType}
-          onSelectSortTypeOption={onSelectSortTypeOption}
-          onToggleDropdown={() => setIsSortTypeDropdownOpen(prev => !prev)}
+          setIsOpen={setIsSortTypeDropdownOpen}
+          setOption={updateSortType}
         />
       </Styled.ProductDropdownWrapper>
 
