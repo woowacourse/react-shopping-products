@@ -5,7 +5,7 @@ interface APIErrorFallbackModalProps {
   errorMessage: string;
 }
 
-export default function APIErrorFallbackModal({
+export default function APIErrorToast({
   errorMessage,
 }: APIErrorFallbackModalProps) {
   const [isVisible, setIsVisible] = useState(!!errorMessage);
