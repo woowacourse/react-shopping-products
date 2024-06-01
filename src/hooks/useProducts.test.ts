@@ -65,7 +65,7 @@ describe("useProducts 테스트", () => {
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(expectedLength);
-      expect(result.current.currentPage).toBe(2);
+      expect(result.current.currentPage).toBe(1);
     });
   });
 });

@@ -48,7 +48,7 @@ const useHandleCartItem = () => {
     }
   };
 
-  return { onClickCartItem, isInCart, loading };
+  return { onClickCartItem, isInCart, loading, cartItems };
 };
 
 export default useHandleCartItem;

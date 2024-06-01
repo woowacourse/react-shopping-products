@@ -3,6 +3,7 @@ import ItemInfo from "@/components/ItemInfo";
 import * as S from "@/components/ItemCard/style";
 import CartActionButton from "@/components/CartActionButton";
 import useHandleCartItem from "@/hooks/useHandleCartItem";
+import { memo } from "react";
 
 interface ItemCartProps {
   product: Product;
@@ -23,4 +24,5 @@ const ItemCard = ({ product }: ItemCartProps) => {
   );
 };
 
-export default ItemCard;
+const ItemCartMemo = memo(ItemCard);
+export default ItemCartMemo;

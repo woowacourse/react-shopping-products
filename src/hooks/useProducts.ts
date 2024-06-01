@@ -17,6 +17,7 @@ const useProducts = () => {
   const SIZE_FIRST_PAGE = 20;
 
   const fetchFirstPage = async (category: Category, sort: Sort) => {
+    resetToFirstPage();
     try {
       const res = await getProducts({ category, page: 0, size: 20, sort });
       if (res.last) setIsLastPage(true);
@@ -51,7 +52,6 @@ const useProducts = () => {
   };
 
   const resetToFirstPage = () => {
-    setCurrentPage(0);
     setProducts([]);
     setIsLastPage(false);
     setLoading(true);
