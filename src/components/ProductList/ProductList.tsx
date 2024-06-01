@@ -1,17 +1,21 @@
-import { Product } from '@/types';
+import { ProductItemData } from '@/types';
 import ProductItem from '../ProductItem/ProductItem';
 import styles from './ProductList.module.css';
 
-export default function ProductList({ productList }: { productList: Product[] }) {
+type Props = {
+  productList: ProductItemData[];
+};
+
+export default function ProductList({ productList }: Props) {
   return (
     <ul className={styles.ul}>
-      {productList.length === 0 ? (
+      {!productList.length ? (
         <div>목록이 비어있습니다.</div>
       ) : (
         <>
-          {productList.map((product) => (
-            <ProductItem {...product} />
-          ))}
+          {productList.map((product, index) => {
+            return <ProductItem key={index} {...product} />;
+          })}
         </>
       )}
     </ul>

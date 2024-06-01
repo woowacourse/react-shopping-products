@@ -1,10 +1,3 @@
-import { FILTER_OPTION_LIST, CATEGORY_OPTION_LIST } from '@/constants/filter';
-
-export type OptionItem = {
-  option: string;
-  value: string;
-};
-
 export type SortType = 'asc' | 'desc';
 
 export type Category =
@@ -16,7 +9,7 @@ export type Category =
   | 'fitness'
   | 'books';
 
-export type Product = {
+export type ProductItemData = {
   id: number;
   name: string;
   price: number;
@@ -24,12 +17,51 @@ export type Product = {
   category: Category;
 };
 
-export type CartItem = {
+export type CartItemData = {
   id: number;
   quantity: number;
-  product: {
-    id: number;
-    name: string;
-    price: number;
-  };
+  product: ProductItemData;
+};
+
+type Sort = {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+};
+
+type Pageable = {
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  sort: Sort;
+  unpaged: boolean;
+};
+
+export type ProductListData = {
+  content: ProductItemData[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: Pageable;
+  size: number;
+  sort: Sort;
+  totalElements: number;
+  totalPages: number;
+};
+
+export type CartItemListData = {
+  content: CartItemData[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: Pageable;
+  size: number;
+  sort: Sort;
+  totalElements: number;
+  totalPages: number;
 };
