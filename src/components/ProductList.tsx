@@ -14,6 +14,7 @@ import {
 } from "../constants/products";
 import { isIncludedInList } from "../utils/isIncludedInList";
 import { SortOption } from "../types/sortOption";
+import ToastPortal from "../Portal";
 
 const ProductList = () => {
   const {
@@ -64,7 +65,11 @@ const ProductList = () => {
     <>
       <S.Container>
         <ShopHeader />
-        {isOpenToast && <ErrorToast />}
+        {isOpenToast && (
+          <ToastPortal>
+            <ErrorToast />
+          </ToastPortal>
+        )}
         <S.ShopBody>
           <S.Title>bpple 상품 목록</S.Title>
           <S.SelectContainer>
@@ -111,7 +116,7 @@ const S = {
   Container: styled.main`
     display: flex;
     flex-direction: column;
-    margin-top: 10.4rem;
+    margin-top: 12rem;
   `,
 
   ShopBody: styled.div`
