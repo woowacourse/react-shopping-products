@@ -22,8 +22,10 @@ export async function fetchProducts(
   sorting: SortType,
 ) {
   const categoryQuery = category === 'all' ? '' : `category=${category}`;
-  const sortingQuery =
-    sorting === 'priceAsc' ? `sort=price%2Casc` : `sort=price%2Cdesc`;
+  const sortArray = sorting.split('_');
+  const sortingQuery = sortArray.reduce((prev, cur) => {
+    return prev + `${cur}%2C`;
+  }, 'sort=');
 
   const response = await fetch(
     `${ENDPOINT.PRODUCTS}?${categoryQuery}&page=${page}&size=${limit}&${sortingQuery}`,

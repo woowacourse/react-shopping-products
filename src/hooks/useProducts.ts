@@ -27,7 +27,7 @@ export default function useProducts(): UseProductsResult {
   const [page, setPage] = useState(0);
   const [isLast, setIsLast] = useState(false);
   const [category, setCategory] = useState<CategoryType>('all');
-  const [sorting, setSorting] = useState<SortType>('priceAsc');
+  const [sorting, setSorting] = useState<SortType>('price_name_asc');
   const { createToast } = useToast();
 
   const changeCategory = (category: string) => {
@@ -40,6 +40,7 @@ export default function useProducts(): UseProductsResult {
 
   const changeSorting = (sort: string) => {
     if (Object.keys(SORT).includes(sort)) {
+      console.log(sort);
       setSorting(sort as SortType);
       setProducts([]);
       setPage(0);
