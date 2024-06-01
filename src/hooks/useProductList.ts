@@ -47,7 +47,7 @@ const useProductList = () => {
     }
   };
 
-  const handleChangeOrder = (newOrder: string) => {
+  const handleChangeSort = (newOrder: string) => {
     if (order === newOrder) return;
     setOrder(newOrder);
     resetProductState();
@@ -66,7 +66,7 @@ const useProductList = () => {
     error,
     fetchNextPage,
     hasNextPage,
-    handleChangeOrder,
+    handleChangeSort,
     handleChangeCategory,
   };
 };

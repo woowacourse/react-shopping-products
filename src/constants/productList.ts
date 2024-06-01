@@ -3,7 +3,7 @@ export const FETCH_SIZE = {
   moreLoadItemCount: 4,
 };
 
-export const SORT_ORDER = [
+export const PRICE_SORT = [
   {
     key: 'asc',
     value: '낮은 가격순',
