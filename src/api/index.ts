@@ -44,13 +44,13 @@ export async function fetchProducts(
   return data;
 }
 
-export const addCartItem = async (itemId: number) => {
+export const addCartItem = async (itemId: number, itemQuantity: number) => {
   const response = await fetch(ENDPOINT.CART_ITEMS, {
     method: 'POST',
     headers: HEADERS,
     body: JSON.stringify({
       productId: itemId,
-      quantity: 1,
+      quantity: itemQuantity,
     }),
   });
 
@@ -94,7 +94,7 @@ export const fetchShoppingCartQuantity = async () => {
   }
 
   const data = await response.json();
-  return data.quantity;
+  return data.totalElements;
 };
 
 export async function fetchItems(): Promise<CartItems[]> {

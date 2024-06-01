@@ -40,7 +40,6 @@ export default function useProducts(): UseProductsResult {
 
   const changeSorting = (sort: string) => {
     if (Object.keys(SORT).includes(sort)) {
-      console.log(sort);
       setSorting(sort as SortType);
       setProducts([]);
       setPage(0);

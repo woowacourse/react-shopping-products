@@ -7,6 +7,7 @@ import {
 } from './ItemCard.style';
 import CartButton from '../CartButton/CartButton';
 import { ItemCardProps } from './ItemCard.type';
+import { useState } from 'react';
 
 const ItemCard: React.FC<ItemCardProps> = ({
   id,
@@ -15,6 +16,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
   imageUrl,
   initIsInCart,
 }) => {
+  const [itemQuantity] = useState(1);
   return (
     <li key={id}>
       <ItemCardSection>
@@ -25,7 +27,11 @@ const ItemCard: React.FC<ItemCardProps> = ({
         </ItemInfo>
 
         <ItemCardBottom>
-          <CartButton productId={id} initIsInCart={initIsInCart} />
+          <CartButton
+            itemQuantity={itemQuantity}
+            productId={id}
+            initIsInCart={initIsInCart}
+          />
         </ItemCardBottom>
       </ItemCardSection>
     </li>

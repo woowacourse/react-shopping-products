@@ -15,13 +15,13 @@ const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleAddCartItem = async () => {
+  const handleAddCartItem = async (itemQuantity: number) => {
     try {
       setError(false);
       setLoading(true);
       setCounts((prev) => prev + 1);
       setIsInCart(true);
-      await addCartItem(productId);
+      await addCartItem(productId, itemQuantity);
     } catch (error) {
       if (error instanceof Error) {
         createToast('⛔️ 상품을 담는데 실패했습니다. 다시 시도해 주세요.');
@@ -53,7 +53,13 @@ const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
     }
   };
 
-  return { isInCart, handleAddCartItem, handleRemoveCartItem, loading, error };
+  return {
+    isInCart,
+    handleAddCartItem,
+    handleRemoveCartItem,
+    loading,
+    error,
+  };
 };
 
 export default useCartItemHandler;
