@@ -6,27 +6,17 @@ import { CART_ITEM_ENDPOINT } from '@/apis/endpoints';
 
 const cartItems: CartItem[] = cartItemListData as CartItem[];
 
-type AddCartItemRequestBody = {
-  productId: number;
-  quantity: number;
-};
-
-type AddCartItemParams = {
-  id: string;
-};
-
 type DeleteCartItemParams = {
   id: string;
 };
 
-export const handlers = [
+export const cartItemHandlers = [
   http.get(`${BASE_URL.SHOP}${CART_ITEM_ENDPOINT.CART_LIST}`, ({ request }) => {
     const url = new URL(request.url);
-    console.log(url);
     const page = Number(url.searchParams.get('page') || '0');
     const size = Number(url.searchParams.get('size') || '20');
 
-    const start = (page - 1) * size;
+    const start = page * size;
     const end = start + size;
     const paginatedCartItems = cartItems.slice(start, end);
 
@@ -40,25 +30,22 @@ export const handlers = [
 
   // ⛔️ async 추가로 인한 이펙트 확인 안됨. ⛔️
   // ⛔️ as 로 인한 이펙트 확인 안됨. ⛔️
-  http.post<AddCartItemParams>(
-    `${BASE_URL.SHOP}${CART_ITEM_ENDPOINT.CART_LIST}/:id`,
-    ({ params }) => {
-      const productId = Number(params);
+  http.post(`${BASE_URL.SHOP}${CART_ITEM_ENDPOINT.CART_LIST}`, ({ params }) => {
+    const productId = Number(params);
 
-      const cartItem = cartItems.find(({ product }) => product.id === productId);
+    const cartItem = cartItems.find(({ product }) => product.id === productId);
 
-      if (cartItem)
-        return HttpResponse.json(
-          { error: `cartItem already exists; cartItemId=${cartItem.id}` },
-          { status: 400 },
-        );
-      if (!productId) return HttpResponse.json({ error: `Invalid productId` }, { status: 400 });
+    if (cartItem)
+      return HttpResponse.json(
+        { error: `cartItem already exists; cartItemId=${cartItem.id}` },
+        { status: 400 },
+      );
+    if (!productId) return HttpResponse.json({ error: `Invalid productId` }, { status: 400 });
 
-      return HttpResponse.json({
-        message: 'Success create',
-      });
-    },
-  ),
+    return HttpResponse.json({
+      message: 'Success create',
+    });
+  }),
 
   // 장바구니 아이템 삭제 delete
   http.delete<DeleteCartItemParams>(
