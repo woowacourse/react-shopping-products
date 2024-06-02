@@ -14,7 +14,6 @@ import ProductsContainer from './components/ProductsContainer';
 import FilterContainer from './components/FilterContainer';
 import ProductsContent from './components/ProductsContent';
 import ProductItem from './components/ProductItem';
-import ToastPopup from './components/ToastPopup';
 
 import useFetchProducts from './hooks/useFetchProducts';
 
@@ -45,10 +44,6 @@ function App() {
         <HomeButton onClick={() => {}} />
         <CartButton count={cartItems.length} onClick={() => {}} />
       </Header>
-      <ToastPopup
-        isOpen={Boolean(error)}
-        message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
-      />
       <Main>
         <ProductsContainer>
           <Title />
