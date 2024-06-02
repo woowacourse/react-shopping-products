@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useEffect, useState } from 'react';
 
-import { CartItem } from '@/types/cartItem.type';
 import { getCartList } from '@/api/cartItem';
+import { CartItem } from '@/types/cartItem.type';
 
 interface CartContextType {
   cartList: CartItem[];
@@ -9,7 +9,7 @@ interface CartContextType {
 }
 
 export const CartContext = createContext<CartContextType | undefined>(
-  undefined
+  undefined,
 );
 
 interface Props {

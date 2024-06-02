@@ -1,7 +1,7 @@
-import { CartItem } from '@/types/cartItem.type';
-import { ENDPOINT } from './endpoints';
+import ENDPOINT from '@/api/endpoints';
+import { fetchWithAuth } from '@/api/utils/fetchClient';
 import { ERROR_MESSAGES } from '@/constants/error';
-import { fetchWithAuth } from './utils/fetchClient';
+import { CartItem } from '@/types/cartItem.type';
 
 /**
  * 사용자의 장바구니 목록 조회
@@ -44,7 +44,7 @@ export const deleteCartItem = async (productId: number): Promise<void> => {
     ENDPOINT.cartItem.deleteItem(productId),
     {
       method: 'DELETE',
-    }
+    },
   );
 
   if (!response.ok) {

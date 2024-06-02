@@ -8,10 +8,9 @@
  * @param userPassword 사용자 비밀번호
  * @returns 인코딩된 기본 인증 토큰
  */
-export function generateBasicToken(
-  userId: string,
-  userPassword: string
-): string {
+const generateBasicToken = (userId: string, userPassword: string) => {
   const token = btoa(`${userId}:${userPassword}`);
   return `Basic ${token}`;
-}
+};
+
+export default generateBasicToken;

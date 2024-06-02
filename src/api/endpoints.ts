@@ -1,7 +1,7 @@
-import buildGetProductListURL from './buildGetProductListURL';
-import { getProductListProps } from './product';
+import buildGetProductListURL from '@/api/product/buildGetProductListURL';
+import { getProductListProps } from '@/api/product';
 
-export const ENDPOINT = {
+const ENDPOINT = {
   product: {
     getList: ({ page, size, category, order }: getProductListProps) => {
       return buildGetProductListURL({
@@ -24,3 +24,5 @@ export const ENDPOINT = {
     getItemCount: '/cart-items/counts',
   },
 };
+
+export default ENDPOINT;

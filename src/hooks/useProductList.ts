@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
+import { getProductList } from '@/api/product';
 import { FETCH_SIZE } from '@/constants/productList';
 import { Product } from '@/types/product.type';
-import { getProductList } from '@/api/product';
 
 const useProductList = () => {
   const [page, setPage] = useState(0);

@@ -1,6 +1,6 @@
-import { ENDPOINT } from './endpoints';
 import { ERROR_MESSAGES } from '@/constants/error';
-import { fetchWithoutAuth } from './utils/fetchClient';
+import ENDPOINT from '../endpoints';
+import { fetchWithoutAuth } from '../utils/fetchClient';
 
 export interface getProductListProps {
   page?: number;
@@ -20,7 +20,7 @@ export const getProductList = async ({
 }: getProductListProps) => {
   const response = await fetchWithoutAuth(
     ENDPOINT.product.getList({ page, size, category, order }),
-    { method: 'GET' }
+    { method: 'GET' },
   );
 
   if (!response.ok) {
