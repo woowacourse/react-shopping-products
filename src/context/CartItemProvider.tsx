@@ -8,13 +8,7 @@ interface CartItemContextProps {
   deleteCart: (cartId: number) => Promise<void>;
 }
 
-const InitialState: CartItemContextProps = {
-  cartItems: [],
-  addCart: async () => {},
-  deleteCart: async () => {},
-};
-
-export const CartItemsContext = createContext(InitialState);
+export const CartItemsContext = createContext<CartItemContextProps>({} as CartItemContextProps);
 
 export const CartItemProvider = ({ children }: PropsWithChildren) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
