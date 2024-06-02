@@ -51,7 +51,19 @@ const useFetchProducts = (
     getProducts();
   }, [page, sortings, filter]);
 
-  return { products, isError, isPending, isLast, fetchNextPage, page };
+  const resetPage = () => {
+    setPage(0);
+  };
+
+  return {
+    products,
+    isError,
+    isPending,
+    isLast,
+    fetchNextPage,
+    page,
+    resetPage,
+  };
 };
 
 export default useFetchProducts;

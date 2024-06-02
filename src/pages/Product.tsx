@@ -18,8 +18,15 @@ function Product() {
   const fetchAddCartState = useFetchAddCart();
   const [sortings, setSortings] = useState<SortingParam[]>([]);
   const [filter, setFilter] = useState('');
-  const { products, isError, isPending, isLast, fetchNextPage, page } =
-    useFetchProducts(sortings, filter);
+  const {
+    products,
+    isError,
+    isPending,
+    isLast,
+    fetchNextPage,
+    page,
+    resetPage,
+  } = useFetchProducts(sortings, filter);
 
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
@@ -42,7 +49,12 @@ function Product() {
         {isError && <ErrorMessage />}
         <S.ProductContentWrapper>
           <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
-          <Dropdown setSortings={setSortings} setFilter={setFilter} />
+          <Dropdown
+            setSortings={setSortings}
+            setFilter={setFilter}
+            resetPage={resetPage}
+          />
+
           <S.ProductListContainer>
             {products.map((product) => {
               return <ProductCard key={product.id} product={product} />;

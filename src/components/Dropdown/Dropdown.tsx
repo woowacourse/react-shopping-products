@@ -7,19 +7,30 @@ import * as S from './Dropdown.styled';
 interface DropdownProps {
   setSortings: Dispatch<SetStateAction<SortingParam[]>>;
   setFilter: Dispatch<SetStateAction<string>>;
+  resetPage: () => void;
 }
 
-function Dropdown({ setSortings, setFilter }: DropdownProps) {
+function Dropdown({ setSortings, setFilter, resetPage }: DropdownProps) {
   (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.target.value;
+  };
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    resetPage();
+    setFilter(event.target.value);
+  };
+
+  const handleSortingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    resetPage();
+    setSortings([{ name: 'price', order: event.target.value } as SortingParam]);
   };
 
   return (
     <S.DropdownContainer>
       <S.Dropdown
-        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          setFilter(event.target.value);
-        }}
+        onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+          handleFilterChange(event)
+        }
       >
         <option value={''}>전체</option>
         <option value={'fashion'}>fashion</option>
@@ -32,11 +43,9 @@ function Dropdown({ setSortings, setFilter }: DropdownProps) {
       </S.Dropdown>
 
       <S.Dropdown
-        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          setSortings([
-            { name: 'price', order: event.target.value } as SortingParam,
-          ]);
-        }}
+        onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+          handleSortingChange(event)
+        }
       >
         <option value={'asc'}>낮은 가격 순</option>
         <option value={'desc'}>높은 가격 순</option>
