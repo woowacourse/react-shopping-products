@@ -6,6 +6,8 @@ import { HttpResponse, http } from 'msw';
 import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
 import { FIRST_PAGE_SIZE } from '../../constants/pagination';
 
+import wrapper from './wrapper';
+
 describe('첫 페이지 상품 목록 조회', () => {
   it('상품 목록 조회 중 로딩 상태를 "true"로 세팅한다.', async () => {
     const { result } = renderHook(() => useFetchProducts());
@@ -31,7 +33,9 @@ describe('첫 페이지 상품 목록 조회', () => {
         return new HttpResponse(null, { status: 500 });
       }),
     );
-    const { result } = renderHook(() => useFetchProducts());
+    const { result } = renderHook(() => useFetchProducts(), {
+      wrapper: wrapper,
+    });
 
     await waitFor(() => {
       expect(result.current.products).toEqual([]);

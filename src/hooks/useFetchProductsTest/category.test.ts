@@ -22,10 +22,8 @@ describe('카테고리', () => {
         ).toBeFalsy();
       });
 
-      await waitFor(() => {
-        act(() => {
-          result.current.filterByCategory(selectedCategory);
-        });
+      act(() => {
+        result.current.filterByCategory(selectedCategory);
       });
 
       await waitFor(() => {
