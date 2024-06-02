@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const StyledProductItem = styled.div`
   display: flex;
   flex-direction: column;
-  width: 182px;
+  width: 100%;
   height: 224px;
 `;
 
