@@ -2,14 +2,20 @@ import { ERROR_MESSAGE } from "../constants/message";
 import { CART_ITEMS_ENDPOINT } from "./endPoint";
 import { fetchWithToken } from "./fetchWithToken";
 
-export async function getCartItems(size: number = 20) {
-  const data = await fetchWithToken({
-    url: `${CART_ITEMS_ENDPOINT}?size=${size}`,
-    errorMessage: ERROR_MESSAGE.getCartItems,
-  });
+export async function getCartItems() {
+  const fetchCartItems = async (size?: number) =>
+    await fetchWithToken({
+      url: `${CART_ITEMS_ENDPOINT}?size=${size}`,
+      errorMessage: ERROR_MESSAGE.getCartItems,
+    });
 
-  return data;
+  const { totalElements } = await fetchCartItems();
+  const data = await fetchCartItems(totalElements);
+
+  return data.content;
 }
+
+export async function getFirstCartItems() {}
 
 export async function postCartItems(body: { productId: number; quantity: number }) {
   const data = await fetchWithToken({

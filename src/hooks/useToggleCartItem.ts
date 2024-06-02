@@ -21,10 +21,8 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
     if (isLoading) return;
     try {
       setIsLoading(true);
-      const prevData = await getCartItems();
-      const size = prevData.totalElements;
-      const data = await getCartItems(size);
-      setCartItems(data.content);
+      const data = await getCartItems();
+      setCartItems(data);
     } catch (error) {
       setError(error);
     } finally {
