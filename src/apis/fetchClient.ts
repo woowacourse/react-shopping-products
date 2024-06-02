@@ -1,5 +1,5 @@
-import { ERROR_MESSAGE } from '../constants/apis';
-import { HTTPMethod } from '../types/apis';
+import { ERROR_MESSAGE } from "../constants/apis";
+import { HTTPMethod } from "../types/apis";
 
 interface FetchOption {
   url: string;
@@ -21,21 +21,38 @@ export async function fetchClient({ url, method, body, token }: FetchOption) {
       throw new Error(getResponseErrorMessage(response.status));
     }
 
-    const isJson = response.headers.get('content-type')?.includes('application/json');
-    return isJson ? response.json() : {};
+    const contentType = response.headers.get("content-type");
+
+    return getResponseByContentType(response, contentType);
   } catch (error) {
     throw new Error(getNetworkErrorMessage(error));
   }
 }
 
 function getHeaders(token?: string): Record<string, string> {
-  const headers = { 'Content-type': 'application/json' };
+  const headers = { "Content-type": "application/json" };
 
   if (token) {
     return { ...headers, Authorization: token };
   }
 
   return headers;
+}
+
+function getResponseByContentType(response: Response, contentType: string | null) {
+  if (contentType?.includes("application/json")) {
+    return response.json();
+  }
+
+  if (contentType?.includes("image/") || contentType?.includes("application/octet-stream")) {
+    return response.blob();
+  }
+
+  if (contentType?.includes("application/pdf")) {
+    return response.arrayBuffer();
+  }
+
+  return response.text();
 }
 
 function getResponseErrorMessage(status: number, defaultErrorMessage?: string): string {
