@@ -21,7 +21,10 @@ export default function useCartItems(): UseCartItemsResult {
 
   const getCartItems = useCallback(async () => {
     fetchData({
-      size: MAX_CART_ITEMS_FETCH_SIZE,
+      errorMessage: '일시적인 오류로 장바구니 정보를 불러오는 데 실패했습니다.',
+      queryParams: {
+        size: MAX_CART_ITEMS_FETCH_SIZE,
+      },
     }).then((response) => {
       if (!response) return;
 

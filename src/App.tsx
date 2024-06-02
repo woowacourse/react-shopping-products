@@ -5,13 +5,15 @@ import Header from './components/product/Header';
 
 import styled from '@emotion/styled';
 import IntersectionArea from './components/common/IntersectionArea';
-import useProducts, { SortType } from './components/hooks/useProducts';
+import useProducts from './components/hooks/useProducts';
 import ProductItem from './components/product/ProductItem';
 import ProductList from './components/product/ProductList';
 import { CartItemsProvider } from './context/CartItemsProvider';
 
+import { SortOrder } from './api/types';
 import { CATEGORY, SORT } from './constants/filterOptions';
 import { PAGE_INFORMATION } from './constants/page';
+import { Category } from './types';
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,10 +32,10 @@ function App() {
     useProducts();
 
   const onCategorySelect = (value: string) => {
-    setCategory(value);
+    setCategory(value as Category);
   };
   const onSortSelect = (value: string) => {
-    setSort(value as SortType);
+    setSort(value as SortOrder);
   };
 
   return (

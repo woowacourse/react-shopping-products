@@ -1,17 +1,19 @@
-import { CommonQueryParams } from '../types/fetch';
+import { CommonQueryParams } from '../api/types';
 
 export const generateQueryParams = <T extends CommonQueryParams>(
   queryParams: T
 ) => {
-  const newQueryParams = Object.entries(queryParams).reduce<
-    Record<string, string>
-  >((acc, [key, value]) => {
-    if (value) {
-      acc[key] = value.toString();
-      return acc;
-    }
-    return acc;
-  }, {});
+  const urlSearchParams = new URLSearchParams();
 
-  return new URLSearchParams(newQueryParams);
+  Object.entries(queryParams).forEach(([param, value]) => {
+    if (!value) return;
+
+    if (Array.isArray(value)) {
+      return value.forEach((v) => urlSearchParams.append(param, v));
+    }
+
+    urlSearchParams.append(param, value.toString());
+  });
+
+  return urlSearchParams;
 };

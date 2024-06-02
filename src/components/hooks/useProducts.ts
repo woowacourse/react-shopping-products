@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
+import { SortOrder, SortType } from '../../api/types';
 import {
   INITIAL_PAGE_NUMBER,
   INITIAL_PAGE_SIZE,
   PAGE_SIZE,
 } from '../../constants/paginationRules';
-import { Product } from '../../types';
-import useFetch from './useFetch';
-
-export type SortType = 'desc' | 'asc';
+import { Category, Product } from '../../types';
+import useFetchProducts from './products/useFetchProducts';
 
 interface UseProductsResult {
   products: Product[];
@@ -18,32 +16,25 @@ interface UseProductsResult {
   isLastPage: boolean;
   fetchNextPage: () => void;
 
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
-  setSort: React.Dispatch<React.SetStateAction<SortType>>;
-}
-
-interface FetchProductsResponse {
-  last: boolean;
-  content: Product[];
+  setSort: (newPriceOrder: SortOrder) => void;
+  setCategory: (newCategory: Category) => void;
 }
 
 export default function useProducts(): UseProductsResult {
-  const { error, loading, fetchData } = useFetch<FetchProductsResponse>({
-    url: PRODUCTS_ENDPOINT,
-  });
+  const { error, loading, fetchProducts } = useFetchProducts();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [isLastPage, setIsLastPage] = useState(false);
 
   const [page, setPage] = useState(0);
-  const [sort, setSort] = useState<SortType>('asc');
+  const [sort, setSort] = useState<SortType>({ price: 'asc', id: 'asc' });
   const [category, setCategory] = useState('');
 
   const getProducts = useCallback(async () => {
-    fetchData({
+    fetchProducts({
       page,
       category,
-      sort: `price,${sort}`,
+      sort,
       size: page === INITIAL_PAGE_NUMBER ? INITIAL_PAGE_SIZE : PAGE_SIZE,
     }).then((response) => {
       if (!response) return;
@@ -54,7 +45,7 @@ export default function useProducts(): UseProductsResult {
         page === INITIAL_PAGE_NUMBER ? content : [...prevProducts, ...content]
       );
     });
-  }, [page, sort, category, fetchData]);
+  }, [page, sort, category, fetchProducts]);
 
   useEffect(() => {
     if (!isLastPage) {
@@ -83,8 +74,12 @@ export default function useProducts(): UseProductsResult {
     error,
     page,
     fetchNextPage,
-    setCategory,
-    setSort,
+    setCategory: (newCategory: Category) => {
+      setCategory(() => newCategory);
+    },
+    setSort: (newPriceOrder: SortOrder) => {
+      setSort((prev) => ({ ...prev, price: newPriceOrder }));
+    },
     isLastPage,
   };
 }
