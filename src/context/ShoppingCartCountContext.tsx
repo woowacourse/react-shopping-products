@@ -14,7 +14,7 @@ export const CartContext = createContext<{
 });
 
 export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [counts, setCounts] = useState<number>(0);
+  const [counts, setCounts] = useState(0);
 
   useEffect(() => {
     const fetchQuantity = async () => {
