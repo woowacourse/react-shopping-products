@@ -1,4 +1,4 @@
-import ProductList from "./components/ProductList";
+import ProductList from "./components/ProductListPage/ProductList";
 import { ErrorToastProvider } from "./store/errorToastContext";
 import { CartItemsProvider } from "./store/cartItemsContext";
 

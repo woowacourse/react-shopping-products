@@ -3,16 +3,16 @@ import styled from "styled-components";
 
 import ProductItem from "./ProductItem";
 import ShopHeader from "./ShopHeader";
-import Select from "./common/Select";
-import LoadingSpinner from "./common/LoadingSpinner";
-import { IntersectionDetector } from "./common/IntersectionDetector";
+import Select from "../common/Select";
+import LoadingSpinner from "../common/LoadingSpinner";
+import { IntersectionDetector } from "../common/IntersectionDetector";
 
-import { useInfiniteProducts } from "../hooks/useInfiniteProducts";
-import { ErrorToastContext } from "../store/errorToastContext";
-import { CATEGORY_SELECT_OPTIONS, PRICE_SORT_SELECT_OPTIONS } from "../constants/selectOptions";
-import { isIncludedInList } from "../utils/isIncludedInList";
-import { Category, SortOption } from "../types/products";
-import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../api/products/constants";
+import { useInfiniteProducts } from "../../hooks/useInfiniteProducts";
+import { ErrorToastContext } from "../../store/errorToastContext";
+import { CATEGORY_SELECT_OPTIONS, PRICE_SORT_SELECT_OPTIONS } from "../__constants__/selectOptions";
+import { isIncludedInList } from "../../utils/isIncludedInList";
+import { Category, SortOption } from "../../types/products";
+import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../../api/__constants__/productQueryParams";
 
 const ProductList = () => {
   const { products, isLoading, error, fetchNextPage, updateCategoryFilter, updatePriceSort } =

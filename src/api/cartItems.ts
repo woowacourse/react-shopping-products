@@ -1,4 +1,4 @@
-import { API_URL } from "../constants/url";
+import { API_URL } from "./__constants__/apiUrl";
 import { cartClient } from "./clients/cartClient";
 import { Product } from "./products";
 

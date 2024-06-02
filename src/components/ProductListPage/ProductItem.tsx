@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { ReactComponent as AddToCartIcon } from "../assets/addToCart.svg";
-import { ReactComponent as DeleteFromCartIcon } from "../assets/deleteFromCart.svg";
-import { addCartItem, deleteCartItem } from "../api/cartItems";
+import { ReactComponent as AddToCartIcon } from "../../assets/addToCart.svg";
+import { ReactComponent as DeleteFromCartIcon } from "../../assets/deleteFromCart.svg";
+import { addCartItem, deleteCartItem } from "../../api/cartItems";
 import { useContext } from "react";
-import { CartItemsContext } from "../store/cartItemsContext";
-import { MAX_CART_ITEM_COUNT } from "../constants/cartItems";
+import { CartItemsContext } from "../../store/cartItemsContext";
+import { MAX_CART_ITEM_COUNT } from "../__constants__/cartItems";
 
 interface ProductItemProps {
   id: number;

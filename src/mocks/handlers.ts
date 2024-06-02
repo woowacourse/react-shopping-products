@@ -1,11 +1,11 @@
 import { http, HttpResponse } from "msw";
-import { CART_API_URL } from "../envVariables";
-import { API_URL } from "../constants/url";
+import { CART_API_URL } from "../env/envVariables";
 import products from "./products.json";
-import { SORT_OPTIONS } from "../api/products/constants";
+import { API_URL } from "../api/__constants__/apiUrl";
+import { SORT_OPTIONS } from "../api/__constants__/productQueryParams";
 
 export const handlers = [
-  http.get(CART_API_URL + "/" + API_URL.products, ({ request }) => {
+  http.get(CART_API_URL + API_URL.products, ({ request }) => {
     const url = new URL(request.url);
 
     const page = Number(url.searchParams.get("page") || "0");

@@ -1,9 +1,9 @@
-import { CART_API_URL } from "./../../envVariables";
-import { renderHook, waitFor } from "@testing-library/react";
-import { useInfiniteProducts } from ".";
-import { server } from "../../mocks/server";
 import { HttpResponse, http } from "msw";
-import { API_URL } from "../../constants/url";
+import { CART_API_URL } from "../../../env/envVariables";
+import { renderHook, waitFor } from "@testing-library/react";
+import { useInfiniteProducts } from "..";
+import { server } from "../../../mocks/server";
+import { API_URL } from "../../../api/__constants__/apiUrl";
 import { act } from "@testing-library/react";
 
 describe("useInfiniteProducts", () => {
@@ -24,7 +24,7 @@ describe("useInfiniteProducts", () => {
 
     it("초기 상품 목록을 불러올 때 에러가 발생하면 에러 객체를 받아온다", async () => {
       server.use(
-        http.get(CART_API_URL + "/" + API_URL.products, () => {
+        http.get(CART_API_URL + API_URL.products, () => {
           return new HttpResponse(null, { status: 500 });
         })
       );
