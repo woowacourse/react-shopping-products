@@ -12,6 +12,7 @@ import {
   ContentWrapper,
 } from './ProductPage.style';
 import useCartItems from '../hooks/useCartItem';
+import { CategoryType, SortType } from '../type';
 
 function ProductPage() {
   const {
@@ -33,13 +34,17 @@ function ProductPage() {
         <DropBoxContainer>
           <Dropdown
             onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              changeCategory(e.target.value);
+              if (Object.keys(CATEGORY).includes(e.target.value)) {
+                changeCategory(e.target.value as CategoryType);
+              }
             }}
             options={Object.entries(CATEGORY)}
           ></Dropdown>
           <Dropdown
             onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              changeSorting(e.target.value);
+              if (Object.keys(SORT).includes(e.target.value)) {
+                changeSorting(e.target.value as SortType);
+              }
             }}
             options={Object.entries(SORT)}
           ></Dropdown>
