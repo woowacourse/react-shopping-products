@@ -16,10 +16,10 @@ export default function Dropdown({ optionList, bannerText, onChange }: DropdownP
   const [selectedOption, setSelectedOption] = useState(bannerText);
   const selectRef = useRef<HTMLDivElement | null>(null);
 
-  const handleOptionClick = (value: string, option: string) => {
-    setSelectedOption(value);
+  const handleOptionClick = (option: { value: string; name: string }) => {
+    setSelectedOption(option.name);
     setIsOpen(false);
-    onChange(option);
+    onChange(option.value);
   };
 
   const handleOptionListToggle = () => setIsOpen((prevState) => !prevState);
@@ -48,9 +48,8 @@ export default function Dropdown({ optionList, bannerText, onChange }: DropdownP
               selectedOption !== name && (
                 <li
                   key={value}
-                  data-value={value}
                   className={styles.option}
-                  onClick={() => handleOptionClick(name, value)}
+                  onClick={() => handleOptionClick({ name, value })}
                 >
                   {name}
                 </li>
