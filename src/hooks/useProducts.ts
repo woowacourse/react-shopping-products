@@ -39,12 +39,9 @@ export default function useProducts({
           page,
           size,
         });
-        setProducts((prevProducts) => [
-          ...prevProducts,
-          ...responseData.content,
-        ]);
+        setProducts((prevProducts) => [...prevProducts, ...responseData]);
 
-        if (responseData.content.length < size) {
+        if (responseData.length < size) {
           setHasMore(false);
         }
       } catch (error) {

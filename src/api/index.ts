@@ -36,9 +36,7 @@ const createQueryString = (params: QueryParams) => {
     .filter(([, value]) => value !== undefined)
     .map(([key, value]) => {
       if (Array.isArray(value)) {
-        return value
-          .map((v) => `${encodeURIComponent(key)}=${encodeURIComponent(v)}`)
-          .join("&");
+        return `${encodeURIComponent(key)}=${encodeURIComponent(value.join(","))}`;
       }
       return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
     })
@@ -50,7 +48,7 @@ export const getProducts = async ({
   page = 0,
   size = 20,
   sort = "asc",
-}: GetProductsParams = {}) => {
+}: GetProductsParams = {}): Promise<Product[]> => {
   const params = {
     category,
     page,
@@ -68,7 +66,7 @@ export const getProducts = async ({
     throw new Error("Failed to get products item");
   }
 
-  return data;
+  return data.content;
 };
 
 export const postProductInCart = async (
@@ -98,7 +96,7 @@ export const deleteProductInCart = async (cartId: number) => {
   }
 };
 
-export const getCartItemsCount = async () => {
+export const getCartItemsCount = async (): Promise<number> => {
   const response = await fetchWithAuth(CART_ITEMS_COUNTS_ENDPOINT, {
     method: "GET",
   });
