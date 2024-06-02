@@ -6,11 +6,7 @@ import ProductItemList from '../ProductItemList/ProductItemList';
 
 import * as S from './ProductItemSection.style';
 
-interface ProductItemSectionProps {
-  onError: (error: string) => void;
-}
-
-function ProductItemSection({ onError }: ProductItemSectionProps) {
+function ProductItemSection() {
   const [category, setCategory] = useState<Category>('all' as Category);
   const [sort, setSort] = useState<Sort>('price,asc' as Sort);
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -26,7 +22,7 @@ function ProductItemSection({ onError }: ProductItemSectionProps) {
         sort={sort}
         onChangeSort={handleSortingChange}
       />
-      <ProductItemList category={category} sort={sort} onError={onError} />
+      <ProductItemList category={category} sort={sort} />
     </S.ProductSectionContainer>
   );
 }

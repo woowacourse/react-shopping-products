@@ -5,7 +5,7 @@ export async function requestFetchCartItemList() {
   const data = await response({
     url: `${CART_ITEMS_ENDPOINT}?size=2000`,
     method: 'GET',
-    errorMessage: '장바구니 목록을 불러오는데 실패했어요..',
+    errorMessage: '장바구니 목록을 불러오는데 실패했어요.',
   });
   return data;
 }

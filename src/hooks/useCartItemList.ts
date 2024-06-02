@@ -11,7 +11,7 @@ import { QuantityContext } from '../store/QuantityContext';
 interface UseCartItemListResult {
   cartItemList: CartItem[];
   cartItemListLoading: boolean;
-  cartItemListError: unknown;
+  cartItemListError: Error | null;
 
   isInCart: (productId: number) => boolean;
   toggleCartItem: (product: Product) => Promise<void>;
@@ -20,7 +20,9 @@ interface UseCartItemListResult {
 export default function useCartItemList(): UseCartItemListResult {
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
   const [cartItemListLoading, setCartItemListLoading] = useState<boolean>(true);
-  const [cartItemListError, setCartItemListError] = useState<unknown>(null);
+  const [cartItemListError, setCartItemListError] = useState<Error | null>(
+    null,
+  );
   const quantityContext = useContext(QuantityContext);
   const setQuantity = quantityContext ? quantityContext.setQuantity : () => {};
 
@@ -71,7 +73,7 @@ export default function useCartItemList(): UseCartItemListResult {
         const data = await requestFetchCartItemList();
         setCartItemList(data.content);
       } catch (error) {
-        setCartItemListError(error);
+        if (error instanceof Error) setCartItemListError(error);
       } finally {
         setCartItemListLoading(false);
       }

@@ -7,16 +7,16 @@ import ProductItem from '../ProductItem/ProductItem';
 import { Category, Sort } from '../../types/type';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../common/Spinner/Spinner';
+import { ErrorContext } from '../../store/ErrorContext';
 
 import * as S from './ProductItemList.style';
 
 interface ProductItemListProp {
   category: Category;
   sort: Sort;
-  onError: (error: string) => void;
 }
 
-function ProductItemList({ category, sort, onError }: ProductItemListProp) {
+function ProductItemList({ category, sort }: ProductItemListProp) {
   const {
     productList,
     productListError,
@@ -35,6 +35,9 @@ function ProductItemList({ category, sort, onError }: ProductItemListProp) {
   const [observe, unobserve] = useIntersectionObserver(() => {
     fetchNextPage();
   });
+
+  const errorContext = useContext(ErrorContext);
+  const setError = errorContext ? errorContext.setError : () => {};
 
   useEffect(() => {
     setPage(0);
@@ -55,10 +58,10 @@ function ProductItemList({ category, sort, onError }: ProductItemListProp) {
   setQuantity(cartItemList.length);
 
   if (productListError) {
-    onError('상품 목록 조회 실패');
+    setError(productListError);
   }
   if (cartItemListError) {
-    onError('장바구니 목록 조회 실패');
+    setError(cartItemListError);
   }
 
   return (

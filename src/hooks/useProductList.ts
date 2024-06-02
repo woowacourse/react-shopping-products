@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { fetchProductList } from "../apis/products";
-import { PRODUCT_LIST } from "../constants/productList";
-import { Category, Product, Sort } from "../types/type";
+import { fetchProductList } from '../apis/products';
+import { PRODUCT_LIST } from '../constants/productList';
+import { Category, Product, Sort } from '../types/type';
 
 interface UseProductListResult {
   productList: Product[];
   productListLoading: boolean;
-  productListError: unknown;
+  productListError: Error | null;
   page: number;
   fetchNextPage: () => void;
   isLastPage: boolean;
@@ -25,7 +25,7 @@ export default function useProductList({
 }: UseProductListProps): UseProductListResult {
   const [productList, setProductList] = useState<Product[]>([]);
   const [productListLoading, setProductListLoading] = useState<boolean>(true);
-  const [productListError, setProductListError] = useState<unknown>(null);
+  const [productListError, setProductListError] = useState<Error | null>(null);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
 
@@ -50,8 +50,8 @@ export default function useProductList({
           ]);
         }
         setIsLastPage(data.last);
-      } catch (productListError) {
-        setProductListError(productListError);
+      } catch (error) {
+        if (error instanceof Error) setProductListError(error);
       } finally {
         setProductListLoading(false);
       }
