@@ -1,6 +1,6 @@
 import { Filtering, Product } from '@appTypes/index';
 import { fetchProduct } from '@apis/index';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const useLoadProducts = (filtering: Filtering) => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -41,7 +41,7 @@ const useLoadProducts = (filtering: Filtering) => {
     }
   };
 
-  const handleFilteringProducts = async () => {
+  const refreshByFiltering = async () => {
     try {
       setProducts([]);
       setLoading(true);
@@ -55,13 +55,10 @@ const useLoadProducts = (filtering: Filtering) => {
     }
   };
 
-  useEffect(() => {
-    handleFilteringProducts();
-  }, [filtering]);
-
   return {
     products,
     loadNextPage,
+    refreshByFiltering,
     loading,
     error,
   };

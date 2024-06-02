@@ -14,7 +14,7 @@ interface ProductListPageProps {
 
 function ProductListPage({ cartItems, refetch }: ProductListPageProps) {
   const [filtering, setFiltering] = useState<Filtering>({ category: '', sort: 'price,asc' });
-  const { products, loading, error, loadNextPage } = useLoadProducts(filtering);
+  const { products, loading, error, loadNextPage, refreshByFiltering } = useLoadProducts(filtering);
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const handleChangeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -28,6 +28,10 @@ function ProductListPage({ cartItems, refetch }: ProductListPageProps) {
       throw new Error('예기치 못한 에러 발생');
     }
   }, [error]);
+
+  useEffect(() => {
+    refreshByFiltering();
+  }, [filtering]);
 
   return (
     <div>
