@@ -125,7 +125,7 @@ describe("useInfiniteProducts", () => {
       const { result } = renderHook(() => useInfiniteProducts());
 
       act(() => {
-        result.current.changeCategoryFilter(CATEGORY);
+        result.current.updateCategoryFilter(CATEGORY);
       });
 
       await waitFor(() => {
@@ -142,7 +142,7 @@ describe("useInfiniteProducts", () => {
       const { result } = renderHook(() => useInfiniteProducts());
 
       act(() => {
-        result.current.changePriceSort(PRICE_SORT);
+        result.current.updatePriceSort(PRICE_SORT);
       });
 
       await waitFor(() => expect(result.current.isLoading).toBe(false));

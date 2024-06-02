@@ -7,19 +7,19 @@ interface UseInfiniteProductsReturn {
   isLoading: boolean;
   error: unknown;
   fetchNextPage: () => void;
-  changeCategoryFilter: (category: Category) => void;
-  changePriceSort: (sort: SortOption) => void;
+  updateCategoryFilter: (category: Category) => void;
+  updatePriceSort: (sort: SortOption) => void;
 }
 
 export const useInfiniteProducts = (): UseInfiniteProductsReturn => {
   const { data, isLoading, error, refetchByQueryUpdate, fetchNextPage } =
     useInfiniteFetch<Product>(getProducts);
 
-  const changeCategoryFilter = (category: Category) => {
+  const updateCategoryFilter = (category: Category) => {
     refetchByQueryUpdate("category", category);
   };
 
-  const changePriceSort = (sort: SortOption) => {
+  const updatePriceSort = (sort: SortOption) => {
     refetchByQueryUpdate("sort", `price,${sort}`);
   };
 
@@ -28,7 +28,7 @@ export const useInfiniteProducts = (): UseInfiniteProductsReturn => {
     isLoading,
     error,
     fetchNextPage,
-    changeCategoryFilter,
-    changePriceSort,
+    updateCategoryFilter,
+    updatePriceSort,
   };
 };

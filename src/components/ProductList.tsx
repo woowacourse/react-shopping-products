@@ -15,7 +15,7 @@ import { Category, SortOption } from "../types/products";
 import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../api/products/productQueryParams";
 
 const ProductList = () => {
-  const { products, isLoading, error, fetchNextPage, changeCategoryFilter, changePriceSort } =
+  const { products, isLoading, error, fetchNextPage, updateCategoryFilter, updatePriceSort } =
     useInfiniteProducts();
   const { showErrorToast } = useContext(ErrorToastContext);
 
@@ -27,13 +27,13 @@ const ProductList = () => {
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (isIncludedInList<Category>(e.target.value, Object.values(CATEGORY_OPTIONS))) {
-      changeCategoryFilter(e.target.value);
+      updateCategoryFilter(e.target.value);
     }
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (isIncludedInList<SortOption>(e.target.value, Object.values(SORT_OPTIONS))) {
-      changePriceSort(e.target.value);
+      updatePriceSort(e.target.value);
     }
   };
 
