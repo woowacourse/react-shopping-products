@@ -12,9 +12,11 @@ const ShopHeader = () => {
       <S.Title>SHOP</S.Title>
       <S.CartButton role="button" aria-label="장바구니 이동">
         <CartIcon />
-        <S.Badge>
-          <S.CircleContent>{isLoading ? "" : cartItems.length}</S.CircleContent>
-        </S.Badge>
+        {!isLoading && (
+          <S.Badge>
+            <S.CircleContent>{cartItems.length}</S.CircleContent>
+          </S.Badge>
+        )}
       </S.CartButton>
     </S.Header>
   );
