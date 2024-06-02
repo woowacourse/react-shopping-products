@@ -17,7 +17,7 @@ const ProductList = () => {
 
   useEffect(() => {
     if (error) {
-      showErrorToast("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      showErrorToast("상품을 로딩하는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   }, [error]);
 
