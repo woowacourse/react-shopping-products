@@ -4,13 +4,13 @@ import { getProductListProps } from '@/api/product';
 const ENDPOINT = {
   product: {
     getList: ({ page, size, category, order }: getProductListProps) => {
-      return buildGetProductListURL({
-        baseUrl: `/products`,
+      const query = buildGetProductListURL({
         page,
         size,
         category,
         order,
       });
+      return `/products${query}`;
     },
     postItem: `/products`,
     getItem: (id: number) => `/product/${id}`,
