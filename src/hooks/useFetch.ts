@@ -19,7 +19,9 @@ const useFetch = <T>(fetchFunction: (options?: FetchOptions) => Promise<T>) => {
       setErrorMessage("");
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage(error.message);
+        setErrorMessage(
+          "데이터를 불러오는 도중 문제가 발생했습니다. 잠시 후 다시 시도해주세요."
+        );
       } else {
         setErrorMessage(
           "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
