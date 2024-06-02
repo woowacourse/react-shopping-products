@@ -1,7 +1,7 @@
 import '@styles/App.css';
 import '@styles/reset.css';
 import '@styles/global.css';
-import { CartAction, PageRequest } from '@components/Fallbacks';
+import { CartActionError, PageRequest } from '@components/Fallbacks';
 import { Header, Layout, ToastModal } from '@components/index';
 import { useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -48,7 +48,7 @@ function App() {
       </Layout>
       {headerPosition && (
         <ToastModal isOpen={error} closeModal={() => setCartActionError(false)} position={headerPosition}>
-          <CartAction />
+          <CartActionError />
         </ToastModal>
       )}
     </>
