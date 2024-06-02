@@ -13,7 +13,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
-const Button = ({
+function Button({
   size = "m",
   width = "fit",
   height = "fit",
@@ -23,7 +23,7 @@ const Button = ({
   children,
   isDisabled = false,
   ...rest
-}: ButtonProps) => {
+}: ButtonProps) {
   return (
     <S.Button
       disabled={isDisabled}
@@ -38,6 +38,6 @@ const Button = ({
       {children}
     </S.Button>
   );
-};
+}
 
 export default Button;

@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import ProductItemTitle from "./ProductItemTitle";
+import ProductItemTitle from './ProductItemTitle';
 
 const meta = {
-  title: "Components/ProductItemTitle",
+  title: 'Components/ProductItemTitle',
   component: ProductItemTitle,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   args: {
-    title: "코카콜라",
+    title: '코카콜라',
     price: 10000,
   },
 } satisfies Meta<typeof ProductItemTitle>;

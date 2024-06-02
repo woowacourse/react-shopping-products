@@ -1,9 +1,9 @@
-import { CATEGORY } from "../../constants/categories";
-import { SORT } from "../../constants/sorts";
-import { Category, Sort } from "../../types/type";
-import Dropdown from "../common/Dropdown/Dropdown";
+import { CATEGORY } from '../../constants/categories';
+import { SORT } from '../../constants/sorts';
+import { Category, Sort } from '../../types/type';
+import Dropdown from '../common/Dropdown/Dropdown';
 
-import * as S from "./DropdownContainer.style";
+import * as S from './DropdownContainer.style';
 
 interface DropdownContainerProps {
   category: Category;
@@ -35,13 +35,13 @@ function DropdownContainer({
         value={category}
         onChange={onChangeCategory}
         type="category"
-      ></Dropdown>
+      />
       <Dropdown
         optionList={sortOptions}
         value={sort}
         onChange={onChangeSort}
         type="sort"
-      ></Dropdown>
+      />
     </S.Container>
   );
 }

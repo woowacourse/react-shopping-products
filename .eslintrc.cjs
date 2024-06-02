@@ -2,7 +2,12 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
+    "airbnb",
+    "airbnb/hooks",
     "eslint:recommended",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "plugin:storybook/recommended",
@@ -13,13 +18,22 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh", "import"],
+  plugins: [
+    "react",
+    "react-refresh",
+    "@typescript-eslint",
+    "import",
+    "prettier",
+  ],
   rules: {
-    "react-refresh/only-export-components": [
-      "warn",
-      { allowConstantExport: true },
-    ],
+    "prettier/prettier": "error",
+    "react/jsx-uses-vars": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [1, { extensions: [".jsx", ".tsx"] }],
+    "@typescript-eslint/no-use-before-define": ["error"],
 
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
     "import/order": [
       "error",
       {

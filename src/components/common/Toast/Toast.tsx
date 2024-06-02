@@ -1,6 +1,6 @@
-import { createPortal } from "react-dom";
+import { createPortal } from 'react-dom';
 
-import * as S from "./Toast.style";
+import * as S from './Toast.style';
 
 interface ToastProps {
   message: string;

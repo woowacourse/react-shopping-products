@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ProductItem = styled.div`
   display: flex;
@@ -16,14 +16,14 @@ export const ProductImage = styled.img`
 `;
 
 export const ProductDescription = styled.div`
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
   padding: 16px 8px 8px 8px;
-`
+`;
 
 export const ToggleCartItemButtonWrapper = styled.div`
-display:flex;
-width: 100%;
-flex-direction: row-reverse;
-`
+  display: flex;
+  width: 100%;
+  flex-direction: row-reverse;
+`;

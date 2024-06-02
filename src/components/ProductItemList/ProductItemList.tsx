@@ -1,14 +1,14 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from 'react';
 
-import { QuantityContext } from "../../store/QuantityContext";
-import useProductList from "../../hooks/useProductList";
-import useCartItemList from "../../hooks/useCartItemList";
-import ProductItem from "../ProductItem/ProductItem";
-import { Category, Sort } from "../../types/type";
-import useIntersectionObserver from "../../hooks/useIntersectionObserver";
-import Spinner from "../common/Spinner/Spinner";
+import { QuantityContext } from '../../store/QuantityContext';
+import useProductList from '../../hooks/useProductList';
+import useCartItemList from '../../hooks/useCartItemList';
+import ProductItem from '../ProductItem/ProductItem';
+import { Category, Sort } from '../../types/type';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import Spinner from '../common/Spinner/Spinner';
 
-import * as S from "./ProductItemList.style";
+import * as S from './ProductItemList.style';
 
 interface ProductItemListProp {
   category: Category;
@@ -46,7 +46,7 @@ function ProductItemList({ category, sort, onError }: ProductItemListProp) {
 
     const N = productList.length;
 
-    if (0 === N || isLastPage) {
+    if (N === 0 || isLastPage) {
       unobserve(target.current);
     }
   }, [productList, page, observe, unobserve, isLastPage]);
@@ -55,27 +55,25 @@ function ProductItemList({ category, sort, onError }: ProductItemListProp) {
   setQuantity(cartItemList.length);
 
   if (productListError) {
-    onError("상품 목록 조회 실패");
+    onError('상품 목록 조회 실패');
   }
   if (cartItemListError) {
-    onError("장바구니 목록 조회 실패");
+    onError('장바구니 목록 조회 실패');
   }
 
   return (
     <>
       <S.ProductList>
-        {productList.map((product, idx) => {
-          return (
-            <ProductItem
-              key={`${idx}_${product.id}`}
-              product={product}
-              isInCart={isInCart(product.id)}
-              toggleCartItem={() => toggleCartItem(product)}
-            />
-          );
-        })}
+        {productList.map((product, idx) => (
+          <ProductItem
+            key={`${idx}_${product.id}`}
+            product={product}
+            isInCart={isInCart(product.id)}
+            toggleCartItem={() => toggleCartItem(product)}
+          />
+        ))}
       </S.ProductList>
-      <div ref={target} style={{ height: "1px" }}></div>
+      <div ref={target} style={{ height: '1px' }} />
       {productListLoading && <Spinner />}
     </>
   );

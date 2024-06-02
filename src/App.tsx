@@ -15,6 +15,7 @@ function App() {
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
   };
+
   return (
     <>
       <GlobalStyles />

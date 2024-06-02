@@ -1,8 +1,8 @@
-import { Product } from "../../types/type";
-import ProductItemTitle from "../ProductItemTitle/ProductItemTitle";
-import ToggleCartItemButton from "../ToggleCartItemButton/ToggleCartItemButton";
+import { Product } from '../../types/type';
+import ProductItemTitle from '../ProductItemTitle/ProductItemTitle';
+import ToggleCartItemButton from '../ToggleCartItemButton/ToggleCartItemButton';
 
-import * as S from "./ProductItem.style";
+import * as S from './ProductItem.style';
 
 interface ProductItemProps {
   product: Product;

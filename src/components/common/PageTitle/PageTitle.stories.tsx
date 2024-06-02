@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import PageTitle from "./PageTitle";
+import PageTitle from './PageTitle';
 
 const meta = {
-  title: "Components/PageTitle",
+  title: 'Components/PageTitle',
   component: PageTitle,
-  tags: ["autodocs"],
-  args: {children: "타이틀입니다."}
+  tags: ['autodocs'],
+  args: { children: '타이틀입니다.' },
 } satisfies Meta<typeof PageTitle>;
 
 export default meta;

@@ -8,58 +8,48 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     size: {
-      description:
-        '',
+      description: '',
       control: { type: 'radio' },
       options: ['s', 'm', 'l', 'fit'],
     },
     width: {
-      description:
-        '',
+      description: '',
       control: { type: 'radio' },
       options: ['fit', 'full', 'custom'],
     },
     customWidth: {
       if: { arg: 'width', eq: 'custom' },
-      description:
-        '',
+      description: '',
       control: { type: 'number' },
     },
     radius: {
-      description:
-        '',
+      description: '',
       control: { type: 'radio' },
       options: ['s', 'm', 'l', 'custom'],
     },
     customRadius: {
       if: { arg: 'radius', eq: 'custom' },
-      description:
-        '',
+      description: '',
       control: { type: 'number' },
     },
     color: {
-      description:
-        '',
+      description: '',
       control: { type: 'radio' },
       options: ['default', 'primary'],
     },
     square: {
-      description:
-        '',
+      description: '',
       control: { type: 'boolean' },
     },
     isDisabled: {
-      description:
-        '',
+      description: '',
       control: { type: 'boolean' },
     },
     onClick: {
-      description:
-        '',
+      description: '',
     },
     children: {
-      description:
-        '',
+      description: '',
       control: { type: 'text' },
     },
   },

@@ -1,12 +1,12 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from 'react';
 
 import {
   requestAddCartItem,
   requestDeleteCartItem,
   requestFetchCartItemList,
-} from "../apis/carItems";
-import { CartItem, Product } from "../types/type";
-import { QuantityContext } from "../store/QuantityContext";
+} from '../apis/carItems';
+import { CartItem, Product } from '../types/type';
+import { QuantityContext } from '../store/QuantityContext';
 
 interface UseCartItemListResult {
   cartItemList: CartItem[];
@@ -24,11 +24,8 @@ export default function useCartItemList(): UseCartItemListResult {
   const quantityContext = useContext(QuantityContext);
   const setQuantity = quantityContext ? quantityContext.setQuantity : () => {};
 
-  const isInCart = (productId: number) => {
-    return cartItemList.some(
-      ({ product }: CartItem) => product.id === productId,
-    );
-  };
+  const isInCart = (productId: number) =>
+    cartItemList.some(({ product }: CartItem) => product.id === productId);
 
   const addCartItem = async (product: Product) => {
     try {

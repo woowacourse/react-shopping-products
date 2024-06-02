@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ProductSectionContainer = styled.div`
-display: flex;
-flex-direction: column;
-gap:28px;
-`
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+`;

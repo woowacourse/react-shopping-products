@@ -1,19 +1,13 @@
 export type Category =
-  | "all"
-  | "books"
-  | "fitness"
-  | "beverage"
-  | "electronics"
-  | "kitchen"
-  | "fashion";
+  | 'all'
+  | 'books'
+  | 'fitness'
+  | 'beverage'
+  | 'electronics'
+  | 'kitchen'
+  | 'fashion';
 
-export type Sort = "price,asc" | "price,desc";
-
-export interface CartItem {
-  id: number;
-  product: Product;
-  quantity: number;
-}
+export type Sort = 'price,asc' | 'price,desc';
 
 export interface Product {
   id: number;
@@ -21,4 +15,10 @@ export interface Product {
   price: number;
   imageUrl: string;
   category: string;
+}
+
+export interface CartItem {
+  id: number;
+  product: Product;
+  quantity: number;
 }

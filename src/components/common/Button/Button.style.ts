@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { ButtonProps } from "./Button";
+import { ButtonProps } from './Button';
 
 export const Button = styled.button<ButtonProps>`
   cursor: pointer;
@@ -10,13 +10,13 @@ export const Button = styled.button<ButtonProps>`
   transition: 0.2s;
 
   ${({ color }) => {
-    if (color === "primary") {
+    if (color === 'primary') {
       return `
           background-color: black;
           color: white;
         `;
     }
-    if (color === "secondary") {
+    if (color === 'secondary') {
       return `
           background-color: lightGrey;
           color: black;
@@ -31,17 +31,17 @@ export const Button = styled.button<ButtonProps>`
 
   ${({ size, square }) => {
     switch (size) {
-      case "s":
+      case 's':
         return `
           height: 24px;
           padding:  4px 4px ;
         `;
-      case "l":
+      case 'l':
         return `
           height: 48px;
-          padding: ${square ? "12px 12px" : "12px 16px"};
+          padding: ${square ? '12px 12px' : '12px 16px'};
         `;
-      case "fit":
+      case 'fit':
         return `
           height: fit-content;
           padding: 16px 16px;
@@ -49,7 +49,7 @@ export const Button = styled.button<ButtonProps>`
       default:
         return `
           height: 36px;
-          padding: ${square ? "8px 8px" : "8px 12px"};
+          padding: ${square ? '8px 8px' : '8px 12px'};
         `;
     }
   }}
@@ -62,33 +62,33 @@ export const Button = styled.button<ButtonProps>`
 
   ${({ width }) => {
     switch (width) {
-      case "fit":
-        return `width: fit-content;`;
-      case "full":
-        return `width: 100%;`;
+      case 'fit':
+        return 'width: fit-content;';
+      case 'full':
+        return 'width: 100%;';
       default:
         return `width: ${width}px;`;
     }
   }}
 
   ${({ height }) => {
-    if (height === "fit") {
-      return `height: fit-content;`;
+    if (height === 'fit') {
+      return 'height: fit-content;';
     }
-    if (height === "full") {
-      return `height: 100%;`;
+    if (height === 'full') {
+      return 'height: 100%;';
     }
     return `height: ${height}px;`;
   }}
 
   border-radius: ${({ radius }) => {
     switch (radius) {
-      case "s":
-        return "4px";
-      case "m":
-        return "8px";
-      case "l":
-        return "16px";
+      case 's':
+        return '4px';
+      case 'm':
+        return '8px';
+      case 'l':
+        return '16px';
       default:
         return `${radius}px`;
     }
@@ -98,10 +98,10 @@ export const Button = styled.button<ButtonProps>`
     &:hover {
       cursor: pointer;
       background-color: ${({ color }) => {
-        if (color === "default") {
-          return "#f5f5f5";
+        if (color === 'default') {
+          return '#f5f5f5';
         }
-        return "#555555";
+        return '#555555';
       }};
     }
   }
@@ -109,10 +109,10 @@ export const Button = styled.button<ButtonProps>`
   &:disabled {
     cursor: default;
     background-color: ${({ color }) => {
-      if (color === "default") {
-        return "#dddddd";
+      if (color === 'default') {
+        return '#dddddd';
       }
-      return "#aaaaaa";
+      return '#aaaaaa';
     }};
   }
 `;

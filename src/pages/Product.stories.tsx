@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import Product from "./Product";
+import Product from './Product';
 
 const meta = {
-  title: "Page/Product",
+  title: 'Page/Product',
   component: Product,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 } satisfies Meta<typeof Product>;
 
 export default meta;

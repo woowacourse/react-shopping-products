@@ -1,4 +1,4 @@
-import { generateBasicToken } from "../util/auth";
+import { generateBasicToken } from '../util/auth';
 
 const API_URL = import.meta.env.VITE_API_URL;
 

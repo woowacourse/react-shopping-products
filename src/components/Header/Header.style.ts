@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const HeaderBackground = styled.div`
   display: flex;
@@ -7,7 +7,7 @@ export const HeaderBackground = styled.div`
   top: 0;
   width: 100%;
   background: #000000;
-`
+`;
 
 export const HeaderWrapper = styled.header`
   display: flex;

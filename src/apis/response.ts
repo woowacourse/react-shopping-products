@@ -10,21 +10,21 @@ interface ResponseProps {
 }
 
 const response = async ({ url, method, body, errorMessage }: ResponseProps) => {
-  const response = await fetch(url, {
-    method: method,
+  const result = await fetch(url, {
+    method,
     headers: {
       "Content-Type": "application/json",
       Authorization: token,
     },
-    body: body,
+    body,
   });
 
-  if (!response.ok) {
+  if (!result.ok) {
     throw new Error(errorMessage);
   }
 
   if (method === "GET") {
-    const data = await response.json();
+    const data = await result.json();
     return data;
   }
 };

@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import ProductItemListSection from "./ProductItemSection";
+import ProductItemListSection from './ProductItemSection';
 
 const meta = {
-  title: "Components/ProductItemListSection",
+  title: 'Components/ProductItemListSection',
   component: ProductItemListSection,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 } satisfies Meta<typeof ProductItemListSection>;
 
 export default meta;
