@@ -1,33 +1,37 @@
 import { useEffect, useState } from "react";
 import { useError } from "../context/errorContext";
 import { fetchProducts } from "../api/products";
+import usePagination from "./usePagination";
 
 interface UseProductsResult {
   products: ProductProps[];
   isLoading: boolean;
-  page: number;
   fetchNextPage: () => void;
   isLastPage: boolean;
-  setSortOption: (sortOption: string) => void;
-  setCategory: (category: string) => void;
-  resetPage: () => void;
-  selectedCategory: string;
-  selectedSort: string;
+  categoryState: {
+    currentCategory: string;
+    changeCategory: (value: string) => void;
+  };
+
+  sortOptionState: {
+    currentSortOption: string;
+    changeSortOption: (value: string) => void;
+  };
 }
 
 const sortOptionsMap: { [key: string]: string } = {
-  "price,asc": "낮은 가격순",
-  "price,desc": "높은 가격순",
+  "낮은 가격순": "price,asc",
+  "높은 가격순": "price,desc",
 };
 
 const useProducts = (): UseProductsResult => {
   const [products, setProducts] = useState<ProductProps[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { setErrorMessage } = useError();
-  const [page, setPage] = useState<number>(1);
-  const [isLastPage, setIsLastPage] = useState<boolean>(false);
-  const [sortOption, setSortOption] = useState<string>("price,asc");
+  const { page, isLastPage, handleLastPage, goToNextPage, resetPage } = usePagination();
+
   const [category, setCategory] = useState<string>("전체");
+  const [sortOption, setSortOption] = useState<string>("price,asc");
 
   const fetchParams = {
     page: page,
@@ -45,7 +49,7 @@ const useProducts = (): UseProductsResult => {
         page === 1 ? data.content : [...prevProducts, ...data.content]
       );
 
-      setIsLastPage(data.last);
+      handleLastPage(data.last);
     } catch (error) {
       console.log(error);
     } finally {
@@ -54,30 +58,38 @@ const useProducts = (): UseProductsResult => {
   };
 
   useEffect(() => {
-    getProducts();
-  }, [setErrorMessage, page, sortOption, category]);
+    if (!isLastPage) getProducts();
+  }, [page, sortOption, category]);
 
   const fetchNextPage = () => {
-    if (!isLastPage && !isLoading) setPage((prevPage) => prevPage + 1);
+    if (!isLoading) goToNextPage();
   };
 
-  const resetPage = () => {
-    setProducts([]);
-    setPage(1);
-    setIsLastPage(false);
+  const categoryState = {
+    currentCategory: category,
+    changeCategory: (value: string) => {
+      setProducts([]);
+      resetPage();
+      setCategory(value);
+    },
+  };
+
+  const sortOptionState = {
+    currentSortOption: sortOption,
+    changeSortOption: (value: string) => {
+      setProducts([]);
+      resetPage();
+      setSortOption(sortOptionsMap[value]);
+    },
   };
 
   return {
     products,
     isLoading,
-    page,
     isLastPage,
     fetchNextPage,
-    setSortOption,
-    setCategory,
-    resetPage,
-    selectedCategory: category,
-    selectedSort: sortOptionsMap[sortOption],
+    categoryState,
+    sortOptionState,
   };
 };
 
