@@ -52,6 +52,10 @@ export const SelectBoxContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const ObserverTarget = styled.div`
+export const ObserverTarget = styled.div<{ $isEnabled: boolean }>`
   height: 10px;
+  display: ${(props) => (props.$isEnabled ? "block" : "none")};
+  position: absolute;
+  bottom: 300px;
+  opacity: 0;
 `;

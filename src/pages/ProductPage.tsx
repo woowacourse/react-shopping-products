@@ -1,20 +1,20 @@
-import useProducts from '../hooks/useProducts';
-import useCartItem from '../hooks/useCartItem';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import useProducts from "../hooks/useProducts";
+import useCartItem from "../hooks/useCartItem";
+import useIntersectionObserver from "../hooks/useIntersectionObserver";
 
-import NavigationBar from '../components/NavigationBar/NavigationBar';
-import SelectBox from '../components/SelectBox/SelectBox';
-import ProductItemContainer from '../components/ProductItemContainer/ProductItemContainer';
-import APIErrorToast from '../components/APIErrorToast/APIErrorToast';
+import NavigationBar from "../components/NavigationBar/NavigationBar";
+import SelectBox from "../components/SelectBox/SelectBox";
+import ProductItemContainer from "../components/ProductItemContainer/ProductItemContainer";
+import APIErrorToast from "../components/APIErrorToast/APIErrorToast";
 
-import * as Styled from './ProductPage.style';
+import * as Styled from "./ProductPage.style";
 
 import {
   CategoryKeys,
   SortOptionsKeys,
   PRODUCT_CATEGORIES,
   PRODUCT_SORT_OPTIONS,
-} from '../constants/products';
+} from "../constants/products";
 
 export default function ProductPage() {
   const {
@@ -34,7 +34,10 @@ export default function ProductPage() {
     checkIsInCart,
   } = useCartItem();
 
-  const observerRef = useIntersectionObserver<HTMLDivElement>(fetchNextPage);
+  const observerRef = useIntersectionObserver<HTMLDivElement>({
+    onIntersect: fetchNextPage,
+    options: { threshold: 0.7 },
+  });
 
   const handleSelectCategory = (value: CategoryKeys) => {
     handleChangeCategory(PRODUCT_CATEGORIES[value]);
@@ -55,6 +58,7 @@ export default function ProductPage() {
           )}
         </Styled.ShopHeader>
       </NavigationBar>
+
       <Styled.ShopContent>
         <Styled.ShopTitle>bpple 상품 목록</Styled.ShopTitle>
         <Styled.SelectBoxContainer>
@@ -76,7 +80,12 @@ export default function ProductPage() {
           checkIsInCart={checkIsInCart}
         />
       </Styled.ShopContent>
-      {!isProductLoading && !productError && <Styled.ObserverTarget ref={observerRef} />}
+
+      <Styled.ObserverTarget
+        ref={observerRef}
+        $isEnabled={!isProductLoading && !productError}
+      />
+
       {productError && productError instanceof Error && (
         <APIErrorToast message={productError.message} />
       )}
