@@ -1,13 +1,13 @@
 import { http, HttpResponse } from "msw";
 import type { PathParams } from "msw";
-import { GetProductsParams } from "../api";
+import { GetProductsParams } from "@api/index";
 import products from "./products.json";
 import {
   CART_ITEMS_COUNTS_ENDPOINT,
   CART_ITEMS_ENDPOINT,
   PRODUCTS_ENDPOINT,
-} from "../api/endpoints";
-import { RULE } from "../constants/rules";
+} from "@api/endpoints";
+import { RULE } from "@constants/rules";
 
 export const handlers = [
   http.get<PathParams, GetProductsParams>(

@@ -1,9 +1,9 @@
 import { forwardRef, useContext } from "react";
 import * as PI from "./ProductItem.style";
 import CartControlButton from "../../Button/CartControlButton";
-import { deleteProductInCart, postProductInCart } from "../../../api";
-import { useError } from "../../../hooks/useError";
-import { CartItemsContext } from "../../../context/CartItemsContext";
+import { deleteProductInCart, postProductInCart } from "@api/index";
+import { useError } from "@hooks/index";
+import { CartItemsContext } from "@context/CartItemsContext";
 
 interface ProductProps {
   product: Product;

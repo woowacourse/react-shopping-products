@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import STYLE from "../../../constants/style";
+import STYLE from "@constants/style";
 
 export const ProductItemStyle = styled.div`
   background-color: ${STYLE.COLOR.white};

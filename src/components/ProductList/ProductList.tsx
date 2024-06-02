@@ -1,9 +1,9 @@
-import useProducts from "../../hooks/useProducts";
+import useProducts from "@hooks/useProducts";
+import useInfiniteScroll from "@hooks/useInfiniteScroll";
+import usePagination from "@hooks/usePagination";
 import ProductListHeader from "../ProductListHeader/ProductListHeader";
 import ProductItem from "./ProductItem/ProductItem";
 import * as PL from "./ProductList.style";
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
-import usePagination from "../../hooks/usePagination";
 
 const ProductList = () => {
   const { page, nextPage, resetPage } = usePagination();

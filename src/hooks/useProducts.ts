@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getProducts } from "../api";
-import { useError } from "./useError";
-import { RULE } from "../constants/rules";
+import { getProducts } from "@api/index";
+import { useError } from "./index";
+import { RULE } from "@constants/rules";
 
 interface UseProductsResult {
   products: Product[];

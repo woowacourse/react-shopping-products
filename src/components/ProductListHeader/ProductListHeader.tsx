@@ -1,4 +1,4 @@
-import { FILTER_CATEGORIES, SORT_PRICE } from "../../constants/rules";
+import { FILTER_CATEGORIES, SORT_PRICE } from "@constants/rules";
 import * as PLH from "./ProductListHeader.style";
 
 interface ProductListHeaderProps {

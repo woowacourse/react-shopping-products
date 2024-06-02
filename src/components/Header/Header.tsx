@@ -1,5 +1,5 @@
-import Logo from "../../assets/logo.svg";
-import Cart from "../../assets/cart.svg";
+import Logo from "@assets/logo.svg";
+import Cart from "@assets/cart.svg";
 import { HeaderStyle, CartCount, LogoImg, CartImg } from "./Header.style";
 import { useContext } from "react";
 import { CartItemsContext } from "../../context/CartItemsContext";

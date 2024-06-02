@@ -1,4 +1,4 @@
-import { RULE } from "../constants/rules";
+import { RULE } from "@constants/rules";
 import {
   CART_ITEMS_COUNTS_ENDPOINT,
   CART_ITEMS_ENDPOINT,

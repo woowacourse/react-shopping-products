@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import STYLE from "../../constants/style";
+import STYLE from "@constants/style";
 
 export const ErrorToastStyle = styled.div`
   background-color: ${STYLE.COLOR.red};

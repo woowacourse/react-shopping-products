@@ -1,11 +1,9 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import useProducts from "./useProducts";
-import { ErrorProvider } from "../context/ErrorContext";
-import { PRODUCTS_ENDPOINT } from "../api/endpoints";
+import { ErrorProvider } from "@context/ErrorContext";
+import { PRODUCTS_ENDPOINT } from "@api/endpoints";
 import { HttpResponse, http } from "msw";
-import { server } from "../mocks/server";
-import { useError } from "./useError";
-import usePagination from "./usePagination";
+import { server } from "@mocks/server";
+import { useError, usePagination, useProducts } from "./index";
 import { act } from "react";
 
 describe("useProducts", () => {

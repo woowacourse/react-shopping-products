@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useError } from "../../hooks/useError";
+import { useError } from "@hooks/index";
 import { ErrorToastStyle } from "./ErrorToast.style";
 
 const ErrorToast = () => {
