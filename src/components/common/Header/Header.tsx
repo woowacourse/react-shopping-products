@@ -3,7 +3,7 @@ import CartBadge from '../../CartBadge/CartBadge';
 import { HeaderContainer, HeaderIcon } from './Header.style';
 import { HeaderProps } from './Header.type';
 
-const Header: React.FC<HeaderProps> = ({ headerIconType = 'home' }) => {
+const Header = ({ headerIconType = 'home' }: HeaderProps) => {
   const handleHeaderIcon = ({ headerIconType }: HeaderProps) => {
     switch (headerIconType) {
       default:

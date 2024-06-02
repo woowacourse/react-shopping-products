@@ -31,19 +31,22 @@ export default function useProducts(): UseProductsResult {
   const [sorting, setSorting] = useState<SortType>('price_name_asc');
   const { createToast } = useToast();
 
+  const resetPage = () => {
+    setProducts([]);
+    setPage(0);
+  };
+
   const changeCategory = (category: CategoryType) => {
     if (Object.keys(CATEGORY).includes(category)) {
       setCategory(category as CategoryType);
-      setProducts([]);
-      setPage(0);
+      resetPage();
     }
   };
 
   const changeSorting = (sort: SortType) => {
     if (Object.keys(SORT).includes(sort)) {
       setSorting(sort as SortType);
-      setProducts([]);
-      setPage(0);
+      resetPage();
     }
   };
   const getProducts = useCallback(async () => {

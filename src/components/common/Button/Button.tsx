@@ -1,12 +1,7 @@
-import { PropsWithChildren } from 'react';
 import { ButtonWrapper } from './Button.style';
 import { ButtonProps } from './Button.type';
 
-const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
-  onClick,
-  children,
-  isGray = false,
-}) => {
+const Button = ({ onClick, children, isGray = false }: ButtonProps) => {
   return (
     <ButtonWrapper
       color="#fff"

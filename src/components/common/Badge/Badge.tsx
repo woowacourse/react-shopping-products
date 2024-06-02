@@ -1,11 +1,7 @@
 import { BadgeProps } from './Badge.type';
 import { BadgeContainer } from './Badge.style';
-import { PropsWithChildren } from 'react';
 
-const Badge: React.FC<PropsWithChildren<BadgeProps>> = ({
-  children,
-  ...props
-}) => {
+const Badge = ({ children, ...props }: BadgeProps) => {
   return <BadgeContainer {...props}>{children}</BadgeContainer>;
 };
 

@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface ToastProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
