@@ -1,4 +1,23 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+
+const fadeInOut = keyframes`
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+`;
 
 export const Container = styled.div`
   display: flex;
@@ -9,6 +28,8 @@ export const Container = styled.div`
   height: 4.5rem;
 
   transform: translateX(-50%);
+
+  animation: ${fadeInOut} 3s ease-in-out;
 `;
 
 export const SideBar = styled.div`
