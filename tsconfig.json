@@ -18,7 +18,28 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* custom */
+    "baseUrl": "src",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@styles/*": ["styles/*"],
+      "@utils/*": ["utils/*"],
+      "@assets/*": ["assets/*"],
+      "@constants/*": ["constants/*"],
+      "@hooks/*": ["hooks/*"],
+      "@domain/*": ["domain/*"],
+      "@routes/*": ["routes/*"],
+      "@pages/*": ["pages/*"],
+      "@apis/*": ["apis/*"],
+      "@errors/*": ["errors/*"],
+      "@appTypes/*": ["appTypes/*"],
+      "@recoil/*": ["recoil/*"],
+      "@validation/*": ["validation/*"],
+      "@mocks/*": ["mocks/*"]
+    },
+    "types": ["vite-plugin-svgr/client", "vite/client"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
