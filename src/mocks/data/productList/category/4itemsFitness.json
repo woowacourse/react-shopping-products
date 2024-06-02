@@ -1,0 +1,57 @@
+{
+  "content": [
+    {
+      "id": 178,
+      "name": "헬스 자전거",
+      "price": 200000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1669261222932-35c2491e7340?q=80&w=3386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 179,
+      "name": "스피닝 바이크",
+      "price": 250000,
+      "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 174,
+      "name": "멀티 트레이닝 머신",
+      "price": 300000,
+      "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 180,
+      "name": "체스트 프레스 머신",
+      "price": 450000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "sorted": true,
+      "unsorted": false,
+      "empty": false
+    },
+    "pageNumber": 5,
+    "pageSize": 4,
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": false,
+  "totalPages": 7,
+  "totalElements": 28,
+  "sort": {
+    "sorted": true,
+    "unsorted": false,
+    "empty": false
+  },
+  "first": true,
+  "number": 0,
+  "numberOfElements": 4,
+  "size": 4,
+  "empty": false
+}
