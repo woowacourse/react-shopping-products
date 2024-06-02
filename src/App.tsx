@@ -19,26 +19,26 @@ function App() {
   const { cartItems, getCartItemList, handleCartAction, error, setCartActionError } = useCartAction();
   const [headerPosition, setHeaderPosition] = useState<HeaderPosition | null>(null);
 
-  const headerRef = useRef<HTMLElement | null>(null);
+  const toastPosition = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     getCartItemList();
   }, []);
 
   useEffect(() => {
-    if (!headerRef.current) return;
+    if (!toastPosition.current) return;
 
-    const domRect = headerRef.current.getClientRects()[0];
+    const domRect = toastPosition.current.getClientRects()[0];
 
     setHeaderPosition({
       top: domRect.top,
       left: domRect.left,
     });
-  }, [headerRef]);
+  }, [toastPosition]);
 
   return (
     <>
-      <Header cartItemsLength={cartItems.length} headerRef={headerRef} />
+      <Header cartItemsLength={cartItems.length} toastPosition={toastPosition} />
       <Layout>
         <ErrorBoundary FallbackComponent={({ error }) => <PageRequest error={error} />}>
           <CartItemsContext.Provider value={{ handleCartAction }}>
