@@ -19,8 +19,7 @@ function App() {
   return (
     <>
       <GlobalStyles />
-      {showToast &&
-        createPortal(<Toast message={toastMessage} />, document.body)}
+      <Toast message={toastMessage} showToast={showToast} />
       <QuantityContext.Provider value={{ quantity, setQuantity }}>
         <Header />
         <Product onError={handleError} />

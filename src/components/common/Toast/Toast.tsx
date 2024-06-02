@@ -1,14 +1,22 @@
+import { createPortal } from "react-dom";
 import * as S from "./Toast.style";
 
 interface ToastProps {
   message: string;
+  showToast: boolean;
 }
 
-function Toast({ message }: ToastProps) {
+function Toast({ message, showToast }: ToastProps) {
   return (
-    <S.Container>
-      <S.MessageText>{message}</S.MessageText>
-    </S.Container>
+    <>
+      {showToast &&
+        createPortal(
+          <S.Container>
+            <S.MessageText>{message}</S.MessageText>
+          </S.Container>,
+          document.body,
+        )}
+    </>
   );
 }
 
