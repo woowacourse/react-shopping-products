@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { generateBasicToken } from './auth';
 import { USER_ID, USER_PASSWORD } from './userInformation';
 
@@ -22,9 +23,7 @@ export const FetchWithToken = {
     });
 
     if (response.status === 500) {
-      throw new Error(
-        '서버에 문제가 발생했습니다. 관리자에게 문의하시거나 잠시 후 다시 시도해주세요.',
-      );
+      throw new Error(ERROR_MESSAGE[500]);
     }
 
     if (!response.ok) throw new Error('Failed to request "GET"');
@@ -45,9 +44,7 @@ export const FetchWithToken = {
     });
 
     if (response.status === 500) {
-      throw new Error(
-        '서버에 문제가 발생했습니다. 관리자에게 문의하시거나 잠시 후 다시 시도해주세요.',
-      );
+      throw new Error(ERROR_MESSAGE[500]);
     }
 
     if (!response.ok) throw new Error('Failed to request "POST"');
