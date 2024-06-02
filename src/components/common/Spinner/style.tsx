@@ -46,59 +46,59 @@ export const SpinnerDot = styled.div<{ $isInCart: boolean }>`
     box-shadow: 0 0 20px rgba(18, 31, 53, 0.3);
   }
 
-  &:nth-child(2) {
+  &:nth-of-type(2) {
     transform: rotate(45deg);
   }
 
-  &:nth-child(2)::before {
+  &:nth-of-type(2)::before {
     animation-delay: calc(0.9s * -0.875);
   }
 
-  &:nth-child(3) {
+  &:nth-of-type(3) {
     transform: rotate(90deg);
   }
 
-  &:nth-child(3)::before {
+  &:nth-of-type(3)::before {
     animation-delay: calc(0.9s * -0.75);
   }
 
-  &:nth-child(4) {
+  &:nth-of-type(4) {
     transform: rotate(135deg);
   }
 
-  &:nth-child(4)::before {
+  &:nth-of-type(4)::before {
     animation-delay: calc(0.9s * -0.625);
   }
 
-  &:nth-child(5) {
+  &:nth-of-type(5) {
     transform: rotate(180deg);
   }
 
-  &:nth-child(5)::before {
+  &:nth-of-type(5)::before {
     animation-delay: calc(0.9s * -0.5);
   }
 
-  &:nth-child(6) {
+  &:nth-of-type(6) {
     transform: rotate(225deg);
   }
 
-  &:nth-child(6)::before {
+  &:nth-of-type(6)::before {
     animation-delay: calc(0.9s * -0.375);
   }
 
-  &:nth-child(7) {
+  &:nth-of-type(7) {
     transform: rotate(270deg);
   }
 
-  &:nth-child(7)::before {
+  &:nth-of-type(7)::before {
     animation-delay: calc(0.9s * -0.25);
   }
 
-  &:nth-child(8) {
+  &:nth-of-type(8) {
     transform: rotate(315deg);
   }
 
-  &:nth-child(8)::before {
+  &:nth-of-type(8)::before {
     animation-delay: calc(0.9s * -0.125);
   }
 `;
