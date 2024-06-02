@@ -11,3 +11,10 @@ interface CartItemProps {
   quantity: number;
   product: ProductProps;
 }
+
+interface fetchParams {
+  page: number;
+  category: string;
+  sortOption: string;
+  setErrorMessage: Dispatch<SetStateAction<string | null>>;
+}

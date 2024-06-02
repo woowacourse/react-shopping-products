@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { PRODUCTS_ENDPOINT } from "../api/endpoints";
-import { PAGE } from "../constants/page";
 import { useError } from "../context/errorContext";
+import { fetchProducts } from "../api/products";
 
 interface UseProductsResult {
   products: ProductProps[];
   isLoading: boolean;
-  error: Error | null;
   page: number;
   fetchNextPage: () => void;
   isLastPage: boolean;
@@ -22,31 +20,26 @@ const sortOptionsMap: { [key: string]: string } = {
   "price,desc": "높은 가격순",
 };
 
-export default function useProducts(): UseProductsResult {
+const useProducts = (): UseProductsResult => {
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
-  const { setErrorStatus } = useError();
+  const { setErrorMessage } = useError();
   const [page, setPage] = useState<number>(1);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<string>("price,asc");
   const [category, setCategory] = useState<string>("전체");
 
-  const fetchProducts = async () => {
+  const fetchParams = {
+    page: page,
+    category: category,
+    sortOption: sortOption,
+    setErrorMessage: setErrorMessage,
+  };
+
+  const getProducts = async () => {
     setIsLoading(true);
     try {
-      const size = page === PAGE.FIRST_PAGE ? PAGE.FIRST_PAGE_LIMIT : PAGE.OTHER_PAGE_LIMIT;
-      const categoryQuery = category === "전체" ? "" : `category=${category}`;
-
-      const response = await fetch(
-        `${PRODUCTS_ENDPOINT}?${categoryQuery}&page=${page}&size=${size}&sort=${sortOption}`
-      );
-
-      if (!response.ok) {
-        setErrorStatus(response.status);
-        throw new Error("에러 발생");
-      }
-      const data = await response.json();
+      const data = await fetchProducts(fetchParams);
 
       setProducts((prevProducts) =>
         page === 1 ? data.content : [...prevProducts, ...data.content]
@@ -54,15 +47,15 @@ export default function useProducts(): UseProductsResult {
 
       setIsLastPage(data.last);
     } catch (error) {
-      setError(error as Error);
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
-  }, [setErrorStatus, page, sortOption, category]);
+    getProducts();
+  }, [setErrorMessage, page, sortOption, category]);
 
   const fetchNextPage = () => {
     if (!isLastPage && !isLoading) setPage((prevPage) => prevPage + 1);
@@ -77,7 +70,6 @@ export default function useProducts(): UseProductsResult {
   return {
     products,
     isLoading,
-    error,
     page,
     isLastPage,
     fetchNextPage,
@@ -87,4 +79,6 @@ export default function useProducts(): UseProductsResult {
     selectedCategory: category,
     selectedSort: sortOptionsMap[sortOption],
   };
-}
+};
+
+export default useProducts;
