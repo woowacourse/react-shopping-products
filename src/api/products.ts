@@ -20,7 +20,8 @@ export const getProducts = async (
   categoryFilter: string,
   sort: "asc" | "desc"
 ) => {
-  const categoryParam = categoryFilter === "all" ? [] : ["category", categoryFilter];
+  const categoryParam =
+    categoryFilter === "all" ? [] : ["category", categoryFilter];
 
   const params = [
     ["page", page.toString()],
@@ -29,7 +30,10 @@ export const getProducts = async (
     categoryParam,
   ].filter((param) => param.length === 2);
 
-  const data = await cartClient.get<ProductResponse>(API_URL.products, new URLSearchParams(params));
+  const data = await cartClient.get<ProductResponse>(
+    API_URL.products,
+    new URLSearchParams(params)
+  );
 
   const isLastPage = data.last;
 
