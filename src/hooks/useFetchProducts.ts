@@ -19,6 +19,7 @@ const useFetchProducts = () => {
   const [category, setCategory] = useState<Category>('all');
   const [sort, setSort] = useState<Sort>({
     price: 'asc',
+    name: 'asc',
   });
 
   const getProducts = async () => {
