@@ -1,31 +1,9 @@
 import { CART_ITEMS_ENDPOINT, PRODUCTS_ENDPOINT } from "../api/endPoint";
-import { CartItem, isValidCartItemRequestBody } from "../types/cartItems";
 import { HttpResponse, http } from "msw";
 
-import cartItemMockData from "./cartItems.json";
+import { CartMockClosure, isValidCartItemRequestBody } from "./handlerUtils";
+
 import productsMockData from "./products.json";
-
-function CartMockClosure() {
-  let cartMockData = JSON.parse(JSON.stringify(cartItemMockData));
-
-  const getCartMockData = () => {
-    return cartMockData;
-  };
-
-  const pushCartItem = (mockCartItem: CartItem) => {
-    cartMockData.content = [...cartMockData.content, mockCartItem];
-  };
-
-  const deleteCartItem = (id: number) => {
-    cartMockData.content = cartMockData.content.filter((el: CartItem) => el.id !== id);
-  };
-
-  const resetCartItems = () => {
-    cartMockData = JSON.parse(JSON.stringify(cartItemMockData));
-  };
-
-  return { getCartMockData, pushCartItem, deleteCartItem, resetCartItems };
-}
 
 export const cartMockClosure = CartMockClosure();
 
