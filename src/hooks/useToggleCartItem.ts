@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 
 import { CartItem } from "../types/cartItems";
 
-export interface HandleCartItems {
+export interface ToggleCartItemReturns {
+  cartItems: CartItem[];
   addToCart: (productId: number) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
   checkSelected: (id: number) => boolean;
   isLoading: boolean;
+  error: unknown;
 }
 
-const useToggleCartItem = () => {
+const useToggleCartItem = (): ToggleCartItemReturns => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);

@@ -6,14 +6,18 @@ import { baseStyle } from "../style/baseStyle";
 
 import useProducts from "../hooks/useProducts";
 import useCustomContext from "../hooks/useCustomContext";
-import useToggleCartItem from "../hooks/useToggleCartItem";
+
+import { ToggleCartItemContext } from "../components/ToggleCartItemProvider";
+import { ToastContext } from "../components/Toasts/ToastProvider";
 
 import Dropdown from "../components/Dropdown";
 import Header from "../components/Header";
 import InfiniteScrollComponent from "../components/InfiniteProductsScrollComponent";
 import MainTitle from "../components/MainTitle";
-import { ToastContext } from "../components/Toasts/ToastProvider";
+import ProductCard from "../components/product/ProductCard";
+
 import { PRODUCT_CATEGORY, PRODUCT_SORT } from "../constants/mall";
+import { ERROR_MESSAGE } from "../constants/message";
 
 const S = {
   MainMall: styled.div`
@@ -46,14 +50,7 @@ const Mall = () => {
     handleSortChange,
   } = useProducts();
 
-  const {
-    cartItems,
-    addToCart,
-    removeFromCart,
-    checkSelected,
-    isLoading: isToggleCartItemLoading,
-    error: toggleCartItemError,
-  } = useToggleCartItem();
+  const { cartItems, error: toggleCartItemError } = useCustomContext(ToggleCartItemContext);
 
   const { failAlert } = useCustomContext(ToastContext);
 
@@ -80,20 +77,12 @@ const Mall = () => {
           <Dropdown options={PRODUCT_SORT} handleChange={handleSortChange} />
         </S.Toolbar>
         <S.ProductList>
-          <InfiniteScrollComponent
-            handleCartItems={{
-              addToCart,
-              checkSelected,
-              removeFromCart,
-              isLoading: isToggleCartItemLoading,
-            }}
-            productObject={{
-              products,
-              isLoading: isProductLoading,
-              error: productError,
-              fetchNextPage,
-            }}
-          />
+          <InfiniteScrollComponent isLoading={isProductLoading} handleScroll={fetchNextPage}>
+            {products.map((product, index) => (
+              <ProductCard key={`${index}${product.id}`} product={product} />
+            ))}
+            {productError! && <div>{ERROR_MESSAGE.getProducts}</div>}
+          </InfiniteScrollComponent>
         </S.ProductList>
       </S.MainMall>
     </>

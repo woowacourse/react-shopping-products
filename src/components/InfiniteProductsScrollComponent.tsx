@@ -1,21 +1,12 @@
-import { useEffect, useRef } from "react";
+import { PropsWithChildren, useEffect, useRef } from "react";
 
-import { HandleCartItems } from "../hooks/useToggleCartItem";
-import { Product } from "../types/products";
-import ProductCard from "./product/ProductCard";
 import LoadingDots from "./LoadingDots";
 
 import styled from "@emotion/styled";
-import { ERROR_MESSAGE } from "../constants/message";
 
-interface InfiniteProductsScrollComponentProps {
-  productObject: {
-    products: Product[];
-    isLoading: boolean;
-    error: unknown;
-    fetchNextPage: () => void;
-  };
-  handleCartItems: HandleCartItems;
+interface InfiniteProductsScrollComponentProps extends PropsWithChildren {
+  isLoading: boolean;
+  handleScroll: () => void;
 }
 
 const S = {
@@ -25,15 +16,18 @@ const S = {
   `,
 };
 
-const InfiniteProductsScrollComponent = ({ productObject, handleCartItems }: InfiniteProductsScrollComponentProps) => {
-  const { products, isLoading, error, fetchNextPage } = productObject;
+const InfiniteProductsScrollComponent = ({
+  children,
+  isLoading,
+  handleScroll,
+}: InfiniteProductsScrollComponentProps) => {
   const loaderRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !isLoading) {
-          fetchNextPage();
+          handleScroll();
         }
       },
       {
@@ -52,15 +46,12 @@ const InfiniteProductsScrollComponent = ({ productObject, handleCartItems }: Inf
         observer.unobserve(loaderRef.current);
       }
     };
-  }, [isLoading, fetchNextPage]);
+  }, [isLoading, handleScroll]);
 
   return (
     <>
-      {products.map((product, index) => (
-        <ProductCard key={`${index}${product.id}`} product={product} handleCartItems={handleCartItems} />
-      ))}
+      {children}
       <S.FallbackContainer>
-        {error! && <div>{ERROR_MESSAGE.getProducts}</div>}
         <div ref={loaderRef}>{isLoading && <LoadingDots />}</div>
       </S.FallbackContainer>
     </>

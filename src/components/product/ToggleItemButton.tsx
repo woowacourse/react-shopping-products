@@ -1,9 +1,14 @@
-import AddToCart from "../icons/AddToCart";
-import COLOR_PALETTE from "../../style/colorPalette";
-import DeleteFromCart from "../icons/DeleteFromCart";
-import { HandleCartItems } from "../../hooks/useToggleCartItem";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
+
+import COLOR_PALETTE from "../../style/colorPalette";
+
+import useCustomContext from "../../hooks/useCustomContext";
+
+import { ToggleCartItemContext } from "../ToggleCartItemProvider";
+
+import AddToCart from "../icons/AddToCart";
+import DeleteFromCart from "../icons/DeleteFromCart";
 import LoadingDots from "../LoadingDots";
 
 const S = {
@@ -31,11 +36,10 @@ const S = {
 
 interface ToggleItemButtonProps {
   id: number;
-  handleCartItems: HandleCartItems;
 }
 
-const ToggleItemButton = ({ id, handleCartItems }: ToggleItemButtonProps) => {
-  const { addToCart, removeFromCart, checkSelected } = handleCartItems;
+const ToggleItemButton = ({ id }: ToggleItemButtonProps) => {
+  const { addToCart, removeFromCart, checkSelected } = useCustomContext(ToggleCartItemContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isSelected, setSelected] = useState(checkSelected(id));
 
