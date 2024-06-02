@@ -2,7 +2,7 @@ import { HttpResponse, http } from 'msw';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import { API_URL } from '@/api/config';
-import { ENDPOINT } from '@/api/endpoints';
+import ENDPOINT from '@/api/endpoints';
 import { act } from 'react';
 import { server } from '@/mocks/server';
 import useProductList from '@/hooks/useProductList';
@@ -27,7 +27,7 @@ describe('useProductList 테스트', () => {
       server.use(
         http.get(`${API_URL}${ENDPOINT.product.getList({})}`, () => {
           return new HttpResponse(null, { status: 500 });
-        })
+        }),
       );
 
       const { result } = renderHook(() => useProductList());
@@ -130,7 +130,7 @@ describe('useProductList 테스트', () => {
           if (cur.price < array[index - 1].price) return false;
           return acc;
         },
-        true
+        true,
       );
 
       expect(isAscPrice).toBe(true);
@@ -158,7 +158,7 @@ describe('useProductList 테스트', () => {
           if (cur.price < array[index - 1].price) return false;
           return acc;
         },
-        true
+        true,
       );
 
       expect(isAscPrice).toBe(true);
@@ -172,7 +172,7 @@ describe('useProductList 테스트', () => {
       });
 
       act(() => {
-        result.current.handleChangeOrder('desc');
+        result.current.handleChangeSort('desc');
       });
 
       await waitFor(() => {
@@ -185,7 +185,7 @@ describe('useProductList 테스트', () => {
           if (cur.price > array[index - 1].price) return false;
           return acc;
         },
-        true
+        true,
       );
 
       expect(isDescPrice).toBe(true);
@@ -199,7 +199,7 @@ describe('useProductList 테스트', () => {
       });
 
       act(() => {
-        result.current.handleChangeOrder('desc');
+        result.current.handleChangeSort('desc');
       });
 
       await waitFor(() => {
@@ -221,7 +221,7 @@ describe('useProductList 테스트', () => {
           if (cur.price > array[index - 1].price) return false;
           return acc;
         },
-        true
+        true,
       );
 
       expect(isDescPrice).toBe(true);
@@ -247,7 +247,7 @@ describe('useProductList 테스트', () => {
       });
 
       const isAllFashion = result.current.products.some(
-        (item) => item.category === SELECTED_CATEGORY
+        (item) => item.category === SELECTED_CATEGORY,
       );
 
       expect(isAllFashion).toBe(true);
@@ -280,7 +280,7 @@ describe('useProductList 테스트', () => {
       });
 
       const isAllFashion = result.current.products.some(
-        (item) => item.category === SELECTED_CATEGORY
+        (item) => item.category === SELECTED_CATEGORY,
       );
 
       expect(isAllFashion).toBe(true);
@@ -304,7 +304,7 @@ describe('useProductList 테스트', () => {
       });
 
       const isAllFashion = result.current.products.some(
-        (item) => item.category === SELECTED_CATEGORY
+        (item) => item.category === SELECTED_CATEGORY,
       );
 
       expect(isAllFashion).toBe(true);
@@ -337,7 +337,7 @@ describe('useProductList 테스트', () => {
       });
 
       const isAllFashion = result.current.products.some(
-        (item) => item.category === SELECTED_CATEGORY
+        (item) => item.category === SELECTED_CATEGORY,
       );
 
       expect(isAllFashion).toBe(true);

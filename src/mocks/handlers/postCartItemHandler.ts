@@ -1,7 +1,7 @@
 import { HttpResponse, http } from 'msw';
 
 import { API_URL } from '@/api/config';
-import { ENDPOINT } from '@/api/endpoints';
+import ENDPOINT from '@/api/endpoints';
 
 interface postCartInfo {
   productId: string;
@@ -19,14 +19,14 @@ export const postCartItemHandler = [
         {
           message: 'Item added to cart successfully',
         },
-        { status: 201 }
+        { status: 201 },
       );
     } else {
       return HttpResponse.json(
         {
           message: `Product not found; productId=${productId}`,
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
   }),

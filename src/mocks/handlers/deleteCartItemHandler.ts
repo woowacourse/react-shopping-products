@@ -11,14 +11,14 @@ export const deleteCartItemHandler = [
         {
           message: 'Item removed from cart successfully',
         },
-        { status: 200 }
+        { status: 200 },
       );
     } else {
       return HttpResponse.json(
         {
           message: `Item not found; id=${id}`,
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
   }),
