@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { fetchProducts } from '../../api/products';
 import usePage from '../usePage';
 
-import { Category, Order, Product, Sort } from '../../types/product';
+import { Category, Order, Product } from '../../types/product';
 
 const useProducts = () => {
   const [loading, setLoading] = useState(false);
@@ -11,16 +11,14 @@ const useProducts = () => {
   const [isLastPage, setIsLastPage] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [category, setCategory] = useState<Category>('all');
-  const [sort, setSort] = useState<Sort>({
-    price: 'asc',
-  });
+  const [priceOrder, setPriceOrder] = useState<Order>('asc');
 
   const { page, increasePage, decreasePage, resetPage } = usePage();
 
   const getProducts = async () => {
     try {
       setLoading(true);
-      const data = await fetchProducts(page, category, sort);
+      const data = await fetchProducts(page, category, priceOrder);
 
       setIsLastPage(data.last);
       setProducts((prevProducts) => [...prevProducts, ...data.content]);
@@ -35,29 +33,24 @@ const useProducts = () => {
 
   useEffect(() => {
     if (!isLastPage && !error) getProducts();
-  }, [page, category, sort]);
+  }, [page, category, priceOrder]);
 
   const reset = () => {
     resetPage();
     setProducts([]);
   };
 
-  const filterByCategory = (selectedCategory: Category) => {
+  const handleCategoryChange = (selectedCategory: Category) => {
     if (selectedCategory !== category) {
       reset();
       setCategory(selectedCategory);
     }
   };
 
-  const filterBySort = (condition: string, order: Order) => {
-    if (sort.price !== order) {
+  const handlePriceOrderChange = (order: Order) => {
+    if (priceOrder !== order) {
       reset();
-      setSort((prevSort) => {
-        return {
-          ...prevSort,
-          [condition]: order,
-        };
-      });
+      setPriceOrder(order);
     }
   };
 
@@ -72,9 +65,9 @@ const useProducts = () => {
     page,
     fetchNextPage,
     category,
-    filterByCategory,
-    sort,
-    filterBySort,
+    handleCategoryChange,
+    priceOrder,
+    handlePriceOrderChange,
   };
 };
 

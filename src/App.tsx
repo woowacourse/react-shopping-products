@@ -38,11 +38,11 @@ function App() {
   const {
     error,
     category,
-    filterByCategory,
+    handleCategoryChange,
     loading,
     products,
-    sort,
-    filterBySort,
+    priceOrder,
+    handlePriceOrderChange,
     fetchNextPage,
   } = useProducts();
 
@@ -50,17 +50,9 @@ function App() {
     ([, value]) => value === category,
   )![0];
 
-  const selectedSortOption = Object.entries(PRICE_SORT).find(
-    ([, value]) => value === sort.price,
+  const selectedPriceOrderOption = Object.entries(PRICE_SORT).find(
+    ([, value]) => value === priceOrder,
   )![0];
-
-  const handleCategoryChange = (option: string) => {
-    filterByCategory(CATEGORY[option]);
-  };
-
-  const handlePriceSortChange = (option: string) => {
-    filterBySort('price', PRICE_SORT[option]);
-  };
 
   useIntersectionObserver(loading, observerRef, fetchNextPage, { threshold: 0.8 });
 
@@ -79,12 +71,12 @@ function App() {
               <Dropdown
                 optionArray={Object.keys(CATEGORY)}
                 selectedOption={selectedCategoryOption}
-                optionChange={handleCategoryChange}
+                optionChange={(option) => handleCategoryChange(CATEGORY[option])}
               />
               <Dropdown
                 optionArray={Object.keys(PRICE_SORT)}
-                selectedOption={selectedSortOption}
-                optionChange={handlePriceSortChange}
+                selectedOption={selectedPriceOrderOption}
+                optionChange={(option) => handlePriceOrderChange(PRICE_SORT[option])}
               />
             </FilterContainer>
             <ProductsContent>

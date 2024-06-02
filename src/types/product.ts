@@ -13,8 +13,6 @@ export interface ProductsResponseData {
 
 export type Order = 'asc' | 'desc';
 
-export type Sort = Record<string, Order>;
-
 export type Category =
   | 'fashion'
   | 'electronics'
