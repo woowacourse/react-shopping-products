@@ -1,15 +1,9 @@
-import ProductList from "./components/ProductListPage/ProductList";
-import { ErrorToastProvider } from "./store/errorToastContext";
-import { CartItemsProvider } from "./store/cartItemsContext";
+import ProductListPage from "./pages/ProductListPage";
 
 function App() {
   return (
     <>
-      <CartItemsProvider>
-        <ErrorToastProvider>
-          <ProductList />
-        </ErrorToastProvider>
-      </CartItemsProvider>
+      <ProductListPage />
     </>
   );
 }
