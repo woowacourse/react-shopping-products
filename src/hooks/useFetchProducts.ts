@@ -33,14 +33,11 @@ const useFetchProducts = (
           sortings,
           filter,
         );
-        if (page === PAGE.DEFAULT) {
-          setProducts(fetchedProducts.content);
-        } else {
-          setProducts((prevState) => [
-            ...prevState,
-            ...fetchedProducts.content,
-          ]);
-        }
+        setProducts((prevState) =>
+          page === 0
+            ? fetchedProducts.content
+            : [...prevState, ...fetchedProducts.content],
+        );
         setIsLast(fetchedProducts.last);
         setIsError(false);
       } catch (error) {
