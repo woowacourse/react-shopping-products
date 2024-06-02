@@ -8,9 +8,9 @@ const useAddCartItem = (refetch: () => Promise<void>) => {
   const addCartItem = async (productId: number) => {
     try {
       setLoading(true);
+      setError('');
       await fetchPostCartItems({ productId });
       await refetch();
-      setError('');
     } catch (error) {
       const errorMessage = (error as Error).message;
       setError(errorMessage);
