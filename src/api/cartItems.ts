@@ -1,11 +1,11 @@
-import { CartResponse } from "../types/fetch";
-import { ENDPOINTS_CART } from "./endpoints";
-import { token } from "./token";
+import { CartResponse } from '../types/fetch';
+import { ENDPOINTS_CART } from './endpoints';
+import fetchResponse from './fetchResponse';
 
 export const fetchCartItems = async () => {
-  const response = await fetch(`${ENDPOINTS_CART}`, {
+  const response = await fetchResponse({
+    url: `${ENDPOINTS_CART}`,
     method: 'GET',
-    headers: { Authorization: token, 'Content-Type': 'application/json' },
   });
 
   if (!response.ok) {

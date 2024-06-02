@@ -5,7 +5,7 @@ import {
   ENDPOINTS_CART,
   ENDPOINTS_REMOVE_CART,
 } from './endpoints';
-import { token } from './token';
+import fetchResponse from './fetchResponse';
 
 export const fetchProducts = async (
   page: number,
@@ -21,9 +21,10 @@ export const fetchProducts = async (
 
   const categoryParam = category ? `&category=${category}` : '';
 
-  const response = await fetch(
-    `${ENDPOINTS_PRODUCTS}?page=${page}&size=${size}${sortingParams}${categoryParam}`,
-  );
+  const response = await fetchResponse({
+    url: `${ENDPOINTS_PRODUCTS}?page=${page}&size=${size}${sortingParams}${categoryParam}`,
+    method: 'GET',
+  });
 
   if (!response.ok) {
     throw new Error(`200~299 이외의 응답이 발생하였습니다.${response.body}`);
@@ -34,9 +35,9 @@ export const fetchProducts = async (
 };
 
 export const postAddItems = async (id: number) => {
-  const response = await fetch(`${ENDPOINTS_CART}`, {
+  const response = await fetchResponse({
+    url: `${ENDPOINTS_CART}`,
     method: 'POST',
-    headers: { Authorization: token, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       productId: id,
       quantity: 1,
@@ -49,9 +50,9 @@ export const postAddItems = async (id: number) => {
 };
 
 export const deleteItem = async (id: number) => {
-  const response = await fetch(`${ENDPOINTS_REMOVE_CART(id)}`, {
+  const response = await fetchResponse({
+    url: `${ENDPOINTS_REMOVE_CART(id)}`,
     method: 'DELETE',
-    headers: { Authorization: token, 'Content-Type': 'application/json' },
   });
 
   if (!response.ok) {
