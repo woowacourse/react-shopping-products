@@ -77,7 +77,7 @@ export default function useProducts(): UseProductsResult {
   const fetchNextPage = () => {
     setPage((prevPage) => {
       if (isLast) return prevPage;
-      if (page === 0) return prevPage + 5;
+      if (page === 0) return prevPage + JUMP_NEXT_PAGE_IN_ZERO;
       return prevPage + 1;
     });
   };
