@@ -4,7 +4,7 @@ import { act } from 'react';
 import useProductList from '@/hooks/useProductList';
 
 describe('productList', () => {
-  it('첫 페이지에서는 20개의 상품 목록을 불러와야 한다.', async () => {
+  it('첫 페이지에서는 20개의 상품 목록을 불러온다.', async () => {
     const { result } = renderHook(() => useProductList());
 
     await waitFor(() => {
@@ -13,7 +13,7 @@ describe('productList', () => {
     });
   });
 
-  it('다음 페이지에서는 4개의 상품 목록을 추가로 불러와야 한다.', async () => {
+  it('다음 페이지에서는 4개의 상품 목록을 추가로 불러온다.', async () => {
     const { result } = renderHook(() => useProductList());
 
     await waitFor(() => {
@@ -30,7 +30,7 @@ describe('productList', () => {
       expect(result.current.page).toBe(5);
     });
   });
-  it('마지막 페이지 일 때 상품 목록을 불러오지 않아야 한다.', async () => {
+  it('마지막 페이지 일 때 상품 목록을 불러오지 않는다.', async () => {
     const { result } = renderHook(() => useProductList());
 
     await waitFor(() => {
