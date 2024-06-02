@@ -20,7 +20,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "svg.d.ts"],
   "exclude": ["**/*.stories.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
