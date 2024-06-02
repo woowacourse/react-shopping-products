@@ -1,4 +1,5 @@
-import { SmartURLSearchParams } from "../SmartURLSearchParams";
+import { SmartURLSearchParams } from "../../utils/SmartURLSearchParams";
+import { buildURL } from "./utils/buildURL";
 
 type URLString = string;
 
@@ -18,7 +19,7 @@ export default class ApiClient implements ApiClientInterface {
   }
 
   async get<T>(path: string, params?: SmartURLSearchParams): Promise<T> {
-    const url = `${this.baseUrl.toString()}${path}${params ? `?${params.toString()}` : ""}`;
+    const url = buildURL({ baseUrl: this.baseUrl, path, params });
 
     const response = await fetch(url, {
       headers: this.header,
@@ -33,7 +34,7 @@ export default class ApiClient implements ApiClientInterface {
   }
 
   async post(path: string, body: object): Promise<void> {
-    const url = `${this.baseUrl.toString()}${path}`;
+    const url = buildURL({ baseUrl: this.baseUrl, path });
 
     const parsedBody = JSON.stringify(body);
 
@@ -49,7 +50,7 @@ export default class ApiClient implements ApiClientInterface {
   }
 
   async delete(path: string): Promise<void> {
-    const url = `${this.baseUrl.toString()}${path}`;
+    const url = buildURL({ baseUrl: this.baseUrl, path });
 
     const response = await fetch(url, {
       method: "DELETE",
