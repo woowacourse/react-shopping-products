@@ -1,6 +1,7 @@
-import { PropsWithChildren, createContext, useEffect, useState } from 'react';
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
 import { CartItem } from '../types/cart';
 import { addCartItem, deleteCartItem, fetchCartItems } from '../api/cartItems';
+import { ToastContext } from './ToastProvider';
 
 interface CartItemContextProps {
   cartItems: CartItem[];
@@ -11,6 +12,7 @@ interface CartItemContextProps {
 export const CartItemsContext = createContext<CartItemContextProps>({} as CartItemContextProps);
 
 export const CartItemProvider = ({ children }: PropsWithChildren) => {
+  const { showToast } = useContext(ToastContext);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -22,7 +24,10 @@ export const CartItemProvider = ({ children }: PropsWithChildren) => {
 
       setCartItems(fetchedCartItems);
     } catch (error) {
-      setError(error);
+      if (error instanceof Error) {
+        setError(error);
+        showToast(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -35,23 +40,15 @@ export const CartItemProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const addCart = async (productId: number) => {
-    try {
-      await addCartItem(productId);
+    await addCartItem(productId);
 
-      await getCartItems();
-    } catch (error) {
-      setError(error);
-    }
+    await getCartItems();
   };
 
   const deleteCart = async (cartId: number) => {
-    try {
-      await deleteCartItem(cartId);
+    await deleteCartItem(cartId);
 
-      await getCartItems();
-    } catch (error) {
-      setError(error);
-    }
+    await getCartItems();
   };
 
   return (

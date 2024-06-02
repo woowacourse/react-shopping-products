@@ -6,6 +6,7 @@ import { CartItemsContext } from '../../context/CartItemProvider';
 import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
 
 import Spinner from '../common/Spinner';
+import { ToastContext } from '../../context/ToastProvider';
 
 interface ProductItemProps {
   id: number;
@@ -17,6 +18,7 @@ interface ProductItemProps {
 
 const ProductItem = ({ id, imageUrl, name, price, cartItemId }: ProductItemProps) => {
   const { addCart, deleteCart } = useContext(CartItemsContext);
+  const { showToast } = useContext(ToastContext);
   const [loading, setLoading] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
 
@@ -25,25 +27,24 @@ const ProductItem = ({ id, imageUrl, name, price, cartItemId }: ProductItemProps
 
   const onToggle = async () => {
     setLoading(true);
+
     if (cartItemId) {
       try {
         await deleteCart(cartItemId);
         setIsInCart(false);
       } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
+        if (error instanceof Error) showToast(error.message);
       }
     } else {
       try {
         await addCart(id);
         setIsInCart(true);
       } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
+        if (error instanceof Error) showToast(error.message);
       }
     }
+
+    setLoading(false);
   };
 
   useEffect(() => {
