@@ -1,4 +1,4 @@
-import { Product } from "../../interfaces/Product";
+import { Product } from "../../types/type";
 import ProductItemTitle from "../ProductItemTitle/ProductItemTitle";
 import ToggleCartItemButton from "../ToggleCartItemButton/ToggleCartItemButton";
 

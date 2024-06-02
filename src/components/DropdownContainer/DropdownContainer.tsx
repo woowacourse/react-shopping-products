@@ -1,5 +1,6 @@
-import { Category } from "../../interfaces/Product";
-import { Sorting } from "../../interfaces/Sorting";
+import { CATEGORY } from "../../constants/categories";
+import { SORT } from "../../constants/sorts";
+import { Category, Sort } from "../../types/type";
 import Dropdown from "../common/Dropdown/Dropdown";
 
 import * as S from "./DropdownContainer.style";
@@ -7,22 +8,22 @@ import * as S from "./DropdownContainer.style";
 interface DropdownContainerProps {
   category: Category;
   onChangeCategory: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  sortingOption: Sorting;
-  onChangeSortingOption: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  sort: Sort;
+  onChangeSort: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 function DropdownContainer({
   category,
   onChangeCategory,
-  sortingOption,
-  onChangeSortingOption,
+  sort,
+  onChangeSort,
 }: DropdownContainerProps) {
-  const categoryOptions = [["", "전체"]];
-  categoryOptions.push(
-    ...Object.entries(Category).map(([key, value]) => [key, `${value}`])
-  );
+  const categoryOptions = Object.entries(CATEGORY).map(([key, value]) => [
+    key,
+    value as string,
+  ]);
 
-  const sortingOptions = Object.entries(Sorting).map(([key, value]) => [
+  const sortOptions = Object.entries(SORT).map(([key, value]) => [
     key,
     value as string,
   ]);
@@ -36,9 +37,9 @@ function DropdownContainer({
         type="category"
       ></Dropdown>
       <Dropdown
-        optionList={sortingOptions}
-        value={sortingOption}
-        onChange={onChangeSortingOption}
+        optionList={sortOptions}
+        value={sort}
+        onChange={onChangeSort}
         type="sort"
       ></Dropdown>
     </S.Container>

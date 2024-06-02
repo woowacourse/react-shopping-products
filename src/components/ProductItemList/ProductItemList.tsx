@@ -4,8 +4,7 @@ import { QuantityContext } from "../../store/QuantityContext";
 import useProductList from "../../hooks/useProductList";
 import useCartItemList from "../../hooks/useCartItemList";
 import ProductItem from "../ProductItem/ProductItem";
-import { Category } from "../../interfaces/Product";
-import { Sorting } from "../../interfaces/Sorting";
+import { Category, Sort } from "../../types/type";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import Spinner from "../common/Spinner/Spinner";
 
@@ -13,15 +12,11 @@ import * as S from "./ProductItemList.style";
 
 interface ProductItemListProp {
   category: Category;
-  sortOption: Sorting;
+  sort: Sort;
   onError: (error: string) => void;
 }
 
-function ProductItemList({
-  category,
-  sortOption,
-  onError,
-}: ProductItemListProp) {
+function ProductItemList({ category, sort, onError }: ProductItemListProp) {
   const {
     productList,
     productListError,
@@ -32,7 +27,7 @@ function ProductItemList({
     setPage,
   } = useProductList({
     category,
-    sortOption,
+    sort,
   });
   const { cartItemList, isInCart, toggleCartItem, cartItemListError } =
     useCartItemList();
@@ -43,7 +38,7 @@ function ProductItemList({
 
   useEffect(() => {
     setPage(0);
-  }, [category, sortOption, setPage]);
+  }, [category, sort, setPage]);
 
   useEffect(() => {
     if (page === -1 || target.current === null) return;

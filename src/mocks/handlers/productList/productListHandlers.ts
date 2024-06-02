@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 
 import { PRODUCTS_ENDPOINT } from "../../../apis/config";
 import { PRODUCT_LIST } from "../../../constants/productList";
-import { Product } from "../../../interfaces/Product";
+import { Product } from "../../../types/type";
 
 import productListData from "./defaultData.json";
 
@@ -67,7 +67,7 @@ export const productListHandlers = [
       JSON.stringify({ content: paginatedData, last: isLastPage }),
       {
         status: 200,
-      }
+      },
     );
   }),
 ];

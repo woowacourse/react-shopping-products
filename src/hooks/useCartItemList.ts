@@ -5,8 +5,7 @@ import {
   requestDeleteCartItem,
   requestFetchCartItemList,
 } from "../apis/carItems";
-import { CartItem } from "../interfaces/CartItem";
-import { Product } from "../interfaces/Product";
+import { CartItem, Product } from "../types/type";
 import { QuantityContext } from "../store/QuantityContext";
 
 interface UseCartItemListResult {
@@ -27,7 +26,7 @@ export default function useCartItemList(): UseCartItemListResult {
 
   const isInCart = (productId: number) => {
     return cartItemList.some(
-      ({ product }: CartItem) => product.id === productId
+      ({ product }: CartItem) => product.id === productId,
     );
   };
 

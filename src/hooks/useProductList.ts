@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 
 import { fetchProductList } from "../apis/products";
 import { PRODUCT_LIST } from "../constants/productList";
-import { Category, Product } from "../interfaces/Product";
-
-import { Sorting } from "./../interfaces/Sorting";
+import { Category, Product, Sort } from "../types/type";
 
 interface UseProductListResult {
   productList: Product[];
@@ -18,12 +16,13 @@ interface UseProductListResult {
 
 interface UseProductListProps {
   category?: Category;
-  sortOption?: Sorting;
+  sort?: Sort;
 }
 
-export default function useProductList(
-  option: UseProductListProps
-): UseProductListResult {
+export default function useProductList({
+  category,
+  sort,
+}: UseProductListProps): UseProductListResult {
   const [productList, setProductList] = useState<Product[]>([]);
   const [productListLoading, setProductListLoading] = useState<boolean>(true);
   const [productListError, setProductListError] = useState<unknown>(null);
@@ -39,8 +38,8 @@ export default function useProductList(
           page === 0
             ? PRODUCT_LIST.initialPageProductQuantity
             : PRODUCT_LIST.additionalPageProductQuantity,
-          option.category,
-          option.sortOption
+          category,
+          sort,
         );
         if (page === 0) {
           setProductList(data.content);
@@ -58,7 +57,7 @@ export default function useProductList(
       }
     };
     getProductList();
-  }, [page, option.category, option.sortOption]);
+  }, [page, category, sort]);
 
   const fetchNextPage = () => {
     if (!isLastPage) {
@@ -66,7 +65,7 @@ export default function useProductList(
         prevPage === 0
           ? PRODUCT_LIST.initialPageProductQuantity /
             PRODUCT_LIST.additionalPageProductQuantity
-          : prevPage + 1
+          : prevPage + 1,
       );
     }
   };

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { createPortal } from "react-dom";
 
 import Header from "./components/Header/Header";
 import Product from "./pages/Product";

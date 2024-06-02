@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+
 import * as S from "./Toast.style";
 
 interface ToastProps {
