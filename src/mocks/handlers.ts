@@ -24,7 +24,7 @@ export const handlers = [
         content: products.content.slice(start, end),
       };
       return HttpResponse.json(paginatedProducts);
-    }
+    },
   ),
   http.get(CART_ITEMS_ENDPOINT, () => {
     return HttpResponse.json(products);

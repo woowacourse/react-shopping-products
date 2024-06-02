@@ -36,7 +36,7 @@ describe("useProducts", () => {
       server.use(
         http.get(PRODUCTS_ENDPOINT, () => {
           return new HttpResponse(null, { status: 500 });
-        })
+        }),
       );
 
       const { result } = renderHook(
@@ -50,7 +50,7 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
       await waitFor(() => {
@@ -70,7 +70,7 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
       await waitFor(() => {
@@ -91,7 +91,7 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
       await waitFor(() => {
@@ -121,7 +121,7 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
       await waitFor(() => {
@@ -166,7 +166,7 @@ describe("useProducts", () => {
         },
         {
           wrapper: ErrorProvider,
-        }
+        },
       );
 
       await waitFor(() => {
