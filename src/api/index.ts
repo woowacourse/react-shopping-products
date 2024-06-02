@@ -6,6 +6,15 @@ import {
 } from "./endpoints";
 import { fetchWithAuth } from "./fetchWithAuth";
 
+/**
+ * @example
+ * const params: QueryParams = {
+ *  category: 'fashion',
+ *  page: 1,
+ *  size: 20,
+ *  sort: ['price', 'asc']
+ * }
+ */
 interface QueryParams {
   [key: string]:
     | undefined
