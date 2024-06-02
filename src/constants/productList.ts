@@ -1,4 +1,4 @@
 export const PRODUCT_LIST = {
-  initialPageProductQuantity: 20,
-  additionalPageProductQuantity: 4,
+  initialQuantity: 20,
+  quantityPerPage: 4,
 };

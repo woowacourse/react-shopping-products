@@ -26,17 +26,16 @@ export const productListHandlers = [
     }
 
     const limit =
-      page === 0
-        ? PRODUCT_LIST.initialPageProductQuantity
-        : PRODUCT_LIST.additionalPageProductQuantity;
+      page === 0 ? PRODUCT_LIST.initialQuantity : PRODUCT_LIST.quantityPerPage;
+
+    const pageNumber =
+      page - PRODUCT_LIST.initialQuantity / PRODUCT_LIST.quantityPerPage;
+
     const start =
       page === 0
         ? 0
-        : (page -
-            PRODUCT_LIST.initialPageProductQuantity /
-              PRODUCT_LIST.additionalPageProductQuantity) *
-            PRODUCT_LIST.additionalPageProductQuantity +
-          PRODUCT_LIST.initialPageProductQuantity;
+        : pageNumber * PRODUCT_LIST.quantityPerPage +
+          PRODUCT_LIST.initialQuantity;
     const end = start + limit;
 
     const filteredData =
@@ -58,9 +57,9 @@ export const productListHandlers = [
 
     const paginatedData = sortedData.slice(start, end);
     const lastPage =
-      sortedData.length <= PRODUCT_LIST.initialPageProductQuantity
+      sortedData.length <= PRODUCT_LIST.initialQuantity
         ? 0
-        : sortedData.length - 1 / PRODUCT_LIST.additionalPageProductQuantity;
+        : sortedData.length - 1 / PRODUCT_LIST.quantityPerPage;
     const isLastPage = lastPage === page;
 
     return new HttpResponse(
