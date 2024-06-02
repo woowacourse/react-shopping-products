@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Option } from '../../types/Option.type';
-import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
+import { Option } from '../types/Option.type';
+import { CATEGORY_LIST, SORTING_LIST } from '../constants/optionList';
 
 interface UseFilterAndSortResult {
   category: Option;

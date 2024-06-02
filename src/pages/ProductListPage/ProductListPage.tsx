@@ -1,18 +1,21 @@
-import CartIcon from '../../assets/CartIcon.svg';
 import TitleContainer from '../../components/TitleContainer/TitleContainer';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Header from '../../components/Header/Header';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import ProductItem from '../../components/ProductItem/ProductItem';
+
 import useProducts from '../../hooks/useProducts/useProducts';
 import useCartItems from '../../hooks/useCartItems/useCartItems';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import useFilterAndSort from '../../hooks/useFilterAndSort/useFilterAndSort';
-import * as S from './ProductListPage.style';
+import useFilterAndSort from '../../hooks/useFilterAndSort';
+
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
 import { SIZE } from '../../constants/api';
-import Loading from '../../assets/loading.gif';
+import * as S from './ProductListPage.style';
+
+import CartIcon from '../../assets/CartIcon.svg';
 import EmptyCart from '../../assets/EmptyCart.png';
+import Loading from '../../assets/loading.gif';
 
 const ProductListPage = () => {
   const { category, sort, handleCategory, handleSort } = useFilterAndSort();

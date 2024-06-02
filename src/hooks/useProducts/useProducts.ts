@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { fetchProducts } from '../../api/product';
-import { Product } from '../../types/Product.type';
 import usePagination from '../usePagination';
 import useFetcher from '../useFetcher';
 import { SIZE } from '../../constants/api';
+import { Product } from '../../types/Product.type';
 import { Option } from '../../types/Option.type';
 
 interface UseProductsResult {
