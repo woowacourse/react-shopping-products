@@ -28,7 +28,7 @@ const ProductItem = ({ item }: Props) => {
   return (
     <>
       <S.ItemCard>
-        <S.Img src={imageUrl} />
+        <S.Img src={imageUrl} alt={`${name}의 이미지`} />
         <S.InfoWrapper>
           <S.InfoText>
             <S.Title>{name}</S.Title>
