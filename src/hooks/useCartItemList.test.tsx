@@ -22,7 +22,7 @@ describe('useCartItemList에 대한 테스트 코드', () => {
     const { result } = renderHook(() => useCartItemListContext(), { wrapper });
 
     await act(async () => {
-      await result.current.toggleCartItem(3);
+      await result.current.toggleCartItem(101);
     });
 
     await waitFor(() => {
@@ -35,6 +35,11 @@ describe('useCartItemList에 대한 테스트 코드', () => {
     const { result } = renderHook(() => useCartItemListContext(), { wrapper });
 
     const initialItem = cartItemList[0];
+
+    await waitFor(() => {
+      expect(result.current.cartItemList).toHaveLength(cartItemList.length);
+    });
+
     await act(async () => {
       await result.current.toggleCartItem(initialItem.product.id);
     });
