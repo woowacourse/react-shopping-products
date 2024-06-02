@@ -21,6 +21,12 @@ export const FetchWithToken = {
       },
     });
 
+    if (response.status === 500) {
+      throw new Error(
+        '서버에 문제가 발생했습니다. 관리자에게 문의하시거나 잠시 후 다시 시도해주세요.',
+      );
+    }
+
     if (!response.ok) throw new Error('Failed to request "GET"');
 
     const data: T = await response.json();
@@ -38,6 +44,12 @@ export const FetchWithToken = {
       body: JSON.stringify({ ...body }),
     });
 
+    if (response.status === 500) {
+      throw new Error(
+        '서버에 문제가 발생했습니다. 관리자에게 문의하시거나 잠시 후 다시 시도해주세요.',
+      );
+    }
+
     if (!response.ok) throw new Error('Failed to request "POST"');
   },
 
@@ -49,6 +61,12 @@ export const FetchWithToken = {
         ...headers,
       },
     });
+
+    if (response.status === 500) {
+      throw new Error(
+        '서버에 문제가 발생했습니다. 관리자에게 문의하시거나 잠시 후 다시 시도해주세요.',
+      );
+    }
 
     if (!response.ok) throw new Error('Failed to request "DELETE"');
   },

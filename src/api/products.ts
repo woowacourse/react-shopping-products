@@ -20,10 +20,15 @@ export async function fetchProducts(
 
   const response = await fetch(`${PRODUCTS_ENDPOINT}?${params.toString()}`);
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch products');
+  if (response.status === 500) {
+    throw new Error(
+      '서버에 문제가 발생했습니다. 관리자에게 문의하시거나 잠시 후 다시 시도해주세요.',
+    );
   }
 
+  if (!response.ok) throw new Error('Failed to fetch products');
+
   const data = await response.json();
+
   return data;
 }
