@@ -12,7 +12,7 @@ const CartToggleButton = ({ productId }: CartToggleButtonProps) => {
   const { addToCart, removeFromCart, isIncludedInCart } = useCartActions();
   const { showErrorToast } = useErrorToast();
 
-  const handleAddToCart = async () => {
+  const handleAddToCartClick = async () => {
     try {
       await addToCart(productId, 1);
     } catch (error) {
@@ -22,7 +22,7 @@ const CartToggleButton = ({ productId }: CartToggleButtonProps) => {
     }
   };
 
-  const handleDeleteFromCart = async () => {
+  const handleDeleteFromCartClick = async () => {
     try {
       await removeFromCart(productId);
     } catch (error) {
@@ -35,9 +35,13 @@ const CartToggleButton = ({ productId }: CartToggleButtonProps) => {
   return (
     <S.ButtonWrapper>
       {isIncludedInCart(productId) ? (
-        <S.DeleteFromCartIcon role="button" aria-label="상품 빼기" onClick={handleDeleteFromCart} />
+        <S.DeleteFromCartIcon
+          role="button"
+          aria-label="상품 빼기"
+          onClick={handleDeleteFromCartClick}
+        />
       ) : (
-        <S.AddToCartIcon role="button" aria-label="상품 담기" onClick={handleAddToCart} />
+        <S.AddToCartIcon role="button" aria-label="상품 담기" onClick={handleAddToCartClick} />
       )}
     </S.ButtonWrapper>
   );
