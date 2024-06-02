@@ -6,6 +6,10 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "plugin:storybook/recommended",
+    "plugin:import/typescript",
+    "plugin:import/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
@@ -19,6 +23,7 @@ module.exports = {
     "import/order": [
       "error",
       {
+        "newlines-between": "always",
         groups: [
           "type",
           "builtin",
@@ -53,5 +58,14 @@ module.exports = {
         ],
       },
     ],
+  },
+  settings: {
+    "import/resolver": {
+      node: {},
+      typescript: {
+        directory: "./src",
+      },
+    },
+    "import/parsers": { "@typescript-eslint/parser": [".ts", ".tsx"] },
   },
 };
