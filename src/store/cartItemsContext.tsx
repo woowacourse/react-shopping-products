@@ -1,16 +1,17 @@
 import React, { createContext, useState, useEffect } from "react";
 import { CartItem, getCartItems } from "../api/cartItems";
+import { useFetch } from "../hooks/useFetch";
 
 interface CartItemContextState {
   cartItems: CartItem[];
-  loading: boolean;
+  isLoading: boolean;
   error: Error | null;
   refreshCartItems: () => Promise<void>;
 }
 
 export const CartItemsContext = createContext<CartItemContextState>({
   cartItems: [],
-  loading: false,
+  isLoading: false,
   error: null,
   refreshCartItems: async () => {},
 });
@@ -21,34 +22,26 @@ interface CartItemsProviderProps {
 
 export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const { fetchData: fetchCartItems, isLoading, error } = useFetch(getCartItems);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await getCartItems();
-        setCartItems(res.data);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error);
-        }
-      } finally {
-        setLoading(false);
+    const loadData = async () => {
+      const data = await fetchCartItems();
+      if (data) {
+        setCartItems(data);
       }
     };
 
-    fetchData();
+    loadData();
   }, []);
 
   const refreshCartItems = async () => {
-    const res = await getCartItems();
-    setCartItems(res.data);
+    const data = await getCartItems();
+    setCartItems(data);
   };
 
   return (
-    <CartItemsContext.Provider value={{ cartItems, refreshCartItems, loading, error }}>
+    <CartItemsContext.Provider value={{ cartItems, refreshCartItems, isLoading, error }}>
       {children}
     </CartItemsContext.Provider>
   );
