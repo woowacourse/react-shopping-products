@@ -1,5 +1,5 @@
 import { API_URL } from "../constants/url";
-import { cartClient } from "./cartClient";
+import { cartClient } from "./clients/cartClient";
 import { Product } from "./products";
 
 export interface CartItem {

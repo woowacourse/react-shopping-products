@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 import { CART_API_URL } from "../envVariables";
 import { API_URL } from "../constants/url";
 import products from "./products.json";
-import { SORT_OPTIONS } from "../constants/products";
+import { SORT_OPTIONS } from "../api/products/productQueryParams";
 
 export const handlers = [
   http.get(CART_API_URL + "/" + API_URL.products, ({ request }) => {

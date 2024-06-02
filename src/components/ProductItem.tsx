@@ -16,6 +16,7 @@ interface ProductItemProps {
 const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
   const { cartItems, refreshCartItems } = useContext(CartItemsContext);
 
+  // TODO: 아래의 로직을 리팩토링 (addToCart, deleteFromCart와 같은 함수를 반환하는 커스텀훅으로 분리?, alert 로직은 어떻게 하지?)
   const handleAddToCart = async () => {
     if (cartItems.length < MAX_CART_ITEM_COUNT) {
       try {

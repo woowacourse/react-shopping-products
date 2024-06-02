@@ -1,21 +1,19 @@
 import { isIncludedInList } from "../utils/isIncludedInList";
 
-const INVALID_PARAM_VALUES = [null, undefined, ""];
-const isValidParamValue = (value: unknown): boolean => {
-  if (Number.isNaN(value)) return false;
-
-  return !isIncludedInList(value, INVALID_PARAM_VALUES);
-};
-
+type SmartURLSearchParamsInit = Record<string, unknown> | URLSearchParams;
 /**
  * URLSearchParams에 아래 두 가지 기능이 추가된 클래스
  * 1. 유효하지 않은 값을 가진 param을 자동 필터링
  * 2. string이 아닌 값을 string으로 자동 변환
  */
 export class SmartURLSearchParams extends URLSearchParams {
-  constructor(init?: Record<string, unknown>) {
-    super();
-    if (init) {
+  constructor(init?: SmartURLSearchParamsInit) {
+    if (!init) return;
+
+    if (init instanceof URLSearchParams) {
+      super(init);
+    } else {
+      super();
       for (const [key, value] of Object.entries(init)) {
         this.set(key, value);
       }
@@ -34,3 +32,10 @@ export class SmartURLSearchParams extends URLSearchParams {
     }
   }
 }
+
+const INVALID_PARAM_VALUES = [null, undefined, ""];
+const isValidParamValue = (value: unknown): boolean => {
+  if (Number.isNaN(value)) return false;
+
+  return !isIncludedInList(value, INVALID_PARAM_VALUES);
+};

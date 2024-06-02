@@ -1,4 +1,4 @@
-import { SmartURLSearchParams } from "./SmartURLSearchParams";
+import { SmartURLSearchParams } from "../SmartURLSearchParams";
 
 type URLString = string;
 

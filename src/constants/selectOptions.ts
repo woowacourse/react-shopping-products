@@ -1,21 +1,9 @@
-export const SORT_OPTIONS = {
-  asc: "asc",
-  desc: "desc",
-} as const;
+import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../api/products/productQueryParams";
 
 export const PRICE_SORT_SELECT_OPTIONS = [
   { value: SORT_OPTIONS.asc, label: "낮은 가격순" },
   { value: SORT_OPTIONS.desc, label: "높은 가격순" },
 ];
-
-export const CATEGORY_OPTIONS = {
-  all: "all",
-  electronics: "electronics",
-  books: "books",
-  fashion: "fashion",
-  kitchen: "kitchen",
-  fitness: "fitness",
-} as const;
 
 export const CATEGORY_SELECT_OPTIONS = [
   { value: CATEGORY_OPTIONS.all, label: "전체" },
