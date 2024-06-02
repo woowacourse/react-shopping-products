@@ -2,8 +2,6 @@ import { fetchProduct } from '@apis/index';
 import { CartItem, Filtering, Product } from '@appTypes/index';
 import { Dropdown, IntersectionObserverArea } from '@components/index';
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@constants/index';
-import { useFilteredProducts, useStackProducts } from '@hooks/index';
-import useFetch from '@hooks/useFetch';
 import { useEffect, useRef, useState } from 'react';
 
 import ProductList from './ProductList';
@@ -16,23 +14,12 @@ interface ProductListPageProps {
 function ProductListPage({ cartItems }: ProductListPageProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(0);
-  const [isLastPage, setIsLastPage] = useState(false);
+  const [isLast, setIsLast] = useState(false);
   const [filtering, setFiltering] = useState<Filtering>({ category: '', sort: 'price,asc' });
   const targetRef = useRef<HTMLDivElement | null>(null);
 
-  const { fetch, loading, error } = useFetch<typeof fetchProduct>(fetchProduct);
-
-  const { getStackedProducts } = useStackProducts({
-    fetch,
-    products,
-    filtering,
-    isLast: isLastPage,
-    productLength: products.length,
-  });
-  const { getFilteredProducts } = useFilteredProducts({
-    fetch,
-    filtering,
-  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const updateState = ({
     isLast,
@@ -43,25 +30,40 @@ function ProductListPage({ cartItems }: ProductListPageProps) {
     newProducts: Product[];
     newPage: number;
   }) => {
-    setIsLastPage(isLast);
+    setIsLast(isLast);
     setProducts(newProducts);
     setPage(newPage);
   };
 
-  const observerCallback = async (entries: IntersectionObserverEntry[]) => {
-    if (!entries[0].isIntersecting) return;
-
-    const result = await getStackedProducts(page);
-    if (!result) return;
-
-    updateState(result);
+  const callback = async () => {
+    try {
+      if (isLast || !products.length) return;
+      setLoading(true);
+      const newPage = page + 1;
+      const result = await fetchProduct({ filtering, page: newPage });
+      if (!result) return;
+      updateState({ newPage, ...result, newProducts: [...products, ...result.products], isLast: result.isLast });
+      setError('');
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFilteringProducts = async () => {
-    const result = await getFilteredProducts();
-    if (!result) return;
-
-    updateState(result);
+    try {
+      setProducts([]);
+      setLoading(true);
+      const result = await fetchProduct({ filtering });
+      updateState({ isLast: result.isLast, newProducts: result.products, newPage: 0 });
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChangeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -87,7 +89,7 @@ function ProductListPage({ cartItems }: ProductListPageProps) {
         <Dropdown label="카테고리" name="category" options={CATEGORY_OPTIONS} onChange={handleChangeOption} />
         <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
-      <IntersectionObserverArea callback={observerCallback} targetRef={targetRef}>
+      <IntersectionObserverArea callback={callback} targetRef={targetRef}>
         <ProductList products={products} targetRef={targetRef} loading={loading} cartItems={cartItems} />
       </IntersectionObserverArea>
     </div>
