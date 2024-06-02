@@ -7,9 +7,10 @@ import CustomError from '@/utils/error';
 
 interface UseCartItemsProp {
   handleError: ({ name, isError, errorMessage }: ErrorState) => void;
+  resetError: () => void;
 }
 
-const useCartItems = ({ handleError }: UseCartItemsProp) => {
+const useCartItems = ({ handleError, resetError }: UseCartItemsProp) => {
   const [cartItems, setCartItems] = useState<CartItemInfo[]>([]);
 
   const matchCartItem = (productId: number) => {
@@ -20,6 +21,7 @@ const useCartItems = ({ handleError }: UseCartItemsProp) => {
     try {
       await addCartItem({ productId });
       await refreshCartItems();
+      resetError();
     } catch (error) {
       if (error instanceof CustomError) {
         handleError({ isError: true, name: error.name, errorMessage: error.message });
@@ -31,8 +33,10 @@ const useCartItems = ({ handleError }: UseCartItemsProp) => {
     try {
       const matchedCartItemInfo = matchCartItem(productId);
       const cartItemId = matchedCartItemInfo!.id;
+
       await deleteCartItem(cartItemId);
       await refreshCartItems();
+      resetError();
     } catch (error) {
       if (error instanceof CustomError) {
         handleError({ isError: true, name: error.name, errorMessage: error.message });

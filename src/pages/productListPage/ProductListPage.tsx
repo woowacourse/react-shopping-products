@@ -19,6 +19,7 @@ const ProductListPage = () => {
     fetchNextPage,
     errorState,
     handleError,
+    resetError,
     handleChangeCategory,
     handleChangeSort,
     order,
@@ -26,6 +27,7 @@ const ProductListPage = () => {
   } = useProductList();
   const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems({
     handleError,
+    resetError,
   });
   const bottomRef = useRef<HTMLDivElement>(null);
 
