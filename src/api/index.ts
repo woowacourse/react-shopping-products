@@ -104,7 +104,7 @@ export const fetchShoppingCartQuantity = async () => {
   }
 
   const data = await response.json();
-  return data.totalElements;
+  return data.content.length;
 };
 
 export async function fetchItems(): Promise<CartItems[]> {

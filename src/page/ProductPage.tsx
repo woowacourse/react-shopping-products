@@ -50,7 +50,7 @@ function ProductPage() {
           ></Dropdown>
         </DropBoxContainer>
 
-        {cartItemIds !== null && (
+        {cartItemIds !== null && products.length !== 0 && (
           <ItemList>
             {products.map((product, index) => {
               return (
@@ -63,11 +63,12 @@ function ProductPage() {
             })}
           </ItemList>
         )}
+        {products.length === 0 && <div>상품 정보가 없습니다.</div>}
         {loading && (
           <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
         )}
 
-        {!loading && !error && (
+        {!loading && !error && products.length !== 0 && (
           <div
             ref={lastProductElementRef}
             style={{ height: '30px', fontSize: '5rem' }}

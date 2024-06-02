@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { addCartItem, deleteCartItem } from '../api';
 import { useCart } from '../context/CartContext';
 import { useToast } from './useToast';
+import { CHANGE_CART_ITEM_COUNT } from '../constants';
 
 interface CartButtonProps {
   productId: number;
@@ -19,7 +20,7 @@ const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
     try {
       setError(false);
       setLoading(true);
-      setCounts((prev) => prev + 1);
+      setCounts((prev) => prev + CHANGE_CART_ITEM_COUNT);
       setIsInCart(true);
       await addCartItem(productId, itemQuantity);
     } catch (error) {
@@ -38,7 +39,7 @@ const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
     try {
       setError(false);
       setLoading(true);
-      setCounts((prev) => Math.max(0, prev - 1));
+      setCounts((prev) => Math.max(0, prev - CHANGE_CART_ITEM_COUNT));
       setIsInCart(false);
       await deleteCartItem(productId);
     } catch (error) {
