@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { fetchProducts } from '../api/products';
 import usePage from './usePage';
@@ -38,6 +38,12 @@ const useFetchProducts = () => {
     }
   };
 
+  useEffect(() => {
+    if (loading || error) return;
+
+    getProducts();
+  }, [page, category, sort]);
+
   const reset = () => {
     resetPage();
     resetProducts();
@@ -49,7 +55,6 @@ const useFetchProducts = () => {
 
     reset();
     setCategory(selectedCategory);
-    await getProducts();
   };
 
   const setSorting = async (condition: string, order: Order) => {
@@ -57,14 +62,12 @@ const useFetchProducts = () => {
 
     reset();
     setSort((prevSort) => ({ ...prevSort, [condition]: order }));
-    await getProducts();
   };
 
   const fetchNextPage = async () => {
     if (isLastPage || error) return;
 
     increasePage();
-    await getProducts();
   };
 
   useIntersectionObserver(loading, observerRef, fetchNextPage, { threshold: 0.8 });
