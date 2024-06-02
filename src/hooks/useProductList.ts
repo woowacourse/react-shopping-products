@@ -20,7 +20,7 @@ const useProductList = () => {
     errorMessage: '',
   });
 
-  const { category, order, handleChangeCategory, handleChangeSort } = useDropdown({
+  const toast = useToast();
   const { category, order, handleChangeCategory, handleChangeSort } = useProductDropdown({
     resetPage: () => setPage(0),
   });
@@ -63,10 +63,7 @@ const useProductList = () => {
       } catch (error) {
         if (error instanceof CustomError) {
           setErrorState({ isError: true, name: error.name, errorMessage: error.message });
-          const message = error.message;
-          const name = error.name;
-
-          setErrorState({ name, isError: true, errorMessage: message });
+          toast.error(error.message);
         }
       } finally {
         setIsLoading(false);

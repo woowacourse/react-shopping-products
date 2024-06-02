@@ -12,12 +12,11 @@ export const ToastContainer = styled.div`
   color: #000;
   background: ${(prop) => prop.theme.color.errorPink};
 
-  border-radius: 7px;
+  border-radius: 0.4375rem;
 
-  opacity: 0.9;
-
-  font-size: 1.1rem;
+  font-size: 0.75rem;
   font-weight: 500;
+  text-align: center;
 
   @keyframes fadeOut {
     0%,
@@ -29,5 +28,6 @@ export const ToastContainer = styled.div`
       opacity: 1;
     }
   }
-  animation: fadeOut 3s ease-in-out 0s infinite normal none running;
+
+  animation: fadeOut linear 3s forwards;
 `;
