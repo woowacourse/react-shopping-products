@@ -9,9 +9,10 @@ interface ProductListProps {
   products: Product[];
   targetRef: React.MutableRefObject<HTMLDivElement | null>;
   loading: boolean;
+  refetch: () => Promise<void>;
   cartItems: CartItem[];
 }
-function ProductList({ products, targetRef, loading, cartItems }: ProductListProps) {
+function ProductList({ products, targetRef, refetch, loading, cartItems }: ProductListProps) {
   const productListRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ function ProductList({ products, targetRef, loading, cartItems }: ProductListPro
     <section ref={productListRef} className={style.wrapper}>
       <ul className={style.productList}>
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} cartItem={getCartItem(product.id)} />
+          <ProductCard key={product.id} product={product} cartItem={getCartItem(product.id)} refetch={refetch} />
         ))}
         {loading && <div>로딩중....</div>}
         <div className={style.target} ref={targetRef}>

@@ -2,15 +2,16 @@ import AddIcon from '@assets/addCart.svg';
 import DeleteIcon from '@assets/deleteCart.svg';
 import style from './style.module.css';
 import { useAddCartItem, useDeleteCartItem } from '@hooks/index';
-import { fetchGetCartItems } from '@apis/index';
 import { CartItem } from '@appTypes/index';
-import { useEffect, useState } from 'react';
+import { ToastModal } from '@src/components';
+import { CartActionError } from '@src/components/Fallbacks';
 
 type ButtonType = 'add' | 'delete';
 
 interface CartActionButtonProps {
   cartItem: CartItem;
   productId: number;
+  refetch: () => Promise<void>;
 }
 
 interface ButtonInfo {
@@ -32,28 +33,12 @@ const BUTTON_INFO: Record<ButtonType, ButtonInfo> = {
   },
 };
 
-function CartActionButton({ cartItem, productId }: CartActionButtonProps) {
+function CartActionButton({ cartItem, productId, refetch }: CartActionButtonProps) {
   const isInCart = cartItem !== undefined;
   const buttonType = isInCart ? 'delete' : 'add';
 
   const { src, alt, text } = BUTTON_INFO[buttonType];
   const className = `${style.button} ${style[buttonType]}`;
-
-  const [, setLoading] = useState(false);
-  const [, setError] = useState('');
-
-  const refetch = async () => {
-    try {
-      setLoading(true);
-      await fetchGetCartItems();
-      setError('');
-    } catch (error) {
-      const errorMessage = (error as Error).message;
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const { addCartItem, loading: addLoading, error: addError } = useAddCartItem(refetch);
   const { deleteCarItem, loading: deleteLoading, error: deleteError } = useDeleteCartItem(refetch);
@@ -68,18 +53,20 @@ function CartActionButton({ cartItem, productId }: CartActionButtonProps) {
   };
 
   const isPending = addLoading || deleteLoading;
-
-  useEffect(() => {
-    if (addError || deleteError) {
-      throw new Error('삭제 추가하는 도중 에러가 발생했습니다.');
-    }
-  });
+  const isError = addError !== '' || deleteError !== '';
 
   return (
-    <button onClick={onAction} className={className} disabled={isPending}>
-      <img src={src} alt={alt} />
-      <span className="button__text">{text}</span>
-    </button>
+    <>
+      <button onClick={onAction} className={className} disabled={isPending}>
+        <img src={src} alt={alt} />
+        <span className="button__text">{text}</span>
+      </button>
+      {isError && (
+        <ToastModal isError={isError} position={{ top: 40 }}>
+          <CartActionError />
+        </ToastModal>
+      )}
+    </>
   );
 }
 
