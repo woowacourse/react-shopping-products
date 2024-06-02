@@ -16,9 +16,9 @@ function useCartAction() {
     const firstResult = await getFetchResult.fetch();
     if (!firstResult) return;
 
-    const { totalNumbers, cartItems, isTotalCartItems } = firstResult;
+    const { totalNumbers, cartItems, totalElements } = firstResult;
 
-    if (isTotalCartItems) {
+    if (totalElements === cartItems.length) {
       return setCartItem(cartItems);
     }
     // page-0인 장바구니 목록외에 더 데이터를 불러와야 할 경우
