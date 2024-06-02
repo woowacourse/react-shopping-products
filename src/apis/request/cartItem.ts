@@ -1,6 +1,6 @@
 import { CartItem } from '@/types';
 import { BASE_URL } from '../baseUrl';
-import { ENDPOINT } from '../endpoints';
+import { CART_ITEM_ENDPOINT, ENDPOINT } from '../endpoints';
 import { requestGet, requestPost, requestDelete } from '../fetcher';
 
 type ResponseCartItemList = {
@@ -48,7 +48,7 @@ export const requestCartItemList = async (
 
   return await requestGet<ResponseCartItemList>({
     baseUrl: BASE_URL.SHOP,
-    endpoint: ENDPOINT.CART_LIST,
+    endpoint: CART_ITEM_ENDPOINT.CART_LIST,
     queryParams,
   });
 };
@@ -56,7 +56,7 @@ export const requestCartItemList = async (
 export const requestAddCartItem = async (productId: number, quantity: number = 1) => {
   await requestPost({
     baseUrl: BASE_URL.SHOP,
-    endpoint: ENDPOINT.CART_LIST,
+    endpoint: CART_ITEM_ENDPOINT.CART_LIST,
     body: {
       productId,
       quantity,
@@ -67,7 +67,7 @@ export const requestAddCartItem = async (productId: number, quantity: number = 1
 export const requestDeleteCartItem = async (cartItemId: number) => {
   await requestDelete({
     baseUrl: BASE_URL.SHOP,
-    endpoint: ENDPOINT.cartItemId(cartItemId),
+    endpoint: CART_ITEM_ENDPOINT.cartItemId(cartItemId),
     body: {
       id: cartItemId,
     },
