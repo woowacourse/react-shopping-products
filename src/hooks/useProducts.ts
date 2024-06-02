@@ -29,9 +29,9 @@ export default function useProducts({
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setLoading(true);
-
       try {
+        setLoading(true);
+
         const size = page === 0 ? 20 : 4;
         const responseData = await getProducts({
           category: category === "all" ? undefined : category,
@@ -39,6 +39,7 @@ export default function useProducts({
           page,
           size,
         });
+
         setProducts((prevProducts) => [
           ...prevProducts,
           ...responseData.content,
@@ -60,15 +61,17 @@ export default function useProducts({
   }, [page, category, sort, showError]);
 
   const handleCategory = (category: Category | "all") => {
-    setProducts([]);
     setCategory(category);
-    resetPage();
-    setHasMore(true);
+    resetState();
   };
 
   const handleSort = (sort: Sort) => {
-    setProducts([]);
     setSort(sort);
+    resetState();
+  };
+
+  const resetState = () => {
+    setProducts([]);
     resetPage();
     setHasMore(true);
   };
