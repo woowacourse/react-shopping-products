@@ -1,16 +1,27 @@
 import { createContext, useState, useContext, ReactNode, useMemo, useEffect } from 'react';
-import { CartItem } from '@/types';
 import {
   requestCartItemList,
   requestAddCartItem,
   requestDeleteCartItem,
 } from '@/apis/request/cartItem';
 import { useToast } from './useToast';
+import { CartItem } from '@/types/cartItem.type';
+import { SYSTEM_ERROR_MESSAGE } from '@/constants/messages';
 
-const BASE_PAGE_SIZE = 20;
+const PAGE = {
+  START: 0,
+  SIZE: 100,
+};
+
+const MAX_ITEM_LENGTH = 100;
+const ERROR_MESSAGE = {
+  MAX_ITEM_LENGTH: `장바구니에 담을 수 있는 상품의 개수는 최대 ${MAX_ITEM_LENGTH}개까지 입니다.`,
+  ADD_CART_ITEM: '아이템을 장바구니에 추가할 수 없습니다.',
+  DELETE_CART_ITEM: '아이템을 장바구니에서 제거할 수 없습니다.',
+};
 
 interface CartItemListContextType {
-  loading: boolean;
+  isLoading: boolean;
   cartItemList: CartItem[];
   toggleCartItem: (cartItemId: number) => void;
   isInCart: (productId: number) => boolean;
@@ -19,45 +30,44 @@ interface CartItemListContextType {
 
 export const CartItemListContext = createContext<CartItemListContextType | undefined>(undefined);
 
+// 장바구니에 담은 상품의 개수는 100개 초과일 수 없다.
 export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { showToast } = useToast();
 
-  const updateCartItemListForAllPage = async () => {
+  const updateCartItemList = async () => {
     try {
-      setLoading(true);
-      const { content, totalPages } = await requestCartItemList(1, BASE_PAGE_SIZE);
+      setIsLoading(true);
 
-      for (let i = 2; i <= totalPages; i++) {
-        const { content: curCartItemList } = await requestCartItemList(i, BASE_PAGE_SIZE);
-        content.push(...curCartItemList);
-      }
+      const { content } = await requestCartItemList(PAGE.START, PAGE.SIZE);
 
       setCartItemList(content);
     } catch (error) {
       setError(error as Error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const addCartItem = async (productId: number) => {
-    await requestAddCartItem(productId, 1);
+    if (cartItemList.length >= MAX_ITEM_LENGTH) {
+      showToast(ERROR_MESSAGE.MAX_ITEM_LENGTH);
+      return;
+    }
 
-    const prevPage = Math.ceil(cartItemList.length / BASE_PAGE_SIZE);
-    const ItemCountInLastPage = cartItemList.length % BASE_PAGE_SIZE;
+    try {
+      await requestAddCartItem(productId, 1);
+    } catch (error) {
+      showToast(ERROR_MESSAGE.ADD_CART_ITEM);
+    }
 
-    let curPage;
-    if (ItemCountInLastPage < BASE_PAGE_SIZE) curPage = prevPage;
-    else curPage = prevPage + 1;
-
-    const { content } = await requestCartItemList(curPage, BASE_PAGE_SIZE);
+    const { content } = await requestCartItemList(PAGE.START, PAGE.SIZE);
     const curCartItem = content.find(({ product }) => product.id === productId);
 
     if (!curCartItem) {
-      showToast('system error. 관리자에게 문의하십시오.');
+      showToast(SYSTEM_ERROR_MESSAGE);
       return;
     }
 
@@ -65,7 +75,11 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const deleteCartItem = async (cartItemId: number) => {
-    await requestDeleteCartItem(cartItemId);
+    try {
+      await requestDeleteCartItem(cartItemId);
+    } catch (error) {
+      showToast(ERROR_MESSAGE.DELETE_CART_ITEM);
+    }
 
     const updatedCartItemList = cartItemList.filter(({ id }) => id !== cartItemId);
 
@@ -75,12 +89,8 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
   const toggleCartItem = async (productId: number) => {
     const cartItem = cartItemList.find(({ product }) => product.id === productId);
 
-    try {
-      if (cartItem) await deleteCartItem(cartItem.id);
-      else await addCartItem(productId);
-    } catch (error) {
-      showToast('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-    }
+    if (cartItem) await deleteCartItem(cartItem.id);
+    else await addCartItem(productId);
   };
 
   const isInCart = (productId: number) => {
@@ -88,18 +98,18 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    updateCartItemListForAllPage();
+    updateCartItemList();
   }, []);
 
   const value = useMemo(
     () => ({
-      loading,
+      isLoading,
       cartItemList,
       toggleCartItem,
       isInCart,
       error,
     }),
-    [cartItemList, toggleCartItem, isInCart],
+    [cartItemList, toggleCartItem, isInCart, error, isLoading],
   );
 
   return <CartItemListContext.Provider value={value}>{children}</CartItemListContext.Provider>;
