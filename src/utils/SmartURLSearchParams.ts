@@ -8,7 +8,10 @@ type SmartURLSearchParamsInit = Record<string, unknown> | URLSearchParams;
  */
 export class SmartURLSearchParams extends URLSearchParams {
   constructor(init?: SmartURLSearchParamsInit) {
-    if (!init) return;
+    if (!init) {
+      super();
+      return;
+    }
 
     if (init instanceof URLSearchParams) {
       super(init);
