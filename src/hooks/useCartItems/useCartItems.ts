@@ -6,6 +6,7 @@ import { SIZE } from '../../constants/api';
 
 interface UseCartItemsResult {
   cartItems: CartItem[];
+  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
   loading: boolean;
   error: unknown;
   handleAddCartItem: (productId: number) => void;
@@ -21,7 +22,7 @@ const useCartItems = (): UseCartItemsResult => {
   }, []);
 
   const getCartItems = async () => {
-    const { data: initialData, totalElements } = await fetchCartItems(20);
+    const { data: initialData, totalElements } = await fetchCartItems(SIZE.DEFAULT);
 
     if (totalElements <= SIZE.DEFAULT) {
       setCartItems(initialData);
@@ -52,6 +53,7 @@ const useCartItems = (): UseCartItemsResult => {
 
   return {
     cartItems,
+    setCartItems,
     loading,
     error,
     handleAddCartItem,

@@ -27,7 +27,7 @@ export const TextContainer = styled.div`
   flex-direction: column;
   gap: 6px;
 
-  h1 {
+  strong {
     font-size: 14px;
     font-weight: 700;
   }

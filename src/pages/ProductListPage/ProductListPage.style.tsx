@@ -16,21 +16,21 @@ export const DropdownContainer = styled.div`
 export const ProductList = styled.div`
   display: grid;
   gap: 20px;
+  justify-items: center;
 
   /* 데스크톱 */
-  @media (min-width: 1200px) {
+  @media (min-width: 1250px) {
     grid-template-columns: repeat(6, 1fr);
   }
 
   /* 태블릿 */
-  @media (min-width: 768px) and (max-width: 1199px) {
+  @media (min-width: 840px) and (max-width: 1249px) {
     grid-template-columns: repeat(4, 1fr);
   }
 
   /* 모바일 */
-  @media (max-width: 767px) {
+  @media (max-width: 839px) {
     grid-template-columns: repeat(2, 1fr);
-  }
   }
 `;
 

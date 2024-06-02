@@ -3,7 +3,8 @@ import { http, HttpResponse } from 'msw';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import useProduct from './useProducts';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
-import { API_URL } from '../../constants/api';
+import API_ENDPOINTS from '../../api/endpoints';
+import { PAGE_INTERVAL, SIZE } from '../../constants/api';
 
 describe('useProduct', () => {
   describe('상품 목록 조회', () => {
@@ -23,7 +24,7 @@ describe('useProduct', () => {
 
     it('상품 목록 조회 중 에러가 발생하면 에러 상태가 된다.', async () => {
       server.use(
-        http.get(`${API_URL}/products`, () => {
+        http.get(`${API_ENDPOINTS.PRODUCT}`, () => {
           return new HttpResponse(null, { status: 500 });
         }),
       );
@@ -37,20 +38,20 @@ describe('useProduct', () => {
   });
 
   describe('페이지네이션', () => {
-    it('초기에 첫 페이지의 상품 20개를 불러온다', async () => {
+    it(`초기에 첫 페이지의 상품 ${SIZE.DEFAULT}개를 불러온다`, async () => {
       const { result } = renderHook(() => useProduct(CATEGORY_LIST[0], SORTING_LIST[0]));
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(SIZE.DEFAULT);
         expect(result.current.page).toBe(0);
       });
     });
 
-    it('다음 페이지의 상품 4개를 추가로 불러온다', async () => {
+    it(`다음 페이지의 상품 ${SIZE.ADDITIONAL}개를 추가로 불러온다`, async () => {
       const { result } = renderHook(() => useProduct(CATEGORY_LIST[0], SORTING_LIST[0]));
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(SIZE.DEFAULT);
         expect(result.current.page).toBe(0);
       });
 
@@ -59,8 +60,8 @@ describe('useProduct', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(24);
-        expect(result.current.page).toBe(5);
+        expect(result.current.products).toHaveLength(SIZE.DEFAULT + SIZE.ADDITIONAL);
+        expect(result.current.page).toBe(PAGE_INTERVAL.INITIAL);
       });
     });
 
@@ -68,7 +69,7 @@ describe('useProduct', () => {
       const { result } = renderHook(() => useProduct(CATEGORY_LIST[0], SORTING_LIST[0]));
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(SIZE.DEFAULT);
       });
 
       for (let i = 5; i < 25; i++) {
@@ -78,7 +79,7 @@ describe('useProduct', () => {
           });
         });
 
-        const expectedLength = 20 + (i - 4) * 4;
+        const expectedLength = SIZE.DEFAULT + (i - SIZE.ADDITIONAL) * SIZE.ADDITIONAL;
 
         await waitFor(() => {
           expect(result.current.products).toHaveLength(expectedLength);
@@ -126,7 +127,7 @@ describe('useProduct', () => {
       const { result } = renderHook(() => useProduct(category, SORTING_LIST[0]));
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(SIZE.DEFAULT);
         category.key !== 'all' && expect(result.current.products[0].category).toBe(category.key);
       });
     });
@@ -134,7 +135,7 @@ describe('useProduct', () => {
     it.each([
       [SORTING_LIST[0].name, SORTING_LIST[0], 1000],
       [SORTING_LIST[1].name, SORTING_LIST[1], 1500000],
-    ])('상품 목록을 %s 별로 정렬하여 조회한다.', async (_, option, price) => {
+    ])('상품 목록을 %s으로 정렬하여 조회한다.', async (_, option, price) => {
       const { result } = renderHook(() => useProduct(CATEGORY_LIST[0], option));
 
       await waitFor(() => {

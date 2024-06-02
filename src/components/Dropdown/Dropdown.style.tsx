@@ -1,13 +1,17 @@
 import styled from 'styled-components';
 
-export const Layout = styled.div`
+export const SelectContainer = styled.div`
   position: relative;
 `;
 
-export const Container = styled.div<{ $isDefault: boolean }>`
+export const SelectWrapper = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const Select = styled.select<{ $isDefault: boolean }>`
   width: 125px;
   height: 36px;
   padding: 8px;
@@ -15,37 +19,15 @@ export const Container = styled.div<{ $isDefault: boolean }>`
   border: 1px solid ${({ theme }) => theme.color.primary.light};
   font-size: ${({ theme }) => theme.fontSize.base};
   cursor: pointer;
+  color: ${(props) =>
+    props.$isDefault ? ({ theme }) => theme.color.primary.light : ({ theme }) => theme.color.primary.dark};
 
-  p {
-    color: ${(props) =>
-      props.$isDefault ? ({ theme }) => theme.color.primary.light : ({ theme }) => theme.color.primary.dark};
+  option {
+    color: ${({ theme }) => theme.color.primary.dark};
   }
 `;
 
-export const OptionList = styled.ul`
-  z-index: 999;
+export const ArrowIcon = styled.img`
   position: absolute;
-  top: 38px;
-  width: 125px;
-  border: 1px solid ${({ theme }) => theme.color.primary.light};
-  border-radius: 8px;
-  background: #ffffff;
-  font-size: ${({ theme }) => theme.fontSize.base};
-`;
-
-export const OptionItem = styled.li`
-  width: 125px;
-  height: 32px;
-  cursor: pointer;
-
-  &:hover {
-    background: #eeeeee;
-  }
-`;
-
-export const OptionLabel = styled.label`
-  display: inline-block;
-  width: 125px;
-  height: 100%;
-  padding: 8px;
+  right: 10px;
 `;

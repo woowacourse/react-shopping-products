@@ -1,16 +1,16 @@
 import { http, HttpResponse } from 'msw';
 import products from '../product/products.json';
 import cartItemsData from '../cartItem/cartItem.json';
-import { API_URL } from '../../constants/api';
 import { CartItem } from '../../types/CartItem.type';
 import { Product } from '../../types/Product.type';
+import API_ENDPOINTS from '../../api/endpoints';
 
 let cartItems: CartItem[] = cartItemsData;
 
 export const handlers = [
-  http.get(`${API_URL}/cart-items`, () => HttpResponse.json({ content: cartItems })),
+  http.get(`${API_ENDPOINTS.CART}`, () => HttpResponse.json({ content: cartItems })),
 
-  http.post(`${API_URL}/cart-items`, async ({ request }) => {
+  http.post(`${API_ENDPOINTS.CART}`, async ({ request }) => {
     const { productId } = (await request.json()) as { productId: number };
 
     const product = products.find((product: Product) => product.id === productId);
@@ -24,7 +24,7 @@ export const handlers = [
     return HttpResponse.json({ status: 201 });
   }),
 
-  http.delete(`${API_URL}/cart-items/:cartItemId`, async ({ params }) => {
+  http.delete(`${API_ENDPOINTS.CART}/:cartItemId`, async ({ params }) => {
     const { cartItemId } = params;
 
     cartItems = cartItems.filter((cartItem) => cartItem.id !== Number(cartItemId));
