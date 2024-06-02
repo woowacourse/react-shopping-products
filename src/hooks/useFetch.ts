@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SmartURLSearchParams } from "../utils/SmartURLSearchParams";
+import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
 
 interface UseFetchReturn<T> {
   isLoading: boolean;

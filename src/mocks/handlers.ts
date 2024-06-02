@@ -1,8 +1,10 @@
 import { http, HttpResponse } from "msw";
-import { CART_API_URL } from "../env/envVariables";
-import products from "./products.json";
-import { API_URL } from "../api/__constants__/apiUrl";
-import { SORT_OPTIONS } from "../api/__constants__/productQueryParams";
+
+import products from "@mocks/products.json";
+
+import { CART_API_URL } from "@env/envVariables";
+import { API_URL } from "@apis/__constants__/apiUrl";
+import { SORT_OPTIONS } from "@apis/__constants__/productQueryParams";
 
 export const handlers = [
   http.get(CART_API_URL + API_URL.products, ({ request }) => {

@@ -1,7 +1,7 @@
-import { API_URL } from "./__constants__/apiUrl";
-import { SmartURLSearchParams } from "../utils/SmartURLSearchParams";
-import { cartClient } from "./clients/cartClient";
-import { adjustProductQueryParams } from "./__utils__/adjustProductQueryParams";
+import { cartClient } from "@apis/clients/cartClient";
+import { API_URL } from "@apis/__constants__/apiUrl";
+import { adjustProductQueryParams } from "@apis/__utils__/adjustProductQueryParams";
+import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
 
 export interface Product {
   id: number;

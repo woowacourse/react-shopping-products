@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useFetch } from "./useFetch";
-import { SmartURLSearchParams } from "../utils/SmartURLSearchParams";
+import { useFetch } from "@hooks/useFetch";
+import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
 
 interface UseInfiniteFetchReturn<T> {
   data: T[];

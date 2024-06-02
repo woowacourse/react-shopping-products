@@ -1,5 +1,5 @@
-import { SmartURLSearchParams } from "../../utils/SmartURLSearchParams";
-import { CATEGORY_OPTIONS, PRODUCT_QUERY_PARAMS } from "../__constants__/productQueryParams";
+import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
+import { CATEGORY_OPTIONS, PRODUCT_QUERY_PARAMS } from "@apis/__constants__/productQueryParams";
 
 const PAGE_SIZE = 4;
 const INITIAL_PAGE_SIZE = 20;

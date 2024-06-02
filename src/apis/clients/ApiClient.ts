@@ -1,5 +1,5 @@
-import { SmartURLSearchParams } from "../../utils/SmartURLSearchParams";
-import { buildURL } from "../__utils__/buildURL";
+import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
+import { buildURL } from "@apis/__utils__/buildURL";
 
 type URLString = string;
 

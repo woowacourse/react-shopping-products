@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { SCREEN_WIDTH_REM } from "../../styles/GlobalStyle";
+import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
 
 interface ToastProps {
   message: string;

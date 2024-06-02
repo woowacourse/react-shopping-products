@@ -1,4 +1,4 @@
-import { isIncludedInList } from "./isIncludedInList";
+import { isIncludedInList } from "@utils/isIncludedInList";
 
 type SmartURLSearchParamsInit = Record<string, unknown> | URLSearchParams;
 /**

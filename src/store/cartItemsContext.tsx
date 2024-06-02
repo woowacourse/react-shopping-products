@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { CartItem, getCartItems } from "../api/cartItems";
+import { CartItem, getCartItems } from "../apis/cartItems";
 import { useFetch } from "../hooks/useFetch";
 
 interface CartItemContextState {

@@ -1,6 +1,6 @@
-import { API_URL } from "./__constants__/apiUrl";
-import { cartClient } from "./clients/cartClient";
-import { Product } from "./products";
+import { cartClient } from "@apis/clients/cartClient";
+import { Product } from "@apis/products";
+import { API_URL } from "@apis/__constants__/apiUrl";
 
 export interface CartItem {
   id: number;

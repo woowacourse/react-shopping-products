@@ -1,4 +1,4 @@
-import { SmartURLSearchParams } from "../../utils/SmartURLSearchParams";
+import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
 
 interface URLInit {
   baseUrl: URL;

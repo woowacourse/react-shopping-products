@@ -1,18 +1,21 @@
 import { useContext, useEffect } from "react";
 import styled from "styled-components";
 
-import ProductItem from "./ProductItem";
-import ShopHeader from "./ShopHeader";
-import Select from "../common/Select";
-import LoadingSpinner from "../common/LoadingSpinner";
-import { IntersectionDetector } from "../common/IntersectionDetector";
+import ProductItem from "@components/ProductListPage/ProductItem";
+import ShopHeader from "@components/ProductListPage/ShopHeader";
+import Select from "@components/common/Select";
+import LoadingSpinner from "@components/common/LoadingSpinner";
+import { IntersectionDetector } from "@components/common/IntersectionDetector";
 
-import { useInfiniteProducts } from "../../hooks/useInfiniteProducts";
-import { ErrorToastContext } from "../../store/errorToastContext";
-import { CATEGORY_SELECT_OPTIONS, PRICE_SORT_SELECT_OPTIONS } from "../__constants__/selectOptions";
-import { isIncludedInList } from "../../utils/isIncludedInList";
-import { Category, SortOption } from "../../types/products";
-import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../../api/__constants__/productQueryParams";
+import { useInfiniteProducts } from "@hooks/useInfiniteProducts";
+import { ErrorToastContext } from "@store/errorToastContext";
+import { CATEGORY_OPTIONS, SORT_OPTIONS } from "@apis/__constants__/productQueryParams";
+import { isIncludedInList } from "@utils/isIncludedInList";
+import {
+  CATEGORY_SELECT_OPTIONS,
+  PRICE_SORT_SELECT_OPTIONS,
+} from "@components/__constants__/selectOptions";
+import type { Category, SortOption } from "products";
 
 const ProductList = () => {
   const { products, isLoading, error, fetchNextPage, updateCategoryFilter, updatePriceSort } =

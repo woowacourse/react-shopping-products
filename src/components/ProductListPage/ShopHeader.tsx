@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { SCREEN_WIDTH_REM } from "../../styles/GlobalStyle";
-import { ReactComponent as CartIcon } from "../../assets/cart.svg";
 import { useContext } from "react";
-import { CartItemsContext } from "../../store/cartItemsContext";
+import { CartItemsContext } from "@store/cartItemsContext";
+
+import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
+import { ReactComponent as CartIcon } from "@assets/cart.svg";
 
 const ShopHeader = () => {
   const { cartItems, isLoading } = useContext(CartItemsContext);

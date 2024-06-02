@@ -1,6 +1,6 @@
-import { Product, getProducts } from "../../api/products";
-import { Category, SortOption } from "../../types/products";
-import { useInfiniteFetch } from "../useInfiniteFetch";
+import { Product, getProducts } from "@apis/products";
+import { useInfiniteFetch } from "@hooks/useInfiniteFetch";
+import type { Category, SortOption } from "products";
 
 interface UseInfiniteProductsReturn {
   products: Product[];

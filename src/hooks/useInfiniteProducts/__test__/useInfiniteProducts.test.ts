@@ -1,10 +1,10 @@
 import { HttpResponse, http } from "msw";
-import { CART_API_URL } from "../../../env/envVariables";
-import { renderHook, waitFor } from "@testing-library/react";
+import { renderHook, waitFor, act } from "@testing-library/react";
+
+import { API_URL } from "@apis/__constants__/apiUrl";
+import { server } from "@mocks/server";
+import { CART_API_URL } from "@env/envVariables";
 import { useInfiniteProducts } from "..";
-import { server } from "../../../mocks/server";
-import { API_URL } from "../../../api/__constants__/apiUrl";
-import { act } from "@testing-library/react";
 
 describe("useInfiniteProducts", () => {
   describe("상품 목록 조회", () => {

@@ -1,4 +1,4 @@
-import { validateEnvVariables } from "./__utils__/validateEnvVariables";
+import { validateEnvVariables } from "@env/__utils__/validateEnvVariables";
 
 export const CART_API_URL = import.meta.env.VITE_CART_API_URL;
 export const USERNAME = import.meta.env.VITE_USERNAME;

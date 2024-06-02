@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import useToast from "../hooks/useToast";
-import Toast from "../components/common/Toast";
+import useToast from "@hooks/useToast";
+import Toast from "@components/common/Toast";
 
 interface ErrorToastContextState {
   showErrorToast: (message: string) => void;
