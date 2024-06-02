@@ -1,12 +1,17 @@
-import { useState } from "react";
+import './reset.css';
+import './index.css';
+
+import ProductPage from './page/ProductPage';
+import { ToastContextProvider } from './context/ToastContextProvider';
+import { CartProvider } from './context/ShoppingCartCountContext';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <ToastContextProvider>
+      <CartProvider>
+        <ProductPage />
+      </CartProvider>
+    </ToastContextProvider>
   );
 }
 
