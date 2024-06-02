@@ -1,60 +1,53 @@
 import styled from "styled-components";
-import { useContext } from "react";
-
-import { CartItemsContext } from "@store/cartItemsContext";
-import { addCartItem, deleteCartItem } from "@apis/cartItems";
-
-import { MAX_CART_ITEM_COUNT } from "@components/__constants__/cartItems";
+import { useCartActions } from "@src/hooks/useCartItemAction";
+import { formatToKRW } from "@src/utils/formatToKRW";
 import { ReactComponent as AddToCartIcon } from "@assets/addToCart.svg";
 import { ReactComponent as DeleteFromCartIcon } from "@assets/deleteFromCart.svg";
 
-interface ProductItemProps {
+interface ProductInfo {
   id: number;
   name: string;
   price: number;
   imageUrl: string;
 }
 
-const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
-  const { cartItems, refreshCartItems } = useContext(CartItemsContext);
+interface ProductItemProps {
+  productInfo: ProductInfo;
+  showErrorToast: (message: string) => void;
+}
 
-  // TODO: 아래의 로직을 리팩토링 (addToCart, deleteFromCart와 같은 함수를 반환하는 커스텀훅으로 분리?, alert 로직은 어떻게 하지?)
+const ProductItem = ({ productInfo, showErrorToast }: ProductItemProps) => {
+  const { addToCart, removeFromCart, isIncludedInCart } = useCartActions();
+
   const handleAddToCart = async () => {
-    if (cartItems.length < MAX_CART_ITEM_COUNT) {
-      try {
-        await addCartItem(id, 1);
-        await refreshCartItems();
-      } catch {
-        alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    try {
+      await addToCart(productInfo.id, 1);
+    } catch (error) {
+      if (error instanceof Error) {
+        showErrorToast(error.message);
       }
-    } else {
-      alert("장바구니에 담을 수 있는 상품의 개수는 20개까지입니다.");
     }
   };
 
-  const targetCartItemId = cartItems.find((cartItem) => cartItem.product.id === id)?.id;
   const handleDeleteFromCart = async () => {
-    if (targetCartItemId) {
-      try {
-        await deleteCartItem(targetCartItemId);
-        await refreshCartItems();
-      } catch {
-        alert("상품을 장바구니에서 빼는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    try {
+      await removeFromCart(productInfo.id);
+    } catch (error) {
+      if (error instanceof Error) {
+        showErrorToast(error.message);
       }
-    } else {
-      alert("해당 상품이 장바구니에 없습니다.");
     }
   };
 
   return (
     <S.Container>
-      <S.ProductImage src={imageUrl}></S.ProductImage>
+      <S.ProductImage src={productInfo.imageUrl}></S.ProductImage>
       <S.ProductInfo>
-        <S.ProductName>{name}</S.ProductName>
-        <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
+        <S.ProductName>{productInfo.name}</S.ProductName>
+        <S.ProductPrice>{formatToKRW(productInfo.price)}</S.ProductPrice>
       </S.ProductInfo>
       <S.ButtonWrapper>
-        {targetCartItemId ? (
+        {isIncludedInCart(productInfo.id) ? (
           <S.DeleteFromCartIcon
             role="button"
             aria-label="상품 빼기"

@@ -1,12 +1,11 @@
 import styled from "styled-components";
-import { useContext } from "react";
-import { CartItemsContext } from "@store/cartItemsContext";
 
 import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "@assets/cart.svg";
+import { useCartItems } from "@src/contexts/cartItems/useCartItems";
 
 const ShopHeader = () => {
-  const { cartItems, isLoading } = useContext(CartItemsContext);
+  const { cartItems, isLoading } = useCartItems();
 
   return (
     <S.Header>

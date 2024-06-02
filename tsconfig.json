@@ -28,11 +28,11 @@
       "@apis/*": ["apis/*"],
       "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
+      "@contexts/*": ["contexts/*"],
       "@env/*": ["env/*"],
       "@hooks/*": ["hooks/*"],
       "@mocks/*": ["mocks/*"],
       "@pages/*": ["pages/*"],
-      "@store/*": ["store/*"],
       "@styles/*": ["styles/*"],
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"]

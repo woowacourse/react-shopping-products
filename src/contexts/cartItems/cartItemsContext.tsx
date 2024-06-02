@@ -1,8 +1,12 @@
 import React, { createContext, useState, useEffect } from "react";
-import { CartItem, getCartItems } from "../apis/cartItems";
-import { useFetch } from "../hooks/useFetch";
+import { CartItem, getCartItems } from "@apis/cartItems";
+import { useFetch } from "@hooks/useFetch";
 
-interface CartItemContextState {
+interface CartItemsProviderProps {
+  children: React.ReactNode;
+}
+
+export interface CartItemContextState {
   cartItems: CartItem[];
   isLoading: boolean;
   error: Error | null;
@@ -15,10 +19,6 @@ export const CartItemsContext = createContext<CartItemContextState>({
   error: null,
   refreshCartItems: async () => {},
 });
-
-interface CartItemsProviderProps {
-  children: React.ReactNode;
-}
 
 export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -41,7 +41,7 @@ export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
   };
 
   return (
-    <CartItemsContext.Provider value={{ cartItems, refreshCartItems, isLoading, error }}>
+    <CartItemsContext.Provider value={{ cartItems, isLoading, error, refreshCartItems }}>
       {children}
     </CartItemsContext.Provider>
   );

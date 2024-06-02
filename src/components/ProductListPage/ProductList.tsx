@@ -1,26 +1,19 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 import ProductItem from "@components/ProductListPage/ProductItem";
 import ShopHeader from "@components/ProductListPage/ShopHeader";
-import Select from "@components/common/Select";
+import ProductFilterBar from "@components/ProductListPage/ProductFilterBar";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import { IntersectionDetector } from "@components/common/IntersectionDetector";
 
 import { useInfiniteProducts } from "@hooks/useInfiniteProducts";
-import { ErrorToastContext } from "@store/errorToastContext";
-import { CATEGORY_OPTIONS, SORT_OPTIONS } from "@apis/__constants__/productQueryParams";
-import { isIncludedInList } from "@utils/isIncludedInList";
-import {
-  CATEGORY_SELECT_OPTIONS,
-  PRICE_SORT_SELECT_OPTIONS,
-} from "@components/__constants__/selectOptions";
-import type { Category, SortOption } from "products";
+import { useErrorToast } from "@contexts/errorToast/useErrorToast";
 
 const ProductList = () => {
   const { products, isLoading, error, fetchNextPage, updateCategoryFilter, updatePriceSort } =
     useInfiniteProducts();
-  const { showErrorToast } = useContext(ErrorToastContext);
+  const { showErrorToast } = useErrorToast();
 
   useEffect(() => {
     if (error) {
@@ -28,36 +21,22 @@ const ProductList = () => {
     }
   }, [error]);
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (isIncludedInList<Category>(e.target.value, Object.values(CATEGORY_OPTIONS))) {
-      updateCategoryFilter(e.target.value);
-    }
-  };
-
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (isIncludedInList<SortOption>(e.target.value, Object.values(SORT_OPTIONS))) {
-      updatePriceSort(e.target.value);
-    }
-  };
-
   return (
     <>
       <S.Container>
         <ShopHeader />
         <S.ShopBody>
           <S.Title>bpple 상품 목록</S.Title>
-          <S.SelectContainer>
-            <Select onChange={handleCategoryChange} options={CATEGORY_SELECT_OPTIONS} />
-            <Select onChange={handleSortChange} options={PRICE_SORT_SELECT_OPTIONS} />
-          </S.SelectContainer>
+          <ProductFilterBar
+            updateCategoryFilter={updateCategoryFilter}
+            updatePriceSort={updatePriceSort}
+          />
           <S.ItemContainer>
-            {products.map(({ id, name, price, imageUrl }) => (
+            {products.map((product) => (
               <ProductItem
                 key={crypto.randomUUID()}
-                id={id}
-                name={name}
-                price={price}
-                imageUrl={imageUrl}
+                productInfo={product}
+                showErrorToast={showErrorToast}
               />
             ))}
             {isLoading && <LoadingSpinner />}
@@ -88,10 +67,6 @@ const S = {
   Title: styled.h2`
     font-size: 2.4rem;
     font-weight: bold;
-  `,
-  SelectContainer: styled.div`
-    display: flex;
-    justify-content: space-between;
   `,
 
   ItemContainer: styled.section`
