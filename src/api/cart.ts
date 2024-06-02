@@ -13,7 +13,7 @@ type MutationResponse = Record<'status', number>;
 
 export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
   const response = await fetcher.get({
-    url: `${END_POINT.cartItems}`,
+    url: `${END_POINT.cartItems}?size=2000`,
     headers: AUTH_HEADER,
   });
 
