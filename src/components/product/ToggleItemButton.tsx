@@ -41,7 +41,7 @@ interface ToggleItemButtonProps {
 const ToggleItemButton = ({ id }: ToggleItemButtonProps) => {
   const { addToCart, removeFromCart, checkSelected } = useCustomContext(ToggleCartItemContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSelected, setSelected] = useState(checkSelected(id));
+  const [isSelected, setSelected] = useState(() => checkSelected(id));
 
   useEffect(() => {
     setSelected(checkSelected(id));
