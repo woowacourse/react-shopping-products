@@ -1,3 +1,4 @@
+import objectToQueryString, { ObjectQueryParams } from '@/utils/objectToQueryString';
 import { generateBasicToken } from '../utils/auth';
 
 type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
@@ -13,13 +14,11 @@ type RequestProps = {
   endpoint: string;
   headers?: HeadersType;
   body?: Body | object | null;
-  queryParams?: Record<string, string | number | boolean>;
+  queryParams?: ObjectQueryParams;
 };
 
 type FetcherProps = RequestProps & {
   method: Method;
-  baseUrl: string;
-  endpoint: string;
 };
 
 type Options = {
@@ -78,11 +77,7 @@ const fetcher = ({ method, baseUrl, endpoint, headers, body, queryParams }: Fetc
 
   let url = `${baseUrl}${endpoint}`;
 
-  if (queryParams) {
-    // TODO: as 제거
-    const queryString = new URLSearchParams(queryParams as Record<string, string>).toString();
-    url += `?${queryString}`;
-  }
+  if (queryParams) url += `?${objectToQueryString(queryParams)}`;
 
   return errorHandler(url, options, endpoint);
 };
