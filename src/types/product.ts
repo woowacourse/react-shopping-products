@@ -13,9 +13,7 @@ export interface ProductsResponseData {
 
 export type Order = 'asc' | 'desc';
 
-export interface Sort {
-  [key: string]: Order;
-}
+export type Sort = Record<string, Order>;
 
 export type Category =
   | 'fashion'
