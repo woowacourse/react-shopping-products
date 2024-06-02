@@ -5,7 +5,7 @@ export const useCartItems = (): CartItemContextState => {
   const context = useContext(CartItemsContext);
 
   if (context === undefined) {
-    throw new Error("useCartItemsContext는 CartItemsProvider 내부에서 사용되어야 합니다.");
+    throw new Error("useCartItems는 CartItemsProvider 내부에서 사용되어야 합니다.");
   }
 
   return context;
