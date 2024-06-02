@@ -4,12 +4,11 @@ import style from './style.module.css';
 
 interface HeaderProps {
   cartItemsLength: number;
-  toastPosition: React.MutableRefObject<HTMLElement | null>;
 }
 
-function Header({ cartItemsLength, toastPosition }: HeaderProps) {
+function Header({ cartItemsLength }: HeaderProps) {
   return (
-    <header ref={toastPosition} className={style.header}>
+    <header className={style.header}>
       <Logo />
       <CartBadgeButton cartItemsLength={cartItemsLength} />
     </header>
