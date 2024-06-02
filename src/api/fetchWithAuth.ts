@@ -7,10 +7,14 @@ const API_URL = `${import.meta.env.VITE_API_URL}`;
 const USER_ID = `${import.meta.env.VITE_USER_ID}`;
 const USER_PASSWORD = `${import.meta.env.VITE_USER_PASSWORD}`;
 
-if (!API_URL || !USER_ID || !USER_PASSWORD) {
-  throw new Error(
-    "API_URL, USER_ID, PASSWORD environment variables are not set",
-  );
+try {
+  if (!API_URL || !USER_ID || !USER_PASSWORD) {
+    throw new Error(
+      "API_URL, USER_ID, PASSWORD environment variables are not set",
+    );
+  }
+} catch (error) {
+  console.log(error);
 }
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
@@ -24,8 +28,12 @@ export const fetchWithAuth = async (path: string, options: RequestOptions) => {
   const requestInit = requestBuilder(options);
   const response = await fetch(path, requestInit);
 
-  if (!response.ok) {
-    throw new Error(`Failed to ${options.method} ${path}`);
+  try {
+    if (!response.ok) {
+      throw new Error(`Failed to ${options.method} ${path}`);
+    }
+  } catch (error) {
+    console.log(error);
   }
 
   return response;
@@ -37,6 +45,7 @@ const requestBuilder = ({ method, body }: RequestOptions): RequestInit => {
     "Content-Type": "application/json",
     Authorization: token,
   };
+
   return {
     method,
     headers,
