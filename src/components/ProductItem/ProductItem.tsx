@@ -5,11 +5,11 @@ import Flex from '../common/Flex/Flex';
 import AddProductItemIcon from '@/assets/AddShoppingCart.svg';
 import RemoveShoppingCartIcon from '@/assets/RemoveShoppingCart.svg';
 import styles from './ProductItem.module.css';
-import { Product } from '@/types';
 import { useState } from 'react';
 import { useCartItemListContext } from '@/hooks/useCartItemList';
+import { Product } from '@/types/product.type';
 
-type ProductItemProps = Product & {};
+type ProductItemProps = Product;
 
 export default function ProductItem({ id, name, price, imageUrl }: ProductItemProps) {
   const { toggleCartItem, isInCart } = useCartItemListContext();

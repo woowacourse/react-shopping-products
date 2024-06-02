@@ -1,6 +1,6 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { CartItemListProvider, useCartItemListContext } from './useCartItemList';
-import cartItemList from '@/mocks/cartItemList.json';
+import cartItemList from '@/mocks/datas/cartItemList.json';
 import ToastProvider from './useToast';
 
 describe('useCartItemList에 대한 테스트 코드', () => {
