@@ -2,11 +2,8 @@ import styled, { keyframes } from "styled-components";
 import ProductItem from "./ProductItem";
 import Select from "./Select";
 import ShopHeader from "./ShopHeader";
-import ErrorToast from "./ErrorToast";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import useProducts from "../hooks/useProducts";
-import useToast from "../hooks/useToast";
-import { useEffect } from "react";
+import usePaginatedProducts from "../hooks/usePaginatedProducts";
 import {
   CATEGORY_SELECT_OPTIONS,
   PRICE_SORT_SELECT_OPTIONS,
@@ -14,25 +11,16 @@ import {
 } from "../constants/products";
 import { isIncludedInList } from "../utils/isIncludedInList";
 import { SortOption } from "../types/sortOption";
-import ToastPortal from "../Portal";
 
 const ProductList = () => {
   const {
     products,
     isLoading,
-    error,
     fetchNextPage,
     resetPage,
     setCategoryFilter,
     setPriceSort,
-  } = useProducts();
-  const { isOpenToast, showToast } = useToast();
-
-  useEffect(() => {
-    if (error) {
-      showToast();
-    }
-  }, [error]);
+  } = usePaginatedProducts();
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!isLoading) {
@@ -65,11 +53,6 @@ const ProductList = () => {
     <>
       <S.Container>
         <ShopHeader />
-        {isOpenToast && (
-          <ToastPortal>
-            <ErrorToast />
-          </ToastPortal>
-        )}
         <S.ShopBody>
           <S.Title>bpple 상품 목록</S.Title>
           <S.SelectContainer>

@@ -1,6 +1,9 @@
-import React, { createContext } from "react";
+import React, { createContext, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 import { CartItem, getCartItems } from "../api/cartItems";
+import ToastPortal from "../Portal";
+import useToast from "../hooks/useToast";
+import ErrorToast from "../components/ErrorToast";
 
 export const CartItemsContext = createContext<{
   cartItems: CartItem[];
@@ -25,6 +28,8 @@ export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
     return result.data;
   };
 
+  const { isOpenToast, showToast } = useToast();
+
   const {
     data: cartItems,
     isLoading,
@@ -32,10 +37,21 @@ export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
     refetch,
   } = useFetch<CartItem[]>(fetchCartItems);
 
+  useEffect(() => {
+    if (errorMessage) {
+      showToast();
+    }
+  }, [errorMessage]);
+
   return (
     <CartItemsContext.Provider
       value={{ cartItems: cartItems ?? [], refetch, isLoading, errorMessage }}
     >
+      {isOpenToast && (
+        <ToastPortal>
+          <ErrorToast errorMessage={errorMessage} />
+        </ToastPortal>
+      )}
       {children}
     </CartItemsContext.Provider>
   );
