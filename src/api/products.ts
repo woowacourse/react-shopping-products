@@ -1,15 +1,11 @@
-import { CartResponse, ProductResponse } from '../types/fetch';
+import { ProductResponse } from '../types/fetch';
 import { SortingParam } from '../types/sort';
-import { generateBasicToken } from '../utils/auth';
 import {
   ENDPOINTS_PRODUCTS,
   ENDPOINTS_CART,
   ENDPOINTS_REMOVE_CART,
 } from './endpoints';
-
-const USER_ID = import.meta.env.VITE_USER_ID;
-const USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;
-const token = generateBasicToken(USER_ID, USER_PASSWORD);
+import { token } from './token';
 
 export const fetchProducts = async (
   page: number,
@@ -61,18 +57,4 @@ export const deleteItem = async (id: number) => {
   if (!response.ok) {
     throw new Error(`200~299 이외의 응답이 발생하였습니다.${response.body}`);
   }
-};
-
-export const fetchCartItems = async () => {
-  const response = await fetch(`${ENDPOINTS_CART}`, {
-    method: 'GET',
-    headers: { Authorization: token, 'Content-Type': 'application/json' },
-  });
-
-  if (!response.ok) {
-    throw new Error(`200~299 이외의 응답이 발생하였습니다.${response.body}`);
-  }
-
-  const data = (await response.json()) as CartResponse;
-  return data;
 };
