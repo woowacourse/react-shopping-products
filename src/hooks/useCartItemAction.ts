@@ -29,7 +29,7 @@ export const useCartActions = (): UseCartActionsReturn => {
   const removeFromCart = async (productId: number) => {
     const targetCartItemId = cartItems.find((cartItem) => cartItem.product.id === productId)?.id;
 
-    if (targetCartItemId !== 0 && !targetCartItemId) {
+    if (targetCartItemId === undefined) {
       throw new Error("해당 상품이 장바구니에 없습니다.");
     }
     try {
