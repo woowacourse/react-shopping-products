@@ -47,28 +47,36 @@ const ToggleItemButton = ({ id }: ToggleItemButtonProps) => {
     setSelected(checkSelected(id));
   }, [checkSelected, id]);
 
-  const handleClick = async () => {
+  const handleAddToCart = async () => {
     if (isLoading) return;
 
     try {
       setIsLoading(true);
-      setSelected((prev) => !prev);
-
-      if (isSelected) {
-        await removeFromCart(id);
-      }
-      if (!isSelected) {
-        await addToCart(id);
-      }
+      await addToCart(id);
+      setSelected(true);
     } catch (error) {
-      setSelected((prev) => !prev);
+      setSelected(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoveFromCart = async () => {
+    if (isLoading) return;
+
+    try {
+      setIsLoading(true);
+      await removeFromCart(id);
+      setSelected(false);
+    } catch (error) {
+      setSelected(true);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <S.ToggleItemButton key={id} onClick={handleClick} isSelected={isSelected}>
+    <S.ToggleItemButton key={id} onClick={isSelected ? handleRemoveFromCart : handleAddToCart} isSelected={isSelected}>
       {isLoading ? (
         <LoadingDots type={isSelected ? "black" : "white"} />
       ) : isSelected ? (
