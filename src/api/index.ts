@@ -15,26 +15,36 @@ const HEADERS = {
   'Content-Type': 'application/json',
 };
 
+function createURLWithParams(
+  baseURL: string,
+  params: Record<string, string[] | string | number | undefined>,
+) {
+  const url = new URL(baseURL);
+  Object.keys(params).forEach((key) => {
+    const value = params[key];
+    if (value !== undefined) {
+      url.searchParams.append(key, value.toString());
+    }
+  });
+  return url;
+}
 export async function fetchProducts(
   page: number,
   limit: number,
   category: CategoryType,
   sorting: SortType,
 ) {
-  const categoryQuery = category === 'all' ? '' : `category=${category}`;
   const sortArray = sorting.split('_');
-  const sortingQuery = sortArray.reduce((prev, cur) => {
-    return prev + `${cur}%2C`;
-  }, 'sort=');
-
-  const response = await fetch(
-    `${ENDPOINT.PRODUCTS}?${categoryQuery}&page=${page}&size=${limit}&${sortingQuery}`,
-
-    {
-      method: 'GET',
-      headers: HEADERS,
-    },
-  );
+  const url = createURLWithParams(ENDPOINT.PRODUCTS, {
+    category: category === 'all' ? undefined : category,
+    page,
+    size: limit,
+    sort: sortArray,
+  });
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: HEADERS,
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch products');
@@ -98,13 +108,13 @@ export const fetchShoppingCartQuantity = async () => {
 };
 
 export async function fetchItems(): Promise<CartItems[]> {
-  const response = await fetch(
-    `${ENDPOINT.CART_ITEMS}?size=${MAX_CART_ITEMS_COUNTS}`,
-    {
-      method: 'GET',
-      headers: HEADERS,
-    },
-  );
+  const url = createURLWithParams(ENDPOINT.CART_ITEMS, {
+    size: MAX_CART_ITEMS_COUNTS,
+  });
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: HEADERS,
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch Items');
