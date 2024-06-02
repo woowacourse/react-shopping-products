@@ -61,7 +61,7 @@ const S = {
   ItemCard: styled.div`
     display: flex;
     flex-direction: column;
-    width: 95%;
+    width: 182px;
     height: 224px;
     border-radius: 8px;
     box-shadow: 0 0 10px 0 ${theme.color.blackWithOpacity};

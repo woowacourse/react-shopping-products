@@ -52,19 +52,24 @@ export default ProductList;
 const S = {
   ListContainer: styled.div`
     width: 100%;
-    height: calc(85% - 24px);
+    height: calc(
+      100vh - 223px
+    ); // 전체 화면 높이에서 헤더, 드롭다운, 마진 등을 뺀 높이
     margin-top: 24px;
     overflow-y: auto;
   `,
-
   GridContainer: styled.div`
+    min-height: calc(
+      100vh - 223px
+    ); // 전체 화면 높이에서 헤더, 드롭다운, 마진 등을 뺀 최소 높이
     display: grid;
     grid-template-columns: 1fr 1fr;
-    flex-grow: 1;
     gap: 16px;
     justify-items: center;
   `,
   ObserverContainer: styled.div`
     width: 100%;
+    height: 1px;
+    visibility: hidden;
   `,
 };
