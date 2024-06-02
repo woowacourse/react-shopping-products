@@ -17,14 +17,14 @@ export const Product = () => {
     selectedCategory,
     selectedSort,
   } = useProducts();
-  const { errorStatus } = useError();
+  const { errorMessage } = useError();
 
   return (
     <StyledProduct>
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        !errorStatus && (
+        !errorMessage && (
           <>
             <ProductHeader
               resetPage={resetPage}

@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface ErrorContextType {
-  errorStatus: number | null;
-  setErrorStatus: (status: number | null) => void;
+  errorMessage: string;
+  setErrorMessage: (message: string) => void;
 }
 
 const ErrorContext = createContext<ErrorContextType | undefined>(undefined);
@@ -16,10 +16,10 @@ export const useError = () => {
 };
 
 export const ErrorProvider = ({ children }: { children: ReactNode }) => {
-  const [errorStatus, setErrorStatus] = useState<number | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   return (
-    <ErrorContext.Provider value={{ errorStatus, setErrorStatus }}>
+    <ErrorContext.Provider value={{ errorMessage, setErrorMessage }}>
       {children}
     </ErrorContext.Provider>
   );
