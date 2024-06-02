@@ -9,7 +9,7 @@ const USER_PASSWORD = `${import.meta.env.VITE_USER_PASSWORD}`;
 
 if (!API_URL || !USER_ID || !USER_PASSWORD) {
   throw new Error(
-    "API_URL, USER_ID, PASSWORD environment variables are not set"
+    "API_URL, USER_ID, PASSWORD environment variables are not set",
   );
 }
 
@@ -31,16 +31,12 @@ export const fetchWithAuth = async (path: string, options: RequestOptions) => {
   return response;
 };
 
-const requestBuilder = (options: RequestOptions): RequestInit => {
+const requestBuilder = ({ method, body }: RequestOptions): RequestInit => {
   const token = generateBasicToken(USER_ID, USER_PASSWORD);
-
-  const { method, body } = options;
-
   const headers: HeadersInit = {
     "Content-Type": "application/json",
     Authorization: token,
   };
-
   return {
     method,
     headers,
