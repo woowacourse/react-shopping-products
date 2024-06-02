@@ -33,11 +33,7 @@ const ProductList = () => {
           />
           <S.ItemContainer>
             {products.map((product) => (
-              <ProductItem
-                key={crypto.randomUUID()}
-                productInfo={product}
-                showErrorToast={showErrorToast}
-              />
+              <ProductItem key={crypto.randomUUID()} productInfo={product} />
             ))}
             {isLoading && <LoadingSpinner />}
             <IntersectionDetector onIntersected={fetchNextPage} />

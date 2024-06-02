@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { useCartActions } from "@src/hooks/useCartItemAction";
+import CartToggleButton from "@components/ProductListPage/CartToggleButton";
 import { formatToKRW } from "@src/utils/formatToKRW";
-import { ReactComponent as AddToCartIcon } from "@assets/addToCart.svg";
-import { ReactComponent as DeleteFromCartIcon } from "@assets/deleteFromCart.svg";
 
 interface ProductInfo {
   id: number;
@@ -13,50 +11,19 @@ interface ProductInfo {
 
 interface ProductItemProps {
   productInfo: ProductInfo;
-  showErrorToast: (message: string) => void;
 }
 
-const ProductItem = ({ productInfo, showErrorToast }: ProductItemProps) => {
-  const { addToCart, removeFromCart, isIncludedInCart } = useCartActions();
-
-  const handleAddToCart = async () => {
-    try {
-      await addToCart(productInfo.id, 1);
-    } catch (error) {
-      if (error instanceof Error) {
-        showErrorToast(error.message);
-      }
-    }
-  };
-
-  const handleDeleteFromCart = async () => {
-    try {
-      await removeFromCart(productInfo.id);
-    } catch (error) {
-      if (error instanceof Error) {
-        showErrorToast(error.message);
-      }
-    }
-  };
+const ProductItem = ({ productInfo }: ProductItemProps) => {
+  const { id, name, price, imageUrl } = productInfo;
 
   return (
     <S.Container>
-      <S.ProductImage src={productInfo.imageUrl}></S.ProductImage>
+      <S.ProductImage src={imageUrl}></S.ProductImage>
       <S.ProductInfo>
-        <S.ProductName>{productInfo.name}</S.ProductName>
-        <S.ProductPrice>{formatToKRW(productInfo.price)}</S.ProductPrice>
+        <S.ProductName>{name}</S.ProductName>
+        <S.ProductPrice>{formatToKRW(price)}</S.ProductPrice>
       </S.ProductInfo>
-      <S.ButtonWrapper>
-        {isIncludedInCart(productInfo.id) ? (
-          <S.DeleteFromCartIcon
-            role="button"
-            aria-label="상품 빼기"
-            onClick={handleDeleteFromCart}
-          />
-        ) : (
-          <S.AddToCartIcon role="button" aria-label="상품 담기" onClick={handleAddToCart} />
-        )}
-      </S.ButtonWrapper>
+      <CartToggleButton productId={id} />
     </S.Container>
   );
 };
@@ -100,21 +67,5 @@ const S = {
 
   ProductPrice: styled.p`
     font-size: 1.2rem;
-  `,
-
-  ButtonWrapper: styled.div`
-    display: flex;
-    flex-direction: row-reverse;
-    margin-top: 0.8rem;
-    width: 100%;
-    right: 0;
-  `,
-
-  AddToCartIcon: styled(AddToCartIcon)`
-    cursor: pointer;
-  `,
-
-  DeleteFromCartIcon: styled(DeleteFromCartIcon)`
-    cursor: pointer;
   `,
 };
