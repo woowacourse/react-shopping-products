@@ -43,7 +43,7 @@ function ProductItemList({
 
   useEffect(() => {
     setPage(0);
-  }, [category, sortOption]);
+  }, [category, sortOption, setPage]);
 
   useEffect(() => {
     if (page === -1 || target.current === null) return;
@@ -54,7 +54,7 @@ function ProductItemList({
     if (0 === N || isLastPage) {
       unobserve(target.current);
     }
-  }, [productList, page, observe, unobserve]);
+  }, [productList, page, observe, unobserve, isLastPage]);
   const quantityContext = useContext(QuantityContext);
   const setQuantity = quantityContext ? quantityContext.setQuantity : () => {};
   setQuantity(cartItemList.length);
