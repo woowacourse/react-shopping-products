@@ -15,14 +15,14 @@ const useFetchAddCart = () => {
     fetchInitialCartId();
   }, []);
 
-  const patchToAddCart = (id: number) => {
+  const postToAddCart = (id: number) => {
     postAddItems(id);
     const newCartIdSet = new Set(cartIdSet);
     newCartIdSet.add(id);
     setCartIdSet(newCartIdSet);
   };
 
-  const patchToRemoveCart = async (id: number) => {
+  const deleteToRemoveCart = async (id: number) => {
     const cartItems = await fetchCart();
     const filteredCartItems = cartItems.find((item) => item.product.id === id);
     if (!filteredCartItems) return;
@@ -42,8 +42,8 @@ const useFetchAddCart = () => {
   return {
     cartIdSet,
     setCartIdSet,
-    patchToAddCart,
-    patchToRemoveCart,
+    postToAddCart,
+    deleteToRemoveCart,
     fetchCart,
   };
 };

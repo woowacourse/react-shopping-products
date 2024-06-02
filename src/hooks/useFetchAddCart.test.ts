@@ -7,7 +7,7 @@ describe('useFetchAddCart', () => {
     const { result } = renderHook(() => useFetchAddCart());
 
     act(() => {
-      result.current.patchToAddCart(PRODUCT_ID);
+      result.current.postToAddCart(PRODUCT_ID);
     });
 
     expect(result.current.cartIdSet.has(PRODUCT_ID)).toBe(true);
@@ -18,7 +18,7 @@ describe('useFetchAddCart', () => {
     const { result } = renderHook(() => useFetchAddCart());
 
     act(() => {
-      result.current.patchToRemoveCart(PRODUCT_ID);
+      result.current.deleteToRemoveCart(PRODUCT_ID);
     });
 
     expect(result.current.cartIdSet.has(PRODUCT_ID)).toBe(false);
@@ -30,7 +30,7 @@ describe('useFetchAddCart', () => {
     expect(result.current.cartIdSet.size).toBe(0);
 
     act(() => {
-      result.current.patchToAddCart(3);
+      result.current.postToAddCart(3);
     });
 
     expect(result.current.cartIdSet.size).toBe(1);
@@ -40,13 +40,13 @@ describe('useFetchAddCart', () => {
     const { result } = renderHook(() => useFetchAddCart());
 
     act(() => {
-      result.current.patchToAddCart(3);
+      result.current.postToAddCart(3);
     });
 
     expect(result.current.cartIdSet.size).toBe(1);
 
     await waitFor(() => {
-      result.current.patchToRemoveCart(3);
+      result.current.deleteToRemoveCart(3);
     });
 
     expect(result.current.cartIdSet.size).toBe(0);
@@ -58,7 +58,7 @@ describe('useFetchAddCart', () => {
   //   const { result } = renderHook(() => useFetchAddCart());
 
   //   await waitFor(() => {
-  //     result.current.patchToAddCart(PRODUCT_ID);
+  //     result.current.postToAddCart(PRODUCT_ID);
   //   });
 
   //   let cartItems = [];
@@ -83,8 +83,8 @@ describe('useFetchAddCart', () => {
   //   const { result } = renderHook(() => useFetchAddCart());
 
   //   act(() => {
-  //     result.current.patchToAddCart(PRODUCT_ID_TWO);
-  //     result.current.patchToAddCart(PRODUCT_ID_THREE);
+  //     result.current.postToAddCart(PRODUCT_ID_TWO);
+  //     result.current.postToAddCart(PRODUCT_ID_THREE);
   //   });
 
   //   expect(
