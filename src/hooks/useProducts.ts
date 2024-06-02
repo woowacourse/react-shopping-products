@@ -6,7 +6,7 @@ interface UseProductsResult {
   products: Product[];
   loading: boolean;
   hasMore: boolean;
-  handleCategory: (category: Category | "all") => void;
+  handleCategory: (category: Category) => void;
   handleSort: (sort: Sort) => void;
 }
 
@@ -21,7 +21,7 @@ export default function useProducts({
 }: UseProductsProps): UseProductsResult {
   const [products, setProducts] = useState<Product[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [category, setCategory] = useState<Category | "all">("all");
+  const [category, setCategory] = useState<Category>("all");
   const [sort, setSort] = useState<Sort>("asc");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -58,7 +58,7 @@ export default function useProducts({
     }
   }, [page, category, sort, showError]);
 
-  const handleCategory = (category: Category | "all") => {
+  const handleCategory = (category: Category) => {
     setProducts([]);
     setCategory(category);
     resetPage();

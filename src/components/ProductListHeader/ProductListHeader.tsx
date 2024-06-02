@@ -2,7 +2,7 @@ import { FILTER_CATEGORIES, SORT_PRICE } from "../../constants/rules";
 import * as PLH from "./ProductListHeader.style";
 
 interface ProductListHeaderProps {
-  handleCategory: (category: Category | "all") => void;
+  handleCategory: (category: Category) => void;
   handleSort: (sort: Sort) => void;
 }
 
@@ -17,7 +17,7 @@ const ProductListHeader = ({
         <PLH.SelectBox
           name=""
           id=""
-          onChange={(e) => handleCategory(e.target.value as Category | "all")}
+          onChange={(e) => handleCategory(e.target.value as Category)}
         >
           {Object.entries(FILTER_CATEGORIES).map(([key, value]) => (
             <option value={key} key={key}>
