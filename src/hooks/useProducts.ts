@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getProducts } from "../api";
 import { useError } from "./useError";
+import { RULE } from "../constants/rules";
 
 interface UseProductsResult {
   products: Product[];
@@ -32,7 +33,8 @@ export default function useProducts({
       setLoading(true);
 
       try {
-        const size = page === 0 ? 20 : 4;
+        const size =
+          page === RULE.initialPage ? RULE.initialSize : RULE.nextSize;
         const responseData = await getProducts({
           category: category === "all" ? undefined : category,
           sort,

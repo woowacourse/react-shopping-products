@@ -17,8 +17,10 @@ describe("useProducts", () => {
         wrapper: ErrorProvider,
       });
 
+      const expectedLength = 20;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toHaveLength(expectedLength);
       });
     });
 
@@ -53,8 +55,10 @@ describe("useProducts", () => {
         },
       );
 
+      const expectedProducts: Product[] = [];
+
       await waitFor(() => {
-        expect(result.current.products).toEqual([]);
+        expect(result.current.products).toEqual(expectedProducts);
         expect(result.current.error).toBeTruthy();
       });
     });
@@ -73,9 +77,12 @@ describe("useProducts", () => {
         },
       );
 
+      const expectedLength = 20;
+      const expectedPage = 0;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
+        expect(result.current.products).toHaveLength(expectedLength);
+        expect(result.current.page).toBe(expectedPage);
       });
     });
 
@@ -94,18 +101,24 @@ describe("useProducts", () => {
         },
       );
 
+      const initialExpectedLength = 20;
+      const initialExpectedPage = 0;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
+        expect(result.current.products).toHaveLength(initialExpectedLength);
+        expect(result.current.page).toBe(initialExpectedPage);
       });
 
       act(() => {
         result.current.nextPage();
       });
 
+      const nextExpectedLength = 24;
+      const nextExpectedPage = 5;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(24);
-        expect(result.current.page).toBe(5);
+        expect(result.current.products).toHaveLength(nextExpectedLength);
+        expect(result.current.page).toBe(nextExpectedPage);
       });
     });
 
@@ -124,9 +137,12 @@ describe("useProducts", () => {
         },
       );
 
+      const initialExpectedLength = 20;
+      const initialExpectedPage = 0;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
+        expect(result.current.products).toHaveLength(initialExpectedLength);
+        expect(result.current.page).toBe(initialExpectedPage);
       });
 
       for (let i = 1; i < 21; i++) {
@@ -137,10 +153,11 @@ describe("useProducts", () => {
         });
 
         const expectedLength = 20 + i * 4;
+        const expectedPage = i + 4;
 
         await waitFor(() => {
           expect(result.current.products).toHaveLength(expectedLength);
-          expect(result.current.page).toBe(i + 4);
+          expect(result.current.page).toBe(expectedPage);
         });
       }
 
@@ -148,9 +165,12 @@ describe("useProducts", () => {
         result.current.nextPage();
       });
 
+      const finalExpectedLength = 100;
+      const finalExpectedPage = 25;
+
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(100);
-        expect(result.current.page).toBe(25);
+        expect(result.current.products).toHaveLength(finalExpectedLength);
+        expect(result.current.page).toBe(finalExpectedPage);
       });
     });
 
