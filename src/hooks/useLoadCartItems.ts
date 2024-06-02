@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CartItem } from '@appTypes/index';
 import { fetchGetCartItems } from '@apis/index';
 
@@ -30,6 +30,10 @@ const useLoadCartItems = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getCartItemList();
+  }, []);
 
   return {
     refetch: getCartItemList,
