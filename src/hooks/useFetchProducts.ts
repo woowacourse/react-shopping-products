@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
+import { PAGE, SIZE } from '../constants/page';
 
 const useFetchProducts = (
   sortings: SortingParam[] = [],
@@ -14,8 +15,8 @@ const useFetchProducts = (
   const [isLast, setIsLast] = useState(false);
   const [page, setPage] = useState(0);
 
-  const size = page === 0 ? 20 : 4;
-  const fetchPage = page === 0 ? page : page + 4;
+  const size = page === PAGE.DEFAULT ? SIZE.DEFAULT : SIZE.INTERVAL;
+  const fetchPage = page === PAGE.DEFAULT ? page : page + SIZE.INTERVAL;
 
   const fetchNextPage = () => {
     if (isLast) return;
@@ -32,7 +33,7 @@ const useFetchProducts = (
           sortings,
           filter,
         );
-        if (page === 0) {
+        if (page === PAGE.DEFAULT) {
           setProducts(fetchedProducts.content);
         } else {
           setProducts((prevState) => [
@@ -52,7 +53,7 @@ const useFetchProducts = (
   }, [page, sortings, filter]);
 
   const resetPage = () => {
-    setPage(0);
+    setPage(PAGE.DEFAULT);
   };
 
   return {

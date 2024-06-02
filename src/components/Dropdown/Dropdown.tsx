@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
 import { SortingParam } from '../../types/sort';
+import { FILTER, SORTING } from '../../constants/dropdown';
 
 import * as S from './Dropdown.styled';
 
@@ -32,14 +33,11 @@ function Dropdown({ setSortings, setFilter, resetPage }: DropdownProps) {
           handleFilterChange(event)
         }
       >
-        <option value={''}>전체</option>
-        <option value={'fashion'}>fashion</option>
-        <option value={'beverage'}>beverage</option>
-        <option value={'electronics'}>electronics</option>
-        <option value={'kitchen'}>kitchen</option>
-        <option value={'fitness'}>fitness</option>
-        <option value={'books'}>books</option>
-        <option value={'animal'}>animal</option>
+        {Object.keys(FILTER).map((key) => (
+          <option key={key} value={key}>
+            {FILTER[key as keyof typeof FILTER]}
+          </option>
+        ))}
       </S.Dropdown>
 
       <S.Dropdown
@@ -47,8 +45,11 @@ function Dropdown({ setSortings, setFilter, resetPage }: DropdownProps) {
           handleSortingChange(event)
         }
       >
-        <option value={'asc'}>낮은 가격 순</option>
-        <option value={'desc'}>높은 가격 순</option>
+        {Object.keys(SORTING).map((key) => (
+          <option key={key} value={key}>
+            {SORTING[key as keyof typeof SORTING]}
+          </option>
+        ))}
       </S.Dropdown>
     </S.DropdownContainer>
   );
