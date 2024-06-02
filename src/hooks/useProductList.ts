@@ -31,7 +31,9 @@ const useProductList = () => {
 
     setPage((prevPage) => prevPage + nextPageUnit);
   };
-    setPage((prevPage) => prevPage + nextPage);
+
+  const handleError = ({ name, isError, errorMessage }: ErrorState) => {
+    setErrorState({ isError, name, errorMessage });
   };
 
   useEffect(() => {
@@ -84,6 +86,7 @@ const useProductList = () => {
     category,
     order,
     errorState,
+    handleError,
   };
 };
 

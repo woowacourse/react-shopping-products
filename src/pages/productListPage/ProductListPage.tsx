@@ -5,7 +5,6 @@ import * as Styled from './ProductListPage.styled';
 import Dropdown from '@/components/common/dropdown/Dropdown';
 import Header from '@/components/common/header/Header';
 import InfinityScrollContainer from '@/components/common/InfinityScrollContainer';
-import Toast from '@/components/common/toast/Toast';
 import ProductCardList from '@/components/productCardList/ProductCardList';
 import Title from '@/components/title/Title';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
@@ -19,12 +18,15 @@ const ProductListPage = () => {
     isLoading,
     fetchNextPage,
     errorState,
+    handleError,
     handleChangeCategory,
     handleChangeSort,
     order,
     category,
   } = useProductList();
-  const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems();
+  const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems({
+    handleError,
+  });
   const bottomRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -58,7 +60,6 @@ const ProductListPage = () => {
           <div ref={bottomRef} style={{ height: 100 }}></div>
         </Styled.CommonContainer>
       </Styled.PageContainer>
-      <Toast isError={errorState.isError} errorMessage={errorState.errorMessage} />
     </InfinityScrollContainer>
   );
 };

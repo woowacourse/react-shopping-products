@@ -2,8 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { addCartItem, deleteCartItem, fetchCartItems } from '@/api/cart';
 import { CartItemInfo } from '@/types/cartItem';
+import { ErrorState } from '@/types/error';
+import CustomError from '@/utils/error';
 
-const useCartItems = () => {
+interface UseCartItemsProp {
+  handleError: ({ name, isError, errorMessage }: ErrorState) => void;
+}
+
+const useCartItems = ({ handleError }: UseCartItemsProp) => {
   const [cartItems, setCartItems] = useState<CartItemInfo[]>([]);
 
   const matchCartItem = (productId: number) => {
@@ -11,19 +17,27 @@ const useCartItems = () => {
   };
 
   const handleAddCartItem = async (productId: number) => {
-    if (matchCartItem(productId)) return;
-
-    await addCartItem({ productId });
-    await refreshCartItems();
+    try {
+      await addCartItem({ productId });
+      await refreshCartItems();
+    } catch (error) {
+      if (error instanceof CustomError) {
+        handleError({ isError: true, name: error.name, errorMessage: error.message });
+      }
+    }
   };
 
   const handleDeleteCartItem = async (productId: number) => {
-    const matchedCartItemInfo = matchCartItem(productId);
-    if (!matchedCartItemInfo) return;
-
-    const cartItemId = matchedCartItemInfo.id;
-    await deleteCartItem(cartItemId);
-    await refreshCartItems();
+    try {
+      const matchedCartItemInfo = matchCartItem(productId);
+      const cartItemId = matchedCartItemInfo!.id;
+      await deleteCartItem(cartItemId);
+      await refreshCartItems();
+    } catch (error) {
+      if (error instanceof CustomError) {
+        handleError({ isError: true, name: error.name, errorMessage: error.message });
+      }
+    }
   };
 
   const refreshCartItems = async () => {
