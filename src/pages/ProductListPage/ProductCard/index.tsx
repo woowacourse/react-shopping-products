@@ -6,12 +6,10 @@ import style from './style.module.css';
 
 interface ProductCardProps {
   product: Product;
-  cartItems: CartItem[];
+  cartItem: CartItem | undefined;
 }
 
-function ProductCard({ product, cartItems }: ProductCardProps) {
-  const cartItem = cartItems.find((item) => item.product.id === product.id);
-
+function ProductCard({ product, cartItem }: ProductCardProps) {
   return (
     <li className={style.productCard}>
       <img src={product.imageUrl} alt="" className={style.image} />
