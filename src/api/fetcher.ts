@@ -1,9 +1,10 @@
+import { ERROR_MESSAGE, ERROR_NAME } from '@/constants/error';
 import CustomError from '@/utils/error';
+import { isErrorStatus } from '@/utils/typeGuard';
 
 interface RequestProps {
   url: string;
   method: 'GET' | 'POST' | 'DELETE' | 'PATCH' | 'PUT';
-  errorMessage: string;
   body?: Record<string, string | number>;
   headers?: Record<string, string>;
 }
@@ -11,47 +12,43 @@ interface RequestProps {
 type FetchProps = Omit<RequestProps, 'method'>;
 
 const fetcher = {
-  async request({ url, method, errorMessage, body, headers }: RequestProps) {
+  async request({ url, method, body, headers }: RequestProps) {
     try {
       const response = await fetch(url, {
         method,
         body: body && JSON.stringify(body),
         headers: headers && headers,
       });
-      if (response.status === 400)
-        throw new CustomError({ name: 'BAD_REQUEST_ERROR', message: errorMessage });
-      if (response.status === 401)
-        throw new CustomError({ name: 'AUTHORIZED_ERROR', message: errorMessage });
-      if (response.status === 404)
-        throw new CustomError({ name: 'NOT_FOUND_ERROR', message: errorMessage });
-      if (response.status === 500) {
-        throw new CustomError({ name: 'SERVER_ERROR', message: errorMessage });
+
+      if (isErrorStatus(response.status)) {
+        const errorName = ERROR_NAME[response.status];
+        throw new CustomError({ name: errorName, message: ERROR_MESSAGE[errorName] });
       }
 
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new CustomError({ name: 'NETWORK_ERROR', message: errorMessage });
+      if (error instanceof CustomError) {
+        throw error;
       }
 
-      throw error;
+      throw new CustomError({ name: 'NETWORK_ERROR', message: ERROR_MESSAGE['NETWORK_ERROR'] });
     }
   },
 
-  get({ url, headers, errorMessage }: FetchProps) {
-    return this.request({ url, method: 'GET', headers, errorMessage });
+  get({ url, headers }: FetchProps) {
+    return this.request({ url, method: 'GET', headers });
   },
-  post({ url, body, headers, errorMessage }: FetchProps) {
-    return this.request({ url, method: 'POST', body, headers, errorMessage });
+  post({ url, body, headers }: FetchProps) {
+    return this.request({ url, method: 'POST', body, headers });
   },
-  delete({ url, headers, errorMessage }: FetchProps) {
-    return this.request({ url, method: 'DELETE', headers, errorMessage });
+  delete({ url, headers }: FetchProps) {
+    return this.request({ url, method: 'DELETE', headers });
   },
-  patch({ url, headers, errorMessage }: FetchProps) {
-    return this.request({ url, method: 'PATCH', headers, errorMessage });
+  patch({ url, headers }: FetchProps) {
+    return this.request({ url, method: 'PATCH', headers });
   },
-  put({ url, headers, errorMessage }: FetchProps) {
-    return this.request({ url, method: 'PUT', headers, errorMessage });
+  put({ url, headers }: FetchProps) {
+    return this.request({ url, method: 'PUT', headers });
   },
 };
 

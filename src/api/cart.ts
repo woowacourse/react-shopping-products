@@ -15,7 +15,6 @@ export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
   const response = await fetcher.get({
     url: `${END_POINT.cartItems}`,
     headers: AUTH_HEADER,
-    errorMessage: '장바구니 조회에 실패했습니다',
   });
 
   const data = await response.json();
@@ -23,7 +22,6 @@ export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
   return data.content;
 };
 
-// 201
 export const addCartItem = async ({
   productId,
   quantity = 1,
@@ -35,18 +33,15 @@ export const addCartItem = async ({
       productId,
       quantity,
     },
-    errorMessage: '장바구니 추가에 실패했습니다',
   });
 
   return { status: response.status };
 };
 
-// 204
 export const deleteCartItem = async (cartId: number): Promise<MutationResponse> => {
   const response = await fetcher.delete({
     url: `${END_POINT.cartItems}/${cartId}`,
     headers: AUTH_HEADER,
-    errorMessage: '장바구니 삭제에 실패했습니다',
   });
 
   return { status: response.status };

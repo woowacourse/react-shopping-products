@@ -29,7 +29,6 @@ export const fetchProductList = async ({
 }: FetchProductListProps): Promise<ProductResponse> => {
   const response = await fetcher.get({
     url: covertUrlFormat({ category, page, size, sortOptions }),
-    errorMessage: '상품 리스트 불러오기에 실패했습니다🥹',
   });
 
   const data = await response.json();

@@ -1,3 +1,4 @@
+import { ErrorStatus } from '@/types/error';
 import { CategoryLabel, ProductCategory, SortLabel, SortValue } from '@/types/product';
 
 export const isCategoryLabel = (value: string): value is CategoryLabel => {
@@ -16,4 +17,8 @@ export const isSortLabel = (value: string): value is SortLabel => {
 
 export const isSortValue = (value: string): value is SortValue => {
   return ['asc', 'desc'].includes(value);
+};
+
+export const isErrorStatus = (value: number): value is ErrorStatus => {
+  return [400, 401, 404, 500, 504].includes(value);
 };
