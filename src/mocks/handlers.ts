@@ -1,7 +1,9 @@
 import { HttpResponse, http, StrictRequest } from 'msw';
+
 import { ENDPOINTS_CART, ENDPOINTS_PRODUCTS } from '../api/endpoints';
 import { ProductResponse } from '../types/fetch';
 import productSorter from '../utils/productSorter';
+
 import { mockCart as mockCartResponse } from './cart';
 import { mockProductsResponse } from './products';
 

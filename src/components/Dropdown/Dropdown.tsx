@@ -1,5 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
+
 import { SortingParam } from '../../types/sort';
+
 import * as S from './Dropdown.styled';
 
 interface DropdownProps {

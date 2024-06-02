@@ -1,11 +1,13 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { HttpResponse, http } from 'msw';
-import { ENDPOINTS_PRODUCTS } from '../api/endpoints';
-import { server } from '../mocks/node';
+
 import useFetchProducts from './useFetchProducts';
-import {mockProductsResponse} from '../mocks/products';
+import { ENDPOINTS_PRODUCTS } from '../api/endpoints';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
+
+import { server } from '../mocks/node';
+import { mockProductsResponse } from '../mocks/products';
 
 describe('fetchProducts', () => {
   it('상품 목록 첫 조회시에는 20개의 아이템을 가져온다.', async () => {
@@ -39,11 +41,11 @@ describe('fetchProducts', () => {
   //   await waitFor(() => {
   //     expect(result.current.products).toHaveLength(20);
   //   });
-      
+
   //   act(() =>  result.current.fetchNextPage());
-    
+
   //   await waitFor(() => {
-  //     act(() => 
+  //     act(() =>
   //       {expect(result.current.products).toHaveLength(24);}
   //     )
   //   });

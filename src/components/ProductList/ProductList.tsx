@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
-import ProductCard from '../ProductCard/ProductCard';
-import * as S from './ProductList.styled';
-import { Product } from '../../types/fetch';
+
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import ProductCard from '../ProductCard/ProductCard';
+import { Product } from '../../types/fetch';
+
+import * as S from './ProductList.styled';
 
 interface ProductListProps {
   products: Product[];
@@ -20,9 +22,7 @@ function ProductList({
   fetchNextPage,
 }: ProductListProps) {
   const target = useRef(null);
-  const { observe, unobserve } = useIntersectionObserver(() =>
-    fetchNextPage(),
-  );
+  const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
   useEffect(() => {
     if (!target.current || isPending || isLast) return;

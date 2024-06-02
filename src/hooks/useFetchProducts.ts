@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
@@ -15,7 +16,7 @@ const useFetchProducts = (
 
   const size = page === 0 ? 20 : 4;
   const fetchPage = page === 0 ? page : page + 4;
-  
+
   const fetchNextPage = () => {
     if (isLast) return;
     setPage((page) => page + 1);

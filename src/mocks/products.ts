@@ -1,4 +1,5 @@
 import { ProductResponse } from '../types/fetch';
+
 export const mockProductsResponse: ProductResponse = {
   content: [
     {
