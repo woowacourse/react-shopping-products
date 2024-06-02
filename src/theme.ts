@@ -40,6 +40,11 @@ const theme: Theme = {
       font-size: 0.75rem;
       line-height: 0.9375rem;
     `,
+    toastTitle: `
+    font-family: Noto Sans;
+    font-weight: 700;
+    font-size: 1rem;
+    `,
     cartLabel: `
       font-family: Montserrat;
       font-weight: 700;
@@ -53,7 +58,8 @@ const theme: Theme = {
     pink: '#FFC9C9',
     gray: '#EAEAEA',
     borderGray: '#0000001A',
-    red: '#f33f3f',
+    error: '#EB5758',
+    errorLight: '#FBDDDD',
   },
 };
 

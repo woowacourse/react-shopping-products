@@ -11,6 +11,7 @@ declare module '@emotion/react' {
         toggleButton: string;
       };
       toast: string;
+      toastTitle: string;
       cartLabel: string;
     };
     color: {
@@ -20,7 +21,8 @@ declare module '@emotion/react' {
       pink: string;
       gray: string;
       borderGray: string;
-      red: string;
+      error: string;
+      errorLight: string;
     };
   }
 }
