@@ -39,7 +39,7 @@ const ProductItem = ({ item }: Props) => {
         <S.InfoWrapper>
           <S.InfoText>
             <S.Title>{item.name}</S.Title>
-            <S.Price>{item.price}</S.Price>
+            <S.Price>{item.price.toLocaleString('ko-RR')}원</S.Price>
           </S.InfoText>
           <S.ButtonWrapper>
             {isSelected ? (
