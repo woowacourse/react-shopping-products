@@ -1,8 +1,10 @@
 import { useContext } from 'react';
+
 import { CartContext } from '../../CartContext';
 import { Product } from '../../types/fetch';
+import CartButton from '../CartButton/CartButton';
+
 import * as S from './ProductCard.styled';
-import AddCartButton from '../AddCartButton/AddCartButton';
 
 interface ProductCardProps {
   product: Product;
@@ -21,7 +23,7 @@ function ProductCard({ product }: ProductCardProps) {
         </S.InfoWrapper>
 
         <S.ButtonContainer>
-          <AddCartButton
+          <CartButton
             id={product.id}
             onAddClick={() => {
               patchToAddCart(product.id);
