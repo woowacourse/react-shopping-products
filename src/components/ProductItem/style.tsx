@@ -8,6 +8,7 @@ export const ProductItem = styled.li`
 export const Image = styled.img`
   width: 100%;
   height: 7rem;
+  object-fit: contain;
 
   border-radius: 8px 8px 0 0;
 `;
