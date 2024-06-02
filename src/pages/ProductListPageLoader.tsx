@@ -3,9 +3,9 @@ import { useCartItemListContext } from '@/hooks/useCartItemList';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 
 const ProductListPageLoader = ({ children }: PropsWithChildren) => {
-  const { loading } = useCartItemListContext();
+  const { isLoading } = useCartItemListContext();
 
-  if (loading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
 
   return <>{children}</>;
 };
