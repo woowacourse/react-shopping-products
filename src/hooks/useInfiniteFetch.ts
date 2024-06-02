@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useFetch } from "@hooks/useFetch";
+import { Fetcher, useFetch } from "@hooks/useFetch";
 import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
 
 interface UseInfiniteFetchReturn<T> {
@@ -10,7 +10,7 @@ interface UseInfiniteFetchReturn<T> {
   refetchByQueryUpdate: (key: string, value: QueryParamValue) => void;
 }
 
-export const useInfiniteFetch = <T>(fetcher: Fetcher<T>): UseInfiniteFetchReturn<T> => {
+export const useInfiniteFetch = <T>(fetcher: Fetcher<T[]>): UseInfiniteFetchReturn<T> => {
   const { isLoading, error, fetchData } = useFetch<T[]>(fetcher);
 
   const [data, setData] = useState<T[]>([]);
@@ -58,5 +58,3 @@ type QueryParams = {
 };
 
 type PagedQueryParams = QueryParams & { page: number };
-
-type Fetcher<T> = (queryParams?: SmartURLSearchParams) => Promise<T[]>;

@@ -7,9 +7,9 @@ interface UseFetchReturn<T> {
   fetchData: (queryParams?: SmartURLSearchParams) => Promise<T | undefined>;
 }
 
-export const useFetch = <T>(
-  fetcher: (queryParams?: URLSearchParams) => Promise<T>
-): UseFetchReturn<T> => {
+export type Fetcher<T> = (queryParams?: URLSearchParams) => Promise<T>;
+
+export const useFetch = <T>(fetcher: Fetcher<T>): UseFetchReturn<T> => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
