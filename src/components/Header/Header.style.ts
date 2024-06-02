@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const HeaderBackground = styled.div`
   display: flex;
@@ -19,11 +19,6 @@ export const HeaderWrapper = styled.header`
   padding: 0px 24px;
 `;
 
-export const MainLogo = styled.img`
-  width: 56px;
-  cursor: pointer;
-`;
-
 export const ShoppingCartButton = styled.button`
   display: flex;
   position: relative;
@@ -33,11 +28,6 @@ export const ShoppingCartButton = styled.button`
   border: none;
   width: 32px;
   height: 32px;
-`;
-
-export const ShoppingCartIconContainer = styled.img`
-  width: 20px;
-  cursor: pointer;
 `;
 
 export const ShoppingCartQuantityContainer = styled.div`

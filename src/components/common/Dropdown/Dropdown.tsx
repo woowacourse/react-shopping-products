@@ -1,12 +1,12 @@
-import chevronDown from '../../../assets/images/chevronDown.svg';
+import { ChevronDown } from "../../../assets/";
 
-import * as S from './Dropdown.style';
+import * as S from "./Dropdown.style";
 
 interface DropdownProps {
   optionList: string[][];
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  type: 'category' | 'sort';
+  type: "category" | "sort";
 }
 
 function Dropdown({ optionList, value, onChange, type }: DropdownProps) {
@@ -20,7 +20,7 @@ function Dropdown({ optionList, value, onChange, type }: DropdownProps) {
             </S.Option>
           ))}
         </S.Select>
-        <S.ChevronDownIcon src={chevronDown} />
+        <ChevronDown />
       </S.Dropdown>
     </S.DropdownLabel>
   );

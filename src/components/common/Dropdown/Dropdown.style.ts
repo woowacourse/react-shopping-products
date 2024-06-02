@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Dropdown = styled.div`
   display: flex;
@@ -13,22 +13,17 @@ export const Dropdown = styled.div`
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       cursor: pointer;
-      background-color: return '#333333';
+      background-color: return "#333333";
     }
   }
 
   &:disabled {
     cursor: default;
-    background-color: '#aaaaaa';
+    background-color: "#aaaaaa";
   }
 `;
 
 export const DropdownLabel = styled.label``;
-
-export const ChevronDownIcon = styled.img`
-  width: 20px;
-  height: 20px;
-`;
 
 export const Select = styled.select`
   background-color: white;

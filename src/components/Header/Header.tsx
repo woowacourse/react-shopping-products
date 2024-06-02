@@ -1,9 +1,9 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
-import { MainLogo, ShoppingCartIcon } from '../../assets';
-import { QuantityContext } from '../../store/QuantityContext';
+import { MainLogo, ShoppingCartIcon } from "../../assets";
+import { QuantityContext } from "../../store/QuantityContext";
 
-import * as S from './Header.style';
+import * as S from "./Header.style";
 
 function Header() {
   const quantityContext = useContext(QuantityContext);
@@ -12,9 +12,9 @@ function Header() {
   return (
     <S.HeaderBackground>
       <S.HeaderWrapper>
-        <S.MainLogo src={MainLogo} alt="메인 로고" />
+        <MainLogo />
         <S.ShoppingCartButton>
-          <S.ShoppingCartIconContainer src={ShoppingCartIcon} />
+          <ShoppingCartIcon />
           {(quantity ?? 0) > 0 && (
             <S.ShoppingCartQuantityContainer>
               <S.ShoppingCartQuantity>{quantity}</S.ShoppingCartQuantity>

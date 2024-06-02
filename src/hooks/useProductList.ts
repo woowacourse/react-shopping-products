@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { fetchProductList } from '../apis/products';
-import { PRODUCT_LIST } from '../constants/productList';
-import { Category, Product, Sort } from '../types/type';
+import { fetchProductList } from "../apis/products";
+import { PRODUCT_LIST } from "../constants/productList";
+import { Category, Product, Sort } from "../types/type";
 
 interface UseProductListResult {
   productList: Product[];
@@ -61,10 +61,12 @@ export default function useProductList({
 
   const fetchNextPage = () => {
     if (!isLastPage) {
-      setPage((prevPage) => (prevPage === 0
+      setPage((prevPage) =>
+        prevPage === 0
           ? PRODUCT_LIST.initialPageProductQuantity /
             PRODUCT_LIST.additionalPageProductQuantity
-          : prevPage + 1,);
+          : prevPage + 1,
+      );
     }
   };
 

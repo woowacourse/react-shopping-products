@@ -21,7 +21,7 @@ function ToggleCartItemButton({
       onClick={onClick}
     >
       <S.ButtonContent>
-        <S.Icon src={isInCart ? RemoveFromCartIcon : AddToCartIcon} />
+        {isInCart ? <RemoveFromCartIcon /> : <AddToCartIcon />}
         <S.Content>{isInCart ? "빼기" : "담기"}</S.Content>
       </S.ButtonContent>
     </Button>
