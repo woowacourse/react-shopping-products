@@ -20,16 +20,17 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
 
     const handleIsInCart = async () => {
       try {
-        if (isInCart) {
-          const filteredItem = cartItems.find(
-            (item) => item.product.id === product.id,
-          );
-          if (filteredItem) {
-            await deleteProductInCart(filteredItem.id);
-            refreshCartItems();
-          }
-        } else {
+        if (!isInCart) {
           await postProductInCart(product.id);
+          refreshCartItems();
+          return;
+        }
+
+        const filteredItem = cartItems.find(
+          (item) => item.product.id === product.id,
+        );
+        if (filteredItem) {
+          await deleteProductInCart(filteredItem.id);
           refreshCartItems();
         }
       } catch (error) {
