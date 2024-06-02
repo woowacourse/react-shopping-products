@@ -26,8 +26,7 @@ const FilterContainer = styled.div`
 `;
 
 function App() {
-  const { products, setCategory, setSort, fetchNextPage, error, loading } =
-    useProducts();
+  const { products, setCategory, setSort, fetchNextPage, error, loading } = useProducts();
 
   const onCategorySelect = (value: string) => {
     setCategory(value);
@@ -43,13 +42,13 @@ function App() {
           <Title content={PAGE_INFORMATION.main.title} />
           <FilterContainer>
             <Dropdown
-              size="small"
+              size='small'
               defaultContent={CATEGORY.defaultContent}
               options={CATEGORY.options}
               onSelect={onCategorySelect}
             />
             <Dropdown
-              size="small"
+              size='small'
               defaultContent={SORT.defaultContent}
               options={SORT.options}
               onSelect={onSortSelect}
@@ -58,15 +57,13 @@ function App() {
 
           <ProductList loading={loading} error={error}>
             {products.map((product, idx) => {
-              return idx + 1 !== products.length ? (
-                <ProductItem product={product} key={`${product.id}_${idx}`} />
-              ) : (
-                <IntersectionArea
-                  onImpression={fetchNextPage}
-                  key={`${product.id}_${idx}`}
-                >
+              const isLastProduct = idx + 1 === products.length;
+              return isLastProduct ? (
+                <IntersectionArea onImpression={fetchNextPage} key={`${product.id}_${idx}`}>
                   <ProductItem product={product} />
                 </IntersectionArea>
+              ) : (
+                <ProductItem product={product} key={`${product.id}_${idx}`} />
               );
             })}
           </ProductList>
