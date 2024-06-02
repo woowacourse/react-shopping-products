@@ -9,12 +9,10 @@ interface HeaderProps {
 
 function Header({ cartItemsLength, toastPosition }: HeaderProps) {
   return (
-    <>
-      <header ref={toastPosition} className={style.header}>
-        <Logo />
-        <CartBadgeButton cartItemsLength={cartItemsLength} />
-      </header>
-    </>
+    <header ref={toastPosition} className={style.header}>
+      <Logo />
+      <CartBadgeButton cartItemsLength={cartItemsLength} />
+    </header>
   );
 }
 
