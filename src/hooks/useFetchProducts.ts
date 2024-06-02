@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { fetchProducts } from '../api/products';
 import usePage from './usePage';
 import useProducts from './useProducts';
 
 import { Category, Order, Sort } from '../types/product';
-import useIntersectionObserver from './useIntersectionObserver';
+import { ToastContext } from '../context/ToastProvider';
 
 const useFetchProducts = () => {
-  const observerRef = useRef<HTMLDivElement | null>(null);
+  const { showToast } = useContext(ToastContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [isLastPage, setIsLastPage] = useState(false);
@@ -30,9 +30,11 @@ const useFetchProducts = () => {
 
       addProducts(data.content);
     } catch (error) {
-      decreasePage();
-      setError(error);
-      setTimeout(() => setError(null), 3000);
+      if (error instanceof Error) {
+        decreasePage();
+        setError(error);
+        showToast(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -70,8 +72,6 @@ const useFetchProducts = () => {
     increasePage();
   };
 
-  useIntersectionObserver(loading, observerRef, fetchNextPage, { threshold: 0.8 });
-
   return {
     products,
     loading,
@@ -82,7 +82,6 @@ const useFetchProducts = () => {
     filterByCategory,
     sort,
     setSorting,
-    observerRef,
   };
 };
 

@@ -2,15 +2,10 @@ import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
-  position: absolute;
-
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-
-  width: 23.875px;
-  height: 70%;
 `;
 
 export const LoadingContainer = styled.div`

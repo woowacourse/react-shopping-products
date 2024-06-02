@@ -1,6 +1,7 @@
+import styled from '@emotion/styled';
 import { Container } from './layouts/GlobalLayout/style';
 
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 
 import Header from './components/common/Header';
 import Main from './components/common/Main';
@@ -21,10 +22,12 @@ import { CartItemsContext } from './context/CartItemProvider';
 
 import { CATEGORIES, PRICE_SORT } from './constants/filter';
 import { Category, Order } from './types/product';
+import useIntersectionObserver from './hooks/useIntersectionObserver';
 
 function App() {
+  const observerRef = useRef<HTMLDivElement | null>(null);
   const { cartItems } = useContext(CartItemsContext);
-  const { error, category, filterByCategory, loading, products, sort, setSorting, observerRef } =
+  const { products, category, sort, loading, error, fetchNextPage, filterByCategory, setSorting } =
     useFetchProducts();
 
   const selectedCategoryOption = CATEGORIES.find(({ value }) => value === category)!.label;
@@ -37,6 +40,8 @@ function App() {
   const handlePriceSortChange = (option: Order) => {
     setSorting('price', option);
   };
+
+  useIntersectionObserver({ loading, error }, observerRef, fetchNextPage, { threshold: 0.8 });
 
   return (
     <Container>
@@ -59,18 +64,19 @@ function App() {
               optionChange={handlePriceSortChange}
             />
           </FilterContainer>
-          <ProductsContent>
-            {products.map((product) => (
-              <ProductItem
-                key={product.id}
-                cartItemId={cartItems.find((cartItem) => product.id === cartItem.product.id)?.id}
-                {...product}
-              />
-            ))}
-
+          <ProductsContentContainer>
+            <ProductsContent>
+              {products.map((product) => (
+                <ProductItem
+                  key={product.id}
+                  cartItemId={cartItems.find((cartItem) => product.id === cartItem.product.id)?.id}
+                  {...product}
+                />
+              ))}
+              <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
+            </ProductsContent>
             {loading && <Loading />}
-            <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
-          </ProductsContent>
+          </ProductsContentContainer>
         </ProductsContainer>
       </Main>
     </Container>
@@ -78,3 +84,11 @@ function App() {
 }
 
 export default App;
+
+const ProductsContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  overflow-y: scroll;
+`;
