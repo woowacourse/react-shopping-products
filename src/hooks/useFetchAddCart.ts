@@ -24,10 +24,10 @@ const useFetchAddCart = () => {
 
   const deleteToRemoveCart = async (id: number) => {
     const cartItems = await fetchCart();
-    const filteredCartItems = cartItems.find((item) => item.product.id === id);
-    if (!filteredCartItems) return;
+    const cartItemToDelete = cartItems.find((item) => item.product.id === id);
+    if (!cartItemToDelete) return;
 
-    deleteItem(filteredCartItems.id);
+    deleteItem(cartItemToDelete.id);
     const newCartIdSet = new Set(cartIdSet);
     newCartIdSet.delete(id);
     setCartIdSet(newCartIdSet);
