@@ -5,6 +5,7 @@ import {
   SUBSEQUENT_DATA_LOAD_COUNT,
   CATEGORY,
   SORT,
+  JUMP_NEXT_PAGE_IN_ZERO,
 } from '../constants';
 import { useToast } from './useToast';
 import { CategoryType, SortType } from '../type';
@@ -16,8 +17,8 @@ interface UseProductsResult {
   error: unknown;
   page: number;
   fetchNextPage: () => void;
-  changeCategory: (dropboxOption: string) => void;
-  changeSorting: (dropboxOption: string) => void;
+  changeCategory: (dropboxOption: CategoryType) => void;
+  changeSorting: (dropboxOption: SortType) => void;
 }
 
 export default function useProducts(): UseProductsResult {
@@ -30,7 +31,7 @@ export default function useProducts(): UseProductsResult {
   const [sorting, setSorting] = useState<SortType>('price_name_asc');
   const { createToast } = useToast();
 
-  const changeCategory = (category: string) => {
+  const changeCategory = (category: CategoryType) => {
     if (Object.keys(CATEGORY).includes(category)) {
       setCategory(category as CategoryType);
       setProducts([]);
@@ -38,7 +39,7 @@ export default function useProducts(): UseProductsResult {
     }
   };
 
-  const changeSorting = (sort: string) => {
+  const changeSorting = (sort: SortType) => {
     if (Object.keys(SORT).includes(sort)) {
       setSorting(sort as SortType);
       setProducts([]);
