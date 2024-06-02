@@ -32,7 +32,7 @@ export const CartItemListContext = createContext<CartItemListContextType | undef
 
 // 장바구니에 담은 상품의 개수는 100개 초과일 수 없다.
 export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
+  const [cartItemList, setCartItemList] = useState<Map<number, CartItem>>(new Map());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { showToast } = useToast();
@@ -43,7 +43,12 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
 
       const { content } = await requestCartItemList(PAGE.START, PAGE.SIZE);
 
-      setCartItemList(content);
+      const cartItemMap = new Map<number, CartItem>();
+      content.forEach((item) => {
+        cartItemMap.set(item.product.id, item);
+      });
+
+      setCartItemList(cartItemMap);
     } catch (error) {
       setError(error as Error);
     } finally {
@@ -52,7 +57,7 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addCartItem = async (productId: number) => {
-    if (cartItemList.length >= MAX_ITEM_LENGTH) {
+    if (cartItemList.size >= MAX_ITEM_LENGTH) {
       showToast(ERROR_MESSAGE.MAX_ITEM_LENGTH);
       return;
     }
@@ -71,30 +76,32 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    setCartItemList((prev) => [...prev, curCartItem]);
+    const cartItemMap = new Map<number, CartItem>(cartItemList);
+    cartItemMap.set(curCartItem.product.id, curCartItem);
+    setCartItemList(cartItemMap);
   };
 
-  const deleteCartItem = async (cartItemId: number) => {
+  const deleteCartItem = async (cartItemId: number, productId: number) => {
     try {
       await requestDeleteCartItem(cartItemId);
     } catch (error) {
       showToast(ERROR_MESSAGE.DELETE_CART_ITEM);
     }
 
-    const updatedCartItemList = cartItemList.filter(({ id }) => id !== cartItemId);
-
-    setCartItemList(updatedCartItemList);
+    const cartItemMap = new Map<number, CartItem>(cartItemList);
+    cartItemMap.delete(productId);
+    setCartItemList(cartItemMap);
   };
 
   const toggleCartItem = async (productId: number) => {
-    const cartItem = cartItemList.find(({ product }) => product.id === productId);
+    const cartItem = cartItemList.get(productId);
 
-    if (cartItem) await deleteCartItem(cartItem.id);
+    if (cartItem) await deleteCartItem(cartItem.id, productId);
     else await addCartItem(productId);
   };
 
   const isInCart = (productId: number) => {
-    return cartItemList.some(({ product }) => product.id === productId);
+    return cartItemList.has(productId);
   };
 
   useEffect(() => {
@@ -104,7 +111,7 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
   const value = useMemo(
     () => ({
       isLoading,
-      cartItemList,
+      cartItemList: Array.from(cartItemList.values()),
       toggleCartItem,
       isInCart,
       error,
