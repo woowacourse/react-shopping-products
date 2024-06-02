@@ -1,7 +1,9 @@
-import { Category, SortType, Product } from '@/types';
 import { requestGet } from '../fetcher';
 import { BASE_URL } from '../baseUrl';
-import { ENDPOINT, PRODUCT_ENDPOINT } from '../endpoints';
+import { PRODUCT_ENDPOINT } from '../endpoints';
+import { Category } from '@/types/filter.type';
+import { Product } from '@/types/product.type';
+import { SortValue } from '@/constants/filter';
 
 type ResponseProductList = {
   content: Product[];
@@ -24,7 +26,7 @@ export const requestProductList = async ({
   page: number;
   size: number;
   category: Category;
-  sortType: SortType;
+  sortType: SortValue;
 }) => {
   const queryParams: QueryParams = {
     page,

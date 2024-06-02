@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
-import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
+import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST, SortValue } from '@/constants/filter';
 import { requestProductList } from '@/apis/request/product';
 import { useToast } from './useToast';
 import { Product } from '@/types/product.type';
-import { Category, SortType } from '@/types/filter.type';
+import { Category } from '@/types/filter.type';
 
 export const PAGE = {
   START: 0,
   START_SIZE: 20,
   SIZE: 4,
+};
+
+const ERROR_MESSAGE = {
+  INVALID_SORT_TYPE: '올바른 정렬 기준이 아닙니다.',
+  INVALID_CATEGORY: '올바른 카테고리가 아닙니다.',
 };
 
 const useProductList = () => {
@@ -17,7 +22,7 @@ const useProductList = () => {
   const [page, setPage] = useState(PAGE.START - 1);
   const [totalPage, setTotalPage] = useState<number | null>(null);
 
-  const [sortType, setSortType] = useState<SortType>('asc');
+  const [sortType, setSortType] = useState<SortValue>('price,asc');
   const [category, setCategory] = useState<Category>('all');
 
   const { showToast } = useToast();
@@ -49,30 +54,33 @@ const useProductList = () => {
     getProducts();
   }, [page, sortType, category]);
 
-  const handleSortType = (value: string) => {
-    const sortType = FILTER_OPTION_LIST.find((sortOptionItem) => sortOptionItem.value === value);
+  const handleSortType = (sortValue: SortValue) => {
+    const sortType = FILTER_OPTION_LIST.find(
+      (sortOptionItem) => sortOptionItem.value === sortValue,
+    );
 
     if (!sortType) {
-      showToast('올바른 정렬 기준이 아닙니다.');
-
+      showToast(ERROR_MESSAGE.INVALID_SORT_TYPE);
       return;
     }
 
-    setSortType(sortType.value);
-    setPage(PAGE.START);
-    setProductList([]);
+    setSortType(sortValue);
+    resetPage();
   };
 
   const handleCategory = (value: string) => {
     const category = CATEGORY_OPTION_LIST.find((categoryItem) => categoryItem.value === value);
 
     if (!category) {
-      showToast('올바른 카테고리가 아닙니다.');
-
+      showToast(ERROR_MESSAGE.INVALID_CATEGORY);
       return;
     }
 
     setCategory(category.value);
+    resetPage();
+  };
+
+  const resetPage = () => {
     setPage(PAGE.START);
     setProductList([]);
   };

@@ -2,6 +2,7 @@ import useProductList, { PAGE } from './useProductList';
 import { waitFor, renderHook, act } from '@testing-library/react';
 import { ChangeEvent } from 'react';
 import ToastProvider from './useToast';
+import { SortValue } from '@/constants/filter';
 
 describe('useProductList', () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -68,9 +69,9 @@ describe('useProductList', () => {
   });
 
   describe('필터 변경 발생', () => {
-    it('정렬 기준이 바뀌면 1페이지부터 다시 받아온다.', async () => {
+    it(`정렬 기준이 바뀌면 ${PAGE.START}페이지부터 다시 받아온다.`, async () => {
       const { result } = renderHook(() => useProductList(), { wrapper });
-
+      const sortValue: SortValue = 'price,desc';
       act(() => {
         result.current.fetchNextPage();
         result.current.fetchNextPage(); // 연속 페치가 될 지 확신 없음
@@ -83,11 +84,11 @@ describe('useProductList', () => {
       act(() => {
         const event = {
           target: {
-            value: 'desc',
+            value: sortValue,
           },
         } as ChangeEvent<HTMLSelectElement>;
 
-        result.current.handleSortType(event.target.value);
+        result.current.handleSortType(event.target.value as SortValue);
       });
 
       await waitFor(() => {
@@ -95,7 +96,7 @@ describe('useProductList', () => {
       });
     });
 
-    it('카테고리가 바뀌면 1페이지부터 다시 받아온다.', async () => {
+    it(`카테고리가 바뀌면 ${PAGE.START}페이지부터 다시 받아온다.`, async () => {
       const { result } = renderHook(() => useProductList(), { wrapper });
 
       const targetCategory = 'electronics';
