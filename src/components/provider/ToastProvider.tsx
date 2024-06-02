@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode } from "react";
-import { SuccessToastComponent, FailToastComponent } from "./Toasts";
+import { SuccessToastComponent, FailToastComponent } from "../common/Toasts";
 
 type ToastContextType = {
   failAlert: (message: string) => void;

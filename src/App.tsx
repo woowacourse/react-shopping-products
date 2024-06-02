@@ -1,5 +1,5 @@
-import { ToggleCartItemProvider } from "./components/ToggleCartItemProvider";
-import { ToastProvider } from "./components/Toasts/ToastProvider";
+import { ToggleCartItemProvider } from "./components/provider/ToggleCartItemProvider";
+import { ToastProvider } from "./components/provider/ToastProvider";
 import Mall from "./pages/Mall";
 
 function App() {

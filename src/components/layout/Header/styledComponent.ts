@@ -1,7 +1,5 @@
-import COLOR_PALETTE from "../style/colorPalette";
-import CartIcon from "./icons/CartIcon";
-import Logo from "./icons/Logo";
 import styled from "@emotion/styled";
+import COLOR_PALETTE from "../../../style/colorPalette";
 
 const S = {
   HeaderContainer: styled.div`
@@ -51,16 +49,4 @@ const S = {
   `,
 };
 
-function Header({ itemCount }: { itemCount: number }) {
-  return (
-    <S.HeaderContainer>
-      <Logo />
-      <S.CartButton>
-        <CartIcon />
-        {itemCount > 0 && <S.ItemCount>{itemCount}</S.ItemCount>}
-      </S.CartButton>
-    </S.HeaderContainer>
-  );
-}
-
-export default Header;
+export default S;

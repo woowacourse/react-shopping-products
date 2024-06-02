@@ -1,26 +1,14 @@
 import { PropsWithChildren, useEffect, useRef } from "react";
 
-import LoadingDots from "./LoadingDots";
+import LoadingDots from "../../common/LoadingDots";
+import S from "./styledComponent";
 
-import styled from "@emotion/styled";
-
-interface InfiniteProductsScrollComponentProps extends PropsWithChildren {
+interface InfiniteScrollProps extends PropsWithChildren {
   isLoading: boolean;
   handleScroll: () => void;
 }
 
-const S = {
-  FallbackContainer: styled.div`
-    width: calc(183px * 2 + 16px);
-    margin: 16px 0;
-  `,
-};
-
-const InfiniteProductsScrollComponent = ({
-  children,
-  isLoading,
-  handleScroll,
-}: InfiniteProductsScrollComponentProps) => {
+const InfiniteScroll = ({ children, isLoading, handleScroll }: InfiniteScrollProps) => {
   const loaderRef = useRef(null);
 
   useEffect(() => {
@@ -58,4 +46,4 @@ const InfiniteProductsScrollComponent = ({
   );
 };
 
-export default InfiniteProductsScrollComponent;
+export default InfiniteScroll;

@@ -1,7 +1,6 @@
-import React from "react";
-import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import COLOR_PALETTE from "../style/colorPalette";
+import styled from "@emotion/styled";
+import COLOR_PALETTE from "../../../style/colorPalette";
 
 const blink = keyframes`
   0%, 100% { opacity: 0.2; }
@@ -38,18 +37,4 @@ const S = {
   `,
 };
 
-interface LoadingDotsProps {
-  type?: "black" | "white";
-}
-
-const LoadingDots: React.FC<LoadingDotsProps> = ({ type = "black" }) => {
-  return (
-    <S.Container>
-      <S.Dot type={type} />
-      <S.Dot type={type} />
-      <S.Dot type={type} />
-    </S.Container>
-  );
-};
-
-export default LoadingDots;
+export default S;
