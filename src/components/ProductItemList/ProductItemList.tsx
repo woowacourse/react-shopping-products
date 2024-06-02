@@ -1,13 +1,15 @@
 import { useContext, useEffect, useRef } from "react";
+
 import { QuantityContext } from "../../store/QuantityContext";
 import useProductList from "../../hooks/useProductList";
 import useCartItemList from "../../hooks/useCartItemList";
 import ProductItem from "../ProductItem/ProductItem";
-import * as S from "./ProductItemList.style";
 import { Category } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import Spinner from "../common/Spinner/Spinner";
+
+import * as S from "./ProductItemList.style";
 
 interface ProductItemListProp {
   category: Category;

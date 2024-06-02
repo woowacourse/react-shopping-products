@@ -1,6 +1,7 @@
 import { Category } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import Dropdown from "../common/Dropdown/Dropdown";
+
 import * as S from "./DropdownContainer.style";
 
 interface DropdownContainerProps {

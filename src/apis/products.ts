@@ -1,5 +1,6 @@
 import { Category } from "../interfaces/Product";
 import { Sorting } from "../interfaces/Sorting";
+
 import { PRODUCTS_ENDPOINT, token } from "./config";
 
 export async function fetchProductList(

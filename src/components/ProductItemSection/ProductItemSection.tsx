@@ -1,9 +1,11 @@
 import { useState } from "react";
+
 import DropdownContainer from "../DropdownContainer/DropdownContainer";
-import * as S from "./ProductItemSection.style";
 import { Category } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import ProductItemList from "../ProductItemList/ProductItemList";
+
+import * as S from "./ProductItemSection.style";
 interface ProductItemSectionProps {
   onError: (error: string) => void;
 }

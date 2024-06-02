@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
+
 import Header from "./components/Header/Header";
 import Product from "./pages/Product";
 import GlobalStyles from "./styles/Global.style";
 import Toast from "./components/common/Toast/Toast";
 import { QuantityContext } from "./store/QuantityContext";
-import { createPortal } from "react-dom";
 
 function App() {
   const [quantity, setQuantity] = useState(0);

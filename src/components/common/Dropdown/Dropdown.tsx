@@ -1,4 +1,5 @@
 import chevronDown from "../../../assets/images/chevronDown.svg";
+
 import * as S from "./Dropdown.style";
 
 interface DropdownProps {

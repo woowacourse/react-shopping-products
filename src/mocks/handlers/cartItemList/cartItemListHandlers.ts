@@ -2,6 +2,7 @@ import { http, HttpResponse } from "msw";
 
 import { CART_ITEMS_ENDPOINT } from "../../../apis/config";
 import productListData from "../productList/defaultData.json";
+
 import cartItemListData from "./defaultData.json";
 
 const mockCartItemList = cartItemListData;

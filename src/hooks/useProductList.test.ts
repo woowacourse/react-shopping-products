@@ -1,15 +1,15 @@
 import { http, HttpResponse } from "msw";
 import { act } from "react";
-
 import { renderHook, waitFor } from "@testing-library/react";
 
 import { PRODUCTS_ENDPOINT } from "../apis/config";
 import expectedDefaultParamsData from "../mocks/handlers/productList/expectedDefaultParamsData.json";
 import expectedFitnessPriceDescData from "../mocks/handlers/productList/expectedFitnessPriceDescData.json";
 import { server } from "../mocks/server";
-import useProductList from "./useProductList";
 import { Category } from "../interfaces/Product";
 import { Sorting } from "../interfaces/Sorting";
+
+import useProductList from "./useProductList";
 
 describe("useProductList", () => {
   describe("상품 목록 조회", () => {

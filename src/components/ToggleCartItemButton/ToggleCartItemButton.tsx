@@ -1,5 +1,6 @@
 import { AddToCartIcon, RemoveFromCartIcon } from "../../assets";
 import Button from "../common/Button/Button";
+
 import * as S from "./ToggleCartItemButton.style";
 
 interface ToggleCartItemButtonProps {

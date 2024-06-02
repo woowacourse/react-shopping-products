@@ -1,7 +1,9 @@
 import { useContext } from "react";
+
 import { MainLogo, ShoppingCartIcon } from "../../assets";
-import * as S from "./Header.style";
 import { QuantityContext } from "../../store/QuantityContext";
+
+import * as S from "./Header.style";
 
 function Header() {
   const quantityContext = useContext(QuantityContext);

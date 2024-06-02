@@ -1,4 +1,5 @@
 import { generateBasicToken } from "../util/auth";
+
 import { CART_ITEMS_ENDPOINT } from "./config";
 
 const USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;

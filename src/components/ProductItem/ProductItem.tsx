@@ -1,6 +1,7 @@
 import { Product } from "../../interfaces/Product";
 import ProductItemTitle from "../ProductItemTitle/ProductItemTitle";
 import ToggleCartItemButton from "../ToggleCartItemButton/ToggleCartItemButton";
+
 import * as S from "./ProductItem.style";
 
 interface ProductItemProps {

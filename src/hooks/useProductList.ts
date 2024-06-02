@@ -1,9 +1,10 @@
-import { Sorting } from "./../interfaces/Sorting";
 import { useEffect, useState } from "react";
 
 import { fetchProductList } from "../apis/products";
 import { PRODUCT_LIST } from "../constants/productList";
 import { Category, Product } from "../interfaces/Product";
+
+import { Sorting } from "./../interfaces/Sorting";
 
 interface UseProductListResult {
   productList: Product[];
