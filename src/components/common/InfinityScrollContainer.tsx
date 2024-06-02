@@ -22,9 +22,7 @@ const InfinityScrollContainer = ({
       }
     };
 
-    const options = {
-      rootMargin: '0px 0px 30% 0px',
-    };
+    const options = {};
 
     const io = new IntersectionObserver(onIntersect, options);
 
