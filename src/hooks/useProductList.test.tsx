@@ -55,14 +55,14 @@ describe('useProductList', () => {
 
       await waitFor(() => {
         expect(result.current.productList).toHaveLength(PAGE.START_SIZE);
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(PAGE.START);
       });
 
       act(() => result.current.fetchNextPage());
 
       await waitFor(() => {
         expect(result.current.productList).toHaveLength(PAGE.START_SIZE + PAGE.SIZE);
-        expect(result.current.page).toBe(2);
+        expect(result.current.page).toBe(PAGE.START + 1);
       });
     });
   });
@@ -77,7 +77,7 @@ describe('useProductList', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(2);
+        expect(result.current.page).toBe(PAGE.START + 1);
       });
 
       act(() => {
@@ -91,7 +91,7 @@ describe('useProductList', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(PAGE.START);
       });
     });
 
@@ -106,7 +106,7 @@ describe('useProductList', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(2);
+        expect(result.current.page).toBe(PAGE.START + 1);
       });
 
       act(() => {
@@ -120,7 +120,7 @@ describe('useProductList', () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(1);
+        expect(result.current.page).toBe(PAGE.START);
         expect(
           result.current.productList.every(({ category }) => category === targetCategory),
         ).toBe(true);

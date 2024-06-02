@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
-import { Category, SortType, Product } from '@/types';
 import { requestProductList } from '@/apis/request/product';
 import { useToast } from './useToast';
+import { Product } from '@/types/product.type';
+import { Category, SortType } from '@/types/filter.type';
 
 export const PAGE = {
-  START: 1,
+  START: 0,
   START_SIZE: 20,
   SIZE: 4,
 };
@@ -13,7 +14,7 @@ export const PAGE = {
 const useProductList = () => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(PAGE.START - 1);
   const [totalPage, setTotalPage] = useState<number | null>(null);
 
   const [sortType, setSortType] = useState<SortType>('asc');
@@ -22,18 +23,19 @@ const useProductList = () => {
   const { showToast } = useToast();
 
   useEffect(() => {
-    if (page === 0) return;
+    if (page === -1) return;
 
     const getProducts = async () => {
       try {
         setLoading(true);
-        const size = page === 1 ? PAGE.START_SIZE : PAGE.SIZE;
+        const size = page === PAGE.START ? PAGE.START_SIZE : PAGE.SIZE;
         const { paginatedProducts, totalPages: curTotalPage } = await requestProductList({
           page,
           category,
           sortType,
           size,
         });
+
         if (curTotalPage !== totalPage) setTotalPage(curTotalPage);
 
         setProductList((prevProducts) => [...prevProducts, ...paginatedProducts]);
