@@ -54,17 +54,15 @@ const useProductList = () => {
     getProducts();
   }, [page, sortType, category]);
 
-  const handleSortType = (sortValue: SortValue) => {
-    const sortType = FILTER_OPTION_LIST.find(
-      (sortOptionItem) => sortOptionItem.value === sortValue,
-    );
+  const handleSortType = (sortValue: string) => {
+    const sortType = FILTER_OPTION_LIST.find((sortOption) => sortOption.value === sortValue);
 
     if (!sortType) {
       showToast(ERROR_MESSAGE.INVALID_SORT_TYPE);
       return;
     }
 
-    setSortType(sortValue);
+    setSortType(sortType.value);
     resetPage();
   };
 
