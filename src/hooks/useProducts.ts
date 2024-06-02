@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { fetchProducts } from '../api/index';
 import {
   INITIAL_DATA_LOAD_COUNT,
@@ -45,32 +45,33 @@ export default function useProducts(): UseProductsResult {
       setPage(0);
     }
   };
+  const getProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const limit =
+        page === 0 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
+      const data = await fetchProducts(page, limit, category, sorting);
+
+      if (data.last) {
+        setIsLast(true);
+      }
+
+      setProducts((prevProducts) => [...prevProducts, ...data.content]);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error);
+        createToast(
+          '⛔️ 장바구니 상품을 가져오는데 실패했습니다. 다시 시도해 주세요.',
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [category, sorting, page, createToast]);
 
   useEffect(() => {
-    const getProducts = async () => {
-      setLoading(true);
-      try {
-        const limit =
-          page === 0 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
-        const data = await fetchProducts(page, limit, category, sorting);
-
-        if (data.last) {
-          setIsLast(true);
-        }
-
-        setProducts((prevProducts) => [...prevProducts, ...data.content]);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error);
-          createToast('⛔️ 장바구니 상품을 가져오는데 실. 다시 시도해 주세요.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
     getProducts();
-  }, [page, category, sorting, createToast]);
+  }, [page, category, sorting, createToast, getProducts]);
 
   const fetchNextPage = () => {
     setPage((prevPage) => {
