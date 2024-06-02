@@ -1,7 +1,5 @@
 import * as S from './style';
 
-import { useEffect, useState } from 'react';
-
 import useCartItems from '../../hooks/useCartItems';
 
 import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
@@ -15,26 +13,18 @@ interface ProductItemProps {
 
 const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
   const { cartItems, addCartItem, deleteCartItem } = useCartItems();
-  const [isInCart, setIsInCart] = useState(false);
 
   const cartItem = cartItems.find(({ product }) => id === product.id);
-
-  useEffect(() => {
-    if (cartItem) {
-      setIsInCart(true);
-    }
-  }, [cartItems]);
+  const isInCart = !!cartItem;
 
   const TOGGLE_BUTTON_ICON = isInCart ? REMOVE_TO_CART : ADD_TO_CART;
   const BUTTON_TEXT = isInCart ? '빼기' : '담기';
 
   const handleOnToggle = () => {
-    if (cartItem && isInCart) {
+    if (cartItem) {
       deleteCartItem(cartItem.id);
-      setIsInCart(false);
     } else {
       addCartItem(id);
-      setIsInCart(true);
     }
   };
 
