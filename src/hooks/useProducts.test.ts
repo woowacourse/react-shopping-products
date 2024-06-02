@@ -22,7 +22,7 @@ describe("useProducts", () => {
       });
     });
 
-    it("상품 목록 조회 중 로딩 상태", async () => {
+    it("상품 목록 조회 중일 경우 로딩 상태가 된다.", async () => {
       const { result } = renderHook(() => useProducts(initialParams), {
         wrapper: ErrorProvider,
       });
@@ -32,7 +32,7 @@ describe("useProducts", () => {
       });
     });
 
-    it("상품 목록 조회 중 에러 상태", async () => {
+    it("상품 목록 조회 중 에러가 발생할 경우 error의 값은 true가 된다.", async () => {
       server.use(
         http.get(PRODUCTS_ENDPOINT, () => {
           return new HttpResponse(null, { status: 500 });
@@ -61,7 +61,7 @@ describe("useProducts", () => {
   });
 
   describe("페이지네이션", () => {
-    it("초기에 첫 페이지의 상품 20개를 불러온다", async () => {
+    it("초기에 첫 페이지의 상품 20개를 불러온다.", async () => {
       const { result } = renderHook(
         () => {
           const { products } = useProducts(initialParams);
@@ -79,7 +79,7 @@ describe("useProducts", () => {
       });
     });
 
-    it("다음 페이지의 상품 4개를 추가로 불러온다", async () => {
+    it("다음 페이지의 상품 4개를 추가로 불러온다.", async () => {
       const { result } = renderHook(
         () => {
           const { page, resetPage, nextPage } = usePagination();
