@@ -10,9 +10,7 @@ export interface CartItem {
 
 export const getCartItems = async () => {
   const cartItems = await cartClient.get<{ content: CartItem[] }>(API_URL.cartItems);
-  return {
-    data: cartItems.content,
-  };
+  return cartItems.content;
 };
 
 export const addCartItem = async (productId: number, quantity: number) => {

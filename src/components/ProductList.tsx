@@ -1,24 +1,26 @@
-import styled from "styled-components";
-import ProductItem from "./ProductItem";
-import Select from "./common/Select";
-import ShopHeader from "./ShopHeader";
-import useProducts from "../hooks/useProducts";
-import { ErrorToastContext } from "../store/errorToastContext";
 import { useContext, useEffect } from "react";
-import {
-  CATEGORY_OPTIONS,
-  CATEGORY_SELECT_OPTIONS,
-  PRICE_SORT_SELECT_OPTIONS,
-  SORT_OPTIONS,
-} from "../constants/products";
-import { isIncludedInList } from "../utils/isIncludedInList";
-import { Category, SortOption } from "../types/products";
+import styled from "styled-components";
+
+import ProductItem from "./ProductItem";
+import ShopHeader from "./ShopHeader";
+import Select from "./common/Select";
 import LoadingSpinner from "./common/LoadingSpinner";
 import { IntersectionDetector } from "./common/IntersectionDetector";
 
+import { useInfiniteProducts } from "../hooks/useInfiniteProducts";
+import { ErrorToastContext } from "../store/errorToastContext";
+import {
+  CATEGORY_OPTIONS,
+  SORT_OPTIONS,
+  CATEGORY_SELECT_OPTIONS,
+  PRICE_SORT_SELECT_OPTIONS,
+} from "../constants/products";
+import { isIncludedInList } from "../utils/isIncludedInList";
+import { Category, SortOption } from "../types/products";
+
 const ProductList = () => {
-  const { products, loading, error, fetchNextPage, resetPage, setCategoryFilter, setPriceSort } =
-    useProducts();
+  const { products, isLoading, error, fetchNextPage, changeCategoryFilter, changePriceSort } =
+    useInfiniteProducts();
   const { showErrorToast } = useContext(ErrorToastContext);
 
   useEffect(() => {
@@ -28,17 +30,14 @@ const ProductList = () => {
   }, [error]);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!loading && isIncludedInList<Category>(e.target.value, Object.values(CATEGORY_OPTIONS))) {
-      resetPage();
-      setCategoryFilter(e.target.value);
+    if (isIncludedInList<Category>(e.target.value, Object.values(CATEGORY_OPTIONS))) {
+      changeCategoryFilter(e.target.value);
     }
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    if (!loading && isIncludedInList<SortOption>(value, Object.values(SORT_OPTIONS))) {
-      resetPage();
-      setPriceSort(value);
+    if (isIncludedInList<SortOption>(e.target.value, Object.values(SORT_OPTIONS))) {
+      changePriceSort(e.target.value);
     }
   };
 
@@ -62,7 +61,7 @@ const ProductList = () => {
                 imageUrl={imageUrl}
               />
             ))}
-            {loading && <LoadingSpinner />}
+            {isLoading && <LoadingSpinner />}
             <IntersectionDetector onIntersected={fetchNextPage} />
           </S.ItemContainer>
         </S.ShopBody>
