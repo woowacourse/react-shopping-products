@@ -1,6 +1,4 @@
 import { CartItem, Product } from '@appTypes/index';
-import { CartItemsContext } from '@contexts/index';
-import { useTargetContext } from '@hooks/index';
 
 import CartActionButton from '../CartActionButton';
 
@@ -12,14 +10,7 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product, cartItems }: ProductCardProps) {
-  const { handleCartAction } = useTargetContext(CartItemsContext);
-
   const cartItem = cartItems.find((item) => item.product.id === product.id);
-  const isInCart = cartItem !== undefined;
-
-  const handleCartActionButtonClick = () => {
-    handleCartAction({ isInCart, productId: product.id, cartItem });
-  };
 
   return (
     <li className={style.productCard}>
@@ -27,7 +18,7 @@ function ProductCard({ product, cartItems }: ProductCardProps) {
       <div className={style.contents}>
         <p className="product-name">{product.name}</p>
         <p className="text">{product.price.toLocaleString()}원</p>
-        <CartActionButton buttonType={isInCart ? 'delete' : 'add'} onClick={handleCartActionButtonClick} />
+        <CartActionButton cartItem={cartItem!} productId={product.id} />
       </div>
     </li>
   );
