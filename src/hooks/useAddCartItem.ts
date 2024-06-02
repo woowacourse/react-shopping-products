@@ -1,12 +1,22 @@
 import { fetchPostCartItems } from '@apis/index';
-import useFetch from './useFetch';
+import { useState } from 'react';
 
 const useAddCartItem = (refetch: () => Promise<void>) => {
-  const { fetch, loading, error } = useFetch<typeof fetchPostCartItems>(fetchPostCartItems);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>('');
 
   const addCartItem = async (productId: number) => {
-    await fetch({ productId });
-    await refetch();
+    try {
+      setLoading(true);
+      await fetchPostCartItems({ productId });
+      await refetch();
+      setError('');
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return {

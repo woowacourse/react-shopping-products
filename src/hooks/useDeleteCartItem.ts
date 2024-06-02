@@ -1,15 +1,25 @@
 import { fetchDeleteCartItems } from '@apis/index';
-import useFetch from './useFetch';
 import { CartItem } from '@src/appTypes';
+import { useState } from 'react';
 
-const useAddCartItem = (refetch: () => Promise<void>) => {
-  const { fetch, loading, error } = useFetch<typeof fetchDeleteCartItems>(fetchDeleteCartItems);
+const useDeleteCartItem = (refetch: () => Promise<void>) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>('');
 
   const deleteCarItem = async (cartItem: CartItem | undefined) => {
     if (!cartItem) return;
 
-    await fetch({ cartItemId: cartItem.id });
-    await refetch();
+    try {
+      setLoading(true);
+      await fetchDeleteCartItems({ cartItemId: cartItem.id });
+      await refetch();
+      setError('');
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
   return {
     deleteCarItem,
@@ -18,4 +28,4 @@ const useAddCartItem = (refetch: () => Promise<void>) => {
   };
 };
 
-export default useAddCartItem;
+export default useDeleteCartItem;
