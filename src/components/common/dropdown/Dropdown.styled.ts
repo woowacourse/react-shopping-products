@@ -14,12 +14,11 @@ interface SelectedTextProps {
 }
 
 export const SelectBox = styled.div<SelectProps>`
-  width: 100%;
   position: relative;
 
-  padding: 12px 8px;
-  border-radius: 8px;
-  align-self: center;
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.5rem;
   border: 1px solid ${(props) => (props.$isOpen ? 'black' : '#acacac')};
 
   background-color: #ffffff;
@@ -36,10 +35,11 @@ export const LabelWrapper = styled.div`
 `;
 
 export const SelectedText = styled.span<SelectedTextProps>`
-  margin-left: 4px;
+  margin-left: 0.25rem;
 
   text-align: center;
-  font-size: 14px;
+  font-size: 0.875rem;
+
   user-select: none;
   cursor: pointer;
 `;
@@ -48,28 +48,27 @@ export const SelectOptions = styled.ul<OptionProps>`
   position: absolute;
   top: 45px;
   left: 0;
+
   width: 100%;
   height: ${(props) => (props.$isOpen ? `${38 * props.$count}px` : '0')};
-
   border: 1px solid ${(props) => (props.$isOpen ? '#acacac' : 'none')};
-  border-radius: 8px;
+  border-radius: 0.5rem;
 
   background-color: white;
 
-  list-style: none;
-  overflow: hidden;
-
   color: black;
 
+  list-style: none;
+  overflow: hidden;
   transition: height 0.3s;
   user-select: none;
 `;
 
 export const Option = styled.li`
-  padding: 12px;
+  padding: 0.75rem;
 
   color: #4f4f4f;
-  font-size: 14px;
+  font-size: 0.875rem;
 
   transition: background-color 0.1s ease-in;
   &:hover {
