@@ -9,12 +9,12 @@ import { useObserver } from '@/hooks/useObserver';
 import styles from './ProductListPage.module.css';
 import CartIcon from '@/components/CartIcon/CartIcon';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
-import DropdownUl from '@/components/DropdownUl/DropdownUl';
+import Dropdown from '@/components/Dropdown/Dropdown';
 
 export default function ProductListPage() {
   const { productList, handleCategory, handleSortType, loading, fetchNextPage } = useProductList();
 
-  let bottom = useRef(null);
+  const bottom = useRef(null);
 
   const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
     !loading && entry.isIntersecting && fetchNextPage();
@@ -37,12 +37,12 @@ export default function ProductListPage() {
             direction={'row'}
             style={{ justifyContent: 'space-between', marginTop: '24px' }}
           >
-            <DropdownUl
+            <Dropdown
               optionList={CATEGORY_OPTION_LIST}
               bannerText="전체"
               onChange={handleCategory}
             />
-            <DropdownUl
+            <Dropdown
               optionList={FILTER_OPTION_LIST}
               bannerText="낮은 가격순"
               onChange={handleSortType}
