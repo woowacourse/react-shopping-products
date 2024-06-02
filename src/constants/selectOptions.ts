@@ -1,4 +1,4 @@
-import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../api/products/productQueryParams";
+import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../api/products/constants";
 
 export const PRICE_SORT_SELECT_OPTIONS = [
   { value: SORT_OPTIONS.asc, label: "낮은 가격순" },

@@ -1,4 +1,4 @@
-import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../api/products/productQueryParams";
+import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../api/products/constants";
 
 export type SortOption = (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS];
 

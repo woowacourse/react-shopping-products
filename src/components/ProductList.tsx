@@ -12,7 +12,7 @@ import { ErrorToastContext } from "../store/errorToastContext";
 import { CATEGORY_SELECT_OPTIONS, PRICE_SORT_SELECT_OPTIONS } from "../constants/selectOptions";
 import { isIncludedInList } from "../utils/isIncludedInList";
 import { Category, SortOption } from "../types/products";
-import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../api/products/productQueryParams";
+import { CATEGORY_OPTIONS, SORT_OPTIONS } from "../api/products/constants";
 
 const ProductList = () => {
   const { products, isLoading, error, fetchNextPage, updateCategoryFilter, updatePriceSort } =
