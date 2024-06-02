@@ -38,6 +38,7 @@ const useProducts = () => {
   const reset = () => {
     resetPage();
     setProducts([]);
+    setIsLastPage(false);
   };
 
   const handleCategoryChange = (selectedCategory: Category) => {
@@ -47,10 +48,10 @@ const useProducts = () => {
     }
   };
 
-  const handlePriceOrderChange = (order: Order) => {
-    if (priceOrder !== order) {
+  const handlePriceOrderChange = (selectedPriceOrder: Order) => {
+    if (selectedPriceOrder !== priceOrder) {
       reset();
-      setPriceOrder(order);
+      setPriceOrder(selectedPriceOrder);
     }
   };
 
