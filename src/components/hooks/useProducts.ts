@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
-import {
-  INITIAL_PAGING_SIZE,
-  PAGING_SIZE,
-  START_PAGE_NUMBER,
-} from '../../constants/api';
+import { INITIAL_PAGING_SIZE, PAGING_SIZE, START_PAGE_NUMBER } from '../../constants/api';
 import useFetch from './useFetch';
 import { Product } from '../../types';
 
@@ -49,9 +45,7 @@ export default function useProducts(): UseProductsResult {
       const { last, content } = response;
 
       setIsLastPage(last);
-      setProducts((prevProducts) =>
-        page === START_PAGE_NUMBER ? content : [...prevProducts, ...content]
-      );
+      setProducts((prevProducts) => (page === START_PAGE_NUMBER ? content : [...prevProducts, ...content]));
     });
   }, [page, sort, category]);
 
@@ -68,11 +62,10 @@ export default function useProducts(): UseProductsResult {
   }, [category, sort]);
 
   const fetchNextPage = () => {
-    if (!isLastPage) {
-      if (page === START_PAGE_NUMBER)
-        setPage(page + INITIAL_PAGING_SIZE / PAGING_SIZE);
-      else setPage(page + 1);
-    }
+    if (isLastPage) return;
+
+    if (page === START_PAGE_NUMBER) setPage(page + INITIAL_PAGING_SIZE / PAGING_SIZE);
+    else setPage(page + 1);
   };
 
   return {
