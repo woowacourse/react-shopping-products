@@ -1,13 +1,14 @@
 import { Category } from "../interfaces/Product";
 import { Sorting } from "../interfaces/Sorting";
 
-import { PRODUCTS_ENDPOINT, token } from "./config";
+import { PRODUCTS_ENDPOINT } from "./config";
+import response from "./response";
 
 export async function fetchProductList(
   page: number,
   limit: number,
   category?: Category,
-  sortOption: Sorting = "price%2Casc" as Sorting
+  sortOption: Sorting = "price%2Casc" as Sorting,
 ) {
   const requiredQuery = `page=${page}&size=${limit}`;
 
@@ -15,21 +16,11 @@ export async function fetchProductList(
 
   const sortOptionQuery = sortOption ? `sort=${sortOption}` : "";
 
-  const response = await fetch(
-    `${PRODUCTS_ENDPOINT}?${categoryQuery}${requiredQuery}&${sortOptionQuery}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    }
-  );
+  const data = await response({
+    url: `${PRODUCTS_ENDPOINT}?${categoryQuery}${requiredQuery}&${sortOptionQuery}`,
+    method: "GET",
+    errorMessage: "상품목록을 불러오는데 실패했어요..",
+  });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch products");
-  }
-
-  const data = await response.json();
   return data;
 }
