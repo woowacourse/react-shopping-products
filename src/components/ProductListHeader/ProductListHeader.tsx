@@ -12,7 +12,7 @@ const ProductListHeader = ({
 }: ProductListHeaderProps) => {
   return (
     <PLH.Header>
-      <h2>bpple 상품 목록</h2>
+      <PLH.Title>bpple 상품 목록</PLH.Title>
       <PLH.SelectBoxGroup>
         <PLH.SelectBox
           name=""
