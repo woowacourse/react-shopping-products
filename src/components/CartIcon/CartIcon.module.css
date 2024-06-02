@@ -1,0 +1,29 @@
+.container {
+  position: relative;
+}
+
+.cartIcon {
+  cursor: pointer;
+}
+
+.amountContainer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 19px;
+  height: 19px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.amount {
+  color: black;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 12.19px;
+  text-align: left;
+  margin-top: 2px;
+}

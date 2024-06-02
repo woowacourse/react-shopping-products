@@ -1,0 +1,19 @@
+.toast {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  width: 472px;
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 16px;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #f5c6cb;
+  z-index: 1000;
+  transform: translateX(-50%);
+}
+
+.toast.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}

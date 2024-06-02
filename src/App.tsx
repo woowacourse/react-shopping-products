@@ -1,12 +1,15 @@
-import { useState } from "react";
+import './reset.css';
+import ToastContainer from './components/common/Toast/ToastContainer';
+import ProductListPage from './pages/ProductListPage';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ width: '472px' }}>
+        <ProductListPage />
+        <ToastContainer />
+      </div>
+    </div>
   );
 }
 
