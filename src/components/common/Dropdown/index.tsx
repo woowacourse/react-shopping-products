@@ -32,7 +32,7 @@ const Dropdown = ({ optionArray, selectedOption, optionChange }: DropdownProps) 
   return (
     <S.Dropdown $isOpen={isOpen}>
       <S.Select onClick={handleToggleDropdown}>
-        <p>{selectedOption}</p>
+        <span>{selectedOption}</span>
         <S.ArrowImage src={DROPDOWN_ICON} alt="열고 닫기 화살표" />
       </S.Select>
       {isOpen && <S.Options>{options}</S.Options>}
