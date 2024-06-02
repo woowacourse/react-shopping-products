@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { Global } from '@emotion/react';
+import ProductPage from '@pages/ProductPage/ProductPage';
+import { resetCSS } from '@styles/resetCSS';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <Global styles={resetCSS} />
+      <ProductPage />
     </>
   );
 }
