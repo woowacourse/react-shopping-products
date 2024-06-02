@@ -1,18 +1,19 @@
-import { CATEGORY, CATEGORY_LIST } from "../constants/category";
-import { SORT, SORT_LIST } from "../constants/sort";
+import { useEffect } from "react";
+import { Global } from "@emotion/react";
+import styled from "@emotion/styled";
+
+import { baseStyle } from "../style/baseStyle";
+
+import useProducts from "../hooks/useProducts";
+import useCustomContext from "../hooks/useCustomContext";
+import useToggleCartItem from "../hooks/useToggleCartItem";
 
 import Dropdown from "../components/Dropdown";
-import { Global } from "@emotion/react";
 import Header from "../components/Header";
 import InfiniteScrollComponent from "../components/InfiniteProductsScrollComponent";
 import MainTitle from "../components/MainTitle";
-import { baseStyle } from "../style/baseStyle";
-import styled from "@emotion/styled";
-import useProducts from "../hooks/useProducts";
-import useToggleCartItem from "../hooks/useToggleCartItem";
-import useCustomContext from "../hooks/useCustomContext";
 import { ToastContext } from "../components/Toasts/ToastProvider";
-import { useEffect } from "react";
+import { PRODUCT_CATEGORY, PRODUCT_SORT } from "../constants/mall";
 
 const S = {
   MainMall: styled.div`
@@ -22,10 +23,12 @@ const S = {
     flex-direction: column;
     gap: 24px;
   `,
+
   Toolbar: styled.div`
     display: flex;
     justify-content: space-between;
   `,
+
   ProductList: styled.div`
     display: grid;
     grid-template-columns: repeat(2, 183px);
@@ -73,8 +76,8 @@ const Mall = () => {
       <S.MainMall>
         <MainTitle>러기의 쇼핑몰</MainTitle>
         <S.Toolbar>
-          <Dropdown options={CATEGORY_LIST} engToKor={CATEGORY} handleChange={handleCategoryChange} />
-          <Dropdown options={SORT_LIST} engToKor={SORT} handleChange={handleSortChange} />
+          <Dropdown options={PRODUCT_CATEGORY} handleChange={handleCategoryChange} />
+          <Dropdown options={PRODUCT_SORT} handleChange={handleSortChange} />
         </S.Toolbar>
         <S.ProductList>
           <InfiniteScrollComponent
