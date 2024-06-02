@@ -1,6 +1,6 @@
-import { CartItem } from '@/types';
+import { CartItem } from '@/types/cartItem.type';
 import { BASE_URL } from '../baseUrl';
-import { CART_ITEM_ENDPOINT, ENDPOINT } from '../endpoints';
+import { CART_ITEM_ENDPOINT } from '../endpoints';
 import { requestGet, requestPost, requestDelete } from '../fetcher';
 
 type ResponseCartItemList = {
