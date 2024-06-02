@@ -1,9 +1,10 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import useFetchProducts from '../useFetchProducts';
+
+import useProducts from '../useProducts';
 
 describe('sort', () => {
-  it.only('기본값은 낮은 가격순으로 한다.', async () => {
-    const { result } = renderHook(() => useFetchProducts());
+  it('기본값은 낮은 가격순으로 한다.', async () => {
+    const { result } = renderHook(() => useProducts());
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(20);
@@ -21,7 +22,7 @@ describe('sort', () => {
   });
 
   it('가격이 높은순 정렬을 선택했을 때, 높은 가격순으로 정렬된다.', async () => {
-    const { result } = renderHook(() => useFetchProducts());
+    const { result } = renderHook(() => useProducts());
 
     await waitFor(() => {
       const sortByPriceDescending = [...result.current.products].sort(

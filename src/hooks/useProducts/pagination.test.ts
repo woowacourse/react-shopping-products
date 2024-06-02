@@ -1,5 +1,5 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
-import useFetchProducts from '../useFetchProducts';
+import useProducts from '../useProducts';
 import { server } from '../../mocks/server';
 import { HttpResponse, http } from 'msw';
 
@@ -15,7 +15,7 @@ import {
 
 describe('페이지네이션', () => {
   it(`첫 페이지 이후 다음 페이지의 상품 ${SIZE_PER_PAGE}개를 추가로 불러온다.`, async () => {
-    const { result } = renderHook(() => useFetchProducts());
+    const { result } = renderHook(() => useProducts());
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(FIRST_PAGE_SIZE);
@@ -33,7 +33,7 @@ describe('페이지네이션', () => {
   });
 
   it('모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.', async () => {
-    const { result } = renderHook(() => useFetchProducts());
+    const { result } = renderHook(() => useProducts());
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(FIRST_PAGE_SIZE);
@@ -65,7 +65,7 @@ describe('페이지네이션', () => {
   });
 
   it('페이지네이션으로 추가 데이터를 불러올 때 로딩 상태를 "true"로 세팅한다.', async () => {
-    const { result } = renderHook(() => useFetchProducts());
+    const { result } = renderHook(() => useProducts());
 
     await waitFor(() => {
       expect(result.current.loading).toBeFalsy();
@@ -83,7 +83,7 @@ describe('페이지네이션', () => {
   });
 
   it('페이지네이션으로 추가 데이터를 불러오는 중 에러가 발생한다면 에러 상태를 "Error"로 세팅하고 이전 페이지로 돌아간다.', async () => {
-    const { result } = renderHook(() => useFetchProducts());
+    const { result } = renderHook(() => useProducts());
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(20);

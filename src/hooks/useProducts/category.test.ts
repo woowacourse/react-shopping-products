@@ -1,5 +1,5 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
-import useFetchProducts from '../useFetchProducts';
+import useProducts from '../useProducts';
 import { Category } from '../../types/product';
 
 describe('카테고리', () => {
@@ -13,7 +13,7 @@ describe('카테고리', () => {
   ];
 
   it('카테고리에 해당되는 상품만 불러온다.', async () => {
-    const { result } = renderHook(() => useFetchProducts());
+    const { result } = renderHook(() => useProducts());
 
     for (const selectedCategory of CATEGORIES) {
       await waitFor(() => {

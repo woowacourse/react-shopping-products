@@ -12,7 +12,7 @@ import Header from './components/common/Header';
 import Main from './components/common/Main';
 import Dropdown from './components/common/Dropdown';
 import Title from './components/common/Title';
-import useFetchProducts from './hooks/useFetchProducts';
+import useProducts from './hooks/useProducts';
 import Loading from './components/common/Loading';
 import ToastPopup from './components/ToastPopup';
 import useIntersectionObserver from './hooks/useIntersectionObserver';
@@ -44,7 +44,7 @@ function App() {
     sort,
     filterBySort,
     fetchNextPage,
-  } = useFetchProducts();
+  } = useProducts();
 
   const selectedCategoryOption = Object.entries(CATEGORY).find(
     ([, value]) => value === category,

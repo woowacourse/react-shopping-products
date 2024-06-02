@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { fetchProducts } from '../api/products';
-import usePage from './usePage';
+import { fetchProducts } from '../../api/products';
+import usePage from '../usePage';
 
-import { Category, Order, Product, Sort } from '../types/product';
+import { Category, Order, Product, Sort } from '../../types/product';
 
 const useProducts = () => {
   const [loading, setLoading] = useState(false);
