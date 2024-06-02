@@ -1,5 +1,5 @@
-import useToast from '../../hooks/useToast';
-import Toast from '../Toast/Toast';
+import useToast from "../../hooks/useToast";
+import Toast from "../Toast/Toast";
 
 interface APIErrorToastProps {
   message: string;
@@ -8,14 +8,14 @@ interface APIErrorToastProps {
 export default function APIErrorToast({ message }: APIErrorToastProps) {
   const { isToastOpen, closeToast } = useToast(true);
 
+  if (!isToastOpen) {
+    return null;
+  }
+
   return (
-    <>
-      {isToastOpen && (
-        <Toast
-          message={message}
-          onClose={closeToast}
-        />
-      )}
-    </>
+    <Toast
+      message={message}
+      onClose={closeToast}
+    />
   );
 }
