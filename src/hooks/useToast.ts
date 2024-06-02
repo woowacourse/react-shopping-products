@@ -11,13 +11,13 @@ export function useToast() {
   const { setToast } = context;
 
   const createToast = useCallback(
-    (message: string) => {
+    (message: string, time: number = 3000) => {
       const newToast = { id: Date.now().toString(), message };
       setToast(newToast);
 
       setTimeout(() => {
         setToast(null);
-      }, 3000);
+      }, time);
     },
     [setToast],
   );
