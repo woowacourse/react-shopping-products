@@ -1,14 +1,12 @@
-import { useEffect } from "react";
 import { Global } from "@emotion/react";
 
 import { baseStyle } from "../../style/baseStyle";
 
 import useProducts from "../../hooks/useProducts";
 import useCustomContext from "../../hooks/useCustomContext";
+import useErrorAlert from "../../hooks/useErrorAlert";
 
 import { ToggleCartItemContext } from "../../components/provider/ToggleCartItemProvider";
-import { ToastContext } from "../../components/provider/ToastProvider";
-
 import Dropdown from "../../components/common/Dropdown";
 import Header from "../../components/layout/Header";
 import InfiniteScroll from "../../components/utils/InfiniteScroll";
@@ -31,20 +29,7 @@ const Mall = () => {
   } = useProducts();
 
   const { cartItems, error: toggleCartItemError } = useCustomContext(ToggleCartItemContext);
-
-  const { failAlert } = useCustomContext(ToastContext);
-
-  useEffect(() => {
-    if (toggleCartItemError && toggleCartItemError instanceof Error) {
-      failAlert(toggleCartItemError.message);
-    }
-  }, [toggleCartItemError]);
-
-  useEffect(() => {
-    if (productError && productError instanceof Error) {
-      failAlert(productError.message);
-    }
-  }, [productError]);
+  useErrorAlert({ toggleCartItemError, productError });
 
   return (
     <>
