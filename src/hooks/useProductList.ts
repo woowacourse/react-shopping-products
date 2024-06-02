@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { fetchProductList } from '../apis/products';
-import { PRODUCT_LIST } from '../constants/productList';
-import { Category, Product, Sort } from '../types/type';
+import { fetchProductList } from "../apis/products";
+import { PRODUCT_LIST } from "../constants/productList";
+import { Category, Product, Sort } from "../types/type";
 
 interface UseProductListResult {
   productList: Product[];
@@ -30,14 +30,15 @@ export default function useProductList({
   const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
+    console.log(page, category, sort);
     const getProductList = async () => {
       try {
         setProductListLoading(true);
         const data = await fetchProductList(
           page,
           page === 0
-            ? PRODUCT_LIST.initialPageProductQuantity
-            : PRODUCT_LIST.additionalPageProductQuantity,
+            ? PRODUCT_LIST.initialQuantity
+            : PRODUCT_LIST.quantityPerPage,
           category,
           sort,
         );
@@ -63,8 +64,7 @@ export default function useProductList({
     if (!isLastPage) {
       setPage((prevPage) =>
         prevPage === 0
-          ? PRODUCT_LIST.initialPageProductQuantity /
-            PRODUCT_LIST.additionalPageProductQuantity
+          ? PRODUCT_LIST.initialQuantity / PRODUCT_LIST.quantityPerPage
           : prevPage + 1,
       );
     }
