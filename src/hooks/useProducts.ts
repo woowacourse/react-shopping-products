@@ -62,7 +62,7 @@ export default function useProducts(): UseProductsResult {
       if (error instanceof Error) {
         setError(error);
         createToast(
-          '⛔️ 장바구니 상품을 가져오는데 실패했습니다. 다시 시도해 주세요.',
+          '⛔️ 상품 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.',
         );
       }
     } finally {
