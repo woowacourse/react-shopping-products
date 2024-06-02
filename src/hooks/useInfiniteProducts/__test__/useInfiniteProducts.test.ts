@@ -5,6 +5,7 @@ import { API_URL } from "@apis/__constants__/apiUrl";
 import { server } from "@mocks/server";
 import { CART_API_URL } from "@env/envVariables";
 import { useInfiniteProducts } from "..";
+import { PRICE_SORT_OPTIONS } from "@src/apis/__constants__/productQueryParams";
 
 describe("useInfiniteProducts", () => {
   describe("상품 목록 조회", () => {
@@ -138,7 +139,7 @@ describe("useInfiniteProducts", () => {
 
   describe("상품 정렬", () => {
     it("선택한 가격 정렬 기준에 따라 상품을 불러온다", async () => {
-      const PRICE_SORT = "desc";
+      const PRICE_SORT = PRICE_SORT_OPTIONS.desc;
       const { result } = renderHook(() => useInfiniteProducts());
 
       act(() => {

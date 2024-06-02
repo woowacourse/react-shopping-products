@@ -18,3 +18,8 @@ export const SORT_OPTIONS = {
   asc: "asc",
   desc: "desc",
 } as const;
+
+export const PRICE_SORT_OPTIONS = {
+  asc: `price,${SORT_OPTIONS.asc}`,
+  desc: `price,${SORT_OPTIONS.desc}`,
+} as const;

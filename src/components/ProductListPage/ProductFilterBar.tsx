@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import Select from "../common/Select";
-import { isCategory, isSortOption } from "@components/__utils__/typeGuards";
+import { isCategory, isPriceSort } from "@components/__utils__/typeGuards";
 import {
   CATEGORY_SELECT_OPTIONS,
   PRICE_SORT_SELECT_OPTIONS,
 } from "@components/__constants__/selectOptions";
-import type { Category, SortOption } from "products";
+import type { Category, PriceSort } from "products";
 
 interface ProductFilterBarProps {
   updateCategoryFilter: (category: Category) => void;
-  updatePriceSort: (sort: SortOption) => void;
+  updatePriceSort: (sort: PriceSort) => void;
 }
 
 const ProductFilterBar = ({ updateCategoryFilter, updatePriceSort }: ProductFilterBarProps) => {
@@ -20,7 +20,7 @@ const ProductFilterBar = ({ updateCategoryFilter, updatePriceSort }: ProductFilt
   };
 
   const handlePriceSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (isSortOption(e.target.value)) {
+    if (isPriceSort(e.target.value)) {
       updatePriceSort(e.target.value);
     }
   };
