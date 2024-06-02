@@ -5,7 +5,7 @@ import productListData from '../datas/productList.json';
 import { Product } from '@/types/product.type';
 import { Category, SortOrder } from '@/types/filter.type';
 
-export const handlers = [
+export const productHandlers = [
   http.get(`${BASE_URL.SHOP}${PRODUCT_ENDPOINT.PRODUCT_LIST}`, ({ request }) => {
     const url = new URL(request.url);
     const products: Product[] = productListData as Product[];
