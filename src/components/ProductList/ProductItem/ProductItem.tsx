@@ -21,11 +21,13 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
     const handleIsInCart = async () => {
       try {
         if (isInCart) {
-          const filtered = cartItems.filter(
+          const filteredItem = cartItems.find(
             (item) => item.product.id === product.id,
           );
-          await deleteProductInCart(filtered[0].id);
-          refreshCartItems();
+          if (filteredItem) {
+            await deleteProductInCart(filteredItem.id);
+            refreshCartItems();
+          }
         } else {
           await postProductInCart(product.id);
           refreshCartItems();
