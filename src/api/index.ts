@@ -22,16 +22,14 @@ export interface GetProductsParams {
   sort?: Sort;
 }
 
-const createQueryString = (params: QueryParams): string => {
+const createQueryString = (params: QueryParams) => {
   return Object.entries(params)
+    .filter(([, value]) => value !== undefined)
     .map(([key, value]) => {
-      if (value === undefined) {
-        return;
-      }
       if (Array.isArray(value)) {
-        return `${encodeURIComponent(key)}=${encodeURIComponent(
-          value.join(",")
-        )}`;
+        return value
+          .map((v) => `${encodeURIComponent(key)}=${encodeURIComponent(v)}`)
+          .join("&");
       }
       return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
     })
@@ -66,7 +64,7 @@ export const getProducts = async ({
 
 export const postProductInCart = async (
   productId: number,
-  quantity: number = 1
+  quantity: number = 1,
 ) => {
   const response = await fetchWithAuth(CART_ITEMS_ENDPOINT, {
     method: "POST",
