@@ -1,8 +1,9 @@
 const INITIAL_DATA_LOAD_COUNT = 20;
 const SUBSEQUENT_DATA_LOAD_COUNT = 4;
+const JUMP_NEXT_PAGE_IN_ZERO = 5;
 const MAX_CART_ITEMS_COUNTS = 100;
 
-const CATEGORY: Record<string, string> = {
+const CATEGORY = {
   all: '전체',
   fashion: '의류',
   beverage: '음료',
@@ -12,7 +13,7 @@ const CATEGORY: Record<string, string> = {
   books: '도서',
 } as const;
 
-const SORT: Record<string, string> = {
+const SORT = {
   price_name_asc: '낮은 가격순',
   price_name_desc: '높은 가격순',
 } as const;
@@ -20,6 +21,7 @@ const SORT: Record<string, string> = {
 export {
   INITIAL_DATA_LOAD_COUNT,
   SUBSEQUENT_DATA_LOAD_COUNT,
+  JUMP_NEXT_PAGE_IN_ZERO,
   CATEGORY,
   SORT,
   MAX_CART_ITEMS_COUNTS,
