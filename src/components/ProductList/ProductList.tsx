@@ -26,14 +26,16 @@ const ProductList = () => {
         handleCategory={handleCategory}
         handleSort={handleSort}
       />
-      {loading ? (
-        <PL.Loading>로딩중! 💪</PL.Loading>
-      ) : products.length === 0 ? (
-        <PL.Empty>상품이 존재하지 않습니다! 🥲</PL.Empty>
-      ) : (
-        <PL.ProductListStyle>
-          {products.map((item, index) => {
-            return (
+      {(() => {
+        if (loading) {
+          return <PL.Loading>로딩중! 💪</PL.Loading>;
+        }
+        if (products.length === 0) {
+          return <PL.Empty>상품이 존재하지 않습니다! 🥲</PL.Empty>;
+        }
+        return (
+          <PL.ProductListStyle>
+            {products.map((item, index) => (
               <ProductItem
                 product={item}
                 key={item.id}
@@ -41,10 +43,10 @@ const ProductList = () => {
                   index === products.length - 1 ? lastProductElementRef : null
                 }
               />
-            );
-          })}
-        </PL.ProductListStyle>
-      )}
+            ))}
+          </PL.ProductListStyle>
+        );
+      })()}
     </>
   );
 };
