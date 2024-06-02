@@ -51,12 +51,12 @@ export const useInfiniteFetch = <T>(fetcher: Fetcher<T>): UseInfiniteFetchReturn
   return { data, isLoading, error, fetchNextPage, refetchByQueryUpdate };
 };
 
-// TODO: 아래의 타입 선언들을 다른 파일로 분리
-type PagedQueryParams = QueryParams & { page: number };
+type QueryParamValue = string | number | boolean;
 
 type QueryParams = {
   [key: string]: QueryParamValue;
 };
-type QueryParamValue = string | number | boolean;
+
+type PagedQueryParams = QueryParams & { page: number };
 
 type Fetcher<T> = (queryParams?: SmartURLSearchParams) => Promise<T[]>;

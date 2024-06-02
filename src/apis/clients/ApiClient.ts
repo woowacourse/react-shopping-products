@@ -1,5 +1,6 @@
 import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
 import { buildURL } from "@apis/__utils__/buildURL";
+import { HTTP_METHOD } from "../__constants__/httpMethod";
 
 type URLString = string;
 
@@ -39,7 +40,7 @@ export default class ApiClient implements ApiClientInterface {
     const parsedBody = JSON.stringify(body);
 
     const response = await fetch(url, {
-      method: "POST",
+      method: HTTP_METHOD.post,
       headers: this.header,
       body: parsedBody,
     });
@@ -53,7 +54,7 @@ export default class ApiClient implements ApiClientInterface {
     const url = buildURL({ baseUrl: this.baseUrl, path });
 
     const response = await fetch(url, {
-      method: "DELETE",
+      method: HTTP_METHOD.delete,
       headers: this.header,
     });
 

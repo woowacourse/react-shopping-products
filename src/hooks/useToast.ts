@@ -5,6 +5,10 @@ interface UseToastReturn {
   showToast: (message: string) => void;
 }
 
+/**
+ *
+ * @param duration in milliseconds (default: 3000)
+ */
 const useToast = (duration: number = 3000): UseToastReturn => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const toastTimer = useRef<NodeJS.Timeout>();
