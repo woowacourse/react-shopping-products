@@ -64,7 +64,7 @@ const S = {
     ); // 전체 화면 높이에서 헤더, 드롭다운, 마진 등을 뺀 최소 높이
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    row-gap: 16px;
     justify-items: center;
   `,
   ObserverContainer: styled.div`
