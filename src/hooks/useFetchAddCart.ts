@@ -15,8 +15,8 @@ const useFetchAddCart = () => {
     fetchInitialCartId();
   }, []);
 
-  const postToAddCart = (id: number) => {
-    postAddItems(id);
+  const postToAddCart = async (id: number) => {
+    await postAddItems(id);
     const newCartIdSet = new Set(cartIdSet);
     newCartIdSet.add(id);
     setCartIdSet(newCartIdSet);
