@@ -1,0 +1,170 @@
+[
+  {
+    "id": 106,
+    "name": "트레드밀",
+    "price": 700000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1670505060574-b08479270d1b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 88,
+    "name": "러닝머신",
+    "price": 600000,
+    "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 91,
+    "name": "사이클머신",
+    "price": 500000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1670505060574-b08479270d1b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 175,
+    "name": "스마트 러닝머신",
+    "price": 500000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 180,
+    "name": "체스트 프레스 머신",
+    "price": 450000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 174,
+    "name": "멀티 트레이닝 머신",
+    "price": 300000,
+    "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 179,
+    "name": "스피닝 바이크",
+    "price": 250000,
+    "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 178,
+    "name": "헬스 자전거",
+    "price": 200000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1669261222932-35c2491e7340?q=80&w=3386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 99,
+    "name": "헬스자전거",
+    "price": 150000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 102,
+    "name": "웨이트트레이너",
+    "price": 120000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1669261222932-35c2491e7340?q=80&w=3386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 89,
+    "name": "덤벨세트",
+    "price": 100000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 181,
+    "name": "덤벨 세트",
+    "price": 100000,
+    "imageUrl": "https://images.unsplash.com/photo-1665378029534-fc879ff3920d?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 94,
+    "name": "복근운동기구",
+    "price": 80000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 105,
+    "name": "운동화",
+    "price": 80000,
+    "imageUrl": "https://images.unsplash.com/photo-1665378029534-fc879ff3920d?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 98,
+    "name": "스테퍼",
+    "price": 70000,
+    "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 107,
+    "name": "바벨",
+    "price": 60000,
+    "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 93,
+    "name": "케틀벨",
+    "price": 50000,
+    "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 90,
+    "name": "요가매트",
+    "price": 40000,
+    "imageUrl": "https://images.unsplash.com/photo-1665378029534-fc879ff3920d?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 176,
+    "name": "요가 매트 프로",
+    "price": 40000,
+    "imageUrl": "https://images.unsplash.com/photo-1665378029534-fc879ff3920d?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 177,
+    "name": "체중 측정기",
+    "price": 35000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1670505060574-b08479270d1b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 97,
+    "name": "아령",
+    "price": 30000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1669261222932-35c2491e7340?q=80&w=3386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 92,
+    "name": "푸쉬업바",
+    "price": 25000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1669261222932-35c2491e7340?q=80&w=3386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 101,
+    "name": "피트니스볼",
+    "price": 25000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1670505060574-b08479270d1b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  },
+  {
+    "id": 96,
+    "name": "스트레칭밴드",
+    "price": 20000,
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1670505060574-b08479270d1b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "category": "fitness"
+  }
+]

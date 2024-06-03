@@ -1,11 +1,19 @@
 import { useState } from "react";
+import Header from "./components/Header/Header";
+import Product from "./pages/Product";
+import GlobalStyles from "./styles/Global.style";
+import { QuantityContext } from "./store/QuantityContext";
 
 function App() {
-  const [count, setCount] = useState(0);
-
+  const [quantity, setQuantity] = useState(0);
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <GlobalStyles />
+
+      <QuantityContext.Provider value={{ quantity, setQuantity }}>
+        <Header />
+        <Product />
+      </QuantityContext.Provider>
     </>
   );
 }
