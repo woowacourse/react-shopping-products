@@ -61,6 +61,9 @@ export default function useProducts(): UseProductsResult {
   const fetchNextPage = () => {
     if (isLastPage) return;
 
+    // 서버의 page size가 4로 고정되어
+    // page: 0, size: 20 요청 이후엔
+    // page: 5, size: 4 로 요청해야 함
     setPage((prevPage) =>
       prevPage !== INITIAL_PAGE_NUMBER
         ? prevPage + 1
