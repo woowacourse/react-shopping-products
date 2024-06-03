@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Container = styled.div`
+export const ShoppingProductsPage = styled.div`
   width: 26.875rem;
   height: 100vh;
 
