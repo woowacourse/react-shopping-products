@@ -44,12 +44,12 @@ function getResponseByContentType(response: Response, contentType: string | null
     return response.json();
   }
 
-  if (contentType?.includes("image/") || contentType?.includes("application/octet-stream")) {
+  if (
+    contentType?.includes("image/") ||
+    contentType?.includes("application/octet-stream") ||
+    contentType?.includes("application/pdf")
+  ) {
     return response.blob();
-  }
-
-  if (contentType?.includes("application/pdf")) {
-    return response.arrayBuffer();
   }
 
   return response.text();
