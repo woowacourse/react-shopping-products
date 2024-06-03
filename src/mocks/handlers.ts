@@ -7,6 +7,11 @@ import productSorter from '../utils/productSorter';
 import { mockCart as mockCartResponse } from './cart';
 import { mockProductsResponse } from './products';
 
+interface RequestIdResponse {
+  productId: number;
+  quantity: number;
+}
+
 const filterProductHandler = (
   productCopy: ProductResponse,
   category: string | null,
@@ -54,10 +59,11 @@ export const handlers = [
   http.post(
     `${ENDPOINTS_CART}`,
     async ({ request }: { request: StrictRequest<number> }) => {
-      const id = await request.json();
+      const requestId = (await request.json()) as unknown as RequestIdResponse;
       const findProduct = mockProductsResponse.content.find(
-        (product) => product.id === id,
+        (product) => product.id === (requestId.productId as number),
       );
+
       if (findProduct) {
         const data = {
           id: Math.random() * 1000,
