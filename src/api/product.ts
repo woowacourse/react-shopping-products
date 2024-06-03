@@ -2,6 +2,7 @@ import { END_POINT } from './endpoints';
 import fetcher from './fetcher';
 
 import { ProductCategory, ProductResponse, SortValue } from '@/types/product';
+import { createUrlQuery } from '@/utils/createUrlQuery';
 
 interface FetchProductListProps {
   size?: number;
@@ -10,15 +11,9 @@ interface FetchProductListProps {
   sortOptions?: SortValue;
 }
 
-const covertUrlFormat = ({ category, page, size, sortOptions }: FetchProductListProps) => {
-  const priceSort = `price,${sortOptions}`;
-  const encodedSort = encodeURIComponent(priceSort);
-
-  const pageQuery = `?page=${page}`;
-  const categoryQuery = category !== 'all' ? `&category=${category}` : '';
-  const sizeQuery = size ? `&size=${size}` : '';
-  const sortQuery = sortOptions ? `&sort=${encodedSort}` : '';
-  return `${END_POINT.products}${pageQuery}${categoryQuery}${sizeQuery}${sortQuery}`;
+const convertUrlFormat = ({ category, page, size, sortOptions }: FetchProductListProps) => {
+  const params = createUrlQuery({ category, page, size, sortOptions });
+  return `${END_POINT.products}?${params.toString()}`;
 };
 
 export const fetchProductList = async ({
@@ -28,7 +23,7 @@ export const fetchProductList = async ({
   sortOptions,
 }: FetchProductListProps): Promise<ProductResponse> => {
   const response = await fetcher.get({
-    url: covertUrlFormat({ category, page, size, sortOptions }),
+    url: convertUrlFormat({ category, page, size, sortOptions }),
     errorMessage: '상품 리스트 불러오기에 실패했습니다🥹',
   });
 
