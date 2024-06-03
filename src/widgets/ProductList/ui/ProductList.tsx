@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { ProductCard, Product, Category, SortOrder } from '@/entities/product';
-import { FilterCategoryButton, FilterSortOrderButton, ALL, CartToggleButton } from '@/features/product';
+import { ProductCard, Product, Category, SortOrder } from "@/entities/product";
+import { CartState } from "@/entities/product/model/types";
+import {
+  FilterCategoryButton,
+  FilterSortOrderButton,
+  ALL,
+  CartToggleButton,
+} from "@/features/product";
 
-import css from './ProductList.module.css';
+import css from "./ProductList.module.css";
 
 interface ProductListProps {
   products: Product[];
@@ -22,7 +28,7 @@ export const ProductList = ({
   onChangeSortOrder,
   onToggleCartItem,
 }: ProductListProps) => {
-  const [cartState, setCartState] = useState<{ [key: number]: boolean }>({});
+  const [cartState, setCartState] = useState<CartState>({});
 
   const handleCartToggle = (productId: number) => {
     setCartState((prevState) => ({

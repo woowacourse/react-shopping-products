@@ -11,3 +11,5 @@ export interface Product {
   imageUrl: string;
   category: Category;
 }
+
+export type CartState = { [key: number]: boolean };
