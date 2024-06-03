@@ -1,9 +1,24 @@
 import * as S from './style';
 
-import { PropsWithChildren } from 'react';
+import { useContext } from 'react';
 
-const ProductsContainer = ({ children }: PropsWithChildren) => {
-  return <S.ProductsContainer>{children}</S.ProductsContainer>;
+import FilterContainer from '../FilterContainer';
+import ProductsContent from '../ProductsContent';
+import Loading from '../common/Loading';
+import Title from '../common/Title';
+import { UseProductsContext } from '../ShoppingProductsPage';
+
+const ProductsContainer = () => {
+  const { productsLoading } = useContext(UseProductsContext);
+
+  return (
+    <S.ProductsContainer>
+      <Title />
+      <FilterContainer />
+      <ProductsContent />
+      <Loading isLoading={productsLoading} />
+    </S.ProductsContainer>
+  );
 };
 
 export default ProductsContainer;
