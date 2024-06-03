@@ -29,6 +29,6 @@ export const handlers = [
 
     cartItems = cartItems.filter((cartItem) => cartItem.id !== Number(cartItemId));
 
-    return HttpResponse.json({ status: 201 });
+    return HttpResponse.json({ status: 204 });
   }),
 ];
