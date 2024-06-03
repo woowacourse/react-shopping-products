@@ -1,12 +1,12 @@
 import { http, HttpResponse } from 'msw';
 import { BASE_URL } from '@/apis/baseUrl';
-import { PRODUCT_ENDPOINT } from '@/apis/endpoints';
 import productListData from '../datas/productList.json';
 import { Product } from '@/types/product.type';
 import { Category, SortOrder } from '@/types/filter.type';
+import { ENDPOINT } from '@/apis/endpoints';
 
 export const productHandlers = [
-  http.get(`${BASE_URL.SHOP}${PRODUCT_ENDPOINT.PRODUCT_LIST}`, ({ request }) => {
+  http.get(`${BASE_URL.SHOP}${ENDPOINT.PRODUCT}`, ({ request }) => {
     const url = new URL(request.url);
     const products: Product[] = productListData as Product[];
 

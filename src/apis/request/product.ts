@@ -1,9 +1,9 @@
 import { requestGet } from '../fetcher';
 import { BASE_URL } from '../baseUrl';
-import { PRODUCT_ENDPOINT } from '../endpoints';
 import { Category } from '@/types/filter.type';
 import { Product } from '@/types/product.type';
 import { SortValue } from '@/constants/filter';
+import { ENDPOINT } from '../endpoints';
 
 type ResponseProductList = {
   content: Product[];
@@ -38,7 +38,7 @@ export const requestProductList = async ({
 
   const { content, totalPages } = await requestGet<ResponseProductList>({
     baseUrl: BASE_URL.SHOP,
-    endpoint: PRODUCT_ENDPOINT.PRODUCT_LIST,
+    endpoint: ENDPOINT.PRODUCT,
     queryParams,
   });
 
