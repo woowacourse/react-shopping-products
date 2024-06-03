@@ -13,6 +13,7 @@ interface UseProductsResult {
   isLoading: boolean;
   error: Error | null;
   isLastPage: boolean;
+  page: number;
   fetchNextPage: () => void;
   setSort: (newPriceOrder: SortOrder) => void;
   setCategory: (newCategory: Category) => void;
@@ -76,6 +77,7 @@ export default function useProducts(): UseProductsResult {
     products: products ?? [],
     isLoading,
     error,
+    page,
     fetchNextPage,
     setCategory: (value: Category) => {
       setCategory(value);
