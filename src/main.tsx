@@ -4,7 +4,6 @@ import { Global, ThemeProvider } from '@emotion/react';
 import App from './App.tsx';
 import theme from './theme.ts';
 import { globalStyles } from './globalStyle.ts';
-import GlobalLayout from './layouts/GlobalLayout/index.tsx';
 
 // async function enableMocking() {
 //   if (process.env.NODE_ENV !== 'development') {
@@ -25,8 +24,6 @@ import GlobalLayout from './layouts/GlobalLayout/index.tsx';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ThemeProvider theme={theme}>
     <Global styles={globalStyles} />
-    <GlobalLayout>
-      <App />
-    </GlobalLayout>
+    <App />
   </ThemeProvider>,
 );
