@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import styles from '../components/Toast/Toast.module.css';
 
 export type ToastType = 'alert';
+const MAX_TOAST_COUNT = 10;
 
 type Toast = {
   message: string;
@@ -23,7 +24,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const showToast = (toast: Toast) => {
     const id = Date.now();
     const newToast = { ...toast, id };
-    setToastList((prev) => [newToast, ...prev]);
+    setToastList((prev) => [newToast, ...prev].slice(0, MAX_TOAST_COUNT));
 
     setTimeout(() => {
       setToastList((prev) => prev.filter((t) => t.id !== id));
