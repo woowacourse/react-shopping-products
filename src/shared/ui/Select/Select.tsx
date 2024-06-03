@@ -10,15 +10,20 @@ interface SelectProps {
   onChange: (value: string) => void;
 }
 
-export const Select = ({ className, options, value, onChange }: SelectProps) => {
+export const Select = ({
+  className,
+  options,
+  value,
+  onChange,
+}: SelectProps) => {
   const handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(event.target.value);
   };
 
   return (
     <select className={className} value={value} onChange={handleOnChange}>
-      {options.map((option, index) => (
-        <option key={index} value={option.value}>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
           {option.label}
         </option>
       ))}
