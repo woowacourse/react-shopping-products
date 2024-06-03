@@ -3,11 +3,7 @@ import { MouseEvent, useState } from 'react';
 import { Category, SortOption } from '@/types/product';
 import { isCategoryLabel, isProductCategory, isSortLabel, isSortValue } from '@/utils/typeGuard';
 
-interface UseProductDropdownProp {
-  resetPage: () => void;
-}
-
-const useProductDropdown = ({ resetPage }: UseProductDropdownProp) => {
+const useProductDropdown = (resetPage: () => void) => {
   const [category, setCategory] = useState<Category>({ label: '전체', value: 'all' });
   const [order, setOrder] = useState<SortOption>({ label: '낮은 가격순', value: 'asc' });
 

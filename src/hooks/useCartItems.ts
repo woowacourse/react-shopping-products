@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
 
+import useToast from './useToast';
+
 import { addCartItem, deleteCartItem, fetchCartItems } from '@/api/cart';
 import { CartItemInfo } from '@/types/cartItem';
-import { ErrorState } from '@/types/error';
 import CustomError from '@/utils/error';
 
-interface UseCartItemsProp {
-  handleError: ({ name, isError, errorMessage }: ErrorState) => void;
-  resetError: () => void;
-}
-
-const useCartItems = ({ handleError, resetError }: UseCartItemsProp) => {
+const useCartItems = () => {
   const [cartItems, setCartItems] = useState<CartItemInfo[]>([]);
+  const toast = useToast();
 
   const matchCartItem = (productId: number) => {
     return cartItems.find((cartItem) => cartItem.product.id === productId);
@@ -21,10 +18,9 @@ const useCartItems = ({ handleError, resetError }: UseCartItemsProp) => {
     try {
       await addCartItem({ productId });
       await refreshCartItems();
-      resetError();
     } catch (error) {
       if (error instanceof CustomError) {
-        handleError({ isError: true, name: error.name, errorMessage: error.message });
+        toast.error(error.message);
       }
     }
   };
@@ -36,10 +32,9 @@ const useCartItems = ({ handleError, resetError }: UseCartItemsProp) => {
 
       await deleteCartItem(cartItemId);
       await refreshCartItems();
-      resetError();
     } catch (error) {
       if (error instanceof CustomError) {
-        handleError({ isError: true, name: error.name, errorMessage: error.message });
+        toast.error(error.message);
       }
     }
   };
