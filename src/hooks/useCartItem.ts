@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { CartItem } from '../types/cartItem';
-import { addCartItem, removeCartItem, getCartItems } from '../apis/cart-item';
+import { useState, useEffect } from "react";
+import { CartItem } from "../types/cartItem";
+import { addCartItem, removeCartItem, getCartItems } from "../apis/cart-item";
 
 interface UseCartItemResult {
   error: unknown;
@@ -28,9 +28,10 @@ export default function useCartItem(): UseCartItemResult {
       const cartItems = await getCartItems(totalItemCount);
 
       setCartItems(cartItems.content);
-      setIsLoading(false);
     } catch (error) {
       setError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -39,9 +40,10 @@ export default function useCartItem(): UseCartItemResult {
       setIsLoading(true);
       await addCartItem(productId);
       fetchCartItem();
-      setIsLoading(false);
     } catch (error) {
       setError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -53,15 +55,15 @@ export default function useCartItem(): UseCartItemResult {
 
       if (!targetCartItem) {
         setIsLoading(false);
-        setError(new Error('존재하지 않는 상품입니다.'));
+        setError(new Error("존재하지 않는 상품입니다."));
         return;
       }
 
       await removeCartItem(targetCartItem.id);
       fetchCartItem();
-      setIsLoading(false);
     } catch (error) {
       setError(error);
+    } finally {
       setIsLoading(false);
     }
   };
