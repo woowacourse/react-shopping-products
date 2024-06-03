@@ -11,7 +11,7 @@ const useProductList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [hasNextPage, setHasNextPage] = useState(true);
-  const [order, setOrder] = useState<string>('asc');
+  const [sort, setSort] = useState<string>('asc');
   const [category, setCategory] = useState('');
 
   useEffect(() => {
@@ -30,26 +30,21 @@ const useProductList = () => {
     };
 
     fetchData();
-  }, [page, size, category, order]);
-
-  const resetProductState = () => {
-    setProducts([]);
-    setPage(0);
-    setSize(FETCH_SIZE.firstPageItemCount);
-  };
+  }, [page, category, sort]);
 
   const fetchNextPage = () => {
     if (page === 0) {
       setPage(FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount); // 20 / 4 = 5
       setSize(FETCH_SIZE.moreLoadItemCount);
+      setPage(FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount);
     } else {
       setPage((prev) => prev + 1);
     }
   };
 
-  const handleChangeSort = (newOrder: string) => {
-    if (order === newOrder) return;
-    setOrder(newOrder);
+  const handleChangeSort = (newSort: string) => {
+    if (sort === newSort) return;
+    setSort(newSort);
     resetProductState();
   };
 

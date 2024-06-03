@@ -3,12 +3,12 @@ import { getProductListProps } from '@/api/product';
 
 const ENDPOINT = {
   product: {
-    getList: ({ page, size, category, order }: getProductListProps) => {
+    getList: ({ page, size, category, sort }: getProductListProps) => {
       const query = buildGetProductListURL({
         page,
         size,
         category,
-        order,
+        sort,
       });
       return `/products${query}`;
     },

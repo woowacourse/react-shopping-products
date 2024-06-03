@@ -6,7 +6,7 @@ export interface getProductListProps {
   page?: number;
   size?: number;
   category?: string;
-  order?: string;
+  sort?: string;
 }
 
 /**
@@ -16,10 +16,10 @@ export const getProductList = async ({
   page,
   size,
   category,
-  order,
+  sort,
 }: getProductListProps) => {
   const response = await fetchWithoutAuth(
-    ENDPOINT.product.getList({ page, size, category, order }),
+    ENDPOINT.product.getList({ page, size, category, sort }),
     { method: 'GET' },
   );
 

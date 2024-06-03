@@ -9,7 +9,7 @@ const buildGetProductListURL = ({ ...params }: getProductListProps): string => {
     }
   });
 
-  const order = params.order === 'desc' ? 'price,desc' : 'price';
+  const order = params.sort === 'desc' ? 'price,desc' : 'price';
   searchParams.set('sort', order);
   searchParams.append('sort', 'name');
 
