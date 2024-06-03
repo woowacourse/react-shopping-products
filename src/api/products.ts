@@ -13,8 +13,8 @@ export async function fetchProducts(
   if (category !== 'all') params.append('category', category);
   params.append('page', String(page));
   params.append('size', String(size));
-  params.append('sort', `name,asc`);
   params.append('sort', `price,${priceOrder}`);
+  params.append('sort', 'name,asc');
 
   const response = await fetch(`${PRODUCTS_ENDPOINT}?${params.toString()}`);
 
