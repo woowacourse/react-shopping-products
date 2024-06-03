@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import useDropdown from './useDropdown';
+import useProductFilter from './useProductFilter';
 
 import { fetchProductList } from '@/api/product';
 import { Product } from '@/types/product';
@@ -13,7 +13,7 @@ const useProductList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorState, setErrorState] = useState({ name: '', isError: false, errorMessage: '' });
 
-  const { category, order, handleChangeCategory, handleChangeSort } = useDropdown({
+  const { category, order, handleChangeCategory, handleChangeSort } = useProductFilter({
     resetPage: () => setPage(0),
   });
 
@@ -23,12 +23,6 @@ const useProductList = () => {
 
     setPage((prevPage) => prevPage + nextPage);
   };
-
-  useEffect(() => {
-    window.addEventListener('online', () => {
-      setErrorState({ name: '', isError: false, errorMessage: '' });
-    });
-  }, []);
 
   useEffect(() => {
     const getProductList = async () => {
