@@ -5,6 +5,7 @@ import { useCartItemListContext } from '@/hooks/useCartItemList';
 
 export default function CartIcon() {
   const { cartItemList } = useCartItemListContext();
+
   return (
     <div className={styles.container}>
       <ImageBox className={styles.cartIcon} src={CartIconImage} width={32} height={32} />
