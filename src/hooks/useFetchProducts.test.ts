@@ -18,7 +18,7 @@ describe('fetchProducts', () => {
     });
   });
 
-  it('상품 목록 조회 시 에러', async () => {
+  it('상품 목록 조회 시 에러가 발생해야 한다.', async () => {
     renderHook(() => {
       server.use(
         http.get(ENDPOINTS_PRODUCTS, () => {
