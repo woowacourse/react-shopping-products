@@ -12,39 +12,29 @@ import css from './ProductPage.module.css';
 
 export const ProductPage = () => {
   const [cartItems, setCartItems] = useState<number[]>([]);
-
   const { products, loading, error, category, sortOrder, fetchNextPage, handleChangeCategory, handleChangeSortOrder } =
     useProducts();
-
   const observationTarget = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchNextPage();
-        }
+        if (entries[0].isIntersecting) fetchNextPage();
       },
       { threshold: 1 }
     );
 
-    if (!loading && observationTarget.current) {
-      observer.observe(observationTarget.current);
-    }
+    if (!loading && observationTarget.current) observer.observe(observationTarget.current);
 
     return () => {
-      if (observationTarget.current) {
-        observer.unobserve(observationTarget.current);
-      }
+      if (observationTarget.current) observer.unobserve(observationTarget.current);
     };
-  }, [fetchNextPage]);
+  }, [loading, fetchNextPage]);
 
   const handleToggleCartItem = (productId: number) => {
-    if (cartItems.includes(productId)) {
-      setCartItems((prev) => prev.filter((itemId) => itemId !== productId));
-    } else {
-      setCartItems((prev) => [...prev, productId]);
-    }
+    setCartItems((prev) =>
+      prev.includes(productId) ? prev.filter((itemId) => itemId !== productId) : [...prev, productId]
+    );
   };
 
   return (
