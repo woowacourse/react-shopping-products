@@ -28,7 +28,6 @@ export const fetchProducts = async ({
     queryString = new URLSearchParams({ page: page.toString(), size: size.toString(), category, sort }).toString();
   }
   const url = PRODUCTS_ENDPOINT + '?' + queryString;
-  console.log(url);
 
   const response = await fetch(url);
 

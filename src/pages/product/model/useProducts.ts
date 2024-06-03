@@ -65,13 +65,11 @@ export default function useProducts(): UseProductsResult {
   };
 
   const handleChangeCategory = (value: typeof ALL | Category) => {
-    console.log('categoryChanged', value);
     setCategory(value);
     setPage(0);
   };
 
   const handleChangeSortOrder = (value: SortOrder) => {
-    console.log('sortOrderChanged', value);
     setSortOrder(value);
     setPage(0);
   };
