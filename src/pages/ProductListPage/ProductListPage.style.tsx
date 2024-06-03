@@ -4,7 +4,6 @@ export const Layout = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  min-width: 435px;
   padding: 36px 24px;
 `;
 
@@ -30,7 +29,6 @@ export const ProductList = styled.div`
   /* 모바일 */
   @media (max-width: 767px) {
     grid-template-columns: repeat(2, 1fr);
-  }
   }
 `;
 
