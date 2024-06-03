@@ -61,8 +61,8 @@ const useProducts = () => {
 
   return {
     products,
-    loading,
-    error,
+    productsLoading: loading,
+    productsError: error,
     page,
     fetchNextPage,
     category,
