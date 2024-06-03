@@ -34,7 +34,6 @@ export function RemoveCartButton({
   productId,
 }: CartToggleButtonProps) {
   const { cartItems, refreshCartItems } = useContext(CartItemsContext);
-
   const cartItemId = cartItems.find(
     (cartItem) => cartItem.product.id === productId
   )?.id;
