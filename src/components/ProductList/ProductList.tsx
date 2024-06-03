@@ -1,7 +1,7 @@
 import useProducts from "@hooks/useProducts";
 import useInfiniteScroll from "@hooks/useInfiniteScroll";
 import usePagination from "@hooks/usePagination";
-import ProductListHeader from "../ProductListHeader/ProductListHeader";
+import ProductListHeader from "@components/ProductListHeader/ProductListHeader";
 import ProductItem from "./ProductItem/ProductItem";
 import * as PL from "./ProductList.style";
 
