@@ -6,7 +6,6 @@ import { Product } from '@/types/product.type';
 
 const useProductList = () => {
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(FETCH_SIZE.firstPageItemCount);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -14,13 +13,21 @@ const useProductList = () => {
   const [sort, setSort] = useState<string>('asc');
   const [category, setCategory] = useState('');
 
+  const resetProductState = () => {
+    setProducts([]);
+    setPage(0);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await getProductList({ page, size, category, order });
+        const size =
+          page === 0
+            ? FETCH_SIZE.firstPageItemCount
+            : FETCH_SIZE.moreLoadItemCount;
+        const data = await getProductList({ page, size, category, sort });
         setProducts((prev) => [...prev, ...data.content]);
-
         setHasNextPage(!data.last);
       } catch (error) {
         setError(error);
@@ -32,10 +39,8 @@ const useProductList = () => {
     fetchData();
   }, [page, category, sort]);
 
-  const fetchNextPage = () => {
+  const loadNextPage = () => {
     if (page === 0) {
-      setPage(FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount); // 20 / 4 = 5
-      setSize(FETCH_SIZE.moreLoadItemCount);
       setPage(FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount);
     } else {
       setPage((prev) => prev + 1);
@@ -59,7 +64,7 @@ const useProductList = () => {
     products,
     loading,
     error,
-    fetchNextPage,
+    loadNextPage,
     hasNextPage,
     handleChangeSort,
     handleChangeCategory,
