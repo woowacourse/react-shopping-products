@@ -14,7 +14,7 @@ function ProductCard({ product }: ProductCardProps) {
   const { postToAddCart, deleteToRemoveCart } = useContext(CartContext);
 
   return (
-    <S.ProductCardContainer>
+    <div>
       <S.ProductImage src={product.imageUrl} alt={product.name} />
       <S.ContentWrapper>
         <S.InfoWrapper>
@@ -34,7 +34,7 @@ function ProductCard({ product }: ProductCardProps) {
           />
         </S.ButtonContainer>
       </S.ContentWrapper>
-    </S.ProductCardContainer>
+    </div>
   );
 }
 

@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-export const ProductCardContainer = styled.div``;
-
 export const ProductImage = styled.img`
   width: 100%;
   height: 50%;

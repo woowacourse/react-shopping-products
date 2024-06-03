@@ -24,5 +24,3 @@ export const Dropdown = styled.select`
   -moz-appearance: none;
   appearance: none;
 `;
-
-export const ArrowIcon = styled.img``;
