@@ -1,0 +1,309 @@
+{
+  "content": [
+    {
+      "id": 78,
+      "name": "커피메이커",
+      "price": 80000,
+      "imageUrl": "https://images.unsplash.com/photo-1501924497965-792fefaea3dc?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 79,
+      "name": "에어프라이어",
+      "price": 100000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1682092150898-2b7dfefd2abe?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 80,
+      "name": "냉장고",
+      "price": 500000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1664372599576-ea88152cda2b?q=80&w=3538&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 81,
+      "name": "믹서볼",
+      "price": 25000,
+      "imageUrl": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=3264&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 82,
+      "name": "조리도구세트",
+      "price": 50000,
+      "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 83,
+      "name": "냄비",
+      "price": 35000,
+      "imageUrl": "https://images.unsplash.com/photo-1501924497965-792fefaea3dc?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 84,
+      "name": "프라이팬",
+      "price": 40000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1682092150898-2b7dfefd2abe?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 85,
+      "name": "밥솥",
+      "price": 150000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1664372599576-ea88152cda2b?q=80&w=3538&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 86,
+      "name": "오븐",
+      "price": 300000,
+      "imageUrl": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=3264&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 87,
+      "name": "식기세척기",
+      "price": 400000,
+      "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "kitchen"
+    },
+    {
+      "id": 88,
+      "name": "러닝머신",
+      "price": 600000,
+      "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 89,
+      "name": "덤벨세트",
+      "price": 100000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 90,
+      "name": "요가매트",
+      "price": 40000,
+      "imageUrl": "https://images.unsplash.com/photo-1665378029534-fc879ff3920d?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 91,
+      "name": "사이클머신",
+      "price": 500000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1670505060574-b08479270d1b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 92,
+      "name": "푸쉬업바",
+      "price": 25000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1669261222932-35c2491e7340?q=80&w=3386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 93,
+      "name": "케틀벨",
+      "price": 50000,
+      "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 94,
+      "name": "복근운동기구",
+      "price": 80000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 95,
+      "name": "점핑로프",
+      "price": 15000,
+      "imageUrl": "https://images.unsplash.com/photo-1665378029534-fc879ff3920d?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 96,
+      "name": "스트레칭밴드",
+      "price": 20000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1670505060574-b08479270d1b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 97,
+      "name": "아령",
+      "price": 30000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1669261222932-35c2491e7340?q=80&w=3386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 98,
+      "name": "스테퍼",
+      "price": 70000,
+      "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 99,
+      "name": "헬스자전거",
+      "price": 150000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 100,
+      "name": "트위스트보드",
+      "price": 20000,
+      "imageUrl": "https://images.unsplash.com/photo-1665378029534-fc879ff3920d?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 101,
+      "name": "피트니스볼",
+      "price": 25000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1670505060574-b08479270d1b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 102,
+      "name": "웨이트트레이너",
+      "price": 120000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1669261222932-35c2491e7340?q=80&w=3386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 103,
+      "name": "런닝벨트",
+      "price": 15000,
+      "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 104,
+      "name": "헬스장갑",
+      "price": 20000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1671028547976-4b1e3300a350?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 105,
+      "name": "운동화",
+      "price": 80000,
+      "imageUrl": "https://images.unsplash.com/photo-1665378029534-fc879ff3920d?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 106,
+      "name": "트레드밀",
+      "price": 700000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1670505060574-b08479270d1b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 107,
+      "name": "바벨",
+      "price": 60000,
+      "imageUrl": "https://images.unsplash.com/photo-1656955178167-3888ac44843c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "fitness"
+    },
+    {
+      "id": 108,
+      "name": "소설책",
+      "price": 5000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1681825268400-c561bd47d586?q=80&w=3544&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    },
+    {
+      "id": 109,
+      "name": "과학소설",
+      "price": 7000,
+      "imageUrl": "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    },
+    {
+      "id": 110,
+      "name": "판타지소설",
+      "price": 6000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1667251760504-096946b820af?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    },
+    {
+      "id": 111,
+      "name": "자서전",
+      "price": 10000,
+      "imageUrl": "https://images.unsplash.com/photo-1589998059171-988d887df646?q=80&w=3552&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    },
+    {
+      "id": 112,
+      "name": "추리소설",
+      "price": 8000,
+      "imageUrl": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    },
+    {
+      "id": 113,
+      "name": "로맨스소설",
+      "price": 7000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1681825268400-c561bd47d586?q=80&w=3544&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    },
+    {
+      "id": 114,
+      "name": "스릴러소설",
+      "price": 9000,
+      "imageUrl": "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=2730&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    },
+    {
+      "id": 115,
+      "name": "자기계발서",
+      "price": 12000,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1667251760504-096946b820af?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    },
+    {
+      "id": 116,
+      "name": "요리책",
+      "price": 15000,
+      "imageUrl": "https://images.unsplash.com/photo-1589998059171-988d887df646?q=80&w=3552&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    },
+    {
+      "id": 117,
+      "name": "그래픽노블",
+      "price": 13000,
+      "imageUrl": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "books"
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "sorted": false,
+      "unsorted": true,
+      "empty": true
+    },
+    "pageNumber": 1,
+    "pageSize": 50,
+    "offset": 50,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": false,
+  "totalPages": 4,
+  "totalElements": 155,
+  "sort": {
+    "sorted": false,
+    "unsorted": true,
+    "empty": true
+  },
+  "first": false,
+  "number": 1,
+  "numberOfElements": 50,
+  "size": 50,
+  "empty": false
+}
