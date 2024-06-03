@@ -1,5 +1,5 @@
 import { cartApis } from '../../../api/cart';
-import useFetch from '../useQuery';
+import useFetch from '../useFetch';
 
 import APIError from '../../../api/apiError';
 import { CartItem } from '../../../types';

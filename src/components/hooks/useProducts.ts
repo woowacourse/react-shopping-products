@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SortOrder, SortType } from '../../api/types';
 import {
   INITIAL_PAGE_NUMBER,
@@ -6,57 +6,58 @@ import {
   PAGE_SIZE,
 } from '../../constants/paginationRules';
 import { Category, Product } from '../../types';
-import useFetchProducts from './products/useFetchProducts';
+import { productQueries } from './queries/product';
 
 interface UseProductsResult {
   products: Product[];
   isLoading: boolean;
   error: Error | null;
-  page: number;
   isLastPage: boolean;
   fetchNextPage: () => void;
-
   setSort: (newPriceOrder: SortOrder) => void;
   setCategory: (newCategory: Category) => void;
 }
 
 export default function useProducts(): UseProductsResult {
-  const { error, isLoading, fetchProducts } = useFetchProducts();
-
   const [products, setProducts] = useState<Product[]>([]);
   const [isLastPage, setIsLastPage] = useState(false);
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(INITIAL_PAGE_NUMBER);
   const [sort, setSort] = useState<SortType>({ price: 'asc', id: 'asc' });
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState<Category | ''>('');
 
-  const getProducts = useCallback(async () => {
-    fetchProducts({
-      page,
-      category,
-      sort,
-      size: page === INITIAL_PAGE_NUMBER ? INITIAL_PAGE_SIZE : PAGE_SIZE,
-    }).then((response) => {
-      if (!response) return;
-      const { last, content } = response;
-
-      setIsLastPage(last);
-      setProducts((prevProducts) =>
-        page === INITIAL_PAGE_NUMBER ? content : [...prevProducts, ...content]
-      );
-    });
-  }, [page, sort, category, fetchProducts]);
+  const {
+    query: getProducts,
+    data: productsResponse,
+    isLoading,
+    error,
+  } = productQueries.useGetProducts({
+    page,
+    category,
+    sort: Object.entries(sort).map(([field, order]) => `${field},${order}`),
+    size: page === INITIAL_PAGE_NUMBER ? INITIAL_PAGE_SIZE : PAGE_SIZE,
+  });
 
   useEffect(() => {
     if (!isLastPage) {
       getProducts();
     }
-  }, [page, isLastPage, category, sort]);
+  }, [page, sort, category, isLastPage]);
 
   useEffect(() => {
     setIsLastPage(false);
     setPage(INITIAL_PAGE_NUMBER);
-  }, [sort, category]);
+  }, [category, sort]);
+
+  useEffect(() => {
+    if (productsResponse) {
+      const { last, content } = productsResponse;
+      setIsLastPage(last);
+      setProducts((prevProducts) =>
+        page === INITIAL_PAGE_NUMBER ? content : [...prevProducts, ...content]
+      );
+    }
+  }, [productsResponse]);
 
   const fetchNextPage = () => {
     if (isLastPage) return;
@@ -72,16 +73,15 @@ export default function useProducts(): UseProductsResult {
   };
 
   return {
-    products,
+    products: products ?? [],
     isLoading,
     error,
-    page,
     fetchNextPage,
-    setCategory: (newCategory: Category) => {
-      setCategory(() => newCategory);
+    setCategory: (value: Category) => {
+      setCategory(value);
     },
-    setSort: (newPriceOrder: SortOrder) => {
-      setSort((prev) => ({ ...prev, price: newPriceOrder }));
+    setSort: (value: SortOrder) => {
+      setSort((prev) => ({ ...prev, price: value }));
     },
     isLastPage,
   };
