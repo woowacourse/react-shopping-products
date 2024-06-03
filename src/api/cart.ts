@@ -23,7 +23,6 @@ export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
   return data.content;
 };
 
-// 201
 export const addCartItem = async ({
   productId,
   quantity = 1,
@@ -41,7 +40,6 @@ export const addCartItem = async ({
   return { status: response.status };
 };
 
-// 204
 export const deleteCartItem = async (cartId: number): Promise<MutationResponse> => {
   const response = await fetcher.delete({
     url: `${END_POINT.cartItems}/${cartId}`,
