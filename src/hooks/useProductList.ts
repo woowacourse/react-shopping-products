@@ -27,7 +27,13 @@ const useProductList = () => {
             ? FETCH_SIZE.firstPageItemCount
             : FETCH_SIZE.moreLoadItemCount;
         const data = await getProductList({ page, size, category, sort });
-        setProducts((prev) => [...prev, ...data.content]);
+
+        if (page === 0) {
+          setProducts(data.content);
+        } else {
+          setProducts((prev) => [...prev, ...data.content]);
+        }
+
         setHasNextPage(!data.last);
       } catch (error) {
         setError(error);
@@ -36,7 +42,9 @@ const useProductList = () => {
       }
     };
 
-    fetchData();
+    if (!loading) {
+      fetchData();
+    }
   }, [page, category, sort]);
 
   const loadNextPage = () => {
