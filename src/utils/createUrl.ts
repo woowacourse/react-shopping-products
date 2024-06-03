@@ -1,16 +1,22 @@
-import { ENDPOINT } from '../constants/apis';
-import { CategoryQueryString, PRODUCTS_SIZE, SortOptionQueryString } from '../constants/products';
+import { CategoryQueryString, SortOptionQueryString } from "../constants/products";
 
 interface CreateUrlProps {
-  page: number;
-  category: CategoryQueryString;
-  sortOption: SortOptionQueryString;
+  endpoint: string;
+  page?: number;
+  size?: number;
+  category?: CategoryQueryString;
+  sortOption?: SortOptionQueryString;
 }
 
-export default function createUrl({ page, category, sortOption }: CreateUrlProps) {
-  const pageNumberForRequest = page === 0 ? page : page + PRODUCTS_SIZE.perRequest;
-  const categoryString = category === 'all' ? '' : `&category=${category}`;
-  const productSizeForRequest = page === 0 ? 20 : PRODUCTS_SIZE.perRequest;
+export default function createUrl({ endpoint, page, size, category, sortOption }: CreateUrlProps) {
+  const searchParams = new URLSearchParams();
 
-  return `${ENDPOINT.PRODUCT}?page=${pageNumberForRequest}&size=${productSizeForRequest}${categoryString}&sort=price,${sortOption}`;
+  if (page) searchParams.set("page", page.toString());
+  if (size) searchParams.set("size", size.toString());
+  if (category && category !== "all") searchParams.set("category", category);
+  if (sortOption) searchParams.set("sort", `price,${sortOption}`);
+
+  const queryString = searchParams.toString();
+
+  return queryString.length === 0 ? endpoint : `${endpoint}?${queryString}`;
 }
