@@ -1,11 +1,11 @@
-import { useEffect, useContext, useState } from 'react';
+import { useState } from 'react';
 
 import { fetchAddCartItem, fetchDeleteCartItem, fetchCartItems } from '../api/cartItems';
-import { CartItemContext } from '../App';
+
+import { CartItem } from '../types/cart';
 
 const useCartItems = () => {
-  const { cartItems, setCartItems } = useContext(CartItemContext);
-
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
@@ -21,10 +21,6 @@ const useCartItems = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    getCartItems();
-  }, []);
 
   const addCartItem = async (productId: number) => {
     try {
@@ -48,10 +44,11 @@ const useCartItems = () => {
 
   return {
     cartItems,
+    getCartItems,
     addCartItem,
     deleteCartItem,
-    CartItemsLoading: loading,
-    CartItemsError: error,
+    cartItemsLoading: loading,
+    cartItemsError: error,
   };
 };
 

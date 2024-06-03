@@ -1,6 +1,8 @@
 import * as S from './style';
 
-import useCartItems from '../../hooks/useCartItems';
+import { useContext } from 'react';
+
+import { UseCartItemsContext } from '../../App';
 
 import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
 
@@ -12,7 +14,7 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
-  const { cartItems, addCartItem, deleteCartItem } = useCartItems();
+  const { cartItems, addCartItem, deleteCartItem } = useContext(UseCartItemsContext);
 
   const cartItem = cartItems.find(({ product }) => id === product.id);
   const isInCart = !!cartItem;
