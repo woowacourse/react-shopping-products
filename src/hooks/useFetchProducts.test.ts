@@ -59,7 +59,7 @@ describe('fetchProducts', () => {
     });
 
     act(() => result.current.fetchNextPage());
-    for (let i = 2; i <= 25; i++) {
+    while (!result.current.isLast) {
       await waitFor(() => {
         act(() => {
           result.current.fetchNextPage();
