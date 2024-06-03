@@ -1,0 +1,19 @@
+.productListContainer {
+  display: flex;
+  gap: 26px;
+  flex-direction: column;
+  background-color: white;
+}
+
+.filterWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.productList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 16px;
+  row-gap: 20px;
+}
