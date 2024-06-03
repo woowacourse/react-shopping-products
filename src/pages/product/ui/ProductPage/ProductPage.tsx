@@ -17,6 +17,8 @@ export const ProductPage = () => {
   const observationTarget = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (loading || !observationTarget.current) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) fetchNextPage();
@@ -24,12 +26,12 @@ export const ProductPage = () => {
       { threshold: 1 }
     );
 
-    if (!loading && observationTarget.current) observer.observe(observationTarget.current);
+    observer.observe(observationTarget.current);
 
     return () => {
       if (observationTarget.current) observer.unobserve(observationTarget.current);
     };
-  }, [loading, fetchNextPage]);
+  }, [loading]);
 
   const handleToggleCartItem = (productId: number) => {
     setCartItems((prev) =>
