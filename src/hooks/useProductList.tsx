@@ -26,6 +26,7 @@ const useProductList = () => {
   const [category, setCategory] = useState<Category>('all');
 
   const { showToast } = useToast();
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (page === -1) return;
@@ -45,7 +46,7 @@ const useProductList = () => {
 
         setProductList((prevProducts) => [...prevProducts, ...paginatedProducts]);
       } catch (error) {
-        showToast('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+        setError(new Error('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'));
       } finally {
         setLoading(false);
       }
@@ -58,7 +59,7 @@ const useProductList = () => {
     const sortType = FILTER_OPTION_LIST.find((sortOption) => sortOption.value === sortValue);
 
     if (!sortType) {
-      showToast(ERROR_MESSAGE.INVALID_SORT_TYPE);
+      setError(new Error(ERROR_MESSAGE.INVALID_SORT_TYPE));
       return;
     }
 
@@ -70,7 +71,7 @@ const useProductList = () => {
     const category = CATEGORY_OPTION_LIST.find((categoryItem) => categoryItem.value === value);
 
     if (!category) {
-      showToast(ERROR_MESSAGE.INVALID_CATEGORY);
+      setError(new Error(ERROR_MESSAGE.INVALID_CATEGORY));
       return;
     }
 
@@ -89,6 +90,13 @@ const useProductList = () => {
 
     setPage((prevPage) => prevPage + 1);
   };
+
+  useEffect(() => {
+    if (error) {
+      showToast({ message: error.message, type: 'alert' });
+      setError(null);
+    }
+  }, [error]);
 
   return {
     handleCategory,

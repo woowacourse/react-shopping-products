@@ -58,21 +58,27 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
 
   const addCartItem = async (productId: number) => {
     if (cartItemList.size >= MAX_ITEM_LENGTH) {
-      showToast(ERROR_MESSAGE.MAX_ITEM_LENGTH);
+      const error = new Error(ERROR_MESSAGE.MAX_ITEM_LENGTH);
+      setError(error);
+      // showToast(ERROR_MESSAGE.MAX_ITEM_LENGTH);
       return;
     }
 
     try {
       await requestAddCartItem(productId, 1);
-    } catch (error) {
-      showToast(ERROR_MESSAGE.ADD_CART_ITEM);
+    } catch (e) {
+      const error = new Error(ERROR_MESSAGE.ADD_CART_ITEM);
+      setError(error);
+      // showToast(ERROR_MESSAGE.ADD_CART_ITEM);
     }
 
     const { content } = await requestCartItemList(PAGE.START, PAGE.SIZE);
     const curCartItem = content.find(({ product }) => product.id === productId);
 
     if (!curCartItem) {
-      showToast(SYSTEM_ERROR_MESSAGE);
+      const error = new Error(SYSTEM_ERROR_MESSAGE);
+      setError(error);
+      // showToast(SYSTEM_ERROR_MESSAGE);
       return;
     }
 
@@ -84,8 +90,10 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
   const deleteCartItem = async (cartItemId: number, productId: number) => {
     try {
       await requestDeleteCartItem(cartItemId);
-    } catch (error) {
-      showToast(ERROR_MESSAGE.DELETE_CART_ITEM);
+    } catch (e) {
+      const error = new Error(ERROR_MESSAGE.DELETE_CART_ITEM);
+      setError(error);
+      // showToast(ERROR_MESSAGE.DELETE_CART_ITEM);
     }
 
     const cartItemMap = new Map<number, CartItem>(cartItemList);
@@ -107,6 +115,13 @@ export const CartItemListProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     updateCartItemList();
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      showToast({ message: error.message, type: 'alert' });
+      setError(null);
+    }
+  }, [error]);
 
   const value = useMemo(
     () => ({
