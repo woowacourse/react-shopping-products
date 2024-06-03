@@ -1,23 +1,25 @@
 import { PropsWithChildren, RefObject, useEffect } from 'react';
 
+import useToast from '@/hooks/useToast';
+
 interface InfinityScrollProp {
   isLoading: boolean;
-  isError: boolean;
   fetchNextPage: () => void;
   bottomRef: RefObject<HTMLDivElement>;
 }
 
 const InfinityScrollContainer = ({
   isLoading,
-  isError,
   fetchNextPage,
   bottomRef,
   children,
 }: PropsWithChildren<InfinityScrollProp>) => {
+  const toast = useToast();
+
   useEffect(() => {
     const onIntersect = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting && !isLoading && !isError) {
+      if (target.isIntersecting && !isLoading && !toast.isError) {
         fetchNextPage();
       }
     };

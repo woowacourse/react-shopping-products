@@ -17,25 +17,18 @@ const ProductListPage = () => {
     productList,
     isLoading,
     fetchNextPage,
-    errorState,
-    handleError,
-    resetError,
-    handleChangeCategory,
-    handleChangeSort,
     order,
     category,
+    handleChangeCategory,
+    handleChangeSort,
   } = useProductList();
-  const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems({
-    handleError,
-    resetError,
-  });
+  const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   return (
     <InfinityScrollContainer
       isLoading={isLoading}
       fetchNextPage={fetchNextPage}
-      isError={errorState.isError}
       bottomRef={bottomRef}
     >
       <Styled.PageContainer>
