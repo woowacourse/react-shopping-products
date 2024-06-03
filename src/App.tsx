@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { CartProvider } from '@/contexts/CartContext';
+import { Global } from '@emotion/react';
+import Products from '@/pages/Products';
+import baseStyle from '@/style/base.style';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <Global styles={baseStyle} />
+      <CartProvider>
+        <Products />
+      </CartProvider>
     </>
   );
 }
