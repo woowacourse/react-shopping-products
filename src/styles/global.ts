@@ -4,7 +4,7 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
 ${resetStyle};
 
-#root {
+#root, #modal-root {
     margin: 0 auto;
     padding-top: 64px;
 }
@@ -14,13 +14,13 @@ ${resetStyle};
   }
   
   @media (max-width: 768px) {
-      #root {
+      #root, #modal-root {
           width: 100%;
       }
   }
   
   @media (min-width: 768px) {
-      #root {
+      #root, #modal-root {
           width: 429px;
       }
   }
