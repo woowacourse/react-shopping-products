@@ -15,18 +15,6 @@ import { CATEGORY, SORT } from './constants/filterOptions';
 import { PAGE_INFORMATION } from './constants/page';
 import { Category } from './types';
 
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const FilterContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
 function App() {
   const { products, setCategory, setSort, fetchNextPage, error, loading } =
     useProducts();
@@ -39,11 +27,12 @@ function App() {
   };
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       <CartItemsProvider>
         <Layout header={<Header />}>
           <Title content={PAGE_INFORMATION.main.title} />
-          <FilterContainer>
+
+          <S.FilterContainer>
             <Dropdown
               size="small"
               defaultContent={CATEGORY.defaultContent}
@@ -56,7 +45,7 @@ function App() {
               options={SORT.options}
               onSelect={onSortSelect}
             />
-          </FilterContainer>
+          </S.FilterContainer>
 
           <ProductList loading={loading} error={error}>
             {products.map((product, idx) => {
@@ -74,8 +63,22 @@ function App() {
           </ProductList>
         </Layout>
       </CartItemsProvider>
-    </Wrapper>
+    </S.Wrapper>
   );
 }
 
 export default App;
+
+const S = {
+  Wrapper: styled.div`
+    display: flex;
+    justify-content: center;
+  `,
+
+  FilterContainer: styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  `,
+};
