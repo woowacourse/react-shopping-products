@@ -20,8 +20,8 @@ const InfiniteScroll = ({ children, isLoading, handleScroll }: InfiniteScrollPro
       },
       {
         root: null,
-        rootMargin: "0px",
-        threshold: 1.0,
+        rootMargin: "200px 0px",
+        threshold: 0.1,
       }
     );
 
