@@ -51,12 +51,12 @@ export default function useProducts(): UseProductsResult {
     if (!isLastPage) {
       getProducts();
     }
-  }, [page]);
+  }, [page, isLastPage, category, sort]);
 
   useEffect(() => {
     setIsLastPage(false);
     setPage(INITIAL_PAGE_NUMBER);
-  }, [category, sort]);
+  }, [sort, category]);
 
   const fetchNextPage = () => {
     if (isLastPage) return;
