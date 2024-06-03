@@ -5,7 +5,7 @@ import { CommonQueryParams } from '../../api/types';
 import APIError from '../../api/apiError';
 
 interface UseFetchResult<T> {
-  loading: boolean;
+  isLoading: boolean;
   error: Error | null;
   fetchData: (options: {
     errorMessage: string;
@@ -18,7 +18,7 @@ interface UseFetchProps {
 }
 
 export default function useFetch<T>({ url }: UseFetchProps): UseFetchResult<T> {
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchData = async ({
@@ -49,5 +49,5 @@ export default function useFetch<T>({ url }: UseFetchProps): UseFetchResult<T> {
     }
   };
 
-  return { loading, error, fetchData };
+  return { isLoading, error, fetchData };
 }

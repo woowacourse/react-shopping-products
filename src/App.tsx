@@ -16,7 +16,7 @@ import { PAGE_INFORMATION } from './constants/page';
 import { Category } from './types';
 
 function App() {
-  const { products, setCategory, setSort, fetchNextPage, error, loading } =
+  const { products, setCategory, setSort, fetchNextPage, error, isLoading } =
     useProducts();
 
   const onCategorySelect = (value: string) => {
@@ -47,7 +47,7 @@ function App() {
             />
           </S.FilterContainer>
 
-          <ProductList loading={loading} error={error}>
+          <ProductList isLoading={isLoading} error={error}>
             {products.map((product, idx) => {
               return idx + 1 !== products.length ? (
                 <ProductItem product={product} key={`${product.id}_${idx}`} />

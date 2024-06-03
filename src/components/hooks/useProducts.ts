@@ -10,7 +10,7 @@ import useFetchProducts from './products/useFetchProducts';
 
 interface UseProductsResult {
   products: Product[];
-  loading: boolean;
+  isLoading: boolean;
   error: Error | null;
   page: number;
   isLastPage: boolean;
@@ -21,7 +21,7 @@ interface UseProductsResult {
 }
 
 export default function useProducts(): UseProductsResult {
-  const { error, loading, fetchProducts } = useFetchProducts();
+  const { error, isLoading, fetchProducts } = useFetchProducts();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [isLastPage, setIsLastPage] = useState(false);
@@ -73,7 +73,7 @@ export default function useProducts(): UseProductsResult {
 
   return {
     products,
-    loading,
+    isLoading,
     error,
     page,
     fetchNextPage,

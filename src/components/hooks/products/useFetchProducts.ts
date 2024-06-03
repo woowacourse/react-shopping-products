@@ -12,7 +12,7 @@ import {
 } from '../../../constants/paginationRules';
 
 const useFetchProducts = () => {
-  const { fetchData, loading, error } = useFetch<FetchProductsResponse>({
+  const { fetchData, isLoading, error } = useFetch<FetchProductsResponse>({
     url: PRODUCTS_ENDPOINT,
   });
 
@@ -35,7 +35,7 @@ const useFetchProducts = () => {
     return response;
   };
 
-  return { fetchProducts, loading, error };
+  return { fetchProducts, isLoading, error };
 };
 
 export default useFetchProducts;

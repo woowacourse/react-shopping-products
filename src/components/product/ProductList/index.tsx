@@ -4,14 +4,14 @@ import APIErrorToast from '../../common/APIErrorToast';
 import { LoadingSpinner } from '../../common/LoadingSpinner/style';
 
 interface ProductListProps {
-  loading: boolean;
+  isLoading: boolean;
   error: Error | null;
 }
 
 // TODO: fetchNextPage까지 prop으로 받아서 내려와야 하나?
 export default function ProductList({
   error,
-  loading,
+  isLoading,
   children,
 }: React.PropsWithChildren<ProductListProps>) {
   return (
@@ -20,7 +20,7 @@ export default function ProductList({
 
       {children}
 
-      {loading && (
+      {isLoading && (
         <S.LoadingContainer>
           <LoadingSpinner />
         </S.LoadingContainer>
