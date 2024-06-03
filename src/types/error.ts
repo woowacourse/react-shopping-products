@@ -6,9 +6,3 @@ export type ErrorName =
   | 'NOT_FOUND_ERROR'
   | 'SERVER_ERROR'
   | 'NETWORK_ERROR';
-
-export interface ErrorState {
-  name: ErrorName | '';
-  isError: boolean;
-  errorMessage: string;
-}

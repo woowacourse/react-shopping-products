@@ -19,7 +19,7 @@ const InfinityScrollContainer = ({
   useEffect(() => {
     const onIntersect = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting && !isLoading && !toast.isError) {
+      if (target.isIntersecting && !isLoading && !toast.isShow) {
         fetchNextPage();
       }
     };

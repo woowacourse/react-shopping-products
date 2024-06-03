@@ -7,7 +7,7 @@ import { ToastContext } from '@/context/toast';
 
 const ToastProvider = ({ children }: PropsWithChildren) => {
   const [toastMessage, setToastMessage] = useState('');
-  const isError = Boolean(toastMessage);
+  const isShow = Boolean(toastMessage);
 
   const error = (message: string) => {
     setTimeout(() => {
@@ -18,7 +18,7 @@ const ToastProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <ToastContext.Provider value={{ isError, error }}>
+    <ToastContext.Provider value={{ isShow, error }}>
       {children}
       {toastMessage &&
         createPortal(<Styled.ToastContainer>{toastMessage}</Styled.ToastContainer>, document.body)}
