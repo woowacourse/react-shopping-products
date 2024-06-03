@@ -1,45 +1,31 @@
 import { generateQueryParams } from '../utils/generateQueryParams';
 import { HEADERS } from './common';
 import { CART_ITEMS_ENDPOINT } from './endpoints';
+import { CommonQueryParams } from './types';
 
-export const fetchCartItems = async () => {
-  const params = generateQueryParams({ size: 100 });
-  const response = await fetch(`${CART_ITEMS_ENDPOINT}?${params}`, {
-    method: 'GET',
-    headers: HEADERS,
-  });
+export const cartApis = {
+  get: async (params: CommonQueryParams) =>
+    await fetch(
+      `${CART_ITEMS_ENDPOINT}?${generateQueryParams({ size: params.size })}`,
+      {
+        method: 'GET',
+        headers: HEADERS,
+      }
+    ),
 
-  if (!response.ok) {
-    throw new Error(`${response.status}`);
-  }
+  add: async (params: CommonQueryParams) =>
+    await fetch(`${CART_ITEMS_ENDPOINT}`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({
+        productId: params.productId,
+        quantity: 1,
+      }),
+    }),
 
-  const data = await response.json();
-  return data.content;
+  delete: async (params: CommonQueryParams) =>
+    await fetch(`${CART_ITEMS_ENDPOINT}/${params.cartItemId}`, {
+      method: 'DELETE',
+      headers: HEADERS,
+    }),
 };
-
-interface AddCartItemArgs {
-  productId: number;
-}
-
-export async function addCartItem({ productId }: AddCartItemArgs) {
-  const response = await fetch(`${CART_ITEMS_ENDPOINT}`, {
-    method: 'POST',
-    headers: HEADERS,
-    body: JSON.stringify({ productId, quantity: 1 }),
-  });
-
-  if (!response.ok) throw new Error(`${response.status}`);
-}
-
-interface RemoveCartItemArgs {
-  cartItemId: number;
-}
-
-export async function removeCartItem({ cartItemId }: RemoveCartItemArgs) {
-  const response = await fetch(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
-    method: 'DELETE',
-    headers: HEADERS,
-  });
-
-  if (!response.ok) throw new Error(`${response.status}`);
-}
