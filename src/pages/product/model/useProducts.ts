@@ -67,7 +67,7 @@ export default function useProducts(): UseProductsResult {
   }, [page, category, sortOrder]);
 
   const fetchNextPage = () => {
-    if (page < totalPage) {
+    if (page < totalPage && !loading) {
       setPage((prevPage) => prevPage + 1);
     }
   };
