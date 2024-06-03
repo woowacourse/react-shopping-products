@@ -70,7 +70,7 @@ const ShoppingProductsPage = () => {
     >
       <S.ShoppingProductsPage>
         <Header />
-        <ToastPopup error={productsError as Error} />
+        <ToastPopup />
         <Main>
           <ProductsContainer />
         </Main>
