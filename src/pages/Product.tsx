@@ -34,7 +34,7 @@ function Product() {
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
   useEffect(() => {
-    if (!target.current || isPending || isLast) return;
+    if (!target.current || isPending || isLast || isError) return;
     const currentTarget = target.current;
     observe(currentTarget);
 
