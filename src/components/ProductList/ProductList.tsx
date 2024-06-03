@@ -1,4 +1,4 @@
-import { Product } from '@/types';
+import { Product } from '@/types/product.type';
 import ProductItem from '../ProductItem/ProductItem';
 import styles from './ProductList.module.css';
 
@@ -10,7 +10,7 @@ export default function ProductList({ productList }: { productList: Product[] })
       ) : (
         <>
           {productList.map((product) => (
-            <ProductItem {...product} />
+            <ProductItem {...product} key={product.id} />
           ))}
         </>
       )}
