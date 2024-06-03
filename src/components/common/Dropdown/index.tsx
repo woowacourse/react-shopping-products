@@ -1,40 +1,55 @@
 import ChevronDown from "../../icons/ChevronDown";
 import ChevronUp from "../../icons/ChevronUp";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import S from "./styledComponent";
+import useCustomContext from "../../../hooks/useCustomContext";
+import { LanguageContext } from "../../provider/LanguageProvider";
 
 interface DropdownProps<T extends string> {
-  options: Record<T, string>;
+  options: readonly T[];
   handleChange: (option: T) => void;
 }
 
 function Dropdown<T extends string>({ options, handleChange }: DropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const optionsKeys = Object.keys(options) as T[];
-  const defaultKey = optionsKeys[0];
-
-  const [selectedOptionKey, setSelectedOptionKey] = useState<T>(defaultKey);
+  const defaultOption = options[0];
+  const [selectedOption, setSelectedOption] = useState<T>(defaultOption);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { messages } = useCustomContext(LanguageContext);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const handleSelect = (optionKey: T) => {
-    setSelectedOptionKey(optionKey);
+  const handleSelect = (option: T) => {
+    setSelectedOption(option);
     setIsOpen(false);
-    handleChange(optionKey);
+    handleChange(option);
   };
 
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("click", handleOutsideClick);
+    }
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [isOpen]);
+
   return (
-    <S.DropdownContainer onClick={toggleDropdown}>
+    <S.DropdownContainer ref={dropdownRef} onClick={toggleDropdown}>
       <S.DropdownLabel>
-        {options[selectedOptionKey]}
+        {messages[selectedOption]}
         {isOpen ? <ChevronUp /> : <ChevronDown />}
       </S.DropdownLabel>
       {isOpen && (
         <S.DropdownList>
-          {optionsKeys.map((optionkey: T) => (
-            <S.DropdownOption key={`dropdown-${optionkey}`} onClick={() => handleSelect(optionkey)}>
-              {options[optionkey]}
+          {options.map((option: T) => (
+            <S.DropdownOption key={`dropdown-${option}`} onClick={() => handleSelect(option)}>
+              {messages[option]}
             </S.DropdownOption>
           ))}
         </S.DropdownList>

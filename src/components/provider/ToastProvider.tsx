@@ -6,7 +6,7 @@ type ToastContextType = {
   successAlert: (message: string) => void;
 };
 
-export const ToastContext = createContext<ToastContextType | undefined>(undefined);
+export const ToastContext = createContext<ToastContextType | null>(null);
 
 export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [toastList, setToastList] = useState<{ id: number; type: "success" | "fail"; message: string }[]>([]);

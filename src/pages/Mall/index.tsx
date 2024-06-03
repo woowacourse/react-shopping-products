@@ -13,10 +13,12 @@ import InfiniteScroll from "../../components/utils/InfiniteScroll";
 import MainTitle from "../../components/common/MainTitle";
 import ProductCard from "../../components/product/ProductCard";
 
-import { PRODUCT_CATEGORY, PRODUCT_SORT } from "../../constants/mall";
-import { ERROR_MESSAGE } from "../../constants/message";
+import { ERROR_MESSAGE } from "../../constants/errorMessage/ko";
 
 import S from "./styledComponent";
+
+import { PRODUCT_CATEGORY_LIST, PRODUCT_SORT_LIST } from "../../constants/mallData";
+import { LanguageContext } from "../../components/provider/LanguageProvider";
 
 const Mall = () => {
   const {
@@ -27,7 +29,7 @@ const Mall = () => {
     handleCategoryChange,
     handleSortChange,
   } = useProducts();
-
+  const { messages } = useCustomContext(LanguageContext);
   const { cartItems, error: toggleCartItemError } = useCustomContext(ToggleCartItemContext);
   useErrorAlert({ toggleCartItemError, productError });
 
@@ -36,10 +38,10 @@ const Mall = () => {
       <Global styles={baseStyle} />
       <Header itemCount={cartItems.length} />
       <S.MainMall>
-        <MainTitle>러기의 쇼핑몰</MainTitle>
+        <MainTitle>{messages.mallTitle}</MainTitle>
         <S.Toolbar>
-          <Dropdown options={PRODUCT_CATEGORY} handleChange={handleCategoryChange} />
-          <Dropdown options={PRODUCT_SORT} handleChange={handleSortChange} />
+          <Dropdown options={PRODUCT_CATEGORY_LIST} handleChange={handleCategoryChange} />
+          <Dropdown options={PRODUCT_SORT_LIST} handleChange={handleSortChange} />
         </S.Toolbar>
         <S.ProductList>
           <InfiniteScroll isLoading={isProductLoading} handleScroll={fetchNextPage}>

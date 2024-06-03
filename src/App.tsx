@@ -1,14 +1,18 @@
 import { ToggleCartItemProvider } from "./components/provider/ToggleCartItemProvider";
 import { ToastProvider } from "./components/provider/ToastProvider";
+import { LanguageProvider } from "./components/provider/LanguageProvider";
+
 import Mall from "./pages/Mall";
 
 function App() {
   return (
-    <ToastProvider>
-      <ToggleCartItemProvider>
-        <Mall />
-      </ToggleCartItemProvider>
-    </ToastProvider>
+    <LanguageProvider>
+      <ToastProvider>
+        <ToggleCartItemProvider>
+          <Mall />
+        </ToggleCartItemProvider>
+      </ToastProvider>
+    </LanguageProvider>
   );
 }
 

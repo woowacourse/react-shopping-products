@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from "../constants/message";
+import { ERROR_MESSAGE } from "../constants/errorMessage/ko";
 import { generateToken } from "./auth";
 
 const USER_ID = import.meta.env.VITE_API_USER_ID;

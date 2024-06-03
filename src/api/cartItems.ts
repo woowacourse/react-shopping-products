@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from "../constants/message";
+import { ERROR_MESSAGE } from "../constants/errorMessage/ko";
 import { CART_ITEMS_ENDPOINT } from "./endPoint";
 import { fetchWithToken } from "./fetchWithToken";
 

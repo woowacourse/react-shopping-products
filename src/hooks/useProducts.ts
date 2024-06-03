@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 
 import { Product } from "../types/products";
 import { getProducts } from "../api/products";
-import { PRODUCT_DEFAULT_CATEGORY, PRODUCT_DEFAULT_SORT, ProductCategory, ProductSort } from "../constants/mall";
+
+import { PRODUCT_DEFAULT_CATEGORY, PRODUCT_DEFAULT_SORT } from "../constants/mallData";
+import { PRODUCT_CATEGORY_TYPE, PRODUCT_SORT_TYPE } from "../types/mall";
 
 const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -11,8 +13,8 @@ const useProducts = () => {
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
 
-  const [category, setCategory] = useState<ProductCategory>(PRODUCT_DEFAULT_CATEGORY);
-  const [sort, setSort] = useState<ProductSort>(PRODUCT_DEFAULT_SORT);
+  const [category, setCategory] = useState<PRODUCT_CATEGORY_TYPE>(PRODUCT_DEFAULT_CATEGORY);
+  const [sort, setSort] = useState<PRODUCT_SORT_TYPE>(PRODUCT_DEFAULT_SORT);
 
   useEffect(() => {
     if (isLoading) return;
@@ -54,7 +56,7 @@ const useProducts = () => {
     setPage((page) => page + 1);
   };
 
-  const handleCategoryChange = (newCategory: ProductCategory) => {
+  const handleCategoryChange = (newCategory: PRODUCT_CATEGORY_TYPE) => {
     if (newCategory !== category) {
       setProducts([]);
       setPage(0);
@@ -62,7 +64,7 @@ const useProducts = () => {
     }
   };
 
-  const handleSortChange = (newSort: ProductSort) => {
+  const handleSortChange = (newSort: PRODUCT_SORT_TYPE) => {
     if (newSort !== sort) {
       setProducts([]);
       setPage(0);
