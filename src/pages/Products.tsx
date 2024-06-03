@@ -18,7 +18,7 @@ const Products = () => {
     page,
     products,
     error,
-    fetchNextPage,
+    loadNextPage,
     hasNextPage,
     handleChangeSort,
     handleChangeCategory,
@@ -62,7 +62,7 @@ const Products = () => {
         <ProductList
           products={products}
           page={page}
-          getNextPage={fetchNextPage}
+          getNextPage={loadNextPage}
           hasNextPage={hasNextPage}
         />
       </S.BodyContent>
