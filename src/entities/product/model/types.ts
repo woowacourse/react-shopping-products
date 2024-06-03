@@ -1,6 +1,8 @@
-export type Category = 'fashion' | 'beverage' | 'electronics' | 'kitchen' | 'fitness' | 'books';
+import { CATEGORIES, SORT_ORDERS } from "./constants";
 
-export type SortOrder = 'price,id,asc' | 'price,id,desc';
+export type Category = (typeof CATEGORIES)[number];
+
+export type SortOrder = (typeof SORT_ORDERS)[number];
 
 export interface Product {
   id: number;
