@@ -1,9 +1,8 @@
-import * as S from './style';
+import { useNavigate } from 'react-router-dom';
 import CartIcon from '../../../assets/images/cartIcon.png';
 import Logo from '../../../assets/images/logo.png';
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { CartItemsContext } from '../../../context/CartItemsProvider';
+import * as S from './style';
+import { useCartItemsContext } from '../../../context/cartItems/useCartItemsContext';
 
 export default function Header() {
   return (
@@ -33,7 +32,7 @@ function CartButton() {
     navigate(0);
   };
 
-  const { cartItems } = useContext(CartItemsContext);
+  const { cartItems } = useCartItemsContext();
 
   return (
     <S.Button onClick={moveToCartPage} type="button">

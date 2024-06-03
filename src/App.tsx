@@ -8,12 +8,12 @@ import IntersectionArea from './components/common/IntersectionArea';
 import useProducts from './components/hooks/useProducts';
 import ProductItem from './components/product/ProductItem';
 import ProductList from './components/product/ProductList';
-import { CartItemsProvider } from './context/CartItemsProvider';
 
 import { SortOrder } from './api/types';
 import { CATEGORY, SORT } from './constants/filterOptions';
 import { PAGE_INFORMATION } from './constants/page';
 import { Category } from './types';
+import { CartItemsProvider } from './context/cartItems/CartItemsProvider';
 
 function App() {
   const { products, setCategory, setSort, fetchNextPage, error, isLoading } =
