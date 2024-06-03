@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import STYLE from "@constants/style";
 
 export const ButtonStyle = styled.button`
   cursor: pointer;
@@ -26,10 +25,10 @@ export const CartControlButtonStyle = styled(ButtonStyle)`
 `;
 
 export const AddCartStyle = styled(CartControlButtonStyle)`
-  background-color: ${STYLE.COLOR.black};
-  color: ${STYLE.COLOR.white};
+  background-color: ${({ theme }) => theme.color.black};
+  color: ${({ theme }) => theme.color.white};
 `;
 export const RemoveCartStyle = styled(CartControlButtonStyle)`
-  background-color: ${STYLE.COLOR.gray234};
-  color: ${STYLE.COLOR.black};
+  background-color: ${({ theme }) => theme.color.gray234};
+  color: ${({ theme }) => theme.color.black};
 `;

@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import STYLE from "@constants/style";
 
 export const ProductItemStyle = styled.div`
-  background-color: ${STYLE.COLOR.white};
-  color: ${STYLE.COLOR.black};
+  background-color: ${({ theme }) => theme.color.white};
+  color: ${({ theme }) => theme.color.black};
   border-radius: 8px;
   width: 182px;
   height: 224px;
