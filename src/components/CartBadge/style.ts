@@ -18,7 +18,8 @@ export const Badge = styled.div`
   text-align: center;
   font-size: 10px;
   font-weight: 700;
-  ${flexCenter}
+  cursor: pointer;
+  ${flexCenter};
 `;
 
 export const BadgeNumber = styled.span`
