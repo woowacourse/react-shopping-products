@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
 import { Product } from '@/entities/product';
 import { Layout, Spinner, Toast } from '@/shared';
@@ -6,7 +6,8 @@ import { ContentHeader } from '@/widgets/ContentHeader';
 import { HeaderCartButton, HeaderLogoButton, LayoutHeader } from '@/widgets/LayoutHeader';
 import { ProductList } from '@/widgets/ProductList';
 
-import useProducts from '../../model/useProducts';
+import { useInfiniteScroll } from '../../model/useInfiniteScroll';
+import { useProducts } from '../../model/useProducts';
 
 import css from './ProductPage.module.css';
 
@@ -16,22 +17,7 @@ export const ProductPage = () => {
     useProducts();
   const observationTarget = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (loading || !observationTarget.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) fetchNextPage();
-      },
-      { threshold: 1 }
-    );
-
-    observer.observe(observationTarget.current);
-
-    return () => {
-      if (observationTarget.current) observer.unobserve(observationTarget.current);
-    };
-  }, [loading]);
+  useInfiniteScroll(observationTarget, loading, fetchNextPage);
 
   const handleToggleCartItem = (productId: number) => {
     setCartItems((prev) =>

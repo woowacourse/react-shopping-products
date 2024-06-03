@@ -16,7 +16,7 @@ interface UseProductsResult {
   handleChangeSortOrder: (value: SortOrder) => void;
 }
 
-export default function useProducts(): UseProductsResult {
+export const useProducts = (): UseProductsResult => {
   const [page, setPage] = useState(0);
   const [category, setCategory] = useState<typeof ALL | Category>(DEFAULT_CATEGORY);
   const [sortOrder, setSortOrder] = useState<SortOrder>(DEFAULT_SORT_ORDER);
@@ -50,4 +50,4 @@ export default function useProducts(): UseProductsResult {
     handleChangeCategory,
     handleChangeSortOrder,
   };
-}
+};
