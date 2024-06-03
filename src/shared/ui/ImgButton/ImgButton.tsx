@@ -1,6 +1,8 @@
-import css from './ImgButton.module.css';
+import { ButtonHTMLAttributes } from "react";
 
-type ButtonType = 'button' | 'submit' | 'reset';
+import css from "./ImgButton.module.css";
+
+type ButtonType = ButtonHTMLAttributes<HTMLButtonElement>["type"];
 
 interface ImgButtonProps {
   children?: string;
@@ -11,9 +13,20 @@ interface ImgButtonProps {
   onClick: () => void;
 }
 
-export const ImgButton = ({ children, className, alt, src, type, onClick }: ImgButtonProps) => {
+export const ImgButton = ({
+  children,
+  className,
+  alt,
+  src,
+  type,
+  onClick,
+}: ImgButtonProps) => {
   return (
-    <button className={`${css.button} ${className}`} type={type} onClick={onClick}>
+    <button
+      className={`${css.button} ${className}`}
+      type={type}
+      onClick={onClick}
+    >
       <img className={css.img} alt={alt} src={src}></img>
       {children}
     </button>
