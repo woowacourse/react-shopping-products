@@ -1,0 +1,51 @@
+{
+  "content": [
+    {
+      "id": 4704,
+      "quantity": 2,
+      "product": {
+        "id": 11,
+        "name": "리복",
+        "price": 20000,
+        "imageUrl": "https://image.msscdn.net/images/goods_img/20221031/2909092/2909092_6_500.jpg",
+        "category": "fashion"
+      }
+    },
+    {
+      "id": 4705,
+      "quantity": 2,
+      "product": {
+        "id": 10,
+        "name": "퓨마",
+        "price": 10000,
+        "imageUrl": "https://sitem.ssgcdn.com/47/78/22/item/1000031227847_i1_750.jpg",
+        "category": "fashion"
+      }
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "sorted": false,
+      "unsorted": true,
+      "empty": true
+    },
+    "pageNumber": 0,
+    "pageSize": 20,
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 19,
+  "sort": {
+    "sorted": false,
+    "unsorted": true,
+    "empty": true
+  },
+  "first": true,
+  "number": 0,
+  "numberOfElements": 19,
+  "size": 20,
+  "empty": false
+}
