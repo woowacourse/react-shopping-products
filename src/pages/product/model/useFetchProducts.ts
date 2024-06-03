@@ -8,7 +8,7 @@ import { EXTRA_FETCH_COUNT, FIRST_FETCH_COUNT, SECONDARY_REQUEST_PAGE_GAP } from
 
 interface UseFetchProductsResult {
   products: Product[];
-  loading: boolean;
+  isLoading: boolean;
   error: unknown;
   totalPage: number;
   fetchProductsData: (page: number, category: typeof ALL | Category, sortOrder: SortOrder) => void;
@@ -16,7 +16,7 @@ interface UseFetchProductsResult {
 
 export default function useFetchProducts(): UseFetchProductsResult {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
   const [totalPage, setTotalPage] = useState(0);
 
@@ -25,7 +25,7 @@ export default function useFetchProducts(): UseFetchProductsResult {
     const requestPage = page === 0 ? 0 : page + SECONDARY_REQUEST_PAGE_GAP;
 
     try {
-      setLoading(true);
+      setIsLoading(true);
       const { totalPages, content } = await fetchProducts({
         page: requestPage,
         size,
@@ -39,9 +39,9 @@ export default function useFetchProducts(): UseFetchProductsResult {
     } catch (error: unknown) {
       setError(error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  return { products, loading, error, totalPage, fetchProductsData };
+  return { products, isLoading, error, totalPage, fetchProductsData };
 }

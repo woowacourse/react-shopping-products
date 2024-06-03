@@ -20,7 +20,7 @@ export const useProducts = (): UseProductsResult => {
   const [page, setPage] = useState(0);
   const [category, setCategory] = useState<typeof ALL | Category>(DEFAULT_CATEGORY);
   const [sortOrder, setSortOrder] = useState<SortOrder>(DEFAULT_SORT_ORDER);
-  const { products, loading, error, totalPage, fetchProductsData } = useFetchProducts();
+  const { products, isLoading: loading, error, totalPage, fetchProductsData } = useFetchProducts();
 
   useEffect(() => {
     fetchProductsData(page, category, sortOrder);
