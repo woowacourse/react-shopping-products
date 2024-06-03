@@ -18,19 +18,12 @@ const fetcher = {
         body: body && JSON.stringify(body),
         headers: headers && headers,
       });
-      if (response.status === 400)
-        throw new CustomError({ name: 'BAD_REQUEST_ERROR', message: errorMessage });
-      if (response.status === 401)
-        throw new CustomError({ name: 'AUTHORIZED_ERROR', message: errorMessage });
-      if (response.status === 404)
-        throw new CustomError({ name: 'NOT_FOUND_ERROR', message: errorMessage });
-      if (response.status === 500) {
-        throw new CustomError({ name: 'SERVER_ERROR', message: errorMessage });
-      }
+
+      handleErrorStatus(response.status, errorMessage);
 
       return response;
     } catch (error) {
-      if (error instanceof Error) {
+      if (!(error instanceof CustomError)) {
         throw new CustomError({ name: 'NETWORK_ERROR', message: errorMessage });
       }
 
@@ -53,6 +46,19 @@ const fetcher = {
   put({ url, headers, errorMessage }: FetchProps) {
     return this.request({ url, method: 'PUT', headers, errorMessage });
   },
+};
+
+const handleErrorStatus = (status: number, errorMessage: string) => {
+  switch (status) {
+    case 400:
+      throw new CustomError({ name: 'BAD_REQUEST_ERROR', message: errorMessage });
+    case 401:
+      throw new CustomError({ name: 'AUTHORIZED_ERROR', message: errorMessage });
+    case 404:
+      throw new CustomError({ name: 'NOT_FOUND_ERROR', message: errorMessage });
+    case 500:
+      throw new CustomError({ name: 'SERVER_ERROR', message: errorMessage });
+  }
 };
 
 export default fetcher;
