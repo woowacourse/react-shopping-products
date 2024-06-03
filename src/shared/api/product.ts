@@ -1,7 +1,7 @@
-import { Category, Product, SortOrder } from '@/entities/product';
-import { ALL, DEFAULT_CATEGORY, DEFAULT_SORT_ORDER } from '@/features/product';
+import { Category, Product, SortOrder } from "@/entities/product";
+import { ALL, DEFAULT_CATEGORY, DEFAULT_SORT_ORDER } from "@/features/product";
 
-import { PRODUCTS_ENDPOINT } from './endpoints';
+import { PRODUCTS_ENDPOINT } from "./endpoints";
 
 interface fetchProductsParams {
   page?: number;
@@ -23,17 +23,25 @@ export const fetchProducts = async ({
 }: fetchProductsParams): Promise<fetchProductsResponse> => {
   let queryString;
   if (category === ALL) {
-    queryString = new URLSearchParams({ page: page.toString(), size: size.toString(), sort }).toString();
+    queryString = new URLSearchParams({
+      page: page.toString(),
+      size: size.toString(),
+      sort,
+    }).toString();
   } else {
-    queryString = new URLSearchParams({ page: page.toString(), size: size.toString(), category, sort }).toString();
+    queryString = new URLSearchParams({
+      page: page.toString(),
+      size: size.toString(),
+      category,
+      sort,
+    }).toString();
   }
-  const url = PRODUCTS_ENDPOINT + '?' + queryString;
-  console.log(url);
+  const url = PRODUCTS_ENDPOINT + "?" + queryString;
 
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch products');
+    throw new Error("Failed to fetch products");
   }
 
   const { totalPages, content } = await response.json();

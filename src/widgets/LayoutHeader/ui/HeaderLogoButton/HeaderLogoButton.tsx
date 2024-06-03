@@ -1,19 +1,17 @@
-import { assets, ImgButton } from '@/shared';
+import { assets, ImgButton } from "@/shared";
 
-import css from './HeaderLogoButton.module.css';
+import css from "./HeaderLogoButton.module.css";
 
 export const HeaderLogoButton = () => {
   // FIXME: This will route to home page
-  const handleOnClick = () => {
-    console.log('clicked');
-  };
+  const handleOnClick = () => {};
 
   return (
     <ImgButton
       className={css.headerLogoButton}
-      alt={'cart'}
+      alt={"cart"}
       src={assets.logo}
-      type={'button'}
+      type={"button"}
       onClick={handleOnClick}
     />
   );

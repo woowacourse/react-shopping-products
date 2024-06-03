@@ -1,10 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-import { Category, Product, SortOrder } from '@/entities/product';
-import { ALL, DEFAULT_CATEGORY, DEFAULT_SORT_ORDER } from '@/features/product';
-import { fetchProducts } from '@/shared';
+import { Category, Product, SortOrder } from "@/entities/product";
+import { ALL, DEFAULT_CATEGORY, DEFAULT_SORT_ORDER } from "@/features/product";
+import { fetchProducts } from "@/shared";
 
-import { EXTRA_FETCH_COUNT, FIRST_FETCH_COUNT, SECONDARY_REQUEST_PAGE_GAP } from '../config/fetchProduct';
+import {
+  EXTRA_FETCH_COUNT,
+  FIRST_FETCH_COUNT,
+  SECONDARY_REQUEST_PAGE_GAP,
+} from "../config/fetchProduct";
 
 interface UseProductsResult {
   products: Product[];
@@ -24,7 +28,9 @@ export default function useProducts(): UseProductsResult {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
   const [page, setPage] = useState(0);
-  const [category, setCategory] = useState<typeof ALL | Category>(DEFAULT_CATEGORY);
+  const [category, setCategory] = useState<typeof ALL | Category>(
+    DEFAULT_CATEGORY
+  );
   const [sortOrder, setSortOrder] = useState<SortOrder>(DEFAULT_SORT_ORDER);
 
   useEffect(() => {
@@ -45,7 +51,9 @@ export default function useProducts(): UseProductsResult {
 
         setError(null);
         setTotalPage(totalPages);
-        page === 0 ? setProducts([...content]) : setProducts([...products, ...content]);
+        page === 0
+          ? setProducts([...content])
+          : setProducts([...products, ...content]);
       } catch (error: unknown) {
         if (error) {
           setError(error);
@@ -65,13 +73,11 @@ export default function useProducts(): UseProductsResult {
   };
 
   const handleChangeCategory = (value: typeof ALL | Category) => {
-    console.log('categoryChanged', value);
     setCategory(value);
     setPage(0);
   };
 
   const handleChangeSortOrder = (value: SortOrder) => {
-    console.log('sortOrderChanged', value);
     setSortOrder(value);
     setPage(0);
   };
