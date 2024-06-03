@@ -8,11 +8,11 @@ interface HeaderProps {
 function Header({ badgeCount }: HeaderProps) {
   return (
     <S.HeaderContainer>
-      <S.LogoIcon src={LogoIcon} />
+      <S.LogoIcon src={LogoIcon} alt="로고" />
       <S.CartIconContainer>
-        <S.CartIcon src={CartIcon} />
+        <S.CartIcon src={CartIcon} alt="쇼핑 카트" />
         <S.BadgeIconContainer>
-          <S.BadgeIcon src={Badge} />
+          <S.BadgeIcon src={Badge} alt="쇼핑 카트 수량" />
           <S.BadgeIconCount>{badgeCount}</S.BadgeIconCount>
         </S.BadgeIconContainer>
       </S.CartIconContainer>

@@ -30,12 +30,12 @@ function CartButton({ id, onAddClick, onDeleteClick }: CartButtonProps) {
 
   return isClicked ? (
     <S.DeleteButton onClick={handleDeleteClick}>
-      <img src={DeleteCartIcon} />
+      <img src={DeleteCartIcon} alt="상품 빼기" />
       빼기
     </S.DeleteButton>
   ) : (
     <S.AddButton onClick={handleAddClick}>
-      <img src={AddCartIcon} />
+      <img src={AddCartIcon} alt="상품 담기" />
       담기
     </S.AddButton>
   );

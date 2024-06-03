@@ -15,7 +15,7 @@ function ProductCard({ product }: ProductCardProps) {
 
   return (
     <S.ProductCardContainer>
-      <S.ProductImage src={product.imageUrl} />
+      <S.ProductImage src={product.imageUrl} alt={product.name} />
       <S.ContentWrapper>
         <S.InfoWrapper>
           <S.ProductName>{product.name}</S.ProductName>
