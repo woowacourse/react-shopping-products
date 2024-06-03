@@ -13,20 +13,21 @@ export const CartItemsContext = createContext<CartItemsContextValue>({
 
   const { cartItems, getCartItems } = useCartItems();
 export const CartItemsProvider = ({ children }: PropsWithChildren) => {
-  const [refresh, setRefresh] = useState<boolean>(true);
+  const [shouldRefresh, setShouldRefresh] = useState<boolean>(true);
 
   useEffect(() => {
-    if (refresh) {
+    if (shouldRefresh) {
       getCartItems();
-      setRefresh(false);
+      setShouldRefresh(false);
     }
   }, [shouldRefresh]);
 
+  const refreshCartItems = () => {
     setShouldRefresh(true);
   };
 
   return (
-    <CartItemsContext.Provider value={{ cartItems, setRefresh }}>
+    <CartItemsContext.Provider value={{ cartItems, refreshCartItems }}>
       {children}
     </CartItemsContext.Provider>
   );
