@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
-import { addCartItem, removeCartItem } from '../../../api/cart';
 import { CartItemsContext } from '../../../context/CartItemsProvider';
 import { AddCartIcon, RemoveCartIcon } from './Icons';
 import * as S from './style';
+import { addCartItem, removeCartItem } from '../../../api/cart';
 
 interface CartButtonProps {
   productId: number;
@@ -14,33 +14,38 @@ export default function CartButton({ productId }: CartButtonProps) {
     cartItems.some((cartItem) => cartItem.product.id === productId)
   );
 
+  const setIsPushed = (newValue: boolean) => {
+    setPushed(newValue);
+  };
+
   return isPushed ? (
-    <RemoveCartButton setPushed={setPushed} productId={productId} />
+    <RemoveCartButton setIsPushed={setIsPushed} productId={productId} />
   ) : (
-    <AddCartButton setPushed={setPushed} productId={productId} />
+    <AddCartButton setIsPushed={setIsPushed} productId={productId} />
   );
 }
 
 interface CartToggleButtonProps extends CartButtonProps {
-  setPushed: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsPushed: (newValue: boolean) => void;
 }
 
 export function RemoveCartButton({
-  setPushed,
+  setIsPushed,
   productId,
 }: CartToggleButtonProps) {
-  const { cartItems, setRefresh } = useContext(CartItemsContext);
+  const { cartItems, refreshCartItems } = useContext(CartItemsContext);
+
   const cartItemId = cartItems.find(
     (cartItem) => cartItem.product.id === productId
   )?.id;
 
   const handleClick = () => {
-    if (cartItemId) {
-      removeCartItem({ cartItemId }).then(() => {
-        setRefresh(true);
-        setPushed(false);
-      });
-    }
+    if (!cartItemId) return;
+
+    removeCartItem({ cartItemId }).then(() => {
+      refreshCartItems();
+      setIsPushed(false);
+    });
   };
 
   return (
@@ -51,13 +56,16 @@ export function RemoveCartButton({
   );
 }
 
-export function AddCartButton({ setPushed, productId }: CartToggleButtonProps) {
-  const { setRefresh } = useContext(CartItemsContext);
+export function AddCartButton({
+  setIsPushed,
+  productId,
+}: CartToggleButtonProps) {
+  const { refreshCartItems } = useContext(CartItemsContext);
 
   const handleClick = () => {
     addCartItem({ productId }).then(() => {
-      setPushed(true);
-      setRefresh(true);
+      refreshCartItems();
+      setIsPushed(true);
     });
   };
 
