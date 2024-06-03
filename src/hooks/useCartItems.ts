@@ -17,6 +17,7 @@ const useCartItems = () => {
       setCartItems(fetchedCartItems);
     } catch (error) {
       setError(error);
+      setTimeout(() => setError(null), 3000);
     } finally {
       setLoading(false);
     }
@@ -29,6 +30,7 @@ const useCartItems = () => {
       await getCartItems();
     } catch (error) {
       setError(error);
+      setTimeout(() => setError(null), 3000);
     }
   };
 
@@ -39,6 +41,7 @@ const useCartItems = () => {
       await getCartItems();
     } catch (error) {
       setError(error);
+      setTimeout(() => setError(null), 3000);
     }
   };
 
