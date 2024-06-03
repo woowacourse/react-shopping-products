@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
-import { PAGE, SIZE } from '../constants/page';
+import { DEFAULT_SORTING_PARAM, PAGE, SIZE } from '../constants/page';
 
 const useFetchProducts = (
-  sortings: SortingParam[] = [],
+  sortings: SortingParam[] = [DEFAULT_SORTING_PARAM],
   filter: string | '' = '',
 ) => {
   const [products, setProducts] = useState<Product[]>([]);

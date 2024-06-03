@@ -1,3 +1,4 @@
+import { DEFAULT_SORTING_PARAM } from '../constants/page';
 import { ProductResponse } from '../types/fetch';
 import { SortingParam } from '../types/sort';
 import {
@@ -10,7 +11,7 @@ import fetchResponse from './fetchResponse';
 export const fetchProducts = async (
   page: number,
   size: number,
-  sortings: SortingParam[] = [],
+  sortings: SortingParam[] = [DEFAULT_SORTING_PARAM],
   category: string = '',
 ): Promise<ProductResponse> => {
   const results = sortings.map(

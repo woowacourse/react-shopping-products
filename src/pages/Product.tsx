@@ -9,6 +9,7 @@ import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
 import ProductCard from '../components/ProductCard/ProductCard';
 import { CartContext } from '../CartContext';
 import { SortingParam } from '../types/sort';
+import { DEFAULT_SORTING_PARAM } from '../constants/page';
 
 import * as S from './Product.styled';
 
@@ -16,7 +17,9 @@ function Product() {
   const target = useRef(null);
 
   const fetchAddCartState = useFetchAddCart();
-  const [sortings, setSortings] = useState<SortingParam[]>([]);
+  const [sortings, setSortings] = useState<SortingParam[]>([
+    DEFAULT_SORTING_PARAM,
+  ]);
   const [filter, setFilter] = useState('');
   const {
     products,
