@@ -47,7 +47,7 @@ export const handlers = [
     const end = (page + 1) * size;
     const productSliced = Object.assign({}, productSorted);
     productSliced.content = productSorted.content.slice(start, end);
-    productSliced.last = productSliced.content.at(-1)!.id === 127;
+    productSliced.last = productSliced.content.at(-1)!.id === 36;
 
     return HttpResponse.json(productSliced);
   }),
