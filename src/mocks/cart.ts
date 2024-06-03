@@ -1,6 +1,6 @@
 import { CartResponse } from '../types/fetch';
 
-export const mockCart: CartResponse = {
+export const mockCartResponse: CartResponse = {
   content: [],
   pageable: {
     sort: {

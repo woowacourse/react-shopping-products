@@ -1,8 +1,8 @@
-import { HttpResponse, http, StrictRequest } from 'msw';
+import { HttpResponse, StrictRequest, http } from 'msw';
 import { ENDPOINTS_CART, ENDPOINTS_PRODUCTS } from '../api/endpoints';
 import { ProductResponse } from '../types/fetch';
 import productSorter from '../utils/productSorter';
-import { mockCart as mockCartResponse } from './cart';
+import { mockCartResponse } from './cart';
 import { mockProductsResponse } from './products';
 
 const filterProductHandler = (
