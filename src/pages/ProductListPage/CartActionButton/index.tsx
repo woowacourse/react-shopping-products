@@ -1,44 +1,31 @@
-import { AddCartIcon, DeleteCartIcon } from '@assets/index';
-import React from 'react';
+import { CartItem } from '@appTypes/index';
+import { QuantityControl } from '@components/index';
 
+import CartActionErrorModal from '../CartActionErrorModal';
+import CartAddButton from '../CartAddButton';
 import style from './style.module.css';
 
-type ButtonType = 'add' | 'delete';
-
 interface CartActionButtonProps {
-  buttonType: ButtonType;
-  onClick: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+  productId: number;
+  cartItem: CartItem | null;
 }
 
-interface ButtonInfo {
-  src: string;
-  alt: string;
-  text: string;
-}
-
-const BUTTON_INFO: Record<ButtonType, ButtonInfo> = {
-  add: {
-    src: AddCartIcon,
-    alt: '상품 담기',
-    text: '담기',
-  },
-  delete: {
-    src: DeleteCartIcon,
-    alt: '상품 빼기',
-    text: '빼기',
-  },
-};
-
-function CartActionButton({ buttonType, onClick }: CartActionButtonProps) {
-  const { src, alt, text } = BUTTON_INFO[buttonType];
-  const className = `cart-action-button ${style.button} ${style[buttonType]}`;
-
+const CartActionButton = ({ productId, cartItem }: CartActionButtonProps) => {
+  //장바구니
+  // const { refreshCartItemIds, cartItemIds } = useTargetContext(CartItemsContext);
+  // const { addCartItem, error: cartActionError } = useCartAction({ refreshCartItemIds });
+  const className = `${style.cartActionButton} ${cartItem ? style.quantity : style.add} `;
+  const addCartItem = (productId: number) => {};
   return (
-    <button onClick={onClick} className={className}>
-      <img src={src} alt={alt} />
-      <span className="button__text">{text}</span>
-    </button>
+    <div className={className}>
+      {/* {cartItem ? (
+        <QuantityControl cartItemId={cartItem.id} quantity={cartItem.quantity} />
+      ) : (
+        <CartAddButton onClick={() => addCartItem(productId)} />
+      )} */}
+      <CartActionErrorModal error={false} />
+    </div>
   );
-}
+};
 
 export default CartActionButton;

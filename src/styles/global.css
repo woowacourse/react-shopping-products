@@ -13,6 +13,8 @@
   --page-title-height: 2.1875rem;
   --page-title-margin-bottom: 1.5rem;
   --product-list-wrapper-margin-top: 1.75rem;
+  --product-card__contents-padding-vertical: 0.9375rem;
+  --product-card__contents-padding-horizon: 0.5rem;
 }
 
 .skeleton {
