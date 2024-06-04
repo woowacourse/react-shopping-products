@@ -31,7 +31,9 @@ const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
             />
           );
         })}
-        {products.length !== 0 && <p style={{ height: '10px' }} ref={lastProductElementRef}></p>}
+        {products.length !== 0 && (
+          <p className={styles.infinityScrollTarget} ref={lastProductElementRef} />
+        )}
       </div>
       {isLoading && <Loader />}
     </>

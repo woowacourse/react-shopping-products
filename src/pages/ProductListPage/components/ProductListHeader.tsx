@@ -14,7 +14,7 @@ const ProductListHeader = ({ cartItemCount }: Props) => {
         <HeaderButton>SHOP</HeaderButton>
         <HeaderButton>
           {cartItemCount !== 0 && <div className={styles.cartItemCount}>{cartItemCount}</div>}
-          <img src={cartIcon} width={20} height={24} />
+          <img src={cartIcon} className={styles.productHeaderImg} />
         </HeaderButton>
       </Header>
     </div>

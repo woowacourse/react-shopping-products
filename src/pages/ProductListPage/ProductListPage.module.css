@@ -11,12 +11,23 @@
   padding-bottom: 28px;
 }
 
+.productSelectButtonImg {
+  width: 14px;
+  height: 14px;
+}
+
 .productItemListContainer {
   display: flex;
   flex-wrap: wrap;
   width: auto;
   row-gap: 20px;
   column-gap: 16px;
+}
+
+.productItemImg {
+  width: 182px;
+  height: 112px;
+  border-radius: 8px 8px 0 0;
 }
 
 .productItemContainer {
@@ -59,6 +70,11 @@
   font-weight: 600;
 }
 
+.productHeaderImg {
+  width: 20px;
+  height: 24px;
+}
+
 .add {
   background-color: black;
   color: white;
@@ -82,4 +98,8 @@
   background-color: #ffffff;
   color: black;
   font-size: 10px;
+}
+
+.infinityScrollTarget {
+  height: 10px;
 }

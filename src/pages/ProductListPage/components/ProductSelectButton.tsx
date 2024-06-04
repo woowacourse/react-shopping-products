@@ -12,7 +12,10 @@ const ProductSelectButton = ({ isSelected, ...props }: Props) => {
 
   return (
     <button className={`${styles.productCartButton} ${styles[buttonStyle]}`} {...props}>
-      <img src={isSelected ? removeCartIcon : addCartIcon} width={14} height={14} />
+      <img
+        src={isSelected ? removeCartIcon : addCartIcon}
+        className={styles.productSelectButtonImg}
+      />
       {isSelected ? '빼기' : '담기'}
     </button>
   );
