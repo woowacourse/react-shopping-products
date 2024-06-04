@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { addCartItem, deleteCartItem, fetchCartItem } from '../api';
 import { CartItemType, ProductType } from '../types';
 import { useToast } from './useToast';
@@ -13,10 +13,8 @@ export function useCartItems() {
 
   const getCartItems = async () => {
     const cartItems = await fetchCartItem();
-    setCartItems(cartItems);
-  };
 
-  useEffect(() => {
+    setCartItems(cartItems);
     setProductToCartIdMap((prev) => {
       const newProductToCartIdMap: Record<number, number> = { ...prev };
       cartItems.forEach((cartItem) => {
@@ -24,7 +22,7 @@ export function useCartItems() {
       });
       return newProductToCartIdMap;
     });
-  }, [cartItems]);
+  };
 
   const pushCartItem = async (itemId: number) => {
     try {
