@@ -9,6 +9,7 @@ import {
   StyledProductPrice,
   StyledWrapper,
 } from "./ProductItem.styled";
+import { formatPrice } from "../../utils/format";
 
 export const ProductItem = ({
   id,
@@ -37,7 +38,7 @@ export const ProductItem = ({
       <StyledContainer>
         <StyledWrapper>
           <StyledProductName>{name}</StyledProductName>
-          <StyledProductPrice>{price}</StyledProductPrice>
+          <StyledProductPrice>{formatPrice(price)}</StyledProductPrice>
         </StyledWrapper>
         <CartActionButton actionType={isAddToCart ? "sub" : "add"} onClick={handleButtonClick} />
       </StyledContainer>
