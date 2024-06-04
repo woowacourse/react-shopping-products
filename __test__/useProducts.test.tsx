@@ -1,10 +1,10 @@
 import { server } from '../src/mocks/server';
 import { http, HttpResponse } from 'msw';
-import { PRODUCTS_ENDPOINT } from '../src/api/endpoints';
 import useProducts from '../src/hooks/useProducts';
 import { renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import { wrapper } from './utils/test-utils';
+import ENDPOINT from '../src/api/endpoints';
 
 const renderUseProductsHook = () =>
   renderHook(() => useProducts(), { wrapper: wrapper });
@@ -26,7 +26,7 @@ describe('useProducts', () => {
 
     it('상품 목록 조회 중 에러 상태', async () => {
       server.use(
-        http.get(PRODUCTS_ENDPOINT, () => {
+        http.get(ENDPOINT.PRODUCTS, () => {
           return new HttpResponse(null, { status: 500 });
         }),
       );

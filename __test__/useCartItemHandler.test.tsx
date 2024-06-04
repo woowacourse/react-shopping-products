@@ -3,7 +3,7 @@ import useCartItemHandler from '../src/hooks/useCartItemHandler';
 import { renderHook, waitFor } from '@testing-library/react';
 import { server } from '../src/mocks/server';
 import { HttpResponse, http } from 'msw';
-import { CART_ITEMS_ENDPOINT } from '../src/api/endpoints';
+import ENDPOINT from '../src/api/endpoints';
 import { wrapper } from './utils/test-utils';
 
 const renderUseCartItemHook = (initIsInCart) =>
@@ -19,7 +19,7 @@ describe('useCartItemHandler', () => {
       expect(result.current.isInCart).toBe(false);
 
       await act(async () => {
-        await result.current.handleAddCartItem();
+        await result.current.handleAddCartItem(1);
       });
 
       await waitFor(() => {
@@ -29,7 +29,7 @@ describe('useCartItemHandler', () => {
 
     it('빼기 버튼을 누르면 장바구니에 상품이 삭제되어야한다.', async () => {
       server.use(
-        http.delete(`${CART_ITEMS_ENDPOINT}/10`, () => {
+        http.delete(`${ENDPOINT.CART_ITEMS}/10`, () => {
           return new HttpResponse(null, { status: 200 });
         }),
       );
@@ -63,7 +63,7 @@ describe('useCartItemHandler', () => {
 
     it('장바구니 목록을 가져오는데 실패했을 때, error 상태값이 true가 되야한다.', async () => {
       server.use(
-        http.post(CART_ITEMS_ENDPOINT, () => {
+        http.post(ENDPOINT.CART_ITEMS, () => {
           return new HttpResponse('Internal Server Error', { status: 500 });
         }),
       );
@@ -71,7 +71,7 @@ describe('useCartItemHandler', () => {
       const { result } = renderUseCartItemHook(false);
 
       await act(async () => {
-        result.current.handleAddCartItem();
+        result.current.handleAddCartItem(1);
       });
 
       await waitFor(() => {
@@ -86,7 +86,7 @@ describe('useCartItemHandler', () => {
     expect(result.current.loading).toBe(false);
 
     act(() => {
-      result.current.handleAddCartItem();
+      result.current.handleAddCartItem(1);
     });
 
     expect(result.current.loading).toBe(true);
