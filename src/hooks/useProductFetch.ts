@@ -48,7 +48,7 @@ export function useProductFetch({ selectBarCondition }: Props) {
       }
     };
     setFetchedProducts();
-  }, [page, selectBarCondition.category, selectBarCondition.sort]);
+  }, [page, selectBarCondition.category, selectBarCondition.sort, showToast]);
 
   const increaseNextPage = () => {
     setPage((prev) =>
