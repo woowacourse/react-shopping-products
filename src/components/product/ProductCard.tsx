@@ -46,7 +46,7 @@ const ProductCard = ({ product, handleCartItems }: ProductCardProps) => {
       <S.ProductImage src={product.imageUrl} alt={product.name} />
       <S.ProductInfo>
         <S.ProductName>{product.name}</S.ProductName>
-        <S.Price>{`${product.price.toLocaleString()}원`}</S.Price>
+        <S.Price>{`${product.price.toLocaleString("ko-KR")}원`}</S.Price>
         <ToggleItemButton id={product.id} handleCartItems={handleCartItems} />
       </S.ProductInfo>
     </S.ProductCard>
