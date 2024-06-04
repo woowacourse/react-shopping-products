@@ -3,13 +3,13 @@ import { CartItemAction, CartItemList } from '../types/type';
 import { cartItemListReducer } from './CartItemListReducer';
 import useFetchCartItemList from '../hooks/useFetchCartItemList';
 
-interface CartItemListContextType {
+export interface CartItemListContextType {
   cartItemList: CartItemList;
   dispatch: Dispatch<CartItemAction>;
 }
-const CartItemListContext = createContext<CartItemListContextType | undefined>(
-  undefined,
-);
+export const CartItemListContext = createContext<
+  CartItemListContextType | undefined
+>(undefined);
 
 interface CartItemListProviderProps {
   children: ReactNode;
