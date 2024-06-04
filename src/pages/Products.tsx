@@ -10,19 +10,21 @@ import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
 import { useEffect } from 'react';
 import useErrorContext from '@/hooks/useErrorContext';
-import useProductList from '@/hooks/useProductList';
+import useProductListQuery from '@/hooks/useProductListQuery';
 
 const Products = () => {
   const {
     page,
     products,
+    isSuccess,
     isLoading,
     error,
     fetchNextPage,
     hasNextPage,
     handleChangeOrder,
     handleChangeCategory,
-  } = useProductList();
+  } = useProductListQuery();
+
   const { setError } = useErrorContext();
 
   useEffect(() => {
@@ -57,13 +59,15 @@ const Products = () => {
               onChangeSelect={handleChangeOrder}
             />
           </S.DropDownWrapper>
-          <ProductList
-            isLoading={isLoading}
-            products={products}
-            page={page}
-            getNextPage={fetchNextPage}
-            hasNextPage={hasNextPage}
-          />
+          {isSuccess && (
+            <ProductList
+              isLoading={isLoading}
+              products={products}
+              page={page}
+              getNextPage={fetchNextPage}
+              hasNextPage={hasNextPage}
+            />
+          )}
         </S.Body>
         <Toast />
       </S.Container>

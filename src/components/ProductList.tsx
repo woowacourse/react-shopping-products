@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
 
 import LoadingImg from '@/assets/loading.gif';
-import { Product } from '@/types/product.type';
 import ProductItem from './ProductItem';
+import { ProductListState } from '@/types/product.type';
 import styled from '@emotion/styled';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 interface Props {
   isLoading: boolean;
-  products: Product[];
+  products: ProductListState[];
   page: number;
   getNextPage: () => void;
   hasNextPage: boolean;
@@ -24,15 +24,9 @@ const ProductList = ({
   const target = useRef<HTMLDivElement | null>(null);
   const [observe, unobserve] = useIntersectionObserver(getNextPage);
 
-  const listContainerRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
     if (target.current) {
       observe(target.current);
-    }
-
-    if (page === 0 && listContainerRef.current) {
-      listContainerRef.current.scrollTop = 0;
     }
 
     return () => {
@@ -43,11 +37,13 @@ const ProductList = ({
   }, [observe, unobserve, page]);
 
   return (
-    <S.ListContainer ref={listContainerRef}>
+    <S.ListContainer>
       <S.GridContainer>
-        {products.map((product) => (
-          <ProductItem key={product.id} item={product} />
-        ))}
+        {products?.map((contents) =>
+          contents?.content.map((product) => (
+            <ProductItem key={product.id} item={product} />
+          ))
+        )}
       </S.GridContainer>
 
       {isLoading && <S.LoadingImg src={LoadingImg} alt="loading" />}
