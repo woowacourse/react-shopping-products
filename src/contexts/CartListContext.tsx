@@ -12,7 +12,7 @@ import { getCartList, getCartListQuantity } from '@/api/cartItem';
 
 interface CartContextType {
   cartList: CartItem[];
-  fetchCartList: () => Promise<void>;
+  updateCartListContext: () => void;
   cartListQuantity: number;
   setCartListQuantity: Dispatch<SetStateAction<number>>;
   fetchCartListQuantity: () => Promise<void>;
@@ -55,11 +55,16 @@ export const CartProvider = ({ children }: Props) => {
   useEffect(() => {
     fetchCartList();
     fetchCartListQuantity();
-  }, [cartList]);
+  }, []);
+
+  const updateCartListContext = () => {
+    fetchCartList();
+    fetchCartListQuantity();
+  };
 
   const value: CartContextType = {
     cartList,
-    fetchCartList,
+    updateCartListContext,
     cartListQuantity,
     setCartListQuantity,
     fetchCartListQuantity,
