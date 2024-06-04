@@ -10,10 +10,10 @@ interface Props {
 
 export default function useProducts({ selectBarCondition, handleCount }: Props) {
   const { products, setPage, hasMore, isLoading } = useProductFetch({ selectBarCondition });
-  const { cartItems, idMap, pushCartItem, popCartItem, getCartItems } = useCartItems();
+  const { cartItems, productToCartIdMap, pushCartItem, popCartItem, getCartItems } = useCartItems();
   const { selectedItems, handleSelect } = useProductSelection({
     cartItems,
-    idMap,
+    productToCartIdMap,
     pushCartItem,
     popCartItem,
     getCartItems,

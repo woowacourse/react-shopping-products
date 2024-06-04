@@ -3,7 +3,7 @@ import { CartItemType } from '../types';
 
 interface Props {
   cartItems: CartItemType[];
-  idMap: Record<number, number>;
+  productToCartIdMap: Record<number, number>;
   pushCartItem: (itemId: number) => Promise<boolean>;
   popCartItem: (itemId: number) => Promise<boolean>;
   getCartItems: () => Promise<void>;
@@ -11,7 +11,7 @@ interface Props {
 
 export function useProductSelection({
   cartItems,
-  idMap,
+  productToCartIdMap,
   pushCartItem,
   popCartItem,
   getCartItems,
@@ -33,7 +33,7 @@ export function useProductSelection({
   const handleSelect = async (itemId: number) => {
     const newSelectedItems = new Set(selectedItems);
     if (selectedItems.has(itemId)) {
-      const result = await popCartItem(idMap[itemId]);
+      const result = await popCartItem(productToCartIdMap[itemId]);
       if (result) newSelectedItems.delete(itemId);
     } else {
       const result = await pushCartItem(itemId);

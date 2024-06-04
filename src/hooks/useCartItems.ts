@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { addCartItem, deleteCartItem, fetchCartItem } from '../api';
-import { CartItemType } from '../types';
+import { CartItemType, ProductType } from '../types';
 import { useToast } from './useToast';
 import { ERROR } from '../constant/message';
 
 export function useCartItems() {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
-  const [idMap, setIdMap] = useState<Record<number, number>>({});
+  const [productToCartIdMap, setProductToCartIdMap] = useState<
+    Record<ProductType['id'], CartItemType['id']>
+  >({});
   const { showToast } = useToast();
 
   const getCartItems = async () => {
@@ -15,11 +17,11 @@ export function useCartItems() {
   };
 
   useEffect(() => {
-    const newIdMap: Record<number, number> = {};
+    const newProductToCartIdMap: Record<number, number> = {};
     cartItems.forEach((cartItem) => {
-      newIdMap[cartItem.product.id] = cartItem.id;
+      newProductToCartIdMap[cartItem.product.id] = cartItem.id;
     });
-    setIdMap(newIdMap);
+    setProductToCartIdMap(newProductToCartIdMap);
   }, [cartItems]);
 
   const pushCartItem = async (itemId: number) => {
@@ -44,5 +46,5 @@ export function useCartItems() {
     }
   };
 
-  return { cartItems, idMap, pushCartItem, popCartItem, getCartItems };
+  return { cartItems, productToCartIdMap, pushCartItem, popCartItem, getCartItems };
 }
