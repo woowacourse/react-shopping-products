@@ -1,4 +1,3 @@
-export { default as MinusShoppingCartIcon } from './MinusShoppingCartIcon.png';
-export { default as PlusShoppingCartIcon } from './PlusShoppingCartIcon.png';
-export { default as ShoppingCartIcon } from './ShoppingCartIcon.png';
-export { default as ArrowIcon } from './ArrowIcon.png';
+export { default as MinusShoppingCartIcon } from "./MinusShoppingCartIcon.svg";
+export { default as PlusShoppingCartIcon } from "./PlusShoppingCartIcon.svg";
+export { default as ShoppingCartIcon } from "./ShoppingCartIcon.svg";
