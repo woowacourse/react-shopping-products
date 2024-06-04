@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledProduct = styled.section`
+export const StyledProductSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 28px;

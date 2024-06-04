@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { STYLE_OPTION } from "../../constants/styleOption";
 
 export const StyledHeader = styled.div`
   display: flex;
@@ -6,7 +7,7 @@ export const StyledHeader = styled.div`
   align-items: center;
   position: fixed;
   top: 0;
-  z-index: 111;
+  z-index: ${STYLE_OPTION.HEADER_Z_INDEX};
 
   width: inherit;
   height: 64px;

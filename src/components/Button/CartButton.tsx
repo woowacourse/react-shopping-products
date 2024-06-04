@@ -28,7 +28,7 @@ export const CartButton = ({ onClick = () => {} }: CartButtonProps) => {
   return (
     <BaseButton onClick={onClick}>
       <StyledContainer>
-        <StyledCartButtonImg src={ShoppingCartIcon} />
+        <StyledCartButtonImg src={ShoppingCartIcon} alt="" />
         {productCount !== null && <StyledCartCount>{productCount}</StyledCartCount>}
       </StyledContainer>
     </BaseButton>

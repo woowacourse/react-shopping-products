@@ -1,6 +1,6 @@
 import "./App.css";
 import { Header } from "./components/Header/Header";
-import { Product } from "./components/Product/Product";
+import { ProductSection } from "./components/ProductSection/ProductSection";
 import { ToastNotification } from "./components/ToastNotification/ToastNotification";
 
 const App = () => {
@@ -8,7 +8,7 @@ const App = () => {
     <>
       <Header />
       <ToastNotification />
-      <Product />
+      <ProductSection />
     </>
   );
 };

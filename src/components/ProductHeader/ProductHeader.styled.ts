@@ -6,7 +6,7 @@ export const StyledHeader = styled.div`
   gap: 24px;
 `;
 
-export const StyledTitle = styled.span`
+export const StyledTitle = styled.h2`
   font-family: Noto Sans KR;
   font-size: 24px;
   font-weight: 700;

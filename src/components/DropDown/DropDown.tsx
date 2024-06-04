@@ -12,7 +12,7 @@ export const DropDown = ({ value, onChange, options }: DropDownProps) => {
   };
 
   return (
-    <StyledSelect value={value} onChange={handleChange}>
+    <StyledSelect value={value} onChange={handleChange} aria-label="옵션 선택">
       {options.map((opt) => (
         <StyledOption key={opt} value={opt}>
           {opt}

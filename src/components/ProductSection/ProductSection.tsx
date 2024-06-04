@@ -3,9 +3,9 @@ import useProducts from "../../hooks/useProducts";
 import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
 import { ProductHeader } from "../ProductHeader/ProductHeader";
 import { ProductList } from "../ProductList/ProductList";
-import { StyledProduct } from "./Product.styled";
+import { StyledProductSection } from "./ProductSection.styled";
 
-export const Product = () => {
+export const ProductSection = () => {
   const {
     isLoading,
     products,
@@ -20,7 +20,7 @@ export const Product = () => {
   const { errorStatus } = useError();
 
   return (
-    <StyledProduct>
+    <StyledProductSection>
       {isLoading ? (
         <LoadingSpinner />
       ) : (
@@ -42,6 +42,6 @@ export const Product = () => {
           </>
         )
       )}
-    </StyledProduct>
+    </StyledProductSection>
   );
 };

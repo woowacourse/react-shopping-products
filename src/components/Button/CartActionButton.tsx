@@ -13,6 +13,7 @@ export const CartActionButton = ({ actionType, onClick }: CartActionButtonType) 
       <StyledContainer actionType={actionType}>
         <StyledActionImg
           src={actionType === "add" ? PlusShoppingCartIcon : MinusShoppingCartIcon}
+          alt=""
         />
         <StyledActionTitle actionType={actionType}>
           {actionType === "add" ? "담기" : "빼기"}

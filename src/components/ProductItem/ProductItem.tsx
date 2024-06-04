@@ -33,7 +33,7 @@ export const ProductItem = ({
 
   return (
     <StyledProductItem>
-      <StyledProductImg src={imageUrl} alt={name} />
+      <StyledProductImg src={imageUrl} alt="" />
       <StyledContainer>
         <StyledWrapper>
           <StyledProductName>{name}</StyledProductName>
