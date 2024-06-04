@@ -1,0 +1,24 @@
+[
+  {
+    "id": 3088,
+    "quantity": 1,
+    "product": {
+      "id": 12,
+      "name": "컨버스",
+      "price": 20000,
+      "imageUrl": "https://sitem.ssgcdn.com/65/73/69/item/1000163697365_i1_750.jpg",
+      "category": "fashion"
+    }
+  },
+  {
+    "id": 3089,
+    "quantity": 1,
+    "product": {
+      "id": 11,
+      "name": "리복",
+      "price": 20000,
+      "imageUrl": "https://image.msscdn.net/images/goods_img/20221031/2909092/2909092_6_500.jpg",
+      "category": "fashion"
+    }
+  }
+]
