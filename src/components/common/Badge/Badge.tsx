@@ -1,4 +1,4 @@
-import { BadgeProps } from '../../../type';
+import { BadgeProps } from '../../../types';
 import { BadgeContainer } from './Badge.style';
 import { PropsWithChildren } from 'react';
 
