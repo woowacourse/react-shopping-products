@@ -15,7 +15,7 @@ const ProductListSelectBar = ({ handleSelectBarCondition }: Props) => {
         onChange={(e) => {
           handleSelectBarCondition('category', e.target.value);
         }}
-      ></Select>
+      />
       <Select
         options={sortOptions}
         defaultValue={Object.keys(sortOptions)[0]}
