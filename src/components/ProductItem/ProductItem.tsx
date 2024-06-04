@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { addCartItem, removeCartItem } from "../../api/cart";
-import { CartActionButton } from "../Button/CartActionButton";
+import { CartActionButton } from "../Button";
 import {
   StyledContainer,
   StyledProductImg,

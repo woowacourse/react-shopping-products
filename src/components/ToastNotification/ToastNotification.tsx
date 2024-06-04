@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from "../../constants/errorMessage";
+import { ERROR_MESSAGE } from "../../constants";
 import { useError } from "../../context/errorContext";
 import { StyledToast } from "./ToastNotification.styled";
 

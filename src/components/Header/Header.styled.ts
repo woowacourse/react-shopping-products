@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { STYLE_OPTION } from "../../constants/styleOption";
+import { STYLE_OPTION } from "../../constants";
 
 export const StyledHeader = styled.div`
   display: flex;

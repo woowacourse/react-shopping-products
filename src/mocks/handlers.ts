@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { PRODUCTS_ENDPOINT } from "../api/endpoints";
-import { PAGE } from "../constants/page";
+import { PAGE } from "../constants";
 import products from "./products.json";
 
 export const handlers = [

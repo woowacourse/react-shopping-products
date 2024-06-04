@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PRODUCTS_ENDPOINT } from "../api/endpoints";
-import { PAGE } from "../constants/page";
+import { PAGE } from "../constants";
 import { useError } from "../context/errorContext";
 
 interface UseProductsResult {

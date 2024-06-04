@@ -1,5 +1,4 @@
-import { ShopButton } from "../Button";
-import { CartButton } from "../Button/CartButton";
+import { CartButton, ShopButton } from "../Button";
 import { StyledHeader } from "./Header.styled";
 
 export const Header = () => {

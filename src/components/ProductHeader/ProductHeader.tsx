@@ -1,4 +1,4 @@
-import { categoryOptions, sortOptions } from "../../constants/options";
+import { categoryOptions, sortOptions } from "../../constants";
 import { DropDown } from "../DropDown/DropDown";
 import { StyledDropDownContainer, StyledHeader, StyledTitle } from "./ProductHeader.styled";
 
