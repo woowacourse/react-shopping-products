@@ -138,12 +138,6 @@ const reset = css`
     padding: 0;
     overflow: visible;
     cursor: pointer;
-
-    transition: all 0.2s;
-
-    &:hover {
-      background-color: ${COLOR_PALETTE.lightGrey};
-    }
   }
 `;
 

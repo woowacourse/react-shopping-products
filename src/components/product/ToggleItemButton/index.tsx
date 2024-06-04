@@ -5,10 +5,10 @@ import useCustomContext from "../../../hooks/useCustomContext";
 import { ToggleCartItemContext } from "../../provider/ToggleCartItemProvider";
 
 import AddToCart from "../../icons/AddToCart";
-import DeleteFromCart from "../../icons/DeleteFromCart";
 import LoadingDots from "../../common/LoadingDots";
 
 import S from "./StyledComponent";
+import ProductControls from "../../domain/ProductControls";
 
 interface ToggleItemButtonProps {
   id: number;
@@ -52,21 +52,22 @@ const ToggleItemButton = ({ id }: ToggleItemButtonProps) => {
   };
 
   return (
-    <S.ToggleItemButton key={id} onClick={isSelected ? handleRemoveFromCart : handleAddToCart} isSelected={isSelected}>
+    <S.ToggleItemContainer>
       {isLoading ? (
         <LoadingDots type={isSelected ? "black" : "white"} />
       ) : isSelected ? (
-        <>
-          <DeleteFromCart />
-          빼기
-        </>
+        <ProductControls />
       ) : (
-        <>
+        <S.ToggleItemButton
+          key={id}
+          onClick={isSelected ? handleRemoveFromCart : handleAddToCart}
+          isSelected={isSelected}
+        >
           <AddToCart />
           담기
-        </>
+        </S.ToggleItemButton>
       )}
-    </S.ToggleItemButton>
+    </S.ToggleItemContainer>
   );
 };
 
