@@ -8,7 +8,7 @@ export default function useDeleteCartItem() {
   return useMutation({
     mutationFn: deleteCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITMES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEMS] });
     },
   });
 }

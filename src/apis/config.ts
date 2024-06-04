@@ -7,10 +7,10 @@ export const token = generateBasicToken(USER_ID, USER_PASSWORD);
 
 export const END_POINTS = {
   PRODUCTS: `${API_URL}/products`,
-  CART_ITMES: `${API_URL}/cart-items`,
+  CART_ITEMS: `${API_URL}/cart-items`,
 };
 
 export const QUERY_KEYS = {
   PRODUCTS: 'products',
-  CART_ITMES: 'cart-items',
+  CART_ITEMS: 'cart-items',
 };

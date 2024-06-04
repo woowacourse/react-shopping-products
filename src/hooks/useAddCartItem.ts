@@ -8,7 +8,7 @@ export default function useAddCartItem() {
   return useMutation({
     mutationFn: addCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITMES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEMS] });
     },
   });
 }

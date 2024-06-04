@@ -4,7 +4,7 @@ import response from './response';
 
 export async function fetchCartItemList(): Promise<{ content: CartItemList }> {
   const data = await response({
-    url: `${END_POINTS.CART_ITMES}?size=2000`,
+    url: `${END_POINTS.CART_ITEMS}?size=2000`,
     method: 'GET',
   });
   return data;
@@ -20,7 +20,7 @@ export async function addCartItem({
   quantity,
 }: AddCartItemProps): Promise<void> {
   await response({
-    url: `${END_POINTS.CART_ITMES}`,
+    url: `${END_POINTS.CART_ITEMS}`,
     method: 'POST',
     body: JSON.stringify({ productId, quantity }),
   });
@@ -34,7 +34,7 @@ export async function deleteCartItem({
   cartItemId,
 }: DeleteCartItemProps): Promise<void> {
   await response({
-    url: `${END_POINTS.CART_ITMES}/${cartItemId}`,
+    url: `${END_POINTS.CART_ITEMS}/${cartItemId}`,
     method: 'DELETE',
   });
 }
@@ -49,7 +49,7 @@ export async function patchCartItem({
   quantity,
 }: PatchCartItemProps): Promise<void> {
   await response({
-    url: `${END_POINTS.CART_ITMES}/${cartItemId}`,
+    url: `${END_POINTS.CART_ITEMS}/${cartItemId}`,
     method: 'DELETE',
     body: JSON.stringify({ quantity }),
   });

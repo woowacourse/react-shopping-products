@@ -4,7 +4,7 @@ import { QUERY_KEYS } from '../apis/config';
 
 export default function useCartItemList() {
   return useQuery({
-    queryKey: [QUERY_KEYS.CART_ITMES],
+    queryKey: [QUERY_KEYS.CART_ITEMS],
     queryFn: fetchCartItemList,
   });
 }
