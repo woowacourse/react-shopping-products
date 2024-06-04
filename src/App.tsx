@@ -2,8 +2,8 @@ import './reset.css';
 import './index.css';
 
 import ProductPage from './page/ProductPage';
-import { ToastContextProvider } from './context/ToastContextProvider';
-import { CartProvider } from './context/ShoppingCartCountContext';
+import { ToastContextProvider } from './contexts/ToastContextProvider';
+import { CartProvider } from '@/contexts/CartListContext';
 
 function App() {
   return (
