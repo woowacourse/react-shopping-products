@@ -2,11 +2,12 @@ import { useEffect, useRef } from 'react';
 
 import useProductList from '../../hooks/useProductList';
 import ProductItem from '../ProductItem/ProductItem';
-import { Category, Product, Sort } from '../../types/type';
+import { CartItem, Category, Product, Sort } from '../../types/type';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../common/Spinner/Spinner';
 
 import * as S from './ProductItemList.style';
+import useCartItemList from '../../hooks/useCartItemList';
 
 interface ProductItemListProp {
   category: Category;
@@ -25,6 +26,15 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     category,
     sort,
   });
+
+  const { data: cartItems } = useCartItemList();
+
+  const isInCart = (productId: number) => {
+    if (!cartItems) return;
+    return cartItems.content.some(
+      (item: CartItem) => item.product.id === productId,
+    );
+  };
 
   const target = useRef(null);
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
@@ -46,7 +56,7 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
             <ProductItem
               key={`${product.id}`}
               product={product}
-              isInCart
+              isInCart={isInCart(product.id)}
               toggleCartItem={() => {}}
             />
           )),
