@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 
 import { CartItem } from "../types/cartItems";
 
-export interface HandleCartItems {
-  addToCart: (productId: number) => Promise<void>;
-  removeFromCart: (productId: number) => Promise<void>;
-  checkSelected: (id: number) => boolean;
+export interface CartManager {
+  addItemToCart: (productId: number) => Promise<void>;
+  removeItemFromCart: (productId: number) => Promise<void>;
+  isItemInCart: (id: number) => boolean;
   isLoading: boolean;
 }
 
-const useToggleCartItem = () => {
+const useManageCartItem = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -34,7 +34,7 @@ const useToggleCartItem = () => {
     fetchCartItems();
   }, []);
 
-  const addToCart = async (productId: number) => {
+  const addItemToCart = async (productId: number) => {
     if (isLoading) return;
     try {
       setIsLoading(true);
@@ -47,7 +47,7 @@ const useToggleCartItem = () => {
     }
   };
 
-  const removeFromCart = async (productId: number) => {
+  const removeItemFromCart = async (productId: number) => {
     if (isLoading) return;
     try {
       setIsLoading(true);
@@ -76,17 +76,17 @@ const useToggleCartItem = () => {
     }
   };
 
-  const checkSelected = (id: number) =>
+  const isItemInCart = (id: number) =>
     !!cartItems.find((item) => item.product.id === id);
 
   return {
     cartItems,
-    addToCart,
-    removeFromCart,
-    checkSelected,
+    addItemToCart,
+    removeItemFromCart,
+    isItemInCart,
     isLoading,
     error,
   };
 };
 
-export default useToggleCartItem;
+export default useManageCartItem;

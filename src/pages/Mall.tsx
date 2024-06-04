@@ -12,8 +12,8 @@ import { baseStyle } from "../style/baseStyle";
 import styled from "@emotion/styled";
 import useCustomContext from "../hooks/useCustomContext";
 import { useEffect } from "react";
+import useManageCartItem from "../hooks/useManageCartItem";
 import useProducts from "../hooks/useProducts";
-import useToggleCartItem from "../hooks/useToggleCartItem";
 
 const S = {
   MainMall: styled.div`
@@ -46,12 +46,12 @@ const Mall = () => {
 
   const {
     cartItems,
-    addToCart,
-    removeFromCart,
-    checkSelected,
+    addItemToCart,
+    removeItemFromCart,
+    isItemInCart,
     isLoading: isToggleCartItemLoading,
     error: toggleCartItemError,
-  } = useToggleCartItem();
+  } = useManageCartItem();
 
   const { failAlert } = useCustomContext(ToastContext);
 
@@ -95,10 +95,10 @@ const Mall = () => {
               <ProductCard
                 key={`${index}${product.id}`}
                 product={product}
-                handleCartItems={{
-                  addToCart,
-                  checkSelected,
-                  removeFromCart,
+                cartManager={{
+                  addItemToCart,
+                  removeItemFromCart,
+                  isItemInCart,
                   isLoading: isToggleCartItemLoading,
                 }}
               />
