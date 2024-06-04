@@ -1,4 +1,4 @@
-import { StyledOption, StyledSelect } from "./DropDown.styled";
+import { StyledSelect } from "./DropDown.styled";
 
 interface DropDownProps {
   value: string;
@@ -14,9 +14,9 @@ export const DropDown = ({ value, onChange, options }: DropDownProps) => {
   return (
     <StyledSelect value={value} onChange={handleChange}>
       {options.map((opt) => (
-        <StyledOption key={opt} value={opt}>
+        <option key={opt} value={opt}>
           {opt}
-        </StyledOption>
+        </option>
       ))}
     </StyledSelect>
   );
