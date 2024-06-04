@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
-import { INITIAL_PAGING_SIZE, PAGING_SIZE, START_PAGE_NUMBER } from '../../constants/api';
 import useFetch from './useFetch';
-import { Product } from '../../types';
+import { Product } from '@_types/product';
+import { PRODUCTS_ENDPOINT } from '@_api/endpoints';
+import { INITIAL_PAGING_SIZE, PAGING_SIZE, START_PAGE_NUMBER } from '@_constants/api';
 
 export type SortType = 'desc' | 'asc';
 
