@@ -11,7 +11,7 @@ export interface Item {
   category: string;
 }
 
-export interface CartItems {
+export interface CartItem {
   id: number;
   quantity: number;
   product: Item;
@@ -20,4 +20,12 @@ export interface CartItems {
 export interface BadgeProps {
   color: string;
   bgColor: string;
+}
+
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: string;
 }
