@@ -1,11 +1,11 @@
 import { useCallback, useRef } from 'react';
 
 interface Props {
-  isLastPage: boolean;
-  increaseNextPage: () => void;
+  onIntersect: () => void;
+  threshold?: number;
 }
 
-export const useInfinityScroll = ({ isLastPage, increaseNextPage }: Props) => {
+export const useInfinityScroll = ({ onIntersect, threshold = 0.1 }: Props) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastProductElementRef = useCallback(
@@ -13,17 +13,17 @@ export const useInfinityScroll = ({ isLastPage, increaseNextPage }: Props) => {
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(
         (entries) => {
-          if (entries[0].isIntersecting && !isLastPage) {
-            increaseNextPage();
+          if (entries[0].isIntersecting) {
+            onIntersect();
           }
         },
         {
-          threshold: 0.1,
+          threshold,
         },
       );
       if (node) observer.current.observe(node);
     },
-    [isLastPage, increaseNextPage],
+    [onIntersect, threshold],
   );
 
   return { lastProductElementRef };

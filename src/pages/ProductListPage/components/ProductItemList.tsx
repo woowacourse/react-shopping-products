@@ -10,12 +10,11 @@ interface Props {
 }
 
 const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
-  const { products, increaseNextPage, isLastPage, selectedItems, handleSelect, isLoading } =
-    useProducts({
-      selectBarCondition,
-      handleCount,
-    });
-  const { lastProductElementRef } = useInfinityScroll({ isLastPage, increaseNextPage });
+  const { products, increaseNextPage, selectedItems, handleSelect, isLoading } = useProducts({
+    selectBarCondition,
+    handleCount,
+  });
+  const { lastProductElementRef } = useInfinityScroll({ onIntersect: increaseNextPage });
 
   return (
     <>

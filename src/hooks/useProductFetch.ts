@@ -25,6 +25,7 @@ export function useProductFetch({ selectBarCondition }: Props) {
 
   useEffect(() => {
     const setFetchedProducts = async () => {
+      if (isLastPage) return;
       try {
         setIsLoading(true);
 
@@ -48,7 +49,7 @@ export function useProductFetch({ selectBarCondition }: Props) {
       }
     };
     setFetchedProducts();
-  }, [page, selectBarCondition.category, selectBarCondition.sort, showToast]);
+  }, [page, selectBarCondition.category, selectBarCondition.sort, showToast, isLastPage]);
 
   const increaseNextPage = () => {
     setPage((prev) =>
@@ -56,5 +57,5 @@ export function useProductFetch({ selectBarCondition }: Props) {
     );
   };
 
-  return { products, increaseNextPage, isLastPage, isLoading };
+  return { products, increaseNextPage, isLoading };
 }
