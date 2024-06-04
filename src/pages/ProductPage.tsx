@@ -1,20 +1,19 @@
-import useProducts from '../hooks/useProducts';
-import useCartItem from '../hooks/useCartItem';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import useProducts from "../hooks/useProducts/useProducts";
+import useCartItem from "../hooks/useCartItems/useCartItems";
+import useIntersectionObserver from "../hooks/useIntersectionObserver";
 
-import NavigationBar from '../components/NavigationBar/NavigationBar';
-import SelectBox from '../components/SelectBox/SelectBox';
-import ProductItemContainer from '../components/ProductItemContainer/ProductItemContainer';
-import APIErrorToast from '../components/APIErrorToast/APIErrorToast';
-
-import * as Styled from './ProductPage.style';
+import NavigationBar from "../components/NavigationBar/NavigationBar";
+import SelectBox from "../components/SelectBox/SelectBox";
+import ProductItemContainer from "../components/ProductItemContainer/ProductItemContainer";
 
 import {
   CategoryKeys,
   SortOptionsKeys,
   PRODUCT_CATEGORIES,
   PRODUCT_SORT_OPTIONS,
-} from '../constants/products';
+} from "../constants/products";
+
+import * as Styled from "./ProductPage.style";
 
 export default function ProductPage() {
   const {
@@ -22,27 +21,16 @@ export default function ProductPage() {
     error: productError,
     isLoading: isProductLoading,
     fetchNextPage,
+    category,
     handleChangeCategory,
+    sortOption,
     handleChangeSortOption,
   } = useProducts();
 
-  const {
-    error: cartItemError,
-    handleAddCartItem,
-    handleRemoveCartItem,
-    selectedCartItemsLength,
-    checkIsInCart,
-  } = useCartItem();
+  const { handleAddCartItem, handleRemoveCartItem, selectedCartItemsLength, checkIsInCart } =
+    useCartItem();
 
   const observerRef = useIntersectionObserver<HTMLDivElement>(fetchNextPage);
-
-  const handleSelectCategory = (value: CategoryKeys) => {
-    handleChangeCategory(PRODUCT_CATEGORIES[value]);
-  };
-
-  const handleSelectSortOption = (value: SortOptionsKeys) => {
-    handleChangeSortOption(PRODUCT_SORT_OPTIONS[value]);
-  };
 
   return (
     <>
@@ -56,17 +44,17 @@ export default function ProductPage() {
         </Styled.ShopHeader>
       </NavigationBar>
       <Styled.ShopContent>
-        <Styled.ShopTitle>bpple 상품 목록</Styled.ShopTitle>
+        <Styled.ShopTitle>해르 상품 목록</Styled.ShopTitle>
         <Styled.SelectBoxContainer>
           <SelectBox<CategoryKeys>
-            optionValues={Object.keys(PRODUCT_CATEGORIES)}
-            onChange={handleSelectCategory}
-            placeholder="전체"
+            options={PRODUCT_CATEGORIES}
+            currentOption={category}
+            onChange={handleChangeCategory}
           />
           <SelectBox<SortOptionsKeys>
-            optionValues={Object.keys(PRODUCT_SORT_OPTIONS)}
-            onChange={handleSelectSortOption}
-            placeholder="낮은 가격순"
+            options={PRODUCT_SORT_OPTIONS}
+            currentOption={sortOption}
+            onChange={handleChangeSortOption}
           />
         </Styled.SelectBoxContainer>
         <ProductItemContainer
@@ -76,13 +64,11 @@ export default function ProductPage() {
           checkIsInCart={checkIsInCart}
         />
       </Styled.ShopContent>
-      {!isProductLoading && !productError && <Styled.ObserverTarget ref={observerRef} />}
-      {productError && productError instanceof Error && (
-        <APIErrorToast message={productError.message} />
-      )}
-      {cartItemError && cartItemError instanceof Error && (
-        <APIErrorToast message={cartItemError.message} />
-      )}
+
+      <Styled.ObserverTarget
+        ref={observerRef}
+        $isActive={!isProductLoading && !productError}
+      />
     </>
   );
 }
