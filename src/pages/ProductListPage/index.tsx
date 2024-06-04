@@ -5,11 +5,11 @@ import SelectBox from "@/components/SelectBox";
 import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
 import ItemCardList from "@/components/ItemCardList";
 import useSelect from "@/hooks/useSelect";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import useProducts from "@/hooks/useProducts";
-import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
 import * as S from "@/pages/ProductListPage/style";
+import InfiniteScroll from "@/components/_common/InfiniteScroll";
 
 const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
@@ -17,17 +17,13 @@ const ProductListPage = () => {
 
   const { products, fetchProductPage, currentPage, isLoading, isLastPage, isAbleFetchNextPage } = useProducts();
 
-  const ref = useRef<HTMLDivElement>(null);
-  const { isIntersecting } = useInfiniteScroll({ threshold: 0.25, rootMargin: "80px" }, ref);
-
   const category = useCategorySelect.selected;
   const sort = useSortSelect.selected;
 
-  useEffect(() => {
-    if (isIntersecting && !isLastPage) {
-      fetchProductPage(category, currentPage, sort);
-    }
-  }, [isIntersecting]);
+  const fetchScrollProduct = () => {
+    if (isLastPage) return;
+    fetchProductPage(category, currentPage, sort);
+  };
 
   useEffect(() => {
     fetchProductPage(category, 0, sort);
@@ -47,8 +43,9 @@ const ProductListPage = () => {
             <SelectBox selectorHook={useSortSelect} optionsContents={Object.keys(SORT)} />
           </S.SelectBoxWrapper>
         </S.ItemInfoWrapper>
-        <ItemCardList products={products} isLoading={isLoading} />
-        {isAbleFetchNextPage && <div ref={ref}></div>}
+        <InfiniteScroll fetchingFunction={fetchScrollProduct} isAbleFetchNextPage={isAbleFetchNextPage}>
+          <ItemCardList products={products} isLoading={isLoading} />
+        </InfiniteScroll>
         {isLoading && <ItemCartListSkeleton />}
       </S.Wrapper>
     </>
