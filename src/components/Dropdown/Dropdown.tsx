@@ -12,13 +12,16 @@ function Dropdown({ setSortings, setFilter }: DropdownProps) {
     event.target.value;
   };
 
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilter(event.target.value);
+  };
+  const handleSortingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortings([{ name: 'price', order: event.target.value } as SortingParam]);
+  };
+
   return (
     <S.DropdownContainer>
-      <S.Dropdown
-        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          setFilter(event.target.value);
-        }}
-      >
+      <S.Dropdown onChange={handleFilterChange}>
         <option value={''}>전체</option>
         <option value={'fashion'}>fashion</option>
         <option value={'beverage'}>beverage</option>
@@ -29,13 +32,7 @@ function Dropdown({ setSortings, setFilter }: DropdownProps) {
         <option value={'animal'}>animal</option>
       </S.Dropdown>
 
-      <S.Dropdown
-        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-          setSortings([
-            { name: 'price', order: event.target.value } as SortingParam,
-          ]);
-        }}
-      >
+      <S.Dropdown onChange={handleSortingChange}>
         <option value={'asc'}>낮은 가격 순</option>
         <option value={'desc'}>높은 가격 순</option>
       </S.Dropdown>
