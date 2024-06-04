@@ -2,11 +2,16 @@ import { Modal } from "ollie-modal-components";
 import CartItemList from "./CartItemList";
 import PriceInfo from "./PriceInfo";
 
-const ShoppingCartModal = () => {
+interface ShoppingCartModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const ShoppingCartModal = ({ isOpen, onClose }: ShoppingCartModalProps) => {
   return (
     <Modal
-      isOpen={true}
-      onClose={() => console.log("asdf")}
+      isOpen={isOpen}
+      onClose={onClose}
       position="bottom"
       style={{ borderRadius: "0.8rem 0.8rem 0 0", height: "55%" }}
     >

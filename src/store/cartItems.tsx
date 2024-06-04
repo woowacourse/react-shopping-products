@@ -1,7 +1,7 @@
 import React, { createContext, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 import { CartItem, getCartItems } from "../api/cartItems";
-import ToastPortal from "../Portal";
+import Portal from "../portal/Portal";
 import useToast from "../hooks/useToast";
 import ErrorToast from "../components/ErrorToast";
 
@@ -48,9 +48,12 @@ export const CartItemsProvider = ({ children }: CartItemsProviderProps) => {
       value={{ cartItems: cartItems ?? [], refetch, isLoading, errorMessage }}
     >
       {isOpenToast && (
-        <ToastPortal>
+        <Portal>
           <ErrorToast errorMessage={errorMessage} />
-        </ToastPortal>
+        </Portal>
+        // <ToastPortal>
+        //   <ErrorToast errorMessage={errorMessage} />
+        // </ToastPortal>
       )}
       {children}
     </CartItemsContext.Provider>
