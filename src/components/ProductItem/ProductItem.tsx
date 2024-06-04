@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-import { CartItemListContext } from '../../store/CartItemListContext';
 import { Product } from '../../types/type';
 import ProductItemTitle from '../ProductItemTitle/ProductItemTitle';
 import ToggleCartItemButton from '../ToggleCartItemButton/ToggleCartItemButton';
@@ -12,17 +10,8 @@ interface ProductItemProps {
 }
 
 function ProductItem({ product }: ProductItemProps) {
-  const cartItemListContext = useContext(CartItemListContext);
-  const cartItemList = cartItemListContext
-    ? cartItemListContext.cartItemList
-    : [];
-
-  const isInCart = cartItemList.some(
-    (cartItem) => cartItem.product.id === product.id,
-  );
-  const quantity = cartItemList.find(
-    (cartItem) => cartItem.product.id === product.id,
-  )?.quantity;
+  const isInCart = true;
+  const quantity = 1;
 
   return (
     <S.ProductItem>
