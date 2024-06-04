@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { fetchProducts } from '../api';
 import { ProductType } from '../types';
 import { formattedKey } from './useProducts.util';
-import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
 import { useToast } from './useToast';
+import { calculatePageParams } from '../utils/calculatePageParams';
 
 interface Props {
   selectBarCondition: Record<string, string>;
@@ -26,12 +26,7 @@ export function useProductFetch({ selectBarCondition }: Props) {
     const setFetchedProducts = async () => {
       try {
         setIsLoading(true);
-
-        const size = page === FIRST_FETCH_PAGE ? FIRST_FETCH_SIZE : AFTER_FETCH_SIZE;
-        const queryPage =
-          page === FIRST_FETCH_PAGE
-            ? FIRST_FETCH_PAGE
-            : FIRST_FETCH_SIZE / AFTER_FETCH_SIZE - 1 + page;
+        const { size, queryPage } = calculatePageParams(page);
         const newProducts = await fetchProducts({
           page: queryPage,
           size,
