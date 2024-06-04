@@ -17,11 +17,13 @@ export function useCartItems() {
   };
 
   useEffect(() => {
-    const newProductToCartIdMap: Record<number, number> = {};
-    cartItems.forEach((cartItem) => {
-      newProductToCartIdMap[cartItem.product.id] = cartItem.id;
+    setProductToCartIdMap((prev) => {
+      const newProductToCartIdMap: Record<number, number> = { ...prev };
+      cartItems.forEach((cartItem) => {
+        newProductToCartIdMap[cartItem.product.id] = cartItem.id;
+      });
+      return newProductToCartIdMap;
     });
-    setProductToCartIdMap(newProductToCartIdMap);
   }, [cartItems]);
 
   const pushCartItem = async (itemId: number) => {
