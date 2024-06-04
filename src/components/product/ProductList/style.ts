@@ -16,7 +16,7 @@ export const LoadingContainer = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-export const EmptyProduct = styled.p`
+export const EmptyProducts = styled.p`
   width: 100%;
   height: 100%;
 
