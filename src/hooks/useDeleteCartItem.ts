@@ -15,8 +15,9 @@ const useDeleteCartItem = (refetch: () => Promise<void>) => {
       await fetchDeleteCartItems({ cartItemId: cartItem.id });
       await refetch();
     } catch (error) {
-      const errorMessage = (error as Error).message;
-      setError(errorMessage);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setLoading(false);
     }

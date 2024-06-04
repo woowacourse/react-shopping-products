@@ -25,8 +25,9 @@ const useLoadCartItems = () => {
 
       setCartItem(result.cartItems);
     } catch (error) {
-      const errorMessage = (error as Error).message;
-      setError(errorMessage);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setLoading(false);
     }

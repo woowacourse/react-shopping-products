@@ -34,8 +34,9 @@ const useLoadProducts = (filtering: Filtering) => {
       if (!result) return;
       updateState({ newPage, ...result, newProducts: [...products, ...result.products], isLast: result.isLast });
     } catch (error) {
-      const errorMessage = (error as Error).message;
-      setError(errorMessage);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setLoading(false);
     }
