@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addCartItem, removeCartItem } from "../../api/cart";
 import { CartActionButton } from "../Button/CartActionButton";
 import {
@@ -9,6 +9,7 @@ import {
   StyledProductPrice,
   StyledWrapper,
 } from "./ProductItem.styled";
+import { useCart } from "../../context/cartContext";
 
 export const ProductItem = ({
   id,
@@ -17,6 +18,7 @@ export const ProductItem = ({
   price,
 }: Pick<ProductProps, "id" | "imageUrl" | "name" | "price">) => {
   const [isAddToCart, setIsAddToCart] = useState(false);
+  const { fetchCartCounts } = useCart();
 
   const handleButtonClick = async () => {
     setIsAddToCart((prev) => !prev);
@@ -30,6 +32,10 @@ export const ProductItem = ({
       console.error("Error handling cart action:", error);
     }
   };
+
+  useEffect(() => {
+    fetchCartCounts();
+  }, [isAddToCart]);
 
   return (
     <StyledProductItem>
