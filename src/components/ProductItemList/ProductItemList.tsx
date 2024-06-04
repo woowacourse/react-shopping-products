@@ -7,20 +7,12 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../common/Spinner/Spinner';
 
 import * as S from './ProductItemList.style';
-import useCartItemList from '../../hooks/useFetchCartItemList';
-import { CartItemListContext } from '../../store/CartItemListContext';
-
 interface ProductItemListProp {
   category: Category;
   sort: Sort;
 }
 
 function ProductItemList({ category, sort }: ProductItemListProp) {
-  const cartItemListContext = useContext(CartItemListContext);
-  const setCartItemList = cartItemListContext
-    ? cartItemListContext.setCartItemList
-    : () => {};
-
   const {
     data,
     error,
@@ -32,11 +24,6 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     category,
     sort,
   });
-
-  const { data: cartItems } = useCartItemList();
-  if (cartItems) {
-    setCartItemList(cartItems.content);
-  }
 
   const target = useRef(null);
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);

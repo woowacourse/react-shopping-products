@@ -1,6 +1,6 @@
 import { createContext, Dispatch, ReactNode, useReducer } from 'react';
 import { CartItemAction, CartItemList } from '../types/type';
-import { cartItemListReducer } from './CartItemListReducer';
+import { cartItemListReducer } from './cartItemListReducer';
 import useFetchCartItemList from '../hooks/useFetchCartItemList';
 
 export interface CartItemListContextType {
@@ -15,11 +15,10 @@ interface CartItemListProviderProps {
   children: ReactNode;
 }
 
-const { data: initialCartItemListState } = useFetchCartItemList();
-
 export const CartItemListProvider: React.FC<CartItemListProviderProps> = ({
   children,
 }) => {
+  const { data: initialCartItemListState } = useFetchCartItemList();
   const [cartItemList, dispatch] = useReducer(
     cartItemListReducer,
     initialCartItemListState,
