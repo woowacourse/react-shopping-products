@@ -700,5 +700,30 @@
       "imageUrl": "https://via.placeholder.com/150/800080/808080?text=바벨",
       "category": "Fitness"
     }
-  ]
+  ],
+  "pageable": {
+    "sort": {
+      "sorted": false,
+      "unsorted": true,
+      "empty": true
+    },
+    "pageNumber": 0,
+    "pageSize": 20,
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 7,
+  "sort": {
+    "sorted": false,
+    "unsorted": true,
+    "empty": true
+  },
+  "first": true,
+  "number": 0,
+  "numberOfElements": 7,
+  "size": 20,
+  "empty": false
 }
