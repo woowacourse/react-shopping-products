@@ -9,7 +9,12 @@ export async function fetchCartItemList() {
   return data;
 }
 
-export async function addCartItem(productId: number, quantity: number) {
+interface AddCartItemProps {
+  productId: number;
+  quantity: number;
+}
+
+export async function addCartItem({ productId, quantity }: AddCartItemProps) {
   await response({
     url: `${END_POINTS.CART_ITMES}`,
     method: 'POST',
@@ -17,7 +22,11 @@ export async function addCartItem(productId: number, quantity: number) {
   });
 }
 
-export async function deleteCartItem(cartItemId: number | undefined) {
+interface DeleteCartItemProps {
+  cartItemId: number;
+}
+
+export async function deleteCartItem({ cartItemId }: DeleteCartItemProps) {
   await response({
     url: `${END_POINTS.CART_ITMES}/${cartItemId}`,
     method: 'DELETE',
