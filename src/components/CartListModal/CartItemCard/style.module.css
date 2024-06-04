@@ -1,0 +1,45 @@
+.cartItemCard {
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  border-top: 1px solid var(--border-color);
+  padding: 1rem 0;
+}
+
+.img {
+  border-radius: 0.5rem;
+  width: 100%;
+  width: 5rem;
+  height: 100%;
+  height: 5rem;
+}
+.info {
+  margin-left: 1rem;
+}
+
+.name {
+  margin-bottom: 0.3125rem;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.4375rem;
+}
+
+.price {
+  margin-bottom: 0.5rem;
+  color: #0a0d13;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.deleteButton {
+  position: absolute;
+  top: 1rem;
+  right: 0.875rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  padding: 1px;
+  width: 2.5rem;
+  height: 1.5rem;
+  text-align: center;
+}

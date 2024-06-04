@@ -1,0 +1,8 @@
+.cartList {
+  margin-top: 1.5rem;
+  max-height: 50vh;
+  overflow-y: auto;
+  li:last-child {
+    border-bottom: 1px solid var(--border-color);
+  }
+}

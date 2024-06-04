@@ -1,0 +1,24 @@
+.totalAmount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.75rem 0;
+  width: 100%;
+  height: 2.625rem;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1rem;
+  font-family: Noto Sans;
+  text-align: left;
+}
+
+.price {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  font-family: Noto Sans KR;
+  text-align: right;
+}
