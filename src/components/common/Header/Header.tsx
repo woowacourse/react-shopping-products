@@ -4,6 +4,7 @@ import { HeaderContainer, HeaderIcon } from './Header.style';
 import { HeaderProps } from './Header.type';
 
 const Header = ({ headerIconType = 'home' }: HeaderProps) => {
+  //현재는 headerIconType 하나이므로 default에 구현
   const handleHeaderIcon = ({ headerIconType }: HeaderProps) => {
     switch (headerIconType) {
       default:
