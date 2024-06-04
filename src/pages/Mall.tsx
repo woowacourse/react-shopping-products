@@ -4,8 +4,9 @@ import { SORT, SORT_LIST } from "../constants/sort";
 import Dropdown from "../components/Dropdown";
 import { Global } from "@emotion/react";
 import Header from "../components/Header";
-import InfiniteScrollComponent from "../components/InfiniteProductsScrollComponent";
+import InfiniteScrollComponent from "../components/InfiniteScrollComponent";
 import MainTitle from "../components/MainTitle";
+import ProductCard from "../components/product/ProductCard";
 import { ToastContext } from "../components/Toasts/ToastProvider";
 import { baseStyle } from "../style/baseStyle";
 import styled from "@emotion/styled";
@@ -86,19 +87,23 @@ const Mall = () => {
         </S.Toolbar>
         <S.ProductList>
           <InfiniteScrollComponent
-            handleCartItems={{
-              addToCart,
-              checkSelected,
-              removeFromCart,
-              isLoading: isToggleCartItemLoading,
-            }}
-            productObject={{
-              products,
-              isLoading: isProductLoading,
-              error: productError,
-              fetchNextPage,
-            }}
-          />
+            isLoading={isProductLoading}
+            error={productError}
+            fetchNextPage={fetchNextPage}
+          >
+            {products.map((product, index) => (
+              <ProductCard
+                key={`${index}${product.id}`}
+                product={product}
+                handleCartItems={{
+                  addToCart,
+                  checkSelected,
+                  removeFromCart,
+                  isLoading: isToggleCartItemLoading,
+                }}
+              />
+            ))}
+          </InfiniteScrollComponent>
         </S.ProductList>
       </S.MainMall>
     </>
