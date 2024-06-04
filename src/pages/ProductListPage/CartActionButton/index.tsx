@@ -1,5 +1,4 @@
-import AddIcon from '@assets/addCart.svg';
-import DeleteIcon from '@assets/deleteCart.svg';
+import { AddCartIcon, DeleteCartIcon } from '@assets/index';
 import React from 'react';
 
 import style from './style.module.css';
@@ -19,12 +18,12 @@ interface ButtonInfo {
 
 const BUTTON_INFO: Record<ButtonType, ButtonInfo> = {
   add: {
-    src: AddIcon,
+    src: AddCartIcon,
     alt: '상품 담기',
     text: '담기',
   },
   delete: {
-    src: DeleteIcon,
+    src: DeleteCartIcon,
     alt: '상품 빼기',
     text: '빼기',
   },

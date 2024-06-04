@@ -1,4 +1,4 @@
-import CartIcon from '@assets/cart.svg';
+import { CartIcon } from '@assets/index';
 
 import style from './style.module.css';
 
