@@ -5,18 +5,17 @@ import { CartActionError, PageRequest } from '@components/Fallbacks';
 import { Header, Layout, ToastModal } from '@components/index';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ProductListPage } from './pages';
-import useLoadCartItems from './hooks/useLoadCartItems';
+import useLoadCartItems from '@queries/cart/useLoadCartItems';
 
 function App() {
-  const { cartItems, refetch, error } = useLoadCartItems();
-  const isError = error !== '';
+  const { cartItems, isError } = useLoadCartItems();
 
   return (
     <>
-      <Header cartItemsLength={cartItems.length} />
+      <Header cartItemsLength={cartItems?.length ?? 0} />
       <Layout>
         <ErrorBoundary FallbackComponent={({ error }) => <PageRequest error={error} />}>
-          <ProductListPage cartItems={cartItems} refetch={refetch} />
+          <ProductListPage cartItems={cartItems ?? []} />
         </ErrorBoundary>
       </Layout>
       {isError && (

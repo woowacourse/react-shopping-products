@@ -1,6 +1,8 @@
 const QUERY_KEYS = {
-  getProducts: 'get-products',
-  getCartItems: 'get-cartItems',
+  getProducts: 'getProducts',
+  getCartItems: 'getCartItems',
+  postCartItem: 'postCartItems',
+  deleteCartItem: 'deleteCartItems',
 } as const;
 
 export default QUERY_KEYS;

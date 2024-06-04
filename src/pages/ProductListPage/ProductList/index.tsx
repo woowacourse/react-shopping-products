@@ -9,11 +9,10 @@ import IntersectionObserverArea from '@components/IntersectionObserverArea';
 
 interface ProductListProps {
   filtering: Filtering;
-  refetch: () => Promise<void>;
   cartItems: CartItem[];
 }
 
-function ProductList({ filtering, refetch, cartItems }: ProductListProps) {
+function ProductList({ filtering, cartItems }: ProductListProps) {
   const productListRef = useRef<HTMLElement | null>(null);
   const targetRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,7 +38,7 @@ function ProductList({ filtering, refetch, cartItems }: ProductListProps) {
       <section ref={productListRef} className={style.wrapper}>
         <ul className={style.productList}>
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} cartItem={getCartItem(product.id)} refetch={refetch} />
+            <ProductCard key={product.id} product={product} cartItem={getCartItem(product.id)} />
           ))}
           {isLoading && <div>로딩 중</div>}
           <div className={style.target} ref={targetRef}>

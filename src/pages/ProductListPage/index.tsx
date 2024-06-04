@@ -8,10 +8,9 @@ import ProductList from './ProductList';
 
 interface ProductListPageProps {
   cartItems: CartItem[];
-  refetch: () => Promise<void>;
 }
 
-function ProductListPage({ cartItems, refetch }: ProductListPageProps) {
+function ProductListPage({ cartItems }: ProductListPageProps) {
   const [filtering, setFiltering] = useState<Filtering>({ category: '', sort: 'price,asc' });
 
   const handleChangeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -28,7 +27,7 @@ function ProductListPage({ cartItems, refetch }: ProductListPageProps) {
         <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
       <Suspense fallback={<div>로딩 중...</div>}>
-        <ProductList filtering={filtering} cartItems={cartItems} refetch={refetch} />
+        <ProductList filtering={filtering} cartItems={cartItems} />
       </Suspense>
     </div>
   );

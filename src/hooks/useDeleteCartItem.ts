@@ -1,5 +1,5 @@
 import { fetchDeleteCartItems } from '@apis/index';
-import { CartItem } from '@src/appTypes';
+import { CartItem } from '@appTypes/index';
 import { useState } from 'react';
 
 const useDeleteCartItem = (refetch: () => Promise<void>) => {

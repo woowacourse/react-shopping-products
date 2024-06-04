@@ -1,17 +1,17 @@
 import AddIcon from '@assets/addCart.svg';
 import DeleteIcon from '@assets/deleteCart.svg';
 import style from './style.module.css';
-import { useAddCartItem, useDeleteCartItem } from '@hooks/index';
 import { CartItem } from '@appTypes/index';
 import { ToastModal } from '@components/index';
 import { CartActionError } from '@components/Fallbacks';
+import useAddCartItem from '@queries/cart/useAddCartItem';
+import useDeleteCartItem from '@queries/cart/useDeleteCartItem';
 
 type ButtonType = 'add' | 'delete';
 
 interface CartActionButtonProps {
   cartItem: CartItem;
   productId: number;
-  refetch: () => Promise<void>;
 }
 
 interface ButtonInfo {
@@ -33,27 +33,22 @@ const BUTTON_INFO: Record<ButtonType, ButtonInfo> = {
   },
 };
 
-function CartActionButton({ cartItem, productId, refetch }: CartActionButtonProps) {
+function CartActionButton({ cartItem, productId }: CartActionButtonProps) {
   const isInCart = cartItem !== undefined;
   const buttonType = isInCart ? 'delete' : 'add';
 
   const { src, alt, text } = BUTTON_INFO[buttonType];
   const className = `${style.button} ${style[buttonType]}`;
 
-  const { addCartItem, loading: addLoading, error: addError } = useAddCartItem(refetch);
-  const { deleteCarItem, loading: deleteLoading, error: deleteError } = useDeleteCartItem(refetch);
+  const { addCartItem, isPending: addLoading, isError: addError } = useAddCartItem(productId);
+  const { deleteCartItem, isPending: deleteLoading, isError: deleteError } = useDeleteCartItem(cartItem);
 
-  const onAction = async () => {
-    if (isInCart) {
-      await deleteCarItem(cartItem);
-      return;
-    }
-
-    await addCartItem(productId);
+  const onAction = () => {
+    isInCart ? deleteCartItem() : addCartItem();
   };
 
   const isPending = addLoading || deleteLoading;
-  const isError = addError !== '' || deleteError !== '';
+  const isError = addError || deleteError;
 
   return (
     <>
