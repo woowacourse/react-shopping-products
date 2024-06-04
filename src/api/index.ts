@@ -14,11 +14,17 @@ const USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;
 async function makeRequest(endpoint: string, options: RequestInit): Promise<Response> {
   const token = generateBasicToken(USER_ID, USER_PASSWORD);
 
+  if (token) {
+    options.headers = {
+      ...options.headers,
+      Authorization: `Bearer ${token}`,
+    };
+  }
+
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: {
       ...options.headers,
-      Authorization: token,
       'Content-Type': 'application/json',
     },
   });
