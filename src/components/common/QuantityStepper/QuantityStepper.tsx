@@ -20,7 +20,6 @@ const QuantityStepper = ({
         size="s"
         onClick={decreaseQuantity}
         square={true}
-        isDisabled={quantity === 1}
         aria-label="minus"
       >
         <Minus />
