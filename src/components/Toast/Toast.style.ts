@@ -1,4 +1,4 @@
-import { styled, keyframes } from 'styled-components';
+import { styled, keyframes } from "styled-components";
 
 export const toastSlideIn = keyframes`
   from{
@@ -17,15 +17,17 @@ export const toastSlideOut = keyframes`
 `;
 
 export const Container = styled.div<{ isClose: boolean }>`
-  position: fixed;
-  top: 64px;
-  width: 430px;
+  width: 400px;
+
+  position: relative;
   padding: 0.8rem;
   gap: 1rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
+
+  border-radius: 8px;
   background-color: #ffc9c9;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
   animation: ${({ isClose }) => (isClose ? toastSlideOut : toastSlideIn)} 0.4s ease-in-out forwards;
@@ -36,5 +38,8 @@ export const ToastMessage = styled.span`
   font-size: 12px;
   font-weight: 500;
   line-height: normal;
+
   color: #0a0d13;
+
+  white-space: pre-line;
 `;

@@ -1,34 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import * as Styled from './Toast.style';
+import useToasts from "../../hooks/useToasts";
 
-interface ToastProps {
-  message: string;
-  onClose: () => void;
-}
+import * as Styled from "./Toast.style";
+import { ToastState } from "../../types/toasts";
 
-const Toast = ({ message, onClose }: ToastProps) => {
+const Toast = ({ id, message, duration }: ToastState) => {
   const [isClose, setIsClose] = useState<boolean>(false);
+  const { removeToast } = useToasts();
 
   useEffect(() => {
     if (!isClose) return;
 
     const removeTimer = setTimeout(() => {
-      onClose();
+      removeToast(id);
     }, 500);
+
     return () => {
       clearTimeout(removeTimer);
     };
-  }, [isClose, onClose]);
+  }, [isClose, removeToast, id]);
 
   useEffect(() => {
     const closeTimer = setTimeout(() => {
       setIsClose(true);
-    }, 3000);
+    }, duration);
+
     return () => {
       clearTimeout(closeTimer);
     };
-  }, []);
+  }, [duration]);
 
   return (
     <Styled.Container isClose={isClose}>
