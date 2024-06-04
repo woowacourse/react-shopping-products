@@ -3,8 +3,6 @@ import { fetchProducts } from '../api/index';
 import {
   INITIAL_DATA_LOAD_COUNT,
   SUBSEQUENT_DATA_LOAD_COUNT,
-  CATEGORY,
-  SORT,
   JUMP_NEXT_PAGE_IN_ZERO,
 } from '../constants';
 import { useToast } from './useToast';
@@ -23,7 +21,7 @@ interface UseProductsResult {
 
 export default function useProducts(): UseProductsResult {
   const [products, setProducts] = useState<ProductItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
   const [page, setPage] = useState(0);
   const [isLast, setIsLast] = useState(false);
@@ -37,17 +35,13 @@ export default function useProducts(): UseProductsResult {
   };
 
   const changeCategory = (category: CategoryType) => {
-    if (Object.keys(CATEGORY).includes(category)) {
-      setCategory(category as CategoryType);
-      resetPage();
-    }
+    setCategory(category);
+    resetPage();
   };
 
   const changeSorting = (sort: SortType) => {
-    if (Object.keys(SORT).includes(sort)) {
-      setSorting(sort as SortType);
-      resetPage();
-    }
+    setSorting(sort);
+    resetPage();
   };
   const getProducts = useCallback(async () => {
     setLoading(true);

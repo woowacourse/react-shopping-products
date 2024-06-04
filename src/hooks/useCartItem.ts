@@ -5,7 +5,7 @@ import { fetchItems } from '../api';
 
 const useCartItems = () => {
   const [cartItemIds, setCartItem] = useState<number[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const { createToast } = useToast();
 
   useEffect(() => {

@@ -12,7 +12,7 @@ import {
   ContentWrapper,
 } from './ProductPage.style';
 import useCartItems from '../hooks/useCartItem';
-import { CategoryType, SortType } from '../type';
+import { isCategoryType, isSortType } from '../type';
 
 function ProductPage() {
   const {
@@ -34,16 +34,18 @@ function ProductPage() {
         <DropBoxContainer>
           <Dropdown
             onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              if (Object.keys(CATEGORY).includes(e.target.value)) {
-                changeCategory(e.target.value as CategoryType);
+              const selectedCategory = e.target.value;
+              if (isCategoryType(selectedCategory)) {
+                changeCategory(selectedCategory);
               }
             }}
             options={Object.entries(CATEGORY)}
           ></Dropdown>
           <Dropdown
             onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              if (Object.keys(SORT).includes(e.target.value)) {
-                changeSorting(e.target.value as SortType);
+              const selectedSort = e.target.value;
+              if (isSortType(selectedSort)) {
+                changeSorting(selectedSort);
               }
             }}
             options={Object.entries(SORT)}
