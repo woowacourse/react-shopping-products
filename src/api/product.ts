@@ -1,4 +1,4 @@
-import { Item, Product } from '@/types/index';
+import { Item } from '@/types/index';
 import { ENDPOINT } from './endpoints';
 
 import { fetchWithoutAuth } from './utils/fetchClient';
