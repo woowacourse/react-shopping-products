@@ -1,13 +1,13 @@
+import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
 import { http, HttpResponse } from 'msw';
-import { PRODUCTS_ENDPOINT } from '../api/endpoints';
 import {
   PAGE_SIZE,
   INITIAL_PAGE_SIZE,
   INITIAL_PAGE_NUMBER,
-} from '../constants/paginationRules';
-import products from './products.json';
+} from '../../constants/paginationRules';
+import products from '../products.json';
 
-export const handlers = [
+export const productsHandlers = [
   http.get(PRODUCTS_ENDPOINT, ({ request }) => {
     const url = new URL(request.url);
     const sort = url.searchParams.get('sort');

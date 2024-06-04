@@ -1,12 +1,12 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { HttpResponse, http } from 'msw';
-import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
-import { SortOrder } from '../../api/types';
-import server from '../../mocks/server';
-import { Category } from '../../types';
-import useProducts from './useProducts';
+import { PRODUCTS_ENDPOINT } from '../src/api/endpoints';
+import { SortOrder } from '../src/api/types';
+import server from '../src/mocks/server';
+import { Category } from '../src/types';
+import useProducts from '../src/components/hooks/useProducts';
 
-describe('useProducts', () => {
+describe('상품 목록 테스트', () => {
   describe('상품 목록 조회', () => {
     it('상품 목록을 조회한다.', async () => {
       const { result } = renderHook(() => useProducts());
