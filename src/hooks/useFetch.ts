@@ -1,44 +1,41 @@
-import { useEffect, useState } from 'react';
-import { fetchClient } from '../apis/fetchClient';
-import { HTTPMethod } from '../types/apis';
+import { useCallback, useState } from "react";
 
-export interface UseFetchResult<T> {
+export interface UseFetchResult {
   error: unknown;
   isLoading: boolean;
-  data: T | undefined;
+  fetcher: (
+    callback: () => Promise<void>,
+    addToast?: (message: string, duration?: number) => void,
+  ) => Promise<void>;
 }
 
-interface FetchOptions {
-  url: string;
-  method: HTTPMethod;
-  body?: object;
-  token?: string;
-}
-
-export default function useFetch<T>({ url, method, body, token }: FetchOptions): UseFetchResult<T> {
-  const [data, setData] = useState<T>();
+export default function useFetch(): UseFetchResult {
   const [error, setError] = useState<unknown>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetcher = useCallback(
+    async <T>(
+      callback: () => Promise<T>,
+      addToast?: (message: string, duration?: number) => void,
+    ) => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-        const fetchedData = await fetchClient({ url, method, body, token });
-        setData(fetchedData);
+        await callback();
       } catch (error) {
         setError(error);
+        if (error instanceof Error && addToast) {
+          addToast(error.message);
+        }
       } finally {
         setIsLoading(false);
       }
-    };
-
-    fetchData();
-  }, [url, method, body, token]);
+    },
+    [],
+  );
 
   return {
     error,
     isLoading,
-    data,
+    fetcher,
   };
 }
