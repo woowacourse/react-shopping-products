@@ -10,6 +10,7 @@
   --header-z-index: 100;
   --modal-z-index: 9999;
   --layout-top-padding: calc(var(--header-height) + 2.25rem);
+  --layout-bottom-padding: 1rem;
   --page-title-height: 2.1875rem;
   --page-title-margin-bottom: 1.5rem;
   --product-list-wrapper-margin-top: 1.75rem;
