@@ -61,15 +61,19 @@ export default function useProducts({
   }, [page, category, sort, showError]);
 
   const handleCategory = (category: Category) => {
-    setProducts([]);
     setCategory(category);
-    resetPage();
+    resetState();
   };
 
   const handleSort = (sort: Sort) => {
-    setProducts([]);
     setSort(sort);
+    resetState();
+  };
+
+  const resetState = () => {
+    setProducts([]);
     resetPage();
+    setHasMore(true);
   };
 
   return {
