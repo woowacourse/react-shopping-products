@@ -1,28 +1,32 @@
-import { ENDPOINT } from '../constants/apis';
-import { CartItem } from '../types/cartItem';
-import { generateBasicToken } from '../utils/generateBasicToken';
-import { fetchClient } from './fetchClient';
+import { fetchClient } from "./fetchClient";
+
+import { generateBasicToken } from "../utils/generateBasicToken";
+
+import { CartItem } from "../types/cartItem";
+import { ENDPOINT, PRODUCTS_ERROR_MESSAGES } from "../constants/apis";
 
 interface CartItemResponse {
   content: CartItem[];
   totalElements: number;
 }
 
-function createCartItemUrl(totalItemCount?: number) {
-  const additionalUrl = totalItemCount ? `?size=${totalItemCount}` : '';
-
-  return `${ENDPOINT.CART_ITEMS}${additionalUrl}`;
-}
-
-export async function getCartItems(totalItemCount?: number): Promise<CartItemResponse> {
+export async function getCartItems(totalItemCount?: number): Promise<CartItemResponse | undefined> {
   const token = generateBasicToken();
-  const cartItemUrl = createCartItemUrl(totalItemCount);
+  const cartItemUrl = createCartItemRequestUrl(totalItemCount);
 
-  const response = await fetchClient({ url: cartItemUrl, method: 'GET', token });
-  return {
-    content: response.content,
-    totalElements: response.totalElements,
-  };
+  const response = await fetchClient<CartItemResponse>({
+    url: cartItemUrl,
+    method: "GET",
+    errorMessage: PRODUCTS_ERROR_MESSAGES.fetchingCartItems,
+    token,
+  });
+
+  if (response) {
+    return {
+      content: response.content,
+      totalElements: response.totalElements,
+    };
+  }
 }
 
 export async function addCartItem(productId: number) {
@@ -31,7 +35,8 @@ export async function addCartItem(productId: number) {
 
   await fetchClient({
     url: ENDPOINT.CART_ITEMS,
-    method: 'POST',
+    method: "POST",
+    errorMessage: PRODUCTS_ERROR_MESSAGES.addingCartItem,
     body,
     token,
   });
@@ -41,5 +46,18 @@ export async function removeCartItem(cartItemId: number) {
   const token = generateBasicToken();
   const url = ENDPOINT.DELETE_CART_ITEM(cartItemId);
 
-  await fetchClient({ url, method: 'DELETE', token });
+  return await fetchClient({
+    url,
+    method: "DELETE",
+    errorMessage: PRODUCTS_ERROR_MESSAGES.removeCartItem,
+    token,
+  });
+}
+
+function createCartItemRequestUrl(totalElements?: number) {
+  const params = new URLSearchParams();
+
+  if (totalElements) params.append("size", String(totalElements));
+
+  return `${ENDPOINT.CART_ITEMS}?${params.toString()}`;
 }
