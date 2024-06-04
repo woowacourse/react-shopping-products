@@ -1,11 +1,11 @@
-import { Product } from '../../types/products';
-import ProductItem from '../ProductItem/ProductItem';
-import * as Styled from './ProductItemContainer.style';
+import { Product } from "../../types/products";
+import ProductItem from "../ProductItem/ProductItem";
+import * as Styled from "./ProductItemContainer.style";
 
 interface ProductItemContainerProps {
   products: Product[];
-  onAddCartItem: (productId: number) => Promise<void>;
-  onRemoveCartItem: (productId: number) => Promise<void>;
+  onAddCartItem: (productId: number) => void;
+  onRemoveCartItem: (productId: number) => void;
   checkIsInCart: (productId: number) => boolean;
 }
 
