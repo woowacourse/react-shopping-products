@@ -8,9 +8,11 @@ const CartBadge: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <CartBadgeContainer>
-      <Badge bgColor="#fff" color="#000">
-        {counts}
-      </Badge>
+      {cartListQuantity !== 0 && (
+        <Badge bgColor="#fff" color="#000">
+          {cartListQuantity}
+        </Badge>
+      )}
       {children}
     </CartBadgeContainer>
   );
