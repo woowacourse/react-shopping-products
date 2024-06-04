@@ -5,6 +5,8 @@ export const StyledProductItem = styled.div`
   flex-direction: column;
   width: 182px;
   height: 224px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 2px 1px rgba(10, 13, 19, 0.5);
 `;
 
 export const StyledProductImg = styled.img`
