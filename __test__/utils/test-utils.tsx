@@ -1,6 +1,6 @@
 import React from 'react';
-import { ToastContextProvider } from '../../src/context/ToastContextProvider';
-import { CartProvider } from '../../src/context/ShoppingCartCountContext';
+import { ToastContextProvider } from '../../src/contexts/ToastContextProvider';
+import { CartProvider } from '../../src/contexts/ShoppingCartCountContext';
 
 export const wrapper = ({ children }) => (
   <ToastContextProvider>
