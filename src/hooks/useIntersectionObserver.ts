@@ -1,10 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
-const useIntersectionObserver = <T extends HTMLElement>(callback: () => void) => {
+const useIntersectionObserver = <T extends HTMLElement>(
+  callback: () => void,
+  options: IntersectionObserverInit = {
+    threshold: 0.7,
+  },
+) => {
   const observerRef = useRef<T>(null);
 
   useEffect(() => {
-    if (!observerRef.current) return;
+    const currentObserverElement = observerRef.current;
+    if (!currentObserverElement) return;
 
     const observer = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
@@ -14,17 +20,18 @@ const useIntersectionObserver = <T extends HTMLElement>(callback: () => void) =>
           }
         });
       },
-      {
-        threshold: 0.7,
-      },
+      { ...options },
     );
+
     observer.observe(observerRef.current);
 
     return () => {
-      if (!observerRef.current) return;
-      observer.unobserve(observerRef.current);
+      if (!currentObserverElement) return;
+
+      observer.unobserve(currentObserverElement);
+      observer.disconnect();
     };
-  }, [callback, observerRef.current]);
+  }, [callback, options]);
 
   return observerRef;
 };
