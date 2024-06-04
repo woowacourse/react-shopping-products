@@ -8,15 +8,15 @@ import {
 import { Category, Product } from '../../types';
 import { productQueries } from './queries/product';
 
-interface UseProductsResult {
+export interface UseProductsResult {
   products: Product[];
   isLoading: boolean;
   error: Error | null;
   isLastPage: boolean;
   page: number;
   fetchNextPage: () => void;
-  setSort: (newPriceOrder: SortOrder) => void;
-  setCategory: (newCategory: Category) => void;
+  setSort: (value: string) => void;
+  setCategory: (value: string) => void;
 }
 
 export default function useProducts(): UseProductsResult {
@@ -79,11 +79,11 @@ export default function useProducts(): UseProductsResult {
     error,
     page,
     fetchNextPage,
-    setCategory: (value: Category) => {
-      setCategory(value);
+    setCategory: (value: string) => {
+      setCategory(value as Category);
     },
-    setSort: (value: SortOrder) => {
-      setSort((prev) => ({ ...prev, price: value }));
+    setSort: (value: string) => {
+      setSort((prev) => ({ ...prev, price: value as SortOrder }));
     },
     isLastPage,
   };

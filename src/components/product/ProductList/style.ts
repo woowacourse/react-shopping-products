@@ -1,13 +1,12 @@
 import styled from '@emotion/styled';
 
-export const Grid = styled.div`
+export const Grid = styled.div<{ isEmpty: boolean }>`
   position: relative;
+  height: 100%;
 
   display: grid;
-  grid-template-columns: auto auto;
   gap: 20px 16px;
-
-  height: 100%;
+  grid-template-columns: ${(props) => (props.isEmpty ? 'auto' : 'auto auto')};
 `;
 
 export const LoadingContainer = styled.div`
@@ -15,4 +14,14 @@ export const LoadingContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+`;
+
+export const EmptyProduct = styled.p`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;

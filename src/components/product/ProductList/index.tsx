@@ -1,24 +1,40 @@
 import * as S from './style';
 
 import APIErrorToast from '../../common/APIErrorToast';
+import IntersectionArea from '../../common/IntersectionArea';
 import { LoadingSpinner } from '../../common/LoadingSpinner/style';
+import { UseProductsResult } from '../../hooks/useProducts';
+import ProductItem from '../ProductItem';
 
-interface ProductListProps {
-  isLoading: boolean;
-  error: Error | null;
-}
-
-// TODO: fetchNextPage까지 prop으로 받아서 내려와야 하나?
 export default function ProductList({
   error,
   isLoading,
-  children,
-}: React.PropsWithChildren<ProductListProps>) {
+  products,
+  fetchNextPage,
+}: UseProductsResult) {
+  const isEmptyProducts = products.length === 0;
+
   return (
-    <S.Grid>
+    <S.Grid isEmpty={isEmptyProducts}>
       {error && <APIErrorToast errorMessage={error.message} />}
 
-      {children}
+      {isEmptyProducts && !isLoading && (
+        <S.EmptyProducts>해당하는 상품이 없습니다.</S.EmptyProducts>
+      )}
+
+      {products.map((product, idx) => {
+        const isLastProductItem = idx + 1 !== products.length;
+        return isLastProductItem ? (
+          <ProductItem product={product} key={`${product.id}_${idx}`} />
+        ) : (
+          <IntersectionArea
+            onImpression={fetchNextPage}
+            key={`${product.id}_${idx}`}
+          >
+            <ProductItem product={product} />
+          </IntersectionArea>
+        );
+      })}
 
       {isLoading && (
         <S.LoadingContainer>
