@@ -7,6 +7,17 @@ interface DropdownProps {
   setFilter: Dispatch<SetStateAction<string>>;
 }
 
+const OPTIONS: Record<string, string> = {
+  '': '전체',
+  fashion: '패션',
+  beverage: '음료',
+  electronics: '전자기기',
+  kitchen: '주방용품',
+  fitness: '운동기구',
+  books: '도서',
+  animal: '애완용품',
+};
+
 function Dropdown({ setSortings, setFilter }: DropdownProps) {
   (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.target.value;
@@ -22,14 +33,9 @@ function Dropdown({ setSortings, setFilter }: DropdownProps) {
   return (
     <S.DropdownContainer>
       <S.Dropdown onChange={handleFilterChange}>
-        <option value={''}>전체</option>
-        <option value={'fashion'}>fashion</option>
-        <option value={'beverage'}>beverage</option>
-        <option value={'electronics'}>electronics</option>
-        <option value={'kitchen'}>kitchen</option>
-        <option value={'fitness'}>fitness</option>
-        <option value={'books'}>books</option>
-        <option value={'animal'}>animal</option>
+        {Object.keys(OPTIONS).map((value) => (
+          <option value={value}>{OPTIONS[value]}</option>
+        ))}{' '}
       </S.Dropdown>
 
       <S.Dropdown onChange={handleSortingChange}>
