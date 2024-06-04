@@ -4,18 +4,18 @@ export const PRODUCTS_SIZE = {
 } as const;
 
 export const PRODUCT_CATEGORIES = {
-  전체: 'all',
-  패션: 'fashion',
-  주방용품: 'kitchen',
-  음료: 'beverage',
-  전자제품: 'electronics',
-  운동용품: 'fitness',
-  도서: 'books',
+  all: "전체",
+  fashion: "패션",
+  kitchen: "주방용품",
+  beverage: "음료",
+  electronics: "전자제품",
+  fitness: "운동용품",
+  books: "도서",
 } as const;
 
 export const PRODUCT_SORT_OPTIONS = {
-  '낮은 가격순': 'asc',
-  '높은 가격순': 'desc',
+  asc: "낮은 가격순",
+  desc: "높은 가격순",
 } as const;
 
 export type CategoryKeys = keyof typeof PRODUCT_CATEGORIES;
