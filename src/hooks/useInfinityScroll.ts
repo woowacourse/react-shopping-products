@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 interface Props {
   isLastPage: boolean;
-  setPage: Dispatch<SetStateAction<number>>;
+  increaseNextPage: () => void;
 }
 
-export const useInfinityScroll = ({ isLastPage, setPage }: Props) => {
+export const useInfinityScroll = ({ isLastPage, increaseNextPage }: Props) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastProductElementRef = useCallback(
@@ -14,7 +14,7 @@ export const useInfinityScroll = ({ isLastPage, setPage }: Props) => {
       observer.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && !isLastPage) {
-            setPage((prevPage) => prevPage + 1);
+            increaseNextPage();
           }
         },
         {
@@ -23,7 +23,7 @@ export const useInfinityScroll = ({ isLastPage, setPage }: Props) => {
       );
       if (node) observer.current.observe(node);
     },
-    [isLastPage, setPage],
+    [isLastPage, increaseNextPage],
   );
 
   return { lastProductElementRef };

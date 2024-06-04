@@ -29,16 +29,13 @@ export function useProductFetch({ selectBarCondition }: Props) {
         setIsLoading(true);
 
         const size = page === FIRST_FETCH_PAGE ? FIRST_FETCH_SIZE : AFTER_FETCH_SIZE;
-        const queryPage =
-          page === FIRST_FETCH_PAGE
-            ? FIRST_FETCH_PAGE
-            : FIRST_FETCH_SIZE / AFTER_FETCH_SIZE - 1 + page;
         const { last, content: newProducts } = await fetchProducts({
-          page: queryPage,
+          page,
           size,
           category: selectBarCondition.category,
           sort: formattedKey(selectBarCondition.sort),
         });
+
         setProducts((prev) => [...prev, ...newProducts]);
         setIsLastPage(last);
       } catch (error) {
@@ -53,5 +50,11 @@ export function useProductFetch({ selectBarCondition }: Props) {
     setFetchedProducts();
   }, [page, selectBarCondition.category, selectBarCondition.sort]);
 
-  return { products, setPage, isLastPage, isLoading };
+  const increaseNextPage = () => {
+    setPage((prev) =>
+      prev === FIRST_FETCH_PAGE ? FIRST_FETCH_SIZE / AFTER_FETCH_SIZE + prev : prev + 1,
+    );
+  };
+
+  return { products, increaseNextPage, isLastPage, isLoading };
 }

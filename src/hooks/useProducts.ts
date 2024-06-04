@@ -9,7 +9,9 @@ interface Props {
 }
 
 export default function useProducts({ selectBarCondition, handleCount }: Props) {
-  const { products, setPage, isLastPage, isLoading } = useProductFetch({ selectBarCondition });
+  const { products, increaseNextPage, isLastPage, isLoading } = useProductFetch({
+    selectBarCondition,
+  });
   const { cartItems, productToCartIdMap, pushCartItem, popCartItem, getCartItems } = useCartItems();
   const { selectedItems, handleSelect } = useProductSelection({
     cartItems,
@@ -27,5 +29,5 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     handleCount(cartItems.length);
   }, [cartItems]);
 
-  return { products, setPage, isLastPage, selectedItems, handleSelect, isLoading };
+  return { products, increaseNextPage, isLastPage, selectedItems, handleSelect, isLoading };
 }
