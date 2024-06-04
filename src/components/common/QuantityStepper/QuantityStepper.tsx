@@ -1,7 +1,7 @@
 import Button from '../Button/Button';
 import * as S from './QuantityStepper.style';
-import PLUS from '../../../assets/plus.svg?react';
-import MINUS from '../../../assets/minus.svg?react';
+import Plus from '../../../assets/images/Plus.svg?react';
+import Minus from '../../../assets/images/Minus.svg?react';
 
 export interface QuantityStepperProps {
   quantity: number;
@@ -23,7 +23,7 @@ const QuantityStepper = ({
         isDisabled={quantity === 1}
         aria-label="minus"
       >
-        <MINUS />
+        <Minus />
       </Button>
       <S.Quantity>{quantity}</S.Quantity>
       <Button
@@ -32,7 +32,7 @@ const QuantityStepper = ({
         square={true}
         aria-label="plus"
       >
-        <PLUS />
+        <Plus />
       </Button>
     </S.QuantityStepper>
   );
