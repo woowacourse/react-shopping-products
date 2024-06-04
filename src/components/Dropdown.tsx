@@ -57,7 +57,7 @@ function Dropdown<T extends string>({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState<T>(options[0]);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => setIsOpen((isOpen) => !isOpen);
 
   const handleSelect = (option: T) => {
     setSelectedLabel(option);
