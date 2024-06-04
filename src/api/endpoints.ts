@@ -1,7 +1,26 @@
-const BASE_URL = import.meta.env.VITE_API_URL;
+import buildGetProductURL from './buildProductURL';
+import { getProductListProps } from './product';
 
-export const PRODUCTS_ENDPOINT = `${BASE_URL}/products`;
-
-export const CART_ITEMS_ENDPOINT = `${BASE_URL}/cart-items`;
-
-export const CART_ITEMS_COUNT_ENDPOINT = `${CART_ITEMS_ENDPOINT}/counts`;
+export const ENDPOINT = {
+  product: {
+    getList: ({ page, size, category, order }: getProductListProps) => {
+      return buildGetProductURL({
+        baseUrl: `/products`,
+        page,
+        size,
+        category,
+        order,
+      });
+    },
+    postItem: `/products`,
+    getItem: (id: number) => `/product/${id}`,
+    deleteItem: (id: number) => `/product/${id}`,
+  },
+  cartItem: {
+    getList: '/cart-items',
+    postItem: '/cart-items',
+    deleteItem: (id: number) => `/cart-items/${id}`,
+    patchItem: (id: number) => `/cart-items/${id}`,
+    getItemCount: '/cart-items/counts',
+  },
+};
