@@ -5,10 +5,9 @@ interface Props extends PropsWithChildren<SelectHTMLAttributes<HTMLSelectElement
   options: Record<string, string>;
 }
 
-const Select = ({ options, defaultValue, children, ...props }: Props) => {
+const Select = ({ options, defaultValue, ...props }: Props) => {
   return (
     <select {...props} className={styles.selectContainer} defaultValue={defaultValue}>
-      {children}
       {Object.keys(options).map((option) => (
         <option key={option} value={option}>
           {options[option]}
