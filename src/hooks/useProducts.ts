@@ -23,7 +23,7 @@ const useProducts = () => {
     if (!res) return;
     if (res.last) setIsLastPage(true);
 
-    page === 0 ? setProducts(res.content) : setProducts((prevProducts) => [...prevProducts, ...res.content]);
+    setProducts((prevProducts) => (page === 0 ? res.content : [...prevProducts, ...res.content]));
 
     setCurrentPage(page + 1);
   };
