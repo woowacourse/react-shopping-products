@@ -9,7 +9,7 @@ interface CartButtonProps {
 }
 
 export default function CartButton({ productId }: CartButtonProps) {
-  const { cartItems } = useContext(CartItemsContext);
+  const { cartItems } = useContext(CartItemsContext) || { cartItems: [] };
   const [isPushed, setPushed] = useState(() => cartItems.some((cartItem) => cartItem.product.id === productId));
 
   return isPushed ? (
@@ -24,7 +24,7 @@ interface CartToggleButtonProps extends CartButtonProps {
 }
 
 export function RemoveCartButton({ setPushed, productId }: CartToggleButtonProps) {
-  const { cartItems, setRefresh } = useContext(CartItemsContext);
+  const { cartItems, setRefresh } = useContext(CartItemsContext) || { cartItems: [], setRefresh: () => {} };
   const cartItemId = cartItems.find((cartItem) => cartItem.product.id === productId)?.id;
 
   const handleClick = () => {
@@ -45,7 +45,7 @@ export function RemoveCartButton({ setPushed, productId }: CartToggleButtonProps
 }
 
 export function AddCartButton({ setPushed, productId }: CartToggleButtonProps) {
-  const { setRefresh } = useContext(CartItemsContext);
+  const { setRefresh } = useContext(CartItemsContext) || { setRefresh: () => {} };
 
   const handleClick = () => {
     addCartItem({ productId }).then(() => {

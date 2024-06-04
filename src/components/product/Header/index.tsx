@@ -33,7 +33,7 @@ function CartButton() {
     navigate(0);
   };
 
-  const { cartItems } = useContext(CartItemsContext);
+  const { cartItems } = useContext(CartItemsContext) || { cartItems: [] };
 
   return (
     <S.Button onClick={moveToCartPage} type='button'>
