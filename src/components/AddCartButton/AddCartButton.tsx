@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
+import { CartContext } from '../../CartContext';
 import { AddCartIcon, DeleteCartIcon } from '../../assets';
 import * as S from './AddCartButton.styled';
-import { CartContext } from '../../CartContext';
 
 interface AddCartButtonProps {
   id: number;
@@ -11,12 +11,12 @@ interface AddCartButtonProps {
 }
 function AddCartButton({ id, onAddClick, onDeleteClick }: AddCartButtonProps) {
   const { cartIdSet } = useContext(CartContext);
-  
+  const [isClicked, setIsClicked] = useState(false);
+
   useEffect(() => {
     setIsClicked(cartIdSet.has(id));
-  }, [cartIdSet,id]);
+  }, [cartIdSet, id]);
 
-  const [isClicked, setIsClicked] = useState(false);
   const handleDeleteClick = (event: React.MouseEvent) => {
     onDeleteClick(event);
     setIsClicked(false);

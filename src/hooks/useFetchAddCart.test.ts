@@ -7,7 +7,7 @@ describe('useFetchAddCart', () => {
     const { result } = renderHook(() => useFetchAddCart());
 
     act(() => {
-      result.current.patchToAddCart(PRODUCT_ID);
+      result.current.addProductToCart(PRODUCT_ID);
     });
 
     expect(result.current.cartIdSet.has(PRODUCT_ID)).toBe(true);
@@ -30,7 +30,7 @@ describe('useFetchAddCart', () => {
     expect(result.current.cartIdSet.size).toBe(0);
 
     act(() => {
-      result.current.patchToAddCart(3);
+      result.current.addProductToCart(3);
     });
 
     expect(result.current.cartIdSet.size).toBe(1);
@@ -40,7 +40,7 @@ describe('useFetchAddCart', () => {
     const { result } = renderHook(() => useFetchAddCart());
 
     act(() => {
-      result.current.patchToAddCart(3);
+      result.current.addProductToCart(3);
     });
 
     expect(result.current.cartIdSet.size).toBe(1);

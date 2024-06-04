@@ -1,15 +1,15 @@
 import { useContext } from 'react';
 import { CartContext } from '../../CartContext';
 import { Product } from '../../types/fetch';
-import * as S from './ProductCard.styled';
 import AddCartButton from '../AddCartButton/AddCartButton';
+import * as S from './ProductCard.styled';
 
 interface ProductCardProps {
   product: Product;
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  const { patchToAddCart, patchToRemoveCart } = useContext(CartContext);
+  const { addProductToCart, patchToRemoveCart } = useContext(CartContext);
 
   return (
     <S.ProductCardContainer>
@@ -24,7 +24,7 @@ function ProductCard({ product }: ProductCardProps) {
           <AddCartButton
             id={product.id}
             onAddClick={() => {
-              patchToAddCart(product.id);
+              addProductToCart(product.id);
             }}
             onDeleteClick={() => {
               patchToRemoveCart(product.id);

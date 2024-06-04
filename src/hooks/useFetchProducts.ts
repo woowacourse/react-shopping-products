@@ -15,7 +15,7 @@ const useFetchProducts = (
 
   const size = page === 0 ? 20 : 4;
   const fetchPage = page === 0 ? page : page + 4;
-  
+
   const fetchNextPage = () => {
     if (isLast) return;
     setPage((page) => page + 1);
@@ -31,14 +31,13 @@ const useFetchProducts = (
           sortings,
           filter,
         );
-        if (page === 0) {
-          setProducts(fetchedProducts.content);
-        } else {
-          setProducts((prevState) => [
-            ...prevState,
-            ...fetchedProducts.content,
-          ]);
-        }
+
+        setProducts((prevState) =>
+          page === 0
+            ? fetchedProducts.content
+            : [...prevState, ...fetchedProducts.content],
+        );
+
         setIsLast(fetchedProducts.last);
         setIsError(false);
       } catch (error) {

@@ -12,8 +12,8 @@ const useFetchAddCart = () => {
     };
     fetchInitialCartId();
   }, []);
-  
-  const patchToAddCart = (id: number) => {
+
+  const addProductToCart = (id: number) => {
     postAddItems(id);
     const newCartIdSet = new Set(cartIdSet);
     newCartIdSet.add(id);
@@ -40,7 +40,7 @@ const useFetchAddCart = () => {
   return {
     cartIdSet,
     setCartIdSet,
-    patchToAddCart,
+    addProductToCart: addProductToCart,
     patchToRemoveCart,
     fetchCart,
   };
