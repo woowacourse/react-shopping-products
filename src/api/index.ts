@@ -30,7 +30,10 @@ async function makeRequest(endpoint: string, options: RequestInit): Promise<Resp
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to ${options.method?.toLowerCase()} ${endpoint}`);
+    const errorData = await response.json();
+    throw new Error(
+      `Failed to ${options.method} ${endpoint}: ${errorData.code} - ${errorData.message}`,
+    );
   }
 
   return response;
