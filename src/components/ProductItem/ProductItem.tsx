@@ -1,17 +1,16 @@
 import { Product } from '../../types/Product.type';
 import AddCart from '../../assets/AddCart.svg';
-import RemoveCart from '../../assets/RemoveCart.svg';
 import Button from '../Button/Button';
+import QuantityStepper from '../QuantityStepper/QuantityStepper';
 import * as S from './ProductItem.style';
 
 interface ProductItemProps {
   product: Product;
-  isAdded: boolean;
+  quantity: number;
   onAddCartItem: (productId: number) => void;
-  onDeleteCartItem: (productId: number) => void;
 }
 
-const ProductItem = ({ product, isAdded, onAddCartItem, onDeleteCartItem }: ProductItemProps) => {
+const ProductItem = ({ product, quantity, onAddCartItem }: ProductItemProps) => {
   const { id, name, price, imageUrl } = product;
 
   return (
@@ -23,11 +22,8 @@ const ProductItem = ({ product, isAdded, onAddCartItem, onDeleteCartItem }: Prod
           <p>{price.toLocaleString()}원</p>
         </S.TextContainer>
         <S.CartButtonContainer>
-          {isAdded ? (
-            <Button variant="secondary" onClick={() => onDeleteCartItem(id)}>
-              <S.Icon src={RemoveCart} alt="장바구니 빼기" />
-              <p>빼기</p>
-            </Button>
+          {quantity !== 0 ? (
+            <QuantityStepper quantity={quantity} onMinusButtonClick={() => {}} onPlusButtonClick={() => {}} />
           ) : (
             <Button onClick={() => onAddCartItem(id)}>
               <S.Icon src={AddCart} alt="장바구니 담기" />

@@ -7,18 +7,18 @@ import ProductItem from '../../components/ProductItem/ProductItem';
 import useProducts from '../../hooks/useProducts/useProducts';
 import useCartItems from '../../hooks/useCartItems/useCartItems';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import * as S from './ProductListPage.style';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
 import { SIZE } from '../../constants/api';
 import Loading from '../../assets/loading.gif';
 import EmptyCart from '../../assets/EmptyCart.png';
+import * as S from './ProductListPage.style';
 
 const ProductListPage = () => {
   const { products, category, sort, loading, error, isLast, handleCategory, handleSort, handlePage } = useProducts(
     CATEGORY_LIST[0],
     SORTING_LIST[0],
   );
-  const { cartItems, handleAddCartItem, handleDeleteCartItem } = useCartItems();
+  const { cartItems, handleAddCartItem } = useCartItems();
   const targetRef = useIntersectionObserver(handlePage);
 
   return (
@@ -37,13 +37,12 @@ const ProductListPage = () => {
         </S.DropdownContainer>
         {products ? (
           <S.ProductList>
-            {products.map((product) => (
+            {products.map((product, idx) => (
               <ProductItem
-                key={product.id}
+                key={`${product.id}-${idx}`}
                 product={product}
-                isAdded={cartItems.some((item) => item.product.id === product.id)}
+                quantity={cartItems.find((item) => item.product.id === product.id)?.quantity || 0}
                 onAddCartItem={handleAddCartItem}
-                onDeleteCartItem={handleDeleteCartItem}
               />
             ))}
           </S.ProductList>
