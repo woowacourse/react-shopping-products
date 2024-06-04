@@ -1,19 +1,23 @@
-import { CartItem, Product } from '@appTypes/index';
+import { CartItem, Filtering } from '@appTypes/index';
 import { useEffect, useRef } from 'react';
 
 import ProductCard from '../ProductCard';
 
 import style from './style.module.css';
+import useLoadProducts from '@queries/product/useLoadProducts';
+import IntersectionObserverArea from '@components/IntersectionObserverArea';
 
 interface ProductListProps {
-  products: Product[];
-  targetRef: React.MutableRefObject<HTMLDivElement | null>;
-  loading: boolean;
+  filtering: Filtering;
   refetch: () => Promise<void>;
   cartItems: CartItem[];
 }
-function ProductList({ products, targetRef, refetch, loading, cartItems }: ProductListProps) {
+
+function ProductList({ filtering, refetch, cartItems }: ProductListProps) {
   const productListRef = useRef<HTMLElement | null>(null);
+  const targetRef = useRef<HTMLDivElement | null>(null);
+
+  const { products, isLoading, fetchNextPage } = useLoadProducts(filtering);
 
   useEffect(() => {
     if (products.length <= 20) {
@@ -26,18 +30,24 @@ function ProductList({ products, targetRef, refetch, loading, cartItems }: Produ
     return cartItem;
   };
 
+  const getNextPage = async () => {
+    await fetchNextPage();
+  };
+
   return (
-    <section ref={productListRef} className={style.wrapper}>
-      <ul className={style.productList}>
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} cartItem={getCartItem(product.id)} refetch={refetch} />
-        ))}
-        {loading && <div>로딩중....</div>}
-        <div className={style.target} ref={targetRef}>
-          <span>target</span>
-        </div>
-      </ul>
-    </section>
+    <IntersectionObserverArea callback={getNextPage} targetRef={targetRef}>
+      <section ref={productListRef} className={style.wrapper}>
+        <ul className={style.productList}>
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} cartItem={getCartItem(product.id)} refetch={refetch} />
+          ))}
+          {isLoading && <div>로딩 중</div>}
+          <div className={style.target} ref={targetRef}>
+            <span>target</span>
+          </div>
+        </ul>
+      </section>
+    </IntersectionObserverArea>
   );
 }
 
