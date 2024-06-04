@@ -1,26 +1,26 @@
-import { useState } from 'react';
-import * as Styled from './SelectBox.style';
+import { useState } from "react";
+import * as Styled from "./SelectBox.style";
 
-interface SelectBoxProps<T> {
-  optionValues: string[];
-  placeholder: T;
-  autoFocus?: boolean;
+interface SelectBoxProps<T extends string> {
+  currentOption: T;
+  options: Record<T, string>;
   onChange: (value: T) => void;
+  autoFocus?: boolean;
 }
 
 export default function SelectBox<T extends string>({
-  optionValues,
-  placeholder,
-  autoFocus,
+  currentOption,
+  options,
   onChange,
+  autoFocus,
 }: SelectBoxProps<T>) {
+  const currentValue = options[currentOption];
+
   const [isOpened, setIsOpened] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<T>(placeholder);
 
   const handleOptionBox = () => setIsOpened((prevState) => !prevState);
 
   const handleOptionValue = (value: T) => {
-    setSelectedValue(value);
     onChange(value);
     handleOptionBox();
   };
@@ -29,25 +29,23 @@ export default function SelectBox<T extends string>({
     <Styled.SelectBoxContainer>
       <Styled.SelectButton
         $isOpened={isOpened}
-        $isSelected={selectedValue !== ''}
+        $isSelected={!!currentValue}
         onClick={handleOptionBox}
         autoFocus={autoFocus ?? false}
       >
-        {selectedValue}
+        {currentValue}
       </Styled.SelectButton>
       {isOpened && (
         <Styled.SelectOptionBox>
-          {optionValues.map((value) => {
-            return (
-              <Styled.SelectOption
-                key={value}
-                $isSelected={value === selectedValue}
-                onClick={() => handleOptionValue(value as T)}
-              >
-                {value}
-              </Styled.SelectOption>
-            );
-          })}
+          {(Object.entries(options) as [T, string][]).map(([key, value]) => (
+            <Styled.SelectOption
+              key={key}
+              $isSelected={value === currentValue}
+              onClick={() => handleOptionValue(key as T)}
+            >
+              {value}
+            </Styled.SelectOption>
+          ))}
         </Styled.SelectOptionBox>
       )}
     </Styled.SelectBoxContainer>
