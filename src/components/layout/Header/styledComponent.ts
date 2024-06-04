@@ -31,7 +31,7 @@ const S = {
     position: absolute;
     width: 19px;
     aspect-ratio: 1/1;
-    right: 4.5px;
+    right: 0px;
     bottom: 0px;
 
     font-size: 10px;

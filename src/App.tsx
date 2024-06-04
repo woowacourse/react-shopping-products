@@ -1,6 +1,7 @@
 import { ToggleCartItemProvider } from "./components/provider/ToggleCartItemProvider";
 import { ToastProvider } from "./components/provider/ToastProvider";
 import { LanguageProvider } from "./components/provider/LanguageProvider";
+import { ModalProvider } from "easy-payments-ui";
 
 import Mall from "./pages/Mall";
 
@@ -9,7 +10,9 @@ function App() {
     <LanguageProvider>
       <ToastProvider>
         <ToggleCartItemProvider>
-          <Mall />
+          <ModalProvider>
+            <Mall />
+          </ModalProvider>
         </ToggleCartItemProvider>
       </ToastProvider>
     </LanguageProvider>

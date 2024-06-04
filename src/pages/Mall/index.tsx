@@ -19,6 +19,7 @@ import S from "./styledComponent";
 
 import { PRODUCT_CATEGORY_LIST, PRODUCT_SORT_LIST } from "../../constants/mallData";
 import { LanguageContext } from "../../components/provider/LanguageProvider";
+import CartItemsModal from "../../components/cart/CartItemsModal";
 
 const Mall = () => {
   const {
@@ -52,6 +53,9 @@ const Mall = () => {
           </InfiniteScroll>
         </S.ProductList>
       </S.MainMall>
+
+      {/* <-- MODAL --> */}
+      <CartItemsModal />
     </>
   );
 };
