@@ -55,6 +55,7 @@ export default function useProducts(): UseProductsResult {
       }
 
       setProducts((prevProducts) => [...prevProducts, ...data.content]);
+      setError(null);
     } catch (error) {
       if (error instanceof Error) {
         setError(error);
