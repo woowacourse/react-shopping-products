@@ -1,7 +1,16 @@
+// 최초에 로드되는 상품의 개수
 const INITIAL_DATA_LOAD_COUNT = 20;
+
+// 최초 로드 이후, 로드되는 상품의 개수
 const SUBSEQUENT_DATA_LOAD_COUNT = 4;
+
+// 최초에 보여줄 페이지에서 다음으로 보여주어야 할 페이지의 위치
 const JUMP_NEXT_PAGE_IN_ZERO = 5;
+
+// 최대 장바구니 상품의 개수
 const MAX_CART_ITEMS_COUNTS = 100;
+
+// 장바구니에 추가될 상품의 수
 const CHANGE_CART_ITEM_COUNT = 1;
 
 const CATEGORY = {
