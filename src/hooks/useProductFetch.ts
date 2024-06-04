@@ -13,14 +13,14 @@ interface Props {
 export function useProductFetch({ selectBarCondition }: Props) {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [page, setPage] = useState(FIRST_FETCH_PAGE);
-  const [hasMore, setHasMore] = useState(true);
+  const [isLastPage, setIsLastPage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => {
     setProducts([]);
     setPage(FIRST_FETCH_PAGE);
-    setHasMore(true);
+    setIsLastPage(false);
   }, [selectBarCondition.category, selectBarCondition.sort]);
 
   useEffect(() => {
@@ -33,14 +33,14 @@ export function useProductFetch({ selectBarCondition }: Props) {
           page === FIRST_FETCH_PAGE
             ? FIRST_FETCH_PAGE
             : FIRST_FETCH_SIZE / AFTER_FETCH_SIZE - 1 + page;
-        const newProducts = await fetchProducts({
+        const { last, content: newProducts } = await fetchProducts({
           page: queryPage,
           size,
           category: selectBarCondition.category,
           sort: formattedKey(selectBarCondition.sort),
         });
         setProducts((prev) => [...prev, ...newProducts]);
-        setHasMore(newProducts.length > 0);
+        setIsLastPage(last);
       } catch (error) {
         if (error instanceof Error) {
           console.error(error.message);
@@ -53,5 +53,5 @@ export function useProductFetch({ selectBarCondition }: Props) {
     setFetchedProducts();
   }, [page, selectBarCondition.category, selectBarCondition.sort]);
 
-  return { products, setPage, hasMore, isLoading };
+  return { products, setPage, isLastPage, isLoading };
 }

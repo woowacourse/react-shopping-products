@@ -10,11 +10,11 @@ interface Props {
 }
 
 const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
-  const { products, setPage, hasMore, selectedItems, handleSelect, isLoading } = useProducts({
+  const { products, setPage, isLastPage, selectedItems, handleSelect, isLoading } = useProducts({
     selectBarCondition,
     handleCount,
   });
-  const { lastProductElementRef } = useInfinityScroll({ hasMore, setPage });
+  const { lastProductElementRef } = useInfinityScroll({ isLastPage, setPage });
 
   return (
     <>

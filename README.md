@@ -1,3 +1,17 @@
+# 🛠 1단계 피드백 반영, 리팩토링
+
+- 피드백 반영
+
+- [x] 과도한 주석 제거
+- [x] showToast 메서드에서 메시지 뿐만 아니라 메시지 지속 시간도 인자로 …
+- [x] idMap->productToCartIdMap으로 변수명 변경, 타입 구체화
+- [x] 이전 값을 참조해 setState 시, callback을 활용하도록 수정
+- [ ] useInfinityScroll을 더 general하게 만들기
+
+- 리팩토링
+- [x] hasMore가 아닌 response의 last 값을 사용해 마지막 페이지 판단, 요청 한번 줄이기
+- [ ] useProductFetch에서 page를 넘기는 메서드를 useEffect에서 분리, return값으로 넘기기
+
 # 🎯1단계 기능 요구사항
 
 ### step 7 - 상품 선택 상태에 따른 장바구니 담기, 빼기 API 요청 기능
