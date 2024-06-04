@@ -51,10 +51,17 @@ const useToggleCartItem = () => {
     if (isLoading) return;
     try {
       setIsLoading(true);
-      const targetCartItemIndex = cartItems.findIndex(
+
+      const targetCartItem = cartItems.find(
         (item) => item.product.id === productId
       );
-      const targetCartItemId = cartItems[targetCartItemIndex].id;
+
+      if (!targetCartItem) {
+        throw new Error("장바구니에 없는 상품입니다.");
+      }
+
+      const targetCartItemId = targetCartItem.id;
+
       await deleteCartItems(targetCartItemId);
       setCartItems((cartItems) => {
         const newCartItems = cartItems.filter(
