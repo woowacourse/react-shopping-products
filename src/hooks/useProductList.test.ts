@@ -8,7 +8,7 @@ import expectedFitnessPriceDescData from '../mocks/handlers/productList/expected
 import { server } from '../mocks/server';
 import { PRODUCT_LIST } from '../constants/productList';
 
-import useProductList from './useFetchProductList';
+import useProductList from './useProductList';
 
 describe('useProductList', () => {
   describe('상품 목록 조회', () => {

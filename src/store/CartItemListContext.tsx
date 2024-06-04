@@ -1,7 +1,7 @@
 import { createContext, Dispatch, ReactNode, useReducer } from 'react';
 import { CartItemAction, CartItemList } from '../types/type';
 import { cartItemListReducer } from './cartItemListReducer';
-import useFetchCartItemList from '../hooks/useFetchCartItemList';
+import useFetchCartItemList from '../hooks/useCartItemList';
 
 export interface CartItemListContextType {
   cartItemList: CartItemList;

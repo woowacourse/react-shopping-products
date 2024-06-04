@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchCartItemList } from '../apis/carItems';
 import { QUERY_KEYS } from '../apis/config';
 
-export default function useFetchCartItemList() {
+export default function useCartItemList() {
   return useQuery({
     queryKey: [QUERY_KEYS.CART_ITMES],
     queryFn: fetchCartItemList,

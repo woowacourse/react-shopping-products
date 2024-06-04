@@ -5,7 +5,7 @@ import { CART_ITEMS_ENDPOINT } from '../apis/config';
 import defaultData from '../mocks/handlers/cartItemList/defaultData.json';
 import { server } from '../mocks/server';
 
-import useCartItemList from './useFetchCartItemList';
+import useCartItemList from './useCartItemList';
 
 describe('useCartItemList', () => {
   describe('장바구니 아이템 목록 조회', () => {

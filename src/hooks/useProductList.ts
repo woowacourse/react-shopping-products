@@ -9,7 +9,7 @@ interface UseFetchProductListProps {
   sort?: Sort;
 }
 
-export default function useFetchProductList({
+export default function useProductList({
   category,
   sort,
 }: UseFetchProductListProps) {

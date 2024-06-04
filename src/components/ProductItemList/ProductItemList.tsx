@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef } from 'react';
 
-import useProductList from '../../hooks/useFetchProductList';
+import useProductList from '../../hooks/useProductList';
 import ProductItem from '../ProductItem/ProductItem';
 import { Category, Product, Sort } from '../../types/type';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
