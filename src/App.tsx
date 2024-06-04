@@ -6,9 +6,12 @@ import GlobalStyles from './styles/Global.style';
 import Toast from './components/common/Toast/Toast';
 import { QuantityContext } from './store/QuantityContext';
 import { ErrorContext } from './store/ErrorContext';
+import { CartItemListContext } from './store/CartItemListContext';
+import { CartItem } from './types/type';
 
 function App() {
   const [quantity, setQuantity] = useState(0);
+  const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
   const [error, setError] = useState<Error | null>(null);
 
   return (
@@ -17,8 +20,12 @@ function App() {
       <ErrorContext.Provider value={{ error, setError }}>
         <Toast />
         <QuantityContext.Provider value={{ quantity, setQuantity }}>
-          <Header />
-          <Product />
+          <CartItemListContext.Provider
+            value={{ cartItemList, setCartItemList }}
+          >
+            <Header />
+            <Product />
+          </CartItemListContext.Provider>
         </QuantityContext.Provider>
       </ErrorContext.Provider>
     </>
