@@ -32,3 +32,19 @@ export async function deleteCartItem({ cartItemId }: DeleteCartItemProps) {
     method: 'DELETE',
   });
 }
+
+interface PatchCartItemProps {
+  cartItemId: number;
+  quantity: number;
+}
+
+export async function patchCartItem({
+  cartItemId,
+  quantity,
+}: PatchCartItemProps) {
+  await response({
+    url: `${END_POINTS.CART_ITMES}/${cartItemId}`,
+    method: 'DELETE',
+    body: JSON.stringify({ quantity }),
+  });
+}
