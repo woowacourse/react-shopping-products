@@ -44,7 +44,7 @@ export function useProductFetch({ selectBarCondition }: Props) {
       } catch (error) {
         if (error instanceof Error) {
           console.error(error.message);
-          showToast(ERROR.fetchProductList);
+          showToast({ message: ERROR.fetchProductList, duration: 3000 });
         }
       } finally {
         setIsLoading(false);

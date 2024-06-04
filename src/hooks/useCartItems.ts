@@ -28,7 +28,7 @@ export function useCartItems() {
       getCartItems();
       return true;
     } catch (error) {
-      showToast(ERROR.addProduct);
+      showToast({ message: ERROR.addProduct, duration: 3000 });
       return false;
     }
   };
@@ -39,7 +39,7 @@ export function useCartItems() {
       getCartItems();
       return true;
     } catch (error) {
-      showToast(ERROR.deleteProduct);
+      showToast({ message: ERROR.deleteProduct, duration: 3000 });
       return false;
     }
   };

@@ -2,7 +2,7 @@ import React, { createContext, useState, useCallback, ReactNode } from 'react';
 import ErrorToast from '../components/ErrorToast/ErrorToast';
 
 export interface ToastContextType {
-  showToast: (message: string) => void;
+  showToast: ({ message, duration }: ToastParameters) => void;
 }
 
 export const ToastContext = createContext<ToastContextType | undefined>(undefined);
@@ -11,16 +11,21 @@ interface ToastProviderProps {
   children: ReactNode;
 }
 
+interface ToastParameters {
+  message: string;
+  duration: number;
+}
+
 export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
 
-  const showToast = useCallback((message: string) => {
+  const showToast = useCallback(({ message, duration }: ToastParameters) => {
     setMessage(message);
     setIsOpen(true);
     setTimeout(() => {
       setIsOpen(false);
-    }, 3000);
+    }, duration);
   }, []);
 
   return (
