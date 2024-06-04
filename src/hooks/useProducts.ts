@@ -10,16 +10,20 @@ import { useEffect, useState } from "react";
 
 import { Product } from "../types/products";
 import { getProducts } from "../api/products";
+import usePagination from "./usePagination";
 
 const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
-  const [page, setPage] = useState(FIRST_PAGE);
-  const [isLastPage, setIsLastPage] = useState(false);
 
   const [category, setCategory] = useState(CATEGORY_LIST[0]);
   const [sort, setSort] = useState(SORT_LIST[0]);
+
+  const { page, fetchNextPage, resetPage, setIsLastPage } = usePagination({
+    firstPage: FIRST_PAGE,
+    gapWithFirstPage: GAP_WITH_FIRST_PAGE,
+  });
 
   useEffect(() => {
     if (isLoading || error) return;
@@ -47,23 +51,10 @@ const useProducts = () => {
     fetchProducts();
   }, [page, sort, category]);
 
-  const fetchNextPage = () => {
-    if (isLastPage) {
-      return;
-    }
-
-    if (page === FIRST_PAGE) {
-      setPage((page) => page + GAP_WITH_FIRST_PAGE);
-      return;
-    }
-
-    setPage((page) => page + 1);
-  };
-
   const handleCategoryChange = (newCategory: Category) => {
     if (newCategory !== category) {
       setProducts([]);
-      setPage(FIRST_PAGE);
+      resetPage();
       setCategory(newCategory);
     }
   };
@@ -71,7 +62,7 @@ const useProducts = () => {
   const handleSortChange = (newSort: Sort) => {
     if (newSort !== sort) {
       setProducts([]);
-      setPage(FIRST_PAGE);
+      resetPage();
       setSort(newSort);
     }
   };
