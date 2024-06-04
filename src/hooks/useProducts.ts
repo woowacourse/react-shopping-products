@@ -22,8 +22,7 @@ const useProducts = () => {
   const [sort, setSort] = useState(SORT_LIST[0]);
 
   useEffect(() => {
-    if (isLoading) return;
-    if (error) return;
+    if (isLoading || error) return;
     const size = page === FIRST_PAGE ? SIZE_OF_FIRST_PAGE : SIZE_PER_PAGE;
 
     const fetchProducts = async () => {
