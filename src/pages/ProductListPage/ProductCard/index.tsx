@@ -1,9 +1,9 @@
 import { Product } from '@appTypes/index';
-import { CartActionErrorModal } from '@components/index';
 import { CartItemsContext } from '@contexts/index';
 import { useCartAction, useTargetContext } from '@hooks/index';
 
 import CartActionButton from '../CartActionButton';
+import CartActionErrorModal from '../CartActionErrorModal';
 
 interface ProductCardProps {
   product: Product;
