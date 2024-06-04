@@ -1,6 +1,6 @@
 import * as S from './style';
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { UseCartItemsContext } from '../../App';
 
@@ -14,7 +14,9 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
-  const { cartItems, addCartItem, deleteCartItem } = useContext(UseCartItemsContext);
+  const { cartItems, addCartItem, deleteCartItem, cartItemsLoading } =
+    useContext(UseCartItemsContext);
+  const [isClicked, setIsClicked] = useState(false);
 
   const cartItem = cartItems.find(({ product }) => id === product.id);
   const isInCart = !!cartItem;
@@ -22,12 +24,14 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
   const TOGGLE_BUTTON_ICON = isInCart ? REMOVE_TO_CART : ADD_TO_CART;
   const BUTTON_TEXT = isInCart ? '빼기' : '담기';
 
-  const handleOnToggle = () => {
+  const handleOnToggle = async () => {
+    setIsClicked(true);
     if (cartItem) {
-      deleteCartItem(cartItem.id);
+      await deleteCartItem(cartItem.id);
     } else {
-      addCartItem(id);
+      await addCartItem(id);
     }
+    setIsClicked(false);
   };
 
   return (
@@ -40,8 +44,13 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
         </S.Information>
         <S.ButtonContainer>
           <S.ToggleButton onClick={handleOnToggle} $isInCart={isInCart}>
-            <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
-            <span>{BUTTON_TEXT}</span>
+            {!(isClicked && cartItemsLoading) && (
+              <>
+                <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
+                <span>{BUTTON_TEXT}</span>
+              </>
+            )}
+            {isClicked && cartItemsLoading && <span>loading...</span>}
           </S.ToggleButton>
         </S.ButtonContainer>
       </S.InformationContainer>
