@@ -4,15 +4,15 @@ import { Category, Sort } from '../types/type';
 import { QUERY_KEYS } from '../apis/config';
 import { fetchProductList } from '../apis/products';
 
-interface UseProductListProps {
+interface UseFetchProductListProps {
   category?: Category;
   sort?: Sort;
 }
 
-export default function useProductList({
+export default function useFetchProductList({
   category,
   sort,
-}: UseProductListProps) {
+}: UseFetchProductListProps) {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.PRODUCTS, category, sort],
     queryFn: ({ pageParam = 0 }) =>

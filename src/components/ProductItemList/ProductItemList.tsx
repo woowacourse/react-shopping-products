@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-import useProductList from '../../hooks/useProductList';
+import useProductList from '../../hooks/useFetchProductList';
 import ProductItem from '../ProductItem/ProductItem';
 import { CartItem, Category, Product, Sort } from '../../types/type';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../common/Spinner/Spinner';
 
 import * as S from './ProductItemList.style';
-import useCartItemList from '../../hooks/useCartItemList';
+import useCartItemList from '../../hooks/useFetchCartItemList';
 
 interface ProductItemListProp {
   category: Category;
