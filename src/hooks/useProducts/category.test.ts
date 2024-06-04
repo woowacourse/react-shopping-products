@@ -24,7 +24,7 @@ describe('카테고리', () => {
 
       await waitFor(() => {
         act(() => {
-          result.current.filterByCategory(selectedCategory);
+          result.current.handleCategoryChange(selectedCategory);
         });
       });
 

@@ -68,17 +68,17 @@ describe('페이지네이션', () => {
     const { result } = renderHook(() => useProducts());
 
     await waitFor(() => {
-      expect(result.current.loading).toBeFalsy();
+      expect(result.current.productsLoading).toBeFalsy();
     });
 
     act(() => {
       result.current.fetchNextPage();
     });
 
-    expect(result.current.loading).toBeTruthy();
+    expect(result.current.productsLoading).toBeTruthy();
 
     await waitFor(() => {
-      expect(result.current.loading).toBeFalsy();
+      expect(result.current.productsLoading).toBeFalsy();
     });
   });
 
@@ -102,8 +102,8 @@ describe('페이지네이션', () => {
     await waitFor(() => {
       expect(result.current.page).toBe(FIRST_PAGE);
       expect(result.current.products).toHaveLength(20);
-      expect(result.current.loading).toEqual(false);
-      expect(result.current.error).not.toBeNull();
+      expect(result.current.productsLoading).toEqual(false);
+      expect(result.current.productsError).not.toBeNull();
     });
   });
 });

@@ -10,10 +10,10 @@ describe('첫 페이지 상품 목록 조회', () => {
   it('상품 목록 조회 중 로딩 상태를 "true"로 세팅한다.', async () => {
     const { result } = renderHook(() => useProducts());
 
-    expect(result.current.loading).toBeTruthy();
+    expect(result.current.productsLoading).toBeTruthy();
 
     await waitFor(() => {
-      expect(result.current.loading).toBeFalsy();
+      expect(result.current.productsLoading).toBeFalsy();
     });
   });
 
@@ -35,8 +35,8 @@ describe('첫 페이지 상품 목록 조회', () => {
 
     await waitFor(() => {
       expect(result.current.products).toEqual([]);
-      expect(result.current.loading).toEqual(false);
-      expect(result.current.error).not.toBeNull();
+      expect(result.current.productsLoading).toEqual(false);
+      expect(result.current.productsError).not.toBeNull();
     });
   });
 });
