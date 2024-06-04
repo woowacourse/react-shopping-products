@@ -9,7 +9,7 @@ export function useCartItems() {
   const { showToast } = useToast();
 
   const getCartItems = async () => {
-    const cartItems = await fetchCartItem();
+    const cartItems = await fetchCartItem(0, 100);
     setCartItems(cartItems);
   };
 

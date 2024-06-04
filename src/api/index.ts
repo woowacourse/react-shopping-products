@@ -81,8 +81,8 @@ export async function addCartItem(productId: number): Promise<void> {
  * fetchCartItem - API에서 장바구니 목록을 fetch합니다.
  * @returns {Promise<CartItemType[]>}
  */
-export async function fetchCartItem(): Promise<CartItemType[]> {
-  const response = await makeRequest('/cart-items?page=0&size=100', {
+export async function fetchCartItem(page: number, size: number): Promise<CartItemType[]> {
+  const response = await makeRequest(`/cart-items?page=${page}&size=${size}`, {
     method: 'GET',
   });
 
