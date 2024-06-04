@@ -1,0 +1,19 @@
+.headerContainer {
+  width: 100%;
+  background-color: black;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  color: #fff;
+
+  justify-content: space-between;
+}
+
+.headerTitle {
+  font-family: Noto Sans;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 16px;
+  text-align: left;
+}

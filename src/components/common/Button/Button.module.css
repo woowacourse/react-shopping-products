@@ -1,0 +1,29 @@
+button {
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 4px 8px;
+
+  gap: 4px;
+}
+
+.primary {
+  background-color: black;
+  color: white;
+}
+
+.default {
+  background-color: #eaeaea;
+  color: black;
+}
+
+.width-fit {
+  width: fit-content;
+}
+
+.width-full {
+  width: 100%;
+}

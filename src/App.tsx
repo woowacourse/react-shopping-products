@@ -1,12 +1,19 @@
-import { useState } from "react";
+import './reset.css';
+import { CartItemListProvider } from './hooks/useCartItemList';
+import ProductListPageContainer from './pages/ProductListPageContainer';
+import ToastProvider from './hooks/useToast';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ width: '472px' }}>
+        <ToastProvider>
+          <CartItemListProvider>
+            <ProductListPageContainer />
+          </CartItemListProvider>
+        </ToastProvider>
+      </div>
+    </div>
   );
 }
 
