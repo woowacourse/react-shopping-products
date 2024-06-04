@@ -28,20 +28,13 @@ const ProductItem = ({ id, imageUrl, name, price, cartItemId }: ProductItemProps
   const onToggle = async () => {
     setLoading(true);
 
-    if (cartItemId) {
-      try {
-        await deleteCart(cartItemId);
-        setIsInCart(false);
-      } catch (error) {
-        if (error instanceof Error) showToast(error.message);
-      }
-    } else {
-      try {
-        await addCart(id);
-        setIsInCart(true);
-      } catch (error) {
-        if (error instanceof Error) showToast(error.message);
-      }
+    try {
+      if (cartItemId) await deleteCart(cartItemId);
+      else await addCart(id);
+
+      setIsInCart(false);
+    } catch (error) {
+      if (error instanceof Error) showToast(error.message);
     }
 
     setLoading(false);
