@@ -22,3 +22,25 @@ export interface CartItem {
   product: Product;
   quantity: number;
 }
+
+export type CartItemList = CartItem[];
+
+export interface AddCartItemAction {
+  type: 'ADD';
+  payload: CartItem;
+}
+
+export interface DeleteCartItemAction {
+  type: 'DELETE';
+  payload: { productId: number };
+}
+
+export interface PatchCartItemAction {
+  type: 'PATCH';
+  payload: { productId: number; quantity: number };
+}
+
+export type CartItemAction =
+  | AddCartItemAction
+  | DeleteCartItemAction
+  | PatchCartItemAction;

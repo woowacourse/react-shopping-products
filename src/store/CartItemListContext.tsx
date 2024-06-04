@@ -1,9 +1,33 @@
-import { createContext, Dispatch, SetStateAction } from 'react';
-import { CartItem } from '../types/type';
+import { createContext, Dispatch, ReactNode, useReducer } from 'react';
+import { CartItemAction, CartItemList } from '../types/type';
+import { cartItemListReducer } from './CartItemListReducer';
+import useFetchCartItemList from '../hooks/useFetchCartItemList';
 
 interface CartItemListContextType {
-  cartItemList: CartItem[];
-  setCartItemList: Dispatch<SetStateAction<CartItem[]>>;
+  cartItemList: CartItemList;
+  dispatch: Dispatch<CartItemAction>;
 }
-export const CartItemListContext =
-  createContext<CartItemListContextType | null>(null);
+const CartItemListContext = createContext<CartItemListContextType | undefined>(
+  undefined,
+);
+
+interface CartItemListProviderProps {
+  children: ReactNode;
+}
+
+const { data: initialCartItemListState } = useFetchCartItemList();
+
+export const CartItemListProvider: React.FC<CartItemListProviderProps> = ({
+  children,
+}) => {
+  const [cartItemList, dispatch] = useReducer(
+    cartItemListReducer,
+    initialCartItemListState,
+  );
+
+  return (
+    <CartItemListContext.Provider value={{ cartItemList, dispatch }}>
+      {children}
+    </CartItemListContext.Provider>
+  );
+};
