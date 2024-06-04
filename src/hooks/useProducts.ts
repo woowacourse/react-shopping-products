@@ -1,4 +1,10 @@
 import { CATEGORY_LIST, Category } from "../constants/category";
+import {
+  FIRST_PAGE,
+  GAP_WITH_FIRST_PAGE,
+  SIZE_OF_FIRST_PAGE,
+  SIZE_PER_PAGE,
+} from "../constants/pagination";
 import { SORT_LIST, Sort } from "../constants/sort";
 import { useEffect, useState } from "react";
 
@@ -9,7 +15,7 @@ const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(FIRST_PAGE);
   const [isLastPage, setIsLastPage] = useState(false);
 
   const [category, setCategory] = useState(CATEGORY_LIST[0]);
@@ -18,7 +24,7 @@ const useProducts = () => {
   useEffect(() => {
     if (isLoading) return;
     if (error) return;
-    const size = page === 0 ? 20 : 4;
+    const size = page === FIRST_PAGE ? SIZE_OF_FIRST_PAGE : SIZE_PER_PAGE;
 
     const fetchProducts = async () => {
       try {
@@ -47,8 +53,8 @@ const useProducts = () => {
       return;
     }
 
-    if (page === 0) {
-      setPage((page) => page + 5);
+    if (page === FIRST_PAGE) {
+      setPage((page) => page + GAP_WITH_FIRST_PAGE);
       return;
     }
 
@@ -58,7 +64,7 @@ const useProducts = () => {
   const handleCategoryChange = (newCategory: Category) => {
     if (newCategory !== category) {
       setProducts([]);
-      setPage(0);
+      setPage(FIRST_PAGE);
       setCategory(newCategory);
     }
   };
@@ -66,7 +72,7 @@ const useProducts = () => {
   const handleSortChange = (newSort: Sort) => {
     if (newSort !== sort) {
       setProducts([]);
-      setPage(0);
+      setPage(FIRST_PAGE);
       setSort(newSort);
     }
   };
