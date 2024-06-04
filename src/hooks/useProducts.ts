@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useFetch from './useFetch';
 import { Product } from '@_types/product';
 import { PRODUCTS_ENDPOINT } from '@_api/endpoints';
@@ -34,7 +34,7 @@ export default function useProducts(): UseProductsResult {
   const [category, setCategory] = useState<string>('');
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
-  const getProducts = useCallback(async () => {
+  const getProducts = async () => {
     fetchData({
       page,
       size: page === START_PAGE_NUMBER ? INITIAL_PAGING_SIZE : PAGING_SIZE,
@@ -47,7 +47,7 @@ export default function useProducts(): UseProductsResult {
       setIsLastPage(last);
       setProducts((prevProducts) => (page === START_PAGE_NUMBER ? content : [...prevProducts, ...content]));
     });
-  }, [page, sort, category]);
+  };
 
   useEffect(() => {
     if (!isLastPage) {
