@@ -8,6 +8,8 @@ import { theme } from "@/styles/theme.ts";
 import CartItemProvider from "@/provider/cartItemProvider.tsx";
 import ToastsProvider from "@/provider/toastProvider.tsx";
 import Toasts from "@/components/_common/Toasts/Toasts.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== "development") {
@@ -23,18 +25,23 @@ async function enableMocking() {
   // return worker.start();
 }
 
+const queryClient = new QueryClient();
+
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <CartItemProvider>
-          <ToastsProvider>
-            <RouterProvider router={router} />
-            <GlobalStyles />
-            <Toasts />
-          </ToastsProvider>
-        </CartItemProvider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <CartItemProvider>
+            <ToastsProvider>
+              <RouterProvider router={router} />
+              <GlobalStyles />
+              <ReactQueryDevtools initialIsOpen={false} />
+              <Toasts />
+            </ToastsProvider>
+          </CartItemProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </React.StrictMode>
   );
 });

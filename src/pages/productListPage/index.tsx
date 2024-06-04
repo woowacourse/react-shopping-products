@@ -3,39 +3,62 @@ import Header from "@/components/Header";
 import TextBox from "@/components/_common/TextBox";
 import SelectBox from "@/components/SelectBox";
 import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
-import ItemCardList from "@/components/ItemCardList";
 import useSelect from "@/hooks/useSelect";
-import { useEffect, useRef } from "react";
-import useProducts from "@/hooks/useProducts";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
 import TopButton from "@/components/_common/TopButton";
 import * as S from "@/pages/productListPage/style";
+import ItemCardList from "@/components/ItemCardList";
+import { Product } from "@/types/products";
+import useInfiniteFilteredProducts from "@/hooks/useInfiniteProducts";
+
+export interface GetProductsProps {
+  category: Category;
+  sort: Sort;
+}
 
 const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
   const useSortSelect = useSelect<Sort>("낮은 가격순");
 
-  const { products, fetchFirstPage, fetchNextPage, currentPage, loading, isLastPage } = useProducts();
+  const category = useCategorySelect.selected;
+  const sort = useSortSelect.selected;
+
+  const { fetchNextPage, data, isLoading, hasNextPage } = useInfiniteFilteredProducts({ category, sort });
+
   const ref = useRef<HTMLDivElement>(null);
 
   const infiniteScrollConfig = { threshold: 0.25, rootMargin: "80px" };
   const { isIntersecting } = useInfiniteScroll(infiniteScrollConfig, ref);
 
-  const category = useCategorySelect.selected;
-  const sort = useSortSelect.selected;
+  const [products, setProducts] = useState<Product[]>([]);
+
+  const setNextPageData = useCallback(() => {
+    if (data) {
+      const result: Product[] = [];
+      data.pages.forEach((pageData) => {
+        result.push(...pageData.content);
+      });
+      setProducts(result);
+    }
+  }, [data]);
 
   useEffect(() => {
-    if (isIntersecting && !isLastPage) {
-      fetchNextPage(category, currentPage, sort);
+    fetchNextPage();
+  }, [category, sort]);
+
+  useEffect(() => {
+    if (isIntersecting) {
+      fetchNextPage();
     }
   }, [isIntersecting]);
 
   useEffect(() => {
-    fetchFirstPage(category, sort);
-  }, [category, sort]);
+    setNextPageData();
+  }, [data]);
 
-  const isAbleFetchNextPage = !loading && !isLastPage;
+  if (!products) return;
 
   return (
     <>
@@ -52,9 +75,9 @@ const ProductListPage = () => {
             <SelectBox useSelector={useSortSelect} optionsContents={Object.keys(SORT)} />
           </S.SelectBoxWrapper>
         </S.ItemInfoWrapper>
-        {products && <ItemCardList products={products} />}
-        {isAbleFetchNextPage && <div ref={ref}></div>}
-        {loading && <ItemCartListSkeleton />}
+        {!isLoading && <ItemCardList products={products} />}
+        {hasNextPage && <div ref={ref}></div>}
+        {hasNextPage && <ItemCartListSkeleton ref={ref} />}
       </S.Wrapper>
     </>
   );

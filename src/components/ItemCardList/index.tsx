@@ -6,7 +6,7 @@ import ItemCartMemo from "@/components/ItemCard";
 const ItemCardList = ({ products }: { products: Product[] }) => {
   return (
     <ItemCardWrapper>
-      {products && products.map((product) => <ItemCartMemo key={`${product.id}`} product={product} />)}
+      {products && products.map((product, index) => <ItemCartMemo key={`${product.id}-${index}`} product={product} />)}
     </ItemCardWrapper>
   );
 };

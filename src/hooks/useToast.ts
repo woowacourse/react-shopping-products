@@ -12,7 +12,12 @@ const useToast = () => {
 
   const onAddToast = (message: string) => {
     const newId = Date.now() + toastList.length;
-    const newToasts = [...toastList, { id: newId, message }];
+
+    if (toastList.length > 2) {
+      toastList.pop();
+    }
+
+    const newToasts = [{ id: newId, message }, ...toastList];
     setToastList(newToasts);
   };
 
