@@ -4,7 +4,7 @@ import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@constants/index';
 import { useEffect, useRef, useState } from 'react';
 
 import style from './style.module.css';
-import useLoadProducts from '@src/hooks/useLoadProducts';
+import useLoadProducts from '@hooks/useLoadProducts';
 import ProductList from './ProductList';
 
 interface ProductListPageProps {

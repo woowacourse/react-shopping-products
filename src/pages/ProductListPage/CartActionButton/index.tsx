@@ -3,8 +3,8 @@ import DeleteIcon from '@assets/deleteCart.svg';
 import style from './style.module.css';
 import { useAddCartItem, useDeleteCartItem } from '@hooks/index';
 import { CartItem } from '@appTypes/index';
-import { ToastModal } from '@src/components';
-import { CartActionError } from '@src/components/Fallbacks';
+import { ToastModal } from '@components/index';
+import { CartActionError } from '@components/Fallbacks';
 
 type ButtonType = 'add' | 'delete';
 
