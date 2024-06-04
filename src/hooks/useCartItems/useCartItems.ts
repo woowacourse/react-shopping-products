@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import useFetcher from '../useFetcher';
 import { fetchCartItems, deleteCartItem, addCartItem } from '../../api/cart';
-import { CartItem } from '../../types/CartItem.type';
+import { Cart } from '../../types/Cart.type';
 import { SIZE } from '../../constants/api';
 
 interface UseCartItemsResult {
-  cartItems: CartItem[];
+  cartItems: Cart[];
   loading: boolean;
   error: unknown;
   handleAddCartItem: (productId: number) => void;
@@ -13,7 +13,7 @@ interface UseCartItemsResult {
 }
 
 const useCartItems = (): UseCartItemsResult => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<Cart[]>([]);
   const { loading, error, fetcher } = useFetcher();
 
   useEffect(() => {

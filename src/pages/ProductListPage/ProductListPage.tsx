@@ -4,9 +4,11 @@ import Dropdown from '../../components/Dropdown/Dropdown';
 import Header from '../../components/Header/Header';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import ProductItem from '../../components/ProductItem/ProductItem';
+import ShoppingCartModal from '../../components/ShoppingCartModal/ShoppingCartModal';
 import useProducts from '../../hooks/useProducts/useProducts';
 import useCartItems from '../../hooks/useCartItems/useCartItems';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import useModal from '../../hooks/useModal';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
 import { SIZE } from '../../constants/api';
 import Loading from '../../assets/loading.gif';
@@ -18,13 +20,17 @@ const ProductListPage = () => {
     CATEGORY_LIST[0],
     SORTING_LIST[0],
   );
+
   const { cartItems, handleAddCartItem } = useCartItems();
+
   const targetRef = useIntersectionObserver(handlePage);
+
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
     <div>
       <Header>
-        <S.CartButtonWrapper>
+        <S.CartButtonWrapper onClick={openModal}>
           <img src={CartIcon} alt="장바구니 아이콘" />
           <S.CartNumber>{cartItems.length <= SIZE.DEFAULT ? cartItems.length : `${SIZE.DEFAULT}+`}</S.CartNumber>
         </S.CartButtonWrapper>
@@ -59,6 +65,7 @@ const ProductListPage = () => {
         )}
       </S.Layout>
       <FloatingButton />
+      {isModalOpen && <ShoppingCartModal cartItems={cartItems} isOpen={isModalOpen} close={closeModal} />}
     </div>
   );
 };

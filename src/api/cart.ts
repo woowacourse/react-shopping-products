@@ -1,10 +1,10 @@
 import apiClient from './apiClient';
-import { CartItem } from '../types/CartItem.type';
+import { Cart } from '../types/Cart.type';
 import { SIZE } from '../constants/api';
 import { ERROR_MESSAGES } from '../constants/message';
 
 interface CartApiResponse {
-  data: CartItem[];
+  data: Cart[];
   totalElements: number;
 }
 
