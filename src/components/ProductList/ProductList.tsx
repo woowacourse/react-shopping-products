@@ -1,14 +1,15 @@
 import { useEffect, useRef } from 'react';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import { Product } from '../../types/fetch';
 import ProductCard from '../ProductCard/ProductCard';
 import * as S from './ProductList.styled';
-import { Product } from '../../types/fetch';
-import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 
 interface ProductListProps {
   products: Product[];
   page: number;
   isPending: boolean;
   isLast: boolean;
+  isError: boolean;
   fetchNextPage: () => void;
 }
 
@@ -17,15 +18,14 @@ function ProductList({
   page,
   isPending,
   isLast,
+  isError,
   fetchNextPage,
 }: ProductListProps) {
   const target = useRef(null);
-  const { observe, unobserve } = useIntersectionObserver(() =>
-    fetchNextPage(),
-  );
+  const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
   useEffect(() => {
-    if (!target.current || isPending || isLast) return;
+    if (!target.current || isPending || isLast || isError) return;
     const currentTarget = target.current;
     observe(currentTarget);
 
