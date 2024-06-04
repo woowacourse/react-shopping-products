@@ -1,10 +1,10 @@
-import { useCart } from '../../hooks/useCart';
+import useCartListContext from '@/hooks/useCartListContext';
 import Badge from '../common/Badge/Badge';
 import { CartBadgeContainer } from './CartBadge.style';
 import { PropsWithChildren } from 'react';
 
 const CartBadge: React.FC<PropsWithChildren> = ({ children }) => {
-  const { counts } = useCart();
+  const { cartListQuantity } = useCartListContext();
 
   return (
     <CartBadgeContainer>
