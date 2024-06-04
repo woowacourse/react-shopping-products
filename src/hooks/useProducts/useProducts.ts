@@ -1,17 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchProducts } from '../../api/product';
 import { Product } from '../../types/Product.type';
 import { Option } from '../../types/Option.type';
-import usePagination from '../usePagination';
-import useFetcher from '../useFetcher';
 import { SIZE } from '../../constants/api';
 
 interface UseProductsResult {
   products: Product[];
-  loading: boolean;
-  error: unknown;
-  isLast: boolean;
-  page: number;
+  isFetching: boolean;
+  isError: boolean;
+  hasNextPage: boolean;
   category: Option;
   sort: Option;
   handleCategory: (category: Option) => void;
@@ -20,43 +18,29 @@ interface UseProductsResult {
 }
 
 const useProduct = (initialCategory: Option, initialSorting: Option): UseProductsResult => {
-  const [products, setProducts] = useState<Product[]>([]);
   const [category, setCategory] = useState(initialCategory);
   const [sort, setSort] = useState(initialSorting);
-  const [isLast, setIsLast] = useState(false);
-  const { page, resetPage, moveNextPage } = usePagination();
-  const { loading, error, fetcher } = useFetcher();
 
-  useEffect(() => {
-    fetcher(handleProducts);
-  }, [page, category, sort]);
+  const { data, isError, isFetching, hasNextPage, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: ['products', category, sort],
+    initialPageParam: 0,
+    queryFn: ({ pageParam }) => fetchProducts(category.key, pageParam, SIZE.ADDITIONAL, sort.key),
+    getNextPageParam: (lastPage, allPages) => (lastPage.isLast ? undefined : allPages.length),
+  });
 
-  const getProducts = async (category: Option, sort: Option) => {
-    const { data, isLast } = await fetchProducts(category.key, page, SIZE.ADDITIONAL, sort.key);
-    setProducts(page === 0 ? data : [...products, ...data]);
-    setIsLast(isLast);
+  const handleCategory = (category: Option) => setCategory(category);
+
+  const handleSort = (sort: Option) => setSort(sort);
+
+  const handlePage = () => {
+    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   };
-
-  const handleProducts = () => getProducts(category, sort);
-
-  const handleCategory = (category: Option) => {
-    setCategory(category);
-    resetPage();
-  };
-
-  const handleSort = (sort: Option) => {
-    setSort(sort);
-    resetPage();
-  };
-
-  const handlePage = () => moveNextPage(loading, isLast);
 
   return {
-    products,
-    loading,
-    error,
-    isLast,
-    page,
+    products: data?.pages.flatMap((page) => page.data) ?? [],
+    isFetching,
+    isError,
+    hasNextPage,
     category,
     sort,
     handleCategory,

@@ -16,12 +16,10 @@ import EmptyCart from '../../assets/EmptyCart.png';
 import * as S from './ProductListPage.style';
 
 const ProductListPage = () => {
-  const { products, category, sort, loading, error, isLast, handleCategory, handleSort, handlePage } = useProducts(
-    CATEGORY_LIST[0],
-    SORTING_LIST[0],
-  );
+  const { products, category, sort, isFetching, isError, hasNextPage, handleCategory, handleSort, handlePage } =
+    useProducts(CATEGORY_LIST[0], SORTING_LIST[0]);
 
-  const { cartItems, handleAddCartItem } = useCartItems();
+  const { cartItems, handleAddCartItem, handleDeleteCartItem } = useCartItems();
 
   const targetRef = useIntersectionObserver(handlePage);
 
@@ -58,9 +56,9 @@ const ProductListPage = () => {
             <p>표시할 상품이 없습니다.</p>
           </S.EmptyProductContainer>
         )}
-        {!error && !isLast && (
+        {!isError && hasNextPage && (
           <S.LoadingWrapper ref={targetRef}>
-            {loading && <S.LoadingSpinner src={Loading} alt="로딩 스피너" />}
+            {isFetching && <S.LoadingSpinner src={Loading} alt="로딩 스피너" />}
           </S.LoadingWrapper>
         )}
       </S.Layout>
