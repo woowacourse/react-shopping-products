@@ -17,7 +17,7 @@ interface UseProductsResult {
   selectedSort: string;
 }
 
-const sortOptionsMap: { [key: string]: string } = {
+const sortOptionsMap: Record<"price,asc" | "price,desc", string> = {
   "price,asc": "낮은 가격순",
   "price,desc": "높은 가격순",
 };
@@ -85,6 +85,6 @@ export default function useProducts(): UseProductsResult {
     setCategory,
     resetPage,
     selectedCategory: category,
-    selectedSort: sortOptionsMap[sortOption],
+    selectedSort: sortOptionsMap[sortOption as "price,asc" | "price,desc"],
   };
 }
