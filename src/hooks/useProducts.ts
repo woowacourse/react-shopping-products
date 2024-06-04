@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { fetchProducts } from '../api/index';
 import {
   INITIAL_DATA_LOAD_COUNT,
   SUBSEQUENT_DATA_LOAD_COUNT,
@@ -7,7 +6,8 @@ import {
   SORT,
 } from '../constants';
 import { useToast } from './useToast';
-import { CategoryType, SortType } from '../type';
+import { CategoryType, SortType } from '../types';
+import { getProductList } from '@/api/product';
 
 interface Product {
   id: number;
@@ -57,9 +57,14 @@ export default function useProducts(): UseProductsResult {
     const getProducts = async () => {
       setLoading(true);
       try {
-        const limit =
+        const size =
           page === 0 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
-        const data = await fetchProducts(page, limit, category, sorting);
+        const data = await getProductList({
+          page,
+          size,
+          category,
+          order: sorting,
+        });
 
         if (data.last) {
           setIsLast(true);

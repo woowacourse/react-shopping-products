@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useToast } from './useToast';
-import { fetchItems } from '../api';
+import { getCartList } from '@/api/cartItem';
 
 const useCartItems = () => {
   const [cartItemIds, setCartItem] = useState<number[] | null>(null);
@@ -10,7 +10,7 @@ const useCartItems = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const cartItems = await fetchItems();
+        const cartItems = await getCartList();
 
         const newCartItemIds = cartItems.map((cartItem) => cartItem.product.id);
         setCartItem(newCartItemIds);

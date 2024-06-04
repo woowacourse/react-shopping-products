@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { addCartItem, deleteCartItem } from '../api';
-import { useCart } from './useCart';
+
 import { useToast } from './useToast';
+import { addCartItem, deleteCartItem } from '@/api/cartItem';
 import useCartListContext from './useCartListContext';
 
 interface CartButtonProps {
@@ -41,7 +41,13 @@ const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
       setLoading(true);
       setCartListQuantity((prev) => Math.max(0, prev - 1));
       setIsInCart(false);
-      await deleteCartItem(productId);
+      // const cartList = await fetchCartList();
+      const cartItemId = cartList.find(
+        (cartItem) => cartItem.product.id === productId,
+      )?.id;
+      if (cartItemId) {
+        await deleteCartItem(cartItemId);
+      }
     } catch (error) {
       if (error instanceof Error) {
         createToast('⛔️ 상품을 제거하는데 실패했습니다. 다시 시도해 주세요.');
