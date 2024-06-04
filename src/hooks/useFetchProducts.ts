@@ -53,7 +53,7 @@ const useFetchProducts = () => {
     setIsLastPage(false);
   };
 
-  const filterByCategory = async (selectedCategory: Category) => {
+  const filterByCategory = (selectedCategory: Category) => {
     if (selectedCategory === category) return;
 
     reset();
