@@ -42,11 +42,7 @@ export default function useCartItemList(): UseCartItemListResult {
   };
 
   const deleteCartItem = async (product: Product) => {
-    const target = cartItemList.find((item) => {
-      {
-        return item.product.id === product.id;
-      }
-    });
+    const target = cartItemList.find((item) => item.product.id === product.id);
     try {
       await requestDeleteCartItem(target!.id);
       setQuantity((prev: number) => prev - 1);
@@ -60,9 +56,11 @@ export default function useCartItemList(): UseCartItemListResult {
 
   const toggleCartItem = async (product: Product) => {
     setCartItemListLoading(true);
-    isInCart(product.id)
-      ? await deleteCartItem(product)
-      : await addCartItem(product);
+    if (isInCart(product.id)) {
+      await deleteCartItem(product);
+    } else {
+      await addCartItem(product);
+    }
     setCartItemListLoading(false);
   };
 

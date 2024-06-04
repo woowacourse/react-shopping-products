@@ -15,7 +15,7 @@ export const cartItemListHandlers = [
   http.post(CART_ITEMS_ENDPOINT, ({ params }) => {
     const { id } = params;
     const newItem = productListData.find(
-      (item) => item.id === parseInt(id as string),
+      (item) => item.id === Number(id as string),
     );
     if (!newItem) {
       return HttpResponse.json('상품을 찾을 수 없습니다.', { status: 404 });

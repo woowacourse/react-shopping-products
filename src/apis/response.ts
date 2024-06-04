@@ -1,6 +1,6 @@
-import { token } from "./config";
+import { token } from './config';
 
-export type HttpMethod = "GET" | "POST" | "DELETE" | "PATCH";
+export type HttpMethod = 'GET' | 'POST' | 'DELETE' | 'PATCH';
 
 interface ResponseProps {
   url: string;
@@ -13,7 +13,7 @@ const response = async ({ url, method, body, errorMessage }: ResponseProps) => {
   const result = await fetch(url, {
     method,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: token,
     },
     body,
@@ -23,10 +23,8 @@ const response = async ({ url, method, body, errorMessage }: ResponseProps) => {
     throw new Error(errorMessage);
   }
 
-  if (method === "GET") {
-    const data = await result.json();
-    return data;
-  }
+  const data = await result.json();
+  return data;
 };
 
 export default response;

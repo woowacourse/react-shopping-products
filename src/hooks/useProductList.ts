@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { fetchProductList } from "../apis/products";
-import { PRODUCT_LIST } from "../constants/productList";
-import { Category, Product, Sort } from "../types/type";
+import { fetchProductList } from '../apis/products';
+import { PRODUCT_LIST } from '../constants/productList';
+import { Category, Product, Sort } from '../types/type';
 
 interface UseProductListResult {
   productList: Product[];
@@ -30,7 +30,6 @@ export default function useProductList({
   const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
-    console.log(page, category, sort);
     const getProductList = async () => {
       try {
         setProductListLoading(true);

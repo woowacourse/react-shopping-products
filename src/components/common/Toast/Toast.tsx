@@ -13,22 +13,18 @@ function Toast() {
   useEffect(() => {
     if (error) {
       setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false), 3000;
-      });
+      setTimeout(() => setShowToast(false), 3000);
     }
   }, [error]);
 
   return (
-    <>
-      {showToast &&
-        createPortal(
-          <S.Container>
-            <S.MessageText>{error?.message}</S.MessageText>
-          </S.Container>,
-          document.body,
-        )}
-    </>
+    showToast &&
+    createPortal(
+      <S.Container>
+        <S.MessageText>{error?.message}</S.MessageText>
+      </S.Container>,
+      document.body,
+    )
   );
 }
 

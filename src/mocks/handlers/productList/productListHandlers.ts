@@ -16,8 +16,10 @@ export const productListHandlers = [
     const sort = url.searchParams.getAll('sort') || 'price,asc';
     const isValidSortParams = !sort.some((option) => {
       const [sortType, sortProperty] = option.split(',');
-      !Object.keys(initialData[0]).includes(sortType) ||
-        sortProperty !== ('asc' || 'desc');
+      return (
+        !Object.keys(initialData[0]).includes(sortType) ||
+        sortProperty !== ('asc' || 'desc')
+      );
     });
     if (!isValidSortParams) {
       return new HttpResponse('올바른 형식의 sort parameter가 아닙니다.', {
@@ -44,15 +46,16 @@ export const productListHandlers = [
         : initialData.filter((item) => item.category === category);
 
     const sortedData = filteredData.sort((a, b) => {
-      for (const option of sort) {
+      let comparison = 0;
+      sort.forEach((option) => {
         const [sortType, sortProperty] = option.split(',');
         const sortKey = sortType as keyof Product;
         const sortOrder = sortProperty === 'asc' ? -1 : 1;
 
-        if (a[sortKey] < b[sortKey]) return 1 * sortOrder;
-        if (a[sortKey] > b[sortKey]) return -1 * sortOrder;
-      }
-      return 0;
+        if (a[sortKey] < b[sortKey]) comparison = 1 * sortOrder;
+        if (a[sortKey] > b[sortKey]) comparison = -1 * sortOrder;
+      });
+      return comparison;
     });
 
     const paginatedData = sortedData.slice(start, end);

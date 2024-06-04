@@ -1,12 +1,12 @@
-import { ChevronDown } from "../../../assets/";
+import { ChevronDown } from '../../../assets';
 
-import * as S from "./Dropdown.style";
+import * as S from './Dropdown.style';
 
 interface DropdownProps {
   optionList: string[][];
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  type: "category" | "sort";
+  type: 'category' | 'sort';
 }
 
 function Dropdown({ optionList, value, onChange, type }: DropdownProps) {
