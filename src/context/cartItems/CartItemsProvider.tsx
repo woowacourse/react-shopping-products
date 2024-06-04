@@ -1,6 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { cartQueries } from '../../components/hooks/queries/cart';
 import { CartItemsContext } from './CartItemsContext';
+import { MAX_CART_ITEMS_FETCH_SIZE } from '../../constants/paginationRules';
 
 export function CartItemsProvider({ children }: PropsWithChildren) {
   const [shouldRefresh, setShouldRefresh] = useState<boolean>(true);
@@ -9,7 +10,7 @@ export function CartItemsProvider({ children }: PropsWithChildren) {
     query: getCartItems,
     data: { content: cartItems },
   } = cartQueries.useGetCartItems({
-    size: 100,
+    size: MAX_CART_ITEMS_FETCH_SIZE,
   });
 
   useEffect(() => {
