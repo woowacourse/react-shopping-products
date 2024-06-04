@@ -1,6 +1,6 @@
 import { fetchDeleteCartItems, fetchPostCartItems } from '@apis/index';
 
-import useFetch from './useFetch';
+import useFetch from '../useFetch';
 
 interface UseCartActionProps {
   refreshCartItemIds: () => Promise<void>;

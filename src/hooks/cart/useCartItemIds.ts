@@ -2,7 +2,7 @@ import { fetchGetCartItems } from '@apis/index';
 import { CartItem } from '@appTypes/index';
 import { useEffect, useState } from 'react';
 
-import useFetch from './useFetch';
+import useFetch from '../useFetch';
 
 const useCartItemIds = () => {
   const { fetch, error } = useFetch<typeof fetchGetCartItems>(fetchGetCartItems);

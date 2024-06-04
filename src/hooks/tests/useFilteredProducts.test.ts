@@ -4,7 +4,7 @@ import { CATEGORY_OPTIONS } from '@constants/index';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import useFetch from '../useFetch';
-import useFilteredProducts from '../useFilteredProducts';
+import useFilteredProducts from '../productList/useFilteredProducts';
 
 describe('상품 목록 필터링 테스트', () => {
   describe('카테고리 필터링 테스트', () => {
