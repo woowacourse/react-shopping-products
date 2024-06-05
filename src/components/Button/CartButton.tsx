@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCartCounts } from "../../api/cart";
+import { getCartItems } from "../../api/cart";
 import { ShoppingCartIcon } from "../../assets";
 import { BaseButton } from "./BaseButton";
 import { StyledCartButtonImg, StyledCartCount, StyledContainer } from "./CartButton.styled";
@@ -9,27 +9,27 @@ interface CartButtonProps {
 }
 
 export const CartButton = ({ onClick = () => {} }: CartButtonProps) => {
-  const [productCount, setProductCount] = useState<number | null>(null);
+  const [cartCount, setCartCount] = useState<number>(0);
+
+  const fetchCartItems = async () => {
+    try {
+      const cartItems = await getCartItems();
+      setCartCount(cartItems.length);
+    } catch (error) {
+      console.error("Failed to fetch cart counts", error);
+      setCartCount(0);
+    }
+  };
 
   useEffect(() => {
-    const fetchCartCounts = async () => {
-      try {
-        const count = await getCartCounts();
-        setProductCount(count);
-      } catch (error) {
-        console.error("Failed to fetch cart counts", error);
-        setProductCount(null);
-      }
-    };
-
-    fetchCartCounts();
-  }, [productCount]);
+    fetchCartItems();
+  }, []);
 
   return (
     <BaseButton onClick={onClick}>
       <StyledContainer>
         <StyledCartButtonImg src={ShoppingCartIcon} alt="" />
-        {productCount !== null && <StyledCartCount>{productCount}</StyledCartCount>}
+        <StyledCartCount>{cartCount}</StyledCartCount>
       </StyledContainer>
     </BaseButton>
   );
