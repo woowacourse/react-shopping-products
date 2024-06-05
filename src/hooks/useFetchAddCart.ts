@@ -2,14 +2,16 @@ import { useCallback, useEffect, useState } from 'react';
 import { deleteItem, fetchCartItems, postAddItems } from '../api/products';
 
 const useFetchAddCart = () => {
-  const [cartIdSet, setCartIdSet] = useState<Set<number>>(new Set());
+  const [productIdSetInCart, setProductIdSetInCart] = useState<Set<number>>(
+    new Set(),
+  );
 
   const addProductToCart = useCallback(
-    async (id: number) => {
-      postAddItems(id);
-      setCartIdSet(new Set(cartIdSet).add(id));
+    async (productId: number) => {
+      postAddItems(productId);
+      setProductIdSetInCart(new Set(productIdSetInCart).add(productId));
     },
-    [cartIdSet],
+    [productIdSetInCart],
   );
 
   const fetchCart = useCallback(async () => {
@@ -19,24 +21,26 @@ const useFetchAddCart = () => {
   }, []);
 
   const patchToRemoveCart = useCallback(
-    async (id: number) => {
+    async (productId: number) => {
       const cartItems = await fetchCart();
       const filteredCartItems = cartItems.find(
-        (item) => item.product.id === id,
+        (item) => item.product.id === productId,
       );
       if (!filteredCartItems) return;
 
       deleteItem(filteredCartItems.id);
-      const newCartIdSet = new Set(cartIdSet);
-      newCartIdSet.delete(id);
-      setCartIdSet(newCartIdSet);
+      const newProductIdSetInCart = new Set(productIdSetInCart);
+      newProductIdSetInCart.delete(productId);
+      setProductIdSetInCart(newProductIdSetInCart);
     },
-    [fetchCart, cartIdSet],
+    [fetchCart, productIdSetInCart],
   );
   const updateCartIdFromServer = useCallback(async () => {
     const cartItems = await fetchCart();
-    const newCartIdSet = new Set(cartItems.map((item) => item.product.id));
-    setCartIdSet(newCartIdSet);
+    const newProductIdSetInCart = new Set(
+      cartItems.map((item) => item.product.id),
+    );
+    setProductIdSetInCart(newProductIdSetInCart);
   }, [fetchCart]);
 
   useEffect(() => {
@@ -44,9 +48,9 @@ const useFetchAddCart = () => {
   }, [updateCartIdFromServer]);
 
   return {
-    cartIdSet,
-    setCartIdSet,
-    addProductToCart: addProductToCart,
+    productIdSetInCart,
+    setProductIdSetInCart,
+    addProductToCart,
     patchToRemoveCart,
     fetchCart,
   };

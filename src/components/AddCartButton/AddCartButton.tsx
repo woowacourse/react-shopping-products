@@ -10,7 +10,7 @@ interface AddCartButtonProps {
   onDeleteClick: (event: React.MouseEvent) => void;
 }
 function AddCartButton({ id, onAddClick, onDeleteClick }: AddCartButtonProps) {
-  const { cartIdSet } = useContext(CartContext);
+  const { productIdSetInCart: cartIdSet } = useContext(CartContext);
   const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
