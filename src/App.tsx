@@ -1,12 +1,11 @@
-import { useState } from "react";
+import Mall from "./pages/Mall";
+import { ToastProvider } from "./components/Toasts/ToastProvider";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <ToastProvider>
+      <Mall />
+    </ToastProvider>
   );
 }
 
