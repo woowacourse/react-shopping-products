@@ -10,7 +10,7 @@ export const fetchProducts = async (
   const response = await APIClient.get(getProductEndpoint(params));
   const data = await response.json();
 
-  APIClient.validateResponse(response, data.error);
+  APIClient.validateResponse(response, '상품 목록을 가져오지 못하였습니다.');
 
   return data;
 };
