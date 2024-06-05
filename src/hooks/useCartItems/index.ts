@@ -4,7 +4,7 @@ import { QUERY_KEY } from "../../constants/queryKeys";
 import { getCartItems } from "./../../api/cartItems";
 
 interface UseCartItemsReturn {
-  cartItems: CartItem[] | undefined;
+  cartItems: CartItem[];
   isLoading: boolean;
   errorMessage: string;
 }
