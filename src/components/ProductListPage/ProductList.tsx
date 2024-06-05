@@ -8,10 +8,10 @@ import LoadingSpinner from "@components/common/LoadingSpinner";
 import { IntersectionDetector } from "@components/common/IntersectionDetector";
 
 import { useErrorToast } from "@contexts/errorToast/useErrorToast";
-import { useInfiniteProducts } from "@src/hooks/query/useInfiniteProducts";
+import { useInfiniteProducts } from "@src/hooks/server/useInfiniteProducts";
 
 const ProductList = () => {
-  const { products, isLoading, error, fetchNextPage, updateCategoryFilter, updatePriceSort } =
+  const { data, isLoading, error, fetchNextPage, updateCategoryFilter, updatePriceSort } =
     useInfiniteProducts();
   const { showErrorToast } = useErrorToast();
 
@@ -32,7 +32,7 @@ const ProductList = () => {
             updatePriceSort={updatePriceSort}
           />
           <S.ItemContainer>
-            {products.map((product) => (
+            {data.map((product) => (
               <ProductItem key={crypto.randomUUID()} productInfo={product} />
             ))}
             {isLoading && <LoadingSpinner />}

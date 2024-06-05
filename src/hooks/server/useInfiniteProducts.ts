@@ -11,7 +11,7 @@ import { Category, PriceSort } from "@src/types/products";
 import { useState } from "react";
 
 interface UseInfiniteProductsReturn {
-  products: Product[];
+  data: Product[];
   isLoading: boolean;
   error: Error | null;
   fetchNextPage: () => void;
@@ -46,7 +46,7 @@ export const useInfiniteProducts = (): UseInfiniteProductsReturn => {
   };
 
   return {
-    products: data?.pages?.flatMap(({ data }) => data) ?? [],
+    data: data?.pages?.flatMap(({ data }) => data) ?? [],
     isLoading: isFetching,
     error,
     fetchNextPage,

@@ -13,7 +13,7 @@ export interface Product {
 
 export interface ProductsWithNextPage {
   data: Product[];
-  nextPage: number;
+  nextPage: number | undefined;
 }
 
 export type ProductQueryParams = {
@@ -24,6 +24,7 @@ export type ProductQueryParams = {
 
 export interface ProductResponse {
   content: Product[];
+  last: boolean;
 }
 
 export const getProductsQuery: QueryFunction<
@@ -41,6 +42,6 @@ export const getProductsQuery: QueryFunction<
 
   return {
     data: data.content,
-    nextPage: pageParam + 1,
+    nextPage: data.last ? undefined : pageParam + 1,
   };
 };

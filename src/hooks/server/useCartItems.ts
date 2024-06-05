@@ -1,28 +1,25 @@
 import { CartItem, getCartItems } from "@src/apis/cartItems";
-import { useQuery } from "@tanstack/react-query";
+import { QueryObserverResult, useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../__constants__/queryKeys";
 
 interface UseCartItemsReturn {
-  cartItems: CartItem[];
+  data: CartItem[];
   isLoading: boolean;
   error: Error | null;
-  refreshCartItems: () => Promise<void>;
+  refetch: () => Promise<QueryObserverResult<CartItem[], Error>>;
 }
 
 export const useCartItems = (): UseCartItemsReturn => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QUERY_KEYS.cartItems],
     queryFn: getCartItems,
+    staleTime: 1000 * 60 * 5,
   });
 
-  const refreshCartItems = async () => {
-    await refetch();
-  };
-
   return {
-    cartItems: data ?? [],
-    isLoading: isLoading,
+    data: data ?? [],
+    isLoading,
     error,
-    refreshCartItems,
+    refetch,
   };
 };

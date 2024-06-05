@@ -5,7 +5,7 @@ import { API_URL } from "@apis/__constants__/apiUrl";
 import { server } from "@mocks/server";
 import { CART_API_URL } from "@env/envVariables";
 import { PRICE_SORT_OPTIONS } from "@src/apis/__constants__/productQueryParams";
-import { useInfiniteProducts } from "@src/hooks/query/useInfiniteProducts";
+import { useInfiniteProducts } from "@src/hooks/server/useInfiniteProducts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
@@ -30,7 +30,7 @@ describe("useInfiniteProducts", () => {
       const { result } = renderHook(() => useInfiniteProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.products).toBeDefined();
+        expect(result.current.data).toBeDefined();
       });
     });
 
@@ -50,7 +50,7 @@ describe("useInfiniteProducts", () => {
       const { result } = renderHook(() => useInfiniteProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.products).toEqual([]);
+        expect(result.current.data).toEqual([]);
         expect(result.current.error).toBeTruthy();
         expect(result.current.isLoading).toBe(false);
       });
@@ -61,7 +61,7 @@ describe("useInfiniteProducts", () => {
       const { result } = renderHook(() => useInfiniteProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.data).toHaveLength(20);
       });
     });
 
@@ -69,7 +69,7 @@ describe("useInfiniteProducts", () => {
       const { result } = renderHook(() => useInfiniteProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.data).toHaveLength(20);
       });
 
       act(() => {
@@ -77,7 +77,7 @@ describe("useInfiniteProducts", () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(24);
+        expect(result.current.data).toHaveLength(24);
       });
     });
 
@@ -90,7 +90,7 @@ describe("useInfiniteProducts", () => {
       const { result } = renderHook(() => useInfiniteProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(20);
+        expect(result.current.data).toHaveLength(20);
       });
 
       // NOTE : 마지막 페이지에 도달하기 위한 for문
@@ -104,7 +104,7 @@ describe("useInfiniteProducts", () => {
         const expectedLength = INITIAL_PAGE_SIZE + currentPage * PAGE_SIZE;
 
         await waitFor(() => {
-          expect(result.current.products).toHaveLength(expectedLength);
+          expect(result.current.data).toHaveLength(expectedLength);
         });
       }
 
@@ -113,7 +113,7 @@ describe("useInfiniteProducts", () => {
       });
 
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(100);
+        expect(result.current.data).toHaveLength(100);
       });
     });
 
@@ -145,11 +145,7 @@ describe("useInfiniteProducts", () => {
       });
 
       await waitFor(() => {
-        if (result.current.products) {
-          expect(result.current.products.every((product) => product.category === CATEGORY)).toBe(
-            true
-          );
-        }
+        expect(result.current.data.every((product) => product.category === CATEGORY)).toBe(true);
       });
     });
   });
@@ -165,11 +161,10 @@ describe("useInfiniteProducts", () => {
 
       await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-      const sortedProducts =
-        result.current.products?.slice().sort((a, b) => b.price - a.price) ?? [];
+      const sortedProducts = result.current.data.slice().sort((a, b) => b.price - a.price) ?? [];
 
       await waitFor(() => {
-        expect(result.current.products).toEqual(sortedProducts);
+        expect(result.current.data).toEqual(sortedProducts);
       });
     });
   });

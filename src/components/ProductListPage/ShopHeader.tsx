@@ -2,17 +2,17 @@ import styled from "styled-components";
 
 import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "@assets/cart.svg";
-import { useCartItems } from "@src/hooks/query/useCartItems";
+import { useCartItems } from "@src/hooks/server/useCartItems";
 
 const ShopHeader = () => {
-  const { cartItems, isLoading } = useCartItems();
+  const { data: cartItems, isLoading } = useCartItems();
 
   return (
     <S.Header>
       <S.Title>SHOP</S.Title>
       <S.CartButton role="button" aria-label="장바구니 이동">
         <CartIcon />
-        {cartItems && !isLoading && (
+        {!isLoading && (
           <S.Badge>
             <S.CircleContent>{cartItems.length}</S.CircleContent>
           </S.Badge>
