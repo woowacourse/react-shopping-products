@@ -13,6 +13,7 @@ import ItemCardList from "@/components/ItemCardList";
 import useInfiniteFilteredProducts from "@/hooks/server/useInfiniteFilteredProducts";
 import useToast from "@/hooks/useToast";
 import { ERROR_MESSAGES } from "@/constants/messages";
+import useHandleCartItem from "@/hooks/useHandleCartItem";
 
 export interface GetProductsProps {
   category: Category;
@@ -30,6 +31,8 @@ const ProductListPage = () => {
 
   const infiniteScrollConfig = { threshold: 0.25, rootMargin: "50px" };
   const { isIntersecting } = useIntersection(infiniteScrollConfig, ref);
+
+  const { cartItems } = useHandleCartItem();
 
   const {
     fetchNextPage,
@@ -62,7 +65,7 @@ const ProductListPage = () => {
     <>
       <Header>
         <Header.Title text="SHOP" />
-        <CartBadge />
+        {cartItems?.length && <CartBadge cartItemLength={cartItems!.length} />}
         <TopButton />
       </Header>
       <S.Wrapper>

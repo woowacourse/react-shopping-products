@@ -1,4 +1,4 @@
-import { deleteCartItem, getCartItems, postCartItem } from "@/apis/cartItem";
+import { deleteCartItem, getCartItems, patchCartItem, postCartItem } from "@/apis/cartItem";
 import { END_POINT } from "@/config/endPoint";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import useToast from "@/hooks/useToast";
@@ -9,7 +9,7 @@ export const useCartItemsQuery = () => {
   const { onAddToast } = useToast();
   const query = useQuery({
     queryKey: [END_POINT.cartItems],
-    queryFn: getCartItems,
+    queryFn: async () => await getCartItems(),
     staleTime: 10000,
   });
 
@@ -22,12 +22,29 @@ export const useCartItemsQuery = () => {
   return query;
 };
 
-export const useUpdateCartItemQuantityMutation = ({ productId, quantity }: { productId: number; quantity: number }) => {
+export const usePostAddCartItemMutation = ({ productId, quantity }: { productId: number; quantity: number }) => {
   const queryClient = useQueryClient();
   const { onAddToast } = useToast();
 
   const mutation = useMutation({
     mutationFn: () => postCartItem({ productId, quantity }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
+    },
+    onError: () => {
+      onAddToast(ERROR_MESSAGES.failPostCartItem);
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateCartItemQuantityMutation = ({ cartId, quantity }: { cartId: number; quantity: number }) => {
+  const queryClient = useQueryClient();
+  const { onAddToast } = useToast();
+
+  const mutation = useMutation({
+    mutationFn: () => patchCartItem({ cartId, quantity }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
     },

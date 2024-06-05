@@ -15,6 +15,7 @@ export const getCartItems = async (): Promise<CartItems[]> => {
   }
 
   const data = await response.json();
+
   return data.content;
 };
 
@@ -28,6 +29,25 @@ export async function postCartItem({ productId, quantity }: PostCartItemParams):
     method: "POST",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
     body: JSON.stringify({ productId, quantity }),
+  });
+
+  if (!response.ok) {
+    throw new Error(ERROR_MESSAGES.failPostCartItem);
+  }
+
+  return response;
+}
+
+export interface PatchCartItemParams {
+  cartId: number;
+  quantity: number;
+}
+
+export async function patchCartItem({ cartId, quantity }: PatchCartItemParams): Promise<Response> {
+  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${cartId}`, {
+    method: "PATCH",
+    headers: { Authorization: basicToken, "Content-Type": "application/json" },
+    body: JSON.stringify({ quantity }),
   });
 
   if (!response.ok) {

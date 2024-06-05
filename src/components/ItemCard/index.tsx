@@ -5,7 +5,6 @@ import CartActionButton from "@/components/CartActionButton";
 import useHandleCartItem from "@/hooks/useHandleCartItem";
 import { memo } from "react";
 import QuantityUpdateButton from "@/components/QuantityUpdateButton";
-import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 
 interface ItemCartProps {
   product: Product;
@@ -13,20 +12,21 @@ interface ItemCartProps {
 
 const ItemCard = ({ product }: ItemCartProps) => {
   const { name, price, imageUrl, id } = product;
-  const { data: cartItems } = useCartItemsQuery();
-  const { onClickCartItem, getQuantityInCart, isInCart } = useHandleCartItem();
+  const { getQuantityInCart, convertProductIdToCartId } = useHandleCartItem();
 
   const quantity = getQuantityInCart(id);
+
+  const cartId = convertProductIdToCartId(id);
 
   return (
     <S.Wrapper>
       <S.Image $imgUrl={imageUrl} />
       <ItemInfo name={name} price={price} />
       <S.ButtonWrapper>
-        {getQuantityInCart(id) > 0 ? (
-          <QuantityUpdateButton quantity={quantity} />
+        {getQuantityInCart(id) > 0 && cartId ? (
+          <QuantityUpdateButton quantity={quantity} cartId={cartId} />
         ) : (
-          <CartActionButton isInCart={isInCart(id)} onClick={() => onClickCartItem(id)} />
+          <CartActionButton productId={id} />
         )}
       </S.ButtonWrapper>
     </S.Wrapper>

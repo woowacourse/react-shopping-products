@@ -1,18 +1,24 @@
 import Icon from "@/components/_common/Icon";
 import TextBox from "@/components/_common/TextBox";
 import * as S from "@/components/CartActionButton/style";
+import { usePostAddCartItemMutation } from "@/hooks/server/useCartItems";
 
 interface CartActionButton {
-  isInCart: boolean;
-  onClick: () => void;
+  productId: number;
 }
 
-const CartActionButton = ({ isInCart, onClick }: CartActionButton) => {
-  const iconKind = isInCart ? "deleteCart" : "addCart";
-  const buttonText = isInCart ? "빼기" : "담기";
+const CartActionButton = ({ productId }: CartActionButton) => {
+  const iconKind = "addCart";
+  const buttonText = "담기";
+
+  const addMutation = usePostAddCartItemMutation({ productId, quantity: 1 });
+
+  const onAddToCart = () => {
+    addMutation.mutate();
+  };
 
   return (
-    <S.ButtonWrapper onClick={onClick} $isInCart={isInCart}>
+    <S.ButtonWrapper onClick={onAddToCart}>
       <Icon kind={iconKind} />
       <TextBox text={buttonText} type="xSmall" />
     </S.ButtonWrapper>
