@@ -1,10 +1,10 @@
-import { forwardRef, useContext } from "react";
+import { forwardRef } from "react";
 import * as PI from "./ProductItem.style";
-import { deleteProductInCart, postProductInCart } from "@api/index";
+import { postProductInCart } from "@api/index";
 import { useError } from "@hooks/index";
-import { CartItemsContext } from "@context/CartItemsContext";
 import CountControlButtonBundle from "@components/CountControlButtonBundle/CountControlButtonBundle";
 import AddCartButton from "@components/Button/AddCartButton";
+import useCartItems from "@hooks/useCartItems";
 
 interface ProductProps {
   product: Product;
@@ -12,7 +12,7 @@ interface ProductProps {
 
 const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
   ({ product }, ref) => {
-    const { cartItems, refreshCartItems } = useContext(CartItemsContext);
+    const { cartItems, refetchCartItems } = useCartItems();
 
     const cartItemIds = cartItems.map((item) => item.product.id);
     const isInCart = cartItemIds.includes(product.id);
@@ -23,16 +23,8 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
       try {
         if (!isInCart) {
           await postProductInCart(product.id);
-          refreshCartItems();
+          refetchCartItems();
           return;
-        }
-
-        const filteredItem = cartItems.find(
-          (item) => item.product.id === product.id,
-        );
-        if (filteredItem) {
-          await deleteProductInCart(filteredItem.id);
-          refreshCartItems();
         }
       } catch (error) {
         if (error instanceof Error) {
