@@ -4,4 +4,5 @@ import styled from '@emotion/styled';
 export const MainContainer = styled.div`
   width: ${SIZE.layoutWidth};
   margin: auto;
+  position: relative;
 `;

@@ -25,7 +25,8 @@ export const ToastContainer = styled.div<{ $isOpen: boolean }>`
   color: white;
   width: ${SIZE.layoutWidth};
   height: 50px;
-  position: fixed;
+  position: absolute;
+  left: 0;
   top: ${SIZE.navigationHeight};
   display: flex;
   justify-content: center;
