@@ -17,7 +17,7 @@ async function makeRequest(endpoint: string, options: RequestInit): Promise<Resp
   if (token) {
     options.headers = {
       ...options.headers,
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     };
   }
 
