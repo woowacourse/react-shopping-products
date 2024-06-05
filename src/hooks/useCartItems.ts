@@ -1,52 +1,26 @@
-import { useEffect, useState } from 'react';
-
-import useToast from './useToast';
-
-import { addCartItem, deleteCartItem, fetchCartItems } from '@/api/cart';
-import { CartItemInfo } from '@/types/cartItem';
-import CustomError from '@/utils/error';
+import useAddCartItemQuery from './useAddCartItemQuery';
+import useDeleteCartItemQuery from './useDeleteCartItemQuery';
+import useFetchCartItemsQuery from './useFetchCartItemsQuery';
 
 const useCartItems = () => {
-  const [cartItems, setCartItems] = useState<CartItemInfo[]>([]);
-  const toast = useToast();
+  const { data: cartItems } = useFetchCartItemsQuery();
+  const { mutate: addCartItem } = useAddCartItemQuery();
+  const { mutate: deleteCartItem } = useDeleteCartItemQuery();
 
   const matchCartItem = (productId: number) => {
     return cartItems.find((cartItem) => cartItem.product.id === productId);
   };
 
   const handleAddCartItem = async (productId: number) => {
-    try {
-      await addCartItem({ productId });
-      await refreshCartItems();
-    } catch (error) {
-      if (error instanceof CustomError) {
-        toast.error(error.message);
-      }
-    }
+    addCartItem({ productId });
   };
 
   const handleDeleteCartItem = async (productId: number) => {
-    try {
-      const matchedCartItemInfo = matchCartItem(productId);
-      const cartItemId = matchedCartItemInfo!.id;
+    const matchedCartItemInfo = matchCartItem(productId);
+    const cartItemId = matchedCartItemInfo!.id;
 
-      await deleteCartItem(cartItemId);
-      await refreshCartItems();
-    } catch (error) {
-      if (error instanceof CustomError) {
-        toast.error(error.message);
-      }
-    }
+    deleteCartItem(cartItemId);
   };
-
-  const refreshCartItems = async () => {
-    const data = await fetchCartItems();
-    setCartItems(data);
-  };
-
-  useEffect(() => {
-    refreshCartItems();
-  }, []);
 
   return { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem };
 };
