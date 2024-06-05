@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import ERROR_MESSAGE from '@constants/errorMessage';
 import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
-import ShoppingCartFetcher from '@apis/ShoppingCartFetcher';
+import { addProduct } from '@apis/ShoppingCartFetcher';
 
 interface Props {
   errorHandler: (err: unknown) => void;
@@ -13,7 +13,7 @@ export default function useAddToCart({ errorHandler }: Props) {
 
   return useMutation(
     async (id: number) => {
-      return ShoppingCartFetcher.addProduct(id).catch(error => {
+      return addProduct(id).catch(error => {
         if (!(error instanceof HTTPError))
           throw new Error(ERROR_MESSAGE.clientNetwork);
         if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
