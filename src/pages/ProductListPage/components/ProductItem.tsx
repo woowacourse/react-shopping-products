@@ -17,12 +17,13 @@ interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
 }
 
 const ProductItem = ({ item, isSelected, onSelect }: Props) => {
+  const { name, price, imageUrl } = item;
   return (
     <div className={styles.productItemContainer}>
-      <img src={item.imageUrl} width={182} height={112} style={{ borderRadius: '8px 8px 0 0' }} />
+      <img src={imageUrl} width={182} height={112} style={{ borderRadius: '8px 8px 0 0' }} />
       <div className={styles.productItemInfoContainer}>
-        <span className={styles.productItemName}>{item.name}</span>
-        <span className={styles.productItemLabel}>{item.price.toLocaleString('KR-ko')}원</span>
+        <span className={styles.productItemName}>{name}</span>
+        <span className={styles.productItemLabel}>{price.toLocaleString('KR-ko')}원</span>
       </div>
       <ProductSelectButton isSelected={isSelected} onClick={onSelect}></ProductSelectButton>
     </div>
