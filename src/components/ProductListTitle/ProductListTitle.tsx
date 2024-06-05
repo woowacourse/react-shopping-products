@@ -4,7 +4,7 @@ import { Wrapper } from "./ProductListTitle.style";
 interface ProductListTitleProps extends HTMLAttributes<HTMLDivElement> {}
 
 const ProductListTitle = ({ ...rest }: ProductListTitleProps) => {
-  return <Wrapper {...rest}>ProductListTitle</Wrapper>;
+  return <Wrapper {...rest}>bpple 상품 목록</Wrapper>;
 };
 
 export default ProductListTitle;
