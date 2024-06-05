@@ -20,6 +20,22 @@ export default function CartModal({
   increaseItemQuantity,
   decreaseItemQuantity,
 }: CartModalProps) {
+  const selectedItemsElements = cartItems.map(cartItem => (
+    <SelectedItem
+      key={cartItem.id}
+      cartItem={cartItem}
+      deleteItem={deleteItem}
+      increaseItemQuantity={increaseItemQuantity}
+      decreaseItemQuantity={decreaseItemQuantity}
+    ></SelectedItem>
+  ));
+
+  const fallbackElement = (
+    <Styled.EmptyFallback>
+      장바구니에 담긴 상품이 없습니다.
+    </Styled.EmptyFallback>
+  );
+
   const cartItemsAmount = cartItems.reduce(
     (acc, item) => acc + item.quantity * item.product.price,
     0
@@ -33,15 +49,7 @@ export default function CartModal({
     >
       <Styled.Title>장바구니</Styled.Title>
       <Styled.SelectedItemsContainer>
-        {cartItems.map(cartItem => (
-          <SelectedItem
-            key={cartItem.id}
-            cartItem={cartItem}
-            deleteItem={deleteItem}
-            increaseItemQuantity={increaseItemQuantity}
-            decreaseItemQuantity={decreaseItemQuantity}
-          ></SelectedItem>
-        ))}
+        {cartItems.length ? selectedItemsElements : fallbackElement}
       </Styled.SelectedItemsContainer>
       <Styled.AmountContainer>
         <Styled.AmountDescription>총 결제 금액</Styled.AmountDescription>

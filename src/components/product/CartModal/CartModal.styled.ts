@@ -15,7 +15,7 @@ export const SelectedItemsContainer = styled.div`
   flex-direction: column;
   gap: 24px;
 
-  max-height: 400px;
+  height: 400px;
   overflow-y: scroll;
 `;
 
@@ -38,4 +38,12 @@ export const AmountDescription = styled.span`
 export const AmountCurrency = styled.span`
   font-size: 24px;
   font-weight: 700;
+`;
+
+export const EmptyFallback = styled.div`
+  width: 397px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
