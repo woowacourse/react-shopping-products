@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 
+import IntersectionContainer from './IntersectionContainer';
 import * as Styled from './ProductListPage.styled';
 
 import Dropdown from '@/components/common/dropdown/Dropdown';
@@ -14,9 +15,10 @@ import useProductList from '@/hooks/useProductList';
 
 const ProductListPage = () => {
   const {
-    productList,
+    data,
     isLoading,
     fetchNextPage,
+    hasNextPage,
     order,
     category,
     handleChangeCategory,
@@ -43,9 +45,8 @@ const ProductListPage = () => {
             />
             <Dropdown value={order.label} options={SORT_OPTIONS} handleSelect={handleChangeSort} />
           </Styled.DropdownContainer>
-
           <ProductCardList
-            productList={productList}
+            data={data}
             handleAddCartItem={handleAddCartItem}
             handleDeleteCartItem={handleDeleteCartItem}
             matchCartItem={matchCartItem}
