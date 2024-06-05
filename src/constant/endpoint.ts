@@ -1,6 +1,6 @@
-const API_ROUTES = {
+const ENDPOINT = {
   products: '/products',
   cartItems: '/cart-items',
 };
 
-export default API_ROUTES;
+export default ENDPOINT;

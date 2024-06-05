@@ -1,11 +1,12 @@
 import { http, HttpResponse } from 'msw';
 import products from './products.json';
 import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
+import ENDPOINT from '../constant/endpoint';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const handlers = [
-  http.get(`${API_URL}/products`, ({ request }) => {
+  http.get(`${API_URL}${ENDPOINT.products}`, ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get('category');
     const sortOptions = url.searchParams.get('sort');
