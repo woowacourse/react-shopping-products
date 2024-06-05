@@ -17,22 +17,25 @@ interface FetchProductsParams {
 export async function fetchProducts(
   params: FetchProductsParams = {},
 ): Promise<ProductsResponseType> {
-  const queryString = Object.entries(params)
-    .map(([key, value]) => {
-      if (key === 'category' && value === 'all') {
-        return;
-      } else {
-        return `${key}=${value}`;
-      }
-    })
-    .join('&');
-  const response = await makeRequest(`/products?${queryString}`, {
+  const queryParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (key === 'category' && value === 'all') {
+      return;
+    }
+    if (value !== undefined) {
+      queryParams.append(key, String(value));
+    }
+  });
+
+  const response = await makeRequest(`/products?${queryParams.toString()}`, {
     method: 'GET',
     headers: {
       Authorization: basicToken,
       'Content-Type': 'application/json',
     },
   });
+
   const data = await response.json();
 
   return data;
@@ -50,7 +53,9 @@ export async function addCartItem(productId: number): Promise<void> {
 }
 
 export async function fetchCartItem(): Promise<CartItemType[]> {
-  const response = await makeRequest('/cart-items?page=0&size=100', {
+  const queryParams = new URLSearchParams({ page: '0', size: '100' });
+
+  const response = await makeRequest(`/cart-items?${queryParams.toString()}`, {
     method: 'GET',
     headers: {
       Authorization: basicToken,
