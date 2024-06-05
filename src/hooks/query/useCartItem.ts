@@ -17,15 +17,12 @@ export default function useCartItems() {
     onError: () => showToast('장바구니 목록을 가져올 수 없습니다.'),
   });
 
-  const getCartItemIdByProductId = useCallback(
+  const getCartItemByProductId = useCallback(
     (productId: number) => {
-      const targetCartItem = cartItems?.find(
-        cartItem => cartItem.product.id === productId
-      );
-      return targetCartItem?.id || -1;
+      return cartItems?.find(cartItem => cartItem.product.id === productId);
     },
     [cartItems]
   );
 
-  return { cartItems, getCartItemIdByProductId, isLoading, error };
+  return { cartItems, getCartItemByProductId, isLoading, error };
 }
