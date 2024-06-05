@@ -1,4 +1,4 @@
-import { CartItem, Filtering } from '@appTypes/index';
+import { Filtering } from '@appTypes/index';
 import { Dropdown } from '@components/index';
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from '@constants/index';
 import { Suspense, useState } from 'react';
@@ -6,11 +6,7 @@ import { Suspense, useState } from 'react';
 import style from './style.module.css';
 import ProductList from './ProductList';
 
-interface ProductListPageProps {
-  cartItems: CartItem[];
-}
-
-function ProductListPage({ cartItems }: ProductListPageProps) {
+function ProductListPage() {
   const [filtering, setFiltering] = useState<Filtering>({ category: '', sort: 'price,asc' });
 
   const handleChangeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -27,7 +23,7 @@ function ProductListPage({ cartItems }: ProductListPageProps) {
         <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
       <Suspense fallback={<div>로딩 중...</div>}>
-        <ProductList filtering={filtering} cartItems={cartItems} />
+        <ProductList filtering={filtering} />
       </Suspense>
     </div>
   );

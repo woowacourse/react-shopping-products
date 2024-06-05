@@ -1,4 +1,4 @@
-import { CartItem, Filtering } from '@appTypes/index';
+import { Filtering } from '@appTypes/index';
 import { useEffect, useRef } from 'react';
 
 import ProductCard from '../ProductCard';
@@ -6,17 +6,18 @@ import ProductCard from '../ProductCard';
 import style from './style.module.css';
 import useLoadProducts from '@queries/product/useLoadProducts';
 import IntersectionObserverArea from '@components/IntersectionObserverArea';
+import useLoadCartItems from '@queries/cart/useLoadCartItems';
 
 interface ProductListProps {
   filtering: Filtering;
-  cartItems: CartItem[];
 }
 
-function ProductList({ filtering, cartItems }: ProductListProps) {
+function ProductList({ filtering }: ProductListProps) {
   const productListRef = useRef<HTMLElement | null>(null);
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const { products, isLoading, fetchNextPage } = useLoadProducts(filtering);
+  const { cartItems } = useLoadCartItems();
 
   useEffect(() => {
     if (products.length <= 20) {
@@ -25,7 +26,7 @@ function ProductList({ filtering, cartItems }: ProductListProps) {
   }, [productListRef, products]);
 
   const getCartItem = (productId: number) => {
-    const cartItem = cartItems.find((item) => item.product.id === productId);
+    const cartItem = cartItems?.find((item) => item.product.id === productId);
     return cartItem;
   };
 

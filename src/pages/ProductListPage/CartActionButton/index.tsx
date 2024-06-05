@@ -2,7 +2,6 @@ import AddIcon from '@assets/addCart.svg';
 import DeleteIcon from '@assets/deleteCart.svg';
 import style from './style.module.css';
 import { CartItem } from '@appTypes/index';
-import { ToastModal } from '@components/index';
 import { CartActionError } from '@components/Fallbacks';
 import useAddCartItem from '@queries/cart/useAddCartItem';
 import useDeleteCartItem from '@queries/cart/useDeleteCartItem';
@@ -56,11 +55,7 @@ function CartActionButton({ cartItem, productId }: CartActionButtonProps) {
         <img src={src} alt={alt} />
         <span className="button__text">{text}</span>
       </button>
-      {isError && (
-        <ToastModal isError={isError} position={{ top: 40 }}>
-          <CartActionError />
-        </ToastModal>
-      )}
+      <CartActionError isError={isError} />
     </>
   );
 }
