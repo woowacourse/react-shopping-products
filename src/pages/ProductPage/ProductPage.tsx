@@ -1,42 +1,60 @@
 import * as Styled from './ProductPage.styled';
 
-import { lazy, useState } from 'react';
+import { Category, SortType } from './Product.types';
+import { useMemo, useState } from 'react';
 
 import AppLayout from '@components/layout/AppLayout/AppLayout';
+import CardList from '@components/product/CardList/CardList';
+import CartModal from '@components/product/CartModal/CartModal';
 import Dropdown from '@components/common/Dropdown/Dropdown';
 import ITEM_CATEGORIES from '@constants/itemCategories';
 import ITEM_SORT_TYPE from '@constants/itemSortTypes';
 import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import WrongCat from '@components/common/WrongCat/WrongCat';
+import useAddToCart from '@hooks/mutation/useAddToCart';
+import useCartItems from '@hooks/query/useCartItem';
+import useDecreaseCartItemQuantityByCartId from '@hooks/mutation/useDecreaseCartItemQuantity';
+import useDeleteFromCart from '@hooks/mutation/useDeleteFromCart';
+import useIncreaseCartItemQuantity from '@hooks/mutation/useIncreaseCartItemQuantity';
+import useInfinityProducts from '@hooks/query/useInfinityProduct';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
-import usePaginatedProducts from '@hooks/product/usePaginatedProducts';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
-import useToggleShoppingCart from '@hooks/product/useToggleShoppingCart';
-
-const CardList = lazy(() => import('@components/product/CardList/CardList'));
 
 const ProductPage = () => {
   const { showToast } = useToastContext();
 
+  const [category, setCategory] = useState<Category>('전체');
+  const [sortType, setSortType] = useState<SortType>('낮은 가격순');
+
   const {
-    products,
+    isFetching,
+    data: productPage,
+    fetchNextPage: fetchNextProductPage,
+  } = useInfinityProducts({
     category,
     sortType,
-    isLoading,
-    updateNextProductPage,
-    updateCategory,
-    updateSortType,
-  } = usePaginatedProducts({ errorHandler: showToast });
+    errorHandler: () => showToast('실수~'),
+  });
 
-  const { addedShoppingCartLength, onToggleCart, isAddedCart } =
-    useToggleShoppingCart();
+  const products = useMemo(() => {
+    return productPage?.pages.flatMap(response => response.content) || [];
+  }, [productPage]);
+  const { cartItems, getCartItemByProductId } = useCartItems();
+
+  const { mutate: addToCart } = useAddToCart();
+  const { mutate: deleteToCart } = useDeleteFromCart();
+  const { mutate: increaseCartItemQuantity } = useIncreaseCartItemQuantity();
+  const { mutate: decreaseCartItemQuantity } =
+    useDecreaseCartItemQuantityByCartId();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
   const [isSortTypeDropdownOpen, setIsSortTypeDropdownOpen] = useState(false);
 
   const targetRef = useIntersectionObserver<HTMLDivElement>({
-    onIntersect: updateNextProductPage,
+    onIntersect: () => fetchNextProductPage(),
   });
 
   const wrongCatElement = (
@@ -54,38 +72,62 @@ const ProductPage = () => {
     <Styled.ProductPageListWrapper>
       <CardList
         products={products}
-        onToggleCart={onToggleCart}
-        isAddedCart={isAddedCart}
+        addToCart={addToCart}
+        increaseCartItemQuantity={(productId: number) => {
+          const cartItem = getCartItemByProductId(productId);
+          if (cartItem !== undefined) increaseCartItemQuantity(cartItem.id);
+        }}
+        decreaseCartItemQuantity={(productId: number) => {
+          const cartItem = getCartItemByProductId(productId);
+          if (cartItem !== undefined) decreaseCartItemQuantity(cartItem.id);
+        }}
+        isAddedCart={(id: number) => getCartItemByProductId(id) !== undefined}
+        getQuantity={(productId: number) => {
+          const cartItem = getCartItemByProductId(productId);
+          return cartItem?.quantity ?? 0;
+        }}
       />
     </Styled.ProductPageListWrapper>
   );
 
   return (
-    <AppLayout itemCount={addedShoppingCartLength}>
+    <AppLayout
+      itemCount={cartItems?.length ?? 0}
+      cartClick={() => setIsModalOpen(true)}
+    >
+      {isModalOpen && (
+        <CartModal
+          onClose={() => setIsModalOpen(false)}
+          cartItems={cartItems ?? []}
+          deleteItem={deleteToCart}
+          increaseItemQuantity={increaseCartItemQuantity}
+          decreaseItemQuantity={decreaseCartItemQuantity}
+        />
+      )}
       <Styled.ProductPageTitle>bpple 상품 목록</Styled.ProductPageTitle>
       <Styled.ProductDropdownWrapper>
         <Dropdown
-          options={ITEM_CATEGORIES}
+          options={ITEM_CATEGORIES.slice()}
           nowSelectedOption={category}
           isOpen={isCategoryDropdownOpen}
           setIsOpen={setIsCategoryDropdownOpen}
-          setOption={updateCategory}
+          setOption={setCategory}
         />
         <Dropdown
-          options={ITEM_SORT_TYPE}
+          options={ITEM_SORT_TYPE.slice()}
           nowSelectedOption={sortType}
           isOpen={isSortTypeDropdownOpen}
           setIsOpen={setIsSortTypeDropdownOpen}
-          setOption={updateSortType}
+          setOption={setSortType}
         />
       </Styled.ProductDropdownWrapper>
 
       {itemsElement}
 
-      {isLoading && loadingSpinnerElement}
-      {!isLoading && products.length === 0 && wrongCatElement}
+      {isFetching && loadingSpinnerElement}
+      {!isFetching && products.length === 0 && wrongCatElement}
 
-      {!isLoading && <Styled.ObserverTarget ref={targetRef} />}
+      {!isFetching && <Styled.ObserverTarget ref={targetRef} />}
     </AppLayout>
   );
 };
