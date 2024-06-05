@@ -42,37 +42,33 @@ describe('fetchProducts', () => {
       result.current.fetchNextPage();
     });
     await waitFor(() => {
-      console.log(result.current.products.length);
       expect(result.current.products).toHaveLength(24);
     });
   });
 
-  // it('마지막 페이지 도달 시 더 이상 요청하지 않는다.', async () => {
-  //   const { result } = renderHook(() => useFetchProducts());
+  it('마지막 페이지 도달 시 더 이상 요청하지 않는다.', async () => {
+    const { result } = renderHook(useFetchProducts);
+    const LAST_PAGE_IN_MOCK = 20;
 
-  //   await waitFor(() => {
-  //     expect(result.current.products).toHaveLength(20);
-  //   });
+    await waitFor(() => {
+      expect(result.current.products).toHaveLength(20);
+    });
 
-  //   act(() => result.current.fetchNextPage());
-  //   for (let i = 2; i <= 25; i++) {
-  //     await waitFor(() => {
-  //       act(() => {
-  //         result.current.fetchNextPage();
-  //       });
-  //     });
-  //   }
+    for (let i = 1; i <= LAST_PAGE_IN_MOCK; i++) {
+      act(() => {
+        result.current.fetchNextPage();
+      });
+      await waitFor(() => {
+        expect(result.current.page).toBe(i);
+      });
+    }
 
-  //   await waitFor(() => {
-  //     expect(result.current.page).toBe(20);
-  //   });
+    act(() => result.current.fetchNextPage());
 
-  //   act(() => result.current.fetchNextPage());
-
-  //   await waitFor(() => {
-  //     expect(result.current.page).toBe(20);
-  //   });
-  // });
+    await waitFor(() => {
+      expect(result.current.page).toBe(LAST_PAGE_IN_MOCK);
+    });
+  });
 
   test.each([
     [

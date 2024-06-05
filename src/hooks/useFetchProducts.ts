@@ -17,7 +17,7 @@ const useFetchProducts = (
   const fetchNextPage = useCallback(() => {
     if (isLast) return;
     setPage((prevPage) => prevPage + 1);
-  }, []);
+  }, [isLast]);
 
   useDeepCompareEffect(() => {
     const size = page === 0 ? 20 : 4;
