@@ -29,7 +29,7 @@ const Dropdown = <T,>({ options, selectedOption, optionChange }: DropdownProps<T
   return (
     <S.Dropdown $isOpen={isOpen}>
       <S.Select onClick={handleToggleDropdown}>
-        <p>{selectedOption as string}</p>
+        <span>{selectedOption as string}</span>
         <S.ArrowImage src={DROPDOWN_ICON} alt="열고 닫기 화살표" />
       </S.Select>
       {isOpen && (
