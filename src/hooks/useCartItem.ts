@@ -13,7 +13,6 @@ const useCartItems = () => {
       setLoading(true);
       try {
         const cartItems = await fetchItems();
-        console.log(cartItemIds);
 
         const newCartItemIds = cartItems.map((cartItem) => cartItem.product.id);
         setCartItem(newCartItemIds);

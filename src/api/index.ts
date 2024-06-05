@@ -1,6 +1,7 @@
 import { MAX_CART_ITEMS_COUNTS } from '../constants';
 import { CategoryType, SortType } from '../type';
 import { CartItems } from '../type/CartItem';
+import { ProductItem } from '../type/ProductItem';
 import ENDPOINT from './endpoints';
 
 const USERNAME = import.meta.env.VITE_USER_ID;
@@ -33,7 +34,7 @@ export async function fetchProducts(
   limit: number,
   category: CategoryType,
   sorting: SortType,
-) {
+): Promise<{ data: ProductItem[]; last: boolean }> {
   const sortArray = sorting.split('_');
   const url = createURLWithParams(ENDPOINT.PRODUCTS, {
     category: category === 'all' ? undefined : category,
@@ -51,7 +52,7 @@ export async function fetchProducts(
   }
 
   const data = await response.json();
-  return data;
+  return { data: data.content, last: data.last };
 }
 
 export const addCartItem = async (itemId: number, itemQuantity: number) => {

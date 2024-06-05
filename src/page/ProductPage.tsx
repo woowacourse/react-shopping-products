@@ -18,12 +18,12 @@ function ProductPage() {
   const {
     products,
     fetchNextPage,
-    loading,
+    isLoading,
     changeCategory,
     changeSorting,
     error,
   } = useProducts();
-  const { lastProductElementRef } = useInfinityScroll(fetchNextPage);
+  const { lastProductElementRef } = useInfinityScroll(() => fetchNextPage());
   const { cartItemIds, isInCart } = useCartItems();
 
   return (
@@ -57,7 +57,7 @@ function ProductPage() {
             {products.map((product, index) => {
               return (
                 <ItemCard
-                  key={`${product.id}${index}`}
+                  key={`${product.id}_${index}`}
                   initIsInCart={isInCart(product.id)}
                   {...product}
                 />
@@ -66,11 +66,11 @@ function ProductPage() {
           </ItemList>
         )}
         {products.length === 0 && <div>상품 정보가 없습니다.</div>}
-        {loading && (
+        {isLoading && (
           <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
         )}
 
-        {!loading && !error && products.length !== 0 && (
+        {!isLoading && !error && products.length !== 0 && (
           <div
             ref={lastProductElementRef}
             style={{ height: '30px', fontSize: '5rem' }}

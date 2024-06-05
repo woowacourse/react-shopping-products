@@ -1,90 +1,80 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchProducts } from '../api/index';
 import {
   INITIAL_DATA_LOAD_COUNT,
   SUBSEQUENT_DATA_LOAD_COUNT,
-  JUMP_NEXT_PAGE_IN_ZERO,
 } from '../constants';
 import { useToast } from './useToast';
 import { CategoryType, SortType } from '../type';
 import { ProductItem } from '../type/ProductItem';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from '../constants/queryKeys';
 
 interface UseProductsResult {
   products: ProductItem[];
-  loading: boolean;
+  isLoading: boolean;
   error: unknown;
-  page: number;
   fetchNextPage: () => void;
   changeCategory: (dropboxOption: CategoryType) => void;
   changeSorting: (dropboxOption: SortType) => void;
 }
 
 export default function useProducts(): UseProductsResult {
-  const [products, setProducts] = useState<ProductItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<unknown>(null);
-  const [page, setPage] = useState(0);
-  const [isLast, setIsLast] = useState(false);
   const [category, setCategory] = useState<CategoryType>('all');
   const [sorting, setSorting] = useState<SortType>('price_name_asc');
   const { createToast } = useToast();
 
-  const resetPage = () => {
-    setProducts([]);
-    setPage(0);
-  };
-
   const changeCategory = (category: CategoryType) => {
     setCategory(category);
-    resetPage();
   };
 
   const changeSorting = (sort: SortType) => {
     setSorting(sort);
-    resetPage();
   };
-  const getProducts = useCallback(async () => {
-    setLoading(true);
-    try {
-      const limit =
-        page === 0 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
-      const data = await fetchProducts(page, limit, category, sorting);
+  const fetchProductsData = async ({
+    pageParam = 0,
+  }: {
+    pageParam?: number;
+  }) => {
+    console.log('a');
+    const limit =
+      pageParam === 0 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
+    const data = await fetchProducts(pageParam, limit, category, sorting);
+    return data;
+  };
 
-      if (data.last) {
-        setIsLast(true);
+  const { data, error, isLoading, fetchNextPage } = useInfiniteQuery({
+    queryKey: [QUERY_KEYS.PRODUCTS, category, sorting],
+    queryFn: fetchProductsData,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      if (allPages.length === 1 && !lastPage.last) {
+        return 5;
       }
+      if (lastPage.last) {
+        return undefined;
+      }
+      return allPages.length;
+    },
+    select: (data) => {
+      return data?.pages.flatMap((page) => page.data) || [];
+    },
+  });
 
-      setProducts((prevProducts) => [...prevProducts, ...data.content]);
-      setError(null);
-    } catch (error) {
+  useEffect(() => {
+    if (error) {
       if (error instanceof Error) {
-        setError(error);
         createToast(
           '⛔️ 상품 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.',
         );
       }
-    } finally {
-      setLoading(false);
     }
-  }, [category, sorting, page, createToast]);
-
-  useEffect(() => {
-    getProducts();
-  }, [page, category, sorting, createToast, getProducts]);
-
-  const fetchNextPage = () => {
-    setPage((prevPage) => {
-      if (isLast) return prevPage;
-      if (page === 0) return prevPage + JUMP_NEXT_PAGE_IN_ZERO;
-      return prevPage + 1;
-    });
-  };
+  }, [error, createToast]);
 
   return {
-    products,
-    loading,
+    products: data || [],
+    isLoading,
     error,
-    page,
     fetchNextPage,
     changeCategory,
     changeSorting,
