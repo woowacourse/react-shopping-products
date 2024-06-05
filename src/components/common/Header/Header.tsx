@@ -1,4 +1,4 @@
-import { LogoIcon, ShoppingCart } from '../../../asset';
+import { LogoIcon, ShoppingCart } from '../../../assets';
 import CartBadge from '../../CartBadge/CartBadge';
 import { HeaderContainer, HeaderIcon } from './Header.style';
 
