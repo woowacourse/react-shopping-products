@@ -14,6 +14,7 @@ import useInfiniteFilteredProducts from "@/hooks/server/useInfiniteFilteredProdu
 import useToast from "@/hooks/useToast";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import useHandleCartItem from "@/hooks/useHandleCartItem";
+import CartModal from "@/pages/cartModal";
 
 export interface GetProductsProps {
   category: Category;
@@ -75,6 +76,7 @@ const ProductListPage = () => {
             <SelectBox useSelector={useCategorySelect} optionsContents={Object.keys(CATEGORY)} />
             <SelectBox useSelector={useSortSelect} optionsContents={Object.keys(SORT)} />
           </S.SelectBoxWrapper>
+          <CartModal />
         </S.ItemInfoWrapper>
         {!isLoading && <ItemCardList products={products.pages} />}
         {hasNextPage && (

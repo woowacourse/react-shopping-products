@@ -16,6 +16,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
+    "rian-modal-component": "^0.0.12",
+    "rian-modal-components": "^0.0.21",
     "styled-components": "^6.1.11"
   },
   "devDependencies": {

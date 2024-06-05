@@ -3,6 +3,7 @@ import { css } from "styled-components";
 const COLOR = {
   grey1: "#EAEAEA", //버튼
   grey2: "#0000001A", //selectBox border
+  grey3: "#333333",
   white: "#ffffff",
   black: "#000000",
 };
