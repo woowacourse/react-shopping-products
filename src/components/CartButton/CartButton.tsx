@@ -1,7 +1,8 @@
-import Button from '../common/Button/Button';
-import { AddCart, MinusCart } from '../../asset';
+import Button from '@/components/common/Button/Button';
+import { AddCart, MinusCart } from '@/assets/index';
 import { ButtonImg } from './CartButton.style';
-import useCartItem from '../../hooks/useCartItemHandler';
+import useCartItem from '@/hooks/useCartItemHandler';
+import QuantityPicker from '@/components/QuantityPicker/QuantityPicker';
 
 interface CartButtonProps {
   productId: number;
@@ -9,10 +10,24 @@ interface CartButtonProps {
 }
 
 const CartButton: React.FC<CartButtonProps> = ({ productId, initIsInCart }) => {
-  const { isInCart, handleAddCartItem, handleRemoveCartItem } = useCartItem({
+  const {
+    isInCart,
+    handleAddCartItem,
+    handlePatchCartItem,
+    handleRemoveCartItem,
+  } = useCartItem({
     productId,
     initIsInCart,
   });
+
+  if (isInCart) {
+    return (
+      <QuantityPicker
+        handlePatchCartItem={handlePatchCartItem}
+        handleRemoveCartItem={handleRemoveCartItem}
+      />
+    );
+  }
 
   return (
     <Button
