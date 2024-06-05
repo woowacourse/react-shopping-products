@@ -65,7 +65,6 @@ function Dropdown<T extends string>({
 
   const handleSelect = (option: T) => {
     setSelectedLabel(option);
-    setIsOpen(false);
 
     handleChange(option);
   };
