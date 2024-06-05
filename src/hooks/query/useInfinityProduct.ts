@@ -1,5 +1,7 @@
 import { Category, SortType } from '@pages/ProductPage/Product.types';
 
+import ERROR_MESSAGE from '@constants/errorMessage';
+import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { fetchPaginatedProducts } from '@apis/ProductFetchers';
 import { useInfiniteQuery } from 'react-query';
@@ -16,14 +18,20 @@ export default function useInfinityProducts({
 }: usePaginatedProductsProps) {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.products, category, sortType],
-    queryFn: ({ pageParam = { page: 0, size: 20, category, sortType } }) => {
-      return fetchPaginatedProducts(pageParam);
+    queryFn: async ({
+      pageParam = { page: 0, size: 20, category, sortType },
+    }) => {
+      return fetchPaginatedProducts(pageParam).catch(error => {
+        if (!(error instanceof HTTPError))
+          throw new Error(ERROR_MESSAGE.clientNetwork);
+        if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
+      });
     },
 
     getNextPageParam: (lastPage, allPages) => {
       if (allPages.length === 0)
         return { page: 0, size: 20, category, sortType };
-      if (lastPage.last) return;
+      if (lastPage === undefined) return;
       return { page: allPages.length + 4, size: 4, category, sortType };
     },
     staleTime: 5 * 60 * 1000,

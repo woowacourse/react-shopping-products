@@ -1,3 +1,5 @@
+import ERROR_MESSAGE from '@constants/errorMessage';
+import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import ShoppingCartFetcher from '@apis/ShoppingCartFetcher';
 import { useCallback } from 'react';
@@ -8,13 +10,15 @@ interface Props {
 }
 
 export default function useCartItems({ errorHandler }: Props) {
-  const {
-    data: cartItems,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: cartItems, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.cartItems],
-    queryFn: ShoppingCartFetcher.getCartItems,
+    queryFn: async () => {
+      return ShoppingCartFetcher.getCartItems().catch(error => {
+        if (!(error instanceof HTTPError))
+          throw new Error(ERROR_MESSAGE.clientNetwork);
+        if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
+      });
+    },
     onError: errorHandler,
   });
 
@@ -25,5 +29,5 @@ export default function useCartItems({ errorHandler }: Props) {
     [cartItems]
   );
 
-  return { cartItems, getCartItemByProductId, isLoading, error };
+  return { cartItems, getCartItemByProductId, isLoading };
 }

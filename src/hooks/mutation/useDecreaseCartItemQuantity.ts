@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from 'react-query';
 
 import { CartItem } from '@appTypes/product';
+import ERROR_MESSAGE from '@constants/errorMessage';
+import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import ShoppingCartFetcher from '@apis/ShoppingCartFetcher';
 
@@ -11,20 +13,26 @@ interface Props {
 export default function useDecreaseCartItemQuantity({ errorHandler }: Props) {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (cartItemId: number) => {
-      const cartItems = queryClient.getQueryData<CartItem[]>(
-        QUERY_KEYS.cartItems
-      );
-      const targetCartItems = cartItems?.find(item => item.id === cartItemId);
-      if (!targetCartItems) throw new Error('존재하지 않는 아이디입니다.');
+  const mutationFn = async (cartItemId: number) => {
+    const cartItems = queryClient.getQueryData<CartItem[]>(
+      QUERY_KEYS.cartItems
+    );
+    const targetCartItems = cartItems?.find(item => item.id === cartItemId);
+    if (!targetCartItems) throw new Error(ERROR_MESSAGE.missingCartItem);
 
-      return ShoppingCartFetcher.updateCartItemQuantity(
-        cartItemId,
-        Math.max(targetCartItems.quantity - 1, 1)
-      );
-    },
+    return ShoppingCartFetcher.updateCartItemQuantity(
+      cartItemId,
+      Math.max(targetCartItems.quantity - 1, 1)
+    ).catch(error => {
+      if (!(error instanceof HTTPError))
+        throw new Error(ERROR_MESSAGE.clientNetwork);
+      if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
+      if (400 <= error.statusCode)
+        throw new Error(ERROR_MESSAGE.missingCartItem);
+    });
+  };
 
+  return useMutation(mutationFn, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
     },

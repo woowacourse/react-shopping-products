@@ -42,7 +42,9 @@ const ProductPage = () => {
   });
 
   const products = useMemo(() => {
-    return productPage?.pages.flatMap(response => response.content) || [];
+    return (
+      productPage?.pages.flatMap(response => response?.content || []) || []
+    );
   }, [productPage]);
   const { cartItems, getCartItemByProductId } = useCartItems({ errorHandler });
 
