@@ -12,19 +12,17 @@ interface CartActionButtonProps {
 
 const CartActionButton = ({ productId }: CartActionButtonProps) => {
   const { cartListMap } = useTargetContext(CartListContext);
+
   const cartItem = cartListMap?.get(productId);
-  //장바구니
-  // const { refreshCartItemIds, cartItemIds } = useTargetContext(CartItemsContext);
-  // const { addCartItem, error: cartActionError } = useCartAction({ refreshCartItemIds });
+
   const className = `${style.cartActionButton} ${cartItem ? style.quantity : style.add} `;
-  const addCartItem = (productId: number) => {};
 
   return (
     <div className={className}>
       {cartItem ? (
         <QuantityControl cartItemId={cartItem.id} quantity={cartItem.quantity} />
       ) : (
-        <CartAddButton onClick={() => addCartItem(productId)} />
+        <CartAddButton productId={productId} />
       )}
     </div>
   );
