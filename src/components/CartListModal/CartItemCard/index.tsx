@@ -1,5 +1,6 @@
 import { CartItem } from '@appTypes/index';
-import { QuantityControl } from '@components/index';
+import { CartActionErrorModal, QuantityControl } from '@components/index';
+import { useDeleteCartItem } from '@hooks/index';
 import { getSkeletonClassName } from '@utils/index';
 
 import style from './style.module.css';
@@ -9,6 +10,12 @@ interface CartItemCardProps {
 }
 
 const CartItemCard = ({ cartItem }: CartItemCardProps) => {
+  const { mutate: deleteMutate, error } = useDeleteCartItem();
+
+  const handleClickDeleteButton = () => {
+    deleteMutate({ cartItemId: cartItem.id });
+  };
+
   return (
     <li className={style.cartItemCard}>
       <img className={style.img} src={cartItem.product.imageUrl} />
@@ -18,9 +25,10 @@ const CartItemCard = ({ cartItem }: CartItemCardProps) => {
         <p className={style.price}>{cartItem.product.price.toLocaleString()}</p>
         <QuantityControl cartItemId={cartItem.id} quantity={cartItem.quantity} />
       </div>
-      <button className={style.deleteButton}>
+      <button className={style.deleteButton} onClick={handleClickDeleteButton}>
         <span className="label">삭제</span>
       </button>
+      <CartActionErrorModal error={error} />
     </li>
   );
 };
