@@ -1,14 +1,14 @@
 # 기능 구현 타임라인
 
-## step 1 - useProducts react query로 마이그레이션
+## step 1 - useProducts tanstack query로 마이그레이션
 
 ### 핵심 기능
 
-> useProducts 내 상품 목록을 불러오는 로직을 react query로 마이그레이션 한다.
+> useProducts 내 상품 목록을 불러오는 로직을 tanstack query로 마이그레이션 한다.
 
 ### 세부 기능 구현 목록
 
-- [v] react query 초기 세팅(queryClient 내 전역 설정)
+- [v] tanstack query 초기 세팅(queryClient 내 전역 설정)
 - [v] useProducts 내 useFetch를 useSuspenseQuery로 변경
   - [v] 초기 상품 목록을 잘 불러오는지 확인
   - [v] 상품 목록을 가져오기 전 fallback ui를 잘 보여주는지 확인
