@@ -88,6 +88,9 @@ export const resetCSS = css`
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
   article,
   aside,
