@@ -1,9 +1,10 @@
 import { forwardRef, useContext } from "react";
 import * as PI from "./ProductItem.style";
-import { CartControlButton } from "@components/Button";
 import { deleteProductInCart, postProductInCart } from "@api/index";
 import { useError } from "@hooks/index";
 import { CartItemsContext } from "@context/CartItemsContext";
+import CountControlButtonBundle from "@components/CountControlButtonBundle/CountControlButtonBundle";
+import AddCartButton from "@components/Button/AddCartButton";
 
 interface ProductProps {
   product: Product;
@@ -51,7 +52,17 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
             <PI.ProductName>{product.name}</PI.ProductName>
             <span>{product.price.toLocaleString("ko-kr")}원</span>
           </PI.ProductContent>
-          <CartControlButton onClick={handleIsInCart} isInCart={isInCart} />
+          <PI.CartButton>
+            {isInCart ? (
+              <CountControlButtonBundle
+                amount={1}
+                handleDecrementAmount={() => {}}
+                handleIncrementAmount={() => {}}
+              />
+            ) : (
+              <AddCartButton onClick={handleIsInCart} />
+            )}
+          </PI.CartButton>
         </PI.ProductGroup>
       </PI.ProductItemStyle>
     );

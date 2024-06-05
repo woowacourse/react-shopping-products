@@ -8,13 +8,10 @@ export const Button = styled.button`
 
 export const CartControlButtonStyle = styled(Button)`
   display: flex;
-  position: absolute;
-  right: 8px;
   align-items: center;
   border-radius: 4px;
   padding: 4px 8px;
   gap: 1px;
-  bottom: 15px;
   font-weight: 600;
   font-size: 12px;
 

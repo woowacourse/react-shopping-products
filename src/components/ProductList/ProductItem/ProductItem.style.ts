@@ -40,3 +40,9 @@ export const ProductName = styled.div`
   font-weight: 700;
   font-size: 14px;
 `;
+
+export const CartButton = styled.div`
+  position: absolute;
+  right: 8px;
+  bottom: 15px;
+`;
