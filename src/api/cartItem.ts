@@ -34,6 +34,26 @@ export const addCartItem = async (productId: number) => {
   );
 };
 
+export const patchCartItem = async ({
+  cartItemId,
+  quantity,
+}: {
+  cartItemId: number;
+  quantity: number;
+}) => {
+  await fetchWithErrorHandling<void>(
+    () =>
+      fetchWithAuth(ENDPOINT.cartItem.patchItem(cartItemId), {
+        method: 'PATCH',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ quantity }),
+      }),
+    '상품 수량 변경에 실패했습니다. 다시 시도해주세요.',
+  );
+};
+
 export const deleteCartItem = async (cartItemId: number): Promise<void> => {
   await fetchWithErrorHandling<void>(
     () =>
