@@ -13,9 +13,16 @@ const CartQuantity = () => {
   const quantityClassName = `${cartListLength > MAX_QUANTITY ? style.over : ''}`;
 
   const getBadgeNumber = () => (cartListLength > MAX_QUANTITY ? MAX_QUANTITY : cartListLength);
-  if (!isSuccess) return <></>;
 
-  return <span className={quantityClassName}>{getBadgeNumber()}</span>;
+  if (!isSuccess || !cartListLength) {
+    return;
+  }
+
+  return (
+    <div className={style.quantityWrapper}>
+      <span className={quantityClassName}>{getBadgeNumber()}</span>
+    </div>
+  );
 };
 
 export default CartQuantity;

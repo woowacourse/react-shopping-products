@@ -18,11 +18,7 @@ const CartBadgeButton = () => {
     <>
       <button type="button" className={style.button} onClick={handleClickButton}>
         <img src={CartIcon} alt="장바구니 아이콘(장바구니 목록 열기)" />
-        <div className={style.quantityWrapper}>
-          <Suspense fallback={<span>···</span>}>
-            <CartQuantity />
-          </Suspense>
-        </div>
+        <CartQuantity />
       </button>
       <CartListModal openModal={openModal} setOpenModal={setOpenModal} rootEl={rootEl} />
     </>
