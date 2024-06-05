@@ -1,0 +1,5 @@
+.over::after {
+  vertical-align: super;
+  content: '\207A';
+  font-size: 0.8em;
+}
