@@ -1,8 +1,8 @@
 import { FETCH_SIZE } from '@/constants/productList';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { getProductList } from '@/api/product';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 const useProductListQuery = () => {
   const [page, setPage] = useState(0);
@@ -10,7 +10,7 @@ const useProductListQuery = () => {
   const [category, setCategory] = useState('');
 
   const { data, isSuccess, isLoading, error, fetchNextPage, hasNextPage } =
-    useSuspenseInfiniteQuery({
+    useInfiniteQuery({
       queryKey: [
         QUERY_KEYS.PRODUCTS,
         { size: FETCH_SIZE.firstPageItemCount, category, order },
@@ -23,13 +23,13 @@ const useProductListQuery = () => {
         return getProductList({ page: pageParam, size, category, order });
       },
       initialPageParam: 0,
-      getNextPageParam: (lastPage, allPages) => {
+      getNextPageParam: (lastPage, allPages, lastPageParam) => {
         if (lastPage.last) return undefined;
 
-        if (allPages.length === 1)
+        if (lastPageParam === 0)
           return FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount;
 
-        return allPages.length + 1;
+        return lastPageParam + 1;
       },
     });
 
