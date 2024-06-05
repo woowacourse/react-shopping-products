@@ -1,7 +1,14 @@
 import { http, HttpResponse } from 'msw';
 import products from './products.json';
+import cartItems from './cartItems.json';
 import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
 import ENDPOINT from '../constant/endpoint';
+import { CartItemType } from '../types';
+
+interface CartItemsPostBody {
+  productId: number;
+  quantity: number;
+}
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -30,5 +37,45 @@ export const handlers = [
     const last = !products.content[endIndex + 1];
 
     return HttpResponse.json({ last, content: [...formattedProducts] });
+  }),
+
+  http.get(`${API_URL}${ENDPOINT.cartItems}`, ({ request }) => {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get('page') || '0');
+    const size = Number(url.searchParams.get('size')) ?? FIRST_FETCH_SIZE;
+
+    const startIndex =
+      page === FIRST_FETCH_PAGE ? page : AFTER_FETCH_SIZE * (page - 5) + FIRST_FETCH_SIZE;
+    const endIndex = startIndex + size;
+
+    const formattedCartItems = cartItems.content.slice(startIndex, endIndex) as CartItemType[];
+
+    return HttpResponse.json({ content: [...formattedCartItems] });
+  }),
+
+  http.post(`${API_URL}${ENDPOINT.cartItems}`, async ({ request }) => {
+    const body = (await request.json()) as CartItemsPostBody;
+    const productId = Number(body.productId);
+    const quantity = Number(body.quantity);
+
+    const newCartItemId = 100;
+    const product = products.content.find((product) => product.id === productId);
+
+    if (!product) return new Response(null, { status: 404 });
+
+    cartItems.content.push({ id: newCartItemId, quantity, product });
+    return new Response(null, { status: 201 });
+  }),
+
+  http.delete(`${API_URL}${ENDPOINT.cartItems}/:cartId`, ({ params }) => {
+    const { cartId } = params;
+
+    const isExistItem = cartItems.content.find((cartItem) => cartItem.id === Number(cartId));
+
+    if (isExistItem) {
+      return new Response(null, { status: 201 });
+    } else {
+      return new Response(null, { status: 404 });
+    }
   }),
 ];
