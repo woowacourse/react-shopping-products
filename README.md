@@ -71,3 +71,9 @@
 
 1. [x] 모달창 UI
 2. [x] 빼기버튼 삭제 및 수량 조절 버튼 추가
+3. [ ] 테스트 코드 ReactQuery로 마이그레이션
+4. [ ] 프로덕션 코드 ReactQuery로 마이그레이션
+5. [ ] 상품 수량에 대한 테스트
+6. [ ] 상품 삭제에 대한 테스트
+7. [ ] 상품 수량에 대한 useProductQuantity훅
+8. [ ] 상품 사제에 대한 useProductDelete훅
