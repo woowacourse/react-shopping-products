@@ -16,7 +16,7 @@ function ProductCard({ product, cartItem }: ProductCardProps) {
       <div className={style.contents}>
         <p className="product-name">{product.name}</p>
         <p className="text">{product.price.toLocaleString()}원</p>
-        <CartActionButton cartItem={cartItem!} productId={product.id} />
+        <CartActionButton cartItem={cartItem} productId={product.id} />
       </div>
     </li>
   );

@@ -13,17 +13,11 @@ interface ProductListProps {
 }
 
 function ProductList({ filtering }: ProductListProps) {
-  const productListRef = useRef<HTMLElement | null>(null);
+  const productListRef = useRef<HTMLDivElement | null>(null);
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const { products, isLoading, fetchNextPage } = useLoadProducts(filtering);
   const { cartItems } = useLoadCartItems();
-
-  useEffect(() => {
-    if (products.length <= 20) {
-      productListRef.current?.scrollTo({ top: 0 });
-    }
-  }, [productListRef, products]);
 
   const getCartItem = (productId: number) => {
     const cartItem = cartItems?.find((item) => item.product.id === productId);
@@ -33,6 +27,12 @@ function ProductList({ filtering }: ProductListProps) {
   const getNextPage = async () => {
     await fetchNextPage();
   };
+
+  useEffect(() => {
+    if (productListRef.current) {
+      productListRef.current.scrollTo({ top: 0 });
+    }
+  }, [filtering]);
 
   return (
     <IntersectionObserverArea callback={getNextPage} targetRef={targetRef}>

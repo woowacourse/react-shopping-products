@@ -3,6 +3,7 @@ const QUERY_KEYS = {
   getCartItems: 'getCartItems',
   postCartItem: 'postCartItems',
   deleteCartItem: 'deleteCartItems',
+  patchCartItemQuantity: 'patchCartItemQuantity',
 } as const;
 
 export default QUERY_KEYS;

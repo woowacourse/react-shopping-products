@@ -5,11 +5,13 @@ import { CartItem } from '@appTypes/index';
 import { CartActionError } from '@components/Fallbacks';
 import useAddCartItem from '@queries/cart/useAddCartItem';
 import useDeleteCartItem from '@queries/cart/useDeleteCartItem';
+import usePatchCartItemQuantity from '@queries/cart/usePatchCartItemQuantity';
+import Stepper from '@components/Stepper';
 
 type ButtonType = 'add' | 'delete';
 
 interface CartActionButtonProps {
-  cartItem: CartItem;
+  cartItem: CartItem | undefined;
   productId: number;
 }
 
@@ -41,20 +43,39 @@ function CartActionButton({ cartItem, productId }: CartActionButtonProps) {
 
   const { addCartItem, isPending: addLoading, isError: addError } = useAddCartItem(productId);
   const { deleteCartItem, isPending: deleteLoading, isError: deleteError } = useDeleteCartItem(cartItem);
-
-  const onAction = () => {
-    isInCart ? deleteCartItem() : addCartItem();
-  };
+  const { changeQuantity } = usePatchCartItemQuantity(cartItem?.id ?? 0);
 
   const isPending = addLoading || deleteLoading;
   const isError = addError || deleteError;
 
+  const onDecrement = () => {
+    if (!cartItem) return;
+    if (cartItem.quantity <= 1) {
+      deleteCartItem();
+      return;
+    }
+
+    const newQuantity = cartItem.quantity - 1;
+    changeQuantity({ cartItemId: cartItem.id, quantity: newQuantity });
+  };
+  const onIncrement = () => {
+    if (!cartItem) return;
+    const newQuantity = cartItem.quantity + 1;
+    changeQuantity({ cartItemId: cartItem.id, quantity: newQuantity });
+  };
+
   return (
     <>
-      <button onClick={onAction} className={className} disabled={isPending}>
-        <img src={src} alt={alt} />
-        <span className="button__text">{text}</span>
-      </button>
+      {cartItem ? (
+        <div className={style.stepperPosition}>
+          <Stepper value={cartItem.quantity} handleDecrement={onDecrement} handleIncrement={onIncrement} />
+        </div>
+      ) : (
+        <button onClick={() => addCartItem()} className={className} disabled={isPending}>
+          <img src={src} alt={alt} />
+          <span className="button__text">{text}</span>
+        </button>
+      )}
       <CartActionError isError={isError} />
     </>
   );
