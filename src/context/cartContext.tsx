@@ -1,9 +1,8 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from "react";
-import { getCartCounts } from "../api/cart";
+import { createContext, useContext, ReactNode, useState } from "react";
 
 interface CartContextType {
   quantity: number;
-  fetchCartCounts: () => Promise<void>;
+  setQuantity: (id: number) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -19,20 +18,5 @@ export const useCart = () => {
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [quantity, setQuantity] = useState<number>(0);
 
-  const fetchCartCounts = async () => {
-    try {
-      const count = await getCartCounts();
-      setQuantity(count);
-    } catch (error) {
-      console.error("Failed to fetch cart counts", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCartCounts();
-  }, []);
-
-  return (
-    <CartContext.Provider value={{ quantity, fetchCartCounts }}>{children}</CartContext.Provider>
-  );
+  return <CartContext.Provider value={{ quantity, setQuantity }}>{children}</CartContext.Provider>;
 };
