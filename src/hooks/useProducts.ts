@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PRODUCTS_ENDPOINT } from "../api/endpoints";
 import { PAGE } from "../constants";
 import { useError } from "../context/errorContext";
@@ -27,7 +27,7 @@ export default function useProducts(): UseProductsResult {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const { setErrorStatus } = useError();
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(PAGE.FIRST_PAGE);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<string>("price,asc");
   const [category, setCategory] = useState<string>("전체");
@@ -49,7 +49,7 @@ export default function useProducts(): UseProductsResult {
       const data = await response.json();
 
       setProducts((prevProducts) =>
-        page === 1 ? data.content : [...prevProducts, ...data.content]
+        page === PAGE.FIRST_PAGE ? data.content : [...prevProducts, ...data.content]
       );
 
       setIsLastPage(data.last);
@@ -64,13 +64,17 @@ export default function useProducts(): UseProductsResult {
     fetchProducts();
   }, [setErrorStatus, page, sortOption, category]);
 
-  const fetchNextPage = () => {
-    if (!isLastPage && !isLoading) setPage((prevPage) => prevPage + 1);
-  };
+  const fetchNextPage = useCallback(() => {
+    if (!isLastPage && !isLoading) {
+      page == PAGE.FIRST_PAGE
+        ? setPage(PAGE.SECOND_PAGE_STD)
+        : setPage((prevPage) => prevPage + PAGE.NEXT_PAGE_STEP);
+    }
+  }, [isLastPage, isLoading]);
 
   const resetPage = () => {
     setProducts([]);
-    setPage(1);
+    setPage(PAGE.FIRST_PAGE);
     setIsLastPage(false);
   };
 

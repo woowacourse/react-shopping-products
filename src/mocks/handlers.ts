@@ -7,16 +7,26 @@ export const handlers = [
   http.get(PRODUCTS_ENDPOINT, ({ request }) => {
     const url = new URL(request.url);
 
-    const page = Number(url.searchParams.get("page") || "1");
-    const limit = page === PAGE.FIRST_PAGE ? PAGE.FIRST_PAGE_LIMIT : PAGE.OTHER_PAGE_LIMIT;
+    const page = Number(url.searchParams.get("page") || "0");
+    const size = page === PAGE.FIRST_PAGE ? PAGE.FIRST_PAGE_LIMIT : PAGE.OTHER_PAGE_LIMIT;
+    const category = url.searchParams.get("category");
+
+    let filteredProducts = products.content;
+
+    if (category && category !== "전체") {
+      filteredProducts = filteredProducts.filter((product) => product.category === category);
+    }
+
     const start =
       page === PAGE.FIRST_PAGE
         ? PAGE.FIRST_PAGE_START
-        : (page - PAGE.OTHER_PAGE_START) * PAGE.OTHER_PAGE_LIMIT + PAGE.FIRST_PAGE_LIMIT;
-    const end = start + limit;
+        : PAGE.FIRST_PAGE_LIMIT + (page - 2) * PAGE.OTHER_PAGE_LIMIT;
+    const end = start + size;
+    const paginatedProducts = filteredProducts.slice(start, end);
 
-    const paginatedProducts = products.content.slice(start, end);
-
-    return HttpResponse.json({ content: paginatedProducts });
+    return HttpResponse.json({
+      content: paginatedProducts,
+      last: end >= filteredProducts.length,
+    });
   }),
 ];
