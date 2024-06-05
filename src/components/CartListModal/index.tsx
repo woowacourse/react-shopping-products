@@ -1,6 +1,4 @@
-import { CartItem } from '@appTypes/index';
 import { useCartList } from '@hooks/index';
-import CartItems from '@mocks/data/cartItems.json';
 import { BottomModal } from 'badahertz52-react-modules-components';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -28,7 +26,7 @@ const CartListModal = ({ openModal, setOpenModal, rootEl }: CartListModalProps) 
       ) : (
         <>
           <CartList cartList={cartList} />
-          <TotalAmount cartItems={CartItems as CartItem[]} />
+          <TotalAmount cartList={cartList} />
         </>
       )}
 
