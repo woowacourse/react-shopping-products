@@ -1,9 +1,9 @@
-import { PAGE } from "../constants/page";
+import { PAGE } from "../mocks/handlers";
 import getErrorMessage from "../utils/errorMessage";
 import { PRODUCTS_ENDPOINT } from "./endpoints";
 
 export const fetchProducts = async (fetchParams: fetchParams) => {
-  const size = fetchParams.page === PAGE.FIRST_PAGE ? PAGE.FIRST_PAGE_LIMIT : PAGE.OTHER_PAGE_LIMIT;
+  const size = fetchParams.page === PAGE.FIRST_PAGE ? PAGE.DEFAULT_SIZE : PAGE.ADDITIONAL_SIZE;
   const categoryQuery = fetchParams.category === "전체" ? "" : `category=${fetchParams.category}`;
 
   const response = await fetch(
