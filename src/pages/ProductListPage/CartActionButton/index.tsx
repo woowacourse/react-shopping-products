@@ -1,7 +1,7 @@
 import { CartItem } from '@appTypes/index';
 import { QuantityControl } from '@components/index';
 
-import CartActionErrorModal from '../CartActionErrorModal';
+import CartActionErrorModal from '../../../components/Fallbacks/CartActionError';
 import CartAddButton from '../CartAddButton';
 import style from './style.module.css';
 
