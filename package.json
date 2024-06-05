@@ -16,7 +16,8 @@
     "@tanstack/react-query": "^5.40.0",
     "@tanstack/react-query-devtools": "^5.40.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styled-base-modal": "^1.0.5"
   },
   "devDependencies": {
     "@testing-library/react": "^15.0.7",
