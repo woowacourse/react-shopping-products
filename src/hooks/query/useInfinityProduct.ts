@@ -31,7 +31,8 @@ export default function useInfinityProducts({
     getNextPageParam: (lastPage, allPages) => {
       if (allPages.length === 0)
         return { page: 0, size: 20, category, sortType };
-      if (lastPage === undefined) return;
+      // @ts-expect-error: lastPage is not void
+      if (lastPage.last) return;
       return { page: allPages.length + 4, size: 4, category, sortType };
     },
     staleTime: 5 * 60 * 1000,
