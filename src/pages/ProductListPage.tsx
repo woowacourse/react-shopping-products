@@ -10,13 +10,13 @@ import ModalInner from "@components/ModalInner/ModalInner";
 import * as PLP from "./ProductListPage.style";
 
 const ProductListPage = () => {
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <ErrorProvider>
       <CartItemsProvider>
         <PLP.Top>
-          <Header />
+          <Header handleOpenCartModal={() => setOpenModal(true)} />
           <ErrorToast />
         </PLP.Top>
 

@@ -15,11 +15,18 @@ export const LogoImg = styled.img`
   width: 56px;
 `;
 
-export const CartImg = styled.img`
-  width: 32px;
+export const CartButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
   position: absolute;
   right: 24px;
   bottom: 16px;
+`;
+
+export const CartImg = styled.img`
+  width: 32px;
 `;
 
 export const CartCount = styled.div`
@@ -30,8 +37,8 @@ export const CartCount = styled.div`
   font-size: 10px;
   font-weight: 700;
   position: absolute;
-  right: 24px;
-  bottom: 16px;
+  right: 0;
+  bottom: 2px;
 
   display: flex;
   align-items: center;
