@@ -37,6 +37,10 @@ const ProductItem = ({ item }: Props) => {
           <S.ButtonWrapper>
             {isSelected ? (
               <CartOutButton onClick={removeCartItem} />
+              <QuantityBox
+                quantity={quantity}
+                handleQuantity={handleChangeQuantity}
+              />
             ) : (
               <CartInButton onClick={addCartItem} />
             )}
