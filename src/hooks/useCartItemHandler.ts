@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   addCartItem,
@@ -28,22 +26,21 @@ const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
   });
   const [isInCart, setIsInCart] = useState(initIsInCart);
 
-  const handleAddCartItem = async () => {
-    try {
-      setError(false);
-      setLoading(true);
-      setCartListQuantity((prev) => prev + 1);
+  const addToCartMutation = useMutation({
+    mutationFn: (productId: number) => addCartItem(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
       setIsInCart(true);
-      await addCartItem(productId);
-    } catch (error) {
-      if (error instanceof Error) {
-        createToast('⛔️ 상품을 담는데 실패했습니다. 다시 시도해 주세요.');
-        setCartListQuantity((prev) => Math.max(0, prev - 1));
-        setIsInCart(false);
-        setError(true);
-      }
-    } finally {
-      setLoading(false);
+      updateCartListContext();
+    },
+    onError: () => {
+      createToast('⛔️ 상품을 담는데 실패했습니다. 다시 시도해 주세요.');
+    },
+  });
+  const handleAddCartItem = () => {
+    addToCartMutation.mutate(productId);
+  };
     }
   };
 
