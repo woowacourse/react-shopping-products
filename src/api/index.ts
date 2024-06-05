@@ -1,34 +1,11 @@
 import { CartItemType, ProductsResponseType } from '../types';
+import { makeRequest } from './apiRequest';
 import { generateBasicToken } from './auth';
 
-const API_URL = import.meta.env.VITE_API_URL;
 const USER_ID = import.meta.env.VITE_USER_ID;
 const USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;
 
-/**
- * 공통 요청을 처리하는 함수
- * @param {string} endpoint - API endpoint
- * @param {RequestInit} options - fetch options
- * @returns {Response} - fetch response
- */
-async function makeRequest(endpoint: string, options: RequestInit): Promise<Response> {
-  const token = generateBasicToken(USER_ID, USER_PASSWORD);
-
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      ...options.headers,
-      Authorization: token,
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to ${options.method?.toLowerCase()} ${endpoint}`);
-  }
-
-  return response;
-}
+const basicToken = generateBasicToken(USER_ID, USER_PASSWORD);
 
 interface FetchProductsParams {
   category?: string;
@@ -37,10 +14,6 @@ interface FetchProductsParams {
   sort?: string;
 }
 
-/**
- * fetchCartItems - API에서 상품 목록을 fetch합니다.
- * @returns {Promise<ProductsResponseType[]>}
- */
 export async function fetchProducts(
   params: FetchProductsParams = {},
 ): Promise<ProductsResponseType> {
@@ -55,30 +28,34 @@ export async function fetchProducts(
     .join('&');
   const response = await makeRequest(`/products?${queryString}`, {
     method: 'GET',
+    headers: {
+      Authorization: basicToken,
+      'Content-Type': 'application/json',
+    },
   });
   const data = await response.json();
 
   return data;
 }
 
-/**
- * addCartItem - 선택한 상품을 장바구니에 추가합니다.
- * @returns {Promise<void>}
- */
 export async function addCartItem(productId: number): Promise<void> {
   await makeRequest('/cart-items', {
     method: 'POST',
+    headers: {
+      Authorization: basicToken,
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({ productId }),
   });
 }
 
-/**
- * fetchCartItem - API에서 장바구니 목록을 fetch합니다.
- * @returns {Promise<CartItemType[]>}
- */
 export async function fetchCartItem(): Promise<CartItemType[]> {
   const response = await makeRequest('/cart-items?page=0&size=100', {
     method: 'GET',
+    headers: {
+      Authorization: basicToken,
+      'Content-Type': 'application/json',
+    },
   });
 
   const data = await response.json();
@@ -86,12 +63,12 @@ export async function fetchCartItem(): Promise<CartItemType[]> {
   return data.content;
 }
 
-/**
- * deleteCartItem - 선택한 상품을 장바구니에서 삭제합니다.
- * @returns {Promise<void>}
- */
 export async function deleteCartItem(cartItemId: number): Promise<void> {
   await makeRequest(`/cart-items/${cartItemId}`, {
     method: 'DELETE',
+    headers: {
+      Authorization: basicToken,
+      'Content-Type': 'application/json',
+    },
   });
 }
