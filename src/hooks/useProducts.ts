@@ -36,7 +36,6 @@ export default function useProducts(): UseProductsResult {
   }: {
     pageParam?: number;
   }) => {
-    console.log('a');
     const limit =
       pageParam === 0 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
     const data = await fetchProducts(pageParam, limit, category, sorting);
