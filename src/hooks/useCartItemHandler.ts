@@ -1,7 +1,15 @@
 import { useState } from 'react';
 
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  addCartItem,
+  deleteCartItem,
+  getCartList,
+  patchCartItem,
+} from '@/api/cartItem';
 import { useToast } from './useToast';
-import { addCartItem, deleteCartItem } from '@/api/cartItem';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { useState } from 'react';
 import useCartListContext from './useCartListContext';
 
 interface CartButtonProps {
@@ -10,11 +18,15 @@ interface CartButtonProps {
 }
 
 const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
-  const [isInCart, setIsInCart] = useState(initIsInCart);
-  const { cartList, setCartListQuantity } = useCartListContext();
+  const queryClient = useQueryClient();
   const { createToast } = useToast();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const { updateCartListContext } = useCartListContext();
+
+  const { data: cartList } = useQuery({
+    queryKey: [QUERY_KEYS.CART],
+    queryFn: getCartList,
+  });
+  const [isInCart, setIsInCart] = useState(initIsInCart);
 
   const handleAddCartItem = async () => {
     try {

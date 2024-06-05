@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useToast } from './useToast';
 import { getCartList } from '@/api/cartItem';

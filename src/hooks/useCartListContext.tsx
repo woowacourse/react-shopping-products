@@ -7,6 +7,7 @@ const useCartListContext = () => {
 
   const {
     cartList,
+    updateCartListContext,
     cartListQuantity,
     setCartListQuantity,
     fetchCartListQuantity,
@@ -14,6 +15,7 @@ const useCartListContext = () => {
   } = state;
   return {
     cartList,
+    updateCartListContext,
     cartListQuantity,
     setCartListQuantity,
     fetchCartListQuantity,
