@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getProducts } from "@api/index";
+import { useQuery } from "@tanstack/react-query";
 import { useError } from "./index";
 import { RULE } from "@constants/rules";
 
@@ -20,45 +21,30 @@ export default function useProducts({
   page,
   resetPage,
 }: UseProductsProps): UseProductsResult {
-  const [products, setProducts] = useState<Product[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [category, setCategory] = useState<Category>("all");
   const [sort, setSort] = useState<Sort>("asc");
-  const [loading, setLoading] = useState<boolean>(false);
 
   const { showError } = useError();
 
+  const size = page === RULE.initialPage ? RULE.initialSize : RULE.nextSize;
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: () =>
+      getProducts({
+        category: category === "all" ? undefined : category,
+        sort,
+        page,
+        size,
+      }),
+  });
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-
-      try {
-        const size =
-          page === RULE.initialPage ? RULE.initialSize : RULE.nextSize;
-        const responseData = await getProducts({
-          category: category === "all" ? undefined : category,
-          sort,
-          page,
-          size,
-        });
-        setProducts((prevProducts) => [...prevProducts, ...responseData]);
-
-        if (responseData.length < size) {
-          setHasMore(false);
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          showError(error.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (!loading) {
-      fetchProducts();
+    if (error instanceof Error) {
+      showError(error.message);
     }
-  }, [page, category, sort, showError]);
+  }, [showError]);
 
   const handleCategory = (category: Category) => {
     setCategory(category);
@@ -71,14 +57,13 @@ export default function useProducts({
   };
 
   const resetState = () => {
-    setProducts([]);
     resetPage();
     setHasMore(true);
   };
 
   return {
-    products,
-    loading,
+    products: data!,
+    loading: isLoading,
     hasMore,
     handleCategory,
     handleSort,
