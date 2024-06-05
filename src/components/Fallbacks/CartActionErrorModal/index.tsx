@@ -1,33 +1,25 @@
-import useToastModalPosition from '@hooks/useToastModalPosition';
+import { useOpenModal, useToastModalPosition } from '@hooks/index';
 import { ToastModal } from 'badahertz52-react-modules-components';
-import { useLayoutEffect, useState } from 'react';
 
-import CartActionError from '../CartActionError';
-
+import CartActionError from './CartActionError';
 interface CartActionErrorModalProps {
-  error: boolean;
+  error: Error | null;
 }
 
 const CartActionErrorModal = ({ error }: CartActionErrorModalProps) => {
-  const rootEl = document.getElementById('root');
+  const { openModal, setOpenModal, rootEl } = useOpenModal({ isOpenModal: !!error });
 
   const { toastModalPosition } = useToastModalPosition({
     targetEl: document.getElementsByTagName('header')[0],
     placement: 'bottom',
   });
 
-  const [isOpenModal, setIsOpenToastModal] = useState(false);
-
-  useLayoutEffect(() => {
-    setIsOpenToastModal(error);
-  }, [error]);
-
   return (
     <>
       {toastModalPosition && (
         <ToastModal
-          openModal={isOpenModal}
-          setOpenModal={setIsOpenToastModal}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
           position={toastModalPosition}
           modalTargetEl={rootEl}
           toastDuration={3000}
