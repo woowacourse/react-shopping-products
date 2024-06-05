@@ -14,4 +14,4 @@
 ### 3. 데이터 관리
 
 - [ ] tansQuery를 사용해서 fetch된 데이터를 관리한다.
-  - [ ] useInfiniteQuery를 사용해서 무한 스크롤을 구현한다.
+  - [x] useInfiniteQuery를 사용해서 무한 스크롤을 구현한다.
