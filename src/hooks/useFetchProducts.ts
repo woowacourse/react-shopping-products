@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
+import useDeepCompareEffect from './useDeepCompareEffect';
 
 const useFetchProducts = (
   sortings: SortingParam[] = [],
@@ -13,15 +14,14 @@ const useFetchProducts = (
   const [isLast, setIsLast] = useState(false);
   const [page, setPage] = useState(0);
 
-  const size = page === 0 ? 20 : 4;
-  const fetchPage = page === 0 ? page : page + 4;
-
   const fetchNextPage = useCallback(() => {
     if (isLast) return;
-    setPage(page + 1);
-  }, [isLast, page]);
+    setPage((prevPage) => prevPage + 1);
+  }, []);
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
+    const size = page === 0 ? 20 : 4;
+    const fetchPage = page === 0 ? page : page + 4;
     const getProducts = async () => {
       try {
         setIsPending(true);
@@ -47,7 +47,7 @@ const useFetchProducts = (
       }
     };
     getProducts();
-  }, [page, sortings, filter, fetchPage, size]);
+  }, [page, sortings, filter]);
 
   return { products, isError, isPending, isLast, fetchNextPage, page };
 };
