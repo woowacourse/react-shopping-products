@@ -4,7 +4,7 @@ import { CartItem } from '@appTypes/product';
 import ERROR_MESSAGE from '@constants/errorMessage';
 import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
-import ShoppingCartFetcher from '@apis/ShoppingCartFetcher';
+import { updateCartItemQuantity } from '@apis/ShoppingCartFetcher';
 
 interface Props {
   errorHandler: (err: unknown) => void;
@@ -20,7 +20,7 @@ export default function useDecreaseCartItemQuantity({ errorHandler }: Props) {
     const targetCartItems = cartItems?.find(item => item.id === cartItemId);
     if (!targetCartItems) throw new Error(ERROR_MESSAGE.missingCartItem);
 
-    return ShoppingCartFetcher.updateCartItemQuantity(
+    return updateCartItemQuantity(
       cartItemId,
       Math.max(targetCartItems.quantity - 1, 1)
     ).catch(error => {
