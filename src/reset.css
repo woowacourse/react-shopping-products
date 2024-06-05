@@ -128,3 +128,6 @@ table {
 button {
   border: none;
 }
+body {
+  overflow-y: scroll;
+}
