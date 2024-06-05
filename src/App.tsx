@@ -1,9 +1,20 @@
 import ProductListPage from "@pages/ProductListPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 function App() {
   return (
     <>
-      <ProductListPage />
+      <QueryClientProvider client={queryClient}>
+        <ProductListPage />
+      </QueryClientProvider>
     </>
   );
 }

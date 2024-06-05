@@ -7,8 +7,8 @@ import ProductFilterBar from "@components/ProductListPage/ProductFilterBar";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import { IntersectionDetector } from "@components/common/IntersectionDetector";
 
-import { useInfiniteProducts } from "@hooks/useInfiniteProducts";
 import { useErrorToast } from "@contexts/errorToast/useErrorToast";
+import { useInfiniteProducts } from "@src/hooks/query/useInfiniteProducts";
 
 const ProductList = () => {
   const { products, isLoading, error, fetchNextPage, updateCategoryFilter, updatePriceSort } =

@@ -1,7 +1,7 @@
 import { cartClient } from "@apis/clients/cartClient";
 import { API_URL } from "@apis/__constants__/apiUrl";
 import { adjustProductQueryParams } from "@apis/__utils__/adjustProductQueryParams";
-import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
+import { QueryFunction } from "@tanstack/react-query";
 
 export interface Product {
   id: number;
@@ -11,14 +11,36 @@ export interface Product {
   category: string;
 }
 
+export interface ProductsWithNextPage {
+  data: Product[];
+  nextPage: number;
+}
+
+export type ProductQueryParams = {
+  page?: number;
+  category?: string;
+  sort?: string;
+};
+
 export interface ProductResponse {
   content: Product[];
 }
 
-export const getProducts = async (queryParams?: SmartURLSearchParams): Promise<Product[]> => {
-  const adjustedParams = queryParams ? adjustProductQueryParams(queryParams) : undefined;
+export const getProductsQuery: QueryFunction<
+  ProductsWithNextPage,
+  [string, ProductQueryParams],
+  number
+> = async ({ queryKey, pageParam }) => {
+  const [, queryParams] = queryKey;
+
+  const adjustedParams = queryParams
+    ? adjustProductQueryParams({ page: pageParam, ...queryParams })
+    : undefined;
 
   const data = await cartClient.get<ProductResponse>(API_URL.products, adjustedParams);
 
-  return data.content;
+  return {
+    data: data.content,
+    nextPage: pageParam + 1,
+  };
 };

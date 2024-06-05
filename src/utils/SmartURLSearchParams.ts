@@ -1,6 +1,7 @@
 import { isIncludedInList } from "@utils/isIncludedInList";
 
-type SmartURLSearchParamsInit = Record<string, unknown> | URLSearchParams;
+export type QueryParamValue = string | number | boolean;
+type SmartURLSearchParamsInit = Record<string, QueryParamValue> | URLSearchParams;
 /**
  * URLSearchParams에 아래 두 가지 기능이 추가된 클래스
  * 1. 유효하지 않은 값을 가진 param을 자동 필터링
