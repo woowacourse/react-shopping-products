@@ -1,47 +1,58 @@
 import { deleteCartItem, getCartItems, postCartItem } from "@/apis/cartItem";
 import { ERROR_MESSAGES } from "@/constants/messages";
-import useMutation from "@/hooks/useMutation";
-import { CartItemContext, CartItemDispatchContext } from "@/provider/cartItemProvider";
-import { useContext } from "react";
+import QUERY_KEY from "@/constants/queryKey";
+import TIMER from "@/constants/timer";
+import useToast from "@/hooks/useToast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const useHandleCartItem = () => {
-  const cartItems = useContext(CartItemContext);
-  const setCartItems = useContext(CartItemDispatchContext);
+  const queryClient = useQueryClient();
+  const { onAddToast } = useToast();
 
-  const { mutate: getCartItemsMutate } = useMutation<typeof getCartItems>(
-    getCartItems,
-    ERROR_MESSAGES.failGetCartItems
-  );
-  const { mutate: postCartItemMutate } = useMutation<typeof postCartItem>(
-    postCartItem,
-    ERROR_MESSAGES.failPostCartItem
-  );
-  const { mutate: deleteCartItemMutate } = useMutation<typeof deleteCartItem>(
-    deleteCartItem,
-    ERROR_MESSAGES.failDeleteCartItem
-  );
+  const { data: cartItems } = useQuery({
+    queryKey: [QUERY_KEY.getCartItems],
+    queryFn: getCartItems,
+    gcTime: TIMER.hour,
+    staleTime: TIMER.hour,
+  });
 
-  const onAddCartItem = async (id: number) => {
-    await postCartItemMutate({ productId: id, quantity: 1 });
+  const { mutate: postCartItemMutate } = useMutation({
+    mutationKey: [QUERY_KEY.postNewCartItem],
+    mutationFn: postCartItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.getCartItems] });
+    },
+    onError: () => {
+      onAddToast(ERROR_MESSAGES.failPostCartItem);
+    },
+  });
 
-    const fetchedItems = await getCartItemsMutate();
-    if (fetchedItems) setCartItems(fetchedItems);
-  };
-
-  const onDeleteCartItem = async (id: number) => {
-    const targetItem = cartItems.find((cartItem) => cartItem.product.id === id);
-
-    await deleteCartItemMutate({ itemId: targetItem!.id });
-    setCartItems((cartItems) => cartItems.filter((item) => item !== targetItem));
-  };
+  const { mutate: deleteCartItemMutate } = useMutation({
+    mutationKey: [QUERY_KEY.deleteCartItem],
+    mutationFn: deleteCartItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.getCartItems] });
+    },
+    onError: () => {
+      onAddToast(ERROR_MESSAGES.failDeleteCartItem);
+    },
+  });
 
   const isInCart = (id: number) => {
+    if (!cartItems) return false;
     return cartItems.some((item) => item.product.id === id);
   };
 
   const onClickCartItem = (id: number) => {
-    if (isInCart(id)) onDeleteCartItem(id);
-    else onAddCartItem(id);
+    if (!cartItems) return;
+
+    if (isInCart(id)) {
+      const targetItem = cartItems.find((cartItem) => cartItem.product.id === id);
+      deleteCartItemMutate({ itemId: targetItem!.id });
+      return;
+    }
+
+    postCartItemMutate({ productId: id, quantity: 1 });
   };
 
   return { onClickCartItem, isInCart };

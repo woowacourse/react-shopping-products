@@ -1,20 +1,28 @@
+import { getCartItems } from "@/apis/cartItem";
 import Icon from "@/components/_common/Icon";
 import * as S from "@/components/CartBadge/style";
 import { END_POINT } from "@/config/endPoint";
-import { CartItemContext } from "@/provider/cartItemProvider";
-import { useContext } from "react";
+import QUERY_KEY from "@/constants/queryKey";
+import TIMER from "@/constants/timer";
+import { useQuery } from "@tanstack/react-query";
 
 const CartBadge = () => {
-  const cartItems = useContext(CartItemContext);
+  const { data: cartItems } = useQuery({
+    queryKey: [QUERY_KEY.getCartItems],
+    queryFn: getCartItems,
+    gcTime: TIMER.hour,
+    staleTime: TIMER.hour,
+  });
 
   return (
     <S.Container onClick={() => (window.location.href = END_POINT.cartItemPage)}>
       <Icon kind="cart" />
-      {cartItems.length !== 0 && (
-        <S.Badge>
-          <S.BadgeNumber>{cartItems.length}</S.BadgeNumber>
-        </S.Badge>
-      )}
+      {!cartItems ||
+        (cartItems.length !== 0 && (
+          <S.Badge>
+            <S.BadgeNumber>{cartItems.length}</S.BadgeNumber>
+          </S.Badge>
+        ))}
     </S.Container>
   );
 };
