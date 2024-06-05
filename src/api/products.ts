@@ -1,9 +1,13 @@
-import { CartResponse, ProductResponse } from '../types/fetch';
+import {
+  CartResponse,
+  PostCartItemRequestBody,
+  ProductResponse,
+} from '../types/fetch';
 import { SortingParam } from '../types/sort';
 import { generateBasicToken } from '../utils/auth';
 import {
-  ENDPOINTS_PRODUCTS,
   ENDPOINTS_CART,
+  ENDPOINTS_PRODUCTS,
   ENDPOINTS_REMOVE_CART,
 } from './endpoints';
 
@@ -44,7 +48,7 @@ export const postAddItems = async (id: number) => {
     body: JSON.stringify({
       productId: id,
       quantity: 1,
-    }),
+    } satisfies PostCartItemRequestBody),
   });
 
   if (!response.ok) {

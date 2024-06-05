@@ -1,6 +1,6 @@
 import { HttpResponse, StrictRequest, http } from 'msw';
 import { ENDPOINTS_CART, ENDPOINTS_PRODUCTS } from '../api/endpoints';
-import { ProductResponse } from '../types/fetch';
+import { PostCartItemRequestBody, ProductResponse } from '../types/fetch';
 import productSorter from '../utils/productSorter';
 import { mockCartResponse } from './cart';
 import { mockProductsResponse } from './products';
@@ -51,11 +51,17 @@ export const handlers = [
   // -> mock data에서 id값이 같은 것 찾기
   http.post(
     `${ENDPOINTS_CART}`,
-    async ({ request }: { request: StrictRequest<number> }) => {
-      const id = await request.json();
+    async ({
+      request,
+    }: {
+      request: StrictRequest<PostCartItemRequestBody>;
+    }) => {
+      const product = await request.json();
+      const id = product.productId;
       const findProduct = mockProductsResponse.content.find(
         (product) => product.id === id,
       );
+
       if (findProduct) {
         const data = {
           id: Math.random() * 1000,

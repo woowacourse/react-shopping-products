@@ -5,6 +5,10 @@ export interface Product {
   imageUrl: string;
   category: string;
 }
+export interface PostCartItemRequestBody {
+  productId: number;
+  quantity: number;
+}
 
 export interface ProductSortOption {
   sorted: boolean;
@@ -37,7 +41,6 @@ interface ProductResponseWithoutContent {
 export interface ProductResponse extends ProductResponseWithoutContent {
   content: Product[];
 }
-
 
 export interface Carts {
   id: number;

@@ -5,11 +5,9 @@ const useFetchAddCart = () => {
   const [cartIdSet, setCartIdSet] = useState<Set<number>>(new Set());
 
   const addProductToCart = useCallback(
-    (id: number) => {
+    async (id: number) => {
       postAddItems(id);
-      const newCartIdSet = new Set(cartIdSet);
-      newCartIdSet.add(id);
-      setCartIdSet(newCartIdSet);
+      setCartIdSet(new Set(cartIdSet).add(id));
     },
     [cartIdSet],
   );
