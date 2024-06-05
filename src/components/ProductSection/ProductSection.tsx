@@ -21,27 +21,24 @@ export const ProductSection = () => {
 
   return (
     <StyledProductSection>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        !errorStatus && (
-          <>
-            <ProductHeader
-              resetPage={resetPage}
-              setCategory={setCategory}
-              setSortOption={setSortOption}
-              selectedCategory={selectedCategory}
-              selectedSort={selectedSort}
-            />
-            <ProductList
-              products={products}
-              isLoading={isLoading}
-              isLastPage={isLastPage}
-              fetchNextPage={fetchNextPage}
-            />
-          </>
-        )
+      {!errorStatus && (
+        <>
+          <ProductHeader
+            resetPage={resetPage}
+            setCategory={setCategory}
+            setSortOption={setSortOption}
+            selectedCategory={selectedCategory}
+            selectedSort={selectedSort}
+          />
+          <ProductList
+            products={products}
+            isLoading={isLoading}
+            isLastPage={isLastPage}
+            fetchNextPage={fetchNextPage}
+          />
+        </>
       )}
+      {isLoading && <LoadingSpinner />}
     </StyledProductSection>
   );
 };
