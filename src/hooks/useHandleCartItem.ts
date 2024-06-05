@@ -68,7 +68,11 @@ const useHandleCartItem = () => {
     patchCartItemMutate({ productId: targetItem!.id, quantity: updatedQuantity });
   };
 
-  const isInCart = (id: number) => cartItems!.some((item) => item.product.id === id);
+  const isInCart = (id: number) => {
+    if (!cartItems) return false;
+
+    return cartItems.some((item) => item.product.id === id);
+  };
 
   return { getCartItemQuantity, addCartItem, updateCartItemQuantity, isInCart };
 };
