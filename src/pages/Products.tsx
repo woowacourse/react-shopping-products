@@ -1,18 +1,21 @@
 import { CATEGORY_LIST, SORT_ORDER } from '@/constants/productList';
 import { FlexColumn, FlexSpaceBetween, WhiteSpace } from '@/style/common.style';
+import { useEffect, useState } from 'react';
 
 import BaseDropDown from '@/components/dropdown/BaseDropDown';
 import CartCountIcon from '@/components/CartCountIcon';
+import CartModal from '@/components/cart/CartModal';
 import Header from '@/components/Header';
 import ProductList from '@/components/ProductList';
 import Toast from '@/components/Toast';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
-import { useEffect } from 'react';
 import useErrorContext from '@/hooks/useErrorContext';
 import useProductListQuery from '@/hooks/useProductListQuery';
 
 const Products = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const {
     page,
     products,
@@ -42,7 +45,7 @@ const Products = () => {
         <Header>
           <S.HeaderContent>
             SHOP
-            <CartCountIcon />
+            <CartCountIcon onClick={() => setIsOpen((prev) => !prev)} />
           </S.HeaderContent>
         </Header>
         <S.Body>
@@ -71,6 +74,7 @@ const Products = () => {
         </S.Body>
         <Toast />
       </S.Container>
+      {isOpen && <CartModal isOpen={isOpen} onClose={() => setIsOpen(false)} />}
     </>
   );
 };
