@@ -43,9 +43,9 @@ const ProductListPage = () => {
 
         {products.length > 0 ? (
           <S.ProductList>
-            {products.map((product) => (
+            {products.map((product, index) => (
               <ProductItem
-                key={product.id}
+                key={`${product.id}-${index}`}
                 product={product}
                 isAdded={cartItems.some((item) => item.product.id === product.id)}
                 onAddCartItem={handleAddCartItem}

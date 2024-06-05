@@ -29,5 +29,7 @@ export const Layout = styled.div<{ $isOpen: boolean }>`
   color: white;
   font-size: 14px;
 
+  transition: visibility 0.5s;
   animation: ${({ $isOpen }) => ($isOpen ? fadeIn : fadeOut)} 0.5s none;
+  visibility: ${({ $isOpen }) => ($isOpen ? 'visible' : 'hidden')};
 `;
