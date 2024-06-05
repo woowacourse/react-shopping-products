@@ -1,4 +1,4 @@
-import { deleteCartItem, getCartItems, postCartItem } from "@/apis/cartItem";
+import { deleteCartItem, getCartItems, patchCartItem, postCartItem } from "@/apis/cartItem";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import QUERY_KEY from "@/constants/queryKey";
 import TIMER from "@/constants/timer";
@@ -38,24 +38,39 @@ const useHandleCartItem = () => {
     },
   });
 
-  const isInCart = (id: number) => {
-    if (!cartItems) return false;
-    return cartItems.some((item) => item.product.id === id);
-  };
+  const { mutate: patchCartItemMutate } = useMutation({
+    mutationKey: [QUERY_KEY.patchCartItem],
+    mutationFn: patchCartItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.getCartItems] });
+    },
+    onError: () => {
+      onAddToast(ERROR_MESSAGES.failPatchCartItem);
+    },
+  });
 
-  const onClickCartItem = (id: number) => {
-    if (!cartItems) return;
+  const getCartItemQuantity = (id: number): number =>
+    cartItems!.find((cartItem) => cartItem.product.id === id)!.quantity;
 
-    if (isInCart(id)) {
-      const targetItem = cartItems.find((cartItem) => cartItem.product.id === id);
+  const addCartItem = (id: number) => postCartItemMutate({ productId: id, quantity: 1 });
+
+  const updateCartItemQuantity = (id: number, clickType: "plus" | "minus") => {
+    const itemQuantity = getCartItemQuantity(id);
+    const targetItem = cartItems!.find((cartItem) => cartItem.product.id === id);
+
+    if (clickType === "minus" && itemQuantity === 1) {
       deleteCartItemMutate({ itemId: targetItem!.id });
+
       return;
     }
 
-    postCartItemMutate({ productId: id, quantity: 1 });
+    const updatedQuantity = clickType === "plus" ? itemQuantity + 1 : itemQuantity - 1;
+    patchCartItemMutate({ productId: targetItem!.id, quantity: updatedQuantity });
   };
 
-  return { onClickCartItem, isInCart };
+  const isInCart = (id: number) => cartItems!.some((item) => item.product.id === id);
+
+  return { getCartItemQuantity, addCartItem, updateCartItemQuantity, isInCart };
 };
 
 export default useHandleCartItem;
