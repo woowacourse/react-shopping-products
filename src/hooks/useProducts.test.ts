@@ -78,4 +78,31 @@ describe('useProducts', () => {
       });
     });
   });
+  describe('상품 필터링 기능 테스트', () => {
+    // 'all' 카테고리 제외
+    it.each(Object.keys(productCategories).slice(1))(
+      '카테고리 "%s"으로 요청하면 해당 카테고리 상품만을 요청한다',
+      async (category) => {
+        const selectBarCondition = {
+          category: category,
+          sort: 'priceAsc',
+        };
+
+        const { result } = renderHook(() => useProductFetch({ selectBarCondition }), {
+          wrapper: ToastProvider,
+        });
+
+        await waitFor(() => {
+          expect(result.current.isLoading).toBe(true);
+        });
+
+        await waitFor(() => {
+          expect(result.current.isLoading).toBe(false);
+          result.current.products.forEach((product) => {
+            expect(product.category).toBe(category);
+          });
+        });
+      },
+    );
+  });
 });
