@@ -6,4 +6,5 @@ export const StyledProductList = styled.div`
   grid-gap: 20px 16px;
   width: 100%;
   min-height: 400px;
+  position: relative;
 `;

@@ -1,4 +1,4 @@
-interface ProductProps {
+interface Product {
   id: number;
   name: string;
   price: number;
@@ -6,7 +6,7 @@ interface ProductProps {
   category: string;
 }
 
-interface CartItemProps {
+interface Cart {
   id: number;
   quantity: number;
   product: ProductProps;

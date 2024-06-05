@@ -5,11 +5,11 @@ import { ToastNotification } from "./components/ToastNotification/ToastNotificat
 
 const App = () => {
   return (
-    <>
+    <div id="app">
       <Header />
       <ToastNotification />
       <Product />
-    </>
+    </div>
   );
 };
 
