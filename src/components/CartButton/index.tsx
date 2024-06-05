@@ -13,7 +13,7 @@ const CartButton = ({ onClick, count, ...props }: CartButtonProps) => {
   return (
     <S.CartButton {...props} onClick={onClick}>
       <img src={CART} alt="장바구니" />
-      <S.NumberOfCartItems>{count >= 10 ? '9+' : count}</S.NumberOfCartItems>
+      {count !== 0 && <S.NumberOfCartItems>{count >= 10 ? '9+' : count}</S.NumberOfCartItems>}
     </S.CartButton>
   );
 };
