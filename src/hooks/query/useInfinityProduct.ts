@@ -7,7 +7,7 @@ import { useInfiniteQuery } from 'react-query';
 interface usePaginatedProductsProps {
   category: Category;
   sortType: SortType;
-  errorHandler: () => void;
+  errorHandler: (err: unknown) => void;
 }
 export default function useInfinityProducts({
   category,

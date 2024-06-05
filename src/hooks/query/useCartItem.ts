@@ -2,11 +2,12 @@ import QUERY_KEYS from '@hooks/queryKeys';
 import ShoppingCartFetcher from '@apis/ShoppingCartFetcher';
 import { useCallback } from 'react';
 import { useQuery } from 'react-query';
-import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 
-export default function useCartItems() {
-  const { showToast } = useToastContext();
+interface Props {
+  errorHandler: (err: unknown) => void;
+}
 
+export default function useCartItems({ errorHandler }: Props) {
   const {
     data: cartItems,
     isLoading,
@@ -14,7 +15,7 @@ export default function useCartItems() {
   } = useQuery({
     queryKey: [QUERY_KEYS.cartItems],
     queryFn: ShoppingCartFetcher.getCartItems,
-    onError: () => showToast('장바구니 목록을 가져올 수 없습니다.'),
+    onError: errorHandler,
   });
 
   const getCartItemByProductId = useCallback(

@@ -22,6 +22,11 @@ import { useToastContext } from '@components/common/Toast/provider/ToastProvider
 
 const ProductPage = () => {
   const { showToast } = useToastContext();
+  const errorHandler = (err: unknown) => {
+    if (err instanceof Error) {
+      showToast(err.message);
+    }
+  };
 
   const [category, setCategory] = useState<Category>('전체');
   const [sortType, setSortType] = useState<SortType>('낮은 가격순');
@@ -33,19 +38,21 @@ const ProductPage = () => {
   } = useInfinityProducts({
     category,
     sortType,
-    errorHandler: () => showToast('실수~'),
+    errorHandler: errorHandler,
   });
 
   const products = useMemo(() => {
     return productPage?.pages.flatMap(response => response.content) || [];
   }, [productPage]);
-  const { cartItems, getCartItemByProductId } = useCartItems();
+  const { cartItems, getCartItemByProductId } = useCartItems({ errorHandler });
 
-  const { mutate: addToCart } = useAddToCart();
-  const { mutate: deleteToCart } = useDeleteFromCart();
-  const { mutate: increaseCartItemQuantity } = useIncreaseCartItemQuantity();
+  const { mutate: addToCart } = useAddToCart({ errorHandler });
+  const { mutate: deleteToCart } = useDeleteFromCart({ errorHandler });
+  const { mutate: increaseCartItemQuantity } = useIncreaseCartItemQuantity({
+    errorHandler,
+  });
   const { mutate: decreaseCartItemQuantity } =
-    useDecreaseCartItemQuantityByCartId();
+    useDecreaseCartItemQuantityByCartId({ errorHandler });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
