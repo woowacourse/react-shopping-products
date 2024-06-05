@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 const useIntersectionObserver = (callback: () => void) => {
   const observer = useRef(
@@ -14,12 +14,12 @@ const useIntersectionObserver = (callback: () => void) => {
     ),
   );
 
-  const observe = (element: Element) => {
+  const observe = useCallback((element: Element) => {
     observer.current.observe(element);
-  };
-  const unobserve = (element: Element) => {
+  }, []);
+  const unobserve = useCallback((element: Element) => {
     observer.current.unobserve(element);
-  };
+  }, []);
   const disconnect = observer.current.disconnect;
 
   return { observe, unobserve, disconnect };

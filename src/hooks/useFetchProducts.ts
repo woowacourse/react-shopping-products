@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
@@ -16,10 +16,10 @@ const useFetchProducts = (
   const size = page === 0 ? 20 : 4;
   const fetchPage = page === 0 ? page : page + 4;
 
-  const fetchNextPage = () => {
+  const fetchNextPage = useCallback(() => {
     if (isLast) return;
-    setPage((page) => page + 1);
-  };
+    setPage(page + 1);
+  }, [isLast, page]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -47,7 +47,7 @@ const useFetchProducts = (
       }
     };
     getProducts();
-  }, [page, sortings, filter]);
+  }, [page, sortings, filter, fetchPage, size]);
 
   return { products, isError, isPending, isLast, fetchNextPage, page };
 };
