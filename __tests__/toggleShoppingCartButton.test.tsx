@@ -19,8 +19,6 @@ describe('장바구니 버튼 토글 테스트', () => {
       result.current.onToggleCart(TARGET_MOCK_DATA.id);
     });
 
-    console.log(result.current.addedShoppingCartLength, initShoppingCartItemLength);
-
     expect(result.current.addedShoppingCartLength).toBe(initShoppingCartItemLength + 1);
   });
 

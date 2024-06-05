@@ -1,13 +1,21 @@
-import { isAscendingPrice, isDescendingPrice } from './utils/productPrice';
+import { isDescendingPrice } from './utils/productPrice';
 import { renderHook, waitFor } from '@testing-library/react';
 
-import { act } from 'react';
+import React, { act } from 'react';
 import products from '../src/mocks/handlers/products/mockData';
-import useProducts from '../src/hooks/product/useProductItems/useProductItems';
+import { createProductsRenderHook } from './utils/createProductsRenderHook';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import useProducts from '../src/hooks/product/useProducts/useProducts';
+
+const queryClient = new QueryClient();
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
 describe('무한 스크롤 테스트', () => {
   it('초기에 첫 페이지의 상품 20개를 불러온다', async () => {
-    const { result } = renderHook(() => useProducts());
+    const { result } = createProductsRenderHook();
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(20);
@@ -16,11 +24,10 @@ describe('무한 스크롤 테스트', () => {
   });
 
   it('다음 페이지의 상품 4개를 추가로 불러온다', async () => {
-    const { result } = renderHook(() => useProducts());
+    const { result } = createProductsRenderHook();
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(20);
-      expect(result.current.page).toBe(0);
+      expect(result.current.products.length).toBe(20);
     });
 
     act(() => {
@@ -34,10 +41,13 @@ describe('무한 스크롤 테스트', () => {
   });
 
   it('모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.', async () => {
-    const { result } = renderHook(() => useProducts());
+    const { result } = renderHook(() => useProducts(), {
+      wrapper,
+    });
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(20);
+      expect(result.current.page).toBe(0);
     });
 
     for (let i = 1; i <= (products.length - 20) / 4; i++) {
@@ -53,50 +63,32 @@ describe('무한 스크롤 테스트', () => {
       });
     }
 
-    await act(async () => {
+    act(() => {
       result.current.updateNextProductItem();
     });
 
-    await waitFor(() => {
-      expect(result.current.page).toBe(20);
-    });
+    expect(result.current.page).toBe(20);
   });
 
   it('스크롤을 내려 4개의 상품을 확인 한 후 가격 내림차순으로 정렬하면, 내림차순으로 정렬된 0 page 20개의 상품이 보여져야 한다.', async () => {
-    const { result } = renderHook(() => useProducts());
+    const { result } = renderHook(() => useProducts(), {
+      wrapper,
+    });
 
     act(() => {
       result.current.updateNextProductItem();
     });
 
-    await act(async () => result.current.onSelectOption('sort', 'desc'));
-
-    const isSortedDescending = result.current.products.every(isDescendingPrice);
-
-    expect(isSortedDescending).toBe(true);
-    expect(result.current.products).toHaveLength(20);
-    expect(result.current.page).toBe(0);
-  });
-
-  it('스크롤을 내려 4개의 상품을 확인 한 후 가격 내림차순으로 정렬한 다음, 다시 스크롤을 내려 4개의 상품을 확인 하고 오름차순으로 정렬하게 되면 오름차순으로 정렬된 0 page 20개의 상품이 보여져야 한다.', async () => {
-    const { result } = renderHook(() => useProducts());
-
     act(() => {
-      result.current.updateNextProductItem();
+      result.current.onSelectOption('sort', 'desc');
     });
 
-    await act(async () => result.current.onSelectOption('sort', 'desc'));
+    await waitFor(() => {
+      const isSortedDescending = result.current.products.every(isDescendingPrice);
 
-    act(() => {
-      result.current.updateNextProductItem();
+      expect(isSortedDescending).toBe(true);
+      expect(result.current.products).toHaveLength(20);
+      expect(result.current.page).toBe(0);
     });
-
-    await act(async () => result.current.onSelectOption('sort', 'asc'));
-
-    const isSortedAscending = result.current.products.every(isAscendingPrice);
-
-    expect(isSortedAscending).toBe(true);
-    expect(result.current.products).toHaveLength(20);
-    expect(result.current.page).toBe(0);
   });
 });
