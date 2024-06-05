@@ -2,11 +2,7 @@ import { useCallback } from 'react';
 
 import { Product } from '@appTypes/product';
 
-import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
-import {
-  ProductDropdownOptionKeys,
-  ProductDropdownOptions,
-} from '@components/product/ProductDropdown/ProductDropdown.type';
+import { ProductDropdownOptions } from '@components/product/ProductDropdown/ProductDropdown.type';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchProducts } from '@apis/product/product';
 
@@ -15,21 +11,18 @@ interface UseProductResult {
   page: number;
   dropdownOptions: ProductDropdownOptions;
   isLoading: boolean;
+  error: Error | null;
   updateNextProductItem: () => void;
-  onSelectOption: <T extends ProductDropdownOptionKeys>(
-    type: 'sort' | 'category',
-    option: T
-  ) => void;
 }
 
-const useProducts = (): UseProductResult => {
-  const { dropdownOptions, onSelectOption } = useSelectProductDropdown();
-
+const useProducts = (dropdownOptions: ProductDropdownOptions): UseProductResult => {
   const {
     data,
-    fetchNextPage,
     hasNextPage,
+    error,
+    isError,
     isFetching: isInfiniteScrollLoading,
+    fetchNextPage,
   } = useInfiniteQuery({
     queryKey: ['products', dropdownOptions],
     initialPageParam: 0,
@@ -38,10 +31,10 @@ const useProducts = (): UseProductResult => {
   });
 
   const updateNextProductItem = useCallback(() => {
-    if (hasNextPage === false) return;
+    if (hasNextPage === false || isInfiniteScrollLoading || isError) return;
 
     fetchNextPage();
-  }, [hasNextPage, fetchNextPage]);
+  }, [hasNextPage, fetchNextPage, isInfiniteScrollLoading, isError]);
 
   const page = (data?.pageParams[data?.pageParams.length - 1] as number) ?? 0;
 
@@ -51,7 +44,7 @@ const useProducts = (): UseProductResult => {
     dropdownOptions,
     isLoading: isInfiniteScrollLoading,
     updateNextProductItem,
-    onSelectOption,
+    error,
   };
 };
 
