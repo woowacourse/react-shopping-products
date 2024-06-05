@@ -6,7 +6,7 @@ import {
   SIZE_PER_PAGE,
 } from "../constants/pagination";
 import { SORT_LIST, Sort } from "../constants/sort";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Product } from "../types/products";
 import { getProducts } from "../api/products";
@@ -51,21 +51,27 @@ const useProducts = () => {
     fetchProducts();
   }, [page, sort, category]);
 
-  const handleCategoryChange = (newCategory: Category) => {
-    if (newCategory !== category) {
-      setProducts([]);
-      resetPage();
-      setCategory(newCategory);
-    }
-  };
+  const handleCategoryChange = useCallback(
+    (newCategory: Category) => {
+      if (newCategory !== category) {
+        setProducts([]);
+        resetPage();
+        setCategory(newCategory);
+      }
+    },
+    [category, resetPage]
+  );
 
-  const handleSortChange = (newSort: Sort) => {
-    if (newSort !== sort) {
-      setProducts([]);
-      resetPage();
-      setSort(newSort);
-    }
-  };
+  const handleSortChange = useCallback(
+    (newSort: Sort) => {
+      if (newSort !== sort) {
+        setProducts([]);
+        resetPage();
+        setSort(newSort);
+      }
+    },
+    [sort, resetPage]
+  );
 
   return {
     products,

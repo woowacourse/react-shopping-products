@@ -1,5 +1,5 @@
 import { deleteCartItems, getCartItems, postCartItems } from "../api/cartItems";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { CartItem } from "../types/cartItems";
 
@@ -34,50 +34,58 @@ const useManageCartItem = () => {
     fetchCartItems();
   }, []);
 
-  const addItemToCart = async (productId: number) => {
-    if (isLoading) return;
-    try {
-      setIsLoading(true);
-      await postCartItems({ productId, quantity: 1 });
-      await fetchCartItems();
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const removeItemFromCart = async (productId: number) => {
-    if (isLoading) return;
-    try {
-      setIsLoading(true);
-
-      const targetCartItem = cartItems.find(
-        (item) => item.product.id === productId
-      );
-
-      if (!targetCartItem) {
-        throw new Error("장바구니에 없는 상품입니다.");
+  const addItemToCart = useCallback(
+    async (productId: number) => {
+      if (isLoading) return;
+      try {
+        setIsLoading(true);
+        await postCartItems({ productId, quantity: 1 });
+        await fetchCartItems();
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
       }
+    },
+    [isLoading]
+  );
 
-      const targetCartItemId = targetCartItem.id;
+  const removeItemFromCart = useCallback(
+    async (productId: number) => {
+      if (isLoading) return;
+      try {
+        setIsLoading(true);
 
-      await deleteCartItems(targetCartItemId);
-      setCartItems((cartItems) => {
-        const newCartItems = cartItems.filter(
-          (cartItem) => cartItem.id !== targetCartItemId
+        const targetCartItem = cartItems.find(
+          (item) => item.product.id === productId
         );
-        return newCartItems;
-      });
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const isItemInCart = (id: number) =>
-    !!cartItems.find((item) => item.product.id === id);
+        if (!targetCartItem) {
+          throw new Error("장바구니에 없는 상품입니다.");
+        }
+
+        const targetCartItemId = targetCartItem.id;
+
+        await deleteCartItems(targetCartItemId);
+        setCartItems((cartItems) => {
+          const newCartItems = cartItems.filter(
+            (cartItem) => cartItem.id !== targetCartItemId
+          );
+          return newCartItems;
+        });
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isLoading, cartItems]
+  );
+
+  const isItemInCart = useCallback(
+    (id: number) => !!cartItems.find((item) => item.product.id === id),
+    [cartItems]
+  );
 
   return {
     cartItems,

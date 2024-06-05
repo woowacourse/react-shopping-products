@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 interface Props {
   firstPage: number;
@@ -9,7 +9,7 @@ const usePagination = ({ firstPage, gapWithFirstPage }: Props) => {
   const [page, setPage] = useState(firstPage);
   const [isLastPage, setIsLastPage] = useState(false);
 
-  const fetchNextPage = () => {
+  const fetchNextPage = useCallback(() => {
     if (isLastPage) {
       return;
     }
@@ -20,11 +20,11 @@ const usePagination = ({ firstPage, gapWithFirstPage }: Props) => {
     }
 
     setPage((page) => page + 1);
-  };
+  }, [firstPage, gapWithFirstPage, isLastPage, page]);
 
-  const resetPage = () => {
+  const resetPage = useCallback(() => {
     setPage(firstPage);
-  };
+  }, [firstPage]);
 
   return { page, fetchNextPage, resetPage, setIsLastPage };
 };
