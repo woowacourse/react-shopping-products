@@ -5,10 +5,10 @@ import {
   ItemInfo,
   ItemCardBottom,
   ItemImage,
-} from './ItemCard.style';
+} from './ProductItemCard.style';
 import CartButton from '../CartButton/CartButton';
 
-interface ItemCardProps {
+interface ProductItemCardProps {
   ref?: LegacyRef<HTMLLIElement> | undefined;
   id: number;
   name: string;
@@ -18,7 +18,7 @@ interface ItemCardProps {
   initIsInCart: boolean;
 }
 
-const ItemCard: React.FC<ItemCardProps> = ({
+const ProductItemCard: React.FC<ProductItemCardProps> = ({
   ref,
   id,
   name,
@@ -43,4 +43,4 @@ const ItemCard: React.FC<ItemCardProps> = ({
   );
 };
 
-export default ItemCard;
+export default ProductItemCard;
