@@ -1,11 +1,11 @@
 import { useRef } from 'react';
 
-import IntersectionContainer from './IntersectionContainer';
 import * as Styled from './ProductListPage.styled';
 
 import Dropdown from '@/components/common/dropdown/Dropdown';
 import Header from '@/components/common/header/Header';
 import InfinityScrollContainer from '@/components/common/InfinityScrollContainer';
+import IntersectionContainer from '@/components/common/intersectionContainer/IntersectionContainer';
 import ProductCardList from '@/components/productCardList/ProductCardList';
 import Title from '@/components/title/Title';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
@@ -53,7 +53,7 @@ const ProductListPage = () => {
             isLoading={isLoading}
           />
 
-          <div ref={bottomRef} style={{ height: 100 }}></div>
+          <IntersectionContainer bottomRef={bottomRef} isNextPage={hasNextPage || isLoading} />
         </Styled.CommonContainer>
       </Styled.PageContainer>
     </InfinityScrollContainer>

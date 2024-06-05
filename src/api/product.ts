@@ -4,8 +4,8 @@ import fetcher from './fetcher';
 import { ProductCategory, ProductResponse, SortValue } from '@/types/product';
 
 interface FetchProductListProps {
-  size?: number;
   category: ProductCategory;
+  size?: number;
   page?: number;
   sortOptions?: SortValue;
 }
