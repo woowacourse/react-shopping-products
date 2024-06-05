@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const UpdateButtonWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
+  height: 20px;
 `;
 
 export const ProductQuantity = styled.span`

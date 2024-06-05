@@ -45,6 +45,14 @@ const useHandleCartItem = () => {
     return cartItems.some((item) => item.product.id === id);
   };
 
+  const getQuantityInCart = (id: number) => {
+    const targetItem = cartItems.find((cartItem) => cartItem.product.id === id);
+    if (targetItem) {
+      return targetItem.quantity;
+    }
+    return 0;
+  };
+
   const onClickCartItem = (id: number) => {
     if (isInCart(id)) {
       onDeleteCartItem(id);
@@ -53,7 +61,7 @@ const useHandleCartItem = () => {
     }
   };
 
-  return { onClickCartItem, isInCart, loading, cartItems };
+  return { onClickCartItem, isInCart, loading, cartItems, getQuantityInCart };
 };
 
 export default useHandleCartItem;

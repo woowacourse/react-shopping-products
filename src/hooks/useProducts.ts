@@ -1,63 +1,40 @@
-// import { Product } from "@/types/products";
-// import { useState } from "react";
-// import { getProducts } from "@/apis/product";
-// import { Category, Sort } from "@/constants/selectOption";
-// import useToast from "@/hooks/useToast";
-// import { ERROR_MESSAGES } from "@/constants/messages";
+import { Product } from "@/types/products";
+import { useCallback, useEffect, useState } from "react";
+import useToast from "@/hooks/useToast";
+import { ERROR_MESSAGES } from "@/constants/messages";
+import useInfiniteFilteredProducts from "@/hooks/server/useInfiniteFilteredProducts";
+import { Category, Sort } from "@/constants/selectOption";
 
-// export const SIZE_PER_PAGE = 4;
-// export const SIZE_FIRST_PAGE = 20;
+export const SIZE_PER_PAGE = 4;
+export const SIZE_FIRST_PAGE = 20;
 
-// const useProducts = () => {
-//   const [products, setProducts] = useState<Product[]>([]);
-//   const [currentPage, setCurrentPage] = useState(0);
-//   const [loading, setLoading] = useState(true);
-//   const [isLastPage, setIsLastPage] = useState(false);
+const useProducts = ({ category, sort }: { category: Category; sort: Sort; isIntersecting: boolean }) => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const { fetchNextPage, data, isLoading, hasNextPage, isError } = useInfiniteFilteredProducts({ category, sort });
 
-//   const { onAddToast } = useToast();
+  const { onAddToast } = useToast();
 
-//   const fetchFirstPage = async (category: Category, sort: Sort) => {
-//     resetToFirstPage();
-//     try {
-//       const res = await getProducts({ category, page: 0, size: 20, sort });
-//       if (res.last) setIsLastPage(true);
+  const setNextPageData = useCallback(() => {
+    if (data) {
+      const result: Product[] = [];
+      data.pages.forEach((pageData) => {
+        result.push(...pageData.content);
+      });
+      setProducts(result);
+    }
+  }, [data]);
 
-//       setProducts(res.content);
-//       setCurrentPage(1);
-//     } catch (error) {
-//       if (error instanceof Error) {
-//         onAddToast(ERROR_MESSAGES.failGetProducts);
-//       }
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+  useEffect(() => {
+    setNextPageData();
+  }, [data]);
 
-//   const fetchNextPage = async (category: Category, page: number, sort: Sort) => {
-//     try {
-//       const size = currentPage === 0 ? SIZE_PER_PAGE : SIZE_FIRST_PAGE;
+  useEffect(() => {
+    if (isError) {
+      onAddToast(ERROR_MESSAGES.failGetProducts);
+    }
+  }, [isError, onAddToast]);
 
-//       const res = await getProducts({ category, page, size, sort });
-//       if (res.last) setIsLastPage(true);
+  return { products, isLoading, hasNextPage, fetchNextPage, isError };
+};
 
-//       setProducts((prevProducts) => [...prevProducts, ...res.content]);
-//       setCurrentPage((prevPage) => prevPage + 1);
-//     } catch (error) {
-//       if (error instanceof Error) {
-//         onAddToast(ERROR_MESSAGES.failGetProducts);
-//       }
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const resetToFirstPage = () => {
-//     setProducts([]);
-//     setIsLastPage(false);
-//     setLoading(true);
-//   };
-
-//   return { products, fetchNextPage, fetchFirstPage, loading, currentPage, isLastPage, resetToFirstPage };
-// };
-
-// export default useProducts;
+export default useProducts;
