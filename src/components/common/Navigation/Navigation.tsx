@@ -2,22 +2,26 @@ import * as Styled from './Navigation.styled';
 
 import { ShoppingCartSvg } from '@assets/svg';
 
-interface NavigationProps extends React.PropsWithChildren {
+interface NavigationProps extends React.HTMLAttributes<HTMLDivElement> {
   itemCount?: number;
+  onCartClick: () => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ itemCount = 0 }) => {
+function Navigation({ itemCount = 0, onCartClick }: NavigationProps) {
   return (
     <Styled.NavigationContainer>
       <Styled.NavigationWrapper>
         <Styled.NavigationButton>SHOP</Styled.NavigationButton>
-        <Styled.NavigationButton style={{ position: 'relative' }} disabled>
+        <Styled.NavigationButton
+          onClick={onCartClick}
+          style={{ position: 'relative' }}
+        >
           <ShoppingCartSvg />
           {itemCount > 0 && <Styled.Circle>{itemCount}</Styled.Circle>}
         </Styled.NavigationButton>
       </Styled.NavigationWrapper>
     </Styled.NavigationContainer>
   );
-};
+}
 
 export default Navigation;
