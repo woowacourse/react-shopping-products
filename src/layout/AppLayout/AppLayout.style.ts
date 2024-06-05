@@ -7,4 +7,6 @@ export const Wrapper = styled.div`
 
 export const App = styled.div`
   width: 429px;
+  display: flex;
+  flex-direction: column;
 `;

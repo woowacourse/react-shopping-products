@@ -1,9 +1,22 @@
-import { AppLayout } from "./layout";
+import { useState } from "react";
+import { AppLayout, ProductListLayout } from "@/layout";
+import {
+  Cart,
+  Filter,
+  Header,
+  ProductList,
+  ProductListTitle,
+} from "@/components";
 
 function App() {
   return (
     <AppLayout>
-      <h1>React Shopping Products</h1>
+      <Header />
+      <ProductListLayout>
+        <Filter />
+        <ProductListTitle />
+        <ProductList />
+      </ProductListLayout>
     </AppLayout>
   );
 }
