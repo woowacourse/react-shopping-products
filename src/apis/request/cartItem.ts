@@ -1,36 +1,9 @@
-import { CartItem } from '@/types/cartItem.type';
 import { BASE_URL } from '../baseUrl';
-import { requestGet, requestPost, requestDelete } from '../fetcher';
+import { requestGet, requestPost, requestDelete, requestPatch } from '../fetcher';
 import { ENDPOINT } from '../endpoints';
-
-type ResponseCartItemList = {
-  content: CartItem[];
-  pageable: {
-    sort: {
-      sorted: false;
-      unsorted: true;
-      empty: true;
-    };
-    pageNumber: 0;
-    pageSize: 20;
-    offset: 0;
-    paged: true;
-    unpaged: false;
-  };
-  last: true;
-  totalPages: 1;
-  totalElements: 6;
-  sort: {
-    sorted: false;
-    unsorted: true;
-    empty: true;
-  };
-  first: true;
-  number: 0;
-  numberOfElements: 6;
-  size: 20;
-  empty: false;
-};
+import { ResponseCartItemList } from '../responseTypes';
+import { CartItem } from '@/types/cartItem.type';
+import { PageParams } from '@/types/infiniteScroll';
 
 type QueryParams = {
   page: number;
@@ -40,20 +13,31 @@ type QueryParams = {
 export const requestCartItemList = async (
   page: number = 0,
   size: number = 20,
-): Promise<ResponseCartItemList> => {
+): Promise<PageParams<CartItem>> => {
   const queryParams: QueryParams = {
     page,
     size,
   };
 
-  return await requestGet<ResponseCartItemList>({
+  const { content, pageable, last } = await requestGet<ResponseCartItemList>({
     baseUrl: BASE_URL.SHOP,
     endpoint: ENDPOINT.CART_ITEM,
     queryParams,
   });
+
+  return {
+    content,
+    hasNextPage: !last,
+    nextCursor: pageable.pageNumber + 1,
+  };
 };
 
-export const requestAddCartItem = async (productId: number, quantity: number = 1) => {
+export type RequestAddCartItem = {
+  productId: number;
+  quantity: number;
+};
+
+export const requestAddCartItem = async ({ productId, quantity = 1 }: RequestAddCartItem) => {
   await requestPost({
     baseUrl: BASE_URL.SHOP,
     endpoint: ENDPOINT.CART_ITEM,
@@ -70,6 +54,24 @@ export const requestDeleteCartItem = async (cartItemId: number) => {
     endpoint: `${ENDPOINT.CART_ITEM}/${cartItemId}`,
     body: {
       id: cartItemId,
+    },
+  });
+};
+
+export type RequestModifyCartItemQuantityParams = {
+  cartItemId: number;
+  quantity: number;
+};
+
+export const requestModifyCartItemQuantity = async ({
+  cartItemId,
+  quantity,
+}: RequestModifyCartItemQuantityParams) => {
+  await requestPatch({
+    baseUrl: BASE_URL.SHOP,
+    endpoint: `${ENDPOINT.CART_ITEM}/${cartItemId}`,
+    body: {
+      quantity,
     },
   });
 };

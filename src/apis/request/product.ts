@@ -1,14 +1,11 @@
 import { requestGet } from '../fetcher';
 import { BASE_URL } from '../baseUrl';
 import { Category } from '@/types/filter.type';
-import { Product } from '@/types/product.type';
 import { SortValue } from '@/constants/filter';
 import { ENDPOINT } from '../endpoints';
-
-type ResponseProductList = {
-  content: Product[];
-  totalPages: number;
-};
+import { ResponseProductList } from '../responseTypes';
+import { Product } from '@/types/product.type';
+import { PageParams } from '@/types/infiniteScroll';
 
 type QueryParams = {
   page: number;
@@ -27,7 +24,7 @@ export const requestProductList = async ({
   size: number;
   category: Category;
   sortType: SortValue;
-}) => {
+}): Promise<PageParams<Product>> => {
   const queryParams: QueryParams = {
     page,
     size,
@@ -36,14 +33,15 @@ export const requestProductList = async ({
 
   if (category !== 'all') queryParams.category = category;
 
-  const { content, totalPages } = await requestGet<ResponseProductList>({
+  const { content, pageable, last } = await requestGet<ResponseProductList>({
     baseUrl: BASE_URL.SHOP,
     endpoint: ENDPOINT.PRODUCT,
     queryParams,
   });
 
   return {
-    paginatedProducts: content,
-    totalPages,
+    content,
+    hasNextPage: !last,
+    nextCursor: pageable.pageNumber + 1,
   };
 };
