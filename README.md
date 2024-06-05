@@ -11,6 +11,7 @@
 - [x] useCartItems에서 showToast 메서드 제거
 - [x] request header를 유연하게 수정, makeRequest 파일 분리, 중복 의미 주석 제거
 - [x] API 요청 시, URLSearchParams 활용하기
+- [x] API 라우트 경로 상수화
 
 - 리팩토링
 - [x] hasMore가 아닌 response의 last 값을 사용해 마지막 페이지 판단, 요청 한번 줄이기

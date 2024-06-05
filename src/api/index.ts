@@ -1,3 +1,4 @@
+import API_ROUTES from '../constant/apiRoutes';
 import { CartItemType, ProductsResponseType } from '../types';
 import { makeRequest } from './apiRequest';
 import { generateBasicToken } from './auth';
@@ -28,7 +29,7 @@ export async function fetchProducts(
     }
   });
 
-  const response = await makeRequest(`/products?${queryParams.toString()}`, {
+  const response = await makeRequest(`${API_ROUTES.products}?${queryParams.toString()}`, {
     method: 'GET',
     headers: {
       Authorization: basicToken,
@@ -42,7 +43,7 @@ export async function fetchProducts(
 }
 
 export async function addCartItem(productId: number): Promise<void> {
-  await makeRequest('/cart-items', {
+  await makeRequest(`${API_ROUTES.cartItems}`, {
     method: 'POST',
     headers: {
       Authorization: basicToken,
@@ -55,7 +56,7 @@ export async function addCartItem(productId: number): Promise<void> {
 export async function fetchCartItem(): Promise<CartItemType[]> {
   const queryParams = new URLSearchParams({ page: '0', size: '100' });
 
-  const response = await makeRequest(`/cart-items?${queryParams.toString()}`, {
+  const response = await makeRequest(`${API_ROUTES.cartItems}?${queryParams.toString()}`, {
     method: 'GET',
     headers: {
       Authorization: basicToken,
@@ -69,7 +70,7 @@ export async function fetchCartItem(): Promise<CartItemType[]> {
 }
 
 export async function deleteCartItem(cartItemId: number): Promise<void> {
-  await makeRequest(`/cart-items/${cartItemId}`, {
+  await makeRequest(`${API_ROUTES.cartItems}/${cartItemId}`, {
     method: 'DELETE',
     headers: {
       Authorization: basicToken,
