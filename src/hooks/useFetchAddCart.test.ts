@@ -91,7 +91,7 @@ describe('useFetchAddCart', () => {
     await waitFor(async () => {
       expect(
         (await result.current.fetchCart()).some(
-          (item) => item.product.id === PRODUCT_ID_TWO,
+          (item) => item.product.id === PRODUCT_ID_THREE,
         ),
       ).toBe(true);
     });
