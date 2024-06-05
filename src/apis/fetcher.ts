@@ -90,7 +90,12 @@ const errorHandler = async (url: string, options: Options, endpoint: string) => 
 
     return response;
   } catch (error) {
-    console.error(`fail to fetch ${endpoint}\n error message: ${error}`);
-    throw new Error('데이터를 가져오는 중 오류가 발생했습니다.');
+    if (error instanceof TypeError && !navigator.onLine) {
+      console.error(`Network error while trying to fetch ${endpoint}: No network connection`);
+      throw new Error('네트워크 연결이 끊어졌습니다. 인터넷 연결을 확인하고 다시 시도하세요.');
+    } else {
+      console.error(`fail to fetch ${endpoint}\n error message: ${error}`);
+      throw new Error('데이터를 가져오는 중 오류가 발생했습니다.');
+    }
   }
 };
