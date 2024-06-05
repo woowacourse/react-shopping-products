@@ -1,0 +1,51 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { act, renderHook, waitFor } from '@testing-library/react';
+
+import { QUERY_KEYS } from '@/constants/queryKeys';
+import useChangeItemQuantity from '../cart/useChangeItemQuantity';
+import { vi } from 'vitest';
+
+vi.mock('@/api/cartItem', () => ({
+  patchCartItem: vi.fn().mockResolvedValue({}),
+}));
+
+const queryClient = new QueryClient();
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
+
+describe('useAddToCartListQuery', () => {
+  it('장바구니에 상품 수량을 수정 할 수 있다', async () => {
+    const { result } = renderHook(() => useChangeItemQuantity(), { wrapper });
+
+    act(() => {
+      result.current.mutate({
+        cartItemId: 1,
+        quantity: 2,
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  });
+
+  it('장바구니에 상품 추가 후 invalidateQueries를 호출한다', async () => {
+    const invalidateQueriesSpy = vi.spyOn(queryClient, 'invalidateQueries');
+
+    const { result } = renderHook(() => useChangeItemQuantity(), { wrapper });
+
+    act(() => {
+      result.current.mutate({
+        cartItemId: 1,
+        quantity: 2,
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+      queryKey: [QUERY_KEYS.CART],
+    });
+
+    invalidateQueriesSpy.mockRestore();
+  });
+});
