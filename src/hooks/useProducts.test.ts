@@ -1,7 +1,7 @@
 import { ToastProvider } from './../context/ToastProvider';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { useProductFetch } from './useProductFetch';
-import { productCategories } from '../constant/products';
+import { productCategories, sortOptions } from '../constant/products';
 
 describe('useProducts', () => {
   describe('상품 목록 조회', () => {
@@ -101,6 +101,42 @@ describe('useProducts', () => {
           result.current.products.forEach((product) => {
             expect(product.category).toBe(category);
           });
+        });
+      },
+    );
+  });
+
+  describe('상품 정렬 기능 테스트', () => {
+    it.each(Object.keys(sortOptions))(
+      '"%s" 정렬로 요청하면 받은 데이터는 해당 기준으로 정렬된 데이터이다.',
+      async (sortKey) => {
+        const selectBarCondition = {
+          category: 'all',
+          sort: sortKey,
+        };
+
+        const { result } = renderHook(() => useProductFetch({ selectBarCondition }), {
+          wrapper: ToastProvider,
+        });
+
+        await waitFor(() => {
+          expect(result.current.products).toBeDefined();
+        });
+
+        await waitFor(() => {
+          const products = result.current.products;
+          expect(products).toHaveLength(20);
+
+          const isSorted = products.every((product, index) => {
+            if (index === 0) return true;
+            if (sortKey === 'priceAsc') {
+              return products[index - 1].price <= product.price;
+            } else {
+              return products[index - 1].price >= product.price;
+            }
+          });
+
+          expect(isSorted).toBe(true);
         });
       },
     );
