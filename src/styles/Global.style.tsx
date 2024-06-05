@@ -18,7 +18,6 @@ const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;
     }
 
-
     /* Fix mobile Safari increase font-size on landscape mode */
     html {
         -moz-text-size-adjust: none;
