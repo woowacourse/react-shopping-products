@@ -22,19 +22,18 @@ function Product() {
   ]);
   const [filter, setFilter] = useState('');
   const {
-    products,
+    data: products,
     isError,
-    isPending,
+    isLoading,
     isLast,
     fetchNextPage,
-    page,
     resetPage,
   } = useFetchProducts(sortings, filter);
 
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
   useEffect(() => {
-    if (!target.current || isPending || isLast || isError) return;
+    if (!target.current || isLoading || isError || isLast) return;
     const currentTarget = target.current;
     observe(currentTarget);
 
@@ -43,7 +42,7 @@ function Product() {
         unobserve(currentTarget);
       }
     };
-  }, [page, isPending, isLast]);
+  }, [isLoading, isError, isLast]);
 
   return (
     <>
@@ -59,7 +58,7 @@ function Product() {
           />
 
           <S.ProductListContainer>
-            {products.map((product) => {
+            {products?.map((product) => {
               return <ProductCard key={product.id} product={product} />;
             })}
             <S.ObserverContainer ref={target} />
