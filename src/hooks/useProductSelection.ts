@@ -20,10 +20,10 @@ export function useProductSelection({
 
   useEffect(() => {
     const newSelectedItems: number[] = [];
-    const cartItemIds = cartItems.map((cartItem) => cartItem.product.id);
+    const cartItemIds = cartItems.map((cartItem) => cartItem?.product?.id);
 
     cartItems.forEach((product) => {
-      if (cartItemIds.includes(product.product.id)) {
+      if (product && product.product && cartItemIds.includes(product.product.id)) {
         newSelectedItems.push(product.product.id);
       }
     });

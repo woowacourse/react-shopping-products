@@ -16,7 +16,9 @@ export function useCartItems() {
   useEffect(() => {
     const newIdMap: Record<number, number> = {};
     cartItems.forEach((cartItem) => {
-      newIdMap[cartItem.product.id] = cartItem.id;
+      if (cartItem && cartItem.product) {
+        newIdMap[cartItem.product.id] = cartItem.id;
+      }
     });
     setIdMap(newIdMap);
   }, [cartItems]);
