@@ -4,7 +4,7 @@ import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import QUERY_KEYS from '@constants/queryKeys';
 
 const useLoadProducts = (filtering: Filtering) => {
-  const { data, isFetchingNextPage, isError, fetchNextPage } = useSuspenseInfiniteQuery({
+  const { data, isFetchingNextPage, isError, isSuccess, fetchNextPage } = useSuspenseInfiniteQuery({
     queryKey: [QUERY_KEYS.getProducts, { filtering }],
     queryFn: ({ pageParam }) => fetchProduct({ filtering, page: pageParam }),
     initialPageParam: 0,
@@ -20,6 +20,7 @@ const useLoadProducts = (filtering: Filtering) => {
     fetchNextPage,
     isLoading: isFetchingNextPage,
     isError,
+    isSuccess,
   };
 };
 

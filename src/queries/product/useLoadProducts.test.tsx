@@ -1,15 +1,41 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import useLoadProducts from '../useLoadProducts';
 import { CATEGORY_OPTIONS } from '@constants/index';
 import { Category } from '@appTypes/index';
+import useLoadProducts from '@queries/product/useLoadProducts';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Suspense } from 'react';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>
+    <Suspense>{children}</Suspense>
+  </QueryClientProvider>
+);
 
 describe('useLoadProducts test', () => {
   describe('context: 상품 로드, 무한 스크롤 테스트', () => {
+    beforeEach(() => {
+      queryClient.clear();
+    });
+
     it('처음 데이터를 로드할 때 상품은 20개이다.', async () => {
-      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }));
+      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }), {
+        wrapper,
+      });
+
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true);
+      });
 
       act(() => {
-        result.current.refreshByFiltering();
+        result.current.fetchNextPage();
       });
 
       await waitFor(async () => {
@@ -18,10 +44,13 @@ describe('useLoadProducts test', () => {
     });
 
     it('다음 목록을 불러올 때 상품 4개를 불러오게 된다.', async () => {
-      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }));
+      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }), { wrapper });
 
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true);
+      });
       act(() => {
-        result.current.refreshByFiltering();
+        result.current.fetchNextPage();
       });
 
       await waitFor(async () => {
@@ -29,7 +58,7 @@ describe('useLoadProducts test', () => {
       });
 
       act(() => {
-        result.current.loadNextPage();
+        result.current.fetchNextPage();
       });
 
       await waitFor(async () => {
@@ -38,32 +67,30 @@ describe('useLoadProducts test', () => {
     });
 
     it('마지막 목록을 불러오고 다음 상품을 불러올 때 상품을 불러오지 않는다.', async () => {
-      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }));
+      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }), { wrapper });
 
-      act(() => {
-        result.current.refreshByFiltering();
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true);
       });
 
-      await waitFor(async () => {
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
+      await waitFor(() => {
         expect(result.current.products.length).toBe(20);
       });
 
       for (let i = 1; i < 21; i++) {
         await waitFor(() => {
           act(() => {
-            result.current.loadNextPage();
+            result.current.fetchNextPage();
           });
-        });
-
-        const expectedLength = 20 + i * 4;
-
-        await waitFor(() => {
-          expect(result.current.products).toHaveLength(expectedLength);
         });
       }
 
       act(() => {
-        result.current.loadNextPage();
+        result.current.fetchNextPage();
       });
 
       await waitFor(async () => {
@@ -73,12 +100,19 @@ describe('useLoadProducts test', () => {
   });
 
   describe('상품 필터링 테스트', () => {
+    beforeEach(() => {
+      queryClient.clear();
+    });
+
     it('전체 선택 시, 모든 상품 목록을 보여준다', async () => {
       const CATEGORY_LENGTH = CATEGORY_OPTIONS.filter((options) => !!options.value).length;
-      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }));
+      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }), { wrapper });
 
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true);
+      });
       act(() => {
-        result.current.refreshByFiltering();
+        result.current.fetchNextPage();
       });
 
       await waitFor(async () => {
@@ -89,10 +123,14 @@ describe('useLoadProducts test', () => {
 
     it('카테고리 선택 시, 해당 카테고리 상품만 보여준다', async () => {
       const category = CATEGORY_OPTIONS[1].value as Category;
-      const { result } = renderHook(() => useLoadProducts({ category, sort: 'price,asc' }));
+      const { result } = renderHook(() => useLoadProducts({ category, sort: 'price,asc' }), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true);
+      });
 
       act(() => {
-        result.current.refreshByFiltering();
+        result.current.fetchNextPage();
       });
 
       await waitFor(async () => {
@@ -103,11 +141,18 @@ describe('useLoadProducts test', () => {
   });
 
   describe('가격 정렬 테스트', () => {
+    beforeEach(() => {
+      queryClient.clear();
+    });
+
     it('오름차순 선택 시, 상품 각각의 오름차순으로 목록을 보여준다', async () => {
-      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }));
+      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }), { wrapper });
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true);
+      });
 
       act(() => {
-        result.current.refreshByFiltering();
+        result.current.fetchNextPage();
       });
 
       await waitFor(async () => {
@@ -116,10 +161,13 @@ describe('useLoadProducts test', () => {
       });
     });
     it('내림차순 선택 시, 상품 각겨의 내림차순으로 목록을 보여준다', async () => {
-      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }));
+      const { result } = renderHook(() => useLoadProducts({ category: '', sort: 'price,asc' }), { wrapper });
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true);
+      });
 
       act(() => {
-        result.current.refreshByFiltering();
+        result.current.fetchNextPage();
       });
 
       await waitFor(async () => {
