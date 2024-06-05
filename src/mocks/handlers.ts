@@ -85,5 +85,6 @@ export const handlers = [
       (cart) => cart.id !== id,
     );
     mockCartResponse.content = newMockCart;
+    return HttpResponse.json(null, { status: 201 });
   }),
 ];
