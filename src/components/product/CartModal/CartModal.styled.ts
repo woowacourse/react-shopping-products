@@ -14,6 +14,9 @@ export const SelectedItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  max-height: 400px;
+  overflow-y: scroll;
 `;
 
 export const AmountContainer = styled.div`
