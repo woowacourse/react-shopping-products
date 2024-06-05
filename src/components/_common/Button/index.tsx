@@ -10,7 +10,7 @@ type BasicButtonProps = {
   width?: number;
   height: number;
   borderType: ButtonBorderType;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: () => void;
   textColor?: string;
   disabled: boolean;
   backgroundColor: string;
@@ -18,7 +18,7 @@ type BasicButtonProps = {
   borderColor?: string;
 };
 
-const BasicButton = ({
+const Button = ({
   children,
   width,
   height,
@@ -44,4 +44,4 @@ const BasicButton = ({
     </S.ButtonWrapper>
   );
 };
-export default BasicButton;
+export default Button;

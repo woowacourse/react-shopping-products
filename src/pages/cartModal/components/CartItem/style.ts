@@ -7,6 +7,7 @@ export const ItemWrapper = styled.div`
   flex-direction: column;
   margin-top: 20px;
   width: 100%;
+  position: relative;
 `;
 
 export const FlexBox = styled.div`
@@ -60,4 +61,10 @@ export const ProductQuantity = styled.span`
   font-size: 12px;
   line-height: 15px;
   font-weight: 500;
+`;
+
+export const DeleteButton = styled.div`
+  position: absolute;
+  right: 0;
+  top: 20px;
 `;

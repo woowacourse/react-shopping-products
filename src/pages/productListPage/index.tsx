@@ -4,7 +4,7 @@ import TextBox from "@/components/_common/TextBox";
 import SelectBox from "@/components/SelectBox";
 import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
 import useSelect from "@/hooks/useSelect";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import useIntersection from "@/hooks/useIntersection";
 import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
 import TopButton from "@/components/_common/TopButton";
@@ -34,6 +34,17 @@ const ProductListPage = () => {
   const { isIntersecting } = useIntersection(infiniteScrollConfig, ref);
 
   const { cartItems } = useHandleCartItem();
+
+  const cartItemLength = cartItems?.length;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const onCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const onOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
   const {
     fetchNextPage,
@@ -66,7 +77,7 @@ const ProductListPage = () => {
     <>
       <Header>
         <Header.Title text="SHOP" />
-        {cartItems?.length && <CartBadge cartItemLength={cartItems!.length} />}
+        {cartItemLength && <CartBadge cartItemLength={cartItemLength} onClick={onOpenModal} />}
         <TopButton />
       </Header>
       <S.Wrapper>
@@ -76,7 +87,7 @@ const ProductListPage = () => {
             <SelectBox useSelector={useCategorySelect} optionsContents={Object.keys(CATEGORY)} />
             <SelectBox useSelector={useSortSelect} optionsContents={Object.keys(SORT)} />
           </S.SelectBoxWrapper>
-          <CartModal />
+          {isModalOpen && <CartModal onCloseModal={onCloseModal} />}
         </S.ItemInfoWrapper>
         {!isLoading && <ItemCardList products={products.pages} />}
         {hasNextPage && (

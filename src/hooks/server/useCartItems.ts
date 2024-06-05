@@ -56,12 +56,12 @@ export const useUpdateCartItemQuantityMutation = ({ cartId, quantity }: { cartId
   return mutation;
 };
 
-export const useDeleteCartItemMutation = ({ productId }: { productId: number }) => {
+export const useDeleteCartItemMutation = ({ cartId }: { cartId: number }) => {
   const queryClient = useQueryClient();
   const { onAddToast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: () => deleteCartItem({ productId }),
+    mutationFn: () => deleteCartItem({ cartId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
     },

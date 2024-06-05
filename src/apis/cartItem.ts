@@ -58,11 +58,11 @@ export async function patchCartItem({ cartId, quantity }: PatchCartItemParams): 
 }
 
 export interface DeleteCartItemParams {
-  productId: number;
+  cartId: number;
 }
 
-export async function deleteCartItem({ productId }: DeleteCartItemParams): Promise<Response> {
-  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${productId}`, {
+export async function deleteCartItem({ cartId }: DeleteCartItemParams): Promise<Response> {
+  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${cartId}`, {
     method: "DELETE",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
   });

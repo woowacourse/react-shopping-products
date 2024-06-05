@@ -15,7 +15,6 @@ const ItemCard = ({ product }: ItemCartProps) => {
   const { getQuantityInCart, convertProductIdToCartId } = useHandleCartItem();
 
   const quantity = getQuantityInCart(id);
-
   const cartId = convertProductIdToCartId(id);
 
   return (
@@ -33,5 +32,9 @@ const ItemCard = ({ product }: ItemCartProps) => {
   );
 };
 
-const ItemCartMemo = memo(ItemCard);
+const equalProps = (prevProps: ItemCartProps, nextProps: ItemCartProps) => {
+  return prevProps.product.id === nextProps.product.id;
+};
+
+const ItemCartMemo = memo(ItemCard, equalProps);
 export default ItemCartMemo;
