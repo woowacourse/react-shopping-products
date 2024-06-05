@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { CartItemsContext } from '../../../context/CartItemsProvider';
 import Logo from '@_assets/images/logo.png';
 import CartIcon from '@_assets/images/cartIcon.png';
+import { PAGE_INFORMATION } from '@_constants/page';
 
 export default function Header() {
   return (
@@ -17,7 +18,7 @@ export default function Header() {
 function HomeButton() {
   const navigate = useNavigate();
   const moveToHome = () => {
-    navigate(0);
+    navigate(PAGE_INFORMATION.main.path);
   };
 
   return (
