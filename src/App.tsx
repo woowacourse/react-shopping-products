@@ -1,33 +1,30 @@
 import '@styles/App.css';
 import '@styles/reset.css';
 import '@styles/global.css';
-import { Header, Layout, PageRequestError } from '@components/index';
+import { CartActionErrorModal, Header, Layout, PageRequestError } from '@components/index';
+import { CartListContext } from '@contexts/index';
+import { useCartList } from '@hooks/index';
+import { ProductListPageSkeleton } from '@pages/ProductListPage/Skeleton';
 import { lazy, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-
-import { CartItemsContext } from './contexts';
-import { useCartItemIds } from './hooks';
-import ProductListPageSkeleton from './pages/ProductListPage/Skeleton/ProductListPageSkeleton/index.';
 
 const ProductListPage = lazy(() => import('@pages/ProductListPage'));
 
 function App() {
-  const { cartItemIds, refreshCartItemIds, error: cartItemsFetchError } = useCartItemIds();
+  const { error, cartListMap, isSuccess } = useCartList();
 
-  const cartItemsLength = cartItemIds ? Array.from(cartItemIds).length : 0;
   return (
-    <>
-      <Header cartItemsLength={cartItemsLength} cartItemsFetchError={cartItemsFetchError} />
+    <CartListContext.Provider value={{ cartListMap, isSuccess }}>
+      <Header />
       <Layout>
         <ErrorBoundary FallbackComponent={({ error }) => <PageRequestError error={error} />}>
-          <CartItemsContext.Provider value={{ cartItemIds, refreshCartItemIds }}>
-            <Suspense fallback={<ProductListPageSkeleton />}>
-              <ProductListPage />
-            </Suspense>
-          </CartItemsContext.Provider>
+          <Suspense fallback={<ProductListPageSkeleton />}>
+            <ProductListPage />
+          </Suspense>
         </ErrorBoundary>
+        <CartActionErrorModal error={error} />
       </Layout>
-    </>
+    </CartListContext.Provider>
   );
 }
 
