@@ -1,23 +1,37 @@
+import { CartItem } from '@appTypes/index';
+import { useCartList } from '@hooks/index';
 import CartItems from '@mocks/data/cartItems.json';
 import { BottomModal } from 'badahertz52-react-modules-components';
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import CartList from './CartList';
 import style from './style.module.css';
 import TotalAmount from './TotalAmount';
-import { CartItem } from '@src/appTypes';
 
 interface CartListModalProps {
-  isOpenModal: boolean;
-  setIsOpenModal: Dispatch<SetStateAction<boolean>>;
+  openModal: boolean;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
+  rootEl: HTMLElement | null;
 }
-const CartListModal = ({ isOpenModal, setIsOpenModal }: CartListModalProps) => {
-  const rootEl = document.getElementById('root');
+const CartListModal = ({ openModal, setOpenModal, rootEl }: CartListModalProps) => {
+  const { cartListMap, isLoading } = useCartList();
+  const cartList = cartListMap ? Array.from(cartListMap.values()) : undefined;
+
   return (
-    <BottomModal modalTargetEl={rootEl} openModal={isOpenModal} setOpenModal={setIsOpenModal} animationDuration={2000}>
+    <BottomModal modalTargetEl={rootEl} openModal={openModal} setOpenModal={setOpenModal} animationDuration={2000}>
       <p className={style.title}>장바구니</p>
-      <CartList />
-      <TotalAmount cartItems={CartItems as CartItem[]} />
+      {isLoading ? (
+        <>
+          <CartList.Skeleton />
+          <TotalAmount.Skeleton />
+        </>
+      ) : (
+        <>
+          <CartList cartList={cartList} />
+          <TotalAmount cartItems={CartItems as CartItem[]} />
+        </>
+      )}
+
       <BottomModal.CloseButtonWrapper>
         <button className={style.closeButton}>닫기</button>
       </BottomModal.CloseButtonWrapper>

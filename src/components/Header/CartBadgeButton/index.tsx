@@ -1,22 +1,23 @@
 import { CartIcon } from '@assets/index';
 import CartListModal from '@components/CartListModal';
-import { useState } from 'react';
+import { useOpenModal } from '@hooks/index';
+import { lazy, Suspense } from 'react';
 
-import style from './style.module.css';
-
-const BADGE_MAX_QUANTITY = 50;
+const CartQuantity = lazy(() => import('../CartQuantity'));
 
 interface CartActionButtonProps {
   // TODO : 삭제 (장바구니 받아오는 것으로, CartListModal에 props로 전달)
   cartItemsLength: number;
 }
+import style from './style.module.css';
 
 const CartBadgeButton = ({ cartItemsLength }: CartActionButtonProps) => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const quantityClassName = `${style.quantity} ${cartItemsLength > BADGE_MAX_QUANTITY ? style.over : ''}`;
+const CartBadgeButton = () => {
+  const { openModal, setOpenModal, rootEl } = useOpenModal({ isOpenModal: false });
 
   const handleClickButton = () => {
-    setIsOpenModal(true);
+    setOpenModal(true);
   };
 
   return (
@@ -29,7 +30,7 @@ const CartBadgeButton = ({ cartItemsLength }: CartActionButtonProps) => {
           </div>
         )}
       </button>
-      <CartListModal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
+      <CartListModal openModal={openModal} setOpenModal={setOpenModal} rootEl={rootEl} />
     </>
   );
 };
