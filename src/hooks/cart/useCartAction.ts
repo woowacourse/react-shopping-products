@@ -1,4 +1,4 @@
-import { fetchDeleteCartItems, fetchPostCartItems } from '@apis/index';
+import { fetchDeleteCartList, fetchPostCartList } from '@apis/index';
 
 import useFetch from '../useFetch';
 
@@ -7,8 +7,8 @@ interface UseCartActionProps {
 }
 
 const useCartAction = ({ refreshCartItemIds }: UseCartActionProps) => {
-  const postFetchResult = useFetch<typeof fetchPostCartItems>(fetchPostCartItems);
-  const deleteFetchResult = useFetch<typeof fetchDeleteCartItems>(fetchDeleteCartItems);
+  const postFetchResult = useFetch<typeof fetchPostCartList>(fetchPostCartList);
+  const deleteFetchResult = useFetch<typeof fetchDeleteCartList>(fetchDeleteCartList);
 
   const addCartItem = async (productId: number) => {
     await postFetchResult.fetch({ productId });
