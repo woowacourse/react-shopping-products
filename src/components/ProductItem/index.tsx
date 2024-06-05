@@ -46,7 +46,9 @@ const ProductItem = ({ id, imageUrl, name, price, cartItemId }: ProductItemProps
 
   return (
     <S.ProductItem>
-      <S.Image src={imageUrl} alt={name + '상품 사진'} />
+      <S.ImageWrapper>
+        <S.Image src={imageUrl} alt={name + '상품 사진'} />
+      </S.ImageWrapper>
       <S.InformationContainer>
         <S.Information>
           <S.Name>{name}</S.Name>

@@ -9,13 +9,18 @@ export const ProductItem = styled.li`
   box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 `;
 
-export const Image = styled.img`
+export const ImageWrapper = styled.div`
   width: 100%;
   height: 7rem;
+`;
+
+export const Image = styled.img`
+  width: 100%;
+  height: 100%;
 
   border-radius: 8px 8px 0 0;
 
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 export const InformationContainer = styled.div`
