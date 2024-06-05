@@ -47,7 +47,7 @@ const useProductListQuery = () => {
 
   return {
     page,
-    products: data?.pages,
+    products: data?.pages.flatMap((page) => page.content) || [],
     isSuccess,
     isLoading,
     error,

@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
 
 import LoadingImg from '@/assets/loading.gif';
+import { Product } from '@/types/product.type';
 import ProductItem from './ProductItem';
-import { ProductListState } from '@/types/product.type';
 import styled from '@emotion/styled';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 interface Props {
   isLoading: boolean;
-  products: ProductListState[];
+  products: Product[];
   page: number;
   getNextPage: () => void;
   hasNextPage: boolean;
@@ -39,11 +39,9 @@ const ProductList = ({
   return (
     <S.ListContainer>
       <S.GridContainer>
-        {products?.map((contents) =>
-          contents?.content.map((product) => (
-            <ProductItem key={product.id} item={product} />
-          ))
-        )}
+        {products?.map((product) => (
+          <ProductItem key={product.id} item={product} />
+        ))}
       </S.GridContainer>
 
       {isLoading && <S.LoadingImg src={LoadingImg} alt="loading" />}
