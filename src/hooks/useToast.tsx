@@ -1,54 +1,32 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import Toast from '@/components/Toast/Toast';
 import { createPortal } from 'react-dom';
-import styles from '../components/Toast/Toast.module.css';
 
-export type ToastType = 'alert';
-const MAX_TOAST_COUNT = 10;
-
-type Toast = {
-  message: string;
-  type: ToastType;
-  id?: number;
-};
-
-type ToastContextType = {
-  showToast: (toast: Toast) => void;
-};
+interface ToastContextType {
+  showToast: (message: string) => void;
+}
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
-  const [toastList, setToastList] = useState<Toast[]>([]);
+  const [message, setMessage] = useState<string | null>(null);
 
-  const showToast = (toast: Toast) => {
-    const id = Date.now();
-    const newToast = { ...toast, id };
-    setToastList((prev) => [newToast, ...prev].slice(0, MAX_TOAST_COUNT));
-
-    setTimeout(() => {
-      setToastList((prev) => prev.filter((t) => t.id !== id));
-    }, 3000);
-  };
+  const showToast = useCallback((msg: string) => {
+    setMessage(msg);
+    setTimeout(() => setMessage(null), 3000);
+  }, []);
 
   const target = document.getElementById('toast');
 
   if (target === null) {
-    console.error('포탈의 생성 위치가 올바르지 않습니다.');
+    console.error('toast를 띄우기 위한 포탈의 생성 위치가 올바르지 않습니다.');
     return;
   }
 
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {createPortal(
-        <ul className={styles['toast-list']}>
-          {toastList.map(({ message, type }, index) => (
-            <Toast type={type} key={index} message={message} />
-          ))}
-        </ul>,
-        target,
-      )}
+      {createPortal(<> {message && <Toast message={message} />}</>, target)}
     </ToastContext.Provider>
   );
 };

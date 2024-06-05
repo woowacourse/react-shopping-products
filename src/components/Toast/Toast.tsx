@@ -1,8 +1,7 @@
-import { ToastType } from '@/hooks/useToast';
 import styles from './Toast.module.css';
 
-const Toast = ({ message, type }: { message: string; type: ToastType }) => {
-  return <li className={`${styles.toast} ${type === 'alert' ? styles.alert : ''}`}>{message}</li>;
+const Toast = ({ message }: { message: string }) => {
+  return <div className={`${styles.toast}`}>{message}</div>;
 };
 
 export default Toast;
