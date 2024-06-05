@@ -1,4 +1,7 @@
+import { useCartItemQuantity } from '@hooks/index';
+
 import CountButton from '../CountButton';
+import { CartActionErrorModal } from '../Fallbacks';
 
 import style from './style.module.css';
 
@@ -8,16 +11,25 @@ interface QuantityControlProps {
 }
 
 const QuantityControl = ({ quantity, cartItemId }: QuantityControlProps) => {
-  const increaseQuantity = () => {};
+  const { mutate: quantityMutate, error } = useCartItemQuantity();
 
-  const decreaseQuantity = () => {};
+  const increaseQuantity = () => {
+    quantityMutate({ cartItemId, quantity: quantity + 1 });
+  };
+
+  const decreaseQuantity = () => {
+    quantityMutate({ cartItemId, quantity: quantity - 1 });
+  };
 
   return (
-    <div className={style.quantityControl}>
-      <CountButton quantitySign="minus" />
-      <span className="text">{quantity}</span>
-      <CountButton quantitySign="plus" />
-    </div>
+    <>
+      <div className={style.quantityControl}>
+        <CountButton quantitySign="minus" onClick={decreaseQuantity} />
+        <span className="text">{quantity}</span>
+        <CountButton quantitySign="plus" onClick={increaseQuantity} />
+      </div>
+      <CartActionErrorModal error={error} />
+    </>
   );
 };
 

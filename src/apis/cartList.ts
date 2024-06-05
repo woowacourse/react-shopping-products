@@ -58,3 +58,13 @@ export async function fetchDeleteCartList({ cartItemId }: { cartItemId: number }
     method: 'DELETE',
   });
 }
+
+export async function fetchPatchCartList({ cartItemId, quantity }: { cartItemId: number; quantity: number }) {
+  await fetchWithToken({
+    url: `${END_POINTS.cartItems}/${cartItemId}`,
+    method: 'PATCH',
+    body: JSON.stringify({
+      quantity: quantity,
+    }),
+  });
+}
