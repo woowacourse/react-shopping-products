@@ -10,6 +10,7 @@ interface CartItemModalProps {
 
 function CartItemModal({ isOpen, onToggle }: CartItemModalProps) {
   const { cartItems } = useLoadCartItems();
+  const totalAmount = cartItems?.reduce((acc, cur) => acc + cur.quantity * cur.product.price, 0);
 
   return (
     <Modal open={isOpen} onClose={onToggle} type="drawer" closeOnESCKeydown>
@@ -20,7 +21,7 @@ function CartItemModal({ isOpen, onToggle }: CartItemModalProps) {
           <hr className={style.hr} />
           <div className={style.totalPrice}>
             <p className={style.label}>총 결제 금액</p>
-            <p className={style.amount}>95,000원</p>
+            <p className={style.amount}>{totalAmount?.toLocaleString()}원</p>
           </div>
         </section>
       </Modal.Content>
