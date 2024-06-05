@@ -1,15 +1,15 @@
-import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useEffect, useRef } from "react";
 
 interface InfiniteScrollProps {
   fetchingFunction: () => void;
-  isAbleFetchNextPage: boolean;
+  hasNextPage: boolean;
   children: React.ReactNode;
 }
 
-const InfiniteScroll = ({ fetchingFunction, isAbleFetchNextPage, children }: InfiniteScrollProps) => {
+const InfiniteScroll = ({ fetchingFunction, hasNextPage, children }: InfiniteScrollProps) => {
   const targetRef = useRef<HTMLDivElement>(null);
-  const { isIntersecting } = useInfiniteScroll({ threshold: 0.25, rootMargin: "80px" }, targetRef);
+  const { isIntersecting } = useIntersectionObserver({ threshold: 0.25, rootMargin: "80px" }, targetRef);
 
   useEffect(() => {
     if (isIntersecting) {
@@ -20,7 +20,7 @@ const InfiniteScroll = ({ fetchingFunction, isAbleFetchNextPage, children }: Inf
   return (
     <>
       <div>{children}</div>
-      {isAbleFetchNextPage && <div ref={targetRef} />}
+      {hasNextPage && <div ref={targetRef} />}
     </>
   );
 };
