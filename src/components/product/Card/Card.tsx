@@ -1,8 +1,8 @@
 import * as Styled from './Card.styled';
 
-import { AddShoppingCartSvg, RemoveShoppingCartSvg } from '@assets/svg';
-
+import { AddShoppingCartSvg } from '@assets/svg';
 import { Product } from '@appTypes/product';
+import Stepper from '@components/common/Stepper/Stepper';
 import { formatKoreanCurrency } from '@utils/currency';
 
 interface CardProps {
@@ -19,20 +19,20 @@ const Card: React.FC<CardProps> = ({ product, isAddedCart, onToggleCart }) => {
         <Styled.ProductName>{product.name}</Styled.ProductName>
         <p>{`${formatKoreanCurrency(product.price)}`}</p>
         <Styled.CardToggleButtonContainer>
-          <Styled.CardToggleButton
-            $isAddedCart={isAddedCart}
-            onClick={onToggleCart}
-          >
-            {isAddedCart ? (
-              <>
-                <AddShoppingCartSvg /> <span>담기</span>
-              </>
-            ) : (
-              <>
-                <RemoveShoppingCartSvg /> <span>빼기</span>
-              </>
-            )}
-          </Styled.CardToggleButton>
+          {isAddedCart ? (
+            <Styled.CardToggleButton
+              $isAddedCart={isAddedCart}
+              onClick={onToggleCart}
+            >
+              <AddShoppingCartSvg /> <span>담기</span>
+            </Styled.CardToggleButton>
+          ) : (
+            <Stepper
+              handleDecreaseQuantity={() => {}}
+              handleIncreaseQuantity={() => {}}
+              quantity={1}
+            />
+          )}
         </Styled.CardToggleButtonContainer>
       </Styled.CardDescription>
     </Styled.CardContainer>
