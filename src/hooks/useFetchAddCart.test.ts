@@ -60,9 +60,8 @@ describe('useFetchAddCart', () => {
       result.current.addProductToCart(PRODUCT_ID);
     });
 
-    let cartItems = [];
     await waitFor(async () => {
-      cartItems = await result.current.fetchCart();
+      const cartItems = await result.current.fetchCart();
 
       expect(cartItems.some((item) => item.product.id === PRODUCT_ID)).toBe(
         true,
@@ -70,25 +69,31 @@ describe('useFetchAddCart', () => {
     });
   });
 
-  // it('장바구니에 제품을 두 개 추가하고 장바구니를 다시 불러왔을 때, 해당 제품들이 포함되어 있어야한다.', async () => {
-  //   const PRODUCT_ID_TWO = 2;
-  //   const PRODUCT_ID_THREE = 3;
-  //   const { result } = renderHook(() => useFetchAddCart());
+  it('장바구니에 제품을 두 개 추가하고 장바구니를 다시 불러왔을 때, 해당 제품들이 포함되어 있어야한다.', async () => {
+    const PRODUCT_ID_TWO = 2;
+    const PRODUCT_ID_THREE = 3;
+    const { result } = renderHook(() => useFetchAddCart());
 
-  //   act(() => {
-  //     result.current.patchToAddCart(PRODUCT_ID_TWO);
-  //     result.current.patchToAddCart(PRODUCT_ID_THREE);
-  //   });
+    act(() => {
+      result.current.addProductToCart(PRODUCT_ID_TWO);
+    });
+    act(() => {
+      result.current.addProductToCart(PRODUCT_ID_THREE);
+    });
 
-  //   expect(
-  //     (await result.current.fetchCart()).some(
-  //       (item) => item.id === PRODUCT_ID_TWO,
-  //     ),
-  //   ).toBe(true);
-  //   expect(
-  //     (await result.current.fetchCart()).some(
-  //       (item) => item.id === PRODUCT_ID_THREE,
-  //     ),
-  //   ).toBe(true);
-  // });
+    await waitFor(async () => {
+      expect(
+        (await result.current.fetchCart()).some(
+          (item) => item.product.id === PRODUCT_ID_TWO,
+        ),
+      ).toBe(true);
+    });
+    await waitFor(async () => {
+      expect(
+        (await result.current.fetchCart()).some(
+          (item) => item.product.id === PRODUCT_ID_TWO,
+        ),
+      ).toBe(true);
+    });
+  });
 });
