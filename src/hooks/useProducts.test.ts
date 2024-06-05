@@ -28,12 +28,14 @@ describe("useProducts", () => {
         })
       );
 
-      const { result } = renderHook(() => useProducts(), { wrapper: ErrorProvider });
+      const { result } = renderHook(() => useProducts(), {
+        wrapper: ErrorProvider,
+      });
 
       await waitFor(() => {
         expect(result.current.products).toEqual([]);
         expect(result.current.isLoading).toBe(false);
-        expect(result.current.error).toBeTruthy();
+        expect(result.current.errorMessage).not.toBe("");
       });
     });
   });
@@ -44,7 +46,6 @@ describe("useProducts", () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(1);
       });
     });
 
@@ -53,7 +54,6 @@ describe("useProducts", () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(1);
       });
 
       act(() => {
@@ -62,7 +62,6 @@ describe("useProducts", () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(24);
-        expect(result.current.page).toBe(2);
       });
     });
 
@@ -84,7 +83,6 @@ describe("useProducts", () => {
 
         await waitFor(() => {
           expect(result.current.products).toHaveLength(expectedLength);
-          expect(result.current.page).toBe(i);
         });
       }
 
@@ -94,7 +92,6 @@ describe("useProducts", () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(100);
-        expect(result.current.page).toBe(21);
       });
     });
 

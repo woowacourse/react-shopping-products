@@ -4,7 +4,7 @@ import { fetchProducts } from "../api/products";
 import usePagination from "./usePagination";
 
 interface UseProductsResult {
-  products: ProductProps[];
+  products: Product[];
   isLoading: boolean;
   fetchNextPage: () => void;
   isLastPage: boolean;
@@ -17,6 +17,8 @@ interface UseProductsResult {
     currentSortOption: string;
     changeSortOption: (value: string) => void;
   };
+
+  errorMessage: string;
 }
 
 const sortOptionsMap: { [key: string]: string } = {
@@ -25,13 +27,12 @@ const sortOptionsMap: { [key: string]: string } = {
 };
 
 const useProducts = (): UseProductsResult => {
-  const [products, setProducts] = useState<ProductProps[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { setErrorMessage } = useError();
-  const { page, isLastPage, handleLastPage, goToNextPage, resetPage } = usePagination();
-
   const [category, setCategory] = useState<string>("전체");
   const [sortOption, setSortOption] = useState<string>("price,asc");
+  const { page, isLastPage, handleLastPage, goToNextPage, resetPage } = usePagination();
+  const { errorMessage, setErrorMessage } = useError();
 
   const fetchParams = {
     page: page,
@@ -41,14 +42,11 @@ const useProducts = (): UseProductsResult => {
   };
 
   const getProducts = async () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
+
       const data = await fetchProducts(fetchParams);
-
-      setProducts((prevProducts) =>
-        page === 1 ? data.content : [...prevProducts, ...data.content]
-      );
-
+      setProducts((prevProducts) => [...prevProducts, ...data.content]);
       handleLastPage(data.last);
     } catch (error) {
       console.log(error);
@@ -90,6 +88,7 @@ const useProducts = (): UseProductsResult => {
     fetchNextPage,
     categoryState,
     sortOptionState,
+    errorMessage,
   };
 };
 
