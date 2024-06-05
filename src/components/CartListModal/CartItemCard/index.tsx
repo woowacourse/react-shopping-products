@@ -1,5 +1,6 @@
-import { CartItem } from '@src/appTypes';
-import QuantityControl from '@src/components/QuantityControl';
+import { CartItem } from '@appTypes/index';
+import { QuantityControl } from '@components/index';
+import { getSkeletonClassName } from '@utils/index';
 
 import style from './style.module.css';
 
@@ -23,5 +24,20 @@ const CartItemCard = ({ cartItem }: CartItemCardProps) => {
     </li>
   );
 };
+
+const Skeleton = () => {
+  return (
+    <li className={getSkeletonClassName(style.cartItemCard)}>
+      <div className={getSkeletonClassName(style.img)} />
+      <div className={getSkeletonClassName(style.info)}>
+        <p className={getSkeletonClassName(style.name)}></p>
+        <p className={getSkeletonClassName(style.price)}></p>
+      </div>
+      <button className={getSkeletonClassName(style.deleteButton)}></button>
+    </li>
+  );
+};
+
+CartItemCard.Skeleton = Skeleton;
 
 export default CartItemCard;

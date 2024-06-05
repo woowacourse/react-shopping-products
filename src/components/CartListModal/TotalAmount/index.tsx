@@ -1,4 +1,5 @@
-import { CartItem } from '@src/appTypes';
+import { CartItem } from '@appTypes/index';
+import { getSkeletonClassName } from '@utils/index';
 
 import style from './style.module.css';
 
@@ -14,5 +15,16 @@ const TotalAmount = ({ cartItems }: TotalAmountProps) => {
     </section>
   );
 };
+
+const Skeleton = () => {
+  return (
+    <section className={getSkeletonClassName(style.totalAmount)}>
+      <p className={getSkeletonClassName(style.title)}></p>
+      <p className={getSkeletonClassName(style.price)}></p>
+    </section>
+  );
+};
+
+TotalAmount.Skeleton = Skeleton;
 
 export default TotalAmount;
