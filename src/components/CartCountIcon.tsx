@@ -1,15 +1,19 @@
 import CartIcon from '@/assets/cart.svg?react';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
-import useCartListContext from '@/hooks/useCartListContext';
+import useGetCartListQuery from '@/hooks/cart/useGetCartListQuery';
 
-const CartCountIcon = () => {
-  const { cartList } = useCartListContext();
+interface Props {
+  onClick: () => void;
+}
+
+const CartCountIcon = ({ onClick }: Props) => {
+  const { data: cartList } = useGetCartListQuery();
 
   return (
-    <S.Container>
+    <S.Container onClick={onClick}>
       <CartIcon />
-      {cartList.length !== 0 && <S.Circle>{cartList.length}</S.Circle>}
+      {cartList?.length !== 0 && <S.Circle>{cartList?.length}</S.Circle>}
     </S.Container>
   );
 };
