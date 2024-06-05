@@ -33,14 +33,15 @@ const useFetchAddCart = () => {
     },
     [fetchCart, cartIdSet],
   );
-  useEffect(() => {
-    const fetchInitialCartId = async () => {
-      const cartItems = await fetchCart();
-      const newCartIdSet = new Set(cartItems.map((item) => item.product.id));
-      setCartIdSet(newCartIdSet);
-    };
-    fetchInitialCartId();
+  const updateCartIdFromServer = useCallback(async () => {
+    const cartItems = await fetchCart();
+    const newCartIdSet = new Set(cartItems.map((item) => item.product.id));
+    setCartIdSet(newCartIdSet);
   }, [fetchCart]);
+
+  useEffect(() => {
+    updateCartIdFromServer();
+  }, [updateCartIdFromServer]);
 
   return {
     cartIdSet,
