@@ -26,8 +26,8 @@ export async function getProducts({
     params.append("category", encodeURIComponent(category));
   }
 
-  params.append("sort", "id,asc");
   params.append("sort", `price,${encodeURIComponent(sort)}`);
+  params.append("sort", "id,asc");
 
   const url = `${PRODUCTS_ENDPOINT}?${params.toString()}`;
 
