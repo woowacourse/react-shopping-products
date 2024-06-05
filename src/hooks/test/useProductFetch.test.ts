@@ -1,9 +1,9 @@
-import { ToastProvider } from './../context/ToastProvider';
+import { ToastProvider } from './../../context/ToastProvider';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { useProductFetch } from './useProductFetch';
-import { productCategories, sortOptions } from '../constant/products';
+import { useProductFetch } from '../useProductFetch';
+import { productCategories, sortOptions } from '../../constant/products';
 
-describe('useProducts', () => {
+describe('useProductFetch 훅 테스트', () => {
   describe('상품 목록 조회', () => {
     const initialSelectBarCondition = {
       category: 'all',
