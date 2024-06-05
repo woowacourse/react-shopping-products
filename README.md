@@ -8,6 +8,7 @@
 - [x] 이전 값을 참조해 setState 시, callback을 활용하도록 수정
 - [x] useInfinityScroll을 더 general하게 만들기 - onIntersect와 threshold를 인자로 받도록
 - [x] productToCartIdMap을 useEffect가 아닌 cartItems를 fetch 해올 때 업데이트
+- [x] useCartItems에서 showToast 메서드 제거
 
 - 리팩토링
 - [x] hasMore가 아닌 response의 last 값을 사용해 마지막 페이지 판단, 요청 한번 줄이기

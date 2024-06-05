@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { addCartItem, deleteCartItem, fetchCartItem } from '../api';
 import { CartItemType, ProductType } from '../types';
-import { useToast } from './useToast';
 import { ERROR } from '../constant/message';
 
 export function useCartItems() {
@@ -9,7 +8,7 @@ export function useCartItems() {
   const [productToCartIdMap, setProductToCartIdMap] = useState<
     Record<ProductType['id'], CartItemType['id']>
   >({});
-  const { showToast } = useToast();
+  const [errorCartItemsFetch, setErrorCartItemsFetch] = useState({ isError: false, message: '' });
 
   const getCartItems = async () => {
     const cartItems = await fetchCartItem();
@@ -25,26 +24,35 @@ export function useCartItems() {
   };
 
   const pushCartItem = async (itemId: number) => {
+    setErrorCartItemsFetch({ isError: false, message: '' });
     try {
       await addCartItem(itemId);
       getCartItems();
       return true;
-    } catch (error) {
-      showToast({ message: ERROR.addProduct, duration: 3000 });
+    } catch {
+      setErrorCartItemsFetch({ isError: true, message: ERROR.addProduct });
       return false;
     }
   };
 
   const popCartItem = async (itemId: number) => {
+    setErrorCartItemsFetch({ isError: false, message: '' });
     try {
       await deleteCartItem(itemId);
       getCartItems();
       return true;
-    } catch (error) {
-      showToast({ message: ERROR.deleteProduct, duration: 3000 });
+    } catch {
+      setErrorCartItemsFetch({ isError: true, message: ERROR.deleteProduct });
       return false;
     }
   };
 
-  return { cartItems, productToCartIdMap, pushCartItem, popCartItem, getCartItems };
+  return {
+    cartItems,
+    productToCartIdMap,
+    errorCartItemsFetch,
+    pushCartItem,
+    popCartItem,
+    getCartItems,
+  };
 }

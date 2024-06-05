@@ -12,7 +12,14 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
   const { products, increaseNextPage, isLoading } = useProductFetch({
     selectBarCondition,
   });
-  const { cartItems, productToCartIdMap, pushCartItem, popCartItem, getCartItems } = useCartItems();
+  const {
+    cartItems,
+    productToCartIdMap,
+    errorCartItemsFetch,
+    pushCartItem,
+    popCartItem,
+    getCartItems,
+  } = useCartItems();
   const { selectedItems, handleSelect } = useProductSelection({
     cartItems,
     productToCartIdMap,
@@ -29,5 +36,12 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     handleCount(cartItems.length);
   }, [cartItems]);
 
-  return { products, increaseNextPage, selectedItems, handleSelect, isLoading };
+  return {
+    products,
+    increaseNextPage,
+    selectedItems,
+    handleSelect,
+    isLoading,
+    errorCartItemsFetch,
+  };
 }
