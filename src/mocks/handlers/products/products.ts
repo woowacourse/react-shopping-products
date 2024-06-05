@@ -8,6 +8,7 @@ export const productsHandler = http.get(`${APIClient.API_URL}/products`, ({ requ
   const url = new URL(request.url);
 
   const { page, size, category, sortStandard, sortOrder } = getQueryByURL(url);
+
   const sortingFunc = getSortingFunc(sortStandard, sortOrder);
 
   const filteredProduct = products.filter(

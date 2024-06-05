@@ -1,16 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 
 import { Product } from '@appTypes/product';
-import useFetch from '@hooks/useFetch';
-import usePagination from '@hooks/usePagination';
+
 import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
-import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
-import { getProductEndpoint } from '@hooks/product/useProducts/useProducts.util';
-import { InfinityScrollResponse } from '@appTypes/response';
 import {
   ProductDropdownOptionKeys,
   ProductDropdownOptions,
 } from '@components/product/ProductDropdown/ProductDropdown.type';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { fetchProducts } from '@apis/product/product';
 
 interface UseProductResult {
   products: Product[];
@@ -25,38 +23,33 @@ interface UseProductResult {
 }
 
 const useProducts = (): UseProductResult => {
-  const { page, resetPage, updateNextPage } = usePagination();
+  const { dropdownOptions, onSelectOption } = useSelectProductDropdown();
 
-  const resetProducts = () => setProducts([]);
-
-  const { dropdownOptions, onSelectOption } = useSelectProductDropdown(resetPage, resetProducts);
-
-  const [products, setProducts] = useState<Product[]>([]);
-
-  const showToast = useToastContext();
-
-  const { data, isLoading } = useFetch<InfinityScrollResponse<Product[]>>(
-    getProductEndpoint({ ...dropdownOptions, page }),
-    showToast
-  );
-
-  useEffect(() => {
-    if (!data) return;
-
-    setProducts((prev) => [...prev, ...data.content]);
-  }, [data]);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetching: isInfiniteScrollLoading,
+  } = useInfiniteQuery({
+    queryKey: ['products', dropdownOptions],
+    initialPageParam: 0,
+    queryFn: ({ pageParam }) => fetchProducts({ page: pageParam, ...dropdownOptions }),
+    getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
+  });
 
   const updateNextProductItem = useCallback(() => {
-    if (data?.last) return;
+    if (hasNextPage === false) return;
 
-    updateNextPage();
-  }, [updateNextPage, data]);
+    fetchNextPage();
+  }, [hasNextPage, fetchNextPage]);
+
+  const page = (data?.pageParams[data?.pageParams.length - 1] as number) ?? 0;
 
   return {
-    products,
+    products: data?.pages.flatMap((page) => page.content) ?? [],
     page,
     dropdownOptions,
-    isLoading,
+    isLoading: isInfiniteScrollLoading,
     updateNextProductItem,
     onSelectOption,
   };

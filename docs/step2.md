@@ -8,12 +8,12 @@
 
 ### 세부 기능 구현 목록
 
-- [ ] react query 초기 세팅(queryClient 내 전역 onError 로직 설정)
-- [ ] useProducts 내 useFetch를 useSuspenseQuery로 변경
-  - [ ] 초기 상품 목록을 잘 불러오는지 확인
-  - [ ] 상품 목록을 가져오기 전 fallback ui를 잘 보여주는지 확인
-  - [ ] 상품 필터링 & 정렬 잘 되는지 확인
-- [ ] 기존 테스트 코드를 잘 통과하는지 확인
+- [v] react query 초기 세팅(queryClient 내 전역 설정)
+- [v] useProducts 내 useFetch를 useSuspenseQuery로 변경
+  - [v] 초기 상품 목록을 잘 불러오는지 확인
+  - [v] 상품 목록을 가져오기 전 fallback ui를 잘 보여주는지 확인
+  - [v] 상품 필터링 & 정렬 잘 되는지 확인
+- [v] 기존 테스트 코드를 잘 통과하는지 확인
 
 ## step 2 - 상품 목록 가져올 때의 예외 처리 로직 개선
 

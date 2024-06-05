@@ -4,7 +4,7 @@ import {
 } from '@components/product/ProductDropdown/ProductDropdown.type';
 import { useState } from 'react';
 
-const useSelectProductDropdown = (onResetPage: () => void, onResetProducts: () => void) => {
+const useSelectProductDropdown = () => {
   const [dropdownOptions, setDropdownOptions] = useState<ProductDropdownOptions>({
     sort: 'asc',
     category: 'all',
@@ -17,8 +17,6 @@ const useSelectProductDropdown = (onResetPage: () => void, onResetProducts: () =
     if (dropdownOptions[type] === option) return;
 
     setDropdownOptions((prevDropdownOptions) => ({ ...prevDropdownOptions, [type]: option }));
-    onResetPage();
-    onResetProducts();
   };
 
   return {

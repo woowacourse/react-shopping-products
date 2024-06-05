@@ -21,7 +21,11 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
   const { products, dropdownOptions, isLoading, updateNextProductItem, onSelectOption } =
     useProducts();
 
-  const targetRef = useIntersectionObserver<HTMLDivElement>({ onIntersect: updateNextProductItem });
+  const targetRef = useIntersectionObserver<HTMLDivElement>({
+    onIntersect: () => {
+      updateNextProductItem();
+    },
+  });
 
   return (
     <>
