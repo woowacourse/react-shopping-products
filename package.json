@@ -18,7 +18,8 @@
     "@emotion/styled": "^11.11.5",
     "le-sserafim": "^0.0.11",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@testing-library/react": "^15.0.7",
