@@ -46,18 +46,18 @@ export const CartIconWrapper = styled.button`
 
 export const CartNumber = styled.div`
   position: absolute;
+  bottom: 0px;
+  right: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 21px;
   height: 21px;
   border-radius: 22px;
-  background-color: white;
-  bottom: 0px;
-  right: 0px;
-  padding-top: 1px;
+  background-color: ${({ theme }) => theme.color.primary.white};
   font-size: 10px;
   font-weight: 700;
+  color: ${({ theme }) => theme.color.primary.main};
 `;
 
 export const LoadingWrapper = styled.div`

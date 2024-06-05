@@ -1,6 +1,5 @@
-import TitleContainer from '../../components/TitleContainer/TitleContainer';
+import Layout from '../../components/Layout/Layout';
 import Dropdown from '../../components/Dropdown/Dropdown';
-import Header from '../../components/Header/Header';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import ProductItem from '../../components/ProductItem/ProductItem';
 
@@ -26,15 +25,18 @@ const ProductListPage = () => {
   const isAddPageAble = !error && !isLast;
 
   return (
-    <>
-      <Header>
+    <Layout>
+      <Layout.Header>
+        <p>SHOP</p>
         <S.CartIconWrapper>
           <img src={CartIcon} alt="장바구니 아이콘" />
-          <S.CartNumber>{cartItems.length <= SIZE.DEFAULT ? cartItems.length : `${SIZE.DEFAULT}+`}</S.CartNumber>
+          {cartItems.length > 0 && (
+            <S.CartNumber>{cartItems.length <= SIZE.DEFAULT ? cartItems.length : `${SIZE.DEFAULT}+`}</S.CartNumber>
+          )}
         </S.CartIconWrapper>
-      </Header>
-      <S.Layout>
-        <TitleContainer title="텐파의 쇼핑몰" />
+      </Layout.Header>
+      <Layout.Content>
+        <Layout.Title mainTitle="텐파의 쇼핑몰" />
 
         <S.DropdownContainer>
           <Dropdown options={CATEGORY_LIST} selectedOption={category} updateOption={handleCategory} />
@@ -65,9 +67,9 @@ const ProductListPage = () => {
             {loading && <S.LoadingSpinner src={Loading} alt="로딩 스피너" />}
           </S.LoadingWrapper>
         )}
-      </S.Layout>
+      </Layout.Content>
       <FloatingButton />
-    </>
+    </Layout>
   );
 };
 
