@@ -17,12 +17,9 @@ const CartBadge = () => {
   return (
     <S.Container onClick={() => (window.location.href = END_POINT.cartItemPage)}>
       <Icon kind="cart" />
-      {!cartItems ||
-        (cartItems.length !== 0 && (
-          <S.Badge>
-            <S.BadgeNumber>{cartItems.length}</S.BadgeNumber>
-          </S.Badge>
-        ))}
+      <S.Badge>
+        <S.BadgeNumber>{!cartItems || cartItems.length === 0 ? 0 : cartItems.length}</S.BadgeNumber>
+      </S.Badge>
     </S.Container>
   );
 };
