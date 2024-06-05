@@ -17,7 +17,7 @@ describe("useProducts 테스트", () => {
   it("상품 목록을 조회한다.", async () => {
     const sort = "낮은 가격순";
     const category = "전체";
-    const { result } = renderHook(() => useProducts({ sort, category, isIntersecting: false }), { wrapper });
+    const { result } = renderHook(() => useProducts({ sort, category }), { wrapper });
 
     const expectedLength = mockProducts.content.length;
 

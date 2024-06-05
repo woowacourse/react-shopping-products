@@ -38,11 +38,11 @@ export async function postCartItem({ productId, quantity }: PostCartItemParams):
 }
 
 export interface DeleteCartItemParams {
-  itemId: number;
+  productId: number;
 }
 
-export async function deleteCartItem({ itemId }: DeleteCartItemParams): Promise<Response> {
-  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${itemId}`, {
+export async function deleteCartItem({ productId }: DeleteCartItemParams): Promise<Response> {
+  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${productId}`, {
     method: "DELETE",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
   });

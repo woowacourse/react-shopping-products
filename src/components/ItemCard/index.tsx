@@ -5,6 +5,7 @@ import CartActionButton from "@/components/CartActionButton";
 import useHandleCartItem from "@/hooks/useHandleCartItem";
 import { memo } from "react";
 import QuantityUpdateButton from "@/components/QuantityUpdateButton";
+import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 
 interface ItemCartProps {
   product: Product;
@@ -12,6 +13,7 @@ interface ItemCartProps {
 
 const ItemCard = ({ product }: ItemCartProps) => {
   const { name, price, imageUrl, id } = product;
+  const { data: cartItems } = useCartItemsQuery();
   const { onClickCartItem, getQuantityInCart, isInCart } = useHandleCartItem();
 
   const quantity = getQuantityInCart(id);

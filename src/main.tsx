@@ -5,7 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import router from "@/router.tsx";
 import { ThemeProvider } from "styled-components";
 import { theme } from "@/styles/theme.ts";
-import CartItemProvider from "@/provider/cartItemProvider.tsx";
+// import CartItemProvider from "@/provider/cartItemProvider.tsx";
 import ToastsProvider from "@/provider/toastProvider.tsx";
 import Toasts from "@/components/_common/Toasts/Toasts.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -32,14 +32,12 @@ enableMocking().then(() => {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
-          <CartItemProvider>
-            <ToastsProvider>
-              <RouterProvider router={router} />
-              <GlobalStyles />
-              <ReactQueryDevtools initialIsOpen={false} />
-              <Toasts />
-            </ToastsProvider>
-          </CartItemProvider>
+          <ToastsProvider>
+            <RouterProvider router={router} />
+            <GlobalStyles />
+            <ReactQueryDevtools initialIsOpen={false} />
+            <Toasts />
+          </ToastsProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </React.StrictMode>
