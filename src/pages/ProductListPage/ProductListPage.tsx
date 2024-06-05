@@ -1,25 +1,21 @@
-import { useState } from 'react';
 import ProductItemList from './components/ProductItemList';
 import ProductListHeader from './components/ProductListHeader';
 import ProductListSelectBar from './components/ProductListSelectBar';
 import ProductListTitle from './components/ProductListTitle';
 import styles from './ProductListPage.module.css';
+import useProducts from '../../hooks/useProducts';
 
 const ProductListPage = () => {
-  const [cartItemCount, setCartItemCount] = useState(0);
-  const [selectBarCondition, setSelectBarCondition] = useState({
-    category: 'all',
-    sort: 'priceAsc',
-  });
-
-  const handleCount = (cartItemCount: number) => {
-    setCartItemCount(cartItemCount);
-  };
-
-  const handleSelectBarCondition = (filter: string, condition: string) => {
-    const newCondition = { ...selectBarCondition, [filter]: condition };
-    setSelectBarCondition(newCondition);
-  };
+  const {
+    products,
+    setPage,
+    hasMore,
+    selectedItems,
+    handleSelect,
+    isLoading,
+    cartItemCount,
+    handleSelectBarCondition,
+  } = useProducts();
 
   return (
     <div>
@@ -27,7 +23,14 @@ const ProductListPage = () => {
       <div className={styles.productContentContainer}>
         <ProductListTitle />
         <ProductListSelectBar handleSelectBarCondition={handleSelectBarCondition} />
-        <ProductItemList selectBarCondition={selectBarCondition} handleCount={handleCount} />
+        <ProductItemList
+          products={products}
+          setPage={setPage}
+          hasMore={hasMore}
+          selectedItems={selectedItems}
+          handleSelect={handleSelect}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

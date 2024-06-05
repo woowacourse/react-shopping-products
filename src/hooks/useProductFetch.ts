@@ -5,11 +5,11 @@ import { formattedKey } from './useProducts.util';
 import { useToast } from './useToast';
 import { calculatePageParams } from '../utils/calculatePageParams';
 
-interface Props {
-  selectBarCondition: Record<string, string>;
-}
-
-export function useProductFetch({ selectBarCondition }: Props) {
+export function useProductFetch() {
+  const [selectBarCondition, setSelectBarCondition] = useState({
+    category: 'all',
+    sort: 'priceAsc',
+  });
   const [products, setProducts] = useState<ProductType[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -21,6 +21,11 @@ export function useProductFetch({ selectBarCondition }: Props) {
     setPage(0);
     setHasMore(true);
   }, [selectBarCondition.category, selectBarCondition.sort]);
+
+  const handleSelectBarCondition = (filter: string, condition: string) => {
+    const newCondition = { ...selectBarCondition, [filter]: condition };
+    setSelectBarCondition(newCondition);
+  };
 
   const fetchMoreProducts = async () => {
     try {
@@ -48,5 +53,5 @@ export function useProductFetch({ selectBarCondition }: Props) {
     fetchMoreProducts();
   }, [page, selectBarCondition.category, selectBarCondition.sort]);
 
-  return { products, setPage, hasMore, isLoading };
+  return { products, setPage, hasMore, isLoading, handleSelectBarCondition, selectBarCondition };
 }

@@ -1,15 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useProductFetch } from './useProductFetch';
 import { useCartItems } from './useCartItems';
 import { useProductSelection } from './useProductSelection';
 
-interface Props {
-  selectBarCondition: Record<string, string>;
-  handleCount: (cartItemCount: number) => void;
-}
-
-export default function useProducts({ selectBarCondition, handleCount }: Props) {
-  const { products, setPage, hasMore, isLoading } = useProductFetch({ selectBarCondition });
+export default function useProducts() {
+  const { products, setPage, hasMore, isLoading, handleSelectBarCondition, selectBarCondition } =
+    useProductFetch();
   const { cartItems, idMap, pushCartItem, popCartItem, getCartItems } = useCartItems();
   const { selectedItems, handleSelect } = useProductSelection({
     cartItems,
@@ -18,14 +14,25 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     popCartItem,
     getCartItems,
   });
+  const [cartItemCount, setCartItemCount] = useState(0);
 
   useEffect(() => {
     getCartItems();
   }, []);
 
   useEffect(() => {
-    handleCount(cartItems.length);
+    setCartItemCount(cartItems.length);
   }, [cartItems]);
 
-  return { products, setPage, hasMore, selectedItems, handleSelect, isLoading };
+  return {
+    products,
+    setPage,
+    hasMore,
+    selectedItems,
+    handleSelect,
+    isLoading,
+    cartItemCount,
+    handleSelectBarCondition,
+    selectBarCondition,
+  };
 }

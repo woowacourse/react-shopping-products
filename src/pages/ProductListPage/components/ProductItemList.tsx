@@ -1,19 +1,27 @@
 import ProductItem from './ProductItem';
-import useProducts from '../../../hooks/useProducts';
 import { useInfinityScroll } from '../../../hooks/useInfinityScroll';
 import Loader from '../../../components/Loader/Loader';
 import styles from '../ProductListPage.module.css';
+import { ProductType } from '../../../types';
+import { Dispatch, SetStateAction } from 'react';
 
 interface Props {
-  handleCount: (cartItemCount: number) => void;
-  selectBarCondition: Record<string, string>;
+  products: ProductType[];
+  setPage: Dispatch<SetStateAction<number>>;
+  hasMore: boolean;
+  selectedItems: Set<number>;
+  handleSelect: (id: number) => void;
+  isLoading: boolean;
 }
 
-const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
-  const { products, setPage, hasMore, selectedItems, handleSelect, isLoading } = useProducts({
-    selectBarCondition,
-    handleCount,
-  });
+const ProductItemList = ({
+  products,
+  setPage,
+  hasMore,
+  selectedItems,
+  handleSelect,
+  isLoading,
+}: Props) => {
   const { lastProductElementRef } = useInfinityScroll({ hasMore, setPage });
 
   return (
