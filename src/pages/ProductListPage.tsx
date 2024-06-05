@@ -12,16 +12,25 @@ import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import Dropdown from '@/components/Dropdown/Dropdown';
 
 export default function ProductListPage() {
-  const { productList, handleCategory, handleSortType, loading, fetchNextPage } = useProductList();
+  const {
+    data: productList,
+    handleCategory,
+    handleSortType,
+    isLoading,
+    fetchNextPage,
+    isSuccess,
+    isFetching,
+  } = useProductList();
 
   const bottom = useRef(null);
 
   const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
-    !loading && entry.isIntersecting && fetchNextPage();
+    !isLoading && entry.isIntersecting && fetchNextPage();
 
   useObserver({
     target: bottom,
     onIntersect,
+    rootMargin: '500px', // 바닥에 덜 잫도록
   });
 
   return (
@@ -49,11 +58,16 @@ export default function ProductListPage() {
             />
           </Flex>
         </div>
-        <ProductList productList={productList} />
+        {isSuccess && <ProductList productList={productList} />}
       </Flex>
 
-      <div ref={bottom} />
-      {loading && <LoadingSpinner />}
+      {!isFetching && (
+        <div
+          ref={bottom}
+          style={{ width: '100px', height: '1px', backgroundColor: 'lightGreen' }}
+        ></div>
+      )}
+      {isLoading && <LoadingSpinner />}
     </div>
   );
 }
