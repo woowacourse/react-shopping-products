@@ -36,7 +36,7 @@ export const ProductList = ({
   return (
     <StyledProductList>
       {products.map((product, index) => (
-        <div ref={products.length === index + 1 ? lastProductElementRef : null} key={product.id}>
+        <div ref={index === products.length - 1 ? lastProductElementRef : null} key={product.id}>
           <ProductItem
             id={product.id}
             imageUrl={product.imageUrl}
