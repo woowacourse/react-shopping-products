@@ -1,4 +1,5 @@
-import { Button, CountButton } from "@components/Button/index";
+import { Button } from "@components/Button/index";
+import CountControlButtonBundle from "../CountControlButtonBundle/CountControlButtonBundle";
 import * as MI from "./ModalInner.style";
 
 const CartItem = () => {
@@ -11,11 +12,11 @@ const CartItem = () => {
       <MI.CartItemContent>
         <p className="cart-item_content_name">상품 이름</p>
         <span className="cart-item_content_price">35,000원</span>
-        <div className="cart-item_content_amount-bundle">
-          <CountButton type="minus" onClick={() => {}} />
-          <span className="product-item_content_amount">3</span>
-          <CountButton type="plus" onClick={() => {}} />
-        </div>
+        <CountControlButtonBundle
+          amount={2}
+          handleDecrementAmount={() => {}}
+          handleIncrementAmount={() => {}}
+        />
       </MI.CartItemContent>
       <MI.CartItemDeleteButton>
         <Button text="삭제" onClick={() => {}} />
