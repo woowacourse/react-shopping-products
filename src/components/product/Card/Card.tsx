@@ -8,10 +8,20 @@ import { formatKoreanCurrency } from '@utils/currency';
 interface CardProps {
   product: Product;
   isAddedCart: boolean;
-  onToggleCart: () => void;
+  addToCart: (productId: number) => void;
+  increaseCartItemQuantity: (productId: number) => void;
+  decreaseCartItemQuantity: (productId: number) => void;
+  getQuantity: (productId: number) => number;
 }
 
-const Card: React.FC<CardProps> = ({ product, isAddedCart, onToggleCart }) => {
+const Card: React.FC<CardProps> = ({
+  product,
+  isAddedCart,
+  addToCart,
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity,
+  getQuantity,
+}) => {
   return (
     <Styled.CardContainer>
       <Styled.CardImage src={product.imageUrl} alt={product.name} />
@@ -22,15 +32,19 @@ const Card: React.FC<CardProps> = ({ product, isAddedCart, onToggleCart }) => {
           {isAddedCart ? (
             <Styled.CardToggleButton
               $isAddedCart={isAddedCart}
-              onClick={onToggleCart}
+              onClick={() => addToCart(product.id)}
             >
               <AddShoppingCartSvg /> <span>담기</span>
             </Styled.CardToggleButton>
           ) : (
             <Stepper
-              handleDecreaseQuantity={() => {}}
-              handleIncreaseQuantity={() => {}}
-              quantity={1}
+              handleIncreaseQuantity={() =>
+                increaseCartItemQuantity(product.id)
+              }
+              handleDecreaseQuantity={() =>
+                decreaseCartItemQuantity(product.id)
+              }
+              quantity={getQuantity(product.id)}
             />
           )}
         </Styled.CardToggleButtonContainer>
