@@ -53,6 +53,25 @@ const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
     },
   });
 
+  const patchCartItemQuantityMutaion = useMutation({
+    mutationFn: async ({
+      cartItemId,
+      quantity,
+    }: {
+      cartItemId: number;
+      quantity: number;
+    }) => patchCartItem({ cartItemId, quantity }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
+      updateCartListContext();
+      setIsInCart(true);
+    },
+    onError: () => {
+      createToast('⛔️ 상품을 제거하는데 실패했습니다. 다시 시도해 주세요.');
+    },
+  });
+
   const handleAddCartItem = () => {
     addToCartMutation.mutate(productId);
   };
@@ -66,10 +85,23 @@ const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
     }
   };
 
+  const handlePatchCartItem = ({ quantity }: { quantity: number }) => {
+    const cartItemId = cartList?.find(
+      (cartItem) => cartItem.product.id === productId,
+    )?.id;
+    if (cartItemId) {
+      patchCartItemQuantityMutaion.mutate({ cartItemId, quantity });
     }
   };
 
-  return { isInCart, handleAddCartItem, handleRemoveCartItem, loading, error };
+  return {
+    isInCart,
+    handleAddCartItem,
+    handleRemoveCartItem,
+    handlePatchCartItem,
+    loading: addToCartMutation.isPending || removeFromCartMutation.isPending,
+    error: addToCartMutation.isError || removeFromCartMutation.isError,
+  };
 };
 
 export default useCartItemHandler;
