@@ -46,5 +46,7 @@
     - [x] 장바구니에 상품 빼기
 
 - Test
-- useProducts 훅
-- usePagination 훅
+  - [x] useProducts 훅
+    - [x] 상품 목록 조회
+  - [x] usePagination 훅
+    - [x] 페이지네이션
