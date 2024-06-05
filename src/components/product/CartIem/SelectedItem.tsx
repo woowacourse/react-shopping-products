@@ -6,13 +6,23 @@ import { formatKoreanCurrency } from '@utils/currency';
 
 interface CartItemProps {
   cartItem: CartItem;
+  deleteItem: (id: number) => void;
+  increaseItemQuantity: (id: number) => void;
+  decreaseItemQuantity: (id: number) => void;
 }
 
-export default function SelectedItem({ cartItem }: CartItemProps) {
+export default function SelectedItem({
+  cartItem,
+  deleteItem,
+  increaseItemQuantity,
+  decreaseItemQuantity,
+}: CartItemProps) {
   return (
     <Styled.SelectedItemContainer>
       <Styled.SelectedItemContent>
-        <Styled.DeleteButton>삭제</Styled.DeleteButton>
+        <Styled.DeleteButton onClick={() => deleteItem(cartItem.id)}>
+          삭제
+        </Styled.DeleteButton>
         <Styled.ProductImageBox
           src={cartItem.product.imageUrl}
           alt={cartItem.product.name}
@@ -23,9 +33,9 @@ export default function SelectedItem({ cartItem }: CartItemProps) {
             {formatKoreanCurrency(cartItem.product.price)}
           </Styled.ProductPrice>
           <Stepper
-            handleDecreaseQuantity={() => {}}
-            handleIncreaseQuantity={() => {}}
-            quantity={1}
+            handleDecreaseQuantity={() => decreaseItemQuantity(cartItem.id)}
+            handleIncreaseQuantity={() => increaseItemQuantity(cartItem.id)}
+            quantity={cartItem.quantity}
           />
         </Styled.ProductInfoBox>
       </Styled.SelectedItemContent>
