@@ -1,5 +1,5 @@
 import { addCartItem, deleteCartItem } from "@src/apis/cartItems";
-import { useCartItems } from "@src/contexts/cartItems/useCartItems";
+import { useCartItems } from "@hooks/query/useCartItems";
 
 interface UseCartActionsReturn {
   addToCart: (productId: number, quantity: number) => Promise<void>;
