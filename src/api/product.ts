@@ -4,11 +4,11 @@ import { ProductItem } from "@/types";
 export const getProducts = async (
   page: number,
   size: number
-): Promise<ProductItem[]> => {
-  const data = await fetchAPI<{ content: ProductItem[] }>({
+): Promise<{ totalPages: number; content: ProductItem[] }> => {
+  const data = await fetchAPI<{ totalPages: number; content: ProductItem[] }>({
     url: `products?page=${page}&size=${size}`,
     method: "GET",
   });
 
-  return data.content;
+  return data;
 };

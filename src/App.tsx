@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { AppLayout, ProductListLayout } from "@/layout";
 import {
   Cart,
@@ -8,6 +9,7 @@ import {
   ProductListTitle,
 } from "@/components";
 import type { ProductItem } from "./types";
+import { getProducts } from "@/api/product";
 
 function App() {
   const productList: ProductItem[] = [
@@ -172,6 +174,23 @@ function App() {
       category: "electronics",
     },
   ];
+
+  const {
+    data,
+    // error,
+    // fetchNextPage,
+    // hasNextPage,
+    // isFetching,
+    // isFetchingNextPage,
+    // status,
+  } = useInfiniteQuery({
+    queryKey: ["products"],
+    queryFn: ({ pageParam }) => getProducts(pageParam, 20),
+    initialPageParam: 0,
+    getNextPageParam: () => 1,
+  });
+
+  console.log(data);
 
   return (
     <AppLayout>
