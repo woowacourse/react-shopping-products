@@ -1,6 +1,6 @@
 import { HttpResponse, http } from 'msw';
 
-import products from './products.json';
+import productsData from './products.json';
 
 import { PRODUCTS_ENDPOINT } from '../api/endpoints';
 import {
@@ -22,6 +22,7 @@ const orderByPrice = (products: Product[], order: Order) => {
 
 export const handlers = [
   http.get(PRODUCTS_ENDPOINT, ({ request }) => {
+    const products = productsData as Product[];
     const url = new URL(request.url);
 
     const page = Number(url.searchParams.get('page') || '0');
