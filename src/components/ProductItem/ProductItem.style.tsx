@@ -43,19 +43,15 @@ export const CartButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-export const CartButton = styled.button`
-  display: flex;
-  align-items: center;
-  column-gap: 5px;
-  padding: 5px 10px;
-  border-radius: 4px;
-  background-color: black;
-  color: white;
-  font-size: 12px;
-  font-weight: 700;
-`;
-
-export const Icon = styled.img`
+export const AddCartIcon = styled.img`
   width: 16px;
   height: 16px;
+`;
+
+export const CartItemQuantityControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  // font: var(--cart-label);
+  // color: var(--grey-400);
 `;
