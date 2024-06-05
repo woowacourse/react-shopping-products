@@ -13,7 +13,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <div className="product-card__contents">
         <p className="product-name">{product.name}</p>
         <p className="text">{product.price.toLocaleString()}원</p>
-        <CartActionButton productId={product.id} cartItem={null} />
+        <CartActionButton productId={product.id} />
       </div>
     </li>
   );

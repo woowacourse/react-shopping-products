@@ -22,8 +22,8 @@ function App() {
             <ProductListPage />
           </Suspense>
         </ErrorBoundary>
-        <CartActionErrorModal error={error} />
       </Layout>
+      <CartActionErrorModal error={error} />
     </CartListContext.Provider>
   );
 }
