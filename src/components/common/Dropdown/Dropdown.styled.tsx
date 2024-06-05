@@ -64,7 +64,7 @@ export const Option = styled.li<{ isSelected: boolean }>`
     cursor: pointer;
   }
 
-  &:first-child {
+  &:first-of-type {
     border-radius: 5px 5px 0 0;
   }
 
