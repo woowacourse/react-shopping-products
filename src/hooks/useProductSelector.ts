@@ -1,58 +1,84 @@
-import { deleteCartItem, postCartItem } from '@/api/cartItem';
 import { useEffect, useState } from 'react';
 
-import useCartListContext from '@/hooks/useCartListContext';
+import { useAddToCartListQuery } from './cart/useAddToCartListQuery';
+import useChangeItemQuantity from './cart/useChangeItemQuantity';
+import { useDeleteFromCartListQuery } from './cart/useDeleteFromCartListQuery';
+import useGetCartListQuery from './cart/useGetCartListQuery';
 
 const useProductSelector = (productId: number) => {
-  const { cartList, fetchCartList } = useCartListContext();
+  const { data: cartList } = useGetCartListQuery();
 
+  const { mutate: addCartItem } = useAddToCartListQuery();
+  const { mutate: deleteCartItem } = useDeleteFromCartListQuery();
+  const { mutate: changeQuantity } = useChangeItemQuantity();
+
+  const [cartItemId, setCartId] = useState(0);
+  const [quantity, setQuantity] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
-    const isInCart = cartList.some((item) => item.product.id === productId);
-    setIsSelected(isInCart);
+    const cartItem = cartList?.find((item) => item.product.id === productId);
+
+    if (cartItem) {
+      setCartId(cartItem.id);
+      setQuantity(cartItem.quantity);
+      setIsSelected(true);
+    } else {
+      setIsSelected(false);
+    }
   }, [cartList, productId]);
 
-  const addCartItem = async () => {
-    try {
-      setIsLoading(true);
-
-      await postCartItem(productId);
-
-      setIsSelected(true);
-      fetchCartList();
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleAddCartItem = () => {
+    addCartItem(productId, {
+      onSuccess: () => {
+        setIsSelected(true);
+        setQuantity(1);
+      },
+      onError: (error) => {
+        setError(error);
+      },
+    });
   };
 
-  const removeCartItem = async () => {
-    try {
-      setIsLoading(true);
+  const handleDeleteCartItem = () => {
+    deleteCartItem(cartItemId, {
+      onSuccess: () => {
+        setIsSelected(false);
+        setQuantity(0);
+      },
+      onError: (error) => {
+        setError(error);
+      },
+    });
+  };
 
-      const index = cartList.find((item) => item.product.id === productId);
-      await deleteCartItem(index?.id as number);
-
-      setIsSelected(false);
-      fetchCartList();
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleChangeQuantity = (quantity: number) => {
+    changeQuantity(
+      {
+        cartItemId,
+        quantity,
+      },
+      {
+        onSuccess: () => {
+          setIsSelected(true);
+          setQuantity(quantity);
+        },
+        onError: (error) => {
+          setError(error);
+        },
+      }
+    );
   };
 
   return {
     isSelected,
-    isLoading,
+    quantity,
     error,
-    addCartItem,
-    removeCartItem,
+    handleAddCartItem,
+    handleDeleteCartItem,
+    handleChangeQuantity,
   };
 };
 
