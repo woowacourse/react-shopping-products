@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 interface UseToastModalPositionProps {
   targetEl: HTMLElement | undefined | null;
@@ -32,16 +32,15 @@ function useToastModalPosition({ targetEl, placement }: UseToastModalPositionPro
     };
   };
 
-  const updateToastModalPosition = () => {
-    if (!targetEl) return console.error('토스트 모달을 열 위치를 찾을 수 없습니다.');
-
+  const updateToastModalPosition = (targetEl: HTMLElement) => {
     const domRect = targetEl.getBoundingClientRect();
 
     setToastModalPosition(getPosition(domRect));
   };
 
-  useEffect(() => {
-    updateToastModalPosition();
+  useLayoutEffect(() => {
+    if (!targetEl) return;
+    updateToastModalPosition(targetEl);
   }, [targetEl]);
 
   return { toastModalPosition };
