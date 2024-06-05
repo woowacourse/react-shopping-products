@@ -13,9 +13,13 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.40.0",
+    "@tanstack/react-query-devtools": "^5.40.1",
+    "@testing-library/jest-dom": "^6.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-error-boundary": "^4.0.13"
+    "react-error-boundary": "^4.0.13",
+    "ts-jest": "^29.1.4"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.4.0",
@@ -39,7 +43,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "eslint-plugin-storybook": "^0.8.0",
-    "msw": "^2.3.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "msw": "^2.3.1",
     "storybook": "^8.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
