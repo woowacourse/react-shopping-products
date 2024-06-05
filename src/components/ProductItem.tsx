@@ -1,8 +1,8 @@
 import { FlexColumn, FlexRow, FlexSpaceBetween } from '@/style/common.style';
 
 import CartInButton from './button/CartInButton';
-import CartOutButton from './button/CartOutButton';
 import { Product } from '@/types/product.type';
+import QuantityBox from './QuantityBox';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
 import { useEffect } from 'react';
@@ -15,8 +15,14 @@ interface Props {
 
 const ProductItem = ({ item }: Props) => {
   const { id, imageUrl, name, price } = item;
-  const { isSelected, error, addCartItem, removeCartItem } =
-    useProductSelector(id);
+  const {
+    isSelected,
+    quantity,
+    error,
+    handleAddCartItem,
+    handleChangeQuantity,
+  } = useProductSelector(id);
+
   const { setError } = useErrorContext();
 
   useEffect(() => {
@@ -36,13 +42,12 @@ const ProductItem = ({ item }: Props) => {
           </S.InfoText>
           <S.ButtonWrapper>
             {isSelected ? (
-              <CartOutButton onClick={removeCartItem} />
               <QuantityBox
                 quantity={quantity}
                 handleQuantity={handleChangeQuantity}
               />
             ) : (
-              <CartInButton onClick={addCartItem} />
+              <CartInButton onClick={handleAddCartItem} />
             )}
           </S.ButtonWrapper>
         </S.InfoWrapper>
