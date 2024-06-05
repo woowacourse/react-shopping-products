@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { SCREEN_WIDTH_REM } from "../styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "../assets/cart.svg";
-import { useContext, useState } from "react";
-import CartItemsContext from "../store/cartItems";
+import { useState } from "react";
 import ShoppingCartModal from "./Modal/ShoppingCartModal";
 import Portal from "../portal/Portal";
 
+import useCartItems from "../hooks/useCartItems";
+
 const ShopHeader = () => {
-  const { cartItems, isLoading } = useContext(CartItemsContext);
+  const { cartItems, isLoading, error } = useCartItems();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const setModalOpenHandler = () => {
@@ -25,7 +26,7 @@ const ShopHeader = () => {
         >
           <CartIcon />
           <S.Badge>
-            <S.CircleContent>{isLoading || cartItems.length}</S.CircleContent>
+            <S.CircleContent>{isLoading || cartItems?.length}</S.CircleContent>
           </S.Badge>
         </S.CartButton>
       </S.Header>

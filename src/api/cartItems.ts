@@ -17,7 +17,15 @@ export const getCartItems = async () => {
   };
 };
 
-export const addCartItem = async (productId: number, quantity: number) => {
+export interface addCartItemProps {
+  productId: number;
+  quantity: number;
+}
+
+export const addCartItem = async ({
+  productId,
+  quantity,
+}: addCartItemProps) => {
   await cartClient.post(API_URL.cartItems, { productId, quantity });
 };
 

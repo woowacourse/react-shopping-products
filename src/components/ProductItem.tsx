@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { ReactComponent as AddToCartIcon } from "../assets/addToCart.svg";
 import { ReactComponent as DeleteFromCartIcon } from "../assets/deleteFromCart.svg";
-import { addCartItem, deleteCartItem } from "../api/cartItems";
-import { useContext } from "react";
-import CartItemsContext from "../store/cartItems";
+
 import { MAX_CART_ITEM_COUNT } from "../constants/cartItems";
+
+import useAddCartItem from "../hooks/useAddCartItem";
+import useDeleteCartItem from "../hooks/useDeleteCartItem";
+import useCartItems from "../hooks/useCartItems";
 
 interface ProductItemProps {
   id: number;
@@ -14,32 +16,41 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
-  const { cartItems, refetch: refetchCartItems } = useContext(CartItemsContext);
+  const { cartItems, isLoading, error } = useCartItems();
+  const addMutation = useAddCartItem();
+  const deleteMutation = useDeleteCartItem();
 
-  const handleAddToCart = async () => {
+  // NOTE: data = cartItems (장바구니에 있는 아이템 리스트)
+  // 즉 아래 코드는 현재 ProductItem이 장바구니에 존재하는지 검사하고, 존재하는 경우 그 id를 가져옴
+  const cartItemId = cartItems?.find(
+    (cartItem) => cartItem.product.id === id
+  )?.id;
+
+  const handleAddToCart = () => {
     try {
-      if (cartItems.length < MAX_CART_ITEM_COUNT) {
-        await addCartItem(id, 1);
-        await refetchCartItems();
+      if (cartItems && cartItems.length < MAX_CART_ITEM_COUNT) {
+        addMutation.mutate({ productId: id, quantity: 1 });
       } else {
         alert("장바구니에 담을 수 있는 상품의 개수는 20개까지입니다.");
       }
     } catch {
-      alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요,");
+      alert(
+        "상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요,"
+      );
     }
   };
 
-  const targetCartItemId = cartItems.find((cartItem) => cartItem.product.id === id)?.id;
-  const handleDeleteFromCart = async () => {
+  const handleDeleteFromCart = () => {
     try {
-      if (targetCartItemId) {
-        await deleteCartItem(targetCartItemId);
-        await refetchCartItems();
+      if (cartItemId) {
+        deleteMutation.mutate(cartItemId);
       } else {
         alert("해당 상품이 장바구니에 없습니다.");
       }
-    } catch {
-      alert("상품을 장바구니에서 빼는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    } catch (error) {
+      alert(
+        "상품을 장바구니에서 빼는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
+      );
     }
   };
 
@@ -51,14 +62,18 @@ const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
         <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
       </S.ProductInfo>
       <S.ButtonWrapper>
-        {targetCartItemId ? (
+        {cartItemId ? (
           <S.DeleteFromCartIcon
             role="button"
             aria-label="상품 빼기"
             onClick={handleDeleteFromCart}
           />
         ) : (
-          <S.AddToCartIcon role="button" aria-label="상품 담기" onClick={handleAddToCart} />
+          <S.AddToCartIcon
+            role="button"
+            aria-label="상품 담기"
+            onClick={handleAddToCart}
+          />
         )}
       </S.ButtonWrapper>
     </S.Container>
