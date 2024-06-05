@@ -51,4 +51,7 @@ export const handlers = [
       last: (page + 1) * size >= filteredProducts.length,
     });
   }),
+  http.get(`${API_URL}/cart-items`, () => {
+    return HttpResponse.json(cartItems);
+  }),
 ];
