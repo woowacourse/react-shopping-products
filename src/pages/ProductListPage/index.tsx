@@ -5,6 +5,7 @@ import { Suspense, useState } from 'react';
 
 import style from './style.module.css';
 import ProductList from './ProductList';
+import { ProductCardSkeleton } from '@components/Fallbacks';
 
 function ProductListPage() {
   const [filtering, setFiltering] = useState<Filtering>({ category: '', sort: 'price,asc' });
@@ -22,7 +23,7 @@ function ProductListPage() {
         <Dropdown label="카테고리" name="category" options={CATEGORY_OPTIONS} onChange={handleChangeOption} />
         <Dropdown label="가격순" name="sort" options={PRICE_SORT_OPTIONS} onChange={handleChangeOption} />
       </div>
-      <Suspense fallback={<div>로딩 중...</div>}>
+      <Suspense fallback={<ProductCardSkeleton />}>
         <ProductList filtering={filtering} />
       </Suspense>
     </div>

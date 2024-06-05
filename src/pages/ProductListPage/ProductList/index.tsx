@@ -7,6 +7,7 @@ import style from './style.module.css';
 import useLoadProducts from '@queries/product/useLoadProducts';
 import IntersectionObserverArea from '@components/IntersectionObserverArea';
 import useLoadCartItems from '@queries/cart/useLoadCartItems';
+import { ProductCardSkeleton } from '@components/Fallbacks';
 
 interface ProductListProps {
   filtering: Filtering;
@@ -41,11 +42,11 @@ function ProductList({ filtering }: ProductListProps) {
           {products.map((product) => (
             <ProductCard key={product.id} product={product} cartItem={getCartItem(product.id)} />
           ))}
-          {isLoading && <div>로딩 중</div>}
           <div className={style.target} ref={targetRef}>
             <span>target</span>
           </div>
         </ul>
+        {isLoading && <ProductCardSkeleton />}
       </section>
     </IntersectionObserverArea>
   );
