@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import CartItemQuantityController from "@components/ProductFeedPage/CartItemQuantityController";
 import { formatToKRW } from "@utils/formatToKRW";
+import ImageWithFallback from "../common/ImageWithFallback";
 
 interface ProductInfo {
   id: number;
@@ -38,7 +39,7 @@ const S = {
     width: 48%;
   `,
 
-  ProductImage: styled.img`
+  ProductImage: styled(ImageWithFallback)`
     width: 100%;
     height: 11rem;
     object-fit: cover;

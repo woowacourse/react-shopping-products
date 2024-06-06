@@ -16,6 +16,7 @@ export const GlobalStyle = createGlobalStyle`
 export const SCREEN_WIDTH_REM = 44;
 
 export const GlobalLayout = styled.div`
+  min-width: ${SCREEN_WIDTH_REM}rem;
   max-width: ${SCREEN_WIDTH_REM}rem;
   height: 100vh;
   margin: 0 auto;
