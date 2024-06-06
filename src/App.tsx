@@ -1,7 +1,7 @@
-import GlobalStyle from './styles/reset';
-import ProductPage from './pages/ProductPage';
+import GlobalStyle from "./styles/reset";
+import ProductPage from "./pages/ProductPage";
 
-import './App.css';
+import "./App.css";
 
 function App() {
   return (

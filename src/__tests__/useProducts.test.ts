@@ -1,17 +1,17 @@
-import { renderHook, waitFor, act } from '@testing-library/react';
-import { HttpResponse, http } from 'msw';
-import { server } from '../mocks/server';
-import { ProductsUnfilteredInitial, ProductsUnfilteredLast } from '../mocks/products';
+import { renderHook, waitFor, act } from "@testing-library/react";
+import { HttpResponse, http } from "msw";
+import { server } from "../mocks/server";
+import { ProductsUnfilteredInitial, ProductsUnfilteredLast } from "../mocks/products";
 
-import { ENDPOINT } from '../constants/apis';
-import { PRODUCTS_SIZE } from '../constants/products';
-import useProducts from '../hooks/useProducts';
+import { ENDPOINT } from "../constants/apis";
+import { PRODUCTS_SIZE } from "../constants/products";
+import useProducts from "../hooks/useProducts";
 
-describe('useProducts', () => {
+describe("useProducts", () => {
   const INITIAL_PAGE = 0;
 
-  describe('상품 목록 조회', () => {
-    it('상품 목록을 조회한다.', async () => {
+  describe("상품 목록 조회", () => {
+    it("상품 목록을 조회한다.", async () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
@@ -19,7 +19,7 @@ describe('useProducts', () => {
       });
     });
 
-    it('다음 페이지의 상품 4개를 추가로 불러온다', async () => {
+    it("다음 페이지의 상품 4개를 추가로 불러온다", async () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
@@ -39,7 +39,7 @@ describe('useProducts', () => {
       });
     });
 
-    it('모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.', async () => {
+    it("모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.", async () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
@@ -79,10 +79,10 @@ describe('useProducts', () => {
     });
   });
 
-  describe('상품 카테코리 필터링', () => {
+  describe("상품 카테코리 필터링", () => {
     it('사용자가 "도서" 카테고리를 선택했다면 "도서" 카테고리의 상품들만 노출되어야 한다.', async () => {
       const { result } = renderHook(() => useProducts());
-      const CATEGORY = 'books';
+      const CATEGORY = "books";
 
       act(() => {
         result.current.handleChangeCategory(CATEGORY);
@@ -100,7 +100,7 @@ describe('useProducts', () => {
 
     it('사용자가 "도서" 카테고리를 선택한 상태로 스크롤을 내리면, "도서" 카테고리의 다음 순서 상품 4개를 추가로 불러와야 한다.', async () => {
       const { result } = renderHook(() => useProducts());
-      const CATEGORY = 'books';
+      const CATEGORY = "books";
 
       act(() => {
         result.current.handleChangeCategory(CATEGORY);
@@ -127,8 +127,8 @@ describe('useProducts', () => {
     });
   });
 
-  describe('상품 가격 정렬', () => {
-    it('사용자가 아무런 설정도 하지 않을 경우, 기본 오름차순으로 정렬되어야 한다.', async () => {
+  describe("상품 가격 정렬", () => {
+    it("사용자가 아무런 설정도 하지 않을 경우, 기본 오름차순으로 정렬되어야 한다.", async () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
@@ -145,7 +145,7 @@ describe('useProducts', () => {
       const { result } = renderHook(() => useProducts());
 
       act(() => {
-        result.current.handleChangeSortOption('desc');
+        result.current.handleChangeSortOption("desc");
       });
 
       await waitFor(() => {
@@ -162,7 +162,7 @@ describe('useProducts', () => {
       const { result } = renderHook(() => useProducts());
 
       act(() => {
-        result.current.handleChangeSortOption('desc');
+        result.current.handleChangeSortOption("desc");
       });
 
       await waitFor(() => {
@@ -197,14 +197,14 @@ describe('useProducts', () => {
     });
   });
 
-  describe('상품 목록 조회 로딩 상태', () => {
-    it('상품 목록을 조회 할 때, 로딩 초기 상태는 true이다.', () => {
+  describe("상품 목록 조회 로딩 상태", () => {
+    it("상품 목록을 조회 할 때, 로딩 초기 상태는 true이다.", () => {
       const { result } = renderHook(() => useProducts());
 
       expect(result.current.isLoading).toBeTruthy();
     });
 
-    it('상품 목록을 조회가 완료되면, 로딩 상태는 false이다.', async () => {
+    it("상품 목록을 조회가 완료되면, 로딩 상태는 false이다.", async () => {
       const { result } = renderHook(() => useProducts());
 
       await waitFor(() => {
@@ -213,8 +213,8 @@ describe('useProducts', () => {
     });
   });
 
-  describe('상품 목록 조회 에러 상태', () => {
-    it('상품 목록 조회 중 에러가 발생하면, 에러 상태는 true이다.', async () => {
+  describe("상품 목록 조회 에러 상태", () => {
+    it("상품 목록 조회 중 에러가 발생하면, 에러 상태는 true이다.", async () => {
       server.use(
         http.get(ENDPOINT.PRODUCT, () => {
           return new HttpResponse(null, { status: 500 });

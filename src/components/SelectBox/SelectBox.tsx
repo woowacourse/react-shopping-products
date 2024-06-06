@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import * as Styled from './SelectBox.style';
+import { useState } from "react";
+import * as Styled from "./SelectBox.style";
 
 interface SelectBoxProps<T> {
   optionValues: string[];
@@ -29,7 +29,7 @@ export default function SelectBox<T extends string>({
     <Styled.SelectBoxContainer>
       <Styled.SelectButton
         $isOpened={isOpened}
-        $isSelected={selectedValue !== ''}
+        $isSelected={selectedValue !== ""}
         onClick={handleOptionBox}
         autoFocus={autoFocus ?? false}
       >

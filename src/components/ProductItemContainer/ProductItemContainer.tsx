@@ -1,6 +1,6 @@
-import { Product } from '../../types/products';
-import ProductItem from '../ProductItem/ProductItem';
-import * as Styled from './ProductItemContainer.style';
+import { Product } from "../../types/products";
+import ProductItem from "../ProductItem/ProductItem";
+import * as Styled from "./ProductItemContainer.style";
 
 interface ProductItemContainerProps {
   products: Product[];

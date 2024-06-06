@@ -1,4 +1,4 @@
-import { styled, css } from 'styled-components';
+import { styled, css } from "styled-components";
 
 export const ProductItemBox = styled.article`
   width: 100%;
@@ -56,7 +56,7 @@ export const ProductCartButton = styled.button<{ $isInCart: boolean }>`
   cursor: pointer;
 
   ${({ $isInCart }) => css`
-    background-color: ${$isInCart ? '#EAEAEA' : '#000000'};
-    color: ${$isInCart ? '#000000' : '#FFFFFF'};
+    background-color: ${$isInCart ? "#EAEAEA" : "#000000"};
+    color: ${$isInCart ? "#000000" : "#FFFFFF"};
   `}
 `;

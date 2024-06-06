@@ -1,7 +1,7 @@
-import { Product } from '../../types/products';
-import { AddToCartIcon, RemoveFromCartIcon } from '../../assets';
+import { Product } from "../../types/products";
+import { AddToCartIcon, RemoveFromCartIcon } from "../../assets";
 
-import * as Styled from './ProductItem.style';
+import * as Styled from "./ProductItem.style";
 
 interface ProductProps {
   product: Product;
@@ -16,7 +16,7 @@ export default function ProductItem({ product, isInCart, onClick }: ProductProps
       <Styled.ProductContentBox>
         <Styled.ProductDescriptionBox>
           <h2>{product.name}</h2>
-          {product.price.toLocaleString('ko-KR')}원
+          {product.price.toLocaleString("ko-KR")}원
         </Styled.ProductDescriptionBox>
         <Styled.ProductFooter>
           <Styled.ProductCartButton
@@ -24,7 +24,7 @@ export default function ProductItem({ product, isInCart, onClick }: ProductProps
             onClick={onClick}
           >
             <img src={isInCart ? RemoveFromCartIcon : AddToCartIcon} />
-            {isInCart ? '빼기' : '담기'}
+            {isInCart ? "빼기" : "담기"}
           </Styled.ProductCartButton>
         </Styled.ProductFooter>
       </Styled.ProductContentBox>

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 export default function usePagination() {
   const [page, setPage] = useState(0);

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import * as Styled from './Toast.style';
+import * as Styled from "./Toast.style";
 
 interface ToastProps {
   message: string;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function useToast(initialState: boolean) {
   const [isToastOpen, setIsToastOpen] = useState<boolean>(initialState);
