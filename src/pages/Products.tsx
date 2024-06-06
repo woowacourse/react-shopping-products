@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import BaseDropDown from '@/components/dropdown/BaseDropDown';
 import CartCountIcon from '@/components/CartCountIcon';
 import CartModal from '@/components/cart/CartModal';
+import Error404 from '@/components/Error404';
 import Header from '@/components/Header';
 import ProductList from '@/components/ProductList';
 import Toast from '@/components/Toast';
@@ -62,7 +63,7 @@ const Products = () => {
               onChangeSelect={handleChangeOrder}
             />
           </S.DropDownWrapper>
-          {isSuccess && (
+          {isSuccess ? (
             <ProductList
               isLoading={isLoading}
               products={products}
@@ -70,6 +71,8 @@ const Products = () => {
               getNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
             />
+          ) : (
+            <Error404 />
           )}
         </S.Body>
         <Toast />
