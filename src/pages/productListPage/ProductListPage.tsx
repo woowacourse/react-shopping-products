@@ -31,7 +31,7 @@ const ProductListPage = () => {
       bottomRef={bottomRef}
     >
       <Styled.PageContainer>
-        <Header cartCount={cartItems.length} />
+        <Header cartItems={cartItems} />
         <Styled.CommonContainer>
           <Title title="상품 목록" />
           <Styled.DropdownContainer>

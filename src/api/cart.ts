@@ -46,3 +46,16 @@ export const deleteCartItem = async (cartId: number): Promise<MutationResponse> 
 
   return { status: response.status };
 };
+
+export const updateItemQuantity = async (
+  cartId: number,
+  quantity: number,
+): Promise<MutationResponse> => {
+  const res = await fetcher.patch({
+    url: `${END_POINT.cartItems}/${cartId}`,
+    headers: AUTH_HEADER,
+    body: { quantity },
+  });
+
+  return { status: res.status };
+};

@@ -8,7 +8,6 @@ const useFetchCartItemsQuery = () => {
     queryFn: fetchCartItems,
     initialData: [],
     refetchOnWindowFocus: false,
-    staleTime: 20 * 1000,
   });
 };
 
