@@ -35,7 +35,7 @@ function Dropdown({ setSortings, setFilter }: DropdownProps) {
       <S.Dropdown onChange={handleFilterChange}>
         {Object.keys(OPTIONS).map((value) => (
           <option value={value}>{OPTIONS[value]}</option>
-        ))}{' '}
+        ))}
       </S.Dropdown>
 
       <S.Dropdown onChange={handleSortingChange}>
