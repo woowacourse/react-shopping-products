@@ -1,9 +1,9 @@
-import { useCartItemsQuery } from "@/hooks/server/useCartItems";
+import { CartItems } from "@/types/products";
 
 const useHandleCartItem = () => {
-  const { data: cartItems, isLoading } = useCartItemsQuery();
+  // const { data: cartItems, isLoading } = useCartItemsQuery();
 
-  const getQuantityInCart = (id: number) => {
+  const getQuantityInCart = (cartItems: CartItems[], id: number) => {
     if (cartItems) {
       const targetItem = cartItems.find((cartItem) => cartItem.product.id === id);
       if (targetItem) {
@@ -14,7 +14,7 @@ const useHandleCartItem = () => {
     return 0;
   };
 
-  const convertProductIdToCartId = (productId: number) => {
+  const convertProductIdToCartId = (cartItems: CartItems[], productId: number) => {
     if (cartItems) {
       const targetItem = cartItems.find((cartItem) => cartItem.product.id === productId);
       if (targetItem) {
@@ -24,7 +24,7 @@ const useHandleCartItem = () => {
     }
   };
 
-  return { isLoading, cartItems, getQuantityInCart, convertProductIdToCartId, cartItemLength: cartItems?.length || 0 };
+  return { getQuantityInCart, convertProductIdToCartId };
 };
 
 export default useHandleCartItem;

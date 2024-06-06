@@ -17,14 +17,14 @@ const formatToWon = (price: number) => {
   return price.toLocaleString();
 };
 
-const CartItem = ({ item }: { item: CartItems }) => {
+const CartItem = ({ item, cartItems }: { item: CartItems; cartItems: CartItems[] }) => {
   const { product } = item;
   const { name, imageUrl, price, id } = product;
   const { getQuantityInCart, convertProductIdToCartId } = useHandleCartItem();
 
-  const quantity = getQuantityInCart(id);
+  const quantity = getQuantityInCart(cartItems, id);
+  const cartId = convertProductIdToCartId(cartItems, id);
 
-  const cartId = convertProductIdToCartId(id);
   const onDeleteCartItemMutation = useDeleteCartItemMutation({ cartId: cartId! });
 
   const onClickDeleteCartItem = onDeleteCartItemMutation.mutate;

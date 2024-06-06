@@ -11,10 +11,8 @@ import TopButton from "@/components/_common/TopButton";
 import * as S from "@/pages/productListPage/style";
 import ItemCardList from "@/components/ItemCardList";
 import useInfiniteFilteredProducts from "@/hooks/server/useInfiniteFilteredProducts";
-import useToast from "@/hooks/useToast";
-import { ERROR_MESSAGES } from "@/constants/messages";
-import useHandleCartItem from "@/hooks/useHandleCartItem";
 import CartModal from "@/pages/cartModal";
+import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 
 export interface GetProductsProps {
   category: Category;
@@ -33,7 +31,7 @@ const ProductListPage = () => {
   const infiniteScrollConfig = { threshold: 0.25, rootMargin: "50px" };
   const { isIntersecting } = useIntersection(infiniteScrollConfig, ref);
 
-  const { cartItems } = useHandleCartItem();
+  const { data: cartItems } = useCartItemsQuery();
 
   const cartItemLength = cartItems?.length || 0;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,19 +49,10 @@ const ProductListPage = () => {
     data: products,
     isLoading,
     hasNextPage,
-    isError,
   } = useInfiniteFilteredProducts({
     category,
     sort,
   });
-
-  const { onAddToast } = useToast();
-
-  useEffect(() => {
-    if (isError) {
-      onAddToast(ERROR_MESSAGES.failGetProducts);
-    }
-  }, [isError, onAddToast]);
 
   useEffect(() => {
     if (isIntersecting) {
@@ -87,9 +76,9 @@ const ProductListPage = () => {
             <SelectBox useSelector={useCategorySelect} optionsContents={Object.keys(CATEGORY)} />
             <SelectBox useSelector={useSortSelect} optionsContents={Object.keys(SORT)} />
           </S.SelectBoxWrapper>
-          {isModalOpen && <CartModal onCloseModal={onCloseModal} />}
+          {isModalOpen && cartItems && <CartModal onCloseModal={onCloseModal} cartItems={cartItems} />}
         </S.ItemInfoWrapper>
-        {!isLoading && <ItemCardList products={products.pages} />}
+        {!isLoading && <ItemCardList products={products.pages} cartItems={cartItems!} />}
         {hasNextPage && (
           <div ref={ref}>
             <ItemCartListSkeleton ref={ref} />

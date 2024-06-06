@@ -1,4 +1,4 @@
-import { Product } from "@/types/products";
+import { CartItems, Product } from "@/types/products";
 import ItemInfo from "@/components/ItemInfo";
 import * as S from "@/components/ItemCard/style";
 import CartActionButton from "@/components/CartActionButton";
@@ -8,21 +8,22 @@ import QuantityUpdateButton from "@/components/QuantityUpdateButton";
 
 interface ItemCartProps {
   product: Product;
+  cartItems: CartItems[];
 }
 
-const ItemCard = ({ product }: ItemCartProps) => {
+const ItemCard = ({ product, cartItems }: ItemCartProps) => {
   const { name, price, imageUrl, id } = product;
   const { getQuantityInCart, convertProductIdToCartId } = useHandleCartItem();
 
-  const quantity = getQuantityInCart(id);
-  const cartId = convertProductIdToCartId(id);
+  const quantity = getQuantityInCart(cartItems, id);
+  const cartId = convertProductIdToCartId(cartItems, id);
 
   return (
     <S.Wrapper>
       <S.Image $imgUrl={imageUrl} />
       <ItemInfo name={name} price={price} />
       <S.ButtonWrapper>
-        {getQuantityInCart(id) > 0 && cartId ? (
+        {quantity > 0 && cartId ? (
           <QuantityUpdateButton quantity={quantity} cartId={cartId} />
         ) : (
           <CartActionButton productId={id} />

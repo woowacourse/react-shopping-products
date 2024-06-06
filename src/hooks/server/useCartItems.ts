@@ -7,6 +7,7 @@ import { useEffect } from "react";
 
 export const useCartItemsQuery = () => {
   const { onAddToast } = useToast();
+
   const query = useQuery({
     queryKey: [END_POINT.cartItems],
     queryFn: async () => await getCartItems(),
@@ -16,7 +17,9 @@ export const useCartItemsQuery = () => {
   const { isError } = query;
 
   useEffect(() => {
-    onAddToast(ERROR_MESSAGES.failGetCartItems);
+    if (isError) {
+      onAddToast(ERROR_MESSAGES.failGetCartItems);
+    }
   }, [isError]);
 
   return query;
