@@ -19,8 +19,10 @@ export const ProductImg = styled.img`
 `;
 
 export const ProductGroup = styled.div`
-  padding: 15px 8px 8px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px 8px;
   box-sizing: border-box;
   height: 112px;
 `;
