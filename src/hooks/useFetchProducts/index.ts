@@ -1,11 +1,11 @@
 import { useState } from 'react';
-
-import { fetchProducts } from '../api/products';
-
-import { Category, Order, Sort } from '../types/product';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import { FIRST_PAGE, GAP_WITH_FIRST_PAGE } from '../constants/pagination';
-import { QUERY_KEYS } from '../constants/queryKeys';
+
+import { fetchProducts } from '../../api/products';
+
+import { Category, Order, Sort } from '../..//types/product';
+import { FIRST_PAGE, GAP_WITH_FIRST_PAGE } from '../../constants/pagination';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 const useFetchProducts = () => {
   const queryClient = useQueryClient();
