@@ -5,40 +5,18 @@ import { PlusSign, MinusSign } from '../../../../assets';
 
 import useCounter from './useCounter';
 
-interface StepperBaseProps {
-  children: React.ReactNode;
-  counterState: ReturnType<typeof useCounter>;
-}
-const StepperBase = ({ children, counterState }: StepperBaseProps) => {
-  return (
-    <StepperContext.Provider value={counterState}>
-      {children}
-    </StepperContext.Provider>
-  );
+const PlusButton = ({ onClick }: { onClick: () => void }) => {
+  return <RoundButtonWithImg imgSrc={PlusSign} onClick={onClick} />;
 };
 
-const StepperContext = createContext<ReturnType<typeof useCounter>>({
-  counter: 0,
-  setCounter: () => {},
-  increase: () => {},
-  decrease: () => {},
-});
-
-const PlusButton = () => {
-  const { increase } = useContext(StepperContext);
-  return <RoundButtonWithImg imgSrc={PlusSign} onClick={increase} />;
+const MinusButton = ({ onClick }: { onClick: () => void }) => {
+  return <RoundButtonWithImg imgSrc={MinusSign} onClick={onClick} />;
 };
 
-const MinusButton = () => {
-  const { decrease } = useContext(StepperContext);
-  return <RoundButtonWithImg imgSrc={MinusSign} onClick={decrease} />;
-};
-
-const DisplayCounter = () => {
-  const { counter } = useContext(StepperContext);
+const DisplayCounter = ({ count }: { count: number }) => {
   return (
     <SFlexDiv $width={40} $height={32}>
-      {counter}
+      {count}
     </SFlexDiv>
   );
 };
@@ -85,8 +63,7 @@ const SImg = styled.img`
 `;
 
 const Layout = { Horizontal: SLayout, Vertical: SLayout };
-const Stepper = Object.assign(StepperBase, {
-  Layout,
+const Stepper = Object.assign(Layout, {
   MinusButton,
   PlusButton,
   DisplayCounter,

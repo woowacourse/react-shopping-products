@@ -10,22 +10,22 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { addProductToCart, patchToRemoveCart } = useContext(CartContext);
-  const counterState = useCounter(0);
+  const { addProductToCart, productIdSetInCart, patchToRemoveCart } =
+    useContext(CartContext);
+  const { count, increase, decrease } = useCounter(0);
 
-  const newCounterState = Object.assign(counterState, {
-    increase: () => {
-      addProductToCart(product.id);
-      counterState.increase();
-    },
-    decrease: () => {
-      if (counterState.counter == 1) {
-        patchToRemoveCart(product.id);
-      }
-      counterState.decrease();
-    },
-  });
-
+  const handleClickDecrease = () => {
+    if (count === 1) {
+      patchToRemoveCart(product.id);
+      return;
+    }
+    // 카트아이템갯수 감소 API 필요
+    decrease();
+  };
+  const handleClickIncrease = () => {
+    // 카트 아이템 갯수 증가 API 필요
+    increase();
+  };
   return (
     <S.ProductCardContainer>
       <S.ProductImage src={product.imageUrl} />
@@ -36,19 +36,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </S.InfoWrapper>
 
         <S.ButtonContainer>
-          {counterState.counter > 0 ? (
-            <Stepper counterState={newCounterState}>
-              <Stepper.Layout.Horizontal>
-                <Stepper.MinusButton />
-                <Stepper.DisplayCounter />
-                <Stepper.PlusButton />
-              </Stepper.Layout.Horizontal>
-            </Stepper>
+          {productIdSetInCart.has(product.id) || count === 0 ? (
+            <Stepper.Horizontal>
+              <Stepper.MinusButton onClick={() => {}} />
+              <Stepper.DisplayCounter count={count} />
+              <Stepper.PlusButton onClick={() => {}} />
+            </Stepper.Horizontal>
           ) : (
             <AddCartButton
               onClick={() => {
                 addProductToCart(product.id);
-                counterState.increase();
+                increase();
               }}
             />
           )}

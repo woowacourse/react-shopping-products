@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 
 const useCounter = (defaultCount = 0) => {
-  const [counter, setCounter] = useState(defaultCount);
-  const increase = useCallback(() => setCounter(counter + 1), [counter]);
-  const decrease = useCallback(() => setCounter(counter - 1), [counter]);
-  return { counter, setCounter, increase, decrease };
+  const [count, setCount] = useState(defaultCount);
+  const increase = useCallback(() => setCount(count + 1), [count]);
+  const decrease = useCallback(() => setCount(count - 1), [count]);
+  return { count: count, setCount, increase, decrease };
 };
 
 export default useCounter;

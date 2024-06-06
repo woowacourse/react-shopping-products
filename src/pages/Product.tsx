@@ -13,6 +13,7 @@ const Product = () => {
   const fetchAddCartState = useFetchAddCart();
   const [sortings, setSortings] = useState<SortingParam[]>([]);
   const [filter, setFilter] = useState('');
+  
   const { products, isError, isPending, isLast, fetchNextPage, page } =
     useFetchProducts(sortings, filter);
 
