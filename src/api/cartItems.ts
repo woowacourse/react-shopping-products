@@ -15,15 +15,13 @@ export async function getCartItems() {
   return data.content;
 }
 
-export async function getFirstCartItems() {}
-
-export async function postCartItems(body: { productId: number; quantity: number }) {
+export async function addCartItem(body: { productId: number; quantity: number }) {
   const data = await fetchWithToken({
     method: "POST",
     url: `${CART_ITEMS_ENDPOINT}`,
     headers: { "Content-type": "Application/json" },
     body: JSON.stringify(body),
-    errorMessage: ERROR_MESSAGE.postCartItems,
+    errorMessage: ERROR_MESSAGE.addCartItem,
   });
 
   return data;

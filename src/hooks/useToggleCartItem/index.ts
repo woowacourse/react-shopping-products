@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { deleteCartItems, getCartItems, postCartItems } from "../../api/cartItems";
+import { deleteCartItems, getCartItems, addCartItem } from "../../api/cartItems";
 import { CartItem } from "../../types/cartItems";
 import { ERROR_MESSAGE } from "../../constants/errorMessage/ko";
 
@@ -24,7 +24,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
   });
 
   const addMutation = useMutation({
-    mutationFn: (productId: number) => postCartItems({ productId, quantity: 1 }),
+    mutationFn: (productId: number) => addCartItem({ productId, quantity: 1 }),
     onSuccess: refetch,
   });
 
