@@ -5,6 +5,8 @@ import S from "./styledComponent";
 const ProductControls = ({ cartItem }: { cartItem: CartItemType }) => {
   const { increaseQuantity, decreaseQuantity } = useCartItemQuantity();
 
+  if (!cartItem) return null;
+
   return (
     <S.ProductControls>
       <S.Button

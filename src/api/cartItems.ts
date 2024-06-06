@@ -34,7 +34,6 @@ export async function deleteCartItem(id: number) {
     headers: { "Content-type": "Application/json" },
     errorMessage: ERROR_MESSAGE.deleteCartItem,
   });
-
   return data;
 }
 

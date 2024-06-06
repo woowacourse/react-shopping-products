@@ -79,3 +79,7 @@
 
 4. [x] 상품 수량에 대한 useProductQuantity 훅
    - increaseQuantity, decreaseQuantity, isLoading, error
+
+### 왜 안되는지 공부하기.
+
+1. 장바구니에서 삭제시 ProductControls에서 에러 발생.
