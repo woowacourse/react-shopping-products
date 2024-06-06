@@ -1,61 +1,67 @@
-import { useState, useEffect } from 'react';
-import useFetcher from '../useFetcher';
+import { useContext } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchCartItems, deleteCartItem, addCartItem } from '../../api/cart';
 import { CartItem } from '../../types/CartItem.type';
 import { SIZE } from '../../constants/api';
+import { ToastContext } from '../../context/ToastProvider';
+import { QUERY_KEYS } from '../../api/queryKeys';
 
 interface UseCartItemsResult {
   cartItems: CartItem[];
-  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
-  loading: boolean;
-  error: unknown;
   handleAddCartItem: (productId: number) => void;
   handleDeleteCartItem: (productId: number) => void;
 }
 
 const useCartItems = (): UseCartItemsResult => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const { loading, error, fetcher } = useFetcher();
+  const { showToast } = useContext(ToastContext);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    fetcher(getCartItems);
-  }, []);
+  const { data: cartItems = [], error } = useQuery<CartItem[], Error>({
+    queryKey: [QUERY_KEYS.CART],
+    queryFn: async () => {
+      const { data: initialData, totalElements } = await fetchCartItems(SIZE.DEFAULT);
+      if (totalElements <= SIZE.DEFAULT) {
+        return initialData;
+      }
+      const { data: totalData } = await fetchCartItems(totalElements);
+      return totalData;
+    },
+  });
 
-  const getCartItems = async () => {
-    const { data: initialData, totalElements } = await fetchCartItems(SIZE.DEFAULT);
+  if (error) showToast(error.message);
 
-    if (totalElements <= SIZE.DEFAULT) {
-      setCartItems(initialData);
-      return;
-    }
+  const addMutation = useMutation({
+    mutationFn: (productId: number) => addCartItem(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
+    },
+    onError: (error: Error) => {
+      showToast(error.message);
+    },
+  });
 
-    const { data: totalData } = await fetchCartItems(totalElements);
-    setCartItems(totalData);
-  };
+  const deleteMutation = useMutation({
+    mutationFn: (cartItemId: number) => deleteCartItem(cartItemId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
+    },
+    onError: (error: Error) => {
+      showToast(error.message);
+    },
+  });
 
   const handleAddCartItem = (productId: number) => {
-    fetcher(async () => {
-      await addCartItem(productId);
-      await getCartItems();
-    });
+    addMutation.mutate(productId);
   };
 
   const handleDeleteCartItem = (productId: number) => {
     const cartItem = cartItems.find((item) => item.product.id === productId);
-
-    if (cartItem) {
-      fetcher(async () => {
-        await deleteCartItem(cartItem.id);
-        await getCartItems();
-      });
-    }
+    if (!cartItem) return;
+    deleteMutation.mutate(cartItem.id);
   };
 
   return {
     cartItems,
-    setCartItems,
-    loading,
-    error,
     handleAddCartItem,
     handleDeleteCartItem,
   };
