@@ -1,12 +1,15 @@
 import { fetchGetCartList } from '@apis/index';
-import { REACT_QUERY_KEY } from '@constants/index';
+import { QUERY_TIME, QUERY_KEY } from '@constants/index';
 import { CartItem } from '@src/appTypes';
 import { useQuery } from '@tanstack/react-query';
 
-const useCartList = () => {
+const useCartList = (refetchOnMount: boolean = false) => {
+  const { staleTime } = QUERY_TIME.cartList;
   const { data, error, isLoading, isSuccess } = useQuery({
     queryKey: [REACT_QUERY_KEY.cartList],
     queryFn: fetchGetCartList,
+    refetchOnMount,
+    staleTime,
   });
 
   const makeCartListMap = (cartList: CartItem[] | undefined) => {

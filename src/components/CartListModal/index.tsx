@@ -12,7 +12,7 @@ interface CartListModalProps {
   rootEl: HTMLElement | null;
 }
 const CartListModal = ({ openModal, setOpenModal, rootEl }: CartListModalProps) => {
-  const { cartListMap, isLoading } = useCartList();
+  const { cartListMap, isLoading } = useCartList(true);
   const cartList = cartListMap ? Array.from(cartListMap.values()) : undefined;
 
   return (
