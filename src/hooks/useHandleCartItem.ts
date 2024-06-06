@@ -54,16 +54,22 @@ const useHandleCartItem = () => {
 
   const addCartItem = (id: number) => postCartItemMutate({ productId: id, quantity: 1 });
 
-  const updateCartItemQuantity = (id: number, clickType: "plus" | "minus") => {
-    const itemQuantity = getCartItemQuantity(id);
+  const removeCartItem = (id: number) => {
     const targetItem = cartItems!.find((cartItem) => cartItem.product.id === id);
 
+    deleteCartItemMutate({ itemId: targetItem!.id });
+  };
+
+  const updateCartItemQuantity = (id: number, clickType: "plus" | "minus") => {
+    const itemQuantity = getCartItemQuantity(id);
+
     if (clickType === "minus" && itemQuantity === 1) {
-      deleteCartItemMutate({ itemId: targetItem!.id });
+      removeCartItem(id);
 
       return;
     }
 
+    const targetItem = cartItems!.find((cartItem) => cartItem.product.id === id);
     const updatedQuantity = clickType === "plus" ? itemQuantity + 1 : itemQuantity - 1;
     patchCartItemMutate({ productId: targetItem!.id, quantity: updatedQuantity });
   };
@@ -74,7 +80,15 @@ const useHandleCartItem = () => {
     return cartItems.some((item) => item.product.id === id);
   };
 
-  return { getCartItemQuantity, addCartItem, updateCartItemQuantity, isInCart };
+  const totalAmount = () => {
+    if (!cartItems) return 0;
+
+    return cartItems.reduce((amount, cur) => {
+      return amount + cur.quantity * cur.product.price;
+    }, 0);
+  };
+
+  return { cartItems, getCartItemQuantity, addCartItem, removeCartItem, updateCartItemQuantity, isInCart, totalAmount };
 };
 
 export default useHandleCartItem;
