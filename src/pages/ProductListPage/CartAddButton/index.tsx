@@ -9,7 +9,7 @@ interface CartAddButtonProps {
 }
 
 const CartAddButton = ({ productId }: CartAddButtonProps) => {
-  const { mutate: addMutate, error, isPending } = useAddCartItem();
+  const { mutateAsync: addMutate, error, isPending } = useAddCartItem();
 
   const className = `cart-action-button ${style.cartAddButton} `;
 

@@ -11,7 +11,7 @@ interface QuantityControlProps {
 }
 
 const QuantityControl = ({ quantity, cartItemId }: QuantityControlProps) => {
-  const { mutate: quantityMutate, error, isPending } = useCartItemQuantity();
+  const { mutateAsync: quantityMutate, error, isPending } = useCartItemQuantity();
 
   const increaseQuantity = () => {
     quantityMutate({ cartItemId, quantity: quantity + 1 });
