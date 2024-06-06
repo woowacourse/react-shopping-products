@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import styled from "styled-components";
 
 import ProductItem from "@components/ProductListPage/ProductItem";
@@ -11,15 +10,13 @@ import { useErrorToast } from "@contexts/errorToast/useErrorToast";
 import { useInfiniteProducts } from "@server/useInfiniteProducts";
 
 const ProductList = () => {
-  const { data, isLoading, error, fetchNextPage, updateCategoryFilter, updatePriceSort } =
-    useInfiniteProducts();
   const { showErrorToast } = useErrorToast();
+  const handleError = () => {
+    showErrorToast("상품을 로딩하는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+  };
 
-  useEffect(() => {
-    if (error) {
-      showErrorToast("상품을 로딩하는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-    }
-  }, [error]);
+  const { data, isLoading, fetchNextPage, updateCategoryFilter, updatePriceSort } =
+    useInfiniteProducts(handleError);
 
   return (
     <>

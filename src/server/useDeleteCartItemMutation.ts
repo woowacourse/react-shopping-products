@@ -7,7 +7,7 @@ interface UseDeleteCartItemMutationReturn {
   deleteCartItemMutation: (cartItemId: number) => void;
 }
 
-export type OnError = (error: Error) => void;
+type OnError = (error: Error) => void;
 
 export const useDeleteCartItemMutation = (onError?: OnError): UseDeleteCartItemMutationReturn => {
   const invalidateCartItems = () => {

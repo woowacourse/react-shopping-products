@@ -8,18 +8,21 @@ import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "./__constants__/queryKeys";
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from "@src/apis/__constants__/productQueryParams";
 import { Category, PriceSort } from "@src/types/products";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface UseInfiniteProductsReturn {
   data: Product[];
   isLoading: boolean;
-  error: Error | null;
   fetchNextPage: () => void;
   updateCategoryFilter: (category: Category) => void;
   updatePriceSort: (sort: PriceSort) => void;
 }
 
-export const useInfiniteProducts = (): UseInfiniteProductsReturn => {
+type OnError = (error?: Error) => void;
+
+export const useInfiniteProducts = (
+  onError: OnError = console.error
+): UseInfiniteProductsReturn => {
   const [categoryFilter, setCategoryFilter] = useState<Category>(CATEGORY_OPTIONS.all);
   const [priceSort, setPriceSort] = useState<PriceSort>(PRICE_SORT_OPTIONS.asc);
 
@@ -37,6 +40,12 @@ export const useInfiniteProducts = (): UseInfiniteProductsReturn => {
     refetchOnWindowFocus: false,
   });
 
+  useEffect(() => {
+    if (error) {
+      onError(error);
+    }
+  }, [error]);
+
   const updateCategoryFilter = (category: Category) => {
     setCategoryFilter(category);
   };
@@ -48,7 +57,6 @@ export const useInfiniteProducts = (): UseInfiniteProductsReturn => {
   return {
     data: flattenInfiniteData(data),
     isLoading: isFetching,
-    error,
     fetchNextPage,
     updateCategoryFilter,
     updatePriceSort,

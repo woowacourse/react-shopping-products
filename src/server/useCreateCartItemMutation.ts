@@ -7,7 +7,7 @@ interface UseCreateCartItemMutationReturn {
   createCartItemMutation: (props: CreateCartItemParams) => void;
 }
 
-export type OnError = (error: Error) => void;
+type OnError = (error: Error) => void;
 
 export const useCreateCartItemMutation = (onError?: OnError): UseCreateCartItemMutationReturn => {
   const invalidateCartItems = () => {

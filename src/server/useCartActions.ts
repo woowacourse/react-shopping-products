@@ -1,5 +1,5 @@
 import { useCartItems } from "@server/useCartItems";
-import { OnError, useDeleteCartItemMutation } from "@server/useDeleteCartItemMutation";
+import { useDeleteCartItemMutation } from "@server/useDeleteCartItemMutation";
 import { useCreateCartItemMutation } from "@server/useCreateCartItemMutation";
 
 interface UseCartActionsReturn {
@@ -9,6 +9,8 @@ interface UseCartActionsReturn {
 }
 
 const MAX_CART_ITEM_COUNT = 20;
+
+type OnError = (error: Error) => void;
 
 export const useCartActions = (onError: OnError = console.error): UseCartActionsReturn => {
   const { data: cartItems } = useCartItems();

@@ -8,6 +8,7 @@ import { PRICE_SORT_OPTIONS } from "@apis/__constants__/productQueryParams";
 import { useInfiniteProducts } from "@server/useInfiniteProducts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
+import { vi } from "vitest";
 
 const wrapper = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient({
@@ -43,12 +44,14 @@ describe("useInfiniteProducts", () => {
         })
       );
 
-      const { result } = renderHook(() => useInfiniteProducts(), { wrapper });
+      const handleError = vi.fn();
+
+      const { result } = renderHook(() => useInfiniteProducts(handleError), { wrapper });
 
       await waitFor(() => {
         expect(result.current.data).toEqual([]);
         expect(result.current.isLoading).toBe(false);
-        expect(result.current.error).toBeTruthy();
+        expect(handleError).toHaveBeenCalled();
       });
     });
   });
