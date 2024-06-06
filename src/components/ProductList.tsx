@@ -9,7 +9,6 @@ import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 interface Props {
   isLoading: boolean;
   products: Product[];
-  page: number;
   getNextPage: () => void;
   hasNextPage: boolean;
 }
@@ -17,7 +16,6 @@ interface Props {
 const ProductList = ({
   isLoading,
   products,
-  page,
   getNextPage,
   hasNextPage,
 }: Props) => {
@@ -34,7 +32,7 @@ const ProductList = ({
         unobserve(target.current);
       }
     };
-  }, [observe, unobserve, page]);
+  }, [observe, unobserve]);
 
   return (
     <S.ListContainer>

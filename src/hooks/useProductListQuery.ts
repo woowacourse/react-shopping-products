@@ -5,7 +5,6 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 const useProductListQuery = () => {
-  const [page, setPage] = useState(0);
   const [order, setOrder] = useState<string>('asc');
   const [category, setCategory] = useState('');
 
@@ -23,30 +22,29 @@ const useProductListQuery = () => {
         return getProductList({ page: pageParam, size, category, order });
       },
       initialPageParam: 0,
-      getNextPageParam: (lastPage, allPages, lastPageParam) => {
-        if (lastPage.last) return undefined;
+      getNextPageParam: (lastPageData) => {
+        if (lastPageData.last) return undefined;
 
-        if (lastPageParam === 0)
+        const page = lastPageData.pageable.pageNumber;
+
+        if (page === 0)
           return FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount;
 
-        return lastPageParam + 1;
+        return page + 1;
       },
     });
 
   const handleChangeOrder = (newOrder: string) => {
     if (order === newOrder) return;
     setOrder(newOrder);
-    setPage(0);
   };
 
   const handleChangeCategory = (newCategory: string) => {
     if (category === newCategory) return;
     setCategory(newCategory);
-    setPage(0);
   };
 
   return {
-    page,
     products: data?.pages.flatMap((page) => page.content) || [],
     isSuccess,
     isLoading,

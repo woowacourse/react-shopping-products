@@ -18,7 +18,6 @@ const Products = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const {
-    page,
     products,
     isSuccess,
     isLoading,
@@ -67,7 +66,6 @@ const Products = () => {
             <ProductList
               isLoading={isLoading}
               products={products}
-              page={page}
               getNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
             />
