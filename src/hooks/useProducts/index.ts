@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getProducts } from "../api/products";
-import { PRODUCT_DEFAULT_CATEGORY, PRODUCT_DEFAULT_SORT } from "../constants/mallData";
-import { PRODUCT_CATEGORY_TYPE, PRODUCT_SORT_TYPE } from "../types/mall";
+import { getProducts } from "../../api/products";
+import { PRODUCT_DEFAULT_CATEGORY, PRODUCT_DEFAULT_SORT } from "../../constants/mallData";
+import { PRODUCT_CATEGORY_TYPE, PRODUCT_SORT_TYPE } from "../../types/mall";
 import { useState } from "react";
 
 const fetchProducts = async ({

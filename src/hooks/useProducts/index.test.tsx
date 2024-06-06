@@ -2,9 +2,9 @@ import { HttpResponse, http } from "msw";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { PRODUCTS_ENDPOINT } from "../api/endPoint";
-import { server } from "../mocks/server";
-import useProducts from "./useProducts";
+import { PRODUCTS_ENDPOINT } from "../../api/endPoint";
+import { server } from "../../mocks/server";
+import useProducts from ".";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PropsWithChildren } from "react";
 

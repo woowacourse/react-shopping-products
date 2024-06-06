@@ -2,10 +2,10 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { describe, it, expect } from "vitest";
 import { PropsWithChildren, act } from "react";
-import useToggleCartItem from "./useToggleCartItem";
-import { server } from "../mocks/server";
+import useToggleCartItem from ".";
+import { server } from "../../mocks/server";
 import { HttpResponse, http } from "msw";
-import { CART_ITEMS_ENDPOINT } from "../api/endPoint";
+import { CART_ITEMS_ENDPOINT } from "../../api/endPoint";
 
 const createWrapper = () => {
   const queryClient = new QueryClient({

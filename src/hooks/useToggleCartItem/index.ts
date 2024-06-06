@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { deleteCartItems, getCartItems, postCartItems } from "../api/cartItems";
-import { CartItem } from "../types/cartItems";
-import { ERROR_MESSAGE } from "../constants/errorMessage/ko";
+import { deleteCartItems, getCartItems, postCartItems } from "../../api/cartItems";
+import { CartItem } from "../../types/cartItems";
+import { ERROR_MESSAGE } from "../../constants/errorMessage/ko";
 
 export interface ToggleCartItemReturns {
   cartItems: CartItem[];
