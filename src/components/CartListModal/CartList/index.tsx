@@ -1,5 +1,5 @@
 import { CartItem } from '@appTypes/index';
-import { getSkeletonClassName } from '@utils/index';
+import { BasketIcon } from '@assets/index';
 
 import CartItemCard from '../CartItemCard';
 
@@ -12,10 +12,12 @@ interface CartListProps {
 const CartList = ({ cartList }: CartListProps) => {
   return (
     <ul className={style.cartList}>
-      {cartList ? (
+      {cartList?.[0] ? (
         cartList.map((cartItem) => <CartItemCard key={cartItem.id} cartItem={cartItem} />)
       ) : (
-        <div>장바구니가 비어있습니다.</div>
+        <div className={style.empty}>
+          <img className={style.cartImg} src={BasketIcon} alt="카트 아이콘" /> <span>장바구니가 비어있습니다.</span>{' '}
+        </div>
       )}
     </ul>
   );
