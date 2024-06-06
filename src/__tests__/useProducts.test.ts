@@ -3,9 +3,8 @@ import { HttpResponse, http } from "msw";
 import { server } from "../mocks/server";
 import { ProductsUnfilteredInitial, ProductsUnfilteredLast } from "../mocks/products";
 
-import { ENDPOINT } from "../constants/apis";
-import { PRODUCTS_SIZE } from "../constants/products";
-import useProducts from "../hooks/useProducts";
+import { ENDPOINT, PRODUCTS_SIZE } from "../constants";
+import { useProducts } from "../hooks";
 
 describe("useProducts", () => {
   const INITIAL_PAGE = 0;
