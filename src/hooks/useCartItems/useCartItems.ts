@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchCartItems, deleteCartItem, addCartItem } from '../../api/cart';
+import { getCartItems, deleteCartItem, addCartItem, updateCartItemQuantity } from '../../api/cart';
 import { Cart } from '../../types/Cart.type';
-import { SIZE } from '../../constants/api';
 
 interface UseCartItemsResult {
   cartItems: Cart[];
@@ -9,21 +8,11 @@ interface UseCartItemsResult {
   isError: boolean;
   handleAddCartItem: (productId: number) => void;
   handleDeleteCartItem: (productId: number) => void;
+  handleUpdateCartItemQuantity: (productId: number, quantity: number) => void;
 }
 
 const useCartItems = (): UseCartItemsResult => {
   const queryClient = useQueryClient();
-
-  const getCartItems = async () => {
-    const { data: initialData, totalElements } = await fetchCartItems();
-
-    if (totalElements <= SIZE.DEFAULT) {
-      return initialData;
-    }
-
-    const { data: totalData } = await fetchCartItems(totalElements);
-    return totalData;
-  };
 
   const {
     data: cartItems,
@@ -48,6 +37,13 @@ const useCartItems = (): UseCartItemsResult => {
     },
   });
 
+  const updateCartItemQuantityMutation = useMutation({
+    mutationFn: updateCartItemQuantity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
+  });
+
   const handleAddCartItem = (productId: number) => addCartItemMutation.mutate(productId);
 
   const handleDeleteCartItem = (productId: number) => {
@@ -60,12 +56,23 @@ const useCartItems = (): UseCartItemsResult => {
     }
   };
 
+  const handleUpdateCartItemQuantity = (productId: number, quantity: number) => {
+    if (cartItems) {
+      const cartItem = cartItems.find((item) => item.product.id === productId);
+
+      if (cartItem) {
+        updateCartItemQuantityMutation.mutate({ cartItemId: cartItem.id, quantity });
+      }
+    }
+  };
+
   return {
     cartItems: cartItems ?? [],
     isLoading,
     isError,
     handleAddCartItem,
     handleDeleteCartItem,
+    handleUpdateCartItemQuantity,
   };
 };
 
