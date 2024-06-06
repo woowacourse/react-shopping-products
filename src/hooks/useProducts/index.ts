@@ -3,7 +3,7 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 import { fetchProducts } from '../../api/products';
 
-import { Category, Order, Sort } from '../..//types/product';
+import { Category, Order, Sort } from '../../types/product';
 import { FIRST_PAGE, GAP_WITH_FIRST_PAGE } from '../../constants/pagination';
 import { QUERY_KEYS } from '../../constants/queryKeys';
 

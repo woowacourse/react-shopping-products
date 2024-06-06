@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 
 import wrapper from './wrapper';
-import useFetchProducts from '.';
+import useProducts from '.';
 
 import {
   FIRST_PAGE,
@@ -15,7 +15,7 @@ import { Category } from '../../types/product';
 
 describe('첫 페이지 상품 목록 조회', () => {
   it(`첫 페이지에서는 상품 목록 ${FIRST_PAGE_SIZE}개를 조회한다.`, async () => {
-    const { result } = renderHook(() => useFetchProducts(), { wrapper });
+    const { result } = renderHook(() => useProducts(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(FIRST_PAGE_SIZE);
@@ -25,7 +25,7 @@ describe('첫 페이지 상품 목록 조회', () => {
 
 describe('페이지네이션', () => {
   it(`첫 페이지 이후 다음 페이지의 상품 ${SIZE_PER_PAGE}개를 추가로 불러온다.`, async () => {
-    const { result } = renderHook(() => useFetchProducts(), { wrapper });
+    const { result } = renderHook(() => useProducts(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(FIRST_PAGE_SIZE);
@@ -41,7 +41,7 @@ describe('페이지네이션', () => {
   });
 
   it('모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.', async () => {
-    const { result } = renderHook(() => useFetchProducts(), { wrapper });
+    const { result } = renderHook(() => useProducts(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(FIRST_PAGE_SIZE);
@@ -82,7 +82,7 @@ describe('카테고리 필터링', () => {
   ];
 
   it('카테고리에 해당되는 상품만 불러온다.', async () => {
-    const { result } = renderHook(() => useFetchProducts(), { wrapper });
+    const { result } = renderHook(() => useProducts(), { wrapper });
 
     for (const selectedCategory of CATEGORIES) {
       await waitFor(() => {
@@ -107,7 +107,7 @@ describe('카테고리 필터링', () => {
 
 describe('정렬', () => {
   it('기본값은 낮은 가격순으로 한다.', async () => {
-    const { result } = renderHook(() => useFetchProducts(), { wrapper });
+    const { result } = renderHook(() => useProducts(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(20);
@@ -122,7 +122,7 @@ describe('정렬', () => {
   });
 
   it('가격이 높은순 정렬을 선택했을 때, 높은 가격순으로 정렬된다.', async () => {
-    const { result } = renderHook(() => useFetchProducts(), { wrapper });
+    const { result } = renderHook(() => useProducts(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.products).toHaveLength(20);

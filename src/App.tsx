@@ -16,7 +16,7 @@ import FilterContainer from './components/FilterContainer';
 import ProductsContent from './components/ProductsContent';
 import ProductItem from './components/ProductItem';
 
-import useFetchProducts from './hooks/useFetchProducts';
+import useProducts from './hooks/useProducts';
 import useIntersectionObserver from './hooks/useIntersectionObserver';
 import { CartItemsContext } from './context/CartItemProvider';
 
@@ -28,6 +28,7 @@ function App() {
   const { showToast } = useContext(ToastContext);
   const observerRef = useRef<HTMLDivElement | null>(null);
   const { cartItems } = useContext(CartItemsContext);
+
   const {
     products,
     category,
@@ -39,7 +40,7 @@ function App() {
     fetchNextPage,
     filterByCategory,
     setSorting,
-  } = useFetchProducts();
+  } = useProducts();
 
   const selectedCategoryOption = CATEGORIES.find(({ value }) => value === category)!.label;
   const selectedSortOption = PRICE_SORT.find(({ value }) => value === sort.price)!.label;
