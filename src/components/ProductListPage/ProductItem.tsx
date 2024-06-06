@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import CartToggleButton from "@components/ProductListPage/CartToggleButton";
+import CartItemQuantityController from "@components/ProductListPage/CartItemQuantityController";
 import { formatToKRW } from "@utils/formatToKRW";
 
 interface ProductInfo {
@@ -23,7 +23,7 @@ const ProductItem = ({ productInfo }: ProductItemProps) => {
         <S.ProductName>{name}</S.ProductName>
         <S.ProductPrice>{formatToKRW(price)}</S.ProductPrice>
       </S.ProductInfo>
-      <CartToggleButton productId={id} />
+      <CartItemQuantityController productId={id} />
     </S.Container>
   );
 };
