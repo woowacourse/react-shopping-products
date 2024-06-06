@@ -2,7 +2,7 @@ import { HttpResponse, http } from 'msw';
 
 import productsData from './products.json';
 
-import { PRODUCTS_ENDPOINT } from '../api/endpoints';
+import { CART_ITEMS_ENDPOINT, PRODUCTS_ENDPOINT } from '../api/endpoints';
 import {
   FIRST_PAGE,
   FIRST_PAGE_SIZE,
@@ -46,5 +46,13 @@ export const handlers = [
     const paginatedProducts = sortedProducts.slice(start, end);
 
     return HttpResponse.json({ content: paginatedProducts, last });
+  }),
+
+  http.post(CART_ITEMS_ENDPOINT, async () => {
+    return HttpResponse.json(null, { status: 201 });
+  }),
+
+  http.delete(`${CART_ITEMS_ENDPOINT}/:id`, async () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 ];
