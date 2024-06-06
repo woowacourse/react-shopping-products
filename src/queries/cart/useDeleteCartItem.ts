@@ -1,12 +1,10 @@
 import { fetchDeleteCartItems } from '@apis/index';
-import { CartItem } from '@appTypes/index';
 import QUERY_KEYS from '@constants/queryKeys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useDeleteCartItem = (cartItem: CartItem | undefined) => {
-  const deleteCartItem = async () => {
-    if (!cartItem) return;
-    await fetchDeleteCartItems({ cartItemId: cartItem.id });
+const useDeleteCartItem = () => {
+  const deleteCartItem = async (cartItemId: number) => {
+    await fetchDeleteCartItems({ cartItemId });
   };
 
   const queryClient = useQueryClient();

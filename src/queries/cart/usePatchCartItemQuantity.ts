@@ -3,11 +3,11 @@ import { CartItem } from '@appTypes/cartItems';
 import QUERY_KEYS from '@constants/queryKeys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const usePatchCartItemQuantity = (cartItemId: number) => {
+const usePatchCartItemQuantity = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isError } = useMutation({
-    mutationKey: [QUERY_KEYS.patchCartItemQuantity, cartItemId],
+    mutationKey: [QUERY_KEYS.patchCartItemQuantity],
     mutationFn: fetchPatchCartItemQuantity,
     onMutate: async ({ cartItemId, quantity }) => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.getCartItems] });

@@ -10,17 +10,18 @@ interface EachCartItemProps {
 }
 
 function EachCartItem({ cartItem }: EachCartItemProps) {
-  const { deleteCartItem, isPending, isError } = useDeleteCartItem(cartItem);
-  const { changeQuantity } = usePatchCartItemQuantity(cartItem?.id ?? 0);
+  const { deleteCartItem, isPending, isError } = useDeleteCartItem();
+  const { changeQuantity } = usePatchCartItemQuantity();
 
   const onDelete = () => {
-    deleteCartItem();
+    if (!cartItem) return;
+    deleteCartItem(cartItem.id);
   };
 
   const handleDecrement = () => {
     if (!cartItem) return;
     if (cartItem.quantity <= 1) {
-      deleteCartItem();
+      deleteCartItem(cartItem.id);
       return;
     }
 
