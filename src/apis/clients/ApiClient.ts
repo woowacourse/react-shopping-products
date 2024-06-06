@@ -50,6 +50,22 @@ export default class ApiClient implements ApiClientInterface {
     }
   }
 
+  async patch(path: string, body: object): Promise<void> {
+    const url = buildURL({ baseUrl: this.baseUrl, path });
+
+    const parsedBody = JSON.stringify(body);
+
+    const response = await fetch(url, {
+      method: HTTP_METHOD.patch,
+      headers: this.header,
+      body: parsedBody,
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+  }
+
   async delete(path: string): Promise<void> {
     const url = buildURL({ baseUrl: this.baseUrl, path });
 
