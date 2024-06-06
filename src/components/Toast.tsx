@@ -15,6 +15,7 @@ const S = {
   Toast: styled.div`
     position: absolute;
     top: 64px;
+    left: 0;
     width: 100%;
     padding: 10px;
     background-color: ${theme.color.lightRed};
