@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { Product } from '../../types/fetch';
-import ProductCard from '../ProductCard/ProductCard';
+import ProductCard from './ProductCard/ProductCard';
 import * as S from './ProductList.styled';
 
 interface ProductListProps {
@@ -13,14 +13,14 @@ interface ProductListProps {
   fetchNextPage: () => void;
 }
 
-function ProductList({
+const ProductList = ({
   products,
   page,
   isPending,
   isLast,
   isError,
   fetchNextPage,
-}: ProductListProps) {
+}: ProductListProps) => {
   const target = useRef(null);
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
@@ -38,12 +38,12 @@ function ProductList({
 
   return (
     <S.ProductListContainer>
-      {products.map((product, i) => {
-        return <ProductCard key={i} product={product} />;
-      })}
+      {products.map((product, i) => (
+        <ProductCard key={i} product={product} />
+      ))}
       <S.ObserverContainer ref={target} />
     </S.ProductListContainer>
   );
-}
+};
 
 export default ProductList;

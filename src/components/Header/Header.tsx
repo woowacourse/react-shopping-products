@@ -5,7 +5,7 @@ interface HeaderProps {
   badgeCount: number;
 }
 
-function Header({ badgeCount }: HeaderProps) {
+const Header = ({ badgeCount }: HeaderProps) => {
   return (
     <S.HeaderContainer>
       <S.LogoIcon src={LogoIcon} />
@@ -18,6 +18,6 @@ function Header({ badgeCount }: HeaderProps) {
       </S.CartIconContainer>
     </S.HeaderContainer>
   );
-}
+};
 
 export default Header;

@@ -1,14 +1,14 @@
 import { useContext } from 'react';
-import { CartContext } from '../../CartContext';
-import { Product } from '../../types/fetch';
-import AddCartButton from '../AddCartButton/AddCartButton';
+import { CartContext } from '../../../CartContext';
+import { Product } from '../../../types/fetch';
+import AddCartButton from './AddCartButton/AddCartButton';
 import * as S from './ProductCard.styled';
 
 interface ProductCardProps {
   product: Product;
 }
 
-function ProductCard({ product }: ProductCardProps) {
+const ProductCard = ({ product }: ProductCardProps) => {
   const { addProductToCart, patchToRemoveCart } = useContext(CartContext);
 
   return (
@@ -34,6 +34,6 @@ function ProductCard({ product }: ProductCardProps) {
       </S.ContentWrapper>
     </S.ProductCardContainer>
   );
-}
+};
 
 export default ProductCard;

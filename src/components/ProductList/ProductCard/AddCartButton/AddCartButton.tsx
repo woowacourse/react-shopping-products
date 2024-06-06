@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { CartContext } from '../../CartContext';
-import { AddCartIcon, DeleteCartIcon } from '../../assets';
+import { CartContext } from '../../../../CartContext';
+import { AddCartIcon, DeleteCartIcon } from '../../../../assets';
 import * as S from './AddCartButton.styled';
 
 interface AddCartButtonProps {

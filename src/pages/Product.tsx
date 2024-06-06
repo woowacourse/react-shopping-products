@@ -9,7 +9,7 @@ import useFetchProducts from '../hooks/useFetchProducts';
 import { SortingParam } from '../types/sort';
 import * as S from './Product.styled';
 
-function Product() {
+const Product = () => {
   const fetchAddCartState = useFetchAddCart();
   const [sortings, setSortings] = useState<SortingParam[]>([]);
   const [filter, setFilter] = useState('');
@@ -36,6 +36,6 @@ function Product() {
       </CartContext.Provider>
     </>
   );
-}
+};
 
 export default Product;

@@ -18,7 +18,7 @@ const OPTIONS: Record<string, string> = {
   animal: '애완용품',
 };
 
-function Dropdown({ setSortings, setFilter }: DropdownProps) {
+const Dropdown = ({ setSortings, setFilter }: DropdownProps) => {
   (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.target.value;
   };
@@ -44,6 +44,6 @@ function Dropdown({ setSortings, setFilter }: DropdownProps) {
       </S.Dropdown>
     </S.DropdownContainer>
   );
-}
+};
 
 export default Dropdown;
