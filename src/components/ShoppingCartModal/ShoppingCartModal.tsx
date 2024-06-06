@@ -4,11 +4,19 @@ import { Cart } from '../../types/Cart.type';
 
 interface ShoppingCartModalProps {
   cartItems: Cart[];
+  onDeleteCartItem: (productId: number) => void;
+  onUpdateCartItemQuantity: (productId: number, quantity: number) => void;
   isOpen: boolean;
   close: () => void;
 }
 
-const ShoppingCartModal = ({ cartItems, isOpen, close }: ShoppingCartModalProps) => {
+const ShoppingCartModal = ({
+  cartItems,
+  onDeleteCartItem,
+  onUpdateCartItemQuantity,
+  isOpen,
+  close,
+}: ShoppingCartModalProps) => {
   return (
     <Modal isOpen={isOpen} close={close} position="bottom">
       <Modal.Header>
@@ -16,7 +24,7 @@ const ShoppingCartModal = ({ cartItems, isOpen, close }: ShoppingCartModalProps)
       </Modal.Header>
       <Modal.Body>
         {cartItems.map((cartItem) => (
-          <CartItem cartItem={cartItem} onRemoveItem={() => {}} onUpdateQuantity={() => {}} />
+          <CartItem cartItem={cartItem} onRemoveItem={onDeleteCartItem} onUpdateQuantity={onUpdateCartItemQuantity} />
         ))}
       </Modal.Body>
       <Modal.Footer>

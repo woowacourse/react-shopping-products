@@ -5,12 +5,12 @@ import * as S from './CartItem.style';
 
 interface CartItemProps {
   cartItem: Cart;
-  onRemoveItem: (cartItemId: number) => void;
-  onUpdateQuantity: (cartItemId: number, quantity: number) => void;
+  onRemoveItem: (productId: number) => void;
+  onUpdateQuantity: (productId: number, quantity: number) => void;
 }
 
 function CartItem({ cartItem, onRemoveItem, onUpdateQuantity }: CartItemProps) {
-  const { id, quantity, product } = cartItem;
+  const { quantity, product } = cartItem;
 
   return (
     <S.Layout>
@@ -23,12 +23,12 @@ function CartItem({ cartItem, onRemoveItem, onUpdateQuantity }: CartItemProps) {
           </S.ItemInfoContainer>
           <QuantityStepper
             quantity={quantity}
-            onMinusButtonClick={() => onUpdateQuantity(id, quantity - 1)}
-            onPlusButtonClick={() => onUpdateQuantity(id, quantity + 1)}
+            onMinusButtonClick={() => onUpdateQuantity(product.id, quantity - 1)}
+            onPlusButtonClick={() => onUpdateQuantity(product.id, quantity + 1)}
           />
         </S.ItemContainer>
       </S.Body>
-      <S.DeleteButton onClick={() => onRemoveItem(id)}>삭제</S.DeleteButton>
+      <S.DeleteButton onClick={() => onRemoveItem(product.id)}>삭제</S.DeleteButton>
     </S.Layout>
   );
 }
