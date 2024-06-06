@@ -27,13 +27,11 @@ const useFetchProducts = () => {
 
         return lastPage.last ? undefined : nextPage;
       },
+      select: (data) => ({
+        pages: data.pages.flatMap((page) => page.content),
+        pageParams: data.pageParams,
+      }),
     });
-
-  const contents = data?.pages.map(({ content }) => content);
-  const products = contents?.reduce(
-    (prevContents, nextContents) => [...prevContents, ...nextContents],
-    [],
-  );
 
   const filterByCategory = (selectedCategory: Category) => {
     if (selectedCategory === category) return;
@@ -54,7 +52,7 @@ const useFetchProducts = () => {
   };
 
   return {
-    products,
+    products: data?.pages,
     isLoading,
     error,
     sort,
