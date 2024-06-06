@@ -1,6 +1,5 @@
-import { QuantityControl } from '@components/index';
-import { CartListContext } from '@contexts/index';
-import { useTargetContext } from '@hooks/index';
+import { CartActionErrorModal, QuantityControl } from '@components/index';
+import { useCartList } from '@hooks/index';
 
 import CartAddButton from '../CartAddButton';
 
@@ -11,8 +10,7 @@ interface CartActionButtonProps {
 }
 
 const CartActionButton = ({ productId }: CartActionButtonProps) => {
-  const { cartListMap } = useTargetContext(CartListContext);
-
+  const { cartListMap, error } = useCartList();
   const cartItem = cartListMap?.get(productId);
 
   const className = `${style.cartActionButton} ${cartItem ? style.quantity : style.add} `;
@@ -24,6 +22,7 @@ const CartActionButton = ({ productId }: CartActionButtonProps) => {
       ) : (
         <CartAddButton productId={productId} />
       )}
+      <CartActionErrorModal error={error} />
     </div>
   );
 };

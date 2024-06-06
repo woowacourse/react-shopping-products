@@ -1,12 +1,12 @@
-import { CartListContext } from '@contexts/index';
-import { useTargetContext } from '@hooks/index';
+import { CartActionErrorModal } from '@components/Fallbacks/index';
+import { useCartList } from '@hooks/index';
 
 import style from './style.module.css';
 
 const MAX_QUANTITY = 50;
 
 const CartQuantity = () => {
-  const { cartListMap, isSuccess } = useTargetContext(CartListContext);
+  const { cartListMap, isSuccess, error } = useCartList();
 
   const NONE_CART_LIST_LENGTH = 0;
   const cartListLength = cartListMap?.size ?? NONE_CART_LIST_LENGTH;
@@ -19,9 +19,12 @@ const CartQuantity = () => {
   }
 
   return (
-    <div className={style.quantityWrapper}>
-      <span className={quantityClassName}>{getBadgeNumber()}</span>
-    </div>
+    <>
+      <div className={style.quantityWrapper}>
+        <span className={quantityClassName}>{getBadgeNumber()}</span>
+      </div>
+      <CartActionErrorModal error={error} />
+    </>
   );
 };
 
