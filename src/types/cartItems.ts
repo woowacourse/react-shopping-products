@@ -5,3 +5,8 @@ export interface CartItem {
   product: Product;
   quantity: number;
 }
+
+export interface AddCartRequest {
+  productId: number;
+  quantity: number;
+}

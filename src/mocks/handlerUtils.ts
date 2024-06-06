@@ -1,8 +1,8 @@
-import { CartItem } from "../types/cartItems";
-import cartItemMockData from "./cartItems.json";
+import { AddCartRequest, CartItem } from "../types/cartItems";
+import cartItemMockData from "./data/cartItems.json";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isValidCartItemRequestBody(value: any): value is CartItem {
+export function isValidCartItemRequestBody(value: any): value is AddCartRequest {
   if (
     !value ||
     typeof value !== "object" ||
@@ -15,10 +15,10 @@ export function isValidCartItemRequestBody(value: any): value is CartItem {
 }
 
 export function CartMockClosure() {
-  let cartMockData = JSON.parse(JSON.stringify(cartItemMockData));
+  let cartMockData = cartItemMockData;
 
   const getCartMockData = () => {
-    return cartMockData;
+    return JSON.parse(JSON.stringify(cartItemMockData));
   };
 
   const pushCartItem = (mockCartItem: CartItem) => {
@@ -30,7 +30,7 @@ export function CartMockClosure() {
   };
 
   const resetCartItems = () => {
-    cartMockData = JSON.parse(JSON.stringify(cartItemMockData));
+    cartMockData = cartItemMockData;
   };
 
   return { getCartMockData, pushCartItem, deleteCartItem, resetCartItems };

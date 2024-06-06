@@ -3,7 +3,8 @@ import { HttpResponse, http } from "msw";
 
 import { CartMockClosure, isValidCartItemRequestBody } from "./handlerUtils";
 
-import productsMockData from "./products.json";
+import productsMockData from "./data/products.json";
+import cartItem from "./data/cartItem.json";
 
 export const cartMockClosure = CartMockClosure();
 
@@ -32,7 +33,12 @@ export const handlers = [
       throw new Error("body로 주어진 값이 { productId, quantity} 형식이 아닙니다.");
     }
 
-    cartMockClosure.pushCartItem(body);
+    cartMockClosure.pushCartItem({
+      ...cartItem,
+      id: cartMockClosure.getCartMockData().content.length + 1,
+      product: { ...cartItem.product, id: body.productId },
+      quantity: body.quantity,
+    });
     return HttpResponse.json({ status: 201 });
   }),
 
