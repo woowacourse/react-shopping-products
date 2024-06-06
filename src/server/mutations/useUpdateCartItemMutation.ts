@@ -15,7 +15,7 @@ export const useUpdateCartItemMutation = (onError?: OnError): UseUpdateCartItemM
   };
 
   const { mutate } = useMutation({
-    mutationKey: [MUTATION_KEYS.deleteCartItem],
+    mutationKey: [MUTATION_KEYS.updateCartItem],
     mutationFn: updateCartItem,
     onSuccess: invalidateCartItems,
     onError,
