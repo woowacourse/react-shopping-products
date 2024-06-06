@@ -16,10 +16,10 @@ const cartHandler = [
     return HttpResponse.json(response, { status: 200 });
   }),
   http.post(END_POINTS.cartItems, async () => {
-    return HttpResponse.json();
+    return HttpResponse.json('success');
   }),
-  http.delete(END_POINTS.cartItems, async () => {
-    return HttpResponse.json();
+  http.delete(`${END_POINTS.cartItems}/:cartItemId`, async () => {
+    return HttpResponse.json('success');
   }),
 ];
 
