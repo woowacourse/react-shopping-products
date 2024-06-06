@@ -50,7 +50,7 @@ export async function patchCartItem({
 }: PatchCartItemProps): Promise<void> {
   await response({
     url: `${END_POINTS.CART_ITEMS}/${cartItemId}`,
-    method: 'DELETE',
+    method: 'PATCH',
     body: JSON.stringify({ quantity }),
   });
 }
