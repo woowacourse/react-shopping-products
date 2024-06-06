@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import CartItemQuantityController from "@components/ProductListPage/CartItemQuantityController";
+import CartItemQuantityController from "@components/ProductFeedPage/CartItemQuantityController";
 import { formatToKRW } from "@utils/formatToKRW";
 
 interface ProductInfo {

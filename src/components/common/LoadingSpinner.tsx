@@ -1,6 +1,12 @@
 import styled, { keyframes } from "styled-components";
 
-const LoadingSpinner = () => {
+interface LoadingSpinnerProps {
+  isLoading?: boolean;
+}
+
+const LoadingSpinner = ({ isLoading = false }: LoadingSpinnerProps) => {
+  if (!isLoading) return null;
+
   return <S.LoadingSpinner />;
 };
 

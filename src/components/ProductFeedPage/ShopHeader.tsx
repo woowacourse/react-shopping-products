@@ -4,13 +4,17 @@ import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "@assets/cart.svg";
 import { useCartItems } from "@src/server/queries/useCartItems";
 
-const ShopHeader = () => {
+interface ShopHeaderProps {
+  onCartButtonClick: () => void;
+}
+
+const ShopHeader = ({ onCartButtonClick }: ShopHeaderProps) => {
   const { data: cartItems, isLoading } = useCartItems();
 
   return (
     <S.Header>
       <S.Title>SHOP</S.Title>
-      <S.CartButton role="button" aria-label="장바구니 이동">
+      <S.CartButton role="button" aria-label="장바구니 이동" onClick={onCartButtonClick}>
         <CartIcon />
         {!isLoading && (
           <S.Badge>
