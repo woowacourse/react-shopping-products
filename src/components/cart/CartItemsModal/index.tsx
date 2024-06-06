@@ -16,6 +16,8 @@ const CartItemsModal = () => {
       <S.Container>
         {isLoading ? (
           <LoadingDots />
+        ) : cartItems.length === 0 ? (
+          <S.EmptyCart>장바구니가 비어있습니다.</S.EmptyCart>
         ) : (
           <S.CartItemsContainer>
             {cartItems.map((item) => (

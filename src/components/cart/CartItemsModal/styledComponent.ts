@@ -26,8 +26,17 @@ const S = {
   TotalLabel: styled.div`
     font-size: 16px;
   `,
+
   TotalPrice: styled.div`
     font-size: 24px;
+  `,
+
+  EmptyCart: styled.div`
+    text-align: center;
+    margin: 20px;
+
+    font-size: 20px;
+    font-weight: 700;
   `,
 };
 
