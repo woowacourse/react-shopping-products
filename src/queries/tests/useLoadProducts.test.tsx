@@ -2,22 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { CATEGORY_OPTIONS } from '@constants/index';
 import { Category } from '@appTypes/index';
 import useLoadProducts from '@queries/product/useLoadProducts';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Suspense } from 'react';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <QueryClientProvider client={queryClient}>
-    <Suspense>{children}</Suspense>
-  </QueryClientProvider>
-);
+import { queryClient, wrapper } from './testUtil';
 
 describe('useLoadProducts test', () => {
   describe('context: 상품 로드, 무한 스크롤 테스트', () => {

@@ -16,7 +16,7 @@ const useLoadCartItems = () => {
     return result.cartItems;
   };
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isSuccess, isError } = useQuery({
     queryKey: [QUERY_KEYS.getCartItems],
     queryFn: getCartItemList,
   });
@@ -28,6 +28,7 @@ const useLoadCartItems = () => {
   return {
     cartItems: data,
     isLoading,
+    isSuccess,
     isError,
   };
 };
