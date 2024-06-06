@@ -11,7 +11,7 @@ const S = {
 
   CartItemsContainer: styled.div`
     max-height: 400px;
-    overflow: scroll;
+    overflow-y: scroll;
   `,
 
   Total: styled.div`

@@ -4,6 +4,7 @@ import COLOR_PALETTE from "../../../style/colorPalette";
 const S = {
   ToggleItemContainer: styled.div`
     align-self: flex-end;
+    height: 40px;
   `,
 
   ToggleItemButton: styled.button<{ isSelected: boolean }>`
