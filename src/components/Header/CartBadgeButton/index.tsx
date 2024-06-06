@@ -1,7 +1,7 @@
 import { CartIcon } from '@assets/index';
 import CartListModal from '@components/CartListModal';
 import { useOpenModal } from '@hooks/index';
-import { lazy, Suspense } from 'react';
+import { lazy } from 'react';
 
 const CartQuantity = lazy(() => import('../CartQuantity'));
 
@@ -20,7 +20,7 @@ const CartBadgeButton = () => {
         <img src={CartIcon} alt="장바구니 아이콘(장바구니 목록 열기)" />
         <CartQuantity />
       </button>
-      <CartListModal openModal={openModal} setOpenModal={setOpenModal} rootEl={rootEl} />
+      {openModal && <CartListModal openModal={openModal} setOpenModal={setOpenModal} rootEl={rootEl} />}
     </>
   );
 };
