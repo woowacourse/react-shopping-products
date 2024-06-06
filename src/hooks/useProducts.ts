@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useFetch, usePagination } from "../hooks";
 import { Product } from "../types";
-import { createFetchUrl } from "../utils";
-import { ENDPOINT, PRODUCTS_SIZE, CategoryQueryString, SortOptionQueryString } from "../constants";
+import { createFetchProductsParams, createFetchUrl } from "../utils";
+import { ENDPOINT, CategoryQueryString, SortOptionQueryString } from "../constants";
 
 interface UseProductResult {
   products: Product[];
@@ -27,13 +27,7 @@ export default function useProducts(): UseProductResult {
   const [category, setCategory] = useState<CategoryQueryString>("all");
   const [sortOption, setSortOption] = useState<SortOptionQueryString>("asc");
 
-  const params = {
-    page: page === 0 ? page.toString() : (page + PRODUCTS_SIZE.perRequest).toString(),
-    size: page === 0 ? PRODUCTS_SIZE.initial.toString() : PRODUCTS_SIZE.perRequest.toString(),
-    category: category === "all" ? undefined : category,
-    sortOption,
-  };
-
+  const params = createFetchProductsParams({ page, category, sortOption });
   const url = createFetchUrl({ endpoint: ENDPOINT.PRODUCT, params });
 
   const { data, error, isLoading } = useFetch<ProductRequestResult>({
