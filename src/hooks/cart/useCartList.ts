@@ -1,11 +1,11 @@
 import { fetchGetCartList } from '@apis/index';
-import { REACT_QUERY_KEY } from '@constants/index';
+import { QUERY_KEY, QUERY_TIME } from '@constants/index';
 import { CartItem } from '@src/appTypes';
 import { useQuery } from '@tanstack/react-query';
 
 const useCartList = (refetchOnMount: boolean = false) => {
   const { data, error, isLoading, isSuccess } = useQuery({
-    queryKey: [REACT_QUERY_KEY.cartList],
+    queryKey: [QUERY_KEY.cartList],
     queryFn: fetchGetCartList,
     refetchOnMount,
   });
