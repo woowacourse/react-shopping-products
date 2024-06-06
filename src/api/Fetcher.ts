@@ -23,7 +23,11 @@ const Fetcher = {
       const data: T = await res.json();
       return data;
     } catch (err) {
-      throw err;
+      if (err instanceof HttpError) {
+        throw err;
+      } else {
+        throw new HttpError(ERROR_MESSAGE.UNEXPECTED_ERROR, 500);
+      }
     }
   },
 
@@ -40,7 +44,11 @@ const Fetcher = {
         throw error;
       }
     } catch (err) {
-      throw err;
+      if (err instanceof HttpError) {
+        throw err;
+      } else {
+        throw new HttpError(ERROR_MESSAGE.UNEXPECTED_ERROR, 500);
+      }
     }
   },
 
@@ -57,7 +65,11 @@ const Fetcher = {
         throw error;
       }
     } catch (err) {
-      throw err;
+      if (err instanceof HttpError) {
+        throw err;
+      } else {
+        throw new HttpError(ERROR_MESSAGE.UNEXPECTED_ERROR, 500);
+      }
     }
   },
 
@@ -74,7 +86,11 @@ const Fetcher = {
         throw error;
       }
     } catch (err) {
-      throw err;
+      if (err instanceof HttpError) {
+        throw err;
+      } else {
+        throw new HttpError(ERROR_MESSAGE.UNEXPECTED_ERROR, 500);
+      }
     }
   },
 
@@ -90,7 +106,11 @@ const Fetcher = {
         throw error;
       }
     } catch (err) {
-      throw err;
+      if (err instanceof HttpError) {
+        throw err;
+      } else {
+        throw new HttpError(ERROR_MESSAGE.UNEXPECTED_ERROR, 500);
+      }
     }
   },
 };
