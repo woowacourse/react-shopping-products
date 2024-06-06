@@ -34,6 +34,6 @@ export async function fetchProduct(params: FetchProductParameter): Promise<{ pro
     method: 'GET',
   });
   const result = (await data.json()) as ApiResponse<Product[]>;
-  console.log('result', result);
+
   return { products: result.content, isLast: result.last };
 }
