@@ -1,79 +1,63 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { deleteCartItems, getCartItems, postCartItems } from "../api/cartItems";
-import { useEffect, useState } from "react";
-
 import { CartItem } from "../types/cartItems";
+import { ERROR_MESSAGE } from "../constants/errorMessage/ko";
 
 export interface ToggleCartItemReturns {
   cartItems: CartItem[];
-  addToCart: (productId: number) => Promise<void>;
-  removeFromCart: (productId: number) => Promise<void>;
+  addToCart: (productId: number) => void;
+  removeFromCart: (productId: number) => void;
   checkSelected: (id: number) => boolean;
   isLoading: boolean;
   error: unknown;
 }
 
 const useToggleCartItem = (): ToggleCartItemReturns => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<unknown>(null);
+  const {
+    data: cartItems,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery<CartItem[]>({
+    queryKey: ["cartItems"],
+    queryFn: getCartItems,
+  });
 
-  const fetchCartItems = async () => {
-    if (isLoading) return;
-    try {
-      setIsLoading(true);
-      const data = await getCartItems();
-      setCartItems(data);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
+  const addMutation = useMutation({
+    mutationFn: (productId: number) => postCartItems({ productId, quantity: 1 }),
+    onSuccess: refetch,
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: (productId: number) => {
+      const targetItem = cartItems?.find((item) => item.product.id === productId);
+      if (targetItem) {
+        return deleteCartItems(targetItem.id);
+      }
+      throw new Error(ERROR_MESSAGE.deleteCartItems);
+    },
+    onSuccess: refetch,
+  });
+
+  const addToCart = (productId: number) => {
+    addMutation.mutate(productId);
   };
 
-  useEffect(() => {
-    fetchCartItems();
-  }, []);
-
-  const addToCart = async (productId: number) => {
-    if (isLoading) return;
-    try {
-      setIsLoading(true);
-      await postCartItems({ productId, quantity: 1 });
-      await fetchCartItems();
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
+  const removeFromCart = (productId: number) => {
+    removeMutation.mutate(productId);
   };
 
-  const removeFromCart = async (productId: number) => {
-    if (isLoading) return;
-    try {
-      setIsLoading(true);
-      const targetCartItemIndex = cartItems.findIndex((item) => item.product.id === productId);
-      const targetCartItemId = cartItems[targetCartItemIndex].id;
-      await deleteCartItems(targetCartItemId);
-      setCartItems((cartItems) => {
-        const newCartItems = cartItems.filter((cartItem) => cartItem.id !== targetCartItemId);
-        return newCartItems;
-      });
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
+  const checkSelected = (id: number): boolean => {
+    return !!cartItems?.find((item) => item.product.id === id);
   };
-
-  const checkSelected = (id: number) => !!cartItems.find((item) => item.product.id === id);
 
   return {
-    cartItems,
+    cartItems: cartItems || [],
     addToCart,
     removeFromCart,
     checkSelected,
-    isLoading,
-    error,
+    isLoading: isLoading,
+    error: error || addMutation.error || removeMutation.error,
   };
 };
 
