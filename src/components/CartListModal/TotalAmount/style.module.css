@@ -8,6 +8,9 @@
 }
 
 .title {
+  width: fit-content;
+  min-width: 30%;
+  height: 1rem;
   font-weight: 700;
   font-size: 1rem;
   line-height: 1rem;
@@ -16,6 +19,9 @@
 }
 
 .price {
+  width: fit-content;
+  min-width: 30%;
+  height: 1.5rem;
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 1.5rem;

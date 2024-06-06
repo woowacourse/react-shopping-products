@@ -25,7 +25,7 @@ const TotalAmount = ({ cartList }: TotalAmountProps) => {
 
 const Skeleton = () => {
   return (
-    <section className={getSkeletonClassName(style.totalAmount)}>
+    <section className={style.totalAmount}>
       <p className={getSkeletonClassName(style.title)}></p>
       <p className={getSkeletonClassName(style.price)}></p>
     </section>

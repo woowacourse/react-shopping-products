@@ -35,13 +35,13 @@ const CartItemCard = ({ cartItem }: CartItemCardProps) => {
 
 const Skeleton = () => {
   return (
-    <li className={getSkeletonClassName(style.cartItemCard)}>
+    <li className={style.cartItemCard}>
       <div className={getSkeletonClassName(style.img)} />
-      <div className={getSkeletonClassName(style.info)}>
+      <div className={style.info}>
         <p className={getSkeletonClassName(style.name)}></p>
         <p className={getSkeletonClassName(style.price)}></p>
       </div>
-      <button className={getSkeletonClassName(style.deleteButton)}></button>
+      <button className={getSkeletonClassName(`${style.deleteButton} ${style.skeletonDeleteButton}`)}></button>
     </li>
   );
 };

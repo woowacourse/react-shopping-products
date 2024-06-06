@@ -19,8 +19,11 @@
 }
 
 .skeleton {
-  animation: skeleton-animation 10s infinite ease-out;
+  animation: skeleton-animation 5s infinite ease-out;
+  border-radius: 0.5rem;
   background: linear-gradient(-90deg, #aaa, #f0f0f0, #aaa, #f0f0f0);
+  background-position: 0;
+  background-size: 400% 400%;
 }
 
 @keyframes skeleton-animation {

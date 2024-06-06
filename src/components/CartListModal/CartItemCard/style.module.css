@@ -19,6 +19,9 @@
 
 .name {
   margin-bottom: 0.3125rem;
+  width: fit-content;
+  min-width: 4rem;
+  height: 1.4375rem;
   font-weight: 700;
   font-size: 1rem;
   line-height: 1.4375rem;
@@ -26,10 +29,13 @@
 
 .price {
   margin-bottom: 0.5rem;
+  width: fit-content;
+  min-width: 4rem;
+  height: 0.9375rem;
   color: #0a0d13;
   font-weight: 500;
-  font-size: 12px;
-  line-height: 15px;
+  font-size: 0.75rem;
+  line-height: 0.9375rem;
 }
 
 .deleteButton {
@@ -42,4 +48,8 @@
   width: 2.5rem;
   height: 1.5rem;
   text-align: center;
+}
+
+.skeletonDeleteButton {
+  border: none;
 }

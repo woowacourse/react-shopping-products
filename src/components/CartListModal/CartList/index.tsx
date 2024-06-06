@@ -25,7 +25,7 @@ const Skeleton = () => {
   const LENGTH = 2;
 
   return (
-    <ul className={getSkeletonClassName(style.cartList)}>
+    <ul className={style.cartList}>
       {Array.from({ length: LENGTH }, (index) => `cartItemCardSkeleton-${index}`).map((i) => (
         <CartItemCard.Skeleton key={i} />
       ))}
