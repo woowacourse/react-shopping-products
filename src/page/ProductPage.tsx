@@ -65,7 +65,9 @@ function ProductPage() {
             })}
           </ItemList>
         )}
-        {products.length === 0 && <div>상품 정보가 없습니다.</div>}
+        {products.length === 0 && !isLoading && !error && (
+          <div>상품 정보가 없습니다.</div>
+        )}
         {isLoading && (
           <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
         )}

@@ -56,7 +56,7 @@ export default function useProducts(): UseProductsResult {
       return allPages.length;
     },
     select: (data) => {
-      return data?.pages.flatMap((page) => page.data) || [];
+      return data.pages.flatMap((page) => page.data);
     },
   });
 
