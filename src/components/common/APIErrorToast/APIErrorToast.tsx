@@ -1,5 +1,5 @@
-import useToast from "../../hooks/useToast";
-import Toast from "../Toast/Toast";
+import { useToast } from "../../../hooks";
+import { Toast } from "../..";
 
 interface APIErrorToastProps {
   message: string;

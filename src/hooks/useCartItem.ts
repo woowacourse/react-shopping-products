@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { CartItem } from "../types/cartItem";
-import { addCartItem, removeCartItem, getCartItems } from "../apis/cartItems";
+import { CartItem } from "../types";
+import { addCartItem, removeCartItem, getCartItems } from "../apis";
 
 interface UseCartItemResult {
   error: unknown;

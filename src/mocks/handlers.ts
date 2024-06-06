@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { ENDPOINT } from "../constants/apis";
+import { ENDPOINT } from "../constants";
 import { initialCartItems, newCartItem } from "./cartItems/initialCartItems";
 
 import {

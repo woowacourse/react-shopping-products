@@ -1,5 +1,5 @@
-import { Product } from "../../types/products";
-import ProductItem from "../ProductItem/ProductItem";
+import { Product } from "../../../types";
+import { ProductItem } from "../..";
 import * as Styled from "./ProductItemContainer.style";
 
 interface ProductItemContainerProps {

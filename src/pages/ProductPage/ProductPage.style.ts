@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { CartItemIcon } from "../assets";
+import { CartItemIcon } from "../../assets";
 
 export const ShopHeader = styled.div`
   width: 100%;

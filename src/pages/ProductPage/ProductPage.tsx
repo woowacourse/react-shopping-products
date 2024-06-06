@@ -1,20 +1,14 @@
-import useProducts from "../hooks/useProducts";
-import useCartItem from "../hooks/useCartItem";
-import useIntersectionObserver from "../hooks/useIntersectionObserver";
-
-import NavigationBar from "../components/NavigationBar/NavigationBar";
-import SelectBox from "../components/SelectBox/SelectBox";
-import ProductItemContainer from "../components/ProductItemContainer/ProductItemContainer";
-import APIErrorToast from "../components/APIErrorToast/APIErrorToast";
-
-import * as Styled from "./ProductPage.style";
+import { useCartItem, useProducts, useIntersectionObserver } from "../../hooks";
+import { NavigationBar, SelectBox, ProductItemContainer, APIErrorToast } from "../../components";
 
 import {
   CategoryKeys,
   SortOptionsKeys,
   PRODUCT_CATEGORIES,
   PRODUCT_SORT_OPTIONS,
-} from "../constants/products";
+} from "../../constants";
+
+import * as Styled from "./ProductPage.style";
 
 export default function ProductPage() {
   const {

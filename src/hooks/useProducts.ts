@@ -1,12 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { CategoryQueryString, PRODUCTS_SIZE, SortOptionQueryString } from "../constants/products";
-
-import useFetch from "./useFetch";
-import { Product } from "../types/products";
-import usePagination from "./usePagination";
+import { useFetch, usePagination } from "../hooks";
+import { Product } from "../types";
 import { createFetchUrl } from "../utils";
-import { ENDPOINT } from "../constants/apis";
+import { ENDPOINT, PRODUCTS_SIZE, CategoryQueryString, SortOptionQueryString } from "../constants";
 
 interface UseProductResult {
   products: Product[];

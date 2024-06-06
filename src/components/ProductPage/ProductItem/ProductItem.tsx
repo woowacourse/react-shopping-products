@@ -1,5 +1,5 @@
-import { Product } from "../../types/products";
-import { AddToCartIcon, RemoveFromCartIcon } from "../../assets";
+import { Product } from "../../../types";
+import { AddToCartIcon, RemoveFromCartIcon } from "../../../assets";
 
 import * as Styled from "./ProductItem.style";
 

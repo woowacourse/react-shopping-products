@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchClient } from "../apis/fetchClient";
-import { HTTPMethod } from "../types/apis";
+import { fetchClient } from "../apis";
+import { HTTPMethod } from "../types";
 
 export interface UseFetchResult<T> {
   error: unknown;

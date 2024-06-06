@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { SelectArrowDown, SelectArrowUp } from "../../assets/";
+import { SelectArrowDown, SelectArrowUp } from "../../../assets";
 
 export const SelectBoxContainer = styled.div`
   width: 125px;

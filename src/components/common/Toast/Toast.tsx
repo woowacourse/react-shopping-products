@@ -7,7 +7,7 @@ interface ToastProps {
   onClose: () => void;
 }
 
-const Toast = ({ message, onClose }: ToastProps) => {
+export default function Toast({ message, onClose }: ToastProps) {
   const [isClose, setIsClose] = useState<boolean>(false);
 
   useEffect(() => {
@@ -35,6 +35,4 @@ const Toast = ({ message, onClose }: ToastProps) => {
       <Styled.ToastMessage>{message}</Styled.ToastMessage>
     </Styled.Container>
   );
-};
-
-export default Toast;
+}
