@@ -11,7 +11,7 @@ interface QuantityControlProps {
 }
 
 const QuantityControl = ({ quantity, cartItemId }: QuantityControlProps) => {
-  const { mutate: quantityMutate, error } = useCartItemQuantity();
+  const { mutate: quantityMutate, error, isPending } = useCartItemQuantity();
 
   const increaseQuantity = () => {
     quantityMutate({ cartItemId, quantity: quantity + 1 });
@@ -24,9 +24,9 @@ const QuantityControl = ({ quantity, cartItemId }: QuantityControlProps) => {
   return (
     <>
       <div className={style.quantityControl}>
-        <CountButton quantitySign="minus" onClick={decreaseQuantity} />
+        <CountButton quantitySign="minus" disabled={isPending} onClick={decreaseQuantity} />
         <span className="text">{quantity}</span>
-        <CountButton quantitySign="plus" onClick={increaseQuantity} />
+        <CountButton quantitySign="plus" disabled={isPending} onClick={increaseQuantity} />
       </div>
       <CartActionErrorModal error={error} />
     </>

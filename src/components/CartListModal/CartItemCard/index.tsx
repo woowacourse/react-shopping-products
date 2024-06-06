@@ -10,7 +10,7 @@ interface CartItemCardProps {
 }
 
 const CartItemCard = ({ cartItem }: CartItemCardProps) => {
-  const { mutate: deleteMutate, error } = useDeleteCartItem();
+  const { mutate: deleteMutate, error, isPending } = useDeleteCartItem();
 
   const handleClickDeleteButton = () => {
     deleteMutate({ cartItemId: cartItem.id });
