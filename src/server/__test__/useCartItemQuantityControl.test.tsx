@@ -3,7 +3,7 @@
 
 import { renderHook } from "@testing-library/react";
 import { vi } from "vitest";
-import { useCartActions } from "../useCartActions";
+import { useCartItemQuantityControl } from "../useCartItemQuantityControl";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "../queryClient";
 import { ReactNode, act } from "react";
@@ -15,7 +15,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 
 vi.mock("@server/useCartItems");
 
-describe("useCartActions", () => {
+describe("useCartItemQuantityControl", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -29,33 +29,39 @@ describe("useCartActions", () => {
 
   mockUseCartItems.mockReturnValue({ data: mockCartItems });
 
-  it("20개를 초과하여 상품 담기를 시도하는 경우 에러를 표시한다", async () => {
+  it("20개를 초과하여 상품을 담을 경우 에러를 표시한다", async () => {
     const onError = vi.fn();
-
-    const { result } = renderHook(() => useCartActions(onError), {
-      wrapper,
-    });
 
     const EXCEEDING_ITEM_ID = 20;
 
+    const { result } = renderHook(
+      () => useCartItemQuantityControl({ productId: EXCEEDING_ITEM_ID, onError }),
+      {
+        wrapper,
+      }
+    );
+
     await act(async () => {
-      result.current.addToCart(EXCEEDING_ITEM_ID);
+      result.current.increaseQuantity();
     });
 
     expect(onError).toHaveBeenCalled();
   });
 
-  it("장바구니에 담기지 않은 상품에 대해 삭제를 시도하는 경우 에러를 표시한다", async () => {
+  it("장바구니에 담기지 않은 상품에 대해 수량을 감소시키는 경우 에러를 표시한다", async () => {
     const onError = vi.fn();
-
-    const { result } = renderHook(() => useCartActions(onError), {
-      wrapper,
-    });
 
     const NON_EXISTING_ITEM_ID = 20;
 
+    const { result } = renderHook(
+      () => useCartItemQuantityControl({ productId: NON_EXISTING_ITEM_ID, onError }),
+      {
+        wrapper,
+      }
+    );
+
     await act(async () => {
-      result.current.removeFromCart(NON_EXISTING_ITEM_ID);
+      result.current.decreaseQuantity();
     });
 
     expect(onError).toHaveBeenCalled();
