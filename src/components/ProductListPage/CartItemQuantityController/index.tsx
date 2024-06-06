@@ -2,6 +2,7 @@ import { useErrorToast } from "@src/contexts/errorToast/useErrorToast";
 import CartItemCounter from "./CartItemCounter";
 import CartItemAddButton from "./CartItemAddButton";
 import { useCartItemQuantityControl } from "@src/server/useCartItemQuantityControl";
+import styled from "styled-components";
 
 interface CartItemQuantityControllerProps {
   productId: number;
@@ -19,7 +20,7 @@ const CartItemQuantityController = ({ productId }: CartItemQuantityControllerPro
   const targetCartItem = cartItems.find(({ product }) => product.id === productId);
 
   return (
-    <div>
+    <S.Container>
       {targetCartItem ? (
         <CartItemCounter
           count={targetCartItem.quantity}
@@ -29,8 +30,18 @@ const CartItemQuantityController = ({ productId }: CartItemQuantityControllerPro
       ) : (
         <CartItemAddButton addCartItem={increaseQuantity} />
       )}
-    </div>
+    </S.Container>
   );
 };
 
 export default CartItemQuantityController;
+
+const S = {
+  Container: styled.div`
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 0.8rem;
+    width: 100%;
+    right: 0;
+  `,
+};

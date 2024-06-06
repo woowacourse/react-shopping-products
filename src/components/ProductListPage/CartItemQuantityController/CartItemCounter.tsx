@@ -1,4 +1,4 @@
-import Counter from "../common/Counter";
+import Counter from "@components/common/Counter";
 
 interface CartItemCounterProps {
   count: number;
@@ -7,7 +7,6 @@ interface CartItemCounterProps {
 }
 
 const MIN_CART_ITEM_COUNT = 0;
-const MAX_CART_ITEM_COUNT = 99;
 
 const CartItemCounter = ({
   count,
@@ -20,7 +19,6 @@ const CartItemCounter = ({
       onIncrease={increaseCartItemQuantity}
       onDecrease={decreaseCartItemQuantity}
       minCount={MIN_CART_ITEM_COUNT}
-      maxCount={MAX_CART_ITEM_COUNT}
     />
   );
 };

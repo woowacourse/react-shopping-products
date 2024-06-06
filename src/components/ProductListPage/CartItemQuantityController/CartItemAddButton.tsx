@@ -6,24 +6,12 @@ interface CartItemAddButtonProps {
 }
 
 const CartItemAddButton = ({ addCartItem }: CartItemAddButtonProps) => {
-  return (
-    <S.Container>
-      <S.AddToCartIcon role="button" aria-label="상품 담기" onClick={addCartItem} />
-    </S.Container>
-  );
+  return <S.AddToCartIcon role="button" aria-label="상품 담기" onClick={addCartItem} />;
 };
 
 export default CartItemAddButton;
 
 const S = {
-  Container: styled.div`
-    display: flex;
-    flex-direction: row-reverse;
-    margin-top: 0.8rem;
-    width: 100%;
-    right: 0;
-  `,
-
   AddToCartIcon: styled(AddToCartIcon)`
     cursor: pointer;
   `,
