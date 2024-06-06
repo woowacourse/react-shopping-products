@@ -3,14 +3,28 @@ import { CartContext } from '../../../CartContext';
 import { Product } from '../../../types/fetch';
 import AddCartButton from './AddCartButton/AddCartButton';
 import * as S from './ProductCard.styled';
-import Stepper from './Stepper/Stepper';
-
+import Stepper from './Stepper/RoundButtonWithImg';
+import useCounter from './Stepper/useCounter';
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { addProductToCart, patchToRemoveCart } = useContext(CartContext);
+  const counterState = useCounter(0);
+
+  const newCounterState = Object.assign(counterState, {
+    increase: () => {
+      addProductToCart(product.id);
+      counterState.increase();
+    },
+    decrease: () => {
+      if (counterState.counter == 1) {
+        patchToRemoveCart(product.id);
+      }
+      counterState.decrease();
+    },
+  });
 
   return (
     <S.ProductCardContainer>
@@ -22,16 +36,22 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </S.InfoWrapper>
 
         <S.ButtonContainer>
-          <AddCartButton
-            id={product.id}
-            onAddClick={() => {
-              addProductToCart(product.id);
-            }}
-            onDeleteClick={() => {
-              patchToRemoveCart(product.id);
-            }}
-          />
-          <Stepper />
+          {counterState.counter > 0 ? (
+            <Stepper counterState={newCounterState}>
+              <Stepper.Layout.Horizontal>
+                <Stepper.MinusButton />
+                <Stepper.DisplayCounter />
+                <Stepper.PlusButton />
+              </Stepper.Layout.Horizontal>
+            </Stepper>
+          ) : (
+            <AddCartButton
+              onClick={() => {
+                addProductToCart(product.id);
+                counterState.increase();
+              }}
+            />
+          )}
         </S.ButtonContainer>
       </S.ContentWrapper>
     </S.ProductCardContainer>

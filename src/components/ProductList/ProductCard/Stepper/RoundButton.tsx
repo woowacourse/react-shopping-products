@@ -1,10 +1,10 @@
 import React from 'react';
-import S from './RoundDesign.styled';
+import S from './RoundButton.styled';
 interface RoundButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   width: number;
   height: number;
 }
-const RoundDesign = ({
+const RoundButton = ({
   width,
   height,
   children,
@@ -17,4 +17,4 @@ const RoundDesign = ({
   );
 };
 
-export default RoundDesign;
+export default RoundButton;
