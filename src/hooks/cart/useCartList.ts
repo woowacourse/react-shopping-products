@@ -8,6 +8,7 @@ const useCartList = (refetchOnMount: boolean = false) => {
     queryKey: [QUERY_KEY.cartList],
     queryFn: fetchGetCartList,
     refetchOnMount,
+    staleTime: QUERY_TIME.cartList.staleTime,
   });
 
   const makeCartListMap = (cartList: CartItem[] | undefined) => {
