@@ -1,18 +1,17 @@
 import { Product } from '@appTypes/index';
-import { FIRST_LOAD_PRODUCTS_AMOUNT, LOAD_MORE_PRODUCTS_AMOUNT } from '@constants/index';
+import { FIRST_LOAD_PRODUCTS_AMOUNT} from '@constants/index';
 import { useEffect, useRef } from 'react';
 
 import ProductCard from '../ProductCard';
-import { ProductListSkeleton } from '../Skeleton';
+
 
 import './ProductList.css';
 
 interface ProductListProps {
   products: Product[];
-  loading: boolean;
   children: React.ReactNode;
 }
-function ProductList({ products, children, loading }: ProductListProps) {
+function ProductList({ products, children }: ProductListProps) {
   const productListRef = useRef<HTMLElement | null>(null);
 
   const handleScrollbar = () => {
@@ -33,9 +32,6 @@ function ProductList({ products, children, loading }: ProductListProps) {
         ))}
         {children}
       </ul>
-      {loading && products.length >= FIRST_LOAD_PRODUCTS_AMOUNT && (
-        <ProductListSkeleton productsLength={LOAD_MORE_PRODUCTS_AMOUNT} />
-      )}
     </section>
   );
 }
