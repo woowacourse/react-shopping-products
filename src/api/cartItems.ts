@@ -32,3 +32,15 @@ export const addCartItem = async ({
 export const deleteCartItem = async (cartItemId: number) => {
   await cartClient.delete(`${API_URL.cartItems}/${cartItemId}`);
 };
+
+export interface patchCartItemQuantityProps {
+  cartItemId: number;
+  quantity: number;
+}
+
+export const patchCartItemQuantity = async ({
+  cartItemId,
+  quantity,
+}: patchCartItemQuantityProps) => {
+  await cartClient.patch(`${API_URL.cartItems}/${cartItemId}`, { quantity });
+};

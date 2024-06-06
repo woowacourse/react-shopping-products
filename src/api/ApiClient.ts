@@ -4,6 +4,7 @@ interface ApiClientInterface {
   get<T>(path: string, params: URLSearchParams): Promise<T>;
   post(path: string, body: object): Promise<void>;
   delete(path: string): Promise<void>;
+  patch(path: string, body: object): Promise<void>;
 }
 
 export default class ApiClient implements ApiClientInterface {
@@ -54,6 +55,22 @@ export default class ApiClient implements ApiClientInterface {
     const response = await fetch(url, {
       method: "DELETE",
       headers: this.header,
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+  }
+
+  async patch(path: string, body: object): Promise<void> {
+    const url = `${this.baseUrl.toString()}${path}`;
+
+    const parsedBody = JSON.stringify(body);
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: this.header,
+      body: parsedBody,
     });
 
     if (!response.ok) {
