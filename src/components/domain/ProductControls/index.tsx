@@ -2,10 +2,8 @@ import useCartItemQuantity from "../../../hooks/useCartItemQuantity";
 import { CartItemType } from "../../../types/cartItems";
 import S from "./styledComponent";
 
-const ProductControls = ({ cartItem }: { cartItem?: CartItemType }) => {
+const ProductControls = ({ cartItem }: { cartItem: CartItemType }) => {
   const { increaseQuantity, decreaseQuantity } = useCartItemQuantity();
-  //TODO: 리팩터링
-  if (!cartItem) return <div>cartItem이 없습니다.</div>;
 
   return (
     <S.ProductControls>
