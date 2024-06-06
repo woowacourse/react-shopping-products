@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import CartToggleButton from "@components/ProductListPage/CartToggleButton";
-import { formatToKRW } from "@src/utils/formatToKRW";
+import { formatToKRW } from "@utils/formatToKRW";
 
 interface ProductInfo {
   id: number;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "@assets/cart.svg";
-import { useCartItems } from "@src/hooks/server/useCartItems";
+import { useCartItems } from "@server/useCartItems";
 
 const ShopHeader = () => {
   const { data: cartItems, isLoading } = useCartItems();

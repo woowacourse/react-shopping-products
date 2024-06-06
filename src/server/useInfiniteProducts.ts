@@ -5,7 +5,7 @@ import {
   getProductsQuery,
 } from "@src/apis/products";
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
-import { QUERY_KEYS } from "../__constants__/queryKeys";
+import { QUERY_KEYS } from "./__constants__/queryKeys";
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from "@src/apis/__constants__/productQueryParams";
 import { Category, PriceSort } from "@src/types/products";
 import { useState } from "react";
@@ -46,11 +46,17 @@ export const useInfiniteProducts = (): UseInfiniteProductsReturn => {
   };
 
   return {
-    data: data?.pages?.flatMap(({ data }) => data) ?? [],
+    data: flattenInfiniteData(data),
     isLoading: isFetching,
     error,
     fetchNextPage,
     updateCategoryFilter,
     updatePriceSort,
   };
+};
+
+const flattenInfiniteData = (
+  data: InfiniteData<ProductsWithNextPage, ProductQueryParams> | undefined
+) => {
+  return data?.pages?.flatMap(({ data }) => data) ?? [];
 };

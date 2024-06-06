@@ -1,6 +1,6 @@
 import { CartItem, getCartItems } from "@src/apis/cartItems";
 import { QueryObserverResult, useQuery } from "@tanstack/react-query";
-import { QUERY_KEYS } from "../__constants__/queryKeys";
+import { QUERY_KEYS } from "./__constants__/queryKeys";
 
 interface UseCartItemsReturn {
   data: CartItem[];

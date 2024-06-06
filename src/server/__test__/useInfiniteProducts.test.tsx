@@ -4,23 +4,19 @@ import { renderHook, waitFor, act } from "@testing-library/react";
 import { API_URL } from "@apis/__constants__/apiUrl";
 import { server } from "@mocks/server";
 import { CART_API_URL } from "@env/envVariables";
-import { PRICE_SORT_OPTIONS } from "@src/apis/__constants__/productQueryParams";
-import { useInfiniteProducts } from "@src/hooks/server/useInfiniteProducts";
+import { PRICE_SORT_OPTIONS } from "@apis/__constants__/productQueryParams";
+import { useInfiniteProducts } from "@server/useInfiniteProducts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
-const createQueryClient = () => {
-  return new QueryClient({
+const wrapper = ({ children }: { children: ReactNode }) => {
+  const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        retry: false,
+        retry: 0,
       },
     },
   });
-};
-
-const wrapper = ({ children }: { children: ReactNode }) => {
-  const queryClient = createQueryClient();
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };
 
@@ -34,13 +30,13 @@ describe("useInfiniteProducts", () => {
       });
     });
 
-    it("초기 상품 목록을 불러올 때 로딩 상태여야 한다", () => {
+    it("초기 상품 목록을 불러올 때 로딩 상태를 표시한다", () => {
       const { result } = renderHook(() => useInfiniteProducts(), { wrapper });
 
       expect(result.current.isLoading).toBe(true);
     });
 
-    it("초기 상품 목록을 불러올 때 에러가 발생하면 에러 객체를 받아온다", async () => {
+    it("초기 상품 목록을 불러올 때 에러가 발생하면 에러를 표시한다", async () => {
       server.use(
         http.get(CART_API_URL + API_URL.products, () => {
           return new HttpResponse(null, { status: 500 });
@@ -51,8 +47,8 @@ describe("useInfiniteProducts", () => {
 
       await waitFor(() => {
         expect(result.current.data).toEqual([]);
-        expect(result.current.error).toBeTruthy();
         expect(result.current.isLoading).toBe(false);
+        expect(result.current.error).toBeTruthy();
       });
     });
   });
@@ -81,7 +77,7 @@ describe("useInfiniteProducts", () => {
       });
     });
 
-    it("존재하는 모든 상품을 불러오면 더 이상 요청을 보내지 않는다", async () => {
+    it("존재하는 모든 상품을 불러오면 더 이상 상품을 불러오지 않는다", async () => {
       const FIRST_PAGE = 1;
       const LAST_PAGE = 20;
       const PAGE_SIZE = 4;

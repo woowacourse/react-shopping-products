@@ -1,8 +1,8 @@
-import { useErrorToast } from "@src/contexts/errorToast/useErrorToast";
-import { useCartActions } from "@src/hooks/server/useCartActions";
+import styled from "styled-components";
+import { useErrorToast } from "@contexts/errorToast/useErrorToast";
+import { useCartActions } from "@server/useCartActions";
 import { ReactComponent as AddToCartIcon } from "@assets/addToCart.svg";
 import { ReactComponent as DeleteFromCartIcon } from "@assets/deleteFromCart.svg";
-import styled from "styled-components";
 
 interface CartToggleButtonProps {
   productId: number;
@@ -14,11 +14,11 @@ const CartToggleButton = ({ productId }: CartToggleButtonProps) => {
   const { addToCart, removeFromCart, isIncludedInCart } = useCartActions(handleError);
 
   const handleAddToCartClick = async () => {
-    addToCart({ productId, quantity: 1 });
+    await addToCart(productId);
   };
 
-  const handleDeleteFromCartClick = () => {
-    removeFromCart(productId);
+  const handleDeleteFromCartClick = async () => {
+    await removeFromCart(productId);
   };
 
   return (

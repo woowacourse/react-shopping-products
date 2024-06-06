@@ -5,5 +5,5 @@ export const QUERY_KEYS = {
 
 export const MUTATION_KEYS = {
   createCartItem: "createCartItem",
-  removeCartItem: "removeCartItem",
+  deleteCartItem: "deleteCartItem",
 } as const;
