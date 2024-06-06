@@ -49,35 +49,35 @@ const useHandleCartItem = () => {
     },
   });
 
-  const getCartItemQuantity = (id: number): number =>
-    cartItems!.find((cartItem) => cartItem.product.id === id)!.quantity;
+  const getCartItemQuantity = (productId: number): number =>
+    cartItems!.find((cartItem) => cartItem.product.id === productId)!.quantity;
 
-  const addCartItem = (id: number) => postCartItemMutate({ productId: id, quantity: 1 });
+  const addCartItem = (productId: number) => postCartItemMutate({ productId, quantity: 1 });
 
-  const removeCartItem = (id: number) => {
-    const targetItem = cartItems!.find((cartItem) => cartItem.product.id === id);
+  const removeCartItem = (productId: number) => {
+    const targetItem = cartItems!.find((cartItem) => cartItem.product.id === productId);
 
     deleteCartItemMutate({ itemId: targetItem!.id });
   };
 
-  const updateCartItemQuantity = (id: number, clickType: "plus" | "minus") => {
-    const itemQuantity = getCartItemQuantity(id);
+  const updateCartItemQuantity = (productId: number, clickType: "plus" | "minus") => {
+    const itemQuantity = getCartItemQuantity(productId);
 
     if (clickType === "minus" && itemQuantity === 1) {
-      removeCartItem(id);
+      removeCartItem(productId);
 
       return;
     }
 
-    const targetItem = cartItems!.find((cartItem) => cartItem.product.id === id);
+    const targetItem = cartItems!.find((cartItem) => cartItem.product.id === productId);
     const updatedQuantity = clickType === "plus" ? itemQuantity + 1 : itemQuantity - 1;
     patchCartItemMutate({ productId: targetItem!.id, quantity: updatedQuantity });
   };
 
-  const isInCart = (id: number) => {
+  const isInCart = (productId: number) => {
     if (!cartItems) return false;
 
-    return cartItems.some((item) => item.product.id === id);
+    return cartItems.some((item) => item.product.id === productId);
   };
 
   const totalAmount = () => {
