@@ -13,3 +13,9 @@ export const TotalAmountWrapper = styled.div`
   padding: 12px 0 24px;
   border-top: 1px solid ${({ theme }) => theme.COLOR["grey2"]};
 `;
+
+export const ImgWrapper = styled.div`
+  text-align: center;
+`;
+
+export const Img = styled.img``;
