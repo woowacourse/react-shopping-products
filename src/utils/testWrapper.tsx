@@ -1,17 +1,13 @@
 import { Global, ThemeProvider } from '@emotion/react';
-import { ReactNode } from 'react';
-import GlobalLayout from '../../layouts/GlobalLayout';
-import theme from '../../theme';
-import { globalStyles } from '../../globalStyle';
+import { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-interface WrapperProps {
-  children: ReactNode;
-}
+import GlobalLayout from '../layouts/GlobalLayout';
+import { globalStyles } from '../globalStyle';
+import theme from '../theme';
 
 const queryClient = new QueryClient();
 
-const wrapper = ({ children }: WrapperProps) => (
+const wrapper = ({ children }: PropsWithChildren) => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider theme={theme}>
       <Global styles={globalStyles} />

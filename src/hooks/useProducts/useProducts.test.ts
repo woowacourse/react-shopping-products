@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 
-import wrapper from './wrapper';
+import wrapper from '../../utils/testWrapper';
 import useProducts from '.';
 
 import {
