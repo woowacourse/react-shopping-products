@@ -21,12 +21,11 @@ const ProductList = ({
 }: Props) => {
   const target = useRef<HTMLDivElement | null>(null);
   const [observe, unobserve] = useIntersectionObserver(getNextPage);
-
   useEffect(() => {
     if (target.current) {
       observe(target.current);
     }
-
+    
     return () => {
       if (target.current) {
         unobserve(target.current);

@@ -27,7 +27,7 @@ const Products = () => {
     handleChangeOrder,
     handleChangeCategory,
   } = useProductListQuery();
-
+  
   const { setError } = useErrorContext();
 
   useEffect(() => {

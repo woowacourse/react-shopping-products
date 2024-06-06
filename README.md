@@ -1,5 +1,6 @@
 # react-shopping-products
 
+
 ### step1 기능 요구 사항
 
 - [x] 상품 목록 조회
@@ -54,6 +55,7 @@
     - [x] MSW를 이용하여 /cart-items API를 모킹
   - [x] 빼기 기능 작동 테스트
     - [x] MSW를 이용하여 /cart-items{id} API를 모킹
+
 
 ### step2 기능 요구 사항
 
