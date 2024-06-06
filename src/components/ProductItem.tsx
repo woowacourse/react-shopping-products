@@ -4,9 +4,11 @@ import { ReactComponent as DeleteFromCartIcon } from "../assets/deleteFromCart.s
 
 import { MAX_CART_ITEM_COUNT } from "../constants/cartItems";
 
+import { useState, useEffect } from "react";
 import useAddCartItem from "../hooks/useAddCartItem";
 import useDeleteCartItem from "../hooks/useDeleteCartItem";
 import useCartItems from "../hooks/useCartItems";
+import QuantitySetter from "./QuantitySetter";
 
 interface ProductItemProps {
   id: number;
@@ -25,6 +27,17 @@ const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
   const cartItemId = cartItems?.find(
     (cartItem) => cartItem.product.id === id
   )?.id;
+
+  const [quantity, setQuantity] = useState(0);
+
+  useEffect(() => {
+    // find..
+    const currentQuantity = cartItems?.find(
+      (cartItem) => cartItem.product.id === id
+    )?.quantity;
+
+    setQuantity(currentQuantity ?? 0);
+  }, [cartItems, cartItemId]);
 
   const handleAddToCart = () => {
     try {
@@ -62,12 +75,8 @@ const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
         <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
       </S.ProductInfo>
       <S.ButtonWrapper>
-        {cartItemId ? (
-          <S.DeleteFromCartIcon
-            role="button"
-            aria-label="상품 빼기"
-            onClick={handleDeleteFromCart}
-          />
+        {cartItemId && quantity > 0 ? (
+          <QuantitySetter cartItemId={cartItemId ?? 0} quantity={quantity} />
         ) : (
           <S.AddToCartIcon
             role="button"
