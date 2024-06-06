@@ -4,13 +4,11 @@ export const ProductCardContainer = styled.div``;
 
 export const ProductImage = styled.img`
   width: 100%;
-  height: 50%;
   object-fit: cover;
   border-radius: 0.8rem 0.8rem 0 0;
 `;
 
 export const ContentWrapper = styled.div`
-  height: 50%;
   padding: 0.8rem;
   box-sizing: border-box;
 

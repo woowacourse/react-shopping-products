@@ -3,6 +3,7 @@ import { CartContext } from '../../../CartContext';
 import { Product } from '../../../types/fetch';
 import AddCartButton from './AddCartButton/AddCartButton';
 import * as S from './ProductCard.styled';
+import Stepper from './Stepper/Stepper';
 
 interface ProductCardProps {
   product: Product;
@@ -30,6 +31,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               patchToRemoveCart(product.id);
             }}
           />
+          <Stepper />
         </S.ButtonContainer>
       </S.ContentWrapper>
     </S.ProductCardContainer>
