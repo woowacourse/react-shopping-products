@@ -1,22 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+
+import useToast from './useToast';
+
+import { ERROR_MESSAGE } from '@/constants/error';
 
 const useNetworkStatus = () => {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const toast = useToast();
 
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
+    const handleOffline = () => toast.error(ERROR_MESSAGE['NETWORK_ERROR']);
 
-    window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
-
-  return { isOnline };
 };
 
 export default useNetworkStatus;

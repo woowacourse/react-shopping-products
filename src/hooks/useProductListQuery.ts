@@ -1,15 +1,19 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
+import useNetworkStatus from './useNetworkStatus';
+
 import { fetchProductList } from '@/api/product';
 import { PAGE_SIZE } from '@/constants/config';
 import { ProductCategory, SortValue } from '@/types/product';
 
 interface FetchProductListProps {
-  category: ProductCategory;
+  category?: ProductCategory;
   sortOptions?: SortValue;
 }
 
 const useProductListQuery = ({ category, sortOptions }: FetchProductListProps) => {
+  useNetworkStatus();
+
   return useInfiniteQuery({
     queryKey: ['projects', category, sortOptions],
     queryFn: ({ pageParam }) => {
@@ -17,7 +21,7 @@ const useProductListQuery = ({ category, sortOptions }: FetchProductListProps) =
 
       return fetchProductList({ category, size, page: pageParam, sortOptions });
     },
-    staleTime: 10 * 1000,
+    staleTime: 20 * 1000,
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.last) {
