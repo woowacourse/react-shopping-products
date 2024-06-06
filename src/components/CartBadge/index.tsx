@@ -5,11 +5,7 @@ const CartBadge = ({ cartItemLength, onClick }: { cartItemLength: number; onClic
   return (
     <S.Container onClick={onClick}>
       <Icon kind="cart" />
-      {
-        <S.Badge>
-          <S.BadgeNumber>{cartItemLength}</S.BadgeNumber>
-        </S.Badge>
-      }
+      {<S.Badge>{cartItemLength && <S.BadgeNumber>{cartItemLength}</S.BadgeNumber>}</S.Badge>}
     </S.Container>
   );
 };

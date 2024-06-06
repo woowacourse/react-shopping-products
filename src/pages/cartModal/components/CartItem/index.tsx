@@ -34,28 +34,25 @@ const CartItem = ({ item }: { item: CartItems }) => {
       <S.ItemInfoBox>
         <S.ItemImgBox $imageUrl={imageUrl} />
         <S.ItemInfoTextBox>
-          <S.FlexBox>
-            <>
-              <TextBox type="xSmall" text={name} />
-              <TextBox type="xLarge" text={formatToWon(price)} />
-            </>
-            <S.DeleteButton>
-              <Button
-                borderType={"round"}
-                disabled={false}
-                backgroundColor={"white"}
-                textColor="black"
-                position="basic"
-                borderColor={theme.COLOR["grey2"]}
-                onClick={onClickDeleteCartItem}
-                width={40}
-                height={24}
-              >
-                삭제
-              </Button>
-            </S.DeleteButton>
-          </S.FlexBox>
-          <QuantityUpdateButton quantity={quantity} cartId={cartId!} />
+          <TextBox type="small" text={name} />
+          <TextBox type="xSmall" text={formatToWon(price)} />
+          <QuantityUpdateButton quantity={quantity} cartId={cartId!} />{" "}
+          <S.DeleteButton>
+            <Button
+              borderType={"round"}
+              disabled={false}
+              backgroundColor={"white"}
+              textColor="black"
+              position="basic"
+              borderColor={theme.COLOR["grey2"]}
+              onClick={onClickDeleteCartItem}
+              width={40}
+              height={24}
+              fontSize={12}
+            >
+              삭제
+            </Button>
+          </S.DeleteButton>
         </S.ItemInfoTextBox>
       </S.ItemInfoBox>
     </S.ItemWrapper>

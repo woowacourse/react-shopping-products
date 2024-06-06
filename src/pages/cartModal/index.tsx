@@ -4,6 +4,7 @@ import useHandleCartItem from "@/hooks/useHandleCartItem";
 import CartItem from "@/pages/cartModal/components/CartItem";
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
+import TextBox from "@/components/_common/TextBox";
 
 const CartModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
   const { cartItems } = useHandleCartItem();
@@ -11,7 +12,7 @@ const CartModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
   return (
     <S.Wrapper>
       <Modal isOpen={true} position="bottom" onClose={onCloseModal}>
-        <Modal.Title>장바구니</Modal.Title>
+        <TextBox type="medium" text="장바구니" />
         <Modal.Content>
           <ItemWrapper>
             {cartItems?.map((item) => (

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import S from "./style";
 
 export type ButtonBorderType = "square" | "round";
@@ -16,6 +16,7 @@ type BasicButtonProps = {
   backgroundColor: string;
   position: ButtonPosition;
   borderColor?: string;
+  fontSize?: number;
 };
 
 const Button = ({
@@ -27,6 +28,7 @@ const Button = ({
   borderType,
   position,
   borderColor,
+  fontSize,
   ...props
 }: PropsWithChildren<BasicButtonProps>) => {
   return (
@@ -38,6 +40,7 @@ const Button = ({
       $borderType={borderType}
       position={position}
       $borderColor={borderColor}
+      fontSize={fontSize}
       {...props}
     >
       {children}

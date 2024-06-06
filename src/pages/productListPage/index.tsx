@@ -35,7 +35,7 @@ const ProductListPage = () => {
 
   const { cartItems } = useHandleCartItem();
 
-  const cartItemLength = cartItems?.length;
+  const cartItemLength = cartItems?.length || 0;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onCloseModal = () => {
@@ -77,7 +77,7 @@ const ProductListPage = () => {
     <>
       <Header>
         <Header.Title text="SHOP" />
-        {cartItemLength && <CartBadge cartItemLength={cartItemLength} onClick={onOpenModal} />}
+        <CartBadge cartItemLength={cartItemLength} onClick={onOpenModal} />
         <TopButton />
       </Header>
       <S.Wrapper>

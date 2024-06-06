@@ -14,6 +14,7 @@ export type BasicButtonProps = {
   $borderType: ButtonBorderType;
   position: ButtonPosition;
   $borderColor?: string;
+  fontSize?: number;
 };
 
 const ButtonWrapper = styled.button<BasicButtonProps>`
@@ -21,7 +22,7 @@ const ButtonWrapper = styled.button<BasicButtonProps>`
   height: ${({ height }) => height}px;
   color: ${({ textColor }) => (textColor ? textColor : "white")};
   background-color: ${({ $backgroundColor }) => $backgroundColor};
-  font-size: 15px;
+  font-size: ${({ fontSize }) => (fontSize ? fontSize : 15)}px;
   ${flexCenter};
   border-radius: ${({ $borderType }) => ($borderType === "round" ? "5px" : "0")};
   :disabled {

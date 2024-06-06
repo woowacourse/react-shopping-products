@@ -1,13 +1,17 @@
 import styled from "styled-components";
 
 export const ItemWrapper = styled.div`
-  height: 120px;
+  padding: 5px;
   border-top: 1px solid ${({ theme }) => theme.COLOR["grey2"]};
   display: flex;
   flex-direction: column;
   margin-top: 20px;
   width: 100%;
   position: relative;
+`;
+
+export const ItemTextBox = styled.div`
+  padding: 10px;
 `;
 
 export const FlexBox = styled.div`
@@ -24,14 +28,14 @@ export const ItemButtonWrapper = styled.div`
 `;
 
 export const ItemInfoBox = styled.div`
-  height: 112px;
+  height: 80px;
   margin-top: 12px;
   display: flex;
   align-items: center;
 `;
 
 export const ItemInfoTextBox = styled.div`
-  height: 93px;
+  gap: 10px;
   width: 200px;
   display: flex;
   flex-direction: column;
@@ -41,8 +45,8 @@ export const ItemInfoTextBox = styled.div`
 `;
 
 export const ItemImgBox = styled.div<{ $imageUrl: string }>`
-  width: 112px;
-  height: 112px;
+  width: 80px;
+  height: 80px;
 
   border-radius: 10px;
   background-size: cover;
