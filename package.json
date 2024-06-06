@@ -16,7 +16,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
-    "styled-components": "^6.1.11"
+    "styled-components": "^6.1.11",
+    "woowacourse-todari-components": "^1.0.5"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.35.6",
