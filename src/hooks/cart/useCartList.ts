@@ -1,5 +1,5 @@
 import { fetchGetCartList } from '@apis/index';
-import { QUERY_TIME, QUERY_KEY } from '@constants/index';
+import { QUERY_KEY, QUERY_TIME } from '@constants/index';
 import { CartItem } from '@src/appTypes';
 import { useQuery } from '@tanstack/react-query';
 
