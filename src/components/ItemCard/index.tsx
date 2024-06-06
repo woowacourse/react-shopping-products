@@ -16,7 +16,9 @@ const ItemCard = ({ product }: ItemCartProps) => {
   return (
     <S.Wrapper>
       <S.Image $imgUrl={imageUrl} />
-      <ItemInfo name={name} price={price} />
+      <S.ItemInfoWrapper>
+        <ItemInfo name={name} price={price} />
+      </S.ItemInfoWrapper>
       <S.ButtonWrapper>
         {isInCart(id) ? (
           <Stepper
