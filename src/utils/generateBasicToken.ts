@@ -1,4 +1,4 @@
-export function generateBasicToken(): string {
+export default function generateBasicToken(): string {
   const USER_ID = import.meta.env.VITE_USER_ID;
   const USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;
 

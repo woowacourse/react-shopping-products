@@ -1,7 +1,6 @@
 import { ENDPOINT } from "../constants/apis";
 import { CartItem } from "../types/cartItem";
-import createUrl from "../utils/createUrl";
-import { generateBasicToken } from "../utils/generateBasicToken";
+import { createFetchUrl, generateBasicToken } from "../utils";
 import { fetchClient } from "./fetchClient";
 
 interface CartItemResponse {
@@ -11,10 +10,11 @@ interface CartItemResponse {
 
 export async function getCartItems(totalItemCount?: number): Promise<CartItemResponse> {
   const token = generateBasicToken();
-  const cartItemUrl = createUrl({ endpoint: ENDPOINT.CART_ITEMS, size: totalItemCount });
+  const params = { size: totalItemCount?.toString() };
+  const fetchUrl = createFetchUrl({ endpoint: ENDPOINT.CART_ITEMS, params });
 
   const response = await fetchClient({
-    url: cartItemUrl,
+    url: fetchUrl.href,
     method: "GET",
     token,
   });
