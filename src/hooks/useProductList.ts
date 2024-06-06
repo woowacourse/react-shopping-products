@@ -1,11 +1,16 @@
-import useProductDropdown from './useProductDropdown';
 import useProductListQuery from './useProductListQuery';
 
-const useProductList = () => {
-  const { category, order, handleChangeCategory, handleChangeSort } = useProductDropdown();
+import { ProductCategory, SortValue } from '@/types/product';
+
+interface UseProductListProp {
+  category?: ProductCategory;
+  sortOptions?: SortValue;
+}
+
+const useProductList = ({ category, sortOptions }: UseProductListProp) => {
   const { data, isLoading, hasNextPage, fetchNextPage } = useProductListQuery({
-    category: category.value,
-    sortOptions: order.value,
+    category,
+    sortOptions,
   });
 
   return {
@@ -13,10 +18,6 @@ const useProductList = () => {
     hasNextPage,
     fetchNextPage,
     isLoading,
-    handleChangeCategory,
-    handleChangeSort,
-    category,
-    order,
   };
 };
 

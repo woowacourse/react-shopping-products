@@ -11,20 +11,17 @@ import Title from '@/components/title/Title';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
 
 import useCartItems from '@/hooks/useCartItems';
+import useProductDropdown from '@/hooks/useProductDropdown';
 import useProductList from '@/hooks/useProductList';
 
 const ProductListPage = () => {
-  const {
-    data,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    order,
-    category,
-    handleChangeCategory,
-    handleChangeSort,
-  } = useProductList();
   const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems();
+  const { category, order, handleChangeCategory, handleChangeSort } = useProductDropdown();
+  const { data, isLoading, fetchNextPage, hasNextPage } = useProductList({
+    category: category.value,
+    sortOptions: order.value,
+  });
+
   const bottomRef = useRef<HTMLDivElement>(null);
 
   return (
