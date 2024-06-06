@@ -21,7 +21,7 @@ describe("useCartItemQuantity", () => {
   it("increaseQuantity 실행시 수량이 1 증가한다", async () => {
     const { result } = renderHook(() => useCartItemQuantity(), { wrapper: createWrapper() });
 
-    const PRODUCT_ID = 101;
+    const CART_ID = 2;
     const EXPECTED_QUANTITY = 3;
 
     await waitFor(() => {
@@ -29,18 +29,18 @@ describe("useCartItemQuantity", () => {
     });
 
     act(() => {
-      result.current.increaseQuantity(PRODUCT_ID);
+      result.current.increaseQuantity(CART_ID);
     });
 
     await waitFor(() => {
-      expect(result.current.cartItems.find((item) => item.product.id === PRODUCT_ID)?.quantity).toBe(EXPECTED_QUANTITY);
+      expect(result.current.cartItems.find((item) => item.id === CART_ID)?.quantity).toBe(EXPECTED_QUANTITY);
     });
   });
 
   it("decreaseQuantity 실행시 수량이 1 감소한다", async () => {
     const { result } = renderHook(() => useCartItemQuantity(), { wrapper: createWrapper() });
 
-    const PRODUCT_ID = 101;
+    const CART_ID = 2;
     const EXPECTED_QUANTITY = 1;
 
     await waitFor(() => {
@@ -48,25 +48,25 @@ describe("useCartItemQuantity", () => {
     });
 
     act(() => {
-      result.current.decreaseQuantity(PRODUCT_ID);
+      result.current.decreaseQuantity(CART_ID);
     });
 
     await waitFor(() => {
-      expect(result.current.cartItems.find((item) => item.product.id === 101)?.quantity).toBe(EXPECTED_QUANTITY);
+      expect(result.current.cartItems.find((item) => item.id === CART_ID)?.quantity).toBe(EXPECTED_QUANTITY);
     });
   });
 
   it("수량이 1개일 때 decreaseQuantity 실행시, Cart에서 삭제된다", async () => {
     const { result } = renderHook(() => useCartItemQuantity(), { wrapper: createWrapper() });
 
-    const PRODUCT_ID = 104;
+    const CART_ID = 3;
 
     act(() => {
-      result.current.decreaseQuantity(PRODUCT_ID);
+      result.current.decreaseQuantity(CART_ID);
     });
 
     await waitFor(() => {
-      expect(result.current.cartItems.find((item) => item.product.id === 102)).toBeUndefined();
+      expect(result.current.cartItems.find((item) => item.id === CART_ID)).toBeUndefined();
     });
   });
 });

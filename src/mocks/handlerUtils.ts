@@ -1,4 +1,4 @@
-import { AddCartRequest, CartItem } from "../types/cartItems";
+import { AddCartRequest, CartItemType } from "../types/cartItems";
 import cartItemMockData from "./data/cartItems.json";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,12 +21,12 @@ export function CartMockClosure() {
     return JSON.parse(JSON.stringify(cartMockData));
   };
 
-  const pushCartItem = (mockCartItem: CartItem) => {
+  const pushCartItem = (mockCartItem: CartItemType) => {
     cartMockData.content = [...cartMockData.content, mockCartItem];
   };
 
   const deleteCartItem = (id: number) => {
-    cartMockData.content = cartMockData.content.filter((el: CartItem) => el.id !== id);
+    cartMockData.content = cartMockData.content.filter((el: CartItemType) => el.id !== id);
   };
 
   const resetCartItems = () => {
@@ -34,7 +34,7 @@ export function CartMockClosure() {
   };
 
   const modifyCartItemQuantity = (id: number, quantity: number) => {
-    const item = cartMockData.content.find((el: CartItem) => el.product.id === id);
+    const item = cartMockData.content.find((el: CartItemType) => el.id === id);
     if (item) {
       item.quantity = quantity;
     }
