@@ -5,11 +5,26 @@ import { describe, expect, it } from "vitest";
 import { PRODUCTS_ENDPOINT } from "../api/endPoint";
 import { server } from "../mocks/server";
 import useProducts from "./useProducts";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { PropsWithChildren } from "react";
+
+const createWrapper = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 0,
+      },
+    },
+  });
+  return ({ children }: PropsWithChildren) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
+};
 
 describe("useProduct 훅 테스트", () => {
   describe("상품 목록 조회", () => {
     it("상품 목록을 조회한다", async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
@@ -17,13 +32,13 @@ describe("useProduct 훅 테스트", () => {
     });
 
     it("상품 목록을 조회되기 이전 로딩 값은 true값이다", async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: createWrapper() });
 
       expect(result.current.isLoading).toBe(true);
     });
 
-    it("상품 목록을 조회된 이후 로딩 값은 false값이다", async () => {
-      const { result } = renderHook(() => useProducts());
+    it("상품 목록을 조회된 이후 로딩 상태는 false값이다", async () => {
+      const { result } = renderHook(() => useProducts(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false);
@@ -37,8 +52,14 @@ describe("useProduct 훅 테스트", () => {
         })
       );
 
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: createWrapper() });
+
+      act(() => {
+        result.current.fetchNextPage();
+      });
+
       await waitFor(() => {
+        console.log(result.current.error);
         expect(result.current.error).toBeTruthy();
         expect(result.current.isLoading).toBe(false);
       });
@@ -47,20 +68,18 @@ describe("useProduct 훅 테스트", () => {
 
   describe("페이지네이션", () => {
     it("초기 값은 상품 20개를 불러온다", async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
       });
     });
 
     it("다음 페이지는 상품 4개를 불러온다", async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
       });
 
       act(() => {
@@ -69,12 +88,11 @@ describe("useProduct 훅 테스트", () => {
 
       await waitFor(() => {
         expect(result.current.products.length).toBe(24);
-        expect(result.current.page).toBe(5);
       });
     });
 
     it("페이지네이션으로 추가 데이터를 발생할 때 로딩 상태를 표시한다", async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: createWrapper() });
 
       act(() => {
         result.current.fetchNextPage();
@@ -88,7 +106,7 @@ describe("useProduct 훅 테스트", () => {
     });
 
     it("마지막 페이지인 경우 데이터를 불러오지 않는다.", async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: createWrapper() });
 
       const expectedInitProductsCount = 20;
 
@@ -104,7 +122,6 @@ describe("useProduct 훅 테스트", () => {
         const expectedProductsCount = expectedInitProductsCount + (page - 4) * 4;
 
         await waitFor(() => {
-          expect(result.current.page).toBe(page);
           expect(result.current.products).toHaveLength(expectedProductsCount);
         });
       }
@@ -114,7 +131,6 @@ describe("useProduct 훅 테스트", () => {
       });
 
       await waitFor(() => {
-        expect(result.current.page).toBe(24);
         expect(result.current.products).toHaveLength(100);
       });
     });
