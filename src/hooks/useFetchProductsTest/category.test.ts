@@ -2,6 +2,8 @@ import { renderHook, waitFor, act } from '@testing-library/react';
 import useFetchProducts from '../useFetchProducts';
 import { Category } from '../../types/product';
 
+import wrapper from './wrapper';
+
 describe('카테고리', () => {
   const CATEGORIES: Category[] = [
     'fashion',
@@ -13,12 +15,12 @@ describe('카테고리', () => {
   ];
 
   it('카테고리에 해당되는 상품만 불러온다.', async () => {
-    const { result } = renderHook(() => useFetchProducts());
+    const { result } = renderHook(() => useFetchProducts(), { wrapper });
 
     for (const selectedCategory of CATEGORIES) {
       await waitFor(() => {
         expect(
-          result.current.products.every(({ category }) => category === selectedCategory),
+          result.current.products?.every(({ category }) => category === selectedCategory),
         ).toBeFalsy();
       });
 
@@ -28,8 +30,8 @@ describe('카테고리', () => {
 
       await waitFor(() => {
         expect(
-          result.current.products.length &&
-            result.current.products.every(({ category }) => selectedCategory === category),
+          result.current.products?.length &&
+            result.current.products?.every(({ category }) => selectedCategory === category),
         ).toBeTruthy();
       });
     }
