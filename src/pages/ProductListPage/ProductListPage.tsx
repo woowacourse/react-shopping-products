@@ -1,25 +1,22 @@
 import Layout from '../../components/Layout/Layout';
-import Dropdown from '../../components/Dropdown/Dropdown';
-import FloatingButton from '../../components/FloatingButton/FloatingButton';
-import ProductItem from '../../components/ProductItem/ProductItem';
+import ProductHeader from '../../components/product/ProductHeader';
+import ProductItem from '../../components/product/ProductItem';
+import Dropdown from '../../components/common/Dropdown';
+import FloatingButton from '../../components/common/FloatingButton';
 
 import useProducts from '../../hooks/useProducts/useProducts';
-import useCartItems from '../../hooks/useCartItems/useCartItems';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useFilterAndSort from '../../hooks/useFilterAndSort';
 
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
-import { SIZE } from '../../constants/api';
 import * as S from './ProductListPage.style';
 
-import CartIcon from '../../assets/CartIcon.svg';
 import EmptyCart from '../../assets/EmptyCart.png';
 import Loading from '../../assets/loading.gif';
 
 const ProductListPage = () => {
   const { category, sort, handleCategory, handleSort } = useFilterAndSort();
   const { products, loading, error, isLast, handlePage } = useProducts(category, sort);
-  const { cartItems, handleAddCartItem, handleDeleteCartItem, handleCartItemQuantity } = useCartItems();
   const targetRef = useIntersectionObserver(handlePage);
 
   const isAddPageAble = !error && !isLast;
@@ -27,13 +24,7 @@ const ProductListPage = () => {
   return (
     <Layout>
       <Layout.Header>
-        <p>SHOP</p>
-        <S.CartIconWrapper>
-          <img src={CartIcon} alt="장바구니 아이콘" />
-          {cartItems.length > 0 && (
-            <S.CartNumber>{cartItems.length <= SIZE.DEFAULT ? cartItems.length : `${SIZE.DEFAULT}+`}</S.CartNumber>
-          )}
-        </S.CartIconWrapper>
+        <ProductHeader />
       </Layout.Header>
 
       <Layout.Content>
@@ -47,14 +38,7 @@ const ProductListPage = () => {
         {products.length > 0 ? (
           <S.ProductList>
             {products.map((product, index) => (
-              <ProductItem
-                key={`${product.id}-${index}`}
-                product={product}
-                cartItems={cartItems}
-                onAddCartItem={handleAddCartItem}
-                onDeleteCartItem={handleDeleteCartItem}
-                onUpdateQuantity={handleCartItemQuantity}
-              />
+              <ProductItem key={`${product.id}-${index}`} product={product} />
             ))}
           </S.ProductList>
         ) : (

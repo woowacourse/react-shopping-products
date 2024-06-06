@@ -1,4 +1,19 @@
+import UpIcon from '../../assets/UpIconWhite.svg';
 import styled, { keyframes } from 'styled-components';
+
+const FloatingButton = () => {
+  const goToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <StyledFloatingButton type="button" onClick={goToTop}>
+      <img src={UpIcon} alt="위로 스크롤" />
+    </StyledFloatingButton>
+  );
+};
+
+export default FloatingButton;
 
 const jump = keyframes`
   0% {
@@ -12,7 +27,7 @@ const jump = keyframes`
   }
 `;
 
-export const Layout = styled.button`
+const StyledFloatingButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;

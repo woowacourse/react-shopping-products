@@ -17,7 +17,7 @@ export const ImageWrapper = styled.img`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 4px;
+  gap: 15px;
   width: 100%;
   padding: 15px 8px 8px 8px;
 `;
@@ -28,13 +28,13 @@ export const TextContainer = styled.div`
   gap: 6px;
 
   strong {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: ${({ theme }) => theme.fontSize.base};
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
   }
 
   p {
-    font-size: 12px;
-    font-weight: 500;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
   }
 `;
 
@@ -52,6 +52,6 @@ export const CartItemQuantityControls = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  // font: var(--cart-label);
-  // color: var(--grey-400);
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
 `;

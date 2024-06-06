@@ -1,4 +1,40 @@
+import React, { ButtonHTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
+
+type ButtonVariant = 'primary' | 'secondary';
+
+type ButtonSize = 'small' | 'medium' | 'large';
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+}
+
+const Button = ({ children, variant = 'primary', size = 'large', ...rest }: ButtonProps) => {
+  return (
+    <StyledButton $variant={variant} $size={size} $isActive={!rest.disabled} {...rest}>
+      {children}
+    </StyledButton>
+  );
+};
+
+export default Button;
+
+const StyledButton = styled.button<{
+  $variant: 'primary' | 'secondary';
+  $size: 'small' | 'medium' | 'large';
+  $isActive: boolean;
+}>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${({ theme }) => theme.color.primary.light};
+  outline: none;
+  cursor: pointer;
+
+  ${(props) => variantStyles[props.$variant]}
+  ${(props) => sizeStyles[props.$size]}
+`;
 
 const variantStyles = {
   primary: css`
@@ -36,15 +72,3 @@ const sizeStyles = {
     font-weight: ${({ theme }) => theme.fontWeight.bold};
   `,
 };
-
-export const StyledButton = styled.button<{ $variant: 'primary' | 'secondary'; $size: 'small' | 'medium' | 'large' }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid ${({ theme }) => theme.color.primary.light};
-  outline: none;
-  cursor: pointer;
-
-  ${(props) => variantStyles[props.$variant]}
-  ${(props) => sizeStyles[props.$size]}
-`;

@@ -2,34 +2,32 @@ import { Product } from '../../types/Product.type';
 import AddCart from '../../assets/AddCart.svg';
 import MinusIcon from '../../assets/MinusIcon.svg';
 import PlusIcon from '../../assets/PlusIcon.svg';
-import Button from '../Button/Button';
+import Button from '../common/Button';
 import * as S from './ProductItem.style';
-import { CartItem } from '../../types/CartItem.type';
+import { formatCurrency } from '../../utils/formatCurrency';
+import useCartItems from '../../hooks/useCartItems/useCartItems';
 
 interface ProductItemProps {
   product: Product;
-  cartItems: CartItem[];
-  onAddCartItem: (productId: number) => void;
-  onDeleteCartItem: (cartItemId: number) => void;
-  onUpdateQuantity: (cartItemId: number, quantity: number) => void;
 }
 
-const ProductItem = ({ product, cartItems, onAddCartItem, onDeleteCartItem, onUpdateQuantity }: ProductItemProps) => {
+const ProductItem = ({ product }: ProductItemProps) => {
+  const { cartItems, handleAddCartItem, handleDeleteCartItem, handleCartItemQuantity } = useCartItems();
   const cartItem = cartItems.find((item) => item.product.id === product.id);
   const isAdded = !!cartItem;
 
   const handleDecreaseQuantity = () => {
     if (!cartItem) return;
     if (cartItem.quantity === 1) {
-      onDeleteCartItem(cartItem.id);
+      handleDeleteCartItem(cartItem.id);
     } else {
-      onUpdateQuantity(cartItem.id, cartItem.quantity - 1);
+      handleCartItemQuantity(cartItem.id, cartItem.quantity - 1);
     }
   };
 
   const handleIncreaseQuantity = () => {
     if (!cartItem) return;
-    onUpdateQuantity(cartItem.id, cartItem.quantity + 1);
+    handleCartItemQuantity(cartItem.id, cartItem.quantity + 1);
   };
 
   return (
@@ -38,8 +36,7 @@ const ProductItem = ({ product, cartItems, onAddCartItem, onDeleteCartItem, onUp
       <S.Container>
         <S.TextContainer>
           <strong>{product.name}</strong>
-          <p>상품 설명</p>
-          <p>{product.price}원</p>
+          <p>{formatCurrency(product.price)}</p>
         </S.TextContainer>
         <S.CartButtonContainer>
           {isAdded ? (
@@ -53,7 +50,7 @@ const ProductItem = ({ product, cartItems, onAddCartItem, onDeleteCartItem, onUp
               </Button>
             </S.CartItemQuantityControls>
           ) : (
-            <Button size="medium" onClick={() => onAddCartItem(product.id)}>
+            <Button size="medium" onClick={() => handleAddCartItem(product.id)}>
               <S.AddCartIcon src={AddCart} alt="장바구니 담기" />
               <p>담기</p>
             </Button>

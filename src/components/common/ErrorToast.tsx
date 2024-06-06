@@ -1,5 +1,16 @@
 import styled, { keyframes } from 'styled-components';
 
+interface ErrorToastProps {
+  message: string;
+  isOpen: boolean;
+}
+
+const ErrorToast = ({ message, isOpen }: ErrorToastProps) => {
+  return <StyledErrorToast $isOpen={isOpen}>{message}</StyledErrorToast>;
+};
+
+export default ErrorToast;
+
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -18,7 +29,7 @@ const fadeOut = keyframes`
   }
 `;
 
-export const Layout = styled.div<{ $isOpen: boolean }>`
+const StyledErrorToast = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   left: 50%;
   bottom: 20px;

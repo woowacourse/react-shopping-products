@@ -1,13 +1,5 @@
 import styled from 'styled-components';
 
-export const Layout = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  min-width: 435px;
-  padding: 36px 24px;
-`;
-
 export const DropdownContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -32,32 +24,6 @@ export const ProductList = styled.div`
   @media (max-width: 839px) {
     grid-template-columns: repeat(2, 1fr);
   }
-`;
-
-export const CartIconWrapper = styled.button`
-  position: relative;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
-export const CartNumber = styled.div`
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 21px;
-  height: 21px;
-  border-radius: 22px;
-  background-color: ${({ theme }) => theme.color.primary.white};
-  font-size: 10px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.color.primary.main};
 `;
 
 export const LoadingWrapper = styled.div`
