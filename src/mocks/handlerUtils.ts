@@ -33,5 +33,18 @@ export function CartMockClosure() {
     cartMockData = cartItemMockData;
   };
 
-  return { getCartMockData, pushCartItem, deleteCartItem, resetCartItems };
+  const modifyCartItemQuantity = (id: number, quantity: number) => {
+    const item = cartMockData.content.find((el: CartItem) => el.id === id);
+    if (item) {
+      item.quantity = quantity;
+    }
+  };
+
+  return {
+    getCartMockData,
+    pushCartItem,
+    deleteCartItem,
+    resetCartItems,
+    modifyCartItemQuantity,
+  };
 }

@@ -53,4 +53,21 @@ export const handlers = [
     cartMockClosure.deleteCartItem(numberId);
     return HttpResponse.json({ status: 204 });
   }),
+
+  http.post(`${CART_ITEMS_ENDPOINT}/:id`, async ({ request, params }) => {
+    const { id } = params;
+    const numberId = Number(id);
+    const body = await request.json();
+
+    if (typeof body !== "object" || body?.quantity || typeof body?.quantity !== "number") {
+      throw new Error(`body로 주어진 값이 { quantity} 형식이 아닙니다.`);
+    }
+
+    if (Number.isNaN(numberId)) {
+      throw new Error(`값이 숫자가 아닙니다.`);
+    }
+
+    cartMockClosure.modifyCartItemQuantity(numberId, body.quantity);
+    return HttpResponse.json({ status: 204 });
+  }),
 ];
