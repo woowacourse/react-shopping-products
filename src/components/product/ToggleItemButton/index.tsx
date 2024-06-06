@@ -35,7 +35,7 @@ const ToggleItemButton = ({ productId }: ToggleItemButtonProps) => {
     <S.ToggleItemContainer>
       {isLoading ? (
         <LoadingDots type={isSelected ? "black" : "white"} />
-      ) : isSelected ? (
+      ) : isSelected && cartItem ? (
         <ProductControls cartItem={cartItem} />
       ) : (
         <S.ToggleItemButton
