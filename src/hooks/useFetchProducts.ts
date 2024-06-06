@@ -4,10 +4,7 @@ import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
 import useDeepCompareEffect from './useDeepCompareEffect';
 
-const useFetchProducts = (
-  sortings: SortingParam[] = [],
-  filter: string | '' = '',
-) => {
+const useFetchProducts = (sortings: SortingParam[], filter: string) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isError, setIsError] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -20,6 +17,11 @@ const useFetchProducts = (
   }, [isLast]);
 
   useDeepCompareEffect(() => {
+    setPage(0);
+  }, [sortings, filter]);
+
+  useDeepCompareEffect(() => {
+    console.log('fetch이펙트 재계산');
     const size = page === 0 ? 20 : 4;
     const fetchPage = page === 0 ? page : page + 4;
     const getProducts = async () => {
