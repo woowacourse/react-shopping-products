@@ -1,50 +1,53 @@
-import { useState, useEffect } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchProducts } from '../../api/product';
-import usePagination from '../usePagination';
-import useFetcher from '../useFetcher';
-import { SIZE } from '../../constants/api';
+import { PAGE_INTERVAL, SIZE } from '../../constants/api';
 import { Product } from '../../types/Product.type';
 import { Option } from '../../types/Option.type';
+import { QUERY_KEYS } from '../../api/queryKeys';
+import { useContext } from 'react';
+import { ToastContext } from '../../context/ToastProvider';
 
 interface UseProductsResult {
   products: Product[];
   loading: boolean;
   error: unknown;
   isLast: boolean;
-  page: number;
   handlePage: () => void;
 }
 
 const useProducts = (category: Option, sort: Option): UseProductsResult => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLast, setIsLast] = useState(false);
-  const { page, resetPage, moveNextPage } = usePagination();
-  const { loading, error, fetcher } = useFetcher();
+  const { showToast } = useContext(ToastContext);
 
-  useEffect(() => {
-    resetPage();
-  }, [category, sort]);
+  const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: [QUERY_KEYS.PRODUCTS, category, sort],
+    queryFn: async ({ pageParam = 0 }) => {
+      const response = await fetchProducts(category.key, pageParam, SIZE.ADDITIONAL, sort.key);
+      const pageInterval = pageParam === 0 ? PAGE_INTERVAL.INITIAL : PAGE_INTERVAL.DEFAULT;
+      return {
+        data: response.data,
+        isLast: response.isLast,
+        nextPage: response.isLast ? null : pageParam + pageInterval,
+      };
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  });
 
-  useEffect(() => {
-    fetcher(handleProducts);
-  }, [page, category, sort]);
+  const products = data?.pages.flatMap((page) => page.data) || [];
 
-  const getProducts = async (category: Option, sort: Option) => {
-    const { data, isLast } = await fetchProducts(category.key, page, SIZE.ADDITIONAL, sort.key);
-    setProducts((prevProducts) => (page === 0 ? data : [...prevProducts, ...data]));
-    setIsLast(isLast);
+  if (error) showToast(error.message);
+
+  const handlePage = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
   };
-
-  const handleProducts = () => getProducts(category, sort);
-
-  const handlePage = () => moveNextPage(loading, isLast);
 
   return {
     products,
-    loading,
+    loading: isFetching || isFetchingNextPage,
     error,
-    isLast,
-    page,
+    isLast: !hasNextPage,
     handlePage,
   };
 };

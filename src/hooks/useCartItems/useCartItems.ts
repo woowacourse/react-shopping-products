@@ -16,6 +16,10 @@ const useCartItems = (): UseCartItemsResult => {
   const { showToast } = useContext(ToastContext);
   const queryClient = useQueryClient();
 
+  const inValidateCart = () => {
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
+  };
+
   const { data: cartItems = [], error } = useQuery<CartItem[], Error>({
     queryKey: [QUERY_KEYS.CART],
     queryFn: async () => {
@@ -32,9 +36,7 @@ const useCartItems = (): UseCartItemsResult => {
 
   const addMutation = useMutation({
     mutationFn: (productId: number) => addCartItem(productId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
-    },
+    onSuccess: inValidateCart,
     onError: (error: Error) => {
       showToast(error.message);
     },
@@ -42,9 +44,7 @@ const useCartItems = (): UseCartItemsResult => {
 
   const deleteMutation = useMutation({
     mutationFn: (cartItemId: number) => deleteCartItem(cartItemId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
-    },
+    onSuccess: inValidateCart,
     onError: (error: Error) => {
       showToast(error.message);
     },
