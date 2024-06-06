@@ -1,82 +1,55 @@
-import { useEffect, useState } from "react";
-
-import { Product } from "../types/products";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getProducts } from "../api/products";
-
 import { PRODUCT_DEFAULT_CATEGORY, PRODUCT_DEFAULT_SORT } from "../constants/mallData";
 import { PRODUCT_CATEGORY_TYPE, PRODUCT_SORT_TYPE } from "../types/mall";
+import { useState } from "react";
+
+const fetchProducts = async ({
+  pageParam = 0,
+  category,
+  sort,
+}: {
+  pageParam: number;
+  category: PRODUCT_CATEGORY_TYPE;
+  sort: PRODUCT_SORT_TYPE;
+}) => {
+  const size = pageParam === 0 ? 20 : 4;
+  return await getProducts({ page: pageParam, size, category, sort });
+};
 
 const useProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<unknown>(null);
-  const [page, setPage] = useState(0);
-  const [isLastPage, setIsLastPage] = useState(false);
-
   const [category, setCategory] = useState<PRODUCT_CATEGORY_TYPE>(PRODUCT_DEFAULT_CATEGORY);
   const [sort, setSort] = useState<PRODUCT_SORT_TYPE>(PRODUCT_DEFAULT_SORT);
 
-  useEffect(() => {
-    if (isLoading) return;
-    if (error) return;
-    const size = page === 0 ? 20 : 4;
+  const { data, error, isError, fetchNextPage, isFetching, refetch, isLoading } = useInfiniteQuery({
+    queryKey: ["products", category, sort],
+    queryFn: ({ pageParam = 0 }) => fetchProducts({ pageParam, category, sort }),
+    getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
+    initialPageParam: 0,
+  });
 
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        const { content, last } = await getProducts({
-          page,
-          size,
-          category,
-          sort,
-        });
-
-        setProducts((prevProducts) => [...prevProducts, ...content]);
-        setIsLastPage(last);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [page, sort, category]);
-
-  const fetchNextPage = () => {
-    if (isLastPage) {
-      return;
-    }
-
-    if (page === 0) {
-      setPage((page) => page + 5);
-      return;
-    }
-
-    setPage((page) => page + 1);
-  };
+  const products = data?.pages.flatMap((page) => page.content) ?? [];
 
   const handleCategoryChange = (newCategory: PRODUCT_CATEGORY_TYPE) => {
     if (newCategory !== category) {
-      setProducts([]);
-      setPage(0);
       setCategory(newCategory);
+      refetch();
     }
   };
 
   const handleSortChange = (newSort: PRODUCT_SORT_TYPE) => {
     if (newSort !== sort) {
-      setProducts([]);
-      setPage(0);
       setSort(newSort);
+      refetch();
     }
   };
 
   return {
     products,
-    page,
     isLoading,
+    isFetching,
     error,
+    isError,
     fetchNextPage,
     handleCategoryChange,
     handleSortChange,

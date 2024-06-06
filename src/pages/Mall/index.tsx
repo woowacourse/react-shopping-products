@@ -26,6 +26,7 @@ const Mall = () => {
     products,
     isLoading: isProductLoading,
     error: productError,
+    isError,
     fetchNextPage,
     handleCategoryChange,
     handleSortChange,
@@ -45,7 +46,7 @@ const Mall = () => {
           <Dropdown options={PRODUCT_SORT_LIST} handleChange={handleSortChange} />
         </S.Toolbar>
         <S.ProductList>
-          <InfiniteScroll isLoading={isProductLoading} handleScroll={fetchNextPage}>
+          <InfiniteScroll isLoading={isProductLoading} handleScroll={fetchNextPage} isError={isError}>
             {products.map((product, index) => (
               <ProductCard key={`${index}${product.id}`} product={product} />
             ))}

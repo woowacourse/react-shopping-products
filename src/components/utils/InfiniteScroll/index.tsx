@@ -6,9 +6,10 @@ import S from "./styledComponent";
 interface InfiniteScrollProps extends PropsWithChildren {
   isLoading: boolean;
   handleScroll: () => void;
+  isError: boolean;
 }
 
-const InfiniteScroll = ({ children, isLoading, handleScroll }: InfiniteScrollProps) => {
+const InfiniteScroll = ({ children, isLoading, handleScroll, isError }: InfiniteScrollProps) => {
   const loaderRef = useRef(null);
 
   useEffect(() => {
@@ -21,11 +22,11 @@ const InfiniteScroll = ({ children, isLoading, handleScroll }: InfiniteScrollPro
       {
         root: null,
         rootMargin: "200px 0px",
-        threshold: 0.1,
+        threshold: 1,
       }
     );
 
-    if (loaderRef.current) {
+    if (loaderRef.current && !isError) {
       observer.observe(loaderRef.current);
     }
 
@@ -34,7 +35,7 @@ const InfiniteScroll = ({ children, isLoading, handleScroll }: InfiniteScrollPro
         observer.unobserve(loaderRef.current);
       }
     };
-  }, [isLoading, handleScroll]);
+  }, [isLoading, handleScroll, isError]);
 
   return (
     <>
