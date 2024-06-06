@@ -1,4 +1,5 @@
 import CartItemBox from '@/components/cart/CartItemBox';
+import EmptyCart from './EmptyCart';
 import styled from '@emotion/styled';
 import useGetCartListQuery from '@/hooks/cart/useGetCartListQuery';
 
@@ -7,9 +8,11 @@ const CartList = () => {
 
   return (
     <S.ListWrapper>
-      {cartList.map((item) => (
-        <CartItemBox key={item.id} item={item} />
-      ))}
+      {cartList.length != 0 ? (
+        cartList.map((item) => <CartItemBox key={item.id} item={item} />)
+      ) : (
+        <EmptyCart />
+      )}
     </S.ListWrapper>
   );
 };
