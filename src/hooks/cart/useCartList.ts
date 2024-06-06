@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 const useCartList = (refetchOnMount: boolean = false) => {
   const { staleTime } = QUERY_TIME.cartList;
   const { data, error, isLoading, isSuccess } = useQuery({
-    queryKey: [QUERY_KEY.cartList],
+    queryKey: [REACT_QUERY_KEY.cartList],
     queryFn: fetchGetCartList,
     refetchOnMount,
     staleTime,
