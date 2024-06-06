@@ -20,7 +20,8 @@ export const cartApis = {
         '장바구니 목록을 불러오는 데 실패했습니다.'
       );
 
-    return await response.json();
+    const data = await response.json();
+    return data.content;
   },
 
   add: async (params: CommonQueryParams) => {
@@ -39,7 +40,7 @@ export const cartApis = {
         '일시적인 오류로 장바구니에 상품을 추가하지 못했습니다.'
       );
 
-    return await response.json;
+    return response;
   },
 
   delete: async (params: CommonQueryParams) => {
@@ -57,6 +58,6 @@ export const cartApis = {
         '일시적인 오류로 장바구니에서 상품을 삭제하지 못했습니다.'
       );
 
-    return await response.json();
+    return response;
   },
 };

@@ -25,23 +25,22 @@ CartButton.Toggle = function Toggle() {
 
 CartButton.Remove = function Remove() {
   const { productId, setIsPushed } = useCartButtonContext();
-  const { cartItems, refreshCartItems } = useCartItemsContext();
+  const { cartItems } = useCartItemsContext();
 
   const cartItemId = cartItems.find(
     (cartItem) => cartItem.product.id === productId
   )?.id;
 
-  const { query: removeCartItem } = cartMutations.useDeleteCartItem({
-    cartItemId,
-  });
+  const { mutate: removeCartItem } = cartMutations.useDeleteCartItem(
+    {
+      cartItemId,
+    },
+    () => setIsPushed(false)
+  );
 
   const handleClick = () => {
     if (!cartItemId) return;
-
-    removeCartItem().then(() => {
-      refreshCartItems();
-      setIsPushed(false);
-    });
+    removeCartItem();
   };
 
   return (
@@ -54,17 +53,16 @@ CartButton.Remove = function Remove() {
 
 CartButton.Add = function Add() {
   const { productId, setIsPushed } = useCartButtonContext();
-  const { refreshCartItems } = useCartItemsContext();
 
-  const { query: addCartItem } = cartMutations.useAddCartItem({
-    productId,
-  });
+  const { mutate: addCartItem } = cartMutations.useAddCartItem(
+    {
+      productId,
+    },
+    () => setIsPushed(true)
+  );
 
   const handleClick = () => {
-    addCartItem().then(() => {
-      refreshCartItems();
-      setIsPushed(true);
-    });
+    addCartItem();
   };
 
   return (

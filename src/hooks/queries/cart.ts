@@ -1,27 +1,43 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { cartApis } from '../../api/cart';
-import useFetch from '../useFetch';
-
-import { CartItem } from '../../types';
-
-interface GetCartItemsResponse {
-  content: CartItem[];
-}
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 export const cartQueries = {
   useGetCartItems: (params: { size: number }) =>
-    useFetch<GetCartItemsResponse>({
+    useQuery({
+      queryKey: [QUERY_KEYS.getCartItems, params.size],
       queryFn: async () => await cartApis.get({ ...params }),
     }),
 };
 
 export const cartMutations = {
-  useAddCartItem: (params: { productId: number }) =>
-    useFetch({
-      queryFn: async () => await cartApis.add({ ...params }),
-    }),
+  useAddCartItem: (
+    params: { productId: number; quantity: number },
+    onSuccessCallback: () => void
+  ) => {
+    const queryClient = useQueryClient();
 
-  useDeleteCartItem: (params: { cartItemId: number | undefined }) =>
-    useFetch({
-      queryFn: async () => await cartApis.delete({ ...params }),
-    }),
+    return useMutation({
+      mutationFn: async () => await cartApis.add({ ...params, quantity: 1 }),
+      onSuccess: () => {
+        onSuccessCallback();
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] });
+      },
+    });
+  },
+
+  useDeleteCartItem: (
+    params: { cartItemId: number | undefined },
+    onSuccessCallback: () => void
+  ) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationFn: async () => await cartApis.delete({ ...params }),
+      onSuccess: () => {
+        onSuccessCallback();
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] });
+      },
+    });
+  },
 };

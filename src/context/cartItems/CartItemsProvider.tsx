@@ -1,33 +1,21 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren } from 'react';
+import { MAX_CART_ITEMS_FETCH_SIZE } from '../../constants/paginationRules';
 import { cartQueries } from '../../hooks/queries/cart';
 import { CartItemsContext } from './CartItemsContext';
-import { MAX_CART_ITEMS_FETCH_SIZE } from '../../constants/paginationRules';
 
 export function CartItemsProvider({ children }: PropsWithChildren) {
-  const [shouldRefresh, setShouldRefresh] = useState<boolean>(true);
-
   const {
-    query: getCartItems,
-    data: { content: cartItems },
+    data: cartItems,
+    isLoading,
+    error,
   } = cartQueries.useGetCartItems({
     size: MAX_CART_ITEMS_FETCH_SIZE,
   });
 
-  useEffect(() => {
-    if (shouldRefresh) {
-      getCartItems();
-      setShouldRefresh(false);
-    }
-  }, [shouldRefresh]);
-
-  const refreshCartItems = () => {
-    setShouldRefresh(true);
-  };
+  if (isLoading || error || !cartItems) return;
 
   return (
-    <CartItemsContext.Provider
-      value={{ cartItems: cartItems ?? {}, refreshCartItems }}
-    >
+    <CartItemsContext.Provider value={{ cartItems: cartItems ?? [] }}>
       {children}
     </CartItemsContext.Provider>
   );

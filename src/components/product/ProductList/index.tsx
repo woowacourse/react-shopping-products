@@ -1,9 +1,9 @@
 import * as S from './style';
 
+import { UseProductsResult } from '../../../hooks/useProducts';
 import APIErrorToast from '../../common/APIErrorToast';
 import IntersectionArea from '../../common/IntersectionArea';
 import { LoadingSpinner } from '../../common/LoadingSpinner/style';
-import { UseProductsResult } from '../../../hooks/useProducts';
 import ProductItem from '../ProductItem';
 
 export default function ProductList({
