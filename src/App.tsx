@@ -23,12 +23,23 @@ import { CartItemsContext } from './context/CartItemProvider';
 import { CATEGORIES, PRICE_SORT } from './constants/filter';
 import { Category, Order } from './types/product';
 import useIntersectionObserver from './hooks/useIntersectionObserver';
+import { ToastContext } from './context/ToastProvider';
 
 function App() {
+  const { showToast } = useContext(ToastContext);
   const observerRef = useRef<HTMLDivElement | null>(null);
   const { cartItems } = useContext(CartItemsContext);
-  const { products, category, sort, loading, error, fetchNextPage, filterByCategory, setSorting } =
-    useFetchProducts();
+  const {
+    products,
+    category,
+    sort,
+    isLoading,
+    isFetchingNextPage,
+    error,
+    fetchNextPage,
+    filterByCategory,
+    setSorting,
+  } = useFetchProducts();
 
   const selectedCategoryOption = CATEGORIES.find(({ value }) => value === category)!.label;
   const selectedSortOption = PRICE_SORT.find(({ value }) => value === sort.price)!.label;
@@ -41,7 +52,9 @@ function App() {
     setSorting('price', option);
   };
 
-  useIntersectionObserver({ loading, error }, observerRef, fetchNextPage, { threshold: 0.8 });
+  useIntersectionObserver({ isLoading, error }, observerRef, fetchNextPage, { threshold: 0.8 });
+
+  if (error) showToast(error.message);
 
   return (
     <Container>
@@ -66,7 +79,7 @@ function App() {
           </FilterContainer>
           <ProductsContentContainer>
             <ProductsContent>
-              {products.map((product) => (
+              {products?.map((product) => (
                 <ProductItem
                   key={product.id}
                   cartItemId={cartItems.find((cartItem) => product.id === cartItem.product.id)?.id}
@@ -75,7 +88,7 @@ function App() {
               ))}
               <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
             </ProductsContent>
-            {loading && <Loading />}
+            {isFetchingNextPage && <Loading />}
           </ProductsContentContainer>
         </ProductsContainer>
       </Main>

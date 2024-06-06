@@ -1,20 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { fetchProducts } from '../api/products';
-import usePage from './usePage';
-import useProducts from './useProducts';
 
 import { Category, Order, Sort } from '../types/product';
-import { ToastContext } from '../context/ToastProvider';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { FIRST_PAGE, GAP_WITH_FIRST_PAGE } from '../constants/pagination';
+import { QUERY_KEYS } from '../constants/queryKeys';
 
 const useFetchProducts = () => {
-  const { showToast } = useContext(ToastContext);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown>(null);
-  const [isLastPage, setIsLastPage] = useState(false);
-
-  const { products, addProducts, resetProducts } = useProducts();
-  const { page, increasePage, decreasePage, resetPage } = usePage();
+  const queryClient = useQueryClient();
 
   const [category, setCategory] = useState<Category>('all');
   const [sort, setSort] = useState<Sort>({
@@ -22,66 +16,53 @@ const useFetchProducts = () => {
     name: 'asc',
   });
 
-  const getProducts = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchProducts(page, category, sort);
+  const { data, error, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: [QUERY_KEYS.products, category, sort],
+      queryFn: ({ pageParam }: { pageParam: number }) => fetchProducts(pageParam, category, sort),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        const prevPage = allPages.length;
+        const nextPage = prevPage + GAP_WITH_FIRST_PAGE - 1;
 
-      if (data.last) setIsLastPage(true);
+        return lastPage.last ? undefined : nextPage;
+      },
+    });
 
-      addProducts(data.content);
-    } catch (error) {
-      if (error instanceof Error) {
-        decreasePage();
-        setError(error);
-        showToast(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (loading || error) return;
-
-    getProducts();
-  }, [page, category, sort]);
-
-  const reset = () => {
-    resetPage();
-    resetProducts();
-    setIsLastPage(false);
-  };
+  const contents = data?.pages.map(({ content }) => content);
+  const products = contents?.reduce(
+    (prevContents, nextContents) => [...prevContents, ...nextContents],
+    [],
+  );
 
   const filterByCategory = (selectedCategory: Category) => {
     if (selectedCategory === category) return;
 
-    reset();
     setCategory(selectedCategory);
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.products, FIRST_PAGE, selectedCategory, { price: 'asc', name: 'asc' }],
+    });
   };
 
   const setSorting = async (condition: string, order: Order) => {
-    if (sort.price == order) return;
+    if (sort.price === order) return;
 
-    reset();
     setSort((prevSort) => ({ ...prevSort, [condition]: order }));
-  };
-
-  const fetchNextPage = async () => {
-    if (isLastPage || error) return;
-
-    increasePage();
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.products, FIRST_PAGE, 'all', { ...sort, [condition]: order }],
+    });
   };
 
   return {
     products,
-    loading,
+    isLoading,
     error,
-    page,
-    fetchNextPage,
-    category,
-    filterByCategory,
     sort,
+    category,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+    filterByCategory,
     setSorting,
   };
 };
