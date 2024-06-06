@@ -1,9 +1,9 @@
-import { fetchProduct } from '@apis/index';
+import { fetchProductList } from '@apis/index';
 import { Filtering, Product } from '@appTypes/index';
 import { PRODUCT_LIST_PAGE } from '@src/constants';
 
 interface UseStackProductsProps {
-  fetch: (...args: Parameters<typeof fetchProduct>) => Promise<
+  fetch: (...args: Parameters<typeof fetchProductList>) => Promise<
     | Promise<{
         products: Product[];
         isLast: boolean;

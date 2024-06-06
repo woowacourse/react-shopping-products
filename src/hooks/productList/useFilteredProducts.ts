@@ -1,9 +1,9 @@
-import { fetchProduct } from '@src/apis';
+import { fetchProductList } from '@src/apis';
 import { Filtering, Product } from '@src/appTypes';
 import { PRODUCT_LIST_PAGE } from '@src/constants';
 
 interface UseFilteredProductsProps {
-  fetch: (...args: Parameters<typeof fetchProduct>) => Promise<
+  fetch: (...args: Parameters<typeof fetchProductList>) => Promise<
     | Promise<{
         products: Product[];
         isLast: boolean;
