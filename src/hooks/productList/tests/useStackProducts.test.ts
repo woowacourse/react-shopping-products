@@ -4,8 +4,8 @@ import { LOAD_MORE_PRODUCTS_AMOUNT, PRODUCT_LIST_PAGE } from '@constants/index';
 import Products from '@mocks/data/products.json';
 import { renderHook, waitFor } from '@testing-library/react';
 
-import useStackProducts, { StackPrams } from '../productList/useStackProducts';
-import useFetch from '../useFetch';
+import useFetch from '../../useFetch';
+import useStackProducts, { StackPrams } from '../useStackProducts';
 
 describe('상품 목록 무한 스크롤 테스트', () => {
   const STACK_PARAMS: StackPrams = {
