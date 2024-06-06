@@ -1,7 +1,6 @@
 import { generateBasicToken } from "../utils/auth";
 import { CART_ITEMS_ENDPOINT } from "./endpoints";
 
-// const API_URL = import.meta.VITE_USER_API_URL;
 const USER_ID = import.meta.env.VITE_USER_ID;
 const USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;
 
