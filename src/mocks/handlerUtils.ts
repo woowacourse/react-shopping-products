@@ -15,11 +15,10 @@ export function isValidCartItemRequestBody(value: any): value is AddCartRequest 
 }
 
 export function CartMockClosure() {
-  let cartMockData = cartItemMockData;
+  let cartMockData = JSON.parse(JSON.stringify(cartItemMockData));
 
   const getCartMockData = () => {
-    // console.log(JSON.stringify(cartItemMockData));
-    return JSON.parse(JSON.stringify(cartItemMockData));
+    return JSON.parse(JSON.stringify(cartMockData));
   };
 
   const pushCartItem = (mockCartItem: CartItem) => {
@@ -31,7 +30,7 @@ export function CartMockClosure() {
   };
 
   const resetCartItems = () => {
-    cartMockData = cartItemMockData;
+    cartMockData = JSON.parse(JSON.stringify(cartItemMockData));
   };
 
   const modifyCartItemQuantity = (id: number, quantity: number) => {
