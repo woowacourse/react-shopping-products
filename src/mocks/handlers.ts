@@ -54,12 +54,12 @@ export const handlers = [
     return HttpResponse.json({ status: 204 });
   }),
 
-  http.post(`${CART_ITEMS_ENDPOINT}/:id`, async ({ request, params }) => {
+  http.patch(`${CART_ITEMS_ENDPOINT}/:id`, async ({ request, params }) => {
     const { id } = params;
     const numberId = Number(id);
     const body = await request.json();
 
-    if (typeof body !== "object" || body?.quantity || typeof body?.quantity !== "number") {
+    if (typeof body !== "object" || !body?.quantity || typeof body?.quantity !== "number") {
       throw new Error(`body로 주어진 값이 { quantity} 형식이 아닙니다.`);
     }
 

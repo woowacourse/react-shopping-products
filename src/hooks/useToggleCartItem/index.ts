@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { deleteCartItems, getCartItems, addCartItem } from "../../api/cartItems";
+import { deleteCartItem, getCartItems, addCartItem } from "../../api/cartItems";
 import { CartItem } from "../../types/cartItems";
 import { ERROR_MESSAGE } from "../../constants/errorMessage/ko";
 
@@ -32,9 +32,9 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
     mutationFn: (productId: number) => {
       const targetItem = cartItems?.find((item) => item.product.id === productId);
       if (targetItem) {
-        return deleteCartItems(targetItem.id);
+        return deleteCartItem(targetItem.id);
       }
-      throw new Error(ERROR_MESSAGE.deleteCartItems);
+      throw new Error(ERROR_MESSAGE.deleteCartItem);
     },
     onSuccess: refetch,
   });

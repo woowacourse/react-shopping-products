@@ -71,11 +71,11 @@
 
 1. [x] 모달창 UI
 2. [x] 빼기버튼 삭제 및 수량 조절 버튼 추가
-3. [ ] 상품 수량에 대한 테스트
+3. [x] 상품 수량에 대한 테스트
 
-   - [ ] increaseQuantity 실행시 수량이 1 증가한다.
-   - [ ] decreaseQuantity 실행시 수량이 1 감소한다.
-   - [ ] 수량이 1개일 때 decreaseQuantity 실행시, Cart에서 삭제된다.
+   - [x] increaseQuantity 실행시 수량이 1 증가한다.
+   - [x] decreaseQuantity 실행시 수량이 1 감소한다.
+   - [x] 수량이 1개일 때 decreaseQuantity 실행시, Cart에서 삭제된다.
 
-4. [ ] 상품 수량에 대한 useProductQuantity 훅
+4. [x] 상품 수량에 대한 useProductQuantity 훅
    - increaseQuantity, decreaseQuantity, isLoading, error

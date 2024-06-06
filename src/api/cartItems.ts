@@ -27,11 +27,22 @@ export async function addCartItem(body: { productId: number; quantity: number })
   return data;
 }
 
-export async function deleteCartItems(id: number) {
+export async function deleteCartItem(id: number) {
   const data = await fetchWithToken({
     method: "DELETE",
     url: `${CART_ITEMS_ENDPOINT}/${id}`,
-    errorMessage: ERROR_MESSAGE.deleteCartItems,
+    errorMessage: ERROR_MESSAGE.deleteCartItem,
+  });
+
+  return data;
+}
+
+export async function modifyCartItem(id: number, quantity: number) {
+  const data = await fetchWithToken({
+    method: "PATCH",
+    url: `${CART_ITEMS_ENDPOINT}/${id}`,
+    body: JSON.stringify({ quantity }),
+    errorMessage: ERROR_MESSAGE.deleteCartItem,
   });
 
   return data;

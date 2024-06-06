@@ -1,14 +1,14 @@
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import useCartItemQuantity from "./useCartItemQuantity";
+import useCartItemQuantity from "./index";
 import { PropsWithChildren } from "react";
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        retry: 0,
+        retry: false,
       },
     },
   });
@@ -24,12 +24,16 @@ describe("useCartItemQuantity", () => {
     const PRODUCT_ID = 101;
     const EXPECTED_QUANTITY = 3;
 
+    await waitFor(() => {
+      expect(result.current.cartItems).not.toHaveLength(0);
+    });
+
     act(() => {
       result.current.increaseQuantity(PRODUCT_ID);
     });
 
     await waitFor(() => {
-      expect(result.current.cartItems.find((item) => item.product.id === 101).quantity).toBe(EXPECTED_QUANTITY);
+      expect(result.current.cartItems.find((item) => item.product.id === PRODUCT_ID)?.quantity).toBe(EXPECTED_QUANTITY);
     });
   });
 
@@ -39,12 +43,16 @@ describe("useCartItemQuantity", () => {
     const PRODUCT_ID = 101;
     const EXPECTED_QUANTITY = 1;
 
+    await waitFor(() => {
+      expect(result.current.cartItems).not.toHaveLength(0);
+    });
+
     act(() => {
       result.current.decreaseQuantity(PRODUCT_ID);
     });
 
     await waitFor(() => {
-      expect(result.current.cartItems.find((item) => item.product.id === 101).quantity).toBe(EXPECTED_QUANTITY);
+      expect(result.current.cartItems.find((item) => item.product.id === 101)?.quantity).toBe(EXPECTED_QUANTITY);
     });
   });
 
