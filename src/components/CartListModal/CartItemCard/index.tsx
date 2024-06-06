@@ -5,10 +5,36 @@ import { getSkeletonClassName } from '@utils/index';
 
 import style from './style.module.css';
 
-interface CartItemCardProps {
+interface DeleteButtonProps {
+  isPending: boolean;
+  handleClick: () => void;
+}
+
+const DeleteButton = ({ isPending, handleClick }: DeleteButtonProps) => {
+  return (
+    <button className={style.deleteButton} disabled={isPending} onClick={handleClick}>
+      <span className="label">삭제</span>
+    </button>
+  );
+};
+
+interface CartItemInfoProps {
   cartItem: CartItem;
 }
 
+const CartItemInfo = ({ cartItem }: CartItemInfoProps) => {
+  return (
+    <div className={style.info}>
+      <p className={style.name}>{cartItem.product.name}</p>
+      <p className={style.price}>{cartItem.product.price.toLocaleString()}</p>
+      <QuantityControl cartItemId={cartItem.id} quantity={cartItem.quantity} />
+    </div>
+  );
+};
+
+interface CartItemCardProps {
+  cartItem: CartItem;
+}
 const CartItemCard = ({ cartItem }: CartItemCardProps) => {
   const { mutate: deleteMutate, error, isPending } = useDeleteCartItem();
 
@@ -19,15 +45,8 @@ const CartItemCard = ({ cartItem }: CartItemCardProps) => {
   return (
     <li className={style.cartItemCard}>
       <img className={style.img} src={cartItem.product.imageUrl} />
-
-      <div className={style.info}>
-        <p className={style.name}>{cartItem.product.name}</p>
-        <p className={style.price}>{cartItem.product.price.toLocaleString()}</p>
-        <QuantityControl cartItemId={cartItem.id} quantity={cartItem.quantity} />
-      </div>
-      <button className={style.deleteButton} onClick={handleClickDeleteButton}>
-        <span className="label">삭제</span>
-      </button>
+      <CartItemInfo cartItem={cartItem} />
+      <DeleteButton isPending={isPending} handleClick={handleClickDeleteButton} />
       <CartActionErrorModal error={error} />
     </li>
   );
