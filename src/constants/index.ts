@@ -13,8 +13,8 @@ const CATEGORY: Record<string, string> = {
 } as const;
 
 const SORT: Record<string, string> = {
-  priceAsc: '낮은 가격순',
-  priceDecs: '높은 가격순',
+  asce: '낮은 가격순',
+  desc: '높은 가격순',
 } as const;
 
 export {
