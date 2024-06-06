@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { UpdateCartItemParams, updateCartItem } from "@src/apis/cartItems";
-import { MUTATION_KEYS, QUERY_KEYS } from "./__constants__/queryKeys";
+import { MUTATION_KEYS, QUERY_KEYS } from "@server/__constants__/queryKeys";
 import { queryClient } from "@server/queryClient";
 
 interface UseUpdateCartItemMutationReturn {

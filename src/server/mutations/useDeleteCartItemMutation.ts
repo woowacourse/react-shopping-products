@@ -1,7 +1,7 @@
 import { deleteCartItem } from "@src/apis/cartItems";
 import { useMutation } from "@tanstack/react-query";
-import { MUTATION_KEYS, QUERY_KEYS } from "./__constants__/queryKeys";
-import { queryClient } from "./queryClient";
+import { MUTATION_KEYS, QUERY_KEYS } from "@server/__constants__/queryKeys";
+import { queryClient } from "@server/queryClient";
 
 interface UseDeleteCartItemMutationReturn {
   deleteCartItemMutation: (cartItemId: number) => void;

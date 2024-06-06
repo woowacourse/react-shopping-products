@@ -1,7 +1,7 @@
-import { useCartItems } from "@server/useCartItems";
-import { useDeleteCartItemMutation } from "@server/useDeleteCartItemMutation";
-import { useCreateCartItemMutation } from "@server/useCreateCartItemMutation";
-import { useUpdateCartItemMutation } from "@server/useUpdateCartItemMutation";
+import { useCartItems } from "@src/server/queries/useCartItems";
+import { useDeleteCartItemMutation } from "@src/server/mutations/useDeleteCartItemMutation";
+import { useCreateCartItemMutation } from "@src/server/mutations/useCreateCartItemMutation";
+import { useUpdateCartItemMutation } from "@src/server/mutations/useUpdateCartItemMutation";
 import { CartItem } from "@src/apis/cartItems";
 
 interface UseCartItemQuantityControlReturn {

@@ -1,6 +1,6 @@
 import { CreateCartItemParams, createCartItem } from "@src/apis/cartItems";
 import { useMutation } from "@tanstack/react-query";
-import { MUTATION_KEYS, QUERY_KEYS } from "./__constants__/queryKeys";
+import { MUTATION_KEYS, QUERY_KEYS } from "@server/__constants__/queryKeys";
 import { queryClient } from "@server/queryClient";
 
 interface UseCreateCartItemMutationReturn {

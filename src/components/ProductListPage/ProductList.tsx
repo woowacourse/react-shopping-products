@@ -7,7 +7,7 @@ import LoadingSpinner from "@components/common/LoadingSpinner";
 import { IntersectionDetector } from "@components/common/IntersectionDetector";
 
 import { useErrorToast } from "@contexts/errorToast/useErrorToast";
-import { useInfiniteProducts } from "@server/useInfiniteProducts";
+import { useInfiniteProducts } from "@src/server/queries/useInfiniteProducts";
 
 const ProductList = () => {
   const { showErrorToast } = useErrorToast();

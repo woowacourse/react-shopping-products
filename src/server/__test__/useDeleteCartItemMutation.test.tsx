@@ -8,7 +8,7 @@ import { server } from "@mocks/server";
 import { HttpResponse, http } from "msw";
 import { CART_API_URL } from "@env/envVariables";
 import { API_URL } from "@apis/__constants__/apiUrl";
-import { useDeleteCartItemMutation } from "@server/useDeleteCartItemMutation";
+import { useDeleteCartItemMutation } from "@src/server/mutations/useDeleteCartItemMutation";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

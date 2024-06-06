@@ -1,7 +1,7 @@
 import { ReactNode, act } from "react";
 import { vi } from "vitest";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { useCreateCartItemMutation } from "@server/useCreateCartItemMutation";
+import { useCreateCartItemMutation } from "@src/server/mutations/useCreateCartItemMutation";
 import { renderHook, waitFor } from "@testing-library/react";
 import { QUERY_KEYS } from "@server/__constants__/queryKeys";
 import { queryClient } from "@server/queryClient";

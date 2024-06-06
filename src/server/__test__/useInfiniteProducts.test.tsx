@@ -5,7 +5,7 @@ import { API_URL } from "@apis/__constants__/apiUrl";
 import { server } from "@mocks/server";
 import { CART_API_URL } from "@env/envVariables";
 import { PRICE_SORT_OPTIONS } from "@apis/__constants__/productQueryParams";
-import { useInfiniteProducts } from "@server/useInfiniteProducts";
+import { useInfiniteProducts } from "@src/server/queries/useInfiniteProducts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { vi } from "vitest";

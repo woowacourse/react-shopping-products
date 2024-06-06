@@ -7,7 +7,7 @@ import { useCartItemQuantityControl } from "../useCartItemQuantityControl";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "../queryClient";
 import { ReactNode, act } from "react";
-import { useCartItems } from "../useCartItems";
+import { useCartItems } from "@src/server/queries/useCartItems";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
