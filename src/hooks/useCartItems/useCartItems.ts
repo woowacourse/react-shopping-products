@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchCartItems, deleteCartItem, addCartItem } from '../../api/cart';
+import { fetchCartItems, deleteCartItem, addCartItem, updateCartItemQuantity } from '../../api/cart';
 import { CartItem } from '../../types/CartItem.type';
 import { SIZE } from '../../constants/api';
 import { ToastContext } from '../../context/ToastProvider';
@@ -10,6 +10,7 @@ interface UseCartItemsResult {
   cartItems: CartItem[];
   handleAddCartItem: (productId: number) => void;
   handleDeleteCartItem: (productId: number) => void;
+  handleCartItemQuantity: (productId: number, quantity: number) => void;
 }
 
 const useCartItems = (): UseCartItemsResult => {
@@ -50,20 +51,32 @@ const useCartItems = (): UseCartItemsResult => {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ cartItemId, quantity }: { cartItemId: number; quantity: number }) =>
+      updateCartItemQuantity(cartItemId, quantity),
+    onSuccess: inValidateCart,
+    onError: (error: Error) => {
+      showToast(error.message);
+    },
+  });
+
   const handleAddCartItem = (productId: number) => {
     addMutation.mutate(productId);
   };
 
-  const handleDeleteCartItem = (productId: number) => {
-    const cartItem = cartItems.find((item) => item.product.id === productId);
-    if (!cartItem) return;
-    deleteMutation.mutate(cartItem.id);
+  const handleDeleteCartItem = (cartItemId: number) => {
+    deleteMutation.mutate(cartItemId);
+  };
+
+  const handleCartItemQuantity = (cartItemId: number, quantity: number) => {
+    updateMutation.mutate({ cartItemId, quantity });
   };
 
   return {
     cartItems,
     handleAddCartItem,
     handleDeleteCartItem,
+    handleCartItemQuantity,
   };
 };
 

@@ -19,7 +19,7 @@ import Loading from '../../assets/loading.gif';
 const ProductListPage = () => {
   const { category, sort, handleCategory, handleSort } = useFilterAndSort();
   const { products, loading, error, isLast, handlePage } = useProducts(category, sort);
-  const { cartItems, handleAddCartItem, handleDeleteCartItem } = useCartItems();
+  const { cartItems, handleAddCartItem, handleDeleteCartItem, handleCartItemQuantity } = useCartItems();
   const targetRef = useIntersectionObserver(handlePage);
 
   const isAddPageAble = !error && !isLast;
@@ -50,9 +50,10 @@ const ProductListPage = () => {
               <ProductItem
                 key={`${product.id}-${index}`}
                 product={product}
-                isAdded={cartItems.some((item) => item.product.id === product.id)}
+                cartItems={cartItems}
                 onAddCartItem={handleAddCartItem}
                 onDeleteCartItem={handleDeleteCartItem}
+                onUpdateQuantity={handleCartItemQuantity}
               />
             ))}
           </S.ProductList>

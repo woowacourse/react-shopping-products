@@ -31,3 +31,11 @@ export const deleteCartItem = async (cartItemId: number): Promise<void> => {
     errorMessage: ERROR_MESSAGES.DELETE_CART_ITEMS,
   });
 };
+
+export const updateCartItemQuantity = async (cartItemId: number, quantity: number): Promise<void> => {
+  return apiClient.patch({
+    endpoint: `${API_ENDPOINTS.CART}/${cartItemId}`,
+    body: { quantity },
+    errorMessage: ERROR_MESSAGES.UPDATE_CART_ITEMS_QUANTITY,
+  });
+};
