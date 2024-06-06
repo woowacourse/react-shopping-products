@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { deleteCartItem, getCartItems, addCartItem } from "../../api/cartItems";
-import { CartItem } from "../../types/cartItems";
+import { CartItemType } from "../../types/cartItems";
 import { ERROR_MESSAGE } from "../../constants/errorMessage/ko";
 
 export interface ToggleCartItemReturns {
-  cartItems: CartItem[];
+  cartItems: CartItemType[];
   addToCart: (productId: number) => void;
   removeFromCart: (productId: number) => void;
   checkSelected: (id: number) => boolean;
@@ -18,7 +18,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
     isLoading,
     error,
     refetch,
-  } = useQuery<CartItem[]>({
+  } = useQuery<CartItemType[]>({
     queryKey: ["cartItems"],
     queryFn: getCartItems,
   });

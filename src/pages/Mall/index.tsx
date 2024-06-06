@@ -6,7 +6,6 @@ import useProducts from "../../hooks/useProducts";
 import useCustomContext from "../../hooks/useCustomContext";
 import useErrorAlert from "../../hooks/useErrorAlert";
 
-import { ToggleCartItemContext } from "../../components/provider/ToggleCartItemProvider";
 import Dropdown from "../../components/common/Dropdown";
 import Header from "../../components/layout/Header";
 import InfiniteScroll from "../../components/utils/InfiniteScroll";
@@ -20,6 +19,7 @@ import S from "./styledComponent";
 import { PRODUCT_CATEGORY_LIST, PRODUCT_SORT_LIST } from "../../constants/mallData";
 import { LanguageContext } from "../../components/provider/LanguageProvider";
 import CartItemsModal from "../../components/cart/CartItemsModal";
+import useToggleCartItem from "../../hooks/useToggleCartItem";
 
 const Mall = () => {
   const {
@@ -32,7 +32,7 @@ const Mall = () => {
     handleSortChange,
   } = useProducts();
   const { messages } = useCustomContext(LanguageContext);
-  const { cartItems, error: toggleCartItemError } = useCustomContext(ToggleCartItemContext);
+  const { cartItems, error: toggleCartItemError } = useToggleCartItem();
   useErrorAlert({ toggleCartItemError, productError });
 
   return (

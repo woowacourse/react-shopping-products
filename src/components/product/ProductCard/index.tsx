@@ -14,7 +14,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <S.ProductInfo>
         <S.ProductName>{product.name}</S.ProductName>
         <S.Price>{`${product.price.toLocaleString()}원`}</S.Price>
-        <ToggleItemButton id={product.id} />
+        <ToggleItemButton productId={product.id} />
       </S.ProductInfo>
     </S.ProductCard>
   );

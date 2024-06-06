@@ -1,19 +1,23 @@
+import useCartItemQuantity from "../../../hooks/useCartItemQuantity";
+import { CartItemType } from "../../../types/cartItems";
 import ProductControls from "../../domain/ProductControls";
 import S from "./styledComponent";
 
-function CartItem({ product }) {
+function CartItem({ item }: { item: CartItemType }) {
+  const { deleteItemMutation } = useCartItemQuantity();
+
   return (
     <S.CartItemContainer>
-      <S.ProductImage src="https://via.placeholder.com/80" alt={product.name} />
+      <S.ProductImage src={item.product.imageUrl} alt={item.product.name} />
       <S.ProductDetailContainer>
         <S.ProductDetail>
           <S.NamePrice>
-            <S.Name>{product.name}</S.Name>
-            <S.Price>{`${product.price.toLocaleString()}원`}</S.Price>
+            <S.Name>{item.product.name}</S.Name>
+            <S.Price>{`${item.product.price.toLocaleString()}원`}</S.Price>
           </S.NamePrice>
           <S.DeleteButton
             onClick={() => {
-              /*TODO: 삭제 버튼 */
+              deleteItemMutation.mutate(item.id);
             }}
           >
             삭제
@@ -21,7 +25,7 @@ function CartItem({ product }) {
         </S.ProductDetail>
 
         {/*<-- 수량 조절 --> */}
-        <ProductControls />
+        <ProductControls cartItem={item} />
       </S.ProductDetailContainer>
     </S.CartItemContainer>
   );

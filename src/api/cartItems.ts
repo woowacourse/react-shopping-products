@@ -31,6 +31,7 @@ export async function deleteCartItem(id: number) {
   const data = await fetchWithToken({
     method: "DELETE",
     url: `${CART_ITEMS_ENDPOINT}/${id}`,
+    headers: { "Content-type": "Application/json" },
     errorMessage: ERROR_MESSAGE.deleteCartItem,
   });
 
@@ -42,6 +43,7 @@ export async function modifyCartItem(id: number, quantity: number) {
     method: "PATCH",
     url: `${CART_ITEMS_ENDPOINT}/${id}`,
     body: JSON.stringify({ quantity }),
+    headers: { "Content-type": "Application/json" },
     errorMessage: ERROR_MESSAGE.deleteCartItem,
   });
 

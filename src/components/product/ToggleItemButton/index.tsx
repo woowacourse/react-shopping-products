@@ -1,54 +1,34 @@
 import { useEffect, useState } from "react";
 
-import useCustomContext from "../../../hooks/useCustomContext";
-
-import { ToggleCartItemContext } from "../../provider/ToggleCartItemProvider";
-
 import AddToCart from "../../icons/AddToCart";
 import LoadingDots from "../../common/LoadingDots";
 
 import S from "./StyledComponent";
 import ProductControls from "../../domain/ProductControls";
+import useFindCartItem from "../../../hooks/useFindCartItem";
+import useToggleCartItem from "../../../hooks/useToggleCartItem";
 
 interface ToggleItemButtonProps {
-  id: number;
+  productId: number;
 }
 
-const ToggleItemButton = ({ id }: ToggleItemButtonProps) => {
-  const { addToCart, removeFromCart, checkSelected } = useCustomContext(ToggleCartItemContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSelected, setSelected] = useState(() => checkSelected(id));
+const ToggleItemButton = ({ productId }: ToggleItemButtonProps) => {
+  const { isLoading, addToCart, removeFromCart, checkSelected } = useToggleCartItem();
+  const cartItem = useFindCartItem({ productId });
+  const [isSelected, setSelected] = useState(() => checkSelected(productId));
 
   useEffect(() => {
-    setSelected(checkSelected(id));
-  }, [checkSelected, id]);
+    setSelected(checkSelected(productId));
+  }, [checkSelected, productId]);
 
   const handleAddToCart = async () => {
     if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-      await addToCart(id);
-      setSelected(true);
-    } catch (error) {
-      setSelected(false);
-    } finally {
-      setIsLoading(false);
-    }
+    addToCart(productId);
   };
 
   const handleRemoveFromCart = async () => {
     if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-      await removeFromCart(id);
-      setSelected(false);
-    } catch (error) {
-      setSelected(true);
-    } finally {
-      setIsLoading(false);
-    }
+    removeFromCart(productId);
   };
 
   return (
@@ -56,10 +36,10 @@ const ToggleItemButton = ({ id }: ToggleItemButtonProps) => {
       {isLoading ? (
         <LoadingDots type={isSelected ? "black" : "white"} />
       ) : isSelected ? (
-        <ProductControls />
+        <ProductControls cartItem={cartItem} />
       ) : (
         <S.ToggleItemButton
-          key={id}
+          key={productId}
           onClick={isSelected ? handleRemoveFromCart : handleAddToCart}
           isSelected={isSelected}
         >

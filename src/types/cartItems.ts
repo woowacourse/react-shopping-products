@@ -1,6 +1,6 @@
 import { Product } from "./products";
 
-export interface CartItem {
+export interface CartItemType {
   id: number;
   product: Product;
   quantity: number;

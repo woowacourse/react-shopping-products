@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCartItems, modifyCartItem, deleteCartItem } from "../../api/cartItems";
-import { CartItem } from "../../types/cartItems";
+import { CartItemType } from "../../types/cartItems";
 import { useCallback } from "react";
 
 function useCartItemQuantity() {
@@ -10,41 +10,41 @@ function useCartItemQuantity() {
     data: cartItems,
     isLoading,
     error,
-  } = useQuery<CartItem[]>({ queryKey: ["cartItems"], queryFn: getCartItems });
+  } = useQuery<CartItemType[]>({ queryKey: ["cartItems"], queryFn: getCartItems });
 
   const updateQuantityMutation = useMutation({
-    mutationFn: (item: { productId: number; quantity: number }) => modifyCartItem(item.productId, item.quantity),
+    mutationFn: (item: { cartId: number; quantity: number }) => modifyCartItem(item.cartId, item.quantity),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
     },
   });
 
   const deleteItemMutation = useMutation({
-    mutationFn: (productId: number) => deleteCartItem(productId),
+    mutationFn: (cartId: number) => deleteCartItem(cartId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
     },
   });
 
   const increaseQuantity = useCallback(
-    (productId: number) => {
-      const item = cartItems?.find((item: CartItem) => item.product.id === productId);
+    (cartId: number) => {
+      const item = cartItems?.find((item: CartItemType) => item.id === cartId);
       if (item) {
-        updateQuantityMutation.mutate({ productId, quantity: item.quantity + 1 });
+        updateQuantityMutation.mutate({ cartId: item.id, quantity: item.quantity + 1 });
       }
     },
     [cartItems, updateQuantityMutation]
   );
 
   const decreaseQuantity = useCallback(
-    (productId: number) => {
-      const item = cartItems?.find((item: CartItem) => item.product.id === productId);
+    (cartId: number) => {
+      const item = cartItems?.find((item: CartItemType) => item.id === cartId);
       if (item) {
         const newQuantity = item.quantity - 1;
         if (newQuantity > 0) {
-          updateQuantityMutation.mutate({ productId, quantity: newQuantity });
+          updateQuantityMutation.mutate({ cartId, quantity: newQuantity });
         } else {
-          deleteItemMutation.mutate(productId);
+          deleteItemMutation.mutate(cartId);
         }
       }
     },
@@ -55,6 +55,7 @@ function useCartItemQuantity() {
     cartItems: cartItems || [],
     increaseQuantity,
     decreaseQuantity,
+    deleteItemMutation,
     isLoading,
     error,
   };

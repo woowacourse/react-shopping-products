@@ -1,19 +1,25 @@
+import useCartItemQuantity from "../../../hooks/useCartItemQuantity";
+import { CartItemType } from "../../../types/cartItems";
 import S from "./styledComponent";
 
-const ProductControls = () => {
+const ProductControls = ({ cartItem }: { cartItem?: CartItemType }) => {
+  const { increaseQuantity, decreaseQuantity } = useCartItemQuantity();
+  //TODO: 리팩터링
+  if (!cartItem) return <div>cartItem이 없습니다.</div>;
+
   return (
     <S.ProductControls>
       <S.Button
         onClick={() => {
-          /*TODO: 수량 감소 */
+          decreaseQuantity(cartItem.id);
         }}
       >
         -
       </S.Button>
-      <S.Quantity>{3}</S.Quantity>
+      <S.Quantity>{cartItem.quantity}</S.Quantity>
       <S.Button
         onClick={() => {
-          /*TODO: 수량 증가*/
+          increaseQuantity(cartItem.id);
         }}
       >
         +
