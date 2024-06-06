@@ -1,10 +1,10 @@
-import { CartItem } from "./../../api/cartItems";
+import { ICartItem } from "./../../api/cartItems";
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEY } from "../../constants/queryKeys";
 import { getCartItems } from "./../../api/cartItems";
 
 interface UseCartItemsReturn {
-  cartItems: CartItem[];
+  cartItems: ICartItem[];
   isLoading: boolean;
   errorMessage: string;
 }

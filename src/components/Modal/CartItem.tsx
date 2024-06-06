@@ -1,20 +1,50 @@
 import styled from "styled-components";
 import QuantitySetter from "../QuantitySetter";
+import useDeleteCartItem from "../../hooks/useDeleteCartItem";
 
-const CartItem = () => {
+interface CartItemProps {
+  cartItemId: number;
+  imageUrl: string;
+  productName: string;
+  price: number;
+  quantity: number;
+}
+
+const CartItem = ({
+  cartItemId,
+  imageUrl,
+  productName,
+  price,
+  quantity,
+}: CartItemProps) => {
+  const deleteMutation = useDeleteCartItem();
+
+  const clickDeleteCartItemHandler = () => {
+    try {
+      if (cartItemId) {
+        deleteMutation.mutate(cartItemId);
+      } else {
+        alert("해당 상품이 장바구니에 없습니다.");
+      }
+    } catch (error) {
+      alert(
+        "상품을 장바구니에서 빼는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
+      );
+    }
+  };
+
   return (
     <S.Container>
-      <S.ItemImg
-        src={
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfFt-m3c3jODvbJ5uiY28Z8deAMH8vBfCYsQ&s"
-        }
-      />
+      <S.ItemImg src={imageUrl} />
       <S.DescriptionContainer>
-        <S.ItemName>고양이</S.ItemName>
-        <S.ItemPrice>100000</S.ItemPrice>
-        <QuantitySetter></QuantitySetter>
+        <S.ItemName>{productName}</S.ItemName>
+        <S.ItemPrice>{price.toLocaleString()}원</S.ItemPrice>
+        <QuantitySetter
+          cartItemId={cartItemId}
+          quantity={quantity}
+        ></QuantitySetter>
       </S.DescriptionContainer>
-      <S.DeleteButton>삭제</S.DeleteButton>
+      <S.DeleteButton onClick={clickDeleteCartItemHandler}>삭제</S.DeleteButton>
     </S.Container>
   );
 };
@@ -32,9 +62,8 @@ const S = {
   ItemImg: styled.img`
     flex: 3;
     width: 25%;
-    height: 80%;
-    object-fit: contain;
-    border-radius: 1.6rem;
+    height: 10rem;
+    border-radius: 0.8rem;
   `,
   DescriptionContainer: styled.div`
     flex: 6;
@@ -57,6 +86,7 @@ const S = {
     height: 25%;
     margin-right: 1.7rem;
     padding: 0.3rem 0.5rem;
+    white-space: nowrap;
     color: #0a0d13;
     font-size: 1.2rem;
     border: 0.1rem solid #bebebe;

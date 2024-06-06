@@ -1,6 +1,7 @@
 import { Modal } from "ollie-modal-components";
 import CartItemList from "./CartItemList";
 import PriceInfo from "./PriceInfo";
+import useCartItems from "../../hooks/useCartItems";
 
 interface ShoppingCartModalProps {
   isOpen: boolean;
@@ -8,12 +9,17 @@ interface ShoppingCartModalProps {
 }
 
 const ShoppingCartModal = ({ isOpen, onClose }: ShoppingCartModalProps) => {
+  const { cartItems } = useCartItems();
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       position="bottom"
-      style={{ borderRadius: "0.8rem 0.8rem 0 0", height: "55%" }}
+      style={{
+        borderRadius: "0.8rem 0.8rem 0 0",
+        width: "30%",
+        height: "55%",
+      }}
     >
       <Modal.ModalHeader
         style={{
@@ -27,15 +33,15 @@ const ShoppingCartModal = ({ isOpen, onClose }: ShoppingCartModalProps) => {
         </Modal.ModalTitle>
       </Modal.ModalHeader>
       <Modal.ModalContent style={{ margin: "0 3.2rem" }}>
-        <CartItemList></CartItemList>
+        <CartItemList cartItems={cartItems}></CartItemList>
       </Modal.ModalContent>
       <Modal.ModalFooter
         style={{ flexDirection: "column", margin: "0.5rem 3.2rem" }}
       >
-        <PriceInfo />
+        <PriceInfo cartItems={cartItems} />
         <Modal.ModalButton
           size="L"
-          onClick={() => console.log("dd")}
+          onClick={onClose}
           style={{
             width: "97%",
             borderRadius: "5px",

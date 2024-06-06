@@ -2,14 +2,14 @@ import { API_URL } from "../constants/url";
 import { cartClient } from "./cartClient";
 import { Product } from "./products";
 
-export interface CartItem {
+export interface ICartItem {
   id: number;
   quantity: number;
   product: Product;
 }
 
 export const getCartItems = async () => {
-  const cartItems = await cartClient.get<{ content: CartItem[] }>(
+  const cartItems = await cartClient.get<{ content: ICartItem[] }>(
     API_URL.cartItems
   );
   return {

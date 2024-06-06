@@ -1,16 +1,28 @@
 import styled from "styled-components";
 import CartItem from "./CartItem";
+import React from "react";
+import { ICartItem } from "../../api/cartItems";
 
-const CartItemList = () => {
+interface CartItemListProps {
+  cartItems: ICartItem[];
+}
+
+const CartItemList = ({ cartItems }: CartItemListProps) => {
   return (
     <S.Container>
       <S.Hr />
-      <CartItem />
-      <S.Hr />
-      <CartItem />
-      <S.Hr />
-      <CartItem />
-      <S.Hr />
+      {cartItems.map((cartItem) => (
+        <React.Fragment key={cartItem.id}>
+          <CartItem
+            cartItemId={cartItem.id}
+            imageUrl={cartItem.product.imageUrl}
+            productName={cartItem.product.name}
+            price={cartItem.product.price}
+            quantity={cartItem.quantity}
+          />
+          <S.Hr />
+        </React.Fragment>
+      ))}
     </S.Container>
   );
 };
@@ -25,7 +37,7 @@ const S = {
     overflow-y: scroll;
   `,
   Hr: styled.hr`
-    width: 95%;
+    width: 100%;
     height: 0.1rem;
     margin-bottom: 1.2rem;
     border: 0.1rem solid #0000001a;
