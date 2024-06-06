@@ -11,6 +11,12 @@ export const GlobalStyle = createGlobalStyle`
   html{
     font-size: 62.5%;
   }
+
+  body {
+    &::-webkit-scrollbar {
+    display: none;
+  }
+  }
   `;
 
 export const SCREEN_WIDTH_REM = 44;

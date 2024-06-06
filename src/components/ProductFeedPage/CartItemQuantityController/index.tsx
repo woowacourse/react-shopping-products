@@ -1,7 +1,7 @@
 import { useErrorToast } from "@src/contexts/errorToast/useErrorToast";
 import CartItemCounter from "./CartItemCounter";
 import CartItemAddButton from "./CartItemAddButton";
-import { useCartItemQuantityControl } from "@src/server/useCartItemQuantityControl";
+import { useCartItemQuantityControl } from "@src/server/hooks/useCartItemQuantityControl";
 import styled from "styled-components";
 
 interface CartItemQuantityControllerProps {
@@ -24,8 +24,8 @@ const CartItemQuantityController = ({ productId }: CartItemQuantityControllerPro
       {targetCartItem ? (
         <CartItemCounter
           count={targetCartItem.quantity}
-          increaseCartItemQuantity={increaseQuantity}
-          decreaseCartItemQuantity={decreaseQuantity}
+          increaseQuantity={increaseQuantity}
+          decreaseQuantity={decreaseQuantity}
         />
       ) : (
         <CartItemAddButton addCartItem={increaseQuantity} />
