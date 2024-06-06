@@ -17,6 +17,7 @@ const response = async ({ url, method, body }: ResponseProps) => {
     },
     body,
   });
+  if (method !== 'GET') return;
   return result.json();
 };
 
