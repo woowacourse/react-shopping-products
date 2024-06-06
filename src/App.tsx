@@ -1,8 +1,8 @@
-import { CartProvider } from '@/contexts/CartContext';
-import { Global } from '@emotion/react';
+import { CartProvider } from './contexts/CartContext';
 import Products from '@/pages/Products';
-import baseStyle from '@/style/base.style';
 
+import baseStyle from '@/style/base.style';
+import { Global } from '@emotion/react';
 function App() {
   return (
     <>

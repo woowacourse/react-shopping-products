@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react';
-
-import useProductList from '@/hooks/useProductList';
+import useProductFilters from '@/hooks/product/useProductFilters';
 
 import Header from '@/components/Header';
 import CartCountIcon from '@/components/CartCountIcon';
 import BaseDropDown from '@/components/dropdown/BaseDropDown';
 import ProductList from '@/components/ProductList';
-import Toast from '@/components/Toast';
 
 import { CATEGORY_LIST, PRICE_SORT } from '@/constants/productList';
 
@@ -14,28 +11,8 @@ import styled from '@emotion/styled';
 import theme from '@/style/theme.style';
 
 const Products = () => {
-  const {
-    page,
-    products,
-    error,
-    loadNextPage,
-    hasNextPage,
-    handleChangeSort,
-    handleChangeCategory,
-  } = useProductList();
-
-  const [showToast, setShowToast] = useState(false);
-
-  useEffect(() => {
-    if (error) {
-      setShowToast(true);
-      const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
+  const { sort, category, handleSortChange, handleCategoryChange } =
+    useProductFilters();
 
   return (
     <S.Container>
@@ -51,22 +28,16 @@ const Products = () => {
           <BaseDropDown
             initialValue="전체"
             options={CATEGORY_LIST}
-            onChangeSelect={handleChangeCategory}
+            onChangeSelect={handleCategoryChange}
           />
           <BaseDropDown
             initialValue="낮은 가격순"
             options={PRICE_SORT}
-            onChangeSelect={handleChangeSort}
+            onChangeSelect={handleSortChange}
           />
         </S.DropDownWrapper>
-        <ProductList
-          products={products}
-          page={page}
-          getNextPage={loadNextPage}
-          hasNextPage={hasNextPage}
-        />
+        <ProductList sort={sort} category={category} />
       </S.BodyContent>
-      {showToast && <Toast message={(error as Error).message} />}
     </S.Container>
   );
 };

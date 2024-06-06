@@ -39,7 +39,7 @@ const useProductsQuery = ({ sort, category }: ProductFilterOptions) => {
     });
 
   return {
-    products: data?.pages.map((page) => page.content).flat() ?? [],
+    products: data?.pages.flatMap((page) => page.content) ?? [],
     isLoading,
     isError,
     errorMessage: error?.message,

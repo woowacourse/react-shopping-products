@@ -1,27 +1,32 @@
 import { useEffect, useRef } from 'react';
-
-import { Product } from '@/types/product.type';
-import ProductItem from './ProductItem';
-import styled from '@emotion/styled';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import useProductsQuery from '@/hooks/queries/product/useProductsQuery';
+import ProductItem from './ProductItem';
+import { ProductFilterOptions } from '@/types/product.type';
+import styled from '@emotion/styled';
+import useToast from '@/hooks/_common/useToast';
+import Toast from './Toast';
 
-interface Props {
-  products: Product[];
-  page: number;
-  getNextPage: () => void;
-  hasNextPage: boolean;
-}
-
-const ProductList = ({ products, page, getNextPage, hasNextPage }: Props) => {
+const ProductList = ({ sort, category }: ProductFilterOptions) => {
   const target = useRef<HTMLDivElement | null>(null);
-  const [observe, unobserve] = useIntersectionObserver(getNextPage);
+  const {
+    products,
+    isLoading,
+    isError,
+    errorMessage,
+    hasNextPage,
+    fetchNextPage,
+  } = useProductsQuery({ sort, category });
+
+  const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
+  const showToast = useToast({ isError });
 
   useEffect(() => {
     if (target.current) {
       observe(target.current);
     }
 
-    if (page === 0) {
+    if (products.length === 0) {
       const listContainer = document.getElementById('listContainer');
       if (listContainer) {
         listContainer.scrollTop = 0;
@@ -33,17 +38,20 @@ const ProductList = ({ products, page, getNextPage, hasNextPage }: Props) => {
         unobserve(target.current);
       }
     };
-  }, [observe, unobserve, page]);
+  }, [observe, unobserve, products.length]);
 
   return (
-    <S.ListContainer id="listContainer">
-      <S.GridContainer>
-        {products.map((product) => (
-          <ProductItem key={product.id} item={product} />
-        ))}
-      </S.GridContainer>
-      {hasNextPage && <S.ObserverContainer ref={target} />}
-    </S.ListContainer>
+    <>
+      <S.ListContainer id="listContainer">
+        <S.GridContainer>
+          {products.map((product) => (
+            <ProductItem key={product.id} item={product} />
+          ))}
+        </S.GridContainer>
+        {hasNextPage && <S.ObserverContainer ref={target} />}
+      </S.ListContainer>
+      {showToast && <Toast message={errorMessage as string} />}
+    </>
   );
 };
 
