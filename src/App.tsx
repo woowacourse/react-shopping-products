@@ -1,13 +1,6 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import ProductListPage from "@pages/ProductListPage";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
+import { queryClient } from "@server/queryClient";
 
 function App() {
   return (
