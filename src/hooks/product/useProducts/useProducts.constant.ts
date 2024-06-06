@@ -5,3 +5,4 @@
 export const PAGE_OFFSET = 4;
 export const DEFAULT_SIZE = 20;
 export const PAGE_PER_SIZE = 4;
+export const INIT_PAGE = 0;

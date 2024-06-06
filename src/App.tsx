@@ -1,16 +1,16 @@
 import AppLayout from '@components/layout/AppLayout/AppLayout';
 import { Global } from '@emotion/react';
+import useToggleShoppingCart from '@hooks/cartItem/useToggleShoppingCart';
 import ProductPage from '@pages/ProductPage/ProductPage';
 import { resetCSS } from '@styles/resetCSS';
-import useToggleShoppingCart from '@hooks/product/useToggleShoppingCart';
 
 function App() {
-  const { addedShoppingCartLength: itemCount, onToggleCart, isAddedCart } = useToggleShoppingCart();
+  const { cartItems, addedShoppingCartLength: itemCount, isAddedCart } = useToggleShoppingCart();
   return (
     <>
       <Global styles={resetCSS} />
       <AppLayout itemCount={itemCount}>
-        <ProductPage onToggleCart={onToggleCart} isAddedCart={isAddedCart} />
+        <ProductPage cartItems={cartItems} isAddedCart={isAddedCart} />
       </AppLayout>
     </>
   );

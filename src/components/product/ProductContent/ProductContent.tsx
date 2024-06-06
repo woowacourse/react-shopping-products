@@ -8,14 +8,15 @@ import { ProductDropdownOptions } from '@components/product/ProductDropdown/Prod
 
 import * as Styled from './ProductContent.styled';
 import APIErrorToast from '@components/common/Toast/ErrorToast';
+import { CartItem } from '@appTypes/product';
 
 interface ProductContentProps {
-  onToggleCart: (id: number) => void;
+  cartItems: CartItem[];
   isAddedCart: (id: number) => boolean;
   dropdownOptions: ProductDropdownOptions;
 }
 
-const ProductContent = ({ onToggleCart, isAddedCart, dropdownOptions }: ProductContentProps) => {
+const ProductContent = ({ isAddedCart, dropdownOptions, cartItems }: ProductContentProps) => {
   const { products, isLoading, updateNextProductItem, error } = useProducts(dropdownOptions);
 
   const targetRef = useIntersectionObserver<HTMLDivElement>({
@@ -30,7 +31,7 @@ const ProductContent = ({ onToggleCart, isAddedCart, dropdownOptions }: ProductC
         <NotProduct />
       ) : (
         <Styled.ProductPageListWrapper>
-          <CardList products={products} onToggleCart={onToggleCart} isAddedCart={isAddedCart} />
+          <CardList cartItems={cartItems} products={products} isAddedCart={isAddedCart} />
         </Styled.ProductPageListWrapper>
       )}
 

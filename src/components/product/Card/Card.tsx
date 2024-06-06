@@ -1,17 +1,21 @@
 import * as Styled from './Card.styled';
 
-import { Product } from '@appTypes/product';
+import { CartItem, Product } from '@appTypes/product';
 import { formatKoreanCurrency } from '@utils/currency';
 
-import { AddShoppingCart, RemoveShoppingCart } from '@assets/svg';
+import { AddShoppingCart } from '@assets/svg';
+import useAddShoppingCart from '@hooks/cartItem/useAddShoppingCart';
+import CartQuantityCounter from '@components/product/CartQuantityCounter/CartQuantityCounter';
 
 interface CardProps {
+  cartItems: CartItem[];
   product: Product;
   isAddedCart: boolean;
-  onToggleCart: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ product, isAddedCart, onToggleCart }) => {
+const Card: React.FC<CardProps> = ({ cartItems, product, isAddedCart }) => {
+  const { addShoppingCart } = useAddShoppingCart();
+
   return (
     <Styled.CardContainer>
       <Styled.CardImage src={product.imageUrl} alt={product.name} />
@@ -19,17 +23,16 @@ const Card: React.FC<CardProps> = ({ product, isAddedCart, onToggleCart }) => {
         <Styled.ProductName>{product.name}</Styled.ProductName>
         <p>{`${formatKoreanCurrency(product.price)}`}</p>
         <Styled.CardToggleButtonContainer>
-          <Styled.CardToggleButton $isAddedCart={isAddedCart} onClick={onToggleCart}>
-            {isAddedCart ? (
-              <>
-                <AddShoppingCart /> <span>담기</span>
-              </>
-            ) : (
-              <>
-                <RemoveShoppingCart /> <span>빼기</span>
-              </>
-            )}
-          </Styled.CardToggleButton>
+          {isAddedCart ? (
+            <Styled.CardToggleButton
+              $isAddedCart={isAddedCart}
+              onClick={() => addShoppingCart(product.id)}
+            >
+              <AddShoppingCart /> 담기
+            </Styled.CardToggleButton>
+          ) : (
+            <CartQuantityCounter cartItems={cartItems} product={product} />
+          )}
         </Styled.CardToggleButtonContainer>
       </Styled.CardDescription>
     </Styled.CardContainer>
