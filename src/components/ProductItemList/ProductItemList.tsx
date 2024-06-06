@@ -1,12 +1,14 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import useProductList from '../../hooks/useProductList';
 import ProductItem from '../ProductItem/ProductItem';
 import { Category, Product, Sort } from '../../types/type';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../common/Spinner/Spinner';
+import useCartItemList from '../../hooks/useCartItemList';
 
 import * as S from './ProductItemList.style';
+
 interface ProductItemListProp {
   category: Category;
   sort: Sort;
@@ -14,16 +16,22 @@ interface ProductItemListProp {
 
 function ProductItemList({ category, sort }: ProductItemListProp) {
   const {
-    data,
-    error,
+    data: productListData,
+    error: productListError,
     fetchNextPage,
     hasNextPage,
-    isFetching,
+    isFetching: isProductListFetching,
     isFetchingNextPage,
   } = useProductList({
     category,
     sort,
   });
+
+  const {
+    data: cartItemListData,
+    error: cartItemListError,
+    isFetching: isCartItemListFetching,
+  } = useCartItemList();
 
   const target = useRef(null);
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
@@ -32,17 +40,21 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     if (target.current === null) return;
     observe(target.current);
 
-    if (data?.pages.length === 0 || !hasNextPage) {
+    if (productListData?.pages.length === 0 || !hasNextPage) {
       unobserve(target.current);
     }
-  }, [data?.pages, observe, unobserve, hasNextPage]);
+  }, [productListData?.pages, observe, unobserve, hasNextPage]);
 
   return (
     <>
       <S.ProductList>
-        {data?.pages.map((page) =>
+        {productListData?.pages.map((page) =>
           page.content.map((product: Product) => (
-            <ProductItem key={`${product.id}`} product={product} />
+            <ProductItem
+              key={`${product.id}`}
+              product={product}
+              cartItemList={cartItemListData?.content ?? []}
+            />
           )),
         )}
       </S.ProductList>

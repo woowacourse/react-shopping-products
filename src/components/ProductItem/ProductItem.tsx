@@ -1,17 +1,48 @@
-import { Product } from '../../types/type';
+import { CartItemList, Product } from '../../types/type';
 import ProductItemTitle from '../ProductItemTitle/ProductItemTitle';
-import ToggleCartItemButton from '../ToggleCartItemButton/ToggleCartItemButton';
+import QuantityStepper from '../common/QuantityStepper/QuantityStepper';
+import AddCartItemButton from '../AddCartItemButton/AddCartItemButton';
+import useAddCartItem from '../../hooks/useAddCartItem';
+import useDeleteCartItem from '../../hooks/useDeleteCartItem';
+import usePatchCartItem from '../../hooks/usePatchCartItem';
 
 import * as S from './ProductItem.style';
-import QuantityStepper from '../common/QuantityStepper/QuantityStepper';
 
 interface ProductItemProps {
   product: Product;
+  cartItemList: CartItemList;
 }
 
-function ProductItem({ product }: ProductItemProps) {
-  const isInCart = true;
-  const quantity = 1;
+function ProductItem({ product, cartItemList }: ProductItemProps) {
+  const cartItem = cartItemList.find(
+    (cartItem) => cartItem.product.id === product.id,
+  );
+  const isInCart = !!cartItem;
+  const quantity = cartItem?.quantity ?? 0;
+
+  const addCartItemMutation = useAddCartItem();
+  const deleteCartItemMustation = useDeleteCartItem();
+  const patchCartItemMutation = usePatchCartItem();
+
+  const handleIncreaseQuantity = () => {
+    if (!cartItem) return;
+    patchCartItemMutation.mutate({
+      cartItemId: cartItem.id,
+      quantity: quantity + 1,
+    });
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (!cartItem) return;
+    if (quantity === 1) {
+      deleteCartItemMustation.mutate({ cartItemId: cartItem.id });
+    } else {
+      patchCartItemMutation.mutate({
+        cartItemId: cartItem.id,
+        quantity: quantity - 1,
+      });
+    }
+  };
 
   return (
     <S.ProductItem>
@@ -22,11 +53,18 @@ function ProductItem({ product }: ProductItemProps) {
           {isInCart ? (
             <QuantityStepper
               quantity={quantity ?? 0}
-              increaseQuantity={() => {}}
-              decreaseQuantity={() => {}}
+              increaseQuantity={handleIncreaseQuantity}
+              decreaseQuantity={handleDecreaseQuantity}
             />
           ) : (
-            <ToggleCartItemButton isInCart={isInCart} onClick={() => {}} />
+            <AddCartItemButton
+              onClick={() =>
+                addCartItemMutation.mutate({
+                  productId: product.id,
+                  quantity: 1,
+                })
+              }
+            />
           )}
         </S.ToggleCartItemButtonWrapper>
       </S.ProductDescription>

@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import QuantityStepper from './QuantityStepper';
+
 import { useState } from 'react';
+
+import QuantityStepper from './QuantityStepper';
 
 const meta = {
   title: 'Components/QuantityStepper',
