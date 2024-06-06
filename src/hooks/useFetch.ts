@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import APIError from '../../api/apiError';
+import APIError from '../api/apiError';
 
 interface UseFetchProps<TData> {
   queryFn: () => Promise<TData>;

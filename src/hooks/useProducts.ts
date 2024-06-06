@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { SortOrder, SortType } from '../../api/types';
+import { SortOrder, SortType } from '../api/types';
 import {
   INITIAL_PAGE_NUMBER,
   INITIAL_PAGE_SIZE,
   PAGE_SIZE,
-} from '../../constants/paginationRules';
-import { Category, Product } from '../../types';
+} from '../constants/paginationRules';
+import { Category, Product } from '../types';
 import { productQueries } from './queries/product';
 
 export interface UseProductsResult {

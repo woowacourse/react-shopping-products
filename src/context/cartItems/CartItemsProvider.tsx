@@ -1,5 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { cartQueries } from '../../components/hooks/queries/cart';
+import { cartQueries } from '../../hooks/queries/cart';
 import { CartItemsContext } from './CartItemsContext';
 import { MAX_CART_ITEMS_FETCH_SIZE } from '../../constants/paginationRules';
 

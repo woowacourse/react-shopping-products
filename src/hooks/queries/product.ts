@@ -1,6 +1,6 @@
-import APIError from '../../../api/apiError';
-import { productApis } from '../../../api/product';
-import { Product } from '../../../types';
+import APIError from '../../api/apiError';
+import { productApis } from '../../api/product';
+import { Product } from '../../types';
 import useFetch from '../useFetch';
 
 interface GetProductsResponse {

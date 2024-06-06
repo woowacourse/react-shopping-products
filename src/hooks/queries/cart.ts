@@ -1,8 +1,8 @@
-import { cartApis } from '../../../api/cart';
+import { cartApis } from '../../api/cart';
 import useFetch from '../useFetch';
 
-import APIError from '../../../api/apiError';
-import { CartItem } from '../../../types';
+import APIError from '../../api/apiError';
+import { CartItem } from '../../types';
 
 interface GetCartItemsResponse {
   content: CartItem[];

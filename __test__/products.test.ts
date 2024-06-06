@@ -4,7 +4,7 @@ import { PRODUCTS_ENDPOINT } from '../src/api/endpoints';
 import { SortOrder } from '../src/api/types';
 import server from '../src/mocks/server';
 import { Category } from '../src/types';
-import useProducts from '../src/components/hooks/useProducts';
+import useProducts from '../src/hooks/useProducts';
 
 describe('상품 목록 테스트', () => {
   describe('상품 목록 조회', () => {

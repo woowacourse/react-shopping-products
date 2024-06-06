@@ -5,7 +5,7 @@ import Header from './components/product/Header';
 import ProductList from './components/product/ProductList';
 
 import styled from '@emotion/styled';
-import useProducts from './components/hooks/useProducts';
+import useProducts from './hooks/useProducts';
 
 import { CATEGORY, SORT } from './constants/filterOptions';
 import { PAGE_INFORMATION } from './constants/page';

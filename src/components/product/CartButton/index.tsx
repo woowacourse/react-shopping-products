@@ -1,6 +1,6 @@
 import { AddCartIcon, RemoveCartIcon } from './Icons';
 import * as S from './style';
-import { cartMutations } from '../../hooks/queries/cart';
+import { cartMutations } from '../../../hooks/queries/cart';
 import { CartButtonProvider } from '../../../context/cartButton/CartButtonProvider';
 import { useCartButtonContext } from '../../../context/cartButton/useCartButtonContext';
 import { useCartItemsContext } from '../../../context/cartItems/useCartItemsContext';
