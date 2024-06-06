@@ -6,9 +6,8 @@ const S = {
     display: flex;
     gap: 10px;
 
-    padding-bottom: 24px;
-    margin-top: 8px;
-    border-bottom: 1px solid gray;
+    border-top: 1px solid ${COLOR_PALETTE.lightGrey};
+    padding: 12px 0px 20px;
   `,
 
   ProductDetailContainer: styled.div`

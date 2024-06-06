@@ -4,18 +4,29 @@ import { LanguageProvider } from "./components/provider/LanguageProvider";
 import { ModalProvider } from "easy-payments-ui";
 
 import Mall from "./pages/Mall";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+    },
+  },
+});
 
 function App() {
   return (
-    <LanguageProvider>
-      <ToastProvider>
-        <ToggleCartItemProvider>
-          <ModalProvider>
-            <Mall />
-          </ModalProvider>
-        </ToggleCartItemProvider>
-      </ToastProvider>
-    </LanguageProvider>
+    <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
+        <ToastProvider>
+          <ToggleCartItemProvider>
+            <ModalProvider>
+              <Mall />
+            </ModalProvider>
+          </ToggleCartItemProvider>
+        </ToastProvider>
+      </LanguageProvider>
+    </QueryClientProvider>
   );
 }
 

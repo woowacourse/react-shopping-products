@@ -1,20 +1,26 @@
 import styled from "@emotion/styled";
+import COLOR_PALETTE from "../../../style/colorPalette";
 
 const S = {
   Container: styled.div`
     box-sizing: border-box;
-    background: #fff;
     border-radius: 8px;
     padding: 20px;
     width: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  `,
+
+  CartItemsContainer: styled.div`
+    max-height: 400px;
+    overflow: scroll;
   `,
 
   Total: styled.div`
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
     font-weight: 700;
+
+    border-top: 1px solid ${COLOR_PALETTE.lightGrey};
+    padding: 20px 0px;
   `,
 
   TotalLabel: styled.div`

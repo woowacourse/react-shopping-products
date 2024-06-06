@@ -15,9 +15,11 @@ const CartItemsModal = () => {
   return (
     <Modal title="장바구니" position="bottom" theme="light" confirmMessage="닫기" onConfirm={handleClose}>
       <S.Container>
-        {items.map((item) => (
-          <CartItem key={item.id} product={item} />
-        ))}
+        <S.CartItemsContainer>
+          {items.map((item) => (
+            <CartItem key={item.id} product={item} />
+          ))}
+        </S.CartItemsContainer>
         <S.Total>
           <S.TotalLabel>총 결제 금액</S.TotalLabel>
           <S.TotalPrice>{total.toLocaleString()}원</S.TotalPrice>
