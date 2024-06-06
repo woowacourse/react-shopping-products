@@ -23,11 +23,8 @@ export default function useCartItem(): UseCartItemResult {
   const fetchCartItem = async () => {
     try {
       setIsLoading(true);
-
-      const totalItemCount = (await getCartItems()).totalElements;
-      const cartItems = await getCartItems(totalItemCount);
-
-      setCartItems(cartItems.content);
+      const cartItems = await getCartItems();
+      setCartItems(cartItems);
     } catch (error) {
       setError(error);
     } finally {
