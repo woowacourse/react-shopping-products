@@ -17,12 +17,11 @@ import ProductsContent from './components/ProductsContent';
 import ProductItem from './components/ProductItem';
 
 import useFetchProducts from './hooks/useFetchProducts';
-
+import useIntersectionObserver from './hooks/useIntersectionObserver';
 import { CartItemsContext } from './context/CartItemProvider';
 
 import { CATEGORIES, PRICE_SORT } from './constants/filter';
 import { Category, Order } from './types/product';
-import useIntersectionObserver from './hooks/useIntersectionObserver';
 import { ToastContext } from './context/ToastProvider';
 
 function App() {
@@ -35,6 +34,7 @@ function App() {
     sort,
     isLoading,
     isFetchingNextPage,
+    hasNextPage,
     error,
     fetchNextPage,
     filterByCategory,
@@ -52,7 +52,9 @@ function App() {
     setSorting('price', option);
   };
 
-  useIntersectionObserver({ isLoading, error }, observerRef, fetchNextPage, { threshold: 0.8 });
+  useIntersectionObserver({ isLoading, error, hasNextPage }, observerRef, fetchNextPage, {
+    threshold: 0.8,
+  });
 
   if (error) showToast(error.message);
 
@@ -86,7 +88,11 @@ function App() {
                   {...product}
                 />
               ))}
-              <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
+              {hasNextPage ? (
+                <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
+              ) : (
+                <div>목록을 모두 조회했습니다.</div>
+              )}
             </ProductsContent>
             {isFetchingNextPage && <Loading />}
           </ProductsContentContainer>
