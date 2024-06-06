@@ -1,7 +1,7 @@
 import Button from '../common/Button/Button';
 import { AddCart, MinusCart } from '../../asset';
 import { ButtonImg } from './CartButton.style';
-import useCartItem from '../../hooks/useCartItemHandler';
+import useCartItemHandler from '../../hooks/useCartItemHandler';
 import { CartButtonProps } from './\bCardButton.type';
 
 const CartButton: React.FC<CartButtonProps> = ({
@@ -9,10 +9,11 @@ const CartButton: React.FC<CartButtonProps> = ({
   productId,
   initIsInCart,
 }) => {
-  const { isInCart, handleAddCartItem, handleRemoveCartItem } = useCartItem({
-    productId,
-    initIsInCart,
-  });
+  const { isInCart, handleAddCartItem, handleRemoveCartItem } =
+    useCartItemHandler({
+      productId,
+      initIsInCart,
+    });
 
   return (
     <Button
