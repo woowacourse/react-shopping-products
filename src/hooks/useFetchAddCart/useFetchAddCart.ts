@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postAddItems } from '../../api/products';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 const useFetchAddCart = () => {
   const queryClient = useQueryClient();
@@ -9,7 +10,7 @@ const useFetchAddCart = () => {
     mutationKey: ['addCartItems'],
     mutationFn: postAddItems,
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['cart-items'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
     },
   });
 
