@@ -1,5 +1,5 @@
-import { CartItem, ProductItem } from "@/types";
 import { InfiniteData } from "@tanstack/react-query";
+import { CartItem, ProductItem } from "@/types";
 
 export const changeToProductList = (
   productsData?: InfiniteData<{ content: ProductItem[] }>,
@@ -11,14 +11,9 @@ export const changeToProductList = (
         return page.content;
       })
       .map((product) => {
-        if (
-          cartItemsData
-            ?.map((cartItem) => cartItem.product.id)
-            .includes(product.id)
-        ) {
-          const quantity = cartItemsData.filter(
-            (cartItem) => cartItem.product.id === product.id
-          )[0].quantity;
+        if (cartItemsData?.map((cartItem) => cartItem.product.id).includes(product.id)) {
+          const quantity = cartItemsData.filter((cartItem) => cartItem.product.id === product.id)[0]
+            .quantity;
           return { ...product, quantity };
         }
         return product;

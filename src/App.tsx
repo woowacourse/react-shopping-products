@@ -7,8 +7,7 @@ import { useIntersectionObserver, useFilters } from "@/hooks";
 import { changeToProductList } from "@/utils/product";
 
 const App = () => {
-  const { category, sort, handleCategoryChange, handleSortChange } =
-    useFilters();
+  const { category, sort, handleCategoryChange, handleSortChange } = useFilters();
 
   const {
     data: productsData,
@@ -16,8 +15,7 @@ const App = () => {
     isFetching,
   } = useInfiniteQuery({
     queryKey: ["products", category, sort],
-    queryFn: ({ pageParam }) =>
-      getProducts(pageParam.page, pageParam.size, category, sort),
+    queryFn: ({ pageParam }) => getProducts(pageParam.page, pageParam.size, category, sort),
     initialPageParam: { page: 0, size: 20 },
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.last) return;
@@ -46,7 +44,7 @@ const App = () => {
           handleSortChange={handleSortChange}
           style={{ marginTop: "24px", marginBottom: "28px" }}
         />
-        <ProductList productList={changeToProductList(productsData)} />
+        <ProductList productList={changeToProductList(productsData, cartItemsData)} />
         {isFetching && <div>로딩중............</div>}
         {<div ref={observerTarget}></div>}
       </ProductListLayout>

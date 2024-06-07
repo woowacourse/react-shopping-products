@@ -10,12 +10,19 @@ import {
 import { ProductItem } from "@/types";
 import { CartIconSVG } from "@/assets/svg";
 import { Button, ProductQuantity } from "@/components";
+import { useMutationCartItem } from "@/hooks";
 
 interface ProductProps extends HTMLAttributes<HTMLDivElement> {
   product: ProductItem;
 }
 
 const Product = ({ product, ...rest }: ProductProps) => {
+  const { postCartItemMutation, patchCartItemMutation } = useMutationCartItem();
+
+  const handlePostClick = () => {
+    postCartItemMutation.mutate({ productId: product.id, quantity: 1 });
+  };
+
   return (
     <Wrapper {...rest}>
       <ProductImg src={product.imageUrl}></ProductImg>
@@ -24,9 +31,13 @@ const Product = ({ product, ...rest }: ProductProps) => {
         <ProductPrice>{product.price}</ProductPrice>
         <ProductFooter>
           {product.quantity ? (
-            <ProductQuantity />
+            <ProductQuantity quantity={product.quantity} />
           ) : (
-            <Button theme="black" style={{ width: "59px", height: "24px" }}>
+            <Button
+              theme="black"
+              style={{ width: "59px", height: "24px" }}
+              onClick={handlePostClick}
+            >
               <CartIconSVG />
               <span>담기</span>
             </Button>

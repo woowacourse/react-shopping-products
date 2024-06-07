@@ -10,9 +10,15 @@ export const getCartItems = async () => {
   return data.content;
 };
 
-export const postCartItem = async (productId: number, quantity: number) => {
+export const postCartItem = async ({
+  productId,
+  quantity,
+}: {
+  productId: number;
+  quantity: number;
+}) => {
   fetchAPI({
-    url: "cart-item",
+    url: "cart-items",
     method: "POST",
     body: {
       productId,
@@ -23,17 +29,20 @@ export const postCartItem = async (productId: number, quantity: number) => {
 
 export const deleteCartItem = async (cartItemId: number) => {
   fetchAPI({
-    url: `cart-item/${cartItemId}`,
+    url: `cart-items/${cartItemId}`,
     method: "DELETE",
   });
 };
 
-export const patchCartItemQuantity = async (
-  cartItemId: number,
-  quantity: number
-) => {
+export const patchCartItemQuantity = async ({
+  cartItemId,
+  quantity,
+}: {
+  cartItemId: number;
+  quantity: number;
+}) => {
   fetchAPI({
-    url: `cart-item/${cartItemId}`,
+    url: `cart-items/${cartItemId}`,
     method: "PATCH",
     body: {
       quantity,
