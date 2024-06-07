@@ -7,7 +7,7 @@ import {
 import { useToast } from './useToast';
 import { CategoryType, SortType } from '../type';
 import { ProductItem } from '../type/ProductItem';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../constants/queryKeys';
 
 interface UseProductsResult {
@@ -46,6 +46,7 @@ export default function useProducts(): UseProductsResult {
     queryKey: [QUERY_KEYS.PRODUCTS, category, sorting],
     queryFn: fetchProductsData,
     initialPageParam: 0,
+    placeholderData: keepPreviousData,
     getNextPageParam: (lastPage, allPages) => {
       if (allPages.length === 1 && !lastPage.last) {
         return 5;
