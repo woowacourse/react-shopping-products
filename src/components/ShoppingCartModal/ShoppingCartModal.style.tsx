@@ -20,3 +20,22 @@ export const PriceValue = styled.p`
   font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
+
+export const EmptyCartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px;
+  padding: 20px 0;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.light};
+  text-align: center;
+
+  img {
+    width: 150px;
+  }
+
+  p {
+    line-height: 1.6;
+  }
+`;

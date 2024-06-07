@@ -1,6 +1,7 @@
 import { Modal } from '@hanuuny/react-modal';
 import CartItem from '../CartItem/CartItem';
 import { Cart } from '../../types/Cart.type';
+import EmptyCart from '../../assets/EmptyCart.png';
 import * as S from './ShoppingCartModal.style';
 
 interface ShoppingCartModalProps {
@@ -18,11 +19,22 @@ const ShoppingCartModal = ({ cartItems, isOpen, close }: ShoppingCartModalProps)
         <Modal.Title>장바구니</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <S.CartItemList>
-          {cartItems.map((cartItem) => (
-            <CartItem cartItem={cartItem} />
-          ))}
-        </S.CartItemList>
+        {cartItems.length > 0 ? (
+          <S.CartItemList>
+            {cartItems.map((cartItem) => (
+              <CartItem cartItem={cartItem} />
+            ))}
+          </S.CartItemList>
+        ) : (
+          <S.EmptyCartContainer>
+            <img src={EmptyCart} alt="빈 상품 목록" />
+            <p>
+              표시할 상품이 없습니다.
+              <br />
+              장바구니에 상품을 추가해 주세요.
+            </p>
+          </S.EmptyCartContainer>
+        )}
       </Modal.Body>
       <S.PriceContainer>
         <S.PriceTitle>총 결제 금액</S.PriceTitle>
