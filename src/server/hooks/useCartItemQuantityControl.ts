@@ -5,15 +5,15 @@ import { useUpdateCartItemMutation } from "@src/server/mutations/useUpdateCartIt
 import { CartItem } from "@src/apis/cartItems";
 import type { OnError } from "onError";
 
+interface UseCartItemQuantityControlProps {
+  productId: number;
+  onError?: OnError;
+}
+
 interface UseCartItemQuantityControlReturn {
   cartItems: CartItem[];
   increaseQuantity: () => void;
   decreaseQuantity: () => void;
-}
-
-interface UseCartItemQuantityControlProps {
-  productId: number;
-  onError?: OnError;
 }
 
 const MAX_CART_ITEM_COUNT = 20;
