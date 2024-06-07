@@ -4,13 +4,11 @@ import * as Styled from './Header.styled';
 import ShoppingCartModal from './ShoppingCartModal';
 
 import { IMAGES } from '@/assets';
-import { CartItemInfo } from '@/types/cartItem';
 
-interface HeaderProp {
-  cartItems: CartItemInfo[];
-}
+import useCartItems from '@/hooks/useCartItems';
 
-const Header = ({ cartItems }: HeaderProp) => {
+const Header = () => {
+  const { cartItems } = useCartItems();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {

@@ -10,12 +10,10 @@ import ProductCardList from '@/components/productCardList/ProductCardList';
 import Title from '@/components/title/Title';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
 
-import useCartItems from '@/hooks/useCartItems';
 import useProductDropdown from '@/hooks/useProductDropdown';
 import useProductList from '@/hooks/useProductList';
 
 const ProductListPage = () => {
-  const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems();
   const { category, order, handleChangeCategory, handleChangeSort } = useProductDropdown();
   const { data, isLoading, fetchNextPage, hasNextPage } = useProductList({
     category: category.value,
@@ -31,7 +29,7 @@ const ProductListPage = () => {
       bottomRef={bottomRef}
     >
       <Styled.PageContainer>
-        <Header cartItems={cartItems} />
+        <Header />
         <Styled.CommonContainer>
           <Title title="상품 목록" />
           <Styled.DropdownContainer>
@@ -42,14 +40,7 @@ const ProductListPage = () => {
             />
             <Dropdown value={order.label} options={SORT_OPTIONS} handleSelect={handleChangeSort} />
           </Styled.DropdownContainer>
-          <ProductCardList
-            data={data}
-            handleAddCartItem={handleAddCartItem}
-            handleDeleteCartItem={handleDeleteCartItem}
-            matchCartItem={matchCartItem}
-            isLoading={isLoading}
-          />
-
+          <ProductCardList data={data} isLoading={isLoading} />
           <IntersectionContainer bottomRef={bottomRef} isNextPage={hasNextPage || isLoading} />
         </Styled.CommonContainer>
       </Styled.PageContainer>

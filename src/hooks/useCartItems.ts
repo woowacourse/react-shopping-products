@@ -1,28 +1,15 @@
-import useAddCartItemQuery from './useAddCartItemQuery';
-import useDeleteCartItemQuery from './useDeleteCartItemQuery';
-import useFetchCartItemsQuery from './useFetchCartItemsQuery';
+import { useContext } from 'react';
+
+import { CartItemsContext } from '@/context/cartItems';
 
 const useCartItems = () => {
-  const { data: cartItems } = useFetchCartItemsQuery();
-  const { mutate: addCartItem } = useAddCartItemQuery();
-  const { mutate: deleteCartItem } = useDeleteCartItemQuery();
+  const cartItems = useContext(CartItemsContext);
 
-  const matchCartItem = (productId: number) => {
-    return cartItems.find((cartItem) => cartItem.product.id === productId);
-  };
+  if (!cartItems) {
+    throw new Error('CartItemsContext를 찾을 수 없습니다.');
+  }
 
-  const handleAddCartItem = async (productId: number) => {
-    addCartItem({ productId });
-  };
-
-  const handleDeleteCartItem = async (productId: number) => {
-    const matchedCartItemInfo = matchCartItem(productId);
-    const cartItemId = matchedCartItemInfo!.id;
-
-    deleteCartItem(cartItemId);
-  };
-
-  return { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem };
+  return cartItems;
 };
 
 export default useCartItems;

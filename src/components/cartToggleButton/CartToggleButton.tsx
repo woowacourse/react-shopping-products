@@ -1,22 +1,17 @@
 import * as Styled from './CartToggleButton.styled';
 
 import { IMAGES } from '@/assets';
-import { CartItemInfo } from '@/types/cartItem';
+
+import useCartItems from '@/hooks/useCartItems';
 
 interface CartItemButtonProp {
   productId: number;
-  matchedCartItem: CartItemInfo | undefined;
-  handleAddCartItem: (productId: number) => void;
-  handleDeleteCartItem: (productId: number) => void;
 }
 
-const CartToggleButton = ({
-  productId,
-  matchedCartItem,
-  handleAddCartItem,
-  handleDeleteCartItem,
-}: CartItemButtonProp) => {
-  if (matchedCartItem) {
+const CartToggleButton = ({ productId }: CartItemButtonProp) => {
+  const { matchCartItem, handleAddCartItem, handleDeleteCartItem } = useCartItems();
+
+  if (matchCartItem(productId)) {
     return (
       <Styled.HandleCartItemButton $isInCart={true} onClick={() => handleDeleteCartItem(productId)}>
         <img src={IMAGES.REMOVE_SHOPPING_CART} alt="장바구니에서 삭제버튼" />
