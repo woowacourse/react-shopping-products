@@ -1,13 +1,17 @@
-import { useState } from "react";
+import "./App.css";
+import { Header } from "./components/Header/Header";
+import { ProductSection } from "./components/ProductSection/ProductSection";
+import { ToastNotification } from "./components/ToastNotification/ToastNotification";
+import { CartProvider } from "./context/cartContext";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const App = () => {
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <CartProvider>
+      <Header />
+      <ToastNotification />
+      <ProductSection />
+    </CartProvider>
   );
-}
+};
 
 export default App;
