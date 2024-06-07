@@ -6,6 +6,7 @@ import { theme } from "@/styles/theme";
 import TextBox from "@/components/_common/TextBox";
 import { CartItems } from "@/types/products";
 import EmptyState from "@/components/_common/EmptyState";
+import CartPrice from "@/components/cart/CartPrice";
 
 const CartModal = ({
   onCloseModal,
@@ -26,7 +27,14 @@ const CartModal = ({
             {isEmptyCart ? (
               <EmptyState type="cart" />
             ) : (
-              cartItems?.map((item) => <CartItem item={item} cartItems={cartItems} />)
+              <>
+                {cartItems?.map((item) => (
+                  <>
+                    <CartItem item={item} cartItems={cartItems} />
+                  </>
+                ))}
+                <CartPrice />
+              </>
             )}
           </ItemWrapper>
         </Modal.Content>
