@@ -10,11 +10,10 @@ interface CartItemQuantityControllerProps {
 
 const CartItemQuantityController = ({ productId }: CartItemQuantityControllerProps) => {
   const { showErrorToast } = useErrorToast();
-  const handleError = (error: Error) => showErrorToast(error.message);
 
   const { cartItems, increaseQuantity, decreaseQuantity } = useCartItemQuantityControl({
     productId,
-    onError: handleError,
+    onError: showErrorToast,
   });
 
   const targetCartItem = cartItems.find(({ product }) => product.id === productId);

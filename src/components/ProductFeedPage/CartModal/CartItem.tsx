@@ -16,13 +16,13 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     quantity,
   } = cartItem;
 
-  const handleError = () => {
-    alert("통신 과정에서 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+  const alertErrorMessage = (error: Error) => {
+    alert(error.message);
   };
 
   const { increaseQuantity, decreaseQuantity } = useCartItemQuantityControl({
     productId: cartItem.product.id,
-    onError: handleError,
+    onError: alertErrorMessage,
   });
 
   const { deleteCartItemMutation } = useDeleteCartItemMutation();

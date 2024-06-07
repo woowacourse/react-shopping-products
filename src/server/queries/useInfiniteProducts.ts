@@ -1,9 +1,4 @@
-import {
-  Product,
-  ProductQueryParams,
-  ProductsWithNextPage,
-  getProductsQuery,
-} from "@src/apis/products";
+import { Product, ProductQueryParams, ProductsWithNextPage, getProducts } from "@src/apis/products";
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@server/__constants__/queryKeys";
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from "@src/apis/__constants__/productQueryParams";
@@ -18,11 +13,9 @@ interface UseInfiniteProductsReturn {
   updatePriceSort: (sort: PriceSort) => void;
 }
 
-type OnError = (error?: Error) => void;
+type OnError = (error: Error) => void;
 
-export const useInfiniteProducts = (
-  onError: OnError = console.error
-): UseInfiniteProductsReturn => {
+export const useInfiniteProducts = (onError?: OnError): UseInfiniteProductsReturn => {
   const [categoryFilter, setCategoryFilter] = useState<Category>(CATEGORY_OPTIONS.all);
   const [priceSort, setPriceSort] = useState<PriceSort>(PRICE_SORT_OPTIONS.asc);
 
@@ -34,14 +27,14 @@ export const useInfiniteProducts = (
     number
   >({
     queryKey: [QUERY_KEYS.products, { category: categoryFilter, sort: priceSort }],
-    queryFn: getProductsQuery,
+    queryFn: getProducts,
     getNextPageParam: (lastPage) => lastPage.nextPage,
     initialPageParam: 0,
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    if (error) {
+    if (error && onError) {
       onError(error);
     }
   }, [error]);

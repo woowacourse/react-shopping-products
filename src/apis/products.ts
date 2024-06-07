@@ -27,7 +27,7 @@ export interface ProductResponse {
   last: boolean;
 }
 
-export const getProductsQuery: QueryFunction<
+export const getProducts: QueryFunction<
   ProductsWithNextPage,
   [string, ProductQueryParams],
   number
@@ -38,10 +38,14 @@ export const getProductsQuery: QueryFunction<
     ? adjustProductQueryParams({ page: pageParam, ...queryParams })
     : undefined;
 
-  const data = await cartClient.get<ProductResponse>(API_URL.products, adjustedParams);
+  try {
+    const data = await cartClient.get<ProductResponse>(API_URL.products, adjustedParams);
 
-  return {
-    data: data.content,
-    nextPage: data.last ? undefined : pageParam + 1,
-  };
+    return {
+      data: data.content,
+      nextPage: data.last ? undefined : pageParam + 1,
+    };
+  } catch {
+    throw new Error("상품을 불러오는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+  }
 };

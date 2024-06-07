@@ -8,12 +8,9 @@ import { useInfiniteProducts } from "@src/server/queries/useInfiniteProducts";
 
 const ProductList = () => {
   const { showErrorToast } = useErrorToast();
-  const handleError = () => {
-    showErrorToast("상품을 로딩하는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-  };
 
   const { data, isLoading, fetchNextPage, updateCategoryFilter, updatePriceSort } =
-    useInfiniteProducts(handleError);
+    useInfiniteProducts(showErrorToast);
 
   return (
     <S.ItemContainer>
