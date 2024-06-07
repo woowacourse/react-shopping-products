@@ -11,7 +11,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@cys4585/react-modal": "^0.0.8",
+    "@cys4585/react-modal": "^0.0.9",
+    "@tanstack/react-query": "^5.40.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^6.1.11"
