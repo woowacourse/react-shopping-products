@@ -14,10 +14,8 @@ function App() {
       <GlobalStyles />
       <ErrorContext.Provider value={{ error, setError }}>
         <Toast />
-        {/* <CartItemListProvider> */}
         <Header />
         <Product />
-        {/* </CartItemListProvider> */}
       </ErrorContext.Provider>
     </>
   );
