@@ -1,7 +1,7 @@
 import { HttpResponse, http, StrictRequest } from 'msw';
 
 import { ENDPOINTS_CART, ENDPOINTS_PRODUCTS } from '../api/endpoints';
-import { ProductResponse } from '../types/fetch';
+import { CartResponse, ProductResponse } from '../types/fetch';
 import productSorter from '../utils/productSorter';
 
 import { mockCart as mockCartResponse } from './cart';
@@ -28,6 +28,11 @@ const sortProductHandler = (
   return sortings.length > 0
     ? productSorter(sortings, productCopy)
     : productCopy;
+};
+
+const sortByIdCartItemsHandler = (cartItemsCopy: CartResponse) => {
+  const newCartItems = Object.assign({}, cartItemsCopy);
+  return newCartItems.content.sort((a, b) => a.id - b.id);
 };
 
 export const handlers = [
@@ -78,7 +83,19 @@ export const handlers = [
   /**
    * 장바구니 상품 목록 가져오기
    */
-  http.get(`${ENDPOINTS_CART}`, async () => {
+  http.get(`${ENDPOINTS_CART}`, async ({ request }) => {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get('page'));
+    const size = Number(url.searchParams.get('size'));
+
+    const cartItemsSorted = Object.assign({}, mockCartResponse);
+    cartItemsSorted.content = sortByIdCartItemsHandler(cartItemsSorted);
+
+    const start = page * size;
+    const end = (page + 1) * size;
+    const cartItemsSliced = Object.assign({}, cartItemsSorted);
+    cartItemsSliced.content = cartItemsSorted.content.slice(start, end);
+
     return HttpResponse.json(mockCartResponse);
   }),
 
