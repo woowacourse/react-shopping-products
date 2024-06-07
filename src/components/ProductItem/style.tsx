@@ -57,6 +57,14 @@ export const ButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 1.5rem;
+`;
+
 export const ToggleButton = styled.button<{ $isInCart: boolean; $loading: boolean }>`
   display: flex;
   gap: 0.25rem;

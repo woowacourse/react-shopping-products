@@ -18,18 +18,18 @@ import ProductItem from './components/ProductItem';
 
 import useProducts from './hooks/useProducts';
 import useIntersectionObserver from './hooks/useIntersectionObserver';
-import { CartItemsContext } from './context/CartItemProvider';
 
 import { CATEGORIES, PRICE_SORT } from './constants/filter';
 import { Category, Order } from './types/product';
 import { ToastContext } from './context/ToastProvider';
 import CartItemModal from './components/CartItemModal';
+import useCartItems from './hooks/useCartItems';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const { showToast } = useContext(ToastContext);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const { cartItems } = useContext(CartItemsContext);
+  const { data: cartItems, isLoading: cartItemsIsLoading } = useCartItems();
 
   const {
     products,
@@ -65,7 +65,10 @@ function App() {
     <Container>
       <Header>
         <HomeButton onClick={() => {}} />
-        <CartButton count={cartItems.length} onOpen={() => setIsOpen(true)} />
+        <CartButton
+          count={cartItemsIsLoading ? 0 : cartItems!.length}
+          onOpen={() => setIsOpen(true)}
+        />
       </Header>
       <Main>
         <ProductsContainer>
@@ -87,7 +90,7 @@ function App() {
               {products?.map((product) => (
                 <ProductItem
                   key={product.id}
-                  cartItemId={cartItems.find((cartItem) => product.id === cartItem.product.id)?.id}
+                  cartItem={cartItems?.find((cartItem) => product.id === cartItem.product.id)}
                   {...product}
                 />
               ))}

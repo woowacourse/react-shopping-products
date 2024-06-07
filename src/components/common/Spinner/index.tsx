@@ -1,20 +1,16 @@
 import * as S from './style';
 
-interface SpinnerProps {
-  isInCart: boolean;
-}
-
-const Spinner = ({ isInCart }: SpinnerProps) => {
+const Spinner = () => {
   return (
     <S.SpinnerContainer>
-      <S.SpinnerDot $isInCart={isInCart} />
-      <S.SpinnerDot $isInCart={isInCart} />
-      <S.SpinnerDot $isInCart={isInCart} />
-      <S.SpinnerDot $isInCart={isInCart} />
-      <S.SpinnerDot $isInCart={isInCart} />
-      <S.SpinnerDot $isInCart={isInCart} />
-      <S.SpinnerDot $isInCart={isInCart} />
-      <S.SpinnerDot $isInCart={isInCart} />
+      <S.SpinnerDot />
+      <S.SpinnerDot />
+      <S.SpinnerDot />
+      <S.SpinnerDot />
+      <S.SpinnerDot />
+      <S.SpinnerDot />
+      <S.SpinnerDot />
+      <S.SpinnerDot />
     </S.SpinnerContainer>
   );
 };
