@@ -28,7 +28,7 @@ const getSizeStyles = (size?: string, square?: boolean) => {
     case 's':
       return css`
         height: 24px;
-        padding: 4px 4px;
+        padding: ${square ? '4px 4px' : '4px 8px'};
       `;
     case 'l':
       return css`
