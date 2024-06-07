@@ -8,7 +8,7 @@ export const PriceContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 0;
+  margin: 20px 0 35px 0;
 `;
 
 export const PriceTitle = styled.p`

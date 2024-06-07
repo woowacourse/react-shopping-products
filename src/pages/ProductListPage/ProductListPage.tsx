@@ -19,7 +19,7 @@ const ProductListPage = () => {
   const { products, category, sort, isFetching, isError, hasNextPage, handleCategory, handleSort, handlePage } =
     useProducts(CATEGORY_LIST[0], SORTING_LIST[0]);
 
-  const { cartItems, handleAddCartItem, handleDeleteCartItem, handleUpdateCartItemQuantity } = useCartItems();
+  const { cartItems } = useCartItems();
 
   const targetRef = useIntersectionObserver(handlePage);
 
@@ -46,8 +46,6 @@ const ProductListPage = () => {
                 key={`${product.id}-${idx}`}
                 product={product}
                 quantity={cartItems.find((item) => item.product.id === product.id)?.quantity || 0}
-                onAddCartItem={handleAddCartItem}
-                onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
               />
             ))}
           </S.ProductList>
@@ -64,15 +62,7 @@ const ProductListPage = () => {
         )}
       </S.Layout>
       <FloatingButton />
-      {isModalOpen && (
-        <ShoppingCartModal
-          cartItems={cartItems}
-          onDeleteCartItem={handleDeleteCartItem}
-          onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
-          isOpen={isModalOpen}
-          close={closeModal}
-        />
-      )}
+      {isModalOpen && <ShoppingCartModal cartItems={cartItems} isOpen={isModalOpen} close={closeModal} />}
     </div>
   );
 };

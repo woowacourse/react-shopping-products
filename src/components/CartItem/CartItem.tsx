@@ -1,16 +1,16 @@
 import QuantityStepper from '../QuantityStepper/QuantityStepper';
+import useCartItems from '../../hooks/useCartItems/useCartItems';
 import { Cart } from '../../types/Cart.type';
-
 import * as S from './CartItem.style';
 
 interface CartItemProps {
   cartItem: Cart;
-  onRemoveItem: (productId: number) => void;
-  onUpdateQuantity: (productId: number, quantity: number) => void;
 }
 
-function CartItem({ cartItem, onRemoveItem, onUpdateQuantity }: CartItemProps) {
+function CartItem({ cartItem }: CartItemProps) {
   const { quantity, product } = cartItem;
+
+  const { handleDeleteCartItem, handleUpdateCartItemQuantity } = useCartItems();
 
   return (
     <S.Layout>
@@ -23,12 +23,12 @@ function CartItem({ cartItem, onRemoveItem, onUpdateQuantity }: CartItemProps) {
           </S.ItemInfoContainer>
           <QuantityStepper
             quantity={quantity}
-            onMinusButtonClick={() => onUpdateQuantity(product.id, quantity - 1)}
-            onPlusButtonClick={() => onUpdateQuantity(product.id, quantity + 1)}
+            onMinusButtonClick={() => handleUpdateCartItemQuantity(product.id, quantity - 1)}
+            onPlusButtonClick={() => handleUpdateCartItemQuantity(product.id, quantity + 1)}
           />
         </S.ItemContainer>
       </S.Body>
-      <S.DeleteButton onClick={() => onRemoveItem(product.id)}>삭제</S.DeleteButton>
+      <S.DeleteButton onClick={() => handleDeleteCartItem(product.id)}>삭제</S.DeleteButton>
     </S.Layout>
   );
 }

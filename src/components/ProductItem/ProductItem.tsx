@@ -1,18 +1,19 @@
 import { Product } from '../../types/Product.type';
 import AddCart from '../../assets/AddCart.svg';
 import Button from '../Button/Button';
+import useCartItems from '../../hooks/useCartItems/useCartItems';
 import QuantityStepper from '../QuantityStepper/QuantityStepper';
 import * as S from './ProductItem.style';
 
 interface ProductItemProps {
   product: Product;
   quantity: number;
-  onAddCartItem: (productId: number) => void;
-  onUpdateCartItemQuantity: (productId: number, quantity: number) => void;
 }
 
-const ProductItem = ({ product, quantity, onAddCartItem, onUpdateCartItemQuantity }: ProductItemProps) => {
+const ProductItem = ({ product, quantity }: ProductItemProps) => {
   const { id, name, price, imageUrl } = product;
+
+  const { handleAddCartItem, handleUpdateCartItemQuantity } = useCartItems();
 
   return (
     <S.Layout>
@@ -26,11 +27,11 @@ const ProductItem = ({ product, quantity, onAddCartItem, onUpdateCartItemQuantit
           {quantity !== 0 ? (
             <QuantityStepper
               quantity={quantity}
-              onMinusButtonClick={() => onUpdateCartItemQuantity(id, quantity - 1)}
-              onPlusButtonClick={() => onUpdateCartItemQuantity(id, quantity + 1)}
+              onMinusButtonClick={() => handleUpdateCartItemQuantity(id, quantity - 1)}
+              onPlusButtonClick={() => handleUpdateCartItemQuantity(id, quantity + 1)}
             />
           ) : (
-            <Button onClick={() => onAddCartItem(id)}>
+            <Button onClick={() => handleAddCartItem(id)}>
               <S.Icon src={AddCart} alt="장바구니 담기" />
               <p>담기</p>
             </Button>

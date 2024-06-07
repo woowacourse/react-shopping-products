@@ -5,19 +5,11 @@ import * as S from './ShoppingCartModal.style';
 
 interface ShoppingCartModalProps {
   cartItems: Cart[];
-  onDeleteCartItem: (productId: number) => void;
-  onUpdateCartItemQuantity: (productId: number, quantity: number) => void;
   isOpen: boolean;
   close: () => void;
 }
 
-const ShoppingCartModal = ({
-  cartItems,
-  onDeleteCartItem,
-  onUpdateCartItemQuantity,
-  isOpen,
-  close,
-}: ShoppingCartModalProps) => {
+const ShoppingCartModal = ({ cartItems, isOpen, close }: ShoppingCartModalProps) => {
   const totalPrice = cartItems.reduce((acc, cur) => acc + cur.quantity * cur.product.price, 0);
 
   return (
@@ -28,7 +20,7 @@ const ShoppingCartModal = ({
       <Modal.Body>
         <S.CartItemList>
           {cartItems.map((cartItem) => (
-            <CartItem cartItem={cartItem} onRemoveItem={onDeleteCartItem} onUpdateQuantity={onUpdateCartItemQuantity} />
+            <CartItem cartItem={cartItem} />
           ))}
         </S.CartItemList>
       </Modal.Body>
