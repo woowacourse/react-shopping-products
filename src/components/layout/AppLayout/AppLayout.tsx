@@ -1,16 +1,33 @@
 import { Navigation } from '@components/common';
 
 import * as Styled from './AppLayout.styled';
+import { ShoppingCart } from '@assets/svg';
+import { useState } from 'react';
+import ShoppingCartConfirmBottomSheet from '@components/shoppingCart/ShoppingCartConfirmBottomSheet/ShoppingCartConfirmBottomSheet';
+import useShoppingCart from '@hooks/cartItem/useShoppingCart';
 
-interface AppLayoutProps extends React.PropsWithChildren {
-  itemCount: number;
-}
+const AppLayout = ({ children }: React.PropsWithChildren) => {
+  const [isBottomSheetToggle, setIsBottomSheetToggle] = useState(false);
 
-const AppLayout: React.FC<AppLayoutProps> = ({ children, itemCount }) => {
+  const { addedShoppingCartLength } = useShoppingCart();
   return (
     <Styled.AppLayoutWrapper>
-      <Navigation itemCount={itemCount} />
+      <Navigation>
+        <Styled.ShoppingCartButton
+          onClick={() => setIsBottomSheetToggle((prev) => !prev)}
+          style={{ position: 'relative' }}
+        >
+          <ShoppingCart />
+          {addedShoppingCartLength > 0 && <Styled.Circle>{addedShoppingCartLength}</Styled.Circle>}
+        </Styled.ShoppingCartButton>
+      </Navigation>
       <Styled.LayoutWrapper>{children}</Styled.LayoutWrapper>
+      {isBottomSheetToggle && (
+        <ShoppingCartConfirmBottomSheet
+          isOpen={isBottomSheetToggle}
+          onToggle={() => setIsBottomSheetToggle((prev) => !prev)}
+        />
+      )}
     </Styled.AppLayoutWrapper>
   );
 };

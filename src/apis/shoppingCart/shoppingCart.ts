@@ -6,9 +6,17 @@ import { InfinityScrollResponse } from '@appTypes/response';
 import { INIT_PAGE } from '@hooks/product/useProducts/useProducts.constant';
 
 export const getCartItems = async (
-  { page, size } = { page: INIT_PAGE, size: 100000 }
+  { page, size } = { page: INIT_PAGE, size: 20 }
 ): Promise<InfinityScrollResponse<CartItem[]>> => {
-  const response = await APIClient.get(getCartItemsEndpoint({ page, size }));
+  const prevResponse = await APIClient.get(getCartItemsEndpoint({ page, size }));
+
+  APIClient.validateResponse(prevResponse, '장바구니 목록을 불러오는데 실패했습니다.');
+
+  const prevData = await prevResponse.json();
+
+  const response = await APIClient.get(
+    getCartItemsEndpoint({ page, size: prevData.totalElements })
+  );
 
   APIClient.validateResponse(response, '장바구니 목록을 불러오는데 실패했습니다.');
 
@@ -24,7 +32,7 @@ export const deleteCartItem = async (id: number) => {
 };
 
 export const addShoppingCartItem = async (productId: number) => {
-  const response = await APIClient.post(`cart-items`, { productId, quantity: 1 });
+  const response = await APIClient.post('cart-items', { productId, quantity: 1 });
 
   APIClient.validateResponse(response, '장바구니에 물건을 담지 못했습니다.');
 };
@@ -37,12 +45,6 @@ export const updateCartItemQuantity = async ({
   quantity: number;
 }) => {
   const response = await APIClient.patch(`cart-items/${id}`, { quantity });
-
-  APIClient.validateResponse(response, '장바구니 물품 수량을 변경하지 못했습니다.');
-};
-
-export const decreaseCartItemQuantity = async (id: number) => {
-  const response = await APIClient.delete(`cart-items/${id}`);
 
   APIClient.validateResponse(response, '장바구니 물품 수량을 변경하지 못했습니다.');
 };

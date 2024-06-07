@@ -5,15 +5,14 @@ import { formatKoreanCurrency } from '@utils/currency';
 
 import { AddShoppingCart } from '@assets/svg';
 import useAddShoppingCart from '@hooks/cartItem/useAddShoppingCart';
-import CartQuantityCounter from '@components/product/CartQuantityCounter/CartQuantityCounter';
+import CartQuantityCounter from '@components/shoppingCart/CartQuantityCounter/CartQuantityCounter';
 
 interface CardProps {
-  cartItems: CartItem[];
+  cartItem: CartItem | null;
   product: Product;
-  isAddedCart: boolean;
 }
 
-const Card: React.FC<CardProps> = ({ cartItems, product, isAddedCart }) => {
+const Card: React.FC<CardProps> = ({ cartItem, product }) => {
   const { addShoppingCart } = useAddShoppingCart();
 
   return (
@@ -23,15 +22,12 @@ const Card: React.FC<CardProps> = ({ cartItems, product, isAddedCart }) => {
         <Styled.ProductName>{product.name}</Styled.ProductName>
         <p>{`${formatKoreanCurrency(product.price)}`}</p>
         <Styled.CardToggleButtonContainer>
-          {isAddedCart ? (
-            <Styled.CardToggleButton
-              $isAddedCart={isAddedCart}
-              onClick={() => addShoppingCart(product.id)}
-            >
+          {cartItem ? (
+            <CartQuantityCounter cartItem={cartItem} />
+          ) : (
+            <Styled.CardToggleButton onClick={() => addShoppingCart(product.id)}>
               <AddShoppingCart /> 담기
             </Styled.CardToggleButton>
-          ) : (
-            <CartQuantityCounter cartItems={cartItems} product={product} />
           )}
         </Styled.CardToggleButtonContainer>
       </Styled.CardDescription>

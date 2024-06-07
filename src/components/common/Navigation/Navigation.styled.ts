@@ -26,19 +26,3 @@ export const NavigationWrapper = styled.div`
 export const NavigationButton = styled.button`
   cursor: pointer;
 `;
-
-export const Circle = styled.div`
-  width: 20px;
-  height: 20px;
-  background-color: ${COLOR.white};
-  border-radius: 50%;
-  color: ${COLOR.black};
-  font-size: 10px;
-  font-weight: 700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 9px;
-  right: -7px;
-`;

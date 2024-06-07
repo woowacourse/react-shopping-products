@@ -7,14 +7,8 @@ import {
 } from '@components/product/ProductDropdown/ProductDropdown.constant';
 import ProductContent from '@components/product/ProductContent/ProductContent';
 import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
-import { CartItem } from '@appTypes/product';
 
-interface ProductPageProps extends React.PropsWithChildren {
-  cartItems: CartItem[];
-  isAddedCart: (id: number) => boolean;
-}
-
-const ProductPage = ({ cartItems, isAddedCart }: ProductPageProps) => {
+const ProductPage = () => {
   const { dropdownOptions, onSelectOption } = useSelectProductDropdown();
 
   return (
@@ -34,11 +28,7 @@ const ProductPage = ({ cartItems, isAddedCart }: ProductPageProps) => {
           onSelect={onSelectOption}
         />
       </Styled.ProductDropdownWrapper>
-      <ProductContent
-        cartItems={cartItems}
-        isAddedCart={isAddedCart}
-        dropdownOptions={dropdownOptions}
-      />
+      <ProductContent dropdownOptions={dropdownOptions} />
     </>
   );
 };

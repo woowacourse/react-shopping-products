@@ -1,18 +1,35 @@
+import ToastProvider from '@components/common/Toast/provider/ToastProvider';
 import AppLayout from '@components/layout/AppLayout/AppLayout';
 import { Global } from '@emotion/react';
-import useToggleShoppingCart from '@hooks/cartItem/useToggleShoppingCart';
 import ProductPage from '@pages/ProductPage/ProductPage';
 import { resetCSS } from '@styles/resetCSS';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+import * as Styled from './App.styled';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 0,
+    },
+  },
+});
 
 function App() {
-  const { cartItems, addedShoppingCartLength: itemCount, isAddedCart } = useToggleShoppingCart();
   return (
-    <>
-      <Global styles={resetCSS} />
-      <AppLayout itemCount={itemCount}>
-        <ProductPage cartItems={cartItems} isAddedCart={isAddedCart} />
-      </AppLayout>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={true} />
+      <Styled.AppContainer>
+        <ToastProvider>
+          <Global styles={resetCSS} />
+          <AppLayout>
+            <ProductPage />
+          </AppLayout>
+        </ToastProvider>
+      </Styled.AppContainer>
+    </QueryClientProvider>
   );
 }
 

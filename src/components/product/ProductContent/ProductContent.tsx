@@ -7,17 +7,13 @@ import useProducts from '@hooks/product/useProducts/useProducts';
 import { ProductDropdownOptions } from '@components/product/ProductDropdown/ProductDropdown.type';
 
 import * as Styled from './ProductContent.styled';
-import APIErrorToast from '@components/common/Toast/ErrorToast';
-import { CartItem } from '@appTypes/product';
 
 interface ProductContentProps {
-  cartItems: CartItem[];
-  isAddedCart: (id: number) => boolean;
   dropdownOptions: ProductDropdownOptions;
 }
 
-const ProductContent = ({ isAddedCart, dropdownOptions, cartItems }: ProductContentProps) => {
-  const { products, isLoading, updateNextProductItem, error } = useProducts(dropdownOptions);
+const ProductContent = ({ dropdownOptions }: ProductContentProps) => {
+  const { products, isLoading, updateNextProductItem } = useProducts(dropdownOptions);
 
   const targetRef = useIntersectionObserver<HTMLDivElement>({
     onIntersect: () => {
@@ -31,13 +27,11 @@ const ProductContent = ({ isAddedCart, dropdownOptions, cartItems }: ProductCont
         <NotProduct />
       ) : (
         <Styled.ProductPageListWrapper>
-          <CardList cartItems={cartItems} products={products} isAddedCart={isAddedCart} />
+          <CardList products={products} />
         </Styled.ProductPageListWrapper>
       )}
 
       {products.length !== 0 && isLoading && <LoadingSpinner $width="100%" $height="30vh" />}
-
-      {error && <APIErrorToast message={error?.message ?? ''} />}
 
       <Styled.ObserverTarget ref={targetRef} />
     </>

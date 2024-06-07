@@ -1,21 +1,21 @@
-import { CartItem, Product } from '@appTypes/product';
+import { Product } from '@appTypes/product';
 import Card from '@components/product/Card/Card';
+import useShoppingCart from '@hooks/cartItem/useShoppingCart';
 
 interface CardListProps {
-  cartItems: CartItem[];
   products: Product[];
-  isAddedCart: (id: number) => boolean;
 }
 
-const CardList: React.FC<CardListProps> = ({ cartItems, products, isAddedCart }) => {
+const CardList: React.FC<CardListProps> = ({ products }) => {
+  const { cartItems } = useShoppingCart();
+
   return (
     <>
       {products.map((product, index) => (
         <Card
           key={`${product.id}-${index}`}
-          cartItems={cartItems}
+          cartItem={cartItems.find((cartItem) => cartItem.product.id === product.id) ?? null}
           product={product}
-          isAddedCart={!isAddedCart(product.id)}
         />
       ))}
     </>

@@ -1,10 +1,11 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { Product } from '@appTypes/product';
 
 import { ProductDropdownOptions } from '@components/product/ProductDropdown/ProductDropdown.type';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchProducts } from '@apis/product/product';
+import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 
 interface UseProductResult {
   products: Product[];
@@ -29,6 +30,12 @@ const useProducts = (dropdownOptions: ProductDropdownOptions): UseProductResult 
     queryFn: ({ pageParam }) => fetchProducts({ page: pageParam, ...dropdownOptions }),
     getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
   });
+
+  const showToast = useToastContext();
+
+  useEffect(() => {
+    if (error) showToast(error.message);
+  }, [error, showToast]);
 
   const updateNextProductItem = useCallback(() => {
     if (hasNextPage === false || isInfiniteScrollLoading || isError) return;

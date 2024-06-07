@@ -36,14 +36,14 @@ export const CardToggleButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-export const CardToggleButton = styled.button<{ $isAddedCart: boolean }>`
+export const CardToggleButton = styled.button`
   width: 59px;
   height: 24px;
   border-radius: 4px;
   padding: 8px 4px;
   cursor: pointer;
-  background-color: ${({ $isAddedCart }) => ($isAddedCart ? COLOR.black : COLOR.lightGray)};
-  color: ${({ $isAddedCart }) => ($isAddedCart ? COLOR.white : COLOR.black)};
+  background-color: ${COLOR.black};
+  color: ${COLOR.white};
   gap: 4px;
   display: flex;
   justify-content: center;

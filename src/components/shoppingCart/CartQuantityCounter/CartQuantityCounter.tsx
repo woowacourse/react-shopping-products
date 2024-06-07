@@ -1,20 +1,14 @@
-import { CartItem, Product } from '@appTypes/product';
+import { CartItem } from '@appTypes/product';
 import * as Styled from './CartQuantityCounter.styled';
 import { Minus, Plus } from '@assets/svg';
 import useUpdateItemQuantity from '@hooks/cartItem/useUpdateItemQuantity';
 
 interface CartQuantityCounterProps {
-  cartItems: CartItem[];
-  product: Product;
+  cartItem: CartItem;
 }
 
-const CartQuantityCounter = ({ cartItems, product }: CartQuantityCounterProps) => {
+const CartQuantityCounter = ({ cartItem: { quantity, id } }: CartQuantityCounterProps) => {
   const { mutate: updateItemQuantity } = useUpdateItemQuantity();
-
-  const quantity = cartItems.find((item) => item.product.id === product.id)?.quantity ?? 1;
-  const id = cartItems.find((item) => item.product.id === product.id)?.id;
-
-  if (!id) return;
 
   return (
     <Styled.CartQuantityCounterWrapper>
