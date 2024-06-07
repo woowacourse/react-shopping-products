@@ -8,6 +8,7 @@ import { useEffect } from "react";
 
 const useInfiniteFilteredProducts = ({ category, sort }: GetProductsProps) => {
   const { onAddToast } = useToast();
+
   const query = useInfiniteQuery({
     queryKey: [END_POINT.cartItems, category, sort],
     queryFn: async ({ pageParam }) => await getProducts({ queryKeys: { category, sort }, pageParam: pageParam }),

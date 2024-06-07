@@ -60,8 +60,6 @@ const ProductListPage = () => {
     }
   }, [isIntersecting]);
 
-  if (!products) return;
-
   return (
     <>
       <Header>
@@ -78,7 +76,7 @@ const ProductListPage = () => {
           </S.SelectBoxWrapper>
           {isModalOpen && cartItems && <CartModal onCloseModal={onCloseModal} cartItems={cartItems} />}
         </S.ItemInfoWrapper>
-        {!isLoading && <ItemCardList products={products.pages} cartItems={cartItems!} />}
+        {!isLoading && products && <ItemCardList products={products.pages} cartItems={cartItems!} />}
         {hasNextPage && (
           <div ref={ref}>
             <ItemCartListSkeleton ref={ref} />

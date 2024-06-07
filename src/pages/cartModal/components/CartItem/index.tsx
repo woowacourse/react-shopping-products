@@ -8,10 +8,10 @@ import * as S from "@/pages/cartModal/components/CartItem/style";
 // import useCartItems from "@/hooks/cart/useCartItems.ts";
 import TextBox from "@/components/_common/TextBox/index.tsx";
 import QuantityUpdateButton from "@/components/QuantityUpdateButton/index.tsx";
-import useHandleCartItem from "@/hooks/useHandleCartItem.ts";
 import Button from "@/components/_common/Button";
 import { useDeleteCartItemMutation } from "@/hooks/server/useCartItems";
 import { theme } from "@/styles/theme";
+import { convertProductIdToCartId, getQuantityInCart } from "@/utils/cart";
 
 const formatToWon = (price: number) => {
   return price.toLocaleString();
@@ -20,7 +20,6 @@ const formatToWon = (price: number) => {
 const CartItem = ({ item, cartItems }: { item: CartItems; cartItems: CartItems[] }) => {
   const { product } = item;
   const { name, imageUrl, price, id } = product;
-  const { getQuantityInCart, convertProductIdToCartId } = useHandleCartItem();
 
   const quantity = getQuantityInCart(cartItems, id);
   const cartId = convertProductIdToCartId(cartItems, id);

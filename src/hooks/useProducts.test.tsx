@@ -1,10 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { END_POINT } from "@/config/endPoint";
-import SERVER_URL from "@/config/serverUrl";
-import useProducts from "@/hooks/useProducts";
-import { server } from "@/mocks/servers";
+import useInfiniteFilteredProducts from "@/hooks/server/useInfiniteFilteredProducts";
 import { renderHook, waitFor, act } from "@testing-library/react";
-import { HttpResponse, http } from "msw";
 import mockProducts from "@/mocks/mockResponse/products.json";
 
 const queryClient = new QueryClient();
@@ -17,8 +13,9 @@ describe("useProducts 테스트", () => {
   it("상품 목록을 조회한다.", async () => {
     const sort = "낮은 가격순";
     const category = "전체";
-    const { result } = renderHook(() => useProducts({ sort, category }), { wrapper });
+    const { result } = renderHook(() => useInfiniteFilteredProducts({ sort, category }), { wrapper });
 
+    console.log("result", result);
     const expectedLength = mockProducts.content.length;
 
     act(() => {
@@ -26,7 +23,7 @@ describe("useProducts 테스트", () => {
     });
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(expectedLength);
+      expect(result.current.data).toHaveLength(expectedLength);
     });
   });
 
@@ -54,14 +51,16 @@ describe("useProducts 테스트", () => {
   it("첫 페이지에서는 20개의 상품을 불러온다.", async () => {
     const sort = "낮은 가격순";
     const category = "전체";
-    const { result } = renderHook(() => useProducts({ sort, category, isIntersecting: false }), { wrapper });
+    const { result } = renderHook(() => useInfiniteFilteredProducts({ sort, category }), { wrapper });
+
+    // const { result } = renderHook(() => useProducts({ sort, category, isIntersecting: false }), { wrapper });
 
     act(() => {
       result.current.fetchNextPage();
     });
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(20);
+      expect(result.current.data).toHaveLength(20);
     });
   });
 });

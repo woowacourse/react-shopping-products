@@ -2,9 +2,9 @@ import { CartItems, Product } from "@/types/products";
 import ItemInfo from "@/components/ItemInfo";
 import * as S from "@/components/ItemCard/style";
 import CartActionButton from "@/components/CartActionButton";
-import useHandleCartItem from "@/hooks/useHandleCartItem";
 import { memo } from "react";
 import QuantityUpdateButton from "@/components/QuantityUpdateButton";
+import { convertProductIdToCartId, getQuantityInCart } from "@/utils/cart";
 
 interface ItemCartProps {
   product: Product;
@@ -13,7 +13,6 @@ interface ItemCartProps {
 
 const ItemCard = ({ product, cartItems }: ItemCartProps) => {
   const { name, price, imageUrl, id } = product;
-  const { getQuantityInCart, convertProductIdToCartId } = useHandleCartItem();
 
   const quantity = getQuantityInCart(cartItems, id);
   const cartId = convertProductIdToCartId(cartItems, id);
