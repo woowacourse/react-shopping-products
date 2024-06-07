@@ -15,7 +15,7 @@ const InfiniteScroll = ({ children, isLoading, handleScroll, isError }: Infinite
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isLoading) {
+        if (entries[0].isIntersecting && !isLoading && !isError) {
           handleScroll();
         }
       },
@@ -26,7 +26,7 @@ const InfiniteScroll = ({ children, isLoading, handleScroll, isError }: Infinite
       }
     );
 
-    if (loaderRef.current && !isError) {
+    if (loaderRef.current) {
       observer.observe(loaderRef.current);
     }
 

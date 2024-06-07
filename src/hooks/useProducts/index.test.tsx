@@ -12,7 +12,7 @@ const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        retry: 0,
+        retry: false,
       },
     },
   });
@@ -59,7 +59,6 @@ describe("useProduct 훅 테스트", () => {
       });
 
       await waitFor(() => {
-        console.log(result.current.error);
         expect(result.current.error).toBeTruthy();
         expect(result.current.isLoading).toBe(false);
       });

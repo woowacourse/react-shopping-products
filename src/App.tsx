@@ -6,13 +6,7 @@ import { ModalProvider } from "easy-payments-ui";
 import Mall from "./pages/Mall";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 0,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 function App() {
   return (
