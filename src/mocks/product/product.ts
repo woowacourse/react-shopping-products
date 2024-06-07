@@ -23,7 +23,7 @@ export const handlers = [
 
     const [, sortOrder] = sort.split(',');
 
-    const start = page * size;
+    const start = page === 0 ? 0 : (page - 1) * 4 + 20;
     const end = start + size;
 
     let filteredProducts = filterProducts(products, category);

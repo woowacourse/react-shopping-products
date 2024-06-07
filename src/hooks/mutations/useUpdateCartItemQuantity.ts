@@ -3,17 +3,18 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateCartItemQuantity } from '../../api/cart';
 import { Cart } from '../../types/Cart.type';
 import { ToastContext } from '../../context/ToastProvider';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 const useUpdateCartItemQuantity = () => {
   const queryClient = useQueryClient();
-  const cartItems = queryClient.getQueryData<Cart[]>(['cart']) ?? [];
+  const cartItems = queryClient.getQueryData<Cart[]>([QUERY_KEYS.CART]) ?? [];
 
   const { showToast } = useContext(ToastContext);
 
   const mutation = useMutation({
     mutationFn: updateCartItemQuantity,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
     },
     onError: (error) => showToast(error.message),
   });

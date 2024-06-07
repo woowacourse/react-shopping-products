@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchCartItems } from '../../../api/cart';
 import { ToastContext } from '../../../context/ToastProvider';
 import { SIZE } from '../../../constants/api';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 const useFetchCartItems = () => {
   const { showToast } = useContext(ToastContext);
@@ -18,10 +19,9 @@ const useFetchCartItems = () => {
     return totalData;
   };
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['cart'],
+  const { data, isFetching, error, isError } = useQuery({
+    queryKey: [QUERY_KEYS.CART],
     queryFn: getCartItems,
-    retry: false,
   });
 
   useEffect(() => {
@@ -30,7 +30,8 @@ const useFetchCartItems = () => {
 
   return {
     cartItems: data ?? [],
-    isLoading,
+    isFetching,
+    isError,
     error,
   };
 };
