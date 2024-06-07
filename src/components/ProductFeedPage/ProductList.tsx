@@ -22,7 +22,7 @@ const ProductList = () => {
         updatePriceSort={updatePriceSort}
       />
       {data.map((product) => (
-        <ProductItem key={crypto.randomUUID()} productInfo={product} />
+        <ProductItem key={crypto.randomUUID()} product={product} />
       ))}
       <LoadingSpinner isLoading={isLoading} />
       <IntersectionDetector onIntersected={fetchNextPage} />

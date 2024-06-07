@@ -2,20 +2,14 @@ import styled from "styled-components";
 import CartItemQuantityController from "@components/ProductFeedPage/CartItemQuantityController";
 import { formatToKRW } from "@utils/formatToKRW";
 import ImageWithFallback from "../common/ImageWithFallback";
-
-interface ProductInfo {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-}
+import { Product } from "@src/apis/products";
 
 interface ProductItemProps {
-  productInfo: ProductInfo;
+  product: Product;
 }
 
-const ProductItem = ({ productInfo }: ProductItemProps) => {
-  const { id, name, price, imageUrl } = productInfo;
+const ProductItem = ({ product }: ProductItemProps) => {
+  const { id, name, price, imageUrl } = product;
 
   return (
     <S.Container>
