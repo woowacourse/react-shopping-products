@@ -1,7 +1,5 @@
-import { useContext, useEffect, useRef } from "react";
-import { QuantityContext } from "../../store/QuantityContext";
+import { useEffect, useRef } from "react";
 import useProductList from "../../hooks/useProductList";
-import useCartItemList from "../../hooks/useCartItem";
 import ProductItem from "../ProductItem/ProductItem";
 import * as S from "./ProductItemList.style";
 import { Category, Product } from "../../interfaces/Product";
