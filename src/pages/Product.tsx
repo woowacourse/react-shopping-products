@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import {
   useFetchAddCart,
+  useFetchCartItems,
   useFetchProducts,
   useIntersectionObserver,
 } from '../hooks/index';
@@ -17,14 +18,12 @@ import * as S from './Product.styled';
 
 function Product() {
   const target = useRef(null);
-
-  const fetchAddCartState = useFetchAddCart();
-  // const fetchProductState = useFetchProduct
-
   const [sortings, setSortings] = useState<SortingParam[]>([
     DEFAULT_SORTING_PARAM,
   ]);
   const [filter, setFilter] = useState('');
+
+  const fetchAddCartState = useFetchAddCart();
   const {
     data: products,
     isError,
@@ -33,6 +32,7 @@ function Product() {
     fetchNextPage,
     resetPage,
   } = useFetchProducts(sortings, filter);
+  const { data: cartItems } = useFetchCartItems();
 
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
@@ -51,8 +51,7 @@ function Product() {
   return (
     <>
       <CartContext.Provider value={fetchAddCartState}>
-        {/* TODO: 임의의 값 수정하기 */}
-        <Header badgeCount={3} />
+        <Header badgeCount={cartItems.length} />
         {isError && <ErrorMessage />}
         <S.ProductContentWrapper>
           <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
