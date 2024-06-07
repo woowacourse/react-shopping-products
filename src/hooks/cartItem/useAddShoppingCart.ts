@@ -1,9 +1,11 @@
 import { addShoppingCartItem } from '@apis/shoppingCart/shoppingCart';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { UseMutateFunction, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useAddShoppingCart = () => {
+const useAddShoppingCart = (): {
+  addShoppingCart: UseMutateFunction<void, Error, number, unknown>;
+} => {
   const queryClient = useQueryClient();
 
   const showToast = useToastContext();

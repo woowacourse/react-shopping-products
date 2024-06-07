@@ -10,5 +10,6 @@ export const getCartItemsEndpoint = ({
 
   const queryString = generateQueryParams({ page, size }).toString();
 
+  console.log(`${baseEndpoint}?${queryString}`);
   return `${baseEndpoint}?${queryString}`;
 };

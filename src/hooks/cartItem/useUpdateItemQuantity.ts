@@ -2,9 +2,14 @@ import { updateCartItemQuantity } from '@apis/shoppingCart/shoppingCart';
 import { CartItem } from '@appTypes/product';
 import { InfinityScrollResponse } from '@appTypes/response';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { UseMutationResult, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useUpdateItemQuantity = () => {
+const useUpdateItemQuantity = (): UseMutationResult<
+  void,
+  Error,
+  { id: number; quantity: number },
+  unknown
+> => {
   const queryClient = useQueryClient();
 
   const showToast = useToastContext();

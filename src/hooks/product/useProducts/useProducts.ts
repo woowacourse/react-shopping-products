@@ -38,7 +38,8 @@ const useProducts = (dropdownOptions: ProductDropdownOptions): UseProductResult 
   }, [error, showToast]);
 
   const updateNextProductItem = useCallback(() => {
-    if (hasNextPage === false || isInfiniteScrollLoading || isError) return;
+    console.log(hasNextPage, isInfiniteScrollLoading, isError);
+    if (!hasNextPage || isInfiniteScrollLoading || isError) return;
 
     fetchNextPage();
   }, [hasNextPage, fetchNextPage, isInfiniteScrollLoading, isError]);
