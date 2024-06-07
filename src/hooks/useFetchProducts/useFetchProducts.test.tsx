@@ -3,12 +3,12 @@ import { HttpResponse, http } from 'msw';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import useFetchProducts from './useFetchProducts';
-import { ENDPOINTS_PRODUCTS } from '../api/endpoints';
-import { Product } from '../types/fetch';
-import { SortingParam } from '../types/sort';
+import { ENDPOINTS_PRODUCTS } from '../../api/endpoints';
+import { Product } from '../../types/fetch';
+import { SortingParam } from '../../types/sort';
 
-import { server } from '../mocks/node';
-import { mockProductsResponse } from '../mocks/products';
+import { server } from '../../mocks/node';
+import { mockProductsResponse } from '../../mocks/products';
 
 const queryClient = new QueryClient();
 

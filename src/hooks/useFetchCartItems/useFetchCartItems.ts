@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { usePagination } from '../usePagination';
+import { usePagination } from '../index';
 import { fetchCartItems } from '../../api/cartItems';
 import { Carts } from '../../types/fetch';
 

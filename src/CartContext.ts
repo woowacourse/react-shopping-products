@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import useFetchAddCart from './hooks/useFetchAddCart';
+import { useFetchAddCart } from './hooks/index';
 // import { MutateOptions } from '@tanstack/react-query';
 
 export const CartContext = createContext<ReturnType<typeof useFetchAddCart>>({

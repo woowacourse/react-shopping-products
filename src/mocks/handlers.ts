@@ -75,6 +75,9 @@ export const handlers = [
       return HttpResponse.json(mockCartResponse);
     },
   ),
+  /**
+   * 장바구니 상품 목록 가져오기
+   */
   http.get(`${ENDPOINTS_CART}`, async () => {
     return HttpResponse.json(mockCartResponse);
   }),

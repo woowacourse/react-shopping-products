@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { usePagination } from './usePagination';
-import { fetchProducts } from '../api/products';
-import { Product } from '../types/fetch';
-import { SortingParam } from '../types/sort';
-import { DEFAULT_SORTING_PARAM } from '../constants/page';
+import { usePagination } from '../index';
+import { fetchProducts } from '../../api/products';
+import { Product } from '../../types/fetch';
+import { SortingParam } from '../../types/sort';
+import { DEFAULT_SORTING_PARAM } from '../../constants/page';
 
 const useFetchProducts = (
   sortings: SortingParam[] = [DEFAULT_SORTING_PARAM],

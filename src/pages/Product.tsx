@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-import useFetchAddCart from '../hooks/useFetchAddCart';
-import useFetchProducts from '../hooks/useFetchProducts';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import {
+  useFetchAddCart,
+  useFetchProducts,
+  useIntersectionObserver,
+} from '../hooks/index';
 import Header from '../components/Header/Header';
 import Dropdown from '../components/Dropdown/Dropdown';
 import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
