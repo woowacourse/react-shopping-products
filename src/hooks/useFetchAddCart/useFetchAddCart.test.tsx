@@ -23,17 +23,6 @@ describe('useFetchAddCart', async () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 
-  // TODO: 장바구니 삭제 기능 추가 후 구현하기
-  // it('장바구니에서 삭제하는 API를 호출하면 해당 제품의 id는 cartIdSet에서 삭제되어야 한다.', () => {
-  //   const { result } = renderHook(() => useFetchAddCart(), { wrapper });
-
-  //   act(() => {
-  //     result.current.deleteToRemoveCart(PRODUCT_ID);
-  //   });
-
-  //   expect(result.current.cartIdSet.has(PRODUCT_ID)).toBe(false);
-  // });
-
   it('장바구니에 담겨있지 않은 제품을 담으면 장바구니에 담긴 제품 종류 개수가 증가되어야 한다.', async () => {
     const { result } = renderHook(
       () => {
@@ -55,23 +44,6 @@ describe('useFetchAddCart', async () => {
     );
   });
 
-  // TODO: 장바구니 삭제 기능 추가 후 구현하기
-  // it('장바구니에 담겨있는 제품을 삭제하면 장바구니에 담긴 제품 종류 개수가 감소되어야 한다.', async () => {
-  //   const { result } = renderHook(() => useFetchAddCart());
-
-  //   await act(async () => {
-  //     await result.current.postToAddCart(3);
-  //   });
-
-  //   expect(result.current.cartIdSet.size).toBe(1);
-
-  //   await act(async () => {
-  //     await result.current.deleteToRemoveCart(3);
-  //   });
-
-  //   expect(result.current.cartIdSet.size).toBe(0);
-  // });
-
   it('장바구니에 제품을 추가하고 장바구니를 다시 불러왔을 때, 해당 제품이 포함되어 있어야한다.', async () => {
     const { result } = renderHook(
       () => {
@@ -89,15 +61,12 @@ describe('useFetchAddCart', async () => {
       result.current.fetchCartItems.refetch();
     });
 
-    let cartItems: Carts[] = [];
     await waitFor(() => {
-      cartItems = result.current.fetchCartItems.data;
-    });
-
-    await waitFor(() => {
-      expect(cartItems.some((item) => item.product.id === PRODUCT_ID)).toBe(
-        true,
-      );
+      expect(
+        result.current.fetchCartItems.data.some(
+          (item) => item.product.id === PRODUCT_ID,
+        ),
+      ).toBe(true);
     });
   });
 
