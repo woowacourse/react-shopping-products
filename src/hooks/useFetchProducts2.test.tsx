@@ -79,6 +79,7 @@ describe('fetchProducts', () => {
     await waitFor(() => {
       expect(result.current.data.pages).toHaveLength(1);
       expect(result.current.data.pages[0].content).toHaveLength(20);
+      expect(result.current.products).toHaveLength(20);
     });
 
     act(() => {
@@ -88,6 +89,7 @@ describe('fetchProducts', () => {
     await waitFor(() => {
       expect(result.current.data.pages).toHaveLength(2);
       expect(result.current.data.pages[1].content).toHaveLength(4);
+      expect(result.current.products).toHaveLength(24);
     });
   });
 

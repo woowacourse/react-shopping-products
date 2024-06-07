@@ -15,12 +15,14 @@ interface useProductProps {
 }
 const useProducts = ({ sortings, filter, options }: useProductProps) => {
   const defaultOptions = {
-    queryKey: ['product'],
+    queryKey: ['product', sortings, filter],
     queryFn: async ({ pageParam }) =>
       await fetchProducts(pageParam, getSize(pageParam), sortings, filter),
     initialPageParam: 0,
     getNextPageParam: (_, __, lastPageParam) => getPage(lastPageParam),
   };
+
+  const [products, setProducts] = useState<Product[]>([]);
 
   const {
     data,
@@ -35,15 +37,18 @@ const useProducts = ({ sortings, filter, options }: useProductProps) => {
     ...options,
   });
 
-  const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
-    if (!isSuccess) return;
-    if (!data.pages.at(-1)) return;
-    setProducts((prev) => [...prev, ...data.pages.at(-1)!.content]);
-  }, [data?.pageParams, isError, isPending]);
+    if (!data) return;
+    setProducts(
+      data.pages
+        .map((page) => page.content)
+        .reduce((prev, cur) => [...prev, ...cur], []),
+    );
+  }, [data, setProducts]);
+
   const isLast = !hasNextPage;
 
-  return { data, isError, isPending, isLast, isFetching, fetchNext };
+  return { products, data, isError, isPending, isLast, isFetching, fetchNext };
 };
 
 export default useProducts;
