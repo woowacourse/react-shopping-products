@@ -1,30 +1,28 @@
-import styled, { keyframes } from "styled-components";
-import ProductItem from "./ProductItem";
-import Select from "./Select";
-import ShopHeader from "./ShopHeader";
-import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import usePaginatedProducts from "../hooks/usePaginatedProducts";
+import { SortOption } from "../types/sortOption";
 import {
   CATEGORY_SELECT_OPTIONS,
   PRICE_SORT_SELECT_OPTIONS,
   SORT_OPTIONS,
 } from "../constants/products";
 import { isIncludedInList } from "../utils/isIncludedInList";
-import { SortOption } from "../types/sortOption";
+import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import useGetInfiniteProducts from "../hooks/useGetInfiniteProducts";
+import ProductItem from "./ProductItem";
+import Select from "./Select";
+import ShopHeader from "./ShopHeader";
+import styled, { keyframes } from "styled-components";
 
 const ProductList = () => {
   const {
     products,
     isLoading,
     fetchNextPage,
-    resetPage,
     setCategoryFilter,
     setPriceSort,
-  } = usePaginatedProducts();
+  } = useGetInfiniteProducts();
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!isLoading) {
-      resetPage();
       setCategoryFilter(e.target.value);
     }
   };
@@ -35,7 +33,6 @@ const ProductList = () => {
       !isLoading &&
       isIncludedInList<SortOption>(value, Object.values(SORT_OPTIONS))
     ) {
-      resetPage();
       setPriceSort(value);
     }
   };

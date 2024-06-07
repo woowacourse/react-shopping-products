@@ -19,7 +19,7 @@ export const getProducts = async (
   size: number,
   categoryFilter: string,
   sort: "asc" | "desc"
-) => {
+): Promise<{ data: Product[]; isLastPage: boolean; page: number }> => {
   const categoryParam =
     categoryFilter === "all" ? [] : ["category", categoryFilter];
 
@@ -30,12 +30,12 @@ export const getProducts = async (
     categoryParam,
   ].filter((param) => param.length === 2);
 
-  const data = await cartClient.get<ProductResponse>(
+  const response = await cartClient.get<ProductResponse>(
     API_URL.products,
     new URLSearchParams(params)
   );
 
-  const isLastPage = data.last;
+  const isLastPage = response.last;
 
-  return { data: data.content, isLastPage };
+  return { data: response.content, isLastPage, page };
 };
