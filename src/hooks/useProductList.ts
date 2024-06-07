@@ -29,7 +29,7 @@ export default function useProductList({
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       const nextPage = allPages.length + 1;
-      return nextPage < lastPage.content.length ? nextPage : undefined;
+      return !lastPage.last ? nextPage : undefined;
     },
   });
 }

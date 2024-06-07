@@ -40,9 +40,11 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     observe(target.current);
 
     if (productListData?.pages.length === 0 || !hasNextPage) {
+      console.log(!hasNextPage);
       unobserve(target.current);
     }
   }, [productListData?.pages, observe, unobserve, hasNextPage]);
+
   return (
     <>
       <S.ProductList>
