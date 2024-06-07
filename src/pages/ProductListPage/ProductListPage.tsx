@@ -6,7 +6,7 @@ import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import ProductItem from '../../components/ProductItem/ProductItem';
 import ShoppingCartModal from '../../components/ShoppingCartModal/ShoppingCartModal';
 import useProducts from '../../hooks/useProducts/useProducts';
-import useCartItems from '../../hooks/queries/useCartItems/useCartItems';
+import useFetchCartItems from '../../hooks/queries/useFetchCartItems/useFetchCartItems';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useModal from '../../hooks/useModal';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
@@ -18,12 +18,10 @@ import * as S from './ProductListPage.style';
 const ProductListPage = () => {
   const { products, category, sort, isFetching, isError, hasNextPage, handleCategory, handleSort, handlePage } =
     useProducts(CATEGORY_LIST[0], SORTING_LIST[0]);
-
-  const { cartItems } = useCartItems();
+  const { cartItems } = useFetchCartItems();
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const targetRef = useIntersectionObserver(handlePage);
-
-  const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
     <div>

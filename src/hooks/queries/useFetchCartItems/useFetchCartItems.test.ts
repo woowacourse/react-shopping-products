@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import useCartItems from './useCartItems';
-import cartItems from '../../mocks/cartItem/cartItem.json';
+import useCartItems from './useFetchCartItems';
+import cartItems from '../../../mocks/cartItem/cartItem.json';
 
 describe('useCartItems', () => {
   describe('장바구니 아이템 조회', () => {
