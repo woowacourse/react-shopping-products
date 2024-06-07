@@ -1,90 +1,65 @@
 import { useContext, useEffect, useRef } from "react";
 import { QuantityContext } from "../../store/QuantityContext";
 import useProductList from "../../hooks/useProductList";
-import useCartItemList from "../../hooks/useCartItemList";
+import useCartItemList from "../../hooks/useAddCartItem";
 import ProductItem from "../ProductItem/ProductItem";
 import * as S from "./ProductItemList.style";
-import { Category } from "../../interfaces/Product";
+import { Category, Product } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import Spinner from "../common/Spinner/Spinner";
-import { createPortal } from "react-dom";
-import Toast from "../common/Toast/Toast";
+import useFetchCartItemList from "../../hooks/useFetchCartItemList";
 
 interface ProductItemListProp {
   category: Category;
-  sortOption: Sorting;
+  sort: Sorting;
 }
 
-function ProductItemList({ category, sortOption }: ProductItemListProp) {
+function ProductItemList({ category, sort }: ProductItemListProp) {
   const {
-    productList,
-    productListError,
-    productListLoading,
-    page,
+    data: productListData,
+    error: productListError,
     fetchNextPage,
-    isLastPage,
-    setPage,
+    hasNextPage,
+    isFetching: isProductListFetching,
+    isFetchingNextPage,
   } = useProductList({
     category,
-    sortOption,
-  });
-  const { cartItemList, isInCart, toggleCartItem, cartItemListError } =
-    useCartItemList();
+    sort,
+  }).productListQuery;
+
+  const {
+    data: cartItemListData,
+    error: cartItemListError,
+    isFetching: isCartItemListFetching,
+  } = useFetchCartItemList().cartItemListQuery;
+
   const target = useRef(null);
-  const [observe, unobserve] = useIntersectionObserver(() => {
-    fetchNextPage();
-  });
+  const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
 
   useEffect(() => {
-    setPage(0);
-  }, [category, sortOption]);
-
-  useEffect(() => {
-    if (page === -1 || target.current === null) return;
+    if (target.current === null) return;
     observe(target.current);
 
-    const N = productList.length;
-
-    if (0 === N || isLastPage) {
+    if (productListData?.pages.length === 0 || !hasNextPage) {
       unobserve(target.current);
     }
-  }, [productList, page, observe, unobserve]);
-  const quantityContext = useContext(QuantityContext);
-  const setQuantity = quantityContext ? quantityContext.setQuantity : () => {};
-  setQuantity(cartItemList.length);
-
-  const renderToast = () => {
-    if (productListError) {
-      return createPortal(
-        <Toast message="상품 목록 조회 실패" />,
-        document.body
-      );
-    }
-    if (cartItemListError) {
-      return createPortal(
-        <Toast message="장바구니 목록 조회 실패" />,
-        document.body
-      );
-    }
-  };
+  }, [productListData?.pages, observe, unobserve, hasNextPage]);
   return (
     <>
-      {renderToast()}
       <S.ProductList>
-        {productList.map((product, idx) => {
-          return (
+        {productListData?.pages.map((page) =>
+          page.content.map((product: Product, idx: number) => (
             <ProductItem
               key={`${idx}_${product.id}`}
               product={product}
-              isInCart={isInCart(product.id)}
-              toggleCartItem={() => toggleCartItem(product)}
+              cartItemList={cartItemListData?.content ?? []}
             />
-          );
-        })}
+          ))
+        )}
       </S.ProductList>
       <div ref={target} style={{ height: "1px" }}></div>
-      {productListLoading && <Spinner />}
+      {isProductListFetching && <Spinner />}
     </>
   );
 }
