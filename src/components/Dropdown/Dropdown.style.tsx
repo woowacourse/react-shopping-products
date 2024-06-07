@@ -1,7 +1,22 @@
 import styled from 'styled-components';
+import DownIcon from '../../assets/DownIcon.svg';
 
 export const Layout = styled.div`
   position: relative;
+`;
+
+export const Select = styled.select`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 125px;
+  height: 36px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.color.primary.light};
+  font-size: ${({ theme }) => theme.fontSize.base};
+  cursor: pointer;
+  background: url(${DownIcon}) no-repeat right 8px center;
 `;
 
 export const Container = styled.div<{ $isDefault: boolean }>`
@@ -23,7 +38,6 @@ export const Container = styled.div<{ $isDefault: boolean }>`
 `;
 
 export const OptionList = styled.ul`
-  z-index: 999;
   position: absolute;
   top: 38px;
   width: 125px;
