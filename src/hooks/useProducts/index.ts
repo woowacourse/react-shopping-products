@@ -4,7 +4,7 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchProducts } from '../../api/products';
 
 import { Category, Order, Sort } from '../../types/product';
-import { FIRST_PAGE, GAP_WITH_FIRST_PAGE } from '../../constants/pagination';
+import * as PRODUCTS from '../../constants/pagination';
 import { QUERY_KEYS } from '../../constants/queryKeys';
 
 const useFetchProducts = () => {
@@ -23,7 +23,7 @@ const useFetchProducts = () => {
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
         const prevPage = allPages.length;
-        const nextPage = prevPage + GAP_WITH_FIRST_PAGE - 1;
+        const nextPage = prevPage + PRODUCTS.GAP_WITH_FIRST_PAGE - 1;
 
         return lastPage.last ? undefined : nextPage;
       },
@@ -38,7 +38,12 @@ const useFetchProducts = () => {
 
     setCategory(selectedCategory);
     queryClient.invalidateQueries({
-      queryKey: [QUERY_KEYS.products, FIRST_PAGE, selectedCategory, { price: 'asc', name: 'asc' }],
+      queryKey: [
+        QUERY_KEYS.products,
+        PRODUCTS.FIRST_PAGE,
+        selectedCategory,
+        { price: 'asc', name: 'asc' },
+      ],
     });
   };
 
@@ -47,7 +52,7 @@ const useFetchProducts = () => {
 
     setSort((prevSort) => ({ ...prevSort, [condition]: order }));
     queryClient.invalidateQueries({
-      queryKey: [QUERY_KEYS.products, FIRST_PAGE, 'all', { ...sort, [condition]: order }],
+      queryKey: [QUERY_KEYS.products, PRODUCTS.FIRST_PAGE, 'all', { ...sort, [condition]: order }],
     });
   };
 

@@ -3,32 +3,25 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import wrapper from '../../utils/testWrapper';
 import useProducts from '.';
 
-import {
-  FIRST_PAGE,
-  FIRST_PAGE_SIZE,
-  GAP_WITH_FIRST_PAGE,
-  MOCK_PRODUCTS_LAST_PAGE,
-  MOCK_PRODUCTS_TOTAL_SIZE,
-  SIZE_PER_PAGE,
-} from '../../constants/pagination';
+import * as PRODUCTS from '../../constants/pagination';
 import { Category } from '../../types/product';
 
 describe('첫 페이지 상품 목록 조회', () => {
-  it(`첫 페이지에서는 상품 목록 ${FIRST_PAGE_SIZE}개를 조회한다.`, async () => {
+  it(`첫 페이지에서는 상품 목록 ${PRODUCTS.FIRST_PAGE_SIZE}개를 조회한다.`, async () => {
     const { result } = renderHook(() => useProducts(), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(FIRST_PAGE_SIZE);
+      expect(result.current.products).toHaveLength(PRODUCTS.FIRST_PAGE_SIZE);
     });
   });
 });
 
 describe('페이지네이션', () => {
-  it(`첫 페이지 이후 다음 페이지의 상품 ${SIZE_PER_PAGE}개를 추가로 불러온다.`, async () => {
+  it(`첫 페이지 이후 다음 페이지의 상품 ${PRODUCTS.SIZE_PER_PAGE}개를 추가로 불러온다.`, async () => {
     const { result } = renderHook(() => useProducts(), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(FIRST_PAGE_SIZE);
+      expect(result.current.products).toHaveLength(PRODUCTS.FIRST_PAGE_SIZE);
     });
 
     act(() => {
@@ -36,7 +29,7 @@ describe('페이지네이션', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(MOCK_PRODUCTS_LAST_PAGE);
+      expect(result.current.products).toHaveLength(PRODUCTS.MOCK_LAST_PAGE);
     });
   });
 
@@ -44,17 +37,22 @@ describe('페이지네이션', () => {
     const { result } = renderHook(() => useProducts(), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(FIRST_PAGE_SIZE);
+      expect(result.current.products).toHaveLength(PRODUCTS.FIRST_PAGE_SIZE);
     });
 
-    for (let i = FIRST_PAGE + GAP_WITH_FIRST_PAGE; i <= MOCK_PRODUCTS_LAST_PAGE; i++) {
+    for (
+      let i = PRODUCTS.FIRST_PAGE + PRODUCTS.GAP_WITH_FIRST_PAGE;
+      i <= PRODUCTS.MOCK_LAST_PAGE;
+      i++
+    ) {
       await waitFor(() => {
         act(() => {
           result.current.fetchNextPage();
         });
       });
 
-      const expectedLength = FIRST_PAGE_SIZE + (i - GAP_WITH_FIRST_PAGE + 1) * SIZE_PER_PAGE;
+      const expectedLength =
+        PRODUCTS.FIRST_PAGE_SIZE + (i - PRODUCTS.GAP_WITH_FIRST_PAGE + 1) * PRODUCTS.SIZE_PER_PAGE;
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(expectedLength);
@@ -66,7 +64,7 @@ describe('페이지네이션', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.products).toHaveLength(MOCK_PRODUCTS_TOTAL_SIZE);
+      expect(result.current.products).toHaveLength(PRODUCTS.MOCK_TOTAL_SIZE);
     });
   });
 });
