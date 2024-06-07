@@ -13,7 +13,7 @@ function CartItemModal({ isOpen, onToggle }: CartItemModalProps) {
   const totalAmount = cartItems?.reduce((acc, cur) => acc + cur.quantity * cur.product.price, 0);
 
   return (
-    <Modal open={isOpen} onClose={onToggle} type="drawer" closeOnESCKeydown>
+    <Modal open={isOpen} onClose={onToggle} type="drawer" closeOnESCKeydown style={{ modal: { padding: '24px 16px' } }}>
       <Modal.Header title="장바구니" onClose={onToggle} />
       <Modal.Content>
         <section className={style.container}>
