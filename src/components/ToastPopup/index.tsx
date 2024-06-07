@@ -5,11 +5,20 @@ import { useContext } from 'react';
 import { UseCartItemsContext } from '../../App';
 import { UseProductsContext } from '../ShoppingProductsPage';
 
+import { MAX_CART_ITEMS_SIZE } from '../../constants/pagination';
+
 const ToastPopup = () => {
-  const { cartItemsError } = useContext(UseCartItemsContext);
+  const { cartItems, cartItemsError } = useContext(UseCartItemsContext);
   const { productsError } = useContext(UseProductsContext);
 
-  const errorMessage = cartItemsError ? '장바구니 요청중' : productsError ? '상품 불러오기중' : '';
+  const errorMessage =
+    cartItemsError && cartItems.length >= MAX_CART_ITEMS_SIZE
+      ? '장바구니 최대 허용치를 초과하여'
+      : cartItemsError
+      ? '장바구니 불러오기중'
+      : productsError
+      ? '상품 불러오기중'
+      : '';
 
   return errorMessage ? (
     <S.ToastMessage>

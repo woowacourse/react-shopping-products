@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { fetchAddCartItem, fetchDeleteCartItem, fetchCartItems } from '../api/cartItems';
 
 import { CartItem } from '../types/cart';
+import { MAX_CART_ITEMS_SIZE } from '../constants/pagination';
 
 const useCartItems = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -25,6 +26,10 @@ const useCartItems = () => {
 
   const addCartItem = async (productId: number) => {
     try {
+      if (cartItems.length >= MAX_CART_ITEMS_SIZE) {
+        throw new Error('Because cart items exceed max count, Failed to add cart Item');
+      }
+
       await fetchAddCartItem(productId);
 
       await getCartItems();

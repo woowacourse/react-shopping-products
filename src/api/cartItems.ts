@@ -3,11 +3,16 @@ import { generateBasicToken } from './auth';
 import { CartItem } from '../types/cart';
 import { CART_ITEMS_ENDPOINT } from './endpoints';
 import { USER_ID, USER_PASSWORD } from './userInformation';
+import { MAX_CART_ITEMS_SIZE } from '../constants/pagination';
 
 export const fetchCartItems = async (): Promise<CartItem[]> => {
   const token = generateBasicToken(USER_ID, USER_PASSWORD);
 
-  const response = await fetch(CART_ITEMS_ENDPOINT, {
+  const params = new URLSearchParams();
+
+  params.append('size', String(MAX_CART_ITEMS_SIZE));
+
+  const response = await fetch(`${CART_ITEMS_ENDPOINT}?${String(params)}`, {
     method: 'GET',
     headers: { Authorization: token },
   });
