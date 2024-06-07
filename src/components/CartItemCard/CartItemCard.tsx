@@ -45,7 +45,7 @@ const CartItemCard = ({ cartItem }: CartItemProps) => {
       <Divider />
       <S.ItemBody>
         <S.ImageWraper>
-          <S.Image src="1" />
+          <S.Image src={cartItem.product.imageUrl} />
         </S.ImageWraper>
         <S.ItemDetail>
           <S.ItemHeader>
@@ -58,7 +58,7 @@ const CartItemCard = ({ cartItem }: CartItemProps) => {
             </Button>
           </S.ItemHeader>
           <QuantityStepper
-            quantity={3}
+            quantity={quantity}
             increaseQuantity={handleIncreaseQuantity}
             decreaseQuantity={handleDecreaseQuantity}
           />
