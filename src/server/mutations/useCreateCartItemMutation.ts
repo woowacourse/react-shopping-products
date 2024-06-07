@@ -1,7 +1,7 @@
 import { CreateCartItemParams, createCartItem } from "@src/apis/cartItems";
 import { useMutation } from "@tanstack/react-query";
-import { MUTATION_KEYS, QUERY_KEYS } from "@server/__constants__/queryKeys";
-import { queryClient } from "@server/queryClient";
+import { MUTATION_KEYS } from "@server/__constants__/queryKeys";
+import { queryInvalidator } from "@server/queryClient";
 
 interface UseCreateCartItemMutationReturn {
   createCartItemMutation: (props: CreateCartItemParams) => void;
@@ -10,14 +10,10 @@ interface UseCreateCartItemMutationReturn {
 type OnError = (error: Error) => void;
 
 export const useCreateCartItemMutation = (onError?: OnError): UseCreateCartItemMutationReturn => {
-  const invalidateCartItems = () => {
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
-  };
-
   const { mutate } = useMutation<void, Error, CreateCartItemParams>({
     mutationKey: [MUTATION_KEYS.createCartItem],
     mutationFn: createCartItem,
-    onSuccess: invalidateCartItems,
+    onSuccess: queryInvalidator.cartItems,
     onError,
   });
 

@@ -13,7 +13,6 @@ export const useCartItems = (): UseCartItemsReturn => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QUERY_KEYS.cartItems],
     queryFn: getCartItems,
-    staleTime: 1000 * 60 * 5,
   });
 
   return {

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { UpdateCartItemParams, updateCartItem } from "@src/apis/cartItems";
-import { MUTATION_KEYS, QUERY_KEYS } from "@server/__constants__/queryKeys";
-import { queryClient } from "@server/queryClient";
+import { MUTATION_KEYS } from "@server/__constants__/queryKeys";
+import { queryInvalidator } from "../queryClient";
 
 interface UseUpdateCartItemMutationReturn {
   updateCartItemMutation: (params: UpdateCartItemParams) => void;
@@ -10,14 +10,10 @@ interface UseUpdateCartItemMutationReturn {
 type OnError = (error: Error) => void;
 
 export const useUpdateCartItemMutation = (onError?: OnError): UseUpdateCartItemMutationReturn => {
-  const invalidateCartItems = () => {
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
-  };
-
   const { mutate } = useMutation({
     mutationKey: [MUTATION_KEYS.updateCartItem],
     mutationFn: updateCartItem,
-    onSuccess: invalidateCartItems,
+    onSuccess: queryInvalidator.cartItems,
     onError,
   });
 
