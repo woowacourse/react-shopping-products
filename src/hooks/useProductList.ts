@@ -14,7 +14,7 @@ export default function useProductList({
   category,
   sort,
 }: UseProductListProps) {
-  const productListQuery = useInfiniteQuery({
+  return useInfiniteQuery({
     queryKey: ["productList", category, sort],
     queryFn: ({ pageParam = 0 }) =>
       fetchProductList({
@@ -32,8 +32,4 @@ export default function useProductList({
       return nextPage < lastPage.content.length ? nextPage : undefined;
     },
   });
-
-  return {
-    productListQuery,
-  };
 }

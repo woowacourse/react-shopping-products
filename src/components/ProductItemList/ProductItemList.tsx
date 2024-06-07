@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import { QuantityContext } from "../../store/QuantityContext";
 import useProductList from "../../hooks/useProductList";
-import useCartItemList from "../../hooks/useAddCartItem";
+import useCartItemList from "../../hooks/useCartItem";
 import ProductItem from "../ProductItem/ProductItem";
 import * as S from "./ProductItemList.style";
 import { Category, Product } from "../../interfaces/Product";
@@ -26,13 +26,13 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
   } = useProductList({
     category,
     sort,
-  }).productListQuery;
+  });
 
   const {
     data: cartItemListData,
     error: cartItemListError,
     isFetching: isCartItemListFetching,
-  } = useFetchCartItemList().cartItemListQuery;
+  } = useFetchCartItemList();
 
   const target = useRef(null);
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
