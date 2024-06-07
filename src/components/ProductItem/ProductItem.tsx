@@ -39,7 +39,6 @@ export const ProductItem = ({
     try {
       await addCartItem(id, 1);
       setIsInCart(true);
-      await fetchCartItemStatus();
       fetchCartItems();
     } catch (error) {
       setErrorStatus(error.response?.status);
@@ -63,6 +62,8 @@ export const ProductItem = ({
   };
 
   const handleButtonClick = async () => {
+    await fetchCartItemStatus();
+
     if (isInCart) {
       await handleRemoveFromCart();
     } else {
@@ -72,7 +73,7 @@ export const ProductItem = ({
 
   useEffect(() => {
     fetchCartItemStatus();
-  }, [id]);
+  }, [id, isInCart]);
 
   return (
     <StyledProductItem>
