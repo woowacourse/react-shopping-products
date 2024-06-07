@@ -20,7 +20,7 @@ const ProductList = ({ onError }: ProductListProps) => {
         updatePriceSort={updatePriceSort}
       />
       {data.map((product) => (
-        <ProductItem key={crypto.randomUUID()} product={product} />
+        <ProductItem key={product.id} product={product} />
       ))}
       <LoadingSpinner isLoading={isLoading} />
       <IntersectionDetector onIntersected={fetchNextPage} />

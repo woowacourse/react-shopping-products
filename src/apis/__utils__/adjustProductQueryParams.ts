@@ -26,5 +26,8 @@ export const adjustProductQueryParams = (queryParams: ProductQueryParams): Smart
     params.delete(PRODUCT_QUERY_PARAMS.category);
   }
 
+  // 중복 데이터 반환을 막기 위해 id 정렬 파라미터 추가
+  params.append(PRODUCT_QUERY_PARAMS.sort, "id,asc");
+
   return params;
 };
