@@ -18,6 +18,7 @@ export const usePagination = () => {
 
   return {
     size,
+    page,
     fetchedPage,
     fetchNextPage,
     resetPage,
