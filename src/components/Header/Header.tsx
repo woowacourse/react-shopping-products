@@ -2,13 +2,19 @@ import { HTMLAttributes } from "react";
 import { Wrapper, HeaderTitle } from "./Header.style";
 import { ShopIconSVG, ShopIconWithNumberSVG } from "@/assets/svg";
 
-interface HeaderProps extends HTMLAttributes<HTMLDivElement> {}
+interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
+  cartItemKind: number;
+}
 
-const Header = ({ ...rest }: HeaderProps) => {
+const Header = ({ cartItemKind, ...rest }: HeaderProps) => {
   return (
     <Wrapper {...rest}>
       <HeaderTitle>SHOP</HeaderTitle>
-      <ShopIconSVG />
+      {cartItemKind === 0 ? (
+        <ShopIconSVG />
+      ) : (
+        <ShopIconWithNumberSVG num={cartItemKind} />
+      )}
     </Wrapper>
   );
 };

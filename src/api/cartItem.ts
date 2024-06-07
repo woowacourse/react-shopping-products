@@ -1,8 +1,8 @@
 import { fetchAPI } from "./fetch";
 import { CartItem } from "@/types";
 
-export const getCartItems = async (): Promise<CartItem> => {
-  const data = await fetchAPI<{ content: CartItem }>({
+export const getCartItems = async () => {
+  const data = await fetchAPI<{ content: CartItem[] }>({
     url: `cart-items`,
     method: "GET",
   });
@@ -10,10 +10,7 @@ export const getCartItems = async (): Promise<CartItem> => {
   return data.content;
 };
 
-export const postCartItem = async (
-  productId: number,
-  quantity: number
-): Promise<void> => {
+export const postCartItem = async (productId: number, quantity: number) => {
   fetchAPI({
     url: "cart-item",
     method: "POST",

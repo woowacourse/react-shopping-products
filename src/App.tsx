@@ -1,14 +1,20 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { AppLayout, ProductListLayout } from "@/layout";
 import { Filter, Header, ProductList, ProductListTitle } from "@/components";
 import { getProducts } from "@/api/product";
+import { getCartItems } from "@/api/cartItem";
 import { useIntersectionObserver, useFilters } from "@/hooks";
+import { changeToProductList } from "@/utils/product";
 
 const App = () => {
   const { category, sort, handleCategoryChange, handleSortChange } =
     useFilters();
 
-  const { data, fetchNextPage, isFetching } = useInfiniteQuery({
+  const {
+    data: productsData,
+    fetchNextPage,
+    isFetching,
+  } = useInfiniteQuery({
     queryKey: ["products", category, sort],
     queryFn: ({ pageParam }) =>
       getProducts(pageParam.page, pageParam.size, category, sort),
@@ -21,17 +27,16 @@ const App = () => {
       return { page: allPages.length + 4, size: 4 };
     },
   });
+  const { data: cartItemsData } = useQuery({
+    queryKey: ["cartItems"],
+    queryFn: getCartItems,
+  });
 
   const observerTarget = useIntersectionObserver(fetchNextPage);
 
-  const productList =
-    data?.pages.flatMap((page) => {
-      return page.content;
-    }) || [];
-
   return (
     <AppLayout>
-      <Header />
+      <Header cartItemKind={cartItemsData?.length || 0} />
       <ProductListLayout>
         <ProductListTitle />
         <Filter
@@ -41,9 +46,9 @@ const App = () => {
           handleSortChange={handleSortChange}
           style={{ marginTop: "24px", marginBottom: "28px" }}
         />
-        <ProductList productList={productList} />
+        <ProductList productList={changeToProductList(productsData)} />
         {isFetching && <div>로딩중............</div>}
-        {!isFetching && <div ref={observerTarget}>타게팅</div>}
+        {<div ref={observerTarget}></div>}
       </ProductListLayout>
     </AppLayout>
   );

@@ -23,11 +23,14 @@ const Product = ({ product, ...rest }: ProductProps) => {
         <ProductName>{product.name}</ProductName>
         <ProductPrice>{product.price}</ProductPrice>
         <ProductFooter>
-          {/* <Button theme="black" style={{ width: "59px", height: "24px" }}>
-            <CartIconSVG />
-            <span>담기</span>
-          </Button> */}
-          {<ProductQuantity />}
+          {product.quantity ? (
+            <ProductQuantity />
+          ) : (
+            <Button theme="black" style={{ width: "59px", height: "24px" }}>
+              <CartIconSVG />
+              <span>담기</span>
+            </Button>
+          )}
         </ProductFooter>
       </ProductInfo>
     </Wrapper>

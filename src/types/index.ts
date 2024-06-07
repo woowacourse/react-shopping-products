@@ -6,6 +6,7 @@ export interface ProductItem {
   price: number;
   imageUrl: `http://${string}` | `https://${string}`;
   category: Category;
+  quantity?: number;
 }
 
 export type Category = (typeof CATEGORIES)[number];

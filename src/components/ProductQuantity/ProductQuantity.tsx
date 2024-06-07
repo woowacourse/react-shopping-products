@@ -1,16 +1,16 @@
-import { Butoon } from "@/components";
+import { Button } from "@/components";
 import { Wrapper } from "./ProductQuantity.style";
 
 const ProductQuantity = () => {
   return (
     <Wrapper>
-      <Butoon theme="white" style={{ width: "24px", height: "24px" }}>
+      <Button theme="white" style={{ width: "24px", height: "24px" }}>
         -
-      </Butoon>
+      </Button>
       <span>2</span>
-      <Butoon theme="white" style={{ width: "24px", height: "24px" }}>
+      <Button theme="white" style={{ width: "24px", height: "24px" }}>
         +
-      </Butoon>
+      </Button>
     </Wrapper>
   );
 };
