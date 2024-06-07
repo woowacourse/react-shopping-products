@@ -1,12 +1,20 @@
 import { fetchAPI } from "./fetch";
-import { ProductItem } from "@/types";
+import { Category, ProductItem, Sort } from "@/types";
 
 export const getProducts = async (
   page: number,
-  size: number
-): Promise<{ totalPages: number; content: ProductItem[] }> => {
-  const data = await fetchAPI<{ totalPages: number; content: ProductItem[] }>({
-    url: `products?page=${page}&size=${size}`,
+  size: number,
+  category: Category | null,
+  sort: Sort = "price,id,asc"
+): Promise<{ totalPages: number; content: ProductItem[]; last: boolean }> => {
+  const data = await fetchAPI<{
+    totalPages: number;
+    content: ProductItem[];
+    last: boolean;
+  }>({
+    url: `products?page=${page}&size=${size}&sort=${sort}${
+      category ? `&category=${category}` : ""
+    }`,
     method: "GET",
   });
 
