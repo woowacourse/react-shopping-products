@@ -2,15 +2,22 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
+import { SortingParam } from '../types/sort';
 
 const getSize = (page: number) => (page === 0 ? 20 : 4);
 const getPage = (lastPage: number) =>
   lastPage === 0 ? lastPage + 5 : lastPage + 1;
-const useProducts = (options?: object) => {
+
+interface useProductProps {
+  sortings?: SortingParam[];
+  filter?: string;
+  options?: object;
+}
+const useProducts = ({ sortings, filter, options }: useProductProps) => {
   const defaultOptions = {
     queryKey: ['product'],
     queryFn: async ({ pageParam }) =>
-      await fetchProducts(pageParam, getSize(pageParam)),
+      await fetchProducts(pageParam, getSize(pageParam), sortings, filter),
     initialPageParam: 0,
     getNextPageParam: (_, __, lastPageParam) => getPage(lastPageParam),
   };
