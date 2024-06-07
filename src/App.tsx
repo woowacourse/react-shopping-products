@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { AppLayout, ProductListLayout } from "@/layout";
 import { Filter, Header, ProductList, ProductListTitle } from "@/components";
 import type { Category, Sort } from "./types";
 import { getProducts } from "@/api/product";
 import { useIntersectionObserver } from "@/hooks";
+import { CATEGORIES, SORTS } from "./constants/product";
 
 const App = () => {
-  const [category, setCategory] = useState<Category | null>(null);
+  const [category, setCategory] = useState<Category>("all");
   const [sort, setSort] = useState<Sort>("price,id,asc");
+
+  const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (CATEGORIES.includes(event.target.value)) {
+      setCategory(event.target.value);
+    }
+  };
+
+  const handleSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (SORTS.includes(event.target.value)) {
+      setSort(event.target.value);
+    }
+  };
 
   const { data, fetchNextPage, isFetching } = useInfiniteQuery({
     queryKey: ["products", category, sort],
@@ -35,7 +48,13 @@ const App = () => {
       <Header />
       <ProductListLayout>
         <ProductListTitle />
-        <Filter style={{ marginTop: "24px", marginBottom: "28px" }} />
+        <Filter
+          category={category}
+          sort={sort}
+          handleCategoryChange={handleCategoryChange}
+          handleSortChange={handleSortChange}
+          style={{ marginTop: "24px", marginBottom: "28px" }}
+        />
         <ProductList productList={productList} />
         {!isFetching && <div ref={observerTarget}></div>}
       </ProductListLayout>

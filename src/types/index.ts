@@ -1,3 +1,5 @@
+import { CATEGORIES, SORTS } from "@/constants/product";
+
 export interface ProductItem {
   id: number;
   name: string;
@@ -6,12 +8,6 @@ export interface ProductItem {
   category: string;
 }
 
-export type Category =
-  | "beverage"
-  | "books"
-  | "fashion"
-  | "fitness"
-  | "kitchen"
-  | "electronics";
+export type Category = (typeof CATEGORIES)[number];
 
-export type Sort = "price,id,asc" | "price,id,desc";
+export type Sort = (typeof SORTS)[number];
