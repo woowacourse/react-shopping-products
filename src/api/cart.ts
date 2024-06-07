@@ -9,6 +9,11 @@ interface AddCartItemProp {
   quantity?: number;
 }
 
+interface UpdateCartItemQuantityProp {
+  cartId: number;
+  quantity: number;
+}
+
 type MutationResponse = Record<'status', number>;
 
 export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
@@ -47,10 +52,10 @@ export const deleteCartItem = async (cartId: number): Promise<MutationResponse> 
   return { status: response.status };
 };
 
-export const updateItemQuantity = async (
-  cartId: number,
-  quantity: number,
-): Promise<MutationResponse> => {
+export const updateItemQuantity = async ({
+  cartId,
+  quantity,
+}: UpdateCartItemQuantityProp): Promise<MutationResponse> => {
   const res = await fetcher.patch({
     url: `${END_POINT.cartItems}/${cartId}`,
     headers: AUTH_HEADER,

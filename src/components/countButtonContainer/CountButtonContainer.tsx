@@ -10,14 +10,14 @@ interface CountButtonContainerProps {
 }
 
 const CountButtonContainer = ({ item }: CountButtonContainerProps) => {
-  const { handleDecrementQuantity, handleIncrementQuantity, isLoading } = useCounter(item);
+  const { handleDecrementQuantity, handleIncrementQuantity, isPending } = useCounter(item);
 
   return (
     <Styled.CountWrapper>
       <Styled.CountButton onClick={handleDecrementQuantity}>
         <img src={IMAGES.MINUS} />
       </Styled.CountButton>
-      {isLoading ? (
+      {isPending ? (
         <Styled.LoadingWrapper>
           <Styled.LoadingSpinner />
         </Styled.LoadingWrapper>
