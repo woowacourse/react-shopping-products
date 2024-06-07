@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 
-import { CartContext } from '../../CartContext';
-import { useFetchAddCart, useFetchDeleteCart } from '../../hooks';
+import { CartContext } from '../../context/CartContext';
 import { Product } from '../../types/fetch';
 import CartButton from '../CartButton/CartButton';
 
@@ -12,10 +11,16 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  // const { postToAddCart, deleteToRemoveCart } = useContext(CartContext);
-  // const { addCartItem } = useContext(CartContext);
-  const { addCartItem } = useFetchAddCart();
-  const { deleteCartItem } = useFetchDeleteCart();
+  const cartContext = useContext(CartContext);
+  if (!cartContext) {
+    throw new Error('CartContext가 비어있습니다.');
+  }
+  const {
+    addCartItem,
+    deleteCartItem,
+    // isDeletePending,
+    // isDeleteError,
+  } = cartContext;
 
   return (
     <div>
@@ -33,7 +38,6 @@ function ProductCard({ product }: ProductCardProps) {
               addCartItem(product.id);
             }}
             onDeleteClick={() => {
-              console.log('delete');
               deleteCartItem(product.id);
             }}
           />

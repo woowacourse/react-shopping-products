@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
 import {
-  useFetchAddCart,
   useFetchCartItems,
   useFetchProducts,
   useIntersectionObserver,
@@ -10,9 +9,9 @@ import Header from '../components/Header/Header';
 import Dropdown from '../components/Dropdown/Dropdown';
 import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
 import ProductCard from '../components/ProductCard/ProductCard';
-import { CartContext } from '../CartContext';
 import { SortingParam } from '../types/sort';
 import { DEFAULT_SORTING_PARAM } from '../constants/page';
+import CartProvider from '../context/CartProvider';
 
 import * as S from './Product.styled';
 
@@ -23,7 +22,6 @@ function Product() {
   ]);
   const [filter, setFilter] = useState('');
 
-  const fetchAddCartState = useFetchAddCart();
   const {
     data: products,
     isError,
@@ -50,7 +48,7 @@ function Product() {
 
   return (
     <>
-      <CartContext.Provider value={fetchAddCartState}>
+      <CartProvider>
         <Header badgeCount={cartItems.length} />
         {isError && <ErrorMessage />}
         <S.ProductContentWrapper>
@@ -68,7 +66,7 @@ function Product() {
             <S.ObserverContainer ref={target} />
           </S.ProductListContainer>
         </S.ProductContentWrapper>
-      </CartContext.Provider>
+      </CartProvider>
     </>
   );
 }
