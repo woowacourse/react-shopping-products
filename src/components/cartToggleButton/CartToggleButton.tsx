@@ -1,4 +1,5 @@
 import * as Styled from './CartToggleButton.styled';
+import CountButtonContainer from '../countButtonContainer/CountButtonContainer';
 
 import { IMAGES } from '@/assets';
 
@@ -9,15 +10,11 @@ interface CartItemButtonProp {
 }
 
 const CartToggleButton = ({ productId }: CartItemButtonProp) => {
-  const { matchCartItem, handleAddCartItem, handleDeleteCartItem } = useCartItems();
+  const { matchCartItem, handleAddCartItem } = useCartItems();
+  const matchedCartItem = matchCartItem(productId);
 
-  if (matchCartItem(productId)) {
-    return (
-      <Styled.HandleCartItemButton $isInCart={true} onClick={() => handleDeleteCartItem(productId)}>
-        <img src={IMAGES.REMOVE_SHOPPING_CART} alt="장바구니에서 삭제버튼" />
-        빼기
-      </Styled.HandleCartItemButton>
-    );
+  if (matchedCartItem) {
+    return <CountButtonContainer item={matchedCartItem} />;
   }
 
   return (

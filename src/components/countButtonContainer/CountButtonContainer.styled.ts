@@ -29,7 +29,7 @@ export const LoadingSpinner = styled.div`
 `;
 
 export const CountWrapper = styled.div`
-  width: 6rem;
+  width: 5rem;
 
   display: flex;
   justify-content: space-between;
