@@ -13,6 +13,12 @@ declare module '@emotion/react' {
       toast: string;
       toastTitle: string;
       cartLabel: string;
+      cartItem: {
+        name: string;
+        price: string;
+        quantity: string;
+        deleteButton: string;
+      };
     };
     color: {
       black: string;

@@ -50,6 +50,36 @@ const theme: Theme = {
       font-weight: 700;
       font-size: 0.625rem;
     `,
+    cartItem: {
+      name: `
+        font-family: Noto Sans KR;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 23.17px;
+        text-align: left;
+      `,
+      price: `
+        font-family: Noto Sans;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 15px;
+        text-align: left;
+      `,
+      quantity: `
+        font-family: Noto Sans;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 15px;
+        text-align: center;
+      `,
+      deleteButton: `
+        font-family: Noto Sans;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 15px;
+        text-align: left;
+      `,
+    },
   },
   color: {
     black: '#000000',

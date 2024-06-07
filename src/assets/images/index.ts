@@ -5,3 +5,5 @@ export { default as REMOVE_TO_CART } from './removeToCart.svg';
 export { default as UP_ARROW } from './upArrow.svg';
 export { default as DOWN_ARROW } from './downArrow.svg';
 export { default as ERROR } from './error.svg';
+export { default as PLUS } from './plus.svg';
+export { default as MINUS } from './minus.svg';
