@@ -6,12 +6,12 @@ import { CART } from '../../assets/images';
 
 interface CartButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   count: number;
-  onClick: () => void;
+  onOpen: () => void;
 }
 
-const CartButton = ({ onClick, count, ...props }: CartButtonProps) => {
+const CartButton = ({ count, onOpen, ...props }: CartButtonProps) => {
   return (
-    <S.CartButton {...props} onClick={onClick}>
+    <S.CartButton {...props} onClick={onOpen}>
       <img src={CART} alt="장바구니" />
       {count !== 0 && <S.NumberOfCartItems>{count >= 10 ? '9+' : count}</S.NumberOfCartItems>}
     </S.CartButton>

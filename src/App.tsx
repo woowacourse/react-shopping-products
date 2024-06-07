@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Container } from './layouts/GlobalLayout/style';
 
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 
 import Header from './components/common/Header';
 import Main from './components/common/Main';
@@ -23,8 +23,10 @@ import { CartItemsContext } from './context/CartItemProvider';
 import { CATEGORIES, PRICE_SORT } from './constants/filter';
 import { Category, Order } from './types/product';
 import { ToastContext } from './context/ToastProvider';
+import CartItemModal from './components/CartItemModal';
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
   const { showToast } = useContext(ToastContext);
   const observerRef = useRef<HTMLDivElement | null>(null);
   const { cartItems } = useContext(CartItemsContext);
@@ -63,7 +65,7 @@ function App() {
     <Container>
       <Header>
         <HomeButton onClick={() => {}} />
-        <CartButton count={cartItems.length} onClick={() => {}} />
+        <CartButton count={cartItems.length} onOpen={() => setIsOpen(true)} />
       </Header>
       <Main>
         <ProductsContainer>
@@ -99,6 +101,7 @@ function App() {
           </ProductsContentContainer>
         </ProductsContainer>
       </Main>
+      <CartItemModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </Container>
   );
 }
