@@ -2,7 +2,6 @@ import { CartItems, Product } from "@/types/products";
 import ItemInfo from "@/components/ItemInfo";
 import * as S from "@/components/ItemCard/style";
 import CartActionButton from "@/components/CartActionButton";
-import { memo } from "react";
 import QuantityUpdateButton from "@/components/QuantityUpdateButton";
 import { convertProductIdToCartId, getQuantityInCart } from "@/utils/cart";
 
@@ -32,9 +31,4 @@ const ItemCard = ({ product, cartItems }: ItemCartProps) => {
   );
 };
 
-const equalProps = (prevProps: ItemCartProps, nextProps: ItemCartProps) => {
-  return prevProps.product.id === nextProps.product.id;
-};
-
-const ItemCartMemo = memo(ItemCard, equalProps);
-export default ItemCartMemo;
+export default ItemCard;

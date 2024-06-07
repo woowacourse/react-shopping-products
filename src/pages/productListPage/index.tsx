@@ -13,6 +13,7 @@ import ItemCardList from "@/components/ItemCardList";
 import useInfiniteFilteredProducts from "@/hooks/server/useInfiniteFilteredProducts";
 import CartModal from "@/pages/cartModal";
 import { useCartItemsQuery } from "@/hooks/server/useCartItems";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 export interface GetProductsProps {
   category: Category;
@@ -24,6 +25,8 @@ const ProductListPage = () => {
 
   const useCategorySelect = useSelect<Category>("전체");
   const useSortSelect = useSelect<Sort>("낮은 가격순");
+
+  const { lockScroll, openScroll } = useBodyScrollLock();
 
   const category = useCategorySelect.selected;
   const sort = useSortSelect.selected;
@@ -38,10 +41,12 @@ const ProductListPage = () => {
 
   const onCloseModal = () => {
     setIsModalOpen(false);
+    openScroll();
   };
 
   const onOpenModal = () => {
     setIsModalOpen(true);
+    lockScroll();
   };
 
   const {
@@ -74,7 +79,9 @@ const ProductListPage = () => {
             <SelectBox useSelector={useCategorySelect} optionsContents={Object.keys(CATEGORY)} />
             <SelectBox useSelector={useSortSelect} optionsContents={Object.keys(SORT)} />
           </S.SelectBoxWrapper>
-          {isModalOpen && cartItems && <CartModal onCloseModal={onCloseModal} cartItems={cartItems} />}
+          {isModalOpen && cartItems && (
+            <CartModal isOpenModal={isModalOpen} onCloseModal={onCloseModal} cartItems={cartItems} />
+          )}
         </S.ItemInfoWrapper>
         {!isLoading && products && <ItemCardList products={products.pages} cartItems={cartItems!} />}
         {hasNextPage && (

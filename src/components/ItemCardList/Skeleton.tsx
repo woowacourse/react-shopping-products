@@ -1,18 +1,17 @@
 import ItemCardSkeleton from "@/components/ItemCard/skeleton";
 import { flexCenter } from "@/styles/common";
+import { forwardRef } from "react";
 import styled from "styled-components";
 
-const ItemCartListSkeleton = ({ ref }: { ref?: React.RefObject<HTMLDivElement> }) => {
+const ItemCartListSkeleton = forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <ItemCardWrapper ref={ref}>
-      {Array.from({ length: 4 })
-        .fill(0)
-        .map((_, i) => (
-          <ItemCardSkeleton key={i} />
-        ))}
+      {Array.from({ length: 4 }).map((_, i) => (
+        <ItemCardSkeleton key={i} />
+      ))}
     </ItemCardWrapper>
   );
-};
+});
 
 export default ItemCartListSkeleton;
 

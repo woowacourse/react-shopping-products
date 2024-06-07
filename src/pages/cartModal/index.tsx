@@ -4,26 +4,17 @@ import CartItem from "@/pages/cartModal/components/CartItem";
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
 import TextBox from "@/components/_common/TextBox";
-import { useEffect } from "react";
 import { CartItems } from "@/types/products";
 
-const CartModal = ({ onCloseModal, cartItems }: { onCloseModal: () => void; cartItems: CartItems[] }) => {
-  useEffect(() => {
-    blockBackScroll();
-  }, []);
-
-  const blockBackScroll = () => {
-    document.body.style.cssText = `
-    position: fixed; 
-    top: -${window.scrollY}px;
-    overflow-y: scroll;
-    width: 100%;`;
-    return () => {
-      const scrollY = document.body.style.top;
-      document.body.style.cssText = "";
-      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-    };
-  };
+const CartModal = ({
+  onCloseModal,
+  cartItems,
+}: {
+  onCloseModal: () => void;
+  cartItems: CartItems[];
+  isOpenModal: boolean;
+}) => {
+  const isEmptyCart = !cartItems.length;
 
   return (
     <S.Wrapper>
@@ -31,9 +22,11 @@ const CartModal = ({ onCloseModal, cartItems }: { onCloseModal: () => void; cart
         <TextBox type="medium" text="장바구니" />
         <Modal.Content>
           <ItemWrapper>
-            {cartItems?.map((item) => (
-              <CartItem item={item} cartItems={cartItems} />
-            ))}
+            {isEmptyCart ? (
+              <div>장바구니가 비어있습니다.</div>
+            ) : (
+              cartItems?.map((item) => <CartItem item={item} cartItems={cartItems} />)
+            )}
           </ItemWrapper>
         </Modal.Content>
         <Modal.StyledButton
