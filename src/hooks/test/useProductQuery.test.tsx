@@ -10,10 +10,14 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe('useProducts', () => {
   it('상품 목록을 가져올 수 있다', async () => {
-    const { result } = renderHook(() => useProductQuery(), { wrapper });
+    const selectBarCondition = {
+      category: 'all',
+      sort: 'priceAsc',
+    };
+    const { result } = renderHook(() => useProductQuery({ selectBarCondition }), { wrapper });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data).toHaveLength(20);
+    expect(result.current.data?.content).toHaveLength(20);
   });
 });
