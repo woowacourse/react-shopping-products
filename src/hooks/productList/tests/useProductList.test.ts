@@ -93,46 +93,36 @@ describe('상품 목록 테스트', () => {
       it('오름차순 선택 시, 상품 각각의 오름차순으로 목록을 보여준다', async () => {
         const FILTERING: Filtering = { category: '', sort: 'price,asc' };
 
-        const { result } = renderHook(() => {
-          const { fetch } = useFetch<typeof fetchProduct>(fetchProduct);
-          const { getFilteredProducts } = useFilteredProducts({
-            fetch,
-          });
-          return { getFilteredProducts };
+        const { result } = renderHook(() => useProductList(FILTERING), { wrapper: queryClientWrapper });
+
+        await waitFor(() => expect(result.current.status).toBe('success'));
+
+        await waitFor(() => {
+          expect(result.current.products).toBeDefined();
         });
 
-        await waitFor(async () => {
-          const response = await result.current.getFilteredProducts(FILTERING);
+        if (!result.current.products) return;
 
-          expect(response).toBeDefined();
-          if (!response) return;
+        const [first, second] = result.current.products;
 
-          const [first, second] = response.newProducts;
-
-          expect(first.price <= second.price).toBeTruthy();
-        });
+        expect(first.price <= second.price).toBeTruthy();
       });
+
       it('내림차순 선택 시, 상품 각겨의 내림차순으로 목록을 보여준다', async () => {
-        const FILTERING: Filtering = { category: '', sort: 'price,desc' };
+        const FILTERING: Filtering = { category: '', sort: 'price,asc' };
 
-        const { result } = renderHook(() => {
-          const { fetch } = useFetch<typeof fetchProduct>(fetchProduct);
-          const { getFilteredProducts } = useFilteredProducts({
-            fetch,
-          });
-          return { getFilteredProducts };
+        const { result } = renderHook(() => useProductList(FILTERING), { wrapper: queryClientWrapper });
+
+        await waitFor(() => expect(result.current.status).toBe('success'));
+
+        await waitFor(() => {
+          expect(result.current.products).toBeDefined();
         });
 
-        await waitFor(async () => {
-          const response = await result.current.getFilteredProducts(FILTERING);
+        if (!result.current.products) return;
+        const [first, second] = result.current.products;
 
-          expect(response).toBeDefined();
-          if (!response) return;
-
-          const [first, second] = response.newProducts;
-
-          expect(first.price >= second.price).toBeTruthy();
-        });
+        expect(first.price >= second.price).toBeTruthy();
       });
     });
   });
