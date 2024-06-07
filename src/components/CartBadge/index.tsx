@@ -4,8 +4,14 @@ import * as S from "@/components/CartBadge/style";
 const CartBadge = ({ cartItemLength, onClick }: { cartItemLength: number; onClick: () => void }) => {
   return (
     <S.Container onClick={onClick}>
-      <Icon kind="cart" />
-      {<S.Badge>{cartItemLength && <S.BadgeNumber>{cartItemLength}</S.BadgeNumber>}</S.Badge>}
+      <>
+        <Icon kind="cart" />
+        {cartItemLength !== 0 && (
+          <S.Badge>
+            <S.BadgeNumber>{cartItemLength}</S.BadgeNumber>
+          </S.Badge>
+        )}
+      </>
     </S.Container>
   );
 };
