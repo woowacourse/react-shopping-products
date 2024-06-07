@@ -1,25 +1,18 @@
-import { useState } from 'react';
-
 import * as Styled from './Header.styled';
-import ShoppingCartModal from './ShoppingCartModal';
+import ShoppingCartModal from '../ShoppingCartModal';
 
 import { IMAGES } from '@/assets';
 
 import useCartItems from '@/hooks/useCartItems';
+import useModal from '@/hooks/useModal';
 
 const Header = () => {
   const { cartItems } = useCartItems();
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, handleOpen, handleClose } = useModal();
 
-  const handleOpen = () => {
-    setIsOpen(true);
+  const handleClickLogo = () => {
+    scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
-  const handleClickLogo = () => scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
   return (
     <Styled.Header>

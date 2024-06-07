@@ -1,6 +1,6 @@
 import { Modal } from 'maru-nice-modal';
 
-import Receipt from '../receipt/Receipt';
+import Receipt from './receipt/Receipt';
 
 import CartItem from '@/components/cartItem/CartItem';
 import { CartItemInfo } from '@/types/cartItem';
