@@ -30,7 +30,7 @@ export const ProductItem = ({
       const cartItem = cartItems.find((item) => item.product.id === id);
       setIsInCart(!!cartItem);
       setCartItemId(cartItem ? cartItem.id : null);
-    } catch (error) {
+    } catch (error: any) {
       setErrorStatus(error.response?.status);
     }
   };
@@ -40,7 +40,7 @@ export const ProductItem = ({
       await addCartItem(id, 1);
       setIsInCart(true);
       fetchCartItems();
-    } catch (error) {
+    } catch (error: any) {
       setErrorStatus(error.response?.status);
       setIsInCart(false);
     }
@@ -54,7 +54,7 @@ export const ProductItem = ({
       setIsInCart(false);
       setCartItemId(null);
       fetchCartItems();
-    } catch (error) {
+    } catch (error: any) {
       setErrorStatus(error.response?.status);
       setIsInCart(true);
       setCartItemId(cartItemId);
