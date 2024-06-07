@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { MainLogo, ShoppingCartIcon } from "../../assets";
 import * as S from "./Header.style";
-import { QuantityContext } from "../../store/QuantityContext";
+import useCartItem from "../../hooks/useCartItem";
 
 function Header() {
-  const quantityContext = useContext(QuantityContext);
-  const quantity = quantityContext ? quantityContext.quantity : 0;
+  const { fetchCartItemList } = useCartItem();
+  const quantity = fetchCartItemList.data?.content.length;
 
   return (
     <S.HeaderBackground>
