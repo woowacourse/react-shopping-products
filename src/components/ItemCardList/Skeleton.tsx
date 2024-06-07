@@ -3,10 +3,14 @@ import { flexCenter } from "@/styles/common";
 import { forwardRef } from "react";
 import styled from "styled-components";
 
-const ItemCartListSkeleton = forwardRef<HTMLDivElement>((_, ref) => {
+interface ItemCartListSkeletonProps {
+  itemCount?: number;
+}
+
+const ItemCartListSkeleton = forwardRef<HTMLDivElement, ItemCartListSkeletonProps>(({ itemCount = 4 }, ref) => {
   return (
     <ItemCardWrapper ref={ref}>
-      {Array.from({ length: 4 }).map((_, i) => (
+      {Array.from({ length: itemCount }).map((_, i) => (
         <ItemCardSkeleton key={i} />
       ))}
     </ItemCardWrapper>

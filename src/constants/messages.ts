@@ -5,3 +5,8 @@ export const ERROR_MESSAGES = {
   failGetProducts: "상품 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.",
   failPushCart: "장바구니가 꽉 찼습니다. 상품을 삭제 후 진행해 주세요.",
 };
+
+export const EMPTY = {
+  emptyCartItems: "장바구니가 비어있습니다.",
+  emtpyProducts: "상품이 존재하지 않습니다",
+};

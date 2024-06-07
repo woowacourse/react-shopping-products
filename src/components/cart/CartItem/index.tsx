@@ -1,5 +1,5 @@
 import { CartItems } from "@/types/products.ts";
-import * as S from "@/pages/cartModal/components/CartItem/style";
+import * as S from "@/components/cart/CartItem/style";
 import TextBox from "@/components/_common/TextBox/index.tsx";
 import QuantityUpdateButton from "@/components/QuantityUpdateButton/index.tsx";
 import Button from "@/components/_common/Button";

@@ -1,11 +1,11 @@
 import { Modal } from "rian-modal-component";
 import * as S from "@/pages/cartModal/style";
-import CartItem from "@/pages/cartModal/components/CartItem";
+import CartItem from "@/components/cart/CartItem";
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
 import TextBox from "@/components/_common/TextBox";
 import { CartItems } from "@/types/products";
-import CartEmpty from "@/pages/cartModal/components/EmptyCart";
+import EmptyState from "@/components/_common/EmptyState";
 
 const CartModal = ({
   onCloseModal,
@@ -23,7 +23,11 @@ const CartModal = ({
         <TextBox type="medium" text="장바구니" />
         <Modal.Content>
           <ItemWrapper>
-            {isEmptyCart ? <CartEmpty /> : cartItems?.map((item) => <CartItem item={item} cartItems={cartItems} />)}
+            {isEmptyCart ? (
+              <EmptyState type="cart" />
+            ) : (
+              cartItems?.map((item) => <CartItem item={item} cartItems={cartItems} />)
+            )}
           </ItemWrapper>
         </Modal.Content>
         <Modal.StyledButton

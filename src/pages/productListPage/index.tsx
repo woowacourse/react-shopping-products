@@ -14,6 +14,7 @@ import useInfiniteFilteredProducts from "@/hooks/server/useInfiniteFilteredProdu
 import CartModal from "@/pages/cartModal";
 import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import EmptyState from "@/components/_common/EmptyState";
 
 export interface GetProductsProps {
   category: Category;
@@ -83,6 +84,8 @@ const ProductListPage = () => {
             <CartModal isOpenModal={isModalOpen} onCloseModal={onCloseModal} cartItems={cartItems} />
           )}
         </S.ItemInfoWrapper>
+        {isLoading && <ItemCartListSkeleton itemCount={6} />}
+        {!isLoading && !products && <EmptyState type="products" />}
         {!isLoading && products && <ItemCardList products={products.pages} cartItems={cartItems!} />}
         {hasNextPage && (
           <div ref={ref}>
