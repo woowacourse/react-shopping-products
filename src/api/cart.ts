@@ -22,17 +22,6 @@ export const fetchCartItems = async (size: number = SIZE.DEFAULT): Promise<CartA
   return { data: data.content, totalElements: data.totalElements };
 };
 
-export const getCartItems = async () => {
-  const { data: initialData, totalElements } = await fetchCartItems();
-
-  if (totalElements <= SIZE.DEFAULT) {
-    return initialData;
-  }
-
-  const { data: totalData } = await fetchCartItems(totalElements);
-  return totalData;
-};
-
 export const addCartItem = async (productId: number): Promise<void> => {
   return apiClient.post({
     endpoint: '/cart-items',

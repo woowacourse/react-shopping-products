@@ -6,7 +6,7 @@ import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import ProductItem from '../../components/ProductItem/ProductItem';
 import ShoppingCartModal from '../../components/ShoppingCartModal/ShoppingCartModal';
 import useProducts from '../../hooks/useProducts/useProducts';
-import useCartItems from '../../hooks/useCartItems/useCartItems';
+import useCartItems from '../../hooks/queries/useCartItems/useCartItems';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useModal from '../../hooks/useModal';
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';

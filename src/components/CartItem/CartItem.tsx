@@ -1,5 +1,6 @@
 import QuantityStepper from '../QuantityStepper/QuantityStepper';
-import useCartItems from '../../hooks/useCartItems/useCartItems';
+import useDeleteCartItem from '../../hooks/mutations/useDeleteCartItem';
+import useUpdateCartItemQuantity from '../../hooks/mutations/useUpdateCartItemQuantity';
 import { Cart } from '../../types/Cart.type';
 import * as S from './CartItem.style';
 
@@ -10,7 +11,8 @@ interface CartItemProps {
 function CartItem({ cartItem }: CartItemProps) {
   const { quantity, product } = cartItem;
 
-  const { handleDeleteCartItem, handleUpdateCartItemQuantity } = useCartItems();
+  const { handleDeleteCartItem } = useDeleteCartItem();
+  const { handleUpdateCartItemQuantity } = useUpdateCartItemQuantity();
 
   return (
     <S.Layout>

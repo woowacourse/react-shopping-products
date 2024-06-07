@@ -1,7 +1,8 @@
 import { Product } from '../../types/Product.type';
 import AddCart from '../../assets/AddCart.svg';
 import Button from '../Button/Button';
-import useCartItems from '../../hooks/useCartItems/useCartItems';
+import useAddCartItem from '../../hooks/mutations/useAddCartItem';
+import useUpdateCartItemQuantity from '../../hooks/mutations/useUpdateCartItemQuantity';
 import QuantityStepper from '../QuantityStepper/QuantityStepper';
 import * as S from './ProductItem.style';
 
@@ -13,7 +14,8 @@ interface ProductItemProps {
 const ProductItem = ({ product, quantity }: ProductItemProps) => {
   const { id, name, price, imageUrl } = product;
 
-  const { handleAddCartItem, handleUpdateCartItemQuantity } = useCartItems();
+  const { handleAddCartItem } = useAddCartItem();
+  const { handleUpdateCartItemQuantity } = useUpdateCartItemQuantity();
 
   return (
     <S.Layout>
