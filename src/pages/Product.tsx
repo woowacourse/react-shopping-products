@@ -17,6 +17,8 @@ function Product() {
   const target = useRef(null);
 
   const fetchAddCartState = useFetchAddCart();
+  // const fetchProductState = useFetchProduct
+
   const [sortings, setSortings] = useState<SortingParam[]>([
     DEFAULT_SORTING_PARAM,
   ]);
@@ -47,7 +49,8 @@ function Product() {
   return (
     <>
       <CartContext.Provider value={fetchAddCartState}>
-        <Header badgeCount={fetchAddCartState.cartIdSet.size} />
+        {/* TODO: 임의의 값 수정하기 */}
+        <Header badgeCount={3} />
         {isError && <ErrorMessage />}
         <S.ProductContentWrapper>
           <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
@@ -58,7 +61,7 @@ function Product() {
           />
 
           <S.ProductListContainer>
-            {products?.map((product) => {
+            {products.map((product) => {
               return <ProductCard key={product.id} product={product} />;
             })}
             <S.ObserverContainer ref={target} />

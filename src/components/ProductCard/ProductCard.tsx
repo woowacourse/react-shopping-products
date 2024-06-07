@@ -11,7 +11,8 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  const { postToAddCart, deleteToRemoveCart } = useContext(CartContext);
+  // const { postToAddCart, deleteToRemoveCart } = useContext(CartContext);
+  const { addCartItem } = useContext(CartContext);
 
   return (
     <div>
@@ -26,10 +27,11 @@ function ProductCard({ product }: ProductCardProps) {
           <CartButton
             id={product.id}
             onAddClick={() => {
-              postToAddCart(product.id);
+              addCartItem(product.id);
             }}
             onDeleteClick={() => {
-              deleteToRemoveCart(product.id);
+              console.log('delete');
+              // deleteToRemoveCart(product.id);
             }}
           />
         </S.ButtonContainer>
