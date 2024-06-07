@@ -5,7 +5,7 @@ import { postAddItems } from '../api/products';
 const useFetchAddCart = () => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
+  const { mutate, isSuccess } = useMutation({
     mutationKey: ['addCartItems'],
     mutationFn: postAddItems,
     onSuccess() {
@@ -15,6 +15,7 @@ const useFetchAddCart = () => {
 
   return {
     addCartItem: mutate,
+    isSuccess,
   };
 };
 
