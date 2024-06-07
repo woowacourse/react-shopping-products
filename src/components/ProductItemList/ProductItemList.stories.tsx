@@ -16,7 +16,6 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {
   args: {
     category: "fitness" as Category,
-    sortOption: "price,desc" as Sorting,
-    onError: () => {},
+    sort: "price,desc" as Sorting,
   },
 };

@@ -1,6 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   requestAddCartItem,
+  requestFetchCartItemList,
   requestUpdateCartItemQuantity,
 } from "../apis/cartItems";
 
@@ -8,6 +9,11 @@ import { Product } from "../interfaces/Product";
 
 export default function useCartItem() {
   const queryClient = useQueryClient();
+
+  const fetchCartItemList = useQuery({
+    queryKey: ["cartItemList"],
+    queryFn: () => requestFetchCartItemList(),
+  });
   const addCartItem = useMutation({
     mutationFn: (product: Product) => requestAddCartItem(product.id, 1),
     onSuccess: () => {
@@ -29,6 +35,7 @@ export default function useCartItem() {
   });
 
   return {
+    fetchCartItemList,
     addCartItem,
     updateCartItemQuantity,
   };

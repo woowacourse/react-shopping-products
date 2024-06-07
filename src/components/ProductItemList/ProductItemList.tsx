@@ -6,7 +6,7 @@ import { Category, Product } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import Spinner from "../common/Spinner/Spinner";
-import useFetchCartItemList from "../../hooks/useFetchCartItemList";
+import useCartItem from "../../hooks/useCartItem";
 
 interface ProductItemListProp {
   category: Category;
@@ -14,6 +14,7 @@ interface ProductItemListProp {
 }
 
 function ProductItemList({ category, sort }: ProductItemListProp) {
+  const { fetchCartItemList } = useCartItem();
   const {
     data: productListData,
     error: productListError,
@@ -30,7 +31,7 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     data: cartItemListData,
     error: cartItemListError,
     isFetching: isCartItemListFetching,
-  } = useFetchCartItemList();
+  } = fetchCartItemList;
 
   const target = useRef(null);
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
@@ -40,7 +41,6 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     observe(target.current);
 
     if (productListData?.pages.length === 0 || !hasNextPage) {
-      console.log(!hasNextPage);
       unobserve(target.current);
     }
   }, [productListData?.pages, observe, unobserve, hasNextPage]);
@@ -49,9 +49,9 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     <>
       <S.ProductList>
         {productListData?.pages.map((page) =>
-          page.content.map((product: Product, idx: number) => (
+          page.content.map((product: Product) => (
             <ProductItem
-              key={`${idx}_${product.id}`}
+              key={product.id}
               product={product}
               cartItemList={cartItemListData?.content ?? []}
             />

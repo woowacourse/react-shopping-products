@@ -7,22 +7,20 @@ import ProductItemList from "../ProductItemList/ProductItemList";
 
 function ProductItemSection() {
   const [category, setCategory] = useState<Category>("" as Category);
-  const [sortingOption, setSortingOption] = useState<Sorting>(
-    Sorting.PRICE_ASC
-  );
+  const [sorting, setSorting] = useState<Sorting>(Sorting.PRICE_ASC);
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setCategory(e.target.value as Category);
   const handleSortingChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setSortingOption(e.target.value as Sorting);
+    setSorting(e.target.value as Sorting);
   return (
     <S.ProductSectionContainer>
       <DropdownContainer
         category={category}
         onChangeCategory={handleCategoryChange}
-        sortingOption={sortingOption}
+        sortingOption={sorting}
         onChangeSortingOption={handleSortingChange}
       />
-      <ProductItemList category={category} sortOption={sortingOption} />
+      <ProductItemList category={category} sort={sorting} />
     </S.ProductSectionContainer>
   );
 }
