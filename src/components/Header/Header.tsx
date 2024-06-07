@@ -1,6 +1,7 @@
-import { MainLogo, ShoppingCartIcon } from "../../assets";
+import { MainLogo } from "../../assets";
 import * as S from "./Header.style";
 import useCartItem from "../../hooks/useCartItem";
+import ShoppingCartButton from "../ShoppingCartButton/ShoppingCartButton";
 
 function Header() {
   const { fetchCartItemList } = useCartItem();
@@ -10,16 +11,7 @@ function Header() {
     <S.HeaderBackground>
       <S.HeaderWrapper>
         <S.MainLogo src={MainLogo} alt="메인 로고" />
-        <S.ShoppingCartButton>
-          <S.ShoppingCartIconContainer
-            src={ShoppingCartIcon}
-          ></S.ShoppingCartIconContainer>
-          {quantity && (
-            <S.ShoppingCartQuantityContainer>
-              <S.ShoppingCartQuantity>{quantity}</S.ShoppingCartQuantity>
-            </S.ShoppingCartQuantityContainer>
-          )}
-        </S.ShoppingCartButton>
+        <ShoppingCartButton quantity={quantity} />
       </S.HeaderWrapper>
     </S.HeaderBackground>
   );
