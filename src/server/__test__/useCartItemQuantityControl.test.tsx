@@ -1,6 +1,3 @@
-// 1. 20개를 초과하여 담으면 에러
-// 2. 없는 상품을 삭제하려고 하면 에러
-
 import { renderHook } from "@testing-library/react";
 import { vi } from "vitest";
 import { useCartItemQuantityControl } from "@server/hooks/useCartItemQuantityControl";
@@ -13,7 +10,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-vi.mock("@server/useCartItems");
+vi.mock("@server/queries/useCartItems");
 
 describe("useCartItemQuantityControl", () => {
   beforeEach(() => {
