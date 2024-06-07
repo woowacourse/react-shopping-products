@@ -5,7 +5,7 @@ import fetchResponse from './fetchResponse';
 
 export const fetchCartItems = async (page: number) => {
   const response = await fetchResponse({
-    url: `${ENDPOINTS_CART}?page=${page}&size=${SIZE.DEFAULT}`,
+    url: `${ENDPOINTS_CART}?page=${page}&size=${SIZE.CART_ITEMS}`,
     method: 'GET',
   });
 

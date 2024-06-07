@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
 import { CartContext } from '../../CartContext';
+import { useFetchAddCart, useFetchDeleteCart } from '../../hooks';
 import { Product } from '../../types/fetch';
 import CartButton from '../CartButton/CartButton';
 
@@ -12,7 +13,9 @@ interface ProductCardProps {
 
 function ProductCard({ product }: ProductCardProps) {
   // const { postToAddCart, deleteToRemoveCart } = useContext(CartContext);
-  const { addCartItem } = useContext(CartContext);
+  // const { addCartItem } = useContext(CartContext);
+  const { addCartItem } = useFetchAddCart();
+  const { deleteCartItem } = useFetchDeleteCart();
 
   return (
     <div>
@@ -31,7 +34,7 @@ function ProductCard({ product }: ProductCardProps) {
             }}
             onDeleteClick={() => {
               console.log('delete');
-              // deleteToRemoveCart(product.id);
+              deleteCartItem(product.id);
             }}
           />
         </S.ButtonContainer>

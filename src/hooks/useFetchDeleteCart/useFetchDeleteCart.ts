@@ -1,29 +1,33 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { deleteItem } from '../../api/products';
+import { fetchCartItems } from '../../api/cartItems';
+import { QUERY_KEYS } from '../../constants/queryKeys';
+import { PAGE } from '../../constants/page';
 
 const useFetchDeleteCart = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ['deleteCartItems'],
-    mutationFn: deleteItem,
-    // onMutate() {
-    //   /* ... */
-    // },
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['delete-cart-item'] });
+    mutationFn: async (id: number) => {
+      const cartItemsResponse = await fetchCartItems(PAGE.DEFAULT);
+      const cartItemToDelete = cartItemsResponse.content.find(
+        (item) => item.product.id === id,
+      );
+
+      if (!cartItemToDelete) {
+        throw new Error('상품이 장바구니에 없습니다.');
+      }
+      await deleteItem(cartItemToDelete.id);
     },
-    // onError(err) {
-    //   console.log(err);
-    // },
-    // onSettled() {
-    //   /* finally와 같은 역할 */
-    // },
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
+    },
   });
 
   return {
-    addCartItem: mutate,
+    deleteCartItem: mutate,
     // isPending,
     // isError,
   };
