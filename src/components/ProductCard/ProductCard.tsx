@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import { CartContext } from '../../context/CartContext';
 import { Product } from '../../types/fetch';
-import CartButton from '../CartButton/CartButton';
+import { CartButton } from '../index';
 
 import * as S from './ProductCard.styled';
 

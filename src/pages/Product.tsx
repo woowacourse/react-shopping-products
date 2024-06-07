@@ -5,10 +5,12 @@ import {
   useFetchProducts,
   useIntersectionObserver,
 } from '../hooks/index';
-import Header from '../components/Header/Header';
-import Dropdown from '../components/Dropdown/Dropdown';
-import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
-import ProductCard from '../components/ProductCard/ProductCard';
+import {
+  Header,
+  Dropdown,
+  ErrorMessage,
+  ProductCard,
+} from '../components/index';
 import { SortingParam } from '../types/sort';
 import { DEFAULT_SORTING_PARAM } from '../constants/page';
 import CartProvider from '../context/CartProvider';
