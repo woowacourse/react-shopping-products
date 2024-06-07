@@ -42,12 +42,12 @@ export interface ProductResponse extends ProductResponseWithoutContent {
   content: Product[];
 }
 
-export interface Carts {
+export interface CartItem {
   id: number;
   quantity: number;
   product: Product;
 }
 
 export interface CartResponse extends ProductResponseWithoutContent {
-  content: Carts[];
+  content: CartItem[];
 }
