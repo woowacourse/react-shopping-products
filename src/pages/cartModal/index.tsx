@@ -29,15 +29,13 @@ const CartModal = ({
             ) : (
               <>
                 {cartItems?.map((item) => (
-                  <>
-                    <CartItem item={item} cartItems={cartItems} />
-                  </>
+                  <CartItem item={item} cartItems={cartItems} />
                 ))}
-                <CartPrice />
               </>
             )}
           </ItemWrapper>
         </Modal.Content>
+        {!isEmptyCart && <CartPrice />}
         <Modal.StyledButton
           backgroundColor={theme.COLOR["grey3"]}
           textColor="white"
