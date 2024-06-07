@@ -6,7 +6,7 @@ const useProducts = (initialCategory: Option, initialSorting: Option) => {
   const [category, setCategory] = useState(initialCategory);
   const [sort, setSort] = useState(initialSorting);
 
-  const { products, isFetching, isError, hasNextPage, isFetchingNextPage, fetchNextPage } = useFetchProducts(
+  const { products, isFetching, error, hasNextPage, isFetchingNextPage, fetchNextPage } = useFetchProducts(
     category,
     sort,
   );
@@ -22,7 +22,7 @@ const useProducts = (initialCategory: Option, initialSorting: Option) => {
   return {
     products,
     isFetching,
-    isError,
+    error,
     hasNextPage,
     category,
     sort,
