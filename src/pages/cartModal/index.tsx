@@ -21,7 +21,7 @@ const CartModal = ({
   return (
     <S.Wrapper>
       <Modal isOpen={true} position="bottom" onClose={onCloseModal}>
-        <TextBox type="medium" text="장바구니" />
+        <TextBox type="medium" text="장바구니" style={{ paddingBottom: 10 }} />
         <Modal.Content>
           <ItemWrapper>
             {isEmptyCart ? (
@@ -35,7 +35,7 @@ const CartModal = ({
             )}
           </ItemWrapper>
         </Modal.Content>
-        {!isEmptyCart && <CartPrice />}
+        {!isEmptyCart && <CartPrice cartItems={cartItems} />}
         <Modal.StyledButton
           backgroundColor={theme.COLOR["grey3"]}
           textColor="white"

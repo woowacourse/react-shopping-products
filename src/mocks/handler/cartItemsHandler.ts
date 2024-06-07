@@ -38,7 +38,7 @@ export const cartItemsHandler = [
     const { id } = params;
 
     const targetIndex = cartItemsData.content.findIndex((item) => item.id === Number(id));
-    if (!targetIndex) return new HttpResponse(null, { status: 404 });
+    if (targetIndex === -1) return new HttpResponse(null, { status: 404 });
 
     cartItemsData.content.splice(targetIndex, 1);
     return HttpResponse.json(null, { status: 201 });

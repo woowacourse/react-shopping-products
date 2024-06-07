@@ -1,10 +1,12 @@
 import useCardPriceCalculator from "@/hooks/useCartPrice";
 import * as S from "@/components/cart/CartPrice/style";
 import TextBox from "@/components/_common/TextBox";
+import { CartItems } from "@/types/products";
 
-const CartPrice = () => {
+const CartPrice = ({ cartItems }: { cartItems: CartItems[] }) => {
   const { calculateItemsPrice } = useCardPriceCalculator();
-  const price = calculateItemsPrice();
+
+  const price = calculateItemsPrice(cartItems);
 
   return (
     <S.Wrapper>
