@@ -36,7 +36,7 @@ export const handlers = [
     const formattedProducts = sortedProducts.slice(startIndex, endIndex);
     const last = !products.content[endIndex + 1];
 
-    return HttpResponse.json({ last, content: [...formattedProducts] });
+    return HttpResponse.json({ number: page, last, content: [...formattedProducts] });
   }),
 
   http.get(`${API_URL}${ENDPOINT.cartItems}`, ({ request }) => {

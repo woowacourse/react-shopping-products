@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchProducts } from '../api';
 import { formattedKey } from './useProducts.util';
 
@@ -9,14 +9,31 @@ interface Props {
 const useProductQuery = ({ selectBarCondition }: Props) => {
   const params = {
     category: selectBarCondition.category,
-    page: 0,
-    size: 20,
     sort: formattedKey(selectBarCondition.sort),
   };
-  return useQuery({
+  const { data, isError, isSuccess, fetchNextPage } = useInfiniteQuery({
     queryKey: ['products'],
-    queryFn: () => fetchProducts(params),
+    queryFn: ({ pageParam }) => {
+      const size = pageParam === 0 ? 20 : 4;
+      return fetchProducts({ ...params, size, page: pageParam });
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.last) {
+        return null;
+      }
+      if (lastPage.number === 0) {
+        return 5;
+      }
+      return lastPage.number + 1;
+    },
   });
+  return {
+    products: data?.pages.map((page) => page.content).flat(),
+    isError,
+    isSuccess,
+    fetchNextPage,
+  };
 };
 
 export default useProductQuery;
