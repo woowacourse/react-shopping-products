@@ -1,11 +1,5 @@
-// import CheckBox from "../../_common/CheckBox/CheckBox.tsx";
-// import MinusButton from "@/assets/minus-button.svg?react";
-// import PlusButton from "@/assets/plus-button.svg?react";
 import { CartItems } from "@/types/products.ts";
 import * as S from "@/pages/cartModal/components/CartItem/style";
-// import { formatToWon } from "@/utils/stringHelper.ts";
-// import useSelectedItems from "@/hooks/cart/useSelectedItems.ts";
-// import useCartItems from "@/hooks/cart/useCartItems.ts";
 import TextBox from "@/components/_common/TextBox/index.tsx";
 import QuantityUpdateButton from "@/components/QuantityUpdateButton/index.tsx";
 import Button from "@/components/_common/Button";
@@ -35,7 +29,7 @@ const CartItem = ({ item, cartItems }: { item: CartItems; cartItems: CartItems[]
         <S.ItemInfoTextBox>
           <TextBox type="small" text={name} />
           <TextBox type="xSmall" text={formatToWon(price)} />
-          <QuantityUpdateButton quantity={quantity} cartId={cartId!} />{" "}
+          <QuantityUpdateButton quantity={quantity} cartId={cartId!} />
           <S.DeleteButton>
             <Button
               borderType={"round"}

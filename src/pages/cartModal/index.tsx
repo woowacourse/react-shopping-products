@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { theme } from "@/styles/theme";
 import TextBox from "@/components/_common/TextBox";
 import { CartItems } from "@/types/products";
+import CartEmpty from "@/pages/cartModal/components/EmptyCart";
 
 const CartModal = ({
   onCloseModal,
@@ -22,11 +23,7 @@ const CartModal = ({
         <TextBox type="medium" text="장바구니" />
         <Modal.Content>
           <ItemWrapper>
-            {isEmptyCart ? (
-              <div>장바구니가 비어있습니다.</div>
-            ) : (
-              cartItems?.map((item) => <CartItem item={item} cartItems={cartItems} />)
-            )}
+            {isEmptyCart ? <CartEmpty /> : cartItems?.map((item) => <CartItem item={item} cartItems={cartItems} />)}
           </ItemWrapper>
         </Modal.Content>
         <Modal.StyledButton
@@ -48,4 +45,5 @@ const ItemWrapper = styled.div`
   max-height: 400px;
   overflow-y: scroll;
   width: 100%;
+  min-height: 250px;
 `;
