@@ -2,9 +2,11 @@ import * as S from './style';
 import useCartItems from '../../hooks/useCartItems';
 import Quantity from '../common/Quantity';
 import Loading from '../common/Loading';
+import useHandleCartItems from '../../hooks/useHandleCartItems';
 
 const CartItems = () => {
   const { data: cartItems, isLoading } = useCartItems();
+  const { deleteCart } = useHandleCartItems();
 
   return (
     <S.CartItemsContainer>
@@ -20,9 +22,9 @@ const CartItems = () => {
                   <S.ProductName>{cartItem.product.name}</S.ProductName>
                   <S.Price>{cartItem.product.price.toLocaleString('ko-KR')}원</S.Price>
                 </S.CartItemTextWrapper>
-                <S.DeleteButton onClick={() => console.log('삭제')}>삭제</S.DeleteButton>
+                <S.DeleteButton onClick={() => deleteCart.mutate(cartItem.id)}>삭제</S.DeleteButton>
               </S.CartItemInfoWrapper>
-              <Quantity cartId={cartItem.id} quantity={cartItem.quantity} />
+              <Quantity deleteIfZero={false} cartId={cartItem.id} quantity={cartItem.quantity} />
             </S.CartItemInfoContainer>
           </S.CartItemContainer>
         ))

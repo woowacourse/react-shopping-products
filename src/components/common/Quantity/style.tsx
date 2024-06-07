@@ -9,7 +9,7 @@ export const QuantityText = styled.span`
   padding: 0.2813rem 0.25rem;
 `;
 
-export const CountButton = styled.button`
+export const CountButton = styled.button<{ $disabled: boolean }>`
   width: 1.5rem;
   height: 1.5rem;
 
@@ -18,8 +18,10 @@ export const CountButton = styled.button`
   border-radius: 0.5rem;
   border: 1px solid ${(props) => props.theme.color.borderGray};
 
+  opacity: ${(props) => (props.$disabled ? 0.3 : 1)};
+
   &:hover {
-    opacity: 0.7;
+    opacity: ${(props) => (props.$disabled ? 0.3 : 0.7)};
   }
 `;
 

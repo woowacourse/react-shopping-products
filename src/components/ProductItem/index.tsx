@@ -38,7 +38,7 @@ const ProductItem = ({ id, imageUrl, name, price, cartItem }: ProductItemProps) 
             {addCart.isPending ? (
               <Spinner />
             ) : isInCart ? (
-              <Quantity cartId={cartItem.id} quantity={cartItem.quantity} />
+              <Quantity deleteIfZero={true} cartId={cartItem.id} quantity={cartItem.quantity} />
             ) : (
               <S.ToggleButton
                 disabled={addCart.isPending}
