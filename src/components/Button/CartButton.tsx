@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { getCartItems } from "../../api/cart";
 import { ShoppingCartIcon } from "../../assets";
+import { useCart } from "../../context/cartContext";
 import { BaseButton } from "./BaseButton";
 import { StyledCartButtonImg, StyledCartCount, StyledContainer } from "./CartButton.styled";
 
@@ -9,27 +8,13 @@ interface CartButtonProps {
 }
 
 export const CartButton = ({ onClick = () => {} }: CartButtonProps) => {
-  const [cartCount, setCartCount] = useState<number>(0);
-
-  const fetchCartItems = async () => {
-    try {
-      const cartItems = await getCartItems();
-      setCartCount(cartItems.length);
-    } catch (error) {
-      console.error("Failed to fetch cart counts", error);
-      setCartCount(0);
-    }
-  };
-
-  useEffect(() => {
-    fetchCartItems();
-  }, []);
+  const { cartItems } = useCart();
 
   return (
     <BaseButton onClick={onClick}>
       <StyledContainer>
         <StyledCartButtonImg src={ShoppingCartIcon} alt="" />
-        <StyledCartCount>{cartCount}</StyledCartCount>
+        <StyledCartCount>{cartItems.length}</StyledCartCount>
       </StyledContainer>
     </BaseButton>
   );

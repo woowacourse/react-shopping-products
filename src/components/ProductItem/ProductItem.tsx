@@ -11,6 +11,7 @@ import {
   StyledProductPrice,
   StyledWrapper,
 } from "./ProductItem.styled";
+import { useCart } from "../../context/cartContext";
 
 export const ProductItem = ({
   id,
@@ -21,6 +22,7 @@ export const ProductItem = ({
   const [isInCart, setIsInCart] = useState(false);
   const [cartItemId, setCartItemId] = useState<number | null>(null);
   const { setErrorStatus } = useError();
+  const { fetchCartItems } = useCart();
 
   const fetchCartItemStatus = async () => {
     try {
@@ -38,6 +40,7 @@ export const ProductItem = ({
       await addCartItem(id, 1);
       setIsInCart(true);
       await fetchCartItemStatus();
+      fetchCartItems();
     } catch (error) {
       setErrorStatus(error.response?.status);
       setIsInCart(false);
@@ -51,6 +54,7 @@ export const ProductItem = ({
       await removeCartItem(cartItemId);
       setIsInCart(false);
       setCartItemId(null);
+      fetchCartItems();
     } catch (error) {
       setErrorStatus(error.response?.status);
       setIsInCart(true);
