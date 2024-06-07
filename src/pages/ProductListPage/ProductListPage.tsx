@@ -3,10 +3,12 @@ import ProductHeader from '../../components/product/ProductHeader';
 import ProductItem from '../../components/product/ProductItem';
 import Dropdown from '../../components/common/Dropdown';
 import FloatingButton from '../../components/common/FloatingButton';
+import CartModal from '../../components/cart/CartModal';
 
 import useProducts from '../../hooks/useProducts/useProducts';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useFilterAndSort from '../../hooks/useFilterAndSort';
+import useModal from '../../hooks/useModal';
 
 import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
 import * as S from './ProductListPage.style';
@@ -17,18 +19,21 @@ import Loading from '../../assets/loading.gif';
 const ProductListPage = () => {
   const { category, sort, handleCategory, handleSort } = useFilterAndSort();
   const { products, loading, error, isLast, handlePage } = useProducts(category, sort);
+  const { isOpen, handleOpen, handleClose } = useModal();
   const targetRef = useIntersectionObserver(handlePage);
 
   const isAddPageAble = !error && !isLast;
 
   return (
     <Layout>
+      <CartModal isOpen={isOpen} onClose={handleClose} />
+
       <Layout.Header>
-        <ProductHeader />
+        <ProductHeader onOpen={handleOpen} />
       </Layout.Header>
 
       <Layout.Content>
-        <Layout.Title mainTitle="텐파의 쇼핑몰" />
+        <Layout.Title mainTitle="텐텐의 쇼핑몰" />
 
         <S.DropdownContainer>
           <Dropdown options={CATEGORY_LIST} selectedOption={category} updateOption={handleCategory} />
@@ -54,6 +59,7 @@ const ProductListPage = () => {
           </S.LoadingWrapper>
         )}
       </Layout.Content>
+
       <FloatingButton />
     </Layout>
   );
