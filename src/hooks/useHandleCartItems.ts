@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addCartItem, deleteCartItem, patchCartItemQuantity } from '../api/cartItems';
 import { QUERY_KEYS } from '../constants/queryKeys';
 
-const useHandlerCartItems = () => {
+const useHandleCartItems = () => {
   const { showToast } = useContext(ToastContext);
   const queryClient = useQueryClient();
 
@@ -42,4 +42,4 @@ const useHandlerCartItems = () => {
   return { addCart, deleteCart, updateCartItemQuantity };
 };
 
-export default useHandlerCartItems;
+export default useHandleCartItems;

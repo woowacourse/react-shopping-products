@@ -1,6 +1,6 @@
 import { MINUS, PLUS } from '../../../assets/images';
 import * as S from './style';
-import useHandlerCartItems from '../../../hooks/useHandlerCartItems';
+import useHandleCartItems from '../../../hooks/useHandleCartItems';
 import Spinner from '../Spinner';
 
 interface QuantityProps {
@@ -9,7 +9,7 @@ interface QuantityProps {
 }
 
 const Quantity = ({ cartId, quantity }: QuantityProps) => {
-  const { deleteCart, updateCartItemQuantity } = useHandlerCartItems();
+  const { deleteCart, updateCartItemQuantity } = useHandleCartItems();
 
   const onClickMinusButton = () => {
     if (quantity === 1) {

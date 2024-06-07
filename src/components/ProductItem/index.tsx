@@ -4,7 +4,7 @@ import { ADD_TO_CART } from '../../assets/images';
 
 import Spinner from '../common/Spinner';
 import Quantity from '../common/Quantity';
-import useHandlerCartItems from '../../hooks/useHandlerCartItems';
+import useHandleCartItems from '../../hooks/useHandleCartItems';
 import { CartItem } from '../../types/cart';
 
 interface ProductItemProps {
@@ -16,7 +16,7 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, imageUrl, name, price, cartItem }: ProductItemProps) => {
-  const { addCart } = useHandlerCartItems();
+  const { addCart } = useHandleCartItems();
   const isInCart = !!cartItem;
 
   const handleOnClickAddButton = () => {
