@@ -1,14 +1,17 @@
 import ImageWithFallback from "@src/components/common/ImageWithFallback";
 import styled from "styled-components";
-import CartItemCounter from "../CartItemQuantityController/CartItemCounter";
 import { CartItem as TCartItem } from "@src/apis/cartItems";
 import { formatToKRW } from "@src/utils/formatToKRW";
 import { useCartItemQuantityControl } from "@server/hooks/useCartItemQuantityControl";
 import { useDeleteCartItemMutation } from "@src/server/mutations/useDeleteCartItemMutation";
+import Counter from "@src/components/common/Counter";
 
 interface CartItemProps {
   cartItem: TCartItem;
 }
+
+const MIN_CART_ITEM_COUNT = 1;
+const MAX_CART_ITEM_COUNT = 99;
 
 const CartItem = ({ cartItem }: CartItemProps) => {
   const {
@@ -40,11 +43,12 @@ const CartItem = ({ cartItem }: CartItemProps) => {
         <S.Info>
           <S.Name>{name}</S.Name>
           <S.Price>{formatToKRW(price)}</S.Price>
-          <CartItemCounter
+          <Counter
             count={quantity}
-            increaseQuantity={increaseQuantity}
-            decreaseQuantity={decreaseQuantity}
-            minCount={1}
+            onIncrease={increaseQuantity}
+            onDecrease={decreaseQuantity}
+            minCount={MIN_CART_ITEM_COUNT}
+            maxCount={MAX_CART_ITEM_COUNT}
           />
         </S.Info>
       </S.ItemWrapper>

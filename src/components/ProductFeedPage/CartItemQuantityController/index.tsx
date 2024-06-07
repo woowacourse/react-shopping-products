@@ -1,12 +1,16 @@
 import { useErrorToast } from "@src/contexts/errorToast/useErrorToast";
-import CartItemCounter from "./CartItemCounter";
 import CartItemAddButton from "./CartItemAddButton";
 import { useCartItemQuantityControl } from "@src/server/hooks/useCartItemQuantityControl";
 import styled from "styled-components";
+import Counter from "@src/components/common/Counter";
 
 interface CartItemQuantityControllerProps {
   productId: number;
 }
+
+const MIN_CART_ITEM_COUNT = 0;
+// 명확한 정책이 없어서 임시로 99개로 설정
+const MAX_CART_ITEM_COUNT = 99;
 
 const CartItemQuantityController = ({ productId }: CartItemQuantityControllerProps) => {
   const { showErrorToast } = useErrorToast();
@@ -21,10 +25,12 @@ const CartItemQuantityController = ({ productId }: CartItemQuantityControllerPro
   return (
     <S.Container>
       {targetCartItem ? (
-        <CartItemCounter
+        <Counter
           count={targetCartItem.quantity}
-          increaseQuantity={increaseQuantity}
-          decreaseQuantity={decreaseQuantity}
+          onIncrease={increaseQuantity}
+          onDecrease={decreaseQuantity}
+          minCount={MIN_CART_ITEM_COUNT}
+          maxCount={MAX_CART_ITEM_COUNT}
         />
       ) : (
         <CartItemAddButton addCartItem={increaseQuantity} />
