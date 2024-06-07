@@ -3,6 +3,7 @@ import { useDeleteCartItemMutation } from "@src/server/mutations/useDeleteCartIt
 import { useCreateCartItemMutation } from "@src/server/mutations/useCreateCartItemMutation";
 import { useUpdateCartItemMutation } from "@src/server/mutations/useUpdateCartItemMutation";
 import { CartItem } from "@src/apis/cartItems";
+import type { OnError } from "onError";
 
 interface UseCartItemQuantityControlReturn {
   cartItems: CartItem[];
@@ -10,7 +11,6 @@ interface UseCartItemQuantityControlReturn {
   decreaseQuantity: () => void;
 }
 
-type OnError = (error: Error) => void;
 interface UseCartItemQuantityControlProps {
   productId: number;
   onError?: OnError;

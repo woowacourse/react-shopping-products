@@ -19,10 +19,6 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     quantity,
   } = cartItem;
 
-  const alertErrorMessage = (error: Error) => {
-    alert(error.message);
-  };
-
   const { increaseQuantity, decreaseQuantity } = useCartItemQuantityControl({
     productId: cartItem.product.id,
     onError: alertErrorMessage,
@@ -58,6 +54,10 @@ const CartItem = ({ cartItem }: CartItemProps) => {
 };
 
 export default CartItem;
+
+const alertErrorMessage = (error: Error) => {
+  alert(error.message);
+};
 
 const S = {
   Container: styled.div`

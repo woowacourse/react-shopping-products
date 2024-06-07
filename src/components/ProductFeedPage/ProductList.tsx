@@ -3,14 +3,15 @@ import { IntersectionDetector } from "@components/common/IntersectionDetector";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import ProductItem from "@components/ProductFeedPage/ProductItem";
 import ProductFilterBar from "@components/ProductFeedPage/ProductFilterBar";
-import { useErrorToast } from "@src/contexts/errorToast/useErrorToast";
 import { useInfiniteProducts } from "@src/server/queries/useInfiniteProducts";
 
-const ProductList = () => {
-  const { showErrorToast } = useErrorToast();
+interface ProductListProps {
+  onError: (error: Error) => void;
+}
 
+const ProductList = ({ onError }: ProductListProps) => {
   const { data, isLoading, fetchNextPage, updateCategoryFilter, updatePriceSort } =
-    useInfiniteProducts(showErrorToast);
+    useInfiniteProducts(onError);
 
   return (
     <S.ItemContainer>

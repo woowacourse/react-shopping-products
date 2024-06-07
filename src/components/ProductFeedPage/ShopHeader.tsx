@@ -3,16 +3,14 @@ import styled from "styled-components";
 import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "@assets/cart.svg";
 import { useCartItems } from "@src/server/queries/useCartItems";
-import { useErrorToast } from "@src/contexts/errorToast/useErrorToast";
 
 interface ShopHeaderProps {
+  onError: (error: Error) => void;
   onCartButtonClick: () => void;
 }
 
-const ShopHeader = ({ onCartButtonClick }: ShopHeaderProps) => {
-  const { showErrorToast } = useErrorToast();
-
-  const { data: cartItems, isLoading } = useCartItems(showErrorToast);
+const ShopHeader = ({ onError, onCartButtonClick }: ShopHeaderProps) => {
+  const { data: cartItems, isLoading } = useCartItems(onError);
 
   return (
     <S.Header>

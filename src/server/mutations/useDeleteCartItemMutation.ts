@@ -2,12 +2,11 @@ import { deleteCartItem } from "@src/apis/cartItems";
 import { useMutation } from "@tanstack/react-query";
 import { MUTATION_KEYS } from "@server/__constants__/queryKeys";
 import { queryInvalidator } from "@server/queryClient";
+import type { OnError } from "onError";
 
 interface UseDeleteCartItemMutationReturn {
   deleteCartItemMutation: (cartItemId: number) => void;
 }
-
-type OnError = (error: Error) => void;
 
 export const useDeleteCartItemMutation = (onError?: OnError): UseDeleteCartItemMutationReturn => {
   const { mutate } = useMutation({

@@ -4,6 +4,7 @@ import { QUERY_KEYS } from "@server/__constants__/queryKeys";
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from "@src/apis/__constants__/productQueryParams";
 import { Category, PriceSort } from "@src/types/products";
 import { useEffect, useState } from "react";
+import type { OnError } from "onError";
 
 interface UseInfiniteProductsReturn {
   data: Product[];
@@ -12,8 +13,6 @@ interface UseInfiniteProductsReturn {
   updateCategoryFilter: (category: Category) => void;
   updatePriceSort: (sort: PriceSort) => void;
 }
-
-type OnError = (error: Error) => void;
 
 export const useInfiniteProducts = (onError?: OnError): UseInfiniteProductsReturn => {
   const [categoryFilter, setCategoryFilter] = useState<Category>(CATEGORY_OPTIONS.all);
