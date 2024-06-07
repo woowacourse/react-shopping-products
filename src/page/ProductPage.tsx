@@ -11,7 +11,6 @@ import {
   DropBoxContainer,
   ContentWrapper,
 } from './ProductPage.style';
-import useCartItems from '../hooks/useCartItem';
 import { isCategoryType, isSortType } from '../type';
 
 function ProductPage() {
@@ -24,7 +23,6 @@ function ProductPage() {
     error,
   } = useProducts();
   const { lastProductElementRef } = useInfinityScroll(() => fetchNextPage());
-  const { cartItemIds, isInCart } = useCartItems();
 
   return (
     <Container>
@@ -52,16 +50,10 @@ function ProductPage() {
           ></Dropdown>
         </DropBoxContainer>
 
-        {cartItemIds !== null && products.length !== 0 && (
+        {products.length !== 0 && (
           <ItemList>
             {products.map((product, index) => {
-              return (
-                <ItemCard
-                  key={`${product.id}_${index}`}
-                  initIsInCart={isInCart(product.id)}
-                  {...product}
-                />
-              );
+              return <ItemCard key={`${product.id}_${index}`} {...product} />;
             })}
           </ItemList>
         )}

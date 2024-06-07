@@ -70,6 +70,22 @@ export const addCartItem = async (itemId: number, itemQuantity: number) => {
   }
 };
 
+export async function fetchCartItemQuantity(
+  cartItemId: number,
+  quantity: number,
+): Promise<void> {
+
+  const response = await fetch(`${ENDPOINT.CART_ITEMS}/${cartItemId}`, {
+    method: 'PATCH',
+    headers: HEADERS,
+    body: JSON.stringify({ quantity: quantity }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch cart item quantity');
+  }
+}
+
 export const deleteCartItem = async (productId: number) => {
   const cartItemId = await findCartItemIdByProductId(productId);
   if (cartItemId !== undefined) {

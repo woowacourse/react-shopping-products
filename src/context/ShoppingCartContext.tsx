@@ -1,0 +1,63 @@
+import React, { createContext, useEffect, PropsWithChildren } from 'react';
+import { fetchItems } from '../api';
+import { useToast } from '../hooks/useToast';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from '../constants/queryKeys';
+import { CartItems, fetchCartItem } from '../type/CartItem';
+export const CartContext = createContext<{
+  isLoading: boolean;
+  error: Error | null;
+  cartItem: fetchCartItem[];
+  isFetching: boolean;
+  isSuccess: boolean;
+  refetch: () => void;
+}>({
+  isLoading: false,
+  error: null,
+  cartItem: [],
+  isFetching: false,
+  isSuccess: false,
+  refetch: () => {},
+});
+
+export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const { createToast } = useToast();
+  const { data, error, isLoading, isFetching, isSuccess, refetch } = useQuery({
+    queryKey: [QUERY_KEYS.CART_ITEM],
+    queryFn: fetchItems,
+    initialData: [],
+    placeholderData: keepPreviousData,
+    select: (data: CartItems[]) => {
+      return data.map((cartItem) => ({
+        orderId: cartItem.id,
+        productId: cartItem.product.id,
+        quantity: cartItem.quantity,
+      }));
+    },
+  });
+
+  useEffect(() => {
+    if (error) {
+      if (error instanceof Error) {
+        createToast(
+          '⛔️ 장바구니 수량을 가져오는데 실패했습니다. 다시 시도해 주세요.',
+        );
+      }
+    }
+  }, [error, createToast]);
+
+  return (
+    <CartContext.Provider
+      value={{
+        isLoading,
+        error,
+        cartItem: data,
+        isFetching,
+        isSuccess,
+        refetch,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
+};

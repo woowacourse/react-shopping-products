@@ -4,12 +4,12 @@ import { CartBadgeContainer } from './CartBadge.style';
 import { PropsWithChildren } from 'react';
 
 const CartBadge: React.FC<PropsWithChildren> = ({ children }) => {
-  const { counts } = useCart();
+  const { cartItem } = useCart();
 
   return (
     <CartBadgeContainer>
       <Badge bgColor="#fff" color="#000">
-        {counts}
+        {cartItem.length}
       </Badge>
       {children}
     </CartBadgeContainer>
