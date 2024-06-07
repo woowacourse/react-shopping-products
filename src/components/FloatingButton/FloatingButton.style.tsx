@@ -19,7 +19,6 @@ export const Layout = styled.button`
   position: fixed;
   right: 30px;
   bottom: 20px;
-  z-index: 999;
   width: 50px;
   height: 50px;
   background-color: black;

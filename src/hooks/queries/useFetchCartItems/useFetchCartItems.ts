@@ -19,7 +19,7 @@ const useFetchCartItems = () => {
     return totalData;
   };
 
-  const { data, isFetching, error, isError } = useQuery({
+  const { data, isFetching, error } = useQuery({
     queryKey: [QUERY_KEYS.CART],
     queryFn: getCartItems,
   });
@@ -31,7 +31,6 @@ const useFetchCartItems = () => {
   return {
     cartItems: data ?? [],
     isFetching,
-    isError,
     error,
   };
 };
