@@ -29,7 +29,7 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
               handleMinusCartItemQuantity();
             }}
           >
-            {BUTTON_MESSAGE.DELETE}
+            {BUTTON_MESSAGE.MINUS}
           </S.CountButton>
 
           <S.QuantityCount>{itemQuantity}</S.QuantityCount>
