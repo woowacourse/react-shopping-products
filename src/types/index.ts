@@ -1,4 +1,4 @@
-import { CATEGORY, SORT } from '../constants';
+import { CATEGORY, SORT } from '@/constants/index';
 
 export type CategoryType = keyof typeof CATEGORY;
 export type SortType = keyof typeof SORT;

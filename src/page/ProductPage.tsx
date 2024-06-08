@@ -1,17 +1,19 @@
-import ItemCard from '../components/ItemCard/ItemCard';
-import ItemList from '../components/ItemList/ItemList';
-import Dropdown from '../components/common/Dropdown/Dropdown';
-import Header from '../components/common/Header/Header';
-import { CATEGORY, SORT } from '../constants';
-import useInfinityScroll from '../hooks/useInfinityScroll';
-import useProducts from '../hooks/useProducts';
+import {
+  ProductItemCard,
+  ItemList,
+  CartItemsModal,
+  Spinner,
+  Dropdown,
+  Header,
+} from '@/components/index';
+import { CATEGORY, SORT } from '@/constants/index';
 import {
   Container,
   Title,
   DropBoxContainer,
   ContentWrapper,
 } from './ProductPage.style';
-import useCartItems from '../hooks/useCartItem';
+import { useIntersectionObserver, useInfiniteProducts } from '@/hooks/index';
 
 function ProductPage() {
   const {
