@@ -11,11 +11,11 @@ export const HandleCartItemButton = styled.button<{ $isInCart: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
+  gap: ${(props) => (props.$isInCart ? '0.6rem' : '0.25rem')};
 
   cursor: pointer;
 
   background-color: ${(props) =>
-    props.$isInCart ? props.theme.color.lightGray : props.theme.color.black};
+    props.$isInCart ? props.theme.color.white : props.theme.color.black};
   color: ${(props) => (props.$isInCart ? props.theme.color.black : 'white')};
 `;
