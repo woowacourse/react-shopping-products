@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import styles from './DropdownUl.module.css';
+import styles from './Dropdown.module.css';
 import ImageBox from '../common/ImageBox/ImageBox';
 import downArrowIcon from '@/assets/DownArrow.svg';
 
@@ -14,7 +14,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-export default function DropdownUl({ optionList, bannerText, onChange }: Props) {
+export default function Dropdown({ optionList, bannerText, onChange }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(bannerText);
   const selectRef = useRef<HTMLDivElement | null>(null);
