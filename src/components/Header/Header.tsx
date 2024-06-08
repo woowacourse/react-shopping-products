@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { MainLogo, ShoppingCartIcon } from '../../assets';
 import CartItemModal from '../CartItemModal/CartItemModal';
+import useCartItemCounts from '../../hooks/useCartItemCounts';
 
 import * as S from './Header.style';
 
@@ -14,7 +15,8 @@ function Header() {
     setIsModalOpened(false);
   };
 
-  const quantity = 0;
+  const { data, error, isFetching } = useCartItemCounts();
+  const quantity = data?.quantity ?? 0;
 
   return (
     <S.HeaderBackground>
