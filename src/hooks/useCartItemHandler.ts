@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { addCartItem, fetchCartItemQuantity } from '../api';
+import { addCartItem, deleteCartItem, fetchCartItemQuantity } from '../api';
 import { useToast } from './useToast';
 import { CHANGE_CART_ITEM_COUNT } from '../constants';
 import { useMutation } from '@tanstack/react-query';
@@ -19,11 +19,11 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
   useEffect(() => {
     const initProductItem = (productId: number): InitProductItem => {
       const isCartItemInProduct = cartItem.find(
-        (item) => item.productId === productId,
+        (item) => item.product.id === productId,
       );
       return isCartItemInProduct
         ? {
-            orderId: isCartItemInProduct.orderId,
+            orderId: isCartItemInProduct.id,
             initIsInCart: true,
             initQuantity: isCartItemInProduct.quantity,
           }
@@ -53,9 +53,8 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
 
   const addCartItemQuantityMutation = useMutation({
     mutationFn: async (itemQuantity: number) => {
-      const targetItem = cartItem.find((item) => item.productId === productId);
-      if (targetItem)
-        await fetchCartItemQuantity(targetItem.orderId, itemQuantity);
+      const targetItem = cartItem.find((item) => item.product.id === productId);
+      if (targetItem) await fetchCartItemQuantity(targetItem.id, itemQuantity);
     },
     onMutate: () => {
       setItemQuantity((prev) => prev + CHANGE_CART_ITEM_COUNT);
@@ -70,9 +69,8 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
 
   const minusCartItemQuantityMutation = useMutation({
     mutationFn: async (itemQuantity: number) => {
-      const targetItem = cartItem.find((item) => item.productId === productId);
-      if (targetItem)
-        await fetchCartItemQuantity(targetItem.orderId, itemQuantity);
+      const targetItem = cartItem.find((item) => item.product.id === productId);
+      if (targetItem) await fetchCartItemQuantity(targetItem.id, itemQuantity);
       if (itemQuantity === 0) {
         setIsInCart(false);
       }
@@ -105,10 +103,13 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
   return {
     isInCart,
     itemQuantity,
-    handleAddCartItem: () =>
+    handleAddCartItemQuantity: () =>
       addCartItemQuantityMutation.mutate(itemQuantity + 1),
-    handleRemoveCartItem: () =>
+    handleMinusCartItemQuantity: () =>
       minusCartItemQuantityMutation.mutate(itemQuantity - 1),
+    handleDeleteCartItem: () => {
+      deleteCartItemMutation.mutate();
+    },
     showCountButton,
   };
 };

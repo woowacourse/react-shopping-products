@@ -3,11 +3,11 @@ import { fetchItems } from '../api';
 import { useToast } from '../hooks/useToast';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../constants/queryKeys';
-import { CartItems, fetchCartItem } from '../type/CartItem';
+import { CartItems } from '../type/CartItem';
 export const CartContext = createContext<{
   isLoading: boolean;
   error: Error | null;
-  cartItem: fetchCartItem[];
+  cartItem: CartItems[];
   isFetching: boolean;
   isSuccess: boolean;
   refetch: () => void;
@@ -27,13 +27,6 @@ export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
     queryFn: fetchItems,
     initialData: [],
     placeholderData: keepPreviousData,
-    select: (data: CartItems[]) => {
-      return data.map((cartItem) => ({
-        orderId: cartItem.id,
-        productId: cartItem.product.id,
-        quantity: cartItem.quantity,
-      }));
-    },
   });
 
   useEffect(() => {
