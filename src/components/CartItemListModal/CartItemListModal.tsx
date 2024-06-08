@@ -13,7 +13,13 @@ const CartItemListModal = ({ isOpen, close }: CartItemListModalProps) => {
   const { data, getTotalPrice } = useCartItemList();
 
   return (
-    <Modal isOpen={isOpen} close={close} position="bottom" style={{ color: 'black' }}>
+    <Modal
+      isOpen={isOpen}
+      close={close}
+      position="bottom"
+      style={{ color: 'black' }}
+      customWidth="100%"
+    >
       <Modal.Header>
         <Modal.Title>장바구니</Modal.Title>
       </Modal.Header>
