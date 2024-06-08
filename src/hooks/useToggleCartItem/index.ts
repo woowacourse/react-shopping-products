@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteCartItem, getCartItems, addCartItem } from "../../api/cartItems";
 import { CartItemType } from "../../types/cartItems";
 import { ERROR_MESSAGE } from "../../constants/errorMessage/ko";
@@ -13,11 +13,12 @@ export interface ToggleCartItemReturns {
 }
 
 const useToggleCartItem = (): ToggleCartItemReturns => {
+  const queryClient = useQueryClient();
+
   const {
     data: cartItems,
     isLoading,
     error,
-    refetch,
   } = useQuery<CartItemType[]>({
     queryKey: ["cartItems"],
     queryFn: getCartItems,
@@ -25,7 +26,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
 
   const addMutation = useMutation({
     mutationFn: (productId: number) => addCartItem({ productId, quantity: 1 }),
-    onSuccess: refetch,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
   });
 
   const removeMutation = useMutation({
@@ -36,7 +37,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
       }
       throw new Error(ERROR_MESSAGE.deleteCartItem);
     },
-    onSuccess: refetch,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
   });
 
   const addToCart = (productId: number) => {
