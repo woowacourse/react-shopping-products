@@ -76,7 +76,7 @@ const Products = () => {
               onChangeSelect={handleOrderChange}
             />
           </S.DropDownWrapper>
-          {isFetching && <SkeletonList length={8} />}
+          {page === 0 && isFetching && <SkeletonList length={8} />}
           {isSuccess && (
             <ProductList
               page={page}
