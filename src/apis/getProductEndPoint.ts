@@ -34,5 +34,6 @@ export const getProductEndpoint = ({
   if (sortType !== undefined)
     params.append('sort', `price,${SORT_TYPE_MATCHER[sortType]}`);
 
+  params.append('sort', `id,asc`);
   return `products?${params.toString()}`;
 };
