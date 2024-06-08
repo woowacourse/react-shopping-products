@@ -5,6 +5,7 @@ import Button from '../common/Button';
 import styled from 'styled-components';
 import Splitter from '../common/Splitter';
 import useFetchCartItems from '../../hooks/useCartItems/useFetchCartItems';
+import { Z_INDEX } from '../../constants/zIndex';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -17,7 +18,7 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
   const totalAmount = cartItems.reduce((acc, cur) => acc + cur.quantity * cur.product.price, 0);
 
   return (
-    <StyledModal isOpen={isOpen} onClose={onClose} position="bottom">
+    <StyledModal isOpen={isOpen} onClose={onClose} position="bottom" zIndex={Z_INDEX.MODAL}>
       <Modal.Header>
         <Modal.Title>장바구니</Modal.Title>
       </Modal.Header>

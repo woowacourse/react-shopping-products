@@ -1,5 +1,6 @@
 import UpIcon from '../../assets/UpIconWhite.svg';
 import styled, { keyframes } from 'styled-components';
+import { Z_INDEX } from '../../constants/zIndex';
 
 const FloatingButton = () => {
   const goToTop = () => {
@@ -34,7 +35,7 @@ const StyledFloatingButton = styled.button`
   position: fixed;
   right: 30px;
   bottom: 20px;
-  z-index: 998;
+  z-index: ${Z_INDEX.CLICKABLE};
   width: 50px;
   height: 50px;
   background-color: black;

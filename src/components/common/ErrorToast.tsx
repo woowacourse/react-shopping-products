@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import { Z_INDEX } from '../../constants/zIndex';
 
 interface ErrorToastProps {
   message: string;
@@ -39,6 +40,7 @@ const StyledErrorToast = styled.div<{ $isOpen: boolean }>`
   background-color: #f33f3f;
   color: white;
   font-size: 14px;
+  z-index: ${Z_INDEX.TOAST};
 
   transition: visibility 0.5s;
   animation: ${({ $isOpen }) => ($isOpen ? fadeIn : fadeOut)} 0.5s none;
