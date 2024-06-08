@@ -42,14 +42,13 @@ export const usePostAddCartItemMutation = ({ productId, quantity }: { productId:
   return mutation;
 };
 
-export const useUpdateCartItemQuantityMutation = ({ cartId, quantity }: { cartId: number; quantity: number }) => {
+export const useUpdateCartItemQuantityMutation = () => {
   const queryClient = useQueryClient();
   const { onAddToast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: () => patchCartItem({ cartId, quantity }),
+    mutationFn: ({ cartId, quantity }: { cartId: number; quantity: number }) => patchCartItem({ cartId, quantity }),
     onSuccess: () => {
-      console.log("update");
       queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
     },
     onError: () => {
@@ -67,7 +66,6 @@ export const useDeleteCartItemMutation = ({ cartId }: { cartId: number }) => {
   const mutation = useMutation({
     mutationFn: () => deleteCartItem({ cartId }),
     onSuccess: () => {
-      console.log("deletes");
       queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
     },
     onError: () => {

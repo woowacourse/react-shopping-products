@@ -1,29 +1,20 @@
-// import { useRecoilState } from "recoil";
+import { useUpdateCartItemQuantityMutation } from "@/hooks/server/useCartItems";
 
-// const useUpdateItemQuantity = (id: number) => {
-//   const [quantity, setQuantity] = useRecoilState(cartItemQuantityState(id));
+const useUpdateItemQuantity = () => {
+  const updateCartItemQuantityMutation = useUpdateCartItemQuantityMutation();
 
-//   const increaseQuantity = async () => {
-//     const canUpdateCardItemQuantity = await patchCartItemQuantity(id, quantity + 1);
+  const increaseQuantity = ({ cartId, itemQuantity }: { cartId: number; itemQuantity: number }) => {
+    updateCartItemQuantityMutation.mutate({ cartId, quantity: itemQuantity + 1 });
+  };
 
-//     if (canUpdateCardItemQuantity) {
-//       setQuantity((prevQuantity) => prevQuantity + 1);
-//     }
-//   };
+  const decreaseQuantity = ({ cartId, itemQuantity }: { cartId: number; itemQuantity: number }) => {
+    updateCartItemQuantityMutation.mutate({ cartId, quantity: itemQuantity - 1 });
+  };
 
-//   const decreaseQuantity = async () => {
-//     const canUpdateCardItemQuantity = await patchCartItemQuantity(id, quantity - 1);
+  return {
+    increaseQuantity,
+    decreaseQuantity,
+  };
+};
 
-//     if (canUpdateCardItemQuantity) {
-//       setQuantity((prevQuantity) => Math.max(1, prevQuantity - 1));
-//     }
-//   };
-
-//   return {
-//     quantity,
-//     increaseQuantity,
-//     decreaseQuantity,
-//   };
-// };
-
-// export default useUpdateItemQuantity;
+export default useUpdateItemQuantity;

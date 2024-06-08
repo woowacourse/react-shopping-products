@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
 import mockCartItems from "@/mocks/mockResponse/cart-items.json";
 import initialCartItems from "@/mocks/mockResponse/cart-items.json";
-import useCardPriceCalculator from "@/hooks/useCartPrice";
+import useCardPriceCalculator from "@/hooks/useCartPriceCalculator";
 
 beforeEach(() => {
   Object.assign(mockCartItems, JSON.parse(JSON.stringify(initialCartItems)));

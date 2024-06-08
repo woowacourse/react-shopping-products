@@ -1,4 +1,4 @@
-import useCardPriceCalculator from "@/hooks/useCartPrice";
+import useCardPriceCalculator from "@/hooks/useCartPriceCalculator";
 import * as S from "@/components/cart/CartPrice/style";
 import TextBox from "@/components/_common/TextBox";
 import { CartItems } from "@/types/products";
