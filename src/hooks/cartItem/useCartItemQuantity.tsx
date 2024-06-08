@@ -36,7 +36,7 @@ const useCartItemQuantity = () => {
       setCartItemQueryData(queryClient, newCartItemData);
       return { previousCartItemCacheData };
     },
-    onError: (error, variables, context) => {
+    onError: (error, _, context) => {
       showCartItemError(error, showToast);
 
       if (context) setCartItemQueryData(queryClient, context.previousCartItemCacheData);
@@ -67,7 +67,7 @@ const useCartItemQuantity = () => {
 
       return { previousCartItemCacheData };
     },
-    onError: (error, variables, context) => {
+    onError: (error, _, context) => {
       showCartItemError(error, showToast);
 
       if (context) setCartItemQueryData(queryClient, context.previousCartItemCacheData);
