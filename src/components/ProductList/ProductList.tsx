@@ -1,23 +1,23 @@
-import useProducts from "@hooks/useProducts";
-import useInfiniteScroll from "@hooks/useInfiniteScroll";
-import usePagination from "@hooks/usePagination";
 import ProductListHeader from "@components/ProductListHeader/ProductListHeader";
 import ProductItem from "./ProductItem/ProductItem";
 import * as PL from "./ProductList.style";
+import { useInfiniteScroll, useProducts } from "@hooks/index";
 
 const ProductList = () => {
-  const { page, nextPage, resetPage } = usePagination();
-
-  const { products, loading, hasMore, handleCategory, handleSort } =
-    useProducts({
-      page,
-      resetPage,
-    });
+  const {
+    products,
+    isLoading,
+    isFetching,
+    hasNextPage,
+    handleCategory,
+    handleSort,
+    fetchNextPage,
+  } = useProducts();
 
   const { lastElementRef: lastProductElementRef } = useInfiniteScroll({
-    hasMore,
-    loading,
-    nextPage,
+    hasMore: hasNextPage,
+    loading: isFetching,
+    nextPage: fetchNextPage,
   });
 
   return (
@@ -27,7 +27,7 @@ const ProductList = () => {
         handleSort={handleSort}
       />
       {(() => {
-        if (loading) {
+        if (isLoading) {
           return <PL.Loading>로딩중! 💪</PL.Loading>;
         }
         if (products.length === 0) {

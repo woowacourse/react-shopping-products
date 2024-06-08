@@ -48,7 +48,7 @@ export const getProducts = async ({
   page = 0,
   size = 20,
   sort = "asc",
-}: GetProductsParams = {}): Promise<Product[]> => {
+}: GetProductsParams = {}): Promise<ApiResponse> => {
   const params = {
     category,
     page,
@@ -66,7 +66,7 @@ export const getProducts = async ({
     throw new Error("Failed to get products item");
   }
 
-  return data.content;
+  return data;
 };
 
 export const postProductInCart = async (
