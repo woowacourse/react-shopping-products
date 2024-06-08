@@ -6,7 +6,7 @@ import { FETCH_SIZE } from '@/constants/productList';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { ProductFilterOptions } from '@/types/product.type';
 
-const useProducts = ({ sort, category }: ProductFilterOptions) => {
+const useFetchProducts = ({ sort, category }: ProductFilterOptions) => {
   const loadNextPage = (isFirstPage: boolean, page: number) => {
     if (isFirstPage) {
       return FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount + 1;
@@ -15,7 +15,7 @@ const useProducts = ({ sort, category }: ProductFilterOptions) => {
     }
   };
 
-  const { data, isError, error, isLoading, fetchNextPage, hasNextPage } =
+  const { data, error, isLoading, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
       queryKey: [QUERY_KEYS.getProducts, category, sort],
       queryFn: ({ pageParam }) =>
@@ -41,13 +41,10 @@ const useProducts = ({ sort, category }: ProductFilterOptions) => {
   return {
     products: data?.pages.flatMap((page) => page.content) ?? [],
     isLoading,
-    errorState: {
-      isError,
-      errorMessage: error?.message,
-    },
+    error,
     hasNextPage,
     fetchNextPage,
   };
 };
 
-export default useProducts;
+export default useFetchProducts;

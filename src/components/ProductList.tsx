@@ -1,21 +1,19 @@
 import { useEffect, useRef } from 'react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import useProducts from '@/queries/product/useProducts';
+import useFetchProducts from '@/queries/product/useFetchProducts';
 
 import ProductItem from '@/components/ProductItem';
 import Toast from '@/components/Toast';
 
 import { ProductFilterOptions } from '@/types/product.type';
 import styled from '@emotion/styled';
-import useToast from '@/hooks/_common/useToast';
 
 const ProductList = ({ sort, category }: ProductFilterOptions) => {
   const target = useRef<HTMLDivElement | null>(null);
-  const { products, isLoading, errorState, hasNextPage, fetchNextPage } =
-    useProducts({ sort, category });
+  const { products, isLoading, error, hasNextPage, fetchNextPage } =
+    useFetchProducts({ sort, category });
 
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
-  const isToastVisible = useToast({ isError: errorState.isError });
 
   useEffect(() => {
     if (target.current) {
@@ -46,7 +44,7 @@ const ProductList = ({ sort, category }: ProductFilterOptions) => {
         </S.GridContainer>
         {hasNextPage && <S.ObserverContainer ref={target} />}
       </S.ListContainer>
-      {isToastVisible && <Toast message={errorState.errorMessage as string} />}
+      {error && <Toast message={error.message} />}
     </>
   );
 };
