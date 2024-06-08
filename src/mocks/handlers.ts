@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { PRODUCTS_ENDPOINT } from "../api/endpoints";
+import { API_ENDPOINTS } from "../api/endpoints";
 import products from "./products.json";
 
 export const PAGE = {
@@ -11,7 +11,7 @@ export const PAGE = {
 };
 
 export const handlers = [
-  http.get(PRODUCTS_ENDPOINT, ({ request }) => {
+  http.get(API_ENDPOINTS.PRODUCTS, ({ request }) => {
     const url = new URL(request.url);
 
     const page = Number(url.searchParams.get("page") || "1");
@@ -26,4 +26,12 @@ export const handlers = [
 
     return HttpResponse.json({ content: paginatedProducts });
   }),
+
+  http.post(
+    `${API_ENDPOINTS.CART}`,
+    async ({ request }: { request: { json: () => Promise<Cart> } }) => {
+      const newCartItem = await request.json();
+      return HttpResponse.json(newCartItem, { status: 201 });
+    }
+  ),
 ];
