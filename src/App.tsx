@@ -4,11 +4,9 @@ import { queryClient } from "@server/queryClient";
 
 function App() {
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <ProductFeedPage />
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <ProductFeedPage />
+    </QueryClientProvider>
   );
 }
 
