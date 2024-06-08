@@ -40,8 +40,8 @@ const fetcher = {
   delete({ url, headers, errorMessage }: FetchProps) {
     return this.request({ url, method: 'DELETE', headers, errorMessage });
   },
-  patch({ url, headers, errorMessage }: FetchProps) {
-    return this.request({ url, method: 'PATCH', headers, errorMessage });
+  patch({ url, headers, errorMessage, body }: FetchProps) {
+    return this.request({ url, method: 'PATCH', headers, errorMessage, body });
   },
   put({ url, headers, errorMessage }: FetchProps) {
     return this.request({ url, method: 'PUT', headers, errorMessage });

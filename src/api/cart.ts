@@ -49,3 +49,17 @@ export const deleteCartItem = async (cartId: number): Promise<StatusResponse> =>
 
   return { status: response.status };
 };
+
+export const adjustCartItemQuantity = async (
+  cartItemId: number,
+  quantity: number,
+): Promise<StatusResponse> => {
+  const response = await fetcher.patch({
+    url: `${END_POINT.cartItems}/${cartItemId}`,
+    headers: AUTH_HEADER,
+    errorMessage: '장바구니 수량 조절에 실패했습니다',
+    body: { quantity },
+  });
+
+  return { status: response.status };
+};
