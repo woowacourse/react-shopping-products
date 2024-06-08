@@ -17,14 +17,19 @@ export default function useProducts(): UseProductsResult {
   const [sort, setSort] = useState<SortType>({ price: 'asc', id: 'asc' });
   const [category, setCategory] = useState<Category | ''>('');
 
-  const { data, error, fetchNextPage, isFetching, hasNextPage } =
-    productQueries.useGetProducts({
-      category,
-      sort: Object.entries(sort).map(([field, order]) => `${field},${order}`),
-    });
+  const {
+    data: { pages: products },
+    error,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+  } = productQueries.useGetProducts({
+    category,
+    sort: Object.entries(sort).map(([field, order]) => `${field},${order}`),
+  });
 
   return {
-    products: data?.pages ?? [],
+    products,
     error,
     isLoading: isFetching,
     isLastPage: !hasNextPage,

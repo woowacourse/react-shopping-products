@@ -10,9 +10,11 @@ import { QUERY_KEYS } from '../../constants/queryKeys';
 export const productQueries = {
   useGetProducts: (params: { sort: string[]; category: string }) => {
     const { sort, category } = params;
+
     return useInfiniteQuery({
       queryKey: [QUERY_KEYS.getProducts, sort, category],
       initialPageParam: INITIAL_PAGE_NUMBER,
+      initialData: { pages: [{ last: false, content: [] }], pageParams: [] },
 
       queryFn: async ({ pageParam = INITIAL_PAGE_NUMBER }) =>
         await productApis.get({
@@ -32,9 +34,9 @@ export const productQueries = {
         return lastPage.last ? undefined : nextPage;
       },
 
-      select: (data) => ({
-        pages: data.pages.flatMap((page) => page.content),
-        pageParams: data.pageParams,
+      select: ({ pages, pageParams }) => ({
+        pages: pages.flatMap((page) => page.content),
+        pageParams: pageParams,
       }),
 
       throwOnError: true,
