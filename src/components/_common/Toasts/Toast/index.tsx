@@ -20,7 +20,7 @@ const Toast = ({ id, message }: ToastType) => {
   useEffect(() => {
     const closeTimer = setTimeout(() => {
       setIsClose(true);
-    }, 2500);
+    }, 200000);
 
     return () => {
       clearTimeout(closeTimer);

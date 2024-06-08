@@ -17,20 +17,17 @@ export const toastSlideOut = keyframes`
   }
 `;
 
-export const Wrapper = styled.div<{ $isClose: boolean }>`
-  z-index: 100;
+export const Wrapper = styled.div<{ isClose: boolean }>`
   height: 30px;
   background-color: #ec4a9b;
   color: white;
   font-weight: 700;
   border-radius: 0 0 3px 3px;
-  animation: ${({ $isClose }) => ($isClose ? toastSlideOut : toastSlideIn)} 0.4s ease-in-out forwards;
+  animation: ${({ isClose }) => (isClose ? toastSlideOut : toastSlideIn)} 0.4s ease-in-out forwards;
   ${flexCenter}
-
   @media (max-width: 768px) {
     width: 100%;
   }
-
   @media (min-width: 768px) {
     width: 429px;
   }

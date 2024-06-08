@@ -28,8 +28,9 @@ export default Toasts;
 
 const ToastContainer = styled.div`
   position: fixed;
+  margin: 0 auto;
   top: 64px;
-  width: 100%;
+  width: 100vw;
   height: 50px;
   z-index: 1;
 `;
