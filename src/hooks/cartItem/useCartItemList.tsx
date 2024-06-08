@@ -28,11 +28,11 @@ const useCartItemList = () => {
   });
 
   const getCartItemQuantity = (productId: number): number => {
-    if (!data || !data.cartItemMap) return -1;
+    if (!data || !data.cartItemMap) return 0;
 
     const { cartItemMap } = data;
     const cartItem = cartItemMap.get(productId);
-    return cartItem ? cartItem.quantity : -1;
+    return cartItem ? cartItem.quantity : 0;
   };
 
   const getCartItemId = (productId: number): number => {
