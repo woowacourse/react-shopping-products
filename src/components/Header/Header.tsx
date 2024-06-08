@@ -6,7 +6,6 @@ type HeaderProps = {
   rightComponent?: ReactElement;
 };
 
-// TODO: 뒤로가기, 로고 합성 컴포넌트를 구현하기
 export default function Header({ leftComponent, rightComponent }: PropsWithChildren<HeaderProps>) {
   return (
     <header className={styles.headerContainer}>
