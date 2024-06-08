@@ -1,11 +1,12 @@
-import { useInfiniteQuery, useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { SortType, Category } from '@/types';
 import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
 import { queryClient } from '../App';
 import ERROR_MESSAGE from '@/constants/errorMessage';
 import toast from '@/services/toast';
-import { getProductList } from '@/api';
+import { getProductList } from '@/api/productAPI';
+import { PRODUCT_KEYS } from '../queries/keys';
 
 const DEFAULT_TOAST_DURATION = 1000;
 
@@ -21,12 +22,12 @@ const useProductList = () => {
   const [sortType, setSortType] = useState<SortType>('asc');
   const [category, setCategory] = useState<Category>('all');
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isError, error, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
     useSuspenseInfiniteQuery({
-      queryKey: ['products', category, sortType],
+      queryKey: PRODUCT_KEYS.ALL(category, sortType),
       queryFn: ({ pageParam }) => getProductList({ page: pageParam, sortType, category }),
       getNextPageParam: (lastPage) => {
-        return lastPage.last ? 0 : lastPage.number + 1;
+        return lastPage.last ? null : lastPage.number + 1;
       },
       initialPageParam: 0,
     });
@@ -40,7 +41,7 @@ const useProductList = () => {
   };
 
   const reMountPage = () => {
-    queryClient.invalidateQueries({ queryKey: ['products'] });
+    queryClient.invalidateQueries({ queryKey: PRODUCT_KEYS.ALL(category, sortType) });
   };
 
   const handleCategory = (value: string) => {
@@ -68,8 +69,6 @@ const useProductList = () => {
     handleCategory,
     handleSortType,
     hasNextPage,
-    error,
-    isError,
     isFetchingNextPage,
   };
 };

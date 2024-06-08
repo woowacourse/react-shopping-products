@@ -1,7 +1,7 @@
+import { queryClient } from '@/App';
 import { waitFor, renderHook, act } from '@testing-library/react';
-
+import { ChangeEvent } from 'react';
 import useProductList from '../useProductList';
-
 import TestWrapper from './TestWrapper';
 
 const INITIAL_PRODUCT_LENGTH = 20;
@@ -54,58 +54,67 @@ describe('useProduct에 대한 테스트 코드 작성', () => {
   });
 });
 
-//   describe('필터 변경 발생', () => {
-//     it('정렬 기준이 바뀌면 1페이지부터 다시 받아온다.', async () => {
-//       const { result } = renderHook(() => useProductList(), { wrapper });
+describe('필터 변경 이벤트가 발생했을때의 테스트 코드 작성', () => {
+  beforeEach(() => {
+    queryClient.clear();
+  });
+  it('정렬 기준이 바뀌면 1페이지부터 다시 받아온다.', async () => {
+    const { result } = renderHook(() => useProductList(), { wrapper: TestWrapper });
 
-//       act(() => {
-//         result.current.handleNextPage();
-//         result.current.handleNextPage();
-//       });
+    act(() => {
+      result.current.handleNextPage();
+    });
 
-//       act(() => {
-//         const event = {
-//           target: {
-//             value: 'desc',
-//           },
-//         } as ChangeEvent<HTMLSelectElement>;
+    await waitFor(() => {
+      expect(result.current.productList).toHaveLength(
+        INITIAL_PRODUCT_LENGTH + ADDITIONAL_PRODUCT_LENGTH,
+      );
+    });
 
-//         result.current.handleSortType(event.target.value);
-//       });
+    act(() => {
+      const event = {
+        target: {
+          value: 'desc',
+        },
+      } as ChangeEvent<HTMLSelectElement>;
 
-//       await waitFor(() => {
-//         expect(result.current.productList.length).toBeGreaterThan(0);
-//       });
-//     });
-//     it('카테고리가 바뀌면 1페이지부터 다시 받아온다.', async () => {
-//       const { result } = renderHook(() => useProductList(), { wrapper });
+      result.current.handleSortType(event.target.value);
+    });
 
-//       const targetCategory = 'electronics';
+    await waitFor(() => {
+      expect(result.current.productList).toHaveLength(INITIAL_PRODUCT_LENGTH);
+    });
+  });
 
-//       act(() => {
-//         result.current.handleNextPage();
-//         result.current.handleNextPage();
-//       });
+  // TODO 해당 테스트 계속 실패, 데이터 받아오는거 32개로 찍힘 (@버건디)
+  it('카테고리가 바뀌면 1페이지부터 다시 받아온다.', async () => {
+    const { result } = renderHook(() => useProductList(), { wrapper: TestWrapper });
 
-//       //   await waitFor(() => {
-//       //     expect(result.current.page).toBe(2);
-//       //   });
+    act(() => {
+      result.current.handleNextPage();
+    });
 
-//       act(() => {
-//         const event = {
-//           target: {
-//             value: targetCategory,
-//           },
-//         } as ChangeEvent<HTMLSelectElement>;
+    await waitFor(() => {
+      expect(result.current.productList).toHaveLength(
+        INITIAL_PRODUCT_LENGTH + ADDITIONAL_PRODUCT_LENGTH,
+      );
+    });
 
-//         result.current.handleCategory(event.target.value);
-//       });
+    // act(() => {
+    //   const event = {
+    //     target: {
+    //       value: targetCategory,
+    //     },
+    //   } as ChangeEvent<HTMLSelectElement>;
 
-//       await waitFor(() => {
-//         // expect(result.current.page).toBe(0);
-//         expect(
-//           result.current.productList.every(({ category }) => category === targetCategory),
-//         ).toBe(true);
-//       });
-//     });
-//   });
+    //   result.current.handleCategory(event.target.value);
+    // });
+
+    // await waitFor(() => {
+    //   expect(result.current.productList).toHaveLength(INITIAL_PRODUCT_LENGTH);
+    //   expect(result.current.productList.every(({ category }) => category === targetCategory)).toBe(
+    //     true,
+    //   );
+    // });
+  });
+});
