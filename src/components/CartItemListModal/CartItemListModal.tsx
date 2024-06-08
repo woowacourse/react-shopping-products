@@ -4,12 +4,12 @@ import CartItem from '../CartItem/CartItem';
 import { PriceTable } from '../PriceTable/PriceTable';
 import Divider from '../common/Divider/Divider';
 
-type CartListModalProps = {
+type CartItemListModalProps = {
   isOpen: boolean;
   close: () => void;
 };
 
-const CartListModal = ({ isOpen, close }: CartListModalProps) => {
+const CartItemListModal = ({ isOpen, close }: CartItemListModalProps) => {
   const { data, getTotalPrice } = useCartItemList();
 
   return (
@@ -29,4 +29,4 @@ const CartListModal = ({ isOpen, close }: CartListModalProps) => {
   );
 };
 
-export default CartListModal;
+export default CartItemListModal;

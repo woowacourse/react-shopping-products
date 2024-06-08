@@ -3,7 +3,7 @@ import ImageBox from '@/components/common/ImageBox/ImageBox';
 import styles from './CartIcon.module.css';
 import useCartItemList from '@/hooks/cartItem/useCartItemList';
 import { useState } from 'react';
-import CartListModal from '../CartListModal/CartListModal';
+import CartItemListModal from '../CartItemListModal/CartItemListModal';
 import { useToast } from '@/hooks/useToast';
 
 export default function CartIcon() {
@@ -29,7 +29,7 @@ export default function CartIcon() {
         </div>
       </div>
 
-      <CartListModal isOpen={isOpen} close={handleModal} />
+      <CartItemListModal isOpen={isOpen} close={handleModal} />
     </>
   );
 }
