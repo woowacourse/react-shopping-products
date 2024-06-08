@@ -1,4 +1,4 @@
-import ProductItemSkeleton from './SkeletonItem';
+import ProductItemSkeleton from '@/components/skeleton/SkeletonItem';
 import styled from '@emotion/styled';
 
 export const SkeletonList = ({ length }: { length: number }) => {

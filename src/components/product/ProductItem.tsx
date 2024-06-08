@@ -1,8 +1,8 @@
 import { FlexColumn, FlexRow, FlexSpaceBetween } from '@/style/common.style';
 
-import CartInButton from './button/CartInButton';
+import CartInButton from '@/components/button/CartInButton';
 import { Product } from '@/types/product.type';
-import QuantityBox from './QuantityBox';
+import QuantityBox from '@/components/product/QuantityBox';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
 import { useEffect } from 'react';

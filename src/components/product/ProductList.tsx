@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 
 import { Product } from '@/types/product.type';
-import ProductItem from './ProductItem';
-import { SkeletonList } from './SkeletonList';
+import ProductItem from '@/components/product/ProductItem';
+import { SkeletonList } from '@/components/skeleton/SkeletonList';
 import styled from '@emotion/styled';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 

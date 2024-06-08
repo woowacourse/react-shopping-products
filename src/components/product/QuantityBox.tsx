@@ -1,4 +1,4 @@
-import BorderButton from './button/BorderButton';
+import BorderButton from '@/components/button/BorderButton';
 import { FlexRow } from '@/style/common.style';
 import Minus from '@/assets/Minus.svg?react';
 import Plus from '@/assets/Plus.svg?react';
