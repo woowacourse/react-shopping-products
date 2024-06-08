@@ -3,7 +3,8 @@ import { requestGet, requestPost, requestDelete, requestPatch } from '../fetcher
 import { ENDPOINT } from '../endpoints';
 import { ResponseCartItemList } from '../responseTypes';
 import { CartItem } from '@/types/cartItem.type';
-import { PageParams } from '@/types/infiniteScroll';
+import { PageData } from '@/types/infiniteScroll';
+import { REQUEST_CART_ITEMS_ERROR_MESSAGE } from '@/constants/messages';
 
 type QueryParams = {
   page: number;
@@ -13,7 +14,7 @@ type QueryParams = {
 export const requestCartItemList = async (
   page: number = 0,
   size: number = 20,
-): Promise<PageParams<CartItem>> => {
+): Promise<PageData<CartItem>> => {
   const queryParams: QueryParams = {
     page,
     size,
@@ -23,6 +24,7 @@ export const requestCartItemList = async (
     baseUrl: BASE_URL.SHOP,
     endpoint: ENDPOINT.CART_ITEM,
     queryParams,
+    errorMessage: REQUEST_CART_ITEMS_ERROR_MESSAGE.GET_CART_ITEMS,
   });
 
   return {
@@ -34,7 +36,7 @@ export const requestCartItemList = async (
 
 export type RequestAddCartItem = {
   productId: number;
-  quantity: number;
+  quantity?: number;
 };
 
 export const requestAddCartItem = async ({ productId, quantity = 1 }: RequestAddCartItem) => {
@@ -45,6 +47,7 @@ export const requestAddCartItem = async ({ productId, quantity = 1 }: RequestAdd
       productId,
       quantity,
     },
+    errorMessage: REQUEST_CART_ITEMS_ERROR_MESSAGE.ADD_CART_ITEM,
   });
 };
 
@@ -55,6 +58,7 @@ export const requestDeleteCartItem = async (cartItemId: number) => {
     body: {
       id: cartItemId,
     },
+    errorMessage: REQUEST_CART_ITEMS_ERROR_MESSAGE.DELETE_CART_ITEM,
   });
 };
 
@@ -73,5 +77,6 @@ export const requestModifyCartItemQuantity = async ({
     body: {
       quantity,
     },
+    errorMessage: REQUEST_CART_ITEMS_ERROR_MESSAGE.MODIFY_CART_ITEM,
   });
 };

@@ -5,7 +5,8 @@ import { SortValue } from '@/constants/filter';
 import { ENDPOINT } from '../endpoints';
 import { ResponseProductList } from '../responseTypes';
 import { Product } from '@/types/product.type';
-import { PageParams } from '@/types/infiniteScroll';
+import { PageData } from '@/types/infiniteScroll';
+import { REQUEST_PRODUCTS_ERROR_MESSAGE } from '@/constants/messages';
 
 type QueryParams = {
   page: number;
@@ -24,7 +25,7 @@ export const requestProductList = async ({
   size: number;
   category: Category;
   sortType: SortValue;
-}): Promise<PageParams<Product>> => {
+}): Promise<PageData<Product>> => {
   const queryParams: QueryParams = {
     page,
     size,
@@ -37,6 +38,7 @@ export const requestProductList = async ({
     baseUrl: BASE_URL.SHOP,
     endpoint: ENDPOINT.PRODUCT,
     queryParams,
+    errorMessage: REQUEST_PRODUCTS_ERROR_MESSAGE.GET_PRODUCT_LIST,
   });
 
   return {
