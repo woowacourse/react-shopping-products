@@ -73,8 +73,11 @@ function Product() {
             <TotalAmount cartItems={cartItems} />
           </Modal>
         )}
-        
-        <Header badgeCount={cartItems.length} />
+
+        <Header
+          badgeCount={cartItems.length}
+          onToggleDetailModal={toggleDetailModal}
+        />
         {isError && <ErrorMessage />}
         <S.ProductContentWrapper>
           <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
@@ -86,13 +89,7 @@ function Product() {
 
           <S.ProductListContainer>
             {products.map((product) => {
-              return (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onToggleDetailModal={toggleDetailModal}
-                />
-              );
+              return <ProductCard key={product.id} product={product} />;
             })}
             <S.ObserverContainer ref={target} />
           </S.ProductListContainer>

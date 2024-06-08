@@ -8,10 +8,9 @@ import * as S from './ProductCard.styled';
 
 interface ProductCardProps {
   product: Product;
-  onToggleDetailModal: () => void;
 }
 
-function ProductCard({ product, onToggleDetailModal }: ProductCardProps) {
+function ProductCard({ product }: ProductCardProps) {
   const cartContext = useContext(CartContext);
   if (!cartContext) {
     throw new Error('CartContext가 비어있습니다.');
@@ -24,7 +23,7 @@ function ProductCard({ product, onToggleDetailModal }: ProductCardProps) {
   } = cartContext;
 
   return (
-    <div onClick={onToggleDetailModal}>
+    <div>
       <S.ProductImage src={product.imageUrl} alt={product.name} />
       <S.ContentWrapper>
         <S.InfoWrapper>
