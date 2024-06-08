@@ -1,16 +1,16 @@
 import { renderHook } from "@testing-library/react";
 import { vi } from "vitest";
-import { useCartItemQuantityControl } from "@server/hooks/useCartItemQuantityControl";
+import { useCartItemQuantityControl } from "@serverState/hooks/useCartItemQuantityControl";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "../queryClient";
 import { ReactNode, act } from "react";
-import { useCartItems } from "@server/queries/useCartItems";
+import { useCartItems } from "@serverState/queries/useCartItems";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-vi.mock("@server/queries/useCartItems");
+vi.mock("@serverState/queries/useCartItems");
 
 describe("useCartItemQuantityControl", () => {
   beforeEach(() => {

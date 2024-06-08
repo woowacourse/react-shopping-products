@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { updateCartItem } from "@src/apis/cartItems";
-import { MUTATION_KEYS } from "@server/__constants__/queryKeys";
+import { MUTATION_KEYS } from "@serverState/__constants__/queryKeys";
 import { queryInvalidator } from "../queryClient";
 import type { OnError } from "onError";
 

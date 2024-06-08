@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "@assets/cart.svg";
-import { useCartItems } from "@src/server/queries/useCartItems";
+import { useCartItems } from "@serverState/queries/useCartItems";
 import { useEffect } from "react";
 
 interface ShopHeaderProps {

@@ -1,6 +1,6 @@
 import { Product, ProductQueryParams, ProductsWithNextPage, getProducts } from "@src/apis/products";
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@server/__constants__/queryKeys";
+import { QUERY_KEYS } from "@serverState/__constants__/queryKeys";
 import { CATEGORY_OPTIONS, PRICE_SORT_OPTIONS } from "@src/apis/__constants__/productQueryParams";
 import { Category, PriceSort } from "@src/types/products";
 import { useEffect, useState } from "react";

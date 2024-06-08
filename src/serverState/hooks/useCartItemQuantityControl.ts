@@ -1,7 +1,7 @@
-import { useCartItems } from "@src/server/queries/useCartItems";
-import { useDeleteCartItemMutation } from "@src/server/mutations/useDeleteCartItemMutation";
-import { useCreateCartItemMutation } from "@src/server/mutations/useCreateCartItemMutation";
-import { useUpdateCartItemMutation } from "@src/server/mutations/useUpdateCartItemMutation";
+import { useCartItems } from "@serverState/queries/useCartItems";
+import { useDeleteCartItemMutation } from "@serverState/mutations/useDeleteCartItemMutation";
+import { useCreateCartItemMutation } from "@serverState/mutations/useCreateCartItemMutation";
+import { useUpdateCartItemMutation } from "@serverState/mutations/useUpdateCartItemMutation";
 import { CartItem } from "@src/apis/cartItems";
 import type { OnError } from "onError";
 

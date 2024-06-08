@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import CartItem from "./CartItem";
-import { useCartItems } from "@src/server/queries/useCartItems";
+import { useCartItems } from "@serverState/queries/useCartItems";
 import LoadingSpinner from "@src/components/common/LoadingSpinner";
 
 const CartItemList = () => {

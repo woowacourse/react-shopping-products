@@ -3,7 +3,7 @@ import { IntersectionDetector } from "@components/common/IntersectionDetector";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import ProductItem from "@components/ProductFeedPage/ProductItem";
 import ProductFilterBar from "@components/ProductFeedPage/ProductFilterBar";
-import { useInfiniteProducts } from "@src/server/queries/useInfiniteProducts";
+import { useInfiniteProducts } from "@serverState/queries/useInfiniteProducts";
 
 interface ProductListProps {
   onError: (error: Error) => void;

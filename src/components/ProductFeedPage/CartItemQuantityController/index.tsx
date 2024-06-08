@@ -1,6 +1,6 @@
 import { useErrorToast } from "@src/contexts/errorToast/useErrorToast";
 import CartItemAddButton from "./CartItemAddButton";
-import { useCartItemQuantityControl } from "@src/server/hooks/useCartItemQuantityControl";
+import { useCartItemQuantityControl } from "@serverState/hooks/useCartItemQuantityControl";
 import styled from "styled-components";
 import Counter from "@src/components/common/Counter";
 

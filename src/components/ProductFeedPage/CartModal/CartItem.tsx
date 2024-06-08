@@ -2,8 +2,8 @@ import ImageWithFallback from "@src/components/common/ImageWithFallback";
 import styled from "styled-components";
 import { CartItem as TCartItem } from "@src/apis/cartItems";
 import { formatToKRW } from "@src/utils/formatToKRW";
-import { useCartItemQuantityControl } from "@server/hooks/useCartItemQuantityControl";
-import { useDeleteCartItemMutation } from "@src/server/mutations/useDeleteCartItemMutation";
+import { useCartItemQuantityControl } from "@serverState/hooks/useCartItemQuantityControl";
+import { useDeleteCartItemMutation } from "@serverState/mutations/useDeleteCartItemMutation";
 import Counter from "@src/components/common/Counter";
 
 interface CartItemProps {
