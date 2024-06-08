@@ -21,6 +21,8 @@ export const PRODUCTS_ERROR_MESSAGES = {
   fetchingCartItems:
     "장바구니 목록을 가져오는 과정에서 에러가 발생했어요!\n 잠시 후 다시 시도해 주세요.",
   addingCartItem: "장바구니에 상품을 담는 과정에서 에러가 발생했어요!\n 잠시 후 다시 시도해 주세요",
+  changeQuantity:
+    "장바구니의 수량을 변경하는 과정에서 에러가 발생했어요!\n 잠시 후 다시 시도해 주세요.",
   removeCartItem:
     "장바구니에서 상품을 삭제하는 과정에서 에러가 발생했어요!\n 잠시 후 다시 시도해 주세요",
   nonExistCartItem: "존재하지 않는 상품은 삭제할 수 없어요!",
