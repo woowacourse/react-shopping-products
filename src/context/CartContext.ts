@@ -1,9 +1,16 @@
 import { createContext } from 'react';
-import { useFetchAddCart, useFetchDeleteCart } from '../hooks/index';
+import {
+  useFetchAddCart,
+  useFetchCartItemQuantity,
+  useFetchDeleteCart,
+} from '../hooks/index';
 
 interface CartContextType {
   addCartItem: ReturnType<typeof useFetchAddCart>['addCartItem'];
   deleteCartItem: ReturnType<typeof useFetchDeleteCart>['deleteCartItem'];
+  updateCartItemQuantity: ReturnType<
+    typeof useFetchCartItemQuantity
+  >['updateCartItemQuantity'];
   // isAddSuccess: ReturnType<typeof useFetchAddCart>['isSuccess'];
   // isDeletePending: ReturnType<typeof useFetchDeleteCart>['isPending'];
   // isDeleteError: ReturnType<typeof useFetchDeleteCart>['isError'];

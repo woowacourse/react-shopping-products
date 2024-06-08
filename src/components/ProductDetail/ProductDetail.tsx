@@ -15,15 +15,19 @@ function ProductDetail({ cartItems }: ProductDetailProps) {
     throw new Error('CartContext가 비어있습니다.');
   }
   const {
-    addCartItem,
     deleteCartItem,
+    updateCartItemQuantity,
     // isDeletePending,
     // isDeleteError,
   } = cartContext;
 
-  const handleDecreasedQuantity = () => {};
+  const handleIncreasedQuantity = (item: Carts) => {
+    updateCartItemQuantity({ id: item.id, quantity: item.quantity + 1 });
+  };
 
-  const handleIncreasedQuantity = () => {};
+  const handleDecreasedQuantity = (item: Carts) => {
+    updateCartItemQuantity({ id: item.id, quantity: item.quantity - 1 });
+  };
 
   return (
     <S.ProductDetailContainer>
@@ -45,9 +49,13 @@ function ProductDetail({ cartItems }: ProductDetailProps) {
                 </S.DeleteButton>
               </S.CardDetailWrapper>
               <S.CardQuantityButton>
-                <S.Button onClick={handleDecreasedQuantity}>-</S.Button>
+                <S.Button onClick={() => handleDecreasedQuantity(item)}>
+                  -
+                </S.Button>
                 <p>{item.quantity}</p>
-                <S.Button onClick={handleIncreasedQuantity}>+</S.Button>
+                <S.Button onClick={() => handleIncreasedQuantity(item)}>
+                  +
+                </S.Button>
               </S.CardQuantityButton>
             </S.CardDetail>
           </S.CardContent>
