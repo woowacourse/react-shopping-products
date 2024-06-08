@@ -3,7 +3,7 @@ export type InfiniteScrollData<Page = unknown, PageParams = unknown> = {
   pageParams: PageParams[];
 };
 
-export type PageParams<T> = {
+export type PageData<T> = {
   content: T[];
   hasNextPage: boolean;
   nextCursor: number;
