@@ -1,13 +1,13 @@
-import useFetchCartItems from '../useFetchCartItems/useFetchCartItems';
+import { useFetchCartItems } from '../index';
 
 const useFetchProductQuantity = () => {
   const { cartItems } = useFetchCartItems();
 
-  const getProductQuantity = (id: number) => {
-    return cartItems.find((item) => item.product.id === id);
+  const getCartItemByProduct = (id: number) => {
+    return cartItems.find((item) => item.product.id === id) ?? null;
   };
 
-  return { getProductQuantity };
+  return { getCartItemByProduct };
 };
 
 export default useFetchProductQuantity;

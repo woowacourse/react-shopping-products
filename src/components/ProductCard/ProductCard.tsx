@@ -1,22 +1,22 @@
 import { useContext } from 'react';
 
 import { CartContext } from '../../context/CartContext';
-import { Carts, Product } from '../../types/fetch';
+import { Product } from '../../types/fetch';
 import { CartButton } from '../index';
 
 import * as S from './ProductCard.styled';
 
 interface ProductCardProps {
   product: Product;
-  cartItem: Carts;
 }
 
-function ProductCard({ product, cartItem }: ProductCardProps) {
+function ProductCard({ product }: ProductCardProps) {
   const cartContext = useContext(CartContext);
   if (!cartContext) {
     throw new Error('CartContext가 비어있습니다.');
   }
-  const { addCartItem } = cartContext;
+  const { addCartItem, getCartItemByProduct } = cartContext;
+  const cartItem = getCartItemByProduct(product.id);
 
   return (
     <div>
@@ -29,7 +29,7 @@ function ProductCard({ product, cartItem }: ProductCardProps) {
 
         <S.ButtonContainer>
           <CartButton
-            item={cartItem}
+            cartItem={cartItem}
             onAddClick={() => {
               addCartItem(product.id);
             }}

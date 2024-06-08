@@ -36,7 +36,6 @@ function Product() {
     resetPage,
   } = useFetchProducts(sortings, filter);
   const { cartItems } = useFetchCartItems();
-  const { getProductQuantity } = useFetchProductQuantity();
 
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
@@ -81,13 +80,7 @@ function Product() {
 
           <S.ProductListContainer>
             {products.map((product) => {
-              return (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  cartItem={getProductQuantity(product.id)}
-                />
-              );
+              return <ProductCard key={product.id} product={product} />;
             })}
             <S.ObserverContainer ref={target} />
           </S.ProductListContainer>

@@ -3,6 +3,7 @@ import {
   useFetchAddCart,
   useFetchUpdateQuantity,
   useFetchDeleteCart,
+  useFetchProductQuantity,
 } from '../hooks/index';
 
 interface CartContextType {
@@ -11,6 +12,9 @@ interface CartContextType {
   updateCartItemQuantity: ReturnType<
     typeof useFetchUpdateQuantity
   >['updateCartItemQuantity'];
+  getCartItemByProduct: ReturnType<
+    typeof useFetchProductQuantity
+  >['getCartItemByProduct'];
   // isAddSuccess: ReturnType<typeof useFetchAddCart>['isSuccess'];
   // isDeletePending: ReturnType<typeof useFetchDeleteCart>['isPending'];
   // isDeleteError: ReturnType<typeof useFetchDeleteCart>['isError'];

@@ -12,6 +12,7 @@ function QuantityUpdateButton({ item }: QuantityUpdateButtonProps) {
   if (!cartContext) {
     throw new Error('CartContext가 비어있습니다.');
   }
+  if (!item) return;
 
   const { updateCartItemQuantity } = cartContext;
 
