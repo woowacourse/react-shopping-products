@@ -36,11 +36,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </S.InfoWrapper>
 
         <S.ButtonContainer>
-          {productIdSetInCart.has(product.id) || count === 0 ? (
+          {productIdSetInCart.has(product.id) || count !== 0 ? (
             <Stepper.Horizontal>
-              <Stepper.MinusButton onClick={() => {}} />
+              <Stepper.MinusButton onClick={handleClickDecrease} />
               <Stepper.DisplayCounter count={count} />
-              <Stepper.PlusButton onClick={() => {}} />
+              <Stepper.PlusButton onClick={handleClickIncrease} />
             </Stepper.Horizontal>
           ) : (
             <AddCartButton
