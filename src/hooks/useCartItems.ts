@@ -13,7 +13,7 @@ const useCartItems = () => {
   };
 
   return {
-    cartItems: data!,
+    cartItems: data ?? [],
     error,
     refetchCartItems,
   };
