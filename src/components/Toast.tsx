@@ -1,7 +1,7 @@
 import useToast from '@/hooks/_common/useToast';
 
+import { STYLE_THEME } from '@/styles/constants/theme';
 import styled from '@emotion/styled';
-import theme from '@/styles/theme.style';
 
 const Toast = ({ message }: { message: string }) => {
   const isToastVisible = useToast();
@@ -20,11 +20,11 @@ const S = {
     left: 0;
     width: 100%;
     padding: 10px;
-    background-color: ${theme.color.lightRed};
+    background-color: ${STYLE_THEME.color.lightRed};
     text-align: center;
     box-sizing: border-box;
     transition: opacity 0.5s ease-in-out;
-    font-size: ${theme.fontSize.xs};
-    font-weight: ${theme.fontWeight.normal};
+    font-size: ${STYLE_THEME.fontSize.xs};
+    font-weight: ${STYLE_THEME.fontWeight.normal};
   `,
 };

@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import BaseButton from '@/components/button/BaseButton';
+
 import DropDownIcon from '@/assets/dropdown.svg?react';
+
+import { STYLE_THEME } from '@/styles/constants/theme';
 import styled from '@emotion/styled';
-import theme from '@/styles/theme.style';
 
 interface Option {
   [key: string]: string;
@@ -58,7 +60,7 @@ const SelectedOption = styled.label`
   width: 125px;
   height: 36px;
   padding: 0 8px;
-  border: 1px solid ${theme.color.blackWithOpacity};
+  border: 1px solid ${STYLE_THEME.color.blackWithOpacity};
   box-sizing: border-box;
   border-radius: 4px;
 `;
@@ -71,11 +73,11 @@ const OptionList = styled.ul`
   align-items: center;
   width: 125px;
   border-radius: 8px;
-  box-shadow: 0 0 10px 0 ${theme.color.blackWithOpacity};
+  box-shadow: 0 0 10px 0 ${STYLE_THEME.color.blackWithOpacity};
   border-radius: 8px;
-  background-color: ${theme.color.white};
-  font-size: ${theme.fontSize.small};
-  font-weight: ${theme.fontWeight.normal};
+  background-color: ${STYLE_THEME.color.white};
+  font-size: ${STYLE_THEME.fontSize.small};
+  font-weight: ${STYLE_THEME.fontWeight.normal};
   overflow-y: auto;
   cursor: pointer;
 `;
@@ -89,6 +91,6 @@ const OptionItem = styled.li`
 
   &:hover,
   &:active {
-    background-color: ${theme.color.blackWithOpacity};
+    background-color: ${STYLE_THEME.color.blackWithOpacity};
   }
 `;

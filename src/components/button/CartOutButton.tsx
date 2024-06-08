@@ -9,7 +9,7 @@ interface Props {
 
 const CartOutButton = ({ onClick }: Props) => {
   return (
-    <BaseButton $theme="light" onClick={onClick}>
+    <BaseButton $theme="gray" onClick={onClick}>
       <S.ButtonContent>
         <CartOut />
         빼기

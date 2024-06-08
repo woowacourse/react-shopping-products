@@ -1,7 +1,8 @@
 import BaseButton from '@/components/button/BaseButton';
 import CartIn from '@/assets/cartIn.svg?react';
+
+import { STYLE_THEME } from '@/styles/constants/theme';
 import styled from '@emotion/styled';
-import theme from '@/styles/theme.style';
 
 interface Props {
   onClick: () => void;
@@ -26,7 +27,7 @@ const S = {
     justify-content: space-between;
     gap: 5px;
     padding: 5px 10px;
-    font-size: ${theme.fontSize.xs};
-    font-weight: ${theme.fontWeight.bold};
+    font-size: ${STYLE_THEME.fontSize.xs};
+    font-weight: ${STYLE_THEME.fontWeight.bold};
   `,
 };

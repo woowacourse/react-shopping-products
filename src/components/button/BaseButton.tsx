@@ -1,23 +1,7 @@
-import React from 'react';
 import styled from '@emotion/styled';
-import theme from '@/styles/theme.style';
+import { BUTTON_THEME } from '@/styles/constants/theme';
 
-type ButtonThemeType = 'dark' | 'light' | 'disabled';
-
-const BUTTON_THEME = {
-  dark: {
-    backgroundColor: theme.color.black,
-    color: theme.color.white,
-  },
-  light: {
-    backgroundColor: theme.color.lightGray,
-    color: theme.color.black,
-  },
-  disabled: {
-    backgroundColor: theme.color.gray,
-    color: theme.color.white,
-  },
-};
+type ButtonThemeType = 'black' | 'white' | 'gray' | 'disabled';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
