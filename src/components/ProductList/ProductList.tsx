@@ -9,6 +9,8 @@ const ProductList = () => {
     isLoading,
     isFetching,
     hasNextPage,
+    isError,
+    error,
     handleCategory,
     handleSort,
     fetchNextPage,
@@ -27,6 +29,14 @@ const ProductList = () => {
         handleSort={handleSort}
       />
       {(() => {
+        if (isError && error) {
+          return (
+            <PL.Error>
+              🚨 Error! 🚨 <br />
+              {error?.message}
+            </PL.Error>
+          );
+        }
         if (isLoading) {
           return <PL.Loading>로딩중! 💪</PL.Loading>;
         }

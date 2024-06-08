@@ -9,6 +9,8 @@ interface UseProductsResult {
   isLoading: boolean;
   isFetching: boolean;
   hasNextPage: boolean;
+  isError: boolean;
+  error: Error | null;
   handleCategory: (category: Category) => void;
   handleSort: (sort: Sort) => void;
   fetchNextPage: () => void;
@@ -26,7 +28,6 @@ export default function useProducts(): UseProductsResult {
     isError,
     isLoading,
     isFetching,
-    refetch,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
@@ -51,24 +52,23 @@ export default function useProducts(): UseProductsResult {
         return currentPage < totalPage - 1 ? currentPage + 1 : undefined;
       }
     },
+    retry: false,
   });
 
   const products = data?.pages.flatMap((page) => page.content) ?? [];
 
   useEffect(() => {
-    if (error instanceof Error) {
+    if (isError && error) {
       showError(error.message);
     }
-  }, [showError, error, isError]);
+  }, [isError, error]);
 
   const handleCategory = (category: Category) => {
     setCategory(category);
-    refetch();
   };
 
   const handleSort = (sort: Sort) => {
     setSort(sort);
-    refetch();
   };
 
   return {
@@ -76,6 +76,8 @@ export default function useProducts(): UseProductsResult {
     isLoading,
     isFetching,
     hasNextPage,
+    isError,
+    error,
     handleCategory,
     handleSort,
     fetchNextPage,
