@@ -43,7 +43,7 @@ export async function modifyCartItem(id: number, quantity: number) {
     url: `${CART_ITEMS_ENDPOINT}/${id}`,
     body: JSON.stringify({ quantity }),
     headers: { "Content-type": "Application/json" },
-    errorMessage: ERROR_MESSAGE.deleteCartItem,
+    errorMessage: ERROR_MESSAGE.modifyCartItem,
   });
 
   return data;
