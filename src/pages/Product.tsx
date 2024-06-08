@@ -70,9 +70,10 @@ function Product() {
               handleCloseButton={toggleDetailModal}
             />
             <ProductDetail cartItems={cartItems} />
-            <TotalAmount />
+            <TotalAmount cartItems={cartItems} />
           </Modal>
         )}
+        
         <Header badgeCount={cartItems.length} />
         {isError && <ErrorMessage />}
         <S.ProductContentWrapper>
