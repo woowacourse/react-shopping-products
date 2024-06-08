@@ -1,24 +1,17 @@
 import { useState, useEffect } from 'react';
 
-interface Props {
-  isError: boolean;
-  duration?: number;
-}
-
-const useToast = ({ isError, duration = 3000 }: Props) => {
-  const [showToast, setShowToast] = useState(false);
+const useToast = (duration = 3000) => {
+  const [isToastVisible, setIsToastVisible] = useState(false);
 
   useEffect(() => {
-    if (isError) {
-      setShowToast(true);
-      const timer = setTimeout(() => {
-        setShowToast(false);
-      }, duration);
-      return () => clearTimeout(timer);
-    }
-  }, [isError, duration]);
+    setIsToastVisible(true);
+    const timer = setTimeout(() => {
+      setIsToastVisible(false);
+    }, duration);
+    return () => clearTimeout(timer);
+  }, []);
 
-  return showToast;
+  return isToastVisible;
 };
 
 export default useToast;

@@ -15,7 +15,7 @@ const ProductList = ({ sort, category }: ProductFilterOptions) => {
     useProducts({ sort, category });
 
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
-  const showToast = useToast({ isError });
+  const isToastVisible = useToast({ isError: errorState.isError });
 
   useEffect(() => {
     if (target.current) {
@@ -46,7 +46,7 @@ const ProductList = ({ sort, category }: ProductFilterOptions) => {
         </S.GridContainer>
         {hasNextPage && <S.ObserverContainer ref={target} />}
       </S.ListContainer>
-      {showToast && <Toast message={errorMessage as string} />}
+      {isToastVisible && <Toast message={errorState.errorMessage as string} />}
     </>
   );
 };

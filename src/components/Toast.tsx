@@ -1,11 +1,13 @@
+import useToast from '@/hooks/_common/useToast';
+
 import styled from '@emotion/styled';
 import theme from '@/styles/theme.style';
 
-interface Props {
-  message: string;
-}
+const Toast = ({ message }: { message: string }) => {
+  const isToastVisible = useToast();
 
-const Toast = ({ message }: Props) => {
+  if (!isToastVisible) return null;
+
   return <S.Toast>{message}</S.Toast>;
 };
 
