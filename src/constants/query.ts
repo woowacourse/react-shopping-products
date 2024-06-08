@@ -5,6 +5,6 @@ export const QUERY_KEY = {
 
 export const QUERY_TIME = {
   cartList: {
-    staleTime: 300000,
+    staleTime: 5 * 60 * 1_000,
   },
 };
