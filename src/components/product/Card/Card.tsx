@@ -3,6 +3,8 @@ import * as Styled from './Card.styled';
 import { AddShoppingCartSvg } from '@assets/svg';
 import { Product } from '@appTypes/product';
 import Stepper from '@components/common/Stepper/Stepper';
+import { SyntheticEvent } from 'react';
+import { WrongCatPng } from '@assets/png';
 import { formatKoreanCurrency } from '@utils/currency';
 
 interface CardProps {
@@ -24,7 +26,16 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <Styled.CardContainer>
-      <Styled.CardImage src={product.imageUrl} alt={product.name} />
+      <Styled.CardImage
+        key={`${product.id}/img`}
+        src={product.imageUrl}
+        alt={product.name}
+        onError={(event: SyntheticEvent<HTMLImageElement, Event>) => {
+          if (!event.target) return;
+          if (!(event.target instanceof HTMLImageElement)) return;
+          event.target.src = WrongCatPng;
+        }}
+      />
       <Styled.CardDescription>
         <Styled.ProductName>{product.name}</Styled.ProductName>
         <p>{`${formatKoreanCurrency(product.price)}`}</p>
