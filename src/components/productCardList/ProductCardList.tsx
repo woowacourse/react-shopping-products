@@ -21,7 +21,7 @@ const ProductCardList = ({ data, isLoading }: ProductCardListProp) => {
             page.content.map((product, idx) => (
               <div key={`${product.id}_${idx}`}>
                 <ProductCard imageUrl={product.imageUrl} name={product.name} price={product.price}>
-                  <CartToggleButton productId={product.id} />
+                  <CartToggleButton product={product} />
                 </ProductCard>
               </div>
             )),

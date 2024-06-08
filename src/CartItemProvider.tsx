@@ -4,6 +4,7 @@ import { CartItemsContext } from './context/cartItems';
 import useAddCartItemQuery from './hooks/queries/cartItems/useAddCartItemQuery';
 import useDeleteCartItemQuery from './hooks/queries/cartItems/useDeleteCartItemQuery';
 import useFetchCartItemsQuery from './hooks/queries/cartItems/useFetchCartItemsQuery';
+import { Product } from './types/product';
 
 const CartItemProvider = ({ children }: PropsWithChildren) => {
   const { data: cartItems } = useFetchCartItemsQuery();
@@ -14,15 +15,15 @@ const CartItemProvider = ({ children }: PropsWithChildren) => {
     return cartItems.find((cartItem) => cartItem.product.id === productId);
   };
 
-  const handleAddCartItem = async (productId: number) => {
-    addCartItem({ productId });
+  const handleAddCartItem = async (product: Product) => {
+    addCartItem(product);
   };
 
   const handleDeleteCartItem = async (productId: number) => {
     const matchedCartItemInfo = matchCartItem(productId);
-    const cartItemId = matchedCartItemInfo!.id;
+    const cartId = matchedCartItemInfo!.id;
 
-    deleteCartItem(cartItemId);
+    deleteCartItem(cartId);
   };
 
   return (

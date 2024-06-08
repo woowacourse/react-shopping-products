@@ -22,19 +22,17 @@ const useProductListQuery = ({ category, sortOptions }: FetchProductListProps) =
 
       return fetchProductList({ category, size, page: pageParam, sortOptions });
     },
-    staleTime: 20 * 1000,
+    staleTime: 300 * 1000,
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, lastPageParam) => {
+      // FIXME: 마지막 페이지 도착 후 다른 카테고리 이동 시 다음 페이지가 없는 것으로 인식하여 fetch X
       if (lastPage.last) {
         return null;
       }
+
       // 서버 로직으로 인해 4개씩 불러올 시 초기 20개 이후 인덱스부터 시작해야함.
       // 0부터 4까지 4*5=20개 이으로 다음 페이지를 5로 설정.
-      if (lastPageParam === 0) {
-        return PAGE_SIZE.firstPageUnit;
-      }
-
-      return lastPageParam + PAGE_SIZE.nextPageUnit;
+      return lastPageParam === 0 ? PAGE_SIZE.firstPageUnit : lastPageParam + PAGE_SIZE.nextPageUnit;
     },
   });
 };

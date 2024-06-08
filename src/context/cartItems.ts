@@ -1,11 +1,12 @@
 import { createContext } from 'react';
 
 import { CartItemInfo } from '@/types/cartItem';
+import { Product } from '@/types/product';
 
 interface CartItemsContext {
   cartItems: CartItemInfo[];
   matchCartItem: (productId: number) => CartItemInfo | undefined;
-  handleAddCartItem: (productId: number) => void;
+  handleAddCartItem: (product: Product) => void;
   handleDeleteCartItem: (productId: number) => void;
 }
 
