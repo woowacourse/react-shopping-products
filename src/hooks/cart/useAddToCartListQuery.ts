@@ -1,15 +1,14 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { QUERY_KEYS } from '@/constants/queryKeys';
 import { postCartItem } from '@/api/cartItem';
+import { useMutation } from '@tanstack/react-query';
+import useRefetchGetCartList from '@/hooks/cart/useRefetchGetCartList';
 
 export function useAddToCartListQuery() {
-  const queryClient = useQueryClient();
+  const { invalidateCartQuery } = useRefetchGetCartList();
 
   return useMutation({
     mutationFn: postCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
+      invalidateCartQuery();
     },
   });
 }

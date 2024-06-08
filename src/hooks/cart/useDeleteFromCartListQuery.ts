@@ -1,15 +1,14 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { QUERY_KEYS } from '@/constants/queryKeys';
 import { deleteCartItem } from '@/api/cartItem';
+import { useMutation } from '@tanstack/react-query';
+import useRefetchGetCartList from '@/hooks/cart/useRefetchGetCartList';
 
 export function useDeleteFromCartListQuery() {
-  const queryClient = useQueryClient();
+  const { invalidateCartQuery } = useRefetchGetCartList();
 
   return useMutation({
     mutationFn: deleteCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
+      invalidateCartQuery();
     },
   });
 }

@@ -1,15 +1,14 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { QUERY_KEYS } from '@/constants/queryKeys';
 import { patchCartItem } from '@/api/cartItem';
+import { useMutation } from '@tanstack/react-query';
+import useRefetchGetCartList from '@/hooks/cart/useRefetchGetCartList';
 
 const useChangeItemQuantity = () => {
-  const queryClient = useQueryClient();
+  const { invalidateCartQuery } = useRefetchGetCartList();
 
   return useMutation({
     mutationFn: patchCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
+      invalidateCartQuery();
     },
   });
 };
