@@ -1,11 +1,6 @@
 import Button from '../common/Button/Button';
 import { AddCart } from '../../asset';
-import {
-  ButtonImg,
-  CardQuantityButtonContainer,
-  CountButton,
-  QuantityCount,
-} from './CartButton.style';
+import * as S from './CartButton.style';
 import useCartItemHandler from '../../hooks/useCartItemHandler';
 import { CartButtonProps } from './\bCardButton.type';
 
@@ -23,28 +18,28 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
     <>
       {!isInCart ? (
         <Button isGray={isInCart} onClick={() => showCountButton()}>
-          <ButtonImg src={AddCart} />
+          <S.ButtonImg src={AddCart} />
           <span>{'담기'}</span>
         </Button>
       ) : (
-        <CardQuantityButtonContainer>
-          <CountButton
+        <S.CardQuantityButtonContainer>
+          <S.CountButton
             onClick={() => {
               handleMinusCartItemQuantity();
             }}
           >
             -
-          </CountButton>
+          </S.CountButton>
 
-          <QuantityCount>{itemQuantity}</QuantityCount>
-          <CountButton
+          <S.QuantityCount>{itemQuantity}</S.QuantityCount>
+          <S.CountButton
             onClick={() => {
               handleAddCartItemQuantity();
             }}
           >
             +
-          </CountButton>
-        </CardQuantityButtonContainer>
+          </S.CountButton>
+        </S.CardQuantityButtonContainer>
       )}
     </>
   );

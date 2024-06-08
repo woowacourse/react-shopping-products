@@ -5,13 +5,11 @@ export const ButtonImg = styled.img`
   height: 1.6rem;
 `;
 
-const ProductName = styled.p`
+export const QuantityCount = styled.p`
   font-size: 1.2rem;
   font-weight: 500;
   line-height: 1.5rem;
 `;
-
-export const QuantityCount = styled(ProductName)``;
 
 export const CountButton = styled.button`
   width: 2.4rem;
