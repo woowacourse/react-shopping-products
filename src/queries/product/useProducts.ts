@@ -6,7 +6,7 @@ import { FETCH_SIZE } from '@/constants/productList';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { ProductFilterOptions } from '@/types/product.type';
 
-const useProductsQuery = ({ sort, category }: ProductFilterOptions) => {
+const useProducts = ({ sort, category }: ProductFilterOptions) => {
   const loadNextPage = (isFirstPage: boolean, page: number) => {
     if (isFirstPage) {
       return FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount + 1;
@@ -41,11 +41,13 @@ const useProductsQuery = ({ sort, category }: ProductFilterOptions) => {
   return {
     products: data?.pages.flatMap((page) => page.content) ?? [],
     isLoading,
-    isError,
-    errorMessage: error?.message,
+    errorState: {
+      isError,
+      errorMessage: error?.message,
+    },
     hasNextPage,
     fetchNextPage,
   };
 };
 
-export default useProductsQuery;
+export default useProducts;

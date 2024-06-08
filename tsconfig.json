@@ -27,17 +27,17 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@/components": ["src/components/*"],
-      "@/pages": ["src/pages/*"],
-      "@/types": ["src/types/*"],
-      "@/utils": ["src/utils/*"],
-      "@/constants": ["src/constants/*"],
-      "@/assets": ["src/assets/*"],
-      "@/style": ["src/style/*"],
       "@/api": ["src/api/*"],
+      "@/assets": ["src/assets/*"],
+      "@/components": ["src/components/*"],
+      "@/constants": ["src/constants/*"],
       "@/hooks": ["src/hooks/*"],
       "@/mocks": ["src/mocks/*"],
-      "@/contexts": ["src/contexts/*"]
+      "@/pages": ["src/pages/*"],
+      "@/queries": ["src/queries/*"],
+      "@/styles": ["src/styles/*"],
+      "@/types": ["src/types/*"],
+      "@/utils": ["src/utils/*"]
     }
   },
   "include": ["src/**/*"],

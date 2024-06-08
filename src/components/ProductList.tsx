@@ -1,22 +1,18 @@
 import { useEffect, useRef } from 'react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import useProductsQuery from '@/hooks/queries/product/useProductsQuery';
-import ProductItem from './ProductItem';
+import useProducts from '@/queries/product/useProducts';
+
+import ProductItem from '@/components/ProductItem';
+import Toast from '@/components/Toast';
+
 import { ProductFilterOptions } from '@/types/product.type';
 import styled from '@emotion/styled';
 import useToast from '@/hooks/_common/useToast';
-import Toast from './Toast';
 
 const ProductList = ({ sort, category }: ProductFilterOptions) => {
   const target = useRef<HTMLDivElement | null>(null);
-  const {
-    products,
-    isLoading,
-    isError,
-    errorMessage,
-    hasNextPage,
-    fetchNextPage,
-  } = useProductsQuery({ sort, category });
+  const { products, isLoading, errorState, hasNextPage, fetchNextPage } =
+    useProducts({ sort, category });
 
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
   const showToast = useToast({ isError });
