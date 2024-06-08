@@ -1,10 +1,10 @@
 import { Modal } from 'chlwlstlf-modal';
 import CartItem from './CartItem';
 import { formatCurrency } from '../../utils/formatCurrency';
-import useCartItems from '../../hooks/useCartItems/useCartItems';
 import Button from '../common/Button';
 import styled from 'styled-components';
 import Splitter from '../common/Splitter';
+import useFetchCartItems from '../../hooks/useCartItems/useFetchCartItems';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -12,8 +12,9 @@ interface CartModalProps {
 }
 
 const CartModal = ({ isOpen, onClose }: CartModalProps) => {
-  const { cartItems } = useCartItems();
-  const totalAmount = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  const { cartItems } = useFetchCartItems();
+
+  const totalAmount = cartItems.reduce((acc, cur) => acc + cur.quantity * cur.product.price, 0);
 
   return (
     <StyledModal isOpen={isOpen} onClose={onClose} position="bottom">

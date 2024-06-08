@@ -1,5 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import useCartItems from './useCartItems';
+import useCartItems from './useMutateCartItems';
 import cartItemsData from '../../mocks/cartItem/cartItem.json';
 
 describe('useCartItems', () => {

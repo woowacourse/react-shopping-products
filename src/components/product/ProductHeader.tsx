@@ -1,10 +1,10 @@
-import useCartItems from '../../hooks/useCartItems/useCartItems';
 import CartIcon from '../../assets/CartIcon.svg';
 import * as S from './ProductHeader.styled';
 import { SIZE } from '../../constants/api';
+import useFetchCartItems from '../../hooks/useCartItems/useFetchCartItems';
 
 const ProductHeader = ({ onOpen }: { onOpen: () => void }) => {
-  const { cartItems } = useCartItems();
+  const { cartItems } = useFetchCartItems();
 
   return (
     <>

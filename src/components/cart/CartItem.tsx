@@ -2,18 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import MinusIcon from '../../assets/MinusIcon.svg';
 import PlusIcon from '../../assets/PlusIcon.svg';
-import useCartItems from '../../hooks/useCartItems/useCartItems';
 import Splitter from '../common/Splitter';
 import Button from '../common/Button';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { CartItem } from '../../types/CartItem.type';
+import useMutateCartItems from '../../hooks/useCartItems/useMutateCartItems';
 
 interface CartItemProps {
   cartItem: CartItem;
 }
 
 const CartItemInfo = ({ cartItem }: CartItemProps) => {
-  const { handleDeleteCartItem, handleCartItemQuantity } = useCartItems();
+  const { handleDeleteCartItem, handleCartItemQuantity } = useMutateCartItems();
 
   return (
     <CartItemWrapper>

@@ -5,14 +5,17 @@ import PlusIcon from '../../assets/PlusIcon.svg';
 import Button from '../common/Button';
 import * as S from './ProductItem.style';
 import { formatCurrency } from '../../utils/formatCurrency';
-import useCartItems from '../../hooks/useCartItems/useCartItems';
+import useFetchCartItems from '../../hooks/useCartItems/useFetchCartItems';
+import useMutateCartItems from '../../hooks/useCartItems/useMutateCartItems';
 
 interface ProductItemProps {
   product: Product;
 }
 
 const ProductItem = ({ product }: ProductItemProps) => {
-  const { cartItems, handleAddCartItem, handleDeleteCartItem, handleCartItemQuantity } = useCartItems();
+  const { cartItems } = useFetchCartItems();
+  const { handleAddCartItem, handleDeleteCartItem, handleCartItemQuantity } = useMutateCartItems();
+
   const cartItem = cartItems.find((item) => item.product.id === product.id);
   const isAdded = !!cartItem;
 

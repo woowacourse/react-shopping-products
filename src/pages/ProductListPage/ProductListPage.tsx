@@ -5,7 +5,7 @@ import Dropdown from '../../components/common/Dropdown';
 import FloatingButton from '../../components/common/FloatingButton';
 import CartModal from '../../components/cart/CartModal';
 
-import useProducts from '../../hooks/useProducts/useProducts';
+import useFetchProducts from '../../hooks/useProducts/useFetchProducts';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useFilterAndSort from '../../hooks/useFilterAndSort';
 import useModal from '../../hooks/useModal';
@@ -18,7 +18,7 @@ import Loading from '../../assets/loading.gif';
 
 const ProductListPage = () => {
   const { category, sort, handleCategory, handleSort } = useFilterAndSort();
-  const { products, loading, error, isLast, handlePage } = useProducts(category, sort);
+  const { products, loading, error, isLast, handlePage } = useFetchProducts(category, sort);
   const { isOpen, handleOpen, handleClose } = useModal();
   const targetRef = useIntersectionObserver(handlePage);
 
