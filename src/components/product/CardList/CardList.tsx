@@ -34,7 +34,7 @@ const CardList: React.FC<CardListProps> = ({ products }) => {
             if (!cartItem) return;
             changeCartItemQuantity({
               cartItemId: cartItem.id,
-              quantity: cartItem.quantity + 1,
+              quantity: Math.max(0, cartItem.quantity - 1),
             });
           }}
           isAddedCart={getCartItemByProductId(product.id) === undefined}
