@@ -5,6 +5,13 @@ import productSorter from '../utils/productSorter';
 import { mockCartResponse } from './cart';
 import { mockProductsResponse } from './products';
 
+const initialCarts = mockCartResponse.content.slice();
+const initialProducts = mockProductsResponse.content.slice();
+export const resetDB = () => {
+  mockCartResponse.content = initialCarts.slice();
+  mockProductsResponse.content = initialProducts.slice();
+};
+
 const filterProductHandler = (
   productCopy: ProductResponse,
   category: string | null,

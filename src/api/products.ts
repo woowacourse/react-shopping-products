@@ -42,8 +42,8 @@ export const postAddItems = async (id: number) => {
   } satisfies PostCartItemRequestBody);
 };
 
-export const deleteItem = async (id: number) => {
-  return await apiClient.delete(`${ENDPOINTS_REMOVE_CART(id)}`);
+export const deleteCartItem = async (cartId: number) => {
+  return await apiClient.delete(`${ENDPOINTS_REMOVE_CART(cartId)}`);
 };
 
 export const fetchCartItems = async () => {

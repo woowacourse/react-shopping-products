@@ -1,3 +1,4 @@
+import { resetDB } from './src/mocks/handlers';
 import { server } from './src/mocks/node';
 
 beforeAll(() => {
@@ -6,6 +7,7 @@ beforeAll(() => {
 
 afterEach(() => {
   server.resetHandlers();
+  resetDB();
 });
 
 afterAll(() => {
