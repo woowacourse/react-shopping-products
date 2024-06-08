@@ -51,6 +51,23 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
     },
   });
 
+  const deleteCartItemMutation = useMutation({
+    mutationFn: async () => {
+      const targetItem = cartItem.find((item) => item.product.id === productId);
+      if (targetItem) await deleteCartItem(targetItem.id);
+    },
+    onMutate: () => {
+      setIsInCart(false);
+    },
+    onError: () => {
+      createToast('⛔️ 상품을 제거하는데 실패했습니다. 다시 시도해 주세요.');
+      setItemQuantity(itemQuantity);
+      setIsInCart(true);
+    },
+    onSuccess: () => {
+      refetch();
+    },
+  });
   const addCartItemQuantityMutation = useMutation({
     mutationFn: async (itemQuantity: number) => {
       const targetItem = cartItem.find((item) => item.product.id === productId);
@@ -64,6 +81,9 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
         '⛔️ 상품의 수량을 변경하는데 실패했습니다. 다시 시도해 주세요.',
       );
       setItemQuantity((prev) => Math.max(0, prev - CHANGE_CART_ITEM_COUNT));
+    },
+    onSuccess: () => {
+      refetch();
     },
   });
 

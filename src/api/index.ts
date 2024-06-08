@@ -74,7 +74,6 @@ export async function fetchCartItemQuantity(
   cartItemId: number,
   quantity: number,
 ): Promise<void> {
-
   const response = await fetch(`${ENDPOINT.CART_ITEMS}/${cartItemId}`, {
     method: 'PATCH',
     headers: HEADERS,
@@ -86,17 +85,14 @@ export async function fetchCartItemQuantity(
   }
 }
 
-export const deleteCartItem = async (productId: number) => {
-  const cartItemId = await findCartItemIdByProductId(productId);
-  if (cartItemId !== undefined) {
-    const response = await fetch(`${ENDPOINT.CART_ITEMS}/${cartItemId}`, {
-      method: 'DELETE',
-      headers: HEADERS,
-    });
+export const deleteCartItem = async (cartItemId: number) => {
+  const response = await fetch(`${ENDPOINT.CART_ITEMS}/${cartItemId}`, {
+    method: 'DELETE',
+    headers: HEADERS,
+  });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch Items');
-    }
+  if (!response.ok) {
+    throw new Error('Failed to fetch Items');
   }
 };
 
