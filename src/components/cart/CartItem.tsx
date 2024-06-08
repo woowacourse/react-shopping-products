@@ -1,10 +1,10 @@
-import styled from 'styled-components';
 import { Button, Splitter } from '../common';
 import useMutateCartItems from '../../hooks/useCartItems/useMutateCartItems';
 import { CartItem } from '../../types/CartItem.type';
 import { formatCurrency } from '../../utils/formatCurrency';
 import MinusIcon from '../../assets/MinusIcon.svg';
 import PlusIcon from '../../assets/PlusIcon.svg';
+import * as S from './CartItem.style';
 
 interface CartItemProps {
   cartItem: CartItem;
@@ -14,22 +14,22 @@ const CartItemInfo = ({ cartItem }: CartItemProps) => {
   const { handleDeleteCartItem, handleCartItemQuantity } = useMutateCartItems();
 
   return (
-    <CartItemWrapper>
+    <S.CartItemWrapper>
       <Splitter />
 
-      <ProductInfo>
-        <ProductImage src={cartItem.product.imageUrl} alt={cartItem.product.name} />
-        <ProductDetails>
-          <Header>
-            <ProductName>{cartItem.product.name}</ProductName>
+      <S.ProductInfo>
+        <S.ProductImage src={cartItem.product.imageUrl} alt={cartItem.product.name} />
+        <S.ProductDetails>
+          <S.Header>
+            <S.ProductName>{cartItem.product.name}</S.ProductName>
             <Button variant="secondary" size="medium" onClick={() => handleDeleteCartItem(cartItem.id)}>
               삭제
             </Button>
-          </Header>
+          </S.Header>
 
-          <ProductPrice>{formatCurrency(cartItem.product.price)}</ProductPrice>
+          <S.ProductPrice>{formatCurrency(cartItem.product.price)}</S.ProductPrice>
 
-          <CartItemQuantityControls>
+          <S.CartItemQuantityControls>
             <Button
               variant="secondary"
               size="small"
@@ -45,60 +45,11 @@ const CartItemInfo = ({ cartItem }: CartItemProps) => {
             >
               <img src={PlusIcon} alt="장바구니 1개 추가" />
             </Button>
-          </CartItemQuantityControls>
-        </ProductDetails>
-      </ProductInfo>
-    </CartItemWrapper>
+          </S.CartItemQuantityControls>
+        </S.ProductDetails>
+      </S.ProductInfo>
+    </S.CartItemWrapper>
   );
 };
 
 export default CartItemInfo;
-
-const CartItemWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const ProductInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 24px;
-`;
-
-const ProductImage = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-`;
-
-const ProductDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: 100%;
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ProductName = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.md};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;
-
-const ProductPrice = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-`;
-
-const CartItemQuantityControls = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-`;
