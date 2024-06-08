@@ -22,3 +22,9 @@ export const changeToProductList = (
       }) || []
   );
 };
+
+export const calculatePaymentPrice = (cartItems: CartItem[]) => {
+  return cartItems.reduce((prev, curr) => {
+    return prev + curr.quantity * curr.product.price;
+  }, 0);
+};

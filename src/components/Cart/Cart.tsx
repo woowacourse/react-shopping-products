@@ -15,6 +15,8 @@ import {
 } from "./Cart.style";
 import { Button, ProductQuantity } from "@/components";
 import { CartItem } from "@/types";
+import { calculatePaymentPrice } from "@/utils/product";
+import { useMutationCartItem } from "@/hooks";
 
 interface CartProps extends HTMLAttributes<HTMLDialogElement> {
   dialogRef: RefObject<HTMLDialogElement>;
@@ -22,6 +24,8 @@ interface CartProps extends HTMLAttributes<HTMLDialogElement> {
 }
 
 const Cart = ({ cartItems, dialogRef, ...rest }: CartProps) => {
+  const { handleDeleteCartItem } = useMutationCartItem();
+
   const handleClickDialog = (event: MouseEvent<HTMLDialogElement>) => {
     if (event.target === dialogRef.current) {
       dialogRef.current?.close();
@@ -56,8 +60,9 @@ const Cart = ({ cartItems, dialogRef, ...rest }: CartProps) => {
                     top: 0,
                     right: 0,
                   }}
+                  onClick={() => handleDeleteCartItem(cartItem.id)}
                 >
-                  닫기
+                  삭제
                 </Button>
               </CartProductInfo>
             </CartProduct>
@@ -65,7 +70,9 @@ const Cart = ({ cartItems, dialogRef, ...rest }: CartProps) => {
         </CartProductList>
         <CartPrice style={{ marginTop: "12px", marginBottom: "24px" }}>
           <CartPriceDescription>총 결제 금액</CartPriceDescription>
-          <CartPriceNumber>95,000원</CartPriceNumber>
+          <CartPriceNumber>{`${calculatePaymentPrice(
+            cartItems || []
+          ).toLocaleString()}원`}</CartPriceNumber>
         </CartPrice>
         <Button theme="black" style={{ height: "44px" }} onClick={handleClickCloseButton}>
           닫기

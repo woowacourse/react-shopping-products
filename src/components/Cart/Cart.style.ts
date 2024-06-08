@@ -26,7 +26,7 @@ export const CartTitle = styled.div`
 `;
 
 export const CartProductList = styled.div`
-  height: 400px;
+  max-height: 400px;
   overflow: scroll;
 `;
 

@@ -25,6 +25,10 @@ const useMutationCartItem = () => {
     },
   });
 
+  const handleDeleteCartItem = (cartItemId: number) => {
+    deleteCartItemMutation.mutate(cartItemId);
+  };
+
   const handleChangeQuantity = (cartItemId: number, newQuantity: number) => {
     patchCartItemMutation.mutate({
       cartItemId: cartItemId,
@@ -37,7 +41,7 @@ const useMutationCartItem = () => {
   };
 
   return {
-    deleteCartItemMutation,
+    handleDeleteCartItem,
     handleClickAddCartItem,
     handleChangeQuantity,
   };
