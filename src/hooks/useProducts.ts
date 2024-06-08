@@ -14,6 +14,7 @@ interface UseProductsResult {
   products: ProductItem[];
   isLoading: boolean;
   error: unknown;
+  isFetching: boolean;
   fetchNextPage: () => void;
   changeCategory: (dropboxOption: CategoryType) => void;
   changeSorting: (dropboxOption: SortType) => void;
@@ -42,24 +43,25 @@ export default function useProducts(): UseProductsResult {
     return data;
   };
 
-  const { data, error, isLoading, fetchNextPage } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.PRODUCTS, category, sorting],
-    queryFn: fetchProductsData,
-    initialPageParam: 0,
-    placeholderData: keepPreviousData,
-    getNextPageParam: (lastPage, allPages) => {
-      if (allPages.length === 1 && !lastPage.last) {
-        return 5;
-      }
-      if (lastPage.last) {
-        return undefined;
-      }
-      return allPages.length;
-    },
-    select: (data) => {
-      return data.pages.flatMap((page) => page.data);
-    },
-  });
+  const { data, error, isLoading, isFetching, fetchNextPage } =
+    useInfiniteQuery({
+      queryKey: [QUERY_KEYS.PRODUCTS, category, sorting],
+      queryFn: fetchProductsData,
+      initialPageParam: 0,
+      placeholderData: keepPreviousData,
+      getNextPageParam: (lastPage, allPages) => {
+        if (allPages.length === 1 && !lastPage.last) {
+          return 5;
+        }
+        if (lastPage.last) {
+          return undefined;
+        }
+        return allPages.length + 4;
+      },
+      select: (data) => {
+        return data.pages.flatMap((page) => page.data);
+      },
+    });
 
   useEffect(() => {
     if (error) {
@@ -75,6 +77,7 @@ export default function useProducts(): UseProductsResult {
     products: data || [],
     isLoading,
     error,
+    isFetching,
     fetchNextPage,
     changeCategory,
     changeSorting,
