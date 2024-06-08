@@ -34,7 +34,7 @@ const useAdjustCartItemQuantity = () => {
 
       return { previousCartItem };
     },
-    onError: (err, variables, context) => {
+    onError: (_, variables, context) => {
       if (context?.previousCartItem) {
         queryClient.setQueryData(
           CART_ITEM_KEYS.DETAIL(variables.cartItemId),

@@ -1,5 +1,5 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SortType, Category } from '@/types';
 import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
 import { queryClient } from '../App';
@@ -40,17 +40,12 @@ const useProductList = () => {
     }
   };
 
-  const reMountPage = () => {
-    queryClient.invalidateQueries({ queryKey: PRODUCT_KEYS.ALL(category, sortType) });
-  };
-
   const handleCategory = (value: string) => {
     if (!isValidCategory(value)) {
       toast.error(ERROR_MESSAGE.WRONG_CATEGORY, DEFAULT_TOAST_DURATION);
       return;
     }
     setCategory(value);
-    reMountPage();
   };
 
   const handleSortType = (value: string) => {
@@ -59,7 +54,6 @@ const useProductList = () => {
       return;
     }
     setSortType(value);
-    reMountPage();
   };
 
   return {

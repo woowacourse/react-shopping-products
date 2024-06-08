@@ -31,12 +31,4 @@ export const handlers = [
       content: paginatedCartItems,
     });
   }),
-
-  http.post(`${BASE_URL.PRODUCT}${API_ROUTES.CART_ITEM}`, ({ request }) => {
-    // const { productId, quantity } = request.body;
-
-    return HttpResponse.json({
-      content: productListData,
-    });
-  }),
 ];
