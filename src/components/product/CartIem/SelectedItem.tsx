@@ -7,8 +7,8 @@ import { formatKoreanCurrency } from '@utils/currency';
 interface CartItemProps {
   cartItem: CartItem;
   deleteItem: (id: number) => void;
-  increaseItemQuantity: (cartItem: CartItem) => void;
-  decreaseItemQuantity: (cartItem: CartItem) => void;
+  increaseItemQuantity: () => void;
+  decreaseItemQuantity: () => void;
 }
 
 export default function SelectedItem({
@@ -33,8 +33,8 @@ export default function SelectedItem({
             {formatKoreanCurrency(cartItem.product.price)}
           </Styled.ProductPrice>
           <Stepper
-            handleDecreaseQuantity={() => decreaseItemQuantity(cartItem)}
-            handleIncreaseQuantity={() => increaseItemQuantity(cartItem)}
+            handleDecreaseQuantity={decreaseItemQuantity}
+            handleIncreaseQuantity={increaseItemQuantity}
             quantity={cartItem.quantity}
           />
         </Styled.ProductInfoBox>

@@ -1,34 +1,44 @@
 import Card from '@components/product/Card/Card';
 import { Product } from '@appTypes/product';
+import useAddToCart from '@hooks/mutation/useAddToCart';
+import useCartItems from '@hooks/query/useCartItem';
+import useChangeCartItemQuantity from '@hooks/mutation/useChangeCartItemQuantity';
 
 interface CardListProps {
   products: Product[];
-  addToCart: (id: number) => void;
-  increaseCartItemQuantity: (id: number) => void;
-  decreaseCartItemQuantity: (id: number) => void;
-  isAddedCart: (id: number) => boolean;
-  getQuantity: (id: number) => number;
 }
 
-const CardList: React.FC<CardListProps> = ({
-  products,
-  addToCart,
-  increaseCartItemQuantity,
-  decreaseCartItemQuantity,
-  isAddedCart,
-  getQuantity,
-}) => {
+const CardList: React.FC<CardListProps> = ({ products }) => {
+  const { getCartItemByProductId } = useCartItems();
+
+  const { mutate: addToCart } = useAddToCart();
+  const { mutate: changeCartItemQuantity } = useChangeCartItemQuantity();
+
   return (
     <>
-      {products.map((product, index) => (
+      {products.map(product => (
         <Card
-          key={`${product.id}-${index}`}
+          key={`${product.id}`}
           product={product}
-          addToCart={addToCart}
-          increaseCartItemQuantity={increaseCartItemQuantity}
-          decreaseCartItemQuantity={decreaseCartItemQuantity}
-          isAddedCart={!isAddedCart(product.id)}
-          getQuantity={getQuantity}
+          addToCart={() => addToCart(product.id)}
+          increaseCartItemQuantity={() => {
+            const cartItem = getCartItemByProductId(product.id);
+            if (!cartItem) return;
+            changeCartItemQuantity({
+              cartItemId: cartItem.id,
+              quantity: cartItem.quantity + 1,
+            });
+          }}
+          decreaseCartItemQuantity={() => {
+            const cartItem = getCartItemByProductId(product.id);
+            if (!cartItem) return;
+            changeCartItemQuantity({
+              cartItemId: cartItem.id,
+              quantity: cartItem.quantity + 1,
+            });
+          }}
+          isAddedCart={getCartItemByProductId(product.id) === undefined}
+          quantity={getCartItemByProductId(product.id)?.quantity || 0}
         />
       ))}
     </>

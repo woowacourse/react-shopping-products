@@ -1,32 +1,39 @@
 import * as Styled from './CartModal.styled';
 
-import { CartItem } from '@appTypes/product';
 import { CompoundModal } from 'le-sserafim';
 import SelectedItem from '../CartIem/SelectedItem';
 import { formatKoreanCurrency } from '@utils/currency';
+import useCartItems from '@hooks/query/useCartItem';
+import useChangeCartItemQuantity from '@hooks/mutation/useChangeCartItemQuantity';
+import useDeleteFromCart from '@hooks/mutation/useDeleteFromCart';
 
 interface CartModalProps {
-  cartItems: CartItem[];
   onClose: () => void;
-  deleteItem: (id: number) => void;
-  increaseItemQuantity: (cartItem: CartItem) => void;
-  decreaseItemQuantity: (cartItem: CartItem) => void;
 }
 
-export default function CartModal({
-  cartItems,
-  onClose,
-  deleteItem,
-  increaseItemQuantity,
-  decreaseItemQuantity,
-}: CartModalProps) {
+export default function CartModal({ onClose }: CartModalProps) {
+  const { cartItems = [] } = useCartItems();
+
+  const { mutate: deleteItem } = useDeleteFromCart();
+  const { mutate: changeCartItemQuantity } = useChangeCartItemQuantity();
+
   const selectedItemsElements = cartItems.map(cartItem => (
     <SelectedItem
       key={cartItem.id}
       cartItem={cartItem}
       deleteItem={deleteItem}
-      increaseItemQuantity={increaseItemQuantity}
-      decreaseItemQuantity={decreaseItemQuantity}
+      increaseItemQuantity={() => {
+        changeCartItemQuantity({
+          cartItemId: cartItem.id,
+          quantity: cartItem.quantity + 1,
+        });
+      }}
+      decreaseItemQuantity={() => {
+        changeCartItemQuantity({
+          cartItemId: cartItem.id,
+          quantity: Math.max(0, cartItem.quantity - 1),
+        });
+      }}
     ></SelectedItem>
   ));
 
