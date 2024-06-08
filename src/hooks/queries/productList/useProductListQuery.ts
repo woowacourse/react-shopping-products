@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import useNetworkStatus from './useNetworkStatus';
+import { PRODUCT_KEYS } from './queryKeys';
+import useNetworkStatus from '../../useNetworkStatus';
 
 import { fetchProductList } from '@/api/product';
 import { PAGE_SIZE } from '@/constants/config';
@@ -15,7 +16,7 @@ const useProductListQuery = ({ category, sortOptions }: FetchProductListProps) =
   useNetworkStatus();
 
   return useInfiniteQuery({
-    queryKey: ['projects', category, sortOptions],
+    queryKey: PRODUCT_KEYS.filter([category, sortOptions]),
     queryFn: ({ pageParam }) => {
       const size = pageParam === 0 ? PAGE_SIZE.firstItemSize : PAGE_SIZE.nextItemSize;
 

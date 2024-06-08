@@ -1,5 +1,5 @@
-import useDeleteCartItemQuery from './useDeleteCartItemQuery';
-import useUpdateItemQuantityQuery from './useUpdateItemQuantityQuery';
+import useDeleteCartItemQuery from './queries/cartItems/useDeleteCartItemQuery';
+import useUpdateItemQuantityQuery from './queries/cartItems/useUpdateItemQuantityQuery';
 
 import { CartItemInfo } from '@/types/cartItem';
 

@@ -1,4 +1,4 @@
-import useProductListQuery from './useProductListQuery';
+import useProductListQuery from './queries/productList/useProductListQuery';
 
 import { ProductCategory, SortValue } from '@/types/product';
 

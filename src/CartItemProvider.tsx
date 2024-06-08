@@ -1,9 +1,9 @@
 import { PropsWithChildren } from 'react';
 
 import { CartItemsContext } from './context/cartItems';
-import useAddCartItemQuery from './hooks/useAddCartItemQuery';
-import useDeleteCartItemQuery from './hooks/useDeleteCartItemQuery';
-import useFetchCartItemsQuery from './hooks/useFetchCartItemsQuery';
+import useAddCartItemQuery from './hooks/queries/cartItems/useAddCartItemQuery';
+import useDeleteCartItemQuery from './hooks/queries/cartItems/useDeleteCartItemQuery';
+import useFetchCartItemsQuery from './hooks/queries/cartItems/useFetchCartItemsQuery';
 
 const CartItemProvider = ({ children }: PropsWithChildren) => {
   const { data: cartItems } = useFetchCartItemsQuery();
