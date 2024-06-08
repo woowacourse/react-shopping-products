@@ -1,20 +1,24 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ToastProvider } from '../../context/ToastProvider';
 import * as S from './style';
-
-import { PropsWithChildren } from 'react';
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ToastContext } from '../../context/ToastProvider';
+
+import { PropsWithChildren, useContext } from 'react';
 
 const GlobalLayout = ({ children }: PropsWithChildren) => {
-  const queryClient = new QueryClient();
+  const { showToast } = useContext(ToastContext);
+
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onError: (error) => showToast(error.message),
+    }),
+  });
 
   return (
-    <ToastProvider>
-      <QueryClientProvider client={queryClient}>
-        <S.Container>{children}</S.Container>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </ToastProvider>
+    <QueryClientProvider client={queryClient}>
+      <S.Container>{children}</S.Container>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 

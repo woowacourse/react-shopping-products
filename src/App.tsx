@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Container } from './layouts/GlobalLayout/style';
 
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Header from './components/common/Header';
 import Main from './components/common/Main';
@@ -21,15 +21,13 @@ import useIntersectionObserver from './hooks/useIntersectionObserver';
 
 import { CATEGORIES, PRICE_SORT } from './constants/filter';
 import { Category, Order } from './types/product';
-import { ToastContext } from './context/ToastProvider';
 import CartItemModal from './components/CartItemModal';
 import useCartItems from './hooks/useCartItems';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
-  const { showToast } = useContext(ToastContext);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const { data: cartItems, error: cartItemsError } = useCartItems();
+  const { data: cartItems } = useCartItems();
 
   const {
     products,
@@ -58,9 +56,6 @@ function App() {
   useIntersectionObserver({ isLoading, error, hasNextPage }, observerRef, fetchNextPage, {
     threshold: 0.8,
   });
-
-  if (error) showToast('상품 목록 조회에 실패했습니다. 다시 시도해주세요.');
-  if (cartItemsError) showToast('장바구니 목록 조회에 실패했습니다. 다시 시도해주세요.');
 
   return (
     <Container>
