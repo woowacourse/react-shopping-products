@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
-import { keyframes } from '@emotion/react';
 import { SIZE } from '@styles/style.constant';
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 const fadeIn = keyframes`
   0% {
@@ -21,6 +21,8 @@ const fadeOut = keyframes`
 `;
 
 export const ToastContainer = styled.div<{ $isOpen: boolean }>`
+  font-size: 15px;
+
   background-color: red;
   color: white;
   width: ${SIZE.layoutWidth};
