@@ -11,18 +11,12 @@ interface Props {
 }
 
 const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
-  const {
-    products,
-    increaseNextPage,
-    selectedItems,
-    handleSelect,
-    isLoading,
-    errorCartItemsFetch,
-  } = useProducts({
-    selectBarCondition,
-    handleCount,
-  });
-  const { lastProductElementRef } = useInfinityScroll({ onIntersect: increaseNextPage });
+  const { products, fetchNextPage, selectedItems, handleSelect, isLoading, errorCartItemsFetch } =
+    useProducts({
+      selectBarCondition,
+      handleCount,
+    });
+  const { lastProductElementRef } = useInfinityScroll({ onIntersect: fetchNextPage });
   const { showToast } = useToast();
 
   if (errorCartItemsFetch.isError) {
@@ -32,7 +26,7 @@ const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
   return (
     <>
       <div className={styles.productItemListContainer}>
-        {products.map((item, idx) => {
+        {products?.map((item, idx) => {
           return (
             <ProductItem
               key={`item-${item.id}-${idx}`}
@@ -44,7 +38,7 @@ const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
             />
           );
         })}
-        {products.length !== 0 && <p style={{ height: '10px' }} ref={lastProductElementRef}></p>}
+        {products?.length !== 0 && <p style={{ height: '10px' }} ref={lastProductElementRef}></p>}
       </div>
       {isLoading && <Loader />}
     </>

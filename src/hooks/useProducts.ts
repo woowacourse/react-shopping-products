@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useProductFetch } from './useProductFetch';
 import { useCartItems } from './useCartItems';
 import { useProductSelection } from './useProductSelection';
+import useProductQuery from './useProductQuery';
 
 interface Props {
   selectBarCondition: Record<string, string>;
@@ -9,9 +9,10 @@ interface Props {
 }
 
 export default function useProducts({ selectBarCondition, handleCount }: Props) {
-  const { products, increaseNextPage, isLoading } = useProductFetch({
+  const { products, isError, isSuccess, isLoading, fetchNextPage } = useProductQuery({
     selectBarCondition,
   });
+
   const {
     cartItems,
     productToCartIdMap,
@@ -38,10 +39,12 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
 
   return {
     products,
-    increaseNextPage,
+    isError,
+    isSuccess,
+    isLoading,
+    fetchNextPage,
     selectedItems,
     handleSelect,
-    isLoading,
     errorCartItemsFetch,
   };
 }
