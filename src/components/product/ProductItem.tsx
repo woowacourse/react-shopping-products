@@ -1,5 +1,8 @@
 import useFetchCartItems from '@/queries/cartItem/useFetchCartItems';
+import useAddCartItem from '@/queries/cartItem/useAddCartItem';
 
+import CartItemQuantityContainer from '@/components/cartItem/CartItemQuantityContainer';
+import CartInButton from '@/components/button/CartInButton';
 
 import { Product } from '@/types/product.type';
 
@@ -12,6 +15,7 @@ interface Props {
 
 const ProductItem = ({ productItem }: Props) => {
   const { findCartItemByProductId } = useFetchCartItems();
+  const { addCartItem, error: postCartItemError } = useAddCartItem();
   return (
     <S.ItemCardContainer>
       <S.Img src={productItem.imageUrl} alt="" />
@@ -21,6 +25,19 @@ const ProductItem = ({ productItem }: Props) => {
           <S.Price>{productItem.price.toLocaleString('ko-RR')}원</S.Price>
         </S.InfoText>
         <S.ButtonWrapper>
+          {findCartItemByProductId(productItem.id) ? (
+            <CartItemQuantityContainer
+              cartItemId={findCartItemByProductId(productItem.id)?.id as number}
+              quantity={
+                findCartItemByProductId(productItem.id)?.quantity as number
+              }
+            />
+          ) : (
+            <CartInButton
+              onClick={() => addCartItem(productItem.id)}
+              error={postCartItemError}
+            />
+          )}
         </S.ButtonWrapper>
       </S.InfoWrapper>
     </S.ItemCardContainer>

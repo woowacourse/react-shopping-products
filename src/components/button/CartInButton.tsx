@@ -1,4 +1,6 @@
 import BaseButton from '@/components/button/BaseButton';
+import Toast from '@/components/Toast';
+
 import CartIn from '@/assets/cartIn.svg?react';
 
 import { STYLE_THEME } from '@/styles/constants/theme';
@@ -6,16 +8,20 @@ import styled from '@emotion/styled';
 
 interface Props {
   onClick: () => void;
+  error?: Error | null;
 }
 
-const CartInButton = ({ onClick }: Props) => {
+const CartInButton = ({ onClick, error }: Props) => {
   return (
-    <BaseButton $theme="dark" onClick={onClick}>
-      <S.ButtonContent>
-        <CartIn />
-        담기
-      </S.ButtonContent>
-    </BaseButton>
+    <>
+      <BaseButton $theme="black" onClick={onClick}>
+        <S.ButtonContent>
+          <CartIn />
+          담기
+        </S.ButtonContent>
+      </BaseButton>
+      {error && <Toast message={error.message} />}
+    </>
   );
 };
 
