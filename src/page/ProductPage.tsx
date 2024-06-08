@@ -14,39 +14,35 @@ import {
   ContentWrapper,
 } from './ProductPage.style';
 import { useIntersectionObserver, useInfiniteProducts } from '@/hooks/index';
+import { Modal } from 'river-modal-component';
 
 function ProductPage() {
-  const {
-    products,
-    fetchNextPage,
-    loading,
-    changeCategory,
-    changeSorting,
-    error,
-  } = useProducts();
   const { products, status, fetchNextPage, changeCategory, changeSorting } =
     useInfiniteProducts();
   const { lastProductElementRef } = useIntersectionObserver(fetchNextPage);
 
   return (
-    <Container>
-      <Header />
-      <ContentWrapper>
-        <Title>bpple 상품 목록</Title>
-        <DropBoxContainer>
-          <Dropdown
-            onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              changeCategory(e.target.value);
-            }}
-            options={Object.entries(CATEGORY)}
-          ></Dropdown>
-          <Dropdown
-            onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              changeSorting(e.target.value);
-            }}
-            options={Object.entries(SORT)}
-          ></Dropdown>
-        </DropBoxContainer>
+    <Modal.Provider>
+      <CartItemsModal />
+      <Container>
+        <Header />
+        <ContentWrapper>
+          <Title>bpple 상품 목록</Title>
+          <DropBoxContainer>
+            <Dropdown
+              onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                changeCategory(e.target.value);
+              }}
+              options={Object.entries(CATEGORY)}
+            ></Dropdown>
+            <Dropdown
+              onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                changeSorting(e.target.value);
+              }}
+              options={Object.entries(SORT)}
+            ></Dropdown>
+          </DropBoxContainer>
+
           {status === 'pending' && (
             // <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
             <Spinner />
@@ -62,6 +58,7 @@ function ProductPage() {
           </ItemList>
         </ContentWrapper>
       </Container>
+    </Modal.Provider>
   );
 }
 
