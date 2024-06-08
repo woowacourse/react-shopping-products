@@ -65,3 +65,8 @@ export type CartItemListData = {
   totalElements: number;
   totalPages: number;
 };
+
+export type AdjustCartItemQuantity = {
+  cartItemId: number;
+  quantity: number;
+};
