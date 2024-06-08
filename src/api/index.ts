@@ -121,3 +121,16 @@ export const getCartItems = async (): Promise<CartItem[]> => {
 
   return data.content;
 };
+
+export const patchCartItems = async (cartId: number, quantity: number) => {
+  const response = await fetchWithAuth(`${CART_ITEMS_ENDPOINT}/${cartId}`, {
+    method: "PATCH",
+    body: {
+      quantity,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to patch cart item in cart");
+  }
+};

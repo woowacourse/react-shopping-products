@@ -2,8 +2,25 @@ import { Button } from "@components/Button/index";
 import CountControlButtonBundle from "../CountControlButtonBundle/CountControlButtonBundle";
 import * as MI from "./ModalInner.style";
 import useCartItems from "@hooks/useCartItems";
+import useControlCart from "@hooks/useControlCart";
 
 const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
+  const { addToCart, deleteToCart } = useControlCart({
+    cartItemId: cartItem.id,
+    quantity: cartItem.quantity,
+  });
+
+  const handleIncrementAmount = () => {
+    if (addToCart.mutate) {
+      addToCart.mutate();
+    }
+  };
+
+  const handleDecrementAmount = () => {
+    if (deleteToCart.mutate) {
+      deleteToCart.mutate();
+    }
+  };
   return (
     <MI.CartItem>
       <MI.CartItemImg src={cartItem.product.imageUrl} alt="" />
@@ -14,8 +31,8 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
         </span>
         <CountControlButtonBundle
           amount={cartItem.quantity}
-          handleDecrementAmount={() => {}}
-          handleIncrementAmount={() => {}}
+          handleIncrementAmount={handleIncrementAmount}
+          handleDecrementAmount={handleDecrementAmount}
         />
       </MI.CartItemContent>
       <MI.CartItemDeleteButton>

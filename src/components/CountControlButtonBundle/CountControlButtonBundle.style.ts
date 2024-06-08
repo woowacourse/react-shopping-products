@@ -7,4 +7,8 @@ export const CountControlButtonBundleStyle = styled.div`
   gap: 12px;
   font-size: 12px;
   font-weight: 500;
+
+  .cart-item_amount {
+    width: 5px;
+  }
 `;

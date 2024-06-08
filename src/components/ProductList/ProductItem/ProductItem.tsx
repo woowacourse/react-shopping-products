@@ -5,6 +5,7 @@ import { useError } from "@hooks/index";
 import CountControlButtonBundle from "@components/CountControlButtonBundle/CountControlButtonBundle";
 import AddCartButton from "@components/Button/AddCartButton";
 import useCartItems from "@hooks/useCartItems";
+import useControlCart from "@hooks/useControlCart";
 
 interface ProductProps {
   product: Product;
@@ -13,6 +14,15 @@ interface ProductProps {
 const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
   ({ product }, ref) => {
     const { cartItems, refetchCartItems } = useCartItems();
+
+    const productInCart = cartItems.find(
+      (item) => item.product.id === product.id,
+    );
+
+    const { addToCart, deleteToCart } = useControlCart({
+      cartItemId: productInCart?.id,
+      quantity: productInCart?.quantity,
+    });
 
     const cartItemIds = cartItems.map((item) => item.product.id);
     const isInCart = cartItemIds.includes(product.id);
@@ -33,6 +43,18 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
       }
     };
 
+    const handleIncrementAmount = () => {
+      if (addToCart.mutate) {
+        addToCart.mutate();
+      }
+    };
+
+    const handleDecrementAmount = () => {
+      if (deleteToCart.mutate) {
+        deleteToCart.mutate();
+      }
+    };
+
     return (
       <PI.ProductItemStyle ref={ref}>
         <PI.ProductImg
@@ -47,9 +69,9 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
           <PI.CartButton>
             {isInCart ? (
               <CountControlButtonBundle
-                amount={1}
-                handleDecrementAmount={() => {}}
-                handleIncrementAmount={() => {}}
+                amount={productInCart?.quantity || 0}
+                handleIncrementAmount={handleIncrementAmount}
+                handleDecrementAmount={handleDecrementAmount}
               />
             ) : (
               <AddCartButton onClick={handleIsInCart} />
