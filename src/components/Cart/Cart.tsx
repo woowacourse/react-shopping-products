@@ -25,11 +25,13 @@ const Cart = ({ cartItems, dialogRef, ...rest }: CartProps) => {
   const handleClickDialog = (event: MouseEvent<HTMLDialogElement>) => {
     if (event.target === dialogRef.current) {
       dialogRef.current?.close();
+      document.body.style.overflow = `auto`;
     }
   };
 
   const handleClickCloseButton = () => {
     dialogRef.current?.close();
+    document.body.style.overflow = `auto`;
   };
 
   return (

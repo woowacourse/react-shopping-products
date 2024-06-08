@@ -37,6 +37,7 @@ const App = () => {
 
   const handleOpenCart = () => {
     dialogRef.current?.showModal();
+    document.body.style.overflow = `hidden`;
   };
 
   return (
