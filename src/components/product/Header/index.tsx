@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import CartIcon from '../../../assets/images/cartIcon.png';
 import Logo from '../../../assets/images/logo.png';
 import * as S from './style';
-import { useCartItemsContext } from '../../../context/cartItems/useCartItemsContext';
+import { cartQueries } from '../../../hooks/queries/cart';
 
 export default function Header() {
   return (
@@ -32,7 +32,7 @@ function CartButton() {
     navigate(0);
   };
 
-  const { cartItems } = useCartItemsContext();
+  const { data: cartItems } = cartQueries.useGetCartItems();
 
   return (
     <S.Button onClick={moveToCartPage} type="button">

@@ -60,4 +60,23 @@ export const cartApis = {
 
     return response;
   },
+
+  update: async (params: CommonQueryParams) => {
+    const response = await fetch(
+      `${CART_ITEMS_ENDPOINT}/${params.cartItemId}`,
+      {
+        method: 'PATCH',
+        headers: HEADERS,
+        body: JSON.stringify({ quantity: params.quantity }),
+      }
+    );
+
+    if (!response.ok)
+      throw new APIError(
+        response.status,
+        '일시적인 오류로 수량을 변경할 수 없습니다.'
+      );
+
+    return response;
+  },
 };

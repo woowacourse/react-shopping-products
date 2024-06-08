@@ -15,31 +15,35 @@ export const cartQueries = {
 };
 
 export const cartMutations = {
-  useAddCartItem: (
-    params: { productId: number; quantity: number },
-    onSuccessCallback: () => void
-  ) => {
+  useAddCartItem: (params: { productId: number }) => {
     const queryClient = useQueryClient();
 
     return useMutation({
       mutationFn: async () => await cartApis.add({ ...params, quantity: 1 }),
       onSuccess: () => {
-        onSuccessCallback();
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] });
       },
     });
   },
 
-  useDeleteCartItem: (
-    params: { cartItemId: number | undefined },
-    onSuccessCallback: () => void
-  ) => {
+  useDeleteCartItem: (params: { cartItemId: number | undefined }) => {
     const queryClient = useQueryClient();
 
     return useMutation({
       mutationFn: async () => await cartApis.delete({ ...params }),
       onSuccess: () => {
-        onSuccessCallback();
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] });
+      },
+    });
+  },
+
+  useUpdateCartItemQuantity: () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationFn: async (params: { cartItemId?: number; quantity?: number }) =>
+        await cartApis.update({ ...params }),
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] });
       },
     });
