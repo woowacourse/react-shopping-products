@@ -6,6 +6,7 @@ const useGetCartListQuery = () => {
   return useSuspenseQuery({
     queryKey: [QUERY_KEYS.CART],
     queryFn: getCartList,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
