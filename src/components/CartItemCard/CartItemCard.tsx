@@ -1,4 +1,3 @@
-import * as S from './CartItemCard.style';
 import Button from '../common/Button/Button';
 import Divider from '../common/Divider/Divider';
 import QuantityStepper from '../common/QuantityStepper/QuantityStepper';
@@ -7,12 +6,14 @@ import useAddCartItem from '../../hooks/useAddCartItem';
 import useDeleteCartItem from '../../hooks/useDeleteCartItem';
 import usePatchCartItem from '../../hooks/usePatchCartItem';
 
+import * as S from './CartItemCard.style';
+
 interface CartItemProps {
   cartItem: CartItem;
 }
 
-const CartItemCard = ({ cartItem }: CartItemProps) => {
-  const quantity = cartItem.quantity;
+function CartItemCard({ cartItem }: CartItemProps) {
+  const { quantity } = cartItem;
 
   // TODO: ProductItem과 공통 로직 별도 hook으로 분리해볼까
   const deleteCartItemMustation = useDeleteCartItem();
@@ -66,6 +67,6 @@ const CartItemCard = ({ cartItem }: CartItemProps) => {
       </S.ItemBody>
     </S.CartItem>
   );
-};
+}
 
 export default CartItemCard;

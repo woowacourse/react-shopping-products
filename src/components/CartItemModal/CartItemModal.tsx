@@ -1,4 +1,5 @@
 import { CustomModal } from 'woowacourse-todari-components';
+
 import ContentRow from '../common/ContentRow/ContentRow';
 import useCartItemList from '../../hooks/useCartItemList';
 import CartItemList from '../CartItemList/CartItemList';
@@ -8,7 +9,7 @@ interface CartItemModalProps {
   onClose: () => void;
 }
 
-const CartItemModal = ({ isOpened, onClose }: CartItemModalProps) => {
+function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
   const {
     data: cartItemListData,
     error: cartItemListError,
@@ -31,6 +32,6 @@ const CartItemModal = ({ isOpened, onClose }: CartItemModalProps) => {
       <ContentRow title="총 결제 금액" content="95,000원" />
     </CustomModal>
   );
-};
+}
 
 export default CartItemModal;

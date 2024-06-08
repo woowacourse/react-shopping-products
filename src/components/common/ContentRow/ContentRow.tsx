@@ -5,13 +5,13 @@ interface ContentRowProps {
   content: string;
 }
 
-const ContentRow = ({ title, content }: ContentRowProps) => {
+function ContentRow({ title, content }: ContentRowProps) {
   return (
     <S.ContentRow>
       <S.Title>{title}</S.Title>
       <S.Content>{content}</S.Content>
     </S.ContentRow>
   );
-};
+}
 
 export default ContentRow;

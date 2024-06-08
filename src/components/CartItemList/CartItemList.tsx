@@ -1,13 +1,15 @@
-import * as S from './CartItemList.style';
 import CartItemCard from '../CartItemCard/CartItemCard';
 import { CartItem } from '../../types/type';
+
+import * as S from './CartItemList.style';
 
 interface CartItemListProp {
   cartItemList: CartItem[];
 }
 
-const CartItemList = ({ cartItemList }: CartItemListProp) => {
-  const reverseCartItemList = cartItemList.reverse();
+function CartItemList({ cartItemList }: CartItemListProp) {
+  const reverseCartItemList = [...cartItemList].reverse();
+
   return (
     <S.CartItemList>
       {reverseCartItemList.map((cartItem: CartItem) => {
@@ -15,6 +17,6 @@ const CartItemList = ({ cartItemList }: CartItemListProp) => {
       })}
     </S.CartItemList>
   );
-};
+}
 
 export default CartItemList;

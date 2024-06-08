@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CartItemCard from './CartItemCard';
+
 import { CartItem } from '../../types/type';
+
+import CartItemCard from './CartItemCard';
 
 const MOCK_DATA: CartItem = {
   id: 11,

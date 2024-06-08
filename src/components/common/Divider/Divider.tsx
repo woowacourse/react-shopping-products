@@ -1,7 +1,7 @@
 import * as S from './Divider.style';
 
-const Divider = () => {
+function Divider() {
   return <S.Divider />;
-};
+}
 
 export default Divider;
