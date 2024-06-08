@@ -10,7 +10,7 @@ import Toast from '@components/common/Toast/Toast';
 
 export const ToastContext = createContext({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  showToast: (error: unknown) => {},
+  showToast: (_: unknown) => {},
 });
 
 export const useToastContext = () => {
