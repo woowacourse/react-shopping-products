@@ -5,6 +5,8 @@ import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constan
 import ENDPOINT from '../constant/endpoint';
 import { CartItemType } from '../types';
 
+let mockCartItems = cartItems.content;
+
 interface CartItemsPostBody {
   productId: number;
   quantity: number;
@@ -48,7 +50,7 @@ export const handlers = [
       page === FIRST_FETCH_PAGE ? page : AFTER_FETCH_SIZE * (page - 5) + FIRST_FETCH_SIZE;
     const endIndex = startIndex + size;
 
-    const formattedCartItems = cartItems.content.slice(startIndex, endIndex) as CartItemType[];
+    const formattedCartItems = mockCartItems.slice(startIndex, endIndex) as CartItemType[];
 
     return HttpResponse.json({ content: [...formattedCartItems] });
   }),
@@ -63,16 +65,17 @@ export const handlers = [
 
     if (!product) return new Response(null, { status: 404 });
 
-    cartItems.content.push({ id: newCartItemId, quantity, product });
+    mockCartItems.push({ id: newCartItemId, quantity, product });
     return new Response(null, { status: 201 });
   }),
 
   http.delete(`${API_URL}${ENDPOINT.cartItems}/:cartId`, ({ params }) => {
     const { cartId } = params;
 
-    const isExistItem = cartItems.content.find((cartItem) => cartItem.id === Number(cartId));
+    const isExistItem = mockCartItems.find((cartItem) => cartItem.id === Number(cartId));
 
     if (isExistItem) {
+      mockCartItems = cartItems.content.filter((cartItem) => cartItem.id !== Number(cartId));
       return new Response(null, { status: 201 });
     } else {
       return new Response(null, { status: 404 });

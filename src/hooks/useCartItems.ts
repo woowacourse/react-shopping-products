@@ -1,22 +1,22 @@
 import { useState } from 'react';
-import { addCartItem, deleteCartItem, fetchCartItem } from '../api';
+import { addCartItem, deleteCartItem } from '../api';
 import { CartItemType, ProductType } from '../types';
 import { ERROR } from '../constant/message';
+import useCartItemQuery from './useCartItemQuery';
 
 export function useCartItems() {
-  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const { cartItems, refetchCartItems } = useCartItemQuery();
   const [productToCartIdMap, setProductToCartIdMap] = useState<
     Record<ProductType['id'], CartItemType['id']>
   >({});
   const [errorCartItemsFetch, setErrorCartItemsFetch] = useState({ isError: false, message: '' });
 
-  const getCartItems = async () => {
-    const cartItems = await fetchCartItem();
+  const getProductToCartIdMap = async () => {
+    if (!cartItems) return;
 
-    setCartItems(cartItems);
     setProductToCartIdMap((prev) => {
       const newProductToCartIdMap: Record<number, number> = { ...prev };
-      cartItems.forEach((cartItem) => {
+      cartItems?.forEach((cartItem) => {
         newProductToCartIdMap[cartItem.product.id] = cartItem.id;
       });
       return newProductToCartIdMap;
@@ -27,7 +27,7 @@ export function useCartItems() {
     setErrorCartItemsFetch({ isError: false, message: '' });
     try {
       await addCartItem(itemId);
-      getCartItems();
+      refetchCartItems();
       return true;
     } catch {
       setErrorCartItemsFetch({ isError: true, message: ERROR.addProduct });
@@ -39,7 +39,7 @@ export function useCartItems() {
     setErrorCartItemsFetch({ isError: false, message: '' });
     try {
       await deleteCartItem(itemId);
-      getCartItems();
+      refetchCartItems();
       return true;
     } catch {
       setErrorCartItemsFetch({ isError: true, message: ERROR.deleteProduct });
@@ -53,6 +53,6 @@ export function useCartItems() {
     errorCartItemsFetch,
     pushCartItem,
     popCartItem,
-    getCartItems,
+    getCartItems: getProductToCartIdMap,
   };
 }

@@ -13,18 +13,12 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     selectBarCondition,
   });
 
-  const {
-    cartItems,
-    productToCartIdMap,
-    errorCartItemsFetch,
-    pushCartItem,
-    popCartItem,
-    getCartItems,
-  } = useCartItems();
+  const { cartItems, productToCartIdMap, errorCartItemsFetch, popCartItem, getCartItems } =
+    useCartItems();
+
   const { selectedItems, handleSelect } = useProductSelection({
     cartItems,
     productToCartIdMap,
-    pushCartItem,
     popCartItem,
     getCartItems,
   });
@@ -34,6 +28,7 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
   }, []);
 
   useEffect(() => {
+    if (!cartItems) return;
     handleCount(cartItems.length);
   }, [cartItems]);
 

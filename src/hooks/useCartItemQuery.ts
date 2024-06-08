@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchCartItem } from '../api';
 
 const useCartItemQuery = () => {
-  const { data, isError, isSuccess, isFetching } = useQuery({
+  const { data, isError, isSuccess, isFetching, refetch } = useQuery({
     queryKey: ['cartItems'],
     queryFn: fetchCartItem,
   });
@@ -12,6 +12,7 @@ const useCartItemQuery = () => {
     cartItemsQueryError: isError,
     cartItemsQuerySuccess: isSuccess,
     cartItemsQueryFetching: isFetching,
+    refetchCartItems: refetch,
   };
 };
 

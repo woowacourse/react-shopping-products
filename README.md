@@ -31,7 +31,11 @@
 - step 2. 장바구니 상품 목록 get 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
 
   - [x] 장바구니 목록 fetch 하는 기능을 useQuery를 사용한 useCartItemsQuery 훅
+
     - [x] 장바구니 상품 목록을 0페이지, 100 size로 불러온다.
+
+  - [x] 프로덕션 코드의 기존 getCartItems 함수를 대체
+    - [ ] cartItems가 undefined인 경우 대비
 
 - step 3 장바구니에 상품 추가 post 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
   - [ ] 장바구니에 상품 추가 post 기능
