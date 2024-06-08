@@ -51,3 +51,31 @@ export const deleteCartItem = async (productId: number): Promise<void> => {
     throw new Error(ERROR_MESSAGES.deleteCartItem);
   }
 };
+
+export interface PatchCartItemQuantityProps {
+  cartItemId: number;
+  quantity: number;
+}
+
+/**
+ * 장바구니 아이템 수량 변경
+ */
+export const patchCartItemQuantity = async ({
+  cartItemId,
+  quantity,
+}: PatchCartItemQuantityProps): Promise<void> => {
+  const response = await fetchWithAuth(
+    ENDPOINT.cartItem.patchItem(cartItemId),
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ quantity }),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(ERROR_MESSAGES.patchCartItemQuantity);
+  }
+};
