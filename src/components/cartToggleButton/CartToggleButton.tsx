@@ -15,7 +15,9 @@ const CartToggleButton = ({ product }: CartItemButtonProp) => {
   const matchedCartItem = matchCartItem(product.id);
 
   if (matchedCartItem) {
-    return <CountButtonContainer item={matchedCartItem} />;
+    return (
+      <CountButtonContainer item={matchedCartItem} testId={`cart-toggle-button-${product.id}`} />
+    );
   }
 
   return (

@@ -4,7 +4,7 @@ import fetcher from './fetcher';
 
 import { CartItemInfo } from '@/types/cartItem';
 
-interface AddCartItemProp {
+export interface AddCartItemProp {
   productId: number;
   quantity?: number;
 }

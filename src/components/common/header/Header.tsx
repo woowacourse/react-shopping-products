@@ -19,7 +19,7 @@ const Header = () => {
       <Styled.AppTitle onClick={handleClickLogo}>SHOP</Styled.AppTitle>
       <button onClick={handleOpen}>
         <Styled.ShoppingCartCount>{cartItems.length}</Styled.ShoppingCartCount>
-        <img src={IMAGES.SHOPPING_CART} />
+        <img src={IMAGES.SHOPPING_CART} alt="장바구니" />
       </button>
       <ShoppingCartModal isOpen={isOpen} onClose={handleClose} cartItems={cartItems} />
     </Styled.Header>

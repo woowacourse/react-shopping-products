@@ -20,7 +20,7 @@ const CartItem = ({ item }: Props) => {
         <Styled.itemContentWrapper>
           <Styled.productName>{item.product.name}</Styled.productName>
           <Styled.price>{koMoneyFormat(item.product.price)}</Styled.price>
-          <CountButtonContainer item={item} />
+          <CountButtonContainer item={item} testId={`shopping-cart-${item.product.id}`} />
         </Styled.itemContentWrapper>
       </Styled.itemBody>
       <Styled.deleteButton onClick={() => handleDeleteCartItem(item.product.id)}>
