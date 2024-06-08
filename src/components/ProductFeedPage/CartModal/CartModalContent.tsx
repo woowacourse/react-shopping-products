@@ -4,7 +4,7 @@ import { formatToKRW } from "@src/utils/formatToKRW";
 import { useCartAmount } from "@src/server/hooks/useCartAmount";
 
 const CartModalContent = () => {
-  const { cartAmount } = useCartAmount();
+  const { data } = useCartAmount();
 
   return (
     <S.Container>
@@ -12,7 +12,7 @@ const CartModalContent = () => {
       <CartItemList />
       <S.TotalPrice>
         <S.PriceLabel>총 상품 금액</S.PriceLabel>
-        <S.Price>{formatToKRW(cartAmount)}</S.Price>
+        <S.Price>{formatToKRW(data)}</S.Price>
       </S.TotalPrice>
     </S.Container>
   );

@@ -1,16 +1,18 @@
-import { CartItem } from "@src/apis/cartItems";
-import { useCartItems } from "../queries/useCartItems";
+import { CartItem, getCartItems } from "@src/apis/cartItems";
+import { useQuery } from "@tanstack/react-query";
+import { QUERY_KEYS } from "../__constants__/queryKeys";
 
-interface UseCartAmountReturn {
-  cartAmount: number;
-}
+export const useCartAmount = () => {
+  const queryResult = useQuery({
+    queryKey: [QUERY_KEYS.cartItems],
+    queryFn: getCartItems,
+    select: (cartItems) => calculateCartAmount(cartItems),
+  });
 
-export const useCartAmount = (): UseCartAmountReturn => {
-  const { data: cartItems } = useCartItems();
-
-  const cartAmount = calculateCartAmount(cartItems);
-
-  return { cartAmount };
+  return {
+    ...queryResult,
+    data: queryResult.data ?? 0,
+  };
 };
 
 const calculateCartAmount = (cartItems: CartItem[]) => {
