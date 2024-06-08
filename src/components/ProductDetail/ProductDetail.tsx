@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+
 import { Carts } from '../../types/fetch';
 import { CartContext } from '../../context/CartContext';
 
@@ -39,7 +40,7 @@ function ProductDetail({ cartItems }: ProductDetailProps) {
                   </S.ItemPrice>
                 </S.CardInfo>
 
-                <S.DeleteButton onClick={() => console.log('삭제기능')}>
+                <S.DeleteButton onClick={() => deleteCartItem(item.product.id)}>
                   삭제
                 </S.DeleteButton>
               </S.CardDetailWrapper>
