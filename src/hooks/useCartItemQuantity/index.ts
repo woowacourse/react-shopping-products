@@ -11,7 +11,7 @@ function useCartItemQuantity() {
     data: cartItems,
     isLoading,
     error,
-  } = useQuery<CartItemType[]>({ queryKey: ["cartItems"], queryFn: getCartItems });
+  } = useQuery<CartItemType[]>({ queryKey: ["cartItems"], queryFn: getCartItems, staleTime: 30 * 1000 });
 
   const updateQuantityMutation = useMutation({
     mutationFn: (item: { cartId: number; quantity: number }) => modifyCartItem(item.cartId, item.quantity),

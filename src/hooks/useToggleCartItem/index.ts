@@ -25,6 +25,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
   } = useQuery<CartItemType[]>({
     queryKey: ["cartItems"],
     queryFn: getCartItems,
+    staleTime: 30 * 1000,
   });
 
   const addMutation = useMutation({
