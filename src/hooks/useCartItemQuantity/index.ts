@@ -14,6 +14,17 @@ function useCartItemQuantity() {
 
   const updateQuantityMutation = useMutation({
     mutationFn: (item: { cartId: number; quantity: number }) => modifyCartItem(item.cartId, item.quantity),
+    onMutate: async (item) => {
+      await queryClient.cancelQueries({ queryKey: ["cartItems"] });
+      const previousItems = queryClient.getQueryData<CartItemType[]>(["cartItems"]);
+      queryClient.setQueryData<CartItemType[]>(["cartItems"], (prev) =>
+        prev?.map((cartItem) => (cartItem.id === item.cartId ? { ...cartItem, quantity: item.quantity } : cartItem))
+      );
+      return { previousItems };
+    },
+    onError: (err, newItem, context) => {
+      queryClient.setQueryData(["cartItems"], context?.previousItems);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
     },
