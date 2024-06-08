@@ -1,26 +1,24 @@
-import CartIcon from '@assets/cart.svg';
+import { CartIcon } from '@assets/index';
+import CartListModal from '@components/CartListModal';
+import { useOpenModal } from '@hooks/index';
+import { lazy } from 'react';
+
+const CartQuantity = lazy(() => import('../CartQuantity'));
 
 import style from './style.module.css';
 
-const BADGE_MAX_QUANTITY = 50;
-
-interface CartActionButtonProps {
-  cartItemsLength: number;
-}
-
-function CartBadgeButton({ cartItemsLength }: CartActionButtonProps) {
-  const quantityClassName = `${style.quantity} ${cartItemsLength > BADGE_MAX_QUANTITY ? style.over : ''}`;
+const CartBadgeButton = () => {
+  const { isModalOpen, openModal, closeModal, rootEl } = useOpenModal();
 
   return (
-    <button type="button" className={style.button}>
-      <img src={CartIcon} alt="장바구니 아이콘(장바구니 페이지 이동)" />
-      {!!cartItemsLength && (
-        <div className={quantityClassName}>
-          {cartItemsLength > BADGE_MAX_QUANTITY ? BADGE_MAX_QUANTITY : cartItemsLength}
-        </div>
-      )}
-    </button>
+    <>
+      <button type="button" className={style.button} onClick={openModal}>
+        <img src={CartIcon} alt="장바구니 아이콘(장바구니 목록 열기)" />
+        <CartQuantity />
+      </button>
+      {isModalOpen && <CartListModal isModalOpen={isModalOpen} closeModal={closeModal} rootEl={rootEl} />}
+    </>
   );
-}
+};
 
 export default CartBadgeButton;

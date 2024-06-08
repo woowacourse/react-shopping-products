@@ -1,0 +1,15 @@
+.cartActionError {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 0.75rem 4.8125rem;
+  width: var(--desktop-width);
+}
+
+@media screen and (max-width: 768px) {
+  .cartActionError {
+    width: var(--mobile-width);
+  }
+}

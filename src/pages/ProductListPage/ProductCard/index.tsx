@@ -1,38 +1,46 @@
 import { Product } from '@appTypes/index';
-import { CartActionErrorModal } from '@components/index';
-import { CartItemsContext } from '@contexts/index';
-import { useCartAction, useTargetContext } from '@hooks/index';
+import { getSkeletonClassName } from '@utils/index';
 
 import CartActionButton from '../CartActionButton';
+import cartActionButtonStyle from '../CartActionButton/style.module.css';
+
+import InvalidProductCard from './InvalidProductCard';
+import style from './style.module.css';
 
 interface ProductCardProps {
   product: Product;
 }
 
-function ProductCard({ product }: ProductCardProps) {
-  const { refreshCartItemIds, cartItemIds } = useTargetContext(CartItemsContext);
-  const { addCartItem, deleteCarItem, error: cartActionError } = useCartAction({ refreshCartItemIds });
+const ProductCard = ({ product }: ProductCardProps) => {
+  const isInvalidData = product.imageUrl === 'string';
 
-  const cartItemId = cartItemIds?.get(product.id);
-  const isInCart = !!cartItemId;
-
-  const handleCartActionButtonClick = () => {
-    if (isInCart) return deleteCarItem(cartItemId);
-
-    return addCartItem(product.id);
-  };
+  if (isInvalidData) return <InvalidProductCard />;
 
   return (
-    <li className="product-card">
-      <img src={product.imageUrl} alt="" className="product-card__image" />
-      <div className="product-card__contents">
-        <p className="product-name">{product.name}</p>
+    <li className={style.productCard}>
+      <img src={product.imageUrl} alt="" className={style.image} />
+      <div className={style.contents}>
+        <p className={style.name}>{product.name}</p>
         <p className="text">{product.price.toLocaleString()}원</p>
-        <CartActionButton buttonType={isInCart ? 'delete' : 'add'} onClick={handleCartActionButtonClick} />
-        <CartActionErrorModal error={cartActionError} />
+        <CartActionButton productId={product.id} />
       </div>
     </li>
   );
-}
+};
+
+const Skeleton = () => {
+  return (
+    <li className={style.productCard}>
+      <div className={getSkeletonClassName(`${style.image} ${style.skeletonImage}`)} />
+      <div className={style.contents}>
+        <p className={getSkeletonClassName(style.skeletonRow)} />
+        <p className={getSkeletonClassName(style.skeletonRow)} />
+        <div className={getSkeletonClassName(`${cartActionButtonStyle.cartActionButton} ${style.skeletonImage}`)} />
+      </div>
+    </li>
+  );
+};
+
+ProductCard.Skeleton = Skeleton;
 
 export default ProductCard;
