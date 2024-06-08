@@ -1,43 +1,84 @@
 import { MinusIcon, PlusIcon } from '@/assets/index';
 import QuantityContainer from './QuantityPicker.style';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useCartItemStatus, usePatchCartItem } from '@/hooks/index';
+import { Button } from '@/components/index';
 
 interface QuantityPickerProps {
-  handlePatchCartItem: ({ quantity }: { quantity: number }) => void;
-  handleRemoveCartItem: () => void;
+  cartItemId: number;
+  productId: number;
+  isAutoDelete?: boolean;
 }
 
-export default function QuantityPicker({
-  handlePatchCartItem,
-  handleRemoveCartItem,
-}: QuantityPickerProps) {
-  const [quantity, setQuantity] = useState<number>(1);
+const QuantityPicker = ({
+  cartItemId,
+  productId,
+  isAutoDelete = false,
+}: QuantityPickerProps) => {
+  const { quantity: initialQuantity } = useCartItemStatus(productId);
+  const [quantity, setQuantity] = useState(initialQuantity);
+  const { cartItemQuantityMutaion } = usePatchCartItem();
 
-  const handleIncreaseQuantity = async () => {
-    setQuantity(quantity + 1);
-    handlePatchCartItem({ quantity: quantity + 1 });
-  };
+  useEffect(() => {
+    setQuantity(initialQuantity);
+  }, [initialQuantity]);
 
   const handleDecreaseQuantity = () => {
-    if (quantity === 1) {
-      handleRemoveCartItem();
-      return;
+    if (!isAutoDelete) {
+      if (quantity === 1) {
+        setQuantity(0);
+      } else if (quantity > 1) {
+        const newQuantity = Math.max(0, quantity - 1);
+        setQuantity(newQuantity);
+        cartItemQuantityMutaion.mutate({
+          cartItemId,
+          quantity: newQuantity,
+        });
+      }
+    } else {
+      cartItemQuantityMutaion.mutate({
+        cartItemId,
+        quantity: Math.max(0, quantity - 1),
+      });
     }
+  };
 
-    const newQuantity = Math.max(quantity - 1, 0);
+  const handleIncreaseQuantity = () => {
+    const newQuantity = Math.min(100, quantity + 1);
     setQuantity(newQuantity);
-    handlePatchCartItem({ quantity: newQuantity });
+    cartItemQuantityMutaion.mutate({
+      cartItemId,
+      quantity: newQuantity,
+    });
   };
 
   return (
     <QuantityContainer>
-      <button onClick={handleDecreaseQuantity}>
+      <Button
+        color="#000"
+        backgroundColor="#fff"
+        onClick={handleDecreaseQuantity}
+        hasBorderRadius
+        borderColor="#0000001A"
+        width="24px"
+        height="24px"
+      >
         <img src={MinusIcon} alt="Decrease quantity" />
-      </button>
+      </Button>
       <p className="quantity">{quantity}</p>
-      <button onClick={handleIncreaseQuantity}>
+      <Button
+        color="#000"
+        backgroundColor="#fff"
+        onClick={handleIncreaseQuantity}
+        hasBorderRadius
+        borderColor="#0000001A"
+        width="24px"
+        height="24px"
+      >
         <img src={PlusIcon} alt="Increase quantity" />
-      </button>
+      </Button>
     </QuantityContainer>
   );
-}
+};
+
+export default QuantityPicker;
