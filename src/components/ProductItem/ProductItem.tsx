@@ -8,6 +8,7 @@ import { Product } from '@/types/product.type';
 import ChangeQuantity from '../ChangeQuantity/ChangeQuantity';
 import useCartItemQuantity from '@/hooks/cartItem/useCartItemQuantity';
 import useCartItemList from '@/hooks/cartItem/useCartItemList';
+import RatioImageBox from '../common/RatioImageBox/RatioImageBox';
 
 type ProductItemProps = Product;
 
@@ -17,7 +18,7 @@ export default function ProductItem({ id, name, price, imageUrl }: ProductItemPr
 
   return (
     <div className={styles.container}>
-      <ImageBox width={182} height={112} src={imageUrl} />
+      <RatioImageBox ratio={60} src={imageUrl} />
       <div className={styles['description-container']}>
         <Text size="m" weight="l">
           {name}
