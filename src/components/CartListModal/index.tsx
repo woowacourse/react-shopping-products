@@ -12,7 +12,7 @@ interface CartListModalProps {
   rootEl: HTMLElement | null;
 }
 const CartListModal = ({ openModal, setOpenModal, rootEl }: CartListModalProps) => {
-  const { cartListMap, isLoading } = useCartList(true);
+  const { cartListMap, isLoading } = useCartList({ refetchOnMount: 'always' });
   const cartList = cartListMap ? Array.from(cartListMap.values()) : undefined;
 
   const calculateTotalAmount = () => {
