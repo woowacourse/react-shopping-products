@@ -11,8 +11,8 @@ const useProductQuery = ({ selectBarCondition }: Props) => {
     category: selectBarCondition.category,
     sort: formattedKey(selectBarCondition.sort),
   };
-  const { data, isError, isSuccess, fetchNextPage } = useInfiniteQuery({
-    queryKey: ['products'],
+  const { data, isError, isSuccess, fetchNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ['products', params],
     queryFn: ({ pageParam }) => {
       const size = pageParam === 0 ? 20 : 4;
       return fetchProducts({ ...params, size, page: pageParam });
@@ -33,6 +33,7 @@ const useProductQuery = ({ selectBarCondition }: Props) => {
     isError,
     isSuccess,
     fetchNextPage,
+    isFetching,
   };
 };
 

@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
-  const { products, fetchNextPage, selectedItems, handleSelect, isLoading, errorCartItemsFetch } =
+  const { products, fetchNextPage, selectedItems, handleSelect, errorCartItemsFetch, isFetching } =
     useProducts({
       selectBarCondition,
       handleCount,
@@ -40,7 +40,7 @@ const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
         })}
         {products?.length !== 0 && <p style={{ height: '10px' }} ref={lastProductElementRef}></p>}
       </div>
-      {isLoading && <Loader />}
+      {isFetching && <Loader />}
     </>
   );
 };

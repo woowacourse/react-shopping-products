@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function useProducts({ selectBarCondition, handleCount }: Props) {
-  const { products, isError, isSuccess, isLoading, fetchNextPage } = useProductQuery({
+  const { products, isError, isSuccess, fetchNextPage, isFetching } = useProductQuery({
     selectBarCondition,
   });
 
@@ -41,10 +41,10 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     products,
     isError,
     isSuccess,
-    isLoading,
     fetchNextPage,
     selectedItems,
     handleSelect,
     errorCartItemsFetch,
+    isFetching,
   };
 }
