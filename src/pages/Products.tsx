@@ -1,6 +1,6 @@
 import { CATEGORY_LIST, SORT_ORDER } from '@/constants/productList';
 import { FlexColumn, FlexSpaceBetween, WhiteSpace } from '@/style/common.style';
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
 import BaseDropDown from '@/components/dropdown/BaseDropDown';
 import CartCountIcon from '@/components/CartCountIcon';
@@ -8,6 +8,7 @@ import CartModal from '@/components/cart/CartModal';
 import Error404 from '@/components/Error404';
 import Header from '@/components/Header';
 import ProductList from '@/components/ProductList';
+import { SkeletonList } from '@/components/SkeletonList';
 import Toast from '@/components/Toast';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
@@ -19,15 +20,16 @@ const Products = () => {
 
   const {
     products,
+    page,
     isSuccess,
-    isLoading,
+    isFetching,
     error,
     fetchNextPage,
     hasNextPage,
     handleChangeOrder,
     handleChangeCategory,
   } = useProductListQuery();
-  
+
   const { setError } = useErrorContext();
 
   useEffect(() => {
@@ -38,6 +40,18 @@ const Products = () => {
 
   const categoryOptions = CATEGORY_LIST;
   const sortOptions = SORT_ORDER;
+
+  const handleCategoryChange = (category: string) => {
+    startTransition(() => {
+      handleChangeCategory(category);
+    });
+  };
+
+  const handleOrderChange = (order: string) => {
+    startTransition(() => {
+      handleChangeOrder(order);
+    });
+  };
 
   return (
     <>
@@ -54,24 +68,25 @@ const Products = () => {
             <BaseDropDown
               initialValue="전체"
               options={categoryOptions}
-              onChangeSelect={handleChangeCategory}
+              onChangeSelect={handleCategoryChange}
             />
             <BaseDropDown
               initialValue="낮은 가격순"
               options={sortOptions}
-              onChangeSelect={handleChangeOrder}
+              onChangeSelect={handleOrderChange}
             />
           </S.DropDownWrapper>
-          {isSuccess ? (
+          {isFetching && <SkeletonList length={8} />}
+          {isSuccess && (
             <ProductList
-              isLoading={isLoading}
+              page={page}
+              isLoading={isFetching}
               products={products}
               getNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
             />
-          ) : (
-            <Error404 />
           )}
+          {error && <Error404 />}
         </S.Body>
         <Toast />
       </S.Container>
@@ -109,5 +124,11 @@ const S = {
   DropDownWrapper: styled.div`
     margin-top: 16px;
     ${FlexSpaceBetween}
+  `,
+  SkeletonWrapper: styled.div`
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+    gap: 16px;
   `,
 };

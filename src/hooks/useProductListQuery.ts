@@ -5,10 +5,11 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 const useProductListQuery = () => {
+  const [page, setPage] = useState(0);
   const [order, setOrder] = useState<string>('asc');
   const [category, setCategory] = useState('');
 
-  const { data, isSuccess, isLoading, error, fetchNextPage, hasNextPage } =
+  const { data, isSuccess, isFetching, error, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
       queryKey: [
         QUERY_KEYS.PRODUCTS,
@@ -19,6 +20,8 @@ const useProductListQuery = () => {
           pageParam === 0
             ? FETCH_SIZE.firstPageItemCount
             : FETCH_SIZE.moreLoadItemCount;
+        setPage(pageParam);
+
         return getProductList({ page: pageParam, size, category, order });
       },
       initialPageParam: 0,
@@ -46,8 +49,9 @@ const useProductListQuery = () => {
 
   return {
     products: data?.pages.flatMap((page) => page.content) || [],
+    page,
     isSuccess,
-    isLoading,
+    isFetching,
     error,
     fetchNextPage,
     hasNextPage,
