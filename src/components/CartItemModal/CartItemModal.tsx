@@ -3,6 +3,8 @@ import { CartItemModalProps } from './CartItemModal.type';
 import { useCart } from '../../context/CartContext';
 import CartItemList from '../CartItemList/CartItemList';
 import { BUTTON_MESSAGE } from '../../constants/button';
+import CartTotalAmount from '../TotalAmount/CartTotalAmount';
+import { CartItems } from '../../type/CartItem';
 
 const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
   const { cartItem } = useCart();
@@ -13,6 +15,16 @@ const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
   const handleConfirm = () => {
     setIsOpenModal(false);
   };
+  const calculateTotalAmount = (cartItem: CartItems[]) => {
+    return cartItem.reduce(
+      (prevTotalAmount: number, currentItem: CartItems) => {
+        return (
+          prevTotalAmount + currentItem.quantity * currentItem.product.price
+        );
+      },
+      0,
+    );
+  };
   return (
     <>
       <Modal position="bottom" size="large" onDimmedClick={handleClose}>
@@ -22,6 +34,9 @@ const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
         </Modal.Header>
         <Modal.Body>
           <CartItemList items={cartItem} />
+          <CartTotalAmount
+            totalCartItemAmount={calculateTotalAmount(cartItem)}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Modal.Button
