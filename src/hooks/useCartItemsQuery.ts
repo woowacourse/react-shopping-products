@@ -8,7 +8,7 @@ const useCartItemsQuery = () => {
     queryFn: () => getCartItems(),
   });
 
-  return { ...result, cartItems: result.data };
+  return { ...result, cartItems: result.data ?? [] };
 };
 
 export default useCartItemsQuery;

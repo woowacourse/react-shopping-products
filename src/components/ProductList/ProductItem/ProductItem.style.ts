@@ -42,3 +42,28 @@ export const ProductName = styled.div`
   font-weight: 700;
   font-size: 14px;
 `;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+
+export const AppendCartButton = styled.div`
+  cursor: pointer;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  padding: 4px 8px;
+  gap: 1px;
+  font-weight: 600;
+  font-size: 12px;
+  width: auto;
+  background-color: #000000;
+  color: #ffffff;
+  img {
+    width: 14px;
+    height: 14px;
+  }
+`;

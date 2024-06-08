@@ -1,9 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeCartItem, updateCartItemQuantity } from "../api";
+import {
+  deleteProductInCart,
+  postProductInCart,
+  updateCartItemQuantity,
+} from "../api";
 import { QUERY_KEYS } from "../constants/queryKeys";
 
 const useCartItemMutation = () => {
   const queryClient = useQueryClient();
+
+  const appendCartItemMutation = useMutation({
+    mutationFn: ({ productId }: { productId: number }) =>
+      postProductInCart({ productId }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
+  });
 
   const updateQuantityMutation = useMutation({
     mutationFn: ({
@@ -19,10 +30,14 @@ const useCartItemMutation = () => {
 
   const removeItemMutation = useMutation({
     mutationFn: ({ cartItemId }: { cartItemId: number }) =>
-      removeCartItem({ cartItemId }),
+      deleteProductInCart({ cartItemId }),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
   });
+
+  const appendProductInCart = async (productId: number) => {
+    appendCartItemMutation.mutate({ productId });
+  };
 
   const handleDecreaseQuantityButtonClick = (cartItem: CartItem) => {
     if (cartItem.quantity < 2) {
@@ -46,6 +61,7 @@ const useCartItemMutation = () => {
   };
 
   return {
+    appendProductInCart,
     handleDecreaseQuantityButtonClick,
     handleIncreaseQuantityButtonClick,
     handleRemoveItemButtonClick,
