@@ -55,3 +55,11 @@ export async function patchCartItem({
     body: JSON.stringify({ quantity }),
   });
 }
+
+export async function getCartItemCounts() {
+  const data = await response({
+    url: `${END_POINTS.CART_ITEMS}/counts`,
+    method: 'GET',
+  });
+  return data;
+}
