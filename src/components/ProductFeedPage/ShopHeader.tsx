@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "@assets/cart.svg";
 import { useCartItems } from "@src/server/queries/useCartItems";
+import { useEffect } from "react";
 
 interface ShopHeaderProps {
   onError: (error: Error) => void;
@@ -10,7 +11,13 @@ interface ShopHeaderProps {
 }
 
 const ShopHeader = ({ onError, onCartButtonClick }: ShopHeaderProps) => {
-  const { data: cartItems, isLoading } = useCartItems(onError);
+  const { data: cartItems, isLoading, error } = useCartItems();
+
+  useEffect(() => {
+    if (error) {
+      onError(error);
+    }
+  }, [error]);
 
   return (
     <S.Header>

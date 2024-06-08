@@ -1,8 +1,6 @@
 import { CartItem, getCartItems } from "@src/apis/cartItems";
 import { QueryObserverResult, useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@server/__constants__/queryKeys";
-import { useEffect } from "react";
-import type { OnError } from "onError";
 
 interface UseCartItemsReturn {
   data: CartItem[];
@@ -11,22 +9,14 @@ interface UseCartItemsReturn {
   refetch: () => Promise<QueryObserverResult<CartItem[], Error>>;
 }
 
-export const useCartItems = (onError?: OnError): UseCartItemsReturn => {
-  const { data, isLoading, error, refetch } = useQuery({
+export const useCartItems = (): UseCartItemsReturn => {
+  const queryResult = useQuery({
     queryKey: [QUERY_KEYS.cartItems],
     queryFn: getCartItems,
   });
 
-  useEffect(() => {
-    if (error && onError) {
-      onError(error);
-    }
-  }, [error]);
-
   return {
-    data: data ?? [],
-    isLoading,
-    error,
-    refetch,
+    ...queryResult,
+    data: queryResult.data ?? [],
   };
 };

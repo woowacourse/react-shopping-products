@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CartItemList from "./CartItemList";
 import { formatToKRW } from "@src/utils/formatToKRW";
-import { useCartAmount } from "@src/server/hooks/useCartAmount";
+import { useCartAmount } from "@server/queries/useCartAmount";
 
 const CartModalContent = () => {
   const { data } = useCartAmount();
