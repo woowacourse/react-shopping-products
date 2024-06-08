@@ -4,11 +4,6 @@ import { CartItem } from '@appTypes/product';
 export async function getCartItems(): Promise<CartItem[]> {
   const response = await APIClient.get('cart-items');
 
-  APIClient.validateResponse(
-    response,
-    '장바구니 목록을 불러오는데 실패했습니다.'
-  );
-
   const data = await response.json();
 
   return data.content;
@@ -18,27 +13,18 @@ export async function updateCartItemQuantity(
   cartItemId: number,
   quantity: number
 ) {
-  const response = await APIClient.patch(`cart-items/${cartItemId}`, {
+  await APIClient.patch(`cart-items/${cartItemId}`, {
     quantity,
   });
-
-  APIClient.validateResponse(response, '수량을 변경하지 못했습니다.');
 }
 
 export async function deleteCartItem(id: number) {
-  const response = await APIClient.delete(`cart-items/${id}`);
-
-  APIClient.validateResponse(
-    response,
-    '장바구니 아이템을 삭제하지 못했습니다.'
-  );
+  await APIClient.delete(`cart-items/${id}`);
 }
 
 export async function addProduct(id: number) {
-  const response = await APIClient.post(`cart-items`, {
+  await APIClient.post(`cart-items`, {
     productId: id,
     quantity: 1,
   });
-
-  APIClient.validateResponse(response, '장바구니에 물건을 담지 못했습니다.');
 }

@@ -1,4 +1,3 @@
-import HTTPError from '@errors/HTTPError';
 import { generateBasicToken } from '@utils/auth';
 
 export default class APIClient {
@@ -6,12 +5,6 @@ export default class APIClient {
   private static USER_ID = import.meta.env.VITE_USER_ID;
   private static USER_PASSWORD = import.meta.env.VITE_USER_PASSWORD;
   private static TOKEN = generateBasicToken(this.USER_ID, this.USER_PASSWORD);
-
-  static validateResponse(response: Response, errorMessage: string) {
-    if (!response.ok) {
-      throw new HTTPError(response.status, errorMessage);
-    }
-  }
 
   static get(endpoint: string, headers: Record<string, string> = {}) {
     return this.request('GET', endpoint, null, headers);
