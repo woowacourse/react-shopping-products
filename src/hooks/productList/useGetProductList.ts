@@ -4,7 +4,7 @@ import { PRODUCT_LIST_PAGE, QUERY_KEY } from '@src/constants';
 import { QueryFunction, QueryKey, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-const useProductList = (filtering: Filtering) => {
+const useGetProductList = (filtering: Filtering) => {
   const queryClient = useQueryClient();
 
   const queryKey = [QUERY_KEY.productList, filtering];
@@ -50,4 +50,4 @@ const useProductList = (filtering: Filtering) => {
     ...queryResult,
   };
 };
-export default useProductList;
+export default useGetProductList;

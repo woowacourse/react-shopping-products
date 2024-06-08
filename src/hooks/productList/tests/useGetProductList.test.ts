@@ -3,7 +3,7 @@ import { CATEGORY_OPTIONS } from '@constants/index';
 import queryClientWrapper from '@src/testSetup/queryClientWrapper';
 import { act, renderHook, waitFor } from '@testing-library/react';
 
-import useProductList from '../useProductList';
+import useGetProductList from '../useGetProductList';
 
 describe('상품 목록 테스트', () => {
   describe('무한 스크롤 테스트', () => {
@@ -13,7 +13,7 @@ describe('상품 목록 테스트', () => {
         sort: 'price,asc',
         category: '',
       };
-      const { result } = renderHook(() => useProductList(FILTERING), { wrapper: queryClientWrapper });
+      const { result } = renderHook(() => useGetProductList(FILTERING), { wrapper: queryClientWrapper });
 
       await waitFor(() => expect(result.current.status).toBe('success'));
 
@@ -31,7 +31,7 @@ describe('상품 목록 테스트', () => {
         sort: 'price,asc',
         category: '',
       };
-      const { result } = renderHook(() => useProductList(FILTERING), { wrapper: queryClientWrapper });
+      const { result } = renderHook(() => useGetProductList(FILTERING), { wrapper: queryClientWrapper });
 
       await waitFor(() => {
         expect(result.current.status).toBe('success');
@@ -57,7 +57,7 @@ describe('상품 목록 테스트', () => {
         const CATEGORY_LENGTH = CATEGORY_OPTIONS.filter((options) => !!options.value).length;
         const FILTERING: Filtering = { category: '', sort: 'price,asc' };
 
-        const { result } = renderHook(() => useProductList(FILTERING), { wrapper: queryClientWrapper });
+        const { result } = renderHook(() => useGetProductList(FILTERING), { wrapper: queryClientWrapper });
 
         await waitFor(() => expect(result.current.status).toBe('success'));
 
@@ -75,7 +75,7 @@ describe('상품 목록 테스트', () => {
         async ({ value }) => {
           const FILTERING: Filtering = { category: value as Category, sort: 'price,asc' };
 
-          const { result } = renderHook(() => useProductList(FILTERING), { wrapper: queryClientWrapper });
+          const { result } = renderHook(() => useGetProductList(FILTERING), { wrapper: queryClientWrapper });
 
           await waitFor(() => expect(result.current.status).toBe('success'));
 
@@ -93,7 +93,7 @@ describe('상품 목록 테스트', () => {
       it('오름차순 선택 시, 상품 각각의 오름차순으로 목록을 보여준다', async () => {
         const FILTERING: Filtering = { category: '', sort: 'price,asc' };
 
-        const { result } = renderHook(() => useProductList(FILTERING), { wrapper: queryClientWrapper });
+        const { result } = renderHook(() => useGetProductList(FILTERING), { wrapper: queryClientWrapper });
 
         await waitFor(() => expect(result.current.status).toBe('success'));
 
@@ -111,7 +111,7 @@ describe('상품 목록 테스트', () => {
       it('내림차순 선택 시, 상품 각겨의 내림차순으로 목록을 보여준다', async () => {
         const FILTERING: Filtering = { category: '', sort: 'price,asc' };
 
-        const { result } = renderHook(() => useProductList(FILTERING), { wrapper: queryClientWrapper });
+        const { result } = renderHook(() => useGetProductList(FILTERING), { wrapper: queryClientWrapper });
 
         await waitFor(() => expect(result.current.status).toBe('success'));
 

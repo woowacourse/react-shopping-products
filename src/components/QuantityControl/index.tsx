@@ -1,5 +1,5 @@
 import { MAX_QUANTITY } from '@constants/index';
-import { useCartItemQuantity } from '@hooks/index';
+import { useChangeCartItemQuantity } from '@hooks/index';
 import { useEffect, useState } from 'react';
 
 import CountButton from '../CountButton';
@@ -14,7 +14,7 @@ interface QuantityControlProps {
 }
 
 const QuantityControl = ({ quantity, cartItemId }: QuantityControlProps) => {
-  const { mutateAsync: quantityMutate, error, isPending } = useCartItemQuantity();
+  const { mutateAsync: quantityMutate, error, isPending } = useChangeCartItemQuantity();
   const [isTryOverMaxQuantity, setIsTryOverMaxQuantity] = useState(false);
 
   const isMaxQuantity = quantity === MAX_QUANTITY;

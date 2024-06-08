@@ -3,7 +3,7 @@ import { QUERY_KEY, QUERY_TIME } from '@constants/index';
 import { CartItem } from '@src/appTypes';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
-const useCartList = (
+const useGetCartList = (
   option: Omit<UseQueryOptions<FetchGetCartListResponse>, 'queryKey' | 'queryFn' | 'staleTime'> = {},
 ) => {
   const { data, ...rest } = useQuery<FetchGetCartListResponse>({
@@ -23,4 +23,4 @@ const useCartList = (
   return { ...rest, cartListMap: makeCartListMap(data?.cartList) };
 };
 
-export default useCartList;
+export default useGetCartList;

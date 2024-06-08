@@ -2,7 +2,7 @@ import { fetchPatchCartList } from '@src/apis';
 import { QUERY_KEY } from '@src/constants';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useCartItemQuantity = () => {
+const useChangeCartItemQuantity = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -16,4 +16,4 @@ const useCartItemQuantity = () => {
   });
 };
 
-export default useCartItemQuantity;
+export default useChangeCartItemQuantity;
