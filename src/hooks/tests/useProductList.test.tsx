@@ -3,6 +3,7 @@ import { waitFor, renderHook, act } from '@testing-library/react';
 import { ChangeEvent } from 'react';
 import useProductList from '../useProductList';
 import TestWrapper from './TestWrapper';
+import 'node_modules/brgndyy-react-modal/dist/style.css';
 
 const INITIAL_PRODUCT_LENGTH = 20;
 const ADDITIONAL_PRODUCT_LENGTH = 4;

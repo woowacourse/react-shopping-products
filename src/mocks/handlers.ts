@@ -16,7 +16,6 @@ export const handlers = [
       content: productListData.slice(start, end),
       last: end >= productListData.length,
       number: parseInt(page, 10),
-      hasNext: end < productListData.length,
     };
 
     return HttpResponse.json(response);
@@ -30,6 +29,14 @@ export const handlers = [
 
     return HttpResponse.json({
       content: paginatedCartItems,
+    });
+  }),
+
+  http.post(`${BASE_URL.PRODUCT}${API_ROUTES.CART_ITEM}`, ({ request }) => {
+    // const { productId, quantity } = request.body;
+
+    return HttpResponse.json({
+      content: productListData,
     });
   }),
 ];

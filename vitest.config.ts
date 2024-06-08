@@ -10,6 +10,11 @@ export default defineConfig((env) =>
         globals: true,
         environment: 'jsdom',
         setupFiles: ['./vitest.setup.ts'],
+        css: {
+          modules: {
+            classNameStrategy: 'non-scoped',
+          },
+        },
       },
     }),
   ),

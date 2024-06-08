@@ -1,4 +1,4 @@
-import { beforeAll, afterEach, afterAll } from 'vitest';
+import { beforeAll, afterEach, afterAll, vi } from 'vitest';
 import { server } from './src/mocks/server';
 
 beforeAll(() => {
@@ -11,4 +11,8 @@ afterEach(() => {
 
 afterAll(() => {
   server.close();
+});
+
+vi.mock('brgndyy-react-modal/dist/style.css', () => {
+  return {};
 });
