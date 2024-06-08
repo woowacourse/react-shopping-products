@@ -3,23 +3,17 @@ import Text from '../common/Text/Text';
 import ImageBox from '../common/ImageBox/ImageBox';
 import Flex from '../common/Flex/Flex';
 import AddProductItemIcon from '@/assets/AddShoppingCart.svg';
-import RemoveShoppingCartIcon from '@/assets/RemoveShoppingCart.svg';
 import styles from './ProductItem.module.css';
-import { useState } from 'react';
-import { useCartItemListContext } from '@/hooks/useCartItemList';
 import { Product } from '@/types/product.type';
+import ChangeQuantity from '../ChangeQuantity/ChangeQuantity';
+import useCartItemQuantity from '@/hooks/cartItem/useCartItemQuantity';
+import useCartItemList from '@/hooks/cartItem/useCartItemList';
 
 type ProductItemProps = Product;
 
 export default function ProductItem({ id, name, price, imageUrl }: ProductItemProps) {
-  const { toggleCartItem, isInCart } = useCartItemListContext();
-  const [isCart, setIsCart] = useState<boolean>(isInCart(id));
-
-  const handleIsCart = (id: number) => {
-    setIsCart((prev) => !prev);
-
-    toggleCartItem(id);
-  };
+  const { increaseCartItemQuantity, decreaseCartItemQuantity, addCartItem } = useCartItemQuantity();
+  const { getCartItemQuantity } = useCartItemList();
 
   return (
     <div className={styles.container}>
@@ -31,19 +25,21 @@ export default function ProductItem({ id, name, price, imageUrl }: ProductItemPr
         <Text size="s">{price.toLocaleString('ko-KR')}원</Text>
       </div>
       <Flex direction="row" style={{ width: '100%', justifyContent: 'flex-end' }}>
-        <Button
-          color={isCart ? 'default' : 'primary'}
-          startContent={
-            <ImageBox
-              width={16}
-              height={16}
-              src={isCart ? RemoveShoppingCartIcon : AddProductItemIcon}
-            />
-          }
-          onClick={() => handleIsCart(id)}
-        >
-          {isCart ? '빼기' : '담기'}
-        </Button>
+        {getCartItemQuantity(id) === 0 ? (
+          <Button
+            color={'primary'}
+            startContent={<ImageBox width={16} height={16} src={AddProductItemIcon} />}
+            onClick={() => addCartItem(id)}
+          >
+            {'담기'}
+          </Button>
+        ) : (
+          <ChangeQuantity
+            quantity={getCartItemQuantity(id)}
+            increaseQuantity={() => increaseCartItemQuantity(id)}
+            decreaseQuantity={() => decreaseCartItemQuantity(id)}
+          />
+        )}
       </Flex>
     </div>
   );
