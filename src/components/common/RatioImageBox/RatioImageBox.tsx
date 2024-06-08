@@ -10,7 +10,14 @@ type RatioImageBoxProps = HTMLAttributes<HTMLImageElement> & {
   src: string;
 };
 
-const RatioImageBox = ({ src = '', alt, border, radius = 'none', ...rest }: RatioImageBoxProps) => {
+const RatioImageBox = ({
+  src = '',
+  ratio,
+  alt,
+  border,
+  radius = 'none',
+  ...rest
+}: RatioImageBoxProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleImageLoad = () => {
@@ -18,8 +25,9 @@ const RatioImageBox = ({ src = '', alt, border, radius = 'none', ...rest }: Rati
   };
 
   return (
-    <S.ContainerWithRatio {...rest}>
+    <S.ContainerWithRatio ratio={ratio}>
       <S.Image
+        {...rest}
         isLoading={isLoading}
         onLoad={handleImageLoad}
         src={src}
