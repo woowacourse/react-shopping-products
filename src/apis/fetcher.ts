@@ -1,5 +1,6 @@
 import objectToQueryString, { ObjectQueryParams } from '@/utils/objectToQueryString';
 import { generateBasicToken } from '../utils/auth';
+import { ERROR_MESSAGE } from '@/constants/messages';
 
 type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
@@ -15,6 +16,7 @@ type RequestProps = {
   headers?: HeadersType;
   body?: Body | object | null;
   queryParams?: ObjectQueryParams;
+  errorMessage: string;
 };
 
 type FetcherProps = RequestProps & {
@@ -27,43 +29,38 @@ type Options = {
   body?: Body | null;
 };
 
-export const requestGet = async <T>({
-  baseUrl,
-  endpoint,
-  headers = {},
-  queryParams,
-}: RequestProps): Promise<T> => {
-  const response = await fetcher({ method: 'GET', baseUrl, endpoint, headers, queryParams });
+export const requestGet = async <T>({ headers = {}, ...args }: RequestProps): Promise<T> => {
+  const response = await fetcher({
+    ...args,
+    method: 'GET',
+    headers,
+  });
   const data: T = await response.json();
 
   return data;
 };
 
-export const requestPatch = ({
+export const requestPatch = ({ headers = {}, ...args }: RequestProps) => {
+  return fetcher({ method: 'PATCH', headers, ...args });
+};
+
+export const requestPost = ({ headers = {}, ...args }: RequestProps) => {
+  return fetcher({ method: 'POST', headers, ...args });
+};
+
+export const requestDelete = ({ headers = {}, ...args }: RequestProps) => {
+  return fetcher({ method: 'DELETE', headers, ...args });
+};
+
+const fetcher = ({
+  method,
   baseUrl,
   endpoint,
-  headers = {},
+  headers,
   body,
   queryParams,
-}: RequestProps) => {
-  return fetcher({ method: 'PATCH', baseUrl, endpoint, headers, body, queryParams });
-};
-
-export const requestPost = ({
-  baseUrl,
-  endpoint,
-  headers = {},
-  body,
-  queryParams,
-}: RequestProps) => {
-  return fetcher({ method: 'POST', baseUrl, endpoint, headers, body, queryParams });
-};
-
-export const requestDelete = ({ baseUrl, endpoint, headers = {}, queryParams }: RequestProps) => {
-  return fetcher({ method: 'DELETE', baseUrl, endpoint, headers, queryParams });
-};
-
-const fetcher = ({ method, baseUrl, endpoint, headers, body, queryParams }: FetcherProps) => {
+  errorMessage,
+}: FetcherProps) => {
   const token = generateBasicToken(USER_ID, USER_PASSWORD);
   const options = {
     method,
@@ -79,23 +76,21 @@ const fetcher = ({ method, baseUrl, endpoint, headers, body, queryParams }: Fetc
 
   if (queryParams) url += `?${objectToQueryString(queryParams)}`;
 
-  return errorHandler(url, options, endpoint);
+  return errorHandler(url, options, errorMessage);
 };
 
-const errorHandler = async (url: string, options: Options, endpoint: string) => {
+const errorHandler = async (url: string, options: Options, errorMessage: string) => {
   try {
     const response = await fetch(url, options);
-
-    if (!response.ok) throw new Error('오류가 발생했습니다.');
+    if (!response.ok) throw new Error(errorMessage);
 
     return response;
   } catch (error) {
-    if (error instanceof TypeError && !navigator.onLine) {
-      console.error(`Network error while trying to fetch ${endpoint}: No network connection`);
-      throw new Error('네트워크 연결이 끊어졌습니다. 인터넷 연결을 확인하고 다시 시도하세요.');
-    } else {
-      console.error(`fail to fetch ${endpoint}\n error message: ${error}`);
-      throw new Error('데이터를 가져오는 중 오류가 발생했습니다.');
-    }
+    throw new Error(getErrorMessage(error));
   }
+};
+
+const getErrorMessage = (error: unknown) => {
+  if (error instanceof TypeError) return ERROR_MESSAGE.OFFLINE;
+  if (error instanceof Error) return error.message;
 };
