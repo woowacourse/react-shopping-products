@@ -14,7 +14,7 @@ interface ProductItemProps {
 }
 
 function ProductItem({ product, cartItemList }: ProductItemProps) {
-  const cartItem = cartItemList.find(
+  const cartItem = cartItemList?.find(
     (cartItem) => cartItem.product.id === product.id,
   );
   const isInCart = !!cartItem;
