@@ -6,7 +6,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 const useCartList = (
   option: Omit<UseQueryOptions<FetchGetCartListResponse>, 'queryKey' | 'queryFn' | 'staleTime'> = {},
 ) => {
-  const { data, error, isLoading, isSuccess } = useQuery<FetchGetCartListResponse>({
+  const { data, ...rest } = useQuery<FetchGetCartListResponse>({
     ...option,
     queryKey: [QUERY_KEY.cartList],
     queryFn: fetchGetCartList,
@@ -20,7 +20,7 @@ const useCartList = (
     return new Map(cartList.map((item) => [item.product.id, item]));
   };
 
-  return { error, isLoading, isSuccess, cartListMap: makeCartListMap(data?.cartList) };
+  return { ...rest, cartListMap: makeCartListMap(data?.cartList) };
 };
 
 export default useCartList;

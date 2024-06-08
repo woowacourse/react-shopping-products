@@ -11,10 +11,7 @@ const useProductList = (filtering: Filtering) => {
   const queryFn: QueryFunction<FetchProductListReturnType, QueryKey, unknown> = async ({ pageParam = 0 }) =>
     fetchProductList({ filtering, page: pageParam as number });
 
-  const { data, fetchNextPage, error, refetch, status, hasNextPage } = useInfiniteQuery<
-    FetchProductListReturnType,
-    Error
-  >({
+  const queryResult = useInfiniteQuery<FetchProductListReturnType, Error>({
     queryKey: queryKey,
     queryFn: queryFn,
     initialPageParam: PRODUCT_LIST_PAGE.first,
@@ -27,6 +24,8 @@ const useProductList = (filtering: Filtering) => {
       return currentPage === PRODUCT_LIST_PAGE.first ? PRODUCT_LIST_PAGE.second : currentPage + 1;
     },
   });
+
+  const { refetch, data } = queryResult;
 
   const handleReset = () => {
     queryClient.setQueryData([QUERY_KEY.productList, filtering], () => ({
@@ -48,10 +47,7 @@ const useProductList = (filtering: Filtering) => {
 
   return {
     products: makeProducts(),
-    fetchNextPage,
-    status,
-    error,
-    hasNextPage,
+    ...queryResult,
   };
 };
 export default useProductList;
