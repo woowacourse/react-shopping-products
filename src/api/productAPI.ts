@@ -43,19 +43,3 @@ export const getProductList = async ({
     last: data.last,
   };
 };
-
-export const deleteCartItemById = async (cartItemId: number) => {
-  await Fetcher.delete(`${BASE_URL.PRODUCT}${API_ROUTES.CART_ITEM}/${cartItemId}`, {
-    headers: { Authorization: token, 'Content-Type': 'application/json' },
-  });
-};
-
-export const addCartItemByProductId = async (productId: number, quantity = 1) => {
-  await Fetcher.post(`${BASE_URL.PRODUCT}${API_ROUTES.CART_ITEM}`, {
-    headers: { Authorization: token, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      productId,
-      quantity,
-    }),
-  });
-};

@@ -18,7 +18,7 @@ const generateProductAPIQueryParams = ({
   if (keyword) params.append('keyword', keyword);
   if (category && category !== 'all') params.append('category', category);
   if (size) params.append('size', size.toString());
-  if (sortType) params.append('sort', sortType);
+  if (sortType) params.append('sort', `price,${sortType}`);
   return `?${params.toString()}`;
 };
 
