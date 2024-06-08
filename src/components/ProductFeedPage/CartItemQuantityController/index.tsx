@@ -9,7 +9,7 @@ interface CartItemQuantityControllerProps {
 }
 
 const MIN_CART_ITEM_COUNT = 0;
-// 명확한 정책이 없어서 임시로 99개로 설정
+//  NOTE(@ryan) - 명확한 정책이 없어서 임시로 99개로 설정
 const MAX_CART_ITEM_COUNT = 99;
 
 const CartItemQuantityController = ({ productId }: CartItemQuantityControllerProps) => {
