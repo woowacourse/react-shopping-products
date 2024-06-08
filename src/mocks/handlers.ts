@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
+import cartItems from './cartItems.json';
 import productList from './products.json';
 
 import { END_POINT } from '@/api/endpoints';
@@ -24,5 +25,9 @@ export const handlers = [
     }
 
     return HttpResponse.json(result);
+  }),
+
+  http.get(END_POINT.cartItems, () => {
+    return HttpResponse.json(cartItems);
   }),
 ];
