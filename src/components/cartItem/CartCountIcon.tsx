@@ -1,15 +1,16 @@
+import useFetchCartItems from '@/queries/cartItem/useFetchCartItems';
+
 import CartIcon from '@/assets/cart.svg?react';
 
+import { STYLE_THEME } from '@/styles/constants/theme';
 import styled from '@emotion/styled';
-import theme from '@/styles/theme.style';
 
 const CartCountIcon = () => {
-  const { cartList } = useCartListContext();
-
+  const { cartItems } = useFetchCartItems();
   return (
     <S.Container>
       <CartIcon />
-      {cartList.length !== 0 && <S.Circle>{cartList.length}</S.Circle>}
+      {cartItems.length !== 0 && <S.Circle>{cartItems.length}</S.Circle>}
     </S.Container>
   );
 };
@@ -33,9 +34,9 @@ const S = {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: ${theme.color.white};
-    color: ${theme.color.black};
-    font-size: ${theme.fontSize.xs};
-    font-weight: ${theme.fontWeight.bold};
+    background-color: ${STYLE_THEME.color.white};
+    color: ${STYLE_THEME.color.black};
+    font-size: ${STYLE_THEME.fontSize.xs};
+    font-weight: ${STYLE_THEME.fontWeight.bold};
   `,
 };

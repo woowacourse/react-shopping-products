@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import useFetchProducts from '@/queries/product/useFetchProducts';
 
-import ProductItem from '@/components/ProductItem';
+import useFetchProducts from '@/queries/product/useFetchProducts';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+
+import ProductItem from '@/components/product/ProductItem';
 import Toast from '@/components/Toast';
 
 import { ProductFilterOptions } from '@/types/product.type';
@@ -35,17 +36,15 @@ const ProductList = ({ sort, category }: ProductFilterOptions) => {
   }, [observe, unobserve, products.length]);
 
   return (
-    <>
-      <S.ListContainer id="listContainer">
-        <S.GridContainer>
-          {products.map((product) => (
-            <ProductItem key={product.id} item={product} />
-          ))}
-        </S.GridContainer>
-        {hasNextPage && <S.ObserverContainer ref={target} />}
-      </S.ListContainer>
+    <S.ListContainer id="listContainer">
+      <S.GridContainer>
+        {products.map((product) => (
+          <ProductItem key={product.id} productItem={product} />
+        ))}
+      </S.GridContainer>
+      {hasNextPage && <S.ObserverContainer ref={target} />}
       {error && <Toast message={error.message} />}
-    </>
+    </S.ListContainer>
   );
 };
 
