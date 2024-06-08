@@ -77,8 +77,8 @@ describe('fetchProducts', () => {
       result.current.fetchNext();
     });
     await waitFor(() => {
-      expect(result.current.data.pages).toHaveLength(1);
-      expect(result.current.data.pages[0].content).toHaveLength(20);
+      expect(result.current.data?.pages).toHaveLength(1);
+      expect(result.current.data?.pages[0].content).toHaveLength(20);
       expect(result.current.products).toHaveLength(20);
     });
 
@@ -87,8 +87,8 @@ describe('fetchProducts', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.data.pages).toHaveLength(2);
-      expect(result.current.data.pages[1].content).toHaveLength(4);
+      expect(result.current.data?.pages).toHaveLength(2);
+      expect(result.current.data?.pages[1].content).toHaveLength(4);
       expect(result.current.products).toHaveLength(24);
     });
   });
@@ -106,8 +106,8 @@ describe('fetchProducts', () => {
       result.current.fetchNext();
     });
     await waitFor(() => {
-      expect(result.current.data.pages).toHaveLength(1);
-      expect(result.current.data.pages[0].content).toHaveLength(20);
+      expect(result.current.data?.pageParams.length).toBe(1);
+      expect(result.current.data?.pages[0].content).toHaveLength(20);
     });
 
     for (let i = 1; i <= LAST_PAGE_IN_MOCK; i++) {
@@ -117,8 +117,8 @@ describe('fetchProducts', () => {
 
       await waitFor(
         () => {
-          expect(result.current.data.pages).toHaveLength(i + 1);
-          expect(result.current.data.pages[i].content).toHaveLength(4);
+          expect(result.current.data?.pageParams.length).toBe(i + 1);
+          expect(result.current.data?.pages[i].content).toHaveLength(4);
         },
         { interval: 3 },
       );
@@ -129,9 +129,12 @@ describe('fetchProducts', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.data?.pageParams).toHaveLength(
+      expect(result.current.data?.pageParams.length).toBe(
         LAST_PAGE_IN_MOCK + 1,
       );
+    });
+    act(() => {
+      result.current.fetchNext();
     });
   });
 
@@ -199,9 +202,9 @@ describe('fetchProducts', () => {
       const FILTERED_MOCK_PRODUCTS = filteredMockProducts.slice(0, 20);
 
       await waitFor(() => {
-        expect(result.current.data.pages).toHaveLength(1);
-        expect(result.current.data.pages[0].content).toHaveLength(20);
-        expect(result.current.data.pages[0].content).toStrictEqual(
+        expect(result.current.data?.pages).toHaveLength(1);
+        expect(result.current.data?.pages[0].content).toHaveLength(20);
+        expect(result.current.data?.pages[0].content).toStrictEqual(
           FILTERED_MOCK_PRODUCTS,
         );
       });

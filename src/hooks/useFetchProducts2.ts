@@ -14,29 +14,25 @@ interface useProductProps {
   options?: object;
 }
 const useProducts = ({ sortings, filter, options }: useProductProps) => {
-  const defaultOptions = {
-    queryKey: ['product', sortings, filter],
-    queryFn: async ({ pageParam }) =>
-      await fetchProducts(pageParam, getSize(pageParam), sortings, filter),
-    initialPageParam: 0,
-    getNextPageParam: (_, __, lastPageParam) => getPage(lastPageParam),
-  };
-
-  const [products, setProducts] = useState<Product[]>([]);
-
   const {
     data,
     isError,
     isPending,
-    isSuccess,
     isFetching,
     hasNextPage,
     fetchNextPage: fetchNext,
   } = useInfiniteQuery({
-    ...defaultOptions,
+    queryKey: ['product', sortings, filter],
+    queryFn: async ({ pageParam }) =>
+      await fetchProducts(pageParam, getSize(pageParam), sortings, filter),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, __, lastPageParam: number) =>
+      lastPage.last ? undefined : getPage(lastPageParam),
+
     ...options,
   });
 
+  const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
     if (!data) return;
     setProducts(
@@ -47,8 +43,18 @@ const useProducts = ({ sortings, filter, options }: useProductProps) => {
   }, [data, setProducts]);
 
   const isLast = !hasNextPage;
+  const page = data ? data.pages.length - 1 : -1;
 
-  return { products, data, isError, isPending, isLast, isFetching, fetchNext };
+  return {
+    products,
+    page,
+    data,
+    isError,
+    isPending,
+    isLast,
+    isFetching,
+    fetchNext,
+  };
 };
 
 export default useProducts;
