@@ -3,7 +3,7 @@ import { CartItemModalProps } from './CartItemModal.type';
 import { useCart } from '../../context/CartContext';
 import CartItemList from '../CartItemList/CartItemList';
 import { BUTTON_MESSAGE } from '../../constants/button';
-import CartTotalAmount from '../TotalAmount/CartTotalAmount';
+import CartTotalAmount from '../CartTotalAmount/CartTotalAmount';
 import { CartItems } from '../../type/CartItem';
 
 const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {

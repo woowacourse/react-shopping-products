@@ -1,6 +1,6 @@
 import { MESSAGE } from '../../constants/message.ts';
 import { CartTotalAmountProps } from './CartTotalAmount.type.ts';
-import * as S from './TotalAmount.styled.ts';
+import * as S from './CartTotalAmount.styled.ts';
 
 function CartTotalAmount({ totalCartItemAmount }: CartTotalAmountProps) {
   return (
