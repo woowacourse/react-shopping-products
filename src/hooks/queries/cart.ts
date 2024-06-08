@@ -1,12 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { cartApis } from '../../api/cart';
 import { QUERY_KEYS } from '../../constants/queryKeys';
+import { CartItem } from '../../types';
+import { MAX_CART_ITEMS_FETCH_SIZE } from '../../constants/paginationRules';
 
 export const cartQueries = {
-  useGetCartItems: (params: { size: number }) =>
-    useQuery({
-      queryKey: [QUERY_KEYS.getCartItems, params.size],
-      queryFn: async () => await cartApis.get({ ...params }),
+  useGetCartItems: () =>
+    useQuery<CartItem[]>({
+      initialData: [],
+      queryKey: [QUERY_KEYS.getCartItems],
+      queryFn: async () =>
+        await cartApis.get({ size: MAX_CART_ITEMS_FETCH_SIZE }),
     }),
 };
 
