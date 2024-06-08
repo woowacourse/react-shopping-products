@@ -8,7 +8,7 @@ import ProductList from '@/components/ProductList';
 import { CATEGORY_LIST, PRICE_SORT } from '@/constants/productList';
 
 import styled from '@emotion/styled';
-import theme from '@/style/theme.style';
+import theme from '@/styles/theme.style';
 
 const Products = () => {
   const { sort, category, handleSortChange, handleCategoryChange } =

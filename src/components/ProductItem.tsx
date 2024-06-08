@@ -9,7 +9,7 @@ import Toast from '@/components/Toast';
 import { Product } from '@/types/product.type';
 
 import styled from '@emotion/styled';
-import theme from '@/style/theme.style';
+import theme from '@/styles/theme.style';
 
 interface Props {
   item: Product;

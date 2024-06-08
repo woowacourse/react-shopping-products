@@ -1,7 +1,7 @@
 import BaseButton from '@/components/button/BaseButton';
 import CartIn from '@/assets/cartIn.svg?react';
 import styled from '@emotion/styled';
-import theme from '@/style/theme.style';
+import theme from '@/styles/theme.style';
 
 interface Props {
   onClick: () => void;

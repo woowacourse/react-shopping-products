@@ -1,7 +1,7 @@
 import CartIcon from '@/assets/cart.svg?react';
+
 import styled from '@emotion/styled';
-import theme from '@/style/theme.style';
-import useCartListContext from '@/hooks/useCartListContext';
+import theme from '@/styles/theme.style';
 
 const CartCountIcon = () => {
   const { cartList } = useCartListContext();

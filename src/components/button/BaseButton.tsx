@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import theme from '@/style/theme.style';
+import theme from '@/styles/theme.style';
 
 type ButtonThemeType = 'dark' | 'light' | 'disabled';
 

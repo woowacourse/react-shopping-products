@@ -2,7 +2,7 @@ import { useState } from 'react';
 import BaseButton from '@/components/button/BaseButton';
 import DropDownIcon from '@/assets/dropdown.svg?react';
 import styled from '@emotion/styled';
-import theme from '@/style/theme.style';
+import theme from '@/styles/theme.style';
 
 interface Option {
   [key: string]: string;
