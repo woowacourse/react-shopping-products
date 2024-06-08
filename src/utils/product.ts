@@ -12,9 +12,11 @@ export const changeToProductList = (
       })
       .map((product) => {
         if (cartItemsData?.map((cartItem) => cartItem.product.id).includes(product.id)) {
-          const quantity = cartItemsData.filter((cartItem) => cartItem.product.id === product.id)[0]
-            .quantity;
-          return { ...product, quantity };
+          const { quantity, id } = cartItemsData.filter(
+            (cartItem) => cartItem.product.id === product.id
+          )[0];
+
+          return { ...product, quantity, cartItemId: id };
         }
         return product;
       }) || []

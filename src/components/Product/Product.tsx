@@ -23,6 +23,15 @@ const Product = ({ product, ...rest }: ProductProps) => {
     postCartItemMutation.mutate({ productId: product.id, quantity: 1 });
   };
 
+  const handleChangeQuantity = (newQuantity: number) => {
+    if (product.cartItemId) {
+      patchCartItemMutation.mutate({
+        cartItemId: product.cartItemId,
+        quantity: newQuantity,
+      });
+    }
+  };
+
   return (
     <Wrapper {...rest}>
       <ProductImg src={product.imageUrl}></ProductImg>
@@ -31,7 +40,10 @@ const Product = ({ product, ...rest }: ProductProps) => {
         <ProductPrice>{product.price}</ProductPrice>
         <ProductFooter>
           {product.quantity ? (
-            <ProductQuantity quantity={product.quantity} />
+            <ProductQuantity
+              quantity={product.quantity}
+              handleChangeQuantity={handleChangeQuantity}
+            />
           ) : (
             <Button
               theme="black"

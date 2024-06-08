@@ -7,14 +7,18 @@ const useMutationCartItem = () => {
   const postCartItemMutation = useMutation({
     mutationFn: postCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems", "products"] });
+      console.log("cartItems");
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      // queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 
   const deleteCartItemMutation = useMutation({
     mutationFn: deleteCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems", "products"] });
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+
+      // queryClient.invalidateQueries({ queryKey: ["cartItems", "products"] });
     },
   });
 
@@ -22,7 +26,7 @@ const useMutationCartItem = () => {
     mutationFn: patchCartItemQuantity,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      // queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 
