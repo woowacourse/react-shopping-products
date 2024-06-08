@@ -1,6 +1,6 @@
-import UpIcon from '../../assets/UpIconWhite.svg';
 import styled, { keyframes } from 'styled-components';
 import { Z_INDEX } from '../../constants/zIndex';
+import UpIcon from '../../assets/UpIconWhite.svg';
 
 const FloatingButton = () => {
   const goToTop = () => {

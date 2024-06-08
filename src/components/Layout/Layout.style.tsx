@@ -44,5 +44,5 @@ export const MainTitle = styled.p`
 
 export const SubTitle = styled.p`
   font-size: ${({ theme }) => theme.fontSize.sm};
-  line-height: 1.5;
+  line-height: 18px;
 `;

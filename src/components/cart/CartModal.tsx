@@ -1,10 +1,9 @@
+import styled from 'styled-components';
 import { Modal } from 'chlwlstlf-modal';
 import CartItem from './CartItem';
-import { formatCurrency } from '../../utils/formatCurrency';
-import Button from '../common/Button';
-import styled from 'styled-components';
-import Splitter from '../common/Splitter';
+import { Button, Splitter } from '../common';
 import useFetchCartItems from '../../hooks/useCartItems/useFetchCartItems';
+import { formatCurrency } from '../../utils/formatCurrency';
 import { Z_INDEX } from '../../constants/zIndex';
 import EmptyCart from '../../assets/EmptyCart.png';
 

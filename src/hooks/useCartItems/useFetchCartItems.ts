@@ -1,9 +1,9 @@
-import { fetchCartItems } from '../../api/cart';
+import { useContext, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { CartItem } from '../../types/CartItem.type';
+import { fetchCartItems } from '../../api/cart';
 import { SIZE } from '../../constants/api';
 import { QUERY_KEYS } from '../../api/queryKeys';
-import { useContext, useEffect } from 'react';
+import { CartItem } from '../../types/CartItem.type';
 import { ToastContext } from '../../context/ToastProvider';
 
 const getCartItems = async () => {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import styled from 'styled-components';
+import { Option } from '../../types/Option.type';
 import UpIcon from '../../assets/UpIcon.svg';
 import DownIcon from '../../assets/DownIcon.svg';
-import { Option } from '../../types/Option.type';
-import styled from 'styled-components';
 
 interface DropdownProps {
   options: Option[];

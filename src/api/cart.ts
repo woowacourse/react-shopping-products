@@ -1,8 +1,8 @@
 import apiClient from './apiClient';
-import { CartItem } from '../types/CartItem.type';
 import { SIZE } from '../constants/api';
+import { API_ENDPOINTS } from './endpoints';
+import { CartItem } from '../types/CartItem.type';
 import { ERROR_MESSAGES } from '../constants/message';
-import API_ENDPOINTS from './endpoints';
 
 interface CartApi {
   data: CartItem[];

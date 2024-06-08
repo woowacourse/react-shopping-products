@@ -19,9 +19,9 @@ export const CartNumber = styled.div`
   align-items: center;
   width: 21px;
   height: 21px;
-  border-radius: 22px;
+  border-radius: 50%;
   background-color: ${({ theme }) => theme.color.primary.white};
   font-size: 10px;
-  font-weight: 700;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.color.primary.main};
 `;

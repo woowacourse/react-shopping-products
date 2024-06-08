@@ -32,7 +32,7 @@ export const TextContainer = styled.div`
     font-weight: ${({ theme }) => theme.fontWeight.bold};
   }
 
-  p {
+  span {
     font-size: ${({ theme }) => theme.fontSize.sm};
     font-weight: ${({ theme }) => theme.fontWeight.medium};
   }

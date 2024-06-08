@@ -1,7 +1,7 @@
-import CartIcon from '../../assets/CartIcon.svg';
-import * as S from './ProductHeader.styled';
-import { SIZE } from '../../constants/api';
 import useFetchCartItems from '../../hooks/useCartItems/useFetchCartItems';
+import { SIZE } from '../../constants/api';
+import * as S from './ProductHeader.styled';
+import CartIcon from '../../assets/CartIcon.svg';
 
 const ProductHeader = ({ onOpen }: { onOpen: () => void }) => {
   const { cartItems } = useFetchCartItems();

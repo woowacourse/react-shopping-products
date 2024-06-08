@@ -1,12 +1,10 @@
-import React from 'react';
 import styled from 'styled-components';
+import { Button, Splitter } from '../common';
+import useMutateCartItems from '../../hooks/useCartItems/useMutateCartItems';
+import { CartItem } from '../../types/CartItem.type';
+import { formatCurrency } from '../../utils/formatCurrency';
 import MinusIcon from '../../assets/MinusIcon.svg';
 import PlusIcon from '../../assets/PlusIcon.svg';
-import Splitter from '../common/Splitter';
-import Button from '../common/Button';
-import { formatCurrency } from '../../utils/formatCurrency';
-import { CartItem } from '../../types/CartItem.type';
-import useMutateCartItems from '../../hooks/useCartItems/useMutateCartItems';
 
 interface CartItemProps {
   cartItem: CartItem;

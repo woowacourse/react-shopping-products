@@ -12,8 +12,8 @@ const spin = keyframes`
 `;
 
 const StyledLoadingSpinner = styled.div`
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #000;
+  border: 4px solid ${({ theme }) => theme.color.primary.light};
+  border-top: 4px solid ${({ theme }) => theme.color.primary.main};
   border-radius: 50%;
   width: 40px;
   height: 40px;

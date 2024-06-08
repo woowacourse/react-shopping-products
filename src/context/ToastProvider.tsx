@@ -1,5 +1,5 @@
 import { createContext, useRef, useState } from 'react';
-import ErrorToast from '../components/common/ErrorToast';
+import { ErrorToast } from '../components/common';
 
 interface ToastContextType {
   showToast: (message: string) => void;

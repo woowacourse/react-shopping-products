@@ -1,11 +1,11 @@
+import { useContext, useEffect } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchProducts } from '../../api/product';
 import { PAGE_INTERVAL, SIZE } from '../../constants/api';
+import { QUERY_KEYS } from '../../api/queryKeys';
 import { Product } from '../../types/Product.type';
 import { Option } from '../../types/Option.type';
-import { QUERY_KEYS } from '../../api/queryKeys';
-import { useContext, useEffect } from 'react';
 import { ToastContext } from '../../context/ToastProvider';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
 interface UseFetchProductsResult {
   products: Product[];

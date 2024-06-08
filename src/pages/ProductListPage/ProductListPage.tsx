@@ -1,9 +1,8 @@
 import Layout from '../../components/Layout/Layout';
+import CartModal from '../../components/cart/CartModal';
 import ProductHeader from '../../components/product/ProductHeader';
 import ProductItem from '../../components/product/ProductItem';
-import Dropdown from '../../components/common/Dropdown';
-import FloatingButton from '../../components/common/FloatingButton';
-import CartModal from '../../components/cart/CartModal';
+import { Dropdown, FloatingButton, LoadingSpinner } from '../../components/common';
 
 import useFetchProducts from '../../hooks/useProducts/useFetchProducts';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
@@ -14,7 +13,6 @@ import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
 import * as S from './ProductListPage.style';
 
 import EmptyCart from '../../assets/EmptyCart.png';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const ProductListPage = () => {
   const { category, sort, handleCategory, handleSort } = useFilterAndSort();
