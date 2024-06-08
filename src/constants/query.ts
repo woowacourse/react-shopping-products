@@ -1,6 +1,6 @@
 export const QUERY_KEY = {
   cartList: 'cartList',
-  productList:'productList'
+  productList: 'productList',
 };
 
 export const QUERY_TIME = {
