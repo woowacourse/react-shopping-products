@@ -8,6 +8,7 @@ import { mockProductsResponse } from '../mocks/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
 import useProducts from './useFetchProducts';
+import { Category } from '../components/Dropdown/Dropdown';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient();
@@ -187,7 +188,7 @@ describe('fetchProducts', () => {
     },
   );
 
-  test.each([['fashion'], ['electronics']])(
+  test.each([['fashion'], ['electronics']] as Category[][])(
     '필터가 %s 일 때 필터링 된 결과가 나와야 한다.',
     async (category) => {
       const { result } = renderHook(

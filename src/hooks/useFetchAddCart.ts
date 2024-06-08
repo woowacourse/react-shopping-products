@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { deleteItem, fetchCartItems, postAddItems } from '../api/products';
+import { deleteCartItem, fetchCartItems, postAddItems } from '../api/products';
 
 const useFetchAddCart = () => {
   const [productIdSetInCart, setProductIdSetInCart] = useState<Set<number>>(
@@ -28,7 +28,7 @@ const useFetchAddCart = () => {
       );
       if (!filteredCartItems) return;
 
-      deleteItem(filteredCartItems.id);
+      deleteCartItem(filteredCartItems.id);
       const newProductIdSetInCart = new Set(productIdSetInCart);
       newProductIdSetInCart.delete(productId);
       setProductIdSetInCart(newProductIdSetInCart);
