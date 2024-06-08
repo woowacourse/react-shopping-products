@@ -30,7 +30,6 @@ export const productHandlers = [
     const end = start + size;
 
     const paginatedProducts = sortedProductList.slice(start, end);
-    console.log(start, end, paginatedProducts);
 
     // 입력받은 size를 기반으로 한 총 페이지수 계산
     const totalPages = Math.ceil(products.length / size);
