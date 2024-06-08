@@ -1,12 +1,13 @@
-import { LogoIcon, ShoppingCart } from '../../../assets';
-import CartBadge from '../../CartBadge/CartBadge';
+import { Modal } from 'river-modal-component';
+import { LogoIcon, ShoppingCart } from '@/assets/index';
+import { CartBadge } from '@/components/index';
 import { HeaderContainer, HeaderIcon } from './Header.style';
 
 interface HeaderProps {
   headerIconType?: 'home' | 'back';
 }
 
-function Header({ headerIconType = 'home' }: HeaderProps) {
+const Header = ({ headerIconType = 'home' }: HeaderProps) => {
   const handleHeaderIcon = ({ headerIconType }: HeaderProps) => {
     switch (headerIconType) {
       default:
@@ -22,11 +23,15 @@ function Header({ headerIconType = 'home' }: HeaderProps) {
   return (
     <HeaderContainer>
       <HeaderIcon $width={front.width} src={front.icon} />
-      <CartBadge>
-        <HeaderIcon $width={back.width} src={back.icon} />
-      </CartBadge>
+      <Modal.Trigger>
+        <div>
+          <CartBadge>
+            <HeaderIcon $width={back.width} src={back.icon} />
+          </CartBadge>
+        </div>
+      </Modal.Trigger>
     </HeaderContainer>
   );
-}
+};
 
 export default Header;
