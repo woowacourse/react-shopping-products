@@ -5,12 +5,10 @@ import { RouterProvider } from "react-router-dom";
 import router from "@/router.tsx";
 import { ThemeProvider } from "styled-components";
 import { theme } from "@/styles/theme.ts";
-// import CartItemProvider from "@/provider/cartItemProvider.tsx";
 import ToastsProvider from "@/provider/toastProvider.tsx";
 import Toasts from "@/components/_common/Toasts/Toasts.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import CartModal from "@/pages/cartModal";
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== "development") {
