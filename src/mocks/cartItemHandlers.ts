@@ -24,6 +24,13 @@ export const cartItemHandlers = [
     });
   }),
 
+  http.patch(`${ENDPOINT.CART_ITEMS}/12`, () => {
+    console.log('a');
+    return HttpResponse.json({
+      content: [],
+    });
+  }),
+
   http.delete(`${ENDPOINT.CART_ITEMS}/10`, () => {
     return HttpResponse.json(
       {

@@ -6,20 +6,20 @@ import { HttpResponse, http } from 'msw';
 import ENDPOINT from '../src/api/endpoints';
 import { wrapper } from './utils/test-utils';
 
-const renderUseCartItemHook = (initIsInCart) =>
-  renderHook(() => useCartItemHandler({ productId: 10, initIsInCart }), {
+const renderUseCartItemHook = () =>
+  renderHook(() => useCartItemHandler({ productId: 10 }), {
     wrapper: wrapper,
   });
 
 describe('useCartItemHandler', () => {
   describe('장바구니에 상품 추가 및 삭제', () => {
     it('담기 버튼을 누르면 장바구니에 상품이 담겨야한다.', async () => {
-      const { result } = renderUseCartItemHook(false);
+      const { result } = renderUseCartItemHook();
 
       expect(result.current.isInCart).toBe(false);
 
       await act(async () => {
-        await result.current.handleAddCartItem(1);
+        await result.current.showCountButton();
       });
 
       await waitFor(() => {
@@ -27,19 +27,49 @@ describe('useCartItemHandler', () => {
       });
     });
 
-    it('빼기 버튼을 누르면 장바구니에 상품이 삭제되어야한다.', async () => {
+    it('삭제 버튼을 누르면 장바구니에 상품이 삭제되어야한다.', async () => {
+      const { result } = renderUseCartItemHook();
+
+      expect(result.current.isInCart).toBe(false);
       server.use(
-        http.delete(`${ENDPOINT.CART_ITEMS}/10`, () => {
+        http.get(`${ENDPOINT.CART_ITEMS}`, () => {
+          return HttpResponse.json({
+            content: [
+              { id: 10, product: { id: 12 } },
+              { id: 12, product: { id: 14 } },
+              { id: 16, product: { id: 10 } },
+            ],
+          });
+        }),
+      );
+
+      await act(async () => {
+        await result.current.showCountButton();
+      });
+
+      await waitFor(() => {
+        expect(result.current.isInCart).toBe(true);
+      });
+
+      server.use(
+        http.get(`${ENDPOINT.CART_ITEMS}`, () => {
+          return HttpResponse.json({
+            content: [
+              { id: 10, product: { id: 12 } },
+              { id: 12, product: { id: 14 } },
+            ],
+          });
+        }),
+      );
+
+      server.use(
+        http.delete(`${ENDPOINT.CART_ITEMS}/16`, () => {
           return new HttpResponse(null, { status: 200 });
         }),
       );
 
-      const { result } = renderUseCartItemHook(true);
-
-      expect(result.current.isInCart).toBe(true);
-
       await act(async () => {
-        await result.current.handleRemoveCartItem();
+        await result.current.handleDeleteCartItem();
       });
 
       await waitFor(() => {
@@ -47,48 +77,108 @@ describe('useCartItemHandler', () => {
       });
     });
 
-    it('아이템을 삭제하는지 확인한다.', async () => {
-      const { result } = renderUseCartItemHook(true);
+    it('+ 버튼을 누르면 해당 상품 수량이 증가한다.', async () => {
+      const { result } = renderUseCartItemHook();
 
-      await waitFor(async () => {
-        await act(async () => {
-          result.current.handleRemoveCartItem();
-        });
-      });
-
-      await waitFor(() => {
-        expect(result.current.isInCart).toBe(false);
-      });
-    });
-
-    it('장바구니 목록을 가져오는데 실패했을 때, error 상태값이 true가 되야한다.', async () => {
+      expect(result.current.isInCart).toBe(false);
       server.use(
-        http.post(ENDPOINT.CART_ITEMS, () => {
-          return new HttpResponse('Internal Server Error', { status: 500 });
+        http.get(`${ENDPOINT.CART_ITEMS}`, () => {
+          return HttpResponse.json({
+            content: [
+              { id: 10, product: { id: 12 } },
+              { id: 12, product: { id: 14 } },
+              { id: 16, product: { id: 10 }, quantity: 1 },
+            ],
+          });
         }),
       );
 
-      const { result } = renderUseCartItemHook(false);
-
       await act(async () => {
-        result.current.handleAddCartItem(1);
+        await result.current.showCountButton();
       });
 
       await waitFor(() => {
-        expect(result.current.error).toBe(true);
+        expect(result.current.isInCart).toBe(true);
+        expect(result.current.itemQuantity).toBe(1);
+      });
+
+      server.use(
+        http.get(`${ENDPOINT.CART_ITEMS}`, () => {
+          return HttpResponse.json({
+            content: [
+              { id: 10, product: { id: 12 }, quantity: 2 },
+              { id: 12, product: { id: 14 }, quantity: 2 },
+              { id: 16, product: { id: 10 }, quantity: 2 },
+            ],
+          });
+        }),
+      );
+      server.use(
+        http.patch(`${ENDPOINT.CART_ITEMS}/16`, () => {
+          return HttpResponse.json({});
+        }),
+      );
+
+      await act(async () => {
+        await result.current.handleAddCartItemQuantity();
+      });
+
+      await waitFor(() => {
+        expect(result.current.isInCart).toBe(true);
+        expect(result.current.itemQuantity).toBe(2);
       });
     });
-  });
 
-  it('장바구니 목록을 가져오는 중일 때, loading 상태값이 true가 되야한다.', async () => {
-    const { result } = renderUseCartItemHook(false);
+    it('- 버튼을 누르면 해당 상품 수량이 감소한다.', async () => {
+      const { result } = renderUseCartItemHook();
 
-    expect(result.current.loading).toBe(false);
+      expect(result.current.isInCart).toBe(false);
+      server.use(
+        http.get(`${ENDPOINT.CART_ITEMS}`, () => {
+          return HttpResponse.json({
+            content: [
+              { id: 10, product: { id: 12 } },
+              { id: 12, product: { id: 14 } },
+              { id: 16, product: { id: 10 }, quantity: 2 },
+            ],
+          });
+        }),
+      );
 
-    act(() => {
-      result.current.handleAddCartItem(1);
+      await act(async () => {
+        await result.current.showCountButton();
+      });
+
+      await waitFor(() => {
+        expect(result.current.isInCart).toBe(true);
+        expect(result.current.itemQuantity).toBe(2);
+      });
+
+      server.use(
+        http.get(`${ENDPOINT.CART_ITEMS}`, () => {
+          return HttpResponse.json({
+            content: [
+              { id: 10, product: { id: 12 }, quantity: 2 },
+              { id: 12, product: { id: 14 }, quantity: 2 },
+              { id: 16, product: { id: 10 }, quantity: 1 },
+            ],
+          });
+        }),
+      );
+      server.use(
+        http.patch(`${ENDPOINT.CART_ITEMS}/16`, () => {
+          return HttpResponse.json({});
+        }),
+      );
+
+      await act(async () => {
+        await result.current.handleAddCartItemQuantity();
+      });
+
+      await waitFor(() => {
+        expect(result.current.isInCart).toBe(true);
+        expect(result.current.itemQuantity).toBe(1);
+      });
     });
-
-    expect(result.current.loading).toBe(true);
   });
 });
