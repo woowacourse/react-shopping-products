@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { ToastContext } from '../contexts/ToastContextProvider';
 
-export function useToast() {
+const useToast = () => {
   const context = useContext(ToastContext);
 
   if (!context) {
@@ -17,10 +17,12 @@ export function useToast() {
 
       setTimeout(() => {
         setToast(null);
-      }, 3000);
+      }, 2000);
     },
     [setToast],
   );
 
   return { createToast };
-}
+};
+
+export default useToast;
