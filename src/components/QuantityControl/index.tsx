@@ -15,25 +15,25 @@ interface QuantityControlProps {
 
 const QuantityControl = ({ quantity, cartItemId }: QuantityControlProps) => {
   const { mutateAsync: quantityMutate, error, isPending } = useCartItemQuantity();
-  const [isTryOverMax, setIsTryOverMax] = useState(false);
+  const [isTryOverMaxQuantity, setIsTryOverMaxQuantity] = useState(false);
 
   const isMaxQuantity = quantity === MAX_QUANTITY;
 
   const increaseQuantity = () => {
-    setIsTryOverMax(isMaxQuantity);
+    setIsTryOverMaxQuantity(isMaxQuantity);
     if (isMaxQuantity) return;
 
     quantityMutate({ cartItemId, quantity: quantity + 1 });
   };
 
   const decreaseQuantity = () => {
-    setIsTryOverMax(false);
+    setIsTryOverMaxQuantity(false);
     quantityMutate({ cartItemId, quantity: quantity - 1 });
   };
 
   useEffect(() => {
     return () => {
-      setIsTryOverMax(false);
+      setIsTryOverMaxQuantity(false);
     };
   }, []);
 
@@ -43,9 +43,12 @@ const QuantityControl = ({ quantity, cartItemId }: QuantityControlProps) => {
         <CountButton quantitySign="minus" disabled={isPending} onClick={decreaseQuantity} />
         <span className="text">{quantity}</span>
         <CountButton quantitySign="plus" disabled={isPending} onClick={increaseQuantity} />
-        <QuantityLimitModal isTryOverMax={isTryOverMax} setIsTryOverMax={setIsTryOverMax} />
       </div>
       <CartActionErrorModal error={error} />
+      <QuantityLimitModal
+        isTryOverMaxQuantity={isTryOverMaxQuantity}
+        setIsTryOverMaxQuantity={setIsTryOverMaxQuantity}
+      />
     </>
   );
 };

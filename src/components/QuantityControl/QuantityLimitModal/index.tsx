@@ -5,16 +5,16 @@ import { Dispatch, SetStateAction } from 'react';
 import style from './style.module.css';
 
 interface QuantityLimitModalProps {
-  isTryOverMax: boolean;
-  setIsTryOverMax: Dispatch<SetStateAction<boolean>>;
+  isTryOverMaxQuantity: boolean;
+  setIsTryOverMaxQuantity: Dispatch<SetStateAction<boolean>>;
 }
-const QuantityLimitModal = ({ isTryOverMax, setIsTryOverMax }: QuantityLimitModalProps) => {
-  const { rootEl } = useOpenModal({ isOpenModal: isTryOverMax });
+const QuantityLimitModal = ({ isTryOverMaxQuantity, setIsTryOverMaxQuantity }: QuantityLimitModalProps) => {
+  const { rootEl } = useOpenModal({ isOpenModal: isTryOverMaxQuantity });
 
   return (
     <AlertModal
-      openModal={isTryOverMax}
-      setOpenModal={setIsTryOverMax}
+      openModal={isTryOverMaxQuantity}
+      setOpenModal={setIsTryOverMaxQuantity}
       modalTargetEl={rootEl}
       contents={<p className={style.message}>상품은 최대 100개까지 구매가능해요.</p>}
       button={<button className={style.confirmButton}>확인</button>}
