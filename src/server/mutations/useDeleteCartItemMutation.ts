@@ -4,21 +4,11 @@ import { MUTATION_KEYS } from "@server/__constants__/queryKeys";
 import { queryInvalidator } from "@server/queryClient";
 import type { OnError } from "onError";
 
-interface UseDeleteCartItemMutationReturn {
-  deleteCartItemMutation: (cartItemId: number) => void;
-}
-
-export const useDeleteCartItemMutation = (onError?: OnError): UseDeleteCartItemMutationReturn => {
-  const { mutate } = useMutation({
+export const useDeleteCartItemMutation = (onError?: OnError) => {
+  return useMutation({
     mutationKey: [MUTATION_KEYS.deleteCartItem],
     mutationFn: deleteCartItem,
     onSuccess: queryInvalidator.cartItems,
     onError,
   });
-
-  const deleteCartItemMutation = (cartItemId: number) => {
-    mutate(cartItemId);
-  };
-
-  return { deleteCartItemMutation };
 };

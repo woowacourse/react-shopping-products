@@ -24,11 +24,11 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     onError: alertErrorMessage,
   });
 
-  const { deleteCartItemMutation } = useDeleteCartItemMutation();
+  const { mutate: deleteCartItem } = useDeleteCartItemMutation();
 
   const handleDeleteButtonClick = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      deleteCartItemMutation(cartItem.id);
+      deleteCartItem(cartItem.id);
     }
   };
 

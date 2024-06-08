@@ -29,7 +29,7 @@ describe("useDeleteCartItemMutation", () => {
     const ITEM_ID = 101;
 
     await act(async () => {
-      result.current.deleteCartItemMutation(ITEM_ID);
+      result.current.mutate(ITEM_ID);
     });
 
     await waitFor(() => {
@@ -53,7 +53,7 @@ describe("useDeleteCartItemMutation", () => {
     const ITEM_ID = 101;
 
     await act(async () => {
-      result.current.deleteCartItemMutation(ITEM_ID);
+      result.current.mutate(ITEM_ID);
     });
 
     await waitFor(() => {

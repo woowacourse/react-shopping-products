@@ -24,9 +24,9 @@ export const useCartItemQuantityControl = ({
 }: UseCartItemQuantityControlProps): UseCartItemQuantityControlReturn => {
   const { data: cartItems } = useCartItems();
 
-  const { createCartItemMutation } = useCreateCartItemMutation(onError);
-  const { updateCartItemMutation } = useUpdateCartItemMutation(onError);
-  const { deleteCartItemMutation } = useDeleteCartItemMutation(onError);
+  const { mutate: createCartItemMutation } = useCreateCartItemMutation(onError);
+  const { mutate: updateCartItemMutation } = useUpdateCartItemMutation(onError);
+  const { mutate: deleteCartItemMutation } = useDeleteCartItemMutation(onError);
 
   const getTargetCartItem = () => {
     return cartItems.find((cartItem) => cartItem.product.id === productId);

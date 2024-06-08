@@ -29,7 +29,7 @@ describe("useUpdateCartItemMutation", () => {
     const params = { cartItemId: 101, quantity: 1 };
 
     await act(async () => {
-      result.current.updateCartItemMutation(params);
+      result.current.mutate(params);
     });
 
     await waitFor(() => {
@@ -53,7 +53,7 @@ describe("useUpdateCartItemMutation", () => {
     const params = { cartItemId: 101, quantity: 1 };
 
     await act(async () => {
-      result.current.updateCartItemMutation(params);
+      result.current.mutate(params);
     });
 
     await waitFor(() => {
