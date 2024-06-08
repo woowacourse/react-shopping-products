@@ -13,8 +13,8 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
   const {
     isInCart,
     itemQuantity,
-    handleAddCartItem,
-    handleRemoveCartItem,
+    handleAddCartItemQuantity,
+    handleMinusCartItemQuantity,
     showCountButton,
   } = useCartItemHandler({
     productId,
@@ -30,7 +30,7 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
         <CardQuantityButtonContainer>
           <CountButton
             onClick={() => {
-              handleRemoveCartItem();
+              handleMinusCartItemQuantity();
             }}
           >
             -
@@ -39,7 +39,7 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
           <QuantityCount>{itemQuantity}</QuantityCount>
           <CountButton
             onClick={() => {
-              handleAddCartItem();
+              handleAddCartItemQuantity();
             }}
           >
             +
