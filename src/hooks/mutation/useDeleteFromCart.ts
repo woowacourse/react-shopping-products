@@ -1,32 +1,26 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import ERROR_MESSAGE from '@constants/errorMessage';
 import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { deleteCartItem } from '@apis/ShoppingCartFetcher';
 
-interface Props {
-  errorHandler: (err: unknown) => void;
-}
+const mutationFn = async (id: number) => {
+  return deleteCartItem(id).catch(error => {
+    if (!(error instanceof HTTPError))
+      throw new Error(ERROR_MESSAGE.clientNetwork);
+    if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
+    if (400 <= error.statusCode) throw new Error(ERROR_MESSAGE.missingCartItem);
+  });
+};
 
-export default function useDeleteFromCart({ errorHandler }: Props) {
+export default function useDeleteFromCart() {
   const queryClient = useQueryClient();
 
-  return useMutation(
-    async (id: number) => {
-      return deleteCartItem(id).catch(error => {
-        if (!(error instanceof HTTPError))
-          throw new Error(ERROR_MESSAGE.clientNetwork);
-        if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
-        if (400 <= error.statusCode)
-          throw new Error(ERROR_MESSAGE.missingCartItem);
-      });
+  return useMutation({
+    mutationFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
-      },
-      onError: errorHandler,
-    }
-  );
+  });
 }

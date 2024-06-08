@@ -3,13 +3,9 @@ import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { getCartItems } from '@apis/ShoppingCartFetcher';
 import { useCallback } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
-interface Props {
-  errorHandler: (err: unknown) => void;
-}
-
-export default function useCartItems({ errorHandler }: Props) {
+export default function useCartItems() {
   const { data: cartItems, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.cartItems],
     queryFn: async () => {
@@ -19,7 +15,6 @@ export default function useCartItems({ errorHandler }: Props) {
         if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
       });
     },
-    onError: errorHandler,
   });
 
   const getCartItemByProductId = useCallback(

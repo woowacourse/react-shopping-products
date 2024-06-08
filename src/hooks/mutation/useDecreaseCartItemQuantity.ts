@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { CartItem } from '@appTypes/product';
 import ERROR_MESSAGE from '@constants/errorMessage';
@@ -6,17 +6,13 @@ import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { updateCartItemQuantity } from '@apis/ShoppingCartFetcher';
 
-interface Props {
-  errorHandler: (err: unknown) => void;
-}
-
-export default function useDecreaseCartItemQuantity({ errorHandler }: Props) {
+export default function useDecreaseCartItemQuantity() {
   const queryClient = useQueryClient();
 
   const mutationFn = async (cartItemId: number) => {
-    const cartItems = queryClient.getQueryData<CartItem[]>(
-      QUERY_KEYS.cartItems
-    );
+    const cartItems = queryClient.getQueryData<CartItem[]>([
+      QUERY_KEYS.cartItems,
+    ]);
     const targetCartItems = cartItems?.find(item => item.id === cartItemId);
     if (!targetCartItems) throw new Error(ERROR_MESSAGE.missingCartItem);
 
@@ -32,10 +28,10 @@ export default function useDecreaseCartItemQuantity({ errorHandler }: Props) {
     });
   };
 
-  return useMutation(mutationFn, {
+  return useMutation({
+    mutationFn,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
     },
-    onError: errorHandler,
   });
 }

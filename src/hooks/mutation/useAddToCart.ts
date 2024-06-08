@@ -1,30 +1,25 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import ERROR_MESSAGE from '@constants/errorMessage';
 import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { addProduct } from '@apis/ShoppingCartFetcher';
 
-interface Props {
-  errorHandler: (err: unknown) => void;
-}
-export default function useAddToCart({ errorHandler }: Props) {
+const mutationFn = async (id: number) => {
+  return addProduct(id).catch(error => {
+    if (!(error instanceof HTTPError))
+      throw new Error(ERROR_MESSAGE.clientNetwork);
+    if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
+    if (400 <= error.statusCode) throw new Error(ERROR_MESSAGE.hadCartItem);
+  });
+};
+export default function useAddToCart() {
   const queryClient = useQueryClient();
 
-  return useMutation(
-    async (id: number) => {
-      return addProduct(id).catch(error => {
-        if (!(error instanceof HTTPError))
-          throw new Error(ERROR_MESSAGE.clientNetwork);
-        if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
-        if (400 <= error.statusCode) throw new Error(ERROR_MESSAGE.hadCartItem);
-      });
+  return useMutation({
+    mutationFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
-      },
-      onError: errorHandler,
-    }
-  );
+  });
 }
