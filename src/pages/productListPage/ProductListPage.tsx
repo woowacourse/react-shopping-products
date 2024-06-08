@@ -11,6 +11,8 @@ import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
 
 import useCartItems from '@/hooks/useCartItems';
 import useProductList from '@/hooks/useProductList';
+import { useModalHandler } from 'hash-modal';
+import CartModalInfo from '@/components/cartInfoModal/CartInfoModal';
 
 const ProductListPage = () => {
   const {
@@ -26,6 +28,7 @@ const ProductListPage = () => {
   } = useProductList();
   const { cartItems } = useCartItems();
   const bottomRef = useRef<HTMLDivElement>(null);
+  const { modalOpen, openModal, closeModal } = useModalHandler();
 
   return (
     <InfinityScrollContainer
@@ -36,8 +39,9 @@ const ProductListPage = () => {
       bottomRef={bottomRef}
     >
       <Styled.PageContainer>
-        <Header cartCount={cartItems?.length} />
+        <Header cartCount={cartItems?.length} openModal={openModal} />
         <Styled.CommonContainer>
+          {modalOpen && <CartModalInfo closeModal={closeModal} />}
           <Title title="상품 목록" />
           <Styled.DropdownContainer>
             <Dropdown

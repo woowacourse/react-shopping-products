@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { adjustCartItemQuantity, addCartItem } from './../api/cart';
+import { adjustCartItemQuantity, addCartItem, deleteCartItem } from './../api/cart';
 import { useToast } from './useToast';
 
 import { CartItemInfo } from '@/types/cartItem';
@@ -9,6 +9,13 @@ const useAdjustCartItemQuantity = () => {
   const { toastError } = useToast();
 
   const queryClient = useQueryClient();
+
+  const { mutate: deleteCartItemMutation } = useMutation({
+    mutationFn: (cartId: number) => deleteCartItem(cartId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['fetchCartItems'] });
+    },
+  });
 
   const { mutate: addCartItemMutation } = useMutation({
     mutationFn: (productId: number) => addCartItem({ productId, quantity: 1 }),
@@ -63,7 +70,7 @@ const useAdjustCartItemQuantity = () => {
     },
   });
 
-  return { addCartItemMutation, adjustCartItemQuantityMutation };
+  return { addCartItemMutation, adjustCartItemQuantityMutation, deleteCartItemMutation };
 };
 
 export default useAdjustCartItemQuantity;

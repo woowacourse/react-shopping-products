@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
+import useAdjustCartItemQuantity from './useAdjustCartItemQuantity';
+
 import { fetchCartItems } from '@/api/cart';
 import { CartItemInfo } from '@/types/cartItem';
-import useAdjustCartItemQuantity from './useAdjustCartItemQuantity';
 
 const useCartItems = () => {
   const { data: cartItems } = useQuery<CartItemInfo[]>({
@@ -10,7 +11,8 @@ const useCartItems = () => {
     queryFn: fetchCartItems,
   });
 
-  const { addCartItemMutation, adjustCartItemQuantityMutation } = useAdjustCartItemQuantity();
+  const { deleteCartItemMutation, addCartItemMutation, adjustCartItemQuantityMutation } =
+    useAdjustCartItemQuantity();
 
   const matchCartItem = (productId: number) => {
     return cartItems?.find((cartItem) => cartItem.product.id === productId);
@@ -22,12 +24,18 @@ const useCartItems = () => {
     });
   };
 
+  const totalCartItemPrice = cartItems?.reduce((totalPrice, cartItem) => {
+    return totalPrice + cartItem.product.price * cartItem.quantity;
+  }, 0);
+
   return {
     cartItems,
+    deleteCartItemMutation,
     addCartItemMutation,
     adjustCartItemQuantityMutation,
     matchCartItem,
     getCartItemQuantity,
+    totalCartItemPrice,
   };
 };
 
