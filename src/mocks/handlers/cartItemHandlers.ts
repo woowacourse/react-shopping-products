@@ -34,8 +34,6 @@ export const cartItemHandlers = [
     });
   }),
 
-  // ⛔️ async 추가로 인한 이펙트 확인 안됨. ⛔️
-  // ⛔️ as 로 인한 이펙트 확인 안됨. ⛔️
   http.post(`${BASE_URL.SHOP}${ENDPOINT.CART_ITEM}`, ({ params }) => {
     const productId = Number(params);
 
@@ -55,7 +53,6 @@ export const cartItemHandlers = [
     });
   }),
 
-  // 장바구니 아이템 삭제 delete
   http.delete<DeleteCartItemParams>(`${BASE_URL.SHOP}${ENDPOINT.CART_ITEM}/:id`, ({ params }) => {
     const cartItemId = Number(params);
 
@@ -69,23 +66,5 @@ export const cartItemHandlers = [
     }
 
     return HttpResponse.json({ error: '아이템 없음' }, { status: 404 });
-  }),
-
-  http.patch(`${BASE_URL.SHOP}${ENDPOINT.CART_ITEM}/:id`, ({ params, request }) => {
-    const cartItemId = Number(params);
-    const { quantity } = request.body;
-    const { content } = cartItems;
-
-    const index = content.findIndex((item) => item.id === cartItemId);
-
-    if (index > -1) {
-      content[index].quantity = quantity;
-      return HttpResponse.json(
-        {
-          message: 'Success create',
-        },
-        { status: 200 },
-      );
-    }
   }),
 ];
