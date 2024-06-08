@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Layout from './components/Layout/Layout';
 import { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
+import ScrollToTopButton from './components/common/ScrollTopButton/ScrollTopButton';
 
 function App() {
   const queryClient = new QueryClient();
@@ -18,6 +19,7 @@ function App() {
           <ToastProvider>
             <ProductListPageContainer />
           </ToastProvider>
+          <ScrollToTopButton />
         </Layout>
       </ThemeProvider>
     </QueryClientProvider>
