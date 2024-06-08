@@ -43,10 +43,7 @@ function ProductPage() {
             ></Dropdown>
           </DropBoxContainer>
 
-          {status === 'pending' && (
-            // <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
-            <Spinner />
-          )}
+          {status === 'pending' && <Spinner />}
 
           <ItemList>
             {products.map((product, index) => (

@@ -35,10 +35,6 @@ describe('useFetchCartItems 테스트', () => {
       wrapper: queryClientWrapper,
     });
 
-    // await waitFor(() => {
-    //   expect(result.current.isError).toBe(true);
-    // });
-
     expect(result.current.cartItemList).toEqual([]);
     expect(result.current.isLoading).toBe(false);
   });
