@@ -3,12 +3,15 @@ import CountControlButtonBundle from "../CountControlButtonBundle/CountControlBu
 import * as MI from "./ModalInner.style";
 import useCartItems from "@hooks/useCartItems";
 import useControlCart from "@hooks/useControlCart";
+import useDeleteCart from "@hooks/useDeleteCart";
 
 const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
   const { addToCart, deleteToCart } = useControlCart({
     cartItemId: cartItem.id,
     quantity: cartItem.quantity,
   });
+
+  const { deleteCartItem } = useDeleteCart({ cartId: cartItem.id });
 
   const handleIncrementAmount = () => {
     if (addToCart.mutate) {
@@ -21,6 +24,13 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
       deleteToCart.mutate();
     }
   };
+
+  const handleDeleteCartItem = () => {
+    if (deleteCartItem.mutate) {
+      deleteCartItem.mutate();
+    }
+  };
+
   return (
     <MI.CartItem>
       <MI.CartItemImg src={cartItem.product.imageUrl} alt="" />
@@ -36,7 +46,7 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
         />
       </MI.CartItemContent>
       <MI.CartItemDeleteButton>
-        <Button text="삭제" onClick={() => {}} />
+        <Button text="삭제" onClick={handleDeleteCartItem} />
       </MI.CartItemDeleteButton>
     </MI.CartItem>
   );
