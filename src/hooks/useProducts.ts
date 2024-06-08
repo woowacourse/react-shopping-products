@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { fetchProducts } from '../api/index';
 import {
   INITIAL_DATA_LOAD_COUNT,
+  JUMP_NEXT_PAGE_IN_ZERO,
   SUBSEQUENT_DATA_LOAD_COUNT,
 } from '../constants';
 import { useToast } from './useToast';
@@ -51,7 +52,7 @@ export default function useProducts(): UseProductsResult {
       placeholderData: keepPreviousData,
       getNextPageParam: (lastPage, allPages) => {
         if (allPages.length === 1 && !lastPage.last) {
-          return 5;
+          return JUMP_NEXT_PAGE_IN_ZERO;
         }
         if (lastPage.last) {
           return undefined;
