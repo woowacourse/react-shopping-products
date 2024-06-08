@@ -37,7 +37,7 @@ const useProductList = (filtering: Filtering) => {
   };
 
   const makeProducts = () => {
-    if (!data?.pages[0]) return;
+    if (!data?.pages.length) return;
 
     return data.pages.reduce((acc, cur) => acc.concat(cur.products), [] as Product[]);
   };
