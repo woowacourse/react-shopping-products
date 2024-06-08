@@ -5,6 +5,7 @@ import {
   useFetchCartItems,
   useFetchProducts,
   useIntersectionObserver,
+  useFetchProductQuantity,
 } from '../hooks/index';
 import {
   Header,
@@ -34,7 +35,8 @@ function Product() {
     fetchNextPage,
     resetPage,
   } = useFetchProducts(sortings, filter);
-  const { data: cartItems } = useFetchCartItems();
+  const { cartItems } = useFetchCartItems();
+  const { getProductQuantity } = useFetchProductQuantity();
 
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
@@ -79,7 +81,13 @@ function Product() {
 
           <S.ProductListContainer>
             {products.map((product) => {
-              return <ProductCard key={product.id} product={product} />;
+              return (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  cartItem={getProductQuantity(product.id)}
+                />
+              );
             })}
             <S.ObserverContainer ref={target} />
           </S.ProductListContainer>

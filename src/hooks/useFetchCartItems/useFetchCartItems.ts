@@ -36,7 +36,7 @@ const useFetchCartItems = () => {
 
   return {
     ...query,
-    data: cartItems,
+    cartItems: cartItems,
     fetchNextPage,
     resetPage,
     isLast,

@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import { Carts } from '../../types/fetch';
 import { CartContext } from '../../context/CartContext';
+import { QuantityUpdateButton } from '../index';
 
 import * as S from './CartModalDetail.styled';
 
@@ -16,18 +17,9 @@ function CartModalDetail({ cartItems }: CartModalDetailProps) {
   }
   const {
     deleteCartItem,
-    updateCartItemQuantity,
     // isDeletePending,
     // isDeleteError,
   } = cartContext;
-
-  const handleIncreasedQuantity = (item: Carts) => {
-    updateCartItemQuantity({ id: item.id, quantity: item.quantity + 1 });
-  };
-
-  const handleDecreasedQuantity = (item: Carts) => {
-    updateCartItemQuantity({ id: item.id, quantity: item.quantity - 1 });
-  };
 
   return (
     <S.CartModalDetailContainer>
@@ -48,15 +40,8 @@ function CartModalDetail({ cartItems }: CartModalDetailProps) {
                   삭제
                 </S.DeleteButton>
               </S.CardDetailWrapper>
-              <S.CardQuantityButton>
-                <S.Button onClick={() => handleDecreasedQuantity(item)}>
-                  -
-                </S.Button>
-                <p>{item.quantity}</p>
-                <S.Button onClick={() => handleIncreasedQuantity(item)}>
-                  +
-                </S.Button>
-              </S.CardQuantityButton>
+
+              <QuantityUpdateButton item={item} />
             </S.CardDetail>
           </S.CardContent>
         </S.CardContainer>

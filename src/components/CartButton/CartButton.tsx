@@ -1,30 +1,27 @@
 import React, { useState } from 'react';
 
-import { AddCartIcon, DeleteCartIcon } from '../../assets';
+import { QuantityUpdateButton } from '../index';
+import { Carts } from '../../types/fetch';
+
+import { AddCartIcon } from '../../assets';
 import * as S from './CartButton.styled';
 
 interface CartButtonProps {
-  id: number;
+  item: Carts;
   onAddClick: (event: React.MouseEvent) => void;
-  onDeleteClick: (event: React.MouseEvent) => void;
 }
-function CartButton({ id, onAddClick, onDeleteClick }: CartButtonProps) {
-  const [isClicked, setIsClicked] = useState(false);
-  const handleDeleteClick = (event: React.MouseEvent) => {
-    onDeleteClick(event);
-    setIsClicked(false);
-  };
+function CartButton({ item, onAddClick }: CartButtonProps) {
+  const [isExistInCart, setIsExistInCart] = useState(
+    item && item.quantity > 0 ? true : false,
+  );
 
   const handleAddClick = (event: React.MouseEvent) => {
     onAddClick(event);
-    setIsClicked(true);
+    setIsExistInCart(true);
   };
 
-  return isClicked ? (
-    <S.DeleteButton onClick={handleDeleteClick}>
-      <img src={DeleteCartIcon} alt="상품 빼기" />
-      빼기
-    </S.DeleteButton>
+  return isExistInCart ? (
+    <QuantityUpdateButton item={item} />
   ) : (
     <S.AddButton onClick={handleAddClick}>
       <img src={AddCartIcon} alt="상품 담기" />

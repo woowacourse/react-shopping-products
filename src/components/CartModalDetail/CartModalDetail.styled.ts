@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { QuantityUpdateButton } from '../QuantityUpdateButton/QuantityUpdateButton.styled';
 
 export const CartModalDetailContainer = styled.div`
   display: flex;
@@ -52,12 +53,6 @@ export const CardInfo = styled.div`
   width: 100%;
 `;
 
-export const CardQuantityButton = styled.div`
-  display: flex;
-  gap: 1.3rem;
-  align-items: center;
-`;
-
 export const ItemName = styled.p`
   font-size: 1.6rem;
   font-weight: 700;
@@ -70,21 +65,7 @@ export const ItemPrice = styled.p`
   line-height: 1.5rem;
 `;
 
-export const Button = styled.button`
-  width: 2.4rem;
-  height: 2.4rem;
-
-  color: var(--black-color-2);
-  background-color: #ffffff;
-
-  border: 1px solid var(--black-color-1-10);
-  border-radius: 0.8rem;
-  box-sizing: border-box;
-
-  white-space: nowrap;
-`;
-
-export const DeleteButton = styled(Button)`
+export const DeleteButton = styled(QuantityUpdateButton)`
   width: 4rem;
 
   font-size: 1.2rem;
