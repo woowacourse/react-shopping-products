@@ -32,7 +32,7 @@ const Mall = () => {
     handleSortChange,
   } = useProducts();
   const { messages } = useCustomContext(LanguageContext);
-  const { cartItems, error: toggleCartItemError } = useToggleCartItem();
+  const { cartItems, queryError: toggleCartItemError } = useToggleCartItem();
   useErrorAlert({ toggleCartItemError, productError });
 
   return (
