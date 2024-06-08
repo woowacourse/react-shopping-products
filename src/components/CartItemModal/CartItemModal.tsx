@@ -2,6 +2,7 @@ import { Modal } from 'chico-custom-modal';
 import { CartItemModalProps } from './CartItemModal.type';
 import { useCart } from '../../context/CartContext';
 import CartItemList from '../CartItemList/CartItemList';
+import { BUTTON_MESSAGE } from '../../constants/button';
 
 const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
   const { cartItem } = useCart();
@@ -28,7 +29,7 @@ const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
             onClick={handleConfirm}
             width="stretch"
           >
-            닫기
+            {BUTTON_MESSAGE.CLOSE}
           </Modal.Button>
         </Modal.Footer>
       </Modal>

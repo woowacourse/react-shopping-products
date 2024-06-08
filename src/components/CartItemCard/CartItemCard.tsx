@@ -1,3 +1,4 @@
+import { BUTTON_MESSAGE } from '../../constants/button';
 import useCartItemHandler from '../../hooks/useCartItemHandler';
 import * as S from './CartItemCard.style';
 import { ProductProps } from './CartItemCard.type';
@@ -24,7 +25,7 @@ function CartItemCard({ item }: ProductProps) {
             <S.CardHeader>
               <S.ProductName>{item.product.name}</S.ProductName>
               <S.DeleteButton onClick={handleDeleteCartItem}>
-                {'삭제'}
+                {BUTTON_MESSAGE.DELETE}
               </S.DeleteButton>
             </S.CardHeader>
             <S.ProductPrice>
@@ -33,10 +34,12 @@ function CartItemCard({ item }: ProductProps) {
           </S.CardInfo>
           <S.CardQuantityButtonContainer>
             <S.CountButton onClick={handleMinusCartItemQuantity}>
-              -
+              {BUTTON_MESSAGE.MINUS}
             </S.CountButton>
             <S.QuantityCount>{itemQuantity}</S.QuantityCount>
-            <S.CountButton onClick={handleAddCartItemQuantity}>+</S.CountButton>
+            <S.CountButton onClick={handleAddCartItemQuantity}>
+              {BUTTON_MESSAGE.PLUS}
+            </S.CountButton>
           </S.CardQuantityButtonContainer>
         </S.CardDetail>
       </S.CardContent>
