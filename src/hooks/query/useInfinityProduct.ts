@@ -1,7 +1,6 @@
 import { Category, SortType } from '@pages/ProductPage/Product.types';
 
 import ERROR_MESSAGE from '@constants/errorMessage';
-import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { fetchPaginatedProducts } from '@apis/ProductFetchers';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -17,11 +16,16 @@ export default function useInfinityProducts({
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.products, category, sortType],
     queryFn: async ({ pageParam }) => {
-      return fetchPaginatedProducts(pageParam).catch(error => {
-        if (!(error instanceof HTTPError))
+      return fetchPaginatedProducts(pageParam)
+        .catch(() => {
           throw new Error(ERROR_MESSAGE.clientNetwork);
-        if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
-      });
+        })
+        .then((response: Response) => {
+          if (500 <= response.status) throw new Error(ERROR_MESSAGE.server);
+          if (400 <= response.status)
+            throw new Error(ERROR_MESSAGE.missingCartItem);
+          return response.json();
+        });
     },
 
     initialPageParam: { page: 0, size: 20, category, sortType },

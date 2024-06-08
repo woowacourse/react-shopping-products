@@ -1,8 +1,6 @@
 import { Category, SortType } from './../pages/ProductPage/Product.types';
 
 import APIClient from './APIClient';
-import { PaginationResponse } from '@appTypes/response';
-import { Product } from '@appTypes/product';
 import { getProductEndpoint } from './getProductEndPoint';
 
 export interface FetchProductsParam {
@@ -14,9 +12,5 @@ export interface FetchProductsParam {
 
 export async function fetchPaginatedProducts(params: FetchProductsParam) {
   const endpoint = getProductEndpoint(params);
-  const response = await APIClient.get(endpoint);
-
-  const data = await response.json();
-
-  return data as PaginationResponse<Product[]>;
+  return await APIClient.get(endpoint);
 }

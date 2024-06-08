@@ -1,5 +1,5 @@
+import { CartItem } from '@appTypes/product';
 import ERROR_MESSAGE from '@constants/errorMessage';
-import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { getCartItems } from '@apis/ShoppingCartFetcher';
 import { useCallback } from 'react';
@@ -9,11 +9,19 @@ export default function useCartItems() {
   const { data: cartItems, isLoading } = useQuery({
     queryKey: [QUERY_KEYS.cartItems],
     queryFn: async () => {
-      return getCartItems().catch(error => {
-        if (!(error instanceof HTTPError))
+      return getCartItems()
+        .then(response => {
+          if (500 <= response.status) throw new Error(ERROR_MESSAGE.server);
+          if (400 <= response.status)
+            throw new Error(ERROR_MESSAGE.missingCartItem);
+          return response.json();
+        })
+        .catch(() => {
           throw new Error(ERROR_MESSAGE.clientNetwork);
-        if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
-      });
+        })
+        .then(data => {
+          return data.content as CartItem[];
+        });
     },
   });
 

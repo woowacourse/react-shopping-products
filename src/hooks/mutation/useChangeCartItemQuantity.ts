@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import ERROR_MESSAGE from '@constants/errorMessage';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { updateCartItemQuantity } from '@apis/ShoppingCartFetcher';
 
@@ -21,7 +22,13 @@ export default function useChangeCartItemQuantity() {
       quantity: number;
     }) => {
       const intQuantity = formatNumberToPositiveInt32(quantity);
-      return updateCartItemQuantity(cartItemId, intQuantity);
+      return updateCartItemQuantity(cartItemId, intQuantity)
+        .catch(() => {
+          throw new Error(ERROR_MESSAGE.clientNetwork);
+        })
+        .then((response: Response) => {
+          if (500 <= response.status) throw new Error(ERROR_MESSAGE.server);
+        });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });

@@ -1,17 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import ERROR_MESSAGE from '@constants/errorMessage';
-import HTTPError from '@errors/HTTPError';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { addProduct } from '@apis/ShoppingCartFetcher';
 
 const mutationFn = async (id: number) => {
-  return addProduct(id).catch(error => {
-    if (!(error instanceof HTTPError))
+  return addProduct(id)
+    .catch(() => {
       throw new Error(ERROR_MESSAGE.clientNetwork);
-    if (500 <= error.statusCode) throw new Error(ERROR_MESSAGE.server);
-    if (400 <= error.statusCode) throw new Error(ERROR_MESSAGE.hadCartItem);
-  });
+    })
+    .then((response: Response) => {
+      if (500 <= response.status) throw new Error(ERROR_MESSAGE.server);
+      if (400 <= response.status) throw new Error(ERROR_MESSAGE.hadCartItem);
+    });
 };
 export default function useAddToCart() {
   const queryClient = useQueryClient();
