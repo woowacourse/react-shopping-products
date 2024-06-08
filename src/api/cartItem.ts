@@ -8,6 +8,7 @@ export const getCartList = async (): Promise<CartItem[]> => {
     () => fetchWithAuth(ENDPOINT.cartItem.getList, { method: 'GET' }),
     '장바구니에 담긴 상품들을 가져오는데 실패했습니다.',
   );
+
   return data.content;
 };
 
