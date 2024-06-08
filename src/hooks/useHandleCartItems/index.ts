@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { ToastContext } from '../context/ToastProvider';
+import { ToastContext } from '../../context/ToastProvider';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addCartItem, deleteCartItem, patchCartItemQuantity } from '../api/cartItems';
-import { QUERY_KEYS } from '../constants/queryKeys';
+import { addCartItem, deleteCartItem, patchCartItemQuantity } from '../../api/cartItems';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 const useHandleCartItems = () => {
   const { showToast } = useContext(ToastContext);

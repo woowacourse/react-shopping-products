@@ -1,14 +1,14 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 
 import wrapper from '../../utils/testWrapper';
-import useCartItems from '.';
+import useHandleCartItems from '../useHandleCartItems';
 
-describe('장바구니', () => {
+describe('useHandleCartItems', () => {
   describe('addCart', () => {
     it('장바구니에 상품을 추가할 수 있다.', async () => {
       const { result } = renderHook(
         () => {
-          const { addCart } = useCartItems();
+          const { addCart } = useHandleCartItems();
 
           return addCart;
         },
@@ -27,7 +27,7 @@ describe('장바구니', () => {
     it('장바구니에 상품을 삭제할 수 있다.', async () => {
       const { result } = renderHook(
         () => {
-          const { deleteCart } = useCartItems();
+          const { deleteCart } = useHandleCartItems();
 
           return deleteCart;
         },
