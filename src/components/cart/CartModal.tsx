@@ -57,9 +57,6 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
 export default CartModal;
 
 const StyledModal = styled(Modal)`
-  display: flex;
-  width: 100vw;
-  color: black;
   overflow-y: auto;
   gap: 24px;
   .modal-content {

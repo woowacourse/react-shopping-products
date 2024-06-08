@@ -33,7 +33,7 @@ const ProductListPage = () => {
       </Layout.Header>
 
       <Layout.Content>
-        <Layout.Title mainTitle="텐텐의 쇼핑몰" />
+        <Layout.Title mainTitle="텐파의 쇼핑몰" />
 
         <S.DropdownContainer>
           <Dropdown options={CATEGORY_LIST} selectedOption={category} updateOption={handleCategory} />
