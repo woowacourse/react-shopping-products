@@ -10,7 +10,7 @@ import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
 import TopButton from "@/components/_common/TopButton";
 import * as S from "@/pages/productListPage/style";
 import ItemCardList from "@/components/ItemCardList";
-import useInfiniteFilteredProducts from "@/hooks/server/useInfiniteFilteredProducts";
+import useFilteredProducts from "@/hooks/server/useFilteredProducts";
 import CartModal from "@/pages/cartModal";
 import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -55,7 +55,7 @@ const ProductListPage = () => {
     data: products,
     isLoading,
     hasNextPage,
-  } = useInfiniteFilteredProducts({
+  } = useFilteredProducts({
     category,
     sort,
   });

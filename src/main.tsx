@@ -10,6 +10,7 @@ import ToastsProvider from "@/provider/toastProvider.tsx";
 import Toasts from "@/components/_common/Toasts/Toasts.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import CartModal from "@/pages/cartModal";
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== "development") {
@@ -34,9 +35,10 @@ enableMocking().then(() => {
         <ThemeProvider theme={theme}>
           <ToastsProvider>
             <RouterProvider router={router} />
+            <Toasts />
+
             <GlobalStyles />
             <ReactQueryDevtools initialIsOpen={false} />
-            <Toasts />
           </ToastsProvider>
         </ThemeProvider>
       </QueryClientProvider>

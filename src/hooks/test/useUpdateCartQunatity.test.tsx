@@ -25,7 +25,6 @@ describe("useMutation", () => {
     });
 
     await waitFor(() => {
-      console.log("result.current.cartItemsQuery", result.current.cartItemsQuery.data);
       const target = result.current.cartItemsQuery.data?.find((item) => item.id === CART_ITEM_ID);
       expect(target?.quantity).toBe(NEW_QUANTITY);
     });

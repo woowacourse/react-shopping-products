@@ -6,7 +6,7 @@ import { GetProductsProps } from "@/pages/productListPage";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-const useInfiniteFilteredProducts = ({ category, sort }: GetProductsProps) => {
+const useFilteredProducts = ({ category, sort }: GetProductsProps) => {
   const { onAddToast } = useToast();
 
   const query = useInfiniteQuery({
@@ -36,4 +36,4 @@ const useInfiniteFilteredProducts = ({ category, sort }: GetProductsProps) => {
   return query;
 };
 
-export default useInfiniteFilteredProducts;
+export default useFilteredProducts;

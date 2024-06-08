@@ -18,6 +18,7 @@ export const toastSlideOut = keyframes`
 `;
 
 export const Wrapper = styled.div<{ $isClose: boolean }>`
+  z-index: 100;
   height: 30px;
   background-color: #ec4a9b;
   color: white;
