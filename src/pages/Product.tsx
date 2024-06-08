@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Modal, useModal } from 'woowacourse-react-modal-component';
+import { useModal } from 'woowacourse-react-modal-component';
 
 import {
   useFetchCartItems,
@@ -11,8 +11,7 @@ import {
   Dropdown,
   ErrorMessage,
   ProductCard,
-  ProductDetail,
-  TotalAmount,
+  CartModal,
 } from '../components/index';
 import { SortingParam } from '../types/sort';
 import { DEFAULT_SORTING_PARAM } from '../constants/page';
@@ -58,20 +57,11 @@ function Product() {
     <>
       <CartProvider>
         {isDetailModalOpen && (
-          <Modal
-            toggleModal={toggleDetailModal}
-            isOpen={isDetailModalOpen}
-            position="bottom"
-            size="large"
-          >
-            <Modal.Header
-              title="장바구니"
-              closeOption="button"
-              handleCloseButton={toggleDetailModal}
-            />
-            <ProductDetail cartItems={cartItems} />
-            <TotalAmount cartItems={cartItems} />
-          </Modal>
+          <CartModal
+            cartItems={cartItems}
+            isDetailModalOpen={isDetailModalOpen}
+            toggleDetailModal={toggleDetailModal}
+          />
         )}
 
         <Header

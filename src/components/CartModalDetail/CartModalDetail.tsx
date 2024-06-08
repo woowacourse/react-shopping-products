@@ -3,13 +3,13 @@ import { useContext } from 'react';
 import { Carts } from '../../types/fetch';
 import { CartContext } from '../../context/CartContext';
 
-import * as S from './ProductDetail.styled';
+import * as S from './CartModalDetail.styled';
 
-interface ProductDetailProps {
+interface CartModalDetailProps {
   cartItems: Carts[];
 }
 
-function ProductDetail({ cartItems }: ProductDetailProps) {
+function CartModalDetail({ cartItems }: CartModalDetailProps) {
   const cartContext = useContext(CartContext);
   if (!cartContext) {
     throw new Error('CartContext가 비어있습니다.');
@@ -30,7 +30,7 @@ function ProductDetail({ cartItems }: ProductDetailProps) {
   };
 
   return (
-    <S.ProductDetailContainer>
+    <S.CartModalDetailContainer>
       {cartItems.map((item) => (
         <S.CardContainer>
           <S.CardContent>
@@ -61,8 +61,8 @@ function ProductDetail({ cartItems }: ProductDetailProps) {
           </S.CardContent>
         </S.CardContainer>
       ))}
-    </S.ProductDetailContainer>
+    </S.CartModalDetailContainer>
   );
 }
 
-export default ProductDetail;
+export default CartModalDetail;

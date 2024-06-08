@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ProductDetailContainer = styled.div`
+export const CartModalDetailContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
