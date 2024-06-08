@@ -1,15 +1,15 @@
 import { HTMLAttributes, useState } from 'react';
 import styles from './ImageBox.module.css';
 
-interface ImageBoxProps extends HTMLAttributes<HTMLImageElement> {
-  src?: string;
+export type ImageBoxProps = HTMLAttributes<HTMLImageElement> & {
+  src: string;
   radius?: 's' | 'm' | 'l' | 'none';
   width: number;
   height: number;
   border?: string;
   backgroundColor?: string;
   alt?: string;
-}
+};
 
 const ImageBox = ({
   src = '',
@@ -20,10 +20,10 @@ const ImageBox = ({
   radius = 'none',
   ...rest
 }: ImageBoxProps) => {
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleImageLoad = () => {
-    setLoading(false);
+    setIsLoading(false);
   };
 
   return (
@@ -37,7 +37,7 @@ const ImageBox = ({
           width,
           height,
           border,
-          backgroundColor: loading ? '#e0e0e0' : 'transparent',
+          backgroundColor: isLoading ? '#e0e0e0' : 'transparent',
         }}
       />
     </div>
