@@ -15,6 +15,12 @@ const CartListModal = ({ openModal, setOpenModal, rootEl }: CartListModalProps) 
   const { cartListMap, isLoading } = useCartList(true);
   const cartList = cartListMap ? Array.from(cartListMap.values()) : undefined;
 
+  const calculateTotalAmount = () => {
+    if (!cartList?.length) return 0;
+
+    return cartList.reduce((prev, curr) => prev + curr.quantity * curr.product.price, 0);
+  };
+
   return (
     <BottomModal modalTargetEl={rootEl} openModal={openModal} setOpenModal={setOpenModal} animationDuration={2000}>
       <p className={style.title}>장바구니</p>
@@ -26,7 +32,7 @@ const CartListModal = ({ openModal, setOpenModal, rootEl }: CartListModalProps) 
       ) : (
         <>
           <CartList cartList={cartList} />
-          <TotalAmount cartList={cartList} />
+          <TotalAmount totalAmount={calculateTotalAmount()} />
         </>
       )}
 
