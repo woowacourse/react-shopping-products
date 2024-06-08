@@ -37,6 +37,7 @@ export const QuantityControls = styled.div`
 `;
 
 export const Quantity = styled.p`
+  width: 14px;
   font-size: 12px;
   font-weight: 500;
   line-height: 15px;
