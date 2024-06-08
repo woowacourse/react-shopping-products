@@ -29,7 +29,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const { showToast } = useContext(ToastContext);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const { data: cartItems, isLoading: cartItemsIsLoading } = useCartItems();
+  const { data: cartItems, error: cartItemsError } = useCartItems();
 
   const {
     products,
@@ -59,14 +59,15 @@ function App() {
     threshold: 0.8,
   });
 
-  if (error) showToast(error.message);
+  if (error) showToast('상품 목록 조회에 실패했습니다. 다시 시도해주세요.');
+  if (cartItemsError) showToast('장바구니 목록 조회에 실패했습니다. 다시 시도해주세요.');
 
   return (
     <Container>
       <Header>
         <HomeButton onClick={() => {}} />
         <CartButton
-          count={cartItemsIsLoading ? 0 : cartItems!.length}
+          count={cartItems === undefined ? 0 : cartItems.length}
           onOpen={() => setIsOpen(true)}
         />
       </Header>

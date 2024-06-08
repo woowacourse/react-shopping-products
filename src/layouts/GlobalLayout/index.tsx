@@ -9,12 +9,12 @@ const GlobalLayout = ({ children }: PropsWithChildren) => {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ToastProvider>
+    <ToastProvider>
+      <QueryClientProvider client={queryClient}>
         <S.Container>{children}</S.Container>
-      </ToastProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ToastProvider>
   );
 };
 
