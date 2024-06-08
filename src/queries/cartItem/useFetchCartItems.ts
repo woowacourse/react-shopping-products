@@ -11,7 +11,7 @@ const useFetchCartItems = () => {
     queryFn: getCartList,
   });
 
-  const isInCart = (productId: number) => {
+  const findCartItemByProductId = (productId: number) => {
     return data?.find((item: CartItem) => item.product.id === productId);
   };
 
@@ -21,7 +21,7 @@ const useFetchCartItems = () => {
     isFetching,
     error,
     refetch,
-    isInCart,
+    findCartItemByProductId,
   };
 };
 
