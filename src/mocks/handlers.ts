@@ -1,61 +1,57 @@
 import { http, HttpResponse } from 'msw';
-import products from './data.json';
-import {
-  CART_ITEMS_COUNT_ENDPOINT,
-  CART_ITEMS_ENDPOINT,
-  PRODUCTS_ENDPOINT,
-} from '../api/endpoints';
+import { products, cartItems } from './data/index';
+import { ENDPOINT } from '../api/endpoints';
+import { API_URL } from '@/api/config';
 import {
   INITIAL_DATA_LOAD_COUNT,
   SUBSEQUENT_DATA_LOAD_COUNT,
-} from '../constants';
+  INITIAL_PAGE,
+} from '@/constants/index';
 
 export const handlers = [
-  http.get(`${PRODUCTS_ENDPOINT}`, ({ request }) => {
+  http.get(`${API_URL}${ENDPOINT.product.getList({})}`, ({ request }) => {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get('page') || '0');
     const limit =
-      page === 0 ? INITIAL_DATA_LOAD_COUNT : SUBSEQUENT_DATA_LOAD_COUNT;
+      page === INITIAL_PAGE
+        ? INITIAL_DATA_LOAD_COUNT
+        : SUBSEQUENT_DATA_LOAD_COUNT;
     const start =
-      page === 0
+      page === INITIAL_PAGE
         ? 0
-        : (page - 5) * SUBSEQUENT_DATA_LOAD_COUNT + INITIAL_DATA_LOAD_COUNT;
+        : (page - INITIAL_DATA_LOAD_COUNT / SUBSEQUENT_DATA_LOAD_COUNT) *
+            SUBSEQUENT_DATA_LOAD_COUNT +
+          INITIAL_DATA_LOAD_COUNT;
     const end = start + limit;
 
     const paginatedProducts = products.content.slice(start, end);
-    const isLast = end >= 100;
+    const isLast = end >= products.totalElements;
 
     return HttpResponse.json({ content: paginatedProducts, last: isLast });
   }),
 
-  http.post(`${CART_ITEMS_ENDPOINT}`, () => {
+  http.post(`${API_URL}${ENDPOINT.cartItem.postItem}`, () => {
     return HttpResponse.json({
       productId: 10,
       quantity: 1,
     });
   }),
 
-  http.get(`${CART_ITEMS_COUNT_ENDPOINT}`, () => {
-    return HttpResponse.json({
-      quantity: 8,
-    });
-  }),
-
-  http.get(CART_ITEMS_ENDPOINT, () => {
-    return HttpResponse.json({
-      content: [
-        { id: 10, product: { id: 12 } },
-        { id: 12, product: { id: 14 } },
-      ],
-    });
-  }),
-
-  http.delete(`${CART_ITEMS_ENDPOINT}/10`, () => {
-    return HttpResponse.json(
-      {
-        itemId: 10,
-      },
-      { status: 200 },
+  http.get(`${API_URL}${ENDPOINT.cartItem.getItemCount}`, () => {
+    const totalQuantity = cartItems.content.reduce(
+      (acc, item) => acc + item.quantity,
+      0,
     );
+    return HttpResponse.json({
+      quantity: totalQuantity,
+    });
+  }),
+
+  http.get(`${API_URL}${ENDPOINT.cartItem.getList}`, () => {
+    return HttpResponse.json(cartItems);
+  }),
+
+  http.delete(`${API_URL}${ENDPOINT.cartItem.deleteItem(100)}`, async () => {
+    return HttpResponse.json('success');
   }),
 ];
