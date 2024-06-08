@@ -79,6 +79,8 @@
 
 4. [x] 상품 수량에 대한 useProductQuantity 훅
    - increaseQuantity, decreaseQuantity, isLoading, error
+5. [ ] 낙관적 업데이트
+6. [ ] Error Boundary
 
 ### 왜 안되는지 공부하기.
 
