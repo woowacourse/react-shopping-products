@@ -1,11 +1,12 @@
+import { Suspense } from 'react';
 import ProductListPage from './ProductListPage';
-import ProductListPageLoader from './ProductListPageLoader';
+import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 
 const ProductListPageContainer = () => {
   return (
-    <ProductListPageLoader>
+    <Suspense fallback={<LoadingSpinner />}>
       <ProductListPage />
-    </ProductListPageLoader>
+    </Suspense>
   );
 };
 
