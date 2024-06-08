@@ -7,11 +7,7 @@ interface FetchAPI {
   body?: Record<string, unknown>;
 }
 
-export const fetchAPI = async <T>({
-  url,
-  method,
-  body,
-}: FetchAPI): Promise<T> => {
+export const fetchAPI = async <T>({ url, method, body }: FetchAPI): Promise<T | void> => {
   const token = generateBasicToken(USERNAME, PASSWORD);
   const response = await fetch(`${API_URL}/${url}`, {
     method,
@@ -23,6 +19,8 @@ export const fetchAPI = async <T>({
     throw new Error("Failed to patch cart item quantity");
   }
 
-  const data = await response.json();
-  return data;
+  if (method === "GET") {
+    const data = await response.json();
+    return data;
+  }
 };
