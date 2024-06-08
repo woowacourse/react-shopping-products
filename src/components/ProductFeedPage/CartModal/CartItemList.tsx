@@ -8,10 +8,10 @@ const CartItemList = () => {
 
   return (
     <S.Container>
-      <LoadingSpinner isLoading={isLoading} />
       {data.map((cartItem) => (
         <CartItem key={cartItem.id} cartItem={cartItem} />
       ))}
+      {isLoading && <LoadingSpinner />}
     </S.Container>
   );
 };

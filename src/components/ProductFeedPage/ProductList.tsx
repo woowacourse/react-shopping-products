@@ -22,7 +22,7 @@ const ProductList = ({ onError }: ProductListProps) => {
       {data.map((product) => (
         <ProductItem key={product.id} product={product} />
       ))}
-      <LoadingSpinner isLoading={isLoading} />
+      {isLoading && <LoadingSpinner />}
       <IntersectionDetector onIntersected={fetchNextPage} />
     </S.ItemContainer>
   );
