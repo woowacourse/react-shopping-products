@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getCartItems, modifyCartItem, deleteCartItem } from "../../api/cartItems";
+import { getCartItems, modifyCartItem } from "../../api/cartItems";
 import { CartItemType } from "../../types/cartItems";
 import { useCallback } from "react";
+import { useDeleteCartItemByCartId } from "../useDeleteCartItem";
 
 function useCartItemQuantity() {
   const queryClient = useQueryClient();
@@ -22,7 +23,7 @@ function useCartItemQuantity() {
       );
       return { previousItems };
     },
-    onError: (err, newItem, context) => {
+    onError: (_, __, context) => {
       queryClient.setQueryData(["cartItems"], context?.previousItems);
     },
     onSuccess: () => {
@@ -30,12 +31,7 @@ function useCartItemQuantity() {
     },
   });
 
-  const deleteItemMutation = useMutation({
-    mutationFn: (cartId: number) => deleteCartItem(cartId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
-    },
-  });
+  const deleteItemMutation = useDeleteCartItemByCartId();
 
   const increaseQuantity = useCallback(
     (cartId: number) => {

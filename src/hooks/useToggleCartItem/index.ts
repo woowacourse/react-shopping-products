@@ -1,15 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteCartItem, getCartItems, addCartItem } from "../../api/cartItems";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { UseMutationResult, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCartItems, addCartItem } from "../../api/cartItems";
 import { CartItemType } from "../../types/cartItems";
-import { ERROR_MESSAGE } from "../../constants/errorMessage/ko";
+import { useDeleteCartItemByProductId } from "../useDeleteCartItem";
 
 export interface ToggleCartItemReturns {
   cartItems: CartItemType[];
   addToCart: (productId: number) => void;
   removeFromCart: (productId: number) => void;
   checkSelected: (id: number) => boolean;
+  removeMutation: UseMutationResult<any, Error, number, unknown>;
+  addMutation: UseMutationResult<any, Error, number, unknown>;
   isLoading: boolean;
-  error: unknown;
+  queryError: unknown;
 }
 
 const useToggleCartItem = (): ToggleCartItemReturns => {
@@ -29,16 +32,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
   });
 
-  const removeMutation = useMutation({
-    mutationFn: (productId: number) => {
-      const targetItem = cartItems?.find((item) => item.product.id === productId);
-      if (targetItem) {
-        return deleteCartItem(targetItem.id);
-      }
-      throw new Error(ERROR_MESSAGE.deleteCartItem);
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
-  });
+  const removeMutation = useDeleteCartItemByProductId();
 
   const addToCart = (productId: number) => {
     addMutation.mutate(productId);
@@ -57,8 +51,10 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
     addToCart,
     removeFromCart,
     checkSelected,
-    isLoading: isLoading,
-    error: error || addMutation.error || removeMutation.error,
+    isLoading,
+    removeMutation,
+    addMutation,
+    queryError: error,
   };
 };
 

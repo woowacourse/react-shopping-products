@@ -1,5 +1,6 @@
 import useCartItemQuantity from "../../../hooks/useCartItemQuantity";
 import { CartItemType } from "../../../types/cartItems";
+import LoadingDots from "../../common/LoadingDots";
 import ProductControls from "../../domain/ProductControls";
 import S from "./styledComponent";
 
@@ -17,10 +18,12 @@ function CartItem({ item }: { item: CartItemType }) {
           </S.NamePrice>
           <S.DeleteButton
             onClick={() => {
-              deleteItemMutation.mutate(item.id);
+              if (deleteItemMutation.isIdle) {
+                deleteItemMutation.mutate(item.id);
+              }
             }}
           >
-            삭제
+            {deleteItemMutation.isIdle ? "삭제" : <LoadingDots />}
           </S.DeleteButton>
         </S.ProductDetail>
 

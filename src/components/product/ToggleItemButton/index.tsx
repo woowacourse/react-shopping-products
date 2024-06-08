@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import AddToCart from "../../icons/AddToCart";
 import LoadingDots from "../../common/LoadingDots";
 
@@ -13,36 +11,17 @@ interface ToggleItemButtonProps {
 }
 
 const ToggleItemButton = ({ productId }: ToggleItemButtonProps) => {
-  const { isLoading, addToCart, removeFromCart, checkSelected } = useToggleCartItem();
+  const { isLoading, addToCart, addMutation } = useToggleCartItem();
   const cartItem = useFindCartItem({ productId });
-  const [isSelected, setSelected] = useState(() => checkSelected(productId));
-
-  useEffect(() => {
-    setSelected(checkSelected(productId));
-  }, [checkSelected, productId]);
-
-  const handleAddToCart = async () => {
-    if (isLoading) return;
-    addToCart(productId);
-  };
-
-  const handleRemoveFromCart = async () => {
-    if (isLoading) return;
-    removeFromCart(productId);
-  };
 
   return (
     <S.ToggleItemContainer>
-      {isLoading ? (
-        <LoadingDots type={isSelected ? "black" : "white"} />
-      ) : isSelected && cartItem ? (
+      {isLoading || addMutation.isPending ? (
+        <LoadingDots type={"black"} />
+      ) : cartItem ? (
         <ProductControls cartItem={cartItem} />
       ) : (
-        <S.ToggleItemButton
-          key={productId}
-          onClick={isSelected ? handleRemoveFromCart : handleAddToCart}
-          isSelected={isSelected}
-        >
+        <S.ToggleItemButton onClick={() => addToCart(productId)} isSelected={false}>
           <AddToCart />
           담기
         </S.ToggleItemButton>
