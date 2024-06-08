@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
+import { Category } from '../components/Dropdown/Dropdown';
 
 const getSize = (page: number) => (page === 0 ? 20 : 4);
 const getPage = (lastPage: number) =>
@@ -10,7 +11,7 @@ const getPage = (lastPage: number) =>
 
 interface useProductProps {
   sortings?: SortingParam[];
-  filter?: string;
+  filter?: Category;
   options?: object;
 }
 const useProducts = ({ sortings, filter, options }: useProductProps) => {

@@ -1,6 +1,7 @@
 import { Product } from './fetch';
 
-export type Order = 'asc' | 'desc';
+export const Orders = ['asc', 'desc'];
+export type Order = (typeof Orders)[number];
 
 export interface SortingParam {
   name: keyof Product;
