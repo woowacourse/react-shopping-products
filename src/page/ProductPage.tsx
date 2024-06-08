@@ -24,8 +24,9 @@ function ProductPage() {
     changeSorting,
     error,
   } = useProducts();
-  const { lastProductElementRef } = useInfinityScroll(fetchNextPage);
-  const { cartItemIds, isInCart } = useCartItems();
+  const { products, status, fetchNextPage, changeCategory, changeSorting } =
+    useInfiniteProducts();
+  const { lastProductElementRef } = useIntersectionObserver(fetchNextPage);
 
   return (
     <Container>
@@ -46,32 +47,21 @@ function ProductPage() {
             options={Object.entries(SORT)}
           ></Dropdown>
         </DropBoxContainer>
+          {status === 'pending' && (
+            // <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
+            <Spinner />
+          )}
 
-        {cartItemIds !== null && (
           <ItemList>
-            {products.map((product, index) => {
-              return (
-                <ItemCard
-                  key={`${product.id}${index}`}
-                  initIsInCart={isInCart(product.id)}
-                  {...product}
-                />
-              );
-            })}
+            {products.map((product, index) => (
+              <div key={product.id}>
+                <ProductItemCard key={`${product.id}${index}`} {...product} />
+              </div>
+            ))}
+            <div ref={lastProductElementRef} />
           </ItemList>
-        )}
-        {loading && (
-          <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
-        )}
-
-        {!loading && !error && (
-          <div
-            ref={lastProductElementRef}
-            style={{ height: '30px', fontSize: '5rem' }}
-          ></div>
-        )}
-      </ContentWrapper>
-    </Container>
+        </ContentWrapper>
+      </Container>
   );
 }
 
