@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useError } from "../context/errorContext";
 import { fetchProducts } from "../api/products";
 import usePagination from "./usePagination";
+import { QUERY_KEYS } from "../constants/queryKeys";
+import { useQuery } from "@tanstack/react-query";
 
 interface UseProductsResult {
   products: Product[];
@@ -41,23 +43,29 @@ const useProducts = (): UseProductsResult => {
     setErrorMessage: setErrorMessage,
   };
 
-  const getProducts = async () => {
-    try {
-      setIsLoading(true);
+  const { data } = useQuery({
+    queryKey: [QUERY_KEYS.PRODUCTS, category, sortOption, page],
+    queryFn: async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetchProducts(fetchParams);
+        console.log("dadta", response.content);
 
-      const data = await fetchProducts(fetchParams);
-      setProducts((prevProducts) => [...prevProducts, ...data.content]);
-      handleLastPage(data.last);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        handleLastPage(response.last);
+        return response;
+      } catch (error) {
+        throw new Error("Error fetching products: " + error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+  });
 
   useEffect(() => {
-    if (!isLastPage) getProducts();
-  }, [page, sortOption, category]);
+    if (data) {
+      setProducts((prevProducts) => [...prevProducts, ...data.content]);
+    }
+  }, [data]);
 
   const fetchNextPage = () => {
     if (!isLoading) goToNextPage();
