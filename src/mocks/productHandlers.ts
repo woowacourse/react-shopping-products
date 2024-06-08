@@ -19,8 +19,7 @@ export const productHandlers = [
     const end = start + limit;
 
     const paginatedProducts = products.content.slice(start, end);
-    const isLast = end >= 100;
-
+    const isLast = end >= 32;
     return HttpResponse.json({ content: paginatedProducts, last: isLast });
   }),
 ];
