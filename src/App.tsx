@@ -1,10 +1,11 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { AppLayout, ProductListLayout } from "@/layout";
-import { Filter, Header, ProductList, ProductListTitle } from "@/components";
+import { Filter, Header, ProductList, ProductListTitle, Cart } from "@/components";
 import { getProducts } from "@/api/product";
 import { getCartItems } from "@/api/cartItem";
 import { useIntersectionObserver, useFilters } from "@/hooks";
 import { changeToProductList } from "@/utils/product";
+import { useRef } from "react";
 
 const App = () => {
   const { category, sort, handleCategoryChange, handleSortChange } = useFilters();
@@ -32,9 +33,15 @@ const App = () => {
 
   const observerTarget = useIntersectionObserver(fetchNextPage);
 
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const handleOpenCart = () => {
+    dialogRef.current?.showModal();
+  };
+
   return (
     <AppLayout>
-      <Header cartItemKind={cartItemsData?.length || 0} />
+      <Header cartItemKind={cartItemsData?.length || 0} handleOpenCart={handleOpenCart} />
       <ProductListLayout>
         <ProductListTitle />
         <Filter
@@ -48,6 +55,7 @@ const App = () => {
         {isFetching && <div>로딩중............</div>}
         {<div ref={observerTarget}></div>}
       </ProductListLayout>
+      <Cart dialogRef={dialogRef} cartItems={cartItemsData} />
     </AppLayout>
   );
 };

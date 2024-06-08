@@ -17,20 +17,7 @@ interface ProductProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Product = ({ product, ...rest }: ProductProps) => {
-  const { postCartItemMutation, patchCartItemMutation } = useMutationCartItem();
-
-  const handlePostClick = () => {
-    postCartItemMutation.mutate({ productId: product.id, quantity: 1 });
-  };
-
-  const handleChangeQuantity = (newQuantity: number) => {
-    if (product.cartItemId) {
-      patchCartItemMutation.mutate({
-        cartItemId: product.cartItemId,
-        quantity: newQuantity,
-      });
-    }
-  };
+  const { handleClickAddCartItem } = useMutationCartItem();
 
   return (
     <Wrapper {...rest}>
@@ -40,15 +27,12 @@ const Product = ({ product, ...rest }: ProductProps) => {
         <ProductPrice>{product.price}</ProductPrice>
         <ProductFooter>
           {product.quantity ? (
-            <ProductQuantity
-              quantity={product.quantity}
-              handleChangeQuantity={handleChangeQuantity}
-            />
+            <ProductQuantity quantity={product.quantity} cartItemId={product.cartItemId} />
           ) : (
             <Button
               theme="black"
               style={{ width: "59px", height: "24px" }}
-              onClick={handlePostClick}
+              onClick={() => handleClickAddCartItem(product.id)}
             >
               <CartIconSVG />
               <span>담기</span>

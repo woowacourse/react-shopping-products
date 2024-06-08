@@ -7,9 +7,7 @@ const useMutationCartItem = () => {
   const postCartItemMutation = useMutation({
     mutationFn: postCartItem,
     onSuccess: () => {
-      console.log("cartItems");
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
-      // queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 
@@ -17,8 +15,6 @@ const useMutationCartItem = () => {
     mutationFn: deleteCartItem,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
-
-      // queryClient.invalidateQueries({ queryKey: ["cartItems", "products"] });
     },
   });
 
@@ -26,11 +22,25 @@ const useMutationCartItem = () => {
     mutationFn: patchCartItemQuantity,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
-      // queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 
-  return { postCartItemMutation, deleteCartItemMutation, patchCartItemMutation };
+  const handleChangeQuantity = (cartItemId: number, newQuantity: number) => {
+    patchCartItemMutation.mutate({
+      cartItemId: cartItemId,
+      quantity: newQuantity,
+    });
+  };
+
+  const handleClickAddCartItem = (productId: number) => {
+    postCartItemMutation.mutate({ productId, quantity: 1 });
+  };
+
+  return {
+    deleteCartItemMutation,
+    handleClickAddCartItem,
+    handleChangeQuantity,
+  };
 };
 
 export default useMutationCartItem;

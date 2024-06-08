@@ -1,19 +1,22 @@
 import { Button } from "@/components";
 import { Wrapper } from "./ProductQuantity.style";
 import { HTMLAttributes } from "react";
+import { useMutationCartItem } from "@/hooks";
 
 interface ProductQuantity extends HTMLAttributes<HTMLDivElement> {
-  handleChangeQuantity: (newQuantity: number) => void;
   quantity: number;
+  cartItemId: number;
 }
 
-const ProductQuantity = ({ handleChangeQuantity, quantity }: ProductQuantity) => {
+const ProductQuantity = ({ cartItemId, quantity }: ProductQuantity) => {
+  const { handleChangeQuantity } = useMutationCartItem();
+
   return (
     <Wrapper>
       <Button
         theme="white"
         style={{ width: "24px", height: "24px" }}
-        onClick={() => handleChangeQuantity(quantity - 1)}
+        onClick={() => handleChangeQuantity(cartItemId, quantity - 1)}
       >
         -
       </Button>
@@ -21,7 +24,7 @@ const ProductQuantity = ({ handleChangeQuantity, quantity }: ProductQuantity) =>
       <Button
         theme="white"
         style={{ width: "24px", height: "24px" }}
-        onClick={() => handleChangeQuantity(quantity + 1)}
+        onClick={() => handleChangeQuantity(cartItemId, quantity + 1)}
       >
         +
       </Button>

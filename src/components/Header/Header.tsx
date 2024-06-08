@@ -4,16 +4,17 @@ import { ShopIconSVG, ShopIconWithNumberSVG } from "@/assets/svg";
 
 interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
   cartItemKind: number;
+  handleOpenCart: () => void;
 }
 
-const Header = ({ cartItemKind, ...rest }: HeaderProps) => {
+const Header = ({ handleOpenCart, cartItemKind, ...rest }: HeaderProps) => {
   return (
     <Wrapper {...rest}>
       <HeaderTitle>SHOP</HeaderTitle>
       {cartItemKind === 0 ? (
         <ShopIconSVG />
       ) : (
-        <ShopIconWithNumberSVG num={cartItemKind} />
+        <ShopIconWithNumberSVG num={cartItemKind} onClick={handleOpenCart} />
       )}
     </Wrapper>
   );
