@@ -27,7 +27,7 @@ describe('ShoppingCartContext', () => {
     expect(result.current.isFetching).toBe(true);
   });
 
-  it('장바구니 목록을 가져오는데 실패했을 때, error 상태값이 true가 되야한다.', async () => {
+  it('장바구니 목록을 가져오는데 실패했을 때, isError 상태값이 true가 되야한다.', async () => {
     server.use(
       http.get(`${ENDPOINT.CART_ITEMS}`, () => {
         return new HttpResponse('error', { status: 500 });
@@ -35,8 +35,6 @@ describe('ShoppingCartContext', () => {
     );
 
     const { result } = renderUseCartHook();
-
-    result.current.refetch();
 
     await waitFor(() => {
       expect(result.current.isError).toBe(true);
