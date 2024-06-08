@@ -6,5 +6,7 @@ export { default as ItemList } from './ItemList/ItemList';
 export { default as ProductItemCard } from './ProductItemCard/ProductItemCard';
 export { default as QuantityPicker } from './QuantityPicker/QuantityPicker';
 export { default as Spinner } from './Spinner/Spinner';
+export { default as SortDropdown } from './SortDropdown/SortDropdown';
+export { default as CategoryDropdown } from './CategoryDropdown/CategoryDropdown';
 export * from './Fallbacks';
 export * from './common';

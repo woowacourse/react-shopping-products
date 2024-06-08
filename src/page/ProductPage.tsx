@@ -3,10 +3,10 @@ import {
   ItemList,
   CartItemsModal,
   Spinner,
-  Dropdown,
   Header,
+  CategoryDropdown,
+  SortDropdown,
 } from '@/components/index';
-import { CATEGORY, SORT } from '@/constants/index';
 import {
   Container,
   Title,
@@ -29,18 +29,8 @@ function ProductPage() {
         <ContentWrapper>
           <Title>bpple 상품 목록</Title>
           <DropBoxContainer>
-            <Dropdown
-              onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                changeCategory(e.target.value);
-              }}
-              options={Object.entries(CATEGORY)}
-            ></Dropdown>
-            <Dropdown
-              onchange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                changeSorting(e.target.value);
-              }}
-              options={Object.entries(SORT)}
-            ></Dropdown>
+            <CategoryDropdown changeCategory={changeCategory} />
+            <SortDropdown changeSorting={changeSorting} />
           </DropBoxContainer>
 
           {status === 'pending' && <Spinner />}
