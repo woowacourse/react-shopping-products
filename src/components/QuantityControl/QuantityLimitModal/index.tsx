@@ -14,7 +14,7 @@ const QuantityLimitModal = ({ isTryOverMaxQuantity, setIsTryOverMaxQuantity }: Q
   return (
     <AlertModal
       openModal={isTryOverMaxQuantity}
-      setOpenModal={setIsTryOverMaxQuantity}
+      closeModal={() => setIsTryOverMaxQuantity(false)}
       modalTargetEl={rootEl}
       contents={<p className={style.message}>상품은 최대 100개까지 구매가능해요.</p>}
       button={<button className={style.confirmButton}>확인</button>}

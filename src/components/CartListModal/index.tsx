@@ -1,4 +1,4 @@
-import { useCartList } from '@hooks/index';
+import { useGetCartList } from '@hooks/index';
 import { BottomModal } from 'badahertz52-react-modules-components';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -22,7 +22,12 @@ const CartListModal = ({ openModal, setOpenModal, rootEl }: CartListModalProps) 
   };
 
   return (
-    <BottomModal modalTargetEl={rootEl} openModal={openModal} setOpenModal={setOpenModal} animationDuration={2000}>
+    <BottomModal
+      modalTargetEl={rootEl}
+      openModal={openModal}
+      closeModal={() => setOpenModal(false)}
+      animationDuration={2000}
+    >
       <p className={style.title}>장바구니</p>
       {isLoading ? (
         <>

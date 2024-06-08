@@ -19,7 +19,7 @@ const CartActionErrorModal = ({ error }: CartActionErrorModalProps) => {
       {toastModalPosition && (
         <ToastModal
           openModal={openModal}
-          setOpenModal={setOpenModal}
+          closeModal={() => setOpenModal(false)}
           position={toastModalPosition}
           modalTargetEl={rootEl}
           toastDuration={3_000}
@@ -27,6 +27,7 @@ const CartActionErrorModal = ({ error }: CartActionErrorModalProps) => {
           animationDuration={2_000}
           backgroundColor={{ modal: '#ffc9c9' }}
           contentsPadding="0"
+          boxShadow=""
         >
           <CartActionError />
         </ToastModal>
