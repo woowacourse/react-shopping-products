@@ -5,7 +5,6 @@ import {
   ProductResponse,
 } from '../types/fetch';
 import { SortingParam } from '../types/sort';
-import { generateBasicToken } from '../utils/auth';
 import { ApiClient, token } from './ApiClient';
 import {
   ENDPOINTS_CART,

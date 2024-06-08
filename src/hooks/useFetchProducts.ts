@@ -1,57 +1,61 @@
-import { useCallback, useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { fetchProducts } from '../api/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
-import useDeepCompareEffect from './useDeepCompareEffect';
+import { Category } from '../components/Dropdown/Dropdown';
 
-const useFetchProducts = (sortings: SortingParam[], filter: string) => {
+const getSize = (page: number) => (page === 0 ? 20 : 4);
+const getPage = (lastPage: number) =>
+  lastPage === 0 ? lastPage + 5 : lastPage + 1;
+
+interface useProductProps {
+  sortings?: SortingParam[];
+  filter?: Category;
+  options?: object;
+}
+const useProducts = ({ sortings, filter, options }: useProductProps) => {
+  const {
+    data,
+    isError,
+    isPending,
+    isFetching,
+    hasNextPage,
+    fetchNextPage: fetchNext,
+  } = useInfiniteQuery({
+    queryKey: ['product', sortings, filter],
+    queryFn: async ({ pageParam }) =>
+      await fetchProducts(pageParam, getSize(pageParam), sortings, filter),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, __, lastPageParam: number) =>
+      lastPage.last ? undefined : getPage(lastPageParam),
+
+    ...options,
+  });
+
   const [products, setProducts] = useState<Product[]>([]);
-  const [isError, setIsError] = useState(false);
-  const [isPending, setIsPending] = useState(false);
-  const [isLast, setIsLast] = useState(false);
-  const [page, setPage] = useState(0);
+  useEffect(() => {
+    if (!data) return;
+    setProducts(
+      data.pages
+        .map((page) => page.content)
+        .reduce((prev, cur) => [...prev, ...cur], []),
+    );
+  }, [data, setProducts]);
 
-  const fetchNextPage = useCallback(() => {
-    if (isLast) return;
-    setPage((prevPage) => prevPage + 1);
-  }, [isLast]);
+  const isLast = !hasNextPage;
+  const page = data ? data.pages.length - 1 : -1;
 
-  useDeepCompareEffect(() => {
-    setPage(0);
-  }, [sortings, filter]);
-
-  useDeepCompareEffect(() => {
-    console.log('fetch이펙트 재계산');
-    const size = page === 0 ? 20 : 4;
-    const fetchPage = page === 0 ? page : page + 4;
-    const getProducts = async () => {
-      try {
-        setIsPending(true);
-        const fetchedProducts = await fetchProducts(
-          fetchPage,
-          size,
-          sortings,
-          filter,
-        );
-
-        setProducts((prevState) =>
-          page === 0
-            ? fetchedProducts.content
-            : [...prevState, ...fetchedProducts.content],
-        );
-
-        setIsLast(fetchedProducts.last);
-        setIsError(false);
-      } catch (error) {
-        setIsError(true);
-      } finally {
-        setIsPending(false);
-      }
-    };
-    getProducts();
-  }, [page, sortings, filter]);
-
-  return { products, isError, isPending, isLast, fetchNextPage, page };
+  return {
+    products,
+    page,
+    data,
+    isError,
+    isPending,
+    isLast,
+    isFetching,
+    fetchNext,
+  };
 };
 
-export default useFetchProducts;
+export default useProducts;

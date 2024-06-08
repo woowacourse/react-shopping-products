@@ -5,7 +5,7 @@ import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
 import Header from '../components/Header/Header';
 import ProductList from '../components/ProductList/ProductList';
 import useFetchAddCart from '../hooks/useFetchAddCart';
-import useFetchProducts from '../hooks/useFetchProducts2';
+import useFetchProducts from '../hooks/useFetchProducts';
 import { SortingParam } from '../types/sort';
 import * as S from './Product.styled';
 

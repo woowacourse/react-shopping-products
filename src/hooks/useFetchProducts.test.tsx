@@ -7,7 +7,7 @@ import { server } from '../mocks/node';
 import { mockProductsResponse } from '../mocks/products';
 import { Product } from '../types/fetch';
 import { SortingParam } from '../types/sort';
-import useProducts from './useFetchProducts2';
+import useProducts from './useFetchProducts';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient();
