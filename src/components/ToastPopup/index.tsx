@@ -8,13 +8,19 @@ import { UseProductsContext } from '../ShoppingProductsPage';
 import { MAX_CART_ITEMS_SIZE } from '../../constants/pagination';
 
 const ToastPopup = () => {
-  const { cartItems, cartItemsError } = useContext(UseCartItemsContext);
+  const { getCartItems, addCartItem, deleteCartItem } = useContext(UseCartItemsContext);
   const { productsError } = useContext(UseProductsContext);
 
+  const isMaxCountExceeded = getCartItems.data && getCartItems.data.length >= MAX_CART_ITEMS_SIZE;
+
   const errorMessage =
-    cartItemsError && cartItems.length >= MAX_CART_ITEMS_SIZE
+    addCartItem.isError && isMaxCountExceeded
       ? '장바구니 최대 허용치를 초과하여'
-      : cartItemsError
+      : addCartItem.isError
+      ? '장바구니 추가 요청중'
+      : deleteCartItem.isError
+      ? '장바구니 삭제 요청중'
+      : getCartItems.isError
       ? '장바구니 불러오기중'
       : productsError
       ? '상품 불러오기중'

@@ -1,6 +1,6 @@
 import * as S from './style';
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { UseCartItemsContext } from '../../App';
 
@@ -14,27 +14,34 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
-  const { cartItems, addCartItem, deleteCartItem, cartItemsLoading } =
-    useContext(UseCartItemsContext);
-  const [isClicked, setIsClicked] = useState(false);
+  const { getCartItems, addCartItem, deleteCartItem } = useContext(UseCartItemsContext);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const cartItem = cartItems.find(({ product }) => id === product.id);
+  const cartItem = getCartItems.data
+    ? getCartItems.data.find(({ product }) => id === product.id)
+    : undefined;
   const isInCart = !!cartItem;
 
   const TOGGLE_BUTTON_ICON = isInCart ? REMOVE_TO_CART : ADD_TO_CART;
   const BUTTON_TEXT = isInCart ? '빼기' : '담기';
 
-  const handleOnToggle = async () => {
-    setIsClicked(true);
+  const handleOnToggle = () => {
+    setIsLoading(true);
 
     if (cartItem) {
-      await deleteCartItem(cartItem.id);
+      deleteCartItem.mutate(cartItem.id, {
+        onError: () => setIsLoading(false),
+      });
     } else {
-      await addCartItem(id);
+      addCartItem.mutate(id, {
+        onError: () => setIsLoading(false),
+      });
     }
-
-    setIsClicked(false);
   };
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [getCartItems.data]);
 
   return (
     <S.ProductItem>
@@ -46,13 +53,13 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
         </S.Information>
         <S.ButtonContainer>
           <S.ToggleButton onClick={handleOnToggle} $isInCart={isInCart}>
-            {!(isClicked && cartItemsLoading) && (
+            {!isLoading && (
               <>
                 <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
                 <span>{BUTTON_TEXT}</span>
               </>
             )}
-            {isClicked && cartItemsLoading && <span>loading...</span>}
+            {isLoading && <span>loading...</span>}
           </S.ToggleButton>
         </S.ButtonContainer>
       </S.InformationContainer>

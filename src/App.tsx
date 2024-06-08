@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
 import ShoppingProductsPage from './components/ShoppingProductsPage';
 import useCartItems from './hooks/useCartItems';
@@ -6,38 +7,22 @@ import useCartItems from './hooks/useCartItems';
 import { CartItem } from './types/cart';
 
 interface UseCartItemsContextProps {
-  cartItems: CartItem[];
-  getCartItems: () => Promise<void>;
-  addCartItem: (productId: number) => Promise<void>;
-  deleteCartItem: (cartId: number) => Promise<void>;
-  cartItemsLoading: boolean;
-  cartItemsError: unknown;
+  getCartItems: UseQueryResult<CartItem[], Error>;
+  addCartItem: UseMutationResult<void, Error, number, unknown>;
+  deleteCartItem: UseMutationResult<void, Error, number, unknown>;
 }
 
-const UseCartItemsInitialState: UseCartItemsContextProps = {
-  cartItems: [],
-  getCartItems: async () => {},
-  addCartItem: async () => {},
-  deleteCartItem: async () => {},
-  cartItemsLoading: false,
-  cartItemsError: null,
-};
-
-export const UseCartItemsContext = createContext(UseCartItemsInitialState);
+export const UseCartItemsContext = createContext({} as UseCartItemsContextProps);
 
 function App() {
-  const { cartItems, getCartItems, addCartItem, deleteCartItem, cartItemsLoading, cartItemsError } =
-    useCartItems();
+  const { getCartItems, addCartItem, deleteCartItem } = useCartItems();
 
   return (
     <UseCartItemsContext.Provider
       value={{
-        cartItems,
         getCartItems,
         addCartItem,
         deleteCartItem,
-        cartItemsLoading,
-        cartItemsError,
       }}
     >
       <ShoppingProductsPage />

@@ -7,16 +7,20 @@ import ProductsContent from '../ProductsContent';
 import Loading from '../common/Loading';
 import Title from '../common/Title';
 import { UseProductsContext } from '../ShoppingProductsPage';
+import { UseCartItemsContext } from '../../App';
 
 const ProductsContainer = () => {
   const { productsLoading } = useContext(UseProductsContext);
+  const { getCartItems } = useContext(UseCartItemsContext);
+
+  const isLoading = productsLoading || getCartItems.isLoading;
 
   return (
     <S.ProductsContainer>
       <Title />
       <FilterContainer />
       <ProductsContent />
-      <Loading isLoading={productsLoading} />
+      <Loading isLoading={isLoading} />
     </S.ProductsContainer>
   );
 };

@@ -7,12 +7,12 @@ import HomeButton from '../../HomeButton';
 import { UseCartItemsContext } from '../../../App';
 
 const Header = () => {
-  const { cartItems } = useContext(UseCartItemsContext);
+  const { getCartItems } = useContext(UseCartItemsContext);
 
   return (
     <S.Header>
       <HomeButton onClick={() => {}} />
-      <CartButton count={cartItems.length} onClick={() => {}} />
+      <CartButton count={getCartItems.data ? getCartItems.data.length : 0} onClick={() => {}} />
     </S.Header>
   );
 };

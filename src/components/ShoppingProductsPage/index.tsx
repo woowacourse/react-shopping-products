@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from 'react';
+import { createContext } from 'react';
 import * as S from '../../components/ShoppingProductsPage/style';
 
 import useProducts from '../../hooks/useProducts';
@@ -6,7 +6,7 @@ import ProductsContainer from '../ProductsContainer';
 import ToastPopup from '../ToastPopup';
 import Header from '../common/Header';
 import Main from '../common/Main';
-import { UseCartItemsContext } from '../../App';
+
 import { Category, Order, Product } from '../../types/product';
 
 interface UseProductsContextProps {
@@ -21,19 +21,7 @@ interface UseProductsContextProps {
   productsError: unknown;
 }
 
-const UseProductsInitialState: UseProductsContextProps = {
-  products: [],
-  page: 0,
-  fetchNextPage: () => {},
-  category: 'all',
-  handleCategoryChange: () => {},
-  priceOrder: 'asc',
-  handlePriceOrderChange: () => {},
-  productsLoading: false,
-  productsError: null,
-};
-
-export const UseProductsContext = createContext(UseProductsInitialState);
+export const UseProductsContext = createContext({} as UseProductsContextProps);
 
 const ShoppingProductsPage = () => {
   const {
@@ -47,12 +35,6 @@ const ShoppingProductsPage = () => {
     priceOrder,
     handlePriceOrderChange,
   } = useProducts();
-
-  const { getCartItems } = useContext(UseCartItemsContext);
-
-  useEffect(() => {
-    getCartItems();
-  }, []);
 
   return (
     <UseProductsContext.Provider
