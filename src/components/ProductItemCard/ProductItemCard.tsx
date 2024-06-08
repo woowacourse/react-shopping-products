@@ -1,12 +1,16 @@
 import { LegacyRef } from 'react';
-import formatPriceToKoreanWon from '../../util/formatPriceToKoreanWon';
+import { formatPriceToKoreanWon } from '@/utils/index';
+import {
+  CartButton,
+  FallbackImageLoader,
+  FallbackImage,
+} from '@/components/index';
 import {
   ItemCardSection,
   ItemInfo,
   ItemCardBottom,
   ItemImage,
 } from './ProductItemCard.style';
-import CartButton from '../CartButton/CartButton';
 
 interface ProductItemCardProps {
   ref?: LegacyRef<HTMLLIElement> | undefined;
@@ -15,7 +19,6 @@ interface ProductItemCardProps {
   price: number;
   imageUrl: string;
   category: string;
-  initIsInCart: boolean;
 }
 
 const ProductItemCard: React.FC<ProductItemCardProps> = ({
@@ -24,19 +27,21 @@ const ProductItemCard: React.FC<ProductItemCardProps> = ({
   name,
   price,
   imageUrl,
-  initIsInCart,
 }) => {
   return (
     <li key={id} ref={ref}>
       <ItemCardSection>
-        <ItemImage src={imageUrl} />
+        <FallbackImageLoader fallbackComponent={<FallbackImage />}>
+          <ItemImage src={imageUrl} />
+        </FallbackImageLoader>
+
         <ItemInfo>
           <h3>{name}</h3>
           <p>{formatPriceToKoreanWon(price)}</p>
         </ItemInfo>
 
         <ItemCardBottom>
-          <CartButton productId={id} initIsInCart={initIsInCart} />
+          <CartButton productId={id} />
         </ItemCardBottom>
       </ItemCardSection>
     </li>
