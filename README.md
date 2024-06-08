@@ -167,7 +167,7 @@ API 연동 과정에서 발생하는 다양한 에러 상황에 대응하고 사
 
 비동기 처리 로직을 react query를 사용해 리팩터링한다.
 
-- [ ] useSuspenseInfiniteQuery를 사용해서 데이터를 페칭한다.
+- [x] useSuspenseInfiniteQuery를 사용해서 데이터를 페칭한다.
 
 - [ ] useMutation을 사용해서 서버 상태를 변경한다.
 

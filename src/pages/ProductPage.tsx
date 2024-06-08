@@ -1,74 +1,56 @@
-import useProducts from "../hooks/useProducts/useProducts";
-import useCartItem from "../hooks/useCartItems/useCartItems";
-import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import { Suspense } from "react";
 
-import NavigationBar from "../components/NavigationBar/NavigationBar";
-import SelectBox from "../components/SelectBox/SelectBox";
+import useProductsOption from "../hooks/products/useProductsOption";
+import useModal from "../hooks/useModal";
+
+import ProductOptionSelector from "../components/ProductOptionSelector/ProductOptionSelector";
+import ProductItemSkeletonList from "../components/ProductItem/skeleton/ProductItemSkeletonList";
 import ProductItemContainer from "../components/ProductItemContainer/ProductItemContainer";
+import CartItemModal from "../components/CartItemModal/CartItemModal";
+import ShopHeader from "./components/ShopHeader";
 
 import {
   CategoryKeys,
   SortOptionsKeys,
   PRODUCT_CATEGORIES,
   PRODUCT_SORT_OPTIONS,
+  PRODUCTS_SIZE,
 } from "../constants/products";
 
 import * as Styled from "./ProductPage.style";
 
 export default function ProductPage() {
-  const {
-    products,
-    error: productError,
-    isLoading: isProductLoading,
-    fetchNextPage,
-    category,
-    handleChangeCategory,
-    sortOption,
-    handleChangeSortOption,
-  } = useProducts();
-
-  const { handleAddCartItem, handleRemoveCartItem, selectedCartItemsLength, checkIsInCart } =
-    useCartItem();
-
-  const observerRef = useIntersectionObserver<HTMLDivElement>(fetchNextPage);
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const { options, handleChangeProductsOption } = useProductsOption();
 
   return (
     <>
-      <NavigationBar>
-        <Styled.ShopHeader>
-          SHOP
-          <Styled.CartButton />
-          {selectedCartItemsLength !== 0 && (
-            <Styled.CartItemsNumber>{selectedCartItemsLength}</Styled.CartItemsNumber>
-          )}
-        </Styled.ShopHeader>
-      </NavigationBar>
+      <CartItemModal
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+      />
+      <ShopHeader openModal={openModal} />
+
       <Styled.ShopContent>
         <Styled.ShopTitle>해르 상품 목록</Styled.ShopTitle>
         <Styled.SelectBoxContainer>
-          <SelectBox<CategoryKeys>
+          <ProductOptionSelector<CategoryKeys>
+            type="category"
             options={PRODUCT_CATEGORIES}
-            currentOption={category}
-            onChange={handleChangeCategory}
+            currentOption={options["category"]}
+            onChange={handleChangeProductsOption}
           />
-          <SelectBox<SortOptionsKeys>
+          <ProductOptionSelector<SortOptionsKeys>
+            type="sort"
             options={PRODUCT_SORT_OPTIONS}
-            currentOption={sortOption}
-            onChange={handleChangeSortOption}
+            currentOption={options["sort"]}
+            onChange={handleChangeProductsOption}
           />
         </Styled.SelectBoxContainer>
-        <ProductItemContainer
-          products={products}
-          onAddCartItem={handleAddCartItem}
-          onRemoveCartItem={handleRemoveCartItem}
-          checkIsInCart={checkIsInCart}
-        />
+        <Suspense fallback={<ProductItemSkeletonList length={PRODUCTS_SIZE.initial} />}>
+          <ProductItemContainer options={options} />
+        </Suspense>
       </Styled.ShopContent>
-
-      <Styled.ObserverTarget
-        ref={observerRef}
-        $isActive={!isProductLoading && !productError}
-      />
     </>
   );
 }
