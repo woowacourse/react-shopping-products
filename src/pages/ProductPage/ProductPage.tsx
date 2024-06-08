@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 
 import AppLayout from '@components/layout/AppLayout/AppLayout';
 import CardList from '@components/product/CardList/CardList';
+import { CartItem } from '@appTypes/product';
 import CartModal from '@components/product/CartModal/CartModal';
 import Dropdown from '@components/common/Dropdown/Dropdown';
 import ITEM_CATEGORIES from '@constants/itemCategories';
@@ -13,9 +14,8 @@ import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import WrongCat from '@components/common/WrongCat/WrongCat';
 import useAddToCart from '@hooks/mutation/useAddToCart';
 import useCartItems from '@hooks/query/useCartItem';
-import useDecreaseCartItemQuantityByCartId from '@hooks/mutation/useDecreaseCartItemQuantity';
+import useChangeCartItemQuantity from '@hooks/mutation/useChangeCartItemQuantity';
 import useDeleteFromCart from '@hooks/mutation/useDeleteFromCart';
-import useIncreaseCartItemQuantity from '@hooks/mutation/useIncreaseCartItemQuantity';
 import useInfinityProducts from '@hooks/query/useInfinityProduct';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 
@@ -41,9 +41,7 @@ const ProductPage = () => {
 
   const { mutate: addToCart } = useAddToCart();
   const { mutate: deleteToCart } = useDeleteFromCart();
-  const { mutate: increaseCartItemQuantity } = useIncreaseCartItemQuantity();
-  const { mutate: decreaseCartItemQuantity } =
-    useDecreaseCartItemQuantityByCartId();
+  const { mutate: changeCartItemQuantity } = useChangeCartItemQuantity();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -73,11 +71,19 @@ const ProductPage = () => {
         addToCart={addToCart}
         increaseCartItemQuantity={(productId: number) => {
           const cartItem = getCartItemByProductId(productId);
-          if (cartItem !== undefined) increaseCartItemQuantity(cartItem.id);
+          if (!cartItem) return;
+          changeCartItemQuantity({
+            cartItemId: cartItem.id,
+            quantity: cartItem.quantity + 1,
+          });
         }}
         decreaseCartItemQuantity={(productId: number) => {
           const cartItem = getCartItemByProductId(productId);
-          if (cartItem !== undefined) decreaseCartItemQuantity(cartItem.id);
+          if (!cartItem) return;
+          changeCartItemQuantity({
+            cartItemId: cartItem.id,
+            quantity: Math.min(cartItem.quantity - 1),
+          });
         }}
         isAddedCart={(id: number) => getCartItemByProductId(id) !== undefined}
         getQuantity={(productId: number) => {
@@ -98,8 +104,18 @@ const ProductPage = () => {
           onClose={() => setIsModalOpen(false)}
           cartItems={cartItems ?? []}
           deleteItem={deleteToCart}
-          increaseItemQuantity={increaseCartItemQuantity}
-          decreaseItemQuantity={decreaseCartItemQuantity}
+          increaseItemQuantity={(cartItem: CartItem) => {
+            changeCartItemQuantity({
+              cartItemId: cartItem.id,
+              quantity: cartItem.quantity + 1,
+            });
+          }}
+          decreaseItemQuantity={(cartItem: CartItem) => {
+            changeCartItemQuantity({
+              cartItemId: cartItem.id,
+              quantity: Math.max(0, cartItem.quantity - 1),
+            });
+          }}
         />
       )}
       <Styled.ProductPageTitle>bpple 상품 목록</Styled.ProductPageTitle>

@@ -9,8 +9,8 @@ interface CartModalProps {
   cartItems: CartItem[];
   onClose: () => void;
   deleteItem: (id: number) => void;
-  increaseItemQuantity: (id: number) => void;
-  decreaseItemQuantity: (id: number) => void;
+  increaseItemQuantity: (cartItem: CartItem) => void;
+  decreaseItemQuantity: (cartItem: CartItem) => void;
 }
 
 export default function CartModal({
