@@ -133,6 +133,7 @@ export async function fetchItems(): Promise<CartItems[]> {
   if (!response.ok) {
     throw new Error('Failed to fetch Items');
   }
+
   const data = await response.json();
   return data.content;
 }
