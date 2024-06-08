@@ -43,7 +43,7 @@ export const EmptyProductContainer = styled.div`
   row-gap: 20px;
   padding-top: ${({ theme }) => theme.boxHeight};
   font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.light};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   text-align: center;
 
   img {

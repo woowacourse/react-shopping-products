@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Splitter from '../common/Splitter';
 import useFetchCartItems from '../../hooks/useCartItems/useFetchCartItems';
 import { Z_INDEX } from '../../constants/zIndex';
+import EmptyCart from '../../assets/EmptyCart.png';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -24,11 +25,18 @@ const CartModal = ({ isOpen, onClose }: CartModalProps) => {
       </Modal.Header>
 
       <Modal.Content>
-        <CartItemContainer>
-          {cartItems.map((item) => (
-            <CartItem key={item.id} cartItem={item} />
-          ))}
-        </CartItemContainer>
+        {cartItems.length > 0 ? (
+          <CartItemContainer>
+            {cartItems.map((item) => (
+              <CartItem key={item.id} cartItem={item} />
+            ))}
+          </CartItemContainer>
+        ) : (
+          <EmptyProductContainer>
+            <img src={EmptyCart} alt="빈 상품 목록" />
+            <p>장바구니가 비어있습니다.</p>
+          </EmptyProductContainer>
+        )}
 
         <TotalAmountContainer>
           <Splitter />
@@ -63,6 +71,21 @@ const CartItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+`;
+
+const EmptyProductContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px;
+  padding-top: ${({ theme }) => theme.boxHeight};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  text-align: center;
+
+  img {
+    width: 150px;
+  }
 `;
 
 const TotalAmountContainer = styled.div`
