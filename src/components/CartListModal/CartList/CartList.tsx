@@ -1,17 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import * as CL from "./CartList.style";
-import { getCartItems } from "../../../api";
 import CartItem from "./CartItem/CartItem";
+import useCartItemsQuery from "../../../hooks/useCartItemsQuery";
 
 const CartList = () => {
-  const {
-    isPending,
-    error,
-    data: cartItems,
-  } = useQuery({
-    queryKey: ["getCartItems"],
-    queryFn: () => getCartItems(),
-  });
+  const { isPending, error, cartItems } = useCartItemsQuery();
 
   console.log(isPending, error, cartItems);
 

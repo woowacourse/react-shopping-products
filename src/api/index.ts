@@ -116,3 +116,26 @@ export const getCartItems = async (): Promise<CartItem[]> => {
 
   return data.content;
 };
+
+export const updateCartItemQuantity = async ({
+  cartItemId,
+  quantity,
+}: {
+  cartItemId: number;
+  quantity: number;
+}): Promise<void> => {
+  await fetchWithAuth(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
+    method: "PATCH",
+    body: { quantity },
+  });
+};
+
+export const removeCartItem = async ({
+  cartItemId,
+}: {
+  cartItemId: number;
+}): Promise<void> => {
+  await fetchWithAuth(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
+    method: "DELETE",
+  });
+};

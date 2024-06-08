@@ -1,11 +1,18 @@
 import Counter from "../../../Counter/Counter";
 import * as CI from "./CartItem.style";
+import useCartItemQuery from "../../../../hooks/useCartItemMutation";
 
 interface CartItemProps {
   cartItem: CartItem;
 }
 
 const CartItem = ({ cartItem }: CartItemProps) => {
+  const {
+    handleDecreaseQuantityButtonClick,
+    handleIncreaseQuantityButtonClick,
+    handleRemoveItemButtonClick,
+  } = useCartItemQuery();
+
   return (
     <CI.CartItem>
       <CI.ItemInfoSection>
@@ -18,11 +25,17 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           <CI.ItemPrice>
             {cartItem.product.price.toLocaleString()}원
           </CI.ItemPrice>
-          <Counter count={1} decrease={() => {}} increase={() => {}} />
+          <Counter
+            count={cartItem.quantity}
+            decrease={() => handleDecreaseQuantityButtonClick(cartItem)}
+            increase={() => handleIncreaseQuantityButtonClick(cartItem)}
+          />
         </CI.ItemDetails>
       </CI.ItemInfoSection>
       <CI.ItemButtonSection>
-        <CI.RemoveButton>삭제</CI.RemoveButton>
+        <CI.RemoveButton onClick={() => handleRemoveItemButtonClick(cartItem)}>
+          삭제
+        </CI.RemoveButton>
       </CI.ItemButtonSection>
     </CI.CartItem>
   );
