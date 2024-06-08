@@ -37,9 +37,7 @@ function ProductPage() {
 
           <ItemList>
             {products.map((product, index) => (
-              <div key={product.id}>
-                <ProductItemCard key={`${product.id}${index}`} {...product} />
-              </div>
+              <ProductItemCard key={`${product.id}${index}`} {...product} />
             ))}
             <div ref={lastProductElementRef} />
           </ItemList>
