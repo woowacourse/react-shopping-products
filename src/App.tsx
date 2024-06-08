@@ -1,5 +1,4 @@
 import './reset.css';
-import { CartItemListProvider } from './hooks/useCartItemList';
 import ProductListPageContainer from './pages/ProductListPageContainer';
 import ToastProvider from './hooks/useToast';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -14,9 +13,7 @@ function App() {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '472px' }}>
           <ToastProvider>
-            <CartItemListProvider>
-              <ProductListPageContainer />
-            </CartItemListProvider>
+            <ProductListPageContainer />
           </ToastProvider>
         </div>
       </div>
