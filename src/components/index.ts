@@ -6,3 +6,4 @@ export { default as ProductList } from "./ProductList/ProductList";
 export { default as ProductListTitle } from "./ProductListTitle/ProductListTitle";
 export { default as Button } from "./Button/Button";
 export { default as ProductQuantity } from "./ProductQuantity/ProductQuantity";
+export { default as CartProduct } from "./CartProduct/CartProduct";

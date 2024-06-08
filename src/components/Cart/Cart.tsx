@@ -4,19 +4,13 @@ import {
   CartContent,
   CartTitle,
   CartProductList,
-  CartProduct,
   CartPrice,
   CartPriceDescription,
   CartPriceNumber,
-  CartProductImg,
-  CartProductInfo,
-  CartProductName,
-  CartProductPrice,
 } from "./Cart.style";
-import { Button, ProductQuantity } from "@/components";
+import { Button, CartProduct } from "@/components";
 import { CartItem } from "@/types";
 import { calculatePaymentPrice } from "@/utils/product";
-import { useMutationCartItem } from "@/hooks";
 
 interface CartProps extends HTMLAttributes<HTMLDialogElement> {
   dialogRef: RefObject<HTMLDialogElement>;
@@ -24,8 +18,6 @@ interface CartProps extends HTMLAttributes<HTMLDialogElement> {
 }
 
 const Cart = ({ cartItems, dialogRef, ...rest }: CartProps) => {
-  const { handleDeleteCartItem } = useMutationCartItem();
-
   const handleClickDialog = (event: MouseEvent<HTMLDialogElement>) => {
     if (event.target === dialogRef.current) {
       dialogRef.current?.close();
@@ -44,28 +36,7 @@ const Cart = ({ cartItems, dialogRef, ...rest }: CartProps) => {
         <CartTitle style={{ marginBottom: "24px" }}>장바구니</CartTitle>
         <CartProductList>
           {cartItems?.map((cartItem) => (
-            <CartProduct key={cartItem.id}>
-              <CartProductImg src={cartItem.product.imageUrl} />
-              <CartProductInfo>
-                <CartProductName>{cartItem.product.name}</CartProductName>
-                <CartProductPrice>{cartItem.product.price}</CartProductPrice>
-                <ProductQuantity cartItemId={cartItem.id} quantity={cartItem.quantity} />
-                <Button
-                  theme="white"
-                  style={{
-                    width: "40px",
-                    height: "24px",
-                    fontSize: "12px",
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                  }}
-                  onClick={() => handleDeleteCartItem(cartItem.id)}
-                >
-                  삭제
-                </Button>
-              </CartProductInfo>
-            </CartProduct>
+            <CartProduct key={cartItem.id} cartItem={cartItem} />
           ))}
         </CartProductList>
         <CartPrice style={{ marginTop: "12px", marginBottom: "24px" }}>
