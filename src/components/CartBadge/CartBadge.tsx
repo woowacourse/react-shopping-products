@@ -1,16 +1,29 @@
-import useCartListContext from '@/hooks/useCartListContext';
-import Badge from '../common/Badge/Badge';
 import { CartBadgeContainer } from './CartBadge.style';
 import { PropsWithChildren } from 'react';
+import { useCartItemTotalQuantity } from '@/hooks/index';
+import { Badge } from '@/components/index';
 
 const CartBadge: React.FC<PropsWithChildren> = ({ children }) => {
-  const { cartListQuantity } = useCartListContext();
+  const { totalQuantity, isLoading, isError } = useCartItemTotalQuantity();
+
+  if (isLoading) {
+    return (
+      <CartBadgeContainer>
+        {
+          <Badge bgColor="#fff" color="#000">
+            0
+          </Badge>
+        }
+        {children}
+      </CartBadgeContainer>
+    );
+  }
 
   return (
     <CartBadgeContainer>
-      {cartListQuantity !== 0 && (
+      {totalQuantity !== 0 && !isLoading && !isError && (
         <Badge bgColor="#fff" color="#000">
-          {cartListQuantity}
+          {totalQuantity}
         </Badge>
       )}
       {children}
