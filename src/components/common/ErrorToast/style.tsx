@@ -27,6 +27,8 @@ export const Container = styled.div`
   width: 80vw;
   height: 4.5rem;
 
+  z-index: 99;
+
   transform: translateX(-50%);
 
   animation: ${fadeInOut} 3s ease-in-out;
