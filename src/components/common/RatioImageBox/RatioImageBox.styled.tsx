@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { ImageBoxProps } from '../ImageBox/ImageBox';
 
-const ContainerWithRatio = styled.div<ImageBoxProps & { ratio: number }>`
+const ContainerWithRatio = styled.div<{ ratio: number }>`
   position: relative;
   width: 100%;
   height: 0;
