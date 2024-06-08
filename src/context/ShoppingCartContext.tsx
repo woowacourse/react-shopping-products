@@ -10,6 +10,7 @@ export const CartContext = createContext<{
   cartItem: CartItems[];
   isFetching: boolean;
   isSuccess: boolean;
+  isError: boolean;
   refetch: () => void;
 }>({
   isLoading: false,
@@ -17,17 +18,19 @@ export const CartContext = createContext<{
   cartItem: [],
   isFetching: false,
   isSuccess: false,
+  isError: false,
   refetch: () => {},
 });
 
 export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { createToast } = useToast();
-  const { data, error, isLoading, isFetching, isSuccess, refetch } = useQuery({
-    queryKey: [QUERY_KEYS.CART_ITEM],
-    queryFn: fetchItems,
-    initialData: [],
-    placeholderData: keepPreviousData,
-  });
+  const { data, error, isLoading, isFetching, isSuccess, isError, refetch } =
+    useQuery({
+      queryKey: [QUERY_KEYS.CART_ITEM],
+      queryFn: fetchItems,
+      initialData: [],
+      placeholderData: keepPreviousData,
+    });
 
   useEffect(() => {
     if (error) {
@@ -38,7 +41,6 @@ export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
       }
     }
   }, [error, createToast]);
-
   return (
     <CartContext.Provider
       value={{
@@ -47,6 +49,7 @@ export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
         cartItem: data,
         isFetching,
         isSuccess,
+        isError,
         refetch,
       }}
     >
