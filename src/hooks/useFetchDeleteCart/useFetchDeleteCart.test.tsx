@@ -36,7 +36,7 @@ describe('useFetchDeleteCart', () => {
 
     await waitFor(() => {
       expect(
-        result.current.fetchCartItems.data.some(
+        result.current.fetchCartItems.cartItems.some(
           (item) => item.product.id === PRODUCT_ID,
         ),
       ).toBe(true);
@@ -52,7 +52,7 @@ describe('useFetchDeleteCart', () => {
 
     await waitFor(() => {
       expect(
-        result.current.fetchCartItems.data.some(
+        result.current.fetchCartItems.cartItems.some(
           (item) => item.product.id === PRODUCT_ID,
         ),
       ).toBe(false);

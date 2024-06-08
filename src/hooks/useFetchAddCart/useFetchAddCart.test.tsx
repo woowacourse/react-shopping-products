@@ -33,14 +33,14 @@ describe('useFetchAddCart', async () => {
       { wrapper },
     );
 
-    expect(result.current.fetchCartItems.data).toHaveLength(0);
+    expect(result.current.fetchCartItems.cartItems).toHaveLength(0);
 
     act(() => {
       result.current.fetchAddCart.addCartItem(PRODUCT_ID);
     });
 
     await waitFor(() =>
-      expect(result.current.fetchCartItems.data).toHaveLength(1),
+      expect(result.current.fetchCartItems.cartItems).toHaveLength(1),
     );
   });
 
@@ -63,7 +63,7 @@ describe('useFetchAddCart', async () => {
 
     await waitFor(() => {
       expect(
-        result.current.fetchCartItems.data.some(
+        result.current.fetchCartItems.cartItems.some(
           (item) => item.product.id === PRODUCT_ID,
         ),
       ).toBe(true);
@@ -93,7 +93,7 @@ describe('useFetchAddCart', async () => {
 
     let cartItems: Carts[] = [];
     await waitFor(() => {
-      cartItems = result.current.fetchCartItems.data;
+      cartItems = result.current.fetchCartItems.cartItems;
     });
 
     await waitFor(() => {

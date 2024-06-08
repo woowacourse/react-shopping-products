@@ -14,7 +14,7 @@ describe('useFetchCartItems', () => {
     const { result } = renderHook(() => useFetchCartItems(), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.data).toHaveLength(0);
+      expect(result.current.cartItems).toHaveLength(0);
     });
   });
 });
