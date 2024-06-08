@@ -15,7 +15,7 @@ export const ItemBody = styled.div`
   column-gap: 20px;
 `;
 
-export const ImageWraper = styled.div`
+export const ImageWrapper = styled.div`
   border-radius: 8px;
 `;
 
@@ -35,7 +35,6 @@ export const ItemDetail = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  align-items: start;
 
   gap: 8px;
 `;

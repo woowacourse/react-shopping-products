@@ -45,9 +45,9 @@ function CartItemCard({ cartItem }: CartItemProps) {
     <S.CartItem>
       <Divider />
       <S.ItemBody>
-        <S.ImageWraper>
+        <S.ImageWrapper>
           <S.Image src={cartItem.product.imageUrl} />
-        </S.ImageWraper>
+        </S.ImageWrapper>
         <S.ItemDetail>
           <S.ItemHeader>
             <S.ItemNameAndCost>
