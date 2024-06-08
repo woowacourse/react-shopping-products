@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { ItemListContainer } from './ItemList.style';
+import { ItemListContainer } from './ProductItemList.style';
 
 const ItemList: React.FC<PropsWithChildren> = ({ children }) => {
   return <ItemListContainer>{children}</ItemListContainer>;

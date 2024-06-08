@@ -1,5 +1,5 @@
 import formatPriceToKoreanWon from '../../util/formatPriceToKoreanWon';
-import * as S from './ItemCard.style';
+import * as S from './ProductItemCard.style';
 import CartButton from '../CartButton/CartButton';
 import { ProductItem } from '../../type/ProductItem';
 

@@ -1,5 +1,5 @@
-import ItemCard from '../components/ItemCard/ItemCard';
-import ItemList from '../components/ItemList/ItemList';
+import ItemCard from '../components/ProductItemCard/ProductItemCard';
+import ItemList from '../components/ProductItemList/ProductItemList';
 import Dropdown from '../components/common/Dropdown/Dropdown';
 import Header from '../components/common/Header/Header';
 import { CATEGORY, SORT } from '../constants';
