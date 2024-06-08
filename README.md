@@ -16,7 +16,7 @@
 
 ### 구현 시작
 
-- step 1. 비동기 로직 hook 구현 + 테스트 코드 작성 후 프로덕션 코드에 적용
+- step 1. 상품 목록 get 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
 
   - [x] 상품 목록 fetch 기능
 
@@ -26,10 +26,16 @@
     - [x] 상품 정렬 기능
 
   - [x] 프로덕션 코드의 기존 useProductFetch 훅 대체
+    - [ ] undefined인 경우 대비
 
-- step 2.
+- step 2. 장바구니 상품 목록 get 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
+
+  - [x] 장바구니 목록 fetch 하는 기능을 useQuery를 사용한 useCartItemsQuery 훅
+    - [x] 장바구니 상품 목록을 0페이지, 100 size로 불러온다.
+
+- step 3 장바구니에 상품 추가 post 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
   - [ ] 장바구니에 상품 추가 post 기능
-    - [ ]
+    - [ ] useMutation을 사용한 useAddCartItem hook
   - [ ] 장바구니에서 상품 제거 delete 기능
     - [ ]
   - [ ] 장바구니 상품 수량 patch 기능
