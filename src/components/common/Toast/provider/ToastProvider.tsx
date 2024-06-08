@@ -8,8 +8,10 @@ import {
 
 import Toast from '@components/common/Toast/Toast';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const ToastContext = createContext({ showToast: (_: string) => {} });
+export const ToastContext = createContext({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  showToast: (error: unknown) => {},
+});
 
 export const useToastContext = () => {
   const value = useContext(ToastContext);
@@ -25,10 +27,12 @@ const ToastProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const toastTimer = useRef<ReturnType<typeof setTimeout>>();
 
-  const showToast = useCallback((message: string) => {
+  const showToast = useCallback((error: unknown) => {
+    if (!(error instanceof Error)) return;
+
     setIsRemove(false);
     setIsOpenToast(true);
-    setMessage(message);
+    setMessage(error.message);
 
     if (toastTimer.current) {
       clearTimeout(toastTimer.current);

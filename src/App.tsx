@@ -18,18 +18,10 @@ function App() {
     () =>
       new QueryClient({
         queryCache: new QueryCache({
-          onError: (err: unknown) => {
-            if (err instanceof Error) {
-              showToast(err.message);
-            }
-          },
+          onError: showToast,
         }),
         mutationCache: new MutationCache({
-          onError: (err: unknown) => {
-            if (err instanceof Error) {
-              showToast(err.message);
-            }
-          },
+          onError: showToast,
         }),
       }),
     [showToast]
