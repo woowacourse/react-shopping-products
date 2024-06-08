@@ -1,10 +1,17 @@
 import styled from 'styled-components';
 
+export const ProductDetailContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  overflow-y: scroll;
+`;
+
 export const CardContainer = styled.li`
   display: flex;
   flex-direction: column;
-  padding: 1rem 0 0 0;
-  gap: 1rem;
+  padding: 0.8rem 0 0 0;
   border-color: rgba(0, 0, 0, 0.1);
   border-width: 0.5px 0 0 0;
   border-style: solid;
@@ -16,17 +23,26 @@ export const CardContent = styled.div`
 `;
 
 export const ItemImg = styled.img`
-  width: 11.2rem;
-  height: 11.2rem;
+  min-width: 8rem;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 0.8rem;
+
+  object-fit: cover;
+  object-position: center;
 `;
 
 export const CardDetail = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
 
-  margin: 0.9rem 0;
   box-sizing: border-box;
+`;
+
+export const CardDetailWrapper = styled.div`
+  display: flex;
 `;
 
 export const CardInfo = styled.div`
@@ -38,29 +54,39 @@ export const CardInfo = styled.div`
 
 export const CardQuantityButton = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 1.3rem;
   align-items: center;
 `;
 
 export const ItemName = styled.p`
-  font-size: 1.2rem;
-  font-weight: 500;
-  line-height: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 2.317rem;
+  font-family: var(--font-Noto-Sans-KR);
 `;
 
 export const ItemPrice = styled.p`
-  font-size: 2.4rem;
-  font-weight: 700;
-  line-height: 3.47rem;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
 `;
 
-// TODO: 디자인수정 (삭제, 수량 버튼)
 export const Button = styled.button`
-  min-width: 2.4rem;
-  min-height: 2.4rem;
-  border: 1px solid gray;
+  width: 2.4rem;
+  height: 2.4rem;
+
+  color: var(--black-color-2);
   background-color: #ffffff;
+
+  border: 1px solid var(--black-color-1-10);
   border-radius: 0.8rem;
   box-sizing: border-box;
-  color: rgba(54, 54, 54, 1);
+
+  white-space: nowrap;
+`;
+
+export const DeleteButton = styled(Button)`
+  width: 4rem;
+
+  font-size: 1.2rem;
+  line-height: 1.5rem;
 `;

@@ -25,20 +25,24 @@ function ProductDetail({ cartItems }: ProductDetailProps) {
   const handleIncreasedQuantity = () => {};
 
   return (
-    <div>
+    <S.ProductDetailContainer>
       {cartItems.map((item) => (
         <S.CardContainer>
-          <S.Button onClick={() => console.log('삭제기능')}>삭제</S.Button>
-
           <S.CardContent>
             <S.ItemImg src={item.product.imageUrl} alt={item.product.name} />
             <S.CardDetail>
-              <S.CardInfo>
-                <S.ItemName>{item.product.name}</S.ItemName>
-                <S.ItemPrice>
-                  {item.product.price.toLocaleString()}원
-                </S.ItemPrice>
-              </S.CardInfo>
+              <S.CardDetailWrapper>
+                <S.CardInfo>
+                  <S.ItemName>{item.product.name}</S.ItemName>
+                  <S.ItemPrice>
+                    {item.product.price.toLocaleString()}원
+                  </S.ItemPrice>
+                </S.CardInfo>
+
+                <S.DeleteButton onClick={() => console.log('삭제기능')}>
+                  삭제
+                </S.DeleteButton>
+              </S.CardDetailWrapper>
               <S.CardQuantityButton>
                 <S.Button onClick={handleDecreasedQuantity}>-</S.Button>
                 <p>{item.quantity}</p>
@@ -48,7 +52,7 @@ function ProductDetail({ cartItems }: ProductDetailProps) {
           </S.CardContent>
         </S.CardContainer>
       ))}
-    </div>
+    </S.ProductDetailContainer>
   );
 }
 

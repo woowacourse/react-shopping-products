@@ -4,3 +4,4 @@ export { default as ErrorMessage } from './ErrorMessage/ErrorMessage';
 export { default as Header } from './Header/Header';
 export { default as ProductCard } from './ProductCard/ProductCard';
 export { default as ProductDetail } from './ProductDetail/ProductDetail';
+export { default as TotalAmount } from './TotalAmount/TotalAmount';

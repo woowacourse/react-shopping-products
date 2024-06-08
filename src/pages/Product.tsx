@@ -12,6 +12,7 @@ import {
   ErrorMessage,
   ProductCard,
   ProductDetail,
+  TotalAmount,
 } from '../components/index';
 import { SortingParam } from '../types/sort';
 import { DEFAULT_SORTING_PARAM } from '../constants/page';
@@ -69,6 +70,7 @@ function Product() {
               handleCloseButton={toggleDetailModal}
             />
             <ProductDetail cartItems={cartItems} />
+            <TotalAmount />
           </Modal>
         )}
         <Header badgeCount={cartItems.length} />
