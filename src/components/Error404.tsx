@@ -27,6 +27,6 @@ const S = {
   `,
   Text: styled.p`
     font-size: ${theme.fontSize.medium};
-    color: ${theme.color.gray};
+    color: ${theme.color.grey};
   `,
 };
