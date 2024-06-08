@@ -15,13 +15,8 @@ export const ProductList = ({ products, isLoading, lastProductElementRef }: Prod
         <LoadingSpinner />
       ) : (
         products.map((product, index) => (
-          <div key={product.id}>
-            <ProductItem
-              id={product.id}
-              imageUrl={product.imageUrl}
-              name={product.name}
-              price={product.price}
-            />
+          <div key={`${product.id}-${index}`}>
+            <ProductItem product={product} />
             <div ref={products.length === index + 1 ? lastProductElementRef : null}></div>
           </div>
         ))
