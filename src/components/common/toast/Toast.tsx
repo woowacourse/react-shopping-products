@@ -1,33 +1,35 @@
-import { useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import * as Styled from './Toast.styled';
 
-interface ToastProp {
-  isError: boolean;
-  errorMessage: string;
+interface ToastContextType {
+  toastError: (message: string) => void;
 }
-const Toast = ({ errorMessage, isError }: ToastProp) => {
-  const [isToast, setIsToast] = useState(false);
 
-  const toastMessage = () => {
+export const ToastContext = createContext<ToastContextType | undefined>(undefined);
+
+interface ToastProviderProps {
+  children: React.ReactNode;
+}
+
+export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
+  const [isToast, setIsToast] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const toastError = (message: string) => {
+    setMessage(message);
+    setIsToast(true);
     setTimeout(() => {
       setIsToast(false);
     }, 3000);
-
-    setIsToast(true);
   };
 
-  useEffect(() => {
-    if (isError) toastMessage();
-  }, [isError]);
-
   return (
-    <>
+    <ToastContext.Provider value={{ toastError }}>
+      {children}
       {isToast &&
-        createPortal(<Styled.ToastContainer>{errorMessage}</Styled.ToastContainer>, document.body)}
-    </>
+        createPortal(<Styled.ToastContainer>{message}</Styled.ToastContainer>, document.body)}
+    </ToastContext.Provider>
   );
 };
-
-export default Toast;
