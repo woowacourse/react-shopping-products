@@ -1,41 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
-import { addCartItem, deleteCartItem, fetchCartItems } from '@/api/cart';
+import { fetchCartItems } from '@/api/cart';
 import { CartItemInfo } from '@/types/cartItem';
+import useAdjustCartItemQuantity from './useAdjustCartItemQuantity';
 
 const useCartItems = () => {
-  const [cartItems, setCartItems] = useState<CartItemInfo[]>([]);
+  const { data: cartItems } = useQuery<CartItemInfo[]>({
+    queryKey: ['fetchCartItems'],
+    queryFn: fetchCartItems,
+  });
+
+  const { addCartItemMutation, adjustCartItemQuantityMutation } = useAdjustCartItemQuantity();
 
   const matchCartItem = (productId: number) => {
-    return cartItems.find((cartItem) => cartItem.product.id === productId);
+    return cartItems?.find((cartItem) => cartItem.product.id === productId);
   };
 
-  const handleAddCartItem = async (productId: number) => {
-    if (matchCartItem(productId)) return;
-
-    await addCartItem({ productId });
-    await refreshCartItems();
+  const getCartItemQuantity = (productId: number) => {
+    return cartItems?.map((cartItem) => {
+      if (cartItem.product.id === productId) return cartItem.quantity;
+    });
   };
 
-  const handleDeleteCartItem = async (productId: number) => {
-    const matchedCartItemInfo = matchCartItem(productId);
-    if (!matchedCartItemInfo) return;
-
-    const cartItemId = matchedCartItemInfo.id;
-    await deleteCartItem(cartItemId);
-    await refreshCartItems();
+  return {
+    cartItems,
+    addCartItemMutation,
+    adjustCartItemQuantityMutation,
+    matchCartItem,
+    getCartItemQuantity,
   };
-
-  const refreshCartItems = async () => {
-    const data = await fetchCartItems();
-    setCartItems(data);
-  };
-
-  useEffect(() => {
-    refreshCartItems();
-  }, []);
-
-  return { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem };
 };
 
 export default useCartItems;
