@@ -1,0 +1,54 @@
+.container {
+  width: 429px;
+  height: 444px;
+  top: 492px;
+  left: 0.5px;
+  padding: 24px 16px 24px 16px;
+  gap: 24px;
+  border-radius: 8px 8px 0 0;
+  background-color: #fff;
+  overflow: scroll;
+}
+
+.title {
+  font-family: Noto Sans KR;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26.06px;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.price_info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.banner {
+  font-family: Noto Sans;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.price {
+  font-family: Noto Sans KR;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 34.75px;
+  text-align: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  width: 100%;
+  background: rgba(51, 51, 51, 1);
+  color: rgba(255, 255, 255, 1);
+  height: 44px;
+}
