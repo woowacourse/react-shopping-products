@@ -3,35 +3,21 @@ import Title from '@/components/common/Title/Title';
 import Flex from '@/components/common/Flex/Flex';
 import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
 import ProductList from '@/components/ProductList/ProductList';
-import useProductList from '@/hooks/useProductList';
-import { useRef } from 'react';
-import { useObserver } from '@/hooks/useObserver';
+import useProductList from '@/hooks/product/useProductList';
 import styles from './ProductListPage.module.css';
 import CartIcon from '@/components/CartIcon/CartIcon';
 import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import Dropdown from '@/components/Dropdown/Dropdown';
+import InfiniteScrollContainer from '@/components/InfiniteScrollContainer/InfiniteScrollContainer';
 
 export default function ProductListPage() {
   const {
     data: productList,
     handleCategory,
     handleSortType,
-    isLoading,
-    fetchNextPage,
     isSuccess,
-    isFetching,
+    ...rest
   } = useProductList();
-
-  const bottom = useRef(null);
-
-  const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
-    !isLoading && entry.isIntersecting && fetchNextPage();
-
-  useObserver({
-    target: bottom,
-    onIntersect,
-    rootMargin: '500px', // 바닥에 덜 잫도록
-  });
 
   return (
     <div className={styles.container}>
@@ -58,16 +44,14 @@ export default function ProductListPage() {
             />
           </Flex>
         </div>
-        {isSuccess && <ProductList productList={productList} />}
+        {isSuccess ? (
+          <InfiniteScrollContainer {...rest}>
+            <ProductList productList={productList} />
+          </InfiniteScrollContainer>
+        ) : (
+          <LoadingSpinner />
+        )}
       </Flex>
-
-      {!isFetching && (
-        <div
-          ref={bottom}
-          style={{ width: '100px', height: '1px', backgroundColor: 'lightGreen' }}
-        ></div>
-      )}
-      {isLoading && <LoadingSpinner />}
     </div>
   );
 }
