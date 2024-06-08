@@ -23,7 +23,7 @@ const CartActionErrorModal = ({ error }: CartActionErrorModalProps) => {
     <>
       {toastModalPosition && (
         <ToastModal
-          openModal={isModalOpen}
+          isModalOpen={isModalOpen}
           closeModal={closeModal}
           position={toastModalPosition}
           modalTargetEl={rootEl}

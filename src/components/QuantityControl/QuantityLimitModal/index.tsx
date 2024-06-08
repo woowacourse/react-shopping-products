@@ -10,7 +10,7 @@ interface QuantityLimitModalProps {
 const QuantityLimitModal = ({ rootEl, isModalOpen, closeModal }: QuantityLimitModalProps) => {
   return (
     <AlertModal
-      openModal={isModalOpen}
+      isModalOpen={isModalOpen}
       closeModal={closeModal}
       modalTargetEl={rootEl}
       contents={<p className={style.message}>상품은 최대 100개까지 구매가능해요.</p>}

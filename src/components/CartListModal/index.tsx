@@ -21,7 +21,7 @@ const CartListModal = ({ isModalOpen, closeModal, rootEl }: CartListModalProps) 
   };
 
   return (
-    <BottomModal modalTargetEl={rootEl} openModal={isModalOpen} closeModal={closeModal} animationDuration={2000}>
+    <BottomModal modalTargetEl={rootEl} isModalOpen={isModalOpen} closeModal={closeModal} animationDuration={2000}>
       <p className={style.title}>장바구니</p>
       {isLoading ? (
         <>
