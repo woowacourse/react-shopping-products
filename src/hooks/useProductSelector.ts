@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { useAddToCartListQuery } from './cart/useAddToCartListQuery';
-import useChangeItemQuantity from './cart/useChangeItemQuantity';
-import { useDeleteFromCartListQuery } from './cart/useDeleteFromCartListQuery';
-import useGetCartListQuery from './cart/useGetCartListQuery';
+import { useAddToCartListQuery } from '@/hooks/cart/useAddToCartListQuery';
+import useChangeItemQuantity from '@/hooks/cart/useChangeItemQuantity';
+import { useDeleteFromCartListQuery } from '@/hooks/cart/useDeleteFromCartListQuery';
+import useGetCartListQuery from '@/hooks/cart/useGetCartListQuery';
 
 const useProductSelector = (productId: number) => {
   const { data: cartList } = useGetCartListQuery();

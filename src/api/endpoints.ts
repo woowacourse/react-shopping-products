@@ -1,5 +1,5 @@
-import buildGetProductListURL from './buildGetProductListURL';
-import { getProductListProps } from './product';
+import buildGetProductListURL from '@/api/buildGetProductListURL';
+import { getProductListProps } from '@/api/product';
 
 export const ENDPOINT = {
   product: {

@@ -1,5 +1,5 @@
 import CartItemBox from '@/components/cart/CartItemBox';
-import EmptyCart from './EmptyCart';
+import EmptyCart from '@/components/cart/EmptyCart';
 import styled from '@emotion/styled';
 import useGetCartListQuery from '@/hooks/cart/useGetCartListQuery';
 

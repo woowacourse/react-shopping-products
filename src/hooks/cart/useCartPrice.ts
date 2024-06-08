@@ -1,4 +1,4 @@
-import useGetCartListQuery from './useGetCartListQuery';
+import useGetCartListQuery from '@/hooks/cart/useGetCartListQuery';
 
 const useCartPrice = () => {
   const { data: cartList } = useGetCartListQuery();

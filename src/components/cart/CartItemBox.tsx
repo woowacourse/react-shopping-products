@@ -1,8 +1,8 @@
 import { FlexColumn, FlexRow, FlexSpaceBetween } from '@/style/common.style';
 
-import BorderButton from '../button/BorderButton';
+import BorderButton from '@/components/button/BorderButton';
 import { CartItem } from '@/types/cartItem.type';
-import QuantityBox from '../QuantityBox';
+import QuantityBox from '@/components/product/QuantityBox';
 import styled from '@emotion/styled';
 import { theme } from '@/style/theme.style';
 import useProductSelector from '@/hooks/useProductSelector';

@@ -1,5 +1,5 @@
-import CartList from './CartList';
-import CartPrice from './CartPrice';
+import CartList from '@/components/cart/CartList';
+import CartPrice from '@/components/cart/CartPrice';
 import { Modal } from 'styled-base-modal';
 
 interface Props {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import useErrorContext from './useErrorContext';
+import useErrorContext from '@/hooks/useErrorContext';
 
 const useToast = () => {
   const { error, setError } = useErrorContext();

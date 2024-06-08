@@ -1,4 +1,4 @@
-import BaseButton from './BaseButton';
+import BaseButton from '@/components/button/BaseButton';
 import CartOutImg from '@/assets/cartOut.svg?react';
 import { FlexSpaceBetween } from '@/style/common.style';
 import styled from '@emotion/styled';

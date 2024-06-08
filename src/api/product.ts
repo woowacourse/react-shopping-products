@@ -1,6 +1,6 @@
-import { ENDPOINT } from './endpoints';
+import { ENDPOINT } from '@/api/endpoints';
 import { ERROR_MESSAGES } from '@/constants/error';
-import { fetchWithoutAuth } from './utils/fetchClient';
+import { fetchWithoutAuth } from '@/api/utils/fetchClient';
 
 export interface getProductListProps {
   page?: number;

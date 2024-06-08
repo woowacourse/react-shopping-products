@@ -1,4 +1,4 @@
-import { getProductListProps } from './product';
+import { getProductListProps } from '@/api/product';
 
 interface Props extends getProductListProps {
   baseUrl: string;
