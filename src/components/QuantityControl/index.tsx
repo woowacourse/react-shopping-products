@@ -1,6 +1,5 @@
 import { MAX_QUANTITY } from '@constants/index';
-import { useChangeCartItemQuantity } from '@hooks/index';
-import { useEffect, useState } from 'react';
+import { useChangeCartItemQuantity, useOpenModal } from '@hooks/index';
 
 import CountButton from '../CountButton';
 import { CartActionErrorModal } from '../Fallbacks';
@@ -15,27 +14,25 @@ interface QuantityControlProps {
 
 const QuantityControl = ({ quantity, cartItemId }: QuantityControlProps) => {
   const { mutateAsync: quantityMutate, error, isPending } = useChangeCartItemQuantity();
-  const [isTryOverMaxQuantity, setIsTryOverMaxQuantity] = useState(false);
+  const {
+    openModal: openLimitModal,
+    closeModal: closeLimitModal,
+    isModalOpen: isLimitModalOpen,
+    rootEl,
+  } = useOpenModal();
 
   const isMaxQuantity = quantity === MAX_QUANTITY;
 
   const increaseQuantity = () => {
-    setIsTryOverMaxQuantity(isMaxQuantity);
-    if (isMaxQuantity) return;
+    if (isMaxQuantity) return openLimitModal();
 
     quantityMutate({ cartItemId, quantity: quantity + 1 });
   };
 
   const decreaseQuantity = () => {
-    setIsTryOverMaxQuantity(false);
+    if (isLimitModalOpen) closeLimitModal();
     quantityMutate({ cartItemId, quantity: quantity - 1 });
   };
-
-  useEffect(() => {
-    return () => {
-      setIsTryOverMaxQuantity(false);
-    };
-  }, []);
 
   return (
     <>
@@ -45,10 +42,7 @@ const QuantityControl = ({ quantity, cartItemId }: QuantityControlProps) => {
         <CountButton quantitySign="plus" disabled={isPending} onClick={increaseQuantity} />
       </div>
       <CartActionErrorModal error={error} />
-      <QuantityLimitModal
-        isTryOverMaxQuantity={isTryOverMaxQuantity}
-        setIsTryOverMaxQuantity={setIsTryOverMaxQuantity}
-      />
+      <QuantityLimitModal rootEl={rootEl} isModalOpen={isLimitModalOpen} closeModal={closeLimitModal} />
     </>
   );
 };

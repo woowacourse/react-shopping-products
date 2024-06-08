@@ -1,20 +1,17 @@
-import { useOpenModal } from '@src/hooks';
 import { AlertModal } from 'badahertz52-react-modules-components';
-import { Dispatch, SetStateAction } from 'react';
 
 import style from './style.module.css';
 
 interface QuantityLimitModalProps {
-  isTryOverMaxQuantity: boolean;
-  setIsTryOverMaxQuantity: Dispatch<SetStateAction<boolean>>;
+  rootEl: HTMLElement | null;
+  isModalOpen: boolean;
+  closeModal: () => void;
 }
-const QuantityLimitModal = ({ isTryOverMaxQuantity, setIsTryOverMaxQuantity }: QuantityLimitModalProps) => {
-  const { rootEl } = useOpenModal({ isOpenModal: isTryOverMaxQuantity });
-
+const QuantityLimitModal = ({ rootEl, isModalOpen, closeModal }: QuantityLimitModalProps) => {
   return (
     <AlertModal
-      openModal={isTryOverMaxQuantity}
-      closeModal={() => setIsTryOverMaxQuantity(false)}
+      openModal={isModalOpen}
+      closeModal={closeModal}
       modalTargetEl={rootEl}
       contents={<p className={style.message}>상품은 최대 100개까지 구매가능해요.</p>}
       button={<button className={style.confirmButton}>확인</button>}
