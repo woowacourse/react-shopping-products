@@ -5,7 +5,6 @@ import * as Styled from './ProductListPage.styled';
 import Dropdown from '@/components/common/dropdown/Dropdown';
 import Header from '@/components/common/header/Header';
 import InfinityScrollContainer from '@/components/common/InfinityScrollContainer';
-import Toast from '@/components/common/toast/Toast';
 import ProductCardList from '@/components/productCardList/ProductCardList';
 import Title from '@/components/title/Title';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
@@ -17,25 +16,27 @@ const ProductListPage = () => {
   const {
     productList,
     isLoading,
+    isFetching,
     fetchNextPage,
-    errorState,
     handleChangeCategory,
     handleChangeSort,
     order,
     category,
+    hasNextPage,
   } = useProductList();
-  const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems();
+  const { cartItems } = useCartItems();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   return (
     <InfinityScrollContainer
       isLoading={isLoading}
       fetchNextPage={fetchNextPage}
-      isError={errorState.isError}
+      hasNextPage={hasNextPage}
+      isFetching={isFetching}
       bottomRef={bottomRef}
     >
       <Styled.PageContainer>
-        <Header cartCount={cartItems.length} />
+        <Header cartCount={cartItems?.length} />
         <Styled.CommonContainer>
           <Title title="상품 목록" />
           <Styled.DropdownContainer>
@@ -48,17 +49,14 @@ const ProductListPage = () => {
           </Styled.DropdownContainer>
 
           <ProductCardList
+            isFetching={isFetching}
             productList={productList}
-            handleAddCartItem={handleAddCartItem}
-            handleDeleteCartItem={handleDeleteCartItem}
-            matchCartItem={matchCartItem}
             isLoading={isLoading}
           />
 
           <div ref={bottomRef} style={{ height: 100 }}></div>
         </Styled.CommonContainer>
       </Styled.PageContainer>
-      <Toast isError={errorState.isError} errorMessage={errorState.errorMessage} />
     </InfinityScrollContainer>
   );
 };

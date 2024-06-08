@@ -1,72 +1,47 @@
-import { useEffect, useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import useProductFilter from './useProductFilter';
 
 import { fetchProductList } from '@/api/product';
-import { Product } from '@/types/product';
-import CustomError from '@/utils/error';
+import { PRODUCT_DATA_SIZE } from '@/constants/productData';
+import { ProductResponse } from '@/types/product';
 
 const useProductList = () => {
-  const [productList, setProductList] = useState<Product[]>([]);
-  const [page, setPage] = useState(0);
-  const [isLastPage, setIsLastPage] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorState, setErrorState] = useState({ name: '', isError: false, errorMessage: '' });
+  const { category, order, handleChangeCategory, handleChangeSort } = useProductFilter();
 
-  const { category, order, handleChangeCategory, handleChangeSort } = useProductFilter({
-    resetPage: () => setPage(0),
-  });
+  const getDataSize = (page: number) =>
+    page === 0 ? PRODUCT_DATA_SIZE.firstPage : PRODUCT_DATA_SIZE.nextPage;
 
-  const fetchNextPage = () => {
-    const nextPage = page === 0 ? 5 : 1;
-    if (isLastPage) return;
-
-    setPage((prevPage) => prevPage + nextPage);
-  };
-
-  useEffect(() => {
-    const getProductList = async () => {
-      try {
-        setIsLoading(true);
-        const limit = page === 0 ? 20 : 4;
-        const { content, last } = await fetchProductList({
-          page,
+  const { data, isFetching, fetchNextPage, hasNextPage, isLoading } =
+    useInfiniteQuery<ProductResponse>({
+      queryKey: ['fetchProductList', { category, order }],
+      queryFn: ({ pageParam }) =>
+        fetchProductList({
+          page: pageParam as number,
           category: category.value,
-          size: limit,
+          size: getDataSize(pageParam as number),
           sortOptions: order.value,
-        });
-        if (last) {
-          setIsLastPage(true);
-        } else {
-          setIsLastPage(false);
-        }
-        page === 0 ? setProductList(content) : setProductList((prev) => [...prev, ...content]);
-        setErrorState({ name: '', errorMessage: '', isError: false });
-      } catch (error) {
-        if (error instanceof CustomError) {
-          const message = error.message;
-          const name = error.name;
+        }),
+      initialPageParam: 0,
+      getNextPageParam: (currentPage, allPages) => {
+        const nextPage = allPages.length;
+        return currentPage.last ? null : nextPage;
+      },
+      retry: 3,
+    });
 
-          setErrorState({ name, isError: true, errorMessage: message });
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getProductList();
-  }, [page, category, order]);
+  const productList = data?.pages.flatMap((page) => page.content) || [];
 
   return {
-    productList,
-    page,
-    fetchNextPage,
+    hasNextPage,
+    isFetching,
     isLoading,
+    productList,
+    fetchNextPage,
     handleChangeCategory,
     handleChangeSort,
     category,
     order,
-    errorState,
   };
 };
 
