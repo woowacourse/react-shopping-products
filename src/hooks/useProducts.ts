@@ -30,7 +30,7 @@ export default function useProducts({
   const size = page === RULE.initialPage ? RULE.initialSize : RULE.nextSize;
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", sort, category],
     queryFn: () =>
       getProducts({
         category: category === "all" ? undefined : category,
