@@ -1,7 +1,7 @@
 import * as Styled from './CartToggleButton.styled';
 
 import { IMAGES } from '@/assets';
-import { CartItemQuantity } from '../common/adjustQuantityButton/AdjustQuantityButton';
+import { AdjustQuantityButton } from '../common/adjustQuantityButton/AdjustQuantityButton';
 import useCartItems from '@/hooks/useCartItems';
 import { useToast } from '@/hooks/useToast';
 
@@ -11,31 +11,13 @@ interface CartItemButtonProp {
 
 const CartToggleButton = ({ productId }: CartItemButtonProp) => {
   const { toastError } = useToast();
-  const { cartItems, addCartItemMutation, adjustCartItemQuantityMutation, matchCartItem } =
-    useCartItems();
-  const cartItemQuantity = matchCartItem(productId)?.quantity;
-  const cartItemId = matchCartItem(productId)?.id;
-
-  const handleAdjustQuantity = (quantity: number) => {
-    if (!cartItemId) return;
-    adjustCartItemQuantityMutation({
-      cartItemId: cartItemId,
-      quantity: quantity,
-    });
-  };
+  const { cartItems, addCartItemMutation, matchCartItem } = useCartItems();
 
   return (
     <>
       {matchCartItem(productId) ? (
         <Styled.HandleCartItemButton $isInCart={true}>
-          <CartItemQuantity
-            handlePlusButton={() => {
-              cartItemQuantity && handleAdjustQuantity(cartItemQuantity + 1);
-            }}
-            handleMinusButton={() => cartItemQuantity && handleAdjustQuantity(cartItemQuantity - 1)}
-          >
-            {cartItemQuantity}
-          </CartItemQuantity>
+          <AdjustQuantityButton productId={productId} />
         </Styled.HandleCartItemButton>
       ) : (
         <Styled.HandleCartItemButton
