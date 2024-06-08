@@ -14,7 +14,7 @@ import { CATEGORY_LIST, SORTING_LIST } from '../../constants/optionList';
 import * as S from './ProductListPage.style';
 
 import EmptyCart from '../../assets/EmptyCart.png';
-import Loading from '../../assets/loading.gif';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const ProductListPage = () => {
   const { category, sort, handleCategory, handleSort } = useFilterAndSort();
@@ -53,11 +53,7 @@ const ProductListPage = () => {
           </S.EmptyProductContainer>
         )}
 
-        {isAddPageAble && (
-          <S.LoadingWrapper ref={targetRef}>
-            {loading && <S.LoadingSpinner src={Loading} alt="로딩 스피너" />}
-          </S.LoadingWrapper>
-        )}
+        {isAddPageAble && <S.LoadingWrapper ref={targetRef}>{loading && <LoadingSpinner />}</S.LoadingWrapper>}
       </Layout.Content>
 
       <FloatingButton />
