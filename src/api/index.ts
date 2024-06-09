@@ -1,4 +1,4 @@
-import { CartItemType, ProductType } from '../types';
+import { CartItemType, ProductsResponseType } from '../types';
 import { generateBasicToken } from './auth';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -50,7 +50,9 @@ interface FetchProductsParams {
  * fetchCartItems - API에서 상품 목록을 fetch합니다.
  * @returns {Promise<ProductType[]>}
  */
-export async function fetchProducts(params: FetchProductsParams = {}): Promise<ProductType[]> {
+export async function fetchProducts(
+  params: FetchProductsParams = {},
+): Promise<ProductsResponseType> {
   const queryParams = Object.entries(params)
     .filter(([key, value]) => {
       return !(key === 'category' && value === 'all');
@@ -63,7 +65,7 @@ export async function fetchProducts(params: FetchProductsParams = {}): Promise<P
   });
   const data = await response.json();
 
-  return data.content;
+  return data;
 }
 
 /**
