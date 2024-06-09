@@ -103,3 +103,21 @@
 .infinityScrollTarget {
   height: 10px;
 }
+
+.productQuantityContainer {
+  height: 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.productQuantityText {
+  width: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  text-align: center;
+  color: rgba(10, 13, 19, 1);
+}
