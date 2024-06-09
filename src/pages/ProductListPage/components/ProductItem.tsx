@@ -1,5 +1,5 @@
 import { HtmlHTMLAttributes } from 'react';
-import { CartItemType } from '@/types';
+import { CartItemType, ProductType } from '@/types';
 import useAddCartItem from '@/hooks/useAddCartItem';
 import useDeleteCartItem from '@/hooks/useDeleteCartItem';
 import useCartItemQuantity from '@/hooks/useCartItemQuantity';
@@ -7,25 +7,17 @@ import Stepper from '@/components/Stepper/Stepper';
 import ProductSelectButton from './ProductSelectButton';
 import styles from '../ProductListPage.module.css';
 
-type productType = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-};
-
 interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
-  item: productType;
+  product: ProductType;
   cartItem: CartItemType;
 }
 
-const ProductItem = ({ item, cartItem }: Props) => {
+const ProductItem = ({ product, cartItem }: Props) => {
   const { addCartItem } = useAddCartItem();
   const { deleteCartItem } = useDeleteCartItem();
   const { decreaseCartItemQuantity, increaseCartItemQuantity } = useCartItemQuantity();
 
-  const { name, price, imageUrl } = item;
+  const { name, price, imageUrl } = product;
   const isInCart = cartItem ? true : false;
 
   return (
@@ -47,7 +39,7 @@ const ProductItem = ({ item, cartItem }: Props) => {
           <ProductSelectButton
             isSelected={isInCart}
             onClick={() => {
-              cartItem ? deleteCartItem(cartItem.id) : addCartItem(item.id);
+              cartItem ? deleteCartItem(cartItem.id) : addCartItem(product.id);
             }}
           />
         )}

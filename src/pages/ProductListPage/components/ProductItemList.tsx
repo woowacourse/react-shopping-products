@@ -30,15 +30,15 @@ const ProductItemList = ({ selectBarCondition, cartItems }: Props) => {
     <>
       <div className={styles.productItemListContainer}>
         {products.length === 0 && !isProductsQueryFetching && <div>상품 목록이 비었어요.</div>}
-        {products.map((item, idx) => {
+        {products.map((product, idx) => {
           const cartItem = cartItems.find((cartItem) => {
-            return cartItem.product.id === item.id;
+            return cartItem.product.id === product.id;
           });
 
           return (
             <ProductItem
-              key={`item-${item.id}-${idx}`}
-              item={item}
+              key={`item-${product.id}-${idx}`}
+              product={product}
               cartItem={cartItem as CartItemType}
             />
           );
