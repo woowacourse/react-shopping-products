@@ -21,7 +21,7 @@ const useFetchDeleteCart = () => {
       await deleteItem(cartItemToDelete.id);
     },
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.deleteCartItem] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
     },
   });
 
