@@ -1,4 +1,4 @@
-import { useCartItem, useProducts, useIntersectionObserver } from "../../hooks";
+import { useCartItems, useProducts, useIntersectionObserver } from "../../hooks";
 import { NavigationBar, SelectBox, ProductItemContainer, APIErrorToast } from "../../components";
 
 import {
@@ -26,7 +26,7 @@ export default function ProductPage() {
     handleRemoveCartItem,
     selectedCartItemsLength,
     checkIsInCart,
-  } = useCartItem();
+  } = useCartItems();
 
   const observerRef = useIntersectionObserver<HTMLDivElement>({
     onIntersect: fetchNextPage,
