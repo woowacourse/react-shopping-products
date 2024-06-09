@@ -1,4 +1,3 @@
-import { ToggleCartItemProvider } from "./components/provider/ToggleCartItemProvider";
 import { useToast } from "./components/provider/ToastProvider";
 import { LanguageProvider } from "./components/provider/LanguageProvider";
 import { ModalProvider } from "easy-payments-ui";
@@ -22,11 +21,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <ToggleCartItemProvider>
-          <ModalProvider>
-            <Mall />
-          </ModalProvider>
-        </ToggleCartItemProvider>
+        <ModalProvider>
+          <Mall />
+        </ModalProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );
