@@ -14,9 +14,29 @@ import {
 import useCartItems from "../../hooks/useCartItems";
 
 export const CartItem = ({ cartItem }: { cartItem: Cart }) => {
-  const { cartItems, handleRemoveCartItem } = useCartItems();
+  const { cartItems, handleRemoveCartItem, handlePatchCartItem } = useCartItems();
   const targetCartItem = cartItems.find((item) => item.id === cartItem.id);
   const productCount = targetCartItem ? targetCartItem.quantity : 1;
+
+  const handleIncrement = async () => {
+    try {
+      const newQuantity = productCount + 1;
+      handlePatchCartItem(cartItem.product.id, newQuantity);
+    } catch (error) {
+      console.error("Failed to increment cart item productCount:", error);
+    }
+  };
+
+  const handleDecrement = async () => {
+    try {
+      if (productCount === 1) return;
+
+      const newQuantity = Math.max(productCount - 1, 1);
+      handlePatchCartItem(cartItem.product.id, newQuantity);
+    } catch (error) {
+      console.error("Failed to decrement cart item productCount:", error);
+    }
+  };
 
   return (
     <Container>
@@ -33,9 +53,9 @@ export const CartItem = ({ cartItem }: { cartItem: Cart }) => {
           </div>
 
           <ProductItemAmountGroup>
-            <CountButton type="minus" onClick={() => {}} />
+            <CountButton type="minus" onClick={handleDecrement} />
             <ProductCount>{productCount}</ProductCount>
-            <CountButton type="plus" onClick={() => {}} />
+            <CountButton type="plus" onClick={handleIncrement} />
           </ProductItemAmountGroup>
         </ProductItemContent>
       </ProductItemBundle>
