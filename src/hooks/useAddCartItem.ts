@@ -3,9 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addCartItem } from '../apis/carItems';
 import { QUERY_KEYS } from '../apis/config';
 import { CartItemListResponse } from '../types/type';
+import { useToast } from '../store/ToastProvider';
 
 export default function useAddCartItem() {
   const queryClient = useQueryClient();
+  const { addToast } = useToast();
 
   return useMutation({
     mutationFn: addCartItem,
@@ -23,7 +25,7 @@ export default function useAddCartItem() {
             ...prev,
             content: [
               ...prev?.content,
-              { product: { id: productId }, quantity: 1 },
+              { product: { id: productId }, quantity },
             ],
           },
       );
@@ -31,13 +33,13 @@ export default function useAddCartItem() {
       return { previousCartItemList };
     },
 
-    onError(error, cartItems, context: any) {
-      console.log(error);
-
+    onError(error, _, context: any) {
       queryClient.setQueryData(
         [QUERY_KEYS.CART_ITEMS],
         context.previousCartItemList,
       );
+
+      addToast(error.message);
     },
 
     onSettled() {

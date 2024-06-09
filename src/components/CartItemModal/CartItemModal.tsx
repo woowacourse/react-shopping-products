@@ -1,9 +1,12 @@
 import { CustomModal } from 'woowacourse-todari-components';
+import { useEffect } from 'react';
 
 import ContentRow from '../common/ContentRow/ContentRow';
 import useCartItemList from '../../hooks/useCartItemList';
 import CartItemList from '../CartItemList/CartItemList';
 import EmptyCartFallback from '../EmptyCartFallback/EmptyCartFallback';
+import { useToast } from '../../store/ToastProvider';
+import Spinner from '../common/Spinner/Spinner';
 
 import * as S from './CartItemModal.style';
 
@@ -18,6 +21,14 @@ function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
     error: cartItemListError,
     isFetching: isCartItemListFetching,
   } = useCartItemList();
+
+  const { addToast } = useToast();
+
+  useEffect(() => {
+    if (cartItemListError) {
+      addToast(cartItemListError.message);
+    }
+  }, [cartItemListError]);
 
   const price = cartItemListData?.content.reduce((acc, cartItem) => {
     return acc + cartItem.quantity * cartItem.product.price;
@@ -36,14 +47,16 @@ function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
       }}
     >
       <S.ModalContent>
-        {cartItemListData?.content.length === 0 ? (
+        {isCartItemListFetching ? (
+          <Spinner height="100%" />
+        ) : cartItemListData?.content.length === 0 ? (
           <EmptyCartFallback />
         ) : (
           <>
             <CartItemList cartItemList={cartItemListData?.content ?? []} />
             <ContentRow
               title="총 결제 금액"
-              content={`${price?.toLocaleString('ko-kr')}원`}
+              content={`${price?.toLocaleString('ko-kr') ?? 0}원`}
             />
           </>
         )}

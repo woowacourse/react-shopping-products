@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useRef, useState } from 'react';
+
 import Toast from '../components/common/Toast/Toast';
 import ToastGroup from '../components/common/ToastGroup/ToastGroup';
 
@@ -26,7 +27,7 @@ interface ToastInfo {
   date: Date;
 }
 
-export const ToastProvider = ({ children }: ToastProviderProps) => {
+export function ToastProvider({ children }: ToastProviderProps) {
   const counter = useRef(0);
   const [toasts, setToasts] = useState<ToastInfo[]>([]);
 
@@ -53,4 +54,4 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
       {children}
     </ToastContext.Provider>
   );
-};
+}

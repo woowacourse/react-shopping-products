@@ -6,6 +6,7 @@ import { Category, Product, Sort } from '../../types/type';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../common/Spinner/Spinner';
 import useCartItemList from '../../hooks/useCartItemList';
+import { useToast } from '../../store/ToastProvider';
 
 import * as S from './ProductItemList.style';
 
@@ -20,21 +21,29 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     error: productListError,
     fetchNextPage,
     hasNextPage,
-    isFetching: isProductListFetching,
+    isFetching,
     isFetchingNextPage,
   } = useProductList({
     category,
     sort,
   });
 
-  const {
-    data: cartItemListData,
-    error: cartItemListError,
-    isFetching: isCartItemListFetching,
-  } = useCartItemList();
+  const { data: cartItemListData, error: cartItemListError } =
+    useCartItemList();
+
+  const { addToast } = useToast();
 
   const target = useRef(null);
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
+
+  useEffect(() => {
+    if (productListError) {
+      addToast(productListError.message);
+    }
+    if (cartItemListError) {
+      addToast(cartItemListError.message);
+    }
+  }, [productListError, cartItemListError]);
 
   useEffect(() => {
     if (target.current === null) return;
@@ -43,23 +52,29 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     if (productListData?.pages.length === 0 || !hasNextPage) {
       unobserve(target.current);
     }
-  }, [productListData?.pages, observe, unobserve, hasNextPage]);
+  }, [productListData?.pages, , observe, unobserve, hasNextPage]);
 
   return (
     <>
-      <S.ProductList>
-        {productListData?.pages.map((page) =>
-          page.content.map((product: Product) => (
-            <ProductItem
-              key={`${product.id}`}
-              product={product}
-              cartItemList={cartItemListData?.content ?? []}
-            />
-          )),
-        )}
-      </S.ProductList>
-      <div ref={target} style={{ height: '1px' }} />
-      {isFetchingNextPage && <Spinner />}
+      {isFetching ? (
+        <Spinner height="80vh" />
+      ) : (
+        <>
+          <S.ProductList>
+            {productListData?.pages.map((page) =>
+              page.content.map((product: Product) => (
+                <ProductItem
+                  key={`${product.id}`}
+                  product={product}
+                  cartItemList={cartItemListData?.content ?? []}
+                />
+              )),
+            )}
+          </S.ProductList>
+          <div ref={target} style={{ height: '1px' }} />
+          {isFetchingNextPage && <Spinner height="fit-content" />}
+        </>
+      )}
     </>
   );
 }
