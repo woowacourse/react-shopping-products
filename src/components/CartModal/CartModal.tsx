@@ -31,7 +31,7 @@ const CartModal = ({ cartItems, isOpen, handleToggle }: Props) => {
     >
       <Modal.ModalHeader title="장바구니" style={{ paddingBottom: '24px' }} />
 
-      <Modal.ModalContent>
+      <Modal.ModalContent style={{ maxHeight: '60vh' }}>
         {cartItems.length === 0 && <div>장바구니가 비었어요.</div>}
         {cartItems.map((cartItem) => {
           return (
