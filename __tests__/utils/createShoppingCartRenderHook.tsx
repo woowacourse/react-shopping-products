@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import useShoppingCart from '../../src/hooks/cartItem/useShoppingCart';
 import usePostShoppingCart from '../../src/queries/shoppingCart/usePostShoppingCart';
-import useDeleteCartItem from '../../src/hooks/cartItem/useDeleteCartItem';
+import useDeleteShoppingCart from '../../src/queries/shoppingCart/useDeleteCartItem';
 import useUpdateItemQuantity from '../../src/hooks/cartItem/useUpdateItemQuantity';
 import { wrapper } from './createProductsRenderHook';
 
@@ -10,7 +10,7 @@ export const createShoppingCartRenderHook = () =>
     () => {
       const { cartItems, addedShoppingCartLength } = useShoppingCart();
       const { addShoppingCart } = usePostShoppingCart(() => {});
-      const { deleteShoppingCartItem } = useDeleteCartItem();
+      const { deleteShoppingCartItem } = useDeleteShoppingCart(() => {});
       const { onIncreaseItemQuantity, onDecreaseItemQuantity } = useUpdateItemQuantity(() => {});
 
       return {
