@@ -2,7 +2,7 @@ import { Item } from '@/types/index';
 import { ENDPOINT } from './endpoints';
 
 import { fetchWithoutAuth } from './utils/fetchClient';
-import fetchWithErrorCheck from './utils/fetchWithErrorHandling';
+import fetchWithErrorCheck from './utils/fetchWithErrorCheck';
 
 export interface getProductListProps {
   page?: number;
