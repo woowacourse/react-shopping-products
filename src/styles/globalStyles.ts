@@ -26,7 +26,7 @@ const globalStyles = () => css`
   }
 
   #modal-portal-root {
-    position: absolute;
+    position: fixed;
     left: 50%;
     transform: translate(-50%, 0);
     width: 430px;
