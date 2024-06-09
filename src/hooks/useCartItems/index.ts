@@ -1,8 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { fetchAddCartItem, fetchDeleteCartItem, fetchCartItems } from '../../api/cartItems';
+import {
+  fetchAddCartItem,
+  fetchDeleteCartItem,
+  fetchCartItems,
+  fetchAdjustCartItemQuantity,
+} from '../../api/cartItems';
 
 import { MAX_CART_ITEMS_SIZE } from '../../constants/pagination';
+import { FetchAdjustCartItemQuantityProps } from '../../types/cart';
 
 const useCartItems = () => {
   const queryClient = useQueryClient();
@@ -31,7 +37,7 @@ const useCartItems = () => {
   });
 
   const deleteCartItem = useMutation({
-    mutationFn: (cartId: number) => fetchDeleteCartItem(cartId),
+    mutationFn: (cartItemId: number) => fetchDeleteCartItem(cartItemId),
     networkMode: 'always',
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cartItems'] });
@@ -43,10 +49,25 @@ const useCartItems = () => {
     },
   });
 
+  const adjustCartItemQuantity = useMutation({
+    mutationFn: ({ cartItemId, quantity }: FetchAdjustCartItemQuantityProps) =>
+      fetchAdjustCartItemQuantity({ cartItemId, quantity }),
+    networkMode: 'always',
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cartItems'] });
+    },
+    onError: () => {
+      setTimeout(() => {
+        adjustCartItemQuantity.reset();
+      }, 2000);
+    },
+  });
+
   return {
     getCartItems,
     addCartItem,
     deleteCartItem,
+    adjustCartItemQuantity,
   };
 };
 

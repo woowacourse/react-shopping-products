@@ -17,7 +17,8 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
-  const { getCartItems, addCartItem, deleteCartItem } = useContext(UseCartItemsContext);
+  const { getCartItems, addCartItem, deleteCartItem, adjustCartItemQuantity } =
+    useContext(UseCartItemsContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const cartItem = getCartItems.data
@@ -35,14 +36,34 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
     });
   };
 
-  const handleRemoveFromCart = () => {
+  const handleDecreaseCartItemQuantity = () => {
     setIsLoading(true);
 
-    if (cartItem) {
-      deleteCartItem.mutate(cartItem.id, {
+    if (cartItem?.quantity === 1) {
+      return deleteCartItem.mutate(cartItem.id, {
         onError: () => setIsLoading(false),
       });
     }
+
+    if (cartItem)
+      adjustCartItemQuantity.mutate(
+        { cartItemId: cartItem.id, quantity: cartItem.quantity - 1 },
+        {
+          onError: () => setIsLoading(false),
+        },
+      );
+  };
+
+  const handleIncreaseCartItemQuantity = () => {
+    setIsLoading(true);
+
+    if (cartItem)
+      adjustCartItemQuantity.mutate(
+        { cartItemId: cartItem.id, quantity: cartItem.quantity + 1 },
+        {
+          onError: () => setIsLoading(false),
+        },
+      );
   };
 
   useEffect(() => {
@@ -71,7 +92,7 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
           )}
           {isInCart && (
             <SelectButtonContainer>
-              <SelectButton onClick={handleRemoveFromCart}>
+              <SelectButton onClick={handleDecreaseCartItemQuantity}>
                 <img
                   src={cartItem.quantity === 1 ? REMOVE_BUTTON : MINUS_BUTTON}
                   alt={cartItem.quantity === 1 ? '삭제' : '빼기'}
@@ -83,7 +104,7 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
                   <Spinner />
                 </S.QuantityText>
               )}
-              <SelectButton onClick={handleRemoveFromCart}>
+              <SelectButton onClick={handleIncreaseCartItemQuantity}>
                 <img src={PLUS_BUTTON} alt={'더하기'} />
               </SelectButton>
             </SelectButtonContainer>
