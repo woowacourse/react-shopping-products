@@ -3,15 +3,23 @@ import * as PL from "./ProductList.style";
 import { Fragment } from "react/jsx-runtime";
 import useProducts from "../../hooks/useProducts";
 import ProductListHeader from "./ProductListHeader/ProductListHeader";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 const ProductList = () => {
   const {
     data,
     isFetching,
-    lastProductElementRef,
+    hasNextPage,
+    fetchNextPage,
     handleCategory,
     handleSort,
   } = useProducts();
+
+  const { lastElementRef: lastProductElementRef } = useInfiniteScroll({
+    hasMore: hasNextPage,
+    loading: isFetching,
+    nextPage: fetchNextPage,
+  });
 
   return (
     <>

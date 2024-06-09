@@ -1,25 +1,29 @@
 import { useState } from "react";
 import { getProducts } from "../api";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import useInfiniteScroll from "./useInfiniteScroll";
 import { QUERY_KEYS } from "../constants/queryKeys";
 
 export default function useProducts() {
   const { category, sort, handleCategory, handleSort } = useProductSelect();
 
-  const { data, isFetching, hasNextPage, fetchNextPage } =
-    useProductsInfiniteQuery(category, sort);
-
-  const { lastElementRef: lastProductElementRef } = useInfiniteScroll({
-    hasMore: hasNextPage,
-    loading: isFetching,
-    nextPage: fetchNextPage,
-  });
+  const {
+    data,
+    status,
+    isFetching,
+    isPending,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useProductsInfiniteQuery(category, sort);
 
   return {
     data,
     isFetching,
-    lastProductElementRef,
+    isFetchingNextPage,
+    isPending,
+    status,
+    hasNextPage,
+    fetchNextPage,
     handleCategory,
     handleSort,
   };
@@ -41,7 +45,7 @@ const useProductSelect = () => {
 };
 
 const useProductsInfiniteQuery = (category: Category | "all", sort: Sort) => {
-  const { isFetching, data, hasNextPage, fetchNextPage } = useInfiniteQuery({
+  return useInfiniteQuery({
     queryKey: [QUERY_KEYS.getProducts, category, sort],
     queryFn: ({ pageParam }) =>
       getProducts({
@@ -56,11 +60,4 @@ const useProductsInfiniteQuery = (category: Category | "all", sort: Sort) => {
       return lastPage.pageable.pageNumber + 1;
     },
   });
-
-  return {
-    data,
-    isFetching,
-    hasNextPage,
-    fetchNextPage,
-  };
 };
