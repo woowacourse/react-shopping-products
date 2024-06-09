@@ -1,6 +1,7 @@
+import { useContext } from 'react';
+
 import { Modal } from 'simodal';
 import ShoppingCartItems from '../ShoppingCartItems';
-import { useContext } from 'react';
 import { UseCartItemsContext } from '../../App';
 import ShoppingCartItem from '../ShoppingCartItem';
 import TotalPaymentAmount from '../TotalPaymentAmount';
