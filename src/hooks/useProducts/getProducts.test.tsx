@@ -29,6 +29,10 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 describe('getProducts', () => {
+  beforeEach(() => {
+    queryClient.clear();
+  });
+
   describe('첫 페이지 상품 목록 조회', () => {
     it(`첫 페이지에서는 상품 목록 ${FIRST_PAGE_SIZE}개를 조회한다.`, async () => {
       const { result } = renderHook(() => useProducts(), { wrapper });
@@ -73,7 +77,6 @@ describe('getProducts', () => {
     });
 
     it('모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.', async () => {
-      queryClient.clear();
       const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
@@ -105,7 +108,6 @@ describe('getProducts', () => {
     });
 
     it('페이지네이션으로 추가 데이터를 불러오는 중 발생하는 server error의 경우 "error"를 가지고 isError 값을 "true"로 세팅한다.', async () => {
-      queryClient.clear();
       const { result } = renderHook(() => useProducts(), { wrapper });
 
       act(() => {
