@@ -2,7 +2,6 @@ import Button from '../common/Button/Button';
 import Divider from '../common/Divider/Divider';
 import QuantityStepper from '../common/QuantityStepper/QuantityStepper';
 import { CartItem } from '../../types/type';
-import useAddCartItem from '../../hooks/useAddCartItem';
 import useDeleteCartItem from '../../hooks/useDeleteCartItem';
 import usePatchCartItem from '../../hooks/usePatchCartItem';
 

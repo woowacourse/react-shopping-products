@@ -1,6 +1,8 @@
-import * as S from './Toast.style';
-import { Notice } from '../../../assets';
 import { useEffect } from 'react';
+
+import { Notice } from '../../../assets';
+
+import * as S from './Toast.style';
 
 interface ToastProps {
   message: string;

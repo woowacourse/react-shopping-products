@@ -4,6 +4,7 @@ import ContentRow from '../common/ContentRow/ContentRow';
 import useCartItemList from '../../hooks/useCartItemList';
 import CartItemList from '../CartItemList/CartItemList';
 import EmptyCartFallback from '../EmptyCartFallback/EmptyCartFallback';
+
 import * as S from './CartItemModal.style';
 
 interface CartItemModalProps {

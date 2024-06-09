@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 
 import * as S from './ToastGroup.style';
-import { createPortal } from 'react-dom';
 
 interface ToastGroupProps {
   children: ReactNode;

@@ -6,7 +6,7 @@ interface DropdownOptionsProps<T> {
   handleToggleDropdown: () => void;
 }
 
-const DropdownOptions = <T extends {}>(props: DropdownOptionsProps<T>) => {
+function DropdownOptions<T extends {}>(props: DropdownOptionsProps<T>) {
   const { optionList, changeOption, handleToggleDropdown } = props;
 
   const handleOnClick = (option: [T, string]) => {
@@ -28,6 +28,6 @@ const DropdownOptions = <T extends {}>(props: DropdownOptionsProps<T>) => {
       })}
     </S.Container>
   );
-};
+}
 
 export default DropdownOptions;
