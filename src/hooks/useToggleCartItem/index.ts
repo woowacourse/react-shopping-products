@@ -13,7 +13,7 @@ export interface ToggleCartItemReturns {
   removeMutation: UseMutationResult<any, Error, number, unknown>;
   addMutation: UseMutationResult<any, Error, number, unknown>;
   isLoading: boolean;
-  queryError: unknown;
+  isError: boolean;
 }
 
 const useToggleCartItem = (): ToggleCartItemReturns => {
@@ -22,7 +22,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
   const {
     data: cartItems,
     isLoading,
-    error,
+    isError,
   } = useQuery<ICartItem[]>({
     queryKey: [QUERY_KEYS.cartItem],
     queryFn: getCartItems,
@@ -55,7 +55,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
     isLoading,
     removeMutation,
     addMutation,
-    queryError: error,
+    isError,
   };
 };
 

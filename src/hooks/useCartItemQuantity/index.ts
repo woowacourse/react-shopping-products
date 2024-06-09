@@ -8,11 +8,11 @@ import QUERY_KEYS from "../../constants/queryKeys";
 function useCartItemQuantity() {
   const queryClient = useQueryClient();
 
-  const {
-    data: cartItems,
-    isLoading,
-    error,
-  } = useQuery<ICartItem[]>({ queryKey: [QUERY_KEYS.cartItem], queryFn: getCartItems, staleTime: 30 * 1000 });
+  const { data: cartItems, isLoading } = useQuery<ICartItem[]>({
+    queryKey: [QUERY_KEYS.cartItem],
+    queryFn: getCartItems,
+    staleTime: 30 * 1000,
+  });
 
   const updateQuantityMutation = useMutation({
     mutationFn: (item: { cartId: number; quantity: number }) => modifyCartItem(item.cartId, item.quantity),
@@ -65,7 +65,6 @@ function useCartItemQuantity() {
     decreaseQuantity,
     deleteItemMutation,
     isLoading,
-    error,
   };
 }
 

@@ -59,7 +59,7 @@ describe("useProduct 훅 테스트", () => {
       });
 
       await waitFor(() => {
-        expect(result.current.error).toBeTruthy();
+        expect(result.current.isError).toBe(true);
         expect(result.current.isLoading).toBe(false);
       });
     });
