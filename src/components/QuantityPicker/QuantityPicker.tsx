@@ -17,7 +17,7 @@ const QuantityPicker = ({
 }: QuantityPickerProps) => {
   const { quantity: initialQuantity } = useCartItemStatus(productId);
   const [quantity, setQuantity] = useState(initialQuantity);
-  const { cartItemQuantityMutaion } = usePatchCartItem();
+  const { cartItemQuantityMutation } = usePatchCartItem();
 
   useEffect(() => {
     setQuantity(initialQuantity);
@@ -30,13 +30,13 @@ const QuantityPicker = ({
       } else if (quantity > 1) {
         const newQuantity = Math.max(0, quantity - 1);
         setQuantity(newQuantity);
-        cartItemQuantityMutaion.mutate({
+        cartItemQuantityMutation.mutate({
           cartItemId,
           quantity: newQuantity,
         });
       }
     } else {
-      cartItemQuantityMutaion.mutate({
+      cartItemQuantityMutation.mutate({
         cartItemId,
         quantity: Math.max(0, quantity - 1),
       });
@@ -46,7 +46,7 @@ const QuantityPicker = ({
   const handleIncreaseQuantity = () => {
     const newQuantity = Math.min(100, quantity + 1);
     setQuantity(newQuantity);
-    cartItemQuantityMutaion.mutate({
+    cartItemQuantityMutation.mutate({
       cartItemId,
       quantity: newQuantity,
     });

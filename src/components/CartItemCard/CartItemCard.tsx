@@ -21,10 +21,10 @@ interface CartItemCardProps {
 const CartItemCard: React.FC<CartItemCardProps> = ({
   cartItem: { id, product },
 }) => {
-  const { delelteCartMutation } = useDeleteCartItem();
+  const { deleteCartMutation } = useDeleteCartItem();
 
   const handleRemoveCartItem = () => {
-    delelteCartMutation.mutate(id);
+    deleteCartMutation.mutate(id);
   };
 
   return (

@@ -7,7 +7,7 @@ const usePatchCartItem = () => {
   const queryClient = useQueryClient();
   const { createToast } = useToast();
 
-  const cartItemQuantityMutaion = useMutation({
+  const cartItemQuantityMutation = useMutation({
     mutationFn: async ({
       cartItemId,
       quantity,
@@ -31,7 +31,7 @@ const usePatchCartItem = () => {
     },
   });
 
-  return { cartItemQuantityMutaion };
+  return { cartItemQuantityMutation };
 };
 
 export default usePatchCartItem;

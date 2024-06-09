@@ -7,7 +7,7 @@ const useDeleteCartItem = () => {
   const queryClient = useQueryClient();
   const { createToast } = useToast();
 
-  const delelteCartMutation = useMutation({
+  const deleteCartMutation = useMutation({
     mutationFn: (cartItemId: number) => deleteCartItem(cartItemId),
 
     onSuccess: () => {
@@ -23,7 +23,7 @@ const useDeleteCartItem = () => {
     },
   });
 
-  return { delelteCartMutation };
+  return { deleteCartMutation };
 };
 
 export default useDeleteCartItem;

@@ -16,7 +16,7 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
   const { isInCart } = useCartItemStatus(productId);
   const { cartItemList } = useFetchCartItems();
   const { addToCartMutation } = usePostCartItem();
-  const { delelteCartMutation } = useDeleteCartItem();
+  const { deleteCartMutation } = useDeleteCartItem();
   const { quantity } = useCartItemStatus(productId);
   const cartItem = cartItemList.find(
     (cartItem) => cartItem.product.id === productId,
@@ -24,7 +24,7 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
 
   const handleRemoveCartItem = () => {
     if (cartItem) {
-      delelteCartMutation.mutate(cartItem.id);
+      deleteCartMutation.mutate(cartItem.id);
     }
   };
 
