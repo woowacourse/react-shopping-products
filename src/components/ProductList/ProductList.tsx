@@ -1,24 +1,17 @@
-import useProducts from "../../hooks/useProducts";
-import ProductListHeader from "../ProductListHeader/ProductListHeader";
 import ProductItem from "./ProductItem/ProductItem";
 import * as PL from "./ProductList.style";
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
-import usePagination from "../../hooks/usePagination";
+import { Fragment } from "react/jsx-runtime";
+import useProducts from "../../hooks/useProducts";
+import ProductListHeader from "../ProductListHeader/ProductListHeader";
 
 const ProductList = () => {
-  const { page, nextPage, resetPage } = usePagination();
-
-  const { products, loading, hasMore, handleCategory, handleSort } =
-    useProducts({
-      page,
-      resetPage,
-    });
-
-  const { lastElementRef: lastProductElementRef } = useInfiniteScroll({
-    hasMore,
-    loading,
-    nextPage,
-  });
+  const {
+    data,
+    isFetching,
+    lastProductElementRef,
+    handleCategory,
+    handleSort,
+  } = useProducts();
 
   return (
     <>
@@ -26,24 +19,29 @@ const ProductList = () => {
         handleCategory={handleCategory}
         handleSort={handleSort}
       />
-      {!loading && products.length === 0 ? (
+      {!data ? (
         <PL.Empty>상품이 존재하지 않습니다! 🥲</PL.Empty>
       ) : (
         <PL.ProductListStyle>
-          {products.map((item, index) => {
-            return (
-              <ProductItem
-                product={item}
-                key={item.id}
-                ref={
-                  index === products.length - 1 ? lastProductElementRef : null
-                }
-              />
-            );
-          })}
+          {data.pages.map((page, i) => (
+            <Fragment key={i}>
+              {page.content.map((product: Product, index: number) => (
+                <ProductItem
+                  product={product}
+                  key={product.id}
+                  ref={
+                    i === data.pages.length - 1 &&
+                    index === page.content.length - 1
+                      ? lastProductElementRef
+                      : null
+                  }
+                />
+              ))}
+            </Fragment>
+          ))}
         </PL.ProductListStyle>
       )}
-      {loading && <PL.Loading>로딩중! 💪</PL.Loading>}
+      {isFetching && <PL.Loading>로딩중! 💪</PL.Loading>}
     </>
   );
 };

@@ -1,86 +1,65 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getProducts } from "../api";
-import { useErrorContext } from "./useErrorContext";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import useInfiniteScroll from "./useInfiniteScroll";
 
-interface UseProductsResult {
-  products: Product[];
-  loading: boolean;
-  hasMore: boolean;
-  handleCategory: (category: Category | "all") => void;
-  handleSort: (sort: Sort) => void;
-}
+export default function useProducts() {
+  const { category, sort, handleCategory, handleSort } = useProductSelect();
 
-interface UseProductsProps {
-  page: number;
-  resetPage: () => void;
-}
+  const { data, isFetching, hasNextPage, fetchNextPage } =
+    useProductsInfiniteQuery(category, sort);
 
-export default function useProducts({
-  page,
-  resetPage,
-}: UseProductsProps): UseProductsResult {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [category, setCategory] = useState<Category | "all">("all");
-  const [sort, setSort] = useState<Sort>("asc");
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const { showError } = useErrorContext();
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-
-        const size = page === 0 ? 20 : 4;
-        const responseData = await getProducts({
-          category: category === "all" ? undefined : category,
-          sort,
-          page,
-          size,
-        });
-
-        setProducts((prevProducts) => [
-          ...prevProducts,
-          ...responseData.content,
-        ]);
-
-        if (responseData.content.length < size) {
-          setHasMore(false);
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          showError(error.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [page, category, sort, showError]);
-
-  const handleCategory = (category: Category | "all") => {
-    setCategory(category);
-    resetState();
-  };
-
-  const handleSort = (sort: Sort) => {
-    setSort(sort);
-    resetState();
-  };
-
-  const resetState = () => {
-    setProducts([]);
-    resetPage();
-    setHasMore(true);
-  };
+  const { lastElementRef: lastProductElementRef } = useInfiniteScroll({
+    hasMore: hasNextPage,
+    loading: isFetching,
+    nextPage: fetchNextPage,
+  });
 
   return {
-    products,
-    loading,
-    hasMore,
+    data,
+    isFetching,
+    lastProductElementRef,
     handleCategory,
     handleSort,
   };
 }
+
+const useProductSelect = () => {
+  const [category, setCategory] = useState<Category | "all">("all");
+  const [sort, setSort] = useState<Sort>("asc");
+
+  const handleCategory = (category: Category | "all") => {
+    setCategory(category);
+  };
+
+  const handleSort = (sort: Sort) => {
+    setSort(sort);
+  };
+
+  return { category, sort, handleCategory, handleSort };
+};
+
+const useProductsInfiniteQuery = (category: Category | "all", sort: Sort) => {
+  const { isFetching, data, hasNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: ["getProducts", category, sort],
+    queryFn: ({ pageParam }) =>
+      getProducts({
+        category: category === "all" ? undefined : category,
+        sort,
+        page: pageParam,
+        size: pageParam === 0 ? 20 : 4,
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.first) return 5;
+      return lastPage.pageable.pageNumber + 1;
+    },
+  });
+
+  return {
+    data,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+  };
+};
