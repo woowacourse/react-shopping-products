@@ -5,35 +5,12 @@ import {
   updateCartItemQuantity,
 } from "../api";
 import { QUERY_KEYS } from "../constants/queryKeys";
+import { useErrorContext } from "./useErrorContext";
 
 const useCartItemMutation = () => {
-  const queryClient = useQueryClient();
-
-  const appendCartItemMutation = useMutation({
-    mutationFn: ({ productId }: { productId: number }) =>
-      postProductInCart({ productId }),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
-  });
-
-  const updateQuantityMutation = useMutation({
-    mutationFn: ({
-      cartItemId,
-      quantity,
-    }: {
-      cartItemId: number;
-      quantity: number;
-    }) => updateCartItemQuantity({ cartItemId, quantity }),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
-  });
-
-  const removeItemMutation = useMutation({
-    mutationFn: ({ cartItemId }: { cartItemId: number }) =>
-      deleteProductInCart({ cartItemId }),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
-  });
+  const appendCartItemMutation = useAppendCartItemMutation();
+  const updateQuantityMutation = useUpdateQuantityMutation();
+  const removeItemMutation = useRemoveItemMutation();
 
   const appendProductInCart = async (productId: number) => {
     appendCartItemMutation.mutate({ productId });
@@ -69,3 +46,47 @@ const useCartItemMutation = () => {
 };
 
 export default useCartItemMutation;
+
+const useAppendCartItemMutation = () => {
+  const { showError } = useErrorContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ productId }: { productId: number }) =>
+      postProductInCart({ productId }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
+    onError: showError,
+  });
+};
+
+const useUpdateQuantityMutation = () => {
+  const { showError } = useErrorContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      cartItemId,
+      quantity,
+    }: {
+      cartItemId: number;
+      quantity: number;
+    }) => updateCartItemQuantity({ cartItemId, quantity }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
+    onError: showError,
+  });
+};
+
+const useRemoveItemMutation = () => {
+  const { showError } = useErrorContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ cartItemId }: { cartItemId: number }) =>
+      deleteProductInCart({ cartItemId }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
+    onError: showError,
+  });
+};
