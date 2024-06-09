@@ -6,9 +6,10 @@ import QUERY_KEYS from '@/constants/queryKeys';
 import { CartItem } from '@/types/cartItem.type';
 
 const useFetchCartItems = () => {
-  const { data, error, isLoading, refetch, isFetching } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: [QUERY_KEYS.getCartItems],
     queryFn: getCartList,
+    retry: 1,
   });
 
   const findCartItemByProductId = (productId: number) => {
@@ -18,7 +19,6 @@ const useFetchCartItems = () => {
   return {
     cartItems: data ?? [],
     isLoading,
-    isFetching,
     error,
     refetch,
     findCartItemByProductId,

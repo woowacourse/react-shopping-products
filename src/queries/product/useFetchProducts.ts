@@ -35,7 +35,7 @@ const useFetchProducts = ({ sort, category }: ProductFilterOptions) => {
         }
         return undefined;
       },
-      retry: 2,
+      retry: 1,
     });
 
   return {
