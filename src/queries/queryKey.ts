@@ -6,4 +6,5 @@ export const QUERY_KEY = {
     ...QUERY_KEY.products,
     dropdownOptions,
   ],
+  cartItems: ['cart-items'],
 } as const;

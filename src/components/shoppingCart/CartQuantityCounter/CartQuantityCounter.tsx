@@ -1,8 +1,8 @@
 import { CartItem } from '@appTypes/product';
 import * as Styled from './CartQuantityCounter.styled';
 import { Minus, Plus } from '@assets/svg';
-import useUpdateItemQuantity from '@hooks/cartItem/useUpdateItemQuantity';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
+import useUpdateItemQuantity from '@hooks/cartItem/useUpdateItemQuantity';
 
 interface CartQuantityCounterProps {
   cartItem: CartItem;
@@ -11,23 +11,15 @@ interface CartQuantityCounterProps {
 const CartQuantityCounter = ({ cartItem: { quantity, id } }: CartQuantityCounterProps) => {
   const showToast = useToastContext();
 
-  const { mutate: updateItemQuantity } = useUpdateItemQuantity(showToast);
+  const { onDecreaseItemQuantity, onIncreaseItemQuantity } = useUpdateItemQuantity(showToast);
 
   return (
     <Styled.CartQuantityCounterWrapper>
-      <Styled.CounterButton
-        onClick={() => {
-          updateItemQuantity({ id, quantity: quantity - 1 });
-        }}
-      >
+      <Styled.CounterButton onClick={() => onDecreaseItemQuantity({ id, quantity })}>
         <Minus />
       </Styled.CounterButton>
       <span>{quantity}</span>
-      <Styled.CounterButton
-        onClick={() => {
-          updateItemQuantity({ id, quantity: quantity + 1 });
-        }}
-      >
+      <Styled.CounterButton onClick={() => onIncreaseItemQuantity({ id, quantity })}>
         <Plus />
       </Styled.CounterButton>
     </Styled.CartQuantityCounterWrapper>

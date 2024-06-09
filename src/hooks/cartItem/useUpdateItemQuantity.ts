@@ -1,48 +1,17 @@
-import { updateCartItemQuantity } from '@apis/shoppingCart/shoppingCart';
-import { CartItem } from '@appTypes/product';
-import { InfinityScrollResponse } from '@appTypes/response';
-import { UseMutationResult, useMutation, useQueryClient } from '@tanstack/react-query';
+import usePatchItemQuantity from '@queries/shoppingCart/usePatchItemQuantity';
 
-const useUpdateItemQuantity = (
-  showToast: (message: string) => void
-): UseMutationResult<void, Error, { id: number; quantity: number }, unknown> => {
-  const queryClient = useQueryClient();
+const useUpdateItemQuantity = (showToast: (message: string) => void) => {
+  const { mutate: updateItemQuantity } = usePatchItemQuantity(showToast);
 
-  return useMutation({
-    mutationFn: updateCartItemQuantity,
-    onMutate: async ({ id, quantity }) => {
-      await queryClient.cancelQueries({ queryKey: ['cart-items'] });
+  const onIncreaseItemQuantity = ({ id, quantity }: { id: number; quantity: number }) => {
+    updateItemQuantity({ id, quantity: quantity + 1 });
+  };
 
-      const previousCartItems = queryClient.getQueryData<InfinityScrollResponse<CartItem[]>>([
-        'cart-items',
-      ]);
+  const onDecreaseItemQuantity = ({ id, quantity }: { id: number; quantity: number }) => {
+    updateItemQuantity({ id, quantity: quantity - 1 });
+  };
 
-      queryClient.setQueryData<InfinityScrollResponse<CartItem[]>>(
-        ['cart-items'],
-        (oldCartItems) =>
-          oldCartItems && {
-            ...oldCartItems,
-            content: oldCartItems?.content.map((item) =>
-              item.id === id ? { ...item, quantity } : item
-            ),
-          }
-      );
-
-      return { previousCartItems };
-    },
-
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart-items'] });
-    },
-
-    onError: (error, _, context) => {
-      showToast(error.message);
-
-      if (!context?.previousCartItems) return;
-
-      queryClient.setQueryData(['cart-items'], context?.previousCartItems);
-    },
-  });
+  return { onDecreaseItemQuantity, onIncreaseItemQuantity };
 };
 
 export default useUpdateItemQuantity;
