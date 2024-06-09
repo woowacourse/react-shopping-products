@@ -13,6 +13,7 @@ interface CartItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 const CartItemCard = ({ cartItem, style }: CartItemProps) => {
   const { handleClickDecrease, handleClickIncrease, isMinusButtonActive } = useCartStepper(cartItem, 1, false);
   const { deleteToRemoveCart } = useFetchCart();
+
   return (
     <div style={style}>
       <S.ItemWrapper>

@@ -19,7 +19,7 @@ const Product = () => {
 
   const { products, isError, isPending, isLast, fetchNext, page, error } = useFetchProducts({ sortings, filter });
 
-  const modalState = useModalState(true, {});
+  const modalState = useModalState(false, {});
 
   return (
     <CartContext.Provider value={cartState}>
