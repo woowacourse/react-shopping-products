@@ -1,37 +1,56 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 export type SizeType = 'small' | 'large' | 'full';
-
-const BUTTON_SIZE_STYLE: Record<SizeType, Record<string, string>> = {
-  small: { width: '24px', height: '24px' },
-  large: { width: '40px' },
-  full: { width: '100%', padding: '12px' },
-};
 
 interface BorderButtonProps {
   size?: SizeType;
 }
 
-export const BorderButton = styled.button<BorderButtonProps>(
-  ({ theme, size = 'large' }) => {
-    const sizeStyle = BUTTON_SIZE_STYLE[size];
-    return {
-      fontSize: '12px',
-
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-
-      border: `1px solid ${theme.colors.border}`,
-      borderRadius: `8px`,
-
-      width: sizeStyle.width,
-      height: sizeStyle.height ?? 'auto',
-      padding: sizeStyle.padding ?? 0,
-
-      img: {
-        width: size === 'small' ? '12px' : size === 'large' ? '16px' : 'auto',
-      },
-    };
+const getSizeStyle = (size: SizeType) => {
+  switch (size) {
+    case 'small':
+      return css`
+        width: 24px;
+        height: 24px;
+        img {
+          width: 12px;
+        }
+      `;
+    case 'large':
+      return css`
+        width: 40px;
+        height: 24px;
+        img {
+          width: 16px;
+        }
+      `;
+    case 'full':
+      return css`
+        width: 100%;
+        padding: 12px;
+      `;
+    default:
+      return css`
+        width: 40px;
+        img {
+          width: 16px;
+        }
+      `;
   }
+};
+
+export const BorderButton = styled.button<BorderButtonProps>(
+  ({ theme, size = 'large' }) => css`
+    font-size: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid ${theme.colors.border};
+    border-radius: 8px;
+
+    ${getSizeStyle(size)}
+  `
 );

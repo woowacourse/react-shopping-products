@@ -1,7 +1,13 @@
 import { CartItem } from '../types';
 import { cartMutations, cartQueries } from './queries/cart';
 
-export default function useQuantityControls(productId: number) {
+interface UseQuantityControlsProps {
+  productId: number;
+}
+
+export default function useQuantityControls({
+  productId,
+}: UseQuantityControlsProps) {
   const { data: cartItems } = cartQueries.useGetCartItems();
   const cartItem = cartItems.find(
     (cartItem) => cartItem.product.id === productId

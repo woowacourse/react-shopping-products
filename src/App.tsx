@@ -1,5 +1,4 @@
 import Dropdown from './components/common/Dropdown';
-import Title from './components/common/Title';
 import Layout from './components/layout';
 import Header from './components/product/Header';
 import ProductList from './components/product/ProductList';
@@ -10,13 +9,15 @@ import useProducts from './hooks/useProducts';
 import { CATEGORY, SORT } from './constants/filterOptions';
 import { PAGE_INFORMATION } from './constants/page';
 
+import * as C from './components/common/commonStyles';
+
 function App() {
   const useProductsResult = useProducts();
 
   return (
     <S.Wrapper>
       <Layout header={<Header />}>
-        <Title content={PAGE_INFORMATION.main.title} />
+        <C.Title>{PAGE_INFORMATION.main.title}</C.Title>
 
         <S.FilterContainer>
           <Dropdown

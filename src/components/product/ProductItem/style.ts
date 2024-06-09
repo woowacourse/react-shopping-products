@@ -34,9 +34,3 @@ export const Description = styled.p`
   font-weight: 500;
   line-height: 15px;
 `;
-
-export const Price = styled.p`
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 15px;
-`;
