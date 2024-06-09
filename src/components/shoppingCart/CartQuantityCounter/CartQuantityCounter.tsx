@@ -2,7 +2,7 @@ import { CartItem } from '@appTypes/product';
 import * as Styled from './CartQuantityCounter.styled';
 import { Minus, Plus } from '@assets/svg';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
-import useUpdateItemQuantity from '@hooks/cartItem/useUpdateItemQuantity';
+import useUpdateItemQuantity from '@hooks/shoppingCart/useUpdateItemQuantity';
 
 interface CartQuantityCounterProps {
   cartItem: CartItem;
