@@ -12,6 +12,7 @@ export const getCartItems = async () => {
   const cartItems = await cartClient.get<{ content: ICartItem[] }>(
     API_URL.cartItems
   );
+
   return {
     data: cartItems.content,
   };
