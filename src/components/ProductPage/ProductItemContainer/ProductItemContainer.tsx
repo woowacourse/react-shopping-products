@@ -1,19 +1,15 @@
 import { Product } from "../../../types";
 import { ProductItem } from "../..";
 import * as Styled from "./ProductItemContainer.style";
-import { useCartItems } from "../../../hooks";
+import { useCartItemQuantity, useCartItems } from "../../../hooks";
 
 interface ProductItemContainerProps {
   products: Product[];
 }
 
 export default function ProductItemContainer({ products }: ProductItemContainerProps) {
-  const {
-    handleAddCartItem,
-    handleRemoveCartItem,
-    getQuantityByProductId,
-    updateQuantityByProductId,
-  } = useCartItems();
+  const { handleAddCartItem, handleRemoveCartItem } = useCartItems();
+  const { getQuantity, updateQuantity } = useCartItemQuantity();
 
   const onAddCartItem = (productId: number) => {
     handleAddCartItem(productId);
@@ -24,7 +20,7 @@ export default function ProductItemContainer({ products }: ProductItemContainerP
       handleRemoveCartItem(productId);
       return;
     }
-    updateQuantityByProductId(productId, newQuantity);
+    updateQuantity(productId, newQuantity);
   };
 
   return (
@@ -33,7 +29,7 @@ export default function ProductItemContainer({ products }: ProductItemContainerP
         <ProductItem
           key={`${product.id}-${index}`}
           product={product}
-          quantity={getQuantityByProductId(product.id)}
+          quantity={getQuantity(product.id)}
           onAddToCart={() => onAddCartItem(product.id)}
           onUpdateQuantity={(newQuantity: number) => handleUpdateQuantity(product.id, newQuantity)}
         />
