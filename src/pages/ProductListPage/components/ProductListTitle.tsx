@@ -1,7 +1,7 @@
-import Title from '../../../components/Title/Title';
+import Text from '@/components/Text/Text';
 
 const ProductListTitle = () => {
-  return <Title>bpple 상품 목록</Title>;
+  return <Text.Title>bpple 상품 목록</Text.Title>;
 };
 
 export default ProductListTitle;
