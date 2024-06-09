@@ -3,6 +3,7 @@ import { CustomModal } from 'woowacourse-todari-components';
 import ContentRow from '../common/ContentRow/ContentRow';
 import useCartItemList from '../../hooks/useCartItemList';
 import CartItemList from '../CartItemList/CartItemList';
+import EmptyCartFallback from '../EmptyCartFallback/EmptyCartFallback';
 
 interface CartItemModalProps {
   isOpened: boolean;
@@ -32,11 +33,17 @@ function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
         onClick: onClose,
       }}
     >
-      <CartItemList cartItemList={cartItemListData?.content ?? []} />
-      <ContentRow
-        title="총 결제 금액"
-        content={`${price?.toLocaleString('ko-kr')}원`}
-      />
+      {cartItemListData?.content.length === 0 ? (
+        <EmptyCartFallback />
+      ) : (
+        <>
+          <CartItemList cartItemList={cartItemListData?.content ?? []} />
+          <ContentRow
+            title="총 결제 금액"
+            content={`${price?.toLocaleString('ko-kr')}원`}
+          />
+        </>
+      )}
     </CustomModal>
   );
 }
