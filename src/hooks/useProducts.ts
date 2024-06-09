@@ -3,7 +3,7 @@ import { useProductFetch } from './useProductFetch';
 import { useCartItems } from './useCartItems';
 
 export default function useProducts() {
-  const { products, setPage, hasMore, isLoading, handleSelectBarCondition, selectBarCondition } =
+  const { products, fetchNextPage, isLoading, handleSelectBarCondition, selectBarCondition } =
     useProductFetch();
   const { cartItems } = useCartItems();
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -15,8 +15,7 @@ export default function useProducts() {
   return {
     products,
     cartItems,
-    setPage,
-    hasMore,
+    fetchNextPage,
     isLoading,
     cartItemCount,
     handleSelectBarCondition,
