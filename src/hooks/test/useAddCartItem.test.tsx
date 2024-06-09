@@ -43,4 +43,26 @@ describe('useAddCartItem 훅 테스트', () => {
       expect(result.current.cartItems?.find((item) => item.product.id === 59)).toBeTruthy();
     });
   });
+
+  it('장바구니에 상품을 상품 ID로 추가할 때, 존재하지 않는 상품 ID라면 에러를 받는다', async () => {
+    const { result } = renderHook(
+      () => {
+        const { addCartItem, isAddCartItemError } = useAddCartItem();
+
+        return {
+          addCartItem,
+          isAddCartItemError,
+        };
+      },
+      { wrapper },
+    );
+
+    act(() => {
+      result.current.addCartItem(1000); // 존재하지 않는 product ID
+    });
+
+    await waitFor(() => {
+      expect(result.current.isAddCartItemError).toBe(true);
+    });
+  });
 });
