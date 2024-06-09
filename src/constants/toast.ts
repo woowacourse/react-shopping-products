@@ -1,0 +1,1 @@
+export const DEFAULT_TOAST_DELAY_TIME = 1000 * 3;

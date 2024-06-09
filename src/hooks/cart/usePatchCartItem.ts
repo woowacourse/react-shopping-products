@@ -27,7 +27,9 @@ const usePatchCartItem = () => {
       });
     },
     onError: () => {
-      createToast('⛔️ 상품을 제거하는데 실패했습니다. 다시 시도해 주세요.');
+      createToast({
+        message: '⛔️ 상품을 제거하는데 실패했습니다. 다시 시도해 주세요.',
+      });
     },
   });
 

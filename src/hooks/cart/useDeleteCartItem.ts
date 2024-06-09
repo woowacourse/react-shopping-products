@@ -19,7 +19,10 @@ const useDeleteCartItem = () => {
       });
     },
     onError: () => {
-      createToast('⛔️ 상품을 삭제하는데 실패했습니다. 다시 시도해 주세요.');
+      createToast({
+        message: '⛔️ 상품을 삭제하는데 실패했습니다. 다시 시도해 주세요.',
+        delayTime: 1_000 * 2,
+      });
     },
   });
 
