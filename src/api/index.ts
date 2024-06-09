@@ -70,7 +70,7 @@ export async function fetchProducts(params: FetchProductsParams = {}): Promise<P
  * addCartItem - 선택한 상품을 장바구니에 추가합니다.
  * @returns {Promise<void>}
  */
-export async function addCartItem(productId: number): Promise<void> {
+export async function addCartItem({ productId }: { productId: number }): Promise<void> {
   await makeRequest('/cart-items', {
     method: 'POST',
     body: JSON.stringify({ productId }),
