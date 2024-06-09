@@ -14,6 +14,7 @@ export default function useCartItem() {
   const fetchCartItemList = useQuery({
     queryKey: ["cartItemList"],
     queryFn: () => requestFetchCartItemList(),
+    staleTime: Infinity,
   });
   const addCartItem = useMutation({
     mutationFn: (product: Product) => requestAddCartItem(product.id, 1),
