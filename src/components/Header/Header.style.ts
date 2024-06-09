@@ -5,6 +5,7 @@ export const HeaderBackground = styled.div`
   justify-content: center;
   position: fixed;
   top: 0;
+  z-index: 10;
   width: 100%;
   background: #000000;
 `;
