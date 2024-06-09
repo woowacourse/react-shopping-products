@@ -1,22 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getProducts } from "../../api/products";
+import { fetchProducts } from "../../api/products";
 import { PRODUCT_DEFAULT_CATEGORY, PRODUCT_DEFAULT_SORT } from "../../constants/mallData";
 import { PRODUCT_CATEGORY_TYPE, PRODUCT_SORT_TYPE } from "../../types/mall";
 import { useState } from "react";
 import QUERY_KEYS from "../../constants/queryKeys";
-
-const fetchProducts = async ({
-  pageParam = 0,
-  category,
-  sort,
-}: {
-  pageParam: number;
-  category: PRODUCT_CATEGORY_TYPE;
-  sort: PRODUCT_SORT_TYPE;
-}) => {
-  const size = pageParam === 0 ? 20 : 4;
-  return await getProducts({ page: pageParam, size, category, sort });
-};
 
 const useProducts = () => {
   const [category, setCategory] = useState<PRODUCT_CATEGORY_TYPE>(PRODUCT_DEFAULT_CATEGORY);

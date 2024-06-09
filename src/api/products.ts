@@ -5,6 +5,7 @@ import {
   PRODUCT_SORT_LIST,
   PRODUCT_CATEGORY_LIST,
 } from "../constants/mallData";
+import { PRODUCT_CATEGORY_TYPE, PRODUCT_SORT_TYPE } from "../types/mall";
 
 import { PRODUCTS_ENDPOINT } from "./endPoint";
 import { fetchWithToken } from "./fetchWithToken";
@@ -16,7 +17,7 @@ interface GetProductsParams {
   sort: (typeof PRODUCT_SORT_LIST)[keyof typeof PRODUCT_SORT_LIST];
 }
 
-export async function getProducts({ page, size, category, sort }: GetProductsParams) {
+async function getProducts({ page, size, category, sort }: GetProductsParams) {
   let url = `${PRODUCTS_ENDPOINT}?page=${page}&size=${size}`;
 
   if (category !== PRODUCT_DEFAULT_CATEGORY) {
@@ -34,3 +35,16 @@ export async function getProducts({ page, size, category, sort }: GetProductsPar
 
   return data;
 }
+
+export const fetchProducts = async ({
+  pageParam = 0,
+  category,
+  sort,
+}: {
+  pageParam: number;
+  category: PRODUCT_CATEGORY_TYPE;
+  sort: PRODUCT_SORT_TYPE;
+}) => {
+  const size = pageParam === 0 ? 20 : 4;
+  return await getProducts({ page: pageParam, size, category, sort });
+};
