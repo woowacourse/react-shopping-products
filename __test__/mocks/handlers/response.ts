@@ -1,11 +1,14 @@
-export const Success = new Response(null, {
-  status: 200,
-});
+export const Success = (body?: BodyInit) =>
+  new Response(body, {
+    status: 200,
+  });
 
-export const NotFoundError = new Response(null, {
-  status: 404,
-});
+export const NotFoundError = (body?: BodyInit) =>
+  new Response(body, {
+    status: 404,
+  });
 
-export const InternalServerError = new Response(null, {
-  status: 500,
-});
+export const InternalServerError = (body?: BodyInit) =>
+  new Response(body, {
+    status: 500,
+  });

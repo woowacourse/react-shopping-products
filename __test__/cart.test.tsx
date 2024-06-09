@@ -14,7 +14,8 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-const { useAddCartItem, useDeleteCartItem } = cartMutations;
+const { useAddCartItem, useDeleteCartItem, useUpdateCartItemQuantity } =
+  cartMutations;
 
 describe('장바구니 테스트', () => {
   describe('장바구니 아이템 추가', () => {
@@ -75,6 +76,56 @@ describe('장바구니 테스트', () => {
 
       await act(async () => {
         await result.current.mutate();
+      });
+
+      await waitFor(() => {
+        const error = result.current.error as APIError;
+        expect(error.statusCode).toBe(404);
+      });
+    });
+  });
+
+  describe('장바구니 아이템 수량 변경', () => {
+    const TEST_CART_ITEM_ID = cartItems[1].id;
+
+    it('장바구니에 존재하는 아이템 아이디와 변경할 수량을 전달하면 서버의 수량이 변경된다', async () => {
+      const { result } = renderHook(() => useUpdateCartItemQuantity(), {
+        wrapper,
+      });
+
+      await act(async () => {
+        await result.current.mutate({
+          cartItemId: TEST_CART_ITEM_ID,
+          quantity: 2,
+        });
+      });
+
+      await waitFor(() => {
+        expect(result.current.error).toBeNull();
+      });
+    });
+
+    it('수량을 0으로 전달하면 삭제된다', async () => {
+      const { result } = renderHook(() => useUpdateCartItemQuantity(), {
+        wrapper,
+      });
+
+      await act(async () => {
+        await result.current.mutate({
+          cartItemId: TEST_CART_ITEM_ID,
+          quantity: 0,
+        });
+      });
+
+      await waitFor(() => {
+        expect(result.current.error).toBeNull();
+      });
+
+      await act(async () => {
+        await result.current.mutate({
+          cartItemId: TEST_CART_ITEM_ID,
+          quantity: 1,
+        });
       });
 
       await waitFor(() => {
