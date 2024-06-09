@@ -49,15 +49,21 @@ const useHandleCartItem = () => {
     },
   });
 
-  const getCartItemQuantity = (productId: number): number =>
-    cartItems!.find((cartItem) => cartItem.product.id === productId)!.quantity;
+  const getCartItemQuantity = (productId: number): number => {
+    if (!cartItems) return 0;
+    const findedCartItem = cartItems.find((cartItem) => cartItem.product.id === productId);
+    if (!findedCartItem) return 0;
+
+    return findedCartItem.quantity;
+  };
 
   const addCartItem = (productId: number) => postProductToCartMutate({ productId, quantity: 1 });
 
   const removeCartItem = (productId: number) => {
     const targetItem = cartItems!.find((cartItem) => cartItem.product.id === productId);
+    if (!targetItem) return;
 
-    deleteProductFromCartMutate({ itemId: targetItem!.id });
+    deleteProductFromCartMutate({ itemId: targetItem.id });
   };
 
   const updateCartItemQuantity = (productId: number, clickType: "plus" | "minus") => {
@@ -69,9 +75,12 @@ const useHandleCartItem = () => {
       return;
     }
 
-    const targetItem = cartItems!.find((cartItem) => cartItem.product.id === productId);
+    if (!cartItems) return;
+    const targetItem = cartItems.find((cartItem) => cartItem.product.id === productId);
+    if (!targetItem) return;
+
     const updatedQuantity = clickType === "plus" ? itemQuantity + 1 : itemQuantity - 1;
-    patchCartItemQuantityMutate({ productId: targetItem!.id, quantity: updatedQuantity });
+    patchCartItemQuantityMutate({ productId: targetItem.id, quantity: updatedQuantity });
   };
 
   const isInCart = (productId: number) => {
