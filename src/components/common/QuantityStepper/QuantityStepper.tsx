@@ -1,6 +1,5 @@
 import Button from '../Button/Button';
-import Plus from '../../../assets/images/Plus.svg?react';
-import Minus from '../../../assets/images/Minus.svg?react';
+import { Plus, Minus } from '../../../assets';
 
 import * as S from './QuantityStepper.style';
 
