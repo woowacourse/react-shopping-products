@@ -67,6 +67,7 @@
 - [x] ProductQuantity 컴포넌트 생성
 - [x] CartItemsModal 컴포넌트 생성
 - [x] CartItemCard 컴포넌트 생성
+- [x] CartItemCardList 컴포넌트 생성
 
 ### react-query로 리팩토링
 
