@@ -9,17 +9,13 @@ import * as S from './ProductItemSection.style';
 function ProductItemSection() {
   const [category, setCategory] = useState<Category>('all' as Category);
   const [sort, setSort] = useState<Sort>('price,asc' as Sort);
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setCategory(e.target.value as Category);
-  const handleSortingChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setSort(e.target.value as Sort);
+  const handleCategoryChange = (value: Category) => setCategory(value);
+  const handleSortingChange = (value: Sort) => setSort(value);
 
   return (
     <S.ProductSectionContainer>
       <DropdownContainer
-        category={category}
         onChangeCategory={handleCategoryChange}
-        sort={sort}
         onChangeSort={handleSortingChange}
       />
       <ProductItemList category={category} sort={sort} />

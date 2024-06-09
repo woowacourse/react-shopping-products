@@ -1,28 +1,47 @@
+import { useState } from 'react';
+
 import { ChevronDown } from '../../../assets';
 
 import * as S from './Dropdown.style';
+import DropdownOptions from './DropdownOptions';
 
-interface DropdownProps {
-  optionList: string[][];
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  type: 'category' | 'sort';
+interface DropdownProps<T> {
+  optionList: [T, string][];
+  onChange: (value: T) => void;
 }
 
-function Dropdown({ optionList, value, onChange, type }: DropdownProps) {
+// TODO: dropdown 외부 영역 클릭 시 setIsOpened(false)
+
+function Dropdown<T extends string>({
+  optionList,
+  onChange,
+}: DropdownProps<T>) {
+  const [isOpened, setIsOpened] = useState(false);
+  const [preview, setPreview] = useState(optionList[0][1]);
+
+  const handleIsOpened = () => {
+    setIsOpened(!isOpened);
+  };
+
+  const handleChangeOption = ([key, value]: [T, string]) => {
+    onChange(key);
+    setPreview(value);
+  };
+
   return (
-    <S.DropdownLabel htmlFor={type}>
-      <S.Dropdown>
-        <S.Select id={type} name={type} value={value} onChange={onChange}>
-          {optionList.map((option) => (
-            <S.Option key={option[0]} value={option[0]}>
-              {option[1]}
-            </S.Option>
-          ))}
-        </S.Select>
-        <ChevronDown />
-      </S.Dropdown>
-    </S.DropdownLabel>
+    <S.Dropdown>
+      <S.Preview isOpened={isOpened} onClick={handleIsOpened}>
+        <S.PreviewText>{preview}</S.PreviewText>
+        {isOpened ? <ChevronDown /> : <ChevronDown />}
+      </S.Preview>
+      {!isOpened || (
+        <DropdownOptions
+          optionList={optionList}
+          changeOption={handleChangeOption}
+          handleIsOpened={handleIsOpened}
+        />
+      )}
+    </S.Dropdown>
   );
 }
 
