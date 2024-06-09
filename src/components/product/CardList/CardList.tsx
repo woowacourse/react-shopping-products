@@ -1,6 +1,6 @@
 import { Product } from '@appTypes/product';
 import Card from '@components/product/Card/Card';
-import useShoppingCart from '@hooks/cartItem/useShoppingCart';
+import useShoppingCart from '@queries/shoppingCart/useShoppingCart';
 
 interface CardListProps {
   products: Product[];

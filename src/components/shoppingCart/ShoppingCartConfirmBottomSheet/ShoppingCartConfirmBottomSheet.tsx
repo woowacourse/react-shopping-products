@@ -1,7 +1,7 @@
 import { Modal } from '@jinyyy/simple-modal';
 
 import { formatKoreanCurrency } from '@utils/currency';
-import useShoppingCart from '@hooks/cartItem/useShoppingCart';
+import useShoppingCart from '@queries/shoppingCart/useShoppingCart';
 
 import * as Styled from './ShoppingCartConfirmBottomSheet.styled';
 import CartList from '@components/shoppingCart/CartList/CartList';

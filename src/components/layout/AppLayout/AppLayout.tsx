@@ -4,7 +4,7 @@ import * as Styled from './AppLayout.styled';
 import { ShoppingCart } from '@assets/svg';
 import { useState } from 'react';
 import ShoppingCartConfirmBottomSheet from '@components/shoppingCart/ShoppingCartConfirmBottomSheet/ShoppingCartConfirmBottomSheet';
-import useShoppingCart from '@hooks/cartItem/useShoppingCart';
+import useShoppingCart from '@queries/shoppingCart/useShoppingCart';
 
 const AppLayout = ({ children }: React.PropsWithChildren) => {
   const [isBottomSheetToggle, setIsBottomSheetToggle] = useState(false);
