@@ -9,6 +9,7 @@ interface UseProductsResult {
   isLoading: boolean;
   isFetching: boolean;
   hasNextPage: boolean;
+  isFetchingNextPage: boolean;
   isError: boolean;
   error: Error | null;
   handleCategory: (category: Category) => void;
@@ -28,6 +29,7 @@ export default function useProducts(): UseProductsResult {
     isError,
     isLoading,
     isFetching,
+    isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
@@ -76,6 +78,7 @@ export default function useProducts(): UseProductsResult {
     isLoading,
     isFetching,
     hasNextPage,
+    isFetchingNextPage,
     isError,
     error,
     handleCategory,
