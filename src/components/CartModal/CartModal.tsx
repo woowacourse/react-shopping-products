@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, useModalState } from 'lv2-modal-component';
 import useFetchCart from '../../hooks/useFetchCart';
 import CartItemCard from './CartItemCard';
