@@ -6,6 +6,10 @@ const globalStyles = () => css`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    // scrollbar
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   button {
