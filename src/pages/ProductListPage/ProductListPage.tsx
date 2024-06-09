@@ -31,6 +31,7 @@ const ProductListPage = () => {
       <CartItemsModal
         isOpen={cartItemsModalOpen}
         cartItemsModalClose={() => setCartItemsModalOpen(false)}
+        cartItems={cartItems}
       />
     </div>
   );
