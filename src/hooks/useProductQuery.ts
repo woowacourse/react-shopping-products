@@ -19,12 +19,8 @@ const useProductQuery = ({ selectBarCondition }: Props) => {
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      if (lastPage.last) {
-        return null;
-      }
-      if (lastPage.number === 0) {
-        return 5;
-      }
+      if (lastPage.last) return null;
+      if (lastPage.number === 0) return 5;
       return lastPage.number + 1;
     },
   });
