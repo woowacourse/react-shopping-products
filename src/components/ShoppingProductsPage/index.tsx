@@ -1,5 +1,6 @@
 import * as S from '../../components/ShoppingProductsPage/style';
 
+import { UseInfiniteQueryResult } from '@tanstack/react-query';
 import { createContext, useState } from 'react';
 
 import useProducts from '../../hooks/useProducts';
@@ -12,31 +13,18 @@ import CartModal from '../CartModal';
 import { Category, Order, Product } from '../../types/product';
 
 interface UseProductsContextProps {
-  products: Product[];
-  page: number;
-  fetchNextPage: () => void;
+  getProducts: UseInfiniteQueryResult<Product[], Error>;
   category: Category;
   handleCategoryChange: (selectedCategory: Category) => void;
   priceOrder: Order;
   handlePriceOrderChange: (selectedPriceOrder: Order) => void;
-  productsLoading: boolean;
-  productsError: unknown;
 }
 
 export const UseProductsContext = createContext({} as UseProductsContextProps);
 
 const ShoppingProductsPage = () => {
-  const {
-    products,
-    productsLoading,
-    productsError,
-    page,
-    fetchNextPage,
-    category,
-    handleCategoryChange,
-    priceOrder,
-    handlePriceOrderChange,
-  } = useProducts();
+  const { getProducts, category, handleCategoryChange, priceOrder, handlePriceOrderChange } =
+    useProducts();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeModal = () => {
@@ -50,11 +38,7 @@ const ShoppingProductsPage = () => {
   return (
     <UseProductsContext.Provider
       value={{
-        products,
-        productsLoading,
-        productsError,
-        page,
-        fetchNextPage,
+        getProducts,
         category,
         handleCategoryChange,
         priceOrder,

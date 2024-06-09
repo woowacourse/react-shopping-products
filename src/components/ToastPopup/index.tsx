@@ -10,7 +10,7 @@ import { MAX_CART_ITEMS_SIZE } from '../../constants/pagination';
 const ToastPopup = () => {
   const { getCartItems, addCartItem, deleteCartItem, adjustCartItemQuantity } =
     useContext(UseCartItemsContext);
-  const { productsError } = useContext(UseProductsContext);
+  const { getProducts } = useContext(UseProductsContext);
 
   const isMaxCountExceeded = getCartItems.data && getCartItems.data.length >= MAX_CART_ITEMS_SIZE;
 
@@ -23,7 +23,7 @@ const ToastPopup = () => {
       ? '장바구니 삭제 요청중'
       : getCartItems.isError
       ? '장바구니 불러오기중'
-      : productsError
+      : getProducts.isError
       ? '상품 불러오기중'
       : adjustCartItemQuantity.isError
       ? '상품 수량 조절중'

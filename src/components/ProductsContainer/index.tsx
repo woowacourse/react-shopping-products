@@ -10,10 +10,10 @@ import { UseProductsContext } from '../ShoppingProductsPage';
 import { UseCartItemsContext } from '../../App';
 
 const ProductsContainer = () => {
-  const { productsLoading } = useContext(UseProductsContext);
+  const { getProducts } = useContext(UseProductsContext);
   const { getCartItems } = useContext(UseCartItemsContext);
 
-  const isLoading = productsLoading || getCartItems.isLoading;
+  const isLoading = getProducts.isLoading || getCartItems.isLoading;
 
   return (
     <S.ProductsContainer>
