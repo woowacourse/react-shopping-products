@@ -10,6 +10,7 @@ import * as S from './Product.styled';
 import useFetchCart from '../hooks/useFetchCart';
 
 import { Modal, useModalState } from 'lv2-modal-component';
+import CartModal from '../components/CartModal/CartModal';
 
 const Product = () => {
   const cartState = useFetchCart();
@@ -21,13 +22,13 @@ const Product = () => {
   const { products, isError, isPending, isLast, fetchNext, page } =
     useFetchProducts({ sortings, filter });
 
-  const { isOpen, openModal, closeModal } = useModalState(false, {});
+  const modalState = useModalState(true, {});
 
   return (
     <CartContext.Provider value={cartState}>
       <Header
         badgeCount={cartState.cartItems?.length ?? 0}
-        onBadgeClick={openModal}
+        onBadgeClick={modalState.openModal}
       />
       {isError && <ErrorMessage message={'에러'} />}
       {cartState.isError && <ErrorMessage message={'카트에러'} />}
@@ -43,14 +44,7 @@ const Product = () => {
           isError={isError}
         />
       </S.ProductContentWrapper>
-      <Modal isOpen={isOpen} closeModal={closeModal}>
-        <Modal.Positioner position={'bottom'} widthSize={'large'}>
-          <Modal.Header title={'장바구니'} onClose={() => {}}></Modal.Header>
-          <Modal.Content>
-            <div>{JSON.stringify(cartState.cartItems)}</div>
-          </Modal.Content>
-        </Modal.Positioner>
-      </Modal>
+      <CartModal cartState={cartState} modalState={modalState} />
     </CartContext.Provider>
   );
 };

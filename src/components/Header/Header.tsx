@@ -7,9 +7,12 @@ interface HeaderProps {
 }
 
 const Header = ({ badgeCount, onBadgeClick }: HeaderProps) => {
+  const handleClickLogoIcon = () => {
+    scrollTo({ top: 0, behavior: 'smooth' });
+  };
   return (
     <S.HeaderContainer>
-      <S.LogoIcon src={LogoIcon} />
+      <S.LogoIcon src={LogoIcon} onClick={handleClickLogoIcon} />
       <S.CartIconContainer>
         <S.CartIcon src={CartIcon} />
         <S.BadgeIconContainer onClick={onBadgeClick}>

@@ -4,8 +4,9 @@ export const ProductCardContainer = styled.div``;
 
 export const ProductImage = styled.img`
   width: 100%;
+  aspect-ratio: 1.7;
   object-fit: cover;
-  border-radius: 0.8rem 0.8rem 0 0;
+  border-radius: 24px 24px 0 0;
 `;
 
 export const ContentWrapper = styled.div`

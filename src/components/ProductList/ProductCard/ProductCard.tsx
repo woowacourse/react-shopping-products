@@ -3,23 +3,16 @@ import { CartContext } from '../../../CartContext';
 import { Product } from '../../../types/fetch';
 import AddCartButton from './AddCartButton/AddCartButton';
 import * as S from './ProductCard.styled';
-import Stepper from './Stepper/Stepper';
-import useCartStepper from './Stepper/useCartStepper';
+import Stepper from '../../common/Stepper/Stepper';
+import useCartStepper from '../../common/Stepper/useCartStepper';
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const {
-    addProductToCart,
-    cartItems,
-    deleteToRemoveCart,
-    patchCartItemQuantity,
-  } = useContext(CartContext);
+  const { addProductToCart, cartItems, deleteToRemoveCart, patchCartItemQuantity } = useContext(CartContext);
 
-  const cartItem = cartItems?.filter(
-    (item) => item.product.id === product.id,
-  )[0];
+  const cartItem = cartItems?.filter((item) => item.product.id === product.id)[0];
 
   const { handleClickDecrease, handleClickIncrease } = useCartStepper(cartItem);
 

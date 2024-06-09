@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const HeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -14,6 +16,7 @@ export const HeaderContainer = styled.div`
 export const LogoIcon = styled.img`
   width: 5.6rem;
   aspect-ratio: 1;
+  cursor: pointer;
 `;
 
 export const CartIconContainer = styled.div`

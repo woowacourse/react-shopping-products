@@ -1,5 +1,5 @@
 import { HttpResponse, http } from 'msw';
-import { ENDPOINTS_PRODUCTS } from '../api/endpoints';
+import { ENDPOINTS_CART, ENDPOINTS_PRODUCTS } from '../api/endpoints';
 import { mockProductsResponse } from './products';
 
 export const getProductsHandler = http.get(
