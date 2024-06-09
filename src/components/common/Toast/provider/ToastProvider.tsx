@@ -10,7 +10,6 @@ export const ToastContext = createContext((_: string) => {});
 
 export const useToastContext = () => {
   const value = useContext(ToastContext);
-  ('');
   if (!value) throw new Error('ToastProvider 내부에서 사용해야 합니다.');
   return value;
 };
