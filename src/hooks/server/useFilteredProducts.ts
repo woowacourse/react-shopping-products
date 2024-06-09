@@ -10,7 +10,7 @@ const useFilteredProducts = ({ category, sort }: GetProductsProps) => {
   const { onAddToast } = useToast();
 
   const query = useInfiniteQuery({
-    queryKey: [END_POINT.cartItems, category, sort],
+    queryKey: [END_POINT.products, category, sort],
     queryFn: async ({ pageParam }) => await getProducts({ queryKeys: { category, sort }, pageParam: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {

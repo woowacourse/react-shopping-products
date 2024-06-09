@@ -1,15 +1,12 @@
 import styled from "styled-components";
 import { flexCenter } from "@/styles/common";
-import { CartItems, Product } from "@/types/products";
+import { Product } from "@/types/products";
 import ItemCard from "@/components/ItemCard";
 
-const ItemCardList = ({ products, cartItems }: { products: Product[]; cartItems: CartItems[] }) => {
+const ItemCardList = ({ products }: { products: Product[] }) => {
   return (
     <ItemCardWrapper>
-      {products &&
-        products.map((product, index) => (
-          <ItemCard key={`${product.id}-${index}`} product={product} cartItems={cartItems} />
-        ))}
+      {products && products.map((product, index) => <ItemCard key={`${product.id}-${index}`} product={product} />)}
     </ItemCardWrapper>
   );
 };

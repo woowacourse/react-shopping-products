@@ -1,4 +1,3 @@
-import CartBadge from "@/components/CartBadge";
 import Header from "@/components/Header";
 import TextBox from "@/components/_common/TextBox";
 import SelectBox from "@/components/SelectBox";
@@ -15,6 +14,7 @@ import CartModal from "@/pages/cartModal";
 import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import EmptyState from "@/components/_common/EmptyState";
+import MemoCartBage from "@/components/CartBadge";
 
 export interface GetProductsProps {
   category: Category;
@@ -70,7 +70,7 @@ const ProductListPage = () => {
     <>
       <Header>
         <Header.Title text="SHOP" />
-        <CartBadge cartItemLength={cartItemLength} onClick={onOpenModal} />
+        <MemoCartBage cartItemLength={cartItemLength} onClick={onOpenModal} />
         <TopButton />
       </Header>
       <S.Wrapper>
@@ -86,7 +86,7 @@ const ProductListPage = () => {
         </S.ItemInfoWrapper>
         {isLoading && <ItemCartListSkeleton itemCount={6} />}
         {!isLoading && !products && <EmptyState type="products" />}
-        {!isLoading && products && <ItemCardList products={products.pages} cartItems={cartItems!} />}
+        {!isLoading && products && <ItemCardList products={products.pages} />}
         {hasNextPage && (
           <div ref={ref}>
             <ItemCartListSkeleton ref={ref} />

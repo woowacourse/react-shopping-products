@@ -13,3 +13,8 @@ export const ProductQuantity = styled.span`
   line-height: 15px;
   font-weight: 500;
 `;
+
+export const LoadingSpinner = styled.img`
+  width: 20px;
+  height: 20px;
+`;

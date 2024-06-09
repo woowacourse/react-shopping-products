@@ -1,20 +1,22 @@
-import { CartItems, Product } from "@/types/products";
+import { Product } from "@/types/products";
 import ItemInfo from "@/components/ItemInfo";
 import * as S from "@/components/ItemCard/style";
 import CartActionButton from "@/components/CartActionButton";
 import QuantityUpdateButton from "@/components/QuantityUpdateButton";
 import { convertProductIdToCartId, getQuantityInCart } from "@/utils/cart";
+import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 
 interface ItemCartProps {
   product: Product;
-  cartItems: CartItems[];
 }
 
-const ItemCard = ({ product, cartItems }: ItemCartProps) => {
+const ItemCard = ({ product }: ItemCartProps) => {
   const { name, price, imageUrl, id } = product;
 
-  const quantity = getQuantityInCart(cartItems, id);
-  const cartId = convertProductIdToCartId(cartItems, id);
+  const { data: cartItems } = useCartItemsQuery();
+
+  const quantity = getQuantityInCart(cartItems || [], id);
+  const cartId = convertProductIdToCartId(cartItems || [], id);
 
   return (
     <S.Wrapper>
