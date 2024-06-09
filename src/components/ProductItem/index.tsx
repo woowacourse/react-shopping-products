@@ -3,8 +3,11 @@ import * as S from './style';
 import { useContext, useEffect, useState } from 'react';
 
 import { UseCartItemsContext } from '../../App';
+import SelectButtonContainer from '../SelectButtonContainer';
+import SelectButton from '../SelectButton';
+import Spinner from '../Spinner';
 
-import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
+import { ADD_TO_CART, MINUS_BUTTON, PLUS_BUTTON, REMOVE_BUTTON } from '../../assets/images';
 
 interface ProductItemProps {
   id: number;
@@ -22,18 +25,21 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
     : undefined;
   const isInCart = !!cartItem;
 
-  const TOGGLE_BUTTON_ICON = isInCart ? REMOVE_TO_CART : ADD_TO_CART;
-  const BUTTON_TEXT = isInCart ? '빼기' : '담기';
+  const BUTTON_TEXT = '담기';
 
-  const handleOnToggle = () => {
+  const handleAddToCart = () => {
+    setIsLoading(true);
+
+    addCartItem.mutate(id, {
+      onError: () => setIsLoading(false),
+    });
+  };
+
+  const handleRemoveFromCart = () => {
     setIsLoading(true);
 
     if (cartItem) {
       deleteCartItem.mutate(cartItem.id, {
-        onError: () => setIsLoading(false),
-      });
-    } else {
-      addCartItem.mutate(id, {
         onError: () => setIsLoading(false),
       });
     }
@@ -41,7 +47,7 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
 
   useEffect(() => {
     setIsLoading(false);
-  }, [getCartItems.data]);
+  }, [cartItem?.quantity]);
 
   return (
     <S.ProductItem>
@@ -52,15 +58,36 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
           <S.Price>{price.toLocaleString('ko-KR')}원</S.Price>
         </S.Information>
         <S.ButtonContainer>
-          <S.ToggleButton onClick={handleOnToggle} $isInCart={isInCart}>
-            {!isLoading && (
-              <>
-                <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
-                <span>{BUTTON_TEXT}</span>
-              </>
-            )}
-            {isLoading && <span>loading...</span>}
-          </S.ToggleButton>
+          {!isInCart && (
+            <S.AddButton onClick={handleAddToCart} $isInCart={isInCart}>
+              {!isLoading && (
+                <>
+                  <S.ButtonImage src={ADD_TO_CART} />
+                  <span>{BUTTON_TEXT}</span>
+                </>
+              )}
+              {isLoading && <Spinner />}
+            </S.AddButton>
+          )}
+          {isInCart && (
+            <SelectButtonContainer>
+              <SelectButton onClick={handleRemoveFromCart}>
+                <img
+                  src={cartItem.quantity === 1 ? REMOVE_BUTTON : MINUS_BUTTON}
+                  alt={cartItem.quantity === 1 ? '삭제' : '빼기'}
+                />
+              </SelectButton>
+              {!isLoading && <S.QuantityText>{cartItem.quantity}</S.QuantityText>}
+              {isLoading && (
+                <S.QuantityText>
+                  <Spinner />
+                </S.QuantityText>
+              )}
+              <SelectButton onClick={handleRemoveFromCart}>
+                <img src={PLUS_BUTTON} alt={'더하기'} />
+              </SelectButton>
+            </SelectButtonContainer>
+          )}
         </S.ButtonContainer>
       </S.InformationContainer>
     </S.ProductItem>
