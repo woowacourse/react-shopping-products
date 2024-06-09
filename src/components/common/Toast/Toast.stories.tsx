@@ -15,5 +15,6 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {
   args: {
     message: 'Hello World',
+    onClose: () => {},
   },
 };
