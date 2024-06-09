@@ -21,7 +21,7 @@ function CartModal({
       toggleModal={toggleDetailModal}
       isOpen={isDetailModalOpen}
       position="bottom"
-      size="large"
+      size="small"
     >
       <Modal.Header
         title="장바구니"

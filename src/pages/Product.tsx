@@ -5,7 +5,6 @@ import {
   useFetchCartItems,
   useFetchProducts,
   useIntersectionObserver,
-  useFetchProductQuantity,
 } from '../hooks/index';
 import {
   Header,
@@ -13,6 +12,7 @@ import {
   ErrorMessage,
   ProductCard,
   CartModal,
+  LoadingSpinner,
 } from '../components/index';
 import { SortingParam } from '../types/sort';
 import { DEFAULT_SORTING_PARAM } from '../constants/page';
@@ -84,6 +84,7 @@ function Product() {
             })}
             <S.ObserverContainer ref={target} />
           </S.ProductListContainer>
+          {isLoading && <LoadingSpinner />}
         </S.ProductContentWrapper>
       </CartProvider>
     </>

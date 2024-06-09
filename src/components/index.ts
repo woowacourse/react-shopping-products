@@ -7,3 +7,4 @@ export { default as CartModal } from './CartModal/CartModal';
 export { default as CartModalDetail } from './CartModalDetail/CartModalDetail';
 export { default as QuantityUpdateButton } from './QuantityUpdateButton/QuantityUpdateButton';
 export { default as TotalAmount } from './TotalAmount/TotalAmount';
+export { default as LoadingSpinner } from './LoadingSpinner/LoadingSpinner';
