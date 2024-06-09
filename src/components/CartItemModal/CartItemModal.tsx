@@ -47,7 +47,7 @@ function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
       }}
     >
       <S.ModalContent>
-        {isCartItemListFetching ? (
+        {isCartItemListFetching && !cartItemListData ? (
           <Spinner height="100%" />
         ) : cartItemListData?.content.length === 0 ? (
           <EmptyCartFallback />
