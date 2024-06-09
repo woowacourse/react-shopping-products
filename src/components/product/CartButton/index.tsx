@@ -23,7 +23,9 @@ export default function CartButton({ productId }: CartButtonProps) {
   const handleDecreaseQuantity = () => {
     if (!targetCartItem) return;
     if (targetCartItem.quantity === 1) {
-      removeItemFromCart({ cartItemId: targetCartItem.id });
+      if (confirm('해당 상품을 장바구니에서 빼시겠습니까?')) {
+        removeItemFromCart({ cartItemId: targetCartItem.id });
+      }
     } else {
       updateCartItemQuantity({ cartItemId: targetCartItem.id, quantity: targetCartItem.quantity - 1 });
     }
