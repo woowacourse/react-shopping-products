@@ -9,6 +9,7 @@ import { SortingParam } from '../../types/sort';
 
 import { server } from '../../mocks/node';
 import { mockProductsResponse } from '../../mocks/products';
+import { act } from 'react';
 
 const queryClient = new QueryClient();
 
@@ -40,49 +41,47 @@ describe('useFetchProducts', () => {
   });
 
   // 해결하지 못한 테스트
-  // it('첫 상품목록 조회 이후부터는, 이전 결과에 이어 4개씩 아이템을 추가하여 가져온다.', async () => {
-  //   const { result } = renderHook(() => useFetchProducts());
+  it('첫 상품목록 조회 이후부터는, 이전 결과에 이어 4개씩 아이템을 추가하여 가져온다.', async () => {
+    const { result } = renderHook(() => useFetchProducts(), { wrapper });
 
-  //   await waitFor(() => {
-  //     expect(result.current.products).toHaveLength(20);
-  //   });
+    await waitFor(() => {
+      expect(result.current.data).toHaveLength(20);
+    });
 
-  //   act(() =>  result.current.fetchNextPage());
+    act(() => result.current.fetchNextPage());
 
-  //   await waitFor(() => {
-  //     act(() =>
-  //       {expect(result.current.products).toHaveLength(24);}
-  //     )
-  //   });
-  // });
+    await waitFor(() => {
+      expect(result.current.data).toHaveLength(24);
+    });
+  });
 
-  // TODO: 페이지네이션
-  // it('마지막 페이지 도달 시 더 이상 요청하지 않는다.', async () => {
-  //   const { result } = renderHook(() => useFetchProducts(), { wrapper });
+  it('마지막 페이지 도달 시 더 이상 요청하지 않는다.', async () => {
+    const { result } = renderHook(() => useFetchProducts(), { wrapper });
 
-  //   await waitFor(() => {
-  //     expect(result.current.data).toHaveLength(20);
-  //   });
+    await waitFor(() => {
+      expect(result.current.data).toHaveLength(20);
+    });
 
-  //   act(() => result.current.fetchNextPage());
-  //   while (!result.current.isLast) {
-  //     await waitFor(() => {
-  //       act(() => {
-  //         result.current.fetchNextPage();
-  //       });
-  //     });
-  //   }
+    while (!result.current.isLast) {
+      await waitFor(() => {
+        act(() => {
+          result.current.fetchNextPage();
+        });
+      });
+    }
 
-  //   await waitFor(() => {
-  //     expect(result.current.page).toBe(20);
-  //   });
+    await waitFor(() => {
+      expect(result.current.page).toBe(20);
+    });
 
-  //   act(() => result.current.fetchNextPage());
+    act(() => {
+      result.current.fetchNextPage();
+    });
 
-  //   await waitFor(() => {
-  //     expect(result.current.page).toBe(20);
-  //   });
-  // });
+    await waitFor(() => {
+      expect(result.current.page).toBe(20);
+    });
+  });
 
   test.each([
     [
