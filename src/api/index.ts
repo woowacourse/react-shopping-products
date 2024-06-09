@@ -100,3 +100,31 @@ export async function deleteCartItem(cartItemId: number): Promise<void> {
     method: 'DELETE',
   });
 }
+
+/**
+ * patchCartItemQuantityChange - 선택한 상품을 수량을 변경합니다.
+ * @returns {Promise<void>}
+ */
+export async function patchCartItemQuantityChange({
+  cartItemId,
+  quantity,
+  errorMessage,
+}: {
+  cartItemId: number;
+  quantity: number;
+  errorMessage: string;
+}): Promise<void> {
+  const token = generateBasicToken(USER_ID, USER_PASSWORD);
+  const response = await fetch(`${API_URL}/cart-items/${cartItemId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify({ quantity }),
+  });
+
+  if (!response.ok) {
+    throw new Error(errorMessage);
+  }
+}
