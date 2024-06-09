@@ -16,6 +16,10 @@ function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
     isFetching: isCartItemListFetching,
   } = useCartItemList();
 
+  const price = cartItemListData?.content.reduce((acc, cartItem) => {
+    return acc + cartItem.quantity * cartItem.product.price;
+  }, 0);
+
   return (
     <CustomModal
       isOpened={isOpened}
@@ -29,7 +33,10 @@ function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
       }}
     >
       <CartItemList cartItemList={cartItemListData?.content ?? []} />
-      <ContentRow title="총 결제 금액" content="95,000원" />
+      <ContentRow
+        title="총 결제 금액"
+        content={`${price?.toLocaleString('ko-kr')}원`}
+      />
     </CustomModal>
   );
 }
