@@ -24,7 +24,7 @@ describe('useProducts 훅 테스트', () => {
     const { result } = renderHook(() => useProducts({ selectBarCondition }), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.isProductsQuerySuccess).toBe(true);
       expect(result.current.products).toHaveLength(20);
     });
   });
@@ -36,14 +36,14 @@ describe('useProducts 훅 테스트', () => {
     };
     const { result } = renderHook(() => useProducts({ selectBarCondition }), { wrapper });
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => expect(result.current.isProductsQuerySuccess).toBe(true));
 
     act(() => {
       result.current.fetchNextPage();
     });
 
     await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.isProductsQuerySuccess).toBe(true);
       expect(result.current.products).toHaveLength(24);
     });
   });
@@ -58,7 +58,7 @@ describe('useProducts 훅 테스트', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.isProductsQuerySuccess).toBe(true);
       expect(result.current.products).toHaveLength(20);
     });
 
@@ -80,7 +80,7 @@ describe('useProducts 훅 테스트', () => {
       result.current.fetchNextPage();
     });
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => expect(result.current.isProductsQuerySuccess).toBe(true));
     expect(result.current.products).toHaveLength(100);
   });
 
@@ -99,7 +99,7 @@ describe('useProducts 훅 테스트', () => {
         });
 
         await waitFor(() => {
-          expect(result.current.isSuccess).toBe(true);
+          expect(result.current.isProductsQuerySuccess).toBe(true);
           result.current.products?.forEach((product) => {
             expect(product.category).toBe(category);
           });

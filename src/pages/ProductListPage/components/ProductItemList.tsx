@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ProductItemList = ({ selectBarCondition, cartItems }: Props) => {
-  const { products, fetchNextPage, isFetching } = useProducts({
+  const { products, fetchNextPage, isProductsQueryFetching } = useProducts({
     selectBarCondition,
   });
   const { lastProductElementRef } = useInfinityScroll({ onIntersect: fetchNextPage });
@@ -19,7 +19,7 @@ const ProductItemList = ({ selectBarCondition, cartItems }: Props) => {
   return (
     <>
       <div className={styles.productItemListContainer}>
-        {products.length === 0 && !isFetching && <div>상품 목록이 비었어요.</div>}
+        {products.length === 0 && !isProductsQueryFetching && <div>상품 목록이 비었어요.</div>}
         {products.map((item, idx) => {
           const cartItem = cartItems.find((cartItem) => {
             return cartItem.product.id === item.id;
@@ -35,7 +35,7 @@ const ProductItemList = ({ selectBarCondition, cartItems }: Props) => {
         })}
         {products.length !== 0 && <p style={{ height: '10px' }} ref={lastProductElementRef}></p>}
       </div>
-      {isFetching && <Loader />}
+      {isProductsQueryFetching && <Loader />}
     </>
   );
 };

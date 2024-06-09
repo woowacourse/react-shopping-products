@@ -36,10 +36,10 @@ const useProductQuery = ({ selectBarCondition }: Props) => {
 
   return {
     products: filterByValidCategory(products),
-    isError,
-    isSuccess,
+    isProductsQueryError: isError,
+    isProductsQuerySuccess: isSuccess,
+    isProductsQueryFetching: isFetching,
     fetchNextPage,
-    isFetching,
   };
 };
 
