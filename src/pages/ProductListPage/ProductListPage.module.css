@@ -5,7 +5,7 @@
 .productContentContainer {
   display: flex;
   flex-direction: column;
-  padding: 36px 25px 0 25px;
+  padding: 100px 25px 0 25px;
 }
 
 .productSelectContainer {
