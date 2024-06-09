@@ -16,11 +16,11 @@ import EmptyCart from '../../assets/EmptyCart.png';
 
 const ProductListPage = () => {
   const { category, sort, handleCategory, handleSort } = useFilterAndSort();
-  const { products, loading, error, isLast, handlePage } = useFetchProducts(category, sort);
+  const { products, loading, status, isLast, handlePage } = useFetchProducts(category, sort);
   const { isOpen, handleOpen, handleClose } = useModal();
   const targetRef = useIntersectionObserver(handlePage);
 
-  const isAddPageAble = !error && !isLast;
+  const isAddPageAble = status !== 'error' && !isLast;
 
   return (
     <Layout>

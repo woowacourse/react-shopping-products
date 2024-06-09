@@ -15,7 +15,7 @@ const getCartItems = async () => {
   return totalData;
 };
 
-const useFetchCartItems = (): { cartItems: CartItem[] } => {
+const useFetchCartItems = (): { cartItems: CartItem[]; status: 'error' | 'success' | 'pending' } => {
   const { showToast } = useContext(ToastContext);
 
   const {
@@ -25,7 +25,7 @@ const useFetchCartItems = (): { cartItems: CartItem[] } => {
   } = useQuery<CartItem[], Error>({
     queryKey: [QUERY_KEYS.CART],
     queryFn: getCartItems,
-    staleTime: 60000,
+    staleTime: 3600000,
     networkMode: 'always',
     retry: false,
   });
@@ -36,7 +36,7 @@ const useFetchCartItems = (): { cartItems: CartItem[] } => {
     }
   }, [status, error]);
 
-  return { cartItems };
+  return { cartItems, status };
 };
 
 export default useFetchCartItems;

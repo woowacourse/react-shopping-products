@@ -10,7 +10,7 @@ import { ToastContext } from '../../context/ToastProvider';
 interface UseFetchProductsResult {
   products: Product[];
   loading: boolean;
-  error: unknown;
+  status: 'error' | 'success' | 'pending';
   isLast: boolean;
   handlePage: () => void;
 }
@@ -54,7 +54,7 @@ const useFetchProducts = (category: Option, sort: Option): UseFetchProductsResul
   return {
     products,
     loading: isFetching || isFetchingNextPage,
-    error,
+    status,
     isLast: !hasNextPage,
     handlePage,
   };
