@@ -8,15 +8,8 @@ import { useState } from 'react';
 import { CartItemsModal } from './components/CartItemsModal';
 
 const ProductListPage = () => {
-  const {
-    products,
-    cartItems,
-    setPage,
-    hasMore,
-    isLoading,
-    cartItemCount,
-    handleSelectBarCondition,
-  } = useProducts();
+  const { products, cartItems, fetchNextPage, isLoading, cartItemCount, handleSelectBarCondition } =
+    useProducts();
   const [cartItemsModalOpen, setCartItemsModalOpen] = useState(false);
 
   return (
@@ -31,9 +24,8 @@ const ProductListPage = () => {
         <ProductItemList
           products={products}
           cartItems={cartItems}
-          setPage={setPage}
-          hasMore={hasMore}
           isLoading={isLoading}
+          fetchNextPage={fetchNextPage}
         />
       </div>
       <CartItemsModal

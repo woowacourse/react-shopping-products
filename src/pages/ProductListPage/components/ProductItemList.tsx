@@ -3,18 +3,16 @@ import { useInfinityScroll } from '../../../hooks/useInfinityScroll';
 import Loader from '../../../components/Loader/Loader';
 import styles from '../ProductListPage.module.css';
 import { CartItemType, ProductType } from '../../../types';
-import { Dispatch, SetStateAction } from 'react';
 
 interface Props {
   products: ProductType[];
-  setPage: Dispatch<SetStateAction<number>>;
-  hasMore: boolean;
   cartItems: CartItemType[];
   isLoading: boolean;
+  fetchNextPage: () => void;
 }
 
-const ProductItemList = ({ products, setPage, hasMore, cartItems, isLoading }: Props) => {
-  const { lastProductElementRef } = useInfinityScroll({ hasMore, setPage });
+const ProductItemList = ({ products, fetchNextPage, cartItems, isLoading }: Props) => {
+  const { lastProductElementRef } = useInfinityScroll({ onIntersect: fetchNextPage });
   const selectedHandler = (productId: number): boolean => {
     return cartItems.some((cartItem) => cartItem.product.id === productId);
   };
