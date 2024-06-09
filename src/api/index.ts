@@ -49,7 +49,7 @@ export async function addCartItem(productId: number): Promise<void> {
       Authorization: basicToken,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ productId }),
+    body: JSON.stringify({ productId, quantity: 1 }),
   });
 }
 
