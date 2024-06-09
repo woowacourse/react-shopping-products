@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 
-import { addCartItem, removeCartItem } from "../../apis";
+import { addCartItem, removeCartItem, updateCartItemQuantity } from "../../apis";
 import { useGetCartItems, useUpdateCartItem } from "./queries";
 import { ERROR_MESSAGE } from "../../constants";
+import { UpdateCartItemQuantityProps } from "../../types";
 
 interface UseCartItemResult {
   error: unknown;
@@ -10,7 +11,9 @@ interface UseCartItemResult {
   selectedCartItemsLength: number;
   handleAddCartItem: (id: number) => Promise<void>;
   handleRemoveCartItem: (id: number) => Promise<void>;
-  checkIsInCart: (productId: number) => boolean;
+  // checkIsInCart: (productId: number) => boolean;
+  getQuantityByProductId: (productId: number) => number;
+  updateQuantityByProductId: (productId: number, quantity: number) => Promise<void>;
 }
 
 export default function useCartItems(): UseCartItemResult {
@@ -23,21 +26,41 @@ export default function useCartItems(): UseCartItemResult {
     error: cartItemsError,
   } = useGetCartItems();
 
-  const addProductToCart = useUpdateCartItem(addCartItem);
-  const removeProductFromCart = useUpdateCartItem(removeCartItem);
+  const addProductToCart = useUpdateCartItem<number>(addCartItem);
+  const removeProductFromCart = useUpdateCartItem<number>(removeCartItem);
+  const updateProductQuantity =
+    useUpdateCartItem<UpdateCartItemQuantityProps>(updateCartItemQuantity);
 
   const isLoading =
-    isCartItemsLoading || addProductToCart.isPending || removeProductFromCart.isPending;
+    isCartItemsLoading ||
+    addProductToCart.isPending ||
+    removeProductFromCart.isPending ||
+    updateProductQuantity.isPending;
 
   useEffect(() => {
-    if (isCartItemsError || addProductToCart.isError || removeProductFromCart.isError) {
-      const error = cartItemsError || addProductToCart.error || removeProductFromCart.error;
+    if (
+      isCartItemsError ||
+      addProductToCart.isError ||
+      removeProductFromCart.isError ||
+      updateProductQuantity.isError
+    ) {
+      const error =
+        cartItemsError ||
+        addProductToCart.error ||
+        removeProductFromCart.error ||
+        updateProductQuantity.error;
       setError(error);
       return;
     }
 
     setError(null);
-  }, [isCartItemsError, cartItemsError, addProductToCart, removeProductFromCart]);
+  }, [
+    isCartItemsError,
+    cartItemsError,
+    addProductToCart,
+    removeProductFromCart,
+    updateProductQuantity,
+  ]);
 
   const handleAddCartItem = async (productId: number) => {
     addProductToCart.mutate(productId, {
@@ -58,8 +81,27 @@ export default function useCartItems(): UseCartItemResult {
     });
   };
 
-  const checkIsInCart = (productId: number) => {
-    return cartItems.some((cartItem) => cartItem.product.id === productId);
+  // const checkIsInCart = (productId: number) => {
+  //   return cartItems.some((cartItem) => cartItem.product.id === productId);
+  // };
+
+  const getQuantityByProductId = (productId: number) => {
+    const targetCartItem = cartItems.find((cartItem) => cartItem.product.id === productId);
+    return targetCartItem ? targetCartItem.quantity : 0;
+  };
+
+  const updateQuantityByProductId = async (productId: number, quantity: number) => {
+    const targetCartItem = cartItems.find((cartItem) => cartItem.product.id === productId);
+
+    if (!targetCartItem) {
+      setError(new Error(ERROR_MESSAGE.INVALID_PRODUCT));
+      return;
+    }
+
+    updateProductQuantity.mutate(
+      { cartItemId: targetCartItem.id, quantity },
+      { onError: (error) => setError(error) },
+    );
   };
 
   return {
@@ -68,6 +110,8 @@ export default function useCartItems(): UseCartItemResult {
     selectedCartItemsLength: cartItems.length ?? 0,
     handleAddCartItem,
     handleRemoveCartItem,
-    checkIsInCart,
+    // checkIsInCart,
+    getQuantityByProductId,
+    updateQuantityByProductId,
   };
 }

@@ -1,32 +1,43 @@
 import { Product } from "../../../types";
 import { ProductItem } from "../..";
 import * as Styled from "./ProductItemContainer.style";
+import { useCartItems } from "../../../hooks";
 
 interface ProductItemContainerProps {
   products: Product[];
-  onAddCartItem: (productId: number) => Promise<void>;
-  onRemoveCartItem: (productId: number) => Promise<void>;
-  checkIsInCart: (productId: number) => boolean;
 }
 
-export default function ProductItemContainer({
-  products,
-  onAddCartItem,
-  onRemoveCartItem,
-  checkIsInCart,
-}: ProductItemContainerProps) {
+export default function ProductItemContainer({ products }: ProductItemContainerProps) {
+  const {
+    handleAddCartItem,
+    handleRemoveCartItem,
+    getQuantityByProductId,
+    updateQuantityByProductId,
+  } = useCartItems();
+
+  const onAddCartItem = (productId: number) => {
+    handleAddCartItem(productId);
+  };
+
+  const handleUpdateQuantity = (productId: number, newQuantity: number) => {
+    if (newQuantity === 0) {
+      handleRemoveCartItem(productId);
+      return;
+    }
+    updateQuantityByProductId(productId, newQuantity);
+  };
+
   return (
-    <Styled.Container>
+    <Styled.ProductItemContainer>
       {products.map((product, index) => (
         <ProductItem
           key={`${product.id}-${index}`}
           product={product}
-          isInCart={checkIsInCart(product.id)}
-          onClick={() => {
-            checkIsInCart(product.id) ? onRemoveCartItem(product.id) : onAddCartItem(product.id);
-          }}
+          quantity={getQuantityByProductId(product.id)}
+          onAddToCart={() => onAddCartItem(product.id)}
+          onUpdateQuantity={(newQuantity: number) => handleUpdateQuantity(product.id, newQuantity)}
         />
       ))}
-    </Styled.Container>
+    </Styled.ProductItemContainer>
   );
 }

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Container = styled.section`
+export const ProductItemContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px 16px;

@@ -1,5 +1,5 @@
 import { ENDPOINT } from "../constants/apis";
-import { CartItem } from "../types/cartItem";
+import { CartItem, UpdateCartItemQuantityProps } from "../types/cartItem";
 import { createFetchUrl, generateBasicToken } from "../utils";
 import { fetchClient } from "./fetchClient";
 
@@ -28,7 +28,7 @@ async function getCartItemsCount(): Promise<number> {
   return response.totalElements;
 }
 
-export async function addCartItem(productId: number) {
+export async function addCartItem(productId: number): Promise<void> {
   const body = { productId, quantity: 1 };
 
   await fetchClient({
@@ -39,10 +39,22 @@ export async function addCartItem(productId: number) {
   });
 }
 
-export async function removeCartItem(cartItemId: number) {
+export async function removeCartItem(cartItemId: number): Promise<void> {
   await fetchClient({
     url: ENDPOINT.DELETE_CART_ITEM(cartItemId),
     method: "DELETE",
+    token: generateBasicToken(),
+  });
+}
+
+export async function updateCartItemQuantity({
+  cartItemId,
+  quantity,
+}: UpdateCartItemQuantityProps): Promise<void> {
+  await fetchClient({
+    url: ENDPOINT.UPDATE_CART_ITEM(cartItemId),
+    method: "PATCH",
+    body: { quantity },
     token: generateBasicToken(),
   });
 }

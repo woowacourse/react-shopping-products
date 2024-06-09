@@ -4,6 +4,7 @@ export const ENDPOINT = {
   PRODUCT: `${BASE_URL}/products`,
   CART_ITEMS: `${BASE_URL}/cart-items`,
   CART_ITEMS_COUNT: `${BASE_URL}/cart-items/count`,
+  UPDATE_CART_ITEM: (cartItemId: number) => `${BASE_URL}/cart-items/${cartItemId}`,
   DELETE_CART_ITEM: (cartItemId: number) => `${BASE_URL}/cart-items/${cartItemId}`,
 } as const;
 

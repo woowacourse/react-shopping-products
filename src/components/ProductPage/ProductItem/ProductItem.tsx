@@ -1,31 +1,52 @@
-import { Product } from "../../../types";
-import { AddToCartIcon, RemoveFromCartIcon } from "../../../assets";
-
+import { Product, QuantityControlType } from "../../../types";
 import * as Styled from "./ProductItem.style";
+
+import { QuantityController, AddToCartButton } from "../../../components";
+import { ORDER_QUANTITY_PER_PRODUCT } from "../../../constants";
 
 interface ProductProps {
   product: Product;
-  isInCart: boolean;
-  onClick: () => void;
+  quantity: number;
+  onAddToCart: () => void;
+  onUpdateQuantity: (quantity: number) => void;
 }
 
-export default function ProductItem({ product, isInCart, onClick }: ProductProps) {
+export default function ProductItem({
+  product,
+  quantity,
+  onAddToCart,
+  onUpdateQuantity,
+}: ProductProps) {
+  const handleAddToCart = () => {
+    onAddToCart();
+  };
+
+  const handleChangeQuantity = (type: QuantityControlType) => {
+    if (quantity) {
+      const newQuantity =
+        type === "increase"
+          ? quantity + 1
+          : Math.max(ORDER_QUANTITY_PER_PRODUCT.min - 1, quantity - 1);
+      onUpdateQuantity(newQuantity);
+    }
+  };
+
   return (
     <Styled.ProductItemBox>
       <Styled.ProductImage $imageUrl={product.imageUrl} />
       <Styled.ProductContentBox>
         <Styled.ProductDescriptionBox>
           <h2>{product.name}</h2>
-          {product.price.toLocaleString("ko-KR")}원
+          <span>{product.price.toLocaleString("ko-KR")}원</span>
         </Styled.ProductDescriptionBox>
         <Styled.ProductFooter>
-          <Styled.ProductCartButton
-            $isInCart={isInCart}
-            onClick={onClick}
-          >
-            <img src={isInCart ? RemoveFromCartIcon : AddToCartIcon} />
-            {isInCart ? "빼기" : "담기"}
-          </Styled.ProductCartButton>
+          {quantity > 0 && (
+            <QuantityController
+              quantity={quantity}
+              onChangeQuantity={(type: QuantityControlType) => handleChangeQuantity(type)}
+            />
+          )}
+          {quantity === 0 && <AddToCartButton onClick={handleAddToCart} />}
         </Styled.ProductFooter>
       </Styled.ProductContentBox>
     </Styled.ProductItemBox>

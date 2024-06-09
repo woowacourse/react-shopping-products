@@ -20,13 +20,7 @@ export default function ProductPage() {
     handleChangeSortOption,
   } = useProducts();
 
-  const {
-    error: cartItemError,
-    handleAddCartItem,
-    handleRemoveCartItem,
-    selectedCartItemsLength,
-    checkIsInCart,
-  } = useCartItems();
+  const { error: cartItemError, selectedCartItemsLength } = useCartItems();
 
   const observerRef = useIntersectionObserver<HTMLDivElement>({
     onIntersect: fetchNextPage,
@@ -67,12 +61,7 @@ export default function ProductPage() {
             placeholder="낮은 가격순"
           />
         </Styled.SelectBoxContainer>
-        <ProductItemContainer
-          products={products}
-          onAddCartItem={handleAddCartItem}
-          onRemoveCartItem={handleRemoveCartItem}
-          checkIsInCart={checkIsInCart}
-        />
+        <ProductItemContainer products={products} />
       </Styled.ShopContent>
 
       <Styled.ObserverTarget
