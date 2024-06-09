@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { ChevronDown } from '../../../assets';
 
@@ -10,7 +10,7 @@ interface DropdownProps<T> {
   onChange: (value: T) => void;
 }
 
-// TODO: dropdown 외부 영역 클릭 시 setIsOpened(false)
+// TODO: dropdown 관련 로직 hook으로 분리
 
 function Dropdown<T extends string>({
   optionList,
@@ -18,8 +18,9 @@ function Dropdown<T extends string>({
 }: DropdownProps<T>) {
   const [isOpened, setIsOpened] = useState(false);
   const [preview, setPreview] = useState(optionList[0][1]);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleIsOpened = () => {
+  const handleToggleDropdown = () => {
     setIsOpened(!isOpened);
   };
 
@@ -28,9 +29,25 @@ function Dropdown<T extends string>({
     setPreview(value);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsOpened(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <S.Dropdown>
-      <S.Preview isOpened={isOpened} onClick={handleIsOpened}>
+    <S.Dropdown ref={dropdownRef}>
+      <S.Preview isOpened={isOpened} onClick={handleToggleDropdown}>
         <S.PreviewText>{preview}</S.PreviewText>
         {isOpened ? <ChevronDown /> : <ChevronDown />}
       </S.Preview>
@@ -38,7 +55,7 @@ function Dropdown<T extends string>({
         <DropdownOptions
           optionList={optionList}
           changeOption={handleChangeOption}
-          handleIsOpened={handleIsOpened}
+          handleToggleDropdown={handleToggleDropdown}
         />
       )}
     </S.Dropdown>
