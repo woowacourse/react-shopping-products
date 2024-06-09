@@ -1,16 +1,14 @@
 import { useRef, useEffect } from "react";
 
-const useIntersectionObserver = (callback: () => void) => {
+const useIntersectionObserver = (callback: () => void, isFetching: boolean) => {
   const observerTarget = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!observerTarget.current) return;
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         callback();
       }
     });
-
     if (observerTarget.current) {
       observer.observe(observerTarget.current);
     }
@@ -20,7 +18,7 @@ const useIntersectionObserver = (callback: () => void) => {
         observer.unobserve(observerTarget.current);
       }
     };
-  }, [callback]);
+  }, [isFetching, callback]);
 
   return observerTarget;
 };
