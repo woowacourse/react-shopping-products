@@ -1,11 +1,17 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchProducts } from '../api';
+import { ProductType } from '@/types';
+import { fetchProducts } from '@/api';
+import { productCategories } from '@/constant/products';
+import { QUERY_KEY } from '@/constant/queryKey';
 import { formattedKey } from './useProducts.util';
-import { QUERY_KEY } from '../constant/queryKey';
 
 interface Props {
   selectBarCondition: Record<string, string>;
 }
+
+const filterByValidCategory = (products: ProductType[]): ProductType[] => {
+  return products.filter((product) => product.category in productCategories);
+};
 
 const useProductQuery = ({ selectBarCondition }: Props) => {
   const params = {
@@ -25,8 +31,11 @@ const useProductQuery = ({ selectBarCondition }: Props) => {
       return lastPage.number + 1;
     },
   });
+
+  const products = data?.pages.map((page) => page.content).flat() ?? [];
+
   return {
-    products: data?.pages.map((page) => page.content).flat(),
+    products: filterByValidCategory(products),
     isError,
     isSuccess,
     fetchNextPage,
