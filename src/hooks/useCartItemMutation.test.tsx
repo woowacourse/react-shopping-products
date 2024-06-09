@@ -3,10 +3,13 @@ import useCartItemMutation from "./useCartItemMutation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import useCartItemsQuery from "./useCartItemsQuery";
 import { act } from "react";
+import { ErrorProvider } from "../context/ErrorContext";
 
 const queryClient = new QueryClient();
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  <ErrorProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  </ErrorProvider>
 );
 
 describe("useCartItemMutation", () => {
@@ -26,7 +29,7 @@ describe("useCartItemMutation", () => {
       }
     );
 
-    await waitFor(() => expect(result.current.cartItems).toBeTruthy());
+    await waitFor(() => expect(result.current.cartItems).not.toHaveLength(0));
 
     const firstCartItem = result.current.cartItems![0];
     const quantity = firstCartItem.quantity;
@@ -58,7 +61,7 @@ describe("useCartItemMutation", () => {
       }
     );
 
-    await waitFor(() => expect(result.current.cartItems).toBeTruthy());
+    await waitFor(() => expect(result.current.cartItems).not.toHaveLength(0));
 
     const firstCartItem = result.current.cartItems![0];
     const quantity = firstCartItem.quantity;
@@ -88,7 +91,7 @@ describe("useCartItemMutation", () => {
       { wrapper }
     );
 
-    await waitFor(() => expect(result.current.cartItems).toBeTruthy());
+    await waitFor(() => expect(result.current.cartItems).not.toHaveLength(0));
 
     const removingCartItem = result.current.cartItems![0];
 
