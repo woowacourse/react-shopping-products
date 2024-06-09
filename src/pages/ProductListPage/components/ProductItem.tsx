@@ -28,7 +28,11 @@ const ProductItem = ({ productItem, isSelected, cartItems }: Props) => {
           {productItem.price.toLocaleString('KR-ko')}원
         </span>
       </div>
-      <ProductSelectButton isSelected={isSelected} cartItem={cartItem} />
+      <ProductSelectButton
+        isSelected={isSelected}
+        cartItem={cartItem}
+        productItemId={productItem.id}
+      />
     </div>
   );
 };
