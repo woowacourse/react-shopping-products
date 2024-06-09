@@ -1,7 +1,6 @@
 import Flex from '@/components/common/Flex/Flex';
 import QuantityAdjustButton from '@/components/Product/QuantityAdjustButton/QuantityAdjustButton';
 import styles from './modalCartItem.module.css';
-import Image from '@/components/common/Image/Image';
 import Button from '@/components/common/Button/Button';
 import useDeleteCartItem from '@/hooks/useDeleteCartItem';
 import DefaultProductImageSrc from '@/assets/DefaultProductImage.png';
@@ -22,7 +21,7 @@ export default function ModalCartItem({ imageUrl, name, price, quantity, id }: P
 
   return (
     <div className={styles.container}>
-      <Image width={80} height={80} src={productThumbnailSrc} className={styles.thumbnail_img} />
+      <img width={80} height={80} src={productThumbnailSrc} className={styles.thumbnail_img} />
       <div className={styles.info_wrapper}>
         <div className={styles.info_container}>
           <div>
