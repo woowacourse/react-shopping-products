@@ -74,11 +74,10 @@ export const handlers = [
 
     const isExistItem = mockCartItems.find((cartItem) => cartItem.id === Number(cartId));
 
-    if (isExistItem) {
-      mockCartItems = cartItems.content.filter((cartItem) => cartItem.id !== Number(cartId));
-      return new Response(null, { status: 201 });
-    } else {
-      return new Response(null, { status: 404 });
-    }
+    if (!isExistItem) return new Response(null, { status: 404 });
+
+    mockCartItems = cartItems.content.filter((cartItem) => cartItem.id !== Number(cartId));
+
+    return new Response(null, { status: 201 });
   }),
 ];

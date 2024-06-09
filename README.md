@@ -39,7 +39,7 @@
 
 - step 3. 장바구니에 상품 추가 post 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
 
-  - [ ] 장바구니에 상품 추가 post 기능
+  - [x] 장바구니에 상품 추가 post 기능
 
     - [x] useMutation을 사용한 useAddCartItem 훅
 
@@ -47,8 +47,11 @@
 
 - step 4. 장바구니에서 상품 제거 delete 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
 
-  - [ ] 장바구니에서 상품 제거 delete 기능
-    - [ ]
+  - [x] 장바구니에서 상품 제거 delete 기능
+
+    - [x] useMutation을 사용한 useDeleteCartItem 훅
+
+  - [ ] 프로덕션 코드의 기존 fetch 함수 대체
 
 - step 5. 장바구니 상품 수량 patch 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
   - [ ] 장바구니 상품 수량 patch 기능
