@@ -4,7 +4,7 @@ import * as S2 from '../common/Stepper/RoundButton.styled';
 import { CartItem } from '../../types/fetch';
 import useCartStepper from '../common/Stepper/useCartStepper';
 import Stepper from '../common/Stepper/Stepper';
-import useMutateCart from '../../hooks/useMutateCart';
+import useFetchCart from '../../hooks/useFetchCart';
 
 interface CartItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   cartItem: CartItem;
@@ -12,7 +12,7 @@ interface CartItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 
 const CartItemCard = ({ cartItem, style }: CartItemProps) => {
   const { handleClickDecrease, handleClickIncrease, isMinusButtonActive } = useCartStepper(cartItem, 1, false);
-  const { deleteToRemoveCart } = useMutateCart();
+  const { deleteToRemoveCart } = useFetchCart();
   return (
     <div style={style}>
       <S.ItemWrapper>

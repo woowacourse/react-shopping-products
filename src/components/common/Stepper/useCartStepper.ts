@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { CartItem } from '../../../types/fetch';
-import useMutateCart from '../../../hooks/useMutateCart';
+import useFetchCart from '../../../hooks/useFetchCart';
 
 const useCartStepper = (cartItem?: CartItem, minValue = 0, deleteCartUnderMin = true) => {
-  const { deleteToRemoveCart, patchCartItemQuantity } = useMutateCart();
+  const { deleteToRemoveCart, patchCartItemQuantity } = useFetchCart();
 
   const [isMinusButtonActive, setIsMinusButtonActive] = useState(true);
   useEffect(() => {

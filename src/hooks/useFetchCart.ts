@@ -18,6 +18,7 @@ const useFetchCart = () => {
     queryKey: ['cart'],
     queryFn: fetchCartItems,
   });
+  
   const { mutate: addProductToCart } = useMutation({
     mutationFn: postAddItems,
     onSettled: (data) => {
