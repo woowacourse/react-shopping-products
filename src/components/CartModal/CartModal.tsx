@@ -32,6 +32,7 @@ const CartModal = ({ cartItems, isOpen, handleToggle }: Props) => {
       <Modal.ModalHeader title="장바구니" style={{ paddingBottom: '24px' }} />
 
       <Modal.ModalContent>
+        {cartItems.length === 0 && <div>장바구니가 비었어요.</div>}
         {cartItems.map((cartItem) => {
           return (
             <div key={`cartItem-${cartItem.id}`}>
