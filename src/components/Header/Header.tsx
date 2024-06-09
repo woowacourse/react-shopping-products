@@ -1,13 +1,14 @@
 import Logo from "../../assets/logo.svg";
 import Cart from "../../assets/cart.svg";
 import * as H from "./Header.style";
-import { useCartItemsContext } from "../../hooks/useCartItemsContext";
 import { useState } from "react";
 import CartListModal from "../CartListModal/CartListModal";
+import useCartItemsQuery from "../../hooks/useCartItemsQuery";
 
 export default function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { cartItems } = useCartItemsContext();
+
+  const { cartItems } = useCartItemsQuery();
   const quantityInCart = cartItems.length;
 
   return (
