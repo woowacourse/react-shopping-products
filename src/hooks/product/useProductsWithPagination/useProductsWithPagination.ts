@@ -3,10 +3,9 @@ import { useCallback, useEffect } from 'react';
 import { Product } from '@appTypes/product';
 
 import { ProductDropdownOptions } from '@components/product/ProductDropdown/ProductDropdown.type';
-import { InfiniteData, useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { fetchProducts } from '@apis/product/product';
+
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
-import { InfinityScrollResponse } from '@appTypes/response';
+import { useProducts } from '@queries/product/useProducts';
 
 interface UseProductResult {
   products: Product[];
@@ -16,7 +15,7 @@ interface UseProductResult {
   updateNextProductItem: () => void;
 }
 
-const useProducts = (dropdownOptions: ProductDropdownOptions): UseProductResult => {
+const useProductsWithPagination = (dropdownOptions: ProductDropdownOptions): UseProductResult => {
   const {
     data,
     hasNextPage,
@@ -24,18 +23,7 @@ const useProducts = (dropdownOptions: ProductDropdownOptions): UseProductResult 
     isError,
     isFetching: isInfiniteScrollLoading,
     fetchNextPage,
-  } = useSuspenseInfiniteQuery<
-    InfinityScrollResponse<Product[]>,
-    Error,
-    InfiniteData<InfinityScrollResponse<Product[]>, number>,
-    (string | ProductDropdownOptions)[],
-    number
-  >({
-    queryKey: ['products', dropdownOptions],
-    initialPageParam: 0,
-    queryFn: ({ pageParam }) => fetchProducts({ page: pageParam, ...dropdownOptions }),
-    getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
-  });
+  } = useProducts(dropdownOptions);
 
   const showToast = useToastContext();
 
@@ -60,4 +48,4 @@ const useProducts = (dropdownOptions: ProductDropdownOptions): UseProductResult 
   };
 };
 
-export default useProducts;
+export default useProductsWithPagination;

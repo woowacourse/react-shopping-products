@@ -3,7 +3,7 @@ import {
   DEFAULT_SIZE,
   PAGE_OFFSET,
   PAGE_PER_SIZE,
-} from '@hooks/product/useProducts/useProducts.constant';
+} from '@hooks/product/useProductsWithPagination/useProductsWithPagination.constant';
 
 import { ProductEndpointParams } from '@apis/product/product.type';
 

@@ -5,7 +5,7 @@ import {
   INIT_PAGE,
   PAGE_OFFSET,
   PAGE_PER_SIZE,
-} from '@hooks/product/useProducts/useProducts.constant';
+} from '@hooks/product/useProductsWithPagination/useProductsWithPagination.constant';
 import { PRODUCT_SORT_MAP } from '@components/product/ProductDropdown/ProductDropdown.constant';
 
 interface ProductEndpoint {

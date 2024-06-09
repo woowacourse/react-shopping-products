@@ -37,7 +37,8 @@
       "@appTypes/*": ["appTypes/*"],
       "@recoil/*": ["recoil/*"],
       "@validation/*": ["validation/*"],
-      "@mocks/*": ["mocks/*"]
+      "@mocks/*": ["mocks/*"],
+      "@queries/*": ["queries/*"]
     },
     "types": ["vite-plugin-svgr/client", "vite/client"]
   },

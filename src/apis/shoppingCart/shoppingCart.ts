@@ -3,7 +3,7 @@ import { getCartItemsEndpoint } from '@apis/shoppingCart/shoppingCart.util';
 import { CartItem } from '@appTypes/product';
 import { InfinityScrollResponse } from '@appTypes/response';
 
-import { INIT_PAGE } from '@hooks/product/useProducts/useProducts.constant';
+import { INIT_PAGE } from '@hooks/product/useProductsWithPagination/useProductsWithPagination.constant';
 
 export const getCartItems = async (
   { page, size } = { page: INIT_PAGE, size: 20 }

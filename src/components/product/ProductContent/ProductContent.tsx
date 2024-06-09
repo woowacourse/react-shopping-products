@@ -1,11 +1,11 @@
 import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
-import useProducts from '@hooks/product/useProducts/useProducts';
+import useProductsWithPagination from '@hooks/product/useProductsWithPagination/useProductsWithPagination';
 import { ProductDropdownOptions } from '@components/product/ProductDropdown/ProductDropdown.type';
 
 import * as Styled from './ProductContent.styled';
 
-import { INIT_PAGE } from '@hooks/product/useProducts/useProducts.constant';
+import { INIT_PAGE } from '@hooks/product/useProductsWithPagination/useProductsWithPagination.constant';
 import CardList from '@components/product/CardList/CardList';
 
 interface ProductContentProps {
@@ -13,7 +13,8 @@ interface ProductContentProps {
 }
 
 const ProductContent = ({ dropdownOptions }: ProductContentProps) => {
-  const { products, isLoading, updateNextProductItem, page } = useProducts(dropdownOptions);
+  const { products, isLoading, updateNextProductItem, page } =
+    useProductsWithPagination(dropdownOptions);
 
   const targetRef = useIntersectionObserver<HTMLDivElement>({
     onIntersect: () => {
