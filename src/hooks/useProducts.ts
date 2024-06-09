@@ -12,7 +12,7 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     selectBarCondition,
   });
 
-  const { cartItems, errorCartItemsFetch, getCartItems } = useCartItems();
+  const { cartItems, getCartItems } = useCartItems();
 
   useEffect(() => {
     getCartItems();
@@ -28,7 +28,6 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     isError,
     isSuccess,
     fetchNextPage,
-    errorCartItemsFetch,
     isFetching,
   };
 }

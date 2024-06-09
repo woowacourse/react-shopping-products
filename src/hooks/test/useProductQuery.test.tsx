@@ -2,11 +2,14 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import useProductQuery from '../useProductQuery';
 import { productCategories, sortOptions } from '../../constant/products';
+import { ToastProvider } from '@/context/ToastProvider';
 
 const queryClient = new QueryClient();
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  <QueryClientProvider client={queryClient}>
+    <ToastProvider>{children}</ToastProvider>
+  </QueryClientProvider>
 );
 
 describe('useProductQuery 훅 테스트', () => {

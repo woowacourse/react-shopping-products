@@ -7,7 +7,6 @@ export function useCartItems() {
   const [productToCartIdMap, setProductToCartIdMap] = useState<
     Record<ProductType['id'], CartItemType['id']>
   >({});
-  const [errorCartItemsFetch, setErrorCartItemsFetch] = useState({ isError: false, message: '' });
 
   const getProductToCartIdMap = async () => {
     if (!cartItems) return;
@@ -24,7 +23,6 @@ export function useCartItems() {
   return {
     cartItems,
     productToCartIdMap,
-    errorCartItemsFetch,
     getCartItems: getProductToCartIdMap,
   };
 }
