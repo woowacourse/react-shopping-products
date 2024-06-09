@@ -3,8 +3,9 @@ import ProductItemList from './components/ProductItemList';
 import ProductListHeader from './components/ProductListHeader';
 import ProductListSelectBar from './components/ProductListSelectBar';
 import ProductListTitle from './components/ProductListTitle';
-import styles from './ProductListPage.module.css';
 import useCartItems from '@/hooks/useCartItems';
+import CartModal from '@/components/CartModal/CartModal';
+import styles from './ProductListPage.module.css';
 
 const ProductListPage = () => {
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -13,6 +14,8 @@ const ProductListPage = () => {
     sort: 'priceAsc',
   });
   const { cartItems } = useCartItems();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setCartItemCount(cartItems.length);
@@ -24,13 +27,17 @@ const ProductListPage = () => {
   };
 
   return (
-    <div>
-      <ProductListHeader cartItemCount={cartItemCount} />
+    <div className={styles.productListPageContainer}>
+      <ProductListHeader
+        cartItemCount={cartItemCount}
+        handleHeaderButton={() => setIsOpen(!isOpen)}
+      />
       <div className={styles.productContentContainer}>
         <ProductListTitle />
         <ProductListSelectBar handleSelectBarCondition={handleSelectBarCondition} />
         <ProductItemList selectBarCondition={selectBarCondition} cartItems={cartItems} />
       </div>
+      <CartModal cartItems={cartItems} isOpen={isOpen} handleToggle={() => setIsOpen(!isOpen)} />
     </div>
   );
 };
