@@ -5,14 +5,15 @@ import styles from '../ProductListPage.module.css';
 
 interface Props {
   cartItemCount: number;
+  cartItemsModalOpen: () => void;
 }
 
-const ProductListHeader = ({ cartItemCount }: Props) => {
+const ProductListHeader = ({ cartItemsModalOpen, cartItemCount }: Props) => {
   return (
     <div>
       <Header>
         <HeaderButton>SHOP</HeaderButton>
-        <HeaderButton>
+        <HeaderButton onClick={() => cartItemsModalOpen()}>
           {cartItemCount !== 0 && <div className={styles.cartItemCount}>{cartItemCount}</div>}
           <img src={cartIcon} className={styles.productHeaderImg} />
         </HeaderButton>

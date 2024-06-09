@@ -4,6 +4,8 @@ import ProductListSelectBar from './components/ProductListSelectBar';
 import ProductListTitle from './components/ProductListTitle';
 import styles from './ProductListPage.module.css';
 import useProducts from '../../hooks/useProducts';
+import { useState } from 'react';
+import { CartItemsModal } from './components/CartItemsModal';
 
 const ProductListPage = () => {
   const {
@@ -15,10 +17,14 @@ const ProductListPage = () => {
     cartItemCount,
     handleSelectBarCondition,
   } = useProducts();
+  const [cartItemsModalOpen, setCartItemsModalOpen] = useState(false);
 
   return (
     <div>
-      <ProductListHeader cartItemCount={cartItemCount} />
+      <ProductListHeader
+        cartItemCount={cartItemCount}
+        cartItemsModalOpen={() => setCartItemsModalOpen(true)}
+      />
       <div className={styles.productContentContainer}>
         <ProductListTitle />
         <ProductListSelectBar handleSelectBarCondition={handleSelectBarCondition} />
@@ -30,6 +36,10 @@ const ProductListPage = () => {
           isLoading={isLoading}
         />
       </div>
+      <CartItemsModal
+        isOpen={cartItemsModalOpen}
+        cartItemsModalClose={() => setCartItemsModalOpen(false)}
+      />
     </div>
   );
 };
