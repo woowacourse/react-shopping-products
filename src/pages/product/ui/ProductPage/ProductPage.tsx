@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 
-import { Product } from '@/entities/product';
-import { Layout, Spinner, Toast } from '@/shared';
+import { Product, Layout, Spinner, Toast } from '@/shared';
 import { ContentHeader } from '@/widgets/ContentHeader';
 import { HeaderCartButton, HeaderLogoButton, LayoutHeader } from '@/widgets/LayoutHeader';
 import { ProductList } from '@/widgets/ProductList';

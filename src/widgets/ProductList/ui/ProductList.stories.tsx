@@ -1,4 +1,4 @@
-import { Product } from '@/entities/product';
+import { Product } from '@/shared';
 import products from '@/shared/mocks/products.json';
 
 import { ProductList } from './ProductList';

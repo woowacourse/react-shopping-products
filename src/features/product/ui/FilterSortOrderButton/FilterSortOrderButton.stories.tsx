@@ -1,4 +1,4 @@
-import { DEFAULT_SORT_ORDER } from '../../model/constants';
+import { DEFAULT_SORT_ORDER } from '@/shared';
 
 import { FilterSortOrderButton } from './FilterSortOrderButton';
 

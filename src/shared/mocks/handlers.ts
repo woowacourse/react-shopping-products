@@ -1,9 +1,8 @@
 import { http, HttpResponse } from 'msw';
 
-import { Product, SORT_ORDERS, SortOrder } from '@/entities/product';
-import { ALL, DEFAULT_SORT_ORDER } from '@/features/product';
+import { ALL, DEFAULT_SORT_ORDER, Product, SORT_ORDERS, SortOrder } from '@/shared';
 
-import { PRODUCTS_ENDPOINT } from '../api/endpoints';
+import { API_CONFIG } from '../config/api';
 
 import products from './products.json';
 
@@ -18,7 +17,7 @@ const sortByPrice = (products: Product[], sort: SortOrder) => {
 };
 
 export const handlers = [
-  http.get(PRODUCTS_ENDPOINT, ({ request }) => {
+  http.get(API_CONFIG.domain + '/products', ({ request }) => {
     const url = new URL(request.url);
 
     const category = url.searchParams.get('category') || ALL;

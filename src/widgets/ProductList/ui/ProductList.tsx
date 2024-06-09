@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import { ProductCard, Product, Category, SortOrder } from '@/entities/product';
-import { FilterCategoryButton, FilterSortOrderButton, ALL, CartToggleButton } from '@/features/product';
+import { ProductCard } from '@/entities/product';
+import { FilterCategoryButton, FilterSortOrderButton, AddToCartButton } from '@/features/product';
+import { Product, Category, SortOrder, ALL } from '@/shared';
 
 import css from './ProductList.module.css';
 
@@ -44,10 +45,7 @@ export const ProductList = ({
             key={product.id}
             product={product}
             actionSlot={
-              <CartToggleButton
-                isInCart={cartState[product.id] ?? false}
-                onClick={() => handleCartToggle(product.id)}
-              />
+              cartState[product.id] ? '있음' : <AddToCartButton onClick={() => handleCartToggle(product.id)} />
             }
           />
         ))}

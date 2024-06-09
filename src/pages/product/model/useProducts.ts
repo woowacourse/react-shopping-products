@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { Category, Product, SortOrder } from '@/entities/product';
-import { ALL, DEFAULT_CATEGORY, DEFAULT_SORT_ORDER } from '@/features/product';
+import { DEFAULT_CATEGORY, DEFAULT_SORT_ORDER, ALL, Category, Product, SortOrder } from '@/shared';
 
 import useFetchProducts from './useFetchProducts';
 
@@ -17,27 +16,31 @@ interface UseProductsResult {
 }
 
 export const useProducts = (): UseProductsResult => {
-  const [page, setPage] = useState(0);
-  const [category, setCategory] = useState<typeof ALL | Category>(DEFAULT_CATEGORY);
-  const [sortOrder, setSortOrder] = useState<SortOrder>(DEFAULT_SORT_ORDER);
-  const { products, isLoading: loading, error, totalPage, fetchProductsData } = useFetchProducts();
+  const {
+    products,
+    isLoading: loading,
+    error,
+    totalPage,
+    page,
+    category,
+    sortOrder,
+    fetchProductsData,
+  } = useFetchProducts();
 
   useEffect(() => {
-    fetchProductsData(page, category, sortOrder);
-  }, [page, category, sortOrder]);
+    fetchProductsData(0, DEFAULT_CATEGORY, DEFAULT_SORT_ORDER);
+  }, []);
 
   const fetchNextPage = () => {
-    if (page < totalPage) setPage((prevPage) => prevPage + 1);
+    if (page < totalPage) fetchProductsData(page + 1, category, sortOrder);
   };
 
   const handleChangeCategory = (value: typeof ALL | Category) => {
-    setCategory(value);
-    setPage(0);
+    fetchProductsData(0, value, sortOrder);
   };
 
   const handleChangeSortOrder = (value: SortOrder) => {
-    setSortOrder(value);
-    setPage(0);
+    fetchProductsData(0, category, value);
   };
 
   return {

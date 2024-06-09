@@ -1,8 +1,6 @@
 import { ReactNode } from 'react';
 
-import { Text } from '@/shared';
-
-import { Product } from '../../model/types';
+import { Product, Text } from '@/shared';
 
 import css from './ProductCard.module.css';
 

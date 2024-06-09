@@ -1,7 +1,4 @@
-import { CATEGORIES, CATEGORIES_KR, SORT_ORDERS, SORT_ORDERS_KR } from '@/entities/product';
-
-export const ALL = 'all' as const;
-export const ALL_KR = '전체';
+import { CATEGORIES, CATEGORIES_KR, SORT_ORDERS, SORT_ORDERS_KR, ALL } from '@/shared';
 
 export const CATEGORY_OPTIONS = CATEGORIES.map((category) => ({
   value: category,

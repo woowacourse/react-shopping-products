@@ -1,4 +1,4 @@
-import { CATEGORIES } from '../../model/constants';
+import { CATEGORIES } from '@/shared';
 
 import { ProductCard } from './ProductCard';
 
