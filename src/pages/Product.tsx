@@ -1,40 +1,46 @@
 import { useEffect, useRef, useState } from 'react';
+import { useModal } from 'woowacourse-react-modal-component';
 
-import useFetchAddCart from '../hooks/useFetchAddCart';
-import useFetchProducts from '../hooks/useFetchProducts';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
-import Header from '../components/Header/Header';
-import Dropdown from '../components/Dropdown/Dropdown';
-import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
-import ProductCard from '../components/ProductCard/ProductCard';
-import { CartContext } from '../CartContext';
+import {
+  useFetchCartItems,
+  useFetchProducts,
+  useIntersectionObserver,
+} from '../hooks/index';
+import {
+  Header,
+  Dropdown,
+  ErrorMessage,
+  ProductCard,
+  CartModal,
+  LoadingSpinner,
+} from '../components/index';
 import { SortingParam } from '../types/sort';
 import { DEFAULT_SORTING_PARAM } from '../constants/page';
+import CartProvider from '../context/CartProvider';
 
 import * as S from './Product.styled';
 
 function Product() {
   const target = useRef(null);
-
-  const fetchAddCartState = useFetchAddCart();
   const [sortings, setSortings] = useState<SortingParam[]>([
     DEFAULT_SORTING_PARAM,
   ]);
   const [filter, setFilter] = useState('');
+
   const {
-    products,
+    data: products,
     isError,
-    isPending,
+    isLoading,
     isLast,
     fetchNextPage,
-    page,
     resetPage,
   } = useFetchProducts(sortings, filter);
+  const { cartItems } = useFetchCartItems();
 
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
   useEffect(() => {
-    if (!target.current || isPending || isLast || isError) return;
+    if (!target.current || isLoading || isError || isLast) return;
     const currentTarget = target.current;
     observe(currentTarget);
 
@@ -43,12 +49,26 @@ function Product() {
         unobserve(currentTarget);
       }
     };
-  }, [page, isPending, isLast]);
+  }, [isLoading, isError, isLast]);
+
+  const { isOpen: isDetailModalOpen, toggleModal: toggleDetailModal } =
+    useModal();
 
   return (
     <>
-      <CartContext.Provider value={fetchAddCartState}>
-        <Header badgeCount={fetchAddCartState.cartIdSet.size} />
+      <CartProvider>
+        {isDetailModalOpen && (
+          <CartModal
+            cartItems={cartItems}
+            isDetailModalOpen={isDetailModalOpen}
+            toggleDetailModal={toggleDetailModal}
+          />
+        )}
+
+        <Header
+          badgeCount={cartItems.length}
+          onToggleDetailModal={toggleDetailModal}
+        />
         {isError && <ErrorMessage />}
         <S.ProductContentWrapper>
           <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
@@ -64,8 +84,9 @@ function Product() {
             })}
             <S.ObserverContainer ref={target} />
           </S.ProductListContainer>
+          {isLoading && <LoadingSpinner />}
         </S.ProductContentWrapper>
-      </CartContext.Provider>
+      </CartProvider>
     </>
   );
 }

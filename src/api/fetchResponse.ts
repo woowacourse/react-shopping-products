@@ -2,7 +2,7 @@ import { generateBasicToken } from '../utils/auth';
 
 interface FetchResponseType {
   url: string;
-  method: 'GET' | 'DELETE' | 'POST';
+  method: 'GET' | 'DELETE' | 'POST' | 'PATCH';
   body?: string | null;
 }
 

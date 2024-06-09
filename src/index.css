@@ -2,12 +2,15 @@
   --black-color-1: #000000;
   --black-color-1-10: rgba(0, 0, 0, 0.1);
   --black-color-2: #0a0d13;
+  --black-color-3: #333333;
 
   --white-color-1: #ffffff;
 
   --gray-color-1: #eaeaea;
 
-  --error-color: #FFC9C9;
+  --error-color: #ffc9c9;
+
+  --font-Noto-Sans-KR: Noto Sans KR;
 }
 
 html {

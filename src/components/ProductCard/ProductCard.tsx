@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 
-import { CartContext } from '../../CartContext';
+import { CartContext } from '../../context/CartContext';
 import { Product } from '../../types/fetch';
-import CartButton from '../CartButton/CartButton';
+import { CartButton } from '../index';
 
 import * as S from './ProductCard.styled';
 
@@ -11,7 +11,12 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  const { postToAddCart, deleteToRemoveCart } = useContext(CartContext);
+  const cartContext = useContext(CartContext);
+  if (!cartContext) {
+    throw new Error('CartContext가 비어있습니다.');
+  }
+  const { addCartItem, getCartItemByProduct } = cartContext;
+  const cartItem = getCartItemByProduct(product.id);
 
   return (
     <div>
@@ -24,12 +29,9 @@ function ProductCard({ product }: ProductCardProps) {
 
         <S.ButtonContainer>
           <CartButton
-            id={product.id}
+            cartItem={cartItem}
             onAddClick={() => {
-              postToAddCart(product.id);
-            }}
-            onDeleteClick={() => {
-              deleteToRemoveCart(product.id);
+              addCartItem(product.id);
             }}
           />
         </S.ButtonContainer>
