@@ -7,8 +7,3 @@ export const ProductPageListWrapper = styled.ul`
   gap: 20px;
   min-height: 100vh;
 `;
-
-export const ObserverTarget = styled.div`
-  height: 1px;
-  width: 100%;
-`;
