@@ -8,16 +8,12 @@ import { changeToProductList } from "@/utils/product";
 
 const App = () => {
   const { category, sort, handleCategoryChange, handleSortChange } = useFilters();
-
   const { data: productsData, fetchNextPage, isFetching } = useInfiniteProduct(category, sort);
-
   const { data: cartItemsData } = useQuery({
     queryKey: ["cartItems"],
     queryFn: getCartItems,
   });
-
   const observerTarget = useIntersectionObserver(fetchNextPage, isFetching);
-
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleOpenCart = () => {
