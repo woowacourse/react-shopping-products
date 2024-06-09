@@ -1,10 +1,10 @@
 import useCartItemQuantity from "../../../hooks/useCartItemQuantity";
-import { CartItemType } from "../../../types/cartItems";
+import { ICartItem } from "../../../types/cartItems";
 import LoadingDots from "../../common/LoadingDots";
 import ProductControls from "../../domain/ProductControls";
 import S from "./styledComponent";
 
-function CartItem({ item }: { item: CartItemType }) {
+function CartItem({ item }: { item: ICartItem }) {
   const { deleteItemMutation } = useCartItemQuantity();
 
   return (

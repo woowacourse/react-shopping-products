@@ -1,9 +1,9 @@
 import useCartItemQuantity from "../../../hooks/useCartItemQuantity";
-import { CartItemType } from "../../../types/cartItems";
+import { ICartItem } from "../../../types/cartItems";
 import S from "./styledComponent";
 import LoadingDots from "../../common/LoadingDots";
 
-const ProductControls = ({ cartItem }: { cartItem: CartItemType }) => {
+const ProductControls = ({ cartItem }: { cartItem: ICartItem }) => {
   const { increaseQuantity, decreaseQuantity, deleteItemMutation } = useCartItemQuantity();
 
   if (!cartItem) return null;

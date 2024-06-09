@@ -1,10 +1,10 @@
-import { Product } from "../../../types/products";
+import { IProduct } from "../../../types/products";
 import { PropsWithChildren } from "react";
 import ToggleItemButton from "../ToggleItemButton";
 import S from "./StyledComponent";
 
 interface ProductCardProps extends PropsWithChildren {
-  product: Product;
+  product: IProduct;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
