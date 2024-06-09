@@ -32,8 +32,8 @@ declare module '@emotion/react' {
 }
 
 const zIndex: ZIndex = {
-  header: 1000,
-  dropdown: 900,
+  header: 20,
+  dropdown: 10,
 };
 
 const colors: Colors = {

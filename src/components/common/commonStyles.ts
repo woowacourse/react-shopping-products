@@ -31,3 +31,11 @@ export const Title = styled.h1`
   font-weight: 700;
 `;
 
+export const Divider = styled.div`
+  width: 100%;
+  height: 1px;
+
+  margin-bottom: 12px;
+
+  background-color: ${({ theme }) => theme.colors.divider};
+`;
