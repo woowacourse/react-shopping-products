@@ -1,13 +1,13 @@
+import useCartItemList from '@/hooks/useCartItemList';
 import * as Styled from './AdjustQuantityButton.styled';
 import { IMAGES } from '@/assets';
-import useCartItems from '@/hooks/useCartItems';
 
 interface AdjustQuantityButtonProp {
   productId: number;
 }
 
 export const AdjustQuantityButton = ({ productId }: AdjustQuantityButtonProp) => {
-  const { adjustCartItemQuantityMutation, matchCartItem } = useCartItems();
+  const { adjustCartItemQuantityMutation, matchCartItem } = useCartItemList();
 
   const cartItemQuantity = matchCartItem(productId)?.quantity;
   const cartItemId = matchCartItem(productId)?.id;

@@ -9,10 +9,10 @@ import ProductCardList from '@/components/productCardList/ProductCardList';
 import Title from '@/components/title/Title';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
 
-import useCartItems from '@/hooks/useCartItems';
 import useProductList from '@/hooks/useProductList';
 import { useModalHandler } from 'hash-modal';
 import CartModalInfo from '@/components/cartInfoModal/CartInfoModal';
+import useCartItemList from '@/hooks/useCartItemList';
 
 const ProductListPage = () => {
   const {
@@ -26,7 +26,7 @@ const ProductListPage = () => {
     category,
     hasNextPage,
   } = useProductList();
-  const { cartItems } = useCartItems();
+  const { cartItemList } = useCartItemList();
   const bottomRef = useRef<HTMLDivElement>(null);
   const { modalOpen, openModal, closeModal } = useModalHandler();
 
@@ -39,7 +39,7 @@ const ProductListPage = () => {
       bottomRef={bottomRef}
     >
       <Styled.PageContainer>
-        <Header cartCount={cartItems?.length} openModal={openModal} />
+        <Header cartCount={cartItemList?.length} openModal={openModal} />
         <Styled.CommonContainer>
           {modalOpen && <CartModalInfo closeModal={closeModal} />}
           <Title title="상품 목록" />

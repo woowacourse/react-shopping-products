@@ -1,13 +1,13 @@
-import useCartItems from '@/hooks/useCartItems';
+import useCartItemList from '@/hooks/useCartItemList';
 import CartItem from './CartItem';
 import * as Styled from './CartItemList.styled';
 import { koMoneyFormat } from '@/utils/koMoneyFormat';
 
 const CartItemList = () => {
-  const { cartItems, deleteCartItemMutation, totalCartItemPrice } = useCartItems();
+  const { cartItemList, deleteCartItemMutation, totalCartItemPrice } = useCartItemList();
   return (
     <Styled.CartItemListContainer>
-      {cartItems?.map((cartItem) => {
+      {cartItemList?.map((cartItem) => {
         return (
           <CartItem
             key={cartItem.product.id}

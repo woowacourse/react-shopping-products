@@ -5,8 +5,8 @@ import useAdjustCartItemQuantity from './useAdjustCartItemQuantity';
 import { fetchCartItems } from '@/api/cart';
 import { CartItemInfo } from '@/types/cartItem';
 
-const useCartItems = () => {
-  const { data: cartItems } = useQuery<CartItemInfo[]>({
+const useCartItemList = () => {
+  const { data: cartItemList } = useQuery<CartItemInfo[]>({
     queryKey: ['fetchCartItems'],
     queryFn: fetchCartItems,
   });
@@ -15,21 +15,20 @@ const useCartItems = () => {
     useAdjustCartItemQuantity();
 
   const matchCartItem = (productId: number) => {
-    return cartItems?.find((cartItem) => cartItem.product.id === productId);
+    return cartItemList?.find((cartItem) => cartItem.product.id === productId);
   };
 
   const getCartItemQuantity = (productId: number) => {
-    return cartItems?.map((cartItem) => {
-      if (cartItem.product.id === productId) return cartItem.quantity;
-    });
+    const cartItem = cartItemList?.find((cartItem) => cartItem.product.id === productId);
+    return cartItem ? cartItem.quantity : 0;
   };
 
-  const totalCartItemPrice = cartItems?.reduce((totalPrice, cartItem) => {
+  const totalCartItemPrice = cartItemList?.reduce((totalPrice, cartItem) => {
     return totalPrice + cartItem.product.price * cartItem.quantity;
   }, 0);
 
   return {
-    cartItems,
+    cartItemList,
     deleteCartItemMutation,
     addCartItemMutation,
     adjustCartItemQuantityMutation,
@@ -39,4 +38,4 @@ const useCartItems = () => {
   };
 };
 
-export default useCartItems;
+export default useCartItemList;
