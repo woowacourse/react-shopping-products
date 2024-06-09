@@ -4,8 +4,7 @@ import { queryClient } from '@/App';
 import toast from '@/services/toast';
 import ERROR_MESSAGE from '@/constants/errorMessage';
 import { CART_ITEM_KEYS } from '@/queries/keys';
-
-const DEFAULT_TOAST_DURATION = 2_000;
+import { DEFAULT_TOAST_DURATION } from '@/constants/toastOption';
 
 const useDeleteCartItem = () => {
   const { mutate: deleteCartItemMutation } = useMutation<void, Error, { cartItemId: number }>({

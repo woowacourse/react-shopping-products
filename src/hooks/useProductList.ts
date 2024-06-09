@@ -1,14 +1,12 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SortType, Category } from '@/types';
 import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
-import { queryClient } from '../App';
 import ERROR_MESSAGE from '@/constants/errorMessage';
 import toast from '@/services/toast';
 import { getProductList } from '@/api/productAPI';
 import { PRODUCT_KEYS } from '../queries/keys';
-
-const DEFAULT_TOAST_DURATION = 1000;
+import { DEFAULT_TOAST_DURATION } from '@/constants/toastOption';
 
 const isValidCategory = (value: any): value is Category => {
   return CATEGORY_OPTION_LIST.some((categoryItem) => categoryItem.value === value);

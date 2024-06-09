@@ -5,8 +5,7 @@ import useAddCartItem from '../useAddCartItem';
 import { CART_ITEM_KEYS } from '@/queries/keys';
 import ERROR_MESSAGE from '@/constants/errorMessage';
 import toast from '@/services/toast';
-
-const DEFAULT_TOAST_DURATION = 2_000;
+import { DEFAULT_TOAST_DURATION } from '@/constants/toastOption';
 
 describe('useAddCartItem 훅에 대한 테스트 코드 작성', () => {
   it('장바구니에 상품을 추가할수 있다..', async () => {

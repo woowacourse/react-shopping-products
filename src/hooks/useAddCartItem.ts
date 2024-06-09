@@ -4,8 +4,7 @@ import ERROR_MESSAGE from '@/constants/errorMessage';
 import { useMutation } from '@tanstack/react-query';
 import toast from '../services/toast';
 import { CART_ITEM_KEYS } from '@/queries/keys';
-
-const DEFAULT_TOAST_DURATION = 2_000;
+import { DEFAULT_TOAST_DURATION } from '@/constants/toastOption';
 
 const DEFAULT_ADD_QUANTITY = 1;
 
