@@ -31,9 +31,10 @@ function CartModal({ isOpened, modalClose }: CartModalProps) {
           modalSize={{ width: '429px' }}
         >
           <S.Container>
-            {cartItems.map((item) => {
-              return <CartItem cartItemInfo={item} />;
-            })}
+            {cartItems &&
+              cartItems.map((item, idx) => {
+                return <CartItem cartItemInfo={item} key={idx} />;
+              })}
             <Divider />
             <PaymentDetail title='총 결제 금액' amount={totalAmount} />
           </S.Container>
