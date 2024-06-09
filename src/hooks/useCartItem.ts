@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   requestAddCartItem,
+  requestDeleteCartItem,
   requestFetchCartItemList,
   requestUpdateCartItemQuantity,
 } from "../apis/cartItems";
@@ -21,6 +22,13 @@ export default function useCartItem() {
     },
   });
 
+  const deleteCartItem = useMutation({
+    mutationFn: (cartItemId: number) => requestDeleteCartItem(cartItemId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cartItemList"] });
+    },
+  });
+
   const updateCartItemQuantity = useMutation({
     mutationFn: ({
       cartItemId,
@@ -36,7 +44,9 @@ export default function useCartItem() {
 
   return {
     fetchCartItemList,
+    cartItemList: fetchCartItemList.data?.content,
     addCartItem,
+    deleteCartItem,
     updateCartItemQuantity,
   };
 }
