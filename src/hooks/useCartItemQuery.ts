@@ -3,7 +3,7 @@ import { fetchCartItem } from '../api';
 import { QUERY_KEY } from '../constant/queryKey';
 
 const useCartItemQuery = () => {
-  const { data, isError, isSuccess, isFetching, refetch } = useQuery({
+  const { data, isError, isSuccess, isFetching } = useQuery({
     queryKey: [QUERY_KEY.CART_ITEMS],
     queryFn: fetchCartItem,
   });
@@ -13,7 +13,6 @@ const useCartItemQuery = () => {
     cartItemsQueryError: isError,
     cartItemsQuerySuccess: isSuccess,
     cartItemsQueryFetching: isFetching,
-    refetchCartItems: refetch,
   };
 };
 

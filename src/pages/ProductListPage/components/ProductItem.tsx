@@ -1,6 +1,9 @@
 import { HtmlHTMLAttributes } from 'react';
 import ProductSelectButton from './ProductSelectButton';
 import styles from '../ProductListPage.module.css';
+import { CartItemType } from '@/types';
+import useAddCartItem from '@/hooks/useAddCartItem';
+import useDeleteCartItem from '@/hooks/useDeleteCartItem';
 
 type productType = {
   id: number;
@@ -12,12 +15,16 @@ type productType = {
 
 interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
   item: productType;
-  isSelected: boolean;
-  onSelect: () => void;
+  cartItem: CartItemType | undefined;
 }
 
-const ProductItem = ({ item, isSelected, onSelect }: Props) => {
+const ProductItem = ({ item, cartItem }: Props) => {
+  const { addCartItem } = useAddCartItem();
+  const { deleteCartItem } = useDeleteCartItem();
+
   const { name, price, imageUrl } = item;
+  const isInCart = cartItem ? true : false;
+
   return (
     <div className={styles.productItemContainer}>
       <img src={imageUrl} width={182} height={112} style={{ borderRadius: '8px 8px 0 0' }} />
@@ -25,7 +32,12 @@ const ProductItem = ({ item, isSelected, onSelect }: Props) => {
         <span className={styles.productItemName}>{name}</span>
         <span className={styles.productItemLabel}>{price.toLocaleString('KR-ko')}원</span>
       </div>
-      <ProductSelectButton isSelected={isSelected} onClick={onSelect}></ProductSelectButton>
+      <ProductSelectButton
+        isSelected={isInCart}
+        onClick={() => {
+          cartItem ? deleteCartItem(cartItem.id) : addCartItem(item.id);
+        }}
+      ></ProductSelectButton>
     </div>
   );
 };

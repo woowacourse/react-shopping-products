@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useCartItems } from './useCartItems';
-import { useProductSelection } from './useProductSelection';
 import useProductQuery from './useProductQuery';
 
 interface Props {
@@ -13,15 +12,7 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     selectBarCondition,
   });
 
-  const { cartItems, productToCartIdMap, errorCartItemsFetch, popCartItem, getCartItems } =
-    useCartItems();
-
-  const { selectedItems, handleSelect } = useProductSelection({
-    cartItems,
-    productToCartIdMap,
-    popCartItem,
-    getCartItems,
-  });
+  const { cartItems, errorCartItemsFetch, getCartItems } = useCartItems();
 
   useEffect(() => {
     getCartItems();
@@ -37,8 +28,6 @@ export default function useProducts({ selectBarCondition, handleCount }: Props) 
     isError,
     isSuccess,
     fetchNextPage,
-    selectedItems,
-    handleSelect,
     errorCartItemsFetch,
     isFetching,
   };
