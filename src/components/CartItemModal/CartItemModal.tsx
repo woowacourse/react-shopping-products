@@ -4,6 +4,7 @@ import ContentRow from '../common/ContentRow/ContentRow';
 import useCartItemList from '../../hooks/useCartItemList';
 import CartItemList from '../CartItemList/CartItemList';
 import EmptyCartFallback from '../EmptyCartFallback/EmptyCartFallback';
+import * as S from './CartItemModal.style';
 
 interface CartItemModalProps {
   isOpened: boolean;
@@ -33,17 +34,19 @@ function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
         onClick: onClose,
       }}
     >
-      {cartItemListData?.content.length === 0 ? (
-        <EmptyCartFallback />
-      ) : (
-        <>
-          <CartItemList cartItemList={cartItemListData?.content ?? []} />
-          <ContentRow
-            title="총 결제 금액"
-            content={`${price?.toLocaleString('ko-kr')}원`}
-          />
-        </>
-      )}
+      <S.ModalContent>
+        {cartItemListData?.content.length === 0 ? (
+          <EmptyCartFallback />
+        ) : (
+          <>
+            <CartItemList cartItemList={cartItemListData?.content ?? []} />
+            <ContentRow
+              title="총 결제 금액"
+              content={`${price?.toLocaleString('ko-kr')}원`}
+            />
+          </>
+        )}
+      </S.ModalContent>
     </CustomModal>
   );
 }
