@@ -1,17 +1,19 @@
 import { CATEGORY, CATEGORY_LIST } from "../constants/category";
 import { SORT, SORT_LIST } from "../constants/sort";
+import { useEffect, useState } from "react";
 
+import CartModal from "../components/CartModal";
 import Dropdown from "../components/Dropdown";
 import { Global } from "@emotion/react";
 import Header from "../components/Header";
 import InfiniteScrollComponent from "../components/InfiniteScrollComponent";
 import MainTitle from "../components/MainTitle";
+import { Product } from "../types/products";
 import ProductCard from "../components/product/ProductCard";
 import { ToastContext } from "../components/Toasts/ToastProvider";
 import { baseStyle } from "../style/baseStyle";
 import styled from "@emotion/styled";
 import useCustomContext from "../hooks/useCustomContext";
-import { useEffect } from "react";
 import useManageCartItem from "../hooks/useManageCartItem";
 import useProducts from "../hooks/useProducts";
 
@@ -31,6 +33,11 @@ const S = {
     display: grid;
     grid-template-columns: repeat(2, 183px);
     gap: 16px;
+  `,
+
+  ModalContainer: styled(CartModal)`
+    background-color: red;
+    width: 430px;
   `,
 };
 
@@ -55,6 +62,12 @@ const Mall = () => {
 
   const { failAlert } = useCustomContext(ToastContext);
 
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const toggleCart = () => {
+    setIsCartOpen((isCartOpen) => !isCartOpen);
+  };
+
   useEffect(() => {
     if (toggleCartItemError && toggleCartItemError instanceof Error) {
       failAlert(toggleCartItemError.message);
@@ -70,7 +83,8 @@ const Mall = () => {
   return (
     <>
       <Global styles={baseStyle} />
-      <Header itemCount={cartItems.length} />
+      <Header itemCount={cartItems.length} toggleCart={toggleCart} />
+      <S.ModalContainer isCartOpen={isCartOpen} toggleCart={toggleCart} />
       <S.MainMall>
         <MainTitle>피터의 쇼핑몰</MainTitle>
         <S.Toolbar>
@@ -91,18 +105,20 @@ const Mall = () => {
             error={productError}
             fetchNextPage={fetchNextPage}
           >
-            {products.map((product, index) => (
-              <ProductCard
-                key={`${index}${product.id}`}
-                product={product}
-                cartManager={{
-                  addItemToCart,
-                  removeItemFromCart,
-                  isItemInCart,
-                  isLoading: isToggleCartItemLoading,
-                }}
-              />
-            ))}
+            {products?.map((page) =>
+              page?.content?.map((product: Product, index: number) => (
+                <ProductCard
+                  key={`${index}-${product.id}`}
+                  product={product}
+                  cartManager={{
+                    addItemToCart,
+                    removeItemFromCart,
+                    isItemInCart,
+                    isLoading: isToggleCartItemLoading,
+                  }}
+                />
+              ))
+            )}
           </InfiniteScrollComponent>
         </S.ProductList>
       </S.MainMall>
