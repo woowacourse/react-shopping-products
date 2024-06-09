@@ -59,7 +59,7 @@
 
     - [x] useMutation을 사용한 usePatchCartItemQuantity 훅
 
-  - [ ] Stepper UI 컴포넌트 제작
+  - [x] Stepper UI 컴포넌트 제작
   - [ ] 장바구니에 상품이 담겨있다면 빼기 버튼 대신 Stepper UI 렌더링
   - [ ] 장바구니 수량 1에서 '-' 버튼 클릭 시 장바구니에서 해당 상품 제거
 
