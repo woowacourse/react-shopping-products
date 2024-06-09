@@ -1,4 +1,4 @@
-const fetchWithErrorHandling = async <T>(
+const fetchWithErrorCheck = async <T>(
   fetchFn: () => Promise<Response>,
   errorMessage: string,
 ): Promise<T extends void ? void : T> => {
@@ -15,4 +15,4 @@ const fetchWithErrorHandling = async <T>(
   return undefined as T extends void ? void : T;
 };
 
-export default fetchWithErrorHandling;
+export default fetchWithErrorCheck;

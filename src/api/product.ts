@@ -2,7 +2,7 @@ import { Item } from '@/types/index';
 import { ENDPOINT } from './endpoints';
 
 import { fetchWithoutAuth } from './utils/fetchClient';
-import fetchWithErrorHandling from './utils/fetchWithErrorHandling';
+import fetchWithErrorCheck from './utils/fetchWithErrorHandling';
 
 export interface getProductListProps {
   page?: number;
@@ -22,7 +22,7 @@ export const getProductList = async ({
   category,
   order,
 }: getProductListProps): Promise<ProductResponse> => {
-  const data = await fetchWithErrorHandling<ProductResponse>(
+  const data = await fetchWithErrorCheck<ProductResponse>(
     () =>
       fetchWithoutAuth(
         ENDPOINT.product.getList({ page, size, category, order }),
