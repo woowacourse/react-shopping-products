@@ -28,4 +28,23 @@ describe('usePostCartItem 테스트', () => {
       expect(result.current.addToCartMutation.isSuccess).toBe(true);
     });
   });
+
+  it('productId로 상품을 장바구니에 담기 실패하면 isError값을 true로 반환한다.', async () => {
+    const PRODUCT_ID = 10;
+    server.use(
+      http.get(ENDPOINT.cartItem.postItem, () => {
+        return new HttpResponse(null, { status: 500 });
+      }),
+    );
+
+    const { result } = renderHook(() => usePostCartItem(), {
+      wrapper: combinedContextWrapper,
+    });
+
+    await act(async () => {
+      result.current.addToCartMutation.mutateAsync(PRODUCT_ID);
+    });
+
+    waitFor(() => expect(result.current.addToCartMutation.isError).toBe(true));
+  });
 });
