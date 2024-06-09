@@ -12,7 +12,7 @@ const PAGE_SIZE = 4;
 // NOTE: 첫 번째 페이지부터 4번째 페이지까지 데이터가 겹치므로 첫 번째 페이지 fetch 이후 5번째 페이지로 이동
 const PAGE_JUMP_COUNT_AT_SECOND_LOAD = 5;
 
-const useGetProducts = () => {
+const useGetInfiniteProducts = () => {
   const [categoryFilter, setCategoryFilter] = useState<string>(
     CATEGORY_OPTIONS.all
   );
@@ -49,4 +49,4 @@ const useGetProducts = () => {
   };
 };
 
-export default useGetProducts;
+export default useGetInfiniteProducts;
