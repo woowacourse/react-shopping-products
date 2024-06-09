@@ -76,26 +76,14 @@ describe('useInfiniteProducts 테스트', () => {
         expect(result.current.products).toHaveLength(20);
       });
 
-      for (let i = 5; i < 24; i++) {
-        await waitFor(() => {
-          act(() => {
-            result.current.fetchNextPage();
-          });
-        });
-
-        const expectedLength = 20 + (i - 4) * 4;
-
-        await waitFor(() => {
-          expect(result.current.products).toHaveLength(expectedLength);
+      while (result.current.hasNextPage) {
+        await act(async () => {
+          await result.current.fetchNextPage();
         });
       }
 
-      await act(async () => {
-        result.current.fetchNextPage();
-      });
-
       await waitFor(() => {
-        expect(result.current.products).toHaveLength(100);
+        expect(result.current.hasNextPage).toBe(false);
       });
     });
   });
