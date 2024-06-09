@@ -1,3 +1,7 @@
+.productListPageContainer {
+  position: relative;
+}
+
 .productContentContainer {
   display: flex;
   flex-direction: column;
@@ -49,9 +53,6 @@
   align-items: center;
   width: 60px;
   height: 24px;
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
   gap: 6px;
   padding: 4px 8px 4px 8px;
   border-radius: 4px;
@@ -82,4 +83,10 @@
   background-color: #ffffff;
   color: black;
   font-size: 10px;
+}
+
+.cartItemButtonWrapper {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
 }

@@ -47,20 +47,22 @@ const ProductItem = ({ item, cartItem }: Props) => {
         <span className={styles.productItemName}>{name}</span>
         <span className={styles.productItemLabel}>{price.toLocaleString('KR-ko')}원</span>
       </div>
-      {isInCart ? (
-        <Stepper
-          value={cartItem.quantity}
-          handleClickMinus={() => handleMinusButtonClick()}
-          handleClickPlus={() => handlePlusButtonClick()}
-        />
-      ) : (
-        <ProductSelectButton
-          isSelected={isInCart}
-          onClick={() => {
-            cartItem ? deleteCartItem(cartItem.id) : addCartItem(item.id);
-          }}
-        />
-      )}
+      <div className={styles.cartItemButtonWrapper}>
+        {isInCart ? (
+          <Stepper
+            value={cartItem.quantity}
+            handleClickMinus={() => handleMinusButtonClick()}
+            handleClickPlus={() => handlePlusButtonClick()}
+          />
+        ) : (
+          <ProductSelectButton
+            isSelected={isInCart}
+            onClick={() => {
+              cartItem ? deleteCartItem(cartItem.id) : addCartItem(item.id);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };
