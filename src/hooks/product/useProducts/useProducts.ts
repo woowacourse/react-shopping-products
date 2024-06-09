@@ -3,16 +3,16 @@ import { useCallback, useEffect } from 'react';
 import { Product } from '@appTypes/product';
 
 import { ProductDropdownOptions } from '@components/product/ProductDropdown/ProductDropdown.type';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { InfiniteData, useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { fetchProducts } from '@apis/product/product';
 import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
+import { InfinityScrollResponse } from '@appTypes/response';
 
 interface UseProductResult {
   products: Product[];
   page: number;
   dropdownOptions: ProductDropdownOptions;
   isLoading: boolean;
-  error: Error | null;
   updateNextProductItem: () => void;
 }
 
@@ -24,7 +24,13 @@ const useProducts = (dropdownOptions: ProductDropdownOptions): UseProductResult 
     isError,
     isFetching: isInfiniteScrollLoading,
     fetchNextPage,
-  } = useInfiniteQuery({
+  } = useSuspenseInfiniteQuery<
+    InfinityScrollResponse<Product[]>,
+    Error,
+    InfiniteData<InfinityScrollResponse<Product[]>, number>,
+    (string | ProductDropdownOptions)[],
+    number
+  >({
     queryKey: ['products', dropdownOptions],
     initialPageParam: 0,
     queryFn: ({ pageParam }) => fetchProducts({ page: pageParam, ...dropdownOptions }),
@@ -38,21 +44,19 @@ const useProducts = (dropdownOptions: ProductDropdownOptions): UseProductResult 
   }, [error, showToast]);
 
   const updateNextProductItem = useCallback(() => {
-    console.log(hasNextPage, isInfiniteScrollLoading, isError);
     if (!hasNextPage || isInfiniteScrollLoading || isError) return;
 
     fetchNextPage();
   }, [hasNextPage, fetchNextPage, isInfiniteScrollLoading, isError]);
 
-  const page = (data?.pageParams[data?.pageParams.length - 1] as number) ?? 0;
+  const page = data.pageParams[data.pageParams.length - 1];
 
   return {
-    products: data?.pages.flatMap((page) => page.content) ?? [],
+    products: data.pages.flatMap((page) => page.content),
     page,
     dropdownOptions,
     isLoading: isInfiniteScrollLoading,
     updateNextProductItem,
-    error,
   };
 };
 

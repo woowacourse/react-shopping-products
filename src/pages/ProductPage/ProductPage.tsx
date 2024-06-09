@@ -7,6 +7,8 @@ import {
 } from '@components/product/ProductDropdown/ProductDropdown.constant';
 import ProductContent from '@components/product/ProductContent/ProductContent';
 import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
+import { Suspense } from 'react';
+import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 
 const ProductPage = () => {
   const { dropdownOptions, onSelectOption } = useSelectProductDropdown();
@@ -28,7 +30,9 @@ const ProductPage = () => {
           onSelect={onSelectOption}
         />
       </Styled.ProductDropdownWrapper>
-      <ProductContent dropdownOptions={dropdownOptions} />
+      <Suspense fallback={<LoadingSpinner $width="100%" $height="75vh" />}>
+        <ProductContent dropdownOptions={dropdownOptions} />
+      </Suspense>
     </>
   );
 };
