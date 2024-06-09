@@ -5,20 +5,16 @@ export const changeToProductList = (
   productsData?: InfiniteData<{ content: ProductItem[] }>,
   cartItemsData?: CartItem[]
 ) => {
+  const cartItemsMap = new Map(cartItemsData?.map((cartItem) => [cartItem.product.id, cartItem]));
+
   return (
     productsData?.pages
-      .flatMap((page) => {
-        return page.content;
-      })
+      .flatMap((page) => page.content)
       .map((product) => {
-        if (cartItemsData?.map((cartItem) => cartItem.product.id).includes(product.id)) {
-          const { quantity, id } = cartItemsData.filter(
-            (cartItem) => cartItem.product.id === product.id
-          )[0];
-
-          return { ...product, quantity, cartItemId: id };
-        }
-        return product;
+        const cartItem = cartItemsMap.get(product.id);
+        return cartItem
+          ? { ...product, quantity: cartItem.quantity, cartItemId: cartItem.id }
+          : product;
       }) || []
   );
 };
