@@ -6,7 +6,6 @@ const useFetchUpdateQuantity = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isSuccess } = useMutation({
-    mutationKey: ['updateCartItems'],
     mutationFn: patchCartItemQuantity,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });

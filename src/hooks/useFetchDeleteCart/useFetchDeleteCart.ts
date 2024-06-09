@@ -9,7 +9,6 @@ const useFetchDeleteCart = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationKey: ['deleteCartItems'],
     mutationFn: async (id: number) => {
       const cartItemsResponse = await fetchCartItems(PAGE.DEFAULT);
       const cartItemToDelete = cartItemsResponse.content.find(
@@ -22,7 +21,7 @@ const useFetchDeleteCart = () => {
       await deleteItem(cartItemToDelete.id);
     },
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.deleteCartItem] });
     },
   });
 

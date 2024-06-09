@@ -4,20 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { usePagination } from '../index';
 import { fetchCartItems } from '../../api/cartItems';
 import { Carts } from '../../types/fetch';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 const useFetchCartItems = () => {
-  const {
-    page,
-    fetchNextPage,
-    resetPage,
-    isLast,
-    setIsLast,
-  } = usePagination();
+  const { page, fetchNextPage, resetPage, isLast, setIsLast } = usePagination();
 
   const [cartItems, setCartItems] = useState<Carts[]>([]);
 
   const query = useQuery({
-    queryKey: ['cart-items'],
+    queryKey: [QUERY_KEYS.cartItems],
     queryFn: () => fetchCartItems(page),
   });
 

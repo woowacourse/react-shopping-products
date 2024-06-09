@@ -7,7 +7,6 @@ const useFetchAddCart = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isSuccess } = useMutation({
-    mutationKey: ['addCartItems'],
     mutationFn: postAddItems,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItems] });

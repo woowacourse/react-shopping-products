@@ -6,6 +6,7 @@ import { fetchProducts } from '../../api/products';
 import { Product } from '../../types/fetch';
 import { SortingParam } from '../../types/sort';
 import { DEFAULT_SORTING_PARAM } from '../../constants/page';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 const useFetchProducts = (
   sortings: SortingParam[] = [DEFAULT_SORTING_PARAM],
@@ -24,7 +25,7 @@ const useFetchProducts = (
   const [products, setProducts] = useState<Product[]>([]);
 
   const query = useQuery({
-    queryKey: ['products', sortings, filter, fetchedPage],
+    queryKey: [QUERY_KEYS.product, sortings, filter, fetchedPage],
     queryFn: () => fetchProducts(fetchedPage, size, sortings, filter),
   });
 
