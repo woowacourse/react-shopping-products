@@ -6,6 +6,7 @@ interface UseCartItemsResult {
   cartItems: Cart[];
   cartItemsCount: number;
   isLoading: boolean;
+  error: unknown;
   handleAddCartItem: (id: number) => void;
   handleRemoveCartItem: (id: number) => void;
   handlePatchCartItem: (id: number, newQuantity: number) => void;
@@ -15,7 +16,11 @@ interface UseCartItemsResult {
 const useCartItems = (): UseCartItemsResult => {
   const queryClient = useQueryClient();
 
-  const { data: cartItems = [], isLoading } = useQuery({
+  const {
+    data: cartItems = [],
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: [QUERY_KEYS.CART],
     queryFn: getCartItems,
   });
@@ -67,6 +72,7 @@ const useCartItems = (): UseCartItemsResult => {
     cartItems,
     cartItemsCount: cartItems.length,
     isLoading,
+    error,
     handleAddCartItem,
     handleRemoveCartItem,
     handlePatchCartItem,

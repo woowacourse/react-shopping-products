@@ -12,9 +12,8 @@ interface Cart {
   product: ProductProps;
 }
 
-interface fetchParams {
+interface FetchParams {
   page: number;
   category: string;
   sortOption: string;
-  setErrorMessage: Dispatch<SetStateAction<string | null>>;
 }

@@ -2,7 +2,7 @@ import { PAGE } from "../mocks/handlers";
 import getErrorMessage from "../utils/errorMessage";
 import { API_ENDPOINTS } from "./endpoints";
 
-export const fetchProducts = async (fetchParams: fetchParams) => {
+export const fetchProducts = async (fetchParams: FetchParams) => {
   const size = fetchParams.page === PAGE.FIRST_PAGE ? PAGE.DEFAULT_SIZE : PAGE.ADDITIONAL_SIZE;
   const categoryQuery = fetchParams.category === "전체" ? "" : `category=${fetchParams.category}`;
 
@@ -11,8 +11,7 @@ export const fetchProducts = async (fetchParams: fetchParams) => {
   );
 
   if (!response.ok) {
-    fetchParams.setErrorMessage(getErrorMessage(response.status));
-    throw new Error("상품을 불러오는데 실패했습니다.");
+    throw new Error(getErrorMessage(response.status));
   }
 
   const data = await response.json();

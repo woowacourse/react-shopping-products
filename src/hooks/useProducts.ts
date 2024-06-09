@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useError } from "../context/errorContext";
 import { fetchProducts } from "../api/products";
 import usePagination from "./usePagination";
 import { QUERY_KEYS } from "../constants/queryKeys";
@@ -8,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 interface UseProductsResult {
   products: Product[];
   isLoading: boolean;
+  error: unknown;
   fetchNextPage: () => void;
   isLastPage: boolean;
   categoryState: {
@@ -19,8 +19,6 @@ interface UseProductsResult {
     currentSortOption: string;
     changeSortOption: (value: string) => void;
   };
-
-  errorMessage: string;
 }
 
 const sortOptionsMap: { [key: string]: string } = {
@@ -34,22 +32,19 @@ const useProducts = (): UseProductsResult => {
   const [category, setCategory] = useState<string>("전체");
   const [sortOption, setSortOption] = useState<string>("price,asc");
   const { page, isLastPage, handleLastPage, goToNextPage, resetPage } = usePagination();
-  const { errorMessage, setErrorMessage } = useError();
 
   const fetchParams = {
     page: page,
     category: category,
     sortOption: sortOption,
-    setErrorMessage: setErrorMessage,
   };
 
-  const { data } = useQuery({
+  const { data, error } = useQuery({
     queryKey: [QUERY_KEYS.PRODUCTS, category, sortOption, page],
     queryFn: async () => {
       try {
         setIsLoading(true);
         const response = await fetchProducts(fetchParams);
-        console.log("dadta", response.content);
 
         handleLastPage(response.last);
         return response;
@@ -93,10 +88,10 @@ const useProducts = (): UseProductsResult => {
     products,
     isLoading,
     isLastPage,
+    error,
     fetchNextPage,
     categoryState,
     sortOptionState,
-    errorMessage,
   };
 };
 
