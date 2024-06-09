@@ -33,6 +33,12 @@ const theme: Theme = {
         font-size: 0.75rem;
         line-height: 0.9375rem;
       `,
+      quantity: `
+      font-family: Noto Sans;
+        font-weight: 500;
+        font-size: 0.75rem;
+        line-height: 0.9375rem;
+      `,
     },
     toast: `
       font-family: Noto Sans;

@@ -9,6 +9,7 @@ declare module '@emotion/react' {
         name: string;
         price: string;
         toggleButton: string;
+        quantity: string;
       };
       toast: string;
       cartLabel: string;
