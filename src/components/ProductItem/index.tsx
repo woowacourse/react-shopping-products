@@ -3,9 +3,10 @@ import * as S from './style';
 import { useContext, useEffect, useState } from 'react';
 
 import { UseCartItemsContext } from '../../App';
-import SelectButtonContainer from '../SelectButtonContainer';
-import SelectButton from '../SelectButton';
+import AdjustButtonContainer from '../AdjustButtonContainer';
+import AdjustButton from '../AdjustButton';
 import Spinner from '../Spinner';
+import QuantityText from '../QuantityText';
 
 import { ADD_TO_CART, MINUS_BUTTON, PLUS_BUTTON, REMOVE_BUTTON } from '../../assets/images';
 
@@ -91,23 +92,23 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
             </S.AddButton>
           )}
           {isInCart && (
-            <SelectButtonContainer>
-              <SelectButton onClick={handleDecreaseCartItemQuantity}>
+            <AdjustButtonContainer>
+              <AdjustButton onClick={handleDecreaseCartItemQuantity}>
                 <img
                   src={cartItem.quantity === 1 ? REMOVE_BUTTON : MINUS_BUTTON}
                   alt={cartItem.quantity === 1 ? '삭제' : '빼기'}
                 />
-              </SelectButton>
-              {!isLoading && <S.QuantityText>{cartItem.quantity}</S.QuantityText>}
+              </AdjustButton>
+              {!isLoading && <QuantityText>{cartItem.quantity}</QuantityText>}
               {isLoading && (
-                <S.QuantityText>
+                <QuantityText>
                   <Spinner />
-                </S.QuantityText>
+                </QuantityText>
               )}
-              <SelectButton onClick={handleIncreaseCartItemQuantity}>
+              <AdjustButton onClick={handleIncreaseCartItemQuantity}>
                 <img src={PLUS_BUTTON} alt={'더하기'} />
-              </SelectButton>
-            </SelectButtonContainer>
+              </AdjustButton>
+            </AdjustButtonContainer>
           )}
         </S.ButtonContainer>
       </S.InformationContainer>

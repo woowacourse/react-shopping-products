@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const SelectButton = styled.button`
+export const AdjustButton = styled.button`
   width: 1.5rem;
   height: 1.5rem;
   padding: 0;
