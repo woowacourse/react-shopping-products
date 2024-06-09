@@ -22,7 +22,13 @@ const ProductItem = ({ product, cartItem }: Props) => {
 
   return (
     <div className={styles.productItemContainer}>
-      <img src={imageUrl} width={182} height={112} style={{ borderRadius: '8px 8px 0 0' }} />
+      <img
+        src={imageUrl}
+        width={182}
+        height={112}
+        style={{ borderRadius: '8px 8px 0 0' }}
+        alt="product-image"
+      />
       <div className={styles.productItemInfoContainer}>
         <span className={styles.productItemName}>{name}</span>
         <span className={styles.productItemLabel}>{price.toLocaleString('KR-ko')}원</span>

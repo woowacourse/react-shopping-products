@@ -38,7 +38,11 @@ const CartModal = ({ cartItems, isOpen, handleToggle }: Props) => {
             <div key={`cartItem-${cartItem.id}`}>
               <Divider />
               <div className={styles.cartItemContainer}>
-                <img src={cartItem.product.imageUrl} className={styles.cartItemImg} />
+                <img
+                  src={cartItem.product.imageUrl}
+                  className={styles.cartItemImg}
+                  alt="cartItem-image"
+                />
                 <div className={styles.cartItemInfoContainer}>
                   <Text.Subtitle>{cartItem.product.name}</Text.Subtitle>
                   <Text.Label>{`${cartItem.product.price.toLocaleString('KR-ko')}원`}</Text.Label>
