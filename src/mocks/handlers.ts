@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import products from './products.json';
-import cartItems from './cartItems.json';
+import cartItems from '@/mocks/cartItems.json';
 import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
 import ENDPOINT from '../constant/endpoint';
 import { CartItemType } from '../types';
@@ -77,6 +77,23 @@ export const handlers = [
     if (!isExistItem) return new Response(null, { status: 404 });
 
     mockCartItems = cartItems.content.filter((cartItem) => cartItem.id !== Number(cartId));
+
+    return new Response(null, { status: 201 });
+  }),
+
+  http.patch(`${API_URL}${ENDPOINT.cartItems}/:cartId`, async ({ params, request }) => {
+    const { cartId } = params;
+    const body = (await request.json()) as CartItemsPostBody;
+    const newQuantity = Number(body.quantity);
+
+    const isExistItem = mockCartItems.find((cartItem) => cartItem.id === Number(cartId));
+
+    if (!isExistItem) return new Response(null, { status: 404 });
+
+    mockCartItems = cartItems.content.map((cartItem) => {
+      if (cartItem.id === Number(cartId)) return { ...cartItem, quantity: newQuantity };
+      return { ...cartItem };
+    });
 
     return new Response(null, { status: 201 });
   }),
