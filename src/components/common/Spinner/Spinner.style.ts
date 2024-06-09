@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-export const SpinnerContainer = styled.div`
+export const SpinnerContainer = styled.div<{ height: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 16px;
-  height: fit-content;
   width: 100%;
+  height: ${({ height }) => height};
 `;
 
 export const Spinner = styled.div`
