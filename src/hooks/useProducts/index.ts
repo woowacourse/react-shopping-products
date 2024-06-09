@@ -9,7 +9,7 @@ const useProducts = () => {
   const [category, setCategory] = useState<PRODUCT_CATEGORY_TYPE>(PRODUCT_DEFAULT_CATEGORY);
   const [sort, setSort] = useState<PRODUCT_SORT_TYPE>(PRODUCT_DEFAULT_SORT);
 
-  const { data, error, isError, fetchNextPage, isFetching, isLoading } = useInfiniteQuery({
+  const { data, isError, fetchNextPage, isFetching, isLoading } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.products, category, sort],
     queryFn: ({ pageParam = 0 }) => fetchProducts({ pageParam, category, sort }),
     getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
@@ -34,7 +34,6 @@ const useProducts = () => {
     products,
     isLoading,
     isFetching,
-    error,
     isError,
     fetchNextPage,
     handleCategoryChange,

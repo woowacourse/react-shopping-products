@@ -1,12 +1,13 @@
 import React, { createContext, useState, ReactNode } from "react";
 import { SuccessToastComponent, FailToastComponent } from "../common/Toasts";
+import useCustomContext from "../../hooks/useCustomContext";
 
 type ToastContextType = {
   failAlert: (message: string) => void;
   successAlert: (message: string) => void;
 };
 
-export const ToastContext = createContext<ToastContextType | null>(null);
+const ToastContext = createContext<ToastContextType | null>(null);
 
 export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [toastList, setToastList] = useState<{ id: number; type: "success" | "fail"; message: string }[]>([]);
@@ -44,4 +45,8 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       {children}
     </ToastContext.Provider>
   );
+};
+
+export const useToast = () => {
+  return useCustomContext(ToastContext);
 };

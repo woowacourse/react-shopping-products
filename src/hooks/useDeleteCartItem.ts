@@ -17,7 +17,6 @@ export const useDeleteCartItemByProductId = () => {
       }
       throw new Error(ERROR_MESSAGE.deleteCartItem);
     },
-    //TODO: onError에서 에러 핸들링
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItem] }),
   });
 };

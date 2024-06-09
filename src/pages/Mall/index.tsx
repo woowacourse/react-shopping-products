@@ -4,7 +4,6 @@ import { baseStyle } from "../../style/baseStyle";
 
 import useProducts from "../../hooks/useProducts";
 import useCustomContext from "../../hooks/useCustomContext";
-import useErrorAlert from "../../hooks/useErrorAlert";
 
 import Dropdown from "../../components/common/Dropdown";
 import Header from "../../components/layout/Header";
@@ -22,18 +21,9 @@ import CartItemsModal from "../../components/cart/CartItemsModal";
 import useToggleCartItem from "../../hooks/useToggleCartItem";
 
 const Mall = () => {
-  const {
-    products,
-    isLoading: isProductLoading,
-    error: productError,
-    isError,
-    fetchNextPage,
-    handleCategoryChange,
-    handleSortChange,
-  } = useProducts();
+  const { products, isError, isFetching, fetchNextPage, handleCategoryChange, handleSortChange } = useProducts();
   const { messages } = useCustomContext(LanguageContext);
-  const { cartItems, queryError: toggleCartItemError } = useToggleCartItem();
-  useErrorAlert({ toggleCartItemError, productError });
+  const { cartItems } = useToggleCartItem();
 
   return (
     <>
@@ -46,11 +36,11 @@ const Mall = () => {
           <Dropdown options={PRODUCT_SORT_LIST} handleChange={handleSortChange} />
         </S.Toolbar>
         <S.ProductList>
-          <InfiniteScroll isLoading={isProductLoading} handleScroll={fetchNextPage} isError={isError}>
+          <InfiniteScroll isLoading={isFetching} handleScroll={fetchNextPage} isError={isError}>
             {products.map((product, index) => (
               <ProductCard key={`${index}${product.id}`} product={product} />
             ))}
-            {productError! && <div>{ERROR_MESSAGE.getProducts}</div>}
+            {isError && <div>{ERROR_MESSAGE.getProducts}</div>}
           </InfiniteScroll>
         </S.ProductList>
       </S.MainMall>
