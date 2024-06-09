@@ -2,7 +2,9 @@ import useFetchCartItems from '@/queries/cartItem/useFetchCartItems';
 import useAddCartItem from '@/queries/cartItem/useAddCartItem';
 
 import CartItemQuantityContainer from '@/components/cartItem/CartItemQuantityContainer';
-import CartInButton from '@/components/button/CartInButton';
+import CartControlButton from '@/components/button/CartControlButton';
+
+import CartInImg from '@/assets/cartIn.svg?react';
 
 import { Product } from '@/types/product.type';
 
@@ -33,10 +35,14 @@ const ProductItem = ({ productItem }: Props) => {
               }
             />
           ) : (
-            <CartInButton
+            <CartControlButton
+              $theme="black"
               onClick={() => addCartItem(productItem.id)}
               error={postCartItemError}
-            />
+            >
+              <CartInImg />
+              담기
+            </CartControlButton>
           )}
         </S.ButtonWrapper>
       </S.InfoWrapper>
