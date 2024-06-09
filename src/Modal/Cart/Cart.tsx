@@ -12,14 +12,14 @@ function Cart({ setIsCartModalOpen }: CartProps) {
       <Modal
         position="bottom"
         onBackdropClick={() => setIsCartModalOpen(false)}
-        style={{ maxHeight: "60vh", overflowY: "auto" }}
+        style={{ maxHeight: "90vh" }}
       >
         <Modal.Title title="장바구니" />
-        <CartItemList />
+        <CartItemList style={{ overflowY: "auto" }} />
         <Modal.ConfirmButton
           content="닫기"
           onClick={() => setIsCartModalOpen(false)}
-          style={{ position: "fixed", bottom: "12px" }}
+          style={{ position: "absolute", margin: "12px", height: "44px" }}
         />
       </Modal>
     </S.Container>

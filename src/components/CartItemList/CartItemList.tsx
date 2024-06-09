@@ -4,11 +4,11 @@ import * as S from "./CartItemList.style";
 import type { CartItem } from "../../interfaces/CartItem";
 import useCartItem from "../../hooks/useCartItem";
 
-function CartItemList() {
+function CartItemList({ style }: { style: React.CSSProperties }) {
   const { deleteCartItem, updateCartItemQuantity } = useCartItem();
   const { cartItemList } = useCartItem();
   return (
-    <S.Layout>
+    <S.Layout style={style}>
       {cartItemList?.map((el: CartItem) => (
         <CartItemContainer
           key={el.id}
