@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
 import { QuantityUpdateButton } from '../index';
-import { useFetchProductQuantity } from '../../hooks';
+import { Carts } from '../../types/fetch';
 
 import { AddCartIcon } from '../../assets';
 import * as S from './CartButton.styled';
-import { Carts } from '../../types/fetch';
 
 interface CartButtonProps {
   cartItem: Carts | null;

@@ -8,7 +8,6 @@ import { Carts } from '../../types/fetch';
 const useFetchCartItems = () => {
   const {
     page,
-    // fetchedPage,
     fetchNextPage,
     resetPage,
     isLast,

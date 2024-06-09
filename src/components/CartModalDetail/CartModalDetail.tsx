@@ -15,11 +15,7 @@ function CartModalDetail({ cartItems }: CartModalDetailProps) {
   if (!cartContext) {
     throw new Error('CartContext가 비어있습니다.');
   }
-  const {
-    deleteCartItem,
-    // isDeletePending,
-    // isDeleteError,
-  } = cartContext;
+  const { deleteCartItem } = cartContext;
 
   return (
     <S.CartModalDetailContainer>

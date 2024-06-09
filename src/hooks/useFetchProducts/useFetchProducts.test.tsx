@@ -40,7 +40,6 @@ describe('useFetchProducts', () => {
     });
   });
 
-  // 해결하지 못한 테스트
   it('첫 상품목록 조회 이후부터는, 이전 결과에 이어 4개씩 아이템을 추가하여 가져온다.', async () => {
     const { result } = renderHook(() => useFetchProducts(), { wrapper });
 

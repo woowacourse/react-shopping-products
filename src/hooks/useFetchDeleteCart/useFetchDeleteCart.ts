@@ -8,7 +8,7 @@ import { PAGE } from '../../constants/page';
 const useFetchDeleteCart = () => {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending, isError } = useMutation({
+  const { mutate } = useMutation({
     mutationKey: ['deleteCartItems'],
     mutationFn: async (id: number) => {
       const cartItemsResponse = await fetchCartItems(PAGE.DEFAULT);
@@ -28,8 +28,6 @@ const useFetchDeleteCart = () => {
 
   return {
     deleteCartItem: mutate,
-    // isPending,
-    // isError,
   };
 };
 

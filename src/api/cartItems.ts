@@ -23,8 +23,7 @@ export const fetchCartItems = async (page: number) => {
 };
 
 /**
- *
- * @param id 카트에 들어간 상품 id (제품id X)
+ * @param id 카트에 들어간 상품 id (product id X)
  */
 export const patchCartItemQuantity = async ({
   id,

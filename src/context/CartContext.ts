@@ -15,9 +15,6 @@ interface CartContextType {
   getCartItemByProduct: ReturnType<
     typeof useFetchProductQuantity
   >['getCartItemByProduct'];
-  // isAddSuccess: ReturnType<typeof useFetchAddCart>['isSuccess'];
-  // isDeletePending: ReturnType<typeof useFetchDeleteCart>['isPending'];
-  // isDeleteError: ReturnType<typeof useFetchDeleteCart>['isError'];
 }
 
 export const CartContext = createContext<CartContextType | undefined>(

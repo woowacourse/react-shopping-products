@@ -25,9 +25,6 @@ const CartProvider = ({ children }: CartProviderProps) => {
         updateCartItemQuantity:
           fetchUpdateCartItemQuantity.updateCartItemQuantity,
         getCartItemByProduct: fetchProductQuantity.getCartItemByProduct,
-        // isAddSuccess: fetchAddCart.isSuccess,
-        // isDeletePending: fetchDeleteCart.isPending,
-        // isDeleteError: fetchDeleteCart.isError,
       }}
     >
       {children}

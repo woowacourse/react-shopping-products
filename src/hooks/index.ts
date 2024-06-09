@@ -5,5 +5,4 @@ export { default as useFetchDeleteCart } from './useFetchDeleteCart/useFetchDele
 export { default as useFetchUpdateQuantity } from './useFetchUpdateQuantity/useFetchUpdateQuantity';
 export { default as useFetchProductQuantity } from './useFetchProductQuantity/useFetchProductQuantity';
 export { default as useIntersectionObserver } from './useIntersectionObserver';
-// export { default as useInfiniteQuery } from './useInfiniteQuery';
 export { default as usePagination } from './usePagination';
