@@ -9,8 +9,10 @@ import { SortingParam } from '../types/sort';
 import * as S from './Product.styled';
 import useFetchCart from '../hooks/useFetchCart';
 
+import { Modal, useModalState } from 'lv2-modal-component';
+
 const Product = () => {
-  const fetchAddCartState = useFetchCart();
+  const cartState = useFetchCart();
   const [sortings, setSortings] = useState<SortingParam[]>([
     { name: 'price', order: 'asc' },
   ]);
@@ -19,11 +21,16 @@ const Product = () => {
   const { products, isError, isPending, isLast, fetchNext, page } =
     useFetchProducts({ sortings, filter });
 
+  const { isOpen, openModal, closeModal } = useModalState(false, {});
+
   return (
-    <CartContext.Provider value={fetchAddCartState}>
-      <Header badgeCount={fetchAddCartState.cartItems?.length ?? 0} />
-      {isError && <ErrorMessage message={'에러'}/>}
-      {fetchAddCartState.isError && <ErrorMessage message={'카트에러'} />}
+    <CartContext.Provider value={cartState}>
+      <Header
+        badgeCount={cartState.cartItems?.length ?? 0}
+        onBadgeClick={openModal}
+      />
+      {isError && <ErrorMessage message={'에러'} />}
+      {cartState.isError && <ErrorMessage message={'카트에러'} />}
       <S.ProductContentWrapper>
         <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
         <Dropdown setFilter={setFilter} setSortings={setSortings} />
@@ -36,6 +43,14 @@ const Product = () => {
           isError={isError}
         />
       </S.ProductContentWrapper>
+      <Modal isOpen={isOpen} closeModal={closeModal}>
+        <Modal.Positioner position={'bottom'} widthSize={'large'}>
+          <Modal.Header title={'장바구니'} onClose={() => {}}></Modal.Header>
+          <Modal.Content>
+            <div>{JSON.stringify(cartState.cartItems)}</div>
+          </Modal.Content>
+        </Modal.Positioner>
+      </Modal>
     </CartContext.Provider>
   );
 };

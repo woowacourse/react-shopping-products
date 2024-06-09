@@ -29,6 +29,7 @@ export const BadgeIconContainer = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
+  cursor: pointer;
 
   width: 1.9rem;
   height: 1.9rem;
