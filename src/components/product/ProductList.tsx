@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
 
 import useFetchProducts from '@/queries/product/useFetchProducts';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import useIntersectionObserver from '@/hooks/_common/useIntersectionObserver';
 
 import ProductItem from '@/components/product/ProductItem';
 import Toast from '@/components/Toast';
+import Loading from '@/components/Loading';
 
 import { ProductFilterOptions } from '@/types/product.type';
 import styled from '@emotion/styled';
@@ -34,6 +35,10 @@ const ProductList = ({ sort, category }: ProductFilterOptions) => {
       }
     };
   }, [observe, unobserve, products.length]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <S.ListContainer id="listContainer">
