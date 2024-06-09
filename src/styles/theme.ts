@@ -24,10 +24,15 @@ interface Colors {
   spinnerColor: string;
 }
 
+interface Size {
+  applicationSize: string;
+}
+
 declare module '@emotion/react' {
   export interface Theme {
     colors: Colors;
     zIndex: ZIndex;
+    size: Size;
   }
 }
 
@@ -56,9 +61,14 @@ const colors: Colors = {
   spinnerColor: '#CA5514',
 };
 
+const size: Size = {
+  applicationSize: '430px',
+};
+
 const theme: Theme = {
   colors,
   zIndex,
+  size,
 };
 
 export default theme;
