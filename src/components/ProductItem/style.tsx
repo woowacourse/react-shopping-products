@@ -31,15 +31,15 @@ export const Information = styled.div`
 export const Name = styled.h2`
   height: 0.9375rem;
 
-  ${(props) => props.theme.typography.product.name}
-  color: ${(props) => props.theme.color.darkBlack}
+  ${(props) => props.theme.typography.product.name};
+  color: ${(props) => props.theme.color.darkBlack};
 `;
 
 export const Price = styled.p`
   height: 0.9375rem;
 
-  ${(props) => props.theme.typography.product.price}
-  color: ${(props) => props.theme.color.darkBlack}
+  ${(props) => props.theme.typography.product.price};
+  color: ${(props) => props.theme.color.darkBlack};
 `;
 
 export const ButtonContainer = styled.div`
@@ -47,7 +47,7 @@ export const ButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-export const ToggleButton = styled.button<{ $isInCart: boolean }>`
+export const AddButton = styled.button<{ $isInCart: boolean }>`
   display: flex;
   gap: 0.25rem;
   align-items: center;
@@ -67,4 +67,13 @@ export const ToggleButton = styled.button<{ $isInCart: boolean }>`
 export const ButtonImage = styled.img`
   width: 1rem;
   height: 1rem;
+`;
+
+export const QuantityText = styled.span`
+  text-align: center;
+
+  width: 1.5rem;
+
+  ${(props) => props.theme.typography.product.quantity};
+  color: ${(props) => props.theme.color.darkBlack};
 `;
