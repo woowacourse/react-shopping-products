@@ -3,8 +3,25 @@ import { BASE_URL } from "../api/cartClient";
 import { API_URL } from "../constants/url";
 import products from "./products.json";
 import { SORT_OPTIONS } from "../constants/products";
+import { ICartItem } from "./../api/cartItems";
+import cartItems from "./cartItems.json";
 
 export const handlers = [
+  // NOTE: add a cartItem
+  http.post(
+    BASE_URL + "/" + API_URL.cartItems,
+    async ({ request }: { request: { json: () => Promise<ICartItem> } }) => {
+      const newCartItem = await request.json();
+      return HttpResponse.json(newCartItem, { status: 201 });
+    }
+  ),
+
+  // NOTE: get cartItems
+  http.get(BASE_URL + "/" + API_URL.cartItems, async () => {
+    const defaultCartItems = cartItems;
+    return HttpResponse.json(defaultCartItems, { status: 201 });
+  }),
+
   http.get(BASE_URL + "/" + API_URL.products, ({ request }) => {
     const url = new URL(request.url);
 
