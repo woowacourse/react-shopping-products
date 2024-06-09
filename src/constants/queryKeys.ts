@@ -4,7 +4,6 @@ const QUERY_KEYS = {
     BASE: 'cart',
     TOTAL_QUANTITY: 'total_quantity',
     FETCH: 'fetch',
-    TOTAL_PRICE: 'total_price',
   },
 };
 

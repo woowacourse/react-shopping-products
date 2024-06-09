@@ -20,9 +20,6 @@ const usePatchCartItem = () => {
         queryKey: [QUERY_KEYS.CART.BASE, QUERY_KEYS.CART.TOTAL_QUANTITY],
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.CART.BASE, QUERY_KEYS.CART.TOTAL_PRICE],
-      });
-      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.CART.BASE, QUERY_KEYS.CART.FETCH],
       });
     },
