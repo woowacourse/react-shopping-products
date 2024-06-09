@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   deleteCartItem as fetchToDeleteCartItem,
   fetchCartItems,
-  postAddItems as fetchToAddCartItem,
+  postAddItems,
 } from '../api/products';
 import { CartItem } from '../types/fetch';
 
@@ -18,11 +18,15 @@ const useFetchCart = () => {
     queryKey: ['cart'],
     queryFn: fetchCartItems,
   });
-
   const { mutate: addProductToCart } = useMutation({
-    mutationFn: fetchToAddCartItem,
-    onSuccess: (data) => {
+    mutationFn: postAddItems,
+    onSettled: (data) => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
+      console.log('invaldate됨');
+    },
+    throwOnError(error) {
+      console.log('에러발생', error.message, error.name, error.stack);
+      return false;
     },
   });
 

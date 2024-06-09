@@ -35,9 +35,9 @@ export const fetchProducts = async (
   return await apiClient.get<ProductResponse>(url);
 };
 
-export const postAddItems = async (id: number) => {
+export const postAddItems = async (productId: number) => {
   return await apiClient.post(`${ENDPOINTS_CART}`, {
-    productId: id,
+    productId,
     quantity: 1,
   } satisfies PostCartItemRequestBody);
 };
@@ -47,5 +47,5 @@ export const deleteCartItem = async (cartId: number) => {
 };
 
 export const fetchCartItems = async () => {
-  return await apiClient.get<CartResponse>(ENDPOINTS_CART);
+  return await apiClient.get<CartResponse>(`${ENDPOINTS_CART}?page=0&size=100`);
 };

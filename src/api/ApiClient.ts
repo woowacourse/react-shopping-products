@@ -18,16 +18,16 @@ export class ApiClient {
   }
 
   async get<R, T = object>(url: string, body?: T) {
-    return await this.fetch<R, T>('GET', url, body);
+    return (await this.fetch<T>('GET', url, body)).json() as R;
   }
   async post<R, T = object>(url: string, body?: T) {
-    return await this.fetch<R, T>('POST', url, body);
+    return await this.fetch<T>('POST', url, body);
   }
   async delete<R, T = object>(url: string, body?: T) {
-    return await this.fetch<R, T>('DELETE', url, body);
+    return await this.fetch<T>('DELETE', url, body);
   }
 
-  private async fetch<R, T = object>(
+  private async fetch<T = object>(
     method: 'GET' | 'POST' | 'DELETE',
     url: string,
     requestBody?: T,
@@ -43,6 +43,6 @@ export class ApiClient {
     if (!response.ok) {
       throw new Error(`200~299 이외의 응답이 발생하였습니다.${response.body}`);
     }
-    return (await response.json()) as R;
+    return await response;
   }
 }

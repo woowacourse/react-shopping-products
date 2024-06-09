@@ -10,9 +10,14 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { addProductToCart, productIdSetInCart, patchToRemoveCart } =
+  const { addProductToCart, cartItems, patchToRemoveCart } =
     useContext(CartContext);
   const { count, increase, decrease } = useCounter(0);
+
+  const productIdSetInCart = new Set(cartItems?.map((item) => item.product.id));
+  const cartItem = cartItems?.filter(
+    (item) => item.product.id === product.id,
+  )[0];
 
   const handleClickDecrease = () => {
     if (count === 1) {
@@ -36,10 +41,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </S.InfoWrapper>
 
         <S.ButtonContainer>
-          {productIdSetInCart.has(product.id) || count !== 0 ? (
+          {productIdSetInCart.has(product.id) && cartItem ? (
             <Stepper.Horizontal>
               <Stepper.MinusButton onClick={handleClickDecrease} />
-              <Stepper.DisplayCounter count={count} />
+              <Stepper.DisplayCounter count={cartItem!.quantity} />
               <Stepper.PlusButton onClick={handleClickIncrease} />
             </Stepper.Horizontal>
           ) : (
