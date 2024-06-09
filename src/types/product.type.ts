@@ -5,3 +5,8 @@ export interface Product {
   imageUrl: string;
   category: string;
 }
+
+export interface ProductListState {
+  content: Product[];
+  last: boolean;
+}

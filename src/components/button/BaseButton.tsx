@@ -10,11 +10,11 @@ const BUTTON_THEME = {
     color: theme.color.white,
   },
   light: {
-    backgroundColor: theme.color.lightGray,
+    backgroundColor: theme.color.lightGrey,
     color: theme.color.black,
   },
   disabled: {
-    backgroundColor: theme.color.gray,
+    backgroundColor: theme.color.grey,
     color: theme.color.white,
   },
 };

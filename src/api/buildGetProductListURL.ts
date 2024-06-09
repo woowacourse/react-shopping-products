@@ -1,4 +1,4 @@
-import { getProductListProps } from './product';
+import { getProductListProps } from '@/api/product';
 
 interface Props extends getProductListProps {
   baseUrl: string;
@@ -10,30 +10,25 @@ const buildGetProductListURL = ({
   page,
   size,
   order,
-}: Props) => {
-  const params = [];
+}: Props): string => {
+  const params = new URLSearchParams();
 
   if (category) {
-    params.push(`category=${encodeURIComponent(category)}`);
+    params.append('category', category);
   }
   if (page !== undefined) {
-    params.push(`page=${page}`);
+    params.append('page', String(page));
   }
   if (size !== undefined) {
-    params.push(`size=${size}`);
+    params.append('size', String(size));
   }
 
-  if (order === 'desc') {
-    params.push(`sort=price%2C${order}&sort=name`);
-  } else {
-    params.push('sort=price&sort=name');
-  }
+  const sortOrder = order === 'desc' ? 'price,desc' : 'price';
+  params.append('sort', sortOrder);
+  params.append('sort', 'name');
 
-  if (params.length > 0) {
-    baseUrl += `?${params.join('&')}`;
-  }
-
-  return baseUrl;
+  const queryString = params.toString();
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl;
 };
 
 export default buildGetProductListURL;

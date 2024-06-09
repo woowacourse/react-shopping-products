@@ -1,23 +1,23 @@
 import { useEffect, useRef } from 'react';
 
-import LoadingImg from '@/assets/loading.gif';
 import { Product } from '@/types/product.type';
-import ProductItem from './ProductItem';
+import ProductItem from '@/components/product/ProductItem';
+import { SkeletonList } from '@/components/skeleton/SkeletonList';
 import styled from '@emotion/styled';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 interface Props {
+  page: number;
   isLoading: boolean;
   products: Product[];
-  page: number;
   getNextPage: () => void;
   hasNextPage: boolean;
 }
 
 const ProductList = ({
+  page,
   isLoading,
   products,
-  page,
   getNextPage,
   hasNextPage,
 }: Props) => {
@@ -27,12 +27,14 @@ const ProductList = ({
   const listContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (target.current) {
-      observe(target.current);
-    }
-
     if (page === 0 && listContainerRef.current) {
       listContainerRef.current.scrollTop = 0;
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (target.current) {
+      observe(target.current);
     }
 
     return () => {
@@ -40,17 +42,17 @@ const ProductList = ({
         unobserve(target.current);
       }
     };
-  }, [observe, unobserve, page]);
+  }, [observe, unobserve]);
 
   return (
     <S.ListContainer ref={listContainerRef}>
       <S.GridContainer>
-        {products.map((product) => (
+        {products?.map((product) => (
           <ProductItem key={product.id} item={product} />
         ))}
       </S.GridContainer>
 
-      {isLoading && <S.LoadingImg src={LoadingImg} alt="loading" />}
+      {isLoading && hasNextPage && <SkeletonList length={4} />}
       {hasNextPage && <S.ObserverContainer ref={target} />}
     </S.ListContainer>
   );
@@ -81,5 +83,11 @@ const S = {
   LoadingImg: styled.img`
     width: 100%;
     height: 50px;
+  `,
+  SkeletonWrapper: styled.div`
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+    gap: 16px;
   `,
 };

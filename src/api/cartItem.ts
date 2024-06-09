@@ -1,7 +1,7 @@
 import { CartItem } from '@/types/cartItem.type';
-import { ENDPOINT } from './endpoints';
+import { ENDPOINT } from '@/api/endpoints';
 import { ERROR_MESSAGES } from '@/constants/error';
-import { fetchWithAuth } from './utils/fetchClient';
+import { fetchWithAuth } from '@/api/utils/fetchClient';
 
 /**
  * 사용자의 장바구니 목록 조회
@@ -51,3 +51,29 @@ export const deleteCartItem = async (productId: number): Promise<void> => {
     throw new Error(ERROR_MESSAGES.deleteCartItem);
   }
 };
+
+/**
+ * 장바구니 아이템 수량 변경
+ */
+export async function patchCartItem({
+  cartItemId,
+  quantity,
+}: {
+  cartItemId: number;
+  quantity: number;
+}): Promise<void> {
+  const response = await fetchWithAuth(
+    ENDPOINT.cartItem.patchItem(cartItemId),
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ quantity }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(ERROR_MESSAGES.postCartItem);
+  }
+}
