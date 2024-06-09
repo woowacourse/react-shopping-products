@@ -23,6 +23,7 @@ export async function fetchProductList({
   const data = await response({
     url: `${END_POINTS.PRODUCTS}?${categoryQuery}${requiredQuery}&${sortQuery}`,
     method: 'GET',
+    errorMessage: '네트워크 문제로 인해 상품 목록을 불러오는데 실패했어요.',
   });
 
   return await data;

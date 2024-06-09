@@ -6,9 +6,10 @@ interface ResponseProps {
   url: string;
   method: HttpMethod;
   body?: BodyInit;
+  errorMessage: string;
 }
 
-const response = async ({ url, method, body }: ResponseProps) => {
+const response = async ({ url, method, body, errorMessage }: ResponseProps) => {
   const result = await fetch(url, {
     method,
     headers: {
@@ -17,6 +18,7 @@ const response = async ({ url, method, body }: ResponseProps) => {
     },
     body,
   });
+  if (!result.ok) throw new Error(errorMessage);
   if (method !== 'GET') return;
   return result.json();
 };

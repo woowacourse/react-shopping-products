@@ -7,6 +7,7 @@ export async function fetchCartItemList(): Promise<{ content: CartItemList }> {
   const data = await response({
     url: `${END_POINTS.CART_ITEMS}?size=2000`,
     method: 'GET',
+    errorMessage: '네트워크 문제로 인해 장바구니 목록을 불러오는데 실패했어요.',
   });
   return data;
 }
@@ -24,6 +25,7 @@ export async function addCartItem({
     url: `${END_POINTS.CART_ITEMS}`,
     method: 'POST',
     body: JSON.stringify({ productId, quantity }),
+    errorMessage: '네트워크 문제로 인해 담기에 실패했어요.',
   });
 }
 
@@ -37,6 +39,7 @@ export async function deleteCartItem({
   await response({
     url: `${END_POINTS.CART_ITEMS}/${cartItemId}`,
     method: 'DELETE',
+    errorMessage: '네트워크 문제로 인해 삭제에 실패했어요.',
   });
 }
 
@@ -53,5 +56,6 @@ export async function patchCartItem({
     url: `${END_POINTS.CART_ITEMS}/${cartItemId}`,
     method: 'PATCH',
     body: JSON.stringify({ quantity }),
+    errorMessage: '네트워크 문제로 인해 수량 조절에 실패했어요.',
   });
 }
