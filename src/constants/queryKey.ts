@@ -1,9 +1,9 @@
 const QUERY_KEY = {
   getProducts: "getProducts",
   getCartItems: "getCartItems",
-  postNewCartItem: "postNewCartItem",
-  deleteCartItem: "deleteCartItem",
-  patchCartItem: "patchCartItem",
+  postProductToCart: "postProductToCart",
+  deleteProductFromCart: "deleteProductFromCart",
+  patchCartItemQuantity: "patchCartItemQuantity",
 };
 
 export default QUERY_KEY;

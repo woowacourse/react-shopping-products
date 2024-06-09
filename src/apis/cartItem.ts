@@ -23,7 +23,7 @@ export const getCartItems = async (): Promise<CartItems[]> => {
   return data.content;
 };
 
-export async function postCartItem({ productId, quantity }: CartItemInfo): Promise<Response> {
+export async function postProductToCart({ productId, quantity }: CartItemInfo): Promise<Response> {
   const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}`, {
     method: "POST",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
@@ -37,7 +37,7 @@ export async function postCartItem({ productId, quantity }: CartItemInfo): Promi
   return response;
 }
 
-export async function deleteCartItem({ itemId }: { itemId: number }): Promise<Response> {
+export async function deleteProductFromCart({ itemId }: { itemId: number }): Promise<Response> {
   const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${itemId}`, {
     method: "DELETE",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },
@@ -50,7 +50,7 @@ export async function deleteCartItem({ itemId }: { itemId: number }): Promise<Re
   return response;
 }
 
-export async function patchCartItem({ productId, quantity }: CartItemInfo): Promise<Response> {
+export async function patchCartItemQuantity({ productId, quantity }: CartItemInfo): Promise<Response> {
   const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${productId}`, {
     method: "PATCH",
     headers: { Authorization: basicToken, "Content-Type": "application/json" },

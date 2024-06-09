@@ -1,4 +1,4 @@
-import { deleteCartItem, getCartItems, patchCartItem, postCartItem } from "@/apis/cartItem";
+import { deleteProductFromCart, getCartItems, patchCartItemQuantity, postProductToCart } from "@/apis/cartItem";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import QUERY_KEY from "@/constants/queryKey";
 import TIMER from "@/constants/timer";
@@ -16,9 +16,9 @@ const useHandleCartItem = () => {
     staleTime: TIMER.hour,
   });
 
-  const { mutate: postCartItemMutate } = useMutation({
-    mutationKey: [QUERY_KEY.postNewCartItem],
-    mutationFn: postCartItem,
+  const { mutate: postProductToCartMutate } = useMutation({
+    mutationKey: [QUERY_KEY.postProductToCart],
+    mutationFn: postProductToCart,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.getCartItems] });
     },
@@ -27,9 +27,9 @@ const useHandleCartItem = () => {
     },
   });
 
-  const { mutate: deleteCartItemMutate } = useMutation({
-    mutationKey: [QUERY_KEY.deleteCartItem],
-    mutationFn: deleteCartItem,
+  const { mutate: deleteProductFromCartMutate } = useMutation({
+    mutationKey: [QUERY_KEY.deleteProductFromCart],
+    mutationFn: deleteProductFromCart,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.getCartItems] });
     },
@@ -38,9 +38,9 @@ const useHandleCartItem = () => {
     },
   });
 
-  const { mutate: patchCartItemMutate } = useMutation({
-    mutationKey: [QUERY_KEY.patchCartItem],
-    mutationFn: patchCartItem,
+  const { mutate: patchCartItemQuantityMutate } = useMutation({
+    mutationKey: [QUERY_KEY.patchCartItemQuantity],
+    mutationFn: patchCartItemQuantity,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.getCartItems] });
     },
@@ -52,12 +52,12 @@ const useHandleCartItem = () => {
   const getCartItemQuantity = (productId: number): number =>
     cartItems!.find((cartItem) => cartItem.product.id === productId)!.quantity;
 
-  const addCartItem = (productId: number) => postCartItemMutate({ productId, quantity: 1 });
+  const addCartItem = (productId: number) => postProductToCartMutate({ productId, quantity: 1 });
 
   const removeCartItem = (productId: number) => {
     const targetItem = cartItems!.find((cartItem) => cartItem.product.id === productId);
 
-    deleteCartItemMutate({ itemId: targetItem!.id });
+    deleteProductFromCartMutate({ itemId: targetItem!.id });
   };
 
   const updateCartItemQuantity = (productId: number, clickType: "plus" | "minus") => {
@@ -71,7 +71,7 @@ const useHandleCartItem = () => {
 
     const targetItem = cartItems!.find((cartItem) => cartItem.product.id === productId);
     const updatedQuantity = clickType === "plus" ? itemQuantity + 1 : itemQuantity - 1;
-    patchCartItemMutate({ productId: targetItem!.id, quantity: updatedQuantity });
+    patchCartItemQuantityMutate({ productId: targetItem!.id, quantity: updatedQuantity });
   };
 
   const isInCart = (productId: number) => {
