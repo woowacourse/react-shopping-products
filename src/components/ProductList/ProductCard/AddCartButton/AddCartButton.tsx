@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { AddCartIcon } from '../../../../assets';
 import * as S from './AddCartButton.styled';
-import { CartContext } from '../../../../CartContext';
 
 interface AddCartButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {}

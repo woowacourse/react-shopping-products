@@ -1,11 +1,10 @@
-import { useCallback, useContext } from 'react';
+import { useContext } from 'react';
 import { CartContext } from '../../../CartContext';
 import { Product } from '../../../types/fetch';
 import AddCartButton from './AddCartButton/AddCartButton';
 import * as S from './ProductCard.styled';
-import Stepper from './Stepper/RoundButtonWithImg';
-import useCounter from './Stepper/useCounter';
-import { patchCartQuantity } from '../../../api/carts';
+import Stepper from './Stepper/Stepper';
+import useCartStepper from './Stepper/useCartStepper';
 interface ProductCardProps {
   product: Product;
 }
@@ -18,33 +17,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
     patchCartItemQuantity,
   } = useContext(CartContext);
 
-  const productIdSetInCart = new Set(cartItems?.map((item) => item.product.id));
   const cartItem = cartItems?.filter(
     (item) => item.product.id === product.id,
   )[0];
-  const cartId = cartItem?.id;
 
-  const handleClickDecrease = useCallback(() => {
-    if (!cartItem) return;
+  const { handleClickDecrease, handleClickIncrease } = useCartStepper(cartItem);
 
-    if (cartItem.quantity === 1) {
-      deleteToRemoveCart(cartItem.id);
-      return;
-    }
-
-    patchCartItemQuantity({
-      cartId: cartItem.id,
-      quantity: cartItem.quantity - 1,
-    });
-  }, [cartItem]);
-
-  const handleClickIncrease = useCallback(() => {
-    if (!cartItem) return;
-    patchCartItemQuantity({
-      cartId: cartItem.id,
-      quantity: cartItem.quantity + 1,
-    });
-  }, [cartItem]);
   return (
     <S.ProductCardContainer>
       <S.ProductImage src={product.imageUrl} />
@@ -55,7 +33,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </S.InfoWrapper>
 
         <S.ButtonContainer>
-          {productIdSetInCart.has(product.id) && cartItem ? (
+          {cartItem ? (
             <Stepper.Horizontal>
               <Stepper.MinusButton onClick={handleClickDecrease} />
               <Stepper.DisplayCounter count={cartItem.quantity} />
