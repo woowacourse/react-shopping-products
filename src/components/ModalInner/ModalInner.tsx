@@ -1,9 +1,7 @@
 import { Button } from "@components/Button/index";
 import CountControlButtonBundle from "../CountControlButtonBundle/CountControlButtonBundle";
+import { useCartItems, useControlCart, useDeleteCart } from "@hooks/index";
 import * as MI from "./ModalInner.style";
-import useCartItems from "@hooks/useCartItems";
-import useControlCart from "@hooks/useControlCart";
-import useDeleteCart from "@hooks/useDeleteCart";
 
 const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
   const { addToCart, deleteToCart } = useControlCart({

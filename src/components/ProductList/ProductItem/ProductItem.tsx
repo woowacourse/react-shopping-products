@@ -1,11 +1,10 @@
 import { forwardRef } from "react";
-import * as PI from "./ProductItem.style";
 import { postProductInCart } from "@api/index";
-import { useError } from "@hooks/index";
 import CountControlButtonBundle from "@components/CountControlButtonBundle/CountControlButtonBundle";
 import AddCartButton from "@components/Button/AddCartButton";
-import useCartItems from "@hooks/useCartItems";
-import useControlCart from "@hooks/useControlCart";
+import { useCartItems, useControlCart, useError } from "@hooks/index";
+import DefaultImage from "@assets/no-image.png";
+import * as PI from "./ProductItem.style";
 
 interface ProductProps {
   product: Product;
@@ -60,6 +59,9 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
         <PI.ProductImg
           src={`${product.imageUrl}`}
           alt={`${product.name} 상품 이미지`}
+          onError={(event) => {
+            event.currentTarget.src = DefaultImage;
+          }}
         />
         <PI.ProductGroup>
           <PI.ProductContent>

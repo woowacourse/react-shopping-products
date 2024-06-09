@@ -1,7 +1,7 @@
 import Logo from "@assets/logo.svg";
 import Cart from "@assets/cart.svg";
-import * as H from "./Header.style";
 import useCartItems from "@hooks/useCartItems";
+import * as H from "./Header.style";
 
 export default function Header({
   handleOpenCartModal,
