@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react';
 import React from 'react';
-import useProducts from '../../src/hooks/product/useProducts/useProducts';
+import useProductWithPagination from '../../src/hooks/product/useProductsWithPagination/useProductsWithPagination';
 import useSelectProductDropdown from '../../src/hooks/product/useSelectProductDropdown';
 
 const queryClient = new QueryClient({
@@ -21,7 +21,7 @@ export const createProductsRenderHook = () =>
   renderHook(
     () => {
       const { dropdownOptions, onSelectOption } = useSelectProductDropdown();
-      const result = useProducts(dropdownOptions);
+      const result = useProductWithPagination({ dropdownOptions, showToast: () => {} });
 
       return { ...result, dropdownOptions, onSelectOption };
     },

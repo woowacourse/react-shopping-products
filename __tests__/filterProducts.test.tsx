@@ -1,7 +1,6 @@
 import { waitFor } from '@testing-library/react';
 
 import { PRODUCT_CATEGORY_MAP } from '../src/components/product/ProductDropdown/ProductDropdown.constant';
-import { act } from 'react';
 import { createProductsRenderHook } from './utils/createProductsRenderHook';
 
 describe('상품 목록 카테고리 테스트', () => {
@@ -11,13 +10,13 @@ describe('상품 목록 카테고리 테스트', () => {
       // when
       const { result } = createProductsRenderHook();
 
-      act(() => {
+      await waitFor(() => {
         result.current.onSelectOption('category', category);
       });
 
       await waitFor(() => {
-        const isEverySameCategory = result.current.products.every(
-          (product) => product.category === category
+        const isEverySameCategory = result.current.products.every((product) =>
+          category === 'all' ? true : product.category === category
         );
 
         // then
