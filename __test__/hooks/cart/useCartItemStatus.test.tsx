@@ -9,7 +9,7 @@ describe('useCartItemStatus 테스트', () => {
     });
 
   describe('productId로 장바구니의 수량을 알 수 있어야한다.', () => {
-    it('장바구니 목록에서 productId로 cartItem을 찾으면 그 수량을 리턴한다.', async () => {
+    it('장바구니 목록에서 productId로 cartItem을 찾으면 그 수량을 반환한다.', async () => {
       const PRODUCT_ID = 100;
       const { result } = renderUseCartItemStatusHook(PRODUCT_ID);
 

@@ -27,12 +27,16 @@ describe('useFetchCartItems 테스트', () => {
   it('장바구니 아이템들을 가져오는데 실패하면 에러 상태를 반환한다.', async () => {
     server.use(
       http.get(ENDPOINT.cartItem.getList, () => {
-        return new HttpResponse('Internal Server Error', { status: 500 });
+        return new HttpResponse(null, { status: 500 });
       }),
     );
 
     const { result } = renderHook(() => useFetchCartItems(), {
       wrapper: queryClientWrapper,
+    });
+
+    waitFor(() => {
+      expect(result.current.isError).toBe(true);
     });
 
     expect(result.current.cartItemList).toEqual([]);
