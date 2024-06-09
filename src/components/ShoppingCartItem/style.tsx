@@ -22,7 +22,7 @@ export const ItemInfo = styled.div`
   flex-direction: column;
   gap: 0.5rem;
 
-  width: 100%;
+  width: 18.75rem;
 `;
 
 export const ItemDetailsContainer = styled.div`
