@@ -1,7 +1,7 @@
 import { CartItem } from '@appTypes/product';
 import Item from '@components/common/Item/Item';
 import CartQuantityCounter from '@components/shoppingCart/CartQuantityCounter/CartQuantityCounter';
-import useDeleteShoppingCart from '@queries/shoppingCart/useDeleteCartItem';
+import useDeleteShoppingCart from '@queries/shoppingCart/useDeleteShoppingCart';
 import NotResultImage from '@assets/images/noResultImage.png';
 
 import * as Styled from './CartList.styled';
