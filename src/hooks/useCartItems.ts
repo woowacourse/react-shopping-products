@@ -27,7 +27,6 @@ export function useCartItems() {
     setErrorCartItemsFetch({ isError: false, message: '' });
     try {
       await addCartItem(itemId);
-      refetchCartItems();
       return true;
     } catch {
       setErrorCartItemsFetch({ isError: true, message: ERROR.addProduct });

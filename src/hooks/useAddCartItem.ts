@@ -1,10 +1,17 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addCartItem } from '../api';
 
 const useAddCartItem = () => {
+  const client = useQueryClient();
+
   const { mutate, isError, isSuccess } = useMutation({
     mutationKey: ['addCartItem'],
     mutationFn: addCartItem,
+    onSuccess: () => {
+      client.invalidateQueries({
+        queryKey: ['cartItems'],
+      });
+    },
   });
 
   return {

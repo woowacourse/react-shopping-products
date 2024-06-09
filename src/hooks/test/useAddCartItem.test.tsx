@@ -13,7 +13,7 @@ describe('useAddCartItem 훅 테스트', () => {
   it('장바구니에 상품을 상품 ID로 추가한다.', async () => {
     const { result } = renderHook(
       () => {
-        const { cartItems, cartItemsQuerySuccess, refetchCartItems } = useCartItemQuery();
+        const { cartItems, cartItemsQuerySuccess } = useCartItemQuery();
         const { addCartItem, isAddCartItemSuccess } = useAddCartItem();
 
         return {
@@ -21,7 +21,6 @@ describe('useAddCartItem 훅 테스트', () => {
           isAddCartItemSuccess,
           cartItems,
           cartItemsQuerySuccess,
-          refetchCartItems,
         };
       },
       { wrapper },
@@ -37,10 +36,6 @@ describe('useAddCartItem 훅 테스트', () => {
 
     await waitFor(() => {
       expect(result.current.isAddCartItemSuccess).toBe(true);
-    });
-
-    act(() => {
-      result.current.refetchCartItems();
     });
 
     await waitFor(() => {
