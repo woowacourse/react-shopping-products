@@ -12,7 +12,7 @@ interface Props {
 
 export function useProductSelection({ cartItems, productToCartIdMap, popCartItem }: Props) {
   const [selectedItems, setSelectedItems] = useState<Set<number>>(new Set());
-  const { mutate, isError, isSuccess } = useAddCartItem();
+  const { addCartItem, isAddCartItemError, isAddCartItemSuccess } = useAddCartItem();
 
   const { showToast } = useToast();
 
@@ -34,12 +34,12 @@ export function useProductSelection({ cartItems, productToCartIdMap, popCartItem
       const result = await popCartItem(productToCartIdMap[itemId]);
       if (result) newSelectedItems.delete(itemId);
     } else {
-      mutate(itemId);
+      addCartItem(itemId);
 
-      if (isSuccess) {
+      if (isAddCartItemSuccess) {
         newSelectedItems.add(itemId);
       }
-      if (isError) {
+      if (isAddCartItemError) {
         showToast({ message: '장바구니 상품 추가에 실패했습니다.', duration: 3000 });
       }
     }

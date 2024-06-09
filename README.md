@@ -37,11 +37,20 @@
   - [x] 프로덕션 코드의 기존 getCartItems 함수를 대체
     - [ ] cartItems가 undefined인 경우 대비
 
-- step 3 장바구니에 상품 추가 post 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
+- step 3. 장바구니에 상품 추가 post 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
+
   - [ ] 장바구니에 상품 추가 post 기능
-    - [ ] useMutation을 사용한 useAddCartItem hook
+
+    - [x] useMutation을 사용한 useAddCartItem 훅
+
+  - [x] 프로덕션 코드의 기존 fetch 함수 대체
+
+- step 4. 장바구니에서 상품 제거 delete 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
+
   - [ ] 장바구니에서 상품 제거 delete 기능
     - [ ]
+
+- step 5. 장바구니 상품 수량 patch 요청 + 테스트 코드 작성 후 프로덕션 코드에 적용
   - [ ] 장바구니 상품 수량 patch 기능
     - [ ]
 
