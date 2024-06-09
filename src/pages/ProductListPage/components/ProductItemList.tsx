@@ -19,7 +19,8 @@ const ProductItemList = ({ selectBarCondition, cartItems }: Props) => {
   return (
     <>
       <div className={styles.productItemListContainer}>
-        {products?.map((item, idx) => {
+        {products.length === 0 && !isFetching && <div>상품 목록이 비었어요.</div>}
+        {products.map((item, idx) => {
           const cartItem = cartItems.find((cartItem) => {
             return cartItem.product.id === item.id;
           });
@@ -32,7 +33,7 @@ const ProductItemList = ({ selectBarCondition, cartItems }: Props) => {
             />
           );
         })}
-        {products?.length !== 0 && <p style={{ height: '10px' }} ref={lastProductElementRef}></p>}
+        {products.length !== 0 && <p style={{ height: '10px' }} ref={lastProductElementRef}></p>}
       </div>
       {isFetching && <Loader />}
     </>
