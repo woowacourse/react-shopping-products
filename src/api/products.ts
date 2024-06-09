@@ -15,6 +15,7 @@ interface GetProductsParams {
   category: (typeof PRODUCT_CATEGORY_LIST)[keyof typeof PRODUCT_CATEGORY_LIST];
   sort: (typeof PRODUCT_SORT_LIST)[keyof typeof PRODUCT_SORT_LIST];
 }
+
 export async function getProducts({ page, size, category, sort }: GetProductsParams) {
   let url = `${PRODUCTS_ENDPOINT}?page=${page}&size=${size}`;
 

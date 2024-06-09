@@ -3,6 +3,7 @@ import { getProducts } from "../../api/products";
 import { PRODUCT_DEFAULT_CATEGORY, PRODUCT_DEFAULT_SORT } from "../../constants/mallData";
 import { PRODUCT_CATEGORY_TYPE, PRODUCT_SORT_TYPE } from "../../types/mall";
 import { useState } from "react";
+import QUERY_KEYS from "../../constants/queryKeys";
 
 const fetchProducts = async ({
   pageParam = 0,
@@ -22,7 +23,7 @@ const useProducts = () => {
   const [sort, setSort] = useState<PRODUCT_SORT_TYPE>(PRODUCT_DEFAULT_SORT);
 
   const { data, error, isError, fetchNextPage, isFetching, isLoading } = useInfiniteQuery({
-    queryKey: ["products", category, sort],
+    queryKey: [QUERY_KEYS.products, category, sort],
     queryFn: ({ pageParam = 0 }) => fetchProducts({ pageParam, category, sort }),
     getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
     initialPageParam: 0,

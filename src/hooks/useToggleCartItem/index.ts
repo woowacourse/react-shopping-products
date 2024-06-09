@@ -3,6 +3,7 @@ import { UseMutationResult, useMutation, useQuery, useQueryClient } from "@tanst
 import { getCartItems, addCartItem } from "../../api/cartItems";
 import { CartItemType } from "../../types/cartItems";
 import { useDeleteCartItemByProductId } from "../useDeleteCartItem";
+import QUERY_KEYS from "../../constants/queryKeys";
 
 export interface ToggleCartItemReturns {
   cartItems: CartItemType[];
@@ -23,14 +24,14 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
     isLoading,
     error,
   } = useQuery<CartItemType[]>({
-    queryKey: ["cartItems"],
+    queryKey: [QUERY_KEYS.cartItem],
     queryFn: getCartItems,
     staleTime: 30 * 1000,
   });
 
   const addMutation = useMutation({
     mutationFn: (productId: number) => addCartItem({ productId, quantity: 1 }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItem] }),
   });
 
   const removeMutation = useDeleteCartItemByProductId();
@@ -43,9 +44,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
     removeMutation.mutate(productId);
   };
 
-  const checkSelected = (id: number): boolean => {
-    return !!cartItems?.find((item) => item.product.id === id);
-  };
+  const checkSelected = (id: number): boolean => !!cartItems?.find((item) => item.product.id === id);
 
   return {
     cartItems: cartItems || [],

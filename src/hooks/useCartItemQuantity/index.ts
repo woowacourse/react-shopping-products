@@ -3,6 +3,7 @@ import { getCartItems, modifyCartItem } from "../../api/cartItems";
 import { CartItemType } from "../../types/cartItems";
 import { useCallback } from "react";
 import { useDeleteCartItemByCartId } from "../useDeleteCartItem";
+import QUERY_KEYS from "../../constants/queryKeys";
 
 function useCartItemQuantity() {
   const queryClient = useQueryClient();
@@ -11,23 +12,23 @@ function useCartItemQuantity() {
     data: cartItems,
     isLoading,
     error,
-  } = useQuery<CartItemType[]>({ queryKey: ["cartItems"], queryFn: getCartItems, staleTime: 30 * 1000 });
+  } = useQuery<CartItemType[]>({ queryKey: [QUERY_KEYS.cartItem], queryFn: getCartItems, staleTime: 30 * 1000 });
 
   const updateQuantityMutation = useMutation({
     mutationFn: (item: { cartId: number; quantity: number }) => modifyCartItem(item.cartId, item.quantity),
     onMutate: async (item) => {
-      await queryClient.cancelQueries({ queryKey: ["cartItems"] });
-      const previousItems = queryClient.getQueryData<CartItemType[]>(["cartItems"]);
-      queryClient.setQueryData<CartItemType[]>(["cartItems"], (prev) =>
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.cartItem] });
+      const previousItems = queryClient.getQueryData<CartItemType[]>([QUERY_KEYS.cartItem]);
+      queryClient.setQueryData<CartItemType[]>([QUERY_KEYS.cartItem], (prev) =>
         prev?.map((cartItem) => (cartItem.id === item.cartId ? { ...cartItem, quantity: item.quantity } : cartItem))
       );
       return { previousItems };
     },
     onError: (_, __, context) => {
-      queryClient.setQueryData(["cartItems"], context?.previousItems);
+      queryClient.setQueryData([QUERY_KEYS.cartItem], context?.previousItems);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItem] });
     },
   });
 

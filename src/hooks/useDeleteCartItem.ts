@@ -2,11 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCartItem } from "../api/cartItems";
 import { CartItemType } from "../types/cartItems";
 import { ERROR_MESSAGE } from "../constants/errorMessage/ko";
+import QUERY_KEYS from "../constants/queryKeys";
 
 export const useDeleteCartItemByProductId = () => {
   const queryClient = useQueryClient();
 
-  const cartItems = queryClient.getQueryData<CartItemType[]>(["cartItems"]);
+  const cartItems = queryClient.getQueryData<CartItemType[]>([QUERY_KEYS.cartItem]);
 
   return useMutation({
     mutationFn: (productId: number) => {
@@ -17,7 +18,7 @@ export const useDeleteCartItemByProductId = () => {
       throw new Error(ERROR_MESSAGE.deleteCartItem);
     },
     //TODO: onError에서 에러 핸들링
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartItems"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItem] }),
   });
 };
 
@@ -27,7 +28,7 @@ export const useDeleteCartItemByCartId = () => {
   return useMutation({
     mutationFn: (cartId: number) => deleteCartItem(cartId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItem] });
     },
   });
 };
