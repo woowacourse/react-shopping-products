@@ -26,6 +26,13 @@ const globalStyles = () => css`
     height: 100%;
   }
 
+  #modal-portal-root {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 430px;
+  }
+
   html,
   body,
   div,
