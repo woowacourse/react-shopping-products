@@ -46,34 +46,3 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
-
-export const AddButton = styled.button<{ $isInCart: boolean }>`
-  display: flex;
-  gap: 0.25rem;
-  align-items: center;
-
-  width: 3.6875rem;
-  height: 1.5rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-
-  background-color: ${(props) =>
-    props.$isInCart ? props.theme.color.gray : props.theme.color.black};
-
-  ${(props) => props.theme.typography.product.toggleButton};
-  color: ${(props) => (props.$isInCart ? props.theme.color.black : props.theme.color.white)};
-`;
-
-export const ButtonImage = styled.img`
-  width: 1rem;
-  height: 1rem;
-`;
-
-export const QuantityText = styled.span`
-  text-align: center;
-
-  width: 1.5rem;
-
-  ${(props) => props.theme.typography.product.quantity};
-  color: ${(props) => props.theme.color.darkBlack};
-`;
