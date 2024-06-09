@@ -17,14 +17,14 @@ const Product = () => {
   const [sortings, setSortings] = useState<SortingParam[]>([{ name: 'price', order: 'asc' }]);
   const [filter, setFilter] = useState<Category>('');
 
-  const { products, isError, isPending, isLast, fetchNext, page } = useFetchProducts({ sortings, filter });
+  const { products, isError, isPending, isLast, fetchNext, page, error } = useFetchProducts({ sortings, filter });
 
   const modalState = useModalState(true, {});
 
   return (
     <CartContext.Provider value={cartState}>
       <Header badgeCount={cartState.cartItems?.length ?? 0} onBadgeClick={modalState.openModal} />
-      {isError && <ErrorMessage message={'에러'} style={{ top: '64px' }} />}
+      {isError && <ErrorMessage message={error?.message} style={{ top: '64px' }} />}
       {cartState.isError && <ErrorMessage message={'카트에러'} />}
       <S.ProductContentWrapper>
         <S.ProductTitle>bpple 상품 목록</S.ProductTitle>

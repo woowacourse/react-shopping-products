@@ -6,8 +6,7 @@ import { SortingParam } from '../types/sort';
 import { Category } from '../components/Dropdown/Dropdown';
 
 const getSize = (page: number) => (page === 0 ? 20 : 4);
-const getPage = (lastPage: number) =>
-  lastPage === 0 ? lastPage + 5 : lastPage + 1;
+const getPage = (lastPage: number) => (lastPage === 0 ? lastPage + 5 : lastPage + 1);
 
 interface useProductProps {
   sortings?: SortingParam[];
@@ -17,6 +16,7 @@ interface useProductProps {
 const useProducts = ({ sortings, filter, options }: useProductProps) => {
   const {
     data,
+    error,
     isError,
     isPending,
     isFetching,
@@ -24,11 +24,9 @@ const useProducts = ({ sortings, filter, options }: useProductProps) => {
     fetchNextPage: fetchNext,
   } = useInfiniteQuery({
     queryKey: ['product', sortings, filter],
-    queryFn: async ({ pageParam }) =>
-      await fetchProducts(pageParam, getSize(pageParam), sortings, filter),
+    queryFn: async ({ pageParam }) => await fetchProducts(pageParam, getSize(pageParam), sortings, filter),
     initialPageParam: 0,
-    getNextPageParam: (lastPage, __, lastPageParam: number) =>
-      lastPage.last ? undefined : getPage(lastPageParam),
+    getNextPageParam: (lastPage, __, lastPageParam: number) => (lastPage.last ? undefined : getPage(lastPageParam)),
 
     ...options,
   });
@@ -36,11 +34,7 @@ const useProducts = ({ sortings, filter, options }: useProductProps) => {
   const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
     if (!data) return;
-    setProducts(
-      data.pages
-        .map((page) => page.content)
-        .reduce((prev, cur) => [...prev, ...cur], []),
-    );
+    setProducts(data.pages.map((page) => page.content).reduce((prev, cur) => [...prev, ...cur], []));
   }, [data, setProducts]);
 
   const isLast = !hasNextPage;
@@ -50,6 +44,7 @@ const useProducts = ({ sortings, filter, options }: useProductProps) => {
     products,
     page,
     data,
+    error,
     isError,
     isPending,
     isLast,
