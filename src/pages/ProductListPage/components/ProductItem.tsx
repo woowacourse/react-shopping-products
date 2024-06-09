@@ -15,7 +15,7 @@ type productType = {
 
 interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
   item: productType;
-  cartItem: CartItemType | undefined;
+  cartItem: CartItemType;
 }
 
 const ProductItem = ({ item, cartItem }: Props) => {

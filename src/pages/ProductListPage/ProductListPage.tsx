@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductItemList from './components/ProductItemList';
 import ProductListHeader from './components/ProductListHeader';
 import ProductListSelectBar from './components/ProductListSelectBar';
 import ProductListTitle from './components/ProductListTitle';
 import styles from './ProductListPage.module.css';
+import useCartItems from '@/hooks/useCartItems';
 
 const ProductListPage = () => {
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -11,10 +12,11 @@ const ProductListPage = () => {
     category: 'all',
     sort: 'priceAsc',
   });
+  const { cartItems } = useCartItems();
 
-  const handleCount = (cartItemCount: number) => {
-    setCartItemCount(cartItemCount);
-  };
+  useEffect(() => {
+    setCartItemCount(cartItems.length);
+  }, [cartItems]);
 
   const handleSelectBarCondition = (filter: string, condition: string) => {
     const newCondition = { ...selectBarCondition, [filter]: condition };
@@ -27,7 +29,7 @@ const ProductListPage = () => {
       <div className={styles.productContentContainer}>
         <ProductListTitle />
         <ProductListSelectBar handleSelectBarCondition={handleSelectBarCondition} />
-        <ProductItemList selectBarCondition={selectBarCondition} handleCount={handleCount} />
+        <ProductItemList selectBarCondition={selectBarCondition} cartItems={cartItems} />
       </div>
     </div>
   );
