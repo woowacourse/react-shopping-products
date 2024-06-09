@@ -2,7 +2,7 @@ import ProductItem from "./ProductItem/ProductItem";
 import * as PL from "./ProductList.style";
 import { Fragment } from "react/jsx-runtime";
 import useProducts from "../../hooks/useProducts";
-import ProductListHeader from "../ProductListHeader/ProductListHeader";
+import ProductListHeader from "./ProductListHeader/ProductListHeader";
 
 const ProductList = () => {
   const {

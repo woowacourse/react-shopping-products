@@ -19,7 +19,6 @@ export default function useInfiniteScroll({
 
   const lastElementRef = useCallback(
     (node: HTMLDivElement) => {
-      console.log(node);
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore && !loading) {
