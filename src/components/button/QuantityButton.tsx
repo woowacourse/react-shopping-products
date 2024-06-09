@@ -1,5 +1,6 @@
 import BaseButton from '@/components/button/BaseButton';
 
+import { STYLE_THEME } from '@/styles/constants/theme';
 import styled from '@emotion/styled';
 
 interface QuantityButtonProps {
@@ -57,6 +58,6 @@ export const MinusButton = ({
 
 const S = {
   StyledBaseButton: styled(BaseButton)`
-    border: 1px solid #0000001a;
+    border: 1px solid ${STYLE_THEME.color.blackWithOpacity};
   `,
 };

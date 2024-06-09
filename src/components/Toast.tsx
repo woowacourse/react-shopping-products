@@ -26,5 +26,6 @@ const S = {
     transition: opacity 0.5s ease-in-out;
     font-size: ${STYLE_THEME.fontSize.xs};
     font-weight: ${STYLE_THEME.fontWeight.normal};
+    color: ${STYLE_THEME.color.black};
   `,
 };

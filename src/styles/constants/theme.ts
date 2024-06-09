@@ -3,7 +3,7 @@ export const STYLE_THEME = {
     white: '#ffffff',
     lightGray: '#EAEAEA',
     black: '#000000',
-    blackWithOpacity: 'rgba(0, 0, 0, 0.1)',
+    blackWithOpacity: '#0000001A',
     lightRed: '#FFC9C9',
   },
   fontSize: {

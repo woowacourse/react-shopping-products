@@ -1,17 +1,27 @@
 import useFetchCartItems from '@/queries/cartItem/useFetchCartItems';
+import useModal from '@/hooks/_common/useModal';
 
-import CartIcon from '@/assets/cart.svg?react';
+import CartSummaryModal from '@/components/cartItem/CartSummaryModal';
+
+import CartIconImg from '@/assets/cart.svg?react';
 
 import { STYLE_THEME } from '@/styles/constants/theme';
 import styled from '@emotion/styled';
 
 const CartCountIcon = () => {
   const { cartItems } = useFetchCartItems();
+  const { isModalOpen, openModal, closeModal } = useModal();
+
   return (
-    <S.Container>
-      <CartIcon />
-      {cartItems.length !== 0 && <S.Circle>{cartItems.length}</S.Circle>}
-    </S.Container>
+    <>
+      <S.Container>
+        <CartIconImg />
+        {cartItems.length !== 0 && (
+          <S.Circle onClick={openModal}>{cartItems.length}</S.Circle>
+        )}
+      </S.Container>
+      {isModalOpen && <CartSummaryModal closeModal={closeModal} />}
+    </>
   );
 };
 
@@ -38,5 +48,6 @@ const S = {
     color: ${STYLE_THEME.color.black};
     font-size: ${STYLE_THEME.fontSize.xs};
     font-weight: ${STYLE_THEME.fontWeight.bold};
+    cursor: pointer;
   `,
 };

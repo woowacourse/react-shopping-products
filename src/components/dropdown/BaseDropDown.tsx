@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import BaseButton from '@/components/button/BaseButton';
 
-import DropDownIcon from '@/assets/dropdown.svg?react';
+import DropDownIconImg from '@/assets/dropdown.svg?react';
 
 import { STYLE_THEME } from '@/styles/constants/theme';
 import styled from '@emotion/styled';
@@ -31,7 +31,7 @@ const BaseDropDown = ({ initialValue, options, onChangeSelect }: Props) => {
       <BaseButton onClick={() => setShowOptions((prev) => !prev)}>
         <SelectedOption>
           {selectedValue}
-          <DropDownIcon />
+          <DropDownIconImg />
         </SelectedOption>
       </BaseButton>
       {showOptions && (
