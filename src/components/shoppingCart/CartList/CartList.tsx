@@ -1,17 +1,19 @@
 import { CartItem } from '@appTypes/product';
 import Item from '@components/common/Item/Item';
 import CartQuantityCounter from '@components/shoppingCart/CartQuantityCounter/CartQuantityCounter';
-import useDeleteCartItem from '@hooks/cartItem/useDeleteCartItem';
+import useDeleteShoppingCart from '@queries/shoppingCart/useDeleteCartItem';
 import NotResultImage from '@assets/images/noResultImage.png';
 
 import * as Styled from './CartList.styled';
+import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 
 interface CartListProps {
   cartItems: CartItem[];
 }
 
 const CartList = ({ cartItems }: CartListProps) => {
-  const { deleteShoppingCartItem } = useDeleteCartItem();
+  const showToast = useToastContext();
+  const { deleteShoppingCartItem } = useDeleteShoppingCart(showToast);
 
   return (
     <>
