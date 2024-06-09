@@ -4,7 +4,6 @@ import { Product } from '@appTypes/product';
 
 import { ProductDropdownOptions } from '@components/product/ProductDropdown/ProductDropdown.type';
 
-import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 import { useProducts } from '@queries/product/useProducts';
 
 interface UseProductResult {
@@ -15,7 +14,13 @@ interface UseProductResult {
   updateNextProductItem: () => void;
 }
 
-const useProductsWithPagination = (dropdownOptions: ProductDropdownOptions): UseProductResult => {
+const useProductsWithPagination = ({
+  dropdownOptions,
+  showToast,
+}: {
+  dropdownOptions: ProductDropdownOptions;
+  showToast: (message: string) => void;
+}): UseProductResult => {
   const {
     data,
     hasNextPage,
@@ -24,8 +29,6 @@ const useProductsWithPagination = (dropdownOptions: ProductDropdownOptions): Use
     isFetching: isInfiniteScrollLoading,
     fetchNextPage,
   } = useProducts(dropdownOptions);
-
-  const showToast = useToastContext();
 
   useEffect(() => {
     if (error) showToast(error.message);

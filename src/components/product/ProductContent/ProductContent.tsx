@@ -7,14 +7,19 @@ import * as Styled from './ProductContent.styled';
 
 import { INIT_PAGE } from '@hooks/product/useProductsWithPagination/useProductsWithPagination.constant';
 import CardList from '@components/product/CardList/CardList';
+import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 
 interface ProductContentProps {
   dropdownOptions: ProductDropdownOptions;
 }
 
 const ProductContent = ({ dropdownOptions }: ProductContentProps) => {
-  const { products, isLoading, updateNextProductItem, page } =
-    useProductsWithPagination(dropdownOptions);
+  const showToast = useToastContext();
+
+  const { products, isLoading, updateNextProductItem, page } = useProductsWithPagination({
+    dropdownOptions,
+    showToast,
+  });
 
   const targetRef = useIntersectionObserver<HTMLDivElement>({
     onIntersect: () => {
