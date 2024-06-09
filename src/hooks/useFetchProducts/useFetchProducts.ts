@@ -11,8 +11,15 @@ const useFetchProducts = (
   sortings: SortingParam[] = [DEFAULT_SORTING_PARAM],
   filter: string | '' = '',
 ) => {
-  const { size, fetchedPage, fetchNextPage, resetPage, isLast, setIsLast } =
-    usePagination();
+  const {
+    size,
+    page,
+    fetchedPage,
+    fetchNextPage,
+    resetPage,
+    isLast,
+    setIsLast,
+  } = usePagination();
 
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -31,7 +38,7 @@ const useFetchProducts = (
       return;
     }
     setProducts((prevProducts) => [...prevProducts, ...query.data.content]);
-  }, [query.data, sortings, filter]);
+  }, [query.data, page, fetchedPage]);
 
   return {
     ...query,
@@ -39,6 +46,7 @@ const useFetchProducts = (
     fetchNextPage,
     resetPage,
     isLast,
+    page,
   };
 };
 

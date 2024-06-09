@@ -3,9 +3,9 @@ import { PAGE, SIZE } from '../constants/page';
 
 const usePagination = () => {
   const [page, setPage] = useState(0);
+  const [isLast, setIsLast] = useState(false);
   const size = page === PAGE.DEFAULT ? SIZE.DEFAULT : SIZE.INTERVAL;
   const fetchedPage = page === PAGE.DEFAULT ? page : page + SIZE.INTERVAL;
-  const [isLast, setIsLast] = useState(false);
 
   const fetchNextPage = () => {
     if (isLast) return;
@@ -14,6 +14,7 @@ const usePagination = () => {
 
   const resetPage = () => {
     setPage(PAGE.DEFAULT);
+    setIsLast(false);
   };
 
   return {
