@@ -31,7 +31,8 @@
       "@/api": ["src/api/*"],
       "@/hooks": ["src/hooks/*"],
       "@/mocks": ["src/mocks/*"],
-      "@/contexts": ["src/contexts/*"]
+      "@/contexts": ["src/contexts/*"],
+      "@/styles": ["src/styles/*"]
     }
   },
   "include": ["src", "__test__"],
