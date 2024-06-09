@@ -15,7 +15,7 @@ const ShoppingCartItem = ({ cartItem }: ShoppingCartItemProps) => {
     <S.ShoppingCartItem>
       <Divider />
       <S.ItemInfoContainer>
-        <S.ItemImg src={cartItem.product.imageUrl} />
+        <S.ItemImg src={cartItem.product.imageUrl} alt={cartItem.product.name + '상품 사진'} />
         <S.ItemInfo>
           <S.ItemDetailsContainer>
             <S.ItemDetails>
