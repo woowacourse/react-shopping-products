@@ -58,3 +58,9 @@
 
 - 컴포넌트 형식 : React arrow function component export default
 - css : module 방식
+
+# 🎯2단계 기능 요구사항
+
+### UI 작업
+
+- [x] Button 공통 컴포넌트 생성
