@@ -6,12 +6,12 @@ import useCartItems from "./hooks/useCartItems";
 import useProducts from "./hooks/useProducts";
 
 const App = () => {
-  const { error: cartItemError } = useCartItems();
+  const { cartItems, error: cartItemError } = useCartItems();
   const { error: productError } = useProducts();
 
   return (
     <div id="app">
-      <Header />
+      <Header quantity={cartItems.length} />
 
       <>
         {cartItemError && cartItemError instanceof Error && (

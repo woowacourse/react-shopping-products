@@ -4,7 +4,7 @@ import { QUERY_KEYS } from "../constants/queryKeys";
 
 interface UseCartItemsResult {
   cartItems: Cart[];
-  cartItemsCount: number;
+  // cartItemsCount: number;
   isLoading: boolean;
   error: unknown;
   handleAddCartItem: (id: number) => void;
@@ -70,7 +70,7 @@ const useCartItems = (): UseCartItemsResult => {
 
   return {
     cartItems,
-    cartItemsCount: cartItems.length,
+    // cartItemsCount: cartItems.length,
     isLoading,
     error,
     handleAddCartItem,

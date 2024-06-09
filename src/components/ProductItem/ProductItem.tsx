@@ -1,5 +1,6 @@
-import { useEffect } from "react";
 import { CartActionButton } from "../Button/CartActionButton";
+import useCartItems from "../../hooks/useCartItems";
+import { CountButton } from "../Button/CountButton";
 import {
   StyledContainer,
   StyledProductImg,
@@ -11,20 +12,15 @@ import {
   ProductItemControls,
   ProductItemQuantity,
 } from "./ProductItem.styled";
-import { useCart } from "../../context/cartContext";
-import useCartItems from "../../hooks/useCartItems";
-import { CountButton } from "../Button/CountButton";
 
 export const ProductItem = ({ product }: { product: Product }) => {
   const {
     cartItems,
-    cartItemsCount,
     handleAddCartItem,
     handleRemoveCartItem,
     handlePatchCartItem,
     isProductInCart,
   } = useCartItems();
-  const { setQuantity } = useCart();
   const cartItem = cartItems.find((item) => item.product.id === product.id);
   const productCount = cartItem ? cartItem.quantity : 1;
 
@@ -48,10 +44,6 @@ export const ProductItem = ({ product }: { product: Product }) => {
     }
   };
 
-  useEffect(() => {
-    setQuantity(cartItemsCount);
-  }, [cartItemsCount]);
-
   const handleCartButtonClick = async () => {
     if (isProductInCart(product.id)) {
       handleRemoveCartItem(product.id);
@@ -66,7 +58,7 @@ export const ProductItem = ({ product }: { product: Product }) => {
       <StyledContainer>
         <StyledWrapper>
           <StyledProductName>{product.name}</StyledProductName>
-          <StyledProductPrice>{product.price}</StyledProductPrice>
+          <StyledProductPrice>{`${product.price.toLocaleString()}원`}</StyledProductPrice>
         </StyledWrapper>
 
         {isProductInCart(product.id) ? (
