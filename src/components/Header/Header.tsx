@@ -5,6 +5,7 @@ import CartItemModal from '../CartItemModal/CartItemModal';
 import useCartItemCounts from '../../hooks/useCartItemCounts';
 
 import * as S from './Header.style';
+import useCartItemList from '../../hooks/useCartItemList';
 
 function Header() {
   const [isModalOpened, setIsModalOpened] = useState(false);
@@ -15,8 +16,8 @@ function Header() {
     setIsModalOpened(false);
   };
 
-  const { data, error, isFetching } = useCartItemCounts();
-  const quantity = data?.quantity ?? 0;
+  const { data, error, isFetching } = useCartItemList();
+  const quantity = data?.content.length ?? 0;
 
   return (
     <S.HeaderBackground>
