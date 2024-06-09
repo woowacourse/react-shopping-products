@@ -1,10 +1,10 @@
 import { http, HttpResponse } from 'msw';
-import { CART_ITEMS_ENDPOINT } from '../../api/endpoints';
-import { INITIAL_PAGE_NUMBER } from '../../constants/paginationRules';
 
 import cartItems from '../cartItems.json';
 import products from '../products.json';
 import { InternalServerError, NotFoundError, Success } from './response';
+import { CART_ITEMS_ENDPOINT } from '../../../src/api/endpoints';
+import { INITIAL_PAGE_NUMBER } from '../../../src/constants/paginationRules';
 
 interface PostCartItemRequestBody {
   productId: number;

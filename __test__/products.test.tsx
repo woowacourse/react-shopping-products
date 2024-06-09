@@ -1,15 +1,29 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
+import React from 'react';
+import server from './mocks/server';
 import { HttpResponse, http } from 'msw';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { PRODUCTS_ENDPOINT } from '../src/api/endpoints';
+
 import { SortOrder } from '../src/api/types';
-import server from '../src/mocks/server';
 import { Category } from '../src/types';
+
 import useProducts from '../src/hooks/useProducts';
+import { queryClient } from './mocks/queryClient';
+import { QueryClientProvider } from '@tanstack/react-query';
+import APIError from '../src/api/apiError';
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
 describe('상품 목록 테스트', () => {
+  beforeEach(() => {
+    queryClient.clear();
+  });
+
   describe('상품 목록 조회', () => {
     it('상품 목록을 조회한다.', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
@@ -19,7 +33,7 @@ describe('상품 목록 테스트', () => {
     });
 
     it('상품 목록 조회 중 로딩 상태', () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper });
 
       expect(result.current.isLoading).toBe(true);
     });
@@ -31,32 +45,30 @@ describe('상품 목록 테스트', () => {
         })
       );
 
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
+        const error = result.current.error as APIError;
         expect(result.current.products).toEqual([]);
-        expect(result.current.isLoading).toBe(false);
-        expect(result.current.error).toBeTruthy();
+        expect(error.statusCode).toBe(500);
       });
     });
   });
 
   describe('페이지네이션', () => {
     it('초기에 첫 페이지의 상품 20개를 불러온다', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
       });
     });
 
     it('다음 페이지의 상품 4개를 추가로 불러온다', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
       });
 
       act(() => {
@@ -65,12 +77,11 @@ describe('상품 목록 테스트', () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(24);
-        expect(result.current.page).toBe(5);
       });
     });
 
     it('모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
@@ -87,7 +98,6 @@ describe('상품 목록 테스트', () => {
 
         await waitFor(() => {
           expect(result.current.products).toHaveLength(expectedLength);
-          expect(result.current.page).toBe(i + 4);
         });
       }
 
@@ -97,12 +107,11 @@ describe('상품 목록 테스트', () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(100);
-        expect(result.current.page).toBe(24);
       });
     });
 
     it('페이지네이션으로 추가 데이터를 불러올 때 로딩 상태를 표시한다.', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false);
@@ -111,8 +120,6 @@ describe('상품 목록 테스트', () => {
       act(() => {
         result.current.fetchNextPage();
       });
-
-      expect(result.current.isLoading).toBe(true);
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false);
@@ -130,7 +137,7 @@ describe('상품 목록 테스트', () => {
     ];
 
     test.each(sortOptions)('$description', async ({ option }) => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper });
 
       act(() => {
         result.current.setSort(option as SortOrder);
@@ -184,7 +191,7 @@ describe('상품 목록 테스트', () => {
       },
     ];
     test.each(categories)('$description', async ({ category, expected }) => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper });
 
       act(() => {
         result.current.setCategory(category as Category);

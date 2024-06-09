@@ -2,16 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import { Global, ThemeProvider } from '@emotion/react';
-import theme from './styles/theme.ts';
-import globalStyles from './styles/globalStyles.ts';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './api/queryClient.ts';
 import AppRouter from './router/AppRouter.tsx';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: { retry: 0 },
-  },
-});
+import globalStyles from './styles/globalStyles.ts';
+import theme from './styles/theme.ts';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

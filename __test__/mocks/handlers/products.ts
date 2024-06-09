@@ -1,11 +1,11 @@
-import { PRODUCTS_ENDPOINT } from '../../api/endpoints';
 import { http, HttpResponse } from 'msw';
-import {
-  PAGE_SIZE,
-  INITIAL_PAGE_SIZE,
-  INITIAL_PAGE_NUMBER,
-} from '../../constants/paginationRules';
 import products from '../products.json';
+import {
+  INITIAL_PAGE_NUMBER,
+  INITIAL_PAGE_SIZE,
+  PAGE_SIZE,
+} from '../../../src/constants/paginationRules';
+import { PRODUCTS_ENDPOINT } from '../../../src/api/endpoints';
 
 export const productsHandlers = [
   http.get(PRODUCTS_ENDPOINT, ({ request }) => {
