@@ -11,8 +11,8 @@ import * as Styled from './App.styled';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
-      retry: 0,
+      refetchOnWindowFocus: true,
+      retry: 3,
     },
   },
 });
