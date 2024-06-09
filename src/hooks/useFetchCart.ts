@@ -1,12 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+
 import {
   fetchToDeleteCartItem,
   fetchCartItems,
   postAddItems,
   patchCartQuantity,
 } from '../api/carts';
-import { CartItem } from '../types/fetch';
 
 const useFetchCart = () => {
   const queryClient = useQueryClient();

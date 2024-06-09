@@ -14,7 +14,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const {
     addProductToCart,
     cartItems,
-    deleteToRemoveCart: patchToRemoveCart,
+    deleteToRemoveCart,
     patchCartItemQuantity,
   } = useContext(CartContext);
 
@@ -28,7 +28,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     if (!cartItem) return;
 
     if (cartItem.quantity === 1) {
-      patchToRemoveCart(product.id);
+      deleteToRemoveCart(cartItem.id);
       return;
     }
 
