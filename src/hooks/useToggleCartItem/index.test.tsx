@@ -73,7 +73,7 @@ describe("useToggleCartItem with useMutation", () => {
     });
 
     await waitFor(() => {
-      expect(result.current.error).toBeTruthy();
+      expect(result.current.queryError).toBeTruthy();
     });
   });
 });
