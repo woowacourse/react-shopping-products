@@ -36,7 +36,6 @@ export default function ProductList({
             onImpression={fetchNextPage}
             key={`${product.id}_${idx}`}
           >
-            k
             <ProductItem product={product} />
           </IntersectionArea>
         );

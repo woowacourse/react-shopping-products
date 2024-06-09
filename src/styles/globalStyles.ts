@@ -7,7 +7,6 @@ const globalStyles = () => css`
     padding: 0;
     box-sizing: border-box;
 
-    // scrollbar
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
