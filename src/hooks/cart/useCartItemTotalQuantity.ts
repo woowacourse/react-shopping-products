@@ -1,5 +1,4 @@
-import { getCartListQuantity } from '@/api/cartItem';
-import { QUERY_KEYS } from '@/constants/index';
+import { cartQueryConfig } from '@/constants/index';
 import { useQuery } from '@tanstack/react-query';
 
 const useCartItemTotalQuantity = () => {
@@ -7,10 +6,7 @@ const useCartItemTotalQuantity = () => {
     data: totalQuantity,
     isError,
     isLoading,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.CART.BASE, QUERY_KEYS.CART.TOTAL_QUANTITY],
-    queryFn: getCartListQuantity,
-  });
+  } = useQuery(cartQueryConfig.cartTotalQuantity);
 
   return { totalQuantity, isError, isLoading };
 };

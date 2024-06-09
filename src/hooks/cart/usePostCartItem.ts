@@ -1,5 +1,5 @@
 import { addCartItem } from '@/api/cartItem';
-import QUERY_KEYS from '@/constants/queryKeys';
+import { cartKeys } from '@/constants/index';
 import { useToast } from '@/hooks/index';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -11,10 +11,10 @@ const usePostCartItem = () => {
     mutationFn: (productId: number) => addCartItem(productId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.CART.BASE, QUERY_KEYS.CART.TOTAL_QUANTITY],
+        queryKey: cartKeys.totalQuantity(),
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.CART.BASE, QUERY_KEYS.CART.FETCH],
+        queryKey: cartKeys.all,
       });
     },
     onError: () => {

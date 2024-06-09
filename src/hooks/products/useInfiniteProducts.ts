@@ -4,7 +4,7 @@ import {
   INITIAL_PAGE,
   SUBSEQUENT_DATA_LOAD_COUNT,
 } from '@/constants/pagination';
-import { QUERY_KEYS } from '@/constants/index';
+import { productsKeys } from '@/constants/index';
 import { SortType, CategoryType } from '@/types/index';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -29,7 +29,7 @@ export default function useInfiniteProducts() {
     isFetchingNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.PRODUCTS, category, sort],
+    queryKey: productsKeys.byCategoryAndSort({ category, sort }),
     queryFn: ({ pageParam = INITIAL_PAGE }) => {
       const page = pageParam;
       const size =
