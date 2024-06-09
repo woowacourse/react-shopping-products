@@ -7,7 +7,7 @@ interface BorderButtonProps {
   size?: SizeType;
 }
 
-const getSizeStyle = (size: SizeType) => {
+const getSizeStyle = (size?: SizeType) => {
   switch (size) {
     case 'small':
       return css`
@@ -32,16 +32,14 @@ const getSizeStyle = (size: SizeType) => {
       `;
     default:
       return css`
-        width: 40px;
-        img {
-          width: 16px;
-        }
+        width: fit-content;
+        padding: 8px;
       `;
   }
 };
 
 export const BorderButton = styled.button<BorderButtonProps>(
-  ({ theme, size = 'large' }) => css`
+  ({ theme, size }) => css`
     font-size: 12px;
 
     display: flex;

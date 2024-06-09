@@ -6,6 +6,8 @@ import CartItemSkeleton from '../CartItem/CartItemSkeleton';
 import type { CartItem as CartItemType } from '../../../types';
 
 import * as S from './style';
+import * as C from '../../common/commonStyles';
+import { BorderButton } from '../../common/BorderButton/style';
 
 interface CartListProps {
   cartItems: CartItemType[];
@@ -20,6 +22,20 @@ export default function CartList({ cartItems }: CartListProps) {
   const hideOverflowIndicator = () => {
     setOverflowIndicator(false);
   };
+
+  const isCartEmpty = cartItems.length === 0;
+  if (isCartEmpty) {
+    return (
+      <S.CartItemsContainer>
+        <S.EmptyCartList>
+          <C.Description>장바구니가 비었어요. 🛒💨</C.Description>
+          <BorderButton onClick={() => (window.location.href = '')}>
+            쇼핑하러 가기
+          </BorderButton>
+        </S.EmptyCartList>
+      </S.CartItemsContainer>
+    );
+  }
 
   return (
     <S.CartItemsContainer>

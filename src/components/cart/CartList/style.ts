@@ -6,6 +6,7 @@ export const CartItemsContainer = styled.ul`
   gap: 16px;
 
   width: 100%;
+  min-height: 224px;
   max-height: inherit;
   overflow-y: scroll;
 `;
@@ -44,4 +45,15 @@ export const OverflowIndicator = styled.div`
     rgba(255, 255, 255, 0) 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
+`;
+
+export const EmptyCartList = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  width: 100%;
+  margin: auto;
 `;

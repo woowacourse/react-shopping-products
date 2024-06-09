@@ -31,6 +31,12 @@ export const Title = styled.h1`
   font-weight: 700;
 `;
 
+export const Description = styled.p`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+`;
+
 export const Divider = styled.div`
   width: 100%;
   height: 1px;
