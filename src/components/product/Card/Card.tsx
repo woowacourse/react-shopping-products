@@ -4,8 +4,9 @@ import { CartItem, Product } from '@appTypes/product';
 import { formatKoreanCurrency } from '@utils/currency';
 
 import { AddShoppingCart } from '@assets/svg';
-import useAddShoppingCart from '@hooks/cartItem/useAddShoppingCart';
 import CartQuantityCounter from '@components/shoppingCart/CartQuantityCounter/CartQuantityCounter';
+import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
+import usePostShoppingCart from '@queries/shoppingCart/usePostShoppingCart';
 
 interface CardProps {
   cartItem: CartItem | null;
@@ -13,7 +14,9 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ cartItem, product }) => {
-  const { addShoppingCart } = useAddShoppingCart();
+  const showToast = useToastContext();
+
+  const { addShoppingCart } = usePostShoppingCart(showToast);
 
   return (
     <Styled.CardContainer>

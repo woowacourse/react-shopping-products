@@ -1,19 +1,19 @@
 import { addShoppingCartItem } from '@apis/shoppingCart/shoppingCart';
-import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
+import { QUERY_KEY } from '@queries/queryKey';
 
 import { UseMutateFunction, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useAddShoppingCart = (): {
+const usePostShoppingCart = (
+  showToast: (message: string) => void
+): {
   addShoppingCart: UseMutateFunction<void, Error, number, unknown>;
 } => {
   const queryClient = useQueryClient();
 
-  const showToast = useToastContext();
-
   const { mutate: addShoppingCart } = useMutation({
     mutationFn: addShoppingCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart-items'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.cartItems });
     },
     onError: (error) => {
       showToast(error.message);
@@ -23,4 +23,4 @@ const useAddShoppingCart = (): {
   return { addShoppingCart };
 };
 
-export default useAddShoppingCart;
+export default usePostShoppingCart;
