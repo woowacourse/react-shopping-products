@@ -14,8 +14,7 @@ const ProductListPage = () => {
     sort: 'priceAsc',
   });
   const { cartItems } = useCartItems();
-
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setCartItemCount(cartItems.length);
@@ -30,14 +29,18 @@ const ProductListPage = () => {
     <div className={styles.productListPageContainer}>
       <ProductListHeader
         cartItemCount={cartItemCount}
-        handleHeaderButton={() => setIsOpen(!isOpen)}
+        handleHeaderButton={() => setIsModalOpen(!isModalOpen)}
       />
       <div className={styles.productContentContainer}>
         <ProductListTitle />
         <ProductListSelectBar handleSelectBarCondition={handleSelectBarCondition} />
         <ProductItemList selectBarCondition={selectBarCondition} cartItems={cartItems} />
       </div>
-      <CartModal cartItems={cartItems} isOpen={isOpen} handleToggle={() => setIsOpen(!isOpen)} />
+      <CartModal
+        cartItems={cartItems}
+        isOpen={isModalOpen}
+        handleToggle={() => setIsModalOpen(!isModalOpen)}
+      />
     </div>
   );
 };
