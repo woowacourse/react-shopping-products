@@ -1,7 +1,7 @@
 import { Modal } from '@jaymyong66/simple-modal';
 import { CartItemType } from '@/types';
 import useDeleteCartItem from '@/hooks/useDeleteCartItem';
-import usePatchCartItemQuantity from '@/hooks/usePatchCartItemQuantity';
+import useCartItemQuantity from '@/hooks/useCartItemQuantity';
 import Divider from '../Divider/Divider';
 import Text from '../Text/Text';
 import Stepper from '../Stepper/Stepper';
@@ -15,7 +15,7 @@ interface Props {
 
 const CartModal = ({ cartItems, isOpen, handleToggle }: Props) => {
   const { deleteCartItem } = useDeleteCartItem();
-  const { patchCartItemQuantity } = usePatchCartItemQuantity();
+  const { decreaseCartItemQuantity, increaseCartItemQuantity } = useCartItemQuantity();
 
   const totalAmount = cartItems.reduce((acc, cartItem) => {
     return acc + cartItem.quantity * cartItem.product.price;
@@ -30,23 +30,9 @@ const CartModal = ({ cartItems, isOpen, handleToggle }: Props) => {
       className={styles.modalContainer}
     >
       <Modal.ModalHeader title="장바구니" style={{ paddingBottom: '24px' }} />
+
       <Modal.ModalContent>
         {cartItems.map((cartItem) => {
-          const handleMinusButtonClick = () => {
-            if (cartItem.quantity === 1) {
-              deleteCartItem(cartItem.id);
-              return;
-            }
-            patchCartItemQuantity({ cartItemId: cartItem.id, newQuantity: cartItem.quantity - 1 });
-          };
-
-          const handlePlusButtonClick = () => {
-            patchCartItemQuantity({ cartItemId: cartItem.id, newQuantity: cartItem.quantity + 1 });
-          };
-
-          const handleDeleteButtonClick = () => {
-            deleteCartItem(cartItem.id);
-          };
           return (
             <div key={`cartItem-${cartItem.id}`}>
               <Divider />
@@ -55,14 +41,21 @@ const CartModal = ({ cartItems, isOpen, handleToggle }: Props) => {
                 <div className={styles.cartItemInfoContainer}>
                   <Text.Subtitle>{cartItem.product.name}</Text.Subtitle>
                   <Text.Label>{`${cartItem.product.price.toLocaleString('KR-ko')}원`}</Text.Label>
-                  <button className={styles.cartItemDeleteButton} onClick={handleDeleteButtonClick}>
+                  <button
+                    className={styles.cartItemDeleteButton}
+                    onClick={() => deleteCartItem(cartItem.id)}
+                  >
                     삭제
                   </button>
                   <div className={styles.stepperWrapper}>
                     <Stepper
                       value={cartItem.quantity}
-                      handleClickMinus={handleMinusButtonClick}
-                      handleClickPlus={handlePlusButtonClick}
+                      handleClickMinus={() =>
+                        decreaseCartItemQuantity(cartItem.id, cartItem.quantity)
+                      }
+                      handleClickPlus={() =>
+                        increaseCartItemQuantity(cartItem.id, cartItem.quantity)
+                      }
                     />
                   </div>
                 </div>
@@ -70,12 +63,14 @@ const CartModal = ({ cartItems, isOpen, handleToggle }: Props) => {
             </div>
           );
         })}
+
         <Divider />
         <div className={styles.totalAmountContainer}>
           <Text.Subtitle>총 결제 금액</Text.Subtitle>
           <Text.Title>{`${totalAmount.toLocaleString('KR-ko')}원`}</Text.Title>
         </div>
       </Modal.ModalContent>
+
       <Modal.ModalFooter>
         <Modal.ModalButton variant="primary" onClick={handleToggle} style={{ width: '100%' }}>
           닫기

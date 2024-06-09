@@ -2,7 +2,7 @@ import { HtmlHTMLAttributes } from 'react';
 import { CartItemType } from '@/types';
 import useAddCartItem from '@/hooks/useAddCartItem';
 import useDeleteCartItem from '@/hooks/useDeleteCartItem';
-import usePatchCartItemQuantity from '@/hooks/usePatchCartItemQuantity';
+import useCartItemQuantity from '@/hooks/useCartItemQuantity';
 import Stepper from '@/components/Stepper/Stepper';
 import ProductSelectButton from './ProductSelectButton';
 import styles from '../ProductListPage.module.css';
@@ -23,22 +23,10 @@ interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
 const ProductItem = ({ item, cartItem }: Props) => {
   const { addCartItem } = useAddCartItem();
   const { deleteCartItem } = useDeleteCartItem();
-  const { patchCartItemQuantity } = usePatchCartItemQuantity();
+  const { decreaseCartItemQuantity, increaseCartItemQuantity } = useCartItemQuantity();
 
   const { name, price, imageUrl } = item;
   const isInCart = cartItem ? true : false;
-
-  const handleMinusButtonClick = () => {
-    if (cartItem.quantity === 1) {
-      deleteCartItem(cartItem.id);
-      return;
-    }
-    patchCartItemQuantity({ cartItemId: cartItem.id, newQuantity: cartItem.quantity - 1 });
-  };
-
-  const handlePlusButtonClick = () => {
-    patchCartItemQuantity({ cartItemId: cartItem.id, newQuantity: cartItem.quantity + 1 });
-  };
 
   return (
     <div className={styles.productItemContainer}>
@@ -47,12 +35,13 @@ const ProductItem = ({ item, cartItem }: Props) => {
         <span className={styles.productItemName}>{name}</span>
         <span className={styles.productItemLabel}>{price.toLocaleString('KR-ko')}원</span>
       </div>
+
       <div className={styles.cartItemButtonWrapper}>
         {isInCart ? (
           <Stepper
             value={cartItem.quantity}
-            handleClickMinus={() => handleMinusButtonClick()}
-            handleClickPlus={() => handlePlusButtonClick()}
+            handleClickMinus={() => decreaseCartItemQuantity(cartItem.id, cartItem.quantity)}
+            handleClickPlus={() => increaseCartItemQuantity(cartItem.id, cartItem.quantity)}
           />
         ) : (
           <ProductSelectButton
