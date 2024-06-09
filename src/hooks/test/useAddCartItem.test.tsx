@@ -1,13 +1,13 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import useAddCartItem from '../useAddCartItem';
-import useCartItemQuery from '../useCartItemQuery';
+import useCartItems from '../useCartItems';
 import { queryWrapper } from './wrapper.util';
 
 describe('useAddCartItem 훅 테스트', () => {
   it('장바구니에 상품을 상품 ID로 추가한다.', async () => {
     const { result } = renderHook(
       () => {
-        const { cartItems, cartItemsQuerySuccess } = useCartItemQuery();
+        const { cartItems, cartItemsQuerySuccess } = useCartItems();
         const { addCartItem, isAddCartItemSuccess } = useAddCartItem();
 
         return {

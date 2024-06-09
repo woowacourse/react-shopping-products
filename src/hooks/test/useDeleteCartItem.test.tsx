@@ -1,5 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import useCartItemQuery from '../useCartItemQuery';
+import useCartItems from '../useCartItems';
 import { queryWrapper } from './wrapper.util';
 import useDeleteCartItem from '../useDeleteCartItem';
 import cartItems from '@/mocks/cartItems.json';
@@ -8,7 +8,7 @@ describe('useDeleteCartItem 훅 테스트', () => {
   it('장바구니에서 상품을 상품 ID로 제거한다.', async () => {
     const { result } = renderHook(
       () => {
-        const { cartItems, cartItemsQuerySuccess } = useCartItemQuery();
+        const { cartItems, cartItemsQuerySuccess } = useCartItems();
         const { deleteCartItem, isDeleteCartItemSuccess } = useDeleteCartItem();
 
         return {
