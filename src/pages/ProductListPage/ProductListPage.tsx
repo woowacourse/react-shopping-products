@@ -8,10 +8,9 @@ import useProducts from '../../hooks/useProducts';
 const ProductListPage = () => {
   const {
     products,
+    cartItems,
     setPage,
     hasMore,
-    selectedItems,
-    handleSelect,
     isLoading,
     cartItemCount,
     handleSelectBarCondition,
@@ -25,10 +24,9 @@ const ProductListPage = () => {
         <ProductListSelectBar handleSelectBarCondition={handleSelectBarCondition} />
         <ProductItemList
           products={products}
+          cartItems={cartItems}
           setPage={setPage}
           hasMore={hasMore}
-          selectedItems={selectedItems}
-          handleSelect={handleSelect}
           isLoading={isLoading}
         />
       </div>
