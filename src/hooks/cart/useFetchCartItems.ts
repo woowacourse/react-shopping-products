@@ -1,5 +1,5 @@
 import { getCartList } from '@/api/cartItem';
-import QUERY_KEYS from '@/constants/queryKeys';
+import { QUERY_KEYS } from '@/constants/index';
 import { CartItem } from '@/types/index';
 import { useQuery } from '@tanstack/react-query';
 

@@ -4,7 +4,7 @@ import {
   INITIAL_PAGE,
   SUBSEQUENT_DATA_LOAD_COUNT,
 } from '@/constants/pagination';
-import QUERY_KEYS from '@/constants/queryKeys';
+import { QUERY_KEYS } from '@/constants/index';
 import { SortType, CategoryType } from '@/types/index';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';

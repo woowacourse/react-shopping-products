@@ -1,4 +1,4 @@
-const QUERY_KEYS = {
+export const QUERY_KEYS = {
   PRODUCTS: 'products',
   CART: {
     BASE: 'cart',
@@ -6,5 +6,3 @@ const QUERY_KEYS = {
     FETCH: 'fetch',
   },
 };
-
-export default QUERY_KEYS;

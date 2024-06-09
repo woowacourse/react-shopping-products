@@ -1,5 +1,5 @@
 import { deleteCartItem } from '@/api/cartItem';
-import QUERY_KEYS from '@/constants/queryKeys';
+import { QUERY_KEYS } from '@/constants/index';
 import { useToast } from '@/hooks/index';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 

@@ -1,5 +1,5 @@
 import { getCartListQuantity } from '@/api/cartItem';
-import QUERY_KEYS from '@/constants/queryKeys';
+import { QUERY_KEYS } from '@/constants/index';
 import { useQuery } from '@tanstack/react-query';
 
 const useCartItemTotalQuantity = () => {
