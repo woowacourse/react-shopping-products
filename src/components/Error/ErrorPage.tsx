@@ -1,11 +1,12 @@
 type Props = {
   resetErrorBoundary: () => void;
+  message: string;
 };
 
-export default function ErrorPage({ resetErrorBoundary }: Props) {
+export default function ErrorPage({ resetErrorBoundary, message }: Props) {
   return (
     <div>
-      에러가 발생했어요!
+      {message}
       <button onClick={resetErrorBoundary}>다시 시도 하기</button>
     </div>
   );
