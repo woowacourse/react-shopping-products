@@ -1,22 +1,14 @@
-import { getCartItems } from "@/apis/cartItem";
 import Icon from "@/components/_common/Icon";
 import * as S from "@/components/CartBadge/style";
 import ShoppingBasket from "@/components/ShoppingBasket";
 import { END_POINT } from "@/config/endPoint";
-import QUERY_KEY from "@/constants/queryKey";
-import TIMER from "@/constants/timer";
-import { useQuery } from "@tanstack/react-query";
+import useHandleCartItem from "@/hooks/useHandleCartItem";
 import { MouseEventHandler, useState } from "react";
 import { CustomModal } from "woowacourse-todari-components";
 
 const CartBadge = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: cartItems } = useQuery({
-    queryKey: [QUERY_KEY.getCartItems],
-    queryFn: getCartItems,
-    gcTime: TIMER.hour,
-    staleTime: TIMER.hour,
-  });
+  const { cartItems } = useHandleCartItem();
 
   const openItemModal: MouseEventHandler = () => {
     setIsModalOpen(true);
