@@ -1,18 +1,12 @@
 import { updateCartItemQuantity } from '@apis/shoppingCart/shoppingCart';
 import { CartItem } from '@appTypes/product';
 import { InfinityScrollResponse } from '@appTypes/response';
-import { useToastContext } from '@components/common/Toast/provider/ToastProvider';
 import { UseMutationResult, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useUpdateItemQuantity = (): UseMutationResult<
-  void,
-  Error,
-  { id: number; quantity: number },
-  unknown
-> => {
+const useUpdateItemQuantity = (
+  showToast: (message: string) => void
+): UseMutationResult<void, Error, { id: number; quantity: number }, unknown> => {
   const queryClient = useQueryClient();
-
-  const showToast = useToastContext();
 
   return useMutation({
     mutationFn: updateCartItemQuantity,

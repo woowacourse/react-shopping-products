@@ -13,6 +13,7 @@ interface ProductContentProps {
   dropdownOptions: ProductDropdownOptions;
 }
 
+// TODO: IntersectionObserver 관련 책임을 관련 컴포넌트로 위임 시키기
 const ProductContent = ({ dropdownOptions }: ProductContentProps) => {
   const showToast = useToastContext();
 
