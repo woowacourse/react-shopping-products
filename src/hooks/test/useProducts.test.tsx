@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import useProductQuery from '../useProductQuery';
+import useProducts from '../useProducts';
 import { productCategories, sortOptions } from '../../constant/products';
 import { ToastProvider } from '@/context/ToastProvider';
 
@@ -12,7 +12,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   </QueryClientProvider>
 );
 
-describe('useProductQuery 훅 테스트', () => {
+describe('useProducts 훅 테스트', () => {
   beforeEach(() => {
     queryClient.clear();
   });
@@ -21,7 +21,7 @@ describe('useProductQuery 훅 테스트', () => {
       category: 'all',
       sort: 'priceAsc',
     };
-    const { result } = renderHook(() => useProductQuery({ selectBarCondition }), { wrapper });
+    const { result } = renderHook(() => useProducts({ selectBarCondition }), { wrapper });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -34,7 +34,7 @@ describe('useProductQuery 훅 테스트', () => {
       category: 'all',
       sort: 'priceAsc',
     };
-    const { result } = renderHook(() => useProductQuery({ selectBarCondition }), { wrapper });
+    const { result } = renderHook(() => useProducts({ selectBarCondition }), { wrapper });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
@@ -53,7 +53,7 @@ describe('useProductQuery 훅 테스트', () => {
       category: 'all',
       sort: 'priceAsc',
     };
-    const { result } = renderHook(() => useProductQuery({ selectBarCondition }), {
+    const { result } = renderHook(() => useProducts({ selectBarCondition }), {
       wrapper,
     });
 
@@ -94,7 +94,7 @@ describe('useProductQuery 훅 테스트', () => {
           sort: 'priceAsc',
         };
 
-        const { result } = renderHook(() => useProductQuery({ selectBarCondition }), {
+        const { result } = renderHook(() => useProducts({ selectBarCondition }), {
           wrapper,
         });
 
@@ -117,7 +117,7 @@ describe('useProductQuery 훅 테스트', () => {
           sort: sortKey,
         };
 
-        const { result } = renderHook(() => useProductQuery({ selectBarCondition }), {
+        const { result } = renderHook(() => useProducts({ selectBarCondition }), {
           wrapper,
         });
 

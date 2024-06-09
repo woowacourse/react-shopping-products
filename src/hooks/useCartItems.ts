@@ -1,28 +1,19 @@
-import { useState } from 'react';
-import { CartItemType, ProductType } from '../types';
-import useCartItemQuery from './useCartItemQuery';
+import { useQuery } from '@tanstack/react-query';
+import { fetchCartItem } from '../api';
+import { QUERY_KEY } from '../constant/queryKey';
 
-export function useCartItems() {
-  const { cartItems } = useCartItemQuery();
-  const [productToCartIdMap, setProductToCartIdMap] = useState<
-    Record<ProductType['id'], CartItemType['id']>
-  >({});
-
-  const getProductToCartIdMap = async () => {
-    if (!cartItems) return;
-
-    setProductToCartIdMap((prev) => {
-      const newProductToCartIdMap: Record<number, number> = { ...prev };
-      cartItems?.forEach((cartItem) => {
-        newProductToCartIdMap[cartItem.product.id] = cartItem.id;
-      });
-      return newProductToCartIdMap;
-    });
-  };
+const useCartItems = () => {
+  const { data, isError, isSuccess, isFetching } = useQuery({
+    queryKey: [QUERY_KEY.CART_ITEMS],
+    queryFn: fetchCartItem,
+  });
 
   return {
-    cartItems,
-    productToCartIdMap,
-    getCartItems: getProductToCartIdMap,
+    cartItems: data,
+    cartItemsQueryError: isError,
+    cartItemsQuerySuccess: isSuccess,
+    cartItemsQueryFetching: isFetching,
   };
-}
+};
+
+export default useCartItems;

@@ -1,9 +1,9 @@
 import ProductItem from './ProductItem';
-import useProducts from '../../../hooks/useProducts';
 import { useInfinityScroll } from '../../../hooks/useInfinityScroll';
 import Loader from '../../../components/Loader/Loader';
 import styles from '../ProductListPage.module.css';
-import useCartItemQuery from '@/hooks/useCartItemQuery';
+import useCartItems from '@/hooks/useCartItems';
+import useProducts from '@/hooks/useProducts';
 
 interface Props {
   handleCount: (cartItemCount: number) => void;
@@ -13,11 +13,13 @@ interface Props {
 const ProductItemList = ({ handleCount, selectBarCondition }: Props) => {
   const { products, fetchNextPage, isFetching } = useProducts({
     selectBarCondition,
-    handleCount,
   });
   const { lastProductElementRef } = useInfinityScroll({ onIntersect: fetchNextPage });
 
-  const { cartItems } = useCartItemQuery();
+  const { cartItems } = useCartItems();
+
+  if (!cartItems) return;
+  handleCount(cartItems.length);
 
   return (
     <>
