@@ -24,7 +24,7 @@ const Product = () => {
   return (
     <CartContext.Provider value={cartState}>
       <Header badgeCount={cartState.cartItems?.length ?? 0} onBadgeClick={modalState.openModal} />
-      {isError && <ErrorMessage message={'에러'} />}
+      {isError && <ErrorMessage message={'에러'} style={{ top: '64px' }} />}
       {cartState.isError && <ErrorMessage message={'카트에러'} />}
       <S.ProductContentWrapper>
         <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
