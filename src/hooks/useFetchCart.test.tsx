@@ -43,7 +43,7 @@ describe('useFetchAddCart', () => {
     )!.id;
 
     await act(async () => {
-      await result.current.patchToRemoveCart(CART_ID);
+      await result.current.deleteToRemoveCart(CART_ID);
     });
 
     expect(
@@ -67,7 +67,7 @@ describe('useFetchAddCart', () => {
     )!.id;
 
     await waitFor(() => {
-      result.current.patchToRemoveCart(CART_ID);
+      result.current.deleteToRemoveCart(CART_ID);
     });
 
     expect(result.current.cartItems?.length).toBe(0);

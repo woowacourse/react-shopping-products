@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import {
-  deleteCartItem as fetchToDeleteCartItem,
+  fetchToDeleteCartItem,
   fetchCartItems,
   postAddItems,
-} from '../api/products';
+  patchCartQuantity,
+} from '../api/carts';
 import { CartItem } from '../types/fetch';
 
 const useFetchCart = () => {
@@ -22,16 +23,17 @@ const useFetchCart = () => {
     mutationFn: postAddItems,
     onSettled: (data) => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      console.log('invaldate됨');
-    },
-    throwOnError(error) {
-      console.log('에러발생', error.message, error.name, error.stack);
-      return false;
     },
   });
 
-  const { mutate: patchToRemoveCart } = useMutation({
+  const { mutate: deleteToRemoveCart } = useMutation({
     mutationFn: fetchToDeleteCartItem,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
+  });
+  const { mutate: patchCartItemQuantity } = useMutation({
+    mutationFn: patchCartQuantity,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
@@ -42,7 +44,8 @@ const useFetchCart = () => {
     isError,
     isPending,
     addProductToCart,
-    patchToRemoveCart,
+    deleteToRemoveCart,
+    patchCartItemQuantity,
   };
 };
 

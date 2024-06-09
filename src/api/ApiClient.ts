@@ -26,9 +26,12 @@ export class ApiClient {
   async delete<R, T = object>(url: string, body?: T) {
     return await this.fetch<T>('DELETE', url, body);
   }
+  async patch<R, T = object>(url: string, body?: T) {
+    return await this.fetch<T>('PATCH', url, body);
+  }
 
   private async fetch<T = object>(
-    method: 'GET' | 'POST' | 'DELETE',
+    method: 'GET' | 'POST' | 'DELETE' | 'PATCH',
     url: string,
     requestBody?: T,
   ) {

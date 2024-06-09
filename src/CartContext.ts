@@ -8,5 +8,6 @@ export const CartContext = createContext<ReturnType<typeof useFetchCart>>({
   isError: false,
   isPending: true,
   addProductToCart: async () => {},
-  patchToRemoveCart: async () => {},
+  deleteToRemoveCart: async () => {},
+  patchCartItemQuantity: async () => {},
 });
