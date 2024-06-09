@@ -56,4 +56,7 @@ export const handlers = [
   http.delete(`${CART_ITEMS_ENDPOINT}/:itemId`, async () => {
     return new HttpResponse(null, { status: 204 });
   }),
+  http.patch(`${CART_ITEMS_ENDPOINT}/:itemId`, async () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
 ];
