@@ -27,6 +27,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
     queryKey: [QUERY_KEYS.cartItem],
     queryFn: getCartItems,
     staleTime: 30 * 1000,
+    initialData: [],
   });
 
   const addMutation = useMutation({
@@ -47,7 +48,7 @@ const useToggleCartItem = (): ToggleCartItemReturns => {
   const checkSelected = (id: number): boolean => !!cartItems?.find((item) => item.product.id === id);
 
   return {
-    cartItems: cartItems || [],
+    cartItems: cartItems,
     addToCart,
     removeFromCart,
     checkSelected,

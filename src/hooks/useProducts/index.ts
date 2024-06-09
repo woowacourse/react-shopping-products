@@ -14,6 +14,7 @@ const useProducts = () => {
     queryFn: ({ pageParam = 0 }) => fetchProducts({ pageParam, category, sort }),
     getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
     initialPageParam: 0,
+    staleTime: 30 * 1000,
   });
 
   const products = data?.pages.flatMap((page) => page.content) ?? [];
