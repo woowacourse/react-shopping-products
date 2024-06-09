@@ -19,7 +19,8 @@ export const ItemCardSection = styled.section`
 `;
 
 export const ItemImage = styled.img`
-  border-radius: 8px 8px 0 0;
+  border-radius: ${({ theme }) =>
+    `${theme.borderRadius.medium} ${theme.borderRadius.medium} 0 0`};
   width: 100%;
   height: 11.4rem;
   object-fit: cover;

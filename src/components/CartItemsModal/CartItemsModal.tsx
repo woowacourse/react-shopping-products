@@ -7,10 +7,13 @@ import {
   TotalPriceContainer,
 } from './CartItemsModal.style';
 import { CartItemCard, Button, FallbackCart } from '@/components/index';
+import { useTheme } from '@emotion/react';
 
 const CartItemsModal: React.FC<PropsWithChildren> = () => {
   const { cartItemList, isLoading, isError } = useFetchCartItems();
   const { totalPrice } = useTotalPrice();
+  const { colors } = useTheme();
+
   return (
     <Modal.Content
       modalPosition="bottom"
@@ -46,10 +49,10 @@ const CartItemsModal: React.FC<PropsWithChildren> = () => {
       <Modal.Footer align="center">
         <Modal.Close>
           <Button
-            color="#fff"
-            backgroundColor="#333"
+            color={colors.white}
+            backgroundColor={colors.darkGray}
             hasBorderRadius
-            borderColor="#0000001A"
+            borderColor={colors.border}
             width="400px"
             height="44px"
           >

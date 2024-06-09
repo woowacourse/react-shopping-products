@@ -3,6 +3,7 @@ import QuantityContainer from './QuantityPicker.style';
 import { useState, useEffect } from 'react';
 import { useCartItemStatus, usePatchCartItem } from '@/hooks/index';
 import { Button } from '@/components/index';
+import { useTheme } from '@emotion/react';
 
 interface QuantityPickerProps {
   cartItemId: number;
@@ -18,6 +19,7 @@ const QuantityPicker = ({
   const { quantity: initialQuantity } = useCartItemStatus(productId);
   const [quantity, setQuantity] = useState(initialQuantity);
   const { cartItemQuantityMutation } = usePatchCartItem();
+  const { colors } = useTheme();
 
   useEffect(() => {
     setQuantity(initialQuantity);
@@ -55,11 +57,11 @@ const QuantityPicker = ({
   return (
     <QuantityContainer>
       <Button
-        color="#000"
-        backgroundColor="#fff"
+        color={colors.black}
+        backgroundColor={colors.white}
         onClick={handleDecreaseQuantity}
         hasBorderRadius
-        borderColor="#0000001A"
+        borderColor={colors.border}
         width="24px"
         height="24px"
       >
@@ -67,11 +69,11 @@ const QuantityPicker = ({
       </Button>
       <p className="quantity">{quantity}</p>
       <Button
-        color="#000"
-        backgroundColor="#fff"
+        color={colors.black}
+        backgroundColor={colors.white}
         onClick={handleIncreaseQuantity}
         hasBorderRadius
-        borderColor="#0000001A"
+        borderColor={colors.border}
         width="24px"
         height="24px"
       >

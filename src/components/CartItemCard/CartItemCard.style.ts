@@ -5,7 +5,7 @@ export const CartItemCardContainer = styled.section`
   gap: 10px;
   box-sizing: border-box;
   width: 100%;
-  border-top: 1px solid #0000001a;
+  border-top: ${({ theme }) => ` 1px solid ${theme.colors.border};`}
   padding: 10px;
 `;
 
@@ -28,7 +28,7 @@ export const CartItemCardInfo = styled.div`
 export const CartItemImage = styled.img`
   width: 80px;
   height: 80px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
 `;
 
 export const CartItemCardHeader = styled.div`

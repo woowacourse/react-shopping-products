@@ -13,6 +13,7 @@ import {
   Button,
   QuantityPicker,
 } from '@/components/index';
+import { useTheme } from '@emotion/react';
 
 interface CartItemCardProps {
   cartItem: CartItem;
@@ -22,6 +23,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
   cartItem: { id, product },
 }) => {
   const { deleteCartMutation } = useDeleteCartItem();
+  const { colors } = useTheme();
 
   const handleRemoveCartItem = () => {
     deleteCartMutation.mutate(id);
@@ -37,11 +39,11 @@ const CartItemCard: React.FC<CartItemCardProps> = ({
         <CartItemCardHeader>
           <h3>{product.name}</h3>
           <Button
-            color="#000"
-            backgroundColor="#fff"
+            color={colors.black}
+            backgroundColor={colors.white}
             onClick={handleRemoveCartItem}
             hasBorderRadius
-            borderColor="#0000001A"
+            borderColor={colors.border}
           >
             삭제
           </Button>

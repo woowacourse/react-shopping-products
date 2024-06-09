@@ -10,7 +10,7 @@ export const DropdownButton = styled.select`
   color: #000000;
   padding: 10px 20px;
   border: 1px solid #0000001a;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.borderRadius.small};
   cursor: pointer;
 `;
 

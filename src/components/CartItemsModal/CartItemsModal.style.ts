@@ -6,7 +6,7 @@ export const CartItemListContainer = styled.ul`
 `;
 
 export const TotalPriceContainer = styled.div`
-  border-top: 1px solid #0000001a;
+border-top: ${({ theme }) => ` 1px solid ${theme.colors.border};`}
   padding: 10px;
   width: 100%;
   box-size: border-box;

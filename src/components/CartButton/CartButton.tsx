@@ -7,6 +7,7 @@ import {
   useFetchCartItems,
   useDeleteCartItem,
 } from '@/hooks/index';
+import { useTheme } from '@emotion/react';
 
 interface CartButtonProps {
   productId: number;
@@ -18,6 +19,8 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
   const { addToCartMutation } = usePostCartItem();
   const { deleteCartMutation } = useDeleteCartItem();
   const { quantity } = useCartItemStatus(productId);
+  const { colors } = useTheme();
+
   const cartItem = cartItemList.find(
     (cartItem) => cartItem.product.id === productId,
   );
@@ -44,8 +47,8 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
 
   return (
     <Button
-      color={!isInCart ? '#fff' : '#000'}
-      backgroundColor={isInCart ? '#eaeaea' : '#000'}
+      color={!isInCart ? colors.white : colors.black}
+      backgroundColor={isInCart ? colors.gray : colors.black}
       onClick={isInCart ? handleRemoveCartItem : handleAddCartItem}
     >
       <CartButtonContentWrapper>

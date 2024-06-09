@@ -13,7 +13,7 @@ export const ButtonWrapper = styled.button<ButtonStyleProps>`
   justify-content: center;
   align-items: center;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.borderRadius.small};
   border : ${({ borderColor }) =>
     borderColor ? `1px solid ${borderColor};` : 'none;'}
   color: ${({ color }) => color};
