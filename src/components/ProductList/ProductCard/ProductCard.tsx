@@ -10,7 +10,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { addProductToCart, cartItems, deleteToRemoveCart, patchCartItemQuantity } = useContext(CartContext);
+  const { addProductToCart, cartItems } = useContext(CartContext);
 
   const cartItem = cartItems?.filter((item) => item.product.id === product.id)[0];
 

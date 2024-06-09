@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React from 'react';
 import RoundButton from './RoundButton';
 import styled from 'styled-components';
 import { PlusSign, MinusSign } from '../../../assets';
