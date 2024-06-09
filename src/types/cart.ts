@@ -11,3 +11,8 @@ export interface CartItem {
     category: Category;
   };
 }
+
+export interface FetchAdjustCartItemQuantityProps {
+  cartItemId: number;
+  quantity: number;
+}
