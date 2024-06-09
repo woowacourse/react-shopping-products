@@ -2,6 +2,7 @@ import { useState } from "react";
 import { getProducts } from "../api";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import useInfiniteScroll from "./useInfiniteScroll";
+import { QUERY_KEYS } from "../constants/queryKeys";
 
 export default function useProducts() {
   const { category, sort, handleCategory, handleSort } = useProductSelect();
@@ -41,7 +42,7 @@ const useProductSelect = () => {
 
 const useProductsInfiniteQuery = (category: Category | "all", sort: Sort) => {
   const { isFetching, data, hasNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["getProducts", category, sort],
+    queryKey: [QUERY_KEYS.getProducts, category, sort],
     queryFn: ({ pageParam }) =>
       getProducts({
         category: category === "all" ? undefined : category,
