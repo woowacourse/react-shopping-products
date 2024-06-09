@@ -65,12 +65,13 @@
 
 - [x] Button 공통 컴포넌트 생성
 - [x] ProductQuantity 컴포넌트 생성
+- [x] CartItemsModal 컴포넌트 생성
 
 ### react-query로 리팩토링
 
 - [x] 장바구니 아이템을 부르는 커스텀 훅(useCartItems) 분리 및 리액트 쿼리로 리팩토링
 - [x] 장바구니에 아이템을 담는 커스텀 훅(useAddCartItem) 분리 및 리액트 쿼리로 리팩토링
 
-### 상품 수량 변경
+### 추가 기능
 
 - [x] 상품 목록에서 담기 버튼을 누를 시 수량 변경을 할 수 있는 기능
