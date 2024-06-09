@@ -18,6 +18,11 @@ export const PRODUCT_SORT_OPTIONS = {
   "높은 가격순": "desc",
 } as const;
 
+export const ORDER_QUANTITY_PER_PRODUCT = {
+  min: 1,
+  max: 100,
+} as const;
+
 export type CategoryKeys = keyof typeof PRODUCT_CATEGORIES;
 export type CategoryQueryString = (typeof PRODUCT_CATEGORIES)[keyof typeof PRODUCT_CATEGORIES];
 
