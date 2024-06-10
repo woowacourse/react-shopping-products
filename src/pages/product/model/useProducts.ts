@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { DEFAULT_CATEGORY, DEFAULT_SORT_ORDER, ALL, Category, Product, SortOrder } from '@/shared';
 

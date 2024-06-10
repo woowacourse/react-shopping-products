@@ -1,3 +1,6 @@
+export { cartItemsAPI } from './api/cart-items/cartItemsAPI';
+export { type CartItem } from './api/cart-items/types';
+
 export { productApi, type productApiGetParams } from './api/products/productsAPI';
 export {
   CATEGORIES,

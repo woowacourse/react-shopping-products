@@ -1,38 +1,29 @@
-import { useState } from 'react';
-
 import { ProductCard } from '@/entities/product';
+import { CartItemQuantityAdjuster } from '@/features/cart';
 import { FilterCategoryButton, FilterSortOrderButton, AddToCartButton } from '@/features/product';
-import { Product, Category, SortOrder, ALL } from '@/shared';
+import { Product, Category, SortOrder, ALL, CartItem } from '@/shared';
 
 import css from './ProductList.module.css';
 
 interface ProductListProps {
+  cartItems: CartItem[];
   products: Product[];
   category: typeof ALL | Category;
   sortOrder: SortOrder;
   onChangeCategory: (value: typeof ALL | Category) => void;
   onChangeSortOrder: (value: SortOrder) => void;
-  onToggleCartItem: (cartItemId: number) => void;
+  onClickAddToCartButton: (id: number) => void;
 }
 
 export const ProductList = ({
+  cartItems,
   products,
   category,
   sortOrder,
   onChangeCategory,
   onChangeSortOrder,
-  onToggleCartItem,
+  onClickAddToCartButton,
 }: ProductListProps) => {
-  const [cartState, setCartState] = useState<{ [key: number]: boolean }>({});
-
-  const handleCartToggle = (productId: number) => {
-    setCartState((prevState) => ({
-      ...prevState,
-      [productId]: !prevState[productId],
-    }));
-    onToggleCartItem(productId);
-  };
-
   return (
     <div className={css.productListContainer}>
       <div className={css.filterWrapper}>
@@ -45,7 +36,14 @@ export const ProductList = ({
             key={product.id}
             product={product}
             actionSlot={
-              cartState[product.id] ? '있음' : <AddToCartButton onClick={() => handleCartToggle(product.id)} />
+              cartItems.filter(({ id }) => id === product.id) ? (
+                <CartItemQuantityAdjuster
+                  id={product.id}
+                  quantity={cartItems.filter(({ id }) => id === product.id)[0].quantity}
+                />
+              ) : (
+                <AddToCartButton onClick={() => onClickAddToCartButton(product.id)} />
+              )
             }
           />
         ))}

@@ -11,10 +11,10 @@ interface requestServerProps {
   method: string;
   path: string;
   query?: string;
-  bodyData?: Record<string, any>;
+  body?: Record<string, any>;
 }
 
-export const requestServer = async <T = void>({ method, path, query, bodyData }: requestServerProps): Promise<T> => {
+export const requestServer = async <T = void>({ method, path, query, body }: requestServerProps): Promise<T> => {
   const token = generateBasicToken(API_CONFIG.userId, API_CONFIG.userPassword);
   const headers = {
     Authorization: token,
@@ -22,7 +22,7 @@ export const requestServer = async <T = void>({ method, path, query, bodyData }:
   };
 
   const url = new URL(query ? `${path}?${query}` : path, API_CONFIG.domain);
-  const options: RequestInit = { method, headers, ...(bodyData && { body: JSON.stringify(bodyData) }) };
+  const options: RequestInit = { method, headers, ...(body && { body: JSON.stringify(body) }) };
 
   const response = await fetch(url, options);
 

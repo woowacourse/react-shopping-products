@@ -1,3 +1,5 @@
+import { PageableObject, SortObject } from '../types';
+
 export type Category = 'fashion' | 'beverage' | 'electronics' | 'kitchen' | 'fitness' | 'books';
 
 export type SortOrder = 'price,id,asc' | 'price,id,desc';
@@ -8,21 +10,6 @@ export interface Product {
   price: number;
   imageUrl: string;
   category: Category;
-}
-
-interface SortObject {
-  sorted: boolean;
-  unsorted: boolean;
-  empty: boolean;
-}
-
-interface PageableObject {
-  sort: SortObject;
-  pageNumber: number;
-  pageSize: number;
-  paged: boolean;
-  unpaged: boolean;
-  offset: number;
 }
 
 export interface ProductsResponse {

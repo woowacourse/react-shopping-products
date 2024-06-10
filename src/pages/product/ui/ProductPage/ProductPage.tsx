@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 
-import { Product, Layout, Spinner, Toast } from '@/shared';
+import { useCartItems } from '@/pages/cart/model/useCartItems';
+import { Layout, Spinner, Toast, cartItemsAPI } from '@/shared';
 import { ContentHeader } from '@/widgets/ContentHeader';
 import { HeaderCartButton, HeaderLogoButton, LayoutHeader } from '@/widgets/LayoutHeader';
 import { ProductList } from '@/widgets/ProductList';
@@ -11,17 +12,15 @@ import { useProducts } from '../../model/useProducts';
 import css from './ProductPage.module.css';
 
 export const ProductPage = () => {
-  const [cartItems, setCartItems] = useState<number[]>([]);
   const { products, loading, error, category, sortOrder, fetchNextPage, handleChangeCategory, handleChangeSortOrder } =
     useProducts();
   const observationTarget = useRef<HTMLDivElement>(null);
+  const { cartItems, loading: cartLoading, error: cartError } = useCartItems();
 
   useInfiniteScroll(observationTarget, loading, fetchNextPage);
 
-  const handleToggleCartItem = (productId: number) => {
-    setCartItems((prev) =>
-      prev.includes(productId) ? prev.filter((itemId) => itemId !== productId) : [...prev, productId]
-    );
+  const handleAddToCart = async (productId: number) => {
+    await cartItemsAPI.post({ productId, quantity: 1 });
   };
 
   return (
@@ -33,6 +32,7 @@ export const ProductPage = () => {
             rightSlot={<HeaderCartButton cartItemCount={cartItems.length} />}
           />
           {error && <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>}
+          {cartError && <Toast>장바구니를 불러오는 중 오류가 발생했습니다.</Toast>}
         </>
       }
       contentHeaderSlot={<ContentHeader title={'상품 목록'} />}
@@ -40,16 +40,17 @@ export const ProductPage = () => {
         <>
           <div>
             <ProductList
-              products={products as Product[]}
+              cartItems={cartItems}
+              products={products}
               category={category}
               sortOrder={sortOrder}
               onChangeCategory={handleChangeCategory}
               onChangeSortOrder={handleChangeSortOrder}
-              onToggleCartItem={handleToggleCartItem}
+              onClickAddToCartButton={handleAddToCart}
             />
             <div className={css.observationTarget} ref={observationTarget}></div>
           </div>
-          {loading && (
+          {(loading || cartLoading) && (
             <div className={css.spinnerWrapper}>
               <Spinner />
             </div>
