@@ -12,11 +12,11 @@ function QuantityStepper({ quantity, onMinusButtonClick, onPlusButtonClick }: Qu
   return (
     <S.Layout>
       <S.QuantityButton onClick={onMinusButtonClick}>
-        <img src={MinusIcon} alt="마이너스 아이콘" />
+        <img src={MinusIcon} alt="수량 감소" />
       </S.QuantityButton>
       <p>{quantity}</p>
       <S.QuantityButton onClick={onPlusButtonClick}>
-        <img src={PlusIcon} alt="플러스 아이콘" />
+        <img src={PlusIcon} alt="수량 증가" />
       </S.QuantityButton>
     </S.Layout>
   );
