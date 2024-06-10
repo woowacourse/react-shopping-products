@@ -87,3 +87,5 @@
 
 - useProductFetch
   - [x] 초기 상품 목록 20개를 불러오는지 테스트
+- useCartItem
+  - [x] 장바구니 목록을 불러오는지 테스트
