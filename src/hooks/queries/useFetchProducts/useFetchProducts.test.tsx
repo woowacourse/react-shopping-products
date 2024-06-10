@@ -48,14 +48,14 @@ describe('useFetchProducts', () => {
         expect(result.current.products).toHaveLength(SIZE.DEFAULT);
       });
 
-      for (let i = 1; i < 20; i++) {
+      for (let i = 5; i < 25; i++) {
         await waitFor(() => {
           act(() => {
             result.current.fetchNextPage();
           });
         });
 
-        const expectedLength = SIZE.DEFAULT + i * SIZE.ADDITIONAL;
+        const expectedLength = SIZE.DEFAULT + (i - 4) * SIZE.ADDITIONAL;
 
         await waitFor(() => {
           expect(result.current.products).toHaveLength(expectedLength);

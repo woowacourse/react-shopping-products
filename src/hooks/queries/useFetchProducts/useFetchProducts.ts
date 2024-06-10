@@ -14,7 +14,7 @@ const useFetchProducts = (category: Option, sort: Option) => {
     queryKey: [QUERY_KEYS.PRODUCTS, category, sort],
     initialPageParam: 0,
     queryFn: ({ pageParam }) => fetchProducts(category.key, pageParam, SIZE.ADDITIONAL, sort.key),
-    getNextPageParam: (lastPage, allPages) => (lastPage.isLast ? undefined : allPages.length),
+    getNextPageParam: (lastPage, allPages) => (lastPage.isLast ? undefined : allPages.length + 4),
   });
 
   useEffect(() => {
