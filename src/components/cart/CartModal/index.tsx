@@ -28,7 +28,7 @@ function CartModal({ isOpened, modalClose }: CartModalProps) {
           }}
           modalFooter={{ confirmButton: { content: '닫기', onConfirm: modalClose } }}
           modalPosition='bottom'
-          modalSize={{ width: '429px' }}
+          modalSize={{ width: '429px', maxHeight: '90vh' }}
         >
           <S.Container>
             {cartItems &&
@@ -36,8 +36,8 @@ function CartModal({ isOpened, modalClose }: CartModalProps) {
                 return <CartItem cartItemInfo={item} key={idx} />;
               })}
             <Divider />
-            <PaymentDetail title='총 결제 금액' amount={totalAmount} />
           </S.Container>
+          <PaymentDetail title='총 결제 금액' amount={totalAmount} />
         </Modal>
       )}
     </>
