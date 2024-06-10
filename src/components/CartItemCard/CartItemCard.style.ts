@@ -4,12 +4,14 @@ export const CartItem = styled.li`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  gap: 12px;
   width: 100%;
 `;
 
 export const ItemBody = styled.div`
   width: 100%;
   display: flex;
+  gap: 20px;
   gap: 20px;
 `;
 
@@ -19,6 +21,9 @@ export const ImageWrapper = styled.div`
 `;
 
 export const Image = styled.img`
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
   height: 100%;
   aspect-ratio: 1/1;
   border-radius: 8px;
