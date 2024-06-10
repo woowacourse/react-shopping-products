@@ -1,6 +1,7 @@
 import { Modal } from '@roqkftjs/react-payments-module';
 import { CartItemCardList } from './CartItemCardList';
 import { CartItemType } from '../../../types';
+import { CartItemsTotalSummary } from './CartItemsTotalSummary';
 
 export interface CartItemsModal {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export const CartItemsModal: React.FC<CartItemsModal> = ({
       </Modal.Header>
       <Modal.Content style={{ overflowY: 'scroll' }}>
         <CartItemCardList cartItems={cartItems} />
+        <CartItemsTotalSummary cartItems={cartItems} />
       </Modal.Content>
       <Modal.Footer>
         <Modal.TextButton style={{ fontWeight: 700 }} onClick={() => cartItemsModalClose()}>
