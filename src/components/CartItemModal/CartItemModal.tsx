@@ -34,6 +34,30 @@ function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
     return acc + cartItem.quantity * cartItem.product.price;
   }, 0);
 
+  const renderContent = () => {
+    if (isCartItemListFetching && !cartItemListData) {
+      return <Spinner height="100%" />;
+    }
+
+    if (cartItemListData?.content.length === 0) {
+      return <EmptyCartFallback />;
+    }
+
+    if (cartItemListData) {
+      return (
+        <>
+          <CartItemList cartItemList={cartItemListData.content} />
+          <ContentRow
+            title="총 결제 금액"
+            content={`${price?.toLocaleString('ko-kr') ?? 0}원`}
+          />
+        </>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <CustomModal
       isOpened={isOpened}
@@ -46,21 +70,7 @@ function CartItemModal({ isOpened, onClose }: CartItemModalProps) {
         onClick: onClose,
       }}
     >
-      <S.ModalContent>
-        {isCartItemListFetching && !cartItemListData ? (
-          <Spinner height="100%" />
-        ) : cartItemListData?.content.length === 0 ? (
-          <EmptyCartFallback />
-        ) : (
-          <>
-            <CartItemList cartItemList={cartItemListData?.content ?? []} />
-            <ContentRow
-              title="총 결제 금액"
-              content={`${price?.toLocaleString('ko-kr') ?? 0}원`}
-            />
-          </>
-        )}
-      </S.ModalContent>
+      <S.ModalContent>{renderContent()}</S.ModalContent>
     </CustomModal>
   );
 }
