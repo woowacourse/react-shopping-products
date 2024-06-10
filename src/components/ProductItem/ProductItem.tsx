@@ -4,15 +4,14 @@ import { CART } from "../../constants";
 import { useCart, useError } from "../../context";
 import { useChangeCartItemQuantity } from "../../hooks";
 import { formatPrice } from "../../utils/format";
-import { CartActionButton, CounterButton } from "../Button";
+import { CartActionButton } from "../Button";
+import { QuantityControls } from "../QuantityControl/QuantityControl";
 import {
   StyledContainer,
   StyledProductImg,
   StyledProductItem,
   StyledProductName,
   StyledProductPrice,
-  StyledProductQuantityContainer,
-  StyledProductQuantityText,
   StyledWrapper,
 } from "./ProductItem.styled";
 
@@ -45,8 +44,8 @@ export const ProductItem = ({
     try {
       await addCartItem(id, 1);
       setIsInCart(true);
-      await fetchCartItems();
       await fetchCartItemStatus();
+      await fetchCartItems();
     } catch (error: any) {
       setErrorStatus(error.response?.status);
       setIsInCart(false);
@@ -86,11 +85,11 @@ export const ProductItem = ({
           <StyledProductPrice>{formatPrice(price)}</StyledProductPrice>
         </StyledWrapper>
         {isInCart ? (
-          <StyledProductQuantityContainer>
-            <CounterButton type="decrement" onClick={handleDecrement} />
-            <StyledProductQuantityText>{quantity}</StyledProductQuantityText>
-            <CounterButton type="increment" onClick={handleIncrement} />
-          </StyledProductQuantityContainer>
+          <QuantityControls
+            quantity={quantity}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+          />
         ) : (
           <CartActionButton actionType="add" onClick={handleAddToCart} />
         )}
