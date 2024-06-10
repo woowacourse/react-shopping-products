@@ -81,7 +81,7 @@ export const ProductItem = ({
             />
           </StyledQuantityControls>
         ) : (
-          <CartActionButton actionType="add" onClick={handleAddToCart} />
+          <CartActionButton onClick={handleAddToCart} />
         )}
       </StyledContainer>
     </StyledProductItem>

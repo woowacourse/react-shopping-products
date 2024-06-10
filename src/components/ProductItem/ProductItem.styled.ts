@@ -47,6 +47,5 @@ export const StyledProductPrice = styled.span`
 export const StyledQuantityControls = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 24px;
-  padding-bottom: 6px;
+  margin-top: 20px;
 `;
