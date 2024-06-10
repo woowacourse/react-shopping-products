@@ -19,6 +19,7 @@ interface UseProductsResult {
     currentSortOption: string;
     changeSortOption: (value: string) => void;
   };
+  isSuccess: boolean;
 }
 
 const sortOptionsMap: Record<string, string> = {
@@ -29,14 +30,20 @@ const sortOptionsMap: Record<string, string> = {
 const useProducts = (): UseProductsResult => {
   const [sortOption, setSortOption] = useState<string>("price,asc");
   const [category, setCategory] = useState<string>("전체");
-  const { isLastPage, resetPage } = usePagination();
+  const { isLastPage } = usePagination();
 
-  const { data, isFetching, fetchNextPage, isLoading, isError, error } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.PRODUCTS, { category, sort: `price,${sortOption}` }],
-    queryFn: ({ pageParam = 0 }) => fetchProducts({ page: pageParam, category, sortOption }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => (lastPage.isLast ? null : lastPage.page + 1),
-  });
+  const { data, isFetching, fetchNextPage, isLoading, isError, error, isSuccess } =
+    useInfiniteQuery({
+      queryKey: [QUERY_KEYS.PRODUCTS, { category, sort: `price,${sortOption}` }],
+      queryFn: ({ pageParam = 0 }) => fetchProducts({ page: pageParam, category, sortOption }),
+      initialPageParam: 0,
+      // getNextPageParam: (lastPage) => (lastPage.isLast ? null : lastPage.page + 1),
+      getNextPageParam: (data) => {
+        if (data.isLast) return null;
+        if (data.page === 0) return 5;
+        return data.page + 1;
+      },
+    });
 
   const products = data ? data.pages.flatMap((page) => page.content) : [];
 
@@ -56,6 +63,7 @@ const useProducts = (): UseProductsResult => {
     isLoading: isLoading || isFetching,
     isError,
     error,
+    isSuccess,
     fetchNextPage,
     categoryState: { currentCategory: category, changeCategory },
     sortOptionState: { currentSortOption: sortOption, changeSortOption },

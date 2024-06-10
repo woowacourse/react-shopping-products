@@ -19,6 +19,8 @@ export const fetchProducts = async (fetchParams: FetchParams) => {
   return {
     content: data.content,
     page: data.number,
+    isFirst: data.first,
     isLast: data.last,
+    pageNumber: data.pageable.pageNumber,
   };
 };

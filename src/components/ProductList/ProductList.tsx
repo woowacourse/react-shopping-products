@@ -17,7 +17,7 @@ export const ProductList = ({ products, isLoading, lastProductElementRef }: Prod
         products.map((product, index) => (
           <div key={`${product.id}-${index}`}>
             <ProductItem product={product} />
-            <div ref={products.length === index + 1 ? lastProductElementRef : null}></div>
+            <div ref={index === products.length - 1 ? lastProductElementRef : null}></div>
           </div>
         ))
       )}

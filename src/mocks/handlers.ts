@@ -3,7 +3,7 @@ import { API_ENDPOINTS } from "../api/endpoints";
 import products from "./products.json";
 
 export const PAGE = {
-  FIRST_PAGE: 1,
+  FIRST_PAGE: 0,
   FIRST_PAGE_START: 0,
   OTHER_PAGE_START: 2,
   DEFAULT_SIZE: 20,
@@ -24,7 +24,34 @@ export const handlers = [
 
     const paginatedProducts = products.content.slice(start, end);
 
-    return HttpResponse.json({ content: paginatedProducts });
+    return HttpResponse.json({
+      content: paginatedProducts,
+      pageable: {
+        sort: {
+          sorted: false,
+          unsorted: true,
+          empty: true,
+        },
+        pageNumber: page,
+        pageSize: 20,
+        offset: 0,
+        paged: true,
+        unpaged: false,
+      },
+      last: page >= 24,
+      totalPages: 100,
+      totalElements: 100,
+      sort: {
+        sorted: false,
+        unsorted: true,
+        empty: true,
+      },
+      first: true,
+      number: 0,
+      numberOfElements: 100,
+      size: 20,
+      empty: false,
+    });
   }),
 
   http.post(
