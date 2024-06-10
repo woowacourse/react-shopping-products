@@ -10,10 +10,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe("useInfiniteProduct hook 테스트", () => {
   it("첫 페이지는 아이템의 개수가 20개이다.", async () => {
-    const { result } = renderHook(
-      () => useInfiniteProduct("books", "price,id,asc"),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useInfiniteProduct("books", "price,id,asc"), { wrapper });
 
     await waitFor(() => expect(result.current.isFetching).toBe(false));
 
@@ -23,10 +20,7 @@ describe("useInfiniteProduct hook 테스트", () => {
   });
 
   it("두 번째 페이지부터는 아이템의 개수가 4개이다", async () => {
-    const { result } = renderHook(
-      () => useInfiniteProduct("books", "price,id,asc"),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useInfiniteProduct("books", "price,id,asc"), { wrapper });
 
     await waitFor(() => expect(result.current.isFetching).toBe(false));
 
@@ -36,20 +30,17 @@ describe("useInfiniteProduct hook 테스트", () => {
 
     await waitFor(() => expect(result.current.isFetching).toBe(false));
 
-    if (result.current.data) {
+    if (result.current.data?.pages[1]?.content) {
       expect(result.current.data?.pages[1].content).toHaveLength(4);
     }
   });
 
   it.only("카테고리가 books인 상품을 낮은 가격순으로 반환한다.", async () => {
-    const { result } = renderHook(
-      () => useInfiniteProduct("books", "price,id,asc"),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useInfiniteProduct("books", "price,id,asc"), { wrapper });
 
     await waitFor(() => expect(result.current.isFetching).toBe(false));
 
-    const products = result.current.data?.pages[0].content;
+    const products = result.current.data?.pages[0]?.content;
 
     if (products) {
       for (let i = 1; i < products.length; i++) {
@@ -63,14 +54,13 @@ describe("useInfiniteProduct hook 테스트", () => {
   });
 
   it("카테고리가 electronics인 상품을 높은 가격순으로 반환한다.", async () => {
-    const { result } = renderHook(
-      () => useInfiniteProduct("electronics", "price,id,desc"),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useInfiniteProduct("electronics", "price,id,desc"), {
+      wrapper,
+    });
 
     await waitFor(() => expect(result.current.isFetching).toBe(false));
 
-    const products = result.current.data?.pages[0].content;
+    const products = result.current.data?.pages[0]?.content;
     if (products) {
       for (let i = 1; i < products.length; i++) {
         expect(products[i - 1].category === "electronics");

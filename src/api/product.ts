@@ -1,4 +1,4 @@
-import { fetchAPI } from "./fetch";
+import { fetchGet } from "./fetch";
 import { Category, ProductItem, Sort } from "@/types";
 
 export const getProducts = async (
@@ -9,20 +9,13 @@ export const getProducts = async (
 ): Promise<{
   totalPages: number;
   content: ProductItem[];
-  last: boolean;
-} | void> => {
-  const data = await fetchAPI<{
-    totalPages: number;
-    content: ProductItem[];
-    last: boolean;
-  }>({
-    url: `products?page=${page}&size=${size}&sort=${sort}${
+  last?: boolean;
+}> => {
+  const data = await fetchGet(
+    `products?page=${page}&size=${size}&sort=${sort}${
       category === "all" ? "" : `&category=${category}`
-    }`,
-    method: "GET",
-  });
+    }`
+  );
 
-  if (data) {
-    return data;
-  }
+  return data;
 };

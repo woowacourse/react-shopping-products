@@ -1,12 +1,7 @@
-import { fetchAPI } from "./fetch";
-import { CartItem } from "@/types";
+import { fetchPost, fetchPatch, fetchGet, fetchDelete } from "./fetch";
 
 export const getCartItems = async () => {
-  const data = await fetchAPI<{ content: CartItem[] }>({
-    url: `cart-items`,
-    method: "GET",
-  });
-
+  const data = await fetchGet("cart-items");
   return data?.content;
 };
 
@@ -17,21 +12,14 @@ export const postCartItem = async ({
   productId: number;
   quantity: number;
 }) => {
-  await fetchAPI({
-    url: "cart-items",
-    method: "POST",
-    body: {
-      productId,
-      quantity,
-    },
+  await fetchPost("cart-items", {
+    productId,
+    quantity,
   });
 };
 
 export const deleteCartItem = async (cartItemId: number) => {
-  await fetchAPI({
-    url: `cart-items/${cartItemId}`,
-    method: "DELETE",
-  });
+  await fetchDelete(`cart-items/${cartItemId}`);
 };
 
 export const patchCartItemQuantity = async ({
@@ -41,11 +29,7 @@ export const patchCartItemQuantity = async ({
   cartItemId: number;
   quantity: number;
 }) => {
-  await fetchAPI({
-    url: `cart-items/${cartItemId}`,
-    method: "PATCH",
-    body: {
-      quantity,
-    },
+  await fetchPatch(`cart-items/${cartItemId}`, {
+    quantity,
   });
 };
