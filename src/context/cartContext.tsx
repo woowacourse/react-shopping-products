@@ -1,25 +1,20 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { getCartItems } from "../api/cart";
 
-interface CartItem {
-  id: number;
-  quantity: number;
-}
-
 interface CartContextType {
-  cartItems: CartItem[];
+  cartItems: CartItemProps[];
   fetchCartItems: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItemProps[]>([]);
 
   const fetchCartItems = async () => {
     try {
       const items = await getCartItems();
-      setCartItems(items.map((item) => ({ id: item.product.id, quantity: item.quantity })));
+      setCartItems(items);
     } catch (error) {
       console.error("Failed to fetch cart items", error);
     }
