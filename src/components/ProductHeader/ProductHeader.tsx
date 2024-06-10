@@ -23,7 +23,7 @@ export const ProductHeader = ({
   selectedSort,
 }: ProductHeaderProps) => {
   const handleCategory = (value: string) => {
-    setCategory(value);
+    setCategory(value as SortOrder);
     resetPage();
   };
 
