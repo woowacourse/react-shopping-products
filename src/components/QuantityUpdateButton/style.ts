@@ -15,6 +15,6 @@ export const ProductQuantity = styled.span`
 `;
 
 export const LoadingSpinner = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
 `;

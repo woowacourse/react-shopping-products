@@ -5,6 +5,20 @@ import useToast from "@/hooks/useToast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
+const useCommonMutationOptions = (errorMessage: string) => {
+  const queryClient = useQueryClient();
+  const { onAddToast } = useToast();
+
+  return {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
+    },
+    onError: () => {
+      onAddToast(errorMessage);
+    },
+  };
+};
+
 export const useCartItemsQuery = () => {
   const { onAddToast } = useToast();
 
@@ -26,51 +40,33 @@ export const useCartItemsQuery = () => {
 };
 
 export const usePostAddCartItemMutation = ({ productId, quantity }: { productId: number; quantity: number }) => {
-  const queryClient = useQueryClient();
-  const { onAddToast } = useToast();
+  const mutationOptions = useCommonMutationOptions(ERROR_MESSAGES.failPostCartItem);
 
   const mutation = useMutation({
     mutationFn: () => postCartItem({ productId, quantity }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
-    },
-    onError: () => {
-      onAddToast(ERROR_MESSAGES.failPostCartItem);
-    },
+    ...mutationOptions,
   });
 
   return mutation;
 };
 
 export const useUpdateCartItemQuantityMutation = () => {
-  const queryClient = useQueryClient();
-  const { onAddToast } = useToast();
+  const mutationOptions = useCommonMutationOptions(ERROR_MESSAGES.failPostCartItem);
 
   const mutation = useMutation({
     mutationFn: ({ cartId, quantity }: { cartId: number; quantity: number }) => patchCartItem({ cartId, quantity }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
-    },
-    onError: () => {
-      onAddToast(ERROR_MESSAGES.failPostCartItem);
-    },
+    ...mutationOptions,
   });
 
   return mutation;
 };
 
 export const useDeleteCartItemMutation = ({ cartId }: { cartId: number }) => {
-  const queryClient = useQueryClient();
-  const { onAddToast } = useToast();
+  const mutationOptions = useCommonMutationOptions(ERROR_MESSAGES.failPostCartItem);
 
   const mutation = useMutation({
     mutationFn: () => deleteCartItem({ cartId }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
-    },
-    onError: () => {
-      onAddToast(ERROR_MESSAGES.failDeleteCartItem);
-    },
+    ...mutationOptions,
   });
 
   return mutation;

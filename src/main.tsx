@@ -34,7 +34,6 @@ enableMocking().then(() => {
           <ToastsProvider>
             <RouterProvider router={router} />
             <Toasts />
-
             <GlobalStyles />
             <ReactQueryDevtools initialIsOpen={false} />
           </ToastsProvider>

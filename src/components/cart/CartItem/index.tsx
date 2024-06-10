@@ -6,6 +6,7 @@ import Button from "@/components/_common/Button";
 import { useDeleteCartItemMutation } from "@/hooks/server/useCartItems";
 import { theme } from "@/styles/theme";
 import { convertProductIdToCartId, getQuantityInCart } from "@/utils/cart";
+import { memo } from "react";
 
 const formatToWon = (price: number) => {
   return price.toLocaleString();
@@ -52,4 +53,6 @@ const CartItem = ({ item, cartItems }: { item: CartItems; cartItems: CartItems[]
   );
 };
 
-export default CartItem;
+const CartItemMemo = memo(CartItem);
+
+export default CartItemMemo;

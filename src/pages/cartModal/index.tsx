@@ -1,12 +1,12 @@
 import { Modal } from "rian-modal-component";
 import * as S from "@/pages/cartModal/style";
-import CartItem from "@/components/cart/CartItem";
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
 import TextBox from "@/components/_common/TextBox";
 import { CartItems } from "@/types/products";
 import EmptyState from "@/components/_common/EmptyState";
 import CartPrice from "@/components/cart/CartPrice";
+import CartItemMemo from "@/components/cart/CartItem";
 
 const CartModal = ({
   onCloseModal,
@@ -29,7 +29,7 @@ const CartModal = ({
             ) : (
               <>
                 {cartItems?.map((item) => (
-                  <CartItem item={item} cartItems={cartItems} />
+                  <CartItemMemo item={item} cartItems={cartItems} />
                 ))}
               </>
             )}
