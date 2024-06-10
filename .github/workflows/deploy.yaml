@@ -1,8 +1,8 @@
-name: 'react-shopping-products 미션 배포'
+name: "react-shopping-products 미션 배포"
 
 on:
   push:
-    branches: ['step1']
+    branches: ["step1", "step2"]
   workflow_dispatch:
 
 permissions:
@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: 'pages'
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
@@ -46,7 +46,7 @@ jobs:
       - name: 깃허브 페이지에 빌드된 정적 파일(artifact) 업로드
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './dist'
+          path: "./dist"
 
       - name: 깃허브 페이지 배포
         uses: actions/deploy-pages@v1
