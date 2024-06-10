@@ -27,11 +27,8 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     sort,
   });
 
-  const {
-    data: cartItemListData,
-    error: cartItemListError,
-    isFetching: isCartItemListFetching,
-  } = fetchCartItemList;
+  const { data: cartItemListData, error: cartItemListError } =
+    fetchCartItemList;
 
   const target = useRef(null);
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
@@ -44,7 +41,9 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
       unobserve(target.current);
     }
   }, [productListData?.pages, observe, unobserve, hasNextPage]);
-
+  if (productListError) {
+    throw productListError;
+  }
   return (
     <>
       <S.ProductList>
@@ -59,7 +58,7 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
         )}
       </S.ProductList>
       <div ref={target} style={{ height: "1px" }}></div>
-      {isProductListFetching && <Spinner />}
+      {(isProductListFetching || isFetchingNextPage) && <Spinner />}
     </>
   );
 }

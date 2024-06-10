@@ -26,6 +26,7 @@ export default function useProductList({
         category: category,
         sort: sort,
       }),
+    staleTime: Infinity,
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       const nextPage = allPages.length + 1;
