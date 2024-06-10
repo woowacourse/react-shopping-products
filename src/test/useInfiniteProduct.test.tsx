@@ -17,7 +17,7 @@ describe("useInfiniteProduct hook 테스트", () => {
 
     await waitFor(() => expect(result.current.isFetching).toBe(false));
 
-    if (result.current.data) {
+    if (result.current.data?.pages[0]?.content) {
       expect(result.current.data?.pages[0].content).toHaveLength(20);
     }
   });

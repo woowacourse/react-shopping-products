@@ -6,7 +6,11 @@ export const getProducts = async (
   size: number,
   category: Category,
   sort: Sort = "price,id,asc"
-): Promise<{ totalPages: number; content: ProductItem[]; last: boolean }> => {
+): Promise<{
+  totalPages: number;
+  content: ProductItem[];
+  last: boolean;
+} | void> => {
   const data = await fetchAPI<{
     totalPages: number;
     content: ProductItem[];
@@ -18,5 +22,7 @@ export const getProducts = async (
     method: "GET",
   });
 
-  return data;
+  if (data) {
+    return data;
+  }
 };
