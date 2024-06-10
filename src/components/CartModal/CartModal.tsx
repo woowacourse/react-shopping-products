@@ -7,6 +7,9 @@ interface CartModalProps {
 }
 
 export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
+  const rootElement = document.getElementById("root");
+  const rootWidth = rootElement && window.getComputedStyle(rootElement).width;
+
   return (
     <Modal
       modalPosition="bottom"
@@ -17,6 +20,7 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
       onConfirm={() => {}}
       size="small"
       buttonText="닫기"
+      rootWidth={rootWidth}
     >
       <CartModalContent />
     </Modal>
