@@ -8,11 +8,9 @@ interface CartItemListProp {
 }
 
 function CartItemList({ cartItemList }: CartItemListProp) {
-  const reverseCartItemList = [...cartItemList].reverse();
-
   return (
     <S.CartItemList>
-      {reverseCartItemList.map((cartItem: CartItem) => {
+      {cartItemList.map((cartItem: CartItem) => {
         return <CartItemCard key={cartItem.id} cartItem={cartItem} />;
       })}
     </S.CartItemList>

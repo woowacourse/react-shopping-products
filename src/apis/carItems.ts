@@ -5,7 +5,7 @@ import response from './response';
 
 export async function fetchCartItemList(): Promise<{ content: CartItemList }> {
   const data = await response({
-    url: `${END_POINTS.CART_ITEMS}?size=2000`,
+    url: `${END_POINTS.CART_ITEMS}?size=2000&sort=id,desc`,
     method: 'GET',
     errorMessage: '네트워크 문제로 인해 장바구니 목록을 불러오는데 실패했어요.',
   });
