@@ -16,8 +16,10 @@ import EmptyCart from '../../assets/EmptyCart.png';
 import * as S from './ProductListPage.style';
 
 const ProductListPage = () => {
-  const { products, category, sort, isFetching, error, hasNextPage, handleCategory, handleSort, handlePage } =
-    useProducts(CATEGORY_LIST[0], SORTING_LIST[0]);
+  const { products, category, sort, isFetching, error, handleCategory, handleSort, handlePage } = useProducts(
+    CATEGORY_LIST[0],
+    SORTING_LIST[0],
+  );
 
   const { cartItems } = useFetchCartItems();
 
@@ -55,7 +57,7 @@ const ProductListPage = () => {
             <p>표시할 상품이 없습니다.</p>
           </S.EmptyProductContainer>
         )}
-        {!error && hasNextPage && (
+        {!error && (
           <S.LoadingWrapper ref={targetRef}>
             {isFetching && <S.LoadingSpinner src={Loading} alt="로딩 스피너" />}
           </S.LoadingWrapper>

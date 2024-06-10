@@ -23,7 +23,6 @@ const useProducts = (initialCategory: Option, initialSorting: Option) => {
     products,
     isFetching,
     error,
-    hasNextPage,
     category,
     sort,
     handleCategory,
