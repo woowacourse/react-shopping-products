@@ -34,10 +34,12 @@ function CartButton() {
 
   const handleModalOpen = () => {
     setModalOpened(true);
+    document.body.setAttribute('style', 'overflow: hidden');
   };
 
   const handleModalClose = () => {
     setModalOpened(false);
+    document.body.setAttribute('style', 'overflow: auto');
   };
 
   const { cartItems } = useContext(CartItemsContext) || { cartItems: [] };
