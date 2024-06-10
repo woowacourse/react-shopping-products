@@ -42,11 +42,12 @@ export default function useCartItem() {
       queryClient.invalidateQueries({ queryKey: ["cartItemList"] });
     },
   });
-
   return {
     fetchCartItemList,
     cartItemList: fetchCartItemList.data?.content,
-    error: fetchCartItemList.error,
+    fetchError: fetchCartItemList.error,
+    mutateError:
+      addCartItem.error || deleteCartItem.error || updateCartItemQuantity.error,
     addCartItem,
     deleteCartItem,
     updateCartItemQuantity,

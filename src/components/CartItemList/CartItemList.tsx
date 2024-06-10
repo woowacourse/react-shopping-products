@@ -10,7 +10,7 @@ function CartItemList({ style }: { style: React.CSSProperties }) {
     deleteCartItem,
     updateCartItemQuantity,
     cartItemList,
-    error: cartItemListError,
+    fetchError: cartItemListError,
   } = useCartItem();
 
   if (cartItemListError) {

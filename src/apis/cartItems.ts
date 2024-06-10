@@ -11,7 +11,10 @@ export async function requestFetchCartItemList() {
 }
 
 export async function requestAddCartItem(productId: number, quantity: number) {
-  await fetchWithAuth(CART_ITEMS_ENDPOINT, "POST", { productId, quantity });
+  await fetchWithAuth(CART_ITEMS_ENDPOINT, "POST", {
+    productId,
+    quantity,
+  });
 }
 
 export async function requestDeleteCartItem(cartItemId: number | undefined) {

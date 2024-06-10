@@ -5,6 +5,8 @@ import AddCartItemButton from "../AddCartItemButton/AddCartItemButton";
 import * as S from "./ProductItem.style";
 import useCartItem from "../../hooks/useCartItem";
 import { CartItem } from "../../interfaces/CartItem";
+import { createPortal } from "react-dom";
+import Toast from "../common/Toast/Toast";
 
 interface ProductItemProps {
   product: Product;
@@ -15,7 +17,7 @@ function ProductItem({ product, cartItemList }: ProductItemProps) {
   const cartItemExists = cartItemList.find(
     (cartItem) => cartItem.product.id === product.id
   );
-  const { addCartItem, updateCartItemQuantity } = useCartItem();
+  const { addCartItem, updateCartItemQuantity, mutateError } = useCartItem();
 
   const renderCartItemQuantity = (cartItemExists: CartItem) => {
     return (
@@ -38,19 +40,23 @@ function ProductItem({ product, cartItemList }: ProductItemProps) {
   };
 
   return (
-    <S.ProductItem>
-      <S.ProductImage src={product.imageUrl} alt={product.name} />
-      <S.ProductDescription>
-        <ProductItemTitle title={product.name} price={product.price} />
-        <S.ToggleCartItemButtonWrapper>
-          {cartItemExists ? (
-            renderCartItemQuantity(cartItemExists)
-          ) : (
-            <AddCartItemButton onClick={() => addCartItem.mutate(product)} /> // TODO: onMinusButtonClick, onPlusButtonClick 메서드 추가
-          )}
-        </S.ToggleCartItemButtonWrapper>
-      </S.ProductDescription>
-    </S.ProductItem>
+    <>
+      {mutateError &&
+        createPortal(<Toast message={mutateError.message} />, document.body)}
+      <S.ProductItem>
+        <S.ProductImage src={product.imageUrl} alt={product.name} />
+        <S.ProductDescription>
+          <ProductItemTitle title={product.name} price={product.price} />
+          <S.ToggleCartItemButtonWrapper>
+            {cartItemExists ? (
+              renderCartItemQuantity(cartItemExists)
+            ) : (
+              <AddCartItemButton onClick={() => addCartItem.mutate(product)} />
+            )}
+          </S.ToggleCartItemButtonWrapper>
+        </S.ProductDescription>
+      </S.ProductItem>
+    </>
   );
 }
 
