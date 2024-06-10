@@ -16,7 +16,7 @@ describe("useProduct 훅 테스트", () => {
 
       await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-      expect(result.current.products?.length).toBe(100);
+      expect(result.current.products[0].content?.length).toBe(100);
     });
   });
 });

@@ -32,19 +32,8 @@ function CartMockClosure() {
 export const cartMockClosure = CartMockClosure();
 
 export const handlers = [
-  http.get(PRODUCTS_ENDPOINT, ({ request }) => {
-    const url = new URL(request.url);
-
-    const page = Number(url.searchParams.get("page") || "1");
-    const limit = page === 0 ? 20 : 4;
-    const start = page === 0 ? 0 : (page - 5) * 4 + 20;
-    const end = start + limit;
-
-    const paginatedProducts = productsMockData.slice(start, end);
-
-    const last = page === 24;
-
-    return HttpResponse.json({ content: paginatedProducts, last });
+  http.get(PRODUCTS_ENDPOINT, () => {
+    return HttpResponse.json({ content: productsMockData });
   }),
 
   http.get(CART_ITEMS_ENDPOINT, () =>

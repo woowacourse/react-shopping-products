@@ -32,7 +32,7 @@ const useProducts = () => {
   );
 
   return {
-    products: data?.pages,
+    products: data?.pages ?? [],
     isLoading,
     error,
     fetchNextPage,
