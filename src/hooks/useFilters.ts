@@ -7,14 +7,16 @@ const useFilters = () => {
   const [sort, setSort] = useState<Sort>("price,id,asc");
 
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    if (CATEGORIES.includes(event.target.value)) {
-      setCategory(event.target.value);
+    const value = event.target.value as Category;
+    if (CATEGORIES.includes(value)) {
+      setCategory(value);
     }
   };
 
   const handleSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    if (SORTS.includes(event.target.value)) {
-      setSort(event.target.value);
+    const value = event.target.value as Sort;
+    if (SORTS.includes(value)) {
+      setSort(value);
     }
   };
 
