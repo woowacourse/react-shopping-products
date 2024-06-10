@@ -16,13 +16,13 @@ function DropdownOptions<T extends {}>(props: DropdownOptionsProps<T>) {
 
   return (
     <S.Container>
-      {optionList.map(([key, value], index) => {
+      {optionList.map(([key, value]) => {
         return (
           <S.OptionWrapper
-            key={index}
+            key={value}
             onClick={() => handleOnClick([key, value])}
           >
-            <S.Option key={index}>{value}</S.Option>
+            <S.Option key={value}>{value}</S.Option>
           </S.OptionWrapper>
         );
       })}
