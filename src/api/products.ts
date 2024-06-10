@@ -15,5 +15,10 @@ export const fetchProducts = async (fetchParams: FetchParams) => {
   }
 
   const data = await response.json();
-  return data;
+
+  return {
+    content: data.content,
+    page: data.number,
+    isLast: data.last,
+  };
 };

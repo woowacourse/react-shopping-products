@@ -4,7 +4,6 @@ interface UsePaginationResult {
   page: number;
   isLastPage: boolean;
   handleLastPage: (isLast: boolean) => void;
-  goToNextPage: () => void;
   resetPage: () => void;
 }
 
@@ -16,16 +15,12 @@ const usePagination = (): UsePaginationResult => {
     if (isLast) setIsLastPage(true);
   };
 
-  const goToNextPage = () => {
-    if (!isLastPage) setPage((prevPage) => prevPage + 1);
-  };
-
   const resetPage = () => {
     setPage(1);
     setIsLastPage(false);
   };
 
-  return { page, isLastPage, handleLastPage, goToNextPage, resetPage };
+  return { page, isLastPage, handleLastPage, resetPage };
 };
 
 export default usePagination;

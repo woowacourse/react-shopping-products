@@ -1,97 +1,64 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchProducts } from "../api/products";
-import usePagination from "./usePagination";
 import { QUERY_KEYS } from "../constants/queryKeys";
-import { useQuery } from "@tanstack/react-query";
+import usePagination from "./usePagination";
 
 interface UseProductsResult {
   products: Product[];
+  isLastPage: boolean;
   isLoading: boolean;
+  isError: boolean;
   error: unknown;
   fetchNextPage: () => void;
-  isLastPage: boolean;
   categoryState: {
     currentCategory: string;
     changeCategory: (value: string) => void;
   };
-
   sortOptionState: {
     currentSortOption: string;
     changeSortOption: (value: string) => void;
   };
 }
 
-const sortOptionsMap: { [key: string]: string } = {
+const sortOptionsMap: Record<string, string> = {
   "낮은 가격순": "price,asc",
   "높은 가격순": "price,desc",
 };
 
 const useProducts = (): UseProductsResult => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [category, setCategory] = useState<string>("전체");
   const [sortOption, setSortOption] = useState<string>("price,asc");
-  const { page, isLastPage, handleLastPage, goToNextPage, resetPage } = usePagination();
+  const [category, setCategory] = useState<string>("전체");
+  const { isLastPage, resetPage } = usePagination();
 
-  const fetchParams = {
-    page: page,
-    category: category,
-    sortOption: sortOption,
-  };
-
-  const { data, error } = useQuery({
-    queryKey: [QUERY_KEYS.PRODUCTS, category, sortOption, page],
-    queryFn: async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetchProducts(fetchParams);
-
-        handleLastPage(response.last);
-        return response;
-      } catch (error) {
-        throw new Error("Error fetching products: " + error);
-      } finally {
-        setIsLoading(false);
-      }
-    },
+  const { data, isFetching, fetchNextPage, isLoading, isError, error } = useInfiniteQuery({
+    queryKey: [QUERY_KEYS.PRODUCTS, { category, sort: `price,${sortOption}` }],
+    queryFn: ({ pageParam = 0 }) => fetchProducts({ page: pageParam, category, sortOption }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => (lastPage.isLast ? null : lastPage.page + 1),
   });
 
-  useEffect(() => {
-    if (data) {
-      setProducts((prevProducts) => [...prevProducts, ...data.content]);
-    }
-  }, [data]);
+  const products = data ? data.pages.flatMap((page) => page.content) : [];
 
-  const fetchNextPage = () => {
-    if (!isLoading) goToNextPage();
+  const changeCategory = (value: string) => {
+    // resetPage();
+    setCategory(value);
   };
 
-  const categoryState = {
-    currentCategory: category,
-    changeCategory: (value: string) => {
-      setProducts([]);
-      resetPage();
-      setCategory(value);
-    },
-  };
-
-  const sortOptionState = {
-    currentSortOption: sortOption,
-    changeSortOption: (value: string) => {
-      setProducts([]);
-      resetPage();
-      setSortOption(sortOptionsMap[value]);
-    },
+  const changeSortOption = (value: string) => {
+    // resetPage();
+    setSortOption(sortOptionsMap[value]);
   };
 
   return {
     products,
-    isLoading,
     isLastPage,
+    isLoading: isLoading || isFetching,
+    isError,
     error,
     fetchNextPage,
-    categoryState,
-    sortOptionState,
+    categoryState: { currentCategory: category, changeCategory },
+    sortOptionState: { currentSortOption: sortOption, changeSortOption },
   };
 };
 
