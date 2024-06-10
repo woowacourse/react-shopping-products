@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { ChevronDown } from '../../../assets';
+import { ChevronDown, ChevronUp } from '../../../assets';
 
 import * as S from './Dropdown.style';
 import DropdownOptions from './DropdownOptions';
@@ -49,7 +49,7 @@ function Dropdown<T extends string>({
     <S.Dropdown ref={dropdownRef}>
       <S.Preview isOpened={isOpened} onClick={handleToggleDropdown}>
         <S.PreviewText>{preview}</S.PreviewText>
-        {isOpened ? <ChevronDown /> : <ChevronDown />}
+        {isOpened ? <ChevronUp /> : <ChevronDown />}
       </S.Preview>
       {!isOpened || (
         <DropdownOptions
