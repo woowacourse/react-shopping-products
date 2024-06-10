@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import { addCartItem, getCartItems } from "../../api/cart";
-import { CART } from "../../constants";
 import { useCart, useError } from "../../context";
-import { useChangeCartItemQuantity } from "../../hooks";
 import { formatPrice } from "../../utils/format";
 import { CartActionButton } from "../Button";
 import { QuantityControls } from "../QuantityControl/QuantityControl";
@@ -26,26 +23,18 @@ export const ProductItem = ({
   const [cartItemId, setCartItemId] = useState<number | null>(null);
   const [quantity, setQuantity] = useState<number>(0);
   const { setErrorStatus } = useError();
-  const { fetchCartItems, updateCartItemQuantity, removeCartItem } = useCart();
-  const { incrementQuantity, decrementQuantity } = useChangeCartItemQuantity();
+  const { cartItems, addItemToCart, updateCartItemQuantity, removeCartItem } = useCart();
 
-  const fetchCartItemStatus = async () => {
-    try {
-      const items = await getCartItems();
-      const cartItem = items.find((item) => item.product.id === id);
-      setIsInCart(!!cartItem);
-      setCartItemId(cartItem ? cartItem.id : null);
-      setQuantity(cartItem ? cartItem.quantity : 0);
-    } catch (error: any) {
-      setErrorStatus(error.response?.status);
-    }
-  };
+  useEffect(() => {
+    const cartItem = cartItems.find((item) => item.product.id === id);
+    setIsInCart(!!cartItem);
+    setCartItemId(cartItem ? cartItem.id : null);
+    setQuantity(cartItem ? cartItem.quantity : 0);
+  }, [cartItems, id]);
 
   const handleAddToCart = async () => {
     try {
-      await addCartItem(id, 1);
-      await fetchCartItems();
-      await fetchCartItemStatus();
+      await addItemToCart(id, 1);
       setIsInCart(true);
     } catch (error: any) {
       setErrorStatus(error.response?.status);
@@ -53,25 +42,22 @@ export const ProductItem = ({
     }
   };
 
-  useEffect(() => {
-    fetchCartItemStatus();
-  }, [id, isInCart]);
-
   const handleIncrement = async () => {
     if (cartItemId) {
-      await incrementQuantity({ id: cartItemId, quantity });
-      setQuantity(quantity + CART.QUANTITY_CHANGE_STEP);
+      await updateCartItemQuantity(cartItemId, quantity + 1);
+      setQuantity(quantity + 1);
     }
   };
 
   const handleDecrement = async () => {
     if (cartItemId) {
-      await decrementQuantity({ id: cartItemId, quantity });
       if (quantity - 1 <= 0) {
+        await removeCartItem(cartItemId);
         setIsInCart(false);
         setCartItemId(null);
         setQuantity(0);
       } else {
+        await updateCartItemQuantity(cartItemId, quantity - 1);
         setQuantity(quantity - 1);
       }
     }

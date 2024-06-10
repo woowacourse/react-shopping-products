@@ -1,4 +1,3 @@
-import { deleteCartItem } from "../../api/cart";
 import { useCart } from "../../context/cartContext";
 import { useChangeCartItemQuantity } from "../../hooks";
 import { formatPrice } from "../../utils/format";
@@ -19,25 +18,25 @@ import {
 } from "./CartModalContent.styled";
 
 export const CartModalContent = () => {
-  const { cartItems, removeCartItem } = useCart();
+  const { cartItems, removeCartItem, updateCartItemQuantity } = useCart();
   const { incrementQuantity, decrementQuantity } = useChangeCartItemQuantity();
 
   const handleIncrement = async (id: number, quantity: number) => {
-    console.log(`Incrementing quantity for item ${id} to ${quantity + 1}`);
-
     await incrementQuantity({ id, quantity });
+    updateCartItemQuantity(id, quantity + 1);
   };
 
   const handleDecrement = async (id: number, quantity: number) => {
-    console.log(`Decrementing quantity for item ${id} to ${quantity - 1}`);
-
-    await decrementQuantity({ id, quantity });
+    if (quantity - 1 <= 0) {
+      await removeCartItem(id);
+    } else {
+      await decrementQuantity({ id, quantity });
+      updateCartItemQuantity(id, quantity - 1);
+    }
   };
 
   const handleDelete = async (id: number) => {
-    console.log(`Deleting item ${id}`);
-
-    removeCartItem(id);
+    await removeCartItem(id);
   };
 
   const totalAmount = cartItems.reduce(
