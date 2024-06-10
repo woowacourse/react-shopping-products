@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MainLogo, ShoppingCartIcon } from '../../assets';
 import CartItemModal from '../CartItemModal/CartItemModal';
 import useCartItemList from '../../hooks/useCartItemList';
 
 import * as S from './Header.style';
+import { useToast } from '../../store/ToastProvider';
 
 function Header() {
   const [isModalOpened, setIsModalOpened] = useState(false);
@@ -15,8 +16,16 @@ function Header() {
     setIsModalOpened(false);
   };
 
-  const { data, error, isFetching } = useCartItemList();
+  const { data, error } = useCartItemList();
   const quantity = data?.content.length ?? 0;
+
+  const { addToast } = useToast();
+
+  useEffect(() => {
+    if (error) {
+      addToast(error.message);
+    }
+  }, [error]);
 
   return (
     <S.HeaderBackground>
