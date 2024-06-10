@@ -1,5 +1,5 @@
-import { CATEGORY_LIST, Category } from "../constants/category";
-import { SORT_LIST, Sort } from "../constants/sort";
+import { CATEGORY_LIST, Category } from "../../constants/category";
+import { SORT_LIST, Sort } from "../../constants/sort";
 import { useCallback, useState } from "react";
 
 import useInfiniteFetchProducts from "./useInfiniteFetchProducts";

@@ -3,11 +3,12 @@ import {
   GAP_WITH_FIRST_PAGE,
   SIZE_OF_FIRST_PAGE,
   SIZE_PER_PAGE,
-} from "../constants/pagination";
+} from "../../constants/pagination";
 
-import { Category } from "../constants/category";
-import { Sort } from "../constants/sort";
-import { getProducts } from "../api/products";
+import { Category } from "../../constants/category";
+import { QUERY_KEYS } from "../../constants/queryKeys";
+import { Sort } from "../../constants/sort";
+import { getProducts } from "../../api/products";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
 
 const useInfiniteFetchProducts = ({ category, sort }: Props) => {
   return useInfiniteQuery({
-    queryKey: ["products", category, sort],
+    queryKey: [QUERY_KEYS.PRODUCTS, category, sort],
     queryFn: ({ pageParam }) =>
       getProducts({
         page: pageParam,
