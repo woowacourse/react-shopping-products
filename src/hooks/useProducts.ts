@@ -3,20 +3,6 @@ import { PRODUCTS_ENDPOINT } from "../api/endpoints";
 import { PAGE } from "../constants";
 import { useError } from "../context/errorContext";
 
-interface UseProductsResult {
-  products: ProductProps[];
-  isLoading: boolean;
-  error: Error | null;
-  page: number;
-  fetchNextPage: () => void;
-  isLastPage: boolean;
-  setSortOption: (sortOption: string) => void;
-  setCategory: (category: string) => void;
-  resetPage: () => void;
-  selectedCategory: string;
-  selectedSort: string;
-}
-
 const sortOptionsMap: Record<"price,asc" | "price,desc", string> = {
   "price,asc": "낮은 가격순",
   "price,desc": "높은 가격순",
