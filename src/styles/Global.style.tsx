@@ -40,10 +40,10 @@ const GlobalStyles = createGlobalStyle`
     }
 
     /* For images to not be able to exceed their container */
-    /* img {
+    img {
         max-inline-size: 100%;
         max-block-size: 100%;
-    } */
+    }
 
     /* Removes spacing between cells in tables */
     table {
