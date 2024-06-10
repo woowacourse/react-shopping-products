@@ -1,7 +1,8 @@
 import { DeleteCartItemButton, QuantityController } from "../../../components";
+import { convertToLocaleAmount, validateProductImageUrl } from "../../../utils";
 import { ORDER_QUANTITY_PER_PRODUCT } from "../../../constants";
 import { Product, QuantityControlType } from "../../../types";
-import { convertToLocaleAmount } from "../../../utils";
+import { EmptyProductImageSquare } from "../../../assets";
 
 import * as Styled from "./CartItem.style";
 
@@ -37,7 +38,9 @@ export default function CartItem({
       <Styled.CartItemContent>
         <Styled.ProductContainer>
           <Styled.ProductImageBox
-            src={product.imageUrl}
+            src={
+              validateProductImageUrl(product.imageUrl) ? product.imageUrl : EmptyProductImageSquare
+            }
             alt={product.name}
           />
           <Styled.ProductInfoBox>

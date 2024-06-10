@@ -7,3 +7,5 @@ export { default as IncreaseIcon } from "./images/increaseIcon.svg";
 export { default as IncreaseIconDisabled } from "./images/increaseIconDisabled.svg";
 export { default as DecreaseIcon } from "./images/decreaseIcon.svg";
 export { default as DecreaseIconDisabled } from "./images/decreaseIconDisabled.svg";
+export { default as EmptyProductImage } from "./images/emptyProductImage.png";
+export { default as EmptyProductImageSquare } from "./images/emptyProductImageSquare.png";

@@ -2,8 +2,9 @@ import { Product, QuantityControlType } from "../../../types";
 import * as Styled from "./ProductItem.style";
 
 import { QuantityController, AddToCartButton } from "../../../components";
+import { convertToLocaleAmount, validateProductImageUrl } from "../../../utils";
 import { ORDER_QUANTITY_PER_PRODUCT } from "../../../constants";
-import { convertToLocaleAmount } from "../../../utils";
+import { EmptyProductImage } from "../../../assets";
 
 interface ProductProps {
   product: Product;
@@ -34,7 +35,9 @@ export default function ProductItem({
 
   return (
     <Styled.ProductItemBox>
-      <Styled.ProductImage $imageUrl={product.imageUrl} />
+      <Styled.ProductImage
+        $imageUrl={validateProductImageUrl(product.imageUrl) ? product.imageUrl : EmptyProductImage}
+      />
       <Styled.ProductContentBox>
         <Styled.ProductDescriptionBox>
           <h2>{product.name}</h2>
