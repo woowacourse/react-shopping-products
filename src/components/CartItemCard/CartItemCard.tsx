@@ -6,40 +6,19 @@ import useDeleteCartItem from '../../hooks/useDeleteCartItem';
 import usePatchCartItem from '../../hooks/usePatchCartItem';
 
 import * as S from './CartItemCard.style';
+import useCartItemQuantity from '../../hooks/useCartItemQuantity';
 
 interface CartItemProps {
   cartItem: CartItem;
 }
 
 function CartItemCard({ cartItem }: CartItemProps) {
-  const { quantity } = cartItem;
-
-  // TODO: ProductItem과 공통 로직 별도 hook으로 분리해볼까
-  const deleteCartItemMutation = useDeleteCartItem();
-  const patchCartItemMutation = usePatchCartItem();
-
-  const handleDeleteCartItem = () => {
-    deleteCartItemMutation.mutate({ cartItemId: cartItem.id });
-  };
-
-  const handleIncreaseQuantity = () => {
-    patchCartItemMutation.mutate({
-      cartItemId: cartItem.id,
-      quantity: quantity + 1,
-    });
-  };
-
-  const handleDecreaseQuantity = () => {
-    if (quantity === 1) {
-      deleteCartItemMutation.mutate({ cartItemId: cartItem.id });
-
-      return;
-    }
-    patchCartItemMutation.mutate({
-      cartItemId: cartItem.id,
-      quantity: quantity - 1,
-    });
-  };
+  const {
+    quantity,
+    handleDecreaseQuantity,
+    handleIncreaseQuantity,
+    handleDeleteCartItem,
+  } = useCartItemQuantity(cartItem ?? ({} as CartItem));
 
   return (
     <S.CartItem>

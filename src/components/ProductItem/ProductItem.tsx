@@ -1,4 +1,4 @@
-import { CartItemList, Product } from '../../types/type';
+import { CartItem, CartItemList, Product } from '../../types/type';
 import ProductItemTitle from '../ProductItemTitle/ProductItemTitle';
 import QuantityStepper from '../common/QuantityStepper/QuantityStepper';
 import AddCartItemButton from '../AddCartItemButton/AddCartItemButton';
@@ -7,6 +7,8 @@ import useDeleteCartItem from '../../hooks/useDeleteCartItem';
 import usePatchCartItem from '../../hooks/usePatchCartItem';
 
 import * as S from './ProductItem.style';
+import useCartITemQuantity from '../../hooks/useCartItemQuantity';
+import useCartItemQuantity from '../../hooks/useCartItemQuantity';
 
 interface ProductItemProps {
   product: Product;
@@ -18,32 +20,10 @@ function ProductItem({ product, cartItemList }: ProductItemProps) {
     (cartItem) => cartItem.product.id === product.id,
   );
   const isInCart = !!cartItem;
-  const quantity = cartItem?.quantity ?? 0;
-
   const addCartItemMutation = useAddCartItem();
-  const deleteCartItemMutation = useDeleteCartItem();
-  const patchCartItemMutation = usePatchCartItem();
 
-  const handleIncreaseQuantity = () => {
-    if (!cartItem) return;
-    patchCartItemMutation.mutate({
-      cartItemId: cartItem.id,
-      quantity: quantity + 1,
-    });
-  };
-
-  const handleDecreaseQuantity = () => {
-    if (!cartItem) return;
-    if (quantity === 1) {
-      deleteCartItemMutation.mutate({ cartItemId: cartItem.id });
-
-      return;
-    }
-    patchCartItemMutation.mutate({
-      cartItemId: cartItem.id,
-      quantity: quantity - 1,
-    });
-  };
+  const { quantity, handleDecreaseQuantity, handleIncreaseQuantity } =
+    useCartItemQuantity(cartItem ?? ({} as CartItem));
 
   return (
     <S.ProductItem>
