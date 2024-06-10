@@ -46,6 +46,7 @@ export default function useCartItem() {
   return {
     fetchCartItemList,
     cartItemList: fetchCartItemList.data?.content,
+    error: fetchCartItemList.error,
     addCartItem,
     deleteCartItem,
     updateCartItemQuantity,

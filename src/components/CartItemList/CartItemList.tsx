@@ -6,8 +6,16 @@ import useCartItem from "../../hooks/useCartItem";
 import { EmptyCart } from "../../assets";
 
 function CartItemList({ style }: { style: React.CSSProperties }) {
-  const { deleteCartItem, updateCartItemQuantity, cartItemList } =
-    useCartItem();
+  const {
+    deleteCartItem,
+    updateCartItemQuantity,
+    cartItemList,
+    error: cartItemListError,
+  } = useCartItem();
+
+  if (cartItemListError) {
+    throw cartItemListError;
+  }
 
   if (!cartItemList || cartItemList.length === 0) {
     return (

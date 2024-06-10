@@ -27,8 +27,7 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
     sort,
   });
 
-  const { data: cartItemListData, error: cartItemListError } =
-    fetchCartItemList;
+  const { data: cartItemListData } = fetchCartItemList;
 
   const target = useRef(null);
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);

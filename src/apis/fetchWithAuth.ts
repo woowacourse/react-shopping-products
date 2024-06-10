@@ -15,6 +15,8 @@ async function fetchWithAuth(url: string, method: string, body?: any) {
       body: body ? JSON.stringify(body) : undefined,
     });
 
+    throw new Error("123");
+
     if (!response.ok) {
       switch (response.status) {
         case 400:
