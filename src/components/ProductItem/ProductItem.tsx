@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
-import { addCartItem, getCartItems, removeCartItem } from "../../api/cart";
-import { useError } from "../../context/errorContext";
+import { addCartItem, getCartItems } from "../../api/cart";
+import { CART } from "../../constants";
+import { useCart, useError } from "../../context";
+import { useChangeCartItemQuantity } from "../../hooks";
 import { formatPrice } from "../../utils/format";
-import { CartActionButton } from "../Button";
+import { CartActionButton, CounterButton } from "../Button";
 import {
   StyledContainer,
   StyledProductImg,
   StyledProductItem,
   StyledProductName,
   StyledProductPrice,
+  StyledProductQuantityContainer,
+  StyledProductQuantityText,
   StyledWrapper,
 } from "./ProductItem.styled";
-import { useCart } from "../../context/cartContext";
 
 export const ProductItem = ({
   id,
@@ -21,15 +24,18 @@ export const ProductItem = ({
 }: Pick<ProductProps, "id" | "imageUrl" | "name" | "price">) => {
   const [isInCart, setIsInCart] = useState(false);
   const [cartItemId, setCartItemId] = useState<number | null>(null);
+  const [quantity, setQuantity] = useState<number>(0);
   const { setErrorStatus } = useError();
   const { fetchCartItems } = useCart();
+  const { incrementQuantity, decrementQuantity } = useChangeCartItemQuantity();
 
   const fetchCartItemStatus = async () => {
     try {
-      const cartItems = await getCartItems();
-      const cartItem = cartItems.find((item) => item.product.id === id);
+      const items = await getCartItems();
+      const cartItem = items.find((item) => item.product.id === id);
       setIsInCart(!!cartItem);
       setCartItemId(cartItem ? cartItem.id : null);
+      setQuantity(cartItem ? cartItem.quantity : 0);
     } catch (error: any) {
       setErrorStatus(error.response?.status);
     }
@@ -39,41 +45,31 @@ export const ProductItem = ({
     try {
       await addCartItem(id, 1);
       setIsInCart(true);
-      fetchCartItems();
+      await fetchCartItems();
+      await fetchCartItemStatus();
     } catch (error: any) {
       setErrorStatus(error.response?.status);
       setIsInCart(false);
-    }
-  };
-
-  const handleRemoveFromCart = async () => {
-    if (cartItemId === null) return;
-
-    try {
-      await removeCartItem(cartItemId);
-      setIsInCart(false);
-      setCartItemId(null);
-      fetchCartItems();
-    } catch (error: any) {
-      setErrorStatus(error.response?.status);
-      setIsInCart(true);
-      setCartItemId(cartItemId);
-    }
-  };
-
-  const handleButtonClick = async () => {
-    await fetchCartItemStatus();
-
-    if (isInCart) {
-      await handleRemoveFromCart();
-    } else {
-      await handleAddToCart();
     }
   };
 
   useEffect(() => {
     fetchCartItemStatus();
   }, [id, isInCart]);
+
+  const handleIncrement = async () => {
+    if (cartItemId) {
+      await incrementQuantity({ id: cartItemId, quantity });
+      setQuantity(quantity + CART.QUANTITY_CHANGE_STEP);
+    }
+  };
+
+  const handleDecrement = async () => {
+    if (cartItemId) {
+      await decrementQuantity({ id: cartItemId, quantity });
+      setQuantity(quantity - CART.QUANTITY_CHANGE_STEP);
+    }
+  };
 
   return (
     <StyledProductItem>
@@ -83,7 +79,15 @@ export const ProductItem = ({
           <StyledProductName>{name}</StyledProductName>
           <StyledProductPrice>{formatPrice(price)}</StyledProductPrice>
         </StyledWrapper>
-        <CartActionButton actionType={isInCart ? "sub" : "add"} onClick={handleButtonClick} />
+        {isInCart ? (
+          <StyledProductQuantityContainer>
+            <CounterButton type="decrement" onClick={handleDecrement} />
+            <StyledProductQuantityText>{quantity}</StyledProductQuantityText>
+            <CounterButton type="increment" onClick={handleIncrement} />
+          </StyledProductQuantityContainer>
+        ) : (
+          <CartActionButton actionType="add" onClick={handleAddToCart} />
+        )}
       </StyledContainer>
     </StyledProductItem>
   );
