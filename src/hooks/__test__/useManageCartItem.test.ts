@@ -2,9 +2,9 @@ import { HttpResponse, http } from "msw";
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { CART_ITEMS_ENDPOINT } from "../api/endPoint";
-import { server } from "../mocks/server";
-import useManageCartItem from "./useManageCartItem";
+import { CART_ITEMS_ENDPOINT } from "../../api/endPoint";
+import { server } from "../../mocks/server";
+import useManageCartItem from "../cartItem/useManageCartItem";
 import { waitFor } from "@testing-library/react";
 
 describe("useManageCartItem", () => {
