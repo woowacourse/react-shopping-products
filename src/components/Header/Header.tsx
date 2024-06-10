@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { MainLogo, ShoppingCartIcon } from '../../assets';
 import CartItemModal from '../CartItemModal/CartItemModal';
 import useCartItemList from '../../hooks/useCartItemList';
+import { useToast } from '../../store/ToastProvider';
 
 import * as S from './Header.style';
-import { useToast } from '../../store/ToastProvider';
 
 function Header() {
   const [isModalOpened, setIsModalOpened] = useState(false);
