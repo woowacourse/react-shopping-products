@@ -1,7 +1,9 @@
+import React from 'react';
 import GlobalStyles from '../src/styles/Global.style';
 import type { Preview } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswLoader } from 'msw-storybook-addon';
+import { ToastProvider } from '../src/store/ToastProvider';
 
 // Initialize MSW
 initialize();
@@ -23,7 +25,9 @@ export const decorators: React.FC[] = [
     <>
       <GlobalStyles />
       <QueryClientProvider client={queryClient}>
-        <Story />
+        <ToastProvider>
+          <Story />
+        </ToastProvider>
       </QueryClientProvider>
     </>
   ),
