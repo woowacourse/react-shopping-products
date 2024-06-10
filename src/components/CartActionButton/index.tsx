@@ -8,9 +8,6 @@ interface CartActionButton {
 }
 
 const CartActionButton = ({ productId }: CartActionButton) => {
-  const iconKind = "addCart";
-  const buttonText = "담기";
-
   const addMutation = usePostAddCartItemMutation({ productId, quantity: 1 });
 
   const onAddToCart = () => {
@@ -19,8 +16,8 @@ const CartActionButton = ({ productId }: CartActionButton) => {
 
   return (
     <S.ButtonWrapper onClick={onAddToCart}>
-      <Icon kind={iconKind} />
-      <TextBox text={buttonText} type="xSmall" />
+      <Icon kind="addCart" />
+      <TextBox text="담기" type="xSmall" />
     </S.ButtonWrapper>
   );
 };

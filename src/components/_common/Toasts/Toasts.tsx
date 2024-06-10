@@ -3,6 +3,7 @@ import styled from "styled-components";
 import React, { useContext } from "react";
 import Toast from "@/components/_common/Toasts/Toast";
 import { createPortal } from "react-dom";
+import { Z_INDEX } from "@/constants/zIndex";
 
 const Toasts = () => {
   const toasts = useContext(ToastStateContext);
@@ -32,7 +33,7 @@ const ToastContainer = styled.div`
   top: 64px;
   width: 100vw;
   height: 50px;
-  z-index: 1;
+  z-index: ${Z_INDEX.TOAST};
 `;
 
 const S = {
