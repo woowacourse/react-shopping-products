@@ -36,6 +36,7 @@ describe('useProductList', () => {
       expect(result.current.isFetching).toBe(true);
     });
 
+    //failed
     it('상품 목록 조회 중 에러 상태', async () => {
       server.use(
         http.get(
@@ -117,6 +118,7 @@ describe('useProductList', () => {
       });
     });
 
+    //failed
     it('페이지네이션으로 추가 데이터를 불러올 때 로딩 상태를 표시한다.', async () => {
       const { result } = renderHook(() => useProductList({}), { wrapper });
 
