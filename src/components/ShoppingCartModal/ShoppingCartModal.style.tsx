@@ -11,12 +11,12 @@ export const PriceContainer = styled.div`
   margin: 20px 0 35px 0;
 `;
 
-export const PriceTitle = styled.p`
+export const PriceTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.md};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-export const PriceValue = styled.p`
+export const PriceValue = styled.span`
   font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
