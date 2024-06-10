@@ -17,3 +17,22 @@ export const SelectAllButtonContainer = styled.div`
     font-size: 12px;
   }
 `;
+
+export const EmptyCartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+
+export const EmptyCartImage = styled.img`
+  width: 120px;
+  height: auto;
+  margin-bottom: 20px;
+`;
+
+export const EmptyCartMessage = styled.div`
+  font-size: 18px;
+  color: #666;
+`;

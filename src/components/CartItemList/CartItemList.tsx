@@ -3,13 +3,24 @@ import * as S from "./CartItemList.style";
 
 import type { CartItem } from "../../interfaces/CartItem";
 import useCartItem from "../../hooks/useCartItem";
+import { EmptyCart } from "../../assets";
 
 function CartItemList({ style }: { style: React.CSSProperties }) {
-  const { deleteCartItem, updateCartItemQuantity } = useCartItem();
-  const { cartItemList } = useCartItem();
+  const { deleteCartItem, updateCartItemQuantity, cartItemList } =
+    useCartItem();
+
+  if (!cartItemList || cartItemList.length === 0) {
+    return (
+      <S.EmptyCartContainer style={style}>
+        <S.EmptyCartImage src={EmptyCart} alt="Empty Cart" />
+        <S.EmptyCartMessage>장바구니가 비어 있습니다.</S.EmptyCartMessage>
+      </S.EmptyCartContainer>
+    );
+  }
+
   return (
     <S.Layout style={style}>
-      {cartItemList?.map((el: CartItem) => (
+      {cartItemList.map((el: CartItem) => (
         <CartItemContainer
           key={el.id}
           item={el}
