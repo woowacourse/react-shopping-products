@@ -15,11 +15,11 @@ function CartItemCard({ cartItem }: CartItemProps) {
   const { quantity } = cartItem;
 
   // TODO: ProductItem과 공통 로직 별도 hook으로 분리해볼까
-  const deleteCartItemMustation = useDeleteCartItem();
+  const deleteCartItemMutation = useDeleteCartItem();
   const patchCartItemMutation = usePatchCartItem();
 
   const handleDeleteCartItem = () => {
-    deleteCartItemMustation.mutate({ cartItemId: cartItem.id });
+    deleteCartItemMutation.mutate({ cartItemId: cartItem.id });
   };
 
   const handleIncreaseQuantity = () => {
@@ -31,7 +31,7 @@ function CartItemCard({ cartItem }: CartItemProps) {
 
   const handleDecreaseQuantity = () => {
     if (quantity === 1) {
-      deleteCartItemMustation.mutate({ cartItemId: cartItem.id });
+      deleteCartItemMutation.mutate({ cartItemId: cartItem.id });
     } else {
       patchCartItemMutation.mutate({
         cartItemId: cartItem.id,

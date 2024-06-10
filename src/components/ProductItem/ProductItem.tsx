@@ -21,7 +21,7 @@ function ProductItem({ product, cartItemList }: ProductItemProps) {
   const quantity = cartItem?.quantity ?? 0;
 
   const addCartItemMutation = useAddCartItem();
-  const deleteCartItemMustation = useDeleteCartItem();
+  const deleteCartItemMutation = useDeleteCartItem();
   const patchCartItemMutation = usePatchCartItem();
 
   const handleIncreaseQuantity = () => {
@@ -35,7 +35,7 @@ function ProductItem({ product, cartItemList }: ProductItemProps) {
   const handleDecreaseQuantity = () => {
     if (!cartItem) return;
     if (quantity === 1) {
-      deleteCartItemMustation.mutate({ cartItemId: cartItem.id });
+      deleteCartItemMutation.mutate({ cartItemId: cartItem.id });
     } else {
       patchCartItemMutation.mutate({
         cartItemId: cartItem.id,
