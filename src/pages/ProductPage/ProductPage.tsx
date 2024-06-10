@@ -24,8 +24,8 @@ export default function ProductPage() {
 
   const {
     products,
-    error: productError,
     isLoading: isProductLoading,
+    error: productError,
     fetchNextPage,
     handleChangeCategory,
     handleChangeSortOption,
@@ -75,6 +75,18 @@ export default function ProductPage() {
             placeholder="낮은 가격순"
           />
         </Styled.SelectBoxContainer>
+
+        {isProductLoading && products.length === 0 && (
+          <Styled.EmptyProductsContainer>
+            <Styled.LoadingSpinner />
+          </Styled.EmptyProductsContainer>
+        )}
+
+        {!isProductLoading && products.length === 0 && (
+          <Styled.EmptyProductsContainer>
+            현재 조회 가능한 상품이 없습니다.
+          </Styled.EmptyProductsContainer>
+        )}
 
         <ProductItemContainer products={products} />
 

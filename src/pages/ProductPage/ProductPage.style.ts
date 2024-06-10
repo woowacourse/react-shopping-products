@@ -1,5 +1,4 @@
-import styled from "styled-components";
-
+import { styled, keyframes } from "styled-components";
 import { CartItemIcon } from "../../assets";
 
 export const ShopHeader = styled.div`
@@ -37,6 +36,9 @@ export const CartItemsNumber = styled.div`
 
 export const ShopContent = styled.div`
   padding: 100px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 `;
 
 export const ShopTitle = styled.h1`
@@ -58,4 +60,40 @@ export const ObserverTarget = styled.div<{ $isEnabled: boolean }>`
   position: absolute;
   bottom: 300px;
   opacity: 0;
+`;
+
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+export const EmptyProductsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 0 auto;
+  height: 60vh;
+`;
+
+export const LoadingSpinner = styled.div`
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  position: relative;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 28px;
+    margin: 4px;
+    border-radius: 50%;
+    border: 3px solid #666666;
+    border-color: #666666 transparent #666666 transparent;
+    animation: ${spin} 1.2s linear infinite;
+  }
 `;
