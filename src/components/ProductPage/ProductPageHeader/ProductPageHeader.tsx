@@ -10,12 +10,18 @@ export default function ProductPageHeader({ onClickCartButton }: ProductPageHead
   const { cartItems } = useCartItems();
   const cartItemsLength = cartItems.length;
 
+  const handleClickCartButton = () => {
+    if (cartItems.length > 0) {
+      onClickCartButton();
+    }
+  };
+
   return (
     <>
       <Styled.Header>
         SHOP
-        <Styled.CartButton onClick={onClickCartButton}>
-          {cartItemsLength !== 0 && (
+        <Styled.CartButton onClick={handleClickCartButton}>
+          {cartItemsLength > 0 && (
             <Styled.CartItemsNumber>{cartItemsLength}</Styled.CartItemsNumber>
           )}
         </Styled.CartButton>
