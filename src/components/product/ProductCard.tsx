@@ -1,7 +1,6 @@
-import { CartManager } from "../../hooks/useManageCartItem";
+import EditCartItemButton from "../cartItem/EditCartItemButton";
 import { Product } from "../../types/products";
 import { PropsWithChildren } from "react";
-import ToggleItemButton from "./ToggleItemButton";
 import styled from "@emotion/styled";
 
 const S = {
@@ -37,17 +36,16 @@ const S = {
 
 interface ProductCardProps extends PropsWithChildren {
   product: Product;
-  cartManager: CartManager;
 }
 
-const ProductCard = ({ product, cartManager }: ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <S.ProductCard>
       <S.ProductImage src={product.imageUrl} alt={product.name} />
       <S.ProductInfo>
         <S.ProductName>{product.name}</S.ProductName>
         <S.Price>{`${product.price.toLocaleString("ko-KR")}원`}</S.Price>
-        <ToggleItemButton id={product.id} cartManager={cartManager} />
+        <EditCartItemButton id={product.id} />
       </S.ProductInfo>
     </S.ProductCard>
   );
