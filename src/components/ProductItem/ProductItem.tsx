@@ -26,7 +26,7 @@ export const ProductItem = ({
   const [cartItemId, setCartItemId] = useState<number | null>(null);
   const [quantity, setQuantity] = useState<number>(0);
   const { setErrorStatus } = useError();
-  const { fetchCartItems } = useCart();
+  const { fetchCartItems, updateCartItemQuantity, removeCartItem } = useCart();
   const { incrementQuantity, decrementQuantity } = useChangeCartItemQuantity();
 
   const fetchCartItemStatus = async () => {
@@ -44,9 +44,9 @@ export const ProductItem = ({
   const handleAddToCart = async () => {
     try {
       await addCartItem(id, 1);
-      setIsInCart(true);
-      await fetchCartItemStatus();
       await fetchCartItems();
+      await fetchCartItemStatus();
+      setIsInCart(true);
     } catch (error: any) {
       setErrorStatus(error.response?.status);
       setIsInCart(false);

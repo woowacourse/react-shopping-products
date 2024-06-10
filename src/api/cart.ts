@@ -25,7 +25,7 @@ export async function addCartItem(productId: number, quantity: number): Promise<
 }
 
 // 장바구니 아이템 삭제
-export async function removeCartItem(cartItemId: number): Promise<Response> {
+export async function deleteCartItem(cartItemId: number): Promise<Response> {
   const token = generateBasicToken(USER_ID, USER_PASSWORD);
   const response = await fetch(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
     method: "DELETE",

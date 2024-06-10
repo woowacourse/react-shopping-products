@@ -1,4 +1,4 @@
-import { removeCartItem } from "../../api/cart";
+import { deleteCartItem } from "../../api/cart";
 import { useCart } from "../../context/cartContext";
 import { useChangeCartItemQuantity } from "../../hooks";
 import { formatPrice } from "../../utils/format";
@@ -6,8 +6,6 @@ import { DeleteButton } from "../Button";
 import { QuantityControls } from "../QuantityControl/QuantityControl";
 import {
   StyledCartItem,
-  StyledCartItemActions,
-  StyledCartItemDeleteButton,
   StyledCartItemImage,
   StyledCartItemImageContainer,
   StyledCartItemInfo,
@@ -21,22 +19,25 @@ import {
 } from "./CartModalContent.styled";
 
 export const CartModalContent = () => {
-  const { cartItems, fetchCartItems } = useCart();
+  const { cartItems, removeCartItem } = useCart();
   const { incrementQuantity, decrementQuantity } = useChangeCartItemQuantity();
 
   const handleIncrement = async (id: number, quantity: number) => {
+    console.log(`Incrementing quantity for item ${id} to ${quantity + 1}`);
+
     await incrementQuantity({ id, quantity });
-    fetchCartItems();
   };
 
   const handleDecrement = async (id: number, quantity: number) => {
+    console.log(`Decrementing quantity for item ${id} to ${quantity - 1}`);
+
     await decrementQuantity({ id, quantity });
-    fetchCartItems();
   };
 
   const handleDelete = async (id: number) => {
-    await removeCartItem(id);
-    fetchCartItems();
+    console.log(`Deleting item ${id}`);
+
+    removeCartItem(id);
   };
 
   const totalAmount = cartItems.reduce(

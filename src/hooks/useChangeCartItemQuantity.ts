@@ -1,4 +1,4 @@
-import { patchCartItemQuantityChange, removeCartItem } from "../api/cart";
+import { patchCartItemQuantityChange, deleteCartItem } from "../api/cart";
 import { CART } from "../constants";
 import { useCart, useError } from "../context";
 
@@ -8,14 +8,14 @@ interface CartItemQuantity {
 }
 
 export const useChangeCartItemQuantity = () => {
-  const { fetchCartItems } = useCart();
+  const { updateCartItemQuantity, removeCartItem } = useCart();
   const { setErrorStatus } = useError();
 
   const incrementQuantity = async ({ id, quantity }: CartItemQuantity) => {
     const newQuantity = quantity + CART.QUANTITY_CHANGE_STEP;
     try {
       await patchCartItemQuantityChange(id, newQuantity);
-      await fetchCartItems();
+      updateCartItemQuantity(id, newQuantity);
     } catch (error: any) {
       setErrorStatus(error.response?.status);
     }
@@ -26,14 +26,14 @@ export const useChangeCartItemQuantity = () => {
     if (newQuantity > 0) {
       try {
         await patchCartItemQuantityChange(id, newQuantity);
-        await fetchCartItems();
+        updateCartItemQuantity(id, newQuantity);
       } catch (error: any) {
         setErrorStatus(error.response?.status);
       }
     } else {
       try {
-        await removeCartItem(id);
-        await fetchCartItems();
+        await deleteCartItem(id);
+        removeCartItem(id);
       } catch (error: any) {
         setErrorStatus(error.response?.status);
       }
