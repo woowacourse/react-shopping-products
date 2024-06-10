@@ -5,7 +5,7 @@ export const Layout = styled.div`
   display: flex;
   justify-content: space-between;
   border-top: 1px solid ${theme.color.primary.light};
-  padding: 16px 0px;
+  padding: 10px 0px 20px 0px;
   row-gap: 12px;
 `;
 
@@ -21,8 +21,8 @@ export const Body = styled.div`
 
 export const ItemImage = styled.img`
   display: flex;
-  width: 112px;
-  height: 112px;
+  width: 80px;
+  height: 80px;
   border-radius: 8px;
 `;
 
@@ -30,6 +30,7 @@ export const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 8px;
   padding: 8px;
 `;
 
@@ -40,12 +41,13 @@ export const ItemInfoContainer = styled.div`
 `;
 
 export const ItemText = styled.p`
-  font-size: ${theme.fontSize.sm};
+  font-size: ${theme.fontSize.md};
+  font-weight: ${theme.fontWeight.bold};
 `;
 
 export const ItemPriceText = styled.p`
-  font-size: ${theme.fontSize.lg};
-  font-weight: ${theme.fontWeight.bold};
+  font-size: ${theme.fontSize.sm};
+  font-weight: ${theme.fontWeight.light};
 `;
 
 export const DeleteButton = styled.button`
