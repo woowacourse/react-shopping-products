@@ -43,3 +43,10 @@ export const StyledProductPrice = styled.span`
   font-weight: 500;
   color: rgba(10, 13, 19, 1);
 `;
+
+export const StyledQuantityControls = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-bottom: 6px;
+`;

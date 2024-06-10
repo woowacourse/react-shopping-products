@@ -12,6 +12,7 @@ import {
   StyledProductItem,
   StyledProductName,
   StyledProductPrice,
+  StyledQuantityControls,
   StyledWrapper,
 } from "./ProductItem.styled";
 
@@ -84,12 +85,15 @@ export const ProductItem = ({
           <StyledProductName>{name}</StyledProductName>
           <StyledProductPrice>{formatPrice(price)}</StyledProductPrice>
         </StyledWrapper>
+
         {isInCart ? (
-          <QuantityControls
-            quantity={quantity}
-            onIncrement={handleIncrement}
-            onDecrement={handleDecrement}
-          />
+          <StyledQuantityControls>
+            <QuantityControls
+              quantity={quantity}
+              onIncrement={handleIncrement}
+              onDecrement={handleDecrement}
+            />
+          </StyledQuantityControls>
         ) : (
           <CartActionButton actionType="add" onClick={handleAddToCart} />
         )}
