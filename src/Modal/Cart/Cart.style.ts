@@ -10,3 +10,16 @@ export const Container = styled.div`
   width: 100%;
   gap: 24px;
 `;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  text-align: center;
+  bottom: 12px;
+  margin: 12px;
+  width: 90%;
+  height: 44px;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+`;

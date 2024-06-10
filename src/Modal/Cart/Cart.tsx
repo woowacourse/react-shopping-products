@@ -25,17 +25,11 @@ function Cart({ setIsCartModalOpen }: CartProps) {
             />
           }
         >
-          <CartItemList style={{ overflowY: "auto" }} />
+          <CartItemList style={{ overflowY: "auto", marginBottom: "70px" }} />
         </ErrorBoundary>
-        <Modal.ConfirmButton
-          content="닫기"
-          onClick={() => setIsCartModalOpen(false)}
-          style={{
-            position: "absolute",
-            margin: "12px",
-            height: "44px", // 닫기 버튼이 계속 줄어듦
-          }}
-        />
+        <S.CloseButton onClick={() => setIsCartModalOpen(false)}>
+          닫기
+        </S.CloseButton>
       </Modal>
     </S.Container>
   );
