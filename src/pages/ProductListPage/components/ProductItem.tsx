@@ -24,6 +24,7 @@ const ProductItem = ({ productItem, isSelected, cartItems }: Props) => {
     <div className={styles.productItemContainer}>
       <img src={productItem.imageUrl} className={styles.productItemImg} />
       <div className={styles.productItemInfoContainer}>
+        <span className={styles.productItemName}>{productItem.name}</span>
         <span className={styles.productItemLabel}>
           {productItem.price.toLocaleString('KR-ko')}원
         </span>
