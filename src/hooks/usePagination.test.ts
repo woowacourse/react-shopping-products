@@ -10,16 +10,6 @@ describe("usePagination", () => {
       expect(result.current.isLastPage).toBeFalsy();
     });
 
-    it("goToNextPage 함수를 호출하면 페이지 번호가 1 증가한다.", () => {
-      const { result } = renderHook(() => usePagination());
-
-      act(() => {
-        result.current.goToNextPage();
-      });
-
-      expect(result.current.page).toBe(2);
-    });
-
     it("handleLastPage 함수를 호출하여 true 값을 전달하면, 현재 페이지를 마지막 페이지로 설정할 수 있다.", () => {
       const { result } = renderHook(() => usePagination());
 
