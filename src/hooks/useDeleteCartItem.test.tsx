@@ -20,11 +20,11 @@ describe('useDeleteCartItem', () => {
     });
 
     await act(async () => {
-      result.current.mutate({ cartItemId: 1 });
+      result.current.mutate({ cartItemId: 3091 });
     });
 
     await waitFor(() => {
-      expect(result.current.error).toBeUndefined();
+      expect(result.current.isSuccess).toBe(true);
     });
   });
 });

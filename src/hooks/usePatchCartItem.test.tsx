@@ -26,7 +26,5 @@ describe('usePatchCartItem', () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-
-    expect(result.current.error).toBeUndefined();
   });
 });

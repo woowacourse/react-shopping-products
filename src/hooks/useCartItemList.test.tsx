@@ -12,6 +12,10 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 describe('useCartItemList', () => {
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
+
   describe('장바구니 목록 조회', () => {
     it('장바구니 아이템을 가져와야 한다', async () => {
       const { result } = renderHook(() => useCartItemList(), { wrapper });
@@ -21,13 +25,13 @@ describe('useCartItemList', () => {
       });
     });
 
-    it('상품 목록 조회 중 로딩 상태', () => {
+    it('장바구니 목록 조회 중 로딩 상태', () => {
       const { result } = renderHook(() => useCartItemList(), { wrapper });
 
       expect(result.current.isFetching).toBe(true);
     });
 
-    it('상품 목록 조회 중 에러 상태', async () => {
+    it('장바구니 목록 조회 중 에러 상태', async () => {
       server.use(
         http.get(
           END_POINTS.PRODUCTS,
@@ -37,7 +41,7 @@ describe('useCartItemList', () => {
 
       const { result } = renderHook(() => useCartItemList(), { wrapper });
       await waitFor(() => {
-        expect(result.current.).toBe(true);
+        expect(result.current.isError).toBe(true);
       });
     });
   });

@@ -18,11 +18,23 @@ describe('useAddCartItem', () => {
     const { result } = renderHook(() => useAddCartItem(), { wrapper });
 
     await act(async () => {
-      result.current.mutate({ productId: 1, quantity: 1 });
+      result.current.mutate({ productId: 12, quantity: 1 });
     });
 
     await waitFor(() => {
-      expect(result.current.error).toBeUndefined();
+      expect(result.current.isSuccess).toBe(true);
+    });
+  });
+
+  it('장바구니 아이템을 추가해야 한다', async () => {
+    const { result } = renderHook(() => useAddCartItem(), { wrapper });
+
+    await act(async () => {
+      result.current.mutate({ productId: 12, quantity: 1 });
+    });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
     });
   });
 });
