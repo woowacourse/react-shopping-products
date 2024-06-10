@@ -1,4 +1,5 @@
 import CustomError from "@/apis/error";
+import { basicToken } from "@/utils/auth";
 
 interface RequestProps {
   url: string;
@@ -14,7 +15,7 @@ const request = async ({ url, method, body, headers = {} }: RequestProps) => {
       method,
       body: body ? JSON.stringify(body) : undefined,
       headers: {
-        "Content-Type": "application/json",
+        Authorization: basicToken,
         ...headers,
       },
     });
@@ -38,7 +39,7 @@ const fetcher = {
   },
 
   post({ url, body, headers }: FetchProps) {
-    return request({ url, method: "POST", body, headers });
+    return request({ url, method: "POST", body, headers: { ...headers, "Content-Type": "application/json" } });
   },
 
   delete({ url, headers }: FetchProps) {
@@ -46,11 +47,11 @@ const fetcher = {
   },
 
   patch({ url, body, headers }: FetchProps) {
-    return request({ url, method: "PATCH", body, headers });
+    return request({ url, method: "PATCH", body, headers: { ...headers, "Content-Type": "application/json" } });
   },
 
   put({ url, headers }: FetchProps) {
-    return request({ url, method: "PUT", headers });
+    return request({ url, method: "PUT", headers: { ...headers, "Content-Type": "application/json" } });
   },
 };
 

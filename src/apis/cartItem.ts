@@ -1,19 +1,11 @@
 import { END_POINT } from "@/config/endPoint";
-import { ERROR_MESSAGES } from "@/constants/messages";
-import { basicToken } from "@/utils/auth";
-import { CartItems } from "@/types/products";
 import SERVER_URL from "@/config/serverUrl";
+import fetcher from "@/apis/fetcher";
 
-export const getCartItems = async (): Promise<CartItems[]> => {
-  const response = await fetch(SERVER_URL.apiUrl + END_POINT.cartItems, {
-    method: "get",
-    headers: { Authorization: basicToken },
+export const getCartItems = async () => {
+  const response = await fetcher.get({
+    url: SERVER_URL.apiUrl + END_POINT.cartItems,
   });
-
-  if (!response.ok) {
-    throw new Error(ERROR_MESSAGES.failGetCartItems);
-  }
-
   const data = await response.json();
 
   return data.content;
@@ -24,52 +16,33 @@ export interface PostCartItemParams {
   quantity: number;
 }
 
-export async function postCartItem({ productId, quantity }: PostCartItemParams): Promise<Response> {
-  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}`, {
-    method: "POST",
-    headers: { Authorization: basicToken, "Content-Type": "application/json" },
-    body: JSON.stringify({ productId, quantity }),
+export const postCartItem = async ({ productId, quantity }: PostCartItemParams) => {
+  const response = await fetcher.post({
+    url: SERVER_URL.apiUrl + END_POINT.cartItems,
+    body: { productId, quantity },
   });
-
-  if (!response.ok) {
-    throw new Error(ERROR_MESSAGES.failPostCartItem);
-  }
-
   return response;
-}
+};
 
 export interface PatchCartItemParams {
   cartId: number;
   quantity: number;
 }
 
-export async function patchCartItem({ cartId, quantity }: PatchCartItemParams): Promise<Response> {
-  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${cartId}`, {
-    method: "PATCH",
-    headers: { Authorization: basicToken, "Content-Type": "application/json" },
-    body: JSON.stringify({ quantity }),
+export const patchCartItem = async ({ cartId, quantity }: PatchCartItemParams) => {
+  return await fetcher.patch({
+    url: `${SERVER_URL.apiUrl + END_POINT.cartItems}/${cartId}`,
+    body: { quantity },
   });
-
-  if (!response.ok) {
-    throw new Error(ERROR_MESSAGES.failPostCartItem);
-  }
-
-  return response;
-}
+};
 
 export interface DeleteCartItemParams {
   cartId: number;
 }
 
-export async function deleteCartItem({ cartId }: DeleteCartItemParams): Promise<Response> {
-  const response = await fetch(`${SERVER_URL.apiUrl + END_POINT.cartItems}/${cartId}`, {
-    method: "DELETE",
-    headers: { Authorization: basicToken, "Content-Type": "application/json" },
+export const deleteCartItem = async ({ cartId }: DeleteCartItemParams) => {
+  const response = await fetcher.delete({
+    url: `${SERVER_URL.apiUrl + END_POINT.cartItems}/${cartId}`,
   });
-
-  if (!response.ok) {
-    throw new Error(ERROR_MESSAGES.failDeleteCartItem);
-  }
-
   return response;
-}
+};

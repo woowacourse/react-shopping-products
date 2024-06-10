@@ -18,6 +18,8 @@ const CartModal = ({
 }) => {
   const isEmptyCart = !cartItems.length;
 
+  console.log("cartItems", cartItems);
+
   return (
     <S.Wrapper>
       <Modal isOpen={true} position="bottom" onClose={onCloseModal}>
@@ -27,11 +29,7 @@ const CartModal = ({
             {isEmptyCart ? (
               <EmptyState type="cart" />
             ) : (
-              <>
-                {cartItems?.map((item) => (
-                  <CartItemMemo item={item} cartItems={cartItems} />
-                ))}
-              </>
+              <>{cartItems && cartItems?.map((item) => <CartItemMemo item={item} cartItems={cartItems} />)}</>
             )}
           </ItemWrapper>
         </Modal.Content>
