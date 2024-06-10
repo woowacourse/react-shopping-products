@@ -1,7 +1,5 @@
 import { FilterButton } from '@/entities/product';
-import { SortOrder } from '@/shared';
-
-import { SORT_ORDER_OPTIONS } from '@/shared';
+import { SortOrder, SORT_ORDER_OPTIONS } from '@/shared';
 
 interface FilterSortOrderButtonProps {
   value: SortOrder;
