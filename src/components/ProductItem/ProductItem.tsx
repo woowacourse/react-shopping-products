@@ -67,7 +67,13 @@ export const ProductItem = ({
   const handleDecrement = async () => {
     if (cartItemId) {
       await decrementQuantity({ id: cartItemId, quantity });
-      setQuantity(quantity - CART.QUANTITY_CHANGE_STEP);
+      if (quantity - 1 <= 0) {
+        setIsInCart(false);
+        setCartItemId(null);
+        setQuantity(0);
+      } else {
+        setQuantity(quantity - 1);
+      }
     }
   };
 
