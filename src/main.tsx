@@ -1,13 +1,18 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { ErrorProvider } from "./context/errorContext.tsx";
 import "./reset.css";
 
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ErrorProvider>
-      <App />
-    </ErrorProvider>
+    <QueryClientProvider client={queryClient}>
+      <ErrorProvider>
+        <App />
+      </ErrorProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
