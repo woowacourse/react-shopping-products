@@ -8,7 +8,7 @@ export function useProductFetch() {
     category: 'all',
     sort: 'price,asc',
   });
-  const { data, fetchNextPage, error, isError, isFetchingNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.PRODUCTS, { selectBarCondition }],
     initialPageParam: 0,
     queryFn: ({ pageParam }) => {
@@ -20,7 +20,6 @@ export function useProductFetch() {
       });
     },
     getNextPageParam: (data) => {
-      console.log(data);
       if (!data || data.last) return null;
       if (data.number === 0) return 5;
       return data.number + 1;
