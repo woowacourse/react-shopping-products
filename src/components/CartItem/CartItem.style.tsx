@@ -56,4 +56,5 @@ export const DeleteButton = styled.button`
   padding: 0px 8px;
   border: 1px solid ${theme.color.primary.light};
   border-radius: 4px;
+  cursor: pointer;
 `;

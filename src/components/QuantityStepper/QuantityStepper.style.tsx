@@ -20,6 +20,7 @@ export const QuantityButton = styled.button`
   height: 24px;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.color.primary.light};
+  cursor: pointer;
 
   img {
     width: 12px;
