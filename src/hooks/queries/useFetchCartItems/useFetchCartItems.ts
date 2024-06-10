@@ -26,7 +26,7 @@ const useFetchCartItems = () => {
 
   useEffect(() => {
     if (error) showToast(error.message);
-  }, [error, showToast]);
+  }, [error]);
 
   return {
     cartItems: data ?? [],

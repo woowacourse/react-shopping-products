@@ -19,7 +19,7 @@ const useFetchProducts = (category: Option, sort: Option) => {
 
   useEffect(() => {
     if (error) showToast(error.message);
-  }, [error, showToast]);
+  }, [error]);
 
   return {
     products: data?.pages.flatMap((page) => page.data) ?? [],
