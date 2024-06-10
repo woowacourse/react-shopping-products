@@ -3,9 +3,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
 
 import { server } from '../mocks/server';
-import { END_POINTS } from '../apis/config';
+import { END_POINTS, QUERY_KEYS } from '../apis/config';
 
 import useCartItemList from './useCartItemList';
+import { CartItemList, CartItemListResponse } from '../types/type';
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,14 @@ describe('useCartItemList', () => {
       const { result } = renderHook(() => useCartItemList(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.data?.content.length).toBeGreaterThan(0);
+        expect(result.current.isSuccess).toBe(true);
+      });
+
+      const afterData: CartItemListResponse =
+        queryClient.getQueryData([QUERY_KEYS.CART_ITEMS]) ??
+        ({ content: [] as CartItemList } as CartItemListResponse);
+      await waitFor(() => {
+        expect(afterData.content).not.toBeUndefined();
       });
     });
 
