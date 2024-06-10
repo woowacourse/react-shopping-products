@@ -10,3 +10,10 @@ export const Container = styled.div`
   gap: 24px;
   margin-bottom: 24px;
 `;
+
+export const Result = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  gap: 24px;
+`;
