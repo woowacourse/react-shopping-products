@@ -3,6 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { Category, Sort } from '../types/type';
 import { QUERY_KEYS } from '../apis/config';
 import { fetchProductList } from '../apis/products';
+import { PRODUCT_LIST } from '../constants/productList';
 
 interface UseFetchProductListProps {
   category?: Category;
@@ -18,7 +19,10 @@ export default function useProductList({
     queryFn: ({ pageParam = 0 }) =>
       fetchProductList({
         page: pageParam,
-        limit: pageParam === 0 ? 20 : 4,
+        limit:
+          pageParam === 0
+            ? PRODUCT_LIST.initialQuantity
+            : PRODUCT_LIST.quantityPerPage,
         category,
         sort,
       }),
