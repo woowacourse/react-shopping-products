@@ -27,12 +27,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             buttonPosition="bottom-left"
           />
         </div>
-        {/* <QueryErrorBoundary> */}
-        <GlobalStyle />
-        <GlobalLayout>
-          <App />
-        </GlobalLayout>
-        {/* </QueryErrorBoundary> */}
+        <QueryErrorBoundary>
+          <GlobalStyle />
+          <GlobalLayout>
+            <App />
+          </GlobalLayout>
+        </QueryErrorBoundary>
       </ToastProvider>
     </QueryClientProvider>
   </>
