@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { fetchProducts } from '../api';
-import { useToast } from './useToast';
 import { QUERY_KEYS } from '../constant/queryKeys';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -29,7 +28,16 @@ export function useProductFetch() {
   });
 
   const handleSelectBarCondition = (filter: string, condition: string) => {
-    const newCondition = { ...selectBarCondition, [filter]: condition };
+    const newCondition = {
+      ...selectBarCondition,
+      [filter]:
+        filter === 'sort' && condition === 'priceDesc'
+          ? 'price,desc'
+          : filter === 'sort' && condition === 'priceAsc'
+          ? 'price,asc'
+          : condition,
+    };
+
     setSelectBarCondition(newCondition);
   };
 
