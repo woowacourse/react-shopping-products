@@ -32,12 +32,13 @@ function CartItemCard({ cartItem }: CartItemProps) {
   const handleDecreaseQuantity = () => {
     if (quantity === 1) {
       deleteCartItemMutation.mutate({ cartItemId: cartItem.id });
-    } else {
-      patchCartItemMutation.mutate({
-        cartItemId: cartItem.id,
-        quantity: quantity - 1,
-      });
+
+      return;
     }
+    patchCartItemMutation.mutate({
+      cartItemId: cartItem.id,
+      quantity: quantity - 1,
+    });
   };
 
   return (
