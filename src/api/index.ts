@@ -97,7 +97,7 @@ export async function fetchCartItem(page: number, size: number): Promise<CartIte
  * deleteCartItem - 선택한 상품을 장바구니에서 삭제합니다.
  * @returns {Promise<void>}
  */
-export async function deleteCartItem(cartItemId: number): Promise<void> {
+export async function deleteCartItem({ cartItemId }: { cartItemId: number }): Promise<void> {
   await makeRequest(`/cart-items/${cartItemId}`, {
     method: 'DELETE',
   });
