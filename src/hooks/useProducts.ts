@@ -4,6 +4,7 @@ import { PRODUCTS_ENDPOINT } from '@_api/endpoints';
 import { INITIAL_PAGING_SIZE, PAGING_SIZE, START_PAGE_NUMBER } from '@_constants/api';
 import { useState } from 'react';
 import { fetchData } from '@_api/fetch';
+import { QUERY_KEYS } from '@_constants/queryKeys';
 
 export type SortType = 'desc' | 'asc';
 
@@ -39,7 +40,7 @@ export default function useProducts(): UseProductsResult {
   };
 
   const { data, error, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery<FetchProductsResponse>({
-    queryKey: ['products', category, sort],
+    queryKey: [QUERY_KEYS.products, category, sort],
     queryFn: ({ pageParam }) => getProducts(pageParam as number),
     initialPageParam: START_PAGE_NUMBER,
     getNextPageParam: (lastPage) => {
