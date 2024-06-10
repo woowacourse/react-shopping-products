@@ -62,7 +62,7 @@ const ProductListPage = () => {
         )}
       </S.Layout>
       <FloatingButton />
-      {isModalOpen && <ShoppingCartModal cartItems={cartItems} isOpen={isModalOpen} close={closeModal} />}
+      <ShoppingCartModal cartItems={cartItems} isOpen={isModalOpen} close={closeModal} />
     </div>
   );
 };
