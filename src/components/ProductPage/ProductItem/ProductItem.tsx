@@ -3,6 +3,7 @@ import * as Styled from "./ProductItem.style";
 
 import { QuantityController, AddToCartButton } from "../../../components";
 import { ORDER_QUANTITY_PER_PRODUCT } from "../../../constants";
+import { convertToLocaleAmount } from "../../../utils";
 
 interface ProductProps {
   product: Product;
@@ -37,7 +38,7 @@ export default function ProductItem({
       <Styled.ProductContentBox>
         <Styled.ProductDescriptionBox>
           <h2>{product.name}</h2>
-          <span>{product.price.toLocaleString("ko-KR")}원</span>
+          <span>{convertToLocaleAmount(product.price)}</span>
         </Styled.ProductDescriptionBox>
         <Styled.ProductFooter>
           {quantity > 0 && (

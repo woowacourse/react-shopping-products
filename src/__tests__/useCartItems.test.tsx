@@ -16,7 +16,7 @@ describe("useCartItems", () => {
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.selectedCartItemsLength).toBe(INITIAL_CART_ITEMS_LENGTH);
+        expect(result.current.cartItems.length).toBe(INITIAL_CART_ITEMS_LENGTH);
       });
     });
   });
@@ -32,13 +32,12 @@ describe("useCartItems", () => {
       });
 
       await waitFor(() => {
-        expect(result.current.selectedCartItemsLength).toBe(INITIAL_CART_ITEMS_LENGTH + 1);
-        expect(result.current.getQuantityByProductId(ADD_CART_ITEM_ID)).toBe(1);
+        expect(result.current.cartItems.length).toBe(INITIAL_CART_ITEMS_LENGTH + 1);
       });
     });
 
     it.skip(`상품 하단의 "빼기" 버튼을 누르면 해당 상품이 장바구니에서 제거되어야 하고, 남은 장바구니 상품 종류 수는 ${INITIAL_CART_ITEMS_LENGTH - 1}이어야 한다.`, async () => {
-      const DELETE_CART_ITEM_ID = 108;
+      const DELETE_CART_ITEM_ID = 2;
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
@@ -47,8 +46,8 @@ describe("useCartItems", () => {
       });
 
       await waitFor(() => {
-        expect(result.current.selectedCartItemsLength).toBe(INITIAL_CART_ITEMS_LENGTH - 1);
-        // expect(result.current.checkIsInCart(DELETE_CART_ITEM_ID)).toBeFalsy();
+        console.log(result.current.cartItems);
+        expect(result.current.cartItems.length).toBe(INITIAL_CART_ITEMS_LENGTH - 1);
       });
     });
   });

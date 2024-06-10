@@ -1,5 +1,14 @@
+import { useState } from "react";
+
 import { useCartItems, useProducts, useIntersectionObserver } from "../../hooks";
-import { NavigationBar, SelectBox, ProductItemContainer, APIErrorToast } from "../../components";
+import {
+  NavigationBar,
+  SelectBox,
+  ProductItemContainer,
+  APIErrorToast,
+  ProductPageHeader,
+  CartModal,
+} from "../../components";
 
 import {
   CategoryKeys,
@@ -11,6 +20,8 @@ import {
 import * as Styled from "./ProductPage.style";
 
 export default function ProductPage() {
+  const [isCartModalOpened, setIsCartModalOpened] = useState(false);
+
   const {
     products,
     error: productError,
@@ -20,12 +31,20 @@ export default function ProductPage() {
     handleChangeSortOption,
   } = useProducts();
 
-  const { error: cartItemError, selectedCartItemsLength } = useCartItems();
+  const { error: cartItemError } = useCartItems();
 
   const observerRef = useIntersectionObserver<HTMLDivElement>({
     onIntersect: fetchNextPage,
     options: { threshold: 0.7 },
   });
+
+  const handleOpenCartModal = () => {
+    setIsCartModalOpened(true);
+  };
+
+  const handleCloseCartModal = () => {
+    setIsCartModalOpened(false);
+  };
 
   const handleSelectCategory = (value: CategoryKeys) => {
     handleChangeCategory(PRODUCT_CATEGORIES[value]);
@@ -38,17 +57,12 @@ export default function ProductPage() {
   return (
     <>
       <NavigationBar>
-        <Styled.ShopHeader>
-          SHOP
-          <Styled.CartButton />
-          {selectedCartItemsLength !== 0 && (
-            <Styled.CartItemsNumber>{selectedCartItemsLength}</Styled.CartItemsNumber>
-          )}
-        </Styled.ShopHeader>
+        <ProductPageHeader onClickCartButton={handleOpenCartModal} />
       </NavigationBar>
 
       <Styled.ShopContent>
         <Styled.ShopTitle>bpple 상품 목록</Styled.ShopTitle>
+
         <Styled.SelectBoxContainer>
           <SelectBox<CategoryKeys>
             optionValues={Object.keys(PRODUCT_CATEGORIES)}
@@ -61,12 +75,18 @@ export default function ProductPage() {
             placeholder="낮은 가격순"
           />
         </Styled.SelectBoxContainer>
+
         <ProductItemContainer products={products} />
+
+        <Styled.ObserverTarget
+          ref={observerRef}
+          $isEnabled={!isProductLoading && !productError}
+        />
       </Styled.ShopContent>
 
-      <Styled.ObserverTarget
-        ref={observerRef}
-        $isEnabled={!isProductLoading && !productError}
+      <CartModal
+        isOpen={isCartModalOpened}
+        onClose={handleCloseCartModal}
       />
 
       {productError && productError instanceof Error && (
