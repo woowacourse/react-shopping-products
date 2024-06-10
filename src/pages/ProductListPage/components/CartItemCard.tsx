@@ -1,4 +1,5 @@
 import Button from '../../../components/Button/Button';
+import { useDeleteCartItem } from '../../../hooks/useDeleteCartItem';
 import { CartItemType } from '../../../types';
 import styles from '../ProductListPage.module.css';
 import ProductQuantity from './ProductQuantity';
@@ -9,11 +10,12 @@ interface Props {
 
 export const CartItemCard = ({ cartItem }: Props) => {
   const { name, price, imageUrl } = cartItem.product;
+  const { handlerDeleteCartItem } = useDeleteCartItem();
 
   return (
     <div className={styles.cartItemCard}>
       <div className={styles.cartItemCardHeader}>
-        <Button onClick={() => console.log('삭제')} disabled={false} text="삭제" />
+        <Button onClick={() => handlerDeleteCartItem(cartItem.id)} disabled={false} text="삭제" />
       </div>
       <div className={styles.cartItemCardProductContents}>
         <img className={styles.cartItemProductImg} src={imageUrl} alt="" />
