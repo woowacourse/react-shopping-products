@@ -3,15 +3,22 @@ import * as Styled from './CartToggleButton.styled';
 import { IMAGES } from '@/assets';
 import { AdjustQuantityButton } from '../common/adjustQuantityButton/AdjustQuantityButton';
 import { useToast } from '@/hooks/useToast';
-import useCartItemList from '@/hooks/useCartItemList';
+import { CartItemInfo } from '@/types/cartItem';
 
 interface CartItemButtonProp {
   productId: number;
+  cartItemList?: CartItemInfo[];
+  addCartItemMutation: (productId: number) => void;
+  matchCartItem: (productId: number) => CartItemInfo | undefined;
 }
 
-const CartToggleButton = ({ productId }: CartItemButtonProp) => {
+const CartToggleButton = ({
+  productId,
+  cartItemList,
+  addCartItemMutation,
+  matchCartItem,
+}: CartItemButtonProp) => {
   const { toastError } = useToast();
-  const { cartItemList, addCartItemMutation, matchCartItem } = useCartItemList();
 
   return (
     <>
