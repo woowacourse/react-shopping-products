@@ -23,8 +23,6 @@ export default function useGetCartItems() {
     networkMode: 'always',
   });
 
-  // TODO: 에러 처리 - toast
-
   const cartItems = (data && data.content) || [];
 
   return { cartItems, status };
