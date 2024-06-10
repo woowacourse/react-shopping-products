@@ -2,8 +2,10 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ToastProvider } from '../store/ToastProvider';
-
+import { QUERY_KEYS } from '../apis/config';
+import mockCartItemList from '../mocks/handlers/cartItemList/defaultData.json';
 import usePatchCartItem from './usePatchCartItem';
+import { CartItemList, CartItemListResponse } from '../types/type';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,17 @@ describe('usePatchCartItem', () => {
       wrapper,
     });
 
+    queryClient.setQueryData([QUERY_KEYS.CART_ITEMS], {
+      content: mockCartItemList,
+    });
+
+    const beforeData: CartItemListResponse =
+      queryClient.getQueryData([QUERY_KEYS.CART_ITEMS]) ??
+      ({ content: [] as CartItemList } as CartItemListResponse);
+    expect(
+      beforeData.content.find((cartItem) => cartItem.id === 3091)?.quantity,
+    ).toBe(1);
+
     act(() => {
       result.current.mutate({ cartItemId: 3091, quantity: 2 });
     });
@@ -26,5 +39,12 @@ describe('usePatchCartItem', () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
+
+    const afterData: CartItemListResponse =
+      queryClient.getQueryData([QUERY_KEYS.CART_ITEMS]) ??
+      ({ content: [] as CartItemList } as CartItemListResponse);
+    expect(
+      afterData.content.find((cartItem) => cartItem.id === 3091)?.quantity,
+    ).toBe(2);
   });
 });

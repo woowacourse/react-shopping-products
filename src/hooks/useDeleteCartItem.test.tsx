@@ -4,6 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastProvider } from '../store/ToastProvider';
 
 import useDeleteCartItem from './useDeleteCartItem';
+import { QUERY_KEYS } from '../apis/config';
+import mockCartItemList from '../mocks/handlers/cartItemList/defaultData.json';
+import { CartItemList, CartItemListResponse } from '../types/type';
 
 const queryClient = new QueryClient();
 
@@ -19,12 +22,28 @@ describe('useDeleteCartItem', () => {
       wrapper,
     });
 
+    queryClient.setQueryData([QUERY_KEYS.CART_ITEMS], {
+      content: mockCartItemList,
+    });
+
+    const beforeData: CartItemListResponse =
+      queryClient.getQueryData([QUERY_KEYS.CART_ITEMS]) ??
+      ({ content: [] as CartItemList } as CartItemListResponse);
+    expect(beforeData.content.length).toBe(7);
+
     await act(async () => {
       result.current.mutate({ cartItemId: 3091 });
     });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
+    });
+
+    const afterData: CartItemListResponse =
+      queryClient.getQueryData([QUERY_KEYS.CART_ITEMS]) ??
+      ({ content: [] as CartItemList } as CartItemListResponse);
+    await waitFor(() => {
+      expect(afterData.content.length).toBe(6);
     });
   });
 });
