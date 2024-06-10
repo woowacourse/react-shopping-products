@@ -5,5 +5,4 @@ import { cartItemListHandlers, productListHandlers } from './handlers/index';
 export const server = setupServer(
   ...cartItemListHandlers,
   ...productListHandlers,
-  // ...handlers,
 );
