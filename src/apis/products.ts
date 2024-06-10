@@ -23,10 +23,6 @@ export async function fetchProductList({
   const url = `${PRODUCTS_ENDPOINT}?${categoryQuery}${requiredQuery}&${sortOptionQuery}`;
   const response = await fetchWithAuth(url, "GET");
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch products");
-  }
-
   const data = await response.json();
   return data;
 }
