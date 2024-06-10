@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  display: flex;
+  gap: 16px;
+  padding: 8px 0 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+`;
 
 export const CartProductImg = styled.img`
   width: 80px;
