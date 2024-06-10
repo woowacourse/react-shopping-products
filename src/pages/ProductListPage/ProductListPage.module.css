@@ -121,3 +121,88 @@
   text-align: center;
   color: rgba(10, 13, 19, 1);
 }
+
+.cartItemCardList {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 52px;
+}
+
+.cartItemCard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 12px;
+}
+
+.cartItemCardHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.cartItemCardProductContents {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.cartItemProductImg {
+  width: 112px;
+  height: 112px;
+  border-radius: 8px;
+}
+
+.cartItemProductInfo {
+  width: 256px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartItemProductName {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  text-align: left;
+  color: rgba(10, 13, 19, 1);
+  margin-bottom: 4px;
+}
+
+.cartItemProductPrice {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 34.75px;
+  text-align: left;
+  color: rgba(0, 0, 0, 1);
+}
+
+.cartItemTotalPriceContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 54px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 12px;
+}
+
+.cartItemTotalPriceTitle {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: left;
+  color: rgba(10, 13, 19, 1);
+}
+
+.cartItemTotalPrice {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 34.75px;
+  text-align: right;
+  color: rgba(0, 0, 0, 1);
+}
