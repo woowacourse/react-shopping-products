@@ -1,27 +1,27 @@
 import styled from 'styled-components';
 
 export const CartItem = styled.li`
-  list-style: none;
-
   display: flex;
   flex-direction: column;
-  row-gap: 12px;
+  gap: 12px;
   width: 100%;
 `;
 
 export const ItemBody = styled.div`
   width: 100%;
   display: flex;
-  column-gap: 20px;
+  gap: 20px;
 `;
 
 export const ImageWrapper = styled.div`
-  border-radius: 8px;
+  height: 80px;
+  aspect-ratio: 1/1;
 `;
 
 export const Image = styled.img`
-  width: 80px;
-  height: 80px;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
   object-fit: cover;
 `;
 
