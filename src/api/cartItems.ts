@@ -35,3 +35,16 @@ export async function deleteCartItems(id: number) {
 
   return data;
 }
+
+export async function patchCartItem(
+  id: number,
+  quantity: number
+): Promise<void> {
+  await fetchWithToken({
+    method: "PATCH",
+    url: `${CART_ITEMS_ENDPOINT}/${id}`,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ quantity }),
+    errorMessage: ERROR_MESSAGE.patchCartItem,
+  });
+}
