@@ -14,32 +14,8 @@ import { ToastContext } from "../components/Toasts/ToastProvider";
 import { baseStyle } from "../style/baseStyle";
 import styled from "@emotion/styled";
 import useCustomContext from "../hooks/useCustomContext";
-import useManageCartItem from "../hooks/useManageCartItem";
-import useProducts from "../hooks/useProducts";
-
-const S = {
-  MainMall: styled.div`
-    padding: 36px 24px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  `,
-  Toolbar: styled.div`
-    display: flex;
-    justify-content: space-between;
-  `,
-  ProductList: styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 183px);
-    gap: 16px;
-  `,
-
-  ModalContainer: styled(CartModal)`
-    background-color: red;
-    width: 430px;
-  `,
-};
+import useManageCartItem from "../hooks/cartItem/useManageCartItem";
+import useProducts from "../hooks/products/useProducts";
 
 const Mall = () => {
   const {
@@ -51,14 +27,7 @@ const Mall = () => {
     handleSortChange,
   } = useProducts();
 
-  const {
-    cartItems,
-    addItemToCart,
-    removeItemFromCart,
-    isItemInCart,
-    isLoading: isToggleCartItemLoading,
-    error: toggleCartItemError,
-  } = useManageCartItem();
+  const { cartItems, error: toggleCartItemError } = useManageCartItem();
 
   const { failAlert } = useCustomContext(ToastContext);
 
@@ -72,19 +41,23 @@ const Mall = () => {
     if (toggleCartItemError && toggleCartItemError instanceof Error) {
       failAlert(toggleCartItemError.message);
     }
-  }, [toggleCartItemError]);
+  }, [toggleCartItemError, failAlert]);
 
   useEffect(() => {
     if (productError && productError instanceof Error) {
       failAlert(productError.message);
     }
-  }, [productError]);
+  }, [productError, failAlert]);
 
   return (
     <>
       <Global styles={baseStyle} />
-      <Header itemCount={cartItems.length} toggleCart={toggleCart} />
-      <S.ModalContainer isCartOpen={isCartOpen} toggleCart={toggleCart} />
+      <Header itemCount={cartItems?.length} toggleCart={toggleCart} />
+      <CartModal
+        cartItems={cartItems}
+        isCartOpen={isCartOpen}
+        toggleCart={toggleCart}
+      />
       <S.MainMall>
         <MainTitle>피터의 쇼핑몰</MainTitle>
         <S.Toolbar>
@@ -107,16 +80,7 @@ const Mall = () => {
           >
             {products?.map((page) =>
               page?.content?.map((product: Product, index: number) => (
-                <ProductCard
-                  key={`${index}-${product.id}`}
-                  product={product}
-                  cartManager={{
-                    addItemToCart,
-                    removeItemFromCart,
-                    isItemInCart,
-                    isLoading: isToggleCartItemLoading,
-                  }}
-                />
+                <ProductCard key={`${index}-${product.id}`} product={product} />
               ))
             )}
           </InfiniteScrollComponent>
@@ -127,3 +91,22 @@ const Mall = () => {
 };
 
 export default Mall;
+
+const S = {
+  MainMall: styled.div`
+    padding: 36px 24px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  `,
+  Toolbar: styled.div`
+    display: flex;
+    justify-content: space-between;
+  `,
+  ProductList: styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 183px);
+    gap: 16px;
+  `,
+};
