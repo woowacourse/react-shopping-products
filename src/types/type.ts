@@ -23,6 +23,11 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface AddCartItemRequest {
+  productId: number;
+  quantity: number;
+}
+
 export type CartItemList = CartItem[];
 
 export interface CartItemListResponse {
@@ -53,24 +58,3 @@ export interface SortPage {
   unsorted: boolean;
   empty: boolean;
 }
-
-export interface AddCartItemAction {
-  type: 'ADD';
-  payload: CartItem;
-}
-
-export interface DeleteCartItemAction {
-  type: 'DELETE';
-  payload: { productId: number };
-}
-
-// TODO: 확인 후 필요없는 코드 삭제
-export interface PatchCartItemAction {
-  type: 'PATCH';
-  payload: { productId: number; quantity: number };
-}
-
-export type CartItemAction =
-  | AddCartItemAction
-  | DeleteCartItemAction
-  | PatchCartItemAction;
