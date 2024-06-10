@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-import { useCartItems, useProducts, useIntersectionObserver } from "../../hooks";
+import { useProducts, useIntersectionObserver } from "../../hooks";
 import {
   NavigationBar,
   SelectBox,
   ProductItemContainer,
-  APIErrorToast,
   ProductPageHeader,
   CartModal,
+  Toast,
 } from "../../components";
 
 import {
@@ -30,8 +30,6 @@ export default function ProductPage() {
     handleChangeCategory,
     handleChangeSortOption,
   } = useProducts();
-
-  const { error: cartItemError } = useCartItems();
 
   const observerRef = useIntersectionObserver<HTMLDivElement>({
     onIntersect: fetchNextPage,
@@ -59,6 +57,8 @@ export default function ProductPage() {
       <NavigationBar>
         <ProductPageHeader onClickCartButton={handleOpenCartModal} />
       </NavigationBar>
+
+      <Toast />
 
       <Styled.ShopContent>
         <Styled.ShopTitle>bpple 상품 목록</Styled.ShopTitle>
@@ -88,13 +88,6 @@ export default function ProductPage() {
         isOpen={isCartModalOpened}
         onClose={handleCloseCartModal}
       />
-
-      {productError && productError instanceof Error && (
-        <APIErrorToast message={productError.message} />
-      )}
-      {cartItemError && cartItemError instanceof Error && (
-        <APIErrorToast message={cartItemError.message} />
-      )}
     </>
   );
 }

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { Product } from "../../types";
 import { CategoryQueryString, SortOptionQueryString, QUERY_KEYS } from "../../constants";
 import { fetchProducts } from "./quaries";
+import useErrorContext from "../useErrorContext";
 
 interface UseProductResult {
   products: Product[];
@@ -29,6 +30,14 @@ export default function useProducts(): UseProductResult {
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPageNumber,
   });
+
+  const { setError } = useErrorContext();
+
+  useEffect(() => {
+    if (error) {
+      setError(error);
+    }
+  }, [error, setError]);
 
   const handleChangeCategory = (value: CategoryQueryString) => {
     if (category === value) return;

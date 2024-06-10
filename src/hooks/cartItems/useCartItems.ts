@@ -1,21 +1,19 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import { addCartItem, removeCartItem } from "../../apis";
 import { useGetCartItems, useUpdateCartItem } from "./queries";
+import { useErrorContext } from "../../hooks";
 import { ERROR_MESSAGE } from "../../constants";
 import { CartItem } from "../../types";
 
 interface UseCartItemResult {
   cartItems: CartItem[];
-  error: unknown;
   isLoading: boolean;
   handleAddCartItem: (id: number) => Promise<void>;
   handleRemoveCartItem: (id: number) => Promise<void>;
 }
 
 export default function useCartItems(): UseCartItemResult {
-  const [error, setError] = useState<unknown>(null);
-
   const {
     data: cartItems = [],
     isLoading: isCartItemsLoading,
@@ -26,18 +24,16 @@ export default function useCartItems(): UseCartItemResult {
   const addProductToCart = useUpdateCartItem<number>(addCartItem);
   const removeProductFromCart = useUpdateCartItem<number>(removeCartItem);
 
+  const { setError } = useErrorContext();
+
   const isLoading =
     isCartItemsLoading || addProductToCart.isPending || removeProductFromCart.isPending;
 
   useEffect(() => {
-    if (isCartItemsError || addProductToCart.isError || removeProductFromCart.isError) {
-      const error = cartItemsError || addProductToCart.error || removeProductFromCart.error;
-      setError(error);
-      return;
+    if (isCartItemsError) {
+      setError(cartItemsError);
     }
-
-    setError(null);
-  }, [isCartItemsError, cartItemsError, addProductToCart, removeProductFromCart]);
+  }, [isCartItemsError, cartItemsError, setError]);
 
   const handleAddCartItem = async (productId: number) => {
     addProductToCart.mutate(productId, {
@@ -60,7 +56,6 @@ export default function useCartItems(): UseCartItemResult {
 
   return {
     cartItems,
-    error,
     isLoading,
     handleAddCartItem,
     handleRemoveCartItem,
