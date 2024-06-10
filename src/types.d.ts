@@ -12,13 +12,15 @@ interface CartItemProps {
   product: ProductProps;
 }
 
+type SortOrder = "asc" | "desc";
+
 interface UseProductsResult {
   products: ProductProps[];
   isLoading: boolean;
   error: Error | null;
   fetchNextPage: () => void;
   isLastPage: boolean;
-  setSortOption: (sortOption: string) => void;
+  setSortOption: (sortOption: SortOrder) => void;
   setCategory: (category: string) => void;
   resetPage: () => void;
   selectedCategory: string;

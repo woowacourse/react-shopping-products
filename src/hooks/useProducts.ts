@@ -3,9 +3,9 @@ import { PRODUCTS_ENDPOINT } from "../api/endpoints";
 import { PAGE } from "../constants";
 import { useError } from "../context/errorContext";
 
-const sortOptionsMap: Record<"price,asc" | "price,desc", string> = {
-  "price,asc": "낮은 가격순",
-  "price,desc": "높은 가격순",
+const sortOptionsMap: Record<SortOrder, string> = {
+  asc: "낮은 가격순",
+  desc: "높은 가격순",
 };
 
 export default function useProducts(): UseProductsResult {
@@ -15,7 +15,7 @@ export default function useProducts(): UseProductsResult {
   const { setErrorStatus } = useError();
   const [page, setPage] = useState<number>(PAGE.FIRST_PAGE);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
-  const [sortOption, setSortOption] = useState<string>("price,asc");
+  const [sortOption, setSortOption] = useState<SortOrder>("asc");
   const [category, setCategory] = useState<string>("전체");
 
   const fetchProducts = async () => {
@@ -25,7 +25,7 @@ export default function useProducts(): UseProductsResult {
       const categoryQuery = category === "전체" ? "" : `category=${category}`;
 
       const response = await fetch(
-        `${PRODUCTS_ENDPOINT}?${categoryQuery}&page=${page}&size=${size}&sort=${sortOption}`
+        `${PRODUCTS_ENDPOINT}?${categoryQuery}&page=${page}&size=${size}&sort=price,${sortOption}`
       );
 
       if (!response.ok) {
@@ -52,7 +52,7 @@ export default function useProducts(): UseProductsResult {
 
   const fetchNextPage = useCallback(() => {
     if (!isLastPage && !isLoading) {
-      page == PAGE.FIRST_PAGE
+      page === PAGE.FIRST_PAGE
         ? setPage(PAGE.SECOND_PAGE_STD)
         : setPage((prevPage) => prevPage + PAGE.NEXT_PAGE_STEP);
     }
@@ -75,6 +75,6 @@ export default function useProducts(): UseProductsResult {
     setCategory,
     resetPage,
     selectedCategory: category,
-    selectedSort: sortOptionsMap[sortOption as "price,asc" | "price,desc"],
+    selectedSort: sortOptionsMap[sortOption],
   };
 }
