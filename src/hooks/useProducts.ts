@@ -52,6 +52,7 @@ export default function useProducts(): UseProductsResult {
         return lastPage.number + 1;
       }
     },
+    networkMode: 'always',
   });
 
   const products = data?.pages.flatMap((page) => page.content) || [];
