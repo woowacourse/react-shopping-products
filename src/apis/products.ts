@@ -26,5 +26,5 @@ export async function fetchProductList({
     errorMessage: '네트워크 문제로 인해 상품 목록을 불러오는데 실패했어요.',
   });
 
-  return await data;
+  return data;
 }
