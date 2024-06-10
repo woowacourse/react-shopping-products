@@ -27,6 +27,7 @@ export const ErrorIcon = styled.div`
 
 export const RetryIcon = styled.img`
   padding: 10px 10px;
+  margin-bottom: 20px;
   font-size: 16px;
   color: #fff;
   background-color: grey;
