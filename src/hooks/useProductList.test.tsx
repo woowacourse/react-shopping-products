@@ -1,15 +1,15 @@
 import { http, HttpResponse } from 'msw';
 import { act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { END_POINTS, QUERY_KEYS } from '../apis/config';
 import expectedDefaultParamsData from '../mocks/handlers/productList/expectedDefaultParamsData.json';
 import expectedFitnessPriceDescData from '../mocks/handlers/productList/expectedFitnessPriceDescData.json';
 import { server } from '../mocks/server';
+import { PRODUCT_LIST } from '../constants/productList';
 
 import useProductList from './useProductList';
-import { PRODUCT_LIST } from '../constants/productList';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 

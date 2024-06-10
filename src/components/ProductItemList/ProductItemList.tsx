@@ -6,9 +6,9 @@ import { Category, Product, Sort } from '../../types/type';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../common/Spinner/Spinner';
 import useCartItemList from '../../hooks/useCartItemList';
+import { useToast } from '../../store/ToastProvider';
 
 import * as S from './ProductItemList.style';
-import { useToast } from '../../store/ToastProvider';
 
 interface ProductItemListProp {
   category: Category;
