@@ -4,9 +4,9 @@ import QuantityStepper from '../common/QuantityStepper/QuantityStepper';
 import { CartItem } from '../../types/type';
 import useDeleteCartItem from '../../hooks/useDeleteCartItem';
 import usePatchCartItem from '../../hooks/usePatchCartItem';
+import useCartItemQuantity from '../../hooks/useCartItemQuantity';
 
 import * as S from './CartItemCard.style';
-import useCartItemQuantity from '../../hooks/useCartItemQuantity';
 
 interface CartItemProps {
   cartItem: CartItem;

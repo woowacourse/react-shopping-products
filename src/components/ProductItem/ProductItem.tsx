@@ -5,10 +5,10 @@ import AddCartItemButton from '../AddCartItemButton/AddCartItemButton';
 import useAddCartItem from '../../hooks/useAddCartItem';
 import useDeleteCartItem from '../../hooks/useDeleteCartItem';
 import usePatchCartItem from '../../hooks/usePatchCartItem';
-
-import * as S from './ProductItem.style';
 import useCartITemQuantity from '../../hooks/useCartItemQuantity';
 import useCartItemQuantity from '../../hooks/useCartItemQuantity';
+
+import * as S from './ProductItem.style';
 
 interface ProductItemProps {
   product: Product;

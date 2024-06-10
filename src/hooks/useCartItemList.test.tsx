@@ -4,9 +4,9 @@ import { http, HttpResponse } from 'msw';
 
 import { server } from '../mocks/server';
 import { END_POINTS, QUERY_KEYS } from '../apis/config';
+import { CartItemList, CartItemListResponse } from '../types/type';
 
 import useCartItemList from './useCartItemList';
-import { CartItemList, CartItemListResponse } from '../types/type';
 
 const queryClient = new QueryClient();
 

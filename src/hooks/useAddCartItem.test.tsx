@@ -2,12 +2,11 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ToastProvider } from '../store/ToastProvider';
-
-import useAddCartItem from './useAddCartItem';
 import { QUERY_KEYS } from '../apis/config';
 import { CartItemList, CartItemListResponse } from '../types/type';
-
 import mockCartItemList from '../mocks/handlers/cartItemList/defaultData.json';
+
+import useAddCartItem from './useAddCartItem';
 
 const queryClient = new QueryClient();
 

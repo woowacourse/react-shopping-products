@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { ChevronDown, ChevronUp } from '../../../assets';
+import useDropdown from '../../../hooks/useDropdown';
 
 import * as S from './Dropdown.style';
 import DropdownOptions from './DropdownOptions';
-import useDropdown from '../../../hooks/useDropdown';
 
 interface DropdownProps<T> {
   optionList: [T, string][];

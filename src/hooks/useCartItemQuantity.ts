@@ -1,10 +1,11 @@
 import { CartItem } from '../types/type';
+
 import useAddCartItem from './useAddCartItem';
 import useDeleteCartItem from './useDeleteCartItem';
 import usePatchCartItem from './usePatchCartItem';
 
 const useCartItemQuantity = (cartItem: CartItem) => {
-  const quantity = cartItem.quantity;
+  const { quantity } = cartItem;
 
   const addCartItemMutation = useAddCartItem();
   const deleteCartItemMutation = useDeleteCartItem();
