@@ -8,7 +8,7 @@ interface CartModalProps {
 
 export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
   const rootElement = document.getElementById("root");
-  const rootWidth = rootElement && window.getComputedStyle(rootElement).width;
+  const rootWidth = rootElement ? window.getComputedStyle(rootElement).width : "430px";
 
   return (
     <Modal
