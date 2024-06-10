@@ -3,11 +3,12 @@ import { useState, useEffect } from "react";
 import { addCartItem, removeCartItem } from "../../apis";
 import { useGetCartItems, useUpdateCartItem } from "./queries";
 import { ERROR_MESSAGE } from "../../constants";
+import { CartItem } from "../../types";
 
 interface UseCartItemResult {
+  cartItems: CartItem[];
   error: unknown;
   isLoading: boolean;
-  selectedCartItemsLength: number;
   handleAddCartItem: (id: number) => Promise<void>;
   handleRemoveCartItem: (id: number) => Promise<void>;
 }
@@ -58,9 +59,9 @@ export default function useCartItems(): UseCartItemResult {
   };
 
   return {
+    cartItems,
     error,
     isLoading,
-    selectedCartItemsLength: cartItems.length ?? 0,
     handleAddCartItem,
     handleRemoveCartItem,
   };
