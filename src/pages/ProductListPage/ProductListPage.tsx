@@ -27,7 +27,7 @@ const ProductListPage = () => {
       <CartModal isOpen={isOpen} onClose={handleClose} />
 
       <Layout.Header>
-        <ProductHeader onOpen={handleOpen} />
+        <ProductHeader onOpenModal={handleOpen} />
       </Layout.Header>
 
       <Layout.Content>
