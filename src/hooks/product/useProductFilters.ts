@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { PriceSortKey, CategoryListKey } from '@/types/product.type';
 
 const useProductFilters = () => {
-  const [sort, setSort] = useState('asc');
-  const [category, setCategory] = useState('');
+  const [sort, setSort] = useState<PriceSortKey>('asc');
+  const [category, setCategory] = useState<CategoryListKey>('');
 
   return {
     sort,
