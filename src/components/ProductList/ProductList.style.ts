@@ -20,10 +20,3 @@ export const Empty = styled(DefaultStyle)`
   font-size: 17px;
   font-weight: 500;
 `;
-
-export const Error = styled(DefaultStyle)`
-  font-size: 23px;
-  font-weight: 500;
-  text-align: center;
-  line-height: 40px;
-`;
