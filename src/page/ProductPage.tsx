@@ -18,6 +18,7 @@ function ProductPage() {
     products,
     fetchNextPage,
     isLoading,
+    isFetching,
     changeCategory,
     changeSorting,
     error,
@@ -64,7 +65,7 @@ function ProductPage() {
           <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
         )}
 
-        {!isLoading && !error && products.length !== 0 && (
+        {!isFetching && !error && products.length !== 0 && (
           <div
             ref={lastProductElementRef}
             style={{ height: '30px', fontSize: '5rem' }}

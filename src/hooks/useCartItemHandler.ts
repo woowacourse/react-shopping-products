@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { addCartItem, deleteCartItem, fetchCartItemQuantity } from '../api';
-import { useToast } from './useToast';
 import { CHANGE_CART_ITEM_COUNT } from '../constants';
 import { useMutation } from '@tanstack/react-query';
 import { useCart } from '../context/CartContext';
@@ -13,7 +12,6 @@ interface CartButtonProps {
 const useCartItemHandler = ({ productId }: CartButtonProps) => {
   const [isInCart, setIsInCart] = useState(false);
   const [itemQuantity, setItemQuantity] = useState(0);
-  const { createToast } = useToast();
   const { cartItem, refetch } = useCart();
 
   useEffect(() => {
@@ -42,7 +40,6 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
       setItemQuantity((prev) => prev + CHANGE_CART_ITEM_COUNT);
     },
     onError: () => {
-      createToast('⛔️ 상품을 담는데 실패했습니다. 다시 시도해 주세요.');
       setItemQuantity((prev) => Math.max(0, prev - CHANGE_CART_ITEM_COUNT));
       setIsInCart(false);
     },
@@ -60,7 +57,6 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
       setIsInCart(false);
     },
     onError: () => {
-      createToast('⛔️ 상품을 제거하는데 실패했습니다. 다시 시도해 주세요.');
       setItemQuantity(itemQuantity);
       setIsInCart(true);
     },
@@ -77,9 +73,6 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
       setItemQuantity((prev) => prev + CHANGE_CART_ITEM_COUNT);
     },
     onError: () => {
-      createToast(
-        '⛔️ 상품의 수량을 변경하는데 실패했습니다. 다시 시도해 주세요.',
-      );
       setItemQuantity((prev) => Math.max(0, prev - CHANGE_CART_ITEM_COUNT));
     },
     onSuccess: () => {
@@ -99,9 +92,6 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
       setItemQuantity((prev) => Math.max(1, prev - CHANGE_CART_ITEM_COUNT));
     },
     onError: (itemQuantity: number) => {
-      createToast(
-        '⛔️ 상품의 수량을 변경하는데 실패했습니다. 다시 시도해 주세요.',
-      );
       setItemQuantity((prev) => prev + CHANGE_CART_ITEM_COUNT);
       if (itemQuantity === 1) {
         setIsInCart(true);

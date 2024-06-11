@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { fetchProducts } from '../api/index';
 import {
   INITIAL_DATA_LOAD_COUNT,
   JUMP_NEXT_PAGE_IN_ZERO,
   SUBSEQUENT_DATA_LOAD_COUNT,
 } from '../constants';
-import { useToast } from './useToast';
 import { CategoryType, SortType } from '../type';
 import { ProductItem } from '../type/ProductItem';
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
@@ -24,8 +23,6 @@ interface UseProductsResult {
 export default function useProducts(): UseProductsResult {
   const [category, setCategory] = useState<CategoryType>('all');
   const [sorting, setSorting] = useState<SortType>('price_name_asc');
-  const { createToast } = useToast();
-
   const changeCategory = (category: CategoryType) => {
     setCategory(category);
   };
@@ -63,16 +60,6 @@ export default function useProducts(): UseProductsResult {
         return data.pages.flatMap((page) => page.data);
       },
     });
-
-  useEffect(() => {
-    if (error) {
-      if (error instanceof Error) {
-        createToast(
-          '⛔️ 상품 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.',
-        );
-      }
-    }
-  }, [error, createToast]);
 
   return {
     products: data || [],

@@ -1,6 +1,5 @@
-import React, { createContext, useEffect, PropsWithChildren } from 'react';
+import React, { createContext, PropsWithChildren } from 'react';
 import { fetchItems } from '../api';
-import { useToast } from '../hooks/useToast';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../constants/queryKeys';
 import { CartItems } from '../type/CartItem';
@@ -23,7 +22,6 @@ export const CartContext = createContext<{
 });
 
 export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const { createToast } = useToast();
   const { data, error, isLoading, isFetching, isSuccess, isError, refetch } =
     useQuery({
       queryKey: [QUERY_KEYS.CART_ITEM],
@@ -32,15 +30,6 @@ export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
       placeholderData: keepPreviousData,
     });
 
-  useEffect(() => {
-    if (error) {
-      if (error instanceof Error) {
-        createToast(
-          '⛔️ 장바구니 수량을 가져오는데 실패했습니다. 다시 시도해 주세요.',
-        );
-      }
-    }
-  }, [error, createToast]);
   return (
     <CartContext.Provider
       value={{

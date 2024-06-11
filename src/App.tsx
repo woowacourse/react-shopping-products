@@ -2,18 +2,34 @@ import './reset.css';
 import './index.css';
 
 import ProductPage from './page/ProductPage';
-import { ToastContextProvider } from './context/ToastContextProvider';
 import { CartProvider } from './context/ShoppingCartContext';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-const queryClient = new QueryClient();
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import { useToast } from './hooks/useToast';
+
 function App() {
+  const { createToast } = useToast();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        networkMode: 'always',
+      },
+    },
+    queryCache: new QueryCache({
+      onError: (error) => {
+        console.log(error);
+        createToast(error.message);
+      },
+    }),
+  });
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastContextProvider>
-        <CartProvider>
-          <ProductPage />
-        </CartProvider>
-      </ToastContextProvider>
+      <CartProvider>
+        <ProductPage />
+      </CartProvider>
     </QueryClientProvider>
   );
 }

@@ -42,31 +42,42 @@ export async function fetchProducts(
     size: limit,
     sort: sortArray,
   });
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: HEADERS,
-  });
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch products');
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: HEADERS,
+    });
+    if (!response.ok) {
+      throw new Error(
+        '⛔️ 상품 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.',
+      );
+    }
+    const data = await response.json();
+    return { data: data.content, last: data.last };
+  } catch (error) {
+    throw new Error(
+      '⛔️ 상품 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.',
+    );
   }
-
-  const data = await response.json();
-  return { data: data.content, last: data.last };
 }
 
 export const addCartItem = async (itemId: number, itemQuantity: number) => {
-  const response = await fetch(ENDPOINT.CART_ITEMS, {
-    method: 'POST',
-    headers: HEADERS,
-    body: JSON.stringify({
-      productId: itemId,
-      quantity: itemQuantity,
-    }),
-  });
+  try {
+    const response = await fetch(ENDPOINT.CART_ITEMS, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({
+        productId: itemId,
+        quantity: itemQuantity,
+      }),
+    });
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch Items');
+    if (!response.ok) {
+      throw new Error('⛔️ 상품을 담는데 실패했습니다. 다시 시도해 주세요.');
+    }
+  } catch (error) {
+    throw new Error('⛔️ 상품을 담는데 실패했습니다. 다시 시도해 주세요.');
   }
 };
 
@@ -74,25 +85,39 @@ export async function fetchCartItemQuantity(
   cartItemId: number,
   quantity: number,
 ): Promise<void> {
-  const response = await fetch(`${ENDPOINT.CART_ITEMS}/${cartItemId}`, {
-    method: 'PATCH',
-    headers: HEADERS,
-    body: JSON.stringify({ quantity: quantity }),
-  });
+  try {
+    const response = await fetch(`${ENDPOINT.CART_ITEMS}/${cartItemId}`, {
+      method: 'PATCH',
+      headers: HEADERS,
+      body: JSON.stringify({ quantity: quantity }),
+    });
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch cart item quantity');
+    if (!response.ok) {
+      throw new Error(
+        '⛔️ 상품의 수량을 변경하는데 실패했습니다. 다시 시도해 주세요.',
+      );
+    }
+  } catch (error) {
+    throw new Error(
+      '⛔️ 상품의 수량을 변경하는데 실패했습니다. 다시 시도해 주세요.',
+    );
   }
 }
 
 export const deleteCartItem = async (cartItemId: number) => {
-  const response = await fetch(`${ENDPOINT.CART_ITEMS}/${cartItemId}`, {
-    method: 'DELETE',
-    headers: HEADERS,
-  });
+  try {
+    const response = await fetch(`${ENDPOINT.CART_ITEMS}/${cartItemId}`, {
+      method: 'DELETE',
+      headers: HEADERS,
+    });
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch Items');
+    if (!response.ok) {
+      throw new Error(
+        '⛔️ 상품을 제거하는데 실패했습니다. 다시 시도해 주세요.',
+      );
+    }
+  } catch (error) {
+    throw new Error('⛔️ 상품을 제거하는데 실패했습니다. 다시 시도해 주세요.');
   }
 };
 
@@ -106,34 +131,28 @@ export const findCartItemIdByProductId = async (productId: number) => {
   return cartItem && cartItem.id;
 };
 
-export const fetchShoppingCartQuantity = async () => {
-  const response = await fetch(ENDPOINT.CART_ITEMS_COUNT, {
-    method: 'GET',
-    headers: HEADERS,
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch Items');
-  }
-
-  const data = await response.json();
-
-  return data.quantity;
-};
-
 export async function fetchItems(): Promise<CartItems[]> {
   const url = createURLWithParams(ENDPOINT.CART_ITEMS, {
     size: MAX_CART_ITEMS_COUNTS,
   });
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: HEADERS,
-  });
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch Items');
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: HEADERS,
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        '⛔️ 장바구니 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.',
+      );
+    }
+
+    const data = await response.json();
+    return data.content;
+  } catch (error) {
+    throw new Error(
+      '⛔️ 장바구니 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.',
+    );
   }
-
-  const data = await response.json();
-  return data.content;
 }
