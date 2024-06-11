@@ -1,14 +1,9 @@
 import { getProducts } from "@/apis/product";
 import { END_POINT } from "@/config/endPoint";
-import { ERROR_MESSAGES } from "@/constants/messages";
-import useToast from "@/hooks/useToast";
 import { GetProductsProps } from "@/pages/productListPage";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 
 const useFilteredProducts = ({ category, sort }: GetProductsProps) => {
-  const { onAddToast } = useToast();
-
   const query = useInfiniteQuery({
     queryKey: [END_POINT.products, category, sort],
     queryFn: async ({ pageParam }) => await getProducts({ queryKeys: { category, sort }, pageParam: pageParam }),
@@ -24,14 +19,6 @@ const useFilteredProducts = ({ category, sort }: GetProductsProps) => {
     }),
     staleTime: 10000,
   });
-
-  const { isError } = query;
-
-  useEffect(() => {
-    if (isError) {
-      onAddToast(ERROR_MESSAGES.failGetProducts);
-    }
-  }, [isError]);
 
   return query;
 };

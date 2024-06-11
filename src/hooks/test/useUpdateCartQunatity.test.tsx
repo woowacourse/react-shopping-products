@@ -1,4 +1,5 @@
 import { useCartItemsQuery, useUpdateCartItemQuantityMutation } from "@/hooks/server/useCartItems";
+import { CartItems } from "@/types/products";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
 import { act } from "react";
@@ -25,7 +26,7 @@ describe("useMutation", () => {
     });
 
     await waitFor(() => {
-      const target = result.current.cartItemsQuery.data?.find((item) => item.id === CART_ITEM_ID);
+      const target = result.current.cartItemsQuery.data?.find((item: CartItems) => item.id === CART_ITEM_ID);
       expect(target?.quantity).toBe(NEW_QUANTITY);
     });
   });

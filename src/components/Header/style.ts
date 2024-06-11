@@ -1,3 +1,4 @@
+import { Z_INDEX } from "@/constants/zIndex";
 import styled from "styled-components";
 
 export const Header = styled.header`
@@ -17,6 +18,8 @@ export const Header = styled.header`
   justify-content: space-between;
   position: fixed;
   top: 0;
+
+  z-index: ${Z_INDEX.HEADER};
 
   @media (max-width: 768px) {
     width: 100%;

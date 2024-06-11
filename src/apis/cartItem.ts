@@ -1,10 +1,12 @@
 import { END_POINT } from "@/config/endPoint";
 import SERVER_URL from "@/config/serverUrl";
 import fetcher from "@/apis/fetcher";
+import { ERROR_MESSAGES } from "@/constants/messages";
 
 export const getCartItems = async () => {
   const response = await fetcher.get({
     url: SERVER_URL.apiUrl + END_POINT.cartItems,
+    errorMessage: ERROR_MESSAGES.failGetCartItems,
   });
   const data = await response.json();
 
@@ -20,6 +22,7 @@ export const postCartItem = async ({ productId, quantity }: PostCartItemParams) 
   const response = await fetcher.post({
     url: SERVER_URL.apiUrl + END_POINT.cartItems,
     body: { productId, quantity },
+    errorMessage: ERROR_MESSAGES.failPostCartItem,
   });
   return response;
 };

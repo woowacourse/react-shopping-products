@@ -6,10 +6,11 @@ interface RequestProps {
   method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
   body?: Record<string, string | number>;
   headers?: Record<string, string>;
+  errorMessage?: string;
 }
 type FetchProps = Omit<RequestProps, "method">;
 
-const request = async ({ url, method, body, headers = {} }: RequestProps) => {
+const request = async ({ url, method, body, headers = {}, errorMessage }: RequestProps) => {
   try {
     const response = await fetch(url, {
       method,
@@ -23,13 +24,13 @@ const request = async ({ url, method, body, headers = {} }: RequestProps) => {
     if (!response.ok) {
       throw new CustomError(response.status);
     }
-
     return response;
   } catch (error) {
     if (error instanceof CustomError) {
-      throw error;
+      throw new CustomError(error.statusCode);
     }
-    throw new CustomError(0);
+
+    throw new Error(errorMessage);
   }
 };
 

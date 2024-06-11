@@ -15,7 +15,7 @@ import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import EmptyState from "@/components/_common/EmptyState";
 import MemoCartBage from "@/components/CartBadge";
-
+import useToast from "@/hooks/useToast";
 export interface GetProductsProps {
   category: Category;
   sort: Sort;
@@ -35,10 +35,12 @@ const ProductListPage = () => {
   const infiniteScrollConfig = { threshold: 0.25, rootMargin: "50px" };
   const { isIntersecting } = useIntersection(infiniteScrollConfig, ref);
 
-  const { data: cartItems } = useCartItemsQuery();
+  const { data: cartItems, error } = useCartItemsQuery();
 
   const cartItemLength = cartItems?.length || 0;
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { onAddToast } = useToast();
 
   const onCloseModal = () => {
     setIsModalOpen(false);
@@ -65,6 +67,12 @@ const ProductListPage = () => {
       fetchNextPage();
     }
   }, [isIntersecting]);
+
+  useEffect(() => {
+    if (error && error.message) {
+      onAddToast(error.message);
+    }
+  }, [error]);
 
   return (
     <>
