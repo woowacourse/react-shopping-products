@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getProducts } from "@api/index";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useError } from "./index";
-import { RULE } from "@constants/rules";
+import { QUERY_KEY, RULE } from "@constants/rules";
 
 interface UseProductsResult {
   products: Product[];
@@ -33,7 +33,7 @@ export default function useProducts(): UseProductsResult {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ["products", sort, category],
+    queryKey: [QUERY_KEY.products, sort, category],
     queryFn: async ({ pageParam = 0 }) => {
       const size =
         pageParam === RULE.initialPage ? RULE.initialSize : RULE.nextSize;

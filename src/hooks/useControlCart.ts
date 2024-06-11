@@ -1,4 +1,5 @@
 import { patchCartItems } from "@api/index";
+import { QUERY_KEY } from "@constants/rules";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -19,7 +20,7 @@ const useControlCart = ({ cartItemId, quantity }: Props) => {
   const increaseToCart = useMutation({
     mutationFn: () => mutationFn(quantity! + 1),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
   });
 
@@ -33,7 +34,7 @@ const useControlCart = ({ cartItemId, quantity }: Props) => {
       return mutationFn(quantity! - 1);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
   });
 
