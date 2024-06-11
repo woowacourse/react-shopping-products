@@ -6,6 +6,8 @@ const ERROR_MESSAGE = {
   FAIL_DELETE_CART_ITEM: '장바구니 아이템을 삭제하는데에 실패했어요!',
   WRONG_CATEGORY: '잘못 된 카테고리에요!',
   WRONG_SORT_TYPE: '잘못 된 분류 값이에요!',
+  UNEXPECTED_ERROR: '알 수 없는 에러가 발생했어요!',
+  FAIL_ADJUST_CART_ITEM_QUANTITY: '장바구니 갯수를 변경하는데에 실패했어요!',
 } as const;
 
 export default ERROR_MESSAGE;

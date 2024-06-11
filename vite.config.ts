@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, './src'),
       },
     },
+
     define: {
       'process.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL),
       'process.env.VITE_API_USER_ID': JSON.stringify(env.VITE_API_USER_ID),

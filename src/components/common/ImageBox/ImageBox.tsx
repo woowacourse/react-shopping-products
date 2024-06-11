@@ -1,7 +1,7 @@
 import { HTMLAttributes, useState } from 'react';
 
 interface ImageBoxProps extends HTMLAttributes<HTMLImageElement> {
-  src?: string;
+  src: string;
   radius?: 's' | 'm' | 'l' | number;
   width: number;
   height: number;

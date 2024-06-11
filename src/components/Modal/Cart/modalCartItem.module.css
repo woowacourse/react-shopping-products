@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  width: 100%;
+  margin-bottom: 24px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail_img {
+  border-radius: 8px;
+  margin-right: 16px;
+}
+
+.info_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.info_wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.name {
+  font-family: Noto Sans KR;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 23.17px;
+  text-align: left;
+}
+
+.price {
+  font-family: Noto Sans;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  text-align: left;
+  margin-top: 4px;
+}
