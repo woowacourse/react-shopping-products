@@ -5,9 +5,5 @@ export const ProductsContent = styled.ul`
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem 1rem;
 
-  height: 100%;
-
   padding: 0.5rem;
-
-  overflow-y: scroll;
 `;

@@ -53,7 +53,7 @@ function App() {
     setSorting('price', option);
   };
 
-  useIntersectionObserver({ isLoading, error, hasNextPage }, observerRef, fetchNextPage, {
+  useIntersectionObserver({ isLoading, isFetchingNextPage, error }, observerRef, fetchNextPage, {
     threshold: 0.8,
   });
 
@@ -90,13 +90,16 @@ function App() {
                   {...product}
                 />
               ))}
-              {hasNextPage ? (
-                <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
-              ) : (
-                <div>목록을 모두 조회했습니다.</div>
-              )}
+              <LastList>
+                {isFetchingNextPage ? (
+                  <Loading />
+                ) : hasNextPage ? (
+                  <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
+                ) : (
+                  !isLoading && '목록을 모두 조회했습니다.'
+                )}
+              </LastList>
             </ProductsContent>
-            {isFetchingNextPage && <Loading />}
           </ProductsContentContainer>
         </ProductsContainer>
       </Main>
@@ -110,7 +113,15 @@ export default App;
 const ProductsContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
 
   overflow-y: scroll;
+`;
+
+const LastList = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: span 2;
+  border-top: 1px solid ${(props) => props.theme.color.borderGray};
+  padding-top: 0.5rem;
 `;
