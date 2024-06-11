@@ -1,17 +1,45 @@
+import { useControlCart, useError } from "@hooks/index";
 import { CountButton } from "../Button";
 import * as CCBB from "./CountControlButtonBundle.style";
 
 interface Props {
   amount: number;
-  handleDecrementAmount: () => void;
-  handleIncrementAmount: () => void;
+  cartItemId: number | undefined;
+  cartItemQuantity: number | undefined;
 }
 
 const CountControlButtonBundle = ({
   amount,
-  handleDecrementAmount,
-  handleIncrementAmount,
+  cartItemId,
+  cartItemQuantity,
 }: Props) => {
+  const { showError } = useError();
+
+  const { increaseToCart, decreaseToCart } = useControlCart({
+    cartItemId,
+    quantity: cartItemQuantity,
+  });
+
+  const handleIncrementAmount = () => {
+    try {
+      increaseToCart.mutate();
+    } catch (error) {
+      if (error instanceof Error) {
+        showError(error.message);
+      }
+    }
+  };
+
+  const handleDecrementAmount = () => {
+    try {
+      decreaseToCart.mutate();
+    } catch (error) {
+      if (error instanceof Error) {
+        showError(error.message);
+      }
+    }
+  };
+
   return (
     <CCBB.Style>
       <CountButton type="minus" onClick={handleDecrementAmount} />

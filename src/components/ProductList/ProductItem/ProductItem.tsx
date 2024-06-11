@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { postProductInCart } from "@api/index";
 import CountControlButtonBundle from "@components/CountControlButtonBundle/CountControlButtonBundle";
 import AddCartButton from "@components/Button/AddCartButton";
-import { useCartItems, useControlCart, useError } from "@hooks/index";
+import { useCartItems, useError } from "@hooks/index";
 import DefaultImage from "@assets/no-image.png";
 import * as PI from "./ProductItem.style";
 
@@ -13,20 +13,14 @@ interface ProductProps {
 const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
   ({ product }, ref) => {
     const { cartItems, refetchCartItems } = useCartItems();
+    const { showError } = useError();
 
     const productInCart = cartItems.find(
       (item) => item.product.id === product.id,
     );
 
-    const { increaseToCart, decreaseToCart } = useControlCart({
-      cartItemId: productInCart?.id,
-      quantity: productInCart?.quantity,
-    });
-
     const cartItemIds = cartItems.map((item) => item.product.id);
     const isInCart = cartItemIds.includes(product.id);
-
-    const { showError } = useError();
 
     const handleIsInCart = async () => {
       try {
@@ -39,18 +33,6 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
         if (error instanceof Error) {
           showError(error.message);
         }
-      }
-    };
-
-    const handleIncrementAmount = () => {
-      if (increaseToCart.mutate) {
-        increaseToCart.mutate();
-      }
-    };
-
-    const handleDecrementAmount = () => {
-      if (decreaseToCart.mutate) {
-        decreaseToCart.mutate();
       }
     };
 
@@ -72,8 +54,8 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
             {isInCart ? (
               <CountControlButtonBundle
                 amount={productInCart?.quantity || 0}
-                handleIncrementAmount={handleIncrementAmount}
-                handleDecrementAmount={handleDecrementAmount}
+                cartItemId={productInCart?.id}
+                cartItemQuantity={productInCart?.quantity}
               />
             ) : (
               <AddCartButton onClick={handleIsInCart} />
