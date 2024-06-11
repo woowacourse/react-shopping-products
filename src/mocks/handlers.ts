@@ -14,9 +14,8 @@ const createResponse = async (handler, req) => {
 
 export const handlers = [
   http.post(createUrl(API_URL.cartItems), (req) =>
-    createResponse(async ({ request }) => {
-      const newCartItem = await request.json();
-      return { response: newCartItem, status: 201 };
+    createResponse(async () => {
+      return { status: 201 };
     }, req)
   ),
 
