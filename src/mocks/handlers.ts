@@ -43,4 +43,20 @@ export const handlers = [
       lastPage: end >= products.length,
     });
   }),
+
+  http.post(CART_API_URL + API_URL.cartItems, () => {
+    return new HttpResponse(null, { status: 201 });
+  }),
+
+  http.patch(`${CART_API_URL}${API_URL.cartItems}/:cartItemId`, () => {
+    return new HttpResponse(null, { status: 200 });
+  }),
+
+  http.post(`${CART_API_URL}${API_URL.cartItems}/:cartItemId`, () => {
+    return new HttpResponse(null, { status: 201 });
+  }),
+
+  http.delete(`${CART_API_URL}${API_URL.cartItems}/:cartItemId`, () => {
+    return new HttpResponse(null, { status: 204 });
+  }),
 ];

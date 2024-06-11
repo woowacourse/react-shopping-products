@@ -2,15 +2,27 @@ import styled from "styled-components";
 
 import { SCREEN_WIDTH_REM } from "@styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "@assets/cart.svg";
-import { useCartItems } from "@src/contexts/cartItems/useCartItems";
+import { useCartItems } from "@serverState/queries/useCartItems";
+import { useEffect } from "react";
 
-const ShopHeader = () => {
-  const { cartItems, isLoading } = useCartItems();
+interface ShopHeaderProps {
+  onError: (error: Error) => void;
+  onCartButtonClick: () => void;
+}
+
+const ShopHeader = ({ onError, onCartButtonClick }: ShopHeaderProps) => {
+  const { data: cartItems, isLoading, error } = useCartItems();
+
+  useEffect(() => {
+    if (error) {
+      onError(error);
+    }
+  }, [error]);
 
   return (
     <S.Header>
       <S.Title>SHOP</S.Title>
-      <S.CartButton role="button" aria-label="장바구니 이동">
+      <S.CartButton role="button" aria-label="장바구니 이동" onClick={onCartButtonClick}>
         <CartIcon />
         {!isLoading && (
           <S.Badge>

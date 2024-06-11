@@ -6,6 +6,7 @@ import { resolve } from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), svgr()],
+  base: "./",
   resolve: {
     alias: [
       { find: "@src", replacement: resolve(__dirname, "src") },
@@ -18,6 +19,7 @@ export default defineConfig({
       { find: "@mocks", replacement: resolve(__dirname, "src/mocks") },
       { find: "@pages", replacement: resolve(__dirname, "src/pages") },
       { find: "@styles", replacement: resolve(__dirname, "src/styles") },
+      { find: "@serverState", replacement: resolve(__dirname, "src/serverState") },
       { find: "@types", replacement: resolve(__dirname, "src/types") },
       { find: "@utils", replacement: resolve(__dirname, "src/utils") },
     ],

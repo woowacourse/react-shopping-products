@@ -1,20 +1,15 @@
 import styled from "styled-components";
-import CartToggleButton from "@components/ProductListPage/CartToggleButton";
-import { formatToKRW } from "@src/utils/formatToKRW";
-
-interface ProductInfo {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-}
+import CartItemQuantityController from "@components/ProductFeedPage/CartItemQuantityController";
+import { formatToKRW } from "@utils/formatToKRW";
+import ImageWithFallback from "../common/ImageWithFallback";
+import { Product } from "@src/apis/products";
 
 interface ProductItemProps {
-  productInfo: ProductInfo;
+  product: Product;
 }
 
-const ProductItem = ({ productInfo }: ProductItemProps) => {
-  const { id, name, price, imageUrl } = productInfo;
+const ProductItem = ({ product }: ProductItemProps) => {
+  const { id, name, price, imageUrl } = product;
 
   return (
     <S.Container>
@@ -23,7 +18,7 @@ const ProductItem = ({ productInfo }: ProductItemProps) => {
         <S.ProductName>{name}</S.ProductName>
         <S.ProductPrice>{formatToKRW(price)}</S.ProductPrice>
       </S.ProductInfo>
-      <CartToggleButton productId={id} />
+      <CartItemQuantityController productId={id} />
     </S.Container>
   );
 };
@@ -38,7 +33,7 @@ const S = {
     width: 48%;
   `,
 
-  ProductImage: styled.img`
+  ProductImage: styled(ImageWithFallback)`
     width: 100%;
     height: 11rem;
     object-fit: cover;

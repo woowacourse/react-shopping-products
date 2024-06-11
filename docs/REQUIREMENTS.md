@@ -34,7 +34,9 @@
         - 장바구니에 있는 아이템을 삭제하는 경우
 
 3. 기능 구현
+
    1. 상품 리스트
+
    - [x] list, item, select UI 레이아웃
    - [x] useProducts
      - [x] 카테고리 필터링, 가격 순 sort 추가
@@ -44,7 +46,9 @@
      - [x] msw
        - [x] product GET
    - [x] UI와 hook 통합
+
    1. 장바구니 아이템 추가/삭제 및 개수 표시
+
    - [x] header,button, badge UI 레이아웃
      - [x] 로딩, 에러 상태
      - [x] 상품 종류 수

@@ -1,10 +1,12 @@
-import ProductListPage from "@pages/ProductListPage";
+import { QueryClientProvider } from "@tanstack/react-query";
+import ProductFeedPage from "@pages/ProductFeedPage";
+import { queryClient } from "@serverState/queryClient";
 
 function App() {
   return (
-    <>
-      <ProductListPage />
-    </>
+    <QueryClientProvider client={queryClient}>
+      <ProductFeedPage />
+    </QueryClientProvider>
   );
 }
 

@@ -1,15 +1,14 @@
 import { SmartURLSearchParams } from "@utils/SmartURLSearchParams";
 import { CATEGORY_OPTIONS, PRODUCT_QUERY_PARAMS } from "@apis/__constants__/productQueryParams";
+import { ProductQueryParams } from "../products";
 
 const PAGE_SIZE = 4;
 const INITIAL_PAGE_SIZE = 20;
 
-// 첫 로드 시 불러온 20개를 건너뛰기 위해 페이지 1부터는 조정값 4를 더해줌
-const PAGE_ADJUSTMENT = 4;
+// 첫 로드 시 불러온 페이지 수만큼 건너뛰기 위해 페이지 1부터는 조정 값을 더해줌
+const PAGE_ADJUSTMENT = INITIAL_PAGE_SIZE / PAGE_SIZE - 1;
 
-export const adjustProductQueryParams = (
-  queryParams: SmartURLSearchParams
-): SmartURLSearchParams => {
+export const adjustProductQueryParams = (queryParams: ProductQueryParams): SmartURLSearchParams => {
   const params = new SmartURLSearchParams(queryParams);
 
   const page = Number(params.get(PRODUCT_QUERY_PARAMS.page)) || 0;
@@ -26,6 +25,9 @@ export const adjustProductQueryParams = (
   if (params.get(PRODUCT_QUERY_PARAMS.category) === CATEGORY_OPTIONS.all) {
     params.delete(PRODUCT_QUERY_PARAMS.category);
   }
+
+  // 중복 데이터 반환을 막기 위해 id 정렬 파라미터 추가
+  params.append(PRODUCT_QUERY_PARAMS.sort, "id,asc");
 
   return params;
 };

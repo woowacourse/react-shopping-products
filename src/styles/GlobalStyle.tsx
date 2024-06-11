@@ -11,11 +11,18 @@ export const GlobalStyle = createGlobalStyle`
   html{
     font-size: 62.5%;
   }
+
+  body {
+    &::-webkit-scrollbar {
+    display: none;
+  }
+  }
   `;
 
 export const SCREEN_WIDTH_REM = 44;
 
 export const GlobalLayout = styled.div`
+  min-width: ${SCREEN_WIDTH_REM}rem;
   max-width: ${SCREEN_WIDTH_REM}rem;
   height: 100vh;
   margin: 0 auto;
