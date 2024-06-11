@@ -7,7 +7,7 @@ export const ProductListStyle = styled.section`
   justify-content: space-between;
 `;
 
-export const Loading = styled.div`
+export const DefaultStyle = styled.div`
   font-size: 30px;
   font-weight: 700;
   height: 50vh;
@@ -16,7 +16,7 @@ export const Loading = styled.div`
   align-items: center;
 `;
 
-export const Empty = styled(Loading)`
+export const Empty = styled(DefaultStyle)`
   font-size: 17px;
   font-weight: 500;
 `;

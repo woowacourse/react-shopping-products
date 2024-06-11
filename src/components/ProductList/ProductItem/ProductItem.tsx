@@ -1,9 +1,10 @@
-import { forwardRef, useContext } from "react";
+import { forwardRef } from "react";
+import { postProductInCart } from "@api/index";
+import CountControlButtonBundle from "@components/CountControlButtonBundle/CountControlButtonBundle";
+import AddCartButton from "@components/Button/AddCartButton";
+import { useCartItems, useError } from "@hooks/index";
+import DefaultImage from "@assets/no-image.png";
 import * as PI from "./ProductItem.style";
-import CartControlButton from "../../Button/CartControlButton";
-import { deleteProductInCart, postProductInCart } from "@api/index";
-import { useError } from "@hooks/index";
-import { CartItemsContext } from "@context/CartItemsContext";
 
 interface ProductProps {
   product: Product;
@@ -11,27 +12,22 @@ interface ProductProps {
 
 const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
   ({ product }, ref) => {
-    const { cartItems, refreshCartItems } = useContext(CartItemsContext);
+    const { cartItems, refetchCartItems } = useCartItems({ retry: false });
+    const { showError } = useError();
+
+    const productInCart = cartItems.find(
+      (item) => item.product.id === product.id,
+    );
 
     const cartItemIds = cartItems.map((item) => item.product.id);
     const isInCart = cartItemIds.includes(product.id);
-
-    const { showError } = useError();
 
     const handleIsInCart = async () => {
       try {
         if (!isInCart) {
           await postProductInCart(product.id);
-          refreshCartItems();
+          refetchCartItems();
           return;
-        }
-
-        const filteredItem = cartItems.find(
-          (item) => item.product.id === product.id,
-        );
-        if (filteredItem) {
-          await deleteProductInCart(filteredItem.id);
-          refreshCartItems();
         }
       } catch (error) {
         if (error instanceof Error) {
@@ -45,13 +41,26 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
         <PI.ProductImg
           src={`${product.imageUrl}`}
           alt={`${product.name} 상품 이미지`}
+          onError={(event) => {
+            event.currentTarget.src = DefaultImage;
+          }}
         />
         <PI.ProductGroup>
           <PI.ProductContent>
             <PI.ProductName>{product.name}</PI.ProductName>
             <span>{product.price.toLocaleString("ko-kr")}원</span>
           </PI.ProductContent>
-          <CartControlButton onClick={handleIsInCart} isInCart={isInCart} />
+          <PI.CartButton>
+            {isInCart ? (
+              <CountControlButtonBundle
+                amount={productInCart?.quantity || 0}
+                cartItemId={productInCart!.id}
+                cartItemQuantity={productInCart!.quantity}
+              />
+            ) : (
+              <AddCartButton onClick={handleIsInCart} />
+            )}
+          </PI.CartButton>
         </PI.ProductGroup>
       </PI.ProductItemStyle>
     );
