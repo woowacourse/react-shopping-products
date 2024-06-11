@@ -1,21 +1,21 @@
 import { Product } from '@appTypes/product';
 import Card from '@components/product/Card/Card';
+import useShoppingCart from '@queries/shoppingCart/useShoppingCart';
 
 interface CardListProps {
   products: Product[];
-  onToggleCart: (id: number) => void;
-  isAddedCart: (id: number) => boolean;
 }
 
-const CardList: React.FC<CardListProps> = ({ products, onToggleCart, isAddedCart }) => {
+const CardList: React.FC<CardListProps> = ({ products }) => {
+  const { cartItems } = useShoppingCart();
+
   return (
     <>
       {products.map((product, index) => (
         <Card
           key={`${product.id}-${index}`}
+          cartItem={cartItems.find((cartItem) => cartItem.product.id === product.id) ?? null}
           product={product}
-          onToggleCart={() => onToggleCart(product.id)}
-          isAddedCart={!isAddedCart(product.id)}
         />
       ))}
     </>

@@ -47,3 +47,23 @@ export const postCartItemHandler = http.post(
     return HttpResponse.json({ content: cartItems });
   }
 );
+
+export const patchCartItemHandler = http.patch(
+  `${APIClient.API_URL}/cart-items/*`,
+  async ({ request }) => {
+    const targetId = Number(request.url.split('/').pop());
+    const parseRequestConfig = await request.json();
+
+    if (!parseRequestConfig) return getHTTPResponseConfig(404, 'Request body가 필요합니다.');
+
+    const quantity = (parseRequestConfig as { quantity: number }).quantity;
+
+    const targetIndex = cartItems.findIndex((item) => item.id === targetId);
+
+    if (targetIndex === -1) return getHTTPResponseConfig(404, '잘못된 아이디 입니다.');
+
+    cartItems[targetIndex].quantity = quantity;
+
+    return HttpResponse.json({ content: cartItems });
+  }
+);

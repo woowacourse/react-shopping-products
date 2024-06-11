@@ -21,6 +21,7 @@ export default defineConfig({
       { find: '@appTypes', replacement: resolve(__dirname, 'src/appTypes') },
       { find: '@errors', replacement: resolve(__dirname, 'src/errors') },
       { find: '@mocks', replacement: resolve(__dirname, 'src/mocks') },
+      { find: '@queries', replacement: resolve(__dirname, 'src/queries') },
     ],
   },
 });

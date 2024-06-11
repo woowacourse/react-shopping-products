@@ -1,25 +1,18 @@
-import { ProductCategory } from '@appTypes/product';
 import { generateQueryParams } from '@utils/queryString';
 import {
   DEFAULT_SIZE,
   PAGE_OFFSET,
   PAGE_PER_SIZE,
-} from '@hooks/product/useProducts/useProducts.constant';
-import { PRODUCT_SORT_MAP } from '@components/product/ProductDropdown/ProductDropdown.constant';
+} from '@hooks/product/useProductsWithPagination/useProductsWithPagination.constant';
 
-interface ProductEndpoint {
-  page: number;
-  category: ProductCategory | 'all';
-  sort: keyof typeof PRODUCT_SORT_MAP;
-  sortBy?: string;
-}
+import { ProductEndpointParams } from '@apis/product/product.type';
 
 export const getProductEndpoint = ({
   category,
   page,
   sortBy = 'price',
   sort,
-}: ProductEndpoint): string => {
+}: ProductEndpointParams): string => {
   const baseEndpoint = 'products';
 
   const adjustedPage = page === 0 ? 0 : page + PAGE_OFFSET;

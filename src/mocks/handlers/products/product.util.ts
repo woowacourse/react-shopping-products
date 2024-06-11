@@ -12,9 +12,9 @@ export const getSortingFunc = (sortStandard: string, sortOrder: string) => {
 };
 
 export const getQueryByURL = (url: URL) => {
-  const page = Number(url.searchParams.get('page') || '0');
-  const size = Number(url.searchParams.get('size') || '20');
-  const sortParam = url.searchParams.get('sort')?.split(',') ?? ['id', 'desc'];
+  const page = Number(url.searchParams.get('page') ?? '0');
+  const size = Number(url.searchParams.get('size') ?? '20');
+  const sortParam = url.searchParams.get('sort')?.split(',') ?? ['price', 'desc'];
 
   const category = url.searchParams.get('category') ?? '';
 

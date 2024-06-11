@@ -1,27 +1,17 @@
 import * as Styled from './ProductPage.styled';
 
-import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
-
-import CardList from '@components/product/CardList/CardList';
-import NotProduct from '@components/product/NotProduct/NotProduct';
-import useIntersectionObserver from '@hooks/useIntersectionObserver';
-import useProducts from '@hooks/product/useProducts/useProducts';
 import ProductDropdown from '@components/product/ProductDropdown/ProductDropdown';
 import {
   PRODUCT_CATEGORY_MAP,
   PRODUCT_SORT_MAP,
 } from '@components/product/ProductDropdown/ProductDropdown.constant';
+import ProductContent from '@components/product/ProductContent/ProductContent';
+import useSelectProductDropdown from '@hooks/product/useSelectProductDropdown';
+import { Suspense } from 'react';
+import LoadingSpinner from '@components/common/LoadingSpinner/LoadingSpinner';
 
-interface ProductPageProps extends React.PropsWithChildren {
-  onToggleCart: (id: number) => void;
-  isAddedCart: (id: number) => boolean;
-}
-
-const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
-  const { products, dropdownOptions, isLoading, updateNextProductItem, onSelectOption } =
-    useProducts();
-
-  const targetRef = useIntersectionObserver<HTMLDivElement>({ onIntersect: updateNextProductItem });
+const ProductPage = () => {
+  const { dropdownOptions, onSelectOption } = useSelectProductDropdown();
 
   return (
     <>
@@ -40,18 +30,9 @@ const ProductPage = ({ onToggleCart, isAddedCart }: ProductPageProps) => {
           onSelect={onSelectOption}
         />
       </Styled.ProductDropdownWrapper>
-
-      {products.length === 0 ? (
-        <NotProduct />
-      ) : (
-        <Styled.ProductPageListWrapper>
-          <CardList products={products} onToggleCart={onToggleCart} isAddedCart={isAddedCart} />
-        </Styled.ProductPageListWrapper>
-      )}
-
-      {products.length !== 0 && isLoading && <LoadingSpinner $width="100%" $height="30vh" />}
-
-      <Styled.ObserverTarget ref={targetRef} />
+      <Suspense fallback={<LoadingSpinner $width="100%" $height="75vh" />}>
+        <ProductContent dropdownOptions={dropdownOptions} />
+      </Suspense>
     </>
   );
 };

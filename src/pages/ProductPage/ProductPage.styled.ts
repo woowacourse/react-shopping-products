@@ -13,16 +13,3 @@ export const ProductDropdownWrapper = styled.div`
   justify-content: space-between;
   margin: 24px 0px;
 `;
-
-export const ProductPageListWrapper = styled.ul`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  min-height: 100vh;
-`;
-
-export const ObserverTarget = styled.div`
-  height: 1px;
-  width: 100%;
-`;
