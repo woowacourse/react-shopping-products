@@ -13,7 +13,7 @@ import { QUERY_KEYS } from '../constants/queryKeys';
 interface UseProductsResult {
   products: ProductItem[];
   isLoading: boolean;
-  error: unknown;
+  isError: boolean;
   isFetching: boolean;
   fetchNextPage: () => void;
   changeCategory: (dropboxOption: CategoryType) => void;
@@ -41,7 +41,7 @@ export default function useProducts(): UseProductsResult {
     return data;
   };
 
-  const { data, error, isLoading, isFetching, fetchNextPage } =
+  const { data, isError, isLoading, isFetching, fetchNextPage } =
     useInfiniteQuery({
       queryKey: [QUERY_KEYS.PRODUCTS, category, sorting],
       queryFn: fetchProductsData,
@@ -64,7 +64,7 @@ export default function useProducts(): UseProductsResult {
   return {
     products: data || [],
     isLoading,
-    error,
+    isError,
     isFetching,
     fetchNextPage,
     changeCategory,

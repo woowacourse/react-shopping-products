@@ -36,8 +36,13 @@ describe('ShoppingCartContext', () => {
 
     const { result } = renderUseCartHook();
 
-    await waitFor(() => {
-      expect(result.current.isError).toBe(true);
-    });
+    expect(result.current.isFetching).toBe(true);
+    await waitFor(
+      () => {
+        expect(result.current.isFetching).toBe(false);
+        expect(result.current.isError).toBe(true);
+      },
+      { timeout: 10000 },
+    );
   });
 });

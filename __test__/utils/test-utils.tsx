@@ -1,21 +1,24 @@
 import React from 'react';
 import { ToastContextProvider } from '../../src/context/ToastContextProvider';
 import { CartProvider } from '../../src/context/ShoppingCartContext';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { useToast } from '../../src/hooks/useToast';
+import createQueryClient from '../../src/queryClient.ts';
 
 export const wrapper = ({ children }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
+  return (
+    <ToastContextProvider>
+      <QueryProvider>{children}</QueryProvider>
+    </ToastContextProvider>
+  );
+};
+
+const QueryProvider = ({ children }) => {
+  const { createToast } = useToast();
+  const queryClient = createQueryClient(createToast);
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastContextProvider>
-        <CartProvider>{children}</CartProvider>
-      </ToastContextProvider>
+      <CartProvider>{children}</CartProvider>
     </QueryClientProvider>
   );
 };

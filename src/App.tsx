@@ -3,28 +3,14 @@ import './index.css';
 
 import ProductPage from './page/ProductPage';
 import { CartProvider } from './context/ShoppingCartContext';
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useToast } from './hooks/useToast';
+import createQueryClient from './queryClient';
 
 function App() {
   const { createToast } = useToast();
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        networkMode: 'always',
-      },
-    },
-    queryCache: new QueryCache({
-      onError: (error) => {
-        console.log(error);
-        createToast(error.message);
-      },
-    }),
-  });
+  const queryClient = createQueryClient(createToast);
+
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>

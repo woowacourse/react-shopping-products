@@ -34,11 +34,13 @@ describe('useProducts', () => {
 
       const { result } = renderUseProductsHook();
 
-      await waitFor(() => {
-        expect(result.current.products).toEqual([]);
-        expect(result.current.isFetching).toBe(false);
-        expect(result.current.error).toBeTruthy();
-      });
+      await waitFor(
+        () => {
+          expect(result.current.products).toEqual([]);
+          expect(result.current.isError).toBe(true);
+        },
+        { timeout: 10000 },
+      );
     });
   });
 
