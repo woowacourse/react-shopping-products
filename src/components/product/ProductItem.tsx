@@ -24,7 +24,7 @@ const ProductItem = ({ productItem }: Props) => {
       <S.InfoWrapper>
         <S.InfoText>
           <S.Title>{productItem.name}</S.Title>
-          <S.Price>{productItem.price.toLocaleString('ko-RR')}원</S.Price>
+          <S.Price>{productItem.price.toLocaleString('ko-KR')}원</S.Price>
         </S.InfoText>
         <S.ButtonWrapper>
           {findCartItemByProductId(productItem.id) ? (
