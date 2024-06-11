@@ -30,8 +30,12 @@ const Quantity = ({ cartId, quantity, deleteIfZero }: QuantityProps) => {
     }
   };
 
-  const onClickPlusButton = () => {
-    updateCartItemQuantity.mutate({ cartId, quantity: quantity + 1 });
+  const onClickPlusButton = async () => {
+    try {
+      await updateCartItemQuantity.mutateAsync({ cartId, quantity: quantity + 1 });
+    } catch (error) {
+      if (error instanceof Error) showToast(error.message);
+    }
   };
 
   return updateCartItemQuantity.isPending || deleteCart.isPending ? (
