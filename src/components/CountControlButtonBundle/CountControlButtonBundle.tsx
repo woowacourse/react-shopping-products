@@ -4,8 +4,8 @@ import * as CCBB from "./CountControlButtonBundle.style";
 
 interface Props {
   amount: number;
-  cartItemId: number | undefined;
-  cartItemQuantity: number | undefined;
+  cartItemId: number;
+  cartItemQuantity: number;
 }
 
 const CountControlButtonBundle = ({
@@ -15,14 +15,11 @@ const CountControlButtonBundle = ({
 }: Props) => {
   const { showError } = useError();
 
-  const { increaseToCart, decreaseToCart } = useControlCart({
-    cartItemId,
-    quantity: cartItemQuantity,
-  });
+  const { increaseToCart, decreaseToCart } = useControlCart();
 
   const handleIncrementAmount = () => {
     try {
-      increaseToCart.mutate();
+      increaseToCart.mutate({ cartItemId, quantity: cartItemQuantity });
     } catch (error) {
       if (error instanceof Error) {
         showError(error.message);
@@ -32,7 +29,7 @@ const CountControlButtonBundle = ({
 
   const handleDecrementAmount = () => {
     try {
-      decreaseToCart.mutate();
+      decreaseToCart.mutate({ cartItemId, quantity: cartItemQuantity });
     } catch (error) {
       if (error instanceof Error) {
         showError(error.message);

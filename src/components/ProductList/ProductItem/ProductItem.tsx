@@ -54,8 +54,8 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
             {isInCart ? (
               <CountControlButtonBundle
                 amount={productInCart?.quantity || 0}
-                cartItemId={productInCart?.id}
-                cartItemQuantity={productInCart?.quantity}
+                cartItemId={productInCart!.id}
+                cartItemQuantity={productInCart!.quantity}
               />
             ) : (
               <AddCartButton onClick={handleIsInCart} />
