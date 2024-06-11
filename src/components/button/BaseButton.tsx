@@ -12,12 +12,12 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const BaseButton = ({ children, ...rest }: Props) => {
-  return <StyledButton {...rest}>{children}</StyledButton>;
+  return <Button {...rest}>{children}</Button>;
 };
 
 export default BaseButton;
 
-const StyledButton = styled.button<Props>`
+const Button = styled.button<Props>`
   display: flex;
   justify-content: center;
   align-items: center;

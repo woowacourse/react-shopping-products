@@ -24,7 +24,7 @@ export const PlusButton = ({
   const isDisabled = max ? quantity >= max : false;
 
   return (
-    <S.StyledBaseButton
+    <S.BaseButton
       onClick={onClick}
       disabled={isDisabled}
       $theme={isDisabled ? 'disabled' : 'white'}
@@ -32,7 +32,7 @@ export const PlusButton = ({
       $height="24px"
     >
       +
-    </S.StyledBaseButton>
+    </S.BaseButton>
   );
 };
 
@@ -44,7 +44,7 @@ export const MinusButton = ({
   const isDisabled = quantity <= min;
 
   return (
-    <S.StyledBaseButton
+    <S.BaseButton
       onClick={onClick}
       disabled={isDisabled}
       $theme={isDisabled ? 'disabled' : 'white'}
@@ -52,12 +52,12 @@ export const MinusButton = ({
       $height="24px"
     >
       -
-    </S.StyledBaseButton>
+    </S.BaseButton>
   );
 };
 
 const S = {
-  StyledBaseButton: styled(BaseButton)`
+  BaseButton: styled(BaseButton)`
     border: 1px solid ${STYLE_THEME.color.blackWithOpacity};
   `,
 };
