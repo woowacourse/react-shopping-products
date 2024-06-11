@@ -1,6 +1,6 @@
+import fetcher from "@/apis/fetcher";
 import { END_POINT } from "@/config/endPoint";
 import SERVER_URL from "@/config/serverUrl";
-import { ERROR_MESSAGES } from "@/constants/messages";
 import { SIZE_FIRST_PAGE, SIZE_PER_PAGE } from "@/constants/page";
 import { SORT } from "@/constants/selectOption";
 import { CATEGORY } from "@/constants/selectOption";
@@ -12,6 +12,7 @@ export const getProducts = async ({ queryKeys, pageParam }: { queryKeys: GetProd
   const convertedSort = SORT[sort];
 
   const size = pageParam === 0 ? SIZE_FIRST_PAGE : SIZE_PER_PAGE;
+
   const params = {
     page: String(pageParam),
     size: size.toString(),
@@ -24,11 +25,9 @@ export const getProducts = async ({ queryKeys, pageParam }: { queryKeys: GetProd
     searchParams.append("category", convertedCategory);
   }
 
-  const response = await fetch(SERVER_URL.apiUrl + END_POINT.products + "?" + searchParams.toString());
-
-  if (!response.ok) {
-    throw new Error(ERROR_MESSAGES.failGetProducts);
-  }
+  const response = await fetcher.get({
+    url: SERVER_URL.apiUrl + END_POINT.products + "?" + searchParams.toString(),
+  });
 
   const data = await response.json();
   return data;

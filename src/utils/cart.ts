@@ -1,6 +1,7 @@
 import { CartItems } from "@/types/products";
 
 export const getQuantityInCart = (cartItems: CartItems[], id: number) => {
+  console.log("getQuantityInCart");
   if (cartItems) {
     const targetItem = cartItems.find((cartItem) => cartItem.product.id === id);
     if (targetItem) {
@@ -12,6 +13,7 @@ export const getQuantityInCart = (cartItems: CartItems[], id: number) => {
 };
 
 export const convertProductIdToCartId = (cartItems: CartItems[], productId: number) => {
+  console.log("convertProductIdToCartId");
   if (cartItems) {
     const targetItem = cartItems.find((cartItem) => cartItem.product.id === productId);
     if (targetItem) {

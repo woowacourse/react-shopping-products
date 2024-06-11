@@ -19,9 +19,11 @@ const CartItem = ({ item, cartItems }: { item: CartItems; cartItems: CartItems[]
   const quantity = getQuantityInCart(cartItems, id);
   const cartId = convertProductIdToCartId(cartItems, id);
 
-  const onDeleteCartItemMutation = useDeleteCartItemMutation({ cartId: cartId! });
+  const { mutate } = useDeleteCartItemMutation({ cartId: cartId! });
 
-  const onClickDeleteCartItem = onDeleteCartItemMutation.mutate;
+  const handleDeleteClick = () => {
+    mutate();
+  };
 
   return (
     <S.ItemWrapper>
@@ -39,7 +41,7 @@ const CartItem = ({ item, cartItems }: { item: CartItems; cartItems: CartItems[]
               textColor="black"
               position="basic"
               borderColor={theme.COLOR["grey2"]}
-              onClick={onClickDeleteCartItem}
+              onClick={handleDeleteClick}
               width={40}
               height={24}
               fontSize={12}
