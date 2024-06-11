@@ -61,5 +61,6 @@ export const MinusButton = ({
 const S = {
   BaseButton: styled(BaseButton)`
     border: 1px solid ${STYLE_THEME.color.blackWithOpacity};
+    cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   `,
 };
