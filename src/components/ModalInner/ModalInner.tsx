@@ -1,9 +1,16 @@
 import { Button } from "@components/Button/index";
 import CountControlButtonBundle from "../CountControlButtonBundle/CountControlButtonBundle";
-import { useCartItems, useControlCart, useDeleteCart } from "@hooks/index";
+import {
+  useCartItems,
+  useControlCart,
+  useDeleteCart,
+  useError,
+} from "@hooks/index";
 import * as MI from "./ModalInner.style";
 
 const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
+  const { showError } = useError();
+
   const { addToCart, deleteToCart } = useControlCart({
     cartItemId: cartItem.id,
     quantity: cartItem.quantity,
@@ -12,20 +19,32 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
   const { deleteCartItem } = useDeleteCart({ cartId: cartItem.id });
 
   const handleIncrementAmount = () => {
-    if (addToCart.mutate) {
+    try {
       addToCart.mutate();
+    } catch (error) {
+      if (error instanceof Error) {
+        showError(error.message);
+      }
     }
   };
 
   const handleDecrementAmount = () => {
-    if (deleteToCart.mutate) {
+    try {
       deleteToCart.mutate();
+    } catch (error) {
+      if (error instanceof Error) {
+        showError(error.message);
+      }
     }
   };
 
   const handleDeleteCartItem = () => {
-    if (deleteCartItem.mutate) {
+    try {
       deleteCartItem.mutate();
+    } catch (error) {
+      if (error instanceof Error) {
+        showError(error.message);
+      }
     }
   };
 
