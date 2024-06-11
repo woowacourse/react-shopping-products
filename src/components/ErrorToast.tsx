@@ -2,10 +2,6 @@ import styled from "styled-components";
 import { SCREEN_WIDTH_REM } from "../styles/GlobalStyle";
 import { useToast } from "../stores/ToastProvider";
 
-// interface ErrorToastProps {
-//   errorMessage: string;
-// }
-
 const ErrorToast = () => {
   const { message: errorMessage } = useToast();
 
