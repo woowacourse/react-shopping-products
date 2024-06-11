@@ -17,32 +17,6 @@ export default function CartModal({ onClose }: CartModalProps) {
   const { mutate: deleteItem } = useDeleteFromCart();
   const { mutate: changeCartItemQuantity } = useChangeCartItemQuantity();
 
-  const selectedItemsElements = cartItems.map(cartItem => (
-    <SelectedItem
-      key={cartItem.id}
-      cartItem={cartItem}
-      deleteItem={deleteItem}
-      increaseItemQuantity={() => {
-        changeCartItemQuantity({
-          cartItemId: cartItem.id,
-          quantity: cartItem.quantity + 1,
-        });
-      }}
-      decreaseItemQuantity={() => {
-        changeCartItemQuantity({
-          cartItemId: cartItem.id,
-          quantity: Math.max(0, cartItem.quantity - 1),
-        });
-      }}
-    ></SelectedItem>
-  ));
-
-  const fallbackElement = (
-    <Styled.EmptyFallback>
-      장바구니에 담긴 상품이 없습니다.
-    </Styled.EmptyFallback>
-  );
-
   const cartItemsAmount = cartItems.reduce(
     (acc, item) => acc + item.quantity * item.product.price,
     0
@@ -56,7 +30,32 @@ export default function CartModal({ onClose }: CartModalProps) {
     >
       <Styled.Title>장바구니</Styled.Title>
       <Styled.SelectedItemsContainer>
-        {cartItems.length ? selectedItemsElements : fallbackElement}
+        {cartItems.length > 0 &&
+          cartItems.map(cartItem => (
+            <SelectedItem
+              key={cartItem.id}
+              cartItem={cartItem}
+              deleteItem={deleteItem}
+              increaseItemQuantity={() => {
+                changeCartItemQuantity({
+                  cartItemId: cartItem.id,
+                  quantity: cartItem.quantity + 1,
+                });
+              }}
+              decreaseItemQuantity={() => {
+                changeCartItemQuantity({
+                  cartItemId: cartItem.id,
+                  quantity: Math.max(0, cartItem.quantity - 1),
+                });
+              }}
+            />
+          ))}
+
+        {cartItems.length === 0 && (
+          <Styled.EmptyFallback>
+            장바구니에 담긴 상품이 없습니다.
+          </Styled.EmptyFallback>
+        )}
       </Styled.SelectedItemsContainer>
       <Styled.AmountContainer>
         <Styled.AmountDescription>총 결제 금액</Styled.AmountDescription>
