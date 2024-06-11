@@ -2,11 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { PRODUCTS_ENDPOINT } from "../api/endpoints";
 import { PAGE } from "../constants";
 import { useError } from "../context/errorContext";
-
-const sortOptionsMap: Record<SortOrder, string> = {
-  asc: "낮은 가격순",
-  desc: "높은 가격순",
-};
+import { sortOptionsMap } from "../components/ProductHeader/ProductHeader";
 
 export default function useProducts(): UseProductsResult {
   const [products, setProducts] = useState<ProductProps[]>([]);
@@ -15,7 +11,7 @@ export default function useProducts(): UseProductsResult {
   const { setErrorStatus } = useError();
   const [page, setPage] = useState<number>(PAGE.FIRST_PAGE);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
-  const [sortOption, setSortOption] = useState<SortOrder>("asc");
+  const [sortOption, setSortOption] = useState<SortOrder>("price,asc");
   const [category, setCategory] = useState<string>("전체");
 
   const fetchProducts = async () => {

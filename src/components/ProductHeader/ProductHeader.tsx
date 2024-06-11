@@ -2,13 +2,13 @@ import { categoryOptions, sortOptions } from "../../constants";
 import { DropDown } from "../DropDown/DropDown";
 import { StyledDropDownContainer, StyledHeader, StyledTitle } from "./ProductHeader.styled";
 
-const sortOptionsMap: { [key: string]: string } = {
+export const sortOptionsMap: { [key: string]: SortOrder } = {
   "낮은 가격순": "price,asc",
   "높은 가격순": "price,desc",
 };
 
 interface ProductHeaderProps {
-  setSortOption: (sortOption: string) => void;
+  setSortOption: (sortOption: SortOrder) => void;
   setCategory: (category: string) => void;
   resetPage: () => void;
   selectedCategory: string;

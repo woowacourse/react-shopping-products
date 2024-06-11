@@ -12,7 +12,7 @@ interface CartItemProps {
   product: ProductProps;
 }
 
-type SortOrder = "asc" | "desc";
+type SortOrder = "price,asc" | "price,desc";
 
 interface UseProductsResult {
   products: ProductProps[];
