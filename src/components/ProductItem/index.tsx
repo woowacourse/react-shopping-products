@@ -6,6 +6,8 @@ import Spinner from '../common/Spinner';
 import Quantity from '../common/Quantity';
 import useHandleCartItems from '../../hooks/useHandleCartItems';
 import { CartItem } from '../../types/cart';
+import { useContext } from 'react';
+import { ToastContext } from '../../context/ToastProvider';
 
 interface ProductItemProps {
   id: number;
@@ -16,11 +18,16 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, imageUrl, name, price, cartItem }: ProductItemProps) => {
+  const { showToast } = useContext(ToastContext);
   const { addCart } = useHandleCartItems();
   const isInCart = !!cartItem;
 
-  const handleOnClickAddButton = () => {
-    addCart.mutate(id);
+  const handleOnClickAddButton = async () => {
+    try {
+      await addCart.mutateAsync(id);
+    } catch (error) {
+      if (error instanceof Error) showToast(error.message);
+    }
   };
 
   return (

@@ -2,6 +2,8 @@ import { MINUS, PLUS } from '../../../assets/images';
 import * as S from './style';
 import useHandleCartItems from '../../../hooks/useHandleCartItems';
 import Spinner from '../Spinner';
+import { useContext } from 'react';
+import { ToastContext } from '../../../context/ToastProvider';
 
 interface QuantityProps {
   cartId: number;
@@ -10,17 +12,21 @@ interface QuantityProps {
 }
 
 const Quantity = ({ cartId, quantity, deleteIfZero }: QuantityProps) => {
+  const { showToast } = useContext(ToastContext);
   const { deleteCart, updateCartItemQuantity } = useHandleCartItems();
 
   const disabled = !deleteIfZero && quantity === 1;
 
-  const onClickMinusButton = () => {
+  const onClickMinusButton = async () => {
     if (disabled) return;
-
-    if (quantity === 1) {
-      deleteCart.mutate(cartId);
-    } else {
-      updateCartItemQuantity.mutate({ cartId, quantity: quantity - 1 });
+    try {
+      if (quantity === 1) {
+        await deleteCart.mutateAsync(cartId);
+      } else {
+        await updateCartItemQuantity.mutateAsync({ cartId, quantity: quantity - 1 });
+      }
+    } catch (error) {
+      if (error instanceof Error) showToast(error.message);
     }
   };
 
