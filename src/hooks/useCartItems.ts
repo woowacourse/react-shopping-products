@@ -4,14 +4,18 @@ import { useEffect } from "react";
 import { useError } from "@hooks/index";
 import { QUERY_KEY } from "@constants/rules";
 
-const useCartItems = () => {
+interface Props {
+  retry?: boolean;
+}
+
+const useCartItems = ({ retry }: Props) => {
   const { showError } = useError();
 
   const queryClient = useQueryClient();
   const { data, error, isError } = useQuery({
     queryKey: [QUERY_KEY.cartItems],
     queryFn: getCartItems,
-    retry: false,
+    retry,
   });
 
   const refetchCartItems = () => {

@@ -40,7 +40,7 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
 };
 
 const ModalInner = () => {
-  const { cartItems } = useCartItems();
+  const { cartItems } = useCartItems({ retry: false });
 
   return (
     <>

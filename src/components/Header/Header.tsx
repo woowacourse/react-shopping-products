@@ -8,7 +8,7 @@ export default function Header({
 }: {
   handleOpenCartModal: () => void;
 }) {
-  const { cartItems } = useCartItems();
+  const { cartItems } = useCartItems({ retry: false });
   const quantityInCart = cartItems.length ? cartItems.length : 0;
 
   return (

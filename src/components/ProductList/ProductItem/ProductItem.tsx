@@ -12,7 +12,7 @@ interface ProductProps {
 
 const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
   ({ product }, ref) => {
-    const { cartItems, refetchCartItems } = useCartItems();
+    const { cartItems, refetchCartItems } = useCartItems({ retry: false });
     const { showError } = useError();
 
     const productInCart = cartItems.find(
