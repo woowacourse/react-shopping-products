@@ -1,3 +1,8 @@
+import { PRICE_SORT, CATEGORY_LIST } from '@/constants/productList';
+
+export type PriceSortKey = (typeof PRICE_SORT)[number]['key'];
+export type CategoryListKey = (typeof CATEGORY_LIST)[number]['key'];
+
 export interface Product {
   id: number;
   name: string;
@@ -6,8 +11,7 @@ export interface Product {
   category: string;
 }
 
-// TODO: constants 파일에 정의한 key값만 들어가게 타입 설정
 export interface ProductFilterOptions {
-  sort: string;
-  category: string;
+  sort: PriceSortKey;
+  category: CategoryListKey;
 }
