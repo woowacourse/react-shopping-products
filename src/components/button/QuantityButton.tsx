@@ -26,6 +26,7 @@ export const PlusButton = ({
   return (
     <S.BaseButton
       onClick={onClick}
+      aria-label="수량 증가"
       disabled={isDisabled}
       $theme={isDisabled ? 'disabled' : 'white'}
       $width="24px"
@@ -46,6 +47,7 @@ export const MinusButton = ({
   return (
     <S.BaseButton
       onClick={onClick}
+      aria-label="수량 감소"
       disabled={isDisabled}
       $theme={isDisabled ? 'disabled' : 'white'}
       $width="24px"
