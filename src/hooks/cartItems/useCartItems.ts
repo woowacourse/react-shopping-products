@@ -14,26 +14,18 @@ interface UseCartItemResult {
 }
 
 export default function useCartItems(): UseCartItemResult {
-  const {
-    data: cartItems = [],
-    isLoading: isCartItemsLoading,
-    isError: isCartItemsError,
-    error: cartItemsError,
-  } = useGetCartItems();
+  const { data: cartItems = [], isLoading, isError, error } = useGetCartItems();
 
   const addProductToCart = useUpdateCartItem<number>(addCartItem);
   const removeProductFromCart = useUpdateCartItem<number>(removeCartItem);
 
   const { setError } = useErrorContext();
 
-  const isLoading =
-    isCartItemsLoading || addProductToCart.isPending || removeProductFromCart.isPending;
-
   useEffect(() => {
-    if (isCartItemsError) {
-      setError(cartItemsError);
+    if (isError) {
+      setError(error);
     }
-  }, [isCartItemsError, cartItemsError, setError]);
+  }, [isError, error, setError]);
 
   const handleAddCartItem = async (productId: number) => {
     addProductToCart.mutate(productId, {
@@ -56,7 +48,7 @@ export default function useCartItems(): UseCartItemResult {
 
   return {
     cartItems,
-    isLoading,
+    isLoading: isLoading || addProductToCart.isPending || removeProductFromCart.isPending,
     handleAddCartItem,
     handleRemoveCartItem,
   };
