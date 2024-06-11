@@ -4,25 +4,21 @@ import ERROR_MESSAGE from '@constants/errorMessage';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { updateCartItemQuantity } from '@apis/ShoppingCartFetcher';
 
-const formatNumberToPositiveInt32 = (number: number) => {
-  if (number < 1) return 1;
-  if (number > 2 ** 32 - 1) return 2 ** 32 - 1;
-  return Math.floor(number);
-};
-
+const MAX_QUANTITY = 2 ** 31 - 1;
 export default function useChangeCartItemQuantity() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
+    mutationFn: async ({
       cartItemId,
       quantity,
     }: {
       cartItemId: number;
       quantity: number;
     }) => {
-      const intQuantity = formatNumberToPositiveInt32(quantity);
-      return updateCartItemQuantity(cartItemId, intQuantity)
+      if (quantity < 1) return;
+      if (quantity > MAX_QUANTITY) return;
+      return updateCartItemQuantity(cartItemId, Math.floor(quantity))
         .catch(() => {
           throw new Error(ERROR_MESSAGE.clientNetwork);
         })
