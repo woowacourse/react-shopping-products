@@ -17,12 +17,7 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
   });
   return (
     <>
-      {!isInCart ? (
-        <Button isGray={isInCart} onClick={() => showCountButton()}>
-          <S.ButtonImg src={AddCart} />
-          <span>{BUTTON_MESSAGE.ADD}</span>
-        </Button>
-      ) : (
+      {isInCart ? (
         <S.CardQuantityButtonContainer>
           <S.CountButton
             onClick={() => {
@@ -41,6 +36,11 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
             {BUTTON_MESSAGE.PLUS}
           </S.CountButton>
         </S.CardQuantityButtonContainer>
+      ) : (
+        <Button isGray={isInCart} onClick={() => showCountButton()}>
+          <S.ButtonImg src={AddCart} />
+          <span>{BUTTON_MESSAGE.ADD}</span>
+        </Button>
       )}
     </>
   );
