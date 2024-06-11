@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { ToastContext } from '../../context/ToastProvider';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addCartItem, deleteCartItem, patchCartItemQuantity } from '../../api/cartItems';
-import { QUERY_KEYS } from '../../constants/queryKeys';
+import { QUERY_KEY } from '../../constants/queryKeys';
 
 const useHandleCartItems = () => {
   const { showToast } = useContext(ToastContext);
@@ -11,7 +11,7 @@ const useHandleCartItems = () => {
   const addCart = useMutation({
     mutationFn: (productId: number) => addCartItem(productId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItem] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItem] });
     },
     onError: (error) => {
       showToast(error.message);
@@ -21,7 +21,7 @@ const useHandleCartItems = () => {
   const deleteCart = useMutation({
     mutationFn: (cartId: number) => deleteCartItem(cartId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItem] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItem] });
     },
     onError: (error) => {
       showToast(error.message);
@@ -32,7 +32,7 @@ const useHandleCartItems = () => {
     mutationFn: ({ cartId, quantity }: { cartId: number; quantity: number }) =>
       patchCartItemQuantity(cartId, quantity),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItem] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItem] });
     },
     onError: (error) => {
       showToast(error.message);
