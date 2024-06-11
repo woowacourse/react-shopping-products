@@ -1,5 +1,5 @@
 import { CountButton } from "../Button";
-import { CountControlButtonBundleStyle } from "./CountControlButtonBundle.style";
+import * as CCBB from "./CountControlButtonBundle.style";
 
 interface Props {
   amount: number;
@@ -13,11 +13,11 @@ const CountControlButtonBundle = ({
   handleIncrementAmount,
 }: Props) => {
   return (
-    <CountControlButtonBundleStyle>
+    <CCBB.Style>
       <CountButton type="minus" onClick={handleDecrementAmount} />
-      <span className="cart-item_amount">{amount}</span>
+      <CCBB.Amount>{amount}</CCBB.Amount>
       <CountButton type="plus" onClick={handleIncrementAmount} />
-    </CountControlButtonBundleStyle>
+    </CCBB.Style>
   );
 };
 export default CountControlButtonBundle;

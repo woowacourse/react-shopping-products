@@ -52,10 +52,10 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
     <MI.CartItem>
       <MI.CartItemImg src={cartItem.product.imageUrl} alt="" />
       <MI.CartItemContent>
-        <p className="cart-item_content_name">{cartItem.product.name}</p>
-        <span className="cart-item_content_price">
+        <MI.ContentName>{cartItem.product.name}</MI.ContentName>
+        <MI.ContentPrice>
           {cartItem.product.price.toLocaleString("ko-kr")}원
-        </span>
+        </MI.ContentPrice>
         <CountControlButtonBundle
           amount={cartItem.quantity}
           handleIncrementAmount={handleIncrementAmount}
@@ -78,10 +78,10 @@ const ModalInner = () => {
         cartItems.map((item) => {
           return <CartItem cartItem={item} />;
         })}
-      <MI.TotalPrice>
-        <p className="total-price_title">총 결제 금액</p>
-        <p className="total-price_price">95,000원</p>
-      </MI.TotalPrice>
+      <MI.TotalPriceStyle>
+        <MI.TotalPriceTitle>총 결제 금액</MI.TotalPriceTitle>
+        <MI.TotalPrice>95,000원</MI.TotalPrice>
+      </MI.TotalPriceStyle>
     </>
   );
 };
