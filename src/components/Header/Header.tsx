@@ -9,7 +9,7 @@ export default function Header({
   handleOpenCartModal: () => void;
 }) {
   const { cartItems } = useCartItems();
-  const quantityInCart = cartItems && cartItems.length;
+  const quantityInCart = cartItems.length ? cartItems.length : 0;
 
   return (
     <H.HeaderStyle>
