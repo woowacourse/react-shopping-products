@@ -21,9 +21,8 @@ const useFetchProducts = () => {
       queryKey: [QUERY_KEYS.products, category, sort],
       queryFn: ({ pageParam }: { pageParam: number }) => fetchProducts(pageParam, category, sort),
       initialPageParam: 0,
-      getNextPageParam: (lastPage, allPages) => {
-        const prevPage = allPages.length;
-        const nextPage = prevPage + PRODUCTS.GAP_WITH_FIRST_PAGE - 1;
+      getNextPageParam: (lastPage, _, lastPageParam) => {
+        const nextPage = lastPageParam + PRODUCTS.GAP_WITH_FIRST_PAGE;
 
         return lastPage.last ? undefined : nextPage;
       },
