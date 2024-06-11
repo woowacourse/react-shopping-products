@@ -6,22 +6,23 @@ import S from "./styledComponent";
 interface InfiniteScrollProps extends PropsWithChildren {
   isLoading: boolean;
   handleScroll: () => void;
+  isError: boolean;
 }
 
-const InfiniteScroll = ({ children, isLoading, handleScroll }: InfiniteScrollProps) => {
+const InfiniteScroll = ({ children, isLoading, handleScroll, isError }: InfiniteScrollProps) => {
   const loaderRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isLoading) {
+        if (entries[0].isIntersecting && !isLoading && !isError) {
           handleScroll();
         }
       },
       {
         root: null,
         rootMargin: "200px 0px",
-        threshold: 0.1,
+        threshold: 1,
       }
     );
 
@@ -34,7 +35,7 @@ const InfiniteScroll = ({ children, isLoading, handleScroll }: InfiniteScrollPro
         observer.unobserve(loaderRef.current);
       }
     };
-  }, [isLoading, handleScroll]);
+  }, [isLoading, handleScroll, isError]);
 
   return (
     <>

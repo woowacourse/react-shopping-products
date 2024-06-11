@@ -3,7 +3,8 @@ import { HttpResponse, http } from "msw";
 
 import { CartMockClosure, isValidCartItemRequestBody } from "./handlerUtils";
 
-import productsMockData from "./products.json";
+import productsMockData from "./data/products.json";
+import cartItem from "./data/cartItem.json";
 
 export const cartMockClosure = CartMockClosure();
 
@@ -32,7 +33,12 @@ export const handlers = [
       throw new Error("body로 주어진 값이 { productId, quantity} 형식이 아닙니다.");
     }
 
-    cartMockClosure.pushCartItem(body);
+    cartMockClosure.pushCartItem({
+      ...cartItem,
+      id: cartMockClosure.getCartMockData().content.length + 1,
+      product: { ...cartItem.product, id: body.productId },
+      quantity: body.quantity,
+    });
     return HttpResponse.json({ status: 201 });
   }),
 
@@ -45,6 +51,23 @@ export const handlers = [
     }
 
     cartMockClosure.deleteCartItem(numberId);
+    return HttpResponse.json({ status: 204 });
+  }),
+
+  http.patch(`${CART_ITEMS_ENDPOINT}/:id`, async ({ request, params }) => {
+    const { id } = params;
+    const numberId = Number(id);
+    const body = await request.json();
+
+    if (typeof body !== "object" || !body?.quantity || typeof body?.quantity !== "number") {
+      throw new Error(`body로 주어진 값이 { quantity} 형식이 아닙니다.`);
+    }
+
+    if (Number.isNaN(numberId)) {
+      throw new Error(`값이 숫자가 아닙니다.`);
+    }
+
+    cartMockClosure.modifyCartItemQuantity(numberId, body.quantity);
     return HttpResponse.json({ status: 204 });
   }),
 ];

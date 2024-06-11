@@ -15,25 +15,35 @@ export async function getCartItems() {
   return data.content;
 }
 
-export async function getFirstCartItems() {}
-
-export async function postCartItems(body: { productId: number; quantity: number }) {
+export async function addCartItem(body: { productId: number; quantity: number }) {
   const data = await fetchWithToken({
     method: "POST",
     url: `${CART_ITEMS_ENDPOINT}`,
     headers: { "Content-type": "Application/json" },
     body: JSON.stringify(body),
-    errorMessage: ERROR_MESSAGE.postCartItems,
+    errorMessage: ERROR_MESSAGE.addCartItem,
   });
 
   return data;
 }
 
-export async function deleteCartItems(id: number) {
+export async function deleteCartItem(id: number) {
   const data = await fetchWithToken({
     method: "DELETE",
     url: `${CART_ITEMS_ENDPOINT}/${id}`,
-    errorMessage: ERROR_MESSAGE.deleteCartItems,
+    headers: { "Content-type": "Application/json" },
+    errorMessage: ERROR_MESSAGE.deleteCartItem,
+  });
+  return data;
+}
+
+export async function modifyCartItem(id: number, quantity: number) {
+  const data = await fetchWithToken({
+    method: "PATCH",
+    url: `${CART_ITEMS_ENDPOINT}/${id}`,
+    body: JSON.stringify({ quantity }),
+    headers: { "Content-type": "Application/json" },
+    errorMessage: ERROR_MESSAGE.modifyCartItem,
   });
 
   return data;

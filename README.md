@@ -66,3 +66,22 @@
 2. [ ] dropdown 외부 요소를 클릭시 닫히게 만든다.
 3. [x] fetch를 두 번 하는 과정은 api도메인에 작성한다. (컴포넌트 외부로 분리한다.)
 4. [x] toast를 사용하는 useEffect는 훅으로 분리한다.
+
+## Step2 기능 요구 사항
+
+1. [x] 모달창 UI
+2. [x] 빼기버튼 삭제 및 수량 조절 버튼 추가
+3. [x] 상품 수량에 대한 테스트
+
+   - [x] increaseQuantity 실행시 수량이 1 증가한다.
+   - [x] decreaseQuantity 실행시 수량이 1 감소한다.
+   - [x] 수량이 1개일 때 decreaseQuantity 실행시, Cart에서 삭제된다.
+
+4. [x] 상품 수량에 대한 useProductQuantity 훅
+   - increaseQuantity, decreaseQuantity, isLoading, error
+5. [x] 낙관적 업데이트
+6. [ ] Error Boundary
+
+### 왜 안되는지 공부하기.
+
+1. 장바구니에서 삭제시 ProductControls에서 에러 발생.

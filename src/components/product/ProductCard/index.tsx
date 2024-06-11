@@ -1,10 +1,10 @@
-import { Product } from "../../../types/products";
+import { IProduct } from "../../../types/products";
 import { PropsWithChildren } from "react";
 import ToggleItemButton from "../ToggleItemButton";
 import S from "./StyledComponent";
 
 interface ProductCardProps extends PropsWithChildren {
-  product: Product;
+  product: IProduct;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
@@ -14,7 +14,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <S.ProductInfo>
         <S.ProductName>{product.name}</S.ProductName>
         <S.Price>{`${product.price.toLocaleString()}원`}</S.Price>
-        <ToggleItemButton id={product.id} />
+        <ToggleItemButton productId={product.id} />
       </S.ProductInfo>
     </S.ProductCard>
   );

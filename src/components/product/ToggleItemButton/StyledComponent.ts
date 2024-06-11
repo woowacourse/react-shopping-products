@@ -2,6 +2,11 @@ import styled from "@emotion/styled";
 import COLOR_PALETTE from "../../../style/colorPalette";
 
 const S = {
+  ToggleItemContainer: styled.div`
+    align-self: flex-end;
+    height: 40px;
+  `,
+
   ToggleItemButton: styled.button<{ isSelected: boolean }>`
     width: 60px;
     height: 32px;
@@ -17,7 +22,6 @@ const S = {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    align-self: flex-end;
     &:hover {
       opacity: 0.8;
     }

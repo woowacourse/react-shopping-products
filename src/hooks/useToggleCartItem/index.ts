@@ -1,0 +1,62 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { UseMutationResult, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCartItems, addCartItem } from "../../api/cartItems";
+import { ICartItem } from "../../types/cartItems";
+import { useDeleteCartItemByProductId } from "../useDeleteCartItem";
+import QUERY_KEYS from "../../constants/queryKeys";
+
+export interface ToggleCartItemReturns {
+  cartItems: ICartItem[];
+  addToCart: (productId: number) => void;
+  removeFromCart: (productId: number) => void;
+  checkSelected: (id: number) => boolean;
+  removeMutation: UseMutationResult<any, Error, number, unknown>;
+  addMutation: UseMutationResult<any, Error, number, unknown>;
+  isLoading: boolean;
+  isError: boolean;
+}
+
+const useToggleCartItem = (): ToggleCartItemReturns => {
+  const queryClient = useQueryClient();
+
+  const {
+    data: cartItems,
+    isLoading,
+    isError,
+  } = useQuery<ICartItem[]>({
+    queryKey: [QUERY_KEYS.cartItem],
+    queryFn: getCartItems,
+    staleTime: 30 * 1000,
+    initialData: [],
+  });
+
+  const addMutation = useMutation({
+    mutationFn: (productId: number) => addCartItem({ productId, quantity: 1 }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItem] }),
+  });
+
+  const removeMutation = useDeleteCartItemByProductId();
+
+  const addToCart = (productId: number) => {
+    addMutation.mutate(productId);
+  };
+
+  const removeFromCart = (productId: number) => {
+    removeMutation.mutate(productId);
+  };
+
+  const checkSelected = (id: number): boolean => !!cartItems?.find((item) => item.product.id === id);
+
+  return {
+    cartItems: cartItems,
+    addToCart,
+    removeFromCart,
+    checkSelected,
+    isLoading,
+    removeMutation,
+    addMutation,
+    isError,
+  };
+};
+
+export default useToggleCartItem;

@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import COLOR_PALETTE from "./colorPalette";
 
 const reset = css`
   html,
@@ -124,6 +125,19 @@ const reset = css`
   table {
     border-collapse: collapse;
     border-spacing: 0;
+  }
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: inherit;
+    border: 1px solid ${COLOR_PALETTE.lightGrey};
+    box-shadow: none;
+    border-radius: 4px;
+    padding: 0;
+    overflow: visible;
+    cursor: pointer;
   }
 `;
 
