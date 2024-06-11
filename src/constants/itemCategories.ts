@@ -6,6 +6,6 @@ const ITEM_CATEGORIES = [
   '주방용품',
   '피트니스',
   '도서',
-];
+] as const;
 
 export default ITEM_CATEGORIES;
