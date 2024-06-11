@@ -4,10 +4,10 @@ import { useCart } from '../../context/CartContext';
 import CartItemList from '../CartItemList/CartItemList';
 import { BUTTON_MESSAGE } from '../../constants/button';
 import CartTotalAmount from '../CartTotalAmount/CartTotalAmount';
-import { CartItems } from '../../type/CartItem';
+import { CartItem } from '../../type/CartItem';
 
 const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
-  const { cartItem } = useCart();
+  const { cartItems } = useCart();
 
   const handleClose = () => {
     setIsOpenModal(false);
@@ -15,15 +15,10 @@ const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
   const handleConfirm = () => {
     setIsOpenModal(false);
   };
-  const calculateTotalAmount = (cartItem: CartItems[]) => {
-    return cartItem.reduce(
-      (prevTotalAmount: number, currentItem: CartItems) => {
-        return (
-          prevTotalAmount + currentItem.quantity * currentItem.product.price
-        );
-      },
-      0,
-    );
+  const calculateTotalAmount = (cartItem: CartItem[]) => {
+    return cartItem.reduce((prevTotalAmount: number, currentItem: CartItem) => {
+      return prevTotalAmount + currentItem.quantity * currentItem.product.price;
+    }, 0);
   };
   return (
     <>
@@ -33,14 +28,14 @@ const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
           <Modal.XButton onClick={handleClose}></Modal.XButton>
         </Modal.Header>
         <Modal.Body>
-          <CartItemList items={cartItem} />
+          <CartItemList items={cartItems} />
           <CartTotalAmount
-            totalCartItemAmount={calculateTotalAmount(cartItem)}
+            totalCartItemAmount={calculateTotalAmount(cartItems)}
           />
         </Modal.Body>
         <Modal.Footer>
           <Modal.Button
-            disabled={cartItem.length === 0}
+            disabled={cartItems.length === 0}
             onClick={handleConfirm}
             width="stretch"
           >

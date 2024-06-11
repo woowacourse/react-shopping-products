@@ -1,5 +1,5 @@
-import { CartItems } from '../../type/CartItem';
+import { CartItem } from '../../type/CartItem';
 
 export interface CartItemListProps {
-  items: CartItems[];
+  items: CartItem[];
 }

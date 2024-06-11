@@ -1,9 +1,9 @@
 import { BUTTON_MESSAGE } from '../../constants/button';
 import useCartItemHandler from '../../hooks/useCartItemHandler';
 import * as S from './CartItemCard.style';
-import { ProductProps } from './CartItemCard.type';
+import { CartItemCardProps } from './CartItemCard.type';
 
-function CartItemCard({ item }: ProductProps) {
+function CartItemCard({ item }: CartItemCardProps) {
   const {
     itemQuantity,
     handleAddCartItemQuantity,

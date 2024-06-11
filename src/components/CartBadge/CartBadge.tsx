@@ -5,7 +5,7 @@ import { CartBadgeContainer } from './CartBadge.style';
 import { PropsWithChildren, useState } from 'react';
 
 const CartBadge: React.FC<PropsWithChildren> = ({ children }) => {
-  const { cartItem } = useCart();
+  const { cartItems } = useCart();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
@@ -16,7 +16,7 @@ const CartBadge: React.FC<PropsWithChildren> = ({ children }) => {
         }}
       >
         <Badge bgColor="#fff" color="#000">
-          {cartItem.length}
+          {cartItems.length}
         </Badge>
         {children}
       </CartBadgeContainer>

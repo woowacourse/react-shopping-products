@@ -2,11 +2,11 @@ import React, { createContext, PropsWithChildren } from 'react';
 import { fetchItems } from '../api';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../constants/queryKeys';
-import { CartItems } from '../type/CartItem';
+import { CartItem } from '../type/CartItem';
 export const CartContext = createContext<{
   isLoading: boolean;
   error: Error | null;
-  cartItem: CartItems[];
+  cartItems: CartItem[];
   isFetching: boolean;
   isSuccess: boolean;
   isError: boolean;
@@ -14,7 +14,7 @@ export const CartContext = createContext<{
 }>({
   isLoading: false,
   error: null,
-  cartItem: [],
+  cartItems: [],
   isFetching: false,
   isSuccess: false,
   isError: false,
@@ -35,7 +35,7 @@ export const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
       value={{
         isLoading,
         error,
-        cartItem: data,
+        cartItems: data,
         isFetching,
         isSuccess,
         isError,

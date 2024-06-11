@@ -17,7 +17,7 @@ describe('ShoppingCartContext', () => {
 
     await waitFor(() => {
       expect(result.current.isFetching).toBe(false);
-      expect(result.current.cartItem).toHaveLength(2);
+      expect(result.current.cartItems).toHaveLength(2);
     });
   });
 

@@ -12,11 +12,11 @@ interface CartButtonProps {
 const useCartItemHandler = ({ productId }: CartButtonProps) => {
   const [isInCart, setIsInCart] = useState(false);
   const [itemQuantity, setItemQuantity] = useState(0);
-  const { cartItem, refetch } = useCart();
+  const { cartItems, refetch } = useCart();
 
   useEffect(() => {
     const initProductItem = (productId: number): InitProductItem => {
-      const isCartItemInProduct = cartItem.find(
+      const isCartItemInProduct = cartItems.find(
         (item) => item.product.id === productId,
       );
       return isCartItemInProduct
@@ -30,7 +30,7 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
     const { initIsInCart, initQuantity } = initProductItem(productId);
     setIsInCart(initIsInCart);
     setItemQuantity(initQuantity);
-  }, [productId, setIsInCart, setItemQuantity, cartItem]);
+  }, [productId, setIsInCart, setItemQuantity, cartItems]);
 
   const addCartItemMutation = useMutation({
     mutationFn: async (itemQuantity: number) => {
@@ -50,7 +50,9 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
 
   const deleteCartItemMutation = useMutation({
     mutationFn: async () => {
-      const targetItem = cartItem.find((item) => item.product.id === productId);
+      const targetItem = cartItems.find(
+        (item) => item.product.id === productId,
+      );
       if (targetItem) await deleteCartItem(targetItem.id);
     },
     onMutate: () => {
@@ -66,7 +68,9 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
   });
   const addCartItemQuantityMutation = useMutation({
     mutationFn: async (itemQuantity: number) => {
-      const targetItem = cartItem.find((item) => item.product.id === productId);
+      const targetItem = cartItems.find(
+        (item) => item.product.id === productId,
+      );
       if (targetItem) await fetchCartItemQuantity(targetItem.id, itemQuantity);
     },
     onMutate: () => {
@@ -82,7 +86,9 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
 
   const minusCartItemQuantityMutation = useMutation({
     mutationFn: async (itemQuantity: number) => {
-      const targetItem = cartItem.find((item) => item.product.id === productId);
+      const targetItem = cartItems.find(
+        (item) => item.product.id === productId,
+      );
       if (targetItem) await fetchCartItemQuantity(targetItem.id, itemQuantity);
       if (itemQuantity === 0) {
         setIsInCart(false);

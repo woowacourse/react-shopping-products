@@ -1,6 +1,6 @@
 import { MAX_CART_ITEMS_COUNTS } from '../constants';
 import { CategoryType, SortType } from '../type';
-import { CartItems } from '../type/CartItem';
+import { CartItem } from '../type/CartItem';
 import { ProductItem } from '../type/ProductItem';
 import ENDPOINT from './endpoints';
 
@@ -131,7 +131,7 @@ export const findCartItemIdByProductId = async (productId: number) => {
   return cartItem && cartItem.id;
 };
 
-export async function fetchItems(): Promise<CartItems[]> {
+export async function fetchItems(): Promise<CartItem[]> {
   const url = createURLWithParams(ENDPOINT.CART_ITEMS, {
     size: MAX_CART_ITEMS_COUNTS,
   });
