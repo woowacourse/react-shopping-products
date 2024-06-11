@@ -37,10 +37,7 @@ const ProductList = () => {
             </PL.Error>
           );
         }
-        if (isLoading) {
-          return <PL.Loading>로딩중! 💪</PL.Loading>;
-        }
-        if (products.length === 0) {
+        if (products.length === 0 && !isLoading) {
           return <PL.Empty>상품이 존재하지 않습니다! 🥲</PL.Empty>;
         }
         return (
