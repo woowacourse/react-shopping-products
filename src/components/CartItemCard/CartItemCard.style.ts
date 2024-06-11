@@ -31,7 +31,6 @@ export const CardDetail = styled.div`
   justify-content: space-between;
   width: 100%;
   margin: 0.9rem 0;
-  box-sizing: border-box;
 `;
 
 export const CardInfo = styled.div`
