@@ -16,14 +16,14 @@ const useControlCart = ({ cartItemId, quantity }: Props) => {
     return patchCartItems(cartItemId, newQuantity);
   };
 
-  const addToCart = useMutation({
+  const increaseToCart = useMutation({
     mutationFn: () => mutationFn(quantity! + 1),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
     },
   });
 
-  const deleteToCart = useMutation({
+  const decreaseToCart = useMutation({
     mutationFn: () => {
       if (quantity! <= 1) {
         return Promise.reject(
@@ -38,8 +38,8 @@ const useControlCart = ({ cartItemId, quantity }: Props) => {
   });
 
   return {
-    addToCart,
-    deleteToCart,
+    increaseToCart,
+    decreaseToCart,
   };
 };
 

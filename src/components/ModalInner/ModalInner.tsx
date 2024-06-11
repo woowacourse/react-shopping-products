@@ -11,7 +11,7 @@ import * as MI from "./ModalInner.style";
 const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
   const { showError } = useError();
 
-  const { addToCart, deleteToCart } = useControlCart({
+  const { increaseToCart, decreaseToCart } = useControlCart({
     cartItemId: cartItem.id,
     quantity: cartItem.quantity,
   });
@@ -20,7 +20,7 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
 
   const handleIncrementAmount = () => {
     try {
-      addToCart.mutate();
+      increaseToCart.mutate();
     } catch (error) {
       if (error instanceof Error) {
         showError(error.message);
@@ -30,7 +30,7 @@ const CartItem = ({ cartItem }: { cartItem: CartItem }) => {
 
   const handleDecrementAmount = () => {
     try {
-      deleteToCart.mutate();
+      decreaseToCart.mutate();
     } catch (error) {
       if (error instanceof Error) {
         showError(error.message);

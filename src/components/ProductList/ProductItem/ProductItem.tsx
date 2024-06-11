@@ -18,7 +18,7 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
       (item) => item.product.id === product.id,
     );
 
-    const { addToCart, deleteToCart } = useControlCart({
+    const { increaseToCart, decreaseToCart } = useControlCart({
       cartItemId: productInCart?.id,
       quantity: productInCart?.quantity,
     });
@@ -43,14 +43,14 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
     };
 
     const handleIncrementAmount = () => {
-      if (addToCart.mutate) {
-        addToCart.mutate();
+      if (increaseToCart.mutate) {
+        increaseToCart.mutate();
       }
     };
 
     const handleDecrementAmount = () => {
-      if (deleteToCart.mutate) {
-        deleteToCart.mutate();
+      if (decreaseToCart.mutate) {
+        decreaseToCart.mutate();
       }
     };
 
