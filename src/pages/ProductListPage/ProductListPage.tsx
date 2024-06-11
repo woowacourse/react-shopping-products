@@ -5,6 +5,7 @@ import ProductItem from '../../components/product/ProductItem';
 import { Dropdown, FloatingButton, LoadingSpinner } from '../../components/common';
 
 import useFetchProducts from '../../hooks/useProducts/useFetchProducts';
+import useFetchCartItems from '../../hooks/useCartItems/useFetchCartItems';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useFilterAndSort from '../../hooks/useFilterAndSort';
 import useModal from '../../hooks/useModal';
@@ -17,6 +18,7 @@ import EmptyCart from '../../assets/EmptyCart.png';
 const ProductListPage = () => {
   const { category, sort, handleCategory, handleSort } = useFilterAndSort();
   const { products, loading, status, isLast, handlePage } = useFetchProducts(category, sort);
+  const { cartItems } = useFetchCartItems();
   const { isOpen, handleOpen, handleClose } = useModal();
   const targetRef = useIntersectionObserver(handlePage);
 
@@ -41,7 +43,7 @@ const ProductListPage = () => {
         {products.length > 0 ? (
           <S.ProductList>
             {products.map((product, index) => (
-              <ProductItem key={`${product.id}-${index}`} product={product} />
+              <ProductItem key={`${product.id}-${index}`} product={product} cartItems={cartItems} />
             ))}
           </S.ProductList>
         ) : (

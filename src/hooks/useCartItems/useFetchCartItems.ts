@@ -25,7 +25,6 @@ const useFetchCartItems = (): { cartItems: CartItem[]; status: 'error' | 'succes
   } = useQuery<CartItem[], Error>({
     queryKey: [QUERY_KEYS.CART],
     queryFn: getCartItems,
-    staleTime: 3600000,
     networkMode: 'always',
     retry: false,
   });
