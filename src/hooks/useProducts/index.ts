@@ -18,9 +18,12 @@ const useFetchProducts = () => {
     useInfiniteQuery({
       queryKey: queryKeys.products(category, sort),
       queryFn: ({ pageParam }: { pageParam: number }) => fetchProducts(pageParam, category, sort),
-      initialPageParam: 0,
+      initialPageParam: PRODUCTS.FIRST_PAGE,
       getNextPageParam: (lastPage, _, lastPageParam) => {
-        const nextPage = lastPageParam + PRODUCTS.GAP_WITH_FIRST_PAGE;
+        const nextPage =
+          lastPageParam === PRODUCTS.FIRST_PAGE
+            ? lastPageParam + PRODUCTS.GAP_WITH_FIRST_PAGE
+            : lastPageParam + 1;
 
         return lastPage.last ? undefined : nextPage;
       },
