@@ -1,6 +1,6 @@
 import { useModal } from "choco-modal-component";
 import { ShoppingCartIcon } from "../../assets";
-import { useCart } from "../../context/cartContext";
+import { useFetchCartItems } from "../../hooks/useFetchCartItems";
 import { CartModal } from "../CartModal/CartModal";
 import { BaseButton } from "./BaseButton";
 import { StyledCartButtonImg, StyledCartCount, StyledContainer } from "./CartButton.styled";
@@ -8,9 +8,8 @@ import { StyledCartButtonImg, StyledCartCount, StyledContainer } from "./CartBut
 interface CartButtonProps {
   onClick?: () => void;
 }
-
 export const CartButton = ({ onClick = () => {} }: CartButtonProps) => {
-  const { cartItems } = useCart();
+  const { cartItems, isError, isLoading } = useFetchCartItems();
   const { isOpen, openModal, closeModal } = useModal();
 
   const handleClick = () => {
@@ -23,7 +22,7 @@ export const CartButton = ({ onClick = () => {} }: CartButtonProps) => {
       <BaseButton onClick={handleClick}>
         <StyledContainer>
           <StyledCartButtonImg src={ShoppingCartIcon} alt="" />
-          <StyledCartCount>{cartItems.length}</StyledCartCount>
+          {!isError && !isLoading && <StyledCartCount>{cartItems.length}</StyledCartCount>}
         </StyledContainer>
       </BaseButton>
 

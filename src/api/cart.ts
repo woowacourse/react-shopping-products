@@ -12,7 +12,12 @@ const handleResponse = async (response: Response, errorMessage: string) => {
 };
 
 // 사용자의 장바구니에 아이템 추가
-export async function addCartItem(productId: number, quantity: number): Promise<Response> {
+
+interface addCartItemProps {
+  productId: number;
+  quantity: number;
+}
+export async function addCartItem({ productId, quantity }: addCartItemProps): Promise<Response> {
   const token = generateBasicToken(USER_ID, USER_PASSWORD);
 
   const response = await fetch(`${CART_ITEMS_ENDPOINT}`, {
@@ -64,10 +69,14 @@ export async function getCartItems(
 }
 
 // 장바구니 아이템 수량 변경
-export async function patchCartItemQuantityChange(
-  cartItemId: number,
-  quantity: number
-): Promise<Response> {
+interface QuantityProps {
+  cartItemId: number;
+  quantity: number;
+}
+export async function patchCartItemQuantityChange({
+  cartItemId,
+  quantity,
+}: QuantityProps): Promise<Response> {
   const token = generateBasicToken(USER_ID, USER_PASSWORD);
   const response = await fetch(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
     method: "PATCH",

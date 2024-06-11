@@ -1,5 +1,5 @@
-import { useCart } from "../../context/cartContext";
-import { useChangeCartItemQuantity } from "../../hooks";
+import { useFetchCartItems } from "../../hooks/useFetchCartItems";
+import { useRemoveItem } from "../../hooks/useRemoveItem";
 import { formatPrice } from "../../utils/format";
 import { DeleteButton } from "../Button";
 import { QuantityControls } from "../QuantityControl/QuantityControl";
@@ -18,59 +18,44 @@ import {
 } from "./CartModalContent.styled";
 
 export const CartModalContent = () => {
-  const { cartItems, removeCartItem, updateCartItemQuantity } = useCart();
-  const { incrementQuantity, decrementQuantity } = useChangeCartItemQuantity();
-
-  const handleIncrement = async (id: number, quantity: number) => {
-    await incrementQuantity({ id, quantity });
-    updateCartItemQuantity(id, quantity + 1);
-  };
-
-  const handleDecrement = async (id: number, quantity: number) => {
-    if (quantity - 1 <= 0) {
-      await removeCartItem(id);
-    } else {
-      await decrementQuantity({ id, quantity });
-      updateCartItemQuantity(id, quantity - 1);
-    }
-  };
+  const { mutate: removeItem } = useRemoveItem();
+  const { cartItems, isError, isLoading } = useFetchCartItems();
 
   const handleDelete = async (id: number) => {
-    await removeCartItem(id);
+    removeItem(id);
   };
 
-  const totalAmount = cartItems.reduce(
-    (total, item) => total + item.product.price * item.quantity,
-    0
-  );
+  const totalAmount = () => {
+    return isError || isLoading
+      ? 0
+      : cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  };
 
   return (
     <>
-      {cartItems.map((item) => (
-        <StyledCartItem key={item.id}>
-          <StyledCartItemImageContainer>
-            <StyledCartItemImage src={item.product.imageUrl} alt={item.product.name} />
-          </StyledCartItemImageContainer>
-          <StyledCartItemInfo>
-            <StyledCartItemText>
-              <StyledCartItemTextWrapper>
-                <StyledCartItemName>{item.product.name}</StyledCartItemName>
-                <StyledCartItemPrice>{formatPrice(item.product.price)}</StyledCartItemPrice>
-              </StyledCartItemTextWrapper>
-              <DeleteButton onClick={() => handleDelete(item.id)} />
-            </StyledCartItemText>
-            <QuantityControls
-              quantity={item.quantity}
-              onIncrement={() => handleIncrement(item.id, item.quantity)}
-              onDecrement={() => handleDecrement(item.id, item.quantity)}
-            />
-          </StyledCartItemInfo>
-        </StyledCartItem>
-      ))}
-
+      {!isError &&
+        !isLoading &&
+        cartItems &&
+        cartItems.map((item) => (
+          <StyledCartItem key={item.id}>
+            <StyledCartItemImageContainer>
+              <StyledCartItemImage src={item.product.imageUrl} alt={item.product.name} />
+            </StyledCartItemImageContainer>
+            <StyledCartItemInfo>
+              <StyledCartItemText>
+                <StyledCartItemTextWrapper>
+                  <StyledCartItemName>{item.product.name}</StyledCartItemName>
+                  <StyledCartItemPrice>{formatPrice(item.product.price)}</StyledCartItemPrice>
+                </StyledCartItemTextWrapper>
+                <DeleteButton onClick={() => handleDelete(item.id)} />
+              </StyledCartItemText>
+              <QuantityControls cartItemId={item.id} quantity={item.quantity} />
+            </StyledCartItemInfo>
+          </StyledCartItem>
+        ))}
       <StyledCartTotal>
         <StyledCartTotalTitle>총 결제 금액</StyledCartTotalTitle>
-        <StyledCartTotalPrice>{formatPrice(totalAmount)}</StyledCartTotalPrice>
+        <StyledCartTotalPrice>{formatPrice(totalAmount())}</StyledCartTotalPrice>
       </StyledCartTotal>
     </>
   );

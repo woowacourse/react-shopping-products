@@ -45,3 +45,8 @@ export const COUNTER_BUTTON_TYPES = {
 export const CART = {
   QUANTITY_CHANGE_STEP: 1,
 };
+
+// 쿼리
+export const CART_KEYS = {
+  CART: "cart",
+};

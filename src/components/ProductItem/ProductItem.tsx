@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { useCart, useError } from "../../context";
+import { useError } from "../../context";
+import { useAddItem } from "../../hooks/useAddItem";
+import { useFetchCartItems } from "../../hooks/useFetchCartItems";
 import { formatPrice } from "../../utils/format";
 import { CartActionButton } from "../Button";
 import { QuantityControls } from "../QuantityControl/QuantityControl";
@@ -19,47 +20,17 @@ export const ProductItem = ({
   name,
   price,
 }: Pick<ProductProps, "id" | "imageUrl" | "name" | "price">) => {
-  const [isInCart, setIsInCart] = useState(false);
-  const [cartItemId, setCartItemId] = useState<number | null>(null);
-  const [quantity, setQuantity] = useState<number>(0);
   const { setErrorStatus } = useError();
-  const { cartItems, addItemToCart, updateCartItemQuantity, removeCartItem } = useCart();
+  const { cartItems } = useFetchCartItems();
+  const { mutate: addItem } = useAddItem();
 
-  useEffect(() => {
-    const cartItem = cartItems.find((item) => item.product.id === id);
-    setIsInCart(!!cartItem);
-    setCartItemId(cartItem ? cartItem.id : null);
-    setQuantity(cartItem ? cartItem.quantity : 0);
-  }, [cartItems, id]);
+  const cartItem = cartItems.find((item) => item.product.id === id);
 
   const handleAddToCart = async () => {
     try {
-      await addItemToCart(id, 1);
-      setIsInCart(true);
+      addItem({ productId: id, quantity: 1 });
     } catch (error: any) {
       setErrorStatus(error.response?.status);
-      setIsInCart(false);
-    }
-  };
-
-  const handleIncrement = async () => {
-    if (cartItemId) {
-      await updateCartItemQuantity(cartItemId, quantity + 1);
-      setQuantity(quantity + 1);
-    }
-  };
-
-  const handleDecrement = async () => {
-    if (cartItemId) {
-      if (quantity - 1 <= 0) {
-        await removeCartItem(cartItemId);
-        setIsInCart(false);
-        setCartItemId(null);
-        setQuantity(0);
-      } else {
-        await updateCartItemQuantity(cartItemId, quantity - 1);
-        setQuantity(quantity - 1);
-      }
     }
   };
 
@@ -72,13 +43,9 @@ export const ProductItem = ({
           <StyledProductPrice>{formatPrice(price)}</StyledProductPrice>
         </StyledWrapper>
 
-        {isInCart ? (
+        {cartItem ? (
           <StyledQuantityControls>
-            <QuantityControls
-              quantity={quantity}
-              onIncrement={handleIncrement}
-              onDecrement={handleDecrement}
-            />
+            <QuantityControls cartItemId={cartItem.id} quantity={cartItem.quantity} />
           </StyledQuantityControls>
         ) : (
           <CartActionButton onClick={handleAddToCart} />
