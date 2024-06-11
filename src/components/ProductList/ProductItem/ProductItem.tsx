@@ -1,9 +1,10 @@
-import { forwardRef, useMemo } from "react";
+import { SyntheticEvent, forwardRef, useMemo } from "react";
 import * as PI from "./ProductItem.style";
 import AddCart from "../../../assets/add-cart.svg";
 import Counter from "../../Counter/Counter";
 import useCartItemMutation from "../../../hooks/useCartItemMutation";
 import useCartItemsQuery from "../../../hooks/useCartItemsQuery";
+import defaultImage from "../../../assets/default-image.png";
 interface ProductProps {
   product: Product;
 }
@@ -22,11 +23,16 @@ const ProductItem = forwardRef<HTMLDivElement, ProductProps>(
       handleIncreaseQuantityButtonClick,
     } = useCartItemMutation();
 
+    const handleImageError = (e: SyntheticEvent<HTMLImageElement>) => {
+      e.currentTarget.src = defaultImage;
+    };
+
     return (
       <PI.ProductItemStyle ref={ref}>
         <PI.ProductImg
           src={`${product.imageUrl}`}
           alt={`${product.name} 상품 이미지`}
+          onError={handleImageError}
         />
         <PI.ProductGroup>
           <PI.ProductContent>
