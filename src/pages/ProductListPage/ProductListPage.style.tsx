@@ -61,11 +61,11 @@ export const CartNumber = styled.div`
 export const LoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 40px 0px;
 `;
 
 export const LoadingSpinner = styled.img`
   width: 40px;
+  margin: 40px 0px;
 `;
 
 export const EmptyProductContainer = styled.div`
