@@ -1,5 +1,5 @@
 import { useError } from "../../context/errorContext";
-import useProducts from "../../hooks/useProducts";
+import { useProducts } from "../../hooks";
 import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
 import { ProductHeader } from "../ProductHeader/ProductHeader";
 import { ProductList } from "../ProductList/ProductList";

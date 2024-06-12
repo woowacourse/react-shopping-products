@@ -42,3 +42,7 @@ export const CART = {
 export const CART_KEYS = {
   CART: "cart",
 };
+
+export const PRODUCT_KEYS = {
+  PRODUCT: "product",
+};
