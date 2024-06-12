@@ -1,12 +1,10 @@
 import * as S from './style';
 
 import Divider from '../Divider/Divider';
-import { useContext } from 'react';
-import { UseCartItemsContext } from '../../App';
+import useCartItems from '../../hooks/useCartItems';
 
 const TotalPaymentAmount = () => {
-  const { getCartItems } = useContext(UseCartItemsContext);
-
+  const { getCartItems } = useCartItems();
   const totalPaymentAmount = getCartItems.data
     ? getCartItems.data.reduce(
         (totalPaymentAmount, cartItem) =>

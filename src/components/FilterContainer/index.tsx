@@ -1,15 +1,12 @@
 import * as S from './style';
 
-import { useContext } from 'react';
-
 import Dropdown from '../common/Dropdown';
-import { UseProductsContext } from '../ShoppingProductsPage';
+import useProducts from '../../hooks/useProducts';
 
 import { CATEGORY, PRICE_SORT } from '../../constants/filter';
 
 const FilterContainer = () => {
-  const { category, priceOrder, handleCategoryChange, handlePriceOrderChange } =
-    useContext(UseProductsContext);
+  const { category, priceOrder, handleCategoryChange, handlePriceOrderChange } = useProducts();
 
   const selectedCategoryOption = Object.entries(CATEGORY).find(
     ([, value]) => value === category,

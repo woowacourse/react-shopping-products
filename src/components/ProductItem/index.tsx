@@ -1,11 +1,8 @@
 import * as S from './style';
 
-import { useContext } from 'react';
-
-import { UseCartItemsContext } from '../../App';
 import AdjustButtonContainer from '../AdjustButtonContainer';
-
 import AddButton from '../AddButton';
+import useCartItems from '../../hooks/useCartItems';
 
 interface ProductItemProps {
   id: number;
@@ -15,7 +12,7 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
-  const { getCartItems } = useContext(UseCartItemsContext);
+  const { getCartItems } = useCartItems();
 
   const cartItem = getCartItems.data
     ? getCartItems.data.find(({ product }) => id === product.id)

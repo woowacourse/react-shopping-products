@@ -1,13 +1,13 @@
 import * as S from './style';
 
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
 
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import ProductItem from '../ProductItem';
-import { UseProductsContext } from '../ShoppingProductsPage';
+import useProducts from '../../hooks/useProducts';
 
 const ProductsContent = () => {
-  const { getProducts } = useContext(UseProductsContext);
+  const { getProducts } = useProducts();
 
   const observerRef = useRef<HTMLDivElement | null>(null);
 

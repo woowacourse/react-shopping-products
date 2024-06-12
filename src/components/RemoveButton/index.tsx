@@ -1,17 +1,18 @@
 import * as S from './style';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { UseCartItemsContext } from '../../App';
-import { CartItem } from '../../types/cart';
 import Spinner from '../Spinner';
+import useCartItems from '../../hooks/useCartItems';
+
+import { CartItem } from '../../types/cart';
 
 interface RemoveButtonProps {
   cartItem: CartItem;
 }
 
 const RemoveButton = ({ cartItem }: RemoveButtonProps) => {
-  const { getCartItems, deleteCartItem } = useContext(UseCartItemsContext);
+  const { getCartItems, deleteCartItem } = useCartItems();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDeleteFromCart = () => {

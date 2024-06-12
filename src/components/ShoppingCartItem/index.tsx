@@ -2,9 +2,9 @@ import * as S from './style';
 
 import Divider from '../Divider/Divider';
 import AdjustButtonContainer from '../AdjustButtonContainer';
+import RemoveButton from '../RemoveButton';
 
 import { CartItem } from '../../types/cart';
-import RemoveButton from '../RemoveButton';
 
 interface ShoppingCartItemProps {
   cartItem: CartItem;

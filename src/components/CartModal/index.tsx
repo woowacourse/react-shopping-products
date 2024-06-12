@@ -1,10 +1,8 @@
-import { useContext } from 'react';
-
 import { Modal } from 'simodal';
 import ShoppingCartItems from '../ShoppingCartItems';
-import { UseCartItemsContext } from '../../App';
 import ShoppingCartItem from '../ShoppingCartItem';
 import TotalPaymentAmount from '../TotalPaymentAmount';
+import useCartItems from '../../hooks/useCartItems';
 
 interface CartModalProps {
   isModalOpen: boolean;
@@ -12,7 +10,7 @@ interface CartModalProps {
 }
 
 const CartModal = ({ isModalOpen, closeModal }: CartModalProps) => {
-  const { getCartItems } = useContext(UseCartItemsContext);
+  const { getCartItems } = useCartItems();
 
   return (
     <Modal isOpen={isModalOpen}>

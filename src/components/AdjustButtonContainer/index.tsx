@@ -1,11 +1,11 @@
 import * as S from './style';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { UseCartItemsContext } from '../../App';
 import AdjustButton from '../AdjustButton';
 import QuantityText from '../QuantityText';
 import Spinner from '../Spinner';
+import useCartItems from '../../hooks/useCartItems';
 
 import { CartItem } from '../../types/cart';
 import { MINUS_BUTTON, PLUS_BUTTON, REMOVE_BUTTON } from '../../assets/images';
@@ -15,7 +15,7 @@ interface AdjustButtonContainerProps {
 }
 
 const AdjustButtonContainer = ({ cartItem }: AdjustButtonContainerProps) => {
-  const { deleteCartItem, adjustCartItemQuantity } = useContext(UseCartItemsContext);
+  const { deleteCartItem, adjustCartItemQuantity } = useCartItems();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDecreaseCartItemQuantity = () => {

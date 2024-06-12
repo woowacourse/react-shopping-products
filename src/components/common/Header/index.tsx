@@ -1,17 +1,15 @@
 import * as S from './style';
 
-import { useContext } from 'react';
-
 import CartButton from '../../CartButton';
 import HomeButton from '../../HomeButton';
-import { UseCartItemsContext } from '../../../App';
+import useCartItems from '../../../hooks/useCartItems';
 
 interface HeaderProps {
   handleCartButtonOnClick: () => void;
 }
 
 const Header = ({ handleCartButtonOnClick }: HeaderProps) => {
-  const { getCartItems } = useContext(UseCartItemsContext);
+  const { getCartItems } = useCartItems();
 
   return (
     <S.Header>

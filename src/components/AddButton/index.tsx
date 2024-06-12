@@ -1,9 +1,9 @@
 import * as S from './style';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { UseCartItemsContext } from '../../App';
 import Spinner from '../Spinner';
+import useCartItems from '../../hooks/useCartItems';
 
 import { ADD_TO_CART } from '../../assets/images';
 
@@ -12,7 +12,8 @@ interface AddButtonProps {
 }
 
 const AddButton = ({ id }: AddButtonProps) => {
-  const { getCartItems, addCartItem } = useContext(UseCartItemsContext);
+  const { getCartItems, addCartItem } = useCartItems();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAddToCart = () => {

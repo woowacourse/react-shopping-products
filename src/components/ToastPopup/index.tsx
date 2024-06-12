@@ -1,16 +1,13 @@
 import * as S from './style';
 
-import { useContext } from 'react';
-
-import { UseCartItemsContext } from '../../App';
-import { UseProductsContext } from '../ShoppingProductsPage';
+import useCartItems from '../../hooks/useCartItems';
+import useProducts from '../../hooks/useProducts';
 
 import { MAX_CART_ITEMS_SIZE } from '../../constants/pagination';
 
 const ToastPopup = () => {
-  const { getCartItems, addCartItem, deleteCartItem, adjustCartItemQuantity } =
-    useContext(UseCartItemsContext);
-  const { getProducts } = useContext(UseProductsContext);
+  const { getCartItems, addCartItem, deleteCartItem, adjustCartItemQuantity } = useCartItems();
+  const { getProducts } = useProducts();
 
   const isMaxCountExceeded = getCartItems.data && getCartItems.data.length >= MAX_CART_ITEMS_SIZE;
 
