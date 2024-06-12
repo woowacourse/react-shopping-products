@@ -89,12 +89,14 @@ export default function ProductPage() {
           </Styled.EmptyProductsContainer>
         )}
 
-        <ProductItemContainer products={products} />
-
-        <Styled.ObserverTarget
-          ref={observerRef}
-          $isEnabled={!isProductLoading && !productError}
-        />
+        {products.length > 0 && (
+          <ProductItemContainer products={products}>
+            <Styled.ObserverTarget
+              ref={observerRef}
+              $isEnabled={!isProductLoading && !productError}
+            />
+          </ProductItemContainer>
+        )}
       </Styled.ShopContent>
 
       <CartModal

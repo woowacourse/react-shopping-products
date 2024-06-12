@@ -1,13 +1,18 @@
 import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+
 import { ErrorProvider } from "../../contexts";
-import ProductPage from "./ProductPage";
+import { ErrorFallback } from "../../components";
+import { ProductPage } from "../../pages";
 
 export default function ProductPageProvider() {
   return (
     <ErrorProvider>
-      <Suspense>
-        <ProductPage />
-      </Suspense>
+      <ErrorBoundary FallbackComponent={({ error }) => <ErrorFallback error={error} />}>
+        <Suspense>
+          <ProductPage />
+        </Suspense>
+      </ErrorBoundary>
     </ErrorProvider>
   );
 }

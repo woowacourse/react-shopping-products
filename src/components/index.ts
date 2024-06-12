@@ -4,6 +4,7 @@ export { default as Toast } from "./common/Toast/Toast";
 export { default as AddToCartButton } from "./common/AddToCartButton/AddToCartButton";
 export { default as QuantityController } from "./common/QuantityController/QuantityController";
 export { default as DeleteCartItemButton } from "./common/DeleteCartItemButton/DeleteCartItemButton";
+export { default as ErrorFallback } from "./common/ErrorFallback/ErrorFallback";
 
 export { default as ProductPageHeader } from "./ProductPage/ProductPageHeader/ProductPageHeader";
 export { default as ProductItem } from "./ProductPage/ProductItem/ProductItem";

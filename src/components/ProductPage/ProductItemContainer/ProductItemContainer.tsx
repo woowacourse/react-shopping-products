@@ -3,11 +3,11 @@ import { ProductItem } from "../..";
 import * as Styled from "./ProductItemContainer.style";
 import { useCartItemQuantity, useCartItems } from "../../../hooks";
 
-interface ProductItemContainerProps {
+interface ProductItemContainerProps extends React.PropsWithChildren {
   products: Product[];
 }
 
-export default function ProductItemContainer({ products }: ProductItemContainerProps) {
+export default function ProductItemContainer({ products, children }: ProductItemContainerProps) {
   const { handleAddCartItem, handleRemoveCartItem } = useCartItems();
   const { getQuantity, updateQuantity } = useCartItemQuantity();
 
@@ -34,6 +34,7 @@ export default function ProductItemContainer({ products }: ProductItemContainerP
           onUpdateQuantity={(newQuantity: number) => handleUpdateQuantity(product.id, newQuantity)}
         />
       ))}
+      {children}
     </Styled.ProductItemContainer>
   );
 }
