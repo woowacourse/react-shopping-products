@@ -1,47 +1,43 @@
-import { useEffect, useState } from 'react';
 import { addCartItem, deleteCartItem, fetchCartItemQuantity } from '../api';
-import { CHANGE_CART_ITEM_COUNT } from '../constants';
-import { useMutation } from '@tanstack/react-query';
-import { InitProductItem } from '../type/ProductItem';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCartItem } from './useCartItem';
+import { QUERY_KEYS } from '../constants/queryKeys';
+import { CartItem } from '../type/CartItem';
 
 interface CartButtonProps {
   productId: number;
 }
 
 const useCartItemHandler = ({ productId }: CartButtonProps) => {
-  const [isInCart, setIsInCart] = useState(false);
-  const [itemQuantity, setItemQuantity] = useState(0);
+  const queryClient = useQueryClient();
   const { cartItems, refetch } = useCartItem(false);
 
-  useEffect(() => {
-    const initProductItem = (productId: number): InitProductItem => {
-      const isCartItemInProduct = cartItems.find(
-        (item) => item.product.id === productId,
-      );
-      return isCartItemInProduct
-        ? {
-            orderId: isCartItemInProduct.id,
-            initIsInCart: true,
-            initQuantity: isCartItemInProduct.quantity,
-          }
-        : { initIsInCart: false, initQuantity: 0 };
-    };
-    const { initIsInCart, initQuantity } = initProductItem(productId);
-    setIsInCart(initIsInCart);
-    setItemQuantity(initQuantity);
-  }, [productId, setIsInCart, setItemQuantity, cartItems]);
+  const cartItem = cartItems.find((item) => item.product.id === productId);
+  const isInCart = !!cartItem;
+  const itemQuantity = cartItem ? cartItem.quantity : 0;
 
   const addCartItemMutation = useMutation({
     mutationFn: async (itemQuantity: number) => {
       await addCartItem(productId, itemQuantity);
     },
-    onMutate: () => {
-      setItemQuantity((prev) => prev + CHANGE_CART_ITEM_COUNT);
+    onMutate: async (itemQuantity: number) => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+      const previousCartItems = queryClient.getQueryData([
+        QUERY_KEYS.CART_ITEM,
+      ]);
+      queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) => [
+        ...old,
+        { product: { id: productId }, quantity: itemQuantity },
+      ]);
+      return { previousCartItems };
     },
-    onError: () => {
-      setItemQuantity((prev) => Math.max(0, prev - CHANGE_CART_ITEM_COUNT));
-      setIsInCart(false);
+    onError: (_err, _variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(
+          [QUERY_KEYS.CART_ITEM],
+          context.previousCartItems,
+        );
+      }
     },
     onSuccess: () => {
       refetch();
@@ -50,34 +46,56 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
 
   const deleteCartItemMutation = useMutation({
     mutationFn: async () => {
-      const targetItem = cartItems.find(
-        (item) => item.product.id === productId,
+      if (cartItem) await deleteCartItem(cartItem.id);
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+      const previousCartItems = queryClient.getQueryData([
+        QUERY_KEYS.CART_ITEM,
+      ]);
+      queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
+        old.filter((item: CartItem) => item.product.id !== productId),
       );
-      if (targetItem) await deleteCartItem(targetItem.id);
+      return { previousCartItems };
     },
-    onMutate: () => {
-      setIsInCart(false);
-    },
-    onError: () => {
-      setItemQuantity(itemQuantity);
-      setIsInCart(true);
+    onError: (_err, _variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(
+          [QUERY_KEYS.CART_ITEM],
+          context.previousCartItems,
+        );
+      }
     },
     onSuccess: () => {
       refetch();
     },
   });
+
   const addCartItemQuantityMutation = useMutation({
-    mutationFn: async (itemQuantity: number) => {
-      const targetItem = cartItems.find(
-        (item) => item.product.id === productId,
+    mutationFn: async (newQuantity: number) => {
+      if (cartItem) await fetchCartItemQuantity(cartItem.id, newQuantity);
+    },
+    onMutate: async (newQuantity: number) => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+      const previousCartItems = queryClient.getQueryData([
+        QUERY_KEYS.CART_ITEM,
+      ]);
+      queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
+        old.map((item: CartItem) =>
+          item.product.id === productId
+            ? { ...item, quantity: newQuantity }
+            : item,
+        ),
       );
-      if (targetItem) await fetchCartItemQuantity(targetItem.id, itemQuantity);
+      return { previousCartItems };
     },
-    onMutate: () => {
-      setItemQuantity((prev) => prev + CHANGE_CART_ITEM_COUNT);
-    },
-    onError: () => {
-      setItemQuantity((prev) => Math.max(0, prev - CHANGE_CART_ITEM_COUNT));
+    onError: (_err, _variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(
+          [QUERY_KEYS.CART_ITEM],
+          context.previousCartItems,
+        );
+      }
     },
     onSuccess: () => {
       refetch();
@@ -85,34 +103,41 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
   });
 
   const minusCartItemQuantityMutation = useMutation({
-    mutationFn: async (itemQuantity: number) => {
-      const targetItem = cartItems.find(
-        (item) => item.product.id === productId,
+    mutationFn: async (newQuantity: number) => {
+      if (cartItem) await fetchCartItemQuantity(cartItem.id, newQuantity);
+    },
+    onMutate: async (newQuantity: number) => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+      const previousCartItems = queryClient.getQueryData([
+        QUERY_KEYS.CART_ITEM,
+      ]);
+      queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
+        old.map((item: CartItem) =>
+          item.product.id === productId
+            ? { ...item, quantity: newQuantity }
+            : item,
+        ),
       );
-      if (targetItem) await fetchCartItemQuantity(targetItem.id, itemQuantity);
-      if (itemQuantity === 0) {
-        setIsInCart(false);
-      }
+      return { previousCartItems };
     },
-    onMutate: () => {
-      setItemQuantity((prev) => Math.max(1, prev - CHANGE_CART_ITEM_COUNT));
-    },
-    onError: (itemQuantity: number) => {
-      setItemQuantity((prev) => prev + CHANGE_CART_ITEM_COUNT);
-      if (itemQuantity === 1) {
-        setIsInCart(true);
+    onError: (_err, _variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(
+          [QUERY_KEYS.CART_ITEM],
+          context.previousCartItems,
+        );
       }
     },
     onSuccess: () => {
       if (itemQuantity === 1) {
+        deleteCartItemMutation.mutate();
+      } else {
         refetch();
       }
     },
   });
 
   const showCountButton = () => {
-    setIsInCart(true);
-    setItemQuantity(0);
     addCartItemMutation.mutate(1);
   };
 
