@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { addCartItem, deleteCartItem, fetchCartItemQuantity } from '../api';
 import { CHANGE_CART_ITEM_COUNT } from '../constants';
 import { useMutation } from '@tanstack/react-query';
-import { useCart } from '../context/CartContext';
 import { InitProductItem } from '../type/ProductItem';
+import { useCartItem } from './useCartItem';
 
 interface CartButtonProps {
   productId: number;
@@ -12,7 +12,7 @@ interface CartButtonProps {
 const useCartItemHandler = ({ productId }: CartButtonProps) => {
   const [isInCart, setIsInCart] = useState(false);
   const [itemQuantity, setItemQuantity] = useState(0);
-  const { cartItems, refetch } = useCart();
+  const { cartItems, refetch } = useCartItem(false);
 
   useEffect(() => {
     const initProductItem = (productId: number): InitProductItem => {

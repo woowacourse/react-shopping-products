@@ -1,13 +1,13 @@
 import { Modal } from 'chico-custom-modal';
 import { CartItemModalProps } from './CartItemModal.type';
-import { useCart } from '../../context/CartContext';
 import CartItemList from '../CartItemList/CartItemList';
 import { BUTTON_MESSAGE } from '../../constants/button';
 import CartTotalAmount from '../CartTotalAmount/CartTotalAmount';
 import { calculateTotalAmount } from '../../util/Calculate';
+import { useCartItem } from '../../hooks/useCartItem';
 
 const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
-  const { cartItems } = useCart();
+  const { cartItems } = useCartItem();
 
   const handleClose = () => {
     setIsOpenModal(false);

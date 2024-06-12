@@ -1,11 +1,11 @@
-import { useCart } from '../../context/CartContext';
+import { useCartItem } from '../../hooks/useCartItem';
 import CartItemModal from '../CartItemModal/CartItemModal';
 import Badge from '../common/Badge/Badge';
 import { CartBadgeContainer } from './CartBadge.style';
 import { PropsWithChildren, useState } from 'react';
 
 const CartBadge: React.FC<PropsWithChildren> = ({ children }) => {
-  const { cartItems } = useCart();
+  const { cartItems } = useCartItem();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
