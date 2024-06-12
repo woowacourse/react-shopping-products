@@ -1,4 +1,4 @@
-import { createContext, useRef, useState } from 'react';
+import { createContext, useRef, useState, useCallback } from 'react';
 import ErrorToast from '../components/ErrorToast/ErrorToast';
 
 interface ToastContextType {
@@ -14,14 +14,12 @@ const ToastProvider = ({ children }: React.PropsWithChildren) => {
 
   const toastTimer = useRef<NodeJS.Timeout>();
 
-  const showToast = (message: string) => {
+  const showToast = useCallback((message: string) => {
     setIsRemove(false);
     setIsOpen(true);
     setMessage(message);
 
-    if (toastTimer.current) {
-      clearTimeout(toastTimer.current);
-    }
+    if (toastTimer.current) clearTimeout(toastTimer.current);
 
     const timer = setTimeout(() => {
       setIsOpen(false);
@@ -33,7 +31,7 @@ const ToastProvider = ({ children }: React.PropsWithChildren) => {
     }, 3000);
 
     toastTimer.current = timer;
-  };
+  }, []);
 
   return (
     <ToastContext.Provider value={{ showToast }}>

@@ -27,11 +27,11 @@ const useFetchCartItems = () => {
 
   useEffect(() => {
     if (error) showToast(error.message);
-  }, [error]);
+  }, [error, showToast]);
 
   useEffect(() => {
     if (isPaused && !navigator.onLine) showToast(ERROR_MESSAGES.OFFLINE);
-  }, [isPaused]);
+  }, [isPaused, showToast]);
 
   return {
     cartItems: data ?? [],
