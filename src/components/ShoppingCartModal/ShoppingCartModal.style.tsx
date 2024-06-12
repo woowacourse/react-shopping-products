@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+export const Title = styled.h2`
+  font-size: 18px;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+`;
+
 export const CartItemList = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.color.primary.light};
 `;

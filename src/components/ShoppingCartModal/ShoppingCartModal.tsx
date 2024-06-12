@@ -16,7 +16,7 @@ const ShoppingCartModal = ({ cartItems, isOpen, close }: ShoppingCartModalProps)
   return (
     <Modal isOpen={isOpen} close={close} position="bottom">
       <Modal.Header>
-        <Modal.Title>장바구니</Modal.Title>
+        <S.Title>장바구니</S.Title>
       </Modal.Header>
       <Modal.Body>
         {cartItems.length > 0 ? (
