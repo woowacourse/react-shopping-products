@@ -1,8 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { cartApis } from '../../api/cart';
+import { MAX_CART_ITEMS_FETCH_SIZE } from '../../constants/paginationRules';
 import { QUERY_KEYS } from '../../constants/queryKeys';
 import { CartItem } from '../../types';
-import { MAX_CART_ITEMS_FETCH_SIZE } from '../../constants/paginationRules';
+import useInvalidateQueries from '../useInvalidateQueries';
 
 export const cartQueries = {
   useGetCartItems: () =>
@@ -16,35 +17,41 @@ export const cartQueries = {
 
 export const cartMutations = {
   useAddCartItem: (params: { productId: number }) => {
-    const queryClient = useQueryClient();
+    const { invalidateQueries } = useInvalidateQueries([
+      QUERY_KEYS.getCartItems,
+    ]);
 
     return useMutation({
       mutationFn: async () => await cartApis.add({ ...params, quantity: 1 }),
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] });
+        invalidateQueries();
       },
     });
   },
 
   useDeleteCartItem: (params: { cartItemId: number | undefined }) => {
-    const queryClient = useQueryClient();
+    const { invalidateQueries } = useInvalidateQueries([
+      QUERY_KEYS.getCartItems,
+    ]);
 
     return useMutation({
       mutationFn: async () => await cartApis.delete({ ...params }),
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] });
+        invalidateQueries();
       },
     });
   },
 
   useUpdateCartItemQuantity: () => {
-    const queryClient = useQueryClient();
+    const { invalidateQueries } = useInvalidateQueries([
+      QUERY_KEYS.getCartItems,
+    ]);
 
     return useMutation({
       mutationFn: async (params: { cartItemId?: number; quantity?: number }) =>
         await cartApis.update({ ...params }),
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] });
+        invalidateQueries();
       },
     });
   },
