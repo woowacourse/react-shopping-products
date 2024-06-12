@@ -4,6 +4,7 @@ import { fetchProductList } from "../apis/products";
 import { PRODUCT_LIST } from "../constants/productList";
 import { Category } from "../interfaces/Product";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { QUERY_KEYS } from "../constants/queryKeys";
 
 interface UseProductListProps {
   category?: Category;
@@ -15,7 +16,7 @@ export default function useProductList({
   sort,
 }: UseProductListProps) {
   return useInfiniteQuery({
-    queryKey: ["productList", category, sort],
+    queryKey: [QUERY_KEYS.productList, category, sort],
     queryFn: ({ pageParam = 0 }) =>
       fetchProductList({
         page: pageParam,

@@ -7,26 +7,27 @@ import {
 } from "../apis/cartItems";
 
 import { Product } from "../interfaces/Product";
+import { QUERY_KEYS } from "../constants/queryKeys";
 
 export default function useCartItem() {
   const queryClient = useQueryClient();
 
   const fetchCartItemList = useQuery({
-    queryKey: ["cartItemList"],
+    queryKey: [QUERY_KEYS.cartItemList],
     queryFn: () => requestFetchCartItemList(),
     staleTime: Infinity,
   });
   const addCartItem = useMutation({
     mutationFn: (product: Product) => requestAddCartItem(product.id, 1),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItemList"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItemList] });
     },
   });
 
   const deleteCartItem = useMutation({
     mutationFn: (cartItemId: number) => requestDeleteCartItem(cartItemId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItemList"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItemList] });
     },
   });
 
@@ -39,7 +40,7 @@ export default function useCartItem() {
       quantity: number;
     }) => requestUpdateCartItemQuantity({ cartItemId, quantity }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItemList"] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cartItemList] });
     },
   });
   return {
