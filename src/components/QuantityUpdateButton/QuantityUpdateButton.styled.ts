@@ -11,7 +11,7 @@ export const QuantityUpdateButton = styled.button`
   height: 2.4rem;
 
   color: var(--black-color-2);
-  background-color: #ffffff;
+  background-color: var(--white-color-1);
 
   border: 1px solid var(--black-color-1-10);
   border-radius: 0.8rem;

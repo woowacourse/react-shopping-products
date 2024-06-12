@@ -57,7 +57,7 @@ export const ItemName = styled.p`
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 2.317rem;
-  font-family: var(--font-Noto-Sans-KR);
+  font-family: var(--primary-font-KR);
 `;
 
 export const ItemPrice = styled.p`

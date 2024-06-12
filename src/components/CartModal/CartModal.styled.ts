@@ -4,7 +4,7 @@ export const CartModalButton = styled.button`
   background-color: var(--black-color-3);
   color: var(--white-color-1);
 
-  font-family: var(--font-Noto-Sans-KR);
+  font-family: var(--primary-font-KR);
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 2.172rem;

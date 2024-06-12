@@ -14,7 +14,7 @@ export const TotalAmountLabel = styled.p`
 `;
 
 export const TotalAmount = styled.p`
-  font-family: var(--font-Noto-Sans-KR);
+  font-family: var(--primary-font-KR);
   font-size: 2.4rem;
   font-weight: 700;
   line-height: 3.475rem;
