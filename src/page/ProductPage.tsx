@@ -21,7 +21,7 @@ function ProductPage() {
     isFetching,
     changeCategory,
     changeSorting,
-    error,
+    isError,
   } = useProducts();
   const { lastProductElementRef } = useInfinityScroll(() => fetchNextPage());
 
@@ -58,14 +58,14 @@ function ProductPage() {
             })}
           </ItemList>
         )}
-        {products.length === 0 && !isLoading && !error && (
+        {products.length === 0 && !isLoading && !isError && (
           <div>상품 정보가 없습니다.</div>
         )}
         {isLoading && (
           <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
         )}
 
-        {!isFetching && !error && products.length !== 0 && (
+        {!isFetching && !isError && products.length !== 0 && (
           <div
             ref={lastProductElementRef}
             style={{ height: '30px', fontSize: '5rem' }}

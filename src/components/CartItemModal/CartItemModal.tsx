@@ -4,7 +4,7 @@ import { useCart } from '../../context/CartContext';
 import CartItemList from '../CartItemList/CartItemList';
 import { BUTTON_MESSAGE } from '../../constants/button';
 import CartTotalAmount from '../CartTotalAmount/CartTotalAmount';
-import { CartItem } from '../../type/CartItem';
+import { calculateTotalAmount } from '../../util/Calculate';
 
 const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
   const { cartItems } = useCart();
@@ -14,11 +14,6 @@ const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
   };
   const handleConfirm = () => {
     setIsOpenModal(false);
-  };
-  const calculateTotalAmount = (cartItem: CartItem[]) => {
-    return cartItem.reduce((prevTotalAmount: number, currentItem: CartItem) => {
-      return prevTotalAmount + currentItem.quantity * currentItem.product.price;
-    }, 0);
   };
   return (
     <>
