@@ -30,10 +30,10 @@ const useFetchProducts = ({ sort, category }: ProductFilterOptions) => {
         }),
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
-        if (!lastPage.last) {
-          return calculateNextPage(lastPage.first, allPages.length);
+        if (lastPage.last) {
+          return;
         }
-        return undefined;
+        return calculateNextPage(lastPage.first, allPages.length);
       },
       retry: 1,
     });
