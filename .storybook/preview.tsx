@@ -1,6 +1,14 @@
-import GlobalStyles from "../src/styles/Global.style";
+import React from 'react';
+import GlobalStyles from '../src/styles/Global.style';
+import type { Preview } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { initialize, mswLoader } from 'msw-storybook-addon';
+import { ToastProvider } from '../src/store/ToastProvider';
 
-import type { Preview } from "@storybook/react";
+// Initialize MSW
+initialize();
+
+const queryClient = new QueryClient();
 const preview: Preview = {
   parameters: {
     controls: {
@@ -10,12 +18,17 @@ const preview: Preview = {
       },
     },
   },
+  loaders: [mswLoader],
 };
 export const decorators: React.FC[] = [
   (Story) => (
     <>
       <GlobalStyles />
-      <Story />
+      <QueryClientProvider client={queryClient}>
+        <ToastProvider>
+          <Story />
+        </ToastProvider>
+      </QueryClientProvider>
     </>
   ),
 ];

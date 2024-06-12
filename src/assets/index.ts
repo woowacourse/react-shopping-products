@@ -1,5 +1,9 @@
-export { default as MainLogo } from "./images/MainLogo.svg?react";
-export { default as ShoppingCartIcon } from "./images/ShoppingCartIcon.svg?react";
-export { default as AddToCartIcon } from "./images/AddToCartIcon.svg?react";
-export { default as RemoveFromCartIcon } from "./images/RemoveFromCartIcon.svg?react";
-export { default as ChevronDown } from "./images/ChevronDown.svg?react";
+export { default as MainLogo } from './images/MainLogo.svg?react';
+export { default as ShoppingCartIcon } from './images/ShoppingCartIcon.svg?react';
+export { default as AddToCartIcon } from './images/AddToCartIcon.svg?react';
+export { default as RemoveFromCartIcon } from './images/RemoveFromCartIcon.svg?react';
+export { default as ChevronDown } from './images/ChevronDown.svg?react';
+export { default as ChevronUp } from './images/ChevronUp.svg?react';
+export { default as Notice } from './images/Notice.svg?react';
+export { default as Plus } from './images/Plus.svg?react';
+export { default as Minus } from './images/Minus.svg?react';

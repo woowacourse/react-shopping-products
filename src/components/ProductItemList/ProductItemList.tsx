@@ -1,15 +1,14 @@
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import { QuantityContext } from "../../store/QuantityContext";
-import useProductList from "../../hooks/useProductList";
-import useCartItemList from "../../hooks/useCartItemList";
-import ProductItem from "../ProductItem/ProductItem";
-import { Category, Sort } from "../../types/type";
-import useIntersectionObserver from "../../hooks/useIntersectionObserver";
-import Spinner from "../common/Spinner/Spinner";
-import { ErrorContext } from "../../store/ErrorContext";
+import useProductList from '../../hooks/useProductList';
+import ProductItem from '../ProductItem/ProductItem';
+import { Category, Product, Sort } from '../../types/type';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import Spinner from '../common/Spinner/Spinner';
+import useCartItemList from '../../hooks/useCartItemList';
+import { useToast } from '../../store/ToastProvider';
 
-import * as S from "./ProductItemList.style";
+import * as S from './ProductItemList.style';
 
 interface ProductItemListProp {
   category: Category;
@@ -18,64 +17,64 @@ interface ProductItemListProp {
 
 function ProductItemList({ category, sort }: ProductItemListProp) {
   const {
-    productList,
-    productListError,
-    productListLoading,
-    page,
+    data: productListData,
+    error: productListError,
     fetchNextPage,
-    isLastPage,
-    setPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
   } = useProductList({
     category,
     sort,
   });
-  const { cartItemList, isInCart, toggleCartItem, cartItemListError } =
+
+  const { data: cartItemListData, error: cartItemListError } =
     useCartItemList();
+
+  const { addToast } = useToast();
+
   const target = useRef(null);
   const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
 
-  const errorContext = useContext(ErrorContext);
-  const setError = errorContext ? errorContext.setError : () => {};
+  useEffect(() => {
+    if (productListError) {
+      addToast(productListError.message);
+    }
+    if (cartItemListError) {
+      addToast(cartItemListError.message);
+    }
+  }, [productListError, cartItemListError]);
 
   useEffect(() => {
-    setPage(0);
-  }, [category, sort, setPage]);
-
-  useEffect(() => {
-    if (page === -1 || target.current === null) return;
+    if (target.current === null) return;
     observe(target.current);
 
-    const N = productList.length;
-
-    if (N === 0 || isLastPage) {
+    if (productListData?.pages.length === 0 || !hasNextPage) {
       unobserve(target.current);
     }
-  }, [productList, page, observe, unobserve, isLastPage]);
-  const quantityContext = useContext(QuantityContext);
-  const setQuantity = quantityContext ? quantityContext.setQuantity : () => {};
-  setQuantity(cartItemList.length);
-
-  if (productListError) {
-    setError(productListError);
-  }
-  if (cartItemListError) {
-    setError(cartItemListError);
-  }
+  }, [productListData?.pages, , observe, unobserve, hasNextPage]);
 
   return (
     <>
-      <S.ProductList>
-        {productList.map((product, idx) => (
-          <ProductItem
-            key={`${idx}_${product.id}`}
-            product={product}
-            isInCart={isInCart(product.id)}
-            toggleCartItem={() => toggleCartItem(product)}
-          />
-        ))}
-      </S.ProductList>
-      <div ref={target} style={{ height: "1px" }} />
-      {productListLoading && <Spinner />}
+      {isFetching && !productListData ? (
+        <Spinner height="80vh" />
+      ) : (
+        <>
+          <S.ProductList>
+            {productListData?.pages.map((page) =>
+              page.content.map((product: Product) => (
+                <ProductItem
+                  key={`${product.id}`}
+                  product={product}
+                  cartItemList={cartItemListData?.content ?? []}
+                />
+              )),
+            )}
+          </S.ProductList>
+          <div ref={target} style={{ height: '1px' }} />
+          {isFetchingNextPage && <Spinner height="fit-content" />}
+        </>
+      )}
     </>
   );
 }

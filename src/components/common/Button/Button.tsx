@@ -1,24 +1,24 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 
-import * as S from "./Button.style";
+import * as S from './Button.style';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: "s" | "m" | "l" | "fit";
-  width?: "fit" | "full" | number;
-  height?: "fit" | "full" | number;
-  radius?: "s" | "m" | "l" | number;
-  color?: "default" | "primary" | "secondary";
+  size?: 's' | 'm' | 'l' | 'fit';
+  width?: 'fit' | 'full' | number;
+  height?: 'fit' | 'full' | number;
+  radius?: 's' | 'm' | 'l' | number;
+  color?: 'default' | 'primary' | 'secondary';
   isDisabled?: boolean;
   square?: boolean;
   children: ReactNode;
 }
 
 function Button({
-  size = "m",
-  width = "fit",
-  height = "fit",
-  radius = "m",
-  color = "default",
+  size = 'm',
+  width = 'fit',
+  height = 'fit',
+  radius = 'm',
+  color = 'default',
   square = false,
   children,
   isDisabled = false,

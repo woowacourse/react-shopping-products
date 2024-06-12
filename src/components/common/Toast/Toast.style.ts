@@ -3,17 +3,20 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 4px 16px;
+  gap: 12px;
+  box-sizing: border-box;
   width: 100%;
-  height: 40px;
-  position: fixed;
-  top: 64px;
-  background-color: rgba(255, 201, 201, 1);
-  transition: left 0.5s ease-in-out;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid lightGray;
+  background-color: white;
 `;
 
 export const MessageText = styled.p`
-  font-family: Noto Sans;
-  font-size: 12px;
+  margin-top: 2px;
+  font-family: Inter;
+  font-size: 14px;
   font-weight: 500;
+  line-height: 20px;
 `;

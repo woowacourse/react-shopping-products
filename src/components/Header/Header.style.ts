@@ -1,10 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const HeaderBackground = styled.div`
   display: flex;
   justify-content: center;
   position: fixed;
   top: 0;
+  z-index: 10;
   width: 100%;
   background: #000000;
 `;

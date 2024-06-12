@@ -6,42 +6,26 @@ import Dropdown from '../common/Dropdown/Dropdown';
 import * as S from './DropdownContainer.style';
 
 interface DropdownContainerProps {
-  category: Category;
-  onChangeCategory: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  sort: Sort;
-  onChangeSort: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChangeCategory: (value: Category) => void;
+  onChangeSort: (value: Sort) => void;
 }
 
 function DropdownContainer({
-  category,
   onChangeCategory,
-  sort,
   onChangeSort,
 }: DropdownContainerProps) {
-  const categoryOptions = Object.entries(CATEGORY).map(([key, value]) => [
-    key,
-    value as string,
-  ]);
+  const categoryOptions: [Category, string][] = Object.entries(CATEGORY).map(
+    ([key, value]) => [key as Category, value],
+  );
 
-  const sortOptions = Object.entries(SORT).map(([key, value]) => [
-    key,
-    value as string,
-  ]);
+  const sortOptions: [Sort, string][] = Object.entries(SORT).map(
+    ([key, value]) => [key as Sort, value],
+  );
 
   return (
     <S.Container>
-      <Dropdown
-        optionList={categoryOptions}
-        value={category}
-        onChange={onChangeCategory}
-        type="category"
-      />
-      <Dropdown
-        optionList={sortOptions}
-        value={sort}
-        onChange={onChangeSort}
-        type="sort"
-      />
+      <Dropdown optionList={categoryOptions} onChange={onChangeCategory} />
+      <Dropdown optionList={sortOptions} onChange={onChangeSort} />
     </S.Container>
   );
 }

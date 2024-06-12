@@ -1,34 +1,28 @@
-import { createPortal } from 'react-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { ErrorContext } from '../../../store/ErrorContext';
+import { Notice } from '../../../assets';
 
 import * as S from './Toast.style';
 
-function Toast() {
-  const errorContext = useContext(ErrorContext);
-  const error = errorContext ? errorContext.error : null;
-  const [showToast, setShowToast] = useState(false);
+interface ToastProps {
+  message: string;
+  onClose: () => void;
+}
 
+function Toast({ message, onClose }: ToastProps) {
   useEffect(() => {
-    if (error) {
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false), 3000;
-      });
-    }
-  }, [error]);
+    const timer = setTimeout(() => {
+      onClose();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  });
 
   return (
-    <>
-      {showToast &&
-        createPortal(
-          <S.Container>
-            <S.MessageText>{error?.message}</S.MessageText>
-          </S.Container>,
-          document.body,
-        )}
-    </>
+    <S.Container>
+      <Notice />
+      <S.MessageText>{message}</S.MessageText>
+    </S.Container>
   );
 }
 

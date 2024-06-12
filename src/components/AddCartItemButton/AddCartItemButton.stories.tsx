@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ToggleCartItemButton from './ToggleCartItemButton';
+import AddCartItemButton from './AddCartItemButton';
 
 const meta = {
-  title: 'Components/ToggleCartItemButton',
-  component: ToggleCartItemButton,
+  title: 'Components/AddCartItemButton',
+  component: AddCartItemButton,
   tags: ['autodocs'],
   argTypes: { isInCart: { description: '', control: { type: 'boolean' } } },
-} satisfies Meta<typeof ToggleCartItemButton>;
+} satisfies Meta<typeof AddCartItemButton>;
 
 export default meta;
 

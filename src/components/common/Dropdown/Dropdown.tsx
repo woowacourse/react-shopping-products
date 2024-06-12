@@ -1,28 +1,38 @@
-import { ChevronDown } from "../../../assets/";
+import { useEffect, useRef, useState } from 'react';
 
-import * as S from "./Dropdown.style";
+import { ChevronDown, ChevronUp } from '../../../assets';
+import useDropdown from '../../../hooks/useDropdown';
 
-interface DropdownProps {
-  optionList: string[][];
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  type: "category" | "sort";
+import * as S from './Dropdown.style';
+import DropdownOptions from './DropdownOptions';
+
+interface DropdownProps<T> {
+  optionList: [T, string][];
+  onChange: (value: T) => void;
 }
 
-function Dropdown({ optionList, value, onChange, type }: DropdownProps) {
+function Dropdown<T extends string>({
+  optionList,
+  onChange,
+}: DropdownProps<T>) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { isOpened, preview, handleChangeOption, handleToggleDropdown } =
+    useDropdown({ optionList, onChange, dropdownRef });
+
   return (
-    <S.DropdownLabel htmlFor={type}>
-      <S.Dropdown>
-        <S.Select id={type} name={type} value={value} onChange={onChange}>
-          {optionList.map((option) => (
-            <S.Option key={option[0]} value={option[0]}>
-              {option[1]}
-            </S.Option>
-          ))}
-        </S.Select>
-        <ChevronDown />
-      </S.Dropdown>
-    </S.DropdownLabel>
+    <S.Dropdown ref={dropdownRef} onClick={handleToggleDropdown}>
+      <S.Preview isOpened={isOpened}>
+        <S.PreviewText>{preview}</S.PreviewText>
+        {isOpened ? <ChevronUp /> : <ChevronDown />}
+      </S.Preview>
+      {!isOpened || (
+        <DropdownOptions
+          optionList={optionList}
+          changeOption={handleChangeOption}
+          handleToggleDropdown={handleToggleDropdown}
+        />
+      )}
+    </S.Dropdown>
   );
 }
 
