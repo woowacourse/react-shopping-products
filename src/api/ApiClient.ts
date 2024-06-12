@@ -39,7 +39,8 @@ export class ApiClient {
     const response = await fetch(url, requestInit);
 
     if (!response.ok) {
-      throw new Error(`200~299 이외의 응답이 발생하였습니다.${response.body}`);
+      const errorText = await response.text();
+      throw new Error(`HTTP 응답 코드 에러 status: ${response.status} ${errorText}`);
     }
     return await response;
   }
