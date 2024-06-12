@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import useProducts from '../useProducts';
+import useProducts from '../queries/useProducts';
 import { productCategories, sortOptions } from '../../constant/products';
 import { ToastProvider } from '@/context/ToastProvider';
 

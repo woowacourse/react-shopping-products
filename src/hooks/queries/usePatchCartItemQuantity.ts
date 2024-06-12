@@ -1,6 +1,6 @@
 import { patchCartItemQuantity } from '@/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useToast } from './useToast';
+import { useToast } from '../useToast';
 import { QUERY_KEY } from '@/constant/queryKey';
 import { ERROR } from '@/constant/message';
 

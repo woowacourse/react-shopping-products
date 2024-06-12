@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import useCartItems from '../useCartItems';
+import useCartItems from '../queries/useCartItems';
 import { queryWrapper } from './wrapper.util';
-import useDeleteCartItem from '../useDeleteCartItem';
+import useDeleteCartItem from '../queries/useDeleteCartItem';
 import cartItems from '@/mocks/cartItems.json';
 
 describe('useDeleteCartItem 훅 테스트', () => {

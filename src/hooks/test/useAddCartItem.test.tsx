@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import useAddCartItem from '../useAddCartItem';
-import useCartItems from '../useCartItems';
+import useAddCartItem from '../queries/useAddCartItem';
+import useCartItems from '../queries/useCartItems';
 import { queryWrapper } from './wrapper.util';
 
 describe('useAddCartItem 훅 테스트', () => {

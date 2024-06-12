@@ -2,7 +2,7 @@ import ProductItem from './ProductItem';
 import { useInfinityScroll } from '../../../hooks/useInfinityScroll';
 import Loader from '../../../components/Loader/Loader';
 import styles from '../ProductListPage.module.css';
-import useProducts from '@/hooks/useProducts';
+import useProducts from '@/hooks/queries/useProducts';
 import { CartItemType } from '@/types';
 import { useToast } from '@/hooks/useToast';
 import { ERROR } from '@/constant/message';

@@ -1,5 +1,5 @@
-import useDeleteCartItem from './useDeleteCartItem';
-import usePatchCartItemQuantity from './usePatchCartItemQuantity';
+import useDeleteCartItem from './queries/useDeleteCartItem';
+import usePatchCartItemQuantity from './queries/usePatchCartItemQuantity';
 
 const useCartItemQuantity = () => {
   const { deleteCartItem } = useDeleteCartItem();

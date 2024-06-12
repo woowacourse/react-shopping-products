@@ -1,7 +1,7 @@
 import { HtmlHTMLAttributes } from 'react';
 import { CartItemType, ProductType } from '@/types';
-import useAddCartItem from '@/hooks/useAddCartItem';
-import useDeleteCartItem from '@/hooks/useDeleteCartItem';
+import useAddCartItem from '@/hooks/queries/useAddCartItem';
+import useDeleteCartItem from '@/hooks/queries/useDeleteCartItem';
 import useCartItemQuantity from '@/hooks/useCartItemQuantity';
 import Stepper from '@/components/Stepper/Stepper';
 import ProductSelectButton from './ProductSelectButton';
