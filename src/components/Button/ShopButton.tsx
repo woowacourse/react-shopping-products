@@ -1,5 +1,5 @@
 import { BaseButton } from "./BaseButton";
-import { StyledShopButton } from "./ShopButton.styled";
+import * as S from "./ShopButton.styled";
 
 export type ShopButtonProp = {
   onClick?: () => void;
@@ -8,7 +8,7 @@ export type ShopButtonProp = {
 export const ShopButton = ({ onClick }: ShopButtonProp) => {
   return (
     <BaseButton onClick={onClick} ariaLabel="홈 버튼">
-      <StyledShopButton>SHOP</StyledShopButton>
+      <S.StyledShopButton>SHOP</S.StyledShopButton>
     </BaseButton>
   );
 };

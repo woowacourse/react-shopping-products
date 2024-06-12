@@ -1,8 +1,8 @@
 import { categoryOptions, sortOptions } from "../../constants";
 import { DropDown } from "../DropDown/DropDown";
-import { StyledDropDownContainer, StyledHeader, StyledTitle } from "./ProductHeader.styled";
+import * as S from "./ProductHeader.styled";
 
-export const sortOptionsMap: { [key: string]: SortOrder } = {
+export const sortOptionsMap: Record<string, SortOrder> = {
   "낮은 가격순": "price,asc",
   "높은 가격순": "price,desc",
 };
@@ -23,7 +23,7 @@ export const ProductHeader = ({
   selectedSort,
 }: ProductHeaderProps) => {
   const handleCategory = (value: string) => {
-    setCategory(value as SortOrder);
+    setCategory(value);
     resetPage();
   };
 
@@ -33,12 +33,12 @@ export const ProductHeader = ({
   };
 
   return (
-    <StyledHeader>
-      <StyledTitle>상품 목록</StyledTitle>
-      <StyledDropDownContainer>
+    <S.StyledHeader>
+      <S.StyledTitle>상품 목록</S.StyledTitle>
+      <S.StyledDropDownContainer>
         <DropDown value={selectedCategory} onChange={handleCategory} options={categoryOptions} />
         <DropDown value={selectedSort} onChange={handleSort} options={sortOptions} />
-      </StyledDropDownContainer>
-    </StyledHeader>
+      </S.StyledDropDownContainer>
+    </S.StyledHeader>
   );
 };

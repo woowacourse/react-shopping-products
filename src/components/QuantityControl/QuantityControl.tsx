@@ -1,10 +1,7 @@
 import { CART } from "../../constants";
 import { useUpdateItemQuantity } from "../../hooks/useUpdateItemQuantity";
 import { CounterButton } from "../Button";
-import {
-  StyledProductQuantityContainer,
-  StyledProductQuantityText,
-} from "./QuantityControl.styled";
+import * as S from "./QuantityControl.styled";
 
 interface QuantityControlsProps {
   cartItemId: number;
@@ -23,10 +20,10 @@ export const QuantityControls = ({ cartItemId, quantity }: QuantityControlsProps
   };
 
   return (
-    <StyledProductQuantityContainer>
+    <S.StyledProductQuantityContainer>
       <CounterButton type="decrement" onClick={decrementQuantity} />
-      <StyledProductQuantityText>{quantity}</StyledProductQuantityText>
+      <S.StyledProductQuantityText>{quantity}</S.StyledProductQuantityText>
       <CounterButton type="increment" onClick={incrementQuantity} />
-    </StyledProductQuantityContainer>
+    </S.StyledProductQuantityContainer>
   );
 };

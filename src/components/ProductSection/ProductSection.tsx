@@ -3,7 +3,7 @@ import useProducts from "../../hooks/useProducts";
 import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
 import { ProductHeader } from "../ProductHeader/ProductHeader";
 import { ProductList } from "../ProductList/ProductList";
-import { StyledProductSection } from "./ProductSection.styled";
+import * as S from "./ProductSection.styled";
 
 export const ProductSection = () => {
   const {
@@ -20,7 +20,7 @@ export const ProductSection = () => {
   const { errorStatus } = useError();
 
   return (
-    <StyledProductSection>
+    <S.StyledProductSection>
       {!errorStatus && (
         <>
           <ProductHeader
@@ -39,6 +39,6 @@ export const ProductSection = () => {
         </>
       )}
       {isLoading && <LoadingSpinner />}
-    </StyledProductSection>
+    </S.StyledProductSection>
   );
 };

@@ -1,7 +1,7 @@
 import { MinusIcon, PlusIcon } from "../../assets";
 import { COUNTER_BUTTON_TYPES } from "../../constants";
 import { BaseButton } from "./BaseButton";
-import { StyledCounterButtonImg } from "./CounterButton.styled";
+import * as S from "./CounterButton.styled";
 
 interface CounterButtonProp {
   type: (typeof COUNTER_BUTTON_TYPES)[keyof typeof COUNTER_BUTTON_TYPES];
@@ -14,7 +14,7 @@ export const CounterButton = ({ type, onClick }: CounterButtonProp) => {
 
   return (
     <BaseButton onClick={onClick} ariaLabel={ariaLabel}>
-      <StyledCounterButtonImg src={src} alt="" />
+      <S.StyledCounterButtonImg src={src} alt="" />
     </BaseButton>
   );
 };

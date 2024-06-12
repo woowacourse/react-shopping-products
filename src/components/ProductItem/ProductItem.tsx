@@ -4,15 +4,7 @@ import { useFetchCartItems } from "../../hooks/useFetchCartItems";
 import { formatPrice } from "../../utils/format";
 import { AddToCartButton } from "../Button";
 import { QuantityControls } from "../QuantityControl/QuantityControl";
-import {
-  StyledContainer,
-  StyledProductImg,
-  StyledProductItem,
-  StyledProductName,
-  StyledProductPrice,
-  StyledQuantityControls,
-  StyledWrapper,
-} from "./ProductItem.styled";
+import * as S from "./ProductItem.styled";
 
 export const ProductItem = ({
   id,
@@ -35,22 +27,22 @@ export const ProductItem = ({
   };
 
   return (
-    <StyledProductItem>
-      <StyledProductImg src={imageUrl} alt="" />
-      <StyledContainer>
-        <StyledWrapper>
-          <StyledProductName>{name}</StyledProductName>
-          <StyledProductPrice>{formatPrice(price)}</StyledProductPrice>
-        </StyledWrapper>
+    <S.StyledProductItem>
+      <S.StyledProductImg src={imageUrl} alt="" />
+      <S.StyledContainer>
+        <S.StyledWrapper>
+          <S.StyledProductName>{name}</S.StyledProductName>
+          <S.StyledProductPrice>{formatPrice(price)}</S.StyledProductPrice>
+        </S.StyledWrapper>
 
         {cartItem ? (
-          <StyledQuantityControls>
+          <S.StyledQuantityControls>
             <QuantityControls cartItemId={cartItem.id} quantity={cartItem.quantity} />
-          </StyledQuantityControls>
+          </S.StyledQuantityControls>
         ) : (
           <AddToCartButton onClick={handleAddToCart} />
         )}
-      </StyledContainer>
-    </StyledProductItem>
+      </S.StyledContainer>
+    </S.StyledProductItem>
   );
 };

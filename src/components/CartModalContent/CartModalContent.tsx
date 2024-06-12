@@ -2,11 +2,7 @@ import { useFetchCartItems } from "../../hooks/useFetchCartItems";
 import { useRemoveItem } from "../../hooks/useRemoveItem";
 import { formatPrice } from "../../utils/format";
 import CartItem from "../CartItem/CartItem";
-import {
-  StyledCartTotal,
-  StyledCartTotalPrice,
-  StyledCartTotalTitle,
-} from "./CartModalContent.styled";
+import * as S from "./CartModalContent.styled";
 
 export const CartModalContent = () => {
   const { mutate: removeItem } = useRemoveItem();
@@ -29,10 +25,10 @@ export const CartModalContent = () => {
       {cartItems.map((item) => (
         <CartItem key={item.id} item={item} onDelete={handleDelete} />
       ))}
-      <StyledCartTotal>
-        <StyledCartTotalTitle>총 결제 금액</StyledCartTotalTitle>
-        <StyledCartTotalPrice>{formatPrice(totalAmount())}</StyledCartTotalPrice>
-      </StyledCartTotal>
+      <S.StyledCartTotal>
+        <S.StyledCartTotalTitle>총 결제 금액</S.StyledCartTotalTitle>
+        <S.StyledCartTotalPrice>{formatPrice(totalAmount())}</S.StyledCartTotalPrice>
+      </S.StyledCartTotal>
     </>
   );
 };

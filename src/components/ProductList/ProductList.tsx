@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 import { ProductItem } from "../ProductItem/ProductItem";
-import { StyledProductList } from "./ProductList.styled";
+import * as S from "./ProductList.styled";
 
 interface ProductListProps {
   products: ProductProps[];
@@ -34,7 +34,7 @@ export const ProductList = ({
   );
 
   return (
-    <StyledProductList>
+    <S.StyledProductList>
       {products.map((product, index) => (
         <div ref={index === products.length - 1 ? lastProductElementRef : null} key={product.id}>
           <ProductItem
@@ -46,6 +46,6 @@ export const ProductList = ({
         </div>
       ))}
       {isLoading && <div>Loading...</div>}
-    </StyledProductList>
+    </S.StyledProductList>
   );
 };

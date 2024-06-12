@@ -1,16 +1,7 @@
 import { formatPrice } from "../../utils/format";
 import { DeleteButton } from "../Button";
 import { QuantityControls } from "../QuantityControl/QuantityControl";
-import {
-  StyledCartItem,
-  StyledCartItemImage,
-  StyledCartItemImageContainer,
-  StyledCartItemInfo,
-  StyledCartItemName,
-  StyledCartItemPrice,
-  StyledCartItemText,
-  StyledCartItemTextWrapper,
-} from "./CartItem.styled";
+import * as S from "./CartItem.styled";
 
 interface CartItemProp {
   item: any;
@@ -19,21 +10,21 @@ interface CartItemProp {
 
 const CartItem = ({ item, onDelete }: CartItemProp) => {
   return (
-    <StyledCartItem key={item.id}>
-      <StyledCartItemImageContainer>
-        <StyledCartItemImage src={item.product.imageUrl} alt={item.product.name} />
-      </StyledCartItemImageContainer>
-      <StyledCartItemInfo>
-        <StyledCartItemText>
-          <StyledCartItemTextWrapper>
-            <StyledCartItemName>{item.product.name}</StyledCartItemName>
-            <StyledCartItemPrice>{formatPrice(item.product.price)}</StyledCartItemPrice>
-          </StyledCartItemTextWrapper>
+    <S.StyledCartItem key={item.id}>
+      <S.StyledCartItemImageContainer>
+        <S.StyledCartItemImage src={item.product.imageUrl} alt={item.product.name} />
+      </S.StyledCartItemImageContainer>
+      <S.StyledCartItemInfo>
+        <S.StyledCartItemText>
+          <S.StyledCartItemTextWrapper>
+            <S.StyledCartItemName>{item.product.name}</S.StyledCartItemName>
+            <S.StyledCartItemPrice>{formatPrice(item.product.price)}</S.StyledCartItemPrice>
+          </S.StyledCartItemTextWrapper>
           <DeleteButton onClick={() => onDelete(item.id)} />
-        </StyledCartItemText>
+        </S.StyledCartItemText>
         <QuantityControls cartItemId={item.id} quantity={item.quantity} />
-      </StyledCartItemInfo>
-    </StyledCartItem>
+      </S.StyledCartItemInfo>
+    </S.StyledCartItem>
   );
 };
 

@@ -1,6 +1,6 @@
 import { PlusShoppingCartIcon } from "../../assets";
+import * as S from "./AddToCartButton.styled";
 import { BaseButton } from "./BaseButton";
-import { StyledAddImg, StyledTitle, StyledContainer } from "./AddToCartButton.styled";
 
 export type AddToCartButtonProp = {
   onClick?: () => void;
@@ -9,10 +9,10 @@ export type AddToCartButtonProp = {
 export const AddToCartButton = ({ onClick }: AddToCartButtonProp) => {
   return (
     <BaseButton onClick={onClick} ariaLabel="상품 담기 버튼">
-      <StyledContainer>
-        <StyledAddImg src={PlusShoppingCartIcon} alt="" />
-        <StyledTitle>담기</StyledTitle>
-      </StyledContainer>
+      <S.StyledContainer>
+        <S.StyledAddImg src={PlusShoppingCartIcon} alt="" />
+        <S.StyledTitle>담기</S.StyledTitle>
+      </S.StyledContainer>
     </BaseButton>
   );
 };
