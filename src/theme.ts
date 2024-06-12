@@ -79,6 +79,21 @@ const theme: Theme = {
         line-height: 15px;
         text-align: left;
       `,
+      finalPriceInfo: `
+        font-family: Noto Sans;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 16px;
+        text-align: left;
+      `,
+      finalPrice: `
+        font-family: Noto Sans KR;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 34.75px;
+        text-align: right;
+
+      `,
     },
   },
   color: {

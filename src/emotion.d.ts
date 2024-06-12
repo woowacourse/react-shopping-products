@@ -18,6 +18,8 @@ declare module '@emotion/react' {
         price: string;
         quantity: string;
         deleteButton: string;
+        finalPriceInfo: string;
+        finalPrice: string;
       };
     };
     color: {

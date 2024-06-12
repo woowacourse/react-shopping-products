@@ -29,6 +29,14 @@ function App() {
   const observerRef = useRef<HTMLDivElement | null>(null);
   const { data: cartItems } = useCartItems();
 
+  const cartItemsTotalAmount =
+    cartItems === undefined
+      ? 0
+      : cartItems.reduce(
+          (totalAmount, cartItem) => totalAmount + cartItem.product.price * cartItem.quantity,
+          0,
+        );
+
   const {
     products,
     category,
@@ -103,7 +111,11 @@ function App() {
           </ProductsContentContainer>
         </ProductsContainer>
       </Main>
-      <CartItemModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <CartItemModal
+        totalAmount={cartItemsTotalAmount}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </Container>
   );
 }
