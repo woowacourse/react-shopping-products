@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import TextBox from "@/components/_common/TextBox";
 import SelectBox from "@/components/SelectBox";
 import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
@@ -6,7 +5,6 @@ import useSelect from "@/hooks/useSelect";
 import { useEffect, useRef, useState } from "react";
 import useIntersection from "@/hooks/useIntersection";
 import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
-import TopButton from "@/components/_common/TopButton";
 import * as S from "@/pages/productListPage/style";
 import ItemCardList from "@/components/ItemCardList";
 import useFilteredProducts from "@/hooks/server/useFilteredProducts";
@@ -14,7 +12,6 @@ import CartModal from "@/pages/cartModal";
 import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import EmptyState from "@/components/_common/EmptyState";
-import MemoCartBage from "@/components/CartBadge";
 
 export interface GetProductsProps {
   category: Category;
@@ -27,7 +24,7 @@ const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
   const useSortSelect = useSelect<Sort>("낮은 가격순");
 
-  const { lockScroll, openScroll } = useBodyScrollLock();
+  const { openScroll } = useBodyScrollLock();
 
   const category = useCategorySelect.selected;
   const sort = useSortSelect.selected;
@@ -36,18 +33,11 @@ const ProductListPage = () => {
   const { isIntersecting } = useIntersection(infiniteScrollConfig, ref);
 
   const { data: cartItems } = useCartItemsQuery();
-
-  const cartItemLength = cartItems?.length || 0;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onCloseModal = () => {
     setIsModalOpen(false);
     openScroll();
-  };
-
-  const onOpenModal = () => {
-    setIsModalOpen(true);
-    lockScroll();
   };
 
   const {
@@ -61,11 +51,9 @@ const ProductListPage = () => {
     sort,
   });
 
-  useEffect(() => {
-    if (error) {
-      throw new Error(error.message);
-    }
-  }, [error]);
+  if (error) {
+    throw error;
+  }
 
   useEffect(() => {
     if (isIntersecting) {
@@ -75,11 +63,6 @@ const ProductListPage = () => {
 
   return (
     <>
-      <Header>
-        <Header.Title text="SHOP" />
-        <MemoCartBage cartItemLength={cartItemLength} onClick={onOpenModal} />
-        <TopButton />
-      </Header>
       <S.Wrapper>
         <S.ItemInfoWrapper>
           <TextBox type="xLarge" text="bpple 상품 목록" />

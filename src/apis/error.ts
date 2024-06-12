@@ -1,34 +1,49 @@
-import { CUSTOM_ERROR_MESSAGE, HTTP_STATUS_CODE } from "@/types/error";
+import { CUSTOM_ERROR_MESSAGE, HTTP_STATUS_CODE } from "@/error/errorMessage";
 
 class HTTPError extends Error {
   statusCode: number;
+  title: string;
+  content: string;
 
   constructor(statusCode: number) {
     super();
     this.statusCode = statusCode;
 
+    let errorInfo = CUSTOM_ERROR_MESSAGE.SERVER_ERROR;
     switch (true) {
       case statusCode >= HTTP_STATUS_CODE.SERVER_ERROR:
-        this.name = "서버 에러가 발생했습니다.";
-        this.message = CUSTOM_ERROR_MESSAGE.SERVER_ERROR;
+        errorInfo = CUSTOM_ERROR_MESSAGE.SERVER_ERROR;
+        this.name = "SERVER_ERROR";
         break;
       case statusCode === HTTP_STATUS_CODE.NOT_FOUND:
+        errorInfo = CUSTOM_ERROR_MESSAGE.NOT_FOUND;
         this.name = "NOT_FOUND";
-        this.message = CUSTOM_ERROR_MESSAGE.NOT_FOUND;
         break;
       case statusCode === HTTP_STATUS_CODE.FORBIDDEN:
+        errorInfo = CUSTOM_ERROR_MESSAGE.FORBIDDEN;
         this.name = "FORBIDDEN";
-        this.message = CUSTOM_ERROR_MESSAGE.FORBIDDEN;
         break;
       case statusCode === HTTP_STATUS_CODE.UNAUTHORIZED:
+        errorInfo = CUSTOM_ERROR_MESSAGE.UNAUTHORIZED;
         this.name = "UNAUTHORIZED";
-        this.message = CUSTOM_ERROR_MESSAGE.UNAUTHORIZED;
+        break;
+      case statusCode === HTTP_STATUS_CODE.BAD_REQUEST:
+        errorInfo = CUSTOM_ERROR_MESSAGE.BAD_REQUEST;
+        this.name = "BAD_REQUEST";
+        break;
+      case statusCode === HTTP_STATUS_CODE.NETWORK_ERROR:
+        errorInfo = CUSTOM_ERROR_MESSAGE.NETWORK_ERROR;
+        this.name = "NETWORK_ERROR";
         break;
       default:
-        this.name = "FETCHING_ERROR";
-        this.message = CUSTOM_ERROR_MESSAGE.FETCH_FAILED;
+        errorInfo = { title: "Unknown Error", content: "An unknown error occurred." };
+        this.name = "UNKNOWN_ERROR";
         break;
     }
+
+    this.message = errorInfo?.title || "Error";
+    this.title = errorInfo?.title || "Error";
+    this.content = errorInfo?.content || "An error occurred. Please try again.";
   }
 }
 

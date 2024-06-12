@@ -1,44 +1,37 @@
-import ErrorFallback from "@/error/ErrorFallback";
-import { Component, PropsWithChildren } from "react";
+import React, { ReactNode, ReactElement } from "react";
 
-export interface ErrorProps {
-  message: string;
+interface ErrorBoundaryState {
+  hasError: boolean;
+  errorMessage?: string;
   resetError: () => void;
 }
 
 interface ErrorBoundaryProps {
-  Fallback: Element;
-  onReset?: (error: Error) => void;
+  children: ReactNode;
+  fallback: ReactElement;
 }
 
-interface State {
-  hasError: boolean;
-  error: Error | null;
-}
-
-const initialState: State = {
-  hasError: false,
-  error: null,
-};
-
-class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, State> {
-  state: State = initialState;
-
-  resetErrorBoundary = () => {
-    this.props.onReset?.(this.state.error!);
-    this.setState(initialState);
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  state: ErrorBoundaryState = {
+    hasError: false,
+    errorMessage: undefined,
+    resetError: () => {},
   };
 
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, errorMessage: error.message, resetError: () => {} };
+  }
+
+  componentDidCatch(error: Error) {
+    this.setState({ errorMessage: error.message });
   }
 
   render() {
-    const { Fallback } = this.props;
-    const { error } = this.state;
+    const { fallback } = this.props;
+    const { hasError, errorMessage, resetError } = this.state;
 
-    if (error) {
-      return <ErrorFallback />;
+    if (hasError) {
+      return React.cloneElement(fallback, { message: errorMessage, resetError: resetError });
     }
 
     return this.props.children;
