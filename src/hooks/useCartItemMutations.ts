@@ -1,22 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   requestAddCartItem,
   requestDeleteCartItem,
-  requestFetchCartItemList,
   requestUpdateCartItemQuantity,
 } from "../apis/cartItems";
 
 import { Product } from "../interfaces/Product";
 import { QUERY_KEYS } from "../constants/queryKeys";
 
-export default function useCartItem() {
+export default function useCartItemMutations() {
   const queryClient = useQueryClient();
 
-  const fetchCartItemList = useQuery({
-    queryKey: [QUERY_KEYS.cartItemList],
-    queryFn: () => requestFetchCartItemList(),
-    staleTime: Infinity,
-  });
   const addCartItem = useMutation({
     mutationFn: (product: Product) => requestAddCartItem(product.id, 1),
     onSuccess: () => {
@@ -44,9 +38,6 @@ export default function useCartItem() {
     },
   });
   return {
-    fetchCartItemList,
-    cartItemList: fetchCartItemList.data?.content,
-    fetchError: fetchCartItemList.error,
     mutateError:
       addCartItem.error || deleteCartItem.error || updateCartItemQuantity.error,
     addCartItem,

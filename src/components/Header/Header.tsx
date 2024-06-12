@@ -1,10 +1,10 @@
 import { MainLogo } from "../../assets";
 import * as S from "./Header.style";
-import useCartItem from "../../hooks/useCartItem";
+import useFetchCartItem from "../../hooks/useFetchCartItem";
 import ShoppingCartButton from "../ShoppingCartButton/ShoppingCartButton";
 
 function Header() {
-  const { fetchCartItemList } = useCartItem();
+  const { fetchCartItemList } = useFetchCartItem();
   const quantity = fetchCartItemList.data?.content.length;
 
   return (

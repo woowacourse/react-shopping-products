@@ -3,10 +3,10 @@ import ProductItemTitle from "../ProductItemTitle/ProductItemTitle";
 import QuantityContainer from "../QuantityContainer/QuantityContainer";
 import AddCartItemButton from "../AddCartItemButton/AddCartItemButton";
 import * as S from "./ProductItem.style";
-import useCartItem from "../../hooks/useCartItem";
 import { CartItem } from "../../interfaces/CartItem";
 import { createPortal } from "react-dom";
 import Toast from "../common/Toast/Toast";
+import useCartItemMutations from "../../hooks/useCartItemMutations";
 
 interface ProductItemProps {
   product: Product;
@@ -17,7 +17,8 @@ function ProductItem({ product, cartItemList }: ProductItemProps) {
   const cartItemExists = cartItemList.find(
     (cartItem) => cartItem.product.id === product.id
   );
-  const { addCartItem, updateCartItemQuantity, mutateError } = useCartItem();
+  const { addCartItem, updateCartItemQuantity, mutateError } =
+    useCartItemMutations();
 
   const renderCartItemQuantity = (cartItemExists: CartItem) => {
     return (

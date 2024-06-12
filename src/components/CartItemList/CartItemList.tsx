@@ -2,16 +2,14 @@ import CartItemContainer from "../CartItemContainer/CartItemContainer";
 import * as S from "./CartItemList.style";
 
 import type { CartItem } from "../../interfaces/CartItem";
-import useCartItem from "../../hooks/useCartItem";
+import useFetchCartItem from "../../hooks/useFetchCartItem";
 import { EmptyCart } from "../../assets";
+import useCartItemMutations from "../../hooks/useCartItemMutations";
 
 function CartItemList({ style }: { style: React.CSSProperties }) {
-  const {
-    deleteCartItem,
-    updateCartItemQuantity,
-    cartItemList,
-    fetchError: cartItemListError,
-  } = useCartItem();
+  const { cartItemList, fetchError: cartItemListError } = useFetchCartItem();
+
+  const { deleteCartItem, updateCartItemQuantity } = useCartItemMutations();
 
   if (cartItemListError) {
     throw cartItemListError;

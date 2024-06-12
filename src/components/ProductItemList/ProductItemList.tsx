@@ -6,7 +6,7 @@ import { Category, Product } from "../../interfaces/Product";
 import { Sorting } from "../../interfaces/Sorting";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import Spinner from "../common/Spinner/Spinner";
-import useCartItem from "../../hooks/useCartItem";
+import useFetchCartItem from "../../hooks/useFetchCartItem";
 
 interface ProductItemListProp {
   category: Category;
@@ -14,7 +14,7 @@ interface ProductItemListProp {
 }
 
 function ProductItemList({ category, sort }: ProductItemListProp) {
-  const { fetchCartItemList } = useCartItem();
+  const { fetchCartItemList } = useFetchCartItem();
   const {
     data: productListData,
     error: productListError,
