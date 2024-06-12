@@ -23,7 +23,7 @@ const ShoppingCartModal = ({ isOpen, onClose, cartItems }: ShoppingCartModalProp
       <Modal.Content style={{ marginBottom: 0 }}>
         <ul style={{ height: 220, overflow: 'scroll' }}>
           {cartItems.map((cartItem) => (
-            <CartItem key={cartItem.id} item={cartItem} />
+            <CartItem key={cartItem.id} cartItem={cartItem} />
           ))}
         </ul>
         <Receipt title="총 결제금액" price={totalAmount} />

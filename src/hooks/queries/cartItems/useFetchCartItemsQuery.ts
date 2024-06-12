@@ -8,7 +8,7 @@ const useFetchCartItemsQuery = () => {
   return useQuery({
     queryKey: [CART_KEYS.fetch],
     queryFn: fetchCartItems,
-    initialData: [],
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 };

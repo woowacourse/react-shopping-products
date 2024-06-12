@@ -1,13 +1,15 @@
+import { useEffect } from 'react';
+
 import * as Styled from './Header.styled';
 import ShoppingCartModal from '../ShoppingCartModal';
 
 import { IMAGES } from '@/assets';
+import useFetchCartItemsQuery from '@/hooks/queries/cartItems/useFetchCartItemsQuery';
 
-import useCartItems from '@/hooks/useCartItems';
 import useModal from '@/hooks/useModal';
 
 const Header = () => {
-  const { cartItems } = useCartItems();
+  const { data: cartItems, isSuccess } = useFetchCartItemsQuery();
   const { isOpen, handleOpen, handleClose } = useModal();
 
   const handleClickLogo = () => {
@@ -18,10 +20,12 @@ const Header = () => {
     <Styled.Header>
       <Styled.AppTitle onClick={handleClickLogo}>SHOP</Styled.AppTitle>
       <button onClick={handleOpen}>
-        <Styled.ShoppingCartCount>{cartItems.length}</Styled.ShoppingCartCount>
+        {isSuccess && <Styled.ShoppingCartCount>{cartItems.length}</Styled.ShoppingCartCount>}
         <img src={IMAGES.SHOPPING_CART} alt="장바구니" />
       </button>
-      <ShoppingCartModal isOpen={isOpen} onClose={handleClose} cartItems={cartItems} />
+      {isSuccess && (
+        <ShoppingCartModal isOpen={isOpen} onClose={handleClose} cartItems={cartItems} />
+      )}
     </Styled.Header>
   );
 };

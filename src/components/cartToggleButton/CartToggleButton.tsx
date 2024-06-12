@@ -2,22 +2,29 @@ import * as Styled from './CartToggleButton.styled';
 import CountButtonContainer from '../countButtonContainer/CountButtonContainer';
 
 import { IMAGES } from '@/assets';
+import useAddCartItemQuery from '@/hooks/queries/cartItems/useAddCartItemQuery';
+import useFetchCartItemsQuery from '@/hooks/queries/cartItems/useFetchCartItemsQuery';
 import { Product } from '@/types/product';
-
-import useCartItems from '@/hooks/useCartItems';
 
 interface CartItemButtonProp {
   product: Product;
 }
 
 const CartToggleButton = ({ product }: CartItemButtonProp) => {
-  const { matchCartItem, handleAddCartItem } = useCartItems();
-  const matchedCartItem = matchCartItem(product.id);
+  const { data: cartItems, isSuccess } = useFetchCartItemsQuery();
+  const { mutate: handleAddCartItem } = useAddCartItemQuery();
 
-  if (matchedCartItem) {
-    return (
-      <CountButtonContainer item={matchedCartItem} testId={`cart-toggle-button-${product.id}`} />
-    );
+  if (isSuccess) {
+    const matchedCartItem = cartItems.find((cartItem) => cartItem.product.id === product.id);
+
+    if (matchedCartItem) {
+      return (
+        <CountButtonContainer
+          cartItem={matchedCartItem}
+          testId={`cart-toggle-button-${product.id}`}
+        />
+      );
+    }
   }
 
   return (
