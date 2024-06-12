@@ -37,6 +37,10 @@ export default function ProductPage() {
     options: { threshold: 0.7 },
   });
 
+  const isLoading = isProductLoading && products.length === 0;
+  const isLoadedProductsEmpty = !isProductLoading && products.length === 0;
+  const isLoadedProductsExists = products.length > 0;
+
   const handleOpenCartModal = () => {
     setIsCartModalOpened(true);
   };
@@ -77,19 +81,19 @@ export default function ProductPage() {
           />
         </Styled.SelectBoxContainer>
 
-        {isProductLoading && products.length === 0 && (
+        {isLoading && (
           <Styled.EmptyProductsContainer>
             <Styled.LoadingSpinner />
           </Styled.EmptyProductsContainer>
         )}
 
-        {!isProductLoading && products.length === 0 && (
+        {isLoadedProductsEmpty && (
           <Styled.EmptyProductsContainer>
             현재 조회 가능한 상품이 없습니다.
           </Styled.EmptyProductsContainer>
         )}
 
-        {products.length > 0 && (
+        {isLoadedProductsExists && (
           <ProductItemContainer products={products}>
             <Styled.ObserverTarget
               ref={observerRef}
