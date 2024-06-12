@@ -1,6 +1,6 @@
+export { AddToCartButton } from "./AddToCartButton";
 export { BaseButton } from "./BaseButton";
-export { CartActionButton } from "./CartActionButton";
 export { CartButton } from "./CartButton";
-export { ShopButton } from "./ShopButton";
 export { CounterButton } from "./CounterButton";
 export { DeleteButton } from "./DeleteButton";
+export { ShopButton } from "./ShopButton";

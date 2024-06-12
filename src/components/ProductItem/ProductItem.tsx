@@ -2,7 +2,7 @@ import { useError } from "../../context";
 import { useAddItem } from "../../hooks/useAddItem";
 import { useFetchCartItems } from "../../hooks/useFetchCartItems";
 import { formatPrice } from "../../utils/format";
-import { CartActionButton } from "../Button";
+import { AddToCartButton } from "../Button";
 import { QuantityControls } from "../QuantityControl/QuantityControl";
 import {
   StyledContainer,
@@ -48,7 +48,7 @@ export const ProductItem = ({
             <QuantityControls cartItemId={cartItem.id} quantity={cartItem.quantity} />
           </StyledQuantityControls>
         ) : (
-          <CartActionButton onClick={handleAddToCart} />
+          <AddToCartButton onClick={handleAddToCart} />
         )}
       </StyledContainer>
     </StyledProductItem>
