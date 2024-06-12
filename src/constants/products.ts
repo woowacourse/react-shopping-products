@@ -23,6 +23,8 @@ export const ORDER_QUANTITY_PER_PRODUCT = {
   max: 100,
 } as const;
 
+export const PRODUCT_IMAGE_PROTOCOLS = ["http:", "https:", "ftp:", "data:"];
+
 export type CategoryKeys = keyof typeof PRODUCT_CATEGORIES;
 export type CategoryQueryString = (typeof PRODUCT_CATEGORIES)[keyof typeof PRODUCT_CATEGORIES];
 
