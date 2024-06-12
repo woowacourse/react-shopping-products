@@ -6,7 +6,7 @@ import useFetchCartItem from "../../hooks/useFetchCartItem";
 import { EmptyCart } from "../../assets";
 import useCartItemMutations from "../../hooks/useCartItemMutations";
 
-function CartItemList({ style }: { style: React.CSSProperties }) {
+function CartItemList() {
   const { cartItemList, fetchError: cartItemListError } = useFetchCartItem();
 
   const { deleteCartItem, updateCartItemQuantity } = useCartItemMutations();
@@ -17,7 +17,7 @@ function CartItemList({ style }: { style: React.CSSProperties }) {
 
   if (!cartItemList || cartItemList.length === 0) {
     return (
-      <S.EmptyCartContainer style={style}>
+      <S.EmptyCartContainer style={{ overflowY: "auto", marginBottom: "70px" }}>
         <S.EmptyCartImage src={EmptyCart} alt="Empty Cart" />
         <S.EmptyCartMessage>장바구니가 비어 있습니다.</S.EmptyCartMessage>
       </S.EmptyCartContainer>

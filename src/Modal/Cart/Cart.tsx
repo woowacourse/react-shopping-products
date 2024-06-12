@@ -25,7 +25,7 @@ function Cart({ setIsCartModalOpen }: CartProps) {
             />
           }
         >
-          <CartItemList style={{ overflowY: "auto", marginBottom: "70px" }} />
+          <CartItemList />
         </ErrorBoundary>
         <S.CloseButton onClick={() => setIsCartModalOpen(false)}>
           닫기
