@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { BadgeProps } from '../../../type';
+import { BadgeProps } from '../../../types';
 
 export const BadgeContainer = styled.div<BadgeProps>`
   position: absolute;
@@ -15,5 +15,5 @@ export const BadgeContainer = styled.div<BadgeProps>`
   font-family: Montserrat;
   font-size: 1rem;
   font-weight: 700;
-  border-radius: 100%;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
 `;

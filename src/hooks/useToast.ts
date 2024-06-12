@@ -1,7 +1,13 @@
 import { useCallback, useContext } from 'react';
-import { ToastContext } from '../context/ToastContextProvider';
+import { ToastContext } from '../contexts/ToastContextProvider';
+import { DEFAULT_TOAST_DELAY_TIME } from '@/constants/index';
 
-export function useToast() {
+interface createToastProps {
+  message: string;
+  delayTime?: number;
+}
+
+const useToast = () => {
   const context = useContext(ToastContext);
 
   if (!context) {
@@ -11,16 +17,18 @@ export function useToast() {
   const { setToast } = context;
 
   const createToast = useCallback(
-    (message: string) => {
+    ({ message, delayTime = DEFAULT_TOAST_DELAY_TIME }: createToastProps) => {
       const newToast = { message };
       setToast(newToast);
 
       setTimeout(() => {
         setToast(null);
-      }, 3000);
+      }, delayTime);
     },
     [setToast],
   );
 
   return { createToast };
-}
+};
+
+export default useToast;

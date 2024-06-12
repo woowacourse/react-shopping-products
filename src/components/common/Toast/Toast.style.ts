@@ -14,7 +14,7 @@ export const ToastContainer = styled.div`
   background-color: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
   padding: 20px 30px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
   animation: toastAnimation 3s forwards;
   color: black;
   font-size: 15px;
