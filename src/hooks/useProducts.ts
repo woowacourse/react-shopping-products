@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { fetchProducts } from '../api/index';
 import {
   INITIAL_DATA_LOAD_COUNT,
+  JUMP_NEXT_PAGE_IN_ONE,
   JUMP_NEXT_PAGE_IN_ZERO,
   SUBSEQUENT_DATA_LOAD_COUNT,
 } from '../constants';
@@ -54,7 +55,7 @@ export default function useProducts(): UseProductsResult {
         if (lastPage.last) {
           return undefined;
         }
-        return allPages.length + 4;
+        return allPages.length + JUMP_NEXT_PAGE_IN_ONE;
       },
       select: (data) => {
         return data.pages.flatMap((page) => page.data);

@@ -42,7 +42,6 @@ export async function fetchProducts(
     size: limit,
     sort: sortArray,
   });
-
   try {
     const response = await fetch(url, {
       method: 'GET',
