@@ -1,5 +1,5 @@
 import { ToastDispatchContext, ToastStateContext } from "@/provider/toastProvider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const useToast = () => {
   const toastList = useContext(ToastStateContext) || [];
@@ -17,9 +17,15 @@ const useToast = () => {
       toastList.pop();
     }
 
+    console.log("message", message);
+
     const newToasts = [{ id: newId, message }, ...toastList];
     setToastList(newToasts);
   };
+
+  useEffect(() => {
+    console.log("toast", toastList);
+  }, [toastList]);
 
   return { onCloseToast, onAddToast, toastList };
 };

@@ -1,14 +1,6 @@
-export const CUSTOM_ERROR_MESSAGE = {
-  SERVER_ERROR: "서버에 에러가 생겼습니다",
-  NOT_FOUND: "요청하신 자료를 찾을 수 없습니다.",
-  FORBIDDEN: "요청하신 자료에 접근할 권한이 없습니다.",
-  UNAUTHORIZED: "유효한 인증이 필요합니다.",
-  BAD_REQUEST: "잘못된 요청입니다.",
-  NETWORK_ERROR: "네트워크 연결이 끊어졌습니다.",
-  FETCH_FAILED: "서버와 연결이 되지 않습니다.",
-};
+import { CUSTOM_ERROR_MESSAGE, HTTP_STATUS_CODE } from "@/types/error";
 
-class CustomError extends Error {
+class HTTPError extends Error {
   statusCode: number;
 
   constructor(statusCode: number) {
@@ -16,19 +8,19 @@ class CustomError extends Error {
     this.statusCode = statusCode;
 
     switch (true) {
-      case statusCode >= 500:
-        this.name = "SERVER_ERROR";
+      case statusCode >= HTTP_STATUS_CODE.SERVER_ERROR:
+        this.name = "서버 에러가 발생했습니다.";
         this.message = CUSTOM_ERROR_MESSAGE.SERVER_ERROR;
         break;
-      case statusCode === 404:
+      case statusCode === HTTP_STATUS_CODE.NOT_FOUND:
         this.name = "NOT_FOUND";
         this.message = CUSTOM_ERROR_MESSAGE.NOT_FOUND;
         break;
-      case statusCode === 403:
+      case statusCode === HTTP_STATUS_CODE.FORBIDDEN:
         this.name = "FORBIDDEN";
         this.message = CUSTOM_ERROR_MESSAGE.FORBIDDEN;
         break;
-      case statusCode === 401:
+      case statusCode === HTTP_STATUS_CODE.UNAUTHORIZED:
         this.name = "UNAUTHORIZED";
         this.message = CUSTOM_ERROR_MESSAGE.UNAUTHORIZED;
         break;
@@ -40,4 +32,4 @@ class CustomError extends Error {
   }
 }
 
-export default CustomError;
+export default HTTPError;

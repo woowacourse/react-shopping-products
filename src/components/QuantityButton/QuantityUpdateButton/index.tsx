@@ -1,5 +1,5 @@
 import Icon from "@/components/_common/Icon";
-import * as S from "@/components/QuantityUpdateButton/style";
+import * as S from "@/components/QuantityButton/QuantityUpdateButton/style";
 import useUpdateItemQuantity from "@/hooks/useUpdateCartQuantity";
 import LoadingSpinner from "@/assets/loading.gif";
 

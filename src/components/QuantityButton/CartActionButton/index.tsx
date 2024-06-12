@@ -1,6 +1,6 @@
 import Icon from "@/components/_common/Icon";
 import TextBox from "@/components/_common/TextBox";
-import * as S from "@/components/CartActionButton/style";
+import * as S from "@/components/QuantityButton/CartActionButton/style";
 import { usePostAddCartItemMutation } from "@/hooks/server/useCartItems";
 
 interface CartActionButton {

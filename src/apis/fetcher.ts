@@ -1,4 +1,5 @@
 import CustomError from "@/apis/error";
+import { CUSTOM_ERROR_MESSAGE } from "@/types/error";
 import { basicToken } from "@/utils/auth";
 
 interface RequestProps {
@@ -10,49 +11,50 @@ interface RequestProps {
 }
 type FetchProps = Omit<RequestProps, "method">;
 
-const request = async ({ url, method, body, headers = {}, errorMessage }: RequestProps) => {
+const request = async ({ url, method, body, headers = {} }: RequestProps) => {
+  const response = await fetch(url, {
+    method,
+    body: body ? JSON.stringify(body) : undefined,
+    headers: {
+      Authorization: basicToken,
+      ...headers,
+    },
+  });
+
+  if (!response.ok) {
+    throw new CustomError(response.status);
+  }
+
+  return response;
+};
+
+const networkRequest = ({ url, method, body, headers = {} }: RequestProps) => {
   try {
-    const response = await fetch(url, {
-      method,
-      body: body ? JSON.stringify(body) : undefined,
-      headers: {
-        Authorization: basicToken,
-        ...headers,
-      },
-    });
-
-    if (!response.ok) {
-      throw new CustomError(response.status);
-    }
-    return response;
-  } catch (error) {
-    if (error instanceof CustomError) {
-      throw new CustomError(error.statusCode);
-    }
-
-    throw new Error(errorMessage);
+    return request({ url, method, body, headers });
+  } catch (err) {
+    throw new Error(CUSTOM_ERROR_MESSAGE.NETWORK_ERROR);
   }
 };
 
 const fetcher = {
   get({ url, headers }: FetchProps) {
-    return request({ url, method: "GET", headers });
+    return networkRequest({ url, method: "GET", headers });
   },
 
   post({ url, body, headers }: FetchProps) {
-    return request({ url, method: "POST", body, headers: { ...headers, "Content-Type": "application/json" } });
+    return networkRequest({ url, method: "POST", body, headers: { ...headers, "Content-Type": "application/json" } });
   },
 
   delete({ url, headers }: FetchProps) {
-    return request({ url, method: "DELETE", headers });
+    return networkRequest({ url, method: "DELETE", headers });
   },
 
   patch({ url, body, headers }: FetchProps) {
-    return request({ url, method: "PATCH", body, headers: { ...headers, "Content-Type": "application/json" } });
+    return networkRequest({ url, method: "PATCH", body, headers: { ...headers, "Content-Type": "application/json" } });
   },
 
   put({ url, headers }: FetchProps) {
-    return request({ url, method: "PUT", headers: { ...headers, "Content-Type": "application/json" } });
+    return networkRequest({ url, method: "PUT", headers: { ...headers, "Content-Type": "application/json" } });
   },
 };
 

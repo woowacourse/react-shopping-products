@@ -1,5 +1,5 @@
-import CartActionButton from "@/components/CartActionButton";
-import QuantityUpdateButton from "@/components/QuantityUpdateButton";
+import CartActionButton from "@/components/QuantityButton/CartActionButton";
+import QuantityUpdateButton from "@/components/QuantityButton/QuantityUpdateButton";
 import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 import { convertProductIdToCartId, getQuantityInCart } from "@/utils/cart";
 import { memo } from "react";

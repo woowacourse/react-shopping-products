@@ -1,14 +1,7 @@
+import App from "@/App";
+import ToastsProvider from "@/provider/toastProvider";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import GlobalStyles from "@/styles/global";
-import { RouterProvider } from "react-router-dom";
-import router from "@/router.tsx";
-import { ThemeProvider } from "styled-components";
-import { theme } from "@/styles/theme.ts";
-import ToastsProvider from "@/provider/toastProvider.tsx";
-import Toasts from "@/components/_common/Toasts/Toasts.tsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== "development") {
@@ -24,21 +17,12 @@ async function enableMocking() {
   // return worker.start();
 }
 
-const queryClient = new QueryClient();
-
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <ToastsProvider>
-            <RouterProvider router={router} />
-            <Toasts />
-            <GlobalStyles />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </ToastsProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <ToastsProvider>
+        <App />
+      </ToastsProvider>
     </React.StrictMode>
   );
 });
