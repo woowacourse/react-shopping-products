@@ -7,8 +7,8 @@ export const CartModalContent = () => {
   const { mutate: removeItem } = useRemoveItem();
   const { cartItems, isError, isLoading } = useFetchCartItems();
 
-  const handleDelete = async (id: number) => {
-    removeItem(id);
+  const handleDelete = async (cartItemId: number) => {
+    removeItem({ cartItemId });
   };
 
   const totalAmount = () => {
