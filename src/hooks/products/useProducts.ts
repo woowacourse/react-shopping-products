@@ -36,7 +36,10 @@ export default function useProducts(): UseProductResult {
   useEffect(() => {
     if (error) {
       setError(error);
+      return;
     }
+
+    setError(null);
   }, [error, setError]);
 
   const handleChangeCategory = (value: CategoryQueryString) => {

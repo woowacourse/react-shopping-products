@@ -24,26 +24,25 @@ export default function useCartItems(): UseCartItemResult {
   useEffect(() => {
     if (isError) {
       setError(error);
+      return;
     }
+
+    setError(null);
   }, [isError, error, setError]);
 
   const handleAddCartItem = async (productId: number) => {
-    addProductToCart.mutate(productId, {
-      onError: (error) => setError(error),
-    });
+    addProductToCart.mutate(productId);
   };
 
   const handleRemoveCartItem = async (productId: number) => {
     const targetCartItem = cartItems.find((cartItem) => cartItem.product.id === productId);
 
     if (!targetCartItem) {
-      setError(new Error(ERROR_MESSAGE.INVALID_PRODUCT));
+      setError(new Error(ERROR_MESSAGE.CART_ITEMS.ITEM_NOT_FOUND));
       return;
     }
 
-    removeProductFromCart.mutate(targetCartItem.id, {
-      onError: (error) => setError(error),
-    });
+    removeProductFromCart.mutate(targetCartItem.id);
   };
 
   return {

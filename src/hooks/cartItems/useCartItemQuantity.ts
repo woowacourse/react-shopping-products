@@ -1,6 +1,5 @@
 import { useGetCartItems, useUpdateCartItem } from "./queries";
 import { updateCartItemQuantity } from "../../apis";
-import { useErrorContext } from "../../hooks";
 import { UpdateCartItemQuantityProps } from "../../types";
 import { ERROR_MESSAGE } from "../../constants";
 
@@ -11,7 +10,6 @@ interface UseCartItemQuantityResult {
 
 export default function useCartItemQuantity(): UseCartItemQuantityResult {
   const { data: cartItems = [] } = useGetCartItems();
-  const { setError } = useErrorContext();
 
   const updateProductQuantity =
     useUpdateCartItem<UpdateCartItemQuantityProps>(updateCartItemQuantity);
@@ -25,15 +23,10 @@ export default function useCartItemQuantity(): UseCartItemQuantityResult {
     const targetCartItem = cartItems.find((cartItem) => cartItem.product.id === productId);
 
     if (!targetCartItem) {
-      throw new Error(ERROR_MESSAGE.INVALID_PRODUCT);
+      throw new Error(ERROR_MESSAGE.CART_ITEMS.ITEM_NOT_FOUND);
     }
 
-    updateProductQuantity.mutate(
-      { cartItemId: targetCartItem.id, quantity },
-      {
-        onError: (error) => setError(error),
-      },
-    );
+    updateProductQuantity.mutate({ cartItemId: targetCartItem.id, quantity });
   };
 
   return {
