@@ -6,9 +6,9 @@ interface CartModalProps {
   onClose: () => void;
 }
 
-export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
+export const CartModal = ({ isOpen, onClose }: CartModalProps) => {
   const rootElement = document.getElementById("root");
-  const rootWidth = rootElement ? window.getComputedStyle(rootElement).width : "430px";
+  const rootWidth = window.getComputedStyle(rootElement!).width;
 
   return (
     <Modal
