@@ -1,13 +1,13 @@
 import { BaseButton } from "./BaseButton";
 import { StyledDeleteButton } from "./DeleteButton.styled";
 
-interface DeleteButtonProps {
+interface DeleteButtonProp {
   onClick?: () => void;
 }
 
-export const DeleteButton = ({ onClick }: DeleteButtonProps) => {
+export const DeleteButton = ({ onClick }: DeleteButtonProp) => {
   return (
-    <BaseButton onClick={onClick}>
+    <BaseButton onClick={onClick} ariaLabel="삭제 버튼">
       <StyledDeleteButton>삭제</StyledDeleteButton>
     </BaseButton>
   );

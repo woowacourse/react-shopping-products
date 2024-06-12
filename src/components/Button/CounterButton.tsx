@@ -3,16 +3,17 @@ import { COUNTER_BUTTON_TYPES } from "../../constants";
 import { BaseButton } from "./BaseButton";
 import { StyledCounterButtonImg } from "./CounterButton.styled";
 
-interface CounterButtonProps {
+interface CounterButtonProp {
   type: (typeof COUNTER_BUTTON_TYPES)[keyof typeof COUNTER_BUTTON_TYPES];
   onClick?: () => void;
 }
 
-export const CounterButton = ({ type, onClick }: CounterButtonProps) => {
+export const CounterButton = ({ type, onClick }: CounterButtonProp) => {
   const src = type === COUNTER_BUTTON_TYPES.INCREMENT ? PlusIcon : MinusIcon;
+  const ariaLabel = type === COUNTER_BUTTON_TYPES.INCREMENT ? "증가 버튼" : "감소 버튼";
 
   return (
-    <BaseButton onClick={onClick}>
+    <BaseButton onClick={onClick} ariaLabel={ariaLabel}>
       <StyledCounterButtonImg src={src} alt="" />
     </BaseButton>
   );

@@ -5,21 +5,22 @@ import { CartModal } from "../CartModal/CartModal";
 import { BaseButton } from "./BaseButton";
 import { StyledCartButtonImg, StyledCartCount, StyledContainer } from "./CartButton.styled";
 
-interface CartButtonProps {
+interface CartButtonProp {
   onClick?: () => void;
 }
-export const CartButton = ({ onClick = () => {} }: CartButtonProps) => {
+
+export const CartButton = ({ onClick }: CartButtonProp) => {
   const { cartItems, isError, isLoading } = useFetchCartItems();
   const { isOpen, openModal, closeModal } = useModal();
 
   const handleClick = () => {
-    onClick();
+    onClick?.();
     openModal();
   };
 
   return (
     <>
-      <BaseButton onClick={handleClick}>
+      <BaseButton onClick={handleClick} ariaLabel="장바구니 버튼">
         <StyledContainer>
           <StyledCartButtonImg src={ShoppingCartIcon} alt="" />
           {!isError && !isLoading && <StyledCartCount>{cartItems.length}</StyledCartCount>}
