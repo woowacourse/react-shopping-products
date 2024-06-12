@@ -33,7 +33,7 @@ const AddButton = ({ id }: AddButtonProps) => {
         <Spinner />
       ) : (
         <>
-          <S.ButtonImage src={ADD_TO_CART} />
+          <S.ButtonImage src={ADD_TO_CART} alt="담기" />
           <span>담기</span>
         </>
       )}
