@@ -1,10 +1,11 @@
 import { useContext } from 'react';
 import { CartContext } from '../../../CartContext';
+import noImageUrl from '../../../assets/NoProductImage.png';
 import { Product } from '../../../types/fetch';
-import AddCartButton from './AddCartButton/AddCartButton';
-import * as S from './ProductCard.styled';
 import Stepper from '../../common/Stepper/Stepper';
 import useCartStepper from '../../common/Stepper/useCartStepper';
+import AddCartButton from './AddCartButton/AddCartButton';
+import * as S from './ProductCard.styled';
 interface ProductCardProps {
   product: Product;
 }
@@ -15,10 +16,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const cartItem = cartItems?.filter((item) => item.product.id === product.id)[0];
 
   const { handleClickDecrease, handleClickIncrease } = useCartStepper(cartItem);
-
+  ('https://');
+  const imageUrl = product.imageUrl.startsWith('https://') ? product.imageUrl : noImageUrl;
   return (
     <S.ProductCardContainer>
-      <S.ProductImage src={product.imageUrl} />
+      <S.ProductImage src={imageUrl} />
       <S.ContentWrapper>
         <S.InfoWrapper>
           <S.ProductName>{product.name}</S.ProductName>
