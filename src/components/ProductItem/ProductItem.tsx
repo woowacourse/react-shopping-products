@@ -1,4 +1,3 @@
-import { useError } from "../../context";
 import { useAddItem, useFetchCartItems } from "../../hooks";
 import { formatPrice } from "../../utils/format";
 import { AddToCartButton } from "../Button";
@@ -11,18 +10,13 @@ export const ProductItem = ({
   name,
   price,
 }: Pick<ProductProps, "id" | "imageUrl" | "name" | "price">) => {
-  const { setErrorStatus } = useError();
   const { cartItems } = useFetchCartItems();
   const { mutate: addItem } = useAddItem();
 
   const cartItem = cartItems.find((item) => item.product.id === id);
 
   const handleAddToCart = async () => {
-    try {
-      addItem({ productId: id, quantity: 1 });
-    } catch (error: any) {
-      setErrorStatus(error.response?.status);
-    }
+    addItem({ productId: id, quantity: 1 });
   };
 
   return (

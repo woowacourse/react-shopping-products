@@ -3,10 +3,8 @@ import { useState } from "react";
 import { getProducts } from "../api/products";
 import { sortOptionsMap } from "../components/ProductHeader/ProductHeader";
 import { PAGE, QUERY_KEYS } from "../constants";
-import { useError } from "../context/errorContext";
 
 export default function useProducts(): UseProductsResult {
-  const { setErrorStatus } = useError();
   const [sortOption, setSortOption] = useState<SortOrder>("price,asc");
   const [category, setCategory] = useState<string>("전체");
 
