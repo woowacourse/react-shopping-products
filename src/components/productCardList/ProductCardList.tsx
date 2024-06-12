@@ -12,7 +12,7 @@ interface ProductCardListProp {
   isFetching: boolean;
   cartItemList?: CartItemInfo[];
   addCartItemMutation: (productId: number) => void;
-  matchCartItem: (productId: number) => CartItemInfo | undefined;
+  matchCartItem?: (productId: number) => CartItemInfo;
 }
 
 const ProductCardList = ({
