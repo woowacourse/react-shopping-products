@@ -1,5 +1,5 @@
 import CustomError from "@/apis/error";
-import { CUSTOM_ERROR_MESSAGE } from "@/error/errorMessage";
+import { HTTP_STATUS_CODE } from "@/error/errorMessage";
 import { basicToken } from "@/utils/auth";
 
 interface RequestProps {
@@ -31,7 +31,7 @@ const request = async ({ url, method, body, headers = {} }: RequestProps) => {
 const networkRequest = async ({ url, method, body, headers = {} }: RequestProps) => {
   const response = await request({ url, method, body, headers });
   if (!response) {
-    throw new Error(CUSTOM_ERROR_MESSAGE.NETWORK_ERROR?.content);
+    throw new CustomError(HTTP_STATUS_CODE.NETWORK_ERROR);
   }
   return response;
 };

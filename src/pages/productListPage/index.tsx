@@ -1,88 +1,43 @@
-import TextBox from "@/components/_common/TextBox";
-import SelectBox from "@/components/SelectBox";
-import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
-import useSelect from "@/hooks/useSelect";
-import { useEffect, useRef, useState } from "react";
-import useIntersection from "@/hooks/useIntersection";
-import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
-import * as S from "@/pages/productListPage/style";
-import ItemCardList from "@/components/ItemCardList";
-import useFilteredProducts from "@/hooks/server/useFilteredProducts";
-import CartModal from "@/pages/cartModal";
-import { useCartItemsQuery } from "@/hooks/server/useCartItems";
+import ErrorFallback from "@/error/ErrorFallback";
+import ErrorBoundary from "@/error/errorBoundary";
+import Header from "@/components/Header";
+import TopButton from "@/components/_common/TopButton";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
-import EmptyState from "@/components/_common/EmptyState";
-
-export interface GetProductsProps {
-  category: Category;
-  sort: Sort;
-}
+import { useState } from "react";
+import CartBadge from "@/components/CartBadge";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "@/constants/path";
+import ProductList from "@/pages/productListPage/productList";
 
 const ProductListPage = () => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const useCategorySelect = useSelect<Category>("전체");
-  const useSortSelect = useSelect<Sort>("낮은 가격순");
-
-  const { openScroll } = useBodyScrollLock();
-
-  const category = useCategorySelect.selected;
-  const sort = useSortSelect.selected;
-
-  const infiniteScrollConfig = { threshold: 0.25, rootMargin: "50px" };
-  const { isIntersecting } = useIntersection(infiniteScrollConfig, ref);
-
-  const { data: cartItems } = useCartItemsQuery();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { lockScroll, openScroll } = useBodyScrollLock();
+
+  const onOpenModal = () => {
+    setIsModalOpen(true);
+    lockScroll();
+  };
+
+  const navigate = useNavigate();
 
   const onCloseModal = () => {
     setIsModalOpen(false);
     openScroll();
   };
 
-  const {
-    fetchNextPage,
-    data: products,
-    isLoading,
-    hasNextPage,
-    error,
-  } = useFilteredProducts({
-    category,
-    sort,
-  });
-
-  if (error) {
-    throw error;
-  }
-
-  useEffect(() => {
-    if (isIntersecting) {
-      fetchNextPage();
-    }
-  }, [isIntersecting]);
-
   return (
     <>
-      <S.Wrapper>
-        <S.ItemInfoWrapper>
-          <TextBox type="xLarge" text="bpple 상품 목록" />
-          <S.SelectBoxWrapper>
-            <SelectBox useSelector={useCategorySelect} optionsContents={Object.keys(CATEGORY)} />
-            <SelectBox useSelector={useSortSelect} optionsContents={Object.keys(SORT)} />
-          </S.SelectBoxWrapper>
-          {isModalOpen && cartItems && (
-            <CartModal isOpenModal={isModalOpen} onCloseModal={onCloseModal} cartItems={cartItems} />
-          )}
-        </S.ItemInfoWrapper>
-        {isLoading && <ItemCartListSkeleton itemCount={6} />}
-        {!isLoading && !products && <EmptyState type="products" />}
-        {!isLoading && products && <ItemCardList products={products.pages} />}
-        {hasNextPage && (
-          <div ref={ref}>
-            <ItemCartListSkeleton ref={ref} />
-          </div>
-        )}
-      </S.Wrapper>
+      <Header>
+        <Header.Title text="SHOP" />
+        <CartBadge onClick={onOpenModal} />
+        <TopButton />
+      </Header>
+      <ErrorBoundary
+        fallback={<ErrorFallback message="에러가 발생했습니다." resetError={() => navigate(PATH.RELOAD)} />}
+      >
+        <ProductList isModalOpen={isModalOpen} onCloseModal={onCloseModal} />
+      </ErrorBoundary>
     </>
   );
 };

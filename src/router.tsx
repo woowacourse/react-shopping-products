@@ -1,5 +1,5 @@
 import { PATH } from "@/constants/path";
-import ErrorWrapperPage from "@/pages/productListPage/errorWrapper";
+import ProductListPage from "@/pages/productListPage";
 import { createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <ErrorWrapperPage />,
+        element: <ProductListPage />,
       },
     ],
   },

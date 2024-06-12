@@ -36,7 +36,7 @@ class HTTPError extends Error {
         this.name = "NETWORK_ERROR";
         break;
       default:
-        errorInfo = { title: "Unknown Error", content: "An unknown error occurred." };
+        errorInfo = { title: "데이터 가져오기에 실패했습니다.", content: "다시 시도해 주세요." };
         this.name = "UNKNOWN_ERROR";
         break;
     }
