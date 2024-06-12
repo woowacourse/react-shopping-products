@@ -1,13 +1,12 @@
 import { useState } from "react";
 
-import { useProducts, useIntersectionObserver } from "../../hooks";
+import { useProducts, useIntersectionObserver, useErrorToast } from "../../hooks";
 import {
   NavigationBar,
   SelectBox,
   ProductItemContainer,
   ProductPageHeader,
   CartModal,
-  Toast,
 } from "../../components";
 
 import {
@@ -21,6 +20,8 @@ import * as Styled from "./ProductPage.style";
 
 export default function ProductPage() {
   const [isCartModalOpened, setIsCartModalOpened] = useState(false);
+
+  const { renderErrorToast } = useErrorToast();
 
   const {
     products,
@@ -58,7 +59,7 @@ export default function ProductPage() {
         <ProductPageHeader onClickCartButton={handleOpenCartModal} />
       </NavigationBar>
 
-      <Toast />
+      {renderErrorToast()}
 
       <Styled.ShopContent>
         <Styled.ShopTitle>bpple 상품 목록</Styled.ShopTitle>

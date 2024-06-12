@@ -1,32 +1,49 @@
 import { useEffect, useState } from "react";
-import { useErrorContext, useErrorToast } from "../../../hooks";
 
 import * as Styled from "./Toast.style";
 
-export default function Toast() {
-  const [isClose, setIsClose] = useState<boolean>(false);
+interface ToastProps {
+  message: string;
+  duration?: number;
+  style: ToastStyleProps;
+  onClose: () => void;
+}
 
-  const { isToastOpen, error } = useErrorToast();
-  const { setError } = useErrorContext();
+interface ToastStyleProps {
+  textColor: string;
+  bgColor: string;
+}
+
+export default function Toast({ message, duration = 3000, style, onClose }: ToastProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isClosed, setIsClosed] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!isToastOpen) {
-      const removeTimer = setTimeout(() => {
-        setIsClose(true);
-      }, 500);
+    setIsOpen(true);
+    setIsClosed(false);
 
-      return () => {
-        clearTimeout(removeTimer);
-        setIsClose(false);
-      };
-    }
-  }, [isToastOpen, setError]);
+    const timer = setTimeout(() => {
+      setIsOpen(false);
+      setTimeout(() => {
+        setIsClosed(true);
+        onClose();
+      }, 400);
+    }, duration);
 
-  if (!error) return null;
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [duration, onClose]);
+
+  if (isClosed) return null;
 
   return (
-    <Styled.Container $isClose={isClose}>
-      <Styled.ToastMessage>{error?.message}</Styled.ToastMessage>
+    <Styled.Container
+      $isOpen={isOpen}
+      $textColor={style.textColor}
+      $bgColor={style.bgColor}
+    >
+      <Styled.ToastMessage>{message}</Styled.ToastMessage>
     </Styled.Container>
   );
 }
