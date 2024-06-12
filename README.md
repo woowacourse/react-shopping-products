@@ -4,6 +4,7 @@
 
   - [x] hooks에서 query훅 레이어 분리
   - [x] 불필요한 await waitFor 제거
+  - [x] onError에서 view 관련 로직을 컴포넌트단으로 옮기기
 
 - 리팩토링
   - [x] 장바구니 상품의 수량 조절 훅으로 반복 로직 제거

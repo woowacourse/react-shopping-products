@@ -1,11 +1,13 @@
 import { Modal } from '@jaymyong66/simple-modal';
 import { CartItemType } from '@/types';
-import useDeleteCartItem from '@/hooks/useDeleteCartItem';
+import useDeleteCartItem from '@/hooks/queries/useDeleteCartItem';
 import useCartItemQuantity from '@/hooks/useCartItemQuantity';
 import Divider from '../Divider/Divider';
 import Text from '../Text/Text';
 import Stepper from '../Stepper/Stepper';
 import styles from './CartModal.module.css';
+import { useToast } from '@/hooks/useToast';
+import { ERROR } from '@/constant/message';
 
 interface Props {
   cartItems: CartItemType[];
@@ -14,7 +16,12 @@ interface Props {
 }
 
 const CartModal = ({ cartItems, isOpen, handleToggle }: Props) => {
-  const { deleteCartItem } = useDeleteCartItem();
+  const { showToast } = useToast();
+  const { deleteCartItem } = useDeleteCartItem({
+    onError: () => {
+      showToast({ message: ERROR.deleteProduct, duration: 3000 });
+    },
+  });
   const { decreaseCartItemQuantity, increaseCartItemQuantity } = useCartItemQuantity();
 
   const totalAmount = cartItems.reduce((acc, cartItem) => {

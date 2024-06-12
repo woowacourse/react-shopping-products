@@ -6,6 +6,8 @@ import useCartItemQuantity from '@/hooks/useCartItemQuantity';
 import Stepper from '@/components/Stepper/Stepper';
 import ProductSelectButton from './ProductSelectButton';
 import styles from '../ProductListPage.module.css';
+import { useToast } from '@/hooks/useToast';
+import { ERROR } from '@/constant/message';
 
 interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
   product: ProductType;
@@ -13,8 +15,17 @@ interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
 }
 
 const ProductItem = ({ product, cartItem }: Props) => {
-  const { addCartItem } = useAddCartItem();
-  const { deleteCartItem } = useDeleteCartItem();
+  const { showToast } = useToast();
+  const { addCartItem } = useAddCartItem({
+    onError: () => {
+      showToast({ message: ERROR.addProduct, duration: 3000 });
+    },
+  });
+  const { deleteCartItem } = useDeleteCartItem({
+    onError: () => {
+      showToast({ message: ERROR.deleteProduct, duration: 3000 });
+    },
+  });
   const { decreaseCartItemQuantity, increaseCartItemQuantity } = useCartItemQuantity();
 
   const { name, price, imageUrl } = product;
