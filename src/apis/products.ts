@@ -1,5 +1,5 @@
 import { fetchClient } from "../apis";
-import { PRODUCTS_SIZE } from "../constants";
+import { ERROR_MESSAGE, PRODUCTS_SIZE } from "../constants";
 import { Product } from "../types";
 
 interface ProductsPageInfo {
@@ -18,15 +18,19 @@ interface ProductRequestResult {
 }
 
 export async function getProducts(url: string): Promise<ProductRequestResult> {
-  const { content, pageable, first, last }: ProductsResponse = await fetchClient({
-    url,
-    method: "GET",
-  });
+  try {
+    const { content, pageable, first, last }: ProductsResponse = await fetchClient({
+      url,
+      method: "GET",
+    });
 
-  return {
-    content,
-    nextPageNumber: getProductsNextPageNumber({ pageable, first, last }),
-  };
+    return {
+      content,
+      nextPageNumber: getProductsNextPageNumber({ pageable, first, last }),
+    };
+  } catch {
+    throw new Error(ERROR_MESSAGE.PRODUCTS.FETCHING_FAILED);
+  }
 }
 
 function getProductsNextPageNumber({ pageable, first, last }: ProductsPageInfo) {
