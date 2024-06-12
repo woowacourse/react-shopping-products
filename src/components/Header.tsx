@@ -1,5 +1,5 @@
+import { STYLE_THEME } from '@/styles/constants/theme';
 import styled from '@emotion/styled';
-import theme from '@/style/theme.style';
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -18,11 +18,11 @@ const S = {
     align-items: center;
     height: 64px;
     width: 100%;
-    background-color: ${theme.color.black};
+    background-color: ${STYLE_THEME.color.black};
     box-sizing: border-box;
-    color: ${theme.color.white};
-    font-weight: ${theme.fontWeight.extraBold};
-    font-size: ${theme.fontSize.large};
+    color: ${STYLE_THEME.color.white};
+    font-weight: ${STYLE_THEME.fontWeight.extraBold};
+    font-size: ${STYLE_THEME.fontSize.large};
     line-height: 16px;
   `,
 };

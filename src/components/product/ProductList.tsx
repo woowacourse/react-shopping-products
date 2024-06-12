@@ -1,27 +1,28 @@
 import { useEffect, useRef } from 'react';
 
-import { Product } from '@/types/product.type';
-import ProductItem from './ProductItem';
+import useFetchProducts from '@/hooks/queries/product/useFetchProducts';
+import useIntersectionObserver from '@/hooks/_common/useIntersectionObserver';
+
+import ProductItem from '@/components/product/ProductItem';
+import Toast from '@/components/Toast';
+import Loading from '@/components/Loading';
+
+import { ProductFilterOptions } from '@/types/product.type';
 import styled from '@emotion/styled';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
-interface Props {
-  products: Product[];
-  page: number;
-  getNextPage: () => void;
-  hasNextPage: boolean;
-}
-
-const ProductList = ({ products, page, getNextPage, hasNextPage }: Props) => {
+const ProductList = ({ sort, category }: ProductFilterOptions) => {
   const target = useRef<HTMLDivElement | null>(null);
-  const [observe, unobserve] = useIntersectionObserver(getNextPage);
+  const { products, isLoading, error, hasNextPage, fetchNextPage } =
+    useFetchProducts({ sort, category });
+
+  const [observe, unobserve] = useIntersectionObserver(fetchNextPage);
 
   useEffect(() => {
     if (target.current) {
       observe(target.current);
     }
 
-    if (page === 0) {
+    if (products.length === 0) {
       const listContainer = document.getElementById('listContainer');
       if (listContainer) {
         listContainer.scrollTop = 0;
@@ -33,16 +34,21 @@ const ProductList = ({ products, page, getNextPage, hasNextPage }: Props) => {
         unobserve(target.current);
       }
     };
-  }, [observe, unobserve, page]);
+  }, [observe, unobserve, products.length]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <S.ListContainer id="listContainer">
       <S.GridContainer>
         {products.map((product) => (
-          <ProductItem key={product.id} item={product} />
+          <ProductItem key={product.id} productItem={product} />
         ))}
       </S.GridContainer>
       {hasNextPage && <S.ObserverContainer ref={target} />}
+      {error && <Toast message={error.message} />}
     </S.ListContainer>
   );
 };

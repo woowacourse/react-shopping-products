@@ -12,7 +12,8 @@ export default defineConfig({
     }),
     svgr(),
   ],
-  base: '/',
+  base:
+    process.env.NODE_ENV === 'production' ? '/react-shopping-products/' : '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

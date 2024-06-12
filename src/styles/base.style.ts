@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { reset } from '@/style/reset.style';
-import theme from '@/style/theme.style';
+import { reset } from '@/styles/reset.style';
+import { STYLE_THEME } from '@/styles/constants/theme';
 
 const baseStyle = css`
   ${reset};
@@ -15,9 +15,9 @@ const baseStyle = css`
     max-width: 430px;
     height: 100vh;
     margin: auto;
-    font-size: ${theme.fontSize.medium};
-    font-weight: ${theme.fontWeight.medium};
-    box-shadow: 0 0 20px ${theme.color.blackWithOpacity};
+    font-size: ${STYLE_THEME.fontSize.medium};
+    font-weight: ${STYLE_THEME.fontWeight.medium};
+    box-shadow: 0 0 20px ${STYLE_THEME.color.blackWithOpacity};
   }
 
   #root {
