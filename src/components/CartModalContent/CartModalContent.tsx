@@ -1,5 +1,4 @@
-import { useFetchCartItems } from "../../hooks/useFetchCartItems";
-import { useRemoveItem } from "../../hooks/useRemoveItem";
+import { useFetchCartItems, useRemoveItem } from "../../hooks";
 import { formatPrice } from "../../utils/format";
 import CartItem from "../CartItem/CartItem";
 import * as S from "./CartModalContent.styled";

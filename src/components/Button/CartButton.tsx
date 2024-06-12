@@ -1,6 +1,6 @@
 import { useModal } from "choco-modal-component";
 import { ShoppingCartIcon } from "../../assets";
-import { useFetchCartItems } from "../../hooks/useFetchCartItems";
+import { useFetchCartItems } from "../../hooks";
 import { CartModal } from "../CartModal/CartModal";
 import { BaseButton } from "./BaseButton";
 import * as S from "./CartButton.styled";

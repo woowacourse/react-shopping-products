@@ -1,6 +1,5 @@
 import { useError } from "../../context";
-import { useAddItem } from "../../hooks/useAddItem";
-import { useFetchCartItems } from "../../hooks/useFetchCartItems";
+import { useAddItem, useFetchCartItems } from "../../hooks";
 import { formatPrice } from "../../utils/format";
 import { AddToCartButton } from "../Button";
 import { QuantityControls } from "../QuantityControl/QuantityControl";

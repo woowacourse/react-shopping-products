@@ -1,5 +1,5 @@
 import { CART } from "../../constants";
-import { useUpdateItemQuantity } from "../../hooks/useUpdateItemQuantity";
+import { useUpdateItemQuantity } from "../../hooks";
 import { CounterButton } from "../Button";
 import * as S from "./QuantityControl.styled";
 
