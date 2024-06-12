@@ -24,18 +24,15 @@ const CartSummaryModal = ({ closeModal }: Props) => {
   }
 
   return (
-    <Modal
-      onCloseModal={closeModal}
-      $size="43rem"
-      $position="bottom"
-      $height="50%"
-    >
+    <Modal onCloseModal={closeModal} $size="43rem" $position="bottom">
       <Modal.Header title="장바구니" />
       {isLoading ? (
         <Loading />
       ) : (
         <Modal.Content>
-          <CartItemList cartItems={cartItems} />
+          <S.CartItemListContainer>
+            <CartItemList cartItems={cartItems} />
+          </S.CartItemListContainer>
           <S.TotalAmountWrapper>
             <S.Title>총 결제 금액 </S.Title>
             <S.TotalAmount>{totalAmount.toLocaleString()}원</S.TotalAmount>
@@ -60,6 +57,10 @@ const CartSummaryModal = ({ closeModal }: Props) => {
 export default CartSummaryModal;
 
 const S = {
+  CartItemListContainer: styled.div`
+    max-height: 35vh;
+    overflow-y: auto;
+  `,
   TotalAmountWrapper: styled.div`
     display: flex;
     justify-content: space-between;
