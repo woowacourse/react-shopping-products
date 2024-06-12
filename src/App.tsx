@@ -1,14 +1,24 @@
-import GlobalStyle from './styles/reset';
-import ProductPage from './pages/ProductPage';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import './App.css';
+import GlobalStyle from "./styles/reset";
+import { ProductPageProvider } from "./pages";
+
+import "./App.css";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+    },
+  },
+});
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <GlobalStyle />
-      <ProductPage />
-    </>
+      <ProductPageProvider />
+    </QueryClientProvider>
   );
 }
 

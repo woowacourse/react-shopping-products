@@ -5,3 +5,5 @@ export interface Product {
   imageUrl: string;
   category: string;
 }
+
+export type QuantityControlType = "increase" | "decrease";

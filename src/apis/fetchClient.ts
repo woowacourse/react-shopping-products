@@ -57,20 +57,20 @@ function getResponseByContentType(response: Response, contentType: string | null
 
 function getResponseErrorMessage(status: number, defaultErrorMessage?: string): string {
   if (status >= 500) {
-    return ERROR_MESSAGE.SERVER_ERROR;
+    return ERROR_MESSAGE.SERVER.SERVER_ERROR;
   }
   if (status === 401 || status === 403) {
-    return ERROR_MESSAGE.AUTHENTICATION_FAILED;
+    return ERROR_MESSAGE.SERVER.AUTHENTICATION_FAILED;
   }
   if (status >= 400) {
-    return defaultErrorMessage ?? ERROR_MESSAGE.FETCHING_FAILED;
+    return defaultErrorMessage ?? ERROR_MESSAGE.SERVER.FETCHING_FAILED;
   }
-  return ERROR_MESSAGE.UNKNOWN_ERROR;
+  return ERROR_MESSAGE.SERVER.UNKNOWN_ERROR;
 }
 
 function getNetworkErrorMessage(error: unknown): string {
   if (error instanceof TypeError) {
-    return ERROR_MESSAGE.NETWORK_DISCONNECTED;
+    return ERROR_MESSAGE.SERVER.NETWORK_DISCONNECTED;
   }
-  return ERROR_MESSAGE.UNKNOWN_ERROR;
+  return ERROR_MESSAGE.SERVER.UNKNOWN_ERROR;
 }

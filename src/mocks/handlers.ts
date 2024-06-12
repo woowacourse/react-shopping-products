@@ -1,6 +1,6 @@
-import { http, HttpResponse } from 'msw';
-import { ENDPOINT } from '../constants/apis';
-import { initialCartItems, newCartItem } from './cartItems/initialCartItems';
+import { http, HttpResponse } from "msw";
+import { ENDPOINT } from "../constants";
+import { initialCartItems, newCartItem } from "./cartItems/initialCartItems";
 
 import {
   ProductsUnfilteredInitial,
@@ -11,7 +11,7 @@ import {
   ProductsUnfilteredSortedDescLast,
   ProductsFilteredBooksSortedDescInitial,
   ProductsFilteredBooksSortedDescLast,
-} from './products';
+} from "./products";
 
 interface CartItemRequestBody {
   productId: number;
@@ -21,26 +21,26 @@ interface CartItemRequestBody {
 export const handlers = [
   http.get(ENDPOINT.PRODUCT, ({ request }) => {
     const url = new URL(request.url);
-    const page = Number(url.searchParams.get('page') || '0');
-    const category = url.searchParams.get('category');
-    const sort = url.searchParams.get('sort') || 'price,asc';
+    const page = Number(url.searchParams.get("page") || "0");
+    const category = url.searchParams.get("category");
+    const sort = url.searchParams.get("sort") || "price,asc";
 
-    if (!category && sort === 'price,asc') {
+    if (!category && sort === "price,asc") {
       if (page === 0) return HttpResponse.json(ProductsUnfilteredInitial);
       return HttpResponse.json(ProductsUnfilteredLast);
     }
 
-    if (!category && sort === 'price,desc') {
+    if (!category && sort === "price,desc") {
       if (page === 0) return HttpResponse.json(ProductsUnfilteredSortedDescInitial);
       return HttpResponse.json(ProductsUnfilteredSortedDescLast);
     }
 
-    if (category === 'books' && sort === 'price,asc') {
+    if (category === "books" && sort === "price,asc") {
       if (page === 0) return HttpResponse.json(ProductsFilteredBooksInitial);
       return HttpResponse.json(ProductsFilteredBooksLast);
     }
 
-    if (category === 'books' && sort === 'price,desc') {
+    if (category === "books" && sort === "price,desc") {
       if (page === 0) return HttpResponse.json(ProductsFilteredBooksSortedDescInitial);
       return HttpResponse.json(ProductsFilteredBooksSortedDescLast);
     }
@@ -63,7 +63,7 @@ export const handlers = [
   }),
 
   http.delete(`${ENDPOINT.CART_ITEMS}/*`, ({ request }) => {
-    const targetId = request.url.split('/').pop();
+    const targetId = request.url.split("/").pop();
 
     if (targetId) {
       initialCartItems.content = initialCartItems.content.filter(
