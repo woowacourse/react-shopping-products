@@ -1,18 +1,11 @@
 import * as S from './style';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ToastContext } from '../../context/ToastProvider';
 
-import { PropsWithChildren, useContext } from 'react';
+import { PropsWithChildren } from 'react';
 
 const GlobalLayout = ({ children }: PropsWithChildren) => {
-  const { showToast } = useContext(ToastContext);
-
-  const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-      onError: (error) => showToast(error.message),
-    }),
-  });
+  const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
