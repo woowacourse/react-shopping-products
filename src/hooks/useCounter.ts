@@ -3,27 +3,27 @@ import useUpdateItemQuantityQuery from './queries/cartItems/useUpdateItemQuantit
 
 import { CartItemInfo } from '@/types/cartItem';
 
-const useCounter = (item: CartItemInfo) => {
-  const { mutate: updateItemQuantity } = useUpdateItemQuantityQuery();
-  const { mutate: deleteCartItem } = useDeleteCartItemQuery();
+const useCounter = (cartItem: CartItemInfo) => {
+  const { mutate: updateItemQuantity, isPending: isUpdatePending } = useUpdateItemQuantityQuery();
+  const { mutate: deleteCartItem, isPending: isDeletePending } = useDeleteCartItemQuery();
 
   const handleDecrementQuantity = async () => {
-    const newQuantity = item.quantity - 1;
+    const newQuantity = cartItem.quantity - 1;
 
     if (newQuantity <= 0) {
-      deleteCartItem(item.id);
+      deleteCartItem(cartItem.id);
       return;
     }
 
-    updateItemQuantity({ cartId: item.id, quantity: newQuantity });
+    updateItemQuantity({ cartId: cartItem.id, quantity: newQuantity });
   };
 
   const handleIncrementQuantity = async () => {
-    const newQuantity = item.quantity + 1;
-    updateItemQuantity({ cartId: item.id, quantity: newQuantity });
+    const newQuantity = cartItem.quantity + 1;
+    updateItemQuantity({ cartId: cartItem.id, quantity: newQuantity });
   };
 
-  return { handleDecrementQuantity, handleIncrementQuantity };
+  return { handleDecrementQuantity, handleIncrementQuantity, isUpdatePending, isDeletePending };
 };
 
 export default useCounter;

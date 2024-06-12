@@ -1,4 +1,5 @@
 import * as Styled from './CartItem.styled';
+import Spinner from '../common/spinner/Spinner';
 import CountButtonContainer from '../countButtonContainer/CountButtonContainer';
 
 import useDeleteCartItemQuery from '@/hooks/queries/cartItems/useDeleteCartItemQuery';
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const CartItem = ({ cartItem }: Props) => {
-  const { mutate: handleDeleteCartItem } = useDeleteCartItemQuery();
+  const { mutate: handleDeleteCartItem, isPending: isDeletePending } = useDeleteCartItemQuery();
 
   return (
     <Styled.itemWrapper>
@@ -26,7 +27,7 @@ const CartItem = ({ cartItem }: Props) => {
         </Styled.itemContentWrapper>
       </Styled.itemBody>
       <Styled.deleteButton onClick={() => handleDeleteCartItem(cartItem.id)}>
-        삭제
+        {isDeletePending ? <Spinner size={25} /> : '삭제'}
       </Styled.deleteButton>
     </Styled.itemWrapper>
   );

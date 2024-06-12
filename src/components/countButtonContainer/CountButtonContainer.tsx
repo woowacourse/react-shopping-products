@@ -1,4 +1,5 @@
 import * as Styled from './CountButtonContainer.styled';
+import Spinner from '../common/spinner/Spinner';
 
 import { IMAGES } from '@/assets';
 import { CartItemInfo } from '@/types/cartItem';
@@ -6,21 +7,24 @@ import { CartItemInfo } from '@/types/cartItem';
 import useCounter from '@/hooks/useCounter';
 
 interface CountButtonContainerProps {
-  item: CartItemInfo;
+  cartItem: CartItemInfo;
   testId?: string;
 }
 
-const CountButtonContainer = ({ item, testId }: CountButtonContainerProps) => {
-  const { handleDecrementQuantity, handleIncrementQuantity } = useCounter(item);
+const CountButtonContainer = ({ cartItem, testId }: CountButtonContainerProps) => {
+  const { handleDecrementQuantity, handleIncrementQuantity, isUpdatePending, isDeletePending } =
+    useCounter(cartItem);
+
+  const isLoading = isUpdatePending || isDeletePending;
 
   return (
     <Styled.CountWrapper>
       <Styled.CountButton onClick={handleDecrementQuantity} data-testid={`${testId}-minus`}>
-        <img src={IMAGES.MINUS} alt={`${item.product.id}-minus`} />
+        <img src={IMAGES.MINUS} alt={`${cartItem.product.id}-minus`} />
       </Styled.CountButton>
-      <span>{item.quantity}</span>
+      {isLoading ? <Spinner size={25} /> : <span>{cartItem.quantity}</span>}
       <Styled.CountButton onClick={handleIncrementQuantity} data-testid={`${testId}-plus`}>
-        <img src={IMAGES.PLUS} alt={`${item.product.id}-plus`} />
+        <img src={IMAGES.PLUS} alt={`${cartItem.product.id}-plus`} />
       </Styled.CountButton>
     </Styled.CountWrapper>
   );

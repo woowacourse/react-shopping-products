@@ -2,11 +2,7 @@ import { AUTH_HEADER } from './auth';
 import { END_POINT } from './endpoints';
 import fetcher from './fetcher';
 
-import {
-  AddCartItemParameter,
-  CartItemInfo,
-  UpdateCartItemQuantityParameter,
-} from '@/types/cartItem';
+import { CartItemInfo, UpdateCartItemQuantityParameter } from '@/types/cartItem';
 
 type MutationResponse = Record<'status', number>;
 
@@ -21,10 +17,7 @@ export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
   return data.content;
 };
 
-export const addCartItem = async ({
-  productId,
-  quantity = 1,
-}: AddCartItemParameter): Promise<MutationResponse> => {
+export const addCartItem = async (productId: number, quantity = 1): Promise<MutationResponse> => {
   const response = await fetcher.post({
     url: END_POINT.cartItems,
     headers: AUTH_HEADER,
