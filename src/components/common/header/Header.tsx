@@ -16,6 +16,14 @@ const Header = () => {
     scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isOpen]);
+
   return (
     <Styled.Header>
       <Styled.AppTitle onClick={handleClickLogo}>SHOP</Styled.AppTitle>
