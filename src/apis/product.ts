@@ -5,7 +5,7 @@ import { ERROR_MESSAGES } from "@/constants/messages";
 import { SIZE_FIRST_PAGE, SIZE_PER_PAGE } from "@/constants/page";
 import { SORT } from "@/constants/selectOption";
 import { CATEGORY } from "@/constants/selectOption";
-import { GetProductsProps } from "@/pages/productListPage";
+import { GetProductsProps } from "@/pages/productListPage/productList";
 
 export const getProducts = async ({ queryKeys, pageParam }: { queryKeys: GetProductsProps; pageParam: number }) => {
   const { category, sort } = queryKeys;

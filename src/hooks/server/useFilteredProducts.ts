@@ -1,6 +1,6 @@
 import { getProducts } from "@/apis/product";
 import { END_POINT } from "@/config/endPoint";
-import { GetProductsProps } from "@/pages/productListPage";
+import { GetProductsProps } from "@/pages/productListPage/productList";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 const useFilteredProducts = ({ category, sort }: GetProductsProps) => {
