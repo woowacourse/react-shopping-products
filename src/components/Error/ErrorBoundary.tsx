@@ -19,10 +19,6 @@ class ErrorBoundary extends Component<Props, State> {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("ErrorBoundary에서 에러 발생", error, errorInfo);
-  }
-
   handleReset = () => {
     this.setState({ hasError: false });
     this.props.onReset();
