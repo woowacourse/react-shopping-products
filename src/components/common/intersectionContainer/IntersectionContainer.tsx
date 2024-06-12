@@ -18,7 +18,7 @@ const IntersectionContainer = ({ bottomRef, isNextPage }: IntersectionContainerP
         <div ref={bottomRef} style={{ height: 100 }}></div>
       ) : (
         <ScrollUpButton onClick={handleClickScrollTop}>
-          <img src={ARROW_UP} />
+          <img src={ARROW_UP} alt="페이지 최상단으로 이동" />
         </ScrollUpButton>
       )}
     </>

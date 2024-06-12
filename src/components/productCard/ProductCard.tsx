@@ -14,7 +14,7 @@ const ProductCard = ({ imageUrl, name, price, children }: PropsWithChildren<Prod
   return (
     <Styled.ProductCardBox>
       <Styled.ProductCardImgBox>
-        <Styled.ProductCardImg src={imageUrl} />
+        <Styled.ProductCardImg src={imageUrl} alt={name} />
       </Styled.ProductCardImgBox>
       <Styled.ProductCardBody>
         <Styled.ProductInfoBox>
