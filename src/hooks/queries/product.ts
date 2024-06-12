@@ -35,7 +35,10 @@ export const productQueries = {
       },
 
       select: ({ pages, pageParams }) => ({
-        pages: pages.flatMap((page) => page.content),
+        // 서버에 의미 없는 제품 정보가 들어가 있어 filter 후 컴포넌트 생성 (2024.06.09, 렛서)
+        pages: pages
+          .flatMap((page) => page.content)
+          .filter((product) => product.name !== 'string'),
         pageParams: pageParams,
       }),
     });
