@@ -7,7 +7,7 @@ interface CartItemResponse {
 }
 
 export const fetchCartItems = async (): Promise<CartItem[]> => {
-  const data = await FetchWithToken.get<CartItemResponse>(CART_ITEMS_ENDPOINT);
+  const data = await FetchWithToken.get<CartItemResponse>(`${CART_ITEMS_ENDPOINT}?size=1000`);
 
   return data.content;
 };
