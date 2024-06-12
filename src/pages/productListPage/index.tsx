@@ -26,6 +26,10 @@ const ProductListPage = () => {
     openScroll();
   };
 
+  const reloadPage = () => {
+    console.log("errr");
+    navigate(PATH.RELOAD);
+  };
   return (
     <>
       <Header>
@@ -33,9 +37,7 @@ const ProductListPage = () => {
         <CartBadge onClick={onOpenModal} />
         <TopButton />
       </Header>
-      <ErrorBoundary
-        fallback={<ErrorFallback message="에러가 발생했습니다." resetError={() => navigate(PATH.RELOAD)} />}
-      >
+      <ErrorBoundary fallback={<ErrorFallback message="에러가 발생했습니다." resetError={reloadPage} />}>
         <ProductList isModalOpen={isModalOpen} onCloseModal={onCloseModal} />
       </ErrorBoundary>
     </>

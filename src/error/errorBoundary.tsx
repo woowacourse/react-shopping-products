@@ -3,7 +3,6 @@ import React, { ReactNode, ReactElement } from "react";
 interface ErrorBoundaryState {
   hasError: boolean;
   errorMessage?: string;
-  resetError: () => void;
 }
 
 interface ErrorBoundaryProps {
@@ -15,11 +14,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   state: ErrorBoundaryState = {
     hasError: false,
     errorMessage: undefined,
-    resetError: () => {},
   };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, errorMessage: error.message, resetError: () => {} };
+    return { hasError: true, errorMessage: error.message };
   }
 
   componentDidCatch(error: Error) {
@@ -28,10 +26,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
   render() {
     const { fallback } = this.props;
-    const { hasError, errorMessage, resetError } = this.state;
+    const { hasError, errorMessage } = this.state;
 
     if (hasError) {
-      return React.cloneElement(fallback, { message: errorMessage, resetError: resetError });
+      return React.cloneElement(fallback, { message: errorMessage });
     }
 
     return this.props.children;
