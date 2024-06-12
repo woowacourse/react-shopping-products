@@ -1,4 +1,4 @@
-import { StyledOption, StyledSelect } from "./DropDown.styled";
+import * as S from "./DropDown.styled";
 
 interface DropDownProps {
   value: string;
@@ -12,12 +12,12 @@ export const DropDown = ({ value, onChange, options }: DropDownProps) => {
   };
 
   return (
-    <StyledSelect value={value} onChange={handleChange} aria-label="옵션 선택">
+    <S.StyledSelect value={value} onChange={handleChange} aria-label="옵션 선택">
       {options.map((opt) => (
-        <StyledOption key={opt} value={opt}>
+        <S.StyledOption key={opt} value={opt}>
           {opt}
-        </StyledOption>
+        </S.StyledOption>
       ))}
-    </StyledSelect>
+    </S.StyledSelect>
   );
 };

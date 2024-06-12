@@ -11,3 +11,19 @@ interface CartItemProps {
   quantity: number;
   product: ProductProps;
 }
+
+type SortOrder = "price,asc" | "price,desc";
+
+interface UseProductsResult {
+  products: ProductProps[];
+  isLoading: boolean;
+  error: Error | null;
+  fetchNextPage: () => void;
+  isLastPage: boolean;
+  setSortOption: (sortOption: SortOrder) => void;
+  setCategory: (category: string) => void;
+  resetPage: () => void;
+  selectedCategory: string;
+  selectedSort: string;
+  page: number;
+}

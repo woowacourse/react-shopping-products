@@ -1,9 +1,9 @@
-import { StyledSpinner, StyledSpinnerContainer } from "./LoadingSpinner.styled";
+import * as S from "./LoadingSpinner.styled";
 
 export const LoadingSpinner = () => {
   return (
-    <StyledSpinnerContainer>
-      <StyledSpinner />
-    </StyledSpinnerContainer>
+    <S.StyledSpinnerContainer>
+      <S.StyledSpinner />
+    </S.StyledSpinnerContainer>
   );
 };

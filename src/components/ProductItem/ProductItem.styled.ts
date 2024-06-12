@@ -11,7 +11,7 @@ export const StyledProductItem = styled.div`
 
 export const StyledProductImg = styled.img`
   width: 100%;
-  height: 50%;
+  height: 112px;
   object-fit: cover;
   border-radius: 8px 8px 0px 0px;
 `;
@@ -42,4 +42,10 @@ export const StyledProductPrice = styled.span`
   font-size: 12px;
   font-weight: 500;
   color: rgba(10, 13, 19, 1);
+`;
+
+export const StyledQuantityControls = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 `;

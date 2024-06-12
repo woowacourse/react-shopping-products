@@ -1,8 +1,13 @@
 interface BaseButtonProps {
   onClick?: () => void;
   children: React.ReactNode;
+  ariaLabel?: string;
 }
 
-export const BaseButton: React.FC<BaseButtonProps> = ({ onClick, children }) => {
-  return <button onClick={onClick}>{children}</button>;
+export const BaseButton = ({ onClick, children, ariaLabel }: BaseButtonProps) => {
+  return (
+    <button onClick={onClick} aria-label={ariaLabel}>
+      {children}
+    </button>
+  );
 };

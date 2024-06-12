@@ -1,10 +1,14 @@
 import { BaseButton } from "./BaseButton";
-import { StyledShopButton } from "./ShopButton.styled";
+import * as S from "./ShopButton.styled";
 
-export const ShopButton = ({ onClick }: { onClick: () => void }) => {
+export type ShopButtonProp = {
+  onClick?: () => void;
+};
+
+export const ShopButton = ({ onClick }: ShopButtonProp) => {
   return (
-    <BaseButton onClick={onClick}>
-      <StyledShopButton>SHOP</StyledShopButton>
+    <BaseButton onClick={onClick} ariaLabel="홈 버튼">
+      <S.StyledShopButton>SHOP</S.StyledShopButton>
     </BaseButton>
   );
 };

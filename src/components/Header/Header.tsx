@@ -1,11 +1,11 @@
 import { CartButton, ShopButton } from "../Button";
-import { StyledHeader } from "./Header.styled";
+import * as S from "./Header.styled";
 
 export const Header = () => {
   return (
-    <StyledHeader>
+    <S.StyledHeader>
       <ShopButton onClick={() => {}} />
       <CartButton onClick={() => {}} />
-    </StyledHeader>
+    </S.StyledHeader>
   );
 };

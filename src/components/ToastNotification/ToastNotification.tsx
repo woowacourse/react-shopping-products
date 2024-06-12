@@ -1,9 +1,11 @@
-import { ERROR_MESSAGE } from "../../constants";
-import { useError } from "../../context/errorContext";
-import { StyledToast } from "./ToastNotification.styled";
+import * as S from "./ToastNotification.styled";
 
-export const ToastNotification = () => {
-  const { errorStatus } = useError();
+interface ToastProp {
+  message: string;
+}
 
-  return errorStatus ? <StyledToast>{ERROR_MESSAGE[errorStatus.toString()]}</StyledToast> : null;
+const ToastNotification: React.FC<ToastProp> = ({ message }) => {
+  return <S.StyledToast>{message}</S.StyledToast>;
 };
+
+export default ToastNotification;
