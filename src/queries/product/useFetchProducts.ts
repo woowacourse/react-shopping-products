@@ -1,13 +1,13 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getProductList } from '@/api/product';
-import { FETCH_SIZE } from '@/constants/productList';
 
+import { FETCH_SIZE } from '@/constants/productList';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { ProductFilterOptions } from '@/types/product.type';
 
 const useFetchProducts = ({ sort, category }: ProductFilterOptions) => {
-  const loadNextPage = (isFirstPage: boolean, page: number) => {
+  const calculateNextPage = (isFirstPage: boolean, page: number) => {
     if (isFirstPage) {
       return FETCH_SIZE.firstPageItemCount / FETCH_SIZE.moreLoadItemCount + 1;
     } else {
@@ -29,9 +29,9 @@ const useFetchProducts = ({ sort, category }: ProductFilterOptions) => {
           sort,
         }),
       initialPageParam: 0,
-      getNextPageParam: (lastPage, allPage) => {
+      getNextPageParam: (lastPage, allPages) => {
         if (!lastPage.last) {
-          return loadNextPage(lastPage.first, allPage.length);
+          return calculateNextPage(lastPage.first, allPages.length);
         }
         return undefined;
       },
