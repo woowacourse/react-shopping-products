@@ -38,7 +38,7 @@ function CartItem({ cartItemInfo }: CartItemProps) {
     <S.Wrapper>
       <Divider />
       <S.Container>
-        <S.Image src={cartItemInfo.product.imageUrl} />
+        <S.Image src={cartItemInfo.product.imageUrl} alt={cartItemInfo.product.name} />
         <S.Information>
           <S.NameAndPrice>
             <S.Name>{cartItemInfo.product.name}</S.Name>
