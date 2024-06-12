@@ -17,7 +17,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 describe('useFetchProductQuantity', () => {
   const PRODUCT_ID = 3;
 
-  it('장바구니에서 찾고자 하는 상품을 반환한다.', async () => {
+  it(`장바구니에 id가 ${PRODUCT_ID}인 상품이 1개 담겨있을 때, 상품의 수량 정보를 얻을 수 있다.`, async () => {
     const { result } = renderHook(
       () => {
         const fetchCartItems = useFetchCartItems();
