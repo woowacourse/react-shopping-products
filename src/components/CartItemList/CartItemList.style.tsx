@@ -12,6 +12,8 @@ export const SelectAllButtonContainer = styled.div`
   flex-direction: row;
   column-gap: 8px;
   align-items: center;
+  overflow-y: auto;
+  margin-bottom: 70px;
 
   p {
     font-size: 12px;

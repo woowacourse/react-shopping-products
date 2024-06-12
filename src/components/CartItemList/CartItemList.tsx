@@ -17,7 +17,7 @@ function CartItemList() {
 
   if (!cartItemList || cartItemList.length === 0) {
     return (
-      <S.EmptyCartContainer style={{ overflowY: "auto", marginBottom: "70px" }}>
+      <S.EmptyCartContainer>
         <S.EmptyCartImage src={EmptyCart} alt="Empty Cart" />
         <S.EmptyCartMessage>장바구니가 비어 있습니다.</S.EmptyCartMessage>
       </S.EmptyCartContainer>
@@ -25,7 +25,7 @@ function CartItemList() {
   }
 
   return (
-    <S.Layout style={style}>
+    <S.Layout>
       {cartItemList.map((el: CartItem) => (
         <CartItemContainer
           key={el.id}
