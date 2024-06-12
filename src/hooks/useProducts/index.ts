@@ -8,7 +8,7 @@ const useFetchProducts = () => {
   const [category, setCategory] = useState<Category>('all');
   const [sort, setSort] = useState<Sort>({
     price: 'asc',
-    name: 'asc',
+    id: 'asc',
   });
 
   const { data, error, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
