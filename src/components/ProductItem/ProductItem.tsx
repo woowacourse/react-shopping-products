@@ -19,7 +19,7 @@ const ProductItem = ({ product, quantity }: ProductItemProps) => {
 
   return (
     <S.Layout>
-      <S.ImageWrapper src={imageUrl} alt={name} />
+      <S.ImageWrapper src={imageUrl} alt="" />
       <S.Container>
         <S.TextContainer>
           <h2>{name}</h2>

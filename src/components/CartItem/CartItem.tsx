@@ -17,7 +17,7 @@ function CartItem({ cartItem }: CartItemProps) {
   return (
     <S.Layout>
       <S.Body>
-        <S.ItemImage src={product.imageUrl} />
+        <S.ItemImage src={product.imageUrl} alt="" />
         <S.ItemContainer>
           <S.ItemInfoContainer>
             <S.ItemText>{product.name}</S.ItemText>
