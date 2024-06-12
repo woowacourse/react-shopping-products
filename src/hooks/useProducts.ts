@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getProducts } from "../api/products";
 import { sortOptionsMap } from "../components/ProductHeader/ProductHeader";
-import { PAGE, PRODUCT_KEYS } from "../constants";
+import { PAGE, QUERY_KEYS } from "../constants";
 import { useError } from "../context/errorContext";
 
 export default function useProducts(): UseProductsResult {
@@ -22,7 +22,7 @@ export default function useProducts(): UseProductsResult {
   };
 
   const { data, error, fetchNextPage, hasNextPage, isFetching, refetch } = useInfiniteQuery({
-    queryKey: [PRODUCT_KEYS.PRODUCT, sortOption, category],
+    queryKey: [QUERY_KEYS.PRODUCTS, sortOption, category],
     queryFn: fetchProducts,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length < PAGE.OTHER_PAGE_LIMIT ? null : allPages.length,

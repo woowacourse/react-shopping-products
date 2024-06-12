@@ -39,10 +39,7 @@ export const CART = {
   QUANTITY_CHANGE_STEP: 1,
 };
 
-export const CART_KEYS = {
+export const QUERY_KEYS = {
   CART: "cart",
-};
-
-export const PRODUCT_KEYS = {
-  PRODUCT: "product",
+  PRODUCTS: "products",
 };

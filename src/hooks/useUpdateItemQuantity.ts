@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { patchCartItemQuantityChange } from "../api/cart";
-import { CART_KEYS } from "../constants";
+import { QUERY_KEYS } from "../constants";
 
 export const useUpdateItemQuantity = () => {
   const queryClient = useQueryClient();
@@ -8,7 +8,7 @@ export const useUpdateItemQuantity = () => {
   return useMutation({
     mutationFn: patchCartItemQuantityChange,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [CART_KEYS.CART] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
     },
   });
 };
