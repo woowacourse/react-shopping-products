@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import { CartItemIcon } from "../../../assets";
-
 export const Header = styled.div`
   width: 100%;
   display: flex;
@@ -11,17 +9,24 @@ export const Header = styled.div`
 `;
 
 export const CartButton = styled.button`
+  position: relative;
   width: 32px;
   height: 32px;
-  background: url("${CartItemIcon}") no-repeat center 2px;
-  background-size: auto;
   cursor: pointer;
+`;
+
+export const CartIcon = styled.img`
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 export const CartItemsNumber = styled.div`
   position: absolute;
-  top: 27px;
-  right: 25px;
+  inset: 16px 0 0 12px;
   width: 19px;
   height: 19px;
   background: #ffffff;

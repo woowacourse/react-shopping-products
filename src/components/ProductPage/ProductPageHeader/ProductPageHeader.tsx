@@ -1,4 +1,5 @@
 import { useCartItems } from "../../../hooks";
+import { CartItemIcon } from "../../../assets";
 
 import * as Styled from "./ProductPageHeader.style";
 
@@ -21,6 +22,10 @@ export default function ProductPageHeader({ onClickCartButton }: ProductPageHead
       <Styled.Header>
         SHOP
         <Styled.CartButton onClick={handleClickCartButton}>
+          <Styled.CartIcon
+            src={CartItemIcon}
+            alt="장바구니 아이콘"
+          />
           {cartItemsLength > 0 && (
             <Styled.CartItemsNumber>{cartItemsLength}</Styled.CartItemsNumber>
           )}
