@@ -13,7 +13,7 @@ interface ProductCardProps {
 const ProductCard = ({ product }: ProductCardProps) => {
   const { addProductToCart, cartItems } = useContext(CartContext);
 
-  const cartItem = cartItems?.filter((item) => item.product.id === product.id)[0];
+  const cartItem = cartItems?.find((item) => item.product.id === product.id);
 
   const { handleClickDecrease, handleClickIncrease } = useCartStepper(cartItem);
   ('https://');
@@ -35,11 +35,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               <Stepper.PlusButton onClick={handleClickIncrease} />
             </Stepper.Horizontal>
           ) : (
-            <AddCartButton
-              onClick={() => {
-                addProductToCart(product.id);
-              }}
-            />
+            <AddCartButton onClick={() => addProductToCart(product.id)} />
           )}
         </S.ButtonContainer>
       </S.ContentWrapper>

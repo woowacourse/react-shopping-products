@@ -13,14 +13,7 @@ interface ProductListProps {
   fetchNextPage: () => void;
 }
 
-const ProductList = ({
-  products,
-  page,
-  isPending,
-  isLast,
-  isError,
-  fetchNextPage,
-}: ProductListProps) => {
+const ProductList = ({ products, page, isPending, isLast, isError, fetchNextPage }: ProductListProps) => {
   const target = useRef(null);
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
