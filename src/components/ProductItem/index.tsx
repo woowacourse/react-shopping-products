@@ -31,8 +31,7 @@ const ProductItem = ({ id, imageUrl, name, price }: ProductItemProps) => {
           <S.Price>{price.toLocaleString('ko-KR')}원</S.Price>
         </S.Information>
         <S.ButtonContainer>
-          {!isInCart && <AddButton id={id} />}
-          {isInCart && <AdjustButtonContainer cartItem={cartItem} />}
+          {isInCart ? <AdjustButtonContainer cartItem={cartItem} /> : <AddButton id={id} />}
         </S.ButtonContainer>
       </S.InformationContainer>
     </S.ProductItem>

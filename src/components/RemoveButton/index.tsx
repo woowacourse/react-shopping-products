@@ -28,11 +28,12 @@ const RemoveButton = ({ cartItem }: RemoveButtonProps) => {
 
   return (
     <>
-      {!isLoading && <S.RemoveButton onClick={handleDeleteFromCart}>삭제</S.RemoveButton>}
-      {isLoading && (
+      {isLoading ? (
         <S.RemoveButton>
           <Spinner />
         </S.RemoveButton>
+      ) : (
+        <S.RemoveButton onClick={handleDeleteFromCart}>삭제</S.RemoveButton>
       )}
     </>
   );

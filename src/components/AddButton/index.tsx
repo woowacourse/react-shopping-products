@@ -29,13 +29,14 @@ const AddButton = ({ id }: AddButtonProps) => {
 
   return (
     <S.AddButton onClick={handleAddToCart}>
-      {!isLoading && (
+      {isLoading ? (
+        <Spinner />
+      ) : (
         <>
           <S.ButtonImage src={ADD_TO_CART} />
           <span>담기</span>
         </>
       )}
-      {isLoading && <Spinner />}
     </S.AddButton>
   );
 };

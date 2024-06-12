@@ -60,12 +60,7 @@ const AdjustButtonContainer = ({ cartItem }: AdjustButtonContainerProps) => {
           alt={cartItem.quantity === 1 ? '삭제' : '빼기'}
         />
       </AdjustButton>
-      {!isLoading && <QuantityText>{cartItem.quantity}</QuantityText>}
-      {isLoading && (
-        <QuantityText>
-          <Spinner />
-        </QuantityText>
-      )}
+      <QuantityText>{isLoading ? <Spinner /> : cartItem.quantity}</QuantityText>
       <AdjustButton onClick={handleIncreaseCartItemQuantity}>
         <img src={PLUS_BUTTON} alt={'더하기'} />
       </AdjustButton>
