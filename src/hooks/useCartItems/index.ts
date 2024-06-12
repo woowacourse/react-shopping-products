@@ -9,13 +9,14 @@ import {
 
 import { MAX_CART_ITEMS_SIZE } from '../../constants/pagination';
 import { FetchAdjustCartItemQuantityProps } from '../../types/cart';
+import QUERY_KEY from '../../types/queryKey';
 
 const useCartItems = () => {
   const queryClient = useQueryClient();
 
   const getCartItems = useQuery({
     networkMode: 'always',
-    queryKey: ['cartItems'],
+    queryKey: [QUERY_KEY.cartItems],
     queryFn: fetchCartItems,
   });
 
@@ -27,7 +28,7 @@ const useCartItems = () => {
         throw new Error('Cart items cannot exceed 99');
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cartItems'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
     onError: () => {
       setTimeout(() => {
@@ -40,7 +41,7 @@ const useCartItems = () => {
     mutationFn: (cartItemId: number) => fetchDeleteCartItem(cartItemId),
     networkMode: 'always',
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cartItems'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
     onError: () => {
       setTimeout(() => {
@@ -54,7 +55,7 @@ const useCartItems = () => {
       fetchAdjustCartItemQuantity({ cartItemId, quantity }),
     networkMode: 'always',
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cartItems'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
     onError: () => {
       setTimeout(() => {

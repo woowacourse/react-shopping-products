@@ -5,6 +5,7 @@ import { fetchProducts } from '../../api/products';
 
 import { Category, Order } from '../../types/product';
 import { FIRST_PAGE, GAP_WITH_FIRST_PAGE } from '../../constants/pagination';
+import QUERY_KEY from '../../types/queryKey';
 
 const useProducts = () => {
   const queryClient = useQueryClient();
@@ -13,7 +14,7 @@ const useProducts = () => {
   const [priceOrder, setPriceOrder] = useState<Order>('asc');
 
   const getProducts = useInfiniteQuery({
-    queryKey: ['products', category, priceOrder],
+    queryKey: [QUERY_KEY.products, category, priceOrder],
     queryFn: ({ pageParam }) => fetchProducts(pageParam),
     networkMode: 'always',
     initialPageParam: {
@@ -41,14 +42,18 @@ const useProducts = () => {
   const handleCategoryChange = (selectedCategory: Category) => {
     if (selectedCategory !== category) {
       setCategory(selectedCategory);
-      queryClient.invalidateQueries({ queryKey: ['products', selectedCategory, priceOrder] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.products, selectedCategory, priceOrder],
+      });
     }
   };
 
   const handlePriceOrderChange = (selectedPriceOrder: Order) => {
     if (selectedPriceOrder !== priceOrder) {
       setPriceOrder(selectedPriceOrder);
-      queryClient.invalidateQueries({ queryKey: ['products', category, selectedPriceOrder] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.products, category, selectedPriceOrder],
+      });
     }
   };
 
