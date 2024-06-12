@@ -38,8 +38,6 @@ export const productQueries = {
         pages: pages.flatMap((page) => page.content),
         pageParams: pageParams,
       }),
-
-      throwOnError: true,
     });
   },
 };
