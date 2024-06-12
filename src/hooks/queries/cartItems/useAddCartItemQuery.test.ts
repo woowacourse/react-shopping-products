@@ -17,9 +17,9 @@ describe('useAddCartItemQuery', () => {
     };
 
     act(() => {
-      result.current.mutate(product);
+      result.current.mutate(product.id);
     });
 
-    await waitFor(() => expect(result.current.variables).toEqual(product));
+    await waitFor(() => expect(result.current.data?.status).toBe(200));
   });
 });

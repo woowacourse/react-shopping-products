@@ -3,8 +3,8 @@ import { http, HttpResponse } from 'msw';
 import cartItems from './cartItems.json';
 import productList from './products.json';
 
-import { AddCartItemProp } from '@/api/cart';
 import { END_POINT } from '@/api/endpoints';
+import { AddCartItemParameter } from '@/types/cartItem';
 
 export const handlers = [
   http.get(END_POINT.products, ({ request }) => {
@@ -34,7 +34,7 @@ export const handlers = [
 
   http.post(
     END_POINT.cartItems,
-    async ({ request }: { request: { json: () => Promise<AddCartItemProp> } }) => {
+    async ({ request }: { request: { json: () => Promise<AddCartItemParameter> } }) => {
       const { productId } = await request.json();
 
       const mockCartItem = {
