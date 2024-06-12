@@ -1,5 +1,5 @@
-import useFetchCartItems from '@/queries/cartItem/useFetchCartItems';
-import useAddCartItem from '@/queries/cartItem/useAddCartItem';
+import useFetchCartItems from '@/hooks/queries/cartItem/useFetchCartItems';
+import useAddCartItem from '@/hooks/queries/cartItem/useAddCartItem';
 
 import CartItemQuantityContainer from '@/components/cartItem/CartItemQuantityContainer';
 import CartControlButton from '@/components/button/CartControlButton';

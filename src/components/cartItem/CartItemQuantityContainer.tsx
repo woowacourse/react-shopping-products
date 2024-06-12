@@ -1,4 +1,4 @@
-import useUpdateCartItemQuantity from '@/queries/cartItem/useUpdateCartItemQuantity';
+import useUpdateCartItemQuantity from '@/hooks/queries/cartItem/useUpdateCartItemQuantity';
 
 import { MinusButton, PlusButton } from '@/components/button/QuantityButton';
 import Toast from '@/components/Toast';

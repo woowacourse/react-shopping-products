@@ -1,6 +1,6 @@
 import { Modal } from 'woowacourse-6th-react-modal-component';
 
-import useFetchCartItems from '@/queries/cartItem/useFetchCartItems';
+import useFetchCartItems from '@/hooks/queries/cartItem/useFetchCartItems';
 
 import BaseButton from '@/components/button/BaseButton';
 import CartItemList from '@/components/cartItem/CartItemList';

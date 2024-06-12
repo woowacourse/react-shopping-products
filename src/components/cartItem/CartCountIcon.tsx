@@ -1,4 +1,4 @@
-import useFetchCartItems from '@/queries/cartItem/useFetchCartItems';
+import useFetchCartItems from '@/hooks/queries/cartItem/useFetchCartItems';
 import useModal from '@/hooks/_common/useModal';
 
 import CartSummaryModal from '@/components/cartItem/CartSummaryModal';

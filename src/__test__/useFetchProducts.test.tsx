@@ -2,7 +2,7 @@ import React, { act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import useFetchProducts from '@/queries/product/useFetchProducts';
+import useFetchProducts from '@/hooks/queries/product/useFetchProducts';
 
 import { FETCH_SIZE } from '@/constants/productList';
 

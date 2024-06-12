@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import useFetchProducts from '@/queries/product/useFetchProducts';
+import useFetchProducts from '@/hooks/queries/product/useFetchProducts';
 import useIntersectionObserver from '@/hooks/_common/useIntersectionObserver';
 
 import ProductItem from '@/components/product/ProductItem';

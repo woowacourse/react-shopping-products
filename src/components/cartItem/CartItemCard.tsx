@@ -1,4 +1,4 @@
-import useDeleteCartItem from '@/queries/cartItem/useDeleteCartItem';
+import useDeleteCartItem from '@/hooks/queries/cartItem/useDeleteCartItem';
 
 import BaseButton from '@/components/button/BaseButton';
 import CartControlButton from '@/components/button/CartControlButton';

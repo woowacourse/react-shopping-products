@@ -2,9 +2,9 @@ import { act } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import useFetchCartItems from '@/queries/cartItem/useFetchCartItems';
-import useAddCartItem from '@/queries/cartItem/useAddCartItem';
-import useDeleteCartItem from '@/queries/cartItem/useDeleteCartItem';
+import useFetchCartItems from '@/hooks/queries/cartItem/useFetchCartItems';
+import useAddCartItem from '@/hooks/queries/cartItem/useAddCartItem';
+import useDeleteCartItem from '@/hooks/queries/cartItem/useDeleteCartItem';
 
 const queryClient = new QueryClient();
 
@@ -14,7 +14,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe('useAddCartItem 테스트', () => {
   it(`장바구니에 아이템을 담을 수 있다.`, async () => {
-    const PRODUCT_ID = 16755;
+    const PRODUCT_ID = 16756;
 
     const { result: addCartItemResult } = renderHook(() => useAddCartItem(), {
       wrapper,
