@@ -1,21 +1,21 @@
 import React from 'react';
-import * as S from './CartItemCard.styled';
-import * as S2 from '../common/Stepper/RoundButton.styled';
-import { CartItem } from '../../types/fetch';
-import useCartStepper from '../common/Stepper/useCartStepper';
-import Stepper from '../common/Stepper/Stepper';
 import useFetchCart from '../../hooks/useFetchCart';
+import { CartItem } from '../../types/fetch';
+import * as S2 from '../common/Stepper/RoundButton.styled';
+import Stepper from '../common/Stepper/Stepper';
+import useCartStepper from '../common/Stepper/useCartStepper';
+import * as S from './CartItemCard.styled';
 
 interface CartItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   cartItem: CartItem;
 }
 
-const CartItemCard = ({ cartItem, style }: CartItemProps) => {
+const CartItemCard = ({ cartItem, style, ...props }: CartItemProps) => {
   const { handleClickDecrease, handleClickIncrease, isMinusButtonActive } = useCartStepper(cartItem, 1, false);
   const { deleteToRemoveCart } = useFetchCart();
 
   return (
-    <div style={style}>
+    <div style={style} {...props}>
       <S.ItemWrapper>
         <S.ItemImage src={cartItem.product.imageUrl} />
         <S.DetailWrapper>
