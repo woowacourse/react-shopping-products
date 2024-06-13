@@ -4,15 +4,10 @@ import * as S from './CartItemCard.style';
 import { CartItemCardProps } from './CartItemCard.type';
 
 function CartItemCard({ item }: CartItemCardProps) {
-  const {
-    itemQuantity,
-    handleAddCartItemQuantity,
-    handleMinusCartItemQuantity,
-    handleDeleteCartItem,
-  } = useCartItemHandler({
+  const itemQuantity = item.quantity;
+  const { handleCartItemQuantity, handleDeleteCartItem } = useCartItemHandler({
     productId: item.product.id,
   });
-
   return (
     <S.CardContainer>
       <S.CardContent>
@@ -24,7 +19,7 @@ function CartItemCard({ item }: CartItemCardProps) {
           <S.CardInfo>
             <S.CardHeader>
               <S.ProductName>{item.product.name}</S.ProductName>
-              <S.DeleteButton onClick={handleDeleteCartItem}>
+              <S.DeleteButton onClick={() => handleDeleteCartItem(item.id)}>
                 {BUTTON_MESSAGE.DELETE}
               </S.DeleteButton>
             </S.CardHeader>
@@ -33,11 +28,15 @@ function CartItemCard({ item }: CartItemCardProps) {
             </S.ProductPrice>
           </S.CardInfo>
           <S.CardQuantityButtonContainer>
-            <S.CountButton onClick={handleMinusCartItemQuantity}>
+            <S.CountButton
+              onClick={() => handleCartItemQuantity(item.id, item.quantity - 1)}
+            >
               {BUTTON_MESSAGE.MINUS}
             </S.CountButton>
             <S.QuantityCount>{itemQuantity}</S.QuantityCount>
-            <S.CountButton onClick={handleAddCartItemQuantity}>
+            <S.CountButton
+              onClick={() => handleCartItemQuantity(item.id, item.quantity + 1)}
+            >
               {BUTTON_MESSAGE.PLUS}
             </S.CountButton>
           </S.CardQuantityButtonContainer>

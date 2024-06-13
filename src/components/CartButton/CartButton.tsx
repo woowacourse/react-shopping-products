@@ -4,15 +4,15 @@ import * as S from './CartButton.style';
 import useCartItemHandler from '../../hooks/useCartItemHandler';
 import { CartButtonProps } from './\bCardButton.type';
 import { BUTTON_MESSAGE } from '../../constants/button';
+import { useCartItem } from '../../hooks/useCartItem';
 
 const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
-  const {
-    isInCart,
-    itemQuantity,
-    handleAddCartItemQuantity,
-    handleMinusCartItemQuantity,
-    showCountButton,
-  } = useCartItemHandler({
+  const { cartItems } = useCartItem(false);
+
+  const cartItem = cartItems.find((item) => item.product.id === productId);
+  const isInCart = !!cartItem;
+  const itemQuantity = cartItem ? cartItem.quantity : 0;
+  const { handleCartItemQuantity, showCountButton } = useCartItemHandler({
     productId,
   });
   return (
@@ -21,7 +21,7 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
         <S.CardQuantityButtonContainer>
           <S.CountButton
             onClick={() => {
-              handleMinusCartItemQuantity();
+              handleCartItemQuantity(cartItem.id, cartItem.quantity - 1);
             }}
           >
             {BUTTON_MESSAGE.MINUS}
@@ -30,7 +30,7 @@ const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
           <S.QuantityCount>{itemQuantity}</S.QuantityCount>
           <S.CountButton
             onClick={() => {
-              handleAddCartItemQuantity();
+              handleCartItemQuantity(cartItem.id, cartItem.quantity + 1);
             }}
           >
             {BUTTON_MESSAGE.PLUS}

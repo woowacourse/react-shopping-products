@@ -1,6 +1,5 @@
 import { addCartItem, deleteCartItem, fetchCartItemQuantity } from '../api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useCartItem } from './useCartItem';
 import { QUERY_KEYS } from '../constants/queryKeys';
 import { CartItem } from '../type/CartItem';
 
@@ -10,11 +9,6 @@ interface CartButtonProps {
 
 const useCartItemHandler = ({ productId }: CartButtonProps) => {
   const queryClient = useQueryClient();
-  const { cartItems, refetch } = useCartItem(false);
-
-  const cartItem = cartItems.find((item) => item.product.id === productId);
-  const isInCart = !!cartItem;
-  const itemQuantity = cartItem ? cartItem.quantity : 0;
 
   const addCartItemMutation = useMutation({
     mutationFn: async (itemQuantity: number) => {
@@ -40,13 +34,13 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
       }
     },
     onSuccess: () => {
-      refetch();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
     },
   });
 
   const deleteCartItemMutation = useMutation({
-    mutationFn: async () => {
-      if (cartItem) await deleteCartItem(cartItem.id);
+    mutationFn: async (cartItemId: number) => {
+      await deleteCartItem(cartItemId);
     },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
@@ -67,72 +61,57 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
       }
     },
     onSuccess: () => {
-      refetch();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
     },
   });
 
-  const addCartItemQuantityMutation = useMutation({
-    mutationFn: async (newQuantity: number) => {
-      if (cartItem) await fetchCartItemQuantity(cartItem.id, newQuantity);
+  const changeCartItemQuantityMutation = useMutation({
+    mutationFn: async ({
+      cartItemId,
+      newQuantity,
+    }: {
+      cartItemId: number;
+      newQuantity: number;
+    }) => {
+      await fetchCartItemQuantity(cartItemId, newQuantity);
     },
-    onMutate: async (newQuantity: number) => {
+
+    onMutate: async ({ newQuantity }) => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
       const previousCartItems = queryClient.getQueryData([
         QUERY_KEYS.CART_ITEM,
       ]);
-      queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
-        old.map((item: CartItem) =>
-          item.product.id === productId
-            ? { ...item, quantity: newQuantity }
-            : item,
-        ),
-      );
-      return { previousCartItems };
-    },
-    onError: (_err, _variables, context) => {
-      if (context?.previousCartItems) {
-        queryClient.setQueryData(
-          [QUERY_KEYS.CART_ITEM],
-          context.previousCartItems,
-        );
-      }
-    },
-    onSuccess: () => {
-      refetch();
-    },
-  });
 
-  const minusCartItemQuantityMutation = useMutation({
-    mutationFn: async (newQuantity: number) => {
-      if (cartItem) await fetchCartItemQuantity(cartItem.id, newQuantity);
-    },
-    onMutate: async (newQuantity: number) => {
-      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
-      const previousCartItems = queryClient.getQueryData([
-        QUERY_KEYS.CART_ITEM,
-      ]);
-      queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
-        old.map((item: CartItem) =>
-          item.product.id === productId
-            ? { ...item, quantity: newQuantity }
-            : item,
-        ),
-      );
-      return { previousCartItems };
-    },
-    onError: (_err, _variables, context) => {
-      if (context?.previousCartItems) {
-        queryClient.setQueryData(
-          [QUERY_KEYS.CART_ITEM],
-          context.previousCartItems,
+      if (newQuantity === 0) {
+        queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
+          old.filter((item: CartItem) => item.product.id !== productId),
         );
-      }
-    },
-    onSuccess: () => {
-      if (itemQuantity === 1) {
-        deleteCartItemMutation.mutate();
       } else {
-        refetch();
+        queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
+          old.map((item: CartItem) =>
+            item.product.id === productId
+              ? { ...item, quantity: newQuantity }
+              : item,
+          ),
+        );
+      }
+
+      return { previousCartItems };
+    },
+
+    onError: (_err, _variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(
+          [QUERY_KEYS.CART_ITEM],
+          context.previousCartItems,
+        );
+      }
+    },
+    onSuccess: (_data, { cartItemId, newQuantity }) => {
+      if (newQuantity === 0) {
+        deleteCartItemMutation.mutate(cartItemId);
+      } else {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
       }
     },
   });
@@ -142,14 +121,11 @@ const useCartItemHandler = ({ productId }: CartButtonProps) => {
   };
 
   return {
-    isInCart,
-    itemQuantity,
-    handleAddCartItemQuantity: () =>
-      addCartItemQuantityMutation.mutate(itemQuantity + 1),
-    handleMinusCartItemQuantity: () =>
-      minusCartItemQuantityMutation.mutate(itemQuantity - 1),
-    handleDeleteCartItem: () => {
-      deleteCartItemMutation.mutate();
+    handleCartItemQuantity: (cartItemId: number, newQuantity: number) => {
+      changeCartItemQuantityMutation.mutate({ cartItemId, newQuantity });
+    },
+    handleDeleteCartItem: (cartItemId: number) => {
+      deleteCartItemMutation.mutate(cartItemId);
     },
     showCountButton,
   };
