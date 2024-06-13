@@ -8,9 +8,9 @@ interface PatchCartItemQuantityProps {
   quantity: number;
 }
 
-export const fetchCartItems = async (page: number) => {
+export const fetchCartItems = async () => {
   const response = await fetchResponse({
-    url: `${ENDPOINTS_CART}?page=${page}&size=${SIZE.CART_ITEMS}`,
+    url: `${ENDPOINTS_CART}?size=${SIZE.CART_ITEMS}`,
     method: 'GET',
   });
 
