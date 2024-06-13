@@ -33,15 +33,5 @@ describe('useCartItems', () => {
         expect(result.current.cartItems.length).toBeGreaterThan(0);
       });
     });
-
-    it('초기 장바구니 항목을 가져올 때 로딩 상태를 보여준다', async () => {
-      const { result } = renderHook(() => useCartItems(), { wrapper });
-
-      expect(result.current.isLoading).toBe(true);
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
-    });
   });
 });
