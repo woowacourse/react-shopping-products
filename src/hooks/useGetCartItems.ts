@@ -1,16 +1,24 @@
 import { FetchCartItemsResponse, fetchCartItems } from '@_api/cart';
 import { QUERY_KEYS } from '@_constants/queryKeys';
 import { CartItem } from '@_types/cartItem';
-import { useQuery } from '@tanstack/react-query';
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
 interface UseGetCartItemsResult {
   cartItems: CartItem[];
   error: Error | null;
   isLoading: boolean;
+  isFetching: boolean;
+  refetch: () => void;
 }
 
-export default function useGetCartItems(): UseGetCartItemsResult {
-  const { data, error, isLoading } = useQuery<FetchCartItemsResponse>({
+interface UseGetCartItemsOptions extends Omit<UseQueryOptions<FetchCartItemsResponse, Error>, 'queryKey' | 'queryFn'> {}
+
+interface UseGetCartItemsProps {
+  options?: UseGetCartItemsOptions;
+}
+
+export default function useGetCartItems({ options }: UseGetCartItemsProps = {}): UseGetCartItemsResult {
+  const { data, error, isLoading, isFetching, refetch } = useQuery<FetchCartItemsResponse>({
     queryKey: [QUERY_KEYS.cart],
     queryFn: () => fetchCartItems(),
     networkMode: 'always',
@@ -25,9 +33,10 @@ export default function useGetCartItems(): UseGetCartItemsResult {
       }
       return false;
     },
+    ...options,
   });
 
   const cartItems = (data && data.content) || [];
 
-  return { cartItems, error, isLoading };
+  return { cartItems, error, isLoading, isFetching, refetch };
 }
