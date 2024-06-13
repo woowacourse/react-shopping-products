@@ -1,17 +1,21 @@
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 
 import useToast from './hooks/useToast';
 
 const QueryProvider = ({ children }: PropsWithChildren) => {
-  const toast = useToast();
+  const { error: showToast } = useToast();
 
-  const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-      onError: (error) => toast.error(error.message),
-    }),
-  });
+  const queryClient = useMemo(
+    () =>
+      new QueryClient({
+        queryCache: new QueryCache({
+          onError: (error) => showToast(error.message),
+        }),
+      }),
+    [showToast],
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
