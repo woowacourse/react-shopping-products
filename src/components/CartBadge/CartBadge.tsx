@@ -7,6 +7,9 @@ import { PropsWithChildren, useState } from 'react';
 const CartBadge: React.FC<PropsWithChildren> = ({ children }) => {
   const { cartItems } = useCartItem();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const closeModal = () => {
+    setIsOpenModal(false);
+  };
 
   return (
     <>
@@ -20,7 +23,7 @@ const CartBadge: React.FC<PropsWithChildren> = ({ children }) => {
         </Badge>
         {children}
       </CartBadgeContainer>
-      {isOpenModal && <CartItemModal setIsOpenModal={setIsOpenModal} />}
+      {isOpenModal && <CartItemModal closeModal={closeModal} />}
     </>
   );
 };

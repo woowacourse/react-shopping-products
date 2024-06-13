@@ -6,14 +6,14 @@ import CartTotalAmount from '../CartTotalAmount/CartTotalAmount';
 import { calculateTotalAmount } from '../../util/Calculate';
 import { useCartItem } from '../../hooks/useCartItem';
 
-const CartItemModal = ({ setIsOpenModal }: CartItemModalProps) => {
+const CartItemModal = ({ closeModal }: CartItemModalProps) => {
   const { cartItems } = useCartItem();
 
   const handleClose = () => {
-    setIsOpenModal(false);
+    closeModal();
   };
   const handleConfirm = () => {
-    setIsOpenModal(false);
+    closeModal();
   };
   return (
     <Modal position="bottom" size="large" onDimmedClick={handleClose}>
