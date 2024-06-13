@@ -16,10 +16,11 @@ const CartModal = ({ isCartOpen, toggleCart, cartItems }: Props) => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    const totalPrice = cartItems?.reduce((accPrice, curItem) => {
-      accPrice += curItem.product.price * curItem.quantity;
-      return accPrice;
-    }, 0);
+    const totalPrice = cartItems?.reduce(
+      (accPrice, curItem) =>
+        accPrice + curItem.product.price * curItem.quantity,
+      0
+    );
 
     setTotalPrice(totalPrice);
   }, [cartItems]);
