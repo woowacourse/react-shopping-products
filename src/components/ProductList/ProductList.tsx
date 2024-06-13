@@ -4,6 +4,8 @@ import { Fragment } from "react/jsx-runtime";
 import useProducts from "../../hooks/useProducts";
 import ProductListHeader from "./ProductListHeader/ProductListHeader";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import { InfiniteData } from "@tanstack/react-query";
+import { ProductsResponse } from "../../hooks/useProductsInfiniteQuery";
 
 const ProductList = () => {
   const {
@@ -21,6 +23,17 @@ const ProductList = () => {
     nextPage: fetchNextPage,
   });
 
+  const isLastElement = (
+    pageIndex: number,
+    productIndex: number,
+    data: InfiniteData<ProductsResponse>
+  ) => {
+    return (
+      pageIndex === data.pages.length - 1 &&
+      productIndex === data.pages[pageIndex].content.length - 1
+    );
+  };
+
   return (
     <>
       <ProductListHeader
@@ -31,15 +44,14 @@ const ProductList = () => {
         <PL.Empty>상품이 존재하지 않습니다! 🥲</PL.Empty>
       ) : (
         <PL.ProductListStyle>
-          {data.pages.map((page, i) => (
-            <Fragment key={i}>
-              {page.content.map((product: Product, index: number) => (
+          {data.pages.map((page, pageIndex) => (
+            <Fragment key={pageIndex}>
+              {page.content.map((product: Product, productIndex: number) => (
                 <ProductItem
                   product={product}
                   key={product.id}
                   ref={
-                    i === data.pages.length - 1 &&
-                    index === page.content.length - 1
+                    isLastElement(pageIndex, productIndex, data)
                       ? lastProductElementRef
                       : null
                   }
