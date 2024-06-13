@@ -12,7 +12,7 @@ export const CartItemsTotalSummary = ({ cartItems }: Props) => {
   return (
     <div className={styles.cartItemTotalPriceContainer}>
       <span className={styles.cartItemTotalPriceTitle}>총 결제 금액</span>
-      <span className={styles.cartItemTotalPrice}>{orderPrice.toLocaleString('KR-ko')}원</span>
+      <span className={styles.cartItemTotalPrice}>{orderPrice.toLocaleString('ko-KR')}원</span>
     </div>
   );
 };

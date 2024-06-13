@@ -26,7 +26,7 @@ const ProductItem = ({ productItem, isSelected, cartItems }: Props) => {
       <div className={styles.productItemInfoContainer}>
         <span className={styles.productItemName}>{productItem.name}</span>
         <span className={styles.productItemLabel}>
-          {productItem.price.toLocaleString('KR-ko')}원
+          {productItem.price.toLocaleString('ko-KR')}원
         </span>
       </div>
       <ProductSelectButton
