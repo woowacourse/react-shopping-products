@@ -17,7 +17,6 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
   const { fetchCartItemList } = useFetchCartItem();
   const {
     data: productListData,
-    error: productListError,
     fetchNextPage,
     hasNextPage,
     isFetching: isProductListFetching,
@@ -40,9 +39,7 @@ function ProductItemList({ category, sort }: ProductItemListProp) {
       unobserve(target.current);
     }
   }, [productListData?.pages, observe, unobserve, hasNextPage]);
-  if (productListError) {
-    throw productListError;
-  }
+
   return (
     <>
       <S.ProductList>

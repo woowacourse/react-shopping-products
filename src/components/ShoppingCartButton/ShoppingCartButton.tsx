@@ -4,13 +4,12 @@ import { ShoppingCartIcon } from "../../assets/index";
 import * as S from "./ShoppingCartButton.style";
 import { useState } from "react";
 import fixScrollOutsideModal from "../../util/fixScrollOutsideModal";
+import useFetchCartItem from "../../hooks/useFetchCartItem";
 
-interface ShoppingCartButtonProps {
-  quantity: number;
-}
-
-function ShoppingCartButton({ quantity }: ShoppingCartButtonProps) {
+function ShoppingCartButton() {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const { fetchCartItemList } = useFetchCartItem();
+  const quantity = fetchCartItemList.data?.content.length;
 
   fixScrollOutsideModal(isCartModalOpen);
 

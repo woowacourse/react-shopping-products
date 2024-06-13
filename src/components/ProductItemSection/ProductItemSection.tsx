@@ -6,6 +6,7 @@ import { Sorting } from "../../interfaces/Sorting";
 import ProductItemList from "../ProductItemList/ProductItemList";
 import ErrorBoundary from "../Error/ErrorBoundary";
 import ErrorFallback from "../Error/ErrorFallback/ErrorFallback";
+import { QueryErrorResetBoundary } from "@tanstack/react-query";
 
 function ProductItemSection() {
   const [category, setCategory] = useState<Category>("" as Category);
@@ -22,16 +23,17 @@ function ProductItemSection() {
         sortingOption={sorting}
         onChangeSortingOption={handleSortingChange}
       />
-      <ErrorBoundary
-        fallback={
-          <ErrorFallback
-            message="오류가 발생했습니다."
-            onRetry={() => location.reload()}
-          />
-        }
-      >
-        <ProductItemList category={category} sort={sorting} />
-      </ErrorBoundary>
+      <QueryErrorResetBoundary>
+        {({ reset }) => (
+          <ErrorBoundary
+            fallback={
+              <ErrorFallback message="오류가 발생했습니다." onRetry={reset} />
+            }
+          >
+            <ProductItemList category={category} sort={sorting} />
+          </ErrorBoundary>
+        )}
+      </QueryErrorResetBoundary>
     </S.ProductSectionContainer>
   );
 }

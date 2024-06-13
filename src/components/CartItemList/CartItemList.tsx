@@ -7,13 +7,9 @@ import { EmptyCart } from "../../assets";
 import useCartItemMutations from "../../hooks/useCartItemMutations";
 
 function CartItemList() {
-  const { cartItemList, fetchError: cartItemListError } = useFetchCartItem();
+  const { cartItemList } = useFetchCartItem();
 
   const { deleteCartItem, updateCartItemQuantity } = useCartItemMutations();
-
-  if (cartItemListError) {
-    throw cartItemListError;
-  }
 
   if (!cartItemList || cartItemList.length === 0) {
     return (

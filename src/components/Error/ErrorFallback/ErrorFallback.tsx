@@ -7,6 +7,7 @@ interface ErrorFallbackProps {
 }
 
 function ErrorFallback({ message, onRetry }: ErrorFallbackProps) {
+  console.log(123);
   return (
     <S.ErrorContainer>
       <S.ErrorIcon>⚠️</S.ErrorIcon>
