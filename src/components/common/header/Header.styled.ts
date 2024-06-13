@@ -39,9 +39,8 @@ export const ShoppingCartCount = styled.div`
   height: 1.1875rem;
   border-radius: 100%;
 
-  background-color: white;
+  background-color: ${(props) => props.theme.color.white};
 
-  color: black;
-  font-size: 0.625rem;
-  font-weight: 700;
+  color: ${(props) => props.theme.color.black};
+  ${(props) => props.theme.typography.cartItemCount};
 `;

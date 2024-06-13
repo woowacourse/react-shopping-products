@@ -5,7 +5,7 @@ export const PageContainer = styled.section`
   min-height: 100vh;
   position: relative;
 
-  background-color: white;
+  background-color: ${(props) => props.theme.color.white};
 `;
 
 export const CommonContainer = styled.div`

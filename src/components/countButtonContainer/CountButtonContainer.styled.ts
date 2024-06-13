@@ -1,6 +1,30 @@
+import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { THEME } from '@/constants/theme';
+interface ButtonOpacityMapperProp {
+  $isDisabled: boolean;
+  opacity: Theme['opacity'];
+}
+
+const buttonColorMapper = ({ $isDisabled, opacity }: ButtonOpacityMapperProp) => {
+  if ($isDisabled) {
+    return {
+      cursor: 'auto',
+      opacity: opacity.disabled,
+      '&:hover': {
+        opacity: opacity.disabled,
+      },
+    };
+  }
+
+  return {
+    cursor: 'pointer',
+    opacity: 1,
+    '&:hover': {
+      opacity: opacity.hover,
+    },
+  };
+};
 
 export const LoadingWrapper = styled.div`
   display: flex;
@@ -36,7 +60,7 @@ export const CountWrapper = styled.div`
   align-items: center;
 `;
 
-export const CountButton = styled.button<{ $isDisabled?: boolean }>`
+export const CountButton = styled.button<{ $isDisabled: boolean }>`
   width: 1.5rem;
   height: 1.5rem;
 
@@ -44,18 +68,15 @@ export const CountButton = styled.button<{ $isDisabled?: boolean }>`
   justify-content: center;
   align-items: center;
 
-  border: 1px solid ${THEME.LIGHT_BLACK};
+  border: 1px solid ${(props) => props.theme.color.borderGray};
   border-radius: 0.5rem;
   padding: 0.25rem;
 
-  background-color: ${THEME.WHITE};
+  background-color: ${(props) => props.theme.color.white};
 
-  font-size: 1.5rem;
+  ${({ $isDisabled, theme }) => buttonColorMapper({ $isDisabled, opacity: theme.opacity })}
+`;
 
-  &:hover {
-    opacity: ${(props) => (props.$isDisabled ? THEME.DISABLED_OPACITY : THEME.HOVER_OPACITY)};
-  }
-
-  cursor: ${(props) => (props.$isDisabled ? 'auto' : 'pointer')};
-  opacity: ${(props) => (props.$isDisabled ? THEME.DISABLED_OPACITY : 1)};
+export const CountLabel = styled.span`
+  ${(props) => props.theme.typography.buttonLabel}
 `;

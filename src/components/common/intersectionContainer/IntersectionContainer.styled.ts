@@ -10,13 +10,12 @@ export const ScrollUpButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid gray;
+  border: 1px solid ${(props) => props.theme.color.gray};
   border-radius: 50%;
 
-  background-color: white;
+  background-color: ${(props) => props.theme.color.white};
 
   font-size: 16px;
-  color: red;
 
   cursor: pointer;
 `;

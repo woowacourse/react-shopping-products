@@ -15,16 +15,28 @@ const CountButtonContainer = ({ cartItem, testId }: CountButtonContainerProps) =
   const { handleDecrementQuantity, handleIncrementQuantity, isUpdatePending, isDeletePending } =
     useCounter(cartItem);
 
+  const { product, quantity } = cartItem;
   const isLoading = isUpdatePending || isDeletePending;
 
   return (
     <Styled.CountWrapper>
-      <Styled.CountButton onClick={handleDecrementQuantity} data-testid={`${testId}-minus`}>
-        <img src={IMAGES.MINUS} alt={`${cartItem.product.id}-minus`} />
+      <Styled.CountButton
+        onClick={handleDecrementQuantity}
+        disabled={isLoading}
+        $isDisabled={isLoading}
+        data-testid={`${testId}-minus`}
+      >
+        <img src={IMAGES.MINUS} alt={`${product.id}-minus`} />
       </Styled.CountButton>
-      {isLoading ? <Spinner size={25} /> : <span>{cartItem.quantity}</span>}
-      <Styled.CountButton onClick={handleIncrementQuantity} data-testid={`${testId}-plus`}>
-        <img src={IMAGES.PLUS} alt={`${cartItem.product.id}-plus`} />
+      {isLoading ? <Spinner size={25} /> : <Styled.CountLabel>{quantity}</Styled.CountLabel>}
+
+      <Styled.CountButton
+        onClick={handleIncrementQuantity}
+        disabled={isLoading}
+        $isDisabled={isLoading}
+        data-testid={`${testId}-plus`}
+      >
+        <img src={IMAGES.PLUS} alt={`${product.id}-plus`} />
       </Styled.CountButton>
     </Styled.CountWrapper>
   );

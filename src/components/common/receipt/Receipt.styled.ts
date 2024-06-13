@@ -5,7 +5,7 @@ export const borderTopWrapper = styled.div`
   flex-direction: column;
   gap: 0.625rem;
 
-  border-top: 1px solid #0000001a;
+  border-top: 1px solid ${(props) => props.theme.color.borderGray};
   padding: 0.625rem 0;
 `;
 
@@ -20,9 +20,9 @@ export const priceDescription = styled.span`
   align-items: center;
 
   height: 100%;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #0a0d13;
+
+  color: ${(props) => props.theme.color.captionBlack};
+  ${(props) => props.theme.typography.totalPurchasePrice};
 `;
 
 export const priceText = styled.span`
@@ -30,7 +30,7 @@ export const priceText = styled.span`
   align-items: center;
 
   height: 100%;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #000;
+
+  color: ${(props) => props.theme.color.black};
+  ${(props) => props.theme.typography.totalPurchasePrice};
 `;
