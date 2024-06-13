@@ -1,22 +1,42 @@
 import styled from "styled-components";
 import { SCREEN_WIDTH_REM } from "../styles/GlobalStyle";
 import { ReactComponent as CartIcon } from "../assets/cart.svg";
-import { useContext } from "react";
-import CartItemsContext from "../store/cartItems";
+import { useState } from "react";
+import ShoppingCartModal from "./Modal/ShoppingCartModal";
+import Portal from "../portal/Portal";
+
+import useCartItems from "../hooks/useCartItems";
 
 const ShopHeader = () => {
-  const { cartItems, isLoading } = useContext(CartItemsContext);
+  const { cartItems, isLoading } = useCartItems();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const setModalOpenHandler = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   return (
-    <S.Header>
-      <S.Title>SHOP</S.Title>
-      <S.CartButton role="button" aria-label="장바구니 이동">
-        <CartIcon />
-        <S.Badge>
-          <S.CircleContent>{isLoading || cartItems.length}</S.CircleContent>
-        </S.Badge>
-      </S.CartButton>
-    </S.Header>
+    <>
+      <S.Header>
+        <S.Title>SHOP</S.Title>
+        <S.CartButton
+          role="button"
+          aria-label="장바구니 이동"
+          onClick={setModalOpenHandler}
+        >
+          <CartIcon />
+          <S.Badge>
+            <S.CircleContent>{isLoading || cartItems?.length}</S.CircleContent>
+          </S.Badge>
+        </S.CartButton>
+      </S.Header>
+      <Portal>
+        <ShoppingCartModal
+          isOpen={isModalOpen}
+          onClose={setModalOpenHandler}
+        ></ShoppingCartModal>
+      </Portal>
+    </>
   );
 };
 

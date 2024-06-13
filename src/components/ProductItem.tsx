@@ -1,46 +1,29 @@
 import styled from "styled-components";
 import { ReactComponent as AddToCartIcon } from "../assets/addToCart.svg";
 import { ReactComponent as DeleteFromCartIcon } from "../assets/deleteFromCart.svg";
-import { addCartItem, deleteCartItem } from "../api/cartItems";
-import { useContext } from "react";
-import CartItemsContext from "../store/cartItems";
-import { MAX_CART_ITEM_COUNT } from "../constants/cartItems";
-
+import useAddCartItem from "../hooks/useAddCartItem";
+import QuantitySetter from "./QuantitySetter";
 interface ProductItemProps {
+  cartItemId?: number;
   id: number;
   name: string;
   price: number;
   imageUrl: string;
+  quantity: number;
 }
 
-const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
-  const { cartItems, refetch: refetchCartItems } = useContext(CartItemsContext);
+const ProductItem = ({
+  id,
+  name,
+  price,
+  imageUrl,
+  cartItemId,
+  quantity,
+}: ProductItemProps) => {
+  const addMutation = useAddCartItem();
 
-  const handleAddToCart = async () => {
-    try {
-      if (cartItems.length < MAX_CART_ITEM_COUNT) {
-        await addCartItem(id, 1);
-        await refetchCartItems();
-      } else {
-        alert("장바구니에 담을 수 있는 상품의 개수는 20개까지입니다.");
-      }
-    } catch {
-      alert("상품을 장바구니에 담는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요,");
-    }
-  };
-
-  const targetCartItemId = cartItems.find((cartItem) => cartItem.product.id === id)?.id;
-  const handleDeleteFromCart = async () => {
-    try {
-      if (targetCartItemId) {
-        await deleteCartItem(targetCartItemId);
-        await refetchCartItems();
-      } else {
-        alert("해당 상품이 장바구니에 없습니다.");
-      }
-    } catch {
-      alert("상품을 장바구니에서 빼는 과정에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
-    }
+  const handleAddToCart = () => {
+    addMutation.mutate({ productId: id, quantity: 1 });
   };
 
   return (
@@ -51,14 +34,14 @@ const ProductItem = ({ id, name, price, imageUrl }: ProductItemProps) => {
         <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
       </S.ProductInfo>
       <S.ButtonWrapper>
-        {targetCartItemId ? (
-          <S.DeleteFromCartIcon
-            role="button"
-            aria-label="상품 빼기"
-            onClick={handleDeleteFromCart}
-          />
+        {cartItemId && quantity > 0 ? (
+          <QuantitySetter cartItemId={cartItemId ?? 0} quantity={quantity} />
         ) : (
-          <S.AddToCartIcon role="button" aria-label="상품 담기" onClick={handleAddToCart} />
+          <S.AddToCartIcon
+            role="button"
+            aria-label="상품 담기"
+            onClick={handleAddToCart}
+          />
         )}
       </S.ButtonWrapper>
     </S.Container>

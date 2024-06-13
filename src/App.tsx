@@ -1,12 +1,15 @@
 import ProductList from "./components/ProductList";
-import { CartItemsProvider } from "./store/cartItems";
+
+import { useToast } from "./stores/ToastProvider";
+import ErrorToast from "./components/ErrorToast.tsx";
 
 function App() {
+  const { isOpenToast } = useToast();
+
   return (
     <>
-      <CartItemsProvider>
-        <ProductList />
-      </CartItemsProvider>
+      {isOpenToast && <ErrorToast />}
+      <ProductList />
     </>
   );
 }

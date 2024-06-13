@@ -1,0 +1,40 @@
+{
+  "totalPages": 0,
+  "totalElements": 0,
+  "sort": {
+    "sorted": true,
+    "unsorted": true,
+    "empty": true
+  },
+  "first": true,
+  "last": true,
+  "pageable": {
+    "sort": {
+      "sorted": true,
+      "unsorted": true,
+      "empty": true
+    },
+    "pageNumber": 0,
+    "pageSize": 0,
+    "paged": true,
+    "unpaged": true,
+    "offset": 0
+  },
+  "number": 0,
+  "numberOfElements": 0,
+  "size": 0,
+  "content": [
+    {
+      "id": 11,
+      "quantity": 1,
+      "product": {
+        "id": 0,
+        "name": "스마트폰",
+        "price": 699,
+        "imageUrl": "https://via.placeholder.com/150/0000FF/808080?text=스마트폰",
+        "category": "Electronics"
+      }
+    }
+  ],
+  "empty": true
+}

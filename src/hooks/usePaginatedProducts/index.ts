@@ -20,7 +20,6 @@ const PAGE_SIZE = 4;
 
 export default function usePaginatedProducts(): UsePaginatedProductsReturn {
   const [products, setProducts] = useState<Product[]>([]);
-
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
   const currentPage = page === 0 ? 0 : page + PAGE_SIZE;
