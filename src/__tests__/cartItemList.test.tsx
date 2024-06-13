@@ -2,6 +2,7 @@ import { ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
+
 import cartItemList from '../mocks/cartItems.json';
 import cartItemListReset from '../mocks/cartItemsReset.json';
 
@@ -10,25 +11,22 @@ import theme from '@/theme';
 
 import useCartItemList from '@/hooks/useCartItemList';
 
-describe('cartItemList', () => {
-  const queryClient = new QueryClient();
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <ThemeProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <ToastProvider>{children}</ToastProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
-  );
-  beforeEach(() => {
-    queryClient.clear();
-  });
-  afterEach(() => {
-    queryClient.clear();
-    cartItemList.content = cartItemListReset.content;
-  });
-  const testProductId = 169;
-  const prevCartItemListLength = 10;
+const queryClient = new QueryClient();
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <ThemeProvider theme={theme}>
+    <QueryClientProvider client={queryClient}>
+      <ToastProvider>{children}</ToastProvider>
+    </QueryClientProvider>
+  </ThemeProvider>
+);
+beforeEach(() => {
+  queryClient.invalidateQueries({ queryKey: ['fetchCartItems'] });
+  cartItemList.content = cartItemListReset.content;
+});
 
+const testProductId = 169;
+const prevCartItemListLength = 10;
+describe('cartItemList', () => {
   describe('장바구니에 상품 추가 테스트', async () => {
     it(`상품을 장바구니에 담으면 장바구니 전체 수량이 1 증가한다.`, async () => {
       const { result } = renderHook(() => useCartItemList(), { wrapper });
@@ -38,20 +36,21 @@ describe('cartItemList', () => {
 
       await waitFor(async () => {
         act(() => {
-          result.current.addCartItemMutation(testProductId);
+          result.current.handleAddCartItem(testProductId);
         });
       });
 
       await waitFor(() => {
         expect(result.current.cartItemList).toHaveLength(prevCartItemListLength + 1);
       });
+      queryClient.clear();
     });
     it(`상품을 장바구니에 담으면 해당 상품이 장바구니에 추가된다.`, async () => {
       const { result } = renderHook(() => useCartItemList(), { wrapper });
 
       await waitFor(async () => {
         act(() => {
-          result.current.addCartItemMutation(testProductId);
+          result.current.handleAddCartItem(testProductId);
         });
       });
 
@@ -60,22 +59,22 @@ describe('cartItemList', () => {
       });
     });
   });
-  describe('장바구니 수량 삭제 테스트', () => {
+  describe('장바구니 상품 삭제 테스트', () => {
     it(`상품을 장바구니서 삭제하면 장바구니 전체 수량이 1 감소한다.`, async () => {
       const deleteCartItemId = 15527;
 
       const { result } = renderHook(() => useCartItemList(), { wrapper });
-      await waitFor(() => {
-        expect(result.current.cartItemList).toHaveLength(prevCartItemListLength);
-      });
 
+      await waitFor(() => {
+        expect(result.current.cartItemList).toHaveLength(prevCartItemListLength + 2);
+      });
       await waitFor(async () => {
         act(() => {
-          result.current.deleteCartItemMutation(deleteCartItemId);
+          result.current.handleDeleteCartItem(deleteCartItemId);
         });
       });
       await waitFor(() => {
-        expect(result.current.cartItemList).toHaveLength(prevCartItemListLength - 1);
+        expect(result.current.cartItemList).toHaveLength(prevCartItemListLength + 1);
       });
     });
   });
@@ -86,15 +85,12 @@ describe('cartItemList', () => {
 
       const { result } = renderHook(() => useCartItemList(), { wrapper });
       await waitFor(() => {
-        expect(result.current.cartItemList).toHaveLength(prevCartItemListLength);
+        expect(result.current.cartItemList).toHaveLength(prevCartItemListLength + 1);
       });
 
       await waitFor(async () => {
         act(() => {
-          result.current.adjustCartItemQuantityMutation({
-            cartItemId: adjustCartItemId,
-            quantity: 10,
-          });
+          result.current.handleAdjustQuantity(10, adjustCartItemId);
         });
       });
 
