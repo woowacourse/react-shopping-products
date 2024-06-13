@@ -31,7 +31,7 @@ const CartToggleButton = ({
           $isInCart={false}
           onClick={() => {
             if (!cartItemList) return;
-            if (cartItemList?.length >= 20) {
+            if (cartItemList.length >= 20) {
               toastError('장바구니에 더 이상 추가할 수 없습니다.');
               return;
             }
