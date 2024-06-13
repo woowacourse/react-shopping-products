@@ -32,11 +32,11 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           />
         </CI.ItemDetails>
       </CI.ItemInfoSection>
-      <CI.ItemButtonSection>
+      <div>
         <CI.RemoveButton onClick={() => handleRemoveItemButtonClick(cartItem)}>
           삭제
         </CI.RemoveButton>
-      </CI.ItemButtonSection>
+      </div>
     </CI.CartItem>
   );
 };

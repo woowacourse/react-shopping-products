@@ -34,8 +34,6 @@ export const ItemPrice = styled.div`
   color: rgba(10, 13, 19, 1);
 `;
 
-export const ItemButtonSection = styled.div``;
-
 export const RemoveButton = styled.button`
   width: 40px;
   height: 24px;
