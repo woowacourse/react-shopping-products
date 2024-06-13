@@ -1,26 +1,13 @@
-import { CART_ITEMS_ENDPOINT } from '@_api/endpoints';
-import { fetchData } from '@_api/fetch';
+import { FetchCartItemsResponse, fetchCartItems } from '@_api/cart';
 import { QUERY_KEYS } from '@_constants/queryKeys';
 import { CartItem } from '@_types/cartItem';
 import { useQuery } from '@tanstack/react-query';
-
-interface FetchCartItemsResponse {
-  last: boolean;
-  number: number;
-  content: CartItem[];
-}
 
 interface UseGetCartItemsResult {
   cartItems: CartItem[];
   error: Error | null;
   isLoading: boolean;
 }
-
-const fetchCartItems = async (): Promise<FetchCartItemsResponse> => {
-  return await fetchData<FetchCartItemsResponse>(CART_ITEMS_ENDPOINT, {
-    size: 100,
-  });
-};
 
 export default function useGetCartItems(): UseGetCartItemsResult {
   const { data, error, isLoading } = useQuery<FetchCartItemsResponse>({

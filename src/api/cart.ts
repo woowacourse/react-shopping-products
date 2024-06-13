@@ -1,5 +1,19 @@
+import { CartItem } from '@_types/cartItem';
 import { HEADERS } from './common';
 import { CART_ITEMS_ENDPOINT } from './endpoints';
+import { fetchData } from './fetch';
+
+export interface FetchCartItemsResponse {
+  last: boolean;
+  number: number;
+  content: CartItem[];
+}
+
+export const fetchCartItems = async () => {
+  return await fetchData<FetchCartItemsResponse>(CART_ITEMS_ENDPOINT, {
+    size: 100,
+  });
+};
 
 export interface AddCartItemArgs {
   productId: number;
