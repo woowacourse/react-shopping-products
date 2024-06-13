@@ -13,6 +13,16 @@ export const getCartItems = async () => {
   return data.content;
 };
 
+export const getCartItemsQuantity = async () => {
+  const response = await fetcher.get({
+    url: SERVER_URL.apiUrl + END_POINT.cartItemsCount,
+    errorMessage: ERROR_MESSAGES.failGetCartItemsQuantity,
+  });
+  const data = await response.json();
+
+  return data.content;
+};
+
 export interface PostCartItemParams {
   productId: number;
   quantity: number;

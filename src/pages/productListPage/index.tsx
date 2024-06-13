@@ -2,34 +2,21 @@ import ErrorFallback from "@/error/ErrorFallback";
 import ErrorBoundary from "@/error/errorBoundary";
 import Header from "@/components/Header";
 import TopButton from "@/components/_common/TopButton";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
-import { useState } from "react";
 import CartBadge from "@/components/CartBadge";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "@/constants/path";
 import ProductList from "@/pages/productListPage/productList";
+import useModal from "@/hooks/useModal";
 
 const ProductListPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { lockScroll, openScroll } = useBodyScrollLock();
-
-  const onOpenModal = () => {
-    setIsModalOpen(true);
-    lockScroll();
-  };
-
   const navigate = useNavigate();
 
-  const onCloseModal = () => {
-    setIsModalOpen(false);
-    openScroll();
-  };
-
   const reloadPage = () => {
-    console.log("errr");
     navigate(PATH.RELOAD);
   };
+
+  const { onOpenModal, onCloseModal, isModalOpen } = useModal();
+
   return (
     <>
       <Header>

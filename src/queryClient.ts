@@ -6,6 +6,7 @@ const createQueryClient = (onAddToast: (message: string) => void) => {
       queries: {
         networkMode: "always",
         retry: 0,
+        staleTime: 3000,
       },
     },
     queryCache: new QueryCache({

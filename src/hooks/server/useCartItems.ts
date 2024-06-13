@@ -1,4 +1,4 @@
-import { deleteCartItem, getCartItems, patchCartItem, postCartItem } from "@/apis/cartItem";
+import { deleteCartItem, getCartItems, getCartItemsQuantity, patchCartItem, postCartItem } from "@/apis/cartItem";
 import { END_POINT } from "@/config/endPoint";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -16,7 +16,15 @@ export const useCartItemsQuery = () => {
   const query = useQuery({
     queryKey: [END_POINT.cartItems],
     queryFn: async () => await getCartItems(),
-    staleTime: 10000,
+  });
+
+  return query;
+};
+
+export const useCartItemsQuantityQuery = () => {
+  const query = useQuery({
+    queryKey: [END_POINT.cartItemsCount],
+    queryFn: async () => await getCartItemsQuantity(),
   });
 
   return query;
