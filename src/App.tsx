@@ -1,19 +1,19 @@
-import { useState } from "react";
 import Header from "./components/Header/Header";
 import Product from "./pages/Product";
 import GlobalStyles from "./styles/Global.style";
-import { QuantityContext } from "./store/QuantityContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
-  const [quantity, setQuantity] = useState(0);
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { throwOnError: true } },
+  });
   return (
     <>
       <GlobalStyles />
-
-      <QuantityContext.Provider value={{ quantity, setQuantity }}>
+      <QueryClientProvider client={queryClient}>
         <Header />
         <Product />
-      </QuantityContext.Provider>
+      </QueryClientProvider>
     </>
   );
 }

@@ -1,26 +1,16 @@
-import { useContext } from "react";
-import { MainLogo, ShoppingCartIcon } from "../../assets";
+import { MainLogo } from "../../assets";
 import * as S from "./Header.style";
-import { QuantityContext } from "../../store/QuantityContext";
+import ShoppingCartButton from "../ShoppingCartButton/ShoppingCartButton";
+import ErrorBoundary from "../Error/ErrorBoundary";
 
 function Header() {
-  const quantityContext = useContext(QuantityContext);
-  const quantity = quantityContext ? quantityContext.quantity : 0;
-
   return (
     <S.HeaderBackground>
       <S.HeaderWrapper>
         <S.MainLogo src={MainLogo} alt="메인 로고" />
-        <S.ShoppingCartButton>
-          <S.ShoppingCartIconContainer
-            src={ShoppingCartIcon}
-          ></S.ShoppingCartIconContainer>
-          {quantity && (
-            <S.ShoppingCartQuantityContainer>
-              <S.ShoppingCartQuantity>{quantity}</S.ShoppingCartQuantity>
-            </S.ShoppingCartQuantityContainer>
-          )}
-        </S.ShoppingCartButton>
+        <ErrorBoundary fallback={<>⚠️</>}>
+          <ShoppingCartButton />
+        </ErrorBoundary>
       </S.HeaderWrapper>
     </S.HeaderBackground>
   );

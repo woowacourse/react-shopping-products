@@ -7,12 +7,11 @@ interface ToastProps {
 
 function Toast({ message }: ToastProps) {
   const [showToast, setShowToast] = useState(false);
-
   useEffect(() => {
     setShowToast(true);
     const timer = setTimeout(() => setShowToast(false), 3000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [message]);
 
   return (
     showToast && (

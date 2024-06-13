@@ -5,20 +5,20 @@ import { CART_ITEMS_ENDPOINT } from "../apis/config";
 import defaultData from "../mocks/handlers/cartItemList/defaultData.json";
 import additionalProduct from "../mocks/handlers/cartItemList/additionalProductData.json";
 import { server } from "../mocks/server";
-import useCartItemList from "./useCartItemList";
+import useFetchCartItemList from "./useFetchCartItemList";
 import { act } from "react";
 
-describe("useCartItemList", () => {
+describe("useFetchCartItemList", () => {
   describe("장바구니 아이템 목록 조회", () => {
     it("장바구니 아이템 목록을 조회한다.", async () => {
-      const { result } = renderHook(() => useCartItemList());
+      const { result } = renderHook(() => useFetchCartItemList());
       await waitFor(() => {
         expect(result.current.cartItemList).toEqual(defaultData);
       });
     });
 
     it("장바구니 아이템 목록 조회 중 로딩 상태", () => {
-      const { result } = renderHook(() => useCartItemList());
+      const { result } = renderHook(() => useFetchCartItemList());
 
       expect(result.current.cartItemListLoading).toBe(true);
     });
@@ -31,7 +31,7 @@ describe("useCartItemList", () => {
         })
       );
 
-      const { result } = renderHook(() => useCartItemList());
+      const { result } = renderHook(() => useFetchCartItemList());
 
       await waitFor(() => {
         expect(result.current.cartItemList).toEqual([]);
@@ -43,7 +43,7 @@ describe("useCartItemList", () => {
 
   describe("장바구니 갯수 반환", () => {
     it("장바구니에 담겨있는 item 갯수 반환", async () => {
-      const { result } = renderHook(() => useCartItemList());
+      const { result } = renderHook(() => useFetchCartItemList());
       await waitFor(() => {
         expect(result.current.cartItemList.length).toEqual(defaultData.length);
       });
@@ -52,14 +52,14 @@ describe("useCartItemList", () => {
 
   describe("장바구니 포함 여부 반환", () => {
     it("장바구니에 담겨있는 item이면 isInCart true 반환", async () => {
-      const { result } = renderHook(() => useCartItemList());
+      const { result } = renderHook(() => useFetchCartItemList());
       await waitFor(() => {
         expect(result.current.isInCart(2)).toEqual(true);
       });
     });
 
     it("장바구니에 담겨있지 않은 item이면 isInCart false 반환", async () => {
-      const { result } = renderHook(() => useCartItemList());
+      const { result } = renderHook(() => useFetchCartItemList());
       await waitFor(() => {
         expect(result.current.isInCart(9999999)).toEqual(false);
       });
@@ -68,7 +68,7 @@ describe("useCartItemList", () => {
 
   describe("장바구니 추가 및 제거", () => {
     it("장바구니에 담겨있는 item이면 toggleCartItem시 아이템 제거", async () => {
-      const { result } = renderHook(() => useCartItemList());
+      const { result } = renderHook(() => useFetchCartItemList());
       await waitFor(() => {
         expect(result.current.isInCart(defaultData[0].product.id)).toBe(true);
       });
@@ -85,7 +85,7 @@ describe("useCartItemList", () => {
     });
 
     it("장바구니에 담겨있지 않은 item이면 toggleCartItem 시 아이템 추가", async () => {
-      const { result } = renderHook(() => useCartItemList());
+      const { result } = renderHook(() => useFetchCartItemList());
 
       await act(async () => {
         await result.current.toggleCartItem(additionalProduct);
