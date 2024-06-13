@@ -1,27 +1,29 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import useToasts from "../useToasts";
 
 import { patchCartItemQuantity } from "../../apis/cart-item";
 
 import { QUERY_KEYS } from "../../constants/queries";
 import { CartItem } from "../../types/cartItem";
 
-export default function usePatchCartItemQuantity() {
-  const queryClient = useQueryClient();
-  const { addToast } = useToasts();
+interface UsePatchCartItemQuantityResult {
+  handleIncreaseQuantity: (cartItemId: number, cartItemQuantity: number) => void;
+  handleDecreaseQuantity: (cartItemId: number, cartItemQuantity: number) => void;
+  error: unknown;
+}
 
-  const { mutate } = useMutation({
-    networkMode: "always",
-    retry: false,
+export default function usePatchCartItemQuantity(): UsePatchCartItemQuantityResult {
+  const queryClient = useQueryClient();
+
+  const { mutate, error } = useMutation({
     mutationFn: patchCartItemQuantity,
-    onMutate: async ({ productId, quantity }) => {
+    onMutate: async ({ cartItemId, quantity }) => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.cartItems] });
 
       const prevCartItem = queryClient.getQueryData<CartItem[]>([QUERY_KEYS.cartItems]);
 
       queryClient.setQueryData([QUERY_KEYS.cartItems], (prevData: CartItem[]) => {
         const nextCartItem = prevData.map((cartItem) => {
-          return cartItem.product.id === productId ? { ...cartItem, quantity } : cartItem;
+          return cartItem.id === cartItemId ? { ...cartItem, quantity } : cartItem;
         });
 
         return nextCartItem;
@@ -29,10 +31,7 @@ export default function usePatchCartItemQuantity() {
 
       return { prevCartItem };
     },
-    onError(error, _, context) {
-      if (error instanceof Error) {
-        addToast(error.message);
-      }
+    onError(_, __, context) {
       if (context?.prevCartItem) {
         queryClient.setQueryData([QUERY_KEYS.cartItems], context.prevCartItem);
       }
@@ -42,16 +41,17 @@ export default function usePatchCartItemQuantity() {
     },
   });
 
-  const handleIncreaseQuantity = (productId: number, currentQuantity: number) => {
-    mutate({ productId, quantity: currentQuantity + 1 });
+  const handleIncreaseQuantity = (cartItemId: number, currentQuantity: number) => {
+    mutate({ cartItemId, quantity: currentQuantity + 1 });
   };
 
-  const handleDecreaseQuantity = (productId: number, currentQuantity: number) => {
-    mutate({ productId, quantity: currentQuantity - 1 });
+  const handleDecreaseQuantity = (cartItemId: number, currentQuantity: number) => {
+    mutate({ cartItemId, quantity: currentQuantity - 1 });
   };
 
   return {
     handleIncreaseQuantity,
     handleDecreaseQuantity,
+    error,
   };
 }
