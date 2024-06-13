@@ -1,13 +1,9 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import useFetchCart from './useFetchCart';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { ReactNode } from 'react';
+import useFetchCart from './useFetchCart';
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-  <QueryClientProvider client={new QueryClient()}>
-    {children}
-  </QueryClientProvider>
-);
+const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={new QueryClient()}>{children}</QueryClientProvider>;
 
 describe('useFetchAddCart', () => {
   it('장바구니에 담는 API를 호출하면 해당 제품의 id는 cartIdSet에 포함되어야 한다.', async () => {
@@ -19,11 +15,7 @@ describe('useFetchAddCart', () => {
     });
 
     await waitFor(() => {
-      expect(
-        result.current.cartItems?.filter(
-          (item) => item.product.id === PRODUCT_ID,
-        ).length,
-      ).toBe(1);
+      expect(result.current.cartItems?.filter((item) => item.product.id === PRODUCT_ID).length).toBe(1);
     });
   });
   it('장바구니에서 삭제하는 API를 호출하면 해당 제품의 id는 cartIdSet에서 삭제되어야 한다.', async () => {
@@ -33,23 +25,20 @@ describe('useFetchAddCart', () => {
     await act(async () => {
       await result.current.addProductToCart(PRODUCT_ID);
     });
-    expect(
-      result.current.cartItems?.filter((item) => item.product.id === PRODUCT_ID)
-        .length,
-    ).toBe(1);
 
-    const CART_ID = result.current.cartItems!.find(
-      (item) => item.product.id === PRODUCT_ID,
-    )!.id;
+    await waitFor(() => {
+      expect(result.current.cartItems?.filter((item) => item.product.id === PRODUCT_ID).length).toBe(1);
+    });
+
+    const CART_ID = result.current.cartItems!.find((item) => item.product.id === PRODUCT_ID)!.id;
 
     await act(async () => {
       await result.current.deleteToRemoveCart(CART_ID);
     });
 
-    expect(
-      result.current.cartItems?.filter((item) => item.product.id === PRODUCT_ID)
-        .length,
-    ).toBe(0);
+    await waitFor(() => {
+      expect(result.current.cartItems?.filter((item) => item.product.id === PRODUCT_ID).length).toBe(0);
+    });
   });
 
   it('장바구니에 담겨있는 제품을 삭제하면 장바구니에 담긴 제품 종류 개수가 감소되어야 한다.', async () => {
@@ -60,11 +49,11 @@ describe('useFetchAddCart', () => {
       await result.current.addProductToCart(PRODUCT_ID);
     });
 
-    expect(result.current.cartItems?.length).toBe(1);
+    await waitFor(() => {
+      expect(result.current.cartItems?.length).toBe(1);
+    });
 
-    const CART_ID = result.current.cartItems!.find(
-      (item) => item.product.id === PRODUCT_ID,
-    )!.id;
+    const CART_ID = result.current.cartItems!.find((item) => item.product.id === PRODUCT_ID)!.id;
 
     await waitFor(() => {
       result.current.deleteToRemoveCart(CART_ID);
@@ -82,11 +71,7 @@ describe('useFetchAddCart', () => {
     });
 
     await waitFor(async () => {
-      expect(
-        result.current.cartItems?.some(
-          (item) => item.product.id === PRODUCT_ID,
-        ),
-      ).toBe(true);
+      expect(result.current.cartItems?.some((item) => item.product.id === PRODUCT_ID)).toBe(true);
     });
   });
 
@@ -103,15 +88,7 @@ describe('useFetchAddCart', () => {
       await result.current.addProductToCart(PRODUCT_ID_THREE);
     });
 
-    expect(
-      result.current.cartItems?.some(
-        (item) => item.product.id === PRODUCT_ID_TWO,
-      ),
-    ).toBe(true);
-    expect(
-      result.current.cartItems?.some(
-        (item) => item.product.id === PRODUCT_ID_THREE,
-      ),
-    ).toBe(true);
+    expect(result.current.cartItems?.some((item) => item.product.id === PRODUCT_ID_TWO)).toBe(true);
+    expect(result.current.cartItems?.some((item) => item.product.id === PRODUCT_ID_THREE)).toBe(true);
   });
 });
