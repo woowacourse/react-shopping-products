@@ -1,4 +1,5 @@
 import * as Styled from './CartToggleButton.styled';
+import Spinner from '../common/spinner/Spinner';
 import CountButtonContainer from '../countButtonContainer/CountButtonContainer';
 
 import { IMAGES } from '@/assets';
@@ -12,7 +13,7 @@ interface CartItemButtonProp {
 
 const CartToggleButton = ({ product }: CartItemButtonProp) => {
   const { data: cartItems, isSuccess } = useFetchCartItemsQuery();
-  const { mutate: handleAddCartItem } = useAddCartItemQuery();
+  const { mutate: handleAddCartItem, isPending } = useAddCartItemQuery();
 
   if (isSuccess) {
     const matchedCartItem = cartItems.find((cartItem) => cartItem.product.id === product.id);
@@ -30,7 +31,7 @@ const CartToggleButton = ({ product }: CartItemButtonProp) => {
   return (
     <Styled.HandleCartItemButton $isInCart={false} onClick={() => handleAddCartItem(product.id)}>
       <img src={IMAGES.ADD_SHOPPING_CART} alt="장바구니에 담기버튼" />
-      담기
+      {isPending ? <Spinner size={25} /> : <span>담기</span>}
     </Styled.HandleCartItemButton>
   );
 };

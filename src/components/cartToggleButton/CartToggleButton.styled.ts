@@ -19,13 +19,13 @@ export const HandleCartItemButton = styled.button<{ $isInCart: boolean }>`
 
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
+  justify-content: space-between;
 
-  width: 3.6875rem;
+  width: 4rem;
   height: 1.5rem;
   border: 0;
   border-radius: 0.25rem;
+  padding: 0 10px;
 
   ${({ $isInCart, theme }) => buttonColorMapper({ $isInCart, color: theme.color })}
 
