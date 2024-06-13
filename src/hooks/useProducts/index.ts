@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 import { fetchProducts } from '../../api/products';
@@ -6,8 +6,12 @@ import { fetchProducts } from '../../api/products';
 import { Category, Order } from '../../types/product';
 import { FIRST_PAGE, GAP_WITH_FIRST_PAGE } from '../../constants/pagination';
 import QUERY_KEY from '../../types/queryKey';
+import ERROR_MESSAGE from '../../constants/errorMessage';
+import { UseToastContext } from '../../components/ShoppingProductsPage';
 
 const useProducts = () => {
+  const { setErrorMessage } = useContext(UseToastContext);
+
   const queryClient = useQueryClient();
 
   const [category, setCategory] = useState<Category>('all');
@@ -38,6 +42,8 @@ const useProducts = () => {
       return products;
     },
   });
+
+  if (getProducts.isError) setErrorMessage(ERROR_MESSAGE.fetchProducts);
 
   const handleCategoryChange = (selectedCategory: Category) => {
     if (selectedCategory !== category) {

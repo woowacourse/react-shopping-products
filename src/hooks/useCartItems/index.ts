@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useContext } from 'react';
 
 import {
   fetchAddCartItem,
@@ -6,12 +7,16 @@ import {
   fetchCartItems,
   fetchAdjustCartItemQuantity,
 } from '../../api/cartItems';
+import { UseToastContext } from '../../components/ShoppingProductsPage';
 
-import { MAX_CART_ITEMS_SIZE } from '../../constants/pagination';
 import { FetchAdjustCartItemQuantityProps } from '../../types/cart';
 import QUERY_KEY from '../../types/queryKey';
+import { MAX_CART_ITEMS_SIZE } from '../../constants/pagination';
+import ERROR_MESSAGE from '../../constants/errorMessage';
 
 const useCartItems = () => {
+  const { setErrorMessage } = useContext(UseToastContext);
+
   const queryClient = useQueryClient();
 
   const getCartItems = useQuery({
@@ -19,6 +24,8 @@ const useCartItems = () => {
     queryKey: [QUERY_KEY.cartItems],
     queryFn: fetchCartItems,
   });
+
+  if (getCartItems.isError) setErrorMessage(ERROR_MESSAGE.fetchCart);
 
   const addCartItem = useMutation({
     mutationFn: (productId: number) => fetchAddCartItem(productId),
@@ -31,9 +38,10 @@ const useCartItems = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
     onError: () => {
-      setTimeout(() => {
-        addCartItem.reset();
-      }, 2000);
+      if (getCartItems.data && getCartItems.data.length >= MAX_CART_ITEMS_SIZE)
+        return setErrorMessage(ERROR_MESSAGE.overMaxCartItemCounts);
+
+      setErrorMessage(ERROR_MESSAGE.addToCart);
     },
   });
 
@@ -44,9 +52,7 @@ const useCartItems = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
     onError: () => {
-      setTimeout(() => {
-        deleteCartItem.reset();
-      }, 2000);
+      setErrorMessage(ERROR_MESSAGE.deleteFromCart);
     },
   });
 
@@ -58,9 +64,7 @@ const useCartItems = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
     onError: () => {
-      setTimeout(() => {
-        adjustCartItemQuantity.reset();
-      }, 2000);
+      setErrorMessage(ERROR_MESSAGE.adjustCartItemQuantity);
     },
   });
 
