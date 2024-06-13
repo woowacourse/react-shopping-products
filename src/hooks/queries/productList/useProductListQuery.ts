@@ -40,7 +40,7 @@ const useProductListQuery = ({ category, sortOptions, queryOptions }: FetchProdu
 
       return fetchProductList({ category, size, page: pageParam, sortOptions });
     },
-    staleTime: 300 * 1000,
+    staleTime: Infinity,
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, lastPageParam) => {
       // FIXME: 마지막 페이지 도착 후 다른 카테고리 이동 시 다음 페이지가 없는 것으로 인식하여 fetch X
