@@ -19,7 +19,7 @@ const ProductSelectButton = ({ isSelected, cartItem, productItemId, ...props }: 
   return (
     <>
       {isSelected ? (
-        <ProductQuantity cartItem={cartItem as CartItemType} />
+        <ProductQuantity cartItem={cartItem as CartItemType} type="cart" />
       ) : (
         <button
           className={`${styles.productCartButton} ${styles[buttonStyle]}`}

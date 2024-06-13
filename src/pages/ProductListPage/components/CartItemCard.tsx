@@ -14,16 +14,16 @@ export const CartItemCard = ({ cartItem }: Props) => {
 
   return (
     <div className={styles.cartItemCard}>
-      <div className={styles.cartItemCardHeader}>
-        <Button onClick={() => handlerDeleteCartItem(cartItem.id)} disabled={false} text="삭제" />
-      </div>
-      <div className={styles.cartItemCardProductContents}>
+      <div className={styles.cartItemCardleft}>
         <img className={styles.cartItemProductImg} src={imageUrl} alt="" />
         <div className={styles.cartItemProductInfo}>
           <span className={styles.cartItemProductName}>{name}</span>
           <span className={styles.cartItemProductPrice}>{price.toLocaleString()}원</span>
-          <ProductQuantity cartItem={cartItem} />
+          <ProductQuantity cartItem={cartItem} type={'list'} />
         </div>
+      </div>
+      <div className={styles.cartItemCardRight}>
+        <Button onClick={() => handlerDeleteCartItem(cartItem.id)} disabled={false} text="삭제" />
       </div>
     </div>
   );

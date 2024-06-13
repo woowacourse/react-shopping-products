@@ -85,6 +85,14 @@
   color: black;
 }
 
+.justifyContentStart {
+  justify-content: flex-start;
+}
+
+.justifyContentEnd {
+  justify-content: flex-end;
+}
+
 .cartItemCount {
   position: absolute;
   display: flex;
@@ -107,7 +115,6 @@
 .productQuantityContainer {
   height: 24px;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   gap: 4px;
   margin-top: 10px;
@@ -123,32 +130,30 @@
 }
 
 .cartItemCardList {
-  min-height: 200px;
+  max-height: 200px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow-y: scroll;
   margin-bottom: 52px;
 }
 
 .cartItemCard {
   width: 100%;
   display: flex;
-  flex-direction: column;
   gap: 12px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-top: 12px;
 }
 
-.cartItemCardHeader {
+.cartItemCardRight {
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
 }
 
-.cartItemCardProductContents {
+.cartItemCardleft {
   display: flex;
-  align-items: center;
   gap: 24px;
 }
 
@@ -159,24 +164,23 @@
 }
 
 .cartItemProductInfo {
-  width: 256px;
+  width: 150px;
   display: flex;
   flex-direction: column;
 }
 
 .cartItemProductName {
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 23.17px;
   text-align: left;
   color: rgba(10, 13, 19, 1);
-  margin-bottom: 4px;
 }
 
 .cartItemProductPrice {
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 34.75px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
   text-align: left;
   color: rgba(0, 0, 0, 1);
 }

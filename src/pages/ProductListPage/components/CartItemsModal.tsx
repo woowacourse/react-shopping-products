@@ -26,7 +26,7 @@ export const CartItemsModal: React.FC<CartItemsModal> = ({
       <Modal.Header>
         <Modal.Title>장바구니</Modal.Title>
       </Modal.Header>
-      <Modal.Content style={{ overflowY: 'scroll' }}>
+      <Modal.Content>
         <CartItemCardList cartItems={cartItems} />
         <CartItemsTotalSummary cartItems={cartItems} />
       </Modal.Content>
