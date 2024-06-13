@@ -1,6 +1,6 @@
 import { Modal } from "harrysimodal";
 
-import useFetchCartItem from "../../hooks/cart-items/useFetchCartItem";
+import useCartItem from "../../hooks/cart-items/useCartItem";
 
 import CartItemComponent from "../CartItem/CartItem";
 import PriceInfoBox from "../PriceInfoBox/PriceInfoBox";
@@ -13,7 +13,7 @@ interface CartItemModalProps {
 }
 
 export default function CartItemModal({ isModalOpen, closeModal }: CartItemModalProps) {
-  const { cartItems, cartItemLength, totalPrice } = useFetchCartItem();
+  const { cartItems, cartItemLength, totalPrice } = useCartItem();
 
   return (
     <Modal

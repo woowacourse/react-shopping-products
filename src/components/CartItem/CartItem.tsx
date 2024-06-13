@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+
+import useToasts from "../../hooks/useToasts";
+import useRemoveCartItem from "../../hooks/cart-items/useRemoveCartItem";
 import usePatchCartItemQuantity from "../../hooks/cart-items/usePatchCartItemQuantity";
 
 import Stepper from "../Stepper/Stepper";
@@ -5,15 +9,28 @@ import Stepper from "../Stepper/Stepper";
 import { CartItem } from "../../types/cartItem";
 
 import * as Styled from "./CartItem.style";
-import useRemoveCartItem from "../../hooks/cart-items/useRemoveCartItem";
 
 interface CartItemProps {
   item: CartItem;
 }
 
 export default function CartItemComponent({ item }: CartItemProps) {
-  const { handleIncreaseQuantity, handleDecreaseQuantity } = usePatchCartItemQuantity();
-  const { handleRemoveCartItem } = useRemoveCartItem();
+  const { addToast } = useToasts();
+  const {
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
+    error: itemQuantityPatchError,
+  } = usePatchCartItemQuantity();
+  const { handleRemoveCartItem, error: itemRemoveError } = useRemoveCartItem();
+
+  useEffect(() => {
+    if (itemQuantityPatchError instanceof Error) {
+      addToast(itemQuantityPatchError.message);
+    }
+    if (itemRemoveError instanceof Error) {
+      addToast(itemRemoveError.message);
+    }
+  }, [itemQuantityPatchError, itemRemoveError, addToast]);
 
   return (
     <>
