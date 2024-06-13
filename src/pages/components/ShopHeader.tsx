@@ -1,4 +1,7 @@
-import useFetchCartItem from "../../hooks/cart-items/useFetchCartItem";
+import { useEffect } from "react";
+
+import useCartItem from "../../hooks/cart-items/useCartItem";
+import useToasts from "../../hooks/useToasts";
 
 import NavigationBar from "../../components/NavigationBar/NavigationBar";
 
@@ -9,7 +12,14 @@ interface ShopHeaderProps {
 }
 
 export default function ShopHeader({ openModal }: ShopHeaderProps) {
-  const { cartItemLength } = useFetchCartItem();
+  const { addToast } = useToasts();
+  const { cartItemLength, error } = useCartItem();
+
+  useEffect(() => {
+    if (error instanceof Error) {
+      addToast(error.message);
+    }
+  }, [error, addToast]);
 
   return (
     <NavigationBar>
