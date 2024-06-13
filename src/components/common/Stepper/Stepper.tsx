@@ -1,15 +1,9 @@
-import React from 'react';
-import RoundButton from './RoundButton';
 import styled from 'styled-components';
-import { PlusSign, MinusSign } from '../../../assets';
+import { MinusSign, PlusSign } from '../../../assets';
+import RoundButton, { RoundButtonProps } from './RoundButton';
 
-const PlusButton = ({ onClick, $isActive }: { onClick: () => void; $isActive?: boolean }) => {
-  return <RoundButtonWithImg imgSrc={PlusSign} onClick={onClick} $isActive={$isActive} />;
-};
-
-const MinusButton = ({ onClick, $isActive }: { onClick: () => void; $isActive?: boolean }) => {
-  return <RoundButtonWithImg imgSrc={MinusSign} onClick={onClick} $isActive={$isActive} />;
-};
+const PlusButton = (props: RoundButtonProps) => <RoundButtonWithImg imgSrc={PlusSign} {...props} />;
+const MinusButton = (props: RoundButtonProps) => <RoundButtonWithImg imgSrc={MinusSign} {...props} />;
 
 interface DisplayCounterProps {
   count: number;
@@ -18,25 +12,23 @@ interface DisplayCounterProps {
 }
 const DisplayCounter = ({ count, $width = 40, $height = 32 }: DisplayCounterProps) => {
   return (
-    <FlexDiv $width={$width} $height={$height}>
+    <CenteredDiv $width={$width} $height={$height}>
       {count}
-    </FlexDiv>
+    </CenteredDiv>
   );
 };
 
-interface RoundButtonWithImgProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface RoundButtonWithImgProps extends RoundButtonProps {
   imgSrc: string;
-  $isActive?: boolean;
 }
-const RoundButtonWithImg = ({ onClick, imgSrc, $isActive }: RoundButtonWithImgProps) => {
+const RoundButtonWithImg = (props: RoundButtonWithImgProps) => {
+  const buttonProps = { ...props, imgSrc: undefined };
   return (
-    <div>
-      <RoundButton width={28} height={28} onClick={onClick} $isActive={$isActive}>
-        <FlexDiv>
-          <Image src={imgSrc}></Image>
-        </FlexDiv>
-      </RoundButton>
-    </div>
+    <RoundButton {...buttonProps}>
+      <CenteredDiv>
+        <Image src={props.imgSrc}></Image>
+      </CenteredDiv>
+    </RoundButton>
   );
 };
 
@@ -47,7 +39,7 @@ const StyledLayout = styled.div`
   gap: 4px;
 `;
 
-const FlexDiv = styled.div<{ $width?: number; $height?: number }>`
+const CenteredDiv = styled.div<{ $width?: number; $height?: number }>`
   display: flex;
   align-items: center;
   justify-content: center;

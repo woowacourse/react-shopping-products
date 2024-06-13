@@ -1,11 +1,11 @@
 import React from 'react';
 import S from './RoundButton.styled';
-interface RoundButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  width: number;
-  height: number;
+export interface RoundButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+  width?: number;
+  height?: number;
   $isActive?: boolean;
 }
-const RoundButton = ({ width, height, children, $isActive = true, onClick }: RoundButtonProps) => {
+const RoundButton = ({ width = 28, height = 28, children, $isActive = true, onClick }: RoundButtonProps) => {
   return (
     <S.RoundButton onClick={onClick} width={width} height={height} $isActive={$isActive}>
       {children}
