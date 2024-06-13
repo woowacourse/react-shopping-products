@@ -1,41 +1,40 @@
 import * as Styled from './CartToggleButton.styled';
 
 import { IMAGES } from '@/assets';
-import { AdjustQuantityButton } from '../common/adjustQuantityButton/AdjustQuantityButton';
-import { useToast } from '@/hooks/useToast';
+import { AdjustQuantityButton } from '../../common/adjustQuantityButton/AdjustQuantityButton';
 import { CartItemInfo } from '@/types/cartItem';
 
 interface CartItemButtonProp {
   productId: number;
   cartItemList?: CartItemInfo[];
-  addCartItemMutation: (productId: number) => void;
+  handleAddCartItem: (productId: number) => void;
+  handleAdjustQuantity: (quantity: number, cartItemId: number) => void;
   matchCartItem: (productId: number) => CartItemInfo | undefined;
 }
 
 const CartToggleButton = ({
   productId,
   cartItemList,
-  addCartItemMutation,
+  handleAddCartItem,
+  handleAdjustQuantity,
   matchCartItem,
 }: CartItemButtonProp) => {
-  const { toastError } = useToast();
-
   return (
     <>
       {matchCartItem(productId) ? (
         <Styled.HandleCartItemButton $isInCart={true}>
-          <AdjustQuantityButton productId={productId} />
+          <AdjustQuantityButton
+            matchCartItem={matchCartItem}
+            productId={productId}
+            handleAdjustQuantity={handleAdjustQuantity}
+          />
         </Styled.HandleCartItemButton>
       ) : (
         <Styled.HandleCartItemButton
           $isInCart={false}
           onClick={() => {
-            if (!cartItemList) return;
-            if (cartItemList.length >= 20) {
-              toastError('장바구니에 더 이상 추가할 수 없습니다.');
-              return;
-            }
-            addCartItemMutation(productId);
+            if (!cartItemList) return alert('해당 제품은 없는 제품 입니다.');
+            handleAddCartItem(productId);
           }}
         >
           <img src={IMAGES.ADD_SHOPPING_CART} alt="장바구니에 담기버튼" />

@@ -1,6 +1,6 @@
 import * as Styled from './ProductCardList.styled';
-import CartToggleButton from '../cartToggleButton/CartToggleButton';
-import Spinner from '../common/spinner/Spinner';
+import CartToggleButton from '../../cart/cartToggleButton/CartToggleButton';
+import Spinner from '../../common/spinner/Spinner';
 import ProductCard from '../productCard/ProductCard';
 
 import { Product } from '@/types/product';
@@ -11,7 +11,8 @@ interface ProductCardListProp {
   isLoading: boolean;
   isFetching: boolean;
   cartItemList?: CartItemInfo[];
-  addCartItemMutation: (productId: number) => void;
+  handleAddCartItem: (productId: number) => void;
+  handleAdjustQuantity: (quantity: number, cartItemId: number) => void;
   matchCartItem: (productId: number) => CartItemInfo | undefined;
 }
 
@@ -20,7 +21,8 @@ const ProductCardList = ({
   productList,
   isLoading,
   cartItemList,
-  addCartItemMutation,
+  handleAddCartItem,
+  handleAdjustQuantity,
   matchCartItem,
 }: ProductCardListProp) => {
   return (
@@ -32,7 +34,8 @@ const ProductCardList = ({
               <CartToggleButton
                 productId={product.id}
                 cartItemList={cartItemList}
-                addCartItemMutation={addCartItemMutation}
+                handleAddCartItem={handleAddCartItem}
+                handleAdjustQuantity={handleAdjustQuantity}
                 matchCartItem={matchCartItem}
               />
             </ProductCard>

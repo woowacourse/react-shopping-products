@@ -1,10 +1,23 @@
-import useCartItemList from '@/hooks/useCartItemList';
+import { CartItemInfo } from '@/types/cartItem';
 import CartItem from './CartItem';
 import * as Styled from './CartItemList.styled';
 import { koMoneyFormat } from '@/utils/koMoneyFormat';
 
-const CartItemList = () => {
-  const { cartItemList, deleteCartItemMutation, totalCartItemPrice } = useCartItemList();
+interface CartItemListProp {
+  cartItemList?: CartItemInfo[];
+  matchCartItem: (productId: number) => CartItemInfo | undefined;
+  handleDeleteCartItem: (cartId: number) => void;
+  handleAdjustQuantity: (quantity: number, cartItemId: number) => void;
+  totalCartItemPrice: number;
+}
+
+const CartItemList = ({
+  cartItemList,
+  handleDeleteCartItem,
+  handleAdjustQuantity,
+  matchCartItem,
+  totalCartItemPrice,
+}: CartItemListProp) => {
   return (
     <Styled.CartItemListContainer>
       {cartItemList?.map((cartItem) => {
@@ -12,11 +25,10 @@ const CartItemList = () => {
           <CartItem
             key={cartItem.product.id}
             cartId={cartItem.id}
-            productId={cartItem.product.id}
-            img={cartItem.product.imageUrl}
-            productName={cartItem.product.name}
-            productPrice={cartItem.product.price}
-            deleteCartItem={deleteCartItemMutation}
+            cartItemProduct={cartItem.product}
+            handleDeleteCartItem={handleDeleteCartItem}
+            handleAdjustQuantity={handleAdjustQuantity}
+            matchCartItem={matchCartItem}
           />
         );
       })}

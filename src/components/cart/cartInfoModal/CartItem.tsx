@@ -1,23 +1,25 @@
 import { koMoneyFormat } from '@/utils/koMoneyFormat';
-import { AdjustQuantityButton } from '../common/adjustQuantityButton/AdjustQuantityButton';
+import { AdjustQuantityButton } from '../../common/adjustQuantityButton/AdjustQuantityButton';
 import * as Styled from './CartItem.styled';
+import { CartItemInfo, CartItemInfoProduct } from '@/types/cartItem';
 
 interface CartItemProp {
-  productId: number;
+  cartItemProduct: CartItemInfoProduct;
   cartId: number;
-  img: string;
-  productName: string;
-  productPrice: number;
-  deleteCartItem: (cartId: number) => void;
+
+  matchCartItem: (productId: number) => CartItemInfo | undefined;
+  handleDeleteCartItem: (cartId: number) => void;
+  handleAdjustQuantity: (quantity: number, cartItemId: number) => void;
 }
+
 const CartItem = ({
+  cartItemProduct,
   cartId,
-  deleteCartItem,
-  productId,
-  img,
-  productName,
-  productPrice,
+  handleDeleteCartItem,
+  handleAdjustQuantity,
+  matchCartItem,
 }: CartItemProp) => {
+  const { id: productId, imageUrl: img, name: productName, price: productPrice } = cartItemProduct;
   return (
     <Styled.CartItem>
       <Styled.Divider />
@@ -28,12 +30,16 @@ const CartItem = ({
             <Styled.ProductName>{productName}</Styled.ProductName>
             <Styled.ProductPrice>{koMoneyFormat(productPrice)}</Styled.ProductPrice>
             <Styled.CartButtonBox>
-              <AdjustQuantityButton productId={productId} />
+              <AdjustQuantityButton
+                productId={productId}
+                handleAdjustQuantity={handleAdjustQuantity}
+                matchCartItem={matchCartItem}
+              />
             </Styled.CartButtonBox>
           </Styled.ProductItemInfo>
           <Styled.DeleteButton
             onClick={() => {
-              deleteCartItem(cartId);
+              handleDeleteCartItem(cartId);
             }}
           >
             삭제
