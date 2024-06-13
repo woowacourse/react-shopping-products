@@ -10,7 +10,6 @@ import { useToast } from '@/hooks/useToast';
 import { ERROR } from '@/constant/message';
 
 const ProductListPage = () => {
-  const [cartItemCount, setCartItemCount] = useState(0);
   const [selectBarCondition, setSelectBarCondition] = useState({
     category: 'all',
     sort: 'priceAsc',
@@ -24,11 +23,6 @@ const ProductListPage = () => {
       showToast({ message: ERROR.fetchCartItems, duration: 3000 });
     }
   }, [cartItemsQueryError, showToast]);
-
-  useEffect(() => {
-    setCartItemCount(cartItems.length);
-  }, [cartItems]);
-
   const handleSelectBarCondition = (filter: string, condition: string) => {
     const newCondition = { ...selectBarCondition, [filter]: condition };
     setSelectBarCondition(newCondition);
@@ -37,7 +31,7 @@ const ProductListPage = () => {
   return (
     <div className={styles.productListPageContainer}>
       <ProductListHeader
-        cartItemCount={cartItemCount}
+        cartItemCount={cartItems === undefined ? 0 : cartItems.length}
         handleHeaderButton={() => setIsModalOpen(!isModalOpen)}
       />
       <div className={styles.productContentContainer}>
