@@ -1,11 +1,22 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  MutationKey,
+  UseMutationOptions,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { CART_KEYS } from './queryKeys';
 import useToast from '../../useToast';
 
 import { deleteCartItem } from '@/api/cart';
+import { MutationResponse } from '@/types/cartItem';
 
-const useDeleteCartItemQuery = () => {
+type UseDeleteCartItemQueryProp = Omit<
+  UseMutationOptions<MutationResponse, Error, number, MutationKey>,
+  'mutationKey' | 'mutationFn'
+>;
+
+const useDeleteCartItemQuery = (mutationOptions?: UseDeleteCartItemQueryProp) => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -18,6 +29,7 @@ const useDeleteCartItemQuery = () => {
     onError: (error) => {
       toast.error(error.message);
     },
+    ...mutationOptions,
   });
 };
 

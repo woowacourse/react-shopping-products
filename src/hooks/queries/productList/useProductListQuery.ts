@@ -1,18 +1,36 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  QueryKey,
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 
 import { PRODUCT_KEYS } from './queryKeys';
 import useNetworkStatus from '../../useNetworkStatus';
 
 import { fetchProductList } from '@/api/product';
 import { PAGE_SIZE } from '@/constants/config';
-import { ProductCategory, SortValue } from '@/types/product';
+import { ProductCategory, ProductResponse, SortValue } from '@/types/product';
+
+type infinityQueryOptions = Omit<
+  UseInfiniteQueryOptions<
+    ProductResponse,
+    Error,
+    InfiniteData<ProductResponse, unknown>,
+    ProductResponse,
+    QueryKey,
+    number
+  >,
+  'queryKey' | 'queryFn'
+>;
 
 interface FetchProductListProps {
   category?: ProductCategory;
   sortOptions?: SortValue;
+  queryOptions?: infinityQueryOptions;
 }
 
-const useProductListQuery = ({ category, sortOptions }: FetchProductListProps) => {
+const useProductListQuery = ({ category, sortOptions, queryOptions }: FetchProductListProps) => {
   useNetworkStatus();
 
   return useInfiniteQuery({
@@ -34,6 +52,7 @@ const useProductListQuery = ({ category, sortOptions }: FetchProductListProps) =
       // 0부터 4까지 4*5=20개 이으로 다음 페이지를 5로 설정.
       return lastPageParam === 0 ? PAGE_SIZE.firstPageUnit : lastPageParam + PAGE_SIZE.nextPageUnit;
     },
+    ...queryOptions,
   });
 };
 

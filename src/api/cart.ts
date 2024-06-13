@@ -2,9 +2,7 @@ import { AUTH_HEADER } from './auth';
 import { END_POINT } from './endpoints';
 import fetcher from './fetcher';
 
-import { CartItemInfo, UpdateCartItemQuantityParameter } from '@/types/cartItem';
-
-type MutationResponse = Record<'status', number>;
+import { CartItemInfo, MutationResponse, UpdateCartItemQuantityParameter } from '@/types/cartItem';
 
 export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
   const response = await fetcher.get({

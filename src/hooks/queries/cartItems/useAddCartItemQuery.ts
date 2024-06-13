@@ -1,12 +1,23 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  MutationKey,
+  UseMutationOptions,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { CART_KEYS } from './queryKeys';
 
 import { addCartItem } from '@/api/cart';
+import { MutationResponse } from '@/types/cartItem';
 
 import useToast from '@/hooks/useToast';
 
-const useAddCartItemQuery = () => {
+type UseAddCartItemQueryProp = Omit<
+  UseMutationOptions<MutationResponse, Error, number, MutationKey>,
+  'mutationKey' | 'mutationFn'
+>;
+
+const useAddCartItemQuery = (mutationOptions?: UseAddCartItemQueryProp) => {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -19,6 +30,7 @@ const useAddCartItemQuery = () => {
     onError: (error) => {
       toast.error(error.message);
     },
+    ...mutationOptions,
   });
 };
 

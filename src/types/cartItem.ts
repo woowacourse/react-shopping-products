@@ -19,3 +19,5 @@ export interface UpdateCartItemQuantityParameter {
   cartId: number;
   quantity: number;
 }
+
+export type MutationResponse = Record<'status', number>;
