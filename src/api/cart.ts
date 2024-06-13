@@ -1,22 +1,5 @@
-import { CartItem } from '../types';
-import { generateQueryParams } from '../utils/generateQueryParams';
 import { HEADERS } from './common';
 import { CART_ITEMS_ENDPOINT } from './endpoints';
-
-export const fetchCartItems = async (): Promise<CartItem[]> => {
-  const params = generateQueryParams({ size: 100 });
-  const response = await fetch(`${CART_ITEMS_ENDPOINT}?${params}`, {
-    method: 'GET',
-    headers: HEADERS,
-  });
-
-  if (!response.ok) {
-    throw new Error(`${response.status}`);
-  }
-
-  const data = await response.json();
-  return data.content;
-};
 
 export interface AddCartItemArgs {
   productId: number;
