@@ -32,7 +32,7 @@ const Toast = ({ id, message, duration }: ToastState) => {
   }, [duration]);
 
   return (
-    <Styled.Container isClose={isClose}>
+    <Styled.Container $isClose={isClose}>
       <Styled.ToastMessage>{message}</Styled.ToastMessage>
     </Styled.Container>
   );

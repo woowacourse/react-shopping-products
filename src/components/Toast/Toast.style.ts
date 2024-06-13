@@ -16,7 +16,7 @@ export const toastSlideOut = keyframes`
   }
 `;
 
-export const Container = styled.div<{ isClose: boolean }>`
+export const Container = styled.div<{ $isClose: boolean }>`
   width: 400px;
 
   position: relative;
@@ -30,7 +30,8 @@ export const Container = styled.div<{ isClose: boolean }>`
   border-radius: 8px;
   background-color: #ffc9c9;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
-  animation: ${({ isClose }) => (isClose ? toastSlideOut : toastSlideIn)} 0.4s ease-in-out forwards;
+  animation: ${({ $isClose }) => ($isClose ? toastSlideOut : toastSlideIn)} 0.4s ease-in-out
+    forwards;
   overflow-x: hidden;
 `;
 
