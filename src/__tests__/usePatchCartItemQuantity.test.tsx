@@ -1,19 +1,19 @@
 import { act } from "react";
-
 import { waitFor } from "@testing-library/react";
+import { HttpResponse, http } from "msw";
+import { vi } from "vitest";
 
-import useFetchCartItem from "../hooks/cart-items/useFetchCartItem";
-import usePatchCartItemQuantity from "../hooks/cart-items/usePatchCartItemQuantity";
 import useToasts from "../hooks/useToasts";
+import useCartItem from "../hooks/cart-items/useCartItem";
+import usePatchCartItemQuantity from "../hooks/cart-items/usePatchCartItemQuantity";
 
 import renderTestHook from "./utils/renderTestHook";
 
 import { CART_ITEMS } from "../mocks/data/cart/cart-items";
-import { CartItem } from "../types/cartItem";
-import { ENDPOINT, PRODUCTS_ERROR_MESSAGES } from "../constants/apis";
 import { server } from "../mocks/server";
-import { HttpResponse, http } from "msw";
-import { vi } from "vitest";
+
+import { ENDPOINT, PRODUCTS_ERROR_MESSAGES } from "../constants/apis";
+import { CartItem } from "../types/cartItem";
 
 vi.mock("/src/hooks/useToasts.ts", () => {
   const toastsMock = {
@@ -30,10 +30,10 @@ describe("usePatchCartItemQuantity", () => {
   describe("상품의 수량 변경", () => {
     it("상품의 수량을 1 증가시킬 수 있다.", async () => {
       const { result } = renderTestHook(() => {
-        const useFetchCartItemResult = useFetchCartItem();
+        const useCartItemResult = useCartItem();
         const usePatchCartItemQuantityResult = usePatchCartItemQuantity();
 
-        return { ...useFetchCartItemResult, ...usePatchCartItemQuantityResult };
+        return { ...useCartItemResult, ...usePatchCartItemQuantityResult };
       });
 
       const EXPECTED_CART_ITEM_LENGTH = CART_ITEMS.content.length;
@@ -62,10 +62,10 @@ describe("usePatchCartItemQuantity", () => {
 
     it("상품의 수량을 1 감소시킬 수 있다.", async () => {
       const { result } = renderTestHook(() => {
-        const useFetchCartItemResult = useFetchCartItem();
+        const useCartItemResult = useCartItem();
         const usePatchCartItemQuantityResult = usePatchCartItemQuantity();
 
-        return { ...useFetchCartItemResult, ...usePatchCartItemQuantityResult };
+        return { ...useCartItemResult, ...usePatchCartItemQuantityResult };
       });
 
       const EXPECTED_CART_ITEM_LENGTH = CART_ITEMS.content.length;
@@ -102,10 +102,10 @@ describe("usePatchCartItemQuantity", () => {
       );
 
       const { result } = renderTestHook(() => {
-        const useFetchCartItemResult = useFetchCartItem();
+        const useCartItemResult = useCartItem();
         const usePatchCartItemQuantityResult = usePatchCartItemQuantity();
 
-        return { ...useFetchCartItemResult, ...usePatchCartItemQuantityResult };
+        return { ...useCartItemResult, ...usePatchCartItemQuantityResult };
       });
 
       const EXPECTED_CART_ITEM_LENGTH = CART_ITEMS.content.length;

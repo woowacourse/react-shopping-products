@@ -7,9 +7,9 @@ import { vi } from "vitest";
 
 import { waitFor } from "@testing-library/react";
 
-import useFetchCartItem from "../hooks/cart-items/useFetchCartItem";
-import useRemoveCartItem from "../hooks/cart-items/useRemoveCartItem";
 import useToasts from "../hooks/useToasts";
+import useCartItem from "../hooks/cart-items/useCartItem";
+import useRemoveCartItem from "../hooks/cart-items/useRemoveCartItem";
 
 import renderTestHook from "./utils/renderTestHook";
 
@@ -32,10 +32,10 @@ describe("useRemoveCartItem", () => {
   describe("상품 삭제", () => {
     it.only("장바구니에 담긴 상품을 삭제할 수 있다", async () => {
       const { result } = renderTestHook(() => {
-        const useFetchCartItemResult = useFetchCartItem();
+        const useCartItemResult = useCartItem();
         const useRemoveCartItemResult = useRemoveCartItem();
 
-        return { ...useFetchCartItemResult, ...useRemoveCartItemResult };
+        return { ...useCartItemResult, ...useRemoveCartItemResult };
       });
 
       const EXPECTED_CART_ITEM_LENGTH = CART_ITEMS.content.length;
@@ -62,10 +62,10 @@ describe("useRemoveCartItem", () => {
       );
 
       const { result } = renderTestHook(() => {
-        const useFetchCartItemResult = useFetchCartItem();
+        const useCartItemResult = useCartItem();
         const useRemoveCartItemResult = useRemoveCartItem();
 
-        return { ...useFetchCartItemResult, ...useRemoveCartItemResult };
+        return { ...useCartItemResult, ...useRemoveCartItemResult };
       });
 
       const EXPECTED_CART_ITEM_LENGTH = CART_ITEMS.content.length;

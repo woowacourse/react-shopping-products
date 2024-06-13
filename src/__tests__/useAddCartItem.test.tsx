@@ -5,7 +5,7 @@ import { HttpResponse, http } from "msw";
 import { waitFor } from "@testing-library/react";
 
 import useAddCartItem from "../hooks/cart-items/useAddCartItem";
-import useFetchCartItem from "../hooks/cart-items/useFetchCartItem";
+import useCartItem from "../hooks/cart-items/useCartItem";
 import useToasts from "../hooks/useToasts";
 
 import renderTestHook from "./utils/renderTestHook";
@@ -37,10 +37,10 @@ describe("useAddCartItem", () => {
 
     it("장바구니에 새로운 상품을 추가할 수 있다.", async () => {
       const { result } = renderTestHook(() => {
-        const useFetchCartItemResult = useFetchCartItem();
+        const useCartItemResult = useCartItem();
         const useAddCartItemResult = useAddCartItem();
 
-        return { ...useFetchCartItemResult, ...useAddCartItemResult };
+        return { ...useCartItemResult, ...useAddCartItemResult };
       });
 
       const INITIAL_CART_ITEM_LENGTH = CART_ITEMS.content.length;
@@ -70,10 +70,10 @@ describe("useAddCartItem", () => {
       );
 
       const { result } = renderTestHook(() => {
-        const useFetchCartItemResult = useFetchCartItem();
+        const useCartItemResult = useCartItem();
         const useAddCartItemResult = useAddCartItem();
 
-        return { ...useFetchCartItemResult, ...useAddCartItemResult };
+        return { ...useCartItemResult, ...useAddCartItemResult };
       });
 
       const INITIAL_CART_ITEM_LENGTH = CART_ITEMS.content.length;

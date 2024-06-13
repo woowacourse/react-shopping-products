@@ -1,10 +1,9 @@
 import { act } from "react";
 import { waitFor } from "@testing-library/react";
+import { HttpResponse, http } from "msw";
 
 import useToasts from "../hooks/useToasts";
 import useFetchProducts from "../hooks/products/useFetchProducts";
-
-import { HttpResponse, http } from "msw";
 
 import { vi } from "vitest";
 import { server } from "../mocks/server";
