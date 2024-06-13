@@ -21,6 +21,7 @@ export const ProductItem = ({ product }: { product: Product }) => {
     handlePatchCartItem,
     isProductInCart,
   } = useCartItems();
+
   const cartItem = cartItems.find((item) => item.product.id === product.id);
   const productCount = cartItem ? cartItem.quantity : 1;
 

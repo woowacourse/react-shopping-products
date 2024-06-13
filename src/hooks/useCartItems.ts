@@ -1,10 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getCartItems, addCartItem, removeCartItem, patchCartItem } from "../api/cart";
+import { useQuery } from "@tanstack/react-query";
+import { addCartItem, getCartItems, patchCartItem, removeCartItem } from "../api/cart";
 import { QUERY_KEYS } from "../constants/queryKeys";
+import useCartMutation from "./useCartMutation";
 
 interface UseCartItemsResult {
   cartItems: Cart[];
-  // cartItemsCount: number;
   isLoading: boolean;
   error: unknown;
   handleAddCartItem: (id: number) => void;
@@ -14,8 +14,6 @@ interface UseCartItemsResult {
 }
 
 const useCartItems = (): UseCartItemsResult => {
-  const queryClient = useQueryClient();
-
   const {
     data: cartItems = [],
     isLoading,
@@ -25,30 +23,18 @@ const useCartItems = (): UseCartItemsResult => {
     queryFn: getCartItems,
   });
 
-  const addMutation = useMutation({
-    mutationFn: addCartItem,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
-    },
-  });
-
-  const removeMutation = useMutation({
+  const addMutation = useCartMutation<number>({ mutationFn: addCartItem });
+  const removeMutation = useCartMutation<number>({
     mutationFn: (id: number) => {
       const cartItem = cartItems.find((item) => item.product.id === id);
       return cartItem ? removeCartItem(cartItem.id) : Promise.reject("Item not found");
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
-    },
   });
 
-  const patchMutation = useMutation({
+  const patchMutation = useCartMutation<{ id: number; newQuantity: number }>({
     mutationFn: ({ id, newQuantity }: { id: number; newQuantity: number }) => {
       const cartItem = cartItems.find((item) => item.product.id === id);
       return cartItem ? patchCartItem(cartItem.id, newQuantity) : Promise.reject("Item not found");
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART] });
     },
   });
 
@@ -70,7 +56,6 @@ const useCartItems = (): UseCartItemsResult => {
 
   return {
     cartItems,
-    // cartItemsCount: cartItems.length,
     isLoading,
     error,
     handleAddCartItem,
