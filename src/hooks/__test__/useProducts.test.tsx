@@ -11,8 +11,10 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe("useProduct 훅 테스트", () => {
   describe("상품 목록 조회", () => {
-    it("상품 목록을 가져올 수 있다", async () => {
+    it("상품 목록을 가져오면 isLoading 이 false 가 된다.", async () => {
       const { result } = renderHook(() => useProducts(), { wrapper });
+
+      expect(result.current.isLoading).toBe(true);
 
       await waitFor(() => expect(result.current.isLoading).toBe(false));
 
