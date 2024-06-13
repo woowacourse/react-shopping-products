@@ -2,9 +2,9 @@ import { InfiniteData } from '@tanstack/react-query';
 
 import * as Styled from './ProductCardList.styled';
 import CartToggleButton from '../cartToggleButton/CartToggleButton';
-import ProductCardListSkeleton from '../common/productCardSkeleton/ProductCardListSkeleton';
 import Spinner from '../common/spinner/Spinner';
 import ProductCard from '../productCard/ProductCard';
+import ProductCardListSkeleton from '../productCardSkeleton/ProductCardListSkeleton';
 
 import { ProductResponse } from '@/types/product';
 

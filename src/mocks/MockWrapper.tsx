@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren } from 'react';
 
 import { ToastContext } from '@/context/toast';
-import theme from '@/theme';
+import theme from '@/styles/theme';
 
 const MockWrapper = ({ children }: PropsWithChildren) => {
   const queryClient = new QueryClient({
