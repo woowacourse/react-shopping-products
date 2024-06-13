@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { QuantityUpdateButton } from '../index';
 import { Carts } from '../../types/fetch';
@@ -11,16 +11,11 @@ interface CartButtonProps {
   onAddClick: (event: React.MouseEvent) => void;
 }
 function CartButton({ cartItem, onAddClick }: CartButtonProps) {
-  const [isExistInCart, setIsExistInCart] = useState(
-    cartItem && cartItem.quantity > 0 ? true : false,
-  );
-
   const handleAddClick = (event: React.MouseEvent) => {
     onAddClick(event);
-    setIsExistInCart(true);
   };
 
-  return cartItem && isExistInCart ? (
+  return cartItem && cartItem.quantity > 0 ? (
     <QuantityUpdateButton item={cartItem} />
   ) : (
     <S.AddButton onClick={handleAddClick}>
