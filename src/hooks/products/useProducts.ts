@@ -1,8 +1,8 @@
 import { CATEGORY_LIST, Category } from "../../constants/category";
 import { SORT_LIST, Sort } from "../../constants/sort";
-import { useCallback, useState } from "react";
 
 import useInfiniteFetchProducts from "./useInfiniteFetchProducts";
+import { useState } from "react";
 
 const useProducts = () => {
   const [category, setCategory] = useState(CATEGORY_LIST[0]);
@@ -13,23 +13,17 @@ const useProducts = () => {
     sort,
   });
 
-  const handleCategoryChange = useCallback(
-    (newCategory: Category) => {
-      if (newCategory !== category) {
-        setCategory(newCategory);
-      }
-    },
-    [category]
-  );
+  const handleCategoryChange = (newCategory: Category) => {
+    if (newCategory !== category) {
+      setCategory(newCategory);
+    }
+  };
 
-  const handleSortChange = useCallback(
-    (newSort: Sort) => {
-      if (newSort !== sort) {
-        setSort(newSort);
-      }
-    },
-    [sort]
-  );
+  const handleSortChange = (newSort: Sort) => {
+    if (newSort !== sort) {
+      setSort(newSort);
+    }
+  };
 
   return {
     products: data?.pages ?? [],
