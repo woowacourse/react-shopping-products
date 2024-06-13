@@ -4,6 +4,8 @@ const COLOR_PALETTE = {
   lightGrey: "#EAEAEA",
   grey: "#bdbdbd",
 
+  blackTransparent: "rgba(0, 0, 0, 0.2)",
+
   success: "#34cceb",
   fail: "#fcb3b3",
 };

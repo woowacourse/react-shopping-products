@@ -1,3 +1,4 @@
+import COLOR_PALETTE from "../../style/colorPalette";
 import styled from "@emotion/styled";
 
 type WidthType = "fit" | "full";
@@ -25,7 +26,7 @@ const S = {
     width: ${(props) => (props.widthType === "fit" ? "fit-content" : "100%")};
     padding: ${(props) => (props.widthType === "fit" ? "6px" : "12px")};
     border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 1px solid ${COLOR_PALETTE.blackTransparent};
     background-color: #ffffff;
     font-size: 14px;
     cursor: pointer;
