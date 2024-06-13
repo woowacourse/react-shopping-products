@@ -1,22 +1,14 @@
-import { useContext } from 'react';
-
 import { Carts } from '../../types/fetch';
-import { CartContext } from '../../context/CartContext';
 import { QuantityUpdateButton } from '../index';
+import { useFetchDeleteCart } from '../../hooks';
 
 import * as S from './CartModalDetail.styled';
-import { useFetchDeleteCart } from '../../hooks';
 
 interface CartModalDetailProps {
   cartItems: Carts[];
 }
 
 function CartModalDetail({ cartItems }: CartModalDetailProps) {
-  // const cartContext = useContext(CartContext);
-  // if (!cartContext) {
-  //   throw new Error('CartContext가 비어있습니다.');
-  // }
-  // const { deleteCartItem } = cartContext;
   const { deleteCartItem } = useFetchDeleteCart();
 
   return (

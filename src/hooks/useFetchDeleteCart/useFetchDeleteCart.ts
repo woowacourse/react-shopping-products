@@ -3,14 +3,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteItem } from '../../api/products';
 import { fetchCartItems } from '../../api/cartItems';
 import { QUERY_KEYS } from '../../constants/queryKeys';
-import { PAGE } from '../../constants/page';
 
 const useFetchDeleteCart = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: async (id: number) => {
-      const cartItemsResponse = await fetchCartItems(PAGE.DEFAULT);
+      const cartItemsResponse = await fetchCartItems();
       const cartItemToDelete = cartItemsResponse.content.find(
         (item) => item.product.id === id,
       );
