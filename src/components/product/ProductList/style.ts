@@ -10,9 +10,48 @@ export const Grid = styled.div`
   height: 100%;
 `;
 
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  gap: 50px;
+`;
+
 export const LoadingContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+`;
+
+export const ErrorImage = styled.img`
+  width: 200px;
+`;
+
+export const ErrorMessage = styled.div`
+  font-size: 18px;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  text-align: center;
+`;
+
+export const RefetchButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 200px;
+  height: 40px;
+
+  border: 1px solid ${({ theme }) => theme.colors.gray};
+  border-radius: 8px;
+  font-size: 15px;
 `;

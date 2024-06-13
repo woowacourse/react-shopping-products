@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
-import useFetch from './useFetch';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Product } from '@_types/product';
 import { PRODUCTS_ENDPOINT } from '@_api/endpoints';
 import { INITIAL_PAGING_SIZE, PAGING_SIZE, START_PAGE_NUMBER } from '@_constants/api';
+import { useState } from 'react';
+import { fetchData } from '@_api/fetch';
+import { QUERY_KEYS } from '@_constants/queryKeys';
 
 export type SortType = 'desc' | 'asc';
 
 interface UseProductsResult {
   products: Product[];
-  loading: boolean;
+  refetch: () => void;
+  isLoading: boolean;
   error: Error | null;
   page: number;
   isLastPage: boolean;
@@ -20,62 +23,63 @@ interface UseProductsResult {
 
 interface FetchProductsResponse {
   last: boolean;
+  number: number;
   content: Product[];
 }
 
 export default function useProducts(): UseProductsResult {
-  const { error, loading, fetchData } = useFetch<FetchProductsResponse>({
-    url: PRODUCTS_ENDPOINT,
-  });
-
-  const [products, setProducts] = useState<Product[]>([]);
-  const [page, setPage] = useState(0);
   const [sort, setSort] = useState<SortType>('asc');
   const [category, setCategory] = useState<string>('');
-  const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
-  const getProducts = async () => {
-    fetchData({
-      page,
-      size: page === START_PAGE_NUMBER ? INITIAL_PAGING_SIZE : PAGING_SIZE,
+  const getProducts = async (pageParam: number) => {
+    return await fetchData<FetchProductsResponse>(PRODUCTS_ENDPOINT, {
+      page: pageParam,
+      size: pageParam === START_PAGE_NUMBER ? INITIAL_PAGING_SIZE : PAGING_SIZE,
       sort: `price,${sort}`,
       category,
-    }).then((response) => {
-      if (!response) return;
-      const { last, content } = response;
-
-      setIsLastPage(last);
-      setProducts((prevProducts) => (page === START_PAGE_NUMBER ? content : [...prevProducts, ...content]));
     });
   };
 
-  useEffect(() => {
-    if (!isLastPage) {
-      getProducts();
-    }
-  }, [page]);
+  const { data, refetch, error, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery<FetchProductsResponse>({
+    queryKey: [QUERY_KEYS.products, category, sort],
+    queryFn: ({ pageParam }) => getProducts(pageParam as number),
+    initialPageParam: START_PAGE_NUMBER,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.last) return undefined;
 
-  useEffect(() => {
-    setPage(START_PAGE_NUMBER);
-    setIsLastPage(false);
-    getProducts();
-  }, [category, sort]);
+      if (lastPage.number === START_PAGE_NUMBER) {
+        return lastPage.number + INITIAL_PAGING_SIZE / PAGING_SIZE;
+      } else {
+        return lastPage.number + 1;
+      }
+    },
+    networkMode: 'always',
+    retry(failureCount, error) {
+      const errorStatus = Number(error.message);
+      if (errorStatus >= 400 && errorStatus < 500) {
+        return false;
+      }
 
-  const fetchNextPage = () => {
-    if (isLastPage) return;
+      if (errorStatus >= 500 && errorStatus < 600) {
+        return failureCount < 3;
+      }
+      return false;
+    },
+  });
 
-    if (page === START_PAGE_NUMBER) setPage(page + INITIAL_PAGING_SIZE / PAGING_SIZE);
-    else setPage(page + 1);
-  };
+  const products = data?.pages.flatMap((page) => page.content) || [];
+  const page = data?.pageParams.length || 0;
+  const isLastPage = !hasNextPage;
 
   return {
     products,
-    loading,
+    refetch,
+    isLoading,
     error,
     page,
+    isLastPage,
     fetchNextPage,
     setCategory,
     setSort,
-    isLastPage,
   };
 }

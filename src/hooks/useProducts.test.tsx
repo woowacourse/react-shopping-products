@@ -3,58 +3,76 @@ import { HttpResponse, http } from 'msw';
 import useProducts, { SortType } from './useProducts';
 import server from '@_mocks/server';
 import { PRODUCTS_ENDPOINT } from '@_api/endpoints';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const createTestQueryClient = () => {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+};
+
+export const QueryClientTestWrapper = ({ children }: { children: React.ReactNode }) => {
+  const testQueryClient = createTestQueryClient();
+
+  return <QueryClientProvider client={testQueryClient}>{children}</QueryClientProvider>;
+};
 
 describe('useProducts', () => {
   describe('상품 목록 조회', () => {
     it('hook이 선언되면 상품 목록을 조회한다.', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: QueryClientTestWrapper });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
         expect(result.current.error).toBeNull();
       });
     });
 
-    it('상품 목록 조회 중 로딩 상태는 true가 된다.', () => {
-      const { result } = renderHook(() => useProducts());
+    it('상품 목록 조회 중 로딩 상태는 true가 된다.', async () => {
+      const { result } = renderHook(() => useProducts(), { wrapper: QueryClientTestWrapper });
 
-      expect(result.current.loading).toBe(true);
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(true);
+      });
     });
 
-    it('상품 목록 조회 중 에러가 발생하면 로딩 상태는 false, 에러 상태는 true가 된다.', async () => {
+    it('상품 목록 조회 중 에러가 발생하면 에러 상태가 true가 된다.', async () => {
       server.use(
         http.get(PRODUCTS_ENDPOINT, () => {
           return new HttpResponse(null, { status: 500 });
         })
       );
 
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: QueryClientTestWrapper });
 
       await waitFor(() => {
-        expect(result.current.products).toEqual([]);
-        expect(result.current.loading).toBe(false);
         expect(result.current.error).toBeTruthy();
+        expect(result.current.isLoading).toBe(false);
       });
     });
   });
 
   describe('페이지네이션', () => {
     it('hook이 선언되면 첫 페이지의 상품 20개를 불러온다', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: QueryClientTestWrapper });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
+        expect(result.current.page).toBe(1);
       });
     });
 
     it('fetchNextPage를 호출하면 다음 페이지의 상품 4개를 추가로 불러온다', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: QueryClientTestWrapper });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
-        expect(result.current.page).toBe(0);
+        expect(result.current.page).toBe(1);
       });
 
       act(() => {
@@ -63,57 +81,56 @@ describe('useProducts', () => {
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(24);
-        expect(result.current.page).toBe(5);
+        expect(result.current.page).toBe(2);
       });
     });
 
     it('모든 페이지의 상품을 불러오면 더 이상 요청하지 않는다.', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: QueryClientTestWrapper });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(20);
       });
 
       for (let i = 1; i < 21; i++) {
-        await waitFor(() => {
-          act(() => {
-            result.current.fetchNextPage();
-          });
+        act(() => {
+          result.current.fetchNextPage();
         });
 
-        const expectedLength = 20 + i * 4;
-
         await waitFor(() => {
+          const expectedLength = 20 + i * 4;
           expect(result.current.products).toHaveLength(expectedLength);
-          expect(result.current.page).toBe(i + 4);
+          expect(result.current.page).toBe(i + 1);
         });
       }
 
-      await act(async () => {
+      act(() => {
         result.current.fetchNextPage();
       });
 
       await waitFor(() => {
         expect(result.current.products).toHaveLength(100);
-        expect(result.current.page).toBe(24);
+        expect(result.current.page).toBe(21);
       });
     });
 
     it('페이지네이션으로 추가 데이터를 불러올 때 로딩 상태를 표시한다.', async () => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: QueryClientTestWrapper });
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
       });
 
       act(() => {
         result.current.fetchNextPage();
       });
 
-      expect(result.current.loading).toBe(true);
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(true);
+      });
 
       await waitFor(() => {
-        expect(result.current.loading).toBe(false);
+        expect(result.current.isLoading).toBe(false);
       });
     });
   });
@@ -128,7 +145,7 @@ describe('useProducts', () => {
     ];
 
     test.each(sortOptions)('$description', async ({ option }) => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: QueryClientTestWrapper });
 
       act(() => {
         result.current.setSort(option as SortType);
@@ -180,7 +197,7 @@ describe('useProducts', () => {
       },
     ];
     test.each(categories)('$description', async ({ category, expected }) => {
-      const { result } = renderHook(() => useProducts());
+      const { result } = renderHook(() => useProducts(), { wrapper: QueryClientTestWrapper });
 
       act(() => {
         result.current.setCategory(category);
