@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor, act } from '@testing-library/react';
 import { HttpResponse, http } from 'msw';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -9,20 +9,22 @@ import { SortingParam } from '../../types/sort';
 
 import { server } from '../../mocks/node';
 import { mockProductsResponse } from '../../mocks/products';
-import { act } from 'react';
 
 const queryClient = new QueryClient();
-
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
 describe('useFetchProducts', () => {
+  beforeEach(() => {
+    queryClient.clear();
+  });
+
   it('상품 목록 첫 조회시에는 20개의 아이템을 가져온다.', async () => {
     const { result } = renderHook(() => useFetchProducts(), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.data).toHaveLength(20);
+      expect(result.current.products).toHaveLength(20);
     });
   });
 
@@ -44,24 +46,28 @@ describe('useFetchProducts', () => {
     const { result } = renderHook(() => useFetchProducts(), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.data).toHaveLength(20);
+      expect(result.current.products).toHaveLength(20);
     });
 
-    act(() => result.current.fetchNextPage());
+    await act(async () => result.current.fetchNextPage());
 
     await waitFor(() => {
-      expect(result.current.data).toHaveLength(24);
+      expect(result.current.products).toHaveLength(24);
     });
   });
 
   it('마지막 페이지 도달 시 더 이상 요청하지 않는다.', async () => {
     const { result } = renderHook(() => useFetchProducts(), { wrapper });
 
-    await waitFor(() => {
-      expect(result.current.data).toHaveLength(20);
+    act(() => {
+      result.current.fetchNextPage();
     });
 
-    while (!result.current.isLast) {
+    await waitFor(() => {
+      expect(result.current.products).toHaveLength(20);
+    });
+
+    for (let i = 0; i < 21; i++) {
       await waitFor(() => {
         act(() => {
           result.current.fetchNextPage();
@@ -70,7 +76,7 @@ describe('useFetchProducts', () => {
     }
 
     await waitFor(() => {
-      expect(result.current.page).toBe(20);
+      expect(result.current.products.at(-1)!.id).toBe(36);
     });
 
     act(() => {
@@ -78,7 +84,7 @@ describe('useFetchProducts', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.page).toBe(20);
+      expect(result.current.products.at(-1)!.id).toBe(36);
     });
   });
 
@@ -122,8 +128,8 @@ describe('useFetchProducts', () => {
       const SORTED_MOCK_PRODUCTS = mockProducts.slice(0, 20);
 
       await waitFor(() => {
-        expect(result.current.data).toHaveLength(20);
-        expect(result.current.data).toEqual(SORTED_MOCK_PRODUCTS);
+        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toEqual(SORTED_MOCK_PRODUCTS);
       });
     },
   );
@@ -142,8 +148,8 @@ describe('useFetchProducts', () => {
       const FILTERED_MOCK_PRODUCTS = filteredMockProducts.slice(0, 20);
 
       await waitFor(() => {
-        expect(result.current.data).toHaveLength(20);
-        expect(result.current.data).toStrictEqual(FILTERED_MOCK_PRODUCTS);
+        expect(result.current.products).toHaveLength(20);
+        expect(result.current.products).toStrictEqual(FILTERED_MOCK_PRODUCTS);
       });
     },
   );
