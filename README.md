@@ -7,6 +7,7 @@
   - [x] onError에서 view 관련 로직을 컴포넌트단으로 옮기기
   - [x] box-sizing 속성으로 width 조정
   - [x] 정의해 둔 api 요청 데이터 size 상수 활용
+  - [x] useQuery의 select 옵션 활용해서 반환값 가공해보기
 
 - 리팩토링
 

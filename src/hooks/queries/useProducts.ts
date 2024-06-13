@@ -30,12 +30,13 @@ const useProductQuery = ({ selectBarCondition }: Props) => {
       if (lastPage.number === 0) return 5;
       return lastPage.number + 1;
     },
+    select: (data) => {
+      return data.pages.map((page) => page.content).flat();
+    },
   });
 
-  const products = data?.pages.map((page) => page.content).flat() ?? [];
-
   return {
-    products: filterByValidCategory(products),
+    products: filterByValidCategory(data ?? []),
     isProductsQueryError: isError,
     isProductsQuerySuccess: isSuccess,
     isProductsQueryFetching: isFetching,
