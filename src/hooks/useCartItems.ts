@@ -1,7 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { addCartItem, getCartItems, patchCartItem, removeCartItem } from "../api/cart";
-import { QUERY_KEYS } from "../constants/queryKeys";
+import { addCartItem, patchCartItem, removeCartItem } from "../api/cart";
 import useCartMutation from "./useCartMutation";
+import useGetCartItems from "./useGetCartItems";
 
 interface UseCartItemsResult {
   cartItems: Cart[];
@@ -14,15 +13,7 @@ interface UseCartItemsResult {
 }
 
 const useCartItems = (): UseCartItemsResult => {
-  const {
-    data: cartItems = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.CART],
-    queryFn: getCartItems,
-  });
-
+  const { data: cartItems = [], isLoading, error } = useGetCartItems();
   const addMutation = useCartMutation<number>({ mutationFn: addCartItem });
   const removeMutation = useCartMutation<number>({
     mutationFn: (id: number) => {
