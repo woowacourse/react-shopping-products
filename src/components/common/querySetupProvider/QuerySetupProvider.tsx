@@ -7,14 +7,6 @@ const QuerySetupProvider = ({ children }: { children: React.ReactNode }) => {
   const { toastError } = useToast();
 
   const queryClient = new QueryClient({
-    defaultOptions: {
-      mutations: {
-        networkMode: 'always',
-      },
-      queries: {
-        networkMode: 'always',
-      },
-    },
     queryCache: new QueryCache({
       onError: (error) => toastError(`${error.name}:${error.message}`),
     }),
