@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.section`
   display: grid;
@@ -7,4 +7,10 @@ export const Container = styled.section`
   margin-top: 28px;
 
   min-height: 100vh;
+`;
+
+export const ObserverTarget = styled.div<{ $isActive: boolean }>`
+  height: 10px;
+
+  display: ${({ $isActive }) => ($isActive ? "block" : "none")};
 `;

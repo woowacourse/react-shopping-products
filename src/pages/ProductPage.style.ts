@@ -51,9 +51,3 @@ export const SelectBoxContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-
-export const ObserverTarget = styled.div<{ $isActive: boolean }>`
-  height: 10px;
-
-  display: ${({ $isActive }) => ($isActive ? "block" : "none")};
-`;

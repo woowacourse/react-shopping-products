@@ -1,4 +1,4 @@
-import { styled, css } from 'styled-components';
+import { styled, css } from "styled-components";
 
 export const ProductItemBox = styled.article`
   width: 100%;
@@ -6,7 +6,7 @@ export const ProductItemBox = styled.article`
   border-radius: 8px;
 `;
 
-export const ProductImage = styled.div<{ $imageUrl: string }>`
+export const ProductImage = styled.div<{ $imageUrl?: string }>`
   width: 100%;
   height: 112px;
 
@@ -43,7 +43,7 @@ export const ProductFooter = styled.div`
   justify-content: flex-end;
 `;
 
-export const ProductCartButton = styled.button<{ $isInCart: boolean }>`
+export const ProductCartButton = styled.button<{ $isInCart?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -56,7 +56,7 @@ export const ProductCartButton = styled.button<{ $isInCart: boolean }>`
   cursor: pointer;
 
   ${({ $isInCart }) => css`
-    background-color: ${$isInCart ? '#EAEAEA' : '#000000'};
-    color: ${$isInCart ? '#000000' : '#FFFFFF'};
+    background-color: ${$isInCart ? "#EAEAEA" : "#000000"};
+    color: ${$isInCart ? "#000000" : "#FFFFFF"};
   `}
 `;

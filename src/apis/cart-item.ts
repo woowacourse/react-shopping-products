@@ -2,19 +2,14 @@ import { fetchClient } from "./fetchClient";
 
 import { generateBasicToken } from "../utils/generateBasicToken";
 
-import { CartItem } from "../types/cartItem";
+import { CartItems, CartItemsServerResponse } from "../types/cartItem";
 import { ENDPOINT, PRODUCTS_ERROR_MESSAGES } from "../constants/apis";
 
-interface CartItemResponse {
-  content: CartItem[];
-  totalElements: number;
-}
-
-export async function getCartItems(totalItemCount?: number): Promise<CartItemResponse | undefined> {
+async function getCartItems(totalItemCount?: number): Promise<CartItems | undefined> {
   const token = generateBasicToken();
   const cartItemUrl = createCartItemRequestUrl(totalItemCount);
 
-  const response = await fetchClient<CartItemResponse>({
+  const response = await fetchClient<CartItemsServerResponse>({
     url: cartItemUrl,
     method: "GET",
     errorMessage: PRODUCTS_ERROR_MESSAGES.fetchingCartItems,
@@ -23,10 +18,43 @@ export async function getCartItems(totalItemCount?: number): Promise<CartItemRes
 
   if (response) {
     return {
-      content: response.content,
+      cartItems: response.content,
       totalElements: response.totalElements,
     };
   }
+}
+
+export async function fetchCartItem() {
+  const firstCartItems = await getCartItems();
+
+  if (!firstCartItems) return;
+
+  if (firstCartItems.totalElements <= 20) {
+    return firstCartItems.cartItems;
+  }
+
+  const totalCartItems = await getCartItems(firstCartItems.totalElements);
+
+  return totalCartItems?.cartItems;
+}
+
+export async function patchCartItemQuantity({
+  cartItemId,
+  quantity,
+}: {
+  cartItemId: number;
+  quantity: number;
+}) {
+  const token = generateBasicToken();
+  const body = { cartItemId, quantity };
+
+  await fetchClient({
+    url: `${ENDPOINT.CART_ITEMS}/${cartItemId}`,
+    method: "PATCH",
+    errorMessage: PRODUCTS_ERROR_MESSAGES.changeQuantity,
+    body,
+    token,
+  });
 }
 
 export async function addCartItem(productId: number) {

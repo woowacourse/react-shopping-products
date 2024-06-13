@@ -18,9 +18,19 @@ export const PRODUCT_SORT_OPTIONS = {
   desc: "높은 가격순",
 } as const;
 
+export const PRODUCT_OPTIONS = {
+  category: PRODUCT_CATEGORIES,
+  sort: PRODUCT_SORT_OPTIONS,
+} as const;
+
 export type CategoryKeys = keyof typeof PRODUCT_CATEGORIES;
 export type CategoryQueryString = (typeof PRODUCT_CATEGORIES)[keyof typeof PRODUCT_CATEGORIES];
 
 export type SortOptionsKeys = keyof typeof PRODUCT_SORT_OPTIONS;
 export type SortOptionQueryString =
   (typeof PRODUCT_SORT_OPTIONS)[keyof typeof PRODUCT_SORT_OPTIONS];
+
+export type ProductOptionKeys = keyof typeof PRODUCT_OPTIONS;
+export type ProductOption = {
+  [K in keyof typeof PRODUCT_OPTIONS]: keyof (typeof PRODUCT_OPTIONS)[K];
+};
