@@ -9,10 +9,10 @@ import { ProductResponse } from '@/types/product';
 
 interface ProductCardListProp {
   data: InfiniteData<ProductResponse, unknown> | undefined;
-  isLoading: boolean;
+  isPending: boolean;
 }
 
-const ProductCardList = ({ data, isLoading }: ProductCardListProp) => {
+const ProductCardList = ({ data, isPending }: ProductCardListProp) => {
   return (
     <>
       <Styled.ProductCardListWrapper>
@@ -27,7 +27,7 @@ const ProductCardList = ({ data, isLoading }: ProductCardListProp) => {
             )),
           )}
       </Styled.ProductCardListWrapper>
-      {isLoading && <Spinner />}
+      {isPending && <Spinner />}
     </>
   );
 };

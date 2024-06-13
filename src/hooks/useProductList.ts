@@ -8,7 +8,7 @@ interface UseProductListProp {
 }
 
 const useProductList = ({ category, sortOptions }: UseProductListProp) => {
-  const { data, isLoading, hasNextPage, fetchNextPage } = useProductListQuery({
+  const { data, hasNextPage, fetchNextPage, isPending, isFetching } = useProductListQuery({
     category,
     sortOptions,
   });
@@ -17,7 +17,8 @@ const useProductList = ({ category, sortOptions }: UseProductListProp) => {
     data,
     hasNextPage,
     fetchNextPage,
-    isLoading,
+    isPending,
+    isFetching,
   };
 };
 
