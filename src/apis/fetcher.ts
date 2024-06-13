@@ -93,4 +93,6 @@ const errorHandler = async (url: string, options: Options, errorMessage: string)
 const getErrorMessage = (error: unknown) => {
   if (error instanceof TypeError) return ERROR_MESSAGE.OFFLINE;
   if (error instanceof Error) return error.message;
+
+  return ERROR_MESSAGE.UNKNOWN;
 };
