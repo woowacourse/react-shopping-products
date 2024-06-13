@@ -5,7 +5,7 @@ class HTTPError extends Error {
   title: string;
   content: string;
 
-  constructor(statusCode: number) {
+  constructor(statusCode: number, errorMessage?: string) {
     super();
     this.statusCode = statusCode;
 
@@ -43,7 +43,7 @@ class HTTPError extends Error {
 
     this.message = errorInfo?.title || "에러";
     this.title = errorInfo?.title || "에러";
-    this.content = errorInfo?.content || "에러가 발생했습니다.";
+    this.content = errorMessage || "에러가 발생했습니다.";
   }
 }
 

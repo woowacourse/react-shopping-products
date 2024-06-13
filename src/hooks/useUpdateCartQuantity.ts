@@ -1,7 +1,7 @@
 import { useUpdateCartItemQuantityMutation } from "@/hooks/server/useCartItems";
 
 const useUpdateItemQuantity = () => {
-  const { mutate, isPending } = useUpdateCartItemQuantityMutation();
+  const { mutate, isPending, error } = useUpdateCartItemQuantityMutation();
 
   const increaseQuantity = ({ cartId, itemQuantity }: { cartId: number; itemQuantity: number }) => {
     mutate({ cartId, quantity: itemQuantity + 1 });
@@ -15,6 +15,7 @@ const useUpdateItemQuantity = () => {
     increaseQuantity,
     decreaseQuantity,
     isPending,
+    error,
   };
 };
 

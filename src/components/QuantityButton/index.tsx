@@ -6,6 +6,7 @@ import { memo } from "react";
 
 const QuantityButton = ({ id }: { id: number }) => {
   const { data: cartItems } = useCartItemsQuery();
+
   const quantity = getQuantityInCart(cartItems || [], id);
   const cartId = convertProductIdToCartId(cartItems || [], id);
 

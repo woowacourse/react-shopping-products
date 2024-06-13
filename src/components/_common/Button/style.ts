@@ -8,7 +8,7 @@ export type BasicButtonProps = {
   height: number;
   borderRadius?: number;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  textColor?: string;
+  $textColor?: string;
   disabled: boolean;
   $backgroundColor: string;
   $borderType: ButtonBorderType;
@@ -20,7 +20,7 @@ export type BasicButtonProps = {
 const ButtonWrapper = styled.button<BasicButtonProps>`
   width: ${({ width }) => (width ? `${width}px` : "100%")};
   height: ${({ height }) => height}px;
-  color: ${({ textColor }) => (textColor ? textColor : "white")};
+  color: ${({ $textColor }) => ($textColor ? $textColor : "white")};
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : 15)}px;
   ${flexCenter};

@@ -11,7 +11,7 @@ interface RequestProps {
 }
 type FetchProps = Omit<RequestProps, "method">;
 
-const request = async ({ url, method, body, headers = {} }: RequestProps) => {
+const request = async ({ url, method, body, headers = {}, errorMessage }: RequestProps) => {
   const response = await fetch(url, {
     method,
     body: body ? JSON.stringify(body) : undefined,
@@ -22,16 +22,16 @@ const request = async ({ url, method, body, headers = {} }: RequestProps) => {
   });
 
   if (!response.ok) {
-    throw new CustomError(response.status);
+    throw new CustomError(response.status, errorMessage);
   }
 
   return response;
 };
 
-const networkRequest = async ({ url, method, body, headers = {} }: RequestProps) => {
-  const response = await request({ url, method, body, headers });
+const networkRequest = async ({ url, method, body, headers = {}, errorMessage }: RequestProps) => {
+  const response = await request({ url, method, body, headers, errorMessage });
   if (!response) {
-    throw new CustomError(HTTP_STATUS_CODE.NETWORK_ERROR);
+    throw new CustomError(HTTP_STATUS_CODE.NETWORK_ERROR, errorMessage);
   }
   return response;
 };

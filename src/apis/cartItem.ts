@@ -46,6 +46,7 @@ export const patchCartItem = async ({ cartId, quantity }: PatchCartItemParams) =
   return await fetcher.patch({
     url: `${SERVER_URL.apiUrl + END_POINT.cartItems}/${cartId}`,
     body: { quantity },
+    errorMessage: ERROR_MESSAGES.failPostCartItem,
   });
 };
 

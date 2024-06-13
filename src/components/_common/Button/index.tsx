@@ -11,7 +11,7 @@ type BasicButtonProps = {
   height: number;
   borderType: ButtonBorderType;
   onClick?: () => void;
-  textColor?: string;
+  $textColor?: string;
   disabled: boolean;
   backgroundColor: string;
   position: ButtonPosition;

@@ -11,6 +11,7 @@ import useFilteredProducts from "@/hooks/server/useFilteredProducts";
 import CartModal from "@/pages/cartModal";
 import { useCartItemsQuery } from "@/hooks/server/useCartItems";
 import EmptyState from "@/components/_common/EmptyState";
+import { ERROR_MESSAGES } from "@/constants/messages";
 
 export interface GetProductsProps {
   category: Category;
@@ -29,21 +30,25 @@ const ProductList = ({ onCloseModal, isModalOpen }: { onCloseModal: () => void; 
   const infiniteScrollConfig = { threshold: 0.25, rootMargin: "50px" };
   const { isIntersecting } = useIntersection(infiniteScrollConfig, ref);
 
-  const { data: cartItems } = useCartItemsQuery();
+  const { data: cartItems, error: cartItemsError } = useCartItemsQuery();
 
   const {
     fetchNextPage,
     data: products,
     isLoading,
     hasNextPage,
-    error,
+    error: productError,
   } = useFilteredProducts({
     category,
     sort,
   });
 
-  if (error) {
-    throw error;
+  if (cartItemsError) {
+    throw new Error(ERROR_MESSAGES.failGetCartItems);
+  }
+
+  if (productError) {
+    throw new Error(ERROR_MESSAGES.failGetProducts);
   }
 
   useEffect(() => {

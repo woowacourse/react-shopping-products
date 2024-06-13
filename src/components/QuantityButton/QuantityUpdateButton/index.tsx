@@ -4,7 +4,11 @@ import useUpdateItemQuantity from "@/hooks/useUpdateCartQuantity";
 import LoadingSpinner from "@/assets/loading.gif";
 
 const QuantityUpdateButton = ({ quantity, cartId }: { quantity: number; cartId: number }) => {
-  const { increaseQuantity, decreaseQuantity, isPending } = useUpdateItemQuantity();
+  const { increaseQuantity, decreaseQuantity, isPending, error } = useUpdateItemQuantity();
+
+  if (error) {
+    throw error;
+  }
 
   return (
     <S.UpdateButtonWrapper>
