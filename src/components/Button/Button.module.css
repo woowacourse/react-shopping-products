@@ -3,11 +3,6 @@
   background-color: transparent;
   border: none;
   padding: 0;
-
-  /* cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
-  &:focus {
-    outline: none;
-  } */
 }
 
 .buttonImg {
