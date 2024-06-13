@@ -30,7 +30,6 @@ export async function fetchCartItem() {
   if (!firstCartItems) return;
 
   if (firstCartItems.totalElements <= 20) {
-    // TODO : 왜 한 번 더 페칭하는지 브콜에게 설명하기
     return firstCartItems.cartItems;
   }
 
@@ -40,17 +39,17 @@ export async function fetchCartItem() {
 }
 
 export async function patchCartItemQuantity({
-  productId,
+  cartItemId,
   quantity,
 }: {
-  productId: number;
+  cartItemId: number;
   quantity: number;
 }) {
   const token = generateBasicToken();
-  const body = { productId, quantity };
+  const body = { cartItemId, quantity };
 
   await fetchClient({
-    url: `${ENDPOINT.CART_ITEMS}/${productId}`,
+    url: `${ENDPOINT.CART_ITEMS}/${cartItemId}`,
     method: "PATCH",
     errorMessage: PRODUCTS_ERROR_MESSAGES.changeQuantity,
     body,
