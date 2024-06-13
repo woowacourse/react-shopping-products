@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "@/constants/path";
 import ProductList from "@/pages/productListPage/productList";
 import useModal from "@/hooks/useModal";
+import { useCartItemQuantityQuery } from "@/hooks/server/useCartItems";
 
 const ProductListPage = () => {
   const navigate = useNavigate();
@@ -15,13 +16,15 @@ const ProductListPage = () => {
     navigate(PATH.RELOAD);
   };
 
+  const { data: cartItemQuantity } = useCartItemQuantityQuery();
+
   const { onOpenModal, onCloseModal, isModalOpen } = useModal();
 
   return (
     <>
       <Header>
         <Header.Title text="SHOP" />
-        <CartBadge onClick={onOpenModal} />
+        <CartBadge onClick={onOpenModal} count={cartItemQuantity} />
         <TopButton />
       </Header>
       <ErrorBoundary fallback={<ErrorFallback message="에러가 발생했습니다." resetError={reloadPage} />}>

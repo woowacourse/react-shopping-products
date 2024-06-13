@@ -41,9 +41,9 @@ class HTTPError extends Error {
         break;
     }
 
-    this.message = errorInfo?.title || "Error";
-    this.title = errorInfo?.title || "Error";
-    this.content = errorInfo?.content || "An error occurred. Please try again.";
+    this.message = errorInfo?.title || "에러";
+    this.title = errorInfo?.title || "에러";
+    this.content = errorInfo?.content || "에러가 발생했습니다.";
   }
 }
 

@@ -1,4 +1,4 @@
-import { deleteCartItem, getCartItems, getCartItemsQuantity, patchCartItem, postCartItem } from "@/apis/cartItem";
+import { deleteCartItem, getCartItems, getCartItemQuantity, patchCartItem, postCartItem } from "@/apis/cartItem";
 import { END_POINT } from "@/config/endPoint";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -8,6 +8,7 @@ const useCommonMutationOptions = () => {
   return {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [END_POINT.cartItems] });
+      queryClient.invalidateQueries({ queryKey: [END_POINT.cartItemsCount] });
     },
   };
 };
@@ -21,10 +22,10 @@ export const useCartItemsQuery = () => {
   return query;
 };
 
-export const useCartItemsQuantityQuery = () => {
+export const useCartItemQuantityQuery = () => {
   const query = useQuery({
     queryKey: [END_POINT.cartItemsCount],
-    queryFn: async () => await getCartItemsQuantity(),
+    queryFn: async () => await getCartItemQuantity(),
   });
 
   return query;

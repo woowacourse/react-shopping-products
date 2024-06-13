@@ -27,7 +27,10 @@ const CartModal = ({
             {isEmptyCart ? (
               <EmptyState type="cart" />
             ) : (
-              <>{cartItems && cartItems?.map((item) => <CartItemMemo item={item} cartItems={cartItems} />)}</>
+              <>
+                {cartItems &&
+                  cartItems?.map((item) => <CartItemMemo key={item.id} item={item} cartItems={cartItems} />)}
+              </>
             )}
           </ItemWrapper>
         </Modal.Content>
