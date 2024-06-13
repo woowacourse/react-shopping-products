@@ -5,7 +5,8 @@
   - [x] hooks에서 query훅 레이어 분리
   - [x] 불필요한 await waitFor 제거
   - [x] onError에서 view 관련 로직을 컴포넌트단으로 옮기기
-  - [x] box-sizing 속성으로 width 조작
+  - [x] box-sizing 속성으로 width 조정
+  - [x] 정의해 둔 api 요청 데이터 size 상수 활용
 
 - 리팩토링
 

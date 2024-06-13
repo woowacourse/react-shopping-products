@@ -1,7 +1,12 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import useProducts from '../queries/useProducts';
-import { productCategories, sortOptions } from '../../constant/products';
+import {
+  AFTER_FETCH_SIZE,
+  FIRST_FETCH_SIZE,
+  productCategories,
+  sortOptions,
+} from '../../constant/products';
 import { ToastProvider } from '@/context/ToastProvider';
 
 const queryClient = new QueryClient();
@@ -25,11 +30,11 @@ describe('useProducts 훅 테스트', () => {
 
     await waitFor(() => {
       expect(result.current.isProductsQuerySuccess).toBe(true);
-      expect(result.current.products).toHaveLength(20);
+      expect(result.current.products).toHaveLength(FIRST_FETCH_SIZE);
     });
   });
 
-  it('다음 페이지 상품 4개를 불러온다.', async () => {
+  it(`다음 페이지 상품 ${AFTER_FETCH_SIZE}개를 불러온다.`, async () => {
     const selectBarCondition = {
       category: 'all',
       sort: 'priceAsc',
@@ -44,7 +49,7 @@ describe('useProducts 훅 테스트', () => {
 
     await waitFor(() => {
       expect(result.current.isProductsQuerySuccess).toBe(true);
-      expect(result.current.products).toHaveLength(24);
+      expect(result.current.products).toHaveLength(FIRST_FETCH_SIZE + AFTER_FETCH_SIZE);
     });
   });
 
@@ -59,7 +64,7 @@ describe('useProducts 훅 테스트', () => {
 
     await waitFor(() => {
       expect(result.current.isProductsQuerySuccess).toBe(true);
-      expect(result.current.products).toHaveLength(20);
+      expect(result.current.products).toHaveLength(FIRST_FETCH_SIZE);
     });
 
     for (let i = 1; i < 21; i++) {
@@ -67,7 +72,7 @@ describe('useProducts 훅 테스트', () => {
         result.current.fetchNextPage();
       });
 
-      const expectedLength = 20 + i * 4;
+      const expectedLength = FIRST_FETCH_SIZE + i * AFTER_FETCH_SIZE;
 
       await waitFor(async () => {
         expect(result.current.products).toHaveLength(expectedLength);
@@ -121,7 +126,7 @@ describe('useProducts 훅 테스트', () => {
 
         await waitFor(() => {
           const products = result.current.products;
-          expect(products).toHaveLength(20);
+          expect(products).toHaveLength(FIRST_FETCH_SIZE);
 
           const isSorted = products?.every((product, index) => {
             if (index === 0) return true;

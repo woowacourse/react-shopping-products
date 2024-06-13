@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ProductType } from '@/types';
 import { fetchProducts } from '@/api';
-import { productCategories } from '@/constant/products';
+import { AFTER_FETCH_SIZE, FIRST_FETCH_SIZE, productCategories } from '@/constant/products';
 import { QUERY_KEY } from '@/constant/queryKey';
 import { formattedKey } from './useProducts.util';
 
@@ -21,7 +21,7 @@ const useProductQuery = ({ selectBarCondition }: Props) => {
   const { data, isError, isSuccess, fetchNextPage, isFetching } = useInfiniteQuery({
     queryKey: [QUERY_KEY.PRODUCT_ITEMS, params],
     queryFn: ({ pageParam }) => {
-      const size = pageParam === 0 ? 20 : 4;
+      const size = pageParam === 0 ? FIRST_FETCH_SIZE : AFTER_FETCH_SIZE;
       return fetchProducts({ ...params, size, page: pageParam });
     },
     initialPageParam: 0,
