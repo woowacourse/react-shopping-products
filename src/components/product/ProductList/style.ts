@@ -42,3 +42,10 @@ export const ErrorMessage = styled.div`
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   text-align: center;
 `;
+
+export const RefetchButton = styled.button`
+  width: 200px;
+  height: 30px;
+
+  font-size: 15px;
+`;

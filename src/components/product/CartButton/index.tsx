@@ -1,8 +1,8 @@
 import { AddCartIcon } from './Icons';
 import * as S from './style';
-import QuantityButton from '@_components/common/Buttons/QuantityButton';
 import { useMutateCartItems } from '@_hooks/useMutateCartItems';
 import useGetCartItems from '@_hooks/useGetCartItems';
+import QuantityButton from '@_components/common/QuantityButton';
 
 interface CartButtonProps {
   productId: number;

@@ -3,7 +3,6 @@ import { LoadingSpinner } from '@_components/common/LoadingSpinner/style';
 import { useToast } from '@_hooks/useToast';
 import { useEffect } from 'react';
 import errorImage from '@_assets/images/errorImage.png';
-import Button from '@_components/common/Buttons';
 
 interface ProductListProps {
   loading: boolean;
@@ -37,9 +36,7 @@ export default function ProductList({ error, loading, refetch, children }: React
           <S.ErrorImage src={errorImage} alt='에러 이미지' />
           <S.ErrorMessage>상품 목록을 불러오지 못했어요.</S.ErrorMessage>
         </S.ErrorContainer>
-        <Button width='200px' height='30px' fontSize='15px' onClick={refetch}>
-          다시 불러오기
-        </Button>
+        <S.RefetchButton onClick={refetch}>다시 불러오기</S.RefetchButton>
       </S.Wrapper>
     );
   }
