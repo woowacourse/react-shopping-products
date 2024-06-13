@@ -12,7 +12,7 @@ const BorderButton = ({
   onClick,
 }: React.PropsWithChildren<Props>) => {
   return (
-    <S.Button onClick={onClick} withType={widthType}>
+    <S.Button onClick={onClick} widthType={widthType}>
       {children}
     </S.Button>
   );
@@ -21,9 +21,9 @@ const BorderButton = ({
 export default BorderButton;
 
 const S = {
-  Button: styled.button<{ withType: WidthType }>`
-    width: ${(props) => (props.withType === "fit" ? "fit-content" : "100%")};
-    padding: ${(props) => (props.withType === "fit" ? "6px" : "12px")};
+  Button: styled.button<{ widthType: WidthType }>`
+    width: ${(props) => (props.widthType === "fit" ? "fit-content" : "100%")};
+    padding: ${(props) => (props.widthType === "fit" ? "6px" : "12px")};
     border-radius: 8px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     background-color: #ffffff;
