@@ -1,7 +1,7 @@
 import * as Styled from './Spinner.styled';
 
-const Spinner = () => {
-  return <Styled.SpinnerContainer />;
+const Spinner = ({ size }: { size?: number }) => {
+  return <Styled.SpinnerContainer $size={size} />;
 };
 
 export default Spinner;

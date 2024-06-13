@@ -5,7 +5,7 @@ export const PageContainer = styled.section`
   min-height: 100vh;
   position: relative;
 
-  background-color: white;
+  background-color: ${(props) => props.theme.color.white};
 `;
 
 export const CommonContainer = styled.div`
@@ -13,7 +13,7 @@ export const CommonContainer = styled.div`
   flex-direction: column;
   gap: 1.5rem;
 
-  padding: 6rem 1.5rem 8rem 1.5rem;
+  padding: 6rem 1.5rem 3rem 1.5rem;
 `;
 
 export const DropdownContainer = styled.div`

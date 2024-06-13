@@ -133,6 +133,13 @@ const reset = css`
     align-items: center;
     background-color: #f9f9f9;
   }
+
+  button {
+    border: none;
+    outline: none;
+    background-color: inherit;
+    cursor: pointer;
+  }
 `;
 
 const GlobalStyle = () => {

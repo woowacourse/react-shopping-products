@@ -2,14 +2,7 @@ import { AUTH_HEADER } from './auth';
 import { END_POINT } from './endpoints';
 import fetcher from './fetcher';
 
-import { CartItemInfo } from '@/types/cartItem';
-
-interface AddCartItemProp {
-  productId: number;
-  quantity?: number;
-}
-
-type MutationResponse = Record<'status', number>;
+import { CartItemInfo, MutationResponse, UpdateCartItemQuantityParameter } from '@/types/cartItem';
 
 export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
   const response = await fetcher.get({
@@ -22,10 +15,7 @@ export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
   return data.content;
 };
 
-export const addCartItem = async ({
-  productId,
-  quantity = 1,
-}: AddCartItemProp): Promise<MutationResponse> => {
+export const addCartItem = async (productId: number, quantity = 1): Promise<MutationResponse> => {
   const response = await fetcher.post({
     url: END_POINT.cartItems,
     headers: AUTH_HEADER,
@@ -45,4 +35,17 @@ export const deleteCartItem = async (cartId: number): Promise<MutationResponse> 
   });
 
   return { status: response.status };
+};
+
+export const updateItemQuantity = async ({
+  cartId,
+  quantity,
+}: UpdateCartItemQuantityParameter): Promise<MutationResponse> => {
+  const res = await fetcher.patch({
+    url: `${END_POINT.cartItems}/${cartId}`,
+    headers: AUTH_HEADER,
+    body: { quantity },
+  });
+
+  return { status: res.status };
 };

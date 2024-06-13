@@ -5,7 +5,7 @@ export const Header = styled.header`
   justify-content: space-between;
 
   position: fixed;
-  width: 24.3rem;
+  width: inherit;
   height: 4rem;
   align-items: center;
   padding: 0 1.3rem;
@@ -27,19 +27,20 @@ export const AppTitle = styled.button`
 `;
 
 export const ShoppingCartCount = styled.div`
-  width: 19px;
-  height: 19px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 100%;
-  z-index: 100;
-  color: black;
-  background-color: white;
-  font-size: 10px;
-  font-weight: 700;
-
   position: absolute;
   right: 1rem;
-  top: 32px;
+  top: 2rem;
+  z-index: 100;
+
+  width: 1.1875rem;
+  height: 1.1875rem;
+  border-radius: 100%;
+
+  background-color: ${(props) => props.theme.color.white};
+
+  color: ${(props) => props.theme.color.black};
+  ${(props) => props.theme.typography.cartItemCount};
 `;

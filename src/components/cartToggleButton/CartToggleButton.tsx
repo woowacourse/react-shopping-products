@@ -1,34 +1,41 @@
 import * as Styled from './CartToggleButton.styled';
+import Spinner from '../common/spinner/Spinner';
+import CountButtonContainer from '../countButtonContainer/CountButtonContainer';
 
 import { IMAGES } from '@/assets';
-import { CartItemInfo } from '@/types/cartItem';
+import useAddCartItemQuery from '@/hooks/queries/cartItems/useAddCartItemQuery';
+import useFetchCartItemsQuery from '@/hooks/queries/cartItems/useFetchCartItemsQuery';
+import { Product } from '@/types/product';
 
 interface CartItemButtonProp {
-  productId: number;
-  matchedCartItem: CartItemInfo | undefined;
-  handleAddCartItem: (productId: number) => void;
-  handleDeleteCartItem: (productId: number) => void;
+  product: Product;
 }
 
-const CartToggleButton = ({
-  productId,
-  matchedCartItem,
-  handleAddCartItem,
-  handleDeleteCartItem,
-}: CartItemButtonProp) => {
-  if (matchedCartItem) {
-    return (
-      <Styled.HandleCartItemButton $isInCart={true} onClick={() => handleDeleteCartItem(productId)}>
-        <img src={IMAGES.REMOVE_SHOPPING_CART} alt="장바구니에서 삭제버튼" />
-        빼기
-      </Styled.HandleCartItemButton>
-    );
+const CartToggleButton = ({ product }: CartItemButtonProp) => {
+  const { data: cartItems, isSuccess } = useFetchCartItemsQuery();
+  const { mutate: handleAddCartItem, isPending } = useAddCartItemQuery();
+
+  if (isSuccess) {
+    const matchedCartItem = cartItems.find((cartItem) => cartItem.product.id === product.id);
+
+    if (matchedCartItem) {
+      return (
+        <CountButtonContainer
+          cartItem={matchedCartItem}
+          testId={`cart-toggle-button-${product.id}`}
+        />
+      );
+    }
   }
 
   return (
-    <Styled.HandleCartItemButton $isInCart={false} onClick={() => handleAddCartItem(productId)}>
+    <Styled.HandleCartItemButton
+      $isDisabled={isPending}
+      disabled={isPending}
+      onClick={() => handleAddCartItem(product.id)}
+    >
       <img src={IMAGES.ADD_SHOPPING_CART} alt="장바구니에 담기버튼" />
-      담기
+      {isPending ? <Spinner size={25} /> : <span>담기</span>}
     </Styled.HandleCartItemButton>
   );
 };

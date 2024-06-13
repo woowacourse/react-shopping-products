@@ -1,8 +1,10 @@
 import { http, HttpResponse } from 'msw';
 
+import cartItems from './cartItems.json';
 import productList from './products.json';
 
 import { END_POINT } from '@/api/endpoints';
+import { AddCartItemParameter } from '@/types/cartItem';
 
 export const handlers = [
   http.get(END_POINT.products, ({ request }) => {
@@ -24,5 +26,41 @@ export const handlers = [
     }
 
     return HttpResponse.json(result);
+  }),
+
+  http.get(END_POINT.cartItems, () => {
+    return HttpResponse.json(cartItems);
+  }),
+
+  http.post(
+    END_POINT.cartItems,
+    async ({ request }: { request: { json: () => Promise<AddCartItemParameter> } }) => {
+      const { productId } = await request.json();
+
+      const mockCartItem = {
+        id: new Date().getTime(),
+        quantity: 1,
+        product: {
+          id: productId,
+          name: 'hello',
+          price: 10000000,
+          imageUrl: '',
+          category: 'kitchen',
+        },
+      };
+
+      const result = {
+        ...productList,
+        mockCartItem,
+      };
+
+      return HttpResponse.json(result);
+    },
+  ),
+
+  http.patch(`${END_POINT.cartItems}/:id`, ({ params }) => {
+    const { id } = params;
+
+    return HttpResponse.json(id, { status: 201 });
   }),
 ];

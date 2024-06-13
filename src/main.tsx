@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from './App.tsx';
-import GlobalStyle from './GlobalStyle.tsx';
-import theme from './theme.ts';
+import GlobalStyle from './styles/GlobalStyle.tsx';
+import theme from './styles/theme.ts';
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -23,6 +23,7 @@ enableMocking().then(() => {
         <GlobalStyle />
         <App />
       </ThemeProvider>
+      ,
     </React.StrictMode>,
   );
 });

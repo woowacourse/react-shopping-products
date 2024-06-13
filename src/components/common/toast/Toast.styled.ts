@@ -9,13 +9,12 @@ export const ToastContainer = styled.div`
 
   padding: 1rem 1.5rem;
 
-  color: #000;
+  color: ${(prop) => prop.theme.color.black};
   background: ${(prop) => prop.theme.color.errorPink};
 
   border-radius: 0.4375rem;
 
-  font-size: 0.75rem;
-  font-weight: 500;
+  ${(props) => props.theme.typography.buttonLabel}
   text-align: center;
 
   @keyframes fadeOut {

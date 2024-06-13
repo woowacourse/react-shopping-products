@@ -4,8 +4,8 @@ import fetcher from './fetcher';
 import { ProductCategory, ProductResponse, SortValue } from '@/types/product';
 
 interface FetchProductListProps {
+  category?: ProductCategory;
   size?: number;
-  category: ProductCategory;
   page?: number;
   sortOptions?: SortValue;
 }
@@ -22,7 +22,7 @@ const covertUrlFormat = ({ category, page, size, sortOptions }: FetchProductList
 };
 
 export const fetchProductList = async ({
-  category,
+  category = 'all',
   size,
   page = 0,
   sortOptions,

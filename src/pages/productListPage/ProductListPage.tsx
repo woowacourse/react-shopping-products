@@ -5,54 +5,44 @@ import * as Styled from './ProductListPage.styled';
 import Dropdown from '@/components/common/dropdown/Dropdown';
 import Header from '@/components/common/header/Header';
 import InfinityScrollContainer from '@/components/common/InfinityScrollContainer';
+import IntersectionContainer from '@/components/common/intersectionContainer/IntersectionContainer';
 import ProductCardList from '@/components/productCardList/ProductCardList';
 import Title from '@/components/title/Title';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
 
-import useCartItems from '@/hooks/useCartItems';
-import useProductList from '@/hooks/useProductList';
+import useProduct from '@/hooks/useProduct';
 
 const ProductListPage = () => {
   const {
-    productList,
-    isLoading,
-    fetchNextPage,
-    order,
     category,
+    order,
     handleChangeCategory,
     handleChangeSort,
-  } = useProductList();
-  const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems();
+    data,
+    isPending,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+  } = useProduct();
+
   const bottomRef = useRef<HTMLDivElement>(null);
 
   return (
     <InfinityScrollContainer
-      isLoading={isLoading}
+      isFetching={isFetching}
       fetchNextPage={fetchNextPage}
       bottomRef={bottomRef}
     >
       <Styled.PageContainer>
-        <Header cartCount={cartItems.length} />
+        <Header />
         <Styled.CommonContainer>
           <Title title="상품 목록" />
           <Styled.DropdownContainer>
-            <Dropdown
-              value={category.label}
-              options={CATEGORY}
-              handleSelect={handleChangeCategory}
-            />
-            <Dropdown value={order.label} options={SORT_OPTIONS} handleSelect={handleChangeSort} />
+            <Dropdown label={category} options={CATEGORY} handleSelect={handleChangeCategory} />
+            <Dropdown label={order} options={SORT_OPTIONS} handleSelect={handleChangeSort} />
           </Styled.DropdownContainer>
-
-          <ProductCardList
-            productList={productList}
-            handleAddCartItem={handleAddCartItem}
-            handleDeleteCartItem={handleDeleteCartItem}
-            matchCartItem={matchCartItem}
-            isLoading={isLoading}
-          />
-
-          <div ref={bottomRef} style={{ height: 100 }}></div>
+          <ProductCardList data={data} isPending={isPending} isFetching={isFetching} />
+          <IntersectionContainer bottomRef={bottomRef} hasNextPage={hasNextPage} />
         </Styled.CommonContainer>
       </Styled.PageContainer>
     </InfinityScrollContainer>

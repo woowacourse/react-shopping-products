@@ -10,6 +10,11 @@ export default mergeConfig(
       globals: true,
       environment: 'jsdom',
       setupFiles: ['./vitest.setup.ts'],
+      server: {
+        deps: {
+          inline: ['maru-nice-modal'],
+        },
+      },
     },
   }),
 );

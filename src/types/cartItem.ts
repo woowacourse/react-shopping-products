@@ -9,3 +9,15 @@ export interface CartItemInfo {
     category: string;
   };
 }
+
+export interface AddCartItemParameter {
+  productId: number;
+  quantity?: number;
+}
+
+export interface UpdateCartItemQuantityParameter {
+  cartId: number;
+  quantity: number;
+}
+
+export type MutationResponse = Record<'status', number>;

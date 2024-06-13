@@ -1,7 +1,6 @@
 import { createContext } from 'react';
 
 interface ToastContext {
-  isShow: boolean;
   error: (message: string) => void;
 }
 

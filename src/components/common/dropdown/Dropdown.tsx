@@ -6,12 +6,12 @@ import { IMAGES } from '@/assets';
 import { Category, SortOption } from '@/types/product';
 
 interface DropdownProps {
-  value: string;
+  label: string;
   options: SortOption[] | Category[];
   handleSelect: (e: React.MouseEvent<HTMLLIElement>) => void;
 }
 
-const Dropdown = ({ value, options, handleSelect }: DropdownProps) => {
+const Dropdown = ({ label, options, handleSelect }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -28,14 +28,14 @@ const Dropdown = ({ value, options, handleSelect }: DropdownProps) => {
   return (
     <Styled.SelectBox ref={dropMenuRef} $isOpen={isOpen} onClick={() => setIsOpen((prev) => !prev)}>
       <Styled.LabelWrapper>
-        <Styled.SelectedText $value={value}>{value || '선택해주세요'}</Styled.SelectedText>
+        <Styled.SelectedText $label={label}>{label || '선택해주세요'}</Styled.SelectedText>
         <img src={isOpen ? IMAGES.ARROW_DOWN : IMAGES.ARROW_UP} alt="드랍다운 방향" />
       </Styled.LabelWrapper>
       <Styled.SelectOptions $isOpen={isOpen} $count={options.length}>
         {isOpen &&
-          options.map((data) => (
-            <Styled.Option key={data.value} data-value={data.value} onClick={handleSelect}>
-              {data.label}
+          options.map((option) => (
+            <Styled.Option key={option.value} data-value={option.value} onClick={handleSelect}>
+              {option.label}
             </Styled.Option>
           ))}
       </Styled.SelectOptions>
