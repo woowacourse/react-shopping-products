@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const ProductContentWrapper = styled.div`
   padding: 3.6rem 2.4rem;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const ProductTitle = styled.p`

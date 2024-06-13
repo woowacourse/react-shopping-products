@@ -16,10 +16,9 @@ import {
 } from '../components/index';
 import { SortingParam } from '../types/sort';
 import { DEFAULT_SORTING_PARAM } from '../constants/page';
-// import CartProvider from '../context/CartProvider';
+import getCartItemByProduct from '../utils/getProductQuantity';
 
 import * as S from './Product.styled';
-import getCartItemByProduct from '../utils/getProductQuantity';
 
 function Product() {
   const target = useRef(null);
@@ -33,21 +32,19 @@ function Product() {
     hasNextPage,
     isFetchingNextPage,
     products,
-    isError,
-
-    // data: products,
-    // isError,
-    // isLoading,
-    // isLast,
-    // fetchNextPage,
-    // resetPage,
+    isError: isProductsFetchError,
   } = useFetchProducts(sortings, filter);
-  const { cartItems } = useFetchCartItems();
+  const { cartItems, isError: isCartItemsFetchError } = useFetchCartItems();
 
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
   useEffect(() => {
-    if (!target.current || isFetchingNextPage || isError || !hasNextPage)
+    if (
+      !target.current ||
+      isFetchingNextPage ||
+      isProductsFetchError ||
+      !hasNextPage
+    )
       return;
     const currentTarget = target.current;
     observe(currentTarget);
@@ -57,14 +54,13 @@ function Product() {
         unobserve(currentTarget);
       }
     };
-  }, [isFetchingNextPage, isError, hasNextPage]);
+  }, [isFetchingNextPage, isProductsFetchError, hasNextPage]);
 
   const { isOpen: isDetailModalOpen, toggleModal: toggleDetailModal } =
     useModal();
 
   return (
     <>
-      {/* <CartProvider> */}
       {isDetailModalOpen && (
         <CartModal
           cartItems={cartItems}
@@ -77,14 +73,10 @@ function Product() {
         badgeCount={cartItems.length}
         onToggleDetailModal={toggleDetailModal}
       />
-      {isError && <ErrorMessage />}
+      {(isProductsFetchError || isCartItemsFetchError) && <ErrorMessage />}
       <S.ProductContentWrapper>
         <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
-        <Dropdown
-          setSortings={setSortings}
-          setFilter={setFilter}
-          // resetPage={resetPage}
-        />
+        <Dropdown setSortings={setSortings} setFilter={setFilter} />
 
         <S.ProductListContainer>
           {products.map((product) => {
@@ -100,7 +92,6 @@ function Product() {
         </S.ProductListContainer>
         {isFetchingNextPage && <LoadingSpinner />}
       </S.ProductContentWrapper>
-      {/* </CartProvider> */}
     </>
   );
 }
