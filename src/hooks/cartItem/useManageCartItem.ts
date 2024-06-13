@@ -1,29 +1,19 @@
 import { CartItem } from "../../types/cartItems";
-import { QUERY_KEYS } from "../../constants/queryKeys";
-import { ToastContext } from "../../components/Toasts/ToastProvider";
-import { getCartItems } from "../../api/cartItems";
 import useAddItemToCart from "./useAddItemToCart";
 import { useCallback } from "react";
-import useCustomContext from "../useCustomContext";
+import useFetchCartItem from "./useFetchCartItem";
 import useHandleQuantityInCart from "./useHandleQuantityInCart";
-import { useQuery } from "@tanstack/react-query";
 import useRemoveItemFromCart from "./useRemoveItemFromCart";
 
 const useManageCartItem = () => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: [QUERY_KEYS.CART_ITEMS],
-    queryFn: async () => {
-      const prevData = await getCartItems();
-      const size = prevData.totalElements;
-      return getCartItems(size);
-    },
-  });
+  const { data, isLoading, error } = useFetchCartItem();
 
-  const { failAlert } = useCustomContext(ToastContext);
-
-  const { mutateAsync: postCartItems } = useAddItemToCart();
-  const { mutateAsync: deleteCartItems } = useRemoveItemFromCart();
-  const { mutateAsync: patchCartItem } = useHandleQuantityInCart();
+  const { mutateAsync: postCartItems, isPending: isAddItemLoading } =
+    useAddItemToCart();
+  const { mutateAsync: deleteCartItems, isPending: isDeleteItemLoading } =
+    useRemoveItemFromCart();
+  const { mutateAsync: patchCartItem, isPending: isPatchItemLoading } =
+    useHandleQuantityInCart();
 
   const itemQuantityInCart = useCallback(
     (id: number) =>
@@ -34,34 +24,26 @@ const useManageCartItem = () => {
 
   const addItemToCart = useCallback(
     async (productId: number) => {
-      try {
-        await postCartItems(productId);
-      } catch (error) {
-        if (error instanceof Error) failAlert(error.message);
-      }
+      await postCartItems(productId);
     },
-    [postCartItems, failAlert]
+    [postCartItems]
   );
 
   const removeItemFromCart = useCallback(
     async (productId: number) => {
-      try {
-        const targetCartItem = data?.content.find(
-          (item: CartItem) => item.product.id === productId
-        );
+      const targetCartItem = data?.content.find(
+        (item: CartItem) => item.product.id === productId
+      );
 
-        if (!targetCartItem) {
-          throw new Error("장바구니에 없는 상품입니다.");
-        }
-
-        const targetCartItemId = targetCartItem.id;
-
-        await deleteCartItems(targetCartItemId);
-      } catch (error) {
-        if (error instanceof Error) failAlert(error.message);
+      if (!targetCartItem) {
+        throw new Error("장바구니에 없는 상품입니다.");
       }
+
+      const targetCartItemId = targetCartItem.id;
+
+      await deleteCartItems(targetCartItemId);
     },
-    [data?.content, deleteCartItems, failAlert]
+    [data?.content, deleteCartItems]
   );
 
   const editQuantityInCart = useCallback(
@@ -86,7 +68,11 @@ const useManageCartItem = () => {
     removeItemFromCart,
     editQuantityInCart,
     itemQuantityInCart,
-    isLoading,
+    isLoading:
+      isLoading ||
+      isAddItemLoading ||
+      isDeleteItemLoading ||
+      isPatchItemLoading,
     error,
   };
 };
