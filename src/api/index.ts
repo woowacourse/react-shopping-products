@@ -110,23 +110,13 @@ export async function deleteCartItem({ cartItemId }: { cartItemId: number }): Pr
 export async function patchCartItemQuantityChange({
   cartItemId,
   quantity,
-  errorMessage,
 }: {
   cartItemId: number;
   quantity: number;
   errorMessage: string;
 }): Promise<void> {
-  const token = generateBasicToken(USER_ID, USER_PASSWORD);
-  const response = await fetch(`${API_URL}/cart-items/${cartItemId}`, {
+  await makeRequest(`/cart-items/${cartItemId}`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
-    },
     body: JSON.stringify({ quantity }),
   });
-
-  if (!response.ok) {
-    throw new Error(errorMessage);
-  }
 }
