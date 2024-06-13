@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import useFetchAddCart from './useFetchAddCart';
 import useFetchCartItems from '../useFetchCartItems/useFetchCartItems';
 import { Carts } from '../../types/fetch';
+import { mockCart as mockCartResponse } from '../../mocks/cart';
 
 const queryClient = new QueryClient();
 
@@ -11,9 +12,14 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 describe('useFetchAddCart', async () => {
+  beforeEach(() => {
+    mockCartResponse.content = [];
+    queryClient.clear();
+  });
+
   const PRODUCT_ID = 3;
 
-  it('장바구니에 상품을 추가할 수 있다.', async () => {
+  it('장바구니에 상품을 추가하면 useFetchAddCart의 API 요청 상태 결과인 isSuccess는 true여야 한다.', async () => {
     const { result } = renderHook(() => useFetchAddCart(), { wrapper });
 
     act(() => {
@@ -33,7 +39,9 @@ describe('useFetchAddCart', async () => {
       { wrapper },
     );
 
-    expect(result.current.fetchCartItems.cartItems).toHaveLength(0);
+    await waitFor(() =>
+      expect(result.current.fetchCartItems.cartItems).toHaveLength(0),
+    );
 
     act(() => {
       result.current.fetchAddCart.addCartItem(PRODUCT_ID);
