@@ -1,13 +1,13 @@
 import { PropsWithChildren, RefObject, useEffect } from 'react';
 
 interface InfinityScrollProp {
-  isPending: boolean;
+  isFetching: boolean;
   fetchNextPage: () => void;
   bottomRef: RefObject<HTMLDivElement>;
 }
 
 const InfinityScrollContainer = ({
-  isPending,
+  isFetching,
   fetchNextPage,
   bottomRef,
   children,
@@ -15,7 +15,7 @@ const InfinityScrollContainer = ({
   useEffect(() => {
     const onIntersect = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting && !isPending) {
+      if (target.isIntersecting && !isFetching) {
         fetchNextPage();
       }
     };
@@ -33,7 +33,7 @@ const InfinityScrollContainer = ({
         io.unobserve(bottomRef.current);
       }
     };
-  }, [isPending, fetchNextPage]);
+  }, [isFetching, fetchNextPage]);
 
   return <>{children}</>;
 };

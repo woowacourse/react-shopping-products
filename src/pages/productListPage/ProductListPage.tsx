@@ -15,7 +15,7 @@ import useProductList from '@/hooks/useProductList';
 
 const ProductListPage = () => {
   const { category, order, handleChangeCategory, handleChangeSort } = useProductDropdown();
-  const { data, isPending, fetchNextPage, hasNextPage } = useProductList({
+  const { data, isPending, isFetching, fetchNextPage, hasNextPage } = useProductList({
     category: category.value,
     sortOptions: order.value,
   });
@@ -24,7 +24,7 @@ const ProductListPage = () => {
 
   return (
     <InfinityScrollContainer
-      isPending={isPending}
+      isFetching={isFetching}
       fetchNextPage={fetchNextPage}
       bottomRef={bottomRef}
     >
@@ -40,7 +40,7 @@ const ProductListPage = () => {
             />
             <Dropdown value={order.label} options={SORT_OPTIONS} handleSelect={handleChangeSort} />
           </Styled.DropdownContainer>
-          <ProductCardList data={data} isPending={isPending} />
+          <ProductCardList data={data} isPending={isPending} isFetching={isFetching} />
           <IntersectionContainer bottomRef={bottomRef} hasNextPage={hasNextPage} />
         </Styled.CommonContainer>
       </Styled.PageContainer>

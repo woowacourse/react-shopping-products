@@ -2,6 +2,7 @@ import { InfiniteData } from '@tanstack/react-query';
 
 import * as Styled from './ProductCardList.styled';
 import CartToggleButton from '../cartToggleButton/CartToggleButton';
+import ProductCardListSkeleton from '../common/productCardSkeleton/ProductCardListSkeleton';
 import Spinner from '../common/spinner/Spinner';
 import ProductCard from '../productCard/ProductCard';
 
@@ -10,9 +11,12 @@ import { ProductResponse } from '@/types/product';
 interface ProductCardListProp {
   data: InfiniteData<ProductResponse, unknown> | undefined;
   isPending: boolean;
+  isFetching: boolean;
 }
 
-const ProductCardList = ({ data, isPending }: ProductCardListProp) => {
+// 데이터를 처음 불러올 때(isPending) : Spinner
+// 추가 데이터를 불러올 때(isFetching) : Skeleton
+const ProductCardList = ({ data, isPending, isFetching }: ProductCardListProp) => {
   return (
     <>
       <Styled.ProductCardListWrapper>
@@ -26,6 +30,7 @@ const ProductCardList = ({ data, isPending }: ProductCardListProp) => {
               </div>
             )),
           )}
+        {isFetching && <ProductCardListSkeleton />}
       </Styled.ProductCardListWrapper>
       {isPending && <Spinner />}
     </>
