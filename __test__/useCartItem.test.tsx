@@ -1,15 +1,15 @@
-import { useCart } from '../src/context/CartContext';
 import { renderHook, waitFor } from '@testing-library/react';
 import { wrapper } from './utils/test-utils';
 import { server } from '../src/mocks/server';
 import { HttpResponse, http } from 'msw';
 import ENDPOINT from '../src/api/endpoints';
+import { useCartItem } from '../src/hooks/useCartItem';
 
 const renderUseCartHook = () =>
-  renderHook(() => useCart(), {
+  renderHook(() => useCartItem(), {
     wrapper: wrapper,
   });
-describe('ShoppingCartContext', () => {
+describe('useCartItem', () => {
   it('장바구니에 담겨있는 아이템들은 가져와야한다.', async () => {
     const { result } = renderUseCartHook();
 
