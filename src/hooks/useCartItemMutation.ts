@@ -1,11 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   deleteProductInCart,
   postProductInCart,
   updateCartItemQuantity,
 } from "../api";
-import { QUERY_KEYS } from "../constants/queryKeys";
-import { useErrorContext } from "./useErrorContext";
+import useMutationWithErrorHandler from "./useMutationWithErrorHandler";
 
 const useCartItemMutation = () => {
   const appendCartItemMutation = useAppendCartItemMutation();
@@ -47,46 +45,22 @@ const useCartItemMutation = () => {
 
 export default useCartItemMutation;
 
-const useAppendCartItemMutation = () => {
-  const { showError } = useErrorContext();
-  const queryClient = useQueryClient();
+const useAppendCartItemMutation = () =>
+  useMutationWithErrorHandler(
+    ({ productId }: { productId: number }) => postProductInCart({ productId }),
+    "postProductInCart"
+  );
 
-  return useMutation({
-    mutationFn: ({ productId }: { productId: number }) =>
-      postProductInCart({ productId }),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
-    onError: showError,
-  });
-};
+const useUpdateQuantityMutation = () =>
+  useMutationWithErrorHandler(
+    ({ cartItemId, quantity }: { cartItemId: number; quantity: number }) =>
+      updateCartItemQuantity({ cartItemId, quantity }),
+    "updateCartItemQuantity"
+  );
 
-const useUpdateQuantityMutation = () => {
-  const { showError } = useErrorContext();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({
-      cartItemId,
-      quantity,
-    }: {
-      cartItemId: number;
-      quantity: number;
-    }) => updateCartItemQuantity({ cartItemId, quantity }),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
-    onError: showError,
-  });
-};
-
-const useRemoveItemMutation = () => {
-  const { showError } = useErrorContext();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ cartItemId }: { cartItemId: number }) =>
+const useRemoveItemMutation = () =>
+  useMutationWithErrorHandler(
+    ({ cartItemId }: { cartItemId: number }) =>
       deleteProductInCart({ cartItemId }),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.getCartItems] }),
-    onError: showError,
-  });
-};
+    "deleteProductInCart"
+  );
