@@ -27,7 +27,7 @@ export async function getCartItems(): Promise<Cart[]> {
 
   const size = prevData.totalElements;
 
-  const response = await fetch(`${API_URL}/cart-items?page=0&size=${size}`, {
+  const response = await fetch(`${API_URL}/cart-items?size=${size}`, {
     method: "GET",
     headers: createHeaders(),
   });
