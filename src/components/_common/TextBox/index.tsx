@@ -8,7 +8,7 @@ interface TextBoxProps {
   type: TextType;
   style?: React.CSSProperties;
   disabled?: boolean;
-  position: PositionType;
+  position?: PositionType;
 }
 
 const TextBox = ({ asset, text, type, style, disabled = false, position = "normal" }: TextBoxProps) => {
