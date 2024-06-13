@@ -29,7 +29,11 @@ const CartToggleButton = ({ product }: CartItemButtonProp) => {
   }
 
   return (
-    <Styled.HandleCartItemButton $isInCart={false} onClick={() => handleAddCartItem(product.id)}>
+    <Styled.HandleCartItemButton
+      $isDisabled={isPending}
+      disabled={isPending}
+      onClick={() => handleAddCartItem(product.id)}
+    >
       <img src={IMAGES.ADD_SHOPPING_CART} alt="장바구니에 담기버튼" />
       {isPending ? <Spinner size={25} /> : <span>담기</span>}
     </Styled.HandleCartItemButton>

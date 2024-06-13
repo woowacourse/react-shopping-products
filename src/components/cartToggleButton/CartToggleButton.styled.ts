@@ -1,20 +1,18 @@
-import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-interface ButtonColorMapperProp {
-  $isInCart: boolean;
-  color: Theme['color'];
+interface ButtonMapperProp {
+  $isDisabled: boolean;
 }
 
-const buttonColorMapper = ({ $isInCart, color }: ButtonColorMapperProp) => {
-  if ($isInCart) {
-    return { backgroundColor: color.lightGray, color: color.black };
+const buttonMapper = ({ $isDisabled }: ButtonMapperProp) => {
+  if ($isDisabled) {
+    return { opacity: 0.6, cursor: 'auto' };
   }
 
-  return { backgroundColor: color.black, color: color.white };
+  return { opacity: 1, cursor: 'pointer' };
 };
 
-export const HandleCartItemButton = styled.button<{ $isInCart: boolean }>`
+export const HandleCartItemButton = styled.button<{ $isDisabled: boolean }>`
   ${(props) => props.theme.typography.buttonLabel}
 
   display: flex;
@@ -27,7 +25,9 @@ export const HandleCartItemButton = styled.button<{ $isInCart: boolean }>`
   border-radius: 0.25rem;
   padding: 0 10px;
 
-  ${({ $isInCart, theme }) => buttonColorMapper({ $isInCart, color: theme.color })}
+  background-color: black;
+  color: white;
+  ${({ $isDisabled }) => buttonMapper({ $isDisabled })}
 
   cursor: pointer;
 `;
