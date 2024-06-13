@@ -8,21 +8,18 @@ import * as S from './Dropdown.styled';
 interface DropdownProps {
   setSortings: Dispatch<SetStateAction<SortingParam[]>>;
   setFilter: Dispatch<SetStateAction<string>>;
-  resetPage: () => void;
 }
 
-function Dropdown({ setSortings, setFilter, resetPage }: DropdownProps) {
+function Dropdown({ setSortings, setFilter }: DropdownProps) {
   (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.target.value;
   };
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    resetPage();
     setFilter(event.target.value);
   };
 
   const handleSortingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    resetPage();
     setSortings([{ name: 'price', order: event.target.value } as SortingParam]);
   };
 

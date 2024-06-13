@@ -16,9 +16,10 @@ import {
 } from '../components/index';
 import { SortingParam } from '../types/sort';
 import { DEFAULT_SORTING_PARAM } from '../constants/page';
-import CartProvider from '../context/CartProvider';
+// import CartProvider from '../context/CartProvider';
 
 import * as S from './Product.styled';
+import getCartItemByProduct from '../utils/getProductQuantity';
 
 function Product() {
   const target = useRef(null);
@@ -28,19 +29,26 @@ function Product() {
   const [filter, setFilter] = useState('');
 
   const {
-    data: products,
-    isError,
-    isLoading,
-    isLast,
     fetchNextPage,
-    resetPage,
+    hasNextPage,
+    isFetchingNextPage,
+    products,
+    isError,
+
+    // data: products,
+    // isError,
+    // isLoading,
+    // isLast,
+    // fetchNextPage,
+    // resetPage,
   } = useFetchProducts(sortings, filter);
   const { cartItems } = useFetchCartItems();
 
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
 
   useEffect(() => {
-    if (!target.current || isLoading || isError || isLast) return;
+    if (!target.current || isFetchingNextPage || isError || !hasNextPage)
+      return;
     const currentTarget = target.current;
     observe(currentTarget);
 
@@ -49,44 +57,50 @@ function Product() {
         unobserve(currentTarget);
       }
     };
-  }, [isLoading, isError, isLast]);
+  }, [isFetchingNextPage, isError, hasNextPage]);
 
   const { isOpen: isDetailModalOpen, toggleModal: toggleDetailModal } =
     useModal();
 
   return (
     <>
-      <CartProvider>
-        {isDetailModalOpen && (
-          <CartModal
-            cartItems={cartItems}
-            isDetailModalOpen={isDetailModalOpen}
-            toggleDetailModal={toggleDetailModal}
-          />
-        )}
-
-        <Header
-          badgeCount={cartItems.length}
-          onToggleDetailModal={toggleDetailModal}
+      {/* <CartProvider> */}
+      {isDetailModalOpen && (
+        <CartModal
+          cartItems={cartItems}
+          isDetailModalOpen={isDetailModalOpen}
+          toggleDetailModal={toggleDetailModal}
         />
-        {isError && <ErrorMessage />}
-        <S.ProductContentWrapper>
-          <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
-          <Dropdown
-            setSortings={setSortings}
-            setFilter={setFilter}
-            resetPage={resetPage}
-          />
+      )}
 
-          <S.ProductListContainer>
-            {products.map((product) => {
-              return <ProductCard key={product.id} product={product} />;
-            })}
-            <S.ObserverContainer ref={target} />
-          </S.ProductListContainer>
-          {isLoading && <LoadingSpinner />}
-        </S.ProductContentWrapper>
-      </CartProvider>
+      <Header
+        badgeCount={cartItems.length}
+        onToggleDetailModal={toggleDetailModal}
+      />
+      {isError && <ErrorMessage />}
+      <S.ProductContentWrapper>
+        <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
+        <Dropdown
+          setSortings={setSortings}
+          setFilter={setFilter}
+          // resetPage={resetPage}
+        />
+
+        <S.ProductListContainer>
+          {products?.map((product) => {
+            return (
+              <ProductCard
+                key={product.id}
+                product={product}
+                cartItem={getCartItemByProduct(cartItems, product.id)}
+              />
+            );
+          })}
+          <S.ObserverContainer ref={target} />
+        </S.ProductListContainer>
+        {isFetchingNextPage && <LoadingSpinner />}
+      </S.ProductContentWrapper>
+      {/* </CartProvider> */}
     </>
   );
 }

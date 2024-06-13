@@ -1,22 +1,26 @@
 import { useContext } from 'react';
 
 import { CartContext } from '../../context/CartContext';
-import { Product } from '../../types/fetch';
+import { Carts, Product } from '../../types/fetch';
 import { CartButton } from '../index';
 
 import * as S from './ProductCard.styled';
+import getCartItemByProduct from '../../utils/getProductQuantity';
+import { useFetchAddCart } from '../../hooks';
 
 interface ProductCardProps {
   product: Product;
+  cartItem: Carts | null;
 }
 
-function ProductCard({ product }: ProductCardProps) {
-  const cartContext = useContext(CartContext);
-  if (!cartContext) {
-    throw new Error('CartContext가 비어있습니다.');
-  }
-  const { addCartItem, getCartItemByProduct } = cartContext;
-  const cartItem = getCartItemByProduct(product.id);
+function ProductCard({ product, cartItem }: ProductCardProps) {
+  // const cartContext = useContext(CartContext);
+  // if (!cartContext) {
+  //   throw new Error('CartContext가 비어있습니다.');
+  // }
+  // const { addCartItem, getCartItemByProduct } = cartContext;
+  // const cartItemByProduct = getCartItemByProduct(cartItems, product.id);
+  const { addCartItem } = useFetchAddCart();
 
   return (
     <div>
