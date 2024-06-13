@@ -1,8 +1,9 @@
-import { useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchProducts } from "../api/products";
 import { QUERY_KEYS } from "../constants/queryKeys";
 import usePagination from "./usePagination";
+import useCategoryState from "./useCategoryState";
+import useSortOptionState from "./useSortOptionState";
 
 interface UseProductsResult {
   products: Product[];
@@ -22,20 +23,20 @@ interface UseProductsResult {
   isSuccess: boolean;
 }
 
-const sortOptionsMap: Record<string, string> = {
-  "낮은 가격순": "price,asc",
-  "높은 가격순": "price,desc",
-};
-
 const useProducts = (): UseProductsResult => {
-  const [sortOption, setSortOption] = useState<string>("price,asc");
-  const [category, setCategory] = useState<string>("전체");
   const { isLastPage } = usePagination();
+  const { currentCategory, changeCategory } = useCategoryState();
+  const { currentSortOption, changeSortOption } = useSortOptionState();
 
   const { data, isFetching, fetchNextPage, isLoading, isError, error, isSuccess } =
     useInfiniteQuery({
-      queryKey: [QUERY_KEYS.PRODUCTS, { category, sort: `price,${sortOption}` }],
-      queryFn: ({ pageParam = 0 }) => fetchProducts({ page: pageParam, category, sortOption }),
+      queryKey: [QUERY_KEYS.PRODUCTS, { currentCategory, sort: `price,${currentSortOption}` }],
+      queryFn: ({ pageParam = 0 }) =>
+        fetchProducts({
+          page: pageParam,
+          category: currentCategory,
+          sortOption: currentSortOption,
+        }),
       initialPageParam: 0,
       // getNextPageParam: (lastPage) => (lastPage.isLast ? null : lastPage.page + 1),
       getNextPageParam: (data) => {
@@ -47,16 +48,6 @@ const useProducts = (): UseProductsResult => {
 
   const products = data ? data.pages.flatMap((page) => page.content) : [];
 
-  const changeCategory = (value: string) => {
-    // resetPage();
-    setCategory(value);
-  };
-
-  const changeSortOption = (value: string) => {
-    // resetPage();
-    setSortOption(sortOptionsMap[value]);
-  };
-
   return {
     products,
     isLastPage,
@@ -65,8 +56,8 @@ const useProducts = (): UseProductsResult => {
     error,
     isSuccess,
     fetchNextPage,
-    categoryState: { currentCategory: category, changeCategory },
-    sortOptionState: { currentSortOption: sortOption, changeSortOption },
+    categoryState: { currentCategory, changeCategory },
+    sortOptionState: { currentSortOption, changeSortOption },
   };
 };
 
