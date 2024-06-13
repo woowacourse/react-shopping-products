@@ -18,6 +18,7 @@ const ERROR_MESSAGE = {
 const useProductList = () => {
   const [sortType, setSortType] = useState<SortValue>('price,asc');
   const [category, setCategory] = useState<Category>('all');
+  const queryInfo = useInfiniteProductList(category, sortType);
 
   const handleSortType = (sortValue: string) => {
     const sortType = FILTER_OPTION_LIST.find((sortOption) => sortOption.value === sortValue);
@@ -42,8 +43,6 @@ const useProductList = () => {
 
     setCategory(category.value);
   };
-
-  const queryInfo = useInfiniteProductList(category, sortType);
 
   return {
     ...queryInfo,
