@@ -13,7 +13,6 @@ interface CartListProps {
   cartItems: CartItemType[];
 }
 
-// TODO: skeleton을 사용하기 위해 lazy를 사용하는 게 자연스러운가..? lazy 필요해서 도입 -> skeleton 사용이 맞지 않나?
 const LazyCartItem = lazy(() => import('../CartItem'));
 
 export default function CartList({ cartItems }: CartListProps) {
