@@ -20,16 +20,15 @@ const useCartItems = () => {
   const queryClient = useQueryClient();
 
   const getCartItems = useQuery({
-    networkMode: 'always',
     queryKey: [QUERY_KEY.cartItems],
     queryFn: fetchCartItems,
   });
 
   if (getCartItems.isError) setErrorMessage(ERROR_MESSAGE.fetchCart);
+  if (getCartItems.isPaused) setErrorMessage(ERROR_MESSAGE.offline);
 
   const addCartItem = useMutation({
     mutationFn: (productId: number) => fetchAddCartItem(productId),
-    networkMode: 'always',
     onMutate: () => {
       if (getCartItems.data && getCartItems.data.length >= MAX_CART_ITEMS_SIZE)
         throw new Error('Cart items cannot exceed 99');
@@ -45,9 +44,10 @@ const useCartItems = () => {
     },
   });
 
+  if (addCartItem.isPaused) setErrorMessage(ERROR_MESSAGE.offline);
+
   const deleteCartItem = useMutation({
     mutationFn: (cartItemId: number) => fetchDeleteCartItem(cartItemId),
-    networkMode: 'always',
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
@@ -56,10 +56,11 @@ const useCartItems = () => {
     },
   });
 
+  if (deleteCartItem.isPaused) setErrorMessage(ERROR_MESSAGE.offline);
+
   const adjustCartItemQuantity = useMutation({
     mutationFn: ({ cartItemId, quantity }: FetchAdjustCartItemQuantityProps) =>
       fetchAdjustCartItemQuantity({ cartItemId, quantity }),
-    networkMode: 'always',
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.cartItems] });
     },
@@ -67,6 +68,8 @@ const useCartItems = () => {
       setErrorMessage(ERROR_MESSAGE.adjustCartItemQuantity);
     },
   });
+
+  if (adjustCartItemQuantity.isPaused) setErrorMessage(ERROR_MESSAGE.offline);
 
   return {
     getCartItems,

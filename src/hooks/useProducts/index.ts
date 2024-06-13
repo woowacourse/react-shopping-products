@@ -20,7 +20,6 @@ const useProducts = () => {
   const getProducts = useInfiniteQuery({
     queryKey: [QUERY_KEY.products, category, priceOrder],
     queryFn: ({ pageParam }) => fetchProducts(pageParam),
-    networkMode: 'always',
     initialPageParam: {
       page: FIRST_PAGE,
       category,
@@ -44,6 +43,7 @@ const useProducts = () => {
   });
 
   if (getProducts.isError) setErrorMessage(ERROR_MESSAGE.fetchProducts);
+  if (getProducts.isPaused) setErrorMessage(ERROR_MESSAGE.offline);
 
   const handleCategoryChange = (selectedCategory: Category) => {
     if (selectedCategory !== category) {

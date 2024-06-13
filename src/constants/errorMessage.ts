@@ -5,6 +5,7 @@ const ERROR_MESSAGE = {
   fetchCart: '장바구니 불러오기중',
   fetchProducts: '상품 불러오기중',
   adjustCartItemQuantity: '상품 수량 조절중',
+  offline: '네트워크',
 };
 
 export default ERROR_MESSAGE;
