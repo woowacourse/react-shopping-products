@@ -3,11 +3,8 @@ import { MinusButton, PlusButton } from "../Button/QuantityButton";
 import AddToCart from "../icons/AddToCart";
 import COLOR_PALETTE from "../../style/colorPalette";
 import LoadingDots from "../LoadingDots";
-import { ToastContext } from "../Toasts/ToastProvider";
 import styled from "@emotion/styled";
-import useCustomContext from "../../hooks/useCustomContext";
 import useManageCartItem from "../../hooks/cartItem/useManageCartItem";
-import { useState } from "react";
 
 interface Props {
   id: number;
@@ -19,24 +16,15 @@ const EditCartItemButton = ({ id }: Props) => {
     removeItemFromCart,
     itemQuantityInCart,
     editQuantityInCart,
+    isLoading,
   } = useManageCartItem();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { failAlert } = useCustomContext(ToastContext);
 
   const handleAddToCart = async () => {
     if (itemQuantityInCart(id) !== 0) {
       return;
     }
 
-    try {
-      setIsLoading(true);
-      await addItemToCart(id);
-    } catch (error) {
-      if (error instanceof Error) failAlert(error.message);
-    } finally {
-      setIsLoading(false);
-    }
+    await addItemToCart(id);
   };
 
   const handleRemoveFromCart = async () => {
@@ -44,14 +32,7 @@ const EditCartItemButton = ({ id }: Props) => {
       return;
     }
 
-    try {
-      setIsLoading(true);
-      await removeItemFromCart(id);
-    } catch (error) {
-      if (error instanceof Error) failAlert(error.message);
-    } finally {
-      setIsLoading(false);
-    }
+    await removeItemFromCart(id);
   };
 
   const handleQuantityInCart = async (quantity: number) => {
@@ -59,14 +40,7 @@ const EditCartItemButton = ({ id }: Props) => {
       return;
     }
 
-    try {
-      setIsLoading(true);
-      await editQuantityInCart({ id, quantity });
-    } catch (error) {
-      if (error instanceof Error) failAlert(error.message);
-    } finally {
-      setIsLoading(false);
-    }
+    await editQuantityInCart({ id, quantity });
   };
 
   return (
