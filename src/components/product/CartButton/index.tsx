@@ -1,4 +1,5 @@
 import { cartMutations, cartQueries } from '../../../hooks/queries/cart';
+import { EllipsisLoader } from '../../common/LoadingSpinner/style';
 
 import QuantityButton from '../../common/QuantityButton';
 import { AddCartIcon } from './Icons';
@@ -27,12 +28,24 @@ export default function CartButton({ productId }: CartButtonProps) {
 }
 
 CartButton.Add = function Add({ productId }: { productId: number }) {
-  const { mutate: addCartItem } = cartMutations.useAddCartItem({
+  const { mutate: addCartItem, isPending } = cartMutations.useAddCartItem({
     productId,
   });
 
+  const handleClick = () => {
+    addCartItem();
+  };
+
+  if (isPending) {
+    return (
+      <S.Button>
+        <EllipsisLoader style={{ top: '-11px' }} />
+      </S.Button>
+    );
+  }
+
   return (
-    <S.Button isPushed={false} onClick={() => addCartItem}>
+    <S.Button isPushed={false} onClick={handleClick}>
       <AddCartIcon />
       <p>담기</p>
     </S.Button>

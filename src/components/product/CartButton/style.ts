@@ -6,7 +6,10 @@ export const ButtonContainer = styled.div`
   right: 8px;
 `;
 
-export const Button = styled.button<{ isPushed: boolean }>`
+export const Button = styled.button<{ isPushed?: boolean }>`
+  position: relative;
+
+  min-width: 58px;
   height: 24px;
 
   background-color: ${({ isPushed, theme }) =>
