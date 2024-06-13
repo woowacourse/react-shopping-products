@@ -18,7 +18,7 @@ export const CartItemCard = ({ cartItem }: Props) => {
         <img className={styles.cartItemProductImg} src={imageUrl} alt="" />
         <div className={styles.cartItemProductInfo}>
           <span className={styles.cartItemProductName}>{name}</span>
-          <span className={styles.cartItemProductPrice}>{price.toLocaleString()}원</span>
+          <span className={styles.cartItemProductPrice}>{price.toLocaleString('KR-ko')}원</span>
           <ProductQuantity cartItem={cartItem} type={'list'} />
         </div>
       </div>
