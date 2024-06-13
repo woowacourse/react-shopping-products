@@ -3,6 +3,7 @@ import { LoadingSpinner } from '@_components/common/LoadingSpinner/style';
 import { useToast } from '@_hooks/useToast';
 import { useEffect } from 'react';
 import errorImage from '@_assets/images/errorImage.png';
+import { ERROR_MESSAGE } from '@_constants/message';
 
 interface ProductListProps {
   loading: boolean;
@@ -15,7 +16,7 @@ export default function ProductList({ error, loading, refetch, children }: React
 
   useEffect(() => {
     if (error) {
-      showToast('상품 목록을 불러오는 도중 에러가 발생했어요.');
+      showToast(ERROR_MESSAGE.product);
     }
   }, [error, showToast]);
 

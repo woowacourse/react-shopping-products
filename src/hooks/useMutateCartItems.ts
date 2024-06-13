@@ -9,6 +9,7 @@ import {
 } from '@_api/cart';
 import { QUERY_KEYS } from '@_constants/queryKeys';
 import { useToast } from './useToast';
+import { ERROR_MESSAGE } from '@_constants/message';
 
 export function useMutateCartItems() {
   const { showToast } = useToast();
@@ -17,7 +18,7 @@ export function useMutateCartItems() {
   const addMutation = useMutation({
     mutationFn: (productId: number) => addCartItem({ productId }),
     onError: () => {
-      showToast('문제가 발생해 상품을 장바구니에 담지 못했어요.');
+      showToast(ERROR_MESSAGE.addToCart);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cart] });
@@ -27,7 +28,7 @@ export function useMutateCartItems() {
   const removeMutation = useMutation({
     mutationFn: (cartItemId: number) => removeCartItem({ cartItemId }),
     onError: () => {
-      showToast('문제가 발생해 상품을 삭제하지 못했어요.');
+      showToast(ERROR_MESSAGE.removeFromCart);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cart] });
@@ -37,7 +38,7 @@ export function useMutateCartItems() {
   const updateMutation = useMutation({
     mutationFn: ({ cartItemId, quantity }: UpdateCartItemArgs) => updateCartItem({ cartItemId, quantity }),
     onError: () => {
-      showToast('문제가 발생해 수량을 변경하지 못했어요.');
+      showToast(ERROR_MESSAGE.updateQuantity);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.cart] });
