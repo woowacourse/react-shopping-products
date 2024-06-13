@@ -41,7 +41,7 @@ const ProductListPage = () => {
             <Dropdown value={order.label} options={SORT_OPTIONS} handleSelect={handleChangeSort} />
           </Styled.DropdownContainer>
           <ProductCardList data={data} isLoading={isLoading} />
-          <IntersectionContainer bottomRef={bottomRef} isNextPage={hasNextPage || isLoading} />
+          <IntersectionContainer bottomRef={bottomRef} hasNextPage={hasNextPage} />
         </Styled.CommonContainer>
       </Styled.PageContainer>
     </InfinityScrollContainer>
