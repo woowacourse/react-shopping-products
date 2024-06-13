@@ -9,11 +9,11 @@ export interface FetchCartItemsResponse {
   content: CartItem[];
 }
 
-export const fetchCartItems = async () => {
+export async function fetchCartItems() {
   return await fetchData<FetchCartItemsResponse>(CART_ITEMS_ENDPOINT, {
     size: 100,
   });
-};
+}
 
 export interface AddCartItemArgs {
   productId: number;
