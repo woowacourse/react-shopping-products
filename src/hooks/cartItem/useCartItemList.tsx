@@ -1,7 +1,4 @@
-import { requestCartItemList } from '@/apis/request/cartItem';
-import { QUERY_KEYS } from '@/constants/queryKeys';
-import { TIME } from '@/constants/time';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteCartItemListQuery } from '@/apis/queries/cartItem';
 
 export const CART_ITEM_PAGE = {
   START: 0,
@@ -9,23 +6,7 @@ export const CART_ITEM_PAGE = {
 };
 
 const useCartItemList = () => {
-  const { isSuccess, data, ...rest } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.CART_ITEM, CART_ITEM_PAGE.START],
-    initialPageParam: 0,
-    queryFn: ({ pageParam }) => requestCartItemList(pageParam, CART_ITEM_PAGE.SIZE), // TODO: 오류 핸들링 필요
-    select: (data) => {
-      const cartItemList = (data.pages ?? []).flatMap(({ content }) => content);
-
-      const newCartItemMap = new Map();
-      cartItemList.forEach((cartItem) => newCartItemMap.set(cartItem.product.id, cartItem)); // PID를 key로한다.
-
-      // map과 리스트로 반환
-      return { cartItemList, cartItemMap: newCartItemMap };
-    },
-    getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.nextCursor : null),
-    staleTime: TIME.HOUR,
-    networkMode: 'always',
-  });
+  const { isSuccess, data, ...rest } = useInfiniteCartItemListQuery();
 
   const getCartItemQuantity = (productId: number): number => {
     if (!data || !data.cartItemMap) return 0;

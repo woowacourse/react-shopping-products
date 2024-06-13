@@ -1,9 +1,6 @@
-import { requestProductList } from '@/apis/request/product';
+import { useInfiniteProductList } from '@/apis/queries/product';
 import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST, SortValue } from '@/constants/filter';
-import { QUERY_KEYS } from '@/constants/queryKeys';
-import { TIME } from '@/constants/time';
 import { Category } from '@/types/filter.type';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 export const PAGE = {
@@ -46,22 +43,7 @@ const useProductList = () => {
     setCategory(category.value);
   };
 
-  const queryInfo = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.PRODUCT, category, sortType],
-    initialPageParam: 0,
-    queryFn: ({ pageParam }) =>
-      requestProductList({
-        page: pageParam,
-        size: pageParam === 0 ? PAGE.START_SIZE : PAGE.SIZE,
-        category,
-        sortType,
-      }),
-    select: (data) => (data.pages ?? []).flatMap(({ content }) => content),
-    getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.nextCursor : null),
-
-    staleTime: TIME.HOUR,
-    networkMode: 'always',
-  });
+  const queryInfo = useInfiniteProductList(category, sortType);
 
   return {
     ...queryInfo,
