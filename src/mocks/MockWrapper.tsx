@@ -16,7 +16,7 @@ const MockWrapper = ({ children }: PropsWithChildren) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <ToastContext.Provider value={{ isShow: false, error: () => {} }}>
+      <ToastContext.Provider value={{ error: () => {} }}>
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       </ToastContext.Provider>
     </ThemeProvider>

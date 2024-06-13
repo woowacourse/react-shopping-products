@@ -68,10 +68,10 @@ describe('productList', () => {
   it('상품 목록 데이터를 불러오기 전 로딩 화면이 표시된다.', async () => {
     const { result } = renderHook(() => useProductList(INITIAL_OPTION), { wrapper: MockWrapper });
 
-    expect(result.current.isLoading).toBeTruthy();
+    expect(result.current.isPending).toBeTruthy();
 
     await waitFor(() => {
-      expect(result.current.isLoading).toBeFalsy();
+      expect(result.current.isPending).toBeFalsy();
     });
   });
 });
