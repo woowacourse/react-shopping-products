@@ -1,15 +1,10 @@
 import * as S from './style';
 
 import { useContext } from 'react';
-
-import { UseCartItemsContext } from '../../App';
-import { UseProductsContext } from '../ShoppingProductsPage';
+import { UseToastContext } from '../ShoppingProductsPage';
 
 const ToastPopup = () => {
-  const { cartItemsError } = useContext(UseCartItemsContext);
-  const { productsError } = useContext(UseProductsContext);
-
-  const errorMessage = cartItemsError ? '장바구니 요청중' : productsError ? '상품 불러오기중' : '';
+  const { errorMessage } = useContext(UseToastContext);
 
   return errorMessage ? (
     <S.ToastMessage>

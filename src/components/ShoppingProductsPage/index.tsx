@@ -1,81 +1,44 @@
-import { createContext, useContext, useEffect } from 'react';
 import * as S from '../../components/ShoppingProductsPage/style';
 
-import useProducts from '../../hooks/useProducts';
+import { createContext, useState } from 'react';
+
 import ProductsContainer from '../ProductsContainer';
 import ToastPopup from '../ToastPopup';
 import Header from '../common/Header';
 import Main from '../common/Main';
-import { UseCartItemsContext } from '../../App';
-import { Category, Order, Product } from '../../types/product';
+import CartModal from '../CartModal';
+import useToast from '../../hooks/useToast';
 
-interface UseProductsContextProps {
-  products: Product[];
-  page: number;
-  fetchNextPage: () => void;
-  category: Category;
-  handleCategoryChange: (selectedCategory: Category) => void;
-  priceOrder: Order;
-  handlePriceOrderChange: (selectedPriceOrder: Order) => void;
-  productsLoading: boolean;
-  productsError: unknown;
+interface UseToastContextProps {
+  errorMessage: string;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const UseProductsInitialState: UseProductsContextProps = {
-  products: [],
-  page: 0,
-  fetchNextPage: () => {},
-  category: 'all',
-  handleCategoryChange: () => {},
-  priceOrder: 'asc',
-  handlePriceOrderChange: () => {},
-  productsLoading: false,
-  productsError: null,
-};
-
-export const UseProductsContext = createContext(UseProductsInitialState);
+export const UseToastContext = createContext({} as UseToastContextProps);
 
 const ShoppingProductsPage = () => {
-  const {
-    products,
-    productsLoading,
-    productsError,
-    page,
-    fetchNextPage,
-    category,
-    handleCategoryChange,
-    priceOrder,
-    handlePriceOrderChange,
-  } = useProducts();
+  const { errorMessage, setErrorMessage } = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { getCartItems } = useContext(UseCartItemsContext);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
-  useEffect(() => {
-    getCartItems();
-  }, []);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
   return (
-    <UseProductsContext.Provider
-      value={{
-        products,
-        productsLoading,
-        productsError,
-        page,
-        fetchNextPage,
-        category,
-        handleCategoryChange,
-        priceOrder,
-        handlePriceOrderChange,
-      }}
-    >
-      <S.ShoppingProductsPage>
-        <Header />
+    <S.ShoppingProductsPage>
+      <UseToastContext.Provider value={{ errorMessage, setErrorMessage }}>
+        <Header handleCartButtonOnClick={openModal} />
         <ToastPopup />
         <Main>
           <ProductsContainer />
         </Main>
-      </S.ShoppingProductsPage>
-    </UseProductsContext.Provider>
+        <CartModal isModalOpen={isModalOpen} closeModal={closeModal} />
+      </UseToastContext.Provider>
+    </S.ShoppingProductsPage>
   );
 };
 

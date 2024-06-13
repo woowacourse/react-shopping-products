@@ -1,12 +1,18 @@
 import { FIRST_PAGE, FIRST_PAGE_SIZE, SIZE_PER_PAGE } from '../constants/pagination';
-import { Order, ProductsResponseData } from '../types/product';
+import { Category, Order, ProductsResponseData } from '../types/product';
 import { PRODUCTS_ENDPOINT } from './endpoints';
 
-export async function fetchProducts(
-  page: number,
-  category = 'all',
-  priceOrder: Order,
-): Promise<ProductsResponseData> {
+interface PageParam {
+  page: number;
+  category: Category;
+  priceOrder: Order;
+}
+
+export async function fetchProducts({
+  page,
+  category,
+  priceOrder,
+}: PageParam): Promise<ProductsResponseData> {
   const size = page === FIRST_PAGE ? FIRST_PAGE_SIZE : SIZE_PER_PAGE;
   const params = new URLSearchParams();
 
@@ -16,7 +22,7 @@ export async function fetchProducts(
   params.append('sort', `price,${priceOrder}`);
   params.append('sort', 'name,asc');
 
-  const response = await fetch(`${PRODUCTS_ENDPOINT}?${params.toString()}`);
+  const response = await fetch(`${PRODUCTS_ENDPOINT}?${String(params)}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch products');

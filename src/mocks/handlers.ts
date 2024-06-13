@@ -1,7 +1,8 @@
 import { HttpResponse, http } from 'msw';
 
 import products from './products.json';
-import { PRODUCTS_ENDPOINT } from '../api/endpoints';
+import cartItems from './cartItems.json';
+import { CART_ITEMS_ENDPOINT, PRODUCTS_ENDPOINT } from '../api/endpoints';
 import {
   FIRST_PAGE,
   FIRST_PAGE_SIZE,
@@ -44,5 +45,18 @@ export const handlers = [
     const paginatedProducts = sortedProducts.slice(start, end);
 
     return HttpResponse.json({ content: paginatedProducts, last });
+  }),
+
+  http.get(CART_ITEMS_ENDPOINT, () => {
+    return HttpResponse.json({ content: cartItems });
+  }),
+  http.post(CART_ITEMS_ENDPOINT, async () => {
+    return new HttpResponse(null, { status: 201 });
+  }),
+  http.delete(`${CART_ITEMS_ENDPOINT}/:itemId`, async () => {
+    return new HttpResponse(null, { status: 204 });
+  }),
+  http.patch(`${CART_ITEMS_ENDPOINT}/:itemId`, async () => {
+    return new HttpResponse(null, { status: 200 });
   }),
 ];

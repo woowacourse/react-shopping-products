@@ -1,22 +1,24 @@
 import * as S from './style';
 
-import { useContext } from 'react';
-
 import FilterContainer from '../FilterContainer';
 import ProductsContent from '../ProductsContent';
 import Loading from '../common/Loading';
 import Title from '../common/Title';
-import { UseProductsContext } from '../ShoppingProductsPage';
+import useCartItems from '../../hooks/useCartItems';
+import useProducts from '../../hooks/useProducts';
 
 const ProductsContainer = () => {
-  const { productsLoading } = useContext(UseProductsContext);
+  const { getProducts } = useProducts();
+  const { getCartItems } = useCartItems();
+
+  const isLoading = getProducts.isLoading || getCartItems.isLoading;
 
   return (
     <S.ProductsContainer>
       <Title />
       <FilterContainer />
       <ProductsContent />
-      <Loading isLoading={productsLoading} />
+      <Loading isLoading={isLoading} />
     </S.ProductsContainer>
   );
 };
