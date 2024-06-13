@@ -1,7 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchProducts } from "../api/products";
 import { QUERY_KEYS } from "../constants/queryKeys";
-import usePagination from "./usePagination";
 import useCategoryState from "./useCategoryState";
 import useSortOptionState from "./useSortOptionState";
 
@@ -24,7 +23,6 @@ interface UseProductsResult {
 }
 
 const useProducts = (): UseProductsResult => {
-  const { isLastPage } = usePagination();
   const { currentCategory, changeCategory } = useCategoryState();
   const { currentSortOption, changeSortOption } = useSortOptionState();
 
@@ -47,6 +45,7 @@ const useProducts = (): UseProductsResult => {
     });
 
   const products = data ? data.pages.flatMap((page) => page.content) : [];
+  const isLastPage = data && data.pages[data.pages.length - 1].isLast;
 
   return {
     products,
