@@ -70,7 +70,10 @@ export const ProductItem = ({ product }: { product: Product }) => {
             </ProductItemControls>
           </ProductItemBundle>
         ) : (
-          <CartActionButton actionType="add" onClick={handleCartButtonClick} />
+          <CartActionButton
+            actionType={isProductInCart(product.id) ? "remove" : "add"}
+            onClick={handleCartButtonClick}
+          />
         )}
       </StyledContainer>
     </StyledProductItem>
