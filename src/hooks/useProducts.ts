@@ -49,13 +49,10 @@ export default function useProducts(): UseProductsResult {
       initialPageParam: 0,
       placeholderData: keepPreviousData,
       getNextPageParam: (lastPage, allPages) => {
-        if (allPages.length === 1 && !lastPage.last) {
-          return JUMP_NEXT_PAGE_IN_ZERO;
-        }
         if (lastPage.last) {
           return undefined;
         }
-        return allPages.length + JUMP_NEXT_PAGE_IN_ONE;
+        return allPages.length + JUMP_NEXT_PAGE_IN_ZERO;
       },
       select: (data) => {
         return data.pages.flatMap((page) => page.data);
