@@ -1,11 +1,11 @@
 import TotalAmount from "@/components/TotalAmount";
-import useHandleCartItem from "@/hooks/useHandleCartItem";
 import * as S from "@/components/ShoppingBasket/style";
 import CartItemCard from "@/components/CartItemCard";
 import { IMAGES } from "@/assets/images";
+import useCartItems from "@/hooks/useCartItems";
 
 const ShoppingBasket = () => {
-  const { cartItems, totalAmount } = useHandleCartItem();
+  const { cartItems, totalAmount } = useCartItems();
 
   const hasCartItems = cartItems && cartItems.length > 0;
 

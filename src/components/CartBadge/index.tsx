@@ -2,13 +2,13 @@ import Icon from "@/components/_common/Icon";
 import * as S from "@/components/CartBadge/style";
 import ShoppingBasket from "@/components/ShoppingBasket";
 import { END_POINT } from "@/config/endPoint";
-import useHandleCartItem from "@/hooks/useHandleCartItem";
+import useCartItems from "@/hooks/useCartItems";
 import { MouseEventHandler, useState } from "react";
 import { CustomModal } from "woowacourse-todari-components";
 
 const CartBadge = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { cartItems } = useHandleCartItem();
+  const { cartItems } = useCartItems();
 
   const openItemModal: MouseEventHandler = () => {
     setIsModalOpen(true);

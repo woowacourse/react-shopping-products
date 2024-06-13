@@ -4,6 +4,7 @@ import * as S from "@/components/ItemCard/style";
 import CartActionButton from "@/components/CartActionButton";
 import useHandleCartItem from "@/hooks/useHandleCartItem";
 import Stepper from "@/components/_common/Stepper";
+import useCartItems from "@/hooks/useCartItems";
 
 interface ItemCartProps {
   product: Product;
@@ -11,7 +12,8 @@ interface ItemCartProps {
 
 const ItemCard = ({ product }: ItemCartProps) => {
   const { name, price, imageUrl, id } = product;
-  const { isInCart, getCartItemQuantity, addCartItem, updateCartItemQuantity } = useHandleCartItem();
+  const { isInCart } = useCartItems();
+  const { getCartItemQuantity, addCartItem, updateCartItemQuantity } = useHandleCartItem();
 
   return (
     <S.Wrapper>

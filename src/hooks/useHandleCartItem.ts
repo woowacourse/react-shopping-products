@@ -1,20 +1,15 @@
-import { deleteProductFromCart, getCartItems, patchCartItemQuantity, postProductToCart } from "@/apis/cartItem";
+import { deleteProductFromCart, patchCartItemQuantity, postProductToCart } from "@/apis/cartItem";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import QUERY_KEY from "@/constants/queryKey";
-import TIMER from "@/constants/timer";
+import useCartItems from "@/hooks/useCartItems";
 import useToast from "@/hooks/useToast";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useHandleCartItem = () => {
   const queryClient = useQueryClient();
   const { onAddToast } = useToast();
 
-  const { data: cartItems } = useQuery({
-    queryKey: [QUERY_KEY.getCartItems],
-    queryFn: getCartItems,
-    gcTime: TIMER.hour,
-    staleTime: TIMER.hour,
-  });
+  const { cartItems } = useCartItems();
 
   const { mutate: postProductToCartMutate } = useMutation({
     mutationKey: [QUERY_KEY.postProductToCart],
@@ -83,21 +78,7 @@ const useHandleCartItem = () => {
     patchCartItemQuantityMutate({ productId: targetItem.id, quantity: updatedQuantity });
   };
 
-  const isInCart = (productId: number) => {
-    if (!cartItems) return false;
-
-    return cartItems.some((item) => item.product.id === productId);
-  };
-
-  const totalAmount = () => {
-    if (!cartItems) return 0;
-
-    return cartItems.reduce((amount, cur) => {
-      return amount + cur.quantity * cur.product.price;
-    }, 0);
-  };
-
-  return { cartItems, getCartItemQuantity, addCartItem, removeCartItem, updateCartItemQuantity, isInCart, totalAmount };
+  return { cartItems, getCartItemQuantity, addCartItem, removeCartItem, updateCartItemQuantity };
 };
 
 export default useHandleCartItem;
