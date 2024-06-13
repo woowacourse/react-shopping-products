@@ -49,7 +49,7 @@ export async function addCartItem(productId: number): Promise<void> {
       Authorization: basicToken,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ productId }),
+    body: JSON.stringify({ productId, quantity: 1 }),
   });
 }
 
@@ -76,5 +76,24 @@ export async function deleteCartItem(cartItemId: number): Promise<void> {
       Authorization: basicToken,
       'Content-Type': 'application/json',
     },
+  });
+}
+
+interface PatchCartItemQuantityProps {
+  cartItemId: number;
+  newQuantity: number;
+}
+
+export async function patchCartItemQuantity({
+  cartItemId,
+  newQuantity,
+}: PatchCartItemQuantityProps): Promise<void> {
+  await makeRequest(`${ENDPOINT.cartItems}/${cartItemId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: basicToken,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ quantity: newQuantity }),
   });
 }

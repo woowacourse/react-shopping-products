@@ -1,9 +1,11 @@
 import { http, HttpResponse } from 'msw';
 import products from './products.json';
-import cartItems from './cartItems.json';
+import cartItems from '@/mocks/cartItems.json';
 import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
 import ENDPOINT from '../constant/endpoint';
 import { CartItemType } from '../types';
+
+let mockCartItems = cartItems.content;
 
 interface CartItemsPostBody {
   productId: number;
@@ -36,7 +38,7 @@ export const handlers = [
     const formattedProducts = sortedProducts.slice(startIndex, endIndex);
     const last = !products.content[endIndex + 1];
 
-    return HttpResponse.json({ last, content: [...formattedProducts] });
+    return HttpResponse.json({ number: page, last, content: [...formattedProducts] });
   }),
 
   http.get(`${API_URL}${ENDPOINT.cartItems}`, ({ request }) => {
@@ -48,7 +50,7 @@ export const handlers = [
       page === FIRST_FETCH_PAGE ? page : AFTER_FETCH_SIZE * (page - 5) + FIRST_FETCH_SIZE;
     const endIndex = startIndex + size;
 
-    const formattedCartItems = cartItems.content.slice(startIndex, endIndex) as CartItemType[];
+    const formattedCartItems = mockCartItems.slice(startIndex, endIndex) as CartItemType[];
 
     return HttpResponse.json({ content: [...formattedCartItems] });
   }),
@@ -63,19 +65,36 @@ export const handlers = [
 
     if (!product) return new Response(null, { status: 404 });
 
-    cartItems.content.push({ id: newCartItemId, quantity, product });
+    mockCartItems.push({ id: newCartItemId, quantity, product });
     return new Response(null, { status: 201 });
   }),
 
   http.delete(`${API_URL}${ENDPOINT.cartItems}/:cartId`, ({ params }) => {
     const { cartId } = params;
 
-    const isExistItem = cartItems.content.find((cartItem) => cartItem.id === Number(cartId));
+    const isExistItem = mockCartItems.find((cartItem) => cartItem.id === Number(cartId));
 
-    if (isExistItem) {
-      return new Response(null, { status: 201 });
-    } else {
-      return new Response(null, { status: 404 });
-    }
+    if (!isExistItem) return new Response(null, { status: 404 });
+
+    mockCartItems = cartItems.content.filter((cartItem) => cartItem.id !== Number(cartId));
+
+    return new Response(null, { status: 201 });
+  }),
+
+  http.patch(`${API_URL}${ENDPOINT.cartItems}/:cartId`, async ({ params, request }) => {
+    const { cartId } = params;
+    const body = (await request.json()) as CartItemsPostBody;
+    const newQuantity = Number(body.quantity);
+
+    const isExistItem = mockCartItems.find((cartItem) => cartItem.id === Number(cartId));
+
+    if (!isExistItem) return new Response(null, { status: 404 });
+
+    mockCartItems = cartItems.content.map((cartItem) => {
+      if (cartItem.id === Number(cartId)) return { ...cartItem, quantity: newQuantity };
+      return { ...cartItem };
+    });
+
+    return new Response(null, { status: 201 });
   }),
 ];
