@@ -13,7 +13,7 @@ interface Props {
 
 const ProductItemList = ({ products, fetchNextPage, cartItems, isLoading }: Props) => {
   const { lastProductElementRef } = useInfinityScroll({ onIntersect: fetchNextPage });
-  const selectedHandler = (productId: number): boolean => {
+  const handlerSelectCartItems = (productId: number): boolean => {
     return cartItems.some((cartItem) => cartItem.product.id === productId);
   };
 
@@ -25,7 +25,7 @@ const ProductItemList = ({ products, fetchNextPage, cartItems, isLoading }: Prop
             <ProductItem
               key={`item-${item.id}-${idx}`}
               productItem={item}
-              isSelected={selectedHandler(item.id)}
+              isSelected={handlerSelectCartItems(item.id)}
               cartItems={cartItems}
             />
           );
