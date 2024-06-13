@@ -2,12 +2,11 @@ import { MouseEvent, useState } from 'react';
 
 import { Category, SortOption } from '@/types/product';
 import { isCategoryLabel, isProductCategory, isSortLabel, isSortValue } from '@/utils/typeGuard';
-import { useQueryClient } from '@tanstack/react-query';
+import useInvalidateQueries from './useInvalidateQueries';
 
 const useProductFilter = () => {
   const [category, setCategory] = useState<Category>({ label: '전체', value: 'all' });
   const [order, setOrder] = useState<SortOption>({ label: '낮은 가격순', value: 'asc' });
-  const queryClient = useQueryClient();
 
   const handleChangeCategory = async (e: MouseEvent<HTMLLIElement>) => {
     const target = e.target as HTMLLIElement;
@@ -21,7 +20,7 @@ const useProductFilter = () => {
     if (!value) return;
     if (label === category.label) return;
     setCategory({ label, value });
-    queryClient.invalidateQueries({ queryKey: ['fetchProductList', { category, order }] });
+    useInvalidateQueries(['fetchProductList', { category, order }]);
   };
 
   const handleChangeSort = async (e: MouseEvent<HTMLLIElement>) => {
@@ -37,7 +36,7 @@ const useProductFilter = () => {
     if (label === order.label) return;
 
     setOrder({ label, value });
-    queryClient.invalidateQueries({ queryKey: ['fetchProductList', { category, order }] });
+    useInvalidateQueries(['fetchProductList', { category, order }]);
   };
 
   return { category, order, handleChangeCategory, handleChangeSort };
