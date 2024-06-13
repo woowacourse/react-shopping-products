@@ -4,7 +4,6 @@ import EditCartItemButton from "./EditCartItemButton";
 import LoadingDots from "../LoadingDots";
 import styled from "@emotion/styled";
 import useManageCartItem from "../../hooks/cartItem/useManageCartItem";
-import { useState } from "react";
 
 interface Props {
   item: CartItem;
@@ -12,9 +11,8 @@ interface Props {
 
 const CartItemCard = ({ item }: Props) => {
   const { product } = item;
-  const [deleteLoading] = useState(false);
 
-  const { removeItemFromCart } = useManageCartItem();
+  const { removeItemFromCart, isLoading } = useManageCartItem();
 
   return (
     <S.ItemWrapper>
@@ -28,8 +26,10 @@ const CartItemCard = ({ item }: Props) => {
           </S.FlexColumnBox>
         </S.FlexRowBox>
 
-        {deleteLoading ? (
-          <LoadingDots />
+        {isLoading ? (
+          <S.LoadingContainer>
+            <LoadingDots />
+          </S.LoadingContainer>
         ) : (
           <BorderButton onClick={() => removeItemFromCart(product.id)}>
             삭제
@@ -86,5 +86,12 @@ const S = {
   ItemPrice: styled.span`
     font-size: 12px;
     font-weight: 500;
+  `,
+
+  LoadingContainer: styled.div`
+    align-self: flex-start;
+
+    width: 60px;
+    margin: 4px;
   `,
 };
