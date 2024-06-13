@@ -6,7 +6,7 @@ import App from './App.tsx';
 import GlobalStyle from './GlobalStyle.tsx';
 import theme from './theme.ts';
 import { ToastProvider } from './components/common/toast/Toast.tsx';
-import QuerySetupProvider from './components/querySetupProvider/QuerySetupProvider.tsx';
+import QuerySetupProvider from './components/common/querySetupProvider/QuerySetupProvider.tsx';
 
 // async function enableMocking() {
 //   if (process.env.NODE_ENV !== 'development') {
