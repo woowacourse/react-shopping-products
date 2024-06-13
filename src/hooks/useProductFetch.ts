@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { fetchProducts } from '../api';
 import { QUERY_KEYS } from '../constant/queryKeys';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
 
 export function useProductFetch() {
   const [selectBarCondition, setSelectBarCondition] = useState({
@@ -12,7 +13,7 @@ export function useProductFetch() {
     queryKey: [QUERY_KEYS.PRODUCTS, { selectBarCondition }],
     initialPageParam: 0,
     queryFn: ({ pageParam }) => {
-      const size = pageParam === 0 ? 20 : 4;
+      const size = pageParam === FIRST_FETCH_PAGE ? FIRST_FETCH_SIZE : AFTER_FETCH_SIZE;
       return fetchProducts({
         page: pageParam,
         size,
@@ -21,7 +22,7 @@ export function useProductFetch() {
     },
     getNextPageParam: (data) => {
       if (!data || data.last) return null;
-      if (data.number === 0) return 5;
+      if (data.number === 0) return AFTER_FETCH_SIZE + 1;
       return data.number + 1;
     },
   });
