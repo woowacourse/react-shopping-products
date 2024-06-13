@@ -2,6 +2,7 @@
 export const ERROR_MESSAGE = {
   SYSTEM_FAULT: 'system error. 관리자에게 문의하십시오',
   OFFLINE: '네트워크 연결이 끊어졌습니다. 인터넷 연결을 확인하고 다시 시도하세요.',
+  UNKNOWN: '알 수 없는 에러입니다. 관리자에게 문의해주세요. (연락처...)',
 };
 
 export const REQUEST_CART_ITEMS_ERROR_MESSAGE = {
