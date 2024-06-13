@@ -11,7 +11,7 @@ interface OptionProps {
 }
 
 interface SelectedTextProps {
-  $value: string;
+  $label: string;
 }
 
 interface SelectBoxMapperProps {

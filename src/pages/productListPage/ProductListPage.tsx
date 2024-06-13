@@ -10,15 +10,20 @@ import ProductCardList from '@/components/productCardList/ProductCardList';
 import Title from '@/components/title/Title';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
 
-import useProductDropdown from '@/hooks/useProductDropdown';
-import useProductList from '@/hooks/useProductList';
+import useProduct from '@/hooks/useProduct';
 
 const ProductListPage = () => {
-  const { category, order, handleChangeCategory, handleChangeSort } = useProductDropdown();
-  const { data, isPending, isFetching, fetchNextPage, hasNextPage } = useProductList({
-    category: category.value,
-    sortOptions: order.value,
-  });
+  const {
+    category,
+    order,
+    handleChangeCategory,
+    handleChangeSort,
+    data,
+    isPending,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+  } = useProduct();
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -33,12 +38,8 @@ const ProductListPage = () => {
         <Styled.CommonContainer>
           <Title title="상품 목록" />
           <Styled.DropdownContainer>
-            <Dropdown
-              value={category.label}
-              options={CATEGORY}
-              handleSelect={handleChangeCategory}
-            />
-            <Dropdown value={order.label} options={SORT_OPTIONS} handleSelect={handleChangeSort} />
+            <Dropdown label={category} options={CATEGORY} handleSelect={handleChangeCategory} />
+            <Dropdown label={order} options={SORT_OPTIONS} handleSelect={handleChangeSort} />
           </Styled.DropdownContainer>
           <ProductCardList data={data} isPending={isPending} isFetching={isFetching} />
           <IntersectionContainer bottomRef={bottomRef} hasNextPage={hasNextPage} />
