@@ -1,16 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { QUERY_KEYS } from "../../constants/queryKeys";
 import { patchCartItem } from "../../api/cartItems";
+import useCustomMutation from "../useCustomMutation";
 
 const useHandleQuantityInCart = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
+  return useCustomMutation({
     mutationFn: ({ id, quantity }: { id: number; quantity: number }) =>
       patchCartItem(id, quantity),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEMS] });
-    },
+    queryKey: [QUERY_KEYS.CART_ITEMS],
   });
 };
 

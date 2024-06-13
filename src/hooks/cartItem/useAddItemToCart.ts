@@ -1,16 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { QUERY_KEYS } from "../../constants/queryKeys";
 import { postCartItems } from "../../api/cartItems";
+import useCustomMutation from "../useCustomMutation";
 
 const useAddItemToCart = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
+  return useCustomMutation({
     mutationFn: (productId: number) =>
       postCartItems({ productId, quantity: 1 }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEMS] });
-    },
+    queryKey: [QUERY_KEYS.CART_ITEMS],
   });
 };
 
