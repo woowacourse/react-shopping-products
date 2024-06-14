@@ -1,31 +1,48 @@
 import Button from '../common/Button/Button';
-import { AddCart, MinusCart } from '../../asset';
-import { ButtonImg } from './CartButton.style';
-import useCartItem from '../../hooks/useCartItemHandler';
+import { AddCart } from '../../asset';
+import * as S from './CartButton.style';
+import useCartItemHandler from '../../hooks/useCartItemHandler';
 import { CartButtonProps } from './\bCardButton.type';
+import { BUTTON_MESSAGE } from '../../constants/button';
+import { useCartItem } from '../../hooks/useCartItem';
 
-const CartButton: React.FC<CartButtonProps> = ({
-  itemQuantity,
-  productId,
-  initIsInCart,
-}) => {
-  const { isInCart, handleAddCartItem, handleRemoveCartItem } = useCartItem({
+const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
+  const { cartItems } = useCartItem(false);
+
+  const cartItem = cartItems.find((item) => item.product.id === productId);
+  const isInCart = !!cartItem;
+  const itemQuantity = cartItem ? cartItem.quantity : 0;
+  const { handleCartItemQuantity, showCountButton } = useCartItemHandler({
     productId,
-    initIsInCart,
   });
-
   return (
-    <Button
-      isGray={isInCart}
-      onClick={
-        isInCart
-          ? () => handleRemoveCartItem()
-          : () => handleAddCartItem(itemQuantity)
-      }
-    >
-      <ButtonImg src={isInCart ? MinusCart : AddCart} />
-      <span>{isInCart ? '빼기' : '담기'}</span>
-    </Button>
+    <>
+      {isInCart ? (
+        <S.CardQuantityButtonContainer>
+          <S.CountButton
+            onClick={() => {
+              handleCartItemQuantity(cartItem.id, cartItem.quantity - 1);
+            }}
+          >
+            {BUTTON_MESSAGE.MINUS}
+          </S.CountButton>
+
+          <S.QuantityCount>{itemQuantity}</S.QuantityCount>
+          <S.CountButton
+            onClick={() => {
+              handleCartItemQuantity(cartItem.id, cartItem.quantity + 1);
+            }}
+          >
+            {BUTTON_MESSAGE.PLUS}
+          </S.CountButton>
+        </S.CardQuantityButtonContainer>
+      ) : (
+        <Button isGray={isInCart} onClick={() => showCountButton()}>
+          <S.ButtonImg src={AddCart} />
+          <span>{BUTTON_MESSAGE.ADD}</span>
+        </Button>
+      )}
+    </>
   );
 };
 

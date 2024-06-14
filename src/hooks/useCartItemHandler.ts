@@ -1,65 +1,133 @@
-import { useState } from 'react';
-import { addCartItem, deleteCartItem } from '../api';
-import { useCart } from '../context/CartContext';
-import { useToast } from './useToast';
-import { CHANGE_CART_ITEM_COUNT } from '../constants';
+import { addCartItem, deleteCartItem, fetchCartItemQuantity } from '../api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from '../constants/queryKeys';
+import { CartItem } from '../type/CartItem';
 
 interface CartButtonProps {
   productId: number;
-  initIsInCart: boolean;
 }
 
-const useCartItemHandler = ({ productId, initIsInCart }: CartButtonProps) => {
-  const [isInCart, setIsInCart] = useState(initIsInCart);
-  const { setCounts } = useCart();
-  const { createToast } = useToast();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+const useCartItemHandler = ({ productId }: CartButtonProps) => {
+  const queryClient = useQueryClient();
 
-  const handleAddCartItem = async (itemQuantity: number) => {
-    try {
-      setError(false);
-      setLoading(true);
-      setCounts((prev) => prev + CHANGE_CART_ITEM_COUNT);
-      setIsInCart(true);
+  const addCartItemMutation = useMutation({
+    mutationFn: async (itemQuantity: number) => {
       await addCartItem(productId, itemQuantity);
-    } catch (error) {
-      if (error instanceof Error) {
-        createToast('⛔️ 상품을 담는데 실패했습니다. 다시 시도해 주세요.');
-        setCounts((prev) => Math.max(0, prev - 1));
-        setIsInCart(false);
-        setError(true);
+    },
+    onMutate: async (itemQuantity: number) => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+      const previousCartItems = queryClient.getQueryData([
+        QUERY_KEYS.CART_ITEM,
+      ]);
+      queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) => [
+        ...old,
+        { product: { id: productId }, quantity: itemQuantity },
+      ]);
+      return { previousCartItems };
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(
+          [QUERY_KEYS.CART_ITEM],
+          context.previousCartItems,
+        );
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+    },
+  });
 
-  const handleRemoveCartItem = async () => {
-    try {
-      setError(false);
-      setLoading(true);
-      setCounts((prev) => Math.max(0, prev - CHANGE_CART_ITEM_COUNT));
-      setIsInCart(false);
-      await deleteCartItem(productId);
-    } catch (error) {
-      if (error instanceof Error) {
-        createToast('⛔️ 상품을 제거하는데 실패했습니다. 다시 시도해 주세요.');
-        setCounts((prev) => prev + 1);
-        setIsInCart(true);
-        setError(true);
+  const deleteCartItemMutation = useMutation({
+    mutationFn: async (cartItemId: number) => {
+      await deleteCartItem(cartItemId);
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+      const previousCartItems = queryClient.getQueryData([
+        QUERY_KEYS.CART_ITEM,
+      ]);
+      queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
+        old.filter((item: CartItem) => item.product.id !== productId),
+      );
+      return { previousCartItems };
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(
+          [QUERY_KEYS.CART_ITEM],
+          context.previousCartItems,
+        );
       }
-    } finally {
-      setLoading(false);
-    }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+    },
+  });
+
+  const changeCartItemQuantityMutation = useMutation({
+    mutationFn: async ({
+      cartItemId,
+      newQuantity,
+    }: {
+      cartItemId: number;
+      newQuantity: number;
+    }) => {
+      await fetchCartItemQuantity(cartItemId, newQuantity);
+    },
+
+    onMutate: async ({ newQuantity }) => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+      const previousCartItems = queryClient.getQueryData([
+        QUERY_KEYS.CART_ITEM,
+      ]);
+
+      if (newQuantity === 0) {
+        queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
+          old.filter((item: CartItem) => item.product.id !== productId),
+        );
+      } else {
+        queryClient.setQueryData([QUERY_KEYS.CART_ITEM], (old: CartItem[]) =>
+          old.map((item: CartItem) =>
+            item.product.id === productId
+              ? { ...item, quantity: newQuantity }
+              : item,
+          ),
+        );
+      }
+
+      return { previousCartItems };
+    },
+
+    onError: (_err, _variables, context) => {
+      if (context?.previousCartItems) {
+        queryClient.setQueryData(
+          [QUERY_KEYS.CART_ITEM],
+          context.previousCartItems,
+        );
+      }
+    },
+    onSuccess: (_data, { cartItemId, newQuantity }) => {
+      if (newQuantity === 0) {
+        deleteCartItemMutation.mutate(cartItemId);
+      } else {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_ITEM] });
+      }
+    },
+  });
+
+  const showCountButton = () => {
+    addCartItemMutation.mutate(1);
   };
 
   return {
-    isInCart,
-    handleAddCartItem,
-    handleRemoveCartItem,
-    loading,
-    error,
+    handleCartItemQuantity: (cartItemId: number, newQuantity: number) => {
+      changeCartItemQuantityMutation.mutate({ cartItemId, newQuantity });
+    },
+    handleDeleteCartItem: (cartItemId: number) => {
+      deleteCartItemMutation.mutate(cartItemId);
+    },
+    showCountButton,
   };
 };
 

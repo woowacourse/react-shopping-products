@@ -19,8 +19,15 @@ export const cartItemHandlers = [
     return HttpResponse.json({
       content: [
         { id: 10, product: { id: 12 } },
-        { id: 12, product: { id: 14 } },
+        { id: 12, product: { id: 14 }, quantity: 1 },
       ],
+    });
+  }),
+
+  http.patch(`${ENDPOINT.CART_ITEMS}/12`, () => {
+    console.log('a');
+    return HttpResponse.json({
+      content: [],
     });
   }),
 

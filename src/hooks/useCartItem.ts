@@ -1,40 +1,33 @@
-import { useEffect, useState } from 'react';
-
-import { useToast } from './useToast';
 import { fetchItems } from '../api';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from '../constants/queryKeys';
+import { CartItem } from '../type/CartItem';
 
-const useCartItems = () => {
-  const [cartItemIds, setCartItem] = useState<number[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { createToast } = useToast();
+interface UseCartItemResult {
+  isLoading: boolean;
+  cartItems: CartItem[];
+  isFetching: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  refetch: () => void;
+}
+export function useCartItem(enabled: boolean = true): UseCartItemResult {
+  const { data, isLoading, isFetching, isSuccess, isError, refetch } = useQuery(
+    {
+      queryKey: [QUERY_KEYS.CART_ITEM],
+      queryFn: fetchItems,
+      initialData: [],
+      placeholderData: keepPreviousData,
+      enabled,
+    },
+  );
 
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      setLoading(true);
-      try {
-        const cartItems = await fetchItems();
-        console.log(cartItemIds);
-
-        const newCartItemIds = cartItems.map((cartItem) => cartItem.product.id);
-        setCartItem(newCartItemIds);
-      } catch (error) {
-        if (error instanceof Error) {
-          createToast(
-            '⛔️ 장바구니 상품을 가져오는데 실패했습니다. 새로고침해주세요',
-          );
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCartItems();
-  }, [createToast]);
-
-  const isInCart = (productId: number) => {
-    return cartItemIds !== null && cartItemIds.includes(productId);
+  return {
+    cartItems: data,
+    isLoading,
+    isFetching,
+    isSuccess,
+    isError,
+    refetch,
   };
-
-  return { cartItemIds, isInCart, loading };
-};
-
-export default useCartItems;
+}

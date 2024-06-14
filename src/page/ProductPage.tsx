@@ -1,5 +1,5 @@
-import ItemCard from '../components/ItemCard/ItemCard';
-import ItemList from '../components/ItemList/ItemList';
+import ItemCard from '../components/ProductItemCard/ProductItemCard';
+import ItemList from '../components/ProductItemList/ProductItemList';
 import Dropdown from '../components/common/Dropdown/Dropdown';
 import Header from '../components/common/Header/Header';
 import { CATEGORY, SORT } from '../constants';
@@ -11,20 +11,19 @@ import {
   DropBoxContainer,
   ContentWrapper,
 } from './ProductPage.style';
-import useCartItems from '../hooks/useCartItem';
 import { isCategoryType, isSortType } from '../type';
 
 function ProductPage() {
   const {
     products,
     fetchNextPage,
-    loading,
+    isLoading,
+    isFetching,
     changeCategory,
     changeSorting,
-    error,
+    isError,
   } = useProducts();
-  const { lastProductElementRef } = useInfinityScroll(fetchNextPage);
-  const { cartItemIds, isInCart } = useCartItems();
+  const { lastProductElementRef } = useInfinityScroll(() => fetchNextPage());
 
   return (
     <Container>
@@ -52,25 +51,21 @@ function ProductPage() {
           ></Dropdown>
         </DropBoxContainer>
 
-        {cartItemIds !== null && products.length !== 0 && (
+        {products.length !== 0 && (
           <ItemList>
             {products.map((product, index) => {
-              return (
-                <ItemCard
-                  key={`${product.id}${index}`}
-                  initIsInCart={isInCart(product.id)}
-                  {...product}
-                />
-              );
+              return <ItemCard key={`${product.id}_${index}`} {...product} />;
             })}
           </ItemList>
         )}
-        {products.length === 0 && <div>상품 정보가 없습니다.</div>}
-        {loading && (
+        {products.length === 0 && !isLoading && !isError && (
+          <div>상품 정보가 없습니다.</div>
+        )}
+        {isLoading && (
           <p style={{ height: '30px', fontSize: '3rem' }}>Loading...</p>
         )}
 
-        {!loading && !error && products.length !== 0 && (
+        {!isFetching && !isError && products.length !== 0 && (
           <div
             ref={lastProductElementRef}
             style={{ height: '30px', fontSize: '5rem' }}

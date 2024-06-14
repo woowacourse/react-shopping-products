@@ -5,3 +5,9 @@ export interface ProductItem {
   imageUrl: string;
   category: string;
 }
+
+export interface InitProductItem {
+  orderId?: number;
+  initIsInCart: boolean;
+  initQuantity: number;
+}
