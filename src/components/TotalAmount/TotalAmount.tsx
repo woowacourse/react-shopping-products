@@ -11,7 +11,9 @@ function TotalAmount({ cartItems }: TotalAmountProps) {
   return (
     <S.TotalAmountContainer>
       <S.TotalAmountLabel>총 결제 금액</S.TotalAmountLabel>
-      <S.TotalAmount>{totalAmountCalculator(cartItems)}원</S.TotalAmount>
+      <S.TotalAmount>
+        {totalAmountCalculator(cartItems).toLocaleString()}원
+      </S.TotalAmount>
     </S.TotalAmountContainer>
   );
 }
