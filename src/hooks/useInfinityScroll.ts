@@ -1,30 +1,26 @@
-import { Dispatch, SetStateAction, useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 interface Props {
-  hasMore: boolean;
-  setPage: Dispatch<SetStateAction<number>>;
+  onIntersect: () => void;
 }
 
-export const useInfinityScroll = ({ hasMore, setPage }: Props) => {
+export const useInfinityScroll = ({ onIntersect }: Props) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const lastProductElementRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && hasMore) {
-            setPage((prevPage) => prevPage + 1);
-          }
-        },
-        {
-          threshold: 0.1,
-        },
-      );
-      if (node) observer.current.observe(node);
-    },
-    [hasMore, setPage],
-  );
+  const lastProductElementRef = useCallback((node: HTMLElement | null) => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          onIntersect();
+        }
+      },
+      {
+        threshold: 0.1,
+      },
+    );
+    if (node) observer.current.observe(node);
+  }, []);
 
   return { lastProductElementRef };
 };

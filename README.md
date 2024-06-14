@@ -58,3 +58,34 @@
 
 - 컴포넌트 형식 : React arrow function component export default
 - css : module 방식
+
+# 🎯2단계 기능 요구사항
+
+### UI 작업
+
+- [x] Button 공통 컴포넌트 생성
+- [x] ProductQuantity 컴포넌트 생성
+- [x] CartItemsModal 컴포넌트 생성
+- [x] CartItemCard 컴포넌트 생성
+- [x] CartItemCardList 컴포넌트 생성
+
+### react-query로 리팩토링
+
+- [x] 장바구니 아이템을 부르는 커스텀 훅(useCartItems) 분리 및 리액트 쿼리로 리팩토링
+- [x] 장바구니에 아이템을 담는 커스텀 훅(useAddCartItem) 분리 및 리액트 쿼리로 리팩토링
+- [x] 상품 목록을 부르는 커스텀 훅(useProductFetch) 리액트 쿼리로 리팩토링
+- [x] 장바구니에서 아이템을
+
+### 추가 기능
+
+- [x] 상품 목록에서 담기 버튼을 누를 시 수량 변경을 할 수 있는 기능
+- [x] 장바구니 버튼을 누르면 장바구니 모달이 켜지고 닫기 버튼, 모달 밖 영역 클릭 또는 esc 키 동작시 모달이 꺼지는 기능
+- [x] 장바구니 모달에서 삭제 버튼을 누를 시 해당 아이템을 장바구니에서 삭제할 수 있는 기능
+- [x] 장바구니 모달에서 총 결제 금액을 확인할 수 있는 기능
+
+### 테스트
+
+- useProductFetch
+  - [x] 초기 상품 목록 20개를 불러오는지 테스트
+- useCartItem
+  - [x] 장바구니 목록을 불러오는지 테스트

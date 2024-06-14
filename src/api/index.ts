@@ -1,4 +1,4 @@
-import { CartItemType, ProductType } from '../types';
+import { CartItemType, ProductsResponseType } from '../types';
 import { generateBasicToken } from './auth';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -50,7 +50,9 @@ interface FetchProductsParams {
  * fetchCartItems - API에서 상품 목록을 fetch합니다.
  * @returns {Promise<ProductType[]>}
  */
-export async function fetchProducts(params: FetchProductsParams = {}): Promise<ProductType[]> {
+export async function fetchProducts(
+  params: FetchProductsParams = {},
+): Promise<ProductsResponseType> {
   const queryParams = Object.entries(params)
     .filter(([key, value]) => {
       return !(key === 'category' && value === 'all');
@@ -63,14 +65,14 @@ export async function fetchProducts(params: FetchProductsParams = {}): Promise<P
   });
   const data = await response.json();
 
-  return data.content;
+  return data;
 }
 
 /**
  * addCartItem - 선택한 상품을 장바구니에 추가합니다.
  * @returns {Promise<void>}
  */
-export async function addCartItem(productId: number): Promise<void> {
+export async function addCartItem({ productId }: { productId: number }): Promise<void> {
   await makeRequest('/cart-items', {
     method: 'POST',
     body: JSON.stringify({ productId }),
@@ -95,8 +97,26 @@ export async function fetchCartItem(page: number, size: number): Promise<CartIte
  * deleteCartItem - 선택한 상품을 장바구니에서 삭제합니다.
  * @returns {Promise<void>}
  */
-export async function deleteCartItem(cartItemId: number): Promise<void> {
+export async function deleteCartItem({ cartItemId }: { cartItemId: number }): Promise<void> {
   await makeRequest(`/cart-items/${cartItemId}`, {
     method: 'DELETE',
+  });
+}
+
+/**
+ * patchCartItemQuantityChange - 선택한 상품을 수량을 변경합니다.
+ * @returns {Promise<void>}
+ */
+export async function patchCartItemQuantityChange({
+  cartItemId,
+  quantity,
+}: {
+  cartItemId: number;
+  quantity: number;
+  errorMessage: string;
+}): Promise<void> {
+  await makeRequest(`/cart-items/${cartItemId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ quantity }),
   });
 }

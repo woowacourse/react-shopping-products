@@ -1,24 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useProductFetch } from './useProductFetch';
 import { useCartItems } from './useCartItems';
-import { useProductSelection } from './useProductSelection';
 
 export default function useProducts() {
-  const { products, setPage, hasMore, isLoading, handleSelectBarCondition, selectBarCondition } =
+  const { products, fetchNextPage, isLoading, handleSelectBarCondition, selectBarCondition } =
     useProductFetch();
-  const { cartItems, idMap, pushCartItem, popCartItem, getCartItems } = useCartItems();
-  const { selectedItems, handleSelect } = useProductSelection({
-    cartItems,
-    idMap,
-    pushCartItem,
-    popCartItem,
-    getCartItems,
-  });
+  const { cartItems } = useCartItems();
   const [cartItemCount, setCartItemCount] = useState(0);
-
-  useEffect(() => {
-    getCartItems();
-  }, []);
 
   useEffect(() => {
     setCartItemCount(cartItems.length);
@@ -26,10 +14,8 @@ export default function useProducts() {
 
   return {
     products,
-    setPage,
-    hasMore,
-    selectedItems,
-    handleSelect,
+    cartItems,
+    fetchNextPage,
     isLoading,
     cartItemCount,
     handleSelectBarCondition,

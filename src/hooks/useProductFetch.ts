@@ -1,57 +1,54 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { fetchProducts } from '../api';
-import { ProductType } from '../types';
-import { formattedKey } from './useProducts.util';
-import { useToast } from './useToast';
-import { calculatePageParams } from '../utils/calculatePageParams';
+import { QUERY_KEYS } from '../constant/queryKeys';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { AFTER_FETCH_SIZE, FIRST_FETCH_PAGE, FIRST_FETCH_SIZE } from '../constant/products';
+
+type SortConditionKey = 'priceDesc' | 'priceAsc';
 
 export function useProductFetch() {
   const [selectBarCondition, setSelectBarCondition] = useState({
     category: 'all',
-    sort: 'priceAsc',
+    sort: 'price,asc',
   });
-  const [products, setProducts] = useState<ProductType[]>([]);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const { showToast } = useToast();
-
-  useEffect(() => {
-    setProducts([]);
-    setPage(0);
-    setHasMore(true);
-  }, [selectBarCondition.category, selectBarCondition.sort]);
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: [QUERY_KEYS.PRODUCTS, { selectBarCondition }],
+    initialPageParam: 0,
+    queryFn: ({ pageParam }) => {
+      const size = pageParam === FIRST_FETCH_PAGE ? FIRST_FETCH_SIZE : AFTER_FETCH_SIZE;
+      return fetchProducts({
+        page: pageParam,
+        size,
+        ...selectBarCondition,
+      });
+    },
+    getNextPageParam: (data) => {
+      if (!data || data.last) return null;
+      if (data.number === 0) return AFTER_FETCH_SIZE + 1;
+      return data.number + 1;
+    },
+  });
 
   const handleSelectBarCondition = (filter: string, condition: string) => {
-    const newCondition = { ...selectBarCondition, [filter]: condition };
+    const sortConditions = {
+      priceDesc: 'price,desc',
+      priceAsc: 'price,asc',
+    };
+
+    const newCondition = {
+      ...selectBarCondition,
+      [filter]:
+        filter === 'sort' ? sortConditions[condition as SortConditionKey] || condition : condition,
+    };
+
     setSelectBarCondition(newCondition);
   };
 
-  const fetchMoreProducts = async () => {
-    try {
-      setIsLoading(true);
-      const { size, queryPage } = calculatePageParams(page);
-      const newProducts = await fetchProducts({
-        page: queryPage,
-        size,
-        category: selectBarCondition.category,
-        sort: formattedKey(selectBarCondition.sort),
-      });
-      setProducts((prev) => [...prev, ...newProducts]);
-      setHasMore(newProducts.length > 0);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-        showToast('상품 목록을 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.');
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  return {
+    products: data?.pages.flatMap((page) => page.content) ?? [],
+    fetchNextPage,
+    isLoading: isFetchingNextPage,
+    handleSelectBarCondition,
+    selectBarCondition,
   };
-
-  useEffect(() => {
-    fetchMoreProducts();
-  }, [page, selectBarCondition.category, selectBarCondition.sort]);
-
-  return { products, setPage, hasMore, isLoading, handleSelectBarCondition, selectBarCondition };
 }

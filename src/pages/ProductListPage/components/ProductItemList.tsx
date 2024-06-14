@@ -2,27 +2,20 @@ import ProductItem from './ProductItem';
 import { useInfinityScroll } from '../../../hooks/useInfinityScroll';
 import Loader from '../../../components/Loader/Loader';
 import styles from '../ProductListPage.module.css';
-import { ProductType } from '../../../types';
-import { Dispatch, SetStateAction } from 'react';
+import { CartItemType, ProductType } from '../../../types';
 
 interface Props {
   products: ProductType[];
-  setPage: Dispatch<SetStateAction<number>>;
-  hasMore: boolean;
-  selectedItems: Set<number>;
-  handleSelect: (id: number) => void;
+  cartItems: CartItemType[];
   isLoading: boolean;
+  fetchNextPage: () => void;
 }
 
-const ProductItemList = ({
-  products,
-  setPage,
-  hasMore,
-  selectedItems,
-  handleSelect,
-  isLoading,
-}: Props) => {
-  const { lastProductElementRef } = useInfinityScroll({ hasMore, setPage });
+const ProductItemList = ({ products, fetchNextPage, cartItems, isLoading }: Props) => {
+  const { lastProductElementRef } = useInfinityScroll({ onIntersect: fetchNextPage });
+  const handlerSelectCartItems = (productId: number): boolean => {
+    return cartItems.some((cartItem) => cartItem.product.id === productId);
+  };
 
   return (
     <>
@@ -31,11 +24,9 @@ const ProductItemList = ({
           return (
             <ProductItem
               key={`item-${item.id}-${idx}`}
-              item={item}
-              isSelected={selectedItems.has(item.id)}
-              onSelect={() => {
-                handleSelect(item.id);
-              }}
+              productItem={item}
+              isSelected={handlerSelectCartItems(item.id)}
+              cartItems={cartItems}
             />
           );
         })}
