@@ -11,12 +11,16 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.40.1",
+    "@tanstack/react-query-devtools": "^5.40.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
-    "styled-components": "^6.1.11"
+    "styled-components": "^6.1.11",
+    "woowacourse-todari-components": "^1.0.5"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.35.6",
     "@testing-library/react": "^15.0.7",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.11",

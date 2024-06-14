@@ -1,50 +1,84 @@
-import { deleteCartItem, getCartItems, postCartItem } from "@/apis/cartItem";
+import { deleteProductFromCart, patchCartItemQuantity, postProductToCart } from "@/apis/cartItem";
 import { ERROR_MESSAGES } from "@/constants/messages";
-import useMutation from "@/hooks/useMutation";
-import { CartItemContext, CartItemDispatchContext } from "@/provider/cartItemProvider";
-import { useContext } from "react";
+import QUERY_KEY from "@/constants/queryKey";
+import useCartItems from "@/hooks/useCartItems";
+import useToast from "@/hooks/useToast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useHandleCartItem = () => {
-  const cartItems = useContext(CartItemContext);
-  const setCartItems = useContext(CartItemDispatchContext);
+  const queryClient = useQueryClient();
+  const { onAddToast } = useToast();
 
-  const { mutate: getCartItemsMutate } = useMutation<typeof getCartItems>(
-    getCartItems,
-    ERROR_MESSAGES.failGetCartItems
-  );
-  const { mutate: postCartItemMutate } = useMutation<typeof postCartItem>(
-    postCartItem,
-    ERROR_MESSAGES.failPostCartItem
-  );
-  const { mutate: deleteCartItemMutate } = useMutation<typeof deleteCartItem>(
-    deleteCartItem,
-    ERROR_MESSAGES.failDeleteCartItem
-  );
+  const { cartItems } = useCartItems();
 
-  const onAddCartItem = async (id: number) => {
-    await postCartItemMutate({ productId: id, quantity: 1 });
+  const { mutate: postProductToCartMutate } = useMutation({
+    mutationKey: [QUERY_KEY.postProductToCart],
+    mutationFn: postProductToCart,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.getCartItems] });
+    },
+    onError: () => {
+      onAddToast(ERROR_MESSAGES.failPostCartItem);
+    },
+  });
 
-    const fetchedItems = await getCartItemsMutate();
-    if (fetchedItems) setCartItems(fetchedItems);
+  const { mutate: deleteProductFromCartMutate } = useMutation({
+    mutationKey: [QUERY_KEY.deleteProductFromCart],
+    mutationFn: deleteProductFromCart,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.getCartItems] });
+    },
+    onError: () => {
+      onAddToast(ERROR_MESSAGES.failDeleteCartItem);
+    },
+  });
+
+  const { mutate: patchCartItemQuantityMutate } = useMutation({
+    mutationKey: [QUERY_KEY.patchCartItemQuantity],
+    mutationFn: patchCartItemQuantity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.getCartItems] });
+    },
+    onError: () => {
+      onAddToast(ERROR_MESSAGES.failPatchCartItem);
+    },
+  });
+
+  const getCartItemQuantity = (productId: number): number => {
+    if (!cartItems) return 0;
+    const findedCartItem = cartItems.find((cartItem) => cartItem.product.id === productId);
+    if (!findedCartItem) return 0;
+
+    return findedCartItem.quantity;
   };
 
-  const onDeleteCartItem = async (id: number) => {
-    const targetItem = cartItems.find((cartItem) => cartItem.product.id === id);
+  const addCartItem = (productId: number) => postProductToCartMutate({ productId, quantity: 1 });
 
-    await deleteCartItemMutate({ itemId: targetItem!.id });
-    setCartItems((cartItems) => cartItems.filter((item) => item !== targetItem));
+  const removeCartItem = (productId: number) => {
+    const targetItem = cartItems!.find((cartItem) => cartItem.product.id === productId);
+    if (!targetItem) return;
+
+    deleteProductFromCartMutate({ itemId: targetItem.id });
   };
 
-  const isInCart = (id: number) => {
-    return cartItems.some((item) => item.product.id === id);
+  const updateCartItemQuantity = (productId: number, clickType: "plus" | "minus") => {
+    const itemQuantity = getCartItemQuantity(productId);
+
+    if (clickType === "minus" && itemQuantity === 1) {
+      removeCartItem(productId);
+
+      return;
+    }
+
+    if (!cartItems) return;
+    const targetItem = cartItems.find((cartItem) => cartItem.product.id === productId);
+    if (!targetItem) return;
+
+    const updatedQuantity = clickType === "plus" ? itemQuantity + 1 : itemQuantity - 1;
+    patchCartItemQuantityMutate({ productId: targetItem.id, quantity: updatedQuantity });
   };
 
-  const onClickCartItem = (id: number) => {
-    if (isInCart(id)) onDeleteCartItem(id);
-    else onAddCartItem(id);
-  };
-
-  return { onClickCartItem, isInCart };
+  return { cartItems, getCartItemQuantity, addCartItem, removeCartItem, updateCartItemQuantity };
 };
 
 export default useHandleCartItem;

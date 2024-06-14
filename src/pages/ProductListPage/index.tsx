@@ -6,27 +6,26 @@ import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
 import ItemCardList from "@/components/ItemCardList";
 import useSelect from "@/hooks/useSelect";
 import { useEffect } from "react";
-import useProducts from "@/hooks/useProducts";
 import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
 import * as S from "@/pages/ProductListPage/style";
 import InfiniteScroll from "@/components/_common/InfiniteScroll";
+import useFetchProductItems from "@/hooks/useFetchProductItems";
 
 const ProductListPage = () => {
   const useCategorySelect = useSelect<Category>("전체");
   const useSortSelect = useSelect<Sort>("낮은 가격순");
 
-  const { products, fetchProductPage, currentPage, isLoading, isLastPage, isAbleFetchNextPage } = useProducts();
-
   const category = useCategorySelect.selected;
   const sort = useSortSelect.selected;
 
+  const { data: products, hasNextPage, fetchNextPage } = useFetchProductItems(category, sort);
+
   const fetchScrollProduct = () => {
-    if (isLastPage) return;
-    fetchProductPage(category, currentPage, sort);
+    if (hasNextPage) fetchNextPage();
   };
 
   useEffect(() => {
-    fetchProductPage(category, 0, sort);
+    fetchNextPage();
   }, [category, sort]);
 
   return (
@@ -43,10 +42,13 @@ const ProductListPage = () => {
             <SelectBox selectorHook={useSortSelect} optionsContents={Object.keys(SORT)} />
           </S.SelectBoxWrapper>
         </S.ItemInfoWrapper>
-        <InfiniteScroll fetchingFunction={fetchScrollProduct} isAbleFetchNextPage={isAbleFetchNextPage}>
-          <ItemCardList products={products} isLoading={isLoading} />
-        </InfiniteScroll>
-        {isLoading && <ItemCartListSkeleton />}
+        {products?.pages ? (
+          <InfiniteScroll fetchingFunction={fetchScrollProduct} hasNextPage={hasNextPage}>
+            <ItemCardList products={products.pages} />
+          </InfiniteScroll>
+        ) : (
+          <ItemCartListSkeleton />
+        )}
       </S.Wrapper>
     </>
   );

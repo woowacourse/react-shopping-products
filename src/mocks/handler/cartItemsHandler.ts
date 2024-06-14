@@ -26,7 +26,20 @@ export const cartItemsHandler = [
 
     return HttpResponse.json(null, { status: 201 });
   }),
-  http.delete(SERVER_URL.apiUrl + END_POINT.cartItems + "/:id", () => {
+  http.delete(SERVER_URL.apiUrl + END_POINT.cartItems + "/:id", ({ params }) => {
+    const requestCartId = Number(params.id);
+
+    if (cartItems) cartItems.content = cartItems.content.filter((cartItem) => cartItem.id !== requestCartId);
+
     return HttpResponse.json(null, { status: 201 });
+  }),
+  http.patch(SERVER_URL.apiUrl + END_POINT.cartItems + "/:id", async ({ request, params }) => {
+    const userRequest = (await request.json()) as { quantity: number };
+    const requestCartId = Number(params.id);
+
+    const findedCartItem = cartItems.content.find((cartItem) => cartItem.id === requestCartId);
+    if (findedCartItem) findedCartItem.quantity = userRequest.quantity;
+
+    return HttpResponse.json(null, { status: 200 });
   }),
 ];

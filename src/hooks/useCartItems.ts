@@ -1,29 +1,31 @@
 import { getCartItems } from "@/apis/cartItem";
-import { ERROR_MESSAGES } from "@/constants/messages";
-import useMutation from "@/hooks/useMutation";
-import { CartItems } from "@/types/products";
-import { useState, useEffect } from "react";
+import QUERY_KEY from "@/constants/queryKey";
+import TIMER from "@/constants/timer";
+import { useQuery } from "@tanstack/react-query";
 
 const useCartItems = () => {
-  const [cartItems, setCartItems] = useState<CartItems[]>([]);
+  const { data: cartItems } = useQuery({
+    queryKey: [QUERY_KEY.getCartItems],
+    queryFn: getCartItems,
+    gcTime: TIMER.hour,
+    staleTime: TIMER.hour,
+  });
 
-  const { mutate: getCartItemsMutate } = useMutation<typeof getCartItems>(
-    getCartItems,
-    ERROR_MESSAGES.failGetCartItems
-  );
+  const isInCart = (productId: number) => {
+    if (!cartItems) return false;
 
-  const getCartItemList = async () => {
-    const res = await getCartItemsMutate();
-    if (!res) return;
-
-    setCartItems(res);
+    return cartItems.some((item) => item.product.id === productId);
   };
 
-  useEffect(() => {
-    getCartItemList();
-  }, []);
+  const totalAmount = () => {
+    if (!cartItems) return 0;
 
-  return { cartItems, setCartItems };
+    return cartItems.reduce((amount, cur) => {
+      return amount + cur.quantity * cur.product.price;
+    }, 0);
+  };
+
+  return { cartItems, isInCart, totalAmount };
 };
 
 export default useCartItems;

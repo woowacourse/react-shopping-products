@@ -1,21 +1,38 @@
 import Icon from "@/components/_common/Icon";
 import * as S from "@/components/CartBadge/style";
+import ShoppingBasket from "@/components/ShoppingBasket";
 import { END_POINT } from "@/config/endPoint";
-import { CartItemContext } from "@/provider/cartItemProvider";
-import { useContext } from "react";
+import useCartItems from "@/hooks/useCartItems";
+import { MouseEventHandler, useState } from "react";
+import { CustomModal } from "woowacourse-todari-components";
 
 const CartBadge = () => {
-  const cartItems = useContext(CartItemContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { cartItems } = useCartItems();
+
+  const openItemModal: MouseEventHandler = () => {
+    setIsModalOpen(true);
+  };
 
   return (
-    <S.Container onClick={() => (window.location.href = END_POINT.cartItemPage)}>
-      <Icon kind="cart" />
-      {cartItems.length !== 0 && (
+    <>
+      <CustomModal
+        isOpened={isModalOpen}
+        modalPosition="bottom"
+        onClose={() => setIsModalOpen(false)}
+        title="장바구니"
+        primaryButton={{ text: "다음", onClick: () => (window.location.href = END_POINT.cartItemPage) }}
+        secondaryButton={{ text: "닫기", onClick: () => setIsModalOpen(false) }}
+      >
+        <ShoppingBasket />
+      </CustomModal>
+      <S.Container onClick={openItemModal}>
+        <Icon kind="cart" />
         <S.Badge>
-          <S.BadgeNumber>{cartItems.length}</S.BadgeNumber>
+          <S.BadgeNumber>{!cartItems || cartItems.length === 0 ? 0 : cartItems.length}</S.BadgeNumber>
         </S.Badge>
-      )}
-    </S.Container>
+      </S.Container>
+    </>
   );
 };
 

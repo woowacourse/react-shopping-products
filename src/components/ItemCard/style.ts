@@ -30,3 +30,7 @@ export const ButtonWrapper = styled.div`
   padding-right: 8px;
   padding-top: 14px;
 `;
+
+export const ItemInfoWrapper = styled.div`
+  padding: 15px 8px 15px 8px;
+`;

@@ -3,6 +3,8 @@ import ItemInfo from "@/components/ItemInfo";
 import * as S from "@/components/ItemCard/style";
 import CartActionButton from "@/components/CartActionButton";
 import useHandleCartItem from "@/hooks/useHandleCartItem";
+import Stepper from "@/components/_common/Stepper";
+import useCartItems from "@/hooks/useCartItems";
 
 interface ItemCartProps {
   product: Product;
@@ -10,14 +12,25 @@ interface ItemCartProps {
 
 const ItemCard = ({ product }: ItemCartProps) => {
   const { name, price, imageUrl, id } = product;
-  const { onClickCartItem, isInCart } = useHandleCartItem();
+  const { isInCart } = useCartItems();
+  const { getCartItemQuantity, addCartItem, updateCartItemQuantity } = useHandleCartItem();
 
   return (
     <S.Wrapper>
       <S.Image $imgUrl={imageUrl} />
-      <ItemInfo name={name} price={price} />
+      <S.ItemInfoWrapper>
+        <ItemInfo name={name} price={price} />
+      </S.ItemInfoWrapper>
       <S.ButtonWrapper>
-        <CartActionButton isInCart={isInCart(id)} onClick={() => onClickCartItem(id)} />
+        {isInCart(id) ? (
+          <Stepper
+            count={getCartItemQuantity(id)}
+            plusAction={() => updateCartItemQuantity(id, "plus")}
+            minusAction={() => updateCartItemQuantity(id, "minus")}
+          />
+        ) : (
+          <CartActionButton isInCart={isInCart(id)} onClick={() => addCartItem(id)} />
+        )}
       </S.ButtonWrapper>
     </S.Wrapper>
   );
