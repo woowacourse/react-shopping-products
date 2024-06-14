@@ -41,3 +41,24 @@ export const StyledProductPrice = styled.span`
   font-weight: 500;
   color: rgba(10, 13, 19, 1);
 `;
+
+export const ProductItemBundle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 24px;
+`;
+
+export const ProductItemControls = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 19px;
+  width: 100%;
+`;
+
+export const ProductItemQuantity = styled.span`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+`;

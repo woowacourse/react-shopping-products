@@ -14,16 +14,30 @@ const createHeaders = () => {
 };
 
 export async function getCartItems(): Promise<Cart[]> {
-  const response = await fetch(`${API_URL}/cart-items`, {
+  const prevResponse = await fetch(`${API_URL}/cart-items`, {
+    method: "GET",
+    headers: createHeaders(),
+  });
+
+  if (!prevResponse.ok) {
+    throw new Error(CART_ERROR_MESSAGES.FETCH_CART_FAILURE);
+  }
+
+  const prevData = await prevResponse.json();
+
+  const size = prevData.totalElements;
+
+  const response = await fetch(`${API_URL}/cart-items?size=${size}`, {
     method: "GET",
     headers: createHeaders(),
   });
 
   if (!response.ok) {
-    throw new Error("장바구니를 불러오는데 실패했습니다.");
+    throw new Error(CART_ERROR_MESSAGES.FETCH_CART_FAILURE);
   }
 
   const data = await response.json();
+
   return data.content;
 }
 
@@ -46,7 +60,20 @@ export async function removeCartItem(productId: number): Promise<void> {
   });
 
   if (!response.ok) {
-    console.log("실패");
     throw new Error(CART_ERROR_MESSAGES.REMOVE_ITEM_FAILURE);
+  }
+}
+
+export async function patchCartItem(cartItemId: number, quantity: number): Promise<void> {
+  const response = await fetch(`${API_URL}/cart-items/${cartItemId}`, {
+    method: "PATCH",
+    headers: createHeaders(),
+    body: JSON.stringify({
+      quantity: quantity,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(CART_ERROR_MESSAGES.UPDATE_ITEM_FAILURE);
   }
 }

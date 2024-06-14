@@ -20,7 +20,7 @@ export const StyledSpinnerContainer = styled.div`
 
 export const StyledSpinner = styled.div`
   border: 8px solid rgba(0, 0, 0, 0.1);
-  border-top: 8px solid #3498db;
+  border-top: 8px solid rgba(0, 0, 0, 1);
   border-radius: 50%;
   width: 100px;
   height: 100px;

@@ -1,67 +1,44 @@
-import { useEffect, useState } from "react";
-import { getCartItems, addCartItem, removeCartItem } from "../api/cart";
+import { addCartItem, patchCartItem, removeCartItem } from "../api/cart";
+import useCartMutation from "./useCartMutation";
+import useGetCartItems from "./useGetCartItems";
 
 interface UseCartItemsResult {
-  cartItemsCount: number;
+  cartItems: Cart[];
   isLoading: boolean;
+  error: unknown;
   handleAddCartItem: (id: number) => void;
   handleRemoveCartItem: (id: number) => void;
+  handlePatchCartItem: (id: number, newQuantity: number) => void;
   isProductInCart: (id: number) => boolean;
 }
 
 const useCartItems = (): UseCartItemsResult => {
-  const [cartItems, setCartItems] = useState<Cart[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { data: cartItems = [], isLoading, error } = useGetCartItems();
+  const addMutation = useCartMutation<number>({ mutationFn: addCartItem });
+  const removeMutation = useCartMutation<number>({
+    mutationFn: (id: number) => {
+      const cartItem = cartItems.find((item) => item.product.id === id);
+      return cartItem ? removeCartItem(cartItem.id) : Promise.reject("Item not found");
+    },
+  });
 
-  useEffect(() => {
-    fetchCartItem();
-  }, []);
+  const patchMutation = useCartMutation<{ id: number; newQuantity: number }>({
+    mutationFn: ({ id, newQuantity }: { id: number; newQuantity: number }) => {
+      const cartItem = cartItems.find((item) => item.product.id === id);
+      return cartItem ? patchCartItem(cartItem.id, newQuantity) : Promise.reject("Item not found");
+    },
+  });
 
-  const fetchCartItem = async () => {
-    try {
-      setIsLoading(true);
-
-      const cartItems = await getCartItems();
-
-      setCartItems(cartItems);
-    } catch (error) {
-      console.error("Error fetch cart :", error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleAddCartItem = (id: number) => {
+    addMutation.mutate(id);
   };
 
-  const handleAddCartItem = async (id: number) => {
-    try {
-      setIsLoading(true);
-
-      await addCartItem(id);
-      fetchCartItem();
-    } catch (error) {
-      console.error("Error handling cart action:", error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleRemoveCartItem = (id: number) => {
+    removeMutation.mutate(id);
   };
 
-  const handleRemoveCartItem = async (id: number) => {
-    try {
-      setIsLoading(true);
-
-      const cart = cartItems.find((cartItem) => cartItem.product.id === id);
-
-      if (!cart) {
-        setIsLoading(false);
-        return;
-      }
-
-      await removeCartItem(cart.id);
-      fetchCartItem();
-    } catch (error) {
-      console.error("Error handling cart action:", error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handlePatchCartItem = (id: number, newQuantity: number) => {
+    patchMutation.mutate({ id, newQuantity });
   };
 
   const isProductInCart = (productId: number) => {
@@ -69,10 +46,12 @@ const useCartItems = (): UseCartItemsResult => {
   };
 
   return {
-    cartItemsCount: cartItems.length,
+    cartItems,
     isLoading,
+    error,
     handleAddCartItem,
     handleRemoveCartItem,
+    handlePatchCartItem,
     isProductInCart,
   };
 };
