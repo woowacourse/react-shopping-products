@@ -1,8 +1,14 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+
   display: flex;
   align-items: center;
+  margin: 0 auto;
   width: 100%;
   max-width: 430px;
   height: 64px;
@@ -10,6 +16,8 @@ export const Container = styled.div`
 
   padding: 0 24px;
   justify-content: space-between;
+
+  z-index: ${({ theme }) => theme.zIndex.header};
 `;
 
 export const Logo = styled.img`

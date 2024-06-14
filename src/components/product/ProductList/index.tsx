@@ -1,10 +1,10 @@
-import * as S from './style';
-
+import ProductItem from '../ProductItem';
 import APIErrorToast from '../../common/APIErrorToast';
 import IntersectionArea from '../../common/IntersectionArea';
 import { LoadingSpinner } from '../../common/LoadingSpinner/style';
-import { UseProductsResult } from '../../hooks/useProducts';
-import ProductItem from '../ProductItem';
+
+import { UseProductsResult } from '../../../hooks/useProducts';
+import * as S from './style';
 
 export default function ProductList({
   error,

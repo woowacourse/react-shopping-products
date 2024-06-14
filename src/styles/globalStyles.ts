@@ -6,6 +6,9 @@ const globalStyles = () => css`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   button {
@@ -13,6 +16,20 @@ const globalStyles = () => css`
     box-sizing: border-box;
     display: block;
     cursor: pointer;
+  }
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+  }
+
+  #modal-portal-root {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 430px;
   }
 
   html,
