@@ -51,11 +51,16 @@ const S = {
   `,
 };
 
-function Header({ itemCount }: { itemCount: number }) {
+interface Props {
+  itemCount: number;
+  toggleCart: () => void;
+}
+
+function Header({ itemCount, toggleCart }: Props) {
   return (
     <S.HeaderContainer>
       <Logo />
-      <S.CartButton>
+      <S.CartButton onClick={toggleCart}>
         <CartIcon />
         {itemCount > 0 && <S.ItemCount>{itemCount}</S.ItemCount>}
       </S.CartButton>
