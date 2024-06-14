@@ -36,7 +36,6 @@ const useProducts = (): UseProductsResult => {
           sortOption: currentSortOption,
         }),
       initialPageParam: 0,
-      // getNextPageParam: (lastPage) => (lastPage.isLast ? null : lastPage.page + 1),
       getNextPageParam: (data) => {
         if (data.isLast) return null;
         if (data.page === 0) return 5;

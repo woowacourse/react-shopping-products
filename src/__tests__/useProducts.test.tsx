@@ -2,24 +2,15 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
 import { API_ENDPOINTS } from "../api/endpoints";
 import { server } from "../mocks/server";
-import useProducts from "./useProducts";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-import { ReactNode } from "react";
-
-const wrapper = ({ children }: { children: ReactNode }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: 0,
-      },
-    },
-  });
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
-};
+import useProducts from "../hooks/useProducts";
+import { queryClient, wrapper } from "./queryClient";
 
 describe("useProducts", () => {
   describe("상품 목록 조회", () => {
+    beforeEach(() => {
+      queryClient.clear();
+    });
+
     it("상품 목록을 조회하면 20개의 상품을 불러온다.", async () => {
       const { result } = renderHook(() => useProducts(), { wrapper });
 
