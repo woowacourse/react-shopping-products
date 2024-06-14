@@ -5,38 +5,60 @@ import * as Styled from './ProductListPage.styled';
 import Dropdown from '@/components/common/dropdown/Dropdown';
 import Header from '@/components/common/header/Header';
 import InfinityScrollContainer from '@/components/common/InfinityScrollContainer';
-import Toast from '@/components/common/toast/Toast';
-import ProductCardList from '@/components/productCardList/ProductCardList';
-import Title from '@/components/title/Title';
+import ProductCardList from '@/components/product/productCardList/ProductCardList';
+import Title from '@/components/common/title/Title';
 import { CATEGORY, SORT_OPTIONS } from '@/constants/dropdownOption';
 
-import useCartItems from '@/hooks/useCartItems';
 import useProductList from '@/hooks/useProductList';
+import { useModalHandler } from 'hash-modal';
+import CartModalInfo from '@/components/cart/cartInfoModal/CartInfoModal';
+import useCartItemList from '@/hooks/useCartItemList';
+import CartItemList from '@/components/cart/cartInfoModal/CartItemList';
 
 const ProductListPage = () => {
   const {
     productList,
     isLoading,
+    isFetching,
     fetchNextPage,
-    errorState,
     handleChangeCategory,
     handleChangeSort,
     order,
     category,
+    hasNextPage,
   } = useProductList();
-  const { cartItems, handleAddCartItem, handleDeleteCartItem, matchCartItem } = useCartItems();
+  const {
+    cartItemList,
+    handleAddCartItem,
+    matchCartItem,
+    handleDeleteCartItem,
+    handleAdjustQuantity,
+    totalCartItemPrice,
+  } = useCartItemList();
   const bottomRef = useRef<HTMLDivElement>(null);
+  const { modalOpen, openModal, closeModal } = useModalHandler();
 
   return (
     <InfinityScrollContainer
-      isLoading={isLoading}
       fetchNextPage={fetchNextPage}
-      isError={errorState.isError}
+      hasNextPage={hasNextPage}
+      isFetching={isFetching}
       bottomRef={bottomRef}
     >
       <Styled.PageContainer>
-        <Header cartCount={cartItems.length} />
+        <Header cartCount={cartItemList?.length} openModal={openModal} />
         <Styled.CommonContainer>
+          {modalOpen && (
+            <CartModalInfo closeModal={closeModal}>
+              <CartItemList
+                cartItemList={cartItemList}
+                matchCartItem={matchCartItem}
+                handleDeleteCartItem={handleDeleteCartItem}
+                handleAdjustQuantity={handleAdjustQuantity}
+                totalCartItemPrice={totalCartItemPrice}
+              />
+            </CartModalInfo>
+          )}
           <Title title="상품 목록" />
           <Styled.DropdownContainer>
             <Dropdown
@@ -48,17 +70,18 @@ const ProductListPage = () => {
           </Styled.DropdownContainer>
 
           <ProductCardList
+            isFetching={isFetching}
             productList={productList}
-            handleAddCartItem={handleAddCartItem}
-            handleDeleteCartItem={handleDeleteCartItem}
-            matchCartItem={matchCartItem}
             isLoading={isLoading}
+            cartItemList={cartItemList}
+            handleAddCartItem={handleAddCartItem}
+            handleAdjustQuantity={handleAdjustQuantity}
+            matchCartItem={matchCartItem}
           />
 
           <div ref={bottomRef} style={{ height: 100 }}></div>
         </Styled.CommonContainer>
       </Styled.PageContainer>
-      <Toast isError={errorState.isError} errorMessage={errorState.errorMessage} />
     </InfinityScrollContainer>
   );
 };

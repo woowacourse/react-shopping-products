@@ -13,7 +13,7 @@ export const CommonContainer = styled.div`
   flex-direction: column;
   gap: 1.5rem;
 
-  padding: 6rem 1.5rem 8rem 1.5rem;
+  padding: 6rem 1.5rem 0rem 1.5rem;
 `;
 
 export const DropdownContainer = styled.div`

@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from '@/constants/message';
 import { AUTH_HEADER } from './auth';
 import { END_POINT } from './endpoints';
 import fetcher from './fetcher';
@@ -15,7 +16,7 @@ export const fetchCartItems = async (): Promise<CartItemInfo[]> => {
   const response = await fetcher.get({
     url: `${END_POINT.cartItems}`,
     headers: AUTH_HEADER,
-    errorMessage: '장바구니 조회에 실패했습니다',
+    errorMessage: ERROR_MESSAGE.CART_ITEM.GET,
   });
 
   const data = await response.json();
@@ -34,7 +35,7 @@ export const addCartItem = async ({
       productId,
       quantity,
     },
-    errorMessage: '장바구니 추가에 실패했습니다',
+    errorMessage: ERROR_MESSAGE.CART_ITEM.ADD,
   });
 
   return { status: response.status };
@@ -44,7 +45,21 @@ export const deleteCartItem = async (cartId: number): Promise<StatusResponse> =>
   const response = await fetcher.delete({
     url: `${END_POINT.cartItems}/${cartId}`,
     headers: AUTH_HEADER,
-    errorMessage: '장바구니 삭제에 실패했습니다',
+    errorMessage: ERROR_MESSAGE.CART_ITEM.DELETE,
+  });
+
+  return { status: response.status };
+};
+
+export const adjustCartItemQuantity = async (
+  cartItemId: number,
+  quantity: number,
+): Promise<StatusResponse> => {
+  const response = await fetcher.patch({
+    url: `${END_POINT.cartItems}/${cartItemId}`,
+    headers: AUTH_HEADER,
+    errorMessage: ERROR_MESSAGE.CART_ITEM.ADJUST,
+    body: { quantity },
   });
 
   return { status: response.status };

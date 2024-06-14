@@ -2,12 +2,9 @@ import { MouseEvent, useState } from 'react';
 
 import { Category, SortOption } from '@/types/product';
 import { isCategoryLabel, isProductCategory, isSortLabel, isSortValue } from '@/utils/typeGuard';
+import useInvalidateQueries from './useInvalidateQueries';
 
-interface UseProductFilterProp {
-  resetPage: () => void;
-}
-
-const useProductFilter = ({ resetPage }: UseProductFilterProp) => {
+const useProductFilter = () => {
   const [category, setCategory] = useState<Category>({ label: '전체', value: 'all' });
   const [order, setOrder] = useState<SortOption>({ label: '낮은 가격순', value: 'asc' });
 
@@ -21,9 +18,9 @@ const useProductFilter = ({ resetPage }: UseProductFilterProp) => {
 
     if (!label) return;
     if (!value) return;
-
+    if (label === category.label) return;
     setCategory({ label, value });
-    resetPage();
+    useInvalidateQueries(['fetchProductList', { category, order }]);
   };
 
   const handleChangeSort = async (e: MouseEvent<HTMLLIElement>) => {
@@ -36,9 +33,10 @@ const useProductFilter = ({ resetPage }: UseProductFilterProp) => {
 
     if (!label) return;
     if (!value) return;
+    if (label === order.label) return;
 
     setOrder({ label, value });
-    resetPage();
+    useInvalidateQueries(['fetchProductList', { category, order }]);
   };
 
   return { category, order, handleChangeCategory, handleChangeSort };

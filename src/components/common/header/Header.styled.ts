@@ -12,7 +12,7 @@ export const Header = styled.header`
 
   background-color: ${(props) => props.theme.color.black};
 
-  z-index: 100;
+  z-index: 10;
 `;
 
 export const AppTitle = styled.button`
@@ -33,7 +33,6 @@ export const ShoppingCartCount = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 100%;
-  z-index: 100;
   color: black;
   background-color: white;
   font-size: 10px;
@@ -42,4 +41,10 @@ export const ShoppingCartCount = styled.div`
   position: absolute;
   right: 1rem;
   top: 32px;
+`;
+
+export const ShoppingCartButton = styled.button`
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
 `;

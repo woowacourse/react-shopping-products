@@ -1,25 +1,29 @@
 import * as Styled from './ProductCardList.styled';
-import CartToggleButton from '../addCartItemButton/CartToggleButton';
-import Spinner from '../common/spinner/Spinner';
+import CartToggleButton from '../../cart/cartToggleButton/CartToggleButton';
+import Spinner from '../../common/spinner/Spinner';
 import ProductCard from '../productCard/ProductCard';
 
-import { CartItemInfo } from '@/types/cartItem';
 import { Product } from '@/types/product';
+import { CartItemInfo } from '@/types/cartItem';
 
 interface ProductCardListProp {
   productList: Product[];
-  handleAddCartItem: (productId: number) => void;
-  handleDeleteCartItem: (productId: number) => void;
-  matchCartItem: (productId: number) => CartItemInfo | undefined;
   isLoading: boolean;
+  isFetching: boolean;
+  cartItemList?: CartItemInfo[];
+  handleAddCartItem: (productId: number) => void;
+  handleAdjustQuantity: (quantity: number, cartItemId: number) => void;
+  matchCartItem: (productId: number) => CartItemInfo | undefined;
 }
 
 const ProductCardList = ({
+  isFetching,
   productList,
-  handleAddCartItem,
-  handleDeleteCartItem,
-  matchCartItem,
   isLoading,
+  cartItemList,
+  handleAddCartItem,
+  handleAdjustQuantity,
+  matchCartItem,
 }: ProductCardListProp) => {
   return (
     <>
@@ -29,15 +33,17 @@ const ProductCardList = ({
             <ProductCard imageUrl={product.imageUrl} name={product.name} price={product.price}>
               <CartToggleButton
                 productId={product.id}
+                cartItemList={cartItemList}
                 handleAddCartItem={handleAddCartItem}
-                handleDeleteCartItem={handleDeleteCartItem}
-                matchedCartItem={matchCartItem(product.id)}
+                handleAdjustQuantity={handleAdjustQuantity}
+                matchCartItem={matchCartItem}
               />
             </ProductCard>
           </div>
         ))}
       </Styled.ProductCardListWrapper>
-      {isLoading && <Spinner />}
+
+      {(isFetching || isLoading) && <Spinner />}
     </>
   );
 };

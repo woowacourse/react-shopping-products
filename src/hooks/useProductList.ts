@@ -1,72 +1,25 @@
-import { useEffect, useState } from 'react';
-
 import useProductFilter from './useProductFilter';
 
-import { fetchProductList } from '@/api/product';
-import { Product } from '@/types/product';
-import CustomError from '@/utils/error';
+import { productQuery } from './queries/products';
 
 const useProductList = () => {
-  const [productList, setProductList] = useState<Product[]>([]);
-  const [page, setPage] = useState(0);
-  const [isLastPage, setIsLastPage] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorState, setErrorState] = useState({ name: '', isError: false, errorMessage: '' });
+  const { category, order, handleChangeCategory, handleChangeSort } = useProductFilter();
 
-  const { category, order, handleChangeCategory, handleChangeSort } = useProductFilter({
-    resetPage: () => setPage(0),
-  });
+  const { data, isFetching, fetchNextPage, hasNextPage, isLoading } =
+    productQuery.useGetProductList({ category, order });
 
-  const fetchNextPage = () => {
-    const nextPage = page === 0 ? 5 : 1;
-    if (isLastPage) return;
-
-    setPage((prevPage) => prevPage + nextPage);
-  };
-
-  useEffect(() => {
-    const getProductList = async () => {
-      try {
-        setIsLoading(true);
-        const limit = page === 0 ? 20 : 4;
-        const { content, last } = await fetchProductList({
-          page,
-          category: category.value,
-          size: limit,
-          sortOptions: order.value,
-        });
-        if (last) {
-          setIsLastPage(true);
-        } else {
-          setIsLastPage(false);
-        }
-        page === 0 ? setProductList(content) : setProductList((prev) => [...prev, ...content]);
-        setErrorState({ name: '', errorMessage: '', isError: false });
-      } catch (error) {
-        if (error instanceof CustomError) {
-          const message = error.message;
-          const name = error.name;
-
-          setErrorState({ name, isError: true, errorMessage: message });
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getProductList();
-  }, [page, category, order]);
+  const productList = data?.pages.flatMap((page) => page.content) || [];
 
   return {
-    productList,
-    page,
-    fetchNextPage,
+    hasNextPage,
+    isFetching,
     isLoading,
+    productList,
+    fetchNextPage,
     handleChangeCategory,
     handleChangeSort,
     category,
     order,
-    errorState,
   };
 };
 
