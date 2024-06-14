@@ -22,12 +22,12 @@ import useIntersectionObserver from './hooks/useIntersectionObserver';
 import { CATEGORIES, PRICE_SORT } from './constants/filter';
 import { Category, Order } from './types/product';
 import CartItemModal from './components/CartItemModal';
-import useCartItems from './hooks/useCartItems';
+import { useCartItemsQuery } from './hooks/queries/cartItems/query';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const { data: cartItems } = useCartItems();
+  const { data: cartItems } = useCartItemsQuery();
 
   const cartItemsTotalAmount =
     cartItems === undefined

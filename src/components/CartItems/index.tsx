@@ -1,14 +1,14 @@
 import * as S from './style';
-import useCartItems from '../../hooks/useCartItems';
 import Quantity from '../common/Quantity';
 import Loading from '../common/Loading';
 import useHandleCartItems from '../../hooks/useHandleCartItems';
 import { useContext } from 'react';
 import { ToastContext } from '../../context/ToastProvider';
+import { useCartItemsQuery } from '../../hooks/queries/cartItems/query';
 
 const CartItems = () => {
   const { showToast } = useContext(ToastContext);
-  const { data: cartItems, isLoading } = useCartItems();
+  const { data: cartItems, isLoading } = useCartItemsQuery();
   const { deleteCart } = useHandleCartItems();
 
   const handleOnClickDeleteButton = async (cartItemId: number) => {
