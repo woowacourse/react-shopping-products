@@ -92,7 +92,6 @@ const theme: Theme = {
         font-weight: 700;
         line-height: 34.75px;
         text-align: right;
-
       `,
     },
   },
