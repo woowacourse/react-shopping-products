@@ -1,11 +1,11 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { Category, Sort } from '../../types/product';
-import { queryKeys } from '../../constants/queryKeys';
-import { fetchProducts } from '../../api/products';
+import { Category, Sort } from '../../../types/product';
+import { queryKeys } from '../../../constants/queryKeys';
 
-import * as PRODUCTS from '../../constants/pagination';
+import * as PRODUCTS from '../../../constants/pagination';
+import { fetchProducts } from '../../../api/products';
 
-const useProductsInfiniteScroll = (category: Category, sort: Sort) => {
+export const useProductsInfiniteScroll = (category: Category, sort: Sort) => {
   return useInfiniteQuery({
     queryKey: queryKeys.products(category, sort),
     queryFn: ({ pageParam }: { pageParam: number }) => fetchProducts(pageParam, category, sort),
@@ -24,5 +24,3 @@ const useProductsInfiniteScroll = (category: Category, sort: Sort) => {
     }),
   });
 };
-
-export default useProductsInfiniteScroll;

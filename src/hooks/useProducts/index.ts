@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
 import { Category, Order, Sort } from '../../types/product';
-
-import useProductsInfiniteScroll from './useProductsInfiniteScroll';
+import { useProductsInfiniteScroll } from '../queries/products/query';
 
 const useFetchProducts = () => {
   const [category, setCategory] = useState<Category>('all');
