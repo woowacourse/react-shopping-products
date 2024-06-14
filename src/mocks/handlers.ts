@@ -48,14 +48,15 @@ export const handlers = [
     const productSliced = Object.assign({}, productSorted);
     productSliced.content = productSorted.content.slice(start, end);
     productSliced.last = productSliced.content.at(-1)!.id === 36;
+    productSliced.pageable.pageNumber = page;
 
     return HttpResponse.json(productSliced);
   }),
 
-  // 카트에 상품 담기
-  // 상품 담는 api 호출
-  // -> cart-items (GET) 호출 대신 cart.json에 mock data 추가
-  // -> mock data에서 id값이 같은 것 찾기
+  /**
+   * mockProductsResponse에서 productId가 같은 값을 찾고,
+   * 같은 값이 있다면 카트에 상품 추가
+   */
   http.post(
     `${ENDPOINTS_CART}`,
     async ({ request }: { request: StrictRequest<number> }) => {
@@ -72,14 +73,20 @@ export const handlers = [
         };
         mockCartResponse.content = [...mockCartResponse.content, data];
       }
+
       return HttpResponse.json(mockCartResponse);
     },
   ),
+  /**
+   * 장바구니 상품 목록 가져오기
+   */
   http.get(`${ENDPOINTS_CART}`, async () => {
     return HttpResponse.json(mockCartResponse);
   }),
 
-  // 카트에서 상품 제거
+  /**
+   * 카트에서 상품 제거
+   */
   http.delete(`${ENDPOINTS_CART}/:id`, ({ params }) => {
     const id = Number(params.id);
     const newMockCart = mockCartResponse.content.filter(

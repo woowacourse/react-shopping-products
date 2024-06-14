@@ -1,17 +1,16 @@
-import { useContext } from 'react';
-
-import { CartContext } from '../../CartContext';
-import { Product } from '../../types/fetch';
-import CartButton from '../CartButton/CartButton';
+import { Carts, Product } from '../../types/fetch';
+import { CartButton } from '../index';
+import { useFetchAddCart } from '../../hooks';
 
 import * as S from './ProductCard.styled';
 
 interface ProductCardProps {
   product: Product;
+  cartItem: Carts | null;
 }
 
-function ProductCard({ product }: ProductCardProps) {
-  const { postToAddCart, deleteToRemoveCart } = useContext(CartContext);
+function ProductCard({ product, cartItem }: ProductCardProps) {
+  const { addCartItem } = useFetchAddCart();
 
   return (
     <div>
@@ -24,12 +23,9 @@ function ProductCard({ product }: ProductCardProps) {
 
         <S.ButtonContainer>
           <CartButton
-            id={product.id}
+            cartItem={cartItem}
             onAddClick={() => {
-              postToAddCart(product.id);
-            }}
-            onDeleteClick={() => {
-              deleteToRemoveCart(product.id);
+              addCartItem(product.id);
             }}
           />
         </S.ButtonContainer>
