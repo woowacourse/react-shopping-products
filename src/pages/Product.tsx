@@ -34,6 +34,7 @@ function Product() {
     products,
     isError: isProductsFetchError,
   } = useFetchProducts(sortings, filter);
+
   const { cartItems, isError: isCartItemsFetchError } = useFetchCartItems();
 
   const { observe, unobserve } = useIntersectionObserver(() => fetchNextPage());
@@ -74,6 +75,7 @@ function Product() {
         onToggleDetailModal={toggleDetailModal}
       />
       {(isProductsFetchError || isCartItemsFetchError) && <ErrorMessage />}
+
       <S.ProductContentWrapper>
         <S.ProductTitle>bpple 상품 목록</S.ProductTitle>
         <Dropdown setSortings={setSortings} setFilter={setFilter} />

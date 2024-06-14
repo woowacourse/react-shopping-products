@@ -2,7 +2,7 @@ import { renderHook, waitFor, act } from '@testing-library/react';
 import { HttpResponse, http } from 'msw';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import useFetchProducts from './useFetchProducts';
+import { useFetchProducts } from '../index';
 import { ENDPOINTS_PRODUCTS } from '../../api/endpoints';
 import { Product } from '../../types/fetch';
 import { SortingParam } from '../../types/sort';

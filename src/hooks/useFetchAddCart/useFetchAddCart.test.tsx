@@ -1,8 +1,9 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import useFetchAddCart from './useFetchAddCart';
-import useFetchCartItems from '../useFetchCartItems/useFetchCartItems';
+
+import { useFetchAddCart, useFetchCartItems } from '../index';
 import { Carts } from '../../types/fetch';
+
 import { mockCart as mockCartResponse } from '../../mocks/cart';
 
 const queryClient = new QueryClient();

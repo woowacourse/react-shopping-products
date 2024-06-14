@@ -10,6 +10,7 @@ interface CartButtonProps {
   cartItem: Carts | null;
   onAddClick: (event: React.MouseEvent) => void;
 }
+
 function CartButton({ cartItem, onAddClick }: CartButtonProps) {
   const handleAddClick = (event: React.MouseEvent) => {
     onAddClick(event);

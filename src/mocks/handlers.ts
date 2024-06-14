@@ -53,10 +53,10 @@ export const handlers = [
     return HttpResponse.json(productSliced);
   }),
 
-  // 카트에 상품 담기
-  // 상품 담는 api 호출
-  // -> cart-items (GET) 호출 대신 cart.json에 mock data 추가
-  // -> mock data에서 id값이 같은 것 찾기
+  /**
+   * mockProductsResponse에서 productId가 같은 값을 찾고,
+   * 같은 값이 있다면 카트에 상품 추가
+   */
   http.post(
     `${ENDPOINTS_CART}`,
     async ({ request }: { request: StrictRequest<number> }) => {
@@ -84,7 +84,9 @@ export const handlers = [
     return HttpResponse.json(mockCartResponse);
   }),
 
-  // 카트에서 상품 제거
+  /**
+   * 카트에서 상품 제거
+   */
   http.delete(`${ENDPOINTS_CART}/:id`, ({ params }) => {
     const id = Number(params.id);
     const newMockCart = mockCartResponse.content.filter(

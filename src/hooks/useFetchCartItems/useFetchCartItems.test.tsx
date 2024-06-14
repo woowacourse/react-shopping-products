@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 
-import useFetchCartItems from './useFetchCartItems';
+import { useFetchCartItems } from '../index';
 
 const queryClient = new QueryClient();
 
