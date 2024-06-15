@@ -74,3 +74,27 @@
     - [x] 상품 정렬
       - [x] 낮은 가격 순
       - [x] 높은 가격 순
+
+---
+
+## 2단계 추가 요구 사항
+
+- [x] UI
+  - [x] 상품 목록 페이지 > 상품 아이템: 빼기 버튼 → 수량 조절 버튼 (change)
+  - [x] 장바구니 모달 (new feature)
+- [x] 기능
+  - [x] 장바구니에 담긴 상품의 수량 조절
+  - [x] 장바구니에 담긴 상품 삭제
+  - [x] 총 결제 금액 계산
+- [x] refactoring
+  - [x] 기존의 모든 비동기 처리 로직 react query로 구현
+    - [x] ProductItem
+      - CartItemsContext, useEffect → useCartItemsQuery, useCartItemMutation으로 리팩토링
+    - [x] ProductList
+      - useProducts 훅 수정
+        - useEffect → useInfiniteQuery로 리팩토링
+    - [x] Header
+      - CartItemsContext → useCartItemsQuery로 리팩토링
+  - [x] useCartItemMutation 리팩토링
+    - 내부적으로 각각의 mutation 분리하기
+    - onError 핸들링 (useErrorContext)

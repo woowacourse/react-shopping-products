@@ -64,15 +64,16 @@ export const getProducts = async ({
   return data;
 };
 
-export const postProductInCart = async (
-  productId: number,
-  quantity: number = 1
-) => {
+export const postProductInCart = async ({
+  productId,
+}: {
+  productId: number;
+}) => {
   const response = await fetchWithAuth(CART_ITEMS_ENDPOINT, {
     method: "POST",
     body: {
       productId,
-      quantity,
+      quantity: 1,
     },
   });
 
@@ -81,8 +82,12 @@ export const postProductInCart = async (
   }
 };
 
-export const deleteProductInCart = async (cartId: number) => {
-  const response = await fetchWithAuth(`${CART_ITEMS_ENDPOINT}/${cartId}`, {
+export const deleteProductInCart = async ({
+  cartItemId,
+}: {
+  cartItemId: number;
+}) => {
+  const response = await fetchWithAuth(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
     method: "DELETE",
   });
 
@@ -115,4 +120,17 @@ export const getCartItems = async (): Promise<CartItem[]> => {
   }
 
   return data.content;
+};
+
+export const updateCartItemQuantity = async ({
+  cartItemId,
+  quantity,
+}: {
+  cartItemId: number;
+  quantity: number;
+}): Promise<void> => {
+  await fetchWithAuth(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, {
+    method: "PATCH",
+    body: { quantity },
+  });
 };
