@@ -3,21 +3,25 @@ import * as S from './Header.styled';
 
 interface HeaderProps {
   badgeCount: number;
+  onBadgeClick?: () => void;
 }
 
-function Header({ badgeCount }: HeaderProps) {
+const Header = ({ badgeCount, onBadgeClick }: HeaderProps) => {
+  const handleClickLogoIcon = () => {
+    scrollTo({ top: 0, behavior: 'smooth' });
+  };
   return (
     <S.HeaderContainer>
-      <S.LogoIcon src={LogoIcon} />
+      <S.LogoIcon src={LogoIcon} onClick={handleClickLogoIcon} />
       <S.CartIconContainer>
         <S.CartIcon src={CartIcon} />
-        <S.BadgeIconContainer>
+        <S.BadgeIconContainer onClick={onBadgeClick}>
           <S.BadgeIcon src={Badge} />
           <S.BadgeIconCount>{badgeCount}</S.BadgeIconCount>
         </S.BadgeIconContainer>
       </S.CartIconContainer>
     </S.HeaderContainer>
   );
-}
+};
 
 export default Header;

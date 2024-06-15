@@ -1,10 +1,11 @@
 import { createContext } from 'react';
-import useFetchAddCart from './hooks/useFetchAddCart';
+import useFetchCart from './hooks/useFetchCart';
 
-export const CartContext = createContext<ReturnType<typeof useFetchAddCart>>({
-  productIdSetInCart: new Set(),
-  setProductIdSetInCart: () => {},
-  addProductToCart: () => {},
-  patchToRemoveCart: async () => {},
-  fetchCart: async () => [],
+export const CartContext = createContext<ReturnType<typeof useFetchCart>>({
+  cartItems: [],
+  isError: false,
+  isPending: true,
+  addProductToCart: async () => {},
+  deleteToRemoveCart: async () => {},
+  patchCartItemQuantity: async () => {},
 });

@@ -12,7 +12,8 @@ const roundButtonCSS = styled.button`
   box-sizing: border-box;
 
   font-weight: 600;
-  line-height: 1.5rem;
+  line-height: 24px;
+  cursor: pointer;
 `;
 
 export const AddButton = styled(roundButtonCSS)`

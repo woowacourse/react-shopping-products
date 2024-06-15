@@ -5,22 +5,19 @@ import productSorter from '../utils/productSorter';
 import { mockCartResponse } from './cart';
 import { mockProductsResponse } from './products';
 
-const filterProductHandler = (
-  productCopy: ProductResponse,
-  category: string | null,
-) => {
-  return category
-    ? productCopy.content.filter((product) => product.category === category)
-    : productCopy.content;
+const initialCarts = mockCartResponse.content.slice();
+const initialProducts = mockProductsResponse.content.slice();
+export const resetDB = () => {
+  mockCartResponse.content = initialCarts.slice();
+  mockProductsResponse.content = initialProducts.slice();
 };
 
-const sortProductHandler = (
-  sortings: string[],
-  productCopy: ProductResponse,
-) => {
-  return sortings.length > 0
-    ? productSorter(sortings, productCopy)
-    : productCopy;
+const filterProductHandler = (productCopy: ProductResponse, category: string | null) => {
+  return category ? productCopy.content.filter((product) => product.category === category) : productCopy.content;
+};
+
+const sortProductHandler = (sortings: string[], productCopy: ProductResponse) => {
+  return sortings.length > 0 ? productSorter(sortings, productCopy) : productCopy;
 };
 
 const getProductsHandler = http.get(ENDPOINTS_PRODUCTS, ({ request }) => {
@@ -39,32 +36,26 @@ const getProductsHandler = http.get(ENDPOINTS_PRODUCTS, ({ request }) => {
   const end = (page + 1) * size;
   const productSliced = Object.assign({}, productSorted);
   productSliced.content = productSorted.content.slice(start, end);
-  productSliced.last =
-    productSliced.content.at(-1)!.id === productSorted.content.at(-1)!.id;
+  productSliced.last = productSliced.content.at(-1)!.id === productSorted.content.at(-1)!.id;
 
   return HttpResponse.json(productSliced);
 });
 
-const postProductToCartHandler = http.post(
-  `${ENDPOINTS_CART}`,
-  async ({ request }: { request: StrictRequest<PostCartItemRequestBody> }) => {
-    const product = await request.json();
-    const id = product.productId;
-    const findProduct = mockProductsResponse.content.find(
-      (product) => product.id === id,
-    );
+const postProductToCartHandler = http.post(`${ENDPOINTS_CART}`, async ({ request }: { request: StrictRequest<PostCartItemRequestBody> }) => {
+  const product = await request.json();
+  const id = product.productId;
+  const findProduct = mockProductsResponse.content.find((product) => product.id === id);
 
-    if (findProduct) {
-      const data = {
-        id: Math.random() * 1000,
-        quantity: 1,
-        product: findProduct,
-      };
-      mockCartResponse.content = [...mockCartResponse.content, data];
-    }
-    return HttpResponse.json(mockCartResponse);
-  },
-);
+  if (findProduct) {
+    const data = {
+      id: Math.random() * 1000,
+      quantity: 1,
+      product: findProduct,
+    };
+    mockCartResponse.content = [...mockCartResponse.content, data];
+  }
+  return HttpResponse.json(mockCartResponse);
+});
 
 const getCartHandler = http.get(`${ENDPOINTS_CART}`, async () => {
   return HttpResponse.json(mockCartResponse);
@@ -77,9 +68,4 @@ const deleteCartHandler = http.delete(`${ENDPOINTS_CART}/:id`, ({ params }) => {
   return HttpResponse.json(null, { status: 201 });
 });
 
-export const handlers = [
-  getProductsHandler,
-  getCartHandler,
-  postProductToCartHandler,
-  deleteCartHandler,
-];
+export const handlers = [getProductsHandler, getCartHandler, postProductToCartHandler, deleteCartHandler];
