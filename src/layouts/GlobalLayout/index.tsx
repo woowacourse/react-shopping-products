@@ -1,16 +1,17 @@
-import { CartItemProvider } from '../../context/CartItemProvider';
-import { ToastProvider } from '../../context/ToastProvider';
 import * as S from './style';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { PropsWithChildren } from 'react';
 
 const GlobalLayout = ({ children }: PropsWithChildren) => {
+  const queryClient = new QueryClient();
+
   return (
-    <ToastProvider>
-      <CartItemProvider>
-        <S.Container>{children}</S.Container>
-      </CartItemProvider>
-    </ToastProvider>
+    <QueryClientProvider client={queryClient}>
+      <S.Container>{children}</S.Container>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 

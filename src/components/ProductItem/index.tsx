@@ -1,11 +1,12 @@
 import * as S from './style';
 
-import { useContext, useEffect, useState } from 'react';
-import { CartItemsContext } from '../../context/CartItemProvider';
-
-import { ADD_TO_CART, REMOVE_TO_CART } from '../../assets/images';
+import { ADD_TO_CART } from '../../assets/images';
 
 import Spinner from '../common/Spinner';
+import Quantity from '../common/Quantity';
+import useHandleCartItems from '../../hooks/useHandleCartItems';
+import { CartItem } from '../../types/cart';
+import { useContext } from 'react';
 import { ToastContext } from '../../context/ToastProvider';
 
 interface ProductItemProps {
@@ -13,68 +14,50 @@ interface ProductItemProps {
   imageUrl: string;
   name: string;
   price: number;
-  cartItemId: number | undefined;
+  cartItem: CartItem | undefined;
 }
 
-const ProductItem = ({ id, imageUrl, name, price, cartItemId }: ProductItemProps) => {
-  const { addCart, deleteCart } = useContext(CartItemsContext);
+const ProductItem = ({ id, imageUrl, name, price, cartItem }: ProductItemProps) => {
   const { showToast } = useContext(ToastContext);
-  const [loading, setLoading] = useState(false);
-  const [isInCart, setIsInCart] = useState(false);
+  const { addCart } = useHandleCartItems();
+  const isInCart = !!cartItem;
 
-  const TOGGLE_BUTTON_ICON = isInCart ? REMOVE_TO_CART : ADD_TO_CART;
-  const BUTTON_TEXT = isInCart ? '빼기' : '담기';
-
-  const onToggle = async () => {
-    setLoading(true);
-
-    if (cartItemId) {
-      try {
-        await deleteCart(cartItemId);
-        setIsInCart(false);
-      } catch (error) {
-        if (error instanceof Error) showToast(error.message);
-      }
-    } else {
-      try {
-        await addCart(id);
-        setIsInCart(true);
-      } catch (error) {
-        if (error instanceof Error) showToast(error.message);
-      }
+  const handleOnClickAddButton = async () => {
+    try {
+      await addCart.mutateAsync(id);
+    } catch (error) {
+      if (error instanceof Error) showToast(error.message);
     }
-
-    setLoading(false);
   };
-
-  useEffect(() => {
-    setIsInCart(Boolean(cartItemId));
-  }, [cartItemId]);
 
   return (
     <S.ProductItem>
-      <S.Image src={imageUrl} alt={name + '상품 사진'} />
+      <S.ImageWrapper>
+        <S.Image src={imageUrl} alt={name + '상품 사진'} />
+      </S.ImageWrapper>
       <S.InformationContainer>
         <S.Information>
           <S.Name>{name}</S.Name>
           <S.Price>{price.toLocaleString('ko-KR')}원</S.Price>
         </S.Information>
         <S.ButtonContainer>
-          <S.ToggleButton
-            disabled={loading}
-            $loading={loading}
-            onClick={onToggle}
-            $isInCart={isInCart}
-          >
-            {loading ? (
-              <Spinner isInCart={isInCart} />
+          <S.ButtonWrapper>
+            {addCart.isPending ? (
+              <Spinner />
+            ) : isInCart ? (
+              <Quantity deleteIfZero={true} cartId={cartItem.id} quantity={cartItem.quantity} />
             ) : (
-              <>
-                <S.ButtonImage src={TOGGLE_BUTTON_ICON} />
-                <span>{BUTTON_TEXT}</span>
-              </>
+              <S.ToggleButton
+                disabled={addCart.isPending}
+                $loading={addCart.isPending}
+                onClick={handleOnClickAddButton}
+                $isInCart={isInCart}
+              >
+                <S.ButtonImage src={ADD_TO_CART} />
+                <span>담기</span>
+              </S.ToggleButton>
             )}
-          </S.ToggleButton>
+          </S.ButtonWrapper>
         </S.ButtonContainer>
       </S.InformationContainer>
     </S.ProductItem>

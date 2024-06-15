@@ -23,7 +23,7 @@ export const SpinnerContainer = styled.div`
   width: 1.25rem;
 `;
 
-export const SpinnerDot = styled.div<{ $isInCart: boolean }>`
+export const SpinnerDot = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -38,8 +38,7 @@ export const SpinnerDot = styled.div<{ $isInCart: boolean }>`
     height: 20%;
     width: 20%;
     border-radius: 50%;
-    background-color: ${(props) =>
-      props.$isInCart ? props.theme.color.darkBlack : props.theme.color.white};
+    background-color: ${(props) => props.theme.color.darkBlack};
     transform: scale(0);
     opacity: 0.5;
     animation: ${pulse} calc(0.9s * 1.111) ease-in-out infinite;

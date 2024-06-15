@@ -8,7 +8,7 @@ interface FetchOption {
   headers?: HeadersInit;
 }
 
-interface PostFetchOption extends FetchOption {
+interface FetchOptionWithBody extends FetchOption {
   body?: object;
 }
 
@@ -33,7 +33,7 @@ export const FetchWithToken = {
     return data;
   },
 
-  post: async (url: string, { headers, body }: PostFetchOption = {}) => {
+  post: async (url: string, { headers, body }: FetchOptionWithBody = {}) => {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -66,5 +66,24 @@ export const FetchWithToken = {
     }
 
     if (!response.ok) throw new Error('Failed to request "DELETE"');
+  },
+
+  patch: async (url: string, { headers, body }: FetchOptionWithBody = {}) => {
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        Authorization: token,
+        ...headers,
+      },
+      body: JSON.stringify({ ...body }),
+    });
+
+    if (response.status === 500) {
+      throw new Error(
+        '서버에 문제가 발생했습니다. 관리자에게 문의하시거나 잠시 후 다시 시도해주세요.',
+      );
+    }
+
+    if (!response.ok) throw new Error('Failed to request "PATCH"');
   },
 };

@@ -1,13 +1,13 @@
-import { FIRST_PAGE, FIRST_PAGE_SIZE, SIZE_PER_PAGE } from '../constants/pagination';
-import { ProductsResponseData, Sort } from '../types/product';
+import * as PRODUCTS from '../constants/pagination';
+import { Category, ProductsResponseData, Sort } from '../types/product';
 import { PRODUCTS_ENDPOINT } from './endpoints';
 
 export async function fetchProducts(
   page: number,
-  category = 'all',
+  category: Category = 'all',
   sort: Sort,
 ): Promise<ProductsResponseData> {
-  const size = page === FIRST_PAGE ? FIRST_PAGE_SIZE : SIZE_PER_PAGE;
+  const size = page === PRODUCTS.FIRST_PAGE ? PRODUCTS.FIRST_PAGE_SIZE : PRODUCTS.SIZE_PER_PAGE;
   const params = new URLSearchParams();
 
   if (category !== 'all') params.append('category', category);

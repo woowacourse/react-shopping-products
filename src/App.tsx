@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Container } from './layouts/GlobalLayout/style';
 
-import { useContext, useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import Header from './components/common/Header';
 import Main from './components/common/Main';
@@ -16,19 +16,39 @@ import FilterContainer from './components/FilterContainer';
 import ProductsContent from './components/ProductsContent';
 import ProductItem from './components/ProductItem';
 
-import useFetchProducts from './hooks/useFetchProducts';
-
-import { CartItemsContext } from './context/CartItemProvider';
+import useProducts from './hooks/useProducts';
+import useIntersectionObserver from './hooks/useIntersectionObserver';
 
 import { CATEGORIES, PRICE_SORT } from './constants/filter';
 import { Category, Order } from './types/product';
-import useIntersectionObserver from './hooks/useIntersectionObserver';
+import CartItemModal from './components/CartItemModal';
+import { useCartItemsQuery } from './hooks/queries/cartItems/query';
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const { cartItems } = useContext(CartItemsContext);
-  const { products, category, sort, loading, error, fetchNextPage, filterByCategory, setSorting } =
-    useFetchProducts();
+  const { data: cartItems } = useCartItemsQuery();
+
+  const cartItemsTotalAmount =
+    cartItems === undefined
+      ? 0
+      : cartItems.reduce(
+          (totalAmount, cartItem) => totalAmount + cartItem.product.price * cartItem.quantity,
+          0,
+        );
+
+  const {
+    products,
+    category,
+    sort,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    error,
+    fetchNextPage,
+    filterByCategory,
+    setSorting,
+  } = useProducts();
 
   const selectedCategoryOption = CATEGORIES.find(({ value }) => value === category)!.label;
   const selectedSortOption = PRICE_SORT.find(({ value }) => value === sort.price)!.label;
@@ -41,13 +61,18 @@ function App() {
     setSorting('price', option);
   };
 
-  useIntersectionObserver({ loading, error }, observerRef, fetchNextPage, { threshold: 0.8 });
+  useIntersectionObserver({ isLoading, isFetchingNextPage, error }, observerRef, fetchNextPage, {
+    threshold: 0.8,
+  });
 
   return (
     <Container>
       <Header>
         <HomeButton onClick={() => {}} />
-        <CartButton count={cartItems.length} onClick={() => {}} />
+        <CartButton
+          count={cartItems === undefined ? 0 : cartItems.length}
+          onOpen={() => setIsOpen(true)}
+        />
       </Header>
       <Main>
         <ProductsContainer>
@@ -66,19 +91,31 @@ function App() {
           </FilterContainer>
           <ProductsContentContainer>
             <ProductsContent>
-              {products.map((product) => (
+              {products?.map((product) => (
                 <ProductItem
                   key={product.id}
-                  cartItemId={cartItems.find((cartItem) => product.id === cartItem.product.id)?.id}
+                  cartItem={cartItems?.find((cartItem) => product.id === cartItem.product.id)}
                   {...product}
                 />
               ))}
-              <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
+              <LastList>
+                {isFetchingNextPage ? (
+                  <Loading />
+                ) : hasNextPage ? (
+                  <div ref={observerRef} id="observer" style={{ height: '10px' }}></div>
+                ) : (
+                  !isLoading && '목록을 모두 조회했습니다.'
+                )}
+              </LastList>
             </ProductsContent>
-            {loading && <Loading />}
           </ProductsContentContainer>
         </ProductsContainer>
       </Main>
+      <CartItemModal
+        totalAmount={cartItemsTotalAmount}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </Container>
   );
 }
@@ -88,7 +125,15 @@ export default App;
 const ProductsContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
 
   overflow-y: scroll;
+`;
+
+const LastList = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: span 2;
+  border-top: 1px solid ${(props) => props.theme.color.borderGray};
+  padding-top: 0.5rem;
 `;

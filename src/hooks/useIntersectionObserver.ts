@@ -4,19 +4,20 @@ type IntersectionObserverCallback = () => void;
 type IntersectionObserverOptions = IntersectionObserverInit;
 
 interface intersectionCondition {
-  loading: boolean;
+  isLoading: boolean;
+  isFetchingNextPage: boolean;
   error: unknown;
 }
 
 const useIntersectionObserver = (
-  { loading, error }: intersectionCondition,
+  { isLoading, isFetchingNextPage, error }: intersectionCondition,
   targetRef: MutableRefObject<Element | null>,
   callback: IntersectionObserverCallback,
   options?: IntersectionObserverOptions,
 ) => {
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !loading && !error) {
+      if (entry.isIntersecting && !isLoading && !error && !isFetchingNextPage) {
         callback();
       }
     }, options);
