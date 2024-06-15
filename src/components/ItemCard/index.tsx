@@ -1,28 +1,26 @@
-import { Product } from "@/types/products";
 import ItemInfo from "@/components/ItemInfo";
 import * as S from "@/components/ItemCard/style";
-import CartActionButton from "@/components/CartActionButton";
-import useHandleCartItem from "@/hooks/useHandleCartItem";
 import { memo } from "react";
+import QuantityButtonMemo from "@/components/QuantityButton";
 
-interface ItemCartProps {
-  product: Product;
+interface ItemCardProps {
+  name: string;
+  price: number;
+  imageUrl: string;
+  id: number;
 }
 
-const ItemCard = ({ product }: ItemCartProps) => {
-  const { name, price, imageUrl, id } = product;
-  const { onClickCartItem, isInCart } = useHandleCartItem();
-
+const ItemCard = ({ name, price, imageUrl, id }: ItemCardProps) => {
   return (
     <S.Wrapper>
       <S.Image $imgUrl={imageUrl} />
       <ItemInfo name={name} price={price} />
       <S.ButtonWrapper>
-        <CartActionButton isInCart={isInCart(id)} onClick={() => onClickCartItem(id)} />
+        <QuantityButtonMemo id={id} />
       </S.ButtonWrapper>
     </S.Wrapper>
   );
 };
 
-const ItemCartMemo = memo(ItemCard);
-export default ItemCartMemo;
+const MemoItemCard = memo(ItemCard);
+export default MemoItemCard;

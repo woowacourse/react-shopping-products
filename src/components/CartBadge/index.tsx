@@ -1,19 +1,17 @@
 import Icon from "@/components/_common/Icon";
 import * as S from "@/components/CartBadge/style";
-import { CartItemContext } from "@/provider/cartItemProvider";
-import { useContext } from "react";
 
-const CartBadge = () => {
-  const cartItems = useContext(CartItemContext);
-
+const CartBadge = ({ onClick, count }: { onClick: () => void; count: number }) => {
   return (
-    <S.Container>
-      <Icon kind="cart" />
-      {cartItems.length !== 0 && (
-        <S.Badge>
-          <S.BadgeNumber>{cartItems.length}</S.BadgeNumber>
-        </S.Badge>
-      )}
+    <S.Container onClick={onClick}>
+      <>
+        <Icon kind="cart" />
+        {count !== 0 && (
+          <S.Badge>
+            <S.BadgeNumber>{count}</S.BadgeNumber>
+          </S.Badge>
+        )}
+      </>
     </S.Container>
   );
 };

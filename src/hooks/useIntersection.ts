@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 
-const useInfiniteScroll = (
+const useIntersection = (
   options: IntersectionObserverInit,
   externalRef: React.MutableRefObject<HTMLElement | null>
-): { isIntersecting: boolean } => {
+) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
 
   const onIntersection: IntersectionObserverCallback = useCallback(([entry]) => {
@@ -26,4 +26,4 @@ const useInfiniteScroll = (
   return { isIntersecting };
 };
 
-export default useInfiniteScroll;
+export default useIntersection;

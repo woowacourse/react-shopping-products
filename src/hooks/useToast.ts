@@ -4,6 +4,7 @@ import { useContext } from "react";
 const useToast = () => {
   const toastList = useContext(ToastStateContext) || [];
   const setToastList = useContext(ToastDispatchContext);
+  const TOAST_MAX_COUNT = 2;
 
   const onCloseToast = (id: number) => {
     const newToasts = toastList?.filter((toast) => toast.id !== id) || [];
@@ -12,7 +13,12 @@ const useToast = () => {
 
   const onAddToast = (message: string) => {
     const newId = Date.now() + toastList.length;
-    const newToasts = [...toastList, { id: newId, message }];
+
+    if (toastList.length > TOAST_MAX_COUNT) {
+      toastList.pop();
+    }
+
+    const newToasts = [{ id: newId, message }, ...toastList];
     setToastList(newToasts);
   };
 

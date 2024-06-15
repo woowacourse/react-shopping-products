@@ -7,12 +7,15 @@ const Toast = ({ id, message }: ToastType) => {
   const [isClose, setIsClose] = useState<boolean>(false);
   const { onCloseToast } = useToast();
 
+  const TOAST_TIME = 3000;
+  const TOAST_DISAPPEAR_TIME = 500;
+
   useEffect(() => {
     if (!isClose) return;
 
     const timer = setTimeout(() => {
       onCloseToast(id);
-    }, 500);
+    }, TOAST_DISAPPEAR_TIME);
 
     return () => clearTimeout(timer);
   }, [isClose, onCloseToast, id]);
@@ -20,7 +23,7 @@ const Toast = ({ id, message }: ToastType) => {
   useEffect(() => {
     const closeTimer = setTimeout(() => {
       setIsClose(true);
-    }, 2500);
+    }, TOAST_TIME);
 
     return () => {
       clearTimeout(closeTimer);

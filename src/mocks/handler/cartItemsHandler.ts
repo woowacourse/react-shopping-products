@@ -3,7 +3,7 @@ import SERVER_URL from "@/config/serverUrl";
 import { HttpResponse, http } from "msw";
 import cartItems from "@/mocks/mockResponse/cart-items.json";
 import products from "@/mocks/mockResponse/products.json";
-import { PostCartItemParams } from "@/apis/cartItem";
+import { PatchCartItemParams, PostCartItemParams } from "@/apis/cartItem";
 
 const cartItemsData = cartItems;
 
@@ -34,11 +34,26 @@ export const cartItemsHandler = [
     return HttpResponse.json(null, { status: 201 });
   }),
 
+  http.patch(SERVER_URL.apiUrl + END_POINT.cartItems + `/:cartId`, async ({ params, request }) => {
+    const productAndQuantity = (await request.json()) as PatchCartItemParams;
+    const { cartId } = params;
+    const { quantity } = productAndQuantity;
+
+    if (!productAndQuantity) return new HttpResponse("바디가 없습니다.", { status: 404 });
+    const itemIndex = cartItems.content.findIndex((cart) => cart.id === Number(cartId));
+
+    if (itemIndex === -1) return new HttpResponse("아이디가 잘못된 아이디입니다.", { status: 404 });
+
+    cartItems.content[itemIndex].quantity = quantity;
+
+    return HttpResponse.json(null, { status: 201 });
+  }),
+
   http.delete(SERVER_URL.apiUrl + END_POINT.cartItems + "/:id", ({ params }) => {
     const { id } = params;
 
     const targetIndex = cartItemsData.content.findIndex((item) => item.id === Number(id));
-    if (!targetIndex) return new HttpResponse(null, { status: 404 });
+    if (targetIndex === -1) return new HttpResponse(null, { status: 404 });
 
     cartItemsData.content.splice(targetIndex, 1);
     return HttpResponse.json(null, { status: 201 });

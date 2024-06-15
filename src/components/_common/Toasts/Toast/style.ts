@@ -25,11 +25,9 @@ export const Wrapper = styled.div<{ $isClose: boolean }>`
   border-radius: 0 0 3px 3px;
   animation: ${({ $isClose }) => ($isClose ? toastSlideOut : toastSlideIn)} 0.4s ease-in-out forwards;
   ${flexCenter}
-
   @media (max-width: 768px) {
     width: 100%;
   }
-
   @media (min-width: 768px) {
     width: 429px;
   }

@@ -1,6 +1,7 @@
 import { IMAGES } from "@/assets/images";
 import * as S from "@/components/_common/Icon/style";
-import { IconKind } from "@/types/IconKind";
+
+export type IconKind = "addCart" | "deleteCart" | "downArrow" | "cart" | "minus" | "plus";
 
 interface IconProps extends React.PropsWithChildren<React.ImgHTMLAttributes<HTMLImageElement>> {
   kind: IconKind;

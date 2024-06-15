@@ -1,61 +1,35 @@
-import CartBadge from "@/components/CartBadge";
+import ErrorFallback from "@/error/ErrorFallback";
+import ErrorBoundary from "@/error/errorBoundary";
 import Header from "@/components/Header";
-import TextBox from "@/components/_common/TextBox";
-import SelectBox from "@/components/SelectBox";
-import { CATEGORY, Category, SORT, Sort } from "@/constants/selectOption";
-import ItemCardList from "@/components/ItemCardList";
-import useSelect from "@/hooks/useSelect";
-import { useEffect, useRef } from "react";
-import useProducts from "@/hooks/useProducts";
-import useInfiniteScroll from "@/hooks/useInfiniteScroll";
-import ItemCartListSkeleton from "@/components/ItemCardList/Skeleton";
 import TopButton from "@/components/_common/TopButton";
-import * as S from "@/pages/productListPage/style";
+import CartBadge from "@/components/CartBadge";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "@/constants/path";
+import ProductList from "@/pages/productListPage/productList";
+import useModal from "@/hooks/useModal";
+import { useCartItemQuantityQuery } from "@/hooks/server/useCartItems";
 
 const ProductListPage = () => {
-  const useCategorySelect = useSelect<Category>("전체");
-  const useSortSelect = useSelect<Sort>("낮은 가격순");
+  const navigate = useNavigate();
 
-  const { products, fetchFirstPage, fetchNextPage, currentPage, loading, isLastPage } = useProducts();
-  const ref = useRef<HTMLDivElement>(null);
+  const reloadPage = () => {
+    navigate(PATH.RELOAD);
+  };
 
-  const infiniteScrollConfig = { threshold: 0.25, rootMargin: "80px" };
-  const { isIntersecting } = useInfiniteScroll(infiniteScrollConfig, ref);
+  const { data: cartItemQuantity } = useCartItemQuantityQuery();
 
-  const category = useCategorySelect.selected;
-  const sort = useSortSelect.selected;
-
-  useEffect(() => {
-    if (isIntersecting && !isLastPage) {
-      fetchNextPage(category, currentPage, sort);
-    }
-  }, [isIntersecting]);
-
-  useEffect(() => {
-    fetchFirstPage(category, sort);
-  }, [category, sort]);
-
-  const isAbleFetchNextPage = !loading && !isLastPage;
+  const { onOpenModal, onCloseModal, isModalOpen } = useModal();
 
   return (
     <>
       <Header>
         <Header.Title text="SHOP" />
-        <CartBadge />
+        <CartBadge onClick={onOpenModal} count={cartItemQuantity} />
         <TopButton />
       </Header>
-      <S.Wrapper>
-        <S.ItemInfoWrapper>
-          <TextBox type="xLarge" text="bpple 상품 목록" />
-          <S.SelectBoxWrapper>
-            <SelectBox useSelector={useCategorySelect} optionsContents={Object.keys(CATEGORY)} />
-            <SelectBox useSelector={useSortSelect} optionsContents={Object.keys(SORT)} />
-          </S.SelectBoxWrapper>
-        </S.ItemInfoWrapper>
-        {products && <ItemCardList products={products} />}
-        {isAbleFetchNextPage && <div ref={ref}></div>}
-        {loading && <ItemCartListSkeleton />}
-      </S.Wrapper>
+      <ErrorBoundary fallback={<ErrorFallback message="에러가 발생했습니다." resetError={reloadPage} />}>
+        <ProductList isModalOpen={isModalOpen} onCloseModal={onCloseModal} />
+      </ErrorBoundary>
     </>
   );
 };
