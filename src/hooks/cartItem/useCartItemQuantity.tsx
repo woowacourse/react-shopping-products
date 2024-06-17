@@ -5,13 +5,14 @@ import {
   useDeleteCartItemMutation,
   useModifyCartItemQuantityMutation,
 } from '@/apis/queries/cartItem';
+import ErrorWithHeader from '@/errors/ErrorWithHeader';
 
 const UNIT_COUNT = 1;
 
 type UseCartItemQuantityProps = {
-  onAddCartItemError: (error: Error) => void;
-  onDeleteCartItemError: (error: Error) => void;
-  onModifyCartItemQuantityError: (error: Error) => void;
+  onAddCartItemError: (error: ErrorWithHeader) => void;
+  onDeleteCartItemError: (error: ErrorWithHeader) => void;
+  onModifyCartItemQuantityError: (error: ErrorWithHeader) => void;
 };
 
 const useCartItemQuantity = ({

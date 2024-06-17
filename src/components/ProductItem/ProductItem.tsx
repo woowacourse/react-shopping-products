@@ -16,9 +16,9 @@ type ProductItemProps = Product;
 export default function ProductItem({ id, name, price, imageUrl }: ProductItemProps) {
   const { showToast } = useToast();
   const { increaseCartItemQuantity, decreaseCartItemQuantity, addCartItem } = useCartItemQuantity({
-    onAddCartItemError: (e) => showToast(e.message),
-    onDeleteCartItemError: (e) => showToast(e.message),
-    onModifyCartItemQuantityError: (e) => showToast(e.message),
+    onAddCartItemError: (e) => showErrorToast(e),
+    onDeleteCartItemError: (e) => showErrorToast(e),
+    onModifyCartItemQuantityError: (e) => showErrorToast(e),
   });
 
   const { getCartItemQuantity } = useCartItemList();

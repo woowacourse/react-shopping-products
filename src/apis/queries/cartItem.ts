@@ -7,8 +7,8 @@ import {
   requestDeleteCartItem,
   requestModifyCartItemQuantity,
 } from '../request/cartItem';
-import { TIME } from '@/constants/time';
 import { invalidateCartItemQueries } from '@/apis/queries/cartItem.utils';
+import ErrorWithHeader from '@/errors/ErrorWithHeader';
 
 export const useInfiniteCartItemListQuery = () => {
   return useInfiniteQuery({
@@ -24,14 +24,13 @@ export const useInfiniteCartItemListQuery = () => {
       return newCartItemMap;
     },
     getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.nextCursor : null),
-    staleTime: TIME.HOUR,
     networkMode: 'always',
   });
 };
 
 export const useModifyCartItemQuantityMutation = (
   queryClient: QueryClient,
-  onModifyCartItemQuantityError: (error: Error) => void,
+  onModifyCartItemQuantityError: (error: ErrorWithHeader) => void,
 ) => {
   return useMutation({
     mutationFn: requestModifyCartItemQuantity,
@@ -43,7 +42,7 @@ export const useModifyCartItemQuantityMutation = (
 
 export const useAddCartItemMutation = (
   queryClient: QueryClient,
-  onAddCartItemError: (error: Error) => void,
+  onAddCartItemError: (error: ErrorWithHeader) => void,
 ) => {
   return useMutation({
     mutationFn: (productId: number) => requestAddCartItem({ productId }),
@@ -55,7 +54,7 @@ export const useAddCartItemMutation = (
 
 export const useDeleteCartItemMutation = (
   queryClient: QueryClient,
-  onModifyDeleteCartItemError: (error: Error) => void,
+  onModifyDeleteCartItemError: (error: ErrorWithHeader) => void,
 ) => {
   return useMutation({
     mutationFn: requestDeleteCartItem,
