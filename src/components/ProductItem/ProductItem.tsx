@@ -10,20 +10,27 @@ import useCartItemQuantity from '@/hooks/cartItem/useCartItemQuantity';
 import useCartItemList from '@/hooks/cartItem/useCartItemList';
 import RatioImageBox from '../common/RatioImageBox/RatioImageBox';
 import { useToast } from '@/hooks/useToast';
+import { useEffect } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 
 type ProductItemProps = Product;
 
 export default function ProductItem({ id, name, price, imageUrl }: ProductItemProps) {
-  const { showToast } = useToast();
+  const { showErrorToast } = useToast();
   const { increaseCartItemQuantity, decreaseCartItemQuantity, addCartItem } = useCartItemQuantity({
     onAddCartItemError: (e) => showErrorToast(e),
     onDeleteCartItemError: (e) => showErrorToast(e),
     onModifyCartItemQuantityError: (e) => showErrorToast(e),
   });
 
-  const { getCartItemQuantity } = useCartItemList();
+  const { getCartItemQuantity, isError, error } = useCartItemList();
 
   const quantity = getCartItemQuantity(id);
+  const { showBoundary } = useErrorBoundary();
+
+  useEffect(() => {
+    if (isError) showBoundary(error);
+  }, [isError]);
 
   return (
     <div className={styles.container}>
