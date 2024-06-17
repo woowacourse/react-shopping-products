@@ -1,7 +1,8 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import LoadingSpinner from '../common/LoadingSpinner/LoadingSpinner';
 import { useObserver } from '@/hooks/useObserver';
-import { useToast } from '@/hooks/useToast';
+import OptionalErrorArea from '../OptionalErrorArea/OptionalErrorArea';
+import OptionalSuspense from '../OptionalSuspense/OptionalSuspense';
 
 type InfiniteScrollContainer = {
   children: ReactNode;
@@ -10,6 +11,7 @@ type InfiniteScrollContainer = {
   rootMargin?: number;
   isError: boolean;
   error: Error | null;
+  isSuccess: boolean;
 };
 
 export default function InfiniteScrollContainer({
@@ -19,10 +21,9 @@ export default function InfiniteScrollContainer({
   rootMargin = 500,
   isError,
   error,
+  isSuccess,
 }: InfiniteScrollContainer) {
-  const { showToast } = useToast();
   const bottom = useRef(null);
-
   const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
     !isFetching && entry.isIntersecting && fetchNextPage();
 
@@ -32,15 +33,12 @@ export default function InfiniteScrollContainer({
     rootMargin: rootMargin + 'px', // 바닥에 덜 잫도록
   });
 
-  useEffect(() => {
-    if (isError && error) showToast(error.message);
-  }, [isError]);
-
   return (
-    <>
-      {children}
-      {isFetching && <LoadingSpinner />}
-      {!isFetching && <div ref={bottom}></div>}
-    </>
+    <OptionalErrorArea isError={isError} error={error}>
+      {isSuccess && children}
+      <OptionalSuspense isFetching={isFetching} fallbackComponent={<LoadingSpinner />}>
+        <div ref={bottom} />
+      </OptionalSuspense>
+    </OptionalErrorArea>
   );
 }

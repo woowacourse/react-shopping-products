@@ -6,18 +6,11 @@ import ProductList from '@/components/ProductList/ProductList';
 import useProductList from '@/hooks/product/useProductList';
 import styles from './ProductListPage.module.css';
 import CartIcon from '@/components/CartIcon/CartIcon';
-import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import Dropdown from '@/components/Dropdown/Dropdown';
 import InfiniteScrollContainer from '@/components/InfiniteScrollContainer/InfiniteScrollContainer';
 
 export default function ProductListPage() {
-  const {
-    data: productList,
-    handleCategory,
-    handleSortType,
-    isSuccess,
-    ...rest
-  } = useProductList();
+  const { data: productList, handleCategory, handleSortType, ...rest } = useProductList();
 
   return (
     <div className={styles.container}>
@@ -44,13 +37,9 @@ export default function ProductListPage() {
             />
           </Flex>
         </div>
-        {isSuccess ? (
-          <InfiniteScrollContainer {...rest}>
-            <ProductList productList={productList} />
-          </InfiniteScrollContainer>
-        ) : (
-          <LoadingSpinner />
-        )}
+        <InfiniteScrollContainer {...rest}>
+          <ProductList productList={productList ?? []} />
+        </InfiniteScrollContainer>
       </Flex>
     </div>
   );
