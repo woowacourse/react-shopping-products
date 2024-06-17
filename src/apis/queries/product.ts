@@ -19,7 +19,6 @@ export const useInfiniteProductList = (category: Category, sortType: SortValue) 
       }),
     select: (data) => (data.pages ?? []).flatMap(({ content }) => content),
     getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.nextCursor : null),
-
     staleTime: TIME.HOUR,
     networkMode: 'always',
   });
