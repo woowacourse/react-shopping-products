@@ -6,42 +6,38 @@ export const CART_ITEM_PAGE = {
 };
 
 const useCartItemList = () => {
-  const { isSuccess, data, ...rest } = useInfiniteCartItemListQuery();
+  const { isSuccess, data: cartItemMap, ...rest } = useInfiniteCartItemListQuery();
 
   const getCartItemQuantity = (productId: number): number => {
-    if (!data || !data.cartItemMap) return 0;
+    if (!cartItemMap) return 0;
 
-    const { cartItemMap } = data;
     const cartItem = cartItemMap.get(productId);
     return cartItem ? cartItem.quantity : 0;
   };
 
   const getCartItemId = (productId: number): number => {
-    if (!data || !data.cartItemMap) return -1;
+    if (!cartItemMap) return -1;
 
-    const { cartItemMap } = data;
     const cartItem = cartItemMap.get(productId);
     return cartItem ? cartItem.id : -1;
   };
 
   const getTotalQuantity = (): number => {
-    if (!data || !data.cartItemMap) return -1;
+    if (!cartItemMap) return -1;
 
-    const { cartItemMap } = data;
     return cartItemMap.size;
   };
 
   const getTotalPrice = (): number => {
-    if (!data || !data.cartItemMap) return -1;
+    if (!cartItemMap) return -1;
 
-    const { cartItemList } = data;
-
+    const cartItemList = [...cartItemMap.values()];
     return cartItemList.reduce((sum, { product, quantity }) => sum + product.price * quantity, 0);
   };
 
   return {
     isSuccess,
-    data: data?.cartItemList,
+    data: cartItemMap ? [...cartItemMap.values()] : undefined,
     ...rest,
     getCartItemId,
     getCartItemQuantity,
