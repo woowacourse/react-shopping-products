@@ -1,7 +1,7 @@
 import { ReactNode, useRef } from 'react';
 import LoadingSpinner from '../common/LoadingSpinner/LoadingSpinner';
 import { useObserver } from '@/hooks/useObserver';
-import OptionalErrorArea from '../OptionalErrorArea/OptionalErrorArea';
+import OptionalErrorBoundary from '../OptionalErrorBoundary/OptionalErrorBoundary';
 import OptionalSuspense from '../OptionalSuspense/OptionalSuspense';
 
 type InfiniteScrollContainer = {
@@ -34,11 +34,11 @@ export default function InfiniteScrollContainer({
   });
 
   return (
-    <OptionalErrorArea isError={isError} error={error}>
+    <OptionalErrorBoundary isError={isError} error={error}>
       {isSuccess && children}
       <OptionalSuspense isFetching={isFetching} fallbackComponent={<LoadingSpinner />}>
         <div ref={bottom} />
       </OptionalSuspense>
-    </OptionalErrorArea>
+    </OptionalErrorBoundary>
   );
 }
