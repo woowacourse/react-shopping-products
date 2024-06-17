@@ -21,8 +21,7 @@ export const useInfiniteCartItemListQuery = () => {
       const newCartItemMap = new Map();
       cartItemList.forEach((cartItem) => newCartItemMap.set(cartItem.product.id, cartItem)); // PID를 key로한다.
 
-      // map과 리스트로 반환
-      return { cartItemList, cartItemMap: newCartItemMap };
+      return newCartItemMap;
     },
     getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.nextCursor : null),
     staleTime: TIME.HOUR,
