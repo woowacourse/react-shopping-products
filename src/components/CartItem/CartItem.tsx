@@ -4,13 +4,19 @@ import styles from './CartItem.module.css';
 import Button from '../common/Button/Button';
 import Text from '../common/Text/Text';
 import ChangeQuantity from '../ChangeQuantity/ChangeQuantity';
-import useCartItemQuantity from '@/hooks/cartItem/useCartItemQuantity';
 import Divider from '../common/Divider/Divider';
+import useCartItemQuantity from '@/hooks/cartItem/useCartItemQuantity';
+import { useToast } from '@/hooks/useToast';
 
 const CartItem = ({ quantity, product }: CartItem) => {
   const { imageUrl, name, price } = product;
+  const { showErrorToast } = useToast();
   const { increaseCartItemQuantity, decreaseCartItemQuantity, deleteCartItem } =
-    useCartItemQuantity();
+    useCartItemQuantity({
+      onAddCartItemError: (e) => showErrorToast(e),
+      onDeleteCartItemError: (e) => showErrorToast(e),
+      onModifyCartItemQuantityError: (e) => showErrorToast(e),
+    });
 
   return (
     <>
