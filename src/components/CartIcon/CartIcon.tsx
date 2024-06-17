@@ -7,7 +7,7 @@ import CartItemListModal from '../CartItemListModal/CartItemListModal';
 import { useToast } from '@/hooks/useToast';
 
 export default function CartIcon() {
-  const { data, getTotalQuantity } = useCartItemList();
+  const { data, getTotalQuantity, isLoading } = useCartItemList();
   const [isOpen, setIsOpen] = useState(false);
   const { showToast } = useToast();
 
@@ -24,9 +24,11 @@ export default function CartIcon() {
     <>
       <div className={styles.container} onClick={handleModal}>
         <ImageBox className={styles.cartIcon} src={CartIconImage} width={32} height={32} />
-        <div className={styles.amountContainer}>
-          <span className={styles.amount}>{getTotalQuantity()}</span>
-        </div>
+        {!isLoading && (
+          <div className={styles.amountContainer}>
+            <span className={styles.amount}>{getTotalQuantity()}</span>
+          </div>
+        )}
       </div>
 
       <CartItemListModal isOpen={isOpen} close={handleModal} />
