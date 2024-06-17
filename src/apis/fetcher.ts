@@ -1,6 +1,12 @@
 import objectToQueryString, { ObjectQueryParams } from '@/utils/objectToQueryString';
 import { generateBasicToken } from '../utils/auth';
-import { ERROR_MESSAGE } from '@/constants/messages';
+import {
+  ERROR_MESSAGE,
+  SERVER_ERROR_MESSAGE,
+  SERVER_ERROR_MESSAGE_DIVIDER,
+} from '@/constants/messages';
+import { convertToUpperCase } from '@/utils/convertToUpperCase';
+import ErrorWithHeader from '@/errors/ErrorWithHeader';
 
 type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
@@ -79,20 +85,34 @@ const fetcher = ({
   return errorHandler(url, options, errorMessage);
 };
 
-const errorHandler = async (url: string, options: Options, errorMessage: string) => {
+const errorHandler = async (url: string, options: Options, errorMessageHeader: string) => {
   try {
     const response = await fetch(url, options);
-    if (!response.ok) throw new Error(errorMessage);
+    if (!response.ok) {
+      const serverErrorMessage = await response.text();
+      throw new Error(serverErrorMessage || ''); // 받은 에러 메세지가 없는 경우는 서버에게..
+    }
 
     return response;
   } catch (error) {
-    throw new Error(getErrorMessage(error));
+    throw new ErrorWithHeader(errorMessageHeader, getErrorMessage(error));
   }
 };
 
 const getErrorMessage = (error: unknown) => {
   if (error instanceof TypeError) return ERROR_MESSAGE.OFFLINE;
-  if (error instanceof Error) return error.message;
+
+  if (error instanceof Error) {
+    const mappedErrorMessage = Object.entries(SERVER_ERROR_MESSAGE).find(([key]) => {
+      const upperCaseErrorMessage = convertToUpperCase(
+        error.message.split(SERVER_ERROR_MESSAGE_DIVIDER)[0],
+      );
+
+      return upperCaseErrorMessage.includes(key);
+    })?.[1];
+
+    return mappedErrorMessage ?? ERROR_MESSAGE.UNKNOWN;
+  }
 
   return ERROR_MESSAGE.UNKNOWN;
 };
