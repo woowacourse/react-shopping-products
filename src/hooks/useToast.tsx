@@ -1,19 +1,31 @@
 import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import Toast from '@/components/Toast/Toast';
 import { createPortal } from 'react-dom';
+import ErrorWithHeader from '@/errors/ErrorWithHeader';
 
 interface ToastContextType {
   showToast: (message: string) => void;
+  showErrorToast: (error: ErrorWithHeader) => void;
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
-  const [message, setMessage] = useState<string | null>(null);
+  const [header, setHeader] = useState<string | undefined>(undefined);
+  const [message, setMessage] = useState<string | undefined>(undefined);
 
   const showToast = useCallback((msg: string) => {
     setMessage(msg);
-    setTimeout(() => setMessage(null), 3000);
+    setTimeout(() => setMessage(undefined), 3000);
+  }, []);
+
+  const showErrorToast = useCallback(({ header, message }: ErrorWithHeader) => {
+    setHeader(header);
+    setMessage(message);
+    setTimeout(() => {
+      setMessage(undefined);
+      setHeader(undefined);
+    }, 3000);
   }, []);
 
   const target = document.getElementById('toast');
@@ -24,9 +36,9 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={{ showToast, showErrorToast }}>
       {children}
-      {createPortal(<> {message && <Toast message={message} />}</>, target)}
+      {createPortal(<> {message && <Toast message={message} header={header} />}</>, target)}
     </ToastContext.Provider>
   );
 };
