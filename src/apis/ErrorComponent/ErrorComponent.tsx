@@ -13,12 +13,14 @@ const ErrorAreaContainer = styled.div`
   row-gap: 14px;
 `;
 
-const ErrorComponent = ({ error }: { error: ErrorWithHeader }) => {
+const ErrorComponent = ({ error }: { error: ErrorWithHeader | Error }) => {
   return (
     <ErrorAreaContainer>
-      <Text size="l" weight="l">
-        {error.header}
-      </Text>
+      {error instanceof ErrorWithHeader && (
+        <Text size="l" weight="l">
+          {error.header}
+        </Text>
+      )}
       <Text size="m" weight="l">
         {error.message}
       </Text>
