@@ -1,8 +1,6 @@
 import { ReactNode, useRef } from 'react';
-import LoadingSpinner from '../common/LoadingSpinner/LoadingSpinner';
 import { useObserver } from '@/hooks/useObserver';
-import OptionalErrorBoundary from '../OptionalErrorBoundary/OptionalErrorBoundary';
-import OptionalSuspense from '../OptionalSuspense/OptionalSuspense';
+import LoadingSpinner from '../common/LoadingSpinner/LoadingSpinner';
 
 type InfiniteScrollContainer = {
   children: ReactNode;
@@ -19,8 +17,6 @@ export default function InfiniteScrollContainer({
   isFetching,
   fetchNextPage,
   rootMargin = 500,
-  isError,
-  error,
   isSuccess,
 }: InfiniteScrollContainer) {
   const bottom = useRef(null);
@@ -34,11 +30,10 @@ export default function InfiniteScrollContainer({
   });
 
   return (
-    <OptionalErrorBoundary isError={isError} error={error}>
+    <>
       {isSuccess && children}
-      <OptionalSuspense isFetching={isFetching} fallbackComponent={<LoadingSpinner />}>
-        <div ref={bottom} />
-      </OptionalSuspense>
-    </OptionalErrorBoundary>
+      {isFetching && <LoadingSpinner />}
+      <div ref={bottom} />
+    </>
   );
 }
