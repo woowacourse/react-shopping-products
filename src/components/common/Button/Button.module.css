@@ -16,7 +16,8 @@ button {
 }
 
 .default {
-  background-color: #eaeaea;
+  background-color: white;
+  border: 1px solid #0000001a;
   color: black;
 }
 
@@ -26,4 +27,40 @@ button {
 
 .width-full {
   width: 100%;
+}
+
+.size-s {
+  height: 24px;
+}
+
+.size-m {
+  height: 30px;
+}
+
+.size-l {
+  height: 36px;
+}
+
+.square.size-s {
+  width: 24px;
+}
+
+.square.size-m {
+  width: 30px;
+}
+
+.square.size-l {
+  width: 36px;
+}
+
+.radius-s {
+  border-radius: 4px;
+}
+
+.radius-m {
+  border-radius: 8px;
+}
+
+.radius-l {
+  border-radius: 12px;
 }

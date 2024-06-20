@@ -1,54 +1,44 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import Toast from '@/components/Toast/Toast';
 import { createPortal } from 'react-dom';
-import styles from '../components/Toast/Toast.module.css';
+import ErrorWithHeader from '@/errors/ErrorWithHeader';
 
-export type ToastType = 'alert';
-const MAX_TOAST_COUNT = 10;
-
-type Toast = {
-  message: string;
-  type: ToastType;
-  id?: number;
-};
-
-type ToastContextType = {
-  showToast: (toast: Toast) => void;
-};
+interface ToastContextType {
+  showToast: (message: string) => void;
+  showErrorToast: (error: ErrorWithHeader) => void;
+}
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
-  const [toastList, setToastList] = useState<Toast[]>([]);
+  const [header, setHeader] = useState<string | undefined>(undefined);
+  const [message, setMessage] = useState<string | undefined>(undefined);
 
-  const showToast = (toast: Toast) => {
-    const id = Date.now();
-    const newToast = { ...toast, id };
-    setToastList((prev) => [newToast, ...prev].slice(0, MAX_TOAST_COUNT));
+  const showToast = useCallback((msg: string) => {
+    setMessage(msg);
+    setTimeout(() => setMessage(undefined), 3000);
+  }, []);
 
+  const showErrorToast = useCallback(({ header, message }: ErrorWithHeader) => {
+    setHeader(header);
+    setMessage(message);
     setTimeout(() => {
-      setToastList((prev) => prev.filter((t) => t.id !== id));
+      setMessage(undefined);
+      setHeader(undefined);
     }, 3000);
-  };
+  }, []);
 
   const target = document.getElementById('toast');
 
   if (target === null) {
-    console.error('포탈의 생성 위치가 올바르지 않습니다.');
+    console.error('toast를 띄우기 위한 포탈의 생성 위치가 올바르지 않습니다.');
     return;
   }
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={{ showToast, showErrorToast }}>
       {children}
-      {createPortal(
-        <ul className={styles['toast-list']}>
-          {toastList.map(({ message, type }, index) => (
-            <Toast type={type} key={index} message={message} />
-          ))}
-        </ul>,
-        target,
-      )}
+      {createPortal(<> {message && <Toast message={message} header={header} />}</>, target)}
     </ToastContext.Provider>
   );
 };

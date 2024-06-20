@@ -1,10 +1,10 @@
 import { http, HttpResponse } from 'msw';
 import { BASE_URL } from '@/apis/baseUrl';
 import cartItemListData from '../datas/cartItemList.json';
-import { CartItem } from '@/types/cartItem.type';
 import { ENDPOINT } from '@/apis/endpoints';
+import { ResponseCartItemList } from '@/apis/responseTypes';
 
-const cartItems: CartItem[] = cartItemListData as CartItem[];
+const cartItems = cartItemListData as ResponseCartItemList;
 
 type DeleteCartItemParams = {
   id: string;
@@ -16,24 +16,30 @@ export const cartItemHandlers = [
     const page = Number(url.searchParams.get('page') || '0');
     const size = Number(url.searchParams.get('size') || '20');
 
+    const { content } = cartItems;
+
     const start = page * size;
     const end = start + size;
-    const paginatedCartItems = cartItems.slice(start, end);
+    const paginatedCartItems = content.slice(start, end);
 
-    const totalPages = Math.ceil(cartItems.length / size);
+    const totalPages = Math.ceil(content.length / size);
 
     return HttpResponse.json({
       content: paginatedCartItems,
       totalPages,
+      last: false,
+      pageable: {
+        pageNumber: 1,
+      },
     });
   }),
 
-  // ⛔️ async 추가로 인한 이펙트 확인 안됨. ⛔️
-  // ⛔️ as 로 인한 이펙트 확인 안됨. ⛔️
   http.post(`${BASE_URL.SHOP}${ENDPOINT.CART_ITEM}`, ({ params }) => {
     const productId = Number(params);
 
-    const cartItem = cartItems.find(({ product }) => product.id === productId);
+    const { content } = cartItems;
+
+    const cartItem = content.find(({ product }) => product.id === productId);
 
     if (cartItem)
       return HttpResponse.json(
@@ -47,13 +53,15 @@ export const cartItemHandlers = [
     });
   }),
 
-  // 장바구니 아이템 삭제 delete
   http.delete<DeleteCartItemParams>(`${BASE_URL.SHOP}${ENDPOINT.CART_ITEM}/:id`, ({ params }) => {
     const cartItemId = Number(params);
-    const index = cartItems.findIndex((item) => item.id === cartItemId);
+
+    const { content } = cartItems;
+
+    const index = content.findIndex((item) => item.id === cartItemId);
 
     if (index > -1) {
-      cartItems.splice(index, 1);
+      content.splice(index, 1);
       return HttpResponse.json({}, { status: 200 });
     }
 

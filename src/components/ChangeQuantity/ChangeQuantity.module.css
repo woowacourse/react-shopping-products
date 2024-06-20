@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.quantity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 24px;
+}

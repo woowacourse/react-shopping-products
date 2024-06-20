@@ -4,11 +4,12 @@ import productListData from '../datas/productList.json';
 import { Product } from '@/types/product.type';
 import { Category, SortOrder } from '@/types/filter.type';
 import { ENDPOINT } from '@/apis/endpoints';
+import { ResponseProductList } from '@/apis/responseTypes';
 
 export const productHandlers = [
   http.get(`${BASE_URL.SHOP}${ENDPOINT.PRODUCT}`, ({ request }) => {
     const url = new URL(request.url);
-    const products: Product[] = productListData as Product[];
+    const { content: products } = productListData as ResponseProductList;
 
     // TODO as 타입 선언 대체하기
     const page = Number(url.searchParams.get('page') ?? '1');
@@ -36,6 +37,10 @@ export const productHandlers = [
     return HttpResponse.json({
       content: paginatedProducts,
       totalPages,
+      last: false,
+      pageable: {
+        pageNumber: 1,
+      },
     });
   }),
 ];

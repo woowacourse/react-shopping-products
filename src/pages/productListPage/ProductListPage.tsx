@@ -2,27 +2,18 @@ import Header from '@/components/Header/Header';
 import Title from '@/components/common/Title/Title';
 import Flex from '@/components/common/Flex/Flex';
 import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
-import ProductList from '@/components/ProductList/ProductList';
-import useProductList from '@/hooks/useProductList';
-import { useRef } from 'react';
-import { useObserver } from '@/hooks/useObserver';
 import styles from './ProductListPage.module.css';
 import CartIcon from '@/components/CartIcon/CartIcon';
-import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 import Dropdown from '@/components/Dropdown/Dropdown';
+import useProductListFilter from '@/hooks/product/useProductListFilter';
+import ProductListContainer from './ProductListContainer';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorComponent from '@/apis/ErrorComponent/ErrorComponent';
+import { Suspense } from 'react';
+import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 
 export default function ProductListPage() {
-  const { productList, handleCategory, handleSortType, loading, fetchNextPage } = useProductList();
-
-  const bottom = useRef(null);
-
-  const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
-    !loading && entry.isIntersecting && fetchNextPage();
-
-  useObserver({
-    target: bottom,
-    onIntersect,
-  });
+  const { handleCategory, handleSortType, category, sortType } = useProductListFilter();
 
   return (
     <div className={styles.container}>
@@ -49,11 +40,12 @@ export default function ProductListPage() {
             />
           </Flex>
         </div>
-        <ProductList productList={productList} />
+        <ErrorBoundary FallbackComponent={ErrorComponent}>
+          <Suspense fallback={<LoadingSpinner />}>
+            <ProductListContainer category={category} sortType={sortType} />
+          </Suspense>
+        </ErrorBoundary>
       </Flex>
-
-      <div ref={bottom} />
-      {loading && <LoadingSpinner />}
     </div>
   );
 }

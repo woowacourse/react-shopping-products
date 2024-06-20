@@ -1,14 +1,12 @@
 import { requestGet } from '../fetcher';
 import { BASE_URL } from '../baseUrl';
 import { Category } from '@/types/filter.type';
-import { Product } from '@/types/product.type';
 import { SortValue } from '@/constants/filter';
 import { ENDPOINT } from '../endpoints';
-
-type ResponseProductList = {
-  content: Product[];
-  totalPages: number;
-};
+import { ResponseProductList } from '../responseTypes';
+import { Product } from '@/types/product.type';
+import { PageData } from '@/types/infiniteScroll';
+import { REQUEST_PRODUCTS_ERROR_MESSAGE } from '@/constants/messages';
 
 type QueryParams = {
   page: number;
@@ -27,7 +25,7 @@ export const requestProductList = async ({
   size: number;
   category: Category;
   sortType: SortValue;
-}) => {
+}): Promise<PageData<Product>> => {
   const queryParams: QueryParams = {
     page,
     size,
@@ -36,14 +34,16 @@ export const requestProductList = async ({
 
   if (category !== 'all') queryParams.category = category;
 
-  const { content, totalPages } = await requestGet<ResponseProductList>({
+  const { content, pageable, last } = await requestGet<ResponseProductList>({
     baseUrl: BASE_URL.SHOP,
     endpoint: ENDPOINT.PRODUCT,
     queryParams,
+    errorMessage: REQUEST_PRODUCTS_ERROR_MESSAGE.GET_PRODUCT_LIST,
   });
 
   return {
-    paginatedProducts: content,
-    totalPages,
+    content,
+    hasNextPage: !last,
+    nextCursor: pageable.pageNumber + 1,
   };
 };

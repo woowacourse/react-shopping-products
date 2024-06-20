@@ -1,7 +1,26 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .ul {
+  width: 100%;
   display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
+  grid-template-columns: repeat(2, 1fr);
   align-items: start;
-  row-gap: 20px;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .ul {
+    grid-template-columns: repeat(3, 1fr); /* 태블릿 사이즈 (3개) */
+  }
+}
+
+@media (min-width: 1024px) {
+  .ul {
+    grid-template-columns: repeat(4, 1fr); /* 웹 사이즈 (4개) */
+    max-width: 1400px;
+  }
 }
