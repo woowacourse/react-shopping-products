@@ -2,15 +2,18 @@ import Header from '@/components/Header/Header';
 import Title from '@/components/common/Title/Title';
 import Flex from '@/components/common/Flex/Flex';
 import { CATEGORY_OPTION_LIST, FILTER_OPTION_LIST } from '@/constants/filter';
-import ProductList from '@/components/ProductList/ProductList';
-import useProductList from '@/hooks/product/useProductList';
 import styles from './ProductListPage.module.css';
 import CartIcon from '@/components/CartIcon/CartIcon';
 import Dropdown from '@/components/Dropdown/Dropdown';
-import InfiniteScrollContainer from '@/components/InfiniteScrollContainer/InfiniteScrollContainer';
+import useProductListFilter from '@/hooks/product/useProductListFilter';
+import ProductListContainer from './ProductListContainer';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorComponent from '@/apis/ErrorComponent/ErrorComponent';
+import { Suspense } from 'react';
+import LoadingSpinner from '@/components/common/LoadingSpinner/LoadingSpinner';
 
 export default function ProductListPage() {
-  const { data: productList, handleCategory, handleSortType, ...rest } = useProductList();
+  const { handleCategory, handleSortType, category, sortType } = useProductListFilter();
 
   return (
     <div className={styles.container}>
@@ -37,9 +40,11 @@ export default function ProductListPage() {
             />
           </Flex>
         </div>
-        <InfiniteScrollContainer {...rest}>
-          <ProductList productList={productList ?? []} />
-        </InfiniteScrollContainer>
+        <ErrorBoundary FallbackComponent={ErrorComponent}>
+          <Suspense fallback={<LoadingSpinner />}>
+            <ProductListContainer category={category} sortType={sortType} />
+          </Suspense>
+        </ErrorBoundary>
       </Flex>
     </div>
   );
