@@ -6,19 +6,17 @@ interface HeaderProps {
 }
 
 const headerLayout = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0 24px;
   width: 100%;
   height: 64px;
   background-color: black;
-  align-items: center;
-  justify-content: space-between;
-  display: flex;
   color: #fff;
   font-family: "Noto Sans";
   font-size: 20px;
-  font-style: normal;
   font-weight: 800;
-  line-height: 16px;
 `;
 
 export default function Header({ title, children }: HeaderProps) {
