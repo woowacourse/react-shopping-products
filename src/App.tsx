@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import getProducts from './getProducts';
+import getProducts from './api/getProducts';
 import ProductItem from './components/ProductItem/ProductItem';
 import isInCart from './utils/isIncart';
 import Header from './components/Header';
-import getCartItems from './getCartItems';
+import getCartItems from './api/getCartItems';
+import postCartItems from './api/postCartItems';
 // {
 //     "id": 61,
 //     "name": "방울토마토",
@@ -20,6 +21,12 @@ export type Product = {
   category: string;
 };
 
+export type CartItem = {
+  id: number;
+  quantity: number;
+  product: Product;
+};
+
 type Category = '식료품' | '패션잡화' | '전체';
 type SortPrice = '낮은 가격순' | '높은 가격순';
 
@@ -27,19 +34,17 @@ function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
   const [sortPrice, setSortPrice] = useState<SortPrice>('낮은 가격순');
-  const [cart, setCart] = useState<Product[]>([]);
-  console.log(cart);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = (product: Product) => {
-    if (isInCart(cart, product.id)) {
-      console.log('이미 장바구니에 담긴 상품입니다.');
-      return;
-    }
-    setCart((prev) => [...prev, product]);
+  const addToCart = async (product: Product) => {
+    postCartItems(product);
+    const cartData = await getCartItems();
+    const cartItems = cartData.content;
+    setCart(cartItems);
   };
 
   const removeFromCart = (product: Product) => {
-    setCart((prev) => prev.filter((item) => item.id !== product.id));
+    // setCart((prev) => prev.filter((item) => item.id !== product.id));
   };
 
   const filteredProducts = products.filter((product) => {
@@ -64,11 +69,11 @@ function App() {
 
       setProducts(data.content.slice(0, 20));
       setCart(cartData.content);
+      console.log(cartData.content);
     };
 
     fetchData();
   }, []);
-  console.log(`cart: ${cart}`);
 
   return (
     <>

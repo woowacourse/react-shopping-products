@@ -13,6 +13,7 @@ const ProductItem = ({
   addToCart: (product: Product) => void;
   removeFromCart: (product: Product) => void;
 }) => {
+  console.log(isInCart);
   return (
     <div key={product.id}>
       <img

@@ -1,7 +1,7 @@
-import { Product } from '../App';
+import { CartItem } from '../App';
 
-const isInCart = (cart: Product[], id: number) => {
-  return cart.some((item) => item.id === id);
+const isInCart = (cartItem: CartItem[], id: number) => {
+  return cartItem.some((item) => item.product.id === id);
 };
 
 export default isInCart;
