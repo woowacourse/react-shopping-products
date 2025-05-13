@@ -7,3 +7,4 @@ export interface Product {
 }
 
 export type SortingType = "ASC" | "DESC";
+export type filterType = "식료품" | "패션잡화";
