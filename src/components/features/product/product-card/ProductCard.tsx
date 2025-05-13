@@ -20,6 +20,7 @@ function ProductCard() {
 }
 
 const Container = styled(Flex)`
+  width: 182px;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;

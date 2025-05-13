@@ -1,14 +1,14 @@
 import { Global, ThemeProvider } from '@emotion/react';
-import { theme } from './global/style/theme';
+import ProductList from './components/features/product/product-list/ProductList';
 import reset from './global/style/reset';
-import ProductCard from './components/features/product/product-card/ProductCard';
+import { theme } from './global/style/theme';
 
 function App() {
   return (
     <>
       <Global styles={reset} />
       <ThemeProvider theme={theme}>
-        <ProductCard />
+        <ProductList />
       </ThemeProvider>
     </>
   );
