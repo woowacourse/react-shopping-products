@@ -4,7 +4,7 @@
 
 ### 컴포넌트 구현
 
-- [ ] Header 컴포넌트
+- [x] Header 컴포넌트
 - [ ] Body 컴포넌트
   - [ ] Title + Select 2개 감싸는 컴포넌트
     - [ ] Title
