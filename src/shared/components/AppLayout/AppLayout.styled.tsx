@@ -6,7 +6,7 @@ export const StyledAppLayout = styled.div`
   display: flex;
   height: 100dvh;
   width: 100%;
-  max-width: 400px;
+  max-width: 425px;
   display: flex;
   flex-direction: column;
   align-items: center;
