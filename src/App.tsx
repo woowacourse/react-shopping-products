@@ -5,7 +5,7 @@ function App() {
 
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <h1 className="bg-red-500">React Shopping Products</h1>
     </>
   );
 }
