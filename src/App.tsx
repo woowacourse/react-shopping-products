@@ -6,6 +6,7 @@ import isInCart from './utils/isIncart';
 import Header from './components/Header';
 import getCartItems from './api/getCartItems';
 import postCartItems from './api/postCartItems';
+import './reset.css';
 
 // {
 //     "id": 61,
