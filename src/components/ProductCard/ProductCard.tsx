@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-
+import CartButton from "./CartButton";
 interface ProductCardProps {
   title: string;
   price: number;
@@ -9,7 +9,7 @@ interface ProductCardProps {
 const cardCss = css({
   display: "flex",
   width: "182px",
-  height: "224px",
+  height: "250px",
   flexDirection: "column",
   borderRadius: "8px 8px 0 0",
   backgroundColor: "white",
@@ -25,9 +25,12 @@ const detailCss = css({
   padding: "15px 8px 0 8px",
   h2: {
     fontWeight: "700",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
     fontSize: "20px",
   },
-  p: { fontWeight: "500", fontSize: "14px" },
+  p: { fontWeight: "500", fontSize: "14px", marginBottom: "1rem" },
 });
 
 function ProductCard({ title, price, imageUrl }: ProductCardProps) {
@@ -37,7 +40,7 @@ function ProductCard({ title, price, imageUrl }: ProductCardProps) {
       <div css={detailCss}>
         <h2>{title}</h2>
         <p>{`${price.toLocaleString()}원`}</p>
-        {/* <button>Add to Cart</button> */}
+        <CartButton isInCart={false}></CartButton>
       </div>
     </div>
   );
