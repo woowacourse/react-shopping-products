@@ -1,7 +1,7 @@
 import { Global, ThemeProvider } from '@emotion/react';
 import { theme } from './global/style/theme';
-import ProductCard from './ProductCard';
 import reset from './global/style/reset';
+import ProductCard from './components/features/product/product-card/ProductCard';
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Flex from './components/common/Flex';
+import Flex from '../../../common/Flex';
 import AddCartButton from './AddCartButton';
 
 function ProductCard() {
