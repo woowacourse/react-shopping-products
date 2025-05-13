@@ -3,6 +3,7 @@ import getProducts from './getProducts';
 import ProductItem from './components/ProductItem/ProductItem';
 import isInCart from './utils/isIncart';
 import Header from './components/Header';
+import getCartItems from './getCartItems';
 // {
 //     "id": 61,
 //     "name": "방울토마토",
@@ -59,16 +60,19 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getProducts();
+      const cartData = await getCartItems();
 
       setProducts(data.content.slice(0, 20));
+      setCart(cartData.content);
     };
 
     fetchData();
   }, []);
+  console.log(`cart: ${cart}`);
 
   return (
     <>
-      <Header cartItemCount={cart.length}/>
+      <Header cartItemCount={cart.length} />
       <h1>React Shopping Products</h1>
       <select
         id="category"
