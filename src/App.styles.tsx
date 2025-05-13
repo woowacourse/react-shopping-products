@@ -37,8 +37,11 @@ export const ProductListFilterContainer = styled.div`
 `;
 
 export const ProductList = styled.main`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+  gap: 20px;
   flex: 1;
-  background-color: green;
   width: 100%;
+  margin-top: 28px;
 `;
