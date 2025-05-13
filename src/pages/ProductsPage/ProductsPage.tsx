@@ -1,7 +1,7 @@
 import { css } from '@emotion/css';
+import SelectBox from '../../components/common/SelectBox/SelectBox';
+import Toast from '../../components/common/Toast/Toast';
 import Header from '../../components/Header/Header';
-import SelectBox from '../../components/SelectBox/SelectBox';
-import Toast from '../../components/Toast/Toast';
 
 const productPageContainer = css`
   width: 429px;
