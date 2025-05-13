@@ -1,0 +1,44 @@
+import styled from '@emotion/styled';
+
+export const ProductListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+`;
+
+export const ProductListContainer = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 36px 24px 0 24px;
+`;
+
+export const ProductListHeader = styled.div`
+  width: 100%;
+  height: 95px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+export const ProductListHeaderTitle = styled.h1`
+  font-size: 24px;
+  font-weight: 700;
+`;
+
+export const ProductListFilterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+export const ProductList = styled.main`
+  display: flex;
+  flex: 1;
+  background-color: green;
+  width: 100%;
+`;
