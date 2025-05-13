@@ -14,7 +14,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     <div key={id} className={CardFrame}>
       <img src={imageUrl} alt={name} className={CardImage} />
       <div className={CardInfo}>
-        <h2>{name}</h2>
+        <h4>{name}</h4>
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
           {isInCart ? <RemoveButton /> : <AddButton />}
@@ -45,8 +45,8 @@ const CardInfo = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: fl;
   padding: 16px 8px 8px 8px;
+  gap: 8px;
 `;
 
 const ButtonArea = css`

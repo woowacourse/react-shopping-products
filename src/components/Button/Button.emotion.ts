@@ -6,4 +6,5 @@ export const ButtonStyles = css`
   padding: 4px 8px;
   gap: 4px;
   border: none;
+  cursor: pointer;
 `;
