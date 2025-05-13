@@ -16,6 +16,8 @@ type Product = {
   category: string;
 };
 
+type Category = "식료품" | "패션잡화" | "전체";
+
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
@@ -29,10 +31,24 @@ function App() {
     fetchData();
   }, []);
 
+  const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
+
+  const filteredProducts = products.filter((product) => {
+    if (selectedCategory === '전체') {
+      return true;
+    }
+    return product.category === selectedCategory;
+  });
+
   return (
     <>
       <h1>React Shopping Products</h1>
-      {products.map((product) => (
+            <select id="category"  value={selectedCategory} onChange={(e)=>setSelectedCategory(e.target.value as Category)}>
+        <option value="전체">전체</option>
+        <option value="식료품">식료품</option>
+        <option value="패션잡화">패션잡화</option>
+      </select>
+      {filteredProducts.map((product) => (
         <div key={product.id}>
           <img
             src={product.imageUrl}
