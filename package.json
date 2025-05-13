@@ -11,15 +11,18 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@emotion/css": "^11.13.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@tailwindcss/vite": "^4.1.6",
     "class-variance-authority": "^0.7.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.6"
   },
   "devDependencies": {
-    "@testing-library/react": "^15.0.7",
+    "@testing-library/react": "^16.3.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.11",
     "@types/react": "^18.2.66",
