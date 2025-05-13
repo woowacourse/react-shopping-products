@@ -23,7 +23,7 @@
 - [x] icon button
 - [x] select
 - [x] skeleton
-- [ ] item layout
+- [x] item layout
 - [x] app layout
 - [ ] list layout
 
