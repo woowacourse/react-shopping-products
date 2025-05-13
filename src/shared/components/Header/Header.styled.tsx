@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { HeaderProps } from '.';
 
 export const StyledHeader = styled.header<Pick<HeaderProps, 'right'>>`
-  position: absolute;
+  position: fixed;
   top: 0;
   display: flex;
   min-height: 64px;
@@ -12,4 +12,6 @@ export const StyledHeader = styled.header<Pick<HeaderProps, 'right'>>`
   background-color: black;
   align-items: center;
   justify-content: ${({ right }) => (right ? 'space-between' : 'flex-start')};
+  flex-shrink: 0;
+  z-index: 10;
 `;
