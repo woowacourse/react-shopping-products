@@ -4,7 +4,7 @@ interface HeaderProps {
   title: string;
 }
 
-const Header = ({ title }: HeaderProps) => {
+function Header({ title }: HeaderProps) {
   return (
     <Container>
       <Title>{title}</Title>
@@ -13,6 +13,6 @@ const Header = ({ title }: HeaderProps) => {
       </Button>
     </Container>
   );
-};
+}
 
 export default Header;
