@@ -15,10 +15,3 @@ export const HeaderTitle = css`
   font-size: 20px;
   font-weight: 800;
 `;
-
-export const CartButton = css`
-  width: 32px;
-  height: 32px;
-  border: none;
-  background-color: transparent;
-`;
