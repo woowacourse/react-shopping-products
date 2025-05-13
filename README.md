@@ -1,14 +1,14 @@
 # 컴포넌트 목록
 
-- [ ] Header
-- [ ] ProductList
-- [ ] Product
+- [x] Header
+- [x] ProductList
+- [x] Product
 
 공통 컴포넌트
 
-- [ ] Button
-- [ ] SelectBox
-- [ ] Toast
+- [x] Button
+- [x] SelectBox
+- [x] Toast
 
 <br/>
 
