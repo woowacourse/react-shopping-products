@@ -5,7 +5,7 @@ const Header = ({ cartItemCount }: { cartItemCount: number }) => {
   return (
     <HeaderContainer>
       <h1>SHOP</h1>
-      <CartIconButton cartItemCount={cartItemCount}/>
+      <CartIconButton cartItemCount={cartItemCount} />
     </HeaderContainer>
   );
 };
@@ -13,8 +13,8 @@ const Header = ({ cartItemCount }: { cartItemCount: number }) => {
 export default Header;
 
 const HeaderContainer = styled.header`
-  width:500px;
-  height: 64px;
+  width: 500px;
+  min-height: 64px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,5 +22,5 @@ const HeaderContainer = styled.header`
   background-color: black;
   color: white;
   box-sizing: border-box;
-  font-weight: 800
-  `
+  font-weight: 800;
+`;

@@ -47,7 +47,6 @@ export default ProductItem;
 const ProductItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 200px;
   height: 240px;
   border-radius: 8px;
 `;

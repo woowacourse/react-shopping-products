@@ -7,6 +7,8 @@ import Header from './components/header/Header';
 import getCartItems from './api/getCartItems';
 import postCartItems from './api/postCartItems';
 import './reset.css';
+import styled from '@emotion/styled';
+import './app.css';
 
 // {
 //     "id": 61,
@@ -88,37 +90,81 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Layout>
       <Header cartItemCount={cart.length} />
-      <h1>React Shopping Products</h1>
-      <select
-        id="category"
-        value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value as Category)}
-      >
-        <option value="전체">전체</option>
-        <option value="식료품">식료품</option>
-        <option value="패션잡화">패션잡화</option>
-      </select>
-      <select
-        id="sortPrice"
-        value={sortPrice}
-        onChange={(e) => setSortPrice(e.target.value as SortPrice)}
-      >
-        <option value="낮은 가격순">낮은 가격순</option>
-        <option value="높은 가격순">높은 가격순</option>
-      </select>
-      {sortedProducts.map((product) => (
-        <ProductItem
-          key={product.id}
-          product={product}
-          addToCart={addToCart}
-          removeFromCart={removeFromCart}
-          isInCart={isInCart(cart, product.id)}
-        />
-      ))}
-    </>
+      <ProductPageContainer>
+        <ProductPageHeader>bppl 상품 목록</ProductPageHeader>
+        <SelectContainer>
+          <select
+            id="category"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value as Category)}
+          >
+            <option value="전체">전체</option>
+            <option value="식료품">식료품</option>
+            <option value="패션잡화">패션잡화</option>
+          </select>
+          <select
+            id="sortPrice"
+            value={sortPrice}
+            onChange={(e) => setSortPrice(e.target.value as SortPrice)}
+          >
+            <option value="낮은 가격순">낮은 가격순</option>
+            <option value="높은 가격순">높은 가격순</option>
+          </select>
+        </SelectContainer>
+        <ProductListContainer>
+          {sortedProducts.map((product) => (
+            <ProductItem
+              key={product.id}
+              product={product}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+              isInCart={isInCart(cart, product.id)}
+            />
+          ))}
+        </ProductListContainer>
+      </ProductPageContainer>
+    </Layout>
   );
 }
+
+const Layout = styled.div`
+  width: 500px;
+  height: 100vh;
+  background-color: white;
+  margin: 0 auto;
+`;
+
+const ProductPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 30px 25px;
+  height: calc(100vh - 64px - 60px);};
+`;
+
+const ProductPageHeader = styled.div`
+  font-size: 28px;
+  font-weight: 700;
+`;
+
+const SelectContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+`;
+
+const ProductListContainer = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 export default App;
