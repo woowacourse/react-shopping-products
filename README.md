@@ -5,10 +5,10 @@
 ### 컴포넌트 구현
 
 - [x] Header 컴포넌트
-- [ ] Body 컴포넌트
-  - [ ] Title + Select 2개 감싸는 컴포넌트
+- [ ] Body
+  - [ ] ProductListToolbar 컴포넌트
     - [ ] Title
-    - [ ] Select 컴포넌트
+    - [x] Select 컴포넌트
   - [ ] ProductList 컴포넌트
     - [ ] ProductItem 컴포넌트
   - [ ] 에러 컴포넌트
