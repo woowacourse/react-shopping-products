@@ -8,7 +8,6 @@ function App() {
     <>
       <Global styles={reset} />
       <ThemeProvider theme={theme}>
-        <h1>React Shopping Products</h1>
         <ProductCard />
       </ThemeProvider>
     </>
