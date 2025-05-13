@@ -1,12 +1,11 @@
-import { useState } from "react";
+import "./index.css";
+import "./reset.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
+    <div className="container">
       <h1>React Shopping Products</h1>
-    </>
+    </div>
   );
 }
 
