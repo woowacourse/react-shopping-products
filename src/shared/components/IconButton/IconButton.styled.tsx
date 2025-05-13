@@ -1,6 +1,28 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-export const StyledButton = styled.button`
+import { IconButtonProps } from '.';
+
+const buttonStyles = {
+  primary: css`
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: 500;
+    &:hover {
+      background-color: #808080;
+    }
+  `,
+  secondary: css`
+    background-color: rgb(96, 96, 96);
+    color: #000000;
+    font-weight: 500;
+    &:hover {
+      background-color: rgb(188, 188, 188);
+    }
+  `,
+};
+
+export const StyledButton = styled.button<IconButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,6 +30,12 @@ export const StyledButton = styled.button`
   border: none;
   border-radius: 4px;
   gap: 2px;
+  cursor: pointer;
+
+  ${({ variant }) => buttonStyles[variant ?? 'primary']}
+  &:hover {
+    background-color: #808080;
+  }
 `;
 
 export const StyledImgIcon = styled.img`
