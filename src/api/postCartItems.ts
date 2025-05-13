@@ -1,12 +1,12 @@
 import { Product } from '../App';
 
-const  postCartItems = (product: Product) => {
+const  postCartItems = async(product: Product) => {
   const body = JSON.stringify({
     productId: product.id,
     quantity: 1,
   });
 
-  fetch(
+  await fetch(
     'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items',
     {
       method: 'POST',
