@@ -6,8 +6,8 @@
 
 - [x] Header 컴포넌트
 - [ ] Body
-  - [ ] ProductListToolbar 컴포넌트
-    - [ ] Title
+  - [x] ProductListToolbar 컴포넌트
+    - [x] Title
     - [x] Select 컴포넌트
   - [ ] ProductList 컴포넌트
     - [ ] ProductItem 컴포넌트
