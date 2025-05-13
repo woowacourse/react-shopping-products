@@ -3,7 +3,7 @@ import { Container } from './Dropdown.styles';
 
 interface DropdownProps {
   value: string;
-  placeholder: string;
+  placeholder?: string;
   options: string[];
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }

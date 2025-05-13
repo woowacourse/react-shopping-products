@@ -1,0 +1,14 @@
+import styled from '@emotion/styled';
+
+export const Section = styled.section`
+  width: 100%;
+  height: 100%;
+  padding: 0 24px;
+`;
+
+export const DropdownContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 28px;
+`;
