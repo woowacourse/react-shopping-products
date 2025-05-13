@@ -16,9 +16,9 @@ interface ProductProps {
   imgSrc?: string;
 }
 
-function Product({ key, name, price, imgSrc }: ProductProps) {
+function Product({ name, price, imgSrc }: ProductProps) {
   return (
-    <Container key={key}>
+    <Container>
       <ProductImage src={imgSrc} alt={name} />
       <Detail>
         <ProductName>{name}</ProductName>
