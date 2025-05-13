@@ -23,6 +23,7 @@ const GlobalStyle = css`
     justify-content: center;
     align-items: center;
     scroll-behavior: smooth;
+    background-color: #f5f5f5;
   }
 
   a {
