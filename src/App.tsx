@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { getProducts } from './services/productServices';
-import Layout from './pages/Layout';
-import { ProductListPage } from './pages/ProductListPage';
+import GlobalStyle from './GlobalStyles';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
 
 function App() {
   useEffect(() => {
@@ -11,9 +12,10 @@ function App() {
     })();
   }, []);
   return (
-    <Layout>
-      <ProductListPage />
-    </Layout>
+    <>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </>
   );
 }
 
