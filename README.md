@@ -22,7 +22,7 @@
 - [ ]  select
 - [ ]  skeleton
 - [ ]  item layout
-- [ ]  app layout
+- [x]  app layout
 - [ ]  list layout
 
 ### 기능
