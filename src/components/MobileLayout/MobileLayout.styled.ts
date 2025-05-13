@@ -26,6 +26,5 @@ export const Content = styled.div`
   flex: 0 0 500px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  padding: 0 1.5rem;
   overflow-y: auto;
 `;
