@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Products } from "./types";
+import ProductItem from "./components/ProductItem/ProductItem";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
@@ -16,7 +17,7 @@ function App() {
 
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <ProductItem />
     </>
   );
 }
