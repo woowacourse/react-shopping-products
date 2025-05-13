@@ -16,7 +16,8 @@ type Product = {
   category: string;
 };
 
-type Category = "식료품" | "패션잡화" | "전체";
+type Category = '식료품' | '패션잡화' | '전체';
+type SortPrice = '낮은 가격순' | '높은 가격순';
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -32,6 +33,7 @@ function App() {
   }, []);
 
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
+  const [sortPrice, setSortPrice] = useState<SortPrice>('낮은 가격순');
 
   const filteredProducts = products.filter((product) => {
     if (selectedCategory === '전체') {
@@ -40,15 +42,36 @@ function App() {
     return product.category === selectedCategory;
   });
 
+  const sortedProducts = filteredProducts.sort((a: Product, b:Product
+  ) => {
+    if (sortPrice === '높은 가격순') {
+      return b.price - a.price;
+    }
+
+    return a.price-b.price
+  });
+
   return (
     <>
       <h1>React Shopping Products</h1>
-            <select id="category"  value={selectedCategory} onChange={(e)=>setSelectedCategory(e.target.value as Category)}>
+      <select
+        id="category"
+        value={selectedCategory}
+        onChange={(e) => setSelectedCategory(e.target.value as Category)}
+      >
         <option value="전체">전체</option>
         <option value="식료품">식료품</option>
         <option value="패션잡화">패션잡화</option>
       </select>
-      {filteredProducts.map((product) => (
+      <select
+        id="sortPrice"
+        value={sortPrice}
+        onChange={(e) => setSortPrice(e.target.value as SortPrice)}
+      >
+        <option value="낮은 가격순">낮은 가격순</option>
+        <option value="높은 가격순">높은 가격순</option>
+      </select>
+      {sortedProducts.map((product) => (
         <div key={product.id}>
           <img
             src={product.imageUrl}
