@@ -1,13 +1,15 @@
-import { useState } from "react";
+import Product from "./components/Product/Product";
+
+const product = {
+  id: 61,
+  name: "방울토마토",
+  price: 50000,
+  imageUrl: "https://jjfoodmarket.co.kr/data/shop/item/1671006183_l1",
+  category: "식료품",
+} as const;
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
-  );
+  return <Product product={product}></Product>;
 }
 
 export default App;

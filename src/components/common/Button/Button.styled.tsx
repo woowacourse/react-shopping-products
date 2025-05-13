@@ -4,11 +4,11 @@ import { ButtonProps } from "./Button.types";
 
 const buttonColors = {
   light: {
-    "background-color": "#EAEAEA",
+    backgroundColor: "#EAEAEA",
     color: "#000000",
   },
   dark: {
-    "background-color": "#000000",
+    backgroundColor: "#000000",
     color: "#FFFFFF",
   },
 } as const;
