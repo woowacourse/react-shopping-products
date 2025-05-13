@@ -1,0 +1,33 @@
+.cardContainer {
+	width: 182px;
+	height: 224px;
+	padding-bottom: 8px;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.cardImg {
+	width: 182px;
+	height: 112px;
+}
+
+.cardName {
+	font-size: 14px;
+	font-weight: 700;
+	color: #0a0d13;
+}
+
+.cardPrice {
+}
+
+.cardButton {
+	/* display: block;
+	margin-left: auto; */
+
+	text-align: right;
+}
+
+.cardButton .cartImg {
+}
+.cardButton .cartText {
+}
