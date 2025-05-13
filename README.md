@@ -16,7 +16,7 @@
 
 ### 컴포넌트
 
-- [ ]  header
+- [x]  header
 - [ ]  text
 - [ ]  icon button
 - [ ]  select
