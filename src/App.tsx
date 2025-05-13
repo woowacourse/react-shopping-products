@@ -39,7 +39,7 @@ function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const addToCart = async (product: Product) => {
-    postCartItems(product);
+    await postCartItems(product);
     const cartData = await getCartItems();
     const cartItems = cartData.content;
     setCart(cartItems);
