@@ -1,6 +1,5 @@
 import { Product } from '../../App';
-import AddToCardButton from '../AddToCardButton';
-import RemoveFromCartButton from './RemoveFromCartButton';
+import CartActionButton from './button/CartActionButton';
 import styled from '@emotion/styled';
 
 const ProductItem = ({
@@ -27,9 +26,15 @@ const ProductItem = ({
 
         <ButtonContainer>
           {isInCart ? (
-            <RemoveFromCartButton onClick={() => removeFromCart(product.id)} />
+            <CartActionButton
+              variant="remove"
+              onClick={() => removeFromCart(product.id)}
+            />
           ) : (
-            <AddToCardButton onClick={() => addToCart(product)} />
+            <CartActionButton
+              variant="add"
+              onClick={() => addToCart(product)}
+            />
           )}
         </ButtonContainer>
       </ProductItemInfoContainer>

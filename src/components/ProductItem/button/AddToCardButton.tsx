@@ -3,3 +3,4 @@ const AddToCardButton = ({ onClick }: { onClick: () => void }) => {
 };
 
 export default AddToCardButton;
+
