@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Products } from "./types";
 import ProductItem from "./components/ProductItem/ProductItem";
+import * as S from "./styles/Layout.styles";
+import { Products } from "./types";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
@@ -16,9 +17,11 @@ function App() {
   }, []);
 
   return (
-    <>
-      <ProductItem />
-    </>
+    <S.LayoutContainer>
+      <S.LayoutWrapper>
+        <ProductItem />
+      </S.LayoutWrapper>
+    </S.LayoutContainer>
   );
 }
 
