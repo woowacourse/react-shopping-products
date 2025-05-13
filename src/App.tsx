@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { Global, ThemeProvider } from '@emotion/react';
+import { theme } from './global/style/theme';
+import ProductCard from './ProductCard';
+import reset from './global/style/reset';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <Global styles={reset} />
+      <ThemeProvider theme={theme}>
+        <h1>React Shopping Products</h1>
+        <ProductCard />
+      </ThemeProvider>
     </>
   );
 }
