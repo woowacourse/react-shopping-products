@@ -1,7 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Products } from "./types";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [products, setProducts] = useState<Products | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}products`
+      );
+      const data = await response.json();
+      setProducts(data);
+    })();
+  }, []);
 
   return (
     <>
