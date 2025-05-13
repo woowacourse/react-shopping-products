@@ -122,11 +122,17 @@ const resetCss = css`
     border-collapse: collapse;
     border-spacing: 0;
   }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
 `;
 
 const themeVariables = css`
   :root {
-    --color-black: #333333;
+    --color-black: #222222;
     --color-white: #ffffff;
     --color-gray: #eaeaea;
     --color-red: #ffc9c9;

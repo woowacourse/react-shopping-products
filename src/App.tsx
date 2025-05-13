@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { getProducts } from './services/productServices';
+import Layout from './pages/Layout';
+import { ProductListPage } from './pages/ProductListPage';
 
 function App() {
   useEffect(() => {
@@ -8,7 +10,11 @@ function App() {
       console.log(data);
     })();
   }, []);
-  return <h1>this is App</h1>;
+  return (
+    <Layout>
+      <ProductListPage />
+    </Layout>
+  );
 }
 
 export default App;
