@@ -10,19 +10,16 @@ import {
 } from './Product.styles';
 
 interface ProductProps {
+  key: number;
   name: string;
-  price: string;
+  price: number;
   imgSrc?: string;
 }
 
-function Product({ name, price, imgSrc }: ProductProps) {
+function Product({ key, name, price, imgSrc }: ProductProps) {
   return (
-    <Container>
-      {/* <Image src={imgSrc} alt={name} /> */}
-      <ProductImage
-        src="https://img.danawa.com/prod_img/500000/471/914/img/12914471_1.jpg?_v=20220324105614"
-        alt={name}
-      />
+    <Container key={key}>
+      <ProductImage src={imgSrc} alt={name} />
       <Detail>
         <ProductName>{name}</ProductName>
         <Price>{price}</Price>

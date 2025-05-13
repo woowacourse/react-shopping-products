@@ -9,6 +9,6 @@ export const Container = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 440px;
-  height: 100%;
+  height: 100vh;
   background-color: #ffffff;
 `;

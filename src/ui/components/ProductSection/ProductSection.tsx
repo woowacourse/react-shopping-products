@@ -1,7 +1,7 @@
 import Title from '../Title/Title';
-import Product from '../Product/Product';
-import { DropdownContainer, Section } from './ProductSection.styles';
 import Dropdown from '../Dropdown/Dropdown';
+import ProductList from '../ProductList/ProductList';
+import { DropdownContainer, Section } from './ProductSection.styles';
 import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
 
 function ProductSection() {
@@ -16,7 +16,7 @@ function ProductSection() {
           onChange={() => {}}
         />
       </DropdownContainer>
-      <Product name="양말" price="2000" imgSrc="./cart_default.png" />
+      <ProductList />
     </Section>
   );
 }
