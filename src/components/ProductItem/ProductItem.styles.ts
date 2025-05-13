@@ -4,7 +4,6 @@ export const ProductContainer = styled.div`
   display: flex;
   width: 182px;
   height: 224px;
-  padding-bottom: 8px;
   flex-direction: column;
   border-radius: 8px;
   background-color: #fff;
@@ -23,6 +22,8 @@ export const ProductWrapper = styled.div`
   flex-direction: column;
   padding: 15px 8px 8px;
   border-radius: 0 0 8px 8px;
+  height: 50%;
+  position: relative;
 `;
 
 export const ProductName = styled.p`
