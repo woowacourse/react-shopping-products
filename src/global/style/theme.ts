@@ -10,9 +10,6 @@ export const theme = {
     error: '#ff0000',
     black: '#000000',
   },
-  fonts: {
-    inter: 'Inter, sans-serif',
-  },
   heading: css`
     font-size: 28px;
     font-weight: 700;

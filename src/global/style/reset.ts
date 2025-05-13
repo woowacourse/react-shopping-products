@@ -5,22 +5,6 @@ const reset = css`
    v2.0 | 20110126
    License: none (public domain)
 */
-  * {
-    box-sizing: border-box;
-  }
-  p,
-  span,
-  a {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
-      format('woff');
-    font-weight: 400;
-    font-style: normal;
-  }
-  button {
-    border: none;
-    cursor: pointer;
-  }
 
   html,
   body,
@@ -145,6 +129,22 @@ const reset = css`
   table {
     border-collapse: collapse;
     border-spacing: 0;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  button {
+    border: none;
+    cursor: pointer;
+  }
+  p,
+  span,
+  a {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+      format('woff');
+    font-weight: 400;
+    font-style: normal;
   }
 `;
 
