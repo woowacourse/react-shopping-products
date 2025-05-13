@@ -5,10 +5,11 @@ export const HeaderContainer = css`
   justify-content: space-between;
   background-color: black;
   height: 64px;
-  width: 100%;
+  width: 430px;
   color: white;
   align-items: center;
   padding: 24px;
+  position: fixed;
 `;
 
 export const HeaderTitle = css`

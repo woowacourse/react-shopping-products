@@ -7,6 +7,7 @@ export const Container = css`
 export const Title = css`
   font-size: 24px;
   font-weight: 700;
+  margin-top: 64px;
 `;
 
 export const SelectContainer = css`
