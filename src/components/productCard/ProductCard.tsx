@@ -9,7 +9,11 @@ import {
 import sample from "/sample.svg";
 import CartToggleButton from "./CartToggleButton";
 
-function ProductCard() {
+interface ProductCardProps {
+  isAdded: boolean;
+}
+
+function ProductCard({ isAdded }: ProductCardProps) {
   return (
     <div css={ProductContainer}>
       <img css={ProductImage} src={sample}></img>
@@ -18,7 +22,7 @@ function ProductCard() {
         <p css={ProductPrice}>35,000원</p>
       </div>
       <div css={ButtonContainer}>
-        <CartToggleButton />
+        <CartToggleButton isAdded={isAdded} />
       </div>
     </div>
   );
