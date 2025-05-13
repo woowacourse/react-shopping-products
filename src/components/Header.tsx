@@ -1,12 +1,12 @@
-import { HeaderContainer } from "../styles/Header";
+import { HeaderWrapper } from "../styles/Header";
 import { IMAGE_PATH } from "../constants/imagePath";
 
 const Header = () => {
   return (
-    <HeaderContainer>
+    <HeaderWrapper>
       <img src={IMAGE_PATH.HEADER_TITLE} />
       <img src={IMAGE_PATH.SHOPPING_BASKET} />
-    </HeaderContainer>
+    </HeaderWrapper>
   );
 };
 

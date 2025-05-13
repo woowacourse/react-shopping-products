@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const HeaderContainer = styled.div`
+export const HeaderWrapper = styled.div`
   width: 100%;
   height: 100%;
   background-color: black;
