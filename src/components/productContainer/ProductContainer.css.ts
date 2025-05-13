@@ -12,5 +12,5 @@ export const Title = css`
 export const SelectContainer = css`
   display: flex;
   justify-content: space-between;
-  margin-top: 24px;
+  margin: 24px 0;
 `;

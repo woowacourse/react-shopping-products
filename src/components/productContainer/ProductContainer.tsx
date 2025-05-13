@@ -1,4 +1,5 @@
 import Filter from "../filter/Filter";
+import ProductCardList from "../productCardList/ProductCardList";
 import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 
@@ -10,6 +11,7 @@ function ProductContainer() {
         <Filter />
         <Sort />
       </div>
+      <ProductCardList />
     </div>
   );
 }
