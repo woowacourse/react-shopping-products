@@ -1,4 +1,4 @@
-import CartItemAddButton from "./components/CartItemAddButton/CartItemAddButton";
+import CartItemButton from "./components/CartItemButton/CartItemButton";
 import * as S from "./ProductItem.styles";
 
 const ProductItem = () => {
@@ -8,7 +8,7 @@ const ProductItem = () => {
       <S.ProductWrapper>
         <S.ProductName>이름</S.ProductName>
         <S.ProductPrice>가격</S.ProductPrice>
-        <CartItemAddButton />
+        <CartItemButton isAdd={false} />
       </S.ProductWrapper>
     </S.ProductContainer>
   );

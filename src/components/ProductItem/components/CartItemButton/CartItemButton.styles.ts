@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 
-export const CartItemAddButton = styled.button`
+export const CartItemButton = styled.button<{ $isAdd: boolean }>`
   padding: 4px 8px;
-  background-color: black;
-  color: white;
+  background-color: ${({ $isAdd }) => ($isAdd ? "#EAEAEA" : "#000")};
+  color: ${({ $isAdd }) => ($isAdd ? "#000" : "#fff")};
   border: none;
   width: 60px;
   border-radius: 4px;
