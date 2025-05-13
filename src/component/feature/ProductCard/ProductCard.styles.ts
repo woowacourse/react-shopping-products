@@ -7,7 +7,6 @@ export const productCardStyle = css`
   gap: 1.5rem;
   border-radius: 8px;
   width: 18.2rem;
-  height: 22.4rem;
   border: 1px solid black;
 `;
 
