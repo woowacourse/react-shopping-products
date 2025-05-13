@@ -1,15 +1,6 @@
 import { css } from '@emotion/react';
 
 export const theme = {
-  colors: {
-    caption: '#8b95a1',
-    background: '#f9f9f9',
-    cardBackground: '#333333',
-    cardText: '#ffffff',
-    border: '#cccccc',
-    error: '#ff0000',
-    black: '#000000',
-  },
   heading: css`
     font-size: 28px;
     font-weight: 700;

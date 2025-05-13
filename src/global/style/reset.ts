@@ -136,6 +136,7 @@ const reset = css`
   button {
     border: none;
     cursor: pointer;
+    background-color: transparent;
   }
   p,
   span,

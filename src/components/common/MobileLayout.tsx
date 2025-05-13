@@ -12,7 +12,7 @@ function MobileLayout({ children }: PropsWithChildren) {
 
 const Container = styled(Flex)`
   width: 440px;
-  height: 100vh;
+  min-height: 100vh;
   border: 1px solid grey;
   overflow: hidden;
 `;
