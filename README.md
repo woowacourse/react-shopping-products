@@ -25,7 +25,7 @@
 - [x] skeleton
 - [x] item layout
 - [x] app layout
-- [ ] list layout
+- [x] list layout
 
 ### 기능
 
