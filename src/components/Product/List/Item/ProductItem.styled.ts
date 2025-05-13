@@ -12,11 +12,14 @@ export const Item = styled.li`
 export const ImageWrapper = styled.div`
   width: 100%;
   aspect-ratio: 1/1;
+  border-bottom: 1px solid #acacac;
+  max-height: 218px;
 `;
 
 export const ProductImage = styled.img`
   width: 100%;
   border-radius: 8px 8px 0 0;
+  max-height: 218px;
 `;
 
 export const Content = styled.div`

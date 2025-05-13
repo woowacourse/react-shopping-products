@@ -1,16 +1,15 @@
-import { CartItemType, ProductItemType } from "@/types/product";
+import { ProductItemType } from "@/types/product";
 import AddCartItemButton from "@components/Product/CardItemButton/Add";
 import RemoveCartItemButton from "@components/Product/CardItemButton/Remove";
 import * as S from "./ProductItem.styled";
 
 interface ProductItemProps {
   product: ProductItemType;
-  cartItems: CartItemType[];
+  isAddedToCart: boolean;
 }
 
-function ProductItem({ product, cartItems }: ProductItemProps) {
-  const { id, name, price, imageUrl } = product;
-  const isAddedToCart = cartItems.some(({ product }) => product.id === id);
+function ProductItem({ product, isAddedToCart }: ProductItemProps) {
+  const { name, price, imageUrl } = product;
 
   const handleAddToCart = () => {
     // TODO: 장바구니에 추가하는 로직
