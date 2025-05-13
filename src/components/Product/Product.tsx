@@ -1,13 +1,7 @@
 import { css } from '@emotion/css';
 import AddButton from '../AddButton/AddButton';
 import DeleteButton from '../DeleteButton/DeleteButton';
-
-type ProductProps = {
-  imageUrl: string;
-  title: string;
-  price: number;
-  isAdd: boolean;
-};
+import { ProductProps } from '../../types/product';
 
 const productContainer = css`
   width: 100%;
@@ -19,6 +13,8 @@ const productContainer = css`
 const productImage = css`
   width: 100%;
   height: 50%;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 `;
 
 const productContent = css`
