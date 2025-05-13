@@ -1,6 +1,7 @@
-import { cva } from 'class-variance-authority';
-import { cn } from '../utils/core';
 import { ComponentProps } from 'react';
+import { cva } from 'class-variance-authority';
+
+import { cn } from '../utils/core';
 
 export type Typography = 'Heading' | 'Title' | 'Body' | 'caption';
 
@@ -36,6 +37,6 @@ type Props = {
   weight?: 'regular' | 'medium' | 'semibold' | 'bold';
 } & ComponentProps<'p'>;
 
-export function Text({ type, weight = 'regular', className, ...props }: Props) {
+export const Text = ({ type, weight = 'regular', className, ...props }: Props) => {
   return <p className={cn(variantClasses({ type, weight }), className)} {...props} />;
-}
+};
