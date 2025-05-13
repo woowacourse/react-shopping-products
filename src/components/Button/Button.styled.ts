@@ -9,7 +9,7 @@ const buttonTheme: Record<ButtonVariants, Record<string, string>> = {
 export const Button = styled.button<{ variant: ButtonVariants }>`
   background-color: ${({ variant }) => buttonTheme[variant].background};
   color: ${({ variant }) => buttonTheme[variant].text};
-  padding: 12px 16px;
+  padding: 8px 12px;
   display: flex;
   gap: 4px;
   justify-content: space-between;
