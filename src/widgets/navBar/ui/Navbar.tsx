@@ -1,10 +1,10 @@
-import {CartIcon, Logo, Wrapper} from './Navbar.styles';
+import * as S from './Navbar.styles';
 
 export const Navbar = () => {
   return (
-    <Wrapper>
-      <Logo>SHOP</Logo>
-      <CartIcon src="/cartIcon.svg"></CartIcon>
-    </Wrapper>
+    <S.Wrapper>
+      <S.Logo>SHOP</S.Logo>
+      <S.CartIcon src='/cartIcon.svg'></S.CartIcon>
+    </S.Wrapper>
   );
 };
