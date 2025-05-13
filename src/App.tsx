@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useEffect } from 'react';
+import getProducts from './getProducts';
 
 function App() {
-  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getProducts();
+      console.log(data.content.slice(0,20))
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
