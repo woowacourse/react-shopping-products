@@ -21,7 +21,7 @@
 - [x] header
 - [x] text
 - [x] icon button
-- [ ] select
+- [x] select
 - [ ] skeleton
 - [ ] item layout
 - [x] app layout
