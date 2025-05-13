@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import getProducts from './getProducts';
+import ProductItem from './components/ProductItem/ProductItem';
+import isInCart from './components/utils/isIncart';
 // {
 //     "id": 61,
 //     "name": "방울토마토",
@@ -8,7 +10,7 @@ import getProducts from './getProducts';
 //     "category": "식료품"
 // }
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   price: number;
@@ -21,19 +23,22 @@ type SortPrice = '낮은 가격순' | '높은 가격순';
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getProducts();
-
-      console.log(data.content);
-      setProducts(data.content.slice(0, 20));
-    };
-
-    fetchData();
-  }, []);
-
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
   const [sortPrice, setSortPrice] = useState<SortPrice>('낮은 가격순');
+  const [cart, setCart] = useState<Product[]>([]);
+  console.log(cart);
+
+  const addToCart = (product: Product) => {
+    if (isInCart(cart, product.id)) {
+      console.log('이미 장바구니에 담긴 상품입니다.');
+      return;
+    }
+    setCart((prev) => [...prev, product]);
+  };
+
+  const removeFromCart = (product: Product) => {
+    setCart((prev) => prev.filter((item) => item.id !== product.id));
+  };
 
   const filteredProducts = products.filter((product) => {
     if (selectedCategory === '전체') {
@@ -42,14 +47,23 @@ function App() {
     return product.category === selectedCategory;
   });
 
-  const sortedProducts = filteredProducts.sort((a: Product, b:Product
-  ) => {
+  const sortedProducts = filteredProducts.sort((a: Product, b: Product) => {
     if (sortPrice === '높은 가격순') {
       return b.price - a.price;
     }
 
-    return a.price-b.price
+    return a.price - b.price;
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getProducts();
+
+      setProducts(data.content.slice(0, 20));
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -72,16 +86,13 @@ function App() {
         <option value="높은 가격순">높은 가격순</option>
       </select>
       {sortedProducts.map((product) => (
-        <div key={product.id}>
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            width="182px"
-            height="112px"
-          />
-          <p>{product.name}</p>
-          <p>{product.price.toLocaleString()}원</p>
-        </div>
+        <ProductItem
+          key={product.id}
+          product={product}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+          isInCart={isInCart(cart, product.id)}
+        />
       ))}
     </>
   );
