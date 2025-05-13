@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import { useState } from "react";
 
 function App() {
@@ -5,7 +6,13 @@ function App() {
 
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <h1
+        css={css`
+          color: green;
+        `}
+      >
+        React Shopping Products
+      </h1>
     </>
   );
 }
