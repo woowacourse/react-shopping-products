@@ -1,10 +1,10 @@
 import * as S from './Navbar.styles';
 
-export const Navbar = () => {
+export default function Navbar() {
   return (
     <S.Wrapper>
       <S.Logo>SHOP</S.Logo>
-      <S.CartIcon src='/cartIcon.svg'></S.CartIcon>
+      <S.CartIcon src="/cartIcon.svg"></S.CartIcon>
     </S.Wrapper>
   );
-};
+}
