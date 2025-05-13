@@ -1,11 +1,12 @@
-import { useState } from "react";
+import Layout from './ui/components/Layout/Layout';
+import { Global } from '@emotion/react';
+import GlobalStyle from './ui/styles/globalStyle';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <Global styles={GlobalStyle} />
+      <Layout>자식</Layout>
     </>
   );
 }
