@@ -1,6 +1,6 @@
 import { Product } from '../App';
 
-const postCartItems = (product: Product) => {
+const  postCartItems = (product: Product) => {
   const body = JSON.stringify({
     productId: product.id,
     quantity: 1,

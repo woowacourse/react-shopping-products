@@ -11,9 +11,8 @@ const ProductItem = ({
   product: Product;
   isInCart: boolean;
   addToCart: (product: Product) => void;
-  removeFromCart: (product: Product) => void;
+  removeFromCart: ( productId:number) => void;
 }) => {
-  console.log(isInCart);
   return (
     <div key={product.id}>
       <img
@@ -25,7 +24,7 @@ const ProductItem = ({
       <p>{product.name}</p>
       <p>{product.price.toLocaleString()}원</p>
       {isInCart ? (
-        <RemoveFromCartButton onClick={() => removeFromCart(product)} />
+        <RemoveFromCartButton onClick={() => removeFromCart(product.id)} />
       ) : (
         <AddToCardButton onClick={() => addToCart(product)} />
       )}

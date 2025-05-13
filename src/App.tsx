@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import getProducts from './api/getProducts';
+import deleteCartItems from './api/deleteCartItems';
 import ProductItem from './components/ProductItem/ProductItem';
 import isInCart from './utils/isIncart';
 import Header from './components/Header';
 import getCartItems from './api/getCartItems';
 import postCartItems from './api/postCartItems';
+
 // {
 //     "id": 61,
 //     "name": "방울토마토",
@@ -43,8 +45,18 @@ function App() {
     setCart(cartItems);
   };
 
-  const removeFromCart = (product: Product) => {
-    // setCart((prev) => prev.filter((item) => item.id !== product.id));
+  const removeFromCart = async (productId: number) => {
+    const cartItem = cart.find((item) => item.product.id === productId);
+    if (!cartItem) {
+      return;
+    }
+
+    const cartItemId = cartItem.id;
+    await deleteCartItems(cartItemId);
+
+    const cartData = await getCartItems();
+    const cartItems = cartData.content;
+    setCart(cartItems);
   };
 
   const filteredProducts = products.filter((product) => {
@@ -69,7 +81,6 @@ function App() {
 
       setProducts(data.content.slice(0, 20));
       setCart(cartData.content);
-      console.log(cartData.content);
     };
 
     fetchData();
