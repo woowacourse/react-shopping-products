@@ -45,7 +45,7 @@ function Selector<T>({
   return (
     <div css={SelectorContainer}>
       <button
-        css={DropDownDefault(isOpen, selectedValue === placeholder)}
+        css={DropDownDefault(isOpen)}
         ref={ref}
         onClick={() => setIsOpen((prev) => !prev)}
         onKeyDown={handleKeyDown}
@@ -55,9 +55,7 @@ function Selector<T>({
       </button>
       <img
         css={DropDownIcon}
-        src={`/react-payments/img/${
-          !isOpen ? "chevron-up" : "chevron-down"
-        }.png`}
+        src={`./${!isOpen ? "chevron-up" : "chevron-down"}.png`}
       />
       {isOpen && (
         <ul css={DropDownContainer} onClick={(e) => handleSelectedOption(e)}>
@@ -103,12 +101,13 @@ const DropDownOptions = css`
   }
 `;
 
-const DropDownDefault = ($isOpen: boolean, $isDefaultValue: boolean) => {
-  const borderColor = $isOpen ? "#000" : "#acacac";
-  const color = $isDefaultValue ? "#acacac" : "#000";
+const DropDownDefault = (isOpen: boolean) => {
+  const borderColor = isOpen ? "#000" : "#acacac";
+  const color = "#000";
 
   return css`
     display: flex;
+    background-color: white;
     padding: 10px;
     width: 100%;
     border: 1px solid #acacac;
@@ -131,6 +130,7 @@ const DropDownContainer = css`
   border: 1px solid #acacac;
   border-radius: 5px;
   background-color: white;
+  list-style-type: none;
 `;
 
 const SelectorContainer = css`
