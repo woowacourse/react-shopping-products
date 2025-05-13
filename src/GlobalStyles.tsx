@@ -138,11 +138,11 @@ const themeVariables = css`
     --color-red: #ffc9c9;
 
     --font-family: 'Noto Sans KR';
-    --font-size-header: 24px;
-    --font-weight-header: 700;
+    --font-size-title: 24px;
+    --font-weight-title: 700;
 
-    --font-size-subheader: 14px;
-    --font-weight-subheader: 700;
+    --font-size-subtitle: 14px;
+    --font-weight-subtitle: 700;
 
     --font-size-placeholder: 14px;
     --font-weight-placeholder: 500;

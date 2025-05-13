@@ -1,10 +1,11 @@
 import Button from '../components/Button';
 import Header from '../components/Header';
+import ProductItem from '../components/ProductItem';
 
 export const ProductListPage = () => {
   return (
     <>
-      <Header />;
+      <Header />
       <Button
         type="button"
         name="test"
@@ -13,6 +14,7 @@ export const ProductListPage = () => {
         content="test"
         variant="smallBlack"
       />
+      <ProductItem />
     </>
   );
 };
