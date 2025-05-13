@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import getProducts from './getProducts';
 import ProductItem from './components/ProductItem/ProductItem';
-import isInCart from './components/utils/isIncart';
+import isInCart from './utils/isIncart';
+import Header from './components/Header';
 // {
 //     "id": 61,
 //     "name": "방울토마토",
@@ -67,6 +68,7 @@ function App() {
 
   return (
     <>
+      <Header cartItemCount={cart.length}/>
       <h1>React Shopping Products</h1>
       <select
         id="category"
