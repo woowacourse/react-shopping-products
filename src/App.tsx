@@ -1,12 +1,13 @@
-import { useState } from "react";
+import Header from './components/Header/Header';
+import * as S from './App.styled';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <S.Global>
+      <S.Wrap>
+        <Header />
+      </S.Wrap>
+    </S.Global>
   );
 }
 
