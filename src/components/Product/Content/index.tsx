@@ -5,22 +5,19 @@ import { Suspense, useMemo, useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
 import { getProducts } from "@/apis/products/getProducts";
 import { wrapPromise } from "@/apis/wrapPromise";
+import { CartItemType, OnAddToCart, OnRemoveToCart } from "@/types/cartItem";
 
-const 장바구니 = [
-  {
-    id: 5,
-    quantity: 1,
-    product: {
-      id: 62,
-      name: "짱구 파자마 세트",
-      price: 19940505,
-      imageUrl: "https://cdn.finomy.com/news/photo/201806/55827_40819_4617.png",
-      category: "패션잡화",
-    },
-  },
-];
+interface ProductContentProps {
+  cartItems: CartItemType[];
+  onAddToCart: OnAddToCart;
+  onRemoveToCart: OnRemoveToCart;
+}
 
-function ProductContent() {
+function ProductContent({
+  cartItems,
+  onAddToCart,
+  onRemoveToCart,
+}: ProductContentProps) {
   const [filterOption, setFilterOption] = useState<FilterOption>("전체");
   const [sortOption, setSortOption] = useState<SortOption>("낮은 가격순");
   const productResource = useMemo(
@@ -46,7 +43,12 @@ function ProductContent() {
         onSortChange={handleSortSelect}
       />
       <Suspense fallback={<div>로딩 중...</div>}>
-        <ProductList resource={productResource} cartItems={장바구니} />
+        <ProductList
+          resource={productResource}
+          cartItems={cartItems}
+          onAddToCart={onAddToCart}
+          onRemoveToCart={onRemoveToCart}
+        />
       </Suspense>
     </S.Container>
   );

@@ -1,13 +1,21 @@
-import { CartItemType, ProductItemType } from "@/types/product";
+import { ProductItemType } from "@/types/product";
 import ProductItem from "./Item";
 import * as S from "./ProductList.styled";
+import { CartItemType, OnAddToCart, OnRemoveToCart } from "@/types/cartItem";
 
 interface ProductListProps {
   resource: { read: () => ProductItemType[] };
   cartItems: CartItemType[];
+  onAddToCart: OnAddToCart;
+  onRemoveToCart: OnRemoveToCart;
 }
 
-function ProductList({ resource, cartItems }: ProductListProps) {
+function ProductList({
+  resource,
+  cartItems,
+  onAddToCart,
+  onRemoveToCart,
+}: ProductListProps) {
   const products = resource.read();
 
   return (
@@ -21,6 +29,8 @@ function ProductList({ resource, cartItems }: ProductListProps) {
             key={productItem.id}
             product={productItem}
             isAddedToCart={isAddedToCart}
+            onAddToCart={onAddToCart}
+            onRemoveToCart={onRemoveToCart}
           />
         );
       })}

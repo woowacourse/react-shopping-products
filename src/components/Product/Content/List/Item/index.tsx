@@ -2,22 +2,22 @@ import { ProductItemType } from "@/types/product";
 import AddCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Add";
 import RemoveCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Remove";
 import * as S from "./ProductItem.styled";
+import { OnAddToCart, OnRemoveToCart } from "@/types/cartItem";
 
 interface ProductItemProps {
   product: ProductItemType;
   isAddedToCart: boolean;
+  onAddToCart: OnAddToCart;
+  onRemoveToCart: OnRemoveToCart;
 }
 
-function ProductItem({ product, isAddedToCart }: ProductItemProps) {
-  const { name, price, imageUrl } = product;
-
-  const handleAddToCart = () => {
-    // TODO: 장바구니에 추가하는 로직
-  };
-
-  const handleRemoveFromCart = () => {
-    // TODO: 장바구니에서 제거하는 로직
-  };
+function ProductItem({
+  product,
+  isAddedToCart,
+  onAddToCart,
+  onRemoveToCart,
+}: ProductItemProps) {
+  const { id, name, price, imageUrl } = product;
 
   return (
     <S.Item>
@@ -31,9 +31,16 @@ function ProductItem({ product, isAddedToCart }: ProductItemProps) {
         </S.ProductInfo>
         <S.ButtonWrapper>
           {isAddedToCart ? (
-            <RemoveCartItemButton onClick={handleRemoveFromCart} />
+            <RemoveCartItemButton onClick={() => onRemoveToCart(id)} />
           ) : (
-            <AddCartItemButton onClick={handleAddToCart} />
+            <AddCartItemButton
+              onClick={() =>
+                onAddToCart({
+                  productId: id,
+                  quantity: 1,
+                })
+              }
+            />
           )}
         </S.ButtonWrapper>
       </S.Content>
