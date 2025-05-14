@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 
 const reset = css`
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
   /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -138,7 +139,6 @@ const reset = css`
     cursor: pointer;
     background-color: transparent;
   }
-  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
   p,
   span,
   a,
