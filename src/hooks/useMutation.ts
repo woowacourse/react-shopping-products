@@ -11,6 +11,7 @@ const useMutation = (mutationFn: () => void) => {
       await mutationFn();
     } catch (error) {
       setError(error as Error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
