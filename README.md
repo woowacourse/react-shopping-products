@@ -5,21 +5,22 @@
 ## 1. 상품 목록 조회
 
 - [ ] 상품 목록 섹션에 최대 20개의 상품을 보여준다.
-  - [ ] UI
-    - [ ] 페이지 레이아웃
-    - [ ] Cart 컴포넌트
+  - [x] UI
+    - [x] 페이지 레이아웃
+    - [x] Cart 컴포넌트
   - [ ] API
-    - [ ] GET Products
-    - [ ] POST a Product
-    - [ ] DELETE a Product
+    - [x] GET Products
+    - [ ] GET Cart Product
+    - [x] POST Cart Product
+    - [ ] DELETE Cart Product
 
 ## 2. 상품 정렬 및 필터링
 
 - 상품 필터링
-  - [ ] 카테고리
+  - [x] 카테고리
 - 상품 정렬
-- [ ] 낮은 가격 순
-- [ ] 높은 가격 순
+- [x] 낮은 가격 순
+- [x] 높은 가격 순
 
 ## 3. 상품 장바구니 담기
 
