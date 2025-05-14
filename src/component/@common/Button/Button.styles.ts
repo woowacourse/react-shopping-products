@@ -8,6 +8,8 @@ const buttonDefaultStyle = css`
   gap: 0.4rem;
 
   border: none;
+
+  cursor: pointer;
 `;
 
 export const buttonStyle = {
