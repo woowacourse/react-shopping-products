@@ -6,6 +6,8 @@ import { FilterOption, SortOption } from "./ProductContent.type";
 import { getProducts } from "@/apis/products/getProducts";
 import { wrapPromise } from "@/apis/wrapPromise";
 import { CartItemType, SetCartItems } from "@/types/cartItem";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import Fallback from "@/components/Fallback";
 
 interface ProductContentProps {
   cartItems: CartItemType[];
@@ -37,12 +39,28 @@ function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
         onFilterChange={handleFilterSelect}
         onSortChange={handleSortSelect}
       />
-      <Suspense fallback={<div>로딩 중...</div>}>
-        <ProductList
-          resource={productResource}
-          cartItems={cartItems}
-          setCartItems={setCartItems}
-        />
+      <Suspense
+        fallback={
+          <Fallback
+            type="loading"
+            message="상품 목록을 가져오는 중 입니다..."
+          />
+        }
+      >
+        <ErrorBoundary
+          fallback={
+            <Fallback
+              type="error"
+              message="상품 목록을 가져오는 중 에러가 발생하였습니다."
+            />
+          }
+        >
+          <ProductList
+            resource={productResource}
+            cartItems={cartItems}
+            setCartItems={setCartItems}
+          />
+        </ErrorBoundary>
       </Suspense>
     </S.Container>
   );

@@ -1,4 +1,4 @@
-import * as S from "./ErrorFallback.styled";
+import * as S from "./Fallback.styled";
 import planetLoadingImage from "@assets/images/planet-loading.png";
 import planetErrorImage from "@assets/images/planet-error.png";
 
