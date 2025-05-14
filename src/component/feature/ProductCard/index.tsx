@@ -7,33 +7,22 @@ import {
   productCardContentStyle,
   productCardImageContainerStyle,
   productCardImageStyle,
-  productCardStyle
+  productCardStyle,
 } from './ProductCard.styles';
+import { Product } from '../../../types/response';
 
-interface ProductCardProps {
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-    category: string;
-  };
-}
+interface ProductCardProps extends Omit<Product, 'id' | 'category'> {}
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ name, price, imageUrl }: ProductCardProps) => {
   return (
     <section css={productCardStyle}>
       <div css={productCardImageContainerStyle}>
-        <img
-          css={productCardImageStyle}
-          src={product.imageUrl}
-          alt={product.name}
-        />
+        <img css={productCardImageStyle} src={imageUrl} alt={name} />
       </div>
       <div css={productCardContentStyle}>
         <div css={productCardContentHeaderStyle}>
-          <Text variant="productName">{product.name}</Text>
-          <Text variant="body">{product.price.toLocaleString()}원</Text>
+          <Text variant="productName">{name}</Text>
+          <Text variant="body">{price.toLocaleString()}원</Text>
         </div>
         <div css={productCardButtonContainerStyle}>
           <Button variant="default">담기</Button>
