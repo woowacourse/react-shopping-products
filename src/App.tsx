@@ -1,25 +1,24 @@
-import Navbar from './widgets/navbar/ui/Navbar';
 import * as S from './App.styles';
 import CustomSelect from './shared/ui/CustomSelect';
 import ProductCard from './features/products/ui/ProductCard';
-import { useEffect, useState } from 'react';
-import { getProducts } from './features/products/api/getProducts';
-import { Product } from './features/products/type/product';
-import { filterByValue } from './shared/utils/filterByValue';
-import { matchCategory } from './features/products/utils/matchCategory';
+import {useEffect, useState} from 'react';
+import {getProducts} from './features/products/api/getProducts';
+import {Product} from './features/products/type/product';
+import {filterByValue} from './shared/utils/filterByValue';
+import {matchCategory} from './features/products/utils/matchCategory';
 
 type Category = 'all' | 'food' | 'clothes';
 
 const CATEGORY_OPTIONS = [
-  { label: '전체', value: 'all' },
-  { label: '식료품', value: 'food' },
-  { label: '패션잡화', value: 'clothes' },
+  {label: '전체', value: 'all'},
+  {label: '식료품', value: 'food'},
+  {label: '패션잡화', value: 'clothes'},
 ];
 
 const FILTER_OPTIONS = [
-  { label: '필터', value: '' },
-  { label: '높은 가격순', value: 'price,desc' },
-  { label: '낮은 가격순', value: 'price,asc' },
+  {label: '필터', value: ''},
+  {label: '높은 가격순', value: 'price,desc'},
+  {label: '낮은 가격순', value: 'price,asc'},
 ];
 
 function App() {
@@ -40,13 +39,13 @@ function App() {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const response = await getProducts({ sortValue });
+        const response = await getProducts({sortValue});
 
         const products = response.content;
         const totalElements = response.totalElements;
         const totalPages = response.totalPages;
 
-        setPageInfo({ totalElements, totalPages });
+        setPageInfo({totalElements, totalPages});
         setProducts(products);
       } catch (error) {
         setError('Failed to fetch products');
@@ -72,10 +71,15 @@ function App() {
   return (
     <S.ProductListWrapper>
       <S.ProductListHeader>
-        <S.ProductListHeaderTitle>WoowaBros Product List</S.ProductListHeaderTitle>
+        <S.ProductListHeaderTitle>
+          WoowaBros Product List
+        </S.ProductListHeaderTitle>
 
         <S.ProductListFilterContainer>
-          <CustomSelect items={CATEGORY_OPTIONS} onChange={(e) => setCategory(e.target.value as Category)} />
+          <CustomSelect
+            items={CATEGORY_OPTIONS}
+            onChange={(e) => setCategory(e.target.value as Category)}
+          />
           <CustomSelect
             items={FILTER_OPTIONS}
             onChange={(e) => {

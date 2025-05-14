@@ -1,4 +1,4 @@
-export const postProducts = async (productId: number) => {
+export const deleteCartProduct = async (productId: number) => {
   const token = import.meta.env.VITE_API_KEY;
   try {
     const response = await fetch(

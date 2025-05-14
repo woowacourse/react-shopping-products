@@ -2,7 +2,7 @@ interface Query {
   sortValue: string;
 }
 
-export const getProducts = async ({sortValue}: Query) => {
+export const getCartProduct = async ({sortValue}: Query) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_API_BASE_URL}/products?sort=${sortValue}&size=40`

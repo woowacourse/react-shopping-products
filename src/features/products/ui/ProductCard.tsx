@@ -1,5 +1,5 @@
 import CustomButton from '../../../shared/ui/CustomButton';
-import {postProducts} from '../../cart/api/postProducts';
+import {postCartProduct} from '../../cart/api/postCartProduct';
 import {Product} from '../type/product';
 import * as S from './ProductCard.styles';
 
@@ -9,7 +9,7 @@ interface ProductCardProps {
 
 export default function ProductCard({product}: ProductCardProps) {
   const handleProductCart = async () => {
-    await postProducts(product.id);
+    await postCartProduct(product.id);
   };
   return (
     <S.ProductCardContainer>
