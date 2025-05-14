@@ -6,5 +6,11 @@ export interface Product {
 	category: string;
 }
 
+export interface CartProduct {
+	id: number;
+	quantity: number;
+	products: Product;
+}
+
 export type SortingType = "ASC" | "DESC";
 export type filterType = "식료품" | "패션잡화";
