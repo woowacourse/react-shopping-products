@@ -1,6 +1,6 @@
-import ProductItem from "../ProductItem/ProductItem";
-import * as S from "./ProductList.styled";
-import { ResponseProduct } from "../../api/types";
+import ProductItem from '../ProductItem/ProductItem';
+import * as S from './ProductList.styled';
+import { ResponseProduct } from '../../api/types';
 function ProductList({ productList }: { productList: ResponseProduct[] }) {
   return (
     <S.ProductListContainer>

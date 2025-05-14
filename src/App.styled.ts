@@ -1,4 +1,4 @@
-import Styled from "@emotion/styled";
+import Styled from '@emotion/styled';
 
 export const Global = Styled.div`
   background-color:gray;
@@ -11,5 +11,9 @@ export const Wrap = Styled.div`
   height:100vh;
   background: white;
   position: relative;
-  
+`;
+
+export const MiddleContainer = Styled.div`
+  height:calc(100vh - 64px);
+  overflow-y: scroll;
 `;

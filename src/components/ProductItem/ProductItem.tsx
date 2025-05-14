@@ -1,6 +1,8 @@
-import * as S from "./ProductItem.styled";
-import AddProductIcon from "../Icon/AddProductIcon";
-import { ResponseProduct } from "../../api/types";
+import * as S from './ProductItem.styled';
+import AddProductIcon from '../Icon/AddProductIcon';
+import { ResponseProduct } from '../../api/types';
+import Button from '../common/Button/Button';
+import RemoveProductIcon from '../Icon/RemoveProductIcon';
 
 function ProductItem({ product }: { product: ResponseProduct }) {
   return (
@@ -11,10 +13,11 @@ function ProductItem({ product }: { product: ResponseProduct }) {
           <S.ProductName>{product.name}</S.ProductName>
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
-        <S.ProductButton>
-          <AddProductIcon />
-          담기
-        </S.ProductButton>
+        <Button
+          text={product.isInCart ? '빼기' : '담기'}
+          icon={product.isInCart ? <RemoveProductIcon /> : <AddProductIcon />}
+          keyWord={product.isInCart ? 'remove' : 'add'}
+        />
       </S.ProductItemBottom>
     </S.ProductItemContainer>
   );

@@ -1,4 +1,4 @@
-import Styled from "@emotion/styled";
+import Styled from '@emotion/styled';
 
 export const ProductItemContainer = Styled.div`
   width:100%;
@@ -35,18 +35,4 @@ export const ProductName = Styled.p`
 
 export const ProductPrice = Styled.p`
   font-size:12px;
-`;
-
-export const ProductButton = Styled.button`
-  width:59px;
-  height:24px;
-  border-radius:4px;
-  font-size:12px;
-  font-weight:600;
-  background-color: black;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
 `;
