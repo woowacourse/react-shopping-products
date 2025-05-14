@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import ProductItem from "./components/ProductItem/ProductItem";
 import * as S from "./styles/Layout.styles";
 import { Products } from "./types";
+import Header from "./components/Header/Header";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
@@ -19,7 +19,18 @@ function App() {
   return (
     <S.LayoutContainer>
       <S.LayoutWrapper>
-        <ProductItem />
+        <Header />
+        {/* <S.Wrapper>
+          <S.ProductsListTitle />
+          <S.ProductControlPanel>
+            <CategoryFilter />
+            <ProductSorter />
+          </S.ProductControlPanel>
+          <S.ProductGrid>
+            <ProductItem />
+          </S.ProductGrid>
+          <ErrorToast />
+        </S.Wrapper> */}
       </S.LayoutWrapper>
     </S.LayoutContainer>
   );
