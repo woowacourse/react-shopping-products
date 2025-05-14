@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import { Dispatch, SetStateAction, useState } from "react";
 import Button from "../Button/Button";
+import postCartItem from "../../api/cartItem";
 
 interface ProductProps {
   id: string;
@@ -70,6 +71,7 @@ export default function Product({
       if (arr.includes(id)) return arr.filter((prev) => prev !== id);
       return [...arr, id];
     });
+    postCartItem({ productId: Number(id), quantity: 1 });
   };
 
   const addProduct = () => {

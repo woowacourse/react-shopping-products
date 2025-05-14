@@ -21,7 +21,6 @@ export default async function getProduct({
     size: "20",
     sort: sortBy,
   });
-
   const categoryParams = new URLSearchParams({ category });
 
   return fetch(
