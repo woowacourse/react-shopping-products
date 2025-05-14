@@ -10,7 +10,6 @@ import {
   productCardStyle
 } from './ProductCard.styles';
 import { Product } from '../../../types/response';
-import { useToast } from '../../@common/Toast/context';
 import { IconAddCart, IconRemoveCart } from '../../../asset';
 
 interface ProductCardProps extends Omit<Product, 'category'> {
@@ -28,18 +27,11 @@ const ProductCard = ({
   handleAddCart,
   handleRemoveCart
 }: ProductCardProps) => {
-  const { openToast } = useToast();
-
   const handleClick = async (productId: number) => {
-    try {
-      if (isInCart) {
-        handleRemoveCart(productId);
-      } else {
-        handleAddCart(productId);
-      }
-      openToast();
-    } catch (error) {
-      openToast();
+    if (isInCart) {
+      handleRemoveCart(productId);
+    } else {
+      handleAddCart(productId);
     }
   };
 
