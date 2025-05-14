@@ -52,7 +52,6 @@ function App() {
     });
   };
 
-  const handleRemoveProduct = (event: React.MouseEvent<HTMLButtonElement>) => {
   const handleRemoveProduct = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -61,9 +60,6 @@ function App() {
       return;
     }
 
-    setSelectedProductIdList((prevIdList) =>
-      prevIdList.filter((productId) => productId !== $product.id)
-    );
     setSelectedProductIdList((prevIdList) => {
       return prevIdList.filter((productId) => productId !== $product.id);
     });
