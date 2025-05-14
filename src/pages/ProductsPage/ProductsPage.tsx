@@ -2,15 +2,10 @@ import { css } from '@emotion/css';
 import SelectBox from '../../components/common/SelectBox/SelectBox';
 // import Toast from '../../components/common/Toast/Toast';
 import Header from '../../components/Header/Header';
-import { useEffect, useState } from 'react';
-import { ProductProps } from '../../types/product';
+import { useState } from 'react';
 import ProductList from '../../components/ProductList/ProductList';
-
-type productsOptionType = {
-  category: string;
-  sortKey: string;
-  sortOrder: string;
-};
+import useGetProducts from '../../hooks/useGetProducts';
+import { CATEGORY } from '../../constants/products';
 
 const productPageContainer = css`
   width: 429px;
@@ -35,48 +30,15 @@ const selectBoxContainer = css`
   margin: 20px 0px;
 `;
 
-async function getProducts({ category, sortKey, sortOrder }: productsOptionType) {
-  const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/products?${
-      category !== CATEGORY[0] ? `category=${category}` : ''
-    }&page=0&size=20&sort=${sortKey}%2C${sortOrder}`,
-  );
-
-  if (!res.ok) {
-    throw new Error('에러 발생');
-  }
-  const data = await res.json();
-  return data.content;
-}
-
-const CATEGORY = ['전체', '식료품', '패션잡화'];
 const SORT: { [key: string]: string } = {
   '낮은 가격 순': 'asc',
   '높은 가격 순': 'desc',
 };
 
 function ProductsPage() {
-  const [products, setProducts] = useState<ProductProps[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [category, setCategory] = useState(CATEGORY[0]);
   const [sort, setSort] = useState('asc');
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const data = await getProducts({ category: category, sortKey: 'price', sortOrder: sort });
-        setProducts(data);
-      } catch (e) {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, [sort, category]);
-
-  // console.log(products);
+  const { isLoading, isError, products } = useGetProducts({ category, sort });
 
   const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSort(SORT[e.target.value]);
