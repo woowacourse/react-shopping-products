@@ -23,11 +23,11 @@ function App() {
         <Header />
         <S.Wrapper>
           <ProductsListTitle />
-          {/* <S.ProductControlPanel>
-            <CategoryFilter />
-            <ProductSorter />
+          <S.ProductControlPanel>
+            {/* <CategoryFilter />
+            <ProductSorter /> */}
           </S.ProductControlPanel>
-          <S.ProductGrid>
+          {/* <S.ProductGrid>
             <ProductItem />
           </S.ProductGrid>
           <ErrorToast /> */}
