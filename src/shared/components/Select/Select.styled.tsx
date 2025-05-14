@@ -16,8 +16,10 @@ export const StyledSelectContainer = styled.div<Pick<Props, 'maxWidth'>>`
 
 export const StyledTriggerButton = styled.button`
   background-color: transparent;
+  display: flex;
   border: none;
   padding: 0;
+  cursor: pointer;
 `;
 
 export const StyledOptionsContainer = styled.div`

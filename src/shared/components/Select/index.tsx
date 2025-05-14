@@ -1,4 +1,5 @@
 import { ComponentProps, ComponentPropsWithoutRef, useState } from 'react';
+import { css } from '@emotion/react';
 
 import {
   StyledSelectContainer,
@@ -27,10 +28,15 @@ export const Select = ({ selectedOptions, maxWidth = '500px', children, ...props
   return (
     <StyledSelectContainer maxWidth={maxWidth} onClick={() => setIsOpen(!isOpen)} {...props}>
       <StyledTriggerButton>
-        <Flex justifyContent="space-between">
-          <Text type="Body">{selectedOptions ?? '전체'}</Text>
-          <StyledSelectIcon isOpen={isOpen} src={Arrow} alt="arrow" />
-        </Flex>
+        <Text type="Body">{selectedOptions ?? '전체'}</Text>
+        <StyledSelectIcon
+          isOpen={isOpen}
+          src={Arrow}
+          alt="arrow"
+          css={css`
+            padding: 2px 0 0 0;
+          `}
+        />
       </StyledTriggerButton>
 
       {isOpen && <StyledOptionsContainer>{children}</StyledOptionsContainer>}
