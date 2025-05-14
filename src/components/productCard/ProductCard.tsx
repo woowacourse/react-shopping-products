@@ -9,20 +9,14 @@ import {
 import CartToggleButton from "./CartToggleButton";
 
 interface ProductCardProps {
+  id: number;
   isAdded: boolean;
-  category: string;
   name: string;
   price: number;
   imageUrl: string;
 }
 
-function ProductCard({
-  category,
-  name,
-  price,
-  imageUrl,
-  isAdded,
-}: ProductCardProps) {
+function ProductCard({ id, name, price, imageUrl, isAdded }: ProductCardProps) {
   return (
     <div css={ProductContainer}>
       <img css={ProductImage} src={imageUrl}></img>
@@ -31,7 +25,7 @@ function ProductCard({
         <p css={ProductPrice}>{price.toLocaleString()}원</p>
       </div>
       <div css={ButtonContainer}>
-        <CartToggleButton isAdded={isAdded} />
+        <CartToggleButton id={id} isAdded={isAdded} />
       </div>
     </div>
   );

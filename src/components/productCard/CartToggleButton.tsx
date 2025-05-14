@@ -1,7 +1,20 @@
+import request from "../../utils/request";
 import { ButtonContainer, RemoveButton } from "./CartToggleButton.css";
 import { CartToggleButtonProps } from "./CartToggleButton.types";
 
-function CartToggleButton({ isAdded }: CartToggleButtonProps) {
+function CartToggleButton({ id, isAdded }: CartToggleButtonProps) {
+  async function addItemToCart() {
+    const data = await request({
+      headers: {
+        Authorization: import.meta.env.VITE_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      url: "/cart-items",
+      body: { productId: id, quantity: 1 },
+    });
+    console.log(data);
+  }
   return (
     <>
       {isAdded && (
@@ -11,7 +24,7 @@ function CartToggleButton({ isAdded }: CartToggleButtonProps) {
         </button>
       )}
       {!isAdded && (
-        <button css={ButtonContainer}>
+        <button css={ButtonContainer} onClick={addItemToCart}>
           <img src="/addCart.svg" alt="담기 아이콘" />
           <p>담기</p>
         </button>

@@ -17,16 +17,16 @@ function ProductCardList({
   category,
   sort,
 }: ProductCardListProps) {
-  const isAdded = true;
+  const isAdded = false;
   useFetchProducts({ category, setProducts, sort });
 
   return (
     <div css={CardListContainer}>
       {products?.content.map((data) => (
         <ProductCard
+          id={data.id}
           key={data.id}
           isAdded={isAdded}
-          category={data.category}
           name={data.name}
           price={data.price}
           imageUrl={data.imageUrl}
