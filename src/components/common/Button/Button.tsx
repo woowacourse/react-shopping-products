@@ -23,8 +23,13 @@ function Button({
   radius = '0px',
   color = '#000000',
   children,
+  ...props
 }: ButtonProps) {
-  return <button className={button({ backgroundColor, radius, color })}>{children}</button>;
+  return (
+    <button className={button({ backgroundColor, radius, color })} {...props}>
+      {children}
+    </button>
+  );
 }
 
 export default Button;
