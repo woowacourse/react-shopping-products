@@ -53,6 +53,9 @@ function App() {
   };
 
   const handleRemoveProduct = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRemoveProduct = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     const $product = event.currentTarget.closest("li");
     if (!$product) {
       return;
@@ -61,6 +64,36 @@ function App() {
     setSelectedProductIdList((prevIdList) =>
       prevIdList.filter((productId) => productId !== $product.id)
     );
+    setSelectedProductIdList((prevIdList) => {
+      return prevIdList.filter((productId) => productId !== $product.id);
+    });
+
+    try {
+      const { content } = await fetchCartItems({
+        method: "GET",
+        params: {
+          page: "0",
+          size: "20",
+        },
+      });
+
+      const targetCartItem = content.find(
+        (cartItem) => cartItem.product.id === Number($product.id)
+      );
+
+      if (!targetCartItem) {
+        return;
+      }
+
+      await fetchRemoveProduct({
+        method: "DELETE",
+        params: {
+          productId: targetCartItem.id,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
