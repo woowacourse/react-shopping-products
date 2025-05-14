@@ -33,8 +33,6 @@ export const CartItemsAPI = {
     };
 
     const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems);
-    const response = await fetch(apiUrl, options);
-
-    return await response.json();
+    await fetch(apiUrl, options);
   },
 };

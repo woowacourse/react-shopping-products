@@ -9,13 +9,13 @@ const RemoveCartIcon = () => (
 
 interface CartItemButtonProps {
   isAdd: boolean;
-  onClick: () => void;
+  onToggleCartItem: () => void;
 }
 
-const CartItemButton = ({ isAdd, onClick }: CartItemButtonProps) => {
+const CartItemButton = ({ isAdd, onToggleCartItem }: CartItemButtonProps) => {
   return (
     <>
-      <S.CartItemButton $isAdd={isAdd} onClick={onClick}>
+      <S.CartItemButton $isAdd={isAdd} onClick={onToggleCartItem}>
         {isAdd ? <RemoveCartIcon /> : <AddCartIcon />}
         <S.CartItemAddText>{isAdd ? "빼기" : "담기"}</S.CartItemAddText>
       </S.CartItemButton>

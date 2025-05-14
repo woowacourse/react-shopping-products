@@ -34,6 +34,13 @@ function App() {
     })();
   }, []);
 
+  const handleCartItemToggle = async (productId: number) => {
+    await CartItemsAPI.post(productId);
+
+    const data = await CartItemsAPI.get();
+    setCartItems(data);
+  };
+
   return (
     <S.LayoutContainer>
       <S.LayoutWrapper>
@@ -51,10 +58,15 @@ function App() {
             />
           </S.ProductControlPanel>
           <S.ProductGrid>
-            {products?.content.map((productInfo) => (
-              <div key={productInfo.id}>
-                <ProductItem {...productInfo} />
-              </div>
+            {products?.content.map(({ id, imageUrl, name, price }) => (
+              <ProductItem
+                key={id}
+                imageUrl={imageUrl}
+                name={name}
+                price={price}
+                isAdd={false}
+                handleCartItemToggle={() => handleCartItemToggle(id)}
+              />
             ))}
           </S.ProductGrid>
           <ErrorToast errorMessage="error" />
