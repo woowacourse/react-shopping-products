@@ -2,10 +2,10 @@ import { css } from "@emotion/react";
 import Product from "../Product/Product";
 import { Dispatch, SetStateAction } from "react";
 
-interface Product {
+export interface Product {
   id: string;
-  imgSrc: string;
-  productName: string;
+  imageUrl: string;
+  name: string;
   price: string;
 }
 
@@ -29,8 +29,8 @@ export default function ProductContainer({
       {products.map((product) => (
         <Product
           id={product.id}
-          imgSrc={product.imgSrc}
-          productName={product.productName}
+          imageUrl={product.imageUrl}
+          name={product.name}
           price={product.price}
           setSelectedProducts={setSelectedProducts}
         />

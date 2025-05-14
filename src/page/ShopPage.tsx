@@ -1,11 +1,14 @@
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Selector from "../component/Selector/Selector";
 import TitleContainer from "../component/TitleContainer/titleContainer";
 import Body from "../component/Body/Body";
 import Header from "../component/Header/Header";
-import ProductContainer from "../component/ProductContainer/ProductContainer";
+import ProductContainer, {
+  Product,
+} from "../component/ProductContainer/ProductContainer";
 import { ProductsMock } from "../mock/Products";
+import getProduct from "../api/product";
 
 const pageLayout = css`
   display: flex;
@@ -51,6 +54,9 @@ export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState("");
   const [filterValue, setFilterValue] = useState("");
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+
+  const [productList, setProductList] = useState<Product[]>([]);
+
   const dropdownOptions = ["식료품", "패션잡화"];
   const filterOptions = ["낮은 가격순", "높은 가격순"];
 
@@ -58,9 +64,20 @@ export default function ShopPage() {
     console.log("click");
   };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getProduct({ sortBy: "id,asc" });
+        setProductList(response.content);
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []);
+
   return (
     <div css={pageLayout}>
-      <Header title="shop">
+      <Header title="SHOP">
         <div css={cartIconContainer}>
           <img
             css={cartIcon}
@@ -89,7 +106,7 @@ export default function ShopPage() {
           </div>
         </TitleContainer>
         <ProductContainer
-          products={ProductsMock}
+          products={productList}
           setSelectedProducts={setSelectedProducts}
         />
       </Body>

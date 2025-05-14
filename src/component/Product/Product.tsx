@@ -4,8 +4,8 @@ import Button from "../Button/Button";
 
 interface ProductProps {
   id: string;
-  imgSrc: string;
-  productName: string;
+  imageUrl: string;
+  name: string;
   price: string;
   setSelectedProducts: Dispatch<SetStateAction<string[]>>;
 }
@@ -57,8 +57,8 @@ const priceLayout = css`
 
 export default function Product({
   id,
-  imgSrc,
-  productName,
+  imageUrl,
+  name,
   price,
   setSelectedProducts,
 }: ProductProps) {
@@ -92,10 +92,10 @@ export default function Product({
 
   return (
     <div id={id} css={productLayout}>
-      <img css={imgLayout} src={imgSrc} />
+      <img css={imgLayout} src={imageUrl ?? "./default-img.png"} />
       <div css={contentLayout}>
         <div css={descriptionLayout}>
-          <p css={productNameLayout}>{productName}</p>
+          <p css={productNameLayout}>{name}</p>
           <p css={priceLayout}>{price}</p>
         </div>
         {isSelected ? removeProduct() : addProduct()}
