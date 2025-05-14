@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import './app.css';
 import ProductItemsWithSkeleton from './components/ProductItemsWithSkeleton';
 import ErrorMessage from './components/ErrorMessage';
+import Select from './components/Select';
 
 export type Product = {
   id: number;
@@ -25,12 +26,12 @@ export type CartItem = {
 };
 
 export type Category = '식료품' | '패션잡화' | '전체';
-type priceOrder = '낮은 가격순' | '높은 가격순';
+export type PriceOrder = '낮은 가격순' | '높은 가격순';
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
-  const [priceOrder, setPriceOrder] = useState<priceOrder>('낮은 가격순');
+  const [priceOrder, setPriceOrder] = useState<PriceOrder>('낮은 가격순');
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -73,12 +74,13 @@ function App() {
   };
 
   const handleCategoryChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
+    category: Category
+    // e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setIsLoading(true);
-    setSelectedCategory(e.target.value as Category);
+    setSelectedCategory(category);
     const { data, newErrorMessage } = await getProducts({
-      category: e.target.value as Category,
+      category: category,
       priceOrder: priceOrder,
     });
     setErrorMessage(newErrorMessage);
@@ -87,14 +89,12 @@ function App() {
     setProducts(data.content.slice(0, 20));
   };
 
-  const handlePriceOrderChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
     setIsLoading(true);
-    setPriceOrder(e.target.value as priceOrder);
+    setPriceOrder(priceOrder);
     const { data, newErrorMessage } = await getProducts({
       category: selectedCategory,
-      priceOrder: e.target.value as priceOrder,
+      priceOrder: priceOrder,
     });
     setErrorMessage(newErrorMessage);
     setIsLoading(false);
@@ -124,7 +124,17 @@ function App() {
       <ProductPageContainer>
         <ProductPageHeader>bppl 상품 목록</ProductPageHeader>
         <SelectContainer>
-          <select
+          <Select
+            optionList={['전체', '식료품', '패션잡화']}
+            value={selectedCategory}
+            setValue={handleCategoryChange}
+          />
+          <Select
+            optionList={['낮은 가격순', '높은 가격순']}
+            value={priceOrder}
+            setValue={handlePriceOrderChange}
+          />
+          {/* <select
             id="category"
             value={selectedCategory}
             onChange={handleCategoryChange}
@@ -140,7 +150,7 @@ function App() {
           >
             <option value="낮은 가격순">낮은 가격순</option>
             <option value="높은 가격순">높은 가격순</option>
-          </select>
+          </select> */}
         </SelectContainer>
         <ProductListContainer>
           <ProductItemsWithSkeleton
