@@ -1,6 +1,6 @@
-import Product from "./components/Product/Product";
+import ProductList from "./components/ProductList/ProductList";
 
-const products = [
+const productList = [
   {
     id: 61,
     name: "방울토마토",
@@ -35,13 +35,7 @@ const products = [
 ] as const;
 
 function App() {
-  return (
-    <ul>
-      {products.map((product) => (
-        <Product product={product}></Product>
-      ))}
-    </ul>
-  );
+  return <ProductList productList={productList}></ProductList>;
 }
 
 export default App;
