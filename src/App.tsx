@@ -10,11 +10,13 @@ import ShopHeader from "./components/ShopHeader/ShopHeader";
 import { CategoryOptionsKey, SortOptionsKey } from "./constants";
 import * as S from "./styles/Layout.styles";
 import { CartItems } from "./types/cartItems";
-import { Products } from "./types/Products";
+import { Products } from "./types/products";
+import { isErrorResponse } from "./utils/typeGuard";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
   const [cartItems, setCartItems] = useState<CartItems | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryOptionsKey>("전체");
   const [selectedSortOption, setSelectedSortOption] =
@@ -22,15 +24,30 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      const data = await ProductsAPI.get(selectedCategory, selectedSortOption);
-      setProducts(data);
+      const response = await ProductsAPI.get(
+        selectedCategory,
+        selectedSortOption
+      );
+
+      if (isErrorResponse(response)) {
+        setErrorMessage(response.error);
+        return;
+      }
+
+      setProducts(response as Products);
     })();
   }, [selectedCategory, selectedSortOption]);
 
   useEffect(() => {
     (async () => {
-      const data = await CartItemsAPI.get();
-      setCartItems(data);
+      const response = await CartItemsAPI.get();
+
+      if (isErrorResponse(response)) {
+        setErrorMessage(response.error);
+        return;
+      }
+
+      setCartItems(response as CartItems);
     })();
   }, []);
 
@@ -51,8 +68,14 @@ function App() {
       await CartItemsAPI.post(productId);
     }
 
-    const data = await CartItemsAPI.get();
-    setCartItems(data);
+    const response = await CartItemsAPI.get();
+
+    if (isErrorResponse(response)) {
+      setErrorMessage(response.error);
+      return;
+    }
+
+    setCartItems(response as CartItems);
   };
 
   return (
@@ -85,7 +108,7 @@ function App() {
               />
             ))}
           </S.ProductGrid>
-          <ErrorToast errorMessage="error" />
+          {!!errorMessage && <ErrorToast errorMessage={errorMessage} />}
         </S.Wrapper>
       </S.LayoutWrapper>
     </S.LayoutContainer>
