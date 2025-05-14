@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useState } from 'react';
+import { createContext, PropsWithChildren, useRef, useState } from 'react';
 
 import { Toast } from '../components/Toast';
 
@@ -6,20 +6,25 @@ export const ToastContext = createContext({ showToast(message: string) {} });
 
 export const ToastProvider = ({ children }: PropsWithChildren) => {
   const [toast, setToast] = useState('');
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const showToast = (message: string) => {
     setToast(message);
 
-    const timer = setTimeout(() => {
-      setToast('');
-    }, 3000);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
 
-    clearTimeout(timer);
+    setTimeout(() => {
+      setToast('');
+      timerRef.current = null;
+    }, 3000);
   };
 
   return (
     <ToastContext.Provider value={{ showToast }}>
-      {children} {toast && <Toast message={toast} />}
+      {children}
+      {toast && <Toast message={toast} />}
     </ToastContext.Provider>
   );
 };
