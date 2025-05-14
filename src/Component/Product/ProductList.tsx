@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import ProductItem from './ProductItem';
-import { Product } from '../../types/ProductTypes';
+import { ProductTypes } from '../../types/ProductTypes';
 
 interface ProductListProps {
-  productList: Product[];
+  productList: ProductTypes[];
 }
 
 export default function ProductList({ productList }: ProductListProps) {
