@@ -44,7 +44,7 @@ export const OptionList = styled.ul`
   top: 40px;
   left: 0%;
   width: 100%;
-  z-index: 999;
+  z-index: 998;
 
   &::-webkit-scrollbar {
     width: 0px;
@@ -53,7 +53,6 @@ export const OptionList = styled.ul`
 
 export const OptionItem = styled.li`
   color: #4f4f4f;
-  padding: 8px;
   border-radius: 4px 4px 0 0;
   cursor: pointer;
   border-bottom: 1px solid #acacac;
@@ -70,4 +69,7 @@ export const OptionItem = styled.li`
 
 export const OptionItemButton = styled.button`
   font-size: 14px;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
 `;
