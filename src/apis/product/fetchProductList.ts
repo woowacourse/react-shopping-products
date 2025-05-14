@@ -29,7 +29,7 @@ const fetchProductList = async ({
     defaultParams.category = params.category;
   }
 
-  url.search = new URLSearchParams().toString();
+  url.search = new URLSearchParams(defaultParams).toString();
 
   const options = {
     method,

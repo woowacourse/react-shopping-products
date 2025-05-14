@@ -1,9 +1,13 @@
 import * as Styled from "./Filter.styled";
 
-function Filter() {
+interface FilterProps {
+  handleCategory: (value: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+function Filter({ handleCategory }: FilterProps) {
   return (
     <Styled.Container>
-      <Styled.Select>
+      <Styled.Select onChange={handleCategory}>
         <option>전체</option>
         <option>식료품</option>
         <option>패션잡화</option>
