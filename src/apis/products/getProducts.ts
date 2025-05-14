@@ -30,6 +30,11 @@ export const getProducts = async ({
     url.delete("category");
   }
 
-  const data = await httpClient.get(`/products?${url.toString()}`);
+  const response = await httpClient.get(`/products?${url.toString()}`);
+  if (!response.ok) {
+    throw new Error("상품 목록을 가져오는 데 실패했습니다.");
+  }
+
+  const data = await response.json();
   return data.content;
 };
