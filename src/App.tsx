@@ -3,6 +3,7 @@ import Header from "./components/Header/Header";
 import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
 import * as S from "./styles/Layout.styles";
 import { Products } from "./types";
+import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
@@ -24,8 +25,8 @@ function App() {
         <S.Wrapper>
           <ProductsListTitle />
           <S.ProductControlPanel>
-            {/* <CategoryFilter />
-            <ProductSorter /> */}
+            <CategoryFilter />
+            {/* <ProductSorter /> */}
           </S.ProductControlPanel>
           {/* <S.ProductGrid>
             <ProductItem />
