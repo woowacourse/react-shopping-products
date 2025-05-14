@@ -13,16 +13,22 @@ function ProductList({ resource, cartItems, setCartItems }: ProductListProps) {
   const products = resource.read();
 
   return (
-    <S.ProductList>
-      {products.map((productItem) => (
-        <ProductItem
-          key={productItem.id}
-          product={productItem}
-          cartItems={cartItems}
-          setCartItems={setCartItems}
-        />
-      ))}
-    </S.ProductList>
+    <>
+      {products.length > 0 ? (
+        <S.ProductList>
+          {products.map((productItem) => (
+            <ProductItem
+              key={productItem.id}
+              product={productItem}
+              cartItems={cartItems}
+              setCartItems={setCartItems}
+            />
+          ))}
+        </S.ProductList>
+      ) : (
+        <S.EmptyProductList>등록된 상품이 없습니다.</S.EmptyProductList>
+      )}
+    </>
   );
 }
 
