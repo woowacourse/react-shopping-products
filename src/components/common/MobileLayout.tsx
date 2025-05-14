@@ -15,6 +15,7 @@ const Container = styled(Flex)`
   min-height: 100vh;
   border: 1px solid grey;
   overflow: hidden;
+  gap: 0;
 `;
 
 export default MobileLayout;
