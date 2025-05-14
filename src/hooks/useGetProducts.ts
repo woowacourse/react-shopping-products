@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ProductProps } from '../types/product';
+import { ProductDataType } from '../types/product';
 import { CATEGORY } from '../constants/products';
 
 type productsOptionType = {
@@ -23,7 +23,7 @@ async function getProducts({ category, sortKey, sortOrder }: productsOptionType)
 }
 
 function useGetProducts({ sort, category }: { sort: string; category: string }) {
-  const [products, setProducts] = useState<ProductProps[] | null>(null);
+  const [products, setProducts] = useState<ProductDataType[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
