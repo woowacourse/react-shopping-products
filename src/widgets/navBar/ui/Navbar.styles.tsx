@@ -1,8 +1,12 @@
 import styled from '@emotion/styled';
 
-export const Wrapper = styled.div`
+export const NavbarWrapper = styled.div`
   position: fixed;
   top: 0;
+  width: 100%;
+`;
+
+export const NavbarContainer = styled.nav`
   width: 100%;
   height: 80px;
   background-color: #000;
