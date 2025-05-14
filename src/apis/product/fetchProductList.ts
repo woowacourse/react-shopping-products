@@ -22,7 +22,6 @@ const fetchProductList = async ({
   method,
   params = { page: "0", size: "20", sort: "price,asc" },
 }: fetchProductListParams) => {
-  console.log(BASE_URL);
   const url = new URL(BASE_URL);
 
   const { category, ...rest } = params;
