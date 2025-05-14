@@ -1,13 +1,28 @@
 import S from "./ItemCard.module.css";
 
-const ItemCard = ({ isCart }: { isCart: boolean }) => {
+interface ItemCardProps {
+	imageUrl: string;
+	name: string;
+	price: number;
+	isCart: boolean;
+}
+
+const ItemCard = ({ imageUrl, name, price, isCart }: ItemCardProps) => {
 	return (
 		<div className={S.cardContainer}>
-			<img className={S.cardImg} src="https://velog.velcdn.com/images/minsungje/post/f74f79d5-5c51-4bac-97ce-1c2b2764fb80/image.jpg" alt="" />
+			<img
+				className={S.cardImg}
+				src={imageUrl}
+				alt="상품 이미지"
+				onError={(e) => {
+					const target = e.target as HTMLImageElement;
+					target.src = "./images/default-image.png";
+				}}
+			/>
 			<div className={S.contentContainer}>
 				<div className={S.itemDescription}>
-					<p className={S.cardName}>상품이름</p>
-					<p>35,000원</p>
+					<p className={S.cardName}>{name}</p>
+					<p>{price.toLocaleString()}원</p>
 				</div>
 				<div className={S.buttonWrap}>
 					{isCart ? (

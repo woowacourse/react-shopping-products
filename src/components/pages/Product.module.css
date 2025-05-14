@@ -36,3 +36,10 @@
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	background: #fff;
 }
+
+.itemContainer {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	column-gap: 16px;
+	row-gap: 20px;
+}
