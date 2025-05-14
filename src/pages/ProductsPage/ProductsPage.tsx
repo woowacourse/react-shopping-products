@@ -6,6 +6,7 @@ import { useState } from 'react';
 import ProductList from '../../components/ProductList/ProductList';
 import useGetProducts from '../../hooks/useGetProducts';
 import { CATEGORY } from '../../constants/products';
+import useGetCarts from '../../hooks/useGetCarts';
 
 const productPageContainer = css`
   width: 429px;
@@ -38,7 +39,12 @@ const SORT: { [key: string]: string } = {
 function ProductsPage() {
   const [category, setCategory] = useState(CATEGORY[0]);
   const [sort, setSort] = useState('asc');
-  const { isLoading, isError, products } = useGetProducts({ category, sort });
+  const {
+    isLoading: isLoadingProducts,
+    isError: isErrorProducts,
+    products,
+  } = useGetProducts({ category, sort });
+  const { isLoading: isLoadingCarts, isError: isErrorCarts, carts } = useGetCarts();
 
   const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSort(SORT[e.target.value]);
@@ -48,9 +54,30 @@ function ProductsPage() {
     setCategory(e.target.value);
   };
 
+  console.log(carts);
+  // console.log(products);
+
+  const getProcessedCartArr = () => {
+    const cartIdArr = carts?.map((cart) => cart.product.id);
+    return products?.map((product) => {
+      if (cartIdArr?.includes(product.id)) {
+        return {
+          ...product,
+          isAdd: true,
+        };
+      }
+
+      return {
+        ...product,
+        isAdd: false,
+      };
+    });
+  };
+
+  const itemCount = new Set(carts?.map((cart) => cart.product.id)).size;
   return (
     <div className={productPageContainer}>
-      <Header />
+      <Header itemCount={itemCount} />
       <div className={productWrapper}>
         <h1 className={productPageTitle}>bpple 상품 목록</h1>
         <div className={selectBoxContainer}>
@@ -62,7 +89,7 @@ function ProductsPage() {
           />
         </div>
         {/* <Toast text="안녕하세요" varient="error" />  */}
-        {products && <ProductList products={products} />}
+        {products && <ProductList products={getProcessedCartArr()} />}
       </div>
     </div>
   );
