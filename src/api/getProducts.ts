@@ -27,7 +27,6 @@ const getProducts = async ({
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Basic RGFldW4tMTAwOnBhc3N3b3Jk',
     },
   };
 

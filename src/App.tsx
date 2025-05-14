@@ -103,8 +103,9 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, newErrorMessage } = await getProducts();
-      const { data: cartData, errorMessage } = await getCartItems();
+      const { data, newErrorMessage: getProductErrorMessage } =
+        await getProducts();
+      const { data: cartData, newErrorMessage } = await getCartItems();
       setErrorMessage(errorMessage);
       setIsLoading(false);
       setErrorMessage(newErrorMessage);

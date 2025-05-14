@@ -11,7 +11,7 @@ const postCartItems = async (product: Product) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Basic RGFldW4tMTAwOnBhc3N3b3Jk',
+      Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTHORIZATION}`,
     },
     body,
   };
@@ -28,7 +28,6 @@ const postCartItems = async (product: Product) => {
   } else if (status === 500) {
     newErrorMessage = '서버에 문제가 발생했습니다.';
   }
-
 
   return { newErrorMessage, data };
 };
