@@ -4,8 +4,30 @@ interface ProductCardProps {
   title: string;
   price: number;
   imageUrl: string;
+  onClick: () => void;
+  isItemInCart: boolean;
 }
 
+function ProductCard({
+  title,
+  price,
+  imageUrl,
+  isItemInCart,
+  onClick,
+}: ProductCardProps) {
+  return (
+    <li css={cardCss}>
+      <img css={imageCss} src={imageUrl} alt={`${title}상품`} />
+      <div css={detailCss}>
+        <h2>{title}</h2>
+        <p>{`${price.toLocaleString()}원`}</p>
+        <CartButton onClick={onClick} isInCart={isItemInCart}></CartButton>
+      </div>
+    </li>
+  );
+}
+
+export default ProductCard;
 const cardCss = css({
   display: "flex",
   width: "182px",
@@ -32,18 +54,3 @@ const detailCss = css({
   },
   p: { fontWeight: "500", fontSize: "14px", marginBottom: "1rem" },
 });
-
-function ProductCard({ title, price, imageUrl }: ProductCardProps) {
-  return (
-    <div css={cardCss}>
-      <img css={imageCss} src={imageUrl} alt={`${title}상품`} />
-      <div css={detailCss}>
-        <h2>{title}</h2>
-        <p>{`${price.toLocaleString()}원`}</p>
-        <CartButton isInCart={false}></CartButton>
-      </div>
-    </div>
-  );
-}
-
-export default ProductCard;
