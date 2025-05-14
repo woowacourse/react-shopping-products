@@ -1,7 +1,7 @@
-import * as S from './App.styled';
-import Header from './components/Header/Header';
-import ProductControl from './components/ProductControl/ProductControl';
-import ProductItem from './components/ProductItem/ProductItem';
+import * as S from "./App.styled";
+import Header from "./components/Header/Header";
+import ProductControl from "./components/ProductControl/ProductControl";
+import ProductList from "./components/ProductList/ProductList";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <S.Wrap>
         <Header />
         <ProductControl />
-        <ProductItem />
+        <ProductList />
       </S.Wrap>
     </S.Global>
   );

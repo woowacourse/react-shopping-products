@@ -1,7 +1,7 @@
-import Styled from '@emotion/styled';
+import Styled from "@emotion/styled";
 
 export const ProductItemContainer = Styled.div`
-  width:182px;
+  width:100%;
   height:224px;
   border-radius:8px;
   overflow:hidden;
