@@ -31,11 +31,13 @@ function App() {
             <ProductSorter />
           </S.ProductControlPanel>
           <S.ProductGrid>
-            {products?.content.map(({ id, imageUrl, name, price }) => (
-              <div key={id}>
-                <ProductItem imageUrl={imageUrl} name={name} price={price} />
-              </div>
-            ))}
+            {products?.content
+              .slice(0, 20)
+              .map(({ id, imageUrl, name, price }) => (
+                <div key={id}>
+                  <ProductItem imageUrl={imageUrl} name={name} price={price} />
+                </div>
+              ))}
           </S.ProductGrid>
           {/* <ErrorToast /> */}
         </S.Wrapper>
