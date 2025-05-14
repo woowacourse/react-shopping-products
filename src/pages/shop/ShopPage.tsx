@@ -21,8 +21,8 @@ function ShopPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [filterOption, setFilterOption] = useState({
-    category: { label: '전체', value: 'all' },
-    sort: { label: '낮은 가격순', value: 'ascending' },
+    category: { label: '전체', value: '전체' },
+    sort: { label: '낮은 가격순', value: 'asc' },
   });
 
   const handleCategoryOption = (option: DropdownOptionType) => {
@@ -43,10 +43,15 @@ function ShopPage() {
     const getListDataHandler = async () => {
       const page = 0;
       const size = 20;
+      const categoryPath =
+        filterOption.category.value !== '전체'
+          ? `category=${filterOption.category.value}&`
+          : '';
+      const basePath = `/products?${categoryPath}page=${page}&size=${size}&sort=price,${filterOption.sort.value}`;
       try {
         const data = await baseAPI<ProductData>({
           method: 'GET',
-          path: `/products?page=${page}&size=${size}`,
+          path: basePath,
         });
         const productsData = data.content.map(
           ({ id, name, price, imageUrl, category }) => ({
@@ -54,7 +59,7 @@ function ShopPage() {
             name: name ?? '',
             price,
             imageUrl: imageUrl ?? 'defaultImage',
-            category: (category ?? 'all') as ProductCategoryType,
+            category: (category ?? '전체') as ProductCategoryType,
           })
         );
         setProducts(productsData);
@@ -66,7 +71,7 @@ function ShopPage() {
     };
 
     getListDataHandler();
-  }, []);
+  }, [filterOption]);
 
   if (isLoading) return <div>로딩중 입니다~</div>;
 
@@ -81,17 +86,17 @@ function ShopPage() {
           <Flex flexDirection="row" justifyContent="space-between">
             <Dropdown
               options={[
-                { label: '전체', value: 'all' },
-                { label: '식료품', value: 'food' },
-                { label: '패션잡화', value: 'fashion' },
+                { label: '전체', value: '전체' },
+                { label: '식료품', value: '식료품' },
+                { label: '패션잡화', value: '패션잡화' },
               ]}
               selectedValue={filterOption.category}
               onSelectHandler={handleCategoryOption}
             />
             <Dropdown
               options={[
-                { label: '낮은 가격순', value: 'ascending' },
-                { label: '높은 가격순', value: 'descending' },
+                { label: '낮은 가격순', value: 'asc' },
+                { label: '높은 가격순', value: 'desc' },
               ]}
               selectedValue={filterOption.sort}
               onSelectHandler={handleSortOption}
