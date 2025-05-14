@@ -8,6 +8,10 @@ export const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   background-color: #000;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 999;
 `;
 
 export const Logo = styled.a`
