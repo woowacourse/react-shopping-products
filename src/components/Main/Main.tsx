@@ -11,6 +11,7 @@ interface MainProps {
 function Main({ productList }: MainProps) {
   return (
     <Container>
+      <ProductListTitle>bpple 상품 목록</ProductListTitle>
       <ProductList productList={productList} />
     </Container>
   );
@@ -24,4 +25,9 @@ const Container = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 24px;
+`;
+
+const ProductListTitle = styled.h1`
+  font-weight: 700;
+  font-size: 24px;
 `;
