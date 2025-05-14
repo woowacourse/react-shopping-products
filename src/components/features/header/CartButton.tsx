@@ -1,20 +1,22 @@
 import styled from '@emotion/styled';
 
-function CartButton({ itemsCount }) {
+function CartButton({ itemsCount }: { itemsCount: number }) {
   return (
     <Container>
       <CartIcon src="./assets/icons/Cart.svg" />
-      <ItemsCountBox>
-        <ItemsCountText>{itemsCount}</ItemsCountText>
-      </ItemsCountBox>
+      {itemsCount > 0 && (
+        <ItemsCountBox>
+          <ItemsCountText>{itemsCount}</ItemsCountText>
+        </ItemsCountBox>
+      )}
     </Container>
   );
 }
 
 const Container = styled.button`
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
 `;
 
 const CartIcon = styled.img`

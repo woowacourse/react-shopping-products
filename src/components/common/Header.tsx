@@ -10,9 +10,7 @@ function Header({ title, right }: HeaderProps) {
   return (
     <HeaderContainer>
       <Logo>{title}</Logo>
-      <div style={{ width: '48px' }}>
-        <Flex gap="xs">{right}</Flex>
-      </div>
+      <RightWrapper>{right}</RightWrapper>
     </HeaderContainer>
   );
 }
@@ -31,6 +29,11 @@ const Logo = styled.h1`
   font-size: 24px;
   font-weight: 800;
   color: white;
+`;
+
+const RightWrapper = styled(Flex)`
+  width: fit-content;
+  gap: 4px;
 `;
 
 export default Header;
