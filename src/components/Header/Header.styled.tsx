@@ -22,12 +22,15 @@ export const Title = styled.p`
 `;
 
 export const Button = styled.button`
+  height: 24px;
+  padding: 0;
   border: 0;
   background-color: transparent;
   cursor: pointer;
+  line-height: 1;
 `;
 
 export const Image = styled.img`
-  width: 20px;
-  height: 24px;
+  width: 24px;
+  height: 100%;
 `;

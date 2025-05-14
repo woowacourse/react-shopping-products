@@ -1,6 +1,8 @@
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 
+import styled from "@emotion/styled";
+
 const productList = [
   {
     id: 61,
@@ -37,11 +39,18 @@ const productList = [
 
 function App() {
   return (
-    <>
+    <Container>
       <Header></Header>
       <Main productList={productList}></Main>;
-    </>
+    </Container>
   );
 }
 
 export default App;
+
+const Container = styled.main`
+  max-width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
