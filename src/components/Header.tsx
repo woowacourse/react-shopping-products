@@ -1,15 +1,13 @@
 import { css } from "@emotion/react";
 import ShoppingBag from "./icons/ShoppingBag";
 
-const Header = () => {
+const Header = ({ shoppingCount }: { shoppingCount: number }) => {
   return (
     <header css={headerStyle}>
       <span>SHOP</span>
       <div css={shoppingBagStyle}>
         <ShoppingBag />
-        <div>
-          <span>3</span>
-        </div>
+        <span css={shoppingBagCountStyle}>{shoppingCount}</span>
       </div>
     </header>
   );
@@ -29,4 +27,18 @@ const headerStyle = css`
 
 const shoppingBagStyle = css`
   position: relative;
+`;
+
+const shoppingBagCountStyle = css`
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  border-radius: 50%;
+  color: #000;
 `;
