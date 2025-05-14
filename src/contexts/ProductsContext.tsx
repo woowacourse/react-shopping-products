@@ -1,10 +1,11 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
-import { Product } from "../types/product.type";
+import { Error, Product } from "../types/product.type";
 import fetchProducts from "../APIs/fetchProducts";
+import { INITIAL_ERROR } from "./context.constant";
 
 interface ProductsContextType {
   products: Product[];
-  isError: boolean;
+  productsError: Error;
   handleChangeProducts: (newProducts: Product[]) => void;
   handleChangeSort: (newSort: "낮은 가격순" | "높은 가격순") => void;
   handleChangeCategory: (newCategory: "패션잡화" | "식료품") => void;
@@ -16,7 +17,7 @@ export const ProductsContext = createContext<ProductsContextType | null>(null);
 
 const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [isError, setIsError] = useState<boolean>(false);
+  const [productsError, setProductsError] = useState<Error>(INITIAL_ERROR);
 
   const [category, setCategory] = useState<string>("");
   const [sort, setSort] = useState<string>("price,asc");
@@ -47,11 +48,15 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
       try {
         const fetchedData = await fetchProducts({ endpoint });
         setProducts(fetchedData);
-        setIsError(false);
+        setProductsError(INITIAL_ERROR);
       } catch (error) {
-        setIsError(true);
+        setProductsError({
+          isError: true,
+          errorMessage:
+            "상품을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.",
+        });
         setTimeout(() => {
-          setIsError(false);
+          setProductsError(INITIAL_ERROR);
         }, 3000);
         setProducts([]);
       }
@@ -62,7 +67,7 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     <ProductsContext.Provider
       value={{
         products,
-        isError,
+        productsError,
         handleChangeProducts,
         handleChangeSort,
         handleChangeCategory,

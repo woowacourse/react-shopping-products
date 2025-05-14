@@ -4,18 +4,21 @@ import AddButton from "../Button/AddButton";
 import { Product } from "../../types/product.type";
 import addShoppingCart from "../../APIs/addShoppingCart";
 import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
-// import { useState } from "react";
+import { useCallback } from "react";
+import deleteShoppingCart from "../../APIs/deleteShoppingCart";
 
 interface ProductCardProps {
   product: Product;
   isInCart: boolean;
+  cartItemId?: number;
 }
 
-const ProductCard = ({ product, isInCart }: ProductCardProps) => {
+const ProductCard = ({ product, isInCart, cartItemId }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const { handleCartItemChange } = useShoppingCartContext();
+  const { handleCartItemChange, handleShoppingCartError } =
+    useShoppingCartContext();
 
-  const handleAddButton = async () => {
+  const handleAddButton = useCallback(async () => {
     const endpoint = "/cart-items";
     const requestBody = {
       productId: id,
@@ -26,9 +29,30 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
       const newCardItem = await addShoppingCart({ endpoint, requestBody });
       handleCartItemChange(newCardItem);
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        handleShoppingCartError({
+          isError: true,
+          errorMessage: "장바구니에 추가하지 못했습니다. 다시 시도해주세요.",
+        });
+      }
     }
-  };
+  }, [id, handleCartItemChange, handleShoppingCartError]);
+
+  const handleRemoveButton = useCallback(async () => {
+    const endpoint = `/cart-items`;
+
+    try {
+      const newCardItem = await deleteShoppingCart({ endpoint, cartItemId });
+      handleCartItemChange(newCardItem);
+    } catch (error) {
+      if (error instanceof Error) {
+        handleShoppingCartError({
+          isError: true,
+          errorMessage: "장바구니에서 삭제하지 못했습니다. 다시 시도해주세요.",
+        });
+      }
+    }
+  }, [cartItemId, handleCartItemChange, handleShoppingCartError]);
 
   return (
     <div key={id} className={CardFrame}>
@@ -40,7 +64,7 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
           {isInCart ? (
-            <RemoveButton />
+            <RemoveButton onClick={handleRemoveButton} />
           ) : (
             <AddButton onClick={handleAddButton} />
           )}

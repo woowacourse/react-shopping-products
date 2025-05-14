@@ -16,8 +16,16 @@ const ProductCardList = ({ products }: ProductCardListProps) => {
         const isInCart = cartItems.some(
           (item) => item.product.id === product.id
         );
+        const cartItemId = cartItems.find(
+          (item) => item.product.id === product.id
+        )?.id;
         return (
-          <ProductCard key={product.id} product={product} isInCart={isInCart} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            isInCart={isInCart}
+            cartItemId={cartItemId}
+          />
         );
       })}
     </div>

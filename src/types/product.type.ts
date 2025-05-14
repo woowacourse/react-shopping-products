@@ -49,7 +49,8 @@ interface FetchProductsRequest {
 
 interface ShoppingCartResponse {
   endpoint: string;
-  requestBody: PostRequestBody | PatchRequestBody;
+  requestBody?: PostRequestBody | PatchRequestBody;
+  cartItemId?: number;
 }
 
 interface PostRequestBody {
@@ -59,6 +60,11 @@ interface PostRequestBody {
 
 interface PatchRequestBody {
   quantity: number;
+}
+
+interface Error {
+  isError: boolean;
+  errorMessage: string;
 }
 
 export type {
@@ -71,4 +77,5 @@ export type {
   SortOption,
   ShoppingCartResponse,
   CartItem,
+  Error,
 };
