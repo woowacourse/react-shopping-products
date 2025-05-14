@@ -12,4 +12,5 @@ export const StyledAppLayout = styled.div`
   align-items: center;
   border-left: 1px solid #000000;
   border-right: 1px solid #000000;
+  overflow: hidden;
 `;
