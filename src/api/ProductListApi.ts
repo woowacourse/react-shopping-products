@@ -1,6 +1,10 @@
 import { ResponseProduct } from "./types";
 
-async function getProductList(): Promise<ResponseProduct[]> {
+async function getProductList({
+  category,
+}: {
+  category: string;
+}): Promise<ResponseProduct[]> {
   const API_URL = import.meta.env.VITE_BASE_URL || "";
   const options = {
     method: "GET",
@@ -9,7 +13,7 @@ async function getProductList(): Promise<ResponseProduct[]> {
     },
   };
   const response = await fetch(
-    `${API_URL}/products?page=0&size=20&sort=price%2Casc`,
+    `${API_URL}/products?${category ? `category=${category}&` : ""}page=0&size=20&sort=price%2Casc`,
     options
   );
 

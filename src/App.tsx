@@ -1,21 +1,25 @@
-import * as S from './App.styled';
-import Header from './components/Header/Header';
-import ProductControl from './components/ProductControl/ProductControl';
-import ProductList from './components/ProductList/ProductList';
-import ErrorBox from './components/common/ErrorBox/ErrorBox';
-import getProductList from './api/ProductListApi';
-import { useEffect, useState } from 'react';
-import { ResponseProduct } from './api/types';
-import getCartItemList from './api/CartItemListApi';
+import * as S from "./App.styled";
+import Header from "./components/Header/Header";
+import ProductControl from "./components/ProductControl/ProductControl";
+import ProductList from "./components/ProductList/ProductList";
+import ErrorBox from "./components/common/ErrorBox/ErrorBox";
+import getProductList from "./api/ProductListApi";
+import { useEffect, useState } from "react";
+import { ResponseCartItem, ResponseProduct } from "./api/types";
+import getCartItemList from "./api/CartItemListApi";
+
 function App() {
   const [productList, setProductList] = useState<ResponseProduct[]>([]);
+  // const [cartItemList, setCartItemList] = useState<ResponseCartItem[]>([]);
 
   useEffect(() => {
     (async () => {
-      const data = await getProductList();
-      const data2 = await getCartItemList();
-      console.log('data2', data2);
-      setProductList(data);
+      // const rawCartItemList = await getCartItemList();
+      const rawProductList = await getProductList({ category: "" });
+      // console.log("rawCartItemList", rawCartItemList);
+      console.log("rawProductList", rawProductList);
+      // setCartItemList(rawCartItemList);
+      setProductList(rawProductList);
     })();
   }, []);
 
@@ -23,9 +27,9 @@ function App() {
     <S.Global>
       <S.Wrap>
         <Header />
-        <ErrorBox backgroundColor='#FFC9C9' text='에러 발생' />
+        <ErrorBox backgroundColor="#FFC9C9" text="에러 발생" />
         <S.MiddleContainer>
-          <ProductControl />
+          <ProductControl setProductList={setProductList} />
           <ProductList productList={productList} />
         </S.MiddleContainer>
       </S.Wrap>

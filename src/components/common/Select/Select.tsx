@@ -2,11 +2,12 @@ import * as S from "./Select.styled";
 
 interface SelectProps {
   options: Record<string, string>;
+  onChange?: (value: string) => void;
 }
 
-function Select({ options }: SelectProps) {
+function Select({ options, onChange }: SelectProps) {
   return (
-    <S.Select>
+    <S.Select onChange={(e) => onChange?.(e.target.value)}>
       {Object.keys(options).map((option) => (
         <option value={options[option]}>{option}</option>
       ))}

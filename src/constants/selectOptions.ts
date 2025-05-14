@@ -1,7 +1,7 @@
 export const CategoryOptions = {
-  전체: "all",
-  식료품: "food",
-  패션잡화: "fashion",
+  전체: "전체",
+  식료품: "식료품",
+  패션잡화: "패션잡화",
 };
 
 export const SortOptions = {
