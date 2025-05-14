@@ -1,12 +1,12 @@
 import { css } from "@emotion/react";
-import React from "react";
+import { useState } from "react";
+import Button from "../Button/Button";
 
 interface ProductProps {
   id: string;
   imgSrc: string;
   productName: string;
   price: string;
-  children: React.ReactNode;
 }
 
 const productLayout = css`
@@ -59,8 +59,31 @@ export default function Product({
   imgSrc,
   productName,
   price,
-  children,
 }: ProductProps) {
+  const [isSelected, setIsSelected] = useState(false);
+
+  const handleClick = () => {
+    setIsSelected((prev) => !prev);
+  };
+
+  const addProduct = () => {
+    return (
+      <Button onClick={handleClick}>
+        <img src="./add-shopping-cart.svg" />
+        <p>담기</p>
+      </Button>
+    );
+  };
+
+  const removeProduct = () => {
+    return (
+      <Button onClick={handleClick} style="secondary">
+        <img src="./remove-shopping-cart.svg" />
+        <p>빼기</p>
+      </Button>
+    );
+  };
+
   return (
     <div id={id} css={productLayout}>
       <img css={imgLayout} src={imgSrc} />
@@ -69,7 +92,7 @@ export default function Product({
           <p css={productNameLayout}>{productName}</p>
           <p css={priceLayout}>{price}</p>
         </div>
-        <div>{children}</div>
+        {isSelected ? removeProduct() : addProduct()}
       </div>
     </div>
   );

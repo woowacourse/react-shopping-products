@@ -32,12 +32,7 @@ export default function ProductContainer({ products }: ProductContainerProps) {
           imgSrc={product.imgSrc}
           productName={product.productName}
           price={product.price}
-        >
-          <Button onClick={onClick}>
-            <img src="./add-shopping-cart.svg" />
-            <p>담기</p>
-          </Button>
-        </Product>
+        />
       ))}
     </div>
   );

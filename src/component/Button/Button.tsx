@@ -17,7 +17,6 @@ const buttonLayout = (backgroundColor: string, color: string) => {
     border-radius: 4px;
     color: ${color};
     gap: 4px;
-    color: #fff;
     font-weight: 600;
     font-family: "Noto Sans";
     font-size: 12px;
