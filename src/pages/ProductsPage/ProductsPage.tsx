@@ -130,9 +130,9 @@ function ProductsPage() {
             onChange={handleChangeSort}
           />
         </div>
-        {/* <Toast text="안녕하세요" varient="error" />  */}
         {products && (
           <ProductList
+            isLoadingProducts={isLoadingProducts}
             products={getProcessedCartArr()}
             onClickAddCartItem={handleAddCartItem}
             onClickDeleteCartItem={handleDeleteCartItem}

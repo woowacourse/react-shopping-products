@@ -24,7 +24,7 @@ async function getProducts({ category, sortKey, sortOrder }: productsOptionType)
 
 function useGetProducts({ sort, category }: { sort: string; category: string }) {
   const [products, setProducts] = useState<ProductDTOType[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ type cartDataType = {
 };
 
 async function getCarts() {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items?page=0&size=20`, {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items?page=0&size=50`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Basic cm9zaWVsc2g6cGFzc3dvcmQ',
@@ -24,7 +24,7 @@ async function getCarts() {
 
 function useGetCarts() {
   const [carts, setCarts] = useState<cartDataType[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const fetchCarts = useCallback(async () => {
