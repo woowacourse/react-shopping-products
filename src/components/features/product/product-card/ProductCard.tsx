@@ -3,6 +3,7 @@ import Flex from '../../../common/Flex';
 import AddCartButton from './AddCartButton';
 import { baseAPI } from '../../../../api/baseAPI';
 import DeleteCartButton from './DeleteCartButton';
+import { useCartContext } from '../../../../context/useCartContext';
 
 interface ProductProps {
   id: string;
@@ -21,6 +22,8 @@ function ProductCard({
   imageUrl,
   isInCart,
 }: ProductProps) {
+  const { refetch } = useCartContext();
+
   const handleAddCart = async () => {
     try {
       await baseAPI({
@@ -31,6 +34,7 @@ function ProductCard({
           quantity: 1,
         },
       });
+      refetch();
     } catch (e) {
       throw new Error('장바구니에 추가하는데 실패했습니다.');
     }
@@ -42,6 +46,7 @@ function ProductCard({
         method: 'DELETE',
         path: `/cart-items/${cartId}`,
       });
+      refetch();
     } catch (e) {
       throw new Error('장바구니에 추가하는데 실패했습니다.');
     }

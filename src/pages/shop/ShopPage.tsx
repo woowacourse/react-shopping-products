@@ -10,7 +10,7 @@ import Loading from '../../components/common/Loading';
 import { wrapPromise } from '../../api/wrapPromise';
 import { Product } from '../../components/features/product/type';
 import { convertResponseToProduct } from '../../components/features/product/responseMapper';
-import { useCartContext } from '../../context/CartContext';
+import { useCartContext } from '../../context/useCartContext';
 
 function ShopPage() {
   const [filterOption, setFilterOption] = useState({
