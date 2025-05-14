@@ -1,10 +1,10 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 const CartIconButton = ({ cartItemCount }: { cartItemCount: number }) => {
   return (
     <CartIconButtonContainer>
       <img src="/cartIcon.png" />
-      <CartItemCount> {cartItemCount}</CartItemCount>
+      {cartItemCount !== 0 && <CartItemCount> {cartItemCount}</CartItemCount>}
     </CartIconButtonContainer>
   );
 };
@@ -12,7 +12,8 @@ const CartIconButton = ({ cartItemCount }: { cartItemCount: number }) => {
 export default CartIconButton;
 
 const CartIconButtonContainer = styled.div`
-  position:relative;`
+  position: relative;
+`;
 
 const CartItemCount = styled.div`
   width: 19px;
