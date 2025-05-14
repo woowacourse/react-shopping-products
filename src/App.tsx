@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
 import Header from "./components/Header/Header";
+import ProductItem from "./components/ProductItem/ProductItem";
 import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
 import ProductSorter from "./components/ProductSorter/ProductSorter";
 import * as S from "./styles/Layout.styles";
@@ -29,10 +30,10 @@ function App() {
             <CategoryFilter />
             <ProductSorter />
           </S.ProductControlPanel>
-          {/* <S.ProductGrid>
+          <S.ProductGrid>
             <ProductItem />
           </S.ProductGrid>
-          <ErrorToast /> */}
+          {/* <ErrorToast /> */}
         </S.Wrapper>
       </S.LayoutWrapper>
     </S.LayoutContainer>
