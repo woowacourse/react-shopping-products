@@ -1,6 +1,6 @@
 export type ProductProps = {
   imageUrl: string;
-  title: string;
+  name: string;
   price: number;
   isAdd: boolean;
 };

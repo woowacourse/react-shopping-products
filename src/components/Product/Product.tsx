@@ -39,12 +39,12 @@ const buttonWrapper = css`
   right: 10px;
 `;
 
-function Product({ imageUrl, title, price, isAdd }: ProductProps) {
+function Product({ imageUrl, name, price, isAdd }: ProductProps) {
   return (
     <li className={productContainer}>
       <img src={imageUrl} alt="product" className={productImage} />
       <div className={productContent}>
-        <div className={productTitle}>{title}</div>
+        <div className={productTitle}>{name}</div>
         <div className={productPrice}>{price}원</div>
         <div className={buttonWrapper}>{isAdd ? <DeleteButton /> : <AddButton />}</div>
       </div>
