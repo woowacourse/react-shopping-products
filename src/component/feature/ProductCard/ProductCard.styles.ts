@@ -7,7 +7,10 @@ export const productCardStyle = css`
   gap: 1.5rem;
   border-radius: 8px;
   width: 18.2rem;
-  border: 1px solid black;
+
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+  }
 `;
 
 export const productCardImageContainerStyle = css`
