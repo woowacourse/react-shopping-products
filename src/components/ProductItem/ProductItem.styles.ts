@@ -24,6 +24,8 @@ export const ProductWrapper = styled.div`
   border-radius: 0 0 8px 8px;
   height: 50%;
   position: relative;
+  border: 1px solid #0000001a;
+  border-top: none;
 `;
 
 export const ProductName = styled.p`
