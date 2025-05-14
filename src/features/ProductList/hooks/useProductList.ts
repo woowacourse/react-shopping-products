@@ -4,23 +4,37 @@ import { getProductList } from '@/api/product';
 
 import { Product } from '../types/Product';
 
-export const useProductList = (selecet1: string, select2?: string) => {
+export const useProductList = () => {
   const [product, setProduct] = useState<Product[]>([]);
+  const [categorySelect, setCategorySelect] = useState('전체');
+  const [priceSelect, setPriceSelect] = useState('전체');
+
+  const handleCategorySelect = (category: string) => {
+    setCategorySelect(category);
+  };
+
+  const handlePriceSelect = (price: string) => {
+    setPriceSelect(price);
+  };
 
   useEffect(() => {
     const getProduct = async () => {
       const product = await getProductList({
         page: 0,
         size: 20,
-        sort: select2 ? `price,${select2}` : '',
-        category: selecet1 === '전체' ? '' : selecet1,
+        sort: priceSelect !== '전체' && priceSelect ? `price,${priceSelect}` : '',
+        category: categorySelect === '전체' ? '' : categorySelect,
       });
       setProduct(product);
     };
     getProduct();
-  }, [selecet1, select2]);
+  }, [categorySelect, priceSelect]);
 
   return {
     product,
+    categorySelect,
+    priceSelect,
+    handleCategorySelect,
+    handlePriceSelect,
   };
 };
