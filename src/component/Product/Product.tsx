@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { Dispatch, SetStateAction, useState } from "react";
 import Button from "../Button/Button";
-import { deleteCartItem, postCartItem } from "../../api/cartItem";
+import { deleteCartItem, getCartItem, postCartItem } from "../../api/cartItem";
 
 interface ProductProps {
   id: string;
@@ -10,6 +10,19 @@ interface ProductProps {
   price: string;
   selectedProducts: string[];
   setSelectedProducts: Dispatch<SetStateAction<string[]>>;
+}
+
+interface ProductItem {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+}
+interface CartItem {
+  id: number;
+  quantity: number;
+  product: ProductItem;
 }
 
 const productLayout = css`
@@ -67,11 +80,23 @@ export default function Product({
 }: ProductProps) {
   const [isSelected, setIsSelected] = useState(false);
 
-  const handleClick = () => {
+  const getCartItemId = async ({ deleteId }: { deleteId: number }) => {
+    const response = await getCartItem({
+      sortBy: "asc",
+    });
+
+    const deleteCartId = response.content.map((cartItem: CartItem) => {
+      if (deleteId === cartItem.product.id) return cartItem.id;
+    });
+    return deleteCartId;
+  };
+
+  const handleClick = async () => {
     setIsSelected((prev) => !prev);
     if (selectedProducts.includes(id)) {
       setSelectedProducts((arr) => arr.filter((prev) => prev !== id));
-      deleteCartItem({ id: Number(id) });
+      const deleteCartId = await getCartItemId({ deleteId: Number(id) });
+      deleteCartItem({ id: deleteCartId });
     } else {
       setSelectedProducts((arr) => [...arr, id]);
       postCartItem({ productId: Number(id), quantity: 1 });

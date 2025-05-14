@@ -1,13 +1,13 @@
 import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
-import Selector from "../component/Selector/Selector";
-import TitleContainer from "../component/TitleContainer/titleContainer";
+import getProduct from "../api/product";
 import Body from "../component/Body/Body";
 import Header from "../component/Header/Header";
 import ProductContainer, {
   Product,
 } from "../component/ProductContainer/ProductContainer";
-import getProduct from "../api/product";
+import Selector from "../component/Selector/Selector";
+import TitleContainer from "../component/TitleContainer/titleContainer";
 
 const pageLayout = css`
   display: flex;
