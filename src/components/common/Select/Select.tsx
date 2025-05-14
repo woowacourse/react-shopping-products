@@ -1,4 +1,4 @@
-import * as S from "./Select.styled";
+import * as S from './Select.styled';
 
 interface SelectProps {
   options: Record<string, string>;
@@ -9,7 +9,9 @@ function Select({ options, onChange }: SelectProps) {
   return (
     <S.Select onChange={(e) => onChange?.(e.target.value)}>
       {Object.keys(options).map((option) => (
-        <option value={options[option]}>{option}</option>
+        <option value={options[option]} key={options[option]}>
+          {option}
+        </option>
       ))}
     </S.Select>
   );
