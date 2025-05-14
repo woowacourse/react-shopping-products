@@ -6,13 +6,12 @@ import { Text } from '@/shared/components/Text';
 
 import { Product } from '../types/Product';
 
+type ProductItemProps = {
+  isChecked: boolean;
+} & Pick<Product, 'name' | 'imageUrl' | 'price'>;
+
 // TODO : boolean 값 변경에 따른 이미지 변경
-export const ProductItem = ({
-  name,
-  price,
-  imageUrl,
-}: Pick<Product, 'name' | 'imageUrl' | 'price'>) => {
-  console.log('imageUrl', imageUrl);
+export const ProductItem = ({ name, price, imageUrl, isChecked = true }: ProductItemProps) => {
   return (
     <StyledProductItemContainer>
       <StyledProductItemImage src={imageUrl} alt={name} />
@@ -24,7 +23,12 @@ export const ProductItem = ({
           {price}
         </Text>
         <Flex direction="row" justifyContent="flex-end" width="100%">
-          <IconButton src={imageUrl}>담기</IconButton>
+          <IconButton
+            variant={isChecked ? 'secondary' : 'primary'}
+            src={isChecked ? `./RemoveCart.png` : `./AddCart.png`}
+          >
+            {isChecked ? '빼기' : '담기'}
+          </IconButton>
         </Flex>
       </Flex>
     </StyledProductItemContainer>
