@@ -37,7 +37,7 @@ function App() {
   return (
     <S.LayoutContainer>
       <S.LayoutWrapper>
-        <ShopHeader />
+        <ShopHeader cartItemCount={cartItems?.content.length ?? 0} />
         <S.Wrapper>
           <ProductsListTitle />
           <S.ProductControlPanel>
