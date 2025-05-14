@@ -6,22 +6,27 @@ import ErrorToast from "./components/errorToast/ErrorToast";
 import useError from "./hooks/useError";
 import request from "./utils/request";
 import { useEffect, useState } from "react";
-import { Product } from "./types/response.types";
+import { CartItem } from "./types/response.types";
 
 function App() {
-  const { isError } = useError();
+  const { isError, setErrorTrue, errorMessage } = useError();
 
-  const [cartItemIds, setCartItemIds] = useState([]);
+  const [cartItemIds, setCartItemIds] = useState<number[]>([]);
   async function fetchCartItems() {
-    const data = await request({
-      method: "GET",
-      url: "/cart-items",
-      headers: {
-        Authorization: import.meta.env.VITE_TOKEN,
-        "Content-Type": "application/json",
-      },
-    });
-    setCartItemIds(data.content.map((data: Product) => data.id));
+    try {
+      const data = await request({
+        method: "GET",
+        url: "/cart-items",
+        headers: {
+          Authorization: import.meta.env.VITE_TOKEN,
+          "Content-Type": "application/json",
+        },
+      });
+
+      setCartItemIds(data.content.map((data: CartItem) => data.product.id));
+    } catch {
+      setErrorTrue("CART");
+    }
   }
 
   useEffect(() => {
@@ -33,8 +38,11 @@ function App() {
   return (
     <div className="container">
       <Header cartItemAmount={cartItemIds.length} />
-      <ProductContainer />
-      {isError && <ErrorToast />}
+      <ProductContainer
+        cartItemIds={cartItemIds}
+        setCartItemIds={setCartItemIds}
+      />
+      {isError && <ErrorToast errorMessage={errorMessage} />}
     </div>
   );
 }

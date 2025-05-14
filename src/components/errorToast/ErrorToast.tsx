@@ -1,9 +1,13 @@
 import { ErrorMessage, ErrorToastContainer } from "./ErrorToast.css";
 
-function ErrorToast() {
+interface ErrorToastProps {
+  errorMessage: string;
+}
+
+function ErrorToast({ errorMessage }: ErrorToastProps) {
   return (
     <div css={ErrorToastContainer}>
-      <p css={ErrorMessage}>오류가 발생했습니다. 잠시 후 다시 시도해주세요.</p>
+      <p css={ErrorMessage}>{errorMessage}</p>
     </div>
   );
 }

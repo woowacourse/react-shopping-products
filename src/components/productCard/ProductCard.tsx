@@ -14,9 +14,17 @@ interface ProductCardProps {
   name: string;
   price: number;
   imageUrl: string;
+  setCartItemIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
-function ProductCard({ id, name, price, imageUrl, isAdded }: ProductCardProps) {
+function ProductCard({
+  id,
+  name,
+  price,
+  imageUrl,
+  isAdded,
+  setCartItemIds,
+}: ProductCardProps) {
   return (
     <div css={ProductContainer}>
       <img css={ProductImage} src={imageUrl}></img>
@@ -25,7 +33,11 @@ function ProductCard({ id, name, price, imageUrl, isAdded }: ProductCardProps) {
         <p css={ProductPrice}>{price.toLocaleString()}원</p>
       </div>
       <div css={ButtonContainer}>
-        <CartToggleButton id={id} isAdded={isAdded} />
+        <CartToggleButton
+          id={id}
+          isAdded={isAdded}
+          setCartItemIds={setCartItemIds}
+        />
       </div>
     </div>
   );

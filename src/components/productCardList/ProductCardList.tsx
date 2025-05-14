@@ -9,6 +9,8 @@ interface ProductCardListProps {
   setProducts: (data: ProductPageResponse) => void;
   category: categoryType;
   sort: sortType;
+  cartItemIds: number[];
+  setCartItemIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 function ProductCardList({
@@ -16,9 +18,11 @@ function ProductCardList({
   setProducts,
   category,
   sort,
+  cartItemIds,
+  setCartItemIds,
 }: ProductCardListProps) {
-  const isAdded = false;
   useFetchProducts({ category, setProducts, sort });
+  console.log(cartItemIds);
 
   return (
     <div css={CardListContainer}>
@@ -26,10 +30,11 @@ function ProductCardList({
         <ProductCard
           id={data.id}
           key={data.id}
-          isAdded={isAdded}
+          isAdded={cartItemIds?.includes(data.id)}
           name={data.name}
           price={data.price}
           imageUrl={data.imageUrl}
+          setCartItemIds={setCartItemIds}
         />
       ))}
     </div>

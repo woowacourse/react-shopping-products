@@ -7,6 +7,12 @@ export interface Product {
   category: string;
 }
 
+export interface CartItem {
+  id: number;
+  product: Product;
+  quantity: number;
+}
+
 // 정렬 정보 타입
 export interface Sort {
   empty: boolean;

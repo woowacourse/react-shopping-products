@@ -13,7 +13,9 @@ function Select<T extends string>({
       value={value}
     >
       {options.map((option) => (
-        <option value={option.value}>{option.text}</option>
+        <option key={option.value} value={option.value}>
+          {option.text}
+        </option>
       ))}
     </select>
   );

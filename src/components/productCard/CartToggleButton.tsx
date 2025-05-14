@@ -2,7 +2,11 @@ import request from "../../utils/request";
 import { ButtonContainer, RemoveButton } from "./CartToggleButton.css";
 import { CartToggleButtonProps } from "./CartToggleButton.types";
 
-function CartToggleButton({ id, isAdded }: CartToggleButtonProps) {
+function CartToggleButton({
+  id,
+  isAdded,
+  setCartItemIds,
+}: CartToggleButtonProps) {
   async function addItemToCart() {
     const data = await request({
       headers: {
@@ -13,6 +17,7 @@ function CartToggleButton({ id, isAdded }: CartToggleButtonProps) {
       url: "/cart-items",
       body: { productId: id, quantity: 1 },
     });
+    setCartItemIds((prev) => [...prev, id]);
     console.log(data);
   }
 
@@ -25,6 +30,7 @@ function CartToggleButton({ id, isAdded }: CartToggleButtonProps) {
       method: "DELETE",
       url: `/cart-items/${id}`,
     });
+    setCartItemIds((prev) => prev.filter((productId) => productId !== id));
     console.log(data);
   }
   return (

@@ -5,8 +5,14 @@ import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { ProductPageResponse } from "../../types/response.types";
 import { categoryType, sortType } from "../../types/index.types";
-
-function ProductContainer() {
+interface ProductContainerProps {
+  cartItemIds: number[];
+  setCartItemIds: React.Dispatch<React.SetStateAction<number[]>>;
+}
+function ProductContainer({
+  cartItemIds,
+  setCartItemIds,
+}: ProductContainerProps) {
   const [products, setProducts] = useState<ProductPageResponse | null>(null);
   const [selectedCategory, setSelectedCategory] =
     useState<categoryType>("전체");
@@ -27,6 +33,8 @@ function ProductContainer() {
         setProducts={setProducts}
         category={selectedCategory}
         sort={selectedSort}
+        cartItemIds={cartItemIds}
+        setCartItemIds={setCartItemIds}
       />
     </div>
   );
