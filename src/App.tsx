@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
 import Header from "./components/Header/Header";
 import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
+import ProductSorter from "./components/ProductSorter/ProductSorter";
 import * as S from "./styles/Layout.styles";
 import { Products } from "./types";
-import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
@@ -26,7 +27,7 @@ function App() {
           <ProductsListTitle />
           <S.ProductControlPanel>
             <CategoryFilter />
-            {/* <ProductSorter /> */}
+            <ProductSorter />
           </S.ProductControlPanel>
           {/* <S.ProductGrid>
             <ProductItem />
