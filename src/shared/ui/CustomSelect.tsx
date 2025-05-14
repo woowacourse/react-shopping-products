@@ -5,11 +5,12 @@ interface CustomSelectProps {
     label: string;
     value: string;
   }>;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export default function CustomSelect({items}: CustomSelectProps) {
+export default function CustomSelect({items, onChange}: CustomSelectProps) {
   return (
-    <StyledCustomSelect>
+    <StyledCustomSelect onChange={onChange}>
       {items.map((item) => (
         <option key={item.value} value={item.value}>
           {item.label}
