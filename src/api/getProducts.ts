@@ -1,4 +1,5 @@
 import { Category } from '../App';
+import fetchWithErrorHandling from './fetchWithErrorHandling';
 
 type PriceOrder = '낮은 가격순' | '높은 가격순';
 type GetProductsProps = {
@@ -16,23 +17,35 @@ const getProducts = async ({
 }: GetProductsProps = {}) => {
   const searchParams = new URLSearchParams();
   searchParams.toString();
-  let newErrorMessage = '';
 
   if (category !== '전체') searchParams.append('category', category);
   if (priceOrder)
     searchParams.append('sort', priceOrderQueryString[priceOrder]);
 
   const queryString = searchParams.toString();
-  const baseUrl =
-    'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products';
-  const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Basic RGFldW4tMTAwOnBhc3N3b3Jk',
+    },
+  };
 
-  const response = await fetch(url, { method: 'GET' });
+  let newErrorMessage = '';
 
-  if (!response.ok)
-    newErrorMessage = '상품을 불러오는 데 실패했습니다. 다시 시도해주세요.';
+  const { data, status } = await fetchWithErrorHandling(
+    `products?${queryString}`,
+    options
+  );
 
-  const data = await response.json();
+  if (status === 400) {
+    newErrorMessage = '상품 목록을 불러오지 못했습니다. 다시 시도해주세요';
+  } else if (status === 404) {
+    newErrorMessage = 'not found';
+  } else if (status === 500) {
+    newErrorMessage = '서버에 문제가 발생했습니다.';
+  }
+
   return { newErrorMessage, data };
 };
 

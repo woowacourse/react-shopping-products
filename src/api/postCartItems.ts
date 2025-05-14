@@ -1,22 +1,47 @@
 import { Product } from '../App';
+import fetchWithErrorHandling from './fetchWithErrorHandling';
 
-const  postCartItems = async(product: Product) => {
+const postCartItems = async (product: Product) => {
   const body = JSON.stringify({
     productId: product.id,
     quantity: 1,
   });
 
-  await fetch(
-    'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Basic RGFldW4tMTAwOnBhc3N3b3Jk',
-      },
-      body,
-    }
-  );
+  // await fetch(
+  //   'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items',
+  //   {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: 'Basic RGFldW4tMTAwOnBhc3N3b3Jk',
+  //     },
+  //     body,
+  //   }
+  // );
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Basic RGFldW4tMTAwOnBhc3N3b3Jk',
+    },
+    body,
+  };
+
+  let newErrorMessage = '';
+
+  const { data, status } = await fetchWithErrorHandling('cart-items', options);
+
+  if (status === 400) {
+    newErrorMessage =
+      '장바구니에 상품을 추가하지 못했습니다. 다시 시도해주세요';
+  } else if (status === 404) {
+    newErrorMessage = 'not found';
+  } else if (status === 500) {
+    newErrorMessage = '서버에 문제가 발생했습니다.';
+  }
+
+
+  return { newErrorMessage, data };
 };
 
 export default postCartItems;
