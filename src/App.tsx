@@ -11,7 +11,9 @@ function App() {
     []
   );
 
-  const handleAddProduct = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAddProduct = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     const $product = event.currentTarget.closest("li");
     if (!$product) {
       return;
@@ -19,7 +21,7 @@ function App() {
 
     setSelectedProductIdList((prevIdList) => [...prevIdList, $product.id]);
 
-    fetchAddProduct({
+    await fetchAddProduct({
       method: "POST",
       params: {
         productId: $product.id,
@@ -41,7 +43,7 @@ function App() {
 
   return (
     <Container>
-      <Header></Header>
+      <Header selectedProductIdList={selectedProductIdList}></Header>
       <Main
         handleAddProduct={handleAddProduct}
         handleRemoveProduct={handleRemoveProduct}
