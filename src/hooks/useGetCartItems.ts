@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { ProductDataType } from '../types/product';
+import { useCallback, useEffect, useState } from 'react';
+import { ProductDTOType } from '../types/product';
 
 type cartDataType = {
   id: number;
   quantity: number;
-  product: ProductDataType;
+  product: ProductDTOType;
 };
 
 async function getCarts() {
@@ -27,21 +27,29 @@ function useGetCarts() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const data = await getCarts();
-        setCarts(data);
-      } catch (e) {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
+  const fetchCarts = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const data = await getCarts();
+      setCarts(data);
+      return data;
+    } catch (e) {
+      setIsError(true);
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  return { isLoading, isError, carts };
+  useEffect(() => {
+    fetchCarts();
+  }, [fetchCarts]);
+
+  const refetchCarts = useCallback(async () => {
+    return await fetchCarts();
+  }, [fetchCarts]);
+
+  return { isLoading, isError, carts, refetchCarts };
 }
 
 export default useGetCarts;
