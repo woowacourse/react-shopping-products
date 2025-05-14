@@ -4,15 +4,13 @@ import { useEffect, useState } from 'react';
 import Select from '../components/Select';
 import styled from '@emotion/styled';
 import { getProducts } from '../services/productServices';
-import { CartItemType, ProductItemType } from '../types/data';
-import { getCartItems } from '../services/cartItemServices';
+import { ProductItemType } from '../types/data';
 
 export const ProductListPage = () => {
   const [errorOpen, setErrorOpen] = useState(false);
   const options = ['옵션1', '옵션2', '옵션3', '옵션4', '옵션5'];
   const [value, setValue] = useState(options[0]);
   const [products, setProducts] = useState<ProductItemType[]>([]);
-  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
 
   const handleSelectedValue = (value: string) => {
     setValue(value);
@@ -22,9 +20,6 @@ export const ProductListPage = () => {
     (async () => {
       const productsData = await getProducts();
       setProducts(productsData);
-
-      const cartItemsData = await getCartItems();
-      setCartItems(cartItemsData);
     })();
   }, []);
 
@@ -35,8 +30,6 @@ export const ProductListPage = () => {
     }, 3000);
     setValue('선택된 값');
   }, []);
-
-  console.log(products);
 
   return (
     <ProductListPageContainer>
@@ -57,7 +50,7 @@ export const ProductListPage = () => {
 
       <ProductItemContainer>
         {products.map((product) => (
-          <ProductItem key={product.id} product={product} cartItems={cartItems} />
+          <ProductItem key={product.id} product={product} />
         ))}
       </ProductItemContainer>
     </ProductListPageContainer>
