@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "./components/Header/Header";
+import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
 import * as S from "./styles/Layout.styles";
 import { Products } from "./types";
 
@@ -21,8 +22,8 @@ function App() {
       <S.LayoutWrapper>
         <Header />
         <S.Wrapper>
-          {/* <S.ProductsListTitle />
-          <S.ProductControlPanel>
+          <ProductsListTitle />
+          {/* <S.ProductControlPanel>
             <CategoryFilter />
             <ProductSorter />
           </S.ProductControlPanel>
