@@ -4,8 +4,8 @@ import request from "../utils/request";
 import { categoryType, sortType } from "../types/index.types";
 
 const SORT_TYPE = {
-  "낮은 가격순": "price,desc",
-  "높은 가격순": "price,asc",
+  "낮은 가격순": "price,asc",
+  "높은 가격순": "price,desc",
 };
 
 interface useFetchProductsProps {
