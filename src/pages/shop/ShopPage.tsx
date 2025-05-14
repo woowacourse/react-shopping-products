@@ -4,6 +4,7 @@ import ShopHeader from '../../components/features/header/ShopHeader';
 import ProductList from '../../components/features/product/product-list/ProductList';
 import Flex from '../../components/common/Flex';
 import styled from '@emotion/styled';
+import { baseAPI } from '../../api/baseAPI';
 import { ProductData } from '../../api/type';
 
 interface Product {
@@ -38,37 +39,15 @@ function ShopPage() {
     }));
   };
 
-  const getListData = async ({
-    page,
-    size,
-  }: {
-    page: number;
-    size: number;
-  }) => {
-    const result = await fetch(
-      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products?page=${page}&size=${size}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Basic ${btoa(
-            `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-          )}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    if (!result.ok) {
-      throw new Error('에러가 났어요~');
-    }
-    const data = (await result.json()) as ProductData;
-
-    return data;
-  };
-
   useEffect(() => {
     const getListDataHandler = async () => {
+      const page = 0;
+      const size = 20;
       try {
-        const data = await getListData({ page: 0, size: 20 });
+        const data = await baseAPI<ProductData>({
+          method: 'GET',
+          path: `/products?page=${page}&size=${size}`,
+        });
         const productsData = data.content.map(
           ({ id, name, price, imageUrl, category }) => ({
             id: id.toString(),
