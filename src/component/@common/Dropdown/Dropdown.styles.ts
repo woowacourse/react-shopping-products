@@ -27,6 +27,9 @@ export const dropdownListStyle = css`
   border-radius: 8px;
   border: 1px solid ${theme.color.gray1};
   background: ${theme.color.white};
+
+  position: absolute;
+  top: 100%;
 `;
 
 export const dropdownItemStyle = css`

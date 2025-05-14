@@ -5,7 +5,6 @@ import {
   dropdownListStyle,
   dropdownTriggerStyle,
 } from './Dropdown.styles';
-import { SortOption } from '../../../App';
 
 export const useDropdownContext = () => {
   const context = useContext(DropdownContext);
@@ -67,7 +66,7 @@ const DropdownList = ({ children, ...rest }: DropdownListProps) => {
 };
 
 interface DropdownItemProps extends ComponentProps<'li'> {
-  handleClick: (content: SortOption) => void;
+  handleClick: (content: string) => void;
   content: string;
 }
 
@@ -76,7 +75,7 @@ const DropdownItem = ({ content, handleClick, ...rest }: DropdownItemProps) => {
 
   const handleSelect = () => {
     close();
-    handleClick?.(content as SortOption);
+    handleClick?.(content);
   };
 
   return (
