@@ -19,7 +19,7 @@ export const ToastProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <ToastContext.Provider value={{ showToast }}>
-      {children} && {toast && <Toast message={toast} />}
+      {children} {toast && <Toast message={toast} />}
     </ToastContext.Provider>
   );
 };
