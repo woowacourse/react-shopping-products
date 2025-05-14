@@ -1,23 +1,33 @@
-import SelectDropdown from "./SelectDropdown";
-import { Container, Header } from "../../styles/SelectDropdown";
-import { CATEGORY, SORT } from "../../constants/selectOption";
+import SelectDropdown from './SelectDropdown';
+import { Container, Header } from '../../styles/SelectDropdown';
+import { CATEGORY, SORT } from '../../constants/selectOption';
 
-const SelectDropdownContainer = () => {
+type CategoryKey = (typeof CATEGORY)[number];
+type SortKey = (typeof SORT)[number];
 
-    const handleCategory = () =>{
-        console.log(CATEGORY);
-    }
+type SelectDropdownContainerProps = {
+  category: CategoryKey;
+  sort: SortKey;
+  setCategory: React.Dispatch<React.SetStateAction<CategoryKey>>;
+  setSort: React.Dispatch<React.SetStateAction<SortKey>>;
+};
 
-    const handleSelect = () =>{
-        console.log(SORT);
-    }
-
+const SelectDropdownContainer = ({
+  category,
+  sort,
+  setCategory,
+  setSort,
+}: SelectDropdownContainerProps) => {
   return (
     <>
       <Header>bpple 상품 목록</Header>
       <Container>
-        <SelectDropdown options={CATEGORY} onSelect={handleCategory} />
-        <SelectDropdown options={SORT} onSelect={handleSelect}/>
+        <SelectDropdown<CategoryKey>
+          title={category}
+          options={CATEGORY}
+          onSelect={(value) => setCategory(value)}
+        />
+        <SelectDropdown<SortKey> title={sort} options={SORT} onSelect={(value) => setSort(value)} />
       </Container>
     </>
   );

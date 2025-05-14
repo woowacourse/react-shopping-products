@@ -1,29 +1,35 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   SelectDropdownWrapper,
   DropdownWrapper,
   DropdownTitleWrapper,
   DropdownUlWrapper,
   DropdownLiWrapper,
-} from "../../styles/SelectDropdown";
-import { IMAGE_PATH } from "../../constants/imagePath";
+} from '../../styles/SelectDropdown';
+import { IMAGE_PATH } from '../../constants/imagePath';
+import { CATEGORY, SORT } from '../../constants/selectOption';
 
-type SelectDropdown = {
-  options: string[];
-  onSelect: (value: string) => void;
+type OptionType = (typeof CATEGORY)[number] | (typeof SORT)[number];
+
+type SelectDropdownProps<T extends OptionType> = {
+  title: T;
+  options: readonly T[];
+  onSelect: (value: T) => void;
 };
 
-const SelectDropdown = ({ options, onSelect }: SelectDropdown) => {
+const SelectDropdown = <T extends OptionType>({
+  title,
+  options,
+  onSelect,
+}: SelectDropdownProps<T>) => {
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState(options[0]);
 
   const toggleSelectDropdown = () => {
     setOpen(!open);
   };
 
-  const handleDropDown = (value: string) => {
+  const handleDropDown = (value: T) => {
     onSelect(value);
-    setTitle(value);
     setOpen(false);
   };
 
@@ -40,10 +46,7 @@ const SelectDropdown = ({ options, onSelect }: SelectDropdown) => {
       {open && (
         <DropdownUlWrapper>
           {options.map((option) => (
-            <DropdownLiWrapper
-              key={option}
-              onClick={() => handleDropDown(option)}
-            >
+            <DropdownLiWrapper key={option} onClick={() => handleDropDown(option)}>
               {option}
             </DropdownLiWrapper>
           ))}
