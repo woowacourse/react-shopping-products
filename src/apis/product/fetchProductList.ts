@@ -1,8 +1,10 @@
+import.meta.env.VITE_BASE_URL;
+
 import { ProductCategory } from "../../types/ProductCategory";
 
 import { Sort } from "../../types/Sort";
 
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+import { HttpMethod } from "../../types/HttpMethod";
 
 type fetchProductListParams = {
   method: HttpMethod;
@@ -14,13 +16,13 @@ type fetchProductListParams = {
   };
 };
 
-const BASE_URL =
-  "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}/products`;
 
 const fetchProductList = async ({
   method,
   params = { page: "0", size: "20", sort: "price,asc" },
 }: fetchProductListParams) => {
+  console.log(BASE_URL);
   const url = new URL(BASE_URL);
 
   const { category, ...rest } = params;

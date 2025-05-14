@@ -2,6 +2,8 @@ import { useState } from "react";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 
+import fetchAddProduct from "./apis/product/fetchAddProduct";
+
 import styled from "@emotion/styled";
 
 function App() {
@@ -16,6 +18,14 @@ function App() {
     }
 
     setSelectedProductIdList((prevIdList) => [...prevIdList, $product.id]);
+
+    fetchAddProduct({
+      method: "POST",
+      params: {
+        productId: $product.id,
+        quantity: "1",
+      },
+    });
   };
 
   const handleRemoveProduct = (event: React.MouseEvent<HTMLButtonElement>) => {
