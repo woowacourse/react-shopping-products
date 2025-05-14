@@ -4,13 +4,15 @@ import { useEffect, useState } from 'react';
 import Select from '../components/Select';
 import styled from '@emotion/styled';
 import { getProducts } from '../services/productServices';
-import { ProductItemType } from '../types/data';
-import { PRODUCT_LIST_ITEM_COUNT } from '../constants/systemConstants';
+import { CartItemType, ProductItemType } from '../types/data';
+import { getCartItems } from '../services/cartItemServices';
 
 export const ProductListPage = () => {
+  const [errorOpen, setErrorOpen] = useState(false);
   const options = ['옵션1', '옵션2', '옵션3', '옵션4', '옵션5'];
   const [value, setValue] = useState(options[0]);
   const [products, setProducts] = useState<ProductItemType[]>([]);
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
 
   const handleSelectedValue = (value: string) => {
     setValue(value);
@@ -18,14 +20,27 @@ export const ProductListPage = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getProducts();
-      setProducts(data);
+      const productsData = await getProducts();
+      setProducts(productsData);
+
+      const cartItemsData = await getCartItems();
+      setCartItems(cartItemsData);
     })();
   }, []);
 
+  useEffect(() => {
+    setErrorOpen(true);
+    setTimeout(() => {
+      setErrorOpen(false);
+    }, 3000);
+    setValue('선택된 값');
+  }, []);
+
+  console.log(products);
+
   return (
     <ProductListPageContainer>
-      <ErrorToast errorMessage="hi" />
+      {errorOpen && <ErrorToast errorMessage="hi" />}
       <Title>bpple 상품 목록</Title>
       <SelectContainer>
         <Select
@@ -41,8 +56,8 @@ export const ProductListPage = () => {
       </SelectContainer>
 
       <ProductItemContainer>
-        {products.slice(0, PRODUCT_LIST_ITEM_COUNT).map((product) => (
-          <ProductItem key={product.id} product={product} />
+        {products.map((product) => (
+          <ProductItem key={product.id} product={product} cartItems={cartItems} />
         ))}
       </ProductItemContainer>
     </ProductListPageContainer>

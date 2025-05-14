@@ -1,25 +1,19 @@
 import styled from '@emotion/styled';
 import Button from './Button';
-import { ProductItemType } from '../types/data';
+import { CartItemType, ProductItemType } from '../types/data';
 import { addCartItems, removeCartItems } from '../services/cartItemServices';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import RemoveShoppingCartIcon from '/public/icon/remove-shopping-cart.svg';
-import { useEffect } from 'react';
 import { getCartId, isCartItem } from '../domain/manageCartInfo';
 import { useState } from 'react';
 
 interface ProductItemProps {
   product: ProductItemType;
+  cartItems: CartItemType[];
 }
 
-const ProductItem = ({ product }: ProductItemProps) => {
-  const [isAddedItem, setIsAddedItem] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setIsAddedItem(await isCartItem(product.id));
-    })();
-  }, [product.id]);
+const ProductItem = ({ product, cartItems }: ProductItemProps) => {
+  const [isAddedItem, setIsAddedItem] = useState(isCartItem(product.id, cartItems));
 
   const handleAddCartItem = () => {
     const addItemInfo = {
