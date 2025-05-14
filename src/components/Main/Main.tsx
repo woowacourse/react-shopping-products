@@ -8,13 +8,14 @@ import * as Styled from "./Main.styled";
 interface MainProps {
   productList: readonly ProductType[];
   handleCategory: (value: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleSort: (value: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-function Main({ productList, handleCategory }: MainProps) {
+function Main({ productList, handleCategory, handleSort }: MainProps) {
   return (
     <Styled.Container>
       <Styled.ProductListTitle>bpple 상품 목록</Styled.ProductListTitle>
-      <Filter handleCategory={handleCategory} />
+      <Filter handleCategory={handleCategory} handleSort={handleSort} />
       <ProductList productList={productList} />
     </Styled.Container>
   );

@@ -1,15 +1,14 @@
 import { ProductCategory } from "../../types/ProductCategory";
 
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+import { Sort } from "../../types/Sort";
 
-type SortKey = "price" | "id";
-type SortOrder = "desc" | "asc";
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 type fetchProductListParams = {
   method: HttpMethod;
   params?: {
     category?: ProductCategory;
-    sort: `${SortKey},${SortOrder}`;
+    sort: Sort;
     page: string;
     size: string;
   };
