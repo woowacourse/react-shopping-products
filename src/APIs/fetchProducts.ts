@@ -1,20 +1,19 @@
 import { FetchProductsRequest, Product } from "../types/product.type";
 
 async function fetchProducts({
-  page,
-  size,
+  params,
+  endpoint,
 }: FetchProductsRequest): Promise<Product[]> {
-  const params = {
-    page: page.toString(),
-    size: size.toString(),
+  const parameter = {
+    page: params.page.toString(),
+    size: params.size.toString(),
   };
 
-  console.log("params", params);
-  const requestBody = new URLSearchParams(params).toString();
+  const query = new URLSearchParams(parameter).toString();
 
   try {
     const response = await fetch(
-      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/produts?${requestBody}`
+      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com${endpoint}?${query}`
     );
 
     if (!response.ok) {

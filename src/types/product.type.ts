@@ -35,9 +35,12 @@ interface Sort {
 }
 
 interface FetchProductsRequest {
-  page: number;
-  size: number;
-  sort?: string[];
+  params: {
+    page: number;
+    size: number;
+    sort?: string;
+  };
+  endpoint: string;
 }
 
 export type {

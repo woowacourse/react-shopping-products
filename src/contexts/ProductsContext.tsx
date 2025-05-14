@@ -14,14 +14,19 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
-    const requestBody = {
+    const params = {
       page: 0,
       size: 20,
     };
 
+    const endpoint = "/products";
+
     (async () => {
       try {
-        const fetchedData = await fetchProducts(requestBody);
+        const fetchedData = await fetchProducts({
+          params,
+          endpoint,
+        });
         setProducts(fetchedData);
         setIsError(false);
       } catch (error) {
