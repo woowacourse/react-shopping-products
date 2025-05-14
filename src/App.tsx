@@ -36,10 +36,12 @@ function App() {
 
   const handleCartItemToggle = async (productId: number) => {
     await CartItemsAPI.post(productId);
-
     const data = await CartItemsAPI.get();
     setCartItems(data);
   };
+
+  const addedCartItemIds =
+    cartItems?.content.map((productInfo) => productInfo.product.id) ?? [];
 
   return (
     <S.LayoutContainer>
@@ -64,7 +66,7 @@ function App() {
                 imageUrl={imageUrl}
                 name={name}
                 price={price}
-                isAdd={false}
+                isAdd={addedCartItemIds.includes(id)}
                 handleCartItemToggle={() => handleCartItemToggle(id)}
               />
             ))}
