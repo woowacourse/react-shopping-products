@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { HeaderProps } from '.';
 
 export const StyledHeader = styled.header<Pick<HeaderProps, 'right'>>`
-  position: fixed;
   top: 0;
   display: flex;
   min-height: 64px;

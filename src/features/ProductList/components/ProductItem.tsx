@@ -16,11 +16,11 @@ export const ProductItem = ({
   return (
     <StyledProductItemContainer>
       <StyledProductItemImage src={imageUrl} alt={name} />
-      <Flex direction="column" alignItems="flex-start" gap="8px" padding="8px" width="100%">
-        <Text type="Title" weight="semibold">
+      <Flex direction="column" alignItems="flex-start" gap="4px" padding="8px" width="100%">
+        <Text type="Body" weight="medium">
           {name}
         </Text>
-        <Text type="Title" weight="semibold">
+        <Text type="Body" weight="medium">
           {price}
         </Text>
         <Flex direction="row" justifyContent="flex-end" width="100%">
