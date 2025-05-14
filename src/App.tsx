@@ -69,7 +69,6 @@ function App() {
 
   const handleCategoryChange = async (
     category: Category
-    // e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setIsLoading(true);
     setSelectedCategory(category);

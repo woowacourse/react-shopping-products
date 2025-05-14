@@ -7,16 +7,19 @@ const fetchWithErrorHandling = async (
     ...options,
   });
 
-  let status = null;
-  let data = null;
+  const status = response.status;
 
   if (!response.ok) {
-    status = response.status;
-  } else if (response.headers.get('Content-Type') === 'application/json') {
-    data = await response.json();
+    return { status, data: null };
   }
 
-  return { status, data };
+  const contentType = response.headers.get('Content-Type') || '';
+  if (contentType.includes('application/json')) {
+    const data = await response.json();
+    return { status, data };
+  }
+
+  return { status, data: null };
 };
 
 export default fetchWithErrorHandling;
