@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 
 import fetchAddProduct from "./apis/product/fetchAddProduct";
+import fetchRemoveProduct from "./apis/product/fetchRemoveProduct";
+import fetchCartItems from "./apis/product/fetchCartItems";
 
 import styled from "@emotion/styled";
 
@@ -10,6 +12,23 @@ function App() {
   const [selectedProductIdList, setSelectedProductIdList] = useState<string[]>(
     []
   );
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { content } = await fetchCartItems({
+          method: "GET",
+          params: {
+            page: "0",
+            size: "20",
+          },
+        });
+        setSelectedProductIdList(content);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   const handleAddProduct = async (
     event: React.MouseEvent<HTMLButtonElement>
