@@ -1,19 +1,12 @@
 import { FetchProductsRequest, Product } from "../types/product.type";
 
 async function fetchProducts({
-  params,
   endpoint,
 }: FetchProductsRequest): Promise<Product[]> {
-  const parameter = {
-    page: params.page.toString(),
-    size: params.size.toString(),
-  };
-
-  const query = new URLSearchParams(parameter).toString();
-
+  console.log(endpoint);
   try {
     const response = await fetch(
-      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com${endpoint}?${query}`
+      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com${endpoint}`
     );
 
     if (!response.ok) {
@@ -21,6 +14,8 @@ async function fetchProducts({
     }
 
     const data = await response.json();
+    console.log(data);
+    console.log("@@@");
     return data.content;
   } catch (error) {
     throw new Error("Error fetching products:" + error);

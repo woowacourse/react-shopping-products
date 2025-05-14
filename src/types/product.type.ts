@@ -1,9 +1,12 @@
+type Category = "식료품" | "패션잡화";
+type SortOption = "낮은 가격순" | "높은 가격순";
+
 interface Product {
   id: number;
   name: string;
   price: number;
   imageUrl: string;
-  category: "식료품" | "패션잡화";
+  category: Category;
 }
 
 interface ProductListResponse {
@@ -35,11 +38,6 @@ interface Sort {
 }
 
 interface FetchProductsRequest {
-  params: {
-    page: number;
-    size: number;
-    sort?: string;
-  };
   endpoint: string;
 }
 
@@ -49,4 +47,6 @@ export type {
   ProductListResponse,
   Pageable,
   Sort,
+  Category,
+  SortOption,
 };

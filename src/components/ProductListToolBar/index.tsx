@@ -1,14 +1,64 @@
 import { css } from "@emotion/css";
 import FilterDropDown from "./FilterDropDown";
 import SortingDropDown from "./SortingDropDown";
+import { useProductsContext } from "../../contexts/useProductsContext";
+import fetchProducts from "../../APIs/fetchProducts";
+import { useCallback } from "react";
+import { Category, SortOption } from "../../types/product.type";
 
 const ProductListToolBar = () => {
+  const {
+    handleChangeProducts,
+    handleChangeSort,
+    handleChangeCategory,
+    category,
+    sort,
+  } = useProductsContext();
+
+  const handleFilterChange = useCallback(
+    async (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const params = {
+        page: "0",
+        size: "20",
+        sort,
+      };
+      const query = new URLSearchParams(params).toString();
+      const endpoint = `/products?${query}&category=${e.target.value}`;
+      const data = await fetchProducts({ endpoint });
+      handleChangeProducts(data);
+      handleChangeCategory(e.target.value as Category);
+    },
+    [handleChangeProducts, handleChangeCategory, sort]
+  );
+
+  const handleSortingChange = useCallback(
+    async (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const params = {
+        page: "0",
+        size: "20",
+        sort: e.target.value === "낮은 가격순" ? "price,asc" : "price,desc",
+      };
+      const query = new URLSearchParams(params).toString();
+      const endpoint = `/products?${query}&category=${category}`;
+      const data = await fetchProducts({ endpoint });
+      handleChangeProducts(data);
+      handleChangeSort(e.target.value as SortOption);
+    },
+    [handleChangeProducts, handleChangeSort, category]
+  );
+
   return (
     <section className={ToolBarSectionStyles}>
       <h1>bpple 상품 목록</h1>
       <div className={ProductListToolBarStyles}>
-        <FilterDropDown options={["패션잡화", "식료품"]} />
-        <SortingDropDown options={["낮은 가격순", "높은 가격순"]} />
+        <FilterDropDown
+          options={["패션잡화", "식료품"]}
+          handleChange={handleFilterChange}
+        />
+        <SortingDropDown
+          options={["낮은 가격순", "높은 가격순"]}
+          handleChange={handleSortingChange}
+        />
       </div>
     </section>
   );
