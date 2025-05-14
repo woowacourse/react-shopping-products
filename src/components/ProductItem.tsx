@@ -1,14 +1,19 @@
 import styled from '@emotion/styled';
 import Button from './Button';
+import { ProductItemType } from '../types/data';
 
-const ProductItem = () => {
+interface ProductItemProps {
+  product: ProductItemType;
+}
+
+const ProductItem = ({ product }: ProductItemProps) => {
   return (
     <ProductItemContainer>
-      <ProductItemImage src="/example.png" />
+      <ProductItemImage src={product.imageUrl} />
       <ProductItemCard>
         <ProductItemInfo>
-          <ProductItemTitle>상품 제목</ProductItemTitle>
-          <ProductItemPrice>{50000}</ProductItemPrice>
+          <ProductItemTitle>{product.name}</ProductItemTitle>
+          <ProductItemPrice>{product.price}</ProductItemPrice>
         </ProductItemInfo>
         <Button type="button" id="add" content="담기" name="담기" variant="smallBlack" />
       </ProductItemCard>
