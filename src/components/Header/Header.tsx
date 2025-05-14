@@ -9,6 +9,7 @@ const headerContainer = css`
   height: 64px;
   background-color: #000000;
   padding: 0px 20px;
+  position: relative;
 `;
 
 const headerTitle = css`
@@ -23,12 +24,28 @@ const cartImg = css`
   height: 24px;
 `;
 
-function Header() {
+const count = css`
+  width: 19px;
+  height: 19px;
+  background-color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  position: absolute;
+  right: 20px;
+  bottom: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+function Header({ itemCount }: { itemCount: number }) {
   return (
     <div className={headerContainer}>
       <div className={headerTitle}>SHOP</div>
       <Button>
         <img src="/images/cart.png" alt="cart" className={cartImg} />
+        <span className={count}>{itemCount}</span>
       </Button>
     </div>
   );
