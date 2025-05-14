@@ -1,33 +1,13 @@
-import { ComponentProps, createContext, useContext } from 'react';
+import { ComponentProps } from 'react';
 import useOverlay from '../../../hook/useOverlay';
 import {
   dropdownItemStyle,
   dropdownListStyle,
   dropdownTriggerStyle,
 } from './Dropdown.styles';
-
-export const useDropdownContext = () => {
-  const context = useContext(DropdownContext);
-  if (!context) {
-    throw new Error('DropdownContext not found');
-  }
-  return context;
-};
+import { DropdownContext, useDropdownContext } from './context.ts';
 
 interface DropdownProps extends ComponentProps<'div'> {}
-
-type DropdownContextType = {
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
-};
-export const DropdownContext = createContext<DropdownContextType>({
-  isOpen: false,
-  open: () => {},
-  close: () => {},
-  toggle: () => {},
-});
 
 const Dropdown = ({ children }: DropdownProps) => {
   const { isOpen, open, close, toggle } = useOverlay();
