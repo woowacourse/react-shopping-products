@@ -5,7 +5,7 @@ export default function Header() {
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
       <StyledButton type="button">
-        <StyledImg src="/shoppingCartIcon.png" alt="shoppingCartIcon" />
+        <StyledImg src="/shoppingBagIcon.png" alt="shoppingBagIcon" />
       </StyledButton>
     </StyledHeader>
   );
