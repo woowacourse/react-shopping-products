@@ -8,7 +8,7 @@ import defaultImage from "/defaultImage.png";
 
 function Product({ product }: ProductProps) {
   return (
-    <li key={product.id}>
+    <li>
       <Styled.Container>
         <Styled.Image src={product.imageUrl ?? defaultImage} />
         <Styled.Wrapper>

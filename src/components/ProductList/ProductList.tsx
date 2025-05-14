@@ -12,7 +12,7 @@ function ProductList({ productList }: ProductListProps) {
   return (
     <Styled.UlContainer>
       {productList.map((product) => (
-        <Product product={product}></Product>
+        <Product key={product.id} product={product}></Product>
       ))}
     </Styled.UlContainer>
   );
