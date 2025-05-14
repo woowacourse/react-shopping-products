@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import SelectBox from './SelectBox';
+import SelectBox from '../Common/SelectBox';
 
 export default function ProductListToolbar() {
   const CATEGORY = [
