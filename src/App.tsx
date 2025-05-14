@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
-import { ProductAPI } from "./apis/product";
+import { CartItemsAPI } from "./apis/cartItems";
+import { ProductsAPI } from "./apis/products";
 import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
+import ErrorToast from "./components/ErrorToast/ErrorToast";
 import ProductItem from "./components/ProductItem/ProductItem";
 import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
 import ProductSorter from "./components/ProductSorter/ProductSorter";
 import ShopHeader from "./components/ShopHeader/ShopHeader";
-import * as S from "./styles/Layout.styles";
-import { Products } from "./types";
 import { CategoryOptionsKey, SortOptionsKey } from "./constants";
-import ErrorToast from "./components/ErrorToast/ErrorToast";
+import * as S from "./styles/Layout.styles";
+import { CartItems } from "./types/cartItems";
+import { Products } from "./types/Products";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
+  const [cartItems, setCartItems] = useState<CartItems | null>(null);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryOptionsKey>("전체");
   const [selectedSortOption, setSelectedSortOption] =
@@ -19,10 +22,17 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      const data = await ProductAPI.get(selectedCategory, selectedSortOption);
+      const data = await ProductsAPI.get(selectedCategory, selectedSortOption);
       setProducts(data);
     })();
   }, [selectedCategory, selectedSortOption]);
+
+  useEffect(() => {
+    (async () => {
+      const data = await CartItemsAPI.get();
+      setCartItems(data);
+    })();
+  }, []);
 
   return (
     <S.LayoutContainer>

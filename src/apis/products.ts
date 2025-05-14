@@ -5,7 +5,7 @@ import {
 } from "../constants";
 import { createApiUrl, SHOP_API } from "./configs";
 
-export const ProductAPI = {
+export const ProductsAPI = {
   get: async (
     category: CategoryOptionsKey,
     selectedSortOption: SortOptionsKey
