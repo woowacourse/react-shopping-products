@@ -6,6 +6,7 @@ const bodyLayout = css`
   justify-content: center;
   padding: 36px 25px;
   box-sizing: border-box;
+  gap: 28px;
 `;
 
 export default function Body({ children }: { children: React.ReactNode }) {

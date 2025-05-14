@@ -7,6 +7,7 @@ import Body from "../component/Body/Body";
 import Header from "../component/Header/Header";
 import Button from "../component/Button/Button";
 import Product from "../component/Product/Product";
+import ProductContainer from "../component/ProductContainer/ProductContainer";
 
 const pageLayout = css`
   display: flex;
@@ -53,16 +54,7 @@ export default function ShopPage() {
             />
           </div>
         </TitleContainer>
-        <Product
-          imgSrc="./default-img.png"
-          productName="상품이름"
-          price="30000원"
-        >
-          <Button onClick={onClick}>
-            <img src="./add-shopping-cart.svg" />
-            <p>담기</p>
-          </Button>
-        </Product>
+        <ProductContainer />
       </Body>
     </div>
   );
