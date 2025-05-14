@@ -1,7 +1,5 @@
 // 장바구니 데이터 가져오기
 import { render, screen, act, waitFor } from "@testing-library/react";
-import { vi } from "vitest";
-import { expect, describe, it } from "vitest";
 import ProductPage from "./ProductPage";
 
 const { mockCartItems } = vi.hoisted(() => {
