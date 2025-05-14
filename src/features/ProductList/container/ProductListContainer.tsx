@@ -6,7 +6,7 @@ export const ProductListContainer = ({ children }: PropsWithChildren) => {
 };
 
 const StyledProductListContainer = styled.div`
-  max-height: 700px;
+  max-height: 670px;
   height: 100%;
   overflow-y: auto;
   padding: 0 25px;
