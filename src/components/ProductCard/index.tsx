@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 // import RemoveButton from "../Button/RemoveButton";
 import AddButton from "../Button/AddButton";
 import { Product } from "../../types/product.type";
-import shoppingCart from "../../APIs/shoppingCart";
+import shoppingCart from "../../APIs/addShoppingCart";
 
 interface ProductCardProps {
   product: Product;

@@ -1,12 +1,18 @@
 import { css } from "@emotion/css";
+import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
 
 const Header = () => {
+  const { cardItems } = useShoppingCartContext();
+
   return (
     <header className={HeaderStyles}>
       <a href="/" className={LogoStyles}>
         SHOP
       </a>
       <img src="/shopIcon.svg" alt="장바구니" className={IconStyles} />
+      {cardItems.length !== 0 && (
+        <div className={ShoppingCartCount}>{cardItems.length}</div>
+      )}
     </header>
   );
 };
@@ -37,4 +43,20 @@ const IconStyles = css`
   height: 32px;
   color: white;
   cursor: pointer;
+`;
+
+const ShoppingCartCount = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 32px;
+  right: 24px;
+  width: 18px;
+  height: 18px;
+  background-color: white;
+  border-radius: 50%;
+  color: black;
+  font-size: 12px;
+  font-weight: 800;
 `;
