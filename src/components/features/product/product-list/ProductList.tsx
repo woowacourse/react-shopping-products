@@ -1,14 +1,10 @@
 import styled from '@emotion/styled';
 import ProductCard from '../product-card/ProductCard';
+import { Product } from '../../../../pages/shop/ShopPage';
 
-type ProductType = {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-};
+function ProductList({ resource }: { resource: { read: () => Product[] } }) {
+  const products = resource.read();
 
-function ProductList({ products }: { products: ProductType[] }) {
   return (
     <Container>
       {products.map(({ id, name, price, imageUrl }) => (

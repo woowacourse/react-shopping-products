@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import Dropdown, { DropdownOptionType } from '../../components/common/Dropdown';
 import ShopHeader from '../../components/features/header/ShopHeader';
 import ProductList from '../../components/features/product/product-list/ProductList';
@@ -6,8 +6,10 @@ import Flex from '../../components/common/Flex';
 import styled from '@emotion/styled';
 import { baseAPI } from '../../api/baseAPI';
 import { ProductData } from '../../api/type';
+import Loading from '../../components/common/Loading';
+import { wrapPromise } from '../../api/wrapPromise';
 
-interface Product {
+export interface Product {
   id: string;
   name: string;
   price: number;
@@ -17,9 +19,6 @@ interface Product {
 type ProductCategoryType = 'all' | 'food' | 'fashion';
 
 function ShopPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
   const [filterOption, setFilterOption] = useState({
     category: { label: '전체', value: '전체' },
     sort: { label: '낮은 가격순', value: 'asc' },
@@ -39,43 +38,30 @@ function ShopPage() {
     }));
   };
 
-  useEffect(() => {
-    const getListDataHandler = async () => {
-      const page = 0;
-      const size = 20;
-      const categoryPath =
-        filterOption.category.value !== '전체'
-          ? `category=${filterOption.category.value}&`
-          : '';
-      const basePath = `/products?${categoryPath}page=${page}&size=${size}&sort=price,${filterOption.sort.value}`;
-      try {
-        const data = await baseAPI<ProductData>({
-          method: 'GET',
-          path: basePath,
-        });
-        const productsData = data.content.map(
-          ({ id, name, price, imageUrl, category }) => ({
-            id: id.toString(),
-            name: name ?? '',
-            price,
-            imageUrl: imageUrl ?? 'defaultImage',
-            category: (category ?? '전체') as ProductCategoryType,
-          })
-        );
-        setProducts(productsData);
-      } catch (e) {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const getListDataHandler = async () => {
+    const page = 0;
+    const size = 20;
+    const categoryPath =
+      filterOption.category.value !== '전체'
+        ? `category=${filterOption.category.value}&`
+        : '';
+    const basePath = `/products?${categoryPath}page=${page}&size=${size}&sort=price,${filterOption.sort.value}`;
 
-    getListDataHandler();
-  }, [filterOption]);
-
-  if (isLoading) return <div>로딩중 입니다~</div>;
-
-  if (isError) return <div>에러가 났어요~!</div>;
+    const data = await baseAPI<ProductData>({
+      method: 'GET',
+      path: basePath,
+    });
+    const productsData = data.content.map(
+      ({ id, name, price, imageUrl, category }) => ({
+        id: id.toString(),
+        name: name ?? '',
+        price,
+        imageUrl: imageUrl ?? 'defaultImage',
+        category: (category ?? '전체') as ProductCategoryType,
+      })
+    );
+    return productsData;
+  };
 
   return (
     <>
@@ -103,7 +89,11 @@ function ShopPage() {
             />
           </Flex>
         </ListTitleBox>
-        <ProductList products={products} />
+        <Suspense fallback={<Loading />}>
+          <ProductList
+            resource={wrapPromise<Product[]>(getListDataHandler())}
+          />
+        </Suspense>
       </ProductListContainer>
     </>
   );
