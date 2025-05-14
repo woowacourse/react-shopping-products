@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { ProductsInfo } from "../types";
+import { Info } from "../types";
 import { PRODUCT_URL } from "../constants/endpoint";
 import getQueryURL from "../utils/getQueryURL";
 
 export default function useProducts({ page = "0", size = "20", sortingType = "", filterType = "" }) {
-	const [productsInfo, setProductsInfo] = useState<ProductsInfo>({ content: [] });
+	const [productsInfo, setProductsInfo] = useState<Info>({ content: [] });
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<unknown>(null);
 

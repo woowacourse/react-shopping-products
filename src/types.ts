@@ -9,10 +9,15 @@ export interface Product {
 export interface CartProduct {
 	id: number;
 	quantity: number;
-	products: Product;
+	product: Product;
 }
 
-export interface ProductsInfo {
+export interface CartInfo {
+	id: number;
+	quantity: number;
+}
+
+export interface Info {
 	content: Product[];
 	[key: string]: unknown;
 }

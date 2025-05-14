@@ -1,3 +1,4 @@
+import useCart from "../../hooks/useCart";
 import useProducts from "../../hooks/useProducts";
 import Header from "../Header/Header";
 import ItemCard from "../ItemCard/ItemCard";
@@ -6,10 +7,16 @@ import S from "./Product.module.css";
 
 const Product = () => {
 	const { products, loading } = useProducts({});
+	const { cartProducts, fetchCartProducts } = useCart();
+
+	const mergedData = products.map((product) => {
+		const cart = cartProducts.find((item) => item.product.id === product.id);
+		return cart ? { ...product, cartInfo: { id: cart.id, quantity: cart.quantity } } : { ...product, cartInfo: { id: -1, quantity: 0 } };
+	});
 
 	return (
 		<div className={S.container}>
-			<Header />
+			<Header cardProducts={cartProducts} />
 			<div className={S.contentContainer}>
 				<div className={S.contentTop}>
 					<h1 className={S.title}>bpple 상품 목록</h1>
@@ -26,8 +33,8 @@ const Product = () => {
 					<Skeleton length={10} />
 				) : (
 					<div className={S.itemContainer}>
-						{products?.map(({ id, imageUrl, name, price }) => (
-							<ItemCard key={id} imageUrl={imageUrl} name={name} price={price} isCart={true} id={id} />
+						{mergedData?.map(({ id, imageUrl, name, price, cartInfo }) => (
+							<ItemCard key={id} imageUrl={imageUrl} name={name} price={price} isCart={cartInfo.id !== -1} cartInfo={cartInfo} fetchCartProducts={fetchCartProducts} id={id} />
 						))}
 					</div>
 				)}
