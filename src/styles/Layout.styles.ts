@@ -17,3 +17,10 @@ export const LayoutWrapper = styled.div`
   height: 100%;
   background-color: #fff;
 `;
+
+export const Wrapper = styled.div`
+  height: 100%;
+  background-color: #fff;
+  padding: 36px 25px 0;
+  overflow-y: scroll;
+`;
