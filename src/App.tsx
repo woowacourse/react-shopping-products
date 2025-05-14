@@ -8,6 +8,7 @@ import ShopHeader from "./components/ShopHeader/ShopHeader";
 import * as S from "./styles/Layout.styles";
 import { Products } from "./types";
 import { CategoryOptionsKey, SortOptionsKey } from "./constants";
+import ErrorToast from "./components/ErrorToast/ErrorToast";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
@@ -46,7 +47,7 @@ function App() {
               </div>
             ))}
           </S.ProductGrid>
-          {/* <ErrorToast /> */}
+          <ErrorToast errorMessage="error" />
         </S.Wrapper>
       </S.LayoutWrapper>
     </S.LayoutContainer>

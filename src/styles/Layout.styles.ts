@@ -23,6 +23,7 @@ export const Wrapper = styled.div`
   background-color: #fff;
   padding: 36px 25px 25px;
   overflow-y: scroll;
+  position: relative;
 `;
 
 export const ProductControlPanel = styled.div`
