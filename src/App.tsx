@@ -108,7 +108,12 @@ function App() {
               />
             ))}
           </S.ProductGrid>
-          {!!errorMessage && <ErrorToast errorMessage={errorMessage} />}
+          {!!errorMessage && (
+            <ErrorToast
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+            />
+          )}
         </S.Wrapper>
       </S.LayoutWrapper>
     </S.LayoutContainer>
