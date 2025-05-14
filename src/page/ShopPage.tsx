@@ -49,34 +49,39 @@ const cartItemCount = css`
   height: 19px;
 `;
 
-export default function ShopPage() {
-  const [categoryValue, setCategoryValue] = useState("");
-  const [filterValue, setFilterValue] = useState("");
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+export type CategoryOption = "전체" | "식료품" | "패션잡화";
+export type FilterOption = "낮은 가격순" | "높은 가격순";
+export type sortOption = "price,asc" | "price,desc";
 
+export default function ShopPage() {
+  const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");
+  const [filterValue, setFilterValue] = useState<FilterOption>("낮은 가격순");
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
 
-  const dropdownOptions = ["식료품", "패션잡화"];
-  const filterOptions = ["낮은 가격순", "높은 가격순"];
+  const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
+  const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
 
   const onClick = () => {
     console.log("click");
   };
 
   useEffect(() => {
-    let sortByFilter = "";
-    if (filterValue === "낮은 가격순") sortByFilter = "price,asc";
-    else if (filterValue === "높은 가격순") sortByFilter = "price,desc";
+    let sortByFilter: sortOption = "price,asc";
+    if (filterValue === "높은 가격순") sortByFilter = "price,desc";
 
     (async () => {
       try {
-        const response = await getProduct({ sortBy: sortByFilter });
+        const response = await getProduct({
+          category: categoryValue,
+          sortBy: sortByFilter,
+        });
         setProductList(response.content);
       } catch (e) {
         console.log(e);
       }
     })();
-  }, [filterValue]);
+  }, [filterValue, categoryValue]);
 
   return (
     <div css={pageLayout}>
@@ -99,12 +104,14 @@ export default function ShopPage() {
             <Selector
               dropDownOptions={dropdownOptions}
               placeholder="전체"
-              onSelectChange={(value) => setCategoryValue(value)}
+              onSelectChange={(value: CategoryOption) =>
+                setCategoryValue(value)
+              }
             />
             <Selector
               dropDownOptions={filterOptions}
               placeholder="낮은 가격순"
-              onSelectChange={(value) => setFilterValue(value)}
+              onSelectChange={(value: FilterOption) => setFilterValue(value)}
             />
           </div>
         </TitleContainer>
