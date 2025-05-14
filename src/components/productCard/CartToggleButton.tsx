@@ -15,10 +15,25 @@ function CartToggleButton({ id, isAdded }: CartToggleButtonProps) {
     });
     console.log(data);
   }
+
+  async function removeItemToCart() {
+    const data = await request({
+      headers: {
+        Authorization: import.meta.env.VITE_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+      url: `/cart-items/${id}`,
+    });
+    console.log(data);
+  }
   return (
     <>
       {isAdded && (
-        <button css={[ButtonContainer, RemoveButton]}>
+        <button
+          css={[ButtonContainer, RemoveButton]}
+          onClick={removeItemToCart}
+        >
           <img src="/removeCart.svg" alt="담기 아이콘" />
           <p>빼기</p>
         </button>
