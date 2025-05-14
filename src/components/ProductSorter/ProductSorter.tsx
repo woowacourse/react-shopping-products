@@ -1,15 +1,22 @@
 import { Dispatch } from "react";
 import SelectBox from "../@common/SelectBox/SelectBox";
+import { SortOptionKey, sortOptions } from "../../constants";
 
 interface ProductSorterProps {
-  sortOption: string;
-  setSortOption: Dispatch<React.SetStateAction<string>>;
+  selectedSortOption: SortOptionKey;
+  setSelectedSortOption: Dispatch<React.SetStateAction<SortOptionKey>>;
 }
 
-const ProductSorter = ({ sortOption, setSortOption }: ProductSorterProps) => {
-  const options = ["낮은 가격 순", "높은 가격 순"];
+const ProductSorter = ({
+  selectedSortOption,
+  setSelectedSortOption,
+}: ProductSorterProps) => {
   return (
-    <SelectBox state={sortOption} setState={setSortOption} options={options} />
+    <SelectBox
+      state={selectedSortOption}
+      setState={setSelectedSortOption}
+      options={sortOptions}
+    />
   );
 };
 

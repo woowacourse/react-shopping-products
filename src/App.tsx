@@ -7,18 +7,20 @@ import ProductSorter from "./components/ProductSorter/ProductSorter";
 import ShopHeader from "./components/ShopHeader/ShopHeader";
 import * as S from "./styles/Layout.styles";
 import { Products } from "./types";
+import { SortOptionKey } from "./constants";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
   const [category, setCategory] = useState<string>("전체");
-  const [sortOption, setSortOption] = useState<string>("낮은 가격 순");
+  const [selectedSortOption, setSelectedSortOption] =
+    useState<SortOptionKey>("낮은 가격 순");
 
   useEffect(() => {
     (async () => {
-      const data = await ProductAPI.get(category);
+      const data = await ProductAPI.get(category, selectedSortOption);
       setProducts(data);
     })();
-  }, [category]);
+  }, [category, selectedSortOption]);
 
   return (
     <S.LayoutContainer>
@@ -29,18 +31,16 @@ function App() {
           <S.ProductControlPanel>
             <CategoryFilter category={category} setCategory={setCategory} />
             <ProductSorter
-              sortOption={sortOption}
-              setSortOption={setSortOption}
+              selectedSortOption={selectedSortOption}
+              setSelectedSortOption={setSelectedSortOption}
             />
           </S.ProductControlPanel>
           <S.ProductGrid>
-            {products?.content
-              .slice(0, 20)
-              .map(({ id, imageUrl, name, price }) => (
-                <div key={id}>
-                  <ProductItem imageUrl={imageUrl} name={name} price={price} />
-                </div>
-              ))}
+            {products?.content.map(({ id, imageUrl, name, price }) => (
+              <div key={id}>
+                <ProductItem imageUrl={imageUrl} name={name} price={price} />
+              </div>
+            ))}
           </S.ProductGrid>
           {/* <ErrorToast /> */}
         </S.Wrapper>
