@@ -1,3 +1,4 @@
+import { SetStateAction } from "react";
 import { ProductItemType } from "./product";
 
 export interface CartItemType {
@@ -13,3 +14,5 @@ export interface AddCartItems {
 
 export type OnAddToCart = ({ productId, quantity }: AddCartItems) => void;
 export type OnRemoveToCart = (id: number) => void;
+
+export type SetCartItems = (value: SetStateAction<CartItemType[]>) => void;
