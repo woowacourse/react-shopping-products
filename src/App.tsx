@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
-import { getProduct } from "./apis/product";
+import { getProducts } from "./apis/product";
 import Button from "./components/Button";
 import Card from "./components/Card";
 import Header from "./components/Header";
@@ -8,6 +8,7 @@ import AddCart from "./components/icons/AddCart";
 import Select from "./components/Select";
 import Text from "./components/Text";
 import { Content } from "./types/product";
+import { getCartItems } from "./apis/cartItem";
 
 function App() {
   const [filter, setFilter] = useState("전체");
@@ -15,15 +16,21 @@ function App() {
 
   const [products, setProducts] = useState<Content[]>();
 
-  const getProducts = async () => {
-    const data = await getProduct({ page: 0, size: 20 });
+  const getProduct = async () => {
+    const data = await getProducts({ page: 0, size: 20 });
 
     setProducts(data.content);
     return data;
   };
 
+  const getCardItem = async () => {
+    const data = await getCartItems({ page: 0, size: 20 });
+    console.log(data);
+  };
+
   useEffect(() => {
-    getProducts();
+    getProduct();
+    getCardItem();
   }, []);
 
   return (
@@ -38,27 +45,32 @@ function App() {
           <Select options={["높은 가격순", "낮은 가격순"]} selectedItem={sort} setSelectedItem={setSort} />
         </div>
         <div css={cardContainerStyle}>
-          {products?.map((product) => (
-            <Card>
-              <Card.Preview>
-                <img src={product.imageUrl} alt={product.name} />
-              </Card.Preview>
-              <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <Text variant="title-2">{product.name}</Text>
-                  <Text variant="body-2">{product.price.toLocaleString()}원</Text>
-                </div>
-                <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Button>
-                    <AddCart />
-                    <Text variant="body-2" color="#fff">
-                      담기
-                    </Text>
-                  </Button>
-                </div>
-              </Card.Content>
-            </Card>
-          ))}
+          {products
+            ?.filter((product) => (filter === "전체" ? true : product.category === filter))
+            ?.sort((productA, productB) =>
+              sort === "낮은 가격순" ? productA.price - productB.price : productB.price - productA.price,
+            )
+            ?.map((product) => (
+              <Card>
+                <Card.Preview>
+                  <img src={product.imageUrl} alt={product.name} />
+                </Card.Preview>
+                <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <Text variant="title-2">{product.name}</Text>
+                    <Text variant="body-2">{product.price.toLocaleString()}원</Text>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button>
+                      <AddCart />
+                      <Text variant="body-2" color="#fff">
+                        담기
+                      </Text>
+                    </Button>
+                  </div>
+                </Card.Content>
+              </Card>
+            ))}
         </div>
       </div>
     </div>

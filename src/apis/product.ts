@@ -6,7 +6,7 @@ interface GetProductParams {
   sort?: "asc" | "desc";
 }
 
-export const getProduct = async ({ page, size, sort = "asc" }: GetProductParams): Promise<GetProductResponse> => {
+export const getProducts = async ({ page, size, sort = "asc" }: GetProductParams): Promise<GetProductResponse> => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/products?page=${page}&size=${size}&sort=${sort}`);
   const data = await response.json();
 
