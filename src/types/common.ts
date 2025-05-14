@@ -1,18 +1,18 @@
-export interface Products {
+export interface PaginatedResponse<T> {
   totalElements: number;
   totalPages: number;
   size: number;
-  content: Content[];
+  content: T[];
   number: number;
   sort: Sort;
   pageable: Pageable;
-  numberOfElements: number;
   first: boolean;
   last: boolean;
+  numberOfElements: number;
   empty: boolean;
 }
 
-export interface Content {
+export interface BaseProduct {
   id: number;
   name: string;
   price: number;
