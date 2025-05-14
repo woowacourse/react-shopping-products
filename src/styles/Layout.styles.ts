@@ -24,3 +24,8 @@ export const Wrapper = styled.div`
   padding: 36px 25px 0;
   overflow-y: scroll;
 `;
+
+export const ProductControlPanel = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
