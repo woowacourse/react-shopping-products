@@ -14,22 +14,17 @@ async function fetchProducts({
 
   try {
     const response = await fetch(
-      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products?${requestBody}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/produts?${requestBody}`
     );
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
+
     const data = await response.json();
     return data.content;
   } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
+    throw new Error("Error fetching products:" + error);
   }
 }
 
