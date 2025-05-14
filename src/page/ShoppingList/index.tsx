@@ -3,7 +3,7 @@ import {
   ShoppingListFilterItemStyle,
   ShoppingListFilterStyle,
   ShoppingListStyle,
-  ShoppingListTitleStyle,
+  ShoppingListTitleStyle
 } from './ShoppingList.styles';
 import Text from '../../component/@common/Text';
 import Dropdown from '../../component/@common/Dropdown';
@@ -20,6 +20,7 @@ const ShoppingList = () => {
   const [selected, setSelected] = useState<SortOption>('낮은 가격순');
   const [category, setCategory] = useState<CategoryOption>('전체');
   const [data, setData] = useState([]);
+  const [cartData, setCartData] = useState([]);
   const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
 
   useEffect(() => {
@@ -33,8 +34,8 @@ const ShoppingList = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
-          },
+            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
+          }
         }
       );
       const results = await response.json();
@@ -42,6 +43,23 @@ const ShoppingList = () => {
     };
     fetchData();
   }, [category, selected]);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/cart-items?page=0&size=20`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
+          }
+        }
+      );
+      const results = await response.json();
+      setCartData(results.content);
+    };
+    fetchCart();
+  }, []);
 
   const handleSortClick = (content: string) => {
     setSelected(content as SortOption);
