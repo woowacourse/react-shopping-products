@@ -1,18 +1,33 @@
+import { useEffect, useState } from "react";
+import request from "../../utils/request";
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
-
-const dummy = [
-  { id: 1, isAdded: false },
-  { id: 2, isAdded: true },
-  { id: 3, isAdded: true },
-  { id: 4, isAdded: false },
-];
+import { ProductPageResponse } from "../../types/response.types";
 
 function ProductCardList() {
+  const [products, setProducts] = useState<ProductPageResponse | null>(null);
+  const isAdded = true;
+  useEffect(() => {
+    (async () => {
+      const data: ProductPageResponse = await request({
+        method: "GET",
+        url: "/products",
+      });
+      console.log(data);
+      setProducts(data);
+    })();
+  }, []);
   return (
     <div css={CardListContainer}>
-      {dummy.map((data) => (
-        <ProductCard key={data.id} isAdded={data.isAdded} />
+      {products?.content.map((data) => (
+        <ProductCard
+          key={data.id}
+          isAdded={isAdded}
+          category={data.category}
+          name={data.name}
+          price={data.price}
+          imageUrl={data.imageUrl}
+        />
       ))}
     </div>
   );
