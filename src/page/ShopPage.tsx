@@ -24,8 +24,27 @@ const selectorBoxLayout = css`
   }
 `;
 
-const headerIcon = css`
+const cartIcon = css`
   cursor: pointer;
+`;
+
+const cartIconContainer = css`
+  position: relative;
+  width: fit-content;
+`;
+
+const cartItemCount = css`
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  inset: 19px 0 0 20px;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 50%;
+  font-size: 10px;
+  width: 19px;
+  height: 19px;
 `;
 
 export default function ShopPage() {
@@ -34,7 +53,6 @@ export default function ShopPage() {
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const dropdownOptions = ["식료품", "패션잡화"];
   const filterOptions = ["낮은 가격순", "높은 가격순"];
-  console.log(selectedProducts);
 
   const onClick = () => {
     console.log("click");
@@ -43,12 +61,17 @@ export default function ShopPage() {
   return (
     <div css={pageLayout}>
       <Header title="shop">
-        <img
-          css={headerIcon}
-          src="./shopping-cart.svg"
-          alt="장바구니 아이콘"
-          onClick={onClick}
-        />
+        <div css={cartIconContainer}>
+          <img
+            css={cartIcon}
+            src="./shopping-cart.svg"
+            alt="장바구니 아이콘"
+            onClick={onClick}
+          />
+          {selectedProducts.length !== 0 && (
+            <div css={cartItemCount}>{selectedProducts.length}</div>
+          )}
+        </div>
       </Header>
       <Body>
         <TitleContainer title="bpple 상품 목록">
