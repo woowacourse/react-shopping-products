@@ -3,7 +3,8 @@ import {
   SortOptionsKey,
   sortOptionsMap,
 } from "../constants";
-import { createApiUrl, SHOP_API } from "./configs";
+import { Products } from "../types/products";
+import { createApiUrl, fetchWithErrorHandling, SHOP_API } from "./configs";
 
 export const ProductsAPI = {
   get: async (
@@ -15,6 +16,10 @@ export const ProductsAPI = {
       size: "20",
     };
 
+    const options: RequestInit = {
+      method: "GET",
+    };
+
     if (category !== "전체") {
       params.category = category;
     }
@@ -24,8 +29,6 @@ export const ProductsAPI = {
     }
 
     const apiUrl = createApiUrl(SHOP_API.endpoint.products, params);
-    const response = await fetch(apiUrl);
-
-    return await response.json();
+    return await fetchWithErrorHandling<Products>(apiUrl, options);
   },
 };
