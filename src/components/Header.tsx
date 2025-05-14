@@ -27,6 +27,7 @@ const HeaderContainer = styled.header`
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
+  box-sizing: border-box;
 `;
 
 const HeaderLogoButton = styled.button`
