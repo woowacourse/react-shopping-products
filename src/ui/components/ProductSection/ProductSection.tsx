@@ -6,7 +6,7 @@ import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
 import React, { useState } from 'react';
 import { SortType, CategoryType } from '../../../types/product';
 
-function ProductSection() {
+function ProductSection(cart) {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
   const [category, setCategory] = useState<CategoryType>('전체');
 
@@ -40,7 +40,7 @@ function ProductSection() {
           onChange={handleSortPrice}
         />
       </DropdownContainer>
-      <ProductList sort={sort} category={category} />
+      <ProductList sort={sort} category={category} cart={cart} />
     </Section>
   );
 }

@@ -1,21 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Product from '../Product/Product';
 import { List } from './ProductList.styles';
 import { getProduct } from '../../../api/product';
 import { ProductType, SortType, CategoryType } from '../../../types/product';
-import { getCartItem } from '../../../api/cart';
 
 interface ProductListProps {
   sort: SortType;
   category: CategoryType;
+  cart: any;
 }
 
-function ProductList({ sort, category }: ProductListProps) {
+function ProductList({ sort, category, cart }: ProductListProps) {
   const [products, setProducts] = useState<ProductType[]>([]);
 
   const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
 
   useEffect(() => {
+    console.log('effect');
     (async () => {
       try {
         const data = await getProduct(mappedSortType);
@@ -24,13 +25,28 @@ function ProductList({ sort, category }: ProductListProps) {
             category === '전체' || item.category === category
         );
 
-        setProducts(filteredCategory);
+        if (cart && cart.cart.content !== null) {
+          console.log('content:', cart.cart.content);
+
+          const cartProductIds = cart.cart.content.map(
+            (item) => item.product.id
+          );
+
+          const cartAwareProducts = filteredCategory.map((product) => ({
+            ...product,
+            isInCart: cartProductIds.includes(product.id),
+          }));
+
+          // console.log(cartAwareProducts);
+
+          setProducts(cartAwareProducts);
+        }
       } catch (e) {
         console.error(e);
       } finally {
       }
     })();
-  }, [sort, category]);
+  }, [sort, category, cart]);
 
   return (
     <List>
@@ -41,7 +57,9 @@ function ProductList({ sort, category }: ProductListProps) {
           name={item.name}
           price={item.price}
           imgSrc={item.imageUrl}
-        ></Product>
+          isInCart={item.isInCart}
+          cart={cart}
+        />
       ))}
     </List>
   );

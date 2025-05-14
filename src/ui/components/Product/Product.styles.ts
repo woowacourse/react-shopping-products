@@ -44,7 +44,7 @@ export const Price = styled.span`
   margin: 8px 0 0 0;
 `;
 
-export const CartButton = styled.button<{ inCart: boolean }>`
+export const CartAddButton = styled.button`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -58,8 +58,24 @@ export const CartButton = styled.button<{ inCart: boolean }>`
   cursor: pointer;
   margin-left: auto;
   margin-right: 8px;
+  background-color: #000000;
+`;
 
-  background-color: ${({ inCart }) => (inCart ? '#EAEAEA' : '#000000')};
+export const CartRemoveButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 59px;
+  height: 24px;
+  border-radius: 4px;
+  gap: 4px;
+  padding: 4px 8px 4px 8px;
+  border: none;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 8px;
+  background-color: #eaeaea;
 `;
 
 export const CartButtonImg = styled.img`
@@ -67,9 +83,16 @@ export const CartButtonImg = styled.img`
   height: 16px;
 `;
 
-export const CartButtonText = styled.span<{ inCart: boolean }>`
+export const CartAddButtonText = styled.span`
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
-  color: ${({ inCart }) => (inCart ? '#000000' : '#ffffff')};
+  color: #ffffff;
+`;
+
+export const CartRemoveButtonText = styled.span`
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+  color: #000000;
 `;
