@@ -3,9 +3,10 @@ import ProductCardList from "../components/ProductCardList";
 import ProductListToolBar from "../components/ProductListToolBar";
 import { useProductsContext } from "../contexts/useProductsContext";
 import { useShoppingCartContext } from "../contexts/useShoppingCartContext";
+import OrbitSpinner from "../components/OrbitSpinner";
 
 const ProductListPage = () => {
-  const { products, productsError } = useProductsContext();
+  const { products, productsError, isProductsLoading } = useProductsContext();
   const { shoppingCartError } = useShoppingCartContext();
 
   return (
@@ -17,7 +18,11 @@ const ProductListPage = () => {
         <ErrorToast errorMessage={shoppingCartError.errorMessage} />
       )}
       <ProductListToolBar />
-      <ProductCardList products={products} />
+      {isProductsLoading ? (
+        <OrbitSpinner />
+      ) : (
+        <ProductCardList products={products} />
+      )}
     </>
   );
 };

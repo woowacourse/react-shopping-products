@@ -11,6 +11,7 @@ interface ProductsContextType {
   handleChangeCategory: (newCategory: "패션잡화" | "식료품") => void;
   category: string;
   sort: string;
+  isProductsLoading: boolean;
 }
 
 export const ProductsContext = createContext<ProductsContextType | null>(null);
@@ -18,6 +19,7 @@ export const ProductsContext = createContext<ProductsContextType | null>(null);
 const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [productsError, setProductsError] = useState<Error>(INITIAL_ERROR);
+  const [isProductsLoading, setIsProductsLoading] = useState<boolean>(false);
 
   const [category, setCategory] = useState<string>("");
   const [sort, setSort] = useState<string>("price,asc");
@@ -45,6 +47,7 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const endpoint = `/products?${query}`;
 
     (async () => {
+      setIsProductsLoading(true);
       try {
         const fetchedData = await fetchProducts({ endpoint });
         setProducts(fetchedData);
@@ -59,6 +62,8 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
           setProductsError(INITIAL_ERROR);
         }, 3000);
         setProducts([]);
+      } finally {
+        setIsProductsLoading(false);
       }
     })();
   }, [sort]);
@@ -73,6 +78,7 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
         handleChangeCategory,
         category,
         sort,
+        isProductsLoading,
       }}
     >
       {children}

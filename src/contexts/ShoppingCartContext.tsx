@@ -8,6 +8,7 @@ interface ShoppingCartContextType {
   shoppingCartError: Error;
   handleCartItemChange: (newCartItems: CartItem[]) => void;
   handleShoppingCartError: (error: Error) => void;
+  isShoppingLoading: boolean;
 }
 
 export const ShoppingCartContext =
@@ -17,6 +18,7 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [shoppingCartError, setShoppingCartError] =
     useState<Error>(INITIAL_ERROR);
+  const [isShoppingLoading, setIsShoppingLoading] = useState<boolean>(false);
 
   const handleCartItemChange = (newCartItems: CartItem[]) => {
     setCartItems(newCartItems);
@@ -39,6 +41,7 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const endpoint = `/cart-items?${query}`;
 
     (async () => {
+      setIsShoppingLoading(true);
       try {
         const fetchedData = await getShoppingCart({ endpoint });
         setCartItems(fetchedData);
@@ -53,6 +56,8 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
           setShoppingCartError(INITIAL_ERROR);
         }, 3000);
         setCartItems([]);
+      } finally {
+        setIsShoppingLoading(false);
       }
     })();
   }, []);
@@ -64,6 +69,7 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
         shoppingCartError,
         handleCartItemChange,
         handleShoppingCartError,
+        isShoppingLoading,
       }}
     >
       {children}
