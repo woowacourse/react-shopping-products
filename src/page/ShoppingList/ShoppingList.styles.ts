@@ -21,3 +21,7 @@ export const ShoppingListFilterStyle = css`
   justify-content: space-between;
   width: 100%;
 `;
+
+export const ShoppingListFilterItemStyle = css`
+  position: relative;
+`;

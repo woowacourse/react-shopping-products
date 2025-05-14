@@ -8,6 +8,8 @@ export const productCardStyle = css`
   border-radius: 8px;
   width: 18.2rem;
 
+  cursor: pointer;
+
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
   }
