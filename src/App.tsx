@@ -13,9 +13,13 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        const { content } = await fetchProductList("GET", {
-          page: "0",
-          size: "20",
+        const { content } = await fetchProductList({
+          method: "GET",
+          params: {
+            category: "전체",
+            page: "0",
+            size: "20",
+          },
         });
         setProductList(content);
       } catch (error) {
