@@ -14,7 +14,12 @@ export default function ProductList({
   cartItems,
   handleCartButtonClick,
 }: ProductListProps) {
-  if (!products || !cartItems) {
+  if (
+    !products ||
+    !cartItems ||
+    products?.length === 0 ||
+    cartItems?.length === 0
+  ) {
     return (
       <div css={fallbackDivCss}>
         <Fallback />
@@ -24,16 +29,22 @@ export default function ProductList({
 
   return (
     <ul css={listCss}>
-      {products.map(({ id, price, name, imageUrl }) => (
-        <ProductCard
-          key={id}
-          price={price}
-          title={name}
-          imageUrl={imageUrl}
-          onClick={handleCartButtonClick}
-          isItemInCart={Boolean(cartItems.some((p) => p.product.id === id))}
-        />
-      ))}
+      {products.map(({ id, price, name, imageUrl }) => {
+        return (
+          <ProductCard
+            key={id}
+            productId={id}
+            cartItemId={
+              cartItems?.find((cartItem) => cartItem.product.id === id)?.id
+            }
+            price={price}
+            title={name}
+            imageUrl={imageUrl}
+            onClick={handleCartButtonClick}
+            isItemInCart={Boolean(cartItems.some((p) => p.product.id === id))}
+          />
+        );
+      })}
     </ul>
   );
 }

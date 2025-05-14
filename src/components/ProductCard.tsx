@@ -6,6 +6,8 @@ interface ProductCardProps {
   imageUrl: string;
   onClick: () => void;
   isItemInCart: boolean;
+  productId: number;
+  cartItemId?: number;
 }
 
 function ProductCard({
@@ -14,6 +16,8 @@ function ProductCard({
   imageUrl,
   isItemInCart,
   onClick,
+  productId,
+  cartItemId,
 }: ProductCardProps) {
   return (
     <li css={cardCss}>
@@ -21,13 +25,19 @@ function ProductCard({
       <div css={detailCss}>
         <h2>{title}</h2>
         <p>{`${price.toLocaleString()}원`}</p>
-        <CartButton onClick={onClick} isInCart={isItemInCart}></CartButton>
+        <CartButton
+          productId={productId}
+          onClick={onClick}
+          isInCart={isItemInCart}
+          cartItemId={cartItemId}
+        />
       </div>
     </li>
   );
 }
 
 export default ProductCard;
+
 const cardCss = css({
   display: "flex",
   width: "182px",
