@@ -26,6 +26,7 @@ export default function ProductListToolbar({
   ];
 
   const [categoryValue, setCategoryValue] = useState('');
+  const [priceValue, setPriceValue] = useState('');
 
   const handleCategoryChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -44,6 +45,29 @@ export default function ProductListToolbar({
     setCategoryValue(value);
   };
 
+  const handlePriceChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+
+    try {
+      const productsData = await getProducts(
+        categoryValue === '전체' ? '' : categoryValue,
+        {
+          page: 0,
+          size: 20,
+          sort: value === '낮은 가격순' ? 'price,asc' : 'price,desc',
+        }
+      );
+      const productsContent = productsData.content;
+      setProducts(markItemsInCart(cartItems, productsContent));
+    } catch (e) {
+      //
+    } finally {
+      //
+    }
+
+    setPriceValue(value);
+  };
+
   return (
     <Container>
       <Title>bpple 상품 목록</Title>
@@ -54,7 +78,12 @@ export default function ProductListToolbar({
           category={CATEGORY}
           name="catetory"
         />
-        <SelectBox category={PRICE} name="price" />
+        <SelectBox
+          value={priceValue}
+          onChange={handlePriceChange}
+          category={PRICE}
+          name="price"
+        />
       </SelectBoxContainer>
     </Container>
   );
