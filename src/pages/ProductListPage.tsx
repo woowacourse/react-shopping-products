@@ -1,8 +1,8 @@
 import ErrorToast from '../components/ErrorToast';
-import Header from '../components/Header';
 import ProductItem from '../components/ProductItem';
 import { useEffect, useState } from 'react';
 import Select from '../components/Select';
+import styled from '@emotion/styled';
 
 export const ProductListPage = () => {
   const [errorOpen, setErrorOpen] = useState(false);
@@ -22,15 +22,54 @@ export const ProductListPage = () => {
   }, []);
 
   return (
-    <>
-      <Header />
+    <ProductListPageContainer>
       {errorOpen && <ErrorToast errorMessage="hi" />}
-      <ProductItem />
-      <Select
-        value={value}
-        options={options}
-        handleSelectedValue={(value: string) => handleSelectedValue(value)}
-      />
-    </>
+      <Title>bpple 상품 목록</Title>
+      <SelectContainer>
+        <Select
+          value={value}
+          options={options}
+          handleSelectedValue={(value: string) => handleSelectedValue(value)}
+        />
+        <Select
+          value={value}
+          options={options}
+          handleSelectedValue={(value: string) => handleSelectedValue(value)}
+        />
+      </SelectContainer>
+
+      <ProductItemContainer>
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+      </ProductItemContainer>
+    </ProductListPageContainer>
   );
 };
+
+const ProductListPageContainer = styled.div`
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const Title = styled.h2`
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-title);
+`;
+
+const SelectContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ProductItemContainer = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  row-gap: 20px;
+`;

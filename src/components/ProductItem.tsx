@@ -24,8 +24,6 @@ const ProductItemContainer = styled.div`
   gap: 8px;
   border-radius: 8px;
   background-color: var(--color-white);
-  /**삭제 예정 */
-  border: 1px solid #000;
 `;
 
 const ProductItemImage = styled.img`

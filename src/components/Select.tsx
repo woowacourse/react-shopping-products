@@ -55,6 +55,7 @@ const slideDown = keyframes`
 
 const SelectContainer = styled.div`
   width: 100%;
+  max-width: 125px;
   cursor: pointer;
   position: relative;
 `;
