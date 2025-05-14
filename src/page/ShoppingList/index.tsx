@@ -15,6 +15,7 @@ import ProductListLayout from '../../component/feature/ProductListLayout';
 import { Product } from '../../types/response';
 
 import useCart, { CartItem } from '../../hook/useCart';
+import { useToast } from '../../component/@common/Toast/context';
 
 export type SortOption = '높은 가격순' | '낮은 가격순';
 export type CategoryOption = '전체' | '패션잡화' | '식료품';
@@ -24,6 +25,7 @@ const ShoppingList = () => {
   const [category, setCategory] = useState<CategoryOption>('전체');
   const [data, setData] = useState([]);
   const { cartData, fetchCartData } = useCart();
+  const { openToast } = useToast();
 
   const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
 
@@ -57,35 +59,59 @@ const ShoppingList = () => {
   };
 
   const handleAddCart = async (productId: number) => {
-    await fetch(`${import.meta.env.VITE_API_BASE_URL}/cart-items`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
-      },
-      body: JSON.stringify({
-        productId,
-        quantity: 1
-      })
-    });
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/cart-items`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
+          },
+          body: JSON.stringify({
+            productId,
+            quantity: 1
+          })
+        }
+      );
 
-    fetchCartData();
+      if (!response.ok) {
+        throw new Error('장바구니 담기에 실패했어요...');
+      }
+
+      fetchCartData();
+      openToast();
+    } catch (error) {
+      openToast();
+    }
   };
 
   const handleRemoveCart = async (cartId: number) => {
-    const targetId = cartData.filter(
-      (item: CartItem) => item.product.id === cartId
-    )[0].id;
+    try {
+      const targetId = cartData.filter(
+        (item: CartItem) => item.product.id === cartId
+      )[0].id;
 
-    await fetch(`${import.meta.env.VITE_API_BASE_URL}/cart-items/${targetId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/cart-items/${targetId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('장바구니 빼기에 실패했어요...');
       }
-    });
 
-    fetchCartData();
+      fetchCartData();
+      openToast();
+    } catch (error) {
+      openToast();
+    }
   };
 
   const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
