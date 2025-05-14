@@ -2,11 +2,12 @@ import { css } from '@emotion/css';
 import SelectBox from '../../components/common/SelectBox/SelectBox';
 // import Toast from '../../components/common/Toast/Toast';
 import Header from '../../components/Header/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductList from '../../components/ProductList/ProductList';
 import useGetProducts from '../../hooks/useGetProducts';
 import { CATEGORY } from '../../constants/products';
 import useGetCarts from '../../hooks/useGetCartItems';
+import { AddCartItemType } from '../../types/cartItem';
 
 const productPageContainer = css`
   width: 429px;
@@ -44,7 +45,8 @@ function ProductsPage() {
     isError: isErrorProducts,
     products,
   } = useGetProducts({ category, sort });
-  const { isLoading: isLoadingCarts, isError: isErrorCarts, carts } = useGetCarts();
+  const { isLoading: isLoadingCarts, isError: isErrorCarts, carts, refetchCarts } = useGetCarts();
+  const [itemCount, setItemCount] = useState(0);
 
   const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSort(SORT[e.target.value]);
@@ -74,7 +76,32 @@ function ProductsPage() {
     });
   };
 
-  const itemCount = new Set(carts?.map((cart) => cart.product.id)).size;
+  const handleAddCartItem = async ({ productId, quantity }: AddCartItemType) => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+      },
+      body: JSON.stringify({
+        productId: productId,
+        quantity: quantity,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error('에러 발생');
+    }
+
+    await refetchCarts();
+  };
+
+  useEffect(() => {
+    if (carts) {
+      setItemCount(new Set(carts?.map((cart) => cart.product.id)).size);
+    }
+  }, [carts]);
+
   return (
     <div className={productPageContainer}>
       <Header itemCount={itemCount} />
@@ -89,7 +116,9 @@ function ProductsPage() {
           />
         </div>
         {/* <Toast text="안녕하세요" varient="error" />  */}
-        {products && <ProductList products={getProcessedCartArr()} />}
+        {products && (
+          <ProductList products={getProcessedCartArr()} onClickAddCartItem={handleAddCartItem} />
+        )}
       </div>
     </div>
   );

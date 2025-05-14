@@ -1,6 +1,7 @@
 import { css } from '@emotion/css';
-import { ProductProps } from '../../types/product';
+import { ProductDataType } from '../../types/product';
 import Product from '../Product/Product';
+import { AddCartItemType } from '../../types/cartItem';
 
 const ProductListContainer = css`
   display: grid;
@@ -8,11 +9,16 @@ const ProductListContainer = css`
   gap: 10px;
 `;
 
-function ProductList({ products }: { products: ProductProps[] | undefined }) {
+type ProductListProps = {
+  products: ProductDataType[] | undefined;
+  onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
+};
+
+function ProductList({ products, onClickAddCartItem }: ProductListProps) {
   return (
     <ul className={ProductListContainer}>
       {products?.map((product, idx) => (
-        <Product key={idx} {...product} />
+        <Product key={idx} {...product} onClickAddCartItem={onClickAddCartItem} />
       ))}
     </ul>
   );
