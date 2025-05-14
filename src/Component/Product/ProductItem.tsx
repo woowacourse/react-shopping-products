@@ -1,12 +1,5 @@
 import styled from '@emotion/styled';
-
-interface ProductItemProps {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  isItemInCart: boolean;
-}
+import { Product } from '../../types/ProductTypes';
 
 export default function ProductItem({
   id,
@@ -14,7 +7,7 @@ export default function ProductItem({
   price,
   imageUrl,
   isItemInCart,
-}: ProductItemProps) {
+}: Product) {
   return (
     <StyledLi id={String(id)}>
       <StyledImgWrapper imageUrl={imageUrl}></StyledImgWrapper>
@@ -50,8 +43,8 @@ const StyledLi = styled.li`
   border-radius: 8px;
 `;
 
-type ImgWrapperProps = Pick<ProductItemProps, 'imageUrl'>;
-type StyledButtonProps = Pick<ProductItemProps, 'isItemInCart'>;
+type ImgWrapperProps = Pick<Product, 'imageUrl'>;
+type StyledButtonProps = Pick<Product, 'isItemInCart'>;
 
 const StyledImgWrapper = styled.div<ImgWrapperProps>`
   width: 100%;

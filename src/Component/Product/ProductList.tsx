@@ -1,16 +1,9 @@
 import styled from '@emotion/styled';
 import ProductItem from './ProductItem';
-
-type ProductList = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  isItemInCart: boolean;
-};
+import { Product } from '../../types/ProductTypes';
 
 interface ProductListProps {
-  productList: ProductList[];
+  productList: Product[];
 }
 
 export default function ProductList({ productList }: ProductListProps) {
