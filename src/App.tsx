@@ -34,6 +34,7 @@ function App() {
           method: "GET",
           params: {
             category,
+            sort: "price,asc",
             page: "0",
             size: "20",
           },
