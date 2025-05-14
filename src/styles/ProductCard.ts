@@ -8,6 +8,7 @@ export const ProductCardContainer = styled.div`
   width: 100%;
   box-sizing: border-box;
   justify-items: center;
+  padding-bottom: 50px;
 `;
 
 export const ProductCardWrapper = styled.div`

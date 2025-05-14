@@ -24,11 +24,14 @@ const ProductCard = ({
   imageUrl,
   category,
 }: ProductCardProps) => {
-  const imageSrc = imageUrl
-    ? imageUrl
-    : category === "패션잡화"
+
+  const defaultSrc = category === "패션잡화"
     ? IMAGE_PATH.DEFAULT_FASHION
     : IMAGE_PATH.DEFAULT_GROCERY;
+
+  const imageSrc = imageUrl
+    ? imageUrl
+    : defaultSrc
     
   const isInBascket = true; // 추후 API 요청 예정
 
