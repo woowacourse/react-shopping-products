@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import ProductCard from './components/ProductCard';
+import SelectDropdownContainer from './components/SelectDropdown/SelectDropdownContainer';
+import { getProducts, ProductResponse } from './api/products';
+import {getCartItemsCounts} from './api/cartItems';
+import { CATEGORY, SORT } from './constants/selectOption';
 import { Container } from './styles/common';
 import { ProductCardContainer } from './styles/ProductCard';
-import { getProducts, ProductResponse } from './api/products';
-import SelectDropdownContainer from './components/SelectDropdown/SelectDropdownContainer';
-import { CATEGORY, SORT } from './constants/selectOption';
 import './styles/reset.css';
 
 type CategoryKey = (typeof CATEGORY)[number];
@@ -49,6 +50,18 @@ function App() {
 
     fetchProducts();
   }, [category, sort]);
+
+  useEffect(() => {
+    const fetchBascketCount = async () => {
+      try{
+        const data = await getCartItemsCounts();
+        setBasketCount(data.quantity);
+      }catch(error){
+        console.error('장바구니 개수를 불러오지 못했습니다.', error)
+      }
+    };
+    fetchBascketCount();
+  },[basketCount]);
 
   return (
     <Container>
