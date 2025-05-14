@@ -1,6 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, DependencyList } from "react";
 
-const useFetch = <T>(url: string | URL, option?: RequestInit) => {
+const useFetch = <T>(
+  url: string | URL,
+  option?: RequestInit,
+  immediate = true,
+  deps: DependencyList = []
+) => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -18,9 +23,10 @@ const useFetch = <T>(url: string | URL, option?: RequestInit) => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [deps]);
 
   useEffect(() => {
+    if (!immediate) return;
     fetcher();
   }, []);
 
