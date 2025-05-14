@@ -1,8 +1,5 @@
 export const postProducts = async (productId: number) => {
-  const username = 'minji2219';
-  const password = 'password';
-  const token = btoa(`${username}:${password}`);
-
+  const token = import.meta.env.VITE_API_KEY;
   try {
     const response = await fetch(
       `${import.meta.env.VITE_API_BASE_URL}/cart-items`,
@@ -18,7 +15,6 @@ export const postProducts = async (productId: number) => {
         }),
       }
     );
-
     if (!response.ok)
       throw new Error('Network response was not ok for postProducts');
     console.log(response);

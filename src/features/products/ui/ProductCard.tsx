@@ -8,8 +8,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({product}: ProductCardProps) {
-  const handleProductCart = () => {
-    postProducts(product.id);
+  const handleProductCart = async () => {
+    await postProducts(product.id);
   };
   return (
     <S.ProductCardContainer>
