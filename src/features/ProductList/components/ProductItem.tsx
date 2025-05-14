@@ -1,5 +1,8 @@
+import { get } from 'http';
+
 import styled from '@emotion/styled';
 
+import { addCartItem } from '@/api/cart';
 import { Flex } from '@/shared/components/Flex';
 import { IconButton } from '@/shared/components/IconButton';
 import { Text } from '@/shared/components/Text';
@@ -8,10 +11,17 @@ import { Product } from '../types/Product';
 
 type ProductItemProps = {
   isChecked: boolean;
-} & Pick<Product, 'name' | 'imageUrl' | 'price'>;
+  onCartUpdate: () => void;
+} & Pick<Product, 'id' | 'name' | 'imageUrl' | 'price'>;
 
-// TODO : boolean 값 변경에 따른 이미지 변경
-export const ProductItem = ({ name, price, imageUrl, isChecked = true }: ProductItemProps) => {
+export const ProductItem = ({
+  id,
+  name,
+  price,
+  imageUrl,
+  isChecked = true,
+  onCartUpdate,
+}: ProductItemProps) => {
   return (
     <StyledProductItemContainer>
       <StyledProductItemImage src={imageUrl} alt={name} />
@@ -26,6 +36,7 @@ export const ProductItem = ({ name, price, imageUrl, isChecked = true }: Product
           <IconButton
             variant={isChecked ? 'secondary' : 'primary'}
             src={isChecked ? `./RemoveCart.png` : `./AddCart.png`}
+            onClick={onCartUpdate}
           >
             {isChecked ? '빼기' : '담기'}
           </IconButton>
@@ -44,6 +55,7 @@ export const StyledProductItemContainer = styled.div`
   justify-content: center;
   border-radius: 8px;
   background-color: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 export const StyledProductItemImage = styled.img`
