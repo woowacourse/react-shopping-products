@@ -2,6 +2,7 @@ import { css } from '@emotion/css';
 import { ProductDataType } from '../../types/product';
 import Product from '../Product/Product';
 import { AddCartItemType } from '../../types/cartItem';
+import { ProductListSkeleton } from '../Skeleton/Skeleton';
 
 const ProductListContainer = css`
   display: grid;
@@ -10,12 +11,22 @@ const ProductListContainer = css`
 `;
 
 type ProductListProps = {
+  isLoadingProducts: boolean;
   products: ProductDataType[] | undefined;
   onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
   onClickDeleteCartItem: ({ productId }: { productId: number }) => void;
 };
 
-function ProductList({ products, onClickAddCartItem, onClickDeleteCartItem }: ProductListProps) {
+function ProductList({
+  isLoadingProducts,
+  products,
+  onClickAddCartItem,
+  onClickDeleteCartItem,
+}: ProductListProps) {
+  if (isLoadingProducts) {
+    return <ProductListSkeleton />;
+  }
+
   return (
     <ul className={ProductListContainer}>
       {products?.map((product, idx) => (
