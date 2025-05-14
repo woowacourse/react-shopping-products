@@ -4,9 +4,9 @@ const TopArrow = (props: React.SVGProps<SVGSVGElement>) => {
       <path
         d="M12.1789 9.5504L8.35899 5.73047L4.53906 9.5504"
         stroke="#ACACAC"
-        stroke-width="1.32867"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.32867"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
