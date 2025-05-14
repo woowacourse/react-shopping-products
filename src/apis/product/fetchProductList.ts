@@ -23,11 +23,13 @@ const fetchProductList = async ({
 }: fetchProductListParams) => {
   const url = new URL(BASE_URL);
 
-  if (params.category === "전체") {
-    delete params.category;
-  }
+  const { category, ...rest } = params;
 
-  url.search = new URLSearchParams(params).toString();
+  if (category === "전체") {
+    url.search = new URLSearchParams(rest).toString();
+  } else {
+    url.search = new URLSearchParams(params).toString();
+  }
 
   const options = {
     method,

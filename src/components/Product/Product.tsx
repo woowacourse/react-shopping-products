@@ -14,7 +14,9 @@ function Product({ product }: ProductProps) {
         <Styled.Wrapper>
           <Styled.Contents>
             <Styled.ProductTitle>{product.name}</Styled.ProductTitle>
-            <Styled.ProductPrice>{product.price}</Styled.ProductPrice>
+            <Styled.ProductPrice>
+              {`${product.price.toLocaleString()}원`}
+            </Styled.ProductPrice>
           </Styled.Contents>
           <Styled.ButtonWrapper>
             <Button color="light" onClick={() => {}}>
