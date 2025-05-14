@@ -138,18 +138,15 @@ const reset = css`
     cursor: pointer;
     background-color: transparent;
   }
-  @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
-      format('woff');
-    font-weight: 400;
-    font-style: normal;
-  }
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
   p,
   span,
   a,
   div {
-    font-family: 'Pretendard-Regular';
+    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+      'Pretendard Variable', Pretendard, Roboto, 'Noto Sans KR', 'Segoe UI',
+      'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+      sans-serif;
   }
 `;
 
