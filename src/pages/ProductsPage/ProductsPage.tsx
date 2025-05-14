@@ -6,7 +6,7 @@ import { useState } from 'react';
 import ProductList from '../../components/ProductList/ProductList';
 import useGetProducts from '../../hooks/useGetProducts';
 import { CATEGORY } from '../../constants/products';
-import useGetCarts from '../../hooks/useGetCarts';
+import useGetCarts from '../../hooks/useGetCartItems';
 
 const productPageContainer = css`
   width: 429px;
