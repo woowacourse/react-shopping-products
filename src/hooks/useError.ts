@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const ERROR_MESSAGE = {
   CART: "장바구니 정보를 불러오는데 실패했습니다.",
@@ -12,9 +12,12 @@ export type ERROR_TYPE = keyof typeof ERROR_MESSAGE;
 function useError() {
   const [errorMessage, setErrorMessage] = useState("");
 
-  function setErrorTrue(errorType: ERROR_TYPE) {
+  const setErrorTrue = useCallback(function setErrorTrue(
+    errorType: ERROR_TYPE
+  ) {
     setErrorMessage(ERROR_MESSAGE[errorType]);
-  }
+  },
+  []);
 
   useEffect(() => {
     if (errorMessage) return;

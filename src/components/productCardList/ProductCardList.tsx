@@ -16,6 +16,7 @@ interface ProductCardListProps {
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
   setErrorTrue: (type: ERROR_TYPE) => void;
+  fetchProducts: () => void;
 }
 
 function ProductCardList({
@@ -26,6 +27,7 @@ function ProductCardList({
   cartItemIds,
   setCartItemIds,
   setErrorTrue,
+  fetchProducts,
 }: ProductCardListProps) {
   const { isLoading } = useFetchProducts({
     category,
@@ -50,6 +52,7 @@ function ProductCardList({
           imageUrl={data.imageUrl}
           setCartItemIds={setCartItemIds}
           setErrorTrue={setErrorTrue}
+          fetchProducts={fetchProducts}
         />
       ))}
     </div>

@@ -5,7 +5,7 @@ import ProductContainer from "./components/productContainer/ProductContainer";
 import ErrorToast from "./components/errorToast/ErrorToast";
 import useError from "./hooks/useError";
 import request from "./utils/request";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { CartItem } from "./types/response.types";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
     Record<"productId" | "cartId", number>[]
   >([]);
 
-  useEffect(() => {
+  const fetchProducts = useCallback(
     async function fetchCartItems() {
       try {
         const data = await request({
@@ -35,9 +35,13 @@ function App() {
       } catch {
         setErrorTrue("CART");
       }
-    }
-    fetchCartItems();
-  }, [setCartItemIds]);
+    },
+    [setErrorTrue]
+  );
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   return (
     <div className="container">
@@ -46,6 +50,7 @@ function App() {
         cartItemIds={cartItemIds}
         setCartItemIds={setCartItemIds}
         setErrorTrue={setErrorTrue}
+        fetchProducts={fetchProducts}
       />
       {isError && <ErrorToast errorMessage={errorMessage} />}
     </div>
