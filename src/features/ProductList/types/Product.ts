@@ -19,3 +19,10 @@ export type ProductListResponse = {
   last: boolean;
   empty: boolean;
 };
+
+export type ProductQuery = {
+  page: number;
+  size: number;
+  sort: string | string[];
+  category: string;
+};
