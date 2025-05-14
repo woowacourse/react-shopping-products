@@ -1,10 +1,11 @@
 import useProducts from "../../hooks/useProducts";
 import Header from "../Header/Header";
 import ItemCard from "../ItemCard/ItemCard";
+import Skeleton from "../Skeleton/Skeleton";
 import S from "./Product.module.css";
 
 const Product = () => {
-	const { products } = useProducts({});
+	const { products, loading } = useProducts({});
 
 	return (
 		<div className={S.container}>
@@ -21,11 +22,15 @@ const Product = () => {
 						</select>
 					</div>
 				</div>
-				<div className={S.itemContainer}>
-					{products?.map(({ id, imageUrl, name, price }) => (
-						<ItemCard key={id} imageUrl={imageUrl} name={name} price={price} isCart={false} />
-					))}
-				</div>
+				{loading ? (
+					<Skeleton length={10} />
+				) : (
+					<div className={S.itemContainer}>
+						{products?.map(({ id, imageUrl, name, price }) => (
+							<ItemCard key={id} imageUrl={imageUrl} name={name} price={price} isCart={false} />
+						))}
+					</div>
+				)}
 			</div>
 		</div>
 	);

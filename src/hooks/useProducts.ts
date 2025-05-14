@@ -5,6 +5,9 @@ import getQueryURL from "../utils/getQueryURL";
 
 export default function useProducts({ page = "0", size = "20", sortingType = "", filterType = "" }) {
 	const [productsInfo, setProductsInfo] = useState<ProductsInfo>({ content: [] });
+	const [loading, setLoading] = useState<boolean>(false);
+	const [error, setError] = useState<unknown>(null);
+
 	const products = productsInfo.content;
 	const query = {
 		page,
@@ -16,14 +19,20 @@ export default function useProducts({ page = "0", size = "20", sortingType = "",
 
 	useEffect(() => {
 		const fetchProducts = async () => {
-			const response = await fetch(requestURL);
-			const data = await response.json();
-
-			setProductsInfo(data);
+			try {
+				setLoading(true);
+				const response = await fetch(requestURL);
+				const data = await response.json();
+				setProductsInfo(data);
+			} catch (error) {
+				setError(error);
+			} finally {
+				setLoading(false);
+			}
 		};
 
 		fetchProducts();
 	}, []);
 
-	return { products };
+	return { products, loading, error };
 }
