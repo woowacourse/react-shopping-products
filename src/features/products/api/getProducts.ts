@@ -2,11 +2,9 @@ interface Query {
   sortValue: string;
 }
 
-export const getProducts = async ({sortValue}: Query) => {
+export const getProducts = async ({ sortValue }: Query) => {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/products?sort=${sortValue}&size=40`
-    );
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products?sort=${sortValue}&size=20`);
     if (!response.ok) {
       throw new Error('Network response was not ok for getProducts');
     }

@@ -45,10 +45,10 @@ function App() {
       setError('');
 
       try {
-        const productRes = await getProducts({ sortValue });
+        const products = await getProducts({ sortValue });
         const cartProducts = await getCartProduct();
 
-        const rawProducts = productRes.content;
+        const rawProducts = products.content;
         const cartProductIds = new Set(cartProducts.content.map((cp: CartProduct) => cp.product.id));
 
         const productsWithCartInfo = rawProducts.map((product: Product) => ({
@@ -59,8 +59,8 @@ function App() {
 
         setProducts(productsWithCartInfo);
         setPageInfo({
-          totalElements: productRes.totalElements,
-          totalPages: productRes.totalPages,
+          totalElements: products.totalElements,
+          totalPages: products.totalPages,
         });
       } catch (error) {
         setError('데이터를 가져오는 중 오류가 발생했습니다.');
