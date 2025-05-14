@@ -16,4 +16,12 @@ export const Button = styled.button<{ variant: ButtonVariants }>`
   border-radius: 4px;
   align-items: center;
   font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+  }
 `;
