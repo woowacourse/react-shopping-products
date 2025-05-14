@@ -7,17 +7,6 @@ const postCartItems = async (product: Product) => {
     quantity: 1,
   });
 
-  // await fetch(
-  //   'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items',
-  //   {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: 'Basic RGFldW4tMTAwOnBhc3N3b3Jk',
-  //     },
-  //     body,
-  //   }
-  // );
   const options = {
     method: 'POST',
     headers: {

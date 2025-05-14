@@ -37,6 +37,10 @@ function App() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const addToCart = async (product: Product) => {
+    if (cart.length > 50) {
+      setErrorMessage('장바구니에 담을 수 있는 상품은 최대 50개입니다.');
+      return;
+    }
     const { newErrorMessage: postErrorMessage } = await postCartItems(product);
     setErrorMessage(postErrorMessage);
     if (!postErrorMessage) {
