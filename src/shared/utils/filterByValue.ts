@@ -1,14 +1,10 @@
-interface FilterByValue<T extends {[key: string]: string | number}> {
+interface FilterByValue<T, K extends keyof T> {
   array: T[];
-  compare: string;
-  value: string;
+  compare: K;
+  value: T[K];
 }
 
-export const filterByValue = <T extends {[key: string]: string | number}>({
-  array,
-  compare,
-  value,
-}: FilterByValue<T>) => {
+export const filterByValue = <T, K extends keyof T>({ array, compare, value }: FilterByValue<T, K>): T[] => {
   if (value === '전체') return array;
   return array.filter((a) => a[compare] === value);
 };
