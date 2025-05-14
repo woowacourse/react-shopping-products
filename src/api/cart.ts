@@ -1,0 +1,37 @@
+import { CartResponse } from '@/features/ProductList/types/Cart';
+import { NewCartItem, ProductQuery } from '@/features/ProductList/types/Product';
+
+import { ENV } from './env';
+import { fetcher } from './fetcher';
+
+export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
+  await fetcher.post(ENV.BASE_URL + 'cart-items', ENV.TOKEN, {
+    productId,
+    quantity,
+  });
+
+  const data = await fetcher
+    .get<CartResponse>({
+      baseUrl: ENV.BASE_URL + 'cart-items',
+      token: ENV.TOKEN,
+    })
+    .then((res) => res);
+
+  return data.content;
+};
+
+export const getCartItemList = async ({
+  page = 0,
+  size = 20,
+  sort = '',
+}: Partial<ProductQuery> = {}) => {
+  const data = await fetcher
+    .get<CartResponse>({
+      baseUrl: ENV.BASE_URL + 'cart-items',
+      token: ENV.TOKEN,
+      query: { page, size, sort },
+    })
+    .then((res) => res);
+
+  return data.content;
+};
