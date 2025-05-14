@@ -6,6 +6,7 @@ const ShopHeader = () => {
     <S.Header>
       <S.Logo href="/">SHOP</S.Logo>
       <S.CartImage src={Cart} alt="장바구니" />
+      <S.CartItemCount>2</S.CartItemCount>
     </S.Header>
   );
 };
