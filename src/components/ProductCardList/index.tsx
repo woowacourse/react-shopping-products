@@ -5,6 +5,7 @@ import ProductCard from "../ProductCard";
 interface ProductCardListProps {
   products: Product[];
 }
+
 const ProductCardList = ({ products }: ProductCardListProps) => {
   return (
     <div className={ProductCardListStyles}>
@@ -18,15 +19,9 @@ const ProductCardList = ({ products }: ProductCardListProps) => {
 export default ProductCardList;
 
 const ProductCardListStyles = css`
-  padding: 0 24px;
+  padding: 0 24px 24px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 16px;
   row-gap: 20px;
 `;
-
-// id: "1",
-// name: "테스트이름",
-// price: 2000,
-// imageUrl: "/sample.png",
-// isInCart: false,
