@@ -8,6 +8,7 @@ import ProductContainer, {
 } from "../component/ProductContainer/ProductContainer";
 import Selector from "../component/Selector/Selector";
 import TitleContainer from "../component/TitleContainer/titleContainer";
+import { getCartItem } from "../api/cartItem";
 
 const pageLayout = css`
   display: flex;
@@ -49,6 +50,19 @@ const cartItemCount = css`
   height: 19px;
 `;
 
+interface ProductItem {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+}
+export interface CartItem {
+  id: number;
+  quantity: number;
+  product: ProductItem;
+}
+
 export type CategoryOption = "전체" | "식료품" | "패션잡화";
 export type FilterOption = "낮은 가격순" | "높은 가격순";
 export type sortOption = "price,asc" | "price,desc";
@@ -56,8 +70,9 @@ export type sortOption = "price,asc" | "price,desc";
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");
   const [filterValue, setFilterValue] = useState<FilterOption>("낮은 가격순");
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<number>(0);
   const [productList, setProductList] = useState<Product[]>([]);
+  const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
 
   const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
   const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
@@ -83,6 +98,16 @@ export default function ShopPage() {
     })();
   }, [filterValue, categoryValue]);
 
+  useEffect(() => {
+    (async () => {
+      const response = await getCartItem({
+        sortBy: "asc",
+      });
+      setSelectedProducts(response.content.length);
+      setCartItemList(response.content);
+    })();
+  }, []);
+
   return (
     <div css={pageLayout}>
       <Header title="SHOP">
@@ -93,8 +118,8 @@ export default function ShopPage() {
             alt="장바구니 아이콘"
             onClick={onClick}
           />
-          {selectedProducts.length !== 0 && (
-            <div css={cartItemCount}>{selectedProducts.length}</div>
+          {selectedProducts !== 0 && (
+            <div css={cartItemCount}>{selectedProducts}</div>
           )}
         </div>
       </Header>
@@ -117,7 +142,7 @@ export default function ShopPage() {
         </TitleContainer>
         <ProductContainer
           products={productList}
-          selectedProducts={selectedProducts}
+          cartItemList={cartItemList}
           setSelectedProducts={setSelectedProducts}
         />
       </Body>

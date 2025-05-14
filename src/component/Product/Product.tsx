@@ -1,28 +1,16 @@
 import { css } from "@emotion/react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { deleteCartItem, postCartItem } from "../../api/cartItem";
 import Button from "../Button/Button";
-import { deleteCartItem, getCartItem, postCartItem } from "../../api/cartItem";
+import { CartItem } from "../../page/ShopPage";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface ProductProps {
   id: string;
   imageUrl: string;
   name: string;
   price: string;
-  selectedProducts: string[];
-  setSelectedProducts: Dispatch<SetStateAction<string[]>>;
-}
-
-interface ProductItem {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
-interface CartItem {
-  id: number;
-  quantity: number;
-  product: ProductItem;
+  selectedCardItems: CartItem[];
+  setSelectedProducts: Dispatch<SetStateAction<number>>;
 }
 
 const productLayout = css`
@@ -75,31 +63,21 @@ export default function Product({
   imageUrl,
   name,
   price,
-  selectedProducts,
+  selectedCardItems,
   setSelectedProducts,
 }: ProductProps) {
-  const [isSelected, setIsSelected] = useState(false);
-
-  const getCartItemId = async ({ deleteId }: { deleteId: number }) => {
-    const response = await getCartItem({
-      sortBy: "asc",
-    });
-
-    const deleteCartId = response.content.map((cartItem: CartItem) => {
-      if (deleteId === cartItem.product.id) return cartItem.id;
-    });
-    return deleteCartId;
-  };
+  const [isSelected, setIsSelected] = useState(selectedCardItems.length !== 0);
+  // const cartItemId = selectedCardItems[0] ? : 0;
 
   const handleClick = async () => {
-    setIsSelected((prev) => !prev);
-    if (selectedProducts.includes(id)) {
-      setSelectedProducts((arr) => arr.filter((prev) => prev !== id));
-      const deleteCartId = await getCartItemId({ deleteId: Number(id) });
-      deleteCartItem({ id: deleteCartId });
+    if (isSelected) {
+      deleteCartItem({ id: Number(selectedCardItems[0].id) });
+      // setIsSelected(false);
+      setSelectedProducts((prev) => prev - 1);
     } else {
-      setSelectedProducts((arr) => [...arr, id]);
+      // setIsSelected(true);
       postCartItem({ productId: Number(id), quantity: 1 });
+      setSelectedProducts((prev) => prev + 1);
     }
   };
 
@@ -120,6 +98,15 @@ export default function Product({
       </Button>
     );
   };
+
+  useEffect(() => {
+    setIsSelected(selectedCardItems.length !== 0);
+    console.log(id, selectedCardItems);
+  }, [selectedCardItems]);
+
+  useEffect(() => {
+    console.log(id, isSelected);
+  }, [isSelected]);
 
   return (
     <div id={id} css={productLayout}>

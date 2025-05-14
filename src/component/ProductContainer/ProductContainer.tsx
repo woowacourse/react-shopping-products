@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import Product from "../Product/Product";
+import { CartItem } from "../../page/ShopPage";
 import { Dispatch, SetStateAction } from "react";
 
 export interface Product {
@@ -11,8 +12,8 @@ export interface Product {
 
 interface ProductContainerProps {
   products: Product[];
-  selectedProducts: string[];
-  setSelectedProducts: Dispatch<SetStateAction<string[]>>;
+  cartItemList: CartItem[];
+  setSelectedProducts: Dispatch<SetStateAction<number>>;
 }
 
 const ProductContainerLayout = css`
@@ -23,21 +24,26 @@ const ProductContainerLayout = css`
 
 export default function ProductContainer({
   products,
-  selectedProducts,
+  cartItemList,
   setSelectedProducts,
 }: ProductContainerProps) {
   return (
     <div css={ProductContainerLayout}>
-      {products.map((product) => (
-        <Product
-          id={product.id}
-          imageUrl={product.imageUrl}
-          name={product.name}
-          price={product.price}
-          selectedProducts={selectedProducts}
-          setSelectedProducts={setSelectedProducts}
-        />
-      ))}
+      {products.map((product) => {
+        const selectedCardItems = cartItemList.filter(
+          (cartItem: CartItem) => Number(product.id) === cartItem.product.id
+        );
+        return (
+          <Product
+            id={product.id}
+            imageUrl={product.imageUrl}
+            name={product.name}
+            price={product.price}
+            selectedCardItems={selectedCardItems}
+            setSelectedProducts={setSelectedProducts}
+          />
+        );
+      })}
     </div>
   );
 }
