@@ -8,7 +8,7 @@ const useMutation = (mutationFn: () => void) => {
     setIsLoading(true);
 
     try {
-      mutationFn();
+      await mutationFn();
     } catch (error) {
       setError(error as Error);
     } finally {
