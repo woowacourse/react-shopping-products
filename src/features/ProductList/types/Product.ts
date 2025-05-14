@@ -26,3 +26,8 @@ export type ProductQuery = {
   sort: string | string[];
   category: string;
 };
+
+export type NewCartItem = {
+  productId: number;
+  quantity: number;
+};
