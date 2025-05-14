@@ -3,7 +3,7 @@ import {
   ShoppingListFilterItemStyle,
   ShoppingListFilterStyle,
   ShoppingListStyle,
-  ShoppingListTitleStyle
+  ShoppingListTitleStyle,
 } from './ShoppingList.styles';
 import Text from '../../component/@common/Text';
 import Dropdown from '../../component/@common/Dropdown';
@@ -34,8 +34,8 @@ const ShoppingList = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
-          }
+            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
+          },
         }
       );
       const results = await response.json();
@@ -51,8 +51,8 @@ const ShoppingList = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
-          }
+            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
+          },
         }
       );
       const results = await response.json();
