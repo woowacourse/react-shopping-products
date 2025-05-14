@@ -7,6 +7,11 @@ export const Container = styled.li`
   background-color: white;
 `;
 
+export const ProductImageContainer = styled.div`
+  width: 182px;
+  height: 112px;
+`;
+
 export const ProductImage = styled.img`
   width: 182px;
   height: 112px;

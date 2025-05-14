@@ -1,5 +1,6 @@
 import {
   Container,
+  ProductImageContainer,
   ProductImage,
   Detail,
   Price,
@@ -30,7 +31,9 @@ function Product({ name, price, imgSrc }: ProductProps) {
 
   return (
     <Container>
-      <ProductImage src={imgSrc} alt={name} />
+      <ProductImageContainer>
+        <ProductImage src={imgSrc} alt={name} />
+      </ProductImageContainer>
       <Detail>
         <ProductName>{name}</ProductName>
         <Price>{price}</Price>
