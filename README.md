@@ -29,13 +29,13 @@
 
 # 컴포넌트 목록
 
-- [ ] DropDown
-- [ ] Header
-- [ ] 담기 버튼
-- [ ] 빼기 버튼
-- [ ] Card
-- [ ] Card List
-- [ ] error toast
+- [x] DropDown
+- [x] Header
+- [x] 담기 버튼
+- [x] 빼기 버튼
+- [x] Card
+- [x] Card List
+- [x] error toast
 
 # ✅ 프로그래밍 요구사항
 
