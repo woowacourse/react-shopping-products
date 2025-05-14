@@ -5,6 +5,6 @@ export const CategoryOptions = {
 };
 
 export const SortOptions = {
-  낮은가격순: "priceCheap",
-  높은가격순: "priceExpensive",
+  낮은가격순: "price,asc",
+  높은가격순: "price,desc",
 };

@@ -1,7 +1,7 @@
 import * as S from "./ProductControl.styled";
 import Select from "../common/Select/Select";
 import { CategoryOptions, SortOptions } from "../../constants/selectOptions";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { ResponseProduct } from "../../api/types";
 import getProductList from "../../api/ProductListApi";
 
@@ -10,9 +10,18 @@ function ProductControl({
 }: {
   setProductList: Dispatch<SetStateAction<ResponseProduct[]>>;
 }) {
+  const [category, setCategory] = useState<string>("");
+  const [sort, setSort] = useState<string>("");
+
   async function handleCategoryChange(category: string) {
-    console.log("category", category);
-    const rawProductList = await getProductList({ category });
+    setCategory(category);
+    const rawProductList = await getProductList({ category, sort });
+    setProductList(rawProductList);
+  }
+
+  async function handleSortChange(sort: string) {
+    setSort(sort);
+    const rawProductList = await getProductList({ category, sort });
     setProductList(rawProductList);
   }
 
@@ -21,7 +30,7 @@ function ProductControl({
       <S.ProductControlTitle>bpple 상품목록</S.ProductControlTitle>
       <S.SelectContainer>
         <Select options={CategoryOptions} onChange={handleCategoryChange} />
-        <Select options={SortOptions} />
+        <Select options={SortOptions} onChange={handleSortChange} />
       </S.SelectContainer>
     </S.ProductControlContainer>
   );
