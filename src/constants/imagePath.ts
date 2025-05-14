@@ -5,4 +5,6 @@ export const IMAGE_PATH = Object.freeze({
   SHOPPIN_CART_ADD: "./shopping-cart-add.svg",
   DEFAULT_GROCERY: "./default-grocery.svg",
   DEFAULT_FASHION: "./default-fashion.svg",
+  CHEVRON_DOWN: "./chevron-down.svg",
+  CHEVRON_UP: "./chevron-up.svg",
 });
