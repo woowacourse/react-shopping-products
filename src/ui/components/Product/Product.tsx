@@ -8,6 +8,7 @@ import {
   CartButtonImg,
   CartButtonText,
 } from './Product.styles';
+import { useState } from 'react';
 
 interface ProductProps {
   key: number;
@@ -17,6 +18,16 @@ interface ProductProps {
 }
 
 function Product({ name, price, imgSrc }: ProductProps) {
+  const [inCart, setInCart] = useState(false);
+
+  const handleToggle = () => setInCart((prev) => !prev);
+
+  const buttonImg = inCart
+    ? './remove_shopping_cart.png'
+    : './add_shopping_cart.png';
+
+  const buttonText = inCart ? '빼기' : '담기';
+
   return (
     <Container>
       <ProductImage src={imgSrc} alt={name} />
@@ -24,9 +35,9 @@ function Product({ name, price, imgSrc }: ProductProps) {
         <ProductName>{name}</ProductName>
         <Price>{price}</Price>
       </Detail>
-      <CartButton>
-        <CartButtonImg src="./add_shopping_cart.png" alt="쇼핑카트" />
-        <CartButtonText>담기</CartButtonText>
+      <CartButton inCart={inCart} onClick={handleToggle}>
+        <CartButtonImg src={buttonImg} alt={buttonText} />
+        <CartButtonText inCart={inCart}>{buttonText}</CartButtonText>
       </CartButton>
     </Container>
   );

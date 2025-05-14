@@ -39,7 +39,7 @@ export const Price = styled.span`
   margin: 8px 0 0 0;
 `;
 
-export const CartButton = styled.button`
+export const CartButton = styled.button<{ inCart: boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -50,10 +50,11 @@ export const CartButton = styled.button`
   gap: 4px;
   padding: 4px 8px 4px 8px;
   border: none;
-  background-color: #000000;
   cursor: pointer;
   margin-left: auto;
   margin-right: 8px;
+
+  background-color: ${({ inCart }) => (inCart ? '#EAEAEA' : '#000000')};
 `;
 
 export const CartButtonImg = styled.img`
@@ -61,9 +62,9 @@ export const CartButtonImg = styled.img`
   height: 16px;
 `;
 
-export const CartButtonText = styled.span`
+export const CartButtonText = styled.span<{ inCart: boolean }>`
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
-  color: #ffffff;
+  color: ${({ inCart }) => (inCart ? '#000000' : '#ffffff')};
 `;
