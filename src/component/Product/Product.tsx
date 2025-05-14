@@ -1,13 +1,14 @@
 import { css } from "@emotion/react";
 import { Dispatch, SetStateAction, useState } from "react";
 import Button from "../Button/Button";
-import postCartItem from "../../api/cartItem";
+import { deleteCartItem, postCartItem } from "../../api/cartItem";
 
 interface ProductProps {
   id: string;
   imageUrl: string;
   name: string;
   price: string;
+  selectedProducts: string[];
   setSelectedProducts: Dispatch<SetStateAction<string[]>>;
 }
 
@@ -61,17 +62,20 @@ export default function Product({
   imageUrl,
   name,
   price,
+  selectedProducts,
   setSelectedProducts,
 }: ProductProps) {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleClick = () => {
     setIsSelected((prev) => !prev);
-    setSelectedProducts((arr) => {
-      if (arr.includes(id)) return arr.filter((prev) => prev !== id);
-      return [...arr, id];
-    });
-    postCartItem({ productId: Number(id), quantity: 1 });
+    if (selectedProducts.includes(id)) {
+      setSelectedProducts((arr) => arr.filter((prev) => prev !== id));
+      deleteCartItem({ id: Number(id) });
+    } else {
+      setSelectedProducts((arr) => [...arr, id]);
+      postCartItem({ productId: Number(id), quantity: 1 });
+    }
   };
 
   const addProduct = () => {

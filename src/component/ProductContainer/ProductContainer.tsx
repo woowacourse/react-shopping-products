@@ -11,6 +11,7 @@ export interface Product {
 
 interface ProductContainerProps {
   products: Product[];
+  selectedProducts: string[];
   setSelectedProducts: Dispatch<SetStateAction<string[]>>;
 }
 
@@ -22,6 +23,7 @@ const ProductContainerLayout = css`
 
 export default function ProductContainer({
   products,
+  selectedProducts,
   setSelectedProducts,
 }: ProductContainerProps) {
   return (
@@ -32,6 +34,7 @@ export default function ProductContainer({
           imageUrl={product.imageUrl}
           name={product.name}
           price={product.price}
+          selectedProducts={selectedProducts}
           setSelectedProducts={setSelectedProducts}
         />
       ))}

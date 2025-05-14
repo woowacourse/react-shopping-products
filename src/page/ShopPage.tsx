@@ -117,6 +117,7 @@ export default function ShopPage() {
         </TitleContainer>
         <ProductContainer
           products={productList}
+          selectedProducts={selectedProducts}
           setSelectedProducts={setSelectedProducts}
         />
       </Body>
