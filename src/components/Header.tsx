@@ -10,7 +10,7 @@ const Header = ({basketCount}:HeaderProps) => {
     <HeaderWrapper>
       <img src={IMAGE_PATH.HEADER_TITLE} />
       <BasketWrapper>
-        <BasketCountTextWrapper>{basketCount}</BasketCountTextWrapper>
+        {basketCount !==0 && <BasketCountTextWrapper>{basketCount}</BasketCountTextWrapper>}
         <img src={IMAGE_PATH.SHOPPING_BASKET} />
       </BasketWrapper>
     </HeaderWrapper>
