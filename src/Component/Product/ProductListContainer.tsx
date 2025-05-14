@@ -13,7 +13,7 @@ export function markItemsInCart(
   cartItems: CartItemTypes[],
   items: ProductTypes[]
 ) {
-  const cartIds = new Set(cartItems.map((cartItem) => cartItem.id));
+  const cartIds = new Set(cartItems.map((cartItem) => cartItem.product.id));
 
   return items.map((item) => ({
     ...item,
@@ -41,10 +41,18 @@ export default function ProductListContainer({
     fetchProducts();
   }, [cartItems]);
 
+  const updateCart = (id: number) => {
+    const index = products.findIndex((e) => e.id === id);
+    if (!index) return;
+
+    const copy = [...products];
+    copy[index] = { ...copy[index], isItemInCart: !copy[index].isItemInCart };
+    setProducts(copy);
+  };
   return (
     <>
       <ProductListToolbar setProducts={setProducts} cartItems={cartItems} />
-      <ProductList productList={products} />
+      <ProductList productList={products} updateCart={updateCart} />
     </>
   );
 }

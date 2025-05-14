@@ -4,13 +4,17 @@ import { ProductTypes } from '../../types/ProductTypes';
 
 interface ProductListProps {
   productList: ProductTypes[];
+  updateCart: (id: number) => void;
 }
 
-export default function ProductList({ productList }: ProductListProps) {
+export default function ProductList({
+  productList,
+  updateCart,
+}: ProductListProps) {
   return (
     <StyledUl>
       {productList.map((props) => (
-        <ProductItem {...props} />
+        <ProductItem {...props} updateCart={updateCart} />
       ))}
     </StyledUl>
   );
