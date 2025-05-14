@@ -12,5 +12,5 @@ export interface CartProduct {
 	products: Product;
 }
 
-export type SortingType = "ASC" | "DESC";
+export type SortingType = "asc" | "desc";
 export type filterType = "식료품" | "패션잡화";

@@ -9,7 +9,7 @@ describe("sortProductList 유틸 함수 테스트", () => {
 			{ id: 2, name: "둘째", price: 3000, imageUrl: "", category: "식료품" },
 			{ id: 3, name: "셋째", price: 5000, imageUrl: "", category: "식료품" },
 		];
-		expect(sortProductList(products, "ASC")).toEqual([
+		expect(sortProductList(products, "asc")).toEqual([
 			{ id: 2, name: "둘째", price: 3000, imageUrl: "", category: "식료품" },
 			{ id: 3, name: "셋째", price: 5000, imageUrl: "", category: "식료품" },
 			{ id: 1, name: "첫째", price: 7000, imageUrl: "", category: "식료품" },
@@ -22,7 +22,7 @@ describe("sortProductList 유틸 함수 테스트", () => {
 			{ id: 2, name: "둘째", price: 3000, imageUrl: "", category: "식료품" },
 			{ id: 3, name: "셋째", price: 5000, imageUrl: "", category: "식료품" },
 		];
-		expect(sortProductList(products, "DESC")).toEqual([
+		expect(sortProductList(products, "desc")).toEqual([
 			{ id: 1, name: "첫째", price: 7000, imageUrl: "", category: "식료품" },
 			{ id: 3, name: "셋째", price: 5000, imageUrl: "", category: "식료품" },
 			{ id: 2, name: "둘째", price: 3000, imageUrl: "", category: "식료품" },
