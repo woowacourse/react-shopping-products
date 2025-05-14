@@ -67,7 +67,7 @@ const labelStyle = (isOpen: boolean) => css`
   background: transparent;
   width: 100%;
   border: solid 1.01px ${isOpen ? "#000000" : "#acacac"};
-  border-radius: 3px;
+  border-radius: 8px;
   padding: 8px;
   box-sizing: border-box;
   cursor: pointer;
