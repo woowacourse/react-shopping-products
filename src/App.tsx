@@ -1,4 +1,4 @@
-import ProductList from "./components/ProductList/ProductList";
+import Main from "./components/Main/Main";
 
 const productList = [
   {
@@ -35,7 +35,7 @@ const productList = [
 ] as const;
 
 function App() {
-  return <ProductList productList={productList}></ProductList>;
+  return <Main productList={productList}></Main>;
 }
 
 export default App;
