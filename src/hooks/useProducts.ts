@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Product } from "../types";
-import { BASE_URL } from "../constants/endpoint";
+import { PRODUCT_URL } from "../constants/endpoint";
 
 interface UseProductsResult {
 	products: Product[];
@@ -11,7 +11,7 @@ export default function useProducts(): UseProductsResult {
 
 	useEffect(() => {
 		const fetchProducts = async () => {
-			const response = await fetch(BASE_URL);
+			const response = await fetch(PRODUCT_URL);
 			const data = await response.json();
 			setProducts(data);
 		};
