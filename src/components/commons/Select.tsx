@@ -1,5 +1,10 @@
 import { SelectStyle } from "./Select.css";
-import { SelectProps } from "./Select.types";
+
+interface SelectProps<T extends string> {
+  options: { value: string; text: string }[];
+  onChange: (category: T) => void;
+  value: T;
+}
 
 function Select<T extends string>({
   onChange,

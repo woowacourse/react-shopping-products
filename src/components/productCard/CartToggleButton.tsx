@@ -1,6 +1,16 @@
+import { ERROR_TYPE } from "../../hooks/useError";
 import request from "../../utils/request";
 import { ButtonContainer, RemoveButton } from "./CartToggleButton.css";
-import { CartToggleButtonProps } from "./CartToggleButton.types";
+
+interface CartToggleButtonProps {
+  isAdded: boolean;
+  productId: number;
+  cartId?: number;
+  setCartItemIds: React.Dispatch<
+    React.SetStateAction<Record<"productId" | "cartId", number>[]>
+  >;
+  setErrorTrue: (type: ERROR_TYPE) => void;
+}
 
 function CartToggleButton({
   productId,
