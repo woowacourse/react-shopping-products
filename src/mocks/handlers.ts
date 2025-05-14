@@ -3,13 +3,16 @@ import products from "./data/products.json";
 import cart from "./data/cart.json";
 import { CART_URL, PRODUCT_URL } from "../constants/endpoint";
 import filterProductList from "../utils/filterProductList";
-import { filterType } from "../types";
+import sortProductList from "../utils/sortProductList";
+import { filterType, SortingType } from "../types";
 
 export const handlers = [
 	http.get(PRODUCT_URL, ({ request }) => {
 		const url = new URL(request.url);
 		const category = url.searchParams.get("category") as filterType;
+		const sort = url.searchParams.get("sort");
 		if (category) return HttpResponse.json(filterProductList(products, category));
+		if (sort) return HttpResponse.json(sortProductList(products, sort.split(",")[1] as SortingType));
 
 		return HttpResponse.json(products);
 	}),

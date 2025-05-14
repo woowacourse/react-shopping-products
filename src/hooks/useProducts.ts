@@ -8,8 +8,8 @@ export default function useProducts({ page = "0", size = "20", sortingType = "",
 	const query = {
 		page,
 		size,
-		sort: sortingType === "" ? "" : `price,${sortingType}`,
-		category: filterType,
+		...(sortingType && { sort: `price,${sortingType}` }),
+		...(filterType && { category: filterType }),
 	};
 	const requestURL = getQueryURL(PRODUCT_URL, query);
 
@@ -17,6 +17,7 @@ export default function useProducts({ page = "0", size = "20", sortingType = "",
 		const fetchProducts = async () => {
 			const response = await fetch(requestURL);
 			const data = await response.json();
+
 			setProducts(data);
 		};
 
