@@ -2,15 +2,48 @@ import Header from '../../component/@common/Header';
 import {
   ShoppingListFilterStyle,
   ShoppingListStyle,
-  ShoppingListTitleStyle,
+  ShoppingListTitleStyle
 } from './ShoppingList.styles';
 import Text from '../../component/@common/Text';
 import Dropdown from '../../component/@common/Dropdown';
 import { useState } from 'react';
 import ArrowIcon from '../../component/@common/ArrowIcon';
+import ProductCard from '../../component/feature/ProductCard';
+import ProductListLayout from '../../component/feature/ProductListLayout';
 
 export type SortOption = '높은 가격순' | '낮은 가격순';
 export type CategoryOption = '전체';
+
+const products = [
+  {
+    id: 1,
+    name: '리바이트 블루투스 헤드셋',
+    price: 10000,
+    imageUrl: './public/image/default.png',
+    category: '패션'
+  },
+  {
+    id: 2,
+    name: '리바이트 블루투스 헤드셋',
+    price: 10000,
+    imageUrl: './public/image/default.png',
+    category: '잡화'
+  },
+  {
+    id: 3,
+    name: '리바이트 블루투스 스피커',
+    price: 10000,
+    imageUrl: './public/image/default.png',
+    category: '패션'
+  },
+  {
+    id: 4,
+    name: '리바이트 블루투스 이어폰',
+    price: 10000,
+    imageUrl: './public/image/default.png',
+    category: '패션'
+  }
+];
 
 const ShoppingList = () => {
   const [selected, setSelected] = useState<SortOption>('낮은 가격순');
@@ -54,6 +87,11 @@ const ShoppingList = () => {
           </div>
         </div>
       </section>
+      <ProductListLayout>
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </ProductListLayout>
     </>
   );
 };
