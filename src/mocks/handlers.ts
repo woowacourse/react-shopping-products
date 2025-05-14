@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
-import products from "./products.json";
-import cart from "./cart.json";
+import products from "./data/products.json";
+import cart from "./data/cart.json";
 import { CART_URL, PRODUCT_URL } from "../constants/endpoint";
 
 export const handlers = [
