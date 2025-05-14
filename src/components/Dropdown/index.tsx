@@ -4,9 +4,9 @@ import * as S from "./Dropdown.styled";
 import ArrowIcon from "@components/ArrowIcon";
 
 interface DropdownProps<T extends string> {
-  optionList: T[];
+  optionList: readonly T[];
   onClick: (option: T) => void;
-  defaultOption: string;
+  defaultOption?: string;
   selectedOption: T | null;
 }
 
