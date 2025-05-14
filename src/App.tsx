@@ -1,22 +1,13 @@
 import { useEffect, useState } from 'react';
 import getProducts from './api/getProducts';
 import deleteCartItems from './api/deleteCartItems';
-import ProductItem from './components/ProductItem/ProductItem';
-import isInCart from './utils/isIncart';
 import Header from './components/header/Header';
 import getCartItems from './api/getCartItems';
 import postCartItems from './api/postCartItems';
 import './reset.css';
 import styled from '@emotion/styled';
 import './app.css';
-
-// {
-//     "id": 61,
-//     "name": "방울토마토",
-//     "price": 50000,
-//     "imageUrl": "https://jjfoodmarket.co.kr/data/shop/item/1671006183_l1",
-//     "category": "식료품"
-// }
+import ProductItemsWithSkeleton from './components/ProductItemsWithSkeleton';
 
 export type Product = {
   id: number;
@@ -40,6 +31,8 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
   const [priceOrder, setPriceOrder] = useState<priceOrder>('낮은 가격순');
   const [cart, setCart] = useState<CartItem[]>([]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const addToCart = async (product: Product) => {
     await postCartItems(product);
@@ -66,6 +59,7 @@ function App() {
     const fetchData = async () => {
       const data = await getProducts();
       const cartData = await getCartItems();
+      setIsLoading(false);
 
       setProducts(data.content.slice(0, 20));
       setCart(cartData.content);
@@ -74,26 +68,29 @@ function App() {
     fetchData();
   }, []);
 
-  //이벤트 타입 설정
   const handleCategoryChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    setIsLoading(true);
     setSelectedCategory(e.target.value as Category);
     const data = await getProducts({
       category: e.target.value as Category,
       priceOrder: priceOrder,
     });
+    setIsLoading(false);
     setProducts(data.content.slice(0, 20));
   };
 
   const handlePriceOrderChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    setIsLoading(true);
     setPriceOrder(e.target.value as priceOrder);
     const data = await getProducts({
       category: selectedCategory,
       priceOrder: e.target.value as priceOrder,
     });
+    setIsLoading(false);
     setProducts(data.content.slice(0, 20));
   };
 
@@ -122,15 +119,13 @@ function App() {
           </select>
         </SelectContainer>
         <ProductListContainer>
-          {products.map((product) => (
-            <ProductItem
-              key={product.id}
-              product={product}
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
-              isInCart={isInCart(cart, product.id)}
-            />
-          ))}
+          <ProductItemsWithSkeleton
+            isLoading={isLoading}
+            products={products}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+            cart={cart}
+          />
         </ProductListContainer>
       </ProductPageContainer>
     </Layout>
