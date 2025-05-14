@@ -22,7 +22,8 @@ function Main({ productList }: MainProps) {
 export default Main;
 
 const Container = styled.div`
-  width: 100%;
+  width: fit-content;
+
   display: flex;
   flex-direction: column;
   gap: 20px;

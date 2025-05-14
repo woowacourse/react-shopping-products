@@ -19,7 +19,6 @@ function ProductList({ productList }: ProductListProps) {
 }
 
 const UlContainer = styled.ul`
-  max-width: 380px;
   list-style: none;
   display: grid;
   grid-template-columns: 1fr 1fr;
