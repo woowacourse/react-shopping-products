@@ -1,4 +1,8 @@
-export type CategoryType = '식료품' | '패션잡화';
+export type CategoryType = '전체' | '식료품' | '패션잡화';
+
+export type SelectedSortType = '높은 가격순' | '낮은 가격순';
+
+export type SortType = 'desc' | 'asc';
 
 export interface ProductItemType {
   id: number;

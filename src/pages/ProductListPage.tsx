@@ -9,11 +9,11 @@ import tryApiCall from '../util/tryApiCall';
 import { addCartItems, removeCartItems } from '../services/cartItemServices';
 import { getCartId } from '../domain/manageCartInfo';
 import useCartContext from '../hooks/useCartContext';
+import { CATEGORY_OPTIONS, SELECT_SORT_OPTIONS, SORT_OPTIONS } from '../constants/systemConstants';
 
 export const ProductListPage = () => {
-  //임시
-  const options = ['옵션1', '옵션2', '옵션3', '옵션4', '옵션5'];
-  const [value, setValue] = useState(options[0]);
+  const [categoryOption, setCategoryOption] = useState(CATEGORY_OPTIONS[0]);
+  const [sortOption, setSortOption] = useState('높은 가격순');
   const [products, setProducts] = useState<ProductItemType[]>([]);
 
   const {
@@ -23,18 +23,25 @@ export const ProductListPage = () => {
     errorMessage,
     handleErrorMessage,
   } = useCartContext();
-
+  console.log(sortOption);
   useEffect(() => {
     (async () => {
-      const productsData = await tryApiCall(getProducts, handleErrorMessage);
+      const productsData = await tryApiCall(
+        () => getProducts(categoryOption, SORT_OPTIONS.get(sortOption)),
+        handleErrorMessage,
+      );
       if (productsData) {
         setProducts(productsData);
       }
     })();
-  }, []);
+  }, [categoryOption, sortOption]);
 
-  const handleSelectedValue = (value: string) => {
-    setValue(value);
+  const handleCategoryOption = (value: string) => {
+    setCategoryOption(value);
+  };
+
+  const handleSortOption = (value: string) => {
+    setSortOption(value);
   };
 
   const handleAddCartItem = (id: number) => {
@@ -55,20 +62,22 @@ export const ProductListPage = () => {
     })();
   };
 
+  // const selectedValue = SORT_OPTIONS.get(sortOption) ?? 'desc';
+
   return (
     <ProductListPageContainer>
       {errorMessage.length !== 0 && <ErrorToast errorMessage={errorMessage} />}
       <Title>bpple 상품 목록</Title>
       <SelectContainer>
         <Select
-          value={value}
-          options={options}
-          handleSelectedValue={(value: string) => handleSelectedValue(value)}
+          value={categoryOption}
+          options={CATEGORY_OPTIONS}
+          handleSelectedValue={(value) => handleCategoryOption(value)}
         />
         <Select
-          value={value}
-          options={options}
-          handleSelectedValue={(value: string) => handleSelectedValue(value)}
+          value={sortOption}
+          options={SELECT_SORT_OPTIONS}
+          handleSelectedValue={(value) => handleSortOption(value)}
         />
       </SelectContainer>
 
