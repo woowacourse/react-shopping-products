@@ -1,11 +1,18 @@
-import { HeaderWrapper } from "../styles/Header";
+import { HeaderWrapper, BasketWrapper, BasketCountTextWrapper } from "../styles/Header";
 import { IMAGE_PATH } from "../constants/imagePath";
 
-const Header = () => {
+type HeaderProps = {
+  basketCount : number;
+};
+
+const Header = ({basketCount}:HeaderProps) => {
   return (
     <HeaderWrapper>
       <img src={IMAGE_PATH.HEADER_TITLE} />
-      <img src={IMAGE_PATH.SHOPPING_BASKET} />
+      <BasketWrapper>
+        <BasketCountTextWrapper>{basketCount}</BasketCountTextWrapper>
+        <img src={IMAGE_PATH.SHOPPING_BASKET} />
+      </BasketWrapper>
     </HeaderWrapper>
   );
 };
