@@ -1,8 +1,6 @@
 export const getProducts = async () => {
   try {
-    const response = await fetch(
-      'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products?page=0&size=10'
-    );
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
