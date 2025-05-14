@@ -1,7 +1,20 @@
 import styled from '@emotion/styled';
 import SelectBox from '../Common/SelectBox';
+import { ProductTypes } from '../../types/ProductTypes';
+import { useState } from 'react';
+import getProducts from '../../api/getProducts';
+import { markItemsInCart } from './ProductListContainer';
+import { CartItemTypes } from '../../types/CartItemType';
 
-export default function ProductListToolbar() {
+interface ProductListToolbarProps {
+  setProducts: (products: ProductTypes[]) => void;
+  cartItems: CartItemTypes[];
+}
+
+export default function ProductListToolbar({
+  setProducts,
+  cartItems,
+}: ProductListToolbarProps) {
   const CATEGORY = [
     { name: '전체', value: 'all' },
     { name: '식료품', value: 'grocery' },
@@ -11,11 +24,36 @@ export default function ProductListToolbar() {
     { name: '낮은 가격순', value: 'low' },
     { name: '높은 가격순', value: 'high' },
   ];
+
+  const [categoryValue, setCategoryValue] = useState('');
+
+  const handleCategoryChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { value } = e.target;
+    try {
+      const productsData = await getProducts(value === '전체' ? '' : value);
+      const productsContent = productsData.content;
+      setProducts(markItemsInCart(cartItems, productsContent));
+    } catch (e) {
+      //
+    } finally {
+      //
+    }
+
+    setCategoryValue(value);
+  };
+
   return (
     <Container>
       <Title>bpple 상품 목록</Title>
       <SelectBoxContainer>
-        <SelectBox category={CATEGORY} name="catetory" />
+        <SelectBox
+          value={categoryValue}
+          onChange={handleCategoryChange}
+          category={CATEGORY}
+          name="catetory"
+        />
         <SelectBox category={PRICE} name="price" />
       </SelectBoxContainer>
     </Container>

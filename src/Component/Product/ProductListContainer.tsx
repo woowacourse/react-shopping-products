@@ -9,7 +9,10 @@ interface ProductListContainerProps {
   cartItems: CartItemTypes[];
 }
 
-function markItemsInCart(cartItems: CartItemTypes[], items: ProductTypes[]) {
+export function markItemsInCart(
+  cartItems: CartItemTypes[],
+  items: ProductTypes[]
+) {
   const cartIds = new Set(cartItems.map((cartItem) => cartItem.id));
 
   return items.map((item) => ({
@@ -40,7 +43,7 @@ export default function ProductListContainer({
 
   return (
     <>
-      <ProductListToolbar />
+      <ProductListToolbar setProducts={setProducts} cartItems={cartItems} />
       <ProductList productList={products} />
     </>
   );

@@ -11,7 +11,7 @@ const PAGEABLE_DEFAULT = {
 };
 
 export default async function getProducts(
-  category?: '식료품' | '패션잡화',
+  category?: '식료품' | '패션잡화' | string,
   pageable: PageableType = PAGEABLE_DEFAULT
 ) {
   const { page, size, sort } = pageable;
