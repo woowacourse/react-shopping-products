@@ -3,6 +3,7 @@ import { CardListContainer } from "./ProductCardList.css";
 import { ProductPageResponse } from "../../types/response.types";
 import useFetchProducts from "../../hooks/useFetchProducts";
 import { categoryType, sortType } from "../../types/index.types";
+import { ERROR_TYPE } from "../../hooks/useError";
 
 interface ProductCardListProps {
   products: ProductPageResponse | null;
@@ -13,6 +14,8 @@ interface ProductCardListProps {
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
+  setErrorTrue: (type: ERROR_TYPE) => void;
+  setErrorFalse: () => void;
 }
 
 function ProductCardList({
@@ -22,8 +25,10 @@ function ProductCardList({
   sort,
   cartItemIds,
   setCartItemIds,
+  setErrorTrue,
+  setErrorFalse,
 }: ProductCardListProps) {
-  useFetchProducts({ category, setProducts, sort });
+  useFetchProducts({ category, setProducts, sort, setErrorTrue });
 
   return (
     <div css={CardListContainer}>
@@ -39,6 +44,8 @@ function ProductCardList({
           price={data.price}
           imageUrl={data.imageUrl}
           setCartItemIds={setCartItemIds}
+          setErrorTrue={setErrorTrue}
+          setErrorFalse={setErrorFalse}
         />
       ))}
     </div>

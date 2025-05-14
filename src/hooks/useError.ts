@@ -7,24 +7,30 @@ const ERROR_MESSAGE = {
   MINUS: "장바구니 삭제를 실패했습니다.",
 };
 
-let errorMessage = "";
+export type ERROR_TYPE = keyof typeof ERROR_MESSAGE;
 
 function useError() {
-  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  function setErrorTrue(errorType: keyof typeof ERROR_MESSAGE) {
-    setIsError(true);
-    errorMessage = ERROR_MESSAGE[errorType];
+  function setErrorTrue(errorType: ERROR_TYPE) {
+    setErrorMessage(ERROR_MESSAGE[errorType]);
   }
 
-  useEffect(() => {
-    if (!isError) return;
-    setTimeout(() => {
-      setIsError(false);
-    }, 5000);
-  }, [isError]);
+  function setErrorFalse() {}
 
-  return { isError, setErrorTrue, errorMessage };
+  useEffect(() => {
+    if (errorMessage) return;
+    setTimeout(() => {
+      setErrorMessage("");
+    }, 5000);
+  }, [errorMessage]);
+
+  return {
+    isError: Boolean(errorMessage),
+    setErrorTrue,
+    errorMessage,
+    setErrorFalse,
+  };
 }
 
 export default useError;

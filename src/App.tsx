@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { CartItem } from "./types/response.types";
 
 function App() {
-  const { isError, setErrorTrue, errorMessage } = useError();
+  const { isError, setErrorTrue, errorMessage, setErrorFalse } = useError();
 
   const [cartItemIds, setCartItemIds] = useState<
     Record<"productId" | "cartId", number>[]
@@ -24,7 +24,6 @@ function App() {
           "Content-Type": "application/json",
         },
       });
-      console.log(data);
 
       setCartItemIds(
         data.content.map((data: CartItem) => {
@@ -32,6 +31,7 @@ function App() {
         })
       );
     } catch {
+      setErrorFalse();
       setErrorTrue("CART");
     }
   }
@@ -48,6 +48,8 @@ function App() {
       <ProductContainer
         cartItemIds={cartItemIds}
         setCartItemIds={setCartItemIds}
+        setErrorTrue={setErrorTrue}
+        setErrorFalse={setErrorFalse}
       />
       {isError && <ErrorToast errorMessage={errorMessage} />}
     </div>

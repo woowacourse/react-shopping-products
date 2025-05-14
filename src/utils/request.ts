@@ -11,17 +11,19 @@ async function request<T extends object>({
   url,
   body,
 }: requestProps<T>) {
-  try {
-    const response = await fetch(`${import.meta.env.VITE_BASE_URL}${url}`, {
-      method,
-      body: body ? JSON.stringify(body) : undefined,
-      headers,
-    });
-    const data = await response.json();
-    return data;
-  } catch {
-    return [];
+  const response = await fetch(`${import.meta.env.VITE_BASE_URL}${url}`, {
+    method,
+    body: body ? JSON.stringify(body) : undefined,
+    headers,
+  });
+  if (!response.ok) throw new Error();
+
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    return await response.json();
   }
+
+  return null;
 }
 
 export default request;

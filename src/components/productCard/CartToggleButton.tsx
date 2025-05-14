@@ -7,30 +7,44 @@ function CartToggleButton({
   cartId,
   isAdded,
   setCartItemIds,
+  setErrorTrue,
+  setErrorFalse,
 }: CartToggleButtonProps) {
   async function addItemToCart() {
-    await request({
-      headers: {
-        Authorization: import.meta.env.VITE_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      url: "/cart-items",
-      body: { productId, quantity: 1 },
-    });
-    setCartItemIds((prev) => [...prev, { productId, cartId: 0 }]);
+    try {
+      await request({
+        headers: {
+          Authorization: import.meta.env.VITE_TOKEN,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        url: "/cart-items",
+        body: { productId, quantity: 1 },
+      });
+      setCartItemIds((prev) => [...prev, { productId, cartId: 0 }]);
+    } catch {
+      setErrorFalse();
+      setErrorTrue("ADD");
+    }
   }
 
   async function removeItemToCart() {
-    await request({
-      headers: {
-        Authorization: import.meta.env.VITE_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-      url: `/cart-items/${cartId}`,
-    });
-    setCartItemIds((prev) => prev.filter((ids) => ids.productId !== productId));
+    try {
+      await request({
+        headers: {
+          Authorization: import.meta.env.VITE_TOKEN,
+          "Content-Type": "application/json",
+        },
+        method: "DELETE",
+        url: `/cart-items/${cartId}`,
+      });
+      setCartItemIds((prev) =>
+        prev.filter((ids) => ids.productId !== productId)
+      );
+    } catch {
+      setErrorFalse();
+      setErrorTrue("MINUS");
+    }
   }
   return (
     <>

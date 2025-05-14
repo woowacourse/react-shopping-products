@@ -7,6 +7,7 @@ import {
   ButtonContainer,
 } from "./ProductCard.css";
 import CartToggleButton from "./CartToggleButton";
+import { ERROR_TYPE } from "../../hooks/useError";
 
 interface ProductCardProps {
   productId: number;
@@ -18,6 +19,8 @@ interface ProductCardProps {
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
+  setErrorTrue: (type: ERROR_TYPE) => void;
+  setErrorFalse: () => void;
 }
 
 function ProductCard({
@@ -28,6 +31,8 @@ function ProductCard({
   imageUrl,
   isAdded,
   setCartItemIds,
+  setErrorTrue,
+  setErrorFalse,
 }: ProductCardProps) {
   return (
     <div css={ProductContainer}>
@@ -42,6 +47,8 @@ function ProductCard({
           cartId={cartId}
           isAdded={isAdded}
           setCartItemIds={setCartItemIds}
+          setErrorTrue={setErrorTrue}
+          setErrorFalse={setErrorFalse}
         />
       </div>
     </div>
