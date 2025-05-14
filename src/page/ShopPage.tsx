@@ -77,8 +77,14 @@ export default function ShopPage() {
   const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
   const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
 
-  const onClick = () => {
-    console.log("click");
+  const updateCardItemList = async () => {
+    (async () => {
+      const response = await getCartItem({
+        sortBy: "asc",
+      });
+      setSelectedProducts(response.content.length);
+      setCartItemList(response.content);
+    })();
   };
 
   useEffect(() => {
@@ -99,13 +105,7 @@ export default function ShopPage() {
   }, [filterValue, categoryValue]);
 
   useEffect(() => {
-    (async () => {
-      const response = await getCartItem({
-        sortBy: "asc",
-      });
-      setSelectedProducts(response.content.length);
-      setCartItemList(response.content);
-    })();
+    updateCardItemList();
   }, []);
 
   return (
@@ -116,7 +116,9 @@ export default function ShopPage() {
             css={cartIcon}
             src="./shopping-cart.svg"
             alt="장바구니 아이콘"
-            onClick={onClick}
+            onClick={() => {
+              console.log("click");
+            }}
           />
           {selectedProducts !== 0 && (
             <div css={cartItemCount}>{selectedProducts}</div>
@@ -143,7 +145,7 @@ export default function ShopPage() {
         <ProductContainer
           products={productList}
           cartItemList={cartItemList}
-          setSelectedProducts={setSelectedProducts}
+          onChange={updateCardItemList}
         />
       </Body>
     </div>

@@ -1,8 +1,7 @@
 import { css } from "@emotion/react";
 import { deleteCartItem, postCartItem } from "../../api/cartItem";
-import Button from "../Button/Button";
 import { CartItem } from "../../page/ShopPage";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import Button from "../Button/Button";
 
 interface ProductProps {
   id: string;
@@ -10,7 +9,7 @@ interface ProductProps {
   name: string;
   price: string;
   selectedCardItems: CartItem[];
-  setSelectedProducts: Dispatch<SetStateAction<number>>;
+  onChange: () => void;
 }
 
 const productLayout = css`
@@ -64,21 +63,15 @@ export default function Product({
   name,
   price,
   selectedCardItems,
-  setSelectedProducts,
+  onChange,
 }: ProductProps) {
-  const [isSelected, setIsSelected] = useState(selectedCardItems.length !== 0);
-  // const cartItemId = selectedCardItems[0] ? : 0;
+  const isSelected = selectedCardItems.length !== 0;
 
   const handleClick = async () => {
-    if (isSelected) {
-      deleteCartItem({ id: Number(selectedCardItems[0].id) });
-      // setIsSelected(false);
-      setSelectedProducts((prev) => prev - 1);
-    } else {
-      // setIsSelected(true);
-      postCartItem({ productId: Number(id), quantity: 1 });
-      setSelectedProducts((prev) => prev + 1);
-    }
+    if (isSelected)
+      await deleteCartItem({ id: Number(selectedCardItems[0].id) });
+    else await postCartItem({ productId: Number(id), quantity: 1 });
+    onChange();
   };
 
   const addProduct = () => {
@@ -99,14 +92,14 @@ export default function Product({
     );
   };
 
-  useEffect(() => {
-    setIsSelected(selectedCardItems.length !== 0);
-    console.log(id, selectedCardItems);
-  }, [selectedCardItems]);
+  // useEffect(() => {
+  //   setIsSelected(selectedCardItems.length !== 0);
+  //   console.log(id, selectedCardItems);
+  // }, [selectedCardItems]);
 
-  useEffect(() => {
-    console.log(id, isSelected);
-  }, [isSelected]);
+  // useEffect(() => {
+  //   console.log(id, isSelected);
+  // }, [isSelected]);
 
   return (
     <div id={id} css={productLayout}>

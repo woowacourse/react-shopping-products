@@ -37,9 +37,7 @@ export async function postCartItem({ productId, quantity }: PostCartItemProps) {
     }),
   };
 
-  return fetch(`${import.meta.env.VITE_BASE_URL}/cart-items`, options).then(
-    (res) => res.json()
-  );
+  return fetch(`${import.meta.env.VITE_BASE_URL}/cart-items`, options);
 }
 
 export async function deleteCartItem({ id }: { id: number }) {
@@ -50,8 +48,5 @@ export async function deleteCartItem({ id }: { id: number }) {
     },
   };
 
-  return fetch(
-    `${import.meta.env.VITE_BASE_URL}/cart-items/${id}`,
-    options
-  ).then((res) => res.json());
+  return fetch(`${import.meta.env.VITE_BASE_URL}/cart-items/${id}`, options);
 }

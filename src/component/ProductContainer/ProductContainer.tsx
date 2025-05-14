@@ -1,7 +1,6 @@
 import { css } from "@emotion/react";
-import Product from "../Product/Product";
 import { CartItem } from "../../page/ShopPage";
-import { Dispatch, SetStateAction } from "react";
+import Product from "../Product/Product";
 
 export interface Product {
   id: string;
@@ -13,7 +12,7 @@ export interface Product {
 interface ProductContainerProps {
   products: Product[];
   cartItemList: CartItem[];
-  setSelectedProducts: Dispatch<SetStateAction<number>>;
+  onChange: () => void;
 }
 
 const ProductContainerLayout = css`
@@ -25,7 +24,7 @@ const ProductContainerLayout = css`
 export default function ProductContainer({
   products,
   cartItemList,
-  setSelectedProducts,
+  onChange,
 }: ProductContainerProps) {
   return (
     <div css={ProductContainerLayout}>
@@ -33,6 +32,7 @@ export default function ProductContainer({
         const selectedCardItems = cartItemList.filter(
           (cartItem: CartItem) => Number(product.id) === cartItem.product.id
         );
+
         return (
           <Product
             id={product.id}
@@ -40,7 +40,7 @@ export default function ProductContainer({
             name={product.name}
             price={product.price}
             selectedCardItems={selectedCardItems}
-            setSelectedProducts={setSelectedProducts}
+            onChange={onChange}
           />
         );
       })}
