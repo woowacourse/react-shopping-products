@@ -1,11 +1,33 @@
-import { useState } from "react";
+import Header from './Component/Layout/Header';
+import ProductListContainer from './Component/Product/ProductListContainer';
+import Body from './Component/Layout/Body';
+import { useEffect, useState } from 'react';
+import getShppingCart from './api/getShppingCart';
+import { CartItemTypes } from './types/CartItemType';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [cartItems, setCartItems] = useState<CartItemTypes[]>([]);
+
+  useEffect(() => {
+    async function fetchCartItems() {
+      try {
+        const cartItemsData = await getShppingCart();
+        setCartItems(cartItemsData.content);
+      } catch (e) {
+        //
+      } finally {
+        //
+      }
+    }
+    fetchCartItems();
+  }, []);
 
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <Header />
+      <Body>
+        <ProductListContainer cartItems={cartItems} />
+      </Body>
     </>
   );
 }
