@@ -4,21 +4,26 @@ import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
 import { postCartProduct } from '../../cart/api/postCartProduct';
 import { Product } from '../type/product';
 import * as S from './ProductCard.styles';
+import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const navigate = useNavigate();
+
   const handleProductCart = async () => {
     if (product.isCart && product.cartProductId) {
       await deleteCartProduct(product.cartProductId);
       alert('장바구니에서 삭제되었습니다.');
+      navigate(0);
       return;
     }
 
     await postCartProduct(product.id);
     alert('장바구니에 담겼습니다.');
+    navigate(0);
   };
 
   const iconUrl = product.isCart ? '/deleteCartIcon.svg' : '/addCartIcon.svg';

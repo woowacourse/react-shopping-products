@@ -36,7 +36,7 @@ function App() {
 
   const isError = error !== '';
 
-  console.log(pageInfo);
+  // console.log(pageInfo);
 
   useEffect(() => {
     const fetchData = async () => {
