@@ -29,8 +29,10 @@ export const getCartItems = async ({ page, size, sort = "asc" }: GetCartItemsPar
 export const postCartItems = async ({ productId, quantity }: PostCartItemsParams) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
     method: "POST",
+
     headers: {
       Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       productId,
@@ -47,6 +49,7 @@ export const deleteCartItems = async ({ productId }: DeleteCartItemsParams) => {
     method: "DELETE",
     headers: {
       Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       productId,

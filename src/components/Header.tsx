@@ -1,14 +1,16 @@
 import { css } from "@emotion/react";
 import ShoppingBag from "./icons/ShoppingBag";
 
-const Header = ({ shoppingCount }: { shoppingCount: number }) => {
+const Header = ({ shoppingCount = 0 }: { shoppingCount?: number }) => {
   return (
     <header css={headerStyle}>
       <span>SHOP</span>
-      <div css={shoppingBagStyle}>
-        <ShoppingBag />
-        <span css={shoppingBagCountStyle}>{shoppingCount}</span>
-      </div>
+      <ShoppingBag />
+      {shoppingCount !== 0 && (
+        <div css={shoppingBagStyle}>
+          <span css={shoppingBagCountStyle}>{shoppingCount}</span>
+        </div>
+      )}
     </header>
   );
 };

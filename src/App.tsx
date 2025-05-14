@@ -8,13 +8,16 @@ import AddCart from "./components/icons/AddCart";
 import Select from "./components/Select";
 import Text from "./components/Text";
 import { Content } from "./types/product";
-import { getCartItems } from "./apis/cartItem";
+import { deleteCartItems, getCartItems, postCartItems } from "./apis/cartItem";
+import RemoveCart from "./components/icons/RemoveCart";
 
 function App() {
   const [filter, setFilter] = useState("전체");
   const [sort, setSort] = useState("높은 가격순");
 
   const [products, setProducts] = useState<Content[]>();
+  const [cartItemIds, setCartItemIds] = useState<number[]>();
+
 
   const getProduct = async () => {
     const data = await getProducts({ page: 0, size: 20 });
@@ -23,19 +26,29 @@ function App() {
     return data;
   };
 
-  const getCardItem = async () => {
+  const getCartItem = async () => {
     const data = await getCartItems({ page: 0, size: 20 });
-    console.log(data);
+    setCartItemIds(data.content.map((item) => item.product.id));
   };
 
   useEffect(() => {
     getProduct();
-    getCardItem();
+    getCartItem();
   }, []);
+
+  const handleAddCart = async (id: number) => {
+    await postCartItems({ quantity: 1, productId: id });
+    await getCartItem();
+  };
+
+  const handleRemoveCart = async (id: number) => {
+    await deleteCartItems({ productId: id });
+    await getCartItem();
+  };
 
   return (
     <div css={appStyle}>
-      <Header shoppingCount={3} />
+      <Header shoppingCount={cartItemIds?.length} />
 
       <div css={containerStyle}>
         <Text variant="title-1">bpple 상품 목록</Text>
@@ -51,9 +64,16 @@ function App() {
               sort === "낮은 가격순" ? productA.price - productB.price : productB.price - productA.price,
             )
             ?.map((product) => (
-              <Card>
+              <Card key={product.id}>
                 <Card.Preview>
-                  <img src={product.imageUrl} alt={product.name} />
+                  <img
+                    src={product.imageUrl}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        "https://www.next-t.co.kr/public/uploads/7b7f7e2138e29e598cd0cdf2c85ea08d.jpg";
+                    }}
+                    alt={product.name}
+                  />
                 </Card.Preview>
                 <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
                   <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -61,12 +81,19 @@ function App() {
                     <Text variant="body-2">{product.price.toLocaleString()}원</Text>
                   </div>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <Button>
-                      <AddCart />
-                      <Text variant="body-2" color="#fff">
-                        담기
-                      </Text>
-                    </Button>
+                    {cartItemIds?.includes(product.id) ? (
+                      <Button backgroundColor="#fff" onClick={() => handleRemoveCart(product.id)}>
+                        <RemoveCart />
+                        <Text variant="body-2">빼기</Text>
+                      </Button>
+                    ) : (
+                      <Button onClick={() => handleAddCart(product.id)}>
+                        <AddCart />
+                        <Text variant="body-2" color="#fff">
+                          담기
+                        </Text>
+                      </Button>
+                    )}
                   </div>
                 </Card.Content>
               </Card>
@@ -105,4 +132,5 @@ const cardContainerStyle = css`
   grid-template-columns: 1fr 1fr;
   row-gap: 20px;
   justify-items: center;
+  overflow-y: scroll;
 `;
