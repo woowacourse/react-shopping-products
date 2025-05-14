@@ -30,7 +30,7 @@ function App() {
   return (
     <S.Global>
       <S.Wrap>
-        <Header />
+        <Header cartItemList={cartItemList} />
         <ErrorBox backgroundColor='#FFC9C9' text='에러 발생' />
         <S.MiddleContainer>
           <ProductControl setProductList={setProductList} />
