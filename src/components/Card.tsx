@@ -28,7 +28,6 @@ Card.Content = ({ children, ...props }: CardContentProps) => {
   );
 };
 
-// style={{ display: "flex", flexDirection: "column", gap: "26px" }}
 export default Card;
 
 const cardStyle = css`
