@@ -5,13 +5,13 @@
 ### 컴포넌트 구현
 
 - [x] Header 컴포넌트
-- [ ] Body
+- [x] Body 컴포넌트
   - [x] ProductListToolbar 컴포넌트
     - [x] Title
     - [x] Select 컴포넌트
   - [x] ProductList 컴포넌트
     - [x] ProductItem 컴포넌트
-  - [ ] 에러 컴포넌트
+  - [x] 에러 컴포넌트
 
 ### 1. 상품 목록 조회
 
