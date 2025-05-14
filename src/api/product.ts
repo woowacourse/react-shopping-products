@@ -1,13 +1,18 @@
-import { ProductListResponse } from '@/features/ProductList/types/Product';
+import { ProductListResponse, ProductQuery } from '@/features/ProductList/types/Product';
 
 import { ENV } from './env';
 import { fetcher } from './fetcher';
 
-export const getProductList = async () => {
+export const getProductList = async ({
+  page = 0,
+  size = 20,
+  sort = 'price,asc',
+  category = '',
+}: Partial<ProductQuery> = {}) => {
   const data = await fetcher
     .get<ProductListResponse>({
       baseUrl: ENV.BASE_URL + 'products',
-      query: { page: 0, size: 20, sort: 'price,asc' },
+      query: { page, size, sort, category },
     })
     .then((res) => res);
 
