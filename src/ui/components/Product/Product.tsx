@@ -1,4 +1,4 @@
-import { addCart } from '../../../api/cart';
+import { addCart, removeCart } from '../../../api/cart';
 import {
   Container,
   ProductImageContainer,
@@ -6,10 +6,9 @@ import {
   Detail,
   Price,
   ProductName,
-  CartButton,
-  CartButtonImg,
-  CartButtonText,
 } from './Product.styles';
+import AddButton from './AddButton';
+import RemoveButton from './RemoveButton';
 import { useState } from 'react';
 
 interface ProductProps {
@@ -18,21 +17,25 @@ interface ProductProps {
   name: string;
   price: number;
   imgSrc?: string;
+  isInCart: boolean;
 }
 
-function Product({ id, name, price, imgSrc }: ProductProps) {
+function Product({ id, name, price, imgSrc, isInCart, cart }: ProductProps) {
   const [inCart, setInCart] = useState(false);
 
-  const handleAddCart = () => {
-    const response = addCart(id, price);
-    setInCart((prev) => !prev);
+  const handleAddCart = async () => {
+    await addCart(id, price);
+    setInCart(true);
   };
 
-  const buttonImg = inCart
-    ? './remove_shopping_cart.png'
-    : './add_shopping_cart.png';
-
-  const buttonText = inCart ? '빼기' : '담기';
+  const handleRemoveCart = async () => {
+    if (cart) {
+      const cartId = cart.cart.content.filter((item) => item.product.id === id);
+      console.log('cart id:', cartId);
+      await removeCart(cartId[0].id);
+      setInCart(false);
+    }
+  };
 
   return (
     <Container>
@@ -43,10 +46,11 @@ function Product({ id, name, price, imgSrc }: ProductProps) {
         <ProductName>{name}</ProductName>
         <Price>{price}</Price>
       </Detail>
-      <CartButton inCart={inCart} onClick={handleAddCart}>
-        <CartButtonImg src={buttonImg} alt={buttonText} />
-        <CartButtonText inCart={inCart}>{buttonText}</CartButtonText>
-      </CartButton>
+      {isInCart ? (
+        <RemoveButton onClick={handleRemoveCart} />
+      ) : (
+        <AddButton onClick={handleAddCart} />
+      )}
     </Container>
   );
 }

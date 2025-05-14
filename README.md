@@ -31,7 +31,7 @@
   - 아이템의 종류는 id 로 판단한다.
   - 전체 장바구니에 1개의 아이템을 100개 담았다고 했을 때, 1개로 표시한다.
 - [ ] 장바구니 담기 요청 중 에러가 발생한 경우, 에러 메시지를 사용자에게 알려주는 UI를 표시한다.
-- [ ] 장바구니에서 빼기 버튼을 누르면, 장바구니에서 해당 아이템이 제거된다.
+- [x] 장바구니에서 빼기 버튼을 누르면, 장바구니에서 해당 아이템이 제거된다.
 - [ ] 장바구니에 담긴 아이템 종류의 최대 개수는 50개이다.
 
 <br>
@@ -45,12 +45,12 @@
   - 설정을 확인할 수 있다.
   - 계정 정보
     - email: github username, password: 'password'
-  - [ ] GET /products API 에서, 정렬(sort)은 {sortKey},{sortOrder}형식으로 요청한다.
+  - [x] GET /products API 에서, 정렬(sort)은 {sortKey},{sortOrder}형식으로 요청한다.
     - ex) price,asc
     - sortKey 에는 price, name, id 등 상품이 가지는 속성이 들어가고, sortOrder 는 asc, desc 가 들어간다.
     - sort 가 여러개의 기준을 가질 수 있다.
       - ex) ["price,asc", "id,desc"]
-    - 가격은 오름차순, 가격이 동일하다면 id 내림차순
+    - [ ] 가격은 오름차순, 가격이 동일하다면 id 내림차순
 
 - API
 

@@ -34,3 +34,21 @@ export const addCart = async (id: number, price: number) => {
   });
   return response;
 };
+
+export const removeCart = async (id: number) => {
+  const response = await fetch(`${baseUrl}/cart-items/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Basic dGhnbWwwNTpwYXNzd29yZA==',
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(
+      errorText || `장바구니 아이템 삭제를 실패했습니다.: ${response.status}`
+    );
+  }
+
+  return response;
+};
