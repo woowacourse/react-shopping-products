@@ -5,8 +5,10 @@ import Toast from './ui/components/Toast/Toast';
 import ProductSection from './ui/components/ProductSection/ProductSection';
 import { Global } from '@emotion/react';
 import { useState } from 'react';
+import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   return (
@@ -17,7 +19,8 @@ function App() {
         {isError && (
           <Toast message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요." />
         )}
-        <ProductSection />
+        {isLoading && <LoadingSpinner duration={2} />}
+        {!isLoading && <ProductSection />}
       </Layout>
     </>
   );
