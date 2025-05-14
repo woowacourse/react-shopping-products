@@ -10,13 +10,15 @@ import deleteShoppingCart from "../../APIs/deleteShoppingCart";
 interface ProductCardProps {
   product: Product;
   isInCart: boolean;
-  cartItemId?: number;
 }
 
-const ProductCard = ({ product, isInCart, cartItemId }: ProductCardProps) => {
+const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const { handleCartItemChange, handleShoppingCartError } =
+  const { cartItems, handleCartItemChange, handleShoppingCartError } =
     useShoppingCartContext();
+  const cartItemId = cartItems.find(
+    (item) => item.product.id === product.id
+  )?.id;
 
   const handleAddButton = useCallback(async () => {
     const endpoint = "/cart-items";
@@ -24,6 +26,14 @@ const ProductCard = ({ product, isInCart, cartItemId }: ProductCardProps) => {
       productId: id,
       quantity: 1,
     };
+
+    if (cartItems.length === 50) {
+      handleShoppingCartError({
+        isError: true,
+        errorMessage: "장바구니에 담을 수 있는 최대 수량은 50개입니다.",
+      });
+      return;
+    }
 
     try {
       const newCardItem = await addShoppingCart({ endpoint, requestBody });
@@ -36,7 +46,7 @@ const ProductCard = ({ product, isInCart, cartItemId }: ProductCardProps) => {
         });
       }
     }
-  }, [id, handleCartItemChange, handleShoppingCartError]);
+  }, [id, handleCartItemChange, handleShoppingCartError, cartItems.length]);
 
   const handleRemoveButton = useCallback(async () => {
     const endpoint = `/cart-items`;

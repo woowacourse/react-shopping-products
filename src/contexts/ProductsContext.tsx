@@ -55,8 +55,7 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
       } catch (error) {
         setProductsError({
           isError: true,
-          errorMessage:
-            "상품을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.",
+          errorMessage: "상품을 불러오는 데 실패했습니다. 다시 시도해주세요.",
         });
         setTimeout(() => {
           setProductsError(INITIAL_ERROR);
