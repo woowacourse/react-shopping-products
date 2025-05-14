@@ -1,11 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Dropdown, { DropdownOptionType } from '../../components/common/Dropdown';
 import ShopHeader from '../../components/features/header/ShopHeader';
 import ProductList from '../../components/features/product/product-list/ProductList';
 import Flex from '../../components/common/Flex';
 import styled from '@emotion/styled';
+import { ProductData } from '../../api/type';
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: ProductCategoryType;
+}
+type ProductCategoryType = 'all' | 'food' | 'fashion';
 
 function ShopPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [filterOption, setFilterOption] = useState({
     category: { label: '전체', value: 'all' },
     sort: { label: '낮은 가격순', value: 'ascending' },
@@ -24,6 +37,61 @@ function ShopPage() {
       sort: option,
     }));
   };
+
+  const getListData = async ({
+    page,
+    size,
+  }: {
+    page: number;
+    size: number;
+  }) => {
+    const result = await fetch(
+      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products?page=${page}&size=${size}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Basic ${btoa(
+            `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
+          )}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    if (!result.ok) {
+      throw new Error('에러가 났어요~');
+    }
+    const data = (await result.json()) as ProductData;
+
+    return data;
+  };
+
+  useEffect(() => {
+    const getListDataHandler = async () => {
+      try {
+        const data = await getListData({ page: 0, size: 20 });
+        const productsData = data.content.map(
+          ({ id, name, price, imageUrl, category }) => ({
+            id: id.toString(),
+            name: name ?? '',
+            price,
+            imageUrl: imageUrl ?? 'defaultImage',
+            category: (category ?? 'all') as ProductCategoryType,
+          })
+        );
+        setProducts(productsData);
+      } catch (e) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getListDataHandler();
+  }, []);
+
+  if (isLoading) return <div>로딩중 입니다~</div>;
+
+  if (isError) return <div>에러가 났어요~!</div>;
 
   return (
     <>
@@ -51,24 +119,7 @@ function ShopPage() {
             />
           </Flex>
         </ListTitleBox>
-        <ProductList
-          products={[
-            {
-              id: '139',
-              name: '오거스가 침뱉은 커피',
-              price: 30000,
-              imageUrl:
-                'https://cdn.wikifoodie.co.kr/news/photo/202504/2050_5442_3844.jpg',
-            },
-            {
-              id: '140',
-              name: '니야의 발냄새나는 운동화',
-              price: 938000,
-              imageUrl:
-                'https://img.danawa.com/prod_img/500000/479/578/img/13578479_1.jpg?_v=20210311181438',
-            },
-          ]}
-        />
+        <ProductList products={products} />
       </ProductListContainer>
     </>
   );
