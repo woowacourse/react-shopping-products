@@ -2,20 +2,18 @@ import { ProductItemType } from "@/types/product";
 import AddCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Add";
 import RemoveCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Remove";
 import * as S from "./ProductItem.styled";
-import { OnAddToCart, OnRemoveToCart } from "@/types/cartItem";
+import { SetCartItems } from "@/types/cartItem";
 
 interface ProductItemProps {
   product: ProductItemType;
   isAddedToCart: boolean;
-  onAddToCart: OnAddToCart;
-  onRemoveToCart: OnRemoveToCart;
+  setCartItems: SetCartItems;
 }
 
 function ProductItem({
   product,
   isAddedToCart,
-  onAddToCart,
-  onRemoveToCart,
+  setCartItems,
 }: ProductItemProps) {
   const { id, name, price, imageUrl } = product;
 
@@ -31,16 +29,9 @@ function ProductItem({
         </S.ProductInfo>
         <S.ButtonWrapper>
           {isAddedToCart ? (
-            <RemoveCartItemButton onClick={() => onRemoveToCart(id)} />
+            <RemoveCartItemButton id={id} setCartItems={setCartItems} />
           ) : (
-            <AddCartItemButton
-              onClick={() =>
-                onAddToCart({
-                  productId: id,
-                  quantity: 1,
-                })
-              }
-            />
+            <AddCartItemButton id={id} setCartItems={setCartItems} />
           )}
         </S.ButtonWrapper>
       </S.Content>

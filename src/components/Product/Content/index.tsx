@@ -5,19 +5,14 @@ import { Suspense, useMemo, useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
 import { getProducts } from "@/apis/products/getProducts";
 import { wrapPromise } from "@/apis/wrapPromise";
-import { CartItemType, OnAddToCart, OnRemoveToCart } from "@/types/cartItem";
+import { CartItemType, SetCartItems } from "@/types/cartItem";
 
 interface ProductContentProps {
   cartItems: CartItemType[];
-  onAddToCart: OnAddToCart;
-  onRemoveToCart: OnRemoveToCart;
+  setCartItems: SetCartItems;
 }
 
-function ProductContent({
-  cartItems,
-  onAddToCart,
-  onRemoveToCart,
-}: ProductContentProps) {
+function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
   const [filterOption, setFilterOption] = useState<FilterOption>("전체");
   const [sortOption, setSortOption] = useState<SortOption>("낮은 가격순");
   const productResource = useMemo(
@@ -46,8 +41,7 @@ function ProductContent({
         <ProductList
           resource={productResource}
           cartItems={cartItems}
-          onAddToCart={onAddToCart}
-          onRemoveToCart={onRemoveToCart}
+          setCartItems={setCartItems}
         />
       </Suspense>
     </S.Container>
