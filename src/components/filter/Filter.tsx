@@ -1,12 +1,24 @@
 import Select from "../commons/Select";
 
 const options = [
-  { value: "하이", text: "하이" },
-  { value: "바이", text: "바이" },
+  { value: "전체", text: "전체" },
+  { value: "식료품", text: "식료품" },
+  { value: "패션잡화", text: "패션잡화" },
 ];
 
-function Filter() {
-  return <Select options={options} />;
+interface FilterProps {
+  selectedCategory: "전체" | "패션잡화" | "식료품";
+  setSelectedCategory: (category: "전체" | "패션잡화" | "식료품") => void;
+}
+
+function Filter({ selectedCategory, setSelectedCategory }: FilterProps) {
+  return (
+    <Select
+      value={selectedCategory}
+      onChange={setSelectedCategory}
+      options={options}
+    />
+  );
 }
 
 export default Filter;

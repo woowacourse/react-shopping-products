@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import request from "../../utils/request";
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
 import { ProductPageResponse } from "../../types/response.types";
 
-function ProductCardList() {
-  const [products, setProducts] = useState<ProductPageResponse | null>(null);
+interface ProductCardListProps {
+  products: ProductPageResponse | null;
+  setProducts: (data: ProductPageResponse) => void;
+}
+
+function ProductCardList({ products, setProducts }: ProductCardListProps) {
   const isAdded = true;
   useEffect(() => {
     (async () => {
@@ -16,7 +20,8 @@ function ProductCardList() {
       console.log(data);
       setProducts(data);
     })();
-  }, []);
+  }, [setProducts]);
+
   return (
     <div css={CardListContainer}>
       {products?.content.map((data) => (
