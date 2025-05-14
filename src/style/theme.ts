@@ -4,7 +4,8 @@ const theme = {
     white: '#fff',
     gray1: '#EAEAEA',
     gray2: 'rgba(0, 0, 0, 0.10)',
-    pink: '#FFC9C9'
+    pink: '#FFC9C9',
+    green: '#90EE90'
   },
   font: {
     title: {

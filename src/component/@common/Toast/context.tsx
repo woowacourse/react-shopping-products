@@ -1,27 +1,43 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 import useOverlay from '../../../hook/useOverlay';
 
 type ToastContextType = {
   isVisible: boolean;
-  openToast: () => void;
+  openToast: (message: string, isOk: boolean) => void;
   closeToast: () => void;
+  message: string;
+  isSuccess: boolean;
 };
 
 const ToastContext = createContext<ToastContextType>({
   isVisible: false,
   openToast: () => {},
   closeToast: () => {},
+  message: '',
+  isSuccess: false
 });
 
 const ToastProvider = ({ children }: { children: React.ReactNode }) => {
-  const {
-    isOpen: isVisible,
-    open: openToast,
-    close: closeToast,
-  } = useOverlay();
+  const { isOpen: isVisible, open, close } = useOverlay();
+  const [message, setMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(true);
+
+  const openToast = (message: string, isOk: boolean) => {
+    setMessage(message);
+    setIsSuccess(isOk);
+    open();
+  };
+
+  const closeToast = () => {
+    setMessage('');
+    setIsSuccess(false);
+    close();
+  };
 
   return (
-    <ToastContext.Provider value={{ isVisible, openToast, closeToast }}>
+    <ToastContext.Provider
+      value={{ isVisible, openToast, closeToast, message, isSuccess }}
+    >
       {children}
     </ToastContext.Provider>
   );

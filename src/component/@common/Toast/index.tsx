@@ -9,11 +9,8 @@ interface ToastProps {
   duration?: number;
 }
 
-const Toast = ({
-  message = '상품이 장바구니에 추가되었습니다.',
-  duration = 3000,
-}: ToastProps) => {
-  const { isVisible, closeToast } = useToast();
+const Toast = ({ duration = 1500 }: ToastProps) => {
+  const { isVisible, closeToast, message, isSuccess } = useToast();
 
   useEffect(() => {
     if (isVisible) {
@@ -28,7 +25,7 @@ const Toast = ({
   if (!isVisible) return null;
 
   return createPortal(
-    <div css={ToastStyle}>
+    <div css={ToastStyle({ isSuccess })}>
       <div>
         <Text variant="body">{message}</Text>
       </div>

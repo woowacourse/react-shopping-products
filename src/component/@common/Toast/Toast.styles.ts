@@ -17,7 +17,7 @@ const fadeInOut = keyframes`
   }
 `;
 
-export const ToastStyle = css`
+export const ToastStyle = ({ isSuccess }: { isSuccess: boolean }) => css`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,7 +26,7 @@ export const ToastStyle = css`
   top: 6.4rem;
   width: 42.9rem;
   padding: 1.2rem 7.7rem;
-  background-color: ${theme.color.pink};
+  background-color: ${isSuccess ? theme.color.green : theme.color.pink};
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   animation: ${fadeInOut} 1.5s ease-out forwards;

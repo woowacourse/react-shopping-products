@@ -80,9 +80,9 @@ const ShoppingList = () => {
       }
 
       fetchCartData();
-      openToast();
+      openToast('상품이 장바구니에 추가되었습니다.', true);
     } catch (error) {
-      openToast();
+      openToast('장바구니 담기에 실패했어요...', false);
     }
   };
 
@@ -108,9 +108,9 @@ const ShoppingList = () => {
       }
 
       fetchCartData();
-      openToast();
+      openToast('상품이 장바구니에서 제거되었습니다.', true);
     } catch (error) {
-      openToast();
+      openToast('장바구니 빼기에 실패했어요...', false);
     }
   };
 
