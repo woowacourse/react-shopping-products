@@ -1,14 +1,14 @@
-import Button from "../common/Button/Button";
-
 import { ProductProps } from "./Product.types";
 
 import * as Styled from "./Product.styled";
 
 import defaultImage from "/defaultImage.png";
+import AddButton from "../AddButton/AddButton";
+import RemoveButton from "../RemoveButton/RemoveButton";
 
-function Product({ product }: ProductProps) {
+function Product({ product, handleAddProduct }: ProductProps) {
   return (
-    <li>
+    <li id={product.id.toString()}>
       <Styled.Container>
         <Styled.Image src={product.imageUrl ?? defaultImage} />
         <Styled.Wrapper>
@@ -19,9 +19,8 @@ function Product({ product }: ProductProps) {
             </Styled.ProductPrice>
           </Styled.Contents>
           <Styled.ButtonWrapper>
-            <Button color="light" onClick={() => {}}>
-              빼기
-            </Button>
+            <AddButton handleAddProduct={handleAddProduct}></AddButton>
+            <RemoveButton handleRemoveProduct={() => {}}></RemoveButton>
           </Styled.ButtonWrapper>
         </Styled.Wrapper>
       </Styled.Container>

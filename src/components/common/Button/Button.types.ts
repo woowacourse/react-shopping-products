@@ -1,5 +1,5 @@
 export interface ButtonProps {
   children: React.ReactNode;
   color: "light" | "dark";
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }

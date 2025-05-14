@@ -1,22 +1,82 @@
+import { useEffect, useState } from "react";
 import ProductList from "../ProductList/ProductList";
 import Filter from "../Filter/Filter";
 
-import { Product as ProductType } from "../../types/Product";
-
 import * as Styled from "./Main.styled";
 
+import { ProductCategory } from "../../types/ProductCategory";
+import { Sort } from "../../types/Sort";
+
+import fetchProductList from "../../apis/product/fetchProductList";
+
 interface MainProps {
-  productList: readonly ProductType[];
-  handleCategory: (value: React.ChangeEvent<HTMLSelectElement>) => void;
-  handleSort: (value: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleAddProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-function Main({ productList, handleCategory, handleSort }: MainProps) {
+const isProductCategory = (value: string): value is ProductCategory => {
+  return ["전체", "식료품", "패션잡화"].includes(value);
+};
+
+const isProductSort = (value: string): value is Sort => {
+  return ["price,desc", "price,asc", "id,desc", "id,asc"].includes(value);
+};
+
+function Main({ handleAddProduct }: MainProps) {
+  const [productList, setProductList] = useState(null);
+  const [category, setCategory] = useState<ProductCategory>("전체");
+  const [sort, setSort] = useState<Sort>("price,asc");
+
+  const handleCategory = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLSelectElement>) => {
+    if (isProductCategory(value) === false) {
+      return;
+    }
+
+    setCategory(value);
+  };
+
+  const handleSort = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLSelectElement>) => {
+    if (isProductSort(value) === false) {
+      return;
+    }
+
+    setSort(value);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { content } = await fetchProductList({
+          method: "GET",
+          params: {
+            category,
+            sort,
+            page: "0",
+            size: "20",
+          },
+        });
+        setProductList(content);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [category, sort]);
+
+  if (!productList) {
+    return <div>로딩중</div>;
+  }
+
   return (
     <Styled.Container>
       <Styled.ProductListTitle>bpple 상품 목록</Styled.ProductListTitle>
       <Filter handleCategory={handleCategory} handleSort={handleSort} />
-      <ProductList productList={productList} />
+      <ProductList
+        productList={productList}
+        handleAddProduct={handleAddProduct}
+      />
     </Styled.Container>
   );
 }
