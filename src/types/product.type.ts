@@ -9,6 +9,12 @@ interface Product {
   category: Category;
 }
 
+interface CartItem {
+  id: number;
+  quantity: number;
+  product: Product;
+}
+
 interface ProductListResponse {
   content: Product[];
   pageable: Pageable;
@@ -64,4 +70,5 @@ export type {
   Category,
   SortOption,
   ShoppingCartResponse,
+  CartItem,
 };

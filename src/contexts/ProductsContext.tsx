@@ -29,7 +29,7 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setSort(newSort === "낮은 가격순" ? "price,asc" : "price,desc");
   };
 
-  const handleChangeCategory = (newCategory: "패션잡화" | "식료품") => {
+  const handleChangeCategory = (newCategory: "패션잡화" | "식료품" | "") => {
     setCategory(newCategory);
   };
 

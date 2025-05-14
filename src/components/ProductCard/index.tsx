@@ -1,17 +1,21 @@
 import { css } from "@emotion/css";
-// import RemoveButton from "../Button/RemoveButton";
+import RemoveButton from "../Button/RemoveButton";
 import AddButton from "../Button/AddButton";
 import { Product } from "../../types/product.type";
-import shoppingCart from "../../APIs/addShoppingCart";
+import addShoppingCart from "../../APIs/addShoppingCart";
+import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
+// import { useState } from "react";
 
 interface ProductCardProps {
   product: Product;
+  isInCart: boolean;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
+  const { handleCartItemChange } = useShoppingCartContext();
 
-  const handleAddButton = () => {
+  const handleAddButton = async () => {
     const endpoint = "/cart-items";
     const requestBody = {
       productId: id,
@@ -19,8 +23,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
     };
 
     try {
-      shoppingCart({ endpoint, requestBody });
-      alert("장바구니에 추가되었습니다.");
+      const newCardItem = await addShoppingCart({ endpoint, requestBody });
+      handleCartItemChange(newCardItem);
     } catch (error) {
       console.log(error);
     }
@@ -28,12 +32,18 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <div key={id} className={CardFrame}>
-      <img src={imageUrl} alt={name} className={CardImage} />
+      <div className={ImageFrame}>
+        <img src={imageUrl} alt={name} className={CardImage} />
+      </div>
       <div className={CardInfo}>
-        <h4>{name}</h4>
+        <h4 className={ProductName}>{name}</h4>
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
-          <AddButton onClick={handleAddButton} />
+          {isInCart ? (
+            <RemoveButton />
+          ) : (
+            <AddButton onClick={handleAddButton} />
+          )}
         </div>
       </div>
     </div>
@@ -50,9 +60,14 @@ const CardFrame = css`
   overflow: hidden;
 `;
 
+const ImageFrame = css`
+  width: 182px;
+  height: 112px;
+`;
+
 const CardImage = css`
   width: 100%;
-  height: 112px;
+  height: 100%;
   border: none;
   object-fit: cover;
 `;
@@ -63,6 +78,13 @@ const CardInfo = css`
   justify-content: center;
   padding: 16px 8px 8px 8px;
   gap: 8px;
+`;
+
+const ProductName = css`
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ButtonArea = css`

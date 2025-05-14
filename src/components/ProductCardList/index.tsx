@@ -1,17 +1,25 @@
 import { css } from "@emotion/css";
 import { Product } from "../../types/product.type";
 import ProductCard from "../ProductCard";
+import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
 
 interface ProductCardListProps {
   products: Product[];
 }
 
 const ProductCardList = ({ products }: ProductCardListProps) => {
+  const { cartItems } = useShoppingCartContext();
+
   return (
     <div className={ProductCardListStyles}>
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+      {products.map((product) => {
+        const isInCart = cartItems.some(
+          (item) => item.product.id === product.id
+        );
+        return (
+          <ProductCard key={product.id} product={product} isInCart={isInCart} />
+        );
+      })}
     </div>
   );
 };

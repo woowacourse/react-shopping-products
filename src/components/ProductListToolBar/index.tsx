@@ -23,7 +23,10 @@ const ProductListToolBar = () => {
         sort,
       };
       const query = new URLSearchParams(params).toString();
-      const endpoint = `/products?${query}&category=${e.target.value}`;
+      const endpoint =
+        e.target.value === "전체"
+          ? `/products?${query}`
+          : `/products?${query}&category=${e.target.value}`;
       const data = await fetchProducts({ endpoint });
       handleChangeProducts(data);
       handleChangeCategory(e.target.value as Category);
@@ -52,7 +55,7 @@ const ProductListToolBar = () => {
       <h1>bpple 상품 목록</h1>
       <div className={ProductListToolBarStyles}>
         <FilterDropDown
-          options={["패션잡화", "식료품"]}
+          options={["전체", "패션잡화", "식료품"]}
           handleChange={handleFilterChange}
         />
         <SortingDropDown

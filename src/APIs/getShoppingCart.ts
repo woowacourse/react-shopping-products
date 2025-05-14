@@ -1,8 +1,8 @@
-import { FetchProductsRequest, Product } from "../types/product.type";
+import { FetchProductsRequest, CartItem } from "../types/product.type";
 
 async function getShoppingCart({
   endpoint,
-}: FetchProductsRequest): Promise<Product[]> {
+}: FetchProductsRequest): Promise<CartItem[]> {
   const username = "H0ngJu";
   const password = "password";
   const credentials = btoa(`${username}:${password}`);

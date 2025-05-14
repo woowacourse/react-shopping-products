@@ -1,18 +1,23 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import getShoppingCart from "../APIs/getShoppingCart";
-import { Product } from "../types/product.type";
+import { CartItem } from "../types/product.type";
 
 interface ShoppingCartContextType {
-  cardItems: Product[];
+  cartItems: CartItem[];
   isError: boolean;
+  handleCartItemChange: (newCartItems: CartItem[]) => void;
 }
 
 export const ShoppingCartContext =
   createContext<ShoppingCartContextType | null>(null);
 
 const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [cardItems, setCardItems] = useState<Product[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
+
+  const handleCartItemChange = (newCartItems: CartItem[]) => {
+    setCartItems(newCartItems);
+  };
 
   useEffect(() => {
     const params = {
@@ -26,20 +31,22 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
     (async () => {
       try {
         const fetchedData = await getShoppingCart({ endpoint });
-        setCardItems(fetchedData);
+        setCartItems(fetchedData);
         setIsError(false);
       } catch (error) {
         setIsError(true);
         setTimeout(() => {
           setIsError(false);
         }, 3000);
-        setCardItems([]);
+        setCartItems([]);
       }
     })();
   }, []);
 
   return (
-    <ShoppingCartContext.Provider value={{ cardItems, isError }}>
+    <ShoppingCartContext.Provider
+      value={{ cartItems, isError, handleCartItemChange }}
+    >
       {children}
     </ShoppingCartContext.Provider>
   );
