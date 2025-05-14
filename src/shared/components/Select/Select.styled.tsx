@@ -1,13 +1,16 @@
 import styled from '@emotion/styled';
 
-export const StyledSelectContainer = styled.div`
+import { Props } from '.';
+
+export const StyledSelectContainer = styled.div<Pick<Props, 'maxWidth'>>`
   position: relative;
   width: 100%;
   box-sizing: border-box;
-  max-width: 500px;
-  border: 1px solid rbga(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+  background-color: white;
   padding: 8px 12px;
+  max-width: ${({ maxWidth }) => (typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth)};
   cursor: pointer;
 `;
 
@@ -23,6 +26,7 @@ export const StyledOptionsContainer = styled.div`
   left: 0;
   background-color: white;
   border: 1px solid rbga(255, 255, 255, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   z-index: 10;
   width: 100%;
@@ -37,7 +41,7 @@ export const StyledSelectIcon = styled.img<{ isOpen: boolean }>`
   position: absolute;
   top: 8px;
   right: 12px;
-  height: 24px;
+  height: 20px;
   transition: transform 0.3s ease;
 
   transform: ${({ isOpen }) => isOpen && `rotate(180deg); `};

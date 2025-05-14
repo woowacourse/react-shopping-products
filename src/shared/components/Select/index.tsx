@@ -8,7 +8,7 @@ import {
   StyledOptionsContainer,
 } from './Select.styled';
 
-import Arrow from '../../../../public/images/arrow.png';
+import Arrow from '../../../../public/arrow.png';
 import { Flex } from '../Flex';
 import { Text } from '../Text';
 
@@ -17,13 +17,15 @@ export type Props = {
    * The currently selected category to be displayed.
    */
   selectedOptions: string;
-} & ComponentPropsWithoutRef<'div'>;
 
-export const Select = ({ selectedOptions, children, ...props }: Props) => {
+  maxWidth?: number | string;
+} & ComponentProps<'div'>;
+
+export const Select = ({ selectedOptions, maxWidth = '500px', children, ...props }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <StyledSelectContainer onClick={() => setIsOpen(!isOpen)} {...props}>
+    <StyledSelectContainer maxWidth={maxWidth} onClick={() => setIsOpen(!isOpen)} {...props}>
       <StyledTriggerButton>
         <Flex justifyContent="space-between">
           <Text type="Body">{selectedOptions ?? '전체'}</Text>
