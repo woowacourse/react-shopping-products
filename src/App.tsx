@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
 import Header from "./components/Header/Header";
-import ProductItem from "./components/ProductItem/ProductItem";
 import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
 import ProductSorter from "./components/ProductSorter/ProductSorter";
 import * as S from "./styles/Layout.styles";
+import ProductItem from "./components/ProductItem/ProductItem";
 import { Products } from "./types";
 
 function App() {
@@ -31,7 +31,11 @@ function App() {
             <ProductSorter />
           </S.ProductControlPanel>
           <S.ProductGrid>
-            <ProductItem />
+            {products?.content.map(({ id, imageUrl, name, price }) => (
+              <div key={id}>
+                <ProductItem imageUrl={imageUrl} name={name} price={price} />
+              </div>
+            ))}
           </S.ProductGrid>
           {/* <ErrorToast /> */}
         </S.Wrapper>
