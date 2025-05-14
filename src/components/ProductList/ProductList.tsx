@@ -8,10 +8,10 @@ const ProductListContainer = css`
   gap: 10px;
 `;
 
-function ProductList({ products }: { products: ProductProps[] }) {
+function ProductList({ products }: { products: ProductProps[] | undefined }) {
   return (
     <ul className={ProductListContainer}>
-      {products.map((product, idx) => (
+      {products?.map((product, idx) => (
         <Product key={idx} {...product} />
       ))}
     </ul>
