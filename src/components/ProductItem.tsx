@@ -42,9 +42,15 @@ const ProductItem = ({ product }: ProductItemProps) => {
     })();
   };
 
+  const DEFAULT_PRODUCT_IMAGE = './default-product.png';
+
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    event.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
+  };
+
   return (
     <ProductItemContainer>
-      <ProductItemImage src={product.imageUrl} />
+      <ProductItemImage src={product.imageUrl} onError={handleImageError} />
       <ProductItemCard>
         <ProductItemInfo>
           <ProductItemTitle>{product.name}</ProductItemTitle>

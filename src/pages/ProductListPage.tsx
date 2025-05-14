@@ -78,6 +78,7 @@ const SelectContainer = styled.div`
 const ProductItemContainer = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 1fr;
   row-gap: 20px;
+  column-gap: 12px;
 `;
