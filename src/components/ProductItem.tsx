@@ -6,6 +6,7 @@ import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import RemoveShoppingCartIcon from '/public/icon/remove-shopping-cart.svg';
 import { getCartId, isCartItem } from '../domain/manageCartInfo';
 import { useEffect, useState } from 'react';
+import useCartContext from '../hooks/useCartContext';
 
 interface ProductItemProps {
   product: ProductItemType;
@@ -13,6 +14,7 @@ interface ProductItemProps {
 
 const ProductItem = ({ product }: ProductItemProps) => {
   const [isAddedItem, setIsAddedItem] = useState(false);
+  const { setCartItemCount } = useCartContext();
 
   useEffect(() => {
     (async () => {
@@ -28,6 +30,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
     (async () => {
       await addCartItems(addItemInfo);
       setIsAddedItem(true);
+      setCartItemCount((prev) => prev + 1);
     })();
   };
 
@@ -35,6 +38,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
     (async () => {
       await removeCartItems(await getCartId(product.id));
       setIsAddedItem(false);
+      setCartItemCount((prev) => prev - 1);
     })();
   };
 
