@@ -1,17 +1,18 @@
 import styled from "@emotion/styled";
-import { CartToggleButtonProps } from "../components/CartToggleButton";
+import { CartToggleButtonWrapperProps } from "../components/CartToggleButton";
 
-export const CartToggleButtonWrapper = styled.div<CartToggleButtonProps>`
+export const CartToggleButtonWrapper = styled.div<CartToggleButtonWrapperProps>`
   display: flex;
   background-color: ${({ isInBascket }) =>
-    isInBascket ? "#000000" : "#EAEAEA"};
+    isInBascket ? "#EAEAEA" : "#000000"};
   border-radius: 4px;
   padding: 4px 8px;
   gap: 4px;
+  cursor: pointer;
 `;
 
-export const CartToggleButtonText = styled.div<CartToggleButtonProps>`
-  color: ${({ isInBascket }) => (isInBascket ? "#ffffff" : "#000000")};
+export const CartToggleButtonText = styled.div<CartToggleButtonWrapperProps>`
+  color: ${({ isInBascket }) => (isInBascket ? "#000000" : "#ffffff")};
   background-color: 
   font-size: 12px;
   font-weight: 600;
