@@ -2,55 +2,50 @@ import Header from '../../component/@common/Header';
 import {
   ShoppingListFilterStyle,
   ShoppingListStyle,
-  ShoppingListTitleStyle
+  ShoppingListTitleStyle,
 } from './ShoppingList.styles';
 import Text from '../../component/@common/Text';
 import Dropdown from '../../component/@common/Dropdown';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ArrowIcon from '../../component/@common/ArrowIcon';
 import ProductCard from '../../component/feature/ProductCard';
 import ProductListLayout from '../../component/feature/ProductListLayout';
 
 export type SortOption = '높은 가격순' | '낮은 가격순';
-export type CategoryOption = '전체';
-
-const products = [
-  {
-    id: 1,
-    name: '리바이트 블루투스 헤드셋',
-    price: 10000,
-    imageUrl: './public/image/default.png',
-    category: '패션'
-  },
-  {
-    id: 2,
-    name: '리바이트 블루투스 헤드셋',
-    price: 10000,
-    imageUrl: './public/image/default.png',
-    category: '잡화'
-  },
-  {
-    id: 3,
-    name: '리바이트 블루투스 스피커',
-    price: 10000,
-    imageUrl: './public/image/default.png',
-    category: '패션'
-  },
-  {
-    id: 4,
-    name: '리바이트 블루투스 이어폰',
-    price: 10000,
-    imageUrl: './public/image/default.png',
-    category: '패션'
-  }
-];
+export type CategoryOption = '전체' | '패션잡화' | '식료품';
 
 const ShoppingList = () => {
   const [selected, setSelected] = useState<SortOption>('낮은 가격순');
   const [category, setCategory] = useState<CategoryOption>('전체');
+  const [data, setData] = useState([]);
+  const categoryOptions: CategoryOption[] = ['패션잡화', '식료품'];
 
-  const handleSortClick = (content: SortOption) => {
-    setSelected(content);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/products?page=0&size=20${
+          category === '전체' ? '' : `&category=${category}`
+        }`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
+          },
+        }
+      );
+      const results = await response.json();
+      console.log('results', results);
+      setData(results.content);
+    };
+    fetchData();
+  }, [category]);
+
+  const handleSortClick = (content: string) => {
+    setSelected(content as SortOption);
+  };
+
+  const handleCategoryClick = (category: string) => {
+    setCategory(category as CategoryOption);
   };
 
   const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
@@ -67,6 +62,15 @@ const ShoppingList = () => {
                 {category}
                 <ArrowIcon />
               </Dropdown.Trigger>
+              <Dropdown.List>
+                {categoryOptions.map((option) => (
+                  <Dropdown.Item
+                    key={option}
+                    handleClick={handleCategoryClick}
+                    content={option}
+                  />
+                ))}
+              </Dropdown.List>
             </Dropdown.Root>
 
             <Dropdown.Root>
@@ -88,7 +92,7 @@ const ShoppingList = () => {
         </div>
       </section>
       <ProductListLayout>
-        {products.map((product) => (
+        {data.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </ProductListLayout>
