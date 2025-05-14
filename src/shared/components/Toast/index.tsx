@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { createPortal } from 'react-dom';
 
-import { StyledBackDrop, StyledModalContainer } from './Toast.styled';
+import { StyledModalContainer, StyledModalContent } from './Toast.styled';
 
 export type ModalProps = {
   /**
@@ -12,12 +12,11 @@ export type ModalProps = {
 
 export const Toast = ({ message, ...props }: ModalProps) => {
   return createPortal(
-    <>
-      <StyledBackDrop aria-hidden="false" />
-      <StyledModalContainer role="dialog" aria-modal="true" {...props}>
+    <StyledModalContainer>
+      <StyledModalContent role="dialog" aria-modal="true" {...props}>
         {message}
-      </StyledModalContainer>
-    </>,
+      </StyledModalContent>
+    </StyledModalContainer>,
     document.body
   );
 };
