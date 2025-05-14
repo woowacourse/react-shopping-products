@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
+import { ComponentProps } from 'react';
 
-function AddCartButton() {
+function AddCartButton({ ...props }: ComponentProps<'button'>) {
   return (
-    <Container>
+    <Container {...props}>
       <ButtonIcon src="./assets/icons/AddCart.svg" />
       <ButtonText>담기</ButtonText>
     </Container>
