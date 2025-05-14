@@ -9,5 +9,7 @@ export const HeaderStyle = css`
   justify-content: space-between;
   align-items: center;
 
+  position: fixed;
+  z-index: 5;
   background: ${theme.color.black};
 `;
