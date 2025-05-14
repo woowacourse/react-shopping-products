@@ -8,20 +8,22 @@ import defaultImage from "/defaultImage.png";
 
 function Product({ product }: ProductProps) {
   return (
-    <Styled.Container>
-      <Styled.Image src={product.imageUrl ?? defaultImage} />
-      <Styled.Wrapper>
-        <Styled.Contents>
-          <p>{product.name}</p>
-          <p>{product.price}</p>
-        </Styled.Contents>
-        <Styled.ButtonWrapper>
-          <Button color="light" onClick={() => {}}>
-            빼기
-          </Button>
-        </Styled.ButtonWrapper>
-      </Styled.Wrapper>
-    </Styled.Container>
+    <li key={product.id}>
+      <Styled.Container>
+        <Styled.Image src={product.imageUrl ?? defaultImage} />
+        <Styled.Wrapper>
+          <Styled.Contents>
+            <Styled.ProductTitle>{product.name}</Styled.ProductTitle>
+            <Styled.ProductPrice>{product.price}</Styled.ProductPrice>
+          </Styled.Contents>
+          <Styled.ButtonWrapper>
+            <Button color="light" onClick={() => {}}>
+              빼기
+            </Button>
+          </Styled.ButtonWrapper>
+        </Styled.Wrapper>
+      </Styled.Container>
+    </li>
   );
 }
 
