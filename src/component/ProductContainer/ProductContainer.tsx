@@ -9,15 +9,15 @@ interface Product {
   price: string;
 }
 
+interface ProductContainerProps {
+  products: Product[];
+}
+
 const ProductContainerLayout = css`
   display: grid;
   grid-template-columns: repeat(2, auto);
   justify-content: space-between;
 `;
-
-interface ProductContainerProps {
-  products?: Product[];
-}
 
 export default function ProductContainer({ products }: ProductContainerProps) {
   const onClick = () => {
@@ -26,57 +26,19 @@ export default function ProductContainer({ products }: ProductContainerProps) {
 
   return (
     <div css={ProductContainerLayout}>
-      <Product
-        imgSrc="./default-img.png"
-        productName="상품이름"
-        price="30000원"
-      >
-        <Button onClick={onClick}>
-          <img src="./add-shopping-cart.svg" />
-          <p>담기</p>
-        </Button>
-      </Product>
-      <Product
-        imgSrc="./default-img.png"
-        productName="상품이름"
-        price="30000원"
-      >
-        <Button onClick={onClick}>
-          <img src="./add-shopping-cart.svg" />
-          <p>담기</p>
-        </Button>
-      </Product>
-
-      <Product
-        imgSrc="./default-img.png"
-        productName="상품이름"
-        price="30000원"
-      >
-        <Button onClick={onClick}>
-          <img src="./add-shopping-cart.svg" />
-          <p>담기</p>
-        </Button>
-      </Product>
-      <Product
-        imgSrc="./default-img.png"
-        productName="상품이름"
-        price="30000원"
-      >
-        <Button onClick={onClick}>
-          <img src="./add-shopping-cart.svg" />
-          <p>담기</p>
-        </Button>
-      </Product>
-      <Product
-        imgSrc="./default-img.png"
-        productName="상품이름"
-        price="30000원"
-      >
-        <Button onClick={onClick}>
-          <img src="./add-shopping-cart.svg" />
-          <p>담기</p>
-        </Button>
-      </Product>
+      {products.map((product) => (
+        <Product
+          id={product.id}
+          imgSrc={product.imgSrc}
+          productName={product.productName}
+          price={product.price}
+        >
+          <Button onClick={onClick}>
+            <img src="./add-shopping-cart.svg" />
+            <p>담기</p>
+          </Button>
+        </Product>
+      ))}
     </div>
   );
 }

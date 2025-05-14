@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import React from "react";
 
 interface ProductProps {
+  id: string;
   imgSrc: string;
   productName: string;
   price: string;
@@ -54,13 +55,14 @@ const priceLayout = css`
 `;
 
 export default function Product({
+  id,
   imgSrc,
   productName,
   price,
   children,
 }: ProductProps) {
   return (
-    <div css={productLayout}>
+    <div id={id} css={productLayout}>
       <img css={imgLayout} src={imgSrc} />
       <div css={contentLayout}>
         <div css={descriptionLayout}>

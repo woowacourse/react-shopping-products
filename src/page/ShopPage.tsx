@@ -2,12 +2,10 @@ import { css } from "@emotion/react";
 import { useState } from "react";
 import Selector from "../component/Selector/Selector";
 import TitleContainer from "../component/TitleContainer/titleContainer";
-
 import Body from "../component/Body/Body";
 import Header from "../component/Header/Header";
-import Button from "../component/Button/Button";
-import Product from "../component/Product/Product";
 import ProductContainer from "../component/ProductContainer/ProductContainer";
+import { ProductsMock } from "../mock/Products";
 
 const pageLayout = css`
   display: flex;
@@ -32,10 +30,6 @@ export default function ShopPage() {
   const dropdownOptions = ["식료품", "패션잡화"];
   const filterOptions = ["낮은 가격순", "높은 가격순"];
 
-  const onClick = () => {
-    console.log("click");
-  };
-
   return (
     <div css={pageLayout}>
       <Header title="shop"></Header>
@@ -54,7 +48,7 @@ export default function ShopPage() {
             />
           </div>
         </TitleContainer>
-        <ProductContainer />
+        <ProductContainer products={ProductsMock} />
       </Body>
     </div>
   );

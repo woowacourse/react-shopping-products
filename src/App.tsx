@@ -7,7 +7,6 @@ function App() {
   return (
     <div>
       <GlobalStyle />
-      <h1>React Shopping Products</h1>
       <ShopPage />
     </div>
   );
