@@ -4,6 +4,7 @@ import { ProductPageResponse } from "../../types/response.types";
 import useFetchProducts from "../../hooks/useFetchProducts";
 import { categoryType, sortType } from "../../types/index.types";
 import { ERROR_TYPE } from "../../hooks/useError";
+import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
 
 interface ProductCardListProps {
   products: ProductPageResponse | null;
@@ -26,7 +27,13 @@ function ProductCardList({
   setCartItemIds,
   setErrorTrue,
 }: ProductCardListProps) {
-  useFetchProducts({ category, setProducts, sort, setErrorTrue });
+  const { isLoading } = useFetchProducts({
+    category,
+    setProducts,
+    sort,
+    setErrorTrue,
+  });
+  if (isLoading) return <ProductCardListSkeleton />;
 
   return (
     <div css={CardListContainer}>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ProductPageResponse } from "../types/response.types";
 import request from "../utils/request";
 import { categoryType, sortType } from "../types/index.types";
@@ -22,7 +22,10 @@ function useFetchProducts({
   sort,
   setErrorTrue,
 }: useFetchProductsProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
+    setIsLoading(true);
     const basicQuery = {
       page: "0",
       size: "20",
@@ -46,9 +49,12 @@ function useFetchProducts({
         setProducts(data);
       } catch {
         setErrorTrue("PRODUCTS");
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, [category, setProducts, sort, setErrorTrue]);
+  return { isLoading };
 }
 
 export default useFetchProducts;

@@ -37,7 +37,7 @@ function App() {
       }
     }
     fetchCartItems();
-  }, [cartItemIds]);
+  }, [setCartItemIds]);
 
   return (
     <div className="container">
