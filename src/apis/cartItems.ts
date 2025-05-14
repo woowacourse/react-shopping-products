@@ -35,4 +35,15 @@ export const CartItemsAPI = {
     const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems);
     await fetch(apiUrl, options);
   },
+  delete: async (cartId: number) => {
+    const options = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+      },
+    };
+
+    const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
+    await fetch(apiUrl, options);
+  },
 };

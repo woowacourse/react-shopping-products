@@ -34,14 +34,26 @@ function App() {
     })();
   }, []);
 
+  const cartItemIds =
+    cartItems?.content.map((productInfo) => ({
+      cartId: productInfo.id,
+      productId: productInfo.product.id,
+    })) ?? [];
+
   const handleCartItemToggle = async (productId: number) => {
-    await CartItemsAPI.post(productId);
+    const currentProductId = cartItemIds.find(
+      (productInfo) => productInfo.productId === productId
+    );
+
+    if (currentProductId) {
+      await CartItemsAPI.delete(currentProductId.cartId);
+    } else {
+      await CartItemsAPI.post(productId);
+    }
+
     const data = await CartItemsAPI.get();
     setCartItems(data);
   };
-
-  const addedCartItemIds =
-    cartItems?.content.map((productInfo) => productInfo.product.id) ?? [];
 
   return (
     <S.LayoutContainer>
@@ -66,7 +78,9 @@ function App() {
                 imageUrl={imageUrl}
                 name={name}
                 price={price}
-                isAdd={addedCartItemIds.includes(id)}
+                isAdd={cartItemIds.some(
+                  (productInfo) => productInfo.productId === id
+                )}
                 handleCartItemToggle={() => handleCartItemToggle(id)}
               />
             ))}
