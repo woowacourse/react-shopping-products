@@ -24,8 +24,19 @@ export const Icon = styled.img`
   cursor: pointer;
 `;
 
+export const CartStock = styled.span`
+  font-size: 10px;
+  font-weight: 700;
+  color: #000000;
+  position: absolute;
+  bottom: 7px;
+  right: 12px;
+  z-index: 100;
+`;
+
 export const Button = styled.button`
   outline: unset;
   background-color: transparent;
   border: none;
+  position: relative;
 `;

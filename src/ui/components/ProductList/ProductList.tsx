@@ -3,6 +3,7 @@ import Product from '../Product/Product';
 import { List } from './ProductList.styles';
 import { getProduct } from '../../../api/product';
 import { ProductType, SortType, CategoryType } from '../../../types/product';
+import { getCartItem } from '../../../api/cart';
 
 interface ProductListProps {
   sort: SortType;

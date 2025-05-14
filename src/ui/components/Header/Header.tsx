@@ -1,15 +1,23 @@
-import { Button, Container, Icon, Title } from './Header.styles';
+import { Button, Container, Icon, CartStock, Title } from './Header.styles';
 
 interface HeaderProps {
   title: string;
+  totalCartProducts: number;
 }
 
-function Header({ title }: HeaderProps) {
+function Header({ title, totalCartProducts }: HeaderProps) {
   return (
     <Container>
       <Title>{title}</Title>
       <Button>
-        <Icon src="./cart_default.png" alt="장바구니 아이콘" />
+        {totalCartProducts > 0 ? (
+          <>
+            <Icon src="./cart_stock.png" alt="장바구니 아이콘" />
+            <CartStock>{totalCartProducts}</CartStock>
+          </>
+        ) : (
+          <Icon src="./cart_default.png" alt="장바구니 아이콘" />
+        )}
       </Button>
     </Container>
   );

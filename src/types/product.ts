@@ -6,6 +6,27 @@ export interface ProductType {
   imageUrl: string;
 }
 
+export interface CartType {
+  totalElements: number;
+}
+
+export interface CartItem {
+  id: number;
+  quantity: number;
+  product: {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+    category: string;
+  };
+}
+
+export interface CartResponse {
+  content: CartItem[];
+  totalElements: number;
+}
+
 export enum SortOrder {
   'asc' = '낮은 가격 순',
   'desc' = '높은 가격 순',

@@ -4,18 +4,31 @@ import Header from './ui/components/Header/Header';
 import Toast from './ui/components/Toast/Toast';
 import ProductSection from './ui/components/ProductSection/ProductSection';
 import { Global } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
+import { getCartItem } from './api/cart';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [cart, setCart] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getCartItem();
+        setCart(data);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, []);
 
   return (
     <>
       <Global styles={GlobalStyle} />
       <Layout>
-        <Header title="SHOP" />
+        <Header title="SHOP" totalCartProducts={cart && cart.totalElements} />
         {isError && (
           <Toast message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요." />
         )}
