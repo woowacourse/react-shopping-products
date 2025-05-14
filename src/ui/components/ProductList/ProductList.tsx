@@ -1,36 +1,29 @@
 import { useEffect, useState } from 'react';
 import Product from '../Product/Product';
 import { List } from './ProductList.styles';
+import { getProduct } from '../../../api/product';
+import { ProductType, SortType } from '../../../types/product';
 
-interface dataType {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
+interface ProductListProps {
+  sort: SortType;
 }
 
-function ProductList() {
-  const [products, setProducts] = useState<dataType[]>([]);
+function ProductList({ sort }: ProductListProps) {
+  const [products, setProducts] = useState<ProductType[]>([]);
 
-  async function getData() {
-    const response = await fetch(
-      'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products?page=0&size=20&sort=price,asc'
-    );
-    const data = await response.json();
-    return data;
-  }
+  const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
 
   useEffect(() => {
     (async () => {
       try {
-        const data = await getData();
+        const data = await getProduct(mappedSortType);
         setProducts(data.content);
       } catch (e) {
         console.log(e);
       } finally {
       }
     })();
-  }, []);
+  }, [sort]);
 
   return (
     <List>

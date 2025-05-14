@@ -16,9 +16,9 @@ function Dropdown({ value, placeholder, options, onChange }: DropdownProps) {
           {placeholder}
         </option>
       )}
-      {options.map((option) => {
+      {options.map((option, index) => {
         return (
-          <option key={option} value={option}>
+          <option key={index} value={option}>
             {option}
           </option>
         );
