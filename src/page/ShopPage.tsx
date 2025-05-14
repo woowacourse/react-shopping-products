@@ -7,7 +7,6 @@ import Header from "../component/Header/Header";
 import ProductContainer, {
   Product,
 } from "../component/ProductContainer/ProductContainer";
-import { ProductsMock } from "../mock/Products";
 import getProduct from "../api/product";
 
 const pageLayout = css`
@@ -65,15 +64,19 @@ export default function ShopPage() {
   };
 
   useEffect(() => {
+    let sortByFilter = "";
+    if (filterValue === "낮은 가격순") sortByFilter = "price,asc";
+    else if (filterValue === "높은 가격순") sortByFilter = "price,desc";
+
     (async () => {
       try {
-        const response = await getProduct({ sortBy: "id,asc" });
+        const response = await getProduct({ sortBy: sortByFilter });
         setProductList(response.content);
       } catch (e) {
         console.log(e);
       }
     })();
-  }, []);
+  }, [filterValue]);
 
   return (
     <div css={pageLayout}>
