@@ -30,11 +30,11 @@ const cartIcon = css({
     bottom: "0%",
     right: "0%",
     textAlign: "center",
-    fontSize: "0.8rem",
+    fontSize: "14px",
   },
 });
 interface headerProps {
-  cartLength: number;
+  cartLength?: number;
 }
 function Header({ cartLength }: headerProps) {
   return (
@@ -42,7 +42,7 @@ function Header({ cartLength }: headerProps) {
       <p>SHOP</p>
       <button css={cartIcon}>
         <img src="assets/cart.svg" alt="cart-icon" />
-        <span>{cartLength}</span>
+        <span hidden={cartLength === 0}>{cartLength}</span>
       </button>
     </header>
   );
