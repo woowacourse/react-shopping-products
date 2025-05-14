@@ -33,7 +33,11 @@ export default function ProductListToolbar({
   ) => {
     const { value } = e.target;
     try {
-      const productsData = await getProducts(value === '전체' ? '' : value);
+      const productsData = await getProducts(value === '전체' ? '' : value, {
+        page: 0,
+        size: 20,
+        sort: priceValue === '낮은 가격순' ? 'price,asc' : 'price,desc',
+      });
       const productsContent = productsData.content;
       setProducts(markItemsInCart(cartItems, productsContent));
     } catch (e) {
