@@ -11,16 +11,6 @@ function ProductContainer() {
     "전체" | "패션잡화" | "식료품"
   >("전체");
 
-  const filteredCategory = products && {
-    ...products,
-    content:
-      selectedCategory === "전체"
-        ? products?.content
-        : products?.content.filter(
-            (product) => product.category === selectedCategory
-          ),
-  };
-
   return (
     <div css={Container}>
       <h2 css={Title}>bpple 상품 목록</h2>
@@ -31,7 +21,11 @@ function ProductContainer() {
         />
         <Sort />
       </div>
-      <ProductCardList products={filteredCategory} setProducts={setProducts} />
+      <ProductCardList
+        products={products}
+        setProducts={setProducts}
+        category={selectedCategory}
+      />
     </div>
   );
 }
