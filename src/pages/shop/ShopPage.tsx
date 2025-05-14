@@ -1,25 +1,24 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import Dropdown, { DropdownOptionType } from '../../components/common/Dropdown';
 import ShopHeader from '../../components/features/header/ShopHeader';
 import ProductList from '../../components/features/product/product-list/ProductList';
 import Flex from '../../components/common/Flex';
 import styled from '@emotion/styled';
 import { baseAPI } from '../../api/baseAPI';
-import { CartData, ProductData } from '../../api/type';
+import { ProductData } from '../../api/type';
 import Loading from '../../components/common/Loading';
 import { wrapPromise } from '../../api/wrapPromise';
-import { Cart, Product } from '../../components/features/product/type';
-import {
-  convertResponseToCart,
-  convertResponseToProduct,
-} from '../../components/features/product/responseMapper';
+import { Product } from '../../components/features/product/type';
+import { convertResponseToProduct } from '../../components/features/product/responseMapper';
+import { useCartContext } from '../../context/CartContext';
 
 function ShopPage() {
   const [filterOption, setFilterOption] = useState({
     category: { label: '전체', value: '전체' },
     sort: { label: '낮은 가격순', value: 'asc' },
   });
-  const [cartList, setCartList] = useState<Cart[]>([]);
+
+  const { cartList } = useCartContext();
 
   const handleCategoryOption = (option: DropdownOptionType) => {
     setFilterOption((prev) => ({
@@ -53,25 +52,6 @@ function ShopPage() {
     );
     return productsData ?? [];
   };
-
-  useEffect(() => {
-    const getShoppingCartDataHandler = async () => {
-      const initialPage = 0;
-      const maxSize = 50;
-      const basePath = `/cart-items?page=${initialPage}&size=${maxSize}`;
-
-      const data = await baseAPI<CartData>({
-        method: 'GET',
-        path: basePath,
-      });
-      const cartsData = data?.content.map((cart) =>
-        convertResponseToCart(cart)
-      );
-      if (cartsData) setCartList(cartsData);
-    };
-
-    getShoppingCartDataHandler();
-  }, []);
 
   return (
     <>
