@@ -14,6 +14,14 @@ export const ProductCardWrapper = styled.div`
   width: 182px;
   border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+`;
+
+export const ProductImage = styled.img`
+  width: 182px;
+  height: 112px;
+  object-fit: cover;
+  display: block;
 `;
 
 export const ProductCardDetailWrapper = styled.div`
@@ -22,6 +30,7 @@ export const ProductCardDetailWrapper = styled.div`
   flex-direction: column;
   gap: 27px;
   align-items: flex-end;
+  background-color: #ffffff;
 `;
 
 export const ProductCardDetailTextWrapper = styled.div`

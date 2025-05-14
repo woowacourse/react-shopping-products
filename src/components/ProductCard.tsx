@@ -3,7 +3,8 @@ import {
   ProductCardDetailWrapper,
   ProductCardDetailTextWrapper,
   ProductCardName,
-  ProductCardPrice
+  ProductCardPrice,
+  ProductImage,
 } from "../styles/ProductCard";
 import { IMAGE_PATH } from "../constants/imagePath";
 import CartToggleButton from "./CartToggleButton";
@@ -14,7 +15,6 @@ type ProductCardProps = {
   price: number;
   imageUrl: string;
   category: string;
-  isInBascket: boolean;
 };
 
 const ProductCard = ({
@@ -23,23 +23,24 @@ const ProductCard = ({
   price,
   imageUrl,
   category,
-  isInBascket,
 }: ProductCardProps) => {
   const imageSrc = imageUrl
     ? imageUrl
     : category === "패션잡화"
     ? IMAGE_PATH.DEFAULT_FASHION
     : IMAGE_PATH.DEFAULT_GROCERY;
+    
+  const isInBascket = true; // 추후 API 요청 예정
 
   return (
     <ProductCardWrapper>
-      <img src={imageSrc} alt={name} />
+        <ProductImage src={imageSrc} alt={name} />
       <ProductCardDetailWrapper>
         <ProductCardDetailTextWrapper>
           <ProductCardName>{name}</ProductCardName>
           <ProductCardPrice>{price.toLocaleString()}원</ProductCardPrice>
         </ProductCardDetailTextWrapper>
-        <CartToggleButton isInBascket={isInBascket}/>
+        <CartToggleButton id={id} isInBascket={isInBascket} />
       </ProductCardDetailWrapper>
     </ProductCardWrapper>
   );
