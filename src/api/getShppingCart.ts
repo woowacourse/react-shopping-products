@@ -10,21 +10,23 @@ const PAGEABLE_DEFAULT = {
   sort: '',
 };
 
-export default async function getProducts(
-  category?: '식료품' | '패션잡화',
+export default async function getShppingCart(
   pageable: PageableType = PAGEABLE_DEFAULT
 ) {
   const { page, size, sort } = pageable;
+  const token = import.meta.env.VITE_APP_TOKEN;
   const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const params = new URLSearchParams({
-    category: category ?? '',
     page: String(page),
     size: String(size),
     sort: sort ?? '',
   });
 
-  const response = await fetch(`${baseUrl}/products?${params}`);
+  const response = await fetch(`${baseUrl}/cart-items?${params}`, {
+    method: 'GET',
+    headers: { Authorization: `Basic ${token}` },
+  });
 
   if (!response.ok) {
     throw new Error('에러 발생');
