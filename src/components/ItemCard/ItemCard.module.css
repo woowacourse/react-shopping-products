@@ -34,6 +34,10 @@
 	font-weight: 700;
 	font-family: Inter;
 	color: #0a0d13;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
 }
 
 .buttonWrap {
