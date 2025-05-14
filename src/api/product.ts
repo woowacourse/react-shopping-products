@@ -12,6 +12,7 @@ export const getProductList = async ({
   const data = await fetcher
     .get<ProductListResponse>({
       baseUrl: ENV.BASE_URL + 'products',
+      token: ENV.TOKEN,
       query: { page, size, sort, category },
     })
     .then((res) => res);
