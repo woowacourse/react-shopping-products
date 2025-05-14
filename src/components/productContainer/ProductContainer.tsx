@@ -10,6 +10,9 @@ function ProductContainer() {
   const [selectedCategory, setSelectedCategory] = useState<
     "전체" | "패션잡화" | "식료품"
   >("전체");
+  const [selectedSort, setSelectedSort] = useState<
+    "낮은 가격순" | "높은 가격순"
+  >("낮은 가격순");
 
   return (
     <div css={Container}>
@@ -19,12 +22,13 @@ function ProductContainer() {
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-        <Sort />
+        <Sort selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
       </div>
       <ProductCardList
         products={products}
         setProducts={setProducts}
         category={selectedCategory}
+        sort={selectedSort}
       />
     </div>
   );

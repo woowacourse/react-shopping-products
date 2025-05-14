@@ -1,12 +1,19 @@
 import Select from "../commons/Select";
 
 const options = [
-  { value: "하이", text: "하이" },
-  { value: "바이", text: "바이" },
+  { value: "낮은 가격순", text: "낮은 가격순" },
+  { value: "높은 가격순", text: "높은 가격순" },
 ];
 
-function Sort() {
-  return <Select options={options} />;
+interface SortProps {
+  selectedSort: "낮은 가격순" | "높은 가격순";
+  setSelectedSort: (sort: "낮은 가격순" | "높은 가격순") => void;
+}
+
+function Sort({ selectedSort, setSelectedSort }: SortProps) {
+  return (
+    <Select value={selectedSort} onChange={setSelectedSort} options={options} />
+  );
 }
 
 export default Sort;

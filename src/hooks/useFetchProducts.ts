@@ -2,28 +2,36 @@ import { useEffect } from "react";
 import { ProductPageResponse } from "../types/response.types";
 import request from "../utils/request";
 
-const basicQuery = {
-  page: "0",
-  size: "20",
-  sort: "price,asc",
+const SORT_TYPE = {
+  "낮은 가격순": "price,desc",
+  "높은 가격순": "price,asc",
 };
 
 interface useFetchProductsProps {
   setProducts: (data: ProductPageResponse) => void;
   category: "전체" | "식료품" | "패션잡화";
+  sort: "낮은 가격순" | "높은 가격순";
 }
 
-function useFetchProducts({ category, setProducts }: useFetchProductsProps) {
+function useFetchProducts({
+  category,
+  setProducts,
+  sort,
+}: useFetchProductsProps) {
   useEffect(() => {
+    const basicQuery = {
+      page: "0",
+      size: "20",
+      sort: SORT_TYPE[sort],
+    };
+
     (async () => {
       const query =
         category === "전체"
           ? basicQuery
           : {
               category: category,
-              page: "0",
-              size: "20",
-              sort: "price,asc",
+              ...basicQuery,
             };
       const queryString = new URLSearchParams(query).toString();
       const data: ProductPageResponse = await request({
@@ -32,7 +40,7 @@ function useFetchProducts({ category, setProducts }: useFetchProductsProps) {
       });
       setProducts(data);
     })();
-  }, [category, setProducts]);
+  }, [category, setProducts, sort]);
 }
 
 export default useFetchProducts;

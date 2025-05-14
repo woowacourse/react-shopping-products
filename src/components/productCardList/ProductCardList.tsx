@@ -7,15 +7,18 @@ interface ProductCardListProps {
   products: ProductPageResponse | null;
   setProducts: (data: ProductPageResponse) => void;
   category: "전체" | "식료품" | "패션잡화";
+  sort: "낮은 가격순" | "높은 가격순";
 }
 
 function ProductCardList({
   products,
   setProducts,
   category,
+  sort,
 }: ProductCardListProps) {
   const isAdded = true;
-  useFetchProducts({ category, setProducts });
+  useFetchProducts({ category, setProducts, sort });
+
   return (
     <div css={CardListContainer}>
       {products?.content.map((data) => (
