@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { ProductAPI } from "./apis/product";
 import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
-import ShopHeader from "./components/ShopHeader/ShopHeader";
+import ProductItem from "./components/ProductItem/ProductItem";
 import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
 import ProductSorter from "./components/ProductSorter/ProductSorter";
+import ShopHeader from "./components/ShopHeader/ShopHeader";
 import * as S from "./styles/Layout.styles";
-import ProductItem from "./components/ProductItem/ProductItem";
 import { Products } from "./types";
 
 function App() {
@@ -13,15 +14,7 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      const response =
-        category !== "전체"
-          ? await fetch(
-              `${
-                import.meta.env.VITE_API_BASE_URL
-              }products?category=${category}`
-            )
-          : await fetch(`${import.meta.env.VITE_API_BASE_URL}products`);
-      const data = await response.json();
+      const data = await ProductAPI.get(category);
       setProducts(data);
     })();
   }, [category]);
