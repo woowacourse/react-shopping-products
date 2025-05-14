@@ -18,12 +18,12 @@ export default async function getProducts(
   const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const params = new URLSearchParams({
-    category: category ?? '',
     page: String(page),
     size: String(size),
     sort: sort ?? '',
   });
 
+  if (category) params.append('category', category);
   const response = await fetch(`${baseUrl}/products?${params}`);
 
   if (!response.ok) {
