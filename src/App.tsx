@@ -1,12 +1,19 @@
-import { useState } from "react";
+import ErrorBoundary from "./components/ErrorBoundary";
+import Fallback from "./components/Fallback";
+import ProductPage from "./pages/ProductPage";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <ErrorBoundary
+      fallback={
+        <Fallback
+          type="error"
+          message="애플리케이션을 불러오는 중 에러가 발생했습니다."
+        />
+      }
+    >
+      <ProductPage />
+    </ErrorBoundary>
   );
 }
 
