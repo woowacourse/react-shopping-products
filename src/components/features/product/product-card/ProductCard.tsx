@@ -2,15 +2,25 @@ import styled from '@emotion/styled';
 import Flex from '../../../common/Flex';
 import AddCartButton from './AddCartButton';
 import { baseAPI } from '../../../../api/baseAPI';
+import DeleteCartButton from './DeleteCartButton';
 
 interface ProductProps {
   id: string;
+  cartId: string | null;
   name: string;
   price: number;
   imageUrl: string;
+  isInCart: boolean;
 }
 
-function ProductCard({ id, name, price, imageUrl }: ProductProps) {
+function ProductCard({
+  id,
+  cartId,
+  name,
+  price,
+  imageUrl,
+  isInCart,
+}: ProductProps) {
   const handleAddCart = async () => {
     try {
       await baseAPI({
@@ -25,6 +35,18 @@ function ProductCard({ id, name, price, imageUrl }: ProductProps) {
       throw new Error('장바구니에 추가하는데 실패했습니다.');
     }
   };
+
+  const handleDeleteCart = async () => {
+    try {
+      await baseAPI({
+        method: 'DELETE',
+        path: `/cart-items/${cartId}`,
+      });
+    } catch (e) {
+      throw new Error('장바구니에 추가하는데 실패했습니다.');
+    }
+  };
+
   return (
     <Container>
       <PreviewBox>
@@ -35,7 +57,11 @@ function ProductCard({ id, name, price, imageUrl }: ProductProps) {
           <ProductTitle>{name}</ProductTitle>
           <ProductPrice>{`${price.toLocaleString()}원`}</ProductPrice>
         </Flex>
-        <AddCartButton onClick={handleAddCart} />
+        {isInCart ? (
+          <DeleteCartButton onClick={handleDeleteCart} />
+        ) : (
+          <AddCartButton onClick={handleAddCart} />
+        )}
       </InfoBox>
     </Container>
   );

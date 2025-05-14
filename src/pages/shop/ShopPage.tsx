@@ -1,28 +1,25 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Dropdown, { DropdownOptionType } from '../../components/common/Dropdown';
 import ShopHeader from '../../components/features/header/ShopHeader';
 import ProductList from '../../components/features/product/product-list/ProductList';
 import Flex from '../../components/common/Flex';
 import styled from '@emotion/styled';
 import { baseAPI } from '../../api/baseAPI';
-import { ProductData } from '../../api/type';
+import { CartData, ProductData } from '../../api/type';
 import Loading from '../../components/common/Loading';
 import { wrapPromise } from '../../api/wrapPromise';
-
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: ProductCategoryType;
-}
-type ProductCategoryType = 'all' | 'food' | 'fashion';
+import { Cart, Product } from '../../components/features/product/type';
+import {
+  convertResponseToCart,
+  convertResponseToProduct,
+} from '../../components/features/product/responseMapper';
 
 function ShopPage() {
   const [filterOption, setFilterOption] = useState({
     category: { label: '전체', value: '전체' },
     sort: { label: '낮은 가격순', value: 'asc' },
   });
+  const [cartList, setCartList] = useState<Cart[]>([]);
 
   const handleCategoryOption = (option: DropdownOptionType) => {
     setFilterOption((prev) => ({
@@ -51,21 +48,34 @@ function ShopPage() {
       method: 'GET',
       path: basePath,
     });
-    const productsData = data?.content.map(
-      ({ id, name, price, imageUrl, category }) => ({
-        id: id.toString(),
-        name: name ?? '',
-        price,
-        imageUrl: imageUrl ?? 'defaultImage',
-        category: (category ?? '전체') as ProductCategoryType,
-      })
+    const productsData = data?.content.map((product) =>
+      convertResponseToProduct(product)
     );
     return productsData ?? [];
   };
 
+  useEffect(() => {
+    const getShoppingCartDataHandler = async () => {
+      const initialPage = 0;
+      const maxSize = 50;
+      const basePath = `/cart-items?page=${initialPage}&size=${maxSize}`;
+
+      const data = await baseAPI<CartData>({
+        method: 'GET',
+        path: basePath,
+      });
+      const cartsData = data?.content.map((cart) =>
+        convertResponseToCart(cart)
+      );
+      if (cartsData) setCartList(cartsData);
+    };
+
+    getShoppingCartDataHandler();
+  }, []);
+
   return (
     <>
-      <ShopHeader />
+      <ShopHeader itemsCount={cartList.length} />
       <ProductListContainer>
         <ListTitleBox>
           <ListTitle>Apple 상품 목록</ListTitle>
@@ -92,6 +102,7 @@ function ShopPage() {
         <Suspense fallback={<Loading />}>
           <ProductList
             resource={wrapPromise<Product[]>(getListDataHandler())}
+            cartList={cartList}
           />
         </Suspense>
       </ProductListContainer>

@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import { ComponentProps } from 'react';
 
-function DeleteCartButton() {
+function DeleteCartButton({ ...props }: ComponentProps<'button'>) {
   return (
-    <Container>
+    <Container {...props}>
       <ButtonIcon src="./assets/icons/DeleteCart.svg" />
-      <ButtonText>담기</ButtonText>
+      <ButtonText>빼기</ButtonText>
     </Container>
   );
 }

@@ -1,5 +1,5 @@
-export interface ProductData {
-  content: Content[];
+export interface CartData {
+  content: CartContent[];
   pageable: Pageable;
   totalElements: number;
   totalPages: number;
@@ -12,7 +12,27 @@ export interface ProductData {
   empty: boolean;
 }
 
-export interface Content {
+export interface ProductData {
+  content: ProductContent[];
+  pageable: Pageable;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+  size: number;
+  number: number;
+  sort: Sort;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+}
+
+export interface CartContent {
+  id: number;
+  quantity: number;
+  product: ProductContent;
+}
+
+export interface ProductContent {
   id: number;
   name: null | string;
   price: number;

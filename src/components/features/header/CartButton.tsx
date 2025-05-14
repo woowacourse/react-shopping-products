@@ -1,26 +1,6 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
-import { baseAPI } from '../../../api/baseAPI';
-import { ProductData } from '../../../api/type';
 
-function CartButton() {
-  const [itemsCount, setItemsCount] = useState(0);
-  useEffect(() => {
-    const getShoppingCartDataHandler = async () => {
-      const initialPage = 0;
-      const maxSize = 50;
-      const basePath = `/cart-items?page=${initialPage}&size=${maxSize}`;
-
-      const data = await baseAPI<ProductData>({
-        method: 'GET',
-        path: basePath,
-      });
-      setItemsCount(data.content.length);
-    };
-
-    getShoppingCartDataHandler();
-  }, []);
-
+function CartButton({ itemsCount }: { itemsCount: number }) {
   return (
     <Container>
       <CartIcon src="./assets/icons/Cart.svg" />
