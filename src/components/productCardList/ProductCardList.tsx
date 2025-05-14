@@ -2,12 +2,13 @@ import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
 import { ProductPageResponse } from "../../types/response.types";
 import useFetchProducts from "../../hooks/useFetchProducts";
+import { categoryType, sortType } from "../../types/index.types";
 
 interface ProductCardListProps {
   products: ProductPageResponse | null;
   setProducts: (data: ProductPageResponse) => void;
-  category: "전체" | "식료품" | "패션잡화";
-  sort: "낮은 가격순" | "높은 가격순";
+  category: categoryType;
+  sort: sortType;
 }
 
 function ProductCardList({

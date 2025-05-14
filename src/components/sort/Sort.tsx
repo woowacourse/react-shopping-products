@@ -1,3 +1,4 @@
+import { sortType } from "../../types/index.types";
 import Select from "../commons/Select";
 
 const options = [
@@ -6,8 +7,8 @@ const options = [
 ];
 
 interface SortProps {
-  selectedSort: "낮은 가격순" | "높은 가격순";
-  setSelectedSort: (sort: "낮은 가격순" | "높은 가격순") => void;
+  selectedSort: sortType;
+  setSelectedSort: (sort: sortType) => void;
 }
 
 function Sort({ selectedSort, setSelectedSort }: SortProps) {

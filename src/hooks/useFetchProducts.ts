@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { ProductPageResponse } from "../types/response.types";
 import request from "../utils/request";
+import { categoryType, sortType } from "../types/index.types";
 
 const SORT_TYPE = {
   "낮은 가격순": "price,desc",
@@ -9,8 +10,8 @@ const SORT_TYPE = {
 
 interface useFetchProductsProps {
   setProducts: (data: ProductPageResponse) => void;
-  category: "전체" | "식료품" | "패션잡화";
-  sort: "낮은 가격순" | "높은 가격순";
+  category: categoryType;
+  sort: sortType;
 }
 
 function useFetchProducts({

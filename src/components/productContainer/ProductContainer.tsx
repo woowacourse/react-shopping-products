@@ -4,15 +4,13 @@ import ProductCardList from "../productCardList/ProductCardList";
 import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { ProductPageResponse } from "../../types/response.types";
+import { categoryType, sortType } from "../../types/index.types";
 
 function ProductContainer() {
   const [products, setProducts] = useState<ProductPageResponse | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<
-    "전체" | "패션잡화" | "식료품"
-  >("전체");
-  const [selectedSort, setSelectedSort] = useState<
-    "낮은 가격순" | "높은 가격순"
-  >("낮은 가격순");
+  const [selectedCategory, setSelectedCategory] =
+    useState<categoryType>("전체");
+  const [selectedSort, setSelectedSort] = useState<sortType>("낮은 가격순");
 
   return (
     <div css={Container}>
