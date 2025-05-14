@@ -1,13 +1,15 @@
-import { ProductItemType, CartItemType } from "@/types/product";
+import { CartItemType, ProductItemType } from "@/types/product";
 import ProductItem from "./Item";
 import * as S from "./ProductList.styled";
 
 interface ProductListProps {
-  products: ProductItemType[];
+  resource: { read: () => ProductItemType[] };
   cartItems: CartItemType[];
 }
 
-function ProductList({ products, cartItems }: ProductListProps) {
+function ProductList({ resource, cartItems }: ProductListProps) {
+  const products = resource.read();
+
   return (
     <S.ProductList>
       {products.map((productItem) => {
