@@ -1,3 +1,4 @@
+import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 
 const productList = [
@@ -35,7 +36,12 @@ const productList = [
 ] as const;
 
 function App() {
-  return <Main productList={productList}></Main>;
+  return (
+    <>
+      <Header></Header>
+      <Main productList={productList}></Main>;
+    </>
+  );
 }
 
 export default App;
