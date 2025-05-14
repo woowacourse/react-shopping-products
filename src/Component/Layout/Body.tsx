@@ -11,4 +11,7 @@ export default function Body({
 const StyledBody = styled.body`
   padding: 36px 24px;
   margin: 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
