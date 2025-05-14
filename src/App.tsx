@@ -8,6 +8,7 @@ import './reset.css';
 import styled from '@emotion/styled';
 import './app.css';
 import ProductItemsWithSkeleton from './components/ProductItemsWithSkeleton';
+import ErrorMessage from './components/ErrorMessage';
 
 export type Product = {
   id: number;
@@ -33,6 +34,7 @@ function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const addToCart = async (product: Product) => {
     await postCartItems(product);
@@ -55,28 +57,17 @@ function App() {
     setCart(cartItems);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getProducts();
-      const cartData = await getCartItems();
-      setIsLoading(false);
-
-      setProducts(data.content.slice(0, 20));
-      setCart(cartData.content);
-    };
-
-    fetchData();
-  }, []);
-
   const handleCategoryChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setIsLoading(true);
     setSelectedCategory(e.target.value as Category);
-    const data = await getProducts({
+    const { data, newErrorMessage } = await getProducts({
       category: e.target.value as Category,
       priceOrder: priceOrder,
     });
+    setErrorMessage(newErrorMessage);
+
     setIsLoading(false);
     setProducts(data.content.slice(0, 20));
   };
@@ -86,17 +77,33 @@ function App() {
   ) => {
     setIsLoading(true);
     setPriceOrder(e.target.value as priceOrder);
-    const data = await getProducts({
+    const { data, newErrorMessage } = await getProducts({
       category: selectedCategory,
       priceOrder: e.target.value as priceOrder,
     });
     setIsLoading(false);
     setProducts(data.content.slice(0, 20));
+    setErrorMessage(newErrorMessage);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, newErrorMessage } = await getProducts();
+      const cartData = await getCartItems();
+      setIsLoading(false);
+      setErrorMessage(newErrorMessage);
+
+      setProducts(data.content.slice(0, 20));
+      setCart(cartData.content);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <Layout>
       <Header cartItemCount={cart.length} />
+      {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
       <ProductPageContainer>
         <ProductPageHeader>bppl 상품 목록</ProductPageHeader>
         <SelectContainer>

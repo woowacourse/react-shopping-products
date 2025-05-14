@@ -16,6 +16,7 @@ const getProducts = async ({
 }: GetProductsProps = {}) => {
   const searchParams = new URLSearchParams();
   searchParams.toString();
+  let newErrorMessage = '';
 
   if (category !== '전체') searchParams.append('category', category);
   if (priceOrder)
@@ -28,8 +29,11 @@ const getProducts = async ({
 
   const response = await fetch(url, { method: 'GET' });
 
+  if (!response.ok)
+    newErrorMessage = '상품을 불러오는 데 실패했습니다. 다시 시도해주세요.';
+
   const data = await response.json();
-  return data;
+  return { newErrorMessage, data };
 };
 
 export default getProducts;
