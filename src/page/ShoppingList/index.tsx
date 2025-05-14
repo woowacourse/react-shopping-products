@@ -48,10 +48,6 @@ const ShoppingList = () => {
     fetchData();
   }, [category, selected]);
 
-  useEffect(() => {
-    fetchCartData();
-  }, []);
-
   const handleSortClick = (content: string) => {
     setSelected(content as SortOption);
   };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Product } from '../types/response';
 
 export type CartItem = {
@@ -9,6 +9,10 @@ export type CartItem = {
 
 const useCart = () => {
   const [cartData, setCartData] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    fetchCartData();
+  }, []);
 
   const fetchCartData = async () => {
     const response = await fetch(
