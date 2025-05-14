@@ -3,7 +3,7 @@ import {
   ShoppingListFilterItemStyle,
   ShoppingListFilterStyle,
   ShoppingListStyle,
-  ShoppingListTitleStyle,
+  ShoppingListTitleStyle
 } from './ShoppingList.styles';
 import Text from '../../component/@common/Text';
 import Dropdown from '../../component/@common/Dropdown';
@@ -11,7 +11,10 @@ import { useEffect, useState } from 'react';
 import ArrowIcon from '../../component/@common/ArrowIcon';
 import ProductCard from '../../component/feature/ProductCard';
 import ProductListLayout from '../../component/feature/ProductListLayout';
+
 import { Product } from '../../types/response';
+
+import useCart, { CartItem } from '../../hook/useCart';
 
 export type SortOption = '높은 가격순' | '낮은 가격순';
 export type CategoryOption = '전체' | '패션잡화' | '식료품';
@@ -20,7 +23,8 @@ const ShoppingList = () => {
   const [selected, setSelected] = useState<SortOption>('낮은 가격순');
   const [category, setCategory] = useState<CategoryOption>('전체');
   const [data, setData] = useState([]);
-  const [cartData, setCartData] = useState([]);
+  const { cartData, fetchCartData } = useCart();
+
   const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
 
   useEffect(() => {
@@ -34,8 +38,8 @@ const ShoppingList = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
-          },
+            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
+          }
         }
       );
       const results = await response.json();
@@ -45,20 +49,7 @@ const ShoppingList = () => {
   }, [category, selected]);
 
   useEffect(() => {
-    const fetchCart = async () => {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/cart-items?page=0&size=20`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`,
-          },
-        }
-      );
-      const results = await response.json();
-      setCartData(results.content);
-    };
-    fetchCart();
+    fetchCartData();
   }, []);
 
   const handleSortClick = (content: string) => {
@@ -69,11 +60,43 @@ const ShoppingList = () => {
     setCategory(category as CategoryOption);
   };
 
+  const handleAddCart = async (productId: number) => {
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/cart-items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
+      },
+      body: JSON.stringify({
+        productId,
+        quantity: 1
+      })
+    });
+
+    fetchCartData();
+  };
+
+  const handleRemoveCart = async (cartId: number) => {
+    const targetId = cartData.filter(
+      (item: CartItem) => item.product.id === cartId
+    )[0].id;
+
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/cart-items/${targetId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
+      }
+    });
+
+    fetchCartData();
+  };
+
   const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
 
   return (
     <>
-      <Header />
+      <Header count={cartData.length} />
       <section css={ShoppingListStyle}>
         <div css={ShoppingListTitleStyle}>
           <Text variant="title">bpple 상품 목록</Text>
@@ -95,7 +118,6 @@ const ShoppingList = () => {
                 </Dropdown.List>
               </Dropdown.Root>
             </div>
-
             <div css={ShoppingListFilterItemStyle}>
               <Dropdown.Root>
                 <Dropdown.Trigger>
@@ -117,9 +139,20 @@ const ShoppingList = () => {
         </div>
       </section>
       <ProductListLayout>
-        {data.map((product: Product) => (
-          <ProductCard key={product.id} {...product} />
-        ))}
+        {data.map((product: Product) => {
+          const isInCart = cartData.some(
+            (item: CartItem) => item.product.id === product.id
+          );
+          return (
+            <ProductCard
+              key={product.id}
+              {...product}
+              isInCart={isInCart}
+              handleAddCart={handleAddCart}
+              handleRemoveCart={handleRemoveCart}
+            />
+          );
+        })}
       </ProductListLayout>
     </>
   );
