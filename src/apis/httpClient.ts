@@ -36,9 +36,7 @@ class HTTPClient {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error("예기치 못한 오류가 발생했습니다.");
-    }
+    return response;
   }
 
   async delete(url: string) {
@@ -52,9 +50,7 @@ class HTTPClient {
       headers,
     });
 
-    if (!response.ok) {
-      throw new Error("예기치 못한 오류가 발생했습니다.");
-    }
+    return response;
   }
 
   setApiKey(apiKey: string) {
