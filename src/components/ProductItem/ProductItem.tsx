@@ -1,13 +1,15 @@
-import * as S from './ProductItem.styled';
-import AddProductIcon from '../Icon/AddProductIcon';
-function ProductItem() {
+import * as S from "./ProductItem.styled";
+import AddProductIcon from "../Icon/AddProductIcon";
+import { ResponseProduct } from "../../api/types";
+
+function ProductItem({ product }: { product: ResponseProduct }) {
   return (
     <S.ProductItemContainer>
-      <S.ProductItemImage src='https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-14%20at%2011.08.33%402x.webp' alt='' />
+      <S.ProductItemImage src={product.imageUrl} alt={product.name} />
       <S.ProductItemBottom>
         <S.ProductItemDetailBox>
-          <S.ProductName>상품이름</S.ProductName>
-          <S.ProductPrice>35,000원</S.ProductPrice>
+          <S.ProductName>{product.name}</S.ProductName>
+          <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
         <S.ProductButton>
           <AddProductIcon />
