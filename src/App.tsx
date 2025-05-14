@@ -19,7 +19,10 @@ function App() {
       return;
     }
 
-    setSelectedProductIdList((prevIdList) => [...prevIdList, $product.id]);
+    setSelectedProductIdList((prevIdList) => {
+      const newIdListSet = new Set([...prevIdList, $product.id]);
+      return Array.from(newIdListSet);
+    });
 
     await fetchAddProduct({
       method: "POST",
