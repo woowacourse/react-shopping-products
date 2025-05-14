@@ -1,7 +1,7 @@
-import * as S from "./Header.styles";
+import * as S from "./ShopHeader.styles";
 import Cart from "/cart.svg";
 
-const Header = () => {
+const ShopHeader = () => {
   return (
     <S.Header>
       <S.Logo href="/">SHOP</S.Logo>
@@ -10,4 +10,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ShopHeader;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
-import Header from "./components/Header/Header";
+import ShopHeader from "./components/ShopHeader/ShopHeader";
 import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
 import ProductSorter from "./components/ProductSorter/ProductSorter";
 import * as S from "./styles/Layout.styles";
@@ -23,7 +23,7 @@ function App() {
   return (
     <S.LayoutContainer>
       <S.LayoutWrapper>
-        <Header />
+        <ShopHeader />
         <S.Wrapper>
           <ProductsListTitle />
           <S.ProductControlPanel>
