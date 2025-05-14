@@ -1,9 +1,11 @@
 import { css } from "@emotion/react";
-import { ComponentProps } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 interface CartButtonProps extends ComponentProps<"button"> {
   isInCart: boolean;
   onClick: () => void;
+  productId: number;
+  cartItemId?: number;
 }
 const buttonCss = css({
   padding: "4px 8px",
@@ -20,11 +22,11 @@ const buttonCss = css({
   justifySelf: "flex-end",
 });
 
-const inCart = css({
+const inCartCss = css({
   backgroundColor: "#EAEAEA",
   color: "black",
 });
-const notInCart = css({
+const notInCartCss = css({
   backgroundColor: "black",
   color: "white",
 });
@@ -32,8 +34,23 @@ const notInCart = css({
 export default function CartButton({
   isInCart,
   onClick,
+  productId,
+  cartItemId,
   ...props
 }: CartButtonProps) {
+  const { fetcher: deleteCartItem } = useFetch(
+    `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/${cartItemId}`,
+    {
+      headers: {
+        Authorization: `Basic ${btoa(
+          `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
+        )}`,
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    },
+    false
+  );
   const { fetcher: addCartItem } = useFetch(
     "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items",
     {
@@ -45,22 +62,28 @@ export default function CartButton({
       },
       method: "POST",
       body: JSON.stringify({
-        productId: 117,
+        productId: productId,
         quantity: 1,
       }),
     },
     false
   );
-  const handleButtonClick = () => {
-    addCartItem();
+
+  const handleDeleteCartItem = async () => {
+    await deleteCartItem();
+    onClick();
+  };
+
+  const handleAddCartItem = async () => {
+    await addCartItem();
     onClick();
   };
 
   return (
     <button
       {...props}
-      onClick={handleButtonClick}
-      css={[buttonCss, isInCart ? inCart : notInCart]}
+      onClick={isInCart ? handleDeleteCartItem : handleAddCartItem}
+      css={[buttonCss, isInCart ? inCartCss : notInCartCss]}
     >
       {isInCart ? (
         <>
