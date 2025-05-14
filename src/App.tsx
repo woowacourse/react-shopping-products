@@ -5,16 +5,16 @@ import { Container } from './styles/common';
 import { ProductCardContainer } from './styles/ProductCard';
 import { getProducts, ProductResponse } from './api/products';
 import SelectDropdownContainer from './components/SelectDropdown/SelectDropdownContainer';
-import './styles/reset.css';
 import { CATEGORY, SORT } from './constants/selectOption';
+import './styles/reset.css';
 
 type CategoryKey = (typeof CATEGORY)[number];
 type SortKey = (typeof SORT)[number];
 
 const categoryQueryMap: Record<CategoryKey, string | undefined> = {
-  전체: undefined,
-  식료품: '식료품',
-  패션잡화: '패션잡화',
+  '전체': undefined,
+  '식료품': '식료품',
+  '패션잡화': '패션잡화',
 };
 
 const sortQueryMap: Record<SortKey, string | undefined> = {
@@ -27,6 +27,7 @@ function App() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
   const [sort, setSort] = useState<SortKey>(SORT[0]);
+  const [basketCount, setBasketCount] = useState(50);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -51,7 +52,7 @@ function App() {
 
   return (
     <Container>
-      <Header />
+      <Header basketCount={basketCount} />
       <SelectDropdownContainer
         category={category}
         sort={sort}
