@@ -13,7 +13,10 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        const { content } = await fetchProductList();
+        const { content } = await fetchProductList("GET", {
+          page: "0",
+          size: "20",
+        });
         setProductList(content);
       } catch (error) {
         console.log(error);
