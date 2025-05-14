@@ -1,32 +1,19 @@
-import styled from "@emotion/styled";
+import * as Styled from "./Filter.styled";
 
-function Filter(props) {
+function Filter() {
   return (
-    <Container>
-      <Select>
+    <Styled.Container>
+      <Styled.Select>
         <option>전체</option>
         <option>식료품</option>
         <option>패션잡화</option>
-      </Select>
-      <Select>
+      </Styled.Select>
+      <Styled.Select>
         <option>낮은 가격순</option>
         <option>높은 가격순</option>
-      </Select>
-    </Container>
+      </Styled.Select>
+    </Styled.Container>
   );
 }
 
 export default Filter;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Select = styled.select`
-  width: 124px;
-  padding: 8px;
-  border: 1px solid #c4c2c2;
-  border-radius: 8px;
-`;

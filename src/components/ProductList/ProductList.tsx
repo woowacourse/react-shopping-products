@@ -2,7 +2,7 @@ import Product from "../Product/Product";
 
 import { Product as ProductType } from "../../types/Product";
 
-import styled from "@emotion/styled";
+import * as Styled from "./ProductList.styled";
 
 interface ProductListProps {
   productList: readonly ProductType[];
@@ -10,19 +10,12 @@ interface ProductListProps {
 
 function ProductList({ productList }: ProductListProps) {
   return (
-    <UlContainer>
+    <Styled.UlContainer>
       {productList.map((product) => (
         <Product product={product}></Product>
       ))}
-    </UlContainer>
+    </Styled.UlContainer>
   );
 }
-
-const UlContainer = styled.ul`
-  list-style: none;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-`;
 
 export default ProductList;

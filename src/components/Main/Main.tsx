@@ -3,7 +3,7 @@ import Filter from "../Filter/Filter";
 
 import { Product as ProductType } from "../../types/Product";
 
-import styled from "@emotion/styled";
+import * as Styled from "./Main.styled";
 
 interface MainProps {
   productList: readonly ProductType[];
@@ -11,26 +11,12 @@ interface MainProps {
 
 function Main({ productList }: MainProps) {
   return (
-    <Container>
-      <ProductListTitle>bpple 상품 목록</ProductListTitle>
+    <Styled.Container>
+      <Styled.ProductListTitle>bpple 상품 목록</Styled.ProductListTitle>
       <Filter />
       <ProductList productList={productList} />
-    </Container>
+    </Styled.Container>
   );
 }
 
 export default Main;
-
-const Container = styled.div`
-  width: fit-content;
-
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 24px;
-`;
-
-const ProductListTitle = styled.h1`
-  font-weight: 700;
-  font-size: 24px;
-`;
