@@ -24,15 +24,32 @@ const selectorBoxLayout = css`
   }
 `;
 
+const headerIcon = css`
+  cursor: pointer;
+`;
+
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState("");
   const [filterValue, setFilterValue] = useState("");
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const dropdownOptions = ["식료품", "패션잡화"];
   const filterOptions = ["낮은 가격순", "높은 가격순"];
+  console.log(selectedProducts);
+
+  const onClick = () => {
+    console.log("click");
+  };
 
   return (
     <div css={pageLayout}>
-      <Header title="shop"></Header>
+      <Header title="shop">
+        <img
+          css={headerIcon}
+          src="./shopping-cart.svg"
+          alt="장바구니 아이콘"
+          onClick={onClick}
+        />
+      </Header>
       <Body>
         <TitleContainer title="bpple 상품 목록">
           <div css={selectorBoxLayout}>
@@ -48,7 +65,10 @@ export default function ShopPage() {
             />
           </div>
         </TitleContainer>
-        <ProductContainer products={ProductsMock} />
+        <ProductContainer
+          products={ProductsMock}
+          setSelectedProducts={setSelectedProducts}
+        />
       </Body>
     </div>
   );

@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Button from "../Button/Button";
 
 interface ProductProps {
@@ -7,6 +7,7 @@ interface ProductProps {
   imgSrc: string;
   productName: string;
   price: string;
+  setSelectedProducts: Dispatch<SetStateAction<string[]>>;
 }
 
 const productLayout = css`
@@ -59,11 +60,16 @@ export default function Product({
   imgSrc,
   productName,
   price,
+  setSelectedProducts,
 }: ProductProps) {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleClick = () => {
     setIsSelected((prev) => !prev);
+    setSelectedProducts((arr) => {
+      if (arr.includes(id)) return arr.filter((prev) => prev !== id);
+      return [...arr, id];
+    });
   };
 
   const addProduct = () => {

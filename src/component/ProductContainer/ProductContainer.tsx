@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import Product from "../Product/Product";
-import Button from "../Button/Button";
+import { Dispatch, SetStateAction } from "react";
 
 interface Product {
   id: string;
@@ -11,6 +11,7 @@ interface Product {
 
 interface ProductContainerProps {
   products: Product[];
+  setSelectedProducts: Dispatch<SetStateAction<string[]>>;
 }
 
 const ProductContainerLayout = css`
@@ -19,11 +20,10 @@ const ProductContainerLayout = css`
   justify-content: space-between;
 `;
 
-export default function ProductContainer({ products }: ProductContainerProps) {
-  const onClick = () => {
-    console.log("click");
-  };
-
+export default function ProductContainer({
+  products,
+  setSelectedProducts,
+}: ProductContainerProps) {
   return (
     <div css={ProductContainerLayout}>
       {products.map((product) => (
@@ -32,6 +32,7 @@ export default function ProductContainer({ products }: ProductContainerProps) {
           imgSrc={product.imgSrc}
           productName={product.productName}
           price={product.price}
+          setSelectedProducts={setSelectedProducts}
         />
       ))}
     </div>
