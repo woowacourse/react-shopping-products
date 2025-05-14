@@ -32,13 +32,13 @@ export type CartItem = {
   product: Product;
 };
 
-type Category = '식료품' | '패션잡화' | '전체';
-type SortPrice = '낮은 가격순' | '높은 가격순';
+export type Category = '식료품' | '패션잡화' | '전체';
+type priceOrder = '낮은 가격순' | '높은 가격순';
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
-  const [sortPrice, setSortPrice] = useState<SortPrice>('낮은 가격순');
+  const [priceOrder, setPriceOrder] = useState<priceOrder>('낮은 가격순');
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const addToCart = async (product: Product) => {
@@ -62,21 +62,6 @@ function App() {
     setCart(cartItems);
   };
 
-  const filteredProducts = products.filter((product) => {
-    if (selectedCategory === '전체') {
-      return true;
-    }
-    return product.category === selectedCategory;
-  });
-
-  const sortedProducts = filteredProducts.sort((a: Product, b: Product) => {
-    if (sortPrice === '높은 가격순') {
-      return b.price - a.price;
-    }
-
-    return a.price - b.price;
-  });
-
   useEffect(() => {
     const fetchData = async () => {
       const data = await getProducts();
@@ -89,6 +74,29 @@ function App() {
     fetchData();
   }, []);
 
+  //이벤트 타입 설정
+  const handleCategoryChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedCategory(e.target.value as Category);
+    const data = await getProducts({
+      category: e.target.value as Category,
+      priceOrder: priceOrder,
+    });
+    setProducts(data.content.slice(0, 20));
+  };
+
+  const handlePriceOrderChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setPriceOrder(e.target.value as priceOrder);
+    const data = await getProducts({
+      category: selectedCategory,
+      priceOrder: e.target.value as priceOrder,
+    });
+    setProducts(data.content.slice(0, 20));
+  };
+
   return (
     <Layout>
       <Header cartItemCount={cart.length} />
@@ -98,23 +106,23 @@ function App() {
           <select
             id="category"
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value as Category)}
+            onChange={handleCategoryChange}
           >
             <option value="전체">전체</option>
             <option value="식료품">식료품</option>
             <option value="패션잡화">패션잡화</option>
           </select>
           <select
-            id="sortPrice"
-            value={sortPrice}
-            onChange={(e) => setSortPrice(e.target.value as SortPrice)}
+            id="priceOrder"
+            value={priceOrder}
+            onChange={handlePriceOrderChange}
           >
             <option value="낮은 가격순">낮은 가격순</option>
             <option value="높은 가격순">높은 가격순</option>
           </select>
         </SelectContainer>
         <ProductListContainer>
-          {sortedProducts.map((product) => (
+          {products.map((product) => (
             <ProductItem
               key={product.id}
               product={product}
