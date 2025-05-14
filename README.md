@@ -24,6 +24,7 @@
 - [x] select
 - [x] skeleton
 - [x] Toast
+- [x] ShoppingBag
 - [x] item layout
 - [x] app layout
 - [x] list layout
