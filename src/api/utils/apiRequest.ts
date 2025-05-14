@@ -2,7 +2,7 @@ type RequestOptions = RequestInit & {
   queryParams?: Record<string, string | number | undefined>;
 };
 
-const apiClient = async <T>(
+const apiRequest = async <T>(
   url: string,
   options: RequestOptions = {}
 ): Promise<T> => {
@@ -18,9 +18,14 @@ const apiClient = async <T>(
     });
   }
 
+  const username = import.meta.env.VITE_API_USERNAME;
+  const password = import.meta.env.VITE_API_PASSWORD;
+  const base64Credentials = btoa(`${username}:${password}`);
+
   const response = await fetch(requestUrl, {
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Basic ${base64Credentials}`,
       ...headers,
     },
     ...restOptions,
@@ -34,4 +39,4 @@ const apiClient = async <T>(
   return response.json();
 };
 
-export default apiClient;
+export default apiRequest;
