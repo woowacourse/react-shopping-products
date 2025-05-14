@@ -44,11 +44,9 @@ function App() {
     }
     const { newErrorMessage: postErrorMessage } = await postCartItems(product);
     setErrorMessage(postErrorMessage);
+
     if (!postErrorMessage) {
-      const { data: cartData, newErrorMessage } = await getCartItems();
-      setErrorMessage(newErrorMessage);
-      const cartItems = cartData.content;
-      setCart(cartItems);
+      await syncCart();
     }
   };
 
@@ -59,17 +57,13 @@ function App() {
     }
 
     const cartItemId = cartItem.id;
-    const { data, newErrorMessage: deleteErrorMessage } = await deleteCartItems(
+    const { newErrorMessage: deleteErrorMessage } = await deleteCartItems(
       cartItemId
     );
     setErrorMessage(deleteErrorMessage);
 
     if (!deleteErrorMessage) {
-      const { data: cartData, newErrorMessage: getErrorMessage } =
-        await getCartItems();
-      setErrorMessage(getErrorMessage);
-      const cartItems = cartData.content;
-      setCart(cartItems);
+      await syncCart();
     }
   };
 
@@ -101,17 +95,25 @@ function App() {
     setProducts(data.content.slice(0, 20));
   };
 
+  const syncCart = async () => {
+    const { data: cartData, newErrorMessage: getErrorMessage } =
+      await getCartItems();
+    setErrorMessage(getErrorMessage);
+    const cartItems = cartData.content;
+    setCart(cartItems);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const { data, newErrorMessage: getProductErrorMessage } =
         await getProducts();
-      const { data: cartData, newErrorMessage } = await getCartItems();
-      setErrorMessage(errorMessage);
-      setIsLoading(false);
-      setErrorMessage(newErrorMessage);
+      setErrorMessage(getProductErrorMessage);
+      if (!getProductErrorMessage) {
+        await syncCart();
 
-      setProducts(data.content.slice(0, 20));
-      setCart(cartData.content);
+        setIsLoading(false);
+        setProducts(data.content.slice(0, 20));
+      }
     };
 
     fetchData();
@@ -134,23 +136,6 @@ function App() {
             value={priceOrder}
             setValue={handlePriceOrderChange}
           />
-          {/* <select
-            id="category"
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-          >
-            <option value="전체">전체</option>
-            <option value="식료품">식료품</option>
-            <option value="패션잡화">패션잡화</option>
-          </select>
-          <select
-            id="priceOrder"
-            value={priceOrder}
-            onChange={handlePriceOrderChange}
-          >
-            <option value="낮은 가격순">낮은 가격순</option>
-            <option value="높은 가격순">높은 가격순</option>
-          </select> */}
         </SelectContainer>
         <ProductListContainer>
           <ProductItemsWithSkeleton
