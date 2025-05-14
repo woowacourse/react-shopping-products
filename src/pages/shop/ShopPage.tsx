@@ -51,7 +51,7 @@ function ShopPage() {
       method: 'GET',
       path: basePath,
     });
-    const productsData = data.content.map(
+    const productsData = data?.content.map(
       ({ id, name, price, imageUrl, category }) => ({
         id: id.toString(),
         name: name ?? '',
@@ -60,7 +60,7 @@ function ShopPage() {
         category: (category ?? '전체') as ProductCategoryType,
       })
     );
-    return productsData;
+    return productsData ?? [];
   };
 
   return (
