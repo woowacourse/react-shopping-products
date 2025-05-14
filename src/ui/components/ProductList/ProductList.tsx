@@ -1,38 +1,45 @@
+import { useEffect, useState } from 'react';
 import Product from '../Product/Product';
 import { List } from './ProductList.styles';
 
-const mockProducts = [
-  { id: 1, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 2, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 3, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 4, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 5, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 6, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 7, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 8, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 9, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 10, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 11, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 12, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 13, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 14, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 15, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 16, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 17, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 18, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 19, name: '양말', price: 2000, imgSrc: './socks.png' },
-  { id: 20, name: '양말', price: 2000, imgSrc: './socks.png' },
-];
+interface dataType {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
 
 function ProductList() {
+  const [products, setProducts] = useState<dataType[]>([]);
+
+  async function getData() {
+    const response = await fetch(
+      'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products?page=0&size=20&sort=price,asc'
+    );
+    const data = await response.json();
+    return data;
+  }
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getData();
+        setProducts(data.content);
+      } catch (e) {
+        console.log(e);
+      } finally {
+      }
+    })();
+  }, []);
+
   return (
     <List>
-      {mockProducts.map((item) => (
+      {products.map((item) => (
         <Product
           key={item.id}
           name={item.name}
           price={item.price}
-          imgSrc={item.imgSrc}
+          imgSrc={item.imageUrl}
         ></Product>
       ))}
     </List>
