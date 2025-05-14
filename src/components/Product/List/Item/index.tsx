@@ -1,6 +1,6 @@
 import { ProductItemType } from "@/types/product";
-import AddCartItemButton from "@components/Product/CardItemButton/Add";
-import RemoveCartItemButton from "@components/Product/CardItemButton/Remove";
+import AddCartItemButton from "@/components/Product/List/Item/CardItemButton/Add";
+import RemoveCartItemButton from "@/components/Product/List/Item/CardItemButton/Remove";
 import * as S from "./ProductItem.styled";
 
 interface ProductItemProps {
