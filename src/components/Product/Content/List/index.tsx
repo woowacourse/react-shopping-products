@@ -14,19 +14,14 @@ function ProductList({ resource, cartItems, setCartItems }: ProductListProps) {
 
   return (
     <S.ProductList>
-      {products.map((productItem) => {
-        const isAddedToCart = cartItems.some(
-          ({ product }) => product.id === productItem.id
-        );
-        return (
-          <ProductItem
-            key={productItem.id}
-            product={productItem}
-            isAddedToCart={isAddedToCart}
-            setCartItems={setCartItems}
-          />
-        );
-      })}
+      {products.map((productItem) => (
+        <ProductItem
+          key={productItem.id}
+          product={productItem}
+          cartItems={cartItems}
+          setCartItems={setCartItems}
+        />
+      ))}
     </S.ProductList>
   );
 }

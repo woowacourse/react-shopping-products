@@ -4,6 +4,7 @@ import { SetCartItems } from "@/types/cartItem";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
 import useMutation from "@/hooks/useMutation";
+import AlertToast from "@/components/AlertToast";
 
 interface RemoveCartItemButton {
   id: number;
@@ -11,7 +12,7 @@ interface RemoveCartItemButton {
 }
 
 function RemoveCartItemButton({ id, setCartItems }: RemoveCartItemButton) {
-  const { mutate, isLoading } = useMutation(() => removeCartItem(id));
+  const { mutate, isLoading, error } = useMutation(() => removeCartItem(id));
 
   const handleClick = async () => {
     await mutate();
@@ -20,15 +21,19 @@ function RemoveCartItemButton({ id, setCartItems }: RemoveCartItemButton) {
   };
 
   return (
-    <Button
-      variant="secondary"
-      type="button"
-      onClick={handleClick}
-      disabled={isLoading}
-    >
-      <img src={removeCartItemIcon} alt="장바구니 빼기" />
-      빼기
-    </Button>
+    <>
+      {error?.message && <AlertToast errorMessage={error.message} />}
+
+      <Button
+        variant="secondary"
+        type="button"
+        onClick={handleClick}
+        disabled={isLoading}
+      >
+        <img src={removeCartItemIcon} alt="장바구니 빼기" />
+        빼기
+      </Button>
+    </>
   );
 }
 

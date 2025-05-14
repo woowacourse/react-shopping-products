@@ -2,20 +2,17 @@ import { ProductItemType } from "@/types/product";
 import AddCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Add";
 import RemoveCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Remove";
 import * as S from "./ProductItem.styled";
-import { SetCartItems } from "@/types/cartItem";
+import { CartItemType, SetCartItems } from "@/types/cartItem";
 
 interface ProductItemProps {
   product: ProductItemType;
-  isAddedToCart: boolean;
+  cartItems: CartItemType[];
   setCartItems: SetCartItems;
 }
 
-function ProductItem({
-  product,
-  isAddedToCart,
-  setCartItems,
-}: ProductItemProps) {
+function ProductItem({ product, cartItems, setCartItems }: ProductItemProps) {
   const { id, name, price, imageUrl } = product;
+  const findCartItem = cartItems.find(({ product }) => product.id === id);
 
   return (
     <S.Item>
@@ -28,8 +25,11 @@ function ProductItem({
           <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
         </S.ProductInfo>
         <S.ButtonWrapper>
-          {isAddedToCart ? (
-            <RemoveCartItemButton id={id} setCartItems={setCartItems} />
+          {findCartItem ? (
+            <RemoveCartItemButton
+              id={findCartItem.id}
+              setCartItems={setCartItems}
+            />
           ) : (
             <AddCartItemButton id={id} setCartItems={setCartItems} />
           )}

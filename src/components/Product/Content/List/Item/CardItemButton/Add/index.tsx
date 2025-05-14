@@ -4,6 +4,7 @@ import useMutation from "@/hooks/useMutation";
 import { addCartItems } from "@/apis/cartItems/addCartItems";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
 import { SetCartItems } from "@/types/cartItem";
+import AlertToast from "@/components/AlertToast";
 
 interface AddCartItemButton {
   id: number;
@@ -11,7 +12,7 @@ interface AddCartItemButton {
 }
 
 function AddCartItemButton({ id, setCartItems }: AddCartItemButton) {
-  const { mutate, isLoading } = useMutation(() =>
+  const { mutate, isLoading, error } = useMutation(() =>
     addCartItems({ productId: id, quantity: 1 })
   );
 
@@ -22,15 +23,18 @@ function AddCartItemButton({ id, setCartItems }: AddCartItemButton) {
   };
 
   return (
-    <Button
-      variant="primary"
-      type="button"
-      onClick={handleClick}
-      disabled={isLoading}
-    >
-      <img src={addCartItemIcon} alt="장바구니 담기" />
-      담기
-    </Button>
+    <>
+      {error?.message && <AlertToast errorMessage={error.message} />}
+      <Button
+        variant="primary"
+        type="button"
+        onClick={handleClick}
+        disabled={isLoading}
+      >
+        <img src={addCartItemIcon} alt="장바구니 담기" />
+        담기
+      </Button>
+    </>
   );
 }
 
