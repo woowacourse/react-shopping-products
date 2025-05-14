@@ -1,14 +1,30 @@
 import styled from '@emotion/styled';
 import Flex from '../../../common/Flex';
 import AddCartButton from './AddCartButton';
+import { baseAPI } from '../../../../api/baseAPI';
 
 interface ProductProps {
+  id: string;
   name: string;
   price: number;
   imageUrl: string;
 }
 
-function ProductCard({ name, price, imageUrl }: ProductProps) {
+function ProductCard({ id, name, price, imageUrl }: ProductProps) {
+  const handleAddCart = async () => {
+    try {
+      await baseAPI({
+        method: 'POST',
+        path: `/cart-items`,
+        body: {
+          productId: id,
+          quantity: 1,
+        },
+      });
+    } catch (e) {
+      throw new Error('장바구니에 추가하는데 실패했습니다.');
+    }
+  };
   return (
     <Container>
       <PreviewBox>
@@ -19,7 +35,7 @@ function ProductCard({ name, price, imageUrl }: ProductProps) {
           <ProductTitle>{name}</ProductTitle>
           <ProductPrice>{`${price.toLocaleString()}원`}</ProductPrice>
         </Flex>
-        <AddCartButton />
+        <AddCartButton onClick={handleAddCart} />
       </InfoBox>
     </Container>
   );

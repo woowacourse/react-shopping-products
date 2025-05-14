@@ -5,7 +5,7 @@ export async function baseAPI<T>({
 }: {
   method: string;
   path: string;
-  body?: Record<string, string>;
+  body?: Record<string, unknown>;
 }): Promise<T> {
   const baseURL = `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com`;
   const result = await fetch(`${baseURL}${path}`, {

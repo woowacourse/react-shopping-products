@@ -12,7 +12,13 @@ function ProductList({ products }: { products: ProductType[] }) {
   return (
     <Container>
       {products.map(({ id, name, price, imageUrl }) => (
-        <ProductCard key={id} name={name} price={price} imageUrl={imageUrl} />
+        <ProductCard
+          key={id}
+          id={id}
+          name={name}
+          price={price}
+          imageUrl={imageUrl}
+        />
       ))}
     </Container>
   );
