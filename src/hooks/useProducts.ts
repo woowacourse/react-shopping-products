@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
 import { Product } from "../types";
 import { PRODUCT_URL } from "../constants/endpoint";
+import getQueryURL from "../utils/getQueryURL";
 
-interface UseProductsResult {
-	products: Product[];
-}
-
-export default function useProducts(): UseProductsResult {
+export default function useProducts({ page = "0", size = "20", sortingType = "", filterType = "" }) {
 	const [products, setProducts] = useState<Product[]>([]);
+	const query = {
+		page,
+		size,
+		sort: sortingType === "" ? "" : `price,${sortingType}`,
+		category: filterType,
+	};
+	const requestURL = getQueryURL(PRODUCT_URL, query);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
-			const response = await fetch(PRODUCT_URL);
+			const response = await fetch(requestURL);
 			const data = await response.json();
 			setProducts(data);
 		};

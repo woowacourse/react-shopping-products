@@ -8,6 +8,6 @@ describe("getQueryURL 유틸 함수 테스트", () => {
 		[{ page: "0", size: "20" }, BASE_URL + "?page=0&size=20"],
 		[{ sort: "price,asc" }, BASE_URL + "?sort=price%2Casc"],
 	])("주어진 쿼리문(%s)이 추가된 URL를 반환한다.", (query, result) => {
-		expect(getQueryURL(query)).toBe(result);
+		expect(getQueryURL(BASE_URL, query)).toBe(result);
 	});
 });
