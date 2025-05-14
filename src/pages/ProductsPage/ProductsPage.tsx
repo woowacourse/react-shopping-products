@@ -37,7 +37,7 @@ const selectBoxContainer = css`
 
 async function getProducts({ category, sortKey, sortOrder }: productsOptionType) {
   const res = await fetch(
-    `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products?${
+    `${import.meta.env.VITE_API_URL}/products?${
       category !== CATEGORY[0] ? `category=${category}` : ''
     }&page=0&size=20&sort=${sortKey}%2C${sortOrder}`,
   );
