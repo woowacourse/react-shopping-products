@@ -1,32 +1,45 @@
+import { css } from '@emotion/react';
 import CustomButton from '../../../shared/ui/CustomButton';
-import {postCartProduct} from '../../cart/api/postCartProduct';
-import {Product} from '../type/product';
+import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
+import { postCartProduct } from '../../cart/api/postCartProduct';
+import { Product } from '../type/product';
 import * as S from './ProductCard.styles';
 
 interface ProductCardProps {
   product: Product;
 }
 
-export default function ProductCard({product}: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   const handleProductCart = async () => {
+    if (product.isCart && product.cartProductId) {
+      await deleteCartProduct(product.cartProductId);
+      alert('장바구니에서 삭제되었습니다.');
+      return;
+    }
+
     await postCartProduct(product.id);
+    alert('장바구니에 담겼습니다.');
   };
+
+  const iconUrl = product.isCart ? '/deleteCartIcon.svg' : '/addCartIcon.svg';
+  const title = product.isCart ? '빼기' : '담기';
+  const className = product.isCart
+    ? css`
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #000;
+      `
+    : css``;
+
   return (
     <S.ProductCardContainer>
-      <S.ImageSection
-        src={product.imageUrl}
-        alt={product.name}
-      ></S.ImageSection>
+      <S.ImageSection src={product.imageUrl} alt={product.name}></S.ImageSection>
       <S.ContentSection>
         <S.ProductName>{product.name}</S.ProductName>
         <S.ProductPrice>{product.price}</S.ProductPrice>
       </S.ContentSection>
       <S.ButtonSection>
-        <CustomButton
-          iconUrl="/addCartIcon.svg"
-          title="담기"
-          onClick={handleProductCart}
-        />
+        <CustomButton iconUrl={iconUrl} title={title} onClick={handleProductCart} css={className} />
       </S.ButtonSection>
     </S.ProductCardContainer>
   );

@@ -4,6 +4,8 @@ export interface Product {
   imageUrl: string;
   name: string;
   price: number;
+  isCart: boolean;
+  cartProductId?: number;
 }
 
 export interface CartProduct {

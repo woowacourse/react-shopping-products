@@ -45,16 +45,15 @@ function App() {
 
       try {
         const productRes = await getProducts({ sortValue });
-        const cartRes = await getCartProduct();
+        const cartProducts = await getCartProduct();
 
         const rawProducts = productRes.content;
-        const cartProductIds = new Set(cartRes.content.map((cp: CartProduct) => cp.product.id));
-
-        console.log('@@@@@@@@@@', cartRes.content);
+        const cartProductIds = new Set(cartProducts.content.map((cp: CartProduct) => cp.product.id));
 
         const productsWithCartInfo = rawProducts.map((product: Product) => ({
           ...product,
           isCart: cartProductIds.has(product.id),
+          cartProductId: cartProducts.content.find((cp: CartProduct) => cp.product.id === product.id)?.id,
         }));
 
         setProducts(productsWithCartInfo);
