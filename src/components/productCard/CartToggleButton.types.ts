@@ -8,5 +8,4 @@ export interface CartToggleButtonProps {
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  setErrorFalse: () => void;
 }

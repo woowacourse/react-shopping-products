@@ -9,37 +9,34 @@ import { useEffect, useState } from "react";
 import { CartItem } from "./types/response.types";
 
 function App() {
-  const { isError, setErrorTrue, errorMessage, setErrorFalse } = useError();
+  const { isError, setErrorTrue, errorMessage } = useError();
 
   const [cartItemIds, setCartItemIds] = useState<
     Record<"productId" | "cartId", number>[]
   >([]);
-  async function fetchCartItems() {
-    try {
-      const data = await request({
-        method: "GET",
-        url: "/cart-items",
-        headers: {
-          Authorization: import.meta.env.VITE_TOKEN,
-          "Content-Type": "application/json",
-        },
-      });
-
-      setCartItemIds(
-        data.content.map((data: CartItem) => {
-          return { productId: data.product.id, cartId: data.id };
-        })
-      );
-    } catch {
-      setErrorFalse();
-      setErrorTrue("CART");
-    }
-  }
 
   useEffect(() => {
-    (async () => {
-      await fetchCartItems();
-    })();
+    async function fetchCartItems() {
+      try {
+        const data = await request({
+          method: "GET",
+          url: "/cart-items",
+          headers: {
+            Authorization: import.meta.env.VITE_TOKEN,
+            "Content-Type": "application/json",
+          },
+        });
+
+        setCartItemIds(
+          data.content.map((data: CartItem) => {
+            return { productId: data.product.id, cartId: data.id };
+          })
+        );
+      } catch {
+        setErrorTrue("CART");
+      }
+    }
+    fetchCartItems();
   }, []);
 
   return (
@@ -49,7 +46,6 @@ function App() {
         cartItemIds={cartItemIds}
         setCartItemIds={setCartItemIds}
         setErrorTrue={setErrorTrue}
-        setErrorFalse={setErrorFalse}
       />
       {isError && <ErrorToast errorMessage={errorMessage} />}
     </div>

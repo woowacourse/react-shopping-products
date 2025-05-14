@@ -8,7 +8,6 @@ function CartToggleButton({
   isAdded,
   setCartItemIds,
   setErrorTrue,
-  setErrorFalse,
 }: CartToggleButtonProps) {
   async function addItemToCart() {
     try {
@@ -23,7 +22,6 @@ function CartToggleButton({
       });
       setCartItemIds((prev) => [...prev, { productId, cartId: 0 }]);
     } catch {
-      setErrorFalse();
       setErrorTrue("ADD");
     }
   }
@@ -42,7 +40,6 @@ function CartToggleButton({
         prev.filter((ids) => ids.productId !== productId)
       );
     } catch {
-      setErrorFalse();
       setErrorTrue("MINUS");
     }
   }

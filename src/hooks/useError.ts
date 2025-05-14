@@ -16,8 +16,6 @@ function useError() {
     setErrorMessage(ERROR_MESSAGE[errorType]);
   }
 
-  function setErrorFalse() {}
-
   useEffect(() => {
     if (errorMessage) return;
     setTimeout(() => {
@@ -29,7 +27,6 @@ function useError() {
     isError: Boolean(errorMessage),
     setErrorTrue,
     errorMessage,
-    setErrorFalse,
   };
 }
 
