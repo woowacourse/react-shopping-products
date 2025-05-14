@@ -1,4 +1,5 @@
 import ProductList from "../ProductList/ProductList";
+import Filter from "../Filter/Filter";
 
 import { Product as ProductType } from "../../types/Product";
 
@@ -12,6 +13,7 @@ function Main({ productList }: MainProps) {
   return (
     <Container>
       <ProductListTitle>bpple 상품 목록</ProductListTitle>
+      <Filter />
       <ProductList productList={productList} />
     </Container>
   );
