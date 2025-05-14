@@ -7,10 +7,15 @@ const RemoveCartIcon = () => (
   <img src={RemoveCart} alt="장바구니에서 상품 삭제" />
 );
 
-const CartItemButton = ({ isAdd }: { isAdd: boolean }) => {
+interface CartItemButtonProps {
+  isAdd: boolean;
+  onClick: () => void;
+}
+
+const CartItemButton = ({ isAdd, onClick }: CartItemButtonProps) => {
   return (
     <>
-      <S.CartItemButton $isAdd={isAdd}>
+      <S.CartItemButton $isAdd={isAdd} onClick={onClick}>
         {isAdd ? <RemoveCartIcon /> : <AddCartIcon />}
         <S.CartItemAddText>{isAdd ? "빼기" : "담기"}</S.CartItemAddText>
       </S.CartItemButton>

@@ -19,5 +19,22 @@ export const CartItemsAPI = {
 
     return await response.json();
   },
-  post: async () => {},
+  post: async (productId: number) => {
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId: productId,
+        quantity: 1,
+      }),
+    };
+
+    const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems);
+    const response = await fetch(apiUrl, options);
+
+    return await response.json();
+  },
 };

@@ -51,9 +51,9 @@ function App() {
             />
           </S.ProductControlPanel>
           <S.ProductGrid>
-            {products?.content.map(({ id, imageUrl, name, price }) => (
-              <div key={id}>
-                <ProductItem imageUrl={imageUrl} name={name} price={price} />
+            {products?.content.map((productInfo) => (
+              <div key={productInfo.id}>
+                <ProductItem {...productInfo} />
               </div>
             ))}
           </S.ProductGrid>
