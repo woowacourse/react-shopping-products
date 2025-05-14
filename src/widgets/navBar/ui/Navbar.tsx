@@ -1,7 +1,7 @@
 import * as S from './Navbar.styles';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
-export default function Navbar() {
+export default function Navbar({cartQuantity}: {cartQuantity: number}) {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -11,7 +11,10 @@ export default function Navbar() {
   return (
     <S.Wrapper>
       <S.Logo onClick={handleLogoClick}>SHOP</S.Logo>
-      <S.CartIcon src='/cartIcon.svg'></S.CartIcon>
+      <S.CartIconContainer>
+        <S.CartQuantity>{cartQuantity}</S.CartQuantity>
+        <S.CartIcon src="/cartIcon.svg"></S.CartIcon>
+      </S.CartIconContainer>
     </S.Wrapper>
   );
 }
