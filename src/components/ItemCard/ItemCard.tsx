@@ -1,13 +1,15 @@
+import addCart from "../../utils/api/addCart";
 import S from "./ItemCard.module.css";
 
 interface ItemCardProps {
+	id: number;
 	imageUrl: string;
 	name: string;
 	price: number;
 	isCart: boolean;
 }
 
-const ItemCard = ({ imageUrl, name, price, isCart }: ItemCardProps) => {
+const ItemCard = ({ id, imageUrl, name, price, isCart }: ItemCardProps) => {
 	return (
 		<div className={S.cardContainer}>
 			<img
@@ -31,7 +33,7 @@ const ItemCard = ({ imageUrl, name, price, isCart }: ItemCardProps) => {
 							<p>빼기</p>
 						</button>
 					) : (
-						<button className={S.addCartButton}>
+						<button className={S.addCartButton} onClick={() => addCart(id)}>
 							<img className={S.cartImg} src="/images/add-cart.svg" alt="장바구니 추가" />
 							<p>담기</p>
 						</button>
