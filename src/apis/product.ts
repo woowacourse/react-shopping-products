@@ -10,17 +10,10 @@ const SHOP_API = {
     products: "products",
     cartItems: "cart-items",
   },
-  defaultParams: {
-    page: "0",
-    size: "20",
-  },
 };
 
 const createApiUrl = (endpoint: string, params?: Record<string, string>) => {
-  const searchParams = new URLSearchParams({
-    ...SHOP_API.defaultParams,
-    ...params,
-  });
+  const searchParams = new URLSearchParams(params);
   return `${SHOP_API.baseUrl}${endpoint}?${searchParams.toString()}`;
 };
 
@@ -29,7 +22,10 @@ export const ProductAPI = {
     category: CategoryOptionsKey,
     selectedSortOption: SortOptionsKey
   ) => {
-    const params: Record<string, string> = {};
+    const params: Record<string, string> = {
+      page: "0",
+      size: "20",
+    };
 
     if (category !== "전체") {
       params.category = category;
