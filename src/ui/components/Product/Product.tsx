@@ -1,3 +1,4 @@
+import { addCart } from '../../../api/cart';
 import {
   Container,
   ProductImageContainer,
@@ -13,15 +14,19 @@ import { useState } from 'react';
 
 interface ProductProps {
   key: number;
+  id: number;
   name: string;
   price: number;
   imgSrc?: string;
 }
 
-function Product({ name, price, imgSrc }: ProductProps) {
+function Product({ id, name, price, imgSrc }: ProductProps) {
   const [inCart, setInCart] = useState(false);
 
-  const handleToggle = () => setInCart((prev) => !prev);
+  const handleAddCart = () => {
+    const response = addCart(id, price);
+    setInCart((prev) => !prev);
+  };
 
   const buttonImg = inCart
     ? './remove_shopping_cart.png'
@@ -38,7 +43,7 @@ function Product({ name, price, imgSrc }: ProductProps) {
         <ProductName>{name}</ProductName>
         <Price>{price}</Price>
       </Detail>
-      <CartButton inCart={inCart} onClick={handleToggle}>
+      <CartButton inCart={inCart} onClick={handleAddCart}>
         <CartButtonImg src={buttonImg} alt={buttonText} />
         <CartButtonText inCart={inCart}>{buttonText}</CartButtonText>
       </CartButton>
