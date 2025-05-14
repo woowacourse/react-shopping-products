@@ -9,16 +9,22 @@ import { Products } from "./types";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
+  const [category, setCategory] = useState<string>("전체");
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}products`
-      );
+      const response =
+        category !== "전체"
+          ? await fetch(
+              `${
+                import.meta.env.VITE_API_BASE_URL
+              }products?category=${category}`
+            )
+          : await fetch(`${import.meta.env.VITE_API_BASE_URL}products`);
       const data = await response.json();
       setProducts(data);
     })();
-  }, []);
+  }, [category]);
 
   return (
     <S.LayoutContainer>
@@ -27,7 +33,7 @@ function App() {
         <S.Wrapper>
           <ProductsListTitle />
           <S.ProductControlPanel>
-            <CategoryFilter />
+            <CategoryFilter category={category} setCategory={setCategory} />
             <ProductSorter />
           </S.ProductControlPanel>
           <S.ProductGrid>

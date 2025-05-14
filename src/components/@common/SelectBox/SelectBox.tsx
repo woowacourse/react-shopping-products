@@ -1,8 +1,14 @@
 import * as S from "./SelectBox.styles";
 
-const SelectBox = ({ options }: { options: string[] }) => {
+interface SelectBoxProps {
+  state: string;
+  setState: React.Dispatch<React.SetStateAction<string>>;
+  options: string[];
+}
+
+const SelectBox = ({ state, setState, options }: SelectBoxProps) => {
   return (
-    <S.Select>
+    <S.Select value={state} onChange={(e) => setState(e.target.value)}>
       {options.map((option, index) => (
         <option key={index} value={option}>
           {option}
