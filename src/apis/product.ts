@@ -1,4 +1,8 @@
-import { SortOptionKey, sortOptionMap } from "../constants";
+import {
+  CategoryOptionsKey,
+  SortOptionsKey,
+  sortOptionsMap,
+} from "../constants";
 
 const SHOP_API = {
   baseUrl: `${import.meta.env.VITE_API_BASE_URL}`,
@@ -21,15 +25,18 @@ const createApiUrl = (endpoint: string, params?: Record<string, string>) => {
 };
 
 export const ProductAPI = {
-  get: async (category: string, selectedSortOption: SortOptionKey) => {
+  get: async (
+    category: CategoryOptionsKey,
+    selectedSortOption: SortOptionsKey
+  ) => {
     const params: Record<string, string> = {};
 
     if (category !== "전체") {
       params.category = category;
     }
 
-    if (selectedSortOption && sortOptionMap[selectedSortOption]) {
-      params.sort = sortOptionMap[selectedSortOption];
+    if (selectedSortOption && sortOptionsMap[selectedSortOption]) {
+      params.sort = sortOptionsMap[selectedSortOption];
     }
 
     const apiUrl = createApiUrl(SHOP_API.endpoint.products, params);

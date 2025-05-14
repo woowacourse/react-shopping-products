@@ -1,15 +1,22 @@
 import { Dispatch } from "react";
 import SelectBox from "../@common/SelectBox/SelectBox";
+import { CategoryOptions, CategoryOptionsKey } from "../../constants";
 
 interface CategoryFilterProps {
-  category: string;
-  setCategory: Dispatch<React.SetStateAction<string>>;
+  selectedCategory: CategoryOptionsKey;
+  setSelectedCategory: Dispatch<React.SetStateAction<CategoryOptionsKey>>;
 }
 
-const CategoryFilter = ({ category, setCategory }: CategoryFilterProps) => {
-  const options = ["전체", "식료품", "패션잡화"];
+const CategoryFilter = ({
+  selectedCategory,
+  setSelectedCategory,
+}: CategoryFilterProps) => {
   return (
-    <SelectBox state={category} setState={setCategory} options={options} />
+    <SelectBox
+      state={selectedCategory}
+      setState={setSelectedCategory}
+      options={CategoryOptions}
+    />
   );
 };
 

@@ -1,10 +1,10 @@
 import { Dispatch } from "react";
 import SelectBox from "../@common/SelectBox/SelectBox";
-import { SortOptionKey, sortOptions } from "../../constants";
+import { SortOptionsKey, sortOptions } from "../../constants";
 
 interface ProductSorterProps {
-  selectedSortOption: SortOptionKey;
-  setSelectedSortOption: Dispatch<React.SetStateAction<SortOptionKey>>;
+  selectedSortOption: SortOptionsKey;
+  setSelectedSortOption: Dispatch<React.SetStateAction<SortOptionsKey>>;
 }
 
 const ProductSorter = ({

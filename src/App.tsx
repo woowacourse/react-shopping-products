@@ -7,20 +7,21 @@ import ProductSorter from "./components/ProductSorter/ProductSorter";
 import ShopHeader from "./components/ShopHeader/ShopHeader";
 import * as S from "./styles/Layout.styles";
 import { Products } from "./types";
-import { SortOptionKey } from "./constants";
+import { CategoryOptionsKey, SortOptionsKey } from "./constants";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
-  const [category, setCategory] = useState<string>("전체");
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryOptionsKey>("전체");
   const [selectedSortOption, setSelectedSortOption] =
-    useState<SortOptionKey>("낮은 가격 순");
+    useState<SortOptionsKey>("낮은 가격 순");
 
   useEffect(() => {
     (async () => {
-      const data = await ProductAPI.get(category, selectedSortOption);
+      const data = await ProductAPI.get(selectedCategory, selectedSortOption);
       setProducts(data);
     })();
-  }, [category, selectedSortOption]);
+  }, [selectedCategory, selectedSortOption]);
 
   return (
     <S.LayoutContainer>
@@ -29,7 +30,10 @@ function App() {
         <S.Wrapper>
           <ProductsListTitle />
           <S.ProductControlPanel>
-            <CategoryFilter category={category} setCategory={setCategory} />
+            <CategoryFilter
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
             <ProductSorter
               selectedSortOption={selectedSortOption}
               setSelectedSortOption={setSelectedSortOption}
