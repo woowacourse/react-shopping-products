@@ -1,15 +1,30 @@
-import { useState } from "react";
+import { css } from "@emotion/react";
+import { useEffect, useState } from "react";
+import { getProduct } from "./apis/product";
+import Button from "./components/Button";
+import Card from "./components/Card";
 import Header from "./components/Header";
+import AddCart from "./components/icons/AddCart";
 import Select from "./components/Select";
 import Text from "./components/Text";
-import Card from "./components/Card";
-import Button from "./components/Button";
-import AddCart from "./components/icons/AddCart";
-import { css } from "@emotion/react";
+import { Content } from "./types/product";
 
 function App() {
   const [filter, setFilter] = useState("전체");
   const [sort, setSort] = useState("높은 가격순");
+
+  const [products, setProducts] = useState<Content[]>();
+
+  const getProducts = async () => {
+    const data = await getProduct({ page: 0, size: 20 });
+
+    setProducts(data.content);
+    return data;
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   return (
     <div css={appStyle}>
@@ -23,72 +38,27 @@ function App() {
           <Select options={["높은 가격순", "낮은 가격순"]} selectedItem={sort} setSelectedItem={setSort} />
         </div>
         <div css={cardContainerStyle}>
-          <Card>
-            <Card.Preview>
-              <img
-                src="https://media.istockphoto.com/id/520700958/ko/%EC%82%AC%EC%A7%84/%EC%95%84%EB%A6%84%EB%8B%A4%EC%9A%B4-%EA%BD%83-%EB%B0%B0%EA%B2%BD%EA%B8%B0%EC%88%A0.jpg?s=612x612&w=0&k=20&c=gJx5-O9U1qXKZqKwv4KunrBae7RDNRcdse1nOdSk_0w="
-                alt="effef"
-              />
-            </Card.Preview>
-            <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                <Text variant="title-2">상품 이름</Text>
-                <Text variant="body-2">35,000원</Text>
-              </div>
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button>
-                  <AddCart />
-                  <Text variant="body-2" color="#fff">
-                    담기
-                  </Text>
-                </Button>
-              </div>
-            </Card.Content>
-          </Card>
-          <Card>
-            <Card.Preview>
-              <img
-                src="https://media.istockphoto.com/id/520700958/ko/%EC%82%AC%EC%A7%84/%EC%95%84%EB%A6%84%EB%8B%A4%EC%9A%B4-%EA%BD%83-%EB%B0%B0%EA%B2%BD%EA%B8%B0%EC%88%A0.jpg?s=612x612&w=0&k=20&c=gJx5-O9U1qXKZqKwv4KunrBae7RDNRcdse1nOdSk_0w="
-                alt="effef"
-              />
-            </Card.Preview>
-            <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                <Text variant="title-2">상품 이름</Text>
-                <Text variant="body-2">35,000원</Text>
-              </div>
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button>
-                  <AddCart />
-                  <Text variant="body-2" color="#fff">
-                    담기
-                  </Text>
-                </Button>
-              </div>
-            </Card.Content>
-          </Card>
-          <Card>
-            <Card.Preview>
-              <img
-                src="https://media.istockphoto.com/id/520700958/ko/%EC%82%AC%EC%A7%84/%EC%95%84%EB%A6%84%EB%8B%A4%EC%9A%B4-%EA%BD%83-%EB%B0%B0%EA%B2%BD%EA%B8%B0%EC%88%A0.jpg?s=612x612&w=0&k=20&c=gJx5-O9U1qXKZqKwv4KunrBae7RDNRcdse1nOdSk_0w="
-                alt="effef"
-              />
-            </Card.Preview>
-            <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                <Text variant="title-2">상품 이름</Text>
-                <Text variant="body-2">35,000원</Text>
-              </div>
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button>
-                  <AddCart />
-                  <Text variant="body-2" color="#fff">
-                    담기
-                  </Text>
-                </Button>
-              </div>
-            </Card.Content>
-          </Card>
+          {products?.map((product) => (
+            <Card>
+              <Card.Preview>
+                <img src={product.imageUrl} alt={product.name} />
+              </Card.Preview>
+              <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <Text variant="title-2">{product.name}</Text>
+                  <Text variant="body-2">{product.price.toLocaleString()}원</Text>
+                </div>
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button>
+                    <AddCart />
+                    <Text variant="body-2" color="#fff">
+                      담기
+                    </Text>
+                  </Button>
+                </div>
+              </Card.Content>
+            </Card>
+          ))}
         </div>
       </div>
     </div>
