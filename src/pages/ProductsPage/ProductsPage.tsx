@@ -56,9 +56,6 @@ function ProductsPage() {
     setCategory(e.target.value);
   };
 
-  console.log(carts);
-  // console.log(products);
-
   const getProcessedCartArr = () => {
     const cartIdArr = carts?.map((cart) => cart.product.id);
     return products?.map((product) => {
@@ -96,6 +93,24 @@ function ProductsPage() {
     await refetchCarts();
   };
 
+  const handleDeleteCartItem = async ({ productId }: { productId: number }) => {
+    const cartId = carts?.filter((cart) => cart.product.id === productId)[0].id;
+
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items/${cartId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error('에러 발생');
+    }
+
+    await refetchCarts();
+  };
+
   useEffect(() => {
     if (carts) {
       setItemCount(new Set(carts?.map((cart) => cart.product.id)).size);
@@ -117,7 +132,11 @@ function ProductsPage() {
         </div>
         {/* <Toast text="안녕하세요" varient="error" />  */}
         {products && (
-          <ProductList products={getProcessedCartArr()} onClickAddCartItem={handleAddCartItem} />
+          <ProductList
+            products={getProcessedCartArr()}
+            onClickAddCartItem={handleAddCartItem}
+            onClickDeleteCartItem={handleDeleteCartItem}
+          />
         )}
       </div>
     </div>

@@ -12,13 +12,19 @@ const ProductListContainer = css`
 type ProductListProps = {
   products: ProductDataType[] | undefined;
   onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
+  onClickDeleteCartItem: ({ productId }: { productId: number }) => void;
 };
 
-function ProductList({ products, onClickAddCartItem }: ProductListProps) {
+function ProductList({ products, onClickAddCartItem, onClickDeleteCartItem }: ProductListProps) {
   return (
     <ul className={ProductListContainer}>
       {products?.map((product, idx) => (
-        <Product key={idx} {...product} onClickAddCartItem={onClickAddCartItem} />
+        <Product
+          key={idx}
+          {...product}
+          onClickAddCartItem={onClickAddCartItem}
+          onClickDeleteCartItem={onClickDeleteCartItem}
+        />
       ))}
     </ul>
   );

@@ -39,7 +39,15 @@ const buttonWrapper = css`
   right: 10px;
 `;
 
-function Product({ id, imageUrl, name, price, isAdd, onClickAddCartItem }: ProductProps) {
+function Product({
+  id,
+  imageUrl,
+  name,
+  price,
+  isAdd,
+  onClickAddCartItem,
+  onClickDeleteCartItem,
+}: ProductProps) {
   return (
     <li className={productContainer}>
       <img src={imageUrl} alt="product" className={productImage} />
@@ -48,7 +56,7 @@ function Product({ id, imageUrl, name, price, isAdd, onClickAddCartItem }: Produ
         <div className={productPrice}>{price}원</div>
         <div className={buttonWrapper}>
           {isAdd ? (
-            <DeleteButton />
+            <DeleteButton onClick={() => onClickDeleteCartItem({ productId: id })} />
           ) : (
             <AddButton onClick={() => onClickAddCartItem({ productId: id, quantity: 1 })} />
           )}
