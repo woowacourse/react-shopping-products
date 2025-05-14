@@ -13,11 +13,12 @@ const buttonStyles = {
     }
   `,
   secondary: css`
-    background-color: rgb(96, 96, 96);
+    background-color: #eaeaea;
     color: #000000;
     font-weight: 500;
+
     &:hover {
-      background-color: rgb(188, 188, 188);
+      background-color: #d0d0d0;
     }
   `,
 };
@@ -33,9 +34,6 @@ export const StyledButton = styled.button<IconButtonProps>`
   cursor: pointer;
 
   ${({ variant }) => buttonStyles[variant ?? 'primary']}
-  &:hover {
-    background-color: #808080;
-  }
 `;
 
 export const StyledImgIcon = styled.img`
