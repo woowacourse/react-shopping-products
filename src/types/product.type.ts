@@ -41,6 +41,20 @@ interface FetchProductsRequest {
   endpoint: string;
 }
 
+interface ShoppingCartResponse {
+  endpoint: string;
+  requestBody: PostRequestBody | PatchRequestBody;
+}
+
+interface PostRequestBody {
+  productId: number;
+  quantity: number;
+}
+
+interface PatchRequestBody {
+  quantity: number;
+}
+
 export type {
   Product,
   FetchProductsRequest,
@@ -49,4 +63,5 @@ export type {
   Sort,
   Category,
   SortOption,
+  ShoppingCartResponse,
 };

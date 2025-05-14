@@ -1,9 +1,13 @@
 import { ButtonStyles } from "./Button.emotion";
 import { css } from "@emotion/css";
 
-const AddButton = () => {
+interface AddButtonProps {
+  onClick: () => void;
+}
+
+const AddButton = ({ onClick }: AddButtonProps) => {
   return (
-    <button className={AddButtonStyles}>
+    <button className={AddButtonStyles} onClick={onClick}>
       <img src="/addShoppingCart.svg" />
       <div className={AddButtonTextStyles}>담기</div>
     </button>

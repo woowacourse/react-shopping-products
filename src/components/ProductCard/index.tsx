@@ -1,14 +1,30 @@
 import { css } from "@emotion/css";
-import RemoveButton from "../Button/RemoveButton";
+// import RemoveButton from "../Button/RemoveButton";
 import AddButton from "../Button/AddButton";
 import { Product } from "../../types/product.type";
+import shoppingCart from "../../APIs/shoppingCart";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { id, name, price, imageUrl, isInCart } = product;
+  const { id, name, price, imageUrl } = product;
+
+  const handleAddButton = () => {
+    const endpoint = "/cart-items";
+    const requestBody = {
+      productId: id,
+      quantity: 1,
+    };
+
+    try {
+      shoppingCart({ endpoint, requestBody });
+      alert("장바구니에 추가되었습니다.");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div key={id} className={CardFrame}>
@@ -17,7 +33,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <h4>{name}</h4>
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
-          {isInCart ? <RemoveButton /> : <AddButton />}
+          <AddButton onClick={handleAddButton} />
         </div>
       </div>
     </div>
