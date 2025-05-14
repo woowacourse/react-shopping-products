@@ -37,10 +37,14 @@ function App() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const addToCart = async (product: Product) => {
-    await postCartItems(product);
-    const cartData = await getCartItems();
-    const cartItems = cartData.content;
-    setCart(cartItems);
+    const { newErrorMessage: postErrorMessage } = await postCartItems(product);
+    setErrorMessage(postErrorMessage);
+    if (!postErrorMessage) {
+      const { data: cartData, newErrorMessage } = await getCartItems();
+      setErrorMessage(newErrorMessage);
+      const cartItems = cartData.content;
+      setCart(cartItems);
+    }
   };
 
   const removeFromCart = async (productId: number) => {
@@ -50,11 +54,18 @@ function App() {
     }
 
     const cartItemId = cartItem.id;
-    await deleteCartItems(cartItemId);
+    const { data, newErrorMessage: deleteErrorMessage } = await deleteCartItems(
+      cartItemId
+    );
+    setErrorMessage(deleteErrorMessage);
 
-    const cartData = await getCartItems();
-    const cartItems = cartData.content;
-    setCart(cartItems);
+    if (!deleteErrorMessage) {
+      const { data: cartData, newErrorMessage: getErrorMessage } =
+        await getCartItems();
+      setErrorMessage(getErrorMessage);
+      const cartItems = cartData.content;
+      setCart(cartItems);
+    }
   };
 
   const handleCategoryChange = async (
@@ -81,15 +92,16 @@ function App() {
       category: selectedCategory,
       priceOrder: e.target.value as priceOrder,
     });
+    setErrorMessage(newErrorMessage);
     setIsLoading(false);
     setProducts(data.content.slice(0, 20));
-    setErrorMessage(newErrorMessage);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       const { data, newErrorMessage } = await getProducts();
-      const cartData = await getCartItems();
+      const { data: cartData, errorMessage } = await getCartItems();
+      setErrorMessage(errorMessage);
       setIsLoading(false);
       setErrorMessage(newErrorMessage);
 
