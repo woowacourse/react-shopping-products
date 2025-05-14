@@ -37,4 +37,5 @@ const Container = styled.div`
 const Title = styled.h1`
   font-weight: 700;
   font-size: 24px;
+  margin: 0px;
 `;

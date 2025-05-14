@@ -59,6 +59,7 @@ const StyledImgWrapper = styled.div<ImgWrapperProps>`
   background-image: ${(props) => `url(${props.imageUrl})`};
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: 8px 8px 0px 0px;
 `;
 
 const StyledProductInfoWrapper = styled.div`
