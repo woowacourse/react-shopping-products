@@ -1,21 +1,39 @@
 import styled from '@emotion/styled';
 import Button from './Button';
 import { ProductItemType } from '../types/data';
+import { addCartItems } from '../services/cartItemServices';
+import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
+// import RemoveShoppingCartIcon from '/public/icon/remove-shopping-cart.svg';
 
 interface ProductItemProps {
   product: ProductItemType;
 }
 
 const ProductItem = ({ product }: ProductItemProps) => {
+  const handleAddCartItem = () => {
+    console.log('장바구니 담기');
+    const addItemInfo = {
+      productId: product.id,
+      quantity: 1,
+    };
+    (async () => {
+      await addCartItems(addItemInfo);
+    })();
+  };
   return (
     <ProductItemContainer>
       <ProductItemImage src={product.imageUrl} />
       <ProductItemCard>
         <ProductItemInfo>
           <ProductItemTitle>{product.name}</ProductItemTitle>
-          <ProductItemPrice>{product.price}</ProductItemPrice>
+          <ProductItemPrice>{product.price.toLocaleString()}원</ProductItemPrice>
         </ProductItemInfo>
-        <Button type="button" id="add" content="담기" name="담기" variant="smallBlack" />
+        <Button type="button" id="add" name="담기" variant="smallBlack" onClick={handleAddCartItem}>
+          <CartIconContainer>
+            <CartAddIcon src={AddShoppingCartIcon} alt="장바구니" />
+            담기
+          </CartIconContainer>
+        </Button>
       </ProductItemCard>
     </ProductItemContainer>
   );
@@ -64,6 +82,18 @@ const ProductItemPrice = styled.span`
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-body);
   width: 100%;
+`;
+
+const CartIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 0;
+`;
+
+const CartAddIcon = styled.img`
+  width: 16px;
 `;
 
 export default ProductItem;

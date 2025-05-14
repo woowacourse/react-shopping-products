@@ -5,13 +5,13 @@ import { ComponentProps } from 'react';
 type VariantsProps = 'smallBlack' | 'smallGrey';
 
 interface ButtonProps extends Pick<ComponentProps<'button'>, 'type' | 'name' | 'id' | 'onClick'> {
-  content: string;
+  children: React.ReactNode;
   variant: VariantsProps;
 }
 
 const buttonStyles = {
   smallBlack: css`
-    width: 59px;
+    max-width: 65px;
     height: 29p;
     padding: 4px 8px;
     background-color: var(--color-black);
@@ -19,7 +19,7 @@ const buttonStyles = {
   `,
 
   smallGrey: css`
-    width: 59px;
+    max-width: 65px;
     height: 29px;
     padding: 4px 8px;
     background-color: var(--color-grey);
@@ -27,7 +27,7 @@ const buttonStyles = {
   `,
 };
 
-const Button = ({ content, variant, ...buttonProps }: ButtonProps) => {
+const Button = ({ children, variant, ...buttonProps }: ButtonProps) => {
   return (
     <ButtonContainer
       type={buttonProps.type}
@@ -36,7 +36,7 @@ const Button = ({ content, variant, ...buttonProps }: ButtonProps) => {
       onClick={buttonProps.onClick}
       $variant={variant}
     >
-      {content}
+      {children}
     </ButtonContainer>
   );
 };
@@ -44,7 +44,9 @@ const Button = ({ content, variant, ...buttonProps }: ButtonProps) => {
 export default Button;
 
 const ButtonContainer = styled.button<{ $variant: VariantsProps }>`
+  width: 100%;
   border-radius: 4px;
+  box-sizing: border-box;
 
   ${({ $variant }) => buttonStyles[$variant]}
 `;

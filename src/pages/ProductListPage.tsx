@@ -7,7 +7,6 @@ import { getProducts } from '../services/productServices';
 import { ProductItemType } from '../types/data';
 
 export const ProductListPage = () => {
-  const [errorOpen, setErrorOpen] = useState(false);
   const options = ['옵션1', '옵션2', '옵션3', '옵션4', '옵션5'];
   const [value, setValue] = useState(options[0]);
   const [products, setProducts] = useState<ProductItemType[]>([]);
@@ -23,19 +22,11 @@ export const ProductListPage = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    setErrorOpen(true);
-    setTimeout(() => {
-      setErrorOpen(false);
-    }, 3000);
-    setValue('선택된 값');
-  }, []);
-
   console.log(products);
 
   return (
     <ProductListPageContainer>
-      {errorOpen && <ErrorToast errorMessage="hi" />}
+      <ErrorToast errorMessage="hi" />
       <Title>bpple 상품 목록</Title>
       <SelectContainer>
         <Select

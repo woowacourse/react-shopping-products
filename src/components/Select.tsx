@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useRef, useState } from 'react';
 import useOutsideClick from '../hooks/useOutsideClick';
 import { keyframes } from '@emotion/react';
-import SelectDownIcon from '/public/select-down.svg';
+import SelectDownIcon from '/public/icon/select-down-icon.svg';
 
 interface SelectProps {
   options: string[];

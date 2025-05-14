@@ -7,12 +7,17 @@ interface ApiClientProps {
 }
 
 const apiClient = async ({ method, URI, body }: ApiClientProps) => {
+  const basicToken = btoa(
+    `${import.meta.env.VITE_API_USERNAME}:${import.meta.env.VITE_API_PASSWORD}`,
+  );
   const requestURL = `${import.meta.env.VITE_API_BASE_URL}` + URI;
   const response = await fetch(requestURL, {
     method,
     body: body ? JSON.stringify(body) : undefined,
-    headers: { 'Content-type': 'application/json' },
+    headers: { 'Content-type': 'application/json', Authorization: `Basic ${basicToken}` },
   });
+
+  console.log(response);
 
   if (response.ok) {
     return response.json();

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Logo from '/public/logo.svg';
-import CartIcon from '/public/cartIcon.svg';
+import CartIcon from '/public/icon/cart.svg';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
