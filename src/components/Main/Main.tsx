@@ -11,6 +11,7 @@ import fetchProductList from "../../apis/product/fetchProductList";
 
 interface MainProps {
   handleAddProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleRemoveProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const isProductCategory = (value: string): value is ProductCategory => {
@@ -21,7 +22,7 @@ const isProductSort = (value: string): value is Sort => {
   return ["price,desc", "price,asc", "id,desc", "id,asc"].includes(value);
 };
 
-function Main({ handleAddProduct }: MainProps) {
+function Main({ handleAddProduct, handleRemoveProduct }: MainProps) {
   const [productList, setProductList] = useState(null);
   const [category, setCategory] = useState<ProductCategory>("전체");
   const [sort, setSort] = useState<Sort>("price,asc");
@@ -76,6 +77,7 @@ function Main({ handleAddProduct }: MainProps) {
       <ProductList
         productList={productList}
         handleAddProduct={handleAddProduct}
+        handleRemoveProduct={handleRemoveProduct}
       />
     </Styled.Container>
   );

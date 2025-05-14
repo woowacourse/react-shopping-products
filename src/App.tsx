@@ -18,14 +18,24 @@ function App() {
     setSelectedProductIdList((prevIdList) => [...prevIdList, $product.id]);
   };
 
-  // const handleRemoveProduct = (
-  //   event: React.MouseEvent<HTMLButtonElement>
-  // ) => {};
+  const handleRemoveProduct = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const $product = event.currentTarget.closest("li");
+    if (!$product) {
+      return;
+    }
+
+    setSelectedProductIdList((prevIdList) =>
+      prevIdList.filter((productId) => productId !== $product.id)
+    );
+  };
 
   return (
     <Container>
       <Header></Header>
-      <Main handleAddProduct={handleAddProduct}></Main>
+      <Main
+        handleAddProduct={handleAddProduct}
+        handleRemoveProduct={handleRemoveProduct}
+      ></Main>
     </Container>
   );
 }

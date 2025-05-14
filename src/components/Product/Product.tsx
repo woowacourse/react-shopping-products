@@ -6,7 +6,11 @@ import defaultImage from "/defaultImage.png";
 import AddButton from "../AddButton/AddButton";
 import RemoveButton from "../RemoveButton/RemoveButton";
 
-function Product({ product, handleAddProduct }: ProductProps) {
+function Product({
+  product,
+  handleAddProduct,
+  handleRemoveProduct,
+}: ProductProps) {
   return (
     <li id={product.id.toString()}>
       <Styled.Container>
@@ -19,8 +23,8 @@ function Product({ product, handleAddProduct }: ProductProps) {
             </Styled.ProductPrice>
           </Styled.Contents>
           <Styled.ButtonWrapper>
-            <AddButton handleAddProduct={handleAddProduct}></AddButton>
-            <RemoveButton handleRemoveProduct={() => {}}></RemoveButton>
+            <AddButton handleAddProduct={handleAddProduct} />
+            <RemoveButton handleRemoveProduct={handleRemoveProduct} />
           </Styled.ButtonWrapper>
         </Styled.Wrapper>
       </Styled.Container>

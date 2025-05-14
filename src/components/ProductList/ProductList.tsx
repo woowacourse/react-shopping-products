@@ -7,9 +7,14 @@ import * as Styled from "./ProductList.styled";
 interface ProductListProps {
   productList: readonly ProductType[];
   handleAddProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleRemoveProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-function ProductList({ productList, handleAddProduct }: ProductListProps) {
+function ProductList({
+  productList,
+  handleAddProduct,
+  handleRemoveProduct,
+}: ProductListProps) {
   return (
     <Styled.UlContainer>
       {productList.map((product) => (
@@ -17,6 +22,7 @@ function ProductList({ productList, handleAddProduct }: ProductListProps) {
           key={product.id}
           product={product}
           handleAddProduct={handleAddProduct}
+          handleRemoveProduct={handleRemoveProduct}
         />
       ))}
     </Styled.UlContainer>
