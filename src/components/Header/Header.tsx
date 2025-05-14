@@ -1,10 +1,12 @@
+import { CartProduct } from "../../types";
 import S from "./Header.module.css";
 
-const Header = () => {
+const Header = ({ cardProducts }: { cardProducts: CartProduct[] }) => {
+	const cartCount = cardProducts.length;
 	return (
 		<div className={S.container}>
 			<p>SHOP</p>
-			<Cart count={2} />
+			<Cart count={cartCount} />
 		</div>
 	);
 };
