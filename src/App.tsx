@@ -6,12 +6,15 @@ import ErrorBox from './components/common/ErrorBox/ErrorBox';
 import getProductList from './api/ProductListApi';
 import { useEffect, useState } from 'react';
 import { ResponseProduct } from './api/types';
+import getCartItemList from './api/CartItemListApi';
 function App() {
   const [productList, setProductList] = useState<ResponseProduct[]>([]);
 
   useEffect(() => {
     (async () => {
       const data = await getProductList();
+      const data2 = await getCartItemList();
+      console.log('data2', data2);
       setProductList(data);
     })();
   }, []);
