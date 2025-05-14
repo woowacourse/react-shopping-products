@@ -4,10 +4,11 @@ import ProductList from '../ProductList/ProductList';
 import { DropdownContainer, Section } from './ProductSection.styles';
 import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
 import React, { useState } from 'react';
-import { SortType } from '../../../types/product';
+import { SortType, CategoryType } from '../../../types/product';
 
 function ProductSection() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
+  const [category, setCategory] = useState<CategoryType>('전체');
 
   const handleSortPrice = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
@@ -17,18 +18,29 @@ function ProductSection() {
     }
   };
 
+  const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+
+    if (value === '전체' || value === '식료품' || value === '패션잡화')
+      setCategory(value);
+  };
+
   return (
     <Section>
       <Title title="bpple 상품 목록" />
       <DropdownContainer>
-        <Dropdown value="전체" options={CATEGORY} onChange={() => {}} />
+        <Dropdown
+          value={category}
+          options={CATEGORY}
+          onChange={handleFilterCategory}
+        />
         <Dropdown
           value={sort}
           options={SORT_PRICE}
           onChange={handleSortPrice}
         />
       </DropdownContainer>
-      <ProductList sort={sort} />
+      <ProductList sort={sort} category={category} />
     </Section>
   );
 }

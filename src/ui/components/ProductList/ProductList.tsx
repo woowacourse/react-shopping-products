@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import Product from '../Product/Product';
 import { List } from './ProductList.styles';
 import { getProduct } from '../../../api/product';
-import { ProductType, SortType } from '../../../types/product';
+import { ProductType, SortType, CategoryType } from '../../../types/product';
 
 interface ProductListProps {
   sort: SortType;
+  category: CategoryType;
 }
 
-function ProductList({ sort }: ProductListProps) {
+function ProductList({ sort, category }: ProductListProps) {
   const [products, setProducts] = useState<ProductType[]>([]);
 
   const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
@@ -17,13 +18,18 @@ function ProductList({ sort }: ProductListProps) {
     (async () => {
       try {
         const data = await getProduct(mappedSortType);
-        setProducts(data.content);
+        const filteredCategory = data.content.filter(
+          (item: ProductType) =>
+            category === '전체' || item.category === category
+        );
+
+        setProducts(filteredCategory);
       } catch (e) {
-        console.log(e);
+        console.error(e);
       } finally {
       }
     })();
-  }, [sort]);
+  }, [sort, category]);
 
   return (
     <List>
