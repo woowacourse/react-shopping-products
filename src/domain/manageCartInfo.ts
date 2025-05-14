@@ -9,7 +9,5 @@ export const isCartItem = async (productId: number) => {
 export const getCartId = async (productId: number) => {
   const data = await getCartItems();
   const cartItem = data.find((item: CartItemType) => item.product.id === productId);
-  console.log(cartItem);
-  console.log(productId);
   return cartItem && cartItem.id;
 };
