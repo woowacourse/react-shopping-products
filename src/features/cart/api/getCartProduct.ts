@@ -1,14 +1,10 @@
-interface Query {
-  sortValue: string;
-}
-
-export const getCartProduct = async ({sortValue}: Query) => {
+export const getCartProduct = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/products?sort=${sortValue}&size=40`
+      `${import.meta.env.VITE_API_BASE_URL}/cart-items`
     );
     if (!response.ok) {
-      throw new Error('Network response was not ok for getProducts');
+      throw new Error('Network response was not ok for getCartProduct');
     }
 
     return await response.json();

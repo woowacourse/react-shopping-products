@@ -16,7 +16,7 @@ export const postCartProduct = async (productId: number) => {
       }
     );
     if (!response.ok)
-      throw new Error('Network response was not ok for postProducts');
+      throw new Error('Network response was not ok for postCartProduct');
     console.log(response);
     return response;
   } catch (error) {

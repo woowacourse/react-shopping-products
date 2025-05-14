@@ -12,7 +12,7 @@ export const deleteCartProduct = async (productId: number) => {
       }
     );
     if (!response.ok)
-      throw new Error('Network response was not ok for postProducts');
+      throw new Error('Network response was not ok for deleteCartProduct');
 
     return response;
   } catch (error) {
