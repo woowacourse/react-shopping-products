@@ -2,16 +2,22 @@ import styled from '@emotion/styled';
 import Flex from '../../../common/Flex';
 import AddCartButton from './AddCartButton';
 
-function ProductCard() {
+interface ProductProps {
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
+function ProductCard({ name, price, imageUrl }: ProductProps) {
   return (
     <Container>
       <PreviewBox>
-        <PreviewImage src="https://img.hankyung.com/photo/202208/99.30841131.1.jpg" />
+        <PreviewImage src={imageUrl} />
       </PreviewBox>
       <InfoBox>
         <Flex flexDirection="column" gap="sm" alignItems="flex-start">
-          <ProductTitle>상품 이름</ProductTitle>
-          <ProductPrice>35,000원</ProductPrice>
+          <ProductTitle>{name}</ProductTitle>
+          <ProductPrice>{`${price.toLocaleString()}원`}</ProductPrice>
         </Flex>
         <AddCartButton />
       </InfoBox>

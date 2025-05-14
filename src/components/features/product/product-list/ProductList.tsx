@@ -1,17 +1,19 @@
 import styled from '@emotion/styled';
 import ProductCard from '../product-card/ProductCard';
 
-function ProductList() {
+type ProductType = {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+};
+
+function ProductList({ products }: { products: ProductType[] }) {
   return (
     <Container>
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
+      {products.map(({ id, name, price, imageUrl }) => (
+        <ProductCard key={id} name={name} price={price} imageUrl={imageUrl} />
+      ))}
     </Container>
   );
 }

@@ -51,7 +51,24 @@ function ShopPage() {
             />
           </Flex>
         </ListTitleBox>
-        <ProductList />
+        <ProductList
+          products={[
+            {
+              id: '139',
+              name: '오거스가 침뱉은 커피',
+              price: 30000,
+              imageUrl:
+                'https://cdn.wikifoodie.co.kr/news/photo/202504/2050_5442_3844.jpg',
+            },
+            {
+              id: '140',
+              name: '니야의 발냄새나는 운동화',
+              price: 938000,
+              imageUrl:
+                'https://img.danawa.com/prod_img/500000/479/578/img/13578479_1.jpg?_v=20210311181438',
+            },
+          ]}
+        />
       </ProductListContainer>
     </>
   );
