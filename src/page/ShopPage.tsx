@@ -6,6 +6,7 @@ import TitleContainer from "../component/TitleContainer/titleContainer";
 import Body from "../component/Body/Body";
 import Header from "../component/Header/Header";
 import Button from "../component/Button/Button";
+import Product from "../component/Product/Product";
 
 const pageLayout = css`
   display: flex;
@@ -50,12 +51,18 @@ export default function ShopPage() {
               placeholder="낮은 가격순"
               onSelectChange={(value) => setFilterValue(value)}
             />
-            <Button onClick={onClick}>
-              <img src="./add-shopping-cart.svg" />
-              <p>담기</p>
-            </Button>
           </div>
         </TitleContainer>
+        <Product
+          imgSrc="./default-img.png"
+          productName="상품이름"
+          price="30000원"
+        >
+          <Button onClick={onClick}>
+            <img src="./add-shopping-cart.svg" />
+            <p>담기</p>
+          </Button>
+        </Product>
       </Body>
     </div>
   );
