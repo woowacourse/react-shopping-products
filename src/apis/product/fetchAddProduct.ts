@@ -14,24 +14,19 @@ const TOKEN = import.meta.env.VITE_TOKEN;
 const fetchAddProduct = async ({ method, params }: fetchAddProductParams) => {
   const url = new URL(BASE_URL);
 
-  url.search = new URLSearchParams(params).toString();
-
   const options = {
     method,
     headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${TOKEN}`,
+      "Content-Type": "application/json",
+      Authorization: `Basic ${TOKEN}`,
     },
+    body: JSON.stringify(params),
   };
 
   const response = await fetch(url, options);
   if (!response.ok) {
     throw new Error("에러 발생!");
   }
-
-  const data = await response.json();
-
-  return data;
 };
 
 export default fetchAddProduct;
