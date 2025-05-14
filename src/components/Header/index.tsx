@@ -14,8 +14,10 @@ const Header = () => {
 export default Header;
 
 const HeaderStyles = css`
+  position: fixed;
+  top: 0;
   background-color: black;
-  width: 100%;
+  width: 430px;
   height: 64px;
   display: flex;
   justify-content: space-between;

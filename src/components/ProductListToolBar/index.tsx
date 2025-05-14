@@ -18,6 +18,7 @@ export default ProductListToolBar;
 
 const ToolBarSectionStyles = css`
   width: 100%;
+  margin-top: 64px;
   padding: 36px 24px;
   display: flex;
   flex-direction: column;
