@@ -1,5 +1,8 @@
 export interface CartToggleButtonProps {
   isAdded: boolean;
-  id: number;
-  setCartItemIds: React.Dispatch<React.SetStateAction<number[]>>;
+  productId: number;
+  cartId?: number;
+  setCartItemIds: React.Dispatch<
+    React.SetStateAction<Record<"productId" | "cartId", number>[]>
+  >;
 }

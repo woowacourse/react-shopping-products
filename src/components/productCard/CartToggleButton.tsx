@@ -3,35 +3,34 @@ import { ButtonContainer, RemoveButton } from "./CartToggleButton.css";
 import { CartToggleButtonProps } from "./CartToggleButton.types";
 
 function CartToggleButton({
-  id,
+  productId,
+  cartId,
   isAdded,
   setCartItemIds,
 }: CartToggleButtonProps) {
   async function addItemToCart() {
-    const data = await request({
+    await request({
       headers: {
         Authorization: import.meta.env.VITE_TOKEN,
         "Content-Type": "application/json",
       },
       method: "POST",
       url: "/cart-items",
-      body: { productId: id, quantity: 1 },
+      body: { productId, quantity: 1 },
     });
-    setCartItemIds((prev) => [...prev, id]);
-    console.log(data);
+    setCartItemIds((prev) => [...prev, { productId, cartId: 0 }]);
   }
 
   async function removeItemToCart() {
-    const data = await request({
+    await request({
       headers: {
         Authorization: import.meta.env.VITE_TOKEN,
         "Content-Type": "application/json",
       },
       method: "DELETE",
-      url: `/cart-items/${id}`,
+      url: `/cart-items/${cartId}`,
     });
-    setCartItemIds((prev) => prev.filter((productId) => productId !== id));
-    console.log(data);
+    setCartItemIds((prev) => prev.filter((ids) => ids.productId !== productId));
   }
   return (
     <>

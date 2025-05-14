@@ -11,7 +11,9 @@ import { CartItem } from "./types/response.types";
 function App() {
   const { isError, setErrorTrue, errorMessage } = useError();
 
-  const [cartItemIds, setCartItemIds] = useState<number[]>([]);
+  const [cartItemIds, setCartItemIds] = useState<
+    Record<"productId" | "cartId", number>[]
+  >([]);
   async function fetchCartItems() {
     try {
       const data = await request({
@@ -22,8 +24,13 @@ function App() {
           "Content-Type": "application/json",
         },
       });
+      console.log(data);
 
-      setCartItemIds(data.content.map((data: CartItem) => data.product.id));
+      setCartItemIds(
+        data.content.map((data: CartItem) => {
+          return { productId: data.product.id, cartId: data.id };
+        })
+      );
     } catch {
       setErrorTrue("CART");
     }

@@ -9,8 +9,10 @@ interface ProductCardListProps {
   setProducts: (data: ProductPageResponse) => void;
   category: categoryType;
   sort: sortType;
-  cartItemIds: number[];
-  setCartItemIds: React.Dispatch<React.SetStateAction<number[]>>;
+  cartItemIds: Record<"productId" | "cartId", number>[];
+  setCartItemIds: React.Dispatch<
+    React.SetStateAction<Record<"productId" | "cartId", number>[]>
+  >;
 }
 
 function ProductCardList({
@@ -22,15 +24,17 @@ function ProductCardList({
   setCartItemIds,
 }: ProductCardListProps) {
   useFetchProducts({ category, setProducts, sort });
-  console.log(cartItemIds);
 
   return (
     <div css={CardListContainer}>
       {products?.content.map((data) => (
         <ProductCard
-          id={data.id}
+          productId={data.id}
+          cartId={cartItemIds?.find((ids) => ids.productId === data.id)?.cartId}
           key={data.id}
-          isAdded={cartItemIds?.includes(data.id)}
+          isAdded={Boolean(
+            cartItemIds?.find((ids) => ids.productId === data.id)
+          )}
           name={data.name}
           price={data.price}
           imageUrl={data.imageUrl}
@@ -41,4 +45,5 @@ function ProductCardList({
   );
 }
 
+// 장바구니에 있는 상품 id랑  모든 상품 정보들의 id를 비교 -> 추가된거
 export default ProductCardList;

@@ -9,16 +9,20 @@ import {
 import CartToggleButton from "./CartToggleButton";
 
 interface ProductCardProps {
-  id: number;
+  productId: number;
+  cartId?: number;
   isAdded: boolean;
   name: string;
   price: number;
   imageUrl: string;
-  setCartItemIds: React.Dispatch<React.SetStateAction<number[]>>;
+  setCartItemIds: React.Dispatch<
+    React.SetStateAction<Record<"productId" | "cartId", number>[]>
+  >;
 }
 
 function ProductCard({
-  id,
+  productId,
+  cartId,
   name,
   price,
   imageUrl,
@@ -34,7 +38,8 @@ function ProductCard({
       </div>
       <div css={ButtonContainer}>
         <CartToggleButton
-          id={id}
+          productId={productId}
+          cartId={cartId}
           isAdded={isAdded}
           setCartItemIds={setCartItemIds}
         />

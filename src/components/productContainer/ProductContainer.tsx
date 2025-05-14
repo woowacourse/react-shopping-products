@@ -6,8 +6,10 @@ import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { ProductPageResponse } from "../../types/response.types";
 import { categoryType, sortType } from "../../types/index.types";
 interface ProductContainerProps {
-  cartItemIds: number[];
-  setCartItemIds: React.Dispatch<React.SetStateAction<number[]>>;
+  cartItemIds: Record<"productId" | "cartId", number>[];
+  setCartItemIds: React.Dispatch<
+    React.SetStateAction<Record<"productId" | "cartId", number>[]>
+  >;
 }
 function ProductContainer({
   cartItemIds,
