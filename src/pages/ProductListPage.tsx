@@ -5,35 +5,59 @@ import Select from '../components/Select';
 import styled from '@emotion/styled';
 import { getProducts } from '../services/productServices';
 import { ProductItemType } from '../types/data';
+import tryApiCall from '../util/tryApiCall';
+import { addCartItems, removeCartItems } from '../services/cartItemServices';
+import { getCartId } from '../domain/manageCartInfo';
+import useCartContext from '../hooks/useCartContext';
 
 export const ProductListPage = () => {
-  const [errorOpen, setErrorOpen] = useState(false);
+  //임시
   const options = ['옵션1', '옵션2', '옵션3', '옵션4', '옵션5'];
   const [value, setValue] = useState(options[0]);
   const [products, setProducts] = useState<ProductItemType[]>([]);
+
+  const {
+    cartItemsIds,
+    handleAddCartItemsIds,
+    handleRemoveCartItemsIds,
+    errorMessage,
+    handleErrorMessage,
+  } = useCartContext();
+
+  useEffect(() => {
+    (async () => {
+      const productsData = await tryApiCall(getProducts, handleErrorMessage);
+      if (productsData) {
+        setProducts(productsData);
+      }
+    })();
+  }, []);
 
   const handleSelectedValue = (value: string) => {
     setValue(value);
   };
 
-  useEffect(() => {
+  const handleAddCartItem = (id: number) => {
+    const addItemInfo = {
+      productId: id,
+      quantity: 1,
+    };
     (async () => {
-      const productsData = await getProducts();
-      setProducts(productsData);
+      await tryApiCall(async () => await addCartItems(addItemInfo), handleErrorMessage);
+      handleAddCartItemsIds(id);
     })();
-  }, []);
+  };
 
-  useEffect(() => {
-    setErrorOpen(true);
-    setTimeout(() => {
-      setErrorOpen(false);
-    }, 3000);
-    setValue('선택된 값');
-  }, []);
+  const handleRemoveCartItem = (id: number) => {
+    (async () => {
+      await removeCartItems(await tryApiCall(async () => await getCartId(id), handleErrorMessage));
+      handleRemoveCartItemsIds(id);
+    })();
+  };
 
   return (
     <ProductListPageContainer>
-      {errorOpen && <ErrorToast errorMessage="hi" />}
+      {errorMessage.length !== 0 && <ErrorToast errorMessage={errorMessage} />}
       <Title>bpple 상품 목록</Title>
       <SelectContainer>
         <Select
@@ -50,7 +74,13 @@ export const ProductListPage = () => {
 
       <ProductItemContainer>
         {products.map((product) => (
-          <ProductItem key={product.id} product={product} />
+          <ProductItem
+            key={product.id}
+            product={product}
+            isCartAdded={cartItemsIds.includes(product.id)}
+            handleAddCartItem={handleAddCartItem}
+            handleRemoveCartItem={handleRemoveCartItem}
+          />
         ))}
       </ProductItemContainer>
     </ProductListPageContainer>

@@ -151,7 +151,11 @@ const themeVariables = css`
     --font-size-body: 12px;
     --font-weight-body: 500;
 
-    --line-height: 1.5;
+    --height-header: 66px;
+    --max-width-container: 430px;
+
+    --z-index-header: 2;
+    --z-index-toast: 1;
   }
 `;
 

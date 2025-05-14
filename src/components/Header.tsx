@@ -4,10 +4,11 @@ import CartIcon from '/public/icon/cart.svg';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import useCartContext from '../hooks/useCartContext';
+import { countDistinct } from '../util/countDistinct';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { cartItemCount } = useCartContext();
+  const { cartItemsIds } = useCartContext();
 
   return (
     <HeaderContainer>
@@ -16,7 +17,9 @@ const Header = () => {
       </HeaderLogoButton>
       <HeaderCartButton>
         <img src={CartIcon} alt="장바구니" />
-        {cartItemCount !== 0 && <HeaderItemCount>{cartItemCount}</HeaderItemCount>}
+        {cartItemsIds.length !== 0 && (
+          <HeaderItemCount>{countDistinct(cartItemsIds)}</HeaderItemCount>
+        )}
       </HeaderCartButton>
     </HeaderContainer>
   );
@@ -25,12 +28,16 @@ const Header = () => {
 export default Header;
 
 const HeaderContainer = styled.header`
+  position: sticky;
+  top: 0;
   width: 100%;
   background-color: var(--color-black);
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
+  height: var(--height-header);
   box-sizing: border-box;
+  z-index: var(--z-index-header);
 `;
 
 const HeaderLogoButton = styled.button`

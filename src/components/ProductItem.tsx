@@ -1,47 +1,22 @@
 import styled from '@emotion/styled';
 import Button from './Button';
 import { ProductItemType } from '../types/data';
-import { addCartItems, removeCartItems } from '../services/cartItemServices';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import RemoveShoppingCartIcon from '/public/icon/remove-shopping-cart.svg';
-import { getCartId, isCartItem } from '../domain/manageCartInfo';
-import { useEffect, useState } from 'react';
-import useCartContext from '../hooks/useCartContext';
 
 interface ProductItemProps {
   product: ProductItemType;
+  isCartAdded: boolean;
+  handleAddCartItem: (id: number) => void;
+  handleRemoveCartItem: (id: number) => void;
 }
 
-const ProductItem = ({ product }: ProductItemProps) => {
-  const [isAddedItem, setIsAddedItem] = useState(false);
-  const { setCartItemCount } = useCartContext();
-
-  useEffect(() => {
-    (async () => {
-      setIsAddedItem(await isCartItem(product.id));
-    })();
-  }, [product.id]);
-
-  const handleAddCartItem = () => {
-    const addItemInfo = {
-      productId: product.id,
-      quantity: 1,
-    };
-    (async () => {
-      await addCartItems(addItemInfo);
-      setIsAddedItem(true);
-      setCartItemCount((prev) => prev + 1);
-    })();
-  };
-
-  const handleRemoveCartItem = () => {
-    (async () => {
-      await removeCartItems(await getCartId(product.id));
-      setIsAddedItem(false);
-      setCartItemCount((prev) => prev - 1);
-    })();
-  };
-
+const ProductItem = ({
+  product,
+  isCartAdded,
+  handleAddCartItem,
+  handleRemoveCartItem,
+}: ProductItemProps) => {
   const DEFAULT_PRODUCT_IMAGE = './default-product.png';
 
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -57,13 +32,13 @@ const ProductItem = ({ product }: ProductItemProps) => {
           <ProductItemPrice>{product.price.toLocaleString()}원</ProductItemPrice>
         </ProductItemInfo>
 
-        {isAddedItem ? (
+        {isCartAdded ? (
           <Button
             type="button"
             id="remove"
             name="빼기"
             variant="smallGrey"
-            onClick={handleRemoveCartItem}
+            onClick={() => handleRemoveCartItem(product.id)}
           >
             <CartIconContainer>
               <CartAddIcon src={RemoveShoppingCartIcon} alt="장바구니 빼기" />
@@ -76,7 +51,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
             id="add"
             name="담기"
             variant="smallBlack"
-            onClick={handleAddCartItem}
+            onClick={() => handleAddCartItem(product.id)}
           >
             <CartIconContainer>
               <CartAddIcon src={AddShoppingCartIcon} alt="장바구니 담기" />

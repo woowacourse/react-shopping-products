@@ -1,31 +1,43 @@
-import { createContext, useEffect, useState } from 'react';
-import { getCartItems } from '../services/cartItemServices';
-import { CartItemType } from '../types/data';
+import { createContext } from 'react';
+
+interface CartContextProps {
+  cartItemsIds: number[];
+  children: React.ReactNode;
+  errorMessage: string;
+  handleErrorMessage: (errorMessage: string) => void;
+  handleAddCartItemsIds: (id: number) => void;
+  handleRemoveCartItemsIds: (id: number) => void;
+}
 
 interface CartContextType {
-  cartItemCount: number;
-  setCartItemCount: React.Dispatch<React.SetStateAction<number>>;
+  cartItemsIds: number[];
+  errorMessage: string;
+  handleErrorMessage: (errorMessage: string) => void;
+  handleAddCartItemsIds: (id: number) => void;
+  handleRemoveCartItemsIds: (id: number) => void;
 }
 
 export const CartContext = createContext<CartContextType | null>(null);
 
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-  const [cartItemCount, setCartItemCount] = useState(0);
-
-  const countDistinct = (cartItems: CartItemType[]) => {
-    const itemIds = cartItems.map((item) => item.product.id);
-    return new Set(itemIds).size;
-  };
-
-  useEffect(() => {
-    (async () => {
-      const cartItemsData = await getCartItems();
-      setCartItemCount(countDistinct(cartItemsData));
-    })();
-  }, []);
-
+export const CartProvider = ({
+  //TODO : Context 분리
+  cartItemsIds,
+  errorMessage,
+  handleErrorMessage,
+  handleAddCartItemsIds,
+  handleRemoveCartItemsIds,
+  children,
+}: CartContextProps) => {
   return (
-    <CartContext.Provider value={{ cartItemCount, setCartItemCount }}>
+    <CartContext.Provider
+      value={{
+        cartItemsIds,
+        errorMessage,
+        handleErrorMessage,
+        handleAddCartItemsIds,
+        handleRemoveCartItemsIds,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
