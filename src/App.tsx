@@ -11,6 +11,7 @@ import { Products } from "./types";
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
   const [category, setCategory] = useState<string>("전체");
+  const [sortOption, setSortOption] = useState<string>("낮은 가격 순");
 
   useEffect(() => {
     (async () => {
@@ -27,7 +28,10 @@ function App() {
           <ProductsListTitle />
           <S.ProductControlPanel>
             <CategoryFilter category={category} setCategory={setCategory} />
-            <ProductSorter />
+            <ProductSorter
+              sortOption={sortOption}
+              setSortOption={setSortOption}
+            />
           </S.ProductControlPanel>
           <S.ProductGrid>
             {products?.content
