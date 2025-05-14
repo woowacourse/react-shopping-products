@@ -1,4 +1,4 @@
-import { FETCH_ERROR_MESSAGE, DEFAULT_ERROR_MESSAGE } from '../constants/systemConstants';
+import { FETCH_ERROR_MESSAGE, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 
 interface ApiClientProps {
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
@@ -17,9 +17,9 @@ const apiClient = async ({ method, URI, body }: ApiClientProps) => {
     headers: { 'Content-type': 'application/json', Authorization: `Basic ${basicToken}` },
   });
 
-  console.log(response);
-
+  if (response.status === 204) return;
   if (response.ok) {
+    if (response.headers.get('content-length') === '0') return;
     return response.json();
   }
 

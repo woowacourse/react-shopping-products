@@ -5,6 +5,7 @@ import Select from '../components/Select';
 import styled from '@emotion/styled';
 import { getProducts } from '../services/productServices';
 import { ProductItemType } from '../types/data';
+import { PRODUCT_LIST_ITEM_COUNT } from '../constants/systemConstants';
 
 export const ProductListPage = () => {
   const options = ['옵션1', '옵션2', '옵션3', '옵션4', '옵션5'];
@@ -21,8 +22,6 @@ export const ProductListPage = () => {
       setProducts(data);
     })();
   }, []);
-
-  console.log(products);
 
   return (
     <ProductListPageContainer>
@@ -42,7 +41,7 @@ export const ProductListPage = () => {
       </SelectContainer>
 
       <ProductItemContainer>
-        {products.map((product) => (
+        {products.slice(0, PRODUCT_LIST_ITEM_COUNT).map((product) => (
           <ProductItem key={product.id} product={product} />
         ))}
       </ProductItemContainer>

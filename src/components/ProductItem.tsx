@@ -1,25 +1,44 @@
 import styled from '@emotion/styled';
 import Button from './Button';
 import { ProductItemType } from '../types/data';
-import { addCartItems } from '../services/cartItemServices';
+import { addCartItems, removeCartItems } from '../services/cartItemServices';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
-// import RemoveShoppingCartIcon from '/public/icon/remove-shopping-cart.svg';
+import RemoveShoppingCartIcon from '/public/icon/remove-shopping-cart.svg';
+import { useEffect } from 'react';
+import { getCartId, isCartItem } from '../domain/manageCartInfo';
+import { useState } from 'react';
 
 interface ProductItemProps {
   product: ProductItemType;
 }
 
 const ProductItem = ({ product }: ProductItemProps) => {
+  const [isAddedItem, setIsAddedItem] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setIsAddedItem(await isCartItem(product.id));
+    })();
+  }, [product.id]);
+
   const handleAddCartItem = () => {
-    console.log('장바구니 담기');
     const addItemInfo = {
       productId: product.id,
       quantity: 1,
     };
     (async () => {
       await addCartItems(addItemInfo);
+      setIsAddedItem(true);
     })();
   };
+
+  const handleRemoveCartItem = () => {
+    (async () => {
+      await removeCartItems(await getCartId(product.id));
+      setIsAddedItem(false);
+    })();
+  };
+
   return (
     <ProductItemContainer>
       <ProductItemImage src={product.imageUrl} />
@@ -28,12 +47,34 @@ const ProductItem = ({ product }: ProductItemProps) => {
           <ProductItemTitle>{product.name}</ProductItemTitle>
           <ProductItemPrice>{product.price.toLocaleString()}원</ProductItemPrice>
         </ProductItemInfo>
-        <Button type="button" id="add" name="담기" variant="smallBlack" onClick={handleAddCartItem}>
-          <CartIconContainer>
-            <CartAddIcon src={AddShoppingCartIcon} alt="장바구니" />
-            담기
-          </CartIconContainer>
-        </Button>
+
+        {isAddedItem ? (
+          <Button
+            type="button"
+            id="remove"
+            name="빼기"
+            variant="smallGrey"
+            onClick={handleRemoveCartItem}
+          >
+            <CartIconContainer>
+              <CartAddIcon src={RemoveShoppingCartIcon} alt="장바구니 빼기" />
+              빼기
+            </CartIconContainer>
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            id="add"
+            name="담기"
+            variant="smallBlack"
+            onClick={handleAddCartItem}
+          >
+            <CartIconContainer>
+              <CartAddIcon src={AddShoppingCartIcon} alt="장바구니 담기" />
+              담기
+            </CartIconContainer>
+          </Button>
+        )}
       </ProductItemCard>
     </ProductItemContainer>
   );

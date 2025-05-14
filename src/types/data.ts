@@ -7,3 +7,9 @@ export interface ProductItemType {
   price: number;
   imageUrl: string;
 }
+
+export interface CartItemType {
+  id: number;
+  product: ProductItemType;
+  quantity: number;
+}
