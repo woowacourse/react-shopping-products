@@ -133,8 +133,9 @@ const resetCss = css`
 const themeVariables = css`
   :root {
     --color-black: #222222;
+    --color-dark-grey: #555555;
     --color-white: #ffffff;
-    --color-gray: #eaeaea;
+    --color-grey: #eaeaea;
     --color-red: #ffc9c9;
 
     --font-family: 'Noto Sans KR';
