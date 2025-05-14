@@ -17,9 +17,11 @@ function AddCartItemButton({ id, setCartItems }: AddCartItemButton) {
   );
 
   const handleClick = async () => {
-    await mutate();
-    const cartItems = await getCartItems();
-    setCartItems(cartItems);
+    try {
+      await mutate();
+      const cartItems = await getCartItems();
+      setCartItems(cartItems);
+    } catch (error) {}
   };
 
   return (
