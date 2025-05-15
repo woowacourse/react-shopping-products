@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { fadeIn } from '../../animations/animations';
 
 export const ProductListPageContainer = styled.div`
   padding: 0 24px;
@@ -25,4 +26,5 @@ export const ProductItemContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   row-gap: 20px;
   column-gap: 12px;
+  animation: ${fadeIn} 0.8s ease;
 `;
