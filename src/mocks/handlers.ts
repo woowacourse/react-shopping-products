@@ -11,10 +11,12 @@ export const handlers = [
 		const url = new URL(request.url);
 		const category = url.searchParams.get("category") as filterType;
 		const sort = url.searchParams.get("sort");
-		if (category) return HttpResponse.json({ content: filterProductList(products, category) });
-		if (sort) return HttpResponse.json({ content: sortProductList(products, sort.split(",")[1] as SortingType) });
 
-		return HttpResponse.json({ content: products });
+		let resultProducts = products;
+		if (category) resultProducts = filterProductList(products, category);
+		if (sort) resultProducts = sortProductList(products, sort.split(",")[1] as SortingType);
+
+		return HttpResponse.json({ content: resultProducts });
 	}),
 
 	http.get(CART_URL, () => {
