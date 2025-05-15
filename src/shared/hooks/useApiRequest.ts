@@ -20,7 +20,9 @@ export const useApiRequest = () => {
         showToast((err as Error).message);
         return errorData;
       } finally {
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       }
     },
     [showToast]
