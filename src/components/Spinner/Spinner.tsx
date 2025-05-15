@@ -9,10 +9,10 @@ const Spinner = ({ size = "medium" }: SpinnerProps) => {
     <div css={styles.containerStyle}>
       <div
         css={[
-          styles.baseSpinnerStyle,
           size === "small" && styles.smallStyle,
           size === "medium" && styles.mediumStyle,
           size === "large" && styles.largeStyle,
+          styles.baseSpinnerStyle,
         ]}
       />
     </div>
