@@ -43,6 +43,8 @@ function ProductCard({
 
   const handleDeleteCart = async () => {
     try {
+      if (!cartId) return;
+
       await deleteCartItem(cartId);
       refetch();
       handleErrorFalse();
