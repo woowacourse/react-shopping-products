@@ -1,6 +1,5 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
-
 interface ApiOptions {
   method?: string;
   body?: unknown;
@@ -11,19 +10,19 @@ export const apiRequest = async <T>(
   endpoint: string,
   options: ApiOptions = {}
 ): Promise<T> => {
-  const url = `${BASE_URL}/${endpoint}`;
+  const url = `${BASE_URL}${endpoint}`;
 
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Basic ${API_KEY}`,
-    ...options.headers
+    ...options.headers,
   };
 
   try {
     const response = await fetch(url, {
       method: options.method || 'GET',
       headers,
-      body: options.body ? JSON.stringify(options.body) : undefined
+      body: options.body ? JSON.stringify(options.body) : undefined,
     });
 
     if (!response.ok) {
@@ -42,8 +41,18 @@ export const apiRequest = async <T>(
       throw new Error(errorMessage);
     }
 
-    return await response.json();
+    if (options.method === 'DELETE') {
+      return {} as T;
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return await response.json();
+    }
+
+    return {} as T;
   } catch (error) {
+    console.error('API 요청 중 오류 발생:', error);
     if (error instanceof Error) {
       throw new Error(`API 요청 오류: ${error.message}`);
     }
