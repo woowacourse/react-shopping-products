@@ -29,9 +29,21 @@ function useFetch<T>(
       if (!res.ok)
         throw new Error(`오류가 발생했습니다. 잠시 후 다시 시도해 주세요.`);
 
+      // 201 Created, 204 No Content
+      // 201 Created: 요청이 성공적으로 처리되었고, 새로운 리소스가 생성됨
+      // 204 No Content: 요청이 성공적으로 처리되었지만, 응답 본문에 데이터가 없음
+      // 이 경우에는 응답 본문을 파싱하지 않고 종료
+
       if (res.status === 201 || res.status === 204) return;
 
-      if (res.headers.get("content-type") !== "application/json") {
+      // 응답의 Content-Type 헤더를 확인하여 JSON인지 확인
+      // JSON이 아닌 경우에는 파싱하지 않음
+      // 이 경우에는 응답 본문을 파싱하지 않고 종료
+      // 이렇게 처리 하는 것은 대개 좋다고 볼수는 없지만,
+      // 현 사용 용례에는 적절하다고 여겨지기 때문에, 이렇게 처리함.
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
         return;
       }
 
