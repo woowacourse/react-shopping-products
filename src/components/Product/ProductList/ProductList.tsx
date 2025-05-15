@@ -6,13 +6,13 @@ import * as styles from "./ProductList.style";
 interface ProductListProps {
   products?: Product[];
   cartItems?: CartItem[];
-  handleCartButtonClick: () => Promise<void>;
+  refetchCart: () => Promise<void>;
 }
 
 export default function ProductList({
   products,
   cartItems,
-  handleCartButtonClick,
+  refetchCart,
 }: ProductListProps) {
   return (
     <ul css={styles.listCss}>
@@ -27,7 +27,7 @@ export default function ProductList({
             price={price}
             title={name}
             imageUrl={imageUrl}
-            onClick={handleCartButtonClick}
+            refetchCart={refetchCart}
             isItemInCart={Boolean(cartItems?.some((p) => p.product.id === id))}
           />
         );

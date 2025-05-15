@@ -4,7 +4,7 @@ interface ProductCardProps {
   title: string;
   price: number;
   imageUrl: string;
-  onClick: () => Promise<void>;
+  refetchCart: () => Promise<void>;
   isItemInCart: boolean;
   productId: number;
   cartItemId?: number;
@@ -18,7 +18,7 @@ function ProductCard({
   price,
   imageUrl,
   isItemInCart,
-  onClick,
+  refetchCart,
   productId,
   cartItemId,
 }: ProductCardProps) {
@@ -35,7 +35,7 @@ function ProductCard({
         <p>{`${price.toLocaleString()}원`}</p>
         <CartButton
           productId={productId}
-          onClick={onClick}
+          refetchCart={refetchCart}
           isInCart={isItemInCart}
           cartItemId={cartItemId}
         />

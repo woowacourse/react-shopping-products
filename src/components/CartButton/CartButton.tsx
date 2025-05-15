@@ -5,14 +5,14 @@ import { useErrorContext } from "../../contexts/ErrorContext";
 
 interface CartButtonProps extends ComponentProps<"button"> {
   isInCart: boolean;
-  onClick: () => Promise<void>;
+  refetchCart: () => Promise<void>;
   productId: number;
   cartItemId?: number;
 }
 
 export default function CartButton({
   isInCart,
-  onClick,
+  refetchCart,
   productId,
   cartItemId,
   ...props
@@ -65,7 +65,7 @@ export default function CartButton({
   const handleDeleteCartItem = async () => {
     try {
       await deleteCartItem();
-      await onClick();
+      await refetchCart();
     } catch (error) {
       if (error instanceof Error) {
         showError(error);
@@ -76,7 +76,7 @@ export default function CartButton({
   const handleAddCartItem = async () => {
     try {
       await addCartItem();
-      await onClick();
+      await refetchCart();
     } catch (error) {
       if (error instanceof Error) {
         showError(error);
