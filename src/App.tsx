@@ -5,17 +5,19 @@ import SelectDropdownContainer from "./components/SelectDropdown/SelectDropdownC
 import { getProducts, ProductResponse } from "./api/products";
 import { getCartItems } from "./api/cartItems";
 import { CATEGORY, SORT } from "./constants/selectOption";
+import { MAX_BASKET_COUNT } from "./constants/magicNumber";
 import { Container } from "./styles/common";
 import { ProductCardContainer } from "./styles/ProductCard";
 import "./styles/reset.css";
+import { ERROR_MSG } from "./constants/errorMessage";
 
 type CategoryKey = (typeof CATEGORY)[number];
 type SortKey = (typeof SORT)[number];
 
 const categoryQueryMap: Record<CategoryKey, string | undefined> = {
-  "전체": undefined,
-  "식료품": "식료품",
-  "패션잡화": "패션잡화",
+  전체: undefined,
+  식료품: "식료품",
+  패션잡화: "패션잡화",
 };
 
 const sortQueryMap: Record<SortKey, string | undefined> = {
@@ -24,12 +26,18 @@ const sortQueryMap: Record<SortKey, string | undefined> = {
   "높은 가격순": "price,desc",
 };
 
+type BasketProductIds = {
+  productId: number;
+  basketId: number;
+};
+
 function App() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
   const [sort, setSort] = useState<SortKey>(SORT[0]);
-  const [basketProductIds, setBasketProductIds] = useState<number[]>([]);
-  
+  const [basketProductsIds, setBasketProductsIds] = useState<
+    BasketProductIds[]
+  >([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -45,7 +53,7 @@ function App() {
         });
         setProducts(data.content);
       } catch (error) {
-        console.error("상품 목록을 불러오지 못했습니다.", error);
+        console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, error);
       }
     };
     fetchProducts();
@@ -55,18 +63,21 @@ function App() {
     const fetchCartItems = async () => {
       try {
         const data = await getCartItems();
-        const ids = data.map((item) => item.product.id);
-        setBasketProductIds(ids);
+        const mapped: BasketProductIds[] = data.map((item) => ({
+          productId: item.product.id,
+          basketId: item.id,
+        }));
+        setBasketProductsIds(mapped);
       } catch (error) {
-        console.error("장바구니 목록을 불러오지 못했습니다.", error);
+        console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
       }
     };
     fetchCartItems();
-  }, []);
+  }, [basketProductsIds]);
 
   return (
     <Container>
-      <Header basketCount={basketProductIds.length} />
+      <Header basketCount={basketProductsIds.length} />
       <SelectDropdownContainer
         category={category}
         sort={sort}
@@ -82,7 +93,12 @@ function App() {
             category={product.category}
             price={product.price}
             imageUrl={product.imageUrl}
-            isInBascket={basketProductIds.includes(product.id)}
+            isInBascket={basketProductsIds.some(
+              (item) => item.productId === product.id
+            )}
+            basketId={basketProductsIds.find((item) => item.productId === product.id)?.basketId}
+            isNotBasketCountMAX={basketProductsIds.length < MAX_BASKET_COUNT
+            }
           />
         ))}
       </ProductCardContainer>
