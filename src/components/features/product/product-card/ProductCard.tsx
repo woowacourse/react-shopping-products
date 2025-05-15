@@ -33,7 +33,7 @@ function ProductCard({
         handleErrorTrue('장바구니는 최대 50개까지 담을 수 있습니다.');
         return;
       }
-      postCartItem(id);
+      await postCartItem(id);
       refetch();
       handleErrorFalse();
     } catch (e) {
@@ -43,7 +43,7 @@ function ProductCard({
 
   const handleDeleteCart = async () => {
     try {
-      deleteCartItem(cartId);
+      await deleteCartItem(cartId);
       refetch();
       handleErrorFalse();
     } catch (e) {

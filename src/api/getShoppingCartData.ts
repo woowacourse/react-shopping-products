@@ -13,6 +13,5 @@ export async function getShoppingCartData() {
   });
 
   const results = data?.content.map((cart) => convertResponseToCart(cart));
-  console.log(results);
   return results ?? [];
 }
