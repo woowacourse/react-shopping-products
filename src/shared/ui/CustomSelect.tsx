@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 interface CustomSelectProps {
+  id: string;
   items: Array<{
     label: string;
     value: string;
@@ -8,9 +9,9 @@ interface CustomSelectProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export default function CustomSelect({items, onChange}: CustomSelectProps) {
+export default function CustomSelect({id, items, onChange}: CustomSelectProps) {
   return (
-    <StyledCustomSelect onChange={onChange}>
+    <StyledCustomSelect onChange={onChange} data-testid={id}>
       {items.map((item) => (
         <option key={item.value} value={item.value}>
           {item.label}

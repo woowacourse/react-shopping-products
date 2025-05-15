@@ -49,15 +49,19 @@ function App() {
           <S.ProductListHeaderTitle>WoowaBros Product List</S.ProductListHeaderTitle>
 
           <S.ProductListFilterContainer>
-            <CustomSelect items={CATEGORY_OPTIONS} onChange={(e) => setCategory(e.target.value as Category)} />
-            <CustomSelect items={FILTER_OPTIONS} onChange={(e) => setSortValue(e.target.value)} />
+            <CustomSelect
+              id='category-select'
+              items={CATEGORY_OPTIONS}
+              onChange={(e) => setCategory(e.target.value as Category)}
+            />
+            <CustomSelect id='sort-select' items={FILTER_OPTIONS} onChange={(e) => setSortValue(e.target.value)} />
           </S.ProductListFilterContainer>
         </S.ProductListHeader>
 
         {isLoading ? (
           <div>loading...</div>
         ) : (
-          <S.ProductList>
+          <S.ProductList data-testid='product-list'>
             {filteredProducts.map((product: Product) => (
               <ProductCard key={product.id} product={product} onRefetch={fetchProducts} cartQuantity={cartQuantity} />
             ))}

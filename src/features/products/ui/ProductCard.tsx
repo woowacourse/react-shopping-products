@@ -45,6 +45,7 @@ export default function ProductCard({ product, onRefetch, cartQuantity }: Produc
       <S.ImageSection src={product.imageUrl} alt={product.name}></S.ImageSection>
       <S.ContentSection>
         <S.ProductName>{product.name}</S.ProductName>
+        <S.ProductCategory>{product.category}</S.ProductCategory>
         <S.ProductPrice>{product.price}</S.ProductPrice>
       </S.ContentSection>
       <S.ButtonSection>
