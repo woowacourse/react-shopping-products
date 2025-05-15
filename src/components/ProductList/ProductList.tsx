@@ -1,7 +1,7 @@
-import ProductItem from '../ProductItem/ProductItem';
-import * as S from './ProductList.styled';
-import { ResponseCartItem, ResponseProduct } from '../../api/types';
-import { Dispatch } from 'react';
+import ProductItem from "../ProductItem/ProductItem";
+import * as S from "./ProductList.styled";
+import { ResponseCartItem, ResponseProduct } from "../../api/types";
+import { Dispatch } from "react";
 
 function ProductList({
   productList,
@@ -17,7 +17,13 @@ function ProductList({
   return (
     <S.ProductListContainer>
       {productList.map((product) => (
-        <ProductItem key={product.id} product={product} cartItemList={cartItemList} setCartItemList={setCartItemList} setErrorMessage={setErrorMessage} />
+        <ProductItem
+          key={product.id}
+          product={product}
+          cartItemList={cartItemList}
+          setCartItemList={setCartItemList}
+          setErrorMessage={setErrorMessage}
+        />
       ))}
     </S.ProductListContainer>
   );
