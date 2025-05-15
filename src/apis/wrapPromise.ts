@@ -1,5 +1,7 @@
+type Status = "pending" | "success" | "error";
+
 export function wrapPromise<T>(promise: Promise<T>) {
-  let status = "pending";
+  let status: Status = "pending";
   let response: T;
 
   const suspender = promise.then(
