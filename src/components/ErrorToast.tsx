@@ -1,6 +1,6 @@
-import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import { fadeIn, fadeOut } from '../animations/animations';
 
 interface ErrorToastProps {
   errorMessage: string;
@@ -11,28 +11,6 @@ const ErrorToast = ({ errorMessage }: ErrorToastProps) => {
     <ErrorToastContainer $isVisible={errorMessage.length !== 0}>{errorMessage}</ErrorToastContainer>
   );
 };
-
-const fadeIn = keyframes`
-    from{
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to{
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-
-const fadeOut = keyframes`
-    from{
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to{
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-`;
 
 const ErrorToastContainer = styled.div<{ $isVisible: boolean }>`
   max-width: var(--max-width-container);

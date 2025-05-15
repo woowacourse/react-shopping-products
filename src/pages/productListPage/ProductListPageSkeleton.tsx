@@ -1,8 +1,8 @@
 import * as P from './ProductListPage.styles';
 import styled from '@emotion/styled';
 import { PRODUCT_LIST_ITEM_COUNT } from '../../constants/systemConstants';
-import { keyframes } from '@emotion/react';
 import { css } from '@emotion/react';
+import { shimmer } from '../../animations/animations';
 
 const ProductListPageSkeleton = () => {
   return (
@@ -21,16 +21,6 @@ const ProductListPageSkeleton = () => {
     </SkeletonContainer>
   );
 };
-
-const shimmer = keyframes`
- 0% {
-    background-position: 0%;
-  }
-
-  100% {
-    background-position: 300%;
-  }
-`;
 
 const skeletonShimmerStyle = css`
   background: linear-gradient(

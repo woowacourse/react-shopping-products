@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useRef, useState } from 'react';
 import useOutsideClick from '../hooks/useOutsideClick';
-import { keyframes } from '@emotion/react';
 import SelectDownIcon from '/public/icon/select-down-icon.svg';
+import { fadeIn } from '../animations/animations';
 
 interface SelectProps {
   options: string[];
@@ -41,17 +41,6 @@ const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
     </SelectContainer>
   );
 };
-
-const slideDown = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
 
 const SelectContainer = styled.div`
   width: 100%;
@@ -92,7 +81,7 @@ const OptionsContainer = styled.ul`
   box-sizing: border-box;
   position: absolute;
   top: calc(100% + 4px);
-  animation: ${slideDown} 0.3s ease;
+  animation: ${fadeIn} 0.3s ease;
 `;
 
 const OptionItem = styled.li`
