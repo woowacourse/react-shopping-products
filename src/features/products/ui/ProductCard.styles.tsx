@@ -23,8 +23,13 @@ export const ProductName = styled.h3`
   font-weight: 700;
 `;
 
+export const ProductCategory = styled.div`
+  padding-top: 8px;
+  font-size: 12px;
+`;
+
 export const ProductPrice = styled.p`
-  margin-top: 8px;
+  margin-top: 12px;
   font-size: 12px;
 `;
 
