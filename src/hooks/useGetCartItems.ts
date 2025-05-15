@@ -35,7 +35,9 @@ function useGetCarts() {
       return data;
     } catch (e) {
       setIsError(true);
-      return null;
+      setTimeout(() => {
+        setIsError(false);
+      }, 3000);
     } finally {
       setIsLoading(false);
     }

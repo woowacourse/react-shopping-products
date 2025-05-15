@@ -28,7 +28,7 @@ const toastContainer = ({ varient }: ToastStyleProps) => css`
   position: fixed;
   width: inherit;
   height: 40px;
-  top: 60px;
+  top: 64px;
   display: flex;
   justify-content: center;
   align-items: center;

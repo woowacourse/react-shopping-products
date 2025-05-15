@@ -1,6 +1,5 @@
 import { css } from '@emotion/css';
 import SelectBox from '../../components/common/SelectBox/SelectBox';
-// import Toast from '../../components/common/Toast/Toast';
 import Header from '../../components/Header/Header';
 import { useEffect, useState } from 'react';
 import ProductList from '../../components/ProductList/ProductList';
@@ -92,6 +91,9 @@ function ProductsPage() {
 
     if (!res.ok) {
       setIsErrorAddCardItem(true);
+      setTimeout(() => {
+        setIsErrorAddCardItem(false);
+      }, 3000);
     }
 
     await refetchCarts();
@@ -109,7 +111,10 @@ function ProductsPage() {
     });
 
     if (!res.ok) {
-      setIsErrorDeleteCardItem(true)
+      setIsErrorDeleteCardItem(true);
+      setTimeout(() => {
+        setIsErrorDeleteCardItem(false);
+      }, 3000);
     }
 
     await refetchCarts();
@@ -143,10 +148,10 @@ function ProductsPage() {
           />
         )}
       </div>
-      {isErrorCarts && <Toast text="장바구니 정보를 불러오지 못했습니다." varient="error"/>}
-      {isErrorProducts && <Toast text="상품 정보를 불러오지 못했습니다." varient="error"/>}
-      {isErrorAddCardItem && <Toast text="장바구니에 상품을 담지 못했습니다." varient="error"/>}
-      {isErrorDeleteCardItem && <Toast text="장바구니에 상품을 빼지 못했습니다." varient="error"/>}
+      {isErrorCarts && <Toast text="장바구니 정보를 불러오지 못했습니다." varient="error" />}
+      {isErrorProducts && <Toast text="상품 정보를 불러오지 못했습니다." varient="error" />}
+      {isErrorAddCardItem && <Toast text="장바구니에 상품을 담지 못했습니다." varient="error" />}
+      {isErrorDeleteCardItem && <Toast text="장바구니에 상품을 빼지 못했습니다." varient="error" />}
     </div>
   );
 }

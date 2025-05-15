@@ -35,6 +35,9 @@ function useGetProducts({ sort, category }: { sort: string; category: string }) 
         setProducts(data);
       } catch (e) {
         setIsError(true);
+        setTimeout(() => {
+          setIsError(false);
+        }, 3000);
       } finally {
         setIsLoading(false);
       }
