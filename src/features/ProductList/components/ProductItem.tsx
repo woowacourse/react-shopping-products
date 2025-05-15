@@ -1,12 +1,10 @@
-import { get } from 'http';
-
 import styled from '@emotion/styled';
 
-import { addCartItem } from '@/api/cart';
 import { Flex } from '@/shared/components/Flex';
 import { IconButton } from '@/shared/components/IconButton';
 import { Text } from '@/shared/components/Text';
 
+import NoImage from '../../../../public/NoImage.png';
 import { Product } from '../types/Product';
 
 type ProductItemProps = {
@@ -22,9 +20,12 @@ export const ProductItem = ({
   isChecked = true,
   onCartUpdate,
 }: ProductItemProps) => {
+  console.log('imageUrl', imageUrl);
+
+  const imgUrl = imageUrl.includes('image') ? imageUrl : NoImage;
   return (
     <StyledProductItemContainer>
-      <StyledProductItemImage src={imageUrl} alt={name} />
+      <StyledProductItemImage src={imgUrl} alt={name} />
       <Flex direction="column" alignItems="flex-start" gap="4px" padding="8px" width="100%">
         <Text type="Body" weight="medium">
           {name}
