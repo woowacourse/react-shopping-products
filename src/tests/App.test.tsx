@@ -1,6 +1,14 @@
 /// <reference types="vitest" />
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, SpyInstance } from 'vitest';
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  afterEach,
+  SpyInstance,
+} from 'vitest';
 import { useProducts } from '../hooks/useProducts';
 import * as productApi from '../api/product';
 import * as cartApi from '../api/cart';
