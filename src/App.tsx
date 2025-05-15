@@ -9,6 +9,7 @@ import fetchRemoveProduct from "./apis/product/fetchRemoveProduct";
 import fetchCartItems from "./apis/product/fetchCartItems";
 
 import styled from "@emotion/styled";
+import useErrorMessage from "./hooks/useErrorMessage";
 
 function App() {
   const [selectedProductIdList, setSelectedProductIdList] = useState<string[]>(
@@ -16,26 +17,8 @@ function App() {
   );
 
   const [loading, setLoading] = useState(true);
+  const { errorMessage, handleErrorMessage } = useErrorMessage();
 
-  const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-
-    if (errorMessage) {
-      timer = setTimeout(() => {
-        setErrorMessage("");
-      }, 3000);
-    }
-
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, [errorMessage]);
-
-  //TODO: 장바구니 목록 가져올 때 로딩중
   useEffect(() => {
     (async () => {
       try {
@@ -56,10 +39,10 @@ function App() {
           return;
         }
 
-        setErrorMessage(error.message);
+        handleErrorMessage(error.message);
       }
     })();
-  }, []);
+  }, [handleErrorMessage]);
 
   const handleAddProduct = async (
     event: React.MouseEvent<HTMLButtonElement>
@@ -70,7 +53,7 @@ function App() {
     }
 
     if (selectedProductIdList.length === 50) {
-      // TODO: 에러 메시지 보여주기?
+      handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
       return;
     }
 
@@ -91,7 +74,7 @@ function App() {
       if (error instanceof Error === false) {
         return;
       }
-      setErrorMessage(error.message);
+      handleErrorMessage(error.message);
     }
   };
 
@@ -124,7 +107,6 @@ function App() {
         return;
       }
 
-      // try catch
       await fetchRemoveProduct({
         method: "DELETE",
         params: {
@@ -136,7 +118,7 @@ function App() {
         return;
       }
 
-      setErrorMessage(error.message);
+      handleErrorMessage(error.message);
     }
   };
 
