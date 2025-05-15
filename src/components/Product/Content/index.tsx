@@ -1,5 +1,5 @@
 import ProductList from "./List";
-import * as S from ".//ProductContent.styled";
+import * as S from "./ProductContent.styled";
 import FilterSortControl from "./FilterSortControl";
 import { Suspense, useMemo, useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
