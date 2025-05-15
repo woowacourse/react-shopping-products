@@ -5,9 +5,13 @@ import { ENV } from './env';
 import { fetcher } from './fetcher';
 
 export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
-  await fetcher.post(ENV.BASE_URL + 'cart-items', ENV.TOKEN, {
-    productId,
-    quantity,
+  await fetcher.post({
+    baseUrl: ENV.BASE_URL + 'cart-items',
+    token: ENV.TOKEN,
+    body: {
+      productId,
+      quantity,
+    },
   });
 
   const data = await fetcher
