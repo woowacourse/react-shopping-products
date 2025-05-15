@@ -13,6 +13,7 @@ const ProductSorter = ({
 }: ProductSorterProps) => {
   return (
     <SelectBox
+      id="sort"
       state={selectedSortOption}
       setState={setSelectedSortOption}
       options={sortOptions}

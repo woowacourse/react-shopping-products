@@ -13,6 +13,7 @@ const CategoryFilter = ({
 }: CategoryFilterProps) => {
   return (
     <SelectBox
+      id="category"
       state={selectedCategory}
       setState={setSelectedCategory}
       options={CategoryOptions}

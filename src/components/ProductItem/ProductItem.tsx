@@ -17,11 +17,11 @@ const ProductItem = ({
   handleCartItemToggle,
 }: ProductItemProps) => {
   return (
-    <S.ProductContainer>
+    <S.ProductContainer data-testid="product-item">
       <S.ProductImage $url={imageUrl} />
       <S.ProductWrapper>
-        <S.ProductName>{name}</S.ProductName>
-        <S.ProductPrice>{price}</S.ProductPrice>
+        <S.ProductName data-testid="product-name">{name}</S.ProductName>
+        <S.ProductPrice data-testid="product-price">{price}</S.ProductPrice>
         <CartItemButton isAdd={isAdd} onToggleCartItem={handleCartItemToggle} />
       </S.ProductWrapper>
     </S.ProductContainer>
