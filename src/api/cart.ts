@@ -35,3 +35,14 @@ export const getCartItemList = async ({
 
   return data.content;
 };
+
+export const deleteCartItem = async (cartItemId: number) => {
+  await fetcher.delete({ baseUrl: ENV.BASE_URL + `cart-items/${cartItemId}`, token: ENV.TOKEN });
+
+  const data = await fetcher.get<CartResponse>({
+    baseUrl: ENV.BASE_URL + 'cart-items',
+    token: ENV.TOKEN,
+  });
+
+  return data.content;
+};
