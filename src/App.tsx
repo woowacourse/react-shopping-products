@@ -22,6 +22,17 @@ function App() {
     fetchCartItems();
   }, []);
 
+  const updateCartItems = async () => {
+    try {
+      const cartItemsData = await getShppingCart();
+      setCartItems(cartItemsData.content);
+    } catch (e) {
+      //
+    } finally {
+      //
+    }
+  };
+
   const isMatch = (id: number) => {
     const match = cartItems.find((e) => e.product.id === id);
 
@@ -32,7 +43,11 @@ function App() {
     <>
       <Header cartItemCount={cartItems.length} />
       <Body>
-        <ProductListContainer cartItems={cartItems} isMatch={isMatch} />
+        <ProductListContainer
+          cartItems={cartItems}
+          updateCartItems={updateCartItems}
+          isMatch={isMatch}
+        />
       </Body>
     </>
   );

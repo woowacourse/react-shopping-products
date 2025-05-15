@@ -7,11 +7,13 @@ import { CartItemTypes } from '../../types/CartItemType';
 
 interface ProductListContainerProps {
   cartItems: CartItemTypes[];
+  updateCartItems: () => void;
   isMatch: (id: number) => boolean;
 }
 
 export default function ProductListContainer({
   cartItems,
+  updateCartItems,
   isMatch,
 }: ProductListContainerProps) {
   const [products, setProducts] = useState<ProductTypes[]>([]);
@@ -31,20 +33,12 @@ export default function ProductListContainer({
     fetchProducts();
   }, [cartItems]);
 
-  const updateCart = (id: number) => {
-    const index = products.findIndex((e) => e.id === id);
-    if (!index) return;
-
-    const copy = [...products];
-    copy[index] = { ...copy[index], isItemInCart: !copy[index].isItemInCart };
-    setProducts(copy);
-  };
   return (
     <>
       <ProductListToolbar setProducts={setProducts} />
       <ProductList
         productList={products}
-        updateCart={updateCart}
+        updateCartItems={updateCartItems}
         isMatch={isMatch}
       />
     </>

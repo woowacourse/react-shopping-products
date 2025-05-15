@@ -4,19 +4,23 @@ import { ProductTypes } from '../../types/ProductTypes';
 
 interface ProductListProps {
   productList: ProductTypes[];
-  updateCart: (id: number) => void;
+  updateCartItems: () => void;
   isMatch: (id: number) => boolean;
 }
 
 export default function ProductList({
   productList,
-  updateCart,
+  updateCartItems,
   isMatch,
 }: ProductListProps) {
   return (
     <StyledUl>
       {productList.map((props) => (
-        <ProductItem {...props} updateCart={updateCart} isMatch={isMatch} />
+        <ProductItem
+          {...props}
+          updateCartItems={updateCartItems}
+          isMatch={isMatch}
+        />
       ))}
     </StyledUl>
   );

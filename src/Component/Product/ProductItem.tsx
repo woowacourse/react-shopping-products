@@ -3,6 +3,7 @@ import { ProductTypes } from '../../types/ProductTypes';
 import postShoppingCart from '../../api/postShoppingCart';
 
 type SetProducts = {
+  updateCartItems: () => void;
   isMatch: (id: number) => boolean;
 };
 
@@ -11,6 +12,7 @@ export default function ProductItem({
   name,
   price,
   imageUrl,
+  updateCartItems,
   isMatch,
 }: ProductTypes & SetProducts) {
   const isItemInCart = isMatch(id);
@@ -20,6 +22,7 @@ export default function ProductItem({
       if (!isItemInCart) {
         await postShoppingCart(id, 1);
       }
+      await updateCartItems();
     } catch (e) {
       //
     } finally {
