@@ -24,13 +24,16 @@ const Toast = ({ duration = 1500 }: ToastProps) => {
 
   if (!isVisible) return null;
 
-  return createPortal(
-    <div css={ToastStyle({ isSuccess })}>
-      <div>
-        <Text variant="body">{message}</Text>
-      </div>
-    </div>,
-    document.getElementById('root') as HTMLElement
+  return (
+    isVisible &&
+    createPortal(
+      <div css={ToastStyle({ isSuccess })}>
+        <div>
+          <Text variant="body">{message}</Text>
+        </div>
+      </div>,
+      document.getElementById('root') as HTMLElement
+    )
   );
 };
 
