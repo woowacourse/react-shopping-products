@@ -1,1 +1,1 @@
-export const MAX_BASKET_COUNT = 20;
+export const MAX_BASKET_COUNT = 50;
