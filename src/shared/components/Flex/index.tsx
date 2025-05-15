@@ -7,12 +7,12 @@ export type Props = {
    * Controls flex direction (row or column)
    * @default row
    */
-  direction?: 'row' | 'column';
+  direction: 'row' | 'column';
   /**
    * Controls horizontal alignment of items
    * @default center
    */
-  justifyContent?:
+  justifyContent:
     | 'center'
     | 'flex-start'
     | 'flex-end'
@@ -25,7 +25,7 @@ export type Props = {
    * Controls vertical alignment of items
    * @default center
    */
-  alignItems?:
+  alignItems:
     | 'normal'
     | 'start'
     | 'center'
@@ -40,12 +40,8 @@ export type Props = {
    * Specifies spacing between flex items
    * @default 0
    */
-  gap?: string;
-  /**
-   * Sets flex grow/shrink ratio
-   * @default 1
-   */
-  flex?: number;
+  gap: string;
+
   /**
    * Sets outer spacing around the container
    * @default 0
@@ -72,11 +68,10 @@ export type Props = {
   children: ReactNode;
 } & ComponentProps<'div'>;
 export const Flex = ({
-  direction = 'row',
-  justifyContent = 'center',
-  alignItems = 'center',
+  direction,
+  justifyContent,
+  alignItems,
   gap = '0',
-  flex = 1,
   margin,
   padding,
   width,
@@ -90,7 +85,6 @@ export const Flex = ({
       justifyContent={justifyContent}
       alignItems={alignItems}
       gap={gap}
-      flex={flex}
       margin={margin}
       padding={padding}
       width={width}

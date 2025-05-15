@@ -24,14 +24,21 @@ export const ProductItem = ({
   return (
     <StyledProductItemContainer>
       <StyledProductItemImage src={imgUrl} alt={name} />
-      <Flex direction="column" alignItems="flex-start" gap="4px" padding="8px" width="100%">
+      <Flex
+        direction="column"
+        alignItems="flex-start"
+        gap="4px"
+        padding="8px"
+        width="100%"
+        justifyContent="center"
+      >
         <Text type="Body" weight="medium">
           {name}
         </Text>
         <Text type="Body" weight="medium">
           {price}
         </Text>
-        <Flex direction="row" justifyContent="flex-end" width="100%">
+        <Flex direction="row" justifyContent="flex-end" alignItems="center" width="100%" gap="">
           <IconButton
             variant={isChecked ? 'secondary' : 'primary'}
             src={isChecked ? `./RemoveCart.svg` : `./AddCart.svg`}
