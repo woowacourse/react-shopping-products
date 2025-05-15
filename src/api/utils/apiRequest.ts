@@ -36,7 +36,12 @@ const apiRequest = async <T>(
     throw new Error(`API 요청 실패: ${response.status} ${errorText}`);
   }
 
-  return response.json();
+  const contentType = response.headers.get("Content-Type");
+  if (contentType && contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  return null as T;
 };
 
 export default apiRequest;
