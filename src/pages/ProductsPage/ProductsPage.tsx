@@ -13,6 +13,8 @@ import {
   productPageTitle,
   selectBoxContainer,
 } from './ProductsPage.style';
+import postCartItem from '../../api/postCartItem';
+import deleteCartItem from '../../api/deleteCartItem';
 
 const SORT: { [key: string]: string } = {
   '낮은 가격 순': 'asc',
@@ -68,16 +70,9 @@ function ProductsPage() {
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-      },
-      body: JSON.stringify({
-        productId: productId,
-        quantity: quantity,
-      }),
+    const res = await postCartItem({
+      productId,
+      quantity,
     });
 
     if (!res.ok) {
@@ -91,15 +86,8 @@ function ProductsPage() {
   };
 
   const handleDeleteCartItem = async ({ productId }: { productId: number }) => {
-    const cartId = carts?.filter((cart) => cart.product.id === productId)[0].id;
-
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items/${cartId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-      },
-    });
+    const cartId = carts?.filter((cart) => cart.product.id === productId)[0].id || 0;
+    const res = await deleteCartItem({ cartId });
 
     if (!res.ok) {
       setIsErrorDeleteCardItem(true);
