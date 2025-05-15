@@ -135,6 +135,7 @@ const themeVariables = css`
     --color-black: #222222;
     --color-dark-grey: #555555;
     --color-white: #ffffff;
+    --color-light-grey: #e1e1e1;
     --color-grey: #d7d7d7;
     --color-red: #ffc9c9;
 

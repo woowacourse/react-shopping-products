@@ -1,20 +1,27 @@
-import ErrorToast from '../components/ErrorToast';
-import ProductItem from '../components/ProductItem';
+import ErrorToast from '../../components/ErrorToast';
+import ProductItem from '../../components/ProductItem';
 import { useEffect, useState } from 'react';
-import Select from '../components/Select';
-import styled from '@emotion/styled';
-import { getProducts } from '../services/productServices';
-import { ProductItemType } from '../types/data';
-import tryApiCall from '../util/tryApiCall';
-import { addCartItems, removeCartItems } from '../services/cartItemServices';
-import { getCartId } from '../domain/manageCartInfo';
-import useCartContext from '../hooks/useCartContext';
-import { CATEGORY_OPTIONS, SELECT_SORT_OPTIONS, SORT_OPTIONS } from '../constants/systemConstants';
+import Select from '../../components/Select';
+import * as P from './ProductListPage.styles.tsx';
+import { getProducts } from '../../services/productServices';
+import { ProductItemType } from '../../types/data';
+import tryApiCall from '../../util/tryApiCall';
+import { addCartItems, removeCartItems } from '../../services/cartItemServices';
+import { getCartId } from '../../domain/manageCartInfo';
+import useCartContext from '../../hooks/useCartContext';
+import {
+  CATEGORY_OPTIONS,
+  SELECT_SORT_OPTIONS,
+  SORT_OPTIONS,
+} from '../../constants/systemConstants';
+import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 
 export const ProductListPage = () => {
   const [categoryOption, setCategoryOption] = useState(CATEGORY_OPTIONS[0]);
   const [sortOption, setSortOption] = useState('높은 가격순');
   const [products, setProducts] = useState<ProductItemType[]>([]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     cartItemsIds,
@@ -33,6 +40,7 @@ export const ProductListPage = () => {
       if (productsData) {
         setProducts(productsData);
       }
+      setIsLoading(false);
     })();
   }, [categoryOption, sortOption]);
 
@@ -62,13 +70,15 @@ export const ProductListPage = () => {
     })();
   };
 
-  // const selectedValue = SORT_OPTIONS.get(sortOption) ?? 'desc';
+  if (isLoading) {
+    return <ProductListPageSkeleton />;
+  }
 
   return (
-    <ProductListPageContainer>
+    <P.ProductListPageContainer>
       {errorMessage.length !== 0 && <ErrorToast errorMessage={errorMessage} />}
-      <Title>bpple 상품 목록</Title>
-      <SelectContainer>
+      <P.Title>bpple 상품 목록</P.Title>
+      <P.SelectContainer>
         <Select
           value={categoryOption}
           options={CATEGORY_OPTIONS}
@@ -79,9 +89,9 @@ export const ProductListPage = () => {
           options={SELECT_SORT_OPTIONS}
           handleSelectedValue={(value) => handleSortOption(value)}
         />
-      </SelectContainer>
+      </P.SelectContainer>
 
-      <ProductItemContainer>
+      <P.ProductItemContainer>
         {products.map((product) => (
           <ProductItem
             key={product.id}
@@ -91,33 +101,7 @@ export const ProductListPage = () => {
             handleRemoveCartItem={handleRemoveCartItem}
           />
         ))}
-      </ProductItemContainer>
-    </ProductListPageContainer>
+      </P.ProductItemContainer>
+    </P.ProductListPageContainer>
   );
 };
-
-const ProductListPageContainer = styled.div`
-  padding: 0 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-const Title = styled.h2`
-  font-size: var(--font-size-title);
-  font-weight: var(--font-weight-title);
-`;
-
-const SelectContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ProductItemContainer = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  row-gap: 20px;
-  column-gap: 12px;
-`;
