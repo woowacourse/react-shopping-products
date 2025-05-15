@@ -1,5 +1,8 @@
 import CartButton from "../../CartButton/CartButton";
+import Spinner from "../../Spinner/Spinner";
 import * as styles from "./ProductCard.style";
+import { useState } from "react";
+
 interface ProductCardProps {
   title: string;
   price: number;
@@ -9,9 +12,6 @@ interface ProductCardProps {
   productId: number;
   cartItemId?: number;
 }
-// imageUrl이 null이면, 대체 이미지를 띄웁시다!
-// onLoad라는 프로퍼티가 있는데.. 이것을 어떻게 하면..
-// 이미지가 로드될때, spinnner를 띄울수 있을지도?
 
 function ProductCard({
   title,
@@ -22,13 +22,22 @@ function ProductCard({
   productId,
   cartItemId,
 }: ProductCardProps) {
+  const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
   return (
     <li css={styles.cardCss}>
+      {!isLoaded && <Spinner size={"large"} />}
       <img
         css={styles.imageCss}
-        src={imageUrl}
+        src={
+          imageUrl === null || imageError
+            ? "/assets/fallback_image.png"
+            : imageUrl
+        }
         alt={`${title}상품`}
-        onLoad={() => console.log("로드 되었슈!")}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setImageError(true)}
       />
       <div css={styles.detailCss}>
         <h2>{title}</h2>
