@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import App from '../../App';
-import mockData from '../__mocks__/productListMockData.json';
-import cartMockData from '../__mocks__/cartData.json';
+import { productListMockData } from '../__mocks__/productListMockData';
+import { cartMockData } from '../__mocks__/cartData';
 
 jest.mock('../../api/postCartItem', () => ({
   postCartItem: jest
@@ -15,8 +15,11 @@ jest.mock('../../api/getShoppingCartData', () => ({
     .mockImplementation(() => Promise.resolve(cartMockData)),
 }));
 
-jest.mock('../../api/getShoppingCartData', () => ({
-  getListData: jest.fn().mockImplementation(() => Promise.resolve(mockData)),
+jest.mock('../../api/getListData', () => ({
+  getListData: jest.fn().mockImplementation(() => {
+    console.log(productListMockData);
+    return Promise.resolve(productListMockData);
+  }),
 }));
 
 jest.mock('../../api/deleteCartItem', () => ({
@@ -34,7 +37,6 @@ describe('삼품 목록을 조회할 시', () => {
     render(<App />);
 
     const productList = await screen.findByTestId('26');
-    expect(productList).toBeInTheDocument();
     console.log(productList);
   });
 });

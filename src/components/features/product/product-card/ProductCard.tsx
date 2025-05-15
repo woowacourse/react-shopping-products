@@ -52,7 +52,7 @@ function ProductCard({
   };
 
   return (
-    <Container>
+    <Container data-testid={id}>
       <PreviewBox>
         <PreviewImage src={imageUrl} />
       </PreviewBox>

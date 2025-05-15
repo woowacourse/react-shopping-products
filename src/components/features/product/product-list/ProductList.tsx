@@ -19,7 +19,6 @@ function ProductList({
           <ProductCard
             key={id}
             id={id}
-            data-testid={id}
             cartId={matchingCart?.id ?? null}
             name={name}
             price={price}
