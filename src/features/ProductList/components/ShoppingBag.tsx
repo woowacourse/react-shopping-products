@@ -7,7 +7,7 @@ type ShoppingBagProps = {
 export const ShoppingBag = ({ count = 0 }: ShoppingBagProps) => {
   return (
     <StyledShoppingBagButton>
-      <StyledShoppingBagIcon src="./ShoppingBag.png" alt="Shopping Bag" />
+      <StyledShoppingBagIcon src="./ShoppingBag.svg" alt="Shopping Bag" />
       {count > 0 && <StyledShoppingBagCount>{count}</StyledShoppingBagCount>}
     </StyledShoppingBagButton>
   );
@@ -21,8 +21,8 @@ const StyledShoppingBagButton = styled.button`
 `;
 
 const StyledShoppingBagIcon = styled.img`
-  width: 20px;
-  height: 25px;
+  width: 25px;
+  height: 23px;
 `;
 
 const StyledShoppingBagCount = styled.span`

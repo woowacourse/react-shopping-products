@@ -4,7 +4,7 @@ import { Flex } from '@/shared/components/Flex';
 import { IconButton } from '@/shared/components/IconButton';
 import { Text } from '@/shared/components/Text';
 
-import NoImage from '../../../../public/NoImage.png';
+import NoImage from '../../../../public/NoImage.svg';
 import { Product } from '../types/Product';
 
 type ProductItemProps = {
@@ -20,8 +20,6 @@ export const ProductItem = ({
   isChecked = true,
   onCartUpdate,
 }: ProductItemProps) => {
-  console.log('imageUrl', imageUrl);
-
   const imgUrl = imageUrl.includes('image') ? imageUrl : NoImage;
   return (
     <StyledProductItemContainer>
@@ -36,7 +34,7 @@ export const ProductItem = ({
         <Flex direction="row" justifyContent="flex-end" width="100%">
           <IconButton
             variant={isChecked ? 'secondary' : 'primary'}
-            src={isChecked ? `./RemoveCart.png` : `./AddCart.png`}
+            src={isChecked ? `./RemoveCart.svg` : `./AddCart.svg`}
             onClick={onCartUpdate}
           >
             {isChecked ? '빼기' : '담기'}
