@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
+    "deploy": "vite build --base=/react-shopping-products/ --minify=false && npx gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest"
   },
+  "homepage": "https://youdame.github.io/react-shopping-products",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
