@@ -1,5 +1,5 @@
-import { ButtonStyles } from "./Button.emotion";
-import { css } from "@emotion/css";
+import { ButtonStyles } from './Button.emotion';
+import { css } from '@emotion/css';
 
 interface AddButtonProps {
   onClick: () => void;
@@ -8,7 +8,7 @@ interface AddButtonProps {
 const AddButton = ({ onClick }: AddButtonProps) => {
   return (
     <button className={AddButtonStyles} onClick={onClick}>
-      <img src="/addShoppingCart.svg" />
+      <img src="./addShoppingCart.svg" />
       <div className={AddButtonTextStyles}>담기</div>
     </button>
   );

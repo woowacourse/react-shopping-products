@@ -1,5 +1,5 @@
-import { css } from "@emotion/css";
-import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
+import { css } from '@emotion/css';
+import { useShoppingCartContext } from '../../contexts/useShoppingCartContext';
 
 const Header = () => {
   const { cartItems } = useShoppingCartContext();
@@ -9,7 +9,7 @@ const Header = () => {
       <a href="/" className={LogoStyles}>
         SHOP
       </a>
-      <img src="/shopIcon.svg" alt="장바구니" className={IconStyles} />
+      <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
       {cartItems.length !== 0 && (
         <div className={ShoppingCartCount}>{cartItems.length}</div>
       )}
