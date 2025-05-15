@@ -5,8 +5,6 @@ import "@testing-library/jest-dom";
 import ProductList from "../components/Product/ProductList/ProductList";
 import { Product } from "../types/product";
 import { CartItem } from "../types/cartContents";
-import { ErrorContextProvider } from "../contexts/ErrorContext";
-import { CartContextProvider } from "../contexts/CartContext";
 
 // Mock the ProductCard component
 
@@ -84,7 +82,7 @@ describe("ProductList는 ", () => {
     expect(screen.getByText("상품이 없습니다.")).toBeInTheDocument();
   });
 
-  it("product가 빈 배열일경우, 서버와 연결이 좋지 않다는 메시지를 출력해야한다.", () => {
+  it("product를 받지 못했을경우, 서버와 연결이 좋지 않다는 메시지를 출력해야한다.", () => {
     render(
       <ProductList
         products={undefined}
