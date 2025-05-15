@@ -72,18 +72,26 @@ export default function ProductListToolbar({
     <Container>
       <Title>bpple 상품 목록</Title>
       <SelectBoxContainer>
-        <SelectBox
-          value={categoryValue}
-          onChange={handleCategoryChange}
-          category={CATEGORY}
-          name="catetory"
-        />
-        <SelectBox
-          value={priceValue}
-          onChange={handlePriceChange}
-          category={PRICE}
-          name="price"
-        />
+        <FirstSelectWrapper>
+          <Label htmlFor="category">카테고리</Label>
+          <SelectBox
+            value={categoryValue}
+            onChange={handleCategoryChange}
+            category={CATEGORY}
+            name="category"
+            id="category"
+          />
+        </FirstSelectWrapper>
+        <div>
+          <Label htmlFor="price">가격</Label>
+          <SelectBox
+            value={priceValue}
+            onChange={handlePriceChange}
+            category={PRICE}
+            name="price"
+            id="price"
+          />
+        </div>
       </SelectBoxContainer>
     </Container>
   );
@@ -105,4 +113,20 @@ const Title = styled.h1`
   font-weight: 700;
   font-size: 24px;
   margin: 0px;
+`;
+
+const Label = styled.label`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+`;
+
+const FirstSelectWrapper = styled.div`
+  display: flex;
 `;

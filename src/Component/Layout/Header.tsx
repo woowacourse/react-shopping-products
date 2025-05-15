@@ -12,8 +12,10 @@ export default function Header({ cartItemCount, status }: HeaderProps) {
       <StyledButton type="button">
         <StyledImg src="/shoppingBagIcon.png" alt="shoppingBagIcon" />
         {status === 'success' ? (
-          <StyledCountBox>
-            <StyledCountText>{cartItemCount}</StyledCountText>
+          <StyledCountBox data-testid="cart-count-box">
+            <StyledCountText data-testid="cart-count">
+              {cartItemCount}
+            </StyledCountText>
           </StyledCountBox>
         ) : null}
       </StyledButton>

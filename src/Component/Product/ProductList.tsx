@@ -19,6 +19,7 @@ export default function ProductList({
       {productList.map((props) => (
         <ProductItem
           {...props}
+          id={props.id}
           updateCartItems={updateCartItems}
           getMatchCartItem={getMatchCartItem}
         />

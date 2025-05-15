@@ -45,7 +45,11 @@ export default function ProductItem({
           <StyledPrice>{price.toLocaleString('ko')}원</StyledPrice>
         </StyledProductInfo>
         <StyledButtonWrapper>
-          <StyledButton isItemInCart={!isItemInCart} onClick={handleItemClick}>
+          <StyledButton
+            isItemInCart={!isItemInCart}
+            onClick={handleItemClick}
+            data-testid={!isItemInCart ? `add-btn-${id}` : `remove-btn-${id}`}
+          >
             <StyledImg
               src={
                 !isItemInCart
