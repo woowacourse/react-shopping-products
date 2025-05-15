@@ -20,7 +20,7 @@ function App() {
           method: "GET",
           params: {
             page: "0",
-            size: "20",
+            size: "50",
           },
         });
 
@@ -72,7 +72,7 @@ function App() {
         method: "GET",
         params: {
           page: "0",
-          size: "20",
+          size: "50",
         },
       });
 

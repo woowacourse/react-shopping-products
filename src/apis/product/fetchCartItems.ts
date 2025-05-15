@@ -16,7 +16,7 @@ const TOKEN = import.meta.env.VITE_TOKEN;
 
 const fetchCartItems = async ({
   method,
-  params = { page: "0", size: "20" },
+  params = { page: "0", size: "50" },
 }: fetchCartItemsParams): Promise<FetchCartItemsResult> => {
   const url = new URL(BASE_URL);
 
