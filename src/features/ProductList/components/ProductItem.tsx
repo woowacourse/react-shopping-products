@@ -10,10 +10,9 @@ import { Product } from '../types/Product';
 type ProductItemProps = {
   isChecked: boolean;
   onCartUpdate: () => void;
-} & Pick<Product, 'id' | 'name' | 'imageUrl' | 'price'>;
+} & Pick<Product, 'name' | 'imageUrl' | 'price'>;
 
 export const ProductItem = ({
-  id,
   name,
   price,
   imageUrl,

@@ -7,7 +7,7 @@ import { CartItem } from '../types/Cart';
 
 export const useCart = () => {
   const [cartData, setCartData] = useState<CartItem[]>([]);
-  const { isLoading, handleRequest } = useApiRequest();
+  const { handleRequest } = useApiRequest();
 
   const fetchCartProductData = useCallback(async () => {
     return handleRequest(
@@ -58,7 +58,6 @@ export const useCart = () => {
   }, [fetchCartProductData]);
 
   return {
-    isLoading,
     cartData,
     addToCart,
     deleteFromCart,
