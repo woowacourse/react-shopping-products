@@ -20,8 +20,8 @@ const categoryQueryMap: Record<CategoryKey, string | undefined> = {
 
 const sortQueryMap: Record<SortKey, string | undefined> = {
   "순서 없음": undefined,
-  "낮은 가격순": "price,desc",
-  "높은 가격순": "price,asc",
+  "낮은 가격순": "price,asc",
+  "높은 가격순": "price,desc",
 };
 
 function App() {
@@ -29,6 +29,7 @@ function App() {
   const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
   const [sort, setSort] = useState<SortKey>(SORT[0]);
   const [basketProductIds, setBasketProductIds] = useState<number[]>([]);
+  
 
   useEffect(() => {
     const fetchProducts = async () => {
