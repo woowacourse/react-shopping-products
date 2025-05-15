@@ -26,14 +26,14 @@ function CartToggleButton({
   const buttonProps = isAdded
     ? {
         label: "빼기",
-        icon: "/removeCart.svg",
+        icon: "removeCart.svg",
         onClick: () =>
           removeItemToCart({ cartId, productId, setCartItemIds, setErrorTrue }),
         styles: [ButtonContainer, RemoveButton],
       }
     : {
         label: "담기",
-        icon: "/addCart.svg",
+        icon: "addCart.svg",
         onClick: () =>
           addItemToCart({
             productId,
