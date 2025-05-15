@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { ProductTypes } from '../../types/ProductTypes';
 import postShoppingCart from '../../api/postShoppingCart';
+import deleteShoppingCart from '../../api/deleteShoppingCart';
+import { CartItemTypes } from '../../types/CartItemType';
 
 type SetProducts = {
   updateCartItems: () => void;
-  isMatch: (id: number) => boolean;
+  getMatchCartItem: (id: number) => CartItemTypes | undefined;
 };
 
 export default function ProductItem({
@@ -13,14 +15,18 @@ export default function ProductItem({
   price,
   imageUrl,
   updateCartItems,
-  isMatch,
+  getMatchCartItem,
 }: ProductTypes & SetProducts) {
-  const isItemInCart = isMatch(id);
+  const isItemInCart = getMatchCartItem(id) ? true : false;
+  const cartItemId = getMatchCartItem(id)?.id;
 
   const handleItemClick = async () => {
     try {
       if (!isItemInCart) {
         await postShoppingCart(id, 1);
+      } else {
+        if (!cartItemId) return;
+        await deleteShoppingCart(cartItemId);
       }
       await updateCartItems();
     } catch (e) {
