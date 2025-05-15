@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 import type { Mock } from 'vitest';
 import { getProducts } from '../../services/productServices';
@@ -84,10 +85,7 @@ describe('상품 목록 조회 테스트', () => {
   });
 
   it('api 요청 중에는 스켈레톤이 표시된다.', async () => {
-    let resolvePromise: ((value: ProductItemType[]) => void) | undefined;
-    const pendingPromise = new Promise<ProductItemType[]>((resolve) => {
-      resolvePromise = resolve;
-    });
+    const pendingPromise = new Promise<ProductItemType[]>(() => {});
     (getProducts as Mock).mockReturnValueOnce(pendingPromise);
 
     render(
