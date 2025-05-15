@@ -41,6 +41,11 @@ function App() {
       return;
     }
 
+    if (selectedProductIdList.length === 50) {
+      // TODO: 에러 메시지 보여주기?
+      return;
+    }
+
     setSelectedProductIdList((prevIdList) => {
       const newIdListSet = new Set([...prevIdList, $product.id]);
       return Array.from(newIdListSet);
