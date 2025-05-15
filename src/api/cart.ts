@@ -1,7 +1,5 @@
 import { CartResponse } from '../types/product';
-
-export const baseUrl =
-  'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com';
+import { baseUrl } from './config';
 
 export const getCartItem = async (): Promise<CartResponse> => {
   const response = await fetch(
@@ -24,14 +22,14 @@ export const getCartItem = async (): Promise<CartResponse> => {
   return data;
 };
 
-export const addCart = async (id: number, price: number) => {
+export const addCart = async (id: number) => {
   const response = await fetch(`${baseUrl}/cart-items`, {
     method: 'POST',
     headers: {
       Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ productId: id, quantity: price }),
+    body: JSON.stringify({ productId: id, quantity: 1 }),
   });
   return response;
 };

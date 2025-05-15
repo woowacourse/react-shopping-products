@@ -1,4 +1,4 @@
-import { baseUrl } from './cart';
+import { baseUrl } from './config';
 
 export const getProduct = async (sort: string) => {
   const response = await fetch(

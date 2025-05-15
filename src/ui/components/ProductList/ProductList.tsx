@@ -1,5 +1,5 @@
-import { ProductElement } from '../../../types/product';
 import Product from '../Product/Product';
+import { ProductElement } from '../../../types/product';
 import { List } from './ProductList.styles';
 
 interface ProductListProps {

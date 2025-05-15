@@ -1,3 +1,5 @@
+import AddButton from './AddButton';
+import RemoveButton from './RemoveButton';
 import {
   Container,
   ProductImageContainer,
@@ -6,8 +8,6 @@ import {
   Price,
   ProductName,
 } from './Product.styles';
-import AddButton from './AddButton';
-import RemoveButton from './RemoveButton';
 import { ProductElement } from '../../../types/product';
 
 interface ProductProps {
