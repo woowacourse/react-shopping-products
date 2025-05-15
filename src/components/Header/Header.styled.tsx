@@ -57,4 +57,6 @@ export const ShoppingBag = styled.div`
 
   font-size: 10px;
   font-weight: 700;
+
+  cursor: pointer;
 `;
