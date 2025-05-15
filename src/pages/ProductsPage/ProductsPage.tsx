@@ -78,7 +78,7 @@ function ProductsPage() {
   };
 
   const handleAddCartItem = async ({ productId, quantity }: AddCartItemType) => {
-    if (itemCount >= 3) {
+    if (itemCount >= 50) {
       setIsOverItemCounts(true);
       setTimeout(() => {
         setIsOverItemCounts(false);
