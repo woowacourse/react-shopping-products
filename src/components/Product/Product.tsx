@@ -8,6 +8,7 @@ import RemoveButton from "../RemoveButton/RemoveButton";
 
 function Product({
   product,
+  isInCart,
   handleAddProduct,
   handleRemoveProduct,
 }: ProductProps) {
@@ -23,8 +24,11 @@ function Product({
             </Styled.ProductPrice>
           </Styled.Contents>
           <Styled.ButtonWrapper>
-            <AddButton handleAddProduct={handleAddProduct} />
-            <RemoveButton handleRemoveProduct={handleRemoveProduct} />
+            {isInCart ? (
+              <RemoveButton handleRemoveProduct={handleRemoveProduct} />
+            ) : (
+              <AddButton handleAddProduct={handleAddProduct} />
+            )}
           </Styled.ButtonWrapper>
         </Styled.Wrapper>
       </Styled.Container>

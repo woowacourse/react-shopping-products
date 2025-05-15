@@ -10,6 +10,7 @@ import { Sort } from "../../types/Sort";
 import fetchProductList from "../../apis/product/fetchProductList";
 
 interface MainProps {
+  selectedProductIdList: string[];
   handleAddProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
   handleRemoveProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -22,7 +23,11 @@ const isProductSort = (value: string): value is Sort => {
   return ["price,desc", "price,asc", "id,desc", "id,asc"].includes(value);
 };
 
-function Main({ handleAddProduct, handleRemoveProduct }: MainProps) {
+function Main({
+  selectedProductIdList,
+  handleAddProduct,
+  handleRemoveProduct,
+}: MainProps) {
   const [productList, setProductList] = useState(null);
   const [category, setCategory] = useState<ProductCategory>("전체");
   const [sort, setSort] = useState<Sort>("price,asc");
@@ -75,6 +80,7 @@ function Main({ handleAddProduct, handleRemoveProduct }: MainProps) {
       <Styled.ProductListTitle>bpple 상품 목록</Styled.ProductListTitle>
       <Filter handleCategory={handleCategory} handleSort={handleSort} />
       <ProductList
+        selectedProductIdList={selectedProductIdList}
         productList={productList}
         handleAddProduct={handleAddProduct}
         handleRemoveProduct={handleRemoveProduct}

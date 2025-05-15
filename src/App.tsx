@@ -23,7 +23,10 @@ function App() {
             size: "20",
           },
         });
-        setSelectedProductIdList(content);
+
+        setSelectedProductIdList(
+          content.map((item) => item.product.id.toString())
+        );
       } catch (error) {
         console.log(error);
       }
@@ -74,7 +77,7 @@ function App() {
       });
 
       const targetCartItem = content.find(
-        (cartItem) => cartItem.product.id === Number($product.id)
+        (cartItem) => cartItem.product.id.toString() === $product.id
       );
 
       if (!targetCartItem) {
@@ -96,9 +99,10 @@ function App() {
     <Container>
       <Header selectedProductIdList={selectedProductIdList}></Header>
       <Main
+        selectedProductIdList={selectedProductIdList}
         handleAddProduct={handleAddProduct}
         handleRemoveProduct={handleRemoveProduct}
-      ></Main>
+      />
     </Container>
   );
 }
