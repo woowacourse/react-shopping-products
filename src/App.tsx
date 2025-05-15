@@ -12,11 +12,13 @@ import * as S from "./styles/Layout.styles";
 import { CartItems } from "./types/cartItems";
 import { Products } from "./types/products";
 import { isErrorResponse } from "./utils/typeGuard";
+import ProductItemSkeleton from "./components/ProductItem/components/ProductItemSkeleton/ProductItemSkeleton";
 
 function App() {
   const [products, setProducts] = useState<Products | null>(null);
   const [cartItems, setCartItems] = useState<CartItems | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryOptionsKey>("전체");
   const [selectedSortOption, setSelectedSortOption] =
@@ -24,10 +26,12 @@ function App() {
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true);
       const response = await ProductsAPI.get(
         selectedCategory,
         selectedSortOption
       );
+      setIsLoading(false);
 
       if (isErrorResponse(response)) {
         setErrorMessage(response.error);
@@ -95,18 +99,26 @@ function App() {
             />
           </S.ProductControlPanel>
           <S.ProductGrid>
-            {products?.content.map(({ id, imageUrl, name, price }) => (
-              <ProductItem
-                key={id}
-                imageUrl={imageUrl}
-                name={name}
-                price={price}
-                isAdd={cartItemIds.some(
-                  (productInfo) => productInfo.productId === id
-                )}
-                handleCartItemToggle={() => handleCartItemToggle(id)}
-              />
-            ))}
+            {!isLoading ? (
+              products?.content.map(({ id, imageUrl, name, price }) => (
+                <ProductItem
+                  key={id}
+                  imageUrl={imageUrl}
+                  name={name}
+                  price={price}
+                  isAdd={cartItemIds.some(
+                    (productInfo) => productInfo.productId === id
+                  )}
+                  handleCartItemToggle={() => handleCartItemToggle(id)}
+                />
+              ))
+            ) : (
+              <>
+                {Array.from({ length: 6 }).map(() => (
+                  <ProductItemSkeleton />
+                ))}
+              </>
+            )}
           </S.ProductGrid>
           {!!errorMessage && (
             <ErrorToast
