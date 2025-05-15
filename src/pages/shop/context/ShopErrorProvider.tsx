@@ -12,10 +12,8 @@ export const ShopErrorContext = createContext<{
 
 function ShopErrorProvider({ children }: { children: ReactNode }) {
   const [isError, setIsError] = useState(false);
-  console.log(isError);
 
   const handleErrorTrue = useCallback(() => {
-    console.log('handle', isError);
     setIsError(true);
   }, []);
 

@@ -1,13 +1,16 @@
 import styled from '@emotion/styled';
 import Flex from './Flex';
 import { useCallback, useEffect, useState } from 'react';
+import { useShopErrorContext } from '../../pages/shop/context/useShopErrorContext';
 
 function ErrorToastMessage() {
   const [toast, setToast] = useState(true);
+  const { handleErrorFalse } = useShopErrorContext();
 
   useEffect(() => {
     setTimeout(() => {
       setToast(false);
+      handleErrorFalse();
     }, 3000);
   }, []);
 

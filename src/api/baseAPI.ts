@@ -18,7 +18,6 @@ export async function baseAPI<T>({
     },
     body: body ? JSON.stringify(body) : null,
   });
-  console.log(result);
   if (!result.ok) {
     throw new Error('서버에서 에러가 발생했습니다.');
   }
