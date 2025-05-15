@@ -1,9 +1,8 @@
+import { useCartContext } from "../../contexts/CartContext";
 import * as styles from "./Header.style";
 
-interface headerProps {
-  cartLength?: number;
-}
-function Header({ cartLength }: headerProps) {
+function Header() {
+  const { cartLength } = useCartContext();
   return (
     <header css={styles.header}>
       <p>SHOP</p>

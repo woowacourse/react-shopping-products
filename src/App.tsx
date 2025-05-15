@@ -11,9 +11,11 @@ import ProductList from "./components/Product/ProductList/ProductList";
 import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
 import * as styles from "./App.style";
 import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
+import { useCartContext } from "./contexts/CartContext";
 
 function App() {
   const { showError } = useErrorContext();
+  const { setCartLength } = useCartContext();
   const [category, setCategory] = useState<CategoryOptionType>("전체");
   const [orderBy, setOrderBy] = useState<OrderByOptionType>("낮은 가격순");
 
@@ -28,7 +30,6 @@ function App() {
     data: cartItems,
     fetcher: refetchCart,
     error: cartFetchError,
-    isLoading: cartFetchLoading,
   } = useFetch<CartItemResponse>(URLS.CART_ITEMS, {
     headers: {
       Authorization: `Basic ${btoa(
@@ -43,6 +44,11 @@ function App() {
   }, [orderBy]);
 
   useEffect(() => {
+    // setCartLength(50);
+    setCartLength(cartItems?.content?.length ?? 0);
+  }, [cartItems]);
+
+  useEffect(() => {
     if (productFetchError) {
       showError(productFetchError);
     }
@@ -50,9 +56,6 @@ function App() {
       showError(cartFetchError);
     }
   }, [productFetchError, cartFetchError, showError]);
-
-  // 2.추가적으로 prop을 드릴링 할가용?
-  // 2.1.아니면... useContext로 넘겨줄까?
 
   async function handleRefetchCart() {
     await refetchCart();
@@ -69,13 +72,7 @@ function App() {
     <div css={styles.bodyCss}>
       <div style={{ marginBottom: "80px" }}></div>
       <div css={styles.dropdownDivCss}>
-        {cartFetchLoading ? (
-          <Header />
-        ) : (
-          <Header
-            cartLength={cartItems?.content ? cartItems?.content.length : 0}
-          />
-        )}
+        <Header />
         <Dropdown
           list={CATEGORY_OPTIONS}
           placeholder="전체"
