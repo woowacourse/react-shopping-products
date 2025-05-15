@@ -43,6 +43,7 @@ function ProductCardList({
         <ProductCard
           productId={data.id}
           cartId={cartItemIds?.find((ids) => ids.productId === data.id)?.cartId}
+          cartAmount={cartItemIds.length}
           key={data.id}
           isAdded={Boolean(
             cartItemIds?.find((ids) => ids.productId === data.id)

@@ -6,6 +6,7 @@ interface CartToggleButtonProps {
   isAdded: boolean;
   productId: number;
   cartId?: number;
+  cartAmount: number;
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
@@ -16,6 +17,7 @@ interface CartToggleButtonProps {
 function CartToggleButton({
   productId,
   cartId,
+  cartAmount,
   isAdded,
   setCartItemIds,
   setErrorTrue,
@@ -23,6 +25,10 @@ function CartToggleButton({
 }: CartToggleButtonProps) {
   async function addItemToCart() {
     try {
+      if (cartAmount >= 50) {
+        setErrorTrue("CART_MAX");
+        return;
+      }
       await request({
         headers: {
           Authorization: import.meta.env.VITE_TOKEN,

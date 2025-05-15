@@ -12,6 +12,7 @@ import { ERROR_TYPE } from "../../hooks/useError";
 interface ProductCardProps {
   productId: number;
   cartId?: number;
+  cartAmount: number;
   isAdded: boolean;
   name: string;
   price: number;
@@ -26,6 +27,7 @@ interface ProductCardProps {
 function ProductCard({
   productId,
   cartId,
+  cartAmount,
   name,
   price,
   imageUrl,
@@ -45,6 +47,7 @@ function ProductCard({
         <CartToggleButton
           productId={productId}
           cartId={cartId}
+          cartAmount={cartAmount}
           isAdded={isAdded}
           setCartItemIds={setCartItemIds}
           setErrorTrue={setErrorTrue}
