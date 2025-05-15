@@ -6,7 +6,7 @@ import {
   ProductPrice,
   ButtonContainer,
 } from "./ProductCard.css";
-import CartToggleButton from "./CartToggleButton";
+import CartToggleButton from "../cartToggleButton/CartToggleButton";
 import { ERROR_TYPE } from "../../hooks/useError";
 
 interface ProductCardProps {

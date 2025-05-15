@@ -35,6 +35,7 @@ function ProductCardList({
     sort,
     setErrorTrue,
   });
+
   if (isLoading) return <ProductCardListSkeleton />;
 
   return (
