@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { URLS } from "../constants/url";
+import { OrderByOptionType } from "../types/categoryOption";
 const defaultSearchParams = {
   page: "0",
   size: "50",
