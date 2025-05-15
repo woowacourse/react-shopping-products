@@ -3,7 +3,7 @@ import { ProductTypes } from '../../types/ProductTypes';
 import postShoppingCart from '../../api/postShoppingCart';
 
 type SetProducts = {
-  updateCart: (id: number) => void;
+  isMatch: (id: number) => boolean;
 };
 
 export default function ProductItem({
@@ -11,13 +11,13 @@ export default function ProductItem({
   name,
   price,
   imageUrl,
-  isItemInCart,
-  updateCart,
+  isMatch,
 }: ProductTypes & SetProducts) {
+  const isItemInCart = isMatch(id);
+
   const handleItemClick = async () => {
     try {
       if (!isItemInCart) {
-        updateCart(id);
         await postShoppingCart(id, 1);
       }
     } catch (e) {
@@ -36,10 +36,7 @@ export default function ProductItem({
           <StyledPrice>{price.toLocaleString('ko')}원</StyledPrice>
         </StyledProductInfo>
         <StyledButtonWrapper>
-          <StyledButton
-            isItemInCart={isItemInCart}
-            onClick={() => handleItemClick}
-          >
+          <StyledButton isItemInCart={isItemInCart} onClick={handleItemClick}>
             <StyledImg
               src={
                 isItemInCart

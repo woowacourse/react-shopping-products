@@ -3,17 +3,13 @@ import SelectBox from '../Common/SelectBox';
 import { ProductTypes } from '../../types/ProductTypes';
 import { useState } from 'react';
 import getProducts from '../../api/getProducts';
-import { markItemsInCart } from './ProductListContainer';
-import { CartItemTypes } from '../../types/CartItemType';
 
 interface ProductListToolbarProps {
   setProducts: (products: ProductTypes[]) => void;
-  cartItems: CartItemTypes[];
 }
 
 export default function ProductListToolbar({
   setProducts,
-  cartItems,
 }: ProductListToolbarProps) {
   const CATEGORY = [
     { name: '전체', value: 'all' },
@@ -39,7 +35,7 @@ export default function ProductListToolbar({
         sort: priceValue === '낮은 가격순' ? 'price,asc' : 'price,desc',
       });
       const productsContent = productsData.content;
-      setProducts(markItemsInCart(cartItems, productsContent));
+      setProducts(productsContent);
     } catch (e) {
       //
     } finally {
@@ -62,7 +58,7 @@ export default function ProductListToolbar({
         }
       );
       const productsContent = productsData.content;
-      setProducts(markItemsInCart(cartItems, productsContent));
+      setProducts(productsContent);
     } catch (e) {
       //
     } finally {

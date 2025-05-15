@@ -7,22 +7,12 @@ import { CartItemTypes } from '../../types/CartItemType';
 
 interface ProductListContainerProps {
   cartItems: CartItemTypes[];
-}
-
-export function markItemsInCart(
-  cartItems: CartItemTypes[],
-  items: ProductTypes[]
-) {
-  const cartIds = new Set(cartItems.map((cartItem) => cartItem.product.id));
-
-  return items.map((item) => ({
-    ...item,
-    isItemInCart: cartIds.has(item.id),
-  }));
+  isMatch: (id: number) => boolean;
 }
 
 export default function ProductListContainer({
   cartItems,
+  isMatch,
 }: ProductListContainerProps) {
   const [products, setProducts] = useState<ProductTypes[]>([]);
 
@@ -31,7 +21,7 @@ export default function ProductListContainer({
       try {
         const productsData = await getProducts();
         const productsContent = productsData.content;
-        setProducts(markItemsInCart(cartItems, productsContent));
+        setProducts(productsContent);
       } catch (e) {
         //
       } finally {
@@ -51,8 +41,12 @@ export default function ProductListContainer({
   };
   return (
     <>
-      <ProductListToolbar setProducts={setProducts} cartItems={cartItems} />
-      <ProductList productList={products} updateCart={updateCart} />
+      <ProductListToolbar setProducts={setProducts} />
+      <ProductList
+        productList={products}
+        updateCart={updateCart}
+        isMatch={isMatch}
+      />
     </>
   );
 }

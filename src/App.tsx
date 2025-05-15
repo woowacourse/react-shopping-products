@@ -22,11 +22,17 @@ function App() {
     fetchCartItems();
   }, []);
 
+  const isMatch = (id: number) => {
+    const match = cartItems.find((e) => e.product.id === id);
+
+    return match ? true : false;
+  };
+
   return (
     <>
-      <Header />
+      <Header cartItemCount={cartItems.length} />
       <Body>
-        <ProductListContainer cartItems={cartItems} />
+        <ProductListContainer cartItems={cartItems} isMatch={isMatch} />
       </Body>
     </>
   );
