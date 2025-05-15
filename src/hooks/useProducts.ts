@@ -32,7 +32,7 @@ export default function useProducts({ page = "0", size = "20", sortingType = "",
 		};
 
 		fetchProducts();
-	}, []);
+	}, [requestURL]);
 
 	return { products, loading, error };
 }
