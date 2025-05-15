@@ -27,3 +27,19 @@ export const getCartItems = async (): Promise<CartItem[]> => {
 
   return response.content;
 };
+
+export const postCartItems = async (productId: number): Promise<void> => {
+  await apiRequest<void>(END_POINT.CART, {
+    method: "POST",
+    body: JSON.stringify({
+      productId,
+      quantity: 1,
+    }),
+  });
+};
+
+export const deleteCartItem = async (basketId: number): Promise<void> => {
+  return await apiRequest<void>(`${END_POINT.CART}/${basketId}`, {
+    method: "DELETE",
+  });
+};
