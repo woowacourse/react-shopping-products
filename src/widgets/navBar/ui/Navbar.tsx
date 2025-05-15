@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useEffect, useState} from 'react';
 import ErrorToast from '../../../shared/ui/ErrorToast';
 import * as S from './Navbar.styles';
 
@@ -8,8 +7,7 @@ interface NavbarProps {
   errorMessage: string;
 }
 
-export default function Navbar({ cartQuantity, errorMessage }: NavbarProps) {
-  const navigate = useNavigate();
+export default function Navbar({cartQuantity, errorMessage}: NavbarProps) {
   const [visibleError, setVisibleError] = useState(errorMessage);
 
   useEffect(() => {
@@ -23,9 +21,7 @@ export default function Navbar({ cartQuantity, errorMessage }: NavbarProps) {
     }
   }, [errorMessage]);
 
-  const handleLogoClick = () => {
-    navigate(0);
-  };
+  const handleLogoClick = () => {};
 
   return (
     <S.NavbarWrapper>
@@ -33,7 +29,7 @@ export default function Navbar({ cartQuantity, errorMessage }: NavbarProps) {
         <S.Logo onClick={handleLogoClick}>SHOP</S.Logo>
         <S.CartIconContainer>
           <S.CartQuantity>{cartQuantity}</S.CartQuantity>
-          <S.CartIcon src='/cartIcon.svg' />
+          <S.CartIcon src="/cartIcon.svg" />
         </S.CartIconContainer>
       </S.NavbarContainer>
       {visibleError && <ErrorToast errorMessage={visibleError} />}
