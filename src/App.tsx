@@ -106,17 +106,22 @@ function App() {
   };
 
   if (loading) {
-    return <Spinner />;
+    return;
+    <Wrapper>
+      <Spinner />;
+    </Wrapper>;
   }
 
   return (
     <Container>
-      <Header selectedProductIdList={selectedProductIdList}></Header>
-      <Main
-        selectedProductIdList={selectedProductIdList}
-        handleAddProduct={handleAddProduct}
-        handleRemoveProduct={handleRemoveProduct}
-      />
+      <Wrapper>
+        <Header selectedProductIdList={selectedProductIdList}></Header>
+        <Main
+          selectedProductIdList={selectedProductIdList}
+          handleAddProduct={handleAddProduct}
+          handleRemoveProduct={handleRemoveProduct}
+        />
+      </Wrapper>
     </Container>
   );
 }
@@ -124,7 +129,14 @@ function App() {
 export default App;
 
 const Container = styled.main`
+  display: flex;
   max-width: 430px;
+  min-height: 100vh;
+  margin: auto;
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
