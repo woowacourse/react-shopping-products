@@ -18,6 +18,7 @@ type ProductCardProps = {
   isInBascket: boolean;
   basketId? : number;
   isNotBasketCountMAX: boolean;
+  setError : (value : boolean) => void;
 };
 
 const ProductCard = ({
@@ -29,6 +30,7 @@ const ProductCard = ({
   isInBascket,
   basketId,
   isNotBasketCountMAX,
+  setError
 }: ProductCardProps) => {
 
   const defaultSrc = category === "패션잡화"
@@ -54,7 +56,7 @@ const ProductCard = ({
           <ProductCardName>{name}</ProductCardName>
           <ProductCardPrice>{price.toLocaleString()}원</ProductCardPrice>
         </ProductCardDetailTextWrapper>
-        <CartToggleButton id={id} isInBascket={isInBascket} basketId={basketId} isNotBasketCountMAX={isNotBasketCountMAX}/>
+        <CartToggleButton id={id} isInBascket={isInBascket} basketId={basketId} isNotBasketCountMAX={isNotBasketCountMAX} setError={setError}/>
       </ProductCardDetailWrapper>
     </ProductCardWrapper>
   );

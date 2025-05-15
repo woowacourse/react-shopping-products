@@ -10,6 +10,7 @@ import { Container } from "./styles/common";
 import { ProductCardContainer } from "./styles/ProductCard";
 import "./styles/reset.css";
 import { ERROR_MSG } from "./constants/errorMessage";
+import ErrorMessage from "./components/ErrorMessage";
 
 type CategoryKey = (typeof CATEGORY)[number];
 type SortKey = (typeof SORT)[number];
@@ -38,6 +39,7 @@ function App() {
   const [basketProductsIds, setBasketProductsIds] = useState<
     BasketProductIds[]
   >([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -54,6 +56,7 @@ function App() {
         setProducts(data.content);
       } catch (error) {
         console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, error);
+        setError(true);
       }
     };
     fetchProducts();
@@ -70,6 +73,7 @@ function App() {
         setBasketProductsIds(mapped);
       } catch (error) {
         console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
+        setError(true);
       }
     };
     fetchCartItems();
@@ -78,6 +82,7 @@ function App() {
   return (
     <Container>
       <Header basketCount={basketProductsIds.length} />
+      {error && <ErrorMessage />}
       <SelectDropdownContainer
         category={category}
         sort={sort}
@@ -96,9 +101,12 @@ function App() {
             isInBascket={basketProductsIds.some(
               (item) => item.productId === product.id
             )}
-            basketId={basketProductsIds.find((item) => item.productId === product.id)?.basketId}
-            isNotBasketCountMAX={basketProductsIds.length < MAX_BASKET_COUNT
+            basketId={
+              basketProductsIds.find((item) => item.productId === product.id)
+                ?.basketId
             }
+            isNotBasketCountMAX={basketProductsIds.length < MAX_BASKET_COUNT}
+            setError={setError}
           />
         ))}
       </ProductCardContainer>
