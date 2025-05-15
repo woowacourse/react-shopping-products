@@ -3,57 +3,44 @@ import {
   ShoppingListFilterItemStyle,
   ShoppingListFilterStyle,
   ShoppingListStyle,
-  ShoppingListTitleStyle
+  ShoppingListTitleStyle,
+  emptyStateStyle,
+  loadingStateStyle,
 } from './ShoppingList.styles';
 import Text from '../../component/@common/Text';
 import Dropdown from '../../component/@common/Dropdown';
-import { useEffect, useState } from 'react';
 import ArrowIcon from '../../component/@common/ArrowIcon';
 import ProductCard from '../../component/feature/ProductCard';
 import ProductListLayout from '../../component/feature/ProductListLayout';
+import ErrorFallback from '../../component/@common/ErrorFallback';
+import Button from '../../component/@common/Button';
 
-import { Product } from '../../types/response';
-
-import useCart, { CartItem } from '../../hook/useCart';
+import useCart from '../../hook/useCart';
 import { useToast } from '../../component/@common/Toast/context';
 import { cartApi } from '../../api/cart';
-import { apiRequest } from '../../api';
-
-type ProductListResponse = Product[];
-
-export type SortOption = '높은 가격순' | '낮은 가격순';
-export type CategoryOption = '전체' | '패션잡화' | '식료품';
+import {
+  CartItem,
+  CategoryOption,
+  Product,
+  SortOption,
+} from '../../types/common';
+import useShoppingItemList from '../../hook/useShoppingItemList';
 
 const ShoppingList = () => {
-  const [selected, setSelected] = useState<SortOption>('낮은 가격순');
-  const [category, setCategory] = useState<CategoryOption>('전체');
-  const [data, setData] = useState<Product[]>([]);
   const { cartData, fetchCartData } = useCart();
   const { openToast } = useToast();
-
+  const {
+    data,
+    handleSortClick,
+    handleCategoryClick,
+    selected,
+    category,
+    error,
+    isLoading,
+    retryFetch,
+  } = useShoppingItemList();
   const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await apiRequest<ProductListResponse>(
-        `/products?page=0&size=20${
-          category === '전체' ? '' : `&category=${category}`
-        }${selected === '높은 가격순' ? '&sort=price,desc' : '&sort=price,asc'}`
-      );
-
-      setData(response);
-    };
-
-    fetchData();
-  }, [category, selected]);
-
-  const handleSortClick = (content: string) => {
-    setSelected(content as SortOption);
-  };
-
-  const handleCategoryClick = (category: string) => {
-    setCategory(category as CategoryOption);
-  };
+  const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
 
   const handleAddCart = async (productId: number) => {
     try {
@@ -68,20 +55,97 @@ const ShoppingList = () => {
 
   const handleRemoveCart = async (cartId: number) => {
     try {
-      const targetId = cartData.filter(
+      const cartItem = cartData.filter(
         (item: CartItem) => item.product.id === cartId
-      )[0].id;
+      );
+
+      if (!cartItem) {
+        console.error('장바구니에서 해당 상품을 찾을 수 없습니다:', cartId);
+        openToast('장바구니에서 상품을 찾을 수 없습니다.', false);
+        return;
+      }
+
+      const targetId = cartItem[0].id;
 
       await cartApi.removeFromCart(targetId);
 
-      fetchCartData();
+      await fetchCartData();
       openToast('상품이 장바구니에서 제거되었습니다.', true);
     } catch (error) {
+      console.error('장바구니 아이템 삭제 중 오류 발생:', error);
       openToast('장바구니 빼기에 실패했어요...', false);
     }
   };
 
-  const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
+  // 에러가 있을 경우 ErrorFallback 표시
+  if (error) {
+    return (
+      <>
+        <Header count={cartData.length} />
+        <ErrorFallback
+          error={error}
+          resetErrorBoundary={retryFetch}
+          message="상품 목록을 불러오는데 실패했습니다"
+        />
+      </>
+    );
+  }
+
+  const renderProductContent = () => {
+    if (isLoading) {
+      console.log('isLoading', isLoading);
+      return (
+        <div css={loadingStateStyle}>
+          <div className="loading-spinner"></div>
+        </div>
+      );
+    }
+
+    if (data.length === 0) {
+      return (
+        <div css={emptyStateStyle}>
+          <svg
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <h3>상품이 없습니다</h3>
+          <p>선택한 카테고리에 상품이 없거나 필터링 결과가 없습니다.</p>
+          {category !== '전체' && (
+            <div style={{ marginTop: '16px' }}>
+              <Button onClick={() => handleCategoryClick('전체')}>
+                모든 상품 보기
+              </Button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return data.map((product: Product) => {
+      const isInCart = cartData.some(
+        (item: CartItem) => item.product.id === product.id
+      );
+      return (
+        <ProductCard
+          key={product.id}
+          {...product}
+          isInCart={isInCart}
+          handleAddCart={handleAddCart}
+          handleRemoveCart={handleRemoveCart}
+        />
+      );
+    });
+  };
 
   return (
     <>
@@ -127,22 +191,7 @@ const ShoppingList = () => {
           </div>
         </div>
       </section>
-      <ProductListLayout>
-        {data.map((product: Product) => {
-          const isInCart = cartData.some(
-            (item: CartItem) => item.product.id === product.id
-          );
-          return (
-            <ProductCard
-              key={product.id}
-              {...product}
-              isInCart={isInCart}
-              handleAddCart={handleAddCart}
-              handleRemoveCart={handleRemoveCart}
-            />
-          );
-        })}
-      </ProductListLayout>
+      <ProductListLayout>{renderProductContent()}</ProductListLayout>
     </>
   );
 };
