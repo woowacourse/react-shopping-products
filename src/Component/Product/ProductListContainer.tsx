@@ -8,13 +8,13 @@ import { CartItemTypes } from '../../types/CartItemType';
 interface ProductListContainerProps {
   cartItems: CartItemTypes[];
   updateCartItems: () => void;
-  isMatch: (id: number) => boolean;
+  getMatchCartItem: (id: number) => CartItemTypes | undefined;
 }
 
 export default function ProductListContainer({
   cartItems,
   updateCartItems,
-  isMatch,
+  getMatchCartItem,
 }: ProductListContainerProps) {
   const [products, setProducts] = useState<ProductTypes[]>([]);
 
@@ -39,7 +39,7 @@ export default function ProductListContainer({
       <ProductList
         productList={products}
         updateCartItems={updateCartItems}
-        isMatch={isMatch}
+        getMatchCartItem={getMatchCartItem}
       />
     </>
   );

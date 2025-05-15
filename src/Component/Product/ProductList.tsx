@@ -1,17 +1,18 @@
 import styled from '@emotion/styled';
 import ProductItem from './ProductItem';
 import { ProductTypes } from '../../types/ProductTypes';
+import { CartItemTypes } from '../../types/CartItemType';
 
 interface ProductListProps {
   productList: ProductTypes[];
   updateCartItems: () => void;
-  isMatch: (id: number) => boolean;
+  getMatchCartItem: (id: number) => CartItemTypes | undefined;
 }
 
 export default function ProductList({
   productList,
   updateCartItems,
-  isMatch,
+  getMatchCartItem,
 }: ProductListProps) {
   return (
     <StyledUl>
@@ -19,7 +20,7 @@ export default function ProductList({
         <ProductItem
           {...props}
           updateCartItems={updateCartItems}
-          isMatch={isMatch}
+          getMatchCartItem={getMatchCartItem}
         />
       ))}
     </StyledUl>

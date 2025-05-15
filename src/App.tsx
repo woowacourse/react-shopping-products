@@ -33,10 +33,9 @@ function App() {
     }
   };
 
-  const isMatch = (id: number) => {
+  const getMatchCartItem = (id: number) => {
     const match = cartItems.find((e) => e.product.id === id);
-
-    return match ? true : false;
+    return match;
   };
 
   return (
@@ -46,7 +45,7 @@ function App() {
         <ProductListContainer
           cartItems={cartItems}
           updateCartItems={updateCartItems}
-          isMatch={isMatch}
+          getMatchCartItem={getMatchCartItem}
         />
       </Body>
     </>
