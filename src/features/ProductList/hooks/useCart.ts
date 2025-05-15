@@ -1,13 +1,12 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { addCartItem, getCartItemList } from '@/api/cart';
+import { addCartItem, deleteCartItem, getCartItemList } from '@/api/cart';
 import { ToastContext } from '@/shared/context/ToastProvider';
 
 import { CartItem } from '../types/Cart';
-import { Product } from '../types/Product';
 
 export const useCart = () => {
-  const [cartData, setCartData] = useState<Product[]>([]);
+  const [cartData, setCartData] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useContext(ToastContext);
 
@@ -20,7 +19,7 @@ export const useCart = () => {
         sort: '',
       });
 
-      setCartData(cart.map((item: CartItem) => item.product));
+      setCartData(cart);
       return cart;
     } catch (error) {
       showToast((error as Error).message);
@@ -33,7 +32,21 @@ export const useCart = () => {
     async (productId: number, quantity: number = 1) => {
       try {
         const data = await addCartItem({ productId, quantity });
-        setCartData(data.map((item: CartItem) => item.product));
+        setCartData(data);
+        return data.length;
+      } catch (error) {
+        showToast((error as Error).message);
+        return cartData;
+      }
+    },
+    [cartData, showToast]
+  );
+
+  const deleteFromCart = useCallback(
+    async (cartItemId: number) => {
+      try {
+        const data = await deleteCartItem(cartItemId);
+        setCartData(data);
         return data.length;
       } catch (error) {
         showToast((error as Error).message);
@@ -51,5 +64,6 @@ export const useCart = () => {
     cartData,
     isLoading,
     addToCart,
+    deleteFromCart,
   };
 };
