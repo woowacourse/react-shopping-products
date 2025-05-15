@@ -11,15 +11,12 @@ import {
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useCartHandler from '../../hooks/useCartHandler.ts';
 import useProductHandler from '../../hooks/useProductHandler.ts';
+import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
 
 export const ProductListPage = () => {
-  const {
-    cartItemsIds,
-    errorMessage,
-    handleErrorMessage,
-    handleAddCartItemsIds,
-    handleRemoveCartItemsIds,
-  } = useCartContext();
+  const { cartItemsIds, handleAddCartItemsIds, handleRemoveCartItemsIds } = useCartContext();
+
+  const { errorMessage, handleErrorMessage } = useErrorMessageContext();
 
   const { handleAddCartItem, handleRemoveCartItem } = useCartHandler({
     handleAddCartItemsIds,

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import tryApiCall from '../util/tryApiCall';
 import { getCartItems } from '../services/cartItemServices';
 import { CartItemType } from '../types/data';
+import { ErrorMessageProvider } from '../context/ErrorMessageContext';
 
 const Layout = () => {
   const [cartItemsIds, setCartItemsIds] = useState<number[]>([]);
@@ -31,18 +32,18 @@ const Layout = () => {
   }, []);
 
   return (
-    <CartProvider
-      cartItemsIds={cartItemsIds}
-      errorMessage={errorMessage}
-      handleErrorMessage={handleErrorMessage}
-      handleAddCartItemsIds={handleAddCartItemsIds}
-      handleRemoveCartItemsIds={handleRemoveCartItemsIds}
-    >
-      <LayoutContainer>
-        <Header />
-        <Outlet />
-      </LayoutContainer>
-    </CartProvider>
+    <ErrorMessageProvider errorMessage={errorMessage} handleErrorMessage={handleErrorMessage}>
+      <CartProvider
+        cartItemsIds={cartItemsIds}
+        handleAddCartItemsIds={handleAddCartItemsIds}
+        handleRemoveCartItemsIds={handleRemoveCartItemsIds}
+      >
+        <LayoutContainer>
+          <Header />
+          <Outlet />
+        </LayoutContainer>
+      </CartProvider>
+    </ErrorMessageProvider>
   );
 };
 
