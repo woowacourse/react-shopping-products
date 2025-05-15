@@ -24,18 +24,38 @@ function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
   const [category, setCategory] = useState<CategoryType>('전체');
 
-  console.log('data', data);
-
   const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
 
   const handleAddCart = async (product: ProductElement) => {
-    await addCart(product.id, product.price);
-    await fetchData(mappedSortType);
+    if (cart?.totalElements === 50) {
+      console.error('최대 장바구니 갯수는 50개 입니다.');
+      setIsError(true);
+      return;
+    }
+
+    try {
+      await addCart(product.id);
+      await fetchData(mappedSortType);
+    } catch (error) {
+      console.error('장바구니 추가 실패:', error);
+      setIsError(true);
+    }
   };
 
   const handleRemoveCart = async (product: ProductElement) => {
-    await removeCart(product.cartId);
-    await fetchData(mappedSortType);
+    if (!product.cartId) {
+      console.error('유효하지 않은 장바구니 ID');
+      setIsError(true);
+      return;
+    }
+
+    try {
+      await removeCart(product.cartId);
+      await fetchData(mappedSortType);
+    } catch (error) {
+      console.error('장바구니 제거 실패:', error);
+      setIsError(true);
+    }
   };
 
   const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -65,18 +85,21 @@ function App() {
       );
 
       const data = (filteredCategory || []).map((item: ProductElement) => {
-        const cartProductItem = filteredCategory.find(
-          (cartItem: CartItem) => cartItem.product?.id === item.id
+        const cartItem = cart.content.find(
+          (cartItem: CartItem) => cartItem.product.id === item.id
         );
 
         return {
           id: item.id,
           name: item.name,
           price: item.price,
+          category: item.category,
           imageUrl: item.imageUrl,
-          cartId: cartProductItem ? cartProductItem.id : undefined,
+          isInCart: cartItem ? 1 : 0,
+          cartId: cartItem ? cartItem.id : undefined,
         };
       });
+
       setData(data);
       setCart(cart);
     } catch (e) {
@@ -90,9 +113,6 @@ function App() {
   useEffect(() => {
     fetchData(mappedSortType);
   }, [sort, category]);
-
-  console.log('cart:', cart);
-  console.log('data', data);
 
   return (
     <>
