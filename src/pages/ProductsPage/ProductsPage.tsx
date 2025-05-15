@@ -49,6 +49,8 @@ function ProductsPage() {
   } = useGetProducts({ category, sort });
   const { isLoading: isLoadingCarts, isError: isErrorCarts, carts, refetchCarts } = useGetCarts();
   const [itemCount, setItemCount] = useState(0);
+  const [isErrorAddCardItem, setIsErrorAddCardItem] = useState(false);
+  const [isErrorDeleteCardItem, setIsErrorDeleteCardItem] = useState(false);
 
   const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSort(SORT[e.target.value]);
@@ -89,7 +91,7 @@ function ProductsPage() {
     });
 
     if (!res.ok) {
-      throw new Error('에러 발생');
+      setIsErrorAddCardItem(true);
     }
 
     await refetchCarts();
@@ -107,7 +109,7 @@ function ProductsPage() {
     });
 
     if (!res.ok) {
-      throw new Error('에러 발생');
+      setIsErrorDeleteCardItem(true)
     }
 
     await refetchCarts();
@@ -141,8 +143,10 @@ function ProductsPage() {
           />
         )}
       </div>
-      {isErrorCarts && <Toast text="장바구니 정보를 불러오지 못했습니다." varient="error"></Toast>}
-      {isErrorProducts && <Toast text="상품 정보를 불러오지 못했습니다." varient="error"></Toast>}
+      {isErrorCarts && <Toast text="장바구니 정보를 불러오지 못했습니다." varient="error"/>}
+      {isErrorProducts && <Toast text="상품 정보를 불러오지 못했습니다." varient="error"/>}
+      {isErrorAddCardItem && <Toast text="장바구니에 상품을 담지 못했습니다." varient="error"/>}
+      {isErrorDeleteCardItem && <Toast text="장바구니에 상품을 빼지 못했습니다." varient="error"/>}
     </div>
   );
 }
