@@ -11,19 +11,20 @@ import { Content } from "./types/product";
 import { deleteCartItems, getCartItems, postCartItems } from "./apis/cartItem";
 import RemoveCart from "./components/icons/RemoveCart";
 import { GetCartItemsResponse } from "./types/cartItem";
+import Spinner from "./components/Spinner";
 
 function App() {
   const [filter, setFilter] = useState("전체");
   const [sort, setSort] = useState("높은 가격순");
-
   const [products, setProducts] = useState<Content[]>();
   const [cartItems, setCartItems] = useState<GetCartItemsResponse>();
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const getProduct = async () => {
     const data = await getProducts({ page: 0, size: 20 });
 
     setProducts(data.content);
-    return data;
   };
 
   const getCartItem = async () => {
@@ -34,8 +35,9 @@ function App() {
   const cartItemIds = cartItems && Object.fromEntries(cartItems?.content.map((item) => [item.product.id, item.id]));
 
   useEffect(() => {
-    getProduct();
-    getCartItem();
+    Promise.all([getProduct(), getCartItem()]).then(() => {
+      setIsLoading(false);
+    });
   }, []);
 
   const handleAddCart = async (id: number) => {
@@ -49,6 +51,7 @@ function App() {
     await getCartItem();
   };
 
+  if (isLoading) return <Spinner />;
   return (
     <div css={appStyle}>
       <Header shoppingCount={cartItems?.content?.length} />
