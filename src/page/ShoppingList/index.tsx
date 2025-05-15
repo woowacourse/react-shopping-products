@@ -93,7 +93,6 @@ const ShoppingList = () => {
 
   const renderProductContent = () => {
     if (isLoading) {
-      console.log('isLoading', isLoading);
       return (
         <div css={loadingStateStyle}>
           <div className="loading-spinner"></div>
