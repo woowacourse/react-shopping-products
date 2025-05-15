@@ -11,12 +11,15 @@ import { wrapPromise } from '../../api/wrapPromise';
 import { Product } from '../../components/features/product/type';
 import { convertResponseToProduct } from '../../components/features/product/responseMapper';
 import { useCartContext } from '../../context/useCartContext';
+import ErrorToastMessage from '../../components/common/ErrorToastMessage';
+import { useShopErrorContext } from './context/useShopErrorContext';
 
 function ShopPage() {
   const [filterOption, setFilterOption] = useState({
     category: { label: '전체', value: '전체' },
     sort: { label: '낮은 가격순', value: 'asc' },
   });
+  const { isError } = useShopErrorContext();
 
   const { cartList } = useCartContext();
 
@@ -85,12 +88,14 @@ function ShopPage() {
             cartList={cartList}
           />
         </Suspense>
+        {isError && <ErrorToastMessage />}
       </ProductListContainer>
     </>
   );
 }
 
 const ProductListContainer = styled(Flex)`
+  position: relative;
   padding: 36px 24px;
   gap: 28px;
 `;

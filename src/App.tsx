@@ -4,15 +4,18 @@ import reset from './global/style/reset';
 import { theme } from './global/style/theme';
 import ShopPage from './pages/shop/ShopPage';
 import CartProvider from './context/CartProvider';
+import ShopErrorProvider from './pages/shop/context/ShopErrorProvider';
 
 function App() {
   return (
     <MobileLayout>
       <Global styles={reset} />
       <ThemeProvider theme={theme}>
-        <CartProvider>
-          <ShopPage />
-        </CartProvider>
+        <ShopErrorProvider>
+          <CartProvider>
+            <ShopPage />
+          </CartProvider>
+        </ShopErrorProvider>
       </ThemeProvider>
     </MobileLayout>
   );

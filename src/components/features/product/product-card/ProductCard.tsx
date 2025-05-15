@@ -4,6 +4,7 @@ import AddCartButton from './AddCartButton';
 import { baseAPI } from '../../../../api/baseAPI';
 import DeleteCartButton from './DeleteCartButton';
 import { useCartContext } from '../../../../context/useCartContext';
+import { useShopErrorContext } from '../../../../pages/shop/context/useShopErrorContext';
 
 interface ProductProps {
   id: string;
@@ -23,6 +24,7 @@ function ProductCard({
   isInCart,
 }: ProductProps) {
   const { refetch } = useCartContext();
+  const { handleErrorTrue, handleErrorFalse } = useShopErrorContext();
 
   const handleAddCart = async () => {
     try {
@@ -35,8 +37,9 @@ function ProductCard({
         },
       });
       refetch();
+      handleErrorFalse();
     } catch (e) {
-      throw new Error('장바구니에 추가하는데 실패했습니다.');
+      handleErrorTrue();
     }
   };
 
@@ -47,8 +50,9 @@ function ProductCard({
         path: `/cart-items/${cartId}`,
       });
       refetch();
+      handleErrorFalse();
     } catch (e) {
-      throw new Error('장바구니에 추가하는데 실패했습니다.');
+      handleErrorTrue();
     }
   };
 
