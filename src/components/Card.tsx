@@ -33,7 +33,8 @@ export default Card;
 const cardStyle = css`
   max-width: 166px;
   overflow: hidden;
-  border-radius: 8px 8px 0 0;
+  border-radius: 8px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 `;
 
 const previewStyle = css`
