@@ -7,7 +7,7 @@ const getCartItems = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Basic RGFldW4tMTAwOnBhc3N3b3Jk',
+      Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTHORIZATION}`,
     },
   });
 
