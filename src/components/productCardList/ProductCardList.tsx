@@ -40,23 +40,32 @@ function ProductCardList({
 
   return (
     <div css={CardListContainer}>
-      {products?.content.map((data) => (
-        <ProductCard
-          productId={data.id}
-          cartId={cartItemIds?.find((ids) => ids.productId === data.id)?.cartId}
-          cartAmount={cartItemIds.length}
-          key={data.id}
-          isAdded={Boolean(
+      {products?.content.map((data) => {
+        const cartInfo = {
+          cartId: cartItemIds?.find((ids) => ids.productId === data.id)?.cartId,
+          cartAmount: cartItemIds.length,
+        };
+
+        const productInfo = {
+          productId: data.id,
+          name: data.name,
+          price: data.price,
+          imageUrl: data.imageUrl,
+          isAdded: Boolean(
             cartItemIds?.find((ids) => ids.productId === data.id)
-          )}
-          name={data.name}
-          price={data.price}
-          imageUrl={data.imageUrl}
-          setCartItemIds={setCartItemIds}
-          setErrorTrue={setErrorTrue}
-          fetchCartProducts={fetchCartProducts}
-        />
-      ))}
+          ),
+        };
+        return (
+          <ProductCard
+            cartInfo={cartInfo}
+            productInfo={productInfo}
+            key={data.id}
+            setCartItemIds={setCartItemIds}
+            setErrorTrue={setErrorTrue}
+            fetchCartProducts={fetchCartProducts}
+          />
+        );
+      })}
     </div>
   );
 }

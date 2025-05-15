@@ -10,13 +10,17 @@ import CartToggleButton from "../cartToggleButton/CartToggleButton";
 import { ERROR_TYPE } from "../../hooks/useError";
 
 interface ProductCardProps {
-  productId: number;
-  cartId?: number;
-  cartAmount: number;
-  isAdded: boolean;
-  name: string;
-  price: number;
-  imageUrl: string;
+  cartInfo: {
+    cartId?: number;
+    cartAmount: number;
+  };
+  productInfo: {
+    productId: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+    isAdded: boolean;
+  };
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
@@ -25,17 +29,14 @@ interface ProductCardProps {
 }
 
 function ProductCard({
-  productId,
-  cartId,
-  cartAmount,
-  name,
-  price,
-  imageUrl,
-  isAdded,
+  cartInfo,
+  productInfo,
   setCartItemIds,
   setErrorTrue,
   fetchCartProducts,
 }: ProductCardProps) {
+  const { imageUrl, productId, name, price, isAdded } = productInfo;
+  const { cartId, cartAmount } = cartInfo;
   return (
     <div css={ProductContainer}>
       <img css={ProductImage} src={imageUrl}></img>
