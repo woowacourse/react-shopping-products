@@ -1,8 +1,12 @@
 import { baseAPI } from './baseAPI';
 import { ProductData } from './type';
 import { convertResponseToProduct } from '../components/features/product/responseMapper';
+import { DropdownOptionType } from '../components/common/Dropdown';
 
-export async function getListData(filterOption) {
+export async function getListData(filterOption: {
+  category: DropdownOptionType;
+  sort: DropdownOptionType;
+}) {
   const page = 0;
   const size = 20;
   const categoryPath =

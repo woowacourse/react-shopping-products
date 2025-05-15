@@ -1,8 +1,7 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from '../../App';
 import { productListMockData } from '../__mocks__/productListMockData';
 import { cartMockData } from '../__mocks__/cartData';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('../../api/postCartItem', () => ({
   postCartItem: jest
@@ -30,8 +29,9 @@ jest.mock('../../api/deleteCartItem', () => ({
 }));
 
 jest.mock('../../api/baseAPI', () => ({
-  baseAPI: jest.fn().mockImplementation(() => Promise.resolve(mockData)),
+  baseAPI: jest.fn().mockImplementation(() => Promise.resolve(cartMockData)),
 }));
+
 describe('SHOP 페이지에 접속 시', () => {
   it('장바구니 아이콘에 현재 장바구니 아이템 수가 표시된다', async () => {
     render(<App />);
