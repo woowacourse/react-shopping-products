@@ -21,7 +21,6 @@ function ProductControl({
       const rawProductList = await getProductList({ category, sort });
       setProductList(rawProductList);
     } catch (error) {
-      console.log("error", error);
       if (error instanceof Error) {
         setErrorMessage(error.message);
       }

@@ -24,10 +24,6 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("errorMessage", errorMessage);
-  }, [errorMessage]);
-
-  useEffect(() => {
     const fetchData = async () => {
       try {
         const rawCartItemList = await getCartItemList();

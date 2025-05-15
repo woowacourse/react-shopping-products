@@ -7,6 +7,7 @@ import AddProductItemApi from "../../api/AddProductItemApi";
 import RemoveProductItemApi from "../../api/RemoveProductItemApi";
 import getCartItemList from "../../api/CartItemListApi";
 import { Dispatch, SetStateAction } from "react";
+import blackDefaultImage from "../../assets/blackDefaultImgae.png";
 
 function ProductItem({
   product,
@@ -45,7 +46,14 @@ function ProductItem({
   }
   return (
     <S.ProductItemContainer>
-      <S.ProductItemImage src={product.imageUrl} alt={product.name} />
+      <S.ProductItemImage
+        src={product.imageUrl}
+        alt={product.name}
+        onError={(e) => {
+          e.currentTarget.src = blackDefaultImage;
+          e.currentTarget.onerror = null;
+        }}
+      />
       <S.ProductItemBottom>
         <S.ProductItemDetailBox>
           <S.ProductName>{product.name}</S.ProductName>
