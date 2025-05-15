@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 
@@ -8,4 +9,9 @@ export default defineConfig({
       jsxImportSource: "@emotion/react",
     }),
   ],
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/test/setup.ts", // 설정 파일 경로
+  },
 });

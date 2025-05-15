@@ -125,7 +125,9 @@ export default function ShopPage() {
             }}
           />
           {selectedProducts !== 0 && (
-            <div css={cartItemCount}>{selectedProducts}</div>
+            <div data-testid="cart-count" css={cartItemCount}>
+              {selectedProducts}
+            </div>
           )}
         </div>
         {isError && (
