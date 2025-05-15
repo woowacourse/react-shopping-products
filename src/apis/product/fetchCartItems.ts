@@ -1,6 +1,7 @@
 import.meta.env.VITE_BASE_URL;
 
 import { HttpMethod } from "../../types/HttpMethod";
+import { FetchCartItemsResult } from "../../types/FetchCartItemsResult";
 
 type fetchCartItemsParams = {
   method: HttpMethod;
@@ -16,7 +17,7 @@ const TOKEN = import.meta.env.VITE_TOKEN;
 const fetchCartItems = async ({
   method,
   params = { page: "0", size: "20" },
-}: fetchCartItemsParams) => {
+}: fetchCartItemsParams): Promise<FetchCartItemsResult> => {
   const url = new URL(BASE_URL);
 
   url.search = new URLSearchParams(params).toString();
