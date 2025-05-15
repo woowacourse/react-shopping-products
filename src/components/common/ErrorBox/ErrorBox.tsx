@@ -7,13 +7,20 @@ interface ErrorBoxProps {
 }
 
 function ErrorBox({ backgroundColor, text }: ErrorBoxProps) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsOpen(false);
-    }, 2000);
-  }, []);
+    if (text) {
+      setIsOpen(true);
+      const timer = setTimeout(() => {
+        setIsOpen(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [text]);
+
+  if (!text) return null;
 
   return (
     isOpen && (

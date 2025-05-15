@@ -7,22 +7,37 @@ import getProductList from "../../api/ProductListApi";
 
 function ProductControl({
   setProductList,
+  setErrorMessage,
 }: {
   setProductList: Dispatch<SetStateAction<ResponseProduct[]>>;
+  setErrorMessage: (message: string) => void;
 }) {
   const [category, setCategory] = useState<string>("");
   const [sort, setSort] = useState<string>("");
 
   async function handleCategoryChange(category: string) {
-    setCategory(category);
-    const rawProductList = await getProductList({ category, sort });
-    setProductList(rawProductList);
+    try {
+      setCategory(category);
+      const rawProductList = await getProductList({ category, sort });
+      setProductList(rawProductList);
+    } catch (error) {
+      console.log("error", error);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      }
+    }
   }
 
   async function handleSortChange(sort: string) {
-    setSort(sort);
-    const rawProductList = await getProductList({ category, sort });
-    setProductList(rawProductList);
+    try {
+      setSort(sort);
+      const rawProductList = await getProductList({ category, sort });
+      setProductList(rawProductList);
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      }
+    }
   }
 
   return (

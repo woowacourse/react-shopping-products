@@ -9,13 +9,34 @@ import RemoveProductItemApi from "../../api/RemoveProductItemApi";
 function ProductItem({
   product,
   cartItemList,
+  setErrorMessage,
 }: {
   product: ResponseProduct;
   cartItemList: ResponseCartItem[];
+  setErrorMessage: (message: string) => void;
 }) {
   function getCartItemId(productId: number) {
     const cartItem = cartItemList.find((item) => item.product.id === productId);
     return cartItem?.id;
+  }
+
+  function handleProductItem(product: ResponseProduct) {
+    try {
+      if (product.isInCart) {
+        const cartItemId = getCartItemId(product.id);
+        if (cartItemId) {
+          RemoveProductItemApi(cartItemId);
+        }
+      } else {
+        AddProductItemApi(product.id, 1);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      }
+    } finally {
+      setErrorMessage("");
+    }
   }
   return (
     <S.ProductItemContainer>
@@ -30,14 +51,7 @@ function ProductItem({
           icon={product.isInCart ? <RemoveProductIcon /> : <AddProductIcon />}
           keyWord={product.isInCart ? "remove" : "add"}
           onClick={() => {
-            if (product.isInCart) {
-              const cartItemId = getCartItemId(product.id);
-              if (cartItemId) {
-                RemoveProductItemApi(cartItemId);
-              }
-            } else {
-              AddProductItemApi(product.id, 1);
-            }
+            handleProductItem(product);
           }}
         />
       </S.ProductItemBottom>

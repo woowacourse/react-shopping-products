@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { ResponseCartItem, ResponseProduct } from "./api/types";
 import getCartItemList from "./api/CartItemListApi";
 import LoadingIcon from "./components/Icon/LoadingIcon";
-import { ErrorBoundary } from "react-error-boundary";
 
 function App() {
   const [productList, setProductList] = useState<ResponseProduct[]>([]);
@@ -16,9 +15,23 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
+  // 에러 메시지 설정 함수 - 중간에 메시지를 초기화했다가 다시 설정
+  const handleSetErrorMessage = (message: string) => {
+    setErrorMessage(""); // 먼저 에러 메시지를 초기화
+
+    // setTimeout을 사용하여 다음 렌더 사이클에서 에러 메시지 설정
+    setTimeout(() => {
+      setErrorMessage(message);
+    }, 10);
+  };
+
   useEffect(() => {
-    try {
-      (async () => {
+    console.log("errorMessage", errorMessage);
+  }, [errorMessage]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         const rawCartItemList = await getCartItemList();
         const rawProductList = await getProductList({ category: "", sort: "" });
         setCartItemList(rawCartItemList);
@@ -29,14 +42,15 @@ function App() {
           return isInCart ? { ...product, isInCart: true } : product;
         });
         setProductList(newProductList);
-      })();
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          handleSetErrorMessage(error.message);
+        }
+      } finally {
+        setIsLoading(false);
       }
-    } finally {
-      setIsLoading(false);
-    }
+    };
+    fetchData();
   }, []);
 
   return (
@@ -48,14 +62,19 @@ function App() {
           <>
             <Header cartItemList={cartItemList} />
             <S.MiddleContainer>
-              <ProductControl setProductList={setProductList} />
+              <ProductControl
+                setProductList={setProductList}
+                setErrorMessage={handleSetErrorMessage}
+              />
               <ProductList
                 productList={productList}
                 cartItemList={cartItemList}
+                setErrorMessage={handleSetErrorMessage}
               />
             </S.MiddleContainer>
           </>
         )}
+        <ErrorBox text={errorMessage} backgroundColor="#FFC9C9" />
       </S.Wrap>
     </S.Global>
   );
