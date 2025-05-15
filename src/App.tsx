@@ -1,37 +1,34 @@
 import * as S from './App.styles';
 import CustomSelect from './shared/ui/CustomSelect';
 import ProductCard from './features/products/ui/ProductCard';
-import {useEffect, useState} from 'react';
-import {Product} from './features/products/type/product';
-import {filterByValue} from './shared/utils/filterByValue';
-import {matchCategory} from './features/products/utils/matchCategory';
+import { useEffect, useState } from 'react';
+import { Product } from './features/products/type/product';
+import { filterByValue } from './shared/utils/filterByValue';
+import { matchCategory } from './features/products/utils/matchCategory';
 import Navbar from './widgets/navbar/ui/Navbar';
 import useGetProductsWithCart from './features/products/hooks/useGetProductsWithCart';
 
 type Category = 'all' | 'food' | 'clothes';
 
 const CATEGORY_OPTIONS = [
-  {label: '전체', value: 'all'},
-  {label: '식료품', value: 'food'},
-  {label: '패션잡화', value: 'clothes'},
+  { label: '전체', value: 'all' },
+  { label: '식료품', value: 'food' },
+  { label: '패션잡화', value: 'clothes' },
 ];
 
 const FILTER_OPTIONS = [
-  {label: '필터', value: ''},
-  {label: '높은 가격순', value: 'price,desc'},
-  {label: '낮은 가격순', value: 'price,asc'},
+  { label: '필터', value: '' },
+  { label: '높은 가격순', value: 'price,desc' },
+  { label: '낮은 가격순', value: 'price,asc' },
 ];
 
 function App() {
   const [category, setCategory] = useState<Category>('all');
   const [sortValue, setSortValue] = useState('');
 
-  const {products, fetchProducts, isLoading, error} =
-    useGetProductsWithCart(sortValue);
+  const { products, fetchProducts, isLoading, error } = useGetProductsWithCart(sortValue);
 
   const cartQuantity = products.filter((product) => product.isCart).length;
-
-  // console.log(pageInfo);
 
   useEffect(() => {
     fetchProducts();
@@ -49,19 +46,11 @@ function App() {
       <Navbar cartQuantity={cartQuantity} errorMessage={error} />
       <S.ProductListWrapper>
         <S.ProductListHeader>
-          <S.ProductListHeaderTitle>
-            WoowaBros Product List
-          </S.ProductListHeaderTitle>
+          <S.ProductListHeaderTitle>WoowaBros Product List</S.ProductListHeaderTitle>
 
           <S.ProductListFilterContainer>
-            <CustomSelect
-              items={CATEGORY_OPTIONS}
-              onChange={(e) => setCategory(e.target.value as Category)}
-            />
-            <CustomSelect
-              items={FILTER_OPTIONS}
-              onChange={(e) => setSortValue(e.target.value)}
-            />
+            <CustomSelect items={CATEGORY_OPTIONS} onChange={(e) => setCategory(e.target.value as Category)} />
+            <CustomSelect items={FILTER_OPTIONS} onChange={(e) => setSortValue(e.target.value)} />
           </S.ProductListFilterContainer>
         </S.ProductListHeader>
 
@@ -70,11 +59,7 @@ function App() {
         ) : (
           <S.ProductList>
             {filteredProducts.map((product: Product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onRefetch={fetchProducts}
-              />
+              <ProductCard key={product.id} product={product} onRefetch={fetchProducts} cartQuantity={cartQuantity} />
             ))}
           </S.ProductList>
         )}
