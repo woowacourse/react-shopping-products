@@ -29,7 +29,7 @@ export default function Navbar({cartQuantity, errorMessage}: NavbarProps) {
         <S.Logo onClick={handleLogoClick}>SHOP</S.Logo>
         <S.CartIconContainer>
           <S.CartQuantity>{cartQuantity}</S.CartQuantity>
-          <S.CartIcon src="/cartIcon.svg" />
+          <S.CartIcon src="./cartIcon.svg" />
         </S.CartIconContainer>
       </S.NavbarContainer>
       {visibleError && <ErrorToast errorMessage={visibleError} />}

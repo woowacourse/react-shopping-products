@@ -1,8 +1,8 @@
-import { css } from '@emotion/react';
+import {css} from '@emotion/react';
 import CustomButton from '../../../shared/ui/CustomButton';
-import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
-import { postCartProduct } from '../../cart/api/postCartProduct';
-import { Product } from '../type/product';
+import {deleteCartProduct} from '../../cart/api/deleteCartProduct';
+import {postCartProduct} from '../../cart/api/postCartProduct';
+import {Product} from '../type/product';
 import * as S from './ProductCard.styles';
 
 interface ProductCardProps {
@@ -11,7 +11,11 @@ interface ProductCardProps {
   cartQuantity: number;
 }
 
-export default function ProductCard({ product, onRefetch, cartQuantity }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  onRefetch,
+  cartQuantity,
+}: ProductCardProps) {
   const handleProductCart = async () => {
     if (product.isCart && product.cartProductId) {
       await deleteCartProduct(product.cartProductId);
@@ -30,7 +34,7 @@ export default function ProductCard({ product, onRefetch, cartQuantity }: Produc
     onRefetch();
   };
 
-  const iconUrl = product.isCart ? '/deleteCartIcon.svg' : '/addCartIcon.svg';
+  const iconUrl = product.isCart ? './deleteCartIcon.svg' : './addCartIcon.svg';
   const title = product.isCart ? '빼기' : '담기';
   const className = product.isCart
     ? css`
@@ -42,14 +46,22 @@ export default function ProductCard({ product, onRefetch, cartQuantity }: Produc
 
   return (
     <S.ProductCardContainer>
-      <S.ImageSection src={product.imageUrl} alt={product.name}></S.ImageSection>
+      <S.ImageSection
+        src={product.imageUrl}
+        alt={product.name}
+      ></S.ImageSection>
       <S.ContentSection>
         <S.ProductName>{product.name}</S.ProductName>
         <S.ProductCategory>{product.category}</S.ProductCategory>
         <S.ProductPrice>{product.price}</S.ProductPrice>
       </S.ContentSection>
       <S.ButtonSection>
-        <CustomButton iconUrl={iconUrl} title={title} onClick={handleProductCart} css={className} />
+        <CustomButton
+          iconUrl={iconUrl}
+          title={title}
+          onClick={handleProductCart}
+          css={className}
+        />
       </S.ButtonSection>
     </S.ProductCardContainer>
   );
