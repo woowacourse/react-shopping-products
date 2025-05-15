@@ -1,9 +1,10 @@
-import { useCallback } from 'react';
+import { useEffect } from 'react';
 import { css } from '@emotion/react';
 
 import { AppLayout } from '@/shared/components/AppLayout';
 import { Flex } from '@/shared/components/Flex';
 import { Header } from '@/shared/components/Header';
+import { Loading } from '@/shared/components/Loading';
 import { Text } from '@/shared/components/Text';
 
 import { ProductItem } from './components/ProductItem';
@@ -19,19 +20,12 @@ export const ProductList = () => {
     cartData,
     filteredData,
     isLoading,
-    addToCart,
+    toggleCartItem,
     categorySelect,
     priceSelect,
     handleCategorySelect,
     handlePriceSelect,
   } = useShopping();
-
-  const handleAddCartClick = useCallback(
-    async (id: number) => {
-      await addToCart(id, 1);
-    },
-    [addToCart]
-  );
 
   return (
     <>
@@ -51,7 +45,13 @@ export const ProductList = () => {
           }
           right={<ShoppingBag count={cartData.length} />}
         />
-        <Flex direction="column" justifyContent="space-between" alignItems="flex-start" gap="0px">
+        <Flex
+          direction="column"
+          justifyContent="flex-start"
+          alignItems="stretch"
+          gap="0px"
+          width="100%"
+        >
           <Text
             type="Heading"
             css={css`
@@ -60,22 +60,22 @@ export const ProductList = () => {
           >
             상품목록
           </Text>
+
           <Flex
             width="100%"
             direction="row"
             justifyContent="space-between"
             alignItems="center"
+            gap="0px"
             padding="10px 25px"
-            flex={0.4}
           >
             <Select maxWidth={100} selectedOptions={categorySelect}>
-              {Object.entries(CATEGORY).map(([key, value], idx) => (
+              {Object.entries(CATEGORY).map(([_, value], idx) => (
                 <Select.Option key={idx} option={value} onSelectOption={handleCategorySelect}>
                   {value}
                 </Select.Option>
               ))}
             </Select>
-
             <Select maxWidth={125} selectedOptions={PRICE[priceSelect as keyof typeof PRICE]}>
               {Object.entries(PRICE).map(([key, value], idx) => (
                 <Select.Option
@@ -88,20 +88,45 @@ export const ProductList = () => {
               ))}
             </Select>
           </Flex>
-
-          <ProductListContainer>
-            {filteredData.map((item) => (
-              <ProductItem
-                key={item.id}
-                id={item.id}
-                isChecked={item.isChecked}
-                name={item.name}
-                price={item.price}
-                imageUrl={item.imageUrl}
-                onCartUpdate={() => handleAddCartClick(item.id)}
-              />
-            ))}
-          </ProductListContainer>
+          <Flex
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            gap="0px"
+            css={css`
+              flex: 1;
+            `}
+          >
+            {isLoading ? (
+              <Flex
+                direction="column"
+                gap="0px"
+                justifyContent="center"
+                alignItems="center"
+                css={css`
+                  width: 100%;
+                  height: 600px;
+                `}
+              >
+                <Loading size="xl" />
+              </Flex>
+            ) : (
+              <ProductListContainer>
+                {filteredData.map((item) => (
+                  <ProductItem
+                    key={item.id}
+                    id={item.id}
+                    isChecked={item.isChecked}
+                    name={item.name}
+                    price={item.price}
+                    imageUrl={item.imageUrl}
+                    onCartUpdate={() => toggleCartItem(item.id)}
+                  />
+                ))}
+              </ProductListContainer>
+            )}
+          </Flex>
         </Flex>
       </AppLayout>
     </>
