@@ -14,4 +14,6 @@ const StyledBody = styled.body`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  height: calc(100vh - 64px);
+  box-sizing: border-box;
 `;
