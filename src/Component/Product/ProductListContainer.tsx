@@ -4,7 +4,6 @@ import ProductList from './ProductList';
 import ProductListToolbar from './ProductListToolbar';
 import getProducts from '../../api/getProducts';
 import { CartItemTypes } from '../../types/CartItemType';
-import ErrorBox from '../Common/ErrorBox';
 import Spinner from '../Common/Spinner';
 import styled from '@emotion/styled';
 
@@ -12,17 +11,17 @@ interface ProductListContainerProps {
   cartItems: CartItemTypes[];
   updateCartItems: () => void;
   getMatchCartItem: (id: number) => CartItemTypes | undefined;
+  updateErrorMessage: (errorMessage: string) => void;
 }
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 export default function ProductListContainer({
-  cartItems,
   updateCartItems,
   getMatchCartItem,
+  updateErrorMessage,
 }: ProductListContainerProps) {
   const [products, setProducts] = useState<ProductTypes[]>([]);
-
   const [status, setStatus] = useState<Status>('idle');
 
   useEffect(() => {
@@ -35,10 +34,13 @@ export default function ProductListContainer({
         setStatus('success');
       } catch (e) {
         setStatus('error');
+        updateErrorMessage(
+          ' 상품 목록 조회 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'
+        );
       }
     }
     fetchProducts();
-  }, [cartItems]);
+  }, [updateErrorMessage]);
 
   return (
     <>
@@ -55,7 +57,6 @@ export default function ProductListContainer({
           <Spinner size={100} color={'red'} />
         </StyledSpinnerWrapper>
       ) : null}
-      {status === 'error' ? <ErrorBox /> : null}
     </>
   );
 }

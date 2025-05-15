@@ -2,17 +2,20 @@ import styled from '@emotion/styled';
 
 interface HeaderProps {
   cartItemCount: number;
+  status: 'idle' | 'loading' | 'success' | 'error';
 }
 
-export default function Header({ cartItemCount }: HeaderProps) {
+export default function Header({ cartItemCount, status }: HeaderProps) {
   return (
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
       <StyledButton type="button">
         <StyledImg src="/shoppingBagIcon.png" alt="shoppingBagIcon" />
-        <StyledCountBox>
-          <StyledCountText>{cartItemCount}</StyledCountText>
-        </StyledCountBox>
+        {status === 'success' ? (
+          <StyledCountBox>
+            <StyledCountText>{cartItemCount}</StyledCountText>
+          </StyledCountBox>
+        ) : null}
       </StyledButton>
     </StyledHeader>
   );
