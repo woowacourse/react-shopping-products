@@ -7,12 +7,14 @@ interface ProductListProps {
   productList: ProductTypes[];
   updateCartItems: () => void;
   getMatchCartItem: (id: number) => CartItemTypes | undefined;
+  checkMax: () => boolean;
 }
 
 export default function ProductList({
   productList,
   updateCartItems,
   getMatchCartItem,
+  checkMax,
 }: ProductListProps) {
   return (
     <StyledUl>
@@ -22,6 +24,7 @@ export default function ProductList({
           id={props.id}
           updateCartItems={updateCartItems}
           getMatchCartItem={getMatchCartItem}
+          checkMax={checkMax}
         />
       ))}
     </StyledUl>

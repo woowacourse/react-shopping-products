@@ -7,6 +7,7 @@ import { CartItemTypes } from '../../types/CartItemType';
 type SetProducts = {
   updateCartItems: () => void;
   getMatchCartItem: (id: number) => CartItemTypes | undefined;
+  checkMax: () => boolean;
 };
 
 export default function ProductItem({
@@ -16,12 +17,16 @@ export default function ProductItem({
   imageUrl,
   updateCartItems,
   getMatchCartItem,
+  checkMax,
 }: ProductTypes & SetProducts) {
   const isItemInCart = getMatchCartItem(id) ? true : false;
   const cartItemId = getMatchCartItem(id)?.id;
 
   const handleItemClick = async () => {
     try {
+      if (checkMax()) {
+        throw new Error('50개 초과');
+      }
       if (!isItemInCart) {
         await postShoppingCart(id, 1);
       } else {

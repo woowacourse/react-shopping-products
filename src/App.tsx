@@ -51,6 +51,10 @@ function App() {
     return match;
   };
 
+  const checkMax = () => {
+    return cartItems.length === 50;
+  };
+
   return (
     <>
       <Header status={status} cartItemCount={cartItems.length} />
@@ -60,6 +64,7 @@ function App() {
           updateCartItems={updateCartItems}
           getMatchCartItem={getMatchCartItem}
           updateErrorMessage={updateErrorMessage}
+          checkMax={checkMax}
         />
       </Body>
       <StyledDiv>

@@ -12,6 +12,7 @@ interface ProductListContainerProps {
   updateCartItems: () => void;
   getMatchCartItem: (id: number) => CartItemTypes | undefined;
   updateErrorMessage: (errorMessage: string) => void;
+  checkMax: () => boolean;
 }
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
@@ -20,6 +21,7 @@ export default function ProductListContainer({
   updateCartItems,
   getMatchCartItem,
   updateErrorMessage,
+  checkMax,
 }: ProductListContainerProps) {
   const [products, setProducts] = useState<ProductTypes[]>([]);
   const [status, setStatus] = useState<Status>('idle');
@@ -50,6 +52,7 @@ export default function ProductListContainer({
           productList={products}
           updateCartItems={updateCartItems}
           getMatchCartItem={getMatchCartItem}
+          checkMax={checkMax}
         />
       ) : null}
       {status === 'loading' ? (
