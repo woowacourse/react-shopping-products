@@ -1,10 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import App from '../../App';
 import mockData from '../__mocks__/productListMockData.json';
-import { baseAPI } from '../../api/baseAPI';
 
-jest.mock('../../api/baseAPI', () => ({
-  baseAPI: jest.fn().mockImplementation(() => Promise.resolve(mockData)),
+jest.mock('../api/getShoppingCartData', () => ({
+  getShoppingCartData: jest
+    .fn()
+    .mockImplementation(() => Promise.resolve(mockData)),
 }));
 
 describe('삼품 목록을 조회할 시', () => {

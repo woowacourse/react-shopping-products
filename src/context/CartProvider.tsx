@@ -5,10 +5,8 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { baseAPI } from '../api/baseAPI';
-import { CartData } from '../api/type';
-import { convertResponseToCart } from '../components/features/product/responseMapper';
 import { Cart } from '../components/features/product/type';
+import { getShoppingCartData } from '../shop/api/getShoppingCartData';
 import { useShopErrorContext } from '../shop/context/useShopErrorContext';
 
 export const CartContext = createContext<{
@@ -22,18 +20,8 @@ function CartProvider({ children }: { children: React.ReactNode }) {
   const { handleErrorTrue, handleErrorFalse } = useShopErrorContext();
 
   const getShoppingCartDataHandler = useCallback(async () => {
-    const initialPage = 0;
-    const maxSize = 50;
-    const basePath = `/cart-items?page=${initialPage}&size=${maxSize}`;
-
     try {
-      const data = await baseAPI<CartData>({
-        method: 'GET',
-        path: basePath,
-      });
-      const cartsData = data?.content.map((cart) =>
-        convertResponseToCart(cart)
-      );
+      const cartsData = await getShoppingCartData();
       if (cartsData) setCartList(cartsData);
       handleErrorFalse();
     } catch (e) {
