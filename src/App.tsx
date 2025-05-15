@@ -2,7 +2,7 @@ import Header from './Component/Layout/Header';
 import ProductListContainer from './Component/Product/ProductListContainer';
 import Body from './Component/Layout/Body';
 import { useCallback, useEffect, useState } from 'react';
-import getShppingCart from './api/getShppingCart';
+import getShoppingCart from './api/getShoppingCart';
 import { CartItemTypes } from './types/CartItemType';
 import ErrorBox from './Component/Common/ErrorBox';
 import styled from '@emotion/styled';
@@ -22,7 +22,7 @@ function App() {
     async function fetchCartItems() {
       try {
         setStatus('loading');
-        const cartItemsData = await getShppingCart();
+        const cartItemsData = await getShoppingCart();
         setCartItems(cartItemsData.content);
         setStatus('success');
       } catch (e) {
@@ -37,7 +37,7 @@ function App() {
 
   const updateCartItems = async () => {
     try {
-      const cartItemsData = await getShppingCart();
+      const cartItemsData = await getShoppingCart();
       setCartItems(cartItemsData.content);
     } catch (e) {
       //

@@ -10,7 +10,7 @@ const PAGEABLE_DEFAULT = {
   sort: '',
 };
 
-export default async function getShppingCart(
+export default async function getShoppingCart(
   pageable: PageableType = PAGEABLE_DEFAULT
 ) {
   const { page, size, sort } = pageable;
