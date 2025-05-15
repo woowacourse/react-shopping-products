@@ -44,7 +44,6 @@ function App() {
   }, [orderBy]);
 
   useEffect(() => {
-    // setCartLength(50);
     setCartLength(cartItems?.content?.length ?? 0);
   }, [cartItems]);
 

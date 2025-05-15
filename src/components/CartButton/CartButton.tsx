@@ -3,6 +3,7 @@ import { ComponentProps, useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
 import { URLS } from "../../constants/url";
+import { useCartContext } from "../../contexts/CartContext";
 interface CartButtonProps extends ComponentProps<"button"> {
   isInCart: boolean;
   refetchCart: () => Promise<void>;
@@ -18,6 +19,7 @@ export default function CartButton({
   ...props
 }: CartButtonProps) {
   const { showError } = useErrorContext();
+  const { cartLength } = useCartContext();
   const [isFetchLoading, setIsFetchLoading] = useState(false);
 
   const { fetcher: deleteCartItem, error: deleteError } = useFetch(
@@ -79,18 +81,24 @@ export default function CartButton({
 
   const handleAddCartItem = async () => {
     try {
+      setIsFetchLoading(true);
+      if (cartLength && cartLength >= 50) {
+        throw new Error(`장바구니 갯수가 50개 이상 담을수 없습니다.`);
+      }
       await addCartItem();
       await refetchCart();
     } catch (error) {
       if (error instanceof Error) {
         showError(error);
       }
+    } finally {
+      setIsFetchLoading(false);
     }
   };
-
   return (
     <button
       {...props}
+      disabled={isFetchLoading}
       onClick={isInCart ? handleDeleteCartItem : handleAddCartItem}
       css={[
         styles.buttonCss,
@@ -108,19 +116,6 @@ export default function CartButton({
           <span>담기</span>
         </>
       )}
-    </button>
-  );
-  //이 친구를 버튼을 로딩할때, 보여줘야 하지 않을까요?
-  //어떻게 보여주죠?
-
-  return (
-    <button
-      css={[
-        styles.buttonCss,
-        isInCart ? styles.inCartCss : styles.notInCartCss,
-      ]}
-    >
-      <span>......</span>
     </button>
   );
 }
