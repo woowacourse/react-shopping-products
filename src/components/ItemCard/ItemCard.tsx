@@ -39,7 +39,7 @@ const ItemCard = ({ id, imageUrl, name, price, isCart, cartInfo, fetchCartProduc
 								fetchCartProducts();
 							}}
 						>
-							<img className={S.cartImg} src="/images/remove-cart.svg" alt="장바구니 제거" />
+							<img className={S.cartImg} src="./images/remove-cart.svg" alt="장바구니 제거" />
 							<p>빼기</p>
 						</button>
 					) : (
@@ -50,7 +50,7 @@ const ItemCard = ({ id, imageUrl, name, price, isCart, cartInfo, fetchCartProduc
 								fetchCartProducts();
 							}}
 						>
-							<img className={S.cartImg} src="/images/add-cart.svg" alt="장바구니 추가" />
+							<img className={S.cartImg} src="./images/add-cart.svg" alt="장바구니 추가" />
 							<p>담기</p>
 						</button>
 					)}
