@@ -6,6 +6,7 @@ import type { ProductItemType } from '../../types/data';
 import { render, screen } from '@testing-library/react';
 import { ProductListPage } from './ProductListPage';
 import { CartProvider } from '../../context/CartContext';
+import { ErrorMessageProvider } from '../../context/ErrorMessageContext';
 import { PRODUCT_LIST_ITEM_COUNT } from '../../constants/systemConstants';
 import type React from 'react';
 import { useState } from 'react';
@@ -26,14 +27,14 @@ const TestCartProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <CartProvider
       cartItemsIds={cartItemsIds}
-      errorMessage={errorMessage}
-      handleErrorMessage={setErrorMessage}
       handleAddCartItemsIds={(id) => setCartItemsIds((prev) => [...prev, id])}
       handleRemoveCartItemsIds={(id) =>
         setCartItemsIds((prev) => prev.filter((itemId) => itemId !== id))
       }
     >
-      {children}
+      <ErrorMessageProvider errorMessage={errorMessage} handleErrorMessage={setErrorMessage}>
+        {children}
+      </ErrorMessageProvider>
     </CartProvider>
   );
 };

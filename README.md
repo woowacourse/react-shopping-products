@@ -33,3 +33,5 @@ src/
 ├── types/            // 타입 정의
 ├── animations/       // animation keyframes 정의
 ```
+
+
