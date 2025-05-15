@@ -5,11 +5,15 @@ const headerContainer = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 429px;
   height: 64px;
   background-color: #000000;
   padding: 0px 20px;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
 `;
 
 const headerTitle = css`
