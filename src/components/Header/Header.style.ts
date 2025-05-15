@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
-const header = css({
+
+export const header = css({
   position: "fixed",
   top: "0%",
   left: "50%",
@@ -14,7 +15,7 @@ const header = css({
   p: { color: "white", fontWeight: 800, fontSize: "20px" },
 });
 
-const cartIcon = css({
+export const cartIcon = css({
   position: "relative",
 
   img: {
@@ -33,19 +34,3 @@ const cartIcon = css({
     fontSize: "14px",
   },
 });
-interface headerProps {
-  cartLength?: number;
-}
-function Header({ cartLength }: headerProps) {
-  return (
-    <header css={header}>
-      <p>SHOP</p>
-      <button css={cartIcon}>
-        <img src="assets/cart.svg" alt="cart-icon" />
-        <span hidden={cartLength === 0}>{cartLength}</span>
-      </button>
-    </header>
-  );
-}
-
-export default Header;
