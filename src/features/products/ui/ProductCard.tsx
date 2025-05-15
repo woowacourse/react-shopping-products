@@ -1,29 +1,28 @@
-import { css } from '@emotion/react';
+import {css} from '@emotion/react';
 import CustomButton from '../../../shared/ui/CustomButton';
-import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
-import { postCartProduct } from '../../cart/api/postCartProduct';
-import { Product } from '../type/product';
+import {deleteCartProduct} from '../../cart/api/deleteCartProduct';
+import {postCartProduct} from '../../cart/api/postCartProduct';
+import {Product} from '../type/product';
 import * as S from './ProductCard.styles';
-import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
   product: Product;
+  onRefetch: () => void;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
-  const navigate = useNavigate();
-
+export default function ProductCard({product, onRefetch}: ProductCardProps) {
   const handleProductCart = async () => {
     if (product.isCart && product.cartProductId) {
       await deleteCartProduct(product.cartProductId);
       alert('장바구니에서 삭제되었습니다.');
-      navigate(0);
+      onRefetch();
+
       return;
     }
 
     await postCartProduct(product.id);
     alert('장바구니에 담겼습니다.');
-    navigate(0);
+    onRefetch();
   };
 
   const iconUrl = product.isCart ? '/deleteCartIcon.svg' : '/addCartIcon.svg';
@@ -38,13 +37,21 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <S.ProductCardContainer>
-      <S.ImageSection src={product.imageUrl} alt={product.name}></S.ImageSection>
+      <S.ImageSection
+        src={product.imageUrl}
+        alt={product.name}
+      ></S.ImageSection>
       <S.ContentSection>
         <S.ProductName>{product.name}</S.ProductName>
         <S.ProductPrice>{product.price}</S.ProductPrice>
       </S.ContentSection>
       <S.ButtonSection>
-        <CustomButton iconUrl={iconUrl} title={title} onClick={handleProductCart} css={className} />
+        <CustomButton
+          iconUrl={iconUrl}
+          title={title}
+          onClick={handleProductCart}
+          css={className}
+        />
       </S.ButtonSection>
     </S.ProductCardContainer>
   );
