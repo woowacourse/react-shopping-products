@@ -3,7 +3,7 @@ import ProductCardList from "../components/ProductCardList";
 import ProductListToolBar from "../components/ProductListToolBar";
 import { useProductsContext } from "../contexts/useProductsContext";
 import { useShoppingCartContext } from "../contexts/useShoppingCartContext";
-import OrbitSpinner from "../components/OrbitSpinner";
+import OrbitSpinner from "../components/OrbitSpinner/index";
 
 const ProductListPage = () => {
   const { products, productsError, isProductsLoading } = useProductsContext();

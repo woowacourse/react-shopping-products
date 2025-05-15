@@ -9,6 +9,11 @@ interface Product {
   category: Category;
 }
 
+interface FetchProductsResponse {
+  content: Product[];
+  totalPages: number;
+}
+
 interface CartItem {
   id: number;
   quantity: number;
@@ -78,4 +83,5 @@ export type {
   ShoppingCartResponse,
   CartItem,
   Error,
+  FetchProductsResponse,
 };

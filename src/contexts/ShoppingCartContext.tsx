@@ -27,7 +27,7 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const handleShoppingCartError = (error: Error) => {
     setShoppingCartError(error);
     setTimeout(() => {
-      setShoppingCartError({ isError: false, errorMessage: "" });
+      setShoppingCartError(INITIAL_ERROR);
     }, 3000);
   };
 
@@ -55,7 +55,6 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
         setTimeout(() => {
           setShoppingCartError(INITIAL_ERROR);
         }, 3000);
-        setCartItems([]);
       } finally {
         setIsShoppingLoading(false);
       }

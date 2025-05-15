@@ -32,10 +32,9 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setSort(newSort === "낮은 가격순" ? "price,asc" : "price,desc");
   };
 
-  const handleChangeCategory = (newCategory: "패션잡화" | "식료품" | "") => {
+  const handleChangeCategory = (newCategory: "패션잡화" | "식료품") => {
     setCategory(newCategory);
   };
-
   useEffect(() => {
     const params = {
       page: "0",
@@ -50,8 +49,7 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
       setIsProductsLoading(true);
       try {
         const fetchedData = await fetchProducts({ endpoint });
-        setProducts(fetchedData);
-        setProductsError(INITIAL_ERROR);
+        setProducts(fetchedData.content);
       } catch (error) {
         setProductsError({
           isError: true,

@@ -27,8 +27,8 @@ const ProductListToolBar = () => {
         e.target.value === "전체"
           ? `/products?${query}`
           : `/products?${query}&category=${e.target.value}`;
-      const data = await fetchProducts({ endpoint });
-      handleChangeProducts(data);
+      const { content } = await fetchProducts({ endpoint });
+      handleChangeProducts(content);
       handleChangeCategory(e.target.value as Category);
     },
     [handleChangeProducts, handleChangeCategory, sort]
@@ -43,8 +43,8 @@ const ProductListToolBar = () => {
       };
       const query = new URLSearchParams(params).toString();
       const endpoint = `/products?${query}&category=${category}`;
-      const data = await fetchProducts({ endpoint });
-      handleChangeProducts(data);
+      const { content } = await fetchProducts({ endpoint });
+      handleChangeProducts(content);
       handleChangeSort(e.target.value as SortOption);
     },
     [handleChangeProducts, handleChangeSort, category]
