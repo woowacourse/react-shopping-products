@@ -48,7 +48,7 @@ function Header({ itemCount }: { itemCount: number }) {
     <div className={headerContainer}>
       <div className={headerTitle}>SHOP</div>
       <Button>
-        <img src="/images/cart.png" alt="cart" className={cartImg} />
+        <img src="./images/cart.png" alt="cart" className={cartImg} />
         <span className={count}>{itemCount}</span>
       </Button>
     </div>
