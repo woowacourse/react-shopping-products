@@ -12,7 +12,7 @@ const Fallback: React.FC<FallbackProps> = ({
     <div css={styles.fallbackContainerStyle}>
       <img
         css={styles.fallbackImageStyle}
-        src="/assets/fallback.png"
+        src="assets/fallback.png"
         alt="머리 아픈 행성이"
       />
       <h1 css={styles.fallbackTitleStyle} id="fallback-details">
