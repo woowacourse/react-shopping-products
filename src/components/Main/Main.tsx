@@ -48,6 +48,7 @@ function Main({
         });
         setProductList(content);
       } catch (error) {
+        // error 상태
         console.log(error);
       }
     })();

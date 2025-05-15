@@ -25,7 +25,7 @@ const fetchAddProduct = async ({ method, params }: fetchAddProductParams) => {
 
   const response = await fetch(url, options);
   if (!response.ok) {
-    throw new Error("에러 발생!");
+    throw new Error("상품이 이미 존재합니다.");
   }
 };
 

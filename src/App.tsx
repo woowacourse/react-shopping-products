@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 import Spinner from "./components/common/Spinner/Spinner";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
 import fetchAddProduct from "./apis/product/fetchAddProduct";
 import fetchRemoveProduct from "./apis/product/fetchRemoveProduct";
@@ -15,6 +16,24 @@ function App() {
   );
 
   const [loading, setLoading] = useState(true);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (errorMessage) {
+      timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [errorMessage]);
 
   //TODO: 장바구니 목록 가져올 때 로딩중
   useEffect(() => {
@@ -33,7 +52,11 @@ function App() {
         );
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        if (error instanceof Error === false) {
+          return;
+        }
+
+        setErrorMessage(error.message);
       }
     })();
   }, []);
@@ -56,13 +79,20 @@ function App() {
       return Array.from(newIdListSet);
     });
 
-    await fetchAddProduct({
-      method: "POST",
-      params: {
-        productId: $product.id,
-        quantity: "1",
-      },
-    });
+    try {
+      await fetchAddProduct({
+        method: "POST",
+        params: {
+          productId: $product.id,
+          quantity: "1",
+        },
+      });
+    } catch (error) {
+      if (error instanceof Error === false) {
+        return;
+      }
+      setErrorMessage(error.message);
+    }
   };
 
   const handleRemoveProduct = async (
@@ -94,14 +124,19 @@ function App() {
         return;
       }
 
+      // try catch
       await fetchRemoveProduct({
         method: "DELETE",
         params: {
           productId: targetCartItem.id,
         },
       });
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      if (error instanceof Error === false) {
+        return;
+      }
+
+      setErrorMessage(error.message);
     }
   };
 
@@ -119,6 +154,7 @@ function App() {
     <Container>
       <Wrapper>
         <Header selectedProductIdList={selectedProductIdList}></Header>
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         <Main
           selectedProductIdList={selectedProductIdList}
           handleAddProduct={handleAddProduct}
