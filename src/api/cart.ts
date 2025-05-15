@@ -3,11 +3,11 @@ const baseUrl =
 
 export const getCartItem = async () => {
   const response = await fetch(
-    `${baseUrl}/cart-items?page=0&size=20&sort=desc`,
+    `${baseUrl}/cart-items?page=0&size=50&sort=desc`,
     {
       method: 'GET',
       headers: {
-        Authorization: 'Basic dGhnbWwwNTpwYXNzd29yZA==',
+        Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
         'Content-Type': 'application/json',
       },
     }
@@ -27,7 +27,7 @@ export const addCart = async (id: number, price: number) => {
   const response = await fetch(`${baseUrl}/cart-items`, {
     method: 'POST',
     headers: {
-      Authorization: 'Basic dGhnbWwwNTpwYXNzd29yZA==',
+      Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ productId: id, quantity: price }),
@@ -39,7 +39,7 @@ export const removeCart = async (id: number) => {
   const response = await fetch(`${baseUrl}/cart-items/${id}`, {
     method: 'DELETE',
     headers: {
-      Authorization: 'Basic dGhnbWwwNTpwYXNzd29yZA==',
+      Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
     },
   });
 
