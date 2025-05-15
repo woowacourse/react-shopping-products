@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ProductList from "../ProductList/ProductList";
 import Filter from "../Filter/Filter";
+import Spinner from "../common/Spinner/Spinner";
 
 import * as Styled from "./Main.styled";
 
@@ -32,6 +33,26 @@ function Main({
   const [category, setCategory] = useState<ProductCategory>("전체");
   const [sort, setSort] = useState<Sort>("price,asc");
 
+  //TODO: 상품 목록 가져올 때 로딩중
+  useEffect(() => {
+    (async () => {
+      try {
+        const { content } = await fetchProductList({
+          method: "GET",
+          params: {
+            category,
+            sort,
+            page: "0",
+            size: "20",
+          },
+        });
+        setProductList(content);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [category, sort]);
+
   const handleCategory = ({
     target: { value },
   }: React.ChangeEvent<HTMLSelectElement>) => {
@@ -52,27 +73,8 @@ function Main({
     setSort(value);
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { content } = await fetchProductList({
-          method: "GET",
-          params: {
-            category,
-            sort,
-            page: "0",
-            size: "20",
-          },
-        });
-        setProductList(content);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [category, sort]);
-
   if (!productList) {
-    return <div>로딩중</div>;
+    return <Spinner />;
   }
 
   return (

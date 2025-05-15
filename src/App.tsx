@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
+import Spinner from "./components/common/Spinner/Spinner";
 
 import fetchAddProduct from "./apis/product/fetchAddProduct";
 import fetchRemoveProduct from "./apis/product/fetchRemoveProduct";
@@ -13,6 +14,9 @@ function App() {
     []
   );
 
+  const [loading, setLoading] = useState(true);
+
+  //TODO: 장바구니 목록 가져올 때 로딩중
   useEffect(() => {
     (async () => {
       try {
@@ -27,6 +31,7 @@ function App() {
         setSelectedProductIdList(
           content.map((item) => item.product.id.toString())
         );
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -99,6 +104,10 @@ function App() {
       console.log(e);
     }
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <Container>
