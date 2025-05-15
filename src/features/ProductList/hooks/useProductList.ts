@@ -31,7 +31,9 @@ export const useProductList = () => {
       (data) => {
         setProduct(data);
         return data;
-      }
+      },
+      [],
+      { delay: 2000 }
     );
   }, [categorySelect, handleRequest, priceSelect]);
 
