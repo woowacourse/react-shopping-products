@@ -12,6 +12,7 @@ export const header = css({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  zIndex: 100,
   p: { color: "white", fontWeight: 800, fontSize: "20px" },
 });
 
