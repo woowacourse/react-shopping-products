@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Header from './Header';
+import Header from '../src/components/header/Header';
 
 describe('Header 컴포넌트', () => {
   it('cartItemCount가 전달되어 숫자가 보인다', () => {

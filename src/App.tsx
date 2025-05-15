@@ -67,9 +67,7 @@ function App() {
     }
   };
 
-  const handleCategoryChange = async (
-    category: Category
-  ) => {
+  const handleCategoryChange = async (category: Category) => {
     setIsLoading(true);
     setSelectedCategory(category);
     const { data, newErrorMessage } = await getProducts({
@@ -129,11 +127,13 @@ function App() {
             optionList={['전체', '식료품', '패션잡화']}
             value={selectedCategory}
             setValue={handleCategoryChange}
+            id="category-select"
           />
           <Select
             optionList={['낮은 가격순', '높은 가격순']}
             value={priceOrder}
             setValue={handlePriceOrderChange}
+            id="price-order-select"
           />
         </SelectContainer>
         <ProductListContainer>

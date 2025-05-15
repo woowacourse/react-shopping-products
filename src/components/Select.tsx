@@ -5,12 +5,14 @@ type SelectPropsType<T extends string> = {
   optionList: T[];
   value: T | null;
   setValue: (args: T) => Promise<void>;
+  id: string;
 };
 
 const Select = <T extends string>({
   optionList,
   value,
   setValue,
+  id,
 }: SelectPropsType<T>) => {
   const [idDropdownOpened, setIsDropdownOpened] = useState(false);
   const toggleDropdownOpened = () => setIsDropdownOpened((prev) => !prev);
@@ -21,8 +23,11 @@ const Select = <T extends string>({
   };
 
   return (
-    <div tabIndex={0} onBlur={closeDropdown} css={selectBoxStyle}>
-      <div css={selectedValueStyle(idDropdownOpened)} onClick={toggleDropdownOpened}>
+    <div tabIndex={0} onBlur={closeDropdown} css={selectBoxStyle} id={id}>
+      <div
+        css={selectedValueStyle(idDropdownOpened)}
+        onClick={toggleDropdownOpened}
+      >
         <div css={selectedValueTextStyle(Boolean(value))}>
           {value ?? '선택해 주세요.'}
         </div>
@@ -34,7 +39,11 @@ const Select = <T extends string>({
       {idDropdownOpened && (
         <ul css={optionListStyle}>
           {optionList.map((option) => (
-            <li key={option} css={optionStyle} onClick={() => handleOption(option)}>
+            <li
+              key={option}
+              css={optionStyle}
+              onClick={() => handleOption(option)}
+            >
               {option}
             </li>
           ))}
@@ -45,7 +54,6 @@ const Select = <T extends string>({
 };
 
 export default Select;
-
 
 const selectBoxStyle = css`
   width: 130px;
