@@ -9,11 +9,11 @@ function MobileLayout({ children }: MobileLayoutProps) {
   return (
     <S.Container>
       <S.SidePanel>
-        <S.SidePanelText>메이토</S.SidePanelText>
+        <S.SidePanelText>상품 목록 미션</S.SidePanelText>
       </S.SidePanel>
       <S.Content>{children}</S.Content>
       <S.SidePanel>
-        <S.SidePanelText>써밋</S.SidePanelText>
+        <S.SidePanelText>메이토 & 써밋</S.SidePanelText>
       </S.SidePanel>
     </S.Container>
   );
