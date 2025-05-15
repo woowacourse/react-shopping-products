@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Suspense, useState } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 import { wrapPromise } from '../../api/wrapPromise';
 import { ErrorToastMessage, Flex, Loading } from '../../components/common';
 import { DropdownOptionType } from '../../components/common/Dropdown';
@@ -33,9 +33,10 @@ function ShopPage() {
     }));
   };
 
-  const getListDataHandler = async () => {
-    return getListData(filterOption);
-  };
+  const listPromiseData = useMemo(
+    () => getListData(filterOption),
+    [filterOption]
+  );
 
   return (
     <>
@@ -51,7 +52,7 @@ function ShopPage() {
         </ListTitleBox>
         <Suspense fallback={<Loading />}>
           <ProductList
-            resource={wrapPromise<Product[]>(getListDataHandler())}
+            resource={wrapPromise<Product[]>(listPromiseData)}
             cartList={cartList}
           />
         </Suspense>
