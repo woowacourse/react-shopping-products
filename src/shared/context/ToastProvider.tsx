@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useRef, useState } from 'react';
 
 import { Toast } from '../components/Toast';
 
-export const ToastContext = createContext({ showToast(message: string) {} });
+export const ToastContext = createContext({ showToast(_message: string) {} });
 
 export const ToastProvider = ({ children }: PropsWithChildren) => {
   const [toast, setToast] = useState('');
