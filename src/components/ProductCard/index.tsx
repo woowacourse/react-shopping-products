@@ -2,10 +2,9 @@ import { css } from "@emotion/css";
 import RemoveButton from "../Button/RemoveButton";
 import AddButton from "../Button/AddButton";
 import { Product } from "../../types/product.type";
-import addShoppingCart from "../../APIs/addShoppingCart";
 import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
-import { useCallback } from "react";
-import deleteShoppingCart from "../../APIs/deleteShoppingCart";
+import { useAddShoppingCart } from "../../hooks/useAddShoppingCart";
+import { useDeleteShoppingCart } from "../../hooks/useDeleteShoppingCart";
 
 interface ProductCardProps {
   product: Product;
@@ -14,55 +13,13 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const { cartItems, handleCartItemChange, handleShoppingCartError } =
-    useShoppingCartContext();
+  const { cartItems } = useShoppingCartContext();
   const cartItemId = cartItems.find(
     (item) => item.product.id === product.id
   )?.id;
 
-  const handleAddButton = useCallback(async () => {
-    const endpoint = "/cart-items";
-    const requestBody = {
-      productId: id,
-      quantity: 1,
-    };
-
-    if (cartItems.length === 50) {
-      handleShoppingCartError({
-        isError: true,
-        errorMessage: "장바구니에 담을 수 있는 최대 수량은 50개입니다.",
-      });
-      return;
-    }
-
-    try {
-      const newCardItem = await addShoppingCart({ endpoint, requestBody });
-      handleCartItemChange(newCardItem);
-    } catch (error) {
-      if (error instanceof Error) {
-        handleShoppingCartError({
-          isError: true,
-          errorMessage: "장바구니에 추가하지 못했습니다. 다시 시도해주세요.",
-        });
-      }
-    }
-  }, [id, handleCartItemChange, handleShoppingCartError, cartItems.length]);
-
-  const handleRemoveButton = useCallback(async () => {
-    const endpoint = `/cart-items`;
-
-    try {
-      const newCardItem = await deleteShoppingCart({ endpoint, cartItemId });
-      handleCartItemChange(newCardItem);
-    } catch (error) {
-      if (error instanceof Error) {
-        handleShoppingCartError({
-          isError: true,
-          errorMessage: "장바구니에서 삭제하지 못했습니다. 다시 시도해주세요.",
-        });
-      }
-    }
-  }, [cartItemId, handleCartItemChange, handleShoppingCartError]);
+  const { handleAdd } = useAddShoppingCart(product.id);
+  const { handleDelete } = useDeleteShoppingCart(cartItemId);
 
   return (
     <div key={id} className={CardFrame}>
@@ -74,9 +31,9 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
           {isInCart ? (
-            <RemoveButton onClick={handleRemoveButton} />
+            <RemoveButton onClick={handleDelete} />
           ) : (
-            <AddButton onClick={handleAddButton} />
+            <AddButton onClick={handleAdd} />
           )}
         </div>
       </div>
