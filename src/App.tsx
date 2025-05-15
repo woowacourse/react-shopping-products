@@ -114,8 +114,8 @@ function App() {
               ))
             ) : (
               <>
-                {Array.from({ length: 6 }).map(() => (
-                  <ProductItemSkeleton />
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <ProductItemSkeleton key={index} />
                 ))}
               </>
             )}
