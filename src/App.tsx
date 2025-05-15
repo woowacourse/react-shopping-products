@@ -5,13 +5,14 @@ import { useErrorContext } from "./contexts/ErrorContext";
 import { useProductQuery } from "./hooks/useProductQuery";
 import { URLS } from "./constants/url";
 import Dropdown from "./components/Dropdown/Dropdown";
-import Header from "./components/Header/Header";
+
 import Spinner from "./components/Spinner/Spinner";
 import ProductList from "./components/Product/ProductList/ProductList";
 import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
 import * as styles from "./App.style";
 import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
 import { useCartContext } from "./contexts/CartContext";
+import Header from "./components/Header/Header";
 
 function App() {
   const { showError } = useErrorContext();
@@ -41,13 +42,13 @@ function App() {
 
   useEffect(() => {
     refetchProducts();
-  }, [orderBy]);
+  }, [orderBy, refetchProducts]);
 
   useEffect(() => {
     if (cartItems?.content) {
       setCartLength(cartItems.content.length);
     }
-  }, [cartItems?.content?.length]);
+  }, [cartItems?.content, cartItems?.content?.length, setCartLength]);
 
   useEffect(() => {
     if (productFetchError) {
