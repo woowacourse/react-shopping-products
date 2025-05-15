@@ -5,7 +5,7 @@ import {getCartProduct} from '../../cart/api/getCartProduct';
 
 function useGetProductsWithCart(sortValue: string) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [pageInfo, setPageInfo] = useState({
+  const [, setPageInfo] = useState({
     totalElements: 0,
     totalPages: 0,
   });
