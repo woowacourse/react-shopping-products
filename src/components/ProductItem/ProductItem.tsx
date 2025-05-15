@@ -33,6 +33,10 @@ function ProductItem({
           await RemoveProductItemApi(cartItemId);
         }
       } else {
+        if (cartItemList.length >= 50) {
+          setErrorMessage("장바구니에는 최대 50개의 상품만 담을 수 있습니다.");
+          return;
+        }
         await AddProductItemApi(product.id, 1);
       }
 
