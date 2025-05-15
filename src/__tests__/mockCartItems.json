@@ -1,0 +1,139 @@
+{
+  "content": [
+    {
+      "id": 1000,
+      "quantity": 1,
+      "product": {
+        "id": 1,
+        "name": "더미 상품 1",
+        "price": 10000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+1",
+        "category": "패션잡화"
+      }
+    },
+    {
+      "id": 1001,
+      "quantity": 1,
+      "product": {
+        "id": 2,
+        "name": "더미 상품 2",
+        "price": 20000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+2",
+        "category": "식료품"
+      }
+    },
+    {
+      "id": 1002,
+      "quantity": 1,
+      "product": {
+        "id": 3,
+        "name": "더미 상품 3",
+        "price": 30000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+3",
+        "category": "패션잡화"
+      }
+    },
+    {
+      "id": 1003,
+      "quantity": 1,
+      "product": {
+        "id": 4,
+        "name": "더미 상품 4",
+        "price": 40000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+4",
+        "category": "식료품"
+      }
+    },
+    {
+      "id": 1004,
+      "quantity": 1,
+      "product": {
+        "id": 5,
+        "name": "더미 상품 5",
+        "price": 50000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+5",
+        "category": "패션잡화"
+      }
+    },
+    {
+      "id": 1005,
+      "quantity": 1,
+      "product": {
+        "id": 6,
+        "name": "더미 상품 6",
+        "price": 60000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+6",
+        "category": "식료품"
+      }
+    },
+    {
+      "id": 1006,
+      "quantity": 1,
+      "product": {
+        "id": 7,
+        "name": "더미 상품 7",
+        "price": 70000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+7",
+        "category": "패션잡화"
+      }
+    },
+    {
+      "id": 1007,
+      "quantity": 1,
+      "product": {
+        "id": 8,
+        "name": "더미 상품 8",
+        "price": 80000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+8",
+        "category": "식료품"
+      }
+    },
+    {
+      "id": 1008,
+      "quantity": 1,
+      "product": {
+        "id": 9,
+        "name": "더미 상품 9",
+        "price": 90000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+9",
+        "category": "패션잡화"
+      }
+    },
+    {
+      "id": 1009,
+      "quantity": 1,
+      "product": {
+        "id": 10,
+        "name": "더미 상품 10",
+        "price": 100000,
+        "imageUrl": "https://via.placeholder.com/150?text=Product+10",
+        "category": "식료품"
+      }
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 20,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalElements": 10,
+  "totalPages": 1,
+  "size": 20,
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "first": true,
+  "numberOfElements": 10,
+  "empty": false
+}
