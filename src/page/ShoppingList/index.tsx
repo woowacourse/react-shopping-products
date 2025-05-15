@@ -16,6 +16,10 @@ import { Product } from '../../types/response';
 
 import useCart, { CartItem } from '../../hook/useCart';
 import { useToast } from '../../component/@common/Toast/context';
+import { cartApi } from '../../api/cart';
+import { apiRequest } from '../../api';
+
+type ProductListResponse = Product[];
 
 export type SortOption = '높은 가격순' | '낮은 가격순';
 export type CategoryOption = '전체' | '패션잡화' | '식료품';
@@ -23,7 +27,7 @@ export type CategoryOption = '전체' | '패션잡화' | '식료품';
 const ShoppingList = () => {
   const [selected, setSelected] = useState<SortOption>('낮은 가격순');
   const [category, setCategory] = useState<CategoryOption>('전체');
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Product[]>([]);
   const { cartData, fetchCartData } = useCart();
   const { openToast } = useToast();
 
@@ -31,22 +35,15 @@ const ShoppingList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/products?page=0&size=20${
+      const response = await apiRequest<ProductListResponse>(
+        `/products?page=0&size=20${
           category === '전체' ? '' : `&category=${category}`
-        }${
-          selected === '높은 가격순' ? '&sort=price,desc' : '&sort=price,asc'
-        }`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
-          }
-        }
+        }${selected === '높은 가격순' ? '&sort=price,desc' : '&sort=price,asc'}`
       );
-      const results = await response.json();
-      setData(results.content);
+
+      setData(response);
     };
+
     fetchData();
   }, [category, selected]);
 
@@ -60,24 +57,7 @@ const ShoppingList = () => {
 
   const handleAddCart = async (productId: number) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/cart-items`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
-          },
-          body: JSON.stringify({
-            productId,
-            quantity: 1
-          })
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('장바구니 담기에 실패했어요...');
-      }
+      await cartApi.addToCart(productId);
 
       fetchCartData();
       openToast('상품이 장바구니에 추가되었습니다.', true);
@@ -92,20 +72,7 @@ const ShoppingList = () => {
         (item: CartItem) => item.product.id === cartId
       )[0].id;
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/cart-items/${targetId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Basic ${import.meta.env.VITE_API_KEY}`
-          }
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('장바구니 빼기에 실패했어요...');
-      }
+      await cartApi.removeFromCart(targetId);
 
       fetchCartData();
       openToast('상품이 장바구니에서 제거되었습니다.', true);
