@@ -1,4 +1,4 @@
-import { ComponentProps, ComponentPropsWithoutRef, useState } from 'react';
+import { ComponentProps, useState } from 'react';
 import { css } from '@emotion/react';
 
 import {
@@ -10,7 +10,6 @@ import {
 } from './Select.styled';
 
 import Arrow from '../../../../public/arrow.png';
-import { Flex } from '../Flex';
 import { Text } from '../Text';
 
 export type Props = {
@@ -22,7 +21,7 @@ export type Props = {
   maxWidth?: number | string;
 } & ComponentProps<'div'>;
 
-export const Select = ({ selectedOptions, maxWidth = '500px', children, ...props }: Props) => {
+export const Select = ({ selectedOptions, maxWidth = '200px', children, ...props }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
