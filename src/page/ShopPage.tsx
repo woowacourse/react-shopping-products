@@ -71,11 +71,11 @@ export type sortOption = "price,asc" | "price,desc";
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");
   const [filterValue, setFilterValue] = useState<FilterOption>("낮은 가격순");
-  const [selectedProducts, setSelectedProducts] = useState<number>(0);
   const [productList, setProductList] = useState<Product[]>([]);
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
   const [isError, setIsError] = useState(false);
 
+  const selectedProducts = cartItemList.length;
   const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
   const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
 
@@ -85,7 +85,6 @@ export default function ShopPage() {
         const response = await getCartItem({
           sortBy: "asc",
         });
-        setSelectedProducts(response.content.length);
         setCartItemList(response.content);
       } catch (e) {
         setIsError(true);
