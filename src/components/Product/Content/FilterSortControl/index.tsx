@@ -18,14 +18,14 @@ function FilterSortControl({
 }: FilterSortControlProps) {
   return (
     <S.DropdownContainer>
-      <S.DropdownWrapper>
+      <S.DropdownWrapper data-testid="filter-dropdown">
         <Dropdown
           optionList={FILTER_OPTIONS}
           selectedOption={filterOption}
           onClick={onFilterChange}
         />
       </S.DropdownWrapper>
-      <S.DropdownWrapper>
+      <S.DropdownWrapper data-testid="sort-dropdown">
         <Dropdown
           optionList={SORT_OPTIONS}
           selectedOption={sortOption}

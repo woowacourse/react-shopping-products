@@ -33,7 +33,11 @@ function Dropdown<T extends string>({
 
   return (
     <S.Container ref={dropdownRef}>
-      <S.DropdownTrigger type="button" onClick={handleDropdownToggle}>
+      <S.DropdownTrigger
+        data-testid="dropdown-trigger"
+        type="button"
+        onClick={handleDropdownToggle}
+      >
         {selectedOption ?? defaultOption}
         <ArrowIcon direction={isOpen ? "down" : "up"} />
       </S.DropdownTrigger>
@@ -43,6 +47,7 @@ function Dropdown<T extends string>({
             <S.OptionItem key={option}>
               <S.OptionItemButton
                 type="button"
+                data-testid={`dropdown-option-${option}`}
                 onClick={() => handleDropdownOptionClick(option)}
               >
                 {option}
