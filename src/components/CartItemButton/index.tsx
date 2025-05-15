@@ -7,14 +7,14 @@ interface CartItemButtonProps {
 
 function CartItemButton({ quantity }: CartItemButtonProps) {
   return (
-    <S.CardItemButton type="button">
+    <S.CartItemButton type="button">
       <img src={cartItemIcon} alt="장바구니" />
       {quantity >= 1 && (
         <S.QuantityBox data-testid="cart-item-quantity">
           {quantity}
         </S.QuantityBox>
       )}
-    </S.CardItemButton>
+    </S.CartItemButton>
   );
 }
 

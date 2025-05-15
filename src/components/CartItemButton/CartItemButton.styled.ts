@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const CardItemButton = styled.button`
+export const CartItemButton = styled.button`
   display: flex;
   position: relative;
 `;
