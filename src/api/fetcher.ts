@@ -1,93 +1,93 @@
-type FetcherOptions = {
+import { HttpError } from './httpError';
+
+type FetcherOptions<T> = {
   baseUrl: string;
   token: string;
   query?: object;
+  body?: T;
 };
 
-type Fetcher = {
-  /**
-   * @param baseUrl - The URL to send the request to.
-   * @param query - An array of query parameters to append to the URL.
-   * @returns A promise that resolves to the response data.
-   */
-  get: <T>({ baseUrl, token, query }: FetcherOptions) => Promise<T>;
-  /**
-   * @param baseUrl - The URL to send the request to.
-   * @param data - The data to send in the request body.
-   * @returns A promise that resolves to the response data.
-   */
-  post: <T>(baseUrl: string, token: string, body: T) => Promise<T>;
-  /**
-   * @param baseUrl - The URL to send the request to.
-   * @returns A promise that resolves to the response data.
-   */
-  delete: ({ baseUrl, token }: FetcherOptions) => Promise<void>;
-};
+type FetcherResponse<T> = Promise<T>;
 
-export const fetcher: Fetcher = {
-  get: async <T>({ baseUrl, token, query = {} }: FetcherOptions): Promise<T> => {
-    const url = new URL(baseUrl);
-
-    Object.entries(query).forEach(([key, value]) => {
-      if (String(value)) {
-        url.searchParams.append(key, value.toString());
-      }
-    });
-
-    const response = await fetch(url, {
+export const fetcher = {
+  get: async <T>({ baseUrl, token, query = {} }: FetcherOptions<T>): FetcherResponse<T> => {
+    return request<T>({
+      baseUrl,
+      token,
+      query,
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Basic ' + token,
-      },
     });
-
-    if (!response.ok) {
-      throw new Error(`${response.status}, ${response.statusText}`);
-    }
-
-    return await response.json();
   },
-  post: async <T>(baseUrl: string, token: string, body: T): Promise<T> => {
-    const url = new URL(baseUrl);
-
-    const response = await fetch(url, {
+  post: async <T>({ baseUrl, token, body }: FetcherOptions<T>): FetcherResponse<T> => {
+    return request<T>({
+      baseUrl,
+      token,
+      body,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Basic ' + token,
-      },
-      body: JSON.stringify(body),
+
+      returnOriginalOnNoContent: true,
     });
-
-    if (!response.ok) {
-      throw new Error(`${response.status}`);
-    }
-    if (response.status === 204 || response.headers.get('content-length') === '0') {
-      return body;
-    }
-
-    return await response.json();
   },
-  delete: async ({ baseUrl, token }: FetcherOptions) => {
-    const url = new URL(baseUrl);
-
-    const response = await fetch(url, {
+  delete: async <T>({ baseUrl, token }: FetcherOptions<T>): FetcherResponse<T> => {
+    return request<T>({
+      baseUrl,
+      token,
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Basic ' + token,
-      },
+      returnOriginalOnNoContent: true,
     });
-
-    if (!response.ok) {
-      throw new Error(`${response.status}, ${response.statusText}`);
-    }
-
-    if (response.status === 204) {
-      return { success: true, status: 204 };
-    }
-
-    return await response.json();
   },
+};
+
+type RequestOptions<T> = {
+  baseUrl: string;
+  token: string;
+  method: string;
+  query?: object;
+  body?: T;
+  returnOriginalOnNoContent?: boolean;
+};
+
+const request = async <T>({
+  baseUrl,
+  token,
+  method,
+  query,
+  body,
+  returnOriginalOnNoContent,
+}: RequestOptions<T>): Promise<T> => {
+  const url = new URL(baseUrl);
+  Object.entries(query || {}).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && String(value)) {
+      url.searchParams.append(key, String(value));
+    }
+  });
+
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Basic ${token}`,
+  };
+
+  const config: RequestInit = {
+    method,
+    headers,
+  };
+
+  if (body && method === 'POST') {
+    config.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(url, config);
+
+  if (!response.ok) {
+    throw new HttpError(response.status);
+  }
+
+  if (response.status === 204 || response.headers.get('content-length') === '0') {
+    if (returnOriginalOnNoContent && body) {
+      return body as unknown as T;
+    }
+    return returnOriginalOnNoContent as unknown as T;
+  }
+
+  return await response.json();
 };
