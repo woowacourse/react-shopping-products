@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { addCart, getCartItem, removeCart } from './api/cart';
 import { getProduct } from './api/product.ts';
 import { CategoryType, ProductType, SortType } from './types/product';
+import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner.tsx';
 
 interface ProductElement {
   id: number;
@@ -99,17 +100,18 @@ function App() {
         {isError && (
           <Toast message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요." />
         )}
-        {/*{isLoading && <LoadingSpinner duration={2} />}*/}
-        {/*{!isLoading && <ProductSection cart={cart} />}*/}
-        <ProductSection
-          onFilter={handleFilterCategory}
-          onSort={handleSortPrice}
-          onAddCart={handleAddCart}
-          onRemoveCart={handleRemoveCart}
-          data={data}
-          sort={sort}
-          category={category}
-        />
+        {isLoading && <LoadingSpinner duration={2} />}
+        {!isLoading && (
+          <ProductSection
+            onFilter={handleFilterCategory}
+            onSort={handleSortPrice}
+            onAddCart={handleAddCart}
+            onRemoveCart={handleRemoveCart}
+            data={data}
+            sort={sort}
+            category={category}
+          />
+        )}
       </Layout>
     </>
   );
