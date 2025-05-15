@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "test": "vitest"
   },
-  "homepage": "https://youdame.github.io/react-shopping-products",
+  "homepage": "https://spoyodevelop.github.io/react-shopping-products",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
