@@ -22,4 +22,19 @@ export const handlers = [
 	http.get(CART_URL, () => {
 		return HttpResponse.json({ content: cart });
 	}),
+
+	http.post(CART_URL, async ({ request }) => {
+		const body = await request.json();
+		const { productId, quantity } = body as { productId: number; quantity: number };
+
+		if (!productId || quantity < 1) {
+			return HttpResponse.error();
+		}
+
+		return HttpResponse.json({ ok: true }, { status: 201 });
+	}),
+
+	http.delete(`${CART_URL}/:id`, async () => {
+		return HttpResponse.json({ ok: true }, { status: 201 });
+	}),
 ];
