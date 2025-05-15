@@ -55,10 +55,12 @@ function App() {
 
           <S.ProductListFilterContainer>
             <CustomSelect
+              id="category-select"
               items={CATEGORY_OPTIONS}
               onChange={(e) => setCategory(e.target.value as Category)}
             />
             <CustomSelect
+              id="sort-select"
               items={FILTER_OPTIONS}
               onChange={(e) => setSortValue(e.target.value)}
             />
@@ -68,7 +70,7 @@ function App() {
         {isLoading ? (
           <div>loading...</div>
         ) : (
-          <S.ProductList>
+          <S.ProductList data-testid="product-list">
             {filteredProducts.map((product: Product) => (
               <ProductCard
                 key={product.id}
