@@ -12,4 +12,5 @@ export const CartButton = Styled.button<{ keyWord: 'add' | 'remove' }>`
   justify-content: center;
   align-items: center;
   gap: 4px;
+  cursor: pointer;
 `;
