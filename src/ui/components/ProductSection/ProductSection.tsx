@@ -7,7 +7,7 @@ import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
 import { SortType, CategoryType } from '../../../types/product';
 import { ProductElement } from '../../../types/product';
 interface ProductSectionProps {
-  data: any;
+  data: ProductElement[];
   sort: SortType;
   category: CategoryType;
   onFilter: (e: React.ChangeEvent<HTMLSelectElement>) => void;

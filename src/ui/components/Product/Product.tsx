@@ -29,9 +29,9 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
         <Price>{`${price.toLocaleString()}원`}</Price>
       </Detail>
       {isInCart ? (
-        <RemoveButton onClick={() => onAddCart(item)} />
+        <RemoveButton onClick={() => onRemoveCart(item)} />
       ) : (
-        <AddButton onClick={() => onRemoveCart(item)} />
+        <AddButton onClick={() => onAddCart(item)} />
       )}
     </Container>
   );
