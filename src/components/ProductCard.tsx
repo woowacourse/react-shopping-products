@@ -41,7 +41,14 @@ const ProductCard = ({
 
   return (
     <ProductCardWrapper>
-        <ProductImage src={imageSrc} alt={name} />
+        <ProductImage 
+          src={imageSrc} 
+          alt={name} 
+          onError={(e) => {
+            const target = e.currentTarget;
+            target.src = defaultSrc;
+          }}
+        />
       <ProductCardDetailWrapper>
         <ProductCardDetailTextWrapper>
           <ProductCardName>{name}</ProductCardName>
