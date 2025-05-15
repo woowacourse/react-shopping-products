@@ -7,9 +7,8 @@ async function fetchProducts({
   endpoint,
 }: FetchProductsRequest): Promise<FetchProductsResponse> {
   try {
-    const response = await fetch(
-      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com${endpoint}`
-    );
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const response = await fetch(`${baseUrl}${endpoint}`);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");

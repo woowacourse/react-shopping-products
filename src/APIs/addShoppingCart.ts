@@ -5,22 +5,20 @@ async function addShoppingCart({
   endpoint,
   requestBody,
 }: ShoppingCartResponse): Promise<CartItem[]> {
-  const username = "H0ngJu";
-  const password = "password";
+  const username = import.meta.env.VITE_USERNAME;
+  const password = import.meta.env.VITE_PASSWORD;
+  const baseUrl = import.meta.env.VITE_BASE_URL;
   const credentials = btoa(`${username}:${password}`);
 
   try {
-    const response = await fetch(
-      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com${endpoint}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic ${credentials}`,
-        },
-        body: JSON.stringify(requestBody),
-      }
-    );
+    const response = await fetch(`${baseUrl}${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${credentials}`,
+      },
+      body: JSON.stringify(requestBody),
+    });
 
     if (!response.ok) {
       throw new Error("Network response was not ok");

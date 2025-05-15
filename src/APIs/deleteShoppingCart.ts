@@ -5,21 +5,19 @@ async function deleteShoppingCart({
   endpoint,
   cartItemId,
 }: ShoppingCartResponse): Promise<CartItem[]> {
-  const username = "H0ngJu";
-  const password = "password";
+  const username = import.meta.env.VITE_USERNAME;
+  const password = import.meta.env.VITE_PASSWORD;
+  const baseUrl = import.meta.env.VITE_BASE_URL;
   const credentials = btoa(`${username}:${password}`);
 
   try {
-    const response = await fetch(
-      `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com${endpoint}/${cartItemId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic ${credentials}`,
-        },
-      }
-    );
+    const response = await fetch(`${baseUrl}${endpoint}/${cartItemId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${credentials}`,
+      },
+    });
 
     if (!response.ok) {
       throw new Error("Network response was not ok");

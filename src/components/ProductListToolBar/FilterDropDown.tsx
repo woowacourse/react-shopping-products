@@ -7,7 +7,11 @@ type FilterDropDownProps = {
 
 const FilterDropDown = ({ options, handleChange }: FilterDropDownProps) => {
   return (
-    <select className={DropDownStyles} onChange={handleChange}>
+    <select
+      aria-label="filter"
+      className={DropDownStyles}
+      onChange={handleChange}
+    >
       {options.map((option) => (
         <option key={option} value={option}>
           {option}
