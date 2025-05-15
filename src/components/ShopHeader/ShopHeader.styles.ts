@@ -35,4 +35,5 @@ export const CartItemCount = styled.div`
   line-height: 20px;
   background-color: #fff;
   border-radius: 100%;
+  cursor: pointer;
 `;
