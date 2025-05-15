@@ -7,7 +7,6 @@ export const StyledAppLayout = styled.div`
   height: 100dvh;
   width: 100%;
   max-width: 425px;
-  display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
