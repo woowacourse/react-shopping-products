@@ -26,7 +26,6 @@ function App() {
             "Content-Type": "application/json",
           },
         });
-
         setCartItemIds(
           data.content.map((data: CartItem) => {
             return { productId: data.product.id, cartId: data.id };

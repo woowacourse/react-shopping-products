@@ -32,7 +32,6 @@ function CartToggleButton({
         url: "/cart-items",
         body: { productId, quantity: 1 },
       });
-      setCartItemIds((prev) => [...prev, { productId, cartId: 0 }]);
       fetchProducts();
     } catch {
       setErrorTrue("ADD");
