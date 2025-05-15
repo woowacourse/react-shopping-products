@@ -5,12 +5,10 @@ const Header = ({ shoppingCount = 0 }: { shoppingCount?: number }) => {
   return (
     <header css={headerStyle}>
       <span>SHOP</span>
-      <ShoppingBag />
-      {shoppingCount !== 0 && (
-        <div css={shoppingBagStyle}>
-          <span css={shoppingBagCountStyle}>{shoppingCount}</span>
-        </div>
-      )}
+      <div css={shoppingBagStyle}>
+        <ShoppingBag />
+        {shoppingCount !== 0 && <span css={shoppingBagCountStyle}>{shoppingCount}</span>}
+      </div>
     </header>
   );
 };

@@ -18,7 +18,6 @@ function App() {
   const [products, setProducts] = useState<Content[]>();
   const [cartItemIds, setCartItemIds] = useState<number[]>();
 
-
   const getProduct = async () => {
     const data = await getProducts({ page: 0, size: 20 });
 
@@ -117,6 +116,7 @@ const appStyle = css`
 const containerStyle = css`
   padding: 36px 24px;
   display: flex;
+  height: calc(100% - 64px);
   flex-direction: column;
   gap: 28px;
 `;
@@ -128,8 +128,9 @@ const selectBoxStyle = css`
 `;
 
 const cardContainerStyle = css`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   row-gap: 20px;
   justify-items: center;
   overflow-y: scroll;
