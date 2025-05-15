@@ -7,6 +7,6 @@ export const getProducts = async (categoryOption: string = '전체', sortOption:
     method: 'GET',
     URI: fullUrl,
   });
-  console.log(data);
+
   return data.content;
 };
