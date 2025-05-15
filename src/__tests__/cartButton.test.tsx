@@ -1,76 +1,138 @@
 // CartButton.test.tsx
-import { render, screen } from "@testing-library/react";
-import CartButton from "../components/CartButton/CartButton";
+import { render, waitFor, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
+import { ErrorContextProvider } from "../contexts/ErrorContext";
+import CartButton from "../components/CartButton/CartButton";
+import React from "react";
 
-// useFetch mocking
+// Mock useFetch hook
 vi.mock("../hooks/useFetch", () => ({
-  default: vi.fn((url: string, config?: RequestInit, immediate = true) => {
-    if (config?.method === "POST") {
-      return {
-        fetcher: vi.fn().mockResolvedValue({}),
-        error: null,
-      };
-    }
-
-    if (config?.method === "DELETE") {
-      return {
-        fetcher: vi.fn().mockResolvedValue({}),
-        error: null,
-      };
-    }
-
-    return { fetcher: vi.fn(), error: null };
+  default: vi.fn(() => {
+    return {
+      data: null,
+      isLoading: false,
+      error: null,
+      fetcher: vi.fn(),
+    };
   }),
 }));
 
-vi.mock("../contexts/CartContext", () => ({
-  useCartContext: () => ({
-    cartLength: 1,
-  }),
-}));
-
-// ErrorContext 내부에서 showError 호출 여부 확인 가능하게 spy 처리
+// Mock the ErrorContext
 const mockShowError = vi.fn();
-vi.mock("../contexts/ErrorContext", async (importOriginal) => {
-  const actual = await importOriginal();
+vi.mock("../contexts/ErrorContext", async () => {
+  const actual = await vi.importActual("../contexts/ErrorContext");
   return {
-    ...actual,
+    ...(actual as Record<string, unknown>),
     useErrorContext: () => ({
       showError: mockShowError,
     }),
   };
 });
 
-describe("CartButton 컴포넌트", () => {
-  const mockRefetchCart = vi.fn().mockResolvedValue(undefined);
+// Mock the CartContext
+const mockSetCartLength = vi.fn();
+let mockCartLength = 0;
 
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
+vi.mock("../contexts/CartContext", () => ({
+  useCartContext: () => ({
+    setCartLength: mockSetCartLength,
+    cartLength: mockCartLength,
+  }),
+  CartContextProvider: ({ children }: { children: React.ReactNode }) =>
+    children,
+}));
 
-  test("장바구니에 상품이 없을 때 '담기' 버튼이 표시됨", () => {
+// Reset mock functions before each test
+beforeEach(() => {
+  vi.clearAllMocks();
+  mockCartLength = 0;
+});
+
+describe("CartButton 컴포넌트 테스트", () => {
+  test("장바구니에 최대 개수(50개) 이상 담으려고 할 때 에러가 발생해야 함", async () => {
+    // Set cart length to maximum (50)
+    mockCartLength = 50;
+
+    const mockRefetchCart = vi.fn();
+
     render(
-      <CartButton
-        isInCart={false}
-        refetchCart={mockRefetchCart}
-        productId={1}
-      />
+      <ErrorContextProvider>
+        <CartButton
+          isInCart={false}
+          refetchCart={mockRefetchCart}
+          productId={1}
+        />
+      </ErrorContextProvider>
     );
 
-    expect(screen.getByText("담기")).toBeInTheDocument();
+    // Trigger the add to cart action
+    const addToCartButton = document.querySelector("button");
+    fireEvent.click(addToCartButton!);
+
+    // Verify that showError was called with the correct error message
+    await waitFor(() => {
+      expect(mockShowError).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: "장바구니 갯수가 50개 이상 담을수 없습니다.",
+        })
+      );
+    });
+
+    // The refetchCart should not be called when we have an error
+    expect(mockRefetchCart).not.toHaveBeenCalled();
   });
 
-  test("장바구니에 상품이 있을 때 '빼기' 버튼이 표시됨", () => {
+  test("장바구니에 상품 추가 기능이 동작해야 함", async () => {
+    mockCartLength = 5; // 아직 최대 개수에 도달하지 않음
+
+    const mockRefetchCart = vi.fn();
+
     render(
-      <CartButton
-        isInCart={true}
-        refetchCart={mockRefetchCart}
-        productId={1}
-        cartItemId={1}
-      />
+      <ErrorContextProvider>
+        <CartButton
+          isInCart={false}
+          refetchCart={mockRefetchCart}
+          productId={1}
+        />
+      </ErrorContextProvider>
     );
 
-    expect(screen.getByText("빼기")).toBeInTheDocument();
+    // Trigger the add to cart action
+    const addToCartButton = document.querySelector("button");
+    fireEvent.click(addToCartButton!);
+
+    // 에러가 발생하지 않아야 함
+    await waitFor(() => {
+      expect(mockShowError).not.toHaveBeenCalled();
+    });
+
+    // refetchCart가 호출되어야 함
+    expect(mockRefetchCart).toHaveBeenCalled();
+  });
+
+  test("장바구니에서 상품 제거 기능이 동작해야 함", async () => {
+    const mockRefetchCart = vi.fn();
+
+    render(
+      <ErrorContextProvider>
+        <CartButton
+          isInCart={true} // 이미 장바구니에 있는 상태
+          refetchCart={mockRefetchCart}
+          productId={1}
+        />
+      </ErrorContextProvider>
+    );
+
+    // Trigger the remove from cart action
+    const removeFromCartButton = document.querySelector("button");
+    fireEvent.click(removeFromCartButton!);
+
+    // 에러가 발생하지 않아야 함
+    await waitFor(() => {
+      expect(mockShowError).not.toHaveBeenCalled();
+    });
+
+    // refetchCart가 호출되어야 함
+    expect(mockRefetchCart).toHaveBeenCalled();
   });
 });

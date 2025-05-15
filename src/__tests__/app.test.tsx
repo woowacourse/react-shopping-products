@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
 import App from "../App";
+import React from "react";
 
 vi.mock("../contexts/ErrorContext", () => ({
   useErrorContext: () => ({
@@ -97,10 +98,10 @@ describe("App - 필터링 테스트", () => {
     const electronicOption = screen.getByText("식료품");
     fireEvent.click(electronicOption);
 
-    expect(screen.getByText("코카콜라")).toBeInTheDocument();
-    expect(screen.getByText("사이다")).toBeInTheDocument();
-    expect(screen.queryByText("바지")).not.toBeInTheDocument();
-    expect(screen.queryByText("치마")).not.toBeInTheDocument();
+    expect(screen.getByText("코카콜라")).toBeTruthy();
+    expect(screen.getByText("사이다")).toBeTruthy();
+    expect(screen.queryByText("바지")).toBe(null);
+    expect(screen.queryByText("치마")).toBe(null);
   });
 });
 
