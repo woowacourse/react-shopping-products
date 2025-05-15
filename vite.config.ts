@@ -11,5 +11,5 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
   },
-  base: '/react-shopping-products/',
+  base: '',
 });
