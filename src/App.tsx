@@ -10,6 +10,7 @@ import Spinner from "./components/Spinner/Spinner";
 import ProductList from "./components/Product/ProductList/ProductList";
 import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
 import * as styles from "./App.style";
+import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
 
 function App() {
   const { showError } = useErrorContext();

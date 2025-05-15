@@ -1,8 +1,8 @@
 import * as styles from "./CartButton.style";
-import { ComponentProps, useEffect } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
-
+import { URLS } from "../../constants/url";
 interface CartButtonProps extends ComponentProps<"button"> {
   isInCart: boolean;
   refetchCart: () => Promise<void>;
@@ -18,9 +18,10 @@ export default function CartButton({
   ...props
 }: CartButtonProps) {
   const { showError } = useErrorContext();
+  const [isFetchLoading, setIsFetchLoading] = useState(false);
 
   const { fetcher: deleteCartItem, error: deleteError } = useFetch(
-    `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/${cartItemId}`,
+    `${URLS.CART_ITEMS}/${cartItemId}`,
     {
       headers: {
         Authorization: `Basic ${btoa(
@@ -33,7 +34,7 @@ export default function CartButton({
     false
   );
   const { fetcher: addCartItem, error: addError } = useFetch(
-    "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items",
+    URLS.CART_ITEMS,
     {
       headers: {
         Authorization: `Basic ${btoa(
@@ -64,12 +65,15 @@ export default function CartButton({
 
   const handleDeleteCartItem = async () => {
     try {
+      setIsFetchLoading(true);
       await deleteCartItem();
       await refetchCart();
     } catch (error) {
       if (error instanceof Error) {
         showError(error);
       }
+    } finally {
+      setIsFetchLoading(false);
     }
   };
 

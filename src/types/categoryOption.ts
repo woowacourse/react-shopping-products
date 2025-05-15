@@ -1,3 +1,8 @@
-type OrderByOptionType = (typeof ORDER_BY_OPTIONS)[number];
+import {
+  CATEGORY_OPTIONS,
+  ORDER_BY_OPTIONS,
+} from "../constants/categoryOption";
 
-type CategoryOptionType = (typeof CATEGORY_OPTIONS)[number];
+export type OrderByOptionType = (typeof ORDER_BY_OPTIONS)[number];
+
+export type CategoryOptionType = (typeof CATEGORY_OPTIONS)[number];
