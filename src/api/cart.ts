@@ -1,9 +1,6 @@
 import { apiRequest } from '.';
-import { CartItem } from '../hook/useCart';
-
-interface CartResponse {
-  content: CartItem[];
-}
+import { CartItem } from '../types/common';
+import { CartResponse } from '../types/response';
 
 export const cartApi = {
   getCartItems: async (): Promise<CartItem[]> => {
@@ -18,14 +15,14 @@ export const cartApi = {
       method: 'POST',
       body: {
         productId,
-        quantity: 1
-      }
+        quantity: 1,
+      },
     });
   },
 
   removeFromCart: async (cartItemId: number): Promise<void> => {
     return apiRequest(`/cart-items/${cartItemId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
     });
-  }
+  },
 };
