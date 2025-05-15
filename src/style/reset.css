@@ -145,6 +145,7 @@ input:-webkit-autofill:active {
   -webkit-background-clip: text;
   -webkit-text-fill-color: #ffffff;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -157,4 +158,8 @@ input::-webkit-inner-spin-button {
 
 a {
   text-decoration: none;
+}
+
+body {
+  font-family: "Noto Sans", sans-serif;
 }
