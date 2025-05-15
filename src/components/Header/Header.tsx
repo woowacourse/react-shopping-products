@@ -8,7 +8,7 @@ function Header({ cartItemList }: { cartItemList: ResponseCartItem[] }) {
       <S.HeaderTitle>SHOP</S.HeaderTitle>
       <S.HeaderIconContainer>
         <BagIcon />
-        {cartItemList.length && <S.CartBadge style={{}}>{cartItemList.length}</S.CartBadge>}
+        {cartItemList.length > 0 && <S.CartBadge>{cartItemList.length}</S.CartBadge>}
       </S.HeaderIconContainer>
     </S.HeaderContainer>
   );
