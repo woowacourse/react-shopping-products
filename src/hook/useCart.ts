@@ -12,11 +12,11 @@ const useCart = () => {
   const fetchCartData = async () => {
     try {
       const response = await cartApi.getCartItems();
-
       setCartData(response);
     } catch (error) {
-      // 예외 처리 로직
-      // TODO: Fallback page
+      // 에러 발생 시 빈 배열로 설정
+      setCartData([]);
+      // TODO: Fallback page 또는 에러 처리 로직 추가
     }
   };
 
