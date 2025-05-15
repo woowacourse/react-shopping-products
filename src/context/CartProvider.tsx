@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 import { Cart } from '../components/features/product/type';
-import { getShoppingCartData } from '../shop/api/getShoppingCartData';
+import { getShoppingCartData } from '../api/getShoppingCartData';
 import { useShopErrorContext } from '../shop/context/useShopErrorContext';
 
 export const CartContext = createContext<{

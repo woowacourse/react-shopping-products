@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
-import { Flex } from '../../../common';
-import AddCartButton from './AddCartButton';
-import { baseAPI } from '../../../../api/baseAPI';
-import DeleteCartButton from './DeleteCartButton';
+import { deleteCartItem } from '../../../../api/deleteCartItem';
+import { postCartItem } from '../../../../api/postCartItem';
 import { useCartContext } from '../../../../context/useCartContext';
 import { useShopErrorContext } from '../../../../shop/context/useShopErrorContext';
+import { Flex } from '../../../common';
+import AddCartButton from './AddCartButton';
+import DeleteCartButton from './DeleteCartButton';
 
 interface ProductProps {
   id: string;
@@ -32,14 +33,7 @@ function ProductCard({
         handleErrorTrue('장바구니는 최대 50개까지 담을 수 있습니다.');
         return;
       }
-      await baseAPI({
-        method: 'POST',
-        path: `/cart-items`,
-        body: {
-          productId: id,
-          quantity: 1,
-        },
-      });
+      postCartItem(id);
       refetch();
       handleErrorFalse();
     } catch (e) {
@@ -49,10 +43,7 @@ function ProductCard({
 
   const handleDeleteCart = async () => {
     try {
-      await baseAPI({
-        method: 'DELETE',
-        path: `/cart-items/${cartId}`,
-      });
+      deleteCartItem(cartId);
       refetch();
       handleErrorFalse();
     } catch (e) {

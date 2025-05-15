@@ -1,14 +1,12 @@
 import styled from '@emotion/styled';
 import { Suspense, useState } from 'react';
-import { baseAPI } from '../../api/baseAPI';
-import { ProductData } from '../../api/type';
 import { wrapPromise } from '../../api/wrapPromise';
 import { ErrorToastMessage, Flex, Loading } from '../../components/common';
 import { DropdownOptionType } from '../../components/common/Dropdown';
 import ProductList from '../../components/features/product/product-list/ProductList';
-import { convertResponseToProduct } from '../../components/features/product/responseMapper';
 import { Product } from '../../components/features/product/type';
 import { useCartContext } from '../../context/useCartContext';
+import { getListData } from '../../api/getListData';
 import ShopFilter from '../../shop/components/filter/ShopFilter';
 import ShopHeader from '../../shop/components/header/ShopHeader';
 import { useShopErrorContext } from '../../shop/context/useShopErrorContext';
@@ -36,22 +34,7 @@ function ShopPage() {
   };
 
   const getListDataHandler = async () => {
-    const page = 0;
-    const size = 20;
-    const categoryPath =
-      filterOption.category.value !== '전체'
-        ? `category=${filterOption.category.value}&`
-        : '';
-    const basePath = `/products?${categoryPath}page=${page}&size=${size}&sort=price,${filterOption.sort.value}`;
-
-    const data = await baseAPI<ProductData>({
-      method: 'GET',
-      path: basePath,
-    });
-    const productsData = data?.content.map((product) =>
-      convertResponseToProduct(product)
-    );
-    return productsData ?? [];
+    return getListData(filterOption);
   };
 
   return (
