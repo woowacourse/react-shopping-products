@@ -1,7 +1,7 @@
 import { DropDownStyles } from "./DropDown.emotion";
 
 type SortingDropDownProps = {
-  options: string[];
+  options: readonly string[];
   handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 

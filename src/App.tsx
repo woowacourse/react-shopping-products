@@ -2,8 +2,8 @@
 import { css } from "@emotion/css";
 import Header from "./components/Header";
 import ProductListPage from "./pages/ProductListPage";
-import ProductsProvider from "./contexts/ProductsContext";
-import ShoppingCartProvider from "./contexts/ShoppingCartContext";
+import ProductsProvider from "./contexts/ProductsProvider";
+import ShoppingCartProvider from "./contexts/ShoppingCartProvider";
 
 function App() {
   return (

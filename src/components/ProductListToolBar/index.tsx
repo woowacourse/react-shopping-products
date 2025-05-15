@@ -2,64 +2,39 @@ import { css } from "@emotion/css";
 import FilterDropDown from "./FilterDropDown";
 import SortingDropDown from "./SortingDropDown";
 import { useProductsContext } from "../../contexts/useProductsContext";
-import fetchProducts from "../../APIs/fetchProducts";
-import { useCallback } from "react";
 import { Category, SortOption } from "../../types/product.type";
+import { CATEGORY, SORT_OPTION } from "./toolBar.constant";
 
 const ProductListToolBar = () => {
-  const {
-    handleChangeProducts,
-    handleChangeSort,
-    handleChangeCategory,
-    category,
-    sort,
-  } = useProductsContext();
+  const { handleChangeSort, handleChangeCategory } = useProductsContext();
 
-  const handleFilterChange = useCallback(
-    async (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const params = {
-        page: "0",
-        size: "20",
-        sort,
-      };
-      const query = new URLSearchParams(params).toString();
-      const endpoint =
-        e.target.value === "전체"
-          ? `/products?${query}`
-          : `/products?${query}&category=${e.target.value}`;
-      const { content } = await fetchProducts({ endpoint });
-      handleChangeProducts(content);
-      handleChangeCategory(e.target.value as Category);
-    },
-    [handleChangeProducts, handleChangeCategory, sort]
-  );
+  const isCategoryOption = (value: string): value is Category => {
+    return CATEGORY.includes(value);
+  };
 
-  const handleSortingChange = useCallback(
-    async (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const params = {
-        page: "0",
-        size: "20",
-        sort: e.target.value === "낮은 가격순" ? "price,asc" : "price,desc",
-      };
-      const query = new URLSearchParams(params).toString();
-      const endpoint = `/products?${query}&category=${category}`;
-      const { content } = await fetchProducts({ endpoint });
-      handleChangeProducts(content);
-      handleChangeSort(e.target.value as SortOption);
-    },
-    [handleChangeProducts, handleChangeSort, category]
-  );
+  const isSortOption = (value: string): value is SortOption => {
+    return SORT_OPTION.includes(value);
+  };
+
+  const handleFilterChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    if (isCategoryOption(e.target.value)) handleChangeCategory(e.target.value);
+  };
+
+  const handleSortingChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    if (isSortOption(e.target.value)) handleChangeSort(e.target.value);
+  };
 
   return (
     <section className={ToolBarSectionStyles}>
       <h1>bpple 상품 목록</h1>
       <div className={ProductListToolBarStyles}>
-        <FilterDropDown
-          options={["전체", "패션잡화", "식료품"]}
-          handleChange={handleFilterChange}
-        />
+        <FilterDropDown options={CATEGORY} handleChange={handleFilterChange} />
         <SortingDropDown
-          options={["낮은 가격순", "높은 가격순"]}
+          options={SORT_OPTION}
           handleChange={handleSortingChange}
         />
       </div>

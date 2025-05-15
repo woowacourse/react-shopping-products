@@ -1,5 +1,10 @@
-type Category = "식료품" | "패션잡화";
-type SortOption = "낮은 가격순" | "높은 가격순";
+import {
+  SORT_OPTION,
+  CATEGORY,
+} from "../components/ProductListToolBar/toolBar.constant";
+
+type Category = (typeof CATEGORY)[number];
+type SortOption = (typeof SORT_OPTION)[number];
 
 interface Product {
   id: number;
