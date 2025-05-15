@@ -1,3 +1,5 @@
+import { API_ERROR_MESSAGES } from "./constants/errorMessages";
+
 async function AddProductItemApi(productId: number, quantity: number) {
   const API_URL = import.meta.env.VITE_BASE_URL || "";
   const options = {
@@ -12,8 +14,11 @@ async function AddProductItemApi(productId: number, quantity: number) {
     }),
   };
   const response = await fetch(`${API_URL}/cart-items`, options);
+  if (!response.ok) {
+    throw new Error(API_ERROR_MESSAGES[response.status]);
+  }
 
-  console.log("상품추가 데이터", response);
+  return response.json();
 }
 
 export default AddProductItemApi;

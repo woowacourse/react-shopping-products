@@ -1,3 +1,4 @@
+import { API_ERROR_MESSAGES } from "./constants/errorMessages";
 import { ResponseProduct } from "./types";
 
 async function getProductList({
@@ -20,6 +21,10 @@ async function getProductList({
     }page=0&size=20`,
     options
   );
+
+  if (!response.ok) {
+    throw new Error(API_ERROR_MESSAGES[response.status]);
+  }
 
   const data = await response.json();
   return data.content;

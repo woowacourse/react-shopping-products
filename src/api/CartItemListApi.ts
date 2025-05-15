@@ -1,3 +1,4 @@
+import { API_ERROR_MESSAGES } from "./constants/errorMessages";
 import { ResponseCartItem } from "./types";
 
 async function getCartItemList(): Promise<ResponseCartItem[]> {
@@ -13,6 +14,10 @@ async function getCartItemList(): Promise<ResponseCartItem[]> {
     `${API_URL}/cart-items?page=0&size=1073741824&sort=asc`,
     options
   );
+
+  if (!response.ok) {
+    throw new Error(API_ERROR_MESSAGES[response.status]);
+  }
 
   const data = await response.json();
 
