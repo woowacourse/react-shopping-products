@@ -4,15 +4,17 @@ import ProductList from '../ProductList/ProductList';
 import { DropdownContainer, Section } from './ProductSection.styles';
 import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
 import { SortType, CategoryType } from '../../../types/product';
+import React from 'react';
+import { ProductElement } from '../../../App';
 
 interface ProductSectionProps {
   data: any;
   sort: SortType;
   category: CategoryType;
-  onFilter: () => void;
-  onSort: () => void;
-  onAddCart: () => void;
-  onRemoveCart: () => void;
+  onFilter: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onSort: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onAddCart: (product: ProductElement) => Promise<void>;
+  onRemoveCart: (product: ProductElement) => Promise<void>;
 }
 
 function ProductSection({

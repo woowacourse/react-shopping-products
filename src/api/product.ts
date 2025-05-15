@@ -1,8 +1,8 @@
-import { SortKeyType } from '../types/product';
+import { baseUrl } from './cart';
 
-export const getProduct = async (sort: SortKeyType) => {
+export const getProduct = async (sort: string) => {
   const response = await fetch(
-    `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products?page=0&size=20&sort=price,${sort}&sort=id,desc`
+    `${baseUrl}/products?page=0&size=20&sort=price,${sort}&sort=id,desc`
   );
   const data = await response.json();
 

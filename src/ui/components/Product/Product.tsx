@@ -8,21 +8,16 @@ import {
 } from './Product.styles';
 import AddButton from './AddButton';
 import RemoveButton from './RemoveButton';
+import { ProductElement } from '../../../types/product';
 
 interface ProductProps {
-  item: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl?: string;
-    isInCart: boolean;
-  };
-  onAddCart: (id: number) => void;
-  onRemoveCart: (id: number) => void;
+  item: ProductElement;
+  onAddCart: (product: ProductElement) => Promise<void>;
+  onRemoveCart: (product: ProductElement) => Promise<void>;
 }
 
 function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
-  const { id, name, price, imageUrl, isInCart } = item;
+  const { name, price, imageUrl, isInCart } = item;
 
   return (
     <Container>
@@ -34,9 +29,9 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
         <Price>{`${price.toLocaleString()}원`}</Price>
       </Detail>
       {isInCart ? (
-        <RemoveButton onClick={() => onAddCart(id)} />
+        <RemoveButton onClick={() => onAddCart(item)} />
       ) : (
-        <AddButton onClick={() => onRemoveCart(id)} />
+        <AddButton onClick={() => onRemoveCart(item)} />
       )}
     </Container>
   );

@@ -1,7 +1,9 @@
-const baseUrl =
+import { CartResponse } from '../types/product';
+
+export const baseUrl =
   'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com';
 
-export const getCartItem = async () => {
+export const getCartItem = async (): Promise<CartResponse> => {
   const response = await fetch(
     `${baseUrl}/cart-items?page=0&size=50&sort=desc`,
     {

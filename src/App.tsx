@@ -3,37 +3,39 @@ import Layout from './ui/components/Layout/Layout';
 import Header from './ui/components/Header/Header';
 import Toast from './ui/components/Toast/Toast';
 import ProductSection from './ui/components/ProductSection/ProductSection';
+import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 import { Global } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import { addCart, getCartItem, removeCart } from './api/cart';
 import { getProduct } from './api/product.ts';
-import { CategoryType, ProductType, SortType } from './types/product';
-import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner.tsx';
-
-interface ProductElement {
-  id: number;
-  cartId: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-}
+import {
+  CategoryType,
+  SortType,
+  CartResponse,
+  ProductElement,
+  CartItem,
+} from './types/product';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [data, setData] = useState<ProductElement[]>([]);
+  const [cart, setCart] = useState<CartResponse | null>(null);
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
   const [category, setCategory] = useState<CategoryType>('전체');
-  const [cart, setCart] = useState();
+
+  console.log('data', data);
+
+  const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
 
   const handleAddCart = async (product: ProductElement) => {
     await addCart(product.id, product.price);
-    await fetchData();
+    await fetchData(mappedSortType);
   };
 
   const handleRemoveCart = async (product: ProductElement) => {
     await removeCart(product.cartId);
-    await fetchData();
+    await fetchData(mappedSortType);
   };
 
   const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -51,19 +53,20 @@ function App() {
     }
   };
 
-  const fetchData = async (mappedSortType) => {
+  const fetchData = async (mappedSortType: string) => {
     setIsLoading(true);
     try {
       const product = await getProduct(mappedSortType);
       const cart = await getCartItem();
 
       const filteredCategory = product.content.filter(
-        (item: ProductType) => category === '전체' || item.category === category
+        (item: ProductElement) =>
+          category === '전체' || item.category === category
       );
 
-      const data = (filteredCategory || []).map((item) => {
+      const data = (filteredCategory || []).map((item: ProductElement) => {
         const cartProductItem = filteredCategory.find(
-          (cartItem) => cartItem.product?.id === item.id
+          (cartItem: CartItem) => cartItem.product?.id === item.id
         );
 
         return {
@@ -85,7 +88,6 @@ function App() {
   };
 
   useEffect(() => {
-    const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
     fetchData(mappedSortType);
   }, [sort, category]);
 

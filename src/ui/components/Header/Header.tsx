@@ -2,7 +2,7 @@ import { Button, Container, Icon, CartStock, Title } from './Header.styles';
 
 interface HeaderProps {
   title: string;
-  totalCartProducts: number;
+  totalCartProducts: number | null;
 }
 
 function Header({ title, totalCartProducts }: HeaderProps) {
@@ -10,7 +10,7 @@ function Header({ title, totalCartProducts }: HeaderProps) {
     <Container>
       <Title>{title}</Title>
       <Button>
-        {totalCartProducts > 0 ? (
+        {totalCartProducts && totalCartProducts > 0 ? (
           <>
             <Icon src="./cart_stock.png" alt="장바구니 아이콘" />
             <CartStock>{totalCartProducts}</CartStock>

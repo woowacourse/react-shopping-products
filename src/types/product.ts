@@ -1,9 +1,11 @@
-export interface ProductType {
+export interface ProductElement {
   id: number;
+  cartId: number;
   name: string;
-  category: string;
   price: number;
+  category: string;
   imageUrl: string;
+  isInCart: number | undefined;
 }
 
 export interface CartType {
@@ -33,7 +35,13 @@ export enum SortOrder {
 }
 
 export type SortType = '낮은 가격 순' | '높은 가격 순';
+type SortDirection = 'asc' | 'desc';
 
 export type SortKeyType = keyof typeof SortOrder;
 
 export type CategoryType = '전체' | '식료품' | '패션잡화';
+
+export const directionMap: Record<SortType, SortDirection> = {
+  '낮은 가격 순': 'asc',
+  '높은 가격 순': 'desc',
+};
