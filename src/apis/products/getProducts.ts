@@ -15,6 +15,8 @@ const sortMap = {
   "높은 가격순": "price,desc",
 };
 
+const ERROR_MESSAGE = "상품 목록을 가져오는 데 실패했습니다.";
+
 export const getProducts = async ({
   filterOption,
   sortOption,
@@ -32,7 +34,7 @@ export const getProducts = async ({
 
   const response = await httpClient.get(`/products?${url.toString()}`);
   if (!response.ok) {
-    throw new Error("상품 목록을 가져오는 데 실패했습니다.");
+    throw new Error(ERROR_MESSAGE);
   }
 
   const data = await response.json();
