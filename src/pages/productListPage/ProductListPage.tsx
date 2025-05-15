@@ -3,7 +3,11 @@ import ProductItem from '../../components/ProductItem';
 import Select from '../../components/Select';
 import * as P from './ProductListPage.styles.tsx';
 import useCartContext from '../../hooks/useCartContext';
-import { CATEGORY_OPTIONS, SELECT_SORT_OPTIONS } from '../../constants/systemConstants';
+import {
+  CATEGORY_OPTIONS,
+  SELECT_SORT_OPTIONS,
+  PRODUCT_LIST_ITEM_COUNT,
+} from '../../constants/systemConstants';
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useCartHandler from '../../hooks/useCartHandler.ts';
 import useProductHandler from '../../hooks/useProductHandler.ts';
@@ -56,7 +60,7 @@ export const ProductListPage = () => {
       </P.SelectContainer>
 
       <P.ProductItemContainer>
-        {products.map((product) => (
+        {products.slice(0, PRODUCT_LIST_ITEM_COUNT).map((product) => (
           <ProductItem
             key={product.id}
             product={product}

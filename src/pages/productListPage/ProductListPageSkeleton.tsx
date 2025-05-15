@@ -4,12 +4,10 @@ import { PRODUCT_LIST_ITEM_COUNT } from '../../constants/systemConstants';
 import { keyframes } from '@emotion/react';
 import { css } from '@emotion/react';
 
-//TODO 애니메이션 정의
-
 const ProductListPageSkeleton = () => {
   return (
-    <SkeletonContainer>
-      <SkeletonTitle></SkeletonTitle>
+    <SkeletonContainer data-testid="product-list-skeleton">
+      <SkeletonTitle />
       <P.SelectContainer>
         <SkeletonSelect />
         <SkeletonSelect />
@@ -17,7 +15,7 @@ const ProductListPageSkeleton = () => {
 
       <P.ProductItemContainer>
         {Array.from({ length: PRODUCT_LIST_ITEM_COUNT }, (_, index) => (
-          <SkeletonProductItem key={index}></SkeletonProductItem>
+          <SkeletonProductItem key={index} />
         ))}
       </P.ProductItemContainer>
     </SkeletonContainer>
