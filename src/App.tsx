@@ -5,26 +5,21 @@ import Toast from './ui/components/Toast/Toast';
 import ProductSection from './ui/components/ProductSection/ProductSection';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 import { Global } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
-import { addCart, getCartItem, removeCart } from './api/cart';
-import { getProduct } from './api/product.ts';
-import {
-  CategoryType,
-  SortType,
-  CartResponse,
-  ProductElement,
-  CartItem,
-} from './types/product';
+import React, { useState } from 'react';
+import { addCart, removeCart } from './api/cart';
+import { useProducts } from './hooks/useProducts';
+import { CategoryType, SortType, ProductElement } from './types/product';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [data, setData] = useState<ProductElement[]>([]);
-  const [cart, setCart] = useState<CartResponse | null>(null);
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
   const [category, setCategory] = useState<CategoryType>('전체');
 
   const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
+
+  const { data, cart, isLoading, isError, setIsError, fetchData } = useProducts(
+    mappedSortType,
+    category
+  );
 
   const handleAddCart = async (product: ProductElement) => {
     if (cart?.totalElements === 50) {
@@ -35,9 +30,9 @@ function App() {
 
     try {
       await addCart(product.id);
-      await fetchData(mappedSortType);
-    } catch (error) {
-      console.error('장바구니 추가 실패:', error);
+      await fetchData();
+    } catch {
+      console.error('장바구니 추가 실패');
       setIsError(true);
     }
   };
@@ -51,7 +46,7 @@ function App() {
 
     try {
       await removeCart(product.cartId);
-      await fetchData(mappedSortType);
+      await fetchData();
     } catch (error) {
       console.error('장바구니 제거 실패:', error);
       setIsError(true);
@@ -72,47 +67,6 @@ function App() {
       setSort(value);
     }
   };
-
-  const fetchData = async (mappedSortType: string) => {
-    setIsLoading(true);
-    try {
-      const product = await getProduct(mappedSortType);
-      const cart = await getCartItem();
-
-      const filteredCategory = product.content.filter(
-        (item: ProductElement) =>
-          category === '전체' || item.category === category
-      );
-
-      const data = (filteredCategory || []).map((item: ProductElement) => {
-        const cartItem = cart.content.find(
-          (cartItem: CartItem) => cartItem.product.id === item.id
-        );
-
-        return {
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          category: item.category,
-          imageUrl: item.imageUrl,
-          isInCart: cartItem ? 1 : 0,
-          cartId: cartItem ? cartItem.id : undefined,
-        };
-      });
-
-      setData(data);
-      setCart(cart);
-    } catch (e) {
-      setIsError(true);
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData(mappedSortType);
-  }, [sort, category]);
 
   return (
     <>
