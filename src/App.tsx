@@ -1,75 +1,42 @@
 import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
-import { getProducts } from "./apis/product";
+import { useState } from "react";
 import Button from "./components/Button";
 import Card from "./components/Card";
 import Header from "./components/Header";
 import AddCart from "./components/icons/AddCart";
 import Select from "./components/Select";
 import Text from "./components/Text";
-import { Content } from "./types/product";
-import { deleteCartItems, getCartItems, postCartItems } from "./apis/cartItem";
 import RemoveCart from "./components/icons/RemoveCart";
-import { GetCartItemsResponse } from "./types/cartItem";
 import Spinner from "./components/Spinner";
 import ErrorPopup from "./components/ErrorPopup";
+import useProducts from "./hooks/useProducts";
+import useCartItems from "./hooks/useCartItems";
 
 function App() {
   const [filter, setFilter] = useState("전체");
   const [sort, setSort] = useState("높은 가격순");
-  const [products, setProducts] = useState<Content[]>();
-  const [cartItems, setCartItems] = useState<GetCartItemsResponse>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
 
-  const getProduct = async () => {
-    try {
-      const data = await getProducts({ page: 0, size: 20 });
-      setProducts(data.content);
-    } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
-    }
-  };
+  const { products, isProductsLoading, productsErrorMessage, setProductsErrorMessage } = useProducts();
+  const {
+    cartItems,
+    isCartItemsLoading,
+    cartItemsErrorMessage,
+    setCartItemsErrorMessage,
+    addCart,
+    removeCart,
+    cartItemIds,
+  } = useCartItems();
 
-  const getCartItem = async () => {
-    try {
-      const data = await getCartItems({ page: 0, size: 20 });
-      setCartItems(data);
-    } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
-    }
-  };
-
-  const cartItemIds = cartItems && Object.fromEntries(cartItems?.content.map((item) => [item.product.id, item.id]));
-
-  const handleAddCart = async (id: number) => {
-    try {
-      await postCartItems({ quantity: 1, productId: id });
-      await getCartItem();
-    } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
-    }
-  };
-
-  const handleRemoveCart = async (id: number) => {
-    try {
-      await deleteCartItems({ productId: id });
-      await getCartItem();
-    } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
-    }
-  };
-
-  useEffect(() => {
-    Promise.all([getProduct(), getCartItem()]).then(() => {
-      setIsLoading(false);
-    });
-  }, []);
-
-  if (isLoading) return <Spinner />;
+  if (isProductsLoading || isCartItemsLoading) return <Spinner />;
   return (
     <div css={appStyle}>
-      {errorMessage && <ErrorPopup errorMessage={errorMessage} setErrorMessage={setErrorMessage} />}
+      {productsErrorMessage && (
+        <ErrorPopup errorMessage={productsErrorMessage} setErrorMessage={setProductsErrorMessage} />
+      )}
+      {cartItemsErrorMessage && (
+        <ErrorPopup errorMessage={cartItemsErrorMessage} setErrorMessage={setCartItemsErrorMessage} />
+      )}
+
       <Header shoppingCount={cartItems?.content?.length} />
       <div css={containerStyle}>
         <Text variant="title-1">bpple 상품 목록</Text>
@@ -103,12 +70,12 @@ function App() {
                   </div>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     {cartItemIds && cartItemIds[product.id] ? (
-                      <Button backgroundColor="#fff" onClick={() => handleRemoveCart(cartItemIds[product.id])}>
+                      <Button backgroundColor="#fff" onClick={() => removeCart(cartItemIds[product.id])}>
                         <RemoveCart />
                         <Text variant="body-2">빼기</Text>
                       </Button>
                     ) : (
-                      <Button onClick={() => handleAddCart(product.id)}>
+                      <Button onClick={() => addCart(product.id)}>
                         <AddCart />
                         <Text variant="body-2" color="#fff">
                           담기

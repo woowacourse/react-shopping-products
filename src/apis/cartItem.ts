@@ -21,13 +21,16 @@ export const getCartItems = async ({ page, size, sort = "asc" }: GetCartItemsPar
       Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
     },
   });
+  if (!response.ok) {
+    throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+  }
   const data = await response.json();
 
   return data;
 };
 
 export const postCartItems = async ({ productId, quantity }: PostCartItemsParams) => {
-  await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
     method: "POST",
 
     headers: {
@@ -39,14 +42,20 @@ export const postCartItems = async ({ productId, quantity }: PostCartItemsParams
       quantity,
     }),
   });
+  if (!response.ok) {
+    throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+  }
 };
 
 export const deleteCartItems = async ({ productId }: DeleteCartItemsParams) => {
-  await fetch(`${import.meta.env.VITE_API_URL}/cart-items/${productId}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items/${productId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
       "Content-Type": "application/json",
     },
   });
+  if (!response.ok) {
+    throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+  }
 };
