@@ -50,6 +50,7 @@ function ProductsPage() {
   const [itemCount, setItemCount] = useState(0);
   const [isErrorAddCardItem, setIsErrorAddCardItem] = useState(false);
   const [isErrorDeleteCardItem, setIsErrorDeleteCardItem] = useState(false);
+  const [isOverItemCounts, setIsOverItemCounts] = useState(false);
 
   const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSort(SORT[e.target.value]);
@@ -77,6 +78,15 @@ function ProductsPage() {
   };
 
   const handleAddCartItem = async ({ productId, quantity }: AddCartItemType) => {
+    if (itemCount >= 3) {
+      setIsOverItemCounts(true);
+      setTimeout(() => {
+        setIsOverItemCounts(false);
+      }, 3000);
+
+      return;
+    }
+
     const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
       method: 'POST',
       headers: {
@@ -152,6 +162,9 @@ function ProductsPage() {
       {isErrorProducts && <Toast text="상품 정보를 불러오지 못했습니다." varient="error" />}
       {isErrorAddCardItem && <Toast text="장바구니에 상품을 담지 못했습니다." varient="error" />}
       {isErrorDeleteCardItem && <Toast text="장바구니에 상품을 빼지 못했습니다." varient="error" />}
+      {isOverItemCounts && (
+        <Toast text="장바구니는 최대 50개의 상품을 담을 수 있습니다." varient="error" />
+      )}
     </div>
   );
 }
