@@ -106,7 +106,7 @@ function App() {
                   imageUrl={imageUrl}
                   name={name}
                   price={price}
-                  isAdd={cartItemIds.some(
+                  isAdded={cartItemIds.some(
                     (productInfo) => productInfo.productId === id
                   )}
                   handleCartItemToggle={() => handleCartItemToggle(id)}

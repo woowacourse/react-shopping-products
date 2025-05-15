@@ -5,7 +5,7 @@ interface ProductItemProps {
   imageUrl: string;
   name: string;
   price: number;
-  isAdd: boolean;
+  isAdded: boolean;
   handleCartItemToggle: () => void;
 }
 
@@ -13,7 +13,7 @@ const ProductItem = ({
   imageUrl,
   name,
   price,
-  isAdd,
+  isAdded,
   handleCartItemToggle,
 }: ProductItemProps) => {
   return (
@@ -22,7 +22,10 @@ const ProductItem = ({
       <S.ProductWrapper>
         <S.ProductName data-testid="product-name">{name}</S.ProductName>
         <S.ProductPrice data-testid="product-price">{price}</S.ProductPrice>
-        <CartItemButton isAdd={isAdd} onToggleCartItem={handleCartItemToggle} />
+        <CartItemButton
+          isAdded={isAdded}
+          onToggleCartItem={handleCartItemToggle}
+        />
       </S.ProductWrapper>
     </S.ProductContainer>
   );
