@@ -136,6 +136,10 @@ function ProductsPage() {
     }
   }, [carts]);
 
+  if (isLoadingCarts) {
+    return <div>로딩중...</div>;
+  }
+
   return (
     <div className={productPageContainer}>
       <Header itemCount={itemCount} />
