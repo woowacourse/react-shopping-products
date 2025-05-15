@@ -1,5 +1,6 @@
-import * as S from "./ErrorBox.styled";
-import { useEffect, useState } from "react";
+import { TOAST_DURATION_TIME } from '../../../constants/constants';
+import * as S from './ErrorBox.styled';
+import { useEffect, useState } from 'react';
 
 interface ErrorBoxProps {
   backgroundColor: string;
@@ -14,7 +15,7 @@ function ErrorBox({ backgroundColor, text }: ErrorBoxProps) {
       setIsOpen(true);
       const timer = setTimeout(() => {
         setIsOpen(false);
-      }, 2000);
+      }, TOAST_DURATION_TIME);
 
       return () => clearTimeout(timer);
     }

@@ -1,9 +1,9 @@
-import * as S from "./ProductControl.styled";
-import Select from "../common/Select/Select";
-import { CategoryOptions, SortOptions } from "../../constants/selectOptions";
-import { Dispatch, SetStateAction, useState } from "react";
-import { ResponseProduct } from "../../api/types";
-import getProductList from "../../api/ProductListApi";
+import * as S from './ProductControl.styled';
+import Select from '../common/Select/Select';
+import getProductList from '../../api/ProductListApi';
+import { CategoryOptions, SortOptions } from '../../constants/selectOptions';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { ResponseProduct } from '../../api/types';
 
 function ProductControl({
   setProductList,
@@ -12,8 +12,8 @@ function ProductControl({
   setProductList: Dispatch<SetStateAction<ResponseProduct[]>>;
   setErrorMessage: (message: string) => void;
 }) {
-  const [category, setCategory] = useState<string>("");
-  const [sort, setSort] = useState<string>("");
+  const [category, setCategory] = useState<string>('');
+  const [sort, setSort] = useState<string>('');
 
   async function handleCategoryChange(category: string) {
     try {
