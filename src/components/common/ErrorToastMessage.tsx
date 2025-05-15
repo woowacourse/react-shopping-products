@@ -1,31 +1,26 @@
 import styled from '@emotion/styled';
-import Flex from './Flex';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useShopErrorContext } from '../../pages/shop/context/useShopErrorContext';
+import Flex from './Flex';
 
 function ErrorToastMessage() {
   const [toast, setToast] = useState(true);
-  const { handleErrorFalse } = useShopErrorContext();
+  const { errorMessage, handleErrorFalse } = useShopErrorContext();
 
   useEffect(() => {
     setTimeout(() => {
       setToast(false);
       handleErrorFalse();
     }, 3000);
-  }, []);
+  }, [handleErrorFalse]);
 
-  const showErrorToast = useCallback(
-    () => (
+  return (
+    toast && (
       <Container>
-        <ErrorText>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</ErrorText>
+        <ErrorText>{errorMessage}</ErrorText>
       </Container>
-    ),
-    []
+    )
   );
-
-  const hideErrorToast = useCallback(() => null, []);
-
-  return toast ? showErrorToast() : hideErrorToast();
 }
 
 const Container = styled(Flex)`

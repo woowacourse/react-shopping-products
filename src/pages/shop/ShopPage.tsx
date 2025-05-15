@@ -20,7 +20,6 @@ function ShopPage() {
     sort: { label: '낮은 가격순', value: 'asc' },
   });
   const { isError } = useShopErrorContext();
-
   const { cartList } = useCartContext();
 
   const handleCategoryOption = (option: DropdownOptionType) => {

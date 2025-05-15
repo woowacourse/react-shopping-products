@@ -1,4 +1,10 @@
-import { createContext, useCallback, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { baseAPI } from '../api/baseAPI';
 import { CartData } from '../api/type';
 import { convertResponseToCart } from '../components/features/product/responseMapper';
@@ -7,11 +13,9 @@ import { useShopErrorContext } from '../pages/shop/context/useShopErrorContext';
 
 export const CartContext = createContext<{
   cartList: Cart[];
+  cartCount: number;
   refetch: () => void;
-}>({
-  cartList: [],
-  refetch: () => {},
-});
+} | null>(null);
 
 function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartList, setCartList] = useState<Cart[]>([]);
@@ -33,7 +37,7 @@ function CartProvider({ children }: { children: React.ReactNode }) {
       if (cartsData) setCartList(cartsData);
       handleErrorFalse();
     } catch (e) {
-      handleErrorTrue();
+      handleErrorTrue('장바구니를 불러오는 데 실패했습니다.');
     }
   }, [handleErrorTrue, handleErrorFalse]);
 
@@ -45,8 +49,10 @@ function CartProvider({ children }: { children: React.ReactNode }) {
     getShoppingCartDataHandler();
   }, [getShoppingCartDataHandler]);
 
+  const cartCount = useMemo(() => cartList.length, [cartList]);
+
   return (
-    <CartContext.Provider value={{ cartList, refetch }}>
+    <CartContext.Provider value={{ cartList, cartCount, refetch }}>
       {children}
     </CartContext.Provider>
   );
