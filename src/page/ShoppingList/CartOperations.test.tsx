@@ -3,6 +3,8 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import ShoppingList from './index';
 import { CartItem } from '../../types/common';
 import { Product } from '../../types/common';
+import { cartApi } from '../../api/cart';
+import { apiRequest } from '../../api';
 
 const mockProducts = {
   content: [
@@ -20,9 +22,19 @@ const mockCartItems = {
   content: [] as CartItem[],
 };
 
-const originalFetch = global.fetch;
-
 const mockOpenToast = vi.fn();
+
+vi.mock('../../api', () => ({
+  apiRequest: vi.fn(),
+}));
+
+vi.mock('../../api/cart', () => ({
+  cartApi: {
+    getCartItems: vi.fn(),
+    addToCart: vi.fn(),
+    removeFromCart: vi.fn(),
+  },
+}));
 
 vi.mock('../../component/@common/Toast/context', () => ({
   useToast: () => ({
@@ -38,64 +50,43 @@ vi.mock('react-dom', () => ({
 
 describe('ShoppingList 장바구니 기능', () => {
   beforeEach(() => {
-    global.fetch = vi.fn().mockImplementation((url, options) => {
-      if (url.includes('/products') && !options?.method) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockProducts),
-        });
+    vi.resetAllMocks();
+
+    vi.mocked(apiRequest).mockImplementation((endpoint) => {
+      if (endpoint.includes('/products')) {
+        return Promise.resolve(mockProducts);
+      } else if (endpoint.includes('/cart-items')) {
+        return Promise.resolve(mockCartItems);
       }
-
-      if (url.includes('/cart-items') && !options?.method) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockCartItems),
-        });
-      }
-
-      if (url.includes('/cart-items') && options?.method === 'POST') {
-        const body = JSON.parse(options.body as string);
-        const product = mockProducts.content.find(
-          (p) => p.id === body.productId
-        );
-
-        if (product) {
-          mockCartItems.content.push({
-            id: Date.now(),
-            product: product,
-            quantity: body.quantity,
-          });
-        }
-
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({ success: true }),
-        });
-      }
-
-      if (url.includes('/cart-items/') && options?.method === 'DELETE') {
-        const id = Number(url.split('/').pop());
-        mockCartItems.content = mockCartItems.content.filter(
-          (item) => item.id !== id
-        );
-
-        return Promise.resolve({
-          ok: true,
-        });
-      }
-
-      return Promise.reject(new Error('Not found'));
+      return Promise.resolve({});
     });
 
-    vi.stubEnv('VITE_API_BASE_URL', 'http://test-api.com');
-    vi.stubEnv('VITE_API_KEY', 'test-api-key');
+    vi.mocked(cartApi.getCartItems).mockResolvedValue(mockCartItems.content);
+    vi.mocked(cartApi.addToCart).mockImplementation(async (productId) => {
+      const product = mockProducts.content.find((p) => p.id === productId);
+      if (product) {
+        const newItem = {
+          id: Date.now(),
+          product: product,
+          quantity: 1,
+        };
+        mockCartItems.content.push(newItem);
+        return newItem;
+      }
+      throw new Error('상품을 찾을 수 없습니다');
+    });
+
+    vi.mocked(cartApi.removeFromCart).mockImplementation(async (cartItemId) => {
+      mockCartItems.content = mockCartItems.content.filter(
+        (item) => item.id !== cartItemId
+      );
+      return Promise.resolve();
+    });
 
     mockOpenToast.mockClear();
   });
 
   afterEach(() => {
-    global.fetch = originalFetch;
-    vi.unstubAllEnvs();
     vi.resetAllMocks();
     mockCartItems.content = [];
   });
@@ -115,22 +106,10 @@ describe('ShoppingList 장바구니 기능', () => {
     fireEvent.click(addButton);
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        'http://test-api.com/cart-items',
-        expect.objectContaining({
-          method: 'POST',
-          body: JSON.stringify({
-            productId: 1,
-            quantity: 1,
-          }),
-        })
-      );
+      expect(cartApi.addToCart).toHaveBeenCalledWith(1);
     });
 
-    expect(global.fetch).toHaveBeenCalledWith(
-      'http://test-api.com/cart-items?page=0&size=20',
-      expect.anything()
-    );
+    expect(cartApi.getCartItems).toHaveBeenCalled();
   });
 
   it('장바구니에서 상품을 제거한다', async () => {
@@ -142,55 +121,29 @@ describe('ShoppingList 장바구니 기능', () => {
       },
     ];
 
+    vi.mocked(cartApi.getCartItems).mockResolvedValue(mockCartItems.content);
+
     render(<ShoppingList />);
 
     await waitFor(() => {
-      expect(screen.getByText('상품 1')).toBeTruthy();
+      const removeButton = screen.queryByText('빼기');
+      expect(removeButton).toBeTruthy();
     });
 
     vi.clearAllMocks();
 
     const removeButton = screen.getByText('빼기');
-    expect(removeButton).toBeTruthy();
-
     fireEvent.click(removeButton);
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        'http://test-api.com/cart-items/1',
-        expect.objectContaining({
-          method: 'DELETE',
-        })
-      );
+      expect(cartApi.removeFromCart).toHaveBeenCalledWith(1);
     });
 
-    expect(global.fetch).toHaveBeenCalledWith(
-      'http://test-api.com/cart-items?page=0&size=20',
-      expect.anything()
-    );
+    expect(cartApi.getCartItems).toHaveBeenCalled();
   });
 
   it('장바구니 추가 실패 시 에러 처리가 된다', async () => {
-    global.fetch = vi.fn().mockImplementation((url, options) => {
-      if (url.includes('/products')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockProducts),
-        });
-      } else if (url.includes('/cart-items') && !options?.method) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({ content: [] }),
-        });
-      } else if (url.includes('/cart-items') && options?.method === 'POST') {
-        return Promise.resolve({
-          ok: false,
-          status: 500,
-        });
-      }
-
-      return Promise.reject(new Error('Not found'));
-    });
+    vi.mocked(cartApi.addToCart).mockRejectedValueOnce(new Error('API 오류'));
 
     render(<ShoppingList />);
 
