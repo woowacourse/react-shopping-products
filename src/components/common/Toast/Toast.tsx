@@ -1,41 +1,13 @@
-import { css } from '@emotion/css';
+import { toastContainer } from './Toast.style';
 
-type ToastVarientType = 'success' | 'error';
+export type ToastVarientType = 'success' | 'error';
 
 type ToastProps = {
   text: string;
   varient: ToastVarientType;
 };
 
-type ToastStyleProps = Omit<ToastProps, 'text'>;
-
-const getBackground = (varient: ToastVarientType) => {
-  switch (varient) {
-    case 'success': {
-      return '#d1fcba';
-    }
-    case 'error': {
-      return '#ffc9c9';
-    }
-    default: {
-      return '#ffffff';
-    }
-  }
-};
-
-const toastContainer = ({ varient }: ToastStyleProps) => css`
-  background-color: ${getBackground(varient)};
-  position: fixed;
-  width: inherit;
-  height: 40px;
-  top: 64px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 15px;
-`;
+export type ToastStyleProps = Omit<ToastProps, 'text'>;
 
 function Toast({ text, varient }: ToastProps) {
   return <div className={toastContainer({ varient })}>{text}</div>;

@@ -1,4 +1,3 @@
-import { css } from '@emotion/css';
 import SelectBox from '../../components/common/SelectBox/SelectBox';
 import Header from '../../components/Header/Header';
 import { useEffect, useState } from 'react';
@@ -8,30 +7,12 @@ import { CATEGORY } from '../../constants/products';
 import useGetCarts from '../../hooks/useGetCartItems';
 import { AddCartItemType } from '../../types/cartItem';
 import Toast from '../../components/common/Toast/Toast';
-
-const productPageContainer = css`
-  width: 429px;
-  margin: 0 auto;
-  padding-top: 64px;
-`;
-
-const productWrapper = css`
-  padding: 20px;
-`;
-
-const productPageTitle = css`
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 100%;
-  margin: 10px 0px;
-`;
-
-const selectBoxContainer = css`
-  display: flex;
-  gap: 150px;
-  justify-content: space-between;
-  margin: 20px 0px;
-`;
+import {
+  productPageContainer,
+  productWrapper,
+  productPageTitle,
+  selectBoxContainer,
+} from './ProductsPage.style';
 
 const SORT: { [key: string]: string } = {
   '낮은 가격 순': 'asc',

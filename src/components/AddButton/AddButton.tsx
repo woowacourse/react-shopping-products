@@ -1,12 +1,5 @@
-import { css } from '@emotion/css';
 import Button from '../common/Button/Button';
-
-const addButton = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-`;
+import { addButton } from './AddButton.style';
 
 function AddButton({ onClick }: { onClick: () => void }) {
   return (

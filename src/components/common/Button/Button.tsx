@@ -1,4 +1,4 @@
-import { css } from '@emotion/css';
+import { button } from './Button.style';
 
 type ButtonProps = {
   backgroundColor?: string;
@@ -7,16 +7,7 @@ type ButtonProps = {
   children: React.ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-type ButtonStyleProps = Omit<ButtonProps, 'children'>;
-
-const button = ({ backgroundColor, radius, color }: ButtonStyleProps) => css`
-  background-color: ${backgroundColor};
-  border-radius: ${radius};
-  color: ${color};
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-`;
+export type ButtonStyleProps = Omit<ButtonProps, 'children'>;
 
 function Button({
   backgroundColor = 'inherit',

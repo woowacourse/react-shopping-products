@@ -1,14 +1,8 @@
-import { css } from '@emotion/css';
 import { ProductDataType } from '../../types/product';
 import Product from '../Product/Product';
 import { AddCartItemType } from '../../types/cartItem';
 import { ProductListSkeleton } from '../Skeleton/Skeleton';
-
-const ProductListContainer = css`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-`;
+import { ProductListContainer } from './ProductList.style';
 
 type ProductListProps = {
   isLoadingProducts: boolean;

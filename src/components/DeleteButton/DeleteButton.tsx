@@ -1,12 +1,5 @@
-import { css } from '@emotion/css';
 import Button from '../common/Button/Button';
-
-const deleteButton = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-`;
+import { deleteButton } from './DeleteButton.style';
 
 function DeleteButton({ onClick }: { onClick: () => void }) {
   return (
