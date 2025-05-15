@@ -9,7 +9,7 @@ import {
 import ProductContent from ".";
 import { FilterOption, SortOption } from "./ProductContent.type";
 
-const { mockProductItems } = vi.hoisted(() => {
+let { mockProductItems } = vi.hoisted(() => {
   return {
     mockProductItems: [
       {
@@ -131,5 +131,25 @@ describe("ProductContent Component", () => {
 
   it("정렬을 높은 가격 순으로 하면 상품 목록은 우비 > 토마토 > 메이토 순서로 렌더링된다.", async () => {
     await testProductSorting("높은 가격순", ["우비", "토마토", "메이토"]);
+  });
+
+  it("등록된 상품이 없을 때 상품 목록 리스트가 렌더링되지 않고 대체 텍스트가 렌더링된다.", async () => {
+    mockProductItems = [];
+    await act(async () => {
+      render(<ProductContent cartItems={[]} setCartItems={() => {}} />);
+    });
+
+    const list = screen.queryByRole("list");
+    expect(list).not.toBeInTheDocument();
+
+    expect(screen.getByText("등록된 상품이 없습니다.")).toBeInTheDocument();
+  });
+
+  it("등록된 상품이 없을 때 상품 목록 리스트가 렌더링되지 않고 대체 텍스트가 렌더링된다.", async () => {
+    render(<ProductContent cartItems={[]} setCartItems={() => {}} />);
+
+    expect(
+      screen.getByText("상품 목록을 가져오는 중 입니다...")
+    ).toBeInTheDocument();
   });
 });
