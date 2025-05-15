@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { css } from '@emotion/react';
 
 import { AppLayout } from '@/shared/components/AppLayout';
@@ -7,15 +6,14 @@ import { Header } from '@/shared/components/Header';
 import { Loading } from '@/shared/components/Loading';
 import { Text } from '@/shared/components/Text';
 
-import { ProductItem } from './components/ProductItem';
-import { ShoppingBag } from './components/ShoppingBag';
-import { CATEGORY, PRICE } from './constants/product';
-import { ProductListContainer } from './container/ProductListContainer';
-import { useShopping } from './hooks/useShopping';
+import { Select } from '../../../shared/components/Select/index';
+import { ProductItem } from '../components/ProductItem';
+import { ShoppingBag } from '../components/ShoppingBag';
+import { CATEGORY, PRICE } from '../constants/product';
+import { ProductListContainer } from '../container/ProductListContainer';
+import { useShopping } from '../hooks/useShopping';
 
-import { Select } from '../../shared/components/Select/index';
-
-export const ProductList = () => {
+export const ProductListPage = () => {
   const {
     cartData,
     filteredData,
@@ -116,7 +114,6 @@ export const ProductList = () => {
                 {filteredData.map((item) => (
                   <ProductItem
                     key={item.id}
-                    id={item.id}
                     isChecked={item.isChecked}
                     name={item.name}
                     price={item.price}

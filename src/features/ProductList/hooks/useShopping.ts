@@ -4,7 +4,7 @@ import { useCart } from './useCart';
 import { useProductList } from './useProductList';
 
 export const useShopping = () => {
-  const { isLoading: isCartLoading, cartData, addToCart, deleteFromCart } = useCart();
+  const { cartData, addToCart, deleteFromCart } = useCart();
   const {
     isLoading: isProductLoading,
     product,
@@ -41,7 +41,7 @@ export const useShopping = () => {
   return {
     cartData,
     filteredData: data,
-    isLoading: isCartLoading || isProductLoading,
+    isLoading: isProductLoading,
     toggleCartItem,
     categorySelect,
     priceSelect,
