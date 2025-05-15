@@ -11,6 +11,14 @@ import TitleContainer from "../component/TitleContainer/titleContainer";
 import { getCartItem } from "../api/cartItem";
 import Toast from "../component/Toast/Toast";
 
+interface ProductItem {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+}
+
 const pageLayout = css`
   display: flex;
   flex-direction: column;
@@ -51,13 +59,15 @@ const cartItemCount = css`
   height: 19px;
 `;
 
-interface ProductItem {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
+const loadingLayout = css`
+  display: grid;
+  grid-column: span 2;
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 500;
+`;
+
 export interface CartItem {
   id: number;
   quantity: number;
@@ -135,27 +145,36 @@ export default function ShopPage() {
         )}
       </Header>
       <Body>
-        <TitleContainer title="bpple 상품 목록">
-          <div css={selectorBoxLayout}>
-            <Selector
-              dropDownOptions={dropdownOptions}
-              placeholder="전체"
-              onSelectChange={(value: CategoryOption) =>
-                setCategoryValue(value)
-              }
+        {productList.length !== 0 ? (
+          <>
+            <TitleContainer title="bpple 상품 목록">
+              <div css={selectorBoxLayout}>
+                <Selector
+                  dropDownOptions={dropdownOptions}
+                  placeholder="전체"
+                  onSelectChange={(value: CategoryOption) =>
+                    setCategoryValue(value)
+                  }
+                />
+                <Selector
+                  dropDownOptions={filterOptions}
+                  placeholder="낮은 가격순"
+                  onSelectChange={(value: FilterOption) =>
+                    setFilterValue(value)
+                  }
+                />
+              </div>
+            </TitleContainer>
+
+            <ProductContainer
+              products={productList}
+              cartItemList={cartItemList}
+              onChange={updateCardItemList}
             />
-            <Selector
-              dropDownOptions={filterOptions}
-              placeholder="낮은 가격순"
-              onSelectChange={(value: FilterOption) => setFilterValue(value)}
-            />
-          </div>
-        </TitleContainer>
-        <ProductContainer
-          products={productList}
-          cartItemList={cartItemList}
-          onChange={updateCardItemList}
-        />
+          </>
+        ) : (
+          <div css={loadingLayout}>로딩중입니다</div>
+        )}
       </Body>
     </div>
   );
