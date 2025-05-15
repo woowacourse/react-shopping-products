@@ -45,19 +45,19 @@ export default function ProductItem({
           <StyledPrice>{price.toLocaleString('ko')}원</StyledPrice>
         </StyledProductInfo>
         <StyledButtonWrapper>
-          <StyledButton isItemInCart={isItemInCart} onClick={handleItemClick}>
+          <StyledButton isItemInCart={!isItemInCart} onClick={handleItemClick}>
             <StyledImg
               src={
-                isItemInCart
+                !isItemInCart
                   ? '/addShoppingCartIcon.png'
                   : '/removeShoppingCartIcon.png'
               }
               alt={
-                isItemInCart ? 'addShoppingCartIcon' : 'removeShoppingCartIcon'
+                !isItemInCart ? 'addShoppingCartIcon' : 'removeShoppingCartIcon'
               }
             ></StyledImg>
             <StyledButtonText>
-              {isItemInCart ? '담기' : '빼기'}
+              {!isItemInCart ? '담기' : '빼기'}
             </StyledButtonText>
           </StyledButton>
         </StyledButtonWrapper>
