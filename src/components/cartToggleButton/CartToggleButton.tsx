@@ -23,41 +23,32 @@ function CartToggleButton({
   setErrorTrue,
   fetchCartProducts,
 }: CartToggleButtonProps) {
+  const buttonProps = isAdded
+    ? {
+        label: "빼기",
+        icon: "/removeCart.svg",
+        onClick: () =>
+          removeItemToCart({ cartId, productId, setCartItemIds, setErrorTrue }),
+        styles: [ButtonContainer, RemoveButton],
+      }
+    : {
+        label: "담기",
+        icon: "/addCart.svg",
+        onClick: () =>
+          addItemToCart({
+            productId,
+            cartAmount,
+            fetchCartProducts,
+            setErrorTrue,
+          }),
+        styles: ButtonContainer,
+      };
+
   return (
-    <>
-      {isAdded && (
-        <button
-          css={[ButtonContainer, RemoveButton]}
-          onClick={() =>
-            removeItemToCart({
-              cartId,
-              setErrorTrue,
-              productId,
-              setCartItemIds,
-            })
-          }
-        >
-          <img src="/removeCart.svg" alt="담기 아이콘" />
-          <p>빼기</p>
-        </button>
-      )}
-      {!isAdded && (
-        <button
-          css={ButtonContainer}
-          onClick={() =>
-            addItemToCart({
-              cartAmount,
-              setErrorTrue,
-              productId,
-              fetchCartProducts,
-            })
-          }
-        >
-          <img src="/addCart.svg" alt="담기 아이콘" />
-          <p>담기</p>
-        </button>
-      )}
-    </>
+    <button css={buttonProps.styles} onClick={buttonProps.onClick}>
+      <img src={buttonProps.icon} alt={`${buttonProps.label} 아이콘`} />
+      <p>{buttonProps.label}</p>
+    </button>
   );
 }
 
