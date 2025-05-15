@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import Flex from '../../../common/Flex';
+import { Flex } from '../../../common';
 import AddCartButton from './AddCartButton';
 import { baseAPI } from '../../../../api/baseAPI';
 import DeleteCartButton from './DeleteCartButton';
 import { useCartContext } from '../../../../context/useCartContext';
-import { useShopErrorContext } from '../../../../pages/shop/context/useShopErrorContext';
+import { useShopErrorContext } from '../../../../shop/context/useShopErrorContext';
 
 interface ProductProps {
   id: string;

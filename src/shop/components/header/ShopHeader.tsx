@@ -1,4 +1,4 @@
-import Header from '../../common/Header';
+import Header from '../../../components/common/Header';
 import CartButton from './CartButton';
 
 function ShopHeader({ itemsCount }: { itemsCount: number }) {

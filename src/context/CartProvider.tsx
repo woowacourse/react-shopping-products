@@ -9,7 +9,7 @@ import { baseAPI } from '../api/baseAPI';
 import { CartData } from '../api/type';
 import { convertResponseToCart } from '../components/features/product/responseMapper';
 import { Cart } from '../components/features/product/type';
-import { useShopErrorContext } from '../pages/shop/context/useShopErrorContext';
+import { useShopErrorContext } from '../shop/context/useShopErrorContext';
 
 export const CartContext = createContext<{
   cartList: Cart[];

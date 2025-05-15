@@ -1,18 +1,17 @@
-import { Suspense, useState } from 'react';
-import Dropdown, { DropdownOptionType } from '../../components/common/Dropdown';
-import ShopHeader from '../../components/features/header/ShopHeader';
-import ProductList from '../../components/features/product/product-list/ProductList';
-import Flex from '../../components/common/Flex';
 import styled from '@emotion/styled';
+import { Suspense, useState } from 'react';
 import { baseAPI } from '../../api/baseAPI';
 import { ProductData } from '../../api/type';
-import Loading from '../../components/common/Loading';
 import { wrapPromise } from '../../api/wrapPromise';
-import { Product } from '../../components/features/product/type';
+import { ErrorToastMessage, Flex, Loading } from '../../components/common';
+import { DropdownOptionType } from '../../components/common/Dropdown';
+import ProductList from '../../components/features/product/product-list/ProductList';
 import { convertResponseToProduct } from '../../components/features/product/responseMapper';
+import { Product } from '../../components/features/product/type';
 import { useCartContext } from '../../context/useCartContext';
-import ErrorToastMessage from '../../components/common/ErrorToastMessage';
-import { useShopErrorContext } from './context/useShopErrorContext';
+import ShopFilter from '../../shop/components/filter/ShopFilter';
+import ShopHeader from '../../shop/components/header/ShopHeader';
+import { useShopErrorContext } from '../../shop/context/useShopErrorContext';
 
 function ShopPage() {
   const [filterOption, setFilterOption] = useState({
@@ -61,25 +60,11 @@ function ShopPage() {
       <ProductListContainer>
         <ListTitleBox>
           <ListTitle>Apple 상품 목록</ListTitle>
-          <Flex flexDirection="row" justifyContent="space-between">
-            <Dropdown
-              options={[
-                { label: '전체', value: '전체' },
-                { label: '식료품', value: '식료품' },
-                { label: '패션잡화', value: '패션잡화' },
-              ]}
-              selectedValue={filterOption.category}
-              onSelectHandler={handleCategoryOption}
-            />
-            <Dropdown
-              options={[
-                { label: '낮은 가격순', value: 'asc' },
-                { label: '높은 가격순', value: 'desc' },
-              ]}
-              selectedValue={filterOption.sort}
-              onSelectHandler={handleSortOption}
-            />
-          </Flex>
+          <ShopFilter
+            filterOption={filterOption}
+            handleCategoryOption={handleCategoryOption}
+            handleSortOption={handleSortOption}
+          />
         </ListTitleBox>
         <Suspense fallback={<Loading />}>
           <ProductList
