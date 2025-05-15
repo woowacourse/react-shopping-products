@@ -145,7 +145,7 @@ describe("ProductContent Component", () => {
     expect(screen.getByText("등록된 상품이 없습니다.")).toBeInTheDocument();
   });
 
-  it("등록된 상품이 없을 때 상품 목록 리스트가 렌더링되지 않고 대체 텍스트가 렌더링된다.", async () => {
+  it("상품 목록을 불러오는 중일 때 로딩 메시지가 표시된다.", async () => {
     render(<ProductContent cartItems={[]} setCartItems={() => {}} />);
 
     expect(
