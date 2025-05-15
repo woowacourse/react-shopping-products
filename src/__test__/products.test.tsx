@@ -1,6 +1,6 @@
 import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {describe, it, vi, beforeEach, expect} from 'vitest';
+import {describe, it, vi, beforeEach, expect, Mock} from 'vitest';
 import * as productAPI from '../features/products/api/getProducts';
 import * as cartAPI from '../features/cart/api/getCartProduct';
 import App from '../App';
@@ -31,9 +31,11 @@ vi.mock('../features/cart/api/getCartProduct', () => ({
 
 describe('GET Products', () => {
   beforeEach(() => {
-    productAPI.getProducts.mockResolvedValue(generateMockProducts(20));
+    (productAPI.getProducts as Mock).mockResolvedValue(
+      generateMockProducts(20)
+    );
 
-    cartAPI.getCartProduct.mockResolvedValue(mockCartResponse);
+    (cartAPI.getCartProduct as Mock).mockResolvedValue(mockCartResponse);
   });
 
   it('products GET 요청시 화면에 ProductList가 보인다.', async () => {
@@ -63,7 +65,7 @@ describe('GET Products', () => {
 
 describe('카테고리 필터링 테스트', () => {
   beforeEach(() => {
-    productAPI.getProducts.mockImplementation(({sortValue}) => {
+    (productAPI.getProducts as Mock).mockImplementation(({sortValue}) => {
       const products = generateMockProducts(20);
       if (sortValue === '낮은 가격순') {
         products.content.sort((a, b) => a.price - b.price);
