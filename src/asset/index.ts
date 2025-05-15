@@ -1,5 +1,7 @@
-export const IconArrowDown = '../../public/icon/ic_arrow_down.svg';
-export const IconLogo = '../../public/icon/ic_logo.svg';
-export const IconCart = '../../public/icon/ic_cart.svg';
-export const IconAddCart = '../../public/icon/ic_add_cart.svg';
-export const IconRemoveCart = '../../public/icon/ic_remove_cart.svg';
+const baseUrl = import.meta.env.BASE_URL;
+
+export const IconArrowDown = `${baseUrl}icon/ic_arrow_down.svg`;
+export const IconLogo = `${baseUrl}icon/ic_logo.svg`;
+export const IconCart = `${baseUrl}icon/ic_cart.svg`;
+export const IconAddCart = `${baseUrl}icon/ic_add_cart.svg`;
+export const IconRemoveCart = `${baseUrl}icon/ic_remove_cart.svg`;
