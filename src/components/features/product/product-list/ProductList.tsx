@@ -12,7 +12,7 @@ function ProductList({
   const products = resource.read();
 
   return (
-    <Container>
+    <Container id="product-list" test-id="product-list">
       {products.map(({ id, name, price, imageUrl }) => {
         const matchingCart = cartList.find((cart) => cart.product.id === id);
         return (
