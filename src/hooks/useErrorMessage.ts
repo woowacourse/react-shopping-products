@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const useErrorMessage = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,9 +19,9 @@ const useErrorMessage = () => {
     };
   }, [errorMessage]);
 
-  const handleErrorMessage = (newErrorMessage: string) => {
+  const handleErrorMessage = useCallback((newErrorMessage: string) => {
     setErrorMessage(newErrorMessage);
-  };
+  }, []);
 
   return { errorMessage, handleErrorMessage };
 };
