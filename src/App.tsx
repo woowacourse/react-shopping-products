@@ -1,6 +1,6 @@
 import ErrorBoundary from "./components/ErrorBoundary";
 import Fallback from "./components/Fallback";
-import ProductPage from "./pages/ProductPage";
+import ProductPage from "./pages/Product/ProductPage";
 
 function App() {
   return (
