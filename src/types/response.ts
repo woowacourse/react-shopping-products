@@ -1,7 +1,9 @@
-export type Product = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
+import { CartItem, Product } from './common';
+
+export type ProductListResponse = {
+  content: Product[];
 };
+
+export interface CartResponse {
+  content: CartItem[];
+}

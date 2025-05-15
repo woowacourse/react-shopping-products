@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Product } from '../types/response';
 import { cartApi } from '../api/cart';
-
-export type CartItem = {
-  id: number;
-  product: Product;
-  quantity: number;
-};
+import { CartItem } from '../types/common';
 
 const useCart = () => {
   const [cartData, setCartData] = useState<CartItem[]>([]);
