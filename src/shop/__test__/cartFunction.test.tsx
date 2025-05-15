@@ -1,8 +1,7 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from '../../App';
 import { productListMockData } from '../__mocks__/productListMockData';
 import { cartMockData } from '../__mocks__/cartData';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('../../api/postCartItem', () => ({
   postCartItem: jest

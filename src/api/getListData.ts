@@ -2,7 +2,10 @@ import { baseAPI } from './baseAPI';
 import { ProductData } from './type';
 import { convertResponseToProduct } from '../components/features/product/responseMapper';
 
-export async function getListData(filterOption) {
+export async function getListData(filterOption: {
+  category: { value: string };
+  sort: { value: string };
+}) {
   const page = 0;
   const size = 20;
   const categoryPath =

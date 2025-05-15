@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 function CartButton({ itemsCount }: { itemsCount: number }) {
   return (
-    <Container>
+    <Container data-testid="cart-button">
       <CartIcon src="./assets/icons/Cart.svg" />
       {itemsCount > 0 && (
         <ItemsCountBox>
