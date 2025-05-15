@@ -4,7 +4,7 @@ type RequestOptions = RequestInit & {
 
 const apiRequest = async <T>(
   url: string,
-  options: RequestOptions = {}
+  options: RequestOptions = {},
 ): Promise<T> => {
   const { queryParams, headers, ...restOptions } = options;
 

@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   SelectDropdownWrapper,
   DropdownWrapper,
   DropdownTitleWrapper,
   DropdownUlWrapper,
   DropdownLiWrapper,
-} from '../../styles/SelectDropdown';
-import { IMAGE_PATH } from '../../constants/imagePath';
-import { CATEGORY, SORT } from '../../constants/selectOption';
+} from "../../styles/SelectDropdown";
+import { IMAGE_PATH } from "../../constants/imagePath";
+import { CATEGORY, SORT } from "../../constants/selectOption";
 
 type OptionType = (typeof CATEGORY)[number] | (typeof SORT)[number];
 
@@ -46,7 +46,10 @@ const SelectDropdown = <T extends OptionType>({
       {open && (
         <DropdownUlWrapper>
           {options.map((option) => (
-            <DropdownLiWrapper key={option} onClick={() => handleDropDown(option)}>
+            <DropdownLiWrapper
+              key={option}
+              onClick={() => handleDropDown(option)}
+            >
               {option}
             </DropdownLiWrapper>
           ))}

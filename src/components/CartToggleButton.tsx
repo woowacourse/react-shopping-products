@@ -36,7 +36,7 @@ const handleCartToggleButton = async ({
   if (!isInBascket) {
     if (!isNotBasketCountMAX) {
       setError(true);
-      setTimeout(()=>{
+      setTimeout(() => {
         setError(false);
       }, 2000);
       throw new Error(ERROR_MSG.BASKET_LIMIT_EXCEEDED);

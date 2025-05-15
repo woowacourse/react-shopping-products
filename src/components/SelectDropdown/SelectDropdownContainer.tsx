@@ -1,6 +1,6 @@
-import SelectDropdown from './SelectDropdown';
-import { Container, Header } from '../../styles/SelectDropdown';
-import { CATEGORY, SORT } from '../../constants/selectOption';
+import SelectDropdown from "./SelectDropdown";
+import { Container, Header } from "../../styles/SelectDropdown";
+import { CATEGORY, SORT } from "../../constants/selectOption";
 
 type CategoryKey = (typeof CATEGORY)[number];
 type SortKey = (typeof SORT)[number];
@@ -27,7 +27,11 @@ const SelectDropdownContainer = ({
           options={CATEGORY}
           onSelect={(value) => setCategory(value)}
         />
-        <SelectDropdown<SortKey> title={sort} options={SORT} onSelect={(value) => setSort(value)} />
+        <SelectDropdown<SortKey>
+          title={sort}
+          options={SORT}
+          onSelect={(value) => setSort(value)}
+        />
       </Container>
     </>
   );

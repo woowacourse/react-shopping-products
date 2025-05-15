@@ -31,7 +31,9 @@ describe("장바구니 API - Mock 데이터 기반 테스트", () => {
   });
 
   test("장바구니에서 상품을 삭제할 수 있다", async () => {
-    const spy = vi.spyOn(cartApi, "deleteCartItem").mockResolvedValue(undefined);
+    const spy = vi
+      .spyOn(cartApi, "deleteCartItem")
+      .mockResolvedValue(undefined);
 
     await cartApi.deleteCartItem(1004);
 

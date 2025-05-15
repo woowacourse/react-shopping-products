@@ -26,7 +26,7 @@ describe("상품 API 실제 호출 테스트", () => {
       expect(result.content.length).toBeGreaterThan(0);
 
       const allAreFashion = result.content.every(
-        (product) => product.category === "패션잡화"
+        (product) => product.category === "패션잡화",
       );
 
       expect(allAreFashion).toBe(true);
@@ -43,7 +43,7 @@ describe("상품 API 실제 호출 테스트", () => {
       expect(result.content.length).toBeGreaterThan(0);
 
       const allAreFood = result.content.every(
-        (product) => product.category === "식료품"
+        (product) => product.category === "식료품",
       );
 
       expect(allAreFood).toBe(true);
@@ -62,7 +62,7 @@ describe("상품 API 실제 호출 테스트", () => {
 
       const prices = result.content.map((p) => p.price);
       const isSortedAsc = prices.every(
-        (val, i, arr) => i === 0 || arr[i - 1] <= val
+        (val, i, arr) => i === 0 || arr[i - 1] <= val,
       );
 
       expect(isSortedAsc).toBe(true);
@@ -79,7 +79,7 @@ describe("상품 API 실제 호출 테스트", () => {
 
       const prices = result.content.map((p) => p.price);
       const isSortedDesc = prices.every(
-        (val, i, arr) => i === 0 || arr[i - 1] >= val
+        (val, i, arr) => i === 0 || arr[i - 1] >= val,
       );
 
       expect(isSortedDesc).toBe(true);
