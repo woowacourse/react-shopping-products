@@ -129,6 +129,9 @@ export default function ShopPage() {
             <div css={cartItemCount}>{selectedProducts}</div>
           )}
         </div>
+        {isError && (
+          <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>
+        )}
       </Header>
       <Body>
         <TitleContainer title="bpple 상품 목록">
