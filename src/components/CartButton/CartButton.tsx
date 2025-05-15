@@ -1,35 +1,14 @@
-import { css } from "@emotion/react";
-import { ComponentProps, useEffect, useState } from "react";
-import useFetch from "../hooks/useFetch";
+import * as styles from "./CartButton.style";
+import { ComponentProps, useEffect } from "react";
+import useFetch from "../../hooks/useFetch";
+import { useErrorContext } from "../../contexts/ErrorContext";
+
 interface CartButtonProps extends ComponentProps<"button"> {
   isInCart: boolean;
-  onClick: () => void;
+  onClick: () => Promise<void>;
   productId: number;
   cartItemId?: number;
 }
-const buttonCss = css({
-  padding: "4px 8px",
-  borderRadius: "4px",
-  border: "none",
-  fontWeight: "600",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: "4px",
-  span: {
-    display: "inline-block",
-  },
-  justifySelf: "flex-end",
-});
-
-const inCartCss = css({
-  backgroundColor: "#EAEAEA",
-  color: "black",
-});
-const notInCartCss = css({
-  backgroundColor: "black",
-  color: "white",
-});
 
 export default function CartButton({
   isInCart,
@@ -38,7 +17,9 @@ export default function CartButton({
   cartItemId,
   ...props
 }: CartButtonProps) {
-  const { fetcher: deleteCartItem } = useFetch(
+  const { showError } = useErrorContext();
+
+  const { fetcher: deleteCartItem, error: deleteError } = useFetch(
     `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/${cartItemId}`,
     {
       headers: {
@@ -51,7 +32,7 @@ export default function CartButton({
     },
     false
   );
-  const { fetcher: addCartItem } = useFetch(
+  const { fetcher: addCartItem, error: addError } = useFetch(
     "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items",
     {
       headers: {
@@ -69,21 +50,48 @@ export default function CartButton({
     false
   );
 
+  useEffect(() => {
+    if (deleteError) {
+      showError(deleteError);
+    }
+  }, [deleteError]);
+
+  useEffect(() => {
+    if (addError) {
+      showError(addError);
+    }
+  }, [addError]);
+
   const handleDeleteCartItem = async () => {
-    await deleteCartItem();
-    onClick();
+    try {
+      await deleteCartItem();
+      await onClick();
+    } catch (error) {
+      if (error instanceof Error) {
+        showError(error);
+      }
+    }
   };
 
   const handleAddCartItem = async () => {
-    await addCartItem();
-    onClick();
+    try {
+      await addCartItem();
+      await onClick();
+    } catch (error) {
+      if (error instanceof Error) {
+        showError(error);
+      }
+    }
   };
 
   return (
     <button
       {...props}
       onClick={isInCart ? handleDeleteCartItem : handleAddCartItem}
-      css={[buttonCss, isInCart ? inCartCss : notInCartCss]}
+      css={[
+        styles.buttonCss,
+        isInCart ? styles.inCartCss : styles.notInCartCss,
+      ]}
     >
       {isInCart ? (
         <>
@@ -96,6 +104,19 @@ export default function CartButton({
           <span>담기</span>
         </>
       )}
+    </button>
+  );
+  //이 친구를 버튼을 로딩할때, 보여줘야 하지 않을까요?
+  //어떻게 보여주죠?
+
+  return (
+    <button
+      css={[
+        styles.buttonCss,
+        isInCart ? styles.inCartCss : styles.notInCartCss,
+      ]}
+    >
+      <span>......</span>
     </button>
   );
 }
