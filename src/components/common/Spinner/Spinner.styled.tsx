@@ -1,6 +1,14 @@
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
+export const Wrapper = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const orbitSpin = keyframes`
   0% {
     transform: translate(-50%, -50%) rotate(0deg);
