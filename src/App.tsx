@@ -44,8 +44,10 @@ function App() {
   }, [orderBy]);
 
   useEffect(() => {
-    setCartLength(cartItems?.content?.length ?? 0);
-  }, [cartItems]);
+    if (cartItems?.content) {
+      setCartLength(cartItems.content.length);
+    }
+  }, [cartItems?.content?.length]);
 
   useEffect(() => {
     if (productFetchError) {
