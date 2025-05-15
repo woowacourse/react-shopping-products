@@ -1,4 +1,3 @@
-import { addCart, removeCart } from '../../../api/cart';
 import {
   Container,
   ProductImageContainer,
@@ -9,47 +8,35 @@ import {
 } from './Product.styles';
 import AddButton from './AddButton';
 import RemoveButton from './RemoveButton';
-import { useState } from 'react';
 
 interface ProductProps {
-  key: number;
-  id: number;
-  name: string;
-  price: number;
-  imgSrc?: string;
-  isInCart: boolean;
+  item: {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl?: string;
+    isInCart: boolean;
+  };
+  onAddCart: (id: number) => void;
+  onRemoveCart: (id: number) => void;
 }
 
-function Product({ id, name, price, imgSrc, isInCart, cart }: ProductProps) {
-  const [inCart, setInCart] = useState(false);
-
-  const handleAddCart = async () => {
-    await addCart(id, price);
-    setInCart(true);
-  };
-
-  const handleRemoveCart = async () => {
-    if (cart) {
-      const cartId = cart.cart.content.filter((item) => item.product.id === id);
-      console.log('cart id:', cartId);
-      await removeCart(cartId[0].id);
-      setInCart(false);
-    }
-  };
+function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
+  const { id, name, price, imageUrl, isInCart } = item;
 
   return (
     <Container>
       <ProductImageContainer>
-        <ProductImage src={imgSrc} alt={name} />
+        <ProductImage src={imageUrl} alt={name} />
       </ProductImageContainer>
       <Detail>
         <ProductName>{name}</ProductName>
         <Price>{price}</Price>
       </Detail>
       {isInCart ? (
-        <RemoveButton onClick={handleRemoveCart} />
+        <RemoveButton onClick={() => onAddCart(id)} />
       ) : (
-        <AddButton onClick={handleAddCart} />
+        <AddButton onClick={() => onRemoveCart(id)} />
       )}
     </Container>
   );

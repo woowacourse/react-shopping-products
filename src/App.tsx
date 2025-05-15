@@ -4,25 +4,92 @@ import Header from './ui/components/Header/Header';
 import Toast from './ui/components/Toast/Toast';
 import ProductSection from './ui/components/ProductSection/ProductSection';
 import { Global } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
-import { getCartItem } from './api/cart';
+import React, { useEffect, useState } from 'react';
+import { addCart, getCartItem, removeCart } from './api/cart';
+import { getProduct } from './api/product.ts';
+import { CategoryType, ProductType, SortType } from './types/product';
+
+interface ProductElement {
+  id: number;
+  cartId: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [cart, setCart] = useState(null);
+  const [data, setData] = useState<ProductElement[]>([]);
+  const [sort, setSort] = useState<SortType>('낮은 가격 순');
+  const [category, setCategory] = useState<CategoryType>('전체');
+  const [cart, setCart] = useState();
+
+  const handleAddCart = async (product: ProductElement) => {
+    await addCart(product.id, product.price);
+    await fetchData();
+  };
+
+  const handleRemoveCart = async (product: ProductElement) => {
+    await removeCart(product.cartId);
+    await fetchData();
+  };
+
+  const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+
+    if (value === '전체' || value === '식료품' || value === '패션잡화')
+      setCategory(value);
+  };
+
+  const handleSortPrice = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+
+    if (value === '낮은 가격 순' || value === '높은 가격 순') {
+      setSort(value);
+    }
+  };
+
+  const fetchData = async (mappedSortType) => {
+    setIsLoading(true);
+    try {
+      const product = await getProduct(mappedSortType);
+      const cart = await getCartItem();
+
+      const filteredCategory = product.content.filter(
+        (item: ProductType) => category === '전체' || item.category === category
+      );
+
+      const data = (filteredCategory || []).map((item) => {
+        const cartProductItem = filteredCategory.find(
+          (cartItem) => cartItem.product?.id === item.id
+        );
+
+        return {
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          imageUrl: item.imageUrl,
+          cartId: cartProductItem ? cartProductItem.id : undefined,
+        };
+      });
+      setData(data);
+      setCart(cart);
+    } catch (e) {
+      setIsError(true);
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await getCartItem();
-        setCart(data);
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, []);
+    const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
+    fetchData(mappedSortType);
+  }, [sort, category]);
+
+  console.log('cart:', cart);
+  console.log('data', data);
 
   return (
     <>
@@ -32,8 +99,17 @@ function App() {
         {isError && (
           <Toast message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요." />
         )}
-        {isLoading && <LoadingSpinner duration={2} />}
-        {!isLoading && <ProductSection cart={cart} />}
+        {/*{isLoading && <LoadingSpinner duration={2} />}*/}
+        {/*{!isLoading && <ProductSection cart={cart} />}*/}
+        <ProductSection
+          onFilter={handleFilterCategory}
+          onSort={handleSortPrice}
+          onAddCart={handleAddCart}
+          onRemoveCart={handleRemoveCart}
+          data={data}
+          sort={sort}
+          category={category}
+        />
       </Layout>
     </>
   );
