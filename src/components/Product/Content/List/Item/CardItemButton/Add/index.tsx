@@ -21,7 +21,9 @@ function AddCartItemButton({ id, setCartItems }: AddCartItemButton) {
       await mutate();
       const cartItems = await getCartItems();
       setCartItems(cartItems);
-    } catch (error) {}
+    } catch (error) {
+      // mutate에서 에러가 발생한 경우 이후 로직을 실행하지 않게 try-catch문을 사용합니다.
+    }
   };
 
   return (
