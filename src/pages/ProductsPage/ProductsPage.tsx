@@ -8,10 +8,12 @@ import useGetProducts from '../../hooks/useGetProducts';
 import { CATEGORY } from '../../constants/products';
 import useGetCarts from '../../hooks/useGetCartItems';
 import { AddCartItemType } from '../../types/cartItem';
+import Toast from '../../components/common/Toast/Toast';
 
 const productPageContainer = css`
   width: 429px;
   margin: 0 auto;
+  padding-top: 64px;
 `;
 
 const productWrapper = css`
@@ -139,6 +141,8 @@ function ProductsPage() {
           />
         )}
       </div>
+      {isErrorCarts && <Toast text="장바구니 정보를 불러오지 못했습니다." varient="error"></Toast>}
+      {isErrorProducts && <Toast text="상품 정보를 불러오지 못했습니다." varient="error"></Toast>}
     </div>
   );
 }
