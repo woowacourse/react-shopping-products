@@ -4,11 +4,10 @@ import useCart from './useCart';
 import { cartApi } from '../api/cart';
 import { CartItem } from '../types/common';
 
-// cartApi 모킹
 vi.mock('../api/cart', () => ({
   cartApi: {
-    getCartItems: vi.fn()
-  }
+    getCartItems: vi.fn(),
+  },
 }));
 
 describe('useCart 훅', () => {
@@ -29,13 +28,12 @@ describe('useCart 훅', () => {
           name: '테스트 상품',
           price: 10000,
           imageUrl: 'test.jpg',
-          category: '패션잡화'
+          category: '패션잡화',
         },
-        quantity: 1
-      }
+        quantity: 1,
+      },
     ];
 
-    // cartApi.getCartItems 모킹
     vi.mocked(cartApi.getCartItems).mockResolvedValueOnce(mockCartData);
 
     const { result } = renderHook(() => useCart());
@@ -49,7 +47,6 @@ describe('useCart 훅', () => {
   });
 
   it('장바구니 데이터 가져오기 실패 시 에러 처리가 된다', async () => {
-    // 에러 발생 시나리오 모킹
     vi.mocked(cartApi.getCartItems).mockRejectedValueOnce(
       new Error('API 오류')
     );
@@ -61,7 +58,6 @@ describe('useCart 훅', () => {
     });
 
     expect(cartApi.getCartItems).toHaveBeenCalled();
-    // 에러 발생 후에도 애플리케이션이 크래시되지 않고 정상 동작하는지 확인
     expect(result.current.cartData).toEqual([]);
   });
 });
