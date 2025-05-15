@@ -6,6 +6,7 @@ interface HeaderProps {
 }
 
 const headerLayout = css`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;

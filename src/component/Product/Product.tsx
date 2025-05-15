@@ -92,15 +92,6 @@ export default function Product({
     );
   };
 
-  // useEffect(() => {
-  //   setIsSelected(selectedCardItems.length !== 0);
-  //   console.log(id, selectedCardItems);
-  // }, [selectedCardItems]);
-
-  // useEffect(() => {
-  //   console.log(id, isSelected);
-  // }, [isSelected]);
-
   return (
     <div id={id} css={productLayout}>
       <img css={imgLayout} src={imageUrl ?? "./default-img.png"} />

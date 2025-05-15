@@ -9,6 +9,7 @@ import ProductContainer, {
 import Selector from "../component/Selector/Selector";
 import TitleContainer from "../component/TitleContainer/titleContainer";
 import { getCartItem } from "../api/cartItem";
+import Toast from "../component/Toast/Toast";
 
 const pageLayout = css`
   display: flex;
@@ -73,24 +74,28 @@ export default function ShopPage() {
   const [selectedProducts, setSelectedProducts] = useState<number>(0);
   const [productList, setProductList] = useState<Product[]>([]);
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
+  const [isError, setIsError] = useState(false);
 
   const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
   const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
 
   const updateCardItemList = async () => {
     (async () => {
-      const response = await getCartItem({
-        sortBy: "asc",
-      });
-      setSelectedProducts(response.content.length);
-      setCartItemList(response.content);
+      try {
+        const response = await getCartItem({
+          sortBy: "asc",
+        });
+        setSelectedProducts(response.content.length);
+        setCartItemList(response.content);
+      } catch (e) {
+        setIsError(true);
+      }
     })();
   };
 
   useEffect(() => {
     let sortByFilter: sortOption = "price,asc";
     if (filterValue === "높은 가격순") sortByFilter = "price,desc";
-
     (async () => {
       try {
         const response = await getProduct({
@@ -99,7 +104,7 @@ export default function ShopPage() {
         });
         setProductList(response.content);
       } catch (e) {
-        console.log(e);
+        setIsError(true);
       }
     })();
   }, [filterValue, categoryValue]);
