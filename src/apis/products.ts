@@ -16,10 +16,6 @@ export const ProductsAPI = {
       size: "20",
     };
 
-    const options: RequestInit = {
-      method: "GET",
-    };
-
     if (category !== "전체") {
       params.category = category;
     }
@@ -29,6 +25,6 @@ export const ProductsAPI = {
     }
 
     const apiUrl = createApiUrl(SHOP_API.endpoint.products, params);
-    return await fetchWithErrorHandling<Products>(apiUrl, options);
+    return await fetchWithErrorHandling<Products>(apiUrl);
   },
 };

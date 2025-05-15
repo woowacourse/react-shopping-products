@@ -16,7 +16,7 @@ export const createApiUrl = (
 
 export const fetchWithErrorHandling = async <T>(
   url: string,
-  options: RequestInit,
+  options?: RequestInit,
   parseJson: boolean = true
 ): Promise<T | { error: string } | void> => {
   try {
