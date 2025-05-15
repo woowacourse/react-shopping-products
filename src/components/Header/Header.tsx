@@ -7,8 +7,10 @@ function Header() {
     <header css={styles.header}>
       <p>SHOP</p>
       <button css={styles.cartIcon}>
-        <img src="assets/cart.svg" alt="cart-icon" />
-        <span hidden={cartLength === 0}>{cartLength}</span>
+        <div hidden={cartLength === 0}>
+          <img src="assets/cart.svg" alt="cart-icon" />
+          <span>{cartLength}</span>
+        </div>
       </button>
     </header>
   );
