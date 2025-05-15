@@ -21,7 +21,7 @@ interface ProductCardProps {
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  fetchProducts: () => void;
+  fetchCartProducts: () => void;
 }
 
 function ProductCard({
@@ -34,7 +34,7 @@ function ProductCard({
   isAdded,
   setCartItemIds,
   setErrorTrue,
-  fetchProducts,
+  fetchCartProducts,
 }: ProductCardProps) {
   return (
     <div css={ProductContainer}>
@@ -51,7 +51,7 @@ function ProductCard({
           isAdded={isAdded}
           setCartItemIds={setCartItemIds}
           setErrorTrue={setErrorTrue}
-          fetchProducts={fetchProducts}
+          fetchCartProducts={fetchCartProducts}
         />
       </div>
     </div>

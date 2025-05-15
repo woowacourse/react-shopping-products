@@ -12,13 +12,13 @@ interface ProductContainerProps {
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  fetchProducts: () => void;
+  fetchCartProducts: () => void;
 }
 function ProductContainer({
   cartItemIds,
   setCartItemIds,
   setErrorTrue,
-  fetchProducts,
+  fetchCartProducts,
 }: ProductContainerProps) {
   const [products, setProducts] = useState<ProductPageResponse | null>(null);
   const [selectedCategory, setSelectedCategory] =
@@ -43,7 +43,7 @@ function ProductContainer({
         cartItemIds={cartItemIds}
         setCartItemIds={setCartItemIds}
         setErrorTrue={setErrorTrue}
-        fetchProducts={fetchProducts}
+        fetchCartProducts={fetchCartProducts}
       />
     </div>
   );

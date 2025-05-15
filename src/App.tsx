@@ -4,43 +4,12 @@ import Header from "./components/header/Header";
 import ProductContainer from "./components/productContainer/ProductContainer";
 import ErrorToast from "./components/errorToast/ErrorToast";
 import useError from "./hooks/useError";
-import request from "./utils/request";
-import { useCallback, useEffect, useState } from "react";
-import { CartItem } from "./types/response.types";
+import useFetchCartProducts from "./hooks/useFetchCartProducts";
 
 function App() {
   const { isError, setErrorTrue, errorMessage } = useError();
-
-  const [cartItemIds, setCartItemIds] = useState<
-    Record<"productId" | "cartId", number>[]
-  >([]);
-
-  const fetchProducts = useCallback(
-    async function fetchCartItems() {
-      try {
-        const data = await request({
-          method: "GET",
-          url: "/cart-items",
-          headers: {
-            Authorization: import.meta.env.VITE_TOKEN,
-            "Content-Type": "application/json",
-          },
-        });
-        setCartItemIds(
-          data.content.map((data: CartItem) => {
-            return { productId: data.product.id, cartId: data.id };
-          })
-        );
-      } catch {
-        setErrorTrue("CART");
-      }
-    },
-    [setErrorTrue]
-  );
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+  const { cartItemIds, setCartItemIds, fetchCartProducts } =
+    useFetchCartProducts({ setErrorTrue });
 
   return (
     <div className="container">
@@ -49,7 +18,7 @@ function App() {
         cartItemIds={cartItemIds}
         setCartItemIds={setCartItemIds}
         setErrorTrue={setErrorTrue}
-        fetchProducts={fetchProducts}
+        fetchCartProducts={fetchCartProducts}
       />
       {isError && <ErrorToast errorMessage={errorMessage} />}
     </div>
