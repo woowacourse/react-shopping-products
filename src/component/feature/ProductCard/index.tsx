@@ -7,9 +7,9 @@ import {
   productCardContentStyle,
   productCardImageContainerStyle,
   productCardImageStyle,
-  productCardStyle
+  productCardStyle,
 } from './ProductCard.styles';
-import { Product } from '../../../types/response';
+import { Product } from '../../../types/common';
 import { IconAddCart, IconRemoveCart } from '../../../asset';
 
 interface ProductCardProps extends Omit<Product, 'category'> {
@@ -25,7 +25,7 @@ const ProductCard = ({
   imageUrl,
   isInCart,
   handleAddCart,
-  handleRemoveCart
+  handleRemoveCart,
 }: ProductCardProps) => {
   const handleClick = async (productId: number) => {
     if (isInCart) {
