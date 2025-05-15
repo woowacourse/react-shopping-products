@@ -1,11 +1,18 @@
 import styled from '@emotion/styled';
 
-export default function Header() {
+interface HeaderProps {
+  cartItemCount: number;
+}
+
+export default function Header({ cartItemCount }: HeaderProps) {
   return (
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
       <StyledButton type="button">
         <StyledImg src="/shoppingBagIcon.png" alt="shoppingBagIcon" />
+        <StyledCountBox>
+          <StyledCountText>{cartItemCount}</StyledCountText>
+        </StyledCountBox>
       </StyledButton>
     </StyledHeader>
   );
@@ -32,9 +39,27 @@ const StyledButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
+  position: relative;
 `;
 
 const StyledImg = styled.img`
   width: 24px;
   height: 24px;
+`;
+
+const StyledCountBox = styled.div`
+  width: 19px;
+  height: 19px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 7px;
+  bottom: -4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledCountText = styled.span`
+  font-weight: 700;
 `;
