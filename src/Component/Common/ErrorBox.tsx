@@ -17,6 +17,7 @@ const StyledDiv = styled.div`
   background-color: #ffc9c9;
   position: absolute;
   top: 64px;
+  left: 0px;
 `;
 
 const StyledSpan = styled.span`
