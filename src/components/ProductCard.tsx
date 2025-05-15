@@ -15,6 +15,7 @@ type ProductCardProps = {
   price: number;
   imageUrl: string;
   category: string;
+  isInBascket: boolean;
 };
 
 const ProductCard = ({
@@ -23,6 +24,7 @@ const ProductCard = ({
   price,
   imageUrl,
   category,
+  isInBascket,
 }: ProductCardProps) => {
 
   const defaultSrc = category === "패션잡화"
@@ -32,8 +34,6 @@ const ProductCard = ({
   const imageSrc = imageUrl
     ? imageUrl
     : defaultSrc
-    
-  const isInBascket = true; // 추후 API 요청 예정
 
   return (
     <ProductCardWrapper>
