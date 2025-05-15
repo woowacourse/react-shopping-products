@@ -1,59 +1,56 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { addCartItem, deleteCartItem, getCartItemList } from '@/api/cart';
-import { ToastContext } from '@/shared/context/ToastProvider';
+import { useApiRequest } from '@/shared/hooks/useApiRequest';
 
 import { CartItem } from '../types/Cart';
 
 export const useCart = () => {
   const [cartData, setCartData] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const { showToast } = useContext(ToastContext);
+  const { isLoading, handleRequest } = useApiRequest();
 
   const fetchCartProductData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const cart = await getCartItemList({
-        page: 0,
-        size: 50,
-        sort: '',
-      });
-
-      setCartData(cart);
-      return cart;
-    } catch (error) {
-      showToast((error as Error).message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [showToast]);
+    return handleRequest(
+      () =>
+        getCartItemList({
+          page: 0,
+          size: 50,
+        }),
+      (data) => {
+        setCartData(data);
+        return data;
+      }
+    );
+  }, [handleRequest]);
 
   const addToCart = useCallback(
     async (productId: number, quantity: number = 1) => {
-      try {
-        const data = await addCartItem({ productId, quantity });
-        setCartData(data);
-        return data.length;
-      } catch (error) {
-        showToast((error as Error).message);
-        return cartData;
-      }
+      return handleRequest(
+        () =>
+          addCartItem({
+            productId,
+            quantity,
+          }),
+        (data) => {
+          setCartData(data);
+          return data.length;
+        }
+      );
     },
-    [cartData, showToast]
+    [handleRequest]
   );
 
   const deleteFromCart = useCallback(
     async (cartItemId: number) => {
-      try {
-        const data = await deleteCartItem(cartItemId);
-        setCartData(data);
-        return data.length;
-      } catch (error) {
-        showToast((error as Error).message);
-        return cartData;
-      }
+      return handleRequest(
+        () => deleteCartItem(cartItemId),
+        (data) => {
+          setCartData(data);
+          return data.length;
+        }
+      );
     },
-    [cartData, showToast]
+    [handleRequest]
   );
 
   useEffect(() => {
@@ -61,8 +58,8 @@ export const useCart = () => {
   }, [fetchCartProductData]);
 
   return {
-    cartData,
     isLoading,
+    cartData,
     addToCart,
     deleteFromCart,
   };

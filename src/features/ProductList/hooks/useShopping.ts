@@ -4,9 +4,15 @@ import { useCart } from './useCart';
 import { useProductList } from './useProductList';
 
 export const useShopping = () => {
-  const { cartData, isLoading, addToCart, deleteFromCart } = useCart();
-  const { product, categorySelect, priceSelect, handleCategorySelect, handlePriceSelect } =
-    useProductList();
+  const { isLoading: isCartLoading, cartData, addToCart, deleteFromCart } = useCart();
+  const {
+    isLoading: isProductLoading,
+    product,
+    categorySelect,
+    priceSelect,
+    handleCategorySelect,
+    handlePriceSelect,
+  } = useProductList();
 
   const data = useMemo(() => {
     return product.map((item) => {
@@ -35,7 +41,7 @@ export const useShopping = () => {
   return {
     cartData,
     filteredData: data,
-    isLoading,
+    isLoading: isCartLoading || isProductLoading,
     toggleCartItem,
     categorySelect,
     priceSelect,
