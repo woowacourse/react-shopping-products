@@ -27,7 +27,7 @@ export const getCartItems = async ({ page, size, sort = "asc" }: GetCartItemsPar
 };
 
 export const postCartItems = async ({ productId, quantity }: PostCartItemsParams) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
+  await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
     method: "POST",
 
     headers: {
@@ -39,24 +39,14 @@ export const postCartItems = async ({ productId, quantity }: PostCartItemsParams
       quantity,
     }),
   });
-  const data = await response.json();
-
-  return data;
 };
 
 export const deleteCartItems = async ({ productId }: DeleteCartItemsParams) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
+  await fetch(`${import.meta.env.VITE_API_URL}/cart-items/${productId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      productId,
-    }),
   });
-
-  const data = await response.json();
-
-  return data;
 };

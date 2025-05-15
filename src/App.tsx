@@ -10,13 +10,14 @@ import Text from "./components/Text";
 import { Content } from "./types/product";
 import { deleteCartItems, getCartItems, postCartItems } from "./apis/cartItem";
 import RemoveCart from "./components/icons/RemoveCart";
+import { GetCartItemsResponse } from "./types/cartItem";
 
 function App() {
   const [filter, setFilter] = useState("전체");
   const [sort, setSort] = useState("높은 가격순");
 
   const [products, setProducts] = useState<Content[]>();
-  const [cartItemIds, setCartItemIds] = useState<number[]>();
+  const [cartItems, setCartItems] = useState<GetCartItemsResponse>();
 
   const getProduct = async () => {
     const data = await getProducts({ page: 0, size: 20 });
@@ -27,8 +28,10 @@ function App() {
 
   const getCartItem = async () => {
     const data = await getCartItems({ page: 0, size: 20 });
-    setCartItemIds(data.content.map((item) => item.product.id));
+    setCartItems(data);
   };
+
+  const cartItemIds = cartItems && Object.fromEntries(cartItems?.content.map((item) => [item.product.id, item.id]));
 
   useEffect(() => {
     getProduct();
@@ -42,12 +45,13 @@ function App() {
 
   const handleRemoveCart = async (id: number) => {
     await deleteCartItems({ productId: id });
+
     await getCartItem();
   };
 
   return (
     <div css={appStyle}>
-      <Header shoppingCount={cartItemIds?.length} />
+      <Header shoppingCount={cartItems?.content?.length} />
 
       <div css={containerStyle}>
         <Text variant="title-1">bpple 상품 목록</Text>
@@ -80,8 +84,8 @@ function App() {
                     <Text variant="body-2">{product.price.toLocaleString()}원</Text>
                   </div>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    {cartItemIds?.includes(product.id) ? (
-                      <Button backgroundColor="#fff" onClick={() => handleRemoveCart(product.id)}>
+                    {cartItemIds && cartItemIds[product.id] ? (
+                      <Button backgroundColor="#fff" onClick={() => handleRemoveCart(cartItemIds[product.id])}>
                         <RemoveCart />
                         <Text variant="body-2">빼기</Text>
                       </Button>
