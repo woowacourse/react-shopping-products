@@ -5,3 +5,7 @@ export const FETCH_ERROR_MESSAGE: Record<string, string> = {
 } as const;
 
 export const DEFAULT_ERROR_MESSAGE = '저런! 예기치 못한 문제가 발생했어요!';
+
+export const DEV_ERROR_MESSAGE = {
+  INVALID_PROVIDER: (providerName: string) => `${providerName}안에서 사용해야 합니다.`,
+};

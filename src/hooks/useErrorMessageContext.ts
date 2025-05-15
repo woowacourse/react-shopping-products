@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 import { ErrorMessageContext } from '../context/ErrorMessageContext';
+import { DEV_ERROR_MESSAGE } from '../constants/errorMessages';
 
 const useErrorMessageContext = () => {
   const context = useContext(ErrorMessageContext);
 
   if (!context) {
-    throw new Error('ErrorProvider 안에서 사용해야 합니다.');
+    throw new Error(DEV_ERROR_MESSAGE.INVALID_PROVIDER('ErrorMessageContext'));
   }
 
   return context;
