@@ -1,5 +1,5 @@
 import * as S from "./ProductItemSkeleton.styles";
-import { Skeleton } from "../../../@common/Skeleton/Skeleton.styles";
+import Skeleton from "../../../@common/Skeleton/Skeleton";
 
 const ProductItemSkeleton = () => {
   return (
