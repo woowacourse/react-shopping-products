@@ -59,7 +59,6 @@ describe("useCartItems integration (real API)", () => {
     if (!initialCartItems) {
       throw new Error("장바구니 목록이 없습니다.");
     }
-    console.log(result!.current!.cartItemIds);
     await result.current.removeCart(result!.current!.cartItemIds![productId]);
 
     await waitFor(() => {

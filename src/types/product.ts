@@ -1,5 +1,5 @@
 export interface GetProductResponse {
-  content: Content[];
+  content: Product[];
   pageable: Pageable;
   totalElements: number;
   totalPages: number;
@@ -12,7 +12,7 @@ export interface GetProductResponse {
   empty: boolean;
 }
 
-export interface Content {
+interface Product {
   id: number;
   name: string;
   price: number;
@@ -20,7 +20,7 @@ export interface Content {
   category: string;
 }
 
-export interface Pageable {
+interface Pageable {
   pageNumber: number;
   pageSize: number;
   sort: Sort;
@@ -29,7 +29,7 @@ export interface Pageable {
   unpaged: boolean;
 }
 
-export interface Sort {
+interface Sort {
   empty: boolean;
   sorted: boolean;
   unsorted: boolean;

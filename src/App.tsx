@@ -1,20 +1,17 @@
 import { css } from "@emotion/react";
 import { useState } from "react";
-import Button from "./components/Button";
-import Card from "./components/Card";
-import Header from "./components/Header";
-import AddCart from "./components/icons/AddCart";
-import Select from "./components/Select";
-import Text from "./components/Text";
-import RemoveCart from "./components/icons/RemoveCart";
-import Spinner from "./components/Spinner";
-import ErrorPopup from "./components/ErrorPopup";
-import useProducts from "./hooks/useProducts";
-import useCartItems from "./hooks/useCartItems";
+import { Button, Card, Header, Select, Text, RemoveCart, AddCart, Spinner, ErrorPopup } from "./components";
+import { useProducts, useCartItems } from "./hooks";
+
+const CATEGORY = ["전체", "식료품", "패션잡화"] as const;
+type Category = (typeof CATEGORY)[number];
+
+const SORT = ["높은 가격순", "낮은 가격순"] as const;
+type Sort = (typeof SORT)[number];
 
 function App() {
-  const [filter, setFilter] = useState("전체");
-  const [sort, setSort] = useState("높은 가격순");
+  const [filter, setFilter] = useState<Category>("전체");
+  const [sort, setSort] = useState<Sort>("높은 가격순");
 
   const { products, isProductsLoading, productsErrorMessage, setProductsErrorMessage } = useProducts();
   const {
@@ -42,11 +39,11 @@ function App() {
         <Text variant="title-1">bpple 상품 목록</Text>
 
         <div css={selectBoxStyle}>
-          <Select options={["전체", "식료품", "패션잡화"]} selectedItem={filter} setSelectedItem={setFilter} />
-          <Select options={["높은 가격순", "낮은 가격순"]} selectedItem={sort} setSelectedItem={setSort} />
+          <Select options={CATEGORY} selectedItem={filter} setSelectedItem={setFilter} />
+          <Select options={SORT} selectedItem={sort} setSelectedItem={setSort} />
         </div>
         <div css={cardContainerStyle}>
-          {products
+          {products?.content
             ?.filter((product) => (filter === "전체" ? true : product.category === filter))
             ?.sort((productA, productB) =>
               sort === "낮은 가격순" ? productA.price - productB.price : productB.price - productA.price,
