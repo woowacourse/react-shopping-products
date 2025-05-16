@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { TopArrow } from "../icons";
 import * as S from "./Select.styles";
+import { TopArrow } from "@/components/icons";
 
 interface SelectProps<T> {
   options: readonly T[];

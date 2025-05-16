@@ -1,4 +1,4 @@
-import { GetCartItemsResponse } from "../types/response/cartItem";
+import { GetCartItemsResponse } from "@/types/response/cartItem";
 
 interface GetCartItemsParams {
   page: number;
@@ -42,6 +42,7 @@ export const postCartItems = async ({ productId, quantity }: PostCartItemsParams
       quantity,
     }),
   });
+
   if (!response.ok) {
     throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
   }

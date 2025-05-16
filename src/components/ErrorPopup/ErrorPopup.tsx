@@ -1,23 +1,19 @@
 import { useEffect } from "react";
-import { Text } from "../index";
+import { useError } from "@/context";
+import { Text } from "@/components";
 import * as S from "./ErrorPopup.styles";
 
-interface ErrorPopupProps {
-  errorMessage: string;
-  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-}
+export default function ErrorPopup() {
+  const { errorMessage, hideError } = useError();
 
-export default function ErrorPopup({ errorMessage, setErrorMessage }: ErrorPopupProps) {
   useEffect(() => {
-    if (!errorMessage) return;
     const timer = setTimeout(() => {
-      setErrorMessage("");
+      hideError();
     }, 3000);
     return () => clearTimeout(timer);
-  }, [errorMessage, setErrorMessage]);
+  }, [errorMessage, hideError]);
 
   if (!errorMessage) return null;
-
   return (
     <S.ErrorPopupWrapper role="alert" aria-live="assertive">
       <Text>{errorMessage}</Text>

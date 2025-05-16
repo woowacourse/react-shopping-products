@@ -1,7 +1,7 @@
-import { DEFAULT_IMAGE_URL } from "../../constants/images";
-import { GetCartItemsResponse, GetProductResponse } from "../../types";
-import { AddCart, RemoveCart } from "../icons";
-import { Button, Card, Spacing, Text } from "../index";
+import { DEFAULT_IMAGE_URL } from "@/constants/images";
+import { GetCartItemsResponse, GetProductResponse } from "@/types";
+import { AddCart, RemoveCart } from "@/components/icons";
+import { Button, Card, Spacing, Text } from "@/components";
 import * as S from "./ProductCard.styles";
 
 interface ProductCardProps {

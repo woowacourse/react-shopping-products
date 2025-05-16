@@ -1,4 +1,4 @@
-import { ShoppingBag } from "../icons";
+import { ShoppingBag } from "@/components/icons";
 import * as S from "./Header.styles";
 
 export default function Header({ shoppingCount = 0 }: { shoppingCount?: number }) {
