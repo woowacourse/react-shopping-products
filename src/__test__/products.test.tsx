@@ -1,12 +1,12 @@
-import {render, screen, waitFor} from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {describe, it, vi, beforeEach, expect, Mock} from 'vitest';
+import { describe, it, vi, beforeEach, expect, Mock } from 'vitest';
 import * as productAPI from '../features/products/api/getProducts';
 import * as cartAPI from '../features/cart/api/getCartProduct';
 import App from '../App';
 
 const generateMockProducts = (count: number) => ({
-  content: Array.from({length: count}, (_, i) => ({
+  content: Array.from({ length: count }, (_, i) => ({
     id: i + 1,
     name: `Product ${i + 1}`,
     price: (i + 1) * 1000,
@@ -31,9 +31,7 @@ vi.mock('../features/cart/api/getCartProduct', () => ({
 
 describe('GET Products', () => {
   beforeEach(() => {
-    (productAPI.getProducts as Mock).mockResolvedValue(
-      generateMockProducts(20)
-    );
+    (productAPI.getProducts as Mock).mockResolvedValue(generateMockProducts(20));
 
     (cartAPI.getCartProduct as Mock).mockResolvedValue(mockCartResponse);
   });
@@ -65,7 +63,7 @@ describe('GET Products', () => {
 
 describe('카테고리 필터링 테스트', () => {
   beforeEach(() => {
-    (productAPI.getProducts as Mock).mockImplementation(({sortValue}) => {
+    (productAPI.getProducts as Mock).mockImplementation(({ sortValue }) => {
       const products = generateMockProducts(20);
       if (sortValue === '낮은 가격순') {
         products.content.sort((a, b) => a.price - b.price);

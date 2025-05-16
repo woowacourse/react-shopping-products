@@ -1,7 +1,7 @@
-import {useState} from 'react';
-import {CartProduct, Product} from '../type/product';
-import {getProducts} from '../api/getProducts';
-import {getCartProduct} from '../../cart/api/getCartProduct';
+import { useState } from 'react';
+import { CartProduct, Product } from '../type/product';
+import { getProducts } from '../api/getProducts';
+import { getCartProduct } from '../../cart/api/getCartProduct';
 
 function useGetProductsWithCart(sortValue: string) {
   const [products, setProducts] = useState<Product[]>([]);
@@ -18,20 +18,16 @@ function useGetProductsWithCart(sortValue: string) {
     setError('');
 
     try {
-      const products = await getProducts({sortValue});
-      const cartProducts = await getCartProduct();
+      const products = await getProducts({ sortValue });
+      const cartProducts = await getCartProduct({ page: 0, size: 20 });
 
       const rawProducts = products.content;
-      const cartProductIds = new Set(
-        cartProducts.content.map((cp: CartProduct) => cp.product.id)
-      );
+      const cartProductIds = new Set(cartProducts.content.map((cp: CartProduct) => cp.product.id));
 
       const productsWithCartInfo = rawProducts.map((product: Product) => ({
         ...product,
         isCart: cartProductIds.has(product.id),
-        cartProductId: cartProducts.content.find(
-          (cp: CartProduct) => cp.product.id === product.id
-        )?.id,
+        cartProductId: cartProducts.content.find((cp: CartProduct) => cp.product.id === product.id)?.id,
       }));
 
       setProducts(productsWithCartInfo);
@@ -47,7 +43,7 @@ function useGetProductsWithCart(sortValue: string) {
     }
   };
 
-  return {products, fetchProducts, isLoading, error};
+  return { products, fetchProducts, isLoading, error };
 }
 
 export default useGetProductsWithCart;
