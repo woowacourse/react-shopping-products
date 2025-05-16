@@ -4,9 +4,10 @@ import { HTMLAttributes } from "react";
 interface CardProps {
   children: React.ReactNode;
 }
-const Card = ({ children }: CardProps) => {
+
+export default function Card({ children }: CardProps) {
   return <S.CardWrapper>{children}</S.CardWrapper>;
-};
+}
 
 interface CardPreviewProps {
   children: React.ReactNode;
@@ -23,5 +24,3 @@ interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
 Card.Content = ({ children, ...props }: CardContentProps) => {
   return <S.CardContent {...props}>{children}</S.CardContent>;
 };
-
-export default Card;

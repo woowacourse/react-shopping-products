@@ -1,7 +1,7 @@
 import { ShoppingBag } from "../icons";
 import * as S from "./Header.styles";
 
-const Header = ({ shoppingCount = 0 }: { shoppingCount?: number }) => {
+export default function Header({ shoppingCount = 0 }: { shoppingCount?: number }) {
   return (
     <S.HeaderWrapper>
       <span>SHOP</span>
@@ -11,6 +11,4 @@ const Header = ({ shoppingCount = 0 }: { shoppingCount?: number }) => {
       </S.ShoppingBagWrapper>
     </S.HeaderWrapper>
   );
-};
-
-export default Header;
+}

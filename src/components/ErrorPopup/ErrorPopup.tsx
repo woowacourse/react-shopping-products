@@ -2,13 +2,12 @@ import Text from "../Text/Text";
 import * as S from "./ErrorPopup.styles";
 import { useEffect } from "react";
 
-const ErrorPopup = ({
-  errorMessage,
-  setErrorMessage,
-}: {
+interface ErrorPopupProps {
   errorMessage: string;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+}
+
+export default function ErrorPopup({ errorMessage, setErrorMessage }: ErrorPopupProps) {
   useEffect(() => {
     setTimeout(() => {
       setErrorMessage("");
@@ -17,9 +16,7 @@ const ErrorPopup = ({
 
   return (
     <S.ErrorPopupWrapper>
-      <Text variant="body-2">{errorMessage}</Text>
+      <Text>{errorMessage}</Text>
     </S.ErrorPopupWrapper>
   );
-};
-
-export default ErrorPopup;
+}

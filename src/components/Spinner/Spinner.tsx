@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 
-const Spinner = () => {
+export default function Spinner() {
   return (
     <div css={[spinnerWrapper, orbitSpin]} className="active">
       <div css={orbitSpinner}>
@@ -12,9 +12,7 @@ const Spinner = () => {
       </div>
     </div>
   );
-};
-
-export default Spinner;
+}
 
 const spinnerWrapper = css`
   background-color: rgba(0, 0, 0, 0.7);

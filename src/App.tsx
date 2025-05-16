@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { deleteCartItems, getCartItems, getProducts, postCartItems } from "./apis";
-import { AddCart, Button, Card, ErrorPopup, RemoveCart, Select, Spinner, Text } from "./components";
-import useFetch from "./hooks/useFetch";
+import { AddCart, Button, Card, ErrorPopup, Header, RemoveCart, Select, Spinner, Text } from "./components";
+import { useFetch } from "./hooks";
 import { DEFAULT_IMAGE_URL } from "./constants/images";
 import * as S from "./App.styles";
 
@@ -27,7 +27,7 @@ function App() {
     error: cartItemsError,
   } = useFetch(() => getCartItems({ page: 0, size: 20 }));
 
-  const handleAddCart = async (productId: number) => {
+  const handleAddCartItem = async (productId: number) => {
     await postCartItems({ productId, quantity: 1 });
     await fetchCartItems();
   };
@@ -49,7 +49,7 @@ function App() {
         <ErrorPopup errorMessage={cartItemsError.message} setErrorMessage={setCartItemsErrorMessage} />
       )}
 
-      {/* <Header shoppingCount={cartItems?.content?.length} /> */}
+      <Header shoppingCount={cartItems?.content?.length} />
 
       <S.Container>
         <Text variant="title-1">bpple 상품 목록</Text>
@@ -78,20 +78,18 @@ function App() {
                 <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
                   <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                     <Text variant="title-2">{product.name}</Text>
-                    <Text variant="body-2">{product.price.toLocaleString()}원</Text>
+                    <Text>{product.price.toLocaleString()}원</Text>
                   </div>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     {cartItems && cartItems.content.find((item) => item.product.id === product.id) ? (
                       <Button backgroundColor="#fff" onClick={() => handleDeleteCartItem(product.id)}>
                         <RemoveCart />
-                        <Text variant="body-2">빼기</Text>
+                        <Text>빼기</Text>
                       </Button>
                     ) : (
-                      <Button onClick={() => handleAddCart(product.id)}>
+                      <Button onClick={() => handleAddCartItem(product.id)}>
                         <AddCart />
-                        <Text variant="body-2" color="#fff">
-                          담기
-                        </Text>
+                        <Text color="#fff">담기</Text>
                       </Button>
                     )}
                   </div>

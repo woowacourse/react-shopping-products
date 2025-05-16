@@ -8,7 +8,7 @@ interface SelectProps<T> {
   setSelectedItem: React.Dispatch<React.SetStateAction<T>>;
 }
 
-const Select = <T extends string>({ options, selectedItem, setSelectedItem }: SelectProps<T>) => {
+export default function Select<T extends string>({ options, selectedItem, setSelectedItem }: SelectProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
 
   const selectRef = useRef<HTMLDivElement>(null);
@@ -46,6 +46,4 @@ const Select = <T extends string>({ options, selectedItem, setSelectedItem }: Se
       )}
     </S.SelectWrapper>
   );
-};
-
-export default Select;
+}

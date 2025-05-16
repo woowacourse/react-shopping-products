@@ -6,12 +6,10 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-const Button = ({ backgroundColor = "#000", children, ...props }: ButtonProps) => {
+export default function Button({ backgroundColor = "#000", children, ...props }: ButtonProps) {
   return (
     <S.Button backgroundColor={backgroundColor} {...props}>
       {children}
     </S.Button>
   );
-};
-
-export default Button;
+}
