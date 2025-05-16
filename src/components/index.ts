@@ -1,9 +1,9 @@
-export { default as Button } from "./Button";
-export { default as Card } from "./Card";
-export { default as ErrorPopup } from "./ErrorPopup";
-export { default as Header } from "./Header";
-export { default as Select } from "./Select";
-export { default as Spinner } from "./Spinner";
-export { default as Text } from "./Text";
+export { default as Button } from "./Button/Button";
+export { default as Card } from "./Card/Card";
+export { default as ErrorPopup } from "./ErrorPopup/ErrorPopup";
+export { default as Header } from "./Header/Header";
+export { default as Select } from "./Select/Select";
+export { default as Spinner } from "./Spinner/Spinner";
+export { default as Text } from "./Text/Text";
 
 export * from "./icons";

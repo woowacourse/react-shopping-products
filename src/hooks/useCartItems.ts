@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { deleteCartItems, getCartItems, postCartItems } from "../apis/cartItem";
-import { GetCartItemsResponse } from "../types/cartItem";
+import { GetCartItemsResponse } from "../types/response/cartItem";
 
-const useCartItems = () => {
+export default function useFetchCartItems() {
   const [cartItems, setCartItems] = useState<GetCartItemsResponse>();
   const [isCartItemsLoading, setIsProductsLoading] = useState(true);
   const [cartItemsErrorMessage, setCartItemsErrorMessage] = useState("");
@@ -27,7 +27,7 @@ const useCartItems = () => {
 
   const removeCart = async (id: number) => {
     try {
-      await deleteCartItems({ productId: id });
+      await deleteCartItems({ cartItemId: id });
       await getCartItem();
     } catch (e) {
       if (e instanceof Error) setCartItemsErrorMessage(e.message);
@@ -51,6 +51,4 @@ const useCartItems = () => {
     removeCart,
     cartItemIds,
   };
-};
-
-export default useCartItems;
+}

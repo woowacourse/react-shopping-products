@@ -1,4 +1,4 @@
-import { GetCartItemsResponse } from "../types/cartItem";
+import { GetCartItemsResponse } from "../types/response/cartItem";
 
 interface GetCartItemsParams {
   page: number;
@@ -12,7 +12,7 @@ interface PostCartItemsParams {
 }
 
 interface DeleteCartItemsParams {
-  productId: number;
+  cartItemId: number;
 }
 
 export const getCartItems = async ({ page, size, sort = "asc" }: GetCartItemsParams): Promise<GetCartItemsResponse> => {
@@ -47,8 +47,8 @@ export const postCartItems = async ({ productId, quantity }: PostCartItemsParams
   }
 };
 
-export const deleteCartItems = async ({ productId }: DeleteCartItemsParams) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items/${productId}`, {
+export const deleteCartItems = async ({ cartItemId }: DeleteCartItemsParams) => {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items/${cartItemId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,

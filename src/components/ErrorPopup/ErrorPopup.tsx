@@ -1,5 +1,5 @@
-import { css } from "@emotion/react";
-import Text from "./Text";
+import Text from "../Text/Text";
+import * as S from "./ErrorPopup.styles";
 import { useEffect } from "react";
 
 const ErrorPopup = ({
@@ -16,21 +16,10 @@ const ErrorPopup = ({
   }, [setErrorMessage]);
 
   return (
-    <div css={errorPopupStyle}>
+    <S.ErrorPopupWrapper>
       <Text variant="body-2">{errorMessage}</Text>
-    </div>
+    </S.ErrorPopupWrapper>
   );
 };
 
 export default ErrorPopup;
-
-const errorPopupStyle = css`
-  position: absolute;
-  top: 64px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  color: #000;
-  background-color: #ffc9c9;
-  padding: 12px 0;
-`;

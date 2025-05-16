@@ -1,7 +1,9 @@
-import { css } from "@emotion/react";
 import { useState } from "react";
-import { Button, Card, Header, Select, Text, RemoveCart, AddCart, Spinner, ErrorPopup } from "./components";
-import { useProducts, useCartItems } from "./hooks";
+import { deleteCartItems, getCartItems, getProducts, postCartItems } from "./apis";
+import { AddCart, Button, Card, ErrorPopup, RemoveCart, Select, Spinner, Text } from "./components";
+import useFetch from "./hooks/useFetch";
+import { DEFAULT_IMAGE_URL } from "./constants/images";
+import * as S from "./App.styles";
 
 const CATEGORY = ["전체", "식료품", "패션잡화"] as const;
 type Category = (typeof CATEGORY)[number];
@@ -13,36 +15,50 @@ function App() {
   const [filter, setFilter] = useState<Category>("전체");
   const [sort, setSort] = useState<Sort>("높은 가격순");
 
-  const { products, isProductsLoading, productsErrorMessage, setProductsErrorMessage } = useProducts();
   const {
-    cartItems,
-    isCartItemsLoading,
-    cartItemsErrorMessage,
-    setCartItemsErrorMessage,
-    addCart,
-    removeCart,
-    cartItemIds,
-  } = useCartItems();
+    data: products,
+    status: productsStatus,
+    error: productsError,
+  } = useFetch(() => getProducts({ page: 0, size: 20 }));
+  const {
+    data: cartItems,
+    status: cartItemsStatus,
+    fetchData: fetchCartItems,
+    error: cartItemsError,
+  } = useFetch(() => getCartItems({ page: 0, size: 20 }));
 
-  if (isProductsLoading || isCartItemsLoading) return <Spinner />;
+  const handleAddCart = async (productId: number) => {
+    await postCartItems({ productId, quantity: 1 });
+    await fetchCartItems();
+  };
+
+  const handleDeleteCartItem = async (productId: number) => {
+    const cartItemId = cartItems?.content.find((item) => item.product.id === productId)?.id;
+
+    if (cartItemId === undefined) return;
+
+    await deleteCartItems({ cartItemId });
+    await fetchCartItems();
+  };
+
+  if (productsStatus === "loading" || cartItemsStatus === "loading") return <Spinner />;
   return (
-    <div css={appStyle}>
-      {productsErrorMessage && (
-        <ErrorPopup errorMessage={productsErrorMessage} setErrorMessage={setProductsErrorMessage} />
-      )}
-      {cartItemsErrorMessage && (
-        <ErrorPopup errorMessage={cartItemsErrorMessage} setErrorMessage={setCartItemsErrorMessage} />
+    <S.AppContainer>
+      {productsError && <ErrorPopup errorMessage={productsError.message} setErrorMessage={setProductsErrorMessage} />}
+      {cartItemsError && (
+        <ErrorPopup errorMessage={cartItemsError.message} setErrorMessage={setCartItemsErrorMessage} />
       )}
 
-      <Header shoppingCount={cartItems?.content?.length} />
-      <div css={containerStyle}>
+      {/* <Header shoppingCount={cartItems?.content?.length} /> */}
+
+      <S.Container>
         <Text variant="title-1">bpple 상품 목록</Text>
 
-        <div css={selectBoxStyle}>
+        <S.SelectBox>
           <Select options={CATEGORY} selectedItem={filter} setSelectedItem={setFilter} />
           <Select options={SORT} selectedItem={sort} setSelectedItem={setSort} />
-        </div>
-        <div css={cardContainerStyle}>
+        </S.SelectBox>
+        <S.CardContainer>
           {products?.content
             ?.filter((product) => (filter === "전체" ? true : product.category === filter))
             ?.sort((productA, productB) =>
@@ -54,8 +70,7 @@ function App() {
                   <img
                     src={product.imageUrl}
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        "https://www.next-t.co.kr/public/uploads/7b7f7e2138e29e598cd0cdf2c85ea08d.jpg";
+                      (e.target as HTMLImageElement).src = DEFAULT_IMAGE_URL;
                     }}
                     alt={product.name}
                   />
@@ -66,13 +81,13 @@ function App() {
                     <Text variant="body-2">{product.price.toLocaleString()}원</Text>
                   </div>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    {cartItemIds && cartItemIds[product.id] ? (
-                      <Button backgroundColor="#fff" onClick={() => removeCart(cartItemIds[product.id])}>
+                    {cartItems && cartItems.content.find((item) => item.product.id === product.id) ? (
+                      <Button backgroundColor="#fff" onClick={() => handleDeleteCartItem(product.id)}>
                         <RemoveCart />
                         <Text variant="body-2">빼기</Text>
                       </Button>
                     ) : (
-                      <Button onClick={() => addCart(product.id)}>
+                      <Button onClick={() => handleAddCart(product.id)}>
                         <AddCart />
                         <Text variant="body-2" color="#fff">
                           담기
@@ -83,42 +98,10 @@ function App() {
                 </Card.Content>
               </Card>
             ))}
-        </div>
-      </div>
-    </div>
+        </S.CardContainer>
+      </S.Container>
+    </S.AppContainer>
   );
 }
 
 export default App;
-
-const appStyle = css`
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  max-width: 430px;
-  margin: 0 auto;
-  background-color: #fff;
-`;
-
-const containerStyle = css`
-  padding: 36px 24px;
-  display: flex;
-  height: calc(100% - 64px);
-  flex-direction: column;
-  gap: 28px;
-`;
-
-const selectBoxStyle = css`
-  display: flex;
-  justify-content: space-between;
-  gap: 132px;
-`;
-
-const cardContainerStyle = css`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  row-gap: 20px;
-  justify-items: center;
-  overflow-y: scroll;
-`;

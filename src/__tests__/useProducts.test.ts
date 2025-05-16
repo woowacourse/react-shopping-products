@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react";
-import useProducts from "../hooks/useProducts";
+import useProducts from "../hooks/useFetchProducts";
 import { waitFor } from "@testing-library/react";
 
 describe("useProducts integration (real API)", () => {

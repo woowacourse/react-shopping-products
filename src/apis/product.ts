@@ -1,4 +1,4 @@
-import { GetProductResponse } from "../types/product";
+import { GetProductResponse } from "../types/response/product";
 
 interface GetProductParams {
   page: number;
