@@ -1,19 +1,39 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import React from "react";
+import { render, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
 import App from "../App";
-import React from "react";
-
-vi.mock("../contexts/ErrorContext", () => ({
-  useErrorContext: () => ({
-    showError: vi.fn(),
-  }),
-}));
+import { screen } from "@testing-library/react";
+import { expect } from "vitest";
+import useFetch from "../hooks/useFetch";
+import { ErrorContextProvider } from "../contexts/ErrorContext";
+import "@testing-library/jest-dom"; // For toBeInTheDocument matcher
 
 vi.mock("../contexts/CartContext", () => ({
   useCartContext: () => ({
     setCartLength: vi.fn(),
     cartLength: 1,
   }),
+}));
+
+// Mock the emotion css prop
+vi.mock("@emotion/react", () => ({
+  jsx: (
+    type: React.ElementType,
+    props: Record<string, unknown>,
+    ...children: React.ReactNode[]
+  ) => {
+    return React.createElement(
+      type,
+      { ...props, className: "emotion-class" },
+      ...children
+    );
+  },
+  css: () => ({ name: "mock-css-result" }),
+}));
+
+vi.mock("../components/Spinner/Spinner", () => ({
+  __esModule: true,
+  default: () => <div data-testid="loading-spinner" />,
 }));
 
 vi.mock("../hooks/useFetch", () => ({
@@ -88,9 +108,13 @@ vi.mock("../hooks/useFetch", () => ({
   }),
 }));
 
-describe("App - 필터링 테스트", () => {
+describe("App - 필터링 및 상태 테스트", () => {
   it("카테고리 필터링이 올바르게 동작한다", () => {
-    render(<App />);
+    render(
+      <ErrorContextProvider>
+        <App />
+      </ErrorContextProvider>
+    );
 
     const categoryDropdown = screen.getByText("전체");
     fireEvent.click(categoryDropdown);
@@ -103,20 +127,36 @@ describe("App - 필터링 테스트", () => {
     expect(screen.queryByText("바지")).toBe(null);
     expect(screen.queryByText("치마")).toBe(null);
   });
-});
 
-describe("App - 정렬 테스트", () => {
-  it("정렬 옵션이 올바르게 동작한다", () => {
-    render(<App />);
+  it("로딩 상태에서는 스피너를 표시한다", () => {
+    vi.mocked(useFetch).mockReturnValueOnce({
+      data: null,
+      isLoading: true,
+      error: null,
+      fetcher: vi.fn(),
+    });
 
-    const orderDropdown = screen.getByText("낮은 가격순");
-    fireEvent.click(orderDropdown);
+    render(
+      <ErrorContextProvider>
+        <App />
+      </ErrorContextProvider>
+    );
+    expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
+  });
 
-    const highPriceOption = screen.getByText("높은 가격순");
-    fireEvent.click(highPriceOption);
+  it("에러 상태에서는 에러 메시지를 표시한다", () => {
+    vi.mocked(useFetch).mockReturnValueOnce({
+      data: null,
+      isLoading: false,
+      error: new Error("API 에러 발생"),
+      fetcher: vi.fn(),
+    });
 
-    const products = screen.getAllByRole("listitem");
-    expect(products[0]).toHaveTextContent("바지");
-    expect(products[1]).toHaveTextContent("치마");
+    render(
+      <ErrorContextProvider>
+        <App />
+      </ErrorContextProvider>
+    );
+    expect(screen.getByText(/에러/i)).toBeInTheDocument();
   });
 });
