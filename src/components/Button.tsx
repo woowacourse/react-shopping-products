@@ -12,7 +12,7 @@ interface ButtonProps extends Pick<ComponentProps<'button'>, 'type' | 'name' | '
 const buttonStyles = {
   smallBlack: css`
     max-width: 65px;
-    height: 29p;
+    height: 29px;
     padding: 4px 8px;
     background-color: var(--color-black);
     color: var(--color-white);
