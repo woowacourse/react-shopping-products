@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import getProducts from './api/getProducts';
-import deleteCartItems from './api/deleteCartItems';
-import Header from './components/header/Header';
-import getCartItems from './api/getCartItems';
-import postCartItems from './api/postCartItems';
-import './reset.css';
-import styled from '@emotion/styled';
-import './app.css';
-import ProductItemsWithSkeleton from './components/ProductItemsWithSkeleton';
-import ErrorMessage from './components/ErrorMessage';
-import Select from './components/Select';
+import { useEffect, useState } from "react";
+import getProducts from "./api/getProducts";
+import deleteCartItems from "./api/deleteCartItems";
+import Header from "./components/header/Header";
+import getCartItems from "./api/getCartItems";
+import postCartItems from "./api/postCartItems";
+import "./reset.css";
+import styled from "@emotion/styled";
+import "./app.css";
+import ProductItemsWithSkeleton from "./components/ProductItemsWithSkeleton";
+import ErrorMessage from "./components/ErrorMessage";
+import Select from "./components/Select";
 
 export type Product = {
   id: number;
@@ -25,21 +25,21 @@ export type CartItem = {
   product: Product;
 };
 
-export type Category = '식료품' | '패션잡화' | '전체';
-export type PriceOrder = '낮은 가격순' | '높은 가격순';
+export type Category = "식료품" | "패션잡화" | "전체";
+export type PriceOrder = "낮은 가격순" | "높은 가격순";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
-  const [priceOrder, setPriceOrder] = useState<PriceOrder>('낮은 가격순');
+  const [selectedCategory, setSelectedCategory] = useState<Category>("전체");
+  const [priceOrder, setPriceOrder] = useState<PriceOrder>("낮은 가격순");
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const addToCart = async (product: Product) => {
     if (cart.length > 50) {
-      setErrorMessage('장바구니에 담을 수 있는 상품은 최대 50개입니다.');
+      setErrorMessage("장바구니에 담을 수 있는 상품은 최대 50개입니다.");
       return;
     }
     const { newErrorMessage: postErrorMessage } = await postCartItems(product);
@@ -124,13 +124,13 @@ function App() {
         <ProductPageHeader>bppl 상품 목록</ProductPageHeader>
         <SelectContainer>
           <Select
-            optionList={['전체', '식료품', '패션잡화']}
+            optionList={["전체", "식료품", "패션잡화"]}
             value={selectedCategory}
             setValue={handleCategoryChange}
             id="category-select"
           />
           <Select
-            optionList={['낮은 가격순', '높은 가격순']}
+            optionList={["낮은 가격순", "높은 가격순"]}
             value={priceOrder}
             setValue={handlePriceOrderChange}
             id="price-order-select"
@@ -163,6 +163,7 @@ const ProductPageContainer = styled.div`
   gap: 30px;
   margin: 30px 25px;
   height: calc(100vh - 64px - 60px);};
+
 `;
 
 const ProductPageHeader = styled.div`
@@ -183,6 +184,9 @@ const ProductListContainer = styled.div`
   gap: 28px;
   overflow-x: hidden;
   overflow-y: auto;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+
   &::-webkit-scrollbar {
     display: none;
   }
