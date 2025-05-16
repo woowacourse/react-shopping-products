@@ -18,7 +18,7 @@ function AddCartItemButton({ id, updateCartItems }: AddCartItemButtonProps) {
     error,
   } = useMutation(() => addCartItems({ productId: id, quantity: 1 }));
 
-  const handleClick = async () => {
+  const handleAddCartItemButtonClick = async () => {
     try {
       await addToCart();
       const cartItems = await getCartItems();
@@ -34,7 +34,7 @@ function AddCartItemButton({ id, updateCartItems }: AddCartItemButtonProps) {
       <Button
         variant="primary"
         type="button"
-        onClick={handleClick}
+        onClick={handleAddCartItemButtonClick}
         disabled={isLoading}
       >
         <img src={addCartItemIcon} alt="장바구니 담기" />

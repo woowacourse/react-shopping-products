@@ -21,7 +21,7 @@ function RemoveCartItemButton({
     error,
   } = useMutation(() => removeCartItem(id));
 
-  const handleClick = async () => {
+  const handleRemoveCartItemButtonClick = async () => {
     try {
       await removeFromCart();
       const cartItems = await getCartItems();
@@ -38,7 +38,7 @@ function RemoveCartItemButton({
       <Button
         variant="secondary"
         type="button"
-        onClick={handleClick}
+        onClick={handleRemoveCartItemButtonClick}
         disabled={isLoading}
       >
         <img src={removeCartItemIcon} alt="장바구니 빼기" />
