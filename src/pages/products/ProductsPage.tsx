@@ -52,15 +52,15 @@ export default function ProductsPage() {
     <>
       <Header shoppingCount={cartItems?.content?.length} />
 
-      <S.Container>
+      <S.ProductPageWrapper>
         <Text variant="title-1">bpple 상품 목록</Text>
 
-        <S.SelectBox>
+        <S.SelectWrapper>
           <Select options={CATEGORY} selectedItem={filter} setSelectedItem={setFilter} />
           <Select options={SORT} selectedItem={sort} setSelectedItem={setSort} />
-        </S.SelectBox>
+        </S.SelectWrapper>
 
-        <S.CardContainer>
+        <S.CardWrapper>
           {cartItems &&
             products?.content &&
             products?.content
@@ -77,8 +77,8 @@ export default function ProductsPage() {
                   handleDeleteCartItem={handleDeleteCartItem}
                 />
               ))}
-        </S.CardContainer>
-      </S.Container>
+        </S.CardWrapper>
+      </S.ProductPageWrapper>
     </>
   );
 }
