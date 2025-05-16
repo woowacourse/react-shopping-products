@@ -1,31 +1,31 @@
-import { useState } from "react";
 import { deleteCartItems, getCartItems, getProducts, postCartItems } from "@/apis";
 import { Header, Select, Spinner, Text } from "@/components";
-import ProductCard from "@/components/ProductCard/ProductCard";
 import { useError } from "@/context";
 import { useFetch } from "@/hooks";
+import { useState } from "react";
+import { ProductCard } from "./components";
+
 import * as S from "./ProductsPage.styles";
-
-const CATEGORY = ["전체", "식료품", "패션잡화"] as const;
-type Category = (typeof CATEGORY)[number];
-
-const SORT = ["높은 가격순", "낮은 가격순"] as const;
-type Sort = (typeof SORT)[number];
+import { CATEGORY, DEFAULT_PAGE, DEFAULT_SIZE, SORT } from "./constants";
+import { DEFAULT_FILTER, DEFAULT_SORT } from "./constants";
+import { Category, Sort } from "./types";
 
 export default function ProductsPage() {
-  const [filter, setFilter] = useState<Category>("전체");
-  const [sort, setSort] = useState<Sort>("높은 가격순");
+  const [filter, setFilter] = useState<Category>(DEFAULT_FILTER);
+  const [sort, setSort] = useState<Sort>(DEFAULT_SORT);
 
   const { showError } = useError();
 
-  const { data: products, status: productsStatus } = useFetch(() => getProducts({ page: 0, size: 20 }));
+  const { data: products, status: productsStatus } = useFetch(() =>
+    getProducts({ page: DEFAULT_PAGE, size: DEFAULT_SIZE }),
+  );
   const {
     data: cartItems,
     status: cartItemsStatus,
     fetchData: fetchCartItems,
-  } = useFetch(() => getCartItems({ page: 0, size: 20 }));
+  } = useFetch(() => getCartItems({ page: DEFAULT_PAGE, size: DEFAULT_SIZE }));
 
-  const handleAddCartItem = async (productId: number) => {
+  const addCartItem = async (productId: number) => {
     try {
       await postCartItems({ productId, quantity: 1 });
       await fetchCartItems();
@@ -34,7 +34,7 @@ export default function ProductsPage() {
     }
   };
 
-  const handleDeleteCartItem = async (productId: number) => {
+  const deleteCartItem = async (productId: number) => {
     const cartItemId = cartItems?.content.find((item) => item.product.id === productId)?.id;
 
     if (cartItemId === undefined) return;
@@ -47,7 +47,9 @@ export default function ProductsPage() {
     }
   };
 
-  if (productsStatus === "loading" || cartItemsStatus === "loading") return <Spinner />;
+  const isLoading = productsStatus === "loading" || cartItemsStatus === "loading";
+
+  if (isLoading) return <Spinner />;
   return (
     <>
       <Header shoppingCount={cartItems?.content?.length} />
@@ -73,8 +75,8 @@ export default function ProductsPage() {
                   key={product.id}
                   cartItems={cartItems}
                   product={product}
-                  handleAddCartItem={handleAddCartItem}
-                  handleDeleteCartItem={handleDeleteCartItem}
+                  handleAddCartItem={addCartItem}
+                  handleDeleteCartItem={deleteCartItem}
                 />
               ))}
         </S.CardWrapper>
