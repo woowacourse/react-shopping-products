@@ -1,4 +1,4 @@
-import { ProductItemType } from "@/types/product";
+import { ProductItemType } from "@/apis/products/product.type";
 import { httpClient } from "../httpClient";
 import {
   FilterOption,

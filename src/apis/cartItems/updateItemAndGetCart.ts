@@ -1,4 +1,4 @@
-import { CartItemType } from "@/types/cartItem";
+import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import { getCartItems } from "./getCartItems";
 
 export const updateItemAndGetCart = async (
