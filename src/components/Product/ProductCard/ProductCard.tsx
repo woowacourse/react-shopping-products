@@ -12,6 +12,7 @@ interface ProductCardProps {
   productId: number;
   cartItemId?: number;
 }
+type ImageStatus = "loading" | "loaded" | "error";
 
 function ProductCard({
   title,
@@ -22,8 +23,7 @@ function ProductCard({
   productId,
   cartItemId,
 }: ProductCardProps) {
-  const [imageError, setImageError] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [imageStatus, setImageStatus] = useState<ImageStatus>("loading");
 
   // 배포 환경에 따른 베이스 경로 계산
   const basePath = useMemo(() => {
@@ -44,17 +44,17 @@ function ProductCard({
 
   return (
     <li css={styles.cardCss}>
-      {!isLoaded && <Spinner size={"large"} />}
+      {imageStatus === "loading" && <Spinner size={"large"} />}
       <img
         css={styles.imageCss}
         src={
-          !isValidImageUrl(imageUrl) || imageError
+          !isValidImageUrl(imageUrl) || imageStatus === "error"
             ? fallbackImagePath
             : imageUrl
         }
         alt={`${title} 상품`}
-        onLoad={() => setIsLoaded(true)}
-        onError={() => setImageError(true)}
+        onLoad={() => setImageStatus("loaded")}
+        onError={() => setImageStatus("error")}
       />
       <div css={styles.detailCss}>
         <h2>{title}</h2>
