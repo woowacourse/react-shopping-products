@@ -4,6 +4,7 @@ import { AddCart, Button, Card, ErrorPopup, Header, RemoveCart, Select, Spinner,
 import { useFetch } from "./hooks";
 import { DEFAULT_IMAGE_URL } from "./constants/images";
 import * as S from "./App.styles";
+import ProductCard from "./components/ProductCard/ProductCard";
 
 const CATEGORY = ["전체", "식료품", "패션잡화"] as const;
 type Category = (typeof CATEGORY)[number];
@@ -58,44 +59,24 @@ function App() {
           <Select options={CATEGORY} selectedItem={filter} setSelectedItem={setFilter} />
           <Select options={SORT} selectedItem={sort} setSelectedItem={setSort} />
         </S.SelectBox>
+
         <S.CardContainer>
-          {products?.content
-            ?.filter((product) => (filter === "전체" ? true : product.category === filter))
-            ?.sort((productA, productB) =>
-              sort === "낮은 가격순" ? productA.price - productB.price : productB.price - productA.price,
-            )
-            ?.map((product) => (
-              <Card key={product.id}>
-                <Card.Preview>
-                  <img
-                    src={product.imageUrl}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = DEFAULT_IMAGE_URL;
-                    }}
-                    alt={product.name}
-                  />
-                </Card.Preview>
-                <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                    <Text variant="title-2">{product.name}</Text>
-                    <Text>{product.price.toLocaleString()}원</Text>
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    {cartItems && cartItems.content.find((item) => item.product.id === product.id) ? (
-                      <Button backgroundColor="#fff" onClick={() => handleDeleteCartItem(product.id)}>
-                        <RemoveCart />
-                        <Text>빼기</Text>
-                      </Button>
-                    ) : (
-                      <Button onClick={() => handleAddCartItem(product.id)}>
-                        <AddCart />
-                        <Text color="#fff">담기</Text>
-                      </Button>
-                    )}
-                  </div>
-                </Card.Content>
-              </Card>
-            ))}
+          {cartItems &&
+            products?.content &&
+            products?.content
+              ?.filter((product) => (filter === "전체" ? true : product.category === filter))
+              ?.sort((productA, productB) =>
+                sort === "낮은 가격순" ? productA.price - productB.price : productB.price - productA.price,
+              )
+              ?.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  cartItems={cartItems}
+                  product={product}
+                  handleAddCartItem={handleAddCartItem}
+                  handleDeleteCartItem={handleDeleteCartItem}
+                />
+              ))}
         </S.CardContainer>
       </S.Container>
     </S.AppContainer>
