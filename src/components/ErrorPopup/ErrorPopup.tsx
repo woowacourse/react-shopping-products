@@ -9,13 +9,17 @@ interface ErrorPopupProps {
 
 export default function ErrorPopup({ errorMessage, setErrorMessage }: ErrorPopupProps) {
   useEffect(() => {
-    setTimeout(() => {
+    if (!errorMessage) return;
+    const timer = setTimeout(() => {
       setErrorMessage("");
     }, 3000);
-  }, [setErrorMessage]);
+    return () => clearTimeout(timer);
+  }, [errorMessage, setErrorMessage]);
+
+  if (!errorMessage) return null;
 
   return (
-    <S.ErrorPopupWrapper>
+    <S.ErrorPopupWrapper role="alert" aria-live="assertive">
       <Text>{errorMessage}</Text>
     </S.ErrorPopupWrapper>
   );
