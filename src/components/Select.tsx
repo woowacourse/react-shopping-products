@@ -1,5 +1,5 @@
-import { css } from '@emotion/react';
-import { useState } from 'react';
+import { css } from "@emotion/react";
+import { useState } from "react";
 
 type SelectPropsType<T extends string> = {
   optionList: T[];
@@ -29,11 +29,12 @@ const Select = <T extends string>({
         onClick={toggleDropdownOpened}
       >
         <div css={selectedValueTextStyle(Boolean(value))}>
-          {value ?? '선택해 주세요.'}
+          {value ?? "선택해 주세요."}
         </div>
         <img
           css={iconStyle}
-          src={idDropdownOpened ? 'chevron-up.svg' : 'chevron-down.svg'}
+          src={idDropdownOpened ? "chevron-up.svg" : "chevron-down.svg"}
+          alt={idDropdownOpened ? "chevron-up" : "chevron-down"}
         />
       </div>
       {idDropdownOpened && (
@@ -73,13 +74,13 @@ const selectedValueStyle = (idDropdownOpened: boolean) => css`
   justify-content: space-between;
   align-items: center;
   padding: 8px 0px;
-  border: 1px solid ${idDropdownOpened ? '#000000' : 'lightgray'};
+  border: 1px solid ${idDropdownOpened ? "#000000" : "lightgray"};
   border-radius: 5px;
   cursor: pointer;
 `;
 const selectedValueTextStyle = (isSelected: boolean) => css`
   font-size: 14px;
-  color: ${isSelected ? '#000000' : '#ACACAC'};
+  color: ${isSelected ? "#000000" : "#ACACAC"};
   padding: 0 0 0 8px;
 `;
 const iconStyle = css`
