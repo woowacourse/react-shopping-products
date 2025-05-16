@@ -1,9 +1,8 @@
 import { DEFAULT_IMAGE_URL } from "../../constants/images";
 import { GetCartItemsResponse, GetProductResponse } from "../../types";
-import Button from "../Button/Button";
-import Card from "../Card/Card";
 import { AddCart, RemoveCart } from "../icons";
-import Text from "../Text/Text";
+import { Button, Card, Spacing, Text } from "../index";
+import * as S from "./ProductCard.styles";
 
 interface ProductCardProps {
   product: GetProductResponse["content"][number];
@@ -24,12 +23,14 @@ export default function ProductCard({ product, cartItems, handleAddCartItem, han
           alt={product.name}
         />
       </Card.Preview>
-      <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+      <Card.Content>
+        <div>
           <Text variant="title-2">{product.name}</Text>
+          <Spacing size={8} />
           <Text>{product.price.toLocaleString()}원</Text>
         </div>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Spacing size={27} />
+        <S.ButtonWrapper>
           {cartItems && cartItems.content.find((item) => item.product.id === product.id) ? (
             <Button backgroundColor="#fff" onClick={() => handleDeleteCartItem(product.id)}>
               <RemoveCart />
@@ -41,7 +42,7 @@ export default function ProductCard({ product, cartItems, handleAddCartItem, han
               <Text color="#fff">담기</Text>
             </Button>
           )}
-        </div>
+        </S.ButtonWrapper>
       </Card.Content>
     </Card>
   );

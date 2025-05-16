@@ -1,6 +1,6 @@
-import Text from "../Text/Text";
-import * as S from "./ErrorPopup.styles";
 import { useEffect } from "react";
+import { Text } from "../index";
+import * as S from "./ErrorPopup.styles";
 
 interface ErrorPopupProps {
   errorMessage: string;

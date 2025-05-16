@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const Text = styled.span<{ variant: string; color: string }>`
+export const Text = styled.p<{ variant: string; color: string }>`
   font-style: normal;
   line-height: normal;
   color: ${({ color }) => color};

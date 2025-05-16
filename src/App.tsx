@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { deleteCartItems, getCartItems, getProducts, postCartItems } from "./apis";
-import { AddCart, Button, Card, ErrorPopup, Header, RemoveCart, Select, Spinner, Text } from "./components";
-import { useFetch } from "./hooks";
-import { DEFAULT_IMAGE_URL } from "./constants/images";
 import * as S from "./App.styles";
+import { ErrorPopup, Header, Select, Spinner, Text } from "./components";
 import ProductCard from "./components/ProductCard/ProductCard";
+import { useFetch } from "./hooks";
 
 const CATEGORY = ["전체", "식료품", "패션잡화"] as const;
 type Category = (typeof CATEGORY)[number];
