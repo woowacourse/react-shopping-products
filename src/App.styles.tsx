@@ -30,14 +30,22 @@ export const ProductListFilterContainer = styled.div`
   width: 100%;
   margin-top: 20px;
 `;
-
 export const ProductList = styled.main`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   justify-items: center;
   gap: 20px;
   flex: 1;
   width: 100%;
   margin-top: 28px;
   padding-bottom: 20px;
+
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
