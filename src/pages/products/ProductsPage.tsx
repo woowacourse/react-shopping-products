@@ -6,8 +6,7 @@ import { useState } from "react";
 import { ProductCard } from "./components";
 
 import * as S from "./ProductsPage.styles";
-import { CATEGORY, DEFAULT_PAGE, DEFAULT_SIZE, SORT } from "./constants";
-import { DEFAULT_FILTER, DEFAULT_SORT } from "./constants";
+import { CATEGORY, DEFAULT_FILTER, DEFAULT_PAGE, DEFAULT_SIZE, DEFAULT_SORT, SORT } from "./constants";
 import { Category, Sort } from "./types";
 
 export default function ProductsPage() {
