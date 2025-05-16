@@ -1,7 +1,8 @@
-import { CartItem, Product } from '../App';
-import isInCart from '../utils/isIncart';
-import ProductItem from './ProductItem/ProductItem';
-import ProductItemSkeleton from './ProductItem/ProductItemSkeleton';
+import { CartItem, Product } from "../App";
+import isInCart from "../utils/isIncart";
+import ProductItem from "./ProductItem/ProductItem";
+import ProductItemSkeleton from "./ProductItem/ProductItemSkeleton";
+import { PRODUCT_TYPE_COUNT } from "../App";
 
 type ProductItemWithSkeletonProps = {
   isLoading: boolean;
@@ -38,7 +39,7 @@ export default ProductItemsWithSkeleton;
 const ProductItemSkeletons = () => {
   return (
     <>
-      {Array.from({ length: 6 }, (_, index) => (
+      {Array.from({ length: PRODUCT_TYPE_COUNT }, (_, index) => (
         <ProductItemSkeleton key={index} />
       ))}
     </>

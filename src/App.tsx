@@ -27,6 +27,7 @@ export type CartItem = {
 
 export type Category = "식료품" | "패션잡화" | "전체";
 export type PriceOrder = "낮은 가격순" | "높은 가격순";
+export const PRODUCT_TYPE_COUNT = 20;
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -77,7 +78,7 @@ function App() {
     setErrorMessage(newErrorMessage);
 
     setIsLoading(false);
-    setProducts(data.content.slice(0, 20));
+    setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
   };
 
   const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
@@ -89,7 +90,7 @@ function App() {
     });
     setErrorMessage(newErrorMessage);
     setIsLoading(false);
-    setProducts(data.content.slice(0, 20));
+    setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
   };
 
   const syncCart = async () => {
@@ -109,7 +110,7 @@ function App() {
         await syncCart();
 
         setIsLoading(false);
-        setProducts(data.content.slice(0, 20));
+        setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
       }
     };
 
