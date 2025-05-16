@@ -1,17 +1,22 @@
-import { DEFAULT_IMAGE_URL } from "@/constants/images";
-import { GetCartItemsResponse, GetProductResponse } from "@/types";
-import { AddCart, RemoveCart } from "@/components/icons";
 import { Button, Card, Spacing, Text } from "@/components";
+import { AddCart, RemoveCart } from "@/components/icons";
+import { DEFAULT_IMAGE_URL } from "@/constants/images";
+import { GetProductResponse } from "@/types";
 import * as S from "./ProductCard.styles";
 
 interface ProductCardProps {
   product: GetProductResponse["content"][number];
+  isCartItem: boolean;
   handleAddCartItem: (productId: number) => void;
   handleDeleteCartItem: (productId: number) => void;
-  cartItems: GetCartItemsResponse;
 }
 
-export default function ProductCard({ product, cartItems, handleAddCartItem, handleDeleteCartItem }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  handleAddCartItem,
+  handleDeleteCartItem,
+  isCartItem,
+}: ProductCardProps) {
   return (
     <Card key={product.id}>
       <Card.Preview>
@@ -29,9 +34,11 @@ export default function ProductCard({ product, cartItems, handleAddCartItem, han
           <Spacing size={8} />
           <Text>{product.price.toLocaleString()}원</Text>
         </div>
+
         <Spacing size={27} />
+
         <S.ButtonWrapper>
-          {cartItems && cartItems.content.find((item) => item.product.id === product.id) ? (
+          {isCartItem ? (
             <Button backgroundColor="#fff" onClick={() => handleDeleteCartItem(product.id)}>
               <RemoveCart />
               <Text>빼기</Text>

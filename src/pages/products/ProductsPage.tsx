@@ -64,7 +64,6 @@ export default function ProductsPage() {
 
         <S.CardWrapper>
           {cartItems &&
-            products?.content &&
             products?.content
               ?.filter((product) => (filter === "전체" ? true : product.category === filter))
               ?.sort((productA, productB) =>
@@ -73,10 +72,10 @@ export default function ProductsPage() {
               ?.map((product) => (
                 <ProductCard
                   key={product.id}
-                  cartItems={cartItems}
                   product={product}
                   handleAddCartItem={addCartItem}
                   handleDeleteCartItem={deleteCartItem}
+                  isCartItem={cartItems.content.some((item) => item.product.id === product.id)}
                 />
               ))}
         </S.CardWrapper>

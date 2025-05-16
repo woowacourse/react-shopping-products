@@ -18,7 +18,6 @@ export default function Select<T extends string>({ options, selectedItem, setSel
     setIsOpen(false);
   };
 
-  // 외부 클릭 시 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
