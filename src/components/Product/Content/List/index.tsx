@@ -1,15 +1,19 @@
-import { ProductItemType } from "@/types/product";
+import { ProductItemType } from "@/apis/products/product.type";
 import ProductItem from "./Item";
 import * as S from "./ProductList.styled";
-import { CartItemType, SetCartItems } from "@/types/cartItem";
+import { CartItemType } from "@/apis/cartItems/cartItem.type";
 
 interface ProductListProps {
   resource: { read: () => ProductItemType[] };
   cartItems: CartItemType[];
-  setCartItems: SetCartItems;
+  updateCartItems: (newCartItems: CartItemType[]) => void;
 }
 
-function ProductList({ resource, cartItems, setCartItems }: ProductListProps) {
+function ProductList({
+  resource,
+  cartItems,
+  updateCartItems,
+}: ProductListProps) {
   const products = resource.read();
 
   return (
@@ -21,7 +25,7 @@ function ProductList({ resource, cartItems, setCartItems }: ProductListProps) {
               key={productItem.id}
               product={productItem}
               cartItems={cartItems}
-              setCartItems={setCartItems}
+              updateCartItems={updateCartItems}
             />
           ))}
         </S.ProductList>

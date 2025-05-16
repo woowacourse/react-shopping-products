@@ -5,16 +5,16 @@ import { Suspense, useMemo, useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
 import { getProducts } from "@/apis/products/getProducts";
 import { wrapPromise } from "@/apis/wrapPromise";
-import { CartItemType, SetCartItems } from "@/types/cartItem";
+import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Fallback from "@/components/Fallback";
 
 interface ProductContentProps {
   cartItems: CartItemType[];
-  setCartItems: SetCartItems;
+  updateCartItems: (newCartItems: CartItemType[]) => void;
 }
 
-function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
+function ProductContent({ cartItems, updateCartItems }: ProductContentProps) {
   const [filterOption, setFilterOption] = useState<FilterOption>("전체");
   const [sortOption, setSortOption] = useState<SortOption>("낮은 가격순");
   const productResource = useMemo(
@@ -58,7 +58,7 @@ function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
           <ProductList
             resource={productResource}
             cartItems={cartItems}
-            setCartItems={setCartItems}
+            updateCartItems={updateCartItems}
           />
         </ErrorBoundary>
       </Suspense>

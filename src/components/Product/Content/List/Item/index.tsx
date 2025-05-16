@@ -1,18 +1,22 @@
-import { ProductItemType } from "@/types/product";
+import { ProductItemType } from "@/apis/products/product.type";
 import AddCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Add";
 import RemoveCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Remove";
 import * as S from "./ProductItem.styled";
-import { CartItemType, SetCartItems } from "@/types/cartItem";
+import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import defaultImage from "@/assets/images/planet-error.png";
 import { SyntheticEvent } from "react";
 
 interface ProductItemProps {
   product: ProductItemType;
   cartItems: CartItemType[];
-  setCartItems: SetCartItems;
+  updateCartItems: (newCartItems: CartItemType[]) => void;
 }
 
-function ProductItem({ product, cartItems, setCartItems }: ProductItemProps) {
+function ProductItem({
+  product,
+  cartItems,
+  updateCartItems,
+}: ProductItemProps) {
   const { id, name, price, imageUrl } = product;
   const findCartItem = cartItems.find(({ product }) => product.id === id);
 
@@ -34,10 +38,10 @@ function ProductItem({ product, cartItems, setCartItems }: ProductItemProps) {
           {findCartItem ? (
             <RemoveCartItemButton
               id={findCartItem.id}
-              setCartItems={setCartItems}
+              updateCartItems={updateCartItems}
             />
           ) : (
-            <AddCartItemButton id={id} setCartItems={setCartItems} />
+            <AddCartItemButton id={id} updateCartItems={updateCartItems} />
           )}
         </S.ButtonWrapper>
       </S.Content>
