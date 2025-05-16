@@ -49,7 +49,7 @@ export default function ProductsPage() {
 
   const isLoading = productsStatus === "loading" || cartItemsStatus === "loading";
 
-  if (isLoading) return <Spinner />;
+  if (isLoading && !cartItems) return <Spinner />;
   return (
     <>
       <Header shoppingCount={cartItems?.content?.length} />
