@@ -6,19 +6,21 @@ import { getCartItems } from "@/apis/cartItems/getCartItems";
 import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import AlertToast from "@/components/AlertToast";
 
-interface AddCartItemButton {
+interface AddCartItemButtonProps {
   id: number;
   updateCartItems: (newCartItems: CartItemType[]) => void;
 }
 
-function AddCartItemButton({ id, updateCartItems }: AddCartItemButton) {
-  const { mutate, isLoading, error } = useMutation(() =>
-    addCartItems({ productId: id, quantity: 1 })
-  );
+function AddCartItemButton({ id, updateCartItems }: AddCartItemButtonProps) {
+  const {
+    mutate: addToCart,
+    isLoading,
+    error,
+  } = useMutation(() => addCartItems({ productId: id, quantity: 1 }));
 
   const handleClick = async () => {
     try {
-      await mutate();
+      await addToCart();
       const cartItems = await getCartItems();
       updateCartItems(cartItems);
     } catch (error) {

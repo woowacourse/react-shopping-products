@@ -6,17 +6,24 @@ import { getCartItems } from "@/apis/cartItems/getCartItems";
 import useMutation from "@/hooks/useMutation";
 import AlertToast from "@/components/AlertToast";
 
-interface RemoveCartItemButton {
+interface RemoveCartItemButtonProps {
   id: number;
   updateCartItems: (newCartItems: CartItemType[]) => void;
 }
 
-function RemoveCartItemButton({ id, updateCartItems }: RemoveCartItemButton) {
-  const { mutate, isLoading, error } = useMutation(() => removeCartItem(id));
+function RemoveCartItemButton({
+  id,
+  updateCartItems,
+}: RemoveCartItemButtonProps) {
+  const {
+    mutate: removeFromCart,
+    isLoading,
+    error,
+  } = useMutation(() => removeCartItem(id));
 
   const handleClick = async () => {
     try {
-      await mutate();
+      await removeFromCart();
       const cartItems = await getCartItems();
       updateCartItems(cartItems);
     } catch (error) {
