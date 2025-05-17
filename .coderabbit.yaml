@@ -1,0 +1,4 @@
+reviews:
+  auto_review:
+    enabled: true # 자동 리뷰 ON/OFF
+    drafts: false # Draft PR 리뷰 여부
