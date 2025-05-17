@@ -8,7 +8,7 @@ type ProductItemWithSkeletonProps = {
   products: Product[];
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
-  cart: CartItem[];
+  cartItems: CartItem[];
 };
 
 const ProductItemsWithSkeleton = ({
@@ -16,7 +16,7 @@ const ProductItemsWithSkeleton = ({
   products,
   addToCart,
   removeFromCart,
-  cart,
+  cartItems,
 }: ProductItemWithSkeletonProps) => {
   return isLoading ? (
     <ProductItemSkeletons />
@@ -27,7 +27,7 @@ const ProductItemsWithSkeleton = ({
         product={product}
         addToCart={addToCart}
         removeFromCart={removeFromCart}
-        isInCart={isInCart(cart, product.id)}
+        isInCart={isInCart(cartItems, product.id)}
       />
     ))
   );
