@@ -1,12 +1,12 @@
-import * as S from './App.styles';
+import Navbar from './widgets/navbar/ui/Navbar';
 import CustomSelect from './shared/ui/CustomSelect';
 import ProductCard from './features/products/ui/ProductCard';
-import {useEffect, useState} from 'react';
-import {Product} from './features/products/type/product';
 import {filterByValue} from './shared/utils/filterByValue';
 import {matchCategory} from './features/products/utils/matchCategory';
-import Navbar from './widgets/navbar/ui/Navbar';
 import useGetProductsWithCart from './features/products/hooks/useGetProductsWithCart';
+import {useEffect, useState} from 'react';
+import {Product} from './features/products/type/product';
+import * as S from './App.styles';
 
 type Category = keyof typeof matchCategory;
 
