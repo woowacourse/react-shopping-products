@@ -15,7 +15,7 @@ export const ToastProvider = ({ children }: PropsWithChildren) => {
       clearTimeout(timerRef.current);
     }
 
-    setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       setToast('');
       timerRef.current = null;
     }, 3000);
