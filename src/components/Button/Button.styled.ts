@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ButtonVariants } from ".";
+import { ButtonVariants } from "./type";
 
 const buttonTheme: Record<ButtonVariants, Record<string, string>> = {
   primary: { text: "#ffffff", background: "#000000" },
