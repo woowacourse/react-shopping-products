@@ -9,7 +9,6 @@ import {
   PRODUCT_LIST_ITEM_COUNT,
 } from '../../constants/systemConstants';
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
-import useCartHandler from '../../hooks/useCartHandler.ts';
 import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
 
@@ -17,12 +16,6 @@ export const ProductListPage = () => {
   const { cartItemsIds, handleAddCartItemsIds, handleRemoveCartItemsIds } = useCartContext();
 
   const { errorMessage, handleErrorMessage } = useErrorMessageContext();
-
-  const { handleAddCartItem, handleRemoveCartItem } = useCartHandler({
-    handleAddCartItemsIds,
-    handleRemoveCartItemsIds,
-    handleErrorMessage,
-  });
 
   const {
     products,
@@ -62,8 +55,8 @@ export const ProductListPage = () => {
             key={product.id}
             product={product}
             isCartAdded={cartItemsIds.includes(product.id)}
-            handleAddCartItem={handleAddCartItem}
-            handleRemoveCartItem={handleRemoveCartItem}
+            handleAddCartItem={handleAddCartItemsIds}
+            handleRemoveCartItem={handleRemoveCartItemsIds}
           />
         ))}
       </P.ProductItemContainer>

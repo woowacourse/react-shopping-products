@@ -1,39 +1,46 @@
+import { useEffect, useState } from 'react';
 import { getCartId } from '../domain/manageCartInfo';
-import { addCartItems, removeCartItems } from '../services/cartItemServices';
+import { addCartItems, getCartItems, removeCartItems } from '../services/cartItemServices';
 import tryApiCall from '../util/tryApiCall';
+import { CartItemType } from '../types/data';
 
 interface CartHandlerProps {
-  handleAddCartItemsIds: (id: number) => void;
-  handleRemoveCartItemsIds: (id: number) => void;
   handleErrorMessage: (errorMessage: string) => void;
 }
 
-const useCartHandler = ({
-  handleAddCartItemsIds,
-  handleRemoveCartItemsIds,
-  handleErrorMessage,
-}: CartHandlerProps) => {
-  const handleAddCartItem = (id: number) => {
+const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
+  const [cartItemsIds, setCartItemsIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const items = await tryApiCall(getCartItems, handleErrorMessage);
+      setCartItemsIds(items.map((item: CartItemType) => item.product.id));
+    })();
+  }, []);
+
+  const handleAddCartItemsIds = (id: number) => {
     const addItemInfo = {
       productId: id,
       quantity: 1,
     };
     (async () => {
       await tryApiCall(async () => await addCartItems(addItemInfo), handleErrorMessage);
-      handleAddCartItemsIds(id);
+      setCartItemsIds((prev: number[]) => [...prev, id]);
     })();
   };
 
-  const handleRemoveCartItem = (id: number) => {
+  const handleRemoveCartItemsIds = (id: number) => {
     (async () => {
       await removeCartItems(await tryApiCall(async () => await getCartId(id), handleErrorMessage));
-      handleRemoveCartItemsIds(id);
+      setCartItemsIds((prev: number[]) => prev.filter((itemId: number) => itemId !== id));
     })();
   };
 
   return {
-    handleAddCartItem,
-    handleRemoveCartItem,
+    cartItemsIds,
+    setCartItemsIds,
+    handleAddCartItemsIds,
+    handleRemoveCartItemsIds,
   };
 };
 
