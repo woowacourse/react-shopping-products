@@ -8,7 +8,7 @@ export const SelectContainer = styled.div`
   position: relative;
 `;
 
-export const SelectField = styled.div<{ $isOpen: boolean }>`
+export const SelectField = styled.button<{ $isOpen: boolean }>`
   width: 100%;
   border: 1px solid var(--color-gray);
   border-radius: 4px;
