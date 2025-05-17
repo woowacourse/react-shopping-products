@@ -1,16 +1,17 @@
-import * as S from './Button.styled';
-import React from 'react';
+import * as S from "./Button.styled";
+import React from "react";
 
+type ButtonVariation = "light" | "dark";
 interface ButtonProps {
   text: string;
   icon: React.ReactNode;
-  keyWord: 'add' | 'remove';
+  variation: ButtonVariation;
   onClick?: () => void;
 }
 
-function Button({ text, icon, keyWord, onClick }: ButtonProps) {
+function Button({ text, icon, variation, onClick }: ButtonProps) {
   return (
-    <S.CartButton keyWord={keyWord} onClick={onClick}>
+    <S.CartButton variation={variation} onClick={onClick}>
       {icon}
       {text}
     </S.CartButton>
