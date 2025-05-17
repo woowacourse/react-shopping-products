@@ -1,13 +1,8 @@
 import { getCartItems } from '../services/cartItemServices';
-import { CartItemType } from '../types/data';
-
-export const isCartItem = async (productId: number) => {
-  const data = await getCartItems();
-  return data.some((item: CartItemType) => item.product.id === productId);
-};
+import type { CartItemType } from '../types/data';
 
 export const getCartId = async (productId: number) => {
   const data = await getCartItems();
   const cartItem = data.find((item: CartItemType) => item.product.id === productId);
-  return cartItem && cartItem.id;
+  return cartItem?.id;
 };
