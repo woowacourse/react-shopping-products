@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { fadeIn } from '../../animations/animations';
+import { css } from '@emotion/react';
 
 export const SelectContainer = styled.div`
   width: 100%;
@@ -43,12 +44,17 @@ export const OptionsContainer = styled.ul`
   animation: ${fadeIn} 0.3s ease;
 `;
 
-export const OptionItem = styled.li`
+export const OptionItem = styled.li<{ $isFocused: boolean }>`
   background-color: var(--color-white);
   font-size: var(--font-size-body);
   cursor: pointer;
   padding: 8px;
   box-sizing: border-box;
+  ${({ $isFocused }) =>
+    $isFocused &&
+    css`
+      background-color: var(--color-light-grey);
+    `}
   &:hover {
     background-color: var(--color-grey);
   }

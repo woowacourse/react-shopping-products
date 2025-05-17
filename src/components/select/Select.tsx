@@ -23,6 +23,12 @@ const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
 
   const handleSelectKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
+      e.stopPropagation();
+      e.preventDefault();
+      if (isOpen) {
+        handleSelectOption(options[focusedIndex]);
+        return;
+      }
       setIsOpen(!isOpen);
     }
     if (e.key === 'Escape') {
@@ -37,12 +43,6 @@ const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
       e.preventDefault();
       setFocusedIndex(Math.max(focusedIndex - 1, 0));
       setIsOpen(true);
-    }
-  };
-
-  const handleOptionKeyDown = (option: string) => (e: React.KeyboardEvent<HTMLLIElement>) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      handleSelectOption(option);
     }
   };
 
@@ -65,14 +65,14 @@ const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
       </S.SelectField>
       {isOpen && (
         <S.OptionsContainer role="listbox">
-          {options.map((option) => (
+          {options.map((option, index) => (
             <S.OptionItem
               id={`option-${option}`}
               key={option}
               role="option"
               onClick={() => handleSelectOption(option)}
-              onKeyDown={handleOptionKeyDown(option)}
               aria-selected={option === selectedValue}
+              $isFocused={focusedIndex === index}
             >
               {option}
             </S.OptionItem>
