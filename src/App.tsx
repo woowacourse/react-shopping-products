@@ -25,8 +25,12 @@ const SORT_OPTIONS = [
 function App() {
   const [category, setCategory] = useState<Category>('all');
   const [sortValue, setSortValue] = useState<string>('');
+  const [errors, setErrors] = useState<string>('');
 
   const { products, fetchProducts, error } = useGetProductsWithCart(sortValue);
+  if (error !== '') {
+    setErrors(error);
+  }
 
   const cartQuantity = products.filter((product) => product.isCart).length;
 
@@ -45,7 +49,7 @@ function App() {
 
   return (
     <>
-      <Navbar cartQuantity={cartQuantity} errorMessage={error} />
+      <Navbar cartQuantity={cartQuantity} errorMessage={errors} />
       <S.ProductListWrapper>
         <S.ProductListHeader>
           <S.ProductListHeaderTitle>WoowaBros Product List</S.ProductListHeaderTitle>
@@ -62,7 +66,13 @@ function App() {
 
         <S.ProductList data-testid='product-list'>
           {filteredProducts.map((product: Product) => (
-            <ProductCard key={product.id} product={product} onRefetch={fetchProducts} cartQuantity={cartQuantity} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              onRefetch={fetchProducts}
+              cartQuantity={cartQuantity}
+              setErrors={setErrors}
+            />
           ))}
         </S.ProductList>
       </S.ProductListWrapper>

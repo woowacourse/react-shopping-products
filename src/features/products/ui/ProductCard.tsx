@@ -10,10 +10,12 @@ interface ProductCardProps {
   product: Product;
   onRefetch: () => void;
   cartQuantity: number;
+  setErrors: (error: string) => void;
 }
 
-export default function ProductCard({ product, onRefetch, cartQuantity }: ProductCardProps) {
+export default function ProductCard({ product, onRefetch, cartQuantity, setErrors }: ProductCardProps) {
   const handleProductCart = async () => {
+    setErrors('');
     try {
       if (product.isCart && product.cartProductId) {
         await deleteCartProduct(product.cartProductId);
@@ -24,12 +26,12 @@ export default function ProductCard({ product, onRefetch, cartQuantity }: Produc
       }
 
       if (cartQuantity >= CART_MAX_LIMIT) {
-        alert('장바구니에 담을 수 있는 최대 개수는 50개입니다.');
+        setErrors('장바구니에 담을 수 있는 최대 개수는 50개입니다.');
         return;
       }
 
       if (product.isCart) {
-        alert('이미 장바구니에 담긴 상품입니다.');
+        setErrors('이미 장바구니에 담긴 상품입니다.');
         return;
       }
 
@@ -39,7 +41,7 @@ export default function ProductCard({ product, onRefetch, cartQuantity }: Produc
     } catch (error) {
       if (error instanceof Error) {
         console.error('장바구니 처리 중 에러 발생:', error);
-        alert('장바구니 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        setErrors('장바구니 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
       }
     }
   };
