@@ -67,7 +67,7 @@ export const ProductListPage = () => {
             gap="0px"
             padding="10px 25px"
           >
-            <Select maxWidth={100} selectedOptions={CATEGORY[categorySelect]}>
+            <Select maxWidth={110} selectedOptions={CATEGORY[categorySelect]}>
               {Object.entries(CATEGORY).map(([key, value], idx) => (
                 <Select.Option
                   key={idx}
@@ -113,7 +113,7 @@ export const ProductListPage = () => {
               >
                 <Loading size="xl" />
               </Flex>
-            ) : (
+            ) : filteredData.length > 0 ? (
               <ProductListContainer>
                 {filteredData.map((item) => (
                   <ProductItem
@@ -126,6 +126,17 @@ export const ProductListPage = () => {
                   />
                 ))}
               </ProductListContainer>
+            ) : (
+              <Text
+                type="Body"
+                css={css`
+                  padding: 20px;
+                  justify-self: center;
+                  align-self: center;
+                `}
+              >
+                데이터가 존재하지 않습니다.
+              </Text>
             )}
           </Flex>
         </Flex>
