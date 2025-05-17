@@ -2,22 +2,22 @@ import * as S from "./SelectBox.styles";
 
 interface SelectBoxProps<T extends string> {
   id: string;
-  state: string;
-  setState: React.Dispatch<React.SetStateAction<T>>;
+  value: string;
+  onChange: React.Dispatch<React.SetStateAction<T>>;
   options: string[];
 }
 
 const SelectBox = <T extends string>({
   id,
-  state,
-  setState,
+  value,
+  onChange,
   options,
 }: SelectBoxProps<T>) => {
   return (
     <S.Select
       data-testid={`${id}-select`}
-      value={state}
-      onChange={(e) => setState(e.target.value as T)}
+      value={value}
+      onChange={(e) => onChange(e.target.value as T)}
     >
       {options.map((option, index) => (
         <option key={index} value={option}>
