@@ -10,45 +10,60 @@ export const useCart = () => {
   const { handleRequest } = useApiRequest();
 
   const fetchCartProductData = useCallback(async () => {
-    return handleRequest({
-      apiCall: () =>
-        getCartItemList({
-          page: 0,
-          size: 50,
-        }),
-      onSuccess: (data) => {
-        setCartData(data);
-        return data;
-      },
-    });
+    try {
+      const cartProductData = handleRequest({
+        apiCall: () =>
+          getCartItemList({
+            page: 0,
+            size: 50,
+          }),
+        onSuccess: (data) => {
+          setCartData(data);
+          return data;
+        },
+      });
+      return cartProductData;
+    } catch (error) {
+      return [];
+    }
   }, [handleRequest]);
 
   const addToCart = useCallback(
     async (productId: number, quantity: number = 1) => {
-      return handleRequest({
-        apiCall: () =>
-          addCartItem({
-            productId,
-            quantity,
-          }),
-        onSuccess: (data) => {
-          setCartData(data);
-          return data.length;
-        },
-      });
+      try {
+        const addRequest = handleRequest({
+          apiCall: () =>
+            addCartItem({
+              productId,
+              quantity,
+            }),
+          onSuccess: (data) => {
+            setCartData(data);
+            return data.length;
+          },
+        });
+        return addRequest;
+      } catch (error) {
+        return [];
+      }
     },
     [handleRequest]
   );
 
   const deleteFromCart = useCallback(
     async (cartItemId: number) => {
-      return handleRequest({
-        apiCall: () => deleteCartItem(cartItemId),
-        onSuccess: (data) => {
-          setCartData(data);
-          return data.length;
-        },
-      });
+      try {
+        const deleteRequest = handleRequest({
+          apiCall: () => deleteCartItem(cartItemId),
+          onSuccess: (data) => {
+            setCartData(data);
+            return data.length;
+          },
+        });
+        return deleteRequest;
+      } catch (error) {
+        return [];
+      }
     },
     [handleRequest]
   );
