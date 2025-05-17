@@ -1,6 +1,6 @@
-import Styled from '@emotion/styled';
+import Styled from "@emotion/styled";
 
-export const Global = Styled.div`
+export const AppContainer = Styled.div`
   background-color:gray;
   display:flex;
   justify-content:center;
