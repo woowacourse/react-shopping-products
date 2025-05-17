@@ -8,9 +8,12 @@ import {matchCategory} from './features/products/utils/matchCategory';
 import Navbar from './widgets/navbar/ui/Navbar';
 import useGetProductsWithCart from './features/products/hooks/useGetProductsWithCart';
 
-type Category = 'all' | 'food' | 'clothes';
+type Category = keyof typeof matchCategory;
 
-const CATEGORY_OPTIONS = [
+const CATEGORY_OPTIONS: {
+  label: (typeof matchCategory)[keyof typeof matchCategory];
+  value: Category;
+}[] = [
   {label: '전체', value: 'all'},
   {label: '식료품', value: 'food'},
   {label: '패션잡화', value: 'clothes'},
