@@ -9,7 +9,7 @@ import { Text } from '@/shared/components/Text';
 import { Select } from '../../../shared/components/Select/index';
 import { ProductItem } from '../components/ProductItem';
 import { ShoppingBag } from '../components/ShoppingBag';
-import { CATEGORY, PRICE } from '../constants/product';
+import { CATEGORY, CategoryType, PRICE, PriceType } from '../constants/product';
 import { ProductListContainer } from '../container/ProductListContainer';
 import { useShopping } from '../hooks/useShopping';
 
@@ -67,21 +67,25 @@ export const ProductListPage = () => {
             gap="0px"
             padding="10px 25px"
           >
-            <Select maxWidth={100} selectedOptions={categorySelect}>
-              {Object.entries(CATEGORY).map(([_, value], idx) => (
-                <Select.Option key={idx} option={value} onSelectOption={handleCategorySelect}>
-                  {value}
+            <Select maxWidth={100} selectedOptions={CATEGORY[categorySelect]}>
+              {Object.entries(CATEGORY).map(([key, value], idx) => (
+                <Select.Option
+                  key={idx}
+                  option={value}
+                  onSelectOption={() => handleCategorySelect(key as CategoryType)}
+                >
+                  {key}
                 </Select.Option>
               ))}
             </Select>
-            <Select maxWidth={125} selectedOptions={PRICE[priceSelect as keyof typeof PRICE]}>
+            <Select maxWidth={125} selectedOptions={PRICE[priceSelect]}>
               {Object.entries(PRICE).map(([key, value], idx) => (
                 <Select.Option
                   key={idx}
                   option={value}
-                  onSelectOption={() => handlePriceSelect(key)}
+                  onSelectOption={() => handlePriceSelect(key as PriceType)}
                 >
-                  {value}
+                  {key}
                 </Select.Option>
               ))}
             </Select>
