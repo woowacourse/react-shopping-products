@@ -1,8 +1,8 @@
 import { Category } from '../App';
-import fetchWithErrorHandling from './fetchWithErrorHandling';
+import safeFetch from './safeFetch';
 
-type PriceOrder = '낮은 가격순' | '높은 가격순';
-type GetProductsProps = {
+export type PriceOrder = '낮은 가격순' | '높은 가격순';
+export type GetProductsProps = {
   category?: Category;
   priceOrder?: PriceOrder;
 };
@@ -30,22 +30,17 @@ const getProducts = async ({
     },
   };
 
-  let newErrorMessage = '';
+  const { data, status } = await safeFetch(`products?${queryString}`, options);
 
-  const { data, status } = await fetchWithErrorHandling(
-    `products?${queryString}`,
-    options
-  );
+  // if (status === 400) {
+  //   newErrorMessage = '상품 목록을 불러오지 못했습니다. 다시 시도해주세요';
+  // } else if (status === 404) {
+  //   newErrorMessage = 'not found';
+  // } else if (status === 500) {
+  //   newErrorMessage = '서버에 문제가 발생했습니다.';
+  // }
 
-  if (status === 400) {
-    newErrorMessage = '상품 목록을 불러오지 못했습니다. 다시 시도해주세요';
-  } else if (status === 404) {
-    newErrorMessage = 'not found';
-  } else if (status === 500) {
-    newErrorMessage = '서버에 문제가 발생했습니다.';
-  }
-
-  return { newErrorMessage, data };
+  return { data, status };
 };
 
 export default getProducts;
