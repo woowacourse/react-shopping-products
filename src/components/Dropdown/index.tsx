@@ -10,14 +10,14 @@ interface Option {
 
 interface DropdownProps<T extends Option> {
   optionList: readonly T[];
-  onClick: (option: T) => void;
+  onOptionSelect: (option: T) => void;
   defaultOption?: string;
   selectedOption: T | null;
 }
 
 function Dropdown<T extends Option>({
   optionList,
-  onClick,
+  onOptionSelect,
   selectedOption,
   defaultOption,
 }: DropdownProps<T>) {
@@ -31,8 +31,8 @@ function Dropdown<T extends Option>({
     setIsOpen((prev) => !prev);
   };
 
-  const handleDropdownOptionClick = (option: T) => {
-    onClick(option);
+  const handleOptionSelect = (option: T) => {
+    onOptionSelect(option);
     setIsOpen(false);
   };
 
@@ -53,7 +53,7 @@ function Dropdown<T extends Option>({
               <S.OptionItemButton
                 type="button"
                 data-testid={`dropdown-option-${option.label}`}
-                onClick={() => handleDropdownOptionClick(option)}
+                onClick={() => handleOptionSelect(option)}
               >
                 {option.label}
               </S.OptionItemButton>

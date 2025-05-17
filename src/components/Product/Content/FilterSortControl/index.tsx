@@ -22,14 +22,14 @@ function FilterSortControl({
         <Dropdown
           optionList={FILTER_OPTIONS}
           selectedOption={filterOption}
-          onClick={onFilterChange}
+          onOptionSelect={onFilterChange}
         />
       </S.DropdownWrapper>
       <S.DropdownWrapper data-testid="sort-dropdown">
         <Dropdown
           optionList={SORT_OPTIONS}
           selectedOption={sortOption}
-          onClick={onSortChange}
+          onOptionSelect={onSortChange}
         />
       </S.DropdownWrapper>
     </S.DropdownContainer>
