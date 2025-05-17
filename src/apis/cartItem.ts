@@ -1,4 +1,5 @@
 import { GetCartItemsResponse } from "../types/cartItem";
+import { baseURL, baseHeaders } from "./base";
 
 interface GetCartItemsParams {
   page: number;
@@ -16,10 +17,8 @@ interface DeleteCartItemsParams {
 }
 
 export const getCartItems = async ({ page, size, sort = "asc" }: GetCartItemsParams): Promise<GetCartItemsResponse> => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items?page=${page}&size=${size}&sort=${sort}`, {
-    headers: {
-      Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-    },
+  const response = await fetch(`${baseURL}/cart-items?page=${page}&size=${size}&sort=${sort}`, {
+    headers: baseHeaders,
   });
   if (!response.ok) {
     throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
@@ -30,11 +29,11 @@ export const getCartItems = async ({ page, size, sort = "asc" }: GetCartItemsPar
 };
 
 export const postCartItems = async ({ productId, quantity }: PostCartItemsParams) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items`, {
+  const response = await fetch(`${baseURL}/cart-items`, {
     method: "POST",
 
     headers: {
-      Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+      ...baseHeaders,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -48,10 +47,10 @@ export const postCartItems = async ({ productId, quantity }: PostCartItemsParams
 };
 
 export const deleteCartItems = async ({ productId }: DeleteCartItemsParams) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items/${productId}`, {
+  const response = await fetch(`${baseURL}/cart-items/${productId}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+      ...baseHeaders,
       "Content-Type": "application/json",
     },
   });

@@ -1,4 +1,6 @@
 import { GetProductResponse } from "../types/product";
+import { baseHeaders } from "./base";
+import { baseURL } from "./base";
 
 interface GetProductParams {
   page: number;
@@ -7,7 +9,9 @@ interface GetProductParams {
 }
 
 export const getProducts = async ({ page, size, sort = "asc" }: GetProductParams): Promise<GetProductResponse> => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/products?page=${page}&size=${size}&sort=${sort}`);
+  const response = await fetch(`${baseURL}/products?page=${page}&size=${size}&sort=${sort}`, {
+    headers: baseHeaders,
+  });
   if (!response.ok) {
     throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
   }
