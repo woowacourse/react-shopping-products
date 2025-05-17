@@ -1,12 +1,12 @@
 import { FETCH_ERROR_MESSAGE, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 
-interface ApiClientProps {
+interface ApiClientProps<T = unknown> {
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   URI: string;
-  body?: any;
+  body?: T;
 }
 
-const apiClient = async ({ method, URI, body }: ApiClientProps) => {
+const apiClient = async <T = unknown>({ method, URI, body }: ApiClientProps<T>) => {
   const basicToken = btoa(
     `${import.meta.env.VITE_API_USERNAME}:${import.meta.env.VITE_API_PASSWORD}`,
   );

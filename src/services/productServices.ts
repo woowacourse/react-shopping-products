@@ -1,6 +1,6 @@
 import apiClient from './apiClient';
 
-export const getProducts = async (categoryOption: string = '전체', sortOption: string = 'asc') => {
+export const getProducts = async (categoryOption = '전체', sortOption = 'asc') => {
   const categoryUrl = categoryOption === '전체' ? '' : `&category=${categoryOption}`;
   const fullUrl = `/products?page=0&size=20&sort=price,${sortOption}` + categoryUrl;
   const data = await apiClient({
