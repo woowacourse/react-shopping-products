@@ -13,7 +13,7 @@ const CategoryFilter = ({
 }: CategoryFilterProps) => {
   return (
     <SelectBox
-      id="category"
+      testIdPrefix="category"
       value={selectedCategory}
       onChange={setSelectedCategory}
       options={CategoryOptions}
