@@ -46,7 +46,7 @@ describe('GET Products', () => {
     });
   });
 
-  it('product 카테고리에 따라 필터링된 ProductList가 보인다.', async () => {
+  it('식료품 카테고리를 선택한 경우 식료품 ProductList가 보인다.', async () => {
     render(<App />);
     await waitFor(() => {
       const select = screen.getByTestId('category-select');
@@ -74,7 +74,7 @@ describe('카테고리 필터링 테스트', () => {
     });
   });
 
-  it('정렬 select에서 낮은 가격순을 클릭하면 오름차순으로 정렬된 ProductList가 보인다.', async () => {
+  it('낮은 가격순을 클릭하면 오름차순으로 정렬된 ProductList가 보인다.', async () => {
     render(<App />);
     await waitFor(() => {
       const select = screen.getByTestId('sort-select');
