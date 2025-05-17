@@ -1,16 +1,13 @@
-import { SerializedStyles } from '@emotion/react';
 import * as S from './CustomButton.styles';
 
-interface CustomButtonProps {
+interface CustomButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   iconUrl: string;
   title: string;
-  css?: SerializedStyles;
-  onClick: () => void;
 }
 
-export default function CustomButton({ iconUrl, title, onClick, css }: CustomButtonProps) {
+export default function CustomButton({ iconUrl, title, ...rest }: CustomButtonProps) {
   return (
-    <S.CustomButton onClick={onClick} css={css}>
+    <S.CustomButton {...rest}>
       <S.ButtonIcon src={iconUrl} alt='button icon' />
       <S.ButtonTitle>{title}</S.ButtonTitle>
     </S.CustomButton>

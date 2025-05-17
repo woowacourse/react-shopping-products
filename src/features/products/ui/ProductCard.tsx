@@ -32,7 +32,7 @@ export default function ProductCard({ product, onRefetch, cartQuantity }: Produc
 
   const iconUrl = product.isCart ? './deleteCartIcon.svg' : './addCartIcon.svg';
   const title = product.isCart ? '빼기' : '담기';
-  const className = product.isCart
+  const buttonStyle = product.isCart
     ? css`
         background-color: #fff;
         color: #000;
@@ -57,7 +57,7 @@ export default function ProductCard({ product, onRefetch, cartQuantity }: Produc
         <S.ProductPrice>{product.price}</S.ProductPrice>
       </S.ContentSection>
       <S.ButtonSection>
-        <CustomButton iconUrl={iconUrl} title={title} onClick={handleProductCart} css={className} />
+        <CustomButton iconUrl={iconUrl} title={title} onClick={handleProductCart} css={buttonStyle} />
       </S.ButtonSection>
     </S.ProductCardContainer>
   );

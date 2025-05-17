@@ -1,7 +1,6 @@
-import { SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
 
-export const CustomButton = styled.button<{ css?: SerializedStyles }>`
+export const CustomButton = styled.button`
   display: flex;
   align-items: center;
   gap: 5px;
@@ -10,7 +9,6 @@ export const CustomButton = styled.button<{ css?: SerializedStyles }>`
   color: #fff;
   border-radius: 4px;
   cursor: pointer;
-  ${({ css }) => css}
 `;
 
 export const ButtonIcon = styled.img`
