@@ -7,7 +7,7 @@ import ErrorMessage from './components/ErrorMessage';
 import useProducts from './hooks/useProducts';
 import useCartItems from './hooks/useCartItems';
 import getProductErrorMessage from './utils/getProductErrorMessage';
-import { getCartErrorMessage } from './utils/getCartErrorMessage';
+import getCartErrorMessage from './utils/getCartErrorMessage';
 import ProductPage from './pages/ProductPage';
 
 export type Product = {

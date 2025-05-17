@@ -1,5 +1,4 @@
 export const getProductErrorMessage = (status: number | null) => {
-  console.log('getProductErrorMessage', status);
   const messages: Record<number, string> = {
     400: '상품 정보를 불러올 수 없습니다.',
     404: '상품을 찾을 수 없습니다.',

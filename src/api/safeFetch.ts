@@ -15,7 +15,6 @@ const safeFetch = async (endPoint: string, options?: RequestInit) => {
   const status = response.status;
 
   if (!response.ok) {
-    console.log('status', response.status);
     throw new Error(`${status}`);
   }
 

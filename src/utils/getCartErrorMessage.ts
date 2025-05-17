@@ -1,4 +1,4 @@
-export const getCartErrorMessage = (status: number | null) => {
+const getCartErrorMessage = (status: number | null) => {
   const messages: Record<number, string> = {
     400: '장바구니 요청이 잘못되었습니다.',
     401: '장바구니에 접근할 수 있는 권한이 없습니다.',
@@ -11,3 +11,5 @@ export const getCartErrorMessage = (status: number | null) => {
     ? messages[status]
     : '알 수 없는 장바구니 오류가 발생했습니다.';
 };
+
+export default getCartErrorMessage;
