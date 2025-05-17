@@ -1,4 +1,4 @@
-import { API_ERROR_MESSAGES } from './constants/errorMessages';
+import { API_ERROR_MESSAGES, DEFAULT_ERROR_MESSAGE } from './constants/errorMessages';
 
 async function removeProductItemApi(productId: number) {
   const API_URL = import.meta.env.VITE_BASE_URL || '';
@@ -11,7 +11,7 @@ async function removeProductItemApi(productId: number) {
   };
   const response = await fetch(`${API_URL}/cart-items/${productId}`, options);
   if (!response.ok) {
-    throw new Error(API_ERROR_MESSAGES[response.status]);
+    throw new Error(API_ERROR_MESSAGES[response.status] ?? DEFAULT_ERROR_MESSAGE);
   }
   return response;
 }
