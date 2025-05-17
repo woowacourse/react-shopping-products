@@ -11,8 +11,10 @@ import { ResponseCartItem, ResponseProduct } from "./api/types";
 
 function App() {
   const [productList, setProductList] = useState<ResponseProduct[]>([]);
+  const [productListLoading, setProductListLoading] = useState(true);
   const [cartItemList, setCartItemList] = useState<ResponseCartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [cartItemListLoading, setCartItemListLoading] = useState(true);
+
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSetErrorMessage = (message: string) => {
@@ -23,24 +25,40 @@ function App() {
     }, 10);
   };
 
+  //TODO : 이후 커스텀 훅으로 분리하자!
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProductList = async () => {
       try {
-        const rawCartItemList = await getCartItemList();
         const rawProductList = await getProductList({ category: "", sort: "" });
-        setCartItemList(rawCartItemList);
         setProductList(rawProductList);
       } catch (error) {
         if (error instanceof Error) {
           handleSetErrorMessage(error.message);
         }
       } finally {
-        setIsLoading(false);
+        setProductListLoading(false);
       }
     };
-    fetchData();
+    fetchProductList();
   }, []);
 
+  useEffect(() => {
+    const fetchCartItemList = async () => {
+      try {
+        const rawCartItemList = await getCartItemList();
+        setCartItemList(rawCartItemList);
+      } catch (error) {
+        if (error instanceof Error) {
+          handleSetErrorMessage(error.message);
+        }
+      } finally {
+        setCartItemListLoading(false);
+      }
+    };
+    fetchCartItemList();
+  }, []);
+
+  const isLoading = productListLoading || cartItemListLoading;
   return (
     <S.AppContainer>
       <S.Wrap>
