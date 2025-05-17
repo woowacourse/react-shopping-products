@@ -17,11 +17,11 @@ const CartActionButton = ({ variant, onClick }: CartActionButtonProps) => {
 export default CartActionButton;
 
 const AddIcon = () => {
-  return <Image src="/addToCartIcon.png" alt="add-button" />;
+  return <Image src="/addToCartIcon.svg" alt="add-button" />;
 };
 
 const RemoveIcon = () => {
-  return <Image src="/removeFromCartIcon.png" alt="remove-button" />;
+  return <Image src="/removeFromCartIcon.svg" alt="remove-button" />;
 };
 
 const Image = styled.img`

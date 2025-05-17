@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 const CartIconButton = ({ cartItemCount }: { cartItemCount: number }) => {
   return (
     <CartIconButtonContainer>
-      <img src="/cartIcon.png" />
+      <img src="/cartIcon.svg" />
       {cartItemCount !== 0 && <CartItemCount> {cartItemCount}</CartItemCount>}
     </CartIconButtonContainer>
   );
