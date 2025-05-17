@@ -4,11 +4,10 @@ export interface ResponseProduct {
   price: number;
   imageUrl: string;
   category: string;
-  isInCart?: boolean;
 }
 
 export interface ResponseCartItem {
   id: number;
   quantity: number;
-  product: Omit<ResponseProduct, "isInCart">;
+  product: Omit<ResponseProduct, 'isInCart'>;
 }
