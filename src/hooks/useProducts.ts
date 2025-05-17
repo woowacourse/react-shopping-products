@@ -17,7 +17,7 @@ const useProducts = () => {
   };
 
   useEffect(() => {
-    getProduct().then(() => {
+    getProduct().finally(() => {
       setIsProductsLoading(false);
     });
   }, []);
