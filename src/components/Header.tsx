@@ -1,19 +1,20 @@
 import styled from '@emotion/styled';
 import Logo from '/public/logo.svg';
 import CartIcon from '/public/icon/cart.svg';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import useCartContext from '../hooks/useCartContext';
 import { countDistinct } from '../util/countDistinct';
 
 const Header = () => {
-  const navigate = useNavigate();
   const { cartItemsIds } = useCartContext();
 
   return (
     <HeaderContainer>
       <HeaderLogoButton>
-        <img src={Logo} alt="헤더 로고" onClick={() => navigate(ROUTES.PRODUCT_LIST_PAGE)} />
+        <Link to={ROUTES.PRODUCT_LIST_PAGE}>
+          <img src={Logo} alt="헤더 로고" />
+        </Link>
       </HeaderLogoButton>
       <HeaderCartButton>
         <img src={CartIcon} alt="장바구니" />
