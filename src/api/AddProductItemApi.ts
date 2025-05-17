@@ -1,11 +1,11 @@
-import { API_ERROR_MESSAGES } from "./constants/errorMessages";
+import { API_ERROR_MESSAGES } from './constants/errorMessages';
 
-async function AddProductItemApi(productId: number, quantity: number) {
-  const API_URL = import.meta.env.VITE_BASE_URL || "";
+async function addProductItemApi(productId: number, quantity: number) {
+  const API_URL = import.meta.env.VITE_BASE_URL || '';
   const options = {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}`,
     },
     body: JSON.stringify({
@@ -20,4 +20,4 @@ async function AddProductItemApi(productId: number, quantity: number) {
   }
 }
 
-export default AddProductItemApi;
+export default addProductItemApi;

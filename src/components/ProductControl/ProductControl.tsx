@@ -1,6 +1,6 @@
 import * as S from './ProductControl.styled';
 import Select from '../common/Select/Select';
-import getProductList from '../../api/ProductListApi';
+import getProductList from '../../api/productListApi';
 import { CategoryOptions, SortOptions } from '../../constants/selectOptions';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { ResponseProduct } from '../../api/types';
