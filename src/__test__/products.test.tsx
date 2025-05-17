@@ -61,7 +61,7 @@ describe('GET Products', () => {
   });
 });
 
-describe('카테고리 필터링 테스트', () => {
+describe('정렬 기능 테스트', () => {
   beforeEach(() => {
     (productAPI.getProducts as Mock).mockImplementation(({ sortValue }) => {
       const products = generateMockProducts(20);

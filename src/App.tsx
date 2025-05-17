@@ -16,7 +16,7 @@ const CATEGORY_OPTIONS = [
   { label: '패션잡화', value: 'clothes' },
 ];
 
-const FILTER_OPTIONS = [
+const SORT_OPTIONS = [
   { label: '필터', value: '' },
   { label: '높은 가격순', value: 'price,desc' },
   { label: '낮은 가격순', value: 'price,asc' },
@@ -24,7 +24,7 @@ const FILTER_OPTIONS = [
 
 function App() {
   const [category, setCategory] = useState<Category>('all');
-  const [sortValue, setSortValue] = useState('');
+  const [sortValue, setSortValue] = useState<string>('');
 
   const { products, fetchProducts, error } = useGetProductsWithCart(sortValue);
 
@@ -53,7 +53,7 @@ function App() {
               items={CATEGORY_OPTIONS}
               onChange={(e) => setCategory(e.target.value as Category)}
             />
-            <CustomSelect id='sort-select' items={FILTER_OPTIONS} onChange={(e) => setSortValue(e.target.value)} />
+            <CustomSelect id='sort-select' items={SORT_OPTIONS} onChange={(e) => setSortValue(e.target.value)} />
           </S.ProductListFilterContainer>
         </S.ProductListHeader>
 
