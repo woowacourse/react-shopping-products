@@ -35,7 +35,7 @@ export const ProductItem = ({
           {name}
         </Text>
         <Text type="Body" weight="medium">
-          {price}
+          {price.toLocaleString()}원
         </Text>
         <Flex direction="row" justifyContent="flex-end" alignItems="center" width="100%" gap="">
           <IconButton
