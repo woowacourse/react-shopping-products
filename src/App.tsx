@@ -15,6 +15,7 @@ import useCartItems from "./hooks/useCartItems";
 function App() {
   const [filter, setFilter] = useState("전체");
   const [sort, setSort] = useState("높은 가격순");
+  const [loadingProductIds, setLoadingProductIds] = useState<{ [productId: number]: boolean }>({});
 
   const { products, isProductsLoading, productsErrorMessage, setProductsErrorMessage } = useProducts();
   const {
@@ -26,6 +27,24 @@ function App() {
     removeCart,
     cartItemIds,
   } = useCartItems();
+
+  const handleAddCart = async (productId: number) => {
+    setLoadingProductIds((prev) => ({ ...prev, [productId]: true }));
+    try {
+      await addCart(productId);
+    } finally {
+      setLoadingProductIds((prev) => ({ ...prev, [productId]: false }));
+    }
+  };
+
+  const handleRemoveCart = async (cartId: number, productId: number) => {
+    setLoadingProductIds((prev) => ({ ...prev, [productId]: true }));
+    try {
+      await removeCart(cartId);
+    } finally {
+      setLoadingProductIds((prev) => ({ ...prev, [productId]: false }));
+    }
+  };
 
   if (isProductsLoading || isCartItemsLoading) return <Spinner />;
   return (
@@ -70,12 +89,16 @@ function App() {
                   </div>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     {cartItemIds && cartItemIds[product.id] ? (
-                      <Button backgroundColor="#fff" onClick={() => removeCart(cartItemIds[product.id])}>
+                      <Button
+                        backgroundColor="#fff"
+                        onClick={() => handleRemoveCart(cartItemIds[product.id], product.id)}
+                        disabled={!!loadingProductIds[product.id]}
+                      >
                         <RemoveCart />
                         <Text variant="body-2">빼기</Text>
                       </Button>
                     ) : (
-                      <Button onClick={() => addCart(product.id)}>
+                      <Button onClick={() => handleAddCart(product.id)} disabled={!!loadingProductIds[product.id]}>
                         <AddCart />
                         <Text variant="body-2" color="#fff">
                           담기

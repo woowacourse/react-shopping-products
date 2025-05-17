@@ -4,6 +4,7 @@ import { HTMLAttributes } from "react";
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string;
   children: React.ReactNode;
+  disabled?: boolean;
 }
 
 const Button = ({ backgroundColor = "#000", children, ...props }: ButtonProps) => {
