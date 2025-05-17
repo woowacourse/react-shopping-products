@@ -25,7 +25,11 @@ const ProductItem = ({
 
   return (
     <S.ProductItemContainer>
-      <S.ProductItemImage src={product.imageUrl} onError={handleImageError} />
+      <S.ProductItemImage
+        src={product.imageUrl}
+        onError={handleImageError}
+        alt={`${product.name} 사진`}
+      />
       <S.ProductItemCard>
         <S.ProductItemInfo>
           <S.ProductItemTitle>{product.name}</S.ProductItemTitle>
