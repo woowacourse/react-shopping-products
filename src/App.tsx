@@ -71,7 +71,7 @@ function App() {
           <div>loading...</div>
         ) : (
           <S.ProductList data-testid="product-list">
-            {filteredProducts.map((product: Product) => (
+            {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
