@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { fadeIn } from '../../animations/animations';
 
-export const ProductListPageContainer = styled.div`
+export const ProductListPageContainer = styled.div<{ $isDimmed: boolean }>`
   padding: 0 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  opacity: ${({ $isDimmed }) => ($isDimmed ? 0.4 : 1)};
 `;
 
 export const Title = styled.h2`

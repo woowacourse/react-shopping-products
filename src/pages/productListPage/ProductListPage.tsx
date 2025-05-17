@@ -12,6 +12,7 @@ import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useCartHandler from '../../hooks/useCartHandler.ts';
 import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
+import { useState, useEffect } from 'react';
 
 export const ProductListPage = () => {
   const { cartItemsIds, handleAddCartItemsIds, handleRemoveCartItemsIds } = useCartContext();
@@ -26,7 +27,7 @@ export const ProductListPage = () => {
 
   const {
     products,
-    isLoading,
+    loadingState,
     categoryOption,
     sortOption,
     handleCategoryOption,
@@ -35,13 +36,24 @@ export const ProductListPage = () => {
     handleErrorMessage,
   });
 
-  if (isLoading) {
+  const [renderError, setRenderError] = useState(false);
+  useEffect(() => {
+    if (errorMessage.length !== 0) {
+      setRenderError(true);
+      return;
+    }
+    setTimeout(() => {
+      setRenderError(false);
+    }, 4000);
+  }, [errorMessage]);
+
+  if (loadingState === 'loadingInitial') {
     return <ProductListPageSkeleton />;
   }
 
   return (
-    <P.ProductListPageContainer>
-      {errorMessage.length !== 0 && <ErrorToast errorMessage={errorMessage} />}
+    <P.ProductListPageContainer $isDimmed={loadingState === 'loadingFilter'}>
+      {renderError && <ErrorToast errorMessage={errorMessage} />}
       <P.Title>bpple 상품 목록</P.Title>
       <P.SelectContainer>
         <Select
