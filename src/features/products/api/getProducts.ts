@@ -1,17 +1,14 @@
+import { httpClient } from '../../../shared/api/httpClient';
+import { ProductDTO } from '../type/product';
+
 interface Query {
   sortValue: string;
 }
 
-export const getProducts = async ({ sortValue }: Query) => {
-  try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products?sort=${sortValue}&size=20`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok for getProducts');
-    }
+interface GetProductResponse {
+  content: ProductDTO[];
+}
 
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    throw error;
-  }
+export const getProducts = ({ sortValue }: Query) => {
+  return httpClient.get<GetProductResponse>(`/products?sort=${sortValue}`);
 };

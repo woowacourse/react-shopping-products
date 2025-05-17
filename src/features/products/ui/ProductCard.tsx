@@ -14,21 +14,34 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, onRefetch, cartQuantity }: ProductCardProps) {
   const handleProductCart = async () => {
-    if (product.isCart && product.cartProductId) {
-      await deleteCartProduct(product.cartProductId);
-      alert('장바구니에서 삭제되었습니다.');
+    try {
+      if (product.isCart && product.cartProductId) {
+        await deleteCartProduct(product.cartProductId);
+        alert('장바구니에서 삭제되었습니다.');
+        onRefetch();
+
+        return;
+      }
+
+      if (cartQuantity >= CART_MAX_LIMIT) {
+        alert('장바구니에 담을 수 있는 최대 개수는 50개입니다.');
+        return;
+      }
+
+      if (product.isCart) {
+        alert('이미 장바구니에 담긴 상품입니다.');
+        return;
+      }
+
+      await addCartProduct(product.id);
+      alert('장바구니에 담겼습니다.');
       onRefetch();
-
-      return;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('장바구니 처리 중 에러 발생:', error);
+        alert('장바구니 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      }
     }
-
-    if (cartQuantity >= CART_MAX_LIMIT) {
-      alert('장바구니에 담을 수 있는 최대 개수는 50개입니다.');
-      return;
-    }
-    await addCartProduct(product.id);
-    alert('장바구니에 담겼습니다.');
-    onRefetch();
   };
 
   const iconUrl = product.isCart ? './deleteCartIcon.svg' : './addCartIcon.svg';
