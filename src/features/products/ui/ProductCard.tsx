@@ -4,6 +4,7 @@ import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
 import { postCartProduct } from '../../cart/api/postCartProduct';
 import { Product } from '../type/product';
 import * as S from './ProductCard.styles';
+import { CART_MAX_LIMIT } from '../../cart/constants/cart';
 
 interface ProductCardProps {
   product: Product;
@@ -21,7 +22,7 @@ export default function ProductCard({ product, onRefetch, cartQuantity }: Produc
       return;
     }
 
-    if (cartQuantity >= 50) {
+    if (cartQuantity >= CART_MAX_LIMIT) {
       alert('장바구니에 담을 수 있는 최대 개수는 50개입니다.');
       return;
     }
