@@ -1,18 +1,8 @@
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { fadeIn, fadeOut } from '../animations/animations';
+import styled from '@emotion/styled';
+import { fadeIn, fadeOut } from '../../animations/animations';
 
-interface ErrorToastProps {
-  errorMessage: string;
-}
-
-const ErrorToast = ({ errorMessage }: ErrorToastProps) => {
-  return (
-    <ErrorToastContainer $isVisible={errorMessage.length !== 0}>{errorMessage}</ErrorToastContainer>
-  );
-};
-
-const ErrorToastContainer = styled.div<{ $isVisible: boolean }>`
+export const ErrorToastContainer = styled.div<{ $isVisible: boolean }>`
   max-width: var(--max-width-container);
   width: 100%;
   background-color: var(--color-red);
@@ -30,5 +20,3 @@ const ErrorToastContainer = styled.div<{ $isVisible: boolean }>`
       animation: ${$isVisible ? fadeIn : fadeOut} 0.3s ease-in-out;
     `}
 `;
-
-export default ErrorToast;

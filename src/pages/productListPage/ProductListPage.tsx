@@ -1,6 +1,6 @@
-import ErrorToast from '../../components/ErrorToast';
-import ProductItem from '../../components/ProductItem';
-import Select from '../../components/Select';
+import ErrorToast from '../../components/errorToast/ErrorToast';
+import ProductItem from '../../components/productItem/ProductItem';
+import Select from '../../components/select/Select';
 import * as P from './ProductListPage.styles.tsx';
 import useCartContext from '../../hooks/useCartContext';
 import {
