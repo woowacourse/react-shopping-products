@@ -65,10 +65,8 @@ function App() {
   };
 
   useEffect(() => {
-    (async () => {
-      await fetchProducts();
-      await fetchCartItems();
-    })();
+    fetchProducts();
+    fetchCartItems();
   }, []);
 
   return (
