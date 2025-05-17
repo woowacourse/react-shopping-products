@@ -34,11 +34,14 @@ function App() {
     fetchProducts();
   }, [fetchProducts]);
 
-  const filteredProducts = filterByValue<Product, 'category'>({
-    array: products,
-    compare: 'category',
-    value: matchCategory[category],
-  });
+  const filteredProducts =
+    category === 'all'
+      ? products
+      : filterByValue<Product, 'category'>({
+          array: products,
+          compare: 'category',
+          value: matchCategory[category],
+        });
 
   return (
     <>
