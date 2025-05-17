@@ -14,12 +14,10 @@ export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
     },
   });
 
-  const data = await fetcher
-    .get<CartResponse>({
-      baseUrl: ENV.BASE_URL + 'cart-items',
-      token: ENV.TOKEN,
-    })
-    .then((res) => res);
+  const data = await fetcher.get<CartResponse>({
+    baseUrl: ENV.BASE_URL + 'cart-items',
+    token: ENV.TOKEN,
+  });
 
   return data.content;
 };
@@ -29,13 +27,11 @@ export const getCartItemList = async ({
   size = 20,
   sort = '',
 }: Partial<ProductQuery> = {}) => {
-  const data = await fetcher
-    .get<CartResponse>({
-      baseUrl: ENV.BASE_URL + 'cart-items',
-      token: ENV.TOKEN,
-      query: { page, size, sort },
-    })
-    .then((res) => res);
+  const data = await fetcher.get<CartResponse>({
+    baseUrl: ENV.BASE_URL + 'cart-items',
+    token: ENV.TOKEN,
+    query: { page, size, sort },
+  });
 
   return data.content;
 };

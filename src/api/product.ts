@@ -9,13 +9,11 @@ export const getProductList = async ({
   sort = 'price,asc',
   category = '',
 }: Partial<ProductQuery> = {}) => {
-  const data = await fetcher
-    .get<ProductListResponse>({
-      baseUrl: ENV.BASE_URL + 'products',
-      token: ENV.TOKEN,
-      query: { page, size, sort, category },
-    })
-    .then((res) => res);
+  const data = await fetcher.get<ProductListResponse>({
+    baseUrl: ENV.BASE_URL + 'products',
+    token: ENV.TOKEN,
+    query: { page, size, sort, category },
+  });
 
   return data.content;
 };
