@@ -21,21 +21,20 @@ export const useProductList = () => {
   };
 
   const fetchProductData = useCallback(async () => {
-    return handleRequest(
-      () =>
+    return handleRequest({
+      apiCall: () =>
         getProductList({
           page: 0,
           size: 20,
           sort: `price,${priceSelect}`,
           category: categorySelect === 'ALL' ? '' : categorySelect,
         }),
-      (data) => {
+      onSuccess: (data) => {
         setProduct(data);
         return data;
       },
-      [],
-      { delay: 2000 }
-    );
+      options: { delay: 2000 },
+    });
   }, [categorySelect, handleRequest, priceSelect]);
 
   useEffect(() => {

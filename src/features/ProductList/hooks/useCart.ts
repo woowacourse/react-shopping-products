@@ -10,45 +10,45 @@ export const useCart = () => {
   const { handleRequest } = useApiRequest();
 
   const fetchCartProductData = useCallback(async () => {
-    return handleRequest(
-      () =>
+    return handleRequest({
+      apiCall: () =>
         getCartItemList({
           page: 0,
           size: 50,
         }),
-      (data) => {
+      onSuccess: (data) => {
         setCartData(data);
         return data;
-      }
-    );
+      },
+    });
   }, [handleRequest]);
 
   const addToCart = useCallback(
     async (productId: number, quantity: number = 1) => {
-      return handleRequest(
-        () =>
+      return handleRequest({
+        apiCall: () =>
           addCartItem({
             productId,
             quantity,
           }),
-        (data) => {
+        onSuccess: (data) => {
           setCartData(data);
           return data.length;
-        }
-      );
+        },
+      });
     },
     [handleRequest]
   );
 
   const deleteFromCart = useCallback(
     async (cartItemId: number) => {
-      return handleRequest(
-        () => deleteCartItem(cartItemId),
-        (data) => {
+      return handleRequest({
+        apiCall: () => deleteCartItem(cartItemId),
+        onSuccess: (data) => {
           setCartData(data);
           return data.length;
-        }
-      );
+        },
+      });
     },
     [handleRequest]
   );
