@@ -8,6 +8,8 @@ import ErrorMessage from './components/ErrorMessage';
 import Select from './components/Select';
 import useProducts from './hooks/useProducts';
 import useCartItems from './hooks/useCartItems';
+import getProductErrorMessage from './utils/getProductErrorMessage';
+import { getCartErrorMessage } from './utils/getCartErrorMessage';
 
 export type Product = {
   id: number;
@@ -32,14 +34,14 @@ function App() {
   const {
     products,
     isLoading: isProductsLoading,
-    errorMessage: productErrorMessage,
+    error: productError,
     fetchProducts,
   } = useProducts();
   const {
     cartItems,
-    // isLoading: isCartItemsLoading,
-    // errorMessage: cartItemsErrorMessage,
-    // fetchCartItems,
+    isLoading: isCartItemsLoading,
+    error: cartItemsError,
+    fetchCartItems,
     addToCart,
     removeFromCart,
   } = useCartItems();
@@ -63,14 +65,24 @@ function App() {
   };
 
   useEffect(() => {
-    (async () => await fetchProducts())();
+    (async () => {
+      await fetchProducts();
+      await fetchCartItems();
+    })();
   }, []);
 
   return (
     <Layout>
       <Header cartItemCount={cartItems.length} />
-      {productErrorMessage && (
-        <ErrorMessage errorMessage={productErrorMessage} />
+      {cartItemsError.isError && (
+        <ErrorMessage
+          errorMessage={getCartErrorMessage(cartItemsError.status)}
+        />
+      )}
+      {productError.isError && (
+        <ErrorMessage
+          errorMessage={getProductErrorMessage(productError.status)}
+        />
       )}
       <ProductPageContainer>
         <ProductPageHeader>bppl 상품 목록</ProductPageHeader>

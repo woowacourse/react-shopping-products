@@ -2,9 +2,17 @@ import { useState } from 'react';
 import { Product } from '../App';
 import getProducts, { GetProductsProps } from '../api/getProducts';
 
+type ErrorState = {
+  isError: boolean;
+  status: number | null;
+};
+
 const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [error, setError] = useState<ErrorState>({
+    isError: false,
+    status: null,
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchProducts = async (options: GetProductsProps = {}) => {
@@ -12,12 +20,12 @@ const useProducts = () => {
       setIsLoading(true);
       const { data, status } = await getProducts(options);
       setProducts(data.content);
-      setErrorMessage('');
+      setError({ isError: false, status: Number(status) });
     } catch (e) {
       if (e instanceof Error) {
-        setErrorMessage(e.message);
+        setError({ isError: true, status: Number(e.message) });
       } else {
-        setErrorMessage('알 수 없는 에러가 발생했습니다.');
+        setError({ isError: true, status: null });
       }
     } finally {
       setIsLoading(false);
@@ -25,7 +33,7 @@ const useProducts = () => {
   };
   return {
     products,
-    errorMessage,
+    error,
     isLoading,
     fetchProducts,
   };

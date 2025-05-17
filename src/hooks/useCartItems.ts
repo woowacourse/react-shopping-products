@@ -4,22 +4,30 @@ import getCartItems from '../api/getCartItems';
 import postCartItems from '../api/postCartItems';
 import deleteCartItems from '../api/deleteCartItems';
 
+type ErrorState = {
+  isError: boolean;
+  status: number | null;
+};
+
 const useCartItems = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [error, setError] = useState<ErrorState>({
+    isError: false,
+    status: null,
+  });
 
   const fetchCartItems = async () => {
     setIsLoading(true);
     try {
-      const { data } = await getCartItems();
+      const { data, status } = await getCartItems();
       setCartItems(data.content);
-      setErrorMessage('');
+      setError({ isError: false, status: Number(status) });
     } catch (e) {
       if (e instanceof Error) {
-        setErrorMessage(e.message);
+        setError({ isError: true, status: Number(e.message) });
       } else {
-        setErrorMessage('알 수 없는 에러가 발생했습니다.');
+        setError({ isError: true, status: null });
       }
     } finally {
       setIsLoading(false);
@@ -28,22 +36,40 @@ const useCartItems = () => {
 
   const addToCart = async (product: Product) => {
     try {
-      await postCartItems(product);
+      const { status } = await postCartItems(product);
       await fetchCartItems();
+      setError({ isError: false, status });
     } catch (e) {
       if (e instanceof Error) {
-        setErrorMessage(e.message);
+        setError({ isError: true, status: Number(e.message) });
+      } else {
+        setError({ isError: true, status: null });
       }
     }
   };
 
   const removeFromCart = async (productId: number) => {
+    const cartItem = cartItems.find(
+      (cartItem) => cartItem.product.id === productId
+    );
+
+    if (!cartItem) {
+      setError({
+        isError: true,
+        status: 404,
+      });
+      return;
+    }
+
     try {
-      await deleteCartItems(productId);
+      const { status } = await deleteCartItems(cartItems[0].id);
       await fetchCartItems();
+      setError({ isError: false, status });
     } catch (e) {
       if (e instanceof Error) {
-        setErrorMessage(e.message);
+        setError({ isError: true, status: Number(e.message) });
+      } else {
+        setError({ isError: true, status: null });
       }
     }
   };
@@ -51,7 +77,7 @@ const useCartItems = () => {
   return {
     cartItems,
     isLoading,
-    errorMessage,
+    error,
     fetchCartItems,
     addToCart,
     removeFromCart,

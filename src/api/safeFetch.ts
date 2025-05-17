@@ -15,7 +15,8 @@ const safeFetch = async (endPoint: string, options?: RequestInit) => {
   const status = response.status;
 
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${status}`);
+    console.log('status', response.status);
+    throw new Error(`${status}`);
   }
 
   const contentType = response.headers.get('Content-Type') || '';
