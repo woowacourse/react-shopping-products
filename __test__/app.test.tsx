@@ -4,7 +4,7 @@ import * as getProductsModule from '../src/api/getProducts';
 import * as getCartItemsModule from '../src/api/getCartItems';
 import * as postCartItemsModule from '../src/api/postCartItems';
 import { vi } from 'vitest';
-  import * as deleteCartItemsModule from '../src/api/deleteCartItems';
+import * as deleteCartItemsModule from '../src/api/deleteCartItems';
 
 vi.mock('../src/api/getProducts');
 vi.mock('../src/api/getCartItems');
@@ -41,8 +41,12 @@ describe('App 컴포넌트 - API 흐름 테스트', () => {
   });
 
   describe('정렬 기능 테스트', () => {
-    const mockedGetProducts = getProductsModule.default as ReturnType<typeof vi.fn>;
-    const mockedGetCartItems = getCartItemsModule.default as ReturnType<typeof vi.fn>;
+    const mockedGetProducts = getProductsModule.default as ReturnType<
+      typeof vi.fn
+    >;
+    const mockedGetCartItems = getCartItemsModule.default as ReturnType<
+      typeof vi.fn
+    >;
 
     beforeEach(() => {
       mockedGetCartItems.mockResolvedValue({
@@ -55,8 +59,20 @@ describe('App 컴포넌트 - API 흐름 테스트', () => {
       mockedGetProducts.mockResolvedValue({
         data: {
           content: [
-            { id: 1, name: '사과', price: 1000, imageUrl: '', category: '식료품' },
-            { id: 2, name: '가방', price: 2000, imageUrl: '', category: '패션잡화' },
+            {
+              id: 1,
+              name: '사과',
+              price: 1000,
+              imageUrl: '',
+              category: '식료품',
+            },
+            {
+              id: 2,
+              name: '가방',
+              price: 2000,
+              imageUrl: '',
+              category: '패션잡화',
+            },
           ],
         },
         newErrorMessage: '',
@@ -71,7 +87,15 @@ describe('App 컴포넌트 - API 흐름 테스트', () => {
     it('카테고리 식료품 응답이면 식료품만 보인다', async () => {
       mockedGetProducts.mockResolvedValue({
         data: {
-          content: [{ id: 1, name: '사과', price: 1000, imageUrl: '', category: '식료품' }],
+          content: [
+            {
+              id: 1,
+              name: '사과',
+              price: 1000,
+              imageUrl: '',
+              category: '식료품',
+            },
+          ],
         },
         newErrorMessage: '',
       });
@@ -84,7 +108,15 @@ describe('App 컴포넌트 - API 흐름 테스트', () => {
     it('카테고리 패션잡화 응답이면 패션잡화만 보인다', async () => {
       mockedGetProducts.mockResolvedValue({
         data: {
-          content: [{ id: 2, name: '가방', price: 2000, imageUrl: '', category: '패션잡화' }],
+          content: [
+            {
+              id: 2,
+              name: '가방',
+              price: 2000,
+              imageUrl: '',
+              category: '패션잡화',
+            },
+          ],
         },
         newErrorMessage: '',
       });
@@ -98,9 +130,27 @@ describe('App 컴포넌트 - API 흐름 테스트', () => {
       mockedGetProducts.mockResolvedValue({
         data: {
           content: [
-            { id: 1, name: '사과', price: 1000, imageUrl: '', category: '식료품' },
-            { id: 2, name: '딸기', price: 2000, imageUrl: '', category: '식료품' },
-            { id: 3, name: '포도', price: 3000, imageUrl: '', category: '식료품' },
+            {
+              id: 1,
+              name: '사과',
+              price: 1000,
+              imageUrl: '',
+              category: '식료품',
+            },
+            {
+              id: 2,
+              name: '딸기',
+              price: 2000,
+              imageUrl: '',
+              category: '식료품',
+            },
+            {
+              id: 3,
+              name: '포도',
+              price: 3000,
+              imageUrl: '',
+              category: '식료품',
+            },
           ],
         },
         newErrorMessage: '',
@@ -121,9 +171,27 @@ describe('App 컴포넌트 - API 흐름 테스트', () => {
       mockedGetProducts.mockResolvedValue({
         data: {
           content: [
-            { id: 1, name: '포도', price: 3000, imageUrl: '', category: '식료품' },
-            { id: 2, name: '딸기', price: 2000, imageUrl: '', category: '식료품' },
-            { id: 3, name: '사과', price: 1000, imageUrl: '', category: '식료품' },
+            {
+              id: 1,
+              name: '포도',
+              price: 3000,
+              imageUrl: '',
+              category: '식료품',
+            },
+            {
+              id: 2,
+              name: '딸기',
+              price: 2000,
+              imageUrl: '',
+              category: '식료품',
+            },
+            {
+              id: 3,
+              name: '사과',
+              price: 1000,
+              imageUrl: '',
+              category: '식료품',
+            },
           ],
         },
         newErrorMessage: '',
@@ -143,27 +211,49 @@ describe('App 컴포넌트 - API 흐름 테스트', () => {
 
   describe('App 컴포넌트 - 장바구니 연동 테스트', () => {
     it('getCartItems 응답에 따라 Header에 장바구니 개수가 표시된다', async () => {
-      (getProductsModule.default as ReturnType<typeof vi.fn>).mockResolvedValue({
-        data: {
-          content: [
-            { id: 1, name: '테스트 상품', price: 1000, imageUrl: '', category: '식료품' },
-          ],
-        },
-        newErrorMessage: '',
-      });
+      (getProductsModule.default as ReturnType<typeof vi.fn>).mockResolvedValue(
+        {
+          data: {
+            content: [
+              {
+                id: 1,
+                name: '테스트 상품',
+                price: 1000,
+                imageUrl: '',
+                category: '식료품',
+              },
+            ],
+          },
+          newErrorMessage: '',
+        }
+      );
 
-      (getCartItemsModule.default as ReturnType<typeof vi.fn>).mockResolvedValue({
+      (
+        getCartItemsModule.default as ReturnType<typeof vi.fn>
+      ).mockResolvedValue({
         data: {
           content: [
             {
               id: 1,
               quantity: 1,
-              product: { id: 1, name: '테스트 상품', price: 1000, imageUrl: '', category: '식료품' },
+              product: {
+                id: 1,
+                name: '테스트 상품',
+                price: 1000,
+                imageUrl: '',
+                category: '식료품',
+              },
             },
             {
               id: 2,
               quantity: 1,
-              product: { id: 2, name: '또다른 상품', price: 2000, imageUrl: '', category: '식료품' },
+              product: {
+                id: 2,
+                name: '또다른 상품',
+                price: 2000,
+                imageUrl: '',
+                category: '식료품',
+              },
             },
           ],
         },
@@ -171,16 +261,25 @@ describe('App 컴포넌트 - API 흐름 테스트', () => {
       });
 
       render(<App />);
-      const cartCount = await screen.findByText('2');
-      expect(cartCount).toBeTruthy();
+
+      await waitFor(() => {
+        const cartCount = screen.getByTestId('cart-item-count');
+        expect(cartCount.textContent).toBe('2');
+      });
     });
   });
 
   describe('App 컴포넌트 - 장바구니 숫자 변경 테스트', () => {
     it('postCartItems 요청 후 장바구니 개수가 반영된다', async () => {
-      const mockedGetProducts = getProductsModule.default as ReturnType<typeof vi.fn>;
-      const mockedGetCartItems = getCartItemsModule.default as ReturnType<typeof vi.fn>;
-      const mockedPostCartItems = postCartItemsModule.default as ReturnType<typeof vi.fn>;
+      const mockedGetProducts = getProductsModule.default as ReturnType<
+        typeof vi.fn
+      >;
+      const mockedGetCartItems = getCartItemsModule.default as ReturnType<
+        typeof vi.fn
+      >;
+      const mockedPostCartItems = postCartItemsModule.default as ReturnType<
+        typeof vi.fn
+      >;
 
       mockedGetProducts.mockResolvedValue({
         data: {
@@ -231,82 +330,106 @@ describe('App 컴포넌트 - API 흐름 테스트', () => {
       addButton.click();
 
       await waitFor(() => {
-        const cartCount = screen.queryByText('1');
-        expect(cartCount).toBeTruthy();
+        const cartCount = screen.getByTestId('cart-item-count');
+        expect(cartCount.textContent).toBe('1');
       });
     });
   });
 
+  vi.mock('../src/api/deleteCartItems', () => ({
+    default: vi.fn(),
+  }));
 
+  describe('App 컴포넌트 - 장바구니 숫자 변경 테스트', () => {
+    it('deleteCartItems 요청 후 장바구니 개수가 감소한다', async () => {
+      const mockedGetProducts = getProductsModule.default as ReturnType<
+        typeof vi.fn
+      >;
+      const mockedGetCartItems = getCartItemsModule.default as ReturnType<
+        typeof vi.fn
+      >;
+      const mockedDeleteCartItems = deleteCartItemsModule.default as ReturnType<
+        typeof vi.fn
+      >;
 
-vi.mock('../src/api/deleteCartItems', () => ({
-  default: vi.fn(),
-}));
-
-describe('App 컴포넌트 - 장바구니 숫자 변경 테스트', () => {
-
-
-  it('deleteCartItems 요청 후 장바구니 개수가 감소한다', async () => {
-    const mockedGetProducts = getProductsModule.default as ReturnType<typeof vi.fn>;
-    const mockedGetCartItems = getCartItemsModule.default as ReturnType<typeof vi.fn>;
-    const mockedDeleteCartItems = deleteCartItemsModule.default as ReturnType<typeof vi.fn>;
-
-
-    mockedGetProducts.mockResolvedValue({
-      data: {
-        content: [
-          {
-            id: 1,
-            name: '포도',
-            price: 3000,
-            imageUrl: '',
-            category: '식료품',
-          },
-        ],
-      },
-      newErrorMessage: '',
-    });
-
-
-    mockedGetCartItems.mockResolvedValueOnce({
-      data: {
-        content: [
-          {
-            id: 101,
-            quantity: 1,
-            product: {
+      mockedGetProducts.mockResolvedValue({
+        data: {
+          content: [
+            {
               id: 1,
               name: '포도',
               price: 3000,
               imageUrl: '',
               category: '식료품',
             },
-          },
-        ],
-      },
-      newErrorMessage: '',
-    });
+          ],
+        },
+        newErrorMessage: '',
+      });
 
-    mockedDeleteCartItems.mockResolvedValue({
-      newErrorMessage: '',
-      data: null,
-    });
+      mockedGetCartItems.mockResolvedValueOnce({
+        data: {
+          content: [
+            {
+              id: 101,
+              quantity: 1,
+              product: {
+                id: 1,
+                name: '포도',
+                price: 3000,
+                imageUrl: '',
+                category: '식료품',
+              },
+            },
+            {
+              id: 102,
+              quantity: 1,
+              product: {
+                id: 2,
+                name: '사과',
+                price: 1000,
+                imageUrl: '',
+                category: '식료품',
+              },
+            },
+          ],
+        },
+        newErrorMessage: '',
+      });
 
-    mockedGetCartItems.mockResolvedValueOnce({
-      data: { content: [] },
-      newErrorMessage: '',
-    });
+      mockedDeleteCartItems.mockResolvedValue({
+        newErrorMessage: '',
+        data: null,
+      });
 
-    render(<App />);
+      mockedGetCartItems.mockResolvedValueOnce({
+        data: {
+          content: [
+            {
+              id: 102,
+              quantity: 1,
+              product: {
+                id: 2,
+                name: '사과',
+                price: 1000,
+                imageUrl: '',
+                category: '식료품',
+              },
+            },
+          ],
+        },
+        newErrorMessage: '',
+      });
 
-    const removeButton = await screen.findByRole('button', { name: /빼기/i });
-    removeButton.click();
+      render(<App />);
 
-    await waitFor(() => {
-      const cartCount = screen.queryByText('1');
-      expect(cartCount).toBeNull();
+      const removeButton = await screen.findByRole('button', { name: /빼기/i });
+      removeButton.click();
+
+      await waitFor(() => {
+        const cartCount = screen.getByTestId('cart-item-count');
+        expect(cartCount.textContent).toBe('1');
+      });
     });
   });
-});
-
 });
