@@ -32,7 +32,7 @@ function App() {
 
   useEffect(() => {
     fetchProducts();
-  }, [sortValue]);
+  }, [fetchProducts]);
 
   const filteredProducts = filterByValue<Product, 'category'>({
     array: products,

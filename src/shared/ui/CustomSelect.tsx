@@ -9,7 +9,7 @@ interface CustomSelectProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export default function CustomSelect({id, items, onChange}: CustomSelectProps) {
+export default function CustomSelect({ id, items, onChange }: CustomSelectProps) {
   return (
     <StyledCustomSelect onChange={onChange} data-testid={id}>
       {items.map((item) => (
