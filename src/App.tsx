@@ -4,7 +4,7 @@ import ProductCard from './features/products/ui/ProductCard';
 import { useEffect, useState } from 'react';
 import { Product } from './features/products/type/product';
 import { filterByValue } from './shared/utils/filterByValue';
-import { matchCategory } from './features/products/utils/matchCategory';
+import { MATCH_CATEGORY } from './features/products/utils/matchCategory';
 import Navbar from './widgets/navbar/ui/Navbar';
 import useGetProductsWithCart from './features/products/hooks/useGetProductsWithCart';
 
@@ -40,7 +40,7 @@ function App() {
       : filterByValue<Product, 'category'>({
           array: products,
           compare: 'category',
-          value: matchCategory[category],
+          value: MATCH_CATEGORY[category],
         });
 
   return (
