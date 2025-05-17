@@ -1,9 +1,9 @@
-import * as S from './ProductControl.styled';
-import Select from '../common/Select/Select';
-import getProductList from '../../api/ProductListApi';
-import { CategoryOptions, SortOptions } from '../../constants/selectOptions';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { ResponseProduct } from '../../api/types';
+import * as S from "./ProductControl.styled";
+import Select from "../common/Select/Select";
+import getProductList from "../../api/ProductListApi";
+import { CategoryOptions, SortOptions } from "../../constants/selectOptions";
+import { Dispatch, SetStateAction, useState, ChangeEvent } from "react";
+import { ResponseProduct } from "../../api/types";
 
 function ProductControl({
   setProductList,
@@ -12,13 +12,17 @@ function ProductControl({
   setProductList: Dispatch<SetStateAction<ResponseProduct[]>>;
   setErrorMessage: (message: string) => void;
 }) {
-  const [category, setCategory] = useState<string>('');
-  const [sort, setSort] = useState<string>('');
+  const [category, setCategory] = useState<string>("");
+  const [sort, setSort] = useState<string>("");
 
-  async function handleCategoryChange(category: string) {
+  async function handleCategoryChange(e: ChangeEvent<HTMLSelectElement>) {
     try {
-      setCategory(category);
-      const rawProductList = await getProductList({ category, sort });
+      const newCategory = e.target.value;
+      setCategory(newCategory);
+      const rawProductList = await getProductList({
+        category: newCategory,
+        sort,
+      });
       setProductList(rawProductList);
     } catch (error) {
       if (error instanceof Error) {
@@ -27,10 +31,11 @@ function ProductControl({
     }
   }
 
-  async function handleSortChange(sort: string) {
+  async function handleSortChange(e: ChangeEvent<HTMLSelectElement>) {
     try {
-      setSort(sort);
-      const rawProductList = await getProductList({ category, sort });
+      const newSort = e.target.value;
+      setSort(newSort);
+      const rawProductList = await getProductList({ category, sort: newSort });
       setProductList(rawProductList);
     } catch (error) {
       if (error instanceof Error) {
