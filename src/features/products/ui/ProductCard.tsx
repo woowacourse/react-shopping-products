@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import CustomButton from '../../../shared/ui/CustomButton';
 import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
-import { postCartProduct } from '../../cart/api/postCartProduct';
 import { Product } from '../type/product';
 import * as S from './ProductCard.styles';
 import { CART_MAX_LIMIT } from '../../cart/constants/cart';
+import { addCartProduct } from '../../cart/api/addCartProduct';
 
 interface ProductCardProps {
   product: Product;
@@ -26,7 +26,7 @@ export default function ProductCard({ product, onRefetch, cartQuantity }: Produc
       alert('장바구니에 담을 수 있는 최대 개수는 50개입니다.');
       return;
     }
-    await postCartProduct(product.id);
+    await addCartProduct(product.id);
     alert('장바구니에 담겼습니다.');
     onRefetch();
   };
