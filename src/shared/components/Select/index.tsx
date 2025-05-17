@@ -17,7 +17,9 @@ export type Props = {
    * The currently selected category to be displayed.
    */
   selectedOptions: string;
-
+  /**
+   * The maximum width of the select component.
+   */
   maxWidth?: number | string;
 } & ComponentProps<'div'>;
 
@@ -27,7 +29,7 @@ export const Select = ({ selectedOptions, maxWidth = '200px', children, ...props
   return (
     <StyledSelectContainer maxWidth={maxWidth} onClick={() => setIsOpen(!isOpen)} {...props}>
       <StyledTriggerButton>
-        <Text type="Body">{selectedOptions ?? '전체'}</Text>
+        <Text type="Body">{selectedOptions}</Text>
         <StyledSelectIcon
           isOpen={isOpen}
           src={Arrow}
