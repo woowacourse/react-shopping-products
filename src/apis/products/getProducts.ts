@@ -10,11 +10,6 @@ interface GetProductsParams {
   sortOption: SortOption;
 }
 
-const sortMap = {
-  "낮은 가격순": "price,asc",
-  "높은 가격순": "price,desc",
-};
-
 const ERROR_MESSAGE = "상품 목록을 가져오는 데 실패했습니다.";
 
 export const getProducts = async ({
@@ -22,13 +17,13 @@ export const getProducts = async ({
   sortOption,
 }: GetProductsParams): Promise<ProductItemType[]> => {
   const url = new URLSearchParams({
-    category: filterOption,
+    category: filterOption.value,
     page: "0",
     size: "20",
-    sort: sortMap[sortOption],
+    sort: sortOption.value,
   });
 
-  if (filterOption === "전체") {
+  if (filterOption.value === "전체") {
     url.delete("category");
   }
 

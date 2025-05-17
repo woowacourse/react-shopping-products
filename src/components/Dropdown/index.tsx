@@ -3,14 +3,19 @@ import { useState } from "react";
 import * as S from "./Dropdown.styled";
 import ArrowIcon from "@components/ArrowIcon";
 
-interface DropdownProps<T extends string> {
+interface Option {
+  label: string;
+  value: string;
+}
+
+interface DropdownProps<T extends Option> {
   optionList: readonly T[];
   onClick: (option: T) => void;
   defaultOption?: string;
   selectedOption: T | null;
 }
 
-function Dropdown<T extends string>({
+function Dropdown<T extends Option>({
   optionList,
   onClick,
   selectedOption,
@@ -38,19 +43,19 @@ function Dropdown<T extends string>({
         type="button"
         onClick={handleDropdownToggle}
       >
-        {selectedOption ?? defaultOption}
+        {selectedOption?.label ?? defaultOption}
         <ArrowIcon direction={isOpen ? "down" : "up"} />
       </S.DropdownTrigger>
       {isOpen && (
         <S.OptionList>
           {optionList.map((option) => (
-            <S.OptionItem key={option}>
+            <S.OptionItem key={option.label}>
               <S.OptionItemButton
                 type="button"
-                data-testid={`dropdown-option-${option}`}
+                data-testid={`dropdown-option-${option.label}`}
                 onClick={() => handleDropdownOptionClick(option)}
               >
-                {option}
+                {option.label}
               </S.OptionItemButton>
             </S.OptionItem>
           ))}

@@ -8,6 +8,7 @@ import { wrapPromise } from "@/apis/wrapPromise";
 import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Fallback from "@/components/Fallback";
+import { FILTER_OPTIONS, SORT_OPTIONS } from "./ProductContent.constant";
 
 interface ProductContentProps {
   cartItems: CartItemType[];
@@ -15,8 +16,10 @@ interface ProductContentProps {
 }
 
 function ProductContent({ cartItems, updateCartItems }: ProductContentProps) {
-  const [filterOption, setFilterOption] = useState<FilterOption>("전체");
-  const [sortOption, setSortOption] = useState<SortOption>("낮은 가격순");
+  const [filterOption, setFilterOption] = useState<FilterOption>(
+    FILTER_OPTIONS[0]
+  );
+  const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS[0]);
   const productResource = useMemo(
     () => wrapPromise(getProducts({ filterOption, sortOption })),
     [filterOption, sortOption]
