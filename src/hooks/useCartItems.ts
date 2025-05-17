@@ -49,11 +49,11 @@ const useCartItems = () => {
   };
 
   const removeFromCart = async (productId: number) => {
-    const cartItem = cartItems.find(
+    const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
 
-    if (!cartItem) {
+    if (!targetCartItem) {
       setError({
         isError: true,
         status: 404,
@@ -62,7 +62,7 @@ const useCartItems = () => {
     }
 
     try {
-      const { status } = await deleteCartItems(cartItems[0].id);
+      const { status } = await deleteCartItems(targetCartItem.id);
       await fetchCartItems();
       setError({ isError: false, status });
     } catch (e) {
