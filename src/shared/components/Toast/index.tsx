@@ -5,7 +5,7 @@ import { StyledModalContainer, StyledModalContent } from './Toast.styled';
 
 export type ModalProps = {
   /**
-   * The title of the modal
+   * The message to be displayed in the toast.
    */
   message: string;
 } & ComponentProps<'div'>;
