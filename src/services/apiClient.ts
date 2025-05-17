@@ -1,12 +1,13 @@
 import { FETCH_ERROR_MESSAGE, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
+import { FetchMethodType } from '../types/data';
 
-interface ApiClientProps {
-  method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+interface ApiClientProps<T> {
+  method: FetchMethodType;
   URI: string;
-  body?: any;
+  body?: T;
 }
 
-const apiClient = async ({ method, URI, body }: ApiClientProps) => {
+const apiClient = async <T>({ method, URI, body }: ApiClientProps<T>) => {
   const basicToken = btoa(
     `${import.meta.env.VITE_API_USERNAME}:${import.meta.env.VITE_API_PASSWORD}`,
   );
