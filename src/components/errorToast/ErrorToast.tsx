@@ -6,7 +6,7 @@ interface ErrorToastProps {
 
 const ErrorToast = ({ errorMessage }: ErrorToastProps) => {
   return (
-    <S.ErrorToastContainer $isVisible={errorMessage.length !== 0}>
+    <S.ErrorToastContainer data-testid="error-message" $isVisible={errorMessage.length !== 0}>
       {errorMessage}
     </S.ErrorToastContainer>
   );

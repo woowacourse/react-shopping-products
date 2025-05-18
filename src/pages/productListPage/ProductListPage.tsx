@@ -68,7 +68,7 @@ export const ProductListPage = () => {
 
   return (
     <P.ProductListPageContainer $isDimmed={loadingState === 'loadingFilter'}>
-      {(errorMessage.length > 0 || isVisible) && <ErrorToast errorMessage={errorMessage} />}
+      {errorMessage.length > 0 && <ErrorToast errorMessage={errorMessage} />}
       <P.Title>bpple 상품 목록</P.Title>
       <P.SelectContainer>
         <Select

@@ -14,31 +14,55 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
 
   const [products, setProducts] = useState<ProductItemType[]>([]);
 
-  type LoadingStateType = 'loadingInitial' | 'loadingFilter' | 'success' | 'error';
+  type LoadingStateType = 'loadingInitial' | 'loadingFilter' | 'success';
   const [loadingState, setLoadingState] = useState<LoadingStateType>('loadingInitial');
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const fetchProducts = async ({
+    category,
+    sort,
+    loadingType,
+  }: {
+    category: string;
+    sort: string;
+    loadingType: LoadingStateType;
+  }) => {
+    setLoadingState(loadingType);
 
-  const fetchProducts = async () => {
-    const productsData = await tryApiCall<ProductItemType[]>(
-      () => getProducts(categoryOption, SORT_OPTIONS.get(sortOption)),
+    const productsData = await tryApiCall(
+      () => getProducts(category, SORT_OPTIONS.get(sort)),
       handleErrorMessage,
     );
-    if (!productsData) return;
 
-    setProducts(productsData);
+    if (productsData) {
+      setProducts(productsData);
+    }
+    setLoadingState('success');
   };
+
+  useEffect(() => {
+    fetchProducts({
+      category: categoryOption,
+      sort: sortOption,
+      loadingType: 'loadingInitial',
+    });
+  }, []);
 
   const handleCategoryOption = (value: string) => {
     setCategoryOption(value);
-    setLoadingState('loadingFilter');
+    fetchProducts({
+      category: value,
+      sort: sortOption,
+      loadingType: 'loadingFilter',
+    });
   };
 
   const handleSortOption = (value: string) => {
     setSortOption(value);
-    setLoadingState('loadingFilter');
+    fetchProducts({
+      category: categoryOption,
+      sort: value,
+      loadingType: 'loadingFilter',
+    });
   };
 
   return {

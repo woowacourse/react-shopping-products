@@ -1,17 +1,14 @@
 import { createContext } from 'react';
 import type { CartItemType } from '../types/data';
 
-interface CartContextProps {
-  cartItems: CartItemType[];
-  children: React.ReactNode;
-  handleAddCartItems: (productId: number) => void;
-  handleRemoveCartItems: (productId: number) => void;
-}
-
 interface CartContextType {
   cartItems: CartItemType[];
   handleAddCartItems: (productId: number) => void;
   handleRemoveCartItems: (productId: number) => void;
+}
+
+interface CartContextProps extends CartContextType {
+  children: React.ReactNode;
 }
 
 export const CartContext = createContext<CartContextType | null>(null);

@@ -12,7 +12,7 @@ export const getProducts = async (categoryOption = '전체', sortOption = 'asc')
   const excludedValues = ['전체'];
 
   const fullUrl = `/products${buildQueryString(params, excludedValues)}`;
-  console.log(fullUrl);
+
   const data = await apiClient({
     method: 'GET',
     URI: fullUrl,
