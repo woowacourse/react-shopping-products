@@ -3,7 +3,7 @@ import { HttpMethod } from "../../types/HttpMethod";
 type fetchRemoveProductParams = {
   method: HttpMethod;
   params: {
-    productId: number;
+    productId: string;
   };
 };
 
