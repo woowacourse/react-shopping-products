@@ -1,15 +1,13 @@
 import { getCartItems } from "@/apis/cartItems/getCartItems";
-import { wrapPromise } from "@/apis/wrapPromise";
 import Header from "@/components/Header";
 import ProductContent from "@/components/Product/Content";
 import { CartItemType } from "@/apis/cartItems/cartItem.type";
-import { useState } from "react";
+import { useState, use } from "react";
 
-const cartItemResource = wrapPromise(getCartItems());
+const cartItemResource = getCartItems();
 function ProductPage() {
-  const [cartItems, setCartItems] = useState<CartItemType[]>(() =>
-    cartItemResource.read()
-  );
+  const cartItemData = use(cartItemResource);
+  const [cartItems, setCartItems] = useState<CartItemType[]>(cartItemData);
 
   const updateCartItems = (newCartItems: CartItemType[]) => {
     setCartItems(newCartItems);

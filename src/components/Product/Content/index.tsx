@@ -4,7 +4,6 @@ import FilterSortControl from "./FilterSortControl";
 import { Suspense, useMemo, useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
 import { getProducts } from "@/apis/products/getProducts";
-import { wrapPromise } from "@/apis/wrapPromise";
 import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Fallback from "@/components/Fallback";
@@ -21,7 +20,7 @@ function ProductContent({ cartItems, updateCartItems }: ProductContentProps) {
   );
   const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS[0]);
   const productResource = useMemo(
-    () => wrapPromise(getProducts({ filterOption, sortOption })),
+    () => getProducts({ filterOption, sortOption }),
     [filterOption, sortOption]
   );
 

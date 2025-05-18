@@ -2,9 +2,10 @@ import { ProductItemType } from "@/apis/products/product.type";
 import ProductItem from "./Item";
 import * as S from "./ProductList.styled";
 import { CartItemType } from "@/apis/cartItems/cartItem.type";
+import { use } from "react";
 
 interface ProductListProps {
-  resource: { read: () => ProductItemType[] };
+  resource: Promise<ProductItemType[]>;
   cartItems: CartItemType[];
   updateCartItems: (newCartItems: CartItemType[]) => void;
 }
@@ -14,7 +15,7 @@ function ProductList({
   cartItems,
   updateCartItems,
 }: ProductListProps) {
-  const products = resource.read();
+  const products = use(resource);
 
   return (
     <>
