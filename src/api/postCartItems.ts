@@ -18,7 +18,7 @@ const postCartItems = async (product: Product) => {
 
   let newErrorMessage = "";
 
-  const { data, status } = await fetchWithErrorHandling("cart-items", options);
+  const { status } = await fetchWithErrorHandling("cart-items", options);
 
   if (status === 400) {
     newErrorMessage =
@@ -29,7 +29,7 @@ const postCartItems = async (product: Product) => {
     newErrorMessage = "서버에 문제가 발생했습니다.";
   }
 
-  return { newErrorMessage, data };
+  return { newErrorMessage };
 };
 
 export default postCartItems;

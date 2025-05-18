@@ -1,6 +1,7 @@
 import { Category } from "../App";
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
 import { PriceOrder } from "../App";
+import { Product } from "../App";
 
 type GetProductsProps = {
   category?: Category;
@@ -11,10 +12,42 @@ const priceOrderQueryString = {
   "높은 가격순": "price%2Cdesc",
 };
 
+type Sort = {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+};
+
+type Pageable = {
+  pageNumber: number;
+  pageSize: number;
+  sort: Sort;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+};
+
+type ProductsResponse = {
+  content: Product[];
+  pageable: Pageable;
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  numberOfElements: number;
+  size: number;
+  sort: Sort;
+  first: boolean;
+  empty: boolean;
+};
+
 const getProducts = async ({
   category = "전체",
   priceOrder = "낮은 가격순",
-}: GetProductsProps = {}) => {
+}: GetProductsProps = {}): Promise<{
+  newErrorMessage: string;
+  data: ProductsResponse;
+}> => {
   const searchParams = new URLSearchParams();
   searchParams.toString();
 
