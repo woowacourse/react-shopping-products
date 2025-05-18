@@ -24,7 +24,11 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
         size: 20,
         sortBy: mappedSortType,
       });
-      const cartRes = await getCartItem({ page: 0, size: 50, sortBy: 'desc' });
+      const cartResponse = await getCartItem({
+        page: 0,
+        size: 50,
+        sortBy: 'desc',
+      });
 
       const filteredCategory = product.content.filter(
         (item: ProductElement) =>
@@ -32,7 +36,7 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
       );
 
       const mapped = filteredCategory.map((item: ProductElement) => {
-        const cartItem = cartRes.content.find(
+        const cartItem = cartResponse.content.find(
           (ci: CartItem) => ci.product.id === item.id
         );
 
@@ -48,7 +52,10 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
       });
 
       setData(mapped);
-      setCart(cartRes);
+      setCart({
+        content: cartResponse.content,
+        totalElements: cartResponse.totalElements,
+      });
     } catch (e) {
       console.error(e);
       setIsError(true);
