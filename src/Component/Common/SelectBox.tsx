@@ -16,7 +16,9 @@ export default function SelectBox({
   return (
     <StyledSelect {...props}>
       {category.map(({ name }) => (
-        <option value={name}>{name}</option>
+        <option value={name} key={name}>
+          {name}
+        </option>
       ))}
     </StyledSelect>
   );

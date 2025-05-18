@@ -22,6 +22,7 @@ export default function ProductList({
         <ProductItem
           {...props}
           id={props.id}
+          key={props.id}
           updateCartItems={updateCartItems}
           getMatchCartItem={getMatchCartItem}
           checkMax={checkMax}
