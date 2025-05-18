@@ -18,17 +18,16 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
   const [loadingState, setLoadingState] = useState<LoadingStateType>('loadingInitial');
 
   useEffect(() => {
-    (async () => {
-      const productsData = await tryApiCall(
-        () => getProducts(categoryOption, SORT_OPTIONS.get(sortOption)),
-        handleErrorMessage,
-      );
-      if (productsData) {
-        setProducts(productsData);
-      }
-      setLoadingState('success');
-    })();
-  }, [categoryOption, sortOption]);
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    const productsData = await tryApiCall(
+      () => getProducts(categoryOption, SORT_OPTIONS.get(sortOption)),
+      handleErrorMessage,
+    );
+    setProducts(productsData);
+  };
 
   const handleCategoryOption = (value: string) => {
     setCategoryOption(value);
