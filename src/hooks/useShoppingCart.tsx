@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { CartItemTypes } from "../types/CartItemType";
 import getShoppingCart from "../api/getShoppingCart";
+import { findIsCartItem, isCartFull } from "../Component/utils/cart";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -41,14 +42,12 @@ export default function useShoppingCart() {
     }
   };
 
-  const getMatchCartItem = (id: number) => {
-    const match = cartItems.find((e) => e.product.id === id);
-    return match;
-  };
+  const getMatchCartItem = useCallback(
+    (productId: number) => findIsCartItem(cartItems, productId),
+    [cartItems]
+  );
 
-  const checkMax = () => {
-    return cartItems.length === 50;
-  };
+  const checkMax = useCallback(() => isCartFull(cartItems), [cartItems]);
 
   return {
     cartItems,
