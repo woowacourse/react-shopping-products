@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProductList from "../ProductList/ProductList";
 import Filter from "../Filter/Filter";
 import Spinner from "../common/Spinner/Spinner";
@@ -8,10 +8,11 @@ import * as Styled from "./Main.styled";
 import { ProductCategory } from "../../types/ProductCategory";
 import { Sort } from "../../types/Sort";
 
-import fetchProductList from "../../apis/product/fetchProductList";
+import useProductList from "../../hooks/useProductList";
 
 interface MainProps {
-  selectedProductIdList: string[];
+  cartItems: string[];
+  handleErrorMessage: (value: string) => void;
   handleAddProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
   handleRemoveProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -25,34 +26,20 @@ const isProductSort = (value: string): value is Sort => {
 };
 
 function Main({
-  selectedProductIdList,
+  cartItems,
+  handleErrorMessage,
   handleAddProduct,
   handleRemoveProduct,
 }: MainProps) {
-  const [productList, setProductList] = useState(null);
   const [category, setCategory] = useState<ProductCategory>("전체");
   const [sort, setSort] = useState<Sort>("price,asc");
+  const { state, productList } = useProductList({
+    category,
+    sort,
+    handleErrorMessage,
+  });
 
-  //TODO: 상품 목록 가져올 때 로딩중
-  useEffect(() => {
-    (async () => {
-      try {
-        const { content } = await fetchProductList({
-          method: "GET",
-          params: {
-            category,
-            sort,
-            page: "0",
-            size: "20",
-          },
-        });
-        setProductList(content);
-      } catch (error) {
-        // error 상태
-        console.log(error);
-      }
-    })();
-  }, [category, sort]);
+  console.log(cartItems, productList);
 
   const handleCategory = ({
     target: { value },
@@ -78,11 +65,11 @@ function Main({
     <Styled.Container>
       <Styled.ProductListTitle>bpple 상품 목록</Styled.ProductListTitle>
       <Filter handleCategory={handleCategory} handleSort={handleSort} />
-      {productList === null ? (
-        <Spinner />
-      ) : (
+      {state.isLoading && <Spinner />}
+      {state.isFail && <Spinner />}
+      {state.isSuccess && (
         <ProductList
-          selectedProductIdList={selectedProductIdList}
+          cartItems={cartItems}
           productList={productList}
           handleAddProduct={handleAddProduct}
           handleRemoveProduct={handleRemoveProduct}

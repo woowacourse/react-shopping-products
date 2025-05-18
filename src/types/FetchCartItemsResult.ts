@@ -1,4 +1,4 @@
-import { Product } from "./Product";
+import CartItem from "./CartItem";
 
 export type FetchCartItemsResult = {
   content: CartItem[];
@@ -12,12 +12,6 @@ export type FetchCartItemsResult = {
   first: boolean;
   numberOfElements: number;
   empty: boolean;
-};
-
-type CartItem = {
-  id: number;
-  quantity: number;
-  product: Product;
 };
 
 type Pageable = {

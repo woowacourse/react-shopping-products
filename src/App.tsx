@@ -1,128 +1,34 @@
-import { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 import Spinner from "./components/common/Spinner/Spinner";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
-import fetchAddProduct from "./apis/product/fetchAddProduct";
-import fetchRemoveProduct from "./apis/product/fetchRemoveProduct";
-import fetchCartItems from "./apis/product/fetchCartItems";
-
 import styled from "@emotion/styled";
 import useErrorMessage from "./hooks/useErrorMessage";
+import useCartItems from "./hooks/useCartItems";
 
 function App() {
-  const [selectedProductIdList, setSelectedProductIdList] = useState<string[]>(
-    []
-  );
-
-  const [loading, setLoading] = useState(true);
   const { errorMessage, handleErrorMessage } = useErrorMessage();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { content } = await fetchCartItems({
-          method: "GET",
-          params: {
-            page: "0",
-            size: "50",
-          },
-        });
-
-        setSelectedProductIdList(
-          content.map((item) => item.product.id.toString())
-        );
-        setLoading(false);
-      } catch (error) {
-        if (error instanceof Error === false) {
-          return;
-        }
-
-        handleErrorMessage(error.message);
-      }
-    })();
-  }, [handleErrorMessage]);
+  const { state, cartItems, addCartItem, removeCartItem } = useCartItems({
+    handleErrorMessage,
+  });
+  const selectedItemProductId = cartItems.map((items) => items.productId);
 
   const handleAddProduct = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const $product = event.currentTarget.closest("li");
-    if (!$product) {
-      return;
-    }
-
-    if (selectedProductIdList.length === 50) {
-      handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
-      return;
-    }
-
-    setSelectedProductIdList((prevIdList) => {
-      const newIdListSet = new Set([...prevIdList, $product.id]);
-      return Array.from(newIdListSet);
-    });
-
-    try {
-      await fetchAddProduct({
-        method: "POST",
-        params: {
-          productId: $product.id,
-          quantity: "1",
-        },
-      });
-    } catch (error) {
-      if (error instanceof Error === false) {
-        return;
-      }
-      handleErrorMessage(error.message);
-    }
+    $product && addCartItem($product.id);
   };
 
   const handleRemoveProduct = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const $product = event.currentTarget.closest("li");
-    if (!$product) {
-      return;
-    }
-
-    setSelectedProductIdList((prevIdList) => {
-      return prevIdList.filter((productId) => productId !== $product.id);
-    });
-
-    try {
-      const { content } = await fetchCartItems({
-        method: "GET",
-        params: {
-          page: "0",
-          size: "50",
-        },
-      });
-
-      const targetCartItem = content.find(
-        (cartItem) => cartItem.product.id.toString() === $product.id
-      );
-
-      if (!targetCartItem) {
-        return;
-      }
-
-      await fetchRemoveProduct({
-        method: "DELETE",
-        params: {
-          productId: targetCartItem.id,
-        },
-      });
-    } catch (error) {
-      if (error instanceof Error === false) {
-        return;
-      }
-
-      handleErrorMessage(error.message);
-    }
+    $product && removeCartItem($product.id);
   };
 
-  if (loading) {
+  if (state.isLoading || state.isFail) {
     return (
       <Container>
         <Wrapper>
@@ -132,19 +38,22 @@ function App() {
     );
   }
 
-  return (
-    <Container>
-      <Wrapper>
-        <Header selectedProductIdList={selectedProductIdList}></Header>
-        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-        <Main
-          selectedProductIdList={selectedProductIdList}
-          handleAddProduct={handleAddProduct}
-          handleRemoveProduct={handleRemoveProduct}
-        />
-      </Wrapper>
-    </Container>
-  );
+  if (state.isSuccess) {
+    return (
+      <Container>
+        <Wrapper>
+          <Header cartItems={selectedItemProductId}></Header>
+          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+          <Main
+            cartItems={selectedItemProductId}
+            handleErrorMessage={handleErrorMessage}
+            handleAddProduct={handleAddProduct}
+            handleRemoveProduct={handleRemoveProduct}
+          />
+        </Wrapper>
+      </Container>
+    );
+  }
 }
 
 export default App;
