@@ -13,7 +13,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   useEffect(() => {
     (async () => {
-      const items = await tryApiCall(getCartItems, handleErrorMessage);
+      const items = (await tryApiCall(getCartItems, handleErrorMessage)) ?? [];
       setCartItemsIds(items.map((item: CartItemType) => item.product.id));
     })();
   }, []);
@@ -31,15 +31,16 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleRemoveCartItemsIds = (id: number) => {
     (async () => {
-      const cartItems = await tryApiCall<CartItemType[]>(getCartItems, handleErrorMessage);
-
-      await removeCartItems(
-        await tryApiCall<number>(
-          async () => (await getCartId(cartItems, id)) as number,
-          handleErrorMessage,
-        ),
+      const cartItems = (await tryApiCall<CartItemType[]>(getCartItems, handleErrorMessage)) ?? [];
+      const cartId = await tryApiCall(
+        async () => await getCartId(cartItems, id),
+        handleErrorMessage,
       );
-      setCartItemsIds((prev: number[]) => prev.filter((itemId: number) => itemId !== id));
+
+      if (cartId) {
+        await tryApiCall(async () => await removeCartItems(cartId), handleErrorMessage);
+        setCartItemsIds((prev: number[]) => prev.filter((itemId: number) => itemId !== id));
+      }
     })();
   };
 
