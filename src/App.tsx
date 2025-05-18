@@ -15,22 +15,28 @@ import RemoveProductItemApi from "./api/RemoveProductItemApi";
 function App() {
   const [productList, setProductList] = useState<ResponseProduct[]>([]);
   const [productListLoading, setProductListLoading] = useState(true);
+  const [productListErrorMessage, setProductListErrorMessage] = useState("");
+
   const [cartItemList, setCartItemList] = useState<ResponseCartItem[]>([]);
   const [cartItemListLoading, setCartItemListLoading] = useState(true);
-
-  const [errorMessage, setErrorMessage] = useState("");
+  const [cartItemListErrorMessage, setCartItemListErrorMessage] = useState("");
 
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
 
-  const handleSetErrorMessage = (message: string) => {
-    setErrorMessage("");
-
+  const handleProductErrorMessage = (message: string) => {
+    setProductListErrorMessage("");
     setTimeout(() => {
-      setErrorMessage(message);
+      setProductListErrorMessage(message);
     }, 10);
   };
 
+  const handleCartErrorMessage = (message: string) => {
+    setCartItemListErrorMessage("");
+    setTimeout(() => {
+      setCartItemListErrorMessage(message);
+    }, 10);
+  };
   //TODO : 이후 커스텀 훅으로 분리하자!
   useEffect(() => {
     const fetchProductList = async () => {
@@ -42,7 +48,7 @@ function App() {
         setProductList(rawProductList);
       } catch (error) {
         if (error instanceof Error) {
-          handleSetErrorMessage(error.message);
+          handleProductErrorMessage(error.message);
         }
       } finally {
         setProductListLoading(false);
@@ -58,7 +64,7 @@ function App() {
         setCartItemList(rawCartItemList);
       } catch (error) {
         if (error instanceof Error) {
-          handleSetErrorMessage(error.message);
+          handleCartErrorMessage(error.message);
         }
       } finally {
         setCartItemListLoading(false);
@@ -72,7 +78,7 @@ function App() {
   async function handleAddToCard(productId: number) {
     try {
       if (cartItemList.length >= CART_MAX_COUNT) {
-        handleSetErrorMessage(
+        handleCartErrorMessage(
           "장바구니에는 최대 50개의 상품만 담을 수 있습니다."
         );
         return;
@@ -84,7 +90,7 @@ function App() {
       setCartItemList(rawCartItemList);
     } catch (error) {
       if (error instanceof Error) {
-        handleSetErrorMessage(error.message);
+        handleCartErrorMessage(error.message);
       }
     }
   }
@@ -97,7 +103,7 @@ function App() {
       setCartItemList(rawCartItemList);
     } catch (error) {
       if (error instanceof Error) {
-        handleSetErrorMessage(error.message);
+        handleCartErrorMessage(error.message);
       }
     }
   };
@@ -116,12 +122,13 @@ function App() {
                 cartItemList={cartItemList}
                 onAddToCart={handleAddToCard}
                 onRemoveFromCart={handleRemoveFromCart}
-                setErrorMessage={handleSetErrorMessage}
+                setErrorMessage={handleProductErrorMessage}
               />
             </S.MiddleContainer>
           </>
         )}
-        <ErrorBox text={errorMessage} backgroundColor="#FFC9C9" />
+        <ErrorBox text={productListErrorMessage} backgroundColor="#FFC9C9" />
+        <ErrorBox text={cartItemListErrorMessage} backgroundColor="#FFC9C9" />
       </S.Wrap>
     </S.AppContainer>
   );
