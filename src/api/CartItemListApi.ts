@@ -1,7 +1,17 @@
 import { API_ERROR_MESSAGES } from "./constants/errorMessages";
 import { ResponseCartItem } from "./types";
 
-async function getCartItemList(): Promise<ResponseCartItem[]> {
+interface CarItemListProps {
+  page: number;
+  size: number;
+  sort: string;
+}
+
+async function getCartItemList({
+  page,
+  size,
+  sort,
+}: CarItemListProps): Promise<ResponseCartItem[]> {
   const API_URL = import.meta.env.VITE_BASE_URL || "";
   const options = {
     method: "GET",
@@ -11,7 +21,7 @@ async function getCartItemList(): Promise<ResponseCartItem[]> {
     },
   };
   const response = await fetch(
-    `${API_URL}/cart-items?page=0&size=1073741824&sort=asc`,
+    `${API_URL}/cart-items?page=${page}&size=${size}&sort=${sort}`,
     options
   );
 
