@@ -77,7 +77,6 @@ export default function ProductsPage() {
                   cartItem={cartItems.content.find((item) => item.product.id === product.id)}
                   handleIncreaseCartItem={increaseCartItem}
                   handleDecreaseCartItem={decreaseCartItem}
-                  fetchCartItems={fetchCartItems}
                 />
               ))}
         </S.CardWrapper>

@@ -1,19 +1,15 @@
 import { Button, Card, Spacing, Text } from "@/components";
-import { AddCart, RemoveCart } from "@/components/icons";
+import { AddCart } from "@/components/icons";
 import { DEFAULT_IMAGE_URL } from "@/constants/images";
 import { GetCartItemsResponse, GetProductResponse } from "@/types";
-import * as S from "./ProductCard.styles";
-import { useState } from "react";
-import { getCartItems, postCartItems } from "@/apis";
-import { useFetch } from "@/hooks";
 import { css } from "@emotion/react";
+import * as S from "./ProductCard.styles";
 
 interface ProductCardProps {
   product: GetProductResponse["content"][number];
   cartItem: GetCartItemsResponse["content"][number] | undefined;
   handleIncreaseCartItem: (productId: number) => void;
   handleDecreaseCartItem: (productId: number) => void;
-  fetchCartItems: () => Promise<void>;
 }
 
 export default function ProductCard({
@@ -21,7 +17,6 @@ export default function ProductCard({
   handleIncreaseCartItem,
   handleDecreaseCartItem,
   cartItem,
-  fetchCartItems,
 }: ProductCardProps) {
   return (
     <Card key={product.id}>
