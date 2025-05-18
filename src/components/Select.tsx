@@ -14,7 +14,7 @@ const Select = <T extends string>({
   setValue,
   id,
 }: SelectPropsType<T>) => {
-  const [idDropdownOpened, setIsDropdownOpened] = useState(false);
+  const [isDropdownOpened, setIsDropdownOpened] = useState(false);
   const toggleDropdownOpened = () => setIsDropdownOpened((prev) => !prev);
   const closeDropdown = () => setIsDropdownOpened(false);
   const handleOption = (v: T) => {
@@ -23,26 +23,42 @@ const Select = <T extends string>({
   };
 
   return (
-    <div tabIndex={0} onBlur={closeDropdown} css={selectBoxStyle} id={id}>
+    <div
+      tabIndex={0}
+      onBlur={closeDropdown}
+      css={selectBoxStyle}
+      id={id}
+      role="listbox"
+      aria-expanded={isDropdownOpened}
+      aria-activedescendant={value ? `${id}-option-${value}` : undefined}
+    >
       <div
-        css={selectedValueStyle(idDropdownOpened)}
+        css={selectedValueStyle(isDropdownOpened)}
         onClick={toggleDropdownOpened}
       >
-        <div css={selectedValueTextStyle(Boolean(value))}>
+        <div
+          css={selectedValueTextStyle(Boolean(value))}
+          aria-label={value ?? '선택해 주세요.'}
+        >
           {value ?? '선택해 주세요.'}
         </div>
         <img
           css={iconStyle}
-          src={idDropdownOpened ? 'chevron-up.svg' : 'chevron-down.svg'}
+          src={isDropdownOpened ? 'chevron-up.svg' : 'chevron-down.svg'}
+          alt=""
+          aria-hidden="true"
         />
       </div>
-      {idDropdownOpened && (
+      {isDropdownOpened && (
         <ul css={optionListStyle}>
           {optionList.map((option) => (
             <li
               key={option}
+              id={`${id}-option-${option}`}
               css={optionStyle}
               onClick={() => handleOption(option)}
+              role="option"
+              aria-selected={value === option}
             >
               {option}
             </li>
