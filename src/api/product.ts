@@ -1,5 +1,3 @@
-import { baseUrl } from './config';
-
 interface getProductProps {
   page: number;
   size: number;
@@ -8,7 +6,9 @@ interface getProductProps {
 
 export const getProduct = async ({ page, size, sortBy }: getProductProps) => {
   const response = await fetch(
-    `${baseUrl}/products?page=${page}&size=${size}&sort=price,${sortBy}&sort=id,desc`
+    `${
+      import.meta.env.VITE_API_BASE_URL
+    }/products?page=${page}&size=${size}&sort=price,${sortBy}&sort=id,desc`
   );
   const data = await response.json();
 

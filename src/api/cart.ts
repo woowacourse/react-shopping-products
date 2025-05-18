@@ -1,6 +1,4 @@
 import { CartResponse } from '../types/product';
-import { baseUrl } from './config';
-
 interface getCartItemProps {
   page: number;
   size: number;
@@ -13,7 +11,9 @@ export const getCartItem = async ({
   sortBy,
 }: getCartItemProps): Promise<CartResponse> => {
   const response = await fetch(
-    `${baseUrl}/cart-items?page=${page}&size=${size}&sort=${sortBy}`,
+    `${
+      import.meta.env.VITE_API_BASE_URL
+    }/cart-items?page=${page}&size=${size}&sort=${sortBy}`,
     {
       method: 'GET',
       headers: {
@@ -33,24 +33,30 @@ export const getCartItem = async ({
 };
 
 export const addCart = async (id: number) => {
-  const response = await fetch(`${baseUrl}/cart-items`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ productId: id, quantity: 1 }),
-  });
+  const response = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/cart-items`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ productId: id, quantity: 1 }),
+    }
+  );
   return response;
 };
 
 export const removeCart = async (id: number) => {
-  const response = await fetch(`${baseUrl}/cart-items/${id}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
-    },
-  });
+  const response = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/cart-items/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
+      },
+    }
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
