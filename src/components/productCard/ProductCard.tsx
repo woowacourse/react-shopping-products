@@ -37,9 +37,18 @@ function ProductCard({
 }: ProductCardProps) {
   const { imageUrl, productId, name, price, isAdded } = productInfo;
   const { cartId, cartAmount } = cartInfo;
+  console.log(imageUrl);
+
   return (
     <div css={ProductContainer}>
-      <img css={ProductImage} src={imageUrl}></img>
+      <img
+        css={ProductImage}
+        src={imageUrl || "/fallBack.png"}
+        alt="상품 이미지"
+        onError={(e) => {
+          e.currentTarget.src = "/fallBack.png";
+        }}
+      />
       <div css={ContentContainer}>
         <h3 css={ProductTitle}>{name}</h3>
         <p css={ProductPrice}>{price.toLocaleString()}원</p>
