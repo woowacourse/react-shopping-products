@@ -2,14 +2,9 @@ import { Product } from "../../App";
 import CartActionButton from "./button/CartActionButton";
 import styled from "@emotion/styled";
 
-function isValidUrl(url: string) {
-  try {
-    new URL(url);
-    return url;
-  } catch (_) {
-    return "./nullImage.png";
-  }
-}
+const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  e.currentTarget.src = "./nullImage.png";
+};
 
 const ProductItem = ({
   product,
@@ -24,7 +19,11 @@ const ProductItem = ({
 }) => {
   return (
     <ProductItemContainer>
-      <ProductItemImage src={isValidUrl(product.imageUrl)} alt={product.name} />
+      <ProductItemImage
+        src={product.imageUrl}
+        alt={product.name}
+        onError={handleImageError}
+      />
       <ProductItemInfoContainer>
         <TextContainer>
           <ProductItemName>{product.name}</ProductItemName>
