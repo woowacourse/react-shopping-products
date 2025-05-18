@@ -11,7 +11,7 @@ const Header = ({ cardProducts, error: { productError, cartError } }: HeaderProp
 	return (
 		<div className={S.container}>
 			<p>SHOP</p>
-			<Cart count={cartCount} />
+			<CartButton count={cartCount} />
 			<ErrorToast isError={productError !== "" || cartError !== ""} message={productError !== "" ? productError : cartError} />
 		</div>
 	);
@@ -19,7 +19,7 @@ const Header = ({ cardProducts, error: { productError, cartError } }: HeaderProp
 
 export default Header;
 
-const Cart = ({ count }: { count: number }) => {
+const CartButton = ({ count }: { count: number }) => {
 	return (
 		<div className={S.cartContainer}>
 			<svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
