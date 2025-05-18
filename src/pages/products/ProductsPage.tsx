@@ -1,4 +1,4 @@
-import { deleteCartItems, getCartItems, getProducts, postCartItems } from "@/apis";
+import { deleteCartItems, getCartItems, getProducts, patchCartItems, postCartItems } from "@/apis";
 import { Header, Select, Spinner, Text } from "@/components";
 import { useError } from "@/context";
 import { useFetch } from "@/hooks";
@@ -15,29 +15,37 @@ export default function ProductsPage() {
 
   const { showError } = useError();
 
-  const { data: products, status: productsStatus } = useFetch(() => getProducts());
-  const { data: cartItems, status: cartItemsStatus, fetchData: fetchCartItems } = useFetch(() => getCartItems());
+  const { data: products, status: productsStatus } = useFetch(getProducts);
+  const { data: cartItems, status: cartItemsStatus, fetchData: fetchCartItems } = useFetch(getCartItems);
 
-  const addCartItem = async (productId: number) => {
-    try {
+  const increaseCartItem = async (productId: number) => {
+    const cartItem = cartItems?.content.find((item) => item.product.id === productId);
+
+    if (!cartItem) {
       await postCartItems({ productId });
-      await fetchCartItems();
-    } catch (error) {
-      showError(ERROR_MESSAGE.ADD_CART_ITEM);
+    } else {
+      await patchCartItems({
+        cartItemId: cartItem.id,
+        quantity: cartItem.quantity + 1,
+      });
     }
+
+    await fetchCartItems();
   };
 
-  const deleteCartItem = async (productId: number) => {
-    const cartItemId = cartItems?.content.find((item) => item.product.id === productId)?.id;
+  const decreaseCartItem = async (productId: number) => {
+    const cartItem = cartItems?.content.find((item) => item.product.id === productId);
 
-    if (cartItemId === undefined) return;
-
-    try {
-      await deleteCartItems({ cartItemId });
-      await fetchCartItems();
-    } catch (error) {
-      showError(ERROR_MESSAGE.DELETE_CART_ITEM);
+    if (!cartItem) {
+      await postCartItems({ productId });
+    } else {
+      await patchCartItems({
+        cartItemId: cartItem.id,
+        quantity: cartItem.quantity - 1,
+      });
     }
+
+    await fetchCartItems();
   };
 
   const isLoading = productsStatus === "loading" || cartItemsStatus === "loading";
@@ -66,9 +74,10 @@ export default function ProductsPage() {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  isCartItem={cartItems.content.some((item) => item.product.id === product.id)}
-                  handleAddCartItem={addCartItem}
-                  handleDeleteCartItem={deleteCartItem}
+                  cartItem={cartItems.content.find((item) => item.product.id === product.id)}
+                  handleIncreaseCartItem={increaseCartItem}
+                  handleDecreaseCartItem={decreaseCartItem}
+                  fetchCartItems={fetchCartItems}
                 />
               ))}
         </S.CardWrapper>

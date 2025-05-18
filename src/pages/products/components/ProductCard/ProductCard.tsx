@@ -11,29 +11,18 @@ import { css } from "@emotion/react";
 interface ProductCardProps {
   product: GetProductResponse["content"][number];
   cartItem: GetCartItemsResponse["content"][number] | undefined;
-  handleAddCartItem: (productId: number) => void;
-  handleDeleteCartItem: (productId: number) => void;
+  handleIncreaseCartItem: (productId: number) => void;
+  handleDecreaseCartItem: (productId: number) => void;
   fetchCartItems: () => Promise<void>;
 }
 
 export default function ProductCard({
   product,
-  handleAddCartItem,
-  handleDeleteCartItem,
+  handleIncreaseCartItem,
+  handleDecreaseCartItem,
   cartItem,
   fetchCartItems,
 }: ProductCardProps) {
-  const [quantity, setQuantity] = useState(cartItem?.quantity || 1);
-
-  const handleCartItemIncrease = async () => {
-    await postCartItems({
-      productId: product.id,
-      quantity: quantity + 1,
-    });
-    await fetchCartItems();
-  };
-  const handleDecrease = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
-
   return (
     <Card key={product.id}>
       <Card.Preview>
@@ -57,13 +46,13 @@ export default function ProductCard({
         <S.ButtonWrapper>
           {cartItem ? (
             <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
-              <Button css={controlButtonStyle} onClick={handleDecrease}>
+              <Button css={controlButtonStyle} onClick={() => handleDecreaseCartItem(product.id)}>
                 <Text css={controlButtonTextStyle} variant="body-0">
                   -
                 </Text>
               </Button>
               <Text variant="title-2">{cartItem.quantity}</Text>
-              <Button css={controlButtonStyle} onClick={handleCartItemIncrease}>
+              <Button css={controlButtonStyle} onClick={() => handleIncreaseCartItem(product.id)}>
                 <Text css={controlButtonTextStyle} variant="body-0">
                   ＋
                 </Text>
@@ -72,8 +61,7 @@ export default function ProductCard({
           ) : (
             <Button
               onClick={() => {
-                handleAddCartItem(product.id);
-                setQuantity(1);
+                handleIncreaseCartItem(product.id);
               }}
             >
               <AddCart />
