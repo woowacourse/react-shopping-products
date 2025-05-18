@@ -3,7 +3,6 @@ import { CardListContainer } from "./ProductCardList.css";
 import { ProductPageResponse } from "../../types/response.types";
 import useFetchProducts from "../../hooks/useFetchProducts";
 import { categoryType, sortType } from "../../types/index.types";
-import { ERROR_TYPE } from "../../hooks/useError";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
 
 interface ProductCardListProps {
@@ -15,7 +14,6 @@ interface ProductCardListProps {
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
-  setErrorTrue: (type: ERROR_TYPE) => void;
   fetchCartProducts: () => void;
 }
 
@@ -26,14 +24,12 @@ function ProductCardList({
   sort,
   cartItemIds,
   setCartItemIds,
-  setErrorTrue,
   fetchCartProducts,
 }: ProductCardListProps) {
   const { isLoading } = useFetchProducts({
     category,
     setProducts,
     sort,
-    setErrorTrue,
   });
 
   if (isLoading) return <ProductCardListSkeleton />;
@@ -61,7 +57,6 @@ function ProductCardList({
             productInfo={productInfo}
             key={data.id}
             setCartItemIds={setCartItemIds}
-            setErrorTrue={setErrorTrue}
             fetchCartProducts={fetchCartProducts}
           />
         );

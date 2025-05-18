@@ -1,6 +1,5 @@
-import { ERROR_TYPE } from "../../hooks/useError";
 import { ButtonContainer, RemoveButton } from "./CartToggleButton.css";
-import { addItemToCart, removeItemToCart } from "./cartToggleButton.domain";
+import useCartToggleButton from "./useCartToggleButton";
 
 interface CartToggleButtonProps {
   isAdded: boolean;
@@ -10,7 +9,6 @@ interface CartToggleButtonProps {
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
-  setErrorTrue: (type: ERROR_TYPE) => void;
   fetchCartProducts: () => void;
 }
 
@@ -20,15 +18,15 @@ function CartToggleButton({
   cartAmount,
   isAdded,
   setCartItemIds,
-  setErrorTrue,
   fetchCartProducts,
 }: CartToggleButtonProps) {
+  const { removeItemToCart, addItemToCart } = useCartToggleButton();
+
   const buttonProps = isAdded
     ? {
         label: "빼기",
         icon: "removeCart.svg",
-        onClick: () =>
-          removeItemToCart({ cartId, productId, setCartItemIds, setErrorTrue }),
+        onClick: () => removeItemToCart({ cartId, productId, setCartItemIds }),
         styles: [ButtonContainer, RemoveButton],
       }
     : {
@@ -39,7 +37,6 @@ function CartToggleButton({
             productId,
             cartAmount,
             fetchCartProducts,
-            setErrorTrue,
           }),
         styles: ButtonContainer,
       };

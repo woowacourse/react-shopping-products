@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ProductPageResponse } from "../types/response.types";
 import request from "../utils/request";
 import { categoryType, sortType } from "../types/index.types";
-import { ERROR_TYPE } from "./useError";
+import { useToast } from "./useToast";
 
 const SORT_TYPE = {
   "낮은 가격순": "price,asc",
@@ -13,16 +13,15 @@ interface useFetchProductsProps {
   setProducts: (data: ProductPageResponse) => void;
   category: categoryType;
   sort: sortType;
-  setErrorTrue: (errorType: ERROR_TYPE) => void;
 }
 
 function useFetchProducts({
   category,
   setProducts,
   sort,
-  setErrorTrue,
 }: useFetchProductsProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => {
     setIsLoading(true);
@@ -48,12 +47,12 @@ function useFetchProducts({
         });
         setProducts(data);
       } catch {
-        setErrorTrue("PRODUCTS");
+        showToast("PRODUCTS");
       } finally {
         setIsLoading(false);
       }
     })();
-  }, [category, setProducts, sort, setErrorTrue]);
+  }, [category, setProducts, sort, showToast]);
   return { isLoading };
 }
 

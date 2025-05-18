@@ -1,16 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { CartItem } from "../types/response.types";
 import request from "../utils/request";
-import { ERROR_TYPE } from "./useError";
+import { useToast } from "./useToast";
 
-interface useFetchCartProductsProps {
-  setErrorTrue: (type: ERROR_TYPE) => void;
-}
-
-function useFetchCartProducts({ setErrorTrue }: useFetchCartProductsProps) {
+function useFetchCartProducts() {
   const [cartItemIds, setCartItemIds] = useState<
     Record<"productId" | "cartId", number>[]
   >([]);
+  const { showToast } = useToast();
 
   const fetchCartProducts = useCallback(
     async function fetchCartItems() {
@@ -29,10 +26,10 @@ function useFetchCartProducts({ setErrorTrue }: useFetchCartProductsProps) {
           })
         );
       } catch {
-        setErrorTrue("CART");
+        showToast("CART");
       }
     },
-    [setErrorTrue]
+    [showToast]
   );
 
   useEffect(() => {

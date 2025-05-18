@@ -5,19 +5,16 @@ import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { ProductPageResponse } from "../../types/response.types";
 import { categoryType, sortType } from "../../types/index.types";
-import { ERROR_TYPE } from "../../hooks/useError";
 interface ProductContainerProps {
   cartItemIds: Record<"productId" | "cartId", number>[];
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
-  setErrorTrue: (type: ERROR_TYPE) => void;
   fetchCartProducts: () => void;
 }
 function ProductContainer({
   cartItemIds,
   setCartItemIds,
-  setErrorTrue,
   fetchCartProducts,
 }: ProductContainerProps) {
   const [products, setProducts] = useState<ProductPageResponse | null>(null);
@@ -42,7 +39,6 @@ function ProductContainer({
         sort={selectedSort}
         cartItemIds={cartItemIds}
         setCartItemIds={setCartItemIds}
-        setErrorTrue={setErrorTrue}
         fetchCartProducts={fetchCartProducts}
       />
     </div>

@@ -5,6 +5,8 @@ interface ErrorToastProps {
 }
 
 function ErrorToast({ errorMessage }: ErrorToastProps) {
+  if (!errorMessage) return null;
+
   return (
     <div css={ErrorToastContainer}>
       <p css={ErrorMessage}>{errorMessage}</p>
