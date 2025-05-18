@@ -1,6 +1,8 @@
 import { CartItems } from "../types/cartItems";
 import { createApiUrl, fetchWithErrorHandling, SHOP_API } from "./configs";
 
+const CART_ITEMS_BASE_URL = createApiUrl(SHOP_API.endpoint.cartItems);
+
 export const CartItemsAPI = {
   get: async () => {
     const params: Record<string, string> = {
@@ -31,8 +33,7 @@ export const CartItemsAPI = {
       }),
     };
 
-    const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems);
-    return await fetchWithErrorHandling(apiUrl, options, false);
+    return await fetchWithErrorHandling(CART_ITEMS_BASE_URL, options, false);
   },
   delete: async (cartId: number) => {
     const options: RequestInit = {
