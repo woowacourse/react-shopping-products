@@ -41,20 +41,21 @@ vi.mock("@/apis/products/getProducts", () => ({
   getProducts: vi.fn().mockImplementation(({ filterOption, sortOption }) => {
     return new Promise((resolve) => {
       const filterItems = mockProductItems.filter((item) => {
-        if (filterOption === "전체") {
+        if (filterOption.label === "전체") {
           return true;
         }
 
-        return item.category === filterOption;
+        return item.category === filterOption.label;
       });
+
       const resultItems = filterItems.sort((a, b) => {
-        if (sortOption === "낮은 가격순") {
+        if (sortOption.label === "낮은 가격순") {
           return a.price - b.price;
         }
 
         return b.price - a.price;
       });
-      resolve(resultItems);
+      return resolve(resultItems);
     });
   }),
 }));
@@ -69,7 +70,7 @@ describe("ProductContent Component", () => {
       render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
     });
 
-    const list = screen.getByRole("list");
+    const list = await screen.findByRole("list");
     expect(list).toBeInTheDocument();
 
     expect(within(list).getAllByRole("listitem")).toHaveLength(
@@ -78,9 +79,13 @@ describe("ProductContent Component", () => {
 
     const filterDropdown = screen.getByTestId("filter-dropdown");
     fireEvent.click(within(filterDropdown).getByTestId("dropdown-trigger"));
-    fireEvent.click(
-      within(filterDropdown).getByTestId(`dropdown-option-${category}`)
-    );
+    await act(async () => {
+      fireEvent.click(
+        within(filterDropdown).getByTestId(`dropdown-option-${category.label}`)
+      );
+      // 모든 비동기 작업이 완료될 때까지 기다림
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    });
 
     await waitFor(() => {
       expect(within(list).getAllByRole("listitem")).toHaveLength(
@@ -110,9 +115,15 @@ describe("ProductContent Component", () => {
 
     const filterDropdown = screen.getByTestId("sort-dropdown");
     fireEvent.click(within(filterDropdown).getByTestId("dropdown-trigger"));
-    fireEvent.click(
-      within(filterDropdown).getByTestId(`dropdown-option-${sortOption}`)
-    );
+    await act(async () => {
+      fireEvent.click(
+        within(filterDropdown).getByTestId(
+          `dropdown-option-${sortOption.label}`
+        )
+      );
+      // 모든 비동기 작업이 완료될 때까지 기다림
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    });
 
     await waitFor(() => {
       const listItems = within(list).getAllByRole("listitem");
