@@ -14,7 +14,11 @@ async function request<T extends object>({
   const response = await fetch(`${import.meta.env.VITE_BASE_URL}${url}`, {
     method,
     body: body ? JSON.stringify(body) : undefined,
-    headers,
+    headers: {
+      Authorization: import.meta.env.VITE_TOKEN,
+      "Content-Type": "application/json",
+      ...headers,
+    },
   });
   if (!response.ok) throw new Error();
 

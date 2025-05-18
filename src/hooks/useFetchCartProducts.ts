@@ -15,10 +15,6 @@ function useFetchCartProducts() {
         const data = await request({
           method: "GET",
           url: "/cart-items",
-          headers: {
-            Authorization: import.meta.env.VITE_TOKEN,
-            "Content-Type": "application/json",
-          },
         });
         setCartItemIds(
           data.content.map((data: CartItem) => {

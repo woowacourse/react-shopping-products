@@ -14,12 +14,7 @@ interface CartItem {
 const fetchCartItems = async (): Promise<
   { cartId: number; productId: number }[]
 > => {
-  const response = await fetch(`${import.meta.env.VITE_BASE_URL}/cart-items`, {
-    headers: {
-      Authorization: import.meta.env.VITE_TOKEN,
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(`${import.meta.env.VITE_BASE_URL}/cart-items`);
 
   const data = await response.json();
   return data.content.map((item: CartItem) => ({
@@ -53,7 +48,6 @@ describe("CartToggleButton 통합 테스트 (실제 API)", () => {
           isAdded={!!item}
           cartAmount={cartItems.length}
           setCartItemIds={setCartItems}
-          setErrorTrue={() => {}}
           fetchCartProducts={updateCart}
         />
       );

@@ -25,10 +25,6 @@ export default function useCartToggleButton() {
   }: RemoveItemToCartProps) {
     try {
       await request({
-        headers: {
-          Authorization: import.meta.env.VITE_TOKEN,
-          "Content-Type": "application/json",
-        },
         method: "DELETE",
         url: `/cart-items/${cartId}`,
       });
@@ -51,10 +47,6 @@ export default function useCartToggleButton() {
         return;
       }
       await request({
-        headers: {
-          Authorization: import.meta.env.VITE_TOKEN,
-          "Content-Type": "application/json",
-        },
         method: "POST",
         url: "/cart-items",
         body: { productId, quantity: 1 },
