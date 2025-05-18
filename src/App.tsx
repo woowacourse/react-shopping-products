@@ -1,16 +1,13 @@
 import { css } from "@emotion/react";
 import { useState } from "react";
-import Button from "./components/Button";
-import Card from "./components/Card";
 import Header from "./components/Header";
-import AddCart from "./components/icons/AddCart";
-import Select from "./components/Select";
-import Text from "./components/Text";
-import RemoveCart from "./components/icons/RemoveCart";
-import Spinner from "./components/Spinner";
+import Select from "./components/common/Select";
+import Text from "./components/common/Text";
+import Spinner from "./components/common/Spinner";
 import ErrorPopup from "./components/ErrorPopup";
 import useProducts from "./hooks/useProducts";
 import useCartItems from "./hooks/useCartItems";
+import ProductList from "./components/Product/ProductList";
 
 function App() {
   const [filter, setFilter] = useState("전체");
@@ -22,8 +19,7 @@ function App() {
     isCartItemsLoading,
     cartItemsErrorMessage,
     setCartItemsErrorMessage,
-    addCart,
-    removeCart,
+    handleCartItem,
     cartItemIds,
   } = useCartItems();
 
@@ -45,48 +41,7 @@ function App() {
           <Select options={["전체", "식료품", "패션잡화"]} selectedItem={filter} setSelectedItem={setFilter} />
           <Select options={["높은 가격순", "낮은 가격순"]} selectedItem={sort} setSelectedItem={setSort} />
         </div>
-        <div css={cardContainerStyle}>
-          {products
-            ?.filter((product) => (filter === "전체" ? true : product.category === filter))
-            ?.sort((productA, productB) =>
-              sort === "낮은 가격순" ? productA.price - productB.price : productB.price - productA.price,
-            )
-            ?.map((product) => (
-              <Card key={product.id}>
-                <Card.Preview>
-                  <img
-                    src={product.imageUrl}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        "https://www.next-t.co.kr/public/uploads/7b7f7e2138e29e598cd0cdf2c85ea08d.jpg";
-                    }}
-                    alt={product.name}
-                  />
-                </Card.Preview>
-                <Card.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                    <Text variant="title-2">{product.name}</Text>
-                    <Text variant="body-2">{product.price.toLocaleString()}원</Text>
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    {cartItemIds && cartItemIds[product.id] ? (
-                      <Button backgroundColor="#fff" onClick={() => removeCart(cartItemIds[product.id])}>
-                        <RemoveCart />
-                        <Text variant="body-2">빼기</Text>
-                      </Button>
-                    ) : (
-                      <Button onClick={() => addCart(product.id)}>
-                        <AddCart />
-                        <Text variant="body-2" color="#fff">
-                          담기
-                        </Text>
-                      </Button>
-                    )}
-                  </div>
-                </Card.Content>
-              </Card>
-            ))}
-        </div>
+        <ProductList productsData={products} cartItemIds={cartItemIds} handleCartItem={handleCartItem} />
       </div>
     </div>
   );
@@ -115,13 +70,4 @@ const selectBoxStyle = css`
   display: flex;
   justify-content: space-between;
   gap: 132px;
-`;
-
-const cardContainerStyle = css`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  row-gap: 20px;
-  justify-items: center;
-  overflow-y: scroll;
 `;

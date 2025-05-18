@@ -40,15 +40,22 @@ const useCartItems = () => {
     });
   }, []);
 
-  const cartItemIds = cartItems && Object.fromEntries(cartItems?.content.map((item) => [item.product.id, item.id]));
+  const cartItemIds = Object.fromEntries((cartItems?.content || []).map((item) => [item.product.id, item.id]));
+
+  const handleCartItem = (type: "add" | "remove", id: number) => {
+    if (type === "add") {
+      addCart(id);
+    } else {
+      removeCart(id);
+    }
+  };
 
   return {
     cartItems,
     isCartItemsLoading,
     cartItemsErrorMessage,
     setCartItemsErrorMessage,
-    addCart,
-    removeCart,
+    handleCartItem,
     cartItemIds,
   };
 };

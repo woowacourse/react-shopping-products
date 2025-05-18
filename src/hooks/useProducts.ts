@@ -3,7 +3,7 @@ import { getProducts } from "../apis/product";
 import { Content } from "../types/product";
 
 const useProducts = () => {
-  const [products, setProducts] = useState<Content[]>();
+  const [products, setProducts] = useState<Content[]>([]);
   const [isProductsLoading, setIsProductsLoading] = useState(true);
   const [productsErrorMessage, setProductsErrorMessage] = useState("");
 
