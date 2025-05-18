@@ -9,10 +9,14 @@ function AlertToast({ errorMessage }: AlertToastProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsVisible(false);
     }, 3000);
-  }, []);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [errorMessage]);
 
   if (!isVisible) {
     return null;
