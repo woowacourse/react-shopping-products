@@ -28,6 +28,7 @@ export type CartItem = {
 export type Category = "식료품" | "패션잡화" | "전체";
 export type PriceOrder = "낮은 가격순" | "높은 가격순";
 export const PRODUCT_TYPE_COUNT = 20;
+export const CART_MAX_COUNT = 50;
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -39,8 +40,10 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const addToCart = async (product: Product) => {
-    if (cart.length > 50) {
-      setErrorMessage("장바구니에 담을 수 있는 상품은 최대 50개입니다.");
+    if (cart.length > CART_MAX_COUNT) {
+      setErrorMessage(
+        `장바구니에 담을 수 있는 상품은 최대 ${CART_MAX_COUNT}개입니다.`
+      );
       return;
     }
     const { newErrorMessage: postErrorMessage } = await postCartItems(product);
