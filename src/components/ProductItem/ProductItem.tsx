@@ -17,6 +17,9 @@ const ProductItem = ({
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
 }) => {
+  const handleProductAddClick = () => addToCart(product);
+  const handleProductRemoveClick = () => removeFromCart(product.id);
+
   return (
     <ProductItemContainer>
       <ProductItemImage
@@ -36,13 +39,10 @@ const ProductItem = ({
           {isInCart ? (
             <CartActionButton
               variant="remove"
-              onClick={() => removeFromCart(product.id)}
+              onClick={handleProductRemoveClick}
             />
           ) : (
-            <CartActionButton
-              variant="add"
-              onClick={() => addToCart(product)}
-            />
+            <CartActionButton variant="add" onClick={handleProductAddClick} />
           )}
         </ButtonContainer>
       </ProductItemInfoContainer>
