@@ -21,8 +21,17 @@ function App() {
   const [priceOrder, setPriceOrder] = useState<PriceOrder>("낮은 가격순");
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const withLoading = async (asyncCallback: () => Promise<void>) => {
+    setIsLoading(true);
+    try {
+      await asyncCallback();
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const addToCart = async (product: Product) => {
     if (cart.length > CART_MAX_COUNT) {
@@ -57,28 +66,27 @@ function App() {
   };
 
   const handleCategoryChange = async (category: Category) => {
-    setIsLoading(true);
-    setSelectedCategory(category);
-    const { data, newErrorMessage } = await getProducts({
-      category: category,
-      priceOrder: priceOrder,
+    await withLoading(async () => {
+      setSelectedCategory(category);
+      const { data, newErrorMessage } = await getProducts({
+        category,
+        priceOrder,
+      });
+      setErrorMessage(newErrorMessage);
+      setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
     });
-    setErrorMessage(newErrorMessage);
-
-    setIsLoading(false);
-    setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
   };
 
   const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
-    setIsLoading(true);
-    setPriceOrder(priceOrder);
-    const { data, newErrorMessage } = await getProducts({
-      category: selectedCategory,
-      priceOrder: priceOrder,
+    await withLoading(async () => {
+      setPriceOrder(priceOrder);
+      const { data, newErrorMessage } = await getProducts({
+        category: selectedCategory,
+        priceOrder: priceOrder,
+      });
+      setErrorMessage(newErrorMessage);
+      setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
     });
-    setErrorMessage(newErrorMessage);
-    setIsLoading(false);
-    setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
   };
 
   const syncCart = async () => {
@@ -91,15 +99,15 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, newErrorMessage: getProductErrorMessage } =
-        await getProducts();
-      setErrorMessage(getProductErrorMessage);
-      if (!getProductErrorMessage) {
-        await syncCart();
-
-        setIsLoading(false);
-        setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
-      }
+      await withLoading(async () => {
+        const { data, newErrorMessage: getProductErrorMessage } =
+          await getProducts();
+        setErrorMessage(getProductErrorMessage);
+        if (!getProductErrorMessage) {
+          await syncCart();
+          setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
+        }
+      });
     };
 
     fetchData();
