@@ -20,6 +20,18 @@ interface ApiClientType {
   ): Promise<Response>;
 }
 
+const isEmptyResponse = (response: Response) => {
+  return response.status === 204 || response.headers.get('content-length') === '0';
+};
+
+const isSuccess = (response: Response) => {
+  return response.ok;
+};
+
+const isFetchError = (response: Response) => {
+  return response.status in FETCH_ERROR_MESSAGE;
+};
+
 const apiClient: ApiClientType = async <Response, RequestBody>({
   method,
   URI,
@@ -35,16 +47,15 @@ const apiClient: ApiClientType = async <Response, RequestBody>({
     headers: { 'Content-type': 'application/json', Authorization: `Basic ${basicToken}` },
   });
 
-  if (response.status === 204) {
+  if (isEmptyResponse(response)) {
     return;
   }
 
-  if (response.ok) {
-    if (response.headers.get('content-length') === '0') return;
+  if (isSuccess(response)) {
     return response.json();
   }
 
-  if (response.status in FETCH_ERROR_MESSAGE) {
+  if (isFetchError(response)) {
     throw new Error(FETCH_ERROR_MESSAGE[String(response.status)]);
   }
 
