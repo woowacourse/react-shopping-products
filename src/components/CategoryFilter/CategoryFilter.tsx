@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 import SelectBox from "../@common/SelectBox/SelectBox";
-import { CategoryOptions, CategoryOptionsKey } from "../../constants";
+import { categoryOptions, CategoryOptionsKey } from "../../constants";
 
 interface CategoryFilterProps {
   selectedCategory: CategoryOptionsKey;
@@ -16,7 +16,7 @@ const CategoryFilter = ({
       id="category"
       state={selectedCategory}
       setState={setSelectedCategory}
-      options={CategoryOptions}
+      options={categoryOptions}
     />
   );
 };

@@ -6,5 +6,5 @@ export const sortOptionsMap = {
 export type SortOptionsKey = keyof typeof sortOptionsMap;
 export const sortOptions = Object.keys(sortOptionsMap) as SortOptionsKey[];
 
-export type CategoryOptionsKey = "전체" | "식료품" | "패션잡화";
-export const CategoryOptions = ["전체", "식료품", "패션잡화"];
+export const categoryOptions = ["전체", "식료품", "패션잡화"] as const;
+export type CategoryOptionsKey = (typeof categoryOptions)[number];

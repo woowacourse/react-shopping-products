@@ -2,9 +2,9 @@ import * as S from "./SelectBox.styles";
 
 interface SelectBoxProps<T extends string> {
   id: string;
-  state: string;
+  state: T;
   setState: React.Dispatch<React.SetStateAction<T>>;
-  options: string[];
+  options: readonly T[] | T[];
 }
 
 const SelectBox = <T extends string>({
