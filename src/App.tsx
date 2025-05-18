@@ -8,6 +8,9 @@ import getCartItemList from "./api/CartItemListApi";
 import LoadingIcon from "./components/Icon/LoadingIcon";
 import { useEffect, useState } from "react";
 import { ResponseCartItem, ResponseProduct } from "./api/types";
+import AddProductItemApi from "./api/AddProductItemApi";
+import { CART_MAX_COUNT } from "./constants/constants";
+import RemoveProductItemApi from "./api/RemoveProductItemApi";
 
 function App() {
   const [productList, setProductList] = useState<ResponseProduct[]>([]);
@@ -65,6 +68,39 @@ function App() {
   }, []);
 
   const isLoading = productListLoading || cartItemListLoading;
+
+  async function handleAddToCard(productId: number) {
+    try {
+      if (cartItemList.length >= CART_MAX_COUNT) {
+        handleSetErrorMessage(
+          "장바구니에는 최대 50개의 상품만 담을 수 있습니다."
+        );
+        return;
+      }
+
+      await AddProductItemApi(productId, 1);
+
+      const rawCartItemList = await getCartItemList();
+      setCartItemList(rawCartItemList);
+    } catch (error) {
+      if (error instanceof Error) {
+        handleSetErrorMessage(error.message);
+      }
+    }
+  }
+
+  const handleRemoveFromCart = async (cartItemId: number) => {
+    try {
+      await RemoveProductItemApi(cartItemId);
+
+      const rawCartItemList = await getCartItemList();
+      setCartItemList(rawCartItemList);
+    } catch (error) {
+      if (error instanceof Error) {
+        handleSetErrorMessage(error.message);
+      }
+    }
+  };
   return (
     <S.AppContainer>
       <S.Wrap>
@@ -78,7 +114,8 @@ function App() {
               <ProductList
                 productList={productList}
                 cartItemList={cartItemList}
-                setCartItemList={setCartItemList}
+                onAddToCart={handleAddToCard}
+                onRemoveFromCart={handleRemoveFromCart}
                 setErrorMessage={handleSetErrorMessage}
               />
             </S.MiddleContainer>
