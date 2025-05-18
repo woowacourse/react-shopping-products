@@ -42,7 +42,7 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
           price: item.price,
           category: item.category,
           imageUrl: item.imageUrl,
-          isInCart: cartItem ? 1 : 0,
+          isInCart: cartItem ? true : false,
           cartId: cartItem?.id,
         };
       });
