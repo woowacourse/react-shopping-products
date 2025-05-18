@@ -7,28 +7,25 @@ class HTTPClient {
     this.apiKey = apiKey || "";
   }
 
-  async get(url: string) {
-    const headers = {
+  private getHeaders() {
+    return {
       "Content-Type": "application/json",
       ...(this.apiKey && { Authorization: this.apiKey }),
     };
+  }
 
+  async get(url: string) {
     const response = await fetch(this.baseUrl + url, {
-      headers,
+      headers: this.getHeaders(),
     });
 
     return response;
   }
 
   async post<T>(url: string, data: T) {
-    const headers = {
-      "Content-Type": "application/json",
-      ...(this.apiKey && { Authorization: this.apiKey }),
-    };
-
     const response = await fetch(this.baseUrl + url, {
       method: "POST",
-      headers,
+      headers: this.getHeaders(),
       body: JSON.stringify(data),
     });
 
@@ -36,14 +33,9 @@ class HTTPClient {
   }
 
   async delete(url: string) {
-    const headers = {
-      "Content-Type": "application/json",
-      ...(this.apiKey && { Authorization: this.apiKey }),
-    };
-
     const response = await fetch(this.baseUrl + url, {
       method: "DELETE",
-      headers,
+      headers: this.getHeaders(),
     });
 
     return response;
