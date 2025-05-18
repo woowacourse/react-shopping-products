@@ -4,16 +4,20 @@ import useOutsideClick from '../hooks/useOutsideClick';
 import SelectDownIcon from '/public/icon/select-down-icon.svg';
 import { fadeIn } from '../animations/animations';
 
-interface SelectProps {
-  options: string[];
-  value: string;
-  handleSelectedValue: (value: string) => void;
+interface SelectProps<T> {
+  options: T[];
+  value: T;
+  handleSelectedValue: (value: T) => void;
 }
 
-const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Select = <T extends string | number>({
+  options,
+  value,
+  handleSelectedValue,
+}: SelectProps<T>) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const handleSelectOption = (option: string) => {
+  const handleSelectOption = (option: T) => {
     handleSelectedValue(option);
     setIsOpen(false);
   };
@@ -21,7 +25,7 @@ const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
   const backgroundRef = useRef<HTMLDivElement>(null);
   useOutsideClick(backgroundRef, () => setIsOpen(false));
 
-  const selectedValue = value.length !== 0 ? value : options[0];
+  const selectedValue: T = value ?? options[0];
 
   return (
     <SelectContainer ref={backgroundRef}>
