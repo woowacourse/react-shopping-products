@@ -7,6 +7,7 @@ import ErrorPopup from "./components/ErrorPopup";
 import useProducts from "./hooks/useProducts";
 import useCartItems from "./hooks/useCartItems";
 import ProductList from "./components/Product/ProductList";
+import { OPTION } from "./constants";
 
 function App() {
   const {
@@ -44,8 +45,8 @@ function App() {
         <Text variant="title-1">bpple 상품 목록</Text>
 
         <div css={selectBoxStyle}>
-          <Select options={["전체", "식료품", "패션잡화"]} selectedItem={filter} setSelectedItem={setFilter} />
-          <Select options={["높은 가격순", "낮은 가격순"]} selectedItem={sort} setSelectedItem={setSort} />
+          <Select options={OPTION.FILTER} selectedItem={filter} setSelectedItem={setFilter} />
+          <Select options={OPTION.SORT} selectedItem={sort} setSelectedItem={setSort} />
         </div>
         <ProductList productsData={products} cartItemIds={cartItemIds} handleCartItem={handleCartItem} />
       </div>
