@@ -11,6 +11,7 @@ import ProductItemsWithSkeleton from "./components/ProductItemsWithSkeleton";
 import ErrorMessage from "./components/ErrorMessage";
 import Select from "./components/Select";
 import { Product, CartItem, Category, PriceOrder } from "./types/productType";
+import useLoading from "./hooks/useLoading";
 
 export const PRODUCT_TYPE_COUNT = 20;
 export const CART_MAX_COUNT = 50;
@@ -20,18 +21,9 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category>("전체");
   const [priceOrder, setPriceOrder] = useState<PriceOrder>("낮은 가격순");
   const [cart, setCart] = useState<CartItem[]>([]);
-
-  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const withLoading = async (asyncCallback: () => Promise<void>) => {
-    setIsLoading(true);
-    try {
-      await asyncCallback();
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { isLoading, withLoading } = useLoading();
 
   const addToCart = async (product: Product) => {
     if (cart.length > CART_MAX_COUNT) {
