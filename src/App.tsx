@@ -7,6 +7,7 @@ import { filterByValue } from './shared/utils/filterByValue';
 import { MATCH_CATEGORY } from './features/products/utils/matchCategory';
 import Navbar from './widgets/navbar/ui/Navbar';
 import useGetProductsWithCart from './features/products/hooks/useGetProductsWithCart';
+import ProductCardSkeleton from './features/products/ui/ProductCardSkeleton';
 
 type Category = 'all' | 'food' | 'clothes';
 
@@ -27,7 +28,7 @@ function App() {
   const [sortValue, setSortValue] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
 
-  const { products, fetchProducts, error } = useGetProductsWithCart(sortValue);
+  const { products, fetchProducts, error, isLoading } = useGetProductsWithCart(sortValue);
   if (error !== '') {
     setErrors(error);
   }
@@ -64,17 +65,25 @@ function App() {
           </S.ProductListFilterContainer>
         </S.ProductListHeader>
 
-        <S.ProductList data-testid='product-list'>
-          {filteredProducts.map((product: Product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onRefetch={fetchProducts}
-              cartQuantity={cartQuantity}
-              setErrors={setErrors}
-            />
-          ))}
-        </S.ProductList>
+        {isLoading ? (
+          <S.ProductList>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <ProductCardSkeleton key={index} />
+            ))}
+          </S.ProductList>
+        ) : (
+          <S.ProductList>
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onRefetch={fetchProducts}
+                cartQuantity={cartQuantity}
+                setErrors={setErrors}
+              />
+            ))}
+          </S.ProductList>
+        )}
       </S.ProductListWrapper>
     </>
   );
