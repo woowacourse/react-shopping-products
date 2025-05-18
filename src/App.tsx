@@ -1,59 +1,20 @@
-import Header from './Component/Layout/Header';
-import ProductListContainer from './Component/Product/ProductListContainer';
-import Body from './Component/Layout/Body';
-import { useCallback, useEffect, useState } from 'react';
-import getShoppingCart from './api/getShoppingCart';
-import { CartItemTypes } from './types/CartItemType';
-import ErrorBox from './Component/Common/ErrorBox';
-import styled from '@emotion/styled';
-
-type Status = 'idle' | 'loading' | 'success' | 'error';
+import Header from "./Component/Layout/Header";
+import ProductListContainer from "./Component/Product/ProductListContainer";
+import Body from "./Component/Layout/Body";
+import ErrorBox from "./Component/Common/ErrorBox";
+import styled from "@emotion/styled";
+import useShoppingCart from "./hooks/useShoppingCart";
 
 function App() {
-  const [cartItems, setCartItems] = useState<CartItemTypes[]>([]);
-  const [status, setStatus] = useState<Status>('idle');
-  const [errorMessage, setErrorMessage] = useState<string[]>([]);
-
-  const updateErrorMessage = useCallback((errorMessage: string) => {
-    setErrorMessage((prev) => [...prev, errorMessage]);
-  }, []);
-
-  useEffect(() => {
-    async function fetchCartItems() {
-      try {
-        setStatus('loading');
-        const cartItemsData = await getShoppingCart();
-        setCartItems(cartItemsData.content);
-        setStatus('success');
-      } catch (e) {
-        setStatus('error');
-        updateErrorMessage(
-          '장바구니 조회 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'
-        );
-      }
-    }
-    fetchCartItems();
-  }, [updateErrorMessage]);
-
-  const updateCartItems = async () => {
-    try {
-      const cartItemsData = await getShoppingCart();
-      setCartItems(cartItemsData.content);
-    } catch (e) {
-      //
-    } finally {
-      //
-    }
-  };
-
-  const getMatchCartItem = (id: number) => {
-    const match = cartItems.find((e) => e.product.id === id);
-    return match;
-  };
-
-  const checkMax = () => {
-    return cartItems.length === 50;
-  };
+  const {
+    cartItems,
+    status,
+    errorMessage,
+    updateErrorMessage,
+    updateCartItems,
+    getMatchCartItem,
+    checkMax,
+  } = useShoppingCart();
 
   return (
     <>
@@ -69,7 +30,9 @@ function App() {
       </Body>
       <StyledDiv>
         {errorMessage
-          ? errorMessage.map((message) => <ErrorBox>{message}</ErrorBox>)
+          ? errorMessage.map((message, index) => (
+              <ErrorBox key={index}>{message}</ErrorBox>
+            ))
           : null}
       </StyledDiv>
     </>
