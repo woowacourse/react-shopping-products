@@ -22,10 +22,12 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
   }, []);
 
   const fetchProducts = async () => {
-    const productsData = await tryApiCall(
+    const productsData = await tryApiCall<ProductItemType[]>(
       () => getProducts(categoryOption, SORT_OPTIONS.get(sortOption)),
       handleErrorMessage,
     );
+    if (!productsData) return;
+
     setProducts(productsData);
   };
 

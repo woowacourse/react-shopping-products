@@ -16,7 +16,9 @@ const useCartItems = ({
   }, []);
 
   const fetchCartItems = async () => {
-    const items = await tryApiCall(getCartItems, handleErrorMessage);
+    const items = await tryApiCall<CartItemType[]>(getCartItems, handleErrorMessage);
+    if (!items) return;
+
     setCartItems(items);
   };
 
@@ -26,7 +28,13 @@ const useCartItems = ({
       quantity: 1,
     };
     await tryApiCall(async () => await addCartItems(addCartItemInfo), handleErrorMessage);
-    setCartItems(await tryApiCall(async () => await getCartItems(), handleErrorMessage));
+    const items = await tryApiCall<CartItemType[]>(
+      async () => await getCartItems(),
+      handleErrorMessage,
+    );
+    if (!items) return;
+
+    setCartItems(items);
   };
 
   const handleRemoveCartItems = async (productId: number) => {
@@ -34,7 +42,13 @@ const useCartItems = ({
 
     if (removeItemCartId) {
       await tryApiCall(async () => await removeCartItems(removeItemCartId), handleErrorMessage);
-      setCartItems(await tryApiCall(async () => await getCartItems(), handleErrorMessage));
+      const items = await tryApiCall<CartItemType[]>(
+        async () => await getCartItems(),
+        handleErrorMessage,
+      );
+      if (!items) return;
+
+      setCartItems(items);
     }
   };
 

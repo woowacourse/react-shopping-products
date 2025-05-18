@@ -12,6 +12,7 @@ const tryApiCall = async <T>(
         handleErrorToast('');
       }, 3000);
     }
+    return undefined;
   }
 };
 
