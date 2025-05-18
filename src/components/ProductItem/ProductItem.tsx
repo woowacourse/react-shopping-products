@@ -59,18 +59,21 @@ function ProductItem({
           <S.ProductName>{product.name}</S.ProductName>
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
-        <Button
-          text={isInCart(product.id) ? "삭제" : "담기"}
-          icon={
-            isInCart(product.id) ? <RemoveProductIcon /> : <AddProductIcon />
-          }
-          variation={isInCart(product.id) ? "light" : "dark"}
-          onClick={() => {
-            isInCart(product.id)
-              ? handleProductItem("remove")
-              : handleProductItem("add");
-          }}
-        />
+        {isInCart(product.id) ? (
+          <Button
+            text="삭제"
+            icon={<RemoveProductIcon />}
+            variation="light"
+            onClick={() => handleProductItem("remove")}
+          />
+        ) : (
+          <Button
+            text="담기"
+            icon={<AddProductIcon />}
+            variation="dark"
+            onClick={() => handleProductItem("add")}
+          />
+        )}
       </S.ProductItemBottom>
     </S.ProductItemContainer>
   );
