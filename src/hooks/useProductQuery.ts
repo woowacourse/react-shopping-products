@@ -15,7 +15,13 @@ export function useProductQuery(orderBy: OrderByOptionType | null) {
     if (!orderBy) {
       return URLS.PRODUCTS;
     }
-    const url = new URL(URLS.PRODUCTS);
+
+    // 상대 경로인 경우 현재 origin을 사용하여 완전한 URL 생성
+    const baseUrl = URLS.PRODUCTS.startsWith("/")
+      ? `${window.location.origin}${URLS.PRODUCTS}`
+      : URLS.PRODUCTS;
+
+    const url = new URL(baseUrl);
     const params = new URLSearchParams({
       ...defaultSearchParams,
       sort: sortParams[orderBy],

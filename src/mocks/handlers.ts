@@ -1,5 +1,4 @@
 import { http, HttpResponse } from "msw";
-import { URLS } from "../constants/url";
 import type { ProductWithQuantity } from "../types/product";
 import { CartItem } from "../types/cartContents";
 
@@ -134,14 +133,14 @@ interface CartItemUpdateRequest {
   quantity: number;
 }
 
-// 정확한 URL을 위한 정규식 패턴
-const BASE_URL_PATTERN = new RegExp(
-  "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com(/.*)?$"
+// 정확한 URL을 위한 정규식 패턴 (상대 경로 및 절대 경로 모두 지원)
+const API_PATTERN = new RegExp(
+  "(/api.*|http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/.*)$"
 );
 
 export const handlers = [
   // Products 핸들러
-  http.get(URLS.PRODUCTS, ({ request }) => {
+  http.get(/\/products(\?.*)?$/, ({ request }) => {
     console.log("MSW INTERCEPTED PRODUCTS REQUEST:", request.url);
     const url = new URL(request.url);
     const sort = url.searchParams.get("sort") || "";
@@ -169,8 +168,12 @@ export const handlers = [
   }),
 
   // 단일 Product 조회
-  http.get(`${URLS.PRODUCTS}/:id`, ({ params }) => {
-    const id = Number(params.id);
+  http.get(/\/products\/(\d+)$/, ({ request }) => {
+    const url = new URL(request.url);
+    const pathParts = url.pathname.split("/");
+    const idStr = pathParts[pathParts.length - 1];
+    const id = Number(idStr);
+
     const product = products.find((p) => p.id === id);
 
     if (!product) {
@@ -181,7 +184,7 @@ export const handlers = [
   }),
 
   // Cart Items 핸들러
-  http.get(URLS.CART_ITEMS, ({ request }) => {
+  http.get(/\/cart-items(\?.*)?$/, ({ request }) => {
     console.log("MSW INTERCEPTED CART_ITEMS REQUEST:", request.url);
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get("page") || "0");
@@ -191,7 +194,7 @@ export const handlers = [
   }),
 
   // Cart Item 추가 핸들러
-  http.post(URLS.CART_ITEMS, async ({ request }) => {
+  http.post(/\/cart-items$/, async ({ request }) => {
     console.log("MSW INTERCEPTED CART_ITEMS POST:", request.url);
     const body = (await request.json()) as CartItemRequest;
     const productId = body.productId;
@@ -226,9 +229,13 @@ export const handlers = [
   }),
 
   // Cart Item 수정 핸들러
-  http.patch(`${URLS.CART_ITEMS}/:id`, async ({ params, request }) => {
+  http.patch(/\/cart-items\/(\d+)$/, async ({ request }) => {
     console.log("MSW INTERCEPTED CART_ITEMS PATCH:", request.url);
-    const id = Number(params.id);
+    const url = new URL(request.url);
+    const pathParts = url.pathname.split("/");
+    const idStr = pathParts[pathParts.length - 1];
+    const id = Number(idStr);
+
     const body = (await request.json()) as CartItemUpdateRequest;
     const quantity = body.quantity;
 
@@ -253,9 +260,13 @@ export const handlers = [
   }),
 
   // Cart Item 삭제 핸들러
-  http.delete(`${URLS.CART_ITEMS}/:id`, ({ params, request }) => {
+  http.delete(/\/cart-items\/(\d+)$/, ({ request }) => {
     console.log("MSW INTERCEPTED CART_ITEMS DELETE:", request.url);
-    const id = Number(params.id);
+    const url = new URL(request.url);
+    const pathParts = url.pathname.split("/");
+    const idStr = pathParts[pathParts.length - 1];
+    const id = Number(idStr);
+
     const index = cartItems.findIndex((item) => item.id === id);
 
     if (index === -1) {
@@ -271,7 +282,7 @@ export const handlers = [
   }),
 
   // 모든 API 요청을 로깅하기 위한 포괄적인 핸들러
-  http.all(BASE_URL_PATTERN, ({ request }) => {
+  http.all(API_PATTERN, ({ request }) => {
     console.log("MSW UNHANDLED REQUEST:", request.method, request.url);
     // 처리되지 않은 요청은 계속 진행
     return HttpResponse.json(

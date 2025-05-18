@@ -6,19 +6,8 @@ import { ErrorContextProvider } from "./contexts/ErrorContext";
 import { CartContextProvider } from "./contexts/CartContext.tsx";
 import { ProductContextProvider } from "./contexts/ProductContext.tsx";
 
-// MSW 디버깅용 전역 타입 확장
-declare global {
-  interface Window {
-    __MSW_ENABLED__?: boolean;
-  }
-}
-
-// MSW 초기화
 async function initMsw() {
   try {
-    // 환경 변수 로깅
-    console.log("MSW 환경변수:", import.meta.env.VITE_APP_USE_MSW);
-
     // MSW 활성화 여부 확인
     const enableMsw =
       import.meta.env.VITE_APP_USE_MSW === true ||
@@ -29,23 +18,22 @@ async function initMsw() {
     if (enableMsw) {
       console.log("MSW 초기화 중...");
 
-      // 브라우저 환경에서만 MSW 로드
       if (typeof window !== "undefined") {
         const { worker } = await import("./mocks/browser");
 
-        // 서비스 워커 시작 (publicPath 명시적 설정)
         const baseUrl = import.meta.env.BASE_URL || "/";
+        const scopeUrl = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
         await worker.start({
           serviceWorker: {
-            url: `${window.location.origin}${baseUrl}mockServiceWorker.js`,
+            url: `${window.location.origin}${baseUrl}${
+              baseUrl.endsWith("/") ? "" : "/"
+            }mockServiceWorker.js`,
             options: {
-              scope: baseUrl,
+              scope: scopeUrl,
             },
           },
           onUnhandledRequest: "warn",
         });
-        // 전역 객체에 MSW 표시 (디버깅용)
-        window.__MSW_ENABLED__ = true;
       }
     } else {
       console.log(
