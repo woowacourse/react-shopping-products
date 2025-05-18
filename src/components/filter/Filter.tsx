@@ -7,8 +7,10 @@ const options = [
 ];
 
 interface FilterProps {
-  selectedCategory: "전체" | "패션잡화" | "식료품";
-  setSelectedCategory: (category: "전체" | "패션잡화" | "식료품") => void;
+  selectedCategory: "전체" | "패션잡화" | "식료품" | "에러";
+  setSelectedCategory: (
+    category: "전체" | "패션잡화" | "식료품" | "에러"
+  ) => void;
 }
 
 function Filter({ selectedCategory, setSelectedCategory }: FilterProps) {

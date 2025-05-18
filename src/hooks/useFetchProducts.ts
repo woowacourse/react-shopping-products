@@ -34,18 +34,24 @@ function useFetchProducts({
 
     (async () => {
       try {
+        if (category === "에러") {
+          throw new Error("의도적인 에러 발생 (테스트용)");
+        }
+
         const query =
           category === "전체"
             ? basicQuery
             : {
-                category: category,
+                category,
                 ...basicQuery,
               };
+
         const queryString = new URLSearchParams(query).toString();
         const data: ProductPageResponse = await request({
           method: "GET",
           url: `/products?${queryString}`,
         });
+
         setProducts(data);
       } catch {
         setErrorTrue("PRODUCTS");
@@ -54,6 +60,7 @@ function useFetchProducts({
       }
     })();
   }, [category, setProducts, sort, setErrorTrue]);
+
   return { isLoading };
 }
 

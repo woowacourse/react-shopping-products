@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import ProductCardList from "../components/productCardList/ProductCardList";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 function Wrapper({
   sort,
@@ -66,6 +66,25 @@ describe("상품 정렬 테스트", () => {
 
       const sorted = [...samePriceNames].sort();
       expect(samePriceNames).toEqual(sorted);
+    });
+  });
+
+  it("상품 목록 불러오기 실패 시 에러 핸들러가 호출되어야 한다", async () => {
+    const mockSetErrorTrue = vi.fn();
+
+    render(
+      <ProductCardList
+        category="에러"
+        sort="낮은 가격순"
+        cartItemIds={[]}
+        setCartItemIds={() => {}}
+        setErrorTrue={mockSetErrorTrue}
+        syncCartWithServer={() => {}}
+      />
+    );
+
+    await waitFor(() => {
+      expect(mockSetErrorTrue).toHaveBeenCalled();
     });
   });
 });
