@@ -66,7 +66,7 @@ describe("ProductContent Component", () => {
     expectedItemCount: number
   ) => {
     await act(async () => {
-      render(<ProductContent cartItems={[]} setCartItems={() => {}} />);
+      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
     });
 
     const list = screen.getByRole("list");
@@ -90,11 +90,11 @@ describe("ProductContent Component", () => {
   };
 
   it("전체 상품 목록 3개에서 식료품 카테고리를 선택하면 상품 목록은 2개가 렌더링된다.", async () => {
-    await testCategoryFiltering("식료품", 3, 2);
+    await testCategoryFiltering({ value: "식료품", label: "식료품" }, 3, 2);
   });
 
   it("전체 상품 목록 3개에서 패션잡화 카테고리를 선택하면 상품 목록은 1개가 렌더링된다.", async () => {
-    await testCategoryFiltering("패션잡화", 3, 1);
+    await testCategoryFiltering({ value: "패션잡화", label: "패션잡화" }, 3, 1);
   });
 
   const testProductSorting = async (
@@ -102,7 +102,7 @@ describe("ProductContent Component", () => {
     expectedOrder: string[]
   ) => {
     await act(async () => {
-      render(<ProductContent cartItems={[]} setCartItems={() => {}} />);
+      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
     });
 
     const list = screen.getByRole("list");
@@ -126,17 +126,25 @@ describe("ProductContent Component", () => {
   };
 
   it("정렬을 낮은 가격 순으로 하면 상품 목록은 메이토 > 토마토 > 우비 순서로 렌더링된다.", async () => {
-    await testProductSorting("낮은 가격순", ["메이토", "토마토", "우비"]);
+    await testProductSorting({ value: "price,asc", label: "낮은 가격순" }, [
+      "메이토",
+      "토마토",
+      "우비",
+    ]);
   });
 
   it("정렬을 높은 가격 순으로 하면 상품 목록은 우비 > 토마토 > 메이토 순서로 렌더링된다.", async () => {
-    await testProductSorting("높은 가격순", ["우비", "토마토", "메이토"]);
+    await testProductSorting({ value: "price,desc", label: "높은 가격순" }, [
+      "우비",
+      "토마토",
+      "메이토",
+    ]);
   });
 
   it("등록된 상품이 없을 때 상품 목록 리스트가 렌더링되지 않고 대체 텍스트가 렌더링된다.", async () => {
     mockProductItems = [];
     await act(async () => {
-      render(<ProductContent cartItems={[]} setCartItems={() => {}} />);
+      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
     });
 
     const list = screen.queryByRole("list");
@@ -146,7 +154,7 @@ describe("ProductContent Component", () => {
   });
 
   it("상품 목록을 불러오는 중일 때 로딩 메시지가 표시된다.", async () => {
-    render(<ProductContent cartItems={[]} setCartItems={() => {}} />);
+    render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
 
     expect(
       screen.getByText("상품 목록을 가져오는 중 입니다...")
