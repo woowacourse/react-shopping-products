@@ -1,47 +1,25 @@
 import * as S from "./ProductControl.styled";
 import Select from "../common/Select/Select";
-import getProductList from "../../api/ProductListApi";
 import { CategoryOptions, SortOptions } from "../../constants/selectOptions";
-import { Dispatch, SetStateAction, useState, ChangeEvent } from "react";
-import { ResponseProduct } from "../../api/types";
+import { Dispatch, SetStateAction, ChangeEvent } from "react";
 
 function ProductControl({
-  setProductList,
-  setErrorMessage,
-}: {
-  setProductList: Dispatch<SetStateAction<ResponseProduct[]>>;
-  setErrorMessage: (message: string) => void;
-}) {
-  const [category, setCategory] = useState<string>("");
-  const [sort, setSort] = useState<string>("");
+  setCategory,
 
+  setSort,
+}: {
+  setCategory: Dispatch<SetStateAction<string>>;
+
+  setSort: Dispatch<SetStateAction<string>>;
+}) {
   async function handleCategoryChange(e: ChangeEvent<HTMLSelectElement>) {
-    try {
-      const newCategory = e.target.value;
-      setCategory(newCategory);
-      const rawProductList = await getProductList({
-        category: newCategory,
-        sort,
-      });
-      setProductList(rawProductList);
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      }
-    }
+    const newCategory = e.target.value;
+    setCategory(newCategory);
   }
 
   async function handleSortChange(e: ChangeEvent<HTMLSelectElement>) {
-    try {
-      const newSort = e.target.value;
-      setSort(newSort);
-      const rawProductList = await getProductList({ category, sort: newSort });
-      setProductList(rawProductList);
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-      }
-    }
+    const newSort = e.target.value;
+    setSort(newSort);
   }
 
   return (

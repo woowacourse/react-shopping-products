@@ -17,6 +17,9 @@ function App() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [category, setCategory] = useState("");
+  const [sort, setSort] = useState("");
+
   const handleSetErrorMessage = (message: string) => {
     setErrorMessage("");
 
@@ -29,7 +32,10 @@ function App() {
   useEffect(() => {
     const fetchProductList = async () => {
       try {
-        const rawProductList = await getProductList({ category: "", sort: "" });
+        const rawProductList = await getProductList({
+          category: category,
+          sort: sort,
+        });
         setProductList(rawProductList);
       } catch (error) {
         if (error instanceof Error) {
@@ -40,7 +46,7 @@ function App() {
       }
     };
     fetchProductList();
-  }, []);
+  }, [category, sort]);
 
   useEffect(() => {
     const fetchCartItemList = async () => {
@@ -68,10 +74,7 @@ function App() {
           <>
             <Header cartItemList={cartItemList} />
             <S.MiddleContainer>
-              <ProductControl
-                setProductList={setProductList}
-                setErrorMessage={handleSetErrorMessage}
-              />
+              <ProductControl setCategory={setCategory} setSort={setSort} />
               <ProductList
                 productList={productList}
                 cartItemList={cartItemList}
