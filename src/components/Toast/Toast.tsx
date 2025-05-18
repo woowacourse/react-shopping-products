@@ -19,7 +19,7 @@ function Toast({ limit = 3, duration = 3000 }: ToastProps) {
 
       setToastInfos((prev) => [...prev, { id, type, message }]);
 
-      setTimeout(() => {
+      window.setTimeout(() => {
         setToastInfos((prev) => prev.filter((toast) => toast.id !== id));
       }, duration);
     };

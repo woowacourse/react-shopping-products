@@ -46,7 +46,7 @@ function ToastContent({
   const delayTime = duration - closeAnimationDuration;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = window.setTimeout(() => {
       setIsUnmountDelayed(true);
     }, delayTime);
 
@@ -57,7 +57,7 @@ function ToastContent({
 
   const handleCloseButtonClick = (id: string) => {
     setIsUnmountDelayed(true);
-    setTimeout(() => {
+    window.setTimeout(() => {
       onClose(id);
     }, closeAnimationDuration);
   };
