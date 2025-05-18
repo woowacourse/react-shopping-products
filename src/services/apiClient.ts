@@ -1,4 +1,6 @@
 import { FETCH_ERROR_MESSAGE, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
+import { isEmptyResponse, isFetchError, isSuccess } from './utils';
+
 import { FetchMethodType } from '../types/data';
 
 interface ApiClientProps<RequestBody> {
@@ -19,18 +21,6 @@ interface ApiClientType {
     options: Omit<ApiClientProps<Response>, 'method'> & { method: 'GET' },
   ): Promise<Response>;
 }
-
-const isEmptyResponse = (response: Response) => {
-  return response.status === 204 || response.headers.get('content-length') === '0';
-};
-
-const isSuccess = (response: Response) => {
-  return response.ok;
-};
-
-const isFetchError = (response: Response) => {
-  return response.status in FETCH_ERROR_MESSAGE;
-};
 
 const apiClient: ApiClientType = async <Response, RequestBody>({
   method,
