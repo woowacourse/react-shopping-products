@@ -8,3 +8,6 @@ export const SORT_OPTIONS = new Map<string, string>([
   ['높은 가격순', 'desc'],
   ['낮은 가격순', 'asc'],
 ]);
+
+export const DEFAULT_PAGE = 0;
+export const DEFAULT_SIZE = 20;

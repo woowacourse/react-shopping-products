@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getProducts } from '../services/productServices';
 import tryApiCall from '../util/tryApiCall';
 import { CATEGORY_OPTIONS, SORT_OPTIONS, SELECT_SORT_OPTIONS } from '../constants/systemConstants';
-import { ProductItemType } from '../types/data';
+import type { ProductItemType } from '../types/data';
 
 interface ProductListProps {
   handleErrorMessage: (errorMessage: string) => void;
@@ -13,7 +13,9 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
   const [sortOption, setSortOption] = useState(SELECT_SORT_OPTIONS[0]);
 
   const [products, setProducts] = useState<ProductItemType[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+
+  type LoadingStateType = 'loadingInitial' | 'loadingFilter' | 'success' | 'error';
+  const [loadingState, setLoadingState] = useState<LoadingStateType>('loadingInitial');
 
   useEffect(() => {
     (async () => {
@@ -24,16 +26,18 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
       if (productsData) {
         setProducts(productsData);
       }
-      setIsLoading(false);
+      setLoadingState('success');
     })();
   }, [categoryOption, sortOption]);
 
   const handleCategoryOption = (value: string) => {
     setCategoryOption(value);
+    setLoadingState('loadingFilter');
   };
 
   const handleSortOption = (value: string) => {
     setSortOption(value);
+    setLoadingState('loadingFilter');
   };
 
   return {
@@ -42,7 +46,7 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
     sortOption,
     handleSortOption,
     products,
-    isLoading,
+    loadingState,
   };
 };
 
