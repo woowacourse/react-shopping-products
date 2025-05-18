@@ -2,6 +2,7 @@ import useClickOutsideRef from "@/hooks/useClickOutsideRef";
 import { useState } from "react";
 import * as S from "./Dropdown.styled";
 import ArrowIcon from "@components/ArrowIcon";
+import useDropdownFocus from "./useDropdownFocus";
 
 interface Option {
   label: string;
@@ -27,17 +28,30 @@ function Dropdown<T extends Option>({
     setIsOpen(false)
   );
 
-  const handleDropdownToggle = () => {
-    setIsOpen((prev) => !prev);
-  };
-
   const handleOptionSelect = (option: T) => {
     onOptionSelect(option);
     setIsOpen(false);
   };
 
+  const { focusedIndex, handleDropdownKeyDown } = useDropdownFocus({
+    optionList,
+    selectOption: handleOptionSelect,
+    closeDropdown: () => setIsOpen(false),
+  });
+
+  const handleDropdownToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
-    <S.Container ref={dropdownRef}>
+    <S.Container
+      ref={dropdownRef}
+      onKeyDown={handleDropdownKeyDown}
+      role="combobox"
+      aria-expanded={isOpen}
+      aria-haspopup="listbox"
+      tabIndex={0}
+    >
       <S.DropdownTrigger
         data-testid="dropdown-trigger"
         type="button"
@@ -48,8 +62,8 @@ function Dropdown<T extends Option>({
       </S.DropdownTrigger>
       {isOpen && (
         <S.OptionList>
-          {optionList.map((option) => (
-            <S.OptionItem key={option.label}>
+          {optionList.map((option, idx) => (
+            <S.OptionItem key={option.label} isFocused={focusedIndex === idx}>
               <S.OptionItemButton
                 type="button"
                 data-testid={`dropdown-option-${option.label}`}

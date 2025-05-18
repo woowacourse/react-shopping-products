@@ -51,7 +51,8 @@ export const OptionList = styled.ul`
   }
 `;
 
-export const OptionItem = styled.li`
+export const OptionItem = styled.li<{ isFocused: boolean }>`
+  background-color: ${(props) => (props.isFocused ? "#cdcdcd" : "#fff")};
   color: #4f4f4f;
   border-radius: 4px 4px 0 0;
   cursor: pointer;
