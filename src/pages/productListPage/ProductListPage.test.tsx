@@ -11,6 +11,8 @@ import { PRODUCT_LIST_ITEM_COUNT } from '../../constants/systemConstants';
 import type React from 'react';
 import { useState } from 'react';
 import userEvent from '@testing-library/user-event';
+import useCartItems from '../../hooks/useCartItems';
+import type { CartItemType } from '../../types/data';
 
 const mockProducts: ProductItemType[] = Array.from({ length: 25 }, (_, index) => ({
   id: index + 1,
@@ -21,16 +23,21 @@ const mockProducts: ProductItemType[] = Array.from({ length: 25 }, (_, index) =>
 }));
 
 const TestCartProvider = ({ children }: { children: React.ReactNode }) => {
-  const [cartItemsIds, setCartItemsIds] = useState<number[]>([]);
+  const [cartItems] = useState<CartItemType[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const handleErrorMessage = (message: string) => {
+    setErrorMessage(message);
+  };
+
+  const { handleAddCartItems, handleRemoveCartItems } = useCartItems({
+    handleErrorMessage,
+  });
 
   return (
     <CartProvider
-      cartItemsIds={cartItemsIds}
-      handleAddCartItemsIds={(id) => setCartItemsIds((prev) => [...prev, id])}
-      handleRemoveCartItemsIds={(id) =>
-        setCartItemsIds((prev) => prev.filter((itemId) => itemId !== id))
-      }
+      cartItems={cartItems}
+      handleAddCartItems={handleAddCartItems}
+      handleRemoveCartItems={handleRemoveCartItems}
     >
       <ErrorMessageProvider errorMessage={errorMessage} handleErrorMessage={setErrorMessage}>
         {children}
@@ -46,14 +53,14 @@ vi.mock('../../services/productServices', () => ({
 describe('상품 목록 조회 테스트', () => {
   beforeEach(() => {
     (getProducts as Mock).mockClear();
-    (getProducts as Mock).mockImplementation((categoryOption, sortOption) => {
+    (getProducts as Mock).mockImplementation((category, sort) => {
       let result = [...mockProducts];
-      if (categoryOption && categoryOption !== '전체') {
-        result = result.filter((p) => p.category === categoryOption);
+      if (category && category !== '전체') {
+        result = result.filter((p) => p.category === category);
       }
-      if (sortOption === 'desc') {
+      if (sort === 'desc') {
         result = result.sort((a, b) => b.price - a.price);
-      } else if (sortOption === 'asc') {
+      } else if (sort === 'asc') {
         result = result.sort((a, b) => a.price - b.price);
       }
       return Promise.resolve(result.slice(0, PRODUCT_LIST_ITEM_COUNT));
@@ -81,8 +88,8 @@ describe('상품 목록 조회 테스트', () => {
         <ProductListPage />
       </TestCartProvider>,
     );
-    const error = await screen.findByText(ERROR_MESSAGE);
-    expect(error).toBeInTheDocument();
+    const error = await screen.findByTestId('error-message');
+    expect(error).toHaveTextContent(ERROR_MESSAGE);
   });
 
   it('api 요청 중에는 스켈레톤이 표시된다.', async () => {
@@ -106,11 +113,16 @@ describe('상품 정렬 및 필터링 테스트', () => {
       </TestCartProvider>,
     );
 
-    const categorySelect = await screen.findAllByText('전체');
-    await userEvent.click(categorySelect[0]);
+    // 최초 렌더링 완료 대기
+    await screen.findAllByTestId('product-name');
+
+    const categorySelect = await screen.findByRole('button', { name: '전체' });
+    await userEvent.click(categorySelect);
 
     const fashionOption = await screen.findByText('패션잡화');
     await userEvent.click(fashionOption);
+
+    await screen.findAllByTestId('product-name');
 
     const fashionProducts = mockProducts
       .filter((p) => p.category === '패션잡화')
@@ -132,17 +144,23 @@ describe('상품 정렬 및 필터링 테스트', () => {
       </TestCartProvider>,
     );
 
-    const sortSelect = await screen.findAllByText('높은 가격순');
-    await userEvent.click(sortSelect[0]);
+    await screen.findAllByTestId('product-name');
+
+    const sortSelect = await screen.findByRole('button', { name: '높은 가격순' });
+    await userEvent.click(sortSelect);
 
     const lowToHighOption = await screen.findByText('낮은 가격순');
     await userEvent.click(lowToHighOption);
+
+    await screen.findAllByTestId('product-name');
 
     const sorted = [...mockProducts]
       .sort((a, b) => a.price - b.price)
       .slice(0, PRODUCT_LIST_ITEM_COUNT);
     const productNames = sorted.map((p) => p.name);
-    const renderedNames = screen.getAllByText(/상품 \d+/).map((el) => el.textContent);
+    const renderedNames = (await screen.findAllByTestId('product-name')).map(
+      (el) => el.textContent,
+    );
     expect(renderedNames).toEqual(productNames);
   });
 });

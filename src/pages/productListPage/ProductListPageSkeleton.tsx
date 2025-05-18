@@ -6,7 +6,7 @@ import { shimmer } from '../../animations/animations';
 
 const ProductListPageSkeleton = () => {
   return (
-    <SkeletonContainer data-testid="product-list-skeleton">
+    <SkeletonContainer $isDimmed={false} data-testid="product-list-skeleton">
       <SkeletonTitle />
       <P.SelectContainer>
         <SkeletonSelect />

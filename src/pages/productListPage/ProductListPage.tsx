@@ -11,7 +11,11 @@ import {
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import {
+  ERROR_MESSAGE_DURATION,
+  ERROR_MESSAGE_ANIMATION_DELAY,
+} from '../../constants/systemConstants';
 
 export const ProductListPage = () => {
   const { cartItems, handleAddCartItems, handleRemoveCartItems } = useCartContext();
@@ -31,15 +35,31 @@ export const ProductListPage = () => {
     handleErrorMessage,
   });
 
-  const [renderError, setRenderError] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
+
+  const hideTimerRef = useRef<number | null>(null);
+  const unmountTimerRef = useRef<number | null>(null);
+
   useEffect(() => {
-    if (errorMessage.length !== 0) {
-      setRenderError(true);
-      return;
-    }
-    setTimeout(() => {
-      setRenderError(false);
-    }, 4000);
+    if (errorMessage.length === 0) return;
+
+    setShouldRender(true);
+    setIsVisible(true);
+
+    hideTimerRef.current = window.setTimeout(() => {
+      setIsVisible(false);
+    }, ERROR_MESSAGE_DURATION);
+
+    unmountTimerRef.current = window.setTimeout(() => {
+      setShouldRender(false);
+      handleErrorMessage('');
+    }, ERROR_MESSAGE_DURATION + ERROR_MESSAGE_ANIMATION_DELAY);
+
+    return () => {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      if (unmountTimerRef.current) clearTimeout(unmountTimerRef.current);
+    };
   }, [errorMessage]);
 
   if (loadingState === 'loadingInitial') {
@@ -48,7 +68,7 @@ export const ProductListPage = () => {
 
   return (
     <P.ProductListPageContainer $isDimmed={loadingState === 'loadingFilter'}>
-      {renderError && <ErrorToast errorMessage={errorMessage} />}
+      {(errorMessage.length > 0 || isVisible) && <ErrorToast errorMessage={errorMessage} />}
       <P.Title>bpple 상품 목록</P.Title>
       <P.SelectContainer>
         <Select
