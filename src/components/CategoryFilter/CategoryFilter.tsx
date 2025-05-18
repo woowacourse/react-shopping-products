@@ -2,15 +2,12 @@ import { Dispatch } from "react";
 import SelectBox from "../@common/SelectBox/SelectBox";
 import { categoryOptions, CategoryOptionsKey } from "../../constants";
 
-interface CategoryFilterProps {
+interface Props {
   selectedCategory: CategoryOptionsKey;
   setSelectedCategory: Dispatch<React.SetStateAction<CategoryOptionsKey>>;
 }
 
-const CategoryFilter = ({
-  selectedCategory,
-  setSelectedCategory,
-}: CategoryFilterProps) => {
+const CategoryFilter = ({ selectedCategory, setSelectedCategory }: Props) => {
   return (
     <SelectBox
       id="category"

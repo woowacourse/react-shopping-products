@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import * as S from "./ErrorToast.styles";
 
-interface ErrorToastProps {
+interface Props {
   errorMessage: string;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ErrorToast = ({ errorMessage, setErrorMessage }: ErrorToastProps) => {
+const ErrorToast = ({ errorMessage, setErrorMessage }: Props) => {
   useEffect(() => {
     if (errorMessage) {
       const timer = setTimeout(() => {

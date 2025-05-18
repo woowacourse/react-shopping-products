@@ -1,9 +1,9 @@
 import { ComponentProps } from "react";
 import * as S from "./Skeleton.styles";
 
-interface SkeletonProps extends ComponentProps<"div"> {}
+interface Props extends ComponentProps<"div"> {}
 
-const Skeleton = ({ ...props }: SkeletonProps) => {
+const Skeleton = ({ ...props }: Props) => {
   return <S.Skeleton {...props} />;
 };
 

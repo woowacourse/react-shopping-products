@@ -1,6 +1,6 @@
 import * as S from "./SelectBox.styles";
 
-interface SelectBoxProps<T extends string> {
+interface Props<T extends string> {
   id: string;
   value: T;
   onChange: React.Dispatch<React.SetStateAction<T>>;
@@ -12,7 +12,7 @@ const SelectBox = <T extends string>({
   value,
   onChange,
   options,
-}: SelectBoxProps<T>) => {
+}: Props<T>) => {
   return (
     <S.Select
       data-testid={`${id}-select`}

@@ -1,7 +1,7 @@
 import CartItemButton from "./components/CartItemButton/CartItemButton";
 import * as S from "./ProductItem.styles";
 
-interface ProductItemProps {
+interface Props {
   imageUrl: string;
   name: string;
   price: number;
@@ -15,7 +15,7 @@ const ProductItem = ({
   price,
   isAdded,
   handleCartItemToggle,
-}: ProductItemProps) => {
+}: Props) => {
   return (
     <S.ProductContainer data-testid="product-item">
       <S.ProductImage $url={imageUrl} />

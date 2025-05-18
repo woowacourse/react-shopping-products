@@ -7,12 +7,12 @@ const RemoveCartIcon = () => (
   <img src={RemoveCart} alt="장바구니에서 상품 삭제" />
 );
 
-interface CartItemButtonProps {
+interface Props {
   isAdded: boolean;
   onToggleCartItem: () => void;
 }
 
-const CartItemButton = ({ isAdded, onToggleCartItem }: CartItemButtonProps) => {
+const CartItemButton = ({ isAdded, onToggleCartItem }: Props) => {
   return (
     <>
       <S.CartItemButton $isAdded={isAdded} onClick={onToggleCartItem}>
