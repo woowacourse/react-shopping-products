@@ -11,7 +11,7 @@ interface CartToggleButtonProps {
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  fetchCartProducts: () => void;
+  syncCartWithServer: () => void;
 }
 
 function CartToggleButton({
@@ -21,7 +21,7 @@ function CartToggleButton({
   isAdded,
   setCartItemIds,
   setErrorTrue,
-  fetchCartProducts,
+  syncCartWithServer,
 }: CartToggleButtonProps) {
   const buttonProps = isAdded
     ? {
@@ -38,7 +38,7 @@ function CartToggleButton({
           addItemToCart({
             productId,
             cartAmount,
-            fetchCartProducts,
+            syncCartWithServer,
             setErrorTrue,
           }),
         styles: ButtonContainer,

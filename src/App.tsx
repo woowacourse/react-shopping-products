@@ -18,7 +18,7 @@ function App() {
         cartItemIds={cartItemIds}
         setCartItemIds={setCartItemIds}
         setErrorTrue={setErrorTrue}
-        fetchCartProducts={fetchCartProducts}
+        syncCartWithServer={fetchCartProducts}
       />
       {isError && <ErrorToast errorMessage={errorMessage} />}
     </div>

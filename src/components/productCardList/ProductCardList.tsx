@@ -15,7 +15,7 @@ interface ProductCardListProps {
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  fetchCartProducts: () => void;
+  syncCartWithServer: () => void;
 }
 
 function ProductCardList({
@@ -24,7 +24,7 @@ function ProductCardList({
   cartItemIds,
   setCartItemIds,
   setErrorTrue,
-  fetchCartProducts,
+  syncCartWithServer,
 }: ProductCardListProps) {
   const [products, setProducts] = useState<ProductPageResponse | null>(null);
 
@@ -61,7 +61,7 @@ function ProductCardList({
             key={data.id}
             setCartItemIds={setCartItemIds}
             setErrorTrue={setErrorTrue}
-            fetchCartProducts={fetchCartProducts}
+            syncCartWithServer={syncCartWithServer}
           />
         );
       })}

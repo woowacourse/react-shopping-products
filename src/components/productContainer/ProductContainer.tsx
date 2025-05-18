@@ -11,13 +11,13 @@ interface ProductContainerProps {
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  fetchCartProducts: () => void;
+  syncCartWithServer: () => void;
 }
 function ProductContainer({
   cartItemIds,
   setCartItemIds,
   setErrorTrue,
-  fetchCartProducts,
+  syncCartWithServer,
 }: ProductContainerProps) {
   const [selectedCategory, setSelectedCategory] =
     useState<categoryType>("전체");
@@ -39,7 +39,7 @@ function ProductContainer({
         cartItemIds={cartItemIds}
         setCartItemIds={setCartItemIds}
         setErrorTrue={setErrorTrue}
-        fetchCartProducts={fetchCartProducts}
+        syncCartWithServer={syncCartWithServer}
       />
     </div>
   );
