@@ -1,11 +1,11 @@
 import SelectBox from "../@common/SelectBox/SelectBox";
-import { CategoryOptions } from "../../constants";
+import { CategoryOptions, CategoryOptionsKey } from "../../constants";
 import { useProductFilter } from "../../hooks/useProductFilter";
 
 const CategoryFilter = () => {
   const { selectedCategory, setSelectedCategory } = useProductFilter();
   return (
-    <SelectBox
+    <SelectBox<CategoryOptionsKey>
       testIdPrefix="category"
       value={selectedCategory}
       onChange={setSelectedCategory}

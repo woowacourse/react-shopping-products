@@ -1,11 +1,11 @@
 import SelectBox from "../@common/SelectBox/SelectBox";
-import { sortOptions } from "../../constants";
+import { sortOptions, SortOptionsKey } from "../../constants";
 import { useProductFilter } from "../../hooks/useProductFilter";
 
 const ProductSorter = () => {
   const { selectedSortOption, setSelectedSortOption } = useProductFilter();
   return (
-    <SelectBox
+    <SelectBox<SortOptionsKey>
       testIdPrefix="sort"
       value={selectedSortOption}
       onChange={setSelectedSortOption}
