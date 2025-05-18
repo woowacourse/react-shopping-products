@@ -24,14 +24,14 @@ function useFetchProducts({
   const { showToast } = useToast();
 
   useEffect(() => {
-    setIsLoading(true);
-    const basicQuery = {
-      page: "0",
-      size: "20",
-      sort: SORT_TYPE[sort],
-    };
+    async function getProducts() {
+      setIsLoading(true);
+      const basicQuery = {
+        page: "0",
+        size: "20",
+        sort: SORT_TYPE[sort],
+      };
 
-    (async () => {
       try {
         const query =
           category === "전체"
@@ -51,7 +51,9 @@ function useFetchProducts({
       } finally {
         setIsLoading(false);
       }
-    })();
+    }
+
+    getProducts();
   }, [category, setProducts, sort, showToast]);
   return { isLoading };
 }
