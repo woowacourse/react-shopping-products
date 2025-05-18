@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getProducts } from '../services/productServices';
 import tryApiCall from '../util/tryApiCall';
 import { CATEGORY_OPTIONS, SORT_OPTIONS, SELECT_SORT_OPTIONS } from '../constants/systemConstants';
-import { ProductItemType } from '../types/data';
+import { CategoryType, ProductItemType, SelectedSortType } from '../types/data';
 
 interface ProductListProps {
   handleErrorMessage: (errorMessage: string) => void;
@@ -28,11 +28,11 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
     })();
   }, [categoryOption, sortOption]);
 
-  const handleCategoryOption = (value: string) => {
+  const handleCategoryOption = (value: CategoryType) => {
     setCategoryOption(value);
   };
 
-  const handleSortOption = (value: string) => {
+  const handleSortOption = (value: SelectedSortType) => {
     setSortOption(value);
   };
 
