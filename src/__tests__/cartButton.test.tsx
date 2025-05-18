@@ -4,17 +4,19 @@ import { vi } from "vitest";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
 import CartButton from "../components/CartButton/CartButton";
 import React from "react";
+import { CartContextProvider } from "../contexts/CartContext"; // Import the real provider
+import { CartItem } from "../types/cartContents"; // Import CartItem type
 
-// Mock useFetch hook
+// Mock useFetch hook - keep this for internal POST/DELETE in CartButton for now
+// If CartButton is refactored to use context for POST/DELETE, this can be removed.
+const mockInternalFetcher = vi.fn(() => Promise.resolve());
 vi.mock("../hooks/useFetch", () => ({
-  default: vi.fn(() => {
-    return {
-      data: null,
-      isLoading: false,
-      error: null,
-      fetcher: vi.fn(),
-    };
-  }),
+  default: vi.fn(() => ({
+    data: null,
+    isLoading: false,
+    error: null,
+    fetcher: mockInternalFetcher, // Mock the internal fetcher
+  })),
 }));
 
 // Mock the ErrorContext
@@ -30,46 +32,59 @@ vi.mock("../contexts/ErrorContext", async () => {
 });
 
 // Mock the CartContext
-const mockSetCartLength = vi.fn();
-let mockCartLength = 0;
+const mockFetchCart = vi.fn(() => Promise.resolve());
+let mockCartData: CartItem[] | undefined = []; // Use CartItem[] type
 
-vi.mock("../contexts/CartContext", () => ({
-  useCartContext: () => ({
-    setCartLength: mockSetCartLength,
-    cartLength: mockCartLength,
-  }),
-  CartContextProvider: ({ children }: { children: React.ReactNode }) =>
-    children,
-}));
+vi.mock("../contexts/CartContext", async () => {
+  const actual = await vi.importActual("../contexts/CartContext"); // Get actual context for Provider
+  return {
+    ...(actual as object), // Spread actual to keep CartContextProvider
+    useCartContext: () => ({
+      fetchCart: mockFetchCart,
+      cartData: mockCartData,
+      cartFetchLoading: false,
+      cartFetchError: null,
+    }),
+  };
+});
 
 // Reset mock functions before each test
 beforeEach(() => {
   vi.clearAllMocks();
-  mockCartLength = 0;
+  mockCartData = []; // Reset cart data
+  mockInternalFetcher.mockClear(); // Clear internal fetcher mock
+  mockFetchCart.mockClear(); // Clear fetchCart mock
 });
 
 describe("CartButton 컴포넌트 테스트", () => {
   test("장바구니에 최대 개수(50개) 이상 담으려고 할 때 에러가 발생해야 함", async () => {
-    // Set cart length to maximum (50)
-    mockCartLength = 50;
-
-    const mockRefetchCart = vi.fn();
+    mockCartData = new Array(50).fill({
+      id: 1,
+      product: {
+        id: 1,
+        name: "Test Product",
+        price: 100,
+        imageUrl: "test.jpg",
+        category: "Test Category",
+      },
+      quantity: 1,
+    }); // Set cart data to maximum
 
     render(
       <ErrorContextProvider>
-        <CartButton
-          isInCart={false}
-          refetchCart={mockRefetchCart}
-          productId={1}
-        />
+        <CartContextProvider>
+          <CartButton
+            isInCart={false}
+            // refetchCart is no longer a prop
+            productId={1}
+          />
+        </CartContextProvider>
       </ErrorContextProvider>
     );
 
-    // Trigger the add to cart action
     const addToCartButton = document.querySelector("button");
     fireEvent.click(addToCartButton!);
 
-    // Verify that showError was called with the correct error message
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -78,61 +93,77 @@ describe("CartButton 컴포넌트 테스트", () => {
       );
     });
 
-    // The refetchCart should not be called when we have an error
-    expect(mockRefetchCart).not.toHaveBeenCalled();
+    expect(mockFetchCart).not.toHaveBeenCalled(); // fetchCart from context should not be called on error
   });
 
   test("장바구니에 상품 추가 기능이 동작해야 함", async () => {
-    mockCartLength = 5; // 아직 최대 개수에 도달하지 않음
-
-    const mockRefetchCart = vi.fn();
+    mockCartData = new Array(5).fill({
+      id: 1,
+      product: {
+        id: 1,
+        name: "Test Product",
+        price: 100,
+        imageUrl: "test.jpg",
+        category: "Test Category",
+      },
+      quantity: 1,
+    }); // Not at max capacity
 
     render(
       <ErrorContextProvider>
-        <CartButton
-          isInCart={false}
-          refetchCart={mockRefetchCart}
-          productId={1}
-        />
+        <CartContextProvider>
+          <CartButton
+            isInCart={false}
+            // refetchCart is no longer a prop
+            productId={1}
+          />
+        </CartContextProvider>
       </ErrorContextProvider>
     );
 
-    // Trigger the add to cart action
     const addToCartButton = document.querySelector("button");
     fireEvent.click(addToCartButton!);
 
-    // 에러가 발생하지 않아야 함
+    await waitFor(() => {
+      // The internal addCartItem (useFetch) should be called
+      expect(mockInternalFetcher).toHaveBeenCalled();
+    });
+
     await waitFor(() => {
       expect(mockShowError).not.toHaveBeenCalled();
     });
 
-    // refetchCart가 호출되어야 함
-    expect(mockRefetchCart).toHaveBeenCalled();
+    // fetchCart from context should be called after successful internal add
+    expect(mockFetchCart).toHaveBeenCalled();
   });
 
   test("장바구니에서 상품 제거 기능이 동작해야 함", async () => {
-    const mockRefetchCart = vi.fn();
-
     render(
       <ErrorContextProvider>
-        <CartButton
-          isInCart={true} // 이미 장바구니에 있는 상태
-          refetchCart={mockRefetchCart}
-          productId={1}
-        />
+        <CartContextProvider>
+          <CartButton
+            isInCart={true} // Already in cart
+            // refetchCart is no longer a prop
+            productId={1}
+            cartItemId={101} // Provide a cartItemId for deletion
+          />
+        </CartContextProvider>
       </ErrorContextProvider>
     );
 
-    // Trigger the remove from cart action
     const removeFromCartButton = document.querySelector("button");
     fireEvent.click(removeFromCartButton!);
 
-    // 에러가 발생하지 않아야 함
+    await waitFor(() => {
+      // The internal deleteCartItem (useFetch) should be called
+      expect(mockInternalFetcher).toHaveBeenCalled();
+    });
+
     await waitFor(() => {
       expect(mockShowError).not.toHaveBeenCalled();
     });
 
-    // refetchCart가 호출되어야 함
-    expect(mockRefetchCart).toHaveBeenCalled();
+    // fetchCart from context should be called after successful internal delete
+    expect(mockFetchCart).toHaveBeenCalled();
   });
 });

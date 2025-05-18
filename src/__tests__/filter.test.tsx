@@ -4,14 +4,67 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import App from "../App";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
 import "@testing-library/jest-dom"; // This will add the custom matchers like toBeInTheDocument
+import { ProductContextProvider } from "../contexts/ProductContext";
+import { CartContextProvider } from "../contexts/CartContext";
+import { Product } from "../types/product";
+import { CartItem } from "../types/cartContents";
 
-// Mock the CartContext
-vi.mock("../contexts/CartContext", () => ({
-  useCartContext: () => ({
-    setCartLength: vi.fn(),
-    cartLength: 1,
-  }),
-}));
+const mockProducts: Product[] = [
+  {
+    id: 1,
+    category: "패션잡화",
+    name: "바지",
+    price: 1000000,
+    imageUrl: "laptop.jpg",
+  },
+  {
+    id: 2,
+    category: "패션잡화",
+    name: "치마",
+    price: 50000,
+    imageUrl: "chair.jpg",
+  },
+  {
+    id: 3,
+    category: "식료품",
+    name: "코카콜라",
+    price: 2000,
+    imageUrl: "coke.jpg",
+  },
+];
+const mockCartItems: CartItem[] = [];
+
+const mockFetchProducts = vi.fn();
+const mockSetOrderBy = vi.fn();
+const mockFetchCart = vi.fn();
+
+vi.mock("../contexts/ProductContext", async () => {
+  const actual = await vi.importActual("../contexts/ProductContext");
+  return {
+    ...(actual as object),
+    useProductContext: () => ({
+      productsData: mockProducts,
+      productFetchLoading: false,
+      productFetchError: null,
+      fetchProducts: mockFetchProducts,
+      orderBy: "낮은 가격순",
+      setOrderBy: mockSetOrderBy,
+    }),
+  };
+});
+
+vi.mock("../contexts/CartContext", async () => {
+  const actual = await vi.importActual("../contexts/CartContext");
+  return {
+    ...(actual as object),
+    useCartContext: () => ({
+      cartData: mockCartItems,
+      cartFetchLoading: false,
+      cartFetchError: null,
+      fetchCart: mockFetchCart,
+    }),
+  };
+});
 
 // Mock the emotion css prop
 vi.mock("@emotion/react", () => ({
@@ -29,50 +82,6 @@ vi.mock("@emotion/react", () => ({
   css: () => ({ name: "mock-css-result" }),
 }));
 
-// Mock useFetch for test data
-vi.mock("../hooks/useFetch", () => ({
-  default: vi.fn((url) => {
-    if (url.toString().includes("products")) {
-      return {
-        data: {
-          content: [
-            {
-              id: 1,
-              category: "패션잡화",
-              name: "바지",
-              price: 1000000,
-              imageUrl: "laptop.jpg",
-            },
-            {
-              id: 2,
-              category: "패션잡화",
-              name: "치마",
-              price: 50000,
-              imageUrl: "chair.jpg",
-            },
-            {
-              id: 3,
-              category: "식료품",
-              name: "코카콜라",
-              price: 2000,
-              imageUrl: "coke.jpg",
-            },
-          ],
-        },
-        isLoading: false,
-        error: null,
-        fetcher: vi.fn(),
-      };
-    }
-    return {
-      data: { content: [] },
-      isLoading: false,
-      error: null,
-      fetcher: vi.fn(),
-    };
-  }),
-}));
-
 // Mock the Spinner component
 vi.mock("../components/Spinner/Spinner", () => ({
   __esModule: true,
@@ -81,9 +90,18 @@ vi.mock("../components/Spinner/Spinner", () => ({
 
 describe("App Dropdown 테스트", () => {
   beforeEach(() => {
+    // Clear mocks
+    mockFetchProducts.mockClear();
+    mockSetOrderBy.mockClear();
+    mockFetchCart.mockClear();
+
     render(
       <ErrorContextProvider>
-        <App />
+        <ProductContextProvider>
+          <CartContextProvider>
+            <App />
+          </CartContextProvider>
+        </ProductContextProvider>
       </ErrorContextProvider>
     );
   });
@@ -121,17 +139,13 @@ describe("App Dropdown 테스트", () => {
     expect(screen.queryByText("코카콜라")).toBeNull();
   });
 
-  it("정렬 드롭다운 테스트 - 낮은 가격순 정렬", () => {
-    // 정렬 드롭다운 찾기 (초기값은 낮은 가격순일 것으로 가정)
-    const sortDropdown = screen.getByText(/낮은 가격순/);
-
-    // 드롭다운 클릭
+  it("정렬 드롭다운을 클릭하면 setOrderBy가 호출되어야 함", () => {
+    const sortDropdown = screen.getByText("낮은 가격순");
     fireEvent.click(sortDropdown);
 
-    // 다른 정렬 옵션 선택
-    fireEvent.click(screen.getByText("높은 가격순"));
+    const highToLow = screen.getByText("높은 가격순");
+    fireEvent.click(highToLow);
 
-    // 변경된 정렬이 적용되었는지 확인
-    expect(screen.getByText("높은 가격순")).toBeDefined();
+    expect(mockSetOrderBy).toHaveBeenCalledWith("높은 가격순");
   });
 });

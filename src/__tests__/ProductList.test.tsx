@@ -52,17 +52,9 @@ const mockCartItems: CartItem[] = [
   },
 ];
 
-const mockRefetchCart = vi.fn();
-
 describe("ProductList는 ", () => {
   it("아이템을 정상적으로 출력해야한다.", () => {
-    render(
-      <ProductList
-        products={mockProducts}
-        cartItems={mockCartItems}
-        refetchCart={mockRefetchCart}
-      />
-    );
+    render(<ProductList products={mockProducts} cartItems={mockCartItems} />);
 
     expect(screen.getByText("Product 1")).toBeInTheDocument();
     expect(screen.getByText("Product 2")).toBeInTheDocument();
@@ -71,25 +63,13 @@ describe("ProductList는 ", () => {
   });
 
   it("상품이 없을 경우 상품이 없다는 메시지를 출력해야한다.", () => {
-    render(
-      <ProductList
-        products={[]}
-        cartItems={mockCartItems}
-        refetchCart={mockRefetchCart}
-      />
-    );
+    render(<ProductList products={[]} cartItems={mockCartItems} />);
 
     expect(screen.getByText("상품이 없습니다.")).toBeInTheDocument();
   });
 
   it("product를 받지 못했을경우, 서버와 연결이 좋지 않다는 메시지를 출력해야한다.", () => {
-    render(
-      <ProductList
-        products={undefined}
-        cartItems={mockCartItems}
-        refetchCart={mockRefetchCart}
-      />
-    );
+    render(<ProductList products={undefined} cartItems={mockCartItems} />);
 
     expect(
       screen.getByText("서버와 연결이 좋지 않아요. 다시 시도해주세요.")
