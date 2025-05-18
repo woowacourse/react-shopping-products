@@ -33,6 +33,18 @@ export default class BaseApi {
     });
   }
 
+  static async patch(path: string, options?: RequestInit) {
+    await fetch(`${this.baseUrl}${path}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+        "Content-Type": "application/json",
+        ...options?.headers,
+      },
+      ...options,
+    });
+  }
+
   static async delete(path: string, options?: RequestInit) {
     await fetch(`${this.baseUrl}${path}`, {
       method: "DELETE",

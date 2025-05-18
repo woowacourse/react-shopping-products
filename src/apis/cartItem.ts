@@ -39,3 +39,16 @@ interface DeleteCartItemsParams {
 export const deleteCartItems = async ({ cartItemId }: DeleteCartItemsParams) => {
   await BaseApi.delete(`/cart-items/${cartItemId}`);
 };
+
+interface PatchCartItemsParams {
+  cartItemId: number;
+  quantity: number;
+}
+
+export const patchCartItems = async ({ cartItemId, quantity }: PatchCartItemsParams) => {
+  await BaseApi.patch(`/cart-items/${cartItemId}`, {
+    body: JSON.stringify({
+      quantity,
+    }),
+  });
+};
