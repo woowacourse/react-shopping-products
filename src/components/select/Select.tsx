@@ -44,6 +44,9 @@ const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
       setFocusedIndex(Math.max(focusedIndex - 1, 0));
       setIsOpen(true);
     }
+    if (e.key === 'Tab') {
+      setIsOpen(false);
+    }
   };
 
   const selectedValue = value.length !== 0 ? value : options[0];
