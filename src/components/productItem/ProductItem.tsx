@@ -32,7 +32,7 @@ const ProductItem = ({
       />
       <S.ProductItemCard>
         <S.ProductItemInfo>
-          <S.ProductItemTitle>{product.name}</S.ProductItemTitle>
+          <S.ProductItemTitle data-testid="product-name">{product.name}</S.ProductItemTitle>
           <S.ProductItemPrice>{product.price.toLocaleString()}원</S.ProductItemPrice>
         </S.ProductItemInfo>
 

@@ -11,7 +11,7 @@ export const SelectContainer = styled.div`
 
 export const SelectField = styled.button<{ $isOpen: boolean }>`
   width: 100%;
-  border: 1px solid var(--color-gray);
+  border: 1px solid var(--color-grey);
   border-radius: 4px;
   padding: 8px;
   box-sizing: border-box;

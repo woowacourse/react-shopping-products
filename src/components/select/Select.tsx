@@ -57,7 +57,7 @@ const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-activedescendant={isOpen ? `option-${options[focusedIndex]}` : undefined}
-        aria-labelledby={options[0]}
+        aria-label={selectedValue}
         onClick={() => setIsOpen(!isOpen)}
         $isOpen={isOpen}
         tabIndex={0}
