@@ -1,4 +1,5 @@
-import CartItemButton from "./components/CartItemButton/CartItemButton";
+import AddToCartButton from "./components/CartItemButton/AddToCartButton/AddToCartButton";
+import RemoveFromCartButton from "./components/CartItemButton/RemoveFromCartButton/RemoveFromCartButton";
 import * as S from "./ProductItem.styles";
 
 interface ProductItemProps {
@@ -22,7 +23,11 @@ const ProductItem = ({
       <S.ProductWrapper>
         <S.ProductName data-testid="product-name">{name}</S.ProductName>
         <S.ProductPrice data-testid="product-price">{price}</S.ProductPrice>
-        <CartItemButton isAdd={isAdd} onToggleCartItem={handleCartItemToggle} />
+        {isAdd ? (
+          <RemoveFromCartButton onRemove={handleCartItemToggle} />
+        ) : (
+          <AddToCartButton onAdd={handleCartItemToggle} />
+        )}
       </S.ProductWrapper>
     </S.ProductContainer>
   );
