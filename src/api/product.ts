@@ -1,8 +1,14 @@
 import { baseUrl } from './config';
 
-export const getProduct = async (sort: string) => {
+interface getProductProps {
+  page: number;
+  size: number;
+  sortBy: string;
+}
+
+export const getProduct = async ({ page, size, sortBy }: getProductProps) => {
   const response = await fetch(
-    `${baseUrl}/products?page=0&size=20&sort=price,${sort}&sort=id,desc`
+    `${baseUrl}/products?page=${page}&size=${size}&sort=price,${sortBy}&sort=id,desc`
   );
   const data = await response.json();
 

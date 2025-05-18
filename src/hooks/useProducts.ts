@@ -19,7 +19,11 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
     setIsError(false);
 
     try {
-      const product = await getProduct(mappedSortType);
+      const product = await getProduct({
+        page: 0,
+        size: 20,
+        sortBy: mappedSortType,
+      });
       const cartRes = await getCartItem({ page: 0, size: 50, sortBy: 'desc' });
 
       const filteredCategory = product.content.filter(
