@@ -10,8 +10,11 @@ const sortParams: Record<OrderByOptionType, string> = {
   "높은 가격순": "price,desc",
 };
 
-export function useProductQuery(orderBy: OrderByOptionType) {
+export function useProductQuery(orderBy: OrderByOptionType | null) {
   return useMemo(() => {
+    if (!orderBy) {
+      return URLS.PRODUCTS;
+    }
     const url = new URL(URLS.PRODUCTS);
     const params = new URLSearchParams({
       ...defaultSearchParams,
