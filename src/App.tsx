@@ -1,4 +1,4 @@
-import ProductList from "./components/pages/ProductList";
+import ProductList from "./components/Pages/ProductList";
 
 function App() {
 	return <ProductList />;
