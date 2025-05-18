@@ -10,16 +10,33 @@ const fetchWithErrorHandling = async (
   const status = response.status;
 
   if (!response.ok) {
-    return { status, data: null };
+    return { newErrorMessage: "", data: null };
   }
 
-  const contentType = response.headers.get('Content-Type') || '';
-  if (contentType.includes('application/json')) {
+  const contentType = response.headers.get("Content-Type") || "";
+
+  if (contentType.includes("application/json")) {
     const data = await response.json();
-    return { status, data };
+    return { newErrorMessage: "", data };
   }
 
-  return { status, data: null };
+  const getErrorMessage = (status: number): string => {
+    if (status === 400) {
+      return "잘못된 요청입니다. 다시 시도해주세요.";
+    }
+
+    if (status === 404) {
+      return "요청하신 정보를 찾을 수 없습니다.";
+    }
+
+    if (status === 500) {
+      return "서버에 문제가 발생했습니다.";
+    }
+
+    return "";
+  };
+
+  return { newErrorMessage: getErrorMessage(status), data: null };
 };
 
 export default fetchWithErrorHandling;
