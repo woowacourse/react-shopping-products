@@ -1,10 +1,6 @@
 import { Product } from "../types/productType";
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
-
-type FetchError = {
-  code: number;
-  message: string;
-};
+import { FetchError } from "../types/\bfetchType";
 
 const postCartItems = async (
   product: Product

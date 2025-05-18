@@ -1,5 +1,6 @@
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
 import { CartItem } from "../types/productType";
+import { FetchError } from "../types/\bfetchType";
 
 export type CartItemsResponse = {
   content: CartItem[];
@@ -28,11 +29,6 @@ export type CartItemsResponse = {
   };
   first: boolean;
   empty: boolean;
-};
-
-type FetchError = {
-  code: number;
-  message: string;
 };
 
 const getCartItems = async (): Promise<{

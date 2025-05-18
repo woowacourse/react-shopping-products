@@ -1,9 +1,5 @@
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
-
-type FetchError = {
-  code: number;
-  message: string;
-};
+import { FetchError } from "../types/\bfetchType";
 
 const deleteCartItems = async (
   cartItemId: number
