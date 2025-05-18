@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import * as S from "./AlertToast.styled";
 
 interface AlertToastProps {
-  errorMessage: string;
+  type: "error" | "success";
+  message: string;
 }
 
-function AlertToast({ errorMessage }: AlertToastProps) {
+function AlertToast({ type, message }: AlertToastProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -16,15 +17,15 @@ function AlertToast({ errorMessage }: AlertToastProps) {
     return () => {
       clearTimeout(timer);
     };
-  }, [errorMessage]);
+  }, [message]);
 
   if (!isVisible) {
     return null;
   }
 
   return (
-    <S.Container>
-      <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
+    <S.Container type={type}>
+      <S.Message>{message}</S.Message>
     </S.Container>
   );
 }

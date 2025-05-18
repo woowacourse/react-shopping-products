@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 
-export const Container = styled.div`
+interface ToastTypeProps {
+  type: "error" | "success";
+}
+
+export const Container = styled.div<ToastTypeProps>`
   width: 500px;
   position: fixed;
   top: 64px;
@@ -10,12 +14,13 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffc9c9;
+  background-color: ${({ type }) =>
+    type === "success" ? "#4caf50" : "#ff4d4d"};
   color: #0a0d13;
   z-index: 999;
 `;
 
-export const ErrorMessage = styled.p`
+export const Message = styled.p`
   font-size: 14px;
   font-weight: 500;
 `;
