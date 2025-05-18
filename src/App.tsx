@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import { useState } from "react";
 import Header from "./components/Header";
 import Select from "./components/common/Select";
 import Text from "./components/common/Text";
@@ -10,10 +9,17 @@ import useCartItems from "./hooks/useCartItems";
 import ProductList from "./components/Product/ProductList";
 
 function App() {
-  const [filter, setFilter] = useState("전체");
-  const [sort, setSort] = useState("높은 가격순");
+  const {
+    products,
+    filter,
+    setFilter,
+    sort,
+    setSort,
+    isProductsLoading,
+    productsErrorMessage,
+    setProductsErrorMessage,
+  } = useProducts();
 
-  const { products, isProductsLoading, productsErrorMessage, setProductsErrorMessage } = useProducts();
   const {
     cartItems,
     isCartItemsLoading,

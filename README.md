@@ -7,6 +7,7 @@
   - [x] App 컴포넌트에서 card 컴포넌트 분리 -> productList 컴포너트 제작
   - [ ] Select 컴포넌트 options 값 상수로 관리
   - [x] Card 컴포넌트 역할 증가 시키기 -> 네이밍 도메인에 직관적으로
+  - [x] filter 및 sort product훅 내부에서 관리
 
 - [ ] API 호출
 
