@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { Content } from "../../types/product";
-import Product from "./Product";
+import ProductCard from "./ProductCard";
 import Text from "../common/Text";
 import Button from "../common/Button";
 import RemoveCart from "../icons/RemoveCart";
@@ -16,21 +16,12 @@ const ProductList = ({ productsData, cartItemIds, handleCartItem }: ProductListP
   return (
     <div css={productListStyle}>
       {productsData?.map((product) => (
-        <Product key={product.id}>
-          <Product.Preview>
-            <img
-              src={product.imageUrl}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src =
-                  "https://www.next-t.co.kr/public/uploads/7b7f7e2138e29e598cd0cdf2c85ea08d.jpg";
-              }}
-              alt={product.name}
-            />
-          </Product.Preview>
-          <Product.Content style={{ display: "flex", flexDirection: "column", gap: "27px" }}>
+        <ProductCard key={product.id}>
+          <ProductCard.Image src={product.imageUrl} alt={product.name} />
+          <ProductCard.Content>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <Text variant="title-2">{product.name}</Text>
-              <Text variant="body-2">{product.price.toLocaleString()}원</Text>
+              <ProductCard.Title text={product.name} />
+              <ProductCard.Price price={product.price} />
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               {cartItemIds[product.id] ? (
@@ -47,8 +38,8 @@ const ProductList = ({ productsData, cartItemIds, handleCartItem }: ProductListP
                 </Button>
               )}
             </div>
-          </Product.Content>
-        </Product>
+          </ProductCard.Content>
+        </ProductCard>
       ))}
     </div>
   );
