@@ -1,3 +1,4 @@
+import { CartItemType } from '../types/data';
 import apiClient from './apiClient';
 
 interface AddCartItemsProps {
@@ -5,8 +6,12 @@ interface AddCartItemsProps {
   quantity: number;
 }
 
+interface CartItemsResponse {
+  content: CartItemType[];
+}
+
 export const getCartItems = async () => {
-  const data = await apiClient({
+  const data = await apiClient<CartItemsResponse>({
     method: 'GET',
     URI: `/cart-items`,
   });

@@ -1,13 +1,30 @@
 import { FETCH_ERROR_MESSAGE, DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 import { FetchMethodType } from '../types/data';
 
-interface ApiClientProps<T> {
+interface ApiClientProps<RequestBody> {
   method: FetchMethodType;
   URI: string;
-  body?: T;
+  body?: RequestBody;
 }
 
-const apiClient = async <T>({ method, URI, body }: ApiClientProps<T>) => {
+interface ApiClientType {
+  <Response, RequestBody>(
+    options: Omit<ApiClientProps<RequestBody>, 'method'> & {
+      method: 'DELETE' | 'POST';
+      body?: RequestBody;
+    },
+  ): Promise<Response>;
+
+  <Response>(
+    options: Omit<ApiClientProps<Response>, 'method'> & { method: 'GET' },
+  ): Promise<Response>;
+}
+
+const apiClient: ApiClientType = async <Response, RequestBody>({
+  method,
+  URI,
+  body,
+}: ApiClientProps<RequestBody>): Promise<Response | void> => {
   const basicToken = btoa(
     `${import.meta.env.VITE_API_USERNAME}:${import.meta.env.VITE_API_PASSWORD}`,
   );
@@ -18,7 +35,10 @@ const apiClient = async <T>({ method, URI, body }: ApiClientProps<T>) => {
     headers: { 'Content-type': 'application/json', Authorization: `Basic ${basicToken}` },
   });
 
-  if (response.status === 204) return;
+  if (response.status === 204) {
+    return;
+  }
+
   if (response.ok) {
     if (response.headers.get('content-length') === '0') return;
     return response.json();
