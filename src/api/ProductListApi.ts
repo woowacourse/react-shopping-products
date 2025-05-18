@@ -1,7 +1,4 @@
-import {
-  API_ERROR_MESSAGES,
-  API_URL_ERROR_MESSAGE,
-} from "./constants/errorMessages";
+import { fetcher } from "./fetcher";
 import { ResponseProduct } from "./types";
 
 interface ProductListProps {
@@ -12,41 +9,18 @@ interface ProductListProps {
 }
 
 async function getProductList({
-  category,
-  sort,
+  category = "",
+  sort = "asc",
   page = 0,
   size = 20,
 }: ProductListProps): Promise<ResponseProduct[]> {
-  const API_URL = import.meta.env.VITE_BASE_URL || "";
-
-  if (!API_URL) {
-    throw new Error(API_URL_ERROR_MESSAGE);
-  }
-
-  const options = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
+  return fetcher<ResponseProduct[]>("/products", {
+    params: {
+      category,
+      sort,
+      page,
+      size,
     },
-  };
-
-  const params = new URLSearchParams();
-  if (category) params.append("category", category);
-  if (sort) params.append("sort", sort);
-  params.append("page", page.toString());
-  params.append("size", size.toString());
-
-  const response = await fetch(
-    `${API_URL}/products?${params.toString()}`,
-    options
-  );
-
-  if (!response.ok) {
-    throw new Error(API_ERROR_MESSAGES[response.status]);
-  }
-
-  const data = await response.json();
-  return data.content;
+  });
 }
-
 export default getProductList;
