@@ -1,13 +1,14 @@
 import { CategoryOptionsKey, SortOptionsKey } from "../constants";
-import { Products } from "../types/products";
 import { createApiUrl, fetchWithErrorHandling, SHOP_API } from "./configs";
+import { PaginationParams } from "./types/pagination";
+import { Products } from "./types/products";
 
 export const ProductsAPI = {
   get: async (
     category: CategoryOptionsKey,
     selectedSortOption: SortOptionsKey
   ) => {
-    const params: Record<string, string | number> = {
+    const params: PaginationParams & Record<string, string | number> = {
       page: 0,
       size: 20,
     };

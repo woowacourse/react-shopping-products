@@ -1,9 +1,10 @@
-import { CartItems } from "../types/cartItems";
 import { createApiUrl, fetchWithErrorHandling, SHOP_API } from "./configs";
+import { CartItems } from "./types/cartItems";
+import { PaginationParams } from "./types/pagination";
 
 export const CartItemsAPI = {
   get: async () => {
-    const params: Record<string, string | number> = {
+    const params: PaginationParams = {
       page: 0,
       size: 50,
     };

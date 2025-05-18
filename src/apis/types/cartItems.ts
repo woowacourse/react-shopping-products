@@ -1,4 +1,5 @@
-import { BaseProduct, PaginatedResponse } from "./common";
+import { PaginatedResponse } from "./pagination";
+import { BaseProduct } from "./products";
 
 export interface CartItemContent {
   id: number;

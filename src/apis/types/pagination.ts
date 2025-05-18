@@ -12,14 +12,6 @@ export interface PaginatedResponse<T> {
   empty: boolean;
 }
 
-export interface BaseProduct {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
-
 export interface Pageable {
   offset: number;
   sort: Sort;
@@ -34,3 +26,8 @@ export interface Sort {
   sorted: boolean;
   unsorted: boolean;
 }
+
+export type PaginationParams = {
+  page: number;
+  size: number;
+};

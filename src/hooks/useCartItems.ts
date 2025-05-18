@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { CartItems } from "../types/cartItems";
 import { CartItemsAPI } from "../apis/cartItems";
 import { isErrorResponse } from "../utils/typeGuard";
+import { CartItems } from "../apis/types/cartItems";
 
 const useCartItems = () => {
   const [cartItems, setCartItems] = useState<CartItems | null>(null);
