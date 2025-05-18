@@ -14,8 +14,8 @@ const ProductSorter = ({
   return (
     <SelectBox
       id="sort"
-      state={selectedSortOption}
-      setState={setSelectedSortOption}
+      value={selectedSortOption}
+      onChange={setSelectedSortOption}
       options={sortOptions}
     />
   );

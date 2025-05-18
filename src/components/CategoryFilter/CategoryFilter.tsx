@@ -14,8 +14,8 @@ const CategoryFilter = ({
   return (
     <SelectBox
       id="category"
-      state={selectedCategory}
-      setState={setSelectedCategory}
+      value={selectedCategory}
+      onChange={setSelectedCategory}
       options={categoryOptions}
     />
   );
