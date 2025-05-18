@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 type CartActionButtonProps = {
   variant: "add" | "remove";
@@ -29,25 +30,42 @@ const Image = styled.img`
   height: 17px;
 `;
 
-const Button = styled.button<CartActionButtonProps>`
-  background-color: ${(props) =>
-    props.variant === "add" ? "black" : "#EAEAEA"};
-  color: ${(props) => (props.variant === "add" ? "white" : "black")};
-  border: none;
-  width: 70px;
-  height: 30px;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
+const buttonVariantStyle = {
+  add: {
+    backgroundColor: "black",
+    color: "white",
+    hoverColor: "#333",
+  },
+  remove: {
+    backgroundColor: "#EAEAEA",
+    color: "black",
+    hoverColor: "#D0D0D0",
+  },
+};
 
-  &:hover {
-    background-color: ${(props) =>
-      props.variant === "add" ? "#333" : "#D0D0D0"};
-  }
-  &:active {
-    background-color: gray;
-  }
+const Button = styled.button<CartActionButtonProps>`
+  ${({ variant }) => {
+    const style = buttonVariantStyle[variant];
+    return css`
+      background-color: ${style.backgroundColor};
+      color: ${style.color};
+      border: none;
+      width: 70px;
+      height: 30px;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: ${style.hoverColor};
+      }
+
+      &:active {
+        background-color: gray;
+      }
+    `;
+  }}
 `;
