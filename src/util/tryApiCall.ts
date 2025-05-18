@@ -1,3 +1,5 @@
+import { DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
+
 const tryApiCall = async <T>(
   apiCall: () => Promise<T>,
   handleErrorToast: (errorMessage: string) => void,
@@ -6,14 +8,11 @@ const tryApiCall = async <T>(
     const data = await apiCall();
     return data;
   } catch (error) {
-    if (error instanceof Error) {
-      handleErrorToast(error.message);
-      setTimeout(() => {
-        handleErrorToast('');
-      }, 3000);
-    }
-
-    throw error;
+    const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
+    handleErrorToast(message);
+    setTimeout(() => {
+      handleErrorToast('');
+    }, 3000);
   }
 };
 
