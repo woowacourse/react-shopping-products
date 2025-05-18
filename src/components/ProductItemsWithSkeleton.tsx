@@ -1,4 +1,4 @@
-import { CartItem, Product } from "../App";
+import { CartItem, Product } from "../types/productType";
 import isInCart from "../utils/isIncart";
 import ProductItem from "./ProductItem/ProductItem";
 import ProductItemSkeleton from "./ProductItem/ProductItemSkeleton";

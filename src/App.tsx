@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import getProducts from "./api/getProducts";
-import deleteCartItems from "./api/deleteCartItems";
 import Header from "./components/header/Header";
-import getCartItems from "./api/getCartItems";
-import postCartItems from "./api/postCartItems";
 import "./reset.css";
 import styled from "@emotion/styled";
 import "./app.css";
 import ProductItemsWithSkeleton from "./components/ProductItemsWithSkeleton";
 import ErrorMessage from "./components/ErrorMessage";
 import Select from "./components/Select";
-import { Product, CartItem, Category, PriceOrder } from "./types/productType";
+import { Product, Category, PriceOrder } from "./types/productType";
 import useLoading from "./hooks/useLoading";
+import useCart from "./hooks/\buseCart";
 
 export const PRODUCT_TYPE_COUNT = 20;
 export const CART_MAX_COUNT = 50;
@@ -20,42 +18,12 @@ function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>("전체");
   const [priceOrder, setPriceOrder] = useState<PriceOrder>("낮은 가격순");
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
 
   const { isLoading, withLoading } = useLoading();
-
-  const addToCart = async (product: Product) => {
-    if (cart.length > CART_MAX_COUNT) {
-      setErrorMessage(
-        `장바구니에 담을 수 있는 상품은 최대 ${CART_MAX_COUNT}개입니다.`
-      );
-      return;
-    }
-    const { newErrorMessage: postErrorMessage } = await postCartItems(product);
-    setErrorMessage(postErrorMessage);
-
-    if (!postErrorMessage) {
-      await syncCart();
-    }
-  };
-
-  const removeFromCart = async (productId: number) => {
-    const cartItem = cart.find((item) => item.product.id === productId);
-    if (!cartItem) {
-      return;
-    }
-
-    const cartItemId = cartItem.id;
-    const { newErrorMessage: deleteErrorMessage } = await deleteCartItems(
-      cartItemId
-    );
-    setErrorMessage(deleteErrorMessage);
-
-    if (!deleteErrorMessage) {
-      await syncCart();
-    }
-  };
+  const { cart, addToCart, removeFromCart, syncCart } = useCart({
+    setErrorMessage,
+  });
 
   const handleCategoryChange = async (category: Category) => {
     await withLoading(async () => {
@@ -79,14 +47,6 @@ function App() {
       setErrorMessage(newErrorMessage);
       setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
     });
-  };
-
-  const syncCart = async () => {
-    const { data: cartData, newErrorMessage: getErrorMessage } =
-      await getCartItems();
-    setErrorMessage(getErrorMessage);
-    const cartItems = cartData.content;
-    setCart(cartItems);
   };
 
   useEffect(() => {
