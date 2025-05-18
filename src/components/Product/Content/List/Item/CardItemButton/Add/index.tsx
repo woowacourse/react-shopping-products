@@ -12,22 +12,24 @@ interface AddCartItemButtonProps {
 }
 
 function AddCartItemButton({ id, updateCartItems }: AddCartItemButtonProps) {
-  const { mutate: addToCart, isLoading } = useMutation(() =>
+  const { mutate: addToCartMutate, isLoading } = useMutation(() =>
     addCartItems({ productId: id, quantity: 1 })
   );
   const { addToast } = useToast();
 
-  const handleAddCartItemButtonClick = async () => {
-    try {
-      await addToCart();
-      const cartItems = await getCartItems();
-      updateCartItems(cartItems);
-    } catch (error) {
-      addToast({
-        type: "error",
-        message: "장바구니에 상품을 추가하는 중 에러가 발생했습니다.",
-      });
-    }
+  const handleAddCartItemButtonClick = () => {
+    addToCartMutate(undefined, {
+      onSuccess: async () => {
+        const cartItems = await getCartItems();
+        updateCartItems(cartItems);
+      },
+      onError: (error) => {
+        addToast({
+          type: "error",
+          message: error.message,
+        });
+      },
+    });
   };
 
   return (
