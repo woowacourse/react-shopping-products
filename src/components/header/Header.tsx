@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
-import CartIconButton from './CartIconButton';
+import styled from "@emotion/styled";
+import CartIconButton from "./CartIconButton";
 
 const Header = ({ cartItemCount }: { cartItemCount: number }) => {
   return (

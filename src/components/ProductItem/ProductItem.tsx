@@ -1,6 +1,15 @@
-import { Product } from '../../App';
-import CartActionButton from './button/CartActionButton';
-import styled from '@emotion/styled';
+import { Product } from "../../App";
+import CartActionButton from "./button/CartActionButton";
+import styled from "@emotion/styled";
+
+function isValidUrl(url: string) {
+  try {
+    new URL(url);
+    return url;
+  } catch (_) {
+    return "./nullImage.png";
+  }
+}
 
 const ProductItem = ({
   product,
@@ -15,7 +24,7 @@ const ProductItem = ({
 }) => {
   return (
     <ProductItemContainer>
-      <ProductItemImage src={product.imageUrl} alt={product.name} />
+      <ProductItemImage src={isValidUrl(product.imageUrl)} alt={product.name} />
       <ProductItemInfoContainer>
         <TextContainer>
           <ProductItemName>{product.name}</ProductItemName>
@@ -68,6 +77,7 @@ const TextContainer = styled.div`
 const ProductItemImage = styled.img`
   height: 50%;
   border-radius: 8px 8px 0px 0px;
+  object-fit: cover;
 `;
 const ProductItemName = styled.p`
   font-size: 18px;
