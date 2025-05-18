@@ -7,7 +7,8 @@ import { getProducts } from "@/apis/products/getProducts";
 import { wrapPromise } from "@/apis/wrapPromise";
 import { CartItemType, SetCartItems } from "@/types/cartItem";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import Fallback from "@/components/Fallback";
+import ErrorFallback from "@/components/Fallback/ErrorFallback";
+import LoadingFallback from "@/components/Fallback/LoadingFallback";
 
 interface ProductContentProps {
   cartItems: CartItemType[];
@@ -41,18 +42,12 @@ function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
       />
       <Suspense
         fallback={
-          <Fallback
-            type="loading"
-            message="상품 목록을 가져오는 중 입니다..."
-          />
+          <LoadingFallback message="상품 목록을 가져오는 중 입니다..." />
         }
       >
         <ErrorBoundary
           fallback={
-            <Fallback
-              type="error"
-              message="상품 목록을 가져오는 중 에러가 발생하였습니다."
-            />
+            <ErrorFallback message="상품 목록을 가져오는 중 에러가 발생하였습니다." />
           }
         >
           <ProductList
