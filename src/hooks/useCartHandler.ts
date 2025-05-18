@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCartId } from '../domain/manageCartInfo';
+import { getCartId } from '../domain/cartItem';
 import { addCartItems, getCartItems, removeCartItems } from '../services/cartItemServices';
 import tryApiCall from '../util/tryApiCall';
 import { CartItemType } from '../types/data';
