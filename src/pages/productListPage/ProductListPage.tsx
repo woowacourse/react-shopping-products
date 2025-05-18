@@ -35,8 +35,8 @@ export const ProductListPage = () => {
     handleErrorMessage,
   });
 
-  const [isVisible, setIsVisible] = useState(false);
-  const [shouldRender, setShouldRender] = useState(false);
+  const [, setIsVisible] = useState(false);
+  const [, setShouldRender] = useState(false);
 
   const hideTimerRef = useRef<number | null>(null);
   const unmountTimerRef = useRef<number | null>(null);
