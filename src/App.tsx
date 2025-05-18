@@ -1,11 +1,12 @@
-import { useState } from "react";
+import GlobalStyle from './GlobalStyles';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <GlobalStyle />
+      <RouterProvider router={router} />
     </>
   );
 }
