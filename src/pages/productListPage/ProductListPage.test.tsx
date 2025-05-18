@@ -9,7 +9,6 @@ import { CartProvider } from '../../context/CartContext';
 import { ErrorMessageProvider } from '../../context/ErrorMessageContext';
 import { PRODUCT_LIST_ITEM_COUNT } from '../../constants/systemConstants';
 import type React from 'react';
-import { useState } from 'react';
 import userEvent from '@testing-library/user-event';
 
 const mockProducts: ProductItemType[] = Array.from({ length: 25 }, (_, index) => ({
@@ -21,21 +20,10 @@ const mockProducts: ProductItemType[] = Array.from({ length: 25 }, (_, index) =>
 }));
 
 const TestCartProvider = ({ children }: { children: React.ReactNode }) => {
-  const [cartItemsIds, setCartItemsIds] = useState<number[]>([]);
-  const [errorMessage, setErrorMessage] = useState('');
-
   return (
-    <CartProvider
-      cartItemsIds={cartItemsIds}
-      handleAddCartItemsIds={(id) => setCartItemsIds((prev) => [...prev, id])}
-      handleRemoveCartItemsIds={(id) =>
-        setCartItemsIds((prev) => prev.filter((itemId) => itemId !== id))
-      }
-    >
-      <ErrorMessageProvider errorMessage={errorMessage} handleErrorMessage={setErrorMessage}>
-        {children}
-      </ErrorMessageProvider>
-    </CartProvider>
+    <ErrorMessageProvider>
+      <CartProvider>{children}</CartProvider>
+    </ErrorMessageProvider>
   );
 };
 

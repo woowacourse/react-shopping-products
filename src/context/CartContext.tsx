@@ -1,10 +1,9 @@
 import { createContext } from 'react';
+import useCartHandler from '../hooks/useCartHandler';
+import useErrorMessageContext from '../hooks/useErrorMessageContext';
 
 interface CartContextProps {
-  cartItemsIds: number[];
   children: React.ReactNode;
-  handleAddCartItemsIds: (id: number) => void;
-  handleRemoveCartItemsIds: (id: number) => void;
 }
 
 interface CartContextType {
@@ -15,12 +14,12 @@ interface CartContextType {
 
 export const CartContext = createContext<CartContextType | null>(null);
 
-export const CartProvider = ({
-  cartItemsIds,
-  handleAddCartItemsIds,
-  handleRemoveCartItemsIds,
-  children,
-}: CartContextProps) => {
+export const CartProvider = ({ children }: CartContextProps) => {
+  const { handleErrorMessage } = useErrorMessageContext();
+  const { cartItemsIds, handleAddCartItemsIds, handleRemoveCartItemsIds } = useCartHandler({
+    handleErrorMessage,
+  });
+
   return (
     <CartContext.Provider
       value={{

@@ -1,9 +1,7 @@
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 
 interface ErrorMessageContextProps {
   children: React.ReactNode;
-  errorMessage: string;
-  handleErrorMessage: (errorMessage: string) => void;
 }
 
 interface ErrorMessageContextType {
@@ -13,11 +11,12 @@ interface ErrorMessageContextType {
 
 export const ErrorMessageContext = createContext<ErrorMessageContextType | null>(null);
 
-export const ErrorMessageProvider = ({
-  errorMessage,
-  handleErrorMessage,
-  children,
-}: ErrorMessageContextProps) => {
+export const ErrorMessageProvider = ({ children }: ErrorMessageContextProps) => {
+  const [errorMessage, setErrorMessage] = useState('');
+  const handleErrorMessage = (errorMessage: string) => {
+    setErrorMessage(errorMessage);
+  };
+
   return (
     <ErrorMessageContext.Provider
       value={{
