@@ -2,13 +2,17 @@ import GlobalStyle from './ui/styles/globalStyle';
 import Layout from './ui/components/Layout/Layout';
 import Header from './ui/components/Header/Header';
 import Toast from './ui/components/Toast/Toast';
-import ProductSection from './ui/components/ProductSection/ProductSection';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 import { Global } from '@emotion/react';
 import React, { useState } from 'react';
 import { addCart, removeCart } from './api/cart';
 import { useProducts } from './hooks/useProducts';
 import { CategoryType, SortType, ProductElement } from './types/product';
+import { DropdownContainer, Section } from './App.styles';
+import Dropdown from './ui/components/Dropdown/Dropdown';
+import ProductList from './ui/components/ProductList/ProductList';
+import Title from './ui/components/Title/Title';
+import { CATEGORY, SORT_PRICE } from './constants/productConfig';
 
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
@@ -78,15 +82,26 @@ function App() {
         )}
         {isLoading && <LoadingSpinner duration={2} />}
         {!isLoading && (
-          <ProductSection
-            onFilter={handleFilterCategory}
-            onSort={handleSortPrice}
-            onAddCart={handleAddCart}
-            onRemoveCart={handleRemoveCart}
-            data={data}
-            sort={sort}
-            category={category}
-          />
+          <Section>
+            <Title title="우테코 상품 목록" />
+            <DropdownContainer>
+              <Dropdown
+                value={category}
+                options={CATEGORY}
+                onChange={handleFilterCategory}
+              />
+              <Dropdown
+                value={sort}
+                options={SORT_PRICE}
+                onChange={handleSortPrice}
+              />
+            </DropdownContainer>
+            <ProductList
+              onAddCart={handleAddCart}
+              onRemoveCart={handleRemoveCart}
+              data={data}
+            />
+          </Section>
         )}
       </Layout>
     </>
