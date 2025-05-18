@@ -9,6 +9,8 @@ import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
 import { useCartContext } from "./contexts/CartContext";
 import Header from "./components/Header/Header";
 import { useProductContext } from "./contexts/ProductContext";
+import MswStatus from "./components/MswStatus";
+import MswDebug from "./components/MswDebug";
 
 function App() {
   const { showError } = useErrorContext();
@@ -23,8 +25,13 @@ function App() {
   } = useProductContext();
   const { cartData, cartFetchError, fetchCart } = useCartContext();
   const [category, setCategory] = useState<CategoryOptionType>("전체");
+  const [showDebug, setShowDebug] = useState(false);
 
   useEffect(() => {
+    // DEV 환경에서만 디버그 표시
+    if (import.meta.env.DEV) {
+      setShowDebug(true);
+    }
     fetchCart();
   }, [fetchCart]);
 
@@ -81,6 +88,8 @@ function App() {
           cartItems={cartData}
         />
       )}
+      <MswStatus />
+      {showDebug && <MswDebug />}
     </div>
   );
 }
