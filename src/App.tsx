@@ -7,47 +7,31 @@ import "./app.css";
 import ProductItemsWithSkeleton from "./components/ProductItemsWithSkeleton";
 import ErrorMessage from "./components/ErrorMessage";
 import Select from "./components/Select";
-import { Product, Category, PriceOrder } from "./types/productType";
 import useLoading from "./hooks/useLoading";
-import useCart from "./hooks/\buseCart";
+import useCart from "./hooks/useCart";
+import useProducts from "./hooks/useProducts";
 
 export const PRODUCT_TYPE_COUNT = 20;
 export const CART_MAX_COUNT = 50;
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<Category>("전체");
-  const [priceOrder, setPriceOrder] = useState<PriceOrder>("낮은 가격순");
   const [errorMessage, setErrorMessage] = useState("");
 
   const { isLoading, withLoading } = useLoading();
   const { cart, addToCart, removeFromCart, syncCart } = useCart({
     setErrorMessage,
   });
-
-  const handleCategoryChange = async (category: Category) => {
-    await withLoading(async () => {
-      setSelectedCategory(category);
-      const { data, newErrorMessage } = await getProducts({
-        category,
-        priceOrder,
-      });
-      setErrorMessage(newErrorMessage);
-      setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
-    });
-  };
-
-  const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
-    await withLoading(async () => {
-      setPriceOrder(priceOrder);
-      const { data, newErrorMessage } = await getProducts({
-        category: selectedCategory,
-        priceOrder: priceOrder,
-      });
-      setErrorMessage(newErrorMessage);
-      setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
-    });
-  };
+  const {
+    handleCategoryChange,
+    handlePriceOrderChange,
+    selectedCategory,
+    priceOrder,
+    products,
+    setProducts,
+  } = useProducts({
+    withLoading,
+    setErrorMessage,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
