@@ -6,7 +6,7 @@ import ItemCard from "../ItemCard/ItemCard";
 import Skeleton from "../Skeleton/Skeleton";
 import S from "./Product.module.css";
 
-const Product = () => {
+const ProductList = () => {
 	const [filter, setFilter] = useState("");
 	const [sort, setSort] = useState("");
 
@@ -50,4 +50,4 @@ const Product = () => {
 	);
 };
 
-export default Product;
+export default ProductList;
