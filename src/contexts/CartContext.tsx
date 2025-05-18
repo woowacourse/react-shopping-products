@@ -1,25 +1,47 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useCallback,
-} from "react";
+import { createContext, useContext, ReactNode } from "react";
+import useFetch from "../hooks/useFetch";
+import { CartItemResponse } from "../types/response";
+
+import { URLS } from "../constants/url";
+import { CartItem } from "../types/cartContents";
 
 interface CartContextType {
-  cartLength: number | null;
-  setCartLength: (length: number) => void;
+  cartData: CartItem[] | undefined;
+  cartFetchLoading: boolean;
+  cartFetchError: Error | null;
+  fetchCart: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartContextProvider = ({ children }: { children: ReactNode }) => {
-  const [cartLength, cartLengthSetter] = useState<number | null>(null);
-  const setCartLength = useCallback((length: number) => {
-    cartLengthSetter(length);
-  }, []);
+  const {
+    data: cartItems,
+    fetcher: fetchCart,
+    error: cartFetchError,
+    isLoading: cartFetchLoading,
+  } = useFetch<CartItemResponse>(
+    URLS.CART_ITEMS,
+    {
+      headers: {
+        Authorization: `Basic ${btoa(
+          `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
+        )}`,
+        "Content-Type": "application/json",
+      },
+    },
+    false
+  );
+
   return (
-    <CartContext.Provider value={{ cartLength, setCartLength }}>
+    <CartContext.Provider
+      value={{
+        cartData: cartItems?.content,
+        cartFetchLoading,
+        cartFetchError,
+        fetchCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
