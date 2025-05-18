@@ -3,11 +3,16 @@ import styled from '@emotion/styled';
 type CartActionButtonProps = {
   variant: 'add' | 'remove';
   onClick: () => void;
+  isLoading?: boolean;
 };
 
-const CartActionButton = ({ variant, onClick }: CartActionButtonProps) => {
+const CartActionButton = ({
+  variant,
+  onClick,
+  isLoading,
+}: CartActionButtonProps) => {
   return (
-    <Button onClick={onClick} variant={variant}>
+    <Button onClick={onClick} variant={variant} disabled={isLoading}>
       {variant === 'add' ? <AddIcon /> : <RemoveIcon />}
       {variant === 'add' ? '담기' : '빼기'}
     </Button>

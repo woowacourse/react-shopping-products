@@ -2,17 +2,21 @@ import { Product } from '../../App';
 import CartActionButton from './button/CartActionButton';
 import styled from '@emotion/styled';
 
-const ProductItem = ({
-  product,
-  addToCart,
-  isInCart,
-  removeFromCart,
-}: {
+type ProductItemProps = {
   product: Product;
   isInCart: boolean;
+  isCartItemsLoading: boolean;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
-}) => {
+};
+
+const ProductItem = ({
+  product,
+  isInCart,
+  isCartItemsLoading,
+  addToCart,
+  removeFromCart,
+}: ProductItemProps) => {
   return (
     <ProductItemContainer>
       <ProductItemImage src={product.imageUrl} alt={product.name} />
@@ -29,11 +33,13 @@ const ProductItem = ({
             <CartActionButton
               variant="remove"
               onClick={() => removeFromCart(product.id)}
+              isLoading={isCartItemsLoading}
             />
           ) : (
             <CartActionButton
               variant="add"
               onClick={() => addToCart(product)}
+              isLoading={isCartItemsLoading}
             />
           )}
         </ButtonContainer>

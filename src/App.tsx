@@ -64,10 +64,11 @@ function App() {
       <ProductPage
         products={products}
         fetchProducts={fetchProducts}
+        cartItems={cartItems}
+        isCartItemsLoading={isCartItemsLoading}
         isLoading={isProductsLoading}
         addToCart={addToCart}
         removeFromCart={removeFromCart}
-        cartItems={cartItems}
       />
     </Layout>
   );

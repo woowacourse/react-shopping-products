@@ -8,6 +8,7 @@ type ProductPageProps = {
   products: Product[];
   isLoading: boolean;
   cartItems: CartItem[];
+  isCartItemsLoading: boolean;
   fetchProducts: (options: {
     category?: Category;
     priceOrder?: PriceOrder;
@@ -20,6 +21,7 @@ const ProductPage = ({
   products,
   isLoading,
   cartItems,
+  isCartItemsLoading,
   fetchProducts,
   addToCart,
   removeFromCart,
@@ -63,11 +65,12 @@ const ProductPage = ({
       </SelectContainer>
       <ProductListContainer>
         <ProductItemsWithSkeleton
-          isLoading={isLoading}
           products={products}
+          isLoading={isLoading}
+          cartItems={cartItems}
+          isCartItemsLoading={isCartItemsLoading}
           addToCart={addToCart}
           removeFromCart={removeFromCart}
-          cartItems={cartItems}
         />
       </ProductListContainer>
     </ProductPageContainer>

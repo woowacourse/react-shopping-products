@@ -6,17 +6,19 @@ import ProductItemSkeleton from './ProductItem/ProductItemSkeleton';
 type ProductItemWithSkeletonProps = {
   isLoading: boolean;
   products: Product[];
+  cartItems: CartItem[];
+  isCartItemsLoading: boolean;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
-  cartItems: CartItem[];
 };
 
 const ProductItemsWithSkeleton = ({
-  isLoading,
   products,
+  isLoading,
+  cartItems,
+  isCartItemsLoading,
   addToCart,
   removeFromCart,
-  cartItems,
 }: ProductItemWithSkeletonProps) => {
   return isLoading ? (
     <ProductItemSkeletons />
@@ -25,9 +27,10 @@ const ProductItemsWithSkeleton = ({
       <ProductItem
         key={product.id}
         product={product}
+        isInCart={isInCart(cartItems, product.id)}
+        isCartItemsLoading={isCartItemsLoading}
         addToCart={addToCart}
         removeFromCart={removeFromCart}
-        isInCart={isInCart(cartItems, product.id)}
       />
     ))
   );

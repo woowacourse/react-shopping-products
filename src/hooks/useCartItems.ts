@@ -18,6 +18,8 @@ const useCartItems = () => {
   });
 
   const fetchCartItems = async () => {
+    if (isLoading) return;
+
     setIsLoading(true);
     try {
       const { data, status } = await getCartItems();
@@ -35,6 +37,9 @@ const useCartItems = () => {
   };
 
   const addToCart = async (product: Product) => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     try {
       const { status } = await postCartItems(product);
       await fetchCartItems();
@@ -45,10 +50,15 @@ const useCartItems = () => {
       } else {
         setError({ isError: true, status: null });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const removeFromCart = async (productId: number) => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
@@ -58,6 +68,7 @@ const useCartItems = () => {
         isError: true,
         status: 404,
       });
+      setIsLoading(false);
       return;
     }
 
@@ -71,6 +82,8 @@ const useCartItems = () => {
       } else {
         setError({ isError: true, status: null });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
