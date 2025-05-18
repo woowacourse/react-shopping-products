@@ -1,5 +1,10 @@
 export const isErrorResponse = (
-  response: any
+  response: unknown
 ): response is { error: string } => {
-  return response && typeof response === "object" && "error" in response;
+  return (
+    response !== null &&
+    response !== undefined &&
+    typeof response === "object" &&
+    "error" in response
+  );
 };
