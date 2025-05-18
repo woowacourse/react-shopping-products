@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
-import ProductItem from './ProductItem';
-import { ProductTypes } from '../../types/ProductTypes';
-import { CartItemTypes } from '../../types/CartItemType';
+import styled from "@emotion/styled";
+import ProductItem from "./ProductItem";
+import { ProductTypes } from "../../types/ProductTypes";
+import { CartItemTypes } from "../../types/CartItemType";
 
 interface ProductListProps {
   productList: ProductTypes[];
@@ -18,10 +18,10 @@ export default function ProductList({
 }: ProductListProps) {
   return (
     <StyledUl>
-      {productList.map((props) => (
+      {productList.map((item) => (
         <ProductItem
-          {...props}
-          id={props.id}
+          key={item.id}
+          {...item}
           updateCartItems={updateCartItems}
           getMatchCartItem={getMatchCartItem}
           checkMax={checkMax}
