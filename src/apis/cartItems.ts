@@ -3,9 +3,9 @@ import { createApiUrl, fetchWithErrorHandling, SHOP_API } from "./configs";
 
 export const CartItemsAPI = {
   get: async () => {
-    const params: Record<string, string> = {
-      page: "0",
-      size: "50",
+    const params: Record<string, string | number> = {
+      page: 0,
+      size: 50,
     };
 
     const options: RequestInit = {

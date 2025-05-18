@@ -8,9 +8,15 @@ export const SHOP_API = {
 
 export const createApiUrl = (
   endpoint: string,
-  params?: Record<string, string>
+  params?: Record<string, string | number>
 ) => {
-  const searchParams = new URLSearchParams(params);
+  const searchParams = new URLSearchParams();
+
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      searchParams.append(key, String(value));
+    }
+  }
   return `${SHOP_API.baseUrl}${endpoint}?${searchParams.toString()}`;
 };
 

@@ -7,9 +7,9 @@ export const ProductsAPI = {
     category: CategoryOptionsKey,
     selectedSortOption: SortOptionsKey
   ) => {
-    const params: Record<string, string> = {
-      page: "0",
-      size: "20",
+    const params: Record<string, string | number> = {
+      page: 0,
+      size: 20,
     };
 
     if (category !== "전체") {
