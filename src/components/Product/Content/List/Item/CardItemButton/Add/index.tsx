@@ -4,7 +4,7 @@ import useMutation from "@/hooks/useMutation";
 import { addCartItems } from "@/apis/cartItems/addCartItems";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
 import { CartItemType } from "@/apis/cartItems/cartItem.type";
-import AlertToast from "@/components/AlertToast";
+import useToast from "@/hooks/useToast";
 
 interface AddCartItemButtonProps {
   id: number;
@@ -12,11 +12,10 @@ interface AddCartItemButtonProps {
 }
 
 function AddCartItemButton({ id, updateCartItems }: AddCartItemButtonProps) {
-  const {
-    mutate: addToCart,
-    isLoading,
-    error,
-  } = useMutation(() => addCartItems({ productId: id, quantity: 1 }));
+  const { mutate: addToCart, isLoading } = useMutation(() =>
+    addCartItems({ productId: id, quantity: 1 })
+  );
+  const { addToast } = useToast();
 
   const handleAddCartItemButtonClick = async () => {
     try {
@@ -24,13 +23,15 @@ function AddCartItemButton({ id, updateCartItems }: AddCartItemButtonProps) {
       const cartItems = await getCartItems();
       updateCartItems(cartItems);
     } catch (error) {
-      // mutate에서 에러가 발생한 경우 이후 로직을 실행하지 않게 try-catch문을 사용합니다.
+      addToast({
+        type: "error",
+        message: "장바구니에 상품을 추가하는 중 에러가 발생했습니다.",
+      });
     }
   };
 
   return (
     <>
-      {error?.message && <AlertToast errorMessage={error.message} />}
       <Button
         variant="primary"
         type="button"

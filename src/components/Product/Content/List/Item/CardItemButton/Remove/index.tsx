@@ -4,7 +4,7 @@ import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
 import useMutation from "@/hooks/useMutation";
-import AlertToast from "@/components/AlertToast";
+import useToast from "@/hooks/useToast";
 
 interface RemoveCartItemButtonProps {
   id: number;
@@ -15,11 +15,10 @@ function RemoveCartItemButton({
   id,
   updateCartItems,
 }: RemoveCartItemButtonProps) {
-  const {
-    mutate: removeFromCart,
-    isLoading,
-    error,
-  } = useMutation(() => removeCartItem(id));
+  const { mutate: removeFromCart, isLoading } = useMutation(() =>
+    removeCartItem(id)
+  );
+  const { addToast } = useToast();
 
   const handleRemoveCartItemButtonClick = async () => {
     try {
@@ -27,14 +26,15 @@ function RemoveCartItemButton({
       const cartItems = await getCartItems();
       updateCartItems(cartItems);
     } catch (error) {
-      // mutate에서 에러가 발생한 경우 이후 로직을 실행하지 않게 try-catch문을 사용합니다.
+      addToast({
+        type: "error",
+        message: "장바구니에서 상품을 삭제하는 중 에러가 발생했습니다.",
+      });
     }
   };
 
   return (
     <>
-      {error?.message && <AlertToast errorMessage={error.message} />}
-
       <Button
         variant="secondary"
         type="button"
