@@ -1,8 +1,10 @@
-import styled from '@emotion/styled';
-import { ProductTypes } from '../../types/ProductTypes';
-import postShoppingCart from '../../api/postShoppingCart';
-import deleteShoppingCart from '../../api/deleteShoppingCart';
-import { CartItemTypes } from '../../types/CartItemType';
+import styled from "@emotion/styled";
+import { ProductTypes } from "../../types/ProductTypes";
+import postShoppingCart from "../../api/postShoppingCart";
+import deleteShoppingCart from "../../api/deleteShoppingCart";
+import { CartItemTypes } from "../../types/CartItemType";
+import addShoppingCartIcon from "../../assets/addShoppingCartIcon.png";
+import removeShoppingCartIcon from "../../assets/removeShoppingCartIcon.png";
 
 type SetProducts = {
   updateCartItems: () => void;
@@ -25,7 +27,7 @@ export default function ProductItem({
   const handleItemClick = async () => {
     try {
       if (checkMax()) {
-        throw new Error('50개 초과');
+        throw new Error("50개 초과");
       }
       if (!isItemInCart) {
         await postShoppingCart(id, 1);
@@ -47,7 +49,7 @@ export default function ProductItem({
       <StyledProductInfoWrapper>
         <StyledProductInfo>
           <StyledTitle>{name}</StyledTitle>
-          <StyledPrice>{price.toLocaleString('ko')}원</StyledPrice>
+          <StyledPrice>{price.toLocaleString("ko")}원</StyledPrice>
         </StyledProductInfo>
         <StyledButtonWrapper>
           <StyledButton
@@ -56,17 +58,13 @@ export default function ProductItem({
             data-testid={!isItemInCart ? `add-btn-${id}` : `remove-btn-${id}`}
           >
             <StyledImg
-              src={
-                !isItemInCart
-                  ? '/addShoppingCartIcon.png'
-                  : '/removeShoppingCartIcon.png'
-              }
+              src={!isItemInCart ? addShoppingCartIcon : removeShoppingCartIcon}
               alt={
-                !isItemInCart ? 'addShoppingCartIcon' : 'removeShoppingCartIcon'
+                !isItemInCart ? "addShoppingCartIcon" : "removeShoppingCartIcon"
               }
             ></StyledImg>
             <StyledButtonText>
-              {!isItemInCart ? '담기' : '빼기'}
+              {!isItemInCart ? "담기" : "빼기"}
             </StyledButtonText>
           </StyledButton>
         </StyledButtonWrapper>
@@ -80,8 +78,8 @@ const StyledLi = styled.li`
   border-radius: 8px;
 `;
 
-type ImgWrapperProps = Pick<ProductTypes, 'imageUrl'>;
-type StyledButtonProps = Pick<ProductTypes, 'isItemInCart'>;
+type ImgWrapperProps = Pick<ProductTypes, "imageUrl">;
+type StyledButtonProps = Pick<ProductTypes, "isItemInCart">;
 
 const StyledImgWrapper = styled.div<ImgWrapperProps>`
   width: 100%;
@@ -117,9 +115,8 @@ const StyledButton = styled.button<StyledButtonProps>`
   padding: 4px 8px;
   gap: 4px;
   border-radius: 4px;
-  background-color: ${(props) => (props.isItemInCart ? '#000000' : '#EAEAEA')};
-  color: ${(props) => (props.isItemInCart ? '#FFFFFF' : '#000000')};
-  padding: 0px;
+  background-color: ${(props) => (props.isItemInCart ? "#000000" : "#EAEAEA")};
+  color: ${(props) => (props.isItemInCart ? "#FFFFFF" : "#000000")};
   display: flex;
   justify-content: center;
   gap: 4px;

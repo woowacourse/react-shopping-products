@@ -1,8 +1,9 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
+import shoppingBagIcon from "../../assets/shoppingBagIcon.png";
 
 interface HeaderProps {
   cartItemCount: number;
-  status: 'idle' | 'loading' | 'success' | 'error';
+  status: "idle" | "loading" | "success" | "error";
 }
 
 export default function Header({ cartItemCount, status }: HeaderProps) {
@@ -10,8 +11,8 @@ export default function Header({ cartItemCount, status }: HeaderProps) {
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
       <StyledButton type="button">
-        <StyledImg src="/shoppingBagIcon.png" alt="shoppingBagIcon" />
-        {status === 'success' ? (
+        <StyledImg src={shoppingBagIcon} alt="shoppingBagIcon" />
+        {status === "success" ? (
           <StyledCountBox data-testid="cart-count-box">
             <StyledCountText data-testid="cart-count">
               {cartItemCount}
