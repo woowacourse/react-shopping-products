@@ -54,11 +54,7 @@ function App() {
   useEffect(() => {
     const fetchCartItemList = async () => {
       try {
-        const rawCartItemList = await getCartItemList({
-          page: 0,
-          size: 50,
-          sort: "asc",
-        });
+        const rawCartItemList = await getCartItemList({});
         setCartItemList(rawCartItemList);
       } catch (error) {
         if (error instanceof Error) {
@@ -84,11 +80,7 @@ function App() {
 
       await AddProductItemApi(productId, 1);
 
-      const rawCartItemList = await getCartItemList({
-        page: 0,
-        size: 50,
-        sort: "asc",
-      });
+      const rawCartItemList = await getCartItemList({});
       setCartItemList(rawCartItemList);
     } catch (error) {
       if (error instanceof Error) {
@@ -101,11 +93,7 @@ function App() {
     try {
       await RemoveProductItemApi(cartItemId);
 
-      const rawCartItemList = await getCartItemList({
-        page: 0,
-        size: 50,
-        sort: "asc",
-      });
+      const rawCartItemList = await getCartItemList({});
       setCartItemList(rawCartItemList);
     } catch (error) {
       if (error instanceof Error) {

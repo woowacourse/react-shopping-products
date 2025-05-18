@@ -7,3 +7,4 @@ export const API_ERROR_MESSAGES: Record<number, string> = {
 } as const;
 
 export const DEFAULT_ERROR_MESSAGE = "알수없는 오류가 발생했습니다.";
+export const API_URL_ERROR_MESSAGE = "API_URL이 정의되지 않았습니다.";

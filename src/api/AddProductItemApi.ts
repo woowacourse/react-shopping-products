@@ -1,7 +1,15 @@
-import { API_ERROR_MESSAGES } from "./constants/errorMessages";
+import {
+  API_ERROR_MESSAGES,
+  API_URL_ERROR_MESSAGE,
+} from "./constants/errorMessages";
 
 async function AddProductItemApi(productId: number, quantity: number) {
   const API_URL = import.meta.env.VITE_BASE_URL || "";
+
+  if (!API_URL) {
+    throw new Error(API_URL_ERROR_MESSAGE);
+  }
+
   const options = {
     method: "POST",
     headers: {

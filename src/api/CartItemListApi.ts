@@ -1,18 +1,26 @@
-import { API_ERROR_MESSAGES } from "./constants/errorMessages";
+import {
+  API_ERROR_MESSAGES,
+  API_URL_ERROR_MESSAGE,
+} from "./constants/errorMessages";
 import { ResponseCartItem } from "./types";
 
 interface CarItemListProps {
-  page: number;
-  size: number;
-  sort: string;
+  page?: number;
+  size?: number;
+  sort?: string;
 }
 
 async function getCartItemList({
-  page,
-  size,
-  sort,
+  page = 0,
+  size = 50,
+  sort = "asc",
 }: CarItemListProps): Promise<ResponseCartItem[]> {
   const API_URL = import.meta.env.VITE_BASE_URL || "";
+
+  if (!API_URL) {
+    throw new Error(API_URL_ERROR_MESSAGE);
+  }
+
   const options = {
     method: "GET",
     headers: {
@@ -20,8 +28,14 @@ async function getCartItemList({
       Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}`,
     },
   };
+
+  const params = new URLSearchParams();
+  params.append("page", page.toString());
+  params.append("size", size.toString());
+  if (sort) params.append("sort", sort);
+
   const response = await fetch(
-    `${API_URL}/cart-items?page=${page}&size=${size}&sort=${sort}`,
+    `${API_URL}/cart-items?${params.toString()}`,
     options
   );
 
