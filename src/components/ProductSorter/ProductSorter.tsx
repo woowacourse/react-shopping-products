@@ -1,16 +1,9 @@
-import { Dispatch } from "react";
 import SelectBox from "../@common/SelectBox/SelectBox";
-import { SortOptionsKey, sortOptions } from "../../constants";
+import { sortOptions } from "../../constants";
+import { useProductFilter } from "../../hooks/useProductFilter";
 
-interface ProductSorterProps {
-  selectedSortOption: SortOptionsKey;
-  setSelectedSortOption: Dispatch<React.SetStateAction<SortOptionsKey>>;
-}
-
-const ProductSorter = ({
-  selectedSortOption,
-  setSelectedSortOption,
-}: ProductSorterProps) => {
+const ProductSorter = () => {
+  const { selectedSortOption, setSelectedSortOption } = useProductFilter();
   return (
     <SelectBox
       testIdPrefix="sort"

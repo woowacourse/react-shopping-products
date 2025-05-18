@@ -2,20 +2,21 @@ import { useEffect, useState } from "react";
 import { Products } from "../types/products";
 import { ProductsAPI } from "../apis/products";
 import { isErrorResponse } from "../utils/typeGuard";
-import { CategoryOptionsKey, SortOptionsKey } from "../constants";
+import { useProductFilter } from "./useProductFilter";
 
-const useProducts = (
-  category: CategoryOptionsKey,
-  sortOption: SortOptionsKey
-) => {
+const useProducts = () => {
   const [products, setProducts] = useState<Products | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const { selectedCategory, selectedSortOption } = useProductFilter();
 
   useEffect(() => {
     (async () => {
       setIsLoading(true);
-      const response = await ProductsAPI.get(category, sortOption);
+      const response = await ProductsAPI.get(
+        selectedCategory,
+        selectedSortOption
+      );
       setIsLoading(false);
 
       if (isErrorResponse(response)) {
@@ -25,7 +26,7 @@ const useProducts = (
 
       setProducts(response as Products);
     })();
-  }, [category, sortOption]);
+  }, [selectedCategory, selectedSortOption]);
 
   return {
     products,
