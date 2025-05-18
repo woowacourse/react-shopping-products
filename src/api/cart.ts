@@ -1,9 +1,19 @@
 import { CartResponse } from '../types/product';
 import { baseUrl } from './config';
 
-export const getCartItem = async (): Promise<CartResponse> => {
+interface getCartItemProps {
+  page: number;
+  size: number;
+  sortBy: string;
+}
+
+export const getCartItem = async ({
+  page,
+  size,
+  sortBy,
+}: getCartItemProps): Promise<CartResponse> => {
   const response = await fetch(
-    `${baseUrl}/cart-items?page=0&size=50&sort=desc`,
+    `${baseUrl}/cart-items?page=${page}&size=${size}&sort=${sortBy}`,
     {
       method: 'GET',
       headers: {
