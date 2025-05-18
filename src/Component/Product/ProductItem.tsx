@@ -58,8 +58,8 @@ export default function ProductItem({
             <StyledImg
               src={
                 !isItemInCart
-                  ? '/addShoppingCartIcon.png'
-                  : '/removeShoppingCartIcon.png'
+                  ? './addShoppingCartIcon.png'
+                  : './removeShoppingCartIcon.png'
               }
               alt={
                 !isItemInCart ? 'addShoppingCartIcon' : 'removeShoppingCartIcon'

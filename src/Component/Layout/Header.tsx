@@ -10,7 +10,7 @@ export default function Header({ cartItemCount, status }: HeaderProps) {
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
       <StyledButton type="button">
-        <StyledImg src="/shoppingBagIcon.png" alt="shoppingBagIcon" />
+        <StyledImg src="./shoppingBagIcon.png" alt="shoppingBagIcon" />
         {status === 'success' ? (
           <StyledCountBox data-testid="cart-count-box">
             <StyledCountText data-testid="cart-count">
