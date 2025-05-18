@@ -7,8 +7,8 @@ import RemoveShoppingCartIcon from '/public/icon/remove-shopping-cart.svg';
 interface ProductItemProps {
   product: ProductItemType;
   isCartAdded: boolean;
-  handleAddCartItem: (id: number) => void;
-  handleRemoveCartItem: (id: number) => void;
+  handleAddCartItem: (productId: number) => void;
+  handleRemoveCartItem: (productId: number) => void;
 }
 
 const ProductItem = ({

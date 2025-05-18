@@ -8,7 +8,7 @@ import { countDistinct } from '../../util/countDistinct';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { cartItemsIds } = useCartContext();
+  const { cartItems } = useCartContext();
 
   return (
     <S.HeaderContainer>
@@ -17,8 +17,10 @@ const Header = () => {
       </S.HeaderLogoButton>
       <S.HeaderCartButton>
         <img src={CartIcon} alt="장바구니" />
-        {cartItemsIds.length !== 0 && (
-          <S.HeaderItemCount>{countDistinct(cartItemsIds)}</S.HeaderItemCount>
+        {cartItems.length !== 0 && (
+          <S.HeaderItemCount>
+            {countDistinct(cartItems.map((cartItem) => cartItem.product.id))}
+          </S.HeaderItemCount>
         )}
       </S.HeaderCartButton>
     </S.HeaderContainer>

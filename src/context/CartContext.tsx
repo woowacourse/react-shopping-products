@@ -1,32 +1,33 @@
 import { createContext } from 'react';
+import type { CartItemType } from '../types/data';
 
 interface CartContextProps {
-  cartItemsIds: number[];
+  cartItems: CartItemType[];
   children: React.ReactNode;
-  handleAddCartItemsIds: (id: number) => void;
-  handleRemoveCartItemsIds: (id: number) => void;
+  handleAddCartItems: (productId: number) => void;
+  handleRemoveCartItems: (productId: number) => void;
 }
 
 interface CartContextType {
-  cartItemsIds: number[];
-  handleAddCartItemsIds: (id: number) => void;
-  handleRemoveCartItemsIds: (id: number) => void;
+  cartItems: CartItemType[];
+  handleAddCartItems: (productId: number) => void;
+  handleRemoveCartItems: (productId: number) => void;
 }
 
 export const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({
-  cartItemsIds,
-  handleAddCartItemsIds,
-  handleRemoveCartItemsIds,
+  cartItems,
+  handleAddCartItems,
+  handleRemoveCartItems,
   children,
 }: CartContextProps) => {
   return (
     <CartContext.Provider
       value={{
-        cartItemsIds,
-        handleAddCartItemsIds,
-        handleRemoveCartItemsIds,
+        cartItems,
+        handleAddCartItems,
+        handleRemoveCartItems,
       }}
     >
       {children}

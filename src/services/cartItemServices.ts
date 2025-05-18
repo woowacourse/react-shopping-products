@@ -14,9 +14,11 @@ export const getCartItems = async () => {
 };
 
 export const addCartItems = async (cartItem: AddCartItemsProps) => {
+  console.log(cartItem);
   await apiClient({ method: 'POST', URI: '/cart-items', body: cartItem });
 };
 
 export const removeCartItems = async (id: number) => {
+  console.log(`removeCartItems : ${id}`);
   await apiClient({ method: 'DELETE', URI: `/cart-items/${id}` });
 };
