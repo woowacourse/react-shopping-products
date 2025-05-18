@@ -20,10 +20,10 @@ const useCart = ({
       );
       return;
     }
-    const { newErrorMessage: postErrorMessage } = await postCartItems(product);
-    setErrorMessage(postErrorMessage);
+    const { error } = await postCartItems(product);
+    setErrorMessage(error?.message || "");
 
-    if (!postErrorMessage) {
+    if (!error?.message) {
       await syncCart();
     }
   };
@@ -35,20 +35,17 @@ const useCart = ({
     }
 
     const cartItemId = cartItem.id;
-    const { newErrorMessage: deleteErrorMessage } = await deleteCartItems(
-      cartItemId
-    );
-    setErrorMessage(deleteErrorMessage);
+    const { error } = await deleteCartItems(cartItemId);
+    setErrorMessage(error?.message || "");
 
-    if (!deleteErrorMessage) {
+    if (!error?.message) {
       await syncCart();
     }
   };
 
   const syncCart = async () => {
-    const { data: cartData, newErrorMessage: getErrorMessage } =
-      await getCartItems();
-    setErrorMessage(getErrorMessage);
+    const { data: cartData, error } = await getCartItems();
+    setErrorMessage(error?.message || "");
     const cartItems = cartData.content;
     setCart(cartItems);
   };

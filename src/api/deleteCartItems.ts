@@ -1,6 +1,15 @@
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
 
-const deleteCartItems = async (cartItemId: number) => {
+type FetchError = {
+  code: number;
+  message: string;
+};
+
+const deleteCartItems = async (
+  cartItemId: number
+): Promise<{
+  error: FetchError | null;
+}> => {
   const options = {
     method: "DELETE",
     headers: {
@@ -9,12 +18,12 @@ const deleteCartItems = async (cartItemId: number) => {
     },
   };
 
-  const { newErrorMessage } = await fetchWithErrorHandling(
+  const { error } = await fetchWithErrorHandling(
     `cart-items/${cartItemId}`,
     options
   );
 
-  return { newErrorMessage };
+  return { error };
 };
 
 export default deleteCartItems;

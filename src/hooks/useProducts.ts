@@ -18,11 +18,11 @@ const useProducts = ({
   const handleCategoryChange = async (category: Category) => {
     await withLoading(async () => {
       setSelectedCategory(category);
-      const { data, newErrorMessage } = await getProducts({
+      const { error, data } = await getProducts({
         category,
         priceOrder,
       });
-      setErrorMessage(newErrorMessage);
+      setErrorMessage(error?.message || "");
       setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
     });
   };
@@ -30,11 +30,11 @@ const useProducts = ({
   const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
     await withLoading(async () => {
       setPriceOrder(priceOrder);
-      const { data, newErrorMessage } = await getProducts({
+      const { data, error } = await getProducts({
         category: selectedCategory,
         priceOrder: priceOrder,
       });
-      setErrorMessage(newErrorMessage);
+      setErrorMessage(error?.message || "");
       setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
     });
   };

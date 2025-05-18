@@ -35,6 +35,11 @@ export type ProductsResponse = {
   empty: boolean;
 };
 
+type FetchError = {
+  code: number;
+  message: string;
+};
+
 const priceOrderQueryString = {
   "낮은 가격순": "price%2Casc",
   "높은 가격순": "price%2Cdesc",
@@ -44,8 +49,8 @@ const getProducts = async ({
   category = "전체",
   priceOrder = "낮은 가격순",
 }: GetProductsProps = {}): Promise<{
-  newErrorMessage: string;
   data: ProductsResponse;
+  error: FetchError | null;
 }> => {
   const searchParams = new URLSearchParams();
   searchParams.toString();
@@ -62,12 +67,12 @@ const getProducts = async ({
     },
   };
 
-  const { data, newErrorMessage } = await fetchWithErrorHandling(
+  const { data, error } = await fetchWithErrorHandling(
     `products?${queryString}`,
     options
   );
 
-  return { newErrorMessage, data };
+  return { data, error };
 };
 
 export default getProducts;

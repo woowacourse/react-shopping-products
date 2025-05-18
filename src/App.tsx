@@ -36,10 +36,9 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       await withLoading(async () => {
-        const { data, newErrorMessage: getProductErrorMessage } =
-          await getProducts();
-        setErrorMessage(getProductErrorMessage);
-        if (!getProductErrorMessage) {
+        const { data, error } = await getProducts();
+        setErrorMessage(error?.message || "");
+        if (!error?.message) {
           await syncCart();
           setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
         }

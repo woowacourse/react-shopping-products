@@ -1,7 +1,16 @@
 import { Product } from "../types/productType";
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
 
-const postCartItems = async (product: Product) => {
+type FetchError = {
+  code: number;
+  message: string;
+};
+
+const postCartItems = async (
+  product: Product
+): Promise<{
+  error: FetchError | null;
+}> => {
   const body = JSON.stringify({
     productId: product.id,
     quantity: 1,
@@ -16,12 +25,10 @@ const postCartItems = async (product: Product) => {
     body,
   };
 
-  const { newErrorMessage } = await fetchWithErrorHandling(
-    "cart-items",
-    options
-  );
+  const { error } = await fetchWithErrorHandling("cart-items", options);
+  console.log(error);
 
-  return { newErrorMessage };
+  return { error };
 };
 
 export default postCartItems;

@@ -30,18 +30,24 @@ export type CartItemsResponse = {
   empty: boolean;
 };
 
+type FetchError = {
+  code: number;
+  message: string;
+};
+
 const getCartItems = async (): Promise<{
-  newErrorMessage: string;
+  error: FetchError | null;
   data: CartItemsResponse;
 }> => {
-  const { data, newErrorMessage } = await fetchWithErrorHandling("cart-items", {
+  const { data, error } = await fetchWithErrorHandling("cart-items", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTHORIZATION}`,
     },
   });
-  return { newErrorMessage, data };
+
+  return { data, error };
 };
 
 export default getCartItems;
