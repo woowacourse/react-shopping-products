@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
-import TopArrow from "./icons/TopArrow";
+import TopArrow from "../icons/TopArrow";
 
 interface SelectProps {
   options: string[];

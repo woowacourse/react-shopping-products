@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
-import Text from "./Text";
 import { useEffect } from "react";
+import Text from "./common/Text";
 
 const ErrorPopup = ({
   errorMessage,
