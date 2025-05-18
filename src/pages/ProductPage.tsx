@@ -1,31 +1,27 @@
 import styled from '@emotion/styled';
 import Select from '../components/Select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CartItem, Category, PriceOrder, Product } from '../App';
 import ProductItemsWithSkeleton from '../components/ProductItemsWithSkeleton';
+import ErrorMessage from '../components/ErrorMessage';
+import getProductErrorMessage from '../utils/getProductErrorMessage';
+import useProducts from '../hooks/useProducts';
 
 type ProductPageProps = {
-  products: Product[];
-  isLoading: boolean;
   cartItems: CartItem[];
   isCartItemsLoading: boolean;
-  fetchProducts: (options: {
-    category?: Category;
-    priceOrder?: PriceOrder;
-  }) => Promise<void>;
   addToCart: (product: Product) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
 };
 
 const ProductPage = ({
-  products,
-  isLoading,
   cartItems,
   isCartItemsLoading,
-  fetchProducts,
   addToCart,
   removeFromCart,
 }: ProductPageProps) => {
+  const { products, isLoading, error, fetchProducts } = useProducts();
+
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
   const [priceOrder, setPriceOrder] = useState<PriceOrder>('낮은 가격순');
 
@@ -46,34 +42,47 @@ const ProductPage = ({
       category: selectedCategory,
     });
   };
+
+  useEffect(() => {
+    fetchProducts({
+      category: selectedCategory,
+      priceOrder,
+    });
+  }, []);
+
   return (
-    <ProductPageContainer>
-      <ProductPageHeader>bppl 상품 목록</ProductPageHeader>
-      <SelectContainer>
-        <Select
-          optionList={['전체', '식료품', '패션잡화']}
-          value={selectedCategory}
-          setValue={handleCategoryChange}
-          id="category-select"
-        />
-        <Select
-          optionList={['낮은 가격순', '높은 가격순']}
-          value={priceOrder}
-          setValue={handlePriceOrderChange}
-          id="price-order-select"
-        />
-      </SelectContainer>
-      <ProductListContainer>
-        <ProductItemsWithSkeleton
-          products={products}
-          isLoading={isLoading}
-          cartItems={cartItems}
-          isCartItemsLoading={isCartItemsLoading}
-          addToCart={addToCart}
-          removeFromCart={removeFromCart}
-        />
-      </ProductListContainer>
-    </ProductPageContainer>
+    <>
+      {error.isError && (
+        <ErrorMessage errorMessage={getProductErrorMessage(error.status)} />
+      )}
+      <ProductPageContainer>
+        <ProductPageHeader>bppl 상품 목록</ProductPageHeader>
+        <SelectContainer>
+          <Select
+            optionList={['전체', '식료품', '패션잡화']}
+            value={selectedCategory}
+            setValue={handleCategoryChange}
+            id="category-select"
+          />
+          <Select
+            optionList={['낮은 가격순', '높은 가격순']}
+            value={priceOrder}
+            setValue={handlePriceOrderChange}
+            id="price-order-select"
+          />
+        </SelectContainer>
+        <ProductListContainer>
+          <ProductItemsWithSkeleton
+            products={products}
+            isLoading={isLoading}
+            cartItems={cartItems}
+            isCartItemsLoading={isCartItemsLoading}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+          />
+        </ProductListContainer>
+      </ProductPageContainer>
+    </>
   );
 };
 
