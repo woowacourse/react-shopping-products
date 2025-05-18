@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <MobileLayout>
       <App />
-      <Toast limit={5} autoClose={3000} />
+      <Toast limit={5} duration={3000} />
     </MobileLayout>
   </React.StrictMode>
 );
