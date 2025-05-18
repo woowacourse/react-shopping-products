@@ -26,7 +26,6 @@ const postCartItems = async (
   };
 
   const { error } = await fetchWithErrorHandling("cart-items", options);
-  console.log(error);
 
   return { error };
 };

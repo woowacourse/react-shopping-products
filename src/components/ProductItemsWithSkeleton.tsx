@@ -1,5 +1,4 @@
 import { CartItem, Product } from "../types/productType";
-import isInCart from "../utils/isIncart";
 import ProductItem from "./ProductItem/ProductItem";
 import ProductItemSkeleton from "./ProductItem/ProductItemSkeleton";
 import { PRODUCT_TYPE_COUNT } from "../App";
@@ -10,6 +9,10 @@ type ProductItemWithSkeletonProps = {
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
   cart: CartItem[];
+};
+
+const isInCart = (cartItem: CartItem[], id: number) => {
+  return cartItem.some((item) => item.product.id === id);
 };
 
 const ProductItemsWithSkeleton = ({
