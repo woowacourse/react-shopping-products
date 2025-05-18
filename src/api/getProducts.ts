@@ -1,24 +1,18 @@
-import { Category } from "../App";
+import { Category, PriceOrder, Product } from "../types/productType";
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
-import { PriceOrder } from "../App";
-import { Product } from "../App";
 
-type GetProductsProps = {
+export type GetProductsProps = {
   category?: Category;
   priceOrder?: PriceOrder;
 };
-const priceOrderQueryString = {
-  "낮은 가격순": "price%2Casc",
-  "높은 가격순": "price%2Cdesc",
-};
 
-type Sort = {
+export type Sort = {
   empty: boolean;
   sorted: boolean;
   unsorted: boolean;
 };
 
-type Pageable = {
+export type Pageable = {
   pageNumber: number;
   pageSize: number;
   sort: Sort;
@@ -27,7 +21,7 @@ type Pageable = {
   unpaged: boolean;
 };
 
-type ProductsResponse = {
+export type ProductsResponse = {
   content: Product[];
   pageable: Pageable;
   last: boolean;
@@ -39,6 +33,11 @@ type ProductsResponse = {
   sort: Sort;
   first: boolean;
   empty: boolean;
+};
+
+const priceOrderQueryString = {
+  "낮은 가격순": "price%2Casc",
+  "높은 가격순": "price%2Cdesc",
 };
 
 const getProducts = async ({

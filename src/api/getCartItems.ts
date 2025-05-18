@@ -1,7 +1,7 @@
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
-import { CartItem } from "../App";
+import { CartItem } from "../types/productType";
 
-type CartItemsResponse = {
+export type CartItemsResponse = {
   content: CartItem[];
   pageable: {
     pageNumber: number;

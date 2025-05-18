@@ -10,23 +10,8 @@ import "./app.css";
 import ProductItemsWithSkeleton from "./components/ProductItemsWithSkeleton";
 import ErrorMessage from "./components/ErrorMessage";
 import Select from "./components/Select";
+import { Product, CartItem, Category, PriceOrder } from "./types/productType";
 
-export type Product = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-};
-
-export type CartItem = {
-  id: number;
-  quantity: number;
-  product: Product;
-};
-
-export type Category = "식료품" | "패션잡화" | "전체";
-export type PriceOrder = "낮은 가격순" | "높은 가격순";
 export const PRODUCT_TYPE_COUNT = 20;
 export const CART_MAX_COUNT = 50;
 

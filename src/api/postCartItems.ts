@@ -1,4 +1,4 @@
-import { Product } from "../App";
+import { Product } from "../types/productType";
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
 
 const postCartItems = async (product: Product) => {

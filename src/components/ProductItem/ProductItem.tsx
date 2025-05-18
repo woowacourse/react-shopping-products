@@ -1,4 +1,4 @@
-import { Product } from "../../App";
+import { Product } from "../../types/productType";
 import CartActionButton from "./button/CartActionButton";
 import styled from "@emotion/styled";
 
