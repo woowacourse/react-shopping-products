@@ -54,7 +54,7 @@ describe("CartToggleButton 통합 테스트 (실제 API)", () => {
           cartAmount={cartItems.length}
           setCartItemIds={setCartItems}
           setErrorTrue={() => {}}
-          fetchCartProducts={updateCart}
+          syncCartWithServer={updateCart}
         />
       );
     };
