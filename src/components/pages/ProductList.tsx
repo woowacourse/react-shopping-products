@@ -15,7 +15,10 @@ const ProductList = () => {
 
 	const mergedData = products.map((product) => {
 		const cart = cartProducts.find((item) => item.product.id === product.id);
-		return cart ? { ...product, cartInfo: { id: cart.id, quantity: cart.quantity } } : { ...product, cartInfo: { id: -1, quantity: 0 } };
+		return {
+			...product,
+			cartInfo: cart ? { id: cart.id, quantity: cart.quantity } : null,
+		};
 	});
 
 	return (
@@ -36,12 +39,13 @@ const ProductList = () => {
 						</select>
 					</div>
 				</div>
+
 				{loading ? (
 					<Skeleton length={10} />
 				) : (
 					<div className={S.itemContainer}>
-						{mergedData?.map(({ id, imageUrl, name, price, cartInfo }) => (
-							<ItemCard key={id} imageUrl={imageUrl} name={name} price={price} isCart={cartInfo.id !== -1} cartInfo={cartInfo} fetchCartProducts={fetchCartProducts} id={id} />
+						{mergedData.map(({ id, imageUrl, name, price, cartInfo }) => (
+							<ItemCard key={id} id={id} imageUrl={imageUrl} name={name} price={price} cartInfo={cartInfo} fetchCartProducts={fetchCartProducts} />
 						))}
 					</div>
 				)}

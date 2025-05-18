@@ -8,12 +8,11 @@ interface ItemCardProps {
 	imageUrl: string;
 	name: string;
 	price: number;
-	isCart: boolean;
-	cartInfo: CartInfo;
+	cartInfo: CartInfo | null;
 	fetchCartProducts: () => Promise<void>;
 }
 
-const ItemCard = ({ id, imageUrl, name, price, isCart, cartInfo, fetchCartProducts }: ItemCardProps) => {
+const ItemCard = ({ id, imageUrl, name, price, cartInfo, fetchCartProducts }: ItemCardProps) => {
 	return (
 		<div className={S.cardContainer}>
 			<img
@@ -31,7 +30,7 @@ const ItemCard = ({ id, imageUrl, name, price, isCart, cartInfo, fetchCartProduc
 					<p>{price.toLocaleString()}원</p>
 				</div>
 				<div className={S.buttonWrap}>
-					{isCart ? (
+					{cartInfo ? (
 						<button
 							className={S.removeCartButton}
 							onClick={async () => {
