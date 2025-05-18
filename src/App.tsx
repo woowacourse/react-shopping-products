@@ -79,7 +79,7 @@ function App() {
     try {
       if (cartItemList.length >= CART_MAX_COUNT) {
         handleCartErrorMessage(
-          "장바구니에는 최대 50개의 상품만 담을 수 있습니다."
+          `장바구니에는 최대 ${CART_MAX_COUNT}개의 상품만 담을 수 있습니다.`
         );
         return;
       }
