@@ -1,10 +1,15 @@
 import * as S from "./SelectBox.styles";
 
+export interface SelectOption<T extends string> {
+  value: T;
+  label: string;
+}
+
 interface SelectBoxProps<T extends string> {
   testIdPrefix: string;
-  value: string;
+  value: T;
   onChange: React.Dispatch<React.SetStateAction<T>>;
-  options: string[];
+  options: SelectOption<T>[];
 }
 
 const SelectBox = <T extends string>({
@@ -19,9 +24,9 @@ const SelectBox = <T extends string>({
       value={value}
       onChange={(e) => onChange(e.target.value as T)}
     >
-      {options.map((option, index) => (
-        <option key={index} value={option}>
-          {option}
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
         </option>
       ))}
     </S.Select>

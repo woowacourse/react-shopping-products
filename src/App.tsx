@@ -22,7 +22,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryOptionsKey>("전체");
   const [selectedSortOption, setSelectedSortOption] =
-    useState<SortOptionsKey>("낮은 가격 순");
+    useState<SortOptionsKey>("price,asc");
 
   useEffect(() => {
     (async () => {

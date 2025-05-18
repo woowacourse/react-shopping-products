@@ -1,8 +1,4 @@
-import {
-  CategoryOptionsKey,
-  SortOptionsKey,
-  sortOptionsMap,
-} from "../constants";
+import { CategoryOptionsKey, SortOptionsKey } from "../constants";
 import { Products } from "../types/products";
 import { createApiUrl, fetchWithErrorHandling, SHOP_API } from "./configs";
 
@@ -20,8 +16,8 @@ export const ProductsAPI = {
       params.category = category;
     }
 
-    if (selectedSortOption && sortOptionsMap[selectedSortOption]) {
-      params.sort = sortOptionsMap[selectedSortOption];
+    if (selectedSortOption) {
+      params.sort = selectedSortOption;
     }
 
     const apiUrl = createApiUrl(SHOP_API.endpoint.products, params);
