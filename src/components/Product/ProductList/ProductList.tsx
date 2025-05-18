@@ -7,14 +7,9 @@ import * as styles from "./ProductList.style";
 interface ProductListProps {
   products?: Product[];
   cartItems?: CartItem[];
-  refetchCart: () => Promise<void>;
 }
 
-export default function ProductList({
-  products,
-  cartItems,
-  refetchCart,
-}: ProductListProps) {
+export default function ProductList({ products, cartItems }: ProductListProps) {
   if (!products) {
     return <Fallback />;
   }
@@ -34,7 +29,6 @@ export default function ProductList({
             price={price}
             title={name}
             imageUrl={imageUrl}
-            refetchCart={refetchCart}
             isItemInCart={Boolean(cartItems?.some((p) => p.product.id === id))}
           />
         );

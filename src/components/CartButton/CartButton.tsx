@@ -6,20 +6,18 @@ import { URLS } from "../../constants/url";
 import { useCartContext } from "../../contexts/CartContext";
 interface CartButtonProps extends ComponentProps<"button"> {
   isInCart: boolean;
-  refetchCart: () => Promise<void>;
   productId: number;
   cartItemId?: number;
 }
 
 export default function CartButton({
   isInCart,
-  refetchCart,
   productId,
   cartItemId,
   ...props
 }: CartButtonProps) {
   const { showError } = useErrorContext();
-  const { cartLength } = useCartContext();
+  const { fetchCart, cartData } = useCartContext();
   const [isFetchLoading, setIsFetchLoading] = useState(false);
 
   const { fetcher: deleteCartItem, error: deleteError } = useFetch(
@@ -69,7 +67,7 @@ export default function CartButton({
     try {
       setIsFetchLoading(true);
       await deleteCartItem();
-      await refetchCart();
+      await fetchCart();
     } catch (error) {
       if (error instanceof Error) {
         showError(error);
@@ -82,11 +80,11 @@ export default function CartButton({
   const handleAddCartItem = async () => {
     try {
       setIsFetchLoading(true);
-      if (cartLength && cartLength >= 50) {
+      if (cartData?.length && cartData.length >= 50) {
         throw new Error(`장바구니 갯수가 50개 이상 담을수 없습니다.`);
       }
       await addCartItem();
-      await refetchCart();
+      await fetchCart();
     } catch (error) {
       if (error instanceof Error) {
         showError(error);

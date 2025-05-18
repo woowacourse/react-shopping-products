@@ -2,14 +2,14 @@ import { useCartContext } from "../../contexts/CartContext";
 import * as styles from "./Header.style";
 
 function Header() {
-  const { cartLength } = useCartContext();
+  const { cartData } = useCartContext();
   return (
     <header css={styles.header}>
       <p>SHOP</p>
       <button css={styles.cartIcon}>
-        <div hidden={cartLength === 0}>
+        <div>
           <img src="assets/cart.svg" alt="cart-icon" />
-          <span>{cartLength}</span>
+          <span hidden={cartData?.length === 0}>{cartData?.length}</span>
         </div>
       </button>
     </header>

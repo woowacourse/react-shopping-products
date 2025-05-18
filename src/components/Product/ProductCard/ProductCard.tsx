@@ -1,13 +1,12 @@
 import CartButton from "../../CartButton/CartButton";
 import Spinner from "../../Spinner/Spinner";
 import * as styles from "./ProductCard.style";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 interface ProductCardProps {
   title: string;
   price: number;
   imageUrl: string;
-  refetchCart: () => Promise<void>;
   isItemInCart: boolean;
   productId: number;
   cartItemId?: number;
@@ -19,11 +18,11 @@ function ProductCard({
   price,
   imageUrl,
   isItemInCart,
-  refetchCart,
   productId,
   cartItemId,
 }: ProductCardProps) {
   const [imageStatus, setImageStatus] = useState<ImageStatus>("loading");
+  const [finalImageUrl, setFinalImageUrl] = useState<string>(imageUrl);
 
   // 배포 환경에 따른 베이스 경로 계산
   const basePath = useMemo(() => {
@@ -42,16 +41,33 @@ function ProductCard({
   // Fallback 이미지 경로
   const fallbackImagePath = `${basePath}assets/fallback_image.png`;
 
+  // 이미지 URL 검증 및 처리
+  useEffect(() => {
+    if (!isValidImageUrl(imageUrl)) {
+      setImageStatus("error");
+      setFinalImageUrl(fallbackImagePath);
+      return;
+    }
+
+    // 이미지 미리 로드하여 CORS 문제 확인
+    const img = new Image();
+    img.onload = () => {
+      setImageStatus("loaded");
+      setFinalImageUrl(imageUrl);
+    };
+    img.onerror = () => {
+      setImageStatus("error");
+      setFinalImageUrl(fallbackImagePath);
+    };
+    img.src = imageUrl;
+  }, [imageUrl, fallbackImagePath]);
+
   return (
     <li css={styles.cardCss}>
       {imageStatus === "loading" && <Spinner size={"large"} />}
       <img
         css={styles.imageCss}
-        src={
-          !isValidImageUrl(imageUrl) || imageStatus === "error"
-            ? fallbackImagePath
-            : imageUrl
-        }
+        src={imageStatus === "error" ? fallbackImagePath : finalImageUrl}
         alt={`${title} 상품`}
         onLoad={() => setImageStatus("loaded")}
         onError={() => setImageStatus("error")}
@@ -61,7 +77,6 @@ function ProductCard({
         <p>{`${price.toLocaleString()}원`}</p>
         <CartButton
           productId={productId}
-          refetchCart={refetchCart}
           isInCart={isItemInCart}
           cartItemId={cartItemId}
         />

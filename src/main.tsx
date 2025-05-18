@@ -4,13 +4,18 @@ import App from "./App.tsx";
 import "./index.css";
 import { ErrorContextProvider } from "./contexts/ErrorContext";
 import { CartContextProvider } from "./contexts/CartContext.tsx";
+import { ProductContextProvider } from "./contexts/ProductContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ErrorContextProvider>
+    <ProductContextProvider>
       <CartContextProvider>
-        <App />
+        <ErrorContextProvider>
+          <CartContextProvider>
+            <App />
+          </CartContextProvider>
+        </ErrorContextProvider>
       </CartContextProvider>
-    </ErrorContextProvider>
+    </ProductContextProvider>
   </React.StrictMode>
 );

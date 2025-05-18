@@ -1,11 +1,6 @@
-import useFetch from "./hooks/useFetch";
-import { CartItemResponse, ProductResponse } from "./types/response";
 import { useEffect, useState } from "react";
 import { useErrorContext } from "./contexts/ErrorContext";
-import { useProductQuery } from "./hooks/useProductQuery";
-import { URLS } from "./constants/url";
 import Dropdown from "./components/Dropdown/Dropdown";
-
 import Spinner from "./components/Spinner/Spinner";
 import ProductList from "./components/Product/ProductList/ProductList";
 import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
@@ -13,42 +8,29 @@ import * as styles from "./App.style";
 import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
 import { useCartContext } from "./contexts/CartContext";
 import Header from "./components/Header/Header";
+import { useProductContext } from "./contexts/ProductContext";
 
 function App() {
   const { showError } = useErrorContext();
-  const { setCartLength } = useCartContext();
+
+  const {
+    productsData,
+    productFetchLoading,
+    productFetchError,
+    fetchProducts,
+    setOrderBy,
+    orderBy,
+  } = useProductContext();
+  const { cartData, cartFetchError, fetchCart } = useCartContext();
   const [category, setCategory] = useState<CategoryOptionType>("전체");
-  const [orderBy, setOrderBy] = useState<OrderByOptionType>("낮은 가격순");
-
-  const {
-    data: products,
-    isLoading: productFetchLoading,
-    error: productFetchError,
-    fetcher: refetchProducts,
-  } = useFetch<ProductResponse>(useProductQuery(orderBy));
-
-  const {
-    data: cartItems,
-    fetcher: refetchCart,
-    error: cartFetchError,
-  } = useFetch<CartItemResponse>(URLS.CART_ITEMS, {
-    headers: {
-      Authorization: `Basic ${btoa(
-        `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-      )}`,
-      "Content-Type": "application/json",
-    },
-  });
 
   useEffect(() => {
-    refetchProducts();
-  }, [orderBy, refetchProducts]);
+    fetchCart();
+  }, [fetchCart]);
 
   useEffect(() => {
-    if (cartItems?.content) {
-      setCartLength(cartItems.content.length);
-    }
-  }, [cartItems?.content, cartItems?.content?.length, setCartLength]);
+    fetchProducts();
+  }, [orderBy, fetchProducts]);
 
   useEffect(() => {
     if (productFetchError) {
@@ -58,10 +40,6 @@ function App() {
       showError(cartFetchError);
     }
   }, [productFetchError, cartFetchError, showError]);
-
-  async function handleRefetchCart() {
-    await refetchCart();
-  }
 
   const handleSelectCategory = (value: CategoryOptionType) => {
     setCategory(value);
@@ -97,11 +75,10 @@ function App() {
         <ProductList
           products={
             category === "전체"
-              ? products?.content
-              : products?.content.filter((item) => item.category == category)
+              ? productsData
+              : productsData?.filter((item) => item.category == category)
           }
-          cartItems={cartItems?.content}
-          refetchCart={handleRefetchCart}
+          cartItems={cartData}
         />
       )}
     </div>
