@@ -11,8 +11,8 @@
 
 - [ ] API 호출
 
-  - [ ] 공통 BASE API 파일 생성
-  - [ ] API 분리
+  - [x] 공통 BASE API 파일 생성
+  - [x] API 분리
   - [ ] API 요청 시, 로딩 및 에러 관리
     - [ ] 로딩 : context api로 상위에서 관리
     - [ ] 에러 : context api로 상위에서 관리
