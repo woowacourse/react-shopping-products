@@ -10,14 +10,7 @@ function Wrapper({
   setErrorTrue?: (type: unknown) => void;
 }) {
   return (
-    <ProductCardList
-      category="전체"
-      sort={sort}
-      cartItemIds={[]}
-      setCartItemIds={() => {}}
-      setErrorTrue={setErrorTrue}
-      syncCartWithServer={() => {}}
-    />
+    <ProductCardList category="전체" sort={sort} setErrorTrue={setErrorTrue} />
   );
 }
 
@@ -76,10 +69,7 @@ describe("상품 정렬 테스트", () => {
       <ProductCardList
         category="에러"
         sort="낮은 가격순"
-        cartItemIds={[]}
-        setCartItemIds={() => {}}
         setErrorTrue={mockSetErrorTrue}
-        syncCartWithServer={() => {}}
       />
     );
 
