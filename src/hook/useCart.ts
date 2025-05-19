@@ -14,9 +14,7 @@ const useCart = () => {
       const response = await cartApi.getCartItems();
       setCartData(response);
     } catch (error) {
-      // 에러 발생 시 빈 배열로 설정
       setCartData([]);
-      // TODO: Fallback page 또는 에러 처리 로직 추가
     }
   };
 
