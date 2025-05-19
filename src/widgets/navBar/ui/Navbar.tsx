@@ -3,11 +3,11 @@ import ErrorToast from '../../../shared/ui/ErrorToast';
 import * as S from './Navbar.styles';
 
 interface NavbarProps {
-  cartQuantity: number;
+  cartTypeQuantity: number;
   errorMessage: string;
 }
 
-export default function Navbar({ cartQuantity, errorMessage }: NavbarProps) {
+export default function Navbar({ cartTypeQuantity, errorMessage }: NavbarProps) {
   const [visibleError, setVisibleError] = useState(errorMessage);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function Navbar({ cartQuantity, errorMessage }: NavbarProps) {
       <S.NavbarContainer>
         <S.Logo onClick={handleLogoClick}>SHOP</S.Logo>
         <S.CartIconContainer>
-          <S.CartQuantity>{cartQuantity}</S.CartQuantity>
+          <S.CartQuantity>{cartTypeQuantity}</S.CartQuantity>
           <S.CartIcon src='./cartIcon.svg' alt='cart icon' />
         </S.CartIconContainer>
       </S.NavbarContainer>

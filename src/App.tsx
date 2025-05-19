@@ -33,7 +33,7 @@ function App() {
     setErrors(error);
   }
 
-  const cartQuantity = products.filter((product) => product.isCart).length;
+  const cartTypeQuantity = products.filter((product) => product.isCart).length;
 
   useEffect(() => {
     fetchProducts();
@@ -50,7 +50,7 @@ function App() {
 
   return (
     <>
-      <Navbar cartQuantity={cartQuantity} errorMessage={errors} />
+      <Navbar cartTypeQuantity={cartTypeQuantity} errorMessage={errors} />
       <S.ProductListWrapper>
         <S.ProductListHeader>
           <S.ProductListHeaderTitle>WoowaBros Product List</S.ProductListHeaderTitle>
@@ -74,13 +74,7 @@ function App() {
         ) : (
           <S.ProductList>
             {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onRefetch={fetchProducts}
-                cartQuantity={cartQuantity}
-                setErrors={setErrors}
-              />
+              <ProductCard key={product.id} product={product} onRefetch={fetchProducts} setErrors={setErrors} />
             ))}
           </S.ProductList>
         )}

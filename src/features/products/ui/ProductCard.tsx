@@ -1,49 +1,24 @@
 import { css } from '@emotion/react';
 import CustomButton from '../../../shared/ui/CustomButton';
-import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
 import { Product } from '../type/product';
 import * as S from './ProductCard.styles';
-import { CART_MAX_LIMIT } from '../../cart/constants/cart';
-import { addCartProduct } from '../../cart/api/addCartProduct';
+import { useState } from 'react';
+import CartQuantitySelector from './CartQuantitySelector';
+// import { CART_MAX_LIMIT } from '../../cart/constants/cart';
+// import { addCartProduct } from '../../cart/api/addCartProduct';
+// import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
 
 interface ProductCardProps {
   product: Product;
   onRefetch: () => void;
-  cartQuantity: number;
   setErrors: (error: string) => void;
 }
 
-export default function ProductCard({ product, onRefetch, cartQuantity, setErrors }: ProductCardProps) {
+export default function ProductCard({ product, onRefetch, setErrors }: ProductCardProps) {
+  const [cartQuantity, setCartQuantity] = useState(1);
+  const [isCartSelected, setCartSelected] = useState(false);
   const handleProductCart = async () => {
-    setErrors('');
-    try {
-      if (product.isCart && product.cartProductId) {
-        await deleteCartProduct(product.cartProductId);
-        alert('장바구니에서 삭제되었습니다.');
-        onRefetch();
-
-        return;
-      }
-
-      if (cartQuantity >= CART_MAX_LIMIT) {
-        setErrors('장바구니에 담을 수 있는 최대 개수는 50개입니다.');
-        return;
-      }
-
-      if (product.isCart) {
-        setErrors('이미 장바구니에 담긴 상품입니다.');
-        return;
-      }
-
-      await addCartProduct(product.id);
-      alert('장바구니에 담겼습니다.');
-      onRefetch();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('장바구니 처리 중 에러 발생:', error);
-        setErrors('장바구니 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
-      }
-    }
+    setCartSelected((prev) => !prev);
   };
 
   const iconUrl = product.isCart ? './deleteCartIcon.svg' : './addCartIcon.svg';
@@ -73,7 +48,11 @@ export default function ProductCard({ product, onRefetch, cartQuantity, setError
         <S.ProductPrice>{product.price}</S.ProductPrice>
       </S.ContentSection>
       <S.ButtonSection>
-        <CustomButton iconUrl={iconUrl} title={title} onClick={handleProductCart} css={buttonStyle} />
+        {!isCartSelected ? (
+          <CustomButton iconUrl={iconUrl} title={title} onClick={handleProductCart} css={buttonStyle} />
+        ) : (
+          <CartQuantitySelector cartQuantity={cartQuantity} setCartQuantity={setCartQuantity} />
+        )}
       </S.ButtonSection>
     </S.ProductCardContainer>
   );

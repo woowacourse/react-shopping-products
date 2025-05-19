@@ -16,6 +16,7 @@ export const ImageSection = styled.img`
 
 export const ContentSection = styled.div`
   flex: 1;
+
   padding: 15px 10px;
 `;
 
@@ -38,4 +39,5 @@ export const ButtonSection = styled.div`
   height: 25px;
   display: flex;
   justify-content: end;
+  padding: 15px 10px;
 `;
