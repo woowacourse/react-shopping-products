@@ -1,8 +1,8 @@
-import { baseAPI } from './baseAPI';
-import { convertResponseToCart } from '../components/features/product/responseMapper';
+import { baseAPI } from '@/api/baseAPI';
+import { convertResponseToCart } from '../responseMapper';
 import { CartItemsResponse } from './type';
 
-export async function getShoppingCartData() {
+export async function getShoppingCartList() {
   const initialPage = 0;
   const maxSize = 50;
   const basePath = `/cart-items?page=${initialPage}&size=${maxSize}`;

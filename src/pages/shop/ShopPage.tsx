@@ -1,15 +1,15 @@
+import { wrapPromise } from '@/api/wrapPromise';
+import { ErrorToastMessage, Flex, Loading } from '@/components/common';
+import { DropdownOptionType } from '@/components/common/Dropdown';
+import { getProductList } from '@/components/features/product/api/getProductList';
+import ProductList from '@/components/features/product/product-list/ProductList';
+import { Product } from '@/components/features/product/type';
+import { useCartContext } from '@/context/useCartContext';
+import ShopFilter from '@/shop/components/filter/ShopFilter';
+import ShopHeader from '@/shop/components/header/ShopHeader';
+import { useShopErrorContext } from '@/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
 import { Suspense, useMemo, useState } from 'react';
-import { wrapPromise } from '../../api/wrapPromise';
-import { ErrorToastMessage, Flex, Loading } from '../../components/common';
-import { DropdownOptionType } from '../../components/common/Dropdown';
-import ProductList from '../../components/features/product/product-list/ProductList';
-import { Product } from '../../components/features/product/type';
-import { useCartContext } from '../../context/useCartContext';
-import { getListData } from '../../api/getListData';
-import ShopFilter from '../../shop/components/filter/ShopFilter';
-import ShopHeader from '../../shop/components/header/ShopHeader';
-import { useShopErrorContext } from '../../shop/context/useShopErrorContext';
 
 function ShopPage() {
   const [filterOption, setFilterOption] = useState({
@@ -34,7 +34,7 @@ function ShopPage() {
   };
 
   const listPromiseData = useMemo(
-    () => getListData(filterOption),
+    () => getProductList(filterOption),
     [filterOption]
   );
 

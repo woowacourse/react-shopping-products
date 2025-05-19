@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { deleteCartItem } from '../../../../api/deleteCartItem';
-import { postCartItem } from '../../../../api/postCartItem';
-import { useCartContext } from '../../../../context/useCartContext';
-import { useShopErrorContext } from '../../../../shop/context/useShopErrorContext';
-import { Flex } from '../../../common';
 import AddCartButton from './AddCartButton';
 import DeleteCartButton from './DeleteCartButton';
+import { useCartContext } from '@/context/useCartContext';
+import { useShopErrorContext } from '@/shop/context/useShopErrorContext';
+import { addCartItem } from '../api/addCartItem';
+import { deleteCartItem } from '../api/deleteCartItem';
+import { Flex } from '@/components/common';
 
 interface ProductProps {
   id: string;
@@ -33,7 +33,7 @@ function ProductCard({
         handleErrorTrue('장바구니는 최대 50개까지 담을 수 있습니다.');
         return;
       }
-      await postCartItem(id);
+      await addCartItem(id);
       refetch();
       handleErrorFalse();
     } catch (e) {

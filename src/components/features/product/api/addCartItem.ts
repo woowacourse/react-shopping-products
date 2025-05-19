@@ -1,6 +1,6 @@
-import { baseAPI } from './baseAPI';
+import { baseAPI } from '@/api/baseAPI';
 
-export async function postCartItem(id: string) {
+export async function addCartItem(id: string) {
   return baseAPI({
     method: 'POST',
     path: `/cart-items`,

@@ -1,16 +1,16 @@
+import App from '@/App';
 import { render, screen } from '@testing-library/react';
-import App from '../../App';
 import { cartMockData } from '../__mocks__/cartData';
 import { productListMockData } from '../__mocks__/productListMockData';
 
-jest.mock('../../api/getShoppingCartData', () => ({
-  getShoppingCartData: jest
+jest.mock('../../components/features/product/api/getShoppingCartList', () => ({
+  getShoppingCartList: jest
     .fn()
     .mockImplementation(() => Promise.resolve(cartMockData)),
 }));
 
-jest.mock('../../api/getListData', () => ({
-  getListData: jest
+jest.mock('../../components/features/product/api/getProductList', () => ({
+  getProductList: jest
     .fn()
     .mockImplementation(() => Promise.resolve(productListMockData)),
 }));

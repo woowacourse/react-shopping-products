@@ -1,4 +1,4 @@
-import { CartItemContent, ProductContent } from '../../../api/type';
+import { CartItemContent, ProductContent } from './api/type';
 import { Cart, Product, ProductCategoryType } from './type';
 
 export const convertResponseToProduct = ({

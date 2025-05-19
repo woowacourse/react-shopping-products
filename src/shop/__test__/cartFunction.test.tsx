@@ -1,35 +1,24 @@
 import { render, screen } from '@testing-library/react';
-import App from '../../App';
 import { productListMockData } from '../__mocks__/productListMockData';
 import { cartMockData } from '../__mocks__/cartData';
+import App from '../../App';
 
-jest.mock('../../api/postCartItem', () => ({
-  postCartItem: jest
+jest.mock('../../components/features/product/api/getShoppingCartList', () => ({
+  getShoppingCartList: jest
     .fn()
     .mockImplementation(() => Promise.resolve(cartMockData)),
 }));
 
-jest.mock('../../api/getShoppingCartData', () => ({
-  getShoppingCartData: jest
+jest.mock('../../components/features/product/api/getProductList', () => ({
+  getProductList: jest
     .fn()
-    .mockImplementation(() => Promise.resolve(cartMockData)),
-}));
-
-jest.mock('../../api/getListData', () => ({
-  getListData: jest.fn().mockImplementation(() => {
-    console.log(productListMockData);
-    return Promise.resolve(productListMockData);
-  }),
-}));
-
-jest.mock('../../api/deleteCartItem', () => ({
-  deleteCartItem: jest
-    .fn()
-    .mockImplementation(() => Promise.resolve(cartMockData)),
+    .mockImplementation(() => Promise.resolve(productListMockData)),
 }));
 
 jest.mock('../../api/baseAPI', () => ({
-  baseAPI: jest.fn().mockImplementation(() => Promise.resolve(cartMockData)),
+  baseAPI: jest
+    .fn()
+    .mockImplementation(() => Promise.resolve(productListMockData)),
 }));
 
 describe('SHOP 페이지에 접속 시', () => {
