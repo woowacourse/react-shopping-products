@@ -12,13 +12,17 @@ import { DropdownContainer, Section } from './App.styles';
 import Dropdown from './ui/components/Dropdown/Dropdown';
 import ProductList from './ui/components/ProductList/ProductList';
 import Title from './ui/components/Title/Title';
-import { CATEGORY, SORT_PRICE } from './constants/productConfig';
+import {
+  CATEGORY,
+  SORT_PRICE,
+  SORT_PRICE_MAP,
+} from './constants/productConfig';
 
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
   const [category, setCategory] = useState<CategoryType>('전체');
 
-  const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
+  const mappedSortType = SORT_PRICE_MAP[sort];
 
   const { products, cart, isLoading, isError, setIsError, fetchData } =
     useProducts(mappedSortType, category);
