@@ -3,7 +3,7 @@
 > react-shopping-products
 > FE 레벨2 상품 목록 미션
 
-[🔗 웹페이지 배포 주소](https://thgml05.github.io/react-shopping-products)
+[🔗 웹페이지 배포 주소](https://shinjungoh.github.io/react-shopping-products)
 
 <br>
 
