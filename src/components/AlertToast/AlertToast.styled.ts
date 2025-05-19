@@ -15,7 +15,7 @@ export const Container = styled.div<ToastTypeProps>`
   align-items: center;
   justify-content: center;
   background-color: ${({ type }) =>
-    type === "success" ? "#4caf50" : "#ff4d4d"};
+    type === "success" ? "#8FD292" : "#FF8C8C "};
   color: #0a0d13;
   z-index: 999;
 `;
