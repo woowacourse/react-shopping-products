@@ -1,7 +1,7 @@
-import { css } from "@emotion/react";
-import { deleteCartItem, postCartItem } from "../../api/cartItem";
-import { CartItem } from "../../page/ShopPage";
-import Button from "../Button/Button";
+import { css } from '@emotion/react';
+import { CartItem } from '../../page/ShopPage';
+import Button from '../Button/Button';
+import { useCartItemToggle } from '../../hook/useCartItemToggle';
 
 interface ProductProps {
   id: string;
@@ -57,44 +57,30 @@ const priceLayout = css`
   font-weight: 500;
 `;
 
-export default function Product({
-  id,
-  imageUrl,
-  name,
-  price,
-  selectedCardItems,
-  onChange,
-}: ProductProps) {
-  const isSelected = selectedCardItems.length !== 0;
+export default function Product({ id, imageUrl, name, price, selectedCardItems, onChange }: ProductProps) {
+  const { isSelected, toggle } = useCartItemToggle({
+    productId: Number(id),
+    selectedCartItem: selectedCardItems[0],
+    onSuccess: onChange,
+  });
 
-  const handleClick = async () => {
-    if (isSelected)
-      await deleteCartItem({ id: Number(selectedCardItems[0].id) });
-    else await postCartItem({ productId: Number(id), quantity: 1 });
-    onChange();
-  };
+  const addProduct = () => (
+    <Button onClick={toggle}>
+      <img src="./add-shopping-cart.svg" />
+      <p>담기</p>
+    </Button>
+  );
 
-  const addProduct = () => {
-    return (
-      <Button onClick={handleClick}>
-        <img src="./add-shopping-cart.svg" />
-        <p>담기</p>
-      </Button>
-    );
-  };
-
-  const removeProduct = () => {
-    return (
-      <Button onClick={handleClick} style="secondary">
-        <img src="./remove-shopping-cart.svg" />
-        <p>빼기</p>
-      </Button>
-    );
-  };
+  const removeProduct = () => (
+    <Button onClick={toggle} style="secondary">
+      <img src="./remove-shopping-cart.svg" />
+      <p>빼기</p>
+    </Button>
+  );
 
   return (
     <div id={id} css={productLayout}>
-      <img css={imgLayout} src={imageUrl ?? "./default-img.png"} />
+      <img css={imgLayout} src={imageUrl ?? './default-img.png'} />
       <div css={contentLayout}>
         <div css={descriptionLayout}>
           <p css={productNameLayout}>{name}</p>
