@@ -25,7 +25,14 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   return (
     <div key={id} className={CardFrame}>
       <div className={ImageFrame}>
-        <img src={imageUrl} alt={name} className={CardImage} />
+        <img
+          src={imageUrl || "./default.png"}
+          alt={name}
+          className={CardImage}
+          onError={(e) => {
+            e.currentTarget.src = "./default.png";
+          }}
+        />
       </div>
       <div className={CardInfo}>
         <h4 className={ProductName}>{name}</h4>
