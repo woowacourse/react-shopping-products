@@ -1,7 +1,7 @@
 import { baseAPI } from './baseAPI';
-import { ProductData } from './type';
 import { convertResponseToProduct } from '../components/features/product/responseMapper';
 import { DropdownOptionType } from '../components/common/Dropdown';
+import { ProductsResponse } from './type';
 
 export async function getListData(filterOption: {
   category: DropdownOptionType;
@@ -15,7 +15,7 @@ export async function getListData(filterOption: {
       : '';
   const basePath = `/products?${categoryPath}page=${page}&size=${size}&sort=price,${filterOption.sort.value}`;
 
-  const data = await baseAPI<ProductData>({
+  const data = await baseAPI<ProductsResponse>({
     method: 'GET',
     path: basePath,
   });

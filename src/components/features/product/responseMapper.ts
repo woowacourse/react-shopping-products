@@ -1,4 +1,4 @@
-import { CartContent, ProductContent } from '../../../api/type';
+import { CartItemContent, ProductContent } from '../../../api/type';
 import { Cart, Product, ProductCategoryType } from './type';
 
 export const convertResponseToProduct = ({
@@ -19,7 +19,7 @@ export const convertResponseToCart = ({
   id,
   quantity,
   product,
-}: CartContent): Cart => ({
+}: CartItemContent): Cart => ({
   id: id.toString(),
   quantity,
   product: convertResponseToProduct(product),

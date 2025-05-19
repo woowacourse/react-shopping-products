@@ -1,5 +1,5 @@
-export interface CartData {
-  content: CartContent[];
+export interface PaginationResponse<T> {
+  content: T[];
   pageable: Pageable;
   totalElements: number;
   totalPages: number;
@@ -12,21 +12,11 @@ export interface CartData {
   empty: boolean;
 }
 
-export interface ProductData {
-  content: ProductContent[];
-  pageable: Pageable;
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
-  size: number;
-  number: number;
-  sort: Sort;
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
-}
+export interface CartItemsResponse
+  extends PaginationResponse<CartItemContent> {}
+export interface ProductsResponse extends PaginationResponse<ProductContent> {}
 
-export interface CartContent {
+export interface CartItemContent {
   id: number;
   quantity: number;
   product: ProductContent;
@@ -40,10 +30,7 @@ export interface ProductContent {
   category: Category | null;
 }
 
-export enum Category {
-  식료품 = '식료품',
-  패션잡화 = '패션잡화',
-}
+export type Category = '식료품' | '패션잡화';
 
 export interface Pageable {
   pageNumber: number;
