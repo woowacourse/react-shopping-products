@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import SelectBox from "../Common/SelectBox";
 import { ProductTypes } from "../../types/ProductTypes";
-import { useState } from "react";
-import getProducts from "../../api/getProducts";
+import useCartContext from "../../contexts/CartContext";
+import { useProductFilters } from "../../hooks/useProductFilter";
 
 interface ProductListToolbarProps {
   setProducts: (products: ProductTypes[]) => void;
@@ -21,52 +21,9 @@ const PRICE = [
 export default function ProductListToolbar({
   setProducts,
 }: ProductListToolbarProps) {
-  const [categoryValue, setCategoryValue] = useState("");
-  const [priceValue, setPriceValue] = useState("");
-
-  const handleCategoryChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { value } = e.target;
-    try {
-      const productsData = await getProducts(value === "전체" ? "" : value, {
-        page: 0,
-        size: 20,
-        sort: priceValue === "낮은 가격순" ? "price,asc" : "price,desc",
-      });
-      const productsContent = productsData.content;
-      setProducts(productsContent);
-    } catch (e) {
-      //
-    } finally {
-      //
-    }
-
-    setCategoryValue(value);
-  };
-
-  const handlePriceChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
-
-    try {
-      const productsData = await getProducts(
-        categoryValue === "전체" ? "" : categoryValue,
-        {
-          page: 0,
-          size: 20,
-          sort: value === "낮은 가격순" ? "price,asc" : "price,desc",
-        }
-      );
-      const productsContent = productsData.content;
-      setProducts(productsContent);
-    } catch (e) {
-      //
-    } finally {
-      //
-    }
-
-    setPriceValue(value);
-  };
+  const { updateErrorMessage } = useCartContext();
+  const { category, price, onCategoryChange, onPriceChange } =
+    useProductFilters(setProducts, updateErrorMessage);
 
   return (
     <Container>
@@ -75,8 +32,8 @@ export default function ProductListToolbar({
         <FirstSelectWrapper>
           <Label htmlFor="category">카테고리</Label>
           <SelectBox
-            value={categoryValue}
-            onChange={handleCategoryChange}
+            value={category}
+            onChange={onCategoryChange}
             options={CATEGORY}
             name="category"
             id="category"
@@ -85,8 +42,8 @@ export default function ProductListToolbar({
         <div>
           <Label htmlFor="price">가격</Label>
           <SelectBox
-            value={priceValue}
-            onChange={handlePriceChange}
+            value={price}
+            onChange={onPriceChange}
             options={PRICE}
             name="price"
             id="price"
