@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
 import { ProductTypes } from "../../types/ProductTypes";
-import postShoppingCart from "../../api/postShoppingCart";
-import deleteShoppingCart from "../../api/deleteShoppingCart";
+import { useToggleCartItem } from "../../hooks/useToggleCartItem";
 import { CartItemTypes } from "../../types/CartItemType";
 import addShoppingCartIcon from "../../assets/addShoppingCartIcon.png";
 import removeShoppingCartIcon from "../../assets/removeShoppingCartIcon.png";
 
-type SetProducts = {
-  updateCartItems: () => void;
+type ProductItemProps = ProductTypes & {
+  updateCartItems: () => Promise<void>;
   getMatchCartItem: (id: number) => CartItemTypes | undefined;
   checkMax: () => boolean;
 };
@@ -20,28 +19,15 @@ export default function ProductItem({
   updateCartItems,
   getMatchCartItem,
   checkMax,
-}: ProductTypes & SetProducts) {
-  const isItemInCart = getMatchCartItem(id) ? true : false;
-  const cartItemId = getMatchCartItem(id)?.id;
+}: ProductItemProps) {
+  const isItemInCart = Boolean(getMatchCartItem(id));
 
-  const handleItemClick = async () => {
-    try {
-      if (checkMax()) {
-        throw new Error("50개 초과");
-      }
-      if (!isItemInCart) {
-        await postShoppingCart(id, 1);
-      } else {
-        if (!cartItemId) return;
-        await deleteShoppingCart(cartItemId);
-      }
-      await updateCartItems();
-    } catch (e) {
-      //
-    } finally {
-      //
-    }
-  };
+  const handleItemClick = useToggleCartItem(
+    id,
+    getMatchCartItem,
+    checkMax,
+    updateCartItems
+  );
 
   return (
     <StyledLi id={String(id)}>
