@@ -42,3 +42,6 @@ interface ButtonProps {
 
 - [ ] RTL 테스트 코드 수정
   - [ ] api 호출 모킹 데이터로 테스트 하기
+    - [ ] useProducts
+      - [x] 모킹데이터 추가
+    - [ ] useCartItems
