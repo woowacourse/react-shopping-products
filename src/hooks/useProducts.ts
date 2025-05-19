@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Info } from '../types';
-import { PRODUCT_URL } from '../constants/endpoint';
-import getQueryURL from '../utils/getQueryURL';
-import handleHttpError from '../utils/handleHTTPError';
+import useProductQueryURL from './useProductQueryURL';
+import useFetch from './useFetch';
 import useError from './useError';
 
 export default function useProducts({
@@ -12,35 +11,23 @@ export default function useProducts({
   filterType = '',
 }) {
   const [productsInfo, setProductsInfo] = useState<Info>({ content: [] });
-  const [loading, setLoading] = useState<boolean>(false);
+  const { fetchData, loading } = useFetch();
+  const { requestURL } = useProductQueryURL({ page, size, sortingType, filterType });
   const { showError } = useError();
 
   const products = productsInfo.content;
-  const query = {
-    page,
-    size,
-    ...(sortingType && { sort: `price,${sortingType}` }),
-    ...(filterType && { category: filterType }),
-  };
-  const requestURL = getQueryURL(PRODUCT_URL, query);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setLoading(true);
-        const response = await fetch(requestURL);
-        handleHttpError(response);
-        const data = await response.json();
+        const data = await fetchData(requestURL);
         setProductsInfo(data);
       } catch (error) {
         if (error instanceof Error) showError(error.message);
-      } finally {
-        setLoading(false);
       }
     };
-
     fetchProducts();
-  }, [requestURL, showError]);
+  }, [fetchData, requestURL, showError]);
 
   return { products, loading };
 }
