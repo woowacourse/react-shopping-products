@@ -39,8 +39,6 @@ function Main({
     handleErrorMessage,
   });
 
-  console.log(cartItems, productList);
-
   const handleCategory = ({
     target: { value },
   }: React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,7 +64,6 @@ function Main({
       <Styled.ProductListTitle>bpple 상품 목록</Styled.ProductListTitle>
       <Filter handleCategory={handleCategory} handleSort={handleSort} />
       {state.isLoading && <Spinner />}
-      {state.isFail && <Spinner />}
       {state.isSuccess && (
         <ProductList
           cartItems={cartItems}

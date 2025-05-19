@@ -1,11 +1,10 @@
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
-import Spinner from "./components/common/Spinner/Spinner";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
 import styled from "@emotion/styled";
 import useErrorMessage from "./hooks/useErrorMessage";
 import useCartItems from "./hooks/useCartItems";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
 function App() {
   const { errorMessage, handleErrorMessage } = useErrorMessage();
@@ -28,32 +27,23 @@ function App() {
     $product && removeCartItem($product.id);
   };
 
-  if (state.isLoading || state.isFail) {
-    return (
-      <Container>
-        <Wrapper>
-          <Spinner />
-        </Wrapper>
-      </Container>
-    );
-  }
-
-  if (state.isSuccess) {
-    return (
-      <Container>
-        <Wrapper>
-          <Header cartItems={selectedItemProductId}></Header>
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-          <Main
-            cartItems={selectedItemProductId}
-            handleErrorMessage={handleErrorMessage}
-            handleAddProduct={handleAddProduct}
-            handleRemoveProduct={handleRemoveProduct}
-          />
-        </Wrapper>
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <Wrapper>
+        <Header cartItems={selectedItemProductId}></Header>
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {/* {state.isLoading && <Spinner />} */}
+        {/* {state.isSuccess && ( */}
+        <Main
+          cartItems={selectedItemProductId}
+          handleErrorMessage={handleErrorMessage}
+          handleAddProduct={handleAddProduct}
+          handleRemoveProduct={handleRemoveProduct}
+        />
+        {/* )} */}
+      </Wrapper>
+    </Container>
+  );
 }
 
 export default App;
