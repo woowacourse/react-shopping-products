@@ -1,6 +1,7 @@
 import { Category, PriceOrder, Product } from "../types/productType";
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
 import { FetchError } from "../types/\bfetchType";
+import getHeaders from "./getHeader";
 
 export type GetProductsProps = {
   category?: Category;
@@ -58,9 +59,7 @@ const getProducts = async ({
   const queryString = searchParams.toString();
   const options = {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getHeaders(),
   };
 
   const { data, error } = await fetchWithErrorHandling(

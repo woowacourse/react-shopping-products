@@ -1,6 +1,7 @@
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
 import { CartItem } from "../types/productType";
 import { FetchError } from "../types/\bfetchType";
+import getHeaders from "./getHeader";
 
 export type CartItemsResponse = {
   content: CartItem[];
@@ -37,10 +38,7 @@ const getCartItems = async (): Promise<{
 }> => {
   const { data, error } = await fetchWithErrorHandling("cart-items", {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTHORIZATION}`,
-    },
+    headers: getHeaders(),
   });
 
   return { data, error };

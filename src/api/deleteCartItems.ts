@@ -1,5 +1,6 @@
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
 import { FetchError } from "../types/\bfetchType";
+import getHeaders from "./getHeader";
 
 const deleteCartItems = async (
   cartItemId: number
@@ -8,10 +9,7 @@ const deleteCartItems = async (
 }> => {
   const options = {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTHORIZATION}`,
-    },
+    headers: getHeaders(),
   };
 
   const { error } = await fetchWithErrorHandling(

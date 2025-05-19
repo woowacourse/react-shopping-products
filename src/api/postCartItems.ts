@@ -1,6 +1,7 @@
 import { Product } from "../types/productType";
 import fetchWithErrorHandling from "./fetchWithErrorHandling";
 import { FetchError } from "../types/\bfetchType";
+import getHeaders from "./getHeader";
 
 const postCartItems = async (
   product: Product
@@ -14,10 +15,7 @@ const postCartItems = async (
 
   const options = {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTHORIZATION}`,
-    },
+    headers: getHeaders(),
     body,
   };
 
