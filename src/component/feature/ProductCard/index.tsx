@@ -27,14 +27,6 @@ const ProductCard = ({
   handleAddCart,
   handleRemoveCart,
 }: ProductCardProps) => {
-  const handleClick = async (productId: number) => {
-    if (isInCart) {
-      handleRemoveCart(productId);
-    } else {
-      handleAddCart(productId);
-    }
-  };
-
   return (
     <section css={productCardStyle}>
       <div css={productCardImageContainerStyle}>
@@ -52,7 +44,7 @@ const ProductCard = ({
               빼기
             </Button>
           ) : (
-            <Button variant="default" onClick={() => handleClick(id)}>
+            <Button variant="default" onClick={() => handleAddCart(id)}>
               <img src={IconAddCart} alt="add cart" />
               담기
             </Button>
