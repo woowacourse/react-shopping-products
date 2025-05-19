@@ -1,8 +1,8 @@
-import styled from '@emotion/styled';
-import SelectBox from '../Common/SelectBox';
-import { ProductTypes } from '../../types/ProductTypes';
-import { useState } from 'react';
-import getProducts from '../../api/getProducts';
+import styled from "@emotion/styled";
+import SelectBox from "../Common/SelectBox";
+import { ProductTypes } from "../../types/ProductTypes";
+import { useState } from "react";
+import getProducts from "../../api/getProducts";
 
 interface ProductListToolbarProps {
   setProducts: (products: ProductTypes[]) => void;
@@ -12,27 +12,27 @@ export default function ProductListToolbar({
   setProducts,
 }: ProductListToolbarProps) {
   const CATEGORY = [
-    { name: '전체', value: 'all' },
-    { name: '식료품', value: 'grocery' },
-    { name: '패션잡화', value: 'fashion' },
+    { name: "전체", value: "all" },
+    { name: "식료품", value: "grocery" },
+    { name: "패션잡화", value: "fashion" },
   ];
   const PRICE = [
-    { name: '낮은 가격순', value: 'low' },
-    { name: '높은 가격순', value: 'high' },
+    { name: "낮은 가격순", value: "low" },
+    { name: "높은 가격순", value: "high" },
   ];
 
-  const [categoryValue, setCategoryValue] = useState('');
-  const [priceValue, setPriceValue] = useState('');
+  const [categoryValue, setCategoryValue] = useState("");
+  const [priceValue, setPriceValue] = useState("");
 
   const handleCategoryChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { value } = e.target;
     try {
-      const productsData = await getProducts(value === '전체' ? '' : value, {
+      const productsData = await getProducts(value === "전체" ? "" : value, {
         page: 0,
         size: 20,
-        sort: priceValue === '낮은 가격순' ? 'price,asc' : 'price,desc',
+        sort: priceValue === "낮은 가격순" ? "price,asc" : "price,desc",
       });
       const productsContent = productsData.content;
       setProducts(productsContent);
@@ -50,11 +50,11 @@ export default function ProductListToolbar({
 
     try {
       const productsData = await getProducts(
-        categoryValue === '전체' ? '' : categoryValue,
+        categoryValue === "전체" ? "" : categoryValue,
         {
           page: 0,
           size: 20,
-          sort: value === '낮은 가격순' ? 'price,asc' : 'price,desc',
+          sort: value === "낮은 가격순" ? "price,asc" : "price,desc",
         }
       );
       const productsContent = productsData.content;
@@ -77,7 +77,7 @@ export default function ProductListToolbar({
           <SelectBox
             value={categoryValue}
             onChange={handleCategoryChange}
-            category={CATEGORY}
+            options={CATEGORY}
             name="category"
             id="category"
           />
@@ -87,7 +87,7 @@ export default function ProductListToolbar({
           <SelectBox
             value={priceValue}
             onChange={handlePriceChange}
-            category={PRICE}
+            options={PRICE}
             name="price"
             id="price"
           />

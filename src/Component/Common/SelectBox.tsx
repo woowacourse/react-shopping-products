@@ -1,21 +1,21 @@
 import { ComponentProps } from "react";
 import styled from "@emotion/styled";
 
-type Category = {
+type Options = {
   name: string;
 };
 
 interface SelectBoxProps {
-  category: Category[];
+  options: Options[];
 }
 
 export default function SelectBox({
-  category,
+  options,
   ...props
 }: SelectBoxProps & ComponentProps<"select">) {
   return (
     <StyledSelect {...props}>
-      {category.map(({ name }) => (
+      {options.map(({ name }) => (
         <option key={name} value={name}>
           {name}
         </option>
