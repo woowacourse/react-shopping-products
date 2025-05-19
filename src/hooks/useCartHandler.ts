@@ -32,10 +32,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
   const handleRemoveCartItemsIds = (id: number) => {
     (async () => {
       const cartItems = (await tryApiCall<CartItemType[]>(getCartItems, handleErrorMessage)) ?? [];
-      const cartId = await tryApiCall(
-        async () => await getCartId(cartItems, id),
-        handleErrorMessage,
-      );
+      const cartId = getCartId(cartItems, id);
 
       if (cartId) {
         await tryApiCall(async () => await removeCartItems(cartId), handleErrorMessage);
