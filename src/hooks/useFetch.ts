@@ -27,7 +27,9 @@ function useFetch<T>(
       const res = await fetch(url, options);
 
       if (!res.ok)
-        throw new Error(`오류가 발생했습니다. 잠시 후 다시 시도해 주세요.`);
+        throw new Error(
+          "네트워크 오류가 발생했습니다. 잠시후 다시 이용해 주세요."
+        );
 
       // 201 Created, 204 No Content
       // 201 Created: 요청이 성공적으로 처리되었고, 새로운 리소스가 생성됨
@@ -54,14 +56,17 @@ function useFetch<T>(
       if (e instanceof Error && e.name === "AbortError") {
         setError(new Error("요청이 취소되었습니다."));
       } else if (e instanceof Error && e.name === "TypeError") {
-        setError(new Error("네트워크 오류가 발생했습니다."));
+        setError(
+          new Error("네트워크 오류가 발생했습니다. 잠시후 다시 이용해 주세요.")
+        );
       } else {
         setError(e instanceof Error ? e : new Error(String(e)));
       }
     } finally {
       setIsLoading(false);
     }
-  }, [url, JSON.stringify(options), ...deps]);
+    //천천히 deps에 고민해보자.
+  }, [url, options, ...deps]);
 
   useEffect(() => {
     if (immediate) fetcher();

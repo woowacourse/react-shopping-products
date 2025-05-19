@@ -28,7 +28,9 @@ export default function ErrorToast({
 
   return (
     <div css={styles.toastCss}>
-      <h2 css={styles.messageCss}>{error.message}</h2>
+      <h2 css={styles.messageCss} id="error-toast-message">
+        {error.message}
+      </h2>
       <button css={styles.closeButtonCss} onClick={handleClose}>
         ✕
       </button>
