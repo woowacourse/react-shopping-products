@@ -2,7 +2,7 @@ import { ENV } from './env';
 import { HttpError } from './httpError';
 
 const baseUrl = ENV.BASE_URL;
-const token = ENV.TOKEN;
+const token = ENV.ACCESS_TOKEN;
 
 type FetcherOptions<T> = {
   endpoint: string;
