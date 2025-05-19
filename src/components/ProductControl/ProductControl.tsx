@@ -2,35 +2,28 @@ import * as S from './ProductControl.styled';
 import Select from '../common/Select/Select';
 import getProductList from '../../api/productListApi';
 import { CategoryOptions, SortOptions } from '../../constants/selectOptions';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { ResponseProduct } from '../../api/types';
+import { useState } from 'react';
+import { CategoryOptionType, ProductControlProps, SelectType, SortOptionType } from './types';
 
-function ProductControl({
-  setProductList,
-  setErrorMessage,
-}: {
-  setProductList: Dispatch<SetStateAction<ResponseProduct[]>>;
-  setErrorMessage: Dispatch<SetStateAction<string>>;
-}) {
-  const [category, setCategory] = useState<string>('');
-  const [sort, setSort] = useState<string>('');
+function ProductControl({ setProductList, setErrorMessage }: ProductControlProps) {
+  const [category, setCategory] = useState<CategoryOptionType>('');
+  const [sort, setSort] = useState<SortOptionType>('price,asc');
 
-  async function handleCategoryChange(category: string) {
+  async function handleSelectChange(selectedValue: CategoryOptionType | SortOptionType, type: SelectType) {
     try {
-      setCategory(category);
-      const rawProductList = await getProductList({ category, sort });
-      setProductList(rawProductList);
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
+      const newCategory = type === 'category' ? selectedValue : category;
+      const newSort = type === 'sort' ? selectedValue : sort;
+
+      if (type === 'category') {
+        setCategory(selectedValue as CategoryOptionType);
+      } else {
+        setSort(selectedValue as SortOptionType);
       }
-    }
-  }
 
-  async function handleSortChange(sort: string) {
-    try {
-      setSort(sort);
-      const rawProductList = await getProductList({ category, sort });
+      const rawProductList = await getProductList({
+        category: newCategory,
+        sort: newSort,
+      });
       setProductList(rawProductList);
     } catch (error) {
       if (error instanceof Error) {
@@ -43,8 +36,8 @@ function ProductControl({
     <S.ProductControlContainer>
       <S.ProductControlTitle>bpple 상품목록</S.ProductControlTitle>
       <S.SelectContainer>
-        <Select options={CategoryOptions} onChange={handleCategoryChange} />
-        <Select options={SortOptions} onChange={handleSortChange} />
+        <Select options={CategoryOptions} onChange={(value) => handleSelectChange(value as CategoryOptionType, 'category')} />
+        <Select options={SortOptions} onChange={(value) => handleSelectChange(value as SortOptionType, 'sort')} />
       </S.SelectContainer>
     </S.ProductControlContainer>
   );
