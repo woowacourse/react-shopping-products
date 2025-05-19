@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import shoppingBagIcon from "../../assets/shoppingBagIcon.png";
+import CountBox from "./CountBox";
 
 interface HeaderProps {
   cartItemCount: number;
@@ -12,13 +13,13 @@ export default function Header({ cartItemCount, status }: HeaderProps) {
       <StyledSpan>SHOP</StyledSpan>
       <StyledButton type="button">
         <StyledImg src={shoppingBagIcon} alt="shoppingBagIcon" />
-        {status === "success" ? (
-          <StyledCountBox data-testid="cart-count-box">
+        {status === "success" && (
+          <CountBox>
             <StyledCountText data-testid="cart-count">
               {cartItemCount}
             </StyledCountText>
-          </StyledCountBox>
-        ) : null}
+          </CountBox>
+        )}
       </StyledButton>
     </StyledHeader>
   );
@@ -51,19 +52,6 @@ const StyledButton = styled.button`
 const StyledImg = styled.img`
   width: 24px;
   height: 24px;
-`;
-
-const StyledCountBox = styled.div`
-  width: 19px;
-  height: 19px;
-  background-color: white;
-  border-radius: 50%;
-  position: absolute;
-  left: 7px;
-  bottom: -4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const StyledCountText = styled.span`
