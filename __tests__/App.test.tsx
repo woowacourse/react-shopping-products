@@ -86,4 +86,18 @@ describe("<App />", () => {
     const updatedCount = await screen.findByTestId("cart-count");
     expect(updatedCount).toHaveTextContent("2");
   });
+
+  it("장바구니 불러오기 실패 시 에러 박스를 띄운다", async () => {
+    mockedGetCart.mockRejectedValue(new Error("서버 오류"));
+
+    render(<App />);
+
+    expect(
+      await screen.findByText(
+        /장바구니 조회 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요./i
+      )
+    ).toBeInTheDocument();
+
+    expect(screen.queryByTestId("cart-count")).toBeNull();
+  });
 });
