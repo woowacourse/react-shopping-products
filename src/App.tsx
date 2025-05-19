@@ -18,8 +18,8 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const rawCartItemList = await getCartItemList();
-        const rawProductList = await getProductList({ category: '', sort: 'price,asc' });
+        const [rawCartItemList, rawProductList] = await Promise.all([getCartItemList(), getProductList({ category: '', sort: 'price,asc' })]);
+
         setCartItemList(rawCartItemList);
         setProductList(rawProductList);
       } catch (error) {
