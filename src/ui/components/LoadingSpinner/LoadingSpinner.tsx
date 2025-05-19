@@ -1,4 +1,5 @@
 import { Spinner, Container } from './LoadingSpinner.styles';
+import {woowaLogo} from "../../../assets";
 
 export interface LoadingSpinnerProps {
   size?: number;
@@ -14,7 +15,7 @@ function LoadingSpinner({
   return (
     <Container>
       <Spinner
-        src="./woowa_logo.png"
+        src={woowaLogo}
         alt={alt}
         size={size}
         duration={duration}

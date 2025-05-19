@@ -3,6 +3,7 @@ import {
   CartButtonImg,
   CartRemoveButtonText,
 } from './Product.styles';
+import { removeShoppingCart } from "../../../assets";
 
 interface RemoveButtonProps {
   onClick: () => void;
@@ -11,7 +12,7 @@ interface RemoveButtonProps {
 export function RemoveButton({ onClick }: RemoveButtonProps) {
   return (
     <CartRemoveButton onClick={onClick}>
-      <CartButtonImg src="./remove_shopping_cart.png" alt="빼기" />
+      <CartButtonImg src={removeShoppingCart} alt="빼기" />
       <CartRemoveButtonText>빼기</CartRemoveButtonText>
     </CartRemoveButton>
   );
