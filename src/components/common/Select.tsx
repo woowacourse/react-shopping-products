@@ -2,23 +2,21 @@ import { css } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
 import TopArrow from "../icons/TopArrow";
 
-interface SelectProps {
-  options: string[];
-  selectedItem: string;
-  setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
+interface SelectProps<T> {
+  options: T[];
+  selectedItem: T;
+  setSelectedItem: React.Dispatch<React.SetStateAction<T>>;
 }
 
-const Select = ({ options, selectedItem, setSelectedItem }: SelectProps) => {
+const Select = <T extends string>({ options, selectedItem, setSelectedItem }: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const selectRef = useRef<HTMLDivElement>(null);
 
-  const handleSelect = (item: string) => {
+  const handleSelect = (item: T) => {
     setSelectedItem(item);
     setIsOpen(false);
   };
 
-  // 외부 클릭 시 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
