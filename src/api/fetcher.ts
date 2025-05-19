@@ -1,8 +1,11 @@
+import { ENV } from './env';
 import { HttpError } from './httpError';
 
+const baseUrl = ENV.BASE_URL;
+const token = ENV.TOKEN;
+
 type FetcherOptions<T> = {
-  baseUrl: string;
-  token: string;
+  endpoint: string;
   query?: object;
   body?: T;
 };
@@ -10,17 +13,17 @@ type FetcherOptions<T> = {
 type FetcherResponse<T> = Promise<T>;
 
 export const fetcher = {
-  get: async <T>({ baseUrl, token, query = {} }: FetcherOptions<T>): FetcherResponse<T> => {
+  get: async <T>({ endpoint, query = {} }: FetcherOptions<T>): FetcherResponse<T> => {
     return request<T>({
-      baseUrl,
+      fullUrl: `${baseUrl}${endpoint}`,
       token,
       query,
       method: 'GET',
     });
   },
-  post: async <T>({ baseUrl, token, body }: FetcherOptions<T>): FetcherResponse<T> => {
+  post: async <T>({ endpoint, body }: FetcherOptions<T>): FetcherResponse<T> => {
     return request<T>({
-      baseUrl,
+      fullUrl: `${baseUrl}${endpoint}`,
       token,
       body,
       method: 'POST',
@@ -28,9 +31,9 @@ export const fetcher = {
       returnOriginalOnNoContent: true,
     });
   },
-  delete: async <T>({ baseUrl, token }: FetcherOptions<T>): FetcherResponse<T> => {
+  delete: async <T>({ endpoint }: FetcherOptions<T>): FetcherResponse<T> => {
     return request<T>({
-      baseUrl,
+      fullUrl: `${baseUrl}${endpoint}`,
       token,
       method: 'DELETE',
       returnOriginalOnNoContent: true,
@@ -39,7 +42,7 @@ export const fetcher = {
 };
 
 type RequestOptions<T> = {
-  baseUrl: string;
+  fullUrl: string;
   token: string;
   method: string;
   query?: object;
@@ -48,14 +51,14 @@ type RequestOptions<T> = {
 };
 
 const request = async <T>({
-  baseUrl,
+  fullUrl,
   token,
   method,
   query,
   body,
   returnOriginalOnNoContent,
 }: RequestOptions<T>): Promise<T> => {
-  const url = new URL(baseUrl);
+  const url = new URL(fullUrl);
   Object.entries(query || {}).forEach(([key, value]) => {
     if (value !== undefined && value !== null && String(value)) {
       url.searchParams.append(key, String(value));
