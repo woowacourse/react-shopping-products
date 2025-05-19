@@ -8,6 +8,7 @@ import S from './Product.module.css';
 import addCart from '../../utils/api/addCart';
 import useError from '../../hooks/useError';
 import removeCart from '../../utils/api/removeCart';
+import getMergedData from '../../utils/getMergedData';
 
 const Product = () => {
   const [filter, setFilter] = useState('');
@@ -20,12 +21,7 @@ const Product = () => {
   });
   const { cartProducts, fetchCartProducts } = useCart();
 
-  const mergedData = products.map((product) => {
-    const cart = cartProducts.find((item) => item.product.id === product.id);
-    return cart
-      ? { ...product, cartInfo: { id: cart.id, quantity: cart.quantity } }
-      : { ...product, cartInfo: { id: -1, quantity: 0 } };
-  });
+  const mergedData = getMergedData(products, cartProducts);
 
   const handleAddCart = async (id: number) => {
     try {
