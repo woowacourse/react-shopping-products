@@ -7,7 +7,7 @@ export async function baseAPI<T>({
   path: string;
   body?: Record<string, unknown>;
 }): Promise<T | null> {
-  const baseURL = `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com`;
+  const baseURL = import.meta.env.VITE_BASE_URL;
   const result = await fetch(`${baseURL}${path}`, {
     method,
     headers: {
