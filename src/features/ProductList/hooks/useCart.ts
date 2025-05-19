@@ -1,57 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { addCartItem, deleteCartItem, getCartItemList } from '@/api/cart';
-import { useApiRequest } from '@/shared/hooks/useApiRequest';
+import { useCartRequest } from './useCartRequest';
 
 import { CartItem } from '../types/Cart';
 
 export const useCart = () => {
   const [cartData, setCartData] = useState<CartItem[]>([]);
-  const { handleRequest } = useApiRequest();
 
-  const fetchCartProductData = useCallback(async () => {
-    return handleRequest(
-      () =>
-        getCartItemList({
-          page: 0,
-          size: 50,
-        }),
-      (data) => {
-        setCartData(data);
-        return data;
-      }
-    );
-  }, [handleRequest]);
+  const handleCartData = (cartData: CartItem[]) => {
+    setCartData(cartData);
+  };
 
-  const addToCart = useCallback(
-    async (productId: number, quantity: number = 1) => {
-      return handleRequest(
-        () =>
-          addCartItem({
-            productId,
-            quantity,
-          }),
-        (data) => {
-          setCartData(data);
-          return data.length;
-        }
-      );
-    },
-    [handleRequest]
-  );
-
-  const deleteFromCart = useCallback(
-    async (cartItemId: number) => {
-      return handleRequest(
-        () => deleteCartItem(cartItemId),
-        (data) => {
-          setCartData(data);
-          return data.length;
-        }
-      );
-    },
-    [handleRequest]
-  );
+  const { fetchCartProductData, addToCart, deleteFromCart } = useCartRequest(handleCartData);
 
   useEffect(() => {
     fetchCartProductData();
