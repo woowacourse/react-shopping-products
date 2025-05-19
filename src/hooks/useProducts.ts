@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getProducts } from "../apis/product";
-import { Content } from "../types/product";
+import { GetProductResponse } from "../types/product";
 import { useErrorMessage, useLoading } from "../contexts";
 
 const useProducts = () => {
-  const [products, setProducts] = useState<Content[]>([]);
+  const [productsResponse, setProductsResponse] = useState<GetProductResponse>();
   const [filter, setFilter] = useState("전체");
   const [sort, setSort] = useState("높은 가격순");
 
@@ -15,7 +15,7 @@ const useProducts = () => {
     setIsLoading(true);
     try {
       const data = await getProducts({ page: 0, size: 20 });
-      setProducts(data.content);
+      setProductsResponse(data);
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
     } finally {
@@ -24,17 +24,17 @@ const useProducts = () => {
   }, [setErrorMessage, setIsLoading]);
 
   const filteredAndSortedProducts = useMemo(() => {
-    return products
+    return productsResponse?.content
       .filter((product) => filter === "전체" || product.category === filter)
       .sort((a, b) => (sort === "높은 가격순" ? b.price - a.price : a.price - b.price));
-  }, [products, filter, sort]);
+  }, [productsResponse, filter, sort]);
 
   useEffect(() => {
     getProduct();
   }, [getProduct]);
 
   return {
-    products: filteredAndSortedProducts,
+    products: filteredAndSortedProducts || [],
     filter,
     setFilter,
     sort,

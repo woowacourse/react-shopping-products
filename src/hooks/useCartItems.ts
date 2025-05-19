@@ -4,7 +4,7 @@ import { GetCartItemsResponse } from "../types/cartItem";
 import { useErrorMessage, useLoading } from "../contexts";
 
 const useCartItems = () => {
-  const [cartItems, setCartItems] = useState<GetCartItemsResponse>();
+  const [cartItemsResponse, setCartItemsResponse] = useState<GetCartItemsResponse>();
   const { setErrorMessage } = useErrorMessage();
   const { setIsLoading } = useLoading();
 
@@ -12,7 +12,7 @@ const useCartItems = () => {
     setIsLoading(true);
     try {
       const data = await getCartItems({ page: 0, size: 20 });
-      setCartItems(data);
+      setCartItemsResponse(data);
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
     } finally {
@@ -45,21 +45,18 @@ const useCartItems = () => {
   };
 
   const handleCartItem = (type: "add" | "remove", id: number) => {
-    if (type === "add") {
-      addCart(id);
-    } else {
-      removeCart(id);
-    }
+    if (type === "add") return addCart(id);
+    return removeCart(id);
   };
 
   useEffect(() => {
     getCartItem();
   }, [getCartItem]);
 
-  const cartItemIds = Object.fromEntries((cartItems?.content || []).map((item) => [item.product.id, item.id]));
+  const cartItemIds = Object.fromEntries((cartItemsResponse?.content || []).map((item) => [item.product.id, item.id]));
 
   return {
-    cartItems,
+    cartItems: cartItemsResponse?.content,
     handleCartItem,
     cartItemIds,
   };

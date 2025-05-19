@@ -12,7 +12,7 @@ const ProductPage = () => {
   const { cartItems, handleCartItem, cartItemIds } = useCartItems();
   return (
     <>
-      <Header shoppingCount={cartItems?.content?.length} />
+      <Header shoppingCount={cartItems?.length} />
       <div css={containerStyle}>
         <Text variant="title-1">bpple 상품 목록</Text>
         <div css={selectBoxStyle}>
