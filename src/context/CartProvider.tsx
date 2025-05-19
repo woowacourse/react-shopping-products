@@ -24,7 +24,7 @@ function CartProvider({ children }: { children: React.ReactNode }) {
       const cartsData = await getShoppingCartList();
       if (cartsData) setCartList(cartsData);
       handleErrorFalse();
-    } catch (e) {
+    } catch {
       handleErrorTrue('장바구니를 불러오는 데 실패했습니다.');
     }
   }, [handleErrorTrue, handleErrorFalse]);

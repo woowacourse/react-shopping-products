@@ -36,7 +36,7 @@ function ProductCard({
       await addCartItem(id);
       refetch();
       handleErrorFalse();
-    } catch (e) {
+    } catch {
       handleErrorTrue('장바구니에 담는 데 실패했습니다.');
     }
   };
@@ -48,7 +48,7 @@ function ProductCard({
       await deleteCartItem(cartId);
       refetch();
       handleErrorFalse();
-    } catch (e) {
+    } catch {
       handleErrorTrue('장바구니에서 삭제하는 데 실패했습니다.');
     }
   };
