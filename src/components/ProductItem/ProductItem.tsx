@@ -9,6 +9,7 @@ import blackDefaultImage from '../../assets/blackDefaultImage.png';
 import { ResponseCartItem, ResponseProduct } from '../../api/types';
 import { Dispatch, SetStateAction } from 'react';
 import { CART_MAX_COUNT } from '../../constants/constants';
+import { getCartItemId, isItemInCart } from './utils';
 
 function ProductItem({
   product,
@@ -21,19 +22,12 @@ function ProductItem({
   setCartItemList: Dispatch<SetStateAction<ResponseCartItem[]>>;
   setErrorMessage: (message: string) => void;
 }) {
-  function isInCart(productId: number) {
-    return cartItemList.some((item) => item.product.id === productId);
-  }
+  const { isInCart, text, keyword } = isItemInCart(product.id, cartItemList);
 
-  function getCartItemId(productId: number) {
-    const cartItem = cartItemList.find((item) => item.product.id === productId);
-    return cartItem?.id;
-  }
-
-  async function handleProductItem(action: string, product: ResponseProduct) {
+  async function handleProductItem(action: string, productId: number) {
     try {
       if (action === 'remove') {
-        const cartItemId = getCartItemId(product.id);
+        const cartItemId = getCartItemId(productId, cartItemList);
         if (cartItemId) {
           await removeProductItemApi(cartItemId);
         }
@@ -42,7 +36,7 @@ function ProductItem({
           setErrorMessage('장바구니에는 최대 50개의 상품만 담을 수 있습니다.');
           return;
         }
-        await addProductItemApi(product.id, 1);
+        await addProductItemApi(productId, 1);
       }
 
       const rawCartItemList = await getCartItemList();
@@ -69,20 +63,20 @@ function ProductItem({
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
         <Button
-          keyWord={isInCart(product.id) ? 'remove' : 'add'}
+          keyWord={keyword}
           onClick={() => {
-            isInCart(product.id) ? handleProductItem('remove', product) : handleProductItem('add', product);
+            isInCart ? handleProductItem('remove', product.id) : handleProductItem('add', product.id);
           }}
         >
-          {isInCart(product.id) ? (
+          {isInCart ? (
             <>
               <RemoveProductIcon />
-              삭제
+              {text}
             </>
           ) : (
             <>
               <AddProductIcon />
-              담기
+              {text}
             </>
           )}
         </Button>
