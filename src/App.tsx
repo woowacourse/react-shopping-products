@@ -29,11 +29,9 @@ function App() {
         />
       </Body>
       <StyledDiv>
-        {errorMessage
-          ? errorMessage.map((message, index) => (
-              <ErrorBox key={index}>{message}</ErrorBox>
-            ))
-          : null}
+        {errorMessage.map((message, index) => (
+          <ErrorBox key={index}>{message}</ErrorBox>
+        ))}
       </StyledDiv>
     </>
   );
