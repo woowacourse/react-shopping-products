@@ -41,7 +41,6 @@ function useGetProductsWithCart(sortValue: string) {
       });
     } catch (error) {
       setError('데이터를 가져오는 중 오류가 발생했습니다.');
-      console.error('Error fetching data:', error);
     } finally {
       setIsLoading(false);
     }
