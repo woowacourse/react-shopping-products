@@ -1,13 +1,11 @@
-import { CartProduct } from '../../types';
 import ErrorToast from '../Toast/ErrorToast';
 import S from './Header.module.css';
 
 interface HeaderProps {
-  cardProducts: CartProduct[];
+  cartCount: number;
   error: Record<string, string>;
 }
-const Header = ({ cardProducts, error: { productError, cartError } }: HeaderProps) => {
-  const cartCount = cardProducts.length;
+const Header = ({ cartCount, error: { productError, cartError } }: HeaderProps) => {
   return (
     <div className={S.container}>
       <p>SHOP</p>

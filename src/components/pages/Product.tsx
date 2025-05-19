@@ -25,7 +25,7 @@ const Product = () => {
 
   return (
     <div className={S.container}>
-      <Header cardProducts={cartProducts} error={{ productError, cartError }} />
+      <Header cartCount={cartProducts.length} error={{ productError, cartError }} />
       <div className={S.contentContainer}>
         <div className={S.contentTop}>
           <h1 className={S.title}>bpple 상품 목록</h1>
