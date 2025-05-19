@@ -56,14 +56,14 @@ describe('useProducts 훅', () => {
 
     expect(result.current.isError).toBe(false);
     expect(result.current.cart).toEqual(mockCart);
-    expect(result.current.data).toEqual([
+    expect(result.current.products).toEqual([
       {
         id: 1,
         name: '상품1',
         price: 100,
         category: '식료품',
         imageUrl: 'url1',
-        isInCart: 1,
+        isInCart: true,
         cartId: 10,
       },
       {
@@ -72,7 +72,7 @@ describe('useProducts 훅', () => {
         price: 200,
         category: '패션잡화',
         imageUrl: 'url2',
-        isInCart: 0,
+        isInCart: false,
         cartId: undefined,
       },
     ]);
@@ -88,14 +88,14 @@ describe('useProducts 훅', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    expect(result.current.data).toEqual([
+    expect(result.current.products).toEqual([
       {
         id: 1,
         name: '상품1',
         price: 100,
         category: '식료품',
         imageUrl: 'url1',
-        isInCart: 1,
+        isInCart: true,
         cartId: 10,
       },
     ]);
@@ -112,7 +112,7 @@ describe('useProducts 훅', () => {
     });
 
     expect(result.current.isError).toBe(true);
-    expect(result.current.data).toEqual([]);
+    expect(result.current.products).toEqual([]);
     expect(result.current.cart).toBeNull();
   });
 
@@ -127,6 +127,6 @@ describe('useProducts 훅', () => {
     });
 
     expect(getProductSpy).toHaveBeenCalledTimes(2);
-    expect(result.current.data.length).toBe(2);
+    expect(result.current.products.length).toBe(2);
   });
 });

@@ -12,7 +12,7 @@ function TestComponent({
   mappedSortType: string;
   category: CategoryType;
 }) {
-  const { data, cart, isLoading, isError } = useProducts(
+  const { products, cart, isLoading, isError } = useProducts(
     mappedSortType,
     category
   );
@@ -21,7 +21,7 @@ function TestComponent({
     <>
       <span data-testid="isLoading">{isLoading ? 'true' : 'false'}</span>
       <span data-testid="isError">{isError ? 'true' : 'false'}</span>
-      <span data-testid="data">{JSON.stringify(data)}</span>
+      <span data-testid="data">{JSON.stringify(products)}</span>
       <span data-testid="cart">{JSON.stringify(cart)}</span>
     </>
   );
@@ -77,7 +77,7 @@ describe('useProducts hook', () => {
         price: 100,
         category: '식료품',
         imageUrl: 'url1',
-        isInCart: 1,
+        isInCart: true,
         cartId: 10,
       },
       {
@@ -86,7 +86,7 @@ describe('useProducts hook', () => {
         price: 200,
         category: '패션잡화',
         imageUrl: 'url2',
-        isInCart: 0,
+        isInCart: false,
         cartId: undefined,
       },
     ]);
@@ -95,7 +95,7 @@ describe('useProducts hook', () => {
     expect(cart).toEqual(mockCart);
   });
 
-  it('getProduct에서 예외가 발생하면 에러 상태를 설정한다.', async () => {
+  it('상품 조회 실패 시 에러 상태를 설정한다.', async () => {
     vi.spyOn(productApi, 'getProduct').mockRejectedValue(new Error('fail'));
     vi.spyOn(cartApi, 'getCartItem').mockResolvedValue(mockCart);
 
@@ -125,7 +125,7 @@ describe('useProducts hook', () => {
         price: 100,
         category: '식료품',
         imageUrl: 'url1',
-        isInCart: 1,
+        isInCart: true,
         cartId: 10,
       },
     ]);

@@ -8,7 +8,7 @@ import { addCart, removeCart } from '../api/cart';
 vi.mock('../hooks/useProducts');
 vi.mock('../api/cart');
 
-vi.mock('../ui/components/ProductSection/ProductSection', () => ({
+vi.mock('../ui/components/ProductList/ProductList', () => ({
   default: ({
     onAddCart,
     onRemoveCart,
