@@ -8,12 +8,10 @@ export const getProductList = async ({
   sort = 'price,asc',
   category = '',
 }: Partial<ProductQuery> = {}) => {
-  const data = await fetcher
-    .get<ProductListResponse>({
-      endpoint: 'products',
-      query: { page, size, sort, category },
-    })
-    .then((res) => res);
+  const data = await fetcher.get<ProductListResponse>({
+    endpoint: 'products',
+    query: { page, size, sort, category },
+  });
 
   return data.content;
 };

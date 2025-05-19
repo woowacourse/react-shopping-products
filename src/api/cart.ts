@@ -12,11 +12,9 @@ export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
     },
   });
 
-  const data = await fetcher
-    .get<CartResponse>({
-      endpoint: 'cart-items',
-    })
-    .then((res) => res);
+  const data = await fetcher.get<CartResponse>({
+    endpoint: 'cart-items',
+  });
 
   return data.content;
 };
@@ -26,12 +24,10 @@ export const getCartItemList = async ({
   size = 20,
   sort = '',
 }: Partial<ProductQuery> = {}) => {
-  const data = await fetcher
-    .get<CartResponse>({
-      endpoint: 'cart-items',
-      query: { page, size, sort },
-    })
-    .then((res) => res);
+  const data = await fetcher.get<CartResponse>({
+    endpoint: 'cart-items',
+    query: { page, size, sort },
+  });
 
   return data.content;
 };
