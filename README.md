@@ -40,8 +40,8 @@ interface ButtonProps {
 </Button>
 ```
 
-- [ ] RTL 테스트 코드 수정
-  - [ ] api 호출 모킹 데이터로 테스트 하기
+- [x] RTL 테스트 코드 수정
+  - [x] api 호출 모킹 데이터로 테스트 하기
     - [x] useProducts
       - [x] 모킹데이터 추가
-    - [ ] useCartItems
+    - [x] useCartItems
