@@ -4,8 +4,9 @@ import useProducts from "../../hooks/useProducts";
 import Header from "../Header/Header";
 import ItemCard from "../ItemCard/ItemCard";
 import Skeleton from "../Skeleton/Skeleton";
-import S from "./Product.module.css";
+import S from "./ProductListPage.module.css";
 import ItemCardFilterSort from "../ItemCard/ItemCardFilterSort";
+import ErrorToast from "../Toast/ErrorToast";
 
 const ProductListPage = () => {
 	const [filter, setFilter] = useState("");
@@ -24,7 +25,9 @@ const ProductListPage = () => {
 
 	return (
 		<div className={S.container}>
-			<Header cardProducts={cartProducts} error={{ productError, cartError }} />
+			<Header cardProducts={cartProducts} />
+			<ErrorToast isError={productError !== "" || cartError !== ""} message={productError !== "" ? productError : cartError} />
+
 			<div className={S.contentContainer}>
 				<div className={S.contentTop}>
 					<h1 className={S.title}>bpple 상품 목록</h1>
