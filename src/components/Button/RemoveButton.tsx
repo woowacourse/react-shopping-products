@@ -2,11 +2,16 @@ import { css } from "@emotion/css";
 import { ButtonStyles } from "./Button.emotion";
 interface RemoveButtonProps {
   onClick: () => void;
+  disabled?: boolean;
 }
 
-const RemoveButton = ({ onClick }: RemoveButtonProps) => {
+const RemoveButton = ({ onClick, disabled }: RemoveButtonProps) => {
   return (
-    <button className={RemoveButtonStyles} onClick={onClick}>
+    <button
+      className={RemoveButtonStyles}
+      onClick={onClick}
+      disabled={disabled}
+    >
       <img src="./removeShoppingCart.svg" />
       <div className={RemoveButtonTextStyles}>빼기</div>
     </button>

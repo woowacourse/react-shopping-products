@@ -3,11 +3,12 @@ import { css } from "@emotion/css";
 
 interface AddButtonProps {
   onClick: () => void;
+  disabled?: boolean;
 }
 
-const AddButton = ({ onClick }: AddButtonProps) => {
+const AddButton = ({ onClick, disabled }: AddButtonProps) => {
   return (
-    <button className={AddButtonStyles} onClick={onClick}>
+    <button className={AddButtonStyles} onClick={onClick} disabled={disabled}>
       <img src="./addShoppingCart.svg" />
       <div className={AddButtonTextStyles}>담기</div>
     </button>

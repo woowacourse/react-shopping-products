@@ -20,6 +20,7 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
 
   const { handleAdd } = useAddShoppingCart(product.id);
   const { handleDelete } = useDeleteShoppingCart(cartItemId);
+  const { isShoppingLoading } = useShoppingCartContext();
 
   return (
     <div key={id} className={CardFrame}>
@@ -31,9 +32,9 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
           {isInCart ? (
-            <RemoveButton onClick={handleDelete} />
+            <RemoveButton onClick={handleDelete} disabled={isShoppingLoading} />
           ) : (
-            <AddButton onClick={handleAdd} />
+            <AddButton onClick={handleAdd} disabled={isShoppingLoading} />
           )}
         </div>
       </div>
