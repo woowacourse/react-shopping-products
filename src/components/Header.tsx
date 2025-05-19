@@ -12,12 +12,12 @@ type HeaderProps = {
 const Header = ({ basketCount }: HeaderProps) => {
   return (
     <HeaderWrapper>
-      <img src={IMAGE_PATH.HEADER_TITLE} />
+      <img src={IMAGE_PATH.HEADER_TITLE} alt="shop-logo"/>
       <BasketWrapper>
         {basketCount !== 0 && (
           <BasketCountTextWrapper>{basketCount}</BasketCountTextWrapper>
         )}
-        <img src={IMAGE_PATH.SHOPPING_BASKET} />
+        <img src={IMAGE_PATH.SHOPPING_BASKET} alt="basket"/>
       </BasketWrapper>
     </HeaderWrapper>
   );
