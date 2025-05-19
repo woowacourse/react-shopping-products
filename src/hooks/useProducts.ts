@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getProducts } from "../apis/product";
 import { GetProductResponse } from "../types/product";
 import { useErrorMessage, useLoading } from "../contexts";
@@ -24,11 +24,9 @@ const useProducts = () => {
     }
   }, [setErrorMessage, setIsLoading]);
 
-  const filteredAndSortedProducts = useMemo(() => {
-    return productsResponse?.content
-      .filter((product) => filter === "전체" || product.category === filter)
-      .sort((a, b) => (sort === "높은 가격순" ? b.price - a.price : a.price - b.price));
-  }, [productsResponse, filter, sort]);
+  const filteredAndSortedProducts = productsResponse?.content
+    .filter((product) => filter === "전체" || product.category === filter)
+    .sort((a, b) => (sort === "높은 가격순" ? b.price - a.price : a.price - b.price));
 
   useEffect(() => {
     getProduct();
