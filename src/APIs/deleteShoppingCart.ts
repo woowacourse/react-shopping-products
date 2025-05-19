@@ -1,15 +1,11 @@
 import { CartItem, ShoppingCartResponse } from "../types/product.type";
+import { baseUrl, credentials } from "./apiConfig";
 import getShoppingCart from "./getShoppingCart";
 
 async function deleteShoppingCart({
   endpoint,
   cartItemId,
 }: ShoppingCartResponse): Promise<CartItem[]> {
-  const username = import.meta.env.VITE_USERNAME;
-  const password = import.meta.env.VITE_PASSWORD;
-  const baseUrl = import.meta.env.VITE_BASE_URL;
-  const credentials = btoa(`${username}:${password}`);
-
   try {
     const response = await fetch(`${baseUrl}${endpoint}/${cartItemId}`, {
       method: "DELETE",
