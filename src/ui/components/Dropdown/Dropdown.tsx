@@ -12,7 +12,7 @@ function Dropdown({ value, placeholder, options, onChange }: DropdownProps) {
   return (
     <Container value={value} onChange={onChange}>
       {placeholder && (
-        <option value="" disabled={value !== ''}>
+        <option value="" disabled={!value}>
           {placeholder}
         </option>
       )}
