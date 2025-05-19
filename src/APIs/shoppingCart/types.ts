@@ -1,4 +1,5 @@
 export interface ShoppingCartResponse {
+  method?: string;
   endpoint: string;
   requestBody?: PostRequestBody | PatchRequestBody;
   cartItemId?: number;
