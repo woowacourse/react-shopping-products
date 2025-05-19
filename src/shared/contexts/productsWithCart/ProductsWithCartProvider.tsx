@@ -1,10 +1,19 @@
-import { useState, useCallback } from 'react';
-import { CartProduct, Product, ProductDTO } from '../../features/products/type/product';
-import { getProducts } from '../../features/products/api/getProducts';
-import { getCartProduct } from '../../features/cart/api/getCartProduct';
+import React, { createContext, useState, useCallback } from 'react';
+import { ProductsWithCartContextValue } from './types';
+import { CartProduct, Product, ProductDTO } from '../../../features/products/type/product';
+import { getProducts } from '../../../features/products/api/getProducts';
+import { getCartProduct } from '../../../features/cart/api/getCartProduct';
 
-function useGetProductsWithCart(sortValue: string) {
+export const ProductsWithCartContext = createContext<ProductsWithCartContextValue | undefined>(undefined);
+
+interface ProductsWithCartProviderProps {
+  children: React.ReactNode;
+}
+
+export const ProductsWithCartProvider = ({ children }: ProductsWithCartProviderProps) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [sortValue, setSortValue] = useState<string>('');
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -37,7 +46,9 @@ function useGetProductsWithCart(sortValue: string) {
     }
   }, [sortValue]);
 
-  return { products, fetchProducts, isLoading, error };
-}
-
-export default useGetProductsWithCart;
+  return (
+    <ProductsWithCartContext.Provider value={{ products, isLoading, error, fetchProducts, sortValue, setSortValue }}>
+      {children}
+    </ProductsWithCartContext.Provider>
+  );
+};

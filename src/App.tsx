@@ -6,8 +6,8 @@ import { Product } from './features/products/type/product';
 import { filterByValue } from './shared/utils/filterByValue';
 import { MATCH_CATEGORY } from './features/products/utils/matchCategory';
 import Navbar from './widgets/navbar/ui/Navbar';
-import useGetProductsWithCart from './shared/hooks/useGetProductsWithCart';
 import ProductCardSkeleton from './features/products/ui/ProductCardSkeleton';
+import { useProductsWithCartContext } from './shared/contexts/productsWithCart/useProductsWithCartContext';
 
 type Category = 'all' | 'food' | 'clothes';
 
@@ -25,10 +25,9 @@ const SORT_OPTIONS = [
 
 function App() {
   const [category, setCategory] = useState<Category>('all');
-  const [sortValue, setSortValue] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
 
-  const { products, fetchProducts, error, isLoading } = useGetProductsWithCart(sortValue);
+  const { products, fetchProducts, error, isLoading, setSortValue } = useProductsWithCartContext();
   if (error !== '') {
     setErrors(error);
   }
