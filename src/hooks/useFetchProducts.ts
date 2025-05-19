@@ -34,10 +34,6 @@ function useFetchProducts({
 
     (async () => {
       try {
-        if (category === "에러") {
-          throw new Error("의도적인 에러 발생 (테스트용)");
-        }
-
         const query =
           category === "전체"
             ? basicQuery

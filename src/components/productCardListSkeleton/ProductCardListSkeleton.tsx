@@ -43,7 +43,7 @@ function ProductCardSkeleton() {
 
 function ProductCardListSkeleton() {
   return (
-    <div css={CardListContainer}>
+    <div css={CardListContainer} data-testid="product-skeleton">
       {Array.from({ length: 20 }).map((_, i) => (
         <ProductCardSkeleton key={i} />
       ))}

@@ -33,14 +33,6 @@ export interface Pageable {
 // 전체 응답 타입
 export interface ProductPageResponse {
   content: Product[];
-  pageable: Pageable;
-  totalElements: number;
   totalPages: number;
-  last: boolean;
-  first: boolean;
   size: number;
-  number: number;
-  numberOfElements: number;
-  empty: boolean;
-  sort: Sort;
 }

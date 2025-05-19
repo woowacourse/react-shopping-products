@@ -1,33 +1,22 @@
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
-import { ProductPageResponse } from "../../types/response.types";
-import useFetchProducts from "../../hooks/useFetchProducts";
-import { categoryType, sortType } from "../../types/index.types";
 import { ERROR_TYPE } from "../../hooks/useError";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
-import { useState } from "react";
 import { useCart } from "../../hooks/useCart";
+import { ProductPageResponse } from "../../types/response.types";
 
 interface ProductCardListProps {
-  category: categoryType;
-  sort: sortType;
+  products: ProductPageResponse | null;
+  isLoading: boolean;
   setErrorTrue: (type: ERROR_TYPE) => void;
 }
 
 function ProductCardList({
-  category,
-  sort,
+  products,
+  isLoading,
   setErrorTrue,
 }: ProductCardListProps) {
   const { cartItemIds } = useCart();
-  const [products, setProducts] = useState<ProductPageResponse | null>(null);
-
-  const { isLoading } = useFetchProducts({
-    category,
-    setProducts,
-    sort,
-    setErrorTrue,
-  });
 
   if (isLoading) return <ProductCardListSkeleton />;
 
