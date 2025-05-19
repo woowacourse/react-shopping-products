@@ -62,15 +62,16 @@ function App() {
   const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
 
-    if (value === '전체' || value === '식료품' || value === '패션잡화')
-      setCategory(value);
+    if (CATEGORY.includes(value)) {
+      setCategory(value as CategoryType);
+    }
   };
 
   const handleSortPrice = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
 
-    if (value === '낮은 가격 순' || value === '높은 가격 순') {
-      setSort(value);
+    if (SORT_PRICE.includes(value)) {
+      setSort(value as SortType);
     }
   };
 
