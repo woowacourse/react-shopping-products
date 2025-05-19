@@ -26,7 +26,9 @@ function RemoveCartItemButton({ id, setCartItems }: RemoveCartItemButton) {
 
   return (
     <>
-      {error?.message && <AlertToast errorMessage={error.message} />}
+      {error?.message && (
+        <AlertToast key={error.message} type="error" message={error.message} />
+      )}
 
       <Button
         variant="secondary"
