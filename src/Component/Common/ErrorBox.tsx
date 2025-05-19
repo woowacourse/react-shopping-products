@@ -1,6 +1,9 @@
-import styled from '@emotion/styled';
+import { PropsWithChildren } from "react";
+import styled from "@emotion/styled";
 
-export default function ErrorBox({ children }: { children: React.ReactNode }) {
+type ErrorBoxProps = PropsWithChildren<object>;
+
+export default function ErrorBox({ children }: ErrorBoxProps) {
   return (
     <StyledDiv>
       <StyledSpan>{children}</StyledSpan>
