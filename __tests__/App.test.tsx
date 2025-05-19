@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import React from "react";
 import App from "../src/App";
 import getProducts from "../src/api/getProducts";
 import getShoppingCart from "../src/api/getShoppingCart";
@@ -55,14 +56,12 @@ describe("<App />", () => {
     const count2 = await screen.findByTestId("cart-count");
     expect(count2).toHaveTextContent("2");
 
-    const itemSpan = screen.getByText("부리부리 원형 테이블");
-    const itemLi = itemSpan.closest("li")!;
+    const itemLi = screen.getByText("부리부리 원형 테이블").closest("li")!;
     const removeBtn = within(itemLi).getByText("빼기");
     await userEvent.click(removeBtn);
 
-    await waitFor(() => expect(mockedDeleteCart).toHaveBeenCalledWith(920));
-
-    await waitFor(() => expect(mockedGetCart).toHaveBeenCalledTimes(2));
+    expect(mockedDeleteCart).toHaveBeenCalledWith(920);
+    expect(mockedGetCart).toHaveBeenCalledTimes(2);
 
     const count1 = await screen.findByTestId("cart-count");
     expect(count1).toHaveTextContent("1");
@@ -78,12 +77,11 @@ describe("<App />", () => {
     const initialCount = await screen.findByTestId("cart-count");
     expect(initialCount).toHaveTextContent("1");
 
-    const itemSpan = screen.getByText("부리부리 원형 테이블");
-    const itemLi = itemSpan.closest("li")!;
+    const itemLi = screen.getByText("부리부리 원형 테이블").closest("li")!;
     const addBtn = within(itemLi).getByText("담기");
     await userEvent.click(addBtn);
 
-    await waitFor(() => expect(mockedGetCart).toHaveBeenCalledTimes(2));
+    expect(mockedGetCart).toHaveBeenCalledTimes(2);
 
     const updatedCount = await screen.findByTestId("cart-count");
     expect(updatedCount).toHaveTextContent("2");
