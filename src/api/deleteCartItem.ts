@@ -3,7 +3,7 @@ async function deleteCartItem({ cartId }: { cartId: number }) {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+      Authorization: import.meta.env.VITE_TOKEN,
     },
   });
 
