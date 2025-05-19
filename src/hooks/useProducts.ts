@@ -53,7 +53,6 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
           cartId: cartItem?.id,
         };
       });
-
       setproducts(mapped);
       setCart({
         content: cartResponse.content,

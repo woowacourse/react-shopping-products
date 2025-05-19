@@ -22,6 +22,7 @@ import {
   SHOPPING_MALL_TITLE,
 } from './constants/shopInfoConfig';
 import { MAX_CART_ITEM_COUNT } from './constants/cartConfig';
+import { ERROR_MESSAGE } from './constants/errorMessage';
 
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
@@ -34,7 +35,7 @@ function App() {
 
   const handleAddCart = async (product: ProductElement) => {
     if (cart?.totalElements === MAX_CART_ITEM_COUNT) {
-      console.error('최대 장바구니 갯수는 50개 입니다.');
+      console.error(ERROR_MESSAGE.MAX_CART_ITEM);
       setIsError(true);
       return;
     }
@@ -42,24 +43,18 @@ function App() {
     try {
       await addCart(product.id);
       await fetchData();
-    } catch {
-      console.error('장바구니 추가 실패');
+    } catch (error) {
+      console.error(error);
       setIsError(true);
     }
   };
 
   const handleRemoveCart = async (product: ProductElement) => {
-    if (!product.cartId) {
-      console.error('유효하지 않은 장바구니 ID');
-      setIsError(true);
-      return;
-    }
-
     try {
       await removeCart(product.cartId);
       await fetchData();
     } catch (error) {
-      console.error('장바구니 제거 실패:', error);
+      console.error(error);
       setIsError(true);
     }
   };
@@ -87,9 +82,7 @@ function App() {
           title={SHOPPING_MALL_TITLE}
           totalCartProducts={cart && cart.totalElements}
         />
-        {isError && (
-          <Toast message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요." />
-        )}
+        {isError && <Toast message={ERROR_MESSAGE.TOAST} />}
         {isLoading && <LoadingSpinner duration={2} />}
         {!isLoading && (
           <Section>

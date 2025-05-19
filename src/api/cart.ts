@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { CartResponse } from '../types/product';
 interface getCartItemProps {
   page: number;
@@ -25,7 +26,7 @@ export const getCartItem = async ({
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(errorText || '장바구니 조회 중 오류가 발생했습니다.');
+    throw new Error(errorText || ERROR_MESSAGE.CART_FETCH_FAIL);
   }
 
   const data = await response.json();
@@ -44,6 +45,14 @@ export const addCart = async (id: number) => {
       body: JSON.stringify({ productId: id, quantity: 1 }),
     }
   );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(
+      errorText || `${ERROR_MESSAGE.CART_PRODUCT_ADD_FAIL}: ${response.status}`
+    );
+  }
+
   return response;
 };
 
@@ -61,7 +70,8 @@ export const removeCart = async (id: number) => {
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(
-      errorText || `장바구니 아이템 삭제를 실패했습니다.: ${response.status}`
+      errorText ||
+        `${ERROR_MESSAGE.CART_PRODUCT_REMOVE_FAIL}: ${response.status}`
     );
   }
 
