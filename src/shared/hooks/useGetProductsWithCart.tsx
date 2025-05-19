@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
-import { CartProduct, Product, ProductDTO } from '../type/product';
-import { getProducts } from '../api/getProducts';
-import { getCartProduct } from '../../cart/api/getCartProduct';
+import { CartProduct, Product, ProductDTO } from '../../features/products/type/product';
+import { getProducts } from '../../features/products/api/getProducts';
+import { getCartProduct } from '../../features/cart/api/getCartProduct';
 
 function useGetProductsWithCart(sortValue: string) {
   const [products, setProducts] = useState<Product[]>([]);

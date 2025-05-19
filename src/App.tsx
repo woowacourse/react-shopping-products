@@ -6,7 +6,7 @@ import { Product } from './features/products/type/product';
 import { filterByValue } from './shared/utils/filterByValue';
 import { MATCH_CATEGORY } from './features/products/utils/matchCategory';
 import Navbar from './widgets/navbar/ui/Navbar';
-import useGetProductsWithCart from './features/products/hooks/useGetProductsWithCart';
+import useGetProductsWithCart from './shared/hooks/useGetProductsWithCart';
 import ProductCardSkeleton from './features/products/ui/ProductCardSkeleton';
 
 type Category = 'all' | 'food' | 'clothes';
