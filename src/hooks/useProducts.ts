@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getProducts } from "../apis/product";
 import { Content } from "../types/product";
+import { useErrorMessage } from "../contexts";
 
 const useProducts = () => {
   const [products, setProducts] = useState<Content[]>([]);
@@ -8,16 +9,17 @@ const useProducts = () => {
   const [sort, setSort] = useState("높은 가격순");
 
   const [isProductsLoading, setIsProductsLoading] = useState(true);
-  const [productsErrorMessage, setProductsErrorMessage] = useState("");
 
-  const getProduct = async () => {
+  const { setErrorMessage } = useErrorMessage();
+
+  const getProduct = useCallback(async () => {
     try {
       const data = await getProducts({ page: 0, size: 20 });
       setProducts(data.content);
     } catch (e) {
-      if (e instanceof Error) setProductsErrorMessage(e.message);
+      if (e instanceof Error) setErrorMessage(e.message);
     }
-  };
+  }, [setErrorMessage]);
 
   const filteredAndSortedProducts = useMemo(() => {
     return products
@@ -29,7 +31,7 @@ const useProducts = () => {
     getProduct().then(() => {
       setIsProductsLoading(false);
     });
-  }, []);
+  }, [getProduct]);
 
   return {
     products: filteredAndSortedProducts,
@@ -38,8 +40,6 @@ const useProducts = () => {
     sort,
     setSort,
     isProductsLoading,
-    productsErrorMessage,
-    setProductsErrorMessage,
   };
 };
 

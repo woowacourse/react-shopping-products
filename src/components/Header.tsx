@@ -17,6 +17,8 @@ export default Header;
 
 const headerStyle = css`
   width: 100%;
+  position: relative;
+  z-index: 9;
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
