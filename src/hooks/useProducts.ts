@@ -9,7 +9,7 @@ import type {
 } from '../types/product';
 
 export function useProducts(mappedSortType: string, category: CategoryType) {
-  const [data, setData] = useState<ProductElement[]>([]);
+  const [products, setproducts] = useState<ProductElement[]>([]);
   const [cart, setCart] = useState<CartResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -54,7 +54,7 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
         };
       });
 
-      setData(mapped);
+      setproducts(mapped);
       setCart({
         content: cartResponse.content,
         totalElements: cartResponse.totalElements,
@@ -71,5 +71,5 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
     fetchData();
   }, [fetchData]);
 
-  return { data, cart, isLoading, isError, setIsError, fetchData };
+  return { products, cart, isLoading, isError, setIsError, fetchData };
 }

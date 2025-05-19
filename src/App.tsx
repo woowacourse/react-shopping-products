@@ -20,10 +20,8 @@ function App() {
 
   const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
 
-  const { data, cart, isLoading, isError, setIsError, fetchData } = useProducts(
-    mappedSortType,
-    category
-  );
+  const { products, cart, isLoading, isError, setIsError, fetchData } =
+    useProducts(mappedSortType, category);
 
   const handleAddCart = async (product: ProductElement) => {
     if (cart?.totalElements === 50) {
@@ -99,7 +97,7 @@ function App() {
             <ProductList
               onAddCart={handleAddCart}
               onRemoveCart={handleRemoveCart}
-              data={data}
+              products={products}
             />
           </Section>
         )}
