@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import ProductItem from "./ProductItem";
 import { ProductTypes } from "../../types/ProductTypes";
-import { useCartContext } from "../../contexts/cartContext";
+import useCartContext from "../../contexts/CartContext";
 
 interface ProductListProps {
   productList: ProductTypes[];
