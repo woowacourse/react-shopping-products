@@ -7,8 +7,8 @@ interface ApiClientProps {
 }
 
 export const apiClient = {
-  get: ({endPoint, headers}: ApiClientProps) =>
-    requestApi('GET', endPoint, headers),
+  get: async ({endPoint, headers}: ApiClientProps) =>
+    (await requestApi('GET', endPoint, headers)).json(),
   post: ({endPoint, headers, body}: ApiClientProps) =>
     requestApi('POST', endPoint, headers, body),
   delete: ({endPoint, headers}: ApiClientProps) =>
