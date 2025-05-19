@@ -10,7 +10,12 @@ async function getCartItemList(): Promise<ResponseCartItem[]> {
       Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}`,
     },
   };
-  const response = await fetch(`${API_URL}/cart-items?page=0&size=1073741824&sort=asc`, options);
+  const params = {
+    size: '20',
+    page: '0',
+  };
+  const newParams = new URLSearchParams(params);
+  const response = await fetch(`${API_URL}/cart-items?${newParams.toString()}`, options);
 
   if (!response.ok) {
     throw new Error(API_ERROR_MESSAGES[response.status] ?? DEFAULT_ERROR_MESSAGE);

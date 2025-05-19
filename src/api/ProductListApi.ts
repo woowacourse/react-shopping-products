@@ -9,7 +9,17 @@ async function getProductList({ category, sort }: { category: string; sort: stri
       'Content-Type': 'application/json',
     },
   };
-  const response = await fetch(`${API_URL}/products?${category ? `category=${category}&` : ''}${sort ? `sort=${sort}&` : ''}page=0&size=20`, options);
+  const params: Record<string, string> = {
+    sort,
+    size: '20',
+    page: '0',
+  };
+  if (category) {
+    params.category = category;
+  }
+  const newParams = new URLSearchParams(params);
+  console.log(`${API_URL}/products?${newParams.toString()}`);
+  const response = await fetch(`${API_URL}/products?${newParams.toString()}`, options);
 
   if (!response.ok) {
     throw new Error(API_ERROR_MESSAGES[response.status] ?? DEFAULT_ERROR_MESSAGE);

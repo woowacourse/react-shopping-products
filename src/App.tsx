@@ -19,7 +19,7 @@ function App() {
     const fetchData = async () => {
       try {
         const rawCartItemList = await getCartItemList();
-        const rawProductList = await getProductList({ category: '', sort: '' });
+        const rawProductList = await getProductList({ category: '', sort: 'price,asc' });
         setCartItemList(rawCartItemList);
         setProductList(rawProductList);
       } catch (error) {
