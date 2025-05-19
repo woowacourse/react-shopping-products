@@ -9,7 +9,7 @@ import { Text } from '@/shared/components/Text';
 import { Select } from '../../../shared/components/Select/index';
 import { ProductItem } from '../components/ProductItem';
 import { ShoppingBag } from '../components/ShoppingBag';
-import { CATEGORY, PRICE } from '../constants/product';
+import { CATEGORY, SORT_ORDER } from '../constants/product';
 import { ProductListContainer } from '../container/ProductListContainer';
 import { useShopping } from '../hooks/useShopping';
 
@@ -74,8 +74,11 @@ export const ProductListPage = () => {
                 </Select.Option>
               ))}
             </Select>
-            <Select maxWidth={125} selectedOptions={PRICE[priceSelect as keyof typeof PRICE]}>
-              {Object.entries(PRICE).map(([key, value], idx) => (
+            <Select
+              maxWidth={125}
+              selectedOptions={SORT_ORDER[priceSelect as keyof typeof SORT_ORDER]}
+            >
+              {Object.entries(SORT_ORDER).map(([key, value], idx) => (
                 <Select.Option
                   key={idx}
                   option={value}
