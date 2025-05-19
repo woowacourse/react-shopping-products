@@ -7,7 +7,7 @@ import { Global } from '@emotion/react';
 import React, { useState } from 'react';
 import { addCart, removeCart } from './api/cart';
 import { useProducts } from './hooks/useProducts';
-import { CategoryType, SortType, ProductElement } from './types/product';
+import { CategoryType, SortType, ProductWithCartInfo } from './types/product';
 import { DropdownContainer, Section } from './App.styles';
 import Dropdown from './ui/components/Dropdown/Dropdown';
 import ProductList from './ui/components/ProductList/ProductList';
@@ -33,7 +33,7 @@ function App() {
   const { products, cart, isLoading, isError, setIsError, fetchData } =
     useProducts(mappedSortType, category);
 
-  const handleAddCart = async (product: ProductElement) => {
+  const handleAddCart = async (product: ProductWithCartInfo) => {
     if (cart?.totalElements === MAX_CART_ITEM_COUNT) {
       console.error(ERROR_MESSAGE.MAX_CART_ITEM);
       setIsError(true);
@@ -49,10 +49,12 @@ function App() {
     }
   };
 
-  const handleRemoveCart = async (product: ProductElement) => {
+  const handleRemoveCart = async (product: ProductWithCartInfo) => {
     try {
-      await removeCart(product.cartId);
-      await fetchData();
+      if (product.cartId) {
+        await removeCart(product.cartId);
+        await fetchData();
+      }
     } catch (error) {
       console.error(error);
       setIsError(true);

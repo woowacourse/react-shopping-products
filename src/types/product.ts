@@ -1,11 +1,14 @@
 export interface ProductElement {
   id: number;
-  cartId: number;
   name: string;
   price: number;
   category: string;
   imageUrl: string;
-  isInCart: number | undefined;
+}
+
+export interface ProductWithCartInfo extends ProductElement {
+  cartId?: number;
+  isInCart: boolean;
 }
 
 export interface CartType {

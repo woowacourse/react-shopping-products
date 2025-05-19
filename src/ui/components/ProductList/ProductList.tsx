@@ -1,17 +1,17 @@
 import Product from '../Product/Product';
-import { ProductElement } from '../../../types/product';
+import { ProductWithCartInfo } from '../../../types/product';
 import { List } from './ProductList.styles';
 
 interface ProductListProps {
-  products: ProductElement[];
-  onAddCart: (product: ProductElement) => Promise<void>;
-  onRemoveCart: (product: ProductElement) => Promise<void>;
+  products: ProductWithCartInfo[];
+  onAddCart: (product: ProductWithCartInfo) => Promise<void>;
+  onRemoveCart: (product: ProductWithCartInfo) => Promise<void>;
 }
 
 function ProductList({ onAddCart, onRemoveCart, products }: ProductListProps) {
   return (
     <List>
-      {products?.map((item: ProductElement) => (
+      {products?.map((item: ProductWithCartInfo) => (
         <Product
           key={item.id}
           item={item}

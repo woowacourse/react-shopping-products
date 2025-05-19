@@ -8,12 +8,12 @@ import {
   Price,
   ProductName,
 } from './Product.styles';
-import { ProductElement } from '../../../types/product';
+import { ProductWithCartInfo } from '../../../types/product';
 
 interface ProductProps {
-  item: ProductElement;
-  onAddCart: (product: ProductElement) => Promise<void>;
-  onRemoveCart: (product: ProductElement) => Promise<void>;
+  item: ProductWithCartInfo;
+  onAddCart: (product: ProductWithCartInfo) => Promise<void>;
+  onRemoveCart: (product: ProductWithCartInfo) => Promise<void>;
 }
 
 function Product({ item, onAddCart, onRemoveCart }: ProductProps) {

@@ -2,14 +2,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { getProduct } from '../api/product';
 import { getCartItem } from '../api/cart';
 import type {
-  ProductElement,
   CartResponse,
   CartItem,
   CategoryType,
+  ProductWithCartInfo,
 } from '../types/product';
 
 export function useProducts(mappedSortType: string, category: CategoryType) {
-  const [products, setproducts] = useState<ProductElement[]>([]);
+  const [products, setproducts] = useState<ProductWithCartInfo[]>([]);
   const [cart, setCart] = useState<CartResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -24,6 +24,7 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
         size: 20,
         sortBy: mappedSortType,
       });
+
       const cartResponse = await getCartItem({
         page: 0,
         size: 50,
@@ -31,7 +32,7 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
       });
 
       const filteredCategory = product.content.filter(
-        (item: ProductElement) =>
+        (item: ProductWithCartInfo) =>
           category === '전체' || item.category === category
       );
 
@@ -40,7 +41,7 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
         cartItemMap.set(item.product.id, item);
       });
 
-      const mapped = filteredCategory.map((item: ProductElement) => {
+      const mapped = filteredCategory.map((item: ProductWithCartInfo) => {
         const cartItem = cartItemMap.get(item.id);
 
         return {
