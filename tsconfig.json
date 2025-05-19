@@ -15,6 +15,7 @@
     "jsx": "react-jsx",
 
     /* Linting */
+    "jsxImportSource": "@emotion/react",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
