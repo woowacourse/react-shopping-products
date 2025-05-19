@@ -69,13 +69,23 @@ function ProductItem({
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
         <Button
-          text={isInCart(product.id) ? '삭제' : '담기'}
-          icon={isInCart(product.id) ? <RemoveProductIcon /> : <AddProductIcon />}
           keyWord={isInCart(product.id) ? 'remove' : 'add'}
           onClick={() => {
             isInCart(product.id) ? handleProductItem('remove', product) : handleProductItem('add', product);
           }}
-        />
+        >
+          {isInCart(product.id) ? (
+            <>
+              <RemoveProductIcon />
+              삭제
+            </>
+          ) : (
+            <>
+              <AddProductIcon />
+              담기
+            </>
+          )}
+        </Button>
       </S.ProductItemBottom>
     </S.ProductItemContainer>
   );

@@ -1,18 +1,16 @@
 import * as S from './Button.styled';
-import React from 'react';
+import { ReactNode } from 'react';
 
 interface ButtonProps {
-  text: string;
-  icon: React.ReactNode;
+  children: ReactNode;
   keyWord: 'add' | 'remove';
   onClick?: () => void;
 }
 
-function Button({ text, icon, keyWord, onClick }: ButtonProps) {
+function Button({ keyWord, onClick, children }: ButtonProps) {
   return (
     <S.CartButton keyWord={keyWord} onClick={onClick}>
-      {icon}
-      {text}
+      {children}
     </S.CartButton>
   );
 }
