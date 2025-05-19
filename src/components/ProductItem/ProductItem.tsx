@@ -20,7 +20,7 @@ function ProductItem({
   product: ResponseProduct;
   cartItemList: ResponseCartItem[];
   setCartItemList: Dispatch<SetStateAction<ResponseCartItem[]>>;
-  setErrorMessage: (message: string) => void;
+  setErrorMessage: Dispatch<SetStateAction<string>>;
 }) {
   const { isInCart, text, keyword } = isItemInCart(product.id, cartItemList);
 
@@ -68,17 +68,8 @@ function ProductItem({
             isInCart ? handleProductItem('remove', product.id) : handleProductItem('add', product.id);
           }}
         >
-          {isInCart ? (
-            <>
-              <RemoveProductIcon />
-              {text}
-            </>
-          ) : (
-            <>
-              <AddProductIcon />
-              {text}
-            </>
-          )}
+          {isInCart ? <RemoveProductIcon /> : <AddProductIcon />}
+          {text}
         </Button>
       </S.ProductItemBottom>
     </S.ProductItemContainer>

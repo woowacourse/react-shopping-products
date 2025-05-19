@@ -15,14 +15,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSetErrorMessage = (message: string) => {
-    setErrorMessage('');
-
-    setTimeout(() => {
-      setErrorMessage(message);
-    }, 10);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,7 +24,7 @@ function App() {
         setProductList(rawProductList);
       } catch (error) {
         if (error instanceof Error) {
-          handleSetErrorMessage(error.message);
+          setErrorMessage(error.message);
         }
       } finally {
         setIsLoading(false);
@@ -50,12 +42,12 @@ function App() {
           <>
             <Header cartItemList={cartItemList} />
             <S.MiddleContainer>
-              <ProductControl setProductList={setProductList} setErrorMessage={handleSetErrorMessage} />
-              <ProductList productList={productList} cartItemList={cartItemList} setCartItemList={setCartItemList} setErrorMessage={handleSetErrorMessage} />
+              <ProductControl setProductList={setProductList} setErrorMessage={setErrorMessage} />
+              <ProductList productList={productList} cartItemList={cartItemList} setCartItemList={setCartItemList} setErrorMessage={setErrorMessage} />
             </S.MiddleContainer>
           </>
         )}
-        <ErrorBox text={errorMessage} backgroundColor='#FFC9C9' />
+        <ErrorBox text={errorMessage} backgroundColor='#FFC9C9' setErrorMessage={setErrorMessage} />
       </S.Wrap>
     </S.Global>
   );

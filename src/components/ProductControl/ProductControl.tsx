@@ -10,7 +10,7 @@ function ProductControl({
   setErrorMessage,
 }: {
   setProductList: Dispatch<SetStateAction<ResponseProduct[]>>;
-  setErrorMessage: (message: string) => void;
+  setErrorMessage: Dispatch<SetStateAction<string>>;
 }) {
   const [category, setCategory] = useState<string>('');
   const [sort, setSort] = useState<string>('');

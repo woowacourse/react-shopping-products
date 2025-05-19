@@ -12,7 +12,7 @@ function ProductList({
   productList: ResponseProduct[];
   cartItemList: ResponseCartItem[];
   setCartItemList: Dispatch<React.SetStateAction<ResponseCartItem[]>>;
-  setErrorMessage: (message: string) => void;
+  setErrorMessage: Dispatch<React.SetStateAction<string>>;
 }) {
   return (
     <S.ProductListContainer>
