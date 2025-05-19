@@ -12,14 +12,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "jsxImportSource": "@emotion/react",
+    "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": ["src", "__test__/header.test.tsx", "__test__/app.test.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
