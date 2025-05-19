@@ -4,11 +4,13 @@ import Header from './ui/components/Header/Header';
 import Toast from './ui/components/Toast/Toast';
 import ProductSection from './ui/components/ProductSection/ProductSection';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
-import { Global } from '@emotion/react';
 import React, { useState } from 'react';
+import { Global } from '@emotion/react';
 import { addCart, removeCart } from './api/cart';
 import { useProducts } from './hooks/useProducts';
 import { CategoryType, SortType, ProductElement } from './types/product';
+import { MAX_CART_ITEM_TYPE } from "./constants/productConfig";
+import { ERROR_MESSAGES } from "./constants/errorMessages";
 
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
@@ -22,8 +24,8 @@ function App() {
   );
 
   const handleAddCart = async (product: ProductElement) => {
-    if (cart?.totalElements === 50) {
-      console.error('최대 장바구니 갯수는 50개 입니다.');
+    if (cart?.totalElements === MAX_CART_ITEM_TYPE) {
+      console.error(ERROR_MESSAGES.maxCartItemType);
       setIsError(true);
       return;
     }
@@ -32,14 +34,14 @@ function App() {
       await addCart(product.id);
       await fetchData();
     } catch {
-      console.error('장바구니 추가 실패');
+      console.error(ERROR_MESSAGES.failedAddCart);
       setIsError(true);
     }
   };
 
   const handleRemoveCart = async (product: ProductElement) => {
     if (!product.cartId) {
-      console.error('유효하지 않은 장바구니 ID');
+      console.error(ERROR_MESSAGES.invalidCartID);
       setIsError(true);
       return;
     }
@@ -48,7 +50,7 @@ function App() {
       await removeCart(product.cartId);
       await fetchData();
     } catch (error) {
-      console.error('장바구니 제거 실패:', error);
+      console.error(ERROR_MESSAGES.failedRemoveCart, error);
       setIsError(true);
     }
   };
