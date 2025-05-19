@@ -1,16 +1,20 @@
 import { css } from "@emotion/react";
 import ErrorPopup from "./components/ErrorPopup";
-import { ErrorProvider } from "./contexts";
+import { ErrorProvider, LoadingProvider } from "./contexts";
 import ProductPage from "./pages/ProductPage";
+import Spinner from "./components/common/Spinner";
 
 function App() {
   return (
-    <ErrorProvider>
-      <div css={appStyle}>
-        <ProductPage />
-        <ErrorPopup />
-      </div>
-    </ErrorProvider>
+    <LoadingProvider>
+      <ErrorProvider>
+        <div css={appStyle}>
+          <ProductPage />
+          <ErrorPopup />
+          <Spinner />
+        </div>
+      </ErrorProvider>
+    </LoadingProvider>
   );
 }
 

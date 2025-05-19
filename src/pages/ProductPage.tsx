@@ -6,14 +6,10 @@ import { OPTION } from "../constants";
 import Text from "../components/common/Text";
 import useProducts from "../hooks/useProducts";
 import useCartItems from "../hooks/useCartItems";
-import Spinner from "../components/common/Spinner";
 
 const ProductPage = () => {
-  const { products, filter, setFilter, sort, setSort, isProductsLoading } = useProducts();
-  const { cartItems, isCartItemsLoading, handleCartItem, cartItemIds } = useCartItems();
-
-  if (isProductsLoading || isCartItemsLoading) return <Spinner />;
-
+  const { products, filter, setFilter, sort, setSort } = useProducts();
+  const { cartItems, handleCartItem, cartItemIds } = useCartItems();
   return (
     <>
       <Header shoppingCount={cartItems?.content?.length} />

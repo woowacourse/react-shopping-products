@@ -1,26 +1,30 @@
 import { css } from "@emotion/react";
+import { useLoading } from "../../contexts";
 
 const Spinner = () => {
-  return (
-    <div css={[spinnerWrapper, orbitSpin]} className="active">
-      <div css={orbitSpinner}>
-        <div css={planet} />
-        <div css={orbit}>
-          <div css={[satellite, satellite1]} />
-          <div css={[satellite, satellite2]} />
+  const { isLoading } = useLoading();
+
+  if (isLoading)
+    return (
+      <div css={[spinnerWrapper, orbitSpin]} className="active">
+        <div css={orbitSpinner}>
+          <div css={planet} />
+          <div css={orbit}>
+            <div css={[satellite, satellite1]} />
+            <div css={[satellite, satellite2]} />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default Spinner;
 
 const spinnerWrapper = css`
-  background-color: rgba(0, 0, 0, 0.7);
-  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
   height: 100vh;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 999999;
