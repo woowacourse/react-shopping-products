@@ -1,37 +1,33 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { vi } from "vitest";
+import { OrderByOptionType } from "../types/categoryOption";
 import { Product } from "../types/product";
 import { CartItem } from "../types/cartContents";
-import { OrderByOptionType } from "../types/categoryOption";
+import {
+  mockProducts,
+  mockCartItems,
+  productError,
+  cartError,
+} from "./mock-data";
 
-// Mock product data
-export const mockProducts: Product[] = [
-  {
-    id: 1,
-    name: "상품 1",
-    price: 10000,
-    imageUrl: "https://example.com/image1.jpg",
-    category: "전자제품",
-  },
-  {
-    id: 2,
-    name: "상품 2",
-    price: 20000,
-    imageUrl: "https://example.com/image2.jpg",
-    category: "의류",
-  },
-];
+interface ProductContextValue {
+  productsData: Product[] | undefined;
+  productFetchLoading: boolean;
+  productFetchError: Error | null;
+  fetchProducts: () => Promise<void>;
+  orderBy: OrderByOptionType;
+  setOrderBy: (orderBy: OrderByOptionType) => void;
+}
 
-// Mock cart data
-export const mockCartItems: CartItem[] = [
-  {
-    id: 1,
-    quantity: 2,
-    product: mockProducts[0],
-  },
-];
+interface CartContextValue {
+  cartData: CartItem[] | undefined;
+  cartFetchLoading: boolean;
+  cartFetchError: Error | null;
+  fetchCart: () => Promise<void>;
+  setCartLength?: (cartLength: number) => void;
+  cartLength?: number;
+}
 
-// Mock the context hooks
 export const mockUseProductContext = () => {
   return {
     productsData: mockProducts,
@@ -49,28 +45,40 @@ export const mockUseCartContext = () => {
     cartFetchLoading: false,
     cartFetchError: null,
     fetchCart: vi.fn().mockResolvedValue(undefined),
+    setCartLength: vi.fn(),
+    cartLength: mockCartItems.length,
   };
 };
 
-// Type for ProductContext value
-interface ProductContextValue {
-  productsData: Product[] | undefined;
-  productFetchLoading: boolean;
-  productFetchError: Error | null;
-  fetchProducts: () => Promise<void>;
-  orderBy: OrderByOptionType;
-  setOrderBy: (orderBy: OrderByOptionType) => void;
-}
+export const setupContextMocks = () => {
+  vi.mock("../contexts/ProductContext", () => ({
+    useProductContext: () => mockUseProductContext(),
+    ProductContextProvider: ({ children }: { children: ReactNode }) => (
+      <>{children}</>
+    ),
+  }));
 
-// Type for CartContext value
-interface CartContextValue {
-  cartData: CartItem[] | undefined;
-  cartFetchLoading: boolean;
-  cartFetchError: Error | null;
-  fetchCart: () => Promise<void>;
-}
+  vi.mock("../contexts/CartContext", () => ({
+    useCartContext: () => mockUseCartContext(),
+    CartContextProvider: ({ children }: { children: ReactNode }) => (
+      <>{children}</>
+    ),
+  }));
 
-// Mock providers with customizable values
+  vi.mock("../contexts/ErrorContext", () => {
+    const mockShowError = vi.fn();
+    return {
+      useErrorContext: () => ({
+        showError: mockShowError,
+        error: null,
+      }),
+      ErrorContextProvider: ({ children }: { children: ReactNode }) => (
+        <>{children}</>
+      ),
+    };
+  });
+};
+
 export const MockProductProvider = ({
   children,
   mockValue = {},
@@ -78,7 +86,6 @@ export const MockProductProvider = ({
   children: ReactNode;
   mockValue?: Partial<ProductContextValue>;
 }) => {
-  // Create mock implementation of the hook
   vi.mock("../contexts/ProductContext", () => ({
     useProductContext: () => ({
       ...mockUseProductContext(),
@@ -96,7 +103,6 @@ export const MockCartProvider = ({
   children: ReactNode;
   mockValue?: Partial<CartContextValue>;
 }) => {
-  // Create mock implementation of the hook
   vi.mock("../contexts/CartContext", () => ({
     useCartContext: () => ({
       ...mockUseCartContext(),
@@ -107,7 +113,6 @@ export const MockCartProvider = ({
   return <>{children}</>;
 };
 
-// Combined provider for convenience
 export const MockProvidersWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <MockProductProvider>
@@ -116,15 +121,6 @@ export const MockProvidersWrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Predefined error states
-export const mockProductError = new Error(
-  "제품 정보를 가져오는데 실패했습니다."
-);
-export const mockCartError = new Error(
-  "장바구니 정보를 가져오는데 실패했습니다."
-);
-
-// Error states
 export const MockProductProviderWithError = ({
   children,
 }: {
@@ -133,7 +129,7 @@ export const MockProductProviderWithError = ({
   return (
     <MockProductProvider
       mockValue={{
-        productFetchError: mockProductError,
+        productFetchError: productError,
         productsData: undefined,
       }}
     >
@@ -150,7 +146,7 @@ export const MockCartProviderWithError = ({
   return (
     <MockCartProvider
       mockValue={{
-        cartFetchError: mockCartError,
+        cartFetchError: cartError,
         cartData: undefined,
       }}
     >
@@ -159,7 +155,6 @@ export const MockCartProviderWithError = ({
   );
 };
 
-// Loading states
 export const MockProductProviderLoading = ({
   children,
 }: {

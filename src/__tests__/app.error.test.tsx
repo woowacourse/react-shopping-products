@@ -7,15 +7,17 @@ import { CartContextProvider } from "../contexts/CartContext";
 import React from "react";
 import { Product } from "../types/product";
 import { CartItem } from "../types/cartContents";
+import { OrderByOptionType } from "../types/categoryOption";
 
-// Define types for our mock context values to match ContextType interfaces
+// error 토스트의 경우에는 외부에서 mock을 불러오면, 리렌더링 이슈가 생기기 떄문에,
+// mock을 하나하나 세팅해줌.
 interface MockProductContextType {
   productsData: Product[] | undefined;
   productFetchLoading: boolean;
   productFetchError: Error | null;
   fetchProducts: () => Promise<void>;
-  orderBy: string; // Assuming OrderByOptionType is a string subtype
-  setOrderBy: (orderBy: string) => void;
+  orderBy: OrderByOptionType;
+  setOrderBy: (orderBy: OrderByOptionType) => void;
 }
 
 interface MockCartContextType {
@@ -25,7 +27,6 @@ interface MockCartContextType {
   fetchCart: () => Promise<void>;
 }
 
-// Default mock values for contexts
 let mockProductContextValue: MockProductContextType = {
   productsData: undefined,
   productFetchLoading: false,
@@ -42,7 +43,6 @@ let mockCartContextValue: MockCartContextType = {
   fetchCart: vi.fn(() => Promise.resolve()),
 };
 
-// Mock the contexts
 vi.mock("../contexts/ProductContext", async () => {
   const actual = await vi.importActual("../contexts/ProductContext");
   return {
@@ -59,7 +59,6 @@ vi.mock("../contexts/CartContext", async () => {
   };
 });
 
-// Mock the ErrorContext to spy on showError
 const mockShowError = vi.fn();
 vi.mock("../contexts/ErrorContext", async () => {
   const actual = await vi.importActual("../contexts/ErrorContext");
@@ -71,29 +70,26 @@ vi.mock("../contexts/ErrorContext", async () => {
   };
 });
 
-// Reset mocks and context values before each test
 beforeEach(() => {
   vi.clearAllMocks();
-  // Reset to default (no error) states, ensuring types match
   mockProductContextValue = {
-    productsData: [], // This is Product[] | undefined, so [] is valid
+    productsData: [],
     productFetchLoading: false,
-    productFetchError: null, // This is Error | null, so null is valid
+    productFetchError: null,
     fetchProducts: vi.fn(() => Promise.resolve()),
     orderBy: "낮은 가격순",
     setOrderBy: vi.fn(),
   };
   mockCartContextValue = {
-    cartData: [], // This is CartItem[] | undefined, so [] is valid
+    cartData: [],
     cartFetchLoading: false,
-    cartFetchError: null, // This is Error | null, so null is valid
+    cartFetchError: null,
     fetchCart: vi.fn(() => Promise.resolve()),
   };
 });
 
 describe("App 에러 처리 테스트", () => {
   test("제품 정보 가져오기 실패시 에러 토스트가 표시되어야 함", async () => {
-    // Simulate product fetch error
     mockProductContextValue.productFetchError = new Error(
       "제품 정보를 가져오는데 실패했습니다."
     );
@@ -118,7 +114,6 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("장바구니 정보 가져오기 실패시 에러 토스트가 표시되어야 함", async () => {
-    // Simulate cart fetch error
     mockCartContextValue.cartFetchError = new Error(
       "장바구니 정보를 가져오는데 실패했습니다."
     );
@@ -143,7 +138,6 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("여러 개의 에러가 발생했을 때 모든 에러가 처리되어야 함", async () => {
-    // Simulate both product and cart fetch errors
     mockProductContextValue.productFetchError = new Error(
       "제품 정보를 가져오는데 실패했습니다."
     );
@@ -177,8 +171,6 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("에러가 없는 경우 에러 처리가 호출되지 않아야 함", async () => {
-    // Default state (no errors) is set in beforeEach
-
     render(
       <ErrorContextProvider>
         <ProductContextProvider>
@@ -196,15 +188,13 @@ describe("App 에러 처리 테스트", () => {
       },
       { timeout: 500 }
     );
-    // Give a very brief moment for any potential async error handling to trigger (it shouldn't)
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(mockShowError).not.toHaveBeenCalled();
   });
 
-  test("네트워크 에러 (TypeError Failed to fetch)가 ProductContext에서 발생시 에러 토스트가 표시되어야 함", async () => {
-    // Simulate a TypeError similar to a network error from ProductContext
+  test("네트워크 에러가 ProductContext에서 발생시 에러 토스트가 표시되어야 함", async () => {
     mockProductContextValue.productFetchError = new TypeError(
-      "Failed to fetch"
+      "네트워크 에러가 발생했습니다."
     );
 
     render(
@@ -220,15 +210,16 @@ describe("App 에러 처리 테스트", () => {
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: "Failed to fetch",
+          message: "네트워크 에러가 발생했습니다.",
         })
       );
     });
   });
 
-  test("네트워크 에러 (TypeError Failed to fetch)가 CartContext에서 발생시 에러 토스트가 표시되어야 함", async () => {
-    // Simulate a TypeError similar to a network error from CartContext
-    mockCartContextValue.cartFetchError = new TypeError("Failed to fetch");
+  test("네트워크 에러가 CartContext에서 발생시 에러 토스트가 표시되어야 함", async () => {
+    mockCartContextValue.cartFetchError = new TypeError(
+      "네트워크 에러가 발생했습니다."
+    );
 
     render(
       <ErrorContextProvider>
@@ -243,7 +234,7 @@ describe("App 에러 처리 테스트", () => {
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: "Failed to fetch",
+          message: "네트워크 에러가 발생했습니다.",
         })
       );
     });

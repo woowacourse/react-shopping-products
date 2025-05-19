@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import App from "../App";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
-import "@testing-library/jest-dom"; // This will add the custom matchers like toBeInTheDocument
+import "@testing-library/jest-dom";
 import { ProductContextProvider } from "../contexts/ProductContext";
 import { CartContextProvider } from "../contexts/CartContext";
 import { Product } from "../types/product";
@@ -66,7 +66,6 @@ vi.mock("../contexts/CartContext", async () => {
   };
 });
 
-// Mock the emotion css prop
 vi.mock("@emotion/react", () => ({
   jsx: (
     type: React.ElementType,
@@ -82,7 +81,6 @@ vi.mock("@emotion/react", () => ({
   css: () => ({ name: "mock-css-result" }),
 }));
 
-// Mock the Spinner component
 vi.mock("../components/Spinner/Spinner", () => ({
   __esModule: true,
   default: () => <div data-testid="loading-spinner" />,
