@@ -19,9 +19,9 @@
   - [ ] 데이터 저장 시, 서버데이터 전체 저장
     - [ ] -> 화면에서 사용할 값만 따로 저장 (가공하는 로직 생성)
 
-- [ ] Button 컴포넌트 props 변경
-  - [ ] props -> icon => 실제 이미지 넣기 (컴포넌트)
-  - [ ] props -> icon 위치
+- [x] Button 컴포넌트 props 변경
+  - [x] props -> icon => 실제 이미지 넣기 (컴포넌트)
+  - [x] props -> icon 위치
 
 ```jsx
 interface ButtonProps {
