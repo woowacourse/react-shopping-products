@@ -11,6 +11,8 @@ interface ProductCardProps {
   cartQuantity: number;
 }
 
+const MAX_CART_QUANTITY = 50;
+
 export default function ProductCard({
   product,
   onRefetch,
@@ -19,18 +21,18 @@ export default function ProductCard({
   const handleProductCart = async () => {
     if (product.isCart && product.cartProductId) {
       await deleteCartProduct(product.cartProductId);
-      alert('장바구니에서 삭제되었습니다.');
       onRefetch();
 
       return;
     }
 
-    if (cartQuantity >= 50) {
-      alert('장바구니에 담을 수 있는 최대 개수는 50개입니다.');
+    if (cartQuantity >= MAX_CART_QUANTITY) {
+      alert(
+        `장바구니에 담을 수 있는 최대 개수는 ${MAX_CART_QUANTITY}개입니다.`
+      );
       return;
     }
     await postCartProduct(product.id);
-    alert('장바구니에 담겼습니다.');
     onRefetch();
   };
 
