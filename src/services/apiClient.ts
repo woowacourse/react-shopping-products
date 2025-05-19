@@ -9,18 +9,15 @@ interface ApiClientProps<RequestBody> {
   body?: RequestBody;
 }
 
-interface ApiClientType {
+type ApiClientType = {
   <Response, RequestBody>(
-    options: Omit<ApiClientProps<RequestBody>, 'method'> & {
-      method: 'DELETE' | 'POST';
-      body?: RequestBody;
+    options: ApiClientProps<RequestBody> & {
+      method: 'POST' | 'DELETE';
     },
   ): Promise<Response>;
 
-  <Response>(
-    options: Omit<ApiClientProps<Response>, 'method'> & { method: 'GET' },
-  ): Promise<Response>;
-}
+  <Response>(options: { method: 'GET'; URI: string }): Promise<Response>;
+};
 
 const apiClient: ApiClientType = async <Response, RequestBody>({
   method,
