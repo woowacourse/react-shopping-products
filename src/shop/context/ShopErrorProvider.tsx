@@ -3,8 +3,8 @@ import { createContext, ReactNode, useCallback, useState } from 'react';
 export const ShopErrorContext = createContext<{
   isError: boolean;
   errorMessage: string;
-  handleErrorTrue: (message: string) => void;
-  handleErrorFalse: () => void;
+  showErrorMessage: (message: string) => void;
+  hideErrorMessage: () => void;
 } | null>(null);
 
 function ShopErrorProvider({ children }: { children: ReactNode }) {
@@ -13,11 +13,11 @@ function ShopErrorProvider({ children }: { children: ReactNode }) {
     errorMessage: '',
   });
 
-  const handleErrorTrue = useCallback((message: string) => {
+  const showErrorMessage = useCallback((message: string) => {
     setError({ isError: true, errorMessage: message });
   }, []);
 
-  const handleErrorFalse = useCallback(() => {
+  const hideErrorMessage = useCallback(() => {
     setError({ isError: false, errorMessage: '' });
   }, []);
 
@@ -26,8 +26,8 @@ function ShopErrorProvider({ children }: { children: ReactNode }) {
       value={{
         isError: error.isError,
         errorMessage: error.errorMessage,
-        handleErrorTrue,
-        handleErrorFalse,
+        showErrorMessage,
+        hideErrorMessage,
       }}
     >
       {children}

@@ -25,19 +25,19 @@ function ProductCard({
   isInCart,
 }: ProductProps) {
   const { cartCount, refetch } = useCartContext();
-  const { handleErrorTrue, handleErrorFalse } = useShopErrorContext();
+  const { showErrorMessage, hideErrorMessage } = useShopErrorContext();
 
   const handleAddCart = async () => {
     try {
       if (cartCount >= 50) {
-        handleErrorTrue('장바구니는 최대 50개까지 담을 수 있습니다.');
+        showErrorMessage('장바구니는 최대 50개까지 담을 수 있습니다.');
         return;
       }
       await addCartItem(id);
       refetch();
-      handleErrorFalse();
+      hideErrorMessage();
     } catch {
-      handleErrorTrue('장바구니에 담는 데 실패했습니다.');
+      showErrorMessage('장바구니에 담는 데 실패했습니다.');
     }
   };
 
@@ -47,9 +47,9 @@ function ProductCard({
 
       await deleteCartItem(cartId);
       refetch();
-      handleErrorFalse();
+      hideErrorMessage();
     } catch {
-      handleErrorTrue('장바구니에서 삭제하는 데 실패했습니다.');
+      showErrorMessage('장바구니에서 삭제하는 데 실패했습니다.');
     }
   };
 

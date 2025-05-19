@@ -5,14 +5,14 @@ import Flex from './Flex';
 
 function ErrorToastMessage() {
   const [toast, setToast] = useState(true);
-  const { errorMessage, handleErrorFalse } = useShopErrorContext();
+  const { errorMessage, hideErrorMessage } = useShopErrorContext();
 
   useEffect(() => {
     setTimeout(() => {
       setToast(false);
-      handleErrorFalse();
+      hideErrorMessage();
     }, 3000);
-  }, [handleErrorFalse]);
+  }, [hideErrorMessage]);
 
   return (
     toast && (
