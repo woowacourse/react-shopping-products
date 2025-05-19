@@ -1,10 +1,10 @@
+import { useErrorMessageContext } from "../../context/ErrorMessageContext";
+
 import styled from "@emotion/styled";
 
-interface ErrorMessageProps {
-  errorMessage: string;
-}
+function ErrorMessage() {
+  const { errorMessage } = useErrorMessageContext();
 
-function ErrorMessage({ errorMessage }: ErrorMessageProps) {
   return (
     <Container>
       <p>{errorMessage}</p>

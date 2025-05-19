@@ -1,13 +1,15 @@
+import { useErrorMessageContext } from "./context/ErrorMessageContext";
+
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
-
-import styled from "@emotion/styled";
-import useErrorMessage from "./hooks/useErrorMessage";
-import useCartItems from "./hooks/useCartItems";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
+import styled from "@emotion/styled";
+
+import useCartItems from "./hooks/useCartItems";
+
 function App() {
-  const { errorMessage, handleErrorMessage } = useErrorMessage();
+  const { errorMessage, handleErrorMessage } = useErrorMessageContext();
   const { state, cartItems, addCartItem, removeCartItem } = useCartItems({
     handleErrorMessage,
   });
@@ -31,12 +33,11 @@ function App() {
     <Container>
       <Wrapper>
         <Header cartItems={selectedItemProductId}></Header>
-        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {errorMessage && <ErrorMessage />}
         {/* {state.isLoading && <Spinner />} */}
         {/* {state.isSuccess && ( */}
         <Main
           cartItems={selectedItemProductId}
-          handleErrorMessage={handleErrorMessage}
           handleAddProduct={handleAddProduct}
           handleRemoveProduct={handleRemoveProduct}
         />
