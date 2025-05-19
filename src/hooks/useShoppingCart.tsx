@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { CartItemTypes } from "../types/CartItemType";
 import getShoppingCart from "../api/getShoppingCart";
-import { findIsCartItem, isCartFull } from "../Component/utils/cart";
+import { findIsCartItem, isCartFull } from "../utils/cart";
 
 type Status = "idle" | "loading" | "success" | "error";
 
