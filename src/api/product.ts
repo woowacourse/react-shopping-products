@@ -1,6 +1,5 @@
 import { ProductListResponse, ProductQuery } from '@/features/ProductList/types/Product';
 
-import { ENV } from './env';
 import { fetcher } from './fetcher';
 
 export const getProductList = async ({
@@ -11,8 +10,7 @@ export const getProductList = async ({
 }: Partial<ProductQuery> = {}) => {
   const data = await fetcher
     .get<ProductListResponse>({
-      baseUrl: ENV.BASE_URL + 'products',
-      token: ENV.TOKEN,
+      endpoint: 'products',
       query: { page, size, sort, category },
     })
     .then((res) => res);
