@@ -1,13 +1,13 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import getProduct from '../api/product';
+import { useState } from 'react';
 import Body from '../component/Body/Body';
 import Header from '../component/Header/Header';
-import ProductContainer, { Product } from '../component/ProductContainer/ProductContainer';
+import ProductContainer from '../component/ProductContainer/ProductContainer';
 import Selector from '../component/Selector/Selector';
 import TitleContainer from '../component/TitleContainer/titleContainer';
-import { getCartItem } from '../api/cartItem';
 import Toast from '../component/Toast/Toast';
+import { useCartItem } from '../hook/useCartItem';
+import { useProductList } from '../hook/useProductList';
 
 interface ProductItem {
   id: number;
@@ -79,66 +79,24 @@ export type sortOption = 'price,asc' | 'price,desc';
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>('전체');
   const [filterValue, setFilterValue] = useState<FilterOption>('낮은 가격순');
-  const [productList, setProductList] = useState<Product[]>([]);
-  const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
-  const [isError, setIsError] = useState(false);
+
+  const { cartItemList, isError: cartError, updateCartItemList } = useCartItem();
+  const { productList, isError: productError } = useProductList(categoryValue, filterValue);
 
   const selectedProducts = cartItemList.length;
-  const dropdownOptions: CategoryOption[] = ['전체', '식료품', '패션잡화'];
-  const filterOptions: FilterOption[] = ['낮은 가격순', '높은 가격순'];
-
-  const updateCardItemList = () => {
-    (async () => {
-      try {
-        const response = await getCartItem({
-          sortBy: 'asc',
-        });
-        setCartItemList(response.content);
-      } catch (e) {
-        setIsError(true);
-      }
-    })();
-  };
-
-  useEffect(() => {
-    let sortByFilter: sortOption = 'price,asc';
-    if (filterValue === '높은 가격순') sortByFilter = 'price,desc';
-    (async () => {
-      try {
-        const response = await getProduct({
-          category: categoryValue,
-          sortBy: sortByFilter,
-        });
-        setProductList(response.content);
-      } catch (e) {
-        setIsError(true);
-      }
-    })();
-  }, [filterValue, categoryValue]);
-
-  useEffect(() => {
-    updateCardItemList();
-  }, []);
 
   return (
     <div css={pageLayout}>
       <Header title="SHOP">
         <div css={cartIconContainer}>
-          <img
-            css={cartIcon}
-            src="./shopping-cart.svg"
-            alt="장바구니 아이콘"
-            onClick={() => {
-              console.log('click');
-            }}
-          />
-          {selectedProducts !== 0 && (
+          <img css={cartIcon} src="./shopping-cart.svg" alt="장바구니 아이콘" onClick={() => console.log('click')} />
+          {selectedProducts > 0 && (
             <div data-testid="cart-count" css={cartItemCount}>
               {selectedProducts}
             </div>
           )}
         </div>
-        {isError && <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>}
+        {(cartError || productError) && <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>}
       </Header>
       <Body>
         {productList.length !== 0 ? (
@@ -146,19 +104,19 @@ export default function ShopPage() {
             <TitleContainer title="bpple 상품 목록">
               <div css={selectorBoxLayout}>
                 <Selector
-                  dropDownOptions={dropdownOptions}
+                  dropDownOptions={['전체', '식료품', '패션잡화']}
                   placeholder="전체"
-                  onSelectChange={(value: CategoryOption) => setCategoryValue(value)}
+                  onSelectChange={setCategoryValue}
                 />
                 <Selector
-                  dropDownOptions={filterOptions}
+                  dropDownOptions={['낮은 가격순', '높은 가격순']}
                   placeholder="낮은 가격순"
-                  onSelectChange={(value: FilterOption) => setFilterValue(value)}
+                  onSelectChange={setFilterValue}
                 />
               </div>
             </TitleContainer>
 
-            <ProductContainer products={productList} cartItemList={cartItemList} onChange={updateCardItemList} />
+            <ProductContainer products={productList} cartItemList={cartItemList} onChange={updateCartItemList} />
           </>
         ) : (
           <div css={loadingLayout}>로딩중입니다</div>
