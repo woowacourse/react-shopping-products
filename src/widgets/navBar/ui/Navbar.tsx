@@ -21,12 +21,10 @@ export default function Navbar({ cartTypeQuantity, errorMessage }: NavbarProps) 
     }
   }, [errorMessage]);
 
-  const handleLogoClick = () => {};
-
   return (
     <S.NavbarWrapper>
       <S.NavbarContainer>
-        <S.Logo onClick={handleLogoClick}>SHOP</S.Logo>
+        <S.Logo>SHOP</S.Logo>
         <S.CartIconContainer>
           <S.CartQuantity>{cartTypeQuantity}</S.CartQuantity>
           <S.CartIcon src='./cartIcon.svg' alt='cart icon' />
