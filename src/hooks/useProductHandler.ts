@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getProducts } from '../services/productServices';
 import tryApiCall from '../util/tryApiCall';
 import { CATEGORY_OPTIONS, SORT_OPTIONS, SELECT_SORT_OPTIONS } from '../constants/systemConstants';
@@ -14,17 +14,29 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
 
   const [products, setProducts] = useState<ProductItemType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const isMountedRef = useRef(false);
 
   useEffect(() => {
+    isMountedRef.current = true;
+    setIsLoading(false);
+
     (async () => {
-      const productsData = await tryApiCall(
-        () => getProducts(categoryOption, SORT_OPTIONS.get(sortOption)),
-        handleErrorMessage,
-      );
-      if (productsData) {
-        setProducts(productsData);
+      try {
+        const productsData = await tryApiCall(
+          () => getProducts(categoryOption, SORT_OPTIONS.get(sortOption)),
+          handleErrorMessage,
+        );
+
+        if (productsData && isMountedRef.current) {
+          setProducts(productsData);
+        }
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
+
+      return () => {
+        isMountedRef.current = false;
+      };
     })();
   }, [categoryOption, sortOption]);
 
