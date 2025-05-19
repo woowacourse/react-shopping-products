@@ -13,7 +13,6 @@ export const CartToggleButtonWrapper = styled.div<CartToggleButtonWrapperProps>`
 
 export const CartToggleButtonText = styled.div<CartToggleButtonWrapperProps>`
   color: ${({ isInBascket }) => (isInBascket ? "#000000" : "#ffffff")};
-  background-color: 
   font-size: 12px;
   font-weight: 600;
 `;
