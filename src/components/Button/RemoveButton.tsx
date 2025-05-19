@@ -7,7 +7,7 @@ interface RemoveButtonProps {
 const RemoveButton = ({ onClick }: RemoveButtonProps) => {
   return (
     <button className={RemoveButtonStyles} onClick={onClick}>
-      <img src="/removeShoppingCart.svg" />
+      <img src="./removeShoppingCart.svg" />
       <div className={RemoveButtonTextStyles}>빼기</div>
     </button>
   );
