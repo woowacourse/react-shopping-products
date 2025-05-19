@@ -1,13 +1,11 @@
 import { CartResponse } from '@/features/ProductList/types/Cart';
 import { NewCartItem, ProductQuery } from '@/features/ProductList/types/Product';
 
-import { ENV } from './env';
 import { fetcher } from './fetcher';
 
 export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
   await fetcher.post({
-    baseUrl: ENV.BASE_URL + 'cart-items',
-    token: ENV.TOKEN,
+    endpoint: 'cart-items',
     body: {
       productId,
       quantity,
@@ -16,8 +14,7 @@ export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
 
   const data = await fetcher
     .get<CartResponse>({
-      baseUrl: ENV.BASE_URL + 'cart-items',
-      token: ENV.TOKEN,
+      endpoint: 'cart-items',
     })
     .then((res) => res);
 
@@ -31,8 +28,7 @@ export const getCartItemList = async ({
 }: Partial<ProductQuery> = {}) => {
   const data = await fetcher
     .get<CartResponse>({
-      baseUrl: ENV.BASE_URL + 'cart-items',
-      token: ENV.TOKEN,
+      endpoint: 'cart-items',
       query: { page, size, sort },
     })
     .then((res) => res);
@@ -41,11 +37,10 @@ export const getCartItemList = async ({
 };
 
 export const deleteCartItem = async (cartItemId: number) => {
-  await fetcher.delete({ baseUrl: ENV.BASE_URL + `cart-items/${cartItemId}`, token: ENV.TOKEN });
+  await fetcher.delete({ endpoint: `cart-items/${cartItemId}` });
 
   const data = await fetcher.get<CartResponse>({
-    baseUrl: ENV.BASE_URL + 'cart-items',
-    token: ENV.TOKEN,
+    endpoint: 'cart-items',
   });
 
   return data.content;
