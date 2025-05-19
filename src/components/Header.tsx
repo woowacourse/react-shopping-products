@@ -4,7 +4,7 @@ import CartIcon from '/public/icon/cart.svg';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import useCartContext from '../hooks/useCartContext';
-import { countDistinct } from '../domain/cartItem';
+import countDistinct from '../util/countDistinct';
 
 const Header = () => {
   const { cartItemsIds } = useCartContext();
