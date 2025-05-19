@@ -1,3 +1,4 @@
+import { useCart } from "../../hooks/useCart";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { ButtonContainer, RemoveButton } from "./CartToggleButton.css";
 import { addItemToCart, removeItemToCart } from "./cartToggleButton.domain";
@@ -8,11 +9,7 @@ interface CartToggleButtonProps {
   productId: number;
   cartId?: number;
   cartAmount: number;
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  syncCartWithServer: () => void;
 }
 
 function CartToggleButton({
@@ -20,10 +17,9 @@ function CartToggleButton({
   cartId,
   cartAmount,
   isAdded,
-  setCartItemIds,
   setErrorTrue,
-  syncCartWithServer,
 }: CartToggleButtonProps) {
+  const { setCartItemIds, fetchCartProducts } = useCart();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAdd = async () => {
@@ -33,7 +29,7 @@ function CartToggleButton({
       await addItemToCart({
         productId,
         cartAmount,
-        syncCartWithServer,
+        fetchCartProducts,
         setErrorTrue,
       });
     } finally {

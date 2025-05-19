@@ -6,19 +6,9 @@ import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { categoryType, sortType } from "../../types/index.types";
 import { ERROR_TYPE } from "../../hooks/useError";
 interface ProductContainerProps {
-  cartItemIds: Record<"productId" | "cartId", number>[];
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  syncCartWithServer: () => void;
 }
-function ProductContainer({
-  cartItemIds,
-  setCartItemIds,
-  setErrorTrue,
-  syncCartWithServer,
-}: ProductContainerProps) {
+function ProductContainer({ setErrorTrue }: ProductContainerProps) {
   const [selectedCategory, setSelectedCategory] =
     useState<categoryType>("전체");
   const [selectedSort, setSelectedSort] = useState<sortType>("낮은 가격순");
@@ -36,10 +26,7 @@ function ProductContainer({
       <ProductCardList
         category={selectedCategory}
         sort={selectedSort}
-        cartItemIds={cartItemIds}
-        setCartItemIds={setCartItemIds}
         setErrorTrue={setErrorTrue}
-        syncCartWithServer={syncCartWithServer}
       />
     </div>
   );

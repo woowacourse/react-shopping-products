@@ -21,23 +21,16 @@ interface ProductCardProps {
     imageUrl: string;
     isAdded: boolean;
   };
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  syncCartWithServer: () => void;
 }
 
 function ProductCard({
   cartInfo,
   productInfo,
-  setCartItemIds,
   setErrorTrue,
-  syncCartWithServer,
 }: ProductCardProps) {
   const { imageUrl, productId, name, price, isAdded } = productInfo;
   const { cartId, cartAmount } = cartInfo;
-  console.log(imageUrl);
 
   return (
     <div css={ProductContainer}>
@@ -59,9 +52,7 @@ function ProductCard({
           cartId={cartId}
           cartAmount={cartAmount}
           isAdded={isAdded}
-          setCartItemIds={setCartItemIds}
           setErrorTrue={setErrorTrue}
-          syncCartWithServer={syncCartWithServer}
         />
       </div>
     </div>

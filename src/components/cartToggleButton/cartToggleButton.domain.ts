@@ -5,7 +5,7 @@ interface AddItemToCartProps {
   productId: number;
   cartAmount: number;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  syncCartWithServer: () => void;
+  fetchCartProducts: () => void;
 }
 
 interface RemoveItemToCartProps {
@@ -21,7 +21,7 @@ export async function addItemToCart({
   cartAmount,
   setErrorTrue,
   productId,
-  syncCartWithServer,
+  fetchCartProducts,
 }: AddItemToCartProps) {
   try {
     if (cartAmount >= 50) {
@@ -37,7 +37,7 @@ export async function addItemToCart({
       url: "/cart-items",
       body: { productId, quantity: 1 },
     });
-    syncCartWithServer();
+    fetchCartProducts();
   } catch {
     setErrorTrue("ADD");
   }

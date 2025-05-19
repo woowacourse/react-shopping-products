@@ -6,26 +6,20 @@ import { categoryType, sortType } from "../../types/index.types";
 import { ERROR_TYPE } from "../../hooks/useError";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
 import { useState } from "react";
+import { useCart } from "../../hooks/useCart";
 
 interface ProductCardListProps {
   category: categoryType;
   sort: sortType;
-  cartItemIds: Record<"productId" | "cartId", number>[];
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
   setErrorTrue: (type: ERROR_TYPE) => void;
-  syncCartWithServer: () => void;
 }
 
 function ProductCardList({
   category,
   sort,
-  cartItemIds,
-  setCartItemIds,
   setErrorTrue,
-  syncCartWithServer,
 }: ProductCardListProps) {
+  const { cartItemIds } = useCart();
   const [products, setProducts] = useState<ProductPageResponse | null>(null);
 
   const { isLoading } = useFetchProducts({
@@ -59,9 +53,7 @@ function ProductCardList({
             cartInfo={cartInfo}
             productInfo={productInfo}
             key={data.id}
-            setCartItemIds={setCartItemIds}
             setErrorTrue={setErrorTrue}
-            syncCartWithServer={syncCartWithServer}
           />
         );
       })}
