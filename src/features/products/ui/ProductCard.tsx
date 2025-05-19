@@ -52,7 +52,7 @@ export default function ProductCard({
         src={product.imageUrl}
         alt={product.name}
         onError={(e) => (e.currentTarget.src = './emptyImage.jpg')}
-      ></S.ImageSection>
+      />
       <S.ContentSection>
         <S.ProductName>{product.name}</S.ProductName>
         <S.ProductCategory>{product.category}</S.ProductCategory>
