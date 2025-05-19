@@ -1,6 +1,8 @@
 import { useToast } from "../../hooks/useToast";
 import request from "../../utils/request";
 
+const MAX_CART_AMOUNT = 50;
+
 interface AddItemToCartProps {
   productId: number;
   cartAmount: number;
@@ -42,7 +44,7 @@ export default function useCartToggleButton() {
     fetchCartProducts,
   }: AddItemToCartProps) {
     try {
-      if (cartAmount >= 50) {
+      if (cartAmount >= MAX_CART_AMOUNT) {
         showToast("CART_MAX");
         return;
       }

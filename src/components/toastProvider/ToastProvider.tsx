@@ -11,6 +11,8 @@ const ERROR_MESSAGE = {
   CART_MAX: "장바구니는 50개까지 가능합니다.",
 };
 
+const TOAST_TIME = 3000;
+
 export type ERROR_TYPE = keyof typeof ERROR_MESSAGE;
 
 export function ToastProvider({ children }: { children: ReactNode }) {
@@ -18,7 +20,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const showToast = (type: ERROR_TYPE) => {
     setMessage(ERROR_MESSAGE[type]);
-    setTimeout(() => setMessage(""), 3000);
+    setTimeout(() => setMessage(""), TOAST_TIME);
   };
 
   const renderLocation = document.querySelector(".container") ?? document.body;

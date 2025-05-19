@@ -65,5 +65,4 @@ function ProductCardList({
   );
 }
 
-// 장바구니에 있는 상품 id랑  모든 상품 정보들의 id를 비교 -> 추가된거
 export default ProductCardList;
