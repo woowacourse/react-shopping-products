@@ -5,10 +5,14 @@ import Header from '../Header/Header';
 import ItemCard from '../ItemCard/ItemCard';
 import Skeleton from '../Skeleton/Skeleton';
 import S from './Product.module.css';
+import addCart from '../../utils/api/addCart';
+import useError from '../../hooks/useError';
+import removeCart from '../../utils/api/removeCart';
 
 const Product = () => {
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('');
+  const { showError } = useError();
 
   const { products, loading } = useProducts({
     filterType: filter,
@@ -22,6 +26,24 @@ const Product = () => {
       ? { ...product, cartInfo: { id: cart.id, quantity: cart.quantity } }
       : { ...product, cartInfo: { id: -1, quantity: 0 } };
   });
+
+  const handleAddCart = async (id: number) => {
+    try {
+      await addCart(id);
+      await fetchCartProducts();
+    } catch (e) {
+      showError('장바구니 추가 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  const handleRemoveCart = async (id: number) => {
+    try {
+      await removeCart(id);
+      await fetchCartProducts();
+    } catch (e) {
+      showError('장바구니 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
+  };
 
   return (
     <>
@@ -52,9 +74,8 @@ const Product = () => {
                 name={name}
                 price={price}
                 isCart={cartInfo.id !== -1}
-                cartInfo={cartInfo}
-                fetchCartProducts={fetchCartProducts}
-                id={id}
+                onAddCart={() => handleAddCart(id)}
+                onRemoveCart={() => handleRemoveCart(cartInfo.id)}
               />
             ))}
           </div>
