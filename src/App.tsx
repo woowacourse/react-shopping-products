@@ -17,6 +17,11 @@ import {
   SORT_PRICE,
   SORT_PRICE_MAP,
 } from './constants/productConfig';
+import {
+  PRODUCT_SECTION_TITLE,
+  SHOPPING_MALL_TITLE,
+} from './constants/shopInfoConfig';
+import { MAX_CART_ITEM_COUNT } from './constants/cartConfig';
 
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
@@ -28,7 +33,7 @@ function App() {
     useProducts(mappedSortType, category);
 
   const handleAddCart = async (product: ProductElement) => {
-    if (cart?.totalElements === 50) {
+    if (cart?.totalElements === MAX_CART_ITEM_COUNT) {
       console.error('최대 장바구니 갯수는 50개 입니다.');
       setIsError(true);
       return;
@@ -78,14 +83,17 @@ function App() {
     <>
       <Global styles={GlobalStyle} />
       <Layout>
-        <Header title="SHOP" totalCartProducts={cart && cart.totalElements} />
+        <Header
+          title={SHOPPING_MALL_TITLE}
+          totalCartProducts={cart && cart.totalElements}
+        />
         {isError && (
           <Toast message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요." />
         )}
         {isLoading && <LoadingSpinner duration={2} />}
         {!isLoading && (
           <Section>
-            <Title title="우테코 상품 목록" />
+            <Title title={PRODUCT_SECTION_TITLE} />
             <DropdownContainer>
               <Dropdown
                 value={category}
