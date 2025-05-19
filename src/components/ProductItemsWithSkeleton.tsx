@@ -1,7 +1,7 @@
 import { CartItem, Product } from "../types/productType";
 import ProductItem from "./ProductItem/ProductItem";
 import ProductItemSkeleton from "./ProductItem/ProductItemSkeleton";
-import { PRODUCT_TYPE_COUNT } from "../App";
+import { PRODUCT_TYPE_COUNT } from "../hooks/useProducts";
 
 type ProductItemWithSkeletonProps = {
   isLoading: boolean;

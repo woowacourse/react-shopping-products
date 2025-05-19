@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import getProducts from "./api/getProducts";
+import { useState } from "react";
 import Header from "./components/header/Header";
 import "./reset.css";
 import styled from "@emotion/styled";
@@ -11,14 +10,10 @@ import useLoading from "./hooks/useLoading";
 import useCart from "./hooks/useCart";
 import useProducts from "./hooks/useProducts";
 
-export const PRODUCT_TYPE_COUNT = 20;
-export const CART_MAX_COUNT = 50;
-
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
-
   const { isLoading, withLoading } = useLoading();
-  const { cart, addToCart, removeFromCart, syncCart } = useCart({
+  const { cart, addToCart, removeFromCart } = useCart({
     setErrorMessage,
   });
   const {
@@ -27,26 +22,10 @@ function App() {
     selectedCategory,
     priceOrder,
     products,
-    setProducts,
   } = useProducts({
     withLoading,
     setErrorMessage,
   });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await withLoading(async () => {
-        const { data, error } = await getProducts();
-        setErrorMessage(error?.message || "");
-        if (!error?.message) {
-          await syncCart();
-          setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
-        }
-      });
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <Layout>

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CartItem, Product } from "../types/productType";
 import postCartItems from "../api/postCartItems";
 import deleteCartItems from "../api/deleteCartItems";
 import getCartItems from "../api/getCartItems";
 
-const CART_MAX_COUNT = 50;
+export const CART_MAX_COUNT = 50;
 
 const useCart = ({
   setErrorMessage,
@@ -49,6 +49,14 @@ const useCart = ({
     const cartItems = cartData.content;
     setCart(cartItems);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await syncCart();
+    };
+
+    fetchData();
+  }, []);
 
   return { cart, addToCart, removeFromCart, syncCart };
 };

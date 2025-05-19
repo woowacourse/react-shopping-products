@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Product, Category, PriceOrder } from "../types/productType";
 import getProducts from "../api/getProducts";
 
-const PRODUCT_TYPE_COUNT = 20;
+export const PRODUCT_TYPE_COUNT = 20;
 
 const useProducts = ({
   withLoading,
@@ -16,7 +16,7 @@ const useProducts = ({
   const [priceOrder, setPriceOrder] = useState<PriceOrder>("낮은 가격순");
 
   const handleCategoryChange = async (category: Category) => {
-    await withLoading(async () => {
+    withLoading(async () => {
       setSelectedCategory(category);
       const { error, data } = await getProducts({
         category,
@@ -28,7 +28,7 @@ const useProducts = ({
   };
 
   const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
-    await withLoading(async () => {
+    withLoading(async () => {
       setPriceOrder(priceOrder);
       const { data, error } = await getProducts({
         category: selectedCategory,
@@ -38,6 +38,21 @@ const useProducts = ({
       setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
     });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      withLoading(async () => {
+        const { data, error } = await getProducts();
+        setErrorMessage(error?.message || "");
+        if (!error?.message) {
+          setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
+        }
+      });
+    };
+
+    fetchData();
+  }, []);
+
   return {
     handleCategoryChange,
     handlePriceOrderChange,
