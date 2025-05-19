@@ -1,5 +1,5 @@
 import { baseAPI } from '@/api/baseAPI';
-import { convertResponseToCart } from '../responseMapper';
+import { convertResponseToCart } from './responseMapper';
 import { CartItemsResponse } from './type';
 
 export async function getShoppingCartList() {

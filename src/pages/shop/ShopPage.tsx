@@ -1,6 +1,6 @@
 import { wrapPromise } from '@/api/wrapPromise';
 import { ErrorToastMessage, Flex, Loading } from '@/components/common';
-import { DropdownOptionType } from '@/components/common/Dropdown';
+import { DropdownOptionType } from '@/components/common/type';
 import { getProductList } from '@/components/features/product/api/getProductList';
 import ProductList from '@/components/features/product/product-list/ProductList';
 import { Product } from '@/components/features/product/type';

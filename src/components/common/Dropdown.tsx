@@ -1,21 +1,17 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 import Arrow from './Arrow';
+import { DropdownOptionType } from './type';
 
-export type DropdownOptionType = {
-  label: string;
-  value: string;
-};
-
-function Dropdown({
+function Dropdown<T extends DropdownOptionType>({
   options,
   selectedValue,
   onSelectHandler,
   placeholder,
 }: {
-  options: DropdownOptionType[];
-  selectedValue: DropdownOptionType | null;
-  onSelectHandler: (option: DropdownOptionType) => void;
+  options: T[];
+  selectedValue: T | null;
+  onSelectHandler: (option: T) => void;
   placeholder?: string;
 }) {
   const [open, setOpen] = useState(false);
@@ -23,7 +19,7 @@ function Dropdown({
 
   const toggleOpen = () => setOpen((prev) => !prev);
 
-  const handleSelect = (option: DropdownOptionType) => {
+  const handleSelect = (option: T) => {
     setOpen(false);
     onSelectHandler(option);
   };

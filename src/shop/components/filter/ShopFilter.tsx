@@ -1,7 +1,6 @@
-import Dropdown, {
-  DropdownOptionType,
-} from '../../../components/common/Dropdown';
-import Flex from '../../../components/common/Flex';
+import { Flex } from '@/components/common';
+import Dropdown from '@/components/common/Dropdown';
+import { DropdownOptionType } from '@/components/common/type';
 
 function ShopFilter({
   filterOption,

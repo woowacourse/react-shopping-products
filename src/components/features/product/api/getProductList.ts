@@ -1,6 +1,6 @@
 import { baseAPI } from '@/api/baseAPI';
-import { DropdownOptionType } from '@/components/common/Dropdown';
-import { convertResponseToProduct } from '../responseMapper';
+import { DropdownOptionType } from '@/components/common/type';
+import { convertResponseToProduct } from './responseMapper';
 import { ProductsResponse } from './type';
 
 export async function getProductList(filterOption: {
