@@ -5,8 +5,9 @@ import Header from "../Header/Header";
 import ItemCard from "../ItemCard/ItemCard";
 import Skeleton from "../Skeleton/Skeleton";
 import S from "./Product.module.css";
+import ItemCardFilterSort from "../ItemCard/ItemCardFilterSort";
 
-const ProductList = () => {
+const ProductListPage = () => {
 	const [filter, setFilter] = useState("");
 	const [sort, setSort] = useState("");
 
@@ -27,17 +28,7 @@ const ProductList = () => {
 			<div className={S.contentContainer}>
 				<div className={S.contentTop}>
 					<h1 className={S.title}>bpple 상품 목록</h1>
-					<div className={S.dropdownContainer}>
-						<select value={filter} onChange={(e) => setFilter(e.target.value)}>
-							<option value="">전체</option>
-							<option value="식료품">식료품</option>
-							<option value="패션잡화">패션잡화</option>
-						</select>
-						<select value={sort} onChange={(e) => setSort(e.target.value)}>
-							<option value="asc">낮은 가격순</option>
-							<option value="desc">높은 가격순</option>
-						</select>
-					</div>
+					<ItemCardFilterSort filter={filter} sort={sort} setFilter={setFilter} setSort={setSort} />
 				</div>
 
 				{loading ? (
@@ -54,4 +45,4 @@ const ProductList = () => {
 	);
 };
 
-export default ProductList;
+export default ProductListPage;
