@@ -1,5 +1,6 @@
 import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { CartResponse } from '../types/product';
+import { fetchAPI } from './fetchAPI';
 interface getCartItemProps {
   page: number;
   size: number;
@@ -11,18 +12,10 @@ export const getCartItem = async ({
   size,
   sortBy,
 }: getCartItemProps): Promise<CartResponse> => {
-  const response = await fetch(
-    `${
-      import.meta.env.VITE_API_BASE_URL
-    }/cart-items?page=${page}&size=${size}&sort=${sortBy}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  const url = `${
+    import.meta.env.VITE_API_BASE_URL
+  }/cart-items?page=${page}&size=${size}&sort=${sortBy}`;
+  const response = await fetchAPI({ url: url, options: { method: 'GET' } });
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -34,17 +27,14 @@ export const getCartItem = async ({
 };
 
 export const addCart = async (id: number) => {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}/cart-items`,
-    {
+  const url = `${import.meta.env.VITE_API_BASE_URL}/cart-items`;
+  const response = await fetchAPI({
+    url: url,
+    options: {
       method: 'POST',
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ productId: id, quantity: 1 }),
-    }
-  );
+      body: { productId: id, quantity: 1 },
+    },
+  });
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -57,15 +47,8 @@ export const addCart = async (id: number) => {
 };
 
 export const removeCart = async (id: number) => {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}/cart-items/${id}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
-      },
-    }
-  );
+  const url = `${import.meta.env.VITE_API_BASE_URL}/cart-items/${id}`;
+  const response = await fetchAPI({ url: url, options: { method: 'DELETE' } });
 
   if (!response.ok) {
     const errorText = await response.text();
