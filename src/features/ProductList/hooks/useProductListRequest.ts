@@ -7,8 +7,8 @@ import { Product } from '../types/Product';
 
 export const useProductListRequest = (
   setProduct: (data: Product[]) => void,
-  categorySelect: string,
-  priceSelect: string
+  priceSelect: string,
+  categorySelect: string
 ) => {
   const { handleRequest, isLoading } = useApiRequest();
 
