@@ -19,10 +19,16 @@ export const ProductItem = ({
   isChecked = true,
   onCartUpdate,
 }: ProductItemProps) => {
-  const imgUrl = imageUrl.includes('kream') ? NoImage : imageUrl;
+  // const imgUrl = imageUrl.includes('kream') ? NoImage : imageUrl;
   return (
     <StyledProductItemContainer>
-      <StyledProductItemImage src={imgUrl} alt={name} />
+      <StyledProductItemImage
+        src={imageUrl}
+        alt={name}
+        onError={(e) => {
+          e.currentTarget.src = NoImage;
+        }}
+      />
       <Flex
         direction="column"
         alignItems="flex-start"
