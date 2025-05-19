@@ -1,7 +1,7 @@
 import { css, keyframes } from "@emotion/react";
 import { useEffect } from "react";
-import Text from "./common/Text";
-import { useErrorMessage } from "../contexts";
+import Text from "./Text";
+import { useErrorMessage } from "../../contexts";
 
 const ErrorPopup = () => {
   const { errorMessage, clearErrorMessage } = useErrorMessage();

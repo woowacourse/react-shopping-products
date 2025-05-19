@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import ErrorPopup from "./components/ErrorPopup";
+import ErrorPopup from "./components/common/ErrorPopup";
 import { ErrorProvider, LoadingProvider } from "./contexts";
 import ProductPage from "./pages/ProductPage";
 import Spinner from "./components/common/Spinner";
