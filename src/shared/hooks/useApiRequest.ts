@@ -9,7 +9,7 @@ export const useApiRequest = () => {
   const handleRequest = useCallback(
     async <T, R = T>(
       apiCall: () => Promise<T>,
-      setCallback: (data: T) => R,
+      onSuccess: (data: T) => R,
       errorData?: T,
       options?: { delay?: number }
     ): Promise<T | R | undefined> => {
@@ -21,10 +21,10 @@ export const useApiRequest = () => {
         }
 
         const data = await apiCall();
-        return setCallback ? setCallback(data) : data;
+        return onSuccess ? onSuccess(data) : data;
       } catch (err) {
         showToast((err as Error).message);
-        errorData && setCallback(errorData);
+        errorData && onSuccess(errorData);
         throw err;
       } finally {
         setIsLoading(false);
