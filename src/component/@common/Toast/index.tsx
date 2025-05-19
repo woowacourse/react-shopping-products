@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { useToast } from './context';
 
 interface ToastProps {
-  message?: string;
   duration?: number;
 }
 
