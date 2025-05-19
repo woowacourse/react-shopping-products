@@ -10,11 +10,11 @@ const Product = () => {
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('');
 
-  const { products, loading, productError } = useProducts({
+  const { products, loading } = useProducts({
     filterType: filter,
     sortingType: sort,
   });
-  const { cartProducts, fetchCartProducts, cartError } = useCart();
+  const { cartProducts, fetchCartProducts } = useCart();
 
   const mergedData = products.map((product) => {
     const cart = cartProducts.find((item) => item.product.id === product.id);
@@ -24,8 +24,8 @@ const Product = () => {
   });
 
   return (
-    <div className={S.container}>
-      <Header cartCount={cartProducts.length} error={{ productError, cartError }} />
+    <>
+      <Header cartCount={cartProducts.length} />
       <div className={S.contentContainer}>
         <div className={S.contentTop}>
           <h1 className={S.title}>bpple 상품 목록</h1>
@@ -60,7 +60,7 @@ const Product = () => {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

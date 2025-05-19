@@ -3,6 +3,7 @@ import { Info } from '../types';
 import { PRODUCT_URL } from '../constants/endpoint';
 import getQueryURL from '../utils/getQueryURL';
 import handleHttpError from '../utils/handleHTTPError';
+import useError from './useError';
 
 export default function useProducts({
   page = '0',
@@ -12,7 +13,7 @@ export default function useProducts({
 }) {
   const [productsInfo, setProductsInfo] = useState<Info>({ content: [] });
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const { showError } = useError();
 
   const products = productsInfo.content;
   const query = {
@@ -32,16 +33,14 @@ export default function useProducts({
         const data = await response.json();
         setProductsInfo(data);
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        }
+        if (error instanceof Error) showError(error.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [requestURL]);
+  }, [requestURL, showError]);
 
-  return { products, loading, productError: error };
+  return { products, loading };
 }

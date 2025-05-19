@@ -1,17 +1,24 @@
+import { useEffect } from 'react';
 import S from './ErrorToast.module.css';
 
 interface ErrorToastProps {
-  isError: boolean;
   message: string;
+  onClose: () => void;
 }
 
-const ErrorToast = ({ isError, message }: ErrorToastProps) => {
+const ErrorToast = ({ message, onClose }: ErrorToastProps) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 3500);
+
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
   return (
-    isError && (
-      <div className={S.toastContainer}>
-        <p className={S.toastText}>{message}</p>
-      </div>
-    )
+    <div className={S.toastContainer}>
+      <p className={S.toastText}>{message}</p>
+    </div>
   );
 };
 
