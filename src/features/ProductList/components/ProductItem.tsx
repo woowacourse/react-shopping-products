@@ -19,7 +19,6 @@ export const ProductItem = ({
   isChecked = true,
   onCartUpdate,
 }: ProductItemProps) => {
-  // const imgUrl = imageUrl.includes('kream') ? NoImage : imageUrl;
   return (
     <StyledProductItemContainer>
       <StyledProductItemImage
