@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ProductPageResponse } from "../types/response.types";
-import request from "../utils/request";
 import { categoryType, sortType } from "../types/index.types";
-import { useToast } from "./useToast";
+import useFetch from "./useFetch";
 
 const SORT_TYPE = {
   "낮은 가격순": "price,asc",
@@ -20,42 +19,42 @@ function useFetchProducts({
   setProducts,
   sort,
 }: useFetchProductsProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const { showToast } = useToast();
+  const { getData, isLoading } = useFetch<ProductPageResponse>();
+
+  const queryString = createQueryString(category, sort);
 
   useEffect(() => {
     async function getProducts() {
-      setIsLoading(true);
-      const basicQuery = {
-        page: "0",
-        size: "20",
-        sort: SORT_TYPE[sort],
-      };
-
-      try {
-        const query =
-          category === "전체"
-            ? basicQuery
-            : {
-                category: category,
-                ...basicQuery,
-              };
-        const queryString = new URLSearchParams(query).toString();
-        const data: ProductPageResponse = await request({
-          method: "GET",
-          url: `/products?${queryString}`,
-        });
-        setProducts(data);
-      } catch {
-        showToast("PRODUCTS");
-      } finally {
-        setIsLoading(false);
-      }
+      const products = await getData({
+        method: "GET",
+        url: `/products?${queryString},`,
+        errorType: "PRODUCTS",
+      });
+      if (products) setProducts(products);
     }
 
     getProducts();
-  }, [category, setProducts, sort, showToast]);
+  }, [getData, queryString, setProducts]);
+
   return { isLoading };
 }
 
 export default useFetchProducts;
+
+function createQueryString(category: categoryType, sort: sortType) {
+  const basicQuery = {
+    page: "0",
+    size: "20",
+    sort: SORT_TYPE[sort],
+  };
+  const query =
+    category === "전체"
+      ? basicQuery
+      : {
+          category: category,
+          ...basicQuery,
+        };
+  const queryString = new URLSearchParams(query).toString();
+
+  return queryString;
+}

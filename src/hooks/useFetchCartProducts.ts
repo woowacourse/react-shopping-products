@@ -1,32 +1,26 @@
 import { useCallback, useEffect, useState } from "react";
-import { CartItem } from "../types/response.types";
-import request from "../utils/request";
-import { useToast } from "./useToast";
+import { CartItem, CartProduct } from "../types/response.types";
+import useFetch from "./useFetch";
 
 function useFetchCartProducts() {
   const [cartItemIds, setCartItemIds] = useState<
     Record<"productId" | "cartId", number>[]
   >([]);
-  const { showToast } = useToast();
+  const { getData } = useFetch<CartProduct>();
 
-  const fetchCartProducts = useCallback(
-    async function fetchCartItems() {
-      try {
-        const data = await request({
-          method: "GET",
-          url: "/cart-items",
-        });
-        setCartItemIds(
-          data.content.map((data: CartItem) => {
-            return { productId: data.product.id, cartId: data.id };
-          })
-        );
-      } catch {
-        showToast("CART");
-      }
-    },
-    [showToast]
-  );
+  const fetchCartProducts = useCallback(async () => {
+    const cartProducts = await getData({
+      method: "GET",
+      url: "/cart-items",
+      errorType: "CART",
+    });
+    if (!cartProducts) return;
+    setCartItemIds(
+      cartProducts.content.map((data: CartItem) => {
+        return { productId: data.product.id, cartId: data.id };
+      })
+    );
+  }, [getData]);
 
   useEffect(() => {
     fetchCartProducts();
@@ -34,4 +28,5 @@ function useFetchCartProducts() {
 
   return { cartItemIds, setCartItemIds, fetchCartProducts };
 }
+
 export default useFetchCartProducts;
