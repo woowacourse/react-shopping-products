@@ -67,7 +67,7 @@ function App() {
           </S.ProductListFilterContainer>
         </S.ProductListHeader>
 
-        {isLoading ? (
+        {isLoading && products.length === 0 ? (
           <div>loading...</div>
         ) : (
           <S.ProductList data-testid="product-list">
