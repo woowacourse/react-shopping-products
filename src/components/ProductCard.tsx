@@ -8,6 +8,7 @@ import {
 } from "../styles/ProductCard";
 import { IMAGE_PATH } from "../constants/imagePath";
 import CartToggleButton from "./CartToggleButton";
+import { useEffect, useRef } from "react";
 
 type ProductCardProps = {
   id: number;
@@ -36,8 +37,18 @@ const ProductCard = ({
     category === "패션잡화"
       ? IMAGE_PATH.DEFAULT_FASHION
       : IMAGE_PATH.DEFAULT_GROCERY;
-
   const imageSrc = imageUrl ? imageUrl : defaultSrc;
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
 
   return (
     <ProductCardWrapper>
@@ -60,6 +71,7 @@ const ProductCard = ({
           basketId={basketId}
           isNotBasketCountMAX={isNotBasketCountMAX}
           setError={setError}
+          timeoutRef={timeoutRef}
         />
       </ProductCardDetailWrapper>
     </ProductCardWrapper>

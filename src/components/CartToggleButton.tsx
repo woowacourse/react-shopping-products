@@ -12,6 +12,7 @@ type CartToggleButtonProps = {
   basketId?: number;
   isNotBasketCountMAX: boolean;
   setError: (value: boolean) => void;
+  timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
 };
 
 export type CartToggleButtonWrapperProps = {
@@ -24,6 +25,7 @@ type handleCartToggleButtonProps = {
   basketId?: number;
   isNotBasketCountMAX: boolean;
   setError: (value: boolean) => void;
+  timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
 };
 
 const handleCartToggleButton = async ({
@@ -32,13 +34,20 @@ const handleCartToggleButton = async ({
   basketId,
   isNotBasketCountMAX,
   setError,
+  timeoutRef,
 }: handleCartToggleButtonProps) => {
   if (!isInBascket) {
     if (!isNotBasketCountMAX) {
       setError(true);
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
       setTimeout(() => {
         setError(false);
       }, 2000);
+
       throw new Error(ERROR_MSG.BASKET_LIMIT_EXCEEDED);
     }
     await postCartItems(productId);
@@ -53,6 +62,7 @@ const CartToggleButton = ({
   basketId,
   isNotBasketCountMAX,
   setError,
+  timeoutRef,
 }: CartToggleButtonProps) => {
   const imageSrc = isInBascket
     ? IMAGE_PATH.SHOPPIN_CART_REMOVE
@@ -68,6 +78,7 @@ const CartToggleButton = ({
           basketId,
           isNotBasketCountMAX,
           setError,
+          timeoutRef,
         })
       }
     >
