@@ -13,3 +13,7 @@ export const HeaderStyle = css`
   z-index: 5;
   background: ${theme.color.black};
 `;
+
+export const CartStyle = css`
+  position: relative;
+`;
