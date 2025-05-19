@@ -29,7 +29,7 @@ function CartToggleButton({
       await addItemToCart({
         productId,
         cartAmount,
-        fetchCartProducts,
+        syncCartWithServer: fetchCartProducts,
         setErrorTrue,
       });
     } finally {
