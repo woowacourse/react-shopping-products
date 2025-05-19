@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useState, useEffect } from "react";
-import { CartItem, Error } from "../types/product.type";
-import { INITIAL_ERROR } from "./context.constant";
-import { useGetShoppingCart } from "../hooks/useGetShoppingCart";
+import { CartItem, Error } from "../../types/product.type";
+import { INITIAL_ERROR } from "../context.constant";
+import { useGetShoppingCart } from "../../hooks/shoppingCart/useGetShoppingCart";
 
 interface ShoppingCartContextType {
   cartItems: CartItem[];

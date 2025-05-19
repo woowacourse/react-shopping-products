@@ -1,7 +1,7 @@
 import { css } from "@emotion/css";
 import { Product } from "../../types/product.type";
 import ProductCard from "../ProductCard";
-import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
+import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
 
 interface ProductCardListProps {
   products: Product[];

@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
+import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
 
 const Header = () => {
   const { cartItems } = useShoppingCartContext();

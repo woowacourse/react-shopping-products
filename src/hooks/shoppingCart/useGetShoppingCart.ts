@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
-import getShoppingCart from "../APIs/getShoppingCart";
-import { CartItem } from "../types/product.type";
-import { INITIAL_ERROR } from "../contexts/context.constant";
-import { Error } from "../types/product.type";
+import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
+import { CartItem } from "../../types/product.type";
+import { INITIAL_ERROR } from "../../contexts/context.constant";
+import { Error } from "../../types/product.type";
 
 export function useGetShoppingCart() {
   const [data, setData] = useState<CartItem[]>([]);

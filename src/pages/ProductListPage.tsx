@@ -1,8 +1,8 @@
 import ErrorToast from "../components/ErrorToast";
 import ProductCardList from "../components/ProductCardList";
 import ProductListToolBar from "../components/ProductListToolBar";
-import { useProductsContext } from "../contexts/useProductsContext";
-import { useShoppingCartContext } from "../contexts/useShoppingCartContext";
+import { useProductsContext } from "../contexts/products/useProductsContext";
+import { useShoppingCartContext } from "../contexts/shoppingCart/useShoppingCartContext";
 import OrbitSpinner from "../components/OrbitSpinner/index";
 
 const ProductListPage = () => {

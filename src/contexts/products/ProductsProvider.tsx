@@ -1,10 +1,13 @@
 import React, { createContext, PropsWithChildren, useState } from "react";
-import { Category, Error, Product, SortOption } from "../types/product.type";
-import { useProductsFetch } from "../hooks/useProductsFetch";
 import {
   CATEGORY,
+  Category,
+  Error,
+  Product,
   SORT_OPTION,
-} from "../components/ProductListToolBar/toolBar.constant";
+  SortOption,
+} from "../../types/product.type";
+import { useProductsFetch } from "../../hooks/products/useProductsFetch";
 
 interface ProductsContextType {
   products: Product[];

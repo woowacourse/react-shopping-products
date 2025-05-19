@@ -2,9 +2,9 @@ import { css } from "@emotion/css";
 import RemoveButton from "../Button/RemoveButton";
 import AddButton from "../Button/AddButton";
 import { Product } from "../../types/product.type";
-import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
-import { useAddShoppingCart } from "../../hooks/useAddShoppingCart";
-import { useDeleteShoppingCart } from "../../hooks/useDeleteShoppingCart";
+import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
+import { useAddShoppingCart } from "../../hooks/shoppingCart/useAddShoppingCart";
+import { useDeleteShoppingCart } from "../../hooks/shoppingCart/useDeleteShoppingCart";
 
 interface ProductCardProps {
   product: Product;

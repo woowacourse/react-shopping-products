@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Product, Error } from "../types/product.type";
-import { INITIAL_ERROR } from "../contexts/context.constant";
-import fetchProducts from "../APIs/fetchProducts";
+import { Product, Error } from "../../types/product.type";
+import { INITIAL_ERROR } from "../../contexts/context.constant";
+import fetchProducts from "../../APIs/products/fetchProducts";
 
 export function useProductsFetch(sort: string, category: string) {
   const [products, setProducts] = useState<Product[]>([]);

@@ -1,9 +1,13 @@
 import { css } from "@emotion/css";
 import FilterDropDown from "./FilterDropDown";
 import SortingDropDown from "./SortingDropDown";
-import { useProductsContext } from "../../contexts/useProductsContext";
-import { Category, SortOption } from "../../types/product.type";
-import { CATEGORY, SORT_OPTION } from "./toolBar.constant";
+import { useProductsContext } from "../../contexts/products/useProductsContext";
+import {
+  CATEGORY,
+  Category,
+  SORT_OPTION,
+  SortOption,
+} from "../../types/product.type";
 
 const ProductListToolBar = () => {
   const { handleChangeSort, handleChangeCategory } = useProductsContext();

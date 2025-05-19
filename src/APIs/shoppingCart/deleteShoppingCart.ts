@@ -1,19 +1,18 @@
-import { CartItem, ShoppingCartResponse } from "../types/product.type";
+import { CartItem, ShoppingCartResponse } from "../../types/product.type";
 import { baseUrl, credentials } from "./apiConfig";
 import getShoppingCart from "./getShoppingCart";
 
-async function addShoppingCart({
+async function deleteShoppingCart({
   endpoint,
-  requestBody,
+  cartItemId,
 }: ShoppingCartResponse): Promise<CartItem[]> {
   try {
-    const response = await fetch(`${baseUrl}${endpoint}`, {
-      method: "POST",
+    const response = await fetch(`${baseUrl}${endpoint}/${cartItemId}`, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Basic ${credentials}`,
       },
-      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
@@ -37,4 +36,4 @@ async function addShoppingCart({
   }
 }
 
-export default addShoppingCart;
+export default deleteShoppingCart;

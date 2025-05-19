@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import deleteShoppingCart from "../APIs/deleteShoppingCart";
-import { useShoppingCartContext } from "../contexts/useShoppingCartContext";
+import deleteShoppingCart from "../../APIs/shoppingCart/deleteShoppingCart";
+import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
 
 export function useDeleteShoppingCart(cartItemId?: number) {
   const {

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import addShoppingCart from "../APIs/addShoppingCart";
-import { useShoppingCartContext } from "../contexts/useShoppingCartContext";
+import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
+import addShoppingCart from "../../APIs/shoppingCart/addShoppingCart";
 
 export function useAddShoppingCart(productId: number) {
   const {

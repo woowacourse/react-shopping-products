@@ -1,7 +1,4 @@
-import {
-  FetchProductsRequest,
-  FetchProductsResponse,
-} from "../types/product.type";
+import { FetchProductsRequest, FetchProductsResponse } from "./type";
 
 async function fetchProducts({
   endpoint,

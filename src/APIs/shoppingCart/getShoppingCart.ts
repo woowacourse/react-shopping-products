@@ -1,9 +1,13 @@
-import { FetchProductsRequest, CartItem } from "../types/product.type";
+import { CartItem } from "../../types/product.type";
 import { baseUrl, credentials } from "./apiConfig";
+
+interface FetchShopingCartRequest {
+  endpoint: string;
+}
 
 async function getShoppingCart({
   endpoint,
-}: FetchProductsRequest): Promise<CartItem[]> {
+}: FetchShopingCartRequest): Promise<CartItem[]> {
   try {
     const response = await fetch(`${baseUrl}${endpoint}`, {
       method: "GET",
