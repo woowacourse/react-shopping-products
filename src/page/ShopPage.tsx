@@ -1,15 +1,13 @@
-import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
-import getProduct from "../api/product";
-import Body from "../component/Body/Body";
-import Header from "../component/Header/Header";
-import ProductContainer, {
-  Product,
-} from "../component/ProductContainer/ProductContainer";
-import Selector from "../component/Selector/Selector";
-import TitleContainer from "../component/TitleContainer/titleContainer";
-import { getCartItem } from "../api/cartItem";
-import Toast from "../component/Toast/Toast";
+import { css } from '@emotion/react';
+import { useEffect, useState } from 'react';
+import getProduct from '../api/product';
+import Body from '../component/Body/Body';
+import Header from '../component/Header/Header';
+import ProductContainer, { Product } from '../component/ProductContainer/ProductContainer';
+import Selector from '../component/Selector/Selector';
+import TitleContainer from '../component/TitleContainer/titleContainer';
+import { getCartItem } from '../api/cartItem';
+import Toast from '../component/Toast/Toast';
 
 interface ProductItem {
   id: number;
@@ -74,26 +72,26 @@ export interface CartItem {
   product: ProductItem;
 }
 
-export type CategoryOption = "전체" | "식료품" | "패션잡화";
-export type FilterOption = "낮은 가격순" | "높은 가격순";
-export type sortOption = "price,asc" | "price,desc";
+export type CategoryOption = '전체' | '식료품' | '패션잡화';
+export type FilterOption = '낮은 가격순' | '높은 가격순';
+export type sortOption = 'price,asc' | 'price,desc';
 
 export default function ShopPage() {
-  const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");
-  const [filterValue, setFilterValue] = useState<FilterOption>("낮은 가격순");
+  const [categoryValue, setCategoryValue] = useState<CategoryOption>('전체');
+  const [filterValue, setFilterValue] = useState<FilterOption>('낮은 가격순');
   const [productList, setProductList] = useState<Product[]>([]);
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
   const [isError, setIsError] = useState(false);
 
   const selectedProducts = cartItemList.length;
-  const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
-  const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
+  const dropdownOptions: CategoryOption[] = ['전체', '식료품', '패션잡화'];
+  const filterOptions: FilterOption[] = ['낮은 가격순', '높은 가격순'];
 
-  const updateCardItemList = async () => {
+  const updateCardItemList = () => {
     (async () => {
       try {
         const response = await getCartItem({
-          sortBy: "asc",
+          sortBy: 'asc',
         });
         setCartItemList(response.content);
       } catch (e) {
@@ -103,8 +101,8 @@ export default function ShopPage() {
   };
 
   useEffect(() => {
-    let sortByFilter: sortOption = "price,asc";
-    if (filterValue === "높은 가격순") sortByFilter = "price,desc";
+    let sortByFilter: sortOption = 'price,asc';
+    if (filterValue === '높은 가격순') sortByFilter = 'price,desc';
     (async () => {
       try {
         const response = await getProduct({
@@ -131,7 +129,7 @@ export default function ShopPage() {
             src="./shopping-cart.svg"
             alt="장바구니 아이콘"
             onClick={() => {
-              console.log("click");
+              console.log('click');
             }}
           />
           {selectedProducts !== 0 && (
@@ -140,9 +138,7 @@ export default function ShopPage() {
             </div>
           )}
         </div>
-        {isError && (
-          <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>
-        )}
+        {isError && <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>}
       </Header>
       <Body>
         {productList.length !== 0 ? (
@@ -152,25 +148,17 @@ export default function ShopPage() {
                 <Selector
                   dropDownOptions={dropdownOptions}
                   placeholder="전체"
-                  onSelectChange={(value: CategoryOption) =>
-                    setCategoryValue(value)
-                  }
+                  onSelectChange={(value: CategoryOption) => setCategoryValue(value)}
                 />
                 <Selector
                   dropDownOptions={filterOptions}
                   placeholder="낮은 가격순"
-                  onSelectChange={(value: FilterOption) =>
-                    setFilterValue(value)
-                  }
+                  onSelectChange={(value: FilterOption) => setFilterValue(value)}
                 />
               </div>
             </TitleContainer>
 
-            <ProductContainer
-              products={productList}
-              cartItemList={cartItemList}
-              onChange={updateCardItemList}
-            />
+            <ProductContainer products={productList} cartItemList={cartItemList} onChange={updateCardItemList} />
           </>
         ) : (
           <div css={loadingLayout}>로딩중입니다</div>
