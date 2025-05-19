@@ -1,6 +1,8 @@
 import Header from '../../component/@common/Header';
-import { ShoppingListStyle } from './ShoppingList.styles';
-import ProductListLayout from '../../component/feature/ProductListLayout';
+import {
+  ProductContentContainer,
+  ShoppingListStyle,
+} from './ShoppingList.styles';
 import ErrorFallback from '../../component/@common/ErrorFallback';
 import ShoppingListHeader from '../../component/feature/ShoppingListHeader';
 import ProductContent from '../../component/feature/ProductContent';
@@ -46,7 +48,7 @@ const ShoppingList = () => {
           handleSortClick={handleSortClick}
         />
       </section>
-      <ProductListLayout>
+      <div css={ProductContentContainer}>
         <ProductContent
           isLoading={isLoading}
           data={data}
@@ -56,7 +58,7 @@ const ShoppingList = () => {
           handleRemoveCart={handleRemoveCart}
           handleCategoryClick={handleCategoryClick}
         />
-      </ProductListLayout>
+      </div>
     </>
   );
 };
