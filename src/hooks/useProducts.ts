@@ -35,10 +35,13 @@ export function useProducts(mappedSortType: string, category: CategoryType) {
           category === '전체' || item.category === category
       );
 
+      const cartItemMap = new Map<number, CartItem>();
+      cartResponse.content.forEach((item) => {
+        cartItemMap.set(item.product.id, item);
+      });
+
       const mapped = filteredCategory.map((item: ProductElement) => {
-        const cartItem = cartResponse.content.find(
-          (ci: CartItem) => ci.product.id === item.id
-        );
+        const cartItem = cartItemMap.get(item.id);
 
         return {
           id: item.id,
