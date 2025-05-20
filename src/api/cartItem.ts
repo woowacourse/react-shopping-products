@@ -1,8 +1,3 @@
-interface PostCartItemProps {
-  productId: number;
-  quantity: number;
-}
-
 export async function getCartItem({ sortBy }: { sortBy: string }) {
   const options = {
     method: "GET",
@@ -24,7 +19,13 @@ export async function getCartItem({ sortBy }: { sortBy: string }) {
   ).then((res) => res.json());
 }
 
-export async function postCartItem({ productId, quantity }: PostCartItemProps) {
+export async function postCartItem({
+  productId,
+  quantity,
+}: {
+  productId: number;
+  quantity: number;
+}) {
   const options = {
     method: "POST",
     headers: {
