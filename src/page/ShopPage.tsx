@@ -3,9 +3,7 @@ import { getCartItems } from "../api/cartItem";
 import getProducts from "../api/product";
 import Body from "../component/Body/Body";
 import Header from "../component/Header/Header";
-import ProductContainer, {
-  Product,
-} from "../component/ProductContainer/ProductContainer";
+import ProductContainer from "../component/ProductContainer/ProductContainer";
 import Selector from "../component/Selector/Selector";
 import TitleContainer from "../component/TitleContainer/titleContainer";
 import Toast from "../component/Toast/Toast";
@@ -17,30 +15,19 @@ import {
   pageLayout,
   selectorBoxLayout,
 } from "./ShopPage.style";
-
-interface ProductItem {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-}
-
-export interface CartItem {
-  id: number;
-  quantity: number;
-  product: ProductItem;
-}
-
-export type CategoryOption = "전체" | "식료품" | "패션잡화";
-export type FilterOption = "낮은 가격순" | "높은 가격순";
-export type sortOption = "price,asc" | "price,desc";
+import {
+  CartItemType,
+  CategoryOption,
+  FilterOption,
+  ProductType,
+  sortOption,
+} from "../constants";
 
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");
   const [filterValue, setFilterValue] = useState<FilterOption>("낮은 가격순");
-  const [productList, setProductList] = useState<Product[]>([]);
-  const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
+  const [productList, setProductList] = useState<ProductType[]>([]);
+  const [cartItemList, setCartItemList] = useState<CartItemType[]>([]);
   const [isError, setIsError] = useState(false);
 
   const selectedProductCount = cartItemList.length;

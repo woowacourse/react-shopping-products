@@ -1,17 +1,10 @@
-import { CartItem } from "../../page/ShopPage";
+import { CartItemType, ProductType } from "../../constants";
 import Product from "../Product/Product";
 import { ProductContainerLayout } from "./ProductContainer.style";
 
-export interface Product {
-  id: string;
-  imageUrl: string;
-  name: string;
-  price: string;
-}
-
 interface ProductContainerProps {
-  products: Product[];
-  cartItemList: CartItem[];
+  products: ProductType[];
+  cartItemList: CartItemType[];
   updateCardItemList: () => void;
 }
 
@@ -24,7 +17,7 @@ export default function ProductContainer({
     <div css={ProductContainerLayout}>
       {products.map((product) => {
         const selectedCardItems = cartItemList.filter(
-          (cartItem: CartItem) => Number(product.id) === cartItem.product.id
+          (cartItem: CartItemType) => Number(product.id) === cartItem.product.id
         );
         return (
           <Product

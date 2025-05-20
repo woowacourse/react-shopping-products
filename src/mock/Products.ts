@@ -1,4 +1,4 @@
-export interface Product {
+interface Product {
   id: number;
   name: string;
   price: number;
@@ -6,13 +6,13 @@ export interface Product {
   category: string;
 }
 
-export interface Sort {
+interface Sort {
   empty: boolean;
   sorted: boolean;
   unsorted: boolean;
 }
 
-export interface Pageable {
+interface Pageable {
   pageNumber: number;
   pageSize: number;
   sort: Sort;
@@ -21,7 +21,7 @@ export interface Pageable {
   unpaged: boolean;
 }
 
-export interface ProductResponse {
+interface ProductResponse {
   content: Product[];
   pageable: Pageable;
   last: boolean;

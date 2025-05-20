@@ -1,5 +1,6 @@
 import { deleteCartItem, postCartItem } from "../../api/cartItem";
-import { CartItem } from "../../page/ShopPage";
+import { CartItemType } from "../../constants";
+
 import Button from "../Button/Button";
 import {
   contentLayout,
@@ -15,7 +16,7 @@ interface ProductProps {
   imageUrl: string;
   name: string;
   price: string;
-  selectedCartItems: CartItem[];
+  selectedCartItems: CartItemType[];
   onChange: () => void;
 }
 

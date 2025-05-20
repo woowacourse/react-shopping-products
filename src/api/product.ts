@@ -1,4 +1,4 @@
-import { CategoryOption, sortOption } from "../page/ShopPage";
+import { CategoryOption, sortOption } from "../constants";
 import { getRequestOptions } from "./getRequestOptions";
 
 interface getProductProps {
