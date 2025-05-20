@@ -4,6 +4,7 @@ import fetchProductList from "../apis/product/fetchProductList";
 
 import { ProductCategory } from "../types/ProductCategory";
 import { Sort } from "../types/Sort";
+import { useErrorMessageContext } from "../context/ErrorMessageContext";
 
 const INIT_STATE = {
   isLoading: false,
@@ -33,16 +34,12 @@ const reducer = (state: typeof INIT_STATE, action: { type: string }) => {
 interface useProductListProps {
   category: ProductCategory;
   sort: Sort;
-  handleErrorMessage: (value: string) => void;
 }
 
-const useProductList = ({
-  category,
-  sort,
-  handleErrorMessage,
-}: useProductListProps) => {
+const useProductList = ({ category, sort }: useProductListProps) => {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
   const [productList, setProductList] = useState([]);
+  const { handleErrorMessage } = useErrorMessageContext();
 
   useEffect(() => {
     const fetchData = async () => {

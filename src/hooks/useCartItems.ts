@@ -5,6 +5,7 @@ import fetchAddProduct from "../apis/product/fetchAddProduct";
 
 import CartItem from "../types/CartItem";
 import fetchRemoveProduct from "../apis/product/fetchRemoveProduct";
+import { useErrorMessageContext } from "../context/ErrorMessageContext";
 
 const INIT_STATE = {
   isLoading: false,
@@ -36,13 +37,10 @@ type selectedItemID = {
   productId: string;
 };
 
-interface useCartItemsProps {
-  handleErrorMessage: (value: string) => void;
-}
-
-const useCartItems = ({ handleErrorMessage }: useCartItemsProps) => {
+const useCartItems = () => {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
   const [cartItems, setCartItems] = useState<selectedItemID[]>([]);
+  const { handleErrorMessage } = useErrorMessageContext();
 
   useEffect(() => {
     fetchData();

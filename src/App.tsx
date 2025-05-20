@@ -9,10 +9,8 @@ import styled from "@emotion/styled";
 import useCartItems from "./hooks/useCartItems";
 
 function App() {
-  const { errorMessage, handleErrorMessage } = useErrorMessageContext();
-  const { state, cartItems, addCartItem, removeCartItem } = useCartItems({
-    handleErrorMessage,
-  });
+  const { errorMessage } = useErrorMessageContext();
+  const { state, cartItems, addCartItem, removeCartItem } = useCartItems();
   const selectedItemProductId = cartItems.map((items) => items.productId);
 
   const handleAddProduct = async (

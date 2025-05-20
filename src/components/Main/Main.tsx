@@ -9,7 +9,6 @@ import { ProductCategory } from "../../types/ProductCategory";
 import { Sort } from "../../types/Sort";
 
 import useProductList from "../../hooks/useProductList";
-import { useErrorMessageContext } from "../../context/ErrorMessageContext";
 
 interface MainProps {
   cartItems: string[];
@@ -26,13 +25,11 @@ const isProductSort = (value: string): value is Sort => {
 };
 
 function Main({ cartItems, handleAddProduct, handleRemoveProduct }: MainProps) {
-  const { handleErrorMessage } = useErrorMessageContext();
   const [category, setCategory] = useState<ProductCategory>("전체");
   const [sort, setSort] = useState<Sort>("price,asc");
   const { state, productList } = useProductList({
     category,
     sort,
-    handleErrorMessage,
   });
 
   const handleCategory = ({
