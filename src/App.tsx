@@ -62,22 +62,23 @@ function App() {
     fetchProducts();
   }, [category, sort]);
 
+  const fetchCartItems = async () => {
+    try {
+      const data = await getCartItems();
+      const mapped: BasketProductIds[] = data.map((item) => ({
+        productId: item.product.id,
+        basketId: item.id,
+      }));
+      setBasketProductsIds(mapped);
+    } catch (error) {
+      console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
+      setError(true);
+    }
+  };
+
   useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const data = await getCartItems();
-        const mapped: BasketProductIds[] = data.map((item) => ({
-          productId: item.product.id,
-          basketId: item.id,
-        }));
-        setBasketProductsIds(mapped);
-      } catch (error) {
-        console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
-        setError(true);
-      }
-    };
     fetchCartItems();
-  }, [basketProductsIds]);
+  }, []);
 
   return (
     <Container>
@@ -107,6 +108,7 @@ function App() {
             }
             isNotBasketCountMAX={basketProductsIds.length < MAX_BASKET_COUNT}
             setError={setError}
+            fetchCartItems={fetchCartItems}
           />
         ))}
       </ProductCardContainer>

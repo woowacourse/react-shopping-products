@@ -13,6 +13,7 @@ type CartToggleButtonProps = {
   isNotBasketCountMAX: boolean;
   setError: (value: boolean) => void;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+  fetchCartItems: () => Promise<void>;
 };
 
 export type CartToggleButtonWrapperProps = {
@@ -26,6 +27,7 @@ type handleCartToggleButtonProps = {
   isNotBasketCountMAX: boolean;
   setError: (value: boolean) => void;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+  fetchCartItems: () => Promise<void>;
 };
 
 const handleCartToggleButton = async ({
@@ -35,6 +37,7 @@ const handleCartToggleButton = async ({
   isNotBasketCountMAX,
   setError,
   timeoutRef,
+  fetchCartItems,
 }: handleCartToggleButtonProps) => {
   if (!isInBascket) {
     if (!isNotBasketCountMAX) {
@@ -44,7 +47,7 @@ const handleCartToggleButton = async ({
         clearTimeout(timeoutRef.current);
       }
 
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setError(false);
       }, 2000);
 
@@ -54,6 +57,7 @@ const handleCartToggleButton = async ({
   } else if (basketId !== undefined) {
     await deleteCartItem(basketId);
   }
+  await fetchCartItems();
 };
 
 const CartToggleButton = ({
@@ -63,6 +67,7 @@ const CartToggleButton = ({
   isNotBasketCountMAX,
   setError,
   timeoutRef,
+  fetchCartItems
 }: CartToggleButtonProps) => {
   const imageSrc = isInBascket
     ? IMAGE_PATH.SHOPPIN_CART_REMOVE
@@ -79,6 +84,7 @@ const CartToggleButton = ({
           isNotBasketCountMAX,
           setError,
           timeoutRef,
+          fetchCartItems,
         })
       }
     >

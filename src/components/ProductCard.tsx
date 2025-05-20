@@ -20,6 +20,7 @@ type ProductCardProps = {
   basketId?: number;
   isNotBasketCountMAX: boolean;
   setError: (value: boolean) => void;
+  fetchCartItems: () => Promise<void>;
 };
 
 const ProductCard = ({
@@ -32,6 +33,7 @@ const ProductCard = ({
   basketId,
   isNotBasketCountMAX,
   setError,
+  fetchCartItems,
 }: ProductCardProps) => {
   const defaultSrc =
     category === "패션잡화"
@@ -72,6 +74,7 @@ const ProductCard = ({
           isNotBasketCountMAX={isNotBasketCountMAX}
           setError={setError}
           timeoutRef={timeoutRef}
+          fetchCartItems={fetchCartItems}
         />
       </ProductCardDetailWrapper>
     </ProductCardWrapper>
