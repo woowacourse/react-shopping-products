@@ -7,6 +7,7 @@ import * as Styled from "./Main.styled";
 
 import { ProductCategory } from "../../types/ProductCategory";
 import { Sort } from "../../types/Sort";
+import { Product } from "../../types/Product";
 
 import fetchProductList from "../../apis/product/fetchProductList";
 
@@ -29,7 +30,7 @@ function Main({
   handleAddProduct,
   handleRemoveProduct,
 }: MainProps) {
-  const [productList, setProductList] = useState(null);
+  const [productList, setProductList] = useState<Product[] | null>(null);
   const [category, setCategory] = useState<ProductCategory>("전체");
   const [sort, setSort] = useState<Sort>("price,asc");
 
