@@ -3,8 +3,8 @@ import Filter from "../filter/Filter";
 import ProductCardList from "../productCardList/ProductCardList";
 import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
-import { ProductPageResponse } from "../../types/response.types";
 import { categoryType, sortType } from "../../types/index.types";
+import { ProductPageResponse } from "../../hooks/useFetchProducts/index.types";
 interface ProductContainerProps {
   cartItemIds: Record<"productId" | "cartId", number>[];
   setCartItemIds: React.Dispatch<

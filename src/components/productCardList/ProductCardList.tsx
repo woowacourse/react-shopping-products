@@ -1,9 +1,9 @@
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
-import { ProductPageResponse } from "../../types/response.types";
 import useFetchProducts from "../../hooks/useFetchProducts/useFetchProducts";
 import { categoryType, sortType } from "../../types/index.types";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
+import { ProductPageResponse } from "../../hooks/useFetchProducts/index.types";
 
 interface ProductCardListProps {
   products: ProductPageResponse | null;
