@@ -7,25 +7,24 @@ import {
   DropdownLiWrapper,
 } from "../../styles/SelectDropdown";
 import { IMAGE_PATH } from "../../constants/imagePath";
-import { CATEGORY, SORT } from "../../constants/selectOption";
 
-type OptionType = (typeof CATEGORY)[number] | (typeof SORT)[number];
-
-type SelectDropdownProps<T extends OptionType> = {
-  title: T;
+type SelectDropdownProps<T extends string> = {
+  title: string;
   options: readonly T[];
+  labelMap: Record<T, string>;
   onSelect: (value: T) => void;
 };
 
-const SelectDropdown = <T extends OptionType>({
+const SelectDropdown = <T extends string>({
   title,
   options,
+  labelMap,
   onSelect,
 }: SelectDropdownProps<T>) => {
   const [open, setOpen] = useState(false);
 
   const toggleSelectDropdown = () => {
-    setOpen(!open);
+    setOpen((prev) => !prev);
   };
 
   const handleDropDown = (value: T) => {
@@ -37,11 +36,10 @@ const SelectDropdown = <T extends OptionType>({
     <SelectDropdownWrapper>
       <DropdownWrapper onClick={toggleSelectDropdown}>
         <DropdownTitleWrapper>{title}</DropdownTitleWrapper>
-        {open ? (
-          <img src={IMAGE_PATH.CHEVRON_UP} alt="chevron-up" />
-        ) : (
-          <img src={IMAGE_PATH.CHEVRON_DOWN} alt="chevron-down" />
-        )}
+        <img
+          src={open ? IMAGE_PATH.CHEVRON_UP : IMAGE_PATH.CHEVRON_DOWN}
+          alt="chevron-icon"
+        />
       </DropdownWrapper>
       {open && (
         <DropdownUlWrapper>
@@ -50,7 +48,7 @@ const SelectDropdown = <T extends OptionType>({
               key={option}
               onClick={() => handleDropDown(option)}
             >
-              {option}
+              {labelMap[option]}
             </DropdownLiWrapper>
           ))}
         </DropdownUlWrapper>

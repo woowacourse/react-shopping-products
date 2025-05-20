@@ -1,9 +1,11 @@
 import SelectDropdown from "./SelectDropdown";
 import { Container, Header } from "../../styles/SelectDropdown";
-import { CATEGORY, SORT } from "../../constants/selectOption";
-
-type CategoryKey = (typeof CATEGORY)[number];
-type SortKey = (typeof SORT)[number];
+import {
+  CATEGORY,
+  SORT,
+  CategoryKey,
+  SortKey,
+} from "../../constants/selectOption";
 
 type SelectDropdownContainerProps = {
   category: CategoryKey;
@@ -22,14 +24,16 @@ const SelectDropdownContainer = ({
     <>
       <Header>bpple 상품 목록</Header>
       <Container>
-        <SelectDropdown<CategoryKey>
-          title={category}
-          options={CATEGORY}
+        <SelectDropdown
+          title={CATEGORY[category]}
+          options={Object.keys(CATEGORY) as CategoryKey[]}
+          labelMap={CATEGORY}
           onSelect={(value) => setCategory(value)}
         />
-        <SelectDropdown<SortKey>
-          title={sort}
-          options={SORT}
+        <SelectDropdown
+          title={SORT[sort]}
+          options={Object.keys(SORT) as SortKey[]}
+          labelMap={SORT}
           onSelect={(value) => setSort(value)}
         />
       </Container>
