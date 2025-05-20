@@ -37,6 +37,7 @@ function App() {
   const [sort, setSort] = useState<SortKey>("NONE");
   const [basketProductsIds, setBasketProductsIds] = useState<BasketProductInfos>([]);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
 
   const fetchCartItems = async () => {
     try {
@@ -47,8 +48,9 @@ function App() {
       }));
       setBasketProductsIds(mapped);
     } catch (error) {
-      console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
       setError(true);
+      setErrorMessage(ERROR_MSG.BASKET_FETCH_FAIL);
+      console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
     }
   };
 
@@ -66,8 +68,9 @@ function App() {
         });
         setProducts(data.content);
       } catch (error) {
-        console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, error);
         setError(true);
+        setErrorMessage(ERROR_MSG.PRODUCT_FETCH_FAIL);
+        console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, error);
       }
     };
     fetchProducts();
@@ -80,7 +83,7 @@ function App() {
   return (
     <Container>
       <Header basketCount={basketProductsIds.length} />
-      {error && <ErrorMessage />}
+      {error && <ErrorMessage message={errorMessage}/>}
       <SelectDropdownContainer
         category={category}
         sort={sort}
@@ -106,6 +109,7 @@ function App() {
             isNotBasketCountMAX={basketProductsIds.length < MAX_BASKET_COUNT}
             setError={setError}
             fetchCartItems={fetchCartItems}
+            setErrorMessage={setErrorMessage}
           />
         ))}
       </ProductCardContainer>
