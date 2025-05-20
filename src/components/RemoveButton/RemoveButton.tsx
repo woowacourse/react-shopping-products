@@ -2,7 +2,7 @@ import Button from "../common/Button/Button";
 import RemoveShoppingCart from "/RemoveShoppingCart.svg";
 
 interface RemoveButtonProps {
-  handleRemoveProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleRemoveProduct: () => void;
 }
 
 function RemoveButton({ handleRemoveProduct }: RemoveButtonProps) {

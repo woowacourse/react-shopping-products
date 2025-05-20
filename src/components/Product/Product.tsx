@@ -13,7 +13,7 @@ function Product({
   handleRemoveProduct,
 }: ProductProps) {
   return (
-    <li id={product.id.toString()}>
+    <li>
       <Styled.Container>
         <Styled.Image src={product.imageUrl ?? defaultImage} />
         <Styled.Wrapper>
@@ -25,7 +25,11 @@ function Product({
           </Styled.Contents>
           <Styled.ButtonWrapper>
             {isInCart ? (
-              <RemoveButton handleRemoveProduct={handleRemoveProduct} />
+              <RemoveButton
+                handleRemoveProduct={() =>
+                  handleRemoveProduct(product.id.toString())
+                }
+              />
             ) : (
               <AddButton
                 handleAddProduct={() => handleAddProduct(product.id.toString())}

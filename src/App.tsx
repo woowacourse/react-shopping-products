@@ -69,16 +69,9 @@ function App() {
     }
   };
 
-  const handleRemoveProduct = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    if (!$product) {
-      return;
-    }
-
+  const handleRemoveProduct = async (productId: string) => {
     setSelectedProductIdList((prevIdList) => {
-      return prevIdList.filter((productId) => productId !== $product.id);
+      return prevIdList.filter((prevId) => prevId !== productId);
     });
 
     try {
@@ -90,7 +83,7 @@ function App() {
       });
 
       const targetCartItem = content.find(
-        (cartItem) => cartItem.product.id.toString() === $product.id
+        (cartItem) => cartItem.product.id.toString() === productId
       );
 
       if (!targetCartItem) {
