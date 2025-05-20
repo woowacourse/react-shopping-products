@@ -4,9 +4,6 @@ import { Product } from '../type/product';
 import * as S from './ProductCard.styles';
 import { useState } from 'react';
 import CartQuantitySelector from './CartQuantitySelector';
-// import { CART_MAX_LIMIT } from '../../cart/constants/cart';
-// import { addCartProduct } from '../../cart/api/addCartProduct';
-// import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
 
 interface ProductCardProps {
   product: Product;
