@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import addShoppingCart from '../APIs/addShoppingCart';
 import { useShoppingCartContext } from '../contexts/useShoppingCartContext';
 
@@ -10,7 +9,7 @@ export function useAddShoppingCart(productId: number) {
     handleIsShoppingLoading,
   } = useShoppingCartContext();
 
-  const handleAdd = useCallback(async () => {
+  return async () => {
     if (cartItems.length >= 50) {
       handleShoppingCartError({
         is: true,
@@ -33,13 +32,5 @@ export function useAddShoppingCart(productId: number) {
     } finally {
       handleIsShoppingLoading(false);
     }
-  }, [
-    productId,
-    cartItems.length,
-    handleCartItemChange,
-    handleShoppingCartError,
-    handleIsShoppingLoading,
-  ]);
-
-  return { handleAdd };
+  };
 }

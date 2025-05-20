@@ -17,9 +17,8 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   const cartItemId = cartItems.find(
     (item) => item.product.id === product.id
   )?.id;
-
-  const { handleAdd } = useAddShoppingCart(product.id);
-  const { handleDelete } = useDeleteShoppingCart(cartItemId);
+  const addShoppingCart = useAddShoppingCart(product.id);
+  const deleteShoppingCart = useDeleteShoppingCart(cartItemId);
 
   return (
     <div key={id} className={CardFrame}>
@@ -38,9 +37,9 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
           {isInCart ? (
-            <RemoveButton onClick={handleDelete} />
+            <RemoveButton onClick={deleteShoppingCart} />
           ) : (
-            <AddButton onClick={handleAdd} />
+            <AddButton onClick={addShoppingCart} />
           )}
         </div>
       </div>

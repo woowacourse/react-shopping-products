@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import deleteShoppingCart from '../APIs/deleteShoppingCart';
 import { useShoppingCartContext } from '../contexts/useShoppingCartContext';
 
@@ -9,7 +8,7 @@ export function useDeleteShoppingCart(cartItemId?: number) {
     handleIsShoppingLoading,
   } = useShoppingCartContext();
 
-  const handleDelete = useCallback(async () => {
+  return async () => {
     handleIsShoppingLoading(true);
     try {
       const endpoint = '/cart-items';
@@ -23,12 +22,5 @@ export function useDeleteShoppingCart(cartItemId?: number) {
     } finally {
       handleIsShoppingLoading(false);
     }
-  }, [
-    cartItemId,
-    handleCartItemChange,
-    handleShoppingCartError,
-    handleIsShoppingLoading,
-  ]);
-
-  return { handleDelete };
+  };
 }
