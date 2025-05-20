@@ -1,7 +1,4 @@
-import { HttpMethod } from "../../types/HttpMethod";
-
 type fetchAddProductParams = {
-  method: HttpMethod;
   params: {
     productId: string;
     quantity: string;
@@ -11,11 +8,11 @@ type fetchAddProductParams = {
 const BASE_URL = `${import.meta.env.VITE_BASE_URL}/cart-items`;
 const TOKEN = import.meta.env.VITE_TOKEN;
 
-const fetchAddProduct = async ({ method, params }: fetchAddProductParams) => {
+const fetchAddProduct = async ({ params }: fetchAddProductParams) => {
   const url = new URL(BASE_URL);
 
   const options = {
-    method,
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Basic ${TOKEN}`,

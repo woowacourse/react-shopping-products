@@ -38,7 +38,6 @@ function Main({
     (async () => {
       try {
         const { content } = await fetchProductList({
-          method: "GET",
           params: {
             category,
             sort,

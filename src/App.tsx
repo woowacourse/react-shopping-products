@@ -23,7 +23,6 @@ function App() {
     (async () => {
       try {
         const { content } = await fetchCartItems({
-          method: "GET",
           params: {
             page: "0",
             size: "50",
@@ -64,7 +63,6 @@ function App() {
 
     try {
       await fetchAddProduct({
-        method: "POST",
         params: {
           productId: $product.id,
           quantity: "1",
@@ -92,7 +90,6 @@ function App() {
 
     try {
       const { content } = await fetchCartItems({
-        method: "GET",
         params: {
           page: "0",
           size: "50",
@@ -108,7 +105,6 @@ function App() {
       }
 
       await fetchRemoveProduct({
-        method: "DELETE",
         params: {
           productId: targetCartItem.id,
         },
