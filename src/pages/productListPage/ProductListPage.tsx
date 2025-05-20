@@ -1,4 +1,4 @@
-import ErrorToast from '../../components/errorToast/ErrorToast';
+import ErrorToast from '../../components/common/errorToast/ErrorToast';
 import ProductItem from '../../components/productItem/ProductItem';
 import Select from '../../components/select/Select';
 import * as P from './ProductListPage.styles.tsx';
@@ -11,16 +11,14 @@ import {
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
-import { useEffect, useRef, useState } from 'react';
-import {
-  ERROR_MESSAGE_DURATION,
-  ERROR_MESSAGE_ANIMATION_DELAY,
-} from '../../constants/systemConstants';
 
 export const ProductListPage = () => {
   const { cartItems, handleAddCartItems, handleRemoveCartItems } = useCartContext();
 
-  const cartItemsIds = cartItems.map((cartItem) => cartItem.product.id);
+  const getCountInCart = (id: number) => {
+    const cartItem = cartItems.filter((cartItem) => cartItem.product.id === id);
+    return cartItem ? cartItem.length : 0;
+  };
 
   const { errorMessage, handleErrorMessage } = useErrorMessageContext();
 
@@ -34,33 +32,6 @@ export const ProductListPage = () => {
   } = useProductHandler({
     handleErrorMessage,
   });
-
-  const [, setIsVisible] = useState(false);
-  const [, setShouldRender] = useState(false);
-
-  const hideTimerRef = useRef<number | null>(null);
-  const unmountTimerRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (errorMessage.length === 0) return;
-
-    setShouldRender(true);
-    setIsVisible(true);
-
-    hideTimerRef.current = window.setTimeout(() => {
-      setIsVisible(false);
-    }, ERROR_MESSAGE_DURATION);
-
-    unmountTimerRef.current = window.setTimeout(() => {
-      setShouldRender(false);
-      handleErrorMessage('');
-    }, ERROR_MESSAGE_DURATION + ERROR_MESSAGE_ANIMATION_DELAY);
-
-    return () => {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-      if (unmountTimerRef.current) clearTimeout(unmountTimerRef.current);
-    };
-  }, [errorMessage]);
 
   if (loadingState === 'loadingInitial') {
     return <ProductListPageSkeleton />;
@@ -88,7 +59,7 @@ export const ProductListPage = () => {
           <ProductItem
             key={product.id}
             product={product}
-            isCartAdded={cartItemsIds.includes(product.id)}
+            countInCart={getCountInCart(product.id)}
             handleAddCartItem={handleAddCartItems}
             handleRemoveCartItem={handleRemoveCartItems}
           />
@@ -97,3 +68,5 @@ export const ProductListPage = () => {
     </P.ProductListPageContainer>
   );
 };
+
+// isCartAdded를 count로 바꿀 것

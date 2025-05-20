@@ -2,14 +2,16 @@ import styled from '@emotion/styled';
 
 interface CounterControlProps {
   count: number;
+  handlePlusCount: () => void;
+  handleMinusCount: () => void;
 }
 
-const CounterControl = ({ count = 1 }: CounterControlProps) => {
+const CounterControl = ({ count, handlePlusCount, handleMinusCount }: CounterControlProps) => {
   return (
     <CountButtonContainer>
-      <CounterButton>-</CounterButton>
+      <CounterButton onClick={handleMinusCount}>-</CounterButton>
       <CountNumber>{count}</CountNumber>
-      <CounterButton>+</CounterButton>
+      <CounterButton onClick={handlePlusCount}>+</CounterButton>
     </CountButtonContainer>
   );
 };

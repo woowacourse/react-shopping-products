@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import CounterControl from '../common/countButton/CounterControl';
+import CounterControl from '../common/counterControl/CounterControl';
 
 interface CartItemProps {
   count: number;
@@ -12,7 +12,7 @@ const CartItem = ({ count }: CartItemProps) => {
       <CartItemInfoContainer>
         <CartItemName>상품명</CartItemName>
         <CartItemPrice>10000원</CartItemPrice>
-        <CounterControl count={count} />
+        <CounterControl count={count} handlePlusCount={() => {}} handleMinusCount={() => {}} />
       </CartItemInfoContainer>
     </CartItemContainer>
   );
