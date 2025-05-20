@@ -25,34 +25,6 @@ interface CartItem {
   product: Product;
 }
 
-interface ProductListResponse {
-  content: Product[];
-  pageable: Pageable;
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
-  size: number;
-  number: number;
-  sort: Sort;
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
-}
-interface Pageable {
-  pageNumber: number;
-  pageSize: number;
-  sort: Sort;
-  offset: number;
-  paged: boolean;
-  unpaged: boolean;
-}
-
-interface Sort {
-  empty: boolean;
-  sorted: boolean;
-  unsorted: boolean;
-}
-
 interface FetchProductsRequest {
   endpoint: string;
 }
@@ -80,9 +52,6 @@ interface ErrorState {
 export type {
   Product,
   FetchProductsRequest,
-  ProductListResponse,
-  Pageable,
-  Sort,
   Category,
   SortOption,
   ShoppingCartResponse,
