@@ -29,7 +29,7 @@ export const Logo = styled.div`
   }
 `;
 
-export const CartIconContainer = styled.div`
+export const CartIconButtonContainer = styled.button`
   height: 100%;
   position: relative;
   border-radius: 100%;
