@@ -9,29 +9,23 @@ import {
   productCardImageStyle,
   productCardStyle,
 } from './ProductCard.styles';
-import { Product } from '../../../types/common';
+import { CartItem, Product } from '../../../types/common';
 import { IconAddCart, IconRemoveCart } from '../../../asset';
+import { useContext } from 'react';
+import CartContext from '../../../context/cartContext/cartContext';
 
-interface ProductCardProps extends Omit<Product, 'category'> {
-  isInCart: boolean;
-  handleAddCart: (productId: number) => void;
-  handleRemoveCart: (cartId: number) => void;
-}
+interface ProductCardProps extends Omit<Product, 'category'> {}
 
-const ProductCard = ({
-  id,
-  name,
-  price,
-  imageUrl,
-  isInCart,
-  handleAddCart,
-  handleRemoveCart,
-}: ProductCardProps) => {
+const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
+  const { cartData, addCart, removeCart } = useContext(CartContext);
+
+  const isInCart = cartData.some((item: CartItem) => item.product.id === id);
+
   const handleClick = async (productId: number) => {
     if (isInCart) {
-      handleRemoveCart(productId);
+      removeCart(productId);
     } else {
-      handleAddCart(productId);
+      addCart(productId);
     }
   };
 
@@ -47,7 +41,7 @@ const ProductCard = ({
         </div>
         <div css={productCardButtonContainerStyle}>
           {isInCart ? (
-            <Button variant="gray" onClick={() => handleRemoveCart(id)}>
+            <Button variant="gray" onClick={() => handleClick(id)}>
               <img src={IconRemoveCart} alt="remove cart" />
               빼기
             </Button>

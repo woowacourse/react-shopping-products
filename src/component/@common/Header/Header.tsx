@@ -1,7 +1,11 @@
 import { IconCart, IconLogo } from '../../../asset';
 import { CartQuantityStyle, CartStyle, HeaderStyle } from './Header.styles';
+import { useContext } from 'react';
+import CartContext from '../../../context/cartContext/cartContext';
 
-const Header = ({ count }: { count: number }) => {
+const Header = () => {
+  const { cartData } = useContext(CartContext);
+
   return (
     <section css={HeaderStyle}>
       <a href="/">
@@ -10,7 +14,9 @@ const Header = ({ count }: { count: number }) => {
 
       <a href="/cart" css={CartStyle}>
         <img src={IconCart} alt="cart" />
-        {count > 0 && <div css={CartQuantityStyle}>{count}</div>}
+        {cartData.length > 0 && (
+          <div css={CartQuantityStyle}>{cartData.length}</div>
+        )}
       </a>
     </section>
   );
