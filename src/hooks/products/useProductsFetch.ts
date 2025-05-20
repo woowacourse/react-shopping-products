@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Product, Error } from "../../types/product.type";
 import { INITIAL_ERROR } from "../../contexts/context.constant";
-import fetchProducts from "../../APIs/products/fetchProducts";
+import getProducts from "../../APIs/products/getProducts";
 
 export function useProductsFetch(sort: string, category: string) {
   const [products, setProducts] = useState<Product[]>([]);
@@ -19,7 +19,7 @@ export function useProductsFetch(sort: string, category: string) {
     (async () => {
       setIsLoading(true);
       try {
-        const { content } = await fetchProducts({ endpoint });
+        const { content } = await getProducts({ endpoint });
         setProducts(content);
         setError(INITIAL_ERROR);
       } catch {

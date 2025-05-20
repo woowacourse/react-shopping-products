@@ -1,18 +1,17 @@
-import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { Product } from "../src/types/product.type";
 import ProductCardList from "../src/components/ProductCardList/index";
-import ShoppingCartProvider from "../src/contexts/ShoppingCartProvider";
-import ProductsProvider from "../src/contexts/ProductsProvider";
-import { useShoppingCartContext } from "../src/contexts/useShoppingCartContext";
-import { useAddShoppingCart } from "../src/hooks/useAddShoppingCart";
-import { useDeleteShoppingCart } from "../src/hooks/useDeleteShoppingCart";
 import { vi } from "vitest";
 import type { Mock } from "vitest";
+import { useShoppingCartContext } from "../src/contexts/shoppingCart/useShoppingCartContext";
+import { useAddShoppingCart } from "../src/hooks/shoppingCart/useAddShoppingCart";
+import { useDeleteShoppingCart } from "../src/hooks/shoppingCart/useDeleteShoppingCart";
+import ShoppingCartProvider from "../src/contexts/shoppingCart/ShoppingCartProvider";
+import ProductsProvider from "../src/contexts/products/ProductsProvider";
 
-vi.mock("../src/contexts/useShoppingCartContext");
-vi.mock("../src/hooks/useAddShoppingCart");
-vi.mock("../src/hooks/useDeleteShoppingCart");
+vi.mock("../src/contexts/shoppingCart/useShoppingCartContext");
+vi.mock("../src/hooks/shoppingCart/useAddShoppingCart");
+vi.mock("../src/hooks/shoppingCart/useDeleteShoppingCart");
 
 describe("장바구니 테스트", () => {
   const mockProducts: Product[] = Array.from({ length: 20 }, (_, index) => ({

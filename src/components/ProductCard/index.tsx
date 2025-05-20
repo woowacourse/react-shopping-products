@@ -35,7 +35,9 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
         />
       </div>
       <div className={CardInfo}>
-        <h4 className={ProductName}>{name}</h4>
+        <h4 className={ProductName} data-testid="product-name">
+          {name}
+        </h4>
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
           {isInCart ? (

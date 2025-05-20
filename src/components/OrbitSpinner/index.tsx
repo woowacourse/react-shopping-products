@@ -1,7 +1,7 @@
 import { css, keyframes } from "@emotion/css";
 
 const OrbitSpinner = () => (
-  <div className={spinnerContainerStyle}>
+  <div className={spinnerContainerStyle} data-testid="loading-spinner">
     <div className={orbitSpinnerStyle} data-testid="progress-indicator">
       <div className={planetStyle} />
       <div className={orbitStyle}>
