@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
 import * as S from "./Button.styles";
 
-interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string;
   children: React.ReactNode;
 }

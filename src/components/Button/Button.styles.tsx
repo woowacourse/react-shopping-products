@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 export const Button = styled.button<{ backgroundColor: string }>`
   display: flex;
   gap: 4px;
+  justify-content: center;
   align-items: center;
   padding: 4px 8px;
   background-color: ${({ backgroundColor }) => backgroundColor};

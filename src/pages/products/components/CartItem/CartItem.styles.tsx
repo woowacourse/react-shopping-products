@@ -1,0 +1,56 @@
+import styled from "@emotion/styled";
+
+export const CartItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+export const CartItemImageWrapper = styled.div`
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+export const CartItemImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+export const CartItemInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const CartItemName = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+export const CartItemPrice = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+export const CartItemQuantity = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const CartItemQuantityButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+`;
+
+export const CartItemQuantityButtonIcon = styled.div`
+  width: 16px;
+  height: 16px;
+`;

@@ -49,11 +49,10 @@ export default function ProductsPage() {
   };
 
   const isLoading = productsStatus === "loading" || cartItemsStatus === "loading";
-
   if (isLoading && !cartItems) return <Spinner />;
   return (
     <>
-      <Header shoppingCount={cartItems?.content?.length} />
+      <Header cartItems={cartItems} />
 
       <S.ProductPageWrapper>
         <Text variant="title-1">bpple 상품 목록</Text>

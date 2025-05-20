@@ -1,8 +1,7 @@
-import { Button, Card, Spacing, Text } from "@/components";
+import { AddMinusButton, Button, Card, Spacing, Text } from "@/components";
 import { AddCart } from "@/components/icons";
 import { DEFAULT_IMAGE_URL } from "@/constants/images";
 import { GetCartItemsResponse, GetProductResponse } from "@/types";
-import { css } from "@emotion/react";
 import * as S from "./ProductCard.styles";
 
 interface ProductCardProps {
@@ -40,18 +39,12 @@ export default function ProductCard({
 
         <S.ButtonWrapper>
           {cartItem ? (
-            <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
-              <Button css={controlButtonStyle} onClick={() => handleDecreaseCartItem(product.id)}>
-                <Text css={controlButtonTextStyle} variant="body-0">
-                  -
-                </Text>
-              </Button>
-              <Text variant="title-2">{cartItem.quantity}</Text>
-              <Button css={controlButtonStyle} onClick={() => handleIncreaseCartItem(product.id)}>
-                <Text css={controlButtonTextStyle} variant="body-0">
-                  ＋
-                </Text>
-              </Button>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", width: "100%" }}>
+              <AddMinusButton
+                quantity={cartItem.quantity}
+                onAddButtonClick={() => handleIncreaseCartItem(product.id)}
+                onMinusButtonClick={() => handleDecreaseCartItem(product.id)}
+              />
             </div>
           ) : (
             <Button
@@ -68,17 +61,3 @@ export default function ProductCard({
     </Card>
   );
 }
-
-const controlButtonStyle = css`
-  padding: 0;
-  border-radius: 8px;
-  border: 1px solid #e5e5e5;
-  width: 24px;
-  height: 24px;
-  background: #fff;
-  text-align: center;
-`;
-
-const controlButtonTextStyle = css`
-  width: 100%;
-`;
