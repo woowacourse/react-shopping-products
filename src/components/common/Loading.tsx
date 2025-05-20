@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 function Loading() {
+  //console.log('로딩중');
   return (
     <Container>
       <LoadingImg src="./assets/gifs/Loading.gif" alt="로딩 스피너" />

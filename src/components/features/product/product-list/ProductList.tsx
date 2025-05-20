@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import ProductCard from '../product-card/ProductCard';
+import ProductCard from './product-card/ProductCard';
 import { Cart, Product } from '../type';
 
 function ProductList({
