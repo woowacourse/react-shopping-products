@@ -44,23 +44,33 @@ export const ModalContainer = styled.div<{ position: ModalPosition }>`
   }
 `;
 
-export const ModalHeader = styled.div`
+export const ModalContent = styled.main`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+`;
+
+export const ModalFooterContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: flex-end;
-  padding-right: 20px;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const CloseButton = styled.button`
-  padding: 10px;
-  background-color: white;
-  color: black;
-  border-radius: 8px;
-  font-size: 18px;
-  font-style: bold;
+  width: 100%;
+  padding: 15px 0;
+  background-color: #333333;
+  color: white;
+  border-radius: 5px;
+  font-size: 15px;
+  font-style: 700;
   cursor: pointer;
   :hover {
-    background-color: #f0f0f0;
+    background-color: #000;
   }
 
   transition: background-color 0.2s ease;
