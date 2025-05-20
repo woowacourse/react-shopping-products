@@ -1,4 +1,4 @@
-import { ErrorWrapper } from "../styles/ErrorMessage";
+import { ErrorWrapper } from "./ErrorMessage.styled";
 
 type ErrorMessageProps = {
   message: string;

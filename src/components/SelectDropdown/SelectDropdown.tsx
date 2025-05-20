@@ -5,7 +5,7 @@ import {
   DropdownTitleWrapper,
   DropdownUlWrapper,
   DropdownLiWrapper,
-} from "../../styles/SelectDropdown";
+} from "./SelectDropdown.styled";
 import { IMAGE_PATH } from "../../constants/imagePath";
 
 type SelectDropdownProps<T extends string> = {

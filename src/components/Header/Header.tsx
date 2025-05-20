@@ -2,8 +2,8 @@ import {
   HeaderWrapper,
   BasketWrapper,
   BasketCountTextWrapper,
-} from "../styles/Header";
-import { IMAGE_PATH } from "../constants/imagePath";
+} from "./Header.styled"
+import { IMAGE_PATH } from "../../constants/imagePath";
 
 type HeaderProps = {
   basketCount: number;

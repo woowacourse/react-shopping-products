@@ -1,10 +1,10 @@
 import {
   CartToggleButtonWrapper,
   CartToggleButtonText,
-} from "../styles/CartToggleButton";
-import { IMAGE_PATH } from "../constants/imagePath";
-import { ERROR_MSG } from "../constants/errorMessage";
-import { deleteCartItem, postCartItems } from "../api/cartItems";
+} from "./CartToggleButton.styled";
+import { IMAGE_PATH } from "../../constants/imagePath";
+import { ERROR_MSG } from "../../constants/errorMessage";
+import { deleteCartItem, postCartItems } from "../../api/cartItems";
 
 type SharedToggleProps = {
   isNotBasketCountMAX: boolean;

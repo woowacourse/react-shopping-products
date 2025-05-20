@@ -1,5 +1,5 @@
 import SelectDropdown from "./SelectDropdown";
-import { Container, Header } from "../../styles/SelectDropdown";
+import { Container, Header } from "./SelectDropdown.styled";
 import {
   CATEGORY,
   SORT,

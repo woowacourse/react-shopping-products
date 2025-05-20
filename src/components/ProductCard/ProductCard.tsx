@@ -5,9 +5,9 @@ import {
   ProductCardName,
   ProductCardPrice,
   ProductImage,
-} from "../styles/ProductCard";
-import { IMAGE_PATH } from "../constants/imagePath";
-import CartToggleButton from "./CartToggleButton";
+} from "./ProductCard.styled";
+import { IMAGE_PATH } from "../../constants/imagePath";
+import CartToggleButton from "../CartToggleButton/CartToggleButton";
 import { useEffect, useRef } from "react";
 
 type ProductCardProps = {

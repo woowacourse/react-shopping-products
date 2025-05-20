@@ -1,4 +1,4 @@
-import { DotWaveWrapper, Dot } from "../styles/DotWaveSpinner";
+import { DotWaveWrapper, Dot } from "./DotWaveSpinner.styled";
 
 const DotWaveSpinner = () => {
   return (

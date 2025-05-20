@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import Header from "./components/Header";
-import ProductCard from "./components/ProductCard";
+import Header from "./components/Header/Header";
+import ProductCard from "./components/ProductCard/ProductCard";
 import SelectDropdownContainer from "./components/SelectDropdown/SelectDropdownContainer";
 import { getProducts, ProductResponse } from "./api/products";
 import { getCartItems } from "./api/cartItems";
 import { CategoryKey, SortKey } from "./constants/selectOption";
 import { MAX_BASKET_COUNT } from "./constants/basket";
 import { Container } from "./styles/common";
-import { ProductCardContainer } from "./styles/ProductCard";
+import { ProductCardContainer } from "./components/ProductCard/ProductCard.styled";
 import "./styles/reset.css";
 import { ERROR_MSG } from "./constants/errorMessage";
-import ErrorMessage from "./components/ErrorMessage";
-import DotWaveSpinner from "./components/DotWaveSpinner";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
+import DotWaveSpinner from "./components/DotWaveSpinner/DotWaveSpinner";
 
 type BasketProductInfo = {
   productId: number;
