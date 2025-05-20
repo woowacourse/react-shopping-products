@@ -11,7 +11,7 @@ const Header = ({ cartCount }: HeaderProps) => {
       <img src={IMAGE_PATH.HEADER_TITLE} />
       <CartWrapper>
         {cartCount !== 0 && <CartCountTextWrapper>{cartCount}</CartCountTextWrapper>}
-        <img src={IMAGE_PATH.SHOPPING_CART} />
+        <img src={IMAGE_PATH.SHOPPING_CART} alt="shopping_cart" />
       </CartWrapper>
     </HeaderWrapper>
   );
