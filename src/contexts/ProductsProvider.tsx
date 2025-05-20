@@ -1,4 +1,10 @@
-import React, { createContext, PropsWithChildren, useState } from 'react';
+import React, {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import {
   Category,
   ErrorState,
@@ -28,8 +34,12 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [sort, setSort] = useState<SortOption>(SORT_OPTION[0]);
   const [category, setCategory] = useState<Category>(CATEGORY[0]);
 
-  const updateSort = (newSort: SortOption) => setSort(newSort);
-  const updateCategory = (newCategory: Category) => setCategory(newCategory);
+  const updateSort = useCallback((newSort: SortOption) => {
+    setSort(newSort);
+  }, []);
+  const updateCategory = useCallback((newCategory: Category) => {
+    setCategory(newCategory);
+  }, []);
 
   const {
     items,
@@ -41,19 +51,31 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     category
   );
 
+  const value = useMemo(
+    () => ({
+      items,
+      error,
+      updateItems,
+      updateSort,
+      updateCategory,
+      category,
+      sort,
+      isLoading,
+    }),
+    [
+      items,
+      error,
+      updateItems,
+      updateSort,
+      updateCategory,
+      category,
+      sort,
+      isLoading,
+    ]
+  );
+
   return (
-    <ProductsContext.Provider
-      value={{
-        items,
-        error,
-        updateItems,
-        updateSort,
-        updateCategory,
-        category,
-        sort,
-        isLoading,
-      }}
-    >
+    <ProductsContext.Provider value={value}>
       {children}
     </ProductsContext.Provider>
   );

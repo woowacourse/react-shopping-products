@@ -1,4 +1,11 @@
-import { createContext, PropsWithChildren, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  PropsWithChildren,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
 import { CartItem, ErrorState } from '../types/product.type';
 import { INITIAL_ERROR } from './context.constant';
 import { useGetShoppingCart } from '../hooks/useGetShoppingCart';
@@ -16,25 +23,26 @@ export const ShoppingCartContext =
   createContext<ShoppingCartContextType | null>(null);
 
 const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const { data, shoppingCartError, isShoppingCartLoading } = useGetShoppingCart();
+  const { data, shoppingCartError, isShoppingCartLoading } =
+    useGetShoppingCart();
   const [items, setItems] = useState<CartItem[]>([]);
   const [error, setError] = useState<ErrorState>(INITIAL_ERROR);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const updateItems = (newCartItems: CartItem[]) => {
+  const updateItems = useCallback((newCartItems: CartItem[]) => {
     setItems(newCartItems);
-  };
+  }, []);
 
-  const updateError = (error: ErrorState) => {
+  const updateError = useCallback((error: ErrorState) => {
     setError(error);
     setTimeout(() => {
       setError(INITIAL_ERROR);
     }, 3000);
-  };
+  }, []);
 
-  const updateIsLoading = (value: boolean) => {
+  const updateIsLoading = useCallback((value: boolean) => {
     setIsLoading(value);
-  };
+  }, []);
 
   useEffect(() => {
     setItems(data);
@@ -42,17 +50,20 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setIsLoading(isShoppingCartLoading);
   }, [data, shoppingCartError, isShoppingCartLoading]);
 
+  const value = useMemo(
+    () => ({
+      items,
+      error,
+      updateItems,
+      updateError,
+      updateIsLoading,
+      isLoading,
+    }),
+    [items, error, updateItems, updateError, updateIsLoading, isLoading]
+  );
+
   return (
-    <ShoppingCartContext.Provider
-      value={{
-        items,
-        error,
-        updateItems,
-        updateError,
-        updateIsLoading,
-        isLoading,
-      }}
-    >
+    <ShoppingCartContext.Provider value={value}>
       {children}
     </ShoppingCartContext.Provider>
   );
