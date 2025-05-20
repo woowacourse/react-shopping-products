@@ -6,7 +6,7 @@ import { ProductListContainer } from './ProductList.style';
 
 type ProductListProps = {
   isLoadingProducts: boolean;
-  products: ProductDataType[] | undefined;
+  products?: ProductDataType[];
   onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
   onClickDeleteCartItem: ({ productId }: { productId: number }) => void;
 };
