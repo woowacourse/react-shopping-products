@@ -1,11 +1,10 @@
+import ApiError from './apiError';
+
 type RequestOptions = RequestInit & {
   queryParams?: Record<string, string | number | undefined>;
 };
 
-const apiRequest = async <T>(
-  url: string,
-  options: RequestOptions = {}
-): Promise<T> => {
+const apiRequest = async <T>(url: string, options: RequestOptions = {}): Promise<T> => {
   const { queryParams, headers, ...restOptions } = options;
 
   const requestUrl = new URL(url);
@@ -24,7 +23,7 @@ const apiRequest = async <T>(
 
   const response = await fetch(requestUrl, {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Basic ${base64Credentials}`,
       ...headers,
     },
@@ -33,11 +32,11 @@ const apiRequest = async <T>(
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`API 요청 실패: ${response.status} ${errorText}`);
+    throw new ApiError(response.status, response.statusText, errorText);
   }
 
-  const contentType = response.headers.get("Content-Type");
-  if (contentType && contentType.includes("application/json")) {
+  const contentType = response.headers.get('Content-Type');
+  if (contentType && contentType.includes('application/json')) {
     return response.json();
   }
 
