@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { CATEGORY } from '../../constants/products';
+import { useEffect } from 'react';
 import { useToast } from '../../hooks/useToast';
 import { productPageTitle, productWrapper } from './ProductContent.style';
 import ProductList from '../ProductList/ProductList';
 import deleteCartItem from '../../api/deleteCartItem';
 import { AddCartItemType } from '../../types/cartItem';
 import postCartItem from '../../api/postCartItem';
-import Filter, { SORT } from '../Filter/Filter';
+import Filter from '../Filter/Filter';
 import { useGetProducts } from '../../hooks/useGetProducts';
 import { CartDataType } from '../../contexts/CartContext';
+import { useProductFilter } from '../../hooks/useProductFilter';
 
 function ProductContent({
   cartItemCount,
@@ -19,22 +19,12 @@ function ProductContent({
   carts: CartDataType[] | null;
   refetchCarts: () => void;
 }) {
-  const [category, setCategory] = useState(CATEGORY[0]);
-  const [sort, setSort] = useState('asc');
-
+  const { category, sort, handleChangeCategory, handleChangeSort } = useProductFilter();
   const { openToast } = useToast();
   const { isLoading, isError, products } = useGetProducts({
     category,
     sort,
   });
-
-  const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSort(SORT[e.target.value]);
-  };
-
-  const handleChangeCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value);
-  };
 
   const getProcessedCartArr = () => {
     const cartIdArr = carts?.map((cart) => cart.product.id);
@@ -68,7 +58,7 @@ function ProductContent({
       openToast('장바구니에 상품을 담지 못했습니다.', 'error');
     }
 
-    await refetchCarts();
+    refetchCarts();
   };
 
   const handleDeleteCartItem = async ({ productId }: { productId: number }) => {
@@ -79,7 +69,7 @@ function ProductContent({
       openToast('장바구니에 상품을 빼지 못했습니다.', 'error');
     }
 
-    await refetchCarts();
+    refetchCarts();
   };
 
   useEffect(() => {
