@@ -1,9 +1,7 @@
 import SelectDropdown from './SelectDropdown';
 import { Container, Header } from '../../styles/SelectDropdown';
 import { CATEGORY, SORT } from '../../constants/selectOption';
-
-type CategoryKey = (typeof CATEGORY)[number];
-type SortKey = (typeof SORT)[number];
+import { CategoryKey, SortKey } from '../../types/selectOptions';
 
 type SelectDropdownContainerProps = {
   category: CategoryKey;

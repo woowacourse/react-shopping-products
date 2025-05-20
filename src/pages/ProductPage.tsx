@@ -7,22 +7,9 @@ import DotWaveSpinner from '../components/DotWaveSpinner';
 import { useFetchProducts } from '../hooks/useFetchProducts';
 import { useFetchCartItems } from '../hooks/useFetchCartItems';
 import { CATEGORY, SORT } from '../constants/selectOption';
+import { CategoryKey, SortKey, categoryQueryMap, sortQueryMap } from '../types/selectOptions';
 import { Container } from '../styles/common';
 import { ProductCardContainer } from '../styles/ProductCard';
-type CategoryKey = (typeof CATEGORY)[number];
-type SortKey = (typeof SORT)[number];
-
-const categoryQueryMap: Record<CategoryKey, string | undefined> = {
-  전체: undefined,
-  식료품: '식료품',
-  패션잡화: '패션잡화',
-};
-
-const sortQueryMap: Record<SortKey, string | undefined> = {
-  '순서 없음': undefined,
-  '낮은 가격순': 'price,asc',
-  '높은 가격순': 'price,desc',
-};
 
 function ProductPage() {
   const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
