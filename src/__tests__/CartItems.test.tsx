@@ -11,7 +11,7 @@ describe("장바구니 API - Mock 데이터 기반 테스트", () => {
     vi.clearAllMocks();
   });
 
-  test("장바구니 mock 데이터를 잘 불러온다", async () => {
+  test("getCartItems 호출 시 10개의 mock 데이터를 배열로 반환한다", async () => {
     vi.mocked(cartApi.getCartItems).mockResolvedValue(mockCartItems);
 
     const items = await cartApi.getCartItems();
