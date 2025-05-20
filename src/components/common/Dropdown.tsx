@@ -1,19 +1,22 @@
 import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import { ComponentProps, useEffect, useRef, useState } from 'react';
 import Arrow from './Arrow';
 import { DropdownOptionType } from './type';
+
+interface DropdownProps<T> {
+  options: T[];
+  selectedValue: T | null;
+  onSelectHandler: (option: T) => void;
+  placeholder?: string;
+}
 
 function Dropdown<T extends DropdownOptionType>({
   options,
   selectedValue,
   onSelectHandler,
   placeholder,
-}: {
-  options: T[];
-  selectedValue: T | null;
-  onSelectHandler: (option: T) => void;
-  placeholder?: string;
-}) {
+  ...props
+}: DropdownProps<T> & ComponentProps<'div'>) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +41,7 @@ function Dropdown<T extends DropdownOptionType>({
   }, []);
 
   return (
-    <DropdownContainer ref={dropdownRef}>
+    <DropdownContainer ref={dropdownRef} {...props}>
       <DropdownToggle onClick={toggleOpen}>
         <DropdownText isSelected={selectedValue !== null}>
           {selectedValue?.label || (placeholder ?? '')}

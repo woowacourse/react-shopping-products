@@ -54,7 +54,7 @@ function ProductCard({
   };
 
   return (
-    <Container data-testid={id}>
+    <Container data-testid={`product-${id}`}>
       <PreviewBox>
         <PreviewImage src={imageUrl} />
       </PreviewBox>
