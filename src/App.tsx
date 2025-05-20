@@ -11,6 +11,7 @@ import { ProductCardContainer } from "./styles/ProductCard";
 import "./styles/reset.css";
 import { ERROR_MSG } from "./constants/errorMessage";
 import ErrorMessage from "./components/ErrorMessage";
+import DotWaveSpinner from "./components/DotWaveSpinner";
 
 type BasketProductInfo = {
   productId: number;
@@ -38,9 +39,11 @@ function App() {
   const [basketProductsIds, setBasketProductsIds] = useState<BasketProductInfos>([]);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchCartItems = async () => {
     try {
+      setIsLoading(true);
       const data = await getCartItems();
       const mapped: BasketProductInfos = data.map((item) => ({
         productId: item.product.id,
@@ -51,12 +54,15 @@ function App() {
       setError(true);
       setErrorMessage(ERROR_MSG.BASKET_FETCH_FAIL);
       console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
         const matchedCategory = categoryQueryMap[category];
         const matchedSort = sortQueryMap[sort];
 
@@ -71,6 +77,8 @@ function App() {
         setError(true);
         setErrorMessage(ERROR_MSG.PRODUCT_FETCH_FAIL);
         console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchProducts();
@@ -84,6 +92,7 @@ function App() {
     <Container>
       <Header basketCount={basketProductsIds.length} />
       {error && <ErrorMessage message={errorMessage}/>}
+      {isLoading && <DotWaveSpinner />}
       <SelectDropdownContainer
         category={category}
         sort={sort}
