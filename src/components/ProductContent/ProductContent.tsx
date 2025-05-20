@@ -2,18 +2,13 @@ import { useEffect, useState } from 'react';
 import useGetProducts from '../../hooks/useGetProducts';
 import { CATEGORY } from '../../constants/products';
 import { useToast } from '../../hooks/useToast';
-import { productPageTitle, productWrapper, selectBoxContainer } from './ProductContent.styles';
-import SelectBox from '../common/SelectBox/SelectBox';
+import { productPageTitle, productWrapper } from './ProductContent.style';
 import ProductList from '../ProductList/ProductList';
 import deleteCartItem from '../../api/deleteCartItem';
 import { AddCartItemType } from '../../types/cartItem';
 import postCartItem from '../../api/postCartItem';
 import { CartDataType } from '../../hooks/useGetCartItems';
-
-const SORT: { [key: string]: string } = {
-  '낮은 가격 순': 'asc',
-  '높은 가격 순': 'desc',
-};
+import Filter, { SORT } from '../Filter/Filter';
 
 function ProductContent({
   cartItemCount,
@@ -94,14 +89,7 @@ function ProductContent({
   return (
     <div className={productWrapper}>
       <h1 className={productPageTitle}>bpple 상품 목록</h1>
-      <div className={selectBoxContainer}>
-        <SelectBox placeHolder={CATEGORY[0]} options={CATEGORY} onChange={handleChangeCategory} />
-        <SelectBox
-          placeHolder={Object.keys(SORT)[0]}
-          options={Object.keys(SORT)}
-          onChange={handleChangeSort}
-        />
-      </div>
+      <Filter onChangeCategory={handleChangeCategory} onChangeSort={handleChangeSort} />
       {products && (
         <ProductList
           isLoadingProducts={isLoadingProducts}

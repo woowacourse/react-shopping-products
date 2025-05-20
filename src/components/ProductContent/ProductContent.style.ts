@@ -10,10 +10,3 @@ export const productPageTitle = css`
   line-height: 100%;
   margin: 10px 0px;
 `;
-
-export const selectBoxContainer = css`
-  display: flex;
-  gap: 150px;
-  justify-content: space-between;
-  margin: 20px 0px;
-`;
