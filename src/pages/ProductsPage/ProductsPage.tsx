@@ -6,7 +6,6 @@ import useGetProducts from '../../hooks/useGetProducts';
 import { CATEGORY } from '../../constants/products';
 import useGetCarts from '../../hooks/useGetCartItems';
 import { AddCartItemType } from '../../types/cartItem';
-import Toast from '../../components/common/Toast/Toast';
 import {
   productPageContainer,
   productWrapper,
@@ -15,6 +14,7 @@ import {
 } from './ProductsPage.style';
 import postCartItem from '../../api/postCartItem';
 import deleteCartItem from '../../api/deleteCartItem';
+import { useToast } from '../../hooks/useToast';
 
 const SORT: { [key: string]: string } = {
   '낮은 가격 순': 'asc',
@@ -31,9 +31,7 @@ function ProductsPage() {
   } = useGetProducts({ category, sort });
   const { isLoading: isLoadingCarts, isError: isErrorCarts, carts, refetchCarts } = useGetCarts();
   const [itemCount, setItemCount] = useState(0);
-  const [isErrorAddCardItem, setIsErrorAddCardItem] = useState(false);
-  const [isErrorDeleteCardItem, setIsErrorDeleteCardItem] = useState(false);
-  const [isOverItemCounts, setIsOverItemCounts] = useState(false);
+  const { openToast } = useToast();
 
   const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSort(SORT[e.target.value]);
@@ -62,11 +60,7 @@ function ProductsPage() {
 
   const handleAddCartItem = async ({ productId, quantity }: AddCartItemType) => {
     if (itemCount >= 50) {
-      setIsOverItemCounts(true);
-      setTimeout(() => {
-        setIsOverItemCounts(false);
-      }, 3000);
-
+      openToast('장바구니는 최대 50개의 상품을 담을 수 있습니다.', 'error');
       return;
     }
 
@@ -76,10 +70,7 @@ function ProductsPage() {
     });
 
     if (!res.ok) {
-      setIsErrorAddCardItem(true);
-      setTimeout(() => {
-        setIsErrorAddCardItem(false);
-      }, 3000);
+      openToast('장바구니에 상품을 담지 못했습니다.', 'error');
     }
 
     await refetchCarts();
@@ -90,10 +81,7 @@ function ProductsPage() {
     const res = await deleteCartItem({ cartId });
 
     if (!res.ok) {
-      setIsErrorDeleteCardItem(true);
-      setTimeout(() => {
-        setIsErrorDeleteCardItem(false);
-      }, 3000);
+      openToast('장바구니에 상품을 빼지 못했습니다.', 'error');
     }
 
     await refetchCarts();
@@ -104,6 +92,15 @@ function ProductsPage() {
       setItemCount(new Set(carts?.map((cart) => cart.product.id)).size);
     }
   }, [carts]);
+
+  useEffect(() => {
+    if (isErrorCarts) {
+      openToast('장바구니 정보를 불러오지 못했습니다.', 'error');
+    }
+    if (isErrorProducts) {
+      openToast('상품 정보를 불러오지 못했습니다.', 'error');
+    }
+  }, [isErrorCarts, isErrorProducts, openToast]);
 
   if (isLoadingCarts) {
     return <div>로딩중...</div>;
@@ -131,13 +128,6 @@ function ProductsPage() {
           />
         )}
       </div>
-      {isErrorCarts && <Toast text="장바구니 정보를 불러오지 못했습니다." varient="error" />}
-      {isErrorProducts && <Toast text="상품 정보를 불러오지 못했습니다." varient="error" />}
-      {isErrorAddCardItem && <Toast text="장바구니에 상품을 담지 못했습니다." varient="error" />}
-      {isErrorDeleteCardItem && <Toast text="장바구니에 상품을 빼지 못했습니다." varient="error" />}
-      {isOverItemCounts && (
-        <Toast text="장바구니는 최대 50개의 상품을 담을 수 있습니다." varient="error" />
-      )}
     </div>
   );
 }

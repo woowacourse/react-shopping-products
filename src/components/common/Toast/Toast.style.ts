@@ -18,13 +18,18 @@ const getBackground = (varient: ToastVarientType) => {
 export const toastContainer = ({ varient }: ToastStyleProps) => css`
   background-color: ${getBackground(varient)};
   position: fixed;
-  width: inherit;
+  width: 429px;
   height: 40px;
-  top: 64px;
+  left: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translateX(-50%);
+  top: 64px;
   font-size: 12px;
   font-weight: 500;
   line-height: 15px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
 `;
