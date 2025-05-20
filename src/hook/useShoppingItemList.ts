@@ -4,7 +4,7 @@ import { ProductListResponse } from '../types/response';
 import { apiRequest } from '../api/apiRequest';
 
 const useShoppingItemList = () => {
-  const [selected, setSelected] = useState<SortOption>('낮은 가격순');
+  const [sortType, setSortType] = useState<SortOption>('낮은 가격순');
   const [category, setCategory] = useState<CategoryOption>('전체');
   const [data, setData] = useState<Product[]>([]);
   const [error, setError] = useState<Error | null>(null);
@@ -20,7 +20,7 @@ const useShoppingItemList = () => {
           `/products?page=0&size=20${
             category === '전체' ? '' : `&category=${category}`
           }${
-            selected === '높은 가격순' ? '&sort=price,desc' : '&sort=price,asc'
+            sortType === '높은 가격순' ? '&sort=price,desc' : '&sort=price,asc'
           }`
         );
 
@@ -37,25 +37,26 @@ const useShoppingItemList = () => {
     };
 
     fetchData();
-  }, [category, selected]);
+  }, [category, sortType]);
 
-  const handleSortClick = (content: string) => {
-    setSelected(content as SortOption);
+  const selectSort = (content: string) => {
+    setSortType(content as SortOption);
   };
 
-  const handleCategoryClick = (category: string) => {
+  const selectCategory = (category: string) => {
     setCategory(category as CategoryOption);
   };
 
   const retryFetch = () => {
-    setSelected((prev) => prev);
+    setSortType('낮은 가격순');
+    setCategory('전체');
   };
 
   return {
     data,
-    handleSortClick,
-    handleCategoryClick,
-    selected,
+    selectSort,
+    selectCategory,
+    sortType,
     category,
     error,
     isLoading,

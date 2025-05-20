@@ -21,9 +21,9 @@ const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
 const ShoppingList = () => {
   const {
     data,
-    handleSortClick,
-    handleCategoryClick,
-    selected,
+    selectSort,
+    selectCategory,
+    sortType,
     category,
     error,
     isLoading,
@@ -61,7 +61,7 @@ const ShoppingList = () => {
                   {categoryOptions.map((option) => (
                     <Dropdown.Item
                       key={option}
-                      handleClick={handleCategoryClick}
+                      handleClick={selectCategory}
                       content={option}
                     />
                   ))}
@@ -71,14 +71,14 @@ const ShoppingList = () => {
             <div css={ShoppingListFilterItemStyle}>
               <Dropdown.Root>
                 <Dropdown.Trigger>
-                  {selected}
+                  {sortType}
                   <ArrowIcon />
                 </Dropdown.Trigger>
                 <Dropdown.List>
                   {sortOptions.map((option) => (
                     <Dropdown.Item
                       key={option}
-                      handleClick={handleSortClick}
+                      handleClick={selectSort}
                       content={option}
                     />
                   ))}
