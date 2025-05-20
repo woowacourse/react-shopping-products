@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import Toast from "../@common/Toast/Toast";
 import * as S from "./ErrorToast.styles";
 
 interface Props {
@@ -7,17 +7,13 @@ interface Props {
 }
 
 const ErrorToast = ({ errorMessage, setErrorMessage }: Props) => {
-  useEffect(() => {
-    if (errorMessage) {
-      const timer = setTimeout(() => {
-        setErrorMessage("");
-      }, 5000);
+  const handleToastEnd = () => setErrorMessage("");
 
-      return () => clearTimeout(timer);
-    }
-  }, [errorMessage, setErrorMessage]);
-
-  return <>{!!errorMessage && <S.ErrorToast>{errorMessage}</S.ErrorToast>}</>;
+  return (
+    <Toast enable={!!errorMessage} onEnd={handleToastEnd}>
+      <S.ErrorToast>{errorMessage}</S.ErrorToast>
+    </Toast>
+  );
 };
 
 export default ErrorToast;
