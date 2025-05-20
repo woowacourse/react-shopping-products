@@ -20,13 +20,16 @@ function CartToggleButton({
   setCartItemIds,
   fetchCartProducts,
 }: CartToggleButtonProps) {
-  const { removeItemToCart, addItemToCart } = useCartToggleButton();
+  const { removeItemToCart, addItemToCart } = useCartToggleButton({
+    setCartItemIds,
+    fetchCartProducts,
+  });
 
   const buttonProps = isAdded
     ? {
         label: "빼기",
         icon: "removeCart.svg",
-        onClick: () => removeItemToCart({ cartId, productId, setCartItemIds }),
+        onClick: () => removeItemToCart({ cartId, productId }),
         styles: [ButtonContainer, RemoveButton],
       }
     : {
@@ -36,7 +39,6 @@ function CartToggleButton({
           addItemToCart({
             productId,
             cartAmount,
-            fetchCartProducts,
           }),
         styles: ButtonContainer,
       };

@@ -6,23 +6,28 @@ const MAX_CART_AMOUNT = 50;
 interface AddItemToCartProps {
   productId: number;
   cartAmount: number;
-  fetchCartProducts: () => void;
 }
 
 interface RemoveItemToCartProps {
   cartId?: number;
   productId: number;
+}
+
+interface useCartToggleButtonProps {
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
+  fetchCartProducts: () => void;
 }
 
-export default function useCartToggleButton() {
+export default function useCartToggleButton({
+  setCartItemIds,
+  fetchCartProducts,
+}: useCartToggleButtonProps) {
   const { showToast } = useToast();
 
   async function removeItemToCart({
     cartId,
-    setCartItemIds,
     productId,
   }: RemoveItemToCartProps) {
     try {
@@ -38,11 +43,7 @@ export default function useCartToggleButton() {
     }
   }
 
-  async function addItemToCart({
-    cartAmount,
-    productId,
-    fetchCartProducts,
-  }: AddItemToCartProps) {
+  async function addItemToCart({ cartAmount, productId }: AddItemToCartProps) {
     try {
       if (cartAmount >= MAX_CART_AMOUNT) {
         showToast("CART_MAX");
