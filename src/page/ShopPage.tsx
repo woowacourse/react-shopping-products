@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCartItem } from "../api/cartItem";
+import { getCartItems } from "../api/cartItem";
 import getProduct from "../api/product";
 import Body from "../component/Body/Body";
 import Header from "../component/Header/Header";
@@ -50,7 +50,7 @@ export default function ShopPage() {
   const updateCardItemList = async () => {
     (async () => {
       try {
-        const response = await getCartItem({
+        const response = await getCartItems({
           sortBy: "asc",
         });
         setCartItemList(response.content);

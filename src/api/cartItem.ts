@@ -1,6 +1,6 @@
 import { getRequestOptions } from "./getRequestOptions";
 
-export async function getCartItem({ sortBy }: { sortBy: string }) {
+export async function getCartItems({ sortBy }: { sortBy: string }) {
   const options = getRequestOptions({ method: "GET", withAuth: true });
 
   const params = new URLSearchParams({

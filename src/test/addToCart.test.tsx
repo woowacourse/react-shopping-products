@@ -11,7 +11,7 @@ vi.mock("../api/product", () => ({
 }));
 
 vi.mock("../api/cartItem", () => ({
-  getCartItem: vi.fn(),
+  getCartItems: vi.fn(),
   postCartItem: vi.fn(),
   deleteCartItem: vi.fn(),
 }));
@@ -21,7 +21,7 @@ describe("ShopPage - 장바구니 동작", () => {
     vi.clearAllMocks(); // ✅ 모든 mock의 호출 기록 초기화
 
     (productApi.default as Mock).mockResolvedValue(mockProductList);
-    (cartApi.getCartItem as Mock).mockResolvedValue({
+    (cartApi.getCartItems as Mock).mockResolvedValue({
       content: [],
     });
     (cartApi.postCartItem as Mock).mockResolvedValue({});
@@ -36,7 +36,7 @@ describe("ShopPage - 장바구니 동작", () => {
     const cartButtons = screen.getAllByRole("button", { name: /(담기|빼기)/i });
     expect(cartButtons.length).toBeGreaterThan(0);
 
-    (cartApi.getCartItem as Mock).mockResolvedValueOnce({
+    (cartApi.getCartItems as Mock).mockResolvedValueOnce({
       content: [
         {
           id: 1,
@@ -57,12 +57,12 @@ describe("ShopPage - 장바구니 동작", () => {
       productId: mockProductList.content[0].id,
       quantity: 1,
     });
-    expect(cartApi.getCartItem).toHaveBeenCalledTimes(2);
+    expect(cartApi.getCartItems).toHaveBeenCalledTimes(2);
   });
 
   it("사용자가 '빼기' 버튼을 누르면, 장바구니에서 제외된다", async () => {
     (productApi.default as Mock).mockResolvedValue(mockProductList);
-    (cartApi.getCartItem as Mock).mockResolvedValueOnce({
+    (cartApi.getCartItems as Mock).mockResolvedValueOnce({
       content: [
         {
           id: 1,
@@ -80,7 +80,7 @@ describe("ShopPage - 장바구니 동작", () => {
     const removeButtons = screen.getAllByRole("button", { name: /빼기/i });
     expect(removeButtons.length).toBeGreaterThan(0);
 
-    (cartApi.getCartItem as Mock).mockResolvedValueOnce({ content: [] });
+    (cartApi.getCartItems as Mock).mockResolvedValueOnce({ content: [] });
     (cartApi.deleteCartItem as Mock).mockResolvedValue({});
 
     fireEvent.click(removeButtons[0]);
@@ -91,6 +91,6 @@ describe("ShopPage - 장바구니 동작", () => {
     });
 
     expect(cartApi.deleteCartItem).toHaveBeenCalledTimes(1);
-    expect(cartApi.getCartItem).toHaveBeenCalledTimes(2);
+    expect(cartApi.getCartItems).toHaveBeenCalledTimes(2);
   });
 });
