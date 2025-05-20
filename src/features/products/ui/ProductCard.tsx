@@ -4,6 +4,7 @@ import {deleteCartProduct} from '../../cart/api/deleteCartProduct';
 import {postCartProduct} from '../../cart/api/postCartProduct';
 import {Product} from '../type/product';
 import * as S from './ProductCard.styles';
+import {useShowError} from '../../../shared/provider/errorProvider';
 
 interface ProductCardProps {
   product: Product;
@@ -18,22 +19,32 @@ export default function ProductCard({
   onRefetch,
   cartQuantity,
 }: ProductCardProps) {
-  const handleProductCart = async () => {
-    if (product.isCart && product.cartProductId) {
-      await deleteCartProduct(product.cartProductId);
-      onRefetch();
+  const showError = useShowError();
 
-      return;
-    }
-
+  const handlePutCartClick = async () => {
     if (cartQuantity >= MAX_CART_QUANTITY) {
-      alert(
+      showError?.(
         `장바구니에 담을 수 있는 최대 개수는 ${MAX_CART_QUANTITY}개입니다.`
       );
       return;
     }
-    await postCartProduct(product.id);
-    onRefetch();
+
+    try {
+      await postCartProduct(product.id);
+      onRefetch();
+    } catch (e) {
+      showError?.('상품 추가 중에 문제가 발생했습니다.');
+    }
+  };
+
+  const handleDeleteCartClick = async () => {
+    if (product.cartProductId)
+      try {
+        await deleteCartProduct(product.cartProductId);
+        onRefetch();
+      } catch (e) {
+        showError?.('삭제하는 중에 문제가 발생했습니다.');
+      }
   };
 
   const iconUrl = product.isCart ? './deleteCartIcon.svg' : './addCartIcon.svg';
@@ -45,6 +56,9 @@ export default function ProductCard({
         border: 1px solid #000;
       `
     : css``;
+  const handleCartClick = product.isCart
+    ? handleDeleteCartClick
+    : handlePutCartClick;
 
   return (
     <S.ProductCardContainer>
@@ -62,7 +76,7 @@ export default function ProductCard({
         <CustomButton
           iconUrl={iconUrl}
           title={title}
-          onClick={handleProductCart}
+          onClick={handleCartClick}
           css={className}
         />
       </S.ButtonSection>

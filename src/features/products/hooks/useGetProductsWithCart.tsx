@@ -2,8 +2,10 @@ import {useState} from 'react';
 import {CartProduct, Product} from '../type/product';
 import {getProducts} from '../api/getProducts';
 import {getCartProduct} from '../../cart/api/getCartProduct';
+import {useShowError} from '../../../shared/provider/errorProvider';
 
 function useGetProductsWithCart(sortValue: string) {
+  const showError = useShowError();
   const [products, setProducts] = useState<Product[]>([]);
   const [, setPageInfo] = useState({
     totalElements: 0,
@@ -11,11 +13,9 @@ function useGetProductsWithCart(sortValue: string) {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const fetchProducts = async () => {
     setIsLoading(true);
-    setError('');
 
     try {
       const products = await getProducts({sortValue});
@@ -40,13 +40,13 @@ function useGetProductsWithCart(sortValue: string) {
         totalPages: products.totalPages,
       });
     } catch (error) {
-      setError('데이터를 가져오는 중 오류가 발생했습니다.');
+      showError?.('데이터를 가져오는 중 오류가 발생했습니다.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  return {products, fetchProducts, isLoading, error};
+  return {products, fetchProducts, isLoading};
 }
 
 export default useGetProductsWithCart;

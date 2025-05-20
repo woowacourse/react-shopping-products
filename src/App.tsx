@@ -29,7 +29,7 @@ function App() {
   const [category, setCategory] = useState<Category>('all');
   const [sortValue, setSortValue] = useState('');
 
-  const {products, fetchProducts, isLoading, error} =
+  const {products, fetchProducts, isLoading} =
     useGetProductsWithCart(sortValue);
 
   const cartQuantity = products.filter((product) => product.isCart).length;
@@ -46,7 +46,7 @@ function App() {
 
   return (
     <>
-      <Navbar cartQuantity={cartQuantity} errorMessage={error} />
+      <Navbar cartQuantity={cartQuantity} />
       <S.ProductListWrapper>
         <S.ProductListHeader>
           <S.ProductListHeaderTitle>

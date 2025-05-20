@@ -1,26 +1,13 @@
-import {useEffect, useState} from 'react';
 import ErrorToast from '../../../shared/ui/ErrorToast';
 import * as S from './Navbar.styles';
+import {useErrorToast} from '../../../shared/provider/errorProvider';
 
 interface NavbarProps {
   cartQuantity: number;
-  errorMessage: string;
 }
 
-export default function Navbar({cartQuantity, errorMessage}: NavbarProps) {
-  const [visibleError, setVisibleError] = useState(errorMessage);
-
-  useEffect(() => {
-    if (errorMessage) {
-      setVisibleError(errorMessage);
-      const timer = setTimeout(() => {
-        setVisibleError('');
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [errorMessage]);
-
+export default function Navbar({cartQuantity}: NavbarProps) {
+  const error = useErrorToast();
   return (
     <S.NavbarWrapper>
       <S.NavbarContainer>
@@ -30,7 +17,7 @@ export default function Navbar({cartQuantity, errorMessage}: NavbarProps) {
           <S.CartIcon src="./cartIcon.svg" />
         </S.CartIconContainer>
       </S.NavbarContainer>
-      {visibleError && <ErrorToast errorMessage={visibleError} />}
+      {error && <ErrorToast errorMessage={error} />}
     </S.NavbarWrapper>
   );
 }
