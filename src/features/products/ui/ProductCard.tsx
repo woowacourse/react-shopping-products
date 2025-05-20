@@ -5,6 +5,8 @@ import {postCartProduct} from '../../cart/api/postCartProduct';
 import {Product} from '../type/product';
 import * as S from './ProductCard.styles';
 import {useShowError} from '../../../shared/provider/errorProvider';
+import {useState} from 'react';
+import CartCount from './CartCount';
 
 interface ProductCardProps {
   product: Product;
@@ -20,6 +22,8 @@ export default function ProductCard({
   cartQuantity,
 }: ProductCardProps) {
   const showError = useShowError();
+  const [isCarting, setIsCarting] = useState(false);
+  const [count, setCount] = useState(0);
 
   const handlePutCartClick = async () => {
     if (cartQuantity >= MAX_CART_QUANTITY) {
@@ -35,6 +39,7 @@ export default function ProductCard({
     } catch (e) {
       showError?.('상품 추가 중에 문제가 발생했습니다.');
     }
+    setIsCarting(false);
   };
 
   const handleDeleteCartClick = async () => {
@@ -58,7 +63,7 @@ export default function ProductCard({
     : css``;
   const handleCartClick = product.isCart
     ? handleDeleteCartClick
-    : handlePutCartClick;
+    : () => setIsCarting(true);
 
   return (
     <S.ProductCardContainer>
@@ -73,12 +78,24 @@ export default function ProductCard({
         <S.ProductPrice>{product.price}</S.ProductPrice>
       </S.ContentSection>
       <S.ButtonSection>
-        <CustomButton
-          iconUrl={iconUrl}
-          title={title}
-          onClick={handleCartClick}
-          css={className}
-        />
+        {isCarting ? (
+          <CartCount
+            count={count}
+            onPlusCount={() => setCount((prev) => prev + 1)}
+            onMinusCount={() => {
+              count > 0 && setCount((prev) => prev - 1);
+            }}
+            // onCount={setCount}
+            onCompleteCart={handlePutCartClick}
+          />
+        ) : (
+          <CustomButton
+            iconUrl={iconUrl}
+            title={title}
+            onClick={handleCartClick}
+            css={className}
+          />
+        )}
       </S.ButtonSection>
     </S.ProductCardContainer>
   );
