@@ -1,70 +1,82 @@
-import styled from '@emotion/styled';
-import { useTempCartContext } from '../../cart/contexts/useTempCartContext';
-import { useEffect, useState } from 'react';
+import * as S from './CartQuantitySelector.styles';
+import { useProductsWithCartContext } from '../../../shared/contexts/productsWithCart/useProductsWithCartContext';
+import { useEffect } from 'react';
 
 interface CartQuantitySelectorProps {
   productId: number;
   cartProductId: number;
+  cartProductQuantity: number;
+  setErrors: (error: string) => void;
 }
 
-export default function CartQuantitySelector({ productId, cartProductId }: CartQuantitySelectorProps) {
-  const { tempCart, updateTempCart } = useTempCartContext();
-
-  const productInCart = tempCart.find((item) => item.cartProductId === cartProductId);
-  const initialQuantity = productInCart?.cartProductQuantity ?? 1;
-
-  const [cartProductQuantity, setCartQuantity] = useState(initialQuantity);
+export default function CartQuantitySelector({
+  productId,
+  cartProductId,
+  cartProductQuantity,
+  setErrors,
+}: CartQuantitySelectorProps) {
+  const { updateCart } = useProductsWithCartContext();
 
   useEffect(() => {
-    updateTempCart({ productId, cartProductId, cartProductQuantity });
-  }, [cartProductQuantity]);
+    const initializeCart = async () => {
+      try {
+        if (cartProductId === -1) {
+          const newCart = {
+            productId: productId,
+            cartProductId: cartProductId,
+            cartProductQuantity: 1,
+          };
+          await updateCart(newCart);
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error('Error initializing cart product:', error);
+          setErrors('장바구니 초기화 중 오류가 발생했습니다.');
+        }
+      }
+    };
 
-  const handleMinusClick = () => {
-    const nextQuantity = cartProductQuantity > 1 ? cartProductQuantity - 1 : 1;
-    setCartQuantity(nextQuantity);
+    initializeCart();
+  }, []);
+
+  const handleMinusClick = async () => {
+    try {
+      const nextQuantity = cartProductQuantity > 1 ? cartProductQuantity - 1 : 1;
+      const newCart = {
+        productId: productId,
+        cartProductId: cartProductId,
+        cartProductQuantity: nextQuantity,
+      };
+      await updateCart(newCart);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error updating cart product:', error);
+        setErrors('장바구니 수량 업데이트 중 오류가 발생했습니다.');
+      }
+    }
   };
 
-  const handlePlusClick = () => {
-    setCartQuantity(cartProductQuantity + 1);
+  const handlePlusClick = async () => {
+    try {
+      const newCart = {
+        productId: productId,
+        cartProductId: cartProductId,
+        cartProductQuantity: cartProductQuantity + 1,
+      };
+      await updateCart(newCart);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error updating cart product:', error);
+        setErrors('장바구니 수량 업데이트 중 오류가 발생했습니다.');
+      }
+    }
   };
 
   return (
-    <CartQuantityContainer>
-      <CartQuantitySelectorButton onClick={handleMinusClick}>-</CartQuantitySelectorButton>
-      <CartQuantityNumber>{cartProductQuantity}</CartQuantityNumber>
-      <CartQuantitySelectorButton onClick={handlePlusClick}>+</CartQuantitySelectorButton>
-    </CartQuantityContainer>
+    <S.CartQuantityContainer>
+      <S.CartQuantitySelectorButton onClick={handleMinusClick}>-</S.CartQuantitySelectorButton>
+      <S.CartQuantityNumber>{cartProductQuantity}</S.CartQuantityNumber>
+      <S.CartQuantitySelectorButton onClick={handlePlusClick}>+</S.CartQuantitySelectorButton>
+    </S.CartQuantityContainer>
   );
 }
-
-const CartQuantityContainer = styled.div`
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  border-radius: 8px;
-  color: #000;
-  gap: 12px;
-`;
-
-const CartQuantitySelectorButton = styled.button`
-  width: 24px;
-  height: 24px;
-  background-color: #fff;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  :hover {
-    background-color: #f0f0f0;
-  }
-`;
-
-const CartQuantityNumber = styled.div`
-  font-size: 12px;
-  font-weight: 500;
-`;
