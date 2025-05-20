@@ -32,7 +32,7 @@ export default function ProductContainer({
             imageUrl={product.imageUrl}
             name={product.name}
             price={product.price}
-            selectedCardItems={selectedCardItems}
+            selectedCartItems={selectedCardItems}
             onChange={onChange}
           />
         );
