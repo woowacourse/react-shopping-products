@@ -13,8 +13,16 @@ export const ErrorMessageContext = createContext<ErrorMessageContextType | null>
 
 export const ErrorMessageProvider = ({ children }: ErrorMessageContextProps) => {
   const [errorMessage, setErrorMessage] = useState('');
-  const handleErrorMessage = (errorMessage: string) => {
-    setErrorMessage(errorMessage);
+  const handleErrorMessage = (newErrorMessage: string) => {
+    if (errorMessage.length !== 0) {
+      return;
+    }
+
+    setErrorMessage(newErrorMessage);
+
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 3000);
   };
 
   return (

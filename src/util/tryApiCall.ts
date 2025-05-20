@@ -10,9 +10,6 @@ const tryApiCall = async <T>(
   } catch (error) {
     const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
     handleErrorToast(message);
-    setTimeout(() => {
-      handleErrorToast('');
-    }, 3000);
 
     return undefined as T;
   }
