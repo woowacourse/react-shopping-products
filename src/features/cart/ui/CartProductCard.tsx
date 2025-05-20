@@ -1,21 +1,25 @@
 import * as S from './CartProductCard.styles';
 import { CartProduct } from '../../products/type/product';
-import { deleteCartProduct } from '../api/deleteCartProduct';
 import { useProductsWithCartContext } from '../../../shared/contexts/productsWithCart/useProductsWithCartContext';
+import CartQuantitySelector from '../../products/ui/CartQuantitySelector';
 
-export default function CartProductCard({ cartProduct }: { cartProduct: CartProduct }) {
-  const { fetchProducts } = useProductsWithCartContext();
+interface CartProductCardProps {
+  cartProduct: CartProduct;
+  setErrors: (error: string) => void;
+}
+
+export default function CartProductCard({ cartProduct, setErrors }: CartProductCardProps) {
+  const { removeFromCart } = useProductsWithCartContext();
+
   const handleDelete = async () => {
     try {
-      await deleteCartProduct(cartProduct.id);
-      await fetchProducts();
+      await removeFromCart(cartProduct.id, cartProduct.product.id);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error deleting cart product:', error);
-      }
+      console.error('장바구니 상품 삭제 중 오류 발생:', error);
     }
   };
 
+  console.log('cartProduct', cartProduct);
   return (
     <S.CartProductCardContainer>
       <S.CartProductImage
@@ -30,7 +34,14 @@ export default function CartProductCard({ cartProduct }: { cartProduct: CartProd
       <S.CartProductDetails>
         <S.CartProductName>{cartProduct.product.name}</S.CartProductName>
         <S.CartProductPrice>{cartProduct.product.price.toLocaleString()}원</S.CartProductPrice>
-        <S.CartProductQuantity>수량: {cartProduct.quantity}</S.CartProductQuantity>
+        <S.CartQuantitySelectorContainer>
+          <CartQuantitySelector
+            productId={cartProduct.product.id}
+            cartProductId={cartProduct.id}
+            cartProductQuantity={cartProduct.quantity}
+            setErrors={setErrors}
+          />
+        </S.CartQuantitySelectorContainer>
       </S.CartProductDetails>
       <S.DeleteContainer>
         <S.DeleteButton onClick={handleDelete}>삭제</S.DeleteButton>

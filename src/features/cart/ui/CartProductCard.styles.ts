@@ -36,7 +36,11 @@ export const CartProductPrice = styled.span`
   color: #000000;
 `;
 
-export const CartProductQuantity = styled.span`
+export const CartQuantitySelectorContainer = styled.div`
+  display: flex;
+  margin-right: auto;
+  justify-content: start;
+  align-items: center;
   font-size: 14px;
   font-weight: 500;
   color: #000000;
