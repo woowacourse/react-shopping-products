@@ -1,8 +1,8 @@
-import { Product, SortingType } from "../types";
+import { Product, SortType } from "../types";
 
-const sortProductList = (productList: Product[], sortingType: SortingType) => {
-	if (sortingType === "asc") return [...productList].sort((a, b) => a.price - b.price);
-	if (sortingType === "desc") return [...productList].sort((a, b) => b.price - a.price);
+const sortProductList = (productList: Product[], SortType: SortType) => {
+	if (SortType === "asc") return [...productList].sort((a, b) => a.price - b.price);
+	if (SortType === "desc") return [...productList].sort((a, b) => b.price - a.price);
 	return [...productList];
 };
 

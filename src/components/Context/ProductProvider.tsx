@@ -1,14 +1,14 @@
 import { createContext, useContext } from "react";
 import useProducts from "../../hooks/useProducts";
-import { filterType, Product, sortingType } from "../../types";
+import { SortType, FilterType, Product } from "../../types";
 
 interface ProductContextType {
 	products: Product[];
 	loading: boolean;
-	sort: sortingType;
-	setSort: React.Dispatch<React.SetStateAction<sortingType>>;
-	filter: filterType;
-	setFilter: React.Dispatch<React.SetStateAction<filterType>>;
+	sort: SortType;
+	setSort: React.Dispatch<React.SetStateAction<SortType>>;
+	filter: FilterType;
+	setFilter: React.Dispatch<React.SetStateAction<FilterType>>;
 	productError: string;
 }
 

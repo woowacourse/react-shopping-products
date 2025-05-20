@@ -4,17 +4,17 @@ import cart from "./data/cart.json";
 import { CART_URL, PRODUCT_URL } from "../constants/endpoint";
 import filterProductList from "../utils/filterProductList";
 import sortProductList from "../utils/sortProductList";
-import { filterType, SortingType } from "../types";
+import { FilterType, SortType } from "../types";
 
 export const handlers = [
 	http.get(PRODUCT_URL, ({ request }) => {
 		const url = new URL(request.url);
-		const category = url.searchParams.get("category") as filterType;
+		const category = url.searchParams.get("category") as FilterType;
 		const sort = url.searchParams.get("sort");
 
 		let resultProducts = products;
 		if (category) resultProducts = filterProductList(products, category);
-		if (sort) resultProducts = sortProductList(products, sort.split(",")[1] as SortingType);
+		if (sort) resultProducts = sortProductList(products, sort.split(",")[1] as SortType);
 
 		return HttpResponse.json({ content: resultProducts });
 	}),

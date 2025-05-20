@@ -22,5 +22,16 @@ export interface Info {
 	[key: string]: unknown;
 }
 
-export type sortingType = "asc" | "desc";
-export type filterType = "" | "식료품" | "패션잡화";
+export const FILTER_OPTIONS = [
+	{ value: "", label: "전체" },
+	{ value: "식료품", label: "식료품" },
+	{ value: "패션잡화", label: "패션잡화" },
+] as const;
+
+export const SORT_OPTIONS = [
+	{ value: "asc", label: "낮은 가격순" },
+	{ value: "desc", label: "높은 가격순" },
+] as const;
+
+export type FilterType = (typeof FILTER_OPTIONS)[number]["value"];
+export type SortType = (typeof SORT_OPTIONS)[number]["value"];
