@@ -1,20 +1,13 @@
 import { USER_TOKEN } from "../../constants/env";
 import handleHttpError from "../handleHTTPError";
 
-interface FetchOptions {
-	url: string;
-	headers?: HeadersInit;
-	body?: BodyInit;
-}
-
-const fetchData = async ({ url, body }: FetchOptions) => {
+const fetchData = async ({ url }: { url: string }) => {
 	try {
 		const response = await fetch(url, {
 			headers: {
 				"content-type": "application/json",
 				Authorization: `Basic ${USER_TOKEN}`,
 			},
-			body,
 		});
 
 		handleHttpError(response);
