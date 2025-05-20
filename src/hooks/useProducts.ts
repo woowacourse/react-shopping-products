@@ -1,8 +1,8 @@
 import { PRODUCT_URL } from "../constants/endpoint";
-import { USER_TOKEN } from "../constants/env";
-import { useFetch } from "./useFetch";
 import getQueryURL from "../utils/getQueryURL";
-import { Product } from "../types";
+import { filterType, Product, sortingType } from "../types";
+import { useState, useEffect } from "react";
+import fetchData from "../utils/api/fetchData";
 
 interface UseProductsProps {
 	page?: string;
@@ -11,27 +11,38 @@ interface UseProductsProps {
 	sortingType?: string;
 }
 
-export default function useProducts({ page = "0", size = "20", filterType, sortingType }: UseProductsProps = {}) {
+export default function useProducts({ page = "0", size = "20" }: UseProductsProps = {}) {
+	const [filter, setFilter] = useState<filterType>("");
+	const [sort, setSort] = useState<sortingType>("asc");
+	const [products, setProducts] = useState<Product[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [productError, setProductError] = useState<string>("");
+
 	const query = {
 		page,
 		size,
-		...(sortingType && { sort: `price,${sortingType}` }),
-		...(filterType && { category: filterType }),
+		...(sort && { sort: `price,${sort}` }),
+		...(filter && { category: filter }),
 	};
 	const url = getQueryURL(PRODUCT_URL, query);
 
-	const {
-		data: products,
-		loading,
-		error: productError,
-		refetch: fetchProducts,
-	} = useFetch<Product[]>({
-		url,
-		headers: {
-			"content-type": "application/json",
-			Authorization: `Basic ${USER_TOKEN}`,
-		},
-	});
+	const fetchProducts = async () => {
+		try {
+			setLoading(true);
+			const data = await fetchData({ url });
+			setProducts(data);
+		} catch (error) {
+			if (error instanceof Error) {
+				setProductError(error.message);
+			}
+		} finally {
+			setLoading(false);
+		}
+	};
 
-	return { products, loading, productError, fetchProducts };
+	useEffect(() => {
+		fetchProducts();
+	}, [url]);
+
+	return { products, loading, filter, setFilter, sort, setSort, productError };
 }
