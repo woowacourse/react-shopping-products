@@ -1,18 +1,23 @@
-import React, { createContext, PropsWithChildren, useState } from "react";
-import { Category, Error, Product, SortOption } from "../types/product.type";
-import { useProductsFetch } from "../hooks/useProductsFetch";
+import React, { createContext, PropsWithChildren, useState } from 'react';
+import {
+  Category,
+  ErrorState,
+  Product,
+  SortOption,
+} from '../types/product.type';
+import { useProductsFetch } from '../hooks/useProductsFetch';
 import {
   CATEGORY,
   SORT_OPTION,
-} from "../components/ProductListToolBar/toolBar.constant";
+} from '../components/ProductListToolBar/toolBar.constant';
 
 interface ProductsContextType {
   products: Product[];
-  productsError: Error;
+  productsError: ErrorState;
   handleChangeProducts: (newProducts: Product[]) => void;
   handleChangeSort: (newSort: SortOption) => void;
   handleChangeCategory: (newCategory: Category) => void;
-  category: Category | "";
+  category: Category | '';
   sort: SortOption;
   isProductsLoading: boolean;
 }
@@ -33,7 +38,7 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     error: productsError,
     setProducts: handleChangeProducts,
   } = useProductsFetch(
-    sort === SORT_OPTION[0] ? "price,asc" : "price,desc",
+    sort === SORT_OPTION[0] ? 'price,asc' : 'price,desc',
     category
   );
 

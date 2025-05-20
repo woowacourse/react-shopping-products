@@ -2,11 +2,11 @@ import { useState, useCallback, useEffect } from 'react';
 import getShoppingCart from '../APIs/getShoppingCart';
 import { CartItem } from '../types/product.type';
 import { INITIAL_ERROR } from '../contexts/context.constant';
-import { Error } from '../types/product.type';
+import { ErrorState } from '../types/product.type';
 
 export function useGetShoppingCart() {
   const [data, setData] = useState<CartItem[]>([]);
-  const [error, setError] = useState<Error>(INITIAL_ERROR);
+  const [error, setError] = useState<ErrorState>(INITIAL_ERROR);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleGet = useCallback(async () => {

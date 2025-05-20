@@ -72,7 +72,7 @@ interface PatchRequestBody {
   quantity: number;
 }
 
-interface Error {
+interface ErrorState {
   is: boolean;
   message: string;
 }
@@ -87,6 +87,6 @@ export type {
   SortOption,
   ShoppingCartResponse,
   CartItem,
-  Error,
+  ErrorState,
   FetchProductsResponse,
 };

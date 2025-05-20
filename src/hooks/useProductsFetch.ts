@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Product, Error } from '../types/product.type';
+import { Product, ErrorState } from '../types/product.type';
 import { INITIAL_ERROR } from '../contexts/context.constant';
 import fetchProducts from '../APIs/fetchProducts';
 
 export function useProductsFetch(sort: string, category: string) {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error>(INITIAL_ERROR);
+  const [error, setError] = useState<ErrorState>(INITIAL_ERROR);
 
   useEffect(() => {
     const params = { page: '0', size: '20', sort };

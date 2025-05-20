@@ -1,13 +1,13 @@
-import { createContext, PropsWithChildren, useState, useEffect } from "react";
-import { CartItem, Error } from "../types/product.type";
-import { INITIAL_ERROR } from "./context.constant";
-import { useGetShoppingCart } from "../hooks/useGetShoppingCart";
+import { createContext, PropsWithChildren, useState, useEffect } from 'react';
+import { CartItem, ErrorState } from '../types/product.type';
+import { INITIAL_ERROR } from './context.constant';
+import { useGetShoppingCart } from '../hooks/useGetShoppingCart';
 
 interface ShoppingCartContextType {
   cartItems: CartItem[];
-  shoppingCartError: Error;
+  shoppingCartError: ErrorState;
   handleCartItemChange: (newCartItems: CartItem[]) => void;
-  handleShoppingCartError: (error: Error) => void;
+  handleShoppingCartError: (error: ErrorState) => void;
   handleIsShoppingLoading: (loading: boolean) => void;
   isShoppingLoading: boolean;
 }
@@ -19,14 +19,14 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { data, error, isLoading } = useGetShoppingCart();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [shoppingCartError, setShoppingCartError] =
-    useState<Error>(INITIAL_ERROR);
+    useState<ErrorState>(INITIAL_ERROR);
   const [isShoppingLoading, setIsShoppingLoading] = useState<boolean>(false);
 
   const handleCartItemChange = (newCartItems: CartItem[]) => {
     setCartItems(newCartItems);
   };
 
-  const handleShoppingCartError = (error: Error) => {
+  const handleShoppingCartError = (error: ErrorState) => {
     setShoppingCartError(error);
     setTimeout(() => {
       setShoppingCartError(INITIAL_ERROR);
