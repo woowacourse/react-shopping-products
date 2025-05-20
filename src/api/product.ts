@@ -6,7 +6,7 @@ interface getProductProps {
   sortBy: sortOption;
 }
 
-export default async function getProduct({
+export default async function getProducts({
   sortBy,
   category,
 }: getProductProps) {

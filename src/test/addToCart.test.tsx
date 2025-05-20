@@ -6,7 +6,7 @@ import * as productApi from "../api/product";
 import * as cartApi from "../api/cartItem";
 
 vi.mock("../api/product", () => ({
-  getProduct: vi.fn(),
+  getProducts: vi.fn(),
   default: vi.fn(),
 }));
 

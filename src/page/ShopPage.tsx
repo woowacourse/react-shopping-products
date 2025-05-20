@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCartItems } from "../api/cartItem";
-import getProduct from "../api/product";
+import getProducts from "../api/product";
 import Body from "../component/Body/Body";
 import Header from "../component/Header/Header";
 import ProductContainer, {
@@ -65,7 +65,7 @@ export default function ShopPage() {
     if (filterValue === "높은 가격순") sortByFilter = "price,desc";
     (async () => {
       try {
-        const response = await getProduct({
+        const response = await getProducts({
           category: categoryValue,
           sortBy: sortByFilter,
         });
