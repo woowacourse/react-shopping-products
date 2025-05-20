@@ -13,15 +13,22 @@ export default function Button({
   children,
   style = "primary",
 }: ButtonProps) {
-  let backgroundColor = "#000000";
-  let color = "#FFFFFF";
-  if (style === "secondary") {
-    backgroundColor = "#EAEAEA";
-    color = "#000000";
-  }
+  const colorVariant = {
+    primary: { backgroundColor: "#000000", color: "#FFFFFF" },
+    secondary: {
+      backgroundColor: "#EAEAEA",
+      color: "#000000",
+    },
+  };
 
   return (
-    <button css={buttonLayout(backgroundColor, color)} onClick={onClick}>
+    <button
+      css={buttonLayout(
+        colorVariant[style].backgroundColor,
+        colorVariant[style].color
+      )}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
