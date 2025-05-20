@@ -13,8 +13,10 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   useEffect(() => {
     (async () => {
-      const items = (await tryApiCall(getCartItems, handleErrorMessage)) ?? [];
-      setCartItemsIds(items.map((item: CartItemType) => item.product.id));
+      const items = await tryApiCall(getCartItems, handleErrorMessage);
+      if (items) {
+        setCartItemsIds(items.map((item: CartItemType) => item.product.id));
+      }
     })();
   }, []);
 
