@@ -1,3 +1,4 @@
+import { CategoryType } from "../../types/index.types";
 import Select from "../commons/Select";
 
 const options = [
@@ -7,8 +8,8 @@ const options = [
 ];
 
 interface FilterProps {
-  selectedCategory: "전체" | "패션잡화" | "식료품";
-  setSelectedCategory: (category: "전체" | "패션잡화" | "식료품") => void;
+  selectedCategory: CategoryType;
+  setSelectedCategory: (category: CategoryType) => void;
 }
 
 function Filter({ selectedCategory, setSelectedCategory }: FilterProps) {
