@@ -153,7 +153,7 @@ const Container = styled.main`
   display: flex;
   max-width: 430px;
   min-height: 100vh;
-  margin: auto;
+  margin: 0 auto;
 `;
 
 const Wrapper = styled.div`
