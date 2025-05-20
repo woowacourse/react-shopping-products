@@ -1,15 +1,10 @@
 import * as S from './CustomButton.styles';
 
-interface CustomButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  iconUrl: string;
-  title: string;
-}
-
-export default function CustomButton({ iconUrl, title, ...rest }: CustomButtonProps) {
+export default function CustomButton({ ...rest }) {
   return (
     <S.CustomButton {...rest}>
-      <S.ButtonIcon src={iconUrl} alt='button icon' />
-      <S.ButtonTitle>{title}</S.ButtonTitle>
+      <S.ButtonIcon src='./addCartIcon.svg' alt='button icon' />
+      <S.ButtonTitle>담기</S.ButtonTitle>
     </S.CustomButton>
   );
 }
