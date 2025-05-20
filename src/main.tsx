@@ -5,9 +5,9 @@ import Skeleton from './shared/ui/Skeleton.tsx';
 import LazyApp from './AppLazy.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <Suspense fallback={<Skeleton />}>
-      <LazyApp />
-    </Suspense>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Suspense fallback={<Skeleton />}>
+    <LazyApp />
+  </Suspense>
+  // </React.StrictMode>
 );

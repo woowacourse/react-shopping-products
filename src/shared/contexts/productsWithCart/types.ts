@@ -7,6 +7,9 @@ export interface ProductsWithCartContextValue {
   error: string;
   fetchProducts: () => Promise<void>;
   updateCart: (newCart: { productId: number; cartProductId: number; cartProductQuantity: number }) => Promise<void>;
+  removeFromCart: (cartProductId: number, productId: number) => Promise<void>;
   sortValue: string;
   setSortValue: (value: string) => void;
+  selectedProductIds: number[];
+  toggleCartSelection: (productId: number) => void;
 }

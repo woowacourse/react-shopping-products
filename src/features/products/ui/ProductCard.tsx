@@ -1,20 +1,22 @@
-import { css } from '@emotion/react';
 import CustomButton from '../../../shared/ui/CustomButton';
 import { Product } from '../type/product';
 import * as S from './ProductCard.styles';
-import { useState } from 'react';
 import CartQuantitySelector from './CartQuantitySelector';
+import { useProductsWithCartContext } from '../../../shared/contexts/productsWithCart/useProductsWithCartContext';
+import { css } from '@emotion/react';
 
 interface ProductCardProps {
   product: Product;
   setErrors: (error: string) => void;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
-  const [isCartSelected, setCartSelected] = useState(false);
+export default function ProductCard({ product, setErrors }: ProductCardProps) {
+  const { toggleCartSelection, selectedProductIds } = useProductsWithCartContext();
 
-  const handleProductCart = async () => {
-    setCartSelected((prev) => !prev);
+  const isCartSelected = selectedProductIds.includes(product.id);
+
+  const handleProductCart = () => {
+    toggleCartSelection(product.id);
   };
 
   const buttonStyle = product.isCart
@@ -26,6 +28,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     : css``;
 
   const cartProductId = product.cartProductId ?? -1;
+  const cartProductQuantity = product.cartProductQuantity || 1;
 
   return (
     <S.ProductCardContainer>
@@ -47,7 +50,12 @@ export default function ProductCard({ product }: ProductCardProps) {
         {!isCartSelected ? (
           <CustomButton onClick={handleProductCart} css={buttonStyle} />
         ) : (
-          <CartQuantitySelector productId={product.id} cartProductId={cartProductId} />
+          <CartQuantitySelector
+            productId={product.id}
+            cartProductId={cartProductId}
+            cartProductQuantity={cartProductQuantity}
+            setErrors={setErrors}
+          />
         )}
       </S.ButtonSection>
     </S.ProductCardContainer>
