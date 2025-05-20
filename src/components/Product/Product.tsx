@@ -9,6 +9,8 @@ import {
   productPrice,
   buttonWrapper,
 } from './Product.style';
+import isValidImageUrl from '../../utils/isValidImageUrl';
+import { DEFAULT_IMAGE_URL } from '../constants/images';
 
 function Product({
   id,
@@ -21,7 +23,15 @@ function Product({
 }: ProductProps) {
   return (
     <li className={productContainer}>
-      <img src={imageUrl} alt="product" className={productImage} />
+      <img
+        src={isValidImageUrl(imageUrl) ? imageUrl : DEFAULT_IMAGE_URL}
+        alt="product"
+        className={productImage}
+        onError={(e) => {
+          e.currentTarget.src = DEFAULT_IMAGE_URL;
+          e.currentTarget.onerror = null;
+        }}
+      />
       <div className={productContent}>
         <div className={productTitle}>{name}</div>
         <div className={productPrice}>{price}원</div>
