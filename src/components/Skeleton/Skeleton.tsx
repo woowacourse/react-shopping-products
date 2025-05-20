@@ -8,7 +8,7 @@ import {
   skeletonListContainer,
 } from './Skeleton.style';
 
-export function ProductSkeleton() {
+function ProductSkeleton() {
   return (
     <li className={skeletonItemContainer}>
       <div className={skeletonImage}></div>
