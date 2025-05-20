@@ -60,3 +60,48 @@ export const CartQuantity = styled.div`
 `;
 
 export const CartIcon = styled.img``;
+
+export const ModalContentContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+`;
+
+export const ModalContentHeader = styled.div`
+  width: 100%;
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+`;
+
+export const ModalContentBody = styled.div`
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-radius: 8px;
+  border: 1px solid #333333;
+  padding: 16px;
+`;
+
+export const ModalTotalPriceContainer = styled.div`
+  width: 100%;
+  color: #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const ModalTotalPriceLabel = styled.span`
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+export const ModalTotalPrice = styled.div`
+  font-size: 24px;
+  font-weight: 700;
+`;
