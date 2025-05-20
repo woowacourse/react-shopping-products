@@ -44,6 +44,7 @@ export const mockCartItems: CartItem[] = [
   },
 ];
 
+export const mockList = ["옵션1", "옵션2", "옵션3"] as const;
 export const productErrorMessage = "제품 정보를 가져오는데 실패했습니다.";
 export const cartErrorMessage = "장바구니 정보를 가져오는데 실패했습니다.";
 export const networkErrorMessage = "Failed to fetch";

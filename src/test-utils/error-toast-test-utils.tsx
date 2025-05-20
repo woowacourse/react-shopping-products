@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { vi } from "vitest";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
 import { server } from "../mocks/node";
