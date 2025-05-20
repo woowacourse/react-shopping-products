@@ -4,6 +4,12 @@ type ApiRequestGetType = {
   useToken?: boolean;
 };
 
+type ApiRequestPostType = {
+  endpoint: string;
+  searchParams: Record<string, string>;
+  useToken?: boolean;
+};
+
 class ApiRequest {
   #baseUrl: string;
   #token: string;
@@ -36,6 +42,24 @@ class ApiRequest {
     }
 
     return response.json();
+  }
+
+  async POST({ endpoint, searchParams, useToken = true }: ApiRequestPostType) {
+    const url = new URL(`${this.#baseUrl}${endpoint}`);
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(useToken && { Authorization: `Basic ${this.#token}` }),
+      },
+      body: JSON.stringify(searchParams),
+    };
+
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("상품이 이미 존재합니다.");
+    }
   }
 }
 
