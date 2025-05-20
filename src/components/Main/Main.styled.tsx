@@ -7,6 +7,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 24px;
+  margin-top: 64px;
 `;
 
 export const ProductListTitle = styled.h1`
