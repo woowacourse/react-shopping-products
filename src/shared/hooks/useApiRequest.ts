@@ -11,7 +11,8 @@ export const useApiRequest = () => {
       apiCall: () => Promise<T>,
       onSuccess: (data: T) => R,
       errorData?: T,
-      options?: { delay?: number }
+      options?: { delay?: number },
+      onError?: (error: Error) => void
     ): Promise<T | R | undefined> => {
       try {
         setIsLoading(true);
@@ -23,9 +24,11 @@ export const useApiRequest = () => {
         const data = await apiCall();
         return onSuccess ? onSuccess(data) : data;
       } catch (err) {
-        showToast((err as Error).message);
+        const error = err instanceof Error ? err : new Error(String(err));
+        showToast(error.message);
+        onError && onError(error);
         errorData && onSuccess(errorData);
-        throw err;
+        throw error;
       } finally {
         setIsLoading(false);
       }
