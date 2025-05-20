@@ -1,4 +1,5 @@
 import { CategoryOption, sortOption } from "../page/ShopPage";
+import { getRequestOptions } from "./getRequestOptions";
 
 interface getProductProps {
   category: CategoryOption;
@@ -9,12 +10,7 @@ export default async function getProduct({
   sortBy,
   category,
 }: getProductProps) {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-    },
-  };
+  const options = getRequestOptions({ method: "GET" });
 
   const params = new URLSearchParams({
     page: "0",

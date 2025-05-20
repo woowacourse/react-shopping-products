@@ -1,11 +1,7 @@
+import { getRequestOptions } from "./getRequestOptions";
+
 export async function getCartItem({ sortBy }: { sortBy: string }) {
-  const options = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}==`,
-    },
-  };
+  const options = getRequestOptions({ method: "GET", withAuth: true });
 
   const params = new URLSearchParams({
     page: "0",
@@ -26,28 +22,23 @@ export async function postCartItem({
   productId: number;
   quantity: number;
 }) {
-  const options = {
+  const options = getRequestOptions({
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}==`,
-    },
-    body: JSON.stringify({
+    body: {
       productId,
       quantity,
-    }),
-  };
+    },
+    withAuth: true,
+  });
 
   return fetch(`${import.meta.env.VITE_BASE_URL}/cart-items`, options);
 }
 
 export async function deleteCartItem({ id }: { id: number }) {
-  const options = {
+  const options = getRequestOptions({
     method: "DELETE",
-    headers: {
-      Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}==`,
-    },
-  };
+    withAuth: true,
+  });
 
   return fetch(`${import.meta.env.VITE_BASE_URL}/cart-items/${id}`, options);
 }
