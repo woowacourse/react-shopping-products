@@ -1,4 +1,4 @@
-import S from "../Pages/Product.module.css";
+import S from "./ItemCardFilterSort.module.css";
 
 interface Props {
 	filter: string;
