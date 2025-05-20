@@ -22,5 +22,5 @@ export interface Info {
 	[key: string]: unknown;
 }
 
-export type SortingType = "asc" | "desc";
-export type filterType = "식료품" | "패션잡화";
+export type sortingType = "asc" | "desc";
+export type filterType = "" | "식료품" | "패션잡화";
