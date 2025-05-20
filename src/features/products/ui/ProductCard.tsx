@@ -10,19 +10,16 @@ import CartQuantitySelector from './CartQuantitySelector';
 
 interface ProductCardProps {
   product: Product;
-  onRefetch: () => void;
   setErrors: (error: string) => void;
 }
 
-export default function ProductCard({ product, onRefetch, setErrors }: ProductCardProps) {
-  const [cartQuantity, setCartQuantity] = useState(1);
+export default function ProductCard({ product }: ProductCardProps) {
   const [isCartSelected, setCartSelected] = useState(false);
+
   const handleProductCart = async () => {
     setCartSelected((prev) => !prev);
   };
 
-  const iconUrl = product.isCart ? './deleteCartIcon.svg' : './addCartIcon.svg';
-  const title = product.isCart ? '빼기' : '담기';
   const buttonStyle = product.isCart
     ? css`
         background-color: #fff;
@@ -30,6 +27,8 @@ export default function ProductCard({ product, onRefetch, setErrors }: ProductCa
         border: 1px solid #000;
       `
     : css``;
+
+  const cartProductId = product.cartProductId ?? -1;
 
   return (
     <S.ProductCardContainer>
@@ -49,9 +48,9 @@ export default function ProductCard({ product, onRefetch, setErrors }: ProductCa
       </S.ContentSection>
       <S.ButtonSection>
         {!isCartSelected ? (
-          <CustomButton iconUrl={iconUrl} title={title} onClick={handleProductCart} css={buttonStyle} />
+          <CustomButton onClick={handleProductCart} css={buttonStyle} />
         ) : (
-          <CartQuantitySelector cartQuantity={cartQuantity} setCartQuantity={setCartQuantity} />
+          <CartQuantitySelector productId={product.id} cartProductId={cartProductId} />
         )}
       </S.ButtonSection>
     </S.ProductCardContainer>

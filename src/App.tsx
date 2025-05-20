@@ -25,16 +25,32 @@ const SORT_OPTIONS = [
 
 function App() {
   const [category, setCategory] = useState<Category>('all');
+  const [cartTypeQuantity, setCartTypeQuantity] = useState<number>(0);
   const [errors, setErrors] = useState<string>('');
 
-  const { products, fetchProducts, error, isLoading, setSortValue } = useProductsWithCartContext();
-  if (error !== '') {
-    setErrors(error);
-  }
+  const { products, cartProducts, fetchProducts, error, isLoading, setSortValue } = useProductsWithCartContext();
 
-  const cartTypeQuantity = products.filter((product) => product.isCart).length;
+  console.log('cartProducts', cartProducts);
 
   useEffect(() => {
+    if (error !== '') {
+      setErrors(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    const fetchCartQuantity = async () => {
+      try {
+        const cartProductTypeQuantity = cartProducts.length;
+        setCartTypeQuantity(cartProductTypeQuantity);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error('Error fetching cart quantity:', error);
+          setErrors('장바구니 수량을 가져오는 중 오류가 발생했습니다.');
+        }
+      }
+    };
+    fetchCartQuantity();
     fetchProducts();
   }, [fetchProducts]);
 
@@ -49,7 +65,7 @@ function App() {
 
   return (
     <>
-      <Navbar cartTypeQuantity={cartTypeQuantity} errorMessage={errors} />
+      <Navbar cartTypeQuantity={cartTypeQuantity} errorMessage={errors} setErrors={setErrors} />
       <S.ProductListWrapper>
         <S.ProductListHeader>
           <S.ProductListHeaderTitle>WoowaBros Product List</S.ProductListHeaderTitle>
@@ -73,7 +89,7 @@ function App() {
         ) : (
           <S.ProductList>
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} onRefetch={fetchProducts} setErrors={setErrors} />
+              <ProductCard key={product.id} product={product} setErrors={setErrors} />
             ))}
           </S.ProductList>
         )}

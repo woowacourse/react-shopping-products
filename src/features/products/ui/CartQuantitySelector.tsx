@@ -1,23 +1,37 @@
 import styled from '@emotion/styled';
+import { useTempCartContext } from '../../cart/contexts/useTempCartContext';
+import { useEffect, useState } from 'react';
 
 interface CartQuantitySelectorProps {
-  cartQuantity: number;
-  setCartQuantity: React.Dispatch<React.SetStateAction<number>>;
+  productId: number;
+  cartProductId: number;
 }
 
-export default function CartQuantitySelector({ cartQuantity, setCartQuantity }: CartQuantitySelectorProps) {
+export default function CartQuantitySelector({ productId, cartProductId }: CartQuantitySelectorProps) {
+  const { tempCart, updateTempCart } = useTempCartContext();
+
+  const productInCart = tempCart.find((item) => item.cartProductId === cartProductId);
+  const initialQuantity = productInCart?.cartProductQuantity ?? 1;
+
+  const [cartProductQuantity, setCartQuantity] = useState(initialQuantity);
+
+  useEffect(() => {
+    updateTempCart({ productId, cartProductId, cartProductQuantity });
+  }, [cartProductQuantity]);
+
   const handleMinusClick = () => {
-    setCartQuantity((prev) => (prev > 1 ? prev - 1 : prev));
+    const nextQuantity = cartProductQuantity > 1 ? cartProductQuantity - 1 : 1;
+    setCartQuantity(nextQuantity);
   };
 
   const handlePlusClick = () => {
-    setCartQuantity((prev) => prev + 1);
+    setCartQuantity(cartProductQuantity + 1);
   };
 
   return (
     <CartQuantityContainer>
       <CartQuantitySelectorButton onClick={handleMinusClick}>-</CartQuantitySelectorButton>
-      <CartQuantityNumber>{cartQuantity}</CartQuantityNumber>
+      <CartQuantityNumber>{cartProductQuantity}</CartQuantityNumber>
       <CartQuantitySelectorButton onClick={handlePlusClick}>+</CartQuantitySelectorButton>
     </CartQuantityContainer>
   );
