@@ -1,9 +1,9 @@
-import ErrorToast from "../components/ErrorToast";
-import ProductCardList from "../components/ProductCardList";
-import ProductListToolBar from "../components/ProductListToolBar";
-import { useProductsContext } from "../contexts/useProductsContext";
-import { useShoppingCartContext } from "../contexts/useShoppingCartContext";
-import OrbitSpinner from "../components/OrbitSpinner/index";
+import ErrorToast from '../components/ErrorToast';
+import ProductCardList from '../components/ProductCardList';
+import ProductListToolBar from '../components/ProductListToolBar';
+import { useProductsContext } from '../contexts/useProductsContext';
+import { useShoppingCartContext } from '../contexts/useShoppingCartContext';
+import OrbitSpinner from '../components/OrbitSpinner/index';
 
 const ProductListPage = () => {
   const { products, productsError, isProductsLoading } = useProductsContext();
@@ -11,11 +11,9 @@ const ProductListPage = () => {
 
   return (
     <>
-      {productsError.isError && (
-        <ErrorToast errorMessage={productsError.errorMessage} />
-      )}
-      {shoppingCartError.isError && (
-        <ErrorToast errorMessage={shoppingCartError.errorMessage} />
+      {productsError.is && <ErrorToast message={productsError.message} />}
+      {shoppingCartError.is && (
+        <ErrorToast message={shoppingCartError.message} />
       )}
       <ProductListToolBar />
       {isProductsLoading ? (

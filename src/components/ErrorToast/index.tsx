@@ -1,9 +1,9 @@
-import { css } from "@emotion/css";
+import { css } from '@emotion/css';
 
-const ErrorToast = ({ errorMessage }: { errorMessage: string }) => {
+const ErrorToast = ({ message }: { message: string }) => {
   return (
     <div className={ErrorToastStyles}>
-      <p>{errorMessage}</p>
+      <p>{message}</p>
     </div>
   );
 };

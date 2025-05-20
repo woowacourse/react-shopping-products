@@ -1,7 +1,7 @@
 import {
   SORT_OPTION,
   CATEGORY,
-} from "../components/ProductListToolBar/toolBar.constant";
+} from '../components/ProductListToolBar/toolBar.constant';
 
 type Category = (typeof CATEGORY)[number];
 type SortOption = (typeof SORT_OPTION)[number];
@@ -73,8 +73,8 @@ interface PatchRequestBody {
 }
 
 interface Error {
-  isError: boolean;
-  errorMessage: string;
+  is: boolean;
+  message: string;
 }
 
 export type {
