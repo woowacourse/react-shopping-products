@@ -34,12 +34,10 @@ const ProductCard = ({
   const defaultSrc =
     category === '패션잡화' ? IMAGE_PATH.DEFAULT_FASHION : IMAGE_PATH.DEFAULT_GROCERY;
 
-  const imageSrc = imageUrl ? imageUrl : defaultSrc;
-
   return (
     <ProductCardWrapper>
       <ProductImage
-        src={imageSrc}
+        src={imageUrl || defaultSrc}
         alt={name}
         onError={(e) => {
           const target = e.currentTarget;
