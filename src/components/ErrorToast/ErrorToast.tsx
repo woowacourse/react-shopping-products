@@ -10,7 +10,7 @@ const ErrorToast = ({ errorMessage, setErrorMessage }: Props) => {
   const handleToastEnd = () => setErrorMessage("");
 
   return (
-    <Toast enable={!!errorMessage} onEnd={handleToastEnd}>
+    <Toast visible={!!errorMessage} onClose={handleToastEnd}>
       <S.ErrorToast>{errorMessage}</S.ErrorToast>
     </Toast>
   );

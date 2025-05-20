@@ -2,30 +2,30 @@ import { PropsWithChildren, useEffect, useState } from "react";
 
 interface Props {
   duration?: number;
-  enable: boolean;
-  onEnd?: () => void;
+  visible: boolean;
+  onClose?: () => void;
 }
 
 const Toast = ({
   children,
   duration = 5000,
-  enable: defaultEnable = false,
-  onEnd,
+  visible: defaultVisible = false,
+  onClose,
 }: PropsWithChildren<Props>) => {
-  const [enable, setEnable] = useState(defaultEnable);
+  const [visible, setVisible] = useState(defaultVisible);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setEnable(false);
-      onEnd?.();
+      setVisible(false);
+      onClose?.();
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [duration, onEnd]);
+  }, [duration, onClose]);
 
-  useEffect(() => setEnable(defaultEnable), [defaultEnable]);
+  useEffect(() => setVisible(defaultVisible), [defaultVisible]);
 
-  if (!enable) return null;
+  if (!visible) return null;
 
   return <>{children}</>;
 };
