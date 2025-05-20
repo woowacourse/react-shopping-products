@@ -1,7 +1,15 @@
+import { ErrorProvider } from './context/ErrorContext';
+import { LoadingProvider } from './context/LoadingContext';
 import ProductPage from './pages/ProductPage';
 
 function App() {
-  return <ProductPage />;
+  return (
+    <ErrorProvider>
+      <LoadingProvider>
+        <ProductPage />
+      </LoadingProvider>
+    </ErrorProvider>
+  );
 }
 
 export default App;
