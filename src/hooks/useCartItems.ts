@@ -86,10 +86,15 @@ const useCartItems = () => {
       await fetchData();
       dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
     } catch (error) {
-      error instanceof Error &&
-        handleErrorMessage(
-          error.message || "장바구니에 상품을 추가하는데 실패했습니다."
-        );
+      if (!(error instanceof Error)) {
+        return;
+      }
+
+      if (error.message === "장바구니에 최대 추가 가능한 개수는 50개 입니다.") {
+        handleErrorMessage(error.message);
+      }
+
+      handleErrorMessage("장바구니에 상품을 추가하는데 실패했습니다.");
       dispatch({ type: ACTION_TYPE.FETCH_FAIL });
     }
   };
