@@ -1,10 +1,10 @@
-import { css } from "@emotion/css";
-import RemoveButton from "../Button/RemoveButton";
-import AddButton from "../Button/AddButton";
-import { Product } from "../../types/product.type";
-import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
-import { useAddShoppingCart } from "../../hooks/useAddShoppingCart";
-import { useDeleteShoppingCart } from "../../hooks/useDeleteShoppingCart";
+import { css } from '@emotion/css';
+import RemoveButton from '../Button/RemoveButton';
+import AddButton from '../Button/AddButton';
+import { Product } from '../../types/product.type';
+import { useShoppingCartContext } from '../../contexts/useShoppingCartContext';
+import { useAddShoppingCart } from '../../hooks/useAddShoppingCart';
+import { useDeleteShoppingCart } from '../../hooks/useDeleteShoppingCart';
 
 interface ProductCardProps {
   product: Product;
@@ -24,7 +24,14 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   return (
     <div key={id} className={CardFrame}>
       <div className={ImageFrame}>
-        <img src={imageUrl} alt={name} className={CardImage} />
+        <img
+          src={imageUrl || './default.png'}
+          alt={name}
+          className={CardImage}
+          onError={(e) => {
+            e.currentTarget.src = './default.png';
+          }}
+        />
       </div>
       <div className={CardInfo}>
         <h4 className={ProductName}>{name}</h4>
