@@ -1,8 +1,10 @@
-import { useAppContext } from "../Context/AppProvider";
+import { useCartContext } from "../Context/CartProvider";
+import { useProductContext } from "../Context/ProductProvider";
 import S from "./ErrorToast.module.css";
 
 const ErrorToast = () => {
-	const { cartError, productError } = useAppContext();
+	const { cartError } = useCartContext();
+	const { productError } = useProductContext();
 
 	return (
 		(cartError || productError) && (

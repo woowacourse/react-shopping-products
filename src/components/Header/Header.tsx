@@ -1,11 +1,11 @@
 import CartButton from "../Button/CartButton";
-import { useAppContext } from "../Context/AppProvider";
+import { useCartContext } from "../Context/CartProvider";
 import S from "./Header.module.css";
 
 const Header = () => {
-	const { cartProducts } = useAppContext();
-
+	const { cartProducts } = useCartContext();
 	const cartCount = cartProducts.length;
+
 	return (
 		<div className={S.container}>
 			<p>SHOP</p>
