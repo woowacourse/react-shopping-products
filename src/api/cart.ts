@@ -3,14 +3,14 @@ import { CartItem } from '../types/common';
 import { CartResponse } from '../types/response';
 
 export const cartApi = {
-  getCartItems: async (): Promise<CartItem[]> => {
+  getCartItems: async () => {
     const response = await apiRequest<CartResponse>(
       '/cart-items?page=0&size=50'
     );
     return response.content;
   },
 
-  addToCart: async (productId: number): Promise<CartItem> => {
+  addToCart: async (productId: number) => {
     return apiRequest<CartItem>(`/cart-items`, {
       method: 'POST',
       body: {
@@ -20,7 +20,7 @@ export const cartApi = {
     });
   },
 
-  removeFromCart: async (cartItemId: number): Promise<void> => {
+  removeFromCart: async (cartItemId: number) => {
     return apiRequest(`/cart-items/${cartItemId}`, {
       method: 'DELETE',
     });
