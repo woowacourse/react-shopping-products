@@ -1,12 +1,12 @@
-import { deleteCartItems, getCartItems, getProducts, patchCartItems, postCartItems } from "@/apis";
 import { Header, Select, Spinner, Text } from "@/components";
 import { useError } from "@/context";
-import { useFetch } from "@/hooks";
 import { useState } from "react";
 import { ProductCard } from "./components";
 
+import { CartItemApi, ProductApi } from "@/apis";
+import useQuery from "@/modules/Query/useQuery/useQuery";
 import * as S from "./ProductsPage.styles";
-import { CATEGORY, DEFAULT_FILTER, DEFAULT_SORT, ERROR_MESSAGE, SORT } from "./constants";
+import { CATEGORY, DEFAULT_FILTER, DEFAULT_SORT, SORT } from "./constants";
 import { Category, Sort } from "./types";
 
 export default function ProductsPage() {
@@ -15,16 +15,27 @@ export default function ProductsPage() {
 
   const { showError } = useError();
 
-  const { data: products, status: productsStatus } = useFetch(getProducts);
-  const { data: cartItems, status: cartItemsStatus, fetchData: fetchCartItems } = useFetch(getCartItems);
+  const { data: products, status: productsStatus } = useQuery({
+    queryFn: ProductApi.getAllProducts,
+    queryKey: "products",
+  });
+
+  const {
+    data: cartItems,
+    status: cartItemsStatus,
+    fetchData: fetchCartItems,
+  } = useQuery({
+    queryFn: CartItemApi.getCartItems,
+    queryKey: "cartItems",
+  });
 
   const increaseCartItem = async (productId: number) => {
     const cartItem = cartItems?.content.find((item) => item.product.id === productId);
 
     if (!cartItem) {
-      await postCartItems({ productId });
+      await CartItemApi.postCartItems({ productId });
     } else {
-      await patchCartItems({
+      await CartItemApi.patchCartItems({
         cartItemId: cartItem.id,
         quantity: cartItem.quantity + 1,
       });
@@ -37,9 +48,9 @@ export default function ProductsPage() {
     const cartItem = cartItems?.content.find((item) => item.product.id === productId);
 
     if (!cartItem) {
-      await postCartItems({ productId });
+      await CartItemApi.postCartItems({ productId });
     } else {
-      await patchCartItems({
+      await CartItemApi.patchCartItems({
         cartItemId: cartItem.id,
         quantity: cartItem.quantity - 1,
       });
@@ -52,7 +63,7 @@ export default function ProductsPage() {
   if (isLoading && !cartItems) return <Spinner />;
   return (
     <>
-      <Header cartItems={cartItems} />
+      <Header />
 
       <S.ProductPageWrapper>
         <Text variant="title-1">bpple 상품 목록</Text>

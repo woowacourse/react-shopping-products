@@ -1,16 +1,18 @@
+import { CartItemApi } from "@/apis";
 import { ShoppingBag } from "@/components/icons";
-import * as S from "./Header.styles";
-import Modal from "../Modal/Modal";
-import { css } from "@emotion/react";
-import { GetCartItemsResponse } from "@/types";
-import Text from "../Text/Text";
+import useQuery from "@/modules/Query/useQuery/useQuery";
 import { CartItem } from "@/pages/products/components";
+import { css } from "@emotion/react";
+import Modal from "../Modal/Modal";
+import Text from "../Text/Text";
+import * as S from "./Header.styles";
 
-interface HeaderProps {
-  cartItems?: GetCartItemsResponse;
-}
+export default function Header() {
+  const { data: cartItems } = useQuery({
+    queryFn: CartItemApi.getCartItems,
+    queryKey: "cartItems",
+  });
 
-export default function Header({ cartItems }: HeaderProps) {
   const shoppingCount = cartItems?.content?.length ?? 0;
 
   const handleShoppingBagClick = () => {};
@@ -26,17 +28,18 @@ export default function Header({ cartItems }: HeaderProps) {
           </S.ShoppingBagWrapper>
         </Modal.Trigger>
 
-        <ShoppingCartModal cartItems={cartItems} />
+        <ShoppingCartModal />
       </Modal.Wrapper>
     </S.HeaderWrapper>
   );
 }
 
-interface ShoppingCartModalProps {
-  cartItems?: GetCartItemsResponse;
-}
+function ShoppingCartModal() {
+  const { data: cartItems } = useQuery({
+    queryFn: CartItemApi.getCartItems,
+    queryKey: "cartItems",
+  });
 
-function ShoppingCartModal({ cartItems }: ShoppingCartModalProps) {
   const totalPrice = cartItems?.content?.reduce((acc, item) => acc + item.product.price * item.quantity, 0) ?? 0;
 
   return (

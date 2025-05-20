@@ -1,8 +1,8 @@
 import { GetCartItemsResponse } from "@/types";
 import * as S from "./CartItem.styles";
-import { deleteCartItems } from "@/apis/cartItem";
 import { AddMinusButton, Button } from "@/components";
 import { css } from "@emotion/react";
+import { CartItemApi } from "@/apis";
 
 interface CartItemProps {
   cartItem: GetCartItemsResponse["content"][number];
@@ -15,7 +15,7 @@ export default function CartItem({ cartItem }: CartItemProps) {
   } = cartItem;
 
   const handleDeleteCartItem = () => {
-    deleteCartItems({ cartItemId: cartItem.id });
+    CartItemApi.deleteCartItems({ cartItemId: cartItem.id });
   };
 
   return (
