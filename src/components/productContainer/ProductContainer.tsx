@@ -3,7 +3,7 @@ import Filter from "../filter/Filter";
 import ProductCardList from "../productCardList/ProductCardList";
 import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
-import { categoryType, sortType } from "../../types/index.types";
+import { CategoryType, SortType } from "../../types/index.types";
 interface ProductContainerProps {
   cartItemIds: Record<"productId" | "cartId", number>[];
   setCartItemIds: React.Dispatch<
@@ -17,8 +17,8 @@ function ProductContainer({
   fetchCartProducts,
 }: ProductContainerProps) {
   const [selectedCategory, setSelectedCategory] =
-    useState<categoryType>("전체");
-  const [selectedSort, setSelectedSort] = useState<sortType>("낮은 가격순");
+    useState<CategoryType>("전체");
+  const [selectedSort, setSelectedSort] = useState<SortType>("낮은 가격순");
 
   return (
     <div css={Container}>

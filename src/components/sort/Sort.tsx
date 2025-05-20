@@ -1,4 +1,4 @@
-import { sortType } from "../../types/index.types";
+import { SortType } from "../../types/index.types";
 import Select from "../commons/Select";
 
 const options = [
@@ -7,8 +7,8 @@ const options = [
 ];
 
 interface SortProps {
-  selectedSort: sortType;
-  setSelectedSort: (sort: sortType) => void;
+  selectedSort: SortType;
+  setSelectedSort: (sort: SortType) => void;
 }
 
 function Sort({ selectedSort, setSelectedSort }: SortProps) {

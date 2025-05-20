@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ProductPageResponse } from "./index.types";
-import { categoryType, sortType } from "../../types/index.types";
+import { CategoryType, SortType } from "../../types/index.types";
 import useFetch from "../useFetch/useFetch";
 
 const SORT_TYPE = {
@@ -8,12 +8,12 @@ const SORT_TYPE = {
   "높은 가격순": "price,desc",
 };
 
-interface useFetchProductsProps {
-  category: categoryType;
-  sort: sortType;
+interface UseFetchProductsProps {
+  category: CategoryType;
+  sort: SortType;
 }
 
-function useFetchProducts({ category, sort }: useFetchProductsProps) {
+function useFetchProducts({ category, sort }: UseFetchProductsProps) {
   const [products, setProducts] = useState<ProductPageResponse | null>(null);
   const { getData, isLoading } = useFetch<ProductPageResponse>();
 
@@ -37,7 +37,7 @@ function useFetchProducts({ category, sort }: useFetchProductsProps) {
 
 export default useFetchProducts;
 
-function createQueryString(category: categoryType, sort: sortType) {
+function createQueryString(category: CategoryType, sort: SortType) {
   const query = {
     ...(category !== "전체" && { category }),
     page: "0",

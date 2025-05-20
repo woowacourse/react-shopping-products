@@ -1,12 +1,12 @@
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
 import useFetchProducts from "../../hooks/useFetchProducts/useFetchProducts";
-import { categoryType, sortType } from "../../types/index.types";
+import { CategoryType, SortType } from "../../types/index.types";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
 
 interface ProductCardListProps {
-  category: categoryType;
-  sort: sortType;
+  category: CategoryType;
+  sort: SortType;
   cartItemIds: Record<"productId" | "cartId", number>[];
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
