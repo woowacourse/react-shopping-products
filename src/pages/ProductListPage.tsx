@@ -7,6 +7,7 @@ import OrbitSpinner from "../components/OrbitSpinner/index";
 
 const ProductListPage = () => {
   const { products, productsError, isProductsLoading } = useProductsContext();
+  const { isShoppingLoading } = useShoppingCartContext();
   const { shoppingCartError } = useShoppingCartContext();
 
   return (
@@ -18,7 +19,7 @@ const ProductListPage = () => {
         <ErrorToast errorMessage={shoppingCartError.errorMessage} />
       )}
       <ProductListToolBar />
-      {isProductsLoading ? (
+      {isProductsLoading && isShoppingLoading ? (
         <OrbitSpinner />
       ) : (
         <ProductCardList products={products} />
