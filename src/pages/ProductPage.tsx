@@ -13,7 +13,6 @@ import { MAX_CART_COUNT } from '../constants/magicNumber';
 import { ERROR_MSG } from '../constants/errorMessage';
 import { Container } from '../styles/common';
 import { ProductCardContainer } from '../styles/ProductCard';
-import '../styles/reset.css';
 
 type CategoryKey = (typeof CATEGORY)[number];
 type SortKey = (typeof SORT)[number];
