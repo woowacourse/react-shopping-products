@@ -1,3 +1,4 @@
+import { useProductContext } from "../../../contexts/ProductContext";
 import CartButton from "../../CartButton/CartButton";
 import Spinner from "../../Spinner/Spinner";
 import * as styles from "./ProductCard.style";
@@ -21,6 +22,11 @@ function ProductCard({
 }: ProductCardProps) {
   const [imageStatus, setImageStatus] = useState<ImageStatus>("loading");
   const [finalImageUrl, setFinalImageUrl] = useState<string>(imageUrl);
+  const { productsData } = useProductContext();
+
+  const productQuantity = productsData?.find(
+    (product) => product.id === productId
+  )?.quantity;
 
   // 배포 환경에 따른 베이스 경로 계산
   const basePath = useMemo(() => {
@@ -63,17 +69,24 @@ function ProductCard({
   return (
     <li css={styles.cardCss}>
       {imageStatus === "loading" && <Spinner size={"large"} />}
-      <img
-        css={styles.imageCss}
-        src={imageStatus === "error" ? fallbackImagePath : finalImageUrl}
-        alt={`${title} 상품`}
-        onLoad={() => setImageStatus("loaded")}
-        onError={() => setImageStatus("error")}
-      />
+
+      <div css={styles.imageCss}>
+        <img
+          src={imageStatus === "error" ? fallbackImagePath : finalImageUrl}
+          alt={`${title} 상품`}
+          onLoad={() => setImageStatus("loaded")}
+          onError={() => setImageStatus("error")}
+        />
+        {productQuantity === 0 && (
+          <div css={styles.soldOutCss}>
+            <p>품절</p>
+          </div>
+        )}
+      </div>
       <div css={styles.detailCss}>
         <h2>{title}</h2>
         <p>{`${price.toLocaleString()}원`}</p>
-        <CartButton productId={productId} cartItemId={cartItemId} />
+        <CartButton productId={productId} cartItemId={Number(cartItemId)} />
       </div>
     </li>
   );

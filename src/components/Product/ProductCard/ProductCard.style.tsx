@@ -10,9 +10,14 @@ export const cardCss = css({
 });
 
 export const imageCss = css({
-  objectFit: "cover",
-  borderRadius: "8px 8px 0 0 ",
+  position: "relative",
   height: "50%",
+  img: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    borderRadius: "8px 8px 0 0",
+  },
 });
 
 export const detailCss = css({
@@ -25,4 +30,23 @@ export const detailCss = css({
     fontSize: "20px",
   },
   p: { fontWeight: "500", fontSize: "14px", marginBottom: "1rem" },
+});
+
+export const soldOutCss = css({
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  backgroundColor: "rgba(0, 0, 0, 0.5)",
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: "8px 8px 0 0",
+  p: {
+    fontSize: "32px",
+    fontWeight: "600",
+    color: "white",
+  },
 });

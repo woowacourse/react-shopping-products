@@ -1,159 +1,109 @@
 import * as styles from "./QuantityButton.style";
-import { useEffect, useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
-import { URLS } from "../../constants/url";
 import { useCartContext } from "../../contexts/CartContext";
-import { useProductContext } from "../../contexts/ProductContext";
+import { URLS } from "../../constants/url";
 
 interface QuantityButtonProps {
-  quantity: number;
+  productId: number;
   cartItemId: number;
 }
 
 export default function QuantityButton({
-  quantity,
+  productId,
   cartItemId,
 }: QuantityButtonProps) {
-  const [isFetchLoading, setIsFetchLoading] = useState(false);
-  const { fetchCart } = useCartContext();
+  const [loading, setLoading] = useState(false);
+  const { fetchCart, cartData } = useCartContext();
   const { showError } = useErrorContext();
-  const { productsData } = useProductContext();
 
-  const productQuantity = productsData?.find(
-    (p) => p.id === cartItemId
-  )?.quantity;
+  const quantity =
+    cartData?.find((item) => item.product.id === productId)?.quantity ?? 0;
 
-  const deleteOptions = {
+  const authHeader = `Basic ${btoa(
+    `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
+  )}`;
+  const commonOpts = {
     headers: {
-      Authorization: `Basic ${btoa(
-        `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-      )}`,
+      Authorization: authHeader,
       "Content-Type": "application/json",
     },
-    method: "DELETE",
   };
-  const addOptions = {
-    headers: {
-      Authorization: `Basic ${btoa(
-        `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-      )}`,
-      "Content-Type": "application/json",
+
+  const { fetcher: deleteItem, error: deleteError } = useFetch(
+    `${URLS.CART_ITEMS}/${cartItemId}`,
+    { ...commonOpts, method: "DELETE" },
+    false
+  );
+  const { fetcher: increaseItem, error: increaseError } = useFetch(
+    `${URLS.CART_ITEMS}/${cartItemId}`,
+    {
+      ...commonOpts,
+      method: "PATCH",
+      body: JSON.stringify({ quantity: quantity + 1 }),
     },
-    method: "PATCH",
-    body: JSON.stringify({
-      productId: cartItemId,
-      quantity: quantity + 1,
-    }),
-  };
-  const subtractOptions = {
-    headers: {
-      Authorization: `Basic ${btoa(
-        `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-      )}`,
-      "Content-Type": "application/json",
+    false,
+    [quantity]
+  );
+  const { fetcher: decreaseItem, error: decreaseError } = useFetch(
+    `${URLS.CART_ITEMS}/${cartItemId}`,
+    {
+      ...commonOpts,
+      method: "PATCH",
+      body: JSON.stringify({ quantity: quantity - 1 }),
     },
-    method: "PATCH",
-    body: JSON.stringify({
-      productId: cartItemId,
-      quantity: quantity - 1,
-    }),
-  };
-  const { fetcher: subtractCartItem, error: subtractError } = useFetch(
-    `${URLS.CART_ITEMS}/${cartItemId}`,
-    subtractOptions,
-    false
+    false,
+    [quantity]
   );
-  const { fetcher: deleteCartItem, error: deleteError } = useFetch(
-    `${URLS.CART_ITEMS}/${cartItemId}`,
-    deleteOptions,
-    false
+
+  const performRequest = useCallback(
+    async (action: () => Promise<void>) => {
+      setLoading(true);
+      try {
+        await action();
+        await fetchCart();
+      } catch (error) {
+        if (error instanceof Error) showError(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchCart, showError]
   );
-  const { fetcher: addCartItem, error: addError } = useFetch(
-    `${URLS.CART_ITEMS}/${cartItemId}`,
-    addOptions,
-    false
-  );
-  const handleDeleteCartItem = async () => {
-    try {
-      setIsFetchLoading(true);
-      await deleteCartItem();
-      await fetchCart();
-    } catch (error) {
-      if (error instanceof Error) {
-        showError(error);
-      }
-    } finally {
-      setIsFetchLoading(false);
+
+  const handleMinusClick = useCallback(() => {
+    if (quantity <= 1) {
+      performRequest(deleteItem);
+      return;
     }
-  };
-  const handleAddCartItemQuantity = async () => {
-    try {
-      setIsFetchLoading(true);
-      if (productQuantity && quantity >= productQuantity) {
-        throw new Error(
-          `장바구니에 담을 수 있는 최대 수량은 ${productQuantity}개 입니다.`
-        );
-      }
-      await addCartItem();
-      await fetchCart();
-    } catch (error) {
-      if (error instanceof Error) {
-        showError(error);
-      }
-    } finally {
-      setIsFetchLoading(false);
-    }
-  };
-  const handleSubtractCartItemQuantity = async () => {
-    try {
-      setIsFetchLoading(true);
-      if (quantity <= 1) {
-        await deleteCartItem();
-      } else {
-        await subtractCartItem();
-      }
-      await fetchCart();
-    } catch (error) {
-      if (error instanceof Error) {
-        showError(error);
-      }
-    } finally {
-      setIsFetchLoading(false);
-    }
-  };
+    performRequest(decreaseItem);
+  }, [quantity, deleteItem, decreaseItem, performRequest]);
+
+  const handlePlusClick = useCallback(() => {
+    performRequest(increaseItem);
+  }, [increaseItem, performRequest]);
+
   useEffect(() => {
-    if (deleteError) {
-      showError(deleteError);
-    }
-  }, [deleteError, showError]);
-  useEffect(() => {
-    if (addError) {
-      showError(addError);
-    }
-  }, [addError, showError]);
-  useEffect(() => {
-    if (subtractError) {
-      showError(subtractError);
-    }
-  }, [subtractError, showError]);
+    [deleteError, increaseError, decreaseError].forEach((err) => {
+      if (err) showError(err);
+    });
+  }, [deleteError, increaseError, decreaseError, showError]);
 
   return (
     <div css={styles.quantityButtonContainer}>
       <button
         css={styles.quantityButton}
-        onClick={
-          quantity > 1 ? handleSubtractCartItemQuantity : handleDeleteCartItem
-        }
-        disabled={isFetchLoading}
+        onClick={handleMinusClick}
+        disabled={loading}
       >
         -
       </button>
       <span>{quantity}</span>
       <button
         css={styles.quantityButton}
-        onClick={handleAddCartItemQuantity}
-        disabled={isFetchLoading}
+        onClick={handlePlusClick}
+        disabled={loading}
       >
         +
       </button>
