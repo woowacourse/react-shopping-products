@@ -12,10 +12,10 @@ export function useProductFilters(
   const [price, setPrice] = useState<FilterValue>("low");
 
   const fetchProducts = useCallback(
-    async (cat: FilterValue, pri: FilterValue) => {
+    async (category: FilterValue, price: FilterValue) => {
       try {
-        const categoryParam = cat === "all" ? "" : cat;
-        const sortParam = pri === "low" ? "price,asc" : "price,desc";
+        const categoryParam = category === "all" ? "" : category;
+        const sortParam = price === "low" ? "price,asc" : "price,desc";
         const { content } = await getProducts(categoryParam, {
           page: 0,
           size: 20,

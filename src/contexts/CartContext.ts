@@ -16,7 +16,7 @@ export interface CartContextValue {
 export const CartContext = createContext<CartContextValue | null>(null);
 
 export default function useCartContext(): CartContextValue {
-  const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("CartContext.Provider로 감싸주세요");
-  return ctx;
+  const context = useContext(CartContext);
+  if (!context) throw new Error("CartContext.Provider로 감싸주세요");
+  return context;
 }
