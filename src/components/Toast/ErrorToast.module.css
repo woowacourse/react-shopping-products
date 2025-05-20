@@ -1,0 +1,35 @@
+.toastContainer {
+  position: fixed;
+  top: 64px;
+  width: 430px;
+  padding: 12px 0px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: #0a0d13;
+  background: #ffc9c9;
+  transform: translateY(-100%);
+  animation: active 3s ease forwards;
+}
+
+@keyframes active {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  10% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+
+  90% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}

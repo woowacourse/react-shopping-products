@@ -1,12 +1,14 @@
-import { useState } from "react";
+import S from './App.module.css';
+import Product from './components/pages/Product';
+import { ErrorProvider } from './contexts/ErrorContext';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <div className={S.container}>
+      <ErrorProvider>
+        <Product />;
+      </ErrorProvider>
+    </div>
   );
 }
 
