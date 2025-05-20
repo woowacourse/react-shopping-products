@@ -1,19 +1,14 @@
-import { describe, test, expect, vi, beforeEach } from "vitest";
-import * as cartApi from "../api/cartItems";
-import mockCartItemsResponse from "./mockCartItems.json";
+import { describe, test, expect, beforeAll, afterAll, afterEach } from 'vitest';
+import * as cartApi from '../api/cartItems';
+import { server } from '../mocks/node';
 
-const mockCartItems = mockCartItemsResponse.content;
+// MSW 서버 설정
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
-vi.mock("../api/cartItems");
-
-describe("장바구니 API - Mock 데이터 기반 테스트", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  test("장바구니 mock 데이터를 잘 불러온다", async () => {
-    vi.mocked(cartApi.getCartItems).mockResolvedValue(mockCartItems);
-
+describe('장바구니 API - MSW 기반 테스트', () => {
+  test('장바구니 데이터를 잘 불러온다', async () => {
     const items = await cartApi.getCartItems();
 
     expect(Array.isArray(items)).toBe(true);
@@ -21,21 +16,16 @@ describe("장바구니 API - Mock 데이터 기반 테스트", () => {
     expect(items[0].product.id).toBe(1);
   });
 
-  test("장바구니에 상품을 추가할 수 있다", async () => {
-    const spy = vi.spyOn(cartApi, "postCartItems").mockResolvedValue(undefined);
+  test('장바구니에 상품을 추가할 수 있다', async () => {
+    const result = await cartApi.postCartItems(1);
 
-    await cartApi.postCartItems(1);
-
-    expect(spy).toHaveBeenCalledWith(1);
-    expect(spy).toHaveBeenCalledTimes(1);
+    // 성공적으로 추가되었는지 확인
+    expect(result).toBeUndefined();
   });
 
-  test("장바구니에서 상품을 삭제할 수 있다", async () => {
-    const spy = vi.spyOn(cartApi, "deleteCartItem").mockResolvedValue(undefined);
+  test('장바구니에서 상품을 삭제할 수 있다', async () => {
+    const result = await cartApi.deleteCartItem(1004);
 
-    await cartApi.deleteCartItem(1004);
-
-    expect(spy).toHaveBeenCalledWith(1004);
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(result == null).toBe(true);
   });
 });
