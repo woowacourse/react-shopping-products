@@ -69,7 +69,7 @@ describe("CartButton 컴포넌트 테스트", () => {
     render(
       <ErrorContextProvider>
         <CartContextProvider>
-          <CartButton isInCart={false} productId={1} />
+          <CartButton productId={2} />
         </CartContextProvider>
       </ErrorContextProvider>
     );
@@ -104,7 +104,7 @@ describe("CartButton 컴포넌트 테스트", () => {
     render(
       <ErrorContextProvider>
         <CartContextProvider>
-          <CartButton isInCart={false} productId={1} />
+          <CartButton productId={2} />
         </CartContextProvider>
       </ErrorContextProvider>
     );
@@ -127,7 +127,7 @@ describe("CartButton 컴포넌트 테스트", () => {
     render(
       <ErrorContextProvider>
         <CartContextProvider>
-          <CartButton isInCart={true} productId={1} cartItemId={101} />
+          <CartButton productId={2} cartItemId={101} />
         </CartContextProvider>
       </ErrorContextProvider>
     );

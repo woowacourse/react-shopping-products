@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useMemo } from "react";
 import useFetch from "../hooks/useFetch";
 import { CartItemResponse } from "../types/response";
 
@@ -15,23 +15,24 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartContextProvider = ({ children }: { children: ReactNode }) => {
-  const {
-    data: cartItems,
-    fetcher: fetchCart,
-    error: cartFetchError,
-    isLoading: cartFetchLoading,
-  } = useFetch<CartItemResponse>(
-    URLS.CART_ITEMS,
-    {
+  const fetchOptions = useMemo(
+    () => ({
       headers: {
         Authorization: `Basic ${btoa(
           `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
         )}`,
         "Content-Type": "application/json",
       },
-    },
-    false
+    }),
+    []
   );
+
+  const {
+    data: cartItems,
+    fetcher: fetchCart,
+    error: cartFetchError,
+    isLoading: cartFetchLoading,
+  } = useFetch<CartItemResponse>(URLS.CART_ITEMS, fetchOptions, false);
 
   return (
     <CartContext.Provider

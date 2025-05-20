@@ -23,7 +23,7 @@ function App() {
     setOrderBy,
     orderBy,
   } = useProductContext();
-  const { cartData, cartFetchError, fetchCart } = useCartContext();
+  const { cartFetchError, fetchCart } = useCartContext();
   const [category, setCategory] = useState<CategoryOptionType>("전체");
   const [showDebug, setShowDebug] = useState(false);
 
@@ -85,7 +85,6 @@ function App() {
               ? productsData
               : productsData?.filter((item) => item.category == category)
           }
-          cartItems={cartData}
         />
       )}
       <MswStatus />

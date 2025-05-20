@@ -1,17 +1,16 @@
 import * as styles from "./CartButton.style";
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps, useEffect, useState, useMemo } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
 import { URLS } from "../../constants/url";
 import { useCartContext } from "../../contexts/CartContext";
+
 interface CartButtonProps extends ComponentProps<"button"> {
-  isInCart: boolean;
   productId: number;
   cartItemId?: number;
 }
 
 export default function CartButton({
-  isInCart,
   productId,
   cartItemId,
   ...props
@@ -19,10 +18,9 @@ export default function CartButton({
   const { showError } = useErrorContext();
   const { fetchCart, cartData } = useCartContext();
   const [isFetchLoading, setIsFetchLoading] = useState(false);
-
-  const { fetcher: deleteCartItem, error: deleteError } = useFetch(
-    `${URLS.CART_ITEMS}/${cartItemId}`,
-    {
+  const isInCart = cartData?.some((p) => p.product.id === productId);
+  const deleteOptions = useMemo(
+    () => ({
       headers: {
         Authorization: `Basic ${btoa(
           `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
@@ -30,12 +28,12 @@ export default function CartButton({
         "Content-Type": "application/json",
       },
       method: "DELETE",
-    },
-    false
+    }),
+    []
   );
-  const { fetcher: addCartItem, error: addError } = useFetch(
-    URLS.CART_ITEMS,
-    {
+
+  const addOptions = useMemo(
+    () => ({
       headers: {
         Authorization: `Basic ${btoa(
           `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
@@ -47,7 +45,19 @@ export default function CartButton({
         productId: productId,
         quantity: 1,
       }),
-    },
+    }),
+    [productId]
+  );
+
+  const { fetcher: deleteCartItem, error: deleteError } = useFetch(
+    `${URLS.CART_ITEMS}/${cartItemId}`,
+    deleteOptions,
+    false
+  );
+
+  const { fetcher: addCartItem, error: addError } = useFetch(
+    URLS.CART_ITEMS,
+    addOptions,
     false
   );
 
@@ -55,13 +65,13 @@ export default function CartButton({
     if (deleteError) {
       showError(deleteError);
     }
-  }, [deleteError]);
+  }, [deleteError, showError]);
 
   useEffect(() => {
     if (addError) {
       showError(addError);
     }
-  }, [addError]);
+  }, [addError, showError]);
 
   const handleDeleteCartItem = async () => {
     try {

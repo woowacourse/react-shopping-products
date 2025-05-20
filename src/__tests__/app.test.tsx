@@ -8,7 +8,6 @@ import { mockExtendedProducts, mockCartItems } from "../test-utils/mock-data";
 import "@testing-library/jest-dom";
 import { Product } from "../types/product";
 
-// Mock implementations
 vi.mock("../components/Spinner/Spinner", () => ({
   __esModule: true,
   default: () => <div data-testid="loading-spinner" />,
@@ -47,10 +46,11 @@ let productContextMock = {
   setOrderBy: vi.fn(),
 };
 
-// Standard mocks
 vi.mock("../contexts/ProductContext", () => ({
   useProductContext: () => productContextMock,
-  ProductContextProvider: ({ children }) => <>{children}</>,
+  ProductContextProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
 }));
 
 vi.mock("../contexts/CartContext", () => ({
@@ -62,7 +62,9 @@ vi.mock("../contexts/CartContext", () => ({
     setCartLength: vi.fn(),
     cartLength: 1,
   }),
-  CartContextProvider: ({ children }) => <>{children}</>,
+  CartContextProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
 }));
 
 vi.mock("../contexts/ErrorContext", () => ({
@@ -70,7 +72,9 @@ vi.mock("../contexts/ErrorContext", () => ({
     showError: mockShowError,
     error: null,
   }),
-  ErrorContextProvider: ({ children }) => <>{children}</>,
+  ErrorContextProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
 }));
 
 describe("App - 필터링 및 상태 테스트", () => {

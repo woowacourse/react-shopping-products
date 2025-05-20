@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useMemo } from "react";
 import useFetch from "../hooks/useFetch";
 import { ProductResponse } from "../types/response";
 
@@ -23,27 +23,37 @@ export const ProductContextProvider = ({
   children: ReactNode;
 }) => {
   const [orderBy, setOrderBy] = useState<OrderByOptionType>("낮은 가격순");
+  const productQuery = useProductQuery(orderBy);
+
+  const fetchOptions = useMemo(() => ({}), []);
 
   const {
     data: products,
     isLoading: productFetchLoading,
     error: productFetchError,
     fetcher: fetchProducts,
-  } = useFetch<ProductResponse>(useProductQuery(orderBy), {}, false);
+  } = useFetch<ProductResponse>(productQuery, fetchOptions, false);
+
+  const value = useMemo(
+    () => ({
+      productsData: products?.content,
+      productFetchLoading,
+      productFetchError,
+      fetchProducts,
+      orderBy,
+      setOrderBy,
+    }),
+    [
+      products?.content,
+      productFetchLoading,
+      productFetchError,
+      fetchProducts,
+      orderBy,
+    ]
+  );
 
   return (
-    <ProductContext.Provider
-      value={{
-        productsData: products?.content,
-        productFetchLoading,
-        productFetchError,
-        fetchProducts,
-        orderBy,
-        setOrderBy,
-      }}
-    >
-      {children}
-    </ProductContext.Provider>
+    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
   );
 };
 

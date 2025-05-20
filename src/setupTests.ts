@@ -3,12 +3,15 @@ import "@testing-library/react";
 import "vitest";
 import { server } from "./mocks/node";
 
-// Establish API mocking before all tests
-beforeAll(() => server.listen());
+// MSW 활성화
+process.env.VITE_APP_USE_MSW = "true";
 
-// Reset any request handlers that we may add during the tests,
-// so they don't affect other tests
+// Establish API mocking before all tests
+beforeAll(async () => {
+  await server.listen({ onUnhandledRequest: "error" });
+});
+
+// Reset handlers after each test
 afterEach(() => server.resetHandlers());
 
-// Clean up after the tests are finished
 afterAll(() => server.close());

@@ -7,7 +7,6 @@ interface ProductCardProps {
   title: string;
   price: number;
   imageUrl: string;
-  isItemInCart: boolean;
   productId: number;
   cartItemId?: number;
 }
@@ -17,7 +16,6 @@ function ProductCard({
   title,
   price,
   imageUrl,
-  isItemInCart,
   productId,
   cartItemId,
 }: ProductCardProps) {
@@ -75,11 +73,7 @@ function ProductCard({
       <div css={styles.detailCss}>
         <h2>{title}</h2>
         <p>{`${price.toLocaleString()}원`}</p>
-        <CartButton
-          productId={productId}
-          isInCart={isItemInCart}
-          cartItemId={cartItemId}
-        />
+        <CartButton productId={productId} cartItemId={cartItemId} />
       </div>
     </li>
   );

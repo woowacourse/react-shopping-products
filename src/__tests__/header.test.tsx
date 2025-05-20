@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { vi, expect } from "vitest";
 import { CartContextProvider } from "../contexts/CartContext";
 import Header from "../components/Header/Header";
-import React from "react";
 import { CartItem } from "../types/cartContents";
 import "@testing-library/jest-dom";
 

@@ -4,7 +4,6 @@ import App from "../App";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
 import { ProductContextProvider } from "../contexts/ProductContext";
 import { CartContextProvider } from "../contexts/CartContext";
-import React from "react";
 import { Product } from "../types/product";
 import { CartItem } from "../types/cartContents";
 import { OrderByOptionType } from "../types/categoryOption";

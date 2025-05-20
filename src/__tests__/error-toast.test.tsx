@@ -2,7 +2,6 @@ import { render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import App from "../App";
 import { CartContextProvider } from "../contexts/CartContext";
-import React from "react";
 import { ProductContextProvider } from "../contexts/ProductContext";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
 import { server } from "../mocks/node";

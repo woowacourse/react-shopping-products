@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import Dropdown from "../components/Dropdown/Dropdown";
-
+import { mockList } from "../test-utils/mock-data";
 // Needed for the css prop to work
 vi.mock("@emotion/react", () => ({
   jsx: (
@@ -20,7 +20,6 @@ vi.mock("@emotion/react", () => ({
 }));
 
 describe("Dropdown", () => {
-  const mockList = ["옵션1", "옵션2", "옵션3"] as const;
   const mockOnSelect = vi.fn();
 
   it("renders with placeholder when no value is selected", () => {

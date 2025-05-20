@@ -1,4 +1,4 @@
-import { CartItem } from "../../../types/cartContents";
+import { useCartContext } from "../../../contexts/CartContext";
 import { Product } from "../../../types/product";
 import Fallback from "../../Fallback/Fallback";
 import ProductCard from "../ProductCard/ProductCard";
@@ -6,10 +6,10 @@ import * as styles from "./ProductList.style";
 
 interface ProductListProps {
   products?: Product[];
-  cartItems?: CartItem[];
 }
 
-export default function ProductList({ products, cartItems }: ProductListProps) {
+export default function ProductList({ products }: ProductListProps) {
+  const { cartData } = useCartContext();
   if (!products) {
     return <Fallback />;
   }
@@ -24,12 +24,11 @@ export default function ProductList({ products, cartItems }: ProductListProps) {
             key={id}
             productId={id}
             cartItemId={
-              cartItems?.find((cartItem) => cartItem.product.id === id)?.id
+              cartData?.find((cartItem) => cartItem.product.id === id)?.id
             }
             price={price}
             title={name}
             imageUrl={imageUrl}
-            isItemInCart={Boolean(cartItems?.some((p) => p.product.id === id))}
           />
         );
       })}
