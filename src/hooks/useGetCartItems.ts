@@ -2,14 +2,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { ProductDTOType } from '../types/product';
 import getCarts from '../api/getCarts';
 
-type cartDataType = {
+export type CartDataType = {
   id: number;
   quantity: number;
   product: ProductDTOType;
 };
 
 function useGetCarts() {
-  const [carts, setCarts] = useState<cartDataType[] | null>(null);
+  const [carts, setCarts] = useState<CartDataType[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -37,7 +37,9 @@ function useGetCarts() {
     return await fetchCarts();
   }, [fetchCarts]);
 
-  return { isLoading, isError, carts, refetchCarts };
+  const cartItemCount = new Set(carts?.map((cart) => cart.product.id)).size;
+
+  return { isLoading, isError, carts, cartItemCount, refetchCarts };
 }
 
 export default useGetCarts;
