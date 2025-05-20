@@ -18,7 +18,7 @@ type handleCartToggleButtonProps = SharedToggleProps & {
   isInBascket: boolean;
   productId: number;
   basketId?: number;
-  fetchCartItems: () => Promise<void>;
+  fetchCartItems: (value?: boolean) => Promise<void>;
 };
 
 type CartToggleButtonProps = {
@@ -28,7 +28,7 @@ type CartToggleButtonProps = {
   isNotBasketCountMAX: boolean;
   setError: (value: boolean) => void;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
-  fetchCartItems: () => Promise<void>;
+  fetchCartItems: (value?: boolean) => Promise<void>;
   setErrorMessage: (value: string) => void;
 };
 
@@ -83,7 +83,7 @@ const handleCartToggleButton = async ({
   } else if (basketId !== undefined) {
     await deleteCartItem(basketId);
   }
-  await fetchCartItems();
+  await fetchCartItems(false);
 };
 
 const CartToggleButton = ({

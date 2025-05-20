@@ -20,7 +20,7 @@ type ProductCardProps = {
   basketId?: number;
   isNotBasketCountMAX: boolean;
   setError: (value: boolean) => void;
-  fetchCartItems: () => Promise<void>;
+  fetchCartItems: (value?: boolean) => Promise<void>;
   setErrorMessage: (value: string) => void;
 };
 

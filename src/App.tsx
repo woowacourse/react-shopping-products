@@ -41,9 +41,9 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const fetchCartItems = async () => {
+  const fetchCartItems = async (withGlobalLoading = true) => {
     try {
-      setIsLoading(true);
+      if (withGlobalLoading) setIsLoading(true);
       const data = await getCartItems();
       const mapped: BasketProductInfos = data.map((item) => ({
         productId: item.product.id,
@@ -55,7 +55,7 @@ function App() {
       setErrorMessage(ERROR_MSG.BASKET_FETCH_FAIL);
       console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
     } finally {
-      setIsLoading(false);
+      if (withGlobalLoading) setIsLoading(false);
     }
   };
 
@@ -85,7 +85,7 @@ function App() {
   }, [category, sort]);
 
   useEffect(() => {
-    fetchCartItems();
+    fetchCartItems(true);
   }, []);
 
   return (
