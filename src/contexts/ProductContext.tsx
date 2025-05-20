@@ -1,9 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useMemo } from "react";
 import useFetch from "../hooks/useFetch";
-import {
-  ProductResponse,
-  ProductWithQuantityResponse,
-} from "../types/response";
+import { ProductWithQuantityResponse } from "../types/response";
 
 import { useProductQuery } from "../hooks/useProductQuery";
 import { OrderByOptionType } from "../types/categoryOption";
