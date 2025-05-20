@@ -7,5 +7,6 @@ const BASE_URL =
 
 export const URLS = {
   CART_ITEMS: `${BASE_URL}/cart-items`,
+  ORDERS: `${BASE_URL}/orders`,
   PRODUCTS: `${BASE_URL}/products`,
 };
