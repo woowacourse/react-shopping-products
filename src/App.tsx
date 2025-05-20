@@ -1,12 +1,12 @@
-import { useState } from "react";
+import ShopPage from "./page/ShopPage";
+import GlobalStyle from "./reset";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <div>
+      <GlobalStyle />
+      <ShopPage />
+    </div>
   );
 }
 
