@@ -8,7 +8,7 @@ interface AddCartItemsProps {
 export const getCartItems = async () => {
   const data = await apiClient({
     method: 'GET',
-    URI: `/cart-items`,
+    URI: '/cart-items',
   });
   return data.content;
 };
