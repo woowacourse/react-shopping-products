@@ -1,13 +1,13 @@
 import * as S from "./SelectBox.styles";
 
-interface Props<T extends string> {
+interface Props<T extends string = string> {
   id: string;
   value: T;
   onChange: React.Dispatch<React.SetStateAction<T>>;
   options: readonly T[] | T[];
 }
 
-const SelectBox = <T extends string>({
+const SelectBox = <T extends string = string>({
   id,
   value,
   onChange,
