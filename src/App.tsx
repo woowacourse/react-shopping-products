@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import ShopPage from "./page/ShopPage";
-import GlobalStyle from "./reset";
+import GlobalStyle from "./GlobalStyle";
 
 function App() {
   return (
