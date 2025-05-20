@@ -1,7 +1,7 @@
-import { ButtonHTMLAttributes } from 'react';
+import { ComponentProps } from 'react';
 import { buttonStyle } from './Button.styles';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ComponentProps<'button'> {
   variant?: 'default' | 'gray';
   icon?: React.ReactNode;
 }
