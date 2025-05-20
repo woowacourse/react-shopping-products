@@ -1,4 +1,4 @@
-import { MAX_BASKET_COUNT } from "./magicNumber";
+import { MAX_BASKET_COUNT } from "./basket";
 
 export const ERROR_MSG = {
   PRODUCT_FETCH_FAIL: "상품 목록을 불러오지 못했습니다.",

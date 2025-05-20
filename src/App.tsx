@@ -5,7 +5,7 @@ import SelectDropdownContainer from "./components/SelectDropdown/SelectDropdownC
 import { getProducts, ProductResponse } from "./api/products";
 import { getCartItems } from "./api/cartItems";
 import { CATEGORY, SORT } from "./constants/selectOption";
-import { MAX_BASKET_COUNT } from "./constants/magicNumber";
+import { MAX_BASKET_COUNT } from "./constants/basket";
 import { Container } from "./styles/common";
 import { ProductCardContainer } from "./styles/ProductCard";
 import "./styles/reset.css";
