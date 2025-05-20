@@ -4,6 +4,11 @@ export const SHOP_API = {
     products: "products",
     cartItems: "cart-items",
   },
+  headers: {
+    default: {
+      Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+    },
+  },
 };
 
 export const createApiUrl = (
@@ -14,13 +19,20 @@ export const createApiUrl = (
   return `${SHOP_API.baseUrl}${endpoint}?${searchParams.toString()}`;
 };
 
+const applyDefaultHeaders = (options: RequestInit = {}): RequestInit => {
+  return {
+    ...options,
+    headers: { ...SHOP_API.headers.default, ...(options.headers || {}) },
+  };
+};
+
 export const fetchWithErrorHandling = async <T>(
   url: string,
   options?: RequestInit,
   parseJson: boolean = true
 ): Promise<T | { error: string } | void> => {
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, applyDefaultHeaders(options));
 
     if (!response.ok) {
       switch (response.status) {

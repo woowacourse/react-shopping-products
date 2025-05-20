@@ -10,23 +10,14 @@ export const CartItemsAPI = {
       size: "50",
     };
 
-    const options: RequestInit = {
-      method: "GET",
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-      },
-    };
-
+    const options: RequestInit = { method: "GET" };
     const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems, params);
     return await fetchWithErrorHandling<CartItems>(apiUrl, options);
   },
   post: async (productId: number) => {
     const options: RequestInit = {
       method: "POST",
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         productId: productId,
         quantity: 1,
@@ -36,13 +27,7 @@ export const CartItemsAPI = {
     return await fetchWithErrorHandling(CART_ITEMS_BASE_URL, options, false);
   },
   delete: async (cartId: number) => {
-    const options: RequestInit = {
-      method: "DELETE",
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-      },
-    };
-
+    const options: RequestInit = { method: "DELETE" };
     const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
     return await fetchWithErrorHandling(apiUrl, options, false);
   },
