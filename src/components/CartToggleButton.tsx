@@ -6,6 +6,21 @@ import { IMAGE_PATH } from "../constants/imagePath";
 import { ERROR_MSG } from "../constants/errorMessage";
 import { deleteCartItem, postCartItems } from "../api/cartItems";
 
+type SharedToggleProps = {
+  isNotBasketCountMAX: boolean;
+  setError: (value: boolean) => void;
+  timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+  setErrorMessage: (value: string) => void;
+};
+
+type addProductInBasketProps = SharedToggleProps;
+type handleCartToggleButtonProps = SharedToggleProps & {
+  isInBascket: boolean;
+  productId: number;
+  basketId?: number;
+  fetchCartItems: () => Promise<void>;
+};
+
 type CartToggleButtonProps = {
   id: number;
   isInBascket: boolean;
@@ -21,15 +36,27 @@ export type CartToggleButtonWrapperProps = {
   isInBascket: boolean;
 };
 
-type handleCartToggleButtonProps = {
-  isInBascket: boolean;
-  productId: number;
-  basketId?: number;
-  isNotBasketCountMAX: boolean;
-  setError: (value: boolean) => void;
-  timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
-  fetchCartItems: () => Promise<void>;
-  setErrorMessage: (value: string) => void;
+const canAddProductToBasket = ({
+  isNotBasketCountMAX,
+  setError,
+  timeoutRef,
+  setErrorMessage,
+}: addProductInBasketProps) => {
+  if (!isNotBasketCountMAX) {
+    setError(true);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setError(false);
+    }, 2000);
+
+    setErrorMessage(ERROR_MSG.BASKET_LIMIT_EXCEEDED);
+    return false;
+  }
+  return true;
 };
 
 const handleCartToggleButton = async ({
@@ -43,20 +70,15 @@ const handleCartToggleButton = async ({
   setErrorMessage,
 }: handleCartToggleButtonProps) => {
   if (!isInBascket) {
-    if (!isNotBasketCountMAX) {
-      setError(true);
-
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-
-      timeoutRef.current = setTimeout(() => {
-        setError(false);
-      }, 2000);
-
-      setErrorMessage(ERROR_MSG.BASKET_LIMIT_EXCEEDED);
+    if (
+      !canAddProductToBasket({
+        isNotBasketCountMAX,
+        setError,
+        timeoutRef,
+        setErrorMessage,
+      })
+    )
       return;
-    }
     await postCartItems(productId);
   } else if (basketId !== undefined) {
     await deleteCartItem(basketId);
