@@ -1,15 +1,13 @@
+import { useAppContext } from "../Context/AppProvider";
 import S from "./ErrorToast.module.css";
 
-interface ErrorToastProps {
-	isError: boolean;
-	message: string;
-}
+const ErrorToast = () => {
+	const { cartError, productError } = useAppContext();
 
-const ErrorToast = ({ isError, message }: ErrorToastProps) => {
 	return (
-		isError && (
+		(cartError || productError) && (
 			<div className={S.toastContainer}>
-				<p className={S.toastText}>{message}</p>
+				<p className={S.toastText}>{cartError || productError}</p>
 			</div>
 		)
 	);

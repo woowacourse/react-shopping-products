@@ -1,13 +1,11 @@
-import { CartProduct } from "../../types";
 import CartButton from "../Button/CartButton";
+import { useAppContext } from "../Context/AppProvider";
 import S from "./Header.module.css";
 
-interface HeaderProps {
-	cardProducts: CartProduct[];
-}
+const Header = () => {
+	const { cartProducts } = useAppContext();
 
-const Header = ({ cardProducts }: HeaderProps) => {
-	const cartCount = cardProducts.length;
+	const cartCount = cartProducts.length;
 	return (
 		<div className={S.container}>
 			<p>SHOP</p>

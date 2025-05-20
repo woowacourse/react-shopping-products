@@ -18,25 +18,25 @@ export default function useProducts({ page = "0", size = "20", sortingType = "",
 	};
 	const requestURL = getQueryURL(PRODUCT_URL, query);
 
-	useEffect(() => {
-		const fetchProducts = async () => {
-			try {
-				setLoading(true);
-				const response = await fetch(requestURL);
-				handleHttpError(response);
-				const data = await response.json();
-				setProductsInfo(data);
-			} catch (error) {
-				if (error instanceof Error) {
-					setError(error.message);
-				}
-			} finally {
-				setLoading(false);
+	const fetchProducts = async () => {
+		try {
+			setLoading(true);
+			const response = await fetch(requestURL);
+			handleHttpError(response);
+			const data = await response.json();
+			setProductsInfo(data);
+		} catch (error) {
+			if (error instanceof Error) {
+				setError(error.message);
 			}
-		};
+		} finally {
+			setLoading(false);
+		}
+	};
 
+	useEffect(() => {
 		fetchProducts();
 	}, [requestURL]);
 
-	return { products, loading, productError: error };
+	return { products, loading, fetchProducts, productError: error };
 }
