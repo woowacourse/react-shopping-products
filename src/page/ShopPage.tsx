@@ -43,7 +43,7 @@ export default function ShopPage() {
   const [cartItemList, setCartItemList] = useState<CartItem[]>([]);
   const [isError, setIsError] = useState(false);
 
-  const selectedProducts = cartItemList.length;
+  const selectedProductCount = cartItemList.length;
   const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
   const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
 
@@ -93,9 +93,9 @@ export default function ShopPage() {
               console.log("click");
             }}
           />
-          {selectedProducts !== 0 && (
+          {selectedProductCount !== 0 && (
             <div data-testid="cart-count" css={cartItemCount}>
-              {selectedProducts}
+              {selectedProductCount}
             </div>
           )}
         </div>
