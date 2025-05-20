@@ -36,7 +36,7 @@ export default function Product({
     onChange();
   };
 
-  const addProduct = () => {
+  const AddToCartButton = () => {
     return (
       <Button onClick={handleClick}>
         <img src="./add-shopping-cart.svg" />
@@ -45,7 +45,7 @@ export default function Product({
     );
   };
 
-  const removeProduct = () => {
+  const RemoveFromCartButton = () => {
     return (
       <Button onClick={handleClick} style="secondary">
         <img src="./remove-shopping-cart.svg" />
@@ -62,7 +62,7 @@ export default function Product({
           <p css={productNameLayout}>{name}</p>
           <p css={priceLayout}>{price}</p>
         </div>
-        {isSelected ? removeProduct() : addProduct()}
+        {isSelected ? RemoveFromCartButton() : AddToCartButton()}
       </div>
     </div>
   );
