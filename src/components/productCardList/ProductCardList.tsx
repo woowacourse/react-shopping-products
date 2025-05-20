@@ -3,11 +3,8 @@ import { CardListContainer } from "./ProductCardList.css";
 import useFetchProducts from "../../hooks/useFetchProducts/useFetchProducts";
 import { categoryType, sortType } from "../../types/index.types";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
-import { ProductPageResponse } from "../../hooks/useFetchProducts/index.types";
 
 interface ProductCardListProps {
-  products: ProductPageResponse | null;
-  setProducts: (data: ProductPageResponse) => void;
   category: categoryType;
   sort: sortType;
   cartItemIds: Record<"productId" | "cartId", number>[];
@@ -18,17 +15,14 @@ interface ProductCardListProps {
 }
 
 function ProductCardList({
-  products,
-  setProducts,
   category,
   sort,
   cartItemIds,
   setCartItemIds,
   fetchCartProducts,
 }: ProductCardListProps) {
-  const { isLoading } = useFetchProducts({
+  const { products, isLoading } = useFetchProducts({
     category,
-    setProducts,
     sort,
   });
 

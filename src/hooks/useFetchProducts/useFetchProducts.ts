@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ProductPageResponse } from "./index.types";
 import { categoryType, sortType } from "../../types/index.types";
 import useFetch from "../useFetch/useFetch";
@@ -9,34 +9,30 @@ const SORT_TYPE = {
 };
 
 interface useFetchProductsProps {
-  setProducts: (data: ProductPageResponse) => void;
   category: categoryType;
   sort: sortType;
 }
 
-function useFetchProducts({
-  category,
-  setProducts,
-  sort,
-}: useFetchProductsProps) {
+function useFetchProducts({ category, sort }: useFetchProductsProps) {
+  const [products, setProducts] = useState<ProductPageResponse | null>(null);
   const { getData, isLoading } = useFetch<ProductPageResponse>();
 
   const queryString = createQueryString(category, sort);
 
   useEffect(() => {
     async function getProducts() {
-      const products = await getData({
+      const fetchProducts = await getData({
         method: "GET",
         url: `/products?${queryString},`,
         errorType: "PRODUCTS",
       });
-      if (products) setProducts(products);
+      if (fetchProducts) setProducts(fetchProducts);
     }
 
     getProducts();
   }, [getData, queryString, setProducts]);
 
-  return { isLoading };
+  return { isLoading, products };
 }
 
 export default useFetchProducts;
