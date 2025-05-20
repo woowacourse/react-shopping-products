@@ -42,18 +42,13 @@ function useFetchProducts({
 export default useFetchProducts;
 
 function createQueryString(category: categoryType, sort: sortType) {
-  const basicQuery = {
+  const query = {
+    ...(category !== "전체" && { category }),
     page: "0",
     size: "20",
     sort: SORT_TYPE[sort],
   };
-  const query =
-    category === "전체"
-      ? basicQuery
-      : {
-          category: category,
-          ...basicQuery,
-        };
+
   const queryString = new URLSearchParams(query).toString();
 
   return queryString;
