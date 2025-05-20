@@ -4,29 +4,3 @@
 	height: 100vh;
 	margin: 0 auto;
 }
-
-.title {
-	font-size: 24px;
-	font-weight: 700;
-	color: #000;
-}
-
-.contentContainer {
-	margin-top: 100px;
-	padding: 0 24px;
-}
-
-.contentTop {
-	display: flex;
-	flex-direction: column;
-	gap: 24px;
-	margin-bottom: 28px;
-	justify-content: space-between;
-}
-
-.itemContainer {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	column-gap: 16px;
-	row-gap: 20px;
-}
