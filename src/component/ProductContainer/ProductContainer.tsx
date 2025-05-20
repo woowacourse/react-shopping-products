@@ -12,13 +12,13 @@ export interface Product {
 interface ProductContainerProps {
   products: Product[];
   cartItemList: CartItem[];
-  onChange: () => void;
+  updateCardItemList: () => void;
 }
 
 export default function ProductContainer({
   products,
   cartItemList,
-  onChange,
+  updateCardItemList,
 }: ProductContainerProps) {
   return (
     <div css={ProductContainerLayout}>
@@ -33,7 +33,7 @@ export default function ProductContainer({
             name={product.name}
             price={product.price}
             selectedCartItems={selectedCardItems}
-            onChange={onChange}
+            onChange={updateCardItemList}
           />
         );
       })}

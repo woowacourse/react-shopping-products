@@ -29,14 +29,12 @@ export default function Product({
 }: ProductProps) {
   const isSelected = selectedCartItems.length !== 0;
 
-  const handleClick = async () => {
-    if (isSelected)
-      await deleteCartItem({ id: Number(selectedCartItems[0].id) });
-    else await postCartItem({ productId: Number(id), quantity: 1 });
-    onChange();
-  };
-
   const AddToCartButton = () => {
+    const handleClick = async () => {
+      await postCartItem({ productId: Number(id), quantity: 1 });
+      onChange();
+    };
+
     return (
       <Button onClick={handleClick}>
         <img src="./add-shopping-cart.svg" />
@@ -46,6 +44,11 @@ export default function Product({
   };
 
   const RemoveFromCartButton = () => {
+    const handleClick = async () => {
+      await deleteCartItem({ id: Number(selectedCartItems[0].id) });
+      onChange();
+    };
+
     return (
       <Button onClick={handleClick} style="secondary">
         <img src="./remove-shopping-cart.svg" />

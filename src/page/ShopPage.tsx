@@ -128,7 +128,7 @@ export default function ShopPage() {
             <ProductContainer
               products={productList}
               cartItemList={cartItemList}
-              onChange={updateCardItemList}
+              updateCardItemList={updateCardItemList}
             />
           </>
         ) : (
