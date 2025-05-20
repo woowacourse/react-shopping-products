@@ -60,16 +60,16 @@ function ProductPage() {
             setSort={setSort}
           />
           <ProductCardContainer>
-            {products.map((product) => (
+            {products.map(({ id, name, category, price, imageUrl }) => (
               <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                category={product.category}
-                price={product.price}
-                imageUrl={product.imageUrl}
-                isInCart={cartProductsIds.some((item) => item.productId === product.id)}
-                cartId={cartProductsIds.find((item) => item.productId === product.id)?.cartId}
+                key={id}
+                id={id}
+                name={name}
+                category={category}
+                price={price}
+                imageUrl={imageUrl}
+                isInCart={cartProductsIds.some((item) => item.productId === id)}
+                cartId={cartProductsIds.find((item) => item.productId === id)?.cartId}
                 isNotCartCountMAX={cartProductsIds.length < MAX_CART_COUNT}
               />
             ))}
