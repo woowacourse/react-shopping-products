@@ -1,0 +1,1 @@
+export const DEFAULT_SKELETON_ITEM_COUNT = 6;

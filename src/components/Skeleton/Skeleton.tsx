@@ -1,3 +1,4 @@
+import { DEFAULT_SKELETON_ITEM_COUNT } from '../../constants/skeleton';
 import {
   skeletonItemContainer,
   skeletonImage,
@@ -21,10 +22,10 @@ function ProductSkeleton() {
   );
 }
 
-export function ProductListSkeleton() {
+export function ProductListSkeleton({ count = DEFAULT_SKELETON_ITEM_COUNT }: { count: number }) {
   return (
     <ul className={skeletonListContainer}>
-      {Array(6)
+      {Array(count)
         .fill(0)
         .map((_, index) => (
           <ProductSkeleton key={index} />
