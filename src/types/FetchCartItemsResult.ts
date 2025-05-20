@@ -1,7 +1,6 @@
 import { Product } from "./Product";
 
-export type FetchCartItemsResult = {
-  content: CartItem[];
+export type BaseFetchItemsResult = {
   pageable: Pageable;
   last: boolean;
   totalElements: number;
@@ -13,6 +12,10 @@ export type FetchCartItemsResult = {
   numberOfElements: number;
   empty: boolean;
 };
+
+export type FetchCartItemsResult = {
+  content: CartItem[];
+} & BaseFetchItemsResult;
 
 type CartItem = {
   id: number;
