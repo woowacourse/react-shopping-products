@@ -15,7 +15,10 @@ function Product({
   return (
     <li id={product.id.toString()}>
       <Styled.Container>
-        <Styled.Image src={product.imageUrl ?? defaultImage} />
+        <Styled.Image
+          src={product.imageUrl ?? defaultImage}
+          onError={(e) => (e.currentTarget.src = defaultImage)}
+        />
         <Styled.Wrapper>
           <Styled.Contents>
             <Styled.ProductTitle>{product.name}</Styled.ProductTitle>
