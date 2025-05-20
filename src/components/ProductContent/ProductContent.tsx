@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import useGetProducts from '../../hooks/useGetProducts';
 import { CATEGORY } from '../../constants/products';
 import { useToast } from '../../hooks/useToast';
 import { productPageTitle, productWrapper } from './ProductContent.style';
@@ -7,8 +6,9 @@ import ProductList from '../ProductList/ProductList';
 import deleteCartItem from '../../api/deleteCartItem';
 import { AddCartItemType } from '../../types/cartItem';
 import postCartItem from '../../api/postCartItem';
-import { CartDataType } from '../../hooks/useGetCartItems';
 import Filter, { SORT } from '../Filter/Filter';
+import { useGetProducts } from '../../hooks/useGetProducts';
+import { CartDataType } from '../../contexts/CartContext';
 
 function ProductContent({
   cartItemCount,
@@ -19,12 +19,12 @@ function ProductContent({
 }) {
   const [category, setCategory] = useState(CATEGORY[0]);
   const [sort, setSort] = useState('asc');
-  const {
-    isLoading: isLoadingProducts,
-    isError: isErrorProducts,
-    products,
-  } = useGetProducts({ category, sort });
+
   const { openToast } = useToast();
+  const { isLoading, isError, products } = useGetProducts({
+    category,
+    sort,
+  });
 
   const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSort(SORT[e.target.value]);
@@ -81,10 +81,10 @@ function ProductContent({
   };
 
   useEffect(() => {
-    if (isErrorProducts) {
+    if (isError) {
       openToast('상품 정보를 불러오지 못했습니다.', 'error');
     }
-  }, [isErrorProducts, openToast]);
+  }, [isError, openToast]);
 
   return (
     <div className={productWrapper}>
@@ -92,7 +92,7 @@ function ProductContent({
       <Filter onChangeCategory={handleChangeCategory} onChangeSort={handleChangeSort} />
       {products && (
         <ProductList
-          isLoadingProducts={isLoadingProducts}
+          isLoadingProducts={isLoading}
           products={getProcessedCartArr()}
           onClickAddCartItem={handleAddCartItem}
           onClickDeleteCartItem={handleDeleteCartItem}
