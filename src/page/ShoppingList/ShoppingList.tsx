@@ -16,8 +16,6 @@ import ErrorFallback from '../../component/@common/ErrorFallback/ErrorFallback';
 import Button from '../../component/@common/Button/Button';
 
 import useCart from '../../hook/useCart';
-import { useToast } from '../../component/@common/Toast/context/toastContext';
-import { cartApi } from '../../api/cart';
 import {
   CartItem,
   CategoryOption,
@@ -27,8 +25,7 @@ import {
 import useShoppingItemList from '../../hook/useShoppingItemList';
 
 const ShoppingList = () => {
-  const { cartData, loadCartData } = useCart();
-  const { openToast } = useToast();
+  const { cartData, addCart, removeCart } = useCart();
   const {
     data,
     handleSortClick,
@@ -41,41 +38,6 @@ const ShoppingList = () => {
   } = useShoppingItemList();
   const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
   const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
-
-  const handleAddCart = async (productId: number) => {
-    try {
-      await cartApi.addToCart(productId);
-
-      loadCartData();
-      openToast('상품이 장바구니에 추가되었습니다.', true);
-    } catch (error) {
-      openToast('장바구니 담기에 실패했어요...', false);
-    }
-  };
-
-  const handleRemoveCart = async (cartId: number) => {
-    try {
-      const cartItem = cartData.filter(
-        (item: CartItem) => item.product.id === cartId
-      );
-
-      if (!cartItem) {
-        console.error('장바구니에서 해당 상품을 찾을 수 없습니다:', cartId);
-        openToast('장바구니에서 상품을 찾을 수 없습니다.', false);
-        return;
-      }
-
-      const targetId = cartItem[0].id;
-
-      await cartApi.removeFromCart(targetId);
-
-      await loadCartData();
-      openToast('상품이 장바구니에서 제거되었습니다.', true);
-    } catch (error) {
-      console.error('장바구니 아이템 삭제 중 오류 발생:', error);
-      openToast('장바구니 빼기에 실패했어요...', false);
-    }
-  };
 
   // 에러가 있을 경우 ErrorFallback 표시
   if (error) {
@@ -139,8 +101,8 @@ const ShoppingList = () => {
           key={product.id}
           {...product}
           isInCart={isInCart}
-          handleAddCart={handleAddCart}
-          handleRemoveCart={handleRemoveCart}
+          handleAddCart={addCart}
+          handleRemoveCart={removeCart}
         />
       );
     });
