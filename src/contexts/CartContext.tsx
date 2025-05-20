@@ -11,21 +11,28 @@ export type CartDataType = {
 type CartContextType = {
   carts: CartDataType[] | null;
   isLoading: boolean;
+  isFetching: boolean;
   isError: boolean;
   cartItemCount: number;
-  fetchCarts: () => Promise<CartDataType[] | undefined>;
+  fetchCarts: (value?: boolean) => Promise<CartDataType[] | undefined>;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [carts, setCarts] = useState<CartDataType[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const fetchCarts = useCallback(async () => {
+  const fetchCarts = useCallback(async (isInitialFetch = false) => {
     try {
-      setIsLoading(true);
+      if (isInitialFetch) {
+        setIsLoading(true);
+      } else {
+        setIsFetching(true);
+      }
+
       const data = await getCarts();
       setCarts(data);
       return data;
@@ -36,17 +43,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }, 3000);
     } finally {
       setIsLoading(false);
+      setIsFetching(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchCarts();
+    fetchCarts(true);
   }, [fetchCarts]);
 
   const cartItemCount = carts ? new Set(carts.map((cart) => cart.product.id)).size : 0;
 
   return (
-    <CartContext.Provider value={{ carts, isLoading, isError, cartItemCount, fetchCarts }}>
+    <CartContext.Provider
+      value={{ carts, isLoading, isFetching, isError, cartItemCount, fetchCarts }}
+    >
       {children}
     </CartContext.Provider>
   );
