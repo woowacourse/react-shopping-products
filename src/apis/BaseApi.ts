@@ -1,58 +1,49 @@
 export default class BaseApi {
-  static baseUrl = import.meta.env.VITE_API_URL;
+  private static baseUrl = import.meta.env.VITE_API_URL;
 
-  static async get(path: string, options?: RequestInit) {
-    const response = await fetch(`${this.baseUrl}${path}`, {
-      headers: { Authorization: `Basic ${import.meta.env.VITE_TOKEN}` },
+  protected static getHeaders() {
+    return {
+      Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+      "Content-Type": "application/json",
+    };
+  }
+
+  protected static async get(path: string, options?: RequestInit) {
+    const response = await fetch(`${BaseApi.baseUrl}${path}`, {
+      headers: BaseApi.getHeaders(),
       ...options,
     });
     return response.json();
   }
 
-  static async post(path: string, options?: RequestInit) {
-    await fetch(`${this.baseUrl}${path}`, {
+  protected static async post(path: string, options?: RequestInit) {
+    await fetch(`${BaseApi.baseUrl}${path}`, {
       method: "POST",
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-        "Content-Type": "application/json",
-        ...options?.headers,
-      },
+      headers: BaseApi.getHeaders(),
       ...options,
     });
   }
 
-  static async put(path: string, options?: RequestInit) {
-    await fetch(`${this.baseUrl}${path}`, {
+  protected static async put(path: string, options?: RequestInit) {
+    await fetch(`${BaseApi.baseUrl}${path}`, {
       method: "PUT",
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-        "Content-Type": "application/json",
-        ...options?.headers,
-      },
+      headers: BaseApi.getHeaders(),
       ...options,
     });
   }
 
-  static async patch(path: string, options?: RequestInit) {
-    await fetch(`${this.baseUrl}${path}`, {
+  protected static async patch(path: string, options?: RequestInit) {
+    await fetch(`${BaseApi.baseUrl}${path}`, {
       method: "PATCH",
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-        "Content-Type": "application/json",
-        ...options?.headers,
-      },
+      headers: BaseApi.getHeaders(),
       ...options,
     });
   }
 
-  static async delete(path: string, options?: RequestInit) {
-    await fetch(`${this.baseUrl}${path}`, {
+  protected static async delete(path: string, options?: RequestInit) {
+    await fetch(`${BaseApi.baseUrl}${path}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
-        "Content-Type": "application/json",
-        ...options?.headers,
-      },
+      headers: BaseApi.getHeaders(),
       ...options,
     });
   }
