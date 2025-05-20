@@ -1,8 +1,14 @@
-import styled from "@emotion/styled";
-import SelectBox from "../Common/SelectBox";
-import { ProductTypes } from "../../types/ProductTypes";
-import useCartContext from "../../contexts/CartContext";
-import { useProductFilters } from "../../hooks/useProductFilter";
+import SelectBox from "../../Common/SelectBox/SelectBox";
+import { ProductTypes } from "../../../types/ProductTypes";
+import useCartContext from "../../../contexts/CartContext";
+import { useProductFilters } from "../../../hooks/useProductFilter";
+import {
+  SelectBoxContainer,
+  Container,
+  Title,
+  Label,
+  FirstSelectWrapper,
+} from "./ProductListToolbar.styles";
 
 interface ProductListToolbarProps {
   setProducts: (products: ProductTypes[]) => void;
@@ -53,37 +59,3 @@ export default function ProductListToolbar({
     </Container>
   );
 }
-
-const SelectBoxContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 27px;
-`;
-
-const Title = styled.h1`
-  font-weight: 700;
-  font-size: 24px;
-  margin: 0px;
-`;
-
-const Label = styled.label`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-`;
-
-const FirstSelectWrapper = styled.div`
-  display: flex;
-`;

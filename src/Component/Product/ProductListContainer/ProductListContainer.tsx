@@ -1,9 +1,9 @@
-import ProductList from "./ProductList";
-import ProductListToolbar from "./ProductListToolbar";
-import Spinner from "../Common/Spinner";
-import styled from "@emotion/styled";
-import useCartContext from "../../contexts/CartContext";
-import useFetchProducts from "../../hooks/useFetchProducts";
+import ProductList from "../ProductList/ProductList";
+import ProductListToolbar from "../ProductListToolbar/ProductListToolbar";
+import Spinner from "../../Common/Spinner";
+import useCartContext from "../../../contexts/CartContext";
+import useFetchProducts from "../../../hooks/useFetchProducts";
+import { StyledSpinnerWrapper } from "./ProductListContainer.styles";
 
 export default function ProductListContainer() {
   const { updateErrorMessage } = useCartContext();
@@ -23,11 +23,3 @@ export default function ProductListContainer() {
     </>
   );
 }
-
-const StyledSpinnerWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;

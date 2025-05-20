@@ -1,7 +1,7 @@
-import { keyframes } from '@emotion/react';
-import styled from '@emotion/styled';
+import { keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
 
-interface SpinnerProps {
+export interface SpinnerProps {
   size?: number;
   color?: string;
 }
@@ -21,11 +21,11 @@ const StyledSpinner = styled.div<SpinnerProps>`
   border: ${(props) =>
     props.size
       ? `${Math.round(props.size / 10)}px solid rgba(0, 0, 0, 0.1)`
-      : '1px solid black'};
+      : "1px solid black"};
   border-top: ${(props) =>
     props.size
       ? `${Math.round(props.size / 10)}px solid ${props.color}`
-      : '1px solid black'};
+      : "1px solid black"};
   border-radius: 50%;
   animation: ${rotate} 1s linear infinite;
 `;

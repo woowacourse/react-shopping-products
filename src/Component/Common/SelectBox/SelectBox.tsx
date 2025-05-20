@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import styled from "@emotion/styled";
+import { StyledSelect } from "./SelectBox.styles";
 
 type Options = {
   name: string;
@@ -23,11 +23,3 @@ export default function SelectBox({
     </StyledSelect>
   );
 }
-
-const StyledSelect = styled.select`
-  width: 125px;
-  height: 36px;
-  border-radius: 8px;
-  border: 1px solid #0000001a;
-  padding: 8px;
-`;

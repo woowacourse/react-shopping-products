@@ -1,7 +1,7 @@
-import styled from "@emotion/styled";
-import ProductItem from "./ProductItem";
-import { ProductTypes } from "../../types/ProductTypes";
-import useCartContext from "../../contexts/CartContext";
+import ProductItem from "../ProductItem/ProductItem";
+import { ProductTypes } from "../../../types/ProductTypes";
+import useCartContext from "../../../contexts/CartContext";
+import { StyledUl } from "./ProductList.styles";
 
 interface ProductListProps {
   productList: ProductTypes[];
@@ -24,11 +24,3 @@ export default function ProductList({ productList }: ProductListProps) {
     </StyledUl>
   );
 }
-
-const StyledUl = styled.ul`
-  display: grid;
-  list-style-type: none;
-  padding: 0;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-`;
