@@ -15,6 +15,9 @@ import useShoppingItemList from '../../hook/useShoppingItemList';
 import CartProvider from '../../context/cartContext/cartProvider';
 import ProductList from '../../component/feature/ProductList/ProductList';
 
+const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
+const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
+
 const ShoppingList = () => {
   const {
     data,
@@ -26,8 +29,6 @@ const ShoppingList = () => {
     isLoading,
     retryFetch,
   } = useShoppingItemList();
-  const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
-  const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
 
   // 에러가 있을 경우 ErrorFallback 표시
   if (error) {
