@@ -1,19 +1,19 @@
-import { css } from "@emotion/css";
-import { Product } from "../../types/product.type";
-import ProductCard from "../ProductCard";
-import { useShoppingCartContext } from "../../contexts/useShoppingCartContext";
+import { css } from '@emotion/css';
+import { Product } from '../../types/product.type';
+import ProductCard from '../ProductCard';
+import { useShoppingCartContext } from '../../contexts/useShoppingCartContext';
 
 interface ProductCardListProps {
   products: Product[];
 }
 
 const ProductCardList = ({ products }: ProductCardListProps) => {
-  const { cartItems } = useShoppingCartContext();
+  const shoppingCart = useShoppingCartContext();
 
   return (
     <div className={ProductCardListStyles}>
       {products.map((product) => {
-        const isInCart = cartItems.some(
+        const isInCart = shoppingCart.items.some(
           (item) => item.product.id === product.id
         );
 

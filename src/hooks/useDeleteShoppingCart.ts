@@ -2,25 +2,21 @@ import deleteShoppingCart from '../APIs/deleteShoppingCart';
 import { useShoppingCartContext } from '../contexts/useShoppingCartContext';
 
 export function useDeleteShoppingCart(cartItemId?: number) {
-  const {
-    handleCartItemChange,
-    handleShoppingCartError,
-    handleIsShoppingLoading,
-  } = useShoppingCartContext();
+  const shoppingCart = useShoppingCartContext();
 
   return async () => {
-    handleIsShoppingLoading(true);
+    shoppingCart.updateIsLoading(true);
     try {
       const endpoint = '/cart-items';
       const newCartItems = await deleteShoppingCart({ endpoint, cartItemId });
-      handleCartItemChange(newCartItems);
+      shoppingCart.updateItems(newCartItems);
     } catch {
-      handleShoppingCartError({
+      shoppingCart.updateError({
         is: true,
         message: '상품을 장바구니에서 삭제하지 못했습니다.',
       });
     } finally {
-      handleIsShoppingLoading(false);
+      shoppingCart.updateIsLoading(false);
     }
   };
 }

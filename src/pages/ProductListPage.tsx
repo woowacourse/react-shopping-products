@@ -6,20 +6,20 @@ import { useShoppingCartContext } from '../contexts/useShoppingCartContext';
 import OrbitSpinner from '../components/OrbitSpinner/index';
 
 const ProductListPage = () => {
-  const { products, productsError, isProductsLoading } = useProductsContext();
-  const { shoppingCartError } = useShoppingCartContext();
+  const products = useProductsContext();
+  const shoppingCart = useShoppingCartContext();
 
   return (
     <>
-      {productsError.is && <ErrorToast message={productsError.message} />}
-      {shoppingCartError.is && (
-        <ErrorToast message={shoppingCartError.message} />
+      {products.error.is && <ErrorToast message={products.error.message} />}
+      {shoppingCart.error.is && (
+        <ErrorToast message={shoppingCart.error.message} />
       )}
       <ProductListToolBar />
-      {isProductsLoading ? (
+      {products.isLoading ? (
         <OrbitSpinner />
       ) : (
-        <ProductCardList products={products} />
+        <ProductCardList products={products.items} />
       )}
     </>
   );

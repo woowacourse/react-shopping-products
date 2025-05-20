@@ -13,8 +13,8 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const { cartItems } = useShoppingCartContext();
-  const cartItemId = cartItems.find(
+  const shoppingCart = useShoppingCartContext();
+  const cartItemId = shoppingCart.items.find(
     (item) => item.product.id === product.id
   )?.id;
   const addShoppingCart = useAddShoppingCart(product.id);

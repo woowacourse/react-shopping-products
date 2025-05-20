@@ -4,55 +4,53 @@ import { INITIAL_ERROR } from './context.constant';
 import { useGetShoppingCart } from '../hooks/useGetShoppingCart';
 
 interface ShoppingCartContextType {
-  cartItems: CartItem[];
-  shoppingCartError: ErrorState;
-  updateCartItem: (newCartItems: CartItem[]) => void;
-  updateShoppingCartError: (error: ErrorState) => void;
-  updateIsShoppingLoading: (loading: boolean) => void;
-  isShoppingCartLoading: boolean;
+  items: CartItem[];
+  error: ErrorState;
+  updateItems: (newCartItems: CartItem[]) => void;
+  updateError: (error: ErrorState) => void;
+  updateIsLoading: (loading: boolean) => void;
+  isLoading: boolean;
 }
 
 export const ShoppingCartContext =
   createContext<ShoppingCartContextType | null>(null);
 
 const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const { data, error, isLoading } = useGetShoppingCart();
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [shoppingCartError, setShoppingCartError] =
-    useState<ErrorState>(INITIAL_ERROR);
-  const [isShoppingCartLoading, setIsShoppingCartLoading] =
-    useState<boolean>(false);
+  const { data, shoppingCartError, isShoppingCartLoading } = useGetShoppingCart();
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [error, setError] = useState<ErrorState>(INITIAL_ERROR);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const updateCartItem = (newCartItems: CartItem[]) => {
-    setCartItems(newCartItems);
+  const updateItems = (newCartItems: CartItem[]) => {
+    setItems(newCartItems);
   };
 
-  const updateShoppingCartError = (error: ErrorState) => {
-    setShoppingCartError(error);
+  const updateError = (error: ErrorState) => {
+    setError(error);
     setTimeout(() => {
-      setShoppingCartError(INITIAL_ERROR);
+      setError(INITIAL_ERROR);
     }, 3000);
   };
 
-  const updateIsShoppingLoading = (value: boolean) => {
-    setIsShoppingCartLoading(value);
+  const updateIsLoading = (value: boolean) => {
+    setIsLoading(value);
   };
 
   useEffect(() => {
-    setCartItems(data);
-    setShoppingCartError(error);
-    setIsShoppingCartLoading(isLoading);
-  }, [data, error, isLoading]);
+    setItems(data);
+    setError(shoppingCartError);
+    setIsLoading(isShoppingCartLoading);
+  }, [data, shoppingCartError, isShoppingCartLoading]);
 
   return (
     <ShoppingCartContext.Provider
       value={{
-        cartItems,
-        shoppingCartError,
-        updateCartItem,
-        updateShoppingCartError,
-        updateIsShoppingLoading,
-        isShoppingCartLoading,
+        items,
+        error,
+        updateItems,
+        updateError,
+        updateIsLoading,
+        isLoading,
       }}
     >
       {children}
