@@ -27,19 +27,35 @@ const sortQueryMap: Record<SortKey, string | undefined> = {
   "높은 가격순": "price,desc",
 };
 
-type BasketProductIds = {
+type BasekProductInfo = {
   productId: number;
   basketId: number;
 };
+
+type BasekProductInfos = BasekProductInfo[]
 
 function App() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
   const [sort, setSort] = useState<SortKey>(SORT[0]);
   const [basketProductsIds, setBasketProductsIds] = useState<
-    BasketProductIds[]
+  BasekProductInfos
   >([]);
   const [error, setError] = useState(false);
+
+  const fetchCartItems = async () => {
+    try {
+      const data = await getCartItems();
+      const mapped: BasekProductInfos = data.map((item) => ({
+        productId: item.product.id,
+        basketId: item.id,
+      }));
+      setBasketProductsIds(mapped);
+    } catch (error) {
+      console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
+      setError(true);
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -61,20 +77,6 @@ function App() {
     };
     fetchProducts();
   }, [category, sort]);
-
-  const fetchCartItems = async () => {
-    try {
-      const data = await getCartItems();
-      const mapped: BasketProductIds[] = data.map((item) => ({
-        productId: item.product.id,
-        basketId: item.id,
-      }));
-      setBasketProductsIds(mapped);
-    } catch (error) {
-      console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
-      setError(true);
-    }
-  };
 
   useEffect(() => {
     fetchCartItems();
