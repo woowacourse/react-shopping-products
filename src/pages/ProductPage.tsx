@@ -2,15 +2,18 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import SelectDropdownContainer from '../components/SelectDropdown/SelectDropdownContainer';
+import ErrorMessage from '../components/ErrorMessage';
+import DotWaveSpinner from '../components/DotWaveSpinner';
+import { useError } from '../context/ErrorContext';
+import { useLoading } from '../context/LoadingContext';
 import { getProducts, ProductResponse } from '../api/products';
 import { getCartItems } from '../api/cartItems';
 import { CATEGORY, SORT } from '../constants/selectOption';
 import { MAX_CART_COUNT } from '../constants/magicNumber';
+import { ERROR_MSG } from '../constants/errorMessage';
 import { Container } from '../styles/common';
 import { ProductCardContainer } from '../styles/ProductCard';
 import '../styles/reset.css';
-import { ERROR_MSG } from '../constants/errorMessage';
-import ErrorMessage from '../components/ErrorMessage';
 
 type CategoryKey = (typeof CATEGORY)[number];
 type SortKey = (typeof SORT)[number];
@@ -37,11 +40,16 @@ function ProductPage() {
   const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
   const [sort, setSort] = useState<SortKey>(SORT[0]);
   const [cartProductsIds, setCartProductsIds] = useState<CartProductIds[]>([]);
-  const [error, setError] = useState(false);
+
+  const { errorMessage, setErrorMessage, clearErrorMessage } = useError();
+  const { isLoading, setIsLoading } = useLoading();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
+        clearErrorMessage();
+
         const matchedCategory = categoryQueryMap[category];
         const matchedSort = sortQueryMap[sort];
 
@@ -54,15 +62,20 @@ function ProductPage() {
         setProducts(data.content);
       } catch (error) {
         console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, error);
-        setError(true);
+        setErrorMessage(ERROR_MSG.PRODUCT_FETCH_FAIL);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchProducts();
-  }, [category, sort]);
+  }, [category, sort, setIsLoading, setErrorMessage, clearErrorMessage]);
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
+        setIsLoading(true);
+        clearErrorMessage();
+
         const data = await getCartItems();
         const mapped: CartProductIds[] = data.map((item) => ({
           productId: item.product.id,
@@ -71,17 +84,19 @@ function ProductPage() {
         setCartProductsIds(mapped);
       } catch (error) {
         console.error(ERROR_MSG.CART_FETCH_FAIL, error);
-        setError(true);
+        setErrorMessage(ERROR_MSG.CART_FETCH_FAIL);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCartItems();
-    console.log('cartProductsIds', cartProductsIds);
-  }, [cartProductsIds]);
+  }, [setIsLoading, setErrorMessage, clearErrorMessage]);
 
   return (
     <Container>
       <Header cartCount={cartProductsIds.length} />
-      {error && <ErrorMessage />}
+      {errorMessage && <ErrorMessage />}
+      {isLoading && <DotWaveSpinner />}
       <SelectDropdownContainer
         category={category}
         sort={sort}
@@ -100,7 +115,6 @@ function ProductPage() {
             isInCart={cartProductsIds.some((item) => item.productId === product.id)}
             cartId={cartProductsIds.find((item) => item.productId === product.id)?.cartId}
             isNotCartCountMAX={cartProductsIds.length < MAX_CART_COUNT}
-            setError={setError}
           />
         ))}
       </ProductCardContainer>

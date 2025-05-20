@@ -18,7 +18,6 @@ type ProductCardProps = {
   isInCart: boolean;
   cartId?: number;
   isNotCartCountMAX: boolean;
-  setError: (value: boolean) => void;
 };
 
 const ProductCard = ({
@@ -30,7 +29,6 @@ const ProductCard = ({
   isInCart,
   cartId,
   isNotCartCountMAX,
-  setError,
 }: ProductCardProps) => {
   const defaultSrc =
     category === '패션잡화' ? IMAGE_PATH.DEFAULT_FASHION : IMAGE_PATH.DEFAULT_GROCERY;
@@ -57,7 +55,6 @@ const ProductCard = ({
           isInCart={isInCart}
           cartId={cartId}
           isNotCartCountMAX={isNotCartCountMAX}
-          setError={setError}
         />
       </ProductCardDetailWrapper>
     </ProductCardWrapper>

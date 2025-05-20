@@ -2,13 +2,13 @@ import { CartToggleButtonWrapper, CartToggleButtonText } from '../styles/CartTog
 import { IMAGE_PATH } from '../constants/imagePath';
 import { ERROR_MSG } from '../constants/errorMessage';
 import { deleteCartItem, postCartItems } from '../api/cartItems';
+import { useError } from '../context/ErrorContext';
 
 type CartToggleButtonProps = {
   id: number;
   isInCart: boolean;
   cartId?: number;
   isNotCartCountMAX: boolean;
-  setError: (value: boolean) => void;
 };
 
 export type CartToggleButtonWrapperProps = {
@@ -20,7 +20,7 @@ type handleCartToggleButtonProps = {
   productId: number;
   cartId?: number;
   isNotCartCountMAX: boolean;
-  setError: (value: boolean) => void;
+  setErrorMessage: (message: string) => void;
 };
 
 const handleCartToggleButton = async ({
@@ -28,14 +28,11 @@ const handleCartToggleButton = async ({
   productId,
   cartId,
   isNotCartCountMAX,
-  setError,
+  setErrorMessage,
 }: handleCartToggleButtonProps) => {
   if (!isInCart) {
     if (!isNotCartCountMAX) {
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 2000);
+      setErrorMessage(ERROR_MSG.CART_LIMIT_EXCEEDED);
       throw new Error(ERROR_MSG.CART_LIMIT_EXCEEDED);
     }
     await postCartItems(productId);
@@ -44,13 +41,8 @@ const handleCartToggleButton = async ({
   }
 };
 
-const CartToggleButton = ({
-  id,
-  isInCart,
-  cartId,
-  isNotCartCountMAX,
-  setError,
-}: CartToggleButtonProps) => {
+const CartToggleButton = ({ id, isInCart, cartId, isNotCartCountMAX }: CartToggleButtonProps) => {
+  const { setErrorMessage } = useError();
   const imageSrc = isInCart ? IMAGE_PATH.SHOPPING_CART_REMOVE : IMAGE_PATH.SHOPPING_CART_ADD;
 
   return (
@@ -62,7 +54,7 @@ const CartToggleButton = ({
           productId: id,
           cartId,
           isNotCartCountMAX,
-          setError,
+          setErrorMessage,
         })
       }
     >
