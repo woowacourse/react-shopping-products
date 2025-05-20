@@ -6,10 +6,10 @@ import { useGetShoppingCart } from '../hooks/useGetShoppingCart';
 interface ShoppingCartContextType {
   cartItems: CartItem[];
   shoppingCartError: ErrorState;
-  handleCartItemChange: (newCartItems: CartItem[]) => void;
-  handleShoppingCartError: (error: ErrorState) => void;
-  handleIsShoppingLoading: (loading: boolean) => void;
-  isShoppingLoading: boolean;
+  updateCartItem: (newCartItems: CartItem[]) => void;
+  updateShoppingCartError: (error: ErrorState) => void;
+  updateIsShoppingLoading: (loading: boolean) => void;
+  isShoppingCartLoading: boolean;
 }
 
 export const ShoppingCartContext =
@@ -20,27 +20,28 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [shoppingCartError, setShoppingCartError] =
     useState<ErrorState>(INITIAL_ERROR);
-  const [isShoppingLoading, setIsShoppingLoading] = useState<boolean>(false);
+  const [isShoppingCartLoading, setIsShoppingCartLoading] =
+    useState<boolean>(false);
 
-  const handleCartItemChange = (newCartItems: CartItem[]) => {
+  const updateCartItem = (newCartItems: CartItem[]) => {
     setCartItems(newCartItems);
   };
 
-  const handleShoppingCartError = (error: ErrorState) => {
+  const updateShoppingCartError = (error: ErrorState) => {
     setShoppingCartError(error);
     setTimeout(() => {
       setShoppingCartError(INITIAL_ERROR);
     }, 3000);
   };
 
-  const handleIsShoppingLoading = (value: boolean) => {
-    setIsShoppingLoading(value);
+  const updateIsShoppingLoading = (value: boolean) => {
+    setIsShoppingCartLoading(value);
   };
 
   useEffect(() => {
     setCartItems(data);
     setShoppingCartError(error);
-    setIsShoppingLoading(isLoading);
+    setIsShoppingCartLoading(isLoading);
   }, [data, error, isLoading]);
 
   return (
@@ -48,10 +49,10 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
       value={{
         cartItems,
         shoppingCartError,
-        handleCartItemChange,
-        handleShoppingCartError,
-        handleIsShoppingLoading,
-        isShoppingLoading,
+        updateCartItem,
+        updateShoppingCartError,
+        updateIsShoppingLoading,
+        isShoppingCartLoading,
       }}
     >
       {children}

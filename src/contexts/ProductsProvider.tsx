@@ -14,9 +14,9 @@ import {
 interface ProductsContextType {
   products: Product[];
   productsError: ErrorState;
-  handleChangeProducts: (newProducts: Product[]) => void;
-  handleChangeSort: (newSort: SortOption) => void;
-  handleChangeCategory: (newCategory: Category) => void;
+  updateProducts: (newProducts: Product[]) => void;
+  updateSort: (newSort: SortOption) => void;
+  updateCategory: (newCategory: Category) => void;
   category: Category | '';
   sort: SortOption;
   isProductsLoading: boolean;
@@ -28,15 +28,14 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [sort, setSort] = useState<SortOption>(SORT_OPTION[0]);
   const [category, setCategory] = useState<Category>(CATEGORY[0]);
 
-  const handleChangeSort = (newSort: SortOption) => setSort(newSort);
-  const handleChangeCategory = (newCategory: Category) =>
-    setCategory(newCategory);
+  const updateSort = (newSort: SortOption) => setSort(newSort);
+  const updateCategory = (newCategory: Category) => setCategory(newCategory);
 
   const {
     products,
     isLoading: isProductsLoading,
     error: productsError,
-    setProducts: handleChangeProducts,
+    setProducts: updateProducts,
   } = useProductsFetch(
     sort === SORT_OPTION[0] ? 'price,asc' : 'price,desc',
     category
@@ -47,9 +46,9 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
       value={{
         products,
         productsError,
-        handleChangeProducts,
-        handleChangeSort,
-        handleChangeCategory,
+        updateProducts,
+        updateSort,
+        updateCategory,
         category,
         sort,
         isProductsLoading,
