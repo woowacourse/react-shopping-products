@@ -4,28 +4,18 @@ import {
   ShoppingListFilterStyle,
   ShoppingListStyle,
   ShoppingListTitleStyle,
-  emptyStateStyle,
-  loadingStateStyle,
 } from './ShoppingList.styles';
 import Text from '../../component/@common/Text/Text';
 import Dropdown from '../../component/@common/Dropdown/Dropdown';
 import ArrowIcon from '../../component/@common/ArrowIcon/ArrowIcon';
-import ProductCard from '../../component/feature/ProductCard/ProductCard';
-import ProductListLayout from '../../component/feature/ProductListLayout/ProductListLayout';
 import ErrorFallback from '../../component/@common/ErrorFallback/ErrorFallback';
-import Button from '../../component/@common/Button/Button';
 
-import useCart from '../../hook/useCart';
-import {
-  CartItem,
-  CategoryOption,
-  Product,
-  SortOption,
-} from '../../types/common';
+import { CategoryOption, SortOption } from '../../types/common';
 import useShoppingItemList from '../../hook/useShoppingItemList';
+import CartProvider from '../../context/cartContext/cartProvider';
+import ProductList from '../../component/feature/ProductList/ProductList';
 
 const ShoppingList = () => {
-  const { cartData, addCart, removeCart } = useCart();
   const {
     data,
     handleSortClick,
@@ -43,7 +33,7 @@ const ShoppingList = () => {
   if (error) {
     return (
       <>
-        <Header count={cartData.length} />
+        <Header />
         <ErrorFallback
           error={error}
           onRetryClick={retryFetch}
@@ -53,64 +43,9 @@ const ShoppingList = () => {
     );
   }
 
-  const renderProductContent = () => {
-    if (isLoading) {
-      return (
-        <div css={loadingStateStyle}>
-          <div className="loading-spinner"></div>
-        </div>
-      );
-    }
-
-    if (data.length === 0) {
-      return (
-        <div css={emptyStateStyle}>
-          <svg
-            width="64"
-            height="64"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-            <line x1="8" y1="21" x2="16" y2="21"></line>
-            <line x1="12" y1="17" x2="12" y2="21"></line>
-          </svg>
-          <h3>상품이 없습니다</h3>
-          <p>선택한 카테고리에 상품이 없거나 필터링 결과가 없습니다.</p>
-          {category !== '전체' && (
-            <div style={{ marginTop: '16px' }}>
-              <Button onClick={() => handleCategoryClick('전체')}>
-                모든 상품 보기
-              </Button>
-            </div>
-          )}
-        </div>
-      );
-    }
-
-    return data.map((product: Product) => {
-      const isInCart = cartData.some(
-        (item: CartItem) => item.product.id === product.id
-      );
-      return (
-        <ProductCard
-          key={product.id}
-          {...product}
-          isInCart={isInCart}
-          handleAddCart={addCart}
-          handleRemoveCart={removeCart}
-        />
-      );
-    });
-  };
-
   return (
-    <>
-      <Header count={cartData.length} />
+    <CartProvider>
+      <Header />
       <section css={ShoppingListStyle}>
         <div css={ShoppingListTitleStyle}>
           <Text variant="title">bpple 상품 목록</Text>
@@ -152,8 +87,8 @@ const ShoppingList = () => {
           </div>
         </div>
       </section>
-      <ProductListLayout>{renderProductContent()}</ProductListLayout>
-    </>
+      <ProductList data={data} isLoading={isLoading} />
+    </CartProvider>
   );
 };
 
