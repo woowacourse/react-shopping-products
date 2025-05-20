@@ -1,5 +1,6 @@
 import { createContext, useState, ReactNode } from 'react';
 import ErrorToast from '../components/Toast/ErrorToast';
+import ERROR_MESSAGE from '../constants/ERROR_MESSAGE';
 
 export const ErrorContext = createContext<{ showError: (msg: string) => void }>({
   showError: () => {},
@@ -12,7 +13,7 @@ export function ErrorProvider({ children }: { children: ReactNode }) {
     <ErrorContext.Provider
       value={{
         showError: (msg) => {
-          if (msg === 'Failed to fetch') setError('인터넷 오류입니다. 확인 후 다시 시도해주세요.');
+          if (msg === 'Failed to fetch') setError(ERROR_MESSAGE.NO_INTERNET);
           else setError(msg);
         },
       }}>
