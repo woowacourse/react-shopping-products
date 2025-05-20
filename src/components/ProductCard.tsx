@@ -8,6 +8,7 @@ import {
 } from '../styles/ProductCard';
 import { IMAGE_PATH } from '../constants/imagePath';
 import CartToggleButton from './CartToggleButton';
+import { CartProductIds } from '../hooks/useFetchCartItems';
 
 type ProductCardProps = {
   id: number;
@@ -15,9 +16,9 @@ type ProductCardProps = {
   price: number;
   imageUrl: string;
   category: string;
-  isInCart: boolean;
-  cartId?: number;
-  isNotCartCountMAX: boolean;
+  cartProductsIds: CartProductIds[];
+  addToCart: (productId: number) => Promise<void>;
+  removeFromCart: (cartId: number) => Promise<void>;
 };
 
 const ProductCard = ({
@@ -26,9 +27,9 @@ const ProductCard = ({
   price,
   imageUrl,
   category,
-  isInCart,
-  cartId,
-  isNotCartCountMAX,
+  cartProductsIds,
+  addToCart,
+  removeFromCart,
 }: ProductCardProps) => {
   const defaultSrc =
     category === '패션잡화' ? IMAGE_PATH.DEFAULT_FASHION : IMAGE_PATH.DEFAULT_GROCERY;
@@ -52,9 +53,9 @@ const ProductCard = ({
         </ProductCardDetailTextWrapper>
         <CartToggleButton
           id={id}
-          isInCart={isInCart}
-          cartId={cartId}
-          isNotCartCountMAX={isNotCartCountMAX}
+          cartProductsIds={cartProductsIds}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
         />
       </ProductCardDetailWrapper>
     </ProductCardWrapper>

@@ -7,7 +7,6 @@ import DotWaveSpinner from '../components/DotWaveSpinner';
 import { useFetchProducts } from '../hooks/useFetchProducts';
 import { useFetchCartItems } from '../hooks/useFetchCartItems';
 import { CATEGORY, SORT } from '../constants/selectOption';
-import { MAX_CART_COUNT } from '../constants/magicNumber';
 import { Container } from '../styles/common';
 import { ProductCardContainer } from '../styles/ProductCard';
 
@@ -41,7 +40,13 @@ function ProductPage() {
     sortQueryMap,
   });
 
-  const { data: cartProductsIds, isLoading: cartLoading, error: cartError } = useFetchCartItems();
+  const {
+    data: cartProductsIds,
+    isLoading: cartLoading,
+    error: cartError,
+    addToCart,
+    removeFromCart,
+  } = useFetchCartItems();
 
   const isLoading = productsLoading || cartLoading;
   const errorMessage = productsError || cartError;
@@ -68,9 +73,9 @@ function ProductPage() {
                 category={category}
                 price={price}
                 imageUrl={imageUrl}
-                isInCart={cartProductsIds.some((item) => item.productId === id)}
-                cartId={cartProductsIds.find((item) => item.productId === id)?.cartId}
-                isNotCartCountMAX={cartProductsIds.length < MAX_CART_COUNT}
+                cartProductsIds={cartProductsIds}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
               />
             ))}
           </ProductCardContainer>
