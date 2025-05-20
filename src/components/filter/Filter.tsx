@@ -1,11 +1,11 @@
 import { CategoryType } from "../../types/index.types";
 import Select from "../commons/Select";
 
-const options = [
-  { value: "전체", text: "전체" },
-  { value: "식료품", text: "식료품" },
-  { value: "패션잡화", text: "패션잡화" },
-];
+const categories: CategoryType[] = ["전체", "식료품", "패션잡화"];
+const options = categories.map((category) => ({
+  value: category,
+  text: category,
+}));
 
 interface FilterProps {
   selectedCategory: CategoryType;
