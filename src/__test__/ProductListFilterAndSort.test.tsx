@@ -5,7 +5,7 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
-import { expect, vi } from "vitest";
+import { expect, Mock, vi } from "vitest";
 import App from "../App";
 import { CartItemsAPI } from "../apis/cartItems";
 import { ProductsAPI } from "../apis/products";
@@ -78,8 +78,8 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
   beforeEach(async () => {
     vi.resetAllMocks();
 
-    (ProductsAPI.get as any).mockResolvedValue(mockProducts);
-    (CartItemsAPI.get as any).mockResolvedValue({
+    (ProductsAPI.get as Mock).mockResolvedValue(mockProducts);
+    (CartItemsAPI.get as Mock).mockResolvedValue({
       content: [],
       totalElements: 0,
       numberOfElements: 0,
@@ -108,7 +108,7 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
       numberOfElements: 2,
     };
 
-    (ProductsAPI.get as any).mockResolvedValueOnce(filteredMockProducts);
+    (ProductsAPI.get as Mock).mockResolvedValueOnce(filteredMockProducts);
 
     const categorySelect = screen.getByTestId("category-select");
 
@@ -140,7 +140,7 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
       content: [...mockProducts.content].sort((a, b) => b.price - a.price),
     };
 
-    (ProductsAPI.get as any).mockResolvedValueOnce(sortedMockProducts);
+    (ProductsAPI.get as Mock).mockResolvedValueOnce(sortedMockProducts);
 
     const sortSelect = screen.getByTestId("sort-select");
 
@@ -191,7 +191,7 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
       numberOfElements: 2,
     };
 
-    (ProductsAPI.get as any)
+    (ProductsAPI.get as Mock)
       .mockResolvedValueOnce(filteredMockProducts)
       .mockResolvedValueOnce(filteredAndSortedMockProducts);
 

@@ -15,7 +15,7 @@ const ErrorToast = ({ errorMessage, setErrorMessage }: Props) => {
 
       return () => clearTimeout(timer);
     }
-  }, [errorMessage]);
+  }, [errorMessage, setErrorMessage]);
 
   return <>{!!errorMessage && <S.ErrorToast>{errorMessage}</S.ErrorToast>}</>;
 };

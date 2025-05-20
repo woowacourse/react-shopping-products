@@ -112,7 +112,7 @@ describe("장바구니의 상품 개수 표시 기능 테스트", () => {
   beforeEach(() => {
     vi.resetAllMocks();
 
-    (ProductsAPI.get as any).mockResolvedValue(mockProducts);
+    (ProductsAPI.get as Mock).mockResolvedValue(mockProducts);
   });
 
   test("사용자가 상품을 장바구니에 추가하면, 헤더에 표시된 장바구니 상품 개수가 해당 수만큼 증가한다.", async () => {
