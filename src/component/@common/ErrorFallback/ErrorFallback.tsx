@@ -11,13 +11,13 @@ import {
 
 interface ErrorFallbackProps {
   error?: Error;
-  resetErrorBoundary?: () => void;
+  onRetryClick?: () => void;
   message?: string;
 }
 
 const ErrorFallback = ({
   error,
-  resetErrorBoundary,
+  onRetryClick,
   message = '문제가 발생했습니다',
 }: ErrorFallbackProps) => {
   return (
@@ -45,9 +45,9 @@ const ErrorFallback = ({
             <Text variant="description">{error.message}</Text>
           </div>
         )}
-        {resetErrorBoundary && (
+        {onRetryClick && (
           <div css={buttonContainerStyle}>
-            <Button onClick={resetErrorBoundary}>다시 시도하기</Button>
+            <Button onClick={onRetryClick}>다시 시도하기</Button>
           </div>
         )}
       </div>

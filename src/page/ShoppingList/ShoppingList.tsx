@@ -84,7 +84,7 @@ const ShoppingList = () => {
         <Header count={cartData.length} />
         <ErrorFallback
           error={error}
-          resetErrorBoundary={retryFetch}
+          onRetryClick={retryFetch}
           message="상품 목록을 불러오는데 실패했습니다"
         />
       </>
