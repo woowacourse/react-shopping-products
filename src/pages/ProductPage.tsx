@@ -41,21 +41,19 @@ function ProductPage() {
 
   const {
     data: cartProductsIds,
-    isLoading: cartLoading,
     error: cartError,
     addToCart,
     removeFromCart,
   } = useFetchCartItems();
 
-  const isLoading = productsLoading || cartLoading;
   const errorMessage = productsError || cartError;
 
   return (
     <Container>
       <Header cartCount={cartProductsIds.length} />
       {errorMessage !== '' && <ErrorMessage errorMessage={errorMessage} />}
-      {isLoading && <DotWaveSpinner />}
-      {!isLoading && (
+      {productsLoading && <DotWaveSpinner />}
+      {!productsLoading && (
         <>
           <SelectDropdownContainer
             category={category}
