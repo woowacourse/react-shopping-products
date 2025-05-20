@@ -10,7 +10,7 @@ import {
   buttonWrapper,
 } from './Product.style';
 import isValidImageUrl from '../../utils/isValidImageUrl';
-import { DEFAULT_IMAGE_URL } from '../constants/images';
+import { DEFAULT_IMAGE_URL } from '../../constants/images';
 
 function Product({
   id,
