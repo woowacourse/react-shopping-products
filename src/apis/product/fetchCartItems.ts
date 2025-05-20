@@ -1,5 +1,3 @@
-import.meta.env.VITE_BASE_URL;
-
 import { FetchCartItemsResult } from "../../types/FetchCartItemsResult";
 
 type fetchCartItemsParams = {

@@ -1,5 +1,3 @@
-import.meta.env.VITE_BASE_URL;
-
 import { ProductCategory } from "../../types/ProductCategory";
 
 import { Sort } from "../../types/Sort";
