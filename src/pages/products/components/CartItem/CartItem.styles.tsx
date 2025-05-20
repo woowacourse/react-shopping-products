@@ -4,6 +4,9 @@ export const CartItemWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
+  border-top: 1px solid #e5e5e5;
+  padding: 8px 0;
+  position: relative;
 `;
 
 export const CartItemImageWrapper = styled.div`
@@ -53,4 +56,10 @@ export const CartItemQuantityButton = styled.button`
 export const CartItemQuantityButtonIcon = styled.div`
   width: 16px;
   height: 16px;
+`;
+
+export const CartItemDeleteButton = styled.button`
+  position: absolute;
+  right: 0;
+  top: 0;
 `;

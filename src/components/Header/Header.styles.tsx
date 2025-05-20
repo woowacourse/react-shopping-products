@@ -37,7 +37,6 @@ export const TotalPriceWrapper = styled.div`
 export const CartItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
   overflow-y: scroll;
   height: 300px;
 `;
