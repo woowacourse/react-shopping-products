@@ -1,4 +1,4 @@
-import Header from '../../component/@common/Header';
+import Header from '../../component/@common/Header/Header';
 import {
   ShoppingListFilterItemStyle,
   ShoppingListFilterStyle,
@@ -7,13 +7,13 @@ import {
   emptyStateStyle,
   loadingStateStyle,
 } from './ShoppingList.styles';
-import Text from '../../component/@common/Text';
-import Dropdown from '../../component/@common/Dropdown';
-import ArrowIcon from '../../component/@common/ArrowIcon';
-import ProductCard from '../../component/feature/ProductCard';
-import ProductListLayout from '../../component/feature/ProductListLayout';
-import ErrorFallback from '../../component/@common/ErrorFallback';
-import Button from '../../component/@common/Button';
+import Text from '../../component/@common/Text/Text';
+import Dropdown from '../../component/@common/Dropdown/Dropdown';
+import ArrowIcon from '../../component/@common/ArrowIcon/ArrowIcon';
+import ProductCard from '../../component/feature/ProductCard/ProductCard';
+import ProductListLayout from '../../component/feature/ProductListLayout/ProductListLayout';
+import ErrorFallback from '../../component/@common/ErrorFallback/ErrorFallback';
+import Button from '../../component/@common/Button/Button';
 
 import useCart from '../../hook/useCart';
 import { useToast } from '../../component/@common/Toast/context';

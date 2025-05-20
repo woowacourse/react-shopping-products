@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CategoryOption, Product, SortOption } from '../types/common';
 import { ProductListResponse } from '../types/response';
-import { apiRequest } from '../api';
+import { apiRequest } from '../api/apiRequest';
 
 const useShoppingItemList = () => {
   const [selected, setSelected] = useState<SortOption>('낮은 가격순');

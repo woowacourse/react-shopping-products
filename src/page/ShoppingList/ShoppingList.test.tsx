@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import ShoppingList from './index';
+import ShoppingList from './ShoppingList';
 import { fireEvent } from '@testing-library/react';
-import { apiRequest } from '../../api';
+import { apiRequest } from '../../api/apiRequest';
 
 const mockProducts = {
   content: [

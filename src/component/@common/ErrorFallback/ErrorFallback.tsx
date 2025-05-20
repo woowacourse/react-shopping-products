@@ -1,5 +1,5 @@
-import Text from '../Text';
-import Button from '../Button';
+import Text from '../Text/Text';
+import Button from '../Button/Button';
 import {
   buttonContainerStyle,
   errorContainerStyle,

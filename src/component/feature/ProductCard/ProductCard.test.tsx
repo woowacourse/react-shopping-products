@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ProductCard from './index';
+import ProductCard from './ProductCard';
 
 vi.mock('../../@common/Toast/context', () => ({
   useToast: () => ({

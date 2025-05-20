@@ -1,5 +1,5 @@
-import Button from '../../@common/Button';
-import Text from '../../@common/Text';
+import Button from '../../@common/Button/Button';
+import Text from '../../@common/Text/Text';
 
 import {
   productCardButtonContainerStyle,

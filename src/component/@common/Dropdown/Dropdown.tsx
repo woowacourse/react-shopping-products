@@ -1,10 +1,10 @@
 import { ComponentProps } from 'react';
-import useOverlay from '../../../hook/useOverlay';
+import useOverlay from '../../../hook/useOverlay.ts';
 import {
   dropdownItemStyle,
   dropdownListStyle,
   dropdownTriggerStyle,
-} from './Dropdown.styles';
+} from './Dropdown.styles.ts';
 import { DropdownContext, useDropdownContext } from './context.ts';
 
 interface DropdownProps extends ComponentProps<'div'> {}
