@@ -51,27 +51,31 @@ function ProductPage() {
       <Header cartCount={cartProductsIds.length} />
       {errorMessage && <ErrorMessage />}
       {isLoading && <DotWaveSpinner />}
-      <SelectDropdownContainer
-        category={category}
-        sort={sort}
-        setCategory={setCategory}
-        setSort={setSort}
-      />
-      <ProductCardContainer>
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            id={product.id}
-            name={product.name}
-            category={product.category}
-            price={product.price}
-            imageUrl={product.imageUrl}
-            isInCart={cartProductsIds.some((item) => item.productId === product.id)}
-            cartId={cartProductsIds.find((item) => item.productId === product.id)?.cartId}
-            isNotCartCountMAX={cartProductsIds.length < MAX_CART_COUNT}
+      {!isLoading && (
+        <>
+          <SelectDropdownContainer
+            category={category}
+            sort={sort}
+            setCategory={setCategory}
+            setSort={setSort}
           />
-        ))}
-      </ProductCardContainer>
+          <ProductCardContainer>
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                category={product.category}
+                price={product.price}
+                imageUrl={product.imageUrl}
+                isInCart={cartProductsIds.some((item) => item.productId === product.id)}
+                cartId={cartProductsIds.find((item) => item.productId === product.id)?.cartId}
+                isNotCartCountMAX={cartProductsIds.length < MAX_CART_COUNT}
+              />
+            ))}
+          </ProductCardContainer>
+        </>
+      )}
     </Container>
   );
 }
