@@ -1,4 +1,5 @@
 import { useToast } from "../../hooks/useToast/useToast";
+import { AddItemBody } from "../../types/request.types";
 import request from "../../utils/request";
 
 const MAX_CART_AMOUNT = 50;
@@ -49,7 +50,7 @@ export default function useCartToggleButton({
         showToast("CART_MAX");
         return;
       }
-      await request({
+      await request<AddItemBody>({
         method: "POST",
         url: "/cart-items",
         body: { productId, quantity: 1 },
