@@ -13,9 +13,11 @@ import { CartDataType } from '../../contexts/CartContext';
 function ProductContent({
   cartItemCount,
   carts,
+  refetchCarts,
 }: {
   cartItemCount: number;
   carts: CartDataType[] | null;
+  refetchCarts: () => void;
 }) {
   const [category, setCategory] = useState(CATEGORY[0]);
   const [sort, setSort] = useState('asc');
@@ -66,7 +68,7 @@ function ProductContent({
       openToast('장바구니에 상품을 담지 못했습니다.', 'error');
     }
 
-    // await refetchCarts();
+    await refetchCarts();
   };
 
   const handleDeleteCartItem = async ({ productId }: { productId: number }) => {
@@ -77,7 +79,7 @@ function ProductContent({
       openToast('장바구니에 상품을 빼지 못했습니다.', 'error');
     }
 
-    // await refetchCarts();
+    await refetchCarts();
   };
 
   useEffect(() => {
