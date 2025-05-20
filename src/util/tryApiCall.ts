@@ -13,6 +13,8 @@ const tryApiCall = async <T>(
     setTimeout(() => {
       handleErrorToast('');
     }, 3000);
+
+    return undefined as T;
   }
 };
 
