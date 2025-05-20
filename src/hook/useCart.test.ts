@@ -39,7 +39,7 @@ describe('useCart 훅', () => {
     const { result } = renderHook(() => useCart());
 
     await act(async () => {
-      await result.current.fetchCartData();
+      await result.current.loadCartData();
     });
 
     expect(cartApi.getCartItems).toHaveBeenCalled();
@@ -54,7 +54,7 @@ describe('useCart 훅', () => {
     const { result } = renderHook(() => useCart());
 
     await act(async () => {
-      await result.current.fetchCartData();
+      await result.current.loadCartData();
     });
 
     expect(cartApi.getCartItems).toHaveBeenCalled();

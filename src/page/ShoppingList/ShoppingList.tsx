@@ -27,7 +27,7 @@ import {
 import useShoppingItemList from '../../hook/useShoppingItemList';
 
 const ShoppingList = () => {
-  const { cartData, fetchCartData } = useCart();
+  const { cartData, loadCartData } = useCart();
   const { openToast } = useToast();
   const {
     data,
@@ -46,7 +46,7 @@ const ShoppingList = () => {
     try {
       await cartApi.addToCart(productId);
 
-      fetchCartData();
+      loadCartData();
       openToast('상품이 장바구니에 추가되었습니다.', true);
     } catch (error) {
       openToast('장바구니 담기에 실패했어요...', false);
@@ -69,7 +69,7 @@ const ShoppingList = () => {
 
       await cartApi.removeFromCart(targetId);
 
-      await fetchCartData();
+      await loadCartData();
       openToast('상품이 장바구니에서 제거되었습니다.', true);
     } catch (error) {
       console.error('장바구니 아이템 삭제 중 오류 발생:', error);

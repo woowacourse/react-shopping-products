@@ -6,10 +6,10 @@ const useCart = () => {
   const [cartData, setCartData] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    fetchCartData();
+    loadCartData();
   }, []);
 
-  const fetchCartData = async () => {
+  const loadCartData = async () => {
     try {
       const response = await cartApi.getCartItems();
       setCartData(response);
@@ -20,7 +20,7 @@ const useCart = () => {
     }
   };
 
-  return { cartData, fetchCartData };
+  return { cartData, loadCartData };
 };
 
 export default useCart;
