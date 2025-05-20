@@ -10,6 +10,12 @@ type ApiRequestPostType = {
   useToken?: boolean;
 };
 
+type ApiRequestDeleteType = {
+  endpoint: string;
+  searchParams: Record<string, string | number>;
+  useToken?: boolean;
+};
+
 class ApiRequest {
   #baseUrl: string;
   #token: string;
@@ -59,6 +65,27 @@ class ApiRequest {
     const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error("상품이 이미 존재합니다.");
+    }
+  }
+
+  async DELETE({
+    endpoint,
+    searchParams,
+    useToken = true,
+  }: ApiRequestDeleteType) {
+    const url = new URL(`${this.#baseUrl}${endpoint}${searchParams.productId}`);
+
+    const options = {
+      method: "DELETE",
+      headers: {
+        accept: "application/json",
+        ...(useToken && { Authorization: `Basic ${this.#token}` }),
+      },
+    };
+
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("상품을 빼는데 실패했습니다.");
     }
   }
 }
