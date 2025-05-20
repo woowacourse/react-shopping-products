@@ -1,27 +1,19 @@
 import { CartItem } from "../../types/product.type";
-import { baseUrl, credentials } from "./apiConfig";
+import { apiClient } from "../APIClient";
+import { baseUrl } from "../apiConfig";
+import { ShoppingCartResponse } from "./types";
 
-interface FetchShopingCartRequest {
+interface FetchShoppingCartRequest {
   endpoint: string;
 }
 
 async function getShoppingCart({
   endpoint,
-}: FetchShopingCartRequest): Promise<CartItem[]> {
+}: FetchShoppingCartRequest): Promise<CartItem[]> {
   try {
-    const response = await fetch(`${baseUrl}${endpoint}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${credentials}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const data = await response.json();
+    const url = `${baseUrl}${endpoint}`;
+    const data = await apiClient<ShoppingCartResponse>("GET", url);
+    if (!data) throw new Error("Error fetching products");
     return data.content;
   } catch (error) {
     throw new Error("Error fetching products:" + error);

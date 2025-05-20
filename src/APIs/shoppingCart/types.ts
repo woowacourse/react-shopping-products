@@ -1,4 +1,6 @@
-export interface ShoppingCartResponse {
+import { CartItem } from "../../types/product.type";
+
+export interface ShoppingCartProps {
   method?: string;
   endpoint: string;
   requestBody?: PostRequestBody | PatchRequestBody;
@@ -12,4 +14,8 @@ interface PostRequestBody {
 
 interface PatchRequestBody {
   quantity: number;
+}
+
+export interface ShoppingCartResponse {
+  content: CartItem[];
 }
