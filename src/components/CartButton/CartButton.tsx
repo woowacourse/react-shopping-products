@@ -5,10 +5,11 @@ import { useErrorContext } from "../../contexts/ErrorContext";
 import { URLS } from "../../constants/url";
 import { useCartContext } from "../../contexts/CartContext";
 import QuantityButton from "../QuantityButton/QuantityButton";
+import { useProductContext } from "../../contexts/ProductContext";
 
 interface CartButtonProps extends ComponentProps<"button"> {
   productId: number;
-  cartItemId?: number;
+  cartItemId: number;
 }
 
 export default function CartButton({
@@ -18,10 +19,12 @@ export default function CartButton({
 }: CartButtonProps) {
   const { showError } = useErrorContext();
   const { fetchCart, cartData } = useCartContext();
+  const { productsData } = useProductContext();
   const [isFetchLoading, setIsFetchLoading] = useState(false);
   const isInCart = cartData?.some((p) => p.product.id === productId);
-  const quantity = Number(
-    cartData?.find((p) => p.product.id === productId)?.quantity
+
+  const productQuantity = Number(
+    productsData?.find((product) => product.id === productId)?.quantity
   );
 
   const addOptions = useMemo(
@@ -70,8 +73,19 @@ export default function CartButton({
     }
   };
   if (isInCart) {
+    return <QuantityButton productId={productId} cartItemId={cartItemId} />;
+  }
+  if (productQuantity === 0) {
     return (
-      <QuantityButton quantity={quantity} cartItemId={Number(cartItemId)} />
+      <button
+        {...props}
+        disabled={true}
+        css={[styles.buttonCss, styles.notInCartCss]}
+      >
+        <>
+          <span>품절!</span>
+        </>
+      </button>
     );
   }
   return (
