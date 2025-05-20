@@ -18,7 +18,7 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
 
   useEffect(() => {
     isMountedRef.current = true;
-    setIsLoading(false);
+    setIsLoading(true);
 
     (async () => {
       try {
