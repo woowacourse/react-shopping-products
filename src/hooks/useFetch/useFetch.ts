@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
-import { useToast } from "./useToast";
-import request from "../utils/request";
-import { Method } from "../types/index.types";
-import { ERROR_TYPE } from "../components/toastProvider/ToastProvider";
+import { useToast } from "../useToast/useToast";
+import request from "../../utils/request";
+import { Method } from "../../types/index.types";
+import { ERROR_TYPE } from "../../components/toastProvider/ToastProvider";
 
 interface GetProducts {
   method: Method;

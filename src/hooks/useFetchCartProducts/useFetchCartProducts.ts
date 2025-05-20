@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { CartItem, CartProduct } from "../types/response.types";
-import useFetch from "./useFetch";
+import { CartItem, CartProduct } from "./index.types";
+import useFetch from "../useFetch/useFetch";
 
 function useFetchCartProducts() {
   const [cartItemIds, setCartItemIds] = useState<

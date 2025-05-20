@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { ProductPageResponse } from "../types/response.types";
-import { categoryType, sortType } from "../types/index.types";
-import useFetch from "./useFetch";
+import { ProductPageResponse } from "./index.types";
+import { categoryType, sortType } from "../../types/index.types";
+import useFetch from "../useFetch/useFetch";
 
 const SORT_TYPE = {
   "낮은 가격순": "price,asc",
