@@ -16,7 +16,7 @@ import ErrorFallback from '../../component/@common/ErrorFallback/ErrorFallback';
 import Button from '../../component/@common/Button/Button';
 
 import useCart from '../../hook/useCart';
-import { useToast } from '../../component/@common/Toast/context';
+import { useToast } from '../../component/@common/Toast/context/toastContext';
 import { cartApi } from '../../api/cart';
 import {
   CartItem,

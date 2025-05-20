@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { IconArrowDown } from '../../../asset';
 import { arrowIconStyle } from './ArrowIcon.styles';
-import { useDropdownContext } from '../Dropdown/context';
+import { useDropdownContext } from '../Dropdown/context/dropdownContext';
 
 interface ArrowIconProps extends ComponentProps<'img'> {}
 

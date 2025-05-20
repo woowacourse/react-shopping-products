@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom';
 import { ToastStyle } from './Toast.styles';
 import Text from '../Text/Text';
 import { useEffect } from 'react';
-import { useToast } from './context';
+import { useToast } from './context/toastContext';
 
 interface ToastProps {
   message?: string;
