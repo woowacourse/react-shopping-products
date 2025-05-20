@@ -1,5 +1,5 @@
 import { CartItem } from "./cartContents";
-import { Product } from "./product";
+import { Product, ProductWithQuantity } from "./product";
 export interface CartItemResponse {
   content: CartItem[];
   pageable: Pageable;
@@ -19,6 +19,19 @@ export interface ProductResponse {
   totalPages: number;
   size: number;
   content: Product[];
+  number: number;
+  sort: Sort;
+  pageable: Pageable;
+  numberOfElements: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
+export interface ProductWithQuantityResponse {
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  content: ProductWithQuantity[];
   number: number;
   sort: Sort;
   pageable: Pageable;

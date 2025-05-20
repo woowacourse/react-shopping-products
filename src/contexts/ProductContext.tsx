@@ -1,13 +1,16 @@
 import { createContext, useContext, useState, ReactNode, useMemo } from "react";
 import useFetch from "../hooks/useFetch";
-import { ProductResponse } from "../types/response";
+import {
+  ProductResponse,
+  ProductWithQuantityResponse,
+} from "../types/response";
 
 import { useProductQuery } from "../hooks/useProductQuery";
 import { OrderByOptionType } from "../types/categoryOption";
-import { Product } from "../types/product";
+import { ProductWithQuantity } from "../types/product";
 
 interface ProductContextType {
-  productsData: Product[] | undefined;
+  productsData: ProductWithQuantity[] | undefined;
   productFetchLoading: boolean;
   productFetchError: Error | null;
   fetchProducts: () => Promise<void>;
@@ -32,7 +35,7 @@ export const ProductContextProvider = ({
     isLoading: productFetchLoading,
     error: productFetchError,
     fetcher: fetchProducts,
-  } = useFetch<ProductResponse>(productQuery, fetchOptions, false);
+  } = useFetch<ProductWithQuantityResponse>(productQuery, fetchOptions, false);
 
   const value = useMemo(
     () => ({
