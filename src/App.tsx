@@ -43,28 +43,21 @@ function App() {
     })();
   }, [handleErrorMessage]);
 
-  const handleAddProduct = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    if (!$product) {
-      return;
-    }
-
+  const handleAddProduct = async (productId: string) => {
     if (selectedProductIdList.length === 50) {
       handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
       return;
     }
 
     setSelectedProductIdList((prevIdList) => {
-      const newIdListSet = new Set([...prevIdList, $product.id]);
+      const newIdListSet = new Set([...prevIdList, productId]);
       return Array.from(newIdListSet);
     });
 
     try {
       await fetchAddProduct({
         params: {
-          productId: $product.id,
+          productId: productId,
           quantity: "1",
         },
       });

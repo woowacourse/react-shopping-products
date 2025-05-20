@@ -7,8 +7,8 @@ import * as Styled from "./ProductList.styled";
 interface ProductListProps {
   selectedProductIdList: string[];
   productList: readonly ProductType[];
-  handleAddProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
   handleRemoveProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleAddProduct: (productId: string) => void;
 }
 
 function ProductList({

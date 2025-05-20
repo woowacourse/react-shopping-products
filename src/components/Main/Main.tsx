@@ -13,8 +13,8 @@ import fetchProductList from "../../apis/product/fetchProductList";
 
 interface MainProps {
   selectedProductIdList: string[];
-  handleAddProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
   handleRemoveProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleAddProduct: (productId: string) => void;
 }
 
 const isProductCategory = (value: string): value is ProductCategory => {

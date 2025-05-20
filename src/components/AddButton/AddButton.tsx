@@ -3,7 +3,7 @@ import Button from "../common/Button/Button";
 import AddShoppingCart from "/AddShoppingCart.svg";
 
 interface AddButtonProps {
-  handleAddProduct: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleAddProduct: () => void;
 }
 
 function AddButton({ handleAddProduct }: AddButtonProps) {

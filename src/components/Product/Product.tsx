@@ -27,7 +27,9 @@ function Product({
             {isInCart ? (
               <RemoveButton handleRemoveProduct={handleRemoveProduct} />
             ) : (
-              <AddButton handleAddProduct={handleAddProduct} />
+              <AddButton
+                handleAddProduct={() => handleAddProduct(product.id.toString())}
+              />
             )}
           </Styled.ButtonWrapper>
         </Styled.Wrapper>
