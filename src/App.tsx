@@ -5,9 +5,12 @@ import ProductContainer from "./components/productContainer/ProductContainer";
 import ErrorToast from "./components/errorToast/ErrorToast";
 import useError from "./hooks/useError";
 import { CartProvider } from "./hooks/useCart";
+import Modal from "./components/modal/Modal";
+import { useState } from "react";
 
 function App() {
   const { isError, setErrorTrue, errorMessage } = useError();
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="container">
@@ -15,6 +18,7 @@ function App() {
         <Header />
         <ProductContainer setErrorTrue={setErrorTrue} />
         {isError && <ErrorToast errorMessage={errorMessage} />}
+        {isOpen && <Modal setIsOpen={setIsOpen} />}
       </CartProvider>
     </div>
   );
