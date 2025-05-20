@@ -12,14 +12,14 @@ import {
 } from '../components/ProductListToolBar/toolBar.constant';
 
 interface ProductsContextType {
-  products: Product[];
-  productsError: ErrorState;
-  updateProducts: (newProducts: Product[]) => void;
+  items: Product[];
+  error: ErrorState;
+  updateItems: (newProducts: Product[]) => void;
   updateSort: (newSort: SortOption) => void;
   updateCategory: (newCategory: Category) => void;
   category: Category | '';
   sort: SortOption;
-  isProductsLoading: boolean;
+  isLoading: boolean;
 }
 
 export const ProductsContext = createContext<ProductsContextType | null>(null);
@@ -32,10 +32,10 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const updateCategory = (newCategory: Category) => setCategory(newCategory);
 
   const {
-    products,
-    isLoading: isProductsLoading,
-    error: productsError,
-    setProducts: updateProducts,
+    items,
+    isLoading,
+    error,
+    setItems: updateItems,
   } = useProductsFetch(
     sort === SORT_OPTION[0] ? 'price,asc' : 'price,desc',
     category
@@ -44,14 +44,14 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <ProductsContext.Provider
       value={{
-        products,
-        productsError,
-        updateProducts,
+        items,
+        error,
+        updateItems,
         updateSort,
         updateCategory,
         category,
         sort,
-        isProductsLoading,
+        isLoading,
       }}
     >
       {children}

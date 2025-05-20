@@ -4,7 +4,7 @@ import { INITIAL_ERROR } from '../contexts/context.constant';
 import fetchProducts from '../APIs/fetchProducts';
 
 export function useProductsFetch(sort: string, category: string) {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [items, setItems] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<ErrorState>(INITIAL_ERROR);
 
@@ -20,7 +20,7 @@ export function useProductsFetch(sort: string, category: string) {
       setIsLoading(true);
       try {
         const { content } = await fetchProducts({ endpoint });
-        setProducts(content);
+        setItems(content);
         setError(INITIAL_ERROR);
       } catch {
         setError({
@@ -34,5 +34,5 @@ export function useProductsFetch(sort: string, category: string) {
     })();
   }, [sort, category]);
 
-  return { products, isLoading, error, setProducts };
+  return { items, isLoading, error, setItems };
 }
