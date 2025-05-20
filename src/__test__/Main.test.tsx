@@ -30,7 +30,7 @@ vi.mock("../apis/product/fetchProductList", () => {
 });
 
 const fakeProps = {
-  selectedProductIdList: [],
+  cartItems: [],
   handleAddProduct: vi.fn(),
   handleRemoveProduct: vi.fn(),
 };
