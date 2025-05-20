@@ -82,7 +82,8 @@ export default function ShopPage() {
 
   return (
     <div css={pageLayout}>
-      <Header title="SHOP">
+      <Header>
+        <p>SHOP</p>
         <div css={cartIconContainer}>
           <img
             css={cartIcon}
