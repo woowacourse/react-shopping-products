@@ -1,8 +1,6 @@
-import { useError } from '../context/ErrorContext';
 import { ErrorWrapper } from '../styles/ErrorMessage';
 
-const ErrorMessage = () => {
-  const { errorMessage } = useError();
+const ErrorMessage = ({ errorMessage }: { errorMessage: string }) => {
   return <ErrorWrapper role="alert">{errorMessage}</ErrorWrapper>;
 };
 

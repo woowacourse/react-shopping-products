@@ -9,7 +9,6 @@ import { useFetchCartItems } from '../hooks/useFetchCartItems';
 import { CATEGORY, SORT } from '../constants/selectOption';
 import { Container } from '../styles/common';
 import { ProductCardContainer } from '../styles/ProductCard';
-
 type CategoryKey = (typeof CATEGORY)[number];
 type SortKey = (typeof SORT)[number];
 
@@ -54,7 +53,7 @@ function ProductPage() {
   return (
     <Container>
       <Header cartCount={cartProductsIds.length} />
-      {errorMessage && <ErrorMessage />}
+      {errorMessage !== '' && <ErrorMessage errorMessage={errorMessage} />}
       {isLoading && <DotWaveSpinner />}
       {!isLoading && (
         <>

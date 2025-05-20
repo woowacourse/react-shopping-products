@@ -39,7 +39,6 @@ export const useFetchCartItems = () => {
     } catch (error) {
       console.error(ERROR_MSG.CART_ADD_FAIL, error);
       setErrorMessage(ERROR_MSG.CART_ADD_FAIL);
-      throw error;
     }
   };
 
@@ -50,7 +49,6 @@ export const useFetchCartItems = () => {
     } catch (error) {
       console.error(ERROR_MSG.CART_REMOVE_FAIL, error);
       setErrorMessage(ERROR_MSG.CART_REMOVE_FAIL);
-      throw error;
     }
   };
 
