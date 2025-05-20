@@ -4,6 +4,7 @@ import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
 import { URLS } from "../../constants/url";
 import { useCartContext } from "../../contexts/CartContext";
+import QuantityButton from "../QuantityButton/QuantityButton";
 
 interface CartButtonProps extends ComponentProps<"button"> {
   productId: number;
@@ -19,17 +20,8 @@ export default function CartButton({
   const { fetchCart, cartData } = useCartContext();
   const [isFetchLoading, setIsFetchLoading] = useState(false);
   const isInCart = cartData?.some((p) => p.product.id === productId);
-  const deleteOptions = useMemo(
-    () => ({
-      headers: {
-        Authorization: `Basic ${btoa(
-          `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-        )}`,
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-    }),
-    []
+  const quantity = Number(
+    cartData?.find((p) => p.product.id === productId)?.quantity
   );
 
   const addOptions = useMemo(
@@ -49,12 +41,6 @@ export default function CartButton({
     [productId]
   );
 
-  const { fetcher: deleteCartItem, error: deleteError } = useFetch(
-    `${URLS.CART_ITEMS}/${cartItemId}`,
-    deleteOptions,
-    false
-  );
-
   const { fetcher: addCartItem, error: addError } = useFetch(
     URLS.CART_ITEMS,
     addOptions,
@@ -62,36 +48,16 @@ export default function CartButton({
   );
 
   useEffect(() => {
-    if (deleteError) {
-      showError(deleteError);
-    }
-  }, [deleteError, showError]);
-
-  useEffect(() => {
     if (addError) {
       showError(addError);
     }
   }, [addError, showError]);
 
-  const handleDeleteCartItem = async () => {
-    try {
-      setIsFetchLoading(true);
-      await deleteCartItem();
-      await fetchCart();
-    } catch (error) {
-      if (error instanceof Error) {
-        showError(error);
-      }
-    } finally {
-      setIsFetchLoading(false);
-    }
-  };
-
   const handleAddCartItem = async () => {
     try {
       setIsFetchLoading(true);
       if (cartData?.length && cartData.length >= 50) {
-        throw new Error(`장바구니 갯수가 50개 이상 담을수 없습니다.`);
+        throw new Error(`장바구니에 50개 이상의 품목을 담을수 없습니다.`);
       }
       await addCartItem();
       await fetchCart();
@@ -103,27 +69,22 @@ export default function CartButton({
       setIsFetchLoading(false);
     }
   };
+  if (isInCart) {
+    return (
+      <QuantityButton quantity={quantity} cartItemId={Number(cartItemId)} />
+    );
+  }
   return (
     <button
       {...props}
+      onClick={handleAddCartItem}
       disabled={isFetchLoading}
-      onClick={isInCart ? handleDeleteCartItem : handleAddCartItem}
-      css={[
-        styles.buttonCss,
-        isInCart ? styles.inCartCss : styles.notInCartCss,
-      ]}
+      css={[styles.buttonCss, styles.notInCartCss]}
     >
-      {isInCart ? (
-        <>
-          <img src="assets/emptyCart.svg" />
-          <span>빼기</span>
-        </>
-      ) : (
-        <>
-          <img src="assets/filledCart.svg" />
-          <span>담기</span>
-        </>
-      )}
+      <>
+        <img src="assets/filledCart.svg" />
+        <span>담기</span>
+      </>
     </button>
   );
 }
