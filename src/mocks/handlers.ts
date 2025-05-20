@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { cartItems, products } from "./data";
+import { cartItems as C0, products as P0 } from "./data";
 
 type PaginatedResponse<T> = {
   content: T[];
@@ -72,7 +72,7 @@ const paginatedResponse = <T>(
 // 요청 타입 정의
 interface CartItemRequest {
   productId: number;
-  quantity?: number;
+  quantity: number;
 }
 
 interface CartItemUpdateRequest {
@@ -83,6 +83,8 @@ interface CartItemUpdateRequest {
 const API_PATTERN = new RegExp(
   "(/api.*|http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/.*)$"
 );
+const products = structuredClone(P0);
+const cartItems = structuredClone(C0);
 
 export const handlers = [
   // Products 핸들러
@@ -147,13 +149,19 @@ export const handlers = [
     const quantity = body.quantity || 1;
 
     const product = products.find((p) => p.id === productId);
+
     if (!product) {
       return new HttpResponse(null, {
         status: 404,
-        statusText: "상품을 찾을 수 없습니다.",
+        statusText: "Product Not Found",
       });
     }
-
+    if (product.quantity === 0) {
+      return new HttpResponse(null, {
+        status: 400,
+        statusText: "Sold Out",
+      });
+    }
     const existingCartItem = cartItems.find(
       (item) => item.product.id === productId
     );
@@ -186,17 +194,30 @@ export const handlers = [
     const quantity = body.quantity;
 
     const cartItem = cartItems.find((item) => item.id === id);
+    const product = products.find((p) => p.id === cartItem?.product.id);
     if (!cartItem) {
       return new HttpResponse(null, {
         status: 404,
-        statusText: "장바구니 아이템을 찾을 수 없습니다.",
+        statusText: "Cart Item Not Found",
+      });
+    }
+    if (!product) {
+      return new HttpResponse(null, {
+        status: 404,
+        statusText: "Product Not Found",
       });
     }
 
+    if (product.quantity < quantity) {
+      return new HttpResponse(null, {
+        status: 400,
+        statusText: "Insufficient Stock",
+      });
+    }
     if (quantity <= 0) {
       return new HttpResponse(null, {
         status: 400,
-        statusText: "수량은 1 이상이어야 합니다.",
+        statusText: "Quantity must be greater than 0",
       });
     }
 
@@ -218,7 +239,7 @@ export const handlers = [
     if (index === -1) {
       return new HttpResponse(null, {
         status: 404,
-        statusText: "장바구니 아이템을 찾을 수 없습니다.",
+        statusText: "Cart Item Not Found",
       });
     }
 
@@ -226,18 +247,46 @@ export const handlers = [
 
     return new HttpResponse(null, { status: 204 });
   }),
+  http.post(/\/orders$/, async ({ request }) => {
+    const body = (await request.json()) as CartItemRequest[];
 
+    for (const item of body) {
+      const qty = Number(item.quantity);
+      const product = products.find((p) => p.id === item.productId);
+
+      // 1) 상품이 없는 경우
+      if (!product) {
+        return new HttpResponse(null, {
+          status: 404,
+          statusText: "Product Not Found",
+        });
+      }
+
+      // 2) 재고 부족인 경우
+      if (product.quantity < qty) {
+        return new HttpResponse(null, {
+          status: 400,
+          statusText: "Insufficient Stock",
+        });
+      }
+
+      // 3) 재고 차감
+      product.quantity -= qty;
+    }
+
+    // 4) 장바구니 비우기
+    cartItems.length = 0;
+
+    // 5) 성공 응답
+    return new HttpResponse(null, { status: 201 });
+  }),
   // 모든 API 요청을 로깅하기 위한 포괄적인 핸들러
   http.all(API_PATTERN, ({ request }) => {
     console.log("MSW UNHANDLED REQUEST:", request.method, request.url);
     // 처리되지 않은 요청은 계속 진행
-    return HttpResponse.json(
-      {
-        message: "이 요청은 MSW에 의해 가로채지만 처리되지 않았습니다.",
-        url: request.url,
-        method: request.method,
-      },
-      { status: 500 }
-    );
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: "Unhandled Request",
+    });
   }),
 ];
