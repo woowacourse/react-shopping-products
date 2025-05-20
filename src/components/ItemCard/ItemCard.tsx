@@ -1,7 +1,5 @@
 import { CartInfo } from "../../types";
-import addCart from "../../utils/api/addCart";
-import removeCart from "../../utils/api/removeCart";
-import { useAppContext } from "../Context/AppProvider";
+import { useCartContext } from "../Context/CartProvider";
 import S from "./ItemCard.module.css";
 
 interface ItemCardProps {
@@ -13,7 +11,8 @@ interface ItemCardProps {
 }
 
 const ItemCard = ({ id, imageUrl, name, price, cartInfo }: ItemCardProps) => {
-	const { refetchCartItems } = useAppContext();
+	const { updateCartItem } = useCartContext();
+
 	return (
 		<div className={S.cardContainer}>
 			<img
@@ -35,8 +34,7 @@ const ItemCard = ({ id, imageUrl, name, price, cartInfo }: ItemCardProps) => {
 						<button
 							className={S.removeCartButton}
 							onClick={async () => {
-								await removeCart(cartInfo.id);
-								refetchCartItems();
+								updateCartItem("remove", cartInfo.id);
 							}}
 						>
 							<img className={S.cartImg} src="./images/remove-cart.svg" alt="장바구니 제거" />
@@ -46,8 +44,7 @@ const ItemCard = ({ id, imageUrl, name, price, cartInfo }: ItemCardProps) => {
 						<button
 							className={S.addCartButton}
 							onClick={async () => {
-								await addCart(id);
-								refetchCartItems();
+								updateCartItem("add", id);
 							}}
 						>
 							<img className={S.cartImg} src="./images/add-cart.svg" alt="장바구니 추가" />

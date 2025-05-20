@@ -1,20 +1,38 @@
 import { CART_URL } from "../constants/endpoint";
-import { USER_TOKEN } from "../constants/env";
-import { useFetch } from "./useFetch";
 import { CartProduct } from "../types";
+import addCart from "../utils/api/addCart";
+import fetchData from "../utils/api/fetchData";
+import { useState, useEffect } from "react";
+import removeCart from "../utils/api/removeCart";
 
 export default function useCart() {
-	const {
-		data: cartProducts,
-		error: cartError,
-		refetch: fetchCartProducts,
-	} = useFetch<CartProduct[]>({
-		url: CART_URL,
-		headers: {
-			"content-type": "application/json",
-			Authorization: `Basic ${USER_TOKEN}`,
-		},
-	});
+	const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
+	const [cartError, setCartError] = useState<string>("");
 
-	return { cartProducts, cartError, fetchCartProducts };
+	const fetchCartProducts = async () => {
+		try {
+			const data = await fetchData({ url: CART_URL });
+			setCartProducts(data);
+		} catch (error) {
+			if (error instanceof Error) {
+				setCartError(error.message);
+			}
+		}
+	};
+
+	const updateCartItem = async (type: string, id: number) => {
+		if (type === "add") {
+			await addCart(id);
+		}
+		if (type === "remove") {
+			await removeCart(id);
+		}
+		fetchCartProducts();
+	};
+
+	useEffect(() => {
+		fetchCartProducts();
+	}, []);
+
+	return { cartProducts, cartError, updateCartItem };
 }
