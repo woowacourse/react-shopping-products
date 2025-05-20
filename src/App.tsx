@@ -35,7 +35,7 @@ function App() {
         );
         setLoading(false);
       } catch (error) {
-        if (error instanceof Error === false) {
+        if (!(error instanceof Error)) {
           return;
         }
 
@@ -71,7 +71,7 @@ function App() {
         },
       });
     } catch (error) {
-      if (error instanceof Error === false) {
+      if (!(error instanceof Error)) {
         return;
       }
       handleErrorMessage(error.message);
@@ -114,7 +114,7 @@ function App() {
         },
       });
     } catch (error) {
-      if (error instanceof Error === false) {
+      if (!(error instanceof Error)) {
         return;
       }
 

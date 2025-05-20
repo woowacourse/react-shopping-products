@@ -57,7 +57,7 @@ function Main({
   const handleCategory = ({
     target: { value },
   }: React.ChangeEvent<HTMLSelectElement>) => {
-    if (isProductCategory(value) === false) {
+    if (!isProductCategory(value)) {
       return;
     }
 
@@ -67,7 +67,7 @@ function Main({
   const handleSort = ({
     target: { value },
   }: React.ChangeEvent<HTMLSelectElement>) => {
-    if (isProductSort(value) === false) {
+    if (!isProductSort(value)) {
       return;
     }
 
