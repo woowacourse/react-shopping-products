@@ -1,20 +1,9 @@
-import { css } from "@emotion/react";
+import { titleContainerLayout } from "./TitleContainer.style";
 
 interface TitleContainerProps {
   title: string;
   children?: React.ReactNode;
 }
-
-const titleContainerLayout = css`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  background-color: white;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 100%;
-  gap: 24px;
-`;
 
 export default function TitleContainer({
   title,

@@ -1,5 +1,5 @@
-import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
+import { getCartItem } from "../api/cartItem";
 import getProduct from "../api/product";
 import Body from "../component/Body/Body";
 import Header from "../component/Header/Header";
@@ -8,8 +8,15 @@ import ProductContainer, {
 } from "../component/ProductContainer/ProductContainer";
 import Selector from "../component/Selector/Selector";
 import TitleContainer from "../component/TitleContainer/titleContainer";
-import { getCartItem } from "../api/cartItem";
 import Toast from "../component/Toast/Toast";
+import {
+  cartIcon,
+  cartIconContainer,
+  cartItemCount,
+  loadingLayout,
+  pageLayout,
+  selectorBoxLayout,
+} from "./ShopPage.style";
 
 interface ProductItem {
   id: number;
@@ -18,55 +25,6 @@ interface ProductItem {
   imageUrl: string;
   category: string;
 }
-
-const pageLayout = css`
-  display: flex;
-  flex-direction: column;
-  width: 430px;
-  background-color: white;
-  border: 1px solid black;
-`;
-
-const selectorBoxLayout = css`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  > div {
-    width: 125px;
-  }
-`;
-
-const cartIcon = css`
-  cursor: pointer;
-`;
-
-const cartIconContainer = css`
-  position: relative;
-  width: fit-content;
-`;
-
-const cartItemCount = css`
-  display: flex;
-  position: absolute;
-  align-items: center;
-  justify-content: center;
-  inset: 19px 0 0 20px;
-  background-color: #ffffff;
-  color: #000000;
-  border-radius: 50%;
-  font-size: 10px;
-  width: 19px;
-  height: 19px;
-`;
-
-const loadingLayout = css`
-  display: grid;
-  grid-column: span 2;
-  width: 100%;
-  text-align: center;
-  font-size: 30px;
-  font-weight: 500;
-`;
 
 export interface CartItem {
   id: number;
