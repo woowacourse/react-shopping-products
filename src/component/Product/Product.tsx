@@ -15,7 +15,7 @@ interface ProductProps {
   imageUrl: string;
   name: string;
   price: string;
-  selectedCardItems: CartItem[];
+  selectedCartItems: CartItem[];
   onChange: () => void;
 }
 
@@ -24,14 +24,14 @@ export default function Product({
   imageUrl,
   name,
   price,
-  selectedCardItems,
+  selectedCartItems,
   onChange,
 }: ProductProps) {
-  const isSelected = selectedCardItems.length !== 0;
+  const isSelected = selectedCartItems.length !== 0;
 
   const handleClick = async () => {
     if (isSelected)
-      await deleteCartItem({ id: Number(selectedCardItems[0].id) });
+      await deleteCartItem({ id: Number(selectedCartItems[0].id) });
     else await postCartItem({ productId: Number(id), quantity: 1 });
     onChange();
   };
