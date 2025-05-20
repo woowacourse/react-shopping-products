@@ -1,13 +1,10 @@
-import { useState } from "react";
+import { ProductListPage } from './features/ProductList/pages/ProductList';
+import { ToastProvider } from './shared/context/ToastProvider';
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export const App = () => {
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <ToastProvider>
+      <ProductListPage />
+    </ToastProvider>
   );
-}
-
-export default App;
+};
