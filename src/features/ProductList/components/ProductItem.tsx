@@ -7,6 +7,8 @@ import { Text } from '@/shared/components/Text';
 import NoImage from '../../../../public/NoImage.svg';
 import { Product } from '../types/Product';
 
+const FALLBACK_IMAGE_SRC = NoImage;
+
 type ProductItemProps = {
   isChecked: boolean;
   onCartUpdate: () => void;
@@ -25,7 +27,7 @@ export const ProductItem = ({
         src={imageUrl}
         alt={name}
         onError={(e) => {
-          e.currentTarget.src = NoImage;
+          e.currentTarget.src = FALLBACK_IMAGE_SRC;
         }}
       />
       <Flex
