@@ -1,80 +1,73 @@
-import {
-  CartToggleButtonWrapper,
-  CartToggleButtonText,
-} from "../styles/CartToggleButton";
-import { IMAGE_PATH } from "../constants/imagePath";
-import { ERROR_MSG } from "../constants/errorMessage";
-import { deleteCartItem, postCartItems } from "../api/cartItems";
+import { CartToggleButtonWrapper, CartToggleButtonText } from '../styles/CartToggleButton';
+import { IMAGE_PATH } from '../constants/imagePath';
+import { ERROR_MSG } from '../constants/errorMessage';
+import { deleteCartItem, postCartItems } from '../api/cartItems';
 
 type CartToggleButtonProps = {
   id: number;
-  isInBascket: boolean;
-  basketId?: number;
-  isNotBasketCountMAX: boolean;
+  isInCart: boolean;
+  cartId?: number;
+  isNotCartCountMAX: boolean;
   setError: (value: boolean) => void;
 };
 
 export type CartToggleButtonWrapperProps = {
-  isInBascket: boolean;
+  isInCart: boolean;
 };
 
 type handleCartToggleButtonProps = {
-  isInBascket: boolean;
+  isInCart: boolean;
   productId: number;
-  basketId?: number;
-  isNotBasketCountMAX: boolean;
+  cartId?: number;
+  isNotCartCountMAX: boolean;
   setError: (value: boolean) => void;
 };
 
 const handleCartToggleButton = async ({
-  isInBascket,
+  isInCart,
   productId,
-  basketId,
-  isNotBasketCountMAX,
+  cartId,
+  isNotCartCountMAX,
   setError,
 }: handleCartToggleButtonProps) => {
-  if (!isInBascket) {
-    if (!isNotBasketCountMAX) {
+  if (!isInCart) {
+    if (!isNotCartCountMAX) {
       setError(true);
-      setTimeout(()=>{
+      setTimeout(() => {
         setError(false);
       }, 2000);
-      throw new Error(ERROR_MSG.BASKET_LIMIT_EXCEEDED);
+      throw new Error(ERROR_MSG.CART_LIMIT_EXCEEDED);
     }
     await postCartItems(productId);
-  } else if (basketId !== undefined) {
-    await deleteCartItem(basketId);
+  } else if (cartId !== undefined) {
+    await deleteCartItem(cartId);
   }
 };
 
 const CartToggleButton = ({
   id,
-  isInBascket,
-  basketId,
-  isNotBasketCountMAX,
+  isInCart,
+  cartId,
+  isNotCartCountMAX,
   setError,
 }: CartToggleButtonProps) => {
-  const imageSrc = isInBascket
-    ? IMAGE_PATH.SHOPPIN_CART_REMOVE
-    : IMAGE_PATH.SHOPPIN_CART_ADD;
+  const imageSrc = isInCart ? IMAGE_PATH.SHOPPING_CART_REMOVE : IMAGE_PATH.SHOPPING_CART_ADD;
 
   return (
     <CartToggleButtonWrapper
-      isInBascket={isInBascket}
+      isInCart={isInCart}
       onClick={() =>
         handleCartToggleButton({
-          isInBascket,
+          isInCart,
           productId: id,
-          basketId,
-          isNotBasketCountMAX,
+          cartId,
+          isNotCartCountMAX,
           setError,
         })
       }
     >
       <img src={imageSrc} alt="shopping_cart" />
-      <CartToggleButtonText isInBascket={isInBascket}>
-        {isInBascket ? "빼기" : "담기"}
-      </CartToggleButtonText>
+      <CartToggleButtonText isInCart={isInCart}>{isInCart ? '빼기' : '담기'}</CartToggleButtonText>
     </CartToggleButtonWrapper>
   );
 };

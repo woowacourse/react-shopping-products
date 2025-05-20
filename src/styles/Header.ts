@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const HeaderWrapper = styled.div`
   width: 100%;
@@ -9,11 +9,11 @@ export const HeaderWrapper = styled.div`
   justify-content: space-between;
   padding: 16px 24px;
 `;
-export const BasketWrapper = styled.div`
+export const CartWrapper = styled.div`
   position: relative;
 `;
 
-export const BasketCountTextWrapper = styled.div`
+export const CartCountTextWrapper = styled.div`
   width: 19px;
   height: 19px;
   position: absolute;

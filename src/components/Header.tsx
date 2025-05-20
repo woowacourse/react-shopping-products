@@ -1,18 +1,18 @@
-import { HeaderWrapper, BasketWrapper, BasketCountTextWrapper } from "../styles/Header";
-import { IMAGE_PATH } from "../constants/imagePath";
+import { HeaderWrapper, CartWrapper, CartCountTextWrapper } from '../styles/Header';
+import { IMAGE_PATH } from '../constants/imagePath';
 
 type HeaderProps = {
-  basketCount : number;
+  cartCount: number;
 };
 
-const Header = ({basketCount}:HeaderProps) => {
+const Header = ({ cartCount }: HeaderProps) => {
   return (
     <HeaderWrapper>
       <img src={IMAGE_PATH.HEADER_TITLE} />
-      <BasketWrapper>
-        {basketCount !==0 && <BasketCountTextWrapper>{basketCount}</BasketCountTextWrapper>}
-        <img src={IMAGE_PATH.SHOPPING_BASKET} />
-      </BasketWrapper>
+      <CartWrapper>
+        {cartCount !== 0 && <CartCountTextWrapper>{cartCount}</CartCountTextWrapper>}
+        <img src={IMAGE_PATH.SHOPPING_CART} />
+      </CartWrapper>
     </HeaderWrapper>
   );
 };

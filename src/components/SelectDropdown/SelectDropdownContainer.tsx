@@ -22,12 +22,8 @@ const SelectDropdownContainer = ({
     <>
       <Header>bpple 상품 목록</Header>
       <Container>
-        <SelectDropdown<CategoryKey>
-          title={category}
-          options={CATEGORY}
-          onSelect={(value) => setCategory(value)}
-        />
-        <SelectDropdown<SortKey> title={sort} options={SORT} onSelect={(value) => setSort(value)} />
+        <SelectDropdown<CategoryKey> title={category} options={CATEGORY} onSelect={setCategory} />
+        <SelectDropdown<SortKey> title={sort} options={SORT} onSelect={setSort} />
       </Container>
     </>
   );

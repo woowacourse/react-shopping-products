@@ -1,44 +1,42 @@
-import { useEffect, useState } from "react";
-import Header from "./components/Header";
-import ProductCard from "./components/ProductCard";
-import SelectDropdownContainer from "./components/SelectDropdown/SelectDropdownContainer";
-import { getProducts, ProductResponse } from "./api/products";
-import { getCartItems } from "./api/cartItems";
-import { CATEGORY, SORT } from "./constants/selectOption";
-import { MAX_BASKET_COUNT } from "./constants/magicNumber";
-import { Container } from "./styles/common";
-import { ProductCardContainer } from "./styles/ProductCard";
-import "./styles/reset.css";
-import { ERROR_MSG } from "./constants/errorMessage";
-import ErrorMessage from "./components/ErrorMessage";
+import { useEffect, useState } from 'react';
+import Header from './components/Header';
+import ProductCard from './components/ProductCard';
+import SelectDropdownContainer from './components/SelectDropdown/SelectDropdownContainer';
+import { getProducts, ProductResponse } from './api/products';
+import { getCartItems } from './api/cartItems';
+import { CATEGORY, SORT } from './constants/selectOption';
+import { MAX_CART_COUNT } from './constants/magicNumber';
+import { Container } from './styles/common';
+import { ProductCardContainer } from './styles/ProductCard';
+import './styles/reset.css';
+import { ERROR_MSG } from './constants/errorMessage';
+import ErrorMessage from './components/ErrorMessage';
 
 type CategoryKey = (typeof CATEGORY)[number];
 type SortKey = (typeof SORT)[number];
 
 const categoryQueryMap: Record<CategoryKey, string | undefined> = {
   전체: undefined,
-  식료품: "식료품",
-  패션잡화: "패션잡화",
+  식료품: '식료품',
+  패션잡화: '패션잡화',
 };
 
 const sortQueryMap: Record<SortKey, string | undefined> = {
-  "순서 없음": undefined,
-  "낮은 가격순": "price,asc",
-  "높은 가격순": "price,desc",
+  '순서 없음': undefined,
+  '낮은 가격순': 'price,asc',
+  '높은 가격순': 'price,desc',
 };
 
-type BasketProductIds = {
+type CartProductIds = {
   productId: number;
-  basketId: number;
+  cartId: number;
 };
 
 function App() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
   const [sort, setSort] = useState<SortKey>(SORT[0]);
-  const [basketProductsIds, setBasketProductsIds] = useState<
-    BasketProductIds[]
-  >([]);
+  const [cartProductsIds, setCartProductsIds] = useState<CartProductIds[]>([]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -66,22 +64,22 @@ function App() {
     const fetchCartItems = async () => {
       try {
         const data = await getCartItems();
-        const mapped: BasketProductIds[] = data.map((item) => ({
+        const mapped: CartProductIds[] = data.map((item) => ({
           productId: item.product.id,
-          basketId: item.id,
+          cartId: item.id,
         }));
-        setBasketProductsIds(mapped);
+        setCartProductsIds(mapped);
       } catch (error) {
-        console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
+        console.error(ERROR_MSG.CART_FETCH_FAIL, error);
         setError(true);
       }
     };
     fetchCartItems();
-  }, [basketProductsIds]);
+  }, [cartProductsIds]);
 
   return (
     <Container>
-      <Header basketCount={basketProductsIds.length} />
+      <Header cartCount={cartProductsIds.length} />
       {error && <ErrorMessage />}
       <SelectDropdownContainer
         category={category}
@@ -98,14 +96,9 @@ function App() {
             category={product.category}
             price={product.price}
             imageUrl={product.imageUrl}
-            isInBascket={basketProductsIds.some(
-              (item) => item.productId === product.id
-            )}
-            basketId={
-              basketProductsIds.find((item) => item.productId === product.id)
-                ?.basketId
-            }
-            isNotBasketCountMAX={basketProductsIds.length < MAX_BASKET_COUNT}
+            isInCart={cartProductsIds.some((item) => item.productId === product.id)}
+            cartId={cartProductsIds.find((item) => item.productId === product.id)?.cartId}
+            isNotCartCountMAX={cartProductsIds.length < MAX_CART_COUNT}
             setError={setError}
           />
         ))}

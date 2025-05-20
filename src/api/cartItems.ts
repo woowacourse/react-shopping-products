@@ -1,5 +1,5 @@
-import apiRequest from "./utils/apiRequest";
-import { END_POINT } from "./constants/endPoint";
+import apiRequest from './utils/apiRequest';
+import { END_POINT } from './constants/endPoint';
 
 type CartItem = {
   id: number;
@@ -30,7 +30,7 @@ export const getCartItems = async (): Promise<CartItem[]> => {
 
 export const postCartItems = async (productId: number): Promise<void> => {
   await apiRequest<void>(END_POINT.CART, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify({
       productId,
       quantity: 1,
@@ -38,8 +38,8 @@ export const postCartItems = async (productId: number): Promise<void> => {
   });
 };
 
-export const deleteCartItem = async (basketId: number): Promise<void> => {
-  return await apiRequest<void>(`${END_POINT.CART}/${basketId}`, {
-    method: "DELETE",
+export const deleteCartItem = async (cartId: number): Promise<void> => {
+  return await apiRequest<void>(`${END_POINT.CART}/${cartId}`, {
+    method: 'DELETE',
   });
 };
