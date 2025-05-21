@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { CategoryOption, Product, SortOption } from '../types/common';
+import { Product } from '../types/common';
 import { ProductListResponse } from '../types/response';
 import { apiRequest } from '../api/apiRequest';
+import useCategory from './useCategory';
+import useSort from './useSort';
 
 const useShoppingItemList = () => {
-  const [sortType, setSortType] = useState<SortOption>('낮은 가격순');
-  const [category, setCategory] = useState<CategoryOption>('전체');
+  const { category, selectCategory, resetCategory } = useCategory();
+  const { sortType, selectSort, resetSort } = useSort();
   const [data, setData] = useState<Product[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -39,17 +41,9 @@ const useShoppingItemList = () => {
     fetchData();
   }, [category, sortType]);
 
-  const selectSort = (content: string) => {
-    setSortType(content as SortOption);
-  };
-
-  const selectCategory = (category: string) => {
-    setCategory(category as CategoryOption);
-  };
-
   const retryFetch = () => {
-    setSortType('낮은 가격순');
-    setCategory('전체');
+    resetCategory();
+    resetSort();
   };
 
   return {
