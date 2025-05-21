@@ -1,12 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ProductDTOType } from '../types/product';
 import getCarts from '../api/getCarts';
-
-type cartDataType = {
-  id: number;
-  quantity: number;
-  product: ProductDTOType;
-};
+import { cartDataType } from '../types/cartItem';
 
 function useGetCarts() {
   const [carts, setCarts] = useState<cartDataType[] | null>(null);
