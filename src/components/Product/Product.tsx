@@ -3,6 +3,7 @@ import { ProductProps } from "./Product.types";
 import * as Styled from "./Product.styled";
 
 import defaultImage from "/defaultImage.png";
+
 import AddButton from "../AddButton/AddButton";
 import RemoveButton from "../RemoveButton/RemoveButton";
 import useCartItemsId from "../../hooks/useCartItemsId";
