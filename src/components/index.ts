@@ -7,6 +7,6 @@ export { default as Select } from "./Select/Select";
 export { default as Spacing } from "./Spacing/Spacing";
 export { default as Spinner } from "./Spinner/Spinner";
 export { default as Text } from "./Text/Text";
-export { default as AddMinusButton } from "./AddMinusButton/AddMinusButton";
+export { default as PlusMinusButton } from "./PlusMinusButton/PlusMinusButton";
 
 export * from "./icons";

@@ -1,3 +1,5 @@
+import { Product } from "./product";
+
 export interface GetCartItemsResponse {
   totalElements: number;
   totalPages: number;
@@ -12,17 +14,10 @@ export interface GetCartItemsResponse {
   empty: boolean;
 }
 
-interface CartItem {
+export interface CartItem {
   id: number;
   quantity: number;
   product: Product;
-}
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
 }
 interface Sort {
   empty: boolean;

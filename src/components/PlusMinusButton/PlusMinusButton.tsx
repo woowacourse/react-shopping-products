@@ -2,13 +2,13 @@ import { css } from "@emotion/react";
 import Text from "../Text/Text";
 import Button from "../Button/Button";
 
-interface AddMinusButtonProps {
+interface PlusMinusButtonProps {
   onAddButtonClick: () => void;
   onMinusButtonClick: () => void;
   quantity: number;
 }
 
-export default function AddMinusButton({ onAddButtonClick, onMinusButtonClick, quantity }: AddMinusButtonProps) {
+export default function PlusMinusButton({ onAddButtonClick, onMinusButtonClick, quantity }: PlusMinusButtonProps) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
       <Button css={controlButtonStyle} onClick={onMinusButtonClick}>

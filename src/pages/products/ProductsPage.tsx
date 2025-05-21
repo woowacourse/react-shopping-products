@@ -8,6 +8,7 @@ import { useQuery } from "@/modules";
 import * as S from "./ProductsPage.styles";
 import { CATEGORY, DEFAULT_FILTER, DEFAULT_SORT, SORT } from "./constants";
 import { Category, Sort } from "./types";
+import { useCartItemsQuery } from "@/hooks";
 
 export default function ProductsPage() {
   const [filter, setFilter] = useState<Category>(DEFAULT_FILTER);
@@ -20,14 +21,7 @@ export default function ProductsPage() {
     queryKey: "products",
   });
 
-  const {
-    data: cartItems,
-    status: cartItemsStatus,
-    refetch: refetchCartItems,
-  } = useQuery({
-    queryFn: CartItemApi.getCartItems,
-    queryKey: "cartItems",
-  });
+  const { data: cartItems, status: cartItemsStatus, refetch: refetchCartItems } = useCartItemsQuery();
 
   const increaseCartItem = async (productId: number) => {
     const cartItem = cartItems?.content.find((item) => item.product.id === productId);
@@ -76,7 +70,7 @@ export default function ProductsPage() {
       <Header />
 
       <S.ProductPageWrapper>
-        <Text variant="title-1">bpple 상품 목록</Text>
+        <Text variant="title-1">피터네 상품 목록</Text>
 
         <S.SelectWrapper>
           <Select options={CATEGORY} selectedItem={filter} setSelectedItem={setFilter} />

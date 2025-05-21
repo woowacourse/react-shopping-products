@@ -1,6 +1,6 @@
 import { GetCartItemsResponse } from "@/types";
 import * as S from "./CartItem.styles";
-import { AddMinusButton, Button } from "@/components";
+import { PlusMinusButton, Button } from "@/components";
 import { css } from "@emotion/react";
 import { CartItemApi } from "@/apis";
 
@@ -38,7 +38,7 @@ export default function CartItem({ cartItem, refetchCartItems }: CartItemProps) 
       <S.CartItemInfoWrapper>
         <S.CartItemName>{name}</S.CartItemName>
         <S.CartItemPrice>{price.toLocaleString()}원</S.CartItemPrice>
-        <AddMinusButton
+        <PlusMinusButton
           quantity={quantity}
           onAddButtonClick={handleIncreaseCartItem}
           onMinusButtonClick={handleDecreaseCartItem}
