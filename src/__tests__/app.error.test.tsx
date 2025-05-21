@@ -1,100 +1,45 @@
 import { render, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
 import App from "../App";
-import { ErrorContextProvider } from "../contexts/ErrorContext";
-import { QueryContextProvider } from "../contexts/QueryContext";
-import { Product } from "../types/product";
-import { CartItem } from "../types/cartContents";
 
-interface MockQueryContextType {
-  query: string;
-  setQuery: (query: string) => void;
-}
+import { mockProducts } from "../test-utils/mock-data";
 
-interface MockQueryResult<T> {
-  data: T | undefined;
-  isLoading: boolean;
-  error: Error | null;
-  refetch: () => Promise<void>;
-}
-
-let mockQueryContextValue: MockQueryContextType = {
-  query: "",
-  setQuery: vi.fn(),
-};
-
-const defaultQueryResult = {
-  data: undefined,
-  isLoading: false,
-  error: null,
-  refetch: vi.fn(() => Promise.resolve()),
-};
-
-let mockProductsQueryResult: MockQueryResult<Product[]> = {
-  ...defaultQueryResult,
-  data: [],
-};
-
-let mockCartQueryResult: MockQueryResult<CartItem[]> = {
-  ...defaultQueryResult,
-  data: [],
-};
-
-// Add mock data for dataPool
 const mockDataPool = {
-  products: {
-    content: [],
-    totalElements: 0,
-    totalPages: 0,
-    size: 0,
-    number: 0,
-    sort: {
-      empty: true,
-      sorted: false,
-      unsorted: true,
-    },
-    pageable: {
-      offset: 0,
-      pageNumber: 0,
-      pageSize: 0,
-      paged: false,
-      sort: {
-        empty: true,
-        sorted: false,
-        unsorted: true,
-      },
-      unpaged: true,
-    },
-    numberOfElements: 0,
-    first: true,
-    last: true,
-    empty: true,
-  },
+  products: [...mockProducts],
+  "cart-items": [],
 };
 
+let mockCartQueryResult = {
+  loading: false,
+  error: new Error("장바구니 정보를 가져오는데 실패했습니다."),
+  refetch: vi.fn(),
+};
+let mockProductsQueryResult = {
+  loading: false,
+  error: new Error("제품 정보를 가져오는데 실패했습니다."),
+  refetch: vi.fn(),
+};
 vi.mock("../contexts/QueryContext", async () => {
   const actual = await vi.importActual("../contexts/QueryContext");
   return {
     ...(actual as object),
+
     useQueryContext: () => ({
-      ...mockQueryContextValue,
       dataPool: mockDataPool,
     }),
   };
 });
-
-vi.mock("../hooks/useGetQuery.ts", () => ({
-  useGetQuery: vi.fn((queryKey: string[]) => {
-    if (queryKey.includes("products")) {
-      return mockProductsQueryResult;
-    }
-    if (queryKey.includes("cart")) {
-      return mockCartQueryResult;
-    }
-    return defaultQueryResult;
-  }),
-}));
-
+vi.mock("../hooks/useData.ts", async () => {
+  const actual = await vi.importActual("../hooks/useData.ts");
+  return {
+    ...(actual as object),
+    useData: (key: string) => {
+      if (key === "products") return mockProductsQueryResult;
+      if (key === "cart-items") return mockCartQueryResult;
+      return { loading: false, error: null, refetch: vi.fn() };
+    },
+  };
+});
 const mockShowError = vi.fn();
 vi.mock("../contexts/ErrorContext", async () => {
   const actual = await vi.importActual("../contexts/ErrorContext");
@@ -108,33 +53,11 @@ vi.mock("../contexts/ErrorContext", async () => {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  mockQueryContextValue = {
-    query: "",
-    setQuery: vi.fn(),
-  };
-  mockProductsQueryResult = {
-    ...defaultQueryResult,
-    data: [],
-  };
-  mockCartQueryResult = {
-    ...defaultQueryResult,
-    data: [],
-  };
 });
 
 describe("App 에러 처리 테스트", () => {
   test("제품 정보 가져오기 실패시 에러 토스트가 표시되어야 함", async () => {
-    mockProductsQueryResult.error = new Error(
-      "제품 정보를 가져오는데 실패했습니다."
-    );
-
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    render(<App />);
 
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith(
@@ -146,17 +69,7 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("장바구니 정보 가져오기 실패시 에러 토스트가 표시되어야 함", async () => {
-    mockCartQueryResult.error = new Error(
-      "장바구니 정보를 가져오는데 실패했습니다."
-    );
-
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    render(<App />);
 
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith(
@@ -168,20 +81,7 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("여러 개의 에러가 발생했을 때 모든 에러가 처리되어야 함", async () => {
-    mockProductsQueryResult.error = new Error(
-      "제품 정보를 가져오는데 실패했습니다."
-    );
-    mockCartQueryResult.error = new Error(
-      "장바구니 정보를 가져오는데 실패했습니다."
-    );
-
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    render(<App />);
 
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledTimes(2);
@@ -199,13 +99,10 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("에러가 없는 경우 에러 처리가 호출되지 않아야 함", async () => {
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    mockProductsQueryResult.error = null;
+    mockCartQueryResult.error = null;
+
+    render(<App />);
 
     await waitFor(
       () => {
@@ -218,18 +115,12 @@ describe("App 에러 처리 테스트", () => {
     expect(mockShowError).not.toHaveBeenCalled();
   });
 
-  test("네트워크 에러가 ProductContext에서 발생시 에러 토스트가 표시되어야 함", async () => {
+  test("네트워크 에러가 product에서 발생시 에러 토스트가 표시되어야 함", async () => {
     mockProductsQueryResult.error = new TypeError(
       "네트워크 에러가 발생했습니다."
     );
 
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    render(<App />);
 
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith(
@@ -240,16 +131,10 @@ describe("App 에러 처리 테스트", () => {
     });
   });
 
-  test("네트워크 에러가 CartContext에서 발생시 에러 토스트가 표시되어야 함", async () => {
+  test("네트워크 에러가 cart에서 발생시 에러 토스트가 표시되어야 함", async () => {
     mockCartQueryResult.error = new TypeError("네트워크 에러가 발생했습니다.");
 
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    render(<App />);
 
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith(
