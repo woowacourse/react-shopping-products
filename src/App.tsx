@@ -1,47 +1,20 @@
-import { useErrorMessageContext } from "./context/ErrorMessageContext";
-
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
-import styled from "@emotion/styled";
+import { useErrorMessageContext } from "./context/ErrorMessageContext";
 
-import useCartItems from "./hooks/useCartItems";
-import Spinner from "./components/common/Spinner/Spinner";
+import styled from "@emotion/styled";
 
 function App() {
   const { errorMessage } = useErrorMessageContext();
-  const { state, cartItems, addCartItem, removeCartItem } = useCartItems();
-  const selectedItemProductId = cartItems.map((items) => items.productId);
 
-  const handleAddProduct = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    $product && addCartItem($product.id);
-  };
-
-  const handleRemoveProduct = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    $product && removeCartItem($product.id);
-  };
-
-  const isShow = state.isSuccess || state.isFetching;
   return (
     <Container>
       <Wrapper>
-        <Header cartItems={selectedItemProductId}></Header>
+        <Header></Header>
         {errorMessage && <ErrorMessage />}
-        {state.isLoading && <Spinner />}
-        {isShow && (
-          <Main
-            cartItems={selectedItemProductId}
-            handleAddProduct={handleAddProduct}
-            handleRemoveProduct={handleRemoveProduct}
-          />
-        )}
+        <Main />
       </Wrapper>
     </Container>
   );
