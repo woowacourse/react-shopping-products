@@ -1,7 +1,6 @@
 import { ComponentProps, useContext } from "react";
 
 import * as styles from "../styles/ModalContainer.style";
-import closeIcon from "/assets/close.png";
 import { ModalContext } from "../../../../contexts/ModalContext";
 interface ContainerProps extends ComponentProps<"div"> {
   children: React.ReactNode;
@@ -25,14 +24,6 @@ function Container({ children, size = "medium", ...props }: ContainerProps) {
       onClick={(e) => e.stopPropagation()}
       aria-modal="true"
     >
-      <button
-        id="modal-close-button"
-        css={styles.closeButton}
-        onClick={ctx?.onClose}
-      >
-        <img src={closeIcon} alt="닫기" />
-      </button>
-
       {children}
     </div>
   );
