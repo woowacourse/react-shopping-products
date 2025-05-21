@@ -15,6 +15,7 @@ import useProductSort from '../../hooks/useProductSort';
 import { SORT } from '../../constants/products';
 import useProductCategory from '../../hooks/useProductCategory';
 import useCartManagement from '../../hooks/useCartManagement';
+import getProcessedCartArr from '../../utils/getProcessedCartArr';
 
 function ProductsPage() {
   const { category, handleChangeCategory } = useProductCategory();
@@ -34,23 +35,6 @@ function ProductsPage() {
     isOverItemCounts,
     itemCount,
   } = useCartManagement({ refetchCarts, carts });
-
-  const getProcessedCartArr = () => {
-    const cartIdArr = carts?.map((cart) => cart.product.id);
-    return products?.map((product) => {
-      if (cartIdArr?.includes(product.id)) {
-        return {
-          ...product,
-          isAdd: true,
-        };
-      }
-
-      return {
-        ...product,
-        isAdd: false,
-      };
-    });
-  };
 
   if (isLoadingCarts) {
     return <div>로딩중...</div>;
@@ -72,7 +56,7 @@ function ProductsPage() {
         {products && (
           <ProductList
             isLoadingProducts={isLoadingProducts}
-            products={getProcessedCartArr()}
+            products={getProcessedCartArr({ carts, products })}
             onClickAddCartItem={handleAddCartItem}
             onClickDeleteCartItem={handleDeleteCartItem}
           />
