@@ -78,21 +78,20 @@ export default function ProductsPage() {
         </S.SelectWrapper>
 
         <S.CardWrapper>
-          {cartItems &&
-            products?.content
-              ?.filter((product) => filter === "전체" || product.category === filter)
-              ?.sort((productA, productB) =>
-                sort === "낮은 가격순" ? productA.price - productB.price : productB.price - productA.price,
-              )
-              ?.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  cartItem={cartItems.content.find((item) => item.product.id === product.id)}
-                  handleIncreaseCartItem={increaseCartItem}
-                  handleDecreaseCartItem={decreaseCartItem}
-                />
-              ))}
+          {products?.content
+            .filter((product) => filter === "전체" || product.category === filter)
+            .sort((productA, productB) =>
+              sort === "낮은 가격순" ? productA.price - productB.price : productB.price - productA.price,
+            )
+            .map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                cartItem={cartItems.content.find((item) => item.product.id === product.id)}
+                handleIncreaseCartItem={increaseCartItem}
+                handleDecreaseCartItem={decreaseCartItem}
+              />
+            ))}
         </S.CardWrapper>
       </S.ProductPageWrapper>
     </>

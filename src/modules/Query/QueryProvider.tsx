@@ -6,26 +6,31 @@ interface QueryProviderProps extends StrictPropsWithChildren {}
 type Status = "idle" | "loading" | "success" | "error";
 
 interface QueryClientContextType {
-  getQueryData: (queryKey: string) => any;
-  setQueryData: (queryKey: string, data: any) => void;
+  getQueryData: (queryKey: string) => unknown;
+  setQueryData: (queryKey: string, data: unknown) => void;
   getQueryStatus: (queryKey: string) => Status;
   setQueryStatus: (queryKey: string, status: Status) => void;
 }
 
 const QueryClientContext = createContext<QueryClientContextType>({
-  getQueryData: () => {},
-  setQueryData: () => {},
+  getQueryData: () => {
+    throw new Error("QueryProvider를 찾을 수 없습니다.");
+  },
+  setQueryData: () => {
+    throw new Error("QueryProvider를 찾을 수 없습니다.");
+  },
   getQueryStatus: () => "idle",
-  setQueryStatus: () => {},
+  setQueryStatus: () => {
+    throw new Error("QueryProvider를 찾을 수 없습니다.");
+  },
 });
-
 export const useQueryClient = () => useContext(QueryClientContext);
 
 export default function QueryProvider({ children }: QueryProviderProps) {
-  const [data, setData] = useState<Record<string, any>>({});
+  const [data, setData] = useState<Record<string, unknown>>({});
   const [status, setStatus] = useState<Record<string, Status>>({});
 
-  const setQueryData = (queryKey: string, data: any) => {
+  const setQueryData = (queryKey: string, data: unknown) => {
     setData((prev) => ({ ...prev, [queryKey]: data }));
   };
 
@@ -38,7 +43,7 @@ export default function QueryProvider({ children }: QueryProviderProps) {
   };
 
   const getQueryStatus = (queryKey: string) => {
-    return status[queryKey];
+    return status[queryKey] ?? "idle";
   };
 
   return (
