@@ -1,7 +1,7 @@
 import ProductList from "./List";
 import * as S from ".//ProductContent.styled";
 import FilterSortControl from "./FilterSortControl";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
 import { getProducts } from "@/apis/products/getProducts";
 import { CartItemType, SetCartItems } from "@/types/cartItem";
@@ -19,11 +19,13 @@ function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
   const [filterOption, setFilterOption] = useState<FilterOption>("전체");
   const [sortOption, setSortOption] = useState<SortOption>("낮은 가격순");
   const [productData, setProductData] = useState<ProductItemType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchProducts() {
       const productData = await getProducts({ filterOption, sortOption });
       setProductData(productData);
+      setIsLoading(false);
     }
 
     fetchProducts();
@@ -46,11 +48,9 @@ function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
         onFilterChange={handleFilterSelect}
         onSortChange={handleSortSelect}
       />
-      <Suspense
-        fallback={
-          <LoadingFallback message="상품 목록을 가져오는 중 입니다..." />
-        }
-      >
+      {isLoading ? (
+        <LoadingFallback message="상품 목록을 가져오는 중 입니다..." />
+      ) : (
         <ErrorBoundary
           fallback={
             <ErrorFallback message="상품 목록을 가져오는 중 에러가 발생하였습니다." />
@@ -62,7 +62,7 @@ function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
             setCartItems={setCartItems}
           />
         </ErrorBoundary>
-      </Suspense>
+      )}
     </S.Container>
   );
 }
