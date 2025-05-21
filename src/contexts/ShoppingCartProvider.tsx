@@ -6,7 +6,8 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { CartItem, ErrorState } from '../types/product.type';
+import { CartItem } from '../types/cart.type';
+import { ErrorState } from '../types/error.type';
 import { INITIAL_ERROR } from './context.constant';
 import { useGetShoppingCart } from '../hooks/useGetShoppingCart';
 

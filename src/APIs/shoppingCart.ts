@@ -3,7 +3,7 @@ import {
   ShoppingCartRequestBody,
   ShoppingCartRequest,
   ShoppingCartResponse,
-} from '../types/product.type';
+} from '../types/cart.type';
 import apiRequest from './apiRequestWithAuth';
 
 const PARAMS = new URLSearchParams({ page: '0', size: '50' }).toString();

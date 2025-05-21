@@ -5,17 +5,13 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import {
-  Category,
-  ErrorState,
-  Product,
-  SortOption,
-} from '../types/product.type';
+import { Category, Product, SortOption } from '../types/product.type';
 import { useProductsFetch } from '../hooks/useProductsFetch';
 import {
   CATEGORY,
   SORT_OPTION,
 } from '../components/ProductListToolBar/toolBar.constant';
+import { ErrorState } from '../types/error.type';
 
 interface ProductsContextType {
   items: Product[];
