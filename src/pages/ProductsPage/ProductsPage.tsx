@@ -15,15 +15,13 @@ import {
 } from './ProductsPage.style';
 import postCartItem from '../../api/postCartItem';
 import deleteCartItem from '../../api/deleteCartItem';
-
-const SORT: { [key: string]: string } = {
-  '낮은 가격 순': 'asc',
-  '높은 가격 순': 'desc',
-};
+import useProductSort from '../../hooks/useProductSort';
+import { SORT } from '../../constants/products';
+import useProductCategory from '../../hooks/useProductCategory';
 
 function ProductsPage() {
-  const [category, setCategory] = useState(CATEGORY[0]);
-  const [sort, setSort] = useState('asc');
+  const { category, handleChangeCategory } = useProductCategory();
+  const { sort, handleChangeSort } = useProductSort();
   const {
     isLoading: isLoadingProducts,
     isError: isErrorProducts,
@@ -34,14 +32,6 @@ function ProductsPage() {
   const [isErrorAddCardItem, setIsErrorAddCardItem] = useState(false);
   const [isErrorDeleteCardItem, setIsErrorDeleteCardItem] = useState(false);
   const [isOverItemCounts, setIsOverItemCounts] = useState(false);
-
-  const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSort(SORT[e.target.value]);
-  };
-
-  const handleChangeCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value);
-  };
 
   const getProcessedCartArr = () => {
     const cartIdArr = carts?.map((cart) => cart.product.id);
