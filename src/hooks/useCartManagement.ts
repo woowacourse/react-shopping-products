@@ -13,6 +13,8 @@ function useCartManagement({
 }) {
   const [isErrorAddCardItem, setIsErrorAddCardItem] = useState(false);
   const [isErrorDeleteCardItem, setIsErrorDeleteCardItem] = useState(false);
+  const [errorAddCardItemMessage, setErrorAddCardItemMessage] = useState('');
+  const [errorDeleteCardItemMessage, setErrorDeleteCardItemMessage] = useState('');
   const [isOverItemCounts, setIsOverItemCounts] = useState(false);
   const [itemCount, setItemCount] = useState(0);
 
@@ -26,33 +28,42 @@ function useCartManagement({
       return;
     }
 
-    const res = await postCartItem({
-      productId,
-      quantity,
-    });
-
-    if (!res.ok) {
+    try {
+      await postCartItem({
+        productId,
+        quantity,
+      });
+      refetchCarts();
+    } catch (error) {
       setIsErrorAddCardItem(true);
+      setErrorAddCardItemMessage(
+        error instanceof Error
+          ? error.message
+          : '장바구니에 상품을 추가하는 중 오류가 발생했습니다',
+      );
       setTimeout(() => {
-        setIsErrorAddCardItem(false);
+        setErrorAddCardItemMessage('');
       }, 3000);
     }
-
-    await refetchCarts();
   };
 
   const handleDeleteCartItem = async ({ productId }: { productId: number }) => {
     const cartId = carts?.filter((cart) => cart.product.id === productId)[0].id || 0;
-    const res = await deleteCartItem({ cartId });
 
-    if (!res.ok) {
+    try {
+      await deleteCartItem({ cartId });
+      refetchCarts();
+    } catch (error) {
       setIsErrorDeleteCardItem(true);
+      setErrorDeleteCardItemMessage(
+        error instanceof Error
+          ? error.message
+          : '장바구니에 상품을 삭제하는 중 오류가 발생했습니다',
+      );
       setTimeout(() => {
-        setIsErrorDeleteCardItem(false);
+        setErrorDeleteCardItemMessage('');
       }, 3000);
     }
-
-    await refetchCarts();
   };
 
   useEffect(() => {
@@ -68,6 +79,8 @@ function useCartManagement({
     isErrorDeleteCardItem,
     isOverItemCounts,
     itemCount,
+    errorAddCardItemMessage,
+    errorDeleteCardItemMessage,
   };
 }
 

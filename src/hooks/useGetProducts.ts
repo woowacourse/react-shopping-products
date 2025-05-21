@@ -6,6 +6,7 @@ function useGetProducts({ sort, category }: { sort: string; category: string }) 
   const [products, setProducts] = useState<ProductDTOType[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -13,10 +14,11 @@ function useGetProducts({ sort, category }: { sort: string; category: string }) 
         setIsLoading(true);
         const data = await getProducts({ category: category, sortKey: 'price', sortOrder: sort });
         setProducts(data);
-      } catch (e) {
+      } catch (error) {
         setIsError(true);
+        setErrorMessage(error instanceof Error ? error.message : '상품 정보를 불러오지 못했습니다');
         setTimeout(() => {
-          setIsError(false);
+          setErrorMessage('');
         }, 3000);
       } finally {
         setIsLoading(false);
@@ -24,7 +26,7 @@ function useGetProducts({ sort, category }: { sort: string; category: string }) 
     })();
   }, [sort, category]);
 
-  return { isLoading, isError, products };
+  return { isLoading, isError, errorMessage, products };
 }
 
 export default useGetProducts;

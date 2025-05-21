@@ -6,6 +6,7 @@ function useGetCarts() {
   const [carts, setCarts] = useState<cartDataType[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const fetchCarts = useCallback(async () => {
     try {
@@ -13,10 +14,13 @@ function useGetCarts() {
       const data = await getCarts();
       setCarts(data);
       return data;
-    } catch (e) {
+    } catch (error) {
       setIsError(true);
+      setErrorMessage(
+        error instanceof Error ? error.message : '장바구니 정보를 불러오지 못했습니다',
+      );
       setTimeout(() => {
-        setIsError(false);
+        setErrorMessage('');
       }, 3000);
     } finally {
       setIsLoading(false);
@@ -31,7 +35,7 @@ function useGetCarts() {
     return await fetchCarts();
   }, [fetchCarts]);
 
-  return { isLoading, isError, carts, refetchCarts };
+  return { isLoading, isError, errorMessage, carts, refetchCarts };
 }
 
 export default useGetCarts;

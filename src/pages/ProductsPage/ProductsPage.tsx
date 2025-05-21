@@ -22,17 +22,17 @@ function ProductsPage() {
   const { sort, handleChangeSort } = useProductSort();
   const {
     isLoading: isLoadingProducts,
-    isError: isErrorProducts,
+    errorMessage: errorProductsMessage,
     products,
   } = useGetProducts({ category, sort });
-  const { isError: isErrorCarts, carts, refetchCarts } = useGetCarts();
+  const { errorMessage: errorCartsMessage, carts, refetchCarts } = useGetCarts();
   const {
     handleAddCartItem,
     handleDeleteCartItem,
-    isErrorAddCardItem,
-    isErrorDeleteCardItem,
     isOverItemCounts,
     itemCount,
+    errorAddCardItemMessage,
+    errorDeleteCardItemMessage,
   } = useCartManagement({ refetchCarts, carts });
 
   return (
@@ -57,10 +57,10 @@ function ProductsPage() {
           />
         )}
       </div>
-      {isErrorCarts && <Toast text="장바구니 정보를 불러오지 못했습니다." varient="error" />}
-      {isErrorProducts && <Toast text="상품 정보를 불러오지 못했습니다." varient="error" />}
-      {isErrorAddCardItem && <Toast text="장바구니에 상품을 담지 못했습니다." varient="error" />}
-      {isErrorDeleteCardItem && <Toast text="장바구니에 상품을 빼지 못했습니다." varient="error" />}
+      {errorCartsMessage && <Toast text={errorCartsMessage} varient="error" />}
+      {errorProductsMessage && <Toast text={errorProductsMessage} varient="error" />}
+      {errorAddCardItemMessage && <Toast text={errorAddCardItemMessage} varient="error" />}
+      {errorDeleteCardItemMessage && <Toast text={errorDeleteCardItemMessage} varient="error" />}
       {isOverItemCounts && (
         <Toast text="장바구니는 최대 50개의 상품을 담을 수 있습니다." varient="error" />
       )}
