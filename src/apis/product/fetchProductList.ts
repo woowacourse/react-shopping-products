@@ -2,6 +2,10 @@ import { FetchProductListResult } from "../../types/FetchProductListResult";
 import { ProductCategory } from "../../types/ProductCategory";
 import { Sort } from "../../types/Sort";
 import { apiRequest } from "../ApiRequest";
+import {
+  LOW_PRICE_SORT_KEY,
+  ALL_CATEGORY,
+} from "../../constants/filterOptions";
 
 type fetchProductListParams = {
   params?: {
@@ -13,13 +17,13 @@ type fetchProductListParams = {
 };
 
 const fetchProductList = async ({
-  params = { page: "0", size: "20", sort: "price,asc" },
+  params = { page: "0", size: "20", sort: LOW_PRICE_SORT_KEY },
 }: fetchProductListParams) => {
   const { category, ...rest } = params;
 
   const data = await apiRequest.GET<FetchProductListResult>({
     endpoint: "/products",
-    searchParams: category === "전체" ? rest : params,
+    searchParams: category === ALL_CATEGORY ? rest : params,
   });
 
   return data;

@@ -10,6 +10,12 @@ import { Sort } from "../../../types/Sort";
 import { Product } from "../../../types/Product";
 
 import fetchProductList from "../../../apis/product/fetchProductList";
+import {
+  ALL_CATEGORY,
+  CATEGORIES,
+  LOW_PRICE_SORT_KEY,
+  PRICE_SORTS_KEYS,
+} from "../../../constants/filterOptions";
 
 interface ProductListContainerProps {
   selectedProductIdList: string[];
@@ -17,12 +23,19 @@ interface ProductListContainerProps {
   handleRemoveProduct: (productId: string) => void;
 }
 
-const isProductCategory = (value: string): value is ProductCategory => {
-  return ["전체", "식료품", "패션잡화"].includes(value);
+const contains = <T extends string>(
+  value: string,
+  list: ReadonlyArray<T>
+): value is T => {
+  return list.some((item) => item === value);
 };
 
-const isProductSort = (value: string): value is Sort => {
-  return ["price,desc", "price,asc", "id,desc", "id,asc"].includes(value);
+const isProductCategory = (value: string) => {
+  return contains<ProductCategory>(value, CATEGORIES);
+};
+
+const isProductPriceSort = (value: string): value is Sort => {
+  return contains<Sort>(value, PRICE_SORTS_KEYS);
 };
 
 function ProductListContainer({
@@ -31,8 +44,8 @@ function ProductListContainer({
   handleRemoveProduct,
 }: ProductListContainerProps) {
   const [productList, setProductList] = useState<Product[] | null>(null);
-  const [category, setCategory] = useState<ProductCategory>("전체");
-  const [sort, setSort] = useState<Sort>("price,asc");
+  const [category, setCategory] = useState<ProductCategory>(ALL_CATEGORY);
+  const [sort, setSort] = useState<Sort>(LOW_PRICE_SORT_KEY);
 
   //TODO: 상품 목록 가져올 때 로딩중
   useEffect(() => {
@@ -67,7 +80,7 @@ function ProductListContainer({
   const handleSort = ({
     target: { value },
   }: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!isProductSort(value)) {
+    if (!isProductPriceSort(value)) {
       return;
     }
 

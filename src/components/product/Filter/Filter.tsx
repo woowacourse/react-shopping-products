@@ -1,4 +1,4 @@
-import { CATEGORIES, SORTS } from "../../../constants/filterOptions";
+import { CATEGORIES, PRICE_SORTS } from "../../../constants/filterOptions";
 import * as Styled from "./Filter.styled";
 
 interface FilterProps {
@@ -17,7 +17,7 @@ function Filter({ handleCategory, handleSort }: FilterProps) {
         ))}
       </Styled.Select>
       <Styled.Select onChange={handleSort}>
-        {SORTS.map(({ key, value }) => (
+        {Object.entries(PRICE_SORTS).map(([key, value]) => (
           <option key={key} value={key}>
             {value}
           </option>
