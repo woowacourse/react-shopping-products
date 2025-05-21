@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface CountControlProps {
@@ -8,7 +9,7 @@ interface CountControlProps {
 export default function CountControl({ count, onClick }: CountControlProps) {
   return (
     <StyledWrapper>
-      <StyledButton onClick={() => onClick('decrease')}>
+      <StyledButton onClick={() => onClick('decrease')} disabled={count === 0}>
         <StyledImg src="./minusIcon.png" alt="minus icon" />
       </StyledButton>
       <StyledText>{count}</StyledText>
@@ -18,6 +19,12 @@ export default function CountControl({ count, onClick }: CountControlProps) {
     </StyledWrapper>
   );
 }
+
+const disabledStyles = css`
+  background: #fefefe;
+  opacity: 0.2;
+  cursor: auto;
+`;
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -36,6 +43,8 @@ const StyledButton = styled.button`
   background-color: white;
   padding: 6px;
   cursor: pointer;
+
+  ${({ disabled }) => disabled && disabledStyles}
 `;
 
 const StyledImg = styled.img`
