@@ -20,7 +20,7 @@ function App() {
   const { errorMessage, handleErrorMessage } = useErrorMessage();
 
   useEffect(() => {
-    (async () => {
+    const loadCartItems = async () => {
       try {
         const { content } = await fetchCartItems({
           params: {
@@ -40,7 +40,9 @@ function App() {
 
         handleErrorMessage(error.message);
       }
-    })();
+    };
+
+    loadCartItems();
   }, [handleErrorMessage]);
 
   const handleAddProduct = async (productId: string) => {
