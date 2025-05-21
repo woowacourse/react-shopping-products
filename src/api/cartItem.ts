@@ -1,4 +1,4 @@
-import { getRequestOptions } from "./getRequestOptions";
+import { getRequestOptions, tryFetch } from "./apiUtils";
 
 export async function getCartItems({ sortBy }: { sortBy: string }) {
   const options = getRequestOptions({ method: "GET", withAuth: true });
@@ -9,10 +9,13 @@ export async function getCartItems({ sortBy }: { sortBy: string }) {
     sort: sortBy,
   });
 
-  return fetch(
-    `${import.meta.env.VITE_BASE_URL}/cart-items?${params.toString()}`,
-    options
-  ).then((res) => res.json());
+  return tryFetch({
+    fetchFunction: () =>
+      fetch(
+        `${import.meta.env.VITE_BASE_URL}/cart-items?${params.toString()}`,
+        options
+      ),
+  }).then((res) => res.json());
 }
 
 export async function postCartItem({
@@ -31,7 +34,10 @@ export async function postCartItem({
     withAuth: true,
   });
 
-  return fetch(`${import.meta.env.VITE_BASE_URL}/cart-items`, options);
+  return tryFetch({
+    fetchFunction: () =>
+      fetch(`${import.meta.env.VITE_BASE_URL}/cart-items`, options),
+  });
 }
 
 export async function deleteCartItem({ id }: { id: number }) {
@@ -40,5 +46,8 @@ export async function deleteCartItem({ id }: { id: number }) {
     withAuth: true,
   });
 
-  return fetch(`${import.meta.env.VITE_BASE_URL}/cart-items/${id}`, options);
+  return tryFetch({
+    fetchFunction: () =>
+      fetch(`${import.meta.env.VITE_BASE_URL}/cart-items/${id}`, options),
+  });
 }

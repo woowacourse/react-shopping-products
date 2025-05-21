@@ -1,5 +1,5 @@
 import { CategoryOption, sortOption } from "../constants";
-import { getRequestOptions } from "./getRequestOptions";
+import { getRequestOptions, tryFetch } from "./apiUtils";
 
 interface getProductProps {
   category: CategoryOption;
@@ -19,10 +19,13 @@ export default async function getProducts({
   });
   const categoryParams = new URLSearchParams({ category });
 
-  return fetch(
-    `${import.meta.env.VITE_BASE_URL}/products?${
-      category !== "전체" && `${categoryParams.toString()}&&`
-    }${params.toString()}`,
-    options
-  ).then((res) => res.json());
+  return tryFetch({
+    fetchFunction: () =>
+      fetch(
+        `${import.meta.env.VITE_BASE_URL}/products?${
+          category !== "전체" && `${categoryParams.toString()}&&`
+        }${params.toString()}`,
+        options
+      ),
+  }).then((res) => res.json());
 }

@@ -23,3 +23,20 @@ export const getRequestOptions = ({
 
   return options;
 };
+
+export const tryFetch = async ({
+  fetchFunction,
+}: {
+  fetchFunction: () => Promise<Response>;
+}) => {
+  try {
+    const response = await fetchFunction();
+    if (!response.ok) {
+      throw new Error(`API 통신 실패: ${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    console.error("`API 통신 중 오류 발생:", error);
+    throw error;
+  }
+};
