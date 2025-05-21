@@ -1,0 +1,130 @@
+import {
+  CartToggleButtonWrapper,
+  CartToggleButtonText,
+} from "./CartToggleButton.styled";
+import { IMAGE_PATH } from "../../constants/imagePath";
+import { ERROR_MSG } from "../../constants/errorMessage";
+import { deleteCartItem, postCartItems } from "../../api/cartItems";
+import { useCartContext } from "../../contexts/CartContext";
+import { useUIContext } from "../../contexts/UIContext";
+
+type SharedToggleProps = {
+  isNotBasketCountMAX: boolean;
+  timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+};
+
+type addProductInBasketProps = SharedToggleProps & {
+  setError: (value: boolean) => void;
+  setErrorMessage: (value: string) => void;
+};
+
+type handleCartToggleButtonProps = SharedToggleProps & {
+  isNotBasketCountMAX: boolean;
+  isInBascket: boolean;
+  productId: number;
+  basketId?: number;
+  fetchCartItems: (value?: boolean) => Promise<void>;
+  setError: (value: boolean) => void;
+  setErrorMessage: (value: string) => void;
+};
+
+type CartToggleButtonProps = {
+  id: number;
+  isInBascket: boolean;
+  basketId?: number;
+  isNotBasketCountMAX: boolean;
+  timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+};
+
+export type CartToggleButtonWrapperProps = {
+  isInBascket: boolean;
+};
+
+const canAddProductToBasket = ({
+  isNotBasketCountMAX,
+  setError,
+  timeoutRef,
+  setErrorMessage,
+}: addProductInBasketProps) => {
+  if (!isNotBasketCountMAX) {
+    setError(true);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setError(false);
+    }, 2000);
+
+    setErrorMessage(ERROR_MSG.BASKET_LIMIT_EXCEEDED);
+    return false;
+  }
+  return true;
+};
+
+const handleCartToggleButton = async ({
+  isInBascket,
+  productId,
+  basketId,
+  isNotBasketCountMAX,
+  timeoutRef,
+  fetchCartItems,
+  setError,
+  setErrorMessage,
+}: handleCartToggleButtonProps) => {
+  if (!isInBascket) {
+    if (
+      !canAddProductToBasket({
+        isNotBasketCountMAX,
+        setError,
+        timeoutRef,
+        setErrorMessage,
+      })
+    )
+      return;
+    await postCartItems(productId);
+  } else if (basketId !== undefined) {
+    await deleteCartItem(basketId);
+  }
+  await fetchCartItems(false);
+};
+
+const CartToggleButton = ({
+  id,
+  isInBascket,
+  basketId,
+  isNotBasketCountMAX,
+  timeoutRef,
+}: CartToggleButtonProps) => {
+  const imageSrc = isInBascket
+    ? IMAGE_PATH.SHOPPIN_CART_REMOVE
+    : IMAGE_PATH.SHOPPIN_CART_ADD;
+  const { fetchCartItems } = useCartContext();
+  const { setError, setErrorMessage } = useUIContext();
+
+  return (
+    <CartToggleButtonWrapper
+      isInBascket={isInBascket}
+      onClick={() =>
+        handleCartToggleButton({
+          isInBascket,
+          productId: id,
+          basketId,
+          isNotBasketCountMAX,
+          timeoutRef,
+          fetchCartItems,
+          setError,
+          setErrorMessage,
+        })
+      }
+    >
+      <img src={imageSrc} alt="shopping_cart" />
+      <CartToggleButtonText isInBascket={isInBascket}>
+        {isInBascket ? "빼기" : "담기"}
+      </CartToggleButtonText>
+    </CartToggleButtonWrapper>
+  );
+};
+
+export default CartToggleButton;
