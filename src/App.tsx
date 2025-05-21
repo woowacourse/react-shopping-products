@@ -84,7 +84,7 @@ function App() {
             price={product.price}
             imageUrl={product.imageUrl}
             isInBascket={basketProductsIds.some(
-              (item) => item.productId === product.id
+              (item) => item.productId === product.id,
             )}
             basketId={
               basketProductsIds.find((item) => item.productId === product.id)

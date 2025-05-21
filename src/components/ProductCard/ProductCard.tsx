@@ -47,7 +47,6 @@ const ProductCard = ({
     };
   }, []);
 
-
   return (
     <ProductCardWrapper>
       <ProductImage

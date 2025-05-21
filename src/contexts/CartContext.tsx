@@ -22,7 +22,8 @@ export const CartProvider = ({
   children: React.ReactNode;
   setGlobalLoading: (v: boolean) => void;
 }) => {
-  const [basketProductsIds, setBasketProductsIds] = useState<BasketProductInfos>([]);
+  const [basketProductsIds, setBasketProductsIds] =
+    useState<BasketProductInfos>([]);
 
   const fetchCartItems = useCallback(
     async (withGlobalLoading = true) => {
@@ -40,7 +41,7 @@ export const CartProvider = ({
         if (withGlobalLoading) setGlobalLoading(false);
       }
     },
-    [setGlobalLoading]
+    [setGlobalLoading],
   );
 
   return (

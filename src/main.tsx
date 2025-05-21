@@ -11,5 +11,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <App />
       </CartProvider>
     </UIProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
