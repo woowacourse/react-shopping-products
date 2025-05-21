@@ -32,6 +32,16 @@ export default function ProductsPage() {
   const increaseCartItem = async (productId: number) => {
     const cartItem = cartItems?.content.find((item) => item.product.id === productId);
 
+    const product = products?.content.find((item) => item.id === productId);
+    if (!product) return;
+
+    const stock = product.stock;
+
+    if (stock < (cartItem?.quantity ?? 0) + 1) {
+      showError("재고가 부족합니다.");
+      return;
+    }
+
     if (!cartItem) {
       await CartItemApi.postCartItems({ productId });
     } else {
