@@ -1,6 +1,6 @@
 import ProductItem from "../ProductItem/ProductItem";
 import { ProductTypes } from "../../../types/ProductTypes";
-import useCartContext from "../../../contexts/CartContext";
+import useCartContext from "../../../contexts/useCartContext";
 import { StyledUl } from "./ProductList.styles";
 
 interface ProductListProps {

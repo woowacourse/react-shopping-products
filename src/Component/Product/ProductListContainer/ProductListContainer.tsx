@@ -1,7 +1,7 @@
 import ProductList from "../ProductList/ProductList";
 import ProductListToolbar from "../ProductListToolbar/ProductListToolbar";
 import Spinner from "../../Common/Spinner";
-import useCartContext from "../../../contexts/CartContext";
+import useCartContext from "../../../contexts/useCartContext";
 import useFetchProducts from "../../../hooks/useFetchProducts";
 import { StyledSpinnerWrapper } from "./ProductListContainer.styles";
 

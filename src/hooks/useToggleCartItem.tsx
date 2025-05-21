@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import postShoppingCart from "../api/postShoppingCart";
 import deleteShoppingCart from "../api/deleteShoppingCart";
-import useCartContext from "../contexts/CartContext";
+import useCartContext from "../contexts/useCartContext";
 
 export function useToggleCartItem(productId: number) {
   const { getMatchCartItem, checkMax, updateCartItems } = useCartContext();
