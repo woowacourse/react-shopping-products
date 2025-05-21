@@ -36,9 +36,7 @@ export default function useShoppingCart() {
       const cartItemsData = await getShoppingCart();
       setCartItems(cartItemsData.content);
     } catch (e) {
-      //
-    } finally {
-      //
+      console.error("장바구니 업데이트 중 오류가 발생했습니다:", e);
     }
   };
 

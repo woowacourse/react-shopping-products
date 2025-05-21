@@ -11,7 +11,7 @@ export const StyledHeader = styled.header`
 
 export const StyledSpan = styled.span`
   color: #ffffff;
-  font-weight: 800px;
+  font-weight: 800;
 `;
 
 export const StyledButton = styled.button`

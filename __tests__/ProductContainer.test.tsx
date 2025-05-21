@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import * as productApi from "../src/api/getProducts";
 import { vi, describe, it, afterEach } from "vitest";
-import ProductListContainer from "../src/Component/Product/ProductListContainer";
+import ProductListContainer from "../src/Component/Product/ProductListContainer/ProductListContainer";
 import {
   CartContext,
   CartContextValue,
