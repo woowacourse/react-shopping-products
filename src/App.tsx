@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Header from "./components/product/Header/Header";
 import ProductListContainer from "./components/product/ProductListContainer/ProductListContainer";
 import Spinner from "./components/common/Spinner/Spinner";
@@ -10,6 +10,7 @@ import fetchCartItems from "./apis/product/fetchCartItems";
 
 import styled from "@emotion/styled";
 import useErrorMessage from "./hooks/useErrorMessage";
+import toastMessage from "./utils/toastMessage";
 
 function App() {
   const [selectedProductIdList, setSelectedProductIdList] = useState<string[]>(
@@ -18,6 +19,19 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const { errorMessage, handleErrorMessage } = useErrorMessage();
+
+  const showErrorMessage = useCallback(
+    (message: string) => {
+      toastMessage({
+        message,
+        updateMessage: handleErrorMessage,
+        resetMessage: () => {
+          handleErrorMessage("");
+        },
+      });
+    },
+    [handleErrorMessage]
+  );
 
   useEffect(() => {
     const loadCartItems = async () => {
@@ -38,12 +52,12 @@ function App() {
           return;
         }
 
-        handleErrorMessage(error.message);
+        showErrorMessage(error.message);
       }
     };
 
     loadCartItems();
-  }, [handleErrorMessage]);
+  }, [showErrorMessage]);
 
   const handleAddProduct = async (productId: string) => {
     if (selectedProductIdList.length === 50) {
@@ -67,7 +81,8 @@ function App() {
       if (!(error instanceof Error)) {
         return;
       }
-      handleErrorMessage(error.message);
+
+      showErrorMessage(error.message);
     }
   };
 
@@ -102,7 +117,7 @@ function App() {
         return;
       }
 
-      handleErrorMessage(error.message);
+      showErrorMessage(error.message);
     }
   };
 
