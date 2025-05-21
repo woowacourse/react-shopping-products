@@ -32,7 +32,7 @@ export default class CartItemApi extends BaseApi {
       size: String(size),
       sort,
     });
-    return this.get(`/cart-items?${searchParams.toString()}`);
+    return BaseApi.get(`/cart-items?${searchParams.toString()}`);
   }
 
   static async postCartItems({ productId, quantity = 1 }: PostCartItemsParams) {
@@ -42,11 +42,11 @@ export default class CartItemApi extends BaseApi {
   }
 
   static async deleteCartItems({ cartItemId }: DeleteCartItemsParams) {
-    return this.delete(`/cart-items/${cartItemId}`);
+    return BaseApi.delete(`/cart-items/${cartItemId}`);
   }
 
   static async patchCartItems({ cartItemId, quantity }: PatchCartItemsParams) {
-    return this.patch(`/cart-items/${cartItemId}`, {
+    return BaseApi.patch(`/cart-items/${cartItemId}`, {
       body: JSON.stringify({ quantity }),
     });
   }

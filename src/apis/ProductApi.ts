@@ -18,6 +18,6 @@ export default class ProductApi extends BaseApi {
       size: String(size),
       sort,
     });
-    return this.get(`/products?${searchParams.toString()}`);
+    return BaseApi.get(`/products?${searchParams.toString()}`);
   }
 }
