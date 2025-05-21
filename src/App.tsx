@@ -91,7 +91,7 @@ function App() {
           </S.ProductListFilterContainer>
         </S.ProductListHeader>
 
-        {isLoading ? (
+        {isLoading && products.length === 0 ? (
           <S.ProductList>
             {Array.from({ length: 6 }).map((_, index) => (
               <ProductCardSkeleton key={index} />
