@@ -1,20 +1,17 @@
-import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { server } from "../mocks/node";
 import App from "../App";
-import { CartContextProvider } from "../contexts/CartContext";
+
 import { ErrorContextProvider } from "../contexts/ErrorContext";
-import { ProductContextProvider } from "../contexts/ProductContext";
+import { QueryContextProvider } from "../contexts/QueryContext";
 
 // 전체 앱을 래핑하는 헬퍼 함수
-const renderWithProviders = (component: React.ReactNode) => {
+const renderWithProviders = (children: React.ReactNode) => {
   return render(
-    <ProductContextProvider>
-      <ErrorContextProvider>
-        <CartContextProvider>{component}</CartContextProvider>
-      </ErrorContextProvider>
-    </ProductContextProvider>
+    <QueryContextProvider>
+      <ErrorContextProvider>{children}</ErrorContextProvider>
+    </QueryContextProvider>
   );
 };
 
@@ -134,16 +131,13 @@ describe("MSW 예제 테스트", () => {
       expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
     });
 
-    // 에러 메시지가 표시될 때까지 기다림
     await waitFor(
       () => {
         expect(
-          screen.getByText(
-            "네트워크 오류가 발생했습니다. 잠시후 다시 이용해 주세요."
-          )
+          screen.getByText("서버 오류가 발생했습니다.")
         ).toBeInTheDocument();
       },
-      { timeout: 5000 }
+      { timeout: 2000 }
     );
   });
 });

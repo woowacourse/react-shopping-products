@@ -1,9 +1,8 @@
 import { render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import App from "../App";
-import { CartContextProvider } from "../contexts/CartContext";
-import { ProductContextProvider } from "../contexts/ProductContext";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
+import { QueryContextProvider } from "../contexts/QueryContext";
 import { server } from "../mocks/node";
 import { vi } from "vitest";
 
@@ -33,11 +32,9 @@ describe("ErrorToast 컴포넌트 테스트", () => {
 
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 
@@ -65,11 +62,9 @@ describe("ErrorToast 컴포넌트 테스트", () => {
 
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 
@@ -91,11 +86,9 @@ describe("ErrorToast 컴포넌트 테스트", () => {
 
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 
@@ -128,11 +121,9 @@ describe("ErrorToast 컴포넌트 테스트", () => {
 
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 

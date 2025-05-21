@@ -3,19 +3,27 @@ import { vi } from "vitest";
 import "@testing-library/jest-dom";
 import ProductList from "../components/Product/ProductList/ProductList";
 import { Product } from "../types/product";
+import { mockQueryContextValue } from "../test-utils/mock-data";
 
-// Mock the ProductCard component
+vi.mock("../contexts/QueryContext", () => ({
+  useQueryContext: () => ({
+    ...mockQueryContextValue,
+    productFetchLoading: false,
+    setProductsQuery: vi.fn(),
+  }),
+}));
+
+vi.mock("../hooks/useGetQuery", () => ({
+  useGetQuery: () => ({
+    loading: false,
+    error: null,
+    refetch: vi.fn(),
+  }),
+}));
 
 vi.mock("../contexts/ErrorContext", () => ({
   useErrorContext: () => ({
     showError: vi.fn(),
-  }),
-}));
-
-vi.mock("../contexts/CartContext", () => ({
-  useCartContext: () => ({
-    setCartLength: vi.fn(),
-    cartLength: 1,
   }),
 }));
 

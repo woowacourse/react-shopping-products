@@ -4,9 +4,15 @@ import { vi } from "vitest";
 import App from "../App";
 import { screen } from "@testing-library/react";
 import { expect } from "vitest";
-import { mockExtendedProducts, mockCartItems } from "../test-utils/mock-data";
+import {
+  mockExtendedProducts,
+  mockQueryContextValue,
+} from "../test-utils/mock-data";
 import "@testing-library/jest-dom";
-import { Product } from "../types/product";
+import { ErrorContextProvider } from "../contexts/ErrorContext";
+import { QueryContextProvider } from "../contexts/QueryContext";
+import { useGetQuery } from "../hooks/useGetQuery";
+import { DataKey } from "../types/data-types";
 
 vi.mock("../components/Spinner/Spinner", () => ({
   __esModule: true,
@@ -30,6 +36,9 @@ vi.mock("@emotion/react", () => ({
       ...children
     );
   },
+  keyframes: (...args: string[]) => {
+    return args.join("");
+  },
   css: () => ({ name: "mock-css-result" }),
 }));
 
@@ -37,32 +46,11 @@ const mockFetchProducts = vi.fn();
 const mockFetchCart = vi.fn();
 const mockShowError = vi.fn();
 
-let productContextMock = {
-  productsData: mockExtendedProducts,
-  productFetchLoading: false,
-  productFetchError: null as Error | null,
-  fetchProducts: mockFetchProducts,
-  orderBy: "낮은 가격순",
-  setOrderBy: vi.fn(),
-};
+let testMockQueryContextValue = { ...mockQueryContextValue };
 
-vi.mock("../contexts/ProductContext", () => ({
-  useProductContext: () => productContextMock,
-  ProductContextProvider: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
-}));
-
-vi.mock("../contexts/CartContext", () => ({
-  useCartContext: () => ({
-    cartData: mockCartItems,
-    cartFetchLoading: false,
-    cartFetchError: null,
-    fetchCart: mockFetchCart,
-    setCartLength: vi.fn(),
-    cartLength: 1,
-  }),
-  CartContextProvider: ({ children }: { children: React.ReactNode }) => (
+vi.mock("../contexts/QueryContext", () => ({
+  useQueryContext: () => testMockQueryContextValue,
+  QueryContextProvider: ({ children }: { children: React.ReactNode }) => (
     <>{children}</>
   ),
 }));
@@ -77,15 +65,47 @@ vi.mock("../contexts/ErrorContext", () => ({
   ),
 }));
 
+vi.mock("../hooks/useGetQuery.ts", () => ({
+  useGetQuery: vi.fn((key: DataKey) => {
+    if (key === "products") {
+      return {
+        data: undefined,
+        loading: false,
+        error: null,
+        refetch: mockFetchProducts,
+        abort: vi.fn(),
+      };
+    }
+    if (key === "cart-items") {
+      return {
+        data: undefined,
+        loading: false,
+        error: null,
+        refetch: mockFetchCart,
+        abort: vi.fn(),
+      };
+    }
+    return {
+      data: undefined,
+      loading: false,
+      error: null,
+      refetch: vi.fn(),
+      abort: vi.fn(),
+    };
+  }),
+}));
+
 describe("App - 필터링 및 상태 테스트", () => {
   beforeEach(() => {
-    productContextMock = {
-      productsData: mockExtendedProducts,
-      productFetchLoading: false,
-      productFetchError: null,
-      fetchProducts: mockFetchProducts,
-      orderBy: "낮은 가격순",
-      setOrderBy: vi.fn(),
+    testMockQueryContextValue = {
+      ...mockQueryContextValue,
+      dataPool: {
+        ...mockQueryContextValue.dataPool,
+        products: {
+          ...mockQueryContextValue.dataPool.products,
+          content: mockExtendedProducts,
+        },
+      },
     };
 
     mockFetchProducts.mockClear();
@@ -98,14 +118,26 @@ describe("App - 필터링 및 상태 테스트", () => {
   });
 
   it("컴포넌트 마운트시 fetchProducts와 fetchCart가 호출된다", () => {
-    render(<App />);
+    render(
+      <ErrorContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
+      </ErrorContextProvider>
+    );
 
     expect(mockFetchProducts).toHaveBeenCalledTimes(1);
     expect(mockFetchCart).toHaveBeenCalledTimes(1);
   });
 
   it("카테고리 필터링이 올바르게 동작한다", () => {
-    render(<App />);
+    render(
+      <ErrorContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
+      </ErrorContextProvider>
+    );
 
     expect(screen.getByText("바지")).toBeInTheDocument();
     expect(screen.getByText("치마")).toBeInTheDocument();
@@ -125,10 +157,33 @@ describe("App - 필터링 및 상태 테스트", () => {
   });
 
   it("로딩 상태에서는 스피너를 표시한다", () => {
-    productContextMock.productFetchLoading = true;
-    productContextMock.productsData = [] as Product[];
+    vi.mocked(useGetQuery).mockImplementation((key: DataKey) => {
+      if (key === "products") {
+        return {
+          data: undefined,
+          loading: true,
+          error: null,
+          refetch: mockFetchProducts,
+          abort: vi.fn(),
+        };
+      }
+      return {
+        data: undefined,
+        loading: false,
+        error: null,
+        refetch: vi.fn(),
+        abort: vi.fn(),
+      };
+    });
 
-    render(<App />);
+    render(
+      <ErrorContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
+      </ErrorContextProvider>
+    );
+
     expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
   });
 });

@@ -2,61 +2,98 @@ import { render, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
 import App from "../App";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
-import { ProductContextProvider } from "../contexts/ProductContext";
-import { CartContextProvider } from "../contexts/CartContext";
+import { QueryContextProvider } from "../contexts/QueryContext";
 import { Product } from "../types/product";
 import { CartItem } from "../types/cartContents";
-import { OrderByOptionType } from "../types/categoryOption";
 
-// error 토스트의 경우에는 외부에서 mock을 불러오면, 리렌더링 이슈가 생기기 떄문에,
-// mock을 하나하나 세팅해줌.
-interface MockProductContextType {
-  productsData: Product[] | undefined;
-  productFetchLoading: boolean;
-  productFetchError: Error | null;
-  fetchProducts: () => Promise<void>;
-  orderBy: OrderByOptionType;
-  setOrderBy: (orderBy: OrderByOptionType) => void;
+interface MockQueryContextType {
+  query: string;
+  setQuery: (query: string) => void;
 }
 
-interface MockCartContextType {
-  cartData: CartItem[] | undefined;
-  cartFetchLoading: boolean;
-  cartFetchError: Error | null;
-  fetchCart: () => Promise<void>;
+interface MockQueryResult<T> {
+  data: T | undefined;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => Promise<void>;
 }
 
-let mockProductContextValue: MockProductContextType = {
-  productsData: undefined,
-  productFetchLoading: false,
-  productFetchError: null,
-  fetchProducts: vi.fn(() => Promise.resolve()),
-  orderBy: "낮은 가격순",
-  setOrderBy: vi.fn(),
+let mockQueryContextValue: MockQueryContextType = {
+  query: "",
+  setQuery: vi.fn(),
 };
 
-let mockCartContextValue: MockCartContextType = {
-  cartData: undefined,
-  cartFetchLoading: false,
-  cartFetchError: null,
-  fetchCart: vi.fn(() => Promise.resolve()),
+const defaultQueryResult = {
+  data: undefined,
+  isLoading: false,
+  error: null,
+  refetch: vi.fn(() => Promise.resolve()),
 };
 
-vi.mock("../contexts/ProductContext", async () => {
-  const actual = await vi.importActual("../contexts/ProductContext");
+let mockProductsQueryResult: MockQueryResult<Product[]> = {
+  ...defaultQueryResult,
+  data: [],
+};
+
+let mockCartQueryResult: MockQueryResult<CartItem[]> = {
+  ...defaultQueryResult,
+  data: [],
+};
+
+// Add mock data for dataPool
+const mockDataPool = {
+  products: {
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    size: 0,
+    number: 0,
+    sort: {
+      empty: true,
+      sorted: false,
+      unsorted: true,
+    },
+    pageable: {
+      offset: 0,
+      pageNumber: 0,
+      pageSize: 0,
+      paged: false,
+      sort: {
+        empty: true,
+        sorted: false,
+        unsorted: true,
+      },
+      unpaged: true,
+    },
+    numberOfElements: 0,
+    first: true,
+    last: true,
+    empty: true,
+  },
+};
+
+vi.mock("../contexts/QueryContext", async () => {
+  const actual = await vi.importActual("../contexts/QueryContext");
   return {
     ...(actual as object),
-    useProductContext: () => mockProductContextValue,
+    useQueryContext: () => ({
+      ...mockQueryContextValue,
+      dataPool: mockDataPool,
+    }),
   };
 });
 
-vi.mock("../contexts/CartContext", async () => {
-  const actual = await vi.importActual("../contexts/CartContext");
-  return {
-    ...(actual as object),
-    useCartContext: () => mockCartContextValue,
-  };
-});
+vi.mock("../hooks/useGetQuery.ts", () => ({
+  useGetQuery: vi.fn((queryKey: string[]) => {
+    if (queryKey.includes("products")) {
+      return mockProductsQueryResult;
+    }
+    if (queryKey.includes("cart")) {
+      return mockCartQueryResult;
+    }
+    return defaultQueryResult;
+  }),
+}));
 
 const mockShowError = vi.fn();
 vi.mock("../contexts/ErrorContext", async () => {
@@ -71,35 +108,31 @@ vi.mock("../contexts/ErrorContext", async () => {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  mockProductContextValue = {
-    productsData: [],
-    productFetchLoading: false,
-    productFetchError: null,
-    fetchProducts: vi.fn(() => Promise.resolve()),
-    orderBy: "낮은 가격순",
-    setOrderBy: vi.fn(),
+  mockQueryContextValue = {
+    query: "",
+    setQuery: vi.fn(),
   };
-  mockCartContextValue = {
-    cartData: [],
-    cartFetchLoading: false,
-    cartFetchError: null,
-    fetchCart: vi.fn(() => Promise.resolve()),
+  mockProductsQueryResult = {
+    ...defaultQueryResult,
+    data: [],
+  };
+  mockCartQueryResult = {
+    ...defaultQueryResult,
+    data: [],
   };
 });
 
 describe("App 에러 처리 테스트", () => {
   test("제품 정보 가져오기 실패시 에러 토스트가 표시되어야 함", async () => {
-    mockProductContextValue.productFetchError = new Error(
+    mockProductsQueryResult.error = new Error(
       "제품 정보를 가져오는데 실패했습니다."
     );
 
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 
@@ -113,17 +146,15 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("장바구니 정보 가져오기 실패시 에러 토스트가 표시되어야 함", async () => {
-    mockCartContextValue.cartFetchError = new Error(
+    mockCartQueryResult.error = new Error(
       "장바구니 정보를 가져오는데 실패했습니다."
     );
 
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 
@@ -137,20 +168,18 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("여러 개의 에러가 발생했을 때 모든 에러가 처리되어야 함", async () => {
-    mockProductContextValue.productFetchError = new Error(
+    mockProductsQueryResult.error = new Error(
       "제품 정보를 가져오는데 실패했습니다."
     );
-    mockCartContextValue.cartFetchError = new Error(
+    mockCartQueryResult.error = new Error(
       "장바구니 정보를 가져오는데 실패했습니다."
     );
 
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 
@@ -172,18 +201,16 @@ describe("App 에러 처리 테스트", () => {
   test("에러가 없는 경우 에러 처리가 호출되지 않아야 함", async () => {
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 
     await waitFor(
       () => {
-        expect(mockProductContextValue.fetchProducts).toHaveBeenCalled(); // Ensure fetch was called
-        expect(mockCartContextValue.fetchCart).toHaveBeenCalled(); // Ensure fetch was called
+        expect(mockProductsQueryResult.refetch).toHaveBeenCalled();
+        expect(mockCartQueryResult.refetch).toHaveBeenCalled();
       },
       { timeout: 500 }
     );
@@ -192,17 +219,15 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("네트워크 에러가 ProductContext에서 발생시 에러 토스트가 표시되어야 함", async () => {
-    mockProductContextValue.productFetchError = new TypeError(
+    mockProductsQueryResult.error = new TypeError(
       "네트워크 에러가 발생했습니다."
     );
 
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 
@@ -216,17 +241,13 @@ describe("App 에러 처리 테스트", () => {
   });
 
   test("네트워크 에러가 CartContext에서 발생시 에러 토스트가 표시되어야 함", async () => {
-    mockCartContextValue.cartFetchError = new TypeError(
-      "네트워크 에러가 발생했습니다."
-    );
+    mockCartQueryResult.error = new TypeError("네트워크 에러가 발생했습니다.");
 
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <QueryContextProvider>
+          <App />
+        </QueryContextProvider>
       </ErrorContextProvider>
     );
 

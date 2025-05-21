@@ -4,67 +4,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import App from "../App";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
 import "@testing-library/jest-dom";
-import { ProductContextProvider } from "../contexts/ProductContext";
-import { CartContextProvider } from "../contexts/CartContext";
-import { Product } from "../types/product";
-import { CartItem } from "../types/cartContents";
-
-const mockProducts: Product[] = [
-  {
-    id: 1,
-    category: "패션잡화",
-    name: "바지",
-    price: 1000000,
-    imageUrl: "laptop.jpg",
-  },
-  {
-    id: 2,
-    category: "패션잡화",
-    name: "치마",
-    price: 50000,
-    imageUrl: "chair.jpg",
-  },
-  {
-    id: 3,
-    category: "식료품",
-    name: "코카콜라",
-    price: 2000,
-    imageUrl: "coke.jpg",
-  },
-];
-const mockCartItems: CartItem[] = [];
-
-const mockFetchProducts = vi.fn();
-const mockSetOrderBy = vi.fn();
-const mockFetchCart = vi.fn();
-
-vi.mock("../contexts/ProductContext", async () => {
-  const actual = await vi.importActual("../contexts/ProductContext");
-  return {
-    ...(actual as object),
-    useProductContext: () => ({
-      productsData: mockProducts,
-      productFetchLoading: false,
-      productFetchError: null,
-      fetchProducts: mockFetchProducts,
-      orderBy: "낮은 가격순",
-      setOrderBy: mockSetOrderBy,
-    }),
-  };
-});
-
-vi.mock("../contexts/CartContext", async () => {
-  const actual = await vi.importActual("../contexts/CartContext");
-  return {
-    ...(actual as object),
-    useCartContext: () => ({
-      cartData: mockCartItems,
-      cartFetchLoading: false,
-      cartFetchError: null,
-      fetchCart: mockFetchCart,
-    }),
-  };
-});
+import { mockQueryContextValue } from "../test-utils/mock-data";
 
 vi.mock("@emotion/react", () => ({
   jsx: (
@@ -78,6 +18,9 @@ vi.mock("@emotion/react", () => ({
       ...children
     );
   },
+  keyframes: (...args: string[]) => {
+    return args.join("");
+  },
   css: () => ({ name: "mock-css-result" }),
 }));
 
@@ -86,20 +29,29 @@ vi.mock("../components/Spinner/Spinner", () => ({
   default: () => <div data-testid="loading-spinner" />,
 }));
 
+const mockSetOrderBy = vi.fn();
+
+vi.mock("../contexts/QueryContext", () => ({
+  useQueryContext: () => ({
+    ...mockQueryContextValue,
+    productFetchLoading: false,
+    setProductsQuery: mockSetOrderBy,
+  }),
+}));
+
+vi.mock("../hooks/useGetQuery", () => ({
+  useGetQuery: () => ({
+    loading: false,
+    error: null,
+    refetch: vi.fn(),
+  }),
+}));
+
 describe("App Dropdown 테스트", () => {
   beforeEach(() => {
-    // Clear mocks
-    mockFetchProducts.mockClear();
-    mockSetOrderBy.mockClear();
-    mockFetchCart.mockClear();
-
     render(
       <ErrorContextProvider>
-        <ProductContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </ProductContextProvider>
+        <App />
       </ErrorContextProvider>
     );
   });
