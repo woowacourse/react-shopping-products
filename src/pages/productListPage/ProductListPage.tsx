@@ -11,6 +11,7 @@ import {
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
+import { getCartInCount } from '../../util/cartUtils';
 
 export const ProductListPage = () => {
   const { errorMessage, handleErrorMessage } = useErrorMessageContext();
@@ -27,11 +28,6 @@ export const ProductListPage = () => {
   });
   const { cartItems, handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems } =
     useCartContext();
-
-  const getCartInCount = (productId: number) => {
-    const cartItem = cartItems.find((cartItem) => cartItem.product.id === productId);
-    return cartItem ? cartItem.quantity : 0;
-  };
 
   if (loadingState === 'loadingInitial') {
     return <ProductListPageSkeleton />;
@@ -58,7 +54,7 @@ export const ProductListPage = () => {
         {products.slice(0, PRODUCT_LIST_ITEM_COUNT).map((product) => (
           <ProductItem
             key={product.id}
-            cartInCount={getCartInCount(product.id)}
+            cartInCount={getCartInCount(cartItems, product.id)}
             product={product}
             handleAddCartItem={handleAddCartItems}
             handleRemoveCartItem={handleRemoveCartItems}
