@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Product } from "../../src/types";
-import filterProductList from "../../src/utils/filterProductList";
+import filterProductList from "..//utils/filterProductList";
 
 describe("filterProductList 유틸 함수 테스트", () => {
 	it("상품 목록을 식료품 카테고리로 필터링하여 상품 목록을 반환한다.", () => {

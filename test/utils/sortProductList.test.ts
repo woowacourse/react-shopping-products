@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Product } from "../../src/types";
-import sortProductList from "../../src/utils/sortProductList";
+import sortProductList from "../utils/sortProductList";
 
 describe("sortProductList 유틸 함수 테스트", () => {
 	it("상품 목록과 낮은 가격순 정렬 기준이 주어지면 낮은 가격순으로 정렬된 상품 목록을 반환한다.", () => {
