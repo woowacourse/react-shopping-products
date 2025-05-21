@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Product } from '../../src/types';
-import getProductById from '../../src/utils/getProductsById';
+import getElementById from '../../src/utils/getElementById';
 
 describe('getProductById 유틸 함수 테스트', () => {
   const products: Product[] = [
@@ -13,6 +13,6 @@ describe('getProductById 유틸 함수 테스트', () => {
     [2, { id: 2, name: '둘째', price: 3000, imageUrl: '', category: '식료품', quantity: 5 }],
     [3, { id: 3, name: '셋째', price: 5000, imageUrl: '', category: '식료품', quantity: 10 }],
   ])('상품 목록과 ID(%s)를 주면 해당하는 ID를 가지고 있는 상품 배열을 반환한다.', (id, result) => {
-    expect(getProductById(products, id)).toEqual([result]);
+    expect(getElementById(products, id)).toEqual([result]);
   });
 });
