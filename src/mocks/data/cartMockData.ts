@@ -1,7 +1,7 @@
 const cartMockData = {
   content: [
     {
-      id: 5247,
+      id: 1,
       quantity: 1,
       product: {
         id: 1,
@@ -13,7 +13,7 @@ const cartMockData = {
       },
     },
     {
-      id: 5248,
+      id: 2,
       quantity: 1,
       product: {
         id: 2,
@@ -25,7 +25,7 @@ const cartMockData = {
       },
     },
     {
-      id: 5249,
+      id: 3,
       quantity: 1,
       product: {
         id: 6,
@@ -37,7 +37,7 @@ const cartMockData = {
       },
     },
     {
-      id: 5251,
+      id: 4,
       quantity: 1,
       product: {
         id: 24,
@@ -49,7 +49,7 @@ const cartMockData = {
       },
     },
     {
-      id: 5252,
+      id: 5,
       quantity: 1,
       product: {
         id: 23,
