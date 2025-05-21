@@ -32,7 +32,6 @@ const useProductList = () => {
   const [category, setCategory] = useState<ProductCategory>(ALL_CATEGORY);
   const [sort, setSort] = useState<PriceSort>(LOW_PRICE_SORT_KEY);
 
-  //TODO: 상품 목록 가져올 때 로딩중
   useEffect(() => {
     const loadProductList = async () => {
       try {
@@ -47,7 +46,6 @@ const useProductList = () => {
 
         setProductList(content);
       } catch (error) {
-        // error 상태
         console.log(error);
       }
     };
