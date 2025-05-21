@@ -11,6 +11,7 @@ export const ProductItemContainer = styled.div`
 `;
 
 export const ProductItemImage = styled.img`
+  position: relative;
   height: 50%;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
@@ -30,6 +31,7 @@ export const ProductItemInfo = styled.div`
   align-items: end;
   gap: 6px;
   width: 100%;
+  height: 40px;
 `;
 
 export const ProductItemTitle = styled.span`
@@ -55,4 +57,11 @@ export const CartIconContainer = styled.div`
 
 export const CartAddIcon = styled.img`
   width: 16px;
+`;
+
+export const OutOfStockText = styled.h2`
+  font-size: var(--font-size-placeholder);
+  font-weight: var(--font-weight-placeholder);
+  width: 100%;
+  color: var(--color-red);
 `;

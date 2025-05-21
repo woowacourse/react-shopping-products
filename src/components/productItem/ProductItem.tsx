@@ -3,9 +3,7 @@ import Button from '../common/button/Button';
 import type { ProductItemType } from '../../types/data';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import CounterControl from '../common/counterControl/CounterControl';
-import validateCartInCount from '../../validate/validateCartCount';
-import useErrorMessageContext from '../../hooks/useErrorMessageContext';
-import tryValidation from '../../util/tryValidation';
+import { CLIENT_ERROR_MESSAGE } from '../../constants/errorMessages';
 
 interface ProductItemProps {
   cartInCount: number;
@@ -15,6 +13,10 @@ interface ProductItemProps {
   handleUpdateCartItem: (productId: number, quantity: number) => void;
 }
 
+// TODO : 품절처리
+// TODO : 품절된 상품일 경우 "최대 구매 수량에 도달했어요" 안보이도록 설정
+// TODO : 최대 구매 수량일 경우 버튼 disabled 처리
+
 const ProductItem = ({
   cartInCount,
   product,
@@ -22,23 +24,17 @@ const ProductItem = ({
   handleRemoveCartItem,
   handleUpdateCartItem,
 }: ProductItemProps) => {
-  const DEFAULT_PRODUCT_IMAGE = './default-product.png';
-
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const DEFAULT_PRODUCT_IMAGE = './default-product.png';
     event.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
   };
 
-  const { handleErrorMessage } = useErrorMessageContext();
+  const isMaxCountReached = cartInCount >= product.quantity;
 
   const handlePlusCount = () => {
     const newCartInCount = cartInCount + 1;
 
-    const isValidateCount = tryValidation(
-      () => validateCartInCount(newCartInCount, product.quantity),
-      handleErrorMessage,
-    );
-    if (!isValidateCount) return;
-
+    if (isMaxCountReached) return;
     if (cartInCount > 0) {
       handleUpdateCartItem(product.id, newCartInCount);
       return;
@@ -66,11 +62,15 @@ const ProductItem = ({
         <S.ProductItemInfo>
           <S.ProductItemTitle data-testid="product-name">{product.name}</S.ProductItemTitle>
           <S.ProductItemPrice>{product.price.toLocaleString()}원</S.ProductItemPrice>
+          {isMaxCountReached && (
+            <S.OutOfStockText>{CLIENT_ERROR_MESSAGE.OUT_OF_STOCK}</S.OutOfStockText>
+          )}
         </S.ProductItemInfo>
 
         {cartInCount > 0 ? (
           <CounterControl
             count={cartInCount}
+            maxCount={product.quantity}
             handlePlusCount={handlePlusCount}
             handleMinusCount={handleMinusCount}
           />

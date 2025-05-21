@@ -2,16 +2,22 @@ import styled from '@emotion/styled';
 
 interface CounterControlProps {
   count: number;
+  maxCount: number;
+  // TODO : handle을 on으로 시작하는 함수명으로 변경
   handlePlusCount: () => void;
   handleMinusCount: () => void;
 }
 
-const CounterControl = ({ count, handlePlusCount, handleMinusCount }: CounterControlProps) => {
+const CounterControl = (props: CounterControlProps) => {
+  const { count, maxCount, handlePlusCount, handleMinusCount } = props;
+
   return (
     <CountButtonContainer>
       <CounterButton onClick={handleMinusCount}>-</CounterButton>
       <CountNumber>{count}</CountNumber>
-      <CounterButton onClick={handlePlusCount}>+</CounterButton>
+      <CounterButton onClick={handlePlusCount} disabled={count >= maxCount}>
+        +
+      </CounterButton>
     </CountButtonContainer>
   );
 };
@@ -31,6 +37,11 @@ const CounterButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--color-light-grey);
+    color: var(--color-white);
+  }
 `;
 
 const CountNumber = styled.span`

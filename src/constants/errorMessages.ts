@@ -13,5 +13,5 @@ export const DEV_ERROR_MESSAGE = {
 };
 
 export const CLIENT_ERROR_MESSAGE = {
-  OUT_OF_STOCK: '재고 수량을 초과하여 담을 수 없습니다.',
+  OUT_OF_STOCK: '최대 구매 수량에 도달했어요',
 };

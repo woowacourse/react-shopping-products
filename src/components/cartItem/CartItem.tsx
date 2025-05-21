@@ -5,6 +5,7 @@ interface CartItemProps {
   count: number;
 }
 
+// TODO : 장바구니에 맞게 변경 필요
 const CartItem = ({ count }: CartItemProps) => {
   return (
     <CartItemContainer>
@@ -12,7 +13,12 @@ const CartItem = ({ count }: CartItemProps) => {
       <CartItemInfoContainer>
         <CartItemName>상품명</CartItemName>
         <CartItemPrice>10000원</CartItemPrice>
-        <CounterControl count={count} handlePlusCount={() => {}} handleMinusCount={() => {}} />
+        <CounterControl
+          count={count}
+          maxCount={20}
+          handlePlusCount={() => {}}
+          handleMinusCount={() => {}}
+        />
       </CartItemInfoContainer>
     </CartItemContainer>
   );

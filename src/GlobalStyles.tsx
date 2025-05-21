@@ -137,7 +137,8 @@ const themeVariables = css`
     --color-white: #ffffff;
     --color-light-grey: #e1e1e1;
     --color-grey: #d7d7d7;
-    --color-red: #ffc9c9;
+    --color-red: #f54d4d;
+    --color-light-red: #ffc9c9;
 
     --font-family: 'Noto Sans KR';
     --font-size-title: 24px;
