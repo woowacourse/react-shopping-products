@@ -1,7 +1,7 @@
 import { CartInfo } from "../../types";
-import ProductImage from "../Image/ProductImage";
-import ProductInfo from "./CardInfo";
-import CartButton from "../Button/CartButton";
+import ItemCardImage from "./ItemCardImage";
+import ItemCardInfo from "./ItemCardInfo";
+import ItemCardButton from "./ItemCardButton";
 import S from "./ItemCard.module.css";
 
 interface ItemCardProps {
@@ -15,11 +15,11 @@ interface ItemCardProps {
 const ItemCard = ({ id, imageUrl, name, price, cartInfo }: ItemCardProps) => {
 	return (
 		<div className={S.cardContainer}>
-			<ProductImage imageUrl={imageUrl} />
+			<ItemCardImage imageUrl={imageUrl} />
 			<div className={S.contentContainer}>
-				<ProductInfo name={name} price={price} />
+				<ItemCardInfo name={name} price={price} />
 				<div className={S.buttonWrap}>
-					<CartButton productId={id} cartInfo={cartInfo} />
+					<ItemCardButton productId={id} cartInfo={cartInfo} />
 				</div>
 			</div>
 		</div>

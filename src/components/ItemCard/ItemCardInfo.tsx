@@ -1,11 +1,11 @@
 import S from "./ItemCard.module.css";
 
-interface CardInfoProps {
+interface ItemCardInfoProps {
 	name: string;
 	price: number;
 }
 
-const CardInfo = ({ name, price }: CardInfoProps) => {
+const ItemCardInfo = ({ name, price }: ItemCardInfoProps) => {
 	return (
 		<div className={S.itemDescription}>
 			<p className={S.cardName}>{name}</p>
@@ -14,4 +14,4 @@ const CardInfo = ({ name, price }: CardInfoProps) => {
 	);
 };
 
-export default CardInfo;
+export default ItemCardInfo;
