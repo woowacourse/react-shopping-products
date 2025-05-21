@@ -1,17 +1,12 @@
 import { http, HttpResponse } from 'msw';
-import { ProductItemType } from '../../types/data';
-import { MOCK_PRODUCTS } from '../dummy';
+import { MOCK_PRODUCTS, MockProductsType } from '../dummy';
 
 interface GetProductsParams {
   productId: string;
 }
 
-interface GetProductsResponse extends ProductItemType {
-  quantity: number;
-}
-
 const handlers = [
-  http.get<never, GetProductsResponse>(/\/products(?:\?.*)?$/, ({ request }) => {
+  http.get<never, MockProductsType[]>(/\/products(?:\?.*)?$/, ({ request }) => {
     const url = new URL(request.url);
     const params = url.searchParams;
     const category = params.get('category');
@@ -30,7 +25,7 @@ const handlers = [
     return HttpResponse.json({ content: MOCK_PRODUCTS });
   }),
 
-  http.get<GetProductsParams, GetProductsResponse>('/products/:productId', async ({ params }) => {
+  http.get<GetProductsParams, MockProductsType[]>('/products/:productId', async ({ params }) => {
     const { productId } = params;
     const targetProduct = MOCK_PRODUCTS.find(({ id }) => String(id) === productId);
 

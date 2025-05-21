@@ -1,6 +1,10 @@
 import { ProductItemType } from '../types/data';
 
-export const MOCK_PRODUCTS: ProductItemType[] = Array.from({ length: 20 }, (_, index) => ({
+export interface MockProductsType extends ProductItemType {
+  quantity: number;
+}
+
+export const MOCK_PRODUCTS: MockProductsType[] = Array.from({ length: 20 }, (_, index) => ({
   id: index + 1,
   name: `상품 ${index + 1}`,
   category: index % 2 === 0 ? '식료품' : '패션잡화',
