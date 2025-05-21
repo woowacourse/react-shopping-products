@@ -2,9 +2,11 @@ import { useEffect, useReducer, useState } from "react";
 
 import fetchProductList from "../apis/product/fetchProductList";
 
+import { useErrorMessageContext } from "../context/ErrorMessageContext";
+
 import { ProductCategory } from "../types/ProductCategory";
 import { Sort } from "../types/Sort";
-import { useErrorMessageContext } from "../context/ErrorMessageContext";
+import { Product } from "../types/Product";
 
 const INIT_STATE = {
   isLoading: false,
@@ -36,7 +38,15 @@ interface useProductListProps {
   sort: Sort;
 }
 
-const useProductList = ({ category, sort }: useProductListProps) => {
+interface useProductListReturn {
+  state: typeof INIT_STATE;
+  productList: Product[];
+}
+
+const useProductList = ({
+  category,
+  sort,
+}: useProductListProps): useProductListReturn => {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
   const [productList, setProductList] = useState([]);
   const { handleErrorMessage } = useErrorMessageContext();
