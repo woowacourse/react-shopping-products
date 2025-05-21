@@ -1,4 +1,4 @@
-import CartButton from "../Button/CartButton";
+import HeaderCart from "../Image/HeaderCart";
 import { useCartContext } from "../Context/CartProvider";
 import S from "./Header.module.css";
 
@@ -9,7 +9,7 @@ const Header = () => {
 	return (
 		<div className={S.container}>
 			<p>SHOP</p>
-			<CartButton count={cartCount} />
+			<HeaderCart count={cartCount} />
 		</div>
 	);
 };
