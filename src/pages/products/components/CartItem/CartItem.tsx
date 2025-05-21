@@ -11,7 +11,7 @@ interface CartItemProps {
 
 export default function CartItem({ cartItem, refetchCartItems }: CartItemProps) {
   const {
-    product: { imageUrl, price, name, id },
+    product: { imageUrl, price, name },
     quantity,
   } = cartItem;
 

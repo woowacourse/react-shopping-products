@@ -1,4 +1,4 @@
-import { PRODUCTS, PATH, CONFIG, CART_ITEMS } from "@/constants";
+import { CONFIG, PATH, PRODUCTS } from "@/constants";
 import { http, HttpResponse } from "msw";
 
 export const handlers = [
