@@ -233,4 +233,18 @@ describe("useProducts 훅 - 상품 필터링 및 정렬 기능", () => {
     expect(productNames).toEqual(["패션잡화 상품2", "패션잡화 상품1"]);
     expect(productPrices).toEqual([40000, 30000]);
   });
+
+  it("API 에러 발생 시 에러 메시지를 설정한다.", async () => {
+    (ProductsAPI.get as Mock).mockResolvedValue({
+      error: "상품을 불러오는 중 오류가 발생했습니다.",
+    });
+
+    renderHook(() => useProducts(mockSetErrorMessage));
+
+    await waitFor(() => {
+      expect(mockSetErrorMessage).toHaveBeenCalledWith(
+        "상품을 불러오는 중 오류가 발생했습니다."
+      );
+    });
+  });
 });
