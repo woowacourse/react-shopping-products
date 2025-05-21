@@ -39,7 +39,7 @@ describe("useProducts", () => {
 		});
 
 		await waitFor(() => {
-			expect(result.current.products.every((product) => product.category === FILTER_TYPE)).toBe(true);
+			expect(result.current.products).toEqual(filteredProducts);
 		});
 	});
 
