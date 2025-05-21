@@ -1,4 +1,3 @@
-// MSW가 활성화된 경우를 위한 상대 경로 URL 사용
 const BASE_URL =
   import.meta.env.VITE_APP_USE_MSW === true ||
   import.meta.env.VITE_APP_USE_MSW === "true"
