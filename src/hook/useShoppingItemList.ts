@@ -10,7 +10,7 @@ const useShoppingItemList = () => {
   const { sortType, selectSort, resetSort } = useSort();
   const [data, setData] = useState<Product[]>([]);
   const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setIsLoading(true);
