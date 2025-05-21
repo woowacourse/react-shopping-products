@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import "@testing-library/jest-dom";
-import ProductListContainer from "../components/ProductListContainer/ProductListContainer";
+import ProductListContainer from "../components/product/ProductListContainer/ProductListContainer";
 
 vi.mock("../apis/product/fetchProductList", () => {
   return {

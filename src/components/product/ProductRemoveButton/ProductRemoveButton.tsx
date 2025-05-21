@@ -1,4 +1,4 @@
-import Button from "../common/Button/Button";
+import Button from "../../common/Button/Button";
 import RemoveShoppingCart from "/RemoveShoppingCart.svg";
 
 interface ProductRemoveButtonProps {

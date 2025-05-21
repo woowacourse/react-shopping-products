@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import Header from "./components/Header/Header";
-import ProductListContainer from "./components/ProductListContainer/ProductListContainer";
+import Header from "./components/product/Header/Header";
+import ProductListContainer from "./components/product/ProductListContainer/ProductListContainer";
 import Spinner from "./components/common/Spinner/Spinner";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
+import ErrorMessage from "./components/product/ErrorMessage/ErrorMessage";
 
 import fetchAddProduct from "./apis/product/fetchAddProduct";
 import fetchRemoveProduct from "./apis/product/fetchRemoveProduct";

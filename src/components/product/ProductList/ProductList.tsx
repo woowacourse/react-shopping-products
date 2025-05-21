@@ -1,6 +1,6 @@
 import ProductItem from "../ProductItem/ProductItem";
 
-import { Product as ProductType } from "../../types/Product";
+import { Product as ProductType } from "../../../types/Product";
 
 import * as Styled from "./ProductList.styled";
 

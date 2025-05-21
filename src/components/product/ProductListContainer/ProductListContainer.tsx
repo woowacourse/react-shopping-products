@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import ProductList from "../ProductList/ProductList";
 import Filter from "../Filter/Filter";
-import Spinner from "../common/Spinner/Spinner";
+import Spinner from "../../common/Spinner/Spinner";
 
 import * as Styled from "./ProductListContainer.styled";
 
-import { ProductCategory } from "../../types/ProductCategory";
-import { Sort } from "../../types/Sort";
-import { Product } from "../../types/Product";
+import { ProductCategory } from "../../../types/ProductCategory";
+import { Sort } from "../../../types/Sort";
+import { Product } from "../../../types/Product";
 
-import fetchProductList from "../../apis/product/fetchProductList";
+import fetchProductList from "../../../apis/product/fetchProductList";
 
 interface ProductListContainerProps {
   selectedProductIdList: string[];
