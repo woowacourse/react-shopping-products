@@ -5,13 +5,13 @@ import { ProductContainerLayout } from "./ProductContainer.style";
 interface ProductContainerProps {
   products: ProductType[];
   cartItemList: CartItemType[];
-  updateCardItemList: () => void;
+  onChange: () => void;
 }
 
 export default function ProductContainer({
   products,
   cartItemList,
-  updateCardItemList,
+  onChange,
 }: ProductContainerProps) {
   return (
     <div css={ProductContainerLayout}>
@@ -27,7 +27,7 @@ export default function ProductContainer({
             name={product.name}
             price={product.price}
             selectedCartItems={selectedCardItems}
-            onChange={updateCardItemList}
+            onChange={onChange}
           />
         );
       })}
