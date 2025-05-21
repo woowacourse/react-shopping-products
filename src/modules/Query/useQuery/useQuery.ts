@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "../QueryClientProvider/QueryClientProvider";
 
-type Status = "idle" | "loading" | "success" | "error";
-
 interface UseQueryProps<T> {
   queryKey: string;
   queryFn: () => Promise<T>;
