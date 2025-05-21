@@ -3,6 +3,7 @@ import { AddCart } from "@/components/icons";
 import { DEFAULT_IMAGE_URL } from "@/constants/images";
 import { GetCartItemsResponse, GetProductResponse } from "@/types";
 import * as S from "./ProductCard.styles";
+import { css } from "@emotion/react";
 
 interface ProductCardProps {
   product: GetProductResponse["content"][number];
@@ -27,6 +28,25 @@ export default function ProductCard({
           }}
           alt={product.name}
         />
+        {product.stock === 0 && (
+          <Text
+            variant="title-1"
+            css={css`
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.5);
+              color: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            `}
+          >
+            품절
+          </Text>
+        )}
       </Card.Preview>
       <Card.Content>
         <div>

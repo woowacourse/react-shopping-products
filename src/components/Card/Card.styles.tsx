@@ -10,6 +10,7 @@ export const CardWrapper = styled.div`
 export const CardPreview = styled.div`
   max-height: 112px;
   overflow: hidden;
+  position: relative;
   img {
     width: 100%;
     height: 100%;

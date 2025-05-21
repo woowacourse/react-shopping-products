@@ -19,11 +19,6 @@ export default function useQuery<T>({ queryKey, queryFn }: UseQueryProps<T>) {
     try {
       const cachedData = queryClient.get(queryKey);
 
-      if (cachedData) {
-        setData(cachedData);
-        setStatus("success");
-        return;
-      }
 
       const response = await queryFn();
       queryClient.set(queryKey, response);

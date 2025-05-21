@@ -1,5 +1,6 @@
 import { GetProductResponse } from "@/types";
 import BaseApi from "./BaseApi";
+import { PATH } from "@/constants";
 
 interface GetProductParams {
   page?: number;
@@ -18,6 +19,6 @@ export default class ProductApi extends BaseApi {
       size: String(size),
       sort,
     });
-    return BaseApi.get(`/products?${searchParams.toString()}`);
+    return BaseApi.get(`${PATH.products}?${searchParams.toString()}`);
   }
 }

@@ -18,6 +18,7 @@ interface Product {
   price: number;
   imageUrl: string;
   category: string;
+  stock: number;
 }
 
 interface Pageable {
