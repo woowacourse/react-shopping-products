@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { cartItems as C0, products as P0 } from "./data";
+import { CartItem } from "../types/cartContents";
 
 type PaginatedResponse<T> = {
   content: T[];
@@ -248,11 +249,11 @@ export const handlers = [
     return new HttpResponse(null, { status: 204 });
   }),
   http.post(/\/orders$/, async ({ request }) => {
-    const body = (await request.json()) as CartItemRequest[];
-
+    console.log("MSW INTERCEPTED ORDERS POST:", request.url);
+    const body = (await request.json()) as CartItem[];
     for (const item of body) {
       const qty = Number(item.quantity);
-      const product = products.find((p) => p.id === item.productId);
+      const product = products.find((p) => p.id === item.product.id);
 
       // 1) 상품이 없는 경우
       if (!product) {
