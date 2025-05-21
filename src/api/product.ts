@@ -1,5 +1,6 @@
 import { CategoryOption, sortOption } from "../constants";
-import { apiClient } from "./apiUtils";
+import { ProductResponse } from "../types/product";
+import { apiClient } from "../utils/apiUtils";
 
 interface getProductProps {
   category: CategoryOption;
@@ -9,7 +10,7 @@ interface getProductProps {
 export default async function getProducts({
   sortBy,
   category,
-}: getProductProps) {
+}: getProductProps): Promise<ProductResponse> {
   const params = new URLSearchParams({
     page: "0",
     size: "20",

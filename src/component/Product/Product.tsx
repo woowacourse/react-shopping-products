@@ -1,5 +1,5 @@
 import { deleteCartItem, postCartItem } from "../../api/cartItem";
-import { CartItemType } from "../../constants";
+import { CartItemType } from "../../types/cartItem";
 
 import Button from "../Button/Button";
 import {
@@ -12,10 +12,10 @@ import {
 } from "./Product.style";
 
 interface ProductProps {
-  id: string;
+  id: number;
   imageUrl: string;
   name: string;
-  price: string;
+  price: number;
   selectedCartItems: CartItemType[];
   onChange: () => void;
 }
@@ -59,7 +59,7 @@ export default function Product({
   };
 
   return (
-    <div id={id} css={productLayout}>
+    <div id={id.toString()} css={productLayout}>
       <img css={imgLayout} src={imageUrl ?? "./default-img.png"} />
       <div css={contentLayout}>
         <div css={descriptionLayout}>

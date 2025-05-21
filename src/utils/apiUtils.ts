@@ -41,7 +41,7 @@ export const apiClient = {
         getRequestOptions("GET", undefined, withAuth)
       )
     ),
-  post: (url: string, body: any, withAuth = true) =>
+  post: (url: string, body: Record<string, number>, withAuth = true) =>
     tryFetch(() =>
       fetch(
         `${import.meta.env.VITE_BASE_URL}${url}`,

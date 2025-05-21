@@ -15,13 +15,10 @@ import {
   pageLayout,
   selectorBoxLayout,
 } from "./ShopPage.style";
-import {
-  CartItemType,
-  CategoryOption,
-  FilterOption,
-  ProductType,
-} from "../constants";
+import { CategoryOption, FilterOption } from "../constants";
 import Main from "../component/Main/Main";
+import { ProductType } from "../types/product";
+import { CartItemType } from "../types/cartItem";
 
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");

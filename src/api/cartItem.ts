@@ -1,4 +1,4 @@
-import { apiClient } from "./apiUtils";
+import { apiClient } from "../utils/apiUtils";
 
 export async function getCartItems({ sortBy }: { sortBy: string }) {
   const params = new URLSearchParams({
