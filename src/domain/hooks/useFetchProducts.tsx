@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import getProducts from "../api/getProducts";
-import type { ProductTypes } from "../types/ProductTypes";
+import getProducts from "../../api/getProducts";
+import type { ProductTypes } from "../../types/ProductTypes";
 
 export type Status = "idle" | "loading" | "success" | "error";
 

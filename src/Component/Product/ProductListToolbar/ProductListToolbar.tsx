@@ -1,7 +1,7 @@
 import SelectBox from "../../Common/SelectBox/SelectBox";
 import { ProductTypes } from "../../../types/ProductTypes";
-import useCartContext from "../../../contexts/useCartContext";
-import { useProductFilters } from "../../../hooks/useProductFilter";
+import useCartContext from "../../../domain/contexts/useCartContext";
+import { useProductFilters } from "../../../domain/hooks/useProductFilter";
 import {
   SelectBoxContainer,
   Container,

@@ -1,5 +1,5 @@
 import { ProductTypes } from "../../../types/ProductTypes";
-import { useToggleCartItem } from "../../../hooks/useToggleCartItem";
+import { useToggleCartItem } from "../../../domain/hooks/useToggleCartItem";
 import { CartItemTypes } from "../../../types/CartItemType";
 import addShoppingCartIcon from "../../../assets/addShoppingCartIcon.png";
 import removeShoppingCartIcon from "../../../assets/removeShoppingCartIcon.png";

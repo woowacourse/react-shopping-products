@@ -1,4 +1,4 @@
-import { CartItemTypes } from "../types/CartItemType";
+import { CartItemTypes } from "../../types/CartItemType";
 
 export function findIsCartItem(
   items: CartItemTypes[],

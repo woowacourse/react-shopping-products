@@ -1,5 +1,5 @@
 import shoppingBagIcon from "../../../assets/shoppingBagIcon.png";
-import useCartContext from "../../../contexts/useCartContext";
+import useCartContext from "../../../domain/contexts/useCartContext";
 import CountBox from "../CountBox/CountBox";
 import {
   StyledHeader,

@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
-import getProducts from "../api/getProducts";
-import type { ProductTypes } from "../types/ProductTypes";
+import getProducts from "../../api/getProducts";
+import type { ProductTypes } from "../../types/ProductTypes";
 
 export type FilterValue = "all" | "grocery" | "fashion" | "low" | "high";
 

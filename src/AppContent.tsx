@@ -2,7 +2,7 @@ import Header from "./Component/Layout/Header/Header";
 import Body from "./Component/Layout/Body/Body";
 import ProductListContainer from "./Component/Product/ProductListContainer/ProductListContainer";
 import ErrorBox from "./Component/Common/ErrorBox/ErrorBox";
-import useCartContext from "./contexts/useCartContext";
+import useCartContext from "./domain/contexts/useCartContext";
 import styled from "@emotion/styled";
 
 export default function AppContent() {

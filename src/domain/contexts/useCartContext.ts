@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { CartItemTypes } from "../types/CartItemType";
+import type { CartItemTypes } from "../../types/CartItemType";
 
 export type Status = "idle" | "loading" | "success" | "error";
 

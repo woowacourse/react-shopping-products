@@ -1,8 +1,8 @@
 import React from "react";
 import { useCallback, useEffect, useState, useMemo } from "react";
-import { CartItemTypes } from "../types/CartItemType";
-import getShoppingCart from "../api/getShoppingCart";
-import { findIsCartItem, isCartFull } from "../utils/cart";
+import { CartItemTypes } from "../../types/CartItemType";
+import getShoppingCart from "../../api/getShoppingCart";
+import { findIsCartItem, isCartFull } from "../cart/cart";
 import { CartContext } from "./useCartContext";
 
 type Status = "idle" | "loading" | "success" | "error";

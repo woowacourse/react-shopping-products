@@ -1,5 +1,5 @@
 import AppContent from "./AppContent";
-import { CartProvider } from "./contexts/CartProvider";
+import { CartProvider } from "./domain/contexts/CartProvider";
 
 function App() {
   return (

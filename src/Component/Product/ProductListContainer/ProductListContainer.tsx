@@ -1,8 +1,8 @@
 import ProductList from "../ProductList/ProductList";
 import ProductListToolbar from "../ProductListToolbar/ProductListToolbar";
 import Spinner from "../../Common/Spinner";
-import useCartContext from "../../../contexts/useCartContext";
-import useFetchProducts from "../../../hooks/useFetchProducts";
+import useCartContext from "../../../domain/contexts/useCartContext";
+import useFetchProducts from "../../../domain/hooks/useFetchProducts";
 import { StyledSpinnerWrapper } from "./ProductListContainer.styles";
 
 export default function ProductListContainer() {
