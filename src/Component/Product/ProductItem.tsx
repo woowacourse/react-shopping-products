@@ -5,11 +5,13 @@ import { CartItemTypes } from '../../types/CartItemType';
 import { useEffect, useState } from 'react';
 import CountControl from './CountControl';
 import patchShoppingCart from '../../api/patchShoppingCart';
+import { css } from '@emotion/react';
 
 type SetProducts = {
   updateCartItems: () => void;
   getMatchCartItem: (id: number) => CartItemTypes | undefined;
   checkMax: () => boolean;
+  quantity: number;
 };
 
 export default function ProductItem({
@@ -20,20 +22,22 @@ export default function ProductItem({
   updateCartItems,
   getMatchCartItem,
   checkMax,
+  quantity,
 }: ProductTypes & SetProducts) {
-  const quantity = getMatchCartItem(id)?.quantity;
+  const cartItemQuantity = getMatchCartItem(id)?.quantity;
 
   const [active, setActive] = useState(false);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    setCount(quantity ?? 0);
-  }, [quantity]);
+    setCount(cartItemQuantity ?? 0);
+  }, [cartItemQuantity]);
 
   const isItemInCart = getMatchCartItem(id) ? true : false;
   const cartItemId = getMatchCartItem(id)?.id;
 
   const handleItemClick = () => {
+    if (quantity === 0) return;
     setActive((prev) => !prev);
   };
 
@@ -69,7 +73,10 @@ export default function ProductItem({
 
   return (
     <StyledLi id={String(id)}>
-      <StyledImgWrapper imageUrl={imageUrl}></StyledImgWrapper>
+      <StyledImgWrapper
+        imageUrl={imageUrl}
+        isSoldout={quantity === 0}
+      ></StyledImgWrapper>
       <StyledProductInfoWrapper>
         <StyledProductInfo>
           <StyledTitle>{name}</StyledTitle>
@@ -83,6 +90,7 @@ export default function ProductItem({
               isItemInCart={!isItemInCart}
               onClick={handleItemClick}
               data-testid={!isItemInCart ? `add-btn-${id}` : `remove-btn-${id}`}
+              isSoldout={quantity === 0}
             >
               <StyledImg
                 src="./addShoppingCartIcon.png"
@@ -100,10 +108,19 @@ export default function ProductItem({
 const StyledLi = styled.li`
   height: 224px;
   border-radius: 8px;
+  position: relative;
 `;
 
-type ImgWrapperProps = Pick<ProductTypes, 'imageUrl'>;
-type StyledButtonProps = Pick<ProductTypes, 'isItemInCart'>;
+type ImgWrapperProps = Pick<ProductTypes, 'imageUrl'> & { isSoldout: boolean };
+type StyledButtonProps = Pick<ProductTypes, 'isItemInCart'> & {
+  isSoldout: boolean;
+};
+
+const disabledStyles = css`
+  background: #000000;
+  opacity: 0.2;
+  cursor: auto;
+`;
 
 const StyledImgWrapper = styled.div<ImgWrapperProps>`
   width: 100%;
@@ -112,6 +129,25 @@ const StyledImgWrapper = styled.div<ImgWrapperProps>`
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 8px 8px 0px 0px;
+
+  ${({ isSoldout }) =>
+    isSoldout &&
+    css`
+      &::before {
+        height: 50%;
+        content: 'SOLDOUT';
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: bold;
+        border-radius: 8px 8px 0 0;
+      }
+    `}
 `;
 
 const StyledProductInfoWrapper = styled.div`
@@ -148,9 +184,9 @@ const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
   border: none;
   cursor: pointer;
+
+  ${({ isSoldout }) => isSoldout && disabledStyles}
 `;
-// background-color: ${(props) => (props.isItemInCart ? '#000000' : '#EAEAEA')};
-// color: ${(props) => (props.isItemInCart ? '#FFFFFF' : '#000000')};
 
 const StyledImg = styled.img`
   width: 15px;
