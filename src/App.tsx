@@ -7,6 +7,7 @@ import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import styled from "@emotion/styled";
 
 import useCartItems from "./hooks/useCartItems";
+import Spinner from "./components/common/Spinner/Spinner";
 
 function App() {
   const { errorMessage } = useErrorMessageContext();
@@ -27,19 +28,20 @@ function App() {
     $product && removeCartItem($product.id);
   };
 
+  const isShow = state.isSuccess || state.isFetching;
   return (
     <Container>
       <Wrapper>
         <Header cartItems={selectedItemProductId}></Header>
         {errorMessage && <ErrorMessage />}
-        {/* {state.isLoading && <Spinner />} */}
-        {/* {state.isSuccess && ( */}
-        <Main
-          cartItems={selectedItemProductId}
-          handleAddProduct={handleAddProduct}
-          handleRemoveProduct={handleRemoveProduct}
-        />
-        {/* )} */}
+        {state.isLoading && <Spinner />}
+        {isShow && (
+          <Main
+            cartItems={selectedItemProductId}
+            handleAddProduct={handleAddProduct}
+            handleRemoveProduct={handleRemoveProduct}
+          />
+        )}
       </Wrapper>
     </Container>
   );

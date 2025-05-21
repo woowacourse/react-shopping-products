@@ -26,7 +26,7 @@ const fetchRemoveProduct = async ({
 
   const response = await fetch(url, options);
   if (!response.ok) {
-    throw new Error("상품을 빼는데 실패했습니다.");
+    throw new Error("장바구니에서 상품을 빼는데 실패했습니다.");
   }
 };
 
