@@ -1,30 +1,15 @@
-import { ProductItemType } from "@/types/product";
 import ProductItem from "./Item";
 import * as S from "./ProductList.styled";
-import { CartItemType, SetCartItems } from "@/types/cartItem";
+import { useProductContext } from "@/context/ProductContext";
 
-interface ProductListProps {
-  productData: ProductItemType[];
-  cartItems: CartItemType[];
-  setCartItems: SetCartItems;
-}
-
-function ProductList({
-  productData,
-  cartItems,
-  setCartItems,
-}: ProductListProps) {
+function ProductList() {
+  const { productData } = useProductContext();
   return (
     <>
       {productData.length > 0 ? (
         <S.ProductList>
           {productData.map((productItem) => (
-            <ProductItem
-              key={productItem.id}
-              product={productItem}
-              cartItems={cartItems}
-              setCartItems={setCartItems}
-            />
+            <ProductItem key={productItem.id} product={productItem} />
           ))}
         </S.ProductList>
       ) : (

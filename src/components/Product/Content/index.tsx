@@ -1,21 +1,14 @@
 import ProductList from "./List";
 import * as S from ".//ProductContent.styled";
 import FilterSortControl from "./FilterSortControl";
-import { CartItemType, SetCartItems } from "@/types/cartItem";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ErrorFallback from "@/components/Fallback/ErrorFallback";
 import LoadingFallback from "@/components/Fallback/LoadingFallback";
 
 import { useProductContext } from "@/context/ProductContext";
 
-interface ProductContentProps {
-  cartItems: CartItemType[];
-  setCartItems: SetCartItems;
-}
-
-function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
+function ProductContent() {
   const {
-    productData,
     isLoading,
     filterOption,
     sortOption,
@@ -40,11 +33,7 @@ function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
             <ErrorFallback message="상품 목록을 가져오는 중 에러가 발생하였습니다." />
           }
         >
-          <ProductList
-            productData={productData}
-            cartItems={cartItems}
-            setCartItems={setCartItems}
-          />
+          <ProductList />
         </ErrorBoundary>
       )}
     </S.Container>

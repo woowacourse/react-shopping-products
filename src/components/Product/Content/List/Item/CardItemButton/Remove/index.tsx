@@ -1,24 +1,25 @@
 import Button from "@/components/Button";
 import removeCartItemIcon from "@/assets/icons/remove-cart-item.svg";
-import { SetCartItems } from "@/types/cartItem";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
 import useMutation from "@/hooks/useMutation";
 import AlertToast from "@/components/AlertToast";
+import { useCartContext } from "@/context/CartContext";
 
 interface RemoveCartItemButton {
   id: number;
-  setCartItems: SetCartItems;
 }
 
-function RemoveCartItemButton({ id, setCartItems }: RemoveCartItemButton) {
+function RemoveCartItemButton({ id }: RemoveCartItemButton) {
   const { mutate, isLoading, error } = useMutation(() => removeCartItem(id));
+
+  const { setCartItemData } = useCartContext();
 
   const handleClick = async () => {
     try {
       await mutate();
       const cartItems = await getCartItems();
-      setCartItems(cartItems);
+      setCartItemData(cartItems);
     } catch (error) {
       // mutate에서 에러가 발생한 경우 이후 로직을 실행하지 않게 try-catch문을 사용합니다.
     }

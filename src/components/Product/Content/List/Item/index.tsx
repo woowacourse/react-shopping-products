@@ -2,19 +2,19 @@ import { ProductItemType } from "@/types/product";
 import AddCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Add";
 import RemoveCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Remove";
 import * as S from "./ProductItem.styled";
-import { CartItemType, SetCartItems } from "@/types/cartItem";
 import defaultImage from "@/assets/images/planet-error.png";
 import { SyntheticEvent } from "react";
+import { useCartContext } from "@/context/CartContext";
 
 interface ProductItemProps {
   product: ProductItemType;
-  cartItems: CartItemType[];
-  setCartItems: SetCartItems;
 }
 
-function ProductItem({ product, cartItems, setCartItems }: ProductItemProps) {
+function ProductItem({ product }: ProductItemProps) {
+  const { cartItemData } = useCartContext();
+
   const { id, name, price, imageUrl } = product;
-  const findCartItem = cartItems.find(({ product }) => product.id === id);
+  const findCartItem = cartItemData.find(({ product }) => product.id === id);
 
   const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = defaultImage;
@@ -32,12 +32,9 @@ function ProductItem({ product, cartItems, setCartItems }: ProductItemProps) {
         </S.ProductInfo>
         <S.ButtonWrapper>
           {findCartItem ? (
-            <RemoveCartItemButton
-              id={findCartItem.id}
-              setCartItems={setCartItems}
-            />
+            <RemoveCartItemButton id={findCartItem.id} />
           ) : (
-            <AddCartItemButton id={id} setCartItems={setCartItems} />
+            <AddCartItemButton id={id} />
           )}
         </S.ButtonWrapper>
       </S.Content>
