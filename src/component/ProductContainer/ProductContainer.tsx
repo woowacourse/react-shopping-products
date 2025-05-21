@@ -21,6 +21,7 @@ export default function ProductContainer({
         );
         return (
           <Product
+            key={product.id}
             id={product.id}
             imageUrl={product.imageUrl}
             name={product.name}
