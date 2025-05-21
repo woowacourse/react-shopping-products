@@ -20,6 +20,9 @@ import Main from "../component/Main/Main";
 import { ProductType } from "../types/product";
 import { CartItemType } from "../types/cartItem";
 
+const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
+const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
+
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");
   const [filterValue, setFilterValue] = useState<FilterOption>("낮은 가격순");
@@ -29,8 +32,6 @@ export default function ShopPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   const selectedProductCount = cartItemList.length;
-  const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
-  const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
 
   const updateCardItemList = async () => {
     (async () => {
