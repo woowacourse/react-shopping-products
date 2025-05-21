@@ -1,14 +1,11 @@
 import { useCallback } from "react";
 import postShoppingCart from "../api/postShoppingCart";
 import deleteShoppingCart from "../api/deleteShoppingCart";
-import type { CartItemTypes } from "../types/CartItemType";
+import useCartContext from "../contexts/CartContext";
 
-export function useToggleCartItem(
-  productId: number,
-  getMatchCartItem: (id: number) => CartItemTypes | undefined,
-  checkMax: () => boolean,
-  updateCartItems: () => Promise<void>
-) {
+export function useToggleCartItem(productId: number) {
+  const { getMatchCartItem, checkMax, updateCartItems } = useCartContext();
+
   return useCallback(async () => {
     if (checkMax()) {
       throw new Error("50개 초과");
