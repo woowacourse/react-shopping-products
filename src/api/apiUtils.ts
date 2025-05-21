@@ -1,14 +1,10 @@
 type optionMethod = "GET" | "POST" | "DELETE";
 
-export const getRequestOptions = ({
-  method,
-  withAuth = false,
-  body,
-}: {
-  method: optionMethod;
-  withAuth?: boolean;
-  body?: Record<string, number>;
-}) => {
+export const getRequestOptions = (
+  method: optionMethod,
+  body?: Record<string, number>,
+  withAuth?: boolean
+) => {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
@@ -24,11 +20,7 @@ export const getRequestOptions = ({
   return options;
 };
 
-export const tryFetch = async ({
-  fetchFunction,
-}: {
-  fetchFunction: () => Promise<Response>;
-}) => {
+export const tryFetch = async (fetchFunction: () => Promise<Response>) => {
   try {
     const response = await fetchFunction();
     if (!response.ok) {
@@ -39,4 +31,28 @@ export const tryFetch = async ({
     console.error("`API 통신 중 오류 발생:", error);
     throw error;
   }
+};
+
+export const apiClient = {
+  get: (url: string, withAuth = true) =>
+    tryFetch(() =>
+      fetch(
+        `${import.meta.env.VITE_BASE_URL}${url}`,
+        getRequestOptions("GET", undefined, withAuth)
+      )
+    ),
+  post: (url: string, body: any, withAuth = true) =>
+    tryFetch(() =>
+      fetch(
+        `${import.meta.env.VITE_BASE_URL}${url}`,
+        getRequestOptions("POST", body, withAuth)
+      )
+    ),
+  delete: (url: string, withAuth = true) =>
+    tryFetch(() =>
+      fetch(
+        `${import.meta.env.VITE_BASE_URL}${url}`,
+        getRequestOptions("DELETE", undefined, withAuth)
+      )
+    ),
 };
