@@ -6,6 +6,7 @@ import { URLS } from "../../constants/url";
 import { useCartContext } from "../../contexts/CartContext";
 import QuantityButton from "../QuantityButton/QuantityButton";
 import { useProductContext } from "../../contexts/ProductContext";
+import { commonOpts } from "../../constants/header";
 
 interface CartButtonProps extends ComponentProps<"button"> {
   productId: number;
@@ -20,29 +21,23 @@ export default function CartButton({
   const { showError } = useErrorContext();
   const { fetchCart, cartData } = useCartContext();
   const { productsData } = useProductContext();
-  const [isFetchLoading, setIsFetchLoading] = useState(false);
-  const isInCart = cartData?.some((p) => p.product.id === productId);
 
-  const productQuantity = Number(
-    productsData?.find((product) => product.id === productId)?.quantity
+  const [loading, setLoading] = useState(false);
+
+  const inCart = useMemo(
+    () => cartData?.some((p) => p.product.id === productId),
+    [cartData, productId]
+  );
+  const availableQty = useMemo(
+    () => productsData?.find((p) => p.id === productId)?.quantity ?? 0,
+    [productsData, productId]
   );
 
-  const addOptions = useMemo(
-    () => ({
-      headers: {
-        Authorization: `Basic ${btoa(
-          `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-        )}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        productId: productId,
-        quantity: 1,
-      }),
-    }),
-    [productId]
-  );
+  const addOptions = {
+    ...commonOpts,
+    method: "POST",
+    body: JSON.stringify({ productId, quantity: 1 }),
+  };
 
   const { fetcher: addCartItem, error: addError } = useFetch(
     URLS.CART_ITEMS,
@@ -51,54 +46,46 @@ export default function CartButton({
   );
 
   useEffect(() => {
-    if (addError) {
-      showError(addError);
-    }
+    if (addError) showError(addError);
   }, [addError, showError]);
 
-  const handleAddCartItem = async () => {
+  const handleAdd = async () => {
+    setLoading(true);
     try {
-      setIsFetchLoading(true);
-      if (cartData?.length && cartData.length >= 50) {
-        throw new Error(`장바구니에 50개 이상의 품목을 담을수 없습니다.`);
+      if ((cartData?.length ?? 0) >= 50) {
+        throw new Error("장바구니에 50개 이상의 품목을 담을수 없습니다.");
       }
       await addCartItem();
       await fetchCart();
-    } catch (error) {
-      if (error instanceof Error) {
-        showError(error);
-      }
+    } catch (err) {
+      if (err instanceof Error) showError(err);
     } finally {
-      setIsFetchLoading(false);
+      setLoading(false);
     }
   };
-  if (isInCart) {
+
+  if (inCart) {
     return <QuantityButton productId={productId} cartItemId={cartItemId} />;
   }
-  if (productQuantity === 0) {
+
+  const commonProps = {
+    ...props,
+    disabled: loading || availableQty === 0,
+    css: [styles.buttonCss, styles.notInCartCss] as const,
+  };
+
+  if (availableQty === 0) {
     return (
-      <button
-        {...props}
-        disabled={true}
-        css={[styles.buttonCss, styles.notInCartCss]}
-      >
-        <>
-          <span>품절!</span>
-        </>
+      <button {...commonProps}>
+        <span>품절!</span>
       </button>
     );
   }
+
   return (
-    <button
-      {...props}
-      onClick={handleAddCartItem}
-      disabled={isFetchLoading}
-      css={[styles.buttonCss, styles.notInCartCss]}
-    >
-      <>
-        <img src="assets/filledCart.svg" />
-        <span>담기</span>
-      </>
+    <button {...commonProps} onClick={handleAdd}>
+      <img src="assets/filledCart.svg" alt="장바구니 아이콘" />
+      <span>담기</span>
     </button>
   );
 }

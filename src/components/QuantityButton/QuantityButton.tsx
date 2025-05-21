@@ -4,7 +4,7 @@ import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
 import { useCartContext } from "../../contexts/CartContext";
 import { URLS } from "../../constants/url";
-
+import { commonOpts } from "../../constants/header";
 interface QuantityButtonProps {
   productId: number;
   cartItemId: number;
@@ -20,16 +20,6 @@ export default function QuantityButton({
 
   const quantity =
     cartData?.find((item) => item.product.id === productId)?.quantity ?? 0;
-
-  const authHeader = `Basic ${btoa(
-    `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-  )}`;
-  const commonOpts = {
-    headers: {
-      Authorization: authHeader,
-      "Content-Type": "application/json",
-    },
-  };
 
   const { fetcher: deleteItem, error: deleteError } = useFetch(
     `${URLS.CART_ITEMS}/${cartItemId}`,
