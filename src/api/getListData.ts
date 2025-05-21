@@ -2,7 +2,7 @@ import { baseAPI } from './baseAPI';
 import { ProductData } from './type';
 import { convertResponseToProduct } from '../components/features/product/responseMapper';
 
-export async function getListData(filterOption: {
+export async function getProductsData(filterOption: {
   category: { value: string };
   sort: { value: string };
 }) {
@@ -13,7 +13,9 @@ export async function getListData(filterOption: {
       ? `category=${filterOption.category.value}&`
       : '';
   const basePath = `/products?${categoryPath}page=${page}&size=${size}&sort=price,${filterOption.sort.value}`;
-
+  // const delay = (ms: number) =>
+  //   new Promise((resolve) => setTimeout(resolve, ms));
+  // await delay(5000);
   const data = await baseAPI<ProductData>({
     method: 'GET',
     path: basePath,

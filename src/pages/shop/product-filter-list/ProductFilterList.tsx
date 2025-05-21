@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { Suspense, useMemo, useState } from 'react';
-import { getListData } from '../../../api/getListData';
 import { wrapPromise } from '../../../api/wrapPromise';
 import { Flex, Loading } from '../../../components/common';
 import { DropdownOptionType } from '../../../components/common/Dropdown';
 import ProductList from '../../../components/features/product/product-list/ProductList';
 import ShopFilter from '../../../shop/components/filter/ShopFilter';
+import { getProductsData } from '../../../api/getListData';
 
 function ProductFilterList() {
   const [filterOption, setFilterOption] = useState({
@@ -14,7 +14,7 @@ function ProductFilterList() {
   });
 
   const listPromiseData = useMemo(
-    () => getListData(filterOption),
+    () => getProductsData(filterOption),
     [filterOption]
   );
 
