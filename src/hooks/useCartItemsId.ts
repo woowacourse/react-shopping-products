@@ -1,10 +1,11 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 
 import fetchCartItems from "../apis/product/fetchCartItems";
 import fetchAddProduct from "../apis/product/fetchAddProduct";
 import fetchRemoveProduct from "../apis/product/fetchRemoveProduct";
 
 import { useErrorMessageContext } from "../context/ErrorMessageContext";
+import { useCartItemsIdContext } from "../context/CartItemsContext";
 
 import CartItem from "../types/CartItem";
 
@@ -57,14 +58,9 @@ const reducer = (state: typeof INIT_STATE, action: { type: string }) => {
   }
 };
 
-type selectedItemID = {
-  cartId: string;
-  productId: string;
-};
-
-const useCartItems = () => {
+const useCartItemsId = () => {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
-  const [cartItems, setCartItems] = useState<selectedItemID[]>([]);
+  const { cartItemsId, handleCartItemsId } = useCartItemsIdContext();
   const { handleErrorMessage } = useErrorMessageContext();
 
   useEffect(() => {
@@ -81,7 +77,7 @@ const useCartItems = () => {
           size: "50",
         },
       });
-      setCartItems(
+      handleCartItemsId(
         content.map((cartItem: CartItem) => ({
           productId: cartItem.product.id.toString(),
           cartId: cartItem.id.toString(),
@@ -94,9 +90,9 @@ const useCartItems = () => {
     }
   };
 
-  const addCartItem = async (id: string) => {
+  const addCartItemId = async (id: string) => {
     dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
-    if (cartItems.length >= 50) {
+    if (cartItemsId.length >= 50) {
       handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
       dispatch({ type: ACTION_TYPE.FETCH_FAIL });
       return;
@@ -129,10 +125,10 @@ const useCartItems = () => {
     dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
   };
 
-  const removeCartItem = async (id: string) => {
+  const removeCartItemId = async (id: string) => {
     try {
       dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
-      const cartItem = cartItems.find((item) => item.productId === id);
+      const cartItem = cartItemsId.find((itemId) => itemId.productId === id);
 
       if (!cartItem) {
         dispatch({ type: ACTION_TYPE.FETCH_FAIL });
@@ -164,7 +160,7 @@ const useCartItems = () => {
     }
   };
 
-  return { state, cartItems, addCartItem, removeCartItem };
+  return { state, cartItemsId, addCartItemId, removeCartItemId };
 };
 
-export default useCartItems;
+export default useCartItemsId;
