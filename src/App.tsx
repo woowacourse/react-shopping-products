@@ -2,7 +2,7 @@ import { ProductsPage } from "./pages/products";
 import * as S from "./App.styles";
 import { ErrorProvider } from "./context";
 import { ErrorPopup } from "./components";
-import QueryProvider from "./modules/Query/QueryProvider/QueryProvider";
+import QueryProvider from "./modules/Query/QueryProvider";
 
 function App() {
   return (

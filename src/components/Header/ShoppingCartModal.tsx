@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import { Modal, Text } from "..";
 import { CartItem } from "@/pages/products/components";
 import { CartItemApi } from "@/apis";
-import useQuery from "@/modules/Query/useQuery/useQuery";
+import useQuery from "@/modules/Query/useQuery";
 import * as S from "./ShoppingCartModal.styles";
 export default function ShoppingCartModal() {
   const { data: cartItems, refetch: refetchCartItems } = useQuery({
