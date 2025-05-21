@@ -4,19 +4,21 @@ import * as S from "./ProductList.styled";
 import { CartItemType, SetCartItems } from "@/types/cartItem";
 
 interface ProductListProps {
-  resource: { read: () => ProductItemType[] };
+  productData: ProductItemType[];
   cartItems: CartItemType[];
   setCartItems: SetCartItems;
 }
 
-function ProductList({ resource, cartItems, setCartItems }: ProductListProps) {
-  const products = resource.read();
-
+function ProductList({
+  productData,
+  cartItems,
+  setCartItems,
+}: ProductListProps) {
   return (
     <>
-      {products.length > 0 ? (
+      {productData.length > 0 ? (
         <S.ProductList>
-          {products.map((productItem) => (
+          {productData.map((productItem) => (
             <ProductItem
               key={productItem.id}
               product={productItem}

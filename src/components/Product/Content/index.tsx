@@ -1,14 +1,14 @@
 import ProductList from "./List";
 import * as S from ".//ProductContent.styled";
 import FilterSortControl from "./FilterSortControl";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
 import { getProducts } from "@/apis/products/getProducts";
-import { wrapPromise } from "@/apis/wrapPromise";
 import { CartItemType, SetCartItems } from "@/types/cartItem";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ErrorFallback from "@/components/Fallback/ErrorFallback";
 import LoadingFallback from "@/components/Fallback/LoadingFallback";
+import { ProductItemType } from "@/types/product";
 
 interface ProductContentProps {
   cartItems: CartItemType[];
@@ -18,10 +18,16 @@ interface ProductContentProps {
 function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
   const [filterOption, setFilterOption] = useState<FilterOption>("전체");
   const [sortOption, setSortOption] = useState<SortOption>("낮은 가격순");
-  const productResource = useMemo(
-    () => wrapPromise(getProducts({ filterOption, sortOption })),
-    [filterOption, sortOption]
-  );
+  const [productData, setProductData] = useState<ProductItemType[]>([]);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const productData = await getProducts({ filterOption, sortOption });
+      setProductData(productData);
+    }
+
+    fetchProducts();
+  }, [filterOption, sortOption]);
 
   const handleFilterSelect = (option: FilterOption) => {
     setFilterOption(option);
@@ -51,7 +57,7 @@ function ProductContent({ cartItems, setCartItems }: ProductContentProps) {
           }
         >
           <ProductList
-            resource={productResource}
+            productData={productData}
             cartItems={cartItems}
             setCartItems={setCartItems}
           />

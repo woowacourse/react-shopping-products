@@ -1,20 +1,24 @@
 import { getCartItems } from "@/apis/cartItems/getCartItems";
-import { wrapPromise } from "@/apis/wrapPromise";
 import Header from "@/components/Header";
 import ProductContent from "@/components/Product/Content";
 import { CartItemType } from "@/types/cartItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const cartItemResource = wrapPromise(getCartItems());
 function ProductPage() {
-  const [cartItems, setCartItems] = useState<CartItemType[]>(() =>
-    cartItemResource.read()
-  );
+  const [cartItemData, setCartItemData] = useState<CartItemType[]>([]);
+
+  useEffect(() => {
+    async function fetchCartItems() {
+      const cartItems = await getCartItems();
+      setCartItemData(cartItems);
+    }
+    fetchCartItems();
+  }, []);
 
   return (
     <>
-      <Header quantity={cartItems.length} />
-      <ProductContent cartItems={cartItems} setCartItems={setCartItems} />
+      <Header quantity={cartItemData.length} />
+      <ProductContent cartItems={cartItemData} setCartItems={setCartItemData} />
     </>
   );
 }
