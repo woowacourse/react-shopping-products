@@ -10,8 +10,8 @@ import {
   SpyInstance,
 } from 'vitest';
 import { useProducts } from '../hooks/useProducts';
-import * as productApi from '../api/product';
-import * as cartApi from '../api/cart';
+import * as productApi from '../api/fetchProduct';
+import * as cartApi from '../api/fetchCart';
 import type { ProductElement, CartItem, CartResponse } from '../types/product';
 
 const mockProducts = {

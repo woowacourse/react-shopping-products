@@ -15,12 +15,12 @@ export const getCartItem = async ({
   const url = `${
     import.meta.env.VITE_API_BASE_URL
   }/cart-items?page=${page}&size=${size}&sort=${sortBy}`;
-  const response = await fetchAPI({ url: url, options: { method: 'GET' } });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText || ERROR_MESSAGE.CART_FETCH_FAIL);
-  }
+  const response = await fetchAPI({
+    url: url,
+    options: { method: 'GET' },
+    errorMessage: ERROR_MESSAGE.CART_FETCH_FAIL,
+  });
 
   const data = await response.json();
   return data;
@@ -28,35 +28,27 @@ export const getCartItem = async ({
 
 export const addCart = async (id: number) => {
   const url = `${import.meta.env.VITE_API_BASE_URL}/cart-items`;
+
   const response = await fetchAPI({
     url: url,
     options: {
       method: 'POST',
       body: { productId: id, quantity: 1 },
     },
+    errorMessage: ERROR_MESSAGE.CART_PRODUCT_ADD_FAIL,
   });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      errorText || `${ERROR_MESSAGE.CART_PRODUCT_ADD_FAIL}: ${response.status}`
-    );
-  }
 
   return response;
 };
 
 export const removeCart = async (id: number) => {
   const url = `${import.meta.env.VITE_API_BASE_URL}/cart-items/${id}`;
-  const response = await fetchAPI({ url: url, options: { method: 'DELETE' } });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      errorText ||
-        `${ERROR_MESSAGE.CART_PRODUCT_REMOVE_FAIL}: ${response.status}`
-    );
-  }
+  const response = await fetchAPI({
+    url: url,
+    options: { method: 'DELETE' },
+    errorMessage: ERROR_MESSAGE.CART_PRODUCT_REMOVE_FAIL,
+  });
 
   return response;
 };

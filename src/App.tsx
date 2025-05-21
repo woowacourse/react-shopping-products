@@ -5,7 +5,7 @@ import Toast from './ui/components/Toast/Toast';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 import { Global } from '@emotion/react';
 import React, { useState } from 'react';
-import { addCart, removeCart } from './api/cart';
+import { addCart, removeCart } from './api/fetchCart';
 import { useProducts } from './hooks/useProducts';
 import { CategoryType, SortType, ProductWithCartInfo } from './types/product';
 import { DropdownContainer, Section } from './App.styles';

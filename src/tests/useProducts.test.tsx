@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useProducts } from '../hooks/useProducts';
-import * as productApi from '../api/product';
-import * as cartApi from '../api/cart';
+import * as productApi from '../api/fetchProduct';
+import * as cartApi from '../api/fetchCart';
 import type { CategoryType, CartResponse } from '../types/product';
 
 function TestComponent({

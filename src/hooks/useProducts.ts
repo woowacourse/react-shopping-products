@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getProduct } from '../api/product';
-import { getCartItem } from '../api/cart';
+import { getProduct } from '../api/fetchProduct';
+import { getCartItem } from '../api/fetchCart';
 import type {
   CartResponse,
   CartItem,
