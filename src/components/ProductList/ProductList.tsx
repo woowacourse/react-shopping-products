@@ -24,9 +24,9 @@ function ProductList({
 
   return (
     <ul className={ProductListContainer}>
-      {products?.map((product, idx) => (
+      {products?.map((product) => (
         <Product
-          key={idx}
+          key={product.id}
           {...product}
           onClickAddCartItem={onClickAddCartItem}
           onClickDeleteCartItem={onClickDeleteCartItem}
