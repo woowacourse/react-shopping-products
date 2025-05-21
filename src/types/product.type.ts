@@ -29,10 +29,16 @@ interface FetchProductsRequest {
   endpoint: string;
 }
 
-interface ShoppingCartResponse {
+type ShoppingCartRequestBody = PostRequestBody | PatchRequestBody;
+
+interface ShoppingCartRequest {
   endpoint: string;
-  requestBody?: PostRequestBody | PatchRequestBody;
+  requestBody?: ShoppingCartRequestBody;
   cartItemId?: number;
+}
+
+interface ShoppingCartResponse {
+  content: CartItem[];
 }
 
 interface PostRequestBody {
@@ -54,8 +60,10 @@ export type {
   FetchProductsRequest,
   Category,
   SortOption,
-  ShoppingCartResponse,
   CartItem,
   ErrorState,
   FetchProductsResponse,
+  ShoppingCartRequestBody,
+  ShoppingCartRequest,
+  ShoppingCartResponse,
 };

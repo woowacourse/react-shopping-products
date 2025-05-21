@@ -1,4 +1,4 @@
-import deleteShoppingCart from '../APIs/deleteShoppingCart';
+import { deleteShoppingCart } from '../APIs/shoppingCart';
 import { useShoppingCartContext } from '../contexts/useShoppingCartContext';
 
 export function useDeleteShoppingCart(cartItemId?: number) {

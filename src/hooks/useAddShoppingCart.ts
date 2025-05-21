@@ -1,4 +1,4 @@
-import addShoppingCart from '../APIs/addShoppingCart';
+import { addShoppingCart } from '../APIs/shoppingCart';
 import { useShoppingCartContext } from '../contexts/useShoppingCartContext';
 
 export function useAddShoppingCart(productId: number) {
