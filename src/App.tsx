@@ -33,7 +33,10 @@ function App() {
     fetchCartItems,
     addToCart,
     removeFromCart,
+    increaseCartItemQuantity,
+    decreaseCartItemQuantity,
   } = useCartItems();
+  console.log(cartItems);
 
   useEffect(() => {
     fetchCartItems();
@@ -49,6 +52,8 @@ function App() {
       )}
       <ProductPage
         cartItems={cartItems}
+        increaseCartItemQuantity={increaseCartItemQuantity}
+        decreaseCartItemQuantity={decreaseCartItemQuantity}
         isCartItemsLoading={isCartItemsLoading}
         addToCart={addToCart}
         removeFromCart={removeFromCart}

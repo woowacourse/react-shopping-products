@@ -10,12 +10,16 @@ import useProducts from '../hooks/useProducts';
 type ProductPageProps = {
   cartItems: CartItem[];
   isCartItemsLoading: boolean;
+  increaseCartItemQuantity: (productId: number) => void;
+  decreaseCartItemQuantity: (productId: number) => void;
   addToCart: (product: Product) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
 };
 
 const ProductPage = ({
   cartItems,
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity,
   isCartItemsLoading,
   addToCart,
   removeFromCart,
@@ -76,6 +80,8 @@ const ProductPage = ({
             products={products}
             isLoading={isLoading}
             cartItems={cartItems}
+            increaseCartItemQuantity={increaseCartItemQuantity}
+            decreaseCartItemQuantity={decreaseCartItemQuantity}
             isCartItemsLoading={isCartItemsLoading}
             addToCart={addToCart}
             removeFromCart={removeFromCart}

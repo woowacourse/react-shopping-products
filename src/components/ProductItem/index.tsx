@@ -1,10 +1,14 @@
 import { Product } from '../../App';
 import isValidImageUrl from '../../utils/isValidImageUrl';
+import QuantityStepper from '../QuantityStepper';
 import CartActionButton from './button/CartActionButton';
 import styled from '@emotion/styled';
 
 type ProductItemProps = {
   product: Product;
+  cartItemQuantity: number;
+  increaseCartItemQuantity: (productId: number) => void;
+  decreaseCartItemQuantity: (productId: number) => void;
   isInCart: boolean;
   isCartItemsLoading: boolean;
   addToCart: (product: Product) => void;
@@ -13,12 +17,26 @@ type ProductItemProps = {
 
 const ProductItem = ({
   product,
+  cartItemQuantity,
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity,
   isInCart,
   isCartItemsLoading,
   addToCart,
   removeFromCart,
 }: ProductItemProps) => {
-  console.log('imgurl', product.imageUrl);
+  const handleClickIncrementButton = () => {
+    increaseCartItemQuantity(product.id);
+  };
+
+  const handleClickDecrementButton = () => {
+    if (cartItemQuantity === 1) {
+      removeFromCart(product.id);
+      return;
+    }
+    decreaseCartItemQuantity(product.id);
+  };
+
   return (
     <ProductItemContainer>
       <ProductItemImage
@@ -37,10 +55,10 @@ const ProductItem = ({
 
         <ButtonContainer>
           {isInCart ? (
-            <CartActionButton
-              variant="remove"
-              onClick={() => removeFromCart(product.id)}
-              isLoading={isCartItemsLoading}
+            <QuantityStepper
+              quantity={cartItemQuantity}
+              onClickDecrementButton={handleClickDecrementButton}
+              onClickIncrementButton={handleClickIncrementButton}
             />
           ) : (
             <CartActionButton
