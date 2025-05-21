@@ -32,9 +32,16 @@ export const handlers = [
     nextId += 1;
     const product = getProductsById(productsMockData.content, productId);
 
-    if (!productId || quantity < 1 || product.length === 0) {
-      return HttpResponse.error();
-    }
+    if (!productId || quantity < 1 || product.length === 0) return HttpResponse.error();
+
+    if (quantity > product[0].quantity)
+      return HttpResponse.json(
+        {
+          errorCode: 'OUT_OF_STOCK',
+          message: '재고 수량을 초과하여 담을 수 없습니다.',
+        },
+        { status: 400 }
+      );
 
     cartMockData.content.push({ id: cartId, quantity, product: product[0] });
 

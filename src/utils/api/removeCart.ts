@@ -13,7 +13,7 @@ const removeCart = async (cartId: number) => {
     });
     console.log(response);
 
-    handleHttpError(response);
+    await handleHttpError(response);
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }

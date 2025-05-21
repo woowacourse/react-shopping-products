@@ -8,7 +8,7 @@ export default function useFetch() {
     try {
       setLoading(true);
       const response = await fetch(url, options);
-      handleHTTPError(response);
+      await handleHTTPError(response);
       const data = await response.json();
       return data;
     } catch (error) {

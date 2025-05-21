@@ -16,7 +16,7 @@ const addCart = async (productId: number, quantity = 1) => {
       }),
     });
 
-    handleHttpError(response);
+    await handleHttpError(response);
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }
