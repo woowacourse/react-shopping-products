@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ProductCard } from "./components";
 
 import { CartItemApi, ProductApi } from "@/apis";
-import useQuery from "@/modules/Query/useQuery";
+import { useQuery } from "@/modules";
 import * as S from "./ProductsPage.styles";
 import { CATEGORY, DEFAULT_FILTER, DEFAULT_SORT, SORT } from "./constants";
 import { Category, Sort } from "./types";

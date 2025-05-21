@@ -1,9 +1,9 @@
 import { CartItemApi } from "@/apis";
 import { ShoppingBag } from "@/components/icons";
-import useQuery from "@/modules/Query/useQuery";
-import Modal from "../Modal/Modal";
+import { useQuery } from "@/modules";
 import * as S from "./Header.styles";
 import ShoppingCartModal from "./ShoppingCartModal";
+import Modal from "../Modal/Modal";
 
 export default function Header() {
   const { data: cartItems } = useQuery({
