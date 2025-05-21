@@ -3,6 +3,8 @@ import { ProductTypes } from '../../types/ProductTypes';
 import postShoppingCart from '../../api/postShoppingCart';
 import deleteShoppingCart from '../../api/deleteShoppingCart';
 import { CartItemTypes } from '../../types/CartItemType';
+import { useEffect, useState } from 'react';
+import CountControl from './CountControl';
 
 type SetProducts = {
   updateCartItems: () => void;
@@ -19,26 +21,36 @@ export default function ProductItem({
   getMatchCartItem,
   checkMax,
 }: ProductTypes & SetProducts) {
+  const quantity = getMatchCartItem(id)?.quantity;
+
+  const [active, setActive] = useState(false);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setCount(quantity ?? 0);
+  }, [quantity]);
+
   const isItemInCart = getMatchCartItem(id) ? true : false;
   const cartItemId = getMatchCartItem(id)?.id;
 
   const handleItemClick = async () => {
-    try {
-      if (checkMax()) {
-        throw new Error('50개 초과');
-      }
-      if (!isItemInCart) {
-        await postShoppingCart(id, 1);
-      } else {
-        if (!cartItemId) return;
-        await deleteShoppingCart(cartItemId);
-      }
-      await updateCartItems();
-    } catch (e) {
-      //
-    } finally {
-      //
-    }
+    setActive((prev) => !prev);
+    // try {
+    //   if (checkMax()) {
+    //     throw new Error('50개 초과');
+    //   }
+    //   if (!isItemInCart) {
+    //     await postShoppingCart(id, 1);
+    //   } else {
+    //     if (!cartItemId) return;
+    //     await deleteShoppingCart(cartItemId);
+    //   }
+    //   await updateCartItems();
+    // } catch (e) {
+    //   //
+    // } finally {
+    //   //
+    // }
   };
 
   return (
@@ -50,25 +62,21 @@ export default function ProductItem({
           <StyledPrice>{price.toLocaleString('ko')}원</StyledPrice>
         </StyledProductInfo>
         <StyledButtonWrapper>
-          <StyledButton
-            isItemInCart={!isItemInCart}
-            onClick={handleItemClick}
-            data-testid={!isItemInCart ? `add-btn-${id}` : `remove-btn-${id}`}
-          >
-            <StyledImg
-              src={
-                !isItemInCart
-                  ? './addShoppingCartIcon.png'
-                  : './removeShoppingCartIcon.png'
-              }
-              alt={
-                !isItemInCart ? 'addShoppingCartIcon' : 'removeShoppingCartIcon'
-              }
-            ></StyledImg>
-            <StyledButtonText>
-              {!isItemInCart ? '담기' : '빼기'}
-            </StyledButtonText>
-          </StyledButton>
+          {active ? (
+            <CountControl count={count} onClick={() => {}} />
+          ) : (
+            <StyledButton
+              isItemInCart={!isItemInCart}
+              onClick={handleItemClick}
+              data-testid={!isItemInCart ? `add-btn-${id}` : `remove-btn-${id}`}
+            >
+              <StyledImg
+                src="./addShoppingCartIcon.png"
+                alt="addShoppingCartIcon"
+              ></StyledImg>
+              <StyledButtonText>담기</StyledButtonText>
+            </StyledButton>
+          )}
         </StyledButtonWrapper>
       </StyledProductInfoWrapper>
     </StyledLi>
@@ -117,8 +125,8 @@ const StyledButton = styled.button<StyledButtonProps>`
   padding: 4px 8px;
   gap: 4px;
   border-radius: 4px;
-  background-color: ${(props) => (props.isItemInCart ? '#000000' : '#EAEAEA')};
-  color: ${(props) => (props.isItemInCart ? '#FFFFFF' : '#000000')};
+  background-color: #000000;
+  color: #ffffff;
   padding: 0px;
   display: flex;
   justify-content: center;
@@ -127,6 +135,8 @@ const StyledButton = styled.button<StyledButtonProps>`
   border: none;
   cursor: pointer;
 `;
+// background-color: ${(props) => (props.isItemInCart ? '#000000' : '#EAEAEA')};
+// color: ${(props) => (props.isItemInCart ? '#FFFFFF' : '#000000')};
 
 const StyledImg = styled.img`
   width: 15px;
