@@ -14,7 +14,9 @@ async function getProducts({ category, sortKey, sortOrder }: productsOptionType)
   );
 
   if (!res.ok) {
-    throw new Error('에러 발생');
+    throw new Error(
+      `상품 목록을 불러오는 중 오류가 발생했습니다 (${res.status} ${res.statusText})`,
+    );
   }
   const data = await res.json();
   return data.content;
