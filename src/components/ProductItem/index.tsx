@@ -36,9 +36,11 @@ const ProductItem = ({
     }
     decreaseCartItemQuantity(product.id);
   };
+  console.log('product', product);
 
   return (
     <ProductItemContainer>
+      {product.quantity === 0 && <ProductItemSoldOut>품절</ProductItemSoldOut>}
       <ProductItemImage
         src={
           isValidImageUrl(product.imageUrl) ? product.imageUrl : 'fallback.svg'
@@ -65,6 +67,7 @@ const ProductItem = ({
               variant="add"
               onClick={() => addToCart(product)}
               isLoading={isCartItemsLoading}
+              isSoldOut={product.quantity === 0}
             />
           )}
         </ButtonContainer>
@@ -80,6 +83,7 @@ const ProductItemContainer = styled.div`
   flex-direction: column;
   height: 240px;
   border-radius: 8px;
+  position: relative;
 `;
 
 const ProductItemInfoContainer = styled.div`
@@ -100,6 +104,22 @@ const ProductItemImage = styled.img`
   height: 50%;
   border-radius: 8px 8px 0px 0px;
 `;
+
+const ProductItemSoldOut = styled.p`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 700;
+  border-radius: 8px 8px 0px 0px;
+}`;
 const ProductItemName = styled.p`
   font-size: 18px;
   font-weight: 700;

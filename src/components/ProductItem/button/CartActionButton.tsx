@@ -4,15 +4,22 @@ type CartActionButtonProps = {
   variant: 'add' | 'remove';
   onClick: () => void;
   isLoading?: boolean;
+  isSoldOut?: boolean;
 };
 
 const CartActionButton = ({
   variant,
   onClick,
   isLoading,
+  isSoldOut = false,
 }: CartActionButtonProps) => {
   return (
-    <Button onClick={onClick} variant={variant} disabled={isLoading}>
+    <Button
+      onClick={onClick}
+      variant={variant}
+      disabled={isLoading || isSoldOut}
+      isSoldOut={isSoldOut}
+    >
       {variant === 'add' ? <AddIcon /> : <RemoveIcon />}
       {variant === 'add' ? '담기' : '빼기'}
     </Button>
@@ -34,9 +41,23 @@ const Image = styled.img`
   height: 17px;
 `;
 
+function getBackgroundColor({
+  variant,
+  isSoldOut,
+}: {
+  variant: 'add' | 'remove';
+  isSoldOut?: boolean;
+}) {
+  if (isSoldOut) {
+    console.log('sold out');
+    return '#EAEAEA';
+  }
+  return variant === 'add' ? 'black' : '#EAEAEA';
+}
+
 const Button = styled.button<CartActionButtonProps>`
-  background-color: ${(props) =>
-    props.variant === 'add' ? 'black' : '#EAEAEA'};
+  background-color: ${({ variant, isSoldOut }) =>
+    getBackgroundColor({ variant, isSoldOut })};
   color: ${(props) => (props.variant === 'add' ? 'white' : 'black')};
   border: none;
   width: 70px;
@@ -46,13 +67,17 @@ const Button = styled.button<CartActionButtonProps>`
   justify-content: center;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
+  cursor: ${({ isSoldOut }) => (isSoldOut ? 'not-allowed' : 'pointer')};
 
-  &:hover {
-    background-color: ${(props) =>
-      props.variant === 'add' ? '#333' : '#D0D0D0'};
-  }
-  &:active {
-    background-color: gray;
-  }
+  ${({ isSoldOut, variant }) =>
+    !isSoldOut &&
+    `
+      &:hover {
+        background-color: ${variant === 'add' ? '#333' : '#D0D0D0'};
+      }
+
+      &:active {
+        background-color: gray;
+      }
+    `}
 `;
