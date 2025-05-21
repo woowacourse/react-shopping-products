@@ -37,7 +37,7 @@ async function apiRequestWithAuth<TRequest, TResponse = void>({
   }
 
   if (response.status === 200) {
-    const data = await response.json();
+    const data = (await response.json()) as TResponse;
     return data;
   }
 

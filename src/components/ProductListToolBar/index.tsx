@@ -3,8 +3,8 @@ import FilterDropDown from './FilterDropDown';
 import SortingDropDown from './SortingDropDown';
 import { useProductsContext } from '../../contexts/useProductsContext';
 import { CATEGORY, SORT_OPTION } from './toolBar.constant';
-
 import { isCategory, isSortOption } from '../../utils/typeGuard';
+
 const ProductListToolBar = () => {
   const products = useProductsContext();
 
