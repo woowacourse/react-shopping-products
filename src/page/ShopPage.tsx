@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCartItems } from "../api/cartItem";
 import getProducts from "../api/product";
-import Body from "../component/Body/Body";
+
 import Header from "../component/Header/Header";
 import ProductContainer from "../component/ProductContainer/ProductContainer";
 import Selector from "../component/Selector/Selector";
@@ -21,6 +21,7 @@ import {
   FilterOption,
   ProductType,
 } from "../constants";
+import Main from "../component/Main/Main";
 
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");
@@ -28,6 +29,7 @@ export default function ShopPage() {
   const [productList, setProductList] = useState<ProductType[]>([]);
   const [cartItemList, setCartItemList] = useState<CartItemType[]>([]);
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const selectedProductCount = cartItemList.length;
   const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
@@ -47,6 +49,7 @@ export default function ShopPage() {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     (async () => {
       try {
         const response = await getProducts({
@@ -58,6 +61,7 @@ export default function ShopPage() {
         setIsError(true);
       }
     })();
+    setIsLoading(false);
   }, [filterValue, categoryValue]);
 
   useEffect(() => {
@@ -87,8 +91,16 @@ export default function ShopPage() {
           <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>
         )}
       </Header>
-      <Body>
-        {productList.length !== 0 ? (
+      <Main>
+        {isError ? (
+          <div css={loadingLayout}>
+            데이터를 가져오는데 실패했습니다. <br /> 다시 시도해주세요
+          </div>
+        ) : isLoading ? (
+          <div css={loadingLayout}>로딩중입니다</div>
+        ) : productList.length === 0 ? (
+          <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>
+        ) : (
           <>
             <TitleContainer title="bpple 상품 목록">
               <div css={selectorBoxLayout}>
@@ -115,10 +127,8 @@ export default function ShopPage() {
               updateCardItemList={updateCardItemList}
             />
           </>
-        ) : (
-          <div css={loadingLayout}>로딩중입니다</div>
         )}
-      </Body>
+      </Main>
     </div>
   );
 }
