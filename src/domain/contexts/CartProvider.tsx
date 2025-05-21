@@ -16,9 +16,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setErrorMessage((prev) => [...prev, errorMessage]);
   }, []);
 
+  const clearErrorMessage = useCallback(() => {
+    setErrorMessage([]);
+  }, []);
+
   useEffect(() => {
     async function fetchCartItems() {
       try {
+        clearErrorMessage();
         setStatus("loading");
         const cartItemsData = await getShoppingCart();
         setCartItems(cartItemsData.content);
@@ -31,7 +36,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
     }
     fetchCartItems();
-  }, [updateErrorMessage]);
+  }, [clearErrorMessage, updateErrorMessage]);
 
   const updateCartItems = useCallback(async () => {
     try {
@@ -55,6 +60,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       status,
       errorMessage,
       updateErrorMessage,
+      clearErrorMessage,
       updateCartItems,
       getMatchCartItem,
       checkMax,
@@ -64,6 +70,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       status,
       errorMessage,
       updateErrorMessage,
+      clearErrorMessage,
       updateCartItems,
       getMatchCartItem,
       checkMax,
