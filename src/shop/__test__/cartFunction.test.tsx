@@ -3,26 +3,26 @@ import App from '../../App';
 import { productListMockData } from '../__mocks__/productListMockData';
 import { cartMockData } from '../__mocks__/cartData';
 
-jest.mock('../../api/postCartItem', () => ({
+jest.mock('../../api/cart', () => ({
   postCartItem: jest
     .fn()
     .mockImplementation(() => Promise.resolve(cartMockData)),
 }));
 
-jest.mock('../../api/getShoppingCartData', () => ({
+jest.mock('../../api/cart', () => ({
   getShoppingCartData: jest
     .fn()
     .mockImplementation(() => Promise.resolve(cartMockData)),
 }));
 
-jest.mock('../../api/getListData', () => ({
+jest.mock('../../api/products', () => ({
   getListData: jest.fn().mockImplementation(() => {
     console.log(productListMockData);
     return Promise.resolve(productListMockData);
   }),
 }));
 
-jest.mock('../../api/deleteCartItem', () => ({
+jest.mock('../../api/cart', () => ({
   deleteCartItem: jest
     .fn()
     .mockImplementation(() => Promise.resolve(cartMockData)),

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useAPIDataContext } from '../../../context/APIDataProvider';
-import { getShoppingCartData } from '../../../api/getShoppingCartData';
+import { getShoppingCartData } from '../../../api/cart';
 
 function CartButton() {
   const { data: cartListData } = useAPIDataContext({

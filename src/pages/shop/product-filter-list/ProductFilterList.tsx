@@ -5,7 +5,7 @@ import { Flex, Loading } from '../../../components/common';
 import { DropdownOptionType } from '../../../components/common/Dropdown';
 import ProductList from '../../../components/features/product/product-list/ProductList';
 import ShopFilter from '../../../shop/components/filter/ShopFilter';
-import { getProductsData } from '../../../api/getListData';
+import { getProductsData } from '../../../api/products';
 
 function ProductFilterList() {
   const [filterOption, setFilterOption] = useState({

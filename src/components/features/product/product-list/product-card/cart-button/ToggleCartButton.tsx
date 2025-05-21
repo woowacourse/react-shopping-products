@@ -1,11 +1,14 @@
 import { ComponentProps, useCallback } from 'react';
-import { getShoppingCartData } from '../../../../../../api/getShoppingCartData';
-import { useAPIDataContext } from '../../../../../../context/APIDataProvider';
-import { postCartItem } from '../../../../../../api/postCartItem';
-import { deleteCartItem } from '../../../../../../api/deleteCartItem';
+
 import DeleteCartButton from './DeleteCartButton';
 import AddCartButton from './AddCartButton';
 import { showToast } from '../../../../../../utils/toast/showToast';
+import { useAPIDataContext } from '../../../../../../context/APIDataProvider';
+import {
+  deleteCartItem,
+  getShoppingCartData,
+  postCartItem,
+} from '../../../../../../api/cart';
 
 interface ToggleCartButtonProps extends ComponentProps<'button'> {
   productId: string;
