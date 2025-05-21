@@ -18,7 +18,7 @@ MSW를 이용해 서버의 다양한 응답을 시뮬레이션하고, 그 시나
 
 ### 컴포넌트
 
-- [ ] Modal
+- [ ] cart Modal
 - [ ] cart item layout in Modal
 - [ ] item delete button in Modal
 - [ ] Quantity Selector
