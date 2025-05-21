@@ -3,7 +3,7 @@ import { CART_URL, PRODUCT_URL } from '../constants/endpoint';
 import { filterType, SortingType } from '../types';
 import productsMockData from './data/productsMockData';
 import cartMockData from './data/cartMockData';
-import { filterProductList, getProductsById, sortProductList } from '../utils';
+import { filterProductList, getElementById, sortProductList } from '../utils';
 
 let nextId = cartMockData.content.length + 1;
 
@@ -30,7 +30,7 @@ export const handlers = [
 
     const cartId = nextId;
     nextId += 1;
-    const product = getProductsById(productsMockData.content, productId);
+    const product = getElementById(productsMockData.content, productId);
 
     if (!productId || quantity < 1 || product.length === 0) return HttpResponse.error();
 
