@@ -1,12 +1,11 @@
+import useCartItemsId from "../../hooks/useCartItemsId";
 import * as Styled from "./Header.styled";
 
 import shoppingBag from "/shoppingBag.svg";
 
-interface HeaderProps {
-  cartItems: string[];
-}
+function Header() {
+  const { cartItemsId } = useCartItemsId();
 
-function Header({ cartItems }: HeaderProps) {
   return (
     <Styled.Container>
       <a href="./">
@@ -16,7 +15,7 @@ function Header({ cartItems }: HeaderProps) {
         <Styled.Button>
           <Styled.Image src={shoppingBag} />
         </Styled.Button>
-        <Styled.ShoppingBag>{cartItems.length}</Styled.ShoppingBag>
+        <Styled.ShoppingBag>{cartItemsId.length}</Styled.ShoppingBag>
       </Styled.ButtonWrapper>
     </Styled.Container>
   );
