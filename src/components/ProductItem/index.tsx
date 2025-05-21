@@ -46,6 +46,14 @@ const ProductItem = ({
           isValidImageUrl(product.imageUrl) ? product.imageUrl : 'fallback.svg'
         }
         alt={product.name}
+        onError={(e) => {
+          e.currentTarget.src = 'fallback.svg';
+        }}
+        onLoad={(e) => {
+          if (!isValidImageUrl(e.currentTarget.src)) {
+            e.currentTarget.src = 'fallback.svg';
+          }
+        }}
       />
       <ProductItemInfoContainer>
         <TextContainer>
