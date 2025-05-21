@@ -31,14 +31,14 @@ export default function useShoppingCart() {
     fetchCartItems();
   }, [updateErrorMessage]);
 
-  const updateCartItems = async () => {
+  const updateCartItems = useCallback(async () => {
     try {
       const cartItemsData = await getShoppingCart();
       setCartItems(cartItemsData.content);
     } catch (e) {
       console.error("장바구니 업데이트 중 오류가 발생했습니다:", e);
     }
-  };
+  }, []);
 
   const getMatchCartItem = useCallback(
     (productId: number) => findIsCartItem(cartItems, productId),
@@ -47,13 +47,27 @@ export default function useShoppingCart() {
 
   const checkMax = useCallback(() => isCartFull(cartItems), [cartItems]);
 
-  return {
-    cartItems,
-    status,
-    errorMessage,
-    updateErrorMessage,
-    updateCartItems,
-    getMatchCartItem,
-    checkMax,
-  };
+  const contextValue = useMemo(
+    () => ({
+      cartItems,
+      status,
+      errorMessage,
+      updateErrorMessage,
+      clearErrorMessages,
+      updateCartItems,
+      getMatchCartItem,
+      checkMax,
+    }),
+    [
+      cartItems,
+      status,
+      errorMessage,
+      updateErrorMessage,
+      clearErrorMessages,
+      updateCartItems,
+      getMatchCartItem,
+      checkMax,
+    ]
+  );
+  return contextValue;
 }
