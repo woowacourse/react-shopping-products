@@ -5,6 +5,8 @@ import productsMockData from './data/productsMockData';
 import cartMockData from './data/cartMockData';
 import { filterProductList, getProductsById, sortProductList } from '../utils';
 
+let nextId = cartMockData.content.length + 1;
+
 export const handlers = [
   http.get(PRODUCT_URL, ({ request }) => {
     const url = new URL(request.url);
@@ -26,7 +28,8 @@ export const handlers = [
     const body = await request.json();
     const { productId, quantity } = body as { productId: number; quantity: number };
 
-    const cartId = cartMockData.content.length + 1;
+    const cartId = nextId;
+    nextId += 1;
     const product = getProductsById(productsMockData.content, productId);
 
     if (!productId || quantity < 1 || product.length === 0) {
