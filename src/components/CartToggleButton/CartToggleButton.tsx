@@ -5,20 +5,27 @@ import {
 import { IMAGE_PATH } from "../../constants/imagePath";
 import { ERROR_MSG } from "../../constants/errorMessage";
 import { deleteCartItem, postCartItems } from "../../api/cartItems";
+import { useCartContext } from "../../contexts/CartContext";
+import { useUIContext } from "../../contexts/UIContext";
 
 type SharedToggleProps = {
   isNotBasketCountMAX: boolean;
-  setError: (value: boolean) => void;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+};
+
+type addProductInBasketProps = SharedToggleProps & {
+  setError: (value: boolean) => void;
   setErrorMessage: (value: string) => void;
 };
 
-type addProductInBasketProps = SharedToggleProps;
 type handleCartToggleButtonProps = SharedToggleProps & {
+  isNotBasketCountMAX: boolean;
   isInBascket: boolean;
   productId: number;
   basketId?: number;
   fetchCartItems: (value?: boolean) => Promise<void>;
+  setError: (value: boolean) => void;
+  setErrorMessage: (value: string) => void;
 };
 
 type CartToggleButtonProps = {
@@ -26,10 +33,7 @@ type CartToggleButtonProps = {
   isInBascket: boolean;
   basketId?: number;
   isNotBasketCountMAX: boolean;
-  setError: (value: boolean) => void;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
-  fetchCartItems: (value?: boolean) => Promise<void>;
-  setErrorMessage: (value: string) => void;
 };
 
 export type CartToggleButtonWrapperProps = {
@@ -64,9 +68,9 @@ const handleCartToggleButton = async ({
   productId,
   basketId,
   isNotBasketCountMAX,
-  setError,
   timeoutRef,
   fetchCartItems,
+  setError,
   setErrorMessage,
 }: handleCartToggleButtonProps) => {
   if (!isInBascket) {
@@ -91,14 +95,13 @@ const CartToggleButton = ({
   isInBascket,
   basketId,
   isNotBasketCountMAX,
-  setError,
   timeoutRef,
-  fetchCartItems,
-  setErrorMessage,
 }: CartToggleButtonProps) => {
   const imageSrc = isInBascket
     ? IMAGE_PATH.SHOPPIN_CART_REMOVE
     : IMAGE_PATH.SHOPPIN_CART_ADD;
+  const { fetchCartItems } = useCartContext();
+  const { setError, setErrorMessage } = useUIContext();
 
   return (
     <CartToggleButtonWrapper
@@ -109,9 +112,9 @@ const CartToggleButton = ({
           productId: id,
           basketId,
           isNotBasketCountMAX,
-          setError,
           timeoutRef,
           fetchCartItems,
+          setError,
           setErrorMessage,
         })
       }

@@ -3,7 +3,6 @@ import Header from "./components/Header/Header";
 import ProductCard from "./components/ProductCard/ProductCard";
 import SelectDropdownContainer from "./components/SelectDropdown/SelectDropdownContainer";
 import { getProducts, ProductResponse } from "./api/products";
-import { getCartItems } from "./api/cartItems";
 import { CategoryKey, SortKey } from "./constants/selectOption";
 import { MAX_BASKET_COUNT } from "./constants/basket";
 import { Container } from "./styles/common";
@@ -12,13 +11,8 @@ import "./styles/reset.css";
 import { ERROR_MSG } from "./constants/errorMessage";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import DotWaveSpinner from "./components/DotWaveSpinner/DotWaveSpinner";
-
-type BasketProductInfo = {
-  productId: number;
-  basketId: number;
-};
-
-type BasketProductInfos = BasketProductInfo[];
+import { useCartContext } from "./contexts/CartContext";
+import { useUIContext } from "./contexts/UIContext";
 
 const categoryQueryMap: Record<CategoryKey, string | undefined> = {
   ALL: undefined,
@@ -36,28 +30,9 @@ function App() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [category, setCategory] = useState<CategoryKey>("ALL");
   const [sort, setSort] = useState<SortKey>("NONE");
-  const [basketProductsIds, setBasketProductsIds] = useState<BasketProductInfos>([]);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const fetchCartItems = async (withGlobalLoading = true) => {
-    try {
-      if (withGlobalLoading) setIsLoading(true);
-      const data = await getCartItems();
-      const mapped: BasketProductInfos = data.map((item) => ({
-        productId: item.product.id,
-        basketId: item.id,
-      }));
-      setBasketProductsIds(mapped);
-    } catch (error) {
-      setError(true);
-      setErrorMessage(ERROR_MSG.BASKET_FETCH_FAIL);
-      console.error(ERROR_MSG.BASKET_FETCH_FAIL, error);
-    } finally {
-      if (withGlobalLoading) setIsLoading(false);
-    }
-  };
+  const { basketProductsIds, fetchCartItems } = useCartContext();
+  const { error, setError, errorMessage, setErrorMessage } = useUIContext();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -91,7 +66,7 @@ function App() {
   return (
     <Container>
       <Header basketCount={basketProductsIds.length} />
-      {error && <ErrorMessage message={errorMessage}/>}
+      {error && <ErrorMessage message={errorMessage} />}
       {isLoading && <DotWaveSpinner />}
       <SelectDropdownContainer
         category={category}
@@ -109,16 +84,13 @@ function App() {
             price={product.price}
             imageUrl={product.imageUrl}
             isInBascket={basketProductsIds.some(
-              (item) => item.productId === product.id,
+              (item) => item.productId === product.id
             )}
             basketId={
               basketProductsIds.find((item) => item.productId === product.id)
                 ?.basketId
             }
             isNotBasketCountMAX={basketProductsIds.length < MAX_BASKET_COUNT}
-            setError={setError}
-            fetchCartItems={fetchCartItems}
-            setErrorMessage={setErrorMessage}
           />
         ))}
       </ProductCardContainer>
