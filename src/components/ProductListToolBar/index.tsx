@@ -2,29 +2,24 @@ import { css } from '@emotion/css';
 import FilterDropDown from './FilterDropDown';
 import SortingDropDown from './SortingDropDown';
 import { useProductsContext } from '../../contexts/useProductsContext';
-import { Category, SortOption } from '../../types/product.type';
 import { CATEGORY, SORT_OPTION } from './toolBar.constant';
 
+import { isCategory, isSortOption } from '../../utils/typeGuard';
 const ProductListToolBar = () => {
   const products = useProductsContext();
 
-  const isCategoryOption = (value: string): value is Category => {
-    return CATEGORY.includes(value);
-  };
-  const isSortOption = (value: string): value is SortOption => {
-    return SORT_OPTION.includes(value);
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (isCategory(value)) {
+      products.updateCategory(value);
+    }
   };
 
-  const handleFilterChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    if (isCategoryOption(e.target.value))
-      products.updateCategory(e.target.value);
-  };
-  const handleSortingChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    if (isSortOption(e.target.value)) products.updateSort(e.target.value);
+  const handleSortingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    if (isSortOption(value)) {
+      products.updateSort(value);
+    }
   };
 
   return (
