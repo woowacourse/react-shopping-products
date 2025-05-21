@@ -3,6 +3,9 @@ import Button from '../common/button/Button';
 import type { ProductItemType } from '../../types/data';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import CounterControl from '../common/counterControl/CounterControl';
+import validateCartInCount from '../../validate/validateCartCount';
+import useErrorMessageContext from '../../hooks/useErrorMessageContext';
+import tryValidation from '../../util/tryValidation';
 
 interface ProductItemProps {
   cartInCount: number;
@@ -25,21 +28,30 @@ const ProductItem = ({
     event.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
   };
 
-  // TODO : product 재고보다 많이 넣으려는 경우 품절 처리 및 장바구니 담기 버튼 비활성화
+  const { handleErrorMessage } = useErrorMessageContext();
+
   const handlePlusCount = () => {
+    const newCartInCount = cartInCount + 1;
+
+    const isValidateCount = tryValidation(
+      () => validateCartInCount(newCartInCount, product.quantity),
+      handleErrorMessage,
+    );
+    if (!isValidateCount) return;
+
     if (cartInCount > 0) {
-      handleUpdateCartItem(product.id, cartInCount + 1);
+      handleUpdateCartItem(product.id, newCartInCount);
       return;
     }
     handleAddCartItem(product.id);
   };
 
   const handleMinusCount = () => {
+    const newCartInCount = cartInCount - 1;
     if (cartInCount !== 1) {
-      handleUpdateCartItem(product.id, cartInCount - 1);
+      handleUpdateCartItem(product.id, newCartInCount);
       return;
     }
-    console.log(cartInCount);
     handleRemoveCartItem(product.id);
   };
 
@@ -63,13 +75,7 @@ const ProductItem = ({
             handleMinusCount={handleMinusCount}
           />
         ) : (
-          <Button
-            type="button"
-            id="add"
-            name="담기"
-            variant="smallBlack"
-            onClick={() => handleAddCartItem(product.id)}
-          >
+          <Button type="button" id="add" name="담기" variant="smallBlack" onClick={handlePlusCount}>
             <S.CartIconContainer>
               <S.CartAddIcon src={AddShoppingCartIcon} alt="장바구니 담기" />
               담기

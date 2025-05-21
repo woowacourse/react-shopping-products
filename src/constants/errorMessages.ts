@@ -11,3 +11,7 @@ export const DEFAULT_ERROR_MESSAGE = '저런! 예기치 못한 문제가 발생�
 export const DEV_ERROR_MESSAGE = {
   INVALID_PROVIDER: (providerName: string) => `${providerName}안에서 사용해야 합니다.`,
 };
+
+export const CLIENT_ERROR_MESSAGE = {
+  OUT_OF_STOCK: '재고 수량을 초과하여 담을 수 없습니다.',
+};
