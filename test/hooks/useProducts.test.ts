@@ -39,17 +39,16 @@ describe("useProducts", () => {
 			})
 		);
 
-		const { result, rerender } = renderHook(() => useProducts());
+		const { result } = renderHook(() => useProducts());
 
 		act(() => {
 			result.current.setFilter(FILTER_TYPE);
 		});
 
-		rerender();
-
 		await waitFor(() => {
-			expect(result.current.products.every((p) => p.category === FILTER_TYPE)).toBe(true);
+			expect(result.current.products.every((product) => product.category === FILTER_TYPE)).toBe(true);
 		});
+		console.log(result.current);
 	});
 
 	it("가장 앞 상품 목록을 오름차순으로 정렬하여 조회한다.", async () => {
