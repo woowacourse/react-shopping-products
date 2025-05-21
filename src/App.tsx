@@ -1,11 +1,12 @@
-import { useState } from "react";
+import AppContent from "./AppContent";
+import { CartProvider } from "./contexts/CartProvider";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <h1>React Shopping Products</h1>
+      <CartProvider>
+        <AppContent />
+      </CartProvider>
     </>
   );
 }
