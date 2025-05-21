@@ -8,7 +8,7 @@ function ProductList({
 }: {
   resource: { read: () => Product[] | null };
 }) {
-  const products = resource.read() ?? [];
+  const products = resource.read();
   if (!products) {
     throw new Error('상품 목록을 불러오는 중 오류가 발생했습니다.');
   }
