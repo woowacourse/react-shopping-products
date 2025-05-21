@@ -1,4 +1,5 @@
 import { CartInfo } from "../../types";
+import CartButton from "../Button/CartButton";
 import { useCartContext } from "../Context/CartProvider";
 import S from "./ItemCard.module.css";
 
@@ -11,20 +12,10 @@ const ItemCardButton = ({ productId, cartInfo }: ItemCardButtonProps) => {
 	const { updateCartItem } = useCartContext();
 
 	if (cartInfo) {
-		return (
-			<button className={S.removeCartButton} onClick={() => updateCartItem("remove", cartInfo.id)}>
-				<img className={S.cartImg} src="./images/remove-cart.svg" alt="장바구니 제거" />
-				<p>빼기</p>
-			</button>
-		);
+		return <CartButton onClick={() => updateCartItem("remove", cartInfo.id)} icon="./images/remove-cart.svg" text="빼기" className={S.removeCartButton} />;
 	}
 
-	return (
-		<button className={S.addCartButton} onClick={() => updateCartItem("add", productId)}>
-			<img className={S.cartImg} src="./images/add-cart.svg" alt="장바구니 추가" />
-			<p>담기</p>
-		</button>
-	);
+	return <CartButton onClick={() => updateCartItem("add", productId)} icon="./images/add-cart.svg" text="담기" className={S.addCartButton} />;
 };
 
 export default ItemCardButton;
