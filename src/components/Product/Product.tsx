@@ -3,7 +3,7 @@ import { ProductProps } from "./Product.types";
 import * as Styled from "./Product.styled";
 
 import defaultImage from "/defaultImage.png";
-import AddButton from "../AddButton/AddButton";
+import ProductAddButton from "../ProductAddButton/ProductAddButton";
 import RemoveButton from "../RemoveButton/RemoveButton";
 
 function Product({
@@ -31,7 +31,7 @@ function Product({
                 }
               />
             ) : (
-              <AddButton
+              <ProductAddButton
                 handleAddProduct={() => handleAddProduct(product.id.toString())}
               />
             )}

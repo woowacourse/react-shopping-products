@@ -2,11 +2,11 @@ import Button from "../common/Button/Button";
 
 import AddShoppingCart from "/AddShoppingCart.svg";
 
-interface AddButtonProps {
+interface ProductAddButtonProps {
   handleAddProduct: () => void;
 }
 
-function AddButton({ handleAddProduct }: AddButtonProps) {
+function ProductAddButton({ handleAddProduct }: ProductAddButtonProps) {
   return (
     <Button color="dark" onClick={handleAddProduct}>
       <img src={AddShoppingCart} />
@@ -15,4 +15,4 @@ function AddButton({ handleAddProduct }: AddButtonProps) {
   );
 }
 
-export default AddButton;
+export default ProductAddButton;
