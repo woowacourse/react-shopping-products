@@ -38,7 +38,11 @@ export const handlers = [
     return HttpResponse.json({ ok: true }, { status: 201 });
   }),
 
-  http.delete(`${CART_URL}/:id`, async () => {
+  http.delete(`${CART_URL}/:id`, async ({ params }) => {
+    const id = Number(params.id);
+
+    cartMockData.content = cartMockData.content.filter((cart) => cart.id !== id);
+
     return HttpResponse.json({ ok: true }, { status: 201 });
   }),
 ];
