@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { ProductTypes } from '../../types/ProductTypes';
 import postShoppingCart from '../../api/postShoppingCart';
-import deleteShoppingCart from '../../api/deleteShoppingCart';
 import { CartItemTypes } from '../../types/CartItemType';
 import { useEffect, useState } from 'react';
 import CountControl from './CountControl';
+import patchShoppingCart from '../../api/patchShoppingCart';
 
 type SetProducts = {
   updateCartItems: () => void;
@@ -23,7 +23,7 @@ export default function ProductItem({
 }: ProductTypes & SetProducts) {
   const quantity = getMatchCartItem(id)?.quantity;
 
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -33,24 +33,38 @@ export default function ProductItem({
   const isItemInCart = getMatchCartItem(id) ? true : false;
   const cartItemId = getMatchCartItem(id)?.id;
 
-  const handleItemClick = async () => {
+  const handleItemClick = () => {
     setActive((prev) => !prev);
-    // try {
-    //   if (checkMax()) {
-    //     throw new Error('50개 초과');
-    //   }
-    //   if (!isItemInCart) {
-    //     await postShoppingCart(id, 1);
-    //   } else {
-    //     if (!cartItemId) return;
-    //     await deleteShoppingCart(cartItemId);
-    //   }
-    //   await updateCartItems();
-    // } catch (e) {
-    //   //
-    // } finally {
-    //   //
-    // }
+  };
+
+  const handleControlClick = async (type: 'increase' | 'decrease') => {
+    try {
+      if (type === 'increase') {
+        if (checkMax()) throw new Error('50개 초과');
+
+        setCount((prev) => prev + 1);
+
+        if (count === 0) await postShoppingCart(id, 1);
+
+        if (cartItemId) {
+          await patchShoppingCart(cartItemId, count + 1);
+        }
+      }
+
+      if (type === 'decrease') {
+        if (count === 0) return;
+
+        setCount((prev) => prev - 1);
+
+        if (cartItemId) {
+          await patchShoppingCart(cartItemId, count - 1);
+        }
+      }
+
+      updateCartItems();
+    } catch (error) {
+      //
+    }
   };
 
   return (
@@ -63,7 +77,7 @@ export default function ProductItem({
         </StyledProductInfo>
         <StyledButtonWrapper>
           {active ? (
-            <CountControl count={count} onClick={() => {}} />
+            <CountControl count={count} onClick={handleControlClick} />
           ) : (
             <StyledButton
               isItemInCart={!isItemInCart}
