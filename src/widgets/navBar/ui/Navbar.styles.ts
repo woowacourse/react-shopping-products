@@ -30,7 +30,8 @@ export const Logo = styled.div`
 `;
 
 export const CartIconButtonContainer = styled.button`
-  height: 100%;
+  width: 40px;
+  height: 40px;
   position: relative;
   border-radius: 100%;
   cursor: pointer;

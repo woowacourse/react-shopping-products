@@ -17,9 +17,3 @@ export interface CartProduct {
   product: Product;
   quantity: number;
 }
-
-export interface TempCartProduct {
-  productId: number;
-  cartProductId: number;
-  cartProductQuantity: number;
-}
