@@ -73,10 +73,12 @@ describe("ProductListContainer", () => {
     await userEvent.selectOptions(select, optionFashion);
 
     const fashionItems = MOCK_PRODUCTS.filter((p) => p.category === "패션잡화");
+    expect(fashionItems).not.toHaveLength(0);
     for (const p of fashionItems) {
       expect(await screen.findByText(p.name)).toBeInTheDocument();
     }
     const groceryItems = MOCK_PRODUCTS.filter((p) => p.category === "식료품");
+    expect(groceryItems).not.toHaveLength(0);
     for (const p of groceryItems) {
       expect(screen.queryByText(p.name)).toBeNull();
     }
