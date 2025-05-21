@@ -1,4 +1,4 @@
-import { ProductItemType } from '../types/data';
+import { CartItemType, ProductItemType } from '../types/data';
 
 export interface MockProductsType extends ProductItemType {
   quantity: number;
@@ -11,4 +11,10 @@ export const MOCK_PRODUCTS: MockProductsType[] = Array.from({ length: 20 }, (_, 
   price: 1000 + index * 100,
   imageUrl: `/images/product-${index + 1}.jpg`,
   quantity: 20,
+}));
+
+export const MOCK_CART_ITEMS: CartItemType[] = Array.from({ length: 5 }, (_, index) => ({
+  id: index + 1,
+  quantity: 3,
+  product: MOCK_PRODUCTS[index],
 }));
