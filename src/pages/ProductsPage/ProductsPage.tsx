@@ -26,7 +26,6 @@ function ProductsPage() {
     products,
   } = useGetProducts({ category, sort });
   const { isError: isErrorCarts, carts, refetchCarts } = useGetCarts();
-
   const {
     handleAddCartItem,
     handleDeleteCartItem,
