@@ -49,7 +49,7 @@ function ProductListContainer({
 
   //TODO: 상품 목록 가져올 때 로딩중
   useEffect(() => {
-    (async () => {
+    const loadProductList = async () => {
       try {
         const { content } = await fetchProductList({
           params: {
@@ -59,12 +59,15 @@ function ProductListContainer({
             size: "20",
           },
         });
+
         setProductList(content);
       } catch (error) {
         // error 상태
         console.log(error);
       }
-    })();
+    };
+
+    loadProductList();
   }, [category, sort]);
 
   const handleCategory = ({
