@@ -241,4 +241,42 @@ describe("useCartItems 훅 - 장바구니의 상품 개수 표시 기능", () =>
     expect(result.current.isProductInCart(1)).toBe(true);
     expect(result.current.isProductInCart(2)).toBe(false);
   });
+
+  it("API 에러 발생 시 에러 메시지를 설정한다.", async () => {
+    (CartItemsAPI.get as Mock).mockResolvedValue({
+      error: "장바구니를 불러오는 중 오류가 발생했습니다.",
+    });
+
+    renderHook(() => useCartItems(mockSetErrorMessage));
+
+    await waitFor(() => {
+      expect(mockSetErrorMessage).toHaveBeenCalledWith(
+        "장바구니를 불러오는 중 오류가 발생했습니다."
+      );
+    });
+  });
+
+  it("상품 추가 후 API 에러 발생 시 에러 메시지를 설정한다.", async () => {
+    (CartItemsAPI.get as Mock)
+      .mockResolvedValueOnce(emptyCartItems)
+      .mockResolvedValueOnce({
+        error: "장바구니 업데이트 중 오류가 발생했습니다.",
+      });
+
+    (CartItemsAPI.post as Mock).mockResolvedValue(undefined);
+
+    const { result } = renderHook(() => useCartItems(mockSetErrorMessage));
+
+    await waitFor(() => {
+      expect(CartItemsAPI.get).toHaveBeenCalled();
+    });
+
+    await act(async () => {
+      await result.current.handleCartItemToggle(1);
+    });
+
+    expect(mockSetErrorMessage).toHaveBeenCalledWith(
+      "장바구니 업데이트 중 오류가 발생했습니다."
+    );
+  });
 });
