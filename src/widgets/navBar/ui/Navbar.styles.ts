@@ -63,7 +63,6 @@ export const CartQuantity = styled.div`
 export const CartIcon = styled.img``;
 
 export const ModalContentContainer = styled.div`
-  min-width: 350px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -73,14 +72,15 @@ export const ModalContentContainer = styled.div`
 
 export const ModalContentHeader = styled.div`
   width: 100%;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 700;
   color: #000;
+  text-align: center;
 `;
 
 export const ModalContentBody = styled.div`
-  width: 100%;
-  max-height: 400px;
+  width: 350px;
+  height: 300px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -106,4 +106,12 @@ export const ModalTotalPriceLabel = styled.span`
 export const ModalTotalPrice = styled.div`
   font-size: 24px;
   font-weight: 700;
+`;
+
+export const ModalEmptyTitle = styled.div`
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+  text-align: center;
 `;

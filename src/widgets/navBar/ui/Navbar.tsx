@@ -58,7 +58,7 @@ export default function Navbar({ cartProducts, cartTypeQuantity, errorMessage, s
                   <CartProductCard key={cartProduct.id} cartProduct={cartProduct} setErrors={setErrors} />
                 ))
               ) : (
-                <div>장바구니에 상품을 담아주세요.</div>
+                <S.ModalEmptyTitle>장바구니에 상품을 담아주세요.</S.ModalEmptyTitle>
               )}
             </S.ModalContentBody>
             <S.ModalTotalPriceContainer>
