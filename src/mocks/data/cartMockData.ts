@@ -1,0 +1,66 @@
+const cartMockData = {
+  content: [
+    {
+      id: 5247,
+      quantity: 1,
+      product: {
+        id: 1,
+        name: '에어포스1',
+        price: 100000,
+        imageUrl:
+          'https://kream-phinf.pstatic.net/MjAyNTA1MTNfMjI5/MDAxNzQ3MTA4MjUzOTg4.106G0-WfVU8g8ziNKgKJjc1_UXvF-2IatsA-Cz5mG1og.etXRFVPYqcs5J9HAfXpaHFPFHorGnZU4Nl7k4368rfog.PNG/a_090d2310040b4f9ca922f2498ae8ae3a.png?type=l',
+        category: '패션잡화',
+      },
+    },
+    {
+      id: 5248,
+      quantity: 1,
+      product: {
+        id: 2,
+        name: '에어포스2',
+        price: 100000,
+        imageUrl:
+          'https://kream-phinf.pstatic.net/MjAyNTA1MTNfMjI5/MDAxNzQ3MTA4MjUzOTg4.106G0-WfVU8g8ziNKgKJjc1_UXvF-2IatsA-Cz5mG1og.etXRFVPYqcs5J9HAfXpaHFPFHorGnZU4Nl7k4368rfog.PNG/a_090d2310040b4f9ca922f2498ae8ae3a.png?type=l',
+        category: '패션잡화',
+      },
+    },
+    {
+      id: 5249,
+      quantity: 1,
+      product: {
+        id: 6,
+        name: '플라망고',
+        price: 8130,
+        imageUrl:
+          'https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg',
+        category: '식료품',
+      },
+    },
+    {
+      id: 5251,
+      quantity: 1,
+      product: {
+        id: 24,
+        name: '부리부리 원형 테이블',
+        price: 3210000,
+        imageUrl:
+          'https://cafe24.poxo.com/ec01/dmswo9075/HOvhRhvOk+Cp2KY4JuusAqBst4wtnsfbyXcejHyxMmXKvNELh5kEAFzUfK9ehG6ogDMwTwYJTLHHXeYVBq809g==/_/web/product/big/202408/19deee5e9d060d80a4180e2b2ecb6ce8.jpg',
+        category: '패션잡화',
+      },
+    },
+    {
+      id: 5252,
+      quantity: 1,
+      product: {
+        id: 23,
+        name: '리바이 아커만',
+        price: 60000000,
+        imageUrl:
+          'https://image.zeta-ai.io/profile-image/793bf4d3-03de-4ac3-afe1-95be8a9bc62c/29cd5c72-f872-4dba-8be1-21ba51e4487f.jpeg?w=1080&q=90&f=webp',
+        category: '패션잡화',
+      },
+    },
+  ],
+};
+
+export default cartMockData;

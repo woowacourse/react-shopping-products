@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import useProducts from '../../src/hooks/useProducts';
 import sortProductList from '../../src/utils/sortProductList';
-import products from '../../src/mocks/data/products.json';
+import productsMockData from '../../src/mocks/data/productsMockData';
 import { SortingType } from '../../src/types';
 
 describe('useProducts', () => {
@@ -21,7 +21,7 @@ describe('useProducts', () => {
 
         await waitFor(() => {
           expect(result.current.products).toHaveLength(
-            products.content.filter((product) => product.category === filterType).length
+            productsMockData.content.filter((product) => product.category === filterType).length
           );
         });
       }
@@ -32,7 +32,7 @@ describe('useProducts', () => {
 
       await waitFor(() => {
         expect(result.current.products).toEqual(
-          sortProductList(products.content, sortingType as SortingType)
+          sortProductList(productsMockData.content, sortingType as SortingType)
         );
       });
     });

@@ -1,10 +1,10 @@
 import { http, HttpResponse } from 'msw';
-import products from './data/products.json';
-import cart from './data/cart.json';
 import { CART_URL, PRODUCT_URL } from '../constants/endpoint';
 import filterProductList from '../utils/filterProductList';
 import sortProductList from '../utils/sortProductList';
 import { filterType, SortingType } from '../types';
+import productsMockData from './data/productsMockData';
+import cartMockData from './data/cartMockData';
 
 export const handlers = [
   http.get(PRODUCT_URL, ({ request }) => {
@@ -12,7 +12,7 @@ export const handlers = [
     const category = url.searchParams.get('category') as filterType;
     const sort = url.searchParams.get('sort');
 
-    let resultProducts = products.content;
+    let resultProducts = productsMockData.content;
     if (category) resultProducts = filterProductList(resultProducts, category);
     if (sort) resultProducts = sortProductList(resultProducts, sort.split(',')[1] as SortingType);
 
@@ -20,7 +20,7 @@ export const handlers = [
   }),
 
   http.get(CART_URL, () => {
-    return HttpResponse.json(cart);
+    return HttpResponse.json(cartMockData);
   }),
 
   http.post(CART_URL, async ({ request }) => {
