@@ -63,6 +63,7 @@ export const CartQuantity = styled.div`
 export const CartIcon = styled.img``;
 
 export const ModalContentContainer = styled.div`
+  min-width: 350px;
   width: 100%;
   display: flex;
   flex-direction: column;
