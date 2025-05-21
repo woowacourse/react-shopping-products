@@ -23,7 +23,7 @@ export default function ProductItem({
 }: ProductTypes & SetProducts) {
   const quantity = getMatchCartItem(id)?.quantity;
 
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState(false);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
