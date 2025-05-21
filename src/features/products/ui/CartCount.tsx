@@ -6,15 +6,9 @@ type Props = {
   count: number;
   onPlusCount: () => void;
   onMinusCount: () => void;
-  onCompleteCart: () => void;
 };
 
-export default function CartCount({
-  count,
-  onPlusCount,
-  onMinusCount,
-  onCompleteCart,
-}: Props) {
+export default function CartCount({count, onPlusCount, onMinusCount}: Props) {
   const className = css`
     background-color: #fff;
     border: 1px solid #d5d5d5;
@@ -35,7 +29,6 @@ export default function CartCount({
         iconUrl="./plusIcon.svg"
         css={className}
       />
-      <CompleteButton onClick={onCompleteCart}>✅</CompleteButton>
     </CartingSection>
   );
 }
@@ -44,8 +37,4 @@ const CartingSection = styled.div`
   display: flex;
   gap: 13px;
   align-items: center;
-`;
-
-const CompleteButton = styled.button`
-  cursor: pointer;
 `;

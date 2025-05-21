@@ -33,8 +33,8 @@ export const ProductPrice = styled.p`
   font-size: 12px;
 `;
 
-export const ButtonSection = styled.div`
+export const ButtonSection = styled.div<{isCarting: boolean}>`
   height: 25px;
   display: flex;
-  justify-content: end;
+  justify-content: ${({isCarting}) => (isCarting ? 'space-between' : 'end')};
 `;

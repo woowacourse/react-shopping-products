@@ -23,9 +23,14 @@ export default function ProductCard({
 }: ProductCardProps) {
   const showError = useShowError();
   const [isCarting, setIsCarting] = useState(false);
-  const [count, setCount] = useState(0);
+  const [quantity, setQuantity] = useState(0);
 
   const handlePutCartClick = async () => {
+    if (!isCarting) {
+      setIsCarting(true);
+      return;
+    }
+
     if (cartQuantity >= MAX_CART_QUANTITY) {
       showError?.(
         `장바구니에 담을 수 있는 최대 개수는 ${MAX_CART_QUANTITY}개입니다.`
@@ -34,7 +39,7 @@ export default function ProductCard({
     }
 
     try {
-      await postCartProduct(product.id);
+      await postCartProduct(product.id, quantity);
       onRefetch();
     } catch (e) {
       showError?.('상품 추가 중에 문제가 발생했습니다.');
@@ -63,7 +68,7 @@ export default function ProductCard({
     : css``;
   const handleCartClick = product.isCart
     ? handleDeleteCartClick
-    : () => setIsCarting(true);
+    : handlePutCartClick;
 
   return (
     <S.ProductCardContainer>
@@ -77,25 +82,23 @@ export default function ProductCard({
         <S.ProductCategory>{product.category}</S.ProductCategory>
         <S.ProductPrice>{product.price}</S.ProductPrice>
       </S.ContentSection>
-      <S.ButtonSection>
-        {isCarting ? (
+      <S.ButtonSection isCarting={isCarting}>
+        {isCarting && (
           <CartCount
-            count={count}
-            onPlusCount={() => setCount((prev) => prev + 1)}
+            count={quantity}
+            onPlusCount={() => setQuantity((prev) => prev + 1)}
             onMinusCount={() => {
-              count > 0 && setCount((prev) => prev - 1);
+              quantity > 0 && setQuantity((prev) => prev - 1);
             }}
             // onCount={setCount}
-            onCompleteCart={handlePutCartClick}
-          />
-        ) : (
-          <CustomButton
-            iconUrl={iconUrl}
-            title={title}
-            onClick={handleCartClick}
-            css={className}
           />
         )}
+        <CustomButton
+          iconUrl={iconUrl}
+          title={title}
+          onClick={handleCartClick}
+          css={className}
+        />
       </S.ButtonSection>
     </S.ProductCardContainer>
   );
