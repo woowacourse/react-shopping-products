@@ -38,10 +38,6 @@ export const apiRequest = async <T>(
       throw new Error(errorMessage);
     }
 
-    if (options.method === 'DELETE') {
-      return {} as T;
-    }
-
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
       return await response.json();
