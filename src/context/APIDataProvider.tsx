@@ -6,6 +6,7 @@ import {
   useState,
   type PropsWithChildren,
 } from 'react';
+import { showToast } from '../utils/toast/showToast';
 
 type APIStateMap = Record<
   string,
@@ -59,6 +60,7 @@ export function useAPIDataContext<T>({
         ...prev,
         [name]: { data: null, loading: false, error: e },
       }));
+      showToast('장바구니를 불러오는데 실패했습니다', 'error');
     }
   }, [name, setState]);
 

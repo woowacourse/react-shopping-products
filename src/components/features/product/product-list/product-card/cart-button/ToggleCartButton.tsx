@@ -5,6 +5,7 @@ import { postCartItem } from '../../../../../../api/postCartItem';
 import { deleteCartItem } from '../../../../../../api/deleteCartItem';
 import DeleteCartButton from './DeleteCartButton';
 import AddCartButton from './AddCartButton';
+import { showToast } from '../../../../../../utils/toast/showToast';
 
 interface ToggleCartButtonProps extends ComponentProps<'button'> {
   productId: string;
@@ -30,7 +31,7 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
       await postCartItem(productId);
       cartRefetch();
     } catch (e) {
-      throw new Error('장바구니에 추가하는 데 실패했습니다.');
+      showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
     }
   }, [cartListData, productId, cartRefetch]);
 
@@ -45,7 +46,7 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
       await deleteCartItem(cartId);
       cartRefetch();
     } catch (e) {
-      throw new Error('장바구니에서 삭제하는 데 실패했습니다.');
+      showToast('장바구니에 삭제하는 데 실패했습니다.', 'error');
     }
   }, [cartListData, productId, cartRefetch]);
   if (!cartListData) {
