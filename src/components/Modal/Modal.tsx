@@ -61,6 +61,16 @@ function Wrapper({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, close]);
 
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
   return <ModalContext.Provider value={{ isOpen, close, open }}>{children}</ModalContext.Provider>;
 }
 Wrapper.displayName = "ModalWrapper";
