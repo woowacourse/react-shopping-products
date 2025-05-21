@@ -24,6 +24,8 @@ function App() {
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
 
+  const [quantity, setQuantity] = useState(0);
+
   const handleProductErrorMessage = (message: string) => {
     setProductListErrorMessage("");
     setTimeout(() => {
@@ -123,6 +125,8 @@ function App() {
                 onAddToCart={handleAddToCard}
                 onRemoveFromCart={handleRemoveFromCart}
                 setErrorMessage={handleProductErrorMessage}
+                quantity={quantity}
+                setQuantity={setQuantity}
               />
             </S.MiddleContainer>
           </>

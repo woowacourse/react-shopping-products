@@ -1,22 +1,25 @@
 import * as S from "./ProductItem.styled";
 import AddProductIcon from "../Icon/AddProductIcon";
 import Button from "../common/Button/Button";
-import RemoveProductIcon from "../Icon/RemoveProductIcon";
 import blackDefaultImage from "../../assets/blackDefaultImage.png";
 import { ResponseCartItem, ResponseProduct } from "../../api/types";
-
+import QuantityButton from "../common/QuantityButton/QuantityButton";
 function ProductItem({
   product,
   cartItemList,
   onAddToCart,
   onRemoveFromCart,
   setErrorMessage,
+  quantity,
+  setQuantity,
 }: {
   product: ResponseProduct;
   cartItemList: ResponseCartItem[];
   onAddToCart: (productId: number) => Promise<void>;
   onRemoveFromCart: (cartItemId: number) => Promise<void>;
   setErrorMessage: (message: string) => void;
+  quantity: number;
+  setQuantity: (quantity: number) => void;
 }) {
   function isInCart(productId: number) {
     return cartItemList.some((item) => item.product.id === productId);
@@ -60,12 +63,7 @@ function ProductItem({
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
         {isInCart(product.id) ? (
-          <Button
-            text="삭제"
-            icon={<RemoveProductIcon />}
-            variation="light"
-            onClick={() => handleProductItem("remove")}
-          />
+          <QuantityButton quantity={quantity} setQuantity={setQuantity} />
         ) : (
           <Button
             text="담기"
