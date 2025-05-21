@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback } from "react";
 import { getCartItems } from "../api/cartItems";
+import { ERROR_MSG } from "../constants/errorMessage";
 
 export type BasketProductInfo = {
   productId: number;
@@ -36,7 +37,7 @@ export const CartProvider = ({
         }));
         setBasketProductsIds(mapped);
       } catch (e) {
-        console.error("[CartContext] Failed to fetch cart items", e); // 잠만 근데 이거 콘솔에 띄움 걍 ? 에러 메시지로 보여줘야되지 않니 이것도 컨텍스트로 해야될듯
+        console.error(ERROR_MSG.BASKET_FETCH_FAIL, e);
       } finally {
         if (withGlobalLoading) setGlobalLoading(false);
       }
@@ -59,6 +60,6 @@ export const CartProvider = ({
 export const useCartContext = () => {
   const context = useContext(CartContext);
   if (!context)
-    throw new Error("useCartContext must be used within a CartProvider");
+    throw new Error("useCartContext는 CartProvider 내에서 사용해주세요.");
   return context;
 };
