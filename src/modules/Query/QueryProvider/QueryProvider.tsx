@@ -1,7 +1,7 @@
 import { StrictPropsWithChildren } from "@/types/strict";
 import { createContext, useContext, useState } from "react";
 
-interface QueryClientProviderProps extends StrictPropsWithChildren {}
+interface QueryProviderProps extends StrictPropsWithChildren {}
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -21,7 +21,7 @@ const QueryClientContext = createContext<QueryClientContextType>({
 
 export const useQueryClient = () => useContext(QueryClientContext);
 
-export default function QueryClientProvider({ children }: QueryClientProviderProps) {
+export default function QueryProvider({ children }: QueryProviderProps) {
   const [data, setData] = useState<Record<string, any>>({});
   const [status, setStatus] = useState<Record<string, Status>>({});
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQueryClient } from "../QueryClientProvider/QueryClientProvider";
+import { useQueryClient } from "../QueryProvider/QueryProvider";
 
 interface UseQueryProps<T> {
   queryKey: string;

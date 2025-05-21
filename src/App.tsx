@@ -2,18 +2,18 @@ import { ProductsPage } from "./pages/products";
 import * as S from "./App.styles";
 import { ErrorProvider } from "./context";
 import { ErrorPopup } from "./components";
-import QueryClientProvider from "./modules/Query/QueryClientProvider/QueryClientProvider";
+import QueryProvider from "./modules/Query/QueryProvider/QueryProvider";
 
 function App() {
   return (
-    <QueryClientProvider>
+    <QueryProvider>
       <S.Container>
         <ErrorProvider>
           <ErrorPopup />
           <ProductsPage />
         </ErrorProvider>
       </S.Container>
-    </QueryClientProvider>
+    </QueryProvider>
   );
 }
 
