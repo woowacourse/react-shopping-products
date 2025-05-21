@@ -1,0 +1,47 @@
+type HttpMethod = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
+
+interface ApiRequestParams<T> {
+  endpoint: string;
+  method?: HttpMethod;
+  body?: T;
+}
+
+async function apiRequestWithAuth<TRequest, TResponse = void>({
+  endpoint,
+  method = 'GET',
+  body,
+}: ApiRequestParams<TRequest>): Promise<TResponse> {
+  const username = import.meta.env.VITE_USERNAME;
+  const password = import.meta.env.VITE_PASSWORD;
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const credentials = btoa(`${username}:${password}`);
+
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    Authorization: `Basic ${credentials}`,
+  };
+
+  const options: RequestInit = {
+    method,
+    headers,
+  };
+
+  if (body && method !== 'GET') {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(`${baseUrl}${endpoint}`, options);
+
+  if (!response.ok) {
+    throw new Error(`Network response was not ok: ${response.statusText}`);
+  }
+
+  if (response.status === 200) {
+    const data = await response.json();
+    return data;
+  }
+
+  return null as TResponse;
+}
+
+export default apiRequestWithAuth;
