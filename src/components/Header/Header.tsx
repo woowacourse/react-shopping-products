@@ -4,6 +4,7 @@ import { useQuery } from "@/modules";
 import * as S from "./Header.styles";
 import ShoppingCartModal from "./ShoppingCartModal";
 import Modal from "../Modal/Modal";
+import Text from "../Text/Text";
 
 export default function Header() {
   const { data: cartItems } = useQuery({
@@ -15,7 +16,9 @@ export default function Header() {
 
   return (
     <S.HeaderWrapper>
-      <span>SHOP</span>
+      <Text variant="title-1" css={S.titleText}>
+        SHOP
+      </Text>
       <Modal.Wrapper>
         <Modal.Trigger>
           <S.ShoppingBagWrapper>

@@ -1,4 +1,9 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+
+export const titleText = css`
+  color: white;
+`;
 
 export const HeaderWrapper = styled.header`
   width: 100%;

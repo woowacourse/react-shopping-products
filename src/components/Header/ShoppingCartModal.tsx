@@ -4,6 +4,7 @@ import { CartItem } from "@/pages/products/components";
 import { CartItemApi } from "@/apis";
 import { useQuery } from "@/modules";
 import * as S from "./ShoppingCartModal.styles";
+
 export default function ShoppingCartModal() {
   const { data: cartItems, refetch: refetchCartItems } = useQuery({
     queryFn: CartItemApi.getCartItems,
@@ -13,14 +14,7 @@ export default function ShoppingCartModal() {
   const totalPrice = cartItems?.content?.reduce((acc, item) => acc + item.product.price * item.quantity, 0) ?? 0;
 
   return (
-    <Modal
-      size="large"
-      position="bottom"
-      isBackdropClose
-      css={css`
-        max-width: 430px;
-      `}
-    >
+    <Modal size="large" position="bottom" isBackdropClose css={S.modalStyle}>
       <Modal.Top>
         <Modal.Title>장바구니</Modal.Title>
       </Modal.Top>
