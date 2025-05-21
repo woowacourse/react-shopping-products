@@ -41,12 +41,10 @@ describe("useProducts", () => {
 
 		const { result, rerender } = renderHook(() => useProducts());
 
-		// 필터 적용
 		act(() => {
 			result.current.setFilter(FILTER_TYPE);
 		});
 
-		// 상태 변경 후 rerender 필요
 		rerender();
 
 		await waitFor(() => {
