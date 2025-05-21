@@ -6,11 +6,7 @@ const ShopHeader = ({ cartItemCount }: { cartItemCount: number }) => {
     <S.Header>
       <S.Logo href="/">SHOP</S.Logo>
       <S.CartImage src={Cart} alt="장바구니" />
-      {!!cartItemCount && (
-        <S.CartItemCount data-testid="cart-item-count">
-          {cartItemCount}
-        </S.CartItemCount>
-      )}
+      {!!cartItemCount && <S.CartItemCount>{cartItemCount}</S.CartItemCount>}
     </S.Header>
   );
 };
