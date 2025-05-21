@@ -22,10 +22,18 @@ export default function useCart() {
 
 	const updateCartItem = async (type: string, id: number) => {
 		if (type === "add") {
-			await addCart(id);
+			try {
+				await addCart(id);
+			} catch (error) {
+				if (error instanceof Error) setCartError(error.message);
+			}
 		}
 		if (type === "remove") {
-			await removeCart(id);
+			try {
+				await removeCart(id);
+			} catch (error) {
+				if (error instanceof Error) setCartError(error.message);
+			}
 		}
 		fetchCartProducts();
 	};
