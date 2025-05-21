@@ -1,10 +1,11 @@
-import {
-  CategoryOptionsKey,
-  SortOptionsKey,
-  sortOptionsMap,
-} from "../constants";
+import { CategoryOptionsKey, SortOptionsKey } from "../constants";
 import { Products } from "../types/products";
 import { createApiUrl, fetchWithErrorHandling, SHOP_API } from "./configs";
+
+const sortOptionsMap: Record<SortOptionsKey, string> = {
+  "낮은 가격 순": "price,asc",
+  "높은 가격 순": "price,desc",
+} as const;
 
 export const ProductsAPI = {
   get: async (
