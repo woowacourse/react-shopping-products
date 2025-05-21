@@ -25,7 +25,7 @@ function ProductsPage() {
     isError: isErrorProducts,
     products,
   } = useGetProducts({ category, sort });
-  const { isLoading: isLoadingCarts, isError: isErrorCarts, carts, refetchCarts } = useGetCarts();
+  const { isError: isErrorCarts, carts, refetchCarts } = useGetCarts();
 
   const {
     handleAddCartItem,
@@ -35,10 +35,6 @@ function ProductsPage() {
     isOverItemCounts,
     itemCount,
   } = useCartManagement({ refetchCarts, carts });
-
-  if (isLoadingCarts) {
-    return <div>로딩중...</div>;
-  }
 
   return (
     <div className={productPageContainer}>
