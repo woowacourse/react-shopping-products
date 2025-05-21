@@ -40,17 +40,9 @@ const handlers = [
 
   http.get<GetProductsParams, GetProductsResponse>('/products/:productId', async ({ params }) => {
     const { productId } = params;
+    const targetProduct = MOCK_PRODUCTS.find(({ id }) => String(id) === productId);
 
-    return HttpResponse.json([
-      {
-        id: Number(productId),
-        name: '운동화',
-        price: 100000,
-        imageUrl: 'string',
-        category: '패션잡화',
-        quantity: 50,
-      },
-    ]);
+    return HttpResponse.json(targetProduct);
   }),
 ];
 
