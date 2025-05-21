@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { ErrorProvider } from './context/ErrorContext';
+import ProductPage from './pages/ProductPage';
+import './styles/reset.css';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <ErrorProvider>
+      <ProductPage />
+    </ErrorProvider>
   );
 }
 
