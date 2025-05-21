@@ -14,11 +14,11 @@ export default function AppContent() {
       <Body>
         <ProductListContainer />
       </Body>
-      <StyledDiv>
-        {errorMessage.map((msg, index) => (
+      {errorMessage.map((msg, index) => (
+        <StyledDiv>
           <ErrorBox key={index}>{msg}</ErrorBox>
-        ))}
-      </StyledDiv>
+        </StyledDiv>
+      ))}
     </>
   );
 }
