@@ -1,24 +1,22 @@
 import { baseAPI } from '@/api/baseAPI';
-import { DropdownOptionType } from '@/components/common/type';
+import { buildQueryString } from '@/api/buildQueryString';
 import { convertResponseToProduct } from './responseMapper';
 import { ProductsResponse } from './type';
-import { buildQueryString } from '@/api/buildQueryString';
 
 export async function getProductList(filterOption: {
-  category: DropdownOptionType;
-  sort: DropdownOptionType;
+  category: string;
+  sort: string;
 }) {
   const page = 0;
   const size = 20;
   const queryString = buildQueryString([
     {
       name: 'category',
-      value:
-        filterOption.category.value !== '전체' && filterOption.category.value,
+      value: filterOption.category !== '전체' && filterOption.category,
     },
     { name: 'page', value: page },
     { name: 'size', value: size },
-    { name: 'sort', value: `price,${filterOption.sort.value}` },
+    { name: 'sort', value: `price,${filterOption.sort}` },
   ]);
 
   const basePath = `/products?${queryString}`;

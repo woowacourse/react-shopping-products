@@ -1,34 +1,37 @@
 import { Flex } from '@/components/common';
 import Dropdown from '@/components/common/Dropdown';
-import { DropdownOptionType } from '@/components/common/type';
+
+const categoryOptions = [
+  { label: '전체', value: '전체' },
+  { label: '식료품', value: '식료품' },
+  { label: '패션잡화', value: '패션잡화' },
+];
+
+const sortOptions = [
+  { label: '낮은 가격순', value: 'asc' },
+  { label: '높은 가격순', value: 'desc' },
+];
 
 function ShopFilter({
-  filterOption,
+  filter,
   handleCategoryOption,
   handleSortOption,
 }: {
-  filterOption: { category: DropdownOptionType; sort: DropdownOptionType };
-  handleCategoryOption: (option: DropdownOptionType) => void;
-  handleSortOption: (option: DropdownOptionType) => void;
+  filter: { category: string; sort: string };
+  handleCategoryOption: (value: string) => void;
+  handleSortOption: (value: string) => void;
 }) {
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <Dropdown
-        options={[
-          { label: '전체', value: '전체' },
-          { label: '식료품', value: '식료품' },
-          { label: '패션잡화', value: '패션잡화' },
-        ]}
-        selectedOption={filterOption.category}
+        options={categoryOptions}
+        selectedValue={filter.category}
         onSelectOption={handleCategoryOption}
         data-testid="filter-category"
       />
       <Dropdown
-        options={[
-          { label: '낮은 가격순', value: 'asc' },
-          { label: '높은 가격순', value: 'desc' },
-        ]}
-        selectedOption={filterOption.sort}
+        options={sortOptions}
+        selectedValue={filter.sort}
         onSelectOption={handleSortOption}
         data-testid="filter-sort"
       />

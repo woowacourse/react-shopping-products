@@ -2,18 +2,17 @@ import { useClickOutsideRef } from '@/hooks/useClickOutsideRef';
 import styled from '@emotion/styled';
 import { ComponentProps, useState } from 'react';
 import Arrow from './Arrow';
-import { DropdownOptionType } from './type';
 
-interface DropdownProps<T> {
+interface DropdownProps<T extends { label: string; value: string }> {
   options: T[];
-  selectedOption: T | null;
-  onSelectOption: (option: T) => void;
+  selectedValue: string | null;
+  onSelectOption: (optionValue: string) => void;
   placeholder?: string;
 }
 
-function Dropdown<T extends DropdownOptionType>({
+function Dropdown<T extends { label: string; value: string }>({
   options,
-  selectedOption,
+  selectedValue,
   onSelectOption,
   placeholder,
   ...props
@@ -23,16 +22,20 @@ function Dropdown<T extends DropdownOptionType>({
 
   const toggle = () => setOpen((prev) => !prev);
 
-  const onOptionSelected = (option: T) => {
+  const selectedLabel = options.find(
+    (option) => option.value === selectedValue
+  )?.label;
+
+  const onOptionSelected = (value: string) => {
     setOpen(false);
-    onSelectOption(option);
+    onSelectOption(value);
   };
 
   return (
     <DropdownContainer ref={dropdownRef} {...props}>
       <DropdownToggle onClick={toggle}>
-        <DropdownText isSelected={selectedOption !== null}>
-          {selectedOption?.label || (placeholder ?? '')}
+        <DropdownText isSelected={selectedValue !== null}>
+          {selectedLabel || (placeholder ?? '')}
         </DropdownText>
         <Arrow width={16} direction={open ? 'up' : 'down'} />
       </DropdownToggle>
@@ -41,7 +44,7 @@ function Dropdown<T extends DropdownOptionType>({
           <DropdownMenuItem
             key={option.value}
             data-value={option.value}
-            onClick={() => onOptionSelected(option)}
+            onClick={() => onOptionSelected(option.value)}
           >
             {option.label}
           </DropdownMenuItem>
