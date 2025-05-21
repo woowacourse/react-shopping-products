@@ -1,3 +1,5 @@
+import { useState } from "react";
+import CartManageButton from "../cartAddButton/CartManageButton";
 import { ButtonContainer, RemoveButton } from "./CartToggleButton.css";
 import useCartToggleButton from "./useCartToggleButton";
 
@@ -20,6 +22,21 @@ function CartToggleButton({
   setCartItemIds,
   fetchCartProducts,
 }: CartToggleButtonProps) {
+  const [quantity, setQuantity] = useState(1);
+
+  function increase() {
+    setQuantity((prev) => prev + 1);
+  }
+
+  function decrease() {
+    if (quantity === 1) {
+      removeItemToCart({ cartId, productId });
+      setQuantity(1);
+      return;
+    }
+    setQuantity((prev) => prev - 1);
+  }
+
   const { removeItemToCart, addItemToCart } = useCartToggleButton({
     setCartItemIds,
     fetchCartProducts,
@@ -43,7 +60,13 @@ function CartToggleButton({
         styles: ButtonContainer,
       };
 
-  return (
+  return isAdded ? (
+    <CartManageButton
+      quantity={quantity}
+      increase={increase}
+      decrease={decrease}
+    />
+  ) : (
     <button css={buttonProps.styles} onClick={buttonProps.onClick}>
       <img src={buttonProps.icon} alt={`${buttonProps.label} 아이콘`} />
       <p>{buttonProps.label}</p>
