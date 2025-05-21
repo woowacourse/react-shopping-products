@@ -35,3 +35,55 @@ export const cartIcon = css({
     fontSize: "14px",
   },
 });
+
+export const totalPrice = css({
+  display: "flex",
+  justifyContent: "space-between",
+  marginTop: "16px",
+  fontSize: "16px",
+  button: {
+    backgroundColor: "black",
+    color: "white",
+    borderRadius: "8px",
+    padding: "8px 16px",
+    border: "none",
+    cursor: "pointer",
+  },
+  label: {
+    fontWeight: 700,
+    fontSize: "16px",
+  },
+  span: {
+    fontWeight: 800,
+    lineHeight: "100%",
+    letterSpacing: "0px",
+    fontSize: "28px",
+  },
+});
+
+export const buttonContainer = css({
+  display: "flex",
+  justifyContent: "space-between",
+  marginTop: "16px",
+  gap: "8px",
+  button: {
+    backgroundColor: "black",
+    color: "white",
+    borderRadius: "8px",
+    padding: "8px 16px",
+    border: "none",
+    cursor: "pointer",
+    width: "100%",
+  },
+  label: {
+    fontWeight: 700,
+    fontSize: "16px",
+  },
+  span: {
+    fontWeight: 800,
+    lineHeight: "100%",
+
+    letterSpacing: "0px",
+    fontSize: "28px",
+  },
+});
