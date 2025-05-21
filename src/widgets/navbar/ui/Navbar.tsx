@@ -3,6 +3,7 @@ import * as S from './Navbar.styles';
 import {useErrorToast} from '../../../shared/provider/errorProvider';
 import {useState} from 'react';
 import Modal from '../../../shared/ui/Modal';
+import CartCard from '../../../features/products/ui/CartCard';
 
 interface NavbarProps {
   cartQuantity: number;
@@ -26,7 +27,9 @@ export default function Navbar({cartQuantity}: NavbarProps) {
         onClose={() => setIsOpen(false)}
         position="bottom"
         title={{text: '장바구니', size: 20}}
-      />
+      >
+        <CartCard />
+      </Modal>
     </S.NavbarWrapper>
   );
 }
