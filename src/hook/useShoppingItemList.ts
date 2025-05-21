@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Product } from '../types/common';
-import { ProductListResponse } from '../types/response';
-import { apiRequest } from '../api/apiRequest';
+
 import useCategory from './useCategory';
 import useSort from './useSort';
+
+import { Product } from '../types/common';
+import { productApi } from '../api/product';
 
 const useShoppingItemList = () => {
   const { category, selectCategory, resetCategory } = useCategory();
@@ -18,15 +19,12 @@ const useShoppingItemList = () => {
       setError(null);
 
       try {
-        const response = await apiRequest<ProductListResponse>(
-          `/products?page=0&size=20${
-            category === '전체' ? '' : `&category=${category}`
-          }${
-            sortType === '높은 가격순' ? '&sort=price,desc' : '&sort=price,asc'
-          }`
-        );
+        const response = await productApi.getProductList({
+          sortType,
+          category,
+        });
 
-        setData(response.content);
+        setData(response);
       } catch (error) {
         console.error('Failed to fetch products:', error);
         setError(
