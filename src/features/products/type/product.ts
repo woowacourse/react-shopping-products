@@ -1,15 +1,12 @@
+import { Product } from '../../../shared/contexts/productsWithCart/types';
+
 export interface ProductDTO {
   category: string;
   id: number;
   imageUrl: string;
   name: string;
   price: number;
-}
-
-export interface Product extends ProductDTO {
-  isCart: boolean;
-  cartProductQuantity?: number;
-  cartProductId?: number;
+  quantity: number;
 }
 
 export interface CartProduct {

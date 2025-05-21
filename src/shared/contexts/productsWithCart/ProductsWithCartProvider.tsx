@@ -1,6 +1,6 @@
 import React, { createContext, useState, useCallback } from 'react';
-import { ProductsWithCartContextValue } from './types';
-import { CartProduct, Product, ProductDTO } from '../../../features/products/type/product';
+import { Product, ProductsWithCartContextValue } from './types';
+import { CartProduct, ProductDTO } from '../../../features/products/type/product';
 import { getProducts } from '../../../features/products/api/getProducts';
 import { getCartProduct } from '../../../features/cart/api/getCartProduct';
 import { addCartProduct } from '../../../features/cart/api/addCartProduct';

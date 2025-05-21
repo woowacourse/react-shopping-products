@@ -1,4 +1,10 @@
-import { CartProduct, Product } from '../../../features/products/type/product';
+import { CartProduct, ProductDTO } from '../../../features/products/type/product';
+
+export interface Product extends ProductDTO {
+  isCart: boolean;
+  cartProductQuantity?: number;
+  cartProductId?: number;
+}
 
 export interface ProductsWithCartContextValue {
   products: Product[];

@@ -2,12 +2,12 @@ import * as S from './App.styles';
 import CustomSelect from './shared/ui/CustomSelect';
 import ProductCard from './features/products/ui/ProductCard';
 import { useEffect, useState } from 'react';
-import { Product } from './features/products/type/product';
 import { filterByValue } from './shared/utils/filterByValue';
 import { MATCH_CATEGORY } from './features/products/utils/matchCategory';
 import Navbar from './widgets/navbar/ui/Navbar';
 import ProductCardSkeleton from './features/products/ui/ProductCardSkeleton';
 import { useProductsWithCartContext } from './shared/contexts/productsWithCart/useProductsWithCartContext';
+import { Product } from './shared/contexts/productsWithCart/types';
 
 type Category = 'all' | 'food' | 'clothes';
 
