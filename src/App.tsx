@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
-import Main from "./components/Main/Main";
+import ProductListContainer from "./components/ProductListContainer/ProductListContainer";
 import Spinner from "./components/common/Spinner/Spinner";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
@@ -119,7 +119,7 @@ function App() {
       <Wrapper>
         <Header selectedProductIdList={selectedProductIdList}></Header>
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-        <Main
+        <ProductListContainer
           selectedProductIdList={selectedProductIdList}
           handleAddProduct={handleAddProduct}
           handleRemoveProduct={handleRemoveProduct}

@@ -3,7 +3,7 @@ import ProductList from "../ProductList/ProductList";
 import Filter from "../Filter/Filter";
 import Spinner from "../common/Spinner/Spinner";
 
-import * as Styled from "./Main.styled";
+import * as Styled from "./ProductListContainer.styled";
 
 import { ProductCategory } from "../../types/ProductCategory";
 import { Sort } from "../../types/Sort";
@@ -11,7 +11,7 @@ import { Product } from "../../types/Product";
 
 import fetchProductList from "../../apis/product/fetchProductList";
 
-interface MainProps {
+interface ProductListContainerProps {
   selectedProductIdList: string[];
   handleAddProduct: (productId: string) => void;
   handleRemoveProduct: (productId: string) => void;
@@ -25,11 +25,11 @@ const isProductSort = (value: string): value is Sort => {
   return ["price,desc", "price,asc", "id,desc", "id,asc"].includes(value);
 };
 
-function Main({
+function ProductListContainer({
   selectedProductIdList,
   handleAddProduct,
   handleRemoveProduct,
-}: MainProps) {
+}: ProductListContainerProps) {
   const [productList, setProductList] = useState<Product[] | null>(null);
   const [category, setCategory] = useState<ProductCategory>("전체");
   const [sort, setSort] = useState<Sort>("price,asc");
@@ -92,4 +92,4 @@ function Main({
   );
 }
 
-export default Main;
+export default ProductListContainer;
