@@ -1,4 +1,3 @@
-import Header from '../../component/@common/Header/Header';
 import {
   ShoppingListFilterItemStyle,
   ShoppingListFilterStyle,
@@ -12,7 +11,6 @@ import ErrorFallback from '../../component/@common/ErrorFallback/ErrorFallback';
 
 import { CategoryOption, SortOption } from '../../types/common';
 import useShoppingItemList from '../../hook/useShoppingItemList';
-import CartProvider from '../../context/cartContext/cartProvider';
 import ProductList from '../../component/feature/ProductList/ProductList';
 
 const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
@@ -34,7 +32,6 @@ const ShoppingList = () => {
   if (error) {
     return (
       <>
-        <Header />
         <ErrorFallback
           error={error}
           onRetryClick={retryFetch}
@@ -45,8 +42,7 @@ const ShoppingList = () => {
   }
 
   return (
-    <CartProvider>
-      <Header />
+    <>
       <section css={ShoppingListStyle}>
         <div css={ShoppingListTitleStyle}>
           <Text variant="title">bpple 상품 목록</Text>
@@ -89,7 +85,7 @@ const ShoppingList = () => {
         </div>
       </section>
       <ProductList data={data} isLoading={isLoading} />
-    </CartProvider>
+    </>
   );
 };
 
