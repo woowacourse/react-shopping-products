@@ -19,7 +19,6 @@ export default function CartProductCard({ cartProduct, setErrors }: CartProductC
     }
   };
 
-  console.log('cartProduct', cartProduct);
   return (
     <S.CartProductCardContainer>
       <S.CartProductImage
