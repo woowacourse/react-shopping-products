@@ -7,11 +7,11 @@ type PageableType = {
 const PAGEABLE_DEFAULT = {
   page: 0,
   size: 20,
-  sort: '',
+  sort: "",
 };
 
 export default async function getProducts(
-  category?: '식료품' | '패션잡화' | string,
+  category?: "식료품" | "패션잡화" | string,
   pageable: PageableType = PAGEABLE_DEFAULT
 ) {
   const { page, size, sort } = pageable;
@@ -20,14 +20,18 @@ export default async function getProducts(
   const params = new URLSearchParams({
     page: String(page),
     size: String(size),
-    sort: sort ?? '',
+    sort: sort ?? "",
   });
 
-  if (category) params.append('category', category);
+  if (category) params.append("category", category);
   const response = await fetch(`${baseUrl}/products?${params}`);
 
   if (!response.ok) {
-    throw new Error('에러 발생');
+    if (!response.ok) {
+      throw new Error(
+        `상품 목록을 가져오는데 실패했습니다. 상태 코드: ${response.status}`
+      );
+    }
   }
 
   const data = await response.json();
