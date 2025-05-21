@@ -1,11 +1,17 @@
 import { baseAPI } from '@/api/baseAPI';
 import { convertResponseToCart } from './responseMapper';
 import { CartItemsResponse } from './type';
+import { buildQueryString } from '@/api/buildQueryString';
 
 export async function getShoppingCartList() {
   const initialPage = 0;
   const maxSize = 50;
-  const basePath = `/cart-items?page=${initialPage}&size=${maxSize}`;
+  const queryString = buildQueryString([
+    { name: 'page', value: initialPage },
+    { name: 'size', value: maxSize },
+  ]);
+
+  const basePath = `/cart-items?${queryString}`;
 
   const data = await baseAPI<CartItemsResponse>({
     method: 'GET',
