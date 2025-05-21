@@ -1,0 +1,36 @@
+import { useCallback, useState } from "react";
+import { useToast } from "../useToast/useToast";
+import request from "../../utils/request";
+import { Method } from "../../types/index.types";
+import { ERROR_TYPE } from "../../components/toastProvider/ToastProvider";
+
+interface GetProducts {
+  method: Method;
+  url: string;
+  errorType: ERROR_TYPE;
+}
+
+export default function useFetch<T>() {
+  const { showToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getData = useCallback(
+    async ({ method, url, errorType }: GetProducts) => {
+      setIsLoading(true);
+      try {
+        const data: T = await request({
+          method,
+          url,
+        });
+        return data;
+      } catch {
+        showToast(errorType);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [showToast]
+  );
+
+  return { getData, isLoading };
+}

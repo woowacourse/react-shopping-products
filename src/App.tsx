@@ -1,12 +1,22 @@
-import { useState } from "react";
+import "./index.css";
+import "./reset.css";
+import Header from "./components/header/Header";
+import ProductContainer from "./components/productContainer/ProductContainer";
+import useFetchCartProducts from "./hooks/useFetchCartProducts/useFetchCartProducts";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { cartItemIds, setCartItemIds, fetchCartProducts } =
+    useFetchCartProducts();
 
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <div className="container">
+      <Header cartItemAmount={cartItemIds.length} />
+      <ProductContainer
+        cartItemIds={cartItemIds}
+        setCartItemIds={setCartItemIds}
+        fetchCartProducts={fetchCartProducts}
+      />
+    </div>
   );
 }
 
