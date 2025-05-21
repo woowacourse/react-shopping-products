@@ -88,12 +88,10 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
 
     render(<App />);
 
-    await waitFor(() => {
-      expect(screen.getByText("식료품 상품1")).toBeInTheDocument();
-      expect(screen.getByText("식료품 상품2")).toBeInTheDocument();
-      expect(screen.getByText("패션잡화 상품1")).toBeInTheDocument();
-      expect(screen.getByText("패션잡화 상품2")).toBeInTheDocument();
-    });
+    expect(await screen.findByText("식료품 상품1")).toBeInTheDocument();
+    expect(await screen.findByText("식료품 상품2")).toBeInTheDocument();
+    expect(await screen.findByText("패션잡화 상품1")).toBeInTheDocument();
+    expect(await screen.findByText("패션잡화 상품2")).toBeInTheDocument();
 
     expect(ProductsAPI.get).toHaveBeenCalledWith("전체", "낮은 가격 순");
   });
@@ -114,14 +112,15 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
 
     fireEvent.change(categorySelect, { target: { value: "패션잡화" } });
 
+    expect(ProductsAPI.get).toHaveBeenCalledWith("패션잡화", "낮은 가격 순");
+
     await waitFor(() => {
-      expect(ProductsAPI.get).toHaveBeenCalledWith("패션잡화", "낮은 가격 순");
+      expect(screen.queryByText("식료품 상품1")).not.toBeInTheDocument();
+      expect(screen.queryByText("식료품 상품2")).not.toBeInTheDocument();
     });
 
-    expect(screen.queryByText("식료품 상품1")).not.toBeInTheDocument();
-    expect(screen.queryByText("식료품 상품2")).not.toBeInTheDocument();
-    expect(screen.getByText("패션잡화 상품1")).toBeInTheDocument();
-    expect(screen.getByText("패션잡화 상품2")).toBeInTheDocument();
+    expect(await screen.findByText("패션잡화 상품1")).toBeInTheDocument();
+    expect(await screen.findByText("패션잡화 상품2")).toBeInTheDocument();
 
     const productItems = screen.getAllByTestId("product-item");
     expect(productItems).toHaveLength(2);
@@ -146,11 +145,9 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
 
     fireEvent.change(sortSelect, { target: { value: "높은 가격 순" } });
 
-    await waitFor(() => {
-      expect(ProductsAPI.get).toHaveBeenCalledWith("전체", "높은 가격 순");
-    });
+    expect(ProductsAPI.get).toHaveBeenCalledWith("전체", "높은 가격 순");
 
-    const productItems = screen.getAllByTestId("product-item");
+    const productItems = await screen.findAllByTestId("product-item");
 
     const productPrices = productItems.map((item) => {
       const priceText = within(item).getByTestId("product-price").textContent;
@@ -198,18 +195,14 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
     const categorySelect = screen.getByTestId("category-select");
     fireEvent.change(categorySelect, { target: { value: "패션잡화" } });
 
-    await waitFor(() => {
-      expect(ProductsAPI.get).toHaveBeenCalledWith("패션잡화", "낮은 가격 순");
-    });
+    expect(ProductsAPI.get).toHaveBeenCalledWith("패션잡화", "낮은 가격 순");
 
-    const sortSelect = screen.getByTestId("sort-select");
+    const sortSelect = await screen.findByTestId("sort-select");
     fireEvent.change(sortSelect, { target: { value: "높은 가격 순" } });
 
-    await waitFor(() => {
-      expect(ProductsAPI.get).toHaveBeenCalledWith("패션잡화", "높은 가격 순");
-    });
+    expect(ProductsAPI.get).toHaveBeenCalledWith("패션잡화", "높은 가격 순");
 
-    const productItems = screen.getAllByTestId("product-item");
+    const productItems = await screen.findAllByTestId("product-item");
     expect(productItems).toHaveLength(2);
 
     const productPrices = productItems.map((item) => {
@@ -218,7 +211,6 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
     });
 
     const sortedPrices = [...productPrices].sort((a, b) => b - a);
-    console.log(sortedPrices);
     expect(productPrices).toEqual(sortedPrices);
 
     const productNames = productItems.map(

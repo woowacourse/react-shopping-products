@@ -125,34 +125,20 @@ describe("장바구니의 상품 개수 표시 기능 테스트", () => {
 
     render(<App />);
 
-    await waitFor(() => {
-      expect(screen.getByText("테스트 상품1")).toBeInTheDocument();
-      expect(screen.getByText("테스트 상품2")).toBeInTheDocument();
-    });
+    expect(await screen.findByText("테스트 상품1")).toBeInTheDocument();
+    expect(await screen.findByText("테스트 상품2")).toBeInTheDocument();
 
     expect(screen.queryByTestId("cart-item-count")).not.toBeInTheDocument();
 
     const addButtons = screen.getAllByText("담기");
 
     fireEvent.click(addButtons[0]);
-
-    await waitFor(() => {
-      expect(CartItemsAPI.post).toHaveBeenCalledWith(1);
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByTestId("cart-item-count")).toHaveTextContent("1");
-    });
+    expect(CartItemsAPI.post).toHaveBeenCalledWith(1);
+    expect(await screen.findByTestId("cart-item-count")).toHaveTextContent("1");
 
     fireEvent.click(addButtons[1]);
-
-    await waitFor(() => {
-      expect(CartItemsAPI.post).toHaveBeenCalledWith(2);
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByTestId("cart-item-count")).toHaveTextContent("2");
-    });
+    expect(CartItemsAPI.post).toHaveBeenCalledWith(2);
+    expect(await screen.findByTestId("cart-item-count")).toHaveTextContent("2");
   });
 
   test("사용자가 상품을 장바구니에서 삭제하면, 헤더에 표시된 장바구니 상품 개수가 해당 수만큼 감소한다.", async () => {
@@ -163,33 +149,19 @@ describe("장바구니의 상품 개수 표시 기능 테스트", () => {
 
     render(<App />);
 
-    await waitFor(() => {
-      expect(screen.getByText("테스트 상품1")).toBeInTheDocument();
-      expect(screen.getByText("테스트 상품2")).toBeInTheDocument();
-    });
+    expect(await screen.findByText("테스트 상품1")).toBeInTheDocument();
+    expect(await screen.findByText("테스트 상품2")).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByTestId("cart-item-count")).toHaveTextContent("2");
-    });
+    expect(screen.getByTestId("cart-item-count")).toHaveTextContent("2");
 
     const removeButtons = screen.getAllByText("빼기");
 
     fireEvent.click(removeButtons[1]);
-
-    await waitFor(() => {
-      expect(CartItemsAPI.delete).toHaveBeenCalledWith(101);
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByTestId("cart-item-count")).toHaveTextContent("1");
-    });
+    expect(CartItemsAPI.delete).toHaveBeenCalledWith(101);
+    expect(await screen.findByTestId("cart-item-count")).toHaveTextContent("1");
 
     fireEvent.click(removeButtons[0]);
-
-    await waitFor(() => {
-      expect(CartItemsAPI.delete).toHaveBeenCalledWith(100);
-    });
-
+    expect(CartItemsAPI.delete).toHaveBeenCalledWith(100);
     await waitFor(() => {
       expect(screen.queryByTestId("cart-item-count")).not.toBeInTheDocument();
     });
