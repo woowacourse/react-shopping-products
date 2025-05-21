@@ -1,3 +1,4 @@
+import { CATEGORIES, SORTS } from "../../../constants/filterOptions";
 import * as Styled from "./Filter.styled";
 
 interface FilterProps {
@@ -9,13 +10,18 @@ function Filter({ handleCategory, handleSort }: FilterProps) {
   return (
     <Styled.Container>
       <Styled.Select onChange={handleCategory}>
-        <option value="전체">전체</option>
-        <option value="식료품">식료품</option>
-        <option value="패션잡화">패션잡화</option>
+        {CATEGORIES.map((category) => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
       </Styled.Select>
       <Styled.Select onChange={handleSort}>
-        <option value="price,asc">낮은 가격순</option>
-        <option value="price,desc">높은 가격순</option>
+        {SORTS.map(({ key, value }) => (
+          <option key={key} value={key}>
+            {value}
+          </option>
+        ))}
       </Styled.Select>
     </Styled.Container>
   );
