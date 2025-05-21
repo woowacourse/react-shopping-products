@@ -2,16 +2,14 @@ import Toast from "../@common/Toast/Toast";
 import * as S from "./ErrorToast.styles";
 
 interface Props {
-  errorMessage: string;
-  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  message: string;
+  onClose: () => void;
 }
 
-const ErrorToast = ({ errorMessage, setErrorMessage }: Props) => {
-  const handleToastEnd = () => setErrorMessage("");
-
+const ErrorToast = ({ message, onClose }: Props) => {
   return (
-    <Toast visible={!!errorMessage} onClose={handleToastEnd}>
-      <S.ErrorToast>{errorMessage}</S.ErrorToast>
+    <Toast visible={!!message} onClose={onClose}>
+      <S.ErrorToast>{message}</S.ErrorToast>
     </Toast>
   );
 };

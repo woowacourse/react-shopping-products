@@ -13,7 +13,6 @@ const ProductSorter = ({
 }: Props) => {
   return (
     <SelectBox
-      id="sort"
       value={selectedSortOption}
       onChange={setSelectedSortOption}
       options={sortOptions}

@@ -63,8 +63,8 @@ function App() {
           </S.ProductGrid>
           {!!errorMessage && (
             <ErrorToast
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
+              message={errorMessage}
+              onClose={() => setErrorMessage("")}
             />
           )}
         </S.Wrapper>
