@@ -12,15 +12,15 @@ export const handlers = [
     const category = url.searchParams.get('category') as filterType;
     const sort = url.searchParams.get('sort');
 
-    let resultProducts = products;
-    if (category) resultProducts = filterProductList(products, category);
-    if (sort) resultProducts = sortProductList(products, sort.split(',')[1] as SortingType);
+    let resultProducts = products.content;
+    if (category) resultProducts = filterProductList(resultProducts, category);
+    if (sort) resultProducts = sortProductList(resultProducts, sort.split(',')[1] as SortingType);
 
     return HttpResponse.json({ content: resultProducts });
   }),
 
   http.get(CART_URL, () => {
-    return HttpResponse.json({ content: cart });
+    return HttpResponse.json(cart);
   }),
 
   http.post(CART_URL, async ({ request }) => {
