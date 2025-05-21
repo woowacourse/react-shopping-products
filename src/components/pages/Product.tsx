@@ -1,48 +1,25 @@
-import { useState } from 'react';
-import useCart from '../../hooks/useCart';
-import useProducts from '../../hooks/useProducts';
 import Header from '../Header/Header';
 import ItemCard from '../ItemCard/ItemCard';
 import Skeleton from '../Skeleton/Skeleton';
 import S from './Product.module.css';
-import useError from '../../hooks/useError';
-import { getMergedData } from '../../utils';
-import { addCart, removeCart } from '../../utils/api';
+import useProductPage from '../../hooks/useProductPage';
 
 const Product = () => {
-  const [filter, setFilter] = useState('');
-  const [sort, setSort] = useState('');
-  const { showError } = useError();
-
-  const { products, loading } = useProducts({
-    filterType: filter,
-    sortingType: sort,
-  });
-  const { cartProducts, fetchCartProducts } = useCart();
-
-  const mergedData = getMergedData(products, cartProducts);
-
-  const handleAddCart = async (id: number) => {
-    try {
-      await addCart(id);
-      await fetchCartProducts();
-    } catch (e) {
-      showError('장바구니 추가 중 오류가 발생했습니다. 다시 시도해주세요.');
-    }
-  };
-
-  const handleRemoveCart = async (id: number) => {
-    try {
-      await removeCart(id);
-      await fetchCartProducts();
-    } catch (e) {
-      showError('장바구니 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
-    }
-  };
+  const {
+    filter,
+    sort,
+    setFilter,
+    setSort,
+    cartLength,
+    mergedData,
+    loading,
+    handleAddCart,
+    handleRemoveCart,
+  } = useProductPage();
 
   return (
     <>
-      <Header cartCount={cartProducts.length} />
+      <Header cartCount={cartLength} />
       <div className={S.contentContainer}>
         <div className={S.contentTop}>
           <h1 className={S.title}>bpple 상품 목록</h1>
