@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { CartItemTypes } from "../types/CartItemType";
 import getShoppingCart from "../api/getShoppingCart";
 import { findIsCartItem, isCartFull } from "../utils/cart";
@@ -53,7 +53,6 @@ export default function useShoppingCart() {
       status,
       errorMessage,
       updateErrorMessage,
-      clearErrorMessages,
       updateCartItems,
       getMatchCartItem,
       checkMax,
@@ -63,7 +62,6 @@ export default function useShoppingCart() {
       status,
       errorMessage,
       updateErrorMessage,
-      clearErrorMessages,
       updateCartItems,
       getMatchCartItem,
       checkMax,
