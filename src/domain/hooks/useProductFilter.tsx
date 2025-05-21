@@ -1,15 +1,16 @@
 import { useState, useCallback } from "react";
 import getProducts from "../../api/getProducts";
 import type { ProductTypes } from "../../types/ProductTypes";
+import useCartContext from "../contexts/useCartContext";
 
 export type FilterValue = "all" | "grocery" | "fashion" | "low" | "high";
 
 export function useProductFilters(
-  setProducts: (prods: ProductTypes[]) => void,
-  onError: (msg: string) => void
+  setProducts: (prods: ProductTypes[]) => void
 ) {
   const [category, setCategory] = useState<FilterValue>("all");
   const [price, setPrice] = useState<FilterValue>("low");
+  const { updateErrorMessage: onError } = useCartContext();
 
   const fetchProducts = useCallback(
     async (category: FilterValue, price: FilterValue) => {
