@@ -8,10 +8,10 @@ import {
 import TotalPrice from "./TotalPrice";
 
 interface ModalProps {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
 }
 
-function Modal({ setIsOpen }: ModalProps) {
+function Modal({ onClose }: ModalProps) {
   return (
     <>
       <div css={ModalOverlay} />
@@ -19,9 +19,10 @@ function Modal({ setIsOpen }: ModalProps) {
         <h2 css={ModalTitle}>장바구니</h2>
         <hr />
         <CartItem />
-
         <TotalPrice />
-        <button css={CloseButton}>닫기</button>
+        <button css={CloseButton} onClick={onClose}>
+          닫기
+        </button>
       </div>
     </>
   );

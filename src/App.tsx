@@ -6,19 +6,36 @@ import ErrorToast from "./components/errorToast/ErrorToast";
 import useError from "./hooks/useError";
 import { CartProvider } from "./hooks/useCart";
 import Modal from "./components/modal/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const { isError, setErrorTrue, errorMessage } = useError();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleModalToggle() {
+    setIsOpen(!isOpen);
+  }
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
 
   return (
     <div className="container">
       <CartProvider setErrorTrue={setErrorTrue}>
-        <Header />
+        <Header onOpenModal={handleModalToggle} />
         <ProductContainer setErrorTrue={setErrorTrue} />
         {isError && <ErrorToast errorMessage={errorMessage} />}
-        {isOpen && <Modal setIsOpen={setIsOpen} />}
+        {isOpen && <Modal onClose={handleModalToggle} />}
       </CartProvider>
     </div>
   );
