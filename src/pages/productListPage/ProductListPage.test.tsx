@@ -20,6 +20,7 @@ const mockProducts: ProductItemType[] = Array.from({ length: 25 }, (_, index) =>
   category: index % 2 === 0 ? '식료품' : '패션잡화',
   price: 1000 + index * 100,
   imageUrl: `/images/product-${index + 1}.jpg`,
+  quantity: 1,
 }));
 
 const TestCartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -29,7 +30,7 @@ const TestCartProvider = ({ children }: { children: React.ReactNode }) => {
     setErrorMessage(message);
   };
 
-  const { handleAddCartItems, handleRemoveCartItems } = useCartItems({
+  const { handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems } = useCartItems({
     handleErrorMessage,
   });
 
@@ -38,6 +39,7 @@ const TestCartProvider = ({ children }: { children: React.ReactNode }) => {
       cartItems={cartItems}
       handleAddCartItems={handleAddCartItems}
       handleRemoveCartItems={handleRemoveCartItems}
+      handleUpdateCartItems={handleUpdateCartItems}
     >
       <ErrorMessageProvider errorMessage={errorMessage} handleErrorMessage={setErrorMessage}>
         {children}

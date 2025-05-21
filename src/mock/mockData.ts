@@ -1,26 +1,26 @@
-const mockData = [
+export const mockData = [
   {
     id: 1,
     name: '에어포스 화이트',
     price: 100000,
     imageUrl: '/images/airforce-white.jpg',
-    category: 'sneakers',
-    quantity: 50,
+    category: '패션잡화',
+    quantity: 0,
   },
   {
     id: 2,
     name: '에어포스 블랙',
     price: 100000,
     imageUrl: '/images/airforce-black.jpg',
-    category: 'sneakers',
-    quantity: 43,
+    category: '패션잡화',
+    quantity: 0,
   },
   {
     id: 3,
     name: '조던 1 시카고',
     price: 180000,
     imageUrl: '/images/jordan1-chicago.jpg',
-    category: 'sneakers',
+    category: '패션잡화',
     quantity: 12,
   },
   {
@@ -28,7 +28,7 @@ const mockData = [
     name: '조던 1 브레드',
     price: 185000,
     imageUrl: '/images/jordan1-bred.jpg',
-    category: 'sneakers',
+    category: '패션잡화',
     quantity: 17,
   },
   {
@@ -36,7 +36,7 @@ const mockData = [
     name: '덩크 로우 판다',
     price: 120000,
     imageUrl: '/images/dunk-panda.jpg',
-    category: 'sneakers',
+    category: '패션잡화',
     quantity: 33,
   },
   {
@@ -44,7 +44,7 @@ const mockData = [
     name: '덩크 하이 블루',
     price: 125000,
     imageUrl: '/images/dunk-high-blue.jpg',
-    category: 'sneakers',
+    category: '패션잡화',
     quantity: 25,
   },
   {
@@ -52,7 +52,7 @@ const mockData = [
     name: '에어맥스 97',
     price: 160000,
     imageUrl: '/images/airmax-97.jpg',
-    category: 'running',
+    category: '패션잡화',
     quantity: 40,
   },
   {
@@ -60,7 +60,7 @@ const mockData = [
     name: '에어맥스 90',
     price: 150000,
     imageUrl: '/images/airmax-90.jpg',
-    category: 'running',
+    category: '식료품',
     quantity: 28,
   },
   {
@@ -68,7 +68,7 @@ const mockData = [
     name: '프리런 5.0',
     price: 110000,
     imageUrl: '/images/freerun.jpg',
-    category: 'running',
+    category: '식료품',
     quantity: 35,
   },
   {
@@ -76,7 +76,7 @@ const mockData = [
     name: '페가수스 40',
     price: 140000,
     imageUrl: '/images/pegasus.jpg',
-    category: 'running',
+    category: '식료품',
     quantity: 20,
   },
   {
@@ -84,7 +84,7 @@ const mockData = [
     name: '데이브레이크',
     price: 130000,
     imageUrl: '/images/daybreak.jpg',
-    category: 'casual',
+    category: '식료품',
     quantity: 15,
   },
   {
@@ -92,7 +92,7 @@ const mockData = [
     name: '와플레이서',
     price: 125000,
     imageUrl: '/images/waffle.jpg',
-    category: 'casual',
+    category: '패션잡화',
     quantity: 10,
   },
   {
@@ -100,7 +100,7 @@ const mockData = [
     name: '에어조던 4',
     price: 200000,
     imageUrl: '/images/jordan4.jpg',
-    category: 'sneakers',
+    category: '패션잡화',
     quantity: 22,
   },
   {
@@ -108,7 +108,7 @@ const mockData = [
     name: '에어조던 11',
     price: 220000,
     imageUrl: '/images/jordan11.jpg',
-    category: 'sneakers',
+    category: '식료품',
     quantity: 18,
   },
   {
@@ -116,7 +116,7 @@ const mockData = [
     name: '코르테즈 클래식',
     price: 95000,
     imageUrl: '/images/cortez.jpg',
-    category: 'casual',
+    category: '패션잡화',
     quantity: 48,
   },
   {
@@ -124,7 +124,7 @@ const mockData = [
     name: '줌 플라이 5',
     price: 170000,
     imageUrl: '/images/zoomfly.jpg',
-    category: 'running',
+    category: '패션잡화',
     quantity: 14,
   },
   {
@@ -132,7 +132,7 @@ const mockData = [
     name: '인빈서블 3',
     price: 180000,
     imageUrl: '/images/invincible.jpg',
-    category: 'running',
+    category: '식료품',
     quantity: 12,
   },
   {
@@ -140,7 +140,7 @@ const mockData = [
     name: '에어포스 커스텀',
     price: 120000,
     imageUrl: '/images/airforce-custom.jpg',
-    category: 'custom',
+    category: '패션잡화',
     quantity: 5,
   },
   {
@@ -148,7 +148,7 @@ const mockData = [
     name: '에어맥스 270',
     price: 150000,
     imageUrl: '/images/airmax-270.jpg',
-    category: 'lifestyle',
+    category: '패션잡화',
     quantity: 19,
   },
   {
@@ -156,9 +156,70 @@ const mockData = [
     name: '에어 조던 3 레트로',
     price: 190000,
     imageUrl: '/images/jordan3-retro.jpg',
-    category: 'sneakers',
+    category: '식료품',
     quantity: 27,
   },
 ];
 
-export default mockData;
+export const mockCartData = [
+  {
+    id: 1,
+    product: {
+      id: 3,
+      name: '조던 1 시카고',
+      price: 180000,
+      imageUrl: '/images/jordan1-chicago.jpg',
+      category: '패션잡화',
+      quantity: 12,
+    },
+    quantity: 2,
+  },
+  {
+    id: 2,
+    product: {
+      id: 5,
+      name: '덩크 로우 판다',
+      price: 120000,
+      imageUrl: '/images/dunk-panda.jpg',
+      category: '패션잡화',
+      quantity: 33,
+    },
+    quantity: 1,
+  },
+  {
+    id: 3,
+    product: {
+      id: 10,
+      name: '페가수스 40',
+      price: 140000,
+      imageUrl: '/images/pegasus.jpg',
+      category: '식료품',
+      quantity: 20,
+    },
+    quantity: 3,
+  },
+  {
+    id: 4,
+    product: {
+      id: 15,
+      name: '코르테즈 클래식',
+      price: 95000,
+      imageUrl: '/images/cortez.jpg',
+      category: '패션잡화',
+      quantity: 48,
+    },
+    quantity: 1,
+  },
+  {
+    id: 5,
+    product: {
+      id: 18,
+      name: '에어포스 커스텀',
+      price: 120000,
+      imageUrl: '/images/airforce-custom.jpg',
+      category: '패션잡화',
+      quantity: 5,
+    },
+    quantity: 2,
+  },
+];

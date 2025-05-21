@@ -12,9 +12,10 @@ const Layout = () => {
     setErrorMessage(errorMessage);
   };
 
-  const { cartItems, handleAddCartItems, handleRemoveCartItems } = useCartItems({
-    handleErrorMessage,
-  });
+  const { cartItems, handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems } =
+    useCartItems({
+      handleErrorMessage,
+    });
 
   return (
     <ErrorMessageProvider errorMessage={errorMessage} handleErrorMessage={handleErrorMessage}>
@@ -22,6 +23,7 @@ const Layout = () => {
         cartItems={cartItems}
         handleAddCartItems={handleAddCartItems}
         handleRemoveCartItems={handleRemoveCartItems}
+        handleUpdateCartItems={handleUpdateCartItems}
       >
         <S.LayoutContainer>
           <Header />

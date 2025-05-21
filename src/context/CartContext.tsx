@@ -5,6 +5,7 @@ interface CartContextType {
   cartItems: CartItemType[];
   handleAddCartItems: (productId: number) => void;
   handleRemoveCartItems: (productId: number) => void;
+  handleUpdateCartItems: (productId: number, quantity: number) => void;
 }
 
 interface CartContextProps extends CartContextType {
@@ -17,6 +18,7 @@ export const CartProvider = ({
   cartItems,
   handleAddCartItems,
   handleRemoveCartItems,
+  handleUpdateCartItems,
   children,
 }: CartContextProps) => {
   return (
@@ -25,6 +27,7 @@ export const CartProvider = ({
         cartItems,
         handleAddCartItems,
         handleRemoveCartItems,
+        handleUpdateCartItems,
       }}
     >
       {children}

@@ -1,4 +1,8 @@
-import { addCartItems, removeCartItems } from '../services/cartItemServices';
+import {
+  addCartItems,
+  removeCartItems,
+  updateCartItemQuantity,
+} from '../services/cartItemServices';
 import tryApiCall from '../util/tryApiCall';
 import type { CartItemType } from '../types/data';
 import { useState, useEffect } from 'react';
@@ -52,7 +56,25 @@ const useCartItems = ({
     }
   };
 
-  return { cartItems, handleAddCartItems, handleRemoveCartItems };
+  const handleUpdateCartItems = async (productId: number, quantity: number) => {
+    const updateCartItemInfo = {
+      quantity: quantity,
+    };
+    await tryApiCall(
+      async () => await updateCartItemQuantity(productId, updateCartItemInfo),
+      handleErrorMessage,
+    );
+
+    const items = await tryApiCall<CartItemType[]>(
+      async () => await getCartItems(),
+      handleErrorMessage,
+    );
+    if (!items) return;
+
+    setCartItems(items);
+  };
+
+  return { cartItems, handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems };
 };
 
 export default useCartItems;

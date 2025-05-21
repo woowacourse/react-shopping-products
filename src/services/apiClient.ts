@@ -17,7 +17,7 @@ const apiClient = async <T = unknown>({ method, URI, body }: ApiClientProps<T>) 
     headers: { 'Content-type': 'application/json', Authorization: `Basic ${basicToken}` },
   });
 
-  if (response.status === 204) return;
+  if (response.status === 204 || response.status === 201) return;
   if (response.ok) {
     if (response.headers.get('content-length') === '0') return;
     return response.json();

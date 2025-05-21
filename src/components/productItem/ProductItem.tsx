@@ -5,22 +5,42 @@ import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import CounterControl from '../common/counterControl/CounterControl';
 
 interface ProductItemProps {
+  cartInCount: number;
   product: ProductItemType;
-  countInCart: number;
   handleAddCartItem: (productId: number) => void;
   handleRemoveCartItem: (productId: number) => void;
+  handleUpdateCartItem: (productId: number, quantity: number) => void;
 }
 
 const ProductItem = ({
+  cartInCount,
   product,
-  countInCart,
   handleAddCartItem,
   handleRemoveCartItem,
+  handleUpdateCartItem,
 }: ProductItemProps) => {
   const DEFAULT_PRODUCT_IMAGE = './default-product.png';
 
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
+  };
+
+  // TODO : product 재고보다 많이 넣으려는 경우 품절 처리 및 장바구니 담기 버튼 비활성화
+  const handlePlusCount = () => {
+    if (cartInCount > 0) {
+      handleUpdateCartItem(product.id, cartInCount + 1);
+      return;
+    }
+    handleAddCartItem(product.id);
+  };
+
+  const handleMinusCount = () => {
+    if (cartInCount !== 1) {
+      handleUpdateCartItem(product.id, cartInCount - 1);
+      return;
+    }
+    console.log(cartInCount);
+    handleRemoveCartItem(product.id);
   };
 
   return (
@@ -36,11 +56,11 @@ const ProductItem = ({
           <S.ProductItemPrice>{product.price.toLocaleString()}원</S.ProductItemPrice>
         </S.ProductItemInfo>
 
-        {countInCart > 0 ? (
+        {cartInCount > 0 ? (
           <CounterControl
-            count={countInCart}
-            handlePlusCount={() => handleAddCartItem(product.id)}
-            handleMinusCount={() => handleRemoveCartItem(product.id)}
+            count={cartInCount}
+            handlePlusCount={handlePlusCount}
+            handleMinusCount={handleMinusCount}
           />
         ) : (
           <Button
