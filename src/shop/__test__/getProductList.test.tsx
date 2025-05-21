@@ -62,15 +62,11 @@ describe('삼품 목록 기능 테스트', () => {
   });
 
   it('카테고리를 "패션잡화"로 선택하면 해당 상품만 목록에 렌더링된다', async () => {
-    console.log("옵션 중 '패션잡화' 클릭 전");
-
     const dropdownButtons = await screen.findAllByTestId(/filter-/);
     fireEvent.click(dropdownButtons[0]);
 
     const fashionOption = await screen.findByText('패션잡화');
     fireEvent.click(fashionOption);
-
-    console.log("옵션 중 '패션잡화' 클릭 후");
 
     await waitFor(() => {
       const items = screen.getAllByTestId(/product-/);
