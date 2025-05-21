@@ -6,9 +6,8 @@ import useFetchProducts from "../../../hooks/useFetchProducts";
 import { StyledSpinnerWrapper } from "./ProductListContainer.styles";
 
 export default function ProductListContainer() {
-  const { updateErrorMessage } = useCartContext();
-  const { products, status, setProducts } =
-    useFetchProducts(updateErrorMessage);
+  const { updateErrorMessage: onError } = useCartContext();
+  const { products, status, setProducts } = useFetchProducts(onError);
 
   return (
     <>
