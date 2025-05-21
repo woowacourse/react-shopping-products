@@ -1,6 +1,6 @@
 import React from "react";
 
-const ShoppingBag = (props: React.SVGProps<SVGSVGElement>) => {
+const ShoppingBagIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
@@ -11,4 +11,4 @@ const ShoppingBag = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
-export default ShoppingBag;
+export default ShoppingBagIcon;

@@ -1,5 +1,5 @@
 import { CartItemApi } from "@/apis";
-import { ShoppingBag } from "@/components/icons";
+import { ShoppingBagIcon } from "@/components/icons";
 import { useQuery } from "@/modules";
 import * as S from "./Header.styles";
 import ShoppingCartModal from "./ShoppingCartModal";
@@ -22,7 +22,7 @@ export default function Header() {
       <Modal.Wrapper>
         <Modal.Trigger>
           <S.ShoppingBagWrapper>
-            <ShoppingBag />
+            <ShoppingBagIcon />
             {shoppingCount !== 0 && <S.ShoppingBagCount>{shoppingCount}</S.ShoppingBagCount>}
           </S.ShoppingBagWrapper>
         </Modal.Trigger>

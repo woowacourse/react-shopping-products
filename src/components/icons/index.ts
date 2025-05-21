@@ -1,5 +1,5 @@
-export { default as AddCart } from "./AddCart";
-export { default as RemoveCart } from "./RemoveCart";
-export { default as ShoppingBag } from "./ShoppingBag";
-export { default as TopArrow } from "./TopArrow";
+export { default as AddCartIcon } from "./AddCartIcon";
+export { default as RemoveCartIcon } from "./RemoveCartIcon";
+export { default as ShoppingBagIcon } from "./ShoppingBagIcon";
+export { default as TopArrowIcon } from "./TopArrowIcon";
 export { default as CloseIcon } from "./CloseIcon";

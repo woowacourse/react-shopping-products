@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as S from "./Select.styles";
-import { TopArrow } from "@/components/icons";
+import { TopArrowIcon } from "@/components/icons";
 
 interface SelectProps<T> {
   options: readonly T[];
@@ -32,7 +32,7 @@ export default function Select<T extends string>({ options, selectedItem, setSel
     <S.SelectWrapper ref={selectRef}>
       <S.Label isOpen={isOpen} onClick={() => setIsOpen((prev) => !prev)}>
         {selectedItem}
-        {isOpen ? <TopArrow style={{ transform: "rotate(180deg)" }} /> : <TopArrow />}
+        {isOpen ? <TopArrowIcon style={{ transform: "rotate(180deg)" }} /> : <TopArrowIcon />}
       </S.Label>
       {isOpen && (
         <S.OptionList>

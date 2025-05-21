@@ -1,5 +1,5 @@
 import { Button, Card, PlusMinusButton, Spacing, Text } from "@/components";
-import { AddCart } from "@/components/icons";
+import { AddCartIcon } from "@/components/icons";
 import { DEFAULT_IMAGE_URL } from "@/constants/images";
 import { CartItem, Product } from "@/types";
 import * as S from "./ProductCard.styles";
@@ -59,7 +59,7 @@ export default function ProductCard({
                 handleIncreaseCartItem(product.id);
               }}
             >
-              <AddCart />
+              <AddCartIcon />
               <Text color="#fff">담기</Text>
             </Button>
           )}
