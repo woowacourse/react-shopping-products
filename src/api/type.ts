@@ -1,19 +1,8 @@
-export interface CartData {
-  content: CartContent[];
-  pageable: Pageable;
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
-  size: number;
-  number: number;
-  sort: Sort;
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
-}
+export type CartResponse = APIResponse<CartContent>;
+export type ProductResponse = APIResponse<ProductContent>;
 
-export interface ProductData {
-  content: ProductContent[];
+export interface APIResponse<T> {
+  content: T[];
   pageable: Pageable;
   totalElements: number;
   totalPages: number;
