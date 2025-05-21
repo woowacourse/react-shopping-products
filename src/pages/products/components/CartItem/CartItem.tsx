@@ -6,16 +6,28 @@ import { CartItemApi } from "@/apis";
 
 interface CartItemProps {
   cartItem: GetCartItemsResponse["content"][number];
+  refetchCartItems: () => Promise<void>;
 }
 
-export default function CartItem({ cartItem }: CartItemProps) {
+export default function CartItem({ cartItem, refetchCartItems }: CartItemProps) {
   const {
     product: { imageUrl, price, name, id },
     quantity,
   } = cartItem;
 
-  const handleDeleteCartItem = () => {
-    CartItemApi.deleteCartItems({ cartItemId: cartItem.id });
+  const handleDecreaseCartItem = async () => {
+    await CartItemApi.patchCartItems({ cartItemId: cartItem.id, quantity: quantity - 1 });
+    await refetchCartItems();
+  };
+
+  const handleIncreaseCartItem = async () => {
+    await CartItemApi.patchCartItems({ cartItemId: cartItem.id, quantity: quantity + 1 });
+    await refetchCartItems();
+  };
+
+  const handleDeleteCartItem = async () => {
+    await CartItemApi.deleteCartItems({ cartItemId: cartItem.id });
+    await refetchCartItems();
   };
 
   return (
@@ -28,8 +40,8 @@ export default function CartItem({ cartItem }: CartItemProps) {
         <S.CartItemPrice>{price.toLocaleString()}원</S.CartItemPrice>
         <AddMinusButton
           quantity={quantity}
-          onAddButtonClick={() => console.log(id)}
-          onMinusButtonClick={() => console.log(id)}
+          onAddButtonClick={handleIncreaseCartItem}
+          onMinusButtonClick={handleDecreaseCartItem}
         />
         <Button
           onClick={handleDeleteCartItem}

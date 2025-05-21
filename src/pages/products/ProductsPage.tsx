@@ -23,7 +23,7 @@ export default function ProductsPage() {
   const {
     data: cartItems,
     status: cartItemsStatus,
-    fetchData: fetchCartItems,
+    refetch: refetchCartItems,
   } = useQuery({
     queryFn: CartItemApi.getCartItems,
     queryKey: "cartItems",
@@ -51,7 +51,7 @@ export default function ProductsPage() {
       });
     }
 
-    await fetchCartItems();
+    await refetchCartItems();
   };
 
   const decreaseCartItem = async (productId: number) => {
@@ -66,7 +66,7 @@ export default function ProductsPage() {
       });
     }
 
-    await fetchCartItems();
+    await refetchCartItems();
   };
 
   const isLoading = productsStatus === "loading" || cartItemsStatus === "loading";

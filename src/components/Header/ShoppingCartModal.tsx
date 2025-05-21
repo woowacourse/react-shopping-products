@@ -5,7 +5,7 @@ import { CartItemApi } from "@/apis";
 import useQuery from "@/modules/Query/useQuery/useQuery";
 import * as S from "./ShoppingCartModal.styles";
 export default function ShoppingCartModal() {
-  const { data: cartItems } = useQuery({
+  const { data: cartItems, refetch: refetchCartItems } = useQuery({
     queryFn: CartItemApi.getCartItems,
     queryKey: "cartItems",
   });
@@ -26,7 +26,9 @@ export default function ShoppingCartModal() {
       </Modal.Top>
       <Modal.Content>
         <S.CartItemWrapper>
-          {cartItems?.content.map((cartItem) => <CartItem key={cartItem.id} cartItem={cartItem} />)}
+          {cartItems?.content.map((cartItem) => (
+            <CartItem key={cartItem.id} cartItem={cartItem} refetchCartItems={refetchCartItems} />
+          ))}
         </S.CartItemWrapper>
 
         <S.TotalPriceWrapper>

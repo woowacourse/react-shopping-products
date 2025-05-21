@@ -9,23 +9,21 @@ interface UseQueryProps<T> {
 }
 
 export default function useQuery<T>({ queryKey, queryFn }: UseQueryProps<T>) {
-  const [data, setData] = useState<T | null>(null);
-  const [status, setStatus] = useState<Status>("idle");
+  const { getQueryData, setQueryData, getQueryStatus, setQueryStatus } = useQueryClient();
 
-  const queryClient = useQueryClient();
-
-  const fetchData = async () => {
-    setStatus("loading");
+  const fetchData = async (forceFetch = false) => {
+    setQueryStatus(queryKey, "loading");
     try {
-      const cachedData = queryClient.get(queryKey);
-
+      if (getQueryData(queryKey) && !forceFetch) {
+        setQueryStatus(queryKey, "success");
+        return;
+      }
 
       const response = await queryFn();
-      queryClient.set(queryKey, response);
-      setData(response);
-      setStatus("success");
+      setQueryData(queryKey, response);
+      setQueryStatus(queryKey, "success");
     } catch (error) {
-      setStatus("error");
+      setQueryStatus(queryKey, "error");
     }
   };
 
@@ -33,9 +31,12 @@ export default function useQuery<T>({ queryKey, queryFn }: UseQueryProps<T>) {
     fetchData();
   }, []);
 
+  const refetch = () => fetchData(true);
+
   return {
-    data,
-    status,
+    data: getQueryData(queryKey) as T,
+    status: getQueryStatus(queryKey),
     fetchData,
+    refetch,
   };
 }

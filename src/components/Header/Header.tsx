@@ -13,14 +13,12 @@ export default function Header() {
 
   const shoppingCount = cartItems?.content?.length ?? 0;
 
-  const handleShoppingBagClick = () => {};
-
   return (
     <S.HeaderWrapper>
       <span>SHOP</span>
-      <Modal.Wrapper initialOpen>
+      <Modal.Wrapper>
         <Modal.Trigger>
-          <S.ShoppingBagWrapper onClick={handleShoppingBagClick}>
+          <S.ShoppingBagWrapper>
             <ShoppingBag />
             {shoppingCount !== 0 && <S.ShoppingBagCount>{shoppingCount}</S.ShoppingBagCount>}
           </S.ShoppingBagWrapper>
