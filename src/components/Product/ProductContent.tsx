@@ -1,10 +1,11 @@
 import ItemCard from "../ItemCard/ItemCard";
-import Skeleton from "../Skeleton/Skeleton";
 import mergeProducts from "../../utils/mergeProducts";
 import ItemCardFilterSort from "../ItemCard/ItemCardFilterSort";
 import { useCartContext } from "../Context/CartProvider";
 import { useProductContext } from "../Context/ProductProvider";
 import S from "./ProductContent.module.css";
+import SkeletonList from "../Skeleton/SkeletonList";
+import SkeletonCard from "../Skeleton/SkeletonCard";
 
 const ProductContent = () => {
 	const { products, loading } = useProductContext();
@@ -18,7 +19,9 @@ const ProductContent = () => {
 				<ItemCardFilterSort />
 			</div>
 			{loading ? (
-				<Skeleton length={10} />
+				<div className={S.itemContainer}>
+					<SkeletonList count={10} renderItem={(i) => <SkeletonCard key={i} />} />
+				</div>
 			) : (
 				<div className={S.itemContainer}>
 					{mergedData.map(({ id, imageUrl, name, price, cartInfo }) => (
