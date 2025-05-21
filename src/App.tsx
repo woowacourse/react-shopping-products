@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './components/header/Header';
 import './reset.css';
 import styled from '@emotion/styled';
@@ -7,6 +7,7 @@ import ErrorMessage from './components/ErrorMessage';
 import useCartItems from './hooks/useCartItems';
 import getCartErrorMessage from './utils/getCartErrorMessage';
 import ProductPage from './pages/ProductPage';
+import Modal from './components/Modal';
 
 export type Product = {
   id: number;
@@ -37,7 +38,13 @@ function App() {
     increaseCartItemQuantity,
     decreaseCartItemQuantity,
   } = useCartItems();
-  console.log(cartItems);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     fetchCartItems();
@@ -45,12 +52,29 @@ function App() {
 
   return (
     <Layout>
-      <Header cartItemCount={cartItems.length} />
+      <Header
+        cartItemCount={cartItems.length}
+        handleOpenModal={handleOpenModal}
+      />
       {cartItemsError.isError && (
         <ErrorMessage
           errorMessage={getCartErrorMessage(cartItemsError.status)}
         />
       )}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        position="bottom"
+        size="small"
+      >
+        <Modal.Title title="장바구니"></Modal.Title>
+        <Modal.Button
+          title="닫기"
+          backgroundColor="black"
+          textColor="white"
+          onClick={handleCloseModal}
+        />
+      </Modal>
       <ProductPage
         cartItems={cartItems}
         increaseCartItemQuantity={increaseCartItemQuantity}
