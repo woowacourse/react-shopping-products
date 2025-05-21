@@ -27,15 +27,8 @@ describe("useProducts", () => {
 		const filteredProducts = filterProductList(products, FILTER_TYPE);
 
 		server.use(
-			http.get(PRODUCT_URL, ({ request }) => {
-				const url = new URL(request.url);
-				const category = url.searchParams.get("category");
-
-				if (category === FILTER_TYPE) {
-					return HttpResponse.json({ content: filteredProducts });
-				}
-
-				return HttpResponse.json({ content: products });
+			http.get(PRODUCT_URL, () => {
+				return HttpResponse.json({ content: filteredProducts });
 			})
 		);
 
@@ -48,7 +41,6 @@ describe("useProducts", () => {
 		await waitFor(() => {
 			expect(result.current.products.every((product) => product.category === FILTER_TYPE)).toBe(true);
 		});
-		console.log(result.current);
 	});
 
 	it("가장 앞 상품 목록을 오름차순으로 정렬하여 조회한다.", async () => {
