@@ -1,4 +1,5 @@
 import shoppingBagIcon from "../../../assets/shoppingBagIcon.png";
+import useCartContext from "../../../contexts/CartContext";
 import CountBox from "../CountBox/CountBox";
 import {
   StyledHeader,
@@ -8,12 +9,8 @@ import {
   StyledCountText,
 } from "./Header.styles";
 
-interface HeaderProps {
-  cartItemCount: number;
-  status: "idle" | "loading" | "success" | "error";
-}
-
-export default function Header({ cartItemCount, status }: HeaderProps) {
+export default function Header() {
+  const { status, cartItems } = useCartContext();
   return (
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
@@ -22,7 +19,7 @@ export default function Header({ cartItemCount, status }: HeaderProps) {
         {status === "success" && (
           <CountBox>
             <StyledCountText data-testid="cart-count">
-              {cartItemCount}
+              {cartItems.length}
             </StyledCountText>
           </CountBox>
         )}

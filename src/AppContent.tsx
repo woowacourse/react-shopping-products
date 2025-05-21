@@ -6,11 +6,11 @@ import useCartContext from "./contexts/CartContext";
 import styled from "@emotion/styled";
 
 export default function AppContent() {
-  const { cartItems, status, errorMessage } = useCartContext();
+  const { errorMessage } = useCartContext();
 
   return (
     <>
-      <Header status={status} cartItemCount={cartItems.length} />
+      <Header />
       <Body>
         <ProductListContainer />
       </Body>
