@@ -1,4 +1,4 @@
-import { useCartContext } from "../../../contexts/CartContext";
+import { useQueryContext } from "../../../contexts/QueryContext";
 import { Product } from "../../../types/product";
 import Fallback from "../../Fallback/Fallback";
 import ProductCard from "../ProductCard/ProductCard";
@@ -9,7 +9,8 @@ interface ProductListProps {
 }
 
 export default function ProductList({ products }: ProductListProps) {
-  const { cartData } = useCartContext();
+  const { dataPool } = useQueryContext();
+  const cartData = dataPool["cart-items"]?.content;
   if (!products) {
     return <Fallback />;
   }

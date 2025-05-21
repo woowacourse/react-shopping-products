@@ -2,9 +2,11 @@ import * as styles from "./QuantityButton.style";
 import { useState, useEffect, useCallback } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
-import { useCartContext } from "../../contexts/CartContext";
 import { URLS } from "../../constants/url";
-import { commonOpts } from "../../constants/header";
+import { commonOpts } from "../../constants/requestHeader";
+import { useGetQuery } from "../../hooks/useGetQuery";
+import { useQueryContext } from "../../contexts/QueryContext";
+
 interface QuantityButtonProps {
   productId: number;
   cartItemId: number;
@@ -15,9 +17,16 @@ export default function QuantityButton({
   cartItemId,
 }: QuantityButtonProps) {
   const [loading, setLoading] = useState(false);
-  const { fetchCart, cartData } = useCartContext();
-  const { showError } = useErrorContext();
+  const { refetch: fetchCart } = useGetQuery(
+    "cart-items",
+    URLS.CART_ITEMS,
+    commonOpts,
+    false
+  );
 
+  const { showError } = useErrorContext();
+  const { dataPool } = useQueryContext();
+  const cartData = dataPool["cart-items"]?.content;
   const quantity =
     cartData?.find((item) => item.product.id === productId)?.quantity ?? 0;
 

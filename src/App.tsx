@@ -6,24 +6,35 @@ import ProductList from "./components/Product/ProductList/ProductList";
 import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
 import * as styles from "./App.style";
 import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
-import { useCartContext } from "./contexts/CartContext";
 import Header from "./components/Header/Header";
-import { useProductContext } from "./contexts/ProductContext";
 import MswStatus from "./components/MswStatus";
 import MswDebug from "./components/MswDebug";
+import { useGetQuery } from "./hooks/useGetQuery";
+import { useProductQuery } from "./hooks/useProductQuery";
+import { URLS } from "./constants/url";
+import { commonOpts } from "./constants/requestHeader";
+import { useQueryContext } from "./contexts/QueryContext";
 
 function App() {
   const { showError } = useErrorContext();
+  const { dataPool, productsQuery, setProductsQuery } = useQueryContext();
+
+  const productQuery = useProductQuery(productsQuery);
 
   const {
-    productsData,
-    productFetchLoading,
-    productFetchError,
-    fetchProducts,
-    setOrderBy,
-    orderBy,
-  } = useProductContext();
-  const { cartFetchError, fetchCart } = useCartContext();
+    loading: productFetchLoading,
+    error: productFetchError,
+    refetch: fetchProducts,
+  } = useGetQuery("products", productQuery, {}, false);
+  const { error: cartFetchError, refetch: fetchCart } = useGetQuery(
+    "cart-items",
+    URLS.CART_ITEMS,
+    commonOpts,
+    false
+  );
+
+  const productsData = dataPool["products"]?.content;
+
   const [category, setCategory] = useState<CategoryOptionType>("전체");
   const [showDebug, setShowDebug] = useState(false);
 
@@ -37,7 +48,7 @@ function App() {
 
   useEffect(() => {
     fetchProducts();
-  }, [orderBy, fetchProducts]);
+  }, [productsQuery, fetchProducts]);
 
   useEffect(() => {
     if (productFetchError) {
@@ -52,7 +63,7 @@ function App() {
     setCategory(value);
   };
   const handleOrderBySelect = (value: OrderByOptionType) => {
-    setOrderBy(value);
+    setProductsQuery(value);
   };
 
   return (
@@ -70,7 +81,7 @@ function App() {
         <Dropdown
           list={ORDER_BY_OPTIONS}
           placeholder="낮은 가격순"
-          value={orderBy}
+          value={productsQuery}
           onSelect={handleOrderBySelect}
         />
       </div>

@@ -1,16 +1,32 @@
 import { useState } from "react";
-import { useCartContext } from "../../contexts/CartContext";
 import CartList from "../Cart/CartList/CartList";
 import * as styles from "./Header.style";
 import CartModal from "../Cart/CartModal/CartModal";
-import { useProductContext } from "../../contexts/ProductContext";
 import useFetch from "../../hooks/useFetch";
 import { URLS } from "../../constants/url";
+import { useGetQuery } from "../../hooks/useGetQuery";
+import { commonOpts } from "../../constants/requestHeader";
+import { useQueryContext } from "../../contexts/QueryContext";
+import { useProductQuery } from "../../hooks/useProductQuery";
 
 function Header() {
+  const { dataPool, productsQuery } = useQueryContext();
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const { fetchCart, cartData } = useCartContext();
-  const { fetchProducts } = useProductContext();
+  const productURL = useProductQuery(productsQuery);
+  const { refetch: fetchProducts } = useGetQuery(
+    "products",
+    productURL,
+    commonOpts,
+    false
+  );
+  const { refetch: fetchCart } = useGetQuery(
+    "cart-items",
+    URLS.CART_ITEMS,
+    commonOpts,
+    false
+  );
+
+  const cartData = dataPool["cart-items"]?.content;
 
   const handleOrder = async () => {
     await orderCart();

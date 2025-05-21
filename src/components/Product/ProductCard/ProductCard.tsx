@@ -1,4 +1,4 @@
-import { useProductContext } from "../../../contexts/ProductContext";
+import { useQueryContext } from "../../../contexts/QueryContext";
 import CartButton from "../../CartButton/CartButton";
 import Spinner from "../../Spinner/Spinner";
 import * as styles from "./ProductCard.style";
@@ -22,8 +22,8 @@ function ProductCard({
 }: ProductCardProps) {
   const [imageStatus, setImageStatus] = useState<ImageStatus>("loading");
   const [finalImageUrl, setFinalImageUrl] = useState<string>(imageUrl);
-  const { productsData } = useProductContext();
-
+  const { dataPool } = useQueryContext();
+  const productsData = dataPool["products"]?.content;
   const productQuantity = productsData?.find(
     (product) => product.id === productId
   )?.quantity;

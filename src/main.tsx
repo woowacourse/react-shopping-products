@@ -3,8 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { ErrorContextProvider } from "./contexts/ErrorContext";
-import { CartContextProvider } from "./contexts/CartContext.tsx";
-import { ProductContextProvider } from "./contexts/ProductContext.tsx";
+import { QueryContextProvider } from "./contexts/QueryContext.tsx";
 
 async function initMsw() {
   try {
@@ -53,13 +52,11 @@ async function startApp() {
   // 그 후 앱 렌더링
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-      <ProductContextProvider>
-        <CartContextProvider>
-          <ErrorContextProvider>
-            <App />
-          </ErrorContextProvider>
-        </CartContextProvider>
-      </ProductContextProvider>
+      <QueryContextProvider>
+        <ErrorContextProvider>
+          <App />
+        </ErrorContextProvider>
+      </QueryContextProvider>
     </React.StrictMode>
   );
 }
