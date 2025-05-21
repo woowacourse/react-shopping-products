@@ -1,11 +1,13 @@
 import Button from "../common/Button/Button";
 import RemoveShoppingCart from "/RemoveShoppingCart.svg";
 
-interface RemoveButtonProps {
+interface ProductRemoveButtonProps {
   handleRemoveProduct: () => void;
 }
 
-function RemoveButton({ handleRemoveProduct }: RemoveButtonProps) {
+function ProductRemoveButton({
+  handleRemoveProduct,
+}: ProductRemoveButtonProps) {
   return (
     <Button color="light" onClick={handleRemoveProduct}>
       <img src={RemoveShoppingCart} />
@@ -14,4 +16,4 @@ function RemoveButton({ handleRemoveProduct }: RemoveButtonProps) {
   );
 }
 
-export default RemoveButton;
+export default ProductRemoveButton;

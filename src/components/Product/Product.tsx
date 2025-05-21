@@ -4,7 +4,7 @@ import * as Styled from "./Product.styled";
 
 import defaultImage from "/defaultImage.png";
 import ProductAddButton from "../ProductAddButton/ProductAddButton";
-import RemoveButton from "../RemoveButton/RemoveButton";
+import ProductRemoveButton from "../ProductRemoveButton/ProductRemoveButton";
 
 function Product({
   product,
@@ -25,7 +25,7 @@ function Product({
           </Styled.Contents>
           <Styled.ButtonWrapper>
             {isInCart ? (
-              <RemoveButton
+              <ProductRemoveButton
                 handleRemoveProduct={() =>
                   handleRemoveProduct(product.id.toString())
                 }
