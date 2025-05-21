@@ -20,7 +20,6 @@ import {
   CategoryOption,
   FilterOption,
   ProductType,
-  sortOption,
 } from "../constants";
 
 export default function ShopPage() {
@@ -48,13 +47,11 @@ export default function ShopPage() {
   };
 
   useEffect(() => {
-    let sortByFilter: sortOption = "price,asc";
-    if (filterValue === "높은 가격순") sortByFilter = "price,desc";
     (async () => {
       try {
         const response = await getProducts({
           category: categoryValue,
-          sortBy: sortByFilter,
+          sortBy: filterValue === "높은 가격순" ? "price,desc" : "price,asc",
         });
         setProductList(response.content);
       } catch (e) {
