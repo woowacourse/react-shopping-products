@@ -57,6 +57,18 @@ const mockProducts = [
     quantity: 8,
   },
 ];
+const mockCartItems = [
+  {
+    id: 5606,
+    product: mockProducts[1],
+    quantity: 1,
+  },
+  {
+    id: 5607,
+    product: mockProducts[2],
+    quantity: 2,
+  },
+];
 
 export const handlers = [
   http.get('*/products', ({ request }) => {
@@ -80,4 +92,80 @@ export const handlers = [
       }
     );
   }),
+  http.get('*/cart-items', () => {
+    return HttpResponse.json(
+      { content: mockCartItems },
+      {
+        status: 200,
+      }
+    );
+  }),
+  http.patch('*/cart-items/:id', async ({ request, params }) => {
+    const cartItemId = Number(params.id);
+    const body = await request.json(); // { quantity: number }
+
+    const cartItem = mockCartItems.find((item) => item.id === cartItemId);
+
+    if (!cartItem) {
+      return HttpResponse.json(
+        { message: 'Cart item not found' },
+        { status: 404 }
+      );
+    }
+
+    cartItem.quantity = body.quantity;
+
+    return HttpResponse.json(cartItem, { status: 200 });
+  }),
+  http.delete('*/cart-items/:id', ({ params }) => {
+    const id = Number(params.id);
+
+    const index = mockCartItems.findIndex((item) => item.id === id);
+    if (index === -1) {
+      return HttpResponse.json(
+        { message: 'Cart item not found' },
+        { status: 404 }
+      );
+    }
+
+    mockCartItems.splice(index, 1);
+    return HttpResponse.json({ message: 'Deleted' }, { status: 200 });
+  }),
+  http.post('*/cart-items', async ({ request }) => {
+    const { productId, quantity } = (await request.json()) as {
+      productId: number;
+      quantity: number;
+    };
+
+    const product = mockProducts.find((p) => p.id === productId);
+    if (!product) {
+      return HttpResponse.json(
+        { message: 'Product not found' },
+        { status: 404 }
+      );
+    }
+
+    const alreadyExists = mockCartItems.some(
+      (item) => item.product.id === productId
+    );
+
+    if (alreadyExists) {
+      return HttpResponse.json(
+        { message: '이미 장바구니에 담긴 상품입니다.' },
+        { status: 500 }
+      );
+    }
+
+    const newCartItem = {
+      id: cartItemIdCounter++,
+      product,
+      quantity,
+    };
+
+    mockCartItems.push(newCartItem);
+
+    return HttpResponse.json(newCartItem, { status: 201 });
+  }),
 ];
+
+let cartItemIdCounter = 5608;
