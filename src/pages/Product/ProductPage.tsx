@@ -1,20 +1,9 @@
-import { getCartItems } from "@/apis/cartItems/getCartItems";
 import Header from "@/components/Header";
 import ProductContent from "@/components/Product/Content";
-import { CartItemType } from "@/types/cartItem";
-import { useEffect, useState } from "react";
+import { useCartContext } from "@/context/CartContext";
 
 function ProductPage() {
-  const [cartItemData, setCartItemData] = useState<CartItemType[]>([]);
-
-  useEffect(() => {
-    async function fetchCartItems() {
-      const cartItems = await getCartItems();
-      setCartItemData(cartItems);
-    }
-    fetchCartItems();
-  }, []);
-
+  const { cartItemData, setCartItemData } = useCartContext();
   return (
     <>
       <Header quantity={cartItemData.length} />
