@@ -4,16 +4,21 @@ import styled from '@emotion/styled';
 interface CountControlProps {
   count: number;
   onClick: (type: 'decrease' | 'increase') => void;
+  disabled: boolean;
 }
 
-export default function CountControl({ count, onClick }: CountControlProps) {
+export default function CountControl({
+  count,
+  onClick,
+  disabled,
+}: CountControlProps) {
   return (
     <StyledWrapper>
       <StyledButton onClick={() => onClick('decrease')} disabled={count === 0}>
         <StyledImg src="./minusIcon.png" alt="minus icon" />
       </StyledButton>
       <StyledText>{count}</StyledText>
-      <StyledButton onClick={() => onClick('increase')}>
+      <StyledButton onClick={() => onClick('increase')} disabled={disabled}>
         <StyledImg src="./plusIcon.png" alt="plus icon" />
       </StyledButton>
     </StyledWrapper>

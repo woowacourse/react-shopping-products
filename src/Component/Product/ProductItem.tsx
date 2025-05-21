@@ -12,6 +12,7 @@ type SetProducts = {
   getMatchCartItem: (id: number) => CartItemTypes | undefined;
   checkMax: () => boolean;
   quantity: number;
+  updateErrorMessage: (errorMessage: string) => void;
 };
 
 export default function ProductItem({
@@ -23,11 +24,13 @@ export default function ProductItem({
   getMatchCartItem,
   checkMax,
   quantity,
+  updateErrorMessage,
 }: ProductTypes & SetProducts) {
   const cartItemQuantity = getMatchCartItem(id)?.quantity;
 
   const [active, setActive] = useState(false);
   const [count, setCount] = useState(0);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     setCount(cartItemQuantity ?? 0);
@@ -44,6 +47,11 @@ export default function ProductItem({
   const handleControlClick = async (type: 'increase' | 'decrease') => {
     try {
       if (type === 'increase') {
+        if (quantity === count) {
+          updateErrorMessage('수량 초과');
+          setDisabled(true);
+          return;
+        }
         if (checkMax()) throw new Error('50개 초과');
 
         setCount((prev) => prev + 1);
@@ -60,6 +68,7 @@ export default function ProductItem({
 
         setCount((prev) => prev - 1);
 
+        if (quantity === count) setDisabled(false);
         if (cartItemId) {
           await patchShoppingCart(cartItemId, count - 1);
         }
@@ -84,7 +93,11 @@ export default function ProductItem({
         </StyledProductInfo>
         <StyledButtonWrapper>
           {active ? (
-            <CountControl count={count} onClick={handleControlClick} />
+            <CountControl
+              count={count}
+              onClick={handleControlClick}
+              disabled={disabled}
+            />
           ) : (
             <StyledButton
               isItemInCart={!isItemInCart}
