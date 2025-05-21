@@ -6,7 +6,7 @@ const enableMocking = async () => {
   const { worker } = await import('./mocks/browser');
   return worker.start({
     serviceWorker: {
-      url: '/mockServiceWorker.js', // public/에 복사된 파일 경로
+      url: '/mockServiceWorker.js',
     },
   });
 };
