@@ -4,7 +4,7 @@ import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
 import { URLS } from "../../constants/url";
 import { commonOpts } from "../../constants/requestHeader";
-import { useGetQuery } from "../../hooks/useGetQuery";
+import { useData } from "../../hooks/useData";
 import { useQueryContext } from "../../contexts/QueryContext";
 
 interface QuantityButtonProps {
@@ -17,7 +17,7 @@ export default function QuantityButton({
   cartItemId,
 }: QuantityButtonProps) {
   const [loading, setLoading] = useState(false);
-  const { refetch: fetchCart } = useGetQuery(
+  const { refetch: fetchCart } = useData(
     "cart-items",
     URLS.CART_ITEMS,
     commonOpts,
@@ -26,7 +26,7 @@ export default function QuantityButton({
 
   const { showError } = useErrorContext();
   const { dataPool } = useQueryContext();
-  const cartData = dataPool["cart-items"]?.content;
+  const cartData = dataPool["cart-items"];
   const quantity =
     cartData?.find((item) => item.product.id === productId)?.quantity ?? 0;
 

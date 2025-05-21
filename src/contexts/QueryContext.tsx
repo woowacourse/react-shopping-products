@@ -14,7 +14,7 @@ type DataPool = Partial<DataPoolMap>;
 
 interface QueryCtx {
   dataPool: DataPool;
-  setData: <K extends DataKey>(k: K, v: DataPoolMap[K]) => void;
+  setData: (key: DataKey, data: DataPoolMap[DataKey]) => void;
   controllers: React.MutableRefObject<Record<string, AbortController | null>>;
   productsQuery: OrderByOptionType;
   setProductsQuery: (q: OrderByOptionType) => void;
@@ -31,7 +31,7 @@ export const QueryContextProvider = ({ children }: { children: ReactNode }) => {
     useState<OrderByOptionType>("낮은 가격순");
 
   const setData = useCallback(
-    <K extends DataKey>(key: K, value: DataPoolMap[K]) =>
+    (key: DataKey, value: DataPoolMap[DataKey]) =>
       setDataPool((prev) => ({ ...prev, [key]: value })),
     []
   );

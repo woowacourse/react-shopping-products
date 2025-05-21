@@ -5,11 +5,11 @@ import { createApiError } from "../util/createApiError";
 import { getErrorTypeByStatus } from "../util/getErrorTypeByStatus";
 import { getErrorMessage } from "../util/getErrorMessage";
 import { useQueryContext } from "../contexts/QueryContext";
-import { DataKey, DataPoolMap } from "../types/data-types";
+import { DataKey, DataPoolMap, DataResponseMap } from "../types/data-types";
 
 type Opts = Omit<RequestInit, "method" | "signal">;
 
-export function useGetQuery<K extends DataKey>(
+export function useData<K extends DataKey>(
   key: K,
   url: string | URL,
   options: Opts = {},
@@ -48,8 +48,8 @@ export function useGetQuery<K extends DataKey>(
       const type = res.headers.get("content-type");
       if (!type || !type.includes("application/json")) return;
 
-      const json = (await res.json()) as DataPoolMap[K];
-      setData(key, json);
+      const json = (await res.json()) as DataResponseMap[K];
+      setData(key, json.content);
     } catch (e) {
       if ((e as DOMException).name !== "AbortError")
         setError(createApiError(e));

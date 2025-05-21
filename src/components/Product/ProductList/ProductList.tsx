@@ -10,7 +10,7 @@ interface ProductListProps {
 
 export default function ProductList({ products }: ProductListProps) {
   const { dataPool } = useQueryContext();
-  const cartData = dataPool["cart-items"]?.content;
+  const cartData = dataPool["cart-items"];
   if (!products) {
     return <Fallback />;
   }

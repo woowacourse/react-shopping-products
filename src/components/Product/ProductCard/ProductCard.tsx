@@ -23,7 +23,7 @@ function ProductCard({
   const [imageStatus, setImageStatus] = useState<ImageStatus>("loading");
   const [finalImageUrl, setFinalImageUrl] = useState<string>(imageUrl);
   const { dataPool } = useQueryContext();
-  const productsData = dataPool["products"]?.content;
+  const productsData = dataPool["products"];
   const productQuantity = productsData?.find(
     (product) => product.id === productId
   )?.quantity;
