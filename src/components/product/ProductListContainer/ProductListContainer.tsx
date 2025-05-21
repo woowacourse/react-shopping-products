@@ -6,7 +6,7 @@ import Spinner from "../../common/Spinner/Spinner";
 import * as Styled from "./ProductListContainer.styled";
 
 import { ProductCategory } from "../../../types/ProductCategory";
-import { Sort } from "../../../types/Sort";
+import { PriceSort } from "../../../types/Sort";
 import { Product } from "../../../types/Product";
 
 import fetchProductList from "../../../apis/product/fetchProductList";
@@ -34,8 +34,8 @@ const isProductCategory = (value: string) => {
   return contains<ProductCategory>(value, CATEGORIES);
 };
 
-const isProductPriceSort = (value: string): value is Sort => {
-  return contains<Sort>(value, PRICE_SORTS_KEYS);
+const isProductPriceSort = (value: string): value is PriceSort => {
+  return contains<PriceSort>(value, PRICE_SORTS_KEYS);
 };
 
 function ProductListContainer({
@@ -45,7 +45,7 @@ function ProductListContainer({
 }: ProductListContainerProps) {
   const [productList, setProductList] = useState<Product[] | null>(null);
   const [category, setCategory] = useState<ProductCategory>(ALL_CATEGORY);
-  const [sort, setSort] = useState<Sort>(LOW_PRICE_SORT_KEY);
+  const [sort, setSort] = useState<PriceSort>(LOW_PRICE_SORT_KEY);
 
   //TODO: 상품 목록 가져올 때 로딩중
   useEffect(() => {

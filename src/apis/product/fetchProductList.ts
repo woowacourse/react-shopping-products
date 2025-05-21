@@ -1,6 +1,6 @@
 import { FetchProductListResult } from "../../types/FetchProductListResult";
 import { ProductCategory } from "../../types/ProductCategory";
-import { Sort } from "../../types/Sort";
+import { PriceSort } from "../../types/Sort";
 import { apiRequest } from "../ApiRequest";
 import {
   LOW_PRICE_SORT_KEY,
@@ -10,7 +10,7 @@ import {
 type fetchProductListParams = {
   params?: {
     category?: ProductCategory;
-    sort: Sort;
+    sort: PriceSort;
     page: string;
     size: string;
   };
