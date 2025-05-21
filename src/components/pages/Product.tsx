@@ -5,10 +5,9 @@ import Header from '../Header/Header';
 import ItemCard from '../ItemCard/ItemCard';
 import Skeleton from '../Skeleton/Skeleton';
 import S from './Product.module.css';
-import addCart from '../../utils/api/addCart';
 import useError from '../../hooks/useError';
-import removeCart from '../../utils/api/removeCart';
-import getMergedData from '../../utils/getMergedData';
+import { getMergedData } from '../../utils';
+import { addCart, removeCart } from '../../utils/api';
 
 const Product = () => {
   const [filter, setFilter] = useState('');

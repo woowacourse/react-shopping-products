@@ -1,10 +1,9 @@
 import { http, HttpResponse } from 'msw';
 import { CART_URL, PRODUCT_URL } from '../constants/endpoint';
-import filterProductList from '../utils/filterProductList';
-import sortProductList from '../utils/sortProductList';
 import { filterType, SortingType } from '../types';
 import productsMockData from './data/productsMockData';
 import cartMockData from './data/cartMockData';
+import { filterProductList, sortProductList } from '../utils';
 
 export const handlers = [
   http.get(PRODUCT_URL, ({ request }) => {

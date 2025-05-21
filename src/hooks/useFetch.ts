@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import handleHttpError from '../utils/handleHTTPError';
+import { handleHTTPError } from '../utils';
 
 export default function useFetch() {
   const [loading, setLoading] = useState(false);
@@ -8,7 +8,7 @@ export default function useFetch() {
     try {
       setLoading(true);
       const response = await fetch(url, options);
-      handleHttpError(response);
+      handleHTTPError(response);
       const data = await response.json();
       return data;
     } catch (error) {
