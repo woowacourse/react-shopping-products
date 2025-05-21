@@ -1,4 +1,4 @@
-import { FilterType, Product } from "../types";
+import { FilterType, Product } from "../../src/types";
 
 const filterProductList = (productList: Product[], filterType: FilterType) => {
 	return productList.filter((product) => product.category === filterType);

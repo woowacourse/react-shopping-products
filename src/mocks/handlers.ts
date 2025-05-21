@@ -2,8 +2,8 @@ import { http, HttpResponse } from "msw";
 import products from "./data/products.json";
 import cart from "./data/cart.json";
 import { CART_URL, PRODUCT_URL } from "../constants/endpoint";
-import filterProductList from "../utils/filterProductList";
-import sortProductList from "../utils/sortProductList";
+import filterProductList from "../../test/utils/filterProductList";
+import sortProductList from "../../test/utils/sortProductList";
 import { FilterType, SortType } from "../types";
 
 export const handlers = [
