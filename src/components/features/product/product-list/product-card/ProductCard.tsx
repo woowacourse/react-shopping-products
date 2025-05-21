@@ -1,57 +1,15 @@
 import styled from '@emotion/styled';
-
-import AddCartButton from './AddCartButton';
-import DeleteCartButton from './DeleteCartButton';
-import { useCartContext } from '../../../../../context/useCartContext';
-import { useShopErrorContext } from '../../../../../shop/context/useShopErrorContext';
-import { postCartItem } from '../../../../../api/postCartItem';
-import { deleteCartItem } from '../../../../../api/deleteCartItem';
 import { Flex } from '../../../../common';
+import ToggleCartButton from './cart-button/ToggleCartButton';
 
 interface ProductProps {
   id: string;
-  cartId: string | null;
   name: string;
   price: number;
   imageUrl: string;
-  isInCart: boolean;
 }
 
-function ProductCard({
-  id,
-  cartId,
-  name,
-  price,
-  imageUrl,
-  isInCart,
-}: ProductProps) {
-  const { cartCount, refetch } = useCartContext();
-  const { handleErrorTrue, handleErrorFalse } = useShopErrorContext();
-
-  const handleAddCart = async () => {
-    try {
-      if (cartCount >= 50) {
-        handleErrorTrue('장바구니는 최대 50개까지 담을 수 있습니다.');
-        return;
-      }
-      await postCartItem(id);
-      refetch();
-      handleErrorFalse();
-    } catch (e) {
-      handleErrorTrue('장바구니에 담는 데 실패했습니다.');
-    }
-  };
-
-  const handleDeleteCart = async () => {
-    try {
-      await deleteCartItem(cartId);
-      refetch();
-      handleErrorFalse();
-    } catch (e) {
-      handleErrorTrue('장바구니에서 삭제하는 데 실패했습니다.');
-    }
-  };
-
+function ProductCard({ id, name, price, imageUrl }: ProductProps) {
   return (
     <Container data-testid={id}>
       <PreviewBox>
@@ -62,11 +20,7 @@ function ProductCard({
           <ProductTitle>{name}</ProductTitle>
           <ProductPrice>{`${price.toLocaleString()}원`}</ProductPrice>
         </Flex>
-        {isInCart ? (
-          <DeleteCartButton onClick={handleDeleteCart} />
-        ) : (
-          <AddCartButton onClick={handleAddCart} />
-        )}
+        <ToggleCartButton productId={id} />
       </InfoBox>
     </Container>
   );

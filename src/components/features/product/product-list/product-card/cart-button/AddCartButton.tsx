@@ -1,9 +1,13 @@
 import styled from '@emotion/styled';
 import { ComponentProps } from 'react';
 
-function AddCartButton({ ...props }: ComponentProps<'button'>) {
+interface AddCartButtonProps extends ComponentProps<'button'> {
+  onAddCartClick: () => void;
+}
+
+function AddCartButton({ onAddCartClick, ...props }: AddCartButtonProps) {
   return (
-    <Container {...props}>
+    <Container onClick={onAddCartClick} {...props}>
       <ButtonIcon src="./assets/icons/AddCart.svg" />
       <ButtonText>담기</ButtonText>
     </Container>

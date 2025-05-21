@@ -1,9 +1,16 @@
 import styled from '@emotion/styled';
 import { ComponentProps } from 'react';
 
-function DeleteCartButton({ ...props }: ComponentProps<'button'>) {
+interface DeleteCartButtonProps extends ComponentProps<'button'> {
+  onDeleteCartClick: () => void;
+}
+
+function DeleteCartButton({
+  onDeleteCartClick,
+  ...props
+}: DeleteCartButtonProps) {
   return (
-    <Container {...props}>
+    <Container onClick={onDeleteCartClick} {...props}>
       <ButtonIcon src="./assets/icons/DeleteCart.svg" />
       <ButtonText>빼기</ButtonText>
     </Container>

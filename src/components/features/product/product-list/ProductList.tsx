@@ -1,29 +1,25 @@
 import styled from '@emotion/styled';
+
+import { Product } from '../type';
 import ProductCard from './product-card/ProductCard';
-import { Cart, Product } from '../type';
 
 function ProductList({
   resource,
-  cartList,
 }: {
-  resource: { read: () => Product[] };
-  cartList: Cart[];
+  resource: { read: () => Product[] | null };
 }) {
-  const products = resource.read();
+  const products = resource.read() ?? [];
 
   return (
     <Container id="product-list" data-testid="product-list">
       {products.map(({ id, name, price, imageUrl }) => {
-        const matchingCart = cartList.find((cart) => cart.product.id === id);
         return (
           <ProductCard
             key={id}
             id={id}
-            cartId={matchingCart?.id ?? null}
             name={name}
             price={price}
             imageUrl={imageUrl}
-            isInCart={Boolean(matchingCart)}
           />
         );
       })}
