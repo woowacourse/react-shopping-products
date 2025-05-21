@@ -57,11 +57,12 @@ export default function ShopPage() {
           sortBy: filterValue === "높은 가격순" ? "price,desc" : "price,asc",
         });
         setProductList(response.content);
+        setIsLoading(false);
       } catch (e) {
         setIsError(true);
+        setIsLoading(false);
       }
     })();
-    setIsLoading(false);
   }, [filterValue, categoryValue]);
 
   useEffect(() => {
