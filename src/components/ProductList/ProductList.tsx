@@ -1,4 +1,4 @@
-import Product from "../Product/Product";
+import ProductItem from "../ProductItem/ProductItem";
 
 import { Product as ProductType } from "../../types/Product";
 
@@ -20,7 +20,7 @@ function ProductList({
   return (
     <Styled.UlContainer>
       {productList.map((product) => (
-        <Product
+        <ProductItem
           key={product.id}
           product={product}
           isInCart={selectedProductIdList.includes(product.id.toString())}

@@ -1,12 +1,12 @@
-import { ProductProps } from "./Product.types";
+import { ProductProps } from "./ProductItem.types";
 
-import * as Styled from "./Product.styled";
+import * as Styled from "./ProductItem.styled";
 
 import defaultImage from "/defaultImage.png";
 import ProductAddButton from "../ProductAddButton/ProductAddButton";
 import ProductRemoveButton from "../ProductRemoveButton/ProductRemoveButton";
 
-function Product({
+function ProductItem({
   product,
   isInCart,
   handleAddProduct,
@@ -42,4 +42,4 @@ function Product({
   );
 }
 
-export default Product;
+export default ProductItem;
