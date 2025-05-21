@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const API_KEY = import.meta.env.VITE_API_KEY;
+
 interface ApiOptions {
   method?: string;
   body?: unknown;
@@ -11,10 +11,7 @@ export const apiRequest = async <T>(
   options: ApiOptions = {}
 ): Promise<T> => {
   const url = `${BASE_URL}${endpoint}`;
-
   const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Basic ${API_KEY}`,
     ...options.headers,
   };
 
