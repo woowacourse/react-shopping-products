@@ -8,16 +8,18 @@ import ShopErrorProvider from './shop/context/ShopErrorProvider';
 
 function App() {
   return (
-    <MobileLayout>
+    <>
       <Global styles={reset} />
-      <ThemeProvider theme={theme}>
-        <ShopErrorProvider>
-          <CartProvider>
-            <ShopPage />
-          </CartProvider>
-        </ShopErrorProvider>
-      </ThemeProvider>
-    </MobileLayout>
+      <MobileLayout>
+        <ThemeProvider theme={theme}>
+          <ShopErrorProvider>
+            <CartProvider>
+              <ShopPage />
+            </CartProvider>
+          </ShopErrorProvider>
+        </ThemeProvider>
+      </MobileLayout>
+    </>
   );
 }
 
