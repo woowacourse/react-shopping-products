@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
-import useOverlay from '../../../../hook/useOverlay';
+import useDisclosure from '../../../../hook/useDisclosure';
 import { DropdownContext } from './dropdownContext';
 
 const DropdownProvider = ({ children }: { children: React.ReactNode }) => {
-  const { isOpen, open, close, toggle } = useOverlay();
+  const { isOpen, open, close, toggle } = useDisclosure();
 
   const contextValue = useMemo(
     () => ({ isOpen, open, close, toggle }),

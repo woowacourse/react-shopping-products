@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import useOverlay from '../../../../hook/useOverlay';
+import useDisclosure from '../../../../hook/useDisclosure';
 import { ToastContext } from './toastContext';
 
 const ToastProvider = ({ children }: { children: React.ReactNode }) => {
-  const { isOpen: isVisible, open, close } = useOverlay();
+  const { isOpen: isVisible, open, close } = useDisclosure();
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(true);
 

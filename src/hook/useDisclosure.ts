@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useOverlay = () => {
+const useDisclosure = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const open = () => {
@@ -18,4 +18,4 @@ const useOverlay = () => {
   return { isOpen, open, close, toggle };
 };
 
-export default useOverlay;
+export default useDisclosure;
