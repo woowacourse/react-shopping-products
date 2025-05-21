@@ -19,8 +19,8 @@ function ShopFilter({
           { label: '식료품', value: '식료품' },
           { label: '패션잡화', value: '패션잡화' },
         ]}
-        selectedValue={filterOption.category}
-        onSelectHandler={handleCategoryOption}
+        selectedOption={filterOption.category}
+        onSelectOption={handleCategoryOption}
         data-testid="filter-category"
       />
       <Dropdown
@@ -28,8 +28,8 @@ function ShopFilter({
           { label: '낮은 가격순', value: 'asc' },
           { label: '높은 가격순', value: 'desc' },
         ]}
-        selectedValue={filterOption.sort}
-        onSelectHandler={handleSortOption}
+        selectedOption={filterOption.sort}
+        onSelectOption={handleSortOption}
         data-testid="filter-sort"
       />
     </Flex>

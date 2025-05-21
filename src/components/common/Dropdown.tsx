@@ -1,50 +1,38 @@
+import { useClickOutsideRef } from '@/hooks/useClickOutsideRef';
 import styled from '@emotion/styled';
-import { ComponentProps, useEffect, useRef, useState } from 'react';
+import { ComponentProps, useState } from 'react';
 import Arrow from './Arrow';
 import { DropdownOptionType } from './type';
 
 interface DropdownProps<T> {
   options: T[];
-  selectedValue: T | null;
-  onSelectHandler: (option: T) => void;
+  selectedOption: T | null;
+  onSelectOption: (option: T) => void;
   placeholder?: string;
 }
 
 function Dropdown<T extends DropdownOptionType>({
   options,
-  selectedValue,
-  onSelectHandler,
+  selectedOption,
+  onSelectOption,
   placeholder,
   ...props
 }: DropdownProps<T> & ComponentProps<'div'>) {
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useClickOutsideRef<HTMLDivElement>(() => setOpen(false));
 
-  const toggleOpen = () => setOpen((prev) => !prev);
+  const toggle = () => setOpen((prev) => !prev);
 
-  const handleSelect = (option: T) => {
+  const onOptionSelected = (option: T) => {
     setOpen(false);
-    onSelectHandler(option);
+    onSelectOption(option);
   };
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   return (
     <DropdownContainer ref={dropdownRef} {...props}>
-      <DropdownToggle onClick={toggleOpen}>
-        <DropdownText isSelected={selectedValue !== null}>
-          {selectedValue?.label || (placeholder ?? '')}
+      <DropdownToggle onClick={toggle}>
+        <DropdownText isSelected={selectedOption !== null}>
+          {selectedOption?.label || (placeholder ?? '')}
         </DropdownText>
         <Arrow width={16} direction={open ? 'up' : 'down'} />
       </DropdownToggle>
@@ -53,7 +41,7 @@ function Dropdown<T extends DropdownOptionType>({
           <DropdownMenuItem
             key={option.value}
             data-value={option.value}
-            onClick={() => handleSelect(option)}
+            onClick={() => onOptionSelected(option)}
           >
             {option.label}
           </DropdownMenuItem>
