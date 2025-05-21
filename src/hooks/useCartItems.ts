@@ -3,6 +3,7 @@ import { Product, CartItem } from '../App';
 import getCartItems from '../api/getCartItems';
 import postCartItems from '../api/postCartItems';
 import deleteCartItems from '../api/deleteCartItems';
+import patchCartItems from '../api/patchCartItems';
 
 type ErrorState = {
   isError: boolean;
@@ -87,6 +88,82 @@ const useCartItems = () => {
     }
   };
 
+  const increaseCartItemQuantity = async (productId: number) => {
+    if (isLoading) return;
+    setIsLoading(true);
+
+    const targetCartItem = cartItems.find(
+      (cartItem) => cartItem.product.id === productId
+    );
+    const currentQuantity = targetCartItem?.quantity;
+
+    if (!targetCartItem) {
+      setError({
+        isError: true,
+        status: 404,
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const { status } = await patchCartItems(
+        targetCartItem.id,
+        currentQuantity! + 1
+      );
+      await fetchCartItems();
+      setError({ isError: false, status });
+    } catch (e) {
+      if (e instanceof Error) {
+        setError({ isError: true, status: Number(e.message) });
+      } else {
+        setError({ isError: true, status: null });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const decreaseCartItemQuantity = async (productId: number) => {
+    if (isLoading) return;
+    setIsLoading(true);
+
+    const targetCartItem = cartItems.find(
+      (cartItem) => cartItem.product.id === productId
+    );
+    const currentQuantity = targetCartItem?.quantity;
+
+    if (!targetCartItem) {
+      setError({
+        isError: true,
+        status: 404,
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (currentQuantity === 1) {
+      removeFromCart(productId);
+      return;
+    }
+
+    try {
+      const { status } = await patchCartItems(
+        targetCartItem.id,
+        currentQuantity! - 1
+      );
+      await fetchCartItems();
+      setError({ isError: false, status });
+    } catch (e) {
+      if (e instanceof Error) {
+        setError({ isError: true, status: Number(e.message) });
+      } else {
+        setError({ isError: true, status: null });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     cartItems,
     isLoading,
@@ -94,6 +171,8 @@ const useCartItems = () => {
     fetchCartItems,
     addToCart,
     removeFromCart,
+    increaseCartItemQuantity,
+    decreaseCartItemQuantity,
   };
 };
 
