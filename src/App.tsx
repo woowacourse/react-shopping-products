@@ -9,7 +9,7 @@ import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
 import Header from "./components/Header/Header";
 import MswStatus from "./components/MswStatus";
 import MswDebug from "./components/MswDebug";
-import { useGetQuery } from "./hooks/useGetQuery";
+import { useData } from "./hooks/useData";
 import { useProductQuery } from "./hooks/useProductQuery";
 import { URLS } from "./constants/url";
 import { commonOpts } from "./constants/requestHeader";
@@ -25,16 +25,14 @@ function App() {
     loading: productFetchLoading,
     error: productFetchError,
     refetch: fetchProducts,
-  } = useGetQuery("products", productQuery, {}, false);
-  const { error: cartFetchError, refetch: fetchCart } = useGetQuery(
+  } = useData("products", productQuery, {}, false);
+  const { error: cartFetchError, refetch: fetchCart } = useData(
     "cart-items",
     URLS.CART_ITEMS,
     commonOpts,
     false
   );
-
-  const productsData = dataPool["products"]?.content;
-
+  const productsData = dataPool?.products;
   const [category, setCategory] = useState<CategoryOptionType>("전체");
   const [showDebug, setShowDebug] = useState(false);
 
