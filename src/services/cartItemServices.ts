@@ -1,7 +1,7 @@
 import { CartItemType } from '../types/data';
 import apiClient from './apiClient';
 
-interface AddCartItemsProps {
+export interface AddCartItemsProps {
   productId: number;
   quantity: number;
 }
