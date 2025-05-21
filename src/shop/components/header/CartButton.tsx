@@ -1,6 +1,13 @@
 import styled from '@emotion/styled';
+import { useAPIDataContext } from '../../../context/APIDataProvider';
+import { getShoppingCartData } from '../../../api/getShoppingCartData';
 
-function CartButton({ itemsCount }: { itemsCount: number }) {
+function CartButton() {
+  const { data: cartListData } = useAPIDataContext({
+    fetcher: getShoppingCartData,
+    name: 'cart',
+  });
+  const itemsCount = cartListData?.length || 0;
   return (
     <Container data-testid="cart-button">
       <CartIcon src="./assets/icons/Cart.svg" />
