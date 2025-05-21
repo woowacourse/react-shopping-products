@@ -4,6 +4,7 @@ import Button from "../common/Button/Button";
 import blackDefaultImage from "../../assets/blackDefaultImage.png";
 import { ResponseCartItem, ResponseProduct } from "../../api/types";
 import QuantityButton from "../common/QuantityButton/QuantityButton";
+
 function ProductItem({
   product,
   cartItemList,
@@ -47,6 +48,8 @@ function ProductItem({
     }
   }
 
+  const isSoldOut = product.quantity === 0;
+
   return (
     <S.ProductItemContainer>
       <S.ProductItemImage
@@ -57,6 +60,11 @@ function ProductItem({
           e.currentTarget.onerror = null;
         }}
       />
+      {isSoldOut && (
+        <S.SoldOutOverlay>
+          <S.SoldOutText>품절</S.SoldOutText>
+        </S.SoldOutOverlay>
+      )}
       <S.ProductItemBottom>
         <S.ProductItemDetailBox>
           <S.ProductName>{product.name}</S.ProductName>

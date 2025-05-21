@@ -7,13 +7,14 @@ console.log("API_URL", API_URL);
 const createMockProducts = (size: number, page: number): ResponseProduct[] => {
   return Array.from({ length: size }, (_, index) => {
     const id = page * size + index + 1;
+    const quantity = id === 1 ? 0 : 50 - (id % 10);
     return {
       id,
       name: `상품 ${id}`,
       price: 10000 * ((id % 5) + 1),
-      imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2012.28.14%402x.webp`,
+      imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
       category: id % 2 === 0 ? "식료품" : "패션잡화",
-      quantity: 50 - (id % 10),
+      quantity,
     };
   });
 };
@@ -28,7 +29,7 @@ const createMockCartItems = (): ResponseCartItem[] => {
         id: productId,
         name: `장바구니 상품 ${productId}`,
         price: 15000 * ((productId % 3) + 1),
-        imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2012.28.14%402x.webp`,
+        imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
         category: productId % 2 === 0 ? "식료품" : "패션잡화",
         quantity: 50 - (productId % 10),
       },
@@ -96,7 +97,7 @@ export const handlers = [
           id: productId,
           name: `상품 ${productId}`,
           price: 12000,
-          imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2012.28.14%402x.webp`,
+          imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
           category: "카테고리1",
         },
       },
@@ -134,7 +135,7 @@ export const handlers = [
         id: productId,
         name: `상품 ${productId}`,
         price: 15000,
-        imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2012.28.14%402x.webp`,
+        imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
         category: "카테고리1",
       },
     });
