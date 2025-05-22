@@ -11,16 +11,18 @@ function ProductItem({
   onAddToCart,
   onRemoveFromCart,
   setErrorMessage,
-  quantity,
-  setQuantity,
+  onIncreaseQuantity,
+  onDecreaseQuantity,
+  getCartQuantityForProduct,
 }: {
   product: ResponseProduct;
   cartItemList: ResponseCartItem[];
   onAddToCart: (productId: number) => Promise<void>;
   onRemoveFromCart: (cartItemId: number) => Promise<void>;
   setErrorMessage: (message: string) => void;
-  quantity: number;
-  setQuantity: (quantity: number) => void;
+  onIncreaseQuantity: (productId: number) => Promise<void>;
+  onDecreaseQuantity: (productId: number) => Promise<void>;
+  getCartQuantityForProduct: (productId: number) => number;
 }) {
   function isInCart(productId: number) {
     return cartItemList.some((item) => item.product.id === productId);
@@ -71,7 +73,11 @@ function ProductItem({
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
         {isInCart(product.id) ? (
-          <QuantityButton quantity={quantity} setQuantity={setQuantity} />
+          <QuantityButton
+            quantity={getCartQuantityForProduct(product.id)}
+            onIncrease={() => onIncreaseQuantity(product.id)}
+            onDecrease={() => onDecreaseQuantity(product.id)}
+          />
         ) : (
           <Button
             text="담기"

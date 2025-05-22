@@ -8,16 +8,18 @@ function ProductList({
   onAddToCart,
   onRemoveFromCart,
   setErrorMessage,
-  quantity,
-  setQuantity,
+  onIncreaseQuantity,
+  onDecreaseQuantity,
+  getCartQuantityForProduct,
 }: {
   productList: ResponseProduct[];
   cartItemList: ResponseCartItem[];
   onAddToCart: (productId: number) => Promise<void>;
   onRemoveFromCart: (cartItemId: number) => Promise<void>;
   setErrorMessage: (message: string) => void;
-  quantity: number;
-  setQuantity: (quantity: number) => void;
+  onIncreaseQuantity: (productId: number) => Promise<void>;
+  onDecreaseQuantity: (productId: number) => Promise<void>;
+  getCartQuantityForProduct: (productId: number) => number;
 }) {
   return (
     <S.ProductListContainer>
@@ -29,8 +31,9 @@ function ProductList({
           onAddToCart={onAddToCart}
           onRemoveFromCart={onRemoveFromCart}
           setErrorMessage={setErrorMessage}
-          quantity={quantity}
-          setQuantity={setQuantity}
+          onIncreaseQuantity={onIncreaseQuantity}
+          onDecreaseQuantity={onDecreaseQuantity}
+          getCartQuantityForProduct={getCartQuantityForProduct}
         />
       ))}
     </S.ProductListContainer>

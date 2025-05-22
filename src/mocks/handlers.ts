@@ -2,24 +2,8 @@ import { http, HttpResponse } from "msw";
 import { ResponseProduct, ResponseCartItem } from "../api/types";
 
 const API_URL = import.meta.env.VITE_BASE_URL;
-console.log("API_URL", API_URL);
 
-const createMockProducts = (size: number, page: number): ResponseProduct[] => {
-  return Array.from({ length: size }, (_, index) => {
-    const id = page * size + index + 1;
-    const quantity = id === 1 ? 0 : 50 - (id % 10);
-    return {
-      id,
-      name: `상품 ${id}`,
-      price: 10000 * ((id % 5) + 1),
-      imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
-      category: id % 2 === 0 ? "식료품" : "패션잡화",
-      quantity,
-    };
-  });
-};
-
-const createMockCartItems = (): ResponseCartItem[] => {
+const initializeCartItems = (): ResponseCartItem[] => {
   return Array.from({ length: 5 }, (_, index) => {
     const productId = index + 1;
     return {
@@ -33,6 +17,23 @@ const createMockCartItems = (): ResponseCartItem[] => {
         category: productId % 2 === 0 ? "식료품" : "패션잡화",
         quantity: 50 - (productId % 10),
       },
+    };
+  });
+};
+
+let cartItemStore: ResponseCartItem[] = initializeCartItems();
+
+const createMockProducts = (size: number, page: number): ResponseProduct[] => {
+  return Array.from({ length: size }, (_, index) => {
+    const id = page * size + index + 1;
+    const quantity = id === 1 ? 0 : 50 - (id % 10);
+    return {
+      id,
+      name: `상품 ${id}`,
+      price: 10000 * ((id % 5) + 1),
+      imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
+      category: id % 2 === 0 ? "식료품" : "패션잡화",
+      quantity,
     };
   });
 };
@@ -59,13 +60,11 @@ export const handlers = [
   http.get(`${API_URL}/cart-items`, ({ request }) => {
     console.log("MSW가 장바구니 목록 요청을 가로챘습니다:", request.url);
 
-    const cartItems = createMockCartItems();
-
     return HttpResponse.json({
-      content: cartItems,
-      totalElements: cartItems.length,
+      content: cartItemStore,
+      totalElements: cartItemStore.length,
       totalPages: 1,
-      size: cartItems.length,
+      size: cartItemStore.length,
       number: 0,
     });
   }),
@@ -89,24 +88,29 @@ export const handlers = [
       );
     }
 
-    return HttpResponse.json(
-      {
+    const newCartItem: ResponseCartItem = {
+      id: productId,
+      quantity,
+      product: {
         id: productId,
-        quantity,
-        product: {
-          id: productId,
-          name: `상품 ${productId}`,
-          price: 12000,
-          imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
-          category: "카테고리1",
-        },
+        name: `상품 ${productId}`,
+        price: 10000 * ((productId % 5) + 1),
+        imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
+        category: productId % 2 === 0 ? "식료품" : "패션잡화",
+        quantity: 50 - (productId % 10),
       },
-      { status: 201 }
-    );
+    };
+
+    cartItemStore.push(newCartItem);
+
+    return HttpResponse.json(newCartItem, { status: 201 });
   }),
 
   http.delete(`${API_URL}/cart-items/:id`, ({ params }) => {
     console.log("MSW가 장바구니 삭제 요청을 가로챘습니다:", params.id);
+
+    const cartItemId = Number(params.id);
+    cartItemStore = cartItemStore.filter((item) => item.id !== cartItemId);
 
     return HttpResponse.json({}, { status: 204 });
   }),
@@ -116,7 +120,7 @@ export const handlers = [
 
     const body = await request.json();
     const { quantity } = body as { quantity: number };
-    const productId = Number(params.id);
+    const cartItemId = Number(params.id);
 
     if (quantity > 50) {
       return HttpResponse.json(
@@ -128,16 +132,21 @@ export const handlers = [
       );
     }
 
-    return HttpResponse.json({
-      id: productId,
-      quantity,
-      product: {
-        id: productId,
-        name: `상품 ${productId}`,
-        price: 15000,
-        imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
-        category: "카테고리1",
+    const cartItemIndex = cartItemStore.findIndex(
+      (item) => item.id === cartItemId
+    );
+
+    if (cartItemIndex !== -1) {
+      cartItemStore[cartItemIndex].quantity = quantity;
+      return HttpResponse.json(cartItemStore[cartItemIndex]);
+    }
+
+    return HttpResponse.json(
+      {
+        errorCode: "CART_ITEM_NOT_FOUND",
+        message: "장바구니 상품을 찾을 수 없습니다.",
       },
-    });
+      { status: 404 }
+    );
   }),
 ];
