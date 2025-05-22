@@ -2,6 +2,7 @@ import { Modal } from '.';
 import styled from '@emotion/styled';
 import ProductListItem from '../Product/ProductListItem';
 import { CartItemTypes } from '../../types/CartItemType';
+import deleteShoppingCart from '../../api/deleteShoppingCart';
 
 interface CartItemModalContentProps {
   cartItems: CartItemTypes[];
@@ -23,6 +24,14 @@ export default function CartItemModalContent({
     0
   );
 
+  const handleDeleteClick = async (cartItemId: number) => {
+    try {
+      await deleteShoppingCart(cartItemId);
+      await updateCartItems();
+    } catch (error) {
+      //
+    }
+  };
   return (
     <Modal.Container>
       <Modal.Overlay />
@@ -32,7 +41,9 @@ export default function CartItemModalContent({
           <StyledUl>
             {cartItems.map((item) => (
               <StyledLi>
-                <DeleteButton>삭제</DeleteButton>
+                <DeleteButton onClick={() => handleDeleteClick(item.id)}>
+                  삭제
+                </DeleteButton>
                 <ProductListItem
                   {...item.product}
                   isRow={true}
