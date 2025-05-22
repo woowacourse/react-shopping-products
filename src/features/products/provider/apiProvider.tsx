@@ -53,6 +53,6 @@ export const useApi = <T,>(fetchFn: () => Promise<T>, name: string) => {
   return {
     data: data[name] as T,
     isLoading,
-    refresh: requestApi,
+    refetch: requestApi,
   };
 };

@@ -8,10 +8,11 @@ import {useShowError} from '../../../shared/provider/errorProvider';
 import {useState} from 'react';
 import CartCount from './CartCount';
 import {formatPrice} from '../../../shared/utils/formatPrice';
+import {useApi} from '../provider/apiProvider';
+import {getCartProduct} from '../../cart/api/getCartProduct';
 
 interface ProductCardProps {
   product: Product;
-  onRefetch: () => void;
   cartQuantity: number;
   cartId: number | undefined;
 }
@@ -20,13 +21,13 @@ const MAX_CART_QUANTITY = 50;
 
 export default function ProductCard({
   product,
-  onRefetch,
   cartQuantity,
   cartId,
 }: ProductCardProps) {
   const showError = useShowError();
   const [isCarting, setIsCarting] = useState(false);
   const [quantity, setQuantity] = useState(0);
+  const {refetch} = useApi(getCartProduct, 'cartItems');
 
   const handlePutCartClick = async () => {
     if (!isCarting) {
@@ -43,7 +44,7 @@ export default function ProductCard({
 
     try {
       await postCartProduct(product.id, quantity);
-      onRefetch();
+      refetch();
     } catch (e) {
       showError?.('상품 추가 중에 문제가 발생했습니다.');
     }
@@ -54,7 +55,7 @@ export default function ProductCard({
     if (cartId)
       try {
         await deleteCartProduct(cartId);
-        onRefetch();
+        refetch();
       } catch (e) {
         showError?.('삭제하는 중에 문제가 발생했습니다.');
       }

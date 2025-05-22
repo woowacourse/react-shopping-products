@@ -3,7 +3,7 @@ import CustomSelect from './shared/ui/CustomSelect';
 import ProductCard from './features/products/ui/ProductCard';
 import {filterByValue} from './shared/utils/filterByValue';
 import {matchCategory} from './features/products/utils/matchCategory';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Product} from './features/products/type/product';
 import * as S from './App.styles';
 import {getProducts} from './features/products/api/getProducts';
@@ -34,21 +34,14 @@ function App() {
   const {
     data: products,
     isLoading,
-    refresh: refetchProducts,
-  } = useApi(
-    async () => await getProducts({sortValue}),
-    `products-${sortValue}`
-  );
+    refetch: refetchProducts,
+  } = useApi(() => getProducts(sortValue), 'products');
 
-  const {data: cartItems, refresh: refetchCartItems} = useApi(
-    getCartProduct,
-    'cartItems'
-  );
-
-  const handleRefetch = () => {
+  useEffect(() => {
     refetchProducts();
-    refetchCartItems();
-  };
+  }, [sortValue]);
+
+  const {data: cartItems} = useApi(getCartProduct, 'cartItems');
 
   const filteredProducts = filterByValue<Product, 'category'>({
     array: products?.content || [],
@@ -88,7 +81,6 @@ function App() {
             <ProductCard
               key={product.id}
               product={product}
-              onRefetch={handleRefetch}
               cartQuantity={cartItems?.content.length}
               cartId={
                 cartItems?.content.find(

@@ -20,13 +20,13 @@ export default function CartCard({cartId, product, quantity}: Props) {
   const [count, setCount] = useState<number>(quantity);
   const showError = useShowError();
 
-  const {refresh} = useApi(getCartProduct, 'cartItems');
+  const {refetch} = useApi(getCartProduct, 'cartItems');
 
   const handlePutCartClick = async () => {
     try {
       await deleteCartProduct(cartId);
       await postCartProduct(product.id, count);
-      refresh();
+      refetch();
     } catch (e) {
       showError?.('상품 추가 중에 문제가 발생했습니다.');
     }
@@ -36,7 +36,7 @@ export default function CartCard({cartId, product, quantity}: Props) {
     if (cartId)
       try {
         await deleteCartProduct(cartId);
-        refresh();
+        refetch();
       } catch (e) {
         showError?.('삭제하는 중에 문제가 발생했습니다.');
       }
