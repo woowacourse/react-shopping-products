@@ -11,8 +11,6 @@ export function useCart() {
     setIsLoading(true);
     setIsError(false);
 
-    console.log('cart', cart);
-
     try {
       const cartData = await getCartItem();
 

@@ -47,8 +47,6 @@ export function useProductsWithCart(sortType: string, category: string = '전체
     cartId: item.cartId
   }));
 
-  console.log(transformedProducts);
-
   const resetErrors = () => {
     setProductsError(false);
     setCartError(false);

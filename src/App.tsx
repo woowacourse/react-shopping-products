@@ -1,17 +1,21 @@
 import GlobalStyle from './ui/styles/globalStyle';
 import Layout from './ui/components/Layout/Layout';
 import Header from './ui/components/Header/Header';
-import Toast from './ui/components/Toast/Toast';
 import ProductSection from './ui/components/ProductSection/ProductSection';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
-import React, { useState } from 'react';
+import ToastList from "./ui/components/Toast/ToastList";
+import React, { useState, useEffect } from 'react';
 import { Global } from '@emotion/react';
 import { SortType, CategoryType } from './types/product';
 import { useCartActions } from './hooks/useCartActions';
+import { useToast } from './context/ToastContext';
+import { ERROR_MESSAGES } from "./constants/errorMessages";
 
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
   const [category, setCategory] = useState<CategoryType>('전체');
+
+  const { showToast } = useToast();
 
   const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
 
@@ -39,14 +43,18 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    if (isError) {
+      showToast(ERROR_MESSAGES.productsFetchError);
+    }
+  }, [isError, showToast]);
+
   return (
     <>
       <Global styles={GlobalStyle} />
       <Layout>
         <Header title="SHOP" totalCartProducts={cart && cart.totalElements} />
-        {isError && (
-          <Toast message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요." />
-        )}
+        <ToastList />
         {isLoading && <LoadingSpinner duration={2} />}
         {!isLoading && !isError && transformedProducts.length > 0 && (
           <ProductSection

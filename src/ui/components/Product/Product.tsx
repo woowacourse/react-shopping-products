@@ -23,7 +23,6 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
   if (!product) {
     return null;
   }
-  // console.log('item', item);
 
   const isImage = product.imageUrl.length > 15
 
