@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useQueryClient } from "./QueryProvider";
+import { getQueryPromise, setQueryPromise, clearQueryPromise } from "./QueryPromises";
 
 interface UseQueryProps<T> {
   queryKey: string;
@@ -17,11 +18,19 @@ export default function useQuery<T>({ queryKey, queryFn }: UseQueryProps<T>) {
         return;
       }
 
-      const response = await queryFn();
+      let promise = getQueryPromise(queryKey);
+      if (!promise || forceFetch) {
+        promise = queryFn();
+        setQueryPromise(queryKey, promise);
+      }
+
+      const response = await promise;
       setQueryData(queryKey, response);
       setQueryStatus(queryKey, "success");
+      clearQueryPromise(queryKey);
     } catch (error) {
       setQueryStatus(queryKey, "error");
+      clearQueryPromise(queryKey);
     }
   };
 
