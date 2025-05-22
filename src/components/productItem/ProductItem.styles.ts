@@ -10,13 +10,6 @@ export const ProductItemContainer = styled.div`
   background-color: var(--color-white);
 `;
 
-export const ProductItemImage = styled.img`
-  position: relative;
-  height: 50%;
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
-`;
-
 export const ProductItemCard = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,4 +57,34 @@ export const OutOfStockText = styled.h2`
   font-weight: var(--font-weight-placeholder);
   width: 100%;
   color: var(--color-red);
+`;
+
+export const ProductItemImageContainer = styled.div`
+  position: relative;
+  height: 50%;
+`;
+
+export const ProductItemImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+`;
+
+export const ProductItemOutOfStockOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--color-dark-grey);
+  opacity: 0.8;
+  width: 100%;
+  height: 100%;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  color: var(--color-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-title);
 `;

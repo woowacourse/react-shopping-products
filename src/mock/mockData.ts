@@ -5,7 +5,7 @@ export const mockData = [
     price: 100000,
     imageUrl: '/images/airforce-white.jpg',
     category: '패션잡화',
-    quantity: 0,
+    quantity: 1,
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ export const mockData = [
     price: 185000,
     imageUrl: '/images/jordan1-bred.jpg',
     category: '패션잡화',
-    quantity: 17,
+    quantity: 0,
   },
   {
     id: 5,

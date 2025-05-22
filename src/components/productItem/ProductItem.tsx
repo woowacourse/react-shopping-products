@@ -13,7 +13,6 @@ interface ProductItemProps {
   handleUpdateCartItem: (productId: number, quantity: number) => void;
 }
 
-// TODO : 품절처리
 // TODO : 품절된 상품일 경우 "최대 구매 수량에 도달했어요" 안보이도록 설정
 // TODO : 최대 구매 수량일 경우 버튼 disabled 처리
 
@@ -30,6 +29,7 @@ const ProductItem = ({
   };
 
   const isMaxCountReached = cartInCount >= product.quantity;
+  const isOutOfStock = product.quantity === 0;
 
   const handlePlusCount = () => {
     const newCartInCount = cartInCount + 1;
@@ -53,16 +53,19 @@ const ProductItem = ({
 
   return (
     <S.ProductItemContainer>
-      <S.ProductItemImage
-        src={product.imageUrl}
-        onError={handleImageError}
-        alt={`${product.name} 사진`}
-      />
+      <S.ProductItemImageContainer>
+        <S.ProductItemImage
+          src={product.imageUrl}
+          onError={handleImageError}
+          alt={`${product.name} 사진`}
+        />
+        {isOutOfStock && <S.ProductItemOutOfStockOverlay>품 절</S.ProductItemOutOfStockOverlay>}
+      </S.ProductItemImageContainer>
       <S.ProductItemCard>
         <S.ProductItemInfo>
           <S.ProductItemTitle data-testid="product-name">{product.name}</S.ProductItemTitle>
           <S.ProductItemPrice>{product.price.toLocaleString()}원</S.ProductItemPrice>
-          {isMaxCountReached && (
+          {isMaxCountReached && !isOutOfStock && (
             <S.OutOfStockText>{CLIENT_ERROR_MESSAGE.OUT_OF_STOCK}</S.OutOfStockText>
           )}
         </S.ProductItemInfo>

@@ -7,6 +7,7 @@ export const SelectContainer = styled.div`
   max-width: 125px;
   cursor: pointer;
   position: relative;
+  z-index: var(--z-index-select);
 `;
 
 export const SelectField = styled.button<{ $isOpen: boolean }>`

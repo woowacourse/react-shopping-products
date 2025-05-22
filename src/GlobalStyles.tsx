@@ -156,8 +156,9 @@ const themeVariables = css`
     --height-header: 66px;
     --max-width-container: 430px;
 
-    --z-index-header: 2;
-    --z-index-toast: 1;
+    --z-index-header: 3;
+    --z-index-toast: 2;
+    --z-index-select: 1;
   }
 `;
 
