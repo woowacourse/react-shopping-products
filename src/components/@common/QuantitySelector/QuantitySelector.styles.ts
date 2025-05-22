@@ -20,6 +20,9 @@ export const ButtonIcon = styled.img`
   height: 14px;
   cursor: pointer;
 
+  user-select: none;
+  -webkit-user-drag: none;
+
   &:active {
     border-color: rgb(230, 230, 230);
     background-color: #f0f0f0;

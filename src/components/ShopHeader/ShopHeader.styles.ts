@@ -20,6 +20,9 @@ export const Logo = styled.a`
 
 export const CartImage = styled.img`
   cursor: pointer;
+
+  user-select: none;
+  -webkit-user-drag: none;
 `;
 
 export const CartItemCount = styled.div`

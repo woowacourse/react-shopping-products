@@ -15,6 +15,9 @@ export const ProductImage = styled.img<{ $url: string }>`
   background: no-repeat url(${({ $url }) => `${$url}`});
   background-size: cover;
   border-radius: 8px 8px 0 0;
+
+  user-select: none;
+  -webkit-user-drag: none;
 `;
 
 export const ProductWrapper = styled.div`
