@@ -18,16 +18,22 @@ export const CartItemsAPI = {
     const options: RequestInit = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        productId: productId,
-        quantity: 1,
-      }),
+      body: JSON.stringify({ productId, quantity: 1 }),
     };
 
     return await fetchWithErrorHandling(CART_ITEMS_BASE_URL, options, false);
   },
   delete: async (cartId: number) => {
     const options: RequestInit = { method: "DELETE" };
+    const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
+    return await fetchWithErrorHandling(apiUrl, options, false);
+  },
+  patch: async (cartId: number, quantity: number) => {
+    const options: RequestInit = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: cartId, quantity }),
+    };
     const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
     return await fetchWithErrorHandling(apiUrl, options, false);
   },

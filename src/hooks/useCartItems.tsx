@@ -7,9 +7,10 @@ type Props = React.Dispatch<React.SetStateAction<string>>;
 
 interface UseCartItemsReturn {
   cartItemsCount: number;
+  quantityByProductId: (productId: number) => number;
   decreaseItemQuantity: (productId: number) => Promise<void>;
   increaseItemQuantity: (productId: number) => Promise<void>;
-  quantityByProductId: (productId: number) => number | undefined;
+  addProductInCart: (productId: number) => Promise<void>;
 }
 
 const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
@@ -38,19 +39,28 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
   );
 
   const cartItemsCount = cartItems?.content.length ?? 0;
-  const allQuantities = cartItems?.content.map(({ id, quantity }) => ({
-    productId: id,
-    quantity: quantity,
-  }));
+  const allQuantities =
+    cartItems?.content.map((productInfo) => ({
+      cartId: productInfo.id,
+      productId: productInfo.product.id,
+      quantity: productInfo.quantity,
+    })) ?? [];
+
+  const quantityByCartId = (cartId: number) =>
+    allQuantities.find((item) => item.cartId === cartId)?.quantity ?? 0;
   const quantityByProductId = (productId: number) =>
-    allQuantities?.find((item) => item.productId === productId)?.quantity;
+    allQuantities.find((item) => item.productId === productId)?.quantity ?? 0;
 
   const decreaseItemQuantity = async (productId: number) => {
     const currentProductId = cartItemIds.find(
       (productInfo) => productInfo.productId === productId
     );
 
-    if (currentProductId) await CartItemsAPI.delete(currentProductId.cartId);
+    if (!currentProductId) return;
+    await CartItemsAPI.patch(
+      currentProductId.cartId,
+      quantityByCartId(currentProductId.cartId) - 1
+    );
 
     const response = await CartItemsAPI.get();
 
@@ -67,7 +77,24 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
       (productInfo) => productInfo.productId === productId
     );
 
-    if (currentProductId) await CartItemsAPI.post(productId);
+    if (!currentProductId) return;
+    await CartItemsAPI.patch(
+      currentProductId.cartId,
+      quantityByCartId(currentProductId.cartId) + 1
+    );
+
+    const response = await CartItemsAPI.get();
+
+    if (isErrorResponse(response)) {
+      setErrorMessage(response.error);
+      return;
+    }
+
+    setCartItems(response as CartItems);
+  };
+
+  const addProductInCart = async (productId: number) => {
+    await CartItemsAPI.post(productId);
 
     const response = await CartItemsAPI.get();
 
@@ -81,9 +108,10 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
 
   return {
     cartItemsCount,
+    quantityByProductId,
     decreaseItemQuantity,
     increaseItemQuantity,
-    quantityByProductId,
+    addProductInCart,
   };
 };
 

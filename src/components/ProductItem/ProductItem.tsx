@@ -9,6 +9,7 @@ interface Props {
   quantity: number;
   increaseItemQuantity: () => void;
   decreaseItemQuantity: () => void;
+  addProductInCart: () => void;
 }
 
 const CART_QUANTITY_THRESHOLD = 1;
@@ -20,6 +21,7 @@ const ProductItem = ({
   quantity,
   increaseItemQuantity,
   decreaseItemQuantity,
+  addProductInCart,
 }: Props) => {
   return (
     <S.ProductContainer>
@@ -34,7 +36,7 @@ const ProductItem = ({
             onDecrease={decreaseItemQuantity}
           />
         ) : (
-          <AddCartItemButton onAdd={increaseItemQuantity} />
+          <AddCartItemButton onAdd={addProductInCart} />
         )}
       </S.ProductWrapper>
     </S.ProductContainer>

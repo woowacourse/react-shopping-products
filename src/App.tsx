@@ -28,9 +28,10 @@ function App() {
 
   const {
     cartItemsCount,
+    quantityByProductId,
     decreaseItemQuantity,
     increaseItemQuantity,
-    quantityByProductId,
+    addProductInCart,
   } = useCartItems(setErrorMessage);
 
   return (
@@ -57,9 +58,10 @@ function App() {
                     imageUrl={imageUrl}
                     name={name}
                     price={price}
-                    quantity={quantityByProductId(id) ?? 0}
+                    quantity={quantityByProductId(id)}
                     increaseItemQuantity={() => increaseItemQuantity(id)}
                     decreaseItemQuantity={() => decreaseItemQuantity(id)}
+                    addProductInCart={() => addProductInCart(id)}
                   />
                 ))
               : ProductsSkeleton}
