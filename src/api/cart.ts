@@ -40,19 +40,24 @@ export const getCartItem = async (): Promise<CartResponse> => {
 };
 
 export const addCart = async (id: number) => {
-  return fetchWithAuth(
+  const response = await fetchWithAuth(
     '/cart-items',
     {
       method: 'POST',
       body: JSON.stringify({ productId: id, quantity: 1 }),
-    }
+    },
+    '장바구니 아이템 추가를 실패했습니다.'
   );
+
+  return response.json();
 };
 
 export const removeCart = async (id: number) => {
-  return fetchWithAuth(
+  const response = await fetchWithAuth(
     `/cart-items/${id}`,
     { method: 'DELETE' },
     '장바구니 아이템 삭제를 실패했습니다.'
   );
+
+  return response.json();
 };
