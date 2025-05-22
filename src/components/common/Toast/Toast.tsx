@@ -1,16 +1,17 @@
 import { toastContainer } from './Toast.style';
 
-export type ToastVarientType = 'success' | 'error';
+export type ToastvariantType = 'success' | 'error';
 
-type ToastProps = {
+export type ToastType = {
+  id?: number;
   text: string;
-  varient: ToastVarientType;
+  variant: ToastvariantType;
 };
 
-export type ToastStyleProps = Omit<ToastProps, 'text'>;
+export type ToastStyleProps = Omit<ToastType, 'text'>;
 
-function Toast({ text, varient }: ToastProps) {
-  return <div className={toastContainer({ varient })}>{text}</div>;
+function Toast({ text, variant }: ToastType) {
+  return <div className={toastContainer({ variant })}>{text}</div>;
 }
 
 export default Toast;

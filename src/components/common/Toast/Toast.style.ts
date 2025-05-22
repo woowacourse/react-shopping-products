@@ -1,8 +1,8 @@
 import { css } from '@emotion/css';
-import { ToastStyleProps, ToastVarientType } from './Toast';
+import { ToastStyleProps, ToastvariantType } from './Toast';
 
-const getBackground = (varient: ToastVarientType) => {
-  switch (varient) {
+const getBackground = (variant: ToastvariantType) => {
+  switch (variant) {
     case 'success': {
       return '#d1fcba';
     }
@@ -15,10 +15,9 @@ const getBackground = (varient: ToastVarientType) => {
   }
 };
 
-export const toastContainer = ({ varient }: ToastStyleProps) => css`
-  background-color: ${getBackground(varient)};
+export const toastContainer = ({ variant }: ToastStyleProps) => css`
+  background-color: ${getBackground(variant)};
   position: fixed;
-  width: inherit;
   height: 40px;
   top: 64px;
   display: flex;
