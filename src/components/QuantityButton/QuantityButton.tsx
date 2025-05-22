@@ -10,11 +10,13 @@ import { useQueryContext } from "../../contexts/QueryContext";
 interface QuantityButtonProps {
   productId: number;
   cartItemId: number;
+  disableButtonWhenQuantityOne?: boolean;
 }
 
 export default function QuantityButton({
   productId,
   cartItemId,
+  disableButtonWhenQuantityOne = false,
 }: QuantityButtonProps) {
   const [loading, setLoading] = useState(false);
   const { refetch: fetchCart } = useData(
@@ -94,7 +96,7 @@ export default function QuantityButton({
       <button
         css={styles.quantityButton}
         onClick={handleMinusClick}
-        disabled={loading}
+        disabled={loading || (disableButtonWhenQuantityOne && quantity === 1)}
       >
         -
       </button>
