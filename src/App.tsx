@@ -6,11 +6,8 @@ import ProductSection from './ui/components/ProductSection/ProductSection';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 import React, { useState } from 'react';
 import { Global } from '@emotion/react';
-import { addCart, removeCart } from './api/cart';
-import { SortType, ProductElement, CategoryType } from './types/product';
-import { MAX_CART_ITEM_TYPE } from "./constants/productConfig";
-import { ERROR_MESSAGES } from "./constants/errorMessages";
-import { useProductsWithCart } from "./hooks/useProductsWithCart";
+import { SortType, CategoryType } from './types/product';
+import { useCartActions } from './hooks/useCartActions';
 
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
@@ -23,41 +20,9 @@ function App() {
     cart,
     isLoading,
     isError,
-    fetchCart,
-    resetErrors
-  } = useProductsWithCart(mappedSortType, category);
-
-  const handleAddCart = async (product: ProductElement) => {
-    if (cart?.totalElements === MAX_CART_ITEM_TYPE) {
-      console.error(ERROR_MESSAGES.maxCartItemType);
-      resetErrors();
-      return;
-    }
-
-    try {
-      await addCart(product.id);
-      await fetchCart();
-    } catch {
-      console.error(ERROR_MESSAGES.failedAddCart);
-      resetErrors();
-    }
-  };
-
-  const handleRemoveCart = async (product: ProductElement) => {
-    if (!product.cartId) {
-      console.error(ERROR_MESSAGES.invalidCartID);
-      resetErrors();
-      return;
-    }
-
-    try {
-      await removeCart(product.cartId);
-      await fetchCart();
-    } catch (error) {
-      console.error(ERROR_MESSAGES.failedRemoveCart, error);
-      resetErrors();
-    }
-  };
+    handleAddCart,
+    handleRemoveCart,
+  } = useCartActions(mappedSortType, category);
 
   const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
@@ -66,7 +31,7 @@ function App() {
       setCategory(value);
   };
 
-  const handleSortPrice = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSortPrice = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
 
     if (value === '낮은 가격 순' || value === '높은 가격 순') {
