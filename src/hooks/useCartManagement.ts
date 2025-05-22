@@ -26,10 +26,6 @@ function useCartManagement({
   const handleAddCartItem = async ({ productId, quantity }: AddCartItemType) => {
     if (itemCount >= CART_LIMIT) {
       setIsOverItemCounts(true);
-      setTimeout(() => {
-        setIsOverItemCounts(false);
-      }, 3000);
-
       return;
     }
 
