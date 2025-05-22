@@ -2,7 +2,6 @@ import { CartItem } from "./cartContents";
 import { ProductWithQuantity } from "./product";
 import { CartItemResponse, ProductWithQuantityResponse } from "./response";
 
-// data-types.ts
 export interface DataPoolMap {
   products: ProductWithQuantity[];
   "cart-items": CartItem[];

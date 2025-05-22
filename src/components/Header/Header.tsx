@@ -1,14 +1,19 @@
 import { useState, useMemo } from "react";
-import CartList from "../Cart/CartList/CartList";
-import * as styles from "./Header.style";
-import CartModal from "../Cart/CartModal/CartModal";
+
 import useFetch from "../../hooks/useFetch";
 import { useData } from "../../hooks/useData";
+import { useProductQuery } from "../../hooks/useProductQuery";
+
+import { useErrorContext } from "../../contexts/ErrorContext";
+import { useQueryContext } from "../../contexts/QueryContext";
+
 import { URLS } from "../../constants/url";
 import { commonOpts } from "../../constants/requestHeader";
-import { useQueryContext } from "../../contexts/QueryContext";
-import { useProductQuery } from "../../hooks/useProductQuery";
-import { useErrorContext } from "../../contexts/ErrorContext";
+
+import CartList from "../Cart/CartList/CartList";
+import CartModal from "../Cart/CartModal/CartModal";
+
+import * as styles from "./Header.style";
 
 export default function Header() {
   const { dataPool, productsQuery, categoryQuery } = useQueryContext();

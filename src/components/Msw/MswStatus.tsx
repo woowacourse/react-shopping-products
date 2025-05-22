@@ -1,6 +1,4 @@
-import React from "react";
-
-const MswStatus: React.FC = () => {
+function MswStatus() {
   const isMswEnabled = import.meta.env.VITE_APP_USE_MSW;
   const env = import.meta.env.MODE;
 
@@ -27,6 +25,6 @@ const MswStatus: React.FC = () => {
         : "MSW 비활성화 (실제 API 사용 중)"}
     </div>
   );
-};
+}
 
 export default MswStatus;

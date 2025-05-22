@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { URLS } from "../constants/url";
+import { useEffect, useState } from "react";
+import { URLS } from "../../constants/url";
 
 interface ResponseData {
   [key: string]: unknown;
 }
 
-const MswDebug: React.FC = () => {
+function MswDebug() {
   const [requestInfo, setRequestInfo] = useState<{
     url: string;
     response: ResponseData | null;
@@ -74,6 +74,5 @@ const MswDebug: React.FC = () => {
       )}
     </div>
   );
-};
-
+}
 export default MswDebug;

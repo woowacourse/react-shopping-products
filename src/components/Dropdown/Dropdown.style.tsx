@@ -1,4 +1,15 @@
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
+
+const slideDown = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const wrapperStyle = css({
   position: "relative",
@@ -8,6 +19,7 @@ export const wrapperStyle = css({
 export const selectBoxStyle = css({
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
   width: "125px",
   borderRadius: "8px",
   padding: "12px",
@@ -16,8 +28,16 @@ export const selectBoxStyle = css({
   border: "1px solid #ccc",
   cursor: "pointer",
   textAlign: "left",
+
+  img: {
+    transition: "transform 0.3s ease",
+  },
+  // 열릴때 살짝 들뜨는 느낌을 준다고 하네요.
+  "&:focus": {
+    boxShadow: "0 0 0 2px rgba(0,112,243,0.3)",
+  },
 });
-// 애니메이션은 어떻게 넣을까요?
+
 export const openStyle = css({
   borderColor: "#0070f3",
   img: {
@@ -43,6 +63,8 @@ export const listStyle = css({
   border: "1px solid #ccc",
   borderTop: "none",
   maxHeight: "200px",
+  overflowY: "auto",
+  animation: `${slideDown} 0.2s ease-out forwards`,
 });
 
 export const itemStyle = css({

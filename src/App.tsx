@@ -1,19 +1,27 @@
 import { useEffect } from "react";
-import { useErrorContext } from "./contexts/ErrorContext";
+
 import Dropdown from "./components/Dropdown/Dropdown";
-import Spinner from "./components/Spinner/Spinner";
-import ProductList from "./components/Product/ProductList/ProductList";
-import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
-import * as styles from "./App.style";
-import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
 import Header from "./components/Header/Header";
-import MswStatus from "./components/MswStatus";
+import MswStatus from "./components/Msw/MswStatus";
+import ProductList from "./components/Product/ProductList/ProductList";
+import Spinner from "./components/Spinner/Spinner";
+
+import { useErrorContext } from "./contexts/ErrorContext";
+import { useQueryContext } from "./contexts/QueryContext";
 
 import { useData } from "./hooks/useData";
 import { useProductQuery } from "./hooks/useProductQuery";
+
+import * as styles from "./App.style";
+
 import { URLS } from "./constants/url";
 import { commonOpts } from "./constants/requestHeader";
-import { useQueryContext } from "./contexts/QueryContext";
+import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
+
+import type {
+  CategoryOptionType,
+  OrderByOptionType,
+} from "./types/categoryOption";
 
 function App() {
   const { showError } = useErrorContext();
