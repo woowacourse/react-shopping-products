@@ -138,9 +138,11 @@ const disabledStyles = css`
 const StyledImgWrapper = styled.div<ImgWrapperProps>`
   width: 100%;
   height: 50%;
-  background-image: ${(props) => `url(${props.imageUrl})`};
+  background-image: ${(props) => `url(${props.imageUrl})`},
+    url('https://lh3.googleusercontent.com/proxy/3Fqjhno28S6v1khXPS44ukHF-8y2Kue7oKfnyqCR4_vX7ze7O20WFu7CzZTq_KQaLwDrpMUNFhUD345MdmKB9ZzzejPJCfHmRAf2rMIzQhkFy9n9kMPPAf4hi7wIZm0cmjLSnTkiaj3g9mAA');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   border-radius: 8px 8px 0px 0px;
 
   ${({ isSoldout }) =>
