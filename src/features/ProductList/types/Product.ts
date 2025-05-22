@@ -4,6 +4,7 @@ export type Product = {
   price: number;
   imageUrl: string;
   category: string;
+  quantity: number;
 };
 
 export type ProductListResponse = {
