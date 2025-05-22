@@ -1,0 +1,29 @@
+.contentContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	margin-top: 80px;
+	padding: 0 8px;
+	gap: 27px;
+}
+
+.itemContainer {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	column-gap: 16px;
+	row-gap: 20px;
+}
+
+.contentTop {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin-bottom: 28px;
+	justify-content: space-between;
+}
+
+.title {
+	font-size: 24px;
+	font-weight: 700;
+	color: #000;
+}
