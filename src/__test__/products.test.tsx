@@ -1,89 +1,92 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, vi, beforeEach, expect, Mock } from 'vitest';
-import * as productAPI from '../features/products/api/getProducts';
-import * as cartAPI from '../features/cart/api/getCartProduct';
+import { describe, it, expect } from 'vitest';
+import { ProductsWithCartProvider } from '../shared/contexts/productsWithCart/ProductsWithCartProvider';
 import App from '../App';
+import '../setupTests';
 
-const generateMockProducts = (count: number) => ({
-  content: Array.from({ length: count }, (_, i) => ({
-    id: i + 1,
-    name: `Product ${i + 1}`,
-    price: (i + 1) * 1000,
-    category: i < count / 2 ? '식료품' : '패션용품',
-    imageUrl: `/image-${i + 1}.png`,
-  })),
-  totalElements: count,
-  totalPages: 1,
-});
+function renderApp() {
+  return render(
+    <ProductsWithCartProvider>
+      <App />
+    </ProductsWithCartProvider>
+  );
+}
 
-const mockCartResponse = {
-  content: [],
-};
+describe('GET API 요청 후 ProductList들이 잘 보이는지 테스트한다.', () => {
+  it('API 요청으로부터 스켈리톤이 보이고 이후 20개의 ProductCard가 보인다.', async () => {
+    renderApp();
 
-vi.mock('../features/products/api/getProducts', () => ({
-  getProducts: vi.fn(),
-}));
+    // 로딩 스켈레톤 확인
+    const skeletons = screen.getAllByTestId('product-skeleton');
+    expect(skeletons.length).toBe(20);
 
-vi.mock('../features/cart/api/getCartProduct', () => ({
-  getCartProduct: vi.fn(),
-}));
-
-describe('GET Products', () => {
-  beforeEach(() => {
-    (productAPI.getProducts as Mock).mockResolvedValue(generateMockProducts(20));
-
-    (cartAPI.getCartProduct as Mock).mockResolvedValue(mockCartResponse);
-  });
-
-  it('products GET 요청시 화면에 ProductList가 보인다.', async () => {
-    render(<App />);
+    // 제품명 확인
     await waitFor(() => {
-      const productList = screen.getByTestId('product-list');
-      expect(productList.children.length).toBe(20);
+      expect(screen.getByText('에어포스')).toBeInTheDocument();
+      expect(screen.getByText('에어포스2')).toBeInTheDocument();
+      expect(screen.getByText('달 무드등')).toBeInTheDocument();
     });
-  });
 
-  it('product 카테고리에 따라 필터링된 ProductList가 보인다.', async () => {
-    render(<App />);
-    await waitFor(() => {
-      const select = screen.getByTestId('category-select');
-      userEvent.selectOptions(select, '식료품');
+    // 전체 제품 개수 확인
+    const allHeadings = screen.getAllByRole('heading', { level: 2 });
+    expect(allHeadings.length).toBe(20);
+  }),
+    it('product 카테고리에 따라 필터링된 ProductList가 보인다.', async () => {
+      const user = userEvent.setup();
+      renderApp();
 
-      const productList = screen.getByTestId('product-list');
+      const select = await screen.findByTestId('category-select');
+      await user.selectOptions(select, '식료품');
 
-      for (let i = 0; i < productList.children.length; i++) {
-        expect(productList.children[i].textContent).toContain('식료품');
-      }
+      await waitFor(() => {
+        const filteredCards = screen.getAllByTestId('product-card');
+        expect(filteredCards.length).toBe(8);
 
-      expect(productList.children.length).toBe(10);
-    });
-  });
-});
-
-describe('정렬 기능 테스트', () => {
-  beforeEach(() => {
-    (productAPI.getProducts as Mock).mockImplementation(({ sortValue }) => {
-      const products = generateMockProducts(20);
-      if (sortValue === '낮은 가격순') {
-        products.content.sort((a, b) => a.price - b.price);
-      }
-      return Promise.resolve(products);
-    });
-  });
-
-  it('정렬 select에서 낮은 가격순을 클릭하면 오름차순으로 정렬된 ProductList가 보인다.', async () => {
-    render(<App />);
-    await waitFor(() => {
+        filteredCards.forEach((card) => {
+          expect(card.textContent).toContain('식료품');
+        });
+      });
+    }),
+    it('정렬 select에서 낮은 가격순을 클릭하면 오름차순으로 정렬된 ProductList가 보인다.', async () => {
+      const user = userEvent.setup();
+      renderApp();
       const select = screen.getByTestId('sort-select');
-      userEvent.selectOptions(select, '낮은 가격순');
+      await user.selectOptions(select, '낮은 가격순');
+      await waitFor(() => {
+        const productList = screen.getByTestId('product-list');
+        expect(productList.children.length).toBeGreaterThan(0);
+        const firstItem = productList.children[0];
+        const lastItem = productList.children[19];
 
-      const productList = screen.getByTestId('product-list');
-      const firstItem = productList.children[0];
-      const lastItem = productList.children[19];
+        expect(firstItem.textContent).toContain('100');
+        expect(lastItem.textContent).toContain('60000000');
+      });
+    });
+});
 
-      expect(firstItem.textContent).toContain('1000');
-      expect(lastItem.textContent).toContain('20000');
+describe('리바이 아커만의 ProductCard에서 + 버튼을 누르면 추가가 되고 재고가 없으면 버튼이 disabled 된다.', () => {
+  it('adds "리바이 아커만" to cart and increases quantity via + button', async () => {
+    const user = userEvent.setup();
+    renderApp();
+
+    const productName = await screen.findByText('리바이 아커만');
+    expect(productName).toBeInTheDocument();
+
+    const productCard = productName.closest('[data-testid="product-card"]') as HTMLElement;
+    expect(productCard).not.toBeNull();
+
+    const addButton = within(productCard).getByRole('button');
+    await user.click(addButton);
+
+    const plusButton = await within(productCard).findByText('+');
+    expect(plusButton).toBeInTheDocument();
+
+    await user.click(plusButton);
+
+    await waitFor(() => {
+      expect(within(productCard).getByText('2')).toBeInTheDocument();
+      expect(plusButton).toBeDisabled();
     });
   });
 });
