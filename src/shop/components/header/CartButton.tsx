@@ -13,7 +13,7 @@ function CartButton() {
       <CartIcon src="./assets/icons/Cart.svg" />
       {itemsCount > 0 && (
         <ItemsCountBox>
-          <ItemsCountText>{itemsCount}</ItemsCountText>
+          <ItemsCountText data-testid="cart-count">{itemsCount}</ItemsCountText>
         </ItemsCountBox>
       )}
     </Container>

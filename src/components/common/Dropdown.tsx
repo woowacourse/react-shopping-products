@@ -12,6 +12,7 @@ function Dropdown({
   selectedValue,
   onSelectHandler,
   placeholder,
+  ...props
 }: {
   options: DropdownOptionType[];
   selectedValue: DropdownOptionType | null;
@@ -42,7 +43,7 @@ function Dropdown({
   }, []);
 
   return (
-    <DropdownContainer ref={dropdownRef}>
+    <DropdownContainer ref={dropdownRef} {...props}>
       <DropdownToggle onClick={toggleOpen}>
         <DropdownText isSelected={selectedValue !== null}>
           {selectedValue?.label || (placeholder ?? '')}

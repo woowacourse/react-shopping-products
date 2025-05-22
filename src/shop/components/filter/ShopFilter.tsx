@@ -22,6 +22,7 @@ function ShopFilter({
         ]}
         selectedValue={filterOption.category}
         onSelectHandler={handleCategoryOption}
+        data-testid="filter-category"
       />
       <Dropdown
         options={[
@@ -30,6 +31,7 @@ function ShopFilter({
         ]}
         selectedValue={filterOption.sort}
         onSelectHandler={handleSortOption}
+        data-testid="filter-sort"
       />
     </Flex>
   );

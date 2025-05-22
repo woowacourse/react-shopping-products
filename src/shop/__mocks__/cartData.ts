@@ -1,26 +1,26 @@
 export const cartMockData = [
   {
-    id: '193',
+    id: '1',
     quantity: 1,
     product: {
-      id: '7',
-      name: '메이통통이',
-      price: 11100000,
+      id: '42',
+      name: '프린세스 미용놀이',
+      price: 1010,
       imageUrl:
-        'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb5H3cg%2FbtsMRVqcfYF%2FvbKfazkKNY7I5CGkF1Ye9k%2Fimg.png',
-      category: '식료품',
+        'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202204/19/ed8eddd4-0edd-40ad-af7d-44a171577c92.jpg',
+      category: '패션잡화',
     },
   },
   {
-    id: '194',
+    id: '2',
     quantity: 1,
     product: {
-      id: '23',
-      name: '리바이 아커만',
-      price: 60000000,
+      id: '34',
+      name: '코카콜라 제로 1.5L',
+      price: 2100,
       imageUrl:
-        'https://image.zeta-ai.io/profile-image/793bf4d3-03de-4ac3-afe1-95be8a9bc62c/29cd5c72-f872-4dba-8be1-21ba51e4487f.jpeg?w=1080&q=90&f=webp',
-      category: '패션잡화',
+        'https://sitem.ssgcdn.com/88/19/87/item/0000006871988_i1_750.jpg',
+      category: '식료품',
     },
   },
 ];
