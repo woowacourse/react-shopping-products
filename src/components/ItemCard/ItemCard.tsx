@@ -5,7 +5,7 @@ interface ItemCardProps {
   name: string;
   price: number;
   isCart: boolean;
-  isSoldOut: boolean;
+  maxQuantity: number;
   onAddCart: () => void;
   onRemoveCart: () => void;
 }
@@ -15,14 +15,14 @@ const ItemCard = ({
   name,
   price,
   isCart,
+  maxQuantity,
   onAddCart,
   onRemoveCart,
-  isSoldOut = false,
 }: ItemCardProps) => {
   return (
     <div className={S.cardContainer}>
       <div className={S.imageContainer}>
-        {isSoldOut && (
+        {maxQuantity === 0 && (
           <div className={S.overlay}>
             <p>품절</p>
           </div>

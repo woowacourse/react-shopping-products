@@ -46,7 +46,7 @@ const Product = () => {
                 name={name}
                 price={price}
                 isCart={cartInfo.id !== -1}
-                isSoldOut={quantity === 0}
+                maxQuantity={quantity}
                 onAddCart={() => handleAddCart(id)}
                 onRemoveCart={() => handleRemoveCart(cartInfo.id)}
               />
