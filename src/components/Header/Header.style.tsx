@@ -6,7 +6,7 @@ export const header = css({
   left: "50%",
   transform: "translate(-50%, 0)",
   height: "64px",
-  width: "382px",
+  width: "400px",
   backgroundColor: "black",
   padding: "24px",
   display: "flex",
