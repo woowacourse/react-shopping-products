@@ -10,6 +10,10 @@ import ProductItemSkeleton from "./components/ProductItem/components/ProductItem
 import useProducts from "./hooks/useProducts";
 import useCartItems from "./hooks/useCartItems";
 
+const ProductsSkeleton = Array.from({ length: 6 }).map((_, index) => (
+  <ProductItemSkeleton key={index} />
+));
+
 function App() {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -46,25 +50,19 @@ function App() {
             />
           </S.ProductControlPanel>
           <S.ProductGrid>
-            {!isLoading ? (
-              products?.content.map(({ id, imageUrl, name, price }) => (
-                <ProductItem
-                  key={id}
-                  imageUrl={imageUrl}
-                  name={name}
-                  price={price}
-                  quantity={quantityByProductId(id) ?? 0}
-                  increaseItemQuantity={() => increaseItemQuantity(id)}
-                  decreaseItemQuantity={() => decreaseItemQuantity(id)}
-                />
-              ))
-            ) : (
-              <>
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <ProductItemSkeleton key={index} />
-                ))}
-              </>
-            )}
+            {!isLoading
+              ? products?.content.map(({ id, imageUrl, name, price }) => (
+                  <ProductItem
+                    key={id}
+                    imageUrl={imageUrl}
+                    name={name}
+                    price={price}
+                    quantity={quantityByProductId(id) ?? 0}
+                    increaseItemQuantity={() => increaseItemQuantity(id)}
+                    decreaseItemQuantity={() => decreaseItemQuantity(id)}
+                  />
+                ))
+              : ProductsSkeleton}
           </S.ProductGrid>
           {!!errorMessage && (
             <ErrorToast
