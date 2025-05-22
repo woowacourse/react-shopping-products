@@ -3,8 +3,27 @@ import BagIcon from "../Icon/BagIcon";
 import { ResponseCartItem } from "../../api/types";
 import { useState } from "react";
 import Modal from "../common/Modal/Modal";
+import ProductItem from "../ProductItem/ProductItem";
 
-function Header({ cartItemList }: { cartItemList: ResponseCartItem[] }) {
+interface HeaderProps {
+  cartItemList: ResponseCartItem[];
+  onAddToCart: (productId: number) => Promise<void>;
+  onRemoveFromCart: (cartItemId: number) => Promise<void>;
+  onIncreaseQuantity: (productId: number) => Promise<void>;
+  onDecreaseQuantity: (productId: number) => Promise<void>;
+  getCartQuantityForProduct: (productId: number) => number;
+  setErrorMessage: (message: string) => void;
+}
+
+function Header({
+  cartItemList,
+  onAddToCart,
+  onRemoveFromCart,
+  onIncreaseQuantity,
+  onDecreaseQuantity,
+  getCartQuantityForProduct,
+  setErrorMessage,
+}: HeaderProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalOpen = () => {
@@ -14,6 +33,11 @@ function Header({ cartItemList }: { cartItemList: ResponseCartItem[] }) {
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
+
+  const totalPrice = cartItemList.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0
+  );
 
   return (
     <>
@@ -28,24 +52,47 @@ function Header({ cartItemList }: { cartItemList: ResponseCartItem[] }) {
       </S.HeaderContainer>
 
       <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-        <div>
-          <h2>장바구니</h2>
+        <S.ModalContent>
+          <S.ModalHeader>
+            <S.ModalTitle>장바구니</S.ModalTitle>
+          </S.ModalHeader>
 
-          <hr />
-          <div>
-            <p>
-              총 결제금액{" "}
-              {cartItemList
-                .reduce(
-                  (total, item) => total + item.product.price * item.quantity,
-                  0
-                )
-                .toLocaleString()}
-              원
-            </p>
-          </div>
-          <button>주문하기</button>
-        </div>
+          <S.ModalDivider />
+
+          <S.CartItemsContainer>
+            {cartItemList.length === 0 ? (
+              <S.EmptyCartMessage>장바구니가 비어있습니다.</S.EmptyCartMessage>
+            ) : (
+              cartItemList.map((item) => (
+                <ProductItem
+                  key={item.id}
+                  product={item.product}
+                  cartItemList={cartItemList}
+                  onAddToCart={onAddToCart}
+                  onRemoveFromCart={onRemoveFromCart}
+                  setErrorMessage={setErrorMessage}
+                  onIncreaseQuantity={onIncreaseQuantity}
+                  onDecreaseQuantity={onDecreaseQuantity}
+                  getCartQuantityForProduct={getCartQuantityForProduct}
+                  isInModal={true}
+                />
+              ))
+            )}
+          </S.CartItemsContainer>
+
+          {cartItemList.length > 0 && (
+            <>
+              <S.ModalDivider />
+              <S.CartSummary>
+                <S.TotalPriceContainer>
+                  <S.TotalPriceLabel>총 결제금액</S.TotalPriceLabel>
+                  <S.TotalPrice>{totalPrice.toLocaleString()}원</S.TotalPrice>
+                </S.TotalPriceContainer>
+                <S.OrderButton>주문하기</S.OrderButton>
+              </S.CartSummary>
+            </>
+          )}
+        </S.ModalContent>
       </Modal>
     </>
   );

@@ -14,6 +14,7 @@ function ProductItem({
   onIncreaseQuantity,
   onDecreaseQuantity,
   getCartQuantityForProduct,
+  isInModal = false,
 }: {
   product: ResponseProduct;
   cartItemList: ResponseCartItem[];
@@ -23,6 +24,7 @@ function ProductItem({
   onIncreaseQuantity: (productId: number) => Promise<void>;
   onDecreaseQuantity: (productId: number) => Promise<void>;
   getCartQuantityForProduct: (productId: number) => number;
+  isInModal?: boolean;
 }) {
   function isInCart(productId: number) {
     return cartItemList.some((item) => item.product.id === productId);
@@ -51,6 +53,50 @@ function ProductItem({
   }
 
   const isSoldOut = product.quantity === 0;
+
+  if (isInModal) {
+    return (
+      <S.ModalProductItemContainer>
+        <S.ModalImageContainer>
+          <S.ModalProductItemImage
+            src={product.imageUrl}
+            alt={product.name}
+            onError={(e) => {
+              e.currentTarget.src = blackDefaultImage;
+              e.currentTarget.onerror = null;
+            }}
+          />
+          {isSoldOut && (
+            <S.ModalSoldOutOverlay>
+              <S.SoldOutText>품절</S.SoldOutText>
+            </S.ModalSoldOutOverlay>
+          )}
+        </S.ModalImageContainer>
+
+        <S.ModalProductContent>
+          <S.ModalProductName>{product.name}</S.ModalProductName>
+          <S.ModalProductPrice>
+            {product.price.toLocaleString()}원
+          </S.ModalProductPrice>
+
+          {isInCart(product.id) ? (
+            <QuantityButton
+              quantity={getCartQuantityForProduct(product.id)}
+              onIncrease={() => onIncreaseQuantity(product.id)}
+              onDecrease={() => onDecreaseQuantity(product.id)}
+            />
+          ) : (
+            <Button
+              text="담기"
+              icon={<AddProductIcon />}
+              variation="dark"
+              onClick={() => handleProductItem("add")}
+            />
+          )}
+        </S.ModalProductContent>
+      </S.ModalProductItemContainer>
+    );
+  }
 
   return (
     <S.ProductItemContainer>

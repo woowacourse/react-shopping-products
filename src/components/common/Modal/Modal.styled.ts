@@ -47,7 +47,7 @@ export const ModalContent = Styled.div`
     margin: 20px 0;
   }
 
-  button {
+  & > button {
     width: 100%;
     height: 48px;
     background-color: #000000;

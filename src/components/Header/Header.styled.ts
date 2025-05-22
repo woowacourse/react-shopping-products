@@ -35,3 +35,90 @@ export const CartBadge = Styled.div`
   font-size: 10px;
   font-weight: 700;
 `;
+
+export const ModalContent = Styled.div`
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  width: 100%;
+  max-width: 500px;
+`;
+
+export const ModalHeader = Styled.div`
+  padding: 20px 24px 16px;
+`;
+
+export const ModalTitle = Styled.h2`
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: #333;
+`;
+
+export const ModalDivider = Styled.hr`
+  margin: 0;
+  border: none;
+  border-top: 1px solid #e0e0e0;
+`;
+
+export const CartItemsContainer = Styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+export const EmptyCartMessage = Styled.div`
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-size: 16px;
+`;
+
+export const CartSummary = Styled.div`
+  padding: 20px 24px;
+  background-color: #f8f9fa;
+`;
+
+export const TotalPriceContainer = Styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+`;
+
+export const TotalPriceLabel = Styled.span`
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+`;
+
+export const TotalPrice = Styled.span`
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c5aa0;
+`;
+
+export const OrderButton = Styled.button`
+  width: 100%;
+  padding: 14px;
+  background-color: #2c5aa0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #1e3d6f;
+  }
+
+  &:active {
+    background-color: #0f2744;
+  }
+`;

@@ -37,7 +37,15 @@ function App() {
           <LoadingIcon />
         ) : (
           <>
-            <Header cartItemList={cartItemList} />
+            <Header
+              cartItemList={cartItemList}
+              onAddToCart={handleAddToCart}
+              onRemoveFromCart={handleRemoveFromCart}
+              onIncreaseQuantity={handleIncreaseQuantity}
+              onDecreaseQuantity={handleDecreaseQuantity}
+              getCartQuantityForProduct={getCartQuantityForProduct}
+              setErrorMessage={setProductErrorMessage}
+            />
             <S.MiddleContainer>
               <ProductControl setCategory={setCategory} setSort={setSort} />
               <ProductList
