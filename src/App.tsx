@@ -83,22 +83,28 @@ function App() {
 
           <S.ProductListFilterContainer>
             <CustomSelect
+              data-testid='category-select'
               id='category-select'
               items={CATEGORY_OPTIONS}
               onChange={(e) => setCategory(e.target.value as Category)}
             />
-            <CustomSelect id='sort-select' items={SORT_OPTIONS} onChange={(e) => setSortValue(e.target.value)} />
+            <CustomSelect
+              data-testid='sort-select'
+              id='sort-select'
+              items={SORT_OPTIONS}
+              onChange={(e) => setSortValue(e.target.value)}
+            />
           </S.ProductListFilterContainer>
         </S.ProductListHeader>
 
         {isLoading && products.length === 0 ? (
           <S.ProductList>
-            {Array.from({ length: 6 }).map((_, index) => (
+            {Array.from({ length: 20 }).map((_, index) => (
               <ProductCardSkeleton key={index} />
             ))}
           </S.ProductList>
         ) : (
-          <S.ProductList>
+          <S.ProductList data-testid='product-list'>
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} setErrors={setErrors} />
             ))}

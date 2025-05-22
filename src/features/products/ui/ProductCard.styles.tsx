@@ -44,7 +44,7 @@ export const ContentSection = styled.div`
   padding: 15px 10px;
 `;
 
-export const ProductName = styled.h3`
+export const ProductName = styled.h2`
   font-size: 16px;
   font-weight: 700;
 `;

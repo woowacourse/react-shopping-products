@@ -34,7 +34,7 @@ export default function ProductCard({ product, setErrors }: ProductCardProps) {
     product.cartProductQuantity !== undefined && product.cartProductQuantity >= product.quantity;
 
   return (
-    <S.ProductCardContainer>
+    <S.ProductCardContainer data-testid='product-card'>
       <S.ImageWrapper>
         <S.ImageSection
           src={product.imageUrl}
@@ -62,6 +62,7 @@ export default function ProductCard({ product, setErrors }: ProductCardProps) {
             cartProductId={cartProductId}
             cartProductQuantity={cartProductQuantity}
             setErrors={setErrors}
+            isProductSoldOut={isProductSoldOut}
           />
         )}
       </S.ButtonSection>
