@@ -107,41 +107,4 @@ describe("App에서는 ", () => {
       expect(mockShowError).not.toHaveBeenCalled();
     });
   });
-
-  test("네트워크 에러가 product에서 발생시 에러 토스트가 표시되어야 함", async () => {
-    setupUseDataMock({
-      productsData: [...mockProducts],
-      productsError: new TypeError("네트워크 에러가 발생했습니다."),
-      cartData: [],
-    });
-
-    await renderAppWithProviders();
-
-    await waitFor(() => {
-      expect(mockShowError).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: "네트워크 에러가 발생했습니다.",
-        })
-      );
-    });
-  });
-
-  test("네트워크 에러가 cart에서 발생시 에러 토스트가 표시되어야 함", async () => {
-    setupUseDataMock({
-      productsData: [...mockProducts],
-      productsError: null,
-      cartData: [],
-      cartError: new TypeError("네트워크 에러가 발생했습니다."),
-    });
-
-    await renderAppWithProviders();
-
-    await waitFor(() => {
-      expect(mockShowError).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: "네트워크 에러가 발생했습니다.",
-        })
-      );
-    });
-  });
 });

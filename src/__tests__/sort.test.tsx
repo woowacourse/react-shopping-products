@@ -12,7 +12,7 @@ vi.mock("../components/Product/ProductCard/ProductCard", () => ({
   ),
 }));
 
-describe("App에서는 정렬이 작동하며, 정렬 기준을 변경할 수 있다.", () => {
+describe("App에서는 정렬이 작동하며,", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();

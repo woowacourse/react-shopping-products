@@ -43,11 +43,8 @@ describe("App에서는 ", () => {
     });
 
     it("마운트 시 스피너가 보인다", async () => {
-      // App 동기 렌더
       await renderAppWithProviders();
 
-      // findByTestId는 내부적으로 retry 하므로,
-      // 스피너가 나타날 때까지 기다렸다가 반환합니다.
       const spinner = await screen.findByTestId("loading-spinner");
       expect(spinner).toBeInTheDocument();
     });

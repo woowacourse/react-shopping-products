@@ -4,7 +4,7 @@ vi.mock("../components/Spinner/Spinner");
 import { render, cleanup } from "@testing-library/react";
 import Spinner from "../components/Spinner/Spinner";
 
-describe("Spinner 모듈 자동 모킹 확인", () => {
+describe("Spinner를 모킹하면,", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
