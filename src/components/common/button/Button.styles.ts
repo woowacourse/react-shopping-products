@@ -17,5 +17,10 @@ export const ButtonContainer = styled.button<{ $variant: VariantsProps }>`
   border-radius: 4px;
   box-sizing: border-box;
 
+  &:disabled {
+    background-color: var(--color-grey);
+    color: var(--color-white);
+  }
+
   ${({ $variant }) => buttonStyles[$variant]}
 `;

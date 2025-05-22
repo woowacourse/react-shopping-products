@@ -78,7 +78,14 @@ const ProductItem = ({
             handleMinusCount={handleMinusCount}
           />
         ) : (
-          <Button type="button" id="add" name="담기" variant="smallBlack" onClick={handlePlusCount}>
+          <Button
+            type="button"
+            id="add"
+            name="담기"
+            variant="smallBlack"
+            onClick={handlePlusCount}
+            disabled={isOutOfStock}
+          >
             <S.CartIconContainer>
               <S.CartAddIcon src={AddShoppingCartIcon} alt="장바구니 담기" />
               담기

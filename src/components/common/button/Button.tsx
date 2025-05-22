@@ -2,7 +2,8 @@ import * as S from './Button.styles';
 import type { ComponentProps } from 'react';
 import type { VariantsProps } from '../../../types/styleVariants';
 
-interface ButtonProps extends Pick<ComponentProps<'button'>, 'type' | 'name' | 'id' | 'onClick'> {
+interface ButtonProps
+  extends Pick<ComponentProps<'button'>, 'type' | 'name' | 'id' | 'onClick' | 'disabled'> {
   children: React.ReactNode;
   variant: VariantsProps;
 }
@@ -15,6 +16,7 @@ const Button = ({ children, variant, ...buttonProps }: ButtonProps) => {
       id={buttonProps.id}
       onClick={buttonProps.onClick}
       $variant={variant}
+      disabled={buttonProps.disabled}
     >
       {children}
     </S.ButtonContainer>
