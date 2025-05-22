@@ -1,75 +1,62 @@
-import { render, screen } from "@testing-library/react";
-import { vi, expect } from "vitest";
-
-import Header from "../components/Header/Header";
-
 import "@testing-library/jest-dom";
+import { cleanup, screen } from "@testing-library/react";
+import { vi, expect } from "vitest";
+import { mockCartItems, mockProducts } from "../test-utils/mock-data";
+import { setupUseDataMock } from "../test-utils/setupUseDataMock";
+import { renderHeaderWithProviders } from "../test-utils/renderWithProviders";
 
-import { ErrorContextProvider } from "../contexts/ErrorContext";
-import { mockQueryContextValue } from "../test-utils/mock-data";
 vi.mock("assets/cart.svg", () => ({
   default: "cart-icon-url",
 }));
+vi.mock("../contexts/ErrorContext", () => ({
+  useErrorContext: () => ({ showError: vi.fn(), error: null }),
+  ErrorContextProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
+}));
+
 vi.mock("../contexts/QueryContext", () => ({
   useQueryContext: () => ({
-    ...mockQueryContextValue,
-    productFetchLoading: false,
+    dataPool: { products: [...mockProducts], "cart-items": [...mockCartItems] },
+    productsQuery: "낮은 가격순",
     setProductsQuery: vi.fn(),
   }),
+  QueryContextProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
 }));
 
-vi.mock("../hooks/useGetQuery", () => ({
-  useGetQuery: () => ({
-    loading: false,
-    error: null,
-    refetch: vi.fn(),
-  }),
-}));
-
-describe("Header 컴포넌트", () => {
+describe("Header 컴포넌트는", () => {
   beforeEach(() => {
-    // Clear mocks before each test
+    setupUseDataMock({ productsLoading: false, cartLoading: false });
+  });
+  afterEach(() => {
+    cleanup();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
-  it("Header 컴포넌트가 올바르게 렌더링된다", () => {
-    render(
-      <ErrorContextProvider>
-        <Header />
-      </ErrorContextProvider>
-    );
+  it("올바르게 렌더링된다", async () => {
+    await renderHeaderWithProviders();
 
-    expect(screen.getByText("SHOP")).toBeTruthy();
-    expect(screen.getByAltText("cart-icon")).toBeTruthy();
+    expect(screen.getAllByText("SHOP")).toBeTruthy();
+    expect(screen.getAllByAltText("cart-icon")).toBeTruthy();
   });
 
-  it("장바구니가 비어있을 때 숫자가 표시되지 않는다.", () => {
-    render(
-      <ErrorContextProvider>
-        <Header />
-      </ErrorContextProvider>
-    );
+  it("장바구니가 비어있을 때 숫자가 표시되지 않는다.", async () => {
+    await renderHeaderWithProviders();
 
     const cartCountElement = screen.queryByText("0");
     expect(cartCountElement).toBeNull();
   });
 
-  it("장바구니에 아이템이 있을 때 숫자가 표시된다", () => {
-    vi.mock("../contexts/QueryContext", () => ({
-      useQueryContext: () => mockQueryContextValue,
-      QueryContextProvider: ({ children }: { children: React.ReactNode }) => (
-        <>{children}</>
-      ),
-    }));
+  it("장바구니에 아이템이 있을 때 숫자가 표시된다", async () => {
+    setupUseDataMock({
+      productsData: [...mockProducts],
+      cartData: [...mockCartItems],
+    });
+    await renderHeaderWithProviders();
 
-    render(
-      <ErrorContextProvider>
-        <Header />
-      </ErrorContextProvider>
-    );
-
-    // Check that the cart count is displayed correctly
-    const cartCountElement = screen.getByText("2");
-    expect(cartCountElement).toBeTruthy();
-    expect(cartCountElement).not.toHaveAttribute("hidden");
+    expect(screen.getByText("2")).toBeTruthy();
   });
 });

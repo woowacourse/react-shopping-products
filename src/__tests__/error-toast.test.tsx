@@ -1,12 +1,12 @@
-import { render, waitFor } from "@testing-library/react";
+import { waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import App from "../App";
-import { ErrorContextProvider } from "../contexts/ErrorContext";
-import { QueryContextProvider } from "../contexts/QueryContext";
 import { server } from "../mocks/node";
 import { vi } from "vitest";
+import { renderAppWithProviders } from "../test-utils/renderWithProviders";
 
 // 에러의 경우에는 따로 mock 처리를 하여 재 렌더링 방지.
+// 글로벌 단에서 mock을 하는 것 외에는 재랜더링 방지가
+// 안되는것 같더군요.
 beforeAll(() => server.listen());
 afterEach(() => {
   server.resetHandlers();
@@ -30,13 +30,7 @@ describe("ErrorToast 컴포넌트 테스트", () => {
     });
     vi.stubGlobal("fetch", mockFetch);
 
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    renderAppWithProviders();
 
     await waitFor(() => {
       const errorToast = document.getElementById("error-toast-message");
@@ -60,13 +54,7 @@ describe("ErrorToast 컴포넌트 테스트", () => {
     });
     vi.stubGlobal("fetch", mockFetch);
 
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    renderAppWithProviders();
 
     await waitFor(() => {
       const errorToast = document.getElementById("error-toast-message");
@@ -84,13 +72,7 @@ describe("ErrorToast 컴포넌트 테스트", () => {
     });
     vi.stubGlobal("fetch", mockFetch);
 
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    renderAppWithProviders();
 
     await waitFor(() => {
       const errorToast = document.getElementById("error-toast-message");
@@ -119,13 +101,7 @@ describe("ErrorToast 컴포넌트 테스트", () => {
     });
     vi.stubGlobal("fetch", mockFetch);
 
-    render(
-      <ErrorContextProvider>
-        <QueryContextProvider>
-          <App />
-        </QueryContextProvider>
-      </ErrorContextProvider>
-    );
+    renderAppWithProviders();
 
     await waitFor(() => {
       const errorToast = document.getElementById("error-toast-message");

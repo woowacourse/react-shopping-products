@@ -1,6 +1,5 @@
 import { ProductWithQuantity } from "../types/product";
 import { CartItem } from "../types/cartContents";
-import { vi } from "vitest";
 
 export const mockProducts: ProductWithQuantity[] = [
   {

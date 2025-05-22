@@ -34,7 +34,7 @@ export const setupUseDataMock = (opts: UseDataMockOptions = {}) => {
           abort: vi.fn(),
         };
       }
-      if (key === "cart-items" || key === "cartItems") {
+      if (key === "cart-items") {
         return {
           data: cartData,
           loading: cartLoading,

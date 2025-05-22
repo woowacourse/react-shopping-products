@@ -1,30 +1,26 @@
-import { render, screen } from "@testing-library/react";
-import { vi } from "vitest";
 import "@testing-library/jest-dom";
-import ProductList from "../components/Product/ProductList/ProductList";
+import { cleanup, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import { Product } from "../types/product";
-import { mockQueryContextValue } from "../test-utils/mock-data";
+import { setupUseDataMock } from "../test-utils/setupUseDataMock";
+import { renderProductListWithProviders } from "../test-utils/renderWithProviders";
+
+vi.mock("../contexts/ErrorContext", () => ({
+  useErrorContext: () => ({ showError: vi.fn(), error: null }),
+  ErrorContextProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
+}));
 
 vi.mock("../contexts/QueryContext", () => ({
   useQueryContext: () => ({
-    ...mockQueryContextValue,
-    productFetchLoading: false,
+    dataPool: { products: [...mockProducts] },
+    productsQuery: "낮은 가격순",
     setProductsQuery: vi.fn(),
   }),
-}));
-
-vi.mock("../hooks/useGetQuery", () => ({
-  useGetQuery: () => ({
-    loading: false,
-    error: null,
-    refetch: vi.fn(),
-  }),
-}));
-
-vi.mock("../contexts/ErrorContext", () => ({
-  useErrorContext: () => ({
-    showError: vi.fn(),
-  }),
+  QueryContextProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
 }));
 
 const mockProducts: Product[] = [
@@ -45,8 +41,16 @@ const mockProducts: Product[] = [
 ];
 
 describe("ProductList는 ", () => {
-  it("아이템을 정상적으로 출력해야한다.", () => {
-    render(<ProductList products={mockProducts} />);
+  beforeEach(() => {
+    setupUseDataMock({ productsLoading: false, cartLoading: false });
+  });
+  afterEach(() => {
+    cleanup();
+    vi.resetModules();
+    vi.clearAllMocks();
+  });
+  it("아이템을 정상적으로 출력해야한다.", async () => {
+    await renderProductListWithProviders(mockProducts);
 
     expect(screen.getByText("Product 1")).toBeInTheDocument();
     expect(screen.getByText("Product 2")).toBeInTheDocument();
@@ -54,14 +58,14 @@ describe("ProductList는 ", () => {
     expect(screen.getByText("20,000원")).toBeInTheDocument();
   });
 
-  it("상품이 없을 경우 상품이 없다는 메시지를 출력해야한다.", () => {
-    render(<ProductList products={[]} />);
+  it("상품이 없을 경우 상품이 없다는 메시지를 출력해야한다.", async () => {
+    await renderProductListWithProviders([]);
 
     expect(screen.getByText("상품이 없습니다.")).toBeInTheDocument();
   });
 
-  it("product를 받지 못했을경우, 서버와 연결이 좋지 않다는 메시지를 출력해야한다.", () => {
-    render(<ProductList products={undefined} />);
+  it("product를 받지 못했을경우, 서버와 연결이 좋지 않다는 메시지를 출력해야한다.", async () => {
+    await renderProductListWithProviders(undefined);
 
     expect(
       screen.getByText("서버와 연결이 좋지 않아요. 다시 시도해주세요.")

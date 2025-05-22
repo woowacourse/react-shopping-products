@@ -5,7 +5,7 @@ import { useErrorContext } from "../../contexts/ErrorContext";
 import { URLS } from "../../constants/url";
 import QuantityButton from "../QuantityButton/QuantityButton";
 import { commonOpts } from "../../constants/requestHeader";
-import { useGetQuery } from "../../hooks/useGetQuery";
+import { useData } from "../../hooks/useData";
 import { useQueryContext } from "../../contexts/QueryContext";
 
 interface CartButtonProps extends ComponentProps<"button"> {
@@ -20,7 +20,7 @@ export default function CartButton({
 }: CartButtonProps) {
   const { showError } = useErrorContext();
 
-  const { refetch: fetchCart } = useGetQuery(
+  const { refetch: fetchCart } = useData(
     "cart-items",
     URLS.CART_ITEMS,
     commonOpts,
@@ -28,8 +28,8 @@ export default function CartButton({
   );
   const { dataPool } = useQueryContext();
 
-  const cartData = dataPool["cart-items"]?.content;
-  const productsData = dataPool["products"]?.content;
+  const cartData = dataPool["cart-items"];
+  const productsData = dataPool["products"];
 
   const [loading, setLoading] = useState(false);
 

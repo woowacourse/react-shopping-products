@@ -10,7 +10,6 @@ import {
 import { mockProducts } from "../test-utils/mock-data";
 import { renderAppWithProviders } from "../test-utils/renderWithProviders";
 
-vi.mock("@emotion/react");
 vi.mock("../components/ErrorToast/ErrorToast");
 vi.mock("../components/Spinner/Spinner");
 
@@ -31,26 +30,30 @@ vi.mock("../contexts/QueryContext", () => ({
   ),
 }));
 
-describe("App UI", () => {
+describe("App에서는 ", () => {
   afterEach(() => {
     cleanup();
     vi.resetModules();
     vi.clearAllMocks();
   });
 
-  describe("로딩 상태", () => {
+  describe("로딩 상태에", () => {
     beforeEach(() => {
       setupUseDataMock({ productsLoading: true, cartLoading: true });
     });
 
     it("마운트 시 스피너가 보인다", async () => {
+      // App 동기 렌더
       await renderAppWithProviders();
 
-      expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
+      // findByTestId는 내부적으로 retry 하므로,
+      // 스피너가 나타날 때까지 기다렸다가 반환합니다.
+      const spinner = await screen.findByTestId("loading-spinner");
+      expect(spinner).toBeInTheDocument();
     });
   });
 
-  describe("데이터 로드 후 UI", () => {
+  describe("데이터 로드 후 에는", () => {
     beforeEach(() => {
       setupUseDataMock({ productsData: [...mockProducts], cartData: [] });
     });
