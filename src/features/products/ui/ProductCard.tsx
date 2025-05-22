@@ -12,6 +12,7 @@ interface ProductCardProps {
   product: Product;
   onRefetch: () => void;
   cartQuantity: number;
+  cartId: number | undefined;
 }
 
 const MAX_CART_QUANTITY = 50;
@@ -20,6 +21,7 @@ export default function ProductCard({
   product,
   onRefetch,
   cartQuantity,
+  cartId,
 }: ProductCardProps) {
   const showError = useShowError();
   const [isCarting, setIsCarting] = useState(false);
@@ -48,27 +50,25 @@ export default function ProductCard({
   };
 
   const handleDeleteCartClick = async () => {
-    if (product.cartProductId)
+    if (cartId)
       try {
-        await deleteCartProduct(product.cartProductId);
+        await deleteCartProduct(cartId);
         onRefetch();
       } catch (e) {
         showError?.('삭제하는 중에 문제가 발생했습니다.');
       }
   };
 
-  const iconUrl = product.isCart ? './deleteCartIcon.svg' : './addCartIcon.svg';
-  const title = product.isCart ? '빼기' : '담기';
-  const className = product.isCart
+  const iconUrl = cartId ? './deleteCartIcon.svg' : './addCartIcon.svg';
+  const title = cartId ? '빼기' : '담기';
+  const className = cartId
     ? css`
         background-color: #fff;
         color: #000;
         border: 1px solid #000;
       `
     : css``;
-  const handleCartClick = product.isCart
-    ? handleDeleteCartClick
-    : handlePutCartClick;
+  const handleCartClick = cartId ? handleDeleteCartClick : handlePutCartClick;
 
   return (
     <S.ProductCardContainer>
