@@ -1,5 +1,8 @@
-import { createContext, useContext, useState, useCallback } from "react";
-import { getCartItems } from "../api/cartItems";
+import { createContext, useContext, useState, useEffect } from "react";
+import { CartItem } from "../api/cartItems";
+import useData from "../hooks/useData";
+import { END_POINT } from "../api/constants/endPoint";
+import { useUIContext } from "./UIContext";
 import { ERROR_MSG } from "../constants/errorMessage";
 
 export type BasketProductInfo = {
@@ -25,31 +28,46 @@ export const CartProvider = ({
 }) => {
   const [basketProductsIds, setBasketProductsIds] =
     useState<BasketProductInfos>([]);
+  const { setError, setErrorMessage } = useUIContext();
 
-  const fetchCartItems = useCallback(
-    async (withGlobalLoading = true) => {
-      try {
-        if (withGlobalLoading) setGlobalLoading(true);
-        const data = await getCartItems();
-        const mapped = data.map((item) => ({
-          productId: item.product.id,
-          basketId: item.id,
-        }));
-        setBasketProductsIds(mapped);
-      } catch (e) {
-        console.error(ERROR_MSG.BASKET_FETCH_FAIL, e);
-      } finally {
-        if (withGlobalLoading) setGlobalLoading(false);
-      }
-    },
-    [setGlobalLoading],
-  );
+  const {
+    data: cartItems,
+    isLoading,
+    error,
+    refetch,
+  } = useData<CartItem[]>(END_POINT.CART, {
+    queryParams: { page: 0, size: 50 },
+  });
+
+  useEffect(() => {
+    if (isLoading) {
+      setGlobalLoading(true);
+      return;
+    }
+
+    if (error !== null) {
+      setError(true);
+      setErrorMessage(ERROR_MSG.BASKET_FETCH_FAIL);
+      setGlobalLoading(false);
+      return;
+    }
+
+    if (cartItems) {
+      const mapped = cartItems.map((item) => ({
+        productId: item.product.id,
+        basketId: item.id,
+      }));
+      setBasketProductsIds(mapped);
+    }
+
+    setGlobalLoading(false);
+  }, [cartItems, isLoading, error]);
 
   return (
     <CartContext.Provider
       value={{
         basketProductsIds,
-        fetchCartItems,
+        fetchCartItems: refetch,
       }}
     >
       {children}

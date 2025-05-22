@@ -1,7 +1,7 @@
 import apiRequest from "./utils/apiRequest";
 import { END_POINT } from "./constants/endPoint";
 
-type CartItem = {
+export type CartItem = {
   id: number;
   quantity: number;
   product: {
