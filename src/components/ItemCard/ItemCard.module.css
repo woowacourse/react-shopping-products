@@ -63,10 +63,32 @@
   word-break: break-all;
 }
 
-.buttonWrap {
+.buttonContainer {
   display: flex;
   flex-direction: row-reverse;
   justify-content: end;
+}
+
+.cartAmountContainer {
+  min-width: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+
+.cartAmountContainer button {
+  cursor: pointer;
+  background: none;
+  border: 2px solid #eaeaea;
+  border-radius: 5px;
+  width: 24px;
+  height: 24px;
+  transition: 0.3s background;
+}
+
+.cartAmountContainer button:hover {
+  background: #eaeaea;
 }
 
 .addCartButton {
