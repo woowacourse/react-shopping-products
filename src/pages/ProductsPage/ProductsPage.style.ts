@@ -17,7 +17,7 @@ export const productPageTitle = css`
   margin: 10px 0px;
 `;
 
-export const selectBoxContainer = css`
+export const productPageSelectBoxContainer = css`
   display: flex;
   gap: 150px;
   justify-content: space-between;

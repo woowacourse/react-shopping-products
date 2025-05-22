@@ -8,7 +8,7 @@ import {
   productPageContainer,
   productWrapper,
   productPageTitle,
-  selectBoxContainer,
+  productPageSelectBoxContainer,
 } from './ProductsPage.style';
 import useProductSort from '../../hooks/useProductSort';
 import { SORT } from '../../constants/products';
@@ -31,7 +31,7 @@ function ProductsPage() {
       <Header itemCount={itemCount} />
       <div className={productWrapper}>
         <h1 className={productPageTitle}>bpple 상품 목록</h1>
-        <div className={selectBoxContainer}>
+        <div className={productPageSelectBoxContainer}>
           <SelectBox placeHolder={CATEGORY[0]} options={CATEGORY} onChange={handleChangeCategory} />
           <SelectBox
             placeHolder={Object.keys(SORT)[0]}
