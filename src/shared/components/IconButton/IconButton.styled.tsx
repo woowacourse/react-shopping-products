@@ -34,6 +34,11 @@ export const StyledButton = styled.button<IconButtonProps>`
   cursor: pointer;
 
   ${({ variant }) => buttonStyles[variant ?? 'primary']}
+  &:disabled {
+    background-color: #eaeaea;
+    color: #808080;
+    cursor: not-allowed;
+  }
 `;
 
 export const StyledImgIcon = styled.img`
