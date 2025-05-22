@@ -1,14 +1,10 @@
-export interface ProductElement {
-  id: number;
-  cartId: number;
-  name: string;
-  price: number;
-  category: string;
-  imageUrl: string;
-  isInCart: number | undefined;
+export type ProductElement = {
+  product: ProductType;
+  cartId: number | null;
+  isInCart: boolean;
 }
 
-export interface ProductType {
+export type ProductType = {
   category: string;
   id: number;
   imageUrl: string;
@@ -16,11 +12,7 @@ export interface ProductType {
   price: number;
 }
 
-export interface CartType {
-  totalElements: number;
-}
-
-export interface CartItem {
+export type CartItem = {
   id: number;
   quantity: number;
   product: {
@@ -32,7 +24,7 @@ export interface CartItem {
   };
 }
 
-export interface CartResponse {
+export type CartResponse = {
   content: CartItem[];
   totalElements: number;
 }

@@ -11,6 +11,8 @@ export function useCart() {
     setIsLoading(true);
     setIsError(false);
 
+    console.log('cart', cart);
+
     try {
       const cartData = await getCartItem();
 
@@ -41,6 +43,7 @@ export function useCart() {
     }
 
     const cartItem = cart.content.find((item: CartItem) => item.product.id === productId);
+
     return cartItem ? cartItem.id : null;
   }, [cart]);
 

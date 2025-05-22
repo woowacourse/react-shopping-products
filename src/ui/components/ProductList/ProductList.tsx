@@ -1,10 +1,9 @@
 import Product from '../Product/Product';
-import { CartItem, ProductElement, ProductType } from '../../../types/product';
+import { ProductElement } from '../../../types/product';
 import { List } from './ProductList.styles';
 
 interface ProductListProps {
-  products: ProductType[];
-  cart: CartItem[];
+  products: ProductElement[];
   onAddCart: (product: ProductElement) => Promise<void>;
   onRemoveCart: (product: ProductElement) => Promise<void>;
 }
@@ -12,10 +11,10 @@ interface ProductListProps {
 function ProductList({ products, onAddCart, onRemoveCart }: ProductListProps) {
   return (
     <List>
-      {products?.map((item) => (
+      {products?.map((product: ProductElement) => (
         <Product
-          key={item.id}
-          item={item}
+          key={product?.product?.id}
+          item={product}
           onAddCart={onAddCart}
           onRemoveCart={onRemoveCart}
         />

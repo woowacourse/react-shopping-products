@@ -14,7 +14,8 @@ export function useProducts(sortType: string, category: string = '전체') {
     try {
       const productsData = await getProducts(sortType, category);
 
-      console.log(productsData.content);
+      // console.log('product',productsData.content);
+      // console.log('products');
 
       setProducts(productsData.content);
     } catch (e) {

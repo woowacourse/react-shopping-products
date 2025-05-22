@@ -16,7 +16,7 @@ function App() {
   const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
 
   const {
-    productsWithCartInfo,
+    transformedProducts,
     cart,
     isLoading,
     isError,
@@ -54,8 +54,8 @@ function App() {
             onSort={handleSortPrice}
             onAddCart={handleAddCart}
             onRemoveCart={handleRemoveCart}
-            cart={cart}
-            products={productsWithCartInfo}
+            cart={cart?.content || null}
+            products={transformedProducts}
             sort={sort}
             category={category}
           />

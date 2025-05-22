@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useProducts } from './useProducts';
 import { useCart } from './useCart';
+import { ProductElement } from "../types/product";
 
 export function useProductsWithCart(sortType: string, category: string = '전체') {
   const {
@@ -29,10 +30,24 @@ export function useProductsWithCart(sortType: string, category: string = '전체
 
     return productArray.map(product => ({
       ...product,
-      isInCart: isInCart(product.id) ? 1 : 0,
+      isInCart: isInCart(product.id),
       cartId: getCartItemId(product.id)
     }));
   }, [products, isInCart, getCartItemId]);
+
+  const transformedProducts: ProductElement[] = productsWithCartInfo.map(item => ({
+    product: {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      imageUrl: item.imageUrl,
+      category: item.category
+    },
+    isInCart: item.isInCart,
+    cartId: item.cartId
+  }));
+
+  console.log(transformedProducts);
 
   const resetErrors = () => {
     setProductsError(false);
@@ -40,7 +55,7 @@ export function useProductsWithCart(sortType: string, category: string = '전체
   };
 
   return {
-    productsWithCartInfo,
+    transformedProducts,
     cart,
     isLoading,
     isError,

@@ -7,7 +7,7 @@ import { useProductsWithCart } from './useProductsWithCart';
 
 export function useCartActions(sortType: string, category: string = '전체') {
   const {
-    productsWithCartInfo,
+    transformedProducts,
     cart,
     isLoading,
     isError,
@@ -24,7 +24,7 @@ export function useCartActions(sortType: string, category: string = '전체') {
     }
 
     try {
-      await addCart(product.id);
+      await addCart(product.product.id);
       await fetchCart();
     } catch {
       console.error(ERROR_MESSAGES.failedAddCart);
@@ -49,7 +49,7 @@ export function useCartActions(sortType: string, category: string = '전체') {
   }, [fetchCart, resetErrors]);
 
   return {
-    productsWithCartInfo,
+    transformedProducts,
     cart,
     isLoading,
     isError,

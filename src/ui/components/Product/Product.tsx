@@ -18,28 +18,31 @@ interface ProductProps {
 }
 
 function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
-  const { name, price, imageUrl, isInCart } = item;
+  const { product, isInCart } = item;
 
+  if (!product) {
+    return null;
+  }
   // console.log('item', item);
 
-  const isImage = imageUrl.length > 15
+  const isImage = product.imageUrl.length > 15
 
   return (
     <Container>
       <ProductImageContainer>
         {isImage ?
-          <ProductImage src={imageUrl} alt={name}/>
+          <ProductImage src={product.imageUrl} alt={product.name}/>
           : (
             <ImageContainer>
-              <EmptyImage src={woowaLogo} alt={name}/>
+              <EmptyImage src={woowaLogo} alt={product.name}/>
               <p>이미지가 없습니다</p>
             </ImageContainer>
           )
         }
       </ProductImageContainer>
       <Detail>
-        <ProductName>{name}</ProductName>
-        <Price>{`${price.toLocaleString()}원`}</Price>
+        <ProductName>{product.name}</ProductName>
+        <Price>{`${product.price.toLocaleString()}원`}</Price>
       </Detail>
       {isInCart ? (
         <RemoveButton onClick={() => onRemoveCart(item)} />

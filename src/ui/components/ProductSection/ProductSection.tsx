@@ -4,12 +4,12 @@ import Dropdown from '../Dropdown/Dropdown';
 import ProductList from '../ProductList/ProductList';
 import { DropdownContainer, Section } from './ProductSection.styles';
 import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
-import { SortType, CategoryType, ProductType, CartItem } from '../../../types/product';
+import { SortType, CategoryType, CartItem } from '../../../types/product';
 import { ProductElement } from '../../../types/product';
 
 interface ProductSectionProps {
-  products: ProductType[];
-  cart: CartItem[];
+  products: ProductElement[];
+  cart?: CartItem[] | null;
   sort: SortType;
   category: CategoryType;
   onFilter: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -20,7 +20,6 @@ interface ProductSectionProps {
 
 function ProductSection({
   products,
-  cart,
   sort,
   category,
   onFilter,
@@ -39,7 +38,6 @@ function ProductSection({
         onAddCart={onAddCart}
         onRemoveCart={onRemoveCart}
         products={products}
-        cart={cart}
       />
     </Section>
   );
