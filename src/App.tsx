@@ -1,12 +1,12 @@
-import { useState } from "react";
+import './styles/reset.css';
+import ProductsPage from './pages/ProductsPage/ProductsPage';
+import { ToastProvider } from './context/ToastProvider';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <ToastProvider>
+      <ProductsPage />
+    </ToastProvider>
   );
 }
 
