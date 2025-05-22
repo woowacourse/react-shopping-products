@@ -1,53 +1,73 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getCartId } from '../domain/cartItem';
 import { addCartItems, getCartItems, removeCartItems } from '../services/cartItemServices';
-import tryApiCall from '../util/tryApiCall';
 import { CartItemType } from '../types/data';
+import useFetchData from './useFetchData';
+import { DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 
 interface CartHandlerProps {
   handleErrorMessage: (errorMessage: string) => void;
 }
 
 const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
-  const [cartItemsIds, setCartItemsIds] = useState<number[]>([]);
+  const { data: cartItems, fetchData: fetchCartItems } = useFetchData<CartItemType[]>({
+    apiCall: getCartItems,
+    dataName: 'cartItems',
+    onSuccess: (items, dataHandler) => {
+      dataHandler(items);
+    },
+    onError: (error) => {
+      const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
+      handleErrorMessage(message);
+    },
+  });
 
   useEffect(() => {
-    (async () => {
-      const items = await tryApiCall(getCartItems, handleErrorMessage);
-      if (items) {
-        setCartItemsIds(items.map((item: CartItemType) => item.product.id));
-      }
-    })();
+    (async () => await fetchCartItems())();
   }, []);
 
-  const handleAddCartItemsIds = (id: number) => {
+  const handleAddCartItems = (id: number, quantity: number) => {
     const addItemInfo = {
       productId: id,
-      quantity: 1,
+      quantity,
     };
-    (async () => {
-      await tryApiCall(async () => await addCartItems(addItemInfo), handleErrorMessage);
-      setCartItemsIds((prev: number[]) => [...prev, id]);
-    })();
+
+    const { fetchData: fetchAddCartItems } = useFetchData<void>({
+      apiCall: () => addCartItems(addItemInfo),
+      dataName: 'cartItems',
+      onSuccess: () => {
+        fetchCartItems();
+      },
+      onError: (error) => {
+        const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
+        handleErrorMessage(message);
+      },
+    });
+
+    fetchAddCartItems();
   };
 
-  const handleRemoveCartItemsIds = (id: number) => {
-    (async () => {
-      const cartItems = (await tryApiCall<CartItemType[]>(getCartItems, handleErrorMessage)) ?? [];
-      const cartId = getCartId(cartItems, id);
+  const handleRemoveCartItems = (id: number) => {
+    const cartId = getCartId(cartItems, id);
 
-      if (cartId) {
-        await tryApiCall(async () => await removeCartItems(cartId), handleErrorMessage);
-        setCartItemsIds((prev: number[]) => prev.filter((itemId: number) => itemId !== id));
-      }
-    })();
+    const { fetchData: fetchRemoveCartItems } = useFetchData<CartItemType[]>({
+      apiCall: () => removeCartItems(cartId),
+      dataName: 'cartItems',
+      onSuccess: () => {
+        fetchCartItems();
+      },
+      onError: (error) => {
+        const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
+        handleErrorMessage(message);
+      },
+    });
+
+    fetchRemoveCartItems();
   };
 
   return {
-    cartItemsIds,
-    setCartItemsIds,
-    handleAddCartItemsIds,
-    handleRemoveCartItemsIds,
+    handleAddCartItems,
+    handleRemoveCartItems,
   };
 };
 
