@@ -52,7 +52,6 @@ export const useCart = () => {
 
   const updateToCart = useCallback(
     async (productId: number, quantity: number) => {
-      console.log('productId', productId);
       try {
         const patchRequest = handleRequest({
           apiCall: () => updateCartItem(productId, quantity),

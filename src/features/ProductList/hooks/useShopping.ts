@@ -4,7 +4,7 @@ import { useCart } from './useCart';
 import { useProductList } from './useProductList';
 
 export const useShopping = () => {
-  const { cartData, addToCart, deleteFromCart } = useCart();
+  const { cartData, addToCart, updateToCart, deleteFromCart } = useCart();
   const {
     isLoading: isProductLoading,
     product,
@@ -16,15 +16,27 @@ export const useShopping = () => {
 
   const data = useMemo(() => {
     return product.map((item) => {
-      const isInCart = cartData
-        .map((item) => item.product)
-        .some((cartItem) => cartItem.id === item.id);
+      const cartItem = cartData.find((cartItem) => cartItem.product.id === item.id);
       return {
         ...item,
-        isChecked: isInCart,
+        isChecked: !!cartItem,
+        cartQuantity: cartItem?.quantity || 0,
+        cartId: cartItem?.id || 0,
       };
     });
   }, [cartData, product]);
+
+  // TODO : cart 변수명 변경
+  const updateCartItemQuantity = useCallback(
+    async (cartId: number, newQuantity: number) => {
+      const cart = cartData.find((item) => item.id === cartId);
+
+      if (cart?.id) {
+        await updateToCart(cart.id, newQuantity);
+      }
+    },
+    [cartData, updateToCart]
+  );
 
   const toggleCartItem = useCallback(
     async (id: number) => {
@@ -45,6 +57,7 @@ export const useShopping = () => {
     toggleCartItem,
     categorySelect,
     priceSelect,
+    updateCartItemQuantity,
     handleCategorySelect,
     handlePriceSelect,
   };
