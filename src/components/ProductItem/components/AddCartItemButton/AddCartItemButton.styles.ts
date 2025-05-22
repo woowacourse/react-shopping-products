@@ -10,9 +10,6 @@ export const AddCartItemButton = styled.button`
   display: flex;
   gap: 4px;
   cursor: pointer;
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
 `;
 
 export const Text = styled.span`

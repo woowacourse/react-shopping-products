@@ -43,3 +43,9 @@ export const ProductPrice = styled.p`
   font-weight: 500;
   color: #0a0d13;
 `;
+
+export const QuantityWrapper = styled.div`
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+`;

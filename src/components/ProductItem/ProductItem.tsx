@@ -29,15 +29,17 @@ const ProductItem = ({
       <S.ProductWrapper>
         <S.ProductName>{name}</S.ProductName>
         <S.ProductPrice>{price}</S.ProductPrice>
-        {quantity >= CART_QUANTITY_THRESHOLD ? (
-          <QuantitySelector
-            quantity={quantity}
-            onIncrease={increaseItemQuantity}
-            onDecrease={decreaseItemQuantity}
-          />
-        ) : (
-          <AddCartItemButton onAdd={addProductInCart} />
-        )}
+        <S.QuantityWrapper>
+          {quantity >= CART_QUANTITY_THRESHOLD ? (
+            <QuantitySelector
+              quantity={quantity}
+              onIncrease={increaseItemQuantity}
+              onDecrease={decreaseItemQuantity}
+            />
+          ) : (
+            <AddCartItemButton onAdd={addProductInCart} />
+          )}
+        </S.QuantityWrapper>
       </S.ProductWrapper>
     </S.ProductContainer>
   );

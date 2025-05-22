@@ -4,9 +4,6 @@ export const QuantitySelector = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 4px;
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
   width: 80px;
   height: 24px;
   line-height: 26px;
