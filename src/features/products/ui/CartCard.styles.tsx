@@ -27,7 +27,9 @@ export const ProductPrice = styled.p`
 `;
 
 export const ButtonSection = styled.div`
-  width: 50px;
+  display: flex;
+  gap: 10px;
+  align-items: start;
 `;
 
 export const Line = styled.div`
