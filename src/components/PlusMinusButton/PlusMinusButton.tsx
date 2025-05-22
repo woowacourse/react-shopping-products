@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import Button from "../Button/Button";
 import Text from "../Text/Text";
 import * as S from "./PlusMinusButton.styles";
@@ -16,7 +17,9 @@ export default function PlusMinusButton({ onAddButtonClick, onMinusButtonClick, 
           -
         </Text>
       </Button>
-      <Text variant="body-2">{quantity}</Text>
+      <Text variant="body-2" css={S.quantityText}>
+        {quantity}
+      </Text>
       <Button css={S.controlButton} onClick={onAddButtonClick}>
         <Text css={S.controlButtonText} variant="body-0">
           +

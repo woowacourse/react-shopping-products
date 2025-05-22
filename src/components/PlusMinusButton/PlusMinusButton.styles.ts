@@ -26,3 +26,8 @@ export const controlButtonText = css`
   color: #222;
   text-align: center;
 `;
+
+export const quantityText = css`
+  width: 24px;
+  text-align: center;
+`;
