@@ -8,6 +8,14 @@ export interface ProductElement {
   isInCart: number | undefined;
 }
 
+export interface ProductType {
+  category: string;
+  id: number;
+  imageUrl: string;
+  name: string;
+  price: number;
+}
+
 export interface CartType {
   totalElements: number;
 }
@@ -35,13 +43,7 @@ export enum SortOrder {
 }
 
 export type SortType = '낮은 가격 순' | '높은 가격 순';
-type SortDirection = 'asc' | 'desc';
 
 export type SortKeyType = keyof typeof SortOrder;
 
 export type CategoryType = '전체' | '식료품' | '패션잡화';
-
-export const directionMap: Record<SortType, SortDirection> = {
-  '낮은 가격 순': 'asc',
-  '높은 가격 순': 'desc',
-};

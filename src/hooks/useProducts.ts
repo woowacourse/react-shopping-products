@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getProducts } from '../api/products';
 import { ProductType } from '../types/product';
 
-export function useProducts(sortType: string) {
+export function useProducts(sortType: string, category: string = '전체') {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -12,7 +12,7 @@ export function useProducts(sortType: string) {
     setIsError(false);
 
     try {
-      const productsData = await getProducts(sortType);
+      const productsData = await getProducts(sortType, category);
 
       console.log(productsData.content);
 
@@ -23,7 +23,7 @@ export function useProducts(sortType: string) {
     } finally {
       setIsLoading(false);
     }
-  }, [sortType]);
+  }, [sortType, category]);
 
   useEffect(() => {
     fetchProduct();

@@ -7,10 +7,10 @@ import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 import React, { useState } from 'react';
 import { Global } from '@emotion/react';
 import { addCart, removeCart } from './api/cart';
-import { useProducts } from './hooks/useProducts';
-import { CategoryType, SortType, ProductElement } from './types/product';
+import { SortType, ProductElement, CategoryType } from './types/product';
 import { MAX_CART_ITEM_TYPE } from "./constants/productConfig";
 import { ERROR_MESSAGES } from "./constants/errorMessages";
+import { useProductsWithCart } from "./hooks/useProductsWithCart";
 
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
@@ -18,40 +18,44 @@ function App() {
 
   const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
 
-  const { data, cart, isLoading, isError, setIsError, fetchData } = useProducts(
-    mappedSortType,
-    category
-  );
+  const {
+    productsWithCartInfo,
+    cart,
+    isLoading,
+    isError,
+    fetchCart,
+    resetErrors
+  } = useProductsWithCart(mappedSortType, category);
 
   const handleAddCart = async (product: ProductElement) => {
     if (cart?.totalElements === MAX_CART_ITEM_TYPE) {
       console.error(ERROR_MESSAGES.maxCartItemType);
-      setIsError(true);
+      resetErrors();
       return;
     }
 
     try {
       await addCart(product.id);
-      await fetchData();
+      await fetchCart();
     } catch {
       console.error(ERROR_MESSAGES.failedAddCart);
-      setIsError(true);
+      resetErrors();
     }
   };
 
   const handleRemoveCart = async (product: ProductElement) => {
     if (!product.cartId) {
       console.error(ERROR_MESSAGES.invalidCartID);
-      setIsError(true);
+      resetErrors();
       return;
     }
 
     try {
       await removeCart(product.cartId);
-      await fetchData();
+      await fetchCart();
     } catch (error) {
       console.error(ERROR_MESSAGES.failedRemoveCart, error);
-      setIsError(true);
+      resetErrors();
     }
   };
 
@@ -85,7 +89,8 @@ function App() {
             onSort={handleSortPrice}
             onAddCart={handleAddCart}
             onRemoveCart={handleRemoveCart}
-            data={data}
+            cart={cart}
+            products={productsWithCartInfo}
             sort={sort}
             category={category}
           />
