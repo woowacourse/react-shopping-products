@@ -4,30 +4,6 @@ import { CartItem } from "../types/cartContents";
 export const mockProducts: ProductWithQuantity[] = [
   {
     id: 1,
-    name: "치마",
-    price: 10000,
-    imageUrl: "https://example.com/image1.jpg",
-    category: "패션잡화",
-    quantity: 10,
-  },
-  {
-    id: 2,
-    name: "바지",
-    price: 20000,
-    imageUrl: "https://example.com/image2.jpg",
-    category: "패션잡화",
-    quantity: 10,
-  },
-  {
-    id: 3,
-    name: "통바지",
-    price: 20000,
-    imageUrl: "https://example.com/image2.jpg",
-    category: "패션잡화",
-    quantity: 10,
-  },
-  {
-    id: 4,
     category: "식료품",
     name: "코카콜라",
     price: 2000,
@@ -35,12 +11,43 @@ export const mockProducts: ProductWithQuantity[] = [
     quantity: 10,
   },
   {
-    id: 5,
+    id: 2,
     category: "식료품",
     name: "사이다",
-    price: 2000,
+    price: 3000,
     imageUrl: "cider.jpg",
     quantity: 10,
+  },
+  {
+    id: 3,
+    name: "치마",
+    price: 10000,
+    imageUrl: "https://example.com/image1.jpg",
+    category: "패션잡화",
+    quantity: 10,
+  },
+  {
+    id: 4,
+    name: "바지",
+    price: 20000,
+    imageUrl: "https://example.com/image2.jpg",
+    category: "패션잡화",
+    quantity: 10,
+  },
+  {
+    id: 5,
+    name: "통바지",
+    price: 30000,
+    imageUrl: "https://example.com/image2.jpg",
+    category: "패션잡화",
+    quantity: 10,
+  },
+];
+
+export const mockProductsWithZeroStock: ProductWithQuantity[] = [
+  {
+    ...mockProducts[0],
+    quantity: 0,
   },
 ];
 
