@@ -19,6 +19,12 @@
   - [x] 장바구니에 담긴 아이템 종류의 최대 개수는 50개이다.
 - [x] 로딩 UI
 - [x] 에러 UI
+- [ ] `useData` (커스텀 훅): 모든 GET API 요청을 처리
+- [ ] Context API: 하나의 Context로 모든 API 상태 관리
+- [ ] MSW 적용
+  - [ ] `/products` 응답에 `quantity` 필드 추가
+  - [ ] 재고를 초과한 장바구니 요청 시 400 에러 처리
+  - [ ] `PATCH /cart-items/{id}` 요청 시에도 재고 초과 에러 처리
 
 ### 🧩 컴포넌트
 
@@ -37,3 +43,7 @@
   : 로딩 상태를 보여준다.
 - ErrorBox (에러 UI)
   : 에러메세지를 보여준다.
+- QuantityController (수량 컨트롤러)
+  : 상품의 수량을 조절할 수 있는 UI.
+- BasketModal (장바구니 모달)
+  : 담은 상품 목록과 수량 조절 기능을 포함한다.
