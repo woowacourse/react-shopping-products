@@ -108,7 +108,6 @@ function CartCard({ cartItem }: CartCardProps) {
           cartItemId={cartItem.id}
           disableButtonWhenQuantityOne={true}
         />
-        ;
       </div>
       <button
         css={styles.cartCardDeleteCss}
