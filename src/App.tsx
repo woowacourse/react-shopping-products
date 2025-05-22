@@ -9,7 +9,7 @@ import useCartItems from "./hooks/useCartItems";
 import ProductList from "./components/ProductList/ProductList";
 import { ProductFilterProvider } from "./contexts/ProductFilterContext";
 
-function App() {
+const AppContent = () => {
   const {
     products,
     isLoading,
@@ -29,31 +29,37 @@ function App() {
   const setErrorMessage = productError ? setProductError : setCartError;
 
   return (
-    <ProductFilterProvider>
-      <S.LayoutContainer>
-        <S.LayoutWrapper>
-          <ShopHeader cartItemCount={cartItems?.content.length ?? 0} />
-          <S.Wrapper>
-            <ProductsListTitle />
-            <S.ProductControlPanel>
-              <CategoryFilter />
-              <ProductSorter />
-            </S.ProductControlPanel>
-            <ProductList
-              products={products}
-              isLoading={isLoading}
-              cartItemIds={cartItemIds}
-              handleCartItemToggle={handleCartItemToggle}
+    <S.LayoutContainer>
+      <S.LayoutWrapper>
+        <ShopHeader cartItemCount={cartItems?.content.length ?? 0} />
+        <S.Wrapper>
+          <ProductsListTitle />
+          <S.ProductControlPanel>
+            <CategoryFilter />
+            <ProductSorter />
+          </S.ProductControlPanel>
+          <ProductList
+            products={products}
+            isLoading={isLoading}
+            cartItemIds={cartItemIds}
+            handleCartItemToggle={handleCartItemToggle}
+          />
+          {!!errorMessage && (
+            <ErrorToast
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
             />
-            {!!errorMessage && (
-              <ErrorToast
-                errorMessage={errorMessage}
-                setErrorMessage={setErrorMessage}
-              />
-            )}
-          </S.Wrapper>
-        </S.LayoutWrapper>
-      </S.LayoutContainer>
+          )}
+        </S.Wrapper>
+      </S.LayoutWrapper>
+    </S.LayoutContainer>
+  );
+};
+
+function App() {
+  return (
+    <ProductFilterProvider>
+      <AppContent />
     </ProductFilterProvider>
   );
 }
