@@ -1,14 +1,19 @@
 import ProductItem from "./Item";
 import * as S from "./ProductList.styled";
-import { useProductContext } from "@/context/ProductContext";
+import { ProductItemType } from "@/types/product";
 
-function ProductList() {
-  const { productData } = useProductContext();
+interface ProductListProps {
+  data: ProductItemType[];
+}
+
+function ProductList({ data }: ProductListProps) {
+  if (!data) return null; // 또는 로딩 스피너
+
   return (
     <>
-      {productData.length > 0 ? (
+      {data.length > 0 ? (
         <S.ProductList>
-          {productData.map((productItem) => (
+          {data.map((productItem) => (
             <ProductItem key={productItem.id} product={productItem} />
           ))}
         </S.ProductList>

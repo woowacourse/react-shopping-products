@@ -3,15 +3,21 @@ import AddCartItemButton from "@/components/Product/Content/List/Item/CardItemBu
 import RemoveCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Remove";
 import * as S from "./ProductItem.styled";
 import defaultImage from "@/assets/images/planet-error.png";
-import { SyntheticEvent } from "react";
-import { useCartContext } from "@/context/CartContext";
+import { SyntheticEvent, useContext } from "react";
+import { CartItemType } from "@/types/cartItem";
+import { DataContext } from "@/context/DataContext";
 
 interface ProductItemProps {
   product: ProductItemType;
 }
 
 function ProductItem({ product }: ProductItemProps) {
-  const { cartItemData } = useCartContext();
+  const context = useContext(DataContext);
+
+  if (!context)
+    throw new Error("DataContext must be used within a DataProvider");
+  const { data } = context;
+  const cartItemData = data.cartItemData as CartItemType[];
 
   const { id, name, price, imageUrl } = product;
   const findCartItem = cartItemData.find(({ product }) => product.id === id);
