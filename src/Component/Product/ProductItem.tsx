@@ -13,6 +13,7 @@ type SetProducts = {
   checkMax: () => boolean;
   quantity: number;
   updateErrorMessage: (errorMessage: string) => void;
+  isRow: boolean;
 };
 
 export default function ProductItem({
@@ -25,8 +26,9 @@ export default function ProductItem({
   checkMax,
   quantity,
   updateErrorMessage,
+  isRow,
 }: ProductTypes & SetProducts) {
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(isRow);
   const [disabled, setDisabled] = useState(false);
 
   const cartItemQuantity = getMatchCartItem(id)?.quantity ?? 0;
@@ -71,17 +73,18 @@ export default function ProductItem({
   };
 
   return (
-    <StyledLi id={String(id)}>
+    <StyledContainer id={String(id)} isRow={isRow}>
       <StyledImgWrapper
+        isRow={isRow}
         imageUrl={imageUrl}
         isSoldout={quantity === 0}
       ></StyledImgWrapper>
-      <StyledProductInfoWrapper>
+      <StyledProductInfoWrapper isRow={isRow}>
         <StyledProductInfo>
-          <StyledTitle>{name}</StyledTitle>
+          <StyledTitle isRow={isRow}>{name}</StyledTitle>
           <StyledPrice>{price.toLocaleString('ko')}원</StyledPrice>
         </StyledProductInfo>
-        <StyledButtonWrapper>
+        <StyledButtonWrapper isRow={isRow}>
           {active ? (
             <CountControl
               count={cartItemQuantity}
@@ -104,14 +107,23 @@ export default function ProductItem({
           )}
         </StyledButtonWrapper>
       </StyledProductInfoWrapper>
-    </StyledLi>
+    </StyledContainer>
   );
 }
 
-const StyledLi = styled.li`
+const styles = css`
+  display: flex;
+  height: 80px;
+  gap: 0px;
+`;
+
+const StyledContainer = styled.div<{ isRow: boolean }>`
   height: 224px;
   border-radius: 8px;
   position: relative;
+  box-sizing: border-box;
+
+  ${({ isRow }) => isRow && styles}
 `;
 
 type ImgWrapperProps = Pick<ProductTypes, 'imageUrl'> & { isSoldout: boolean };
@@ -126,7 +138,7 @@ const disabledStyles = css`
   cursor: auto;
 `;
 
-const StyledImgWrapper = styled.div<ImgWrapperProps>`
+const StyledImgWrapper = styled.div<ImgWrapperProps & { isRow: boolean }>`
   width: 100%;
   height: 50%;
   background-image: ${(props) => `url(${props.imageUrl})`},
@@ -154,20 +166,40 @@ const StyledImgWrapper = styled.div<ImgWrapperProps>`
         border-radius: 8px 8px 0 0;
       }
     `}
+
+  ${({ isRow }) =>
+    isRow &&
+    css`
+      height: 100%;
+      width: 80px;
+      border-radius: 8px;
+    `}
 `;
 
-const StyledProductInfoWrapper = styled.div`
+const StyledProductInfoWrapper = styled.div<{ isRow: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 50%;
   padding: 8px 15px 8px 8px;
   box-sizing: border-box;
+
+  ${({ isRow }) =>
+    isRow &&
+    css`
+      height: 100%;
+    `}
 `;
 
-const StyledTitle = styled.span`
+const StyledTitle = styled.span<{ isRow: boolean }>`
   font-weight: 700;
   font-size: 14px;
+
+  ${({ isRow }) =>
+    isRow &&
+    css`
+      font-size: 16px;
+    `}
 `;
 
 const StyledPrice = styled.span`
@@ -205,11 +237,17 @@ const StyledProductInfo = styled.div`
   gap: 6px;
 `;
 
-const StyledButtonWrapper = styled.div`
+const StyledButtonWrapper = styled.div<{ isRow: boolean }>`
   display: flex;
   flex-grow: 1;
   align-items: flex-end;
   justify-content: flex-end;
+
+  ${({ isRow }) =>
+    isRow &&
+    css`
+      justify-content: flex-start;
+    `}
 `;
 
 const StyledButtonText = styled.span`
