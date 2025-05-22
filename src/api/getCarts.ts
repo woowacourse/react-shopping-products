@@ -1,7 +1,7 @@
 import { CART_LIMIT } from '../constants/carts';
 
-async function getCarts() {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items?page=0&size=${CART_LIMIT}`, {
+async function getCarts(page = 0, size = CART_LIMIT) {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items?page=${page}&size=${size}`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
