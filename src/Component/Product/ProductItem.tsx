@@ -125,7 +125,8 @@ const StyledLi = styled.li`
 `;
 
 type ImgWrapperProps = Pick<ProductTypes, 'imageUrl'> & { isSoldout: boolean };
-type StyledButtonProps = Pick<ProductTypes, 'isItemInCart'> & {
+type StyledButtonProps = {
+  isItemInCart: boolean;
   isSoldout: boolean;
 };
 
