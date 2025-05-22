@@ -18,16 +18,26 @@
 
 ### 컴포넌트
 
-- [x] header
-- [x] text
-- [x] icon button
-- [x] select
-- [x] skeleton
+#### 공통
+
+- [x] Header
+- [x] Text
+- [x] IconButton
+- [x] Select
+- [x] Skeleton
 - [x] Toast
+- [x] ItemLayout
+- [x] AppLayout
+
+#### 기능
+
+- [x] AddBottomSheet
+- [x] CartItemDetail
+- [x] ProductItem
+- [x] QuantitySelector
 - [x] ShoppingBag
-- [x] item layout
-- [x] app layout
-- [x] list layout
+- [x] ProductListContainer
+- [x] CartListContainer
 
 ### 기능
 
@@ -39,11 +49,35 @@
   - [x] 담기 버튼을 누른 상품은 장바구니에 추가된다.
   - [x] 이 때 아이템 종류의 개수로 숫자를 표시한다.
 - [x] 사용자가 빼기 버튼을 누를 수 있다.
-  - [ ] 빼기 버튼을 누르면 장바구니에서 해당 아이템이 제거된다.
+  - [x] 빼기 버튼을 누르면 장바구니에서 해당 아이템이 제거된다.
 - [x] 에러가 발생한 경우
   - [x] 에러 메세지를 사용자에게 알려준다.
 - [x] 장바구니에 최대 50개의 아이템을 담을 수 있다.
-- [x] API 요청중에는 로딩 상태를 나타내는 UI를 보여준다. - 로딩
+- [x] API 요청중에는 로딩 상태를 나타내는 UI를 보여준다.
+- [x] 장바구니 모달
+  - [x] 삭제 버튼을 클릭시 장바구니에서 사라진다.
+  - [x] 최대 quantity까지만 + 버튼이 활성화 되어야 한다.
+  - [ ] -/+에 따라 patch 요청을 보낸다.
+  - [ ] 최대 quantity이상 담으려고 누를 경우 에러 메시지를 노출시킨다.
+  - [ ] 1에서 - 버튼을 누를 경우 `담기` 버튼을 보여준다.
+- [x] 상품 목록 리스트
+  - [x] 품절인 경우 이미지 위에 품절 표시를 보여준다.
+    - [x] 버튼 disabled
+  - [x] 담기 버튼을 누르면 숫자로 변해야 한다.
+  - [x] quantity까지만 + 버튼이 활성화 되어야 한다.
+  - [ ] 최대 quantity이상 담으려고 누를 경우 에러 메시지를 노출시킨다.
+  - [ ] 1에서 - 버튼을 누를 경우 `담기` 버튼을 보여준다.
+
+### msw
+
+- [x] 데이터 목록 조회 (get)
+  - [x] 장바구니
+  - [x] 상품 목록
+  - [x] quantity 필드 추가
+- [x] 장바구니 추가 (post)
+- [x] 장바구니 아이템 수량 변경 (patch)
+- [x] 장바구니 아이템 삭제(delete)
+- [] 재고 초과 에러 response
 
 ### 테스트
 
