@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useModal } from '@sebin0580/modal';
 
 import { AppLayout } from '@/shared/components/AppLayout';
 import { Flex } from '@/shared/components/Flex';
@@ -7,6 +8,7 @@ import { Loading } from '@/shared/components/Loading';
 import { Text } from '@/shared/components/Text';
 
 import { Select } from '../../../shared/components/Select/index';
+import { AddBottomSheet } from '../../CartList/component/AddBottomSheet';
 import { ProductItem } from '../components/ProductItem';
 import { ShoppingBag } from '../components/ShoppingBag';
 import { CATEGORY, CategoryType, PRICE, PriceType } from '../constants/product';
@@ -18,12 +20,14 @@ export const ProductListPage = () => {
     cartData,
     filteredData,
     isLoading,
-    toggleCartItem,
     categorySelect,
     priceSelect,
+    toggleCartItem,
+    updateCartItemQuantity,
     handleCategorySelect,
     handlePriceSelect,
   } = useShopping();
+  const { isOpen, handleOpenModal, handleCloseModal } = useModal();
 
   return (
     <>
@@ -41,7 +45,7 @@ export const ProductListPage = () => {
               SHOP
             </Text>
           }
-          right={<ShoppingBag count={cartData.length} />}
+          right={<ShoppingBag count={cartData.length} onOpenModal={handleOpenModal} />}
         />
         <Flex
           direction="column"
@@ -52,8 +56,9 @@ export const ProductListPage = () => {
         >
           <Text
             type="Heading"
+            weight="semibold"
             css={css`
-              padding: 15px 25px 10px 25px;
+              padding: 25px 25px 10px 25px;
             `}
           >
             상품목록
@@ -118,11 +123,15 @@ export const ProductListPage = () => {
                 {filteredData.map((item) => (
                   <ProductItem
                     key={item.id}
+                    cartId={item.cartId}
                     isChecked={item.isChecked}
                     name={item.name}
                     price={item.price}
                     imageUrl={item.imageUrl}
+                    quantity={item.quantity}
+                    cartQuantity={item.cartQuantity}
                     onCartUpdate={() => toggleCartItem(item.id)}
+                    onUpdateCartItemQuantity={updateCartItemQuantity}
                   />
                 ))}
               </ProductListContainer>
@@ -141,6 +150,14 @@ export const ProductListPage = () => {
           </Flex>
         </Flex>
       </AppLayout>
+      <AddBottomSheet
+        title="장바구니"
+        isOpen={isOpen}
+        onClose={handleCloseModal}
+        cartData={cartData}
+        onUpdateCartItemQuantity={updateCartItemQuantity}
+        onDeleteCartItem={toggleCartItem}
+      />
     </>
   );
 };
