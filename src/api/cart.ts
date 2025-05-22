@@ -12,9 +12,10 @@ export interface CartContent {
 }
 
 export async function getShoppingCartData() {
-  const initialPage = 0;
-  const maxSize = 50;
-  const basePath = `/cart-items?page=${initialPage}&size=${maxSize}`;
+  const params = new URLSearchParams();
+  params.set('page', '0');
+  params.set('size', '50');
+  const basePath = `/cart-items?${params.toString()}`;
 
   const data = await baseAPI<CartResponse>({
     method: 'GET',
