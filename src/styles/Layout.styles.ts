@@ -16,6 +16,7 @@ export const LayoutWrapper = styled.div`
   width: 430px;
   height: 100%;
   background-color: #fff;
+  position: relative;
 `;
 
 export const Wrapper = styled.div`

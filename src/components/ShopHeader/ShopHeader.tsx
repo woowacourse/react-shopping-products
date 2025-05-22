@@ -1,12 +1,21 @@
+import useModal from "../../hooks/useModal";
 import * as S from "./ShopHeader.styles";
 import Cart from "/cart.svg";
 
-const ShopHeader = ({ cartItemCount }: { cartItemCount: number }) => {
+interface Props {
+  cartItemCount: number;
+}
+
+const ShopHeader = ({ cartItemCount }: Props) => {
+  const { openModal } = useModal();
+
   return (
     <S.Header>
       <S.Logo href="/">SHOP</S.Logo>
-      <S.CartIcon src={Cart} alt="장바구니" role="button" tabIndex={0} />
-      {!!cartItemCount && <S.CartItemCount>{cartItemCount}</S.CartItemCount>}
+      <S.CartButton onClick={() => openModal("cart")}>
+        <S.CartIcon src={Cart} alt="장바구니" />
+        {!!cartItemCount && <S.CartItemCount>{cartItemCount}</S.CartItemCount>}
+      </S.CartButton>
     </S.Header>
   );
 };

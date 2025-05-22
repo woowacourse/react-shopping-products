@@ -1,14 +1,14 @@
 import { useState } from "react";
 import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
 import ErrorToast from "./components/ErrorToast/ErrorToast";
+import ProductItemSkeleton from "./components/ProductItem/components/ProductItemSkeleton/ProductItemSkeleton";
 import ProductItem from "./components/ProductItem/ProductItem";
 import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
 import ProductSorter from "./components/ProductSorter/ProductSorter";
 import ShopHeader from "./components/ShopHeader/ShopHeader";
-import * as S from "./styles/Layout.styles";
-import ProductItemSkeleton from "./components/ProductItem/components/ProductItemSkeleton/ProductItemSkeleton";
-import useProducts from "./hooks/useProducts";
 import useCartItems from "./hooks/useCartItems";
+import useProducts from "./hooks/useProducts";
+import * as S from "./styles/Layout.styles";
 
 const ProductsSkeleton = Array.from({ length: 6 }).map((_, index) => (
   <ProductItemSkeleton key={index} />
@@ -36,7 +36,7 @@ function App() {
 
   return (
     <S.LayoutContainer>
-      <S.LayoutWrapper>
+      <S.LayoutWrapper id="custom-root">
         <ShopHeader cartItemCount={cartItemsCount} />
         <S.Wrapper>
           <ProductsListTitle />

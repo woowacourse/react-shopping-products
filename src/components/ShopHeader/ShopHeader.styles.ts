@@ -18,9 +18,15 @@ export const Logo = styled.a`
   text-decoration: none;
 `;
 
-export const CartIcon = styled.img`
+export const CartButton = styled.button`
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+`;
 
+export const CartIcon = styled.img`
   user-select: none;
   -webkit-user-drag: none;
 `;
@@ -38,5 +44,4 @@ export const CartItemCount = styled.div`
   line-height: 20px;
   background-color: #fff;
   border-radius: 100%;
-  cursor: pointer;
 `;
