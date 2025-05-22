@@ -13,8 +13,8 @@ export const handlers = [
 		const sort = url.searchParams.get("sort");
 
 		let resultProducts = products;
-		if (category) resultProducts = filterProductList(products, category);
-		if (sort) resultProducts = sortProductList(products, sort.split(",")[1] as SortType);
+		if (category) resultProducts = filterProductList(resultProducts, category);
+		if (sort) resultProducts = sortProductList(resultProducts, sort.split(",")[1] as SortType);
 
 		return HttpResponse.json({ content: resultProducts });
 	}),
@@ -31,10 +31,10 @@ export const handlers = [
 			return HttpResponse.error();
 		}
 
-		return HttpResponse.json({ ok: true }, { status: 201 });
+		return HttpResponse.json({ ok: true, status: 201 });
 	}),
 
 	http.delete(`${CART_URL}/:id`, async () => {
-		return HttpResponse.json({ ok: true }, { status: 201 });
+		return HttpResponse.json({ ok: true, status: 201 });
 	}),
 ];
