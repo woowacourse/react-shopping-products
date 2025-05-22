@@ -1,4 +1,4 @@
-import { Products } from "../../types/products";
+import { Products } from "../../apis/types/products";
 import ProductItemSkeleton from "../ProductItem/components/ProductItemSkeleton/ProductItemSkeleton";
 import ProductItem from "../ProductItem/ProductItem";
 import * as S from "./ProductList.styles";

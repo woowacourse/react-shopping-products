@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Products } from "../types/products";
 import { ProductsAPI } from "../apis/products";
 import { isErrorResponse } from "../utils/typeGuard";
 import { useProductFilter } from "./useProductFilter";
+import { Products } from "../apis/types/products";
 
 const useProducts = () => {
   const [products, setProducts] = useState<Products | null>(null);
