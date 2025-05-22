@@ -1,86 +1,68 @@
 import "@testing-library/jest-dom";
 import { screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import { mockProducts } from "../test-utils/mock-data";
-import { setupUseDataMock } from "../test-utils/setupUseDataMock";
 import { renderAppWithProviders } from "../test-utils/renderWithProviders";
-vi.mock("../components/ErrorToast/ErrorToast");
-vi.mock("../components/Spinner/Spinner");
-vi.mock("../components/Product/ProductCard");
-vi.mock("../contexts/QueryContext", async () => {
-  const actual = await vi.importActual("../contexts/QueryContext");
-  return {
-    ...actual,
-    useQueryContext: () => ({
-      dataPool: { products: [...mockProducts] },
-    }),
-  };
-});
-vi.mock("../contexts/ErrorContext", () => ({
-  useErrorContext: () => ({ showError: vi.fn(), error: null }),
-  ErrorContextProvider: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
+
+vi.mock("../components/Product/ProductCard/ProductCard", () => ({
+  __esModule: true,
+  default: ({ productId, price }: { productId: number; price: number }) => (
+    <li data-testid="product-card" data-price={price}>
+      mock-{productId}
+    </li>
   ),
 }));
 
-describe("App에서는 정렬이 작동하며,", () => {
-  beforeEach(() => {
-    setupUseDataMock({ productsLoading: true, cartLoading: true });
-  });
+describe("App에서는 정렬이 작동하며, 정렬 기준을 변경할 수 있다.", () => {
   afterEach(() => {
     cleanup();
-    vi.resetModules();
     vi.clearAllMocks();
   });
 
   it('카테고리 드롭다운이 초기에는 "낮은 가격순"로 설정되어 있어야 한다', async () => {
-    setupUseDataMock({ productsLoading: false, cartLoading: false });
     await renderAppWithProviders();
 
-    const categoryDropdown = screen.getByText("낮은 가격순");
-    expect(categoryDropdown).toBeDefined();
+    const sortDropdown = screen.getByText("낮은 가격순");
+    expect(sortDropdown).toBeDefined();
   });
 
   it("카테고리 옵션을 선택하면 각 정렬 기준에 따라 정렬된 상품이 표시되어야 한다.", async () => {
-    setupUseDataMock({
-      productsLoading: false,
-      cartLoading: false,
-      productsData: [...mockProducts],
-    });
     await renderAppWithProviders();
 
-    await waitFor(() => screen.getAllByTestId("loading-spinner"), {
-      timeout: 3000,
+    // 로딩 상태가 끝날 때까지 대기
+    await waitFor(() => {
+      expect(screen.queryByTestId("loading-spinner")).not.toBeInTheDocument();
     });
 
-    // ── 3) 초기 “낮은 가격순” 정렬 확인
+    // 현재 표시된 상품 가격을 확인 (낮은 가격순 정렬 확인)
     const pricesAsc = getPrices();
     function getPrices() {
       return screen
         .getAllByTestId("product-card")
         .map((li) => Number(li.getAttribute("data-price")));
     }
+
+    // 낮은 가격순인지 확인 (이미 정렬되어 있어야 함)
     const sortedAsc = [...pricesAsc].sort((a, b) => a - b);
-    expect(pricesAsc).toEqual(sortedAsc); // 오름차순이어야 함
+    expect(pricesAsc).toEqual(sortedAsc);
 
-    // ── 4) 드롭다운 열고 “높은 가격순” 선택
-    fireEvent.click(screen.getByText("낮은 가격순"));
+    // 정렬 드롭다운을 클릭해 옵션 목록 표시
+    const sortDropdown = screen.getByText("낮은 가격순");
+    fireEvent.click(sortDropdown);
 
-    fireEvent.click(screen.getByText("높은 가격순"));
-    await waitFor(() => screen.getAllByTestId("loading-spinner"), {
-      timeout: 3000,
+    // 옵션 목록에서 "높은 가격순" 선택
+    const highToLowOption = screen.getByText("높은 가격순");
+    fireEvent.click(highToLowOption);
+
+    // 로딩 상태가 끝날 때까지 대기
+    await waitFor(() => {
+      expect(screen.queryByTestId("loading-spinner")).not.toBeInTheDocument();
     });
-    // 상태 업데이트 → 재렌더까지 대기
+
+    // 상태 업데이트 후 내림차순 정렬 확인
     await waitFor(() => {
       const prices = getPrices();
-      // prices가 최소 1개 이상이고, 첫 번째 원소가 마지막보다 크면 내림차순이라 간주
-      expect(prices.length).toBeGreaterThan(0);
-      expect(prices[0]).toBeGreaterThanOrEqual(prices[prices.length - 1]);
+      const sortedDesc = [...prices].sort((a, b) => b - a);
+      expect(prices).toEqual(sortedDesc);
     });
-
-    // ── 5) 최종 내림차순 검증
-    const pricesDesc = getPrices();
-    const sortedDesc = [...pricesDesc].sort((a, b) => b - a);
-    expect(pricesDesc).toEqual(sortedDesc); // 내림차순이어야 함
   });
 });
