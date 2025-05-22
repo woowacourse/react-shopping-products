@@ -8,6 +8,7 @@ import {useShowError} from '../../../shared/provider/errorProvider';
 import {useApi} from '../provider/apiProvider';
 import {getCartProduct} from '../../cart/api/getCartProduct';
 import {postCartProduct} from '../../cart/api/postCartProduct';
+import {formatPrice} from '../../../shared/utils/formatPrice';
 
 type Props = {
   cartId: number;
@@ -50,7 +51,7 @@ export default function CartCard({cartId, product, quantity}: Props) {
         />
         <S.ProductInfoSection>
           <S.ProductName>{product.name}</S.ProductName>
-          <S.ProductPrice>{product.price}원</S.ProductPrice>
+          <S.ProductPrice>{formatPrice(product.price)}원</S.ProductPrice>
           <CartCount
             count={count}
             onPlusCount={() => setCount((prev) => prev + 1)}

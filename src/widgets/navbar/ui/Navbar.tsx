@@ -8,6 +8,7 @@ import {useApi} from '../../../features/products/provider/apiProvider';
 import {getCartProduct} from '../../../features/cart/api/getCartProduct';
 import CustomButton from '../../../shared/ui/CustomButton';
 import {css} from '@emotion/react';
+import {formatPrice} from '../../../shared/utils/formatPrice';
 
 interface NavbarProps {
   cartQuantity: number;
@@ -50,7 +51,7 @@ export default function Navbar({cartQuantity}: NavbarProps) {
         ))}
         <S.TotalPriceSection>
           <S.Description>총 결제 금액</S.Description>
-          <S.TotalPrice>{totalPrice}</S.TotalPrice>
+          <S.TotalPrice>{formatPrice(totalPrice)}원</S.TotalPrice>
         </S.TotalPriceSection>
         <CustomButton
           title="닫기"

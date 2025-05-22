@@ -7,6 +7,7 @@ import * as S from './ProductCard.styles';
 import {useShowError} from '../../../shared/provider/errorProvider';
 import {useState} from 'react';
 import CartCount from './CartCount';
+import {formatPrice} from '../../../shared/utils/formatPrice';
 
 interface ProductCardProps {
   product: Product;
@@ -80,7 +81,7 @@ export default function ProductCard({
       <S.ContentSection>
         <S.ProductName>{product.name}</S.ProductName>
         <S.ProductCategory>{product.category}</S.ProductCategory>
-        <S.ProductPrice>{product.price}</S.ProductPrice>
+        <S.ProductPrice>{formatPrice(product.price)}원</S.ProductPrice>
       </S.ContentSection>
       <S.ButtonSection isCarting={isCarting}>
         {isCarting && (
@@ -90,7 +91,6 @@ export default function ProductCard({
             onMinusCount={() => {
               quantity > 0 && setQuantity((prev) => prev - 1);
             }}
-            // onCount={setCount}
           />
         )}
         <CustomButton
