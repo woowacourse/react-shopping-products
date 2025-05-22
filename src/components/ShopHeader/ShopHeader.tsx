@@ -5,7 +5,7 @@ const ShopHeader = ({ cartItemCount }: { cartItemCount: number }) => {
   return (
     <S.Header>
       <S.Logo href="/">SHOP</S.Logo>
-      <S.CartImage src={Cart} alt="장바구니" />
+      <S.CartIcon src={Cart} alt="장바구니" role="button" tabIndex={0} />
       {!!cartItemCount && <S.CartItemCount>{cartItemCount}</S.CartItemCount>}
     </S.Header>
   );

@@ -18,7 +18,7 @@ export const Logo = styled.a`
   text-decoration: none;
 `;
 
-export const CartImage = styled.img`
+export const CartIcon = styled.img`
   cursor: pointer;
 
   user-select: none;

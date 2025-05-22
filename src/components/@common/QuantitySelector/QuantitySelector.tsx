@@ -13,17 +13,17 @@ const QuantitySelector = ({ quantity, onIncrease, onDecrease }: Props) => {
     <S.QuantitySelector>
       <S.ButtonIcon
         src={MinusButton}
-        alt=""
+        alt="수량 감소"
         onClick={onDecrease}
-        aria-label="수량 감소 버튼"
+        role="button"
         tabIndex={0}
       />
       {quantity}
       <S.ButtonIcon
         src={PlusButton}
-        alt=""
+        alt="수량 증가"
         onClick={onIncrease}
-        aria-label="수량 증가 버튼"
+        role="button"
         tabIndex={0}
       />
     </S.QuantitySelector>
