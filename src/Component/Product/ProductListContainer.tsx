@@ -53,6 +53,7 @@ export default function ProductListContainer({
           updateCartItems={updateCartItems}
           getMatchCartItem={getMatchCartItem}
           checkMax={checkMax}
+          updateErrorMessage={updateErrorMessage}
         />
       ) : null}
       {status === 'loading' ? (
