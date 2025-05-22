@@ -1,7 +1,7 @@
 import { CartProduct, Product } from '../types';
 
-const getElementById = (elements: (Product | CartProduct)[], id: number) => {
-  return elements.filter((element) => element.id === id);
+const getElementById = <T>(elements: (Product | CartProduct)[], id: number) => {
+  return elements.filter((element) => element.id === id) as T;
 };
 
 export default getElementById;

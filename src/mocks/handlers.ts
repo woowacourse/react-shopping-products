@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { CART_URL, PRODUCT_URL } from '../constants/endpoint';
-import { filterType, SortingType } from '../types';
+import { CartProduct, filterType, Product, SortingType } from '../types';
 import productsMockData from './data/productsMockData';
 import cartMockData from './data/cartMockData';
 import { filterProductList, getElementById, sortProductList } from '../utils';
@@ -30,7 +30,7 @@ export const handlers = [
 
     const cartId = nextId;
     nextId += 1;
-    const product = getElementById(productsMockData.content, productId);
+    const product = getElementById<Product[]>(productsMockData.content, productId);
 
     if (!productId || quantity < 1 || product.length === 0) return HttpResponse.error();
 
@@ -54,5 +54,28 @@ export const handlers = [
     cartMockData.content = cartMockData.content.filter((cart) => cart.id !== id);
 
     return HttpResponse.json({ ok: true }, { status: 201 });
+  }),
+
+  http.patch(`${CART_URL}/:id`, async ({ params, request }) => {
+    const cartId = Number(params.id);
+    const body = await request.json();
+
+    const { quantity } = body as { quantity: number };
+    const cart = getElementById<CartProduct[]>(cartMockData.content, cartId);
+
+    if (!cartId || quantity < 1 || cart.length === 0) return HttpResponse.error();
+
+    if (quantity > cart[0].quantity)
+      return HttpResponse.json(
+        {
+          errorCode: 'OUT_OF_STOCK',
+          message: '재고 수량을 초과하여 담을 수 없습니다.',
+        },
+        { status: 400 }
+      );
+
+    cartMockData.content = [...cartMockData.content, { ...cart[0], quantity }];
+
+    return HttpResponse.json({ ok: true }, { status: 200 });
   }),
 ];
