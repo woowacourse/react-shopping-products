@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 
-interface useFetcherProps<T> {
+interface useFetchDataProps<T> {
   apiCall: () => Promise<T>;
   dataName: string;
   onSuccess: (data: T, updateHandler: (name: string, value: T) => void) => void;
   onError: (error: Error | unknown) => void;
 }
 
-const useFetcher = <T>({ apiCall, dataName, onSuccess, onError }: useFetcherProps<T>) => {
+const useFetchData = <T>({ apiCall, dataName, onSuccess, onError }: useFetchDataProps<T>) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<Map<string, T>>(new Map());
 
@@ -38,4 +38,4 @@ const useFetcher = <T>({ apiCall, dataName, onSuccess, onError }: useFetcherProp
   };
 };
 
-export default useFetcher;
+export default useFetchData;
