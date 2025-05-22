@@ -10,10 +10,10 @@ import { useQueryContext } from "../../contexts/QueryContext";
 import { useProductQuery } from "../../hooks/useProductQuery";
 
 export default function Header() {
-  const { dataPool, productsQuery } = useQueryContext();
+  const { dataPool, productsQuery, categoryQuery } = useQueryContext();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const productURL = useProductQuery(productsQuery);
+  const productURL = useProductQuery(productsQuery, categoryQuery);
   const { refetch: fetchProducts } = useData(
     "products",
     productURL,

@@ -7,7 +7,7 @@ import {
   useMemo,
   useCallback,
 } from "react";
-import { OrderByOptionType } from "../types/categoryOption";
+import { CategoryOptionType, OrderByOptionType } from "../types/categoryOption";
 import type { DataKey, DataPoolMap } from "../types/data-types";
 
 type DataPool = Partial<DataPoolMap>;
@@ -18,6 +18,8 @@ interface QueryCtx {
   controllers: React.MutableRefObject<Record<string, AbortController | null>>;
   productsQuery: OrderByOptionType;
   setProductsQuery: (q: OrderByOptionType) => void;
+  categoryQuery: CategoryOptionType;
+  setCategoryQuery: (q: CategoryOptionType) => void;
 }
 
 const QueryContext = createContext<QueryCtx | undefined>(undefined);
@@ -29,6 +31,8 @@ export const QueryContextProvider = ({ children }: { children: ReactNode }) => {
 
   const [productsQuery, _setProductsQuery] =
     useState<OrderByOptionType>("낮은 가격순");
+  const [categoryQuery, _setCategoryQuery] =
+    useState<CategoryOptionType>("전체");
 
   const setData = useCallback(
     (key: DataKey, value: DataPoolMap[DataKey]) =>
@@ -41,10 +45,32 @@ export const QueryContextProvider = ({ children }: { children: ReactNode }) => {
     },
     [_setProductsQuery]
   );
+  const setCategoryQuery = useCallback(
+    (query: CategoryOptionType) => {
+      _setCategoryQuery(query);
+    },
+    [_setCategoryQuery]
+  );
 
   const value = useMemo(
-    () => ({ dataPool, setData, controllers, productsQuery, setProductsQuery }),
-    [dataPool, setData, controllers, productsQuery, setProductsQuery]
+    () => ({
+      dataPool,
+      setData,
+      controllers,
+      productsQuery,
+      setProductsQuery,
+      categoryQuery,
+      setCategoryQuery,
+    }),
+    [
+      dataPool,
+      setData,
+      controllers,
+      productsQuery,
+      setProductsQuery,
+      categoryQuery,
+      setCategoryQuery,
+    ]
   );
 
   return (

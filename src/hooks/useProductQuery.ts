@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { URLS } from "../constants/url";
-import { OrderByOptionType } from "../types/categoryOption";
+import { CategoryOptionType, OrderByOptionType } from "../types/categoryOption";
 const defaultSearchParams = {
   page: "0",
   size: "50",
@@ -10,7 +10,10 @@ const sortParams: Record<OrderByOptionType, string> = {
   "높은 가격순": "price,desc",
 };
 
-export function useProductQuery(orderBy: OrderByOptionType | null) {
+export function useProductQuery(
+  orderBy: OrderByOptionType,
+  category: CategoryOptionType
+) {
   return useMemo(() => {
     if (!orderBy) {
       return URLS.PRODUCTS;
@@ -22,11 +25,14 @@ export function useProductQuery(orderBy: OrderByOptionType | null) {
       : URLS.PRODUCTS;
 
     const url = new URL(baseUrl);
+
     const params = new URLSearchParams({
       ...defaultSearchParams,
       sort: sortParams[orderBy],
+      category: category === "전체" ? "" : category,
     });
+
     url.search = params.toString();
     return url;
-  }, [orderBy]);
+  }, [orderBy, category]);
 }

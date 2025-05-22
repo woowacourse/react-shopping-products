@@ -67,7 +67,7 @@ function ProductCard({
   }, [imageUrl, fallbackImagePath]);
 
   return (
-    <li css={styles.cardCss}>
+    <li css={styles.cardCss} data-testid="product-card">
       {imageStatus === "loading" && <Spinner size={"large"} />}
 
       <div css={styles.imageCss}>

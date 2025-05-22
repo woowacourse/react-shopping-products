@@ -27,7 +27,6 @@ vi.mock("../contexts/ErrorContext", () => ({
   ),
 }));
 
-// QueryContext 모킹을 위한 인터페이스 정의
 interface MockContextValue {
   dataPool: {
     products: ProductWithQuantity[];
@@ -37,7 +36,6 @@ interface MockContextValue {
   setProductsQuery: () => void;
 }
 
-// QueryContext 모킹 (테스트 간에 상태를 변경할 수 있게 설정)
 const mockContextValue: MockContextValue = {
   dataPool: {
     products: [],
@@ -67,7 +65,7 @@ vi.mock("../hooks/useFetch", () => ({
   }),
 }));
 
-describe("CartButton 컴포넌트", () => {
+describe("ProductCard 컴포넌트는", () => {
   afterEach(() => {
     cleanup();
     vi.resetModules();

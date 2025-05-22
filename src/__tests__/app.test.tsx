@@ -50,29 +50,15 @@ describe("App에서는 ", () => {
     });
   });
 
-  describe("데이터 로드 후 에는", () => {
+  describe("초기화 단계에서는", () => {
     beforeEach(() => {
       setupUseDataMock({ productsData: [...mockProducts], cartData: [] });
     });
 
-    it("컴포넌트 마운트 시 fetch 함수가 호출된다", async () => {
+    it("컴포넌트 마운트 시 두개의 fetch 함수가 호출된다", async () => {
       await renderAppWithProviders();
       expect(mockFetchProducts).toHaveBeenCalledTimes(1);
       expect(mockFetchCart).toHaveBeenCalledTimes(1);
-    });
-
-    it("카테고리 필터링이 올바르게 동작한다", async () => {
-      await renderAppWithProviders();
-
-      await waitFor(() => expect(screen.getByText("바지")).toBeInTheDocument());
-
-      fireEvent.click(screen.getByText("전체"));
-      fireEvent.click(screen.getByText("식료품"));
-
-      expect(screen.getByText("코카콜라")).toBeInTheDocument();
-      expect(screen.getByText("사이다")).toBeInTheDocument();
-      expect(screen.queryByText("바지")).not.toBeInTheDocument();
-      expect(screen.queryByText("치마")).not.toBeInTheDocument();
     });
   });
 });

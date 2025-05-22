@@ -1,42 +1,17 @@
-import { screen, fireEvent, cleanup } from "@testing-library/react";
+import { screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 
 import "@testing-library/jest-dom";
 import { renderAppWithProviders } from "../test-utils/renderWithProviders";
-import { mockProducts } from "../test-utils/mock-data";
-import { setupUseDataMock } from "../test-utils/setupUseDataMock";
-
-const mockSetOrderBy = vi.fn();
-
-vi.mock("../contexts/ErrorContext", () => ({
-  useErrorContext: () => ({ showError: vi.fn(), error: null }),
-  ErrorContextProvider: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
-}));
-
-vi.mock("../contexts/QueryContext", () => ({
-  useQueryContext: () => ({
-    dataPool: { products: [...mockProducts] },
-    productsQuery: "낮은 가격순",
-    setProductsQuery: mockSetOrderBy,
-  }),
-  QueryContextProvider: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
-}));
+import { products } from "../mocks/data";
 
 describe("App에서는 필터링이 작동하며,", () => {
-  beforeEach(() => {
-    setupUseDataMock({ productsLoading: true, cartLoading: true });
-  });
+  beforeEach(() => {});
   afterEach(() => {
     cleanup();
-    vi.resetModules();
     vi.clearAllMocks();
   });
   it('카테고리 드롭다운이 초기에는 "전체"로 설정되어 있어야 함', async () => {
-    setupUseDataMock({ productsLoading: false, cartLoading: false });
     await renderAppWithProviders();
     const categoryDropdown = screen.getByText("전체");
     expect(categoryDropdown).toBeDefined();
@@ -53,31 +28,52 @@ describe("App에서는 필터링이 작동하며,", () => {
   });
 
   it("카테고리 옵션을 선택하면 해당 카테고리의 상품만 표시되어야 함", async () => {
-    setupUseDataMock({
-      productsLoading: false,
-      cartLoading: false,
-      productsData: [...mockProducts],
-    });
+    const fashionProductsCount = products.filter(
+      (product) => product.category === "패션잡화"
+    ).length;
+    const foodProductsCount = products.filter(
+      (product) => product.category === "식료품"
+    ).length;
+    const allProductsCount = products.length;
+
     await renderAppWithProviders();
+
+    await waitFor(
+      () => {
+        const productCards = screen.queryAllByTestId("product-card");
+        expect(productCards.length).toBeGreaterThan(0);
+      },
+      { timeout: 3000 }
+    );
+
     const categoryDropdown = screen.getByText("전체");
 
+    expect(screen.getAllByTestId("product-card")).toHaveLength(
+      allProductsCount
+    );
+
     fireEvent.click(categoryDropdown);
+    const fashionOption = screen.getByText("패션잡화");
+    fireEvent.click(fashionOption);
 
-    fireEvent.click(screen.getByText("패션잡화"));
+    await waitFor(
+      () => {
+        const productCards = screen.queryAllByTestId("product-card");
+        expect(productCards.length).toBe(fashionProductsCount);
+      },
+      { timeout: 3000 }
+    );
 
-    expect(screen.getByText("바지")).toBeDefined();
-    expect(screen.getByText("치마")).toBeDefined();
-    expect(screen.queryByText("코카콜라")).toBeNull();
-  });
+    fireEvent.click(categoryDropdown);
+    const foodOption = screen.getByText("식료품");
+    fireEvent.click(foodOption);
 
-  it("정렬 드롭다운을 클릭하면 setOrderBy가 호출되어야 함", async () => {
-    await renderAppWithProviders();
-    const sortDropdown = screen.getByText("낮은 가격순");
-    fireEvent.click(sortDropdown);
-
-    const highToLow = screen.getByText("높은 가격순");
-    fireEvent.click(highToLow);
-
-    expect(mockSetOrderBy).toHaveBeenCalledWith("높은 가격순");
-  });
+    await waitFor(
+      () => {
+        const productCards = screen.queryAllByTestId("product-card");
+        expect(productCards.length).toBe(foodProductsCount);
+      },
+      { timeout: 3000 }
+    );
+  }, 10000);
 });

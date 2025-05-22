@@ -28,7 +28,7 @@ function CartCard({ cartItem }: CartCardProps) {
     commonOpts,
     false
   );
-  const { fetcher: deleteItem, error: deleteError } = useFetch(
+  const { fetcher: deleteItem } = useFetch(
     `${URLS.CART_ITEMS}/${cartItem.id}`,
     { ...commonOpts, method: "DELETE" },
     false
