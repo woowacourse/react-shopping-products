@@ -20,14 +20,13 @@ export default function CartButton({
 }: CartButtonProps) {
   const { showError } = useErrorContext();
 
+  const { dataPool } = useQueryContext();
   const { refetch: fetchCart } = useData(
     "cart-items",
     URLS.CART_ITEMS,
     commonOpts,
     false
   );
-  const { dataPool } = useQueryContext();
-
   const cartData = dataPool["cart-items"];
   const productsData = dataPool["products"];
 

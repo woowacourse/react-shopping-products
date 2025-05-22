@@ -2,16 +2,19 @@ import { css } from "@emotion/react";
 
 export const cartCardCss = css({
   display: "flex",
-  width: "182px",
-  height: "250px",
-  flexDirection: "column",
+  width: "100%",
+  height: "100px",
+  gap: "16px",
+  flexDirection: "row",
+  justifyContent: "flex-start",
+  alignItems: "flex-start",
   borderRadius: "8px 8px 0 0",
-  backgroundColor: "white",
 });
 
 export const cartCardImageCss = css({
+  width: "90px",
+  height: "90px",
   position: "relative",
-  height: "50%",
   img: {
     width: "100%",
     height: "100%",
@@ -21,15 +24,14 @@ export const cartCardImageCss = css({
 });
 
 export const cartCardDetailCss = css({
-  padding: "15px 8px 0 8px",
   h2: {
     fontWeight: "700",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
     fontSize: "20px",
   },
   p: { fontWeight: "500", fontSize: "14px", marginBottom: "1rem" },
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
 });
 
 export const cartCardSoldOutCss = css({
@@ -48,5 +50,33 @@ export const cartCardSoldOutCss = css({
     fontSize: "32px",
     fontWeight: "600",
     color: "white",
+  },
+});
+export const cartCardDeleteCss = css({
+  width: "48px",
+  height: "24px",
+  backgroundColor: "white",
+  color: "black",
+  border: "1px solid #E0E0E0",
+  borderRadius: "4px",
+  cursor: "pointer",
+  marginLeft: "auto",
+  transition: "background-color 0.3s ease, color 0.3s ease",
+  "&:hover": {
+    backgroundColor: "#E0E0E0",
+    color: "black",
+    border: "1px solid #E0E0E0",
+  },
+  "&:hover:enabled:focus": {
+    backgroundColor: "#E0E0E0",
+    color: "black",
+    border: "1px solid #E0E0E0",
+  },
+  "&:disabled": {
+    backgroundColor: "#E0E0E0",
+  },
+  "&:disabled:hover": {
+    backgroundColor: "#E0E0E0",
+    color: "black",
   },
 });

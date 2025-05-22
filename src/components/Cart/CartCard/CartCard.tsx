@@ -1,5 +1,11 @@
+import { commonOpts } from "../../../constants/requestHeader.ts";
+import { URLS } from "../../../constants/url.ts";
+import { useErrorContext } from "../../../contexts/ErrorContext.tsx";
+import { useData } from "../../../hooks/useData.ts";
+import useFetch from "../../../hooks/useFetch.ts";
 import { CartItem } from "../../../types/cartContents.ts";
 import CartButton from "../../CartButton/CartButton";
+import QuantityButton from "../../QuantityButton/QuantityButton.tsx";
 import Spinner from "../../Spinner/Spinner";
 import * as styles from "./CartCard.style.tsx";
 import { useState, useMemo, useEffect } from "react";
@@ -10,11 +16,25 @@ interface CartCardProps {
 type ImageStatus = "loading" | "loaded" | "error";
 
 function CartCard({ cartItem }: CartCardProps) {
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [imageStatus, setImageStatus] = useState<ImageStatus>("loading");
   const [finalImageUrl, setFinalImageUrl] = useState<string>(
     cartItem.product.imageUrl
   );
 
+  const { refetch: fetchCart } = useData(
+    "cart-items",
+    URLS.CART_ITEMS,
+    commonOpts,
+    false
+  );
+  const { fetcher: deleteItem, error: deleteError } = useFetch(
+    `${URLS.CART_ITEMS}/${cartItem.id}`,
+    { ...commonOpts, method: "DELETE" },
+    false
+  );
+
+  const { showError } = useErrorContext();
   // 배포 환경에 따른 베이스 경로 계산
   const basePath = useMemo(() => {
     // GitHub Pages 환경인지 확인
@@ -31,6 +51,17 @@ function CartCard({ cartItem }: CartCardProps) {
 
   // Fallback 이미지 경로
   const fallbackImagePath = `${basePath}assets/fallback_image.png`;
+  const handleCartItemDelete = async () => {
+    try {
+      setDeleteLoading(true);
+      await deleteItem();
+      await fetchCart();
+    } catch (error) {
+      if (error instanceof Error) showError(error);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
 
   // 이미지 URL 검증 및 처리
   useEffect(() => {
@@ -72,8 +103,20 @@ function CartCard({ cartItem }: CartCardProps) {
       <div css={styles.cartCardDetailCss}>
         <h2>{cartItem.product.name}</h2>
         <p>{`${cartItem.product.price.toLocaleString()}원`}</p>
-        <CartButton productId={cartItem.product.id} cartItemId={cartItem.id} />
+        <QuantityButton
+          productId={cartItem.product.id}
+          cartItemId={cartItem.id}
+          disableButtonWhenQuantityOne={true}
+        />
+        ;
       </div>
+      <button
+        css={styles.cartCardDeleteCss}
+        onClick={handleCartItemDelete}
+        disabled={deleteLoading}
+      >
+        삭제
+      </button>
     </li>
   );
 }
