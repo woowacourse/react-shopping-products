@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ProductCard } from "./components";
 
 import { CartItemApi, ProductApi } from "@/apis";
-import { useQuery } from "@/modules";
+import { useMutation, useQuery } from "@/modules";
 import * as S from "./ProductsPage.styles";
 import { CATEGORY, DEFAULT_FILTER, DEFAULT_SORT, SORT } from "./constants";
 import { Category, Sort } from "./types";
@@ -19,6 +19,14 @@ export default function ProductsPage() {
   const { data: products, status: productsStatus } = useQuery({
     queryFn: ProductApi.getAllProducts,
     queryKey: "products",
+  });
+  const { mutate: mutatePostCartItem } = useMutation({
+    mutationFn: CartItemApi.postCartItems,
+    queryKey: "cartItems",
+  });
+  const { mutate: mutatePatchCartItem } = useMutation({
+    mutationFn: CartItemApi.patchCartItems,
+    queryKey: "cartItems",
   });
 
   const { data: cartItems, status: cartItemsStatus, refetch: refetchCartItems } = useCartItemsQuery();
@@ -37,15 +45,27 @@ export default function ProductsPage() {
     }
 
     if (!cartItem) {
-      await CartItemApi.postCartItems({ productId });
+      await mutatePostCartItem({ productId });
+      await refetchCartItems();
     } else {
-      await CartItemApi.patchCartItems({
-        cartItemId: cartItem.id,
-        quantity: cartItem.quantity + 1,
-      });
-    }
+      await mutatePatchCartItem(
+        {
+          cartItemId: cartItem.id,
+          quantity: cartItem.quantity + 1,
+        },
+        (prev) => {
+          const currentCartItemIndex = prev.content.findIndex((item) => item.product.id === productId);
 
-    await refetchCartItems();
+          const newCartContent = [...prev.content];
+          newCartContent[currentCartItemIndex] = {
+            ...newCartContent[currentCartItemIndex],
+            quantity: cartItem.quantity + 1,
+          };
+
+          return { ...prev, content: newCartContent };
+        },
+      );
+    }
   };
 
   const decreaseCartItem = async (productId: number) => {
@@ -64,6 +84,7 @@ export default function ProductsPage() {
   };
 
   const isLoading = productsStatus === "loading" || cartItemsStatus === "loading";
+
   if (isLoading && !cartItems) return <Spinner />;
   return (
     <>
@@ -87,7 +108,7 @@ export default function ProductsPage() {
               <ProductCard
                 key={product.id}
                 product={product}
-                cartItem={cartItems.content.find((item) => item.product.id === product.id)}
+                cartItem={cartItems?.content.find((item) => item.product.id === product.id)}
                 handleIncreaseCartItem={increaseCartItem}
                 handleDecreaseCartItem={decreaseCartItem}
               />
