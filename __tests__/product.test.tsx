@@ -3,9 +3,18 @@ import { vi, describe, test, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as useGetProductsModule from '../src/hooks/useGetProducts';
 import * as useGetCartsModule from '../src/hooks/useGetCartItems';
+import * as useToastModule from '../src/hooks/useToast';
 import { ProductDTOType } from '../src/types/product';
 import React from 'react';
 import ProductsPage from '../src/pages/ProductsPage/ProductsPage';
+import { ToastContext } from '../src/context/ToastContext';
+
+const MockToastProvider = ({ children }: { children: React.ReactNode }) => {
+  const mockShowToast = vi.fn();
+  return (
+    <ToastContext.Provider value={{ showToast: mockShowToast }}>{children}</ToastContext.Provider>
+  );
+};
 
 const mockProducts: ProductDTOType[] = [
   {
@@ -52,6 +61,8 @@ describe('ProductsPage 컴포넌트 테스트', () => {
   beforeEach(() => {
     vi.resetAllMocks();
 
+    vi.spyOn(useToastModule, 'useToast').mockImplementation(() => {});
+
     global.fetch = vi.fn().mockImplementation((url: string) => {
       if (url.includes('/cart-items') && !url.includes('?page')) {
         return Promise.resolve({
@@ -72,20 +83,26 @@ describe('ProductsPage 컴포넌트 테스트', () => {
     vi.spyOn(useGetProductsModule, 'default').mockReturnValue({
       isLoading: false,
       isError: false,
+      errorMessage: '',
       products: mockProducts,
     });
 
     vi.spyOn(useGetCartsModule, 'default').mockReturnValue({
       isLoading: false,
       isError: false,
+      errorMessage: '',
       carts: initialCarts,
       refetchCarts: vi.fn().mockResolvedValue(initialCarts),
     });
   });
 
+  const renderWithToast = (ui: React.ReactNode) => {
+    return render(ui, { wrapper: MockToastProvider });
+  };
+
   describe('상품 목록 조회 기능', () => {
     test('상품 목록이 정상적으로 렌더링되어야 한다', async () => {
-      render(<ProductsPage />);
+      renderWithToast(<ProductsPage />);
 
       expect(screen.getByText('bpple 상품 목록')).toBeInTheDocument();
 
@@ -97,27 +114,32 @@ describe('ProductsPage 컴포넌트 테스트', () => {
       });
     });
 
-    test('상품 정보를 불러오지 못할 때 에러 UI가 표시되어야 한다', async () => {
+    test('상품 정보를 불러오지 못할 때 에러 메시지가 전달되어야 한다', async () => {
+      const mockUseToast = vi.fn();
+      vi.spyOn(useToastModule, 'useToast').mockImplementation(mockUseToast);
+
       vi.spyOn(useGetProductsModule, 'default').mockReturnValue({
         isLoading: false,
         isError: true,
+        errorMessage: '상품 정보를 불러오지 못했습니다',
         products: null,
       });
 
-      render(<ProductsPage />);
+      renderWithToast(<ProductsPage />);
 
-      expect(screen.getByText('상품 정보를 불러오지 못했습니다.')).toBeInTheDocument();
+      expect(mockUseToast).toHaveBeenCalledWith('상품 정보를 불러오지 못했습니다');
     });
   });
 
   describe('상품 정렬 및 필터링 기능', () => {
     test('카테고리 필터링이 정상 작동해야 한다', async () => {
       const useGetProductsMock = vi.spyOn(useGetProductsModule, 'default');
-      const { rerender } = render(<ProductsPage />);
+      const { rerender } = renderWithToast(<ProductsPage />);
 
       useGetProductsMock.mockReturnValue({
         isLoading: false,
         isError: false,
+        errorMessage: '',
         products: mockProducts.filter((product) => product.category === '식료품'),
       });
 
@@ -137,12 +159,13 @@ describe('ProductsPage 컴포넌트 테스트', () => {
 
     test('낮은 가격 순으로 정렬이 정상 작동해야 한다', async () => {
       const useGetProductsMock = vi.spyOn(useGetProductsModule, 'default');
-      const { rerender } = render(<ProductsPage />);
+      const { rerender } = renderWithToast(<ProductsPage />);
 
       const ascSortedProducts = [...mockProducts].sort((a, b) => a.price - b.price);
       useGetProductsMock.mockReturnValue({
         isLoading: false,
         isError: false,
+        errorMessage: '',
         products: ascSortedProducts,
       });
 
@@ -159,12 +182,13 @@ describe('ProductsPage 컴포넌트 테스트', () => {
 
     test('높은 가격 순으로 정렬이 정상 작동해야 한다', async () => {
       const useGetProductsMock = vi.spyOn(useGetProductsModule, 'default');
-      const { rerender } = render(<ProductsPage />);
+      const { rerender } = renderWithToast(<ProductsPage />);
 
       const descSortedProducts = [...mockProducts].sort((a, b) => b.price - a.price);
       useGetProductsMock.mockReturnValue({
         isLoading: false,
         isError: false,
+        errorMessage: '',
         products: descSortedProducts,
       });
 
@@ -182,28 +206,32 @@ describe('ProductsPage 컴포넌트 테스트', () => {
 
   describe('장바구니 조회 기능', () => {
     test('장바구니 아이템 개수가 헤더에 표시되어야 한다', () => {
-      render(<ProductsPage />);
+      renderWithToast(<ProductsPage />);
 
       expect(screen.getByText('1')).toBeInTheDocument();
     });
 
-    test('장바구니 조회 에러 시 에러 UI가 표시되어야 한다', () => {
+    test('장바구니 조회 에러 시 에러 메시지가 전달되어야 한다', () => {
+      const mockUseToast = vi.fn();
+      vi.spyOn(useToastModule, 'useToast').mockImplementation(mockUseToast);
+
       vi.spyOn(useGetCartsModule, 'default').mockReturnValue({
         isLoading: false,
         isError: true,
+        errorMessage: '장바구니 정보를 불러오지 못했습니다',
         carts: null,
         refetchCarts: vi.fn(),
       });
 
-      render(<ProductsPage />);
+      renderWithToast(<ProductsPage />);
 
-      expect(screen.getByText('장바구니 정보를 불러오지 못했습니다.')).toBeInTheDocument();
+      expect(mockUseToast).toHaveBeenCalledWith('장바구니 정보를 불러오지 못했습니다');
     });
   });
 
   describe('상품 장바구니 담기 기능', () => {
     test('담기 버튼 클릭 시 장바구니에 상품이 추가되어야 한다', async () => {
-      render(<ProductsPage />);
+      renderWithToast(<ProductsPage />);
 
       const addButtons = screen.getAllByText('담기');
       expect(addButtons.length).toBeGreaterThan(0);
@@ -227,25 +255,35 @@ describe('ProductsPage 컴포넌트 테스트', () => {
       expect(requestBody).toHaveProperty('quantity', 1);
     });
 
-    test('장바구니 담기 에러 시 에러 UI가 표시되어야 한다', async () => {
+    test('장바구니 담기 에러 시 에러 메시지가 전달되어야 한다', async () => {
+      const mockUseToast = vi.fn();
+      vi.spyOn(useToastModule, 'useToast').mockImplementation(mockUseToast);
+
       global.fetch = vi.fn().mockResolvedValueOnce({
         ok: false,
+        json: () => Promise.reject(new Error('장바구니에 상품을 담지 못했습니다')),
       });
 
-      render(<ProductsPage />);
+      renderWithToast(<ProductsPage />);
 
       const addButtons = screen.getAllByText('담기');
       fireEvent.click(addButtons[0]);
 
       await waitFor(() => {
-        expect(screen.getByText('장바구니에 상품을 담지 못했습니다.')).toBeInTheDocument();
+        expect(mockUseToast).toHaveBeenCalledWith(
+          expect.stringContaining('장바구니에 상품을 담지 못했습니다'),
+        );
       });
     });
 
-    test('장바구니 최대 개수(50개) 초과 시 에러 UI가 표시되어야 한다', async () => {
+    test('장바구니 최대 개수(50개) 초과 시 에러 메시지가 전달되어야 한다', async () => {
+      const mockUseToast = vi.fn();
+      vi.spyOn(useToastModule, 'useToast').mockImplementation(mockUseToast);
+
       vi.spyOn(useGetCartsModule, 'default').mockReturnValue({
         isLoading: false,
         isError: false,
+        errorMessage: '',
         carts: Array.from({ length: 50 }, (_, i) => ({
           id: i + 1,
           quantity: 1,
@@ -254,15 +292,15 @@ describe('ProductsPage 컴포넌트 테스트', () => {
         refetchCarts: vi.fn(),
       });
 
-      render(<ProductsPage />);
+      renderWithToast(<ProductsPage />);
 
       const addButtons = screen.getAllByText('담기');
       fireEvent.click(addButtons[0]);
 
       await waitFor(() => {
-        expect(
-          screen.getByText('장바구니는 최대 50개의 상품을 담을 수 있습니다.'),
-        ).toBeInTheDocument();
+        expect(mockUseToast).toHaveBeenCalledWith(
+          '장바구니는 최대 50개의 상품을 담을 수 있습니다.',
+        );
       });
 
       expect(fetch).not.toHaveBeenCalledWith(
@@ -274,7 +312,7 @@ describe('ProductsPage 컴포넌트 테스트', () => {
 
   describe('상품 장바구니 빼기 기능', () => {
     test('빼기 버튼 클릭 시 장바구니에서 상품이 제거되어야 한다', async () => {
-      render(<ProductsPage />);
+      renderWithToast(<ProductsPage />);
 
       const removeButtons = screen.getAllByText('빼기');
       expect(removeButtons.length).toBeGreaterThan(0);
@@ -290,18 +328,24 @@ describe('ProductsPage 컴포넌트 테스트', () => {
       });
     });
 
-    test('장바구니 빼기 에러 시 에러 메시지가 표시되어야 한다', async () => {
+    test('장바구니 빼기 에러 시 에러 메시지가 전달되어야 한다', async () => {
+      const mockUseToast = vi.fn();
+      vi.spyOn(useToastModule, 'useToast').mockImplementation(mockUseToast);
+
       global.fetch = vi.fn().mockResolvedValueOnce({
         ok: false,
+        json: () => Promise.reject(new Error('장바구니에 상품을 빼지 못했습니다')),
       });
 
-      render(<ProductsPage />);
+      renderWithToast(<ProductsPage />);
 
       const removeButtons = screen.getAllByText('빼기');
       fireEvent.click(removeButtons[0]);
 
       await waitFor(() => {
-        expect(screen.getByText('장바구니에 상품을 빼지 못했습니다.')).toBeInTheDocument();
+        expect(mockUseToast).toHaveBeenCalledWith(
+          expect.stringContaining('장바구니에 상품을 빼지 못했습니다'),
+        );
       });
     });
   });
