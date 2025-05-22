@@ -26,13 +26,13 @@ const SORT_OPTIONS = [
 function App() {
   const [category, setCategory] = useState<Category>('all');
   const [cartTypeQuantity, setCartTypeQuantity] = useState<number>(0);
-  const [errors, setErrors] = useState<string>('');
 
-  const { products, cartProducts, fetchProducts, error, isLoading, setSortValue } = useProductsWithCartContext();
+  const { products, cartProducts, fetchProducts, error, setError, isLoading, setSortValue } =
+    useProductsWithCartContext();
 
   useEffect(() => {
     if (error !== '') {
-      setErrors(error);
+      setError(error);
     }
   }, [error]);
 
@@ -43,7 +43,7 @@ function App() {
       } catch (error) {
         if (error instanceof Error) {
           console.error('Error fetching products:', error);
-          setErrors('데이터를 가져오는 중 오류가 발생했습니다.');
+          setError('데이터를 가져오는 중 오류가 발생했습니다.');
         }
       }
     };
@@ -56,7 +56,7 @@ function App() {
 
   useEffect(() => {
     if (error !== '') {
-      setErrors(error);
+      setError(error);
     }
   }, [error]);
 
@@ -74,8 +74,8 @@ function App() {
       <Navbar
         cartProducts={cartProducts}
         cartTypeQuantity={cartTypeQuantity}
-        errorMessage={errors}
-        setErrors={setErrors}
+        errorMessage={error}
+        setError={setError}
       />
       <S.ProductListWrapper>
         <S.ProductListHeader>
@@ -106,7 +106,7 @@ function App() {
         ) : (
           <S.ProductList data-testid='product-list'>
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} setErrors={setErrors} />
+              <ProductCard key={product.id} product={product} setError={setError} />
             ))}
           </S.ProductList>
         )}

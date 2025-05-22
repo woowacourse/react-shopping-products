@@ -121,6 +121,7 @@ export const ProductsWithCartProvider = ({ children }: ProductsWithCartProviderP
         cartProducts,
         isLoading,
         error,
+        setError,
         fetchProducts,
         updateCart,
         removeFromCart,

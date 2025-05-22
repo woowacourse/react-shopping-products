@@ -6,7 +6,7 @@ interface CartQuantitySelectorProps {
   productId: number;
   cartProductId: number;
   cartProductQuantity: number;
-  setErrors: (error: string) => void;
+  setError: (error: string) => void;
   isProductSoldOut: boolean;
 }
 
@@ -14,7 +14,7 @@ export default function CartQuantitySelector({
   productId,
   cartProductId,
   cartProductQuantity,
-  setErrors,
+  setError,
   isProductSoldOut,
 }: CartQuantitySelectorProps) {
   const { updateCart } = useProductsWithCartContext();
@@ -33,7 +33,7 @@ export default function CartQuantitySelector({
       } catch (error) {
         if (error instanceof Error) {
           console.error('Error initializing cart product:', error);
-          setErrors('장바구니 초기화 중 오류가 발생했습니다.');
+          setError('장바구니 초기화 중 오류가 발생했습니다.');
         }
       }
     };
@@ -53,7 +53,7 @@ export default function CartQuantitySelector({
     } catch (error) {
       if (error instanceof Error) {
         console.error('Error updating cart product:', error);
-        setErrors('장바구니 수량 업데이트 중 오류가 발생했습니다.');
+        setError('장바구니 수량 업데이트 중 오류가 발생했습니다.');
       }
     }
   };
@@ -69,7 +69,7 @@ export default function CartQuantitySelector({
     } catch (error) {
       if (error instanceof Error) {
         console.error('Error updating cart product:', error);
-        setErrors('장바구니 수량 업데이트 중 오류가 발생했습니다.');
+        setError('장바구니 수량 업데이트 중 오류가 발생했습니다.');
       }
     }
   };

@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Skeleton from './shared/ui/Skeleton.tsx';
@@ -15,10 +15,11 @@ async function enableMocking() {
 
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
-    // <React.StrictMode>
-    <Suspense fallback={<Skeleton />}>
-      <LazyApp />
-    </Suspense>
-    // </React.StrictMode>
+    <React.StrictMode>
+      <Suspense fallback={<Skeleton />}>
+        <LazyApp />
+      </Suspense>
+      //{' '}
+    </React.StrictMode>
   );
 });

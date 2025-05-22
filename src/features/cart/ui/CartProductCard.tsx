@@ -5,10 +5,10 @@ import CartQuantitySelector from '../../products/ui/CartQuantitySelector';
 
 interface CartProductCardProps {
   cartProduct: CartProduct;
-  setErrors: (error: string) => void;
+  setError: (error: string) => void;
 }
 
-export default function CartProductCard({ cartProduct, setErrors }: CartProductCardProps) {
+export default function CartProductCard({ cartProduct, setError }: CartProductCardProps) {
   const { products, removeFromCart } = useProductsWithCartContext();
 
   const productQuantity = products.find((product) => product.id === cartProduct.product.id)?.quantity || 0;
@@ -41,7 +41,7 @@ export default function CartProductCard({ cartProduct, setErrors }: CartProductC
             productId={cartProduct.product.id}
             cartProductId={cartProduct.id}
             cartProductQuantity={cartProduct.quantity}
-            setErrors={setErrors}
+            setError={setError}
             isProductSoldOut={isProductSoldOut}
           />
         </S.CartQuantitySelectorContainer>

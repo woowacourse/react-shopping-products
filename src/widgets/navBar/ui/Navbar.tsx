@@ -9,10 +9,10 @@ interface NavbarProps {
   cartProducts: CartProduct[];
   cartTypeQuantity: number;
   errorMessage: string;
-  setErrors: (error: string) => void;
+  setError: (error: string) => void;
 }
 
-export default function Navbar({ cartProducts, cartTypeQuantity, errorMessage, setErrors }: NavbarProps) {
+export default function Navbar({ cartProducts, cartTypeQuantity, errorMessage, setError }: NavbarProps) {
   const [visibleError, setVisibleError] = useState(errorMessage);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -55,7 +55,7 @@ export default function Navbar({ cartProducts, cartTypeQuantity, errorMessage, s
             <S.ModalContentBody>
               {cartProducts.length > 0 ? (
                 cartProducts.map((cartProduct) => (
-                  <CartProductCard key={cartProduct.id} cartProduct={cartProduct} setErrors={setErrors} />
+                  <CartProductCard key={cartProduct.id} cartProduct={cartProduct} setError={setError} />
                 ))
               ) : (
                 <S.ModalEmptyTitle>장바구니에 상품을 담아주세요.</S.ModalEmptyTitle>

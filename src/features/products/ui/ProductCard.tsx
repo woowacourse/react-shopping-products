@@ -7,10 +7,10 @@ import { Product } from '../../../shared/contexts/productsWithCart/types';
 
 interface ProductCardProps {
   product: Product;
-  setErrors: (error: string) => void;
+  setError: (error: string) => void;
 }
 
-export default function ProductCard({ product, setErrors }: ProductCardProps) {
+export default function ProductCard({ product, setError }: ProductCardProps) {
   const { toggleCartSelection, selectedProductIds } = useProductsWithCartContext();
 
   const isCartSelected = selectedProductIds.includes(product.id);
@@ -61,7 +61,7 @@ export default function ProductCard({ product, setErrors }: ProductCardProps) {
             productId={product.id}
             cartProductId={cartProductId}
             cartProductQuantity={cartProductQuantity}
-            setErrors={setErrors}
+            setError={setError}
             isProductSoldOut={isProductSoldOut}
           />
         )}
