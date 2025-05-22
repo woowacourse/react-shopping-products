@@ -3,7 +3,7 @@ async function postCartItem({ productId, quantity }: { productId: number; quanti
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: import.meta.env.VITE_TOKEN,
+      Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
     },
     body: JSON.stringify({
       productId: productId,

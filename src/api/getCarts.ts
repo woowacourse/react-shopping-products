@@ -2,7 +2,7 @@ async function getCarts() {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/cart-items?page=0&size=50`, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: import.meta.env.VITE_TOKEN,
+      Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
     },
   });
 
