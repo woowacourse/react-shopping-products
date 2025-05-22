@@ -4,10 +4,16 @@ import ModalButton from './Button';
 
 interface CancelButtonProps extends ModalButtonProps {
   variation?: 'primary' | 'secondary';
+  width?: string;
 }
 
-const CancelButton = ({ children = '취소', variation = 'primary', ...rest }: CancelButtonProps) => (
-  <ModalButton css={CancelButtonStyle(variation)} aria-label="취소" {...rest}>
+const CancelButton = ({
+  children = '취소',
+  variation = 'primary',
+  width = '',
+  ...rest
+}: CancelButtonProps) => (
+  <ModalButton css={CancelButtonStyle(variation, width)} aria-label="취소" {...rest}>
     {children}
   </ModalButton>
 );

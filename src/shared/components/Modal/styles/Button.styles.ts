@@ -21,7 +21,10 @@ export const ConfirmButtonStyle = (disabled?: boolean) => css`
   cursor: ${disabled ? 'not-allowed' : 'pointer'};
 `;
 
-export const CancelButtonStyle = (variation: 'primary' | 'secondary' = 'secondary') => {
+export const CancelButtonStyle = (
+  variation: 'primary' | 'secondary' = 'secondary',
+  widthSize: string
+) => {
   const base = css`
     border: 1px solid #ccc;
     padding-left: 18px;
@@ -29,6 +32,7 @@ export const CancelButtonStyle = (variation: 'primary' | 'secondary' = 'secondar
     height: 36px;
     border-radius: 5px;
     cursor: pointer;
+    width: ${widthSize};
   `;
 
   if (variation === 'primary') {
