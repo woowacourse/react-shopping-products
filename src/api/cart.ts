@@ -1,53 +1,58 @@
 import { CartResponse } from '../types/product';
 import { baseUrl } from './config';
 
-export const getCartItem = async (): Promise<CartResponse> => {
-  const response = await fetch(
-    `${baseUrl}/cart-items?page=0&size=50&sort=desc`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+const fetchWithAuth = async (
+  endpoint: string,
+  options: RequestInit = {},
+  errorMessage?: string
+) => {
+  const url = `${baseUrl}${endpoint}`;
+
+  const defaultHeaders = {
+    Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
+    'Content-Type': 'application/json',
+  };
+
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      ...defaultHeaders,
+      ...options.headers,
+    },
+  });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(errorText || '장바구니 조회 중 오류가 발생했습니다.');
+    throw new Error(errorText || errorMessage || `API 요청 실패: ${response.status}`);
   }
 
-  const data = await response.json();
-  return data;
+  return response;
+};
+
+export const getCartItem = async (): Promise<CartResponse> => {
+  const response = await fetchWithAuth(
+    '/cart-items?page=0&size=50&sort=desc',
+    { method: 'GET' },
+    '장바구니 조회 중 오류가 발생했습니다.'
+  );
+
+  return response.json();
 };
 
 export const addCart = async (id: number) => {
-  const response = await fetch(`${baseUrl}/cart-items`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ productId: id, quantity: 1 }),
-  });
-  return response;
+  return fetchWithAuth(
+    '/cart-items',
+    {
+      method: 'POST',
+      body: JSON.stringify({ productId: id, quantity: 1 }),
+    }
+  );
 };
 
 export const removeCart = async (id: number) => {
-  const response = await fetch(`${baseUrl}/cart-items/${id}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Basic ${import.meta.env.VITE_API_TOKEN}`,
-    },
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      errorText || `장바구니 아이템 삭제를 실패했습니다.: ${response.status}`
-    );
-  }
-
-  return response;
+  return fetchWithAuth(
+    `/cart-items/${id}`,
+    { method: 'DELETE' },
+    '장바구니 아이템 삭제를 실패했습니다.'
+  );
 };
