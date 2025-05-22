@@ -48,7 +48,7 @@ function App() {
           <Toast message="오류가 발생했습니다. 잠시 후 다시 시도해 주세요." />
         )}
         {isLoading && <LoadingSpinner duration={2} />}
-        {!isLoading && (
+        {!isLoading && !isError && transformedProducts.length > 0 && (
           <ProductSection
             onFilter={handleFilterCategory}
             onSort={handleSortPrice}
@@ -59,6 +59,9 @@ function App() {
             sort={sort}
             category={category}
           />
+        )}
+        {!isLoading && !isError && transformedProducts.length === 0 && (
+          <div>상품이 존재하지 않습니다.</div>
         )}
       </Layout>
     </>
