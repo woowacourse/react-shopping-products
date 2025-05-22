@@ -21,7 +21,7 @@ function useCartManagement({
 
   useToast(errorAddCardItemMessage);
   useToast(errorDeleteCardItemMessage);
-  useToast(isOverItemCounts ? '장바구니는 최대 50개의 상품을 담을 수 있습니다.' : null);
+  useToast(isOverItemCounts ? `장바구니는 최대 ${CART_LIMIT}개의 상품을 담을 수 있습니다.` : null);
 
   const handleAddCartItem = async ({ productId, quantity }: AddCartItemType) => {
     if (itemCount >= CART_LIMIT) {
