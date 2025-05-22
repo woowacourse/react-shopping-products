@@ -1,133 +1,74 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import React from 'react';
+import { render, waitFor, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { useProducts } from '../hooks/useProducts';
-import * as productApi from '../api/product';
-import * as cartApi from '../api/cart';
-import type { CategoryType, CartResponse } from '../types/product';
+import * as api from '../api/products';
+import { ERROR_MESSAGES } from '../constants/errorMessages';
 
-function TestComponent({
-  mappedSortType,
-  category,
-}: {
-  mappedSortType: string;
-  category: CategoryType;
+const mockShowToast = vi.fn();
+
+vi.mock('../api/products');
+const mockedGetProducts = vi.mocked(api.getProducts);
+
+vi.mock('../context/ToastContext', () => ({
+  useToast: () => ({ showToast: mockShowToast }),
+}));
+
+function TestComponent({sortType, category}: {
+  sortType: string;
+  category?: string;
 }) {
-  const { data, cart, isLoading, isError } = useProducts(
-    mappedSortType,
-    category
-  );
+  const { products, isLoading, isError } = useProducts(sortType, category!);
 
   return (
-    <>
-      <span data-testid="isLoading">{isLoading ? 'true' : 'false'}</span>
-      <span data-testid="isError">{isError ? 'true' : 'false'}</span>
-      <span data-testid="data">{JSON.stringify(data)}</span>
-      <span data-testid="cart">{JSON.stringify(cart)}</span>
-    </>
+    <div>
+      <span data-testid="loading">{String(isLoading)}</span>
+      <span data-testid="error">{String(isError)}</span>
+      <span data-testid="products">
+        {JSON.stringify(products)}
+      </span>
+    </div>
   );
 }
 
-describe('useProducts hook', () => {
-  const mockProducts = {
-    content: [
-      { id: 1, name: 'p1', category: '식료품', price: 100, imageUrl: 'url1' },
-      { id: 2, name: 'p2', category: '패션잡화', price: 200, imageUrl: 'url2' },
-    ],
-  };
-  const mockCart: CartResponse = {
-    content: [
-      {
-        id: 10,
-        quantity: 1,
-        product: {
-          id: 1,
-          name: 'p1',
-          category: '식료품',
-          price: 100,
-          imageUrl: 'url1',
-        },
-      },
-    ],
-    totalElements: 1,
-  };
-
+describe('useProducts 훅', () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
-  it('상품과 장바구니 데이터를 불러온 뒤, 올바르게 매핑한다.', async () => {
-    vi.spyOn(productApi, 'getProduct').mockResolvedValue(mockProducts as any);
-    vi.spyOn(cartApi, 'getCartItem').mockResolvedValue(mockCart);
+  it('정상적으로 상품을 가져오면 상태값이 업데이트된다', async () => {
+    const fakeData = { content: [{ id: 1, name: '테스트 상품' }] };
+    mockedGetProducts.mockResolvedValueOnce(fakeData);
 
-    render(<TestComponent mappedSortType="asc" category="전체" />);
-
-    expect(screen.getByTestId('isLoading').textContent).toBe('true');
-
-    await waitFor(() =>
-      expect(screen.getByTestId('isLoading').textContent).toBe('false')
+    render(
+      <TestComponent sortType="asc" category="electronics" />
     );
 
-    expect(screen.getByTestId('isError').textContent).toBe('false');
+    await waitFor(() =>
+      expect(screen.getByTestId('loading').textContent).toBe('false')
+    );
 
-    const data = JSON.parse(screen.getByTestId('data').textContent || 'null');
-    expect(data).toEqual([
-      {
-        id: 1,
-        name: 'p1',
-        price: 100,
-        category: '식료품',
-        imageUrl: 'url1',
-        isInCart: 1,
-        cartId: 10,
-      },
-      {
-        id: 2,
-        name: 'p2',
-        price: 200,
-        category: '패션잡화',
-        imageUrl: 'url2',
-        isInCart: 0,
-        cartId: undefined,
-      },
-    ]);
-
-    const cart = JSON.parse(screen.getByTestId('cart').textContent || 'null');
-    expect(cart).toEqual(mockCart);
+    expect(screen.getByTestId('products').textContent).toContain(
+      '테스트 상품'
+    );
+    expect(screen.getByTestId('error').textContent).toBe('false');
+    expect(mockShowToast).not.toHaveBeenCalled();
   });
 
-  it('getProduct에서 예외가 발생하면 에러 상태를 설정한다.', async () => {
-    vi.spyOn(productApi, 'getProduct').mockRejectedValue(new Error('fail'));
-    vi.spyOn(cartApi, 'getCartItem').mockResolvedValue(mockCart);
+  it('상품 가져오기 실패 시 에러 상태가 true가 되고 토스트를 띄운다', async () => {
+    mockedGetProducts.mockRejectedValueOnce(new Error('fail'));
 
-    render(<TestComponent mappedSortType="asc" category="전체" />);
-
-    await waitFor(() =>
-      expect(screen.getByTestId('isLoading').textContent).toBe('false')
-    );
-    expect(screen.getByTestId('isError').textContent).toBe('true');
-  });
-
-  it('카테고리별로 상품을 필터링한다.', async () => {
-    vi.spyOn(productApi, 'getProduct').mockResolvedValue(mockProducts as any);
-    vi.spyOn(cartApi, 'getCartItem').mockResolvedValue(mockCart);
-
-    render(<TestComponent mappedSortType="asc" category="식료품" />);
-
-    await waitFor(() =>
-      expect(screen.getByTestId('isLoading').textContent).toBe('false')
+    render(
+      <TestComponent sortType="desc" category="apparel" />
     );
 
-    const data = JSON.parse(screen.getByTestId('data').textContent || 'null');
-    expect(data).toEqual([
-      {
-        id: 1,
-        name: 'p1',
-        price: 100,
-        category: '식료품',
-        imageUrl: 'url1',
-        isInCart: 1,
-        cartId: 10,
-      },
-    ]);
+    await waitFor(() =>
+      expect(screen.getByTestId('loading').textContent).toBe('false')
+    );
+
+    expect(screen.getByTestId('error').textContent).toBe('true');
+    expect(mockShowToast).toHaveBeenCalledWith(
+      ERROR_MESSAGES.productsFetchError
+    );
   });
 });
