@@ -18,8 +18,11 @@ const getBackground = (variant: ToastvariantType) => {
 export const toastContainer = ({ variant }: ToastStyleProps) => css`
   background-color: ${getBackground(variant)};
   position: fixed;
+  width: 429px;
   height: 40px;
   top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
