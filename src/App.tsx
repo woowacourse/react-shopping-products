@@ -33,9 +33,12 @@ function App() {
 
   const {
     data: products,
-    status,
+    isLoading,
     refresh: refetchProducts,
-  } = useApi(async () => await getProducts({sortValue}), 'products');
+  } = useApi(
+    async () => await getProducts({sortValue}),
+    `products-${sortValue}`
+  );
 
   const {data: cartItems, refresh: refetchCartItems} = useApi(
     getCartProduct,
@@ -48,17 +51,18 @@ function App() {
   };
 
   const filteredProducts = filterByValue<Product, 'category'>({
-    array: products?.content,
+    array: products?.content || [],
     compare: 'category',
     value: matchCategory[category],
   });
 
-  if (status === 'loading') return <div>loading...</div>;
-  if (!products || !cartItems) return <></>;
+  if (isLoading && !cartItems) {
+    return <div>loading...</div>;
+  }
 
   return (
     <>
-      <Navbar cartQuantity={cartItems.content.length} />
+      <Navbar cartQuantity={cartItems?.content.length} />
       <S.ProductListWrapper>
         <S.ProductListHeader>
           <S.ProductListHeaderTitle>
@@ -85,10 +89,11 @@ function App() {
               key={product.id}
               product={product}
               onRefetch={handleRefetch}
-              cartQuantity={cartItems.content.length}
+              cartQuantity={cartItems?.content.length}
               cartId={
-                cartItems.content.find((item) => item.product.id === product.id)
-                  ?.id
+                cartItems?.content.find(
+                  (item) => item.product.id === product.id
+                )?.id
               }
             />
           ))}

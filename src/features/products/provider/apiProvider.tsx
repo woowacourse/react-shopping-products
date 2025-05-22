@@ -20,7 +20,6 @@ const ApiContext = createContext<ApiContextType>({
 
 export const ApiProvider = ({children}: {children: ReactNode}) => {
   const [data, setData] = useState<Record<string, unknown>>({});
-
   return (
     <ApiContext.Provider value={{data, setData}}>
       {children}
@@ -30,7 +29,7 @@ export const ApiProvider = ({children}: {children: ReactNode}) => {
 
 export const useApi = <T,>(fetchFn: () => Promise<T>, name: string) => {
   const {data, setData} = useContext(ApiContext);
-  const [status, setStatus] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const showError = useShowError();
 
   const requestApi = useCallback(async () => {
@@ -40,20 +39,20 @@ export const useApi = <T,>(fetchFn: () => Promise<T>, name: string) => {
     } catch (err) {
       showError?.('데이터를 가져오는 중 오류가 발생했습니다.');
     } finally {
-      setStatus('fetched');
+      setIsLoading(false);
     }
   }, [fetchFn, name, setData, showError]);
 
   useEffect(() => {
     if (data[name] === undefined) {
-      setStatus('loading');
+      setIsLoading(true);
       requestApi();
     }
   }, [name, data, requestApi]);
 
   return {
     data: data[name] as T,
-    status,
+    isLoading,
     refresh: requestApi,
   };
 };
