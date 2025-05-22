@@ -1,8 +1,7 @@
-import { useCart } from "../../hooks/useCart";
-import { ERROR_TYPE } from "../../hooks/useError";
 import { ButtonContainer, RemoveButton } from "./CartToggleButton.css";
 import { addItemToCart, removeItemToCart } from "./cartToggleButton.domain";
-import { useState } from "react";
+import { useData } from "../../hooks/useData";
+import { ERROR_TYPE } from "../../hooks/useError";
 
 interface CartToggleButtonProps {
   isAdded: boolean;
@@ -13,18 +12,15 @@ interface CartToggleButtonProps {
 }
 
 function CartToggleButton({
+  isAdded,
   productId,
   cartId,
   cartAmount,
-  isAdded,
   setErrorTrue,
 }: CartToggleButtonProps) {
-  const { setCartItemIds, fetchCartProducts } = useCart();
-  const [isLoading, setIsLoading] = useState(false);
+  const { setCartItemIds, fetchCartProducts } = useData();
 
   const handleAdd = async () => {
-    if (isLoading) return;
-    setIsLoading(true);
     try {
       await addItemToCart({
         productId,
@@ -32,14 +28,12 @@ function CartToggleButton({
         syncCartWithServer: fetchCartProducts,
         setErrorTrue,
       });
-    } finally {
-      setIsLoading(false);
+    } catch {
+      console.log("추가실패");
     }
   };
 
   const handleRemove = async () => {
-    if (isLoading) return;
-    setIsLoading(true);
     try {
       await removeItemToCart({
         cartId,
@@ -47,8 +41,8 @@ function CartToggleButton({
         setCartItemIds,
         setErrorTrue,
       });
-    } finally {
-      setIsLoading(false);
+    } catch {
+      console.log("삭제실패");
     }
   };
 
@@ -67,12 +61,8 @@ function CartToggleButton({
       };
 
   return (
-    <button
-      css={buttonProps.styles}
-      onClick={buttonProps.onClick}
-      disabled={isLoading}
-    >
-      <img src={buttonProps.icon} alt={`${buttonProps.label} 아이콘`} />
+    <button css={buttonProps.styles} onClick={buttonProps.onClick}>
+      <img src={`/${buttonProps.icon}`} alt={`${buttonProps.label} 아이콘`} />
       <p>{buttonProps.label}</p>
     </button>
   );

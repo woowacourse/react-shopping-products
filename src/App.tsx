@@ -4,9 +4,9 @@ import Header from "./components/header/Header";
 import ProductContainer from "./components/productContainer/ProductContainer";
 import ErrorToast from "./components/errorToast/ErrorToast";
 import useError from "./hooks/useError";
-import { CartProvider } from "./hooks/useCart";
 import Modal from "./components/modal/Modal";
 import { useEffect, useState } from "react";
+import { DataProvider } from "./hooks/useData";
 
 function App() {
   const { isError, setErrorTrue, errorMessage } = useError();
@@ -31,12 +31,12 @@ function App() {
 
   return (
     <div className="container">
-      <CartProvider setErrorTrue={setErrorTrue}>
+      <DataProvider setErrorTrue={setErrorTrue}>
         <Header onOpenModal={handleModalToggle} />
         <ProductContainer setErrorTrue={setErrorTrue} />
         {isError && <ErrorToast errorMessage={errorMessage} />}
         {isOpen && <Modal onClose={handleModalToggle} />}
-      </CartProvider>
+      </DataProvider>
     </div>
   );
 }

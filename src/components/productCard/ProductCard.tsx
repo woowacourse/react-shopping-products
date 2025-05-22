@@ -8,50 +8,39 @@ import {
 } from "./ProductCard.css";
 import CartToggleButton from "../cartToggleButton/CartToggleButton";
 import { ERROR_TYPE } from "../../hooks/useError";
+import { useData } from "../../hooks/useData";
+import { ProductPageResponse } from "../../types/response.types";
 
 interface ProductCardProps {
-  cartInfo: {
-    cartId?: number;
-    cartAmount: number;
-  };
-  productInfo: {
-    productId: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-    isAdded: boolean;
-  };
+  product: ProductPageResponse["content"][number];
   setErrorTrue: (type: ERROR_TYPE) => void;
 }
 
-function ProductCard({
-  cartInfo,
-  productInfo,
-  setErrorTrue,
-}: ProductCardProps) {
-  const { imageUrl, productId, name, price, isAdded } = productInfo;
-  const { cartId, cartAmount } = cartInfo;
+function ProductCard({ product, setErrorTrue }: ProductCardProps) {
+  const { cartItemIds } = useData();
+
+  const cartMatch = cartItemIds.find((item) => item.productId === product.id);
 
   return (
     <div css={ProductContainer}>
       <img
         css={ProductImage}
-        src={imageUrl || "/fallBack.png"}
+        src={product.imageUrl || "/fallBack.png"}
         alt="상품 이미지"
         onError={(e) => {
           e.currentTarget.src = "/fallBack.png";
         }}
       />
       <div css={ContentContainer}>
-        <h3 css={ProductTitle}>{name}</h3>
-        <p css={ProductPrice}>{price.toLocaleString()}원</p>
+        <h3 css={ProductTitle}>{product.name}</h3>
+        <p css={ProductPrice}>{product.price.toLocaleString()}원</p>
       </div>
       <div css={ButtonContainer}>
         <CartToggleButton
-          productId={productId}
-          cartId={cartId}
-          cartAmount={cartAmount}
-          isAdded={isAdded}
+          productId={product.id}
+          cartId={cartMatch?.cartId}
+          cartAmount={cartItemIds.length}
+          isAdded={Boolean(cartMatch)}
           setErrorTrue={setErrorTrue}
         />
       </div>

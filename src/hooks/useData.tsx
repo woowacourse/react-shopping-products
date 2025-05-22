@@ -1,25 +1,26 @@
-// hooks/useData.ts
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
   useCallback,
-  useEffect,
+  SetStateAction,
+  Dispatch,
 } from "react";
-import { ProductPageResponse, CartItem } from "../types/response.types";
+import { CartItem, ProductPageResponse } from "../types/response.types";
 import { ERROR_TYPE } from "./useError";
-import request from "../utils/request";
+import { useResource } from "./useResource";
 import { categoryType, sortType } from "../types/index.types";
+import { getQueryString } from "../utils/getQueryString";
 
 interface DataContextType {
   cartItemIds: Record<"productId" | "cartId", number>[];
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
   products: ProductPageResponse | null;
-  setProducts: React.Dispatch<React.SetStateAction<ProductPageResponse | null>>;
-  fetchCartProducts: () => Promise<void>;
-  fetchProducts: (category: categoryType, sort: sortType) => Promise<void>;
+  fetchCartProducts: () => void;
+  fetchProducts: (category: categoryType, sort: sortType) => void;
+  setCartItemIds: Dispatch<
+    SetStateAction<Record<"productId" | "cartId", number>[]>
+  >;
   isLoading: boolean;
 }
 
@@ -32,68 +33,48 @@ export function DataProvider({
   children: React.ReactNode;
   setErrorTrue: (type: ERROR_TYPE) => void;
 }) {
+  const {
+    data: cartItemsResponse,
+    fetchData: fetchCartData,
+    isLoading: isCartLoading,
+  } = useResource<{ content: CartItem[] }>(setErrorTrue, "CART");
+
+  const {
+    data: products,
+    fetchData: fetchProductData,
+    isLoading: isProductsLoading,
+  } = useResource<ProductPageResponse>(setErrorTrue, "PRODUCTS");
+
   const [cartItemIds, setCartItemIds] = useState<
     Record<"productId" | "cartId", number>[]
   >([]);
-  const [products, setProducts] = useState<ProductPageResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchCartProducts = useCallback(async () => {
-    try {
-      const data = await request({
-        method: "GET",
-        url: "/cart-items",
-        headers: {
-          Authorization: import.meta.env.VITE_TOKEN,
-          "Content-Type": "application/json",
-        },
-      });
-
-      setCartItemIds(
-        data.content.map((item: CartItem) => ({
-          productId: item.product.id,
-          cartId: item.id,
-        }))
-      );
-    } catch {
-      setErrorTrue("CART");
-    }
-  }, [setErrorTrue]);
+  const fetchCartProducts = useCallback(() => {
+    fetchCartData("/cart-items");
+  }, [fetchCartData]);
 
   const fetchProducts = useCallback(
-    async (category: categoryType, sort: sortType) => {
-      try {
-        setIsLoading(true);
-
-        const baseQuery = {
-          page: "0",
-          size: "20",
-          sort: sort === "낮은 가격순" ? "price,asc" : "price,desc",
-        };
-
-        const queryObj =
-          category === "전체" ? baseQuery : { category, ...baseQuery };
-
-        const queryString = new URLSearchParams(queryObj).toString();
-
-        const data: ProductPageResponse = await request({
-          method: "GET",
-          url: `/products?${queryString}`,
-        });
-
-        setProducts(data);
-      } catch {
-        setErrorTrue("PRODUCTS");
-      } finally {
-        setIsLoading(false);
-      }
+    (category: categoryType, sort: sortType) => {
+      const query = getQueryString(category, sort);
+      fetchProductData(`/products?${query}`);
     },
-    [setErrorTrue]
+    [fetchProductData]
   );
 
   useEffect(() => {
     fetchCartProducts();
   }, [fetchCartProducts]);
+
+  useEffect(() => {
+    if (cartItemsResponse) {
+      setCartItemIds(
+        cartItemsResponse.content.map((item) => ({
+          productId: item.product.id,
+          cartId: item.id,
+        }))
+      );
+    }
+  }, [cartItemsResponse]);
 
   return (
     <DataContext.Provider
@@ -101,10 +82,9 @@ export function DataProvider({
         cartItemIds,
         setCartItemIds,
         products,
-        setProducts,
         fetchCartProducts,
         fetchProducts,
-        isLoading,
+        isLoading: isCartLoading || isProductsLoading,
       }}
     >
       {children}
