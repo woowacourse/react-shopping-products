@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { css } from "@emotion/react";
+import ShopPage from "./page/ShopPage";
+import GlobalStyle from "./GlobalStyle";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <div
+      css={css`
+        display: flex;
+        justify-content: center;
+      `}
+    >
+      <GlobalStyle />
+      <ShopPage />
+    </div>
   );
 }
 
