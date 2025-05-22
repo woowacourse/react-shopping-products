@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { ProductTypes } from '../../types/ProductTypes';
 import postShoppingCart from '../../api/postShoppingCart';
 import { CartItemTypes } from '../../types/CartItemType';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CountControl from './CountControl';
 import patchShoppingCart from '../../api/patchShoppingCart';
 import { css } from '@emotion/react';
@@ -26,16 +26,10 @@ export default function ProductItem({
   quantity,
   updateErrorMessage,
 }: ProductTypes & SetProducts) {
-  const cartItemQuantity = getMatchCartItem(id)?.quantity;
-
   const [active, setActive] = useState(false);
-  const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(false);
 
-  useEffect(() => {
-    setCount(cartItemQuantity ?? 0);
-  }, [cartItemQuantity]);
-
+  const cartItemQuantity = getMatchCartItem(id)?.quantity ?? 0;
   const isItemInCart = getMatchCartItem(id) ? true : false;
   const cartItemId = getMatchCartItem(id)?.id;
 
@@ -47,30 +41,26 @@ export default function ProductItem({
   const handleControlClick = async (type: 'increase' | 'decrease') => {
     try {
       if (type === 'increase') {
-        if (quantity === count) {
+        if (quantity === cartItemQuantity) {
           updateErrorMessage('수량 초과');
           setDisabled(true);
           return;
         }
         if (checkMax()) throw new Error('50개 초과');
 
-        setCount((prev) => prev + 1);
-
-        if (count === 0) await postShoppingCart(id, 1);
+        if (cartItemQuantity === 0) await postShoppingCart(id, 1);
 
         if (cartItemId) {
-          await patchShoppingCart(cartItemId, count + 1);
+          await patchShoppingCart(cartItemId, cartItemQuantity + 1);
         }
       }
 
       if (type === 'decrease') {
-        if (count === 0) return;
+        if (cartItemQuantity === 0) return;
 
-        setCount((prev) => prev - 1);
-
-        if (quantity === count) setDisabled(false);
+        if (quantity === cartItemQuantity) setDisabled(false);
         if (cartItemId) {
-          await patchShoppingCart(cartItemId, count - 1);
+          await patchShoppingCart(cartItemId, cartItemQuantity - 1);
         }
       }
 
@@ -94,7 +84,7 @@ export default function ProductItem({
         <StyledButtonWrapper>
           {active ? (
             <CountControl
-              count={count}
+              count={cartItemQuantity}
               onClick={handleControlClick}
               disabled={disabled}
             />
