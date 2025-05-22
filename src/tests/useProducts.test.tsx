@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import { useProducts } from '../hooks/useProducts';

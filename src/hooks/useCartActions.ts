@@ -39,7 +39,7 @@ export function useCartActions(sortType: string, category: string = '전체') {
 
   const handleRemoveCart = useCallback(async (product: ProductElement) => {
     if (!product.cartId) {
-      showToast('error', ERROR_MESSAGES.invalidCartID);
+      showToast(ERROR_MESSAGES.invalidCartID);
       console.error(ERROR_MESSAGES.invalidCartID);
       resetErrors();
       return;
