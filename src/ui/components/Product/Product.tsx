@@ -6,9 +6,10 @@ import {
   ProductImage,
   Detail,
   Price,
-  ProductName,
+  ProductName, ImageContainer, EmptyImage,
 } from './Product.styles';
 import { ProductElement } from '../../../types/product';
+import { woowaLogo } from "../../../assets";
 
 interface ProductProps {
   item: ProductElement;
@@ -19,10 +20,22 @@ interface ProductProps {
 function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
   const { name, price, imageUrl, isInCart } = item;
 
+  // console.log('item', item);
+
+  const isImage = imageUrl.length > 15
+
   return (
     <Container>
       <ProductImageContainer>
-        <ProductImage src={imageUrl} alt={name} />
+        {isImage ?
+          <ProductImage src={imageUrl} alt={name}/>
+          : (
+            <ImageContainer>
+              <EmptyImage src={woowaLogo} alt={name}/>
+              <p>이미지가 없습니다</p>
+            </ImageContainer>
+          )
+        }
       </ProductImageContainer>
       <Detail>
         <ProductName>{name}</ProductName>

@@ -12,6 +12,23 @@ export const ProductImageContainer = styled.div`
   height: 112px;
 `;
 
+export const ImageContainer = styled.div`
+  width: 182px;
+  height: 112px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const EmptyImage = styled.img`
+  width: 90px;
+  height: 55px;
+  margin-bottom: 20px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+`;
+
 export const ProductImage = styled.img`
   width: 182px;
   height: 112px;
