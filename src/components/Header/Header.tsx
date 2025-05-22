@@ -8,11 +8,14 @@ import { URLS } from "../../constants/url";
 import { commonOpts } from "../../constants/requestHeader";
 import { useQueryContext } from "../../contexts/QueryContext";
 import { useProductQuery } from "../../hooks/useProductQuery";
+import { useErrorContext } from "../../contexts/ErrorContext";
 
 export default function Header() {
   const { dataPool, productsQuery, categoryQuery } = useQueryContext();
+  const { showError } = useErrorContext();
   const [isCartOpen, setIsCartOpen] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const cartData = dataPool["cart-items"] || [];
   const productURL = useProductQuery(productsQuery, categoryQuery);
   const { refetch: fetchProducts } = useData(
     "products",
@@ -27,7 +30,6 @@ export default function Header() {
     false
   );
 
-  const cartData = dataPool["cart-items"] || [];
   const { fetcher: orderCart } = useFetch(
     URLS.ORDERS,
     { method: "POST", body: JSON.stringify(cartData) },
@@ -44,10 +46,17 @@ export default function Header() {
   );
 
   const handleOrder = async () => {
-    await orderCart();
-    await fetchCart();
-    await fetchProducts();
-    setIsCartOpen(false);
+    try {
+      setIsLoading(true);
+      await orderCart();
+      await fetchCart();
+      await fetchProducts();
+    } catch (error) {
+      if (error instanceof Error) showError(error);
+    } finally {
+      setIsLoading(false);
+      setIsCartOpen(false);
+    }
   };
 
   const renderCartContent = () => {
@@ -55,7 +64,7 @@ export default function Header() {
       return (
         <div css={styles.emptyCartContainer}>
           <img src="assets/fallback.png" alt="텅빈 카트" />
-          텅비엇슈!
+          근데 장바구니가 텅 비었나부렁!
           <div css={styles.buttonContainer}>
             <button
               onClick={() => setIsCartOpen(false)}
@@ -80,7 +89,11 @@ export default function Header() {
           <button onClick={() => setIsCartOpen(false)} css={styles.closeButton}>
             닫기
           </button>
-          <button onClick={handleOrder} css={styles.orderButton}>
+          <button
+            onClick={handleOrder}
+            css={styles.orderButton}
+            disabled={isLoading}
+          >
             주문하기
           </button>
         </div>
@@ -111,7 +124,7 @@ export default function Header() {
         >
           <CartModal.Background>
             <CartModal.Container>
-              <CartModal.Header>장바구니</CartModal.Header>
+              <CartModal.Header>뭔가 사실려고용?</CartModal.Header>
               <CartModal.Content>{renderCartContent()}</CartModal.Content>
             </CartModal.Container>
           </CartModal.Background>
