@@ -33,7 +33,8 @@ const useFetchData = <T>({ apiCall, dataName, onSuccess, onError }: useFetchData
   }, [apiCall, updateHandler, onSuccess, onError]);
 
   return {
-    data,
+    dataMap: data,
+    data: data.get(dataName),
     updateHandler,
     isLoading,
     fetchData,
