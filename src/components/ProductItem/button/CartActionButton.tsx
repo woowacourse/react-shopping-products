@@ -9,8 +9,8 @@ type CartActionButtonProps = {
 const CartActionButton = ({ variant, onClick }: CartActionButtonProps) => {
   return (
     <Button onClick={onClick} variant={variant}>
-      {variant === "add" ? <AddIcon /> : <RemoveIcon />}
-      {variant === "add" ? "담기" : "빼기"}
+      {variant === "add" && <AddIcon />}
+      {variant === "add" ? "담기" : "삭제"}
     </Button>
   );
 };
@@ -21,10 +21,6 @@ const AddIcon = () => {
   return <Image src="./addToCartIcon.png" alt="add-button" />;
 };
 
-const RemoveIcon = () => {
-  return <Image src="./removeFromCartIcon.png" alt="remove-button" />;
-};
-
 const Image = styled.img`
   width: 17px;
   height: 17px;
@@ -32,14 +28,20 @@ const Image = styled.img`
 
 const buttonVariantStyle = {
   add: {
+    width: "70px",
+    height: "30px",
     backgroundColor: "black",
     color: "white",
     hoverColor: "#333",
+    border: "none",
   },
   remove: {
-    backgroundColor: "#EAEAEA",
+    width: "40px",
+    height: "24px",
+    backgroundColor: "white",
     color: "black",
     hoverColor: "#D0D0D0",
+    border: "solid 1px lightgray",
   },
 };
 
@@ -49,10 +51,10 @@ const Button = styled.button<CartActionButtonProps>`
     return css`
       background-color: ${style.backgroundColor};
       color: ${style.color};
-      border: none;
-      width: 70px;
-      height: 30px;
+      width: ${style.width};
+      height: ${style.height};
       border-radius: 4px;
+      border: ${style.border};
       display: flex;
       justify-content: center;
       align-items: center;
