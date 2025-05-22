@@ -86,15 +86,13 @@ describe("ProductCard 컴포넌트는", () => {
   });
 
   it("장바구니에 해당 품목이 이미 담겨져 있으면, 수량 버튼이 렌더링되어야 한다", async () => {
-    // 이 테스트에 필요한 특별한 모킹 값 설정
     mockContextValue.dataPool["cart-items"] = [...mockCartItems];
 
     await renderProductCardWithProviders(mockProducts[0]);
     expect(screen.getByText("2")).toBeInTheDocument();
   });
 
-  it("해당 상품이 품절되면, '품절!' 버튼이 렌더링되어야 한다", async () => {
-    // 품절 상품 데이터로 모킹 설정
+  it("해당 상품이 품절되면, 버튼이 렌더링 되지 않아야 한다.", async () => {
     mockContextValue.dataPool.products = [...mockProductsWithZeroStock];
 
     await renderProductCardWithProviders({
@@ -102,7 +100,7 @@ describe("ProductCard 컴포넌트는", () => {
       quantity: 0,
     });
 
-    expect(screen.getByText("품절!")).toBeInTheDocument();
+    expect(screen.queryByText("품절!")).not.toBeInTheDocument();
   });
 
   it("로딩 중에는 버튼이 비활성화된다", async () => {

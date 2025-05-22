@@ -1,5 +1,5 @@
 import React from "react";
-import { cleanup, screen, fireEvent, waitFor } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
 import { vi, describe, it, beforeEach, afterEach, expect } from "vitest";
 import "@testing-library/jest-dom";
 import {
