@@ -43,7 +43,7 @@ export const apiRequest = async <T>(
       return await response.json();
     }
 
-    return {} as T;
+    return response as T;
   } catch (error) {
     console.error('API 요청 중 오류 발생:', error);
     if (error instanceof Error) {
