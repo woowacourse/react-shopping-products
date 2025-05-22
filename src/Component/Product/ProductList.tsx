@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import ProductItem from './ProductItem';
 import { ProductTypes } from '../../types/ProductTypes';
 import { CartItemTypes } from '../../types/CartItemType';
+import ProductListItem from './ProductListItem';
 
 interface ProductListProps {
   productList: ProductTypes[];
@@ -21,10 +21,11 @@ export default function ProductList({
   return (
     <StyledUl>
       {productList.map((props) => (
-        <ProductItem
+        <ProductListItem
           {...props}
           id={props.id}
           key={props.id}
+          isRow={false}
           updateCartItems={updateCartItems}
           getMatchCartItem={getMatchCartItem}
           checkMax={checkMax}
