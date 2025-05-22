@@ -45,7 +45,26 @@ export default function ProductsPage() {
     }
 
     if (!cartItem) {
-      await mutatePostCartItem({ productId });
+      await mutatePostCartItem({ productId }, (prev) => {
+        const newCartContent = [...prev.content];
+        return {
+          ...prev,
+          content: [
+            ...newCartContent,
+            {
+              id: 1,
+              product: {
+                id: Math.floor(Math.random() * 1000000000),
+                name: product.name,
+                price: product.price,
+                imageUrl: product.imageUrl,
+                category: product.category,
+                stock: product.stock,
+              },
+            },
+          ],
+        };
+      });
       await refetchCartItems();
     } else {
       await mutatePatchCartItem(

@@ -12,9 +12,9 @@ export default function useMutation<T, V>({ mutationFn, queryKey }: UseMutationP
     const prevData = getQueryData(queryKey) as T;
 
     if (optimisticUpdate) {
+      mutationFn(variables);
       setQueryData(queryKey, optimisticUpdate(prevData));
       setQueryStatus(queryKey, "success");
-
     } else {
       const response = await mutationFn(variables);
       setQueryData(queryKey, response);
