@@ -19,7 +19,7 @@
   - [x] 장바구니에 담긴 아이템 종류의 최대 개수는 50개이다.
 - [x] 로딩 UI
 - [x] 에러 UI
-- [ ] `useData` (커스텀 훅): 모든 GET API 요청을 처리
+- [x] `useData` (커스텀 훅): 모든 GET API 요청을 처리
 - [ ] Context API: 하나의 Context로 모든 API 상태 관리
 - [ ] MSW 적용
   - [ ] `/products` 응답에 `quantity` 필드 추가
