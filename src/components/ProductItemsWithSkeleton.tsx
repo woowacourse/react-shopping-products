@@ -7,7 +7,6 @@ type ProductItemWithSkeletonProps = {
   isLoading: boolean;
   products: Product[];
   addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
   cart: CartItem[];
 };
 
@@ -19,7 +18,6 @@ const ProductItemsWithSkeleton = ({
   isLoading,
   products,
   addToCart,
-  removeFromCart,
   cart,
 }: ProductItemWithSkeletonProps) => {
   return isLoading ? (
@@ -30,7 +28,6 @@ const ProductItemsWithSkeleton = ({
         key={product.id}
         product={product}
         addToCart={addToCart}
-        removeFromCart={removeFromCart}
         isInCart={isInCart(cart, product.id)}
       />
     ))

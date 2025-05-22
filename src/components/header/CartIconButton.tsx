@@ -1,8 +1,14 @@
 import styled from "@emotion/styled";
 
-const CartIconButton = ({ cartItemCount }: { cartItemCount: number }) => {
+const CartIconButton = ({
+  cartItemCount,
+  onClick,
+}: {
+  cartItemCount: number;
+  onClick: () => void;
+}) => {
   return (
-    <CartIconButtonContainer>
+    <CartIconButtonContainer onClick={onClick}>
       <img src="./cartIcon.png" alt="cart icon" />
       {cartItemCount !== 0 && <CartItemCount> {cartItemCount}</CartItemCount>}
     </CartIconButtonContainer>
@@ -13,6 +19,7 @@ export default CartIconButton;
 
 const CartIconButtonContainer = styled.div`
   position: relative;
+  cursor: pointer;
 `;
 
 const CartItemCount = styled.div`

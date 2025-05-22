@@ -9,11 +9,13 @@ import Select from "./components/Select";
 import useLoading from "./hooks/useLoading";
 import useCart from "./hooks/useCart";
 import useProducts from "./hooks/useProducts";
+import Modal from "./components/Modal/Modal";
+import CartItems from "./components/ProductItem/CartItems";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const { isLoading, withLoading } = useLoading();
-  const { cart, addToCart, removeFromCart } = useCart({
+  const { cart, addToCart } = useCart({
     setErrorMessage,
   });
   const {
@@ -26,10 +28,14 @@ function App() {
     withLoading,
     setErrorMessage,
   });
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const openCartModal = () => {
+    if (!isCartModalOpen) setIsCartModalOpen(true);
+  };
 
   return (
     <Layout>
-      <Header cartItemCount={cart.length} />
+      <Header cartItemCount={cart.length} openCartModal={openCartModal} />
       {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
       <ProductPageContainer>
         <ProductPageHeader>bppl 상품 목록</ProductPageHeader>
@@ -52,10 +58,18 @@ function App() {
             isLoading={isLoading}
             products={products}
             addToCart={addToCart}
-            removeFromCart={removeFromCart}
             cart={cart}
           />
         </ProductListContainer>
+        <Modal
+          isOpen={isCartModalOpen}
+          onClose={() => setIsCartModalOpen(false)}
+          size="medium"
+          position="bottom"
+          title="장바구니"
+        >
+          <CartItems cart={cart} />
+        </Modal>
       </ProductPageContainer>
     </Layout>
   );

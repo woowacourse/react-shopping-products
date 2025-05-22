@@ -1,11 +1,17 @@
 import styled from "@emotion/styled";
 import CartIconButton from "./CartIconButton";
 
-const Header = ({ cartItemCount }: { cartItemCount: number }) => {
+const Header = ({
+  cartItemCount,
+  openCartModal,
+}: {
+  cartItemCount: number;
+  openCartModal: () => void;
+}) => {
   return (
     <HeaderContainer>
       <h1>SHOP</h1>
-      <CartIconButton cartItemCount={cartItemCount} />
+      <CartIconButton cartItemCount={cartItemCount} onClick={openCartModal} />
     </HeaderContainer>
   );
 };

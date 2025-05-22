@@ -1,6 +1,7 @@
 import { Product } from "../../types/productType";
 import CartActionButton from "./button/CartActionButton";
 import styled from "@emotion/styled";
+import QuantityAdjuster from "./QuantityAdjuster";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
@@ -10,43 +11,39 @@ const ProductItem = ({
   product,
   addToCart,
   isInCart,
-  removeFromCart,
 }: {
   product: Product;
   isInCart: boolean;
   addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
 }) => {
   const handleProductAddClick = () => addToCart(product);
-  const handleProductRemoveClick = () => removeFromCart(product.id);
 
   return (
-    <ProductItemContainer>
-      <ProductItemImage
-        src={product.imageUrl}
-        alt={product.name}
-        onError={handleImageError}
-      />
-      <ProductItemInfoContainer>
-        <TextContainer>
-          <ProductItemName>{product.name}</ProductItemName>
-          <ProductItemPrice>
-            {product.price.toLocaleString()}원
-          </ProductItemPrice>
-        </TextContainer>
+    <>
+      <ProductItemContainer>
+        <ProductItemImage
+          src={product.imageUrl}
+          alt={product.name}
+          onError={handleImageError}
+        />
+        <ProductItemInfoContainer>
+          <TextContainer>
+            <ProductItemName>{product.name}</ProductItemName>
+            <ProductItemPrice>
+              {product.price.toLocaleString()}원
+            </ProductItemPrice>
+          </TextContainer>
 
-        <ButtonContainer>
-          {isInCart ? (
-            <CartActionButton
-              variant="remove"
-              onClick={handleProductRemoveClick}
-            />
-          ) : (
-            <CartActionButton variant="add" onClick={handleProductAddClick} />
-          )}
-        </ButtonContainer>
-      </ProductItemInfoContainer>
-    </ProductItemContainer>
+          <ButtonContainer>
+            {isInCart ? (
+              <QuantityAdjuster count={10} />
+            ) : (
+              <CartActionButton variant="add" onClick={handleProductAddClick} />
+            )}
+          </ButtonContainer>
+        </ProductItemInfoContainer>
+      </ProductItemContainer>
+    </>
   );
 };
 
@@ -90,4 +87,6 @@ const ProductItemPrice = styled.p`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
 `;
