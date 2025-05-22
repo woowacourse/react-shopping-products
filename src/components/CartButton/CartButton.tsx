@@ -82,18 +82,12 @@ export default function CartButton({
     css: [styles.buttonCss, styles.notInCartCss] as const,
   };
 
-  if (availableQty === 0) {
+  if (availableQty !== 0) {
     return (
-      <button {...commonProps}>
-        <span>품절!</span>
+      <button {...commonProps} onClick={handleAdd}>
+        <img src="assets/filledCart.svg" alt="장바구니 아이콘" />
+        <span>담기</span>
       </button>
     );
   }
-
-  return (
-    <button {...commonProps} onClick={handleAdd}>
-      <img src="assets/filledCart.svg" alt="장바구니 아이콘" />
-      <span>담기</span>
-    </button>
-  );
 }
