@@ -11,10 +11,9 @@ import "./styles/reset.css";
 import { ERROR_MSG } from "./constants/errorMessage";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import DotWaveSpinner from "./components/DotWaveSpinner/DotWaveSpinner";
-import { useCartContext } from "./contexts/CartContext";
-import { useUIContext } from "./contexts/UIContext";
 import useData from "./hooks/useData";
 import { END_POINT } from "./api/constants/endPoint";
+import { useDateContext } from "./contexts/DataContext";
 
 const categoryQueryMap: Record<CategoryKey, string | undefined> = {
   ALL: undefined,
@@ -31,8 +30,7 @@ const sortQueryMap: Record<SortKey, string | undefined> = {
 function App() {
   const [category, setCategory] = useState<CategoryKey>("ALL");
   const [sort, setSort] = useState<SortKey>("NONE");
-  const { basketProductsIds, fetchCartItems } = useCartContext();
-  const { error, setError, errorMessage, setErrorMessage } = useUIContext();
+  const { basketProductsIds, error, setError, errorMessage, setErrorMessage } = useDateContext();
 
   const {
     data: products,
@@ -55,10 +53,6 @@ function App() {
       console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, fetchError);
     }
   }, [fetchError, setError, setErrorMessage]);
-
-  useEffect(() => {
-    fetchCartItems(true);
-  }, [fetchCartItems]);
 
   return (
     <Container>

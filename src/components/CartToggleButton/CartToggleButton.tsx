@@ -5,8 +5,7 @@ import {
 import { IMAGE_PATH } from "../../constants/imagePath";
 import { ERROR_MSG } from "../../constants/errorMessage";
 import { deleteCartItem, postCartItems } from "../../api/cartItems";
-import { useCartContext } from "../../contexts/CartContext";
-import { useUIContext } from "../../contexts/UIContext";
+import { useDateContext } from "../../contexts/DataContext";
 
 type SharedToggleProps = {
   isNotBasketCountMAX: boolean;
@@ -23,7 +22,7 @@ type handleCartToggleButtonProps = SharedToggleProps & {
   isInBascket: boolean;
   productId: number;
   basketId?: number;
-  fetchCartItems: (value?: boolean) => Promise<void>;
+  fetchCartItems: (value?: boolean) => void;
   setError: (value: boolean) => void;
   setErrorMessage: (value: string) => void;
 };
@@ -100,8 +99,7 @@ const CartToggleButton = ({
   const imageSrc = isInBascket
     ? IMAGE_PATH.SHOPPIN_CART_REMOVE
     : IMAGE_PATH.SHOPPIN_CART_ADD;
-  const { fetchCartItems } = useCartContext();
-  const { setError, setErrorMessage } = useUIContext();
+  const { fetchCartItems, setError, setErrorMessage } = useDateContext();
 
   return (
     <CartToggleButtonWrapper
