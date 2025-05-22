@@ -15,7 +15,7 @@ export const useModal = () => {
 };
 
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   return (
     <ModalContext.Provider value={{ open, setOpen }}>
       {children}
