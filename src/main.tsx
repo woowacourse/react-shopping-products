@@ -12,39 +12,28 @@ async function initMsw() {
       import.meta.env.VITE_APP_USE_MSW === true ||
       import.meta.env.VITE_APP_USE_MSW === "true";
 
-    console.log("MSW 활성화 상태:", enableMsw);
-
     if (enableMsw) {
-      console.log("MSW 초기화 중...");
+      const { worker } = await import("./mocks/browser");
 
-      if (typeof window !== "undefined") {
-        const { worker } = await import("./mocks/browser");
-
-        const baseUrl = import.meta.env.BASE_URL || "/";
-        const scopeUrl = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
-        await worker.start({
-          serviceWorker: {
-            url: `${window.location.origin}${baseUrl}${
-              baseUrl.endsWith("/") ? "" : "/"
-            }mockServiceWorker.js`,
-            options: {
-              scope: scopeUrl,
-            },
+      const baseUrl = import.meta.env.BASE_URL || "/";
+      const scopeUrl = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+      await worker.start({
+        serviceWorker: {
+          url: `${window.location.origin}${baseUrl}${
+            baseUrl.endsWith("/") ? "" : "/"
+          }mockServiceWorker.js`,
+          options: {
+            scope: scopeUrl,
           },
-          onUnhandledRequest: "warn",
-        });
-      }
-    } else {
-      console.log(
-        "MSW가 비활성화되었습니다. 실제 API 요청이 서버로 전송됩니다."
-      );
+        },
+        onUnhandledRequest: "warn",
+      });
     }
   } catch (error) {
     console.error("MSW 초기화 실패:", error);
   }
 }
 
-// 앱 렌더링 함수
 async function startApp() {
   // MSW 초기화 먼저 수행
   await initMsw();

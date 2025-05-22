@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useErrorContext } from "./contexts/ErrorContext";
 import Dropdown from "./components/Dropdown/Dropdown";
 import Spinner from "./components/Spinner/Spinner";
@@ -8,7 +8,7 @@ import * as styles from "./App.style";
 import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
 import Header from "./components/Header/Header";
 import MswStatus from "./components/MswStatus";
-import MswDebug from "./components/MswDebug";
+
 import { useData } from "./hooks/useData";
 import { useProductQuery } from "./hooks/useProductQuery";
 import { URLS } from "./constants/url";
@@ -17,9 +17,15 @@ import { useQueryContext } from "./contexts/QueryContext";
 
 function App() {
   const { showError } = useErrorContext();
-  const { dataPool, productsQuery, setProductsQuery } = useQueryContext();
+  const {
+    dataPool,
+    productsQuery,
+    setProductsQuery,
+    categoryQuery,
+    setCategoryQuery,
+  } = useQueryContext();
 
-  const productQuery = useProductQuery(productsQuery);
+  const productQuery = useProductQuery(productsQuery, categoryQuery);
 
   const {
     loading: productFetchLoading,
@@ -33,14 +39,8 @@ function App() {
     false
   );
   const productsData = dataPool?.products;
-  const [category, setCategory] = useState<CategoryOptionType>("전체");
-  const [showDebug, setShowDebug] = useState(false);
 
   useEffect(() => {
-    // DEV 환경에서만 디버그 표시
-    if (import.meta.env.DEV) {
-      setShowDebug(true);
-    }
     fetchCart();
   }, [fetchCart]);
 
@@ -58,21 +58,21 @@ function App() {
   }, [productFetchError, cartFetchError, showError]);
 
   const handleSelectCategory = (value: CategoryOptionType) => {
-    setCategory(value);
+    setCategoryQuery(value);
   };
   const handleOrderBySelect = (value: OrderByOptionType) => {
     setProductsQuery(value);
   };
 
   return (
-    <div css={styles.bodyCss}>
-      <div style={{ marginBottom: "80px" }}></div>
+    <div css={styles.appCss}>
+      <h2 css={styles.titleCss}>마빈 잡화점</h2>
       <div css={styles.dropdownDivCss}>
         <Header />
         <Dropdown
           list={CATEGORY_OPTIONS}
           placeholder="전체"
-          value={category}
+          value={categoryQuery}
           onSelect={handleSelectCategory}
         />
 
@@ -88,16 +88,9 @@ function App() {
           <Spinner size="medium" />
         </div>
       ) : (
-        <ProductList
-          products={
-            category === "전체"
-              ? productsData
-              : productsData?.filter((item) => item.category == category)
-          }
-        />
+        <ProductList products={productsData} />
       )}
       <MswStatus />
-      {showDebug && <MswDebug />}
     </div>
   );
 }
