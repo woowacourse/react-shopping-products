@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import useDataContext from './useDataContext';
 
 interface useFetchDataProps<T> {
   apiCall: () => Promise<T>;
@@ -8,8 +9,9 @@ interface useFetchDataProps<T> {
 }
 
 const useFetchData = <T>({ apiCall, dataName, onSuccess, onError }: useFetchDataProps<T>) => {
+  const { data, setData } = useDataContext();
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<Map<string, T>>(new Map());
+
   const updateHandler = useCallback(
     (newData: T) => {
       setData((prev) => new Map(prev).set(dataName, newData));
@@ -34,6 +36,7 @@ const useFetchData = <T>({ apiCall, dataName, onSuccess, onError }: useFetchData
 
   return {
     dataMap: data,
+    setDataMap: setData,
     data: data.get(dataName),
     updateHandler,
     isLoading,
