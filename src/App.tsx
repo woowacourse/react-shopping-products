@@ -57,7 +57,14 @@ function App() {
 
   return (
     <>
-      <Header status={status} cartItemCount={cartItems.length} />
+      <Header
+        status={status}
+        cartItems={cartItems}
+        updateCartItems={updateCartItems}
+        getMatchCartItem={getMatchCartItem}
+        updateErrorMessage={updateErrorMessage}
+        checkMax={checkMax}
+      />
       <Body>
         <ProductListContainer
           cartItems={cartItems}
