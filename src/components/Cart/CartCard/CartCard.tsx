@@ -4,7 +4,6 @@ import { useErrorContext } from "../../../contexts/ErrorContext.tsx";
 import { useData } from "../../../hooks/useData.ts";
 import useFetch from "../../../hooks/useFetch.ts";
 import { CartItem } from "../../../types/cartContents.ts";
-import CartButton from "../../CartButton/CartButton";
 import QuantityButton from "../../QuantityButton/QuantityButton.tsx";
 import Spinner from "../../Spinner/Spinner";
 import * as styles from "./CartCard.style.tsx";
@@ -85,15 +84,15 @@ function CartCard({ cartItem }: CartCardProps) {
 
   return (
     <li css={styles.cartCardCss}>
-      {imageStatus === "loading" && <Spinner size={"large"} />}
-
       <div css={styles.cartCardImageCss}>
-        <img
-          src={imageStatus === "error" ? fallbackImagePath : finalImageUrl}
-          alt={`${cartItem.product.name} 상품`}
-          onLoad={() => setImageStatus("loaded")}
-          onError={() => setImageStatus("error")}
-        />
+        {imageStatus === "loading" ? (
+          <Spinner size="large" />
+        ) : (
+          <img
+            src={imageStatus === "error" ? fallbackImagePath : finalImageUrl}
+            alt={`${cartItem.product.name} 상품`}
+          />
+        )}
         {cartItem.product.quantity === 0 && (
           <div css={styles.cartCardSoldOutCss}>
             <p>품절</p>
@@ -106,7 +105,7 @@ function CartCard({ cartItem }: CartCardProps) {
         <QuantityButton
           productId={cartItem.product.id}
           cartItemId={cartItem.id}
-          disableButtonWhenQuantityOne={true}
+          disableButtonWhenQuantityOne
         />
       </div>
       <button
