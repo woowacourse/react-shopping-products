@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ErrorContextProvider } from "../contexts/ErrorContext";
 import { QueryContextProvider } from "../contexts/QueryContext";
-import { Product } from "../types/product";
+import { Product, ProductWithQuantity } from "../types/product";
 
 export function renderWithProviders(ui: React.ReactElement) {
   return render(
@@ -28,4 +28,20 @@ export async function renderProductListWithProviders(
     "../components/Product/ProductList/ProductList"
   );
   return renderWithProviders(<ProductList products={products} />);
+}
+
+export async function renderProductCardWithProviders(
+  product: ProductWithQuantity
+) {
+  const { default: ProductCard } = await import(
+    "../components/Product/ProductCard/ProductCard"
+  );
+  return renderWithProviders(
+    <ProductCard
+      productId={product.id}
+      title={product.name}
+      price={product.price}
+      imageUrl={product.imageUrl}
+    />
+  );
 }
