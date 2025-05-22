@@ -19,9 +19,6 @@ function useGetCarts() {
       setErrorMessage(
         error instanceof Error ? error.message : '장바구니 정보를 불러오지 못했습니다',
       );
-      setTimeout(() => {
-        setErrorMessage('');
-      }, 3000);
     } finally {
       setIsLoading(false);
     }

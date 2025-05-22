@@ -41,9 +41,6 @@ function useCartManagement({
           ? error.message
           : '장바구니에 상품을 추가하는 중 오류가 발생했습니다',
       );
-      setTimeout(() => {
-        setErrorAddCardItemMessage('');
-      }, 3000);
     }
   };
 
@@ -60,9 +57,6 @@ function useCartManagement({
           ? error.message
           : '장바구니에 상품을 삭제하는 중 오류가 발생했습니다',
       );
-      setTimeout(() => {
-        setErrorDeleteCardItemMessage('');
-      }, 3000);
     }
   };
 

@@ -17,9 +17,6 @@ function useGetProducts({ sort, category }: { sort: string; category: string }) 
       } catch (error) {
         setIsError(true);
         setErrorMessage(error instanceof Error ? error.message : '상품 정보를 불러오지 못했습니다');
-        setTimeout(() => {
-          setErrorMessage('');
-        }, 3000);
       } finally {
         setIsLoading(false);
       }
