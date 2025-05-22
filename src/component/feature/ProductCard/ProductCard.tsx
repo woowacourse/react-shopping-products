@@ -19,10 +19,10 @@ interface ProductCardProps extends Omit<Product, 'category'> {}
 const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
   const { cartData, addCart, removeCart } = useContext(CartContext);
 
-  const isInCart = cartData.some((item: CartItem) => item.product.id === id);
+  const inCart = cartData.some((item: CartItem) => item.product.id === id);
 
   const handleClick = async (productId: number) => {
-    if (isInCart) {
+    if (inCart) {
       removeCart(productId);
     } else {
       addCart(productId);
@@ -40,7 +40,7 @@ const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
           <Text variant="body">{price.toLocaleString()}원</Text>
         </div>
         <div css={productCardButtonContainerStyle}>
-          {isInCart ? (
+          {inCart ? (
             <Button variant="gray" onClick={() => handleClick(id)}>
               <img src={IconRemoveCart} alt="remove cart" />
               빼기
