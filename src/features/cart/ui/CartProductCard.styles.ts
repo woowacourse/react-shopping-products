@@ -24,7 +24,7 @@ export const CartProductDetails = styled.div`
   gap: 8px;
 `;
 
-export const CartProductName = styled.span`
+export const CartProductName = styled.h2`
   font-size: 16px;
   font-weight: 700;
   color: #000000;

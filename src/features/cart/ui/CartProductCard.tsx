@@ -9,7 +9,10 @@ interface CartProductCardProps {
 }
 
 export default function CartProductCard({ cartProduct, setErrors }: CartProductCardProps) {
-  const { removeFromCart } = useProductsWithCartContext();
+  const { products, removeFromCart } = useProductsWithCartContext();
+
+  const productQuantity = products.find((product) => product.id === cartProduct.product.id)?.quantity || 0;
+  const isProductSoldOut = cartProduct.quantity >= productQuantity;
 
   const handleDelete = async () => {
     try {
@@ -39,6 +42,7 @@ export default function CartProductCard({ cartProduct, setErrors }: CartProductC
             cartProductId={cartProduct.id}
             cartProductQuantity={cartProduct.quantity}
             setErrors={setErrors}
+            isProductSoldOut={isProductSoldOut}
           />
         </S.CartQuantitySelectorContainer>
       </S.CartProductDetails>

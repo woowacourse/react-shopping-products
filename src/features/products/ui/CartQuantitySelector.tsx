@@ -7,6 +7,7 @@ interface CartQuantitySelectorProps {
   cartProductId: number;
   cartProductQuantity: number;
   setErrors: (error: string) => void;
+  isProductSoldOut: boolean;
 }
 
 export default function CartQuantitySelector({
@@ -14,6 +15,7 @@ export default function CartQuantitySelector({
   cartProductId,
   cartProductQuantity,
   setErrors,
+  isProductSoldOut,
 }: CartQuantitySelectorProps) {
   const { updateCart } = useProductsWithCartContext();
 
@@ -76,7 +78,9 @@ export default function CartQuantitySelector({
     <S.CartQuantityContainer>
       <S.CartQuantitySelectorButton onClick={handleMinusClick}>-</S.CartQuantitySelectorButton>
       <S.CartQuantityNumber>{cartProductQuantity}</S.CartQuantityNumber>
-      <S.CartQuantitySelectorButton onClick={handlePlusClick}>+</S.CartQuantitySelectorButton>
+      <S.CartQuantitySelectorButton onClick={handlePlusClick} disabled={isProductSoldOut}>
+        +
+      </S.CartQuantitySelectorButton>
     </S.CartQuantityContainer>
   );
 }
