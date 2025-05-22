@@ -2,11 +2,12 @@ import styled from '@emotion/styled';
 
 type ShoppingBagProps = {
   count: number;
+  onOpenModal: () => void;
 };
 
-export const ShoppingBag = ({ count = 0 }: ShoppingBagProps) => {
+export const ShoppingBag = ({ count = 0, onOpenModal }: ShoppingBagProps) => {
   return (
-    <StyledShoppingBagButton>
+    <StyledShoppingBagButton onClick={onOpenModal}>
       <StyledShoppingBagIcon src="./ShoppingBag.svg" alt="Shopping Bag" />
       {count > 0 && <StyledShoppingBagCount>{count}</StyledShoppingBagCount>}
     </StyledShoppingBagButton>
