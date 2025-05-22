@@ -1,33 +1,37 @@
 import styled from '@emotion/styled';
 import Select from '../components/Select';
 import { useEffect, useState } from 'react';
-import { CartItem, Category, PriceOrder, Product } from '../App';
+import { Category, PriceOrder } from '../App';
 import ProductItemsWithSkeleton from '../components/ProductItemsWithSkeleton';
 import ErrorMessage from '../components/ErrorMessage';
 import getProductErrorMessage from '../utils/getProductErrorMessage';
-import useProducts from '../hooks/useProducts';
+import Header from '../components/header/Header';
+import { useCartItemsContext } from '../components/contexts/cartItemsContext';
+import getCartErrorMessage from '../utils/getCartErrorMessage';
+import Modal from '../components/Modal';
+import { useProductsContext } from '../components/contexts/productsContext';
 
-type ProductPageProps = {
-  cartItems: CartItem[];
-  isCartItemsLoading: boolean;
-  increaseCartItemQuantity: (productId: number) => void;
-  decreaseCartItemQuantity: (productId: number) => void;
-  addToCart: (product: Product) => Promise<void>;
-  removeFromCart: (productId: number) => Promise<void>;
-};
-
-const ProductPage = ({
-  cartItems,
-  increaseCartItemQuantity,
-  decreaseCartItemQuantity,
-  isCartItemsLoading,
-  addToCart,
-  removeFromCart,
-}: ProductPageProps) => {
-  const { products, isLoading, error, fetchProducts } = useProducts();
+const ProductListPage = () => {
+  const { error, fetchProducts } = useProductsContext();
+  const {
+    cartItems,
+    error: cartItemsError,
+    fetchCartItems,
+  } = useCartItemsContext();
 
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
   const [priceOrder, setPriceOrder] = useState<PriceOrder>('낮은 가격순');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
 
   const handleCategoryChange = async (category: Category) => {
     setSelectedCategory(category);
@@ -56,6 +60,29 @@ const ProductPage = ({
 
   return (
     <>
+      <Header
+        cartItemCount={cartItems.length}
+        handleOpenModal={handleOpenModal}
+      />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        position="bottom"
+        size="small"
+      >
+        <Modal.Title title="장바구니"></Modal.Title>
+        <Modal.Button
+          title="닫기"
+          backgroundColor="black"
+          textColor="white"
+          onClick={handleCloseModal}
+        />
+      </Modal>
+      {cartItemsError.isError && (
+        <ErrorMessage
+          errorMessage={getCartErrorMessage(cartItemsError.status)}
+        />
+      )}
       {error.isError && (
         <ErrorMessage errorMessage={getProductErrorMessage(error.status)} />
       )}
@@ -76,23 +103,14 @@ const ProductPage = ({
           />
         </SelectContainer>
         <ProductListContainer>
-          <ProductItemsWithSkeleton
-            products={products}
-            isLoading={isLoading}
-            cartItems={cartItems}
-            increaseCartItemQuantity={increaseCartItemQuantity}
-            decreaseCartItemQuantity={decreaseCartItemQuantity}
-            isCartItemsLoading={isCartItemsLoading}
-            addToCart={addToCart}
-            removeFromCart={removeFromCart}
-          />
+          <ProductItemsWithSkeleton />
         </ProductListContainer>
       </ProductPageContainer>
     </>
   );
 };
 
-export default ProductPage;
+export default ProductListPage;
 
 const ProductPageContainer = styled.div`
   display: flex;

@@ -1,5 +1,6 @@
 import { Product } from '../../App';
 import isValidImageUrl from '../../utils/isValidImageUrl';
+import { useCartItemsContext } from '../contexts/cartItemsContext';
 import QuantityStepper from '../QuantityStepper';
 import CartActionButton from './button/CartActionButton';
 import styled from '@emotion/styled';
@@ -7,24 +8,22 @@ import styled from '@emotion/styled';
 type ProductItemProps = {
   product: Product;
   cartItemQuantity: number;
-  increaseCartItemQuantity: (productId: number) => void;
-  decreaseCartItemQuantity: (productId: number) => void;
   isInCart: boolean;
-  isCartItemsLoading: boolean;
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
 };
 
 const ProductItem = ({
   product,
   cartItemQuantity,
-  increaseCartItemQuantity,
-  decreaseCartItemQuantity,
   isInCart,
-  isCartItemsLoading,
-  addToCart,
-  removeFromCart,
 }: ProductItemProps) => {
+  const {
+    isLoading: isCartItemsLoading,
+    addToCart,
+    removeFromCart,
+    increaseCartItemQuantity,
+    decreaseCartItemQuantity,
+  } = useCartItemsContext();
+
   const handleClickIncrementButton = () => {
     increaseCartItemQuantity(product.id);
   };
