@@ -22,6 +22,23 @@ export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
   return data.content;
 };
 
+export const updateCartItem = async (cartId: number, newQuantity: number) => {
+  await fetcher.patch({
+    baseUrl: ENV.BASE_URL + `cart-items/${cartId}`,
+    token: ENV.TOKEN,
+    body: {
+      quantity: newQuantity,
+    },
+  });
+
+  const data = await fetcher.get<CartResponse>({
+    baseUrl: ENV.BASE_URL + 'cart-items',
+    token: ENV.TOKEN,
+  });
+
+  return data.content;
+};
+
 export const getCartItemList = async ({
   page = 0,
   size = 20,
