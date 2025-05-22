@@ -12,15 +12,15 @@ function useCartManagement({
   refetchCarts: () => void;
   carts: cartDataType[] | null;
 }) {
-  const [isErrorAddCardItem, setIsErrorAddCardItem] = useState(false);
-  const [isErrorDeleteCardItem, setIsErrorDeleteCardItem] = useState(false);
-  const [errorAddCardItemMessage, setErrorAddCardItemMessage] = useState('');
-  const [errorDeleteCardItemMessage, setErrorDeleteCardItemMessage] = useState('');
+  const [isErrorAddCartItem, setIsErrorAddCartItem] = useState(false);
+  const [isErrorDeleteCartItem, setIsErrorDeleteCartItem] = useState(false);
+  const [errorAddCartItemMessage, setErrorAddCartItemMessage] = useState('');
+  const [errorDeleteCartItemMessage, setErrorDeleteCartItemMessage] = useState('');
   const [isOverItemCounts, setIsOverItemCounts] = useState(false);
   const [itemCount, setItemCount] = useState(0);
 
-  useToast(errorAddCardItemMessage);
-  useToast(errorDeleteCardItemMessage);
+  useToast(errorAddCartItemMessage);
+  useToast(errorDeleteCartItemMessage);
   useToast(isOverItemCounts ? `장바구니는 최대 ${CART_LIMIT}개의 상품을 담을 수 있습니다.` : null);
 
   const handleAddCartItem = async ({ productId, quantity }: AddCartItemType) => {
@@ -36,8 +36,8 @@ function useCartManagement({
       });
       refetchCarts();
     } catch (error) {
-      setIsErrorAddCardItem(true);
-      setErrorAddCardItemMessage(
+      setIsErrorAddCartItem(true);
+      setErrorAddCartItemMessage(
         error instanceof Error
           ? error.message
           : '장바구니에 상품을 추가하는 중 오류가 발생했습니다',
@@ -52,8 +52,8 @@ function useCartManagement({
       await deleteCartItem({ cartId });
       refetchCarts();
     } catch (error) {
-      setIsErrorDeleteCardItem(true);
-      setErrorDeleteCardItemMessage(
+      setIsErrorDeleteCartItem(true);
+      setErrorDeleteCartItemMessage(
         error instanceof Error
           ? error.message
           : '장바구니에 상품을 삭제하는 중 오류가 발생했습니다',
@@ -70,12 +70,12 @@ function useCartManagement({
   return {
     handleAddCartItem,
     handleDeleteCartItem,
-    isErrorAddCardItem,
-    isErrorDeleteCardItem,
+    isErrorAddCartItem,
+    isErrorDeleteCartItem,
     isOverItemCounts,
     itemCount,
-    errorAddCardItemMessage,
-    errorDeleteCardItemMessage,
+    errorAddCartItemMessage,
+    errorDeleteCartItemMessage,
   };
 }
 
