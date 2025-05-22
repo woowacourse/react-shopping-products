@@ -4,7 +4,6 @@ import ProductList from '../../components/ProductList/ProductList';
 import useGetProducts from '../../hooks/useGetProducts';
 import { CATEGORY } from '../../constants/products';
 import useGetCarts from '../../hooks/useGetCartItems';
-import Toast from '../../components/common/Toast/Toast';
 import {
   productPageContainer,
   productWrapper,
@@ -16,6 +15,7 @@ import { SORT } from '../../constants/products';
 import useProductCategory from '../../hooks/useProductCategory';
 import useCartManagement from '../../hooks/useCartManagement';
 import getProcessedCartArr from '../../utils/getProcessedCartArr';
+import { useToast } from '../../hooks/useToast';
 
 function ProductsPage() {
   const { category, handleChangeCategory } = useProductCategory();
@@ -34,6 +34,12 @@ function ProductsPage() {
     errorAddCardItemMessage,
     errorDeleteCardItemMessage,
   } = useCartManagement({ refetchCarts, carts });
+
+  useToast(errorCartsMessage);
+  useToast(errorProductsMessage);
+  useToast(errorAddCardItemMessage);
+  useToast(errorDeleteCardItemMessage);
+  useToast(isOverItemCounts ? '장바구니는 최대 50개의 상품을 담을 수 있습니다.' : null);
 
   return (
     <div className={productPageContainer}>
@@ -57,13 +63,6 @@ function ProductsPage() {
           />
         )}
       </div>
-      {errorCartsMessage && <Toast text={errorCartsMessage} varient="error" />}
-      {errorProductsMessage && <Toast text={errorProductsMessage} varient="error" />}
-      {errorAddCardItemMessage && <Toast text={errorAddCardItemMessage} varient="error" />}
-      {errorDeleteCardItemMessage && <Toast text={errorDeleteCardItemMessage} varient="error" />}
-      {isOverItemCounts && (
-        <Toast text="장바구니는 최대 50개의 상품을 담을 수 있습니다." varient="error" />
-      )}
     </div>
   );
 }
