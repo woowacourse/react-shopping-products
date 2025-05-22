@@ -5,22 +5,38 @@ interface ItemCardProps {
   name: string;
   price: number;
   isCart: boolean;
+  isSoldOut: boolean;
   onAddCart: () => void;
   onRemoveCart: () => void;
 }
 
-const ItemCard = ({ imageUrl, name, price, isCart, onAddCart, onRemoveCart }: ItemCardProps) => {
+const ItemCard = ({
+  imageUrl,
+  name,
+  price,
+  isCart,
+  onAddCart,
+  onRemoveCart,
+  isSoldOut = false,
+}: ItemCardProps) => {
   return (
     <div className={S.cardContainer}>
-      <img
-        className={S.cardImg}
-        src={imageUrl}
-        alt="상품 이미지"
-        onError={(e) => {
-          const target = e.target as HTMLImageElement;
-          target.src = './images/default-image.png';
-        }}
-      />
+      <div className={S.imageContainer}>
+        {isSoldOut && (
+          <div className={S.overlay}>
+            <p>품절</p>
+          </div>
+        )}
+        <img
+          className={S.cardImg}
+          src={imageUrl}
+          alt="상품 이미지"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = './images/default-image.png';
+          }}
+        />
+      </div>
       <div className={S.contentContainer}>
         <div className={S.itemDescription}>
           <p className={S.cardName}>{name}</p>

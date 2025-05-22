@@ -39,13 +39,14 @@ const Product = () => {
           <Skeleton length={10} />
         ) : (
           <div className={S.itemContainer}>
-            {mergedData?.map(({ id, imageUrl, name, price, cartInfo }) => (
+            {mergedData?.map(({ id, imageUrl, name, price, quantity, cartInfo }) => (
               <ItemCard
                 key={id}
                 imageUrl={imageUrl}
                 name={name}
                 price={price}
                 isCart={cartInfo.id !== -1}
+                isSoldOut={quantity === 0}
                 onAddCart={() => handleAddCart(id)}
                 onRemoveCart={() => handleRemoveCart(cartInfo.id)}
               />
