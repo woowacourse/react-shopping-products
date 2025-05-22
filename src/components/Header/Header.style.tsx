@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 
 export const header = css({
   position: "fixed",
-  top: "0%",
+  top: "0.5%",
   left: "50%",
   transform: "translate(-50%, 0)",
   height: "64px",
@@ -12,6 +12,11 @@ export const header = css({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  borderRadius: "8px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.4)",
+  backdropFilter: "blur(2px)",
+  WebkitBackdropFilter: "blur(2px)",
+  border: "1px solid rgba(255, 255, 255, 0.5)",
   zIndex: 100,
   p: { color: "white", fontWeight: 800, fontSize: "20px" },
 });
