@@ -118,6 +118,11 @@ export const orderButton = css({
     backgroundColor: "#111111",
     transform: "scale(0.95)",
   },
+  "&:disabled": {
+    cursor: "not-allowed",
+    opacity: 0.5,
+    pointerEvents: "none",
+  },
 });
 
 export const closeButton = css({
