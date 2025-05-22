@@ -7,11 +7,12 @@ import { removeShoppingCart } from "../../../assets";
 
 interface RemoveButtonProps {
   onClick: () => void;
+  disabled?: boolean;
 }
 
-export function RemoveButton({ onClick }: RemoveButtonProps) {
+export function RemoveButton({ onClick, disabled }: RemoveButtonProps) {
   return (
-    <CartRemoveButton onClick={onClick}>
+    <CartRemoveButton onClick={onClick} disabled={disabled}>
       <CartButtonImg src={removeShoppingCart} alt="빼기" />
       <CartRemoveButtonText>빼기</CartRemoveButtonText>
     </CartRemoveButton>
