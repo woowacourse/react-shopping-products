@@ -20,6 +20,7 @@ export const ButtonContainer = styled.button<{ $variant: VariantsProps }>`
   &:disabled {
     background-color: var(--color-grey);
     color: var(--color-white);
+    cursor: not-allowed;
   }
 
   ${({ $variant }) => buttonStyles[$variant]}

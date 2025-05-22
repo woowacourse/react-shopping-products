@@ -110,8 +110,19 @@ export const handlers = [
 
   http.delete(getRequestURL('/cart-items/:id'), async ({ params }) => {
     const { id } = params;
-    const cartIndex = mockCartData.findIndex((cartItem) => cartItem.product.id === Number(id));
+    console.log(id);
+    const cartIndex = mockCartData.findIndex((cartItem) => cartItem.id === Number(id));
+    console.log(mockCartData);
+
+    if (cartIndex === -1) {
+      return new Response(
+        JSON.stringify({ errorCode: 'NOT_FOUND', message: '상품이 존재하지 않습니다.' }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } },
+      );
+    }
+
     mockCartData.splice(cartIndex, 1);
+    console.log(mockCartData);
 
     return new Response(null, {
       status: 204,
@@ -119,12 +130,3 @@ export const handlers = [
     });
   }),
 ];
-
-/**
- * 
- * 
-export const removeCartItems = async (id: number) => {
-  await apiClient({ method: 'DELETE', URI: `/cart-items/${id}` });
-};
-
- */
