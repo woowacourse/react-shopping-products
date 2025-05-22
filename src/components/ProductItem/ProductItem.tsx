@@ -1,20 +1,25 @@
-import CartItemButton from "./components/CartItemButton/CartItemButton";
+import QuantitySelector from "../@common/QuantitySelector/QuantitySelector";
+import AddCartItemButton from "./components/AddCartItemButton/AddCartItemButton";
 import * as S from "./ProductItem.styles";
 
 interface Props {
   imageUrl: string;
   name: string;
   price: number;
-  isAdded: boolean;
-  handleCartItemToggle: () => void;
+  quantity: number;
+  increaseItemQuantity: () => void;
+  decreaseItemQuantity: () => void;
 }
+
+const CART_QUANTITY_THRESHOLD = 1;
 
 const ProductItem = ({
   imageUrl,
   name,
   price,
-  isAdded,
-  handleCartItemToggle,
+  quantity,
+  increaseItemQuantity,
+  decreaseItemQuantity,
 }: Props) => {
   return (
     <S.ProductContainer>
@@ -22,10 +27,15 @@ const ProductItem = ({
       <S.ProductWrapper>
         <S.ProductName>{name}</S.ProductName>
         <S.ProductPrice>{price}</S.ProductPrice>
-        <CartItemButton
-          isAdded={isAdded}
-          onToggleCartItem={handleCartItemToggle}
-        />
+        {quantity >= CART_QUANTITY_THRESHOLD ? (
+          <QuantitySelector
+            quantity={quantity}
+            onIncrease={increaseItemQuantity}
+            onDecrease={decreaseItemQuantity}
+          />
+        ) : (
+          <AddCartItemButton onAdd={increaseItemQuantity} />
+        )}
       </S.ProductWrapper>
     </S.ProductContainer>
   );

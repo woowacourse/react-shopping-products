@@ -22,8 +22,12 @@ function App() {
     setSelectedSortOption,
   } = useProducts(setErrorMessage);
 
-  const { cartItemsCount, isProductInCart, handleCartItemToggle } =
-    useCartItems(setErrorMessage);
+  const {
+    cartItemsCount,
+    decreaseItemQuantity,
+    increaseItemQuantity,
+    quantityByProductId,
+  } = useCartItems(setErrorMessage);
 
   return (
     <S.LayoutContainer>
@@ -49,8 +53,9 @@ function App() {
                   imageUrl={imageUrl}
                   name={name}
                   price={price}
-                  isAdded={isProductInCart(id)}
-                  handleCartItemToggle={() => handleCartItemToggle(id)}
+                  quantity={quantityByProductId(id) ?? 0}
+                  increaseItemQuantity={() => increaseItemQuantity(id)}
+                  decreaseItemQuantity={() => decreaseItemQuantity(id)}
                 />
               ))
             ) : (
