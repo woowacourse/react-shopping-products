@@ -56,9 +56,9 @@ export const ProductListPage = () => {
             key={product.id}
             cartInCount={getCartInCount(cartItems, product.id)}
             product={product}
-            handleAddCartItem={handleAddCartItems}
-            handleRemoveCartItem={handleRemoveCartItems}
-            handleUpdateCartItem={handleUpdateCartItems}
+            handleAddCartItems={handleAddCartItems}
+            handleRemoveCartItems={handleRemoveCartItems}
+            handleUpdateCartItems={handleUpdateCartItems}
           />
         ))}
       </P.ProductItemContainer>

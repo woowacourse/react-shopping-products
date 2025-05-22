@@ -14,7 +14,7 @@ const getRequestURL = (url: string) => {
 
 export const handlers = [
   http.get(getRequestURL('/products'), async () => {
-    return new Response(JSON.stringify({ content: mockData }), {
+    return new Response(JSON.stringify({ content: [...mockData] }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -30,7 +30,7 @@ export const handlers = [
   }),
 
   http.get(getRequestURL('/cart-items'), async () => {
-    return new Response(JSON.stringify({ content: mockCartData }), {
+    return new Response(JSON.stringify({ content: [...mockCartData] }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -110,9 +110,7 @@ export const handlers = [
 
   http.delete(getRequestURL('/cart-items/:id'), async ({ params }) => {
     const { id } = params;
-    console.log(id);
     const cartIndex = mockCartData.findIndex((cartItem) => cartItem.id === Number(id));
-    console.log(mockCartData);
 
     if (cartIndex === -1) {
       return new Response(
@@ -122,7 +120,6 @@ export const handlers = [
     }
 
     mockCartData.splice(cartIndex, 1);
-    console.log(mockCartData);
 
     return new Response(null, {
       status: 204,

@@ -10,6 +10,7 @@ interface CounterControlProps {
 
 const CounterControl = (props: CounterControlProps) => {
   const { count, maxCount, handlePlusCount, handleMinusCount } = props;
+  console.log(count);
 
   return (
     <CountButtonContainer>

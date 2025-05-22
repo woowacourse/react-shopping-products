@@ -5,5 +5,6 @@ export const LayoutContainer = styled.div`
   max-width: var(--max-width-container);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 36px;
 `;

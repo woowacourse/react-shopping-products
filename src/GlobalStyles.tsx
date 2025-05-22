@@ -159,6 +159,8 @@ const themeVariables = css`
     --z-index-header: 3;
     --z-index-toast: 2;
     --z-index-select: 1;
+    --z-index-modal-background: 50;
+    --z-index-modal: 100;
   }
 `;
 

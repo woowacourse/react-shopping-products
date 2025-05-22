@@ -10,6 +10,12 @@ export const buttonStyles = {
     background-color: var(--color-black);
     color: var(--color-white);
   `,
+  largeBlack: css`
+    width: 100%;
+    padding: 12px 0;
+    background-color: var(--color-black);
+    color: var(--color-white);
+  `,
 };
 
 export const ButtonContainer = styled.button<{ $variant: VariantsProps }>`

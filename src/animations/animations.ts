@@ -31,3 +31,13 @@ export const shimmer = keyframes`
     background-position: 300%;
   }
 `;
+
+export const fadeInModal = keyframes`
+    from{
+        transform: translateY(10px);
+    }
+    to{
+        transform: translateY(0);
+    }
+    
+`;

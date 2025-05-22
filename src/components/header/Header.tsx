@@ -6,7 +6,11 @@ import { ROUTES } from '../../constants/routes';
 import useCartContext from '../../hooks/useCartContext';
 import { countDistinct } from '../../util/countDistinct';
 
-const Header = () => {
+interface HeaderProps {
+  onCartModalOpen: () => void;
+}
+
+const Header = ({ onCartModalOpen }: HeaderProps) => {
   const navigate = useNavigate();
   const { cartItems } = useCartContext();
 
@@ -15,7 +19,7 @@ const Header = () => {
       <S.HeaderLogoButton onClick={() => navigate(ROUTES.PRODUCT_LIST_PAGE)}>
         <img src={Logo} alt="헤더 로고" />
       </S.HeaderLogoButton>
-      <S.HeaderCartButton>
+      <S.HeaderCartButton onClick={onCartModalOpen}>
         <img src={CartIcon} alt="장바구니" />
         {cartItems.length !== 0 && (
           <S.HeaderItemCount>

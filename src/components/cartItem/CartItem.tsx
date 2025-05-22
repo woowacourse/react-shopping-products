@@ -1,23 +1,41 @@
 import styled from '@emotion/styled';
 import CounterControl from '../common/counterControl/CounterControl';
+import type { CartItemType } from '../../types/data';
+import useCartCount from '../../hooks/useCartCount';
+import useErrorMessageContext from '../../hooks/useErrorMessageContext';
 
 interface CartItemProps {
-  count: number;
+  cartItem: CartItemType;
+  handleAddCartItems: (productId: number) => void;
+  handleRemoveCartItems: (productId: number) => void;
+  handleUpdateCartItems: (productId: number, quantity: number) => void;
 }
 
-// TODO : 장바구니에 맞게 변경 필요
-const CartItem = ({ count }: CartItemProps) => {
+const CartItem = ({
+  cartItem,
+  handleAddCartItems,
+  handleRemoveCartItems,
+  handleUpdateCartItems,
+}: CartItemProps) => {
+  const { handlePlusCount, handleMinusCount } = useCartCount({
+    cartInCount: cartItem.quantity,
+    product: cartItem.product,
+    handleUpdateCartItems,
+    handleAddCartItems,
+    handleRemoveCartItems,
+  });
+
   return (
     <CartItemContainer>
       <CartItemImage src="./default-product.png" />
       <CartItemInfoContainer>
-        <CartItemName>상품명</CartItemName>
-        <CartItemPrice>10000원</CartItemPrice>
+        <CartItemName>{cartItem.product.name}</CartItemName>
+        <CartItemPrice>{cartItem.product.price}</CartItemPrice>
         <CounterControl
-          count={count}
-          maxCount={20}
-          handlePlusCount={() => {}}
-          handleMinusCount={() => {}}
+          count={cartItem.quantity}
+          maxCount={cartItem.product.quantity}
+          handlePlusCount={handlePlusCount}
+          handleMinusCount={handleMinusCount}
         />
       </CartItemInfoContainer>
     </CartItemContainer>
