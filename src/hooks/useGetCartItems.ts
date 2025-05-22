@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import getCarts from '../api/getCarts';
 import { cartDataType } from '../types/cartItem';
+import { useToast } from './useToast';
 
 function useGetCarts() {
   const [carts, setCarts] = useState<cartDataType[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  useToast(errorMessage);
 
   const fetchCarts = useCallback(async () => {
     try {

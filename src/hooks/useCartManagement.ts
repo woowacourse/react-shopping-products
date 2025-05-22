@@ -3,6 +3,7 @@ import postCartItem from '../api/postCartItem';
 import deleteCartItem from '../api/deleteCartItem';
 import { AddCartItemType, cartDataType } from '../types/cartItem';
 import { CART_LIMIT } from '../constants/carts';
+import { useToast } from './useToast';
 
 function useCartManagement({
   refetchCarts,
@@ -17,6 +18,10 @@ function useCartManagement({
   const [errorDeleteCardItemMessage, setErrorDeleteCardItemMessage] = useState('');
   const [isOverItemCounts, setIsOverItemCounts] = useState(false);
   const [itemCount, setItemCount] = useState(0);
+
+  useToast(errorAddCardItemMessage);
+  useToast(errorDeleteCardItemMessage);
+  useToast(isOverItemCounts ? '장바구니는 최대 50개의 상품을 담을 수 있습니다.' : null);
 
   const handleAddCartItem = async ({ productId, quantity }: AddCartItemType) => {
     if (itemCount >= CART_LIMIT) {

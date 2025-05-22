@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { ProductDTOType } from '../types/product';
 import getProducts from '../api/getProducts';
+import { useToast } from './useToast';
 
 function useGetProducts({ sort, category }: { sort: string; category: string }) {
   const [products, setProducts] = useState<ProductDTOType[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  useToast(errorMessage);
 
   useEffect(() => {
     (async () => {

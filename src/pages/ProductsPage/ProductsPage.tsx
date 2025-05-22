@@ -15,31 +15,16 @@ import { SORT } from '../../constants/products';
 import useProductCategory from '../../hooks/useProductCategory';
 import useCartManagement from '../../hooks/useCartManagement';
 import getProcessedCartArr from '../../utils/getProcessedCartArr';
-import { useToast } from '../../hooks/useToast';
 
 function ProductsPage() {
   const { category, handleChangeCategory } = useProductCategory();
   const { sort, handleChangeSort } = useProductSort();
-  const {
-    isLoading: isLoadingProducts,
-    errorMessage: errorProductsMessage,
-    products,
-  } = useGetProducts({ category, sort });
-  const { errorMessage: errorCartsMessage, carts, refetchCarts } = useGetCarts();
-  const {
-    handleAddCartItem,
-    handleDeleteCartItem,
-    isOverItemCounts,
-    itemCount,
-    errorAddCardItemMessage,
-    errorDeleteCardItemMessage,
-  } = useCartManagement({ refetchCarts, carts });
-
-  useToast(errorCartsMessage);
-  useToast(errorProductsMessage);
-  useToast(errorAddCardItemMessage);
-  useToast(errorDeleteCardItemMessage);
-  useToast(isOverItemCounts ? '장바구니는 최대 50개의 상품을 담을 수 있습니다.' : null);
+  const { isLoading: isLoadingProducts, products } = useGetProducts({ category, sort });
+  const { carts, refetchCarts } = useGetCarts();
+  const { handleAddCartItem, handleDeleteCartItem, itemCount } = useCartManagement({
+    refetchCarts,
+    carts,
+  });
 
   return (
     <div className={productPageContainer}>
