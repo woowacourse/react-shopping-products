@@ -8,10 +8,12 @@ export const dropdownDivCss = css({
 });
 
 export const appCss = css({
-  width: "380px",
+  width: "420px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.1)",
+  borderRadius: "8px",
 });
 
 export const titleCss = css({

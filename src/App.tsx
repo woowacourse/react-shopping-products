@@ -74,31 +74,33 @@ function App() {
 
   return (
     <div css={styles.appCss}>
-      <h2 css={styles.titleCss}>마빈 잡화점</h2>
-      <div css={styles.dropdownDivCss}>
-        <Header />
-        <Dropdown
-          list={CATEGORY_OPTIONS}
-          placeholder="전체"
-          value={categoryQuery}
-          onSelect={handleSelectCategory}
-        />
+      <div style={{ width: 380 }}>
+        <h2 css={styles.titleCss}>마빈 잡화점</h2>
+        <div css={styles.dropdownDivCss}>
+          <Header />
+          <Dropdown
+            list={CATEGORY_OPTIONS}
+            placeholder="전체"
+            value={categoryQuery}
+            onSelect={handleSelectCategory}
+          />
 
-        <Dropdown
-          list={ORDER_BY_OPTIONS}
-          placeholder="낮은 가격순"
-          value={productsQuery}
-          onSelect={handleOrderBySelect}
-        />
-      </div>
-      {productFetchLoading ? (
-        <div style={{ marginBottom: "500px" }}>
-          <Spinner size="medium" />
+          <Dropdown
+            list={ORDER_BY_OPTIONS}
+            placeholder="낮은 가격순"
+            value={productsQuery}
+            onSelect={handleOrderBySelect}
+          />
         </div>
-      ) : (
-        <ProductList products={productsData} />
-      )}
-      <MswStatus />
+        {productFetchLoading ? (
+          <div style={{ marginBottom: "500px" }}>
+            <Spinner size="medium" />
+          </div>
+        ) : (
+          <ProductList products={productsData} />
+        )}
+        <MswStatus />
+      </div>
     </div>
   );
 }
