@@ -28,6 +28,15 @@ export const fetcher = {
       returnOriginalOnNoContent: true,
     });
   },
+  patch: async <T>({ baseUrl, token, body }: FetcherOptions<T>): FetcherResponse<T> => {
+    return request<T>({
+      baseUrl,
+      token,
+      body,
+      method: 'PATCH',
+      returnOriginalOnNoContent: true,
+    });
+  },
   delete: async <T>({ baseUrl, token }: FetcherOptions<T>): FetcherResponse<T> => {
     return request<T>({
       baseUrl,
@@ -72,7 +81,7 @@ const request = async <T>({
     headers,
   };
 
-  if (body && method === 'POST') {
+  if (body && ['POST', 'PATCH'].includes(method)) {
     config.body = JSON.stringify(body);
   }
 
