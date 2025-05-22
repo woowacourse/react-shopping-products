@@ -56,18 +56,16 @@ function App() {
         <Header title="SHOP" totalCartProducts={cart && cart.totalElements} />
         <ToastList />
         {isLoading && <LoadingSpinner duration={2} />}
-        {!isLoading && !isError && transformedProducts.length > 0 && (
-          <ProductSection
-            onFilter={handleFilterCategory}
-            onSort={handleSortPrice}
-            onAddCart={handleAddCart}
-            onRemoveCart={handleRemoveCart}
-            cart={cart?.content || null}
-            products={transformedProducts}
-            sort={sort}
-            category={category}
-          />
-        )}
+        <ProductSection
+          onFilter={handleFilterCategory}
+          onSort={handleSortPrice}
+          onAddCart={handleAddCart}
+          onRemoveCart={handleRemoveCart}
+          cart={cart?.content || null}
+          products={transformedProducts}
+          sort={sort}
+          category={category}
+        />
         {!isLoading && !isError && transformedProducts.length === 0 && (
           <div>상품이 존재하지 않습니다.</div>
         )}
