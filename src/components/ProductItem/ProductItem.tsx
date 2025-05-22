@@ -2,9 +2,7 @@ import * as S from './ProductItem.styled';
 import AddProductIcon from '../Icon/AddProductIcon';
 import Button from '../common/Button/Button';
 import RemoveProductIcon from '../Icon/RemoveProductIcon';
-import addProductItemApi from '../../api/addProductItemApi';
-import removeProductItemApi from '../../api/removeProductItemApi';
-import getCartItemList from '../../api/cartItemListApi';
+import { cartApi } from '../../api/cartApi';
 import blackDefaultImage from '../../assets/blackDefaultImage.png';
 import { ResponseCartItem, ResponseProduct } from '../../api/types';
 import { Dispatch, SetStateAction } from 'react';
@@ -29,17 +27,17 @@ function ProductItem({
       if (action === 'remove') {
         const cartItemId = getCartItemId(productId, cartItemList);
         if (cartItemId) {
-          await removeProductItemApi(cartItemId);
+          await cartApi.delete(cartItemId);
         }
       } else {
         if (cartItemList.length >= CART_MAX_COUNT) {
           setErrorMessage('장바구니에는 최대 50개의 상품만 담을 수 있습니다.');
           return;
         }
-        await addProductItemApi(productId, 1);
+        await cartApi.post(productId, 1);
       }
 
-      const rawCartItemList = await getCartItemList();
+      const rawCartItemList = await cartApi.get();
       setCartItemList(rawCartItemList);
     } catch (error) {
       if (error instanceof Error) {

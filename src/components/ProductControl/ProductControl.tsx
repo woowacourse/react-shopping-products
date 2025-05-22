@@ -1,6 +1,6 @@
 import * as S from './ProductControl.styled';
 import Select from '../common/Select/Select';
-import getProductList from '../../api/productListApi';
+import { productApi } from '../../api/productApi';
 import { CategoryOptions, SortOptions } from '../../constants/selectOptions';
 import { useState } from 'react';
 import { CategoryOptionType, ProductControlProps, SelectType, SortOptionType } from './types';
@@ -20,7 +20,7 @@ function ProductControl({ setProductList, setErrorMessage }: ProductControlProps
         setSort(selectedValue as SortOptionType);
       }
 
-      const rawProductList = await getProductList({
+      const rawProductList = await productApi.get({
         category: newCategory,
         sort: newSort,
       });

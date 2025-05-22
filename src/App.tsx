@@ -3,8 +3,8 @@ import Header from './components/Header/Header';
 import ProductControl from './components/ProductControl/ProductControl';
 import ProductList from './components/ProductList/ProductList';
 import ErrorBox from './components/common/ErrorBox/ErrorBox';
-import getProductList from './api/productListApi';
-import getCartItemList from './api/cartItemListApi';
+import { productApi } from './api/productApi';
+import { cartApi } from './api/cartApi';
 import LoadingIcon from './components/Icon/LoadingIcon';
 import { useEffect, useState } from 'react';
 import { ResponseCartItem, ResponseProduct } from './api/types';
@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [rawCartItemList, rawProductList] = await Promise.all([getCartItemList(), getProductList({ category: '', sort: 'price,asc' })]);
+        const [rawCartItemList, rawProductList] = await Promise.all([cartApi.get(), productApi.get({ category: '', sort: 'price,asc' })]);
 
         setCartItemList(rawCartItemList);
         setProductList(rawProductList);
