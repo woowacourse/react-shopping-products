@@ -1,24 +1,49 @@
 import styled from '@emotion/styled';
+import { Modal } from '../Modal';
+import CartItemModalContent from '../Modal/CartItemModalContent';
+import { CartItemTypes } from '../../types/CartItemType';
 
 interface HeaderProps {
-  cartItemCount: number;
+  cartItems: CartItemTypes[];
   status: 'idle' | 'loading' | 'success' | 'error';
+  updateCartItems: () => void;
+  getMatchCartItem: (id: number) => CartItemTypes | undefined;
+  updateErrorMessage: (errorMessage: string) => void;
+  checkMax: () => boolean;
 }
 
-export default function Header({ cartItemCount, status }: HeaderProps) {
+export default function Header({
+  cartItems,
+  status,
+  updateCartItems,
+  getMatchCartItem,
+  updateErrorMessage,
+  checkMax,
+}: HeaderProps) {
   return (
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
-      <StyledButton type="button">
-        <StyledImg src="./shoppingBagIcon.png" alt="shoppingBagIcon" />
-        {status === 'success' ? (
-          <StyledCountBox data-testid="cart-count-box">
-            <StyledCountText data-testid="cart-count">
-              {cartItemCount}
-            </StyledCountText>
-          </StyledCountBox>
-        ) : null}
-      </StyledButton>
+      <Modal>
+        <Modal.Trigger>
+          <StyledButton type="button">
+            <StyledImg src="./shoppingBagIcon.png" alt="shoppingBagIcon" />
+            {status === 'success' ? (
+              <StyledCountBox data-testid="cart-count-box">
+                <StyledCountText data-testid="cart-count">
+                  {cartItems.length}
+                </StyledCountText>
+              </StyledCountBox>
+            ) : null}
+          </StyledButton>
+        </Modal.Trigger>
+        <CartItemModalContent
+          cartItems={cartItems}
+          updateCartItems={updateCartItems}
+          getMatchCartItem={getMatchCartItem}
+          checkMax={checkMax}
+          updateErrorMessage={updateErrorMessage}
+        />
+      </Modal>
     </StyledHeader>
   );
 }
