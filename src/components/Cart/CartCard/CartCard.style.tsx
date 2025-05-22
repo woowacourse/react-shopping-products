@@ -3,23 +3,24 @@ import { css } from "@emotion/react";
 export const cartCardCss = css({
   display: "flex",
   width: "100%",
-  height: "100px",
+  height: "120px",
   gap: "16px",
   flexDirection: "row",
   justifyContent: "flex-start",
-  alignItems: "flex-start",
-  borderRadius: "8px 8px 0 0",
+  alignItems: "center",
+  borderBottom: "1px solid #E0E0E0",
 });
 
 export const cartCardImageCss = css({
   width: "90px",
   height: "90px",
   position: "relative",
+
   img: {
     width: "100%",
     height: "100%",
     objectFit: "cover",
-    borderRadius: "8px 8px 0 0",
+    borderRadius: "8px",
   },
 });
 
@@ -45,7 +46,7 @@ export const cartCardSoldOutCss = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  borderRadius: "8px 8px 0 0",
+  borderRadius: "8px",
   p: {
     fontSize: "32px",
     fontWeight: "600",

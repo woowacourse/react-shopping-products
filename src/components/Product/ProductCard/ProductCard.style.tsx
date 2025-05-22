@@ -5,8 +5,13 @@ export const cardCss = css({
   width: "182px",
   height: "250px",
   flexDirection: "column",
-  borderRadius: "8px 8px 0 0",
+  borderRadius: "8px",
   backgroundColor: "white",
+  transition: "transform 0.3s",
+  "&:hover": {
+    transform: "scale(1.05)",
+    boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)",
+  },
 });
 
 export const imageCss = css({
