@@ -8,7 +8,7 @@ export const products: ProductWithQuantity[] = [
     price: 3000,
     imageUrl: "https://via.placeholder.com/150",
     category: "식료품",
-    quantity: 100,
+    quantity: 10,
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ export const products: ProductWithQuantity[] = [
     price: 12000,
     imageUrl: "https://via.placeholder.com/150",
     category: "패션잡화",
-    quantity: 100,
+    quantity: 10,
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ export const products: ProductWithQuantity[] = [
     price: 4000,
     imageUrl: "https://via.placeholder.com/150",
     category: "식료품",
-    quantity: 100,
+    quantity: 10,
   },
   {
     id: 4,
@@ -32,7 +32,7 @@ export const products: ProductWithQuantity[] = [
     price: 25000,
     imageUrl: "https://via.placeholder.com/150",
     category: "패션잡화",
-    quantity: 100,
+    quantity: 10,
   },
   {
     id: 5,
@@ -40,7 +40,7 @@ export const products: ProductWithQuantity[] = [
     price: 5000,
     imageUrl: "https://via.placeholder.com/150",
     category: "식료품",
-    quantity: 100,
+    quantity: 10,
   },
 ];
 
