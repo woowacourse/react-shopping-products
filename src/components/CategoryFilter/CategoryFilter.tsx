@@ -10,7 +10,6 @@ interface Props {
 const CategoryFilter = ({ selectedCategory, setSelectedCategory }: Props) => {
   return (
     <SelectBox
-      id="category"
       value={selectedCategory}
       onChange={setSelectedCategory}
       options={categoryOptions}
