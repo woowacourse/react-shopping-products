@@ -6,7 +6,7 @@ vi.mock("@emotion/react");
 describe("Dropdown은", () => {
   const mockOnSelect = vi.fn();
 
-  it("아무것도 선택되지 않았을 때 선택하세요가 보여야 함", () => {
+  it("아무것도 선택되지 않았을 때 선택하세요가 보여야 한다", () => {
     render(
       <Dropdown
         list={mockList}
@@ -19,7 +19,7 @@ describe("Dropdown은", () => {
     expect(screen.getByText("선택하세요")).toBeDefined();
   });
 
-  it("선택하세요를 클릭하면 옵션들이 보여야 함", () => {
+  it("선택하세요를 클릭하면 옵션들이 보여야 한다.", () => {
     render(
       <Dropdown
         list={mockList}
@@ -36,7 +36,7 @@ describe("Dropdown은", () => {
     expect(screen.getByText("옵션3")).toBeDefined();
   });
 
-  it("옵션을 선택하면 onSelect가 호출되고 드롭다운이 닫혀야 함", () => {
+  it("옵션을 선택하면 onSelect가 호출되고 드롭다운이 닫혀야 한다.", () => {
     render(
       <Dropdown
         list={mockList}

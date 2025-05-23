@@ -1,9 +1,9 @@
-import { cleanup, waitFor } from "@testing-library/react";
+import { cleanup, waitFor, screen } from "@testing-library/react";
 import { vi } from "vitest";
 
-import { mockProducts } from "../test-utils/mock-data";
-import { setupUseDataMock } from "../test-utils/setupUseDataMock";
+import { testStateStore } from "../mocks/handlers";
 import { renderAppWithProviders } from "../test-utils/renderWithProviders";
+import { server } from "../mocks/node";
 
 const mockShowError = vi.fn();
 
@@ -14,97 +14,76 @@ vi.mock("../contexts/ErrorContext", () => ({
   ),
 }));
 
-vi.mock("../contexts/QueryContext", () => ({
-  useQueryContext: () => ({
-    dataPool: { products: [...mockProducts] },
-    productsQuery: "낮은 가격순",
-    setProductsQuery: vi.fn(),
-  }),
-  QueryContextProvider: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
-}));
-
 describe("App에서는 ", () => {
   beforeEach(() => {
-    setupUseDataMock({ productsLoading: true, cartLoading: true });
-  });
-  afterEach(() => {
-    cleanup();
-    vi.resetModules();
+    // MSW 테스트 상태 초기화
+    testStateStore.reset();
     vi.clearAllMocks();
   });
+
+  afterEach(() => {
+    cleanup();
+    // 테스트 상태 리셋
+    testStateStore.reset();
+    server.resetHandlers();
+  });
+
   test("제품 정보 가져오기 실패시 해당 오류가 호출되어야 한다.", async () => {
-    setupUseDataMock({
-      productsData: [...mockProducts],
-      productsError: new Error("제품 정보를 가져오는데 실패했습니다."),
-      cartData: [],
-    });
+    testStateStore.shouldFailProducts = true;
+
     await renderAppWithProviders();
 
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: "제품 정보를 가져오는데 실패했습니다.",
+          message: "제품 정보를 가져오는 중 오류가 발생했습니다.",
         })
       );
     });
   });
 
   test("장바구니 정보 가져오기 실패시 해당 오류가 호출되어야 한다.", async () => {
-    setupUseDataMock({
-      productsData: [...mockProducts],
-      productsError: null,
-      cartData: [],
-      cartError: new Error("장바구니 정보를 가져오는데 실패했습니다."),
-    });
+    testStateStore.shouldFailCart = true;
 
     await renderAppWithProviders();
 
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: "장바구니 정보를 가져오는데 실패했습니다.",
+          message: "장바구니 정보를 가져오는 중 오류가 발생했습니다.",
         })
       );
     });
   });
 
   test("여러 개의 에러가 발생했을 때 모든 에러가 처리되어야 한다.", async () => {
-    setupUseDataMock({
-      productsData: [...mockProducts],
-      productsError: new Error("제품 정보를 가져오는데 실패했습니다."),
-      cartData: [],
-      cartError: new Error("장바구니 정보를 가져오는데 실패했습니다."),
-    });
+    testStateStore.shouldFailProducts = true;
+    testStateStore.shouldFailCart = true;
+
     await renderAppWithProviders();
 
     await waitFor(() => {
       expect(mockShowError).toHaveBeenCalledTimes(2);
       expect(mockShowError).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: "제품 정보를 가져오는데 실패했습니다.",
+          message: "제품 정보를 가져오는 중 오류가 발생했습니다.",
         })
       );
       expect(mockShowError).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: "장바구니 정보를 가져오는데 실패했습니다.",
+          message: "장바구니 정보를 가져오는 중 오류가 발생했습니다.",
         })
       );
     });
   });
 
   test("에러가 없는 경우 해당 오류가 호출되지 않아야 함", async () => {
-    setupUseDataMock({
-      productsData: [...mockProducts],
-      productsError: null,
-      cartData: [],
-      cartError: null,
-    });
     await renderAppWithProviders();
 
     await waitFor(() => {
-      expect(mockShowError).not.toHaveBeenCalled();
+      expect(screen.queryByText("마빈 잡화점")).toBeInTheDocument();
     });
+
+    expect(mockShowError).not.toHaveBeenCalled();
   });
 });

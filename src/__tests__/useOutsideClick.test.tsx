@@ -41,7 +41,7 @@ describe("useOutsideClick 훅은", () => {
     document.body.removeChild(outsideElement);
   });
 
-  it("should not call the callback when clicking inside the referenced element", () => {
+  it("안쪽을 클릭했을때, 해당 콜백이 호출되지 않아야 한다.", () => {
     // Setup a mock callback function
     const mockCallback = vi.fn();
 

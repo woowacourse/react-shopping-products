@@ -2,7 +2,8 @@ import "@testing-library/jest-dom";
 import { cleanup, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import { Product } from "../types/product";
-import { setupUseDataMock } from "../test-utils/setupUseDataMock";
+import { testStateStore } from "../mocks/handlers";
+import { server } from "../mocks/node";
 import { renderProductListWithProviders } from "../test-utils/renderWithProviders";
 
 vi.mock("../contexts/ErrorContext", () => ({
@@ -14,9 +15,11 @@ vi.mock("../contexts/ErrorContext", () => ({
 
 vi.mock("../contexts/QueryContext", () => ({
   useQueryContext: () => ({
-    dataPool: { products: [...mockProducts] },
+    dataPool: { products: [] },
     productsQuery: "낮은 가격순",
     setProductsQuery: vi.fn(),
+    setData: vi.fn(),
+    controllers: { current: {} },
   }),
   QueryContextProvider: ({ children }: { children: React.ReactNode }) => (
     <>{children}</>
@@ -42,13 +45,16 @@ const mockProducts: Product[] = [
 
 describe("ProductList는 ", () => {
   beforeEach(() => {
-    setupUseDataMock({ productsLoading: false, cartLoading: false });
-  });
-  afterEach(() => {
-    cleanup();
-    vi.resetModules();
+    testStateStore.reset();
     vi.clearAllMocks();
   });
+
+  afterEach(() => {
+    cleanup();
+    testStateStore.reset();
+    server.resetHandlers();
+  });
+
   it("아이템을 정상적으로 출력해야한다.", async () => {
     await renderProductListWithProviders(mockProducts);
 

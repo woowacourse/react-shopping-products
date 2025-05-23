@@ -33,10 +33,11 @@ export const ERROR_MESSAGES: Record<string, string> = {
   "Sold Out": "품절된 상품입니다.",
   "Cart Item Not Found": "장바구니 항목을 찾을 수 없습니다.",
   "Insufficient Stock": "재고가 부족합니다.",
-  "Quantity must be greater than 0": "수량은 0보다 커야 합니다.",
+  "Invalid Quantity": "수량은 0보다 커야 합니다.",
   "Unhandled Request": "처리할 수 없는 요청입니다.",
 
-  // 네트워크 관련 에러 메시지
+  "Cart Fetching Error": "장바구니 정보를 가져오는 중 오류가 발생했습니다.",
+  "Product Fetching Error": "제품 정보를 가져오는 중 오류가 발생했습니다.",
   "Network Error": "네트워크 오류가 발생했습니다. 잠시후 다시 이용해 주세요.",
   "Request Cancelled": "요청이 취소되었습니다.",
 

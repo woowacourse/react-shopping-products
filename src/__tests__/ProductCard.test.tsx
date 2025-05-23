@@ -10,7 +10,8 @@ import {
 import { renderProductCardWithProviders } from "../test-utils/renderWithProviders";
 import { CartItem } from "../types/cartContents";
 import { ProductWithQuantity } from "../types/product";
-import { setupUseDataMock } from "../test-utils/setupUseDataMock";
+import { testStateStore } from "../mocks/handlers";
+import { server } from "../mocks/node";
 
 // 외부 컴포넌트 모킹
 vi.mock("../components/ErrorToast/ErrorToast");
@@ -34,6 +35,8 @@ interface MockContextValue {
   };
   productsQuery: string;
   setProductsQuery: () => void;
+  setData: () => void;
+  controllers: { current: Record<string, AbortController | null> };
 }
 
 const mockContextValue: MockContextValue = {
@@ -43,6 +46,8 @@ const mockContextValue: MockContextValue = {
   },
   productsQuery: "낮은 가격순",
   setProductsQuery: vi.fn(),
+  setData: vi.fn(),
+  controllers: { current: {} },
 };
 
 vi.mock("../contexts/QueryContext", () => {
@@ -66,16 +71,17 @@ vi.mock("../hooks/useFetch", () => ({
 }));
 
 describe("ProductCard 컴포넌트는", () => {
-  afterEach(() => {
-    cleanup();
-    vi.resetModules();
+  beforeEach(() => {
+    testStateStore.reset();
+    mockContextValue.dataPool.products = [...mockProducts];
+    mockContextValue.dataPool["cart-items"] = [];
     vi.clearAllMocks();
   });
 
-  beforeEach(() => {
-    setupUseDataMock({ productsLoading: false, cartLoading: false });
-    mockContextValue.dataPool.products = [...mockProducts];
-    mockContextValue.dataPool["cart-items"] = [];
+  afterEach(() => {
+    cleanup();
+    testStateStore.reset();
+    server.resetHandlers();
   });
 
   it("장바구니에 없는 상품은 '담기' 버튼이 렌더링된다", async () => {
