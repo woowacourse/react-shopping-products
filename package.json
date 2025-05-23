@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "VITE_APP_USE_MSW=true vite --host",
     "dev:msw": "VITE_APP_USE_MSW=true vite",
     "build": "tsc && vite build",
     "build:msw": "VITE_APP_USE_MSW=true tsc && vite build",
