@@ -45,6 +45,8 @@
     - [x] products api
     - [ ] cartItem api
   - [ ] msw 연결
+    - [x] products api 로직 연결 (sort, category)
+    - [ ] cartItem api 로직 연결
 
 - [ ] 상품 목록
   - [ ] 장바구니 ui 변경 -> 담기 버튼 클릭시, 갯수 올리는 ui로 변경
