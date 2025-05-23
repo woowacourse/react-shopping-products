@@ -2,7 +2,6 @@ import CustomButton from '../../../shared/ui/CustomButton';
 import * as S from './ProductCard.styles';
 import CartQuantitySelector from './CartQuantitySelector';
 import { useProductsWithCartContext } from '../../../shared/contexts/productsWithCart/useProductsWithCartContext';
-import { css } from '@emotion/react';
 import { Product } from '../../../shared/contexts/productsWithCart/types';
 
 interface ProductCardProps {
@@ -54,7 +53,7 @@ export default function ProductCard({ product, setError }: ProductCardProps) {
             cartProductId={cartProductId}
             cartProductQuantity={cartProductQuantity}
             setError={setError}
-            isProductSoldOut={product.quantity === 0}
+            isProductSoldOut={isProductSoldOut}
           />
         )}
       </S.ButtonSection>

@@ -25,6 +25,10 @@ export const CartQuantitySelectorButton = styled.button`
   :hover {
     background-color: #f0f0f0;
   }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 `;
 
 export const CartQuantityNumber = styled.div`
