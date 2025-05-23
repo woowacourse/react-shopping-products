@@ -5,20 +5,20 @@ interface UseMutationProps<TRequest, TResponse> {
   queryKey: string;
 }
 
-export default function useMutation<TRequest, TResponse, TGetResponse = unknown>({
+export default function useMutation<TRequest, TResponse, TOptimisticResponse = TResponse>({
   mutationFn,
   queryKey,
 }: UseMutationProps<TRequest, TResponse>) {
   const { getQueryData, setQueryData, setQueryStatus } = useQueryClient();
 
-  const mutate = async (variables: TRequest, optimisticUpdate?: (prev: TGetResponse) => TResponse) => {
-    const prevData = getQueryData(queryKey) as TGetResponse;
+  const mutate = async (variables: TRequest, optimisticUpdate?: (prev: TOptimisticResponse) => TResponse) => {
+    const prevData = getQueryData(queryKey) as TOptimisticResponse;
 
     if (optimisticUpdate) {
       mutationFn(variables);
       setQueryData(queryKey, optimisticUpdate(prevData));
-      setQueryStatus(queryKey, "success");
     } else {
+      setQueryStatus(queryKey, "loading");
       const response = await mutationFn(variables);
       setQueryData(queryKey, response);
       setQueryStatus(queryKey, "success");
