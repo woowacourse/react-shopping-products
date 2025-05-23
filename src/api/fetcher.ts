@@ -18,7 +18,7 @@ const createRequestConfig = <T>({
   token,
   body,
 }: {
-  method: 'GET' | 'POST' | 'DELETE';
+  method: 'GET' | 'POST' | 'DELETE' | 'PATCH';
   token: string;
   body?: T;
 }): RequestInit => {
@@ -55,6 +55,12 @@ export const fetcher = {
   post: async <T>({ endpoint, body }: FetcherOptions<T>): FetcherResponse<T> => {
     const url = `${baseUrl}${endpoint}`;
     const config = createRequestConfig({ method: 'POST', body, token });
+    return request<T>({ url, config });
+  },
+
+  patch: async <T>({ endpoint, body }: FetcherOptions<T>): FetcherResponse<T> => {
+    const url = `${baseUrl}${endpoint}`;
+    const config = createRequestConfig({ method: 'PATCH', body, token });
     return request<T>({ url, config });
   },
 
