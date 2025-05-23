@@ -25,7 +25,7 @@ function useFetch<T>(
   const controllerRef = useRef<AbortController | null>(null);
   const requestIdRef = useRef<number>(0);
 
-  const fetcher = useCallback(async () => {
+  const fetcher = useCallback(async (): Promise<void> => {
     if (controllerRef.current) {
       controllerRef.current.abort();
     }
@@ -46,7 +46,7 @@ function useFetch<T>(
       const res = await fetch(url, fetchOptionsWithSignal);
 
       if (currentRequestId !== requestIdRef.current) {
-        return;
+        return null; // Promise resolve with null
       }
 
       if (!res.ok) {
@@ -60,7 +60,9 @@ function useFetch<T>(
       }
 
       // 201 Created, 204 No Content 처리
-      if (res.status === 201 || res.status === 204) return;
+      if (res.status === 201 || res.status === 204) {
+        return;
+      }
 
       // JSON이 아닌 응답 처리
       const contentType = res.headers.get("content-type");
@@ -82,6 +84,7 @@ function useFetch<T>(
         return;
       }
       setError(createApiError(e));
+      throw e; // Re-throw the error so the caller can handle it
     } finally {
       if (controllerRef.current === controller) {
         controllerRef.current = null;
@@ -90,7 +93,7 @@ function useFetch<T>(
         setIsLoading(false);
       }
     }
-  }, [url, JSON.stringify(options), ...deps]);
+  }, [url, ...deps]);
 
   useEffect(() => {
     if (immediate) fetcher();
