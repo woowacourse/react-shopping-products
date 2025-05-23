@@ -1,13 +1,21 @@
-import { selectorContainer } from "./QuantitySelector.style";
+import { useState } from "react";
+import { IconButton } from "../IconButton/IconButton";
+import { QuantitySelectorLayout } from "./QuantitySelector.style";
 
-interface QuantitySelectorProps {
-  imgUrl: string;
-}
+export function QuantitySelector() {
+  const [count, setCount] = useState(0);
 
-export function QuantitySelector({ imgUrl }: QuantitySelectorProps) {
+  const handleAddCount = () => {
+    setCount((prev) => prev + 1);
+  };
+  const handleMinusCount = () => {
+    if (count > 0) setCount((prev) => prev - 1);
+  };
   return (
-    <button css={selectorContainer("80px")}>
-      <img src={imgUrl} />
-    </button>
+    <div css={QuantitySelectorLayout}>
+      <IconButton imgUrl="./minus.png" onClick={handleMinusCount} />
+      <p>{count}</p>
+      <IconButton imgUrl="./plus.png" onClick={handleAddCount} />
+    </div>
   );
 }

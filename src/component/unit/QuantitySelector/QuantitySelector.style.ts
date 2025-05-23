@@ -1,12 +1,11 @@
 import { css } from "@emotion/react";
 
-const selectorContainer = (width: string = "100%") => {
-  return css`
-    display: flex;
-    width: ${width};
-    height: 24px;
-    gap: 4px;
-  `;
-};
+const QuantitySelectorLayout = css`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 24px;
+  gap: 16px;
+`;
 
-export { selectorContainer };
+export { QuantitySelectorLayout };

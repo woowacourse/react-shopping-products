@@ -1,7 +1,8 @@
-import { deleteCartItem, postCartItem } from "../../../api/cartItem";
+import { postCartItem } from "../../../api/cartItem";
 import { CartItemType } from "../../../types/cartItem";
 
 import Button from "../../unit/Button/Button";
+import { QuantitySelector } from "../../unit/QuantitySelector/QuantitySelector";
 import {
   contentLayout,
   descriptionLayout,
@@ -44,23 +45,19 @@ export default function Product({
     );
   };
 
-  const QuantitySelector = () => {
-    return <></>;
-  };
+  // const RemoveFromCartButton = () => {
+  //   const handleClick = async () => {
+  //     await deleteCartItem({ id: Number(selectedCartItems[0].id) });
+  //     onChange();
+  //   };
 
-  const RemoveFromCartButton = () => {
-    const handleClick = async () => {
-      await deleteCartItem({ id: Number(selectedCartItems[0].id) });
-      onChange();
-    };
-
-    return (
-      <Button onClick={handleClick} style="secondary">
-        <img src="./remove-shopping-cart.svg" />
-        <p>빼기</p>
-      </Button>
-    );
-  };
+  //   return (
+  //     <Button onClick={handleClick} style="secondary">
+  //       <img src="./remove-shopping-cart.svg" />
+  //       <p>빼기</p>
+  //     </Button>
+  //   );
+  // };
 
   return (
     <div id={id.toString()} css={productLayout}>
@@ -70,7 +67,7 @@ export default function Product({
           <p css={productNameLayout}>{name}</p>
           <p css={priceLayout}>{price}</p>
         </div>
-        {isSelected ? RemoveFromCartButton() : QuantitySelector()}
+        {isSelected ? <QuantitySelector /> : AddToCartButton()}
       </div>
     </div>
   );

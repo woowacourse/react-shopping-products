@@ -61,7 +61,7 @@ function Selector<T>({
       </button>
       <img
         css={DropDownIcon}
-        src={`./${!isOpen ? "chevron-up" : "chevron-down"}.png`}
+        src={`./${!isOpen ? "chevron-down" : "chevron-up"}.png`}
       />
       {isOpen && (
         <ul css={DropDownContainer} onClick={(e) => handleSelectedOption(e)}>
