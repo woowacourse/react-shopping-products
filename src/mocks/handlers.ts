@@ -6,10 +6,12 @@ const handlers = [
   http.get(`${BASE_URL}/products`, () => {
     const products = [
       {
-        category: "Fruits",
-        price: "$1",
-        stocked: true,
-        name: "Apple",
+        id: 1,
+        name: "에어포스",
+        price: 100000,
+        imageUrl: "string",
+        category: "string",
+        quantity: 50,
       },
     ];
     return HttpResponse.json(products);
