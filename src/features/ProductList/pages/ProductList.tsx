@@ -152,7 +152,7 @@ export const ProductListPage = () => {
             )}
           </Flex>
           <Modal show={showModal} onHide={handleShowModal} position="bottom">
-            <Modal.Header closeButton>
+            <Modal.Header>
               <Modal.Title>장바구니</Modal.Title>
             </Modal.Header>
             <Modal.Body>
