@@ -1,7 +1,7 @@
-import { deleteCartItem, postCartItem } from "../../api/cartItem";
-import { CartItemType } from "../../types/cartItem";
+import { deleteCartItem, postCartItem } from "../../../api/cartItem";
+import { CartItemType } from "../../../types/cartItem";
 
-import Button from "../Button/Button";
+import Button from "../../unit/Button/Button";
 import {
   contentLayout,
   descriptionLayout,
@@ -44,6 +44,10 @@ export default function Product({
     );
   };
 
+  const QuantitySelector = () => {
+    return <></>;
+  };
+
   const RemoveFromCartButton = () => {
     const handleClick = async () => {
       await deleteCartItem({ id: Number(selectedCartItems[0].id) });
@@ -66,7 +70,7 @@ export default function Product({
           <p css={productNameLayout}>{name}</p>
           <p css={priceLayout}>{price}</p>
         </div>
-        {isSelected ? RemoveFromCartButton() : AddToCartButton()}
+        {isSelected ? RemoveFromCartButton() : QuantitySelector()}
       </div>
     </div>
   );

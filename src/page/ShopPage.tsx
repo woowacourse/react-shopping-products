@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { getCartItems } from "../api/cartItem";
 import getProducts from "../api/product";
 
-import Header from "../component/Header/Header";
-import ProductContainer from "../component/ProductContainer/ProductContainer";
-import Selector from "../component/Selector/Selector";
-import TitleContainer from "../component/TitleContainer/titleContainer";
-import Toast from "../component/Toast/Toast";
+import Header from "../component/feature/Header/Header";
+import ProductContainer from "../component/feature/ProductContainer/ProductContainer";
+import Selector from "../component/unit/Selector/Selector";
+import TitleContainer from "../component/feature/TitleContainer/titleContainer";
+import Toast from "../component/unit/Toast/Toast";
 import {
   cartIcon,
   cartIconContainer,
@@ -16,7 +16,7 @@ import {
   selectorBoxLayout,
 } from "./ShopPage.style";
 import { CategoryOption, FilterOption } from "../constants";
-import Main from "../component/Main/Main";
+import Main from "../component/feature/Main/Main";
 import { ProductType } from "../types/product";
 import { CartItemType } from "../types/cartItem";
 

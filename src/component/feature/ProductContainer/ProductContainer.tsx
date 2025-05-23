@@ -1,5 +1,5 @@
-import { CartItemType } from "../../types/cartItem";
-import { ProductType } from "../../types/product";
+import { CartItemType } from "../../../types/cartItem";
+import { ProductType } from "../../../types/product";
 import Product from "../Product/Product";
 import { ProductContainerLayout } from "./ProductContainer.style";
 
