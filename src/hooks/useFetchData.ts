@@ -1,45 +1,51 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import useDataContext from './useDataContext';
 
-interface useFetchDataProps<T> {
-  apiCall: () => Promise<T>;
+interface useFetchDataProps {
   dataName: string;
-  onSuccess: (data: T, updateHandler: (value: T) => void) => void;
+}
+
+interface FetchDataProps<T> {
+  apiCall: () => Promise<T | void>;
+  onSuccess: (data?: T) => void;
   onError: (error: Error | unknown) => void;
 }
 
-const useFetchData = <T>({ apiCall, dataName, onSuccess, onError }: useFetchDataProps<T>) => {
-  const { data, setData } = useDataContext();
-  const [isLoading, setIsLoading] = useState(false);
+const useFetchData = <T>({ dataName }: useFetchDataProps) => {
+  const { data, setData, isLoading, setIsLoading } = useDataContext();
 
-  const updateHandler = useCallback(
-    (newData: T) => {
-      setData((prev) => new Map(prev).set(dataName, newData));
+  const handleLoading = useCallback(
+    (dataLoading: boolean) => {
+      setIsLoading((prev) => new Map(prev).set(dataName, dataLoading));
     },
-    [dataName],
+    [dataName, setIsLoading],
   );
 
-  const fetchData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-
-      const fetchedData = await apiCall();
-      if (fetchedData && onSuccess) {
-        onSuccess(fetchedData, updateHandler);
+  const fetchData = useCallback(
+    async ({ apiCall, onSuccess, onError }: FetchDataProps<T>) => {
+      try {
+        handleLoading(true);
+        const fetchedData = await apiCall();
+        if (fetchedData) {
+          onSuccess(fetchedData);
+        } else {
+          onSuccess();
+        }
+      } catch (error) {
+        onError(error);
+      } finally {
+        handleLoading(false);
       }
-    } catch (error) {
-      onError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [apiCall, updateHandler, onSuccess, onError]);
+    },
+    [handleLoading],
+  );
 
   return {
     dataMap: data,
     setDataMap: setData,
-    data: data.get(dataName),
-    updateHandler,
-    isLoading,
+    data: data.get(dataName) as T,
+    isLoading: isLoading.get(dataName),
+    setIsLoading,
     fetchData,
   };
 };
