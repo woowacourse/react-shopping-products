@@ -1,7 +1,8 @@
 import deleteCartItem from '../api/deleteCartItem';
+import patchCartItem from '../api/patchCartItem';
 import postCartItem from '../api/postCartItem';
 import { CartDataType } from '../contexts/CartContext';
-import { AddCartItemType } from '../types/cartItem';
+import { CartItemParamType } from '../types/cartItem';
 import { useToast } from './useToast';
 
 export function useCartManagement({
@@ -15,7 +16,7 @@ export function useCartManagement({
 }) {
   const { openToast } = useToast();
 
-  const addCartItem = async ({ productId, quantity }: AddCartItemType) => {
+  const addCartItem = async ({ productId, quantity }: CartItemParamType) => {
     if (cartItemCount >= 50) {
       openToast('장바구니는 최대 50개의 상품을 담을 수 있습니다.', 'error');
       return false;
@@ -48,8 +49,26 @@ export function useCartManagement({
     return true;
   };
 
+  const modifyCartItem = async ({ productId, quantity }: CartItemParamType) => {
+    const cartId = carts?.filter((cart) => cart.product.id === productId)[0]?.id || 0;
+
+    const res = await patchCartItem({
+      cartId,
+      quantity,
+    });
+
+    if (!res.ok) {
+      openToast('장바구니의 수량을 변경하지 못했습니다.', 'error');
+      return false;
+    }
+
+    refetchCarts();
+    return true;
+  };
+
   return {
     addCartItem,
     deleteItemFromCart,
+    modifyCartItem,
   };
 }

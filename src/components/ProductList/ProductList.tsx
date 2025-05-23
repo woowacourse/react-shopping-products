@@ -1,34 +1,41 @@
-import { ProductDataType } from '../../types/product';
 import Product from '../Product/Product';
-import { AddCartItemType } from '../../types/cartItem';
 import { ProductListSkeleton } from '../Skeleton/Skeleton';
 import { ProductListContainer } from './ProductList.style';
+import { useToast } from '../../hooks/useToast';
+import { useGetProducts } from '../../hooks/useGetProducts';
+import { ActionType } from '../../types/product';
 
 type ProductListProps = {
-  isLoadingProducts: boolean;
-  products: ProductDataType[] | undefined;
-  onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
-  onClickDeleteCartItem: ({ productId }: { productId: number }) => void;
-};
+  category: string;
+  sort: string;
+} & ActionType;
 
 function ProductList({
-  isLoadingProducts,
-  products,
+  category,
+  sort,
   onClickAddCartItem,
-  onClickDeleteCartItem,
+  onClickModifyCartItem,
 }: ProductListProps) {
-  if (isLoadingProducts) {
-    return <ProductListSkeleton />;
+  const { openToast } = useToast();
+  const { isLoading, isError, products } = useGetProducts({
+    category,
+    sort,
+  });
+
+  if (isError) {
+    openToast('상품 정보를 불러오지 못했습니다.', 'error');
+    return;
   }
 
   return (
     <ul className={ProductListContainer}>
+      {isLoading && <ProductListSkeleton />}
       {products?.map((product, idx) => (
         <Product
           key={idx}
-          {...product}
+          product={product}
           onClickAddCartItem={onClickAddCartItem}
-          onClickDeleteCartItem={onClickDeleteCartItem}
+          onClickModifyCartItem={onClickModifyCartItem}
         />
       ))}
     </ul>
