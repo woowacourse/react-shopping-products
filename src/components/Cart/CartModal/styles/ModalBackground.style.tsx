@@ -19,6 +19,6 @@ export const modalBackground = (position?: "center" | "bottom") =>
     height: "100vh",
     backgroundColor: "#3333331A",
     animation: `${fadeIn} 0.3s ease-in-out`,
-    justifyContent: position === "center" ? "center" : "center",
+    justifyContent: "center",
     alignItems: position === "center" ? "center" : "end",
   });

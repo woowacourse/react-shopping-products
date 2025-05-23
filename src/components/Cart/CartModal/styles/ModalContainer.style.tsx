@@ -9,15 +9,6 @@ const slideIn = keyframes`
   }
 `;
 
-const slideUp = keyframes`
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-`;
-
 const zoomIn = keyframes`
   from {
     transform: scale(0.95);
@@ -34,7 +25,7 @@ const getSizeStyles = (size?: "small" | "medium" | "large" | "full") => {
     case "full":
       return {
         width: "100%",
-        animation: `${slideUp} 0.3s ease-in-out`,
+        animation: `${slideIn} 0.3s ease-in-out`,
       };
     case "small":
       return {
@@ -73,19 +64,3 @@ export const modalContents = (size?: "small" | "medium" | "large" | "full") =>
       minWidth: "95vw",
     },
   });
-
-export const closeButton = css({
-  position: "absolute",
-  top: "16px",
-  right: "16px",
-  width: "24px",
-  height: "24px",
-  cursor: "pointer",
-  transition: "background-color 0.3s ease",
-  backgroundColor: "transparent",
-  border: "none",
-  borderRadius: "4px",
-  "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-  },
-});
