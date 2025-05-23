@@ -14,6 +14,7 @@ export const CartItemsAPI = {
     const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems, params);
     return await fetchWithErrorHandling<CartItems>(apiUrl, options);
   },
+
   post: async (productId: number) => {
     const options: RequestInit = {
       method: "POST",
@@ -23,11 +24,13 @@ export const CartItemsAPI = {
 
     return await fetchWithErrorHandling(CART_ITEMS_BASE_URL, options, false);
   },
+
   delete: async (cartId: number) => {
     const options: RequestInit = { method: "DELETE" };
     const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
     return await fetchWithErrorHandling(apiUrl, options, false);
   },
+
   patch: async (cartId: number, quantity: number) => {
     const options: RequestInit = {
       method: "PATCH",

@@ -11,6 +11,8 @@ interface UseCartItemsReturn {
   decreaseItemQuantity: (productId: number) => Promise<void>;
   increaseItemQuantity: (productId: number) => Promise<void>;
   addProductInCart: (productId: number) => Promise<void>;
+  deleteProductInCart: (productId: number) => Promise<void>;
+  totalPriceInCart: number;
 }
 
 const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
@@ -50,6 +52,13 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
     allQuantities.find((item) => item.cartId === cartId)?.quantity ?? 0;
   const quantityByProductId = (productId: number) =>
     allQuantities.find((item) => item.productId === productId)?.quantity ?? 0;
+
+  const totalPriceInCart =
+    cartItems?.content.reduce((total, productInfo) => {
+      const price = productInfo.product?.price ?? 0;
+      const quantity = productInfo.quantity ?? 0;
+      return total + price * quantity;
+    }, 0) ?? 0;
 
   const decreaseItemQuantity = async (productId: number) => {
     const currentProductId = cartItemIds.find(
@@ -106,12 +115,32 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
     setCartItems(response as CartItems);
   };
 
+  const deleteProductInCart = async (productId: number) => {
+    const currentProductId = cartItemIds.find(
+      (productInfo) => productInfo.productId === productId
+    );
+
+    if (!currentProductId) return;
+    await CartItemsAPI.delete(currentProductId.cartId);
+
+    const response = await CartItemsAPI.get();
+
+    if (isErrorResponse(response)) {
+      setErrorMessage(response.error);
+      return;
+    }
+
+    setCartItems(response as CartItems);
+  };
+
   return {
     cartItemsCount,
     quantityByProductId,
     decreaseItemQuantity,
     increaseItemQuantity,
     addProductInCart,
+    deleteProductInCart,
+    totalPriceInCart,
   };
 };
 

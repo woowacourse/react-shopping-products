@@ -3,18 +3,18 @@ import Portal from "../Portal/Portal";
 import * as S from "./Modal.styles";
 
 type Props = PropsWithChildren<{
-  isOpen: boolean;
+  open: boolean;
   onClose: () => void;
 }>;
 
-const Modal = ({ isOpen, onClose, children }: Props) => {
+const Modal = ({ open, onClose, children }: Props) => {
   const stopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
   return (
     <>
-      {isOpen && (
+      {open && (
         <Portal>
           <S.ModalBackdrop onClick={onClose}>
             <S.ModalContainer onClick={stopPropagation}>

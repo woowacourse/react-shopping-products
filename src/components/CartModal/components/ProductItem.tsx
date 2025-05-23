@@ -1,21 +1,39 @@
 import QuantitySelector from "../../@common/QuantitySelector/QuantitySelector";
 import * as S from "./ProductItem.styles";
 
-const ProductItem = () => {
+interface Props {
+  imageUrl: string;
+  name: string;
+  price: number;
+  quantity: number;
+  increaseItemQuantity: () => void;
+  decreaseItemQuantity: () => void;
+  deleteProductInCart: () => void;
+}
+
+const ProductItem = ({
+  imageUrl,
+  name,
+  price,
+  quantity,
+  increaseItemQuantity,
+  decreaseItemQuantity,
+  deleteProductInCart,
+}: Props) => {
   return (
     <S.ProductItem>
-      <S.ProductImage $url="" />
+      <S.ProductImage $url={imageUrl} />
       <S.ProductWrapper>
         <S.ProductInfo>
-          <S.ProductName>상품 이름</S.ProductName>
-          <S.ProductPrice>35,000원</S.ProductPrice>
+          <S.ProductName>{name}</S.ProductName>
+          <S.ProductPrice>{price}</S.ProductPrice>
           <QuantitySelector
-            quantity={3}
-            onIncrease={() => {}}
-            onDecrease={() => {}}
+            quantity={quantity}
+            onIncrease={increaseItemQuantity}
+            onDecrease={decreaseItemQuantity}
           />
         </S.ProductInfo>
-        <S.DeleteButton>삭제</S.DeleteButton>
+        <S.DeleteButton onClick={deleteProductInCart}>삭제</S.DeleteButton>
       </S.ProductWrapper>
     </S.ProductItem>
   );

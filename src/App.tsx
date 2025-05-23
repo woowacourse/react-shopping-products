@@ -32,12 +32,22 @@ function App() {
     decreaseItemQuantity,
     increaseItemQuantity,
     addProductInCart,
+    deleteProductInCart,
+    totalPriceInCart,
   } = useCartItems(setErrorMessage);
 
   return (
     <S.LayoutContainer>
       <S.LayoutWrapper id="custom-root">
-        <ShopHeader cartItemCount={cartItemsCount} />
+        <ShopHeader
+          cartItemCount={cartItemsCount}
+          products={products}
+          quantityByProductId={quantityByProductId}
+          increaseItemQuantity={increaseItemQuantity}
+          decreaseItemQuantity={decreaseItemQuantity}
+          deleteProductInCart={deleteProductInCart}
+          totalPriceInCart={totalPriceInCart}
+        />
         <S.Wrapper>
           <ProductsListTitle />
           <S.ProductControlPanel>
