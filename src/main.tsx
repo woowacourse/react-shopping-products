@@ -1,14 +1,31 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Skeleton from './shared/ui/Skeleton.tsx';
+import LazyApp from './AppLazy.tsx';
 
-const LazyApp = lazy(() => import('./App.tsx'));
+async function enableMocking() {
+  // if (process.env.NODE_ENV !== 'development') {
+  //   return;
+  // }
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <Suspense fallback={<Skeleton />}>
-      <LazyApp />
-    </Suspense>
-  </React.StrictMode>
-);
+  const isLocalhost = location.hostname === 'localhost';
+
+  const { worker } = await import('./mocks/browser');
+  return worker.start({
+    serviceWorker: {
+      url: isLocalhost ? '/mockServiceWorker.js' : '/react-shopping-products/mockServiceWorker.js',
+    },
+    onUnhandledRequest: 'bypass',
+  });
+}
+
+enableMocking().then(() => {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <Suspense fallback={<Skeleton />}>
+        <LazyApp />
+      </Suspense>
+    </React.StrictMode>
+  );
+});
