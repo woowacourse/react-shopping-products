@@ -60,8 +60,9 @@ function ShopPage() {
         title="장바구니"
         showCloseButton={false}
         position="bottom"
+        style={{ maxHeight: 'calc(100% - 120px)', overflow: 'auto' }}
       >
-        {cartList.map(({ id, quantity, product }) => {
+        {cartList.map(({ id, product }) => {
           const matchingCart = cartList.find(
             (cart) => cart.product.id === product.id
           );
