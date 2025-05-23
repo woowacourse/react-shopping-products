@@ -1,11 +1,12 @@
+import { useCallback } from 'react';
 import { addShoppingCart } from '../APIs/shoppingCartApi';
 import { useShoppingCartContext } from '../contexts/useShoppingCartContext';
 
 export function useAddShoppingCart(productId: number) {
   const shoppingCart = useShoppingCartContext();
 
-  return async () => {
-    if (shoppingCart.items.length >= 50) {
+  return useCallback(async () => {
+    if (shoppingCart.cartItems.length >= 50) {
       shoppingCart.updateError({
         is: true,
         message: '장바구니 최대 50개까지 담을 수 있습니다.',
@@ -27,5 +28,5 @@ export function useAddShoppingCart(productId: number) {
     } finally {
       shoppingCart.updateLoading(false);
     }
-  };
+  }, [productId, shoppingCart]);
 }

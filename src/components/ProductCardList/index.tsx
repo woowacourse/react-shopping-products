@@ -13,7 +13,7 @@ const ProductCardList = ({ products }: ProductCardListProps) => {
   return (
     <div className={ProductCardListStyles}>
       {products.map((product) => {
-        const isInCart = shoppingCart.items.some(
+        const isInCart = shoppingCart.cartItems.some(
           (item) => item.product.id === product.id
         );
 

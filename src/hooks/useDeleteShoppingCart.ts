@@ -1,13 +1,14 @@
+import { useCallback } from 'react';
 import { deleteShoppingCart } from '../APIs/shoppingCartApi';
 import { useShoppingCartContext } from '../contexts/useShoppingCartContext';
 
 export function useDeleteShoppingCart(productId?: number) {
   const shoppingCart = useShoppingCartContext();
-  const cartItemId = shoppingCart.items.find(
+  const cartItemId = shoppingCart.cartItems.find(
     (item) => item.product.id === productId
   )?.id;
 
-  return async () => {
+  return useCallback(async () => {
     shoppingCart.updateLoading(true);
     try {
       const endpoint = '/cart-items';
@@ -21,5 +22,5 @@ export function useDeleteShoppingCart(productId?: number) {
     } finally {
       shoppingCart.updateLoading(false);
     }
-  };
+  }, [cartItemId, shoppingCart]);
 }

@@ -1,8 +1,6 @@
 import React, {
   createContext,
   PropsWithChildren,
-  useEffect,
-  useState,
   useCallback,
   useMemo,
 } from 'react';
@@ -12,7 +10,7 @@ import { INITIAL_ERROR } from './context.constant';
 import { useGetShoppingCart } from '../hooks/useGetShoppingCart';
 
 interface ShoppingCartContextType {
-  items: CartItem[];
+  cartItems: CartItem[];
   error: ErrorState;
   updateItems: (newCartItems: CartItem[]) => void;
   updateError: (error: ErrorState) => void;
@@ -24,42 +22,43 @@ export const ShoppingCartContext =
   createContext<ShoppingCartContextType | null>(null);
 
 const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const shoppingCart = useGetShoppingCart();
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [error, setError] = useState<ErrorState>(INITIAL_ERROR);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { cartItems, error, loading, setCartItems, setError, setLoading } =
+    useGetShoppingCart();
 
-  const updateItems = useCallback((newCartItems: CartItem[]) => {
-    setItems(newCartItems);
-  }, []);
+  const updateItems = useCallback(
+    (newCartItems: CartItem[]) => {
+      setCartItems(newCartItems);
+    },
+    [setCartItems]
+  );
 
-  const updateError = useCallback((error: ErrorState) => {
-    setError(error);
-    setTimeout(() => {
-      setError(INITIAL_ERROR);
-    }, 3000);
-  }, []);
+  const updateError = useCallback(
+    (error: ErrorState) => {
+      setError(error);
+      setTimeout(() => {
+        setError(INITIAL_ERROR);
+      }, 3000);
+    },
+    [setError]
+  );
 
-  const updateLoading = useCallback((value: boolean) => {
-    setLoading(value);
-  }, []);
-
-  useEffect(() => {
-    setItems(shoppingCart.data);
-    setError(shoppingCart.error);
-    setLoading(shoppingCart.loading);
-  }, [shoppingCart.data, shoppingCart.error, shoppingCart.loading]);
+  const updateLoading = useCallback(
+    (value: boolean) => {
+      setLoading(value);
+    },
+    [setLoading]
+  );
 
   const value = useMemo(
     () => ({
-      items,
+      cartItems,
       error,
       updateItems,
       updateError,
       updateLoading,
       loading,
     }),
-    [items, error, updateItems, updateError, updateLoading, loading]
+    [cartItems, error, updateItems, updateError, updateLoading, loading]
   );
 
   return (

@@ -10,8 +10,8 @@ const Header = () => {
         SHOP
       </a>
       <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
-      {shoppingCart.items.length !== 0 && (
-        <div className={ShoppingCartCount}>{shoppingCart.items.length}</div>
+      {shoppingCart.cartItems.length !== 0 && (
+        <div className={ShoppingCartCount}>{shoppingCart.cartItems.length}</div>
       )}
     </header>
   );
