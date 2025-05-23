@@ -1,11 +1,15 @@
+import { useCartListContext } from '../../../context/CartContext';
 import { Button, Container, Icon, CartStock, Title } from './Header.styles';
 
 interface HeaderProps {
   title: string;
-  totalCartProducts: number | null;
+  // totalCartProducts: number | null;
 }
 
-function Header({ title, totalCartProducts }: HeaderProps) {
+function Header({ title }: HeaderProps) {
+  const { cartList } = useCartListContext();
+  const totalCartProducts = cartList.length;
+
   return (
     <Container>
       <Title>{title}</Title>

@@ -8,16 +8,20 @@ import {
   Price,
   ProductName,
 } from './Product.styles';
-import { ProductWithCartInfo } from '../../../types/product';
+import { ProductElement } from '../../../types/type';
+import { useCartListContext } from '../../../context/CartContext';
 
 interface ProductProps {
-  item: ProductWithCartInfo;
-  onAddCart: (product: ProductWithCartInfo) => Promise<void>;
-  onRemoveCart: (product: ProductWithCartInfo) => Promise<void>;
+  item: ProductElement;
+  onAddCart: (product: ProductElement) => Promise<void>;
+  onRemoveCart: (product: ProductElement) => Promise<void>;
 }
 
 function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
-  const { name, price, imageUrl, isInCart } = item;
+  const { name, price, imageUrl } = item;
+
+  const { cartList } = useCartListContext();
+  const isInCart = cartList.some((cartItem) => cartItem.product.id === item.id);
 
   return (
     <Container>

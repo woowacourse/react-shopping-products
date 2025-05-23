@@ -4,76 +4,91 @@ import Header from './ui/components/Header/Header';
 import Toast from './ui/components/Toast/Toast';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 import { Global } from '@emotion/react';
-import React, { useState } from 'react';
-import { addCart, removeCart } from './api/fetchCart';
-import { useProducts } from './hooks/useProducts';
-import { CategoryType, SortType, ProductWithCartInfo } from './types/product';
+import React from 'react';
+import { CategoryType, ProductElement, SortKeyType } from './types/type';
 import { DropdownContainer, Section } from './App.styles';
 import Dropdown from './ui/components/Dropdown/Dropdown';
 import ProductList from './ui/components/ProductList/ProductList';
 import Title from './ui/components/Title/Title';
-import {
-  CATEGORY,
-  SORT_PRICE,
-  SORT_PRICE_MAP,
-} from './constants/productConfig';
+import { CATEGORY, SORT_PRICE } from './constants/productConfig';
 import {
   PRODUCT_SECTION_TITLE,
   SHOPPING_MALL_TITLE,
 } from './constants/shopInfoConfig';
 import { MAX_CART_ITEM_COUNT } from './constants/cartConfig';
 import { ERROR_MESSAGE } from './constants/errorMessage';
+import { addCart, removeCart } from './api/fetchCart';
+import { useProductListContext } from './context/ProductContext';
+import { useCartListContext } from './context/CartContext';
+import { getCartId } from './utils/getCartId';
 
 function App() {
-  const [sort, setSort] = useState<SortType>('낮은 가격 순');
-  const [category, setCategory] = useState<CategoryType>('전체');
+  const {
+    isLoading: isProductLoading,
+    error: productError,
+    fetchData: fetchProductData,
+    category,
+    setCategory,
+    sortBy,
+    // setSortBy,
+    // handleSortPrice,
+  } = useProductListContext();
 
-  const mappedSortType = SORT_PRICE_MAP[sort];
+  const {
+    cartList,
+    isLoading: isCartLoading,
+    error: cartError,
+    fetchData: fetchCartData,
+  } = useCartListContext();
 
-  const { products, cart, isLoading, isError, setIsError, fetchData } =
-    useProducts(mappedSortType, category);
-
-  const handleAddCart = async (product: ProductWithCartInfo) => {
-    if (cart?.totalElements === MAX_CART_ITEM_COUNT) {
+  const handleAddCart = async (product: ProductElement) => {
+    if (cartList?.length === MAX_CART_ITEM_COUNT) {
       console.error(ERROR_MESSAGE.MAX_CART_ITEM);
-      setIsError(true);
+      // setIsError(true);
       return;
     }
 
     try {
       await addCart(product.id);
-      await fetchData();
+      await fetchProductData();
+      await fetchCartData();
     } catch (error) {
       console.error(error);
-      setIsError(true);
+      // setIsError(true);
     }
   };
 
-  const handleRemoveCart = async (product: ProductWithCartInfo) => {
+  const handleRemoveCart = async (product: ProductElement) => {
     try {
-      if (product.cartId) {
-        await removeCart(product.cartId);
-        await fetchData();
+      if (product) {
+        const cartId = getCartId(cartList, product.id);
+        await removeCart(cartId);
+        await fetchProductData();
+        await fetchCartData();
       }
     } catch (error) {
       console.error(error);
-      setIsError(true);
+      // setIsError(true);
     }
   };
 
-  const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleFilterCategory = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const { value } = e.target;
 
-    if (CATEGORY.includes(value)) {
+    if (CATEGORY.includes(value as CategoryType)) {
       setCategory(value as CategoryType);
+      // await fetchProductData(value);
     }
   };
 
   const handleSortPrice = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
 
-    if (SORT_PRICE.includes(value)) {
-      setSort(value as SortType);
+    if (SORT_PRICE.includes(value as SortKeyType)) {
+      setSortBy(value as SortKeyType);
+      // await fetchProductData(value);
     }
   };
 
@@ -81,13 +96,12 @@ function App() {
     <>
       <Global styles={GlobalStyle} />
       <Layout>
-        <Header
-          title={SHOPPING_MALL_TITLE}
-          totalCartProducts={cart && cart.totalElements}
-        />
-        {isError && <Toast message={ERROR_MESSAGE.TOAST} />}
-        {isLoading && <LoadingSpinner duration={2} />}
-        {!isLoading && (
+        <Header title={SHOPPING_MALL_TITLE} />
+        {(!productError || !cartError) && (
+          <Toast message={ERROR_MESSAGE.TOAST} />
+        )}
+        {isProductLoading || (isCartLoading && <LoadingSpinner duration={2} />)}
+        {!isProductLoading && !isCartLoading && (
           <Section>
             <Title title={PRODUCT_SECTION_TITLE} />
             <DropdownContainer>
@@ -97,7 +111,7 @@ function App() {
                 onChange={handleFilterCategory}
               />
               <Dropdown
-                value={sort}
+                value={sortBy}
                 options={SORT_PRICE}
                 onChange={handleSortPrice}
               />
@@ -105,7 +119,6 @@ function App() {
             <ProductList
               onAddCart={handleAddCart}
               onRemoveCart={handleRemoveCart}
-              products={products}
             />
           </Section>
         )}
