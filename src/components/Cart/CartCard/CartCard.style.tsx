@@ -3,12 +3,12 @@ import { css } from "@emotion/react";
 export const cartCardCss = css({
   display: "flex",
   width: "100%",
-  height: "120px",
   gap: "16px",
   flexDirection: "row",
   justifyContent: "flex-start",
   alignItems: "center",
   borderBottom: "1px solid #E0E0E0",
+  minHeight: "120px",
 });
 
 export const cartCardImageCss = css({
