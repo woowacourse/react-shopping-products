@@ -68,10 +68,12 @@ export function DataProvider({
   useEffect(() => {
     if (cartItemsResponse) {
       setCartItemIds(
-        cartItemsResponse.content.map((item) => ({
-          productId: item.product.id,
-          cartId: item.id,
-        }))
+        cartItemsResponse.content.map((item) => {
+          return {
+            productId: item.product.id,
+            cartId: item.id,
+          };
+        })
       );
     }
   }, [cartItemsResponse]);
