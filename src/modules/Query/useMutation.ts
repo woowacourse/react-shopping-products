@@ -18,10 +18,7 @@ export default function useMutation<TRequest, TResponse, TOptimisticResponse = T
       mutationFn(variables);
       setQueryData(queryKey, optimisticUpdate(prevData));
     } else {
-      setQueryStatus(queryKey, "loading");
-      const response = await mutationFn(variables);
-      setQueryData(queryKey, response);
-      setQueryStatus(queryKey, "success");
+      await mutationFn(variables);
     }
   };
 
