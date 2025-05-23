@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 import SelectBox from "../@common/SelectBox/SelectBox";
-import { categoryOptions, CategoryOptionsKey } from "../../constants";
+import { categoryOptions, CategoryOptionsKey } from "../../constants/filter";
 
 interface Props {
   selectedCategory: CategoryOptionsKey;

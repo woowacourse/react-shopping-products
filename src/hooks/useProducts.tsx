@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ProductsAPI } from "../apis/products";
-import { CategoryOptionsKey, SortOptionsKey } from "../constants";
+import { CategoryOptionsKey, SortOptionsKey } from "../constants/filter";
+import { TOAST_TYPES } from "../constants/toast";
 import { Products } from "../types/products";
 import { isErrorResponse } from "../utils/typeGuard";
 import useToast from "./useToast";
@@ -35,7 +36,10 @@ const useProducts = (): UseProductsReturn => {
       setIsLoading(false);
 
       if (isErrorResponse(response)) {
-        showToast(response.error);
+        showToast({
+          message: response.error,
+          type: TOAST_TYPES.ERROR,
+        });
         return;
       }
 

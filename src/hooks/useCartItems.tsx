@@ -3,6 +3,7 @@ import { CartItems } from "../types/cartItems";
 import { CartItemsAPI } from "../apis/cartItems";
 import { isErrorResponse } from "../utils/typeGuard";
 import useToast from "./useToast";
+import { TOAST_TYPES } from "../constants/toast";
 
 interface UseCartItemsReturn {
   cartItemsCount: number;
@@ -24,7 +25,10 @@ const useCartItems = (): UseCartItemsReturn => {
       const response = await CartItemsAPI.get();
 
       if (isErrorResponse(response)) {
-        showToast(response.error);
+        showToast({
+          message: response.error,
+          type: TOAST_TYPES.ERROR,
+        });
         return;
       }
 
@@ -80,7 +84,10 @@ const useCartItems = (): UseCartItemsReturn => {
     const response = await CartItemsAPI.get();
 
     if (isErrorResponse(response)) {
-      showToast(response.error);
+      showToast({
+        message: response.error,
+        type: TOAST_TYPES.ERROR,
+      });
       return;
     }
 
@@ -101,7 +108,10 @@ const useCartItems = (): UseCartItemsReturn => {
     const response = await CartItemsAPI.get();
 
     if (isErrorResponse(response)) {
-      showToast(response.error);
+      showToast({
+        message: response.error,
+        type: TOAST_TYPES.ERROR,
+      });
       return;
     }
 
@@ -114,7 +124,10 @@ const useCartItems = (): UseCartItemsReturn => {
     const response = await CartItemsAPI.get();
 
     if (isErrorResponse(response)) {
-      showToast(response.error);
+      showToast({
+        message: response.error,
+        type: TOAST_TYPES.ERROR,
+      });
       return;
     }
 
@@ -132,7 +145,10 @@ const useCartItems = (): UseCartItemsReturn => {
     const response = await CartItemsAPI.get();
 
     if (isErrorResponse(response)) {
-      showToast(response.error);
+      showToast({
+        message: response.error,
+        type: TOAST_TYPES.ERROR,
+      });
       return;
     }
 

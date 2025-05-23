@@ -1,10 +1,18 @@
 import styled from "@emotion/styled";
+import { TOAST_TYPES, ToastType } from "../../../constants/toast";
 
-export const Toast = styled.div`
+const TOAST_COLORS: Record<ToastType, string> = {
+  [TOAST_TYPES.SUCCESS]: "#37db7b",
+  [TOAST_TYPES.ERROR]: "#ffc9c9",
+  [TOAST_TYPES.INFO]: "#80c8ff",
+  [TOAST_TYPES.WARNING]: "#FF9800",
+} as const;
+
+export const Toast = styled.div<{ $type: ToastType }>`
   position: absolute;
   width: 90%;
   height: 40px;
-  background-color: #ffc9c9;
+  background-color: ${({ $type }) => TOAST_COLORS[$type]};
   font-size: 12px;
   font-weight: 500;
   border-radius: 8px;

@@ -1,4 +1,4 @@
-import { CategoryOptionsKey, SortOptionsKey } from "../constants";
+import { CategoryOptionsKey, SortOptionsKey } from "../constants/filter";
 import { Products } from "../types/products";
 import { createApiUrl, fetchWithErrorHandling, SHOP_API } from "./configs";
 

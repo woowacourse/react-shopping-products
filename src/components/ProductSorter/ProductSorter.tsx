@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 import SelectBox from "../@common/SelectBox/SelectBox";
-import { SortOptionsKey, sortOptions } from "../../constants";
+import { SortOptionsKey, sortOptions } from "../../constants/filter";
 
 interface Props {
   selectedSortOption: SortOptionsKey;
