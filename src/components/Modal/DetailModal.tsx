@@ -1,10 +1,24 @@
-/** @jsxImportSource @emotion/react */
 import { ReactNode } from 'react';
 import { css } from '@emotion/react';
 import Modal from './Modal/Modal';
 import Button from '../Button/Button';
 
-interface AlertModalProps {
+export default function DetailModal({ isOpen, onClose, title, content }: DetailModalProps) {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} position="bottom" size="small">
+      <Modal.BackDrop css={backdropCss} />
+      <Modal.Content css={contentCss}>
+        {Boolean(title) && <Modal.Title css={titleCss}>{title}</Modal.Title>}
+        {content}
+        <Modal.Footer css={buttonCss}>
+          <Button onClick={onClose}>닫기</Button>
+        </Modal.Footer>
+      </Modal.Content>
+    </Modal>
+  );
+}
+
+interface DetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
@@ -30,17 +44,6 @@ const titleCss = css({
   color: '#000'
 });
 
-export default function DetailModal({ isOpen, onClose, title, content }: AlertModalProps) {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} position="bottom" size="small">
-      <Modal.BackDrop css={backdropCss} />
-      <Modal.Content css={contentCss}>
-        {Boolean(title) && <Modal.Title css={titleCss}>{title}</Modal.Title>}
-        {content}
-        <Modal.Footer>
-          <Button onClick={onClose}>닫기</Button>
-        </Modal.Footer>
-      </Modal.Content>
-    </Modal>
-  );
-}
+const buttonCss = css({
+  width: '100%'
+});

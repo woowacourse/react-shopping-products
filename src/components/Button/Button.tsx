@@ -21,6 +21,7 @@ export default function Button({ children, variant = 'primary', ...props }: Butt
 }
 
 const baseStyle = css`
+  width: 100%;
   font-size: 15px;
   padding: 6px 20px;
   border-radius: 5px;

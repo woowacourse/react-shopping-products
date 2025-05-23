@@ -6,6 +6,7 @@ import useErrorHandler from '../../hooks/useErrorHandler';
 import Header from './Header';
 import { useState } from 'react';
 import DetailModal from '../Modal/DetailModal';
+import CartList from '../Cart/CartList';
 import Image from '../Image/Image';
 
 function HomeHeader() {
@@ -34,7 +35,7 @@ function HomeHeader() {
         left={<p css={styles.logoCss}>SHOP</p>}
         right={
           <button onClick={handleToggle} css={styles.cartIcon}>
-            <img src="assets/cart.svg" alt="cart-icon" />
+            <Image src="assets/cart.svg" alt="cart-icon" />
             {shouldShowCount && <span data-testid="cart-count">{cartLength}</span>}
           </button>
         }
@@ -45,17 +46,7 @@ function HomeHeader() {
           onClose={() => setAlertOpen(false)}
           content={
             <div css={styles.modalContent}>
-              {cartItems?.content?.map((item) => (
-                <div key={item.id} css={styles.cartItem}>
-                  <div css={styles.cartImageWrapper}>
-                    <Image src={item.product.imageUrl} />
-                  </div>
-                  <div css={styles.cartTextBlock}>
-                    <p>{item.product.name}</p>
-                    <p>{item.product.price.toLocaleString()}원</p>
-                  </div>
-                </div>
-              ))}
+              <CartList cartItems={cartItems?.content} />
             </div>
           }
         />

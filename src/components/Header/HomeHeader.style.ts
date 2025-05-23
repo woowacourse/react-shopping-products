@@ -31,24 +31,3 @@ export const modalContent = css({
   overflowY: 'auto',
   paddingRight: '4px'
 });
-
-export const cartItem = css({
-  display: 'flex',
-  gap: '12px',
-  padding: '12px 0',
-  borderBottom: '1px solid #eee'
-});
-
-export const cartImageWrapper = css({
-  width: '80px',
-  height: '80px',
-  flexShrink: 0
-});
-
-export const cartTextBlock = css({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  gap: '4px',
-  fontSize: '14px'
-});
