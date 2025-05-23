@@ -7,24 +7,35 @@ const buttonLayout = (
   size: "sm" | "full" = "sm"
 ) => {
   const sizeVarient = {
-    sm: "fit-content",
-    full: "100%",
+    sm: {
+      width: "fit-content",
+      fontSize: "12px",
+      padding: "4px",
+    },
+    full: {
+      width: "100%",
+      fontSize: "16px",
+      padding: "12px",
+    },
   };
 
   return css`
     display: flex;
     align-items: center;
-    padding: 4px 8px;
+    justify-content: center;
+    padding: ${sizeVarient[size].padding};
+    width: ${sizeVarient[size].width};
+    border: ${border};
+
     background-color: ${backgroundColor};
     border-radius: 4px;
     color: ${color};
-    gap: 4px;
+
     font-weight: 600;
     font-family: "Noto Sans";
-    font-size: 12px;
-    border: ${border};
+    font-size: ${sizeVarient[size].fontSize};
+    text-align: center;
     white-space: nowrap;
-    width: ${sizeVarient[size]};
   `;
 };
 

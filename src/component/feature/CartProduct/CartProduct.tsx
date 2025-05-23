@@ -26,7 +26,7 @@ export function CartProduct({ id, imageUrl, name, price }: CartProductProps) {
       <img src={imageUrl} css={ProductImg} />
       <div css={TitleLayout}>
         <p css={ProductName}>{name}</p>
-        <p css={ProductPrice}>{price}</p>
+        <p css={ProductPrice}>{price}원</p>
         <QuantitySelector />
       </div>
       <div css={deleteButton}>

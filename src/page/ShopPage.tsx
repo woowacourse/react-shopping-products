@@ -16,12 +16,16 @@ import {
   cartItemCount,
   loadingLayout,
   pageLayout,
+  PaymentsLabel,
+  PaymentsLayout,
+  PaymentsValue,
   selectorBoxLayout,
 } from "./ShopPage.style";
 import { Modal } from "../component/feature/Modal/Modal";
 import Button from "../component/unit/Button/Button";
 import { CartProduct } from "../component/feature/CartProduct/CartProduct";
 import { CartProductListLayout } from "../component/feature/CartProduct/CartProduct.style";
+import { Line } from "../component/unit/Line/Line";
 
 const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
 const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
@@ -141,7 +145,7 @@ export default function ShopPage() {
         isOpen={isOpen}
         title="장바구니"
         footer={
-          <Button style="primary" onClick={handleClose}>
+          <Button style="primary" onClick={handleClose} size="full">
             닫기
           </Button>
         }
@@ -167,6 +171,11 @@ export default function ShopPage() {
                 />
               );
             })}
+            <Line />
+            <div css={PaymentsLayout}>
+              <p css={PaymentsLabel}> 총 결제 금액</p>
+              <p css={PaymentsValue}>95,000원</p>
+            </div>
           </div>
         )}
       </Modal>

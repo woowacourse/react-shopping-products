@@ -50,6 +50,21 @@ const loadingLayout = css`
   font-weight: 500;
 `;
 
+const PaymentsLayout = css`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const PaymentsLabel = css`
+  font-weight: 700;
+  font-size: 16px;
+`;
+
+const PaymentsValue = css`
+  font-weight: 700;
+  font-size: 24px;
+`;
+
 export {
   pageLayout,
   selectorBoxLayout,
@@ -57,4 +72,7 @@ export {
   cartIconContainer,
   cartItemCount,
   loadingLayout,
+  PaymentsLayout,
+  PaymentsLabel,
+  PaymentsValue,
 };
