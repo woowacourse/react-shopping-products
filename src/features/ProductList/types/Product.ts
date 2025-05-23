@@ -29,6 +29,6 @@ export type ProductQuery = {
 };
 
 export type NewCartItem = {
-  productId: number;
+  cartItemId: number;
   quantity: number;
 };
