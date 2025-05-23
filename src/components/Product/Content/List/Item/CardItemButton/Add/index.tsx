@@ -9,9 +9,10 @@ import { DataContext } from "@/context/DataContext";
 
 interface AddCartItemButton {
   id: number;
+  onClick?: () => void;
 }
 
-function AddCartItemButton({ id }: AddCartItemButton) {
+function AddCartItemButton({ id, onClick }: AddCartItemButton) {
   const { mutate, isLoading, error } = useMutation(() =>
     addCartItems({ productId: id, quantity: 1 })
   );
@@ -33,6 +34,7 @@ function AddCartItemButton({ id }: AddCartItemButton) {
         ...prev,
         cartItemData: updatedCartItems,
       }));
+      onClick?.();
     } catch (error) {
       // mutate에서 에러가 발생한 경우 이후 로직을 실행하지 않게 try-catch문을 사용합니다.
     }

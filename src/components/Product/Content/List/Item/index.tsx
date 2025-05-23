@@ -1,11 +1,13 @@
 import { ProductItemType } from "@/types/product";
 import AddCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Add";
-import RemoveCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Remove";
 import * as S from "./ProductItem.styled";
 import defaultImage from "@/assets/images/planet-error.png";
-import { SyntheticEvent, useContext } from "react";
+import { SyntheticEvent, useContext, useState } from "react";
 import { CartItemType } from "@/types/cartItem";
 import { DataContext } from "@/context/DataContext";
+import QuantityCounter from "@/components/QuantityCounter";
+import { removeCartItem } from "@/apis/cartItems/removeCartItem";
+import { getCartItems } from "@/apis/cartItems/getCartItems";
 
 interface ProductItemProps {
   product: ProductItemType;
@@ -16,7 +18,8 @@ function ProductItem({ product }: ProductItemProps) {
 
   if (!context)
     throw new Error("DataContext must be used within a DataProvider");
-  const { data } = context;
+  const { data, setData } = context;
+
   const cartItemData = data.cartItemData as CartItemType[];
 
   const { id, name, price, imageUrl } = product;
@@ -24,6 +27,36 @@ function ProductItem({ product }: ProductItemProps) {
 
   const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = defaultImage;
+  };
+
+  const [quantity, setQuantity] = useState(1);
+  const [isAdded, setIsAdded] = useState(false);
+
+  const handleIncrease = () => setQuantity((prev) => prev + 1);
+  const handleDecrease = async () => {
+    if (quantity === 1) {
+      if (findCartItem) {
+        try {
+          await removeCartItem(findCartItem.id);
+          const updatedCartItems = await getCartItems();
+
+          setData((prev) => ({
+            ...prev,
+            cartItemData: updatedCartItems,
+          }));
+
+          setIsAdded(false);
+          setQuantity(1);
+        } catch (error) {
+          console.error("Failed to remove item from cart:", error);
+        }
+      }
+    } else {
+      setQuantity((prev) => prev - 1);
+    }
+  };
+  const handleAddToCart = () => {
+    setIsAdded(true);
   };
 
   return (
@@ -37,10 +70,16 @@ function ProductItem({ product }: ProductItemProps) {
           <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
         </S.ProductInfo>
         <S.ButtonWrapper>
-          {findCartItem ? (
-            <RemoveCartItemButton id={findCartItem.id} />
+          {!isAdded && !findCartItem ? (
+            <AddCartItemButton id={id} onClick={handleAddToCart} />
           ) : (
-            <AddCartItemButton id={id} />
+            findCartItem && (
+              <QuantityCounter
+                quantity={quantity}
+                onIncrease={handleIncrease}
+                onDecrease={handleDecrease}
+              />
+            )
           )}
         </S.ButtonWrapper>
       </S.Content>
