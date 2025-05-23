@@ -10,6 +10,7 @@ import {
 } from './Product.styles';
 import { ProductElement } from '../../../types/type';
 import { useCartListContext } from '../../../context/CartContext';
+import QuantityController from '../QuantityController/QuantityController';
 
 interface ProductProps {
   item: ProductElement;
@@ -21,7 +22,8 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
   const { name, price, imageUrl } = item;
 
   const { cartList } = useCartListContext();
-  const isInCart = cartList.some((cartItem) => cartItem.product.id === item.id);
+  // const isInCart = cartList.some((cartItem) => cartItem.product.id === item.id);
+  const cartItem = cartList.find((cartItem) => cartItem.product.id === item.id);
 
   return (
     <Container>
@@ -32,8 +34,9 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
         <ProductName>{name}</ProductName>
         <Price>{`${price.toLocaleString()}원`}</Price>
       </Detail>
-      {isInCart ? (
-        <RemoveButton onClick={() => onRemoveCart(item)} />
+      {cartItem ? (
+        // <RemoveButton onClick={() => onRemoveCart(item)} />
+        <QuantityController quantity={cartItem.quantity} />
       ) : (
         <AddButton onClick={() => onAddCart(item)} />
       )}
