@@ -1,18 +1,18 @@
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
-import { CartProvider } from '../context/CartContext';
 import { ErrorMessageProvider } from '../context/ErrorMessageContext';
+import { DataProvider } from '../context/DataContext';
 
 const Layout = () => {
   return (
     <ErrorMessageProvider>
-      <CartProvider>
+      <DataProvider>
         <LayoutContainer>
           <Header />
           <Outlet />
         </LayoutContainer>
-      </CartProvider>
+      </DataProvider>
     </ErrorMessageProvider>
   );
 };
