@@ -19,14 +19,6 @@ export default function ProductCard({ product, setError }: ProductCardProps) {
     toggleCartSelection(product.id);
   };
 
-  const buttonStyle = product.isCart
-    ? css`
-        background-color: #fff;
-        color: #000;
-        border: 1px solid #000;
-      `
-    : css``;
-
   const cartProductId = product.cartProductId ?? -1;
   const cartProductQuantity = product.cartProductQuantity || 1;
 
@@ -55,14 +47,14 @@ export default function ProductCard({ product, setError }: ProductCardProps) {
       </S.ContentSection>
       <S.ButtonSection>
         {!isCartSelected ? (
-          <CustomButton onClick={handleProductCart} css={buttonStyle} />
+          <CustomButton onClick={handleProductCart} disabled={isProductSoldOut} />
         ) : (
           <CartQuantitySelector
             productId={product.id}
             cartProductId={cartProductId}
             cartProductQuantity={cartProductQuantity}
             setError={setError}
-            isProductSoldOut={isProductSoldOut}
+            isProductSoldOut={product.quantity === 0}
           />
         )}
       </S.ButtonSection>
