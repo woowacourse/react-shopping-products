@@ -22,6 +22,11 @@ jobs:
           node-version: 20
           cache: "npm"
 
+      - name: Set Environment Variables
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+          echo "VITE_TOKEN=${{ secrets.VITE_TOKEN }}" >> .env
+
       - name: Use Cache
         uses: actions/cache@v3
         id: cache
@@ -41,8 +46,8 @@ jobs:
       - name: Type Check
         run: npm run type-check
 
-      - name: Deploy
-        run: npm run deploy
+      - name: Build
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -51,3 +56,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./dist"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
