@@ -40,4 +40,13 @@ export const handlers = [
       return HttpResponse.json(null);
     }
   ),
+  http.delete(
+    "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:id",
+    ({ params }) => {
+      mockCart.content = mockCart.content.filter(
+        (item) => item.id !== Number(params.id)
+      );
+      return HttpResponse.json(null);
+    }
+  ),
 ];
