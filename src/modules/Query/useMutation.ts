@@ -9,7 +9,7 @@ export default function useMutation<TRequest, TResponse, TOptimisticResponse = T
   mutationFn,
   queryKey,
 }: UseMutationProps<TRequest, TResponse>) {
-  const { getQueryData, setQueryData, setQueryStatus } = useQueryClient();
+  const { getQueryData, setQueryData } = useQueryClient();
 
   const mutate = async (variables: TRequest, optimisticUpdate?: (prev: TOptimisticResponse) => TResponse) => {
     const prevData = getQueryData(queryKey) as TOptimisticResponse;

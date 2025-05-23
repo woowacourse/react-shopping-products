@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import Button from "../Button/Button";
 import Text from "../Text/Text";
 import * as S from "./PlusMinusButton.styles";
