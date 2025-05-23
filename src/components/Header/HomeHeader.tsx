@@ -4,10 +4,13 @@ import { CartItemResponse } from '../../types/response';
 import getCartItems from '../../api/getCartItems';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import Header from './Header';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import DetailModal from '../Modal/DetailModal';
 import CartList from '../Cart/CartList';
 import Image from '../Image/Image';
+import { CartItemViewModel } from '../../api/model/createCartItemsViewModel';
+import { deleteCartItem } from '../../api/deleteCartItem';
+import { useErrorContext } from '../../contexts/ErrorContext';
 
 function HomeHeader() {
   const [isAlertOpen, setAlertOpen] = useState(false);
@@ -18,7 +21,8 @@ function HomeHeader() {
   const {
     data: cartItems,
     error: cartFetchError,
-    isLoading
+    isLoading,
+    fetcher: refetchCart
   } = useApiContext<CartItemResponse>({
     fetchFn: getCartItems,
     key: 'getCartItems'
@@ -28,6 +32,20 @@ function HomeHeader() {
 
   const cartLength = cartItems?.content.length;
   const shouldShowCount = !isLoading && cartLength !== 0;
+
+  const { showError } = useErrorContext();
+
+  const handleDeleteCart = useCallback(
+    async (cartItem: CartItemViewModel) => {
+      try {
+        await deleteCartItem(cartItem.id);
+        await refetchCart();
+      } catch (err) {
+        if (err instanceof Error) showError(err);
+      }
+    },
+    [refetchCart, showError]
+  );
 
   return (
     <>
@@ -40,13 +58,13 @@ function HomeHeader() {
           </button>
         }
       />
-      {isAlertOpen && (
+      {isAlertOpen && cartItems?.content && (
         <DetailModal
           isOpen={isAlertOpen}
           onClose={() => setAlertOpen(false)}
           content={
             <div css={styles.modalContent}>
-              <CartList cartItems={cartItems?.content} />
+              <CartList cartItems={cartItems?.content} onClick={handleDeleteCart} />
             </div>
           }
         />

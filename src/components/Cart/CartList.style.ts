@@ -3,7 +3,13 @@ import { css } from '@emotion/react';
 export const cartItem = css({
   display: 'flex',
   gap: '16px',
-  padding: '12px 0',
+  padding: '12px 0'
+});
+
+export const cartItemWrapper = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
   borderBottom: '1px solid #eee'
 });
 

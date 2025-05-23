@@ -32,6 +32,7 @@ const backdropCss = css({
 
 const contentCss = css({
   width: '380px',
+
   backgroundColor: 'white',
   padding: '24px 32px',
   borderRadius: '8px',

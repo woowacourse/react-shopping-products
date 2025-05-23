@@ -12,7 +12,14 @@ export const cardCss = css({
 
 export const imageCss = css({
   objectFit: 'cover',
-  borderRadius: '8px 8px 0 0 '
+  borderRadius: '8px 8px 0 0 ',
+  height: '112px',
+  width: '100%'
+});
+
+export const disabledImageCss = css({
+  filter: 'grayscale(100%)',
+  opacity: '0.5'
 });
 
 export const detailCss = css({

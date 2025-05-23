@@ -26,8 +26,4 @@ export const cartIcon = css({
   }
 });
 
-export const modalContent = css({
-  height: '444px',
-  overflowY: 'auto',
-  paddingRight: '4px'
-});
+export const modalContent = css({ maxHeight: '444px', overflowY: 'auto' });

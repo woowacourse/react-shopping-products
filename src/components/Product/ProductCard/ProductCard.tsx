@@ -15,7 +15,7 @@ export default function ProductCard({ title, price, imageUrl, isInCart, onClick,
   return (
     <li css={styles.cardCss}>
       <div css={styles.imageWrapperCss}>
-        <Image css={styles.imageCss} src={imageUrl} alt={`${title}상품`} />
+        <Image css={[styles.imageCss, quantity == 0 && styles.disabledImageCss]} src={imageUrl} alt={`${title}상품`} />
         {quantity == 0 && <p css={styles.soldOutCss}>SOLD OUT</p>}
       </div>
       <div css={styles.detailCss}>
