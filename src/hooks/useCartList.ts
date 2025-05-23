@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getCartItem } from '../api/fetchCart';
+import { addCart, getCartItem, removeCart } from '../api/fetchCart';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
-import { CartItem, ErrorType } from '../types/type';
+import { CartItem, ErrorType, ProductElement } from '../types/type';
+import { MAX_CART_ITEM_COUNT } from '../constants/cartConfig';
+import { getCartId } from '../utils/getCartId';
 
 export const useCartList = () => {
   const [cartList, setCartList] = useState<CartItem[]>([]);
@@ -36,10 +38,40 @@ export const useCartList = () => {
     fetchData();
   }, []);
 
+  const handleAddCart = async (product: ProductElement) => {
+    if (cartList?.length === MAX_CART_ITEM_COUNT) {
+      console.error(ERROR_MESSAGE.MAX_CART_ITEM);
+      // setIsError(true);
+      return;
+    }
+    try {
+      await addCart(product.id);
+      await fetchData();
+    } catch (error) {
+      console.error(error);
+      // setIsError(true);
+    }
+  };
+
+  const handleRemoveCart = async (product: ProductElement) => {
+    try {
+      if (product) {
+        const cartId = getCartId(cartList, product.id);
+        await removeCart(cartId);
+        await fetchData();
+      }
+    } catch (error) {
+      console.error(error);
+      // setIsError(true);
+    }
+  };
+
   return {
     cartList,
     isLoading,
     error,
     fetchData,
+    handleAddCart,
+    handleRemoveCart,
   };
 };

@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { useCartList } from '../hooks/useCartList.ts';
-import { CartItem, ErrorType } from '../types/type.ts';
+import { CartItem, ErrorType, ProductElement } from '../types/type.ts';
 
 interface CartListContextProps {
   children: React.ReactNode;
@@ -11,6 +11,8 @@ interface CartListContextType {
   isLoading: boolean;
   error: ErrorType;
   fetchData: () => Promise<void>;
+  handleAddCart: (product: ProductElement) => Promise<void>;
+  handleRemoveCart: (product: ProductElement) => Promise<void>;
 }
 
 export const CartListContext = createContext<CartListContextType | null>(null);
