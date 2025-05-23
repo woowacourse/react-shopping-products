@@ -19,7 +19,6 @@ enableMocking().then(() => {
       <Suspense fallback={<Skeleton />}>
         <LazyApp />
       </Suspense>
-      //{' '}
     </React.StrictMode>
   );
 });
