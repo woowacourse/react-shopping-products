@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getCartItems } from "../api/cartItem";
 import getProducts from "../api/product";
-import Header from "../component/feature/Header/Header";
-import Main from "../component/feature/Main/Main";
+import Header from "../component/layout/Header/Header";
+import Main from "../component/layout/Main/Main";
 import ProductContainer from "../component/feature/ProductContainer/ProductContainer";
 import TitleContainer from "../component/feature/TitleContainer/titleContainer";
 import Selector from "../component/unit/Selector/Selector";
