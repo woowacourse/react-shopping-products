@@ -4,7 +4,7 @@ import { useCart } from './useCart';
 import { useProductList } from './useProductList';
 
 export const useShopping = () => {
-  const { cartData, addToCart, deleteFromCart } = useCart();
+  const { cartData, addToCart, increaseQuantity, decreaseQuantity, deleteFromCart } = useCart();
   const {
     isLoading: isProductLoading,
     product,
@@ -26,23 +26,37 @@ export const useShopping = () => {
     });
   }, [cartData, product]);
 
-  const toggleCartItem = useCallback(
+  const addCartItem = useCallback(
     async (id: number) => {
-      const currentCheckedStatus = data.find((item) => item.id === id)?.isChecked;
-      if (currentCheckedStatus) {
-        const cartId = cartData.find((item) => item.product.id === id)?.id;
-        return cartId && (await deleteFromCart(cartId));
-      }
       await addToCart(id, 1);
     },
-    [addToCart, cartData, deleteFromCart, data]
+    [addToCart]
+  );
+
+  const updateCartQuantity = useCallback(
+    async (cartItemId: number, delta: number, currentQuantity: number) => {
+      const newQuantity = currentQuantity + delta;
+
+      if (newQuantity < 1) {
+        await deleteFromCart(cartItemId);
+      } else {
+        if (delta > 0) {
+          await increaseQuantity(cartItemId, currentQuantity);
+        } else {
+          await decreaseQuantity(cartItemId, currentQuantity);
+        }
+      }
+    },
+    [deleteFromCart, increaseQuantity, decreaseQuantity]
   );
 
   return {
     cartData,
     filteredData: data,
     isLoading: isProductLoading,
-    toggleCartItem,
+    addCartItem,
+    updateCartQuantity,
+    deleteFromCart,
     categorySelect,
     priceSelect,
     handleCategorySelect,
