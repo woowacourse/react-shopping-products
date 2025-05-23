@@ -1,5 +1,5 @@
 import { ERROR_MESSAGE } from '../constants/errorMessage';
-import { CartResponse } from '../types/product';
+import { CartResponse } from '../types/type';
 import { fetchAPI } from './fetchAPI';
 interface getCartItemProps {
   page: number;

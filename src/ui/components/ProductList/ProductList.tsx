@@ -1,17 +1,20 @@
 import Product from '../Product/Product';
-import { ProductWithCartInfo } from '../../../types/product';
+import { ProductElement } from '../../../types/type';
 import { List } from './ProductList.styles';
+import { useProductListContext } from '../../../context/ProductContext';
 
 interface ProductListProps {
-  products: ProductWithCartInfo[];
-  onAddCart: (product: ProductWithCartInfo) => Promise<void>;
-  onRemoveCart: (product: ProductWithCartInfo) => Promise<void>;
+  // products: ProductElement[];
+  onAddCart: (product: ProductElement) => Promise<void>;
+  onRemoveCart: (product: ProductElement) => Promise<void>;
 }
 
-function ProductList({ onAddCart, onRemoveCart, products }: ProductListProps) {
+function ProductList({ onAddCart, onRemoveCart }: ProductListProps) {
+  const { productList } = useProductListContext();
+
   return (
     <List>
-      {products?.map((item: ProductWithCartInfo) => (
+      {productList?.map((item: ProductElement) => (
         <Product
           key={item.id}
           item={item}

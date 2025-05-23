@@ -1,16 +1,21 @@
 import { ChangeEvent } from 'react';
 import { Container } from './Dropdown.styles';
+import { SortKeyType } from '../../../types/type';
 
 interface DropdownProps {
   value: string;
   placeholder?: string;
-  options: string[];
-  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  options: readonly string[];
+  // onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (value: SortKeyType) => void;
 }
 
 function Dropdown({ value, placeholder, options, onChange }: DropdownProps) {
   return (
-    <Container value={value} onChange={onChange}>
+    <Container
+      value={value}
+      onChange={(e) => onChange(e.target.value as SortKeyType)}
+    >
       {placeholder && (
         <option value="" disabled={!value}>
           {placeholder}
