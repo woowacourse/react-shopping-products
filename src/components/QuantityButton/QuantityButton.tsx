@@ -6,6 +6,8 @@ import { commonOpts } from "../../constants/requestHeader";
 import { useData } from "../../hooks/useData";
 import { useErrorContext } from "../../contexts/ErrorContext";
 import { useQueryContext } from "../../contexts/QueryContext";
+import { cartQueryOptions } from "@/constants/requestOptions";
+import { CartItem } from "@/types/cartContents";
 
 interface QuantityButtonProps {
   productId: number;
@@ -19,26 +21,24 @@ export default function QuantityButton({
   disableButtonWhenQuantityOne = false,
 }: QuantityButtonProps) {
   const [loading, setLoading] = useState(false);
-  const { refetch: fetchCart } = useData(
-    "cart-items",
-    URLS.CART_ITEMS,
-    commonOpts,
-    false
-  );
+  const { refetch: fetchCart } = useData("cart-items", cartQueryOptions);
 
   const { showError } = useErrorContext();
   const { dataPool } = useQueryContext();
   const cartData = dataPool["cart-items"];
+
+  const itemUrl = `${URLS.CART_ITEMS}/${cartItemId}`;
+
   const quantity =
     cartData?.find((item) => item.product.id === productId)?.quantity ?? 0;
 
-  const { fetcher: deleteItem, error: deleteError } = useFetch(
-    `${URLS.CART_ITEMS}/${cartItemId}`,
+  const { fetcher: deleteItem, error: deleteError } = useFetch<CartItem>(
+    itemUrl,
     { ...commonOpts, method: "DELETE" },
     false
   );
-  const { fetcher: increaseItem, error: increaseError } = useFetch(
-    `${URLS.CART_ITEMS}/${cartItemId}`,
+  const { fetcher: increaseItem, error: increaseError } = useFetch<CartItem>(
+    itemUrl,
     {
       ...commonOpts,
       method: "PATCH",
@@ -47,8 +47,8 @@ export default function QuantityButton({
     false,
     [quantity]
   );
-  const { fetcher: decreaseItem, error: decreaseError } = useFetch(
-    `${URLS.CART_ITEMS}/${cartItemId}`,
+  const { fetcher: decreaseItem, error: decreaseError } = useFetch<CartItem>(
+    itemUrl,
     {
       ...commonOpts,
       method: "PATCH",

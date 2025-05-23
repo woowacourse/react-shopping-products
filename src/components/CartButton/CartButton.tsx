@@ -1,5 +1,5 @@
 import * as styles from "./CartButton.style";
-import { ComponentProps, useEffect, useState, useMemo } from "react";
+import { ComponentProps, useState, useMemo } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
 import { URLS } from "../../constants/url";
@@ -7,6 +7,8 @@ import QuantityButton from "../QuantityButton/QuantityButton";
 import { commonOpts } from "../../constants/requestHeader";
 import { useData } from "../../hooks/useData";
 import { useQueryContext } from "../../contexts/QueryContext";
+import { cartQueryOptions } from "@/constants/requestOptions";
+import { CartItem } from "@/types/cartContents";
 
 interface CartButtonProps extends ComponentProps<"button"> {
   productId: number;
@@ -21,12 +23,7 @@ export default function CartButton({
   const { showError } = useErrorContext();
 
   const { dataPool } = useQueryContext();
-  const { refetch: fetchCart } = useData(
-    "cart-items",
-    URLS.CART_ITEMS,
-    commonOpts,
-    false
-  );
+  const { refetch: fetchCart } = useData("cart-items", cartQueryOptions);
   const cartData = dataPool["cart-items"];
   const productsData = dataPool["products"];
 
@@ -47,15 +44,11 @@ export default function CartButton({
     body: JSON.stringify({ productId, quantity: 1 }),
   };
 
-  const { fetcher: addCartItem, error: addError } = useFetch(
+  const { fetcher: addCartItem } = useFetch<CartItem>(
     URLS.CART_ITEMS,
     addOptions,
     false
   );
-
-  useEffect(() => {
-    if (addError) showError(addError);
-  }, [addError, showError]);
 
   const handleAdd = async () => {
     setLoading(true);

@@ -1,19 +1,23 @@
 import { useState, useMemo } from "react";
 
-import useFetch from "../../hooks/useFetch";
-import { useData } from "../../hooks/useData";
-import { useProductQuery } from "../../hooks/useProductQuery";
+import useFetch from "@/hooks/useFetch";
+import { useData } from "@/hooks/useData";
+import { useProductQuery } from "@/hooks/useProductQuery";
 
-import { useErrorContext } from "../../contexts/ErrorContext";
-import { useQueryContext } from "../../contexts/QueryContext";
+import { useErrorContext } from "@/contexts/ErrorContext";
+import { useQueryContext } from "@/contexts/QueryContext";
 
-import { URLS } from "../../constants/url";
-import { commonOpts } from "../../constants/requestHeader";
+import { URLS } from "@/constants/url";
 
 import CartList from "../Cart/CartList/CartList";
 import CartModal from "../Cart/CartModal/CartModal";
 
 import * as styles from "./Header.style";
+import {
+  cartQueryOptions,
+  productQueryOptions,
+} from "@/constants/requestOptions";
+import { commonOpts } from "@/constants/requestHeader";
 
 export default function Header() {
   const { dataPool, productsQuery, categoryQuery } = useQueryContext();
@@ -22,24 +26,25 @@ export default function Header() {
   const [isLoading, setIsLoading] = useState(false);
   const cartData = dataPool["cart-items"] || [];
   const productURL = useProductQuery(productsQuery, categoryQuery);
-  const { refetch: fetchProducts } = useData(
-    "products",
-    productURL,
-    commonOpts,
-    false
-  );
-  const { refetch: fetchCart } = useData(
-    "cart-items",
-    URLS.CART_ITEMS,
-    commonOpts,
-    false
+
+  const orderOptions = useMemo(
+    () => ({
+      ...commonOpts,
+      method: "POST",
+      body: JSON.stringify(cartData),
+    }),
+    [cartData]
   );
 
-  const { fetcher: orderCart } = useFetch(
-    URLS.ORDERS,
-    { method: "POST", body: JSON.stringify(cartData) },
-    false
-  );
+  const { refetch: fetchProducts } = useData("products", {
+    url: productURL,
+    ...productQueryOptions,
+  });
+  const { refetch: fetchCart } = useData("cart-items", cartQueryOptions);
+
+  const { fetcher: orderCart } = useFetch(URLS.ORDERS, orderOptions, false, [
+    cartData,
+  ]);
 
   const totalPrice = useMemo(
     () =>
