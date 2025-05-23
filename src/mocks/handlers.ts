@@ -1,9 +1,7 @@
 import { http, HttpResponse } from "msw";
 
-const BASE_URL = "http://localhost:3000";
-
 const handlers = [
-  http.get(`${BASE_URL}/products`, () => {
+  http.get(`${import.meta.env.VITE_BASE_URL}/products`, () => {
     const products = [
       {
         id: 1,

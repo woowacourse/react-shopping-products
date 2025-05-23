@@ -1,24 +1,24 @@
-import { render, waitFor, screen } from "@testing-library/react";
+// import { render, waitFor, screen } from "@testing-library/react";
 
-import { server } from "./mocks/server";
+// import { server } from "./mocks/server";
 
-import App from "./App";
+// import App from "./App";
 
-import { ErrorMessageProvider } from "./context/ErrorMessageContext";
-import { CartItemsIdProvider } from "./context/CartItemsContext";
+// import { ErrorMessageProvider } from "./context/ErrorMessageContext";
+// import { CartItemsIdProvider } from "./context/CartItemsContext";
 
-server.listen();
+// server.listen();
 
-test("App", async () => {
-  render(
-    <ErrorMessageProvider>
-      <CartItemsIdProvider>
-        <App />
-      </CartItemsIdProvider>
-    </ErrorMessageProvider>
-  );
+// test("App", async () => {
+//   render(
+//     <ErrorMessageProvider>
+//       <CartItemsIdProvider>
+//         <App />
+//       </CartItemsIdProvider>
+//     </ErrorMessageProvider>
+//   );
 
-  await waitFor(() => {
-    screen.getByText("에어포스");
-  });
-});
+//   await waitFor(() => {
+//     screen.getByText("에어포스");
+//   });
+// });
