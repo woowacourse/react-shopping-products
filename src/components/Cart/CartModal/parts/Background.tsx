@@ -8,13 +8,20 @@ interface BackgroundProps extends ComponentProps<"div"> {
 }
 
 function Background({ children, ...props }: BackgroundProps) {
-  const ctx = useContext(ModalContext)!;
+  const ctx = useContext(ModalContext);
+  if (!ctx) {
+    throw new Error("ModalContext는 ModalProvider 안에 있어야 합니다.");
+  }
   return (
     <div
       {...props}
       id="modal-background"
       css={styles.modalBackground(ctx.position)}
-      onClick={ctx.onClose}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          ctx.onClose();
+        }
+      }}
     >
       {children}
     </div>
