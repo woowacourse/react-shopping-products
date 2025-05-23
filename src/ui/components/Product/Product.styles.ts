@@ -8,6 +8,7 @@ export const Container = styled.li`
 `;
 
 export const ProductImageContainer = styled.div`
+  position: relative;
   width: 182px;
   height: 112px;
 `;
@@ -95,4 +96,24 @@ export const CartRemoveButtonText = styled.span`
   font-size: 12px;
   line-height: 15px;
   color: #000000;
+`;
+
+export const SoldoutBakcgound = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  justify-content: center;
+`;
+
+export const SoldOutText = styled.span`
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
 `;

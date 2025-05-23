@@ -7,6 +7,8 @@ import {
   Detail,
   Price,
   ProductName,
+  // SoldoutBakcgound,
+  // SoldOutText,
 } from './Product.styles';
 import { ProductElement } from '../../../types/type';
 import { useCartListContext } from '../../../context/CartContext';
@@ -38,6 +40,9 @@ function Product({ item }: ProductProps) {
     <Container>
       <ProductImageContainer>
         <ProductImage src={imageUrl} alt={name} />
+        {/* <SoldoutBakcgound>
+          <SoldOutText>품절</SoldOutText>
+        </SoldoutBakcgound> */}
       </ProductImageContainer>
       <Detail>
         <ProductName>{name}</ProductName>
