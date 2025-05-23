@@ -76,6 +76,8 @@ export const ModalBodyStyle = css`
   flex-direction: column;
   gap: 18px;
   width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
 `;
 
 export const ModalFooterStyle = (align: 'left' | 'center' | 'right' = 'right') => css`
