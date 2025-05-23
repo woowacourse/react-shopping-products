@@ -156,32 +156,38 @@ export const ProductListPage = () => {
               <Modal.Title>장바구니</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {filteredData
-                .filter((item) => item.isChecked) // ✅ 장바구니에 담긴 애들만 필터
-                .map((item) => {
-                  const cartItem = cartData.find((cartItem) => cartItem.product.id === item.id);
+              {filteredData.filter((item) => item.isChecked).length === 0 ? (
+                <Text type="Body" weight="medium" color="gray">
+                  장바구니가 비었습니다.
+                </Text>
+              ) : (
+                filteredData
+                  .filter((item) => item.isChecked)
+                  .map((item) => {
+                    const cartItem = cartData.find((cartItem) => cartItem.product.id === item.id);
 
-                  return (
-                    <ProductItem
-                      key={item.id}
-                      isChecked={item.isChecked}
-                      name={item.name}
-                      price={item.price}
-                      imageUrl={item.imageUrl}
-                      quantity={item.quantity}
-                      cartCount={cartItem?.quantity || 0}
-                      onAddCart={() => addCartItem(item.id)}
-                      onIncrease={() =>
-                        cartItem && updateCartQuantity(cartItem.id, +1, cartItem.quantity)
-                      }
-                      onDecrease={() =>
-                        cartItem && updateCartQuantity(cartItem.id, -1, cartItem.quantity)
-                      }
-                      onDelete={() => cartItem && deleteFromCart(cartItem.id)}
-                      variant="modal"
-                    />
-                  );
-                })}
+                    return (
+                      <ProductItem
+                        key={item.id}
+                        isChecked={item.isChecked}
+                        name={item.name}
+                        price={item.price}
+                        imageUrl={item.imageUrl}
+                        quantity={item.quantity}
+                        cartCount={cartItem?.quantity || 0}
+                        onAddCart={() => addCartItem(item.id)}
+                        onIncrease={() =>
+                          cartItem && updateCartQuantity(cartItem.id, +1, cartItem.quantity)
+                        }
+                        onDecrease={() =>
+                          cartItem && updateCartQuantity(cartItem.id, -1, cartItem.quantity)
+                        }
+                        onDelete={() => cartItem && deleteFromCart(cartItem.id)}
+                        variant="modal"
+                      />
+                    );
+                  })
+              )}
             </Modal.Body>
             <Modal.Footer buttonAlign="center">
               <Modal.CancelButton onClick={handleShowModal} width="100%">
