@@ -4,17 +4,15 @@ import { CartItemType } from '../types/data';
 import useFetchData from './useFetchData';
 import { DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 import { getCartId } from '../domain/cartItem';
+import useDataContext from './useDataContext';
 
 interface CartHandlerProps {
   handleErrorMessage: (errorMessage: string) => void;
 }
 
 const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
-  const {
-    data: cartItems,
-    setDataMap,
-    fetchData: fetchCartItems,
-  } = useFetchData<CartItemType[]>({
+  const { data, setData, isLoading } = useDataContext();
+  const { fetchData: fetchCartItems } = useFetchData<CartItemType[]>({
     dataName: 'cartItems',
   });
 
@@ -23,7 +21,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
       apiCall: getCartItems,
       onSuccess: (newData) => {
         if (newData) {
-          setDataMap((prev) => new Map(prev).set('cartItems', newData));
+          setData((prev) => new Map(prev).set('cartItems', newData));
         }
       },
       onError: (error) => {
@@ -31,19 +29,17 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         handleErrorMessage(message);
       },
     });
-  }, [fetchCartItems, handleErrorMessage, setDataMap]);
+  }, [fetchCartItems, handleErrorMessage]);
 
   useEffect(() => {
-    (async () => await fetchTotalCartItems())();
-  }, [fetchTotalCartItems]);
+    fetchTotalCartItems();
+  }, []);
 
   const handleAddCartItems = useCallback(
     async (productId: number, quantity: number) => {
       await fetchCartItems({
         apiCall: () => addCartItems({ productId, quantity }),
-        onSuccess: () => {
-          fetchTotalCartItems();
-        },
+        onSuccess: fetchTotalCartItems,
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
@@ -55,24 +51,24 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleRemoveCartItems = useCallback(
     async (id: number) => {
+      const cartItems = data.get('cartItems') as CartItemType[];
       const cartId = getCartId(cartItems, id) as number;
 
       await fetchCartItems({
         apiCall: () => removeCartItems(cartId),
-        onSuccess: () => {
-          fetchTotalCartItems();
-        },
+        onSuccess: fetchTotalCartItems,
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
         },
       });
     },
-    [fetchCartItems, cartItems, fetchTotalCartItems, handleErrorMessage],
+    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage],
   );
 
   return {
-    cartItems,
+    cartItems: data.get('cartItems') as CartItemType[],
+    isCartItemsLoading: isLoading.get('cartItems'),
     handleAddCartItems,
     handleRemoveCartItems,
   };

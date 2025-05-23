@@ -12,19 +12,12 @@ interface FetchDataProps<T> {
 }
 
 const useFetchData = <T>({ dataName }: useFetchDataProps) => {
-  const { data, setData, isLoading, setIsLoading } = useDataContext();
-
-  const handleLoading = useCallback(
-    (dataLoading: boolean) => {
-      setIsLoading((prev) => new Map(prev).set(dataName, dataLoading));
-    },
-    [dataName, setIsLoading],
-  );
+  const { handleLoading } = useDataContext();
 
   const fetchData = useCallback(
     async ({ apiCall, onSuccess, onError }: FetchDataProps<T>) => {
       try {
-        handleLoading(true);
+        handleLoading(true, dataName);
         const fetchedData = await apiCall();
         if (fetchedData) {
           onSuccess(fetchedData);
@@ -34,18 +27,13 @@ const useFetchData = <T>({ dataName }: useFetchDataProps) => {
       } catch (error) {
         onError(error);
       } finally {
-        handleLoading(false);
+        handleLoading(false, dataName);
       }
     },
-    [handleLoading],
+    [handleLoading, dataName],
   );
 
   return {
-    dataMap: data,
-    setDataMap: setData,
-    data: data.get(dataName) as T,
-    isLoading: isLoading.get(dataName),
-    setIsLoading,
     fetchData,
   };
 };

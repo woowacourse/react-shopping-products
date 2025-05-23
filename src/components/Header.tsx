@@ -4,15 +4,12 @@ import CartIcon from '/public/icon/cart.svg';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import countDistinct from '../util/countDistinct';
-import useCartHandler from '../hooks/useCartHandler';
-import useErrorMessageContext from '../hooks/useErrorMessageContext';
+import useDataContext from '../hooks/useDataContext';
+import { CartItemType } from '../types/data';
 
 const Header = () => {
-  const { handleErrorMessage } = useErrorMessageContext();
-  const { cartItems } = useCartHandler({
-    handleErrorMessage,
-  });
-
+  const { data } = useDataContext();
+  const cartItems = (data.get('cartItems') as CartItemType[]) ?? [];
   const cartIds = cartItems.map(({ id }) => id);
 
   return (

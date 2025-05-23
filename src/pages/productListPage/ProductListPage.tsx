@@ -19,7 +19,7 @@ export const ProductListPage = () => {
   });
   const {
     products,
-    isLoading,
+    isProductsLoading,
     categoryOption,
     sortOption,
     handleCategoryOption,
@@ -28,9 +28,9 @@ export const ProductListPage = () => {
     handleErrorMessage,
   });
 
-  const cartItemsIds = cartItems.map(({ product }) => product.id);
+  const cartItemsIds = cartItems && cartItems.map(({ product }) => product.id);
 
-  if (isLoading) {
+  if (isProductsLoading) {
     return <ProductListPageSkeleton />;
   }
 
@@ -56,7 +56,7 @@ export const ProductListPage = () => {
           <ProductItem
             key={product.id}
             product={product}
-            isCartAdded={cartItemsIds.includes(product.id)}
+            isCartAdded={cartItemsIds.includes(product.id) ?? false}
             handleAddCartItem={handleAddCartItems}
             handleRemoveCartItem={handleRemoveCartItems}
           />
