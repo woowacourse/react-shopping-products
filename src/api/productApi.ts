@@ -1,5 +1,5 @@
 import { apiClient } from './apiClient';
-import { ApiConfigType, ProductParamsType, ResponseProduct } from './types';
+import { ApiConfigType, ProductParamsType, ResponseDefault, ResponseProduct } from './types';
 
 export const productApi = {
   get: async ({ category, sort }: { category: string; sort: string }) => {
@@ -13,8 +13,8 @@ export const productApi = {
       method: 'GET',
       isAuthorization: false,
     };
-    const productList = await apiClient<ResponseProduct[], ProductParamsType>(apiConfigs, `/products`, params);
+    const productList = await apiClient<ResponseDefault<ResponseProduct[]>, ProductParamsType>(apiConfigs, `/products`, params);
 
-    return productList;
+    return productList.content;
   },
 };

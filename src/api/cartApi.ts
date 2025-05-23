@@ -1,5 +1,5 @@
 import { apiClient } from './apiClient';
-import { AddCartParamsType, ApiConfigType, initializeApiParamsType, ResponseCartItem } from './types';
+import { AddCartParamsType, ApiConfigType, initializeApiParamsType, ResponseCartItem, ResponseDefault } from './types';
 
 export const cartApi = {
   get: async () => {
@@ -11,9 +11,9 @@ export const cartApi = {
       method: 'GET',
       isAuthorization: true,
     };
-    const productList = await apiClient<ResponseCartItem[], initializeApiParamsType>(apiConfigs, `/cart-items`, params);
+    const cartList = await apiClient<ResponseDefault<ResponseCartItem[]>, initializeApiParamsType>(apiConfigs, `/cart-items`, params);
 
-    return productList;
+    return cartList.content;
   },
   post: async (productId: number, quantity: number) => {
     const apiConfigs: ApiConfigType = {

@@ -20,8 +20,7 @@ export const apiClient = async <T, P>(apiConfigs: ApiConfigType, query: string, 
     }
 
     if (response.headers.get('Content-Type')?.includes('application/json')) {
-      const data = await response.json();
-      return data.content;
+      return response.json();
     }
 
     return response as T;
@@ -30,6 +29,6 @@ export const apiClient = async <T, P>(apiConfigs: ApiConfigType, query: string, 
       throw new Error(NETWORK_ERROR_MESSAGE);
     }
 
-    throw new Error(`${DEFAULT_ERROR_MESSAGE}`);
+    throw new Error(DEFAULT_ERROR_MESSAGE);
   }
 };
