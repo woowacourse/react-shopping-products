@@ -14,14 +14,20 @@ import QuantityController from '../QuantityController/QuantityController';
 
 interface ProductProps {
   item: ProductElement;
-  onAddCart: (product: ProductElement) => Promise<void>;
-  onRemoveCart: (product: ProductElement) => Promise<void>;
+  // onAddCart: (product: ProductElement) => Promise<void>;
+  // onRemoveCart: (product: ProductElement) => Promise<void>;
 }
 
-function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
+function Product({ item }: ProductProps) {
   const { name, price, imageUrl } = item;
 
-  const { cartList } = useCartListContext();
+  const {
+    cartList,
+    handleAddCart,
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
+    handleRemoveCart,
+  } = useCartListContext();
   // console.log('cartList', cartList);
   // const isInCart = cartList.some((cartItem) => cartItem.product.id === item.id);
   const cartItem = cartList.find((cartItem) => cartItem.product.id === item.id);
@@ -41,10 +47,11 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
         // <RemoveButton onClick={() => onRemoveCart(item)} />
         <QuantityController
           quantity={cartItem.quantity}
-          onClick={() => onAddCart(item)}
+          onIncrease={() => handleIncreaseQuantity(item)}
+          onDecrease={() => handleDecreaseQuantity(item)}
         />
       ) : (
-        <AddButton onClick={() => onAddCart(item)} />
+        <AddButton onClick={() => handleAddCart(item)} />
       )}
     </Container>
   );

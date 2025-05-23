@@ -50,13 +50,33 @@ export const useCartList = () => {
       return;
     }
     try {
+      await addCart(product.id);
+      await fetchData();
+    } catch (error) {
+      console.error(error);
+      // setIsError(true);
+    }
+  };
+
+  const handleIncreaseQuantity = async (product: ProductElement) => {
+    try {
       const cartItem = cartList.find((item) => item.product.id === product.id);
       if (cartItem) {
         await patchCart(cartItem.id, cartItem.quantity + 1);
-      } else {
-        await addCart(product.id);
+        await fetchData();
       }
-      await fetchData();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDecreaseQuantity = async (product: ProductElement) => {
+    try {
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (cartItem) {
+        await patchCart(cartItem.id, cartItem.quantity - 1);
+        await fetchData();
+      }
     } catch (error) {
       console.error(error);
       // setIsError(true);
@@ -82,6 +102,8 @@ export const useCartList = () => {
     error,
     fetchData,
     handleAddCart,
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
     handleRemoveCart,
   };
 };
