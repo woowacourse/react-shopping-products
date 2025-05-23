@@ -67,8 +67,8 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
   );
 
   return {
-    cartItems: data.get('cartItems') as CartItemType[],
-    isCartItemsLoading: isLoading.get('cartItems'),
+    cartItems: (data.get('cartItems') as CartItemType[]) ?? [],
+    isCartItemsLoading: isLoading.get('cartItems') ?? false,
     handleAddCartItems,
     handleRemoveCartItems,
   };

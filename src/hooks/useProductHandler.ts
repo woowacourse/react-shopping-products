@@ -46,8 +46,8 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
   };
 
   return {
-    products: data.get('products') as ProductItemType[],
-    isProductsLoading: isLoading.get('products'),
+    products: (data.get('products') as ProductItemType[]) ?? [],
+    isProductsLoading: isLoading.get('products') ?? false,
     categoryOption,
     handleCategoryOption,
     sortOption,
