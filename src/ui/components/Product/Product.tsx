@@ -50,7 +50,15 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
     <Container>
       <ProductImageContainer>
         {isImage ?
-          <ProductImage src={product.imageUrl} alt={product.name}/>
+          <ProductImage
+            src={product.imageUrl}
+            alt={product.name}
+            onError={e => {
+              const img = e.currentTarget;
+              img.onerror = null;
+              img.src = woowaLogo;
+            }}
+          />
           : (
             <ImageContainer>
               <EmptyImage src={woowaLogo} alt={product.name}/>
