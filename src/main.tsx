@@ -5,7 +5,9 @@ import App from './App.tsx';
 async function enableMocking() {
   const { worker } = await import('./mocks/browser'); //Dynamic import하는 것이 눈에 띄였다.
 
-  return worker.start();
+  return worker.start({
+    onUnhandledRequest: 'bypass',
+  });
 }
 
 enableMocking().then(() => {

@@ -9,6 +9,7 @@ import ShopHeader from '@/shop/components/header/ShopHeader';
 import { useShopErrorContext } from '@/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
 import { Suspense, useMemo, useState } from 'react';
+import { Modal } from '@jae-o/modal-component-module';
 
 function ShopPage() {
   const [filter, setFilter] = useState({
@@ -35,7 +36,7 @@ function ShopPage() {
   const listPromiseData = useMemo(() => getProductList(filter), [filter]);
 
   return (
-    <>
+    <Modal>
       <ShopHeader itemsCount={cartList.length} />
       <ProductListContainer>
         <ListTitleBox>
@@ -54,7 +55,16 @@ function ShopPage() {
         </Suspense>
         {isError && <ErrorToastMessage />}
       </ProductListContainer>
-    </>
+      <Modal.Container
+        title="장바구니"
+        showCloseButton={false}
+        position="bottom"
+      >
+        <Modal.CloseTrigger>
+          <Modal.WideButton>닫기</Modal.WideButton>
+        </Modal.CloseTrigger>
+      </Modal.Container>
+    </Modal>
   );
 }
 
