@@ -14,14 +14,17 @@ import { useProductQuery } from "./hooks/useProductQuery";
 
 import * as styles from "./App.style";
 
-import { URLS } from "./constants/url";
-import { commonOpts } from "./constants/requestHeader";
 import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
 
 import type {
   CategoryOptionType,
   OrderByOptionType,
 } from "./types/categoryOption";
+
+import {
+  cartQueryOptions,
+  productQueryOptions,
+} from "./constants/requestOptions";
 
 function App() {
   const { showError } = useErrorContext();
@@ -39,29 +42,26 @@ function App() {
     loading: productFetchLoading,
     error: productFetchError,
     refetch: fetchProducts,
-  } = useData("products", productQuery, {}, false);
+  } = useData("products", { url: productQuery, ...productQueryOptions });
+
   const { error: cartFetchError, refetch: fetchCart } = useData(
     "cart-items",
-    URLS.CART_ITEMS,
-    commonOpts,
-    false
+    cartQueryOptions
   );
   const productsData = dataPool?.products;
 
   useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+    if (!dataPool?.products) fetchCart();
+  }, []);
 
   useEffect(() => {
     fetchProducts();
-  }, [productsQuery, fetchProducts]);
+  }, [productQuery]);
 
   useEffect(() => {
-    if (productFetchError) {
-      showError(productFetchError);
-    }
-    if (cartFetchError) {
-      showError(cartFetchError);
+    const fetchError = productFetchError || cartFetchError;
+    if (fetchError) {
+      showError(fetchError);
     }
   }, [productFetchError, cartFetchError, showError]);
 
@@ -99,7 +99,8 @@ function App() {
         ) : (
           <ProductList products={productsData} />
         )}
-        <MswStatus />
+        {process.env.NODE_ENV === "development" &&
+          import.meta.env.VITE_APP_USE_MSW && <MswStatus />}
       </div>
     </div>
   );

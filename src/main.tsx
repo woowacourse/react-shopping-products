@@ -7,28 +7,22 @@ import { QueryContextProvider } from "./contexts/QueryContext.tsx";
 
 async function initMsw() {
   try {
-    // MSW 활성화 여부 확인
     const enableMsw =
-      import.meta.env.VITE_APP_USE_MSW === true ||
-      import.meta.env.VITE_APP_USE_MSW === "true";
+      String(import.meta.env.VITE_APP_USE_MSW).toLowerCase() === "true";
 
-    if (enableMsw) {
-      const { worker } = await import("./mocks/browser");
+    if (!enableMsw) return;
 
-      const baseUrl = import.meta.env.BASE_URL || "/";
-      const scopeUrl = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
-      await worker.start({
-        serviceWorker: {
-          url: `${window.location.origin}${baseUrl}${
-            baseUrl.endsWith("/") ? "" : "/"
-          }mockServiceWorker.js`,
-          options: {
-            scope: scopeUrl,
-          },
-        },
-        onUnhandledRequest: "warn",
-      });
-    }
+    const { worker } = await import("./mocks/browser");
+
+    const baseUrl = import.meta.env.BASE_URL;
+
+    await worker.start({
+      serviceWorker: {
+        url: `${window.location.origin}${baseUrl}mockServiceWorker.js`,
+        options: { scope: baseUrl },
+      },
+      onUnhandledRequest: "warn",
+    });
   } catch (error) {
     console.error("MSW 초기화 실패:", error);
   }

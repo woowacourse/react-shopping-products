@@ -1,3 +1,4 @@
+import { cartQueryOptions } from "@/constants/requestOptions.ts";
 import { commonOpts } from "../../../constants/requestHeader.ts";
 import { URLS } from "../../../constants/url.ts";
 import { useErrorContext } from "../../../contexts/ErrorContext.tsx";
@@ -21,12 +22,7 @@ function CartCard({ cartItem }: CartCardProps) {
     cartItem.product.imageUrl
   );
 
-  const { refetch: fetchCart } = useData(
-    "cart-items",
-    URLS.CART_ITEMS,
-    commonOpts,
-    false
-  );
+  const { refetch: fetchCart } = useData("cart-items", cartQueryOptions);
   const { fetcher: deleteItem } = useFetch(
     `${URLS.CART_ITEMS}/${cartItem.id}`,
     { ...commonOpts, method: "DELETE" },
