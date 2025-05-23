@@ -5,11 +5,11 @@ import { getProducts } from '../../services/productServices';
 import type { ProductItemType } from '../../types/data';
 import { render, screen } from '@testing-library/react';
 import { ProductListPage } from './ProductListPage';
-import { CartProvider } from '../../context/CartContext';
 import { ErrorMessageProvider } from '../../context/ErrorMessageContext';
 import { PRODUCT_LIST_ITEM_COUNT } from '../../constants/systemConstants';
 import type React from 'react';
 import userEvent from '@testing-library/user-event';
+import { DataProvider } from '../../context/DataContext';
 
 const mockProducts: ProductItemType[] = Array.from({ length: 25 }, (_, index) => ({
   id: index + 1,
@@ -22,7 +22,7 @@ const mockProducts: ProductItemType[] = Array.from({ length: 25 }, (_, index) =>
 const TestCartProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <ErrorMessageProvider>
-      <CartProvider>{children}</CartProvider>
+      <DataProvider>{children}</DataProvider>
     </ErrorMessageProvider>
   );
 };

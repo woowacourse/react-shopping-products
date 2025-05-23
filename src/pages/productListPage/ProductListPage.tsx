@@ -2,7 +2,7 @@ import ErrorToast from '../../components/ErrorToast';
 import ProductItem from '../../components/ProductItem';
 import Select from '../../components/Select';
 import * as P from './ProductListPage.styles.tsx';
-import useCartContext from '../../hooks/useCartContext';
+import useCartHandler from '../../hooks/useCartHandler.ts';
 import {
   CATEGORY_OPTIONS,
   SELECT_SORT_OPTIONS,
@@ -13,10 +13,10 @@ import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
 
 export const ProductListPage = () => {
-  const { cartItemsIds, handleAddCartItemsIds, handleRemoveCartItemsIds } = useCartContext();
-
   const { errorMessage, handleErrorMessage } = useErrorMessageContext();
-
+  const { cartItems, handleAddCartItems, handleRemoveCartItems } = useCartHandler({
+    handleErrorMessage,
+  });
   const {
     products,
     isLoading,
@@ -27,6 +27,8 @@ export const ProductListPage = () => {
   } = useProductHandler({
     handleErrorMessage,
   });
+
+  const cartItemsIds = cartItems.map(({ product }) => product.id);
 
   if (isLoading) {
     return <ProductListPageSkeleton />;
@@ -55,8 +57,8 @@ export const ProductListPage = () => {
             key={product.id}
             product={product}
             isCartAdded={cartItemsIds.includes(product.id)}
-            handleAddCartItem={handleAddCartItemsIds}
-            handleRemoveCartItem={handleRemoveCartItemsIds}
+            handleAddCartItem={handleAddCartItems}
+            handleRemoveCartItem={handleRemoveCartItems}
           />
         ))}
       </P.ProductItemContainer>

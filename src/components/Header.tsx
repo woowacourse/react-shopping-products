@@ -3,11 +3,17 @@ import Logo from '/public/logo.svg';
 import CartIcon from '/public/icon/cart.svg';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
-import useCartContext from '../hooks/useCartContext';
 import countDistinct from '../util/countDistinct';
+import useCartHandler from '../hooks/useCartHandler';
+import useErrorMessageContext from '../hooks/useErrorMessageContext';
 
 const Header = () => {
-  const { cartItemsIds } = useCartContext();
+  const { handleErrorMessage } = useErrorMessageContext();
+  const { cartItems } = useCartHandler({
+    handleErrorMessage,
+  });
+
+  const cartIds = cartItems.map(({ id }) => id);
 
   return (
     <HeaderContainer>
@@ -18,9 +24,7 @@ const Header = () => {
       </HeaderLogoButton>
       <HeaderCartButton>
         <img src={CartIcon} alt="장바구니" />
-        {cartItemsIds.length !== 0 && (
-          <HeaderItemCount>{countDistinct(cartItemsIds)}</HeaderItemCount>
-        )}
+        {cartItems.length !== 0 && <HeaderItemCount>{countDistinct(cartIds)}</HeaderItemCount>}
       </HeaderCartButton>
     </HeaderContainer>
   );

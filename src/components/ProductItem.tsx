@@ -3,11 +3,12 @@ import Button from './Button';
 import { ProductItemType } from '../types/data';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import RemoveShoppingCartIcon from '/public/icon/remove-shopping-cart.svg';
+import { useState } from 'react';
 
 interface ProductItemProps {
   product: ProductItemType;
   isCartAdded: boolean;
-  handleAddCartItem: (id: number) => void;
+  handleAddCartItem: (id: number, quantity: number) => void;
   handleRemoveCartItem: (id: number) => void;
 }
 
@@ -22,6 +23,8 @@ const ProductItem = ({
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
   };
+
+  const [quantity, setQuantity] = useState(0);
 
   return (
     <ProductItemContainer>
@@ -51,12 +54,21 @@ const ProductItem = ({
             id="add"
             name="담기"
             variant="smallBlack"
-            onClick={() => handleAddCartItem(product.id)}
+            onClick={() => handleAddCartItem(product.id, 3)}
           >
             <CartIconContainer>
               <CartAddIcon src={AddShoppingCartIcon} alt="장바구니 담기" />
               담기
             </CartIconContainer>
+            <Button
+              type="button"
+              id="add"
+              name="추가"
+              variant="smallBlack"
+              onClick={() => handleAddCartItem(product.id, 3)}
+            >
+              {quantity}
+            </Button>
           </Button>
         )}
       </ProductItemCard>
