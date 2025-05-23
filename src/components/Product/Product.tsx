@@ -7,6 +7,7 @@ import defaultImage from "/defaultImage.png";
 import AddButton from "../AddButton/AddButton";
 import RemoveButton from "../RemoveButton/RemoveButton";
 import useCartItemsId from "../../hooks/useCartItemsId";
+import Button from "../common/Button/Button";
 
 function Product({ product, isInCart }: ProductProps) {
   const { state, addCartItemId, removeCartItemId } = useCartItemsId();
@@ -40,6 +41,14 @@ function Product({ product, isInCart }: ProductProps) {
             </Styled.ProductPrice>
           </Styled.Contents>
           <Styled.ButtonWrapper>
+            <Button color="light" onClick={handleRemoveProduct}>
+              -
+            </Button>
+            <p>수량</p>
+            <Button color="light" onClick={handleAddProduct}>
+              +
+            </Button>
+
             {isInCart ? (
               <RemoveButton
                 handleRemoveProduct={handleRemoveProduct}
