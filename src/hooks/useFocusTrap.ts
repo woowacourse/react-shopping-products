@@ -21,10 +21,9 @@ export function useFocusTrap<T extends HTMLElement>(
     const last = nodes[nodes.length - 1];
 
     if (nodes.length === 0) {
-      first?.focus();
-    } else {
       modalEl.setAttribute("tabindex", "-1");
       modalEl.focus();
+      return;
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
