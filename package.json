@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "dev:msw": "VITE_APP_USE_MSW=true vite --host",
+    "dev:msw": "VITE_APP_USE_MSW=true vite",
     "build": "tsc && vite build",
     "build:msw": "VITE_APP_USE_MSW=true tsc && vite build",
     "deploy": "vite build --base=/react-shopping-products && npx gh-pages -d dist",
-    "deploy:msw": "VITE_APP_USE_MSW=true vite build --base=/react-shopping-products && npx gh-pages -d dist",
+    "deploy:msw": "VITE_APP_USE_MSW=true vite build --base=/react-shopping-products/ && npx gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "vitest"
   },
