@@ -26,7 +26,7 @@ const ProductItem = ({
       <S.ProductWrapper>
         <S.ProductInfo>
           <S.ProductName>{name}</S.ProductName>
-          <S.ProductPrice>{price}</S.ProductPrice>
+          <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
           <QuantitySelector
             quantity={quantity}
             onIncrease={increaseItemQuantity}

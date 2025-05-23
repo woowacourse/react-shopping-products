@@ -42,7 +42,9 @@ const CartModal = ({
       </S.ScrollContainer>
       <S.TotalPriceContainer>
         <S.TotalPriceLabel>총 결제 금액</S.TotalPriceLabel>
-        <S.TotalPriceValue>{totalPriceInCart}</S.TotalPriceValue>
+        <S.TotalPriceValue>
+          {totalPriceInCart.toLocaleString()}원
+        </S.TotalPriceValue>
       </S.TotalPriceContainer>
       <S.CloseButton onClick={closeModal}>닫기</S.CloseButton>
     </S.CartModal>

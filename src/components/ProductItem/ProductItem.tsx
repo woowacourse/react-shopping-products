@@ -28,7 +28,7 @@ const ProductItem = ({
       <S.ProductImage $url={imageUrl} />
       <S.ProductWrapper>
         <S.ProductName>{name}</S.ProductName>
-        <S.ProductPrice>{price}</S.ProductPrice>
+        <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
         <S.QuantityWrapper>
           {quantity >= CART_QUANTITY_THRESHOLD ? (
             <QuantitySelector
