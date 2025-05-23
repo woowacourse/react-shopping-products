@@ -23,8 +23,7 @@ export const fetchAPI = async ({
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText || errorMessage);
+    throw new Error(errorMessage);
   }
 
   return response;

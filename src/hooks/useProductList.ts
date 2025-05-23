@@ -12,7 +12,7 @@ import {
   ProductElement,
   SortKeyType,
 } from '../types/type';
-import { ERROR_MESSAGE } from '../constants/errorMessage';
+import { useToastContext } from '../context/ToastContext';
 
 export const useProductList = () => {
   const [productList, setProductList] = useState<ProductElement[]>([]);
@@ -23,6 +23,7 @@ export const useProductList = () => {
     isError: false,
     errorMessage: '',
   });
+  const { showToast } = useToastContext();
 
   const fetchData = useCallback(async () => {
     const mappedSortType = SORT_PRICE_MAP[sortBy];
@@ -41,10 +42,13 @@ export const useProductList = () => {
       setProductList(filteredCategory);
     } catch (error) {
       console.error(error);
-      setError({
-        isError: true,
-        errorMessage: ERROR_MESSAGE.PRODUCT_FETCH_FAIL,
-      });
+      if (error instanceof Error) {
+        showToast(error.message);
+        // setError({
+        //   isError: true,
+        //   errorMessage: error.message,
+        // });
+      }
     } finally {
       setIsLoading(false);
     }

@@ -1,7 +1,7 @@
 import { ToastContainer, Message } from './Toast.styles';
 
 interface ToastProps {
-  message: string;
+  message: string | null;
 }
 
 function Toast({ message }: ToastProps) {

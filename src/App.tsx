@@ -13,9 +13,10 @@ import {
   PRODUCT_SECTION_TITLE,
   SHOPPING_MALL_TITLE,
 } from './constants/shopInfoConfig';
-import { ERROR_MESSAGE } from './constants/errorMessage';
 import { useProductListContext } from './context/ProductContext';
 import { useCartListContext } from './context/CartContext';
+import { useEffect } from 'react';
+import { useToastContext } from './context/ToastContext';
 
 function App() {
   const {
@@ -34,14 +35,23 @@ function App() {
     handleRemoveCart,
   } = useCartListContext();
 
+  const { toast, showToast } = useToastContext();
+
+  useEffect(() => {
+    if (productError.isError) {
+      showToast(productError.errorMessage);
+    }
+    if (cartError.isError) {
+      showToast(cartError.errorMessage);
+    }
+  }, [productError.isError, cartError.isError]);
+
   return (
     <>
       <Global styles={GlobalStyle} />
       <Layout>
         <Header title={SHOPPING_MALL_TITLE} />
-        {(!productError || !cartError) && (
-          <Toast message={ERROR_MESSAGE.TOAST} />
-        )}
+        {toast.isToast && <Toast message={toast.message} />}
         {isProductLoading || (isCartLoading && <LoadingSpinner duration={2} />)}
         {!isProductLoading && !isCartLoading && (
           <Section>

@@ -4,6 +4,7 @@ import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { CartItem, ErrorType, ProductElement } from '../types/type';
 import { MAX_CART_ITEM_COUNT } from '../constants/cartConfig';
 import { getCartId } from '../utils/getCartId';
+import { useToastContext } from '../context/ToastContext';
 
 export const useCartList = () => {
   const [cartList, setCartList] = useState<CartItem[]>([]);
@@ -12,6 +13,7 @@ export const useCartList = () => {
     isError: false,
     errorMessage: '',
   });
+  const { showToast } = useToastContext();
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -25,10 +27,13 @@ export const useCartList = () => {
       setCartList(data.content);
     } catch (error) {
       console.error(error);
-      setError({
-        isError: true,
-        errorMessage: ERROR_MESSAGE.CART_FETCH_FAIL,
-      });
+      if (error instanceof Error) {
+        showToast(error.message);
+        // setError({
+        //   isError: true,
+        //   errorMessage: error.message,
+        // });
+      }
     } finally {
       setIsLoading(false);
     }
