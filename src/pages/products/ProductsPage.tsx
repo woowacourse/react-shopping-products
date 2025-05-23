@@ -9,6 +9,8 @@ import * as S from "./ProductsPage.styles";
 import { CATEGORY, DEFAULT_FILTER, DEFAULT_SORT, SORT } from "./constants";
 import { Category, Sort } from "./types";
 import { useCartItemsQuery } from "@/hooks";
+import { GetCartItemsResponse } from "@/types";
+import { DeleteCartItemsParams, GetCartItemsParams, PatchCartItemsParams } from "@/apis/CartItemApi";
 
 export default function ProductsPage() {
   const [filter, setFilter] = useState<Category>(DEFAULT_FILTER);
@@ -24,8 +26,12 @@ export default function ProductsPage() {
     mutationFn: CartItemApi.postCartItems,
     queryKey: "cartItems",
   });
-  const { mutate: mutatePatchCartItem } = useMutation({
+  const { mutate: mutatePatchCartItem } = useMutation<PatchCartItemsParams, void, GetCartItemsResponse>({
     mutationFn: CartItemApi.patchCartItems,
+    queryKey: "cartItems",
+  });
+  const { mutate: mutateDeleteCartItem } = useMutation<DeleteCartItemsParams, void, GetCartItemsResponse>({
+    mutationFn: CartItemApi.deleteCartItems,
     queryKey: "cartItems",
   });
 
@@ -45,26 +51,7 @@ export default function ProductsPage() {
     }
 
     if (!cartItem) {
-      await mutatePostCartItem({ productId }, (prev) => {
-        const newCartContent = [...prev.content];
-        return {
-          ...prev,
-          content: [
-            ...newCartContent,
-            {
-              id: 1,
-              product: {
-                id: Math.floor(Math.random() * 1000000000),
-                name: product.name,
-                price: product.price,
-                imageUrl: product.imageUrl,
-                category: product.category,
-                stock: product.stock,
-              },
-            },
-          ],
-        };
-      });
+      await mutatePostCartItem({ productId });
       await refetchCartItems();
     } else {
       await mutatePatchCartItem(
@@ -90,16 +77,35 @@ export default function ProductsPage() {
   const decreaseCartItem = async (productId: number) => {
     const cartItem = cartItems?.content.find((item) => item.product.id === productId);
 
-    if (!cartItem) {
-      await CartItemApi.postCartItems({ productId });
-    } else {
-      await CartItemApi.patchCartItems({
-        cartItemId: cartItem.id,
-        quantity: cartItem.quantity - 1,
-      });
-    }
+    if (!cartItem) return;
 
-    await refetchCartItems();
+    if (!cartItem || cartItem.quantity === 1) {
+      await mutateDeleteCartItem({ cartItemId: cartItem.id }, (prev) => {
+        const newCartContent = [...prev.content];
+        return {
+          ...prev,
+          content: newCartContent.filter((item) => item.product.id !== productId),
+        };
+      });
+    } else {
+      await mutatePatchCartItem(
+        {
+          cartItemId: cartItem.id,
+          quantity: cartItem.quantity - 1,
+        },
+        (prev) => {
+          const currentCartItemIndex = prev.content.findIndex((item) => item.product.id === productId);
+
+          const newCartContent = [...prev.content];
+          newCartContent[currentCartItemIndex] = {
+            ...newCartContent[currentCartItemIndex],
+            quantity: cartItem.quantity - 1,
+          };
+
+          return { ...prev, content: newCartContent };
+        },
+      );
+    }
   };
 
   const isLoading = productsStatus === "loading" || cartItemsStatus === "loading";

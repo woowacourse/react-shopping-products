@@ -2,22 +2,22 @@ import { PATH } from "@/constants";
 import { GetCartItemsResponse } from "@/types";
 import BaseApi from "./BaseApi";
 
-interface GetCartItemsParams {
+export interface GetCartItemsParams {
   page?: number;
   size?: number;
   sort?: "asc" | "desc";
 }
 
-interface PostCartItemsParams {
+export interface PostCartItemsParams {
   productId: number;
   quantity?: number;
 }
 
-interface DeleteCartItemsParams {
+export interface DeleteCartItemsParams {
   cartItemId: number;
 }
 
-interface PatchCartItemsParams {
+export interface PatchCartItemsParams {
   cartItemId: number;
   quantity: number;
 }

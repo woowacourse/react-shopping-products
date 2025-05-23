@@ -1,15 +1,18 @@
 import { useQueryClient } from "./QueryProvider";
 
-interface UseMutationProps<T, V> {
-  mutationFn: (variables: V) => Promise<T>;
+interface UseMutationProps<TRequest, TResponse> {
+  mutationFn: (variables: TRequest) => Promise<TResponse>;
   queryKey: string;
 }
 
-export default function useMutation<T, V>({ mutationFn, queryKey }: UseMutationProps<T, V>) {
+export default function useMutation<TRequest, TResponse, TGetResponse = unknown>({
+  mutationFn,
+  queryKey,
+}: UseMutationProps<TRequest, TResponse>) {
   const { getQueryData, setQueryData, setQueryStatus } = useQueryClient();
 
-  const mutate = async (variables: V, optimisticUpdate?: (prev: T) => T) => {
-    const prevData = getQueryData(queryKey) as T;
+  const mutate = async (variables: TRequest, optimisticUpdate?: (prev: TGetResponse) => TResponse) => {
+    const prevData = getQueryData(queryKey) as TGetResponse;
 
     if (optimisticUpdate) {
       mutationFn(variables);
