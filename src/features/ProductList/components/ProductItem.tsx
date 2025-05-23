@@ -104,6 +104,7 @@ export const ProductItem = ({
               src="./AddCart.svg"
               onClick={onAddCart}
               aria-label="장바구니 담기"
+              disabled={quantity === 0}
             >
               담기
             </IconButton>
