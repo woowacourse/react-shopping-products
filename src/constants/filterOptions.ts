@@ -11,3 +11,4 @@ export const PRICE_SORTS_KEYS = Object.keys(
 ) as (keyof typeof PRICE_SORTS)[];
 
 export const LOW_PRICE_SORT_KEY = PRICE_SORTS_KEYS[0];
+export const HIGH_PRICE_SORT_KEY = PRICE_SORTS_KEYS[1];
