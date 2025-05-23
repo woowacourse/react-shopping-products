@@ -10,14 +10,14 @@ const ProductListToolBar = () => {
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    if (isCategory(value)) {
+    if (isCategory(CATEGORY, value)) {
       products.updateCategory(value);
     }
   };
 
   const handleSortingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    if (isSortOption(value)) {
+    if (isSortOption(SORT_OPTION, value)) {
       products.updateSort(value);
     }
   };
