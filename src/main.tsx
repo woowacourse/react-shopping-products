@@ -9,8 +9,15 @@ async function enableMocking() {
   //   return;
   // }
 
+  const isLocalhost = location.hostname === 'localhost';
+
   const { worker } = await import('./mocks/browser');
-  return worker.start({ onUnhandledRequest: 'bypass' });
+  return worker.start({
+    serviceWorker: {
+      url: isLocalhost ? '/mockServiceWorker.js' : '/react-shopping-products/mockServiceWorker.js',
+    },
+    onUnhandledRequest: 'bypass',
+  });
 }
 
 enableMocking().then(() => {
