@@ -13,7 +13,11 @@ const FALLBACK_IMAGE_SRC = NoImage;
 type ProductItemProps = {
   isChecked: boolean;
   cartCount: number;
-  onCartUpdate: () => void;
+  onAddCart: () => void;
+  onIncrease: () => void;
+  onDecrease: () => void;
+  onDelete?: () => void;
+  variant?: 'default' | 'modal';
 } & Pick<Product, 'name' | 'imageUrl' | 'price' | 'quantity'>;
 
 export const ProductItem = ({
@@ -22,17 +26,23 @@ export const ProductItem = ({
   imageUrl,
   quantity,
   isChecked = true,
-  onCartUpdate,
+  variant = 'default',
+  cartCount,
+  onAddCart,
+  onIncrease,
+  onDecrease,
+  onDelete,
 }: ProductItemProps) => {
   return (
-    <StyledProductItemContainer>
-      <StyledImageWrapper>
+    <StyledProductItemContainer variant={variant}>
+      <StyledImageWrapper variant={variant}>
         <StyledProductItemImage
           src={imageUrl}
           alt={name}
           onError={(e) => {
             e.currentTarget.src = FALLBACK_IMAGE_SRC;
           }}
+          variant={variant}
         />
         {quantity === 0 && (
           <SoldOutOverlay>
@@ -48,23 +58,51 @@ export const ProductItem = ({
         width="100%"
         justifyContent="center"
       >
-        <Text type="Body" weight="medium">
-          {name}
-        </Text>
+        <Flex
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          width="100%"
+          gap=""
+        >
+          <Text type="Body" weight="medium">
+            {name}
+          </Text>
+          {variant === 'modal' && (
+            <IconButton
+              variant="secondary"
+              onClick={onDelete}
+              aria-label="삭제"
+              style={{ width: '50px', height: '25px' }}
+            >
+              삭제
+            </IconButton>
+          )}
+        </Flex>
         <Text type="Body" weight="medium">
           {price}
         </Text>
-        <Flex direction="row" justifyContent="flex-end" alignItems="center" width="100%" gap="">
+        <Flex
+          direction="row"
+          justifyContent={variant === 'modal' ? 'flex-start' : 'flex-end'}
+          alignItems="center"
+          width="100%"
+          gap=""
+        >
           {isChecked ? (
             <ItemCounter
-              initial={quantity}
-              handleDeleteToCart={onCartUpdate} // 상태 리셋은 상위에서 하도록
+              initial={cartCount}
+              isInCart={isChecked}
+              onAddToCart={onAddCart}
+              onIncreaseQuantity={onIncrease}
+              onDecreaseQuantity={onDecrease}
+              onRemoveFromCart={onDecrease}
             />
           ) : (
             <IconButton
               variant="primary"
               src="./AddCart.svg"
-              onClick={onCartUpdate} // 여기서 toggle 실행
+              onClick={onAddCart}
               aria-label="장바구니 담기"
             >
               담기
@@ -76,28 +114,31 @@ export const ProductItem = ({
   );
 };
 
-export const StyledProductItemContainer = styled.div`
-  width: 182px;
-  height: 224px;
+export const StyledProductItemContainer = styled.div<{ variant?: 'default' | 'modal' }>`
+  width: ${({ variant }) => (variant === 'modal' ? '100%' : '182px')};
+  height: ${({ variant }) => (variant === 'modal' ? '100px' : '224px')};
+  padding: 0px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: ${({ variant }) => (variant === 'modal' ? 'row' : 'column')};
+  align-items: 'center';
+  justify-content: ${({ variant }) => (variant === 'modal' ? 'flex-start' : 'center')};
+  gap: ${({ variant }) => (variant === 'modal' ? '12px' : '0')};
   border-radius: 8px;
   background-color: #ffffff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: ${({ variant }) => (variant === 'modal' ? '0' : '0px 4px 8px rgba(0, 0, 0, 0.1)')};
 `;
 
-export const StyledProductItemImage = styled.img`
+export const StyledProductItemImage = styled.img<{ variant?: 'default' | 'modal' }>`
   width: 100%;
-  height: 112px;
-  border-radius: 8px 8px 0 0;
+  height: 100%;
+  border-radius: ${({ variant }) => (variant === 'modal' ? '8px' : '8px 8px 0 0;')};
 `;
 
-const StyledImageWrapper = styled.div`
+const StyledImageWrapper = styled.div<{ variant?: 'default' | 'modal' }>`
   position: relative;
-  width: 100%;
-  height: 112px;
+  width: ${({ variant }) => (variant === 'modal' ? '80px' : '100%')};
+  height: ${({ variant }) => (variant === 'modal' ? '80px' : '112px')};
+  flex-shrink: 0;
 `;
 
 const SoldOutOverlay = styled.div`
