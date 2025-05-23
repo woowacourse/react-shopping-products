@@ -23,6 +23,8 @@ const useProducts = (setErrorMessage: Props): UseProductsReturn => {
   const [selectedSortOption, setSelectedSortOption] =
     useState<SortOptionsKey>("낮은 가격 순");
 
+  //TODO: products 자체를 바꾸는 게 아니라, products 는 그냥 상품 목록 전체를 관리하고 함수로 필터링한 상품 목록들 반환해주기
+
   useEffect(() => {
     (async () => {
       setIsLoading(true);
