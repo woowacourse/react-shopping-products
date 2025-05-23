@@ -1,5 +1,5 @@
 // useQuery.ts
-import { useState, useCallback, useEffect, DependencyList } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { ApiError } from "../constants/Error";
 import { createApiError } from "../util/createApiError";
 import { getErrorTypeByStatus } from "../util/getErrorTypeByStatus";
@@ -8,13 +8,14 @@ import { useQueryContext } from "../contexts/QueryContext";
 import { DataKey, DataPoolMap, DataResponseMap } from "../types/data-types";
 
 type Opts = Omit<RequestInit, "method" | "signal">;
-
+type FetchOptions = {
+  url: string | URL;
+  options?: Opts;
+  immediate?: boolean;
+};
 export function useData<K extends DataKey>(
   key: K,
-  url: string | URL,
-  options: Opts = {},
-  immediate = true,
-  deps: DependencyList = []
+  { url, options, immediate = true }: FetchOptions
 ) {
   const { dataPool, setData, controllers } = useQueryContext();
   const cached = dataPool[key] as DataPoolMap[K] | undefined;
@@ -58,7 +59,7 @@ export function useData<K extends DataKey>(
         controllers.current[key] = null;
       setLoading(false);
     }
-  }, [key, url, JSON.stringify(options), ...deps]);
+  }, [key, url]);
 
   useEffect(() => {
     if (!cached && immediate) fetcher();
