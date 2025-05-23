@@ -20,6 +20,8 @@ import {
 } from "./ShopPage.style";
 import { Modal } from "../component/feature/Modal/Modal";
 import Button from "../component/unit/Button/Button";
+import { CartProduct } from "../component/feature/CartProduct/CartProduct";
+import { CartProductListLayout } from "../component/feature/CartProduct/CartProduct.style";
 
 const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
 const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
@@ -144,7 +146,29 @@ export default function ShopPage() {
           </Button>
         }
       >
-        <div>hi</div>
+        {cartItemList.length === 0 ? (
+          <div>
+            장바구니에 추가된 목록이 없습니다. <br /> 상품을 먼저 추가해주세요
+          </div>
+        ) : (
+          <div css={CartProductListLayout}>
+            {cartItemList.map((cartItem) => {
+              const cartProduct = productList.filter(
+                (product) => cartItem.product.id === product.id
+              );
+              if (cartProduct.length === 0) return;
+              return (
+                <CartProduct
+                  key={cartProduct[0].id}
+                  id={cartProduct[0].id}
+                  imageUrl={cartProduct[0].imageUrl}
+                  name={cartProduct[0].name}
+                  price={cartProduct[0].price}
+                />
+              );
+            })}
+          </div>
+        )}
       </Modal>
     </div>
   );

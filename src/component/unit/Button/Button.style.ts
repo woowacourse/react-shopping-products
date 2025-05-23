@@ -1,6 +1,16 @@
 import { css } from "@emotion/react";
 
-const buttonLayout = (backgroundColor: string, color: string) => {
+const buttonLayout = (
+  backgroundColor: string,
+  color: string,
+  border: string = "none",
+  size: "sm" | "full" = "sm"
+) => {
+  const sizeVarient = {
+    sm: "fit-content",
+    full: "100%",
+  };
+
   return css`
     display: flex;
     align-items: center;
@@ -12,6 +22,9 @@ const buttonLayout = (backgroundColor: string, color: string) => {
     font-weight: 600;
     font-family: "Noto Sans";
     font-size: 12px;
+    border: ${border};
+    white-space: nowrap;
+    width: ${sizeVarient[size]};
   `;
 };
 
