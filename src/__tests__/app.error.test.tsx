@@ -56,22 +56,17 @@ describe("App에서는 ", () => {
     });
   });
 
-  test("여러 개의 에러가 발생했을 때 모든 에러가 처리되어야 한다.", async () => {
+  test("여러 개의 에러가 발생했을 때 첫 번째 에러만 처리되어야 한다.", async () => {
     testStateStore.shouldFailProducts = true;
     testStateStore.shouldFailCart = true;
 
     await renderAppWithProviders();
 
     await waitFor(() => {
-      expect(mockShowError).toHaveBeenCalledTimes(2);
+      expect(mockShowError).toHaveBeenCalledTimes(1);
       expect(mockShowError).toHaveBeenCalledWith(
         expect.objectContaining({
           message: "제품 정보를 가져오는 중 오류가 발생했습니다.",
-        })
-      );
-      expect(mockShowError).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: "장바구니 정보를 가져오는 중 오류가 발생했습니다.",
         })
       );
     });

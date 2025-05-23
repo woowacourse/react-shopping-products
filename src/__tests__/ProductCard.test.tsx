@@ -98,7 +98,7 @@ describe("ProductCard 컴포넌트는", () => {
     expect(screen.getByText("2")).toBeInTheDocument();
   });
 
-  it("해당 상품이 품절되면, 버튼이 렌더링 되지 않아야 한다.", async () => {
+  it("해당 상품이 품절되면, 품절이 보이고, 버튼이 렌더링 되지 않아야 한다.", async () => {
     mockContextValue.dataPool.products = [...mockProductsWithZeroStock];
 
     await renderProductCardWithProviders({
@@ -106,7 +106,8 @@ describe("ProductCard 컴포넌트는", () => {
       quantity: 0,
     });
 
-    expect(screen.queryByText("품절!")).not.toBeInTheDocument();
+    expect(screen.getByText("품절")).toBeInTheDocument();
+    expect(screen.queryByText("담기")).not.toBeInTheDocument();
   });
 
   it("로딩 중에는 버튼이 비활성화된다", async () => {
@@ -139,9 +140,15 @@ describe("ProductCard 컴포넌트는", () => {
     );
   });
 
-  it("장바구니 담기 실패 시 에러가 표시된다", async () => {
+  it("장바구니 담기 실패 시 아무런 동작을 하지 않는다.", async () => {
     mockFetchCart.mockRejectedValue(new Error("장바구니 담기 실패"));
 
     await renderProductCardWithProviders(mockProducts[0]);
+
+    const cartButton = screen.getByRole("button", {
+      name: "장바구니 아이콘 담기",
+    });
+    fireEvent.click(cartButton);
+    expect(mockShowError).toHaveBeenCalledWith(new Error("장바구니 담기 실패"));
   });
 });
