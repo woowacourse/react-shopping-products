@@ -4,8 +4,7 @@ import Header from './ui/components/Header/Header';
 import Toast from './ui/components/Toast/Toast';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 import { Global } from '@emotion/react';
-import React from 'react';
-import { CategoryType, ProductElement, SortKeyType } from './types/type';
+import { ProductElement } from './types/type';
 import { DropdownContainer, Section } from './App.styles';
 import Dropdown from './ui/components/Dropdown/Dropdown';
 import ProductList from './ui/components/ProductList/ProductList';
@@ -28,10 +27,9 @@ function App() {
     error: productError,
     fetchData: fetchProductData,
     category,
-    setCategory,
     sortBy,
-    // setSortBy,
-    // handleSortPrice,
+    handleSortPrice,
+    handleFilterCategory,
   } = useProductListContext();
 
   const {
@@ -69,26 +67,6 @@ function App() {
     } catch (error) {
       console.error(error);
       // setIsError(true);
-    }
-  };
-
-  const handleFilterCategory = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { value } = e.target;
-
-    if (CATEGORY.includes(value as CategoryType)) {
-      setCategory(value as CategoryType);
-      // await fetchProductData(value);
-    }
-  };
-
-  const handleSortPrice = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
-
-    if (SORT_PRICE.includes(value as SortKeyType)) {
-      setSortBy(value as SortKeyType);
-      // await fetchProductData(value);
     }
   };
 

@@ -12,10 +12,11 @@ export interface ProductListContextType {
   error: ErrorType;
   fetchData: () => Promise<void>;
   category: string;
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  // setCategory: React.Dispatch<React.SetStateAction<string>>;
   sortBy: SortKeyType;
   // setSortBy: React.Dispatch<React.SetStateAction<SortKeyType>>;
-  // handleSortPrice: (value: string) => Promise<void>;
+  handleSortPrice: (value: string) => Promise<void>;
+  handleFilterCategory: (value: string) => Promise<void>;
 }
 
 export const ProductListContext = createContext<ProductListContextType | null>(

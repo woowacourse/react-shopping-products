@@ -6,7 +6,12 @@ import {
   SORT_PRICE,
   SORT_PRICE_MAP,
 } from '../constants/productConfig';
-import { ErrorType, ProductElement, SortKeyType } from '../types/type';
+import {
+  CategoryType,
+  ErrorType,
+  ProductElement,
+  SortKeyType,
+} from '../types/type';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
 
 export const useProductList = () => {
@@ -27,7 +32,7 @@ export const useProductList = () => {
     try {
       const data = await getProduct({
         page: 0,
-        size: 20,
+        size: 50,
         sortBy: mappedSortType ? mappedSortType : 'asc',
       });
 
@@ -49,14 +54,17 @@ export const useProductList = () => {
     fetchData();
   }, [category, sortBy]);
 
-  // const handleSortPrice = async (value: string) => {
-  //   // const { value } = e.target;
+  const handleFilterCategory = async (value: string) => {
+    if (CATEGORY.includes(value as CategoryType)) {
+      setCategory(value as CategoryType);
+    }
+  };
 
-  //   if (SORT_PRICE.includes(value as SortKeyType)) {
-  //     setSortBy(value as SortKeyType);
-  //     // await fetchProductData(value);
-  //   }
-  // };
+  const handleSortPrice = async (value: string) => {
+    if (SORT_PRICE.includes(value as SortKeyType)) {
+      setSortBy(value as SortKeyType);
+    }
+  };
 
   return {
     productList,
@@ -64,9 +72,8 @@ export const useProductList = () => {
     error,
     fetchData,
     category,
-    setCategory,
     sortBy,
-    // setSortBy,
-    // handleSortPrice,
+    handleSortPrice,
+    handleFilterCategory,
   };
 };
