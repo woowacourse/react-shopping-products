@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react';
 import { vi, describe, test, expect, beforeEach } from 'vitest';
 import { useProductsFetch } from '../src/hooks/useProductsFetch';
-import fetchProducts from '../src/APIs/fetchProducts';
 import { Category } from '../src/types/product.type';
+import fetchProducts from '../src/APIs/productApi';
 
-vi.mock('../src/APIs/fetchProducts');
+vi.mock('../src/APIs/productApi');
 
 const mockedFetchProducts = fetchProducts as jest.MockedFunction<
   typeof fetchProducts
@@ -31,11 +31,11 @@ describe('상품 목록 테스트', () => {
 
     const { result } = renderHook(() => useProductsFetch('price,asc', '전체'));
 
-    expect(result.current.isLoading).toBe(true);
+    expect(result.current.loading).toBe(true);
 
     await act(async () => {});
 
-    expect(result.current.isLoading).toBe(false);
+    expect(result.current.loading).toBe(false);
     expect(result.current.error.is).toBe(false);
     expect(result.current.items).toHaveLength(mockProducts.length);
   });
