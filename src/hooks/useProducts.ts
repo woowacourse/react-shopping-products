@@ -15,25 +15,26 @@ const useProducts = () => {
   const getProduct = useCallback(async () => {
     setIsLoading(true);
     try {
-      const data = await getProducts({ page: 0, size: 20 });
+      const data = await getProducts({
+        category: filter === "전체" ? "" : filter,
+        page: 0,
+        size: 20,
+        sort: sort === "낮은 가격순" ? "asc" : "desc",
+      });
       setProductsResponse(data);
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
     } finally {
       setIsLoading(false);
     }
-  }, [setErrorMessage, setIsLoading]);
-
-  const filteredAndSortedProducts = productsResponse?.content
-    .filter((product) => filter === "전체" || product.category === filter)
-    .sort((a, b) => (sort === "높은 가격순" ? b.price - a.price : a.price - b.price));
+  }, [filter, setErrorMessage, setIsLoading, sort]);
 
   useEffect(() => {
     getProduct();
   }, [getProduct]);
 
   return {
-    products: filteredAndSortedProducts || [],
+    products: productsResponse?.content || [],
     filter,
     setFilter,
     sort,
