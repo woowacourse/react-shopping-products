@@ -15,7 +15,7 @@ function ProductItem({
   return (
     <li>
       <Styled.Container>
-        <Styled.Image src={product.imageUrl ?? defaultImage} />
+        <Styled.Image src={product.imageUrl || defaultImage} />
         <Styled.Wrapper>
           <Styled.Contents>
             <Styled.ProductTitle>{product.name}</Styled.ProductTitle>
