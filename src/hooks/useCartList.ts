@@ -50,7 +50,12 @@ export const useCartList = () => {
       return;
     }
     try {
-      await addCart(product.id);
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (cartItem) {
+        await patchCart(cartItem.id, cartItem.quantity + 1);
+      } else {
+        await addCart(product.id);
+      }
       await fetchData();
     } catch (error) {
       console.error(error);
@@ -58,38 +63,42 @@ export const useCartList = () => {
     }
   };
 
-  const handleIncreaseQuantity = async (product: ProductElement) => {
-    try {
-      const cartItem = cartList.find((item) => item.product.id === product.id);
-      if (cartItem) {
-        await patchCart(cartItem.id, cartItem.quantity + 1);
-        await fetchData();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const handleIncreaseQuantity = async (product: ProductElement) => {
+  //   try {
+  //     const cartItem = cartList.find((item) => item.product.id === product.id);
+  //     if (cartItem) {
+  //       await patchCart(cartItem.id, cartItem.quantity + 1);
+  //       await fetchData();
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  const handleDecreaseQuantity = async (product: ProductElement) => {
-    try {
-      const cartItem = cartList.find((item) => item.product.id === product.id);
-      if (cartItem) {
-        await patchCart(cartItem.id, cartItem.quantity - 1);
-        await fetchData();
-      }
-    } catch (error) {
-      console.error(error);
-      // setIsError(true);
-    }
-  };
+  // const handleDecreaseQuantity = async (product: ProductElement) => {
+  //   try {
+  //     const cartItem = cartList.find((item) => item.product.id === product.id);
+  //     if (cartItem) {
+  //       await patchCart(cartItem.id, cartItem.quantity - 1);
+  //       await fetchData();
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     // setIsError(true);
+  //   }
+  // };
 
   const handleRemoveCart = async (product: ProductElement) => {
     try {
-      if (product) {
-        const cartId = getCartId(cartList, product.id);
-        await removeCart(cartId);
-        await fetchData();
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (cartItem) {
+        if (cartItem.quantity === 1) {
+          await removeCart(cartItem.id);
+        } else {
+          await patchCart(cartItem.id, cartItem.quantity - 1);
+        }
       }
+      await fetchData();
     } catch (error) {
       console.error(error);
       // setIsError(true);
@@ -102,8 +111,8 @@ export const useCartList = () => {
     error,
     fetchData,
     handleAddCart,
-    handleIncreaseQuantity,
-    handleDecreaseQuantity,
+    // handleIncreaseQuantity,
+    // handleDecreaseQuantity,
     handleRemoveCart,
   };
 };

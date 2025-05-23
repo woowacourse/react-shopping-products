@@ -24,8 +24,8 @@ function Product({ item }: ProductProps) {
   const {
     cartList,
     handleAddCart,
-    handleIncreaseQuantity,
-    handleDecreaseQuantity,
+    // handleIncreaseQuantity,
+    // handleDecreaseQuantity,
     handleRemoveCart,
   } = useCartListContext();
   // console.log('cartList', cartList);
@@ -44,12 +44,15 @@ function Product({ item }: ProductProps) {
         <Price>{`${price.toLocaleString()}원`}</Price>
       </Detail>
       {cartItem ? (
-        // <RemoveButton onClick={() => onRemoveCart(item)} />
-        <QuantityController
-          quantity={cartItem.quantity}
-          onIncrease={() => handleIncreaseQuantity(item)}
-          onDecrease={() => handleDecreaseQuantity(item)}
-        />
+        cartItem.quantity >= 1 ? (
+          <QuantityController
+            quantity={cartItem.quantity}
+            onAddClick={() => handleAddCart(item)}
+            onRemoveClick={() => handleRemoveCart(item)}
+          />
+        ) : (
+          <RemoveButton onClick={() => handleRemoveCart(item)} />
+        )
       ) : (
         <AddButton onClick={() => handleAddCart(item)} />
       )}
