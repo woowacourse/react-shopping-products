@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 
 const pageLayout = css`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 430px;

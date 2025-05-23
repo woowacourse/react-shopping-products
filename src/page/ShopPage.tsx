@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { getCartItems } from "../api/cartItem";
 import getProducts from "../api/product";
-
 import Header from "../component/feature/Header/Header";
+import Main from "../component/feature/Main/Main";
 import ProductContainer from "../component/feature/ProductContainer/ProductContainer";
-import Selector from "../component/unit/Selector/Selector";
 import TitleContainer from "../component/feature/TitleContainer/titleContainer";
+import Selector from "../component/unit/Selector/Selector";
 import Toast from "../component/unit/Toast/Toast";
+import { CategoryOption, FilterOption } from "../constants";
+import { CartItemType } from "../types/cartItem";
+import { ProductType } from "../types/product";
 import {
   cartIcon,
   cartIconContainer,
@@ -15,10 +18,8 @@ import {
   pageLayout,
   selectorBoxLayout,
 } from "./ShopPage.style";
-import { CategoryOption, FilterOption } from "../constants";
-import Main from "../component/feature/Main/Main";
-import { ProductType } from "../types/product";
-import { CartItemType } from "../types/cartItem";
+import { Modal } from "../component/feature/Modal/Modal";
+import Button from "../component/unit/Button/Button";
 
 const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
 const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
@@ -30,6 +31,7 @@ export default function ShopPage() {
   const [cartItemList, setCartItemList] = useState<CartItemType[]>([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const selectedProductCount = cartItemList.length;
 
@@ -44,6 +46,10 @@ export default function ShopPage() {
         setIsError(true);
       }
     })();
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -77,7 +83,7 @@ export default function ShopPage() {
             src="./shopping-cart.svg"
             alt="장바구니 아이콘"
             onClick={() => {
-              console.log("click");
+              setIsOpen(true);
             }}
           />
           {selectedProductCount !== 0 && (
@@ -128,6 +134,18 @@ export default function ShopPage() {
           </>
         )}
       </Main>
+
+      <Modal
+        isOpen={isOpen}
+        title="장바구니"
+        footer={
+          <Button style="primary" onClick={handleClose}>
+            닫기
+          </Button>
+        }
+      >
+        <div>hi</div>
+      </Modal>
     </div>
   );
 }
