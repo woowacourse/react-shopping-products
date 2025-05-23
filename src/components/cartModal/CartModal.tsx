@@ -1,3 +1,4 @@
+import { useModalClose } from "../../hooks/useModalClose/useModalClose";
 import CartItem from "../cartItem/CartItem";
 import {
   CloseButton,
@@ -11,9 +12,11 @@ interface ModalProps {
 }
 
 function Modal({ onClose }: ModalProps) {
+  const { onClickOverlay } = useModalClose({ closeModal: onClose });
+
   return (
     <>
-      <div css={ModalOverlay} />
+      <div id="modal-overlay" css={ModalOverlay} onClick={onClickOverlay} />
       <div css={ModalContainer}>
         <h2 css={ModalTitle}>장바구니</h2>
         <hr />
