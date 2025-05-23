@@ -2,7 +2,6 @@ import { css } from '@emotion/css';
 import RemoveButton from '../Button/RemoveButton';
 import AddButton from '../Button/AddButton';
 import { Product } from '../../types/product.type';
-import { useShoppingCartContext } from '../../contexts/useShoppingCartContext';
 import { useAddShoppingCart } from '../../hooks/useAddShoppingCart';
 import { useDeleteShoppingCart } from '../../hooks/useDeleteShoppingCart';
 
@@ -13,12 +12,8 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const shoppingCart = useShoppingCartContext();
-  const cartItemId = shoppingCart.items.find(
-    (item) => item.product.id === product.id
-  )?.id;
   const addShoppingCart = useAddShoppingCart(product.id);
-  const deleteShoppingCart = useDeleteShoppingCart(cartItemId);
+  const deleteShoppingCart = useDeleteShoppingCart(product.id);
 
   return (
     <div key={id} className={CardFrame}>
