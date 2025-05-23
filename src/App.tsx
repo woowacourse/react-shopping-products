@@ -1,12 +1,14 @@
-import { useState } from "react";
+import * as styles from './App.style';
+import HomeHeader from './components/Header/HomeHeader';
+import ProductList from './components/Product/ProductList/ProductList';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>React Shopping Products</h1>
-    </>
+    <div css={styles.bodyCss}>
+      <div css={styles.headerHeight} />
+      <HomeHeader />
+      <ProductList />
+    </div>
   );
 }
 
