@@ -1,6 +1,6 @@
-import { useQueryContext } from "../../../contexts/QueryContext";
-import CartButton from "../../CartButton/CartButton";
-import Spinner from "../../Spinner/Spinner";
+import { useQueryContext } from "@/contexts/QueryContext";
+import CartButton from "@/components/CartButton/CartButton";
+import Spinner from "@/components/Spinner/Spinner";
 import * as styles from "./ProductCard.style";
 import { useState, useMemo, useEffect } from "react";
 
