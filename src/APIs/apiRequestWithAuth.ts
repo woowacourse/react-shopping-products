@@ -6,21 +6,21 @@ interface ApiRequestParams<T> {
   body?: T;
 }
 
+const username = import.meta.env.VITE_USERNAME;
+const password = import.meta.env.VITE_PASSWORD;
+const baseUrl = import.meta.env.VITE_BASE_URL;
+const credentials = btoa(`${username}:${password}`);
+
+const headers: HeadersInit = {
+  'Content-Type': 'application/json',
+  Authorization: `Basic ${credentials}`,
+};
+
 async function apiRequestWithAuth<TRequest, TResponse = void>({
   endpoint,
   method = 'GET',
   body,
 }: ApiRequestParams<TRequest>): Promise<TResponse> {
-  const username = import.meta.env.VITE_USERNAME;
-  const password = import.meta.env.VITE_PASSWORD;
-  const baseUrl = import.meta.env.VITE_BASE_URL;
-  const credentials = btoa(`${username}:${password}`);
-
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    Authorization: `Basic ${credentials}`,
-  };
-
   const options: RequestInit = {
     method,
     headers,
@@ -36,12 +36,11 @@ async function apiRequestWithAuth<TRequest, TResponse = void>({
     throw new Error(`Network response was not ok: ${response.statusText}`);
   }
 
-  if (response.status === 200) {
-    const data = (await response.json()) as TResponse;
-    return data;
-  }
+  const contentType = response.headers.get('content-type');
+  if (contentType !== 'application/json') return {} as TResponse;
 
-  return null as TResponse;
+  const data = await response.json();
+  return data;
 }
 
 export default apiRequestWithAuth;
