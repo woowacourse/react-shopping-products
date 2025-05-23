@@ -5,6 +5,8 @@ import {
   ContentContainer,
   ProductPrice,
   ButtonContainer,
+  ImageContainer,
+  SoldOutImage,
 } from "./ProductCard.css";
 import CartToggleButton from "../cartToggleButton/CartToggleButton";
 
@@ -36,7 +38,10 @@ function ProductCard({
   const { cartId, cartAmount } = cartInfo;
   return (
     <div css={ProductContainer}>
-      <img css={ProductImage} src={imageUrl}></img>
+      <div css={ImageContainer}>
+        <div css={SoldOutImage}>품절</div>
+        <img css={ProductImage} src={imageUrl}></img>
+      </div>
       <div css={ContentContainer}>
         <h3 css={ProductTitle}>{name}</h3>
         <p css={ProductPrice}>{price.toLocaleString()}원</p>
