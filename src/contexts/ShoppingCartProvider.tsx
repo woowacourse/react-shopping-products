@@ -16,19 +16,18 @@ interface ShoppingCartContextType {
   error: ErrorState;
   updateItems: (newCartItems: CartItem[]) => void;
   updateError: (error: ErrorState) => void;
-  updateIsLoading: (loading: boolean) => void;
-  isLoading: boolean;
+  updateLoading: (loading: boolean) => void;
+  loading: boolean;
 }
 
 export const ShoppingCartContext =
   createContext<ShoppingCartContextType | null>(null);
 
 const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const { data, shoppingCartError, isShoppingCartLoading } =
-    useGetShoppingCart();
+  const shoppingCart = useGetShoppingCart();
   const [items, setItems] = useState<CartItem[]>([]);
   const [error, setError] = useState<ErrorState>(INITIAL_ERROR);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const updateItems = useCallback((newCartItems: CartItem[]) => {
     setItems(newCartItems);
@@ -41,15 +40,15 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }, 3000);
   }, []);
 
-  const updateIsLoading = useCallback((value: boolean) => {
-    setIsLoading(value);
+  const updateLoading = useCallback((value: boolean) => {
+    setLoading(value);
   }, []);
 
   useEffect(() => {
-    setItems(data);
-    setError(shoppingCartError);
-    setIsLoading(isShoppingCartLoading);
-  }, [data, shoppingCartError, isShoppingCartLoading]);
+    setItems(shoppingCart.data);
+    setError(shoppingCart.error);
+    setLoading(shoppingCart.loading);
+  }, [shoppingCart.data, shoppingCart.error, shoppingCart.loading]);
 
   const value = useMemo(
     () => ({
@@ -57,10 +56,10 @@ const ShoppingCartProvider: React.FC<PropsWithChildren> = ({ children }) => {
       error,
       updateItems,
       updateError,
-      updateIsLoading,
-      isLoading,
+      updateLoading,
+      loading,
     }),
-    [items, error, updateItems, updateError, updateIsLoading, isLoading]
+    [items, error, updateItems, updateError, updateLoading, loading]
   );
 
   return (

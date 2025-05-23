@@ -21,7 +21,7 @@ interface ProductsContextType {
   updateCategory: (newCategory: Category) => void;
   category: Category | '';
   sort: SortOption;
-  isLoading: boolean;
+  loading: boolean;
 }
 
 export const ProductsContext = createContext<ProductsContextType | null>(null);
@@ -30,21 +30,22 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [sort, setSort] = useState<SortOption>(SORT_OPTION[0]);
   const [category, setCategory] = useState<Category>(CATEGORY[0]);
 
+  const { items, loading, error, setItems } = useProductsFetch(
+    sort === SORT_OPTION[0] ? 'price,asc' : 'price,desc',
+    category
+  );
+
   const updateSort = useCallback((newSort: SortOption) => {
     setSort(newSort);
   }, []);
   const updateCategory = useCallback((newCategory: Category) => {
     setCategory(newCategory);
   }, []);
-
-  const {
-    items,
-    isLoading,
-    error,
-    setItems: updateItems,
-  } = useProductsFetch(
-    sort === SORT_OPTION[0] ? 'price,asc' : 'price,desc',
-    category
+  const updateItems = useCallback(
+    (newProducts: Product[]) => {
+      setItems(newProducts);
+    },
+    [setItems]
   );
 
   const value = useMemo(
@@ -56,7 +57,7 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
       updateCategory,
       category,
       sort,
-      isLoading,
+      loading,
     }),
     [
       items,
@@ -66,7 +67,7 @@ const ProductsProvider: React.FC<PropsWithChildren> = ({ children }) => {
       updateCategory,
       category,
       sort,
-      isLoading,
+      loading,
     ]
   );
 

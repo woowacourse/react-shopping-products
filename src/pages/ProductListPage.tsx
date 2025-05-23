@@ -16,7 +16,7 @@ const ProductListPage = () => {
         <ErrorToast message={shoppingCart.error.message} />
       )}
       <ProductListToolBar />
-      {products.isLoading ? (
+      {products.loading ? (
         <OrbitSpinner />
       ) : (
         <ProductCardList products={products.items} />

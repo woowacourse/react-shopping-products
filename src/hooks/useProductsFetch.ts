@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Product } from '../types/product.type';
 import { INITIAL_ERROR } from '../contexts/context.constant';
-import fetchProducts from '../APIs/fetchProducts';
+import fetchProducts from '../APIs/productApi';
 import { ErrorState } from '../types/error.type';
 
 export function useProductsFetch(sort: string, category: string) {
   const [items, setItems] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<ErrorState>(INITIAL_ERROR);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export function useProductsFetch(sort: string, category: string) {
         : `/products?${query}&category=${category}`;
 
     (async () => {
-      setIsLoading(true);
+      setLoading(true);
       try {
         const { content } = await fetchProducts({ endpoint });
         setItems(content);
@@ -30,10 +30,10 @@ export function useProductsFetch(sort: string, category: string) {
         });
         setTimeout(() => setError(INITIAL_ERROR), 3000);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     })();
   }, [sort, category]);
 
-  return { items, isLoading, error, setItems };
+  return { items, loading, error, setItems };
 }
