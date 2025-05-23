@@ -10,6 +10,7 @@ import { useShopErrorContext } from '@/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
 import { Suspense, useMemo, useState } from 'react';
 import { Modal } from '@jae-o/modal-component-module';
+import ProductRowCard from '@/components/features/product/product-card/ProductRowCard';
 
 function ShopPage() {
   const [filter, setFilter] = useState({
@@ -60,6 +61,24 @@ function ShopPage() {
         showCloseButton={false}
         position="bottom"
       >
+        {cartList.map(({ id, quantity, product }) => {
+          const matchingCart = cartList.find(
+            (cart) => cart.product.id === product.id
+          );
+          return (
+            <Flex>
+              <Separator />
+              <ProductRowCard
+                id={product.id}
+                name={product.name}
+                price={product.price}
+                imageUrl={product.imageUrl}
+                cartId={id}
+                isInCart={!!matchingCart}
+              />
+            </Flex>
+          );
+        })}
         <Modal.CloseTrigger>
           <Modal.WideButton>닫기</Modal.WideButton>
         </Modal.CloseTrigger>
@@ -81,6 +100,11 @@ const ListTitleBox = styled(Flex)`
 
 const ListTitle = styled.h2`
   ${({ theme }) => theme.heading};
+`;
+
+const Separator = styled.div`
+  width: 100%;
+  border: 1px solid #0000001a;
 `;
 
 export default ShopPage;
