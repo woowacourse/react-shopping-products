@@ -272,7 +272,7 @@ export const handlers = [
       if (product.quantity < quantity) {
         return new HttpResponse(null, {
           status: 400,
-          statusText: "Sold Out",
+          statusText: "Insufficient Stock",
         });
       }
       if (quantity <= 0) {
@@ -335,7 +335,6 @@ export const handlers = [
           });
         }
 
-        // 3) 재고 차감
         product.quantity -= qty;
       }
 

@@ -25,7 +25,7 @@ export function createApiError(error: unknown): ApiError {
 
   const message = error instanceof Error ? error.message : String(error);
   return new ApiError(
-    0,
+    500,
     "Unknown Error",
     message || "알 수 없는 오류가 발생했습니다.",
     ErrorType.UNKNOWN

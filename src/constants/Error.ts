@@ -7,6 +7,8 @@ export enum ErrorType {
   NOT_FOUND = "NOT_FOUND",
   SERVER = "SERVER",
   UNKNOWN = "UNKNOWN",
+  CLIENT = "CLIENT",
+  PARSE = "PARSE",
 }
 
 export class ApiError extends Error {
