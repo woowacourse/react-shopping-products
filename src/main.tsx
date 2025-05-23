@@ -2,11 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { ModalProvider } from "./contexts/ModalContext.tsx";
+import { ToastProvider } from "./contexts/ToastContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ModalProvider>
-      <App />
-    </ModalProvider>
+    <ToastProvider>
+      <ModalProvider>
+        <App />
+      </ModalProvider>
+    </ToastProvider>
   </React.StrictMode>
 );

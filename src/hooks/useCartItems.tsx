@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { CartItems } from "../types/cartItems";
 import { CartItemsAPI } from "../apis/cartItems";
 import { isErrorResponse } from "../utils/typeGuard";
-
-type Props = React.Dispatch<React.SetStateAction<string>>;
+import useToast from "./useToast";
 
 interface UseCartItemsReturn {
   cartItemsCount: number;
@@ -16,21 +15,22 @@ interface UseCartItemsReturn {
   productIdsInCart: number[];
 }
 
-const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
+const useCartItems = (): UseCartItemsReturn => {
   const [cartItems, setCartItems] = useState<CartItems | null>(null);
+  const { showToast } = useToast();
 
   useEffect(() => {
     (async () => {
       const response = await CartItemsAPI.get();
 
       if (isErrorResponse(response)) {
-        setErrorMessage(response.error);
+        showToast(response.error);
         return;
       }
 
       setCartItems(response as CartItems);
     })();
-  }, [setErrorMessage]);
+  }, []);
 
   const cartItemIds = useMemo(
     () =>
@@ -80,7 +80,7 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
     const response = await CartItemsAPI.get();
 
     if (isErrorResponse(response)) {
-      setErrorMessage(response.error);
+      showToast(response.error);
       return;
     }
 
@@ -101,7 +101,7 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
     const response = await CartItemsAPI.get();
 
     if (isErrorResponse(response)) {
-      setErrorMessage(response.error);
+      showToast(response.error);
       return;
     }
 
@@ -114,7 +114,7 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
     const response = await CartItemsAPI.get();
 
     if (isErrorResponse(response)) {
-      setErrorMessage(response.error);
+      showToast(response.error);
       return;
     }
 
@@ -132,7 +132,7 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
     const response = await CartItemsAPI.get();
 
     if (isErrorResponse(response)) {
-      setErrorMessage(response.error);
+      showToast(response.error);
       return;
     }
 

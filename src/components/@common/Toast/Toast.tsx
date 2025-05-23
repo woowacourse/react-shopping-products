@@ -1,33 +1,16 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import Portal from "../Portal/Portal";
+import * as S from "./Toast.styles";
 
 interface Props {
-  duration?: number;
-  visible: boolean;
-  onClose?: () => void;
+  message: string;
 }
 
-const Toast = ({
-  children,
-  duration = 5000,
-  visible: defaultVisible = false,
-  onClose,
-}: PropsWithChildren<Props>) => {
-  const [visible, setVisible] = useState(defaultVisible);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(false);
-      onClose?.();
-    }, duration);
-
-    return () => clearTimeout(timer);
-  }, [duration, onClose]);
-
-  useEffect(() => setVisible(defaultVisible), [defaultVisible]);
-
-  if (!visible) return null;
-
-  return <>{children}</>;
+const Toast = ({ message }: Props) => {
+  return (
+    <Portal>
+      <S.Toast>{message}</S.Toast>
+    </Portal>
+  );
 };
 
 export default Toast;

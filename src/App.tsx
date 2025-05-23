@@ -1,6 +1,4 @@
-import { useState } from "react";
 import CategoryFilter from "./components/CategoryFilter/CategoryFilter";
-import ErrorToast from "./components/ErrorToast/ErrorToast";
 import ProductItemSkeleton from "./components/ProductItem/components/ProductItemSkeleton/ProductItemSkeleton";
 import ProductItem from "./components/ProductItem/ProductItem";
 import ProductsListTitle from "./components/ProductsListTitle/ProductsListTitle";
@@ -15,8 +13,6 @@ const ProductsSkeleton = Array.from({ length: 6 }).map((_, index) => (
 ));
 
 function App() {
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
   const {
     products,
     isLoading,
@@ -24,7 +20,7 @@ function App() {
     setSelectedCategory,
     selectedSortOption,
     setSelectedSortOption,
-  } = useProducts(setErrorMessage);
+  } = useProducts();
 
   const {
     cartItemsCount,
@@ -35,7 +31,7 @@ function App() {
     deleteProductInCart,
     totalPriceInCart,
     productIdsInCart,
-  } = useCartItems(setErrorMessage);
+  } = useCartItems();
 
   return (
     <S.LayoutContainer>
@@ -78,12 +74,6 @@ function App() {
                 ))
               : ProductsSkeleton}
           </S.ProductGrid>
-          {!!errorMessage && (
-            <ErrorToast
-              message={errorMessage}
-              onClose={() => setErrorMessage("")}
-            />
-          )}
         </S.Wrapper>
       </S.LayoutWrapper>
     </S.LayoutContainer>
