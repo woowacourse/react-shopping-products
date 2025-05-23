@@ -7,7 +7,7 @@ import ProductContent from '../../components/ProductContent/ProductContent';
 import { ProductProvider } from '../../contexts/ProductContext';
 
 function ProductsPage() {
-  const { isLoading, isError, carts, cartItemCount, refetchCarts } = useGetCarts();
+  const { isLoading, isError } = useGetCarts();
   const { openToast } = useToast();
 
   useEffect(() => {
@@ -16,15 +16,12 @@ function ProductsPage() {
     }
   }, [isError, openToast]);
 
-  if (isLoading) {
-    return <div>로딩중...</div>;
-  }
-
   return (
     <div className={productPageContainer}>
-      <Header cartItemCount={cartItemCount} />
+      {isLoading && <div>로딩중...</div>}
+      <Header />
       <ProductProvider>
-        <ProductContent cartItemCount={cartItemCount} carts={carts} refetchCarts={refetchCarts} />
+        <ProductContent />
       </ProductProvider>
     </div>
   );
