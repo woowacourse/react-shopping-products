@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { addCartItem, deleteCartItem, getCartItemList } from '@/api/cart';
+import { addCartItem, deleteCartItem, getCartItemList, setCartQuantity } from '@/api/cart';
 import { useApiRequest } from '@/shared/hooks/useApiRequest';
 
 import { CartItem } from '../types/Cart';
@@ -39,6 +39,32 @@ export const useCartRequest = (setCartData: (data: CartItem[]) => void) => {
     [handleRequest, setCartData]
   );
 
+  const increaseQuantity = useCallback(
+    async (cartItemId: number, currentQuantity: number) => {
+      return handleRequest(
+        () => setCartQuantity({ cartItemId, quantity: currentQuantity + 1 }),
+        (data) => {
+          setCartData(data);
+          return data.length;
+        }
+      );
+    },
+    [handleRequest, setCartData]
+  );
+
+  const decreaseQuantity = useCallback(
+    async (cartItemId: number, currentQuantity: number) => {
+      return handleRequest(
+        () => setCartQuantity({ cartItemId, quantity: currentQuantity - 1 }),
+        (data) => {
+          setCartData(data);
+          return data.length;
+        }
+      );
+    },
+    [handleRequest, setCartData]
+  );
+
   const deleteFromCart = useCallback(
     async (cartItemId: number) => {
       return handleRequest(
@@ -55,6 +81,8 @@ export const useCartRequest = (setCartData: (data: CartItem[]) => void) => {
   return {
     fetchCartProductData,
     addToCart,
+    increaseQuantity,
+    decreaseQuantity,
     deleteFromCart,
   };
 };

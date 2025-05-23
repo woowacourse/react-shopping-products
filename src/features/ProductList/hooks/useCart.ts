@@ -11,7 +11,8 @@ export const useCart = () => {
     setCartData(cartData);
   }, []);
 
-  const { fetchCartProductData, addToCart, deleteFromCart } = useCartRequest(handleCartData);
+  const { fetchCartProductData, addToCart, increaseQuantity, decreaseQuantity, deleteFromCart } =
+    useCartRequest(handleCartData);
 
   useEffect(() => {
     fetchCartProductData();
@@ -20,6 +21,8 @@ export const useCart = () => {
   return {
     cartData,
     addToCart,
+    increaseQuantity,
+    decreaseQuantity,
     deleteFromCart,
   };
 };
