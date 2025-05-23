@@ -1,5 +1,10 @@
 import styled from "@emotion/styled";
 
+const DEFAULT_IMAGE_URL = "/default-image.webp";
+
+const isValidUrl = (url: string) =>
+  url && (url.startsWith("http://") || url.startsWith("https://"));
+
 export const ProductItem = styled.div`
   width: 100%;
   height: 80px;
@@ -9,15 +14,13 @@ export const ProductItem = styled.div`
   gap: 16px;
 `;
 
-export const ProductImage = styled.img<{ $url: string }>`
+export const ProductImage = styled.div<{ $url: string }>`
   width: 80px;
   height: 80px;
-  background: no-repeat url(${({ $url }) => `${$url}`});
+  background: no-repeat
+    url(${({ $url }) => (isValidUrl($url) ? $url : DEFAULT_IMAGE_URL)});
   background-size: cover;
-  border-radius: 8px 8px 0 0;
-
-  user-select: none;
-  -webkit-user-drag: none;
+  border-radius: 8px;
 `;
 
 export const ProductWrapper = styled.div`

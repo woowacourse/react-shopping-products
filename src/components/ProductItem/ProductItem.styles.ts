@@ -1,5 +1,10 @@
 import styled from "@emotion/styled";
 
+const DEFAULT_IMAGE_URL = "/default-image.webp";
+
+const isValidUrl = (url: string) =>
+  url && (url.startsWith("http://") || url.startsWith("https://"));
+
 export const ProductContainer = styled.div`
   display: flex;
   width: 182px;
@@ -7,17 +12,17 @@ export const ProductContainer = styled.div`
   flex-direction: column;
   border-radius: 8px;
   background-color: #fff;
+  border: 1px solid #0000001a;
 `;
 
-export const ProductImage = styled.img<{ $url: string }>`
+export const ProductImage = styled.div<{ $url: string }>`
   width: 100%;
   height: 50%;
-  background: no-repeat url(${({ $url }) => `${$url}`});
+  background: no-repeat
+    url(${({ $url }) => (isValidUrl($url) ? $url : DEFAULT_IMAGE_URL)});
   background-size: cover;
   border-radius: 8px 8px 0 0;
-
-  user-select: none;
-  -webkit-user-drag: none;
+  border-bottom: 1px solid #0000001a;
 `;
 
 export const ProductWrapper = styled.div`
@@ -27,7 +32,6 @@ export const ProductWrapper = styled.div`
   border-radius: 0 0 8px 8px;
   height: 50%;
   position: relative;
-  border: 1px solid #0000001a;
   border-top: none;
 `;
 
