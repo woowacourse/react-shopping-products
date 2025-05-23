@@ -12,18 +12,30 @@ import { ShoppingBag } from '../components/ShoppingBag';
 import { CATEGORY, SORT_ORDER } from '../constants/product';
 import { ProductListContainer } from '../container/ProductListContainer';
 import { useShopping } from '../hooks/useShopping';
+import { Modal } from '@/shared/components/Modal';
+import { useState } from 'react';
 
 export const ProductListPage = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    setShowModal((prev) => !prev);
+  };
+
   const {
     cartData,
     filteredData,
     isLoading,
-    toggleCartItem,
+    addCartItem,
+    updateCartQuantity,
+    deleteFromCart,
     categorySelect,
     priceSelect,
     handleCategorySelect,
     handlePriceSelect,
   } = useShopping();
+
+  console.log(cartData);
 
   return (
     <>
@@ -41,7 +53,7 @@ export const ProductListPage = () => {
               SHOP
             </Text>
           }
-          right={<ShoppingBag count={cartData.length} />}
+          right={<ShoppingBag count={cartData.length} handleShowModal={handleShowModal} />}
         />
         <Flex
           direction="column"
@@ -114,19 +126,69 @@ export const ProductListPage = () => {
               </Flex>
             ) : (
               <ProductListContainer>
-                {filteredData.map((item) => (
-                  <ProductItem
-                    key={item.id}
-                    isChecked={item.isChecked}
-                    name={item.name}
-                    price={item.price}
-                    imageUrl={item.imageUrl}
-                    onCartUpdate={() => toggleCartItem(item.id)}
-                  />
-                ))}
+                {filteredData.map((item) => {
+                  const cartItem = cartData.find((cartItem) => cartItem.product.id === item.id);
+
+                  return (
+                    <ProductItem
+                      key={item.id}
+                      isChecked={item.isChecked}
+                      name={item.name}
+                      price={item.price}
+                      imageUrl={item.imageUrl}
+                      quantity={item.quantity}
+                      cartCount={cartItem?.quantity || 0}
+                      onAddCart={() => addCartItem(item.id)}
+                      onIncrease={() =>
+                        cartItem && updateCartQuantity(cartItem.id, +1, cartItem.quantity)
+                      }
+                      onDecrease={() =>
+                        cartItem && updateCartQuantity(cartItem.id, -1, cartItem.quantity)
+                      }
+                    />
+                  );
+                })}
               </ProductListContainer>
             )}
           </Flex>
+          <Modal show={showModal} onHide={handleShowModal} position="bottom">
+            <Modal.Header closeButton>
+              <Modal.Title>장바구니</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {filteredData
+                .filter((item) => item.isChecked) // ✅ 장바구니에 담긴 애들만 필터
+                .map((item) => {
+                  const cartItem = cartData.find((cartItem) => cartItem.product.id === item.id);
+
+                  return (
+                    <ProductItem
+                      key={item.id}
+                      isChecked={item.isChecked}
+                      name={item.name}
+                      price={item.price}
+                      imageUrl={item.imageUrl}
+                      quantity={item.quantity}
+                      cartCount={cartItem?.quantity || 0}
+                      onAddCart={() => addCartItem(item.id)}
+                      onIncrease={() =>
+                        cartItem && updateCartQuantity(cartItem.id, +1, cartItem.quantity)
+                      }
+                      onDecrease={() =>
+                        cartItem && updateCartQuantity(cartItem.id, -1, cartItem.quantity)
+                      }
+                      onDelete={() => cartItem && deleteFromCart(cartItem.id)}
+                      variant="modal"
+                    />
+                  );
+                })}
+            </Modal.Body>
+            <Modal.Footer buttonAlign="center">
+              <Modal.CancelButton onClick={handleShowModal} width="100%">
+                닫기
+              </Modal.CancelButton>
+            </Modal.Footer>
+          </Modal>
         </Flex>
       </AppLayout>
     </>
