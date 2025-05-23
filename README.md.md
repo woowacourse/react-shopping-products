@@ -42,6 +42,8 @@
   - [x] msw 에서 사용할 모킹 데이터 구현
     - [x] 프로덕트 데이터 구현 (+quantity 추가되어야함.)
   - [ ] msw api 로직 구현
+    - [x] products api
+    - [ ] cartItem api
   - [ ] msw 연결
 
 - [ ] 상품 목록
