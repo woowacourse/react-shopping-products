@@ -46,12 +46,12 @@
     - [x] products api
     - [ ] cartItem api
       - [x] get (장바구니 조회)
-      - [ ] post (장바구니 담기)
+      - [x] post (장바구니 담기)
       - [ ] patch (장바구니 업데이트)
-      - [ ] delete (장바구니 삭제)
+      - [x] delete (장바구니 삭제)
   - [ ] msw 연결
     - [x] products api 로직 연결 (sort, category)
-    - [ ] cartItem api 로직 연결
+    - [x] cartItem api 로직 연결
 
 - [ ] 상품 목록
   - [ ] 장바구니 ui 변경 -> 담기 버튼 클릭시, 갯수 올리는 ui로 변경

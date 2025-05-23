@@ -1,8 +1,42 @@
 import { http, HttpResponse } from "msw";
 import MOCKING_CART_ITEMS_DATA from "../data/cartItems.json";
+import MOCKING_PRODUCT_DATA from "../data/products.json";
+import { Content, GetCartItemsResponse } from "../../types/cartItem";
+
+const products = { ...MOCKING_PRODUCT_DATA };
+const cartItems: GetCartItemsResponse = { ...MOCKING_CART_ITEMS_DATA }; // 초기 데이터 복사
 
 const getCartItems = http.get(`http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items`, () => {
-  return HttpResponse.json(MOCKING_CART_ITEMS_DATA);
+  return HttpResponse.json(cartItems);
 });
 
-export default [getCartItems];
+const postCartItems = http.post(
+  `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items`,
+  async ({ request }) => {
+    const newCartItem = (await request.json()) as { productId: number; quantity: number };
+
+    const maxId = cartItems.content.length > 0 ? Math.max(...cartItems.content.map((item) => item.id)) : 0;
+
+    const newCartItemData: Content = {
+      id: maxId + 1,
+      quantity: newCartItem.quantity,
+      product: products.content.find((product) => product.id === newCartItem.productId)!,
+    };
+
+    cartItems.content.push(newCartItemData);
+    return HttpResponse.json({ message: "Post" }, { status: 200 });
+  },
+);
+
+const deleteCartItems = http.delete(
+  `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:productId`,
+  async ({ params }) => {
+    const productId = Number(params.productId);
+    console.log(productId);
+    cartItems.content = cartItems.content.filter((item) => item.id !== productId);
+
+    return HttpResponse.json({ message: "Delete" }, { status: 200 });
+  },
+);
+
+export default [getCartItems, postCartItems, deleteCartItems];
