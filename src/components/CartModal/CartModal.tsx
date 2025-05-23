@@ -10,6 +10,7 @@ interface Props {
   decreaseItemQuantity: (productId: number) => Promise<void>;
   deleteProductInCart: (productId: number) => Promise<void>;
   totalPriceInCart: number;
+  productIdsInCart: number[];
 }
 
 const CartModal = ({
@@ -19,6 +20,7 @@ const CartModal = ({
   decreaseItemQuantity,
   deleteProductInCart,
   totalPriceInCart,
+  productIdsInCart,
 }: Props) => {
   const { closeModal } = useModal();
 
@@ -26,19 +28,20 @@ const CartModal = ({
     <S.CartModal>
       <S.Title>장바구니</S.Title>
       <S.ScrollContainer>
-        {/* TODO: 장바구니 담긴 애들만 필터링하기 */}
-        {products?.content.map(({ id, imageUrl, name, price }) => (
-          <ProductItem
-            key={id}
-            imageUrl={imageUrl}
-            name={name}
-            price={price}
-            quantity={quantityByProductId(id)}
-            increaseItemQuantity={() => increaseItemQuantity(id)}
-            decreaseItemQuantity={() => decreaseItemQuantity(id)}
-            deleteProductInCart={() => deleteProductInCart(id)}
-          />
-        ))}
+        {products?.content
+          .filter(({ id }) => productIdsInCart.includes(id))
+          .map(({ id, imageUrl, name, price }) => (
+            <ProductItem
+              key={id}
+              imageUrl={imageUrl}
+              name={name}
+              price={price}
+              quantity={quantityByProductId(id)}
+              increaseItemQuantity={() => increaseItemQuantity(id)}
+              decreaseItemQuantity={() => decreaseItemQuantity(id)}
+              deleteProductInCart={() => deleteProductInCart(id)}
+            />
+          ))}
       </S.ScrollContainer>
       <S.TotalPriceContainer>
         <S.TotalPriceLabel>총 결제 금액</S.TotalPriceLabel>

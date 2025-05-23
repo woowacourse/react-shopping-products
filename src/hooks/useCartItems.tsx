@@ -13,6 +13,7 @@ interface UseCartItemsReturn {
   addProductInCart: (productId: number) => Promise<void>;
   deleteProductInCart: (productId: number) => Promise<void>;
   totalPriceInCart: number;
+  productIdsInCart: number[];
 }
 
 const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
@@ -37,6 +38,11 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
         cartId: productInfo.id,
         productId: productInfo.product.id,
       })) ?? [],
+    [cartItems?.content]
+  );
+
+  const productIdsInCart = useMemo(
+    () => cartItems?.content.map((productInfo) => productInfo.product.id) ?? [],
     [cartItems?.content]
   );
 
@@ -141,6 +147,7 @@ const useCartItems = (setErrorMessage: Props): UseCartItemsReturn => {
     addProductInCart,
     deleteProductInCart,
     totalPriceInCart,
+    productIdsInCart,
   };
 };
 

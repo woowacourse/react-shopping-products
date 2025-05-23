@@ -12,6 +12,7 @@ interface Props {
   decreaseItemQuantity: (productId: number) => Promise<void>;
   deleteProductInCart: (productId: number) => Promise<void>;
   totalPriceInCart: number;
+  productIdsInCart: number[];
 }
 
 const ShopHeader = ({
@@ -22,6 +23,7 @@ const ShopHeader = ({
   decreaseItemQuantity,
   deleteProductInCart,
   totalPriceInCart,
+  productIdsInCart,
 }: Props) => {
   const { openModal } = useModal();
 
@@ -34,6 +36,7 @@ const ShopHeader = ({
         decreaseItemQuantity={decreaseItemQuantity}
         deleteProductInCart={deleteProductInCart}
         totalPriceInCart={totalPriceInCart}
+        productIdsInCart={productIdsInCart}
       />
     );
   };

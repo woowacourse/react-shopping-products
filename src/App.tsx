@@ -34,6 +34,7 @@ function App() {
     addProductInCart,
     deleteProductInCart,
     totalPriceInCart,
+    productIdsInCart,
   } = useCartItems(setErrorMessage);
 
   return (
@@ -47,6 +48,7 @@ function App() {
           decreaseItemQuantity={decreaseItemQuantity}
           deleteProductInCart={deleteProductInCart}
           totalPriceInCart={totalPriceInCart}
+          productIdsInCart={productIdsInCart}
         />
         <S.Wrapper>
           <ProductsListTitle />
