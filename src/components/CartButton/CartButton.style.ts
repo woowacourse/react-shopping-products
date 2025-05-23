@@ -24,5 +24,10 @@ export const inCartCss = css({
 
 export const notInCartCss = css({
   backgroundColor: 'black',
-  color: 'white'
+  color: 'white',
+
+  ':disabled': {
+    backgroundColor: '#EAEAEA',
+    color: 'white'
+  }
 });

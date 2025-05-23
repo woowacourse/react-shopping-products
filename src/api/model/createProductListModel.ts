@@ -13,12 +13,10 @@ export interface ProductCardViewModel {
   imageUrl: string;
   isInCart: boolean;
   cartItemId?: number;
+  quantity: number;
 }
 
-export function createProductListViewModel({
-  products,
-  cartItems
-}: createProductListViewModelParams): ProductCardViewModel[] {
+export function createProductListViewModel({ products, cartItems }: createProductListViewModelParams) {
   if (!products) return [];
 
   return products.map((product) => {
@@ -29,7 +27,8 @@ export function createProductListViewModel({
       price: `${product.price.toLocaleString()}원`,
       imageUrl: product.imageUrl,
       isInCart: !!matchedCart,
-      cartItemId: matchedCart?.id
+      cartItemId: matchedCart?.id,
+      quantity: product.quantity
     };
   });
 }

@@ -15,7 +15,7 @@ export const modalWrapperStyle = (position?: ModalPosition, size?: ModalSizeType
   gap: 18px;
   position: fixed;
   top: ${position === 'bottom' ? 'auto' : '50%'};
-  bottom: ${position === 'bottom' ? '5%' : 'auto'};
+  bottom: ${position === 'bottom' ? '0' : 'auto'};
   left: 50%;
   padding: 24px 32px;
   border-radius: 8px;

@@ -7,17 +7,25 @@ interface ProductCardProps {
   price: string;
   imageUrl: string;
   isInCart: boolean;
+  quantity: number;
   onClick: () => void;
 }
 
-export default function ProductCard({ title, price, imageUrl, isInCart, onClick }: ProductCardProps) {
+export default function ProductCard({ title, price, imageUrl, isInCart, onClick, quantity }: ProductCardProps) {
   return (
     <li css={styles.cardCss}>
-      <Image css={styles.imageCss} src={imageUrl} alt={`${title}상품`} />
+      <div css={styles.imageWrapperCss}>
+        <Image css={styles.imageCss} src={imageUrl} alt={`${title}상품`} />
+        {quantity == 0 && <p css={styles.soldOutCss}>SOLD OUT</p>}
+      </div>
       <div css={styles.detailCss}>
         <h2>{title}</h2>
         <p>{price}</p>
-        {isInCart ? <RemoveFromCartButton onClick={onClick} /> : <AddToCartButton onClick={onClick} />}
+        {isInCart ? (
+          <RemoveFromCartButton onClick={onClick} />
+        ) : (
+          <AddToCartButton disabled={quantity == 0} onClick={onClick} />
+        )}
       </div>
     </li>
   );

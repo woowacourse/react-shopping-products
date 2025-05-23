@@ -12,8 +12,7 @@ export const cardCss = css({
 
 export const imageCss = css({
   objectFit: 'cover',
-  borderRadius: '8px 8px 0 0 ',
-  height: '50%'
+  borderRadius: '8px 8px 0 0 '
 });
 
 export const detailCss = css({
@@ -53,4 +52,17 @@ export const inCartCss = css({
 export const notInCartCss = css({
   backgroundColor: 'black',
   color: 'white'
+});
+
+export const soldOutCss = css({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  color: 'white',
+  fontSize: '18px',
+  fontWeight: '800'
+});
+export const imageWrapperCss = css({
+  position: 'relative'
 });
