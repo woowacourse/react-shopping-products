@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { addCart, getCartItem, removeCart } from '../api/fetchCart';
+import { addCart, getCartItem, patchCart, removeCart } from '../api/fetchCart';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { CartItem, ErrorType, ProductElement } from '../types/type';
 import { MAX_CART_ITEM_COUNT } from '../constants/cartConfig';
@@ -50,7 +50,12 @@ export const useCartList = () => {
       return;
     }
     try {
-      await addCart(product.id);
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (cartItem) {
+        await patchCart(cartItem.id, cartItem.quantity + 1);
+      } else {
+        await addCart(product.id);
+      }
       await fetchData();
     } catch (error) {
       console.error(error);

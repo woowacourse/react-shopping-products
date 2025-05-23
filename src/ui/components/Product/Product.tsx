@@ -22,8 +22,11 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
   const { name, price, imageUrl } = item;
 
   const { cartList } = useCartListContext();
+  // console.log('cartList', cartList);
   // const isInCart = cartList.some((cartItem) => cartItem.product.id === item.id);
   const cartItem = cartList.find((cartItem) => cartItem.product.id === item.id);
+
+  // console.log(cartItem);
 
   return (
     <Container>
@@ -36,7 +39,10 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
       </Detail>
       {cartItem ? (
         // <RemoveButton onClick={() => onRemoveCart(item)} />
-        <QuantityController quantity={cartItem.quantity} />
+        <QuantityController
+          quantity={cartItem.quantity}
+          onClick={() => onAddCart(item)}
+        />
       ) : (
         <AddButton onClick={() => onAddCart(item)} />
       )}

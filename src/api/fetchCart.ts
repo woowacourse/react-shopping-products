@@ -41,6 +41,19 @@ export const addCart = async (id: number) => {
   return response;
 };
 
+export const patchCart = async (id: number, quantity: number) => {
+  const url = `${import.meta.env.VITE_API_BASE_URL}/cart-items/${id}`;
+  const response = await fetchAPI({
+    url: url,
+    options: {
+      method: 'PATCH',
+      body: { quantity: quantity },
+    },
+    errorMessage: ERROR_MESSAGE.CART_PRODUCT_UPDATE_FAIL,
+  });
+  return response;
+};
+
 export const removeCart = async (id: number) => {
   const url = `${import.meta.env.VITE_API_BASE_URL}/cart-items/${id}`;
 
