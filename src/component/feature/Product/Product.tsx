@@ -23,7 +23,7 @@ export default function Product({
   children,
 }: ProductProps) {
   return (
-    <div id={id.toString()} css={productLayout}>
+    <div data-testid="product-component" id={id.toString()} css={productLayout}>
       <img css={imgLayout} src={imageUrl ?? "./default-img.png"} />
       <div css={contentLayout}>
         <div css={descriptionLayout}>

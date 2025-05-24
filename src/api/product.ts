@@ -7,7 +7,7 @@ interface getProductProps {
   sortBy: sortOption;
 }
 
-export default async function getProducts({
+export async function getProducts({
   sortBy,
   category,
 }: getProductProps): Promise<ProductResponse> {

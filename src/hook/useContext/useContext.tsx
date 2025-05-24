@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
-import { CartItemType } from "../types/cartItem";
-import { getCartItems } from "../api/cartItem";
+import { CartItemType } from "../../types/cartItem";
+import { getCartItems } from "../../api/cartItem";
 
 const CartContext = createContext<
   (CartState & { dispatch: React.Dispatch<CartAction> }) | null
@@ -17,7 +17,7 @@ interface CartState {
   error: string | null;
 }
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export function ContextProvider({ children }: { children: React.ReactNode }) {
   const [cartItemState, dispatch] = useReducer(cartItemReducer, {
     cartItemList: [],
     loading: false,
@@ -58,7 +58,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 export function useCartContext() {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
+    throw new Error("useCart must be used within a ShoppingProductsProvider");
   }
   return context;
 }

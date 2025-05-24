@@ -1,5 +1,5 @@
 import { postCartItem } from "../../../api/cartItem";
-import { useCartContext } from "../../../hook/CartContext";
+import { useCartContext } from "../../../hook/useContext/useContext";
 import { CartItemType } from "../../../types/cartItem";
 import { ProductType } from "../../../types/product";
 import Button from "../../unit/Button/Button";

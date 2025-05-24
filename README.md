@@ -58,14 +58,14 @@
 이전 미션의 프로그래밍 요구사항은 기본으로 포함한다.
 
 - Data fetching hook
-- [ ] 서버 API 통신 결과를 Single Source of Truth (SSOT) 원칙에 따라 관리할 수 있도록, 커스텀 훅을 직접 개발한다.
+- [x] 서버 API 통신 결과를 Single Source of Truth (SSOT) 원칙에 따라 관리할 수 있도록, 커스텀 훅을 직접 개발한다. => cartItem 목록을 contextApi + Reducer로 구현
 - [ ] GET method 를 사용하는 모든 API 에 이 커스텀 훅을 적용한다.
   - GET / cart-items , GET /products API 를 통일된 인터페이스로 data fetching 할 수 있어야 한다.
   - ex) useData, useResource 등의 이름으로 선언할 수 있다.
 - [ ] 반환값에는 데이터, 로딩 여부, 에러 정보 등이 포함되어야 한다.
 - [ ] Context API 를 활용한다. 단, API 마다 Provider 를 따로 만들지 않고, 하나의 Context 에서 관리할 수 있어야 한다.
   - Context API 사용으로 인한 렌더링 문제는 해결하지 않아도 된다. 문제점은 학습하여 인지하도록 한다.
-- [ ] 상용 라이브러리의 인터페이스를 그대로 모방하지 않는다. 구조를 직접 설계한다.
+- [x] 상용 라이브러리의 인터페이스를 그대로 모방하지 않는다. 구조를 직접 설계한다.
 
 - MSW
 - [ ] 안정적인 테스트 환경을 만들기 위해 MSW 를 사용한다.

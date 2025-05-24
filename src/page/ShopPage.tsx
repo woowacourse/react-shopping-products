@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
-import getProducts from "../api/product";
+import { getProducts } from "../api/product";
 import CartProductContainer from "../component/feature/CartProductContainer/CartProductContainer";
 import { Modal } from "../component/feature/Modal/Modal";
 import ProductContainer from "../component/feature/ProductContainer/ProductContainer";
@@ -11,7 +11,7 @@ import Button from "../component/unit/Button/Button";
 import Selector from "../component/unit/Selector/Selector";
 import Toast from "../component/unit/Toast/Toast";
 import { CategoryOption, FilterOption } from "../constants";
-import { useCartContext } from "../hook/CartContext";
+import { useCartContext } from "../hook/useContext/useContext";
 import { ProductType } from "../types/product";
 import {
   cartIcon,

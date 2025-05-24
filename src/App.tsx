@@ -1,11 +1,11 @@
 import { css } from "@emotion/react";
 import ShopPage from "./page/ShopPage";
 import GlobalStyle from "./GlobalStyle";
-import { CartProvider } from "./hook/CartContext";
+import { ContextProvider } from "./hook/useContext/useContext";
 
 function App() {
   return (
-    <CartProvider>
+    <ContextProvider>
       <div
         css={css`
           display: flex;
@@ -17,7 +17,7 @@ function App() {
         <GlobalStyle />
         <ShopPage />
       </div>
-    </CartProvider>
+    </ContextProvider>
   );
 }
 
