@@ -5,7 +5,6 @@ import { ENV } from '@/api/env';
 import { cartData } from './cart.data';
 import { productsData } from './products.data';
 
-let productsDataCopy = [...productsData.content];
 const cartDataCopy = { ...cartData, content: [...cartData.content] };
 
 export const handlers = [
@@ -14,11 +13,9 @@ export const handlers = [
     const sort = url.searchParams.get('sort');
     const category = url.searchParams.get('category');
 
-    if (category === 'ALL') {
-      productsDataCopy = [...productsData.content];
-    }
+    let productsDataCopy = [...productsData.content];
 
-    if (category !== 'ALL' && category) {
+    if (category && category !== 'ALL' && category !== '') {
       productsDataCopy = productsDataCopy.filter((item) => item.category === category);
     }
 
