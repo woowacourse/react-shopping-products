@@ -12,8 +12,6 @@ interface Props {
   totalPriceInCart: number;
 }
 
-const MAX_QUANTITY = 3;
-
 const CartModal = ({
   cartItems,
   quantityByProductId,
@@ -24,22 +22,6 @@ const CartModal = ({
 }: Props) => {
   const { closeModal } = useModal();
 
-  const handleDecreaseItemQuantity = (
-    productId: number,
-    isMinQuantity: boolean
-  ) => {
-    if (isMinQuantity) return;
-    decreaseItemQuantity(productId);
-  };
-
-  const handleIncreaseItemQuantity = (
-    productId: number,
-    isMaxQuantity: boolean
-  ) => {
-    if (isMaxQuantity) return;
-    increaseItemQuantity(productId);
-  };
-
   return (
     <S.CartModal>
       <S.Title>장바구니</S.Title>
@@ -47,7 +29,7 @@ const CartModal = ({
         {cartItems?.content.map((productInfo) => {
           const quantity = quantityByProductId(productInfo.product.id);
           const isMinQuantity = quantity <= 1;
-          const isMaxQuantity = quantity >= MAX_QUANTITY;
+          const isMaxQuantity = quantity >= productInfo.product.quantity;
 
           return (
             <ProductItem
@@ -57,22 +39,16 @@ const CartModal = ({
               price={productInfo.product.price}
               quantity={quantity}
               increaseItemQuantity={() =>
-                handleIncreaseItemQuantity(
-                  productInfo.product.id,
-                  isMaxQuantity
-                )
+                increaseItemQuantity(productInfo.product.id)
               }
               decreaseItemQuantity={() =>
-                handleDecreaseItemQuantity(
-                  productInfo.product.id,
-                  isMinQuantity
-                )
+                decreaseItemQuantity(productInfo.product.id)
               }
               deleteProductInCart={() =>
                 deleteProductInCart(productInfo.product.id)
               }
-              decreaseDisabled={isMinQuantity}
               increaseDisabled={isMaxQuantity}
+              decreaseDisabled={isMinQuantity}
             />
           );
         })}

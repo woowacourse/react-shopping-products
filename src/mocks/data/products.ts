@@ -9,6 +9,7 @@ export const productsData: Products = {
       imageUrl:
         "https://i.namu.wiki/i/Mj0aArUbJiq5_c500MqmbYyDPWnSiDBCsxbesdkR0XTOtDvwrjj2ponJvctbYgQ7zPE_LvjsJHAl786rZu0tkw.webp",
       category: "식료품",
+      quantity: 3,
     },
     {
       id: 2,
@@ -17,6 +18,7 @@ export const productsData: Products = {
       imageUrl:
         "https://i.namu.wiki/i/QHZlaOvDdhvtLDYrA6IRvUZdddgwY9q5d0rMBywEIh7dbcNTCzTmE2CDM05JA9GRuXWqp5LsxE_T8BvGNOJhVA.webp",
       category: "식료품",
+      quantity: 3,
     },
     {
       id: 3,
@@ -25,6 +27,7 @@ export const productsData: Products = {
       imageUrl:
         "https://health.chosun.com/site/data/img_dir/2021/11/04/2021110401776_0.jpg",
       category: "식료품",
+      quantity: 0,
     },
     {
       id: 4,
@@ -32,6 +35,7 @@ export const productsData: Products = {
       price: 16000,
       imageUrl: "",
       category: "식료품",
+      quantity: 3,
     },
     {
       id: 5,
@@ -40,6 +44,7 @@ export const productsData: Products = {
       imageUrl:
         "https://i.namu.wiki/i/5ISYTfYvAdrL8uIoYVlMZ0sJCQWOgRHTdcerXSErt2gVgaxEzXAcUhcgJVpVwKFccpD5N8cg_M656GL0O3O2jw.webp",
       category: "식료품",
+      quantity: 0,
     },
     {
       id: 6,
@@ -47,6 +52,7 @@ export const productsData: Products = {
       price: 15000,
       imageUrl: "",
       category: "식료품",
+      quantity: 3,
     },
     {
       id: 7,
@@ -55,6 +61,7 @@ export const productsData: Products = {
       imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Milk_glass.jpg/250px-Milk_glass.jpg",
       category: "식료품",
+      quantity: 3,
     },
     {
       id: 8,
@@ -63,6 +70,7 @@ export const productsData: Products = {
       imageUrl:
         "https://i.namu.wiki/i/Ppbu45jiME3PCSgCzo6Ljs1ogkayv_wGLSkbHRfBmRypZUt8s7j6Gxq0kFe0ScEzHHeE7NNkY2CFjVQ_BZXAgQ.webp",
       category: "식료품",
+      quantity: 3,
     },
     {
       id: 9,
@@ -70,6 +78,7 @@ export const productsData: Products = {
       price: 22000,
       imageUrl: "",
       category: "식료품",
+      quantity: 3,
     },
     {
       id: 10,
@@ -77,6 +86,7 @@ export const productsData: Products = {
       price: 9800,
       imageUrl: "",
       category: "식료품",
+      quantity: 3,
     },
     {
       id: 11,
@@ -84,6 +94,7 @@ export const productsData: Products = {
       price: 59000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 3,
     },
     {
       id: 12,
@@ -91,6 +102,7 @@ export const productsData: Products = {
       price: 24000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 0,
     },
     {
       id: 13,
@@ -98,6 +110,7 @@ export const productsData: Products = {
       price: 18000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 3,
     },
     {
       id: 14,
@@ -105,6 +118,7 @@ export const productsData: Products = {
       price: 12000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 0,
     },
     {
       id: 15,
@@ -112,6 +126,7 @@ export const productsData: Products = {
       price: 28000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 3,
     },
     {
       id: 16,
@@ -119,6 +134,7 @@ export const productsData: Products = {
       price: 25000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 3,
     },
     {
       id: 17,
@@ -126,6 +142,7 @@ export const productsData: Products = {
       price: 21000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 3,
     },
     {
       id: 18,
@@ -133,6 +150,7 @@ export const productsData: Products = {
       price: 45000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 3,
     },
     {
       id: 19,
@@ -140,6 +158,7 @@ export const productsData: Products = {
       price: 37000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 3,
     },
     {
       id: 20,
@@ -147,6 +166,7 @@ export const productsData: Products = {
       price: 67000,
       imageUrl: "",
       category: "패션잡화",
+      quantity: 3,
     },
   ],
   totalElements: 20,

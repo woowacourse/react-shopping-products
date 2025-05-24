@@ -6,7 +6,8 @@ interface Props {
   imageUrl: string;
   name: string;
   price: number;
-  quantity: number;
+  currentQuantity: number;
+  maxQuantity: number;
   increaseItemQuantity: () => void;
   decreaseItemQuantity: () => void;
   addProductInCart: () => void;
@@ -18,11 +19,15 @@ const ProductItem = ({
   imageUrl,
   name,
   price,
-  quantity,
+  currentQuantity,
+  maxQuantity,
   increaseItemQuantity,
   decreaseItemQuantity,
   addProductInCart,
 }: Props) => {
+  const isMaxQuantityReached = currentQuantity >= maxQuantity;
+  const isInCart = currentQuantity >= CART_QUANTITY_THRESHOLD;
+
   return (
     <S.ProductContainer>
       <S.ProductImage $url={imageUrl} />
@@ -30,11 +35,12 @@ const ProductItem = ({
         <S.ProductName>{name}</S.ProductName>
         <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
         <S.QuantityWrapper>
-          {quantity >= CART_QUANTITY_THRESHOLD ? (
+          {isInCart ? (
             <QuantitySelector
-              quantity={quantity}
+              quantity={currentQuantity}
               onIncrease={increaseItemQuantity}
               onDecrease={decreaseItemQuantity}
+              increaseDisabled={isMaxQuantityReached}
             />
           ) : (
             <AddCartItemButton onAdd={addProductInCart} />

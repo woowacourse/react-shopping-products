@@ -9,8 +9,8 @@ interface Props {
   increaseItemQuantity: () => void;
   decreaseItemQuantity: () => void;
   deleteProductInCart: () => void;
-  decreaseDisabled?: boolean;
   increaseDisabled?: boolean;
+  decreaseDisabled?: boolean;
 }
 
 const ProductItem = ({
@@ -21,8 +21,8 @@ const ProductItem = ({
   increaseItemQuantity,
   decreaseItemQuantity,
   deleteProductInCart,
-  decreaseDisabled,
   increaseDisabled,
+  decreaseDisabled,
 }: Props) => {
   return (
     <S.ProductItem>
@@ -35,8 +35,8 @@ const ProductItem = ({
             quantity={quantity}
             onIncrease={increaseItemQuantity}
             onDecrease={decreaseItemQuantity}
-            decreaseDisabled={decreaseDisabled}
             increaseDisabled={increaseDisabled}
+            decreaseDisabled={decreaseDisabled}
           />
         </S.ProductInfo>
         <S.DeleteButton onClick={deleteProductInCart}>삭제</S.DeleteButton>

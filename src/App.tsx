@@ -59,18 +59,21 @@ function App() {
           </S.ProductControlPanel>
           <S.ProductGrid>
             {!isLoading
-              ? products?.content.map(({ id, imageUrl, name, price }) => (
-                  <ProductItem
-                    key={id}
-                    imageUrl={imageUrl}
-                    name={name}
-                    price={price}
-                    quantity={quantityByProductId(id)}
-                    increaseItemQuantity={() => increaseItemQuantity(id)}
-                    decreaseItemQuantity={() => decreaseItemQuantity(id)}
-                    addProductInCart={() => addProductInCart(id)}
-                  />
-                ))
+              ? products?.content.map(
+                  ({ id, imageUrl, name, price, quantity }) => (
+                    <ProductItem
+                      key={id}
+                      imageUrl={imageUrl}
+                      name={name}
+                      price={price}
+                      currentQuantity={quantityByProductId(id)}
+                      maxQuantity={quantity}
+                      increaseItemQuantity={() => increaseItemQuantity(id)}
+                      decreaseItemQuantity={() => decreaseItemQuantity(id)}
+                      addProductInCart={() => addProductInCart(id)}
+                    />
+                  )
+                )
               : ProductsSkeleton}
           </S.ProductGrid>
         </S.Wrapper>

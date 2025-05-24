@@ -6,23 +6,23 @@ interface Props {
   quantity: number;
   onIncrease: () => void;
   onDecrease: () => void;
-  decreaseDisabled?: boolean;
   increaseDisabled?: boolean;
+  decreaseDisabled?: boolean;
 }
 
 const QuantitySelector = ({
   quantity,
   onIncrease,
   onDecrease,
-  decreaseDisabled = false,
   increaseDisabled = false,
+  decreaseDisabled = false,
 }: Props) => {
   return (
     <S.QuantitySelector>
       <S.ButtonIcon
         src={MinusButton}
         alt="수량 감소"
-        onClick={onDecrease}
+        onClick={decreaseDisabled ? undefined : onDecrease}
         role="button"
         tabIndex={0}
         $disabled={decreaseDisabled}
@@ -31,7 +31,7 @@ const QuantitySelector = ({
       <S.ButtonIcon
         src={PlusButton}
         alt="수량 증가"
-        onClick={onIncrease}
+        onClick={increaseDisabled ? undefined : onIncrease}
         role="button"
         tabIndex={0}
         $disabled={increaseDisabled}
