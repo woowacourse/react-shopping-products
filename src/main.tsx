@@ -4,9 +4,18 @@ import App from "./App.tsx";
 import "./styles/reset.css";
 
 async function enableMocking() {
+  if (process.env.NODE_ENV === "production") return;
+
   const { worker } = await import("./mocks/browser");
 
-  return worker.start();
+  return worker.start({
+    serviceWorker: {
+      url:
+        process.env.NODE_ENV === "production"
+          ? "/react-shopping-products/mockServiceWorker.js"
+          : "/mockServiceWorker.js",
+    },
+  });
 }
 
 enableMocking().then(() => {
