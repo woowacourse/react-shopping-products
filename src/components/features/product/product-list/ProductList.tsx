@@ -14,7 +14,7 @@ function ProductList({
   }
   return (
     <Container id="product-list" data-testid="product-list">
-      {products.map(({ id, name, price, imageUrl }) => {
+      {products.map(({ id, name, price, imageUrl, quantity }) => {
         return (
           <ProductCard
             key={id}
@@ -22,6 +22,7 @@ function ProductList({
             name={name}
             price={price}
             imageUrl={imageUrl}
+            quantity={quantity}
           />
         );
       })}
