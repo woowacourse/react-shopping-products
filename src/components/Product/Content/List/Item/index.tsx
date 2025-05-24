@@ -8,12 +8,12 @@ import { DataContext } from "@/context/DataContext";
 import QuantityCounter from "@/components/QuantityCounter";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
-
 interface ProductItemProps {
   product: ProductItemType;
+  variant?: "default" | "cart";
 }
 
-function ProductItem({ product }: ProductItemProps) {
+function ProductItem({ product, variant }: ProductItemProps) {
   const context = useContext(DataContext);
 
   if (!context)
@@ -60,16 +60,16 @@ function ProductItem({ product }: ProductItemProps) {
   };
 
   return (
-    <S.Item>
-      <S.ImageWrapper>
+    <S.Item variant={variant}>
+      <S.ImageWrapper variant={variant}>
         <S.ProductImage src={imageUrl} alt={name} onError={handleImageError} />
       </S.ImageWrapper>
-      <S.Content>
+      <S.Content variant={variant}>
         <S.ProductInfo>
           <S.ProductName>{name}</S.ProductName>
           <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
         </S.ProductInfo>
-        <S.ButtonWrapper>
+        <S.ButtonWrapper variant={variant}>
           {!isAdded && !findCartItem ? (
             <AddCartItemButton id={id} onClick={handleAddToCart} />
           ) : (

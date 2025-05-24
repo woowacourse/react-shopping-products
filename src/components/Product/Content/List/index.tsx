@@ -14,7 +14,11 @@ function ProductList({ data }: ProductListProps) {
       {data.length > 0 ? (
         <S.ProductList>
           {data.map((productItem) => (
-            <ProductItem key={productItem.id} product={productItem} />
+            <ProductItem
+              key={productItem.id}
+              product={productItem}
+              variant="default"
+            />
           ))}
         </S.ProductList>
       ) : (
