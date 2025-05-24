@@ -1,4 +1,4 @@
-import { ProductTypes } from "../../../types/ProductTypes";
+import { ProductType } from "../../../types/ProductType";
 import { useToggleCartItem } from "../../../domain/hooks/useToggleCartItem";
 import { CartItemTypes } from "../../../types/CartItemType";
 import addShoppingCartIcon from "../../../assets/addShoppingCartIcon.png";
@@ -16,7 +16,7 @@ import {
   StyledButtonText,
 } from "./ProductItem.styles";
 
-type ProductItemProps = ProductTypes & {
+type ProductItemProps = ProductType & {
   updateCartItems: () => Promise<void>;
   getMatchCartItem: (id: number) => CartItemTypes | undefined;
   checkMax: () => boolean;

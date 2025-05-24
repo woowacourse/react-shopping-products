@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import getProducts from "../../api/getProducts";
-import type { ProductTypes } from "../../types/ProductTypes";
-import useCartContext from "../contexts/useCartContext";
+import type { ProductType } from "../../types/ProductType";
+import { useCartContext } from "../contexts/CartContext";
 
 export type FilterValue =
   | "all"
@@ -10,9 +10,7 @@ export type FilterValue =
   | "낮은 가격순"
   | "높은 가격순";
 
-export function useProductFilters(
-  setProducts: (prods: ProductTypes[]) => void
-) {
+export function useProductFilters(setProducts: (prods: ProductType[]) => void) {
   const [category, setCategory] = useState<FilterValue>("all");
   const [price, setPrice] = useState<FilterValue>("낮은 가격순");
   const { updateErrorMessage: onError } = useCartContext();

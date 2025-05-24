@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 import getProducts from "../../api/getProducts";
-import type { ProductTypes } from "../../types/ProductTypes";
+import type { ProductType } from "../../types/ProductType";
 
 export type Status = "idle" | "loading" | "success" | "error";
 
 export default function useFetchProducts(
   updateErrorMessage: (msg: string) => void
 ): {
-  products: ProductTypes[];
+  products: ProductType[];
   status: Status;
-  setProducts: React.Dispatch<React.SetStateAction<ProductTypes[]>>;
+  setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
 } {
-  const [products, setProducts] = useState<ProductTypes[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [status, setStatus] = useState<Status>("idle");
 
   useEffect(() => {

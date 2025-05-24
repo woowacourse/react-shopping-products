@@ -1,10 +1,10 @@
 import ProductItem from "../ProductItem/ProductItem";
-import { ProductTypes } from "../../../types/ProductTypes";
-import useCartContext from "../../../domain/contexts/useCartContext";
+import { ProductType } from "../../../types/ProductType";
+import { useCartContext } from "../../../domain/contexts/CartContext";
 import { StyledUl } from "./ProductList.styles";
 
 interface ProductListProps {
-  productList: ProductTypes[];
+  productList: ProductType[];
 }
 
 export default function ProductList({ productList }: ProductListProps) {
