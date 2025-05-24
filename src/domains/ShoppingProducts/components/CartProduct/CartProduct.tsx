@@ -1,4 +1,5 @@
 import Button from "../../../../components/Button/Button";
+import { deleteCartItem } from "../../apis/cartItem";
 import { QuantitySelector } from "../QuantitySelector/QuantitySelector";
 import {
   CartProductLayout,
@@ -28,7 +29,11 @@ export function CartProduct({
   maxQuantity,
   onChange,
 }: CartProductProps) {
-  console.log("max ", name, maxQuantity);
+  const handleDelete = async () => {
+    await deleteCartItem({ id });
+    onChange();
+  };
+
   return (
     <section
       id={`cartProduct-${id}`}
@@ -48,7 +53,7 @@ export function CartProduct({
         />
       </div>
       <div css={deleteButton}>
-        <Button onClick={() => console.log("삭제")} style="ghost">
+        <Button onClick={handleDelete} style="ghost">
           삭제
         </Button>
       </div>
