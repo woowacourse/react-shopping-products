@@ -18,5 +18,5 @@ export default defineConfig({
       "@": "/src",
     },
   },
-  base: "/",
+  base: process.env.NODE_ENV === "production" ? "/react-shopping-products/" : "/",
 });
