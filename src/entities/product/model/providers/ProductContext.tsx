@@ -1,18 +1,18 @@
 import React, {
   createContext,
-  useState,
-  useEffect,
   PropsWithChildren,
+  useEffect,
+  useState,
 } from "react";
 import {
   CategoryOptionsKey,
   SortOptionsKey,
-} from "../../../shared/config/filter";
-import { TOAST_TYPES } from "../../../shared/config/toast";
-import useToast from "../../../shared/hooks/useToast";
-import { isErrorResponse } from "../../../shared/utils/typeGuard";
-import { ProductsAPI } from "../api/products";
-import { Products } from "./types";
+} from "../../../../shared/config/filter";
+import { TOAST_TYPES } from "../../../../shared/config/toast";
+import useToast from "../../../../shared/hooks/useToast";
+import { isErrorResponse } from "../../../../shared/utils/typeGuard";
+import { ProductsAPI } from "../../api/products";
+import { Products } from "../types/response";
 
 export interface ProductContextType {
   products: Products | null;

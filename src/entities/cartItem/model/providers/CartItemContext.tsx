@@ -5,11 +5,11 @@ import {
   useMemo,
   useState,
 } from "react";
-import { TOAST_TYPES } from "../../../shared/config/toast";
-import useToast from "../../../shared/hooks/useToast";
-import { isErrorResponse } from "../../../shared/utils/typeGuard";
-import { CartItemsAPI } from "../api/cartItems";
-import { CartItems } from "./types";
+import { TOAST_TYPES } from "../../../../shared/config/toast";
+import useToast from "../../../../shared/hooks/useToast";
+import { isErrorResponse } from "../../../../shared/utils/typeGuard";
+import { CartItemsAPI } from "../../api/cartItems";
+import { CartItems } from "../types/response";
 
 export interface CartItemContextType {
   cartItems: CartItems | null;

@@ -1,4 +1,4 @@
-import { useCartItems } from "../../entities/cartItem/model/useCartItems";
+import { useCartItems } from "../../entities/cartItem/model/providers/useCartItems";
 import useModal from "../../shared/hooks/useModal";
 import CartItem from "./CartItem/CartItem";
 import * as S from "./CartModal.styles";

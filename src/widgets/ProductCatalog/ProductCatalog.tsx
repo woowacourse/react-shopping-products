@@ -1,4 +1,4 @@
-import { useProducts } from "../../entities/product/model/useProducts";
+import { useProducts } from "../../entities/product/model/providers/useProducts";
 import * as S from "./ProductCatalog.styles";
 import CategoryFilter from "./ProductControlPanel/CategoryFilter/CategoryFilter";
 import ProductSorter from "./ProductControlPanel/ProductSorter/ProductSorter";

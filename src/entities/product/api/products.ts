@@ -5,7 +5,7 @@ import {
   CategoryOptionsKey,
   SortOptionsKey,
 } from "../../../shared/config/filter";
-import { Products } from "../model/types";
+import { Products } from "../model/types/response";
 
 const sortOptionsMap: Record<SortOptionsKey, string> = {
   "낮은 가격 순": "price,asc",

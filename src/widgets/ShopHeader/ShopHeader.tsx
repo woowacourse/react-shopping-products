@@ -3,7 +3,7 @@ import CartModal from "../CartModal/CartModal";
 import * as S from "./ShopHeader.styles";
 import Cart from "/cart.svg";
 import { BASE_URL } from "../../shared/config/base";
-import { useCartItems } from "../../entities/cartItem/model/useCartItems";
+import { useCartItems } from "../../entities/cartItem/model/providers/useCartItems";
 
 const ShopHeader = () => {
   const { cartItemsCount } = useCartItems();

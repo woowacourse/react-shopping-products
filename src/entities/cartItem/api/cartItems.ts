@@ -1,7 +1,7 @@
 import { SHOP_API } from "../../../shared/api/config";
 import { createApiUrl } from "../../../shared/api/createApiUrl";
 import { fetchWithErrorHandling } from "../../../shared/api/errorHandlers";
-import { CartItems } from "../model/types";
+import { CartItems } from "../model/types/response";
 
 const CART_ITEMS_BASE_URL = createApiUrl(SHOP_API.endpoint.cartItems);
 
