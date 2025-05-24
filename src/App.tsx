@@ -8,6 +8,8 @@ import useProducts from "./hooks/useProducts";
 import useCartItems from "./hooks/useCartItems";
 import ProductList from "./components/ProductList/ProductList";
 import { ProductFilterProvider } from "./contexts/ProductFilterContext";
+import { useState } from "react";
+import Modal from "./components/@common/Modal/Modal";
 
 const AppContent = () => {
   const {
@@ -29,11 +31,17 @@ const AppContent = () => {
 
   const errorMessage = productError || cartError;
   const setErrorMessage = productError ? setProductError : setCartError;
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
+  const openCartModal = () => setIsCartModalOpen(true);
+  const closeCartModal = () => setIsCartModalOpen(false);
   return (
     <S.LayoutContainer>
       <S.LayoutWrapper>
-        <ShopHeader cartItemCount={cartItems?.content.length ?? 0} />
+        <ShopHeader
+          cartItemCount={cartItems?.content.length ?? 0}
+          onCartClick={openCartModal}
+        />
         <S.Wrapper>
           <ProductsListTitle />
           <S.ProductControlPanel>
@@ -55,6 +63,15 @@ const AppContent = () => {
             />
           )}
         </S.Wrapper>
+        {isCartModalOpen && (
+          <Modal
+            title="장바구니"
+            position="bottom"
+            size="small"
+            content={<div>내용</div>}
+            onClose={closeCartModal}
+          />
+        )}
       </S.LayoutWrapper>
     </S.LayoutContainer>
   );
