@@ -14,6 +14,7 @@ import { ProductListContainer } from '../container/ProductListContainer';
 import { useShopping } from '../hooks/useShopping';
 import { Modal } from '@/shared/components/Modal';
 import { useState } from 'react';
+import PriceSummary from '../components/PriceSummary';
 
 export const ProductListPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -35,7 +36,9 @@ export const ProductListPage = () => {
     handlePriceSelect,
   } = useShopping();
 
-  console.log(cartData);
+  const cartTotalPrice = cartData.reduce((sum, item) => {
+    return sum + item.product.price * item.quantity;
+  }, 0);
 
   return (
     <>
@@ -190,6 +193,7 @@ export const ProductListPage = () => {
               )}
             </Modal.Body>
             <Modal.Footer buttonAlign="center">
+              <PriceSummary label="총 결제 금액" amount={cartTotalPrice} />
               <Modal.CancelButton onClick={handleShowModal} width="100%">
                 닫기
               </Modal.CancelButton>
