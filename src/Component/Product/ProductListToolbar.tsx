@@ -4,17 +4,17 @@ import { useState } from 'react';
 import getProducts from '../../api/getProducts';
 import { useAPIContext } from '../Common/Provider';
 
-export default function ProductListToolbar() {
-  const CATEGORY = [
-    { name: '전체', value: 'all' },
-    { name: '식료품', value: 'grocery' },
-    { name: '패션잡화', value: 'fashion' },
-  ];
-  const PRICE = [
-    { name: '낮은 가격순', value: 'low' },
-    { name: '높은 가격순', value: 'high' },
-  ];
+const CATEGORY = [
+  { name: '전체', value: 'all' },
+  { name: '식료품', value: 'grocery' },
+  { name: '패션잡화', value: 'fashion' },
+];
+const PRICE = [
+  { name: '낮은 가격순', value: 'low' },
+  { name: '높은 가격순', value: 'high' },
+];
 
+export default function ProductListToolbar() {
   const [categoryValue, setCategoryValue] = useState('');
   const [priceValue, setPriceValue] = useState('');
 
