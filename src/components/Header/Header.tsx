@@ -1,8 +1,9 @@
 import * as S from './Header.styled';
 import BagIcon from '../Icon/BagIcon';
-import { ResponseCartItem } from '../../api/types';
+import { useCartItemList } from '../../pages/productListPage/context/useCartContext';
 
-function Header({ cartItemList }: { cartItemList: ResponseCartItem[] }) {
+function Header() {
+  const { cartItemList } = useCartItemList();
   return (
     <S.HeaderContainer>
       <S.HeaderTitle>SHOP</S.HeaderTitle>

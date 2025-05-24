@@ -4,22 +4,14 @@ import Button from '../common/Button/Button';
 import RemoveProductIcon from '../Icon/RemoveProductIcon';
 import { cartApi } from '../../api/cartApi';
 import blackDefaultImage from '../../assets/blackDefaultImage.png';
-import { ResponseCartItem, ResponseProduct } from '../../api/types';
+import { ResponseProduct } from '../../api/types';
 import { Dispatch, SetStateAction } from 'react';
 import { CART_MAX_COUNT } from '../../constants/constants';
 import { getCartItemId, isItemInCart } from './utils';
+import { useCartItemList } from '../../pages/productListPage/context/useCartContext';
 
-function ProductItem({
-  product,
-  cartItemList,
-  setCartItemList,
-  setErrorMessage,
-}: {
-  product: ResponseProduct;
-  cartItemList: ResponseCartItem[];
-  setCartItemList: Dispatch<SetStateAction<ResponseCartItem[]>>;
-  setErrorMessage: Dispatch<SetStateAction<string>>;
-}) {
+function ProductItem({ product, setErrorMessage }: { product: ResponseProduct; setErrorMessage: Dispatch<SetStateAction<string>> }) {
+  const { cartItemList, setCartItemList } = useCartItemList();
   const { isInCart, text, keyword } = isItemInCart(product.id, cartItemList);
 
   async function handleProductItem(action: string, productId: number) {

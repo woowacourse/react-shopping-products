@@ -3,15 +3,16 @@ import Header from '../../components/Header/Header';
 import ProductControl from '../../components/ProductControl/ProductControl';
 import ProductList from '../../components/ProductList/ProductList';
 import * as S from './productListPage.styled';
-import { ResponseCartItem, ResponseProduct } from '../../api/types';
+import { ResponseProduct } from '../../api/types';
 import { cartApi } from '../../api/cartApi';
 import { productApi } from '../../api/productApi';
 import LoadingIcon from '../../components/Icon/LoadingIcon';
+import { useCartItemList } from './context/useCartContext';
 
 function ProductListPage({ setErrorMessage }: { setErrorMessage: Dispatch<SetStateAction<string>> }) {
   const [productList, setProductList] = useState<ResponseProduct[]>([]);
-  const [cartItemList, setCartItemList] = useState<ResponseCartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { setCartItemList } = useCartItemList();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,10 +37,10 @@ function ProductListPage({ setErrorMessage }: { setErrorMessage: Dispatch<SetSta
         <LoadingIcon />
       ) : (
         <>
-          <Header cartItemList={cartItemList} />
+          <Header />
           <S.MiddleContainer>
             <ProductControl setProductList={setProductList} setErrorMessage={setErrorMessage} />
-            <ProductList productList={productList} cartItemList={cartItemList} setCartItemList={setCartItemList} setErrorMessage={setErrorMessage} />
+            <ProductList productList={productList} setErrorMessage={setErrorMessage} />
           </S.MiddleContainer>
         </>
       )}
