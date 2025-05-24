@@ -1,29 +1,21 @@
 import { css } from '@emotion/react';
 import { Button, Modal, type ModalProps } from '@sebin0580/modal';
 
-import { CartItem } from '@/features/ProductList/types/Cart';
 import { Flex } from '@/shared/components/Flex';
 import { Text } from '@/shared/components/Text';
+import { useData } from '@/shared/context/useData';
 
 import { CartItemDetail } from './CartItemDetail';
 
 import { CartListContainer } from '../container/CartListContainer';
 
-type AddBottomSheetProps = {
-  cartData: CartItem[];
-  onUpdateCartItemQuantity: (id: number, quantity: number) => void;
-  onDeleteCartItem: (id: number) => void;
-} & Pick<ModalProps, 'isOpen' | 'onClose' | 'title'>;
-
 export const AddBottomSheet = ({
-  cartData,
-  onDeleteCartItem,
   isOpen,
   onClose,
   title,
-  onUpdateCartItemQuantity,
-}: AddBottomSheetProps) => {
-  const totalPrice = cartData.reduce((acc, item) => {
+}: Pick<ModalProps, 'isOpen' | 'onClose' | 'title'>) => {
+  const { cartData } = useData();
+  const totalPrice = cartData.data?.reduce((acc, item) => {
     return acc + item.product.price * item.quantity;
   }, 0);
   return (
@@ -37,18 +29,7 @@ export const AddBottomSheet = ({
       content="bottom"
     >
       <CartListContainer>
-        {cartData.map((cartItem) => (
-          <CartItemDetail
-            id={cartItem.id}
-            key={cartItem.id}
-            name={cartItem.product.name}
-            price={cartItem.product.price}
-            quantity={cartItem.quantity}
-            imageUrl={cartItem.product.imageUrl}
-            onUpdateCartItemQuantity={() => onUpdateCartItemQuantity}
-            onDeleteCartItem={() => onDeleteCartItem(cartItem.id)}
-          />
-        ))}
+        {cartData.data?.map((cartItem) => <CartItemDetail key={cartItem.id} {...cartItem} />)}
       </CartListContainer>
       <Flex
         direction="row"
@@ -62,7 +43,7 @@ export const AddBottomSheet = ({
         `}
       >
         <Text type="Body">총 결제 금액</Text>
-        <Text type="Heading">{totalPrice.toLocaleString()}원</Text>
+        <Text type="Heading">{totalPrice?.toLocaleString()}원</Text>
       </Flex>
       <Button size="lg" onClick={onClose} width="100%">
         닫기
