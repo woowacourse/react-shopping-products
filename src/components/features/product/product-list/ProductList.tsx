@@ -20,6 +20,7 @@ function ProductList({
             key={id}
             id={id}
             cartId={matchingCart?.id ?? null}
+            cartCount={matchingCart?.quantity ?? 0}
             name={name}
             price={price}
             imageUrl={imageUrl}
