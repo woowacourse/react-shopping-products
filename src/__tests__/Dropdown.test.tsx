@@ -16,7 +16,7 @@ describe("Dropdown은", () => {
       />
     );
 
-    expect(screen.getByText("선택하세요")).toBeDefined();
+    expect(screen.getByText("선택하세요")).toBeInTheDocument();
   });
 
   it("선택하세요를 클릭하면 옵션들이 보여야 한다.", () => {
@@ -31,9 +31,9 @@ describe("Dropdown은", () => {
 
     fireEvent.click(screen.getByText("선택하세요"));
 
-    expect(screen.getByText("옵션1")).toBeDefined();
-    expect(screen.getByText("옵션2")).toBeDefined();
-    expect(screen.getByText("옵션3")).toBeDefined();
+    expect(screen.getByText("옵션1")).toBeInTheDocument();
+    expect(screen.getByText("옵션2")).toBeInTheDocument();
+    expect(screen.getByText("옵션3")).toBeInTheDocument();
   });
 
   it("옵션을 선택하면 onSelect가 호출되고 드롭다운이 닫혀야 한다.", () => {
@@ -65,6 +65,6 @@ describe("Dropdown은", () => {
       />
     );
 
-    expect(screen.getByText("옵션3")).toBeDefined();
+    expect(screen.getByText("옵션3")).toBeInTheDocument();
   });
 });

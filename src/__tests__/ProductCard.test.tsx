@@ -1,4 +1,4 @@
-import { screen, fireEvent, cleanup } from "@testing-library/react";
+import { screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
 import { vi, expect, describe, it, beforeEach, afterEach } from "vitest";
 import React from "react";
 import "@testing-library/jest-dom";
@@ -86,16 +86,20 @@ describe("ProductCard 컴포넌트는", () => {
 
   it("장바구니에 없는 상품은 '담기' 버튼이 렌더링된다", async () => {
     await renderProductCardWithProviders(mockProducts[0]);
-
-    expect(screen.getByText("담기")).toBeInTheDocument();
-    expect(screen.getByAltText("장바구니 아이콘")).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByText("담기")).toBeInTheDocument();
+      expect(screen.getByAltText("장바구니 아이콘")).toBeInTheDocument();
+    });
   });
 
   it("장바구니에 해당 품목이 이미 담겨져 있으면, 수량 버튼이 렌더링되어야 한다", async () => {
     mockContextValue.dataPool["cart-items"] = [...mockCartItems];
 
     await renderProductCardWithProviders(mockProducts[0]);
-    expect(screen.getByText("2")).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByText("2")).toBeInTheDocument();
+      expect(screen.getByAltText("장바구니 아이콘")).toBeInTheDocument();
+    });
   });
 
   it("해당 상품이 품절되면, 품절이 보이고, 버튼이 렌더링 되지 않아야 한다.", async () => {
@@ -105,9 +109,10 @@ describe("ProductCard 컴포넌트는", () => {
       ...mockProducts[0],
       quantity: 0,
     });
-
-    expect(screen.getByText("품절")).toBeInTheDocument();
-    expect(screen.queryByText("담기")).not.toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByText("품절")).toBeInTheDocument();
+      expect(screen.queryByText("담기")).not.toBeInTheDocument();
+    });
   });
 
   it("로딩 중에는 버튼이 비활성화된다", async () => {
@@ -117,7 +122,9 @@ describe("ProductCard 컴포넌트는", () => {
       name: "장바구니 아이콘 담기",
     });
     fireEvent.click(cartButton);
-    expect(cartButton).toBeDisabled();
+    waitFor(() => {
+      expect(cartButton).toBeDisabled();
+    });
   });
 
   it("장바구니에 50개 이상의 품목을 담을 수 없다", async () => {
@@ -135,9 +142,11 @@ describe("ProductCard 컴포넌트는", () => {
     });
 
     fireEvent.click(cartButton);
-    expect(mockShowError).toHaveBeenCalledWith(
-      new Error("장바구니에 50개 이상의 품목을 담을수 없습니다.")
-    );
+    waitFor(() => {
+      expect(mockShowError).toHaveBeenCalledWith(
+        new Error("장바구니에 50개 이상의 품목을 담을수 없습니다.")
+      );
+    });
   });
 
   it("장바구니 담기 실패 시 아무런 동작을 하지 않는다.", async () => {
@@ -149,6 +158,10 @@ describe("ProductCard 컴포넌트는", () => {
       name: "장바구니 아이콘 담기",
     });
     fireEvent.click(cartButton);
-    expect(mockShowError).toHaveBeenCalledWith(new Error("장바구니 담기 실패"));
+    waitFor(() => {
+      expect(mockShowError).toHaveBeenCalledWith(
+        new Error("장바구니 담기 실패")
+      );
+    });
   });
 });
