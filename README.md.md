@@ -65,6 +65,7 @@
 - [ ] 모달 구현
   - [x] npm i hoyychoi-modal-component 사용
   - [ ] 모달 내부 ui 구현
+    - [x] cartItemCard component 제작
     - [ ] 버튼 컴포넌트
     - [ ] 내부 삭제 버튼
 - [ ] 프로덕트 카드 컴포넌트 변경 -> 가로형/세로형
