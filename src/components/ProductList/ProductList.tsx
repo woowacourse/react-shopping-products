@@ -27,10 +27,11 @@ const ProductList = ({
   return (
     <S.ProductGrid>
       {!isLoading ? (
-        products?.content.map(({ id, imageUrl, name, price }) => (
+        products?.content.map(({ id, imageUrl, name, price, quantity }) => (
           <ProductItem
             key={id}
             id={id}
+            quantity={quantity}
             imageUrl={imageUrl}
             name={name}
             price={price}

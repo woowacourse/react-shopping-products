@@ -3,20 +3,20 @@ import MinusIcon from "./components/MinusIcon/MinusIcon";
 import PlusIcon from "./components/PlusIcon/PlusIcon";
 
 interface QuantityControllerProps {
-  quantity: number;
+  cartQuantity: number;
   onIncrease: () => void;
   onDecrease: () => void;
 }
 
 const QuantityController = ({
-  quantity,
+  cartQuantity,
   onIncrease,
   onDecrease,
 }: QuantityControllerProps) => {
   return (
     <QuantityControllerContainer>
       <MinusIcon onClick={onDecrease} />
-      <QuantityText>{quantity}</QuantityText>
+      <QuantityText>{cartQuantity}</QuantityText>
       <PlusIcon onClick={onIncrease} />
     </QuantityControllerContainer>
   );
