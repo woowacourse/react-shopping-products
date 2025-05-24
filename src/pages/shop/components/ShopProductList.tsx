@@ -1,18 +1,14 @@
-import {
-  ProductCard,
-  type Cart,
-  type Product,
-} from '@/components/features/product';
+import { ProductCard, type Product } from '@/components/features/product';
+import { useCartContext } from '@/context/useCartContext';
 import styled from '@emotion/styled';
 
 function ShopProductList({
   resource,
-  cartList,
 }: {
   resource: { read: () => Product[] };
-  cartList: Cart[];
 }) {
   const products = resource.read();
+  const { cartList } = useCartContext();
 
   return (
     <Container>

@@ -2,8 +2,7 @@ import { wrapPromise } from '@/api/wrapPromise';
 import { ErrorToastMessage, Flex, Loading } from '@/components/common';
 import CartModal from '@/components/features/cart/CartModal';
 import { getProductList } from '@/components/features/product/api/getProductList';
-import { Product } from '@/components/features/product/type';
-import { useCartContext } from '@/context/useCartContext';
+import { type Product } from '@/components/features/product';
 import styled from '@emotion/styled';
 import { Modal } from '@jae-o/modal-component-module';
 import { Suspense, useMemo, useState } from 'react';
@@ -16,7 +15,6 @@ function ShopPage() {
     sort: 'asc',
   });
   const { isError } = useShopErrorContext();
-  const { cartList } = useCartContext();
 
   const handleCategoryOption = (value: string) => {
     setFilter((prev) => ({
@@ -36,7 +34,7 @@ function ShopPage() {
 
   return (
     <Modal>
-      <ShopHeader itemsCount={cartList.length} />
+      <ShopHeader />
       <ProductListContainer>
         <ListTitleBox>
           <ListTitle>Apple 상품 목록</ListTitle>
@@ -47,10 +45,7 @@ function ShopPage() {
           />
         </ListTitleBox>
         <Suspense fallback={<Loading />}>
-          <ShopProductList
-            resource={wrapPromise<Product[]>(listPromiseData)}
-            cartList={cartList}
-          />
+          <ShopProductList resource={wrapPromise<Product[]>(listPromiseData)} />
         </Suspense>
         {isError && <ErrorToastMessage />}
       </ProductListContainer>

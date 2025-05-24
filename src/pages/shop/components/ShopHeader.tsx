@@ -1,14 +1,16 @@
 import { Header } from '@/components/common';
+import { useCartContext } from '@/context/useCartContext';
 import { Modal } from '@jae-o/modal-component-module';
 import CartButton from './CartButton';
 
-function ShopHeader({ itemsCount }: { itemsCount: number }) {
+function ShopHeader() {
+  const { cartCount } = useCartContext();
   return (
     <Header
       title="SHOP"
       right={
         <Modal.OpenTrigger>
-          <CartButton itemsCount={itemsCount} />
+          <CartButton itemsCount={cartCount} />
         </Modal.OpenTrigger>
       }
     />
