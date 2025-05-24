@@ -1,109 +1,115 @@
-import useFetch from "./hooks/useFetch";
-import { CartItemResponse, ProductResponse } from "./types/response";
-import { useEffect, useState } from "react";
-import { useErrorContext } from "./contexts/ErrorContext";
-import { useProductQuery } from "./hooks/useProductQuery";
-import { URLS } from "./constants/url";
-import Dropdown from "./components/Dropdown/Dropdown";
+import { useEffect } from "react";
 
-import Spinner from "./components/Spinner/Spinner";
-import ProductList from "./components/Product/ProductList/ProductList";
-import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
-import * as styles from "./App.style";
-import { CategoryOptionType, OrderByOptionType } from "./types/categoryOption";
-import { useCartContext } from "./contexts/CartContext";
+import Dropdown from "./components/Dropdown/Dropdown";
 import Header from "./components/Header/Header";
+import MswStatus from "./components/Msw/MswStatus";
+import ProductList from "./components/Product/ProductList/ProductList";
+import Spinner from "./components/Spinner/Spinner";
+
+import { useErrorContext } from "./contexts/ErrorContext";
+import { useQueryContext } from "./contexts/QueryContext";
+
+import useQueryData from "./hooks/useQueryData";
+import { useProductQuery } from "./hooks/useProductQuery";
+
+import * as styles from "./App.style.tsx";
+
+import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
+
+import type {
+  CategoryOptionType,
+  OrderByOptionType,
+} from "./types/categoryOption";
+
+import {
+  cartQueryOptions,
+  productQueryOptions,
+} from "./constants/requestOptions";
 
 function App() {
   const { showError } = useErrorContext();
-  const { setCartLength } = useCartContext();
-  const [category, setCategory] = useState<CategoryOptionType>("전체");
-  const [orderBy, setOrderBy] = useState<OrderByOptionType>("낮은 가격순");
+  const {
+    dataPool,
+    productsQuery,
+    setProductsQuery,
+    categoryQuery,
+    setCategoryQuery,
+  } = useQueryContext();
+
+  const productQuery = useProductQuery(productsQuery, categoryQuery);
 
   const {
-    data: products,
-    isLoading: productFetchLoading,
-    error: productFetchError,
-    fetcher: refetchProducts,
-  } = useFetch<ProductResponse>(useProductQuery(orderBy));
+    loading: productLoading,
+    error: productLoadError,
+    loadData: loadProducts,
+  } = useQueryData("products", { url: productQuery, ...productQueryOptions });
 
-  const {
-    data: cartItems,
-    fetcher: refetchCart,
-    error: cartFetchError,
-  } = useFetch<CartItemResponse>(URLS.CART_ITEMS, {
-    headers: {
-      Authorization: `Basic ${btoa(
-        `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-      )}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const { error: cartLoadError, loadData: loadCart } = useQueryData(
+    "cart-items",
+    cartQueryOptions
+  );
+  const productsData = dataPool?.products;
 
   useEffect(() => {
-    refetchProducts();
-  }, [orderBy, refetchProducts]);
+    if (!dataPool?.products) loadCart();
+  }, []);
 
   useEffect(() => {
-    if (cartItems?.content) {
-      setCartLength(cartItems.content.length);
-    }
-  }, [cartItems?.content, cartItems?.content?.length, setCartLength]);
+    loadProducts();
+  }, [productQuery]);
 
   useEffect(() => {
-    if (productFetchError) {
-      showError(productFetchError);
+    const fetchError = productLoadError || cartLoadError;
+    if (fetchError) {
+      showError(fetchError);
     }
-    if (cartFetchError) {
-      showError(cartFetchError);
-    }
-  }, [productFetchError, cartFetchError, showError]);
-
-  async function handleRefetchCart() {
-    await refetchCart();
-  }
+  }, [productLoadError, cartLoadError, showError]);
 
   const handleSelectCategory = (value: CategoryOptionType) => {
-    setCategory(value);
+    setCategoryQuery(value);
   };
   const handleOrderBySelect = (value: OrderByOptionType) => {
-    setOrderBy(value);
+    setProductsQuery(value);
   };
 
   return (
-    <div css={styles.bodyCss}>
-      <div style={{ marginBottom: "80px" }}></div>
-      <div css={styles.dropdownDivCss}>
-        <Header />
-        <Dropdown
-          list={CATEGORY_OPTIONS}
-          placeholder="전체"
-          value={category}
-          onSelect={handleSelectCategory}
-        />
+    <div css={styles.appCss}>
+      <div
+        style={{
+          width: 380,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h2 css={styles.titleCss}>마빈 잡화점</h2>
+        <div css={styles.dropdownDivCss}>
+          <Header />
+          <Dropdown
+            list={CATEGORY_OPTIONS}
+            placeholder="전체"
+            value={categoryQuery}
+            onSelect={handleSelectCategory}
+          />
 
-        <Dropdown
-          list={ORDER_BY_OPTIONS}
-          placeholder="낮은 가격순"
-          value={orderBy}
-          onSelect={handleOrderBySelect}
-        />
-      </div>
-      {productFetchLoading ? (
-        <div style={{ marginBottom: "500px" }}>
-          <Spinner size="medium" />
+          <Dropdown
+            list={ORDER_BY_OPTIONS}
+            placeholder="낮은 가격순"
+            value={productsQuery}
+            onSelect={handleOrderBySelect}
+          />
         </div>
-      ) : (
-        <ProductList
-          products={
-            category === "전체"
-              ? products?.content
-              : products?.content.filter((item) => item.category == category)
-          }
-          cartItems={cartItems?.content}
-          refetchCart={handleRefetchCart}
-        />
-      )}
+        {productLoading ? (
+          <div style={{ marginBottom: "500px" }}>
+            <Spinner size="medium" />
+          </div>
+        ) : (
+          <ProductList products={productsData} />
+        )}
+        {process.env.NODE_ENV === "development" &&
+          import.meta.env.VITE_APP_USE_MSW && <MswStatus />}
+      </div>
     </div>
   );
 }

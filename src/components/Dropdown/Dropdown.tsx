@@ -25,14 +25,14 @@ export default function Dropdown<T extends string>({
   };
 
   return (
-    <div css={styles.wrapperStyle} ref={ref}>
+    <div css={styles.wrapperCss} ref={ref}>
       <button
         type="button"
         autoFocus={value === ""}
         css={[
-          styles.selectBoxStyle,
-          isOpen && styles.openStyle,
-          value ? styles.selectedStyle : styles.unSelectedStyle,
+          styles.selectBoxCss,
+          isOpen && styles.openCss,
+          value ? styles.selectedCss : styles.unSelectedCss,
         ]}
         onClick={handleToggle}
       >
@@ -40,11 +40,11 @@ export default function Dropdown<T extends string>({
         <img src="assets/dropdownArrow.svg"></img>
       </button>
       {isOpen && (
-        <ul css={styles.listStyle}>
+        <ul css={styles.listCss}>
           {list.map((item) => (
             <li
               key={item}
-              css={styles.itemStyle}
+              css={styles.itemCss}
               onClick={() => handleSelect(item)}
             >
               {item}

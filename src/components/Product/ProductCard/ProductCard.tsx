@@ -1,14 +1,13 @@
-import CartButton from "../../CartButton/CartButton";
-import Spinner from "../../Spinner/Spinner";
+import { useQueryContext } from "@/contexts/QueryContext";
+import CartButton from "@/components/CartButton/CartButton";
+import Spinner from "@/components/Spinner/Spinner";
 import * as styles from "./ProductCard.style";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 interface ProductCardProps {
   title: string;
   price: number;
   imageUrl: string;
-  refetchCart: () => Promise<void>;
-  isItemInCart: boolean;
   productId: number;
   cartItemId?: number;
 }
@@ -18,12 +17,16 @@ function ProductCard({
   title,
   price,
   imageUrl,
-  isItemInCart,
-  refetchCart,
   productId,
   cartItemId,
 }: ProductCardProps) {
   const [imageStatus, setImageStatus] = useState<ImageStatus>("loading");
+  const [finalImageUrl, setFinalImageUrl] = useState<string>(imageUrl);
+  const { dataPool } = useQueryContext();
+  const productsData = dataPool["products"];
+  const productQuantity = productsData?.find(
+    (product) => product.id === productId
+  )?.quantity;
 
   // 배포 환경에 따른 베이스 경로 계산
   const basePath = useMemo(() => {
@@ -42,29 +45,63 @@ function ProductCard({
   // Fallback 이미지 경로
   const fallbackImagePath = `${basePath}assets/fallback_image.png`;
 
+  // 이미지 URL 검증 및 처리
+  useEffect(() => {
+    if (!isValidImageUrl(imageUrl)) {
+      setImageStatus("error");
+      setFinalImageUrl(fallbackImagePath);
+      return;
+    }
+
+    // 이미지 미리 로드하여 CORS 문제 확인
+    const img = new Image();
+    img.onload = () => {
+      setImageStatus("loaded");
+      setFinalImageUrl(imageUrl);
+    };
+    img.onerror = () => {
+      setImageStatus("error");
+      setFinalImageUrl(fallbackImagePath);
+    };
+    img.src = imageUrl;
+  }, [imageUrl, fallbackImagePath]);
+
   return (
-    <li css={styles.cardCss}>
+    <li css={styles.cardCss} data-testid="product-card">
       {imageStatus === "loading" && <Spinner size={"large"} />}
-      <img
-        css={styles.imageCss}
-        src={
-          !isValidImageUrl(imageUrl) || imageStatus === "error"
-            ? fallbackImagePath
-            : imageUrl
-        }
-        alt={`${title} 상품`}
-        onLoad={() => setImageStatus("loaded")}
-        onError={() => setImageStatus("error")}
-      />
+
+      <div css={styles.imageCss}>
+        <img
+          src={imageStatus === "error" ? fallbackImagePath : finalImageUrl}
+          alt={`${title} 상품`}
+          onLoad={() => setImageStatus("loaded")}
+          onError={() => setImageStatus("error")}
+        />
+        {productQuantity === 0 && (
+          <div css={styles.soldOutCss}>
+            <p>품절</p>
+          </div>
+        )}
+        {productQuantity !== 0 && productQuantity && productQuantity < 3 && (
+          <div css={styles.soldOutSoonCss}>
+            <span className="track">
+              <span className="msg">⚠️ 품절 임박! 서둘러 구매하세요!</span>
+              <span className="msg" aria-hidden>
+                ⚠️ 품절 임박! 서둘러 구매하세요!
+              </span>
+            </span>
+          </div>
+        )}
+      </div>
       <div css={styles.detailCss}>
         <h2>{title}</h2>
         <p>{`${price.toLocaleString()}원`}</p>
-        <CartButton
-          productId={productId}
-          refetchCart={refetchCart}
-          isInCart={isItemInCart}
-          cartItemId={cartItemId}
-        />
+        <div css={styles.detailsContainerCss}>
+          <p>
+            {productQuantity === 0 ? "재고 없음" : `재고: ${productQuantity}개`}
+          </p>
+          <CartButton productId={productId} cartItemId={Number(cartItemId)} />
+        </div>
       </div>
     </li>
   );

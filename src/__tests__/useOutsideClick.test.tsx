@@ -3,8 +3,8 @@ import { describe, it, expect, vi } from "vitest";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import { fireEvent } from "@testing-library/react";
 
-describe("useOutsideClick hook", () => {
-  it("should call the callback when clicking outside the referenced element", () => {
+describe("useOutsideClick 훅은", () => {
+  it("바깥을 클릭했을때, 해당 콜백이 호출되어야 한다.", () => {
     // Setup a mock callback function
     const mockCallback = vi.fn();
 
@@ -41,7 +41,7 @@ describe("useOutsideClick hook", () => {
     document.body.removeChild(outsideElement);
   });
 
-  it("should not call the callback when clicking inside the referenced element", () => {
+  it("안쪽을 클릭했을때, 해당 콜백이 호출되지 않아야 한다.", () => {
     // Setup a mock callback function
     const mockCallback = vi.fn();
 
