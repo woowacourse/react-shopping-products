@@ -13,10 +13,57 @@
   background: rgba(0, 0, 0, 0.35);
 }
 
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
 .content {
   background: #fff;
-  width: 100%;
-  left: 0;
   bottom: 0;
   position: fixed;
+  width: 430px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 24px;
+  animation: lift-up 0.2s linear forwards;
+}
+
+.totalPriceContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.price {
+  font-size: 24px;
+}
+
+.content button {
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+  background: #333;
+  color: white;
+  padding: 8px;
+  font-weight: bold;
+  border: none;
+  transition: 0.3s background;
+}
+
+.content button:hover {
+  background: #222;
+}
+
+@keyframes lift-up {
+  0% {
+    transform: translateY(100%);
+  }
+
+  100% {
+    transform: translateY(0%);
+  }
 }

@@ -9,7 +9,11 @@ const Modal = ({ handleClose }: ModalProps) => {
     <div className={S.container}>
       <div data-testid="modal-overlay" className={S.overlay} onClick={handleClose} />
       <div className={S.content}>
-        <p>장바구니</p>
+        <p className={S.title}>장바구니</p>
+        <div className={S.totalPriceContainer}>
+          <p>총 결제 금액</p>
+          <p className={S.price}>95,000원</p>
+        </div>
         <button onClick={handleClose}>닫기</button>
       </div>
     </div>
