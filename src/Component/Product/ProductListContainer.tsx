@@ -3,25 +3,18 @@ import { ProductTypes } from '../../types/ProductTypes';
 import ProductList from './ProductList';
 import ProductListToolbar from './ProductListToolbar';
 import getProducts from '../../api/getProducts';
-import { CartItemTypes } from '../../types/CartItemType';
 import Spinner from '../Common/Spinner';
 import styled from '@emotion/styled';
+import { useAPIContext } from '../Common/Provider';
 
 interface ProductListContainerProps {
-  cartItems: CartItemTypes[];
-  updateCartItems: () => void;
-  getMatchCartItem: (id: number) => CartItemTypes | undefined;
   updateErrorMessage: (errorMessage: string) => void;
-  checkMax: () => boolean;
 }
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 export default function ProductListContainer({
-  updateCartItems,
-  getMatchCartItem,
   updateErrorMessage,
-  checkMax,
 }: ProductListContainerProps) {
   const [products, setProducts] = useState<ProductTypes[]>([]);
   const [status, setStatus] = useState<Status>('idle');
@@ -50,9 +43,6 @@ export default function ProductListContainer({
       {status === 'success' ? (
         <ProductList
           productList={products}
-          updateCartItems={updateCartItems}
-          getMatchCartItem={getMatchCartItem}
-          checkMax={checkMax}
           updateErrorMessage={updateErrorMessage}
         />
       ) : null}

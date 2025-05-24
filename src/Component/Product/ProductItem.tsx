@@ -6,11 +6,10 @@ import { useState } from 'react';
 import CountControl from './CountControl';
 import patchShoppingCart from '../../api/patchShoppingCart';
 import { css } from '@emotion/react';
+import getShoppingCart from '../../api/getShoppingCart';
+import { useAPIContext } from '../Common/Provider';
 
 type SetProducts = {
-  updateCartItems: () => void;
-  getMatchCartItem: (id: number) => CartItemTypes | undefined;
-  checkMax: () => boolean;
   quantity: number;
   updateErrorMessage: (errorMessage: string) => void;
   isRow: boolean;
@@ -21,13 +20,26 @@ export default function ProductItem({
   name,
   price,
   imageUrl,
-  updateCartItems,
-  getMatchCartItem,
-  checkMax,
   quantity,
-  updateErrorMessage,
   isRow,
+  updateErrorMessage,
 }: ProductTypes & SetProducts) {
+  const { data: cartItems, refetchData: updateCartItems } = useAPIContext<
+    CartItemTypes[]
+  >({
+    apiFn: () => getShoppingCart(),
+    key: 'cartItems',
+  });
+
+  const getMatchCartItem = (id: number) => {
+    const match = cartItems?.find((e) => e.product.id === id);
+    return match;
+  };
+
+  const checkMax = () => {
+    return cartItems?.length === 50;
+  };
+
   const [active, setActive] = useState(isRow);
   const [disabled, setDisabled] = useState(false);
 

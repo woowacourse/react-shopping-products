@@ -2,24 +2,19 @@ import styled from '@emotion/styled';
 import { Modal } from '../Modal';
 import CartItemModalContent from '../Modal/CartItemModalContent';
 import { CartItemTypes } from '../../types/CartItemType';
+import getShoppingCart from '../../api/getShoppingCart';
+import { useAPIContext } from '../Common/Provider';
 
 interface HeaderProps {
-  cartItems: CartItemTypes[];
-  status: 'idle' | 'loading' | 'success' | 'error';
-  updateCartItems: () => void;
-  getMatchCartItem: (id: number) => CartItemTypes | undefined;
   updateErrorMessage: (errorMessage: string) => void;
-  checkMax: () => boolean;
 }
 
-export default function Header({
-  cartItems,
-  status,
-  updateCartItems,
-  getMatchCartItem,
-  updateErrorMessage,
-  checkMax,
-}: HeaderProps) {
+export default function Header({ updateErrorMessage }: HeaderProps) {
+  const { data: cartItems, status } = useAPIContext<CartItemTypes[]>({
+    apiFn: () => getShoppingCart(),
+    key: 'cartItems',
+  });
+
   return (
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
@@ -36,13 +31,9 @@ export default function Header({
             ) : null}
           </StyledButton>
         </Modal.Trigger>
-        <CartItemModalContent
-          cartItems={cartItems}
-          updateCartItems={updateCartItems}
-          getMatchCartItem={getMatchCartItem}
-          checkMax={checkMax}
-          updateErrorMessage={updateErrorMessage}
-        />
+        {status === 'success' ? (
+          <CartItemModalContent updateErrorMessage={updateErrorMessage} />
+        ) : null}
       </Modal>
     </StyledHeader>
   );

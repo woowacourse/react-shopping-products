@@ -1,21 +1,14 @@
 import styled from '@emotion/styled';
 import { ProductTypes } from '../../types/ProductTypes';
-import { CartItemTypes } from '../../types/CartItemType';
 import ProductListItem from './ProductListItem';
 
 interface ProductListProps {
   productList: ProductTypes[];
-  updateCartItems: () => void;
-  getMatchCartItem: (id: number) => CartItemTypes | undefined;
-  checkMax: () => boolean;
   updateErrorMessage: (errorMessage: string) => void;
 }
 
 export default function ProductList({
   productList,
-  updateCartItems,
-  getMatchCartItem,
-  checkMax,
   updateErrorMessage,
 }: ProductListProps) {
   return (
@@ -26,9 +19,6 @@ export default function ProductList({
           id={props.id}
           key={props.id}
           isRow={false}
-          updateCartItems={updateCartItems}
-          getMatchCartItem={getMatchCartItem}
-          checkMax={checkMax}
           updateErrorMessage={updateErrorMessage}
         />
       ))}

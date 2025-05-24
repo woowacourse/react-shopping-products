@@ -3,22 +3,23 @@ import styled from '@emotion/styled';
 import ProductListItem from '../Product/ProductListItem';
 import { CartItemTypes } from '../../types/CartItemType';
 import deleteShoppingCart from '../../api/deleteShoppingCart';
+import { useAPIContext } from '../Common/Provider';
+import getShoppingCart from '../../api/getShoppingCart';
 
 interface CartItemModalContentProps {
-  cartItems: CartItemTypes[];
-  updateCartItems: () => void;
-  getMatchCartItem: (id: number) => CartItemTypes | undefined;
   updateErrorMessage: (errorMessage: string) => void;
-  checkMax: () => boolean;
 }
 
 export default function CartItemModalContent({
-  cartItems,
-  updateCartItems,
-  getMatchCartItem,
   updateErrorMessage,
-  checkMax,
 }: CartItemModalContentProps) {
+  const { data: cartItems, refetchData: updateCartItems } = useAPIContext<
+    CartItemTypes[]
+  >({
+    apiFn: () => getShoppingCart(),
+    key: 'cartItems',
+  });
+
   const totalPrice = cartItems.reduce(
     (a, b) => a + b.product.price * b.quantity,
     0
@@ -47,9 +48,6 @@ export default function CartItemModalContent({
                 <ProductListItem
                   {...item.product}
                   isRow={true}
-                  getMatchCartItem={getMatchCartItem}
-                  updateCartItems={updateCartItems}
-                  checkMax={checkMax}
                   updateErrorMessage={updateErrorMessage}
                 />
               </StyledLi>
