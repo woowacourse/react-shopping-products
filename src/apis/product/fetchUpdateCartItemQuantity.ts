@@ -2,7 +2,7 @@ import { apiRequest } from "../ApiRequest";
 
 type fetchUpdateCartItemQuantityParams = {
   params: {
-    id: string;
+    id: number;
     quantity: number;
   };
 };

@@ -2,7 +2,7 @@ import { apiRequest } from "../ApiRequest";
 
 type fetchAddProductParams = {
   params: {
-    productId: string;
+    productId: number;
     quantity: string;
   };
 };

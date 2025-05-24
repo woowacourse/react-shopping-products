@@ -6,7 +6,7 @@ type ApiRequestGetType = {
 
 type ApiRequestPostType = {
   endpoint: string;
-  searchParams: Record<string, string>;
+  searchParams: Record<string, string | number>;
   useToken?: boolean;
 };
 
