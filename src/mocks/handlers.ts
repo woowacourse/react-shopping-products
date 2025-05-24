@@ -130,7 +130,7 @@ export const handlers = [
       if (!product) {
         return new HttpResponse(null, {
           status: 404,
-          statusText: "잘못된 요청입니다. 입력값을 다시 확인해주세요.",
+          statusText: "Not found",
         });
       }
 
@@ -176,7 +176,7 @@ export const handlers = [
       if (currentCartItems.content.length === initialLength) {
         return new HttpResponse(null, {
           status: 404,
-          statusText: "잘못된 요청입니다. 입력값을 다시 확인해주세요.",
+          statusText: "Not found",
         });
       }
 
@@ -204,7 +204,7 @@ export const handlers = [
       if (itemIndex === -1) {
         return new HttpResponse(null, {
           status: 404,
-          statusText: "잘못된 요청입니다. 입력값을 다시 확인해주세요.",
+          statusText: "Not found",
         });
       }
 
