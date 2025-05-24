@@ -1,13 +1,15 @@
-import { CONFIG, PATH, PRODUCTS } from "@/constants";
+import { CONFIG, PATH } from "@/constants";
 import { http, HttpResponse } from "msw";
+import { CART_ITEMS_DATA } from "./datas/cartItems";
+import { PRODUCTS_DATA } from "./datas/products";
 
 export const handlers = [
   http.get(`${CONFIG.apiUrl}${PATH.products}`, () => {
-    return HttpResponse.json(PRODUCTS);
+    return HttpResponse.json(PRODUCTS_DATA);
   }),
 
   // http.get(`${CONFIG.apiUrl}${PATH.cartItems}`, () => {
-  //   return HttpResponse.json(CART_ITEMS);
+  //   return HttpResponse.json(CART_ITEMS_DATA);
   // }),
 
   // http.get(`${CONFIG.apiUrl}${PATH.products}/:id`, ({ params }) => {
