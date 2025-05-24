@@ -148,10 +148,10 @@ export default function ShopPage() {
           )}
         </Main>
       </div>
-
       <Modal
         isOpen={isOpen}
         title="장바구니"
+        handleClose={handleClose}
         footer={
           <Button style="primary" onClick={handleClose} size="full">
             닫기

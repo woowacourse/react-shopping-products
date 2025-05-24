@@ -1,3 +1,4 @@
+import { useKeyPress } from "../../../hook/useKeyPress";
 import {
   ModalBackdrop,
   ModalContainer,
@@ -9,12 +10,25 @@ import {
 
 interface ModalProps {
   isOpen: boolean;
-  title: string;
   children: React.ReactNode;
+  handleClose: () => void;
+  title: string;
   footer: React.ReactNode;
 }
 
-export function Modal({ isOpen, children, title, footer }: ModalProps) {
+export function Modal({
+  isOpen,
+  children,
+  handleClose,
+  title,
+  footer,
+}: ModalProps) {
+  useKeyPress({
+    targetKey: "Escape",
+    enabled: !isOpen,
+    onKeyMatch: handleClose,
+  });
+
   return (
     <section
       aria-labelledby="modal-title"
@@ -22,7 +36,7 @@ export function Modal({ isOpen, children, title, footer }: ModalProps) {
       aria-modal="true"
       css={ModalLayout(isOpen)}
     >
-      <div css={ModalBackdrop} />
+      <div css={ModalBackdrop} onClick={handleClose} />
       <div css={ModalContainer}>
         <header id="modal-title" css={ModalTitle}>
           {title}
