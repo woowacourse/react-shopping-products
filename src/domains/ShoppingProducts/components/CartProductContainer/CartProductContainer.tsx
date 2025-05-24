@@ -18,6 +18,18 @@ export default function CartProductContainer() {
       </div>
     );
 
+  const calculateTotalPrice = () => {
+    return cartItemList.reduce((total, cartItem) => {
+      const product = productList.find(
+        (product) => product.id === cartItem.product.id
+      );
+      if (product) {
+        return total + product.price * cartItem.quantity;
+      }
+      return total;
+    }, 0);
+  };
+
   return (
     <>
       <div css={CartProductContainerLayout}>
@@ -43,7 +55,7 @@ export default function CartProductContainer() {
       <Line />
       <div css={PaymentsLayout}>
         <p css={PaymentsLabel}> 총 결제 금액</p>
-        <p css={PaymentsValue}>95,000원</p>
+        <p css={PaymentsValue}>{calculateTotalPrice().toLocaleString()}원</p>
       </div>
     </>
   );
