@@ -1,24 +1,27 @@
+import { useProductContext } from "../../../domain/contexts/ProductContext";
+import Spinner from "../../Common/Spinner";
 import ProductList from "../ProductList/ProductList";
 import ProductListToolbar from "../ProductListToolbar/ProductListToolbar";
-import Spinner from "../../Common/Spinner";
-import useCartContext from "../../../domain/contexts/useCartContext";
-import useFetchProducts from "../../../domain/hooks/useFetchProducts";
 import { StyledSpinnerWrapper } from "./ProductListContainer.styles";
 
 export default function ProductListContainer() {
-  const { updateErrorMessage: onError } = useCartContext();
-  const { products, status, setProducts } = useFetchProducts(onError);
+  const { status, setProducts, products } = useProductContext();
+
+  if (status === "loading") {
+    return (
+      <StyledSpinnerWrapper>
+        <Spinner size={100} color="red" />
+      </StyledSpinnerWrapper>
+    );
+  }
+  if (status === "error") {
+    return <div>상품을 불러오는데 실패했습니다.</div>;
+  }
 
   return (
     <>
       <ProductListToolbar setProducts={setProducts} />
-      {status === "loading" && (
-        <StyledSpinnerWrapper>
-          <Spinner size={100} color="red" />
-        </StyledSpinnerWrapper>
-      )}
-
-      {status === "success" && <ProductList productList={products} />}
+      <ProductList productList={products} />
     </>
   );
 }

@@ -2,7 +2,7 @@ import Header from "./Component/Layout/Header/Header";
 import Body from "./Component/Layout/Body/Body";
 import ProductListContainer from "./Component/Product/ProductListContainer/ProductListContainer";
 import ErrorBox from "./Component/Common/ErrorBox/ErrorBox";
-import useCartContext from "./domain/contexts/useCartContext";
+import { useCartContext } from "./domain/contexts/CartContext";
 import styled from "@emotion/styled";
 import Modal from "./Component/Common/Modal/Modal";
 import { useState } from "react";

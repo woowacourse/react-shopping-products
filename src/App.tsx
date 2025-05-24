@@ -1,12 +1,12 @@
 import AppContent from "./AppContent";
-import { CartProvider } from "./domain/contexts/CartProvider";
+import { AppProvider } from "./domain/contexts/AppProvider";
 
 function App() {
   return (
     <>
-      <CartProvider>
+      <AppProvider>
         <AppContent />
-      </CartProvider>
+      </AppProvider>
     </>
   );
 }
