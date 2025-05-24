@@ -1,22 +1,22 @@
 import { css } from "@emotion/react";
 
-export const modalHeader = css({
+export const modalHeaderCss = css({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
 });
 
-export const headerContainer = css({
+export const headerContainerCss = css({
   position: "relative",
 });
 
-export const closeButton = css({
+export const closeButtonCss = css({
   "&:hover": {
     cursor: "pointer",
   },
 });
 
-export const title = css({
+export const titleCss = css({
   fontFamily: "Noto Sans KR",
   fontWeight: 700,
   fontSize: "18px",

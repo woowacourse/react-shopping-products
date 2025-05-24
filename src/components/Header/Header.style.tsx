@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { colors, radius } from "../../styles/theme";
 
-export const header = css({
+export const headerCss = css({
   position: "fixed",
   top: "0.5%",
   left: "50%",
@@ -22,7 +22,7 @@ export const header = css({
   p: { color: colors.white, fontWeight: 800, fontSize: "20px" },
 });
 
-export const cartIcon = css({
+export const cartIconCss = css({
   position: "relative",
 
   img: {
@@ -62,7 +62,7 @@ export const cartIcon = css({
   },
 });
 
-export const totalPrice = css({
+export const totalPriceCss = css({
   display: "flex",
   justifyContent: "space-between",
   marginTop: "16px",
@@ -86,7 +86,8 @@ export const totalPrice = css({
     fontSize: "28px",
   },
 });
-export const buttonContainer = css({
+
+export const buttonContainerCss = css({
   display: "flex",
   justifyContent: "space-between",
   marginTop: "16px",
@@ -110,7 +111,7 @@ export const buttonContainer = css({
   },
 });
 
-export const orderButton = css({
+export const orderButtonCss = css({
   backgroundColor: colors.black,
   color: colors.white,
   border: "none",
@@ -131,7 +132,7 @@ export const orderButton = css({
   },
 });
 
-export const closeButton = css({
+export const closeButtonCss = css({
   backgroundColor: colors.white,
   color: colors.black,
   border: `1px solid ${colors.gray[300]}`,
@@ -147,7 +148,7 @@ export const closeButton = css({
   },
 });
 
-export const emptyCartContainer = css({
+export const emptyCartContainerCss = css({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",

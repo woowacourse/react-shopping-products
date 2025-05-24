@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { colors, radius } from "../../styles/theme";
 
-export const quantityButton = css({
+export const quantityButtonCss = css({
   width: "24px",
   height: "24px",
   display: "flex",
@@ -28,7 +28,7 @@ export const quantityButton = css({
   },
 });
 
-export const quantityButtonContainer = css({
+export const quantityButtonContainerCss = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",

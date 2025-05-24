@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
-export const fallbackContainerStyle = css({
+
+export const fallbackContainerCss = css({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -8,10 +9,10 @@ export const fallbackContainerStyle = css({
   width: "320px",
 });
 
-export const fallbackImageStyle = css({
+export const fallbackImageCss = css({
   width: "400px",
 });
 
-export const fallbackTitleStyle = css({
+export const fallbackTitleCss = css({
   fontWeight: "bold",
 });

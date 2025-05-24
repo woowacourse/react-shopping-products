@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { colors } from "../../../styles/theme";
 
-export const cartList = css({
+export const cartListCss = css({
   display: "flex",
   flexDirection: "column",
   borderTop: `1px solid ${colors.gray[200]}`,

@@ -12,12 +12,12 @@ const slideDown = keyframes`
   }
 `;
 
-export const wrapperStyle = css({
+export const wrapperCss = css({
   position: "relative",
   width: "125px",
 });
 
-export const selectBoxStyle = css({
+export const selectBoxCss = css({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -39,22 +39,22 @@ export const selectBoxStyle = css({
   },
 });
 
-export const openStyle = css({
+export const openCss = css({
   borderColor: colors.primary,
   img: {
     transform: "rotate(180deg)",
   },
 });
 
-export const selectedStyle = css({
+export const selectedCss = css({
   color: colors.gray[600],
 });
 
-export const unSelectedStyle = css({
+export const unSelectedCss = css({
   color: colors.gray[400],
 });
 
-export const listStyle = css({
+export const listCss = css({
   position: "absolute",
   top: "100%",
   left: 0,
@@ -68,7 +68,7 @@ export const listStyle = css({
   animation: `${slideDown} 0.2s ease-out forwards`,
 });
 
-export const itemStyle = css({
+export const itemCss = css({
   width: "125px",
   padding: "10px 12px",
   fontSize: "14px",

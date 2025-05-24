@@ -10,7 +10,7 @@ const fadeIn = keyframes`
   }
 `;
 
-export const modalBackground = (position?: "center" | "bottom") =>
+export const modalBackgroundCss = (position?: "center" | "bottom") =>
   css({
     position: "fixed",
     display: "flex",
