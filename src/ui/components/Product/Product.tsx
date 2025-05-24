@@ -7,6 +7,8 @@ import {
   Detail,
   Price,
   ProductName,
+  SoldoutBakcgound,
+  SoldOutText,
   // SoldoutBakcgound,
   // SoldOutText,
 } from './Product.styles';
@@ -19,7 +21,7 @@ interface ProductProps {
 }
 
 function Product({ item }: ProductProps) {
-  const { name, price, imageUrl } = item;
+  const { name, price, imageUrl, quantity } = item;
 
   const {
     cartList,
@@ -35,28 +37,26 @@ function Product({ item }: ProductProps) {
     <Container>
       <ProductImageContainer>
         <ProductImage src={imageUrl} alt={name} />
-        {/* <SoldoutBakcgound>
-          <SoldOutText>품절</SoldOutText>
-        </SoldoutBakcgound> */}
+        {quantity === 0 && (
+          <SoldoutBakcgound>
+            <SoldOutText>품절</SoldOutText>
+          </SoldoutBakcgound>
+        )}
       </ProductImageContainer>
       <Detail>
         <ProductName>{name}</ProductName>
         <Price>{`${price.toLocaleString()}원`}</Price>
       </Detail>
-      {cartItem ? (
-        cartItem.quantity >= 1 ? (
-          <QuantityController
-            position="end"
-            quantity={cartItem.quantity}
-            onIncreaseClick={() => handleIncreaseQuantity(item)}
-            onDecreaseClick={() => handleDecreaseQuantity(item)}
-            onRemoveClick={() => handleRemoveCart(item)}
-          />
-        ) : (
-          <RemoveButton onClick={() => handleRemoveCart(item)} />
-        )
+      {cartItem && cartItem.quantity >= 1 ? (
+        <QuantityController
+          position="end"
+          quantity={cartItem.quantity}
+          onIncreaseClick={() => handleIncreaseQuantity(item)}
+          onDecreaseClick={() => handleDecreaseQuantity(item)}
+          onRemoveClick={() => handleRemoveCart(item)}
+        />
       ) : (
-        <AddButton onClick={() => handleAddCart(item)} />
+        <AddButton onClick={() => handleAddCart(item)} isDisable={!quantity} />
       )}
     </Container>
   );
