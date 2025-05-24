@@ -3,24 +3,13 @@ import styled from '@emotion/styled';
 import { Button } from '@sebin0580/modal';
 
 import { QuantitySelector } from '@/features/ProductList/components/QuantitySelector';
-import { Product } from '@/features/ProductList/types/Product';
+import { useControlQuantity } from '@/features/ProductList/hooks/useControlQuantity';
+import { CartItem } from '@/features/ProductList/types/Cart';
 import { Flex } from '@/shared/components/Flex';
 import { Text } from '@/shared/components/Text';
 
-type CartItemDetailProps = {
-  onUpdateCartItemQuantity: (id: number, quantity: number) => void;
-  onDeleteCartItem: () => void;
-} & Pick<Product, 'id' | 'name' | 'imageUrl' | 'price' | 'quantity'>;
-
-export const CartItemDetail = ({
-  id,
-  name,
-  price,
-  imageUrl,
-  quantity,
-  onUpdateCartItemQuantity,
-  onDeleteCartItem,
-}: CartItemDetailProps) => {
+export const CartItemDetail = ({ id, quantity, product }: CartItem) => {
+  const { increaseQuantity, decreaseQuantity } = useControlQuantity(id);
   return (
     <Flex
       direction="row"
@@ -41,7 +30,7 @@ export const CartItemDetail = ({
         padding="8px 0"
         margin="12px 0 0 0"
       >
-        <StyledCartItemImg src={imageUrl} alt={imageUrl} />
+        <StyledCartItemImg src={product.imageUrl} alt={product.imageUrl} />
         <Flex
           direction="column"
           justifyContent="space-between"
@@ -52,16 +41,16 @@ export const CartItemDetail = ({
           margin="0 0 0 8px"
         >
           <Text type="Body" weight="semibold">
-            {name}
+            {product.name}
           </Text>
           <Text type="Caption" weight="regular">
-            {price.toLocaleString()}원
+            {product.price.toLocaleString()}원
           </Text>
           <QuantitySelector
-            quantity={quantity}
+            quantity={product.quantity}
             count={quantity}
-            onIncrease={() => onUpdateCartItemQuantity(id, quantity + 1)}
-            onDecrease={() => onUpdateCartItemQuantity(id, quantity - 1)}
+            onIncrease={increaseQuantity}
+            onDecrease={decreaseQuantity}
           />
         </Flex>
       </Flex>
@@ -73,7 +62,7 @@ export const CartItemDetail = ({
         css={css`
           margin-top: 8px;
         `}
-        onClick={onDeleteCartItem}
+        onClick={decreaseQuantity}
       >
         삭제
       </Button>
