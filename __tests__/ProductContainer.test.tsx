@@ -3,13 +3,13 @@ import userEvent from "@testing-library/user-event";
 import * as productApi from "../src/api/getProducts";
 import { vi, describe, it, afterEach } from "vitest";
 import ProductListContainer from "../src/Component/Product/ProductListContainer/ProductListContainer";
+import { MOCK_PRODUCTS } from "./Constants";
+import React from "react";
 import {
   CartContext,
   CartContextValue,
   Status,
-} from "../src/contexts/CartContext";
-import { MOCK_PRODUCTS } from "./Constants";
-import React from "react";
+} from "../src/domain/contexts/useCartContext";
 
 const mockUpdateCartItems = vi.fn();
 const mockGetMatchCartItem = vi.fn();
