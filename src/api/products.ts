@@ -11,6 +11,7 @@ export interface ProductContent {
   name: null | string;
   price: number;
   imageUrl: null | string;
+  quantity: number;
   category: Category | null;
 }
 
@@ -20,6 +21,7 @@ export interface Product {
   name: string;
   price: number;
   imageUrl: string;
+  quantity: number;
   category: ProductCategoryType;
 }
 
@@ -30,12 +32,14 @@ export const convertResponseToProduct = ({
   name,
   price,
   imageUrl,
+  quantity,
   category,
 }: ProductContent): Product => ({
   id: id.toString(),
   name: name ?? '',
   price,
   imageUrl: imageUrl ?? 'defaultImage',
+  quantity: quantity ?? 0,
   category: (category ?? '전체') as ProductCategoryType,
 });
 
