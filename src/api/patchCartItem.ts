@@ -10,7 +10,7 @@ async function patchCartItem({ cartId, quantity }: { cartId: number; quantity: n
     }),
   });
 
-  return res;
+  return await res.json();
 }
 
 export default patchCartItem;

@@ -7,7 +7,7 @@ async function deleteCartItem({ cartId }: { cartId: number }) {
     },
   });
 
-  return res;
+  return await res.json();
 }
 
 export default deleteCartItem;
