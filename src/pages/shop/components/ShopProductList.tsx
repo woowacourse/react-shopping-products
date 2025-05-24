@@ -1,8 +1,8 @@
+import ProductCard from '@/components/features/product/product-card/ProductCard';
+import { Cart, Product } from '@/components/features/product/type';
 import styled from '@emotion/styled';
-import ProductCard from '../product-card/ProductCard';
-import { Cart, Product } from '../type';
 
-function ProductList({
+function ShopProductList({
   resource,
   cartList,
 }: {
@@ -41,4 +41,4 @@ const Container = styled.div`
   column-gap: 20px;
 `;
 
-export default ProductList;
+export default ShopProductList;

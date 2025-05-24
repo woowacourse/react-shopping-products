@@ -1,16 +1,14 @@
 import { wrapPromise } from '@/api/wrapPromise';
 import { ErrorToastMessage, Flex, Loading } from '@/components/common';
+import CartModal from '@/components/features/cart/CartModal';
 import { getProductList } from '@/components/features/product/api/getProductList';
-import ProductList from '@/components/features/product/product-list/ProductList';
 import { Product } from '@/components/features/product/type';
 import { useCartContext } from '@/context/useCartContext';
-import ShopFilter from '@/pages/shop/components/filter/ShopFilter';
-import ShopHeader from '@/pages/shop/components/header/ShopHeader';
 import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
-import { Suspense, useMemo, useState } from 'react';
 import { Modal } from '@jae-o/modal-component-module';
-import ProductRowCard from '@/components/features/product/product-card/ProductRowCard';
+import { Suspense, useMemo, useState } from 'react';
+import { ShopFilter, ShopHeader, ShopProductList } from './components';
 
 function ShopPage() {
   const [filter, setFilter] = useState({
@@ -36,11 +34,6 @@ function ShopPage() {
 
   const listPromiseData = useMemo(() => getProductList(filter), [filter]);
 
-  const totalPrice = cartList.reduce(
-    (acc, curCart) => acc + curCart.quantity * curCart.product.price,
-    0
-  );
-
   return (
     <Modal>
       <ShopHeader itemsCount={cartList.length} />
@@ -54,49 +47,14 @@ function ShopPage() {
           />
         </ListTitleBox>
         <Suspense fallback={<Loading />}>
-          <ProductList
+          <ShopProductList
             resource={wrapPromise<Product[]>(listPromiseData)}
             cartList={cartList}
           />
         </Suspense>
         {isError && <ErrorToastMessage />}
       </ProductListContainer>
-      <Modal.Container
-        title="장바구니"
-        showCloseButton={false}
-        position="bottom"
-        style={{ maxHeight: 'calc(100% - 120px)', overflow: 'auto' }}
-      >
-        {cartList.map(({ id, quantity, product }) => {
-          const matchingCart = cartList.find(
-            (cart) => cart.product.id === product.id
-          );
-          return (
-            <Flex>
-              <Separator />
-              <ProductRowCard
-                id={product.id}
-                name={product.name}
-                price={product.price}
-                imageUrl={product.imageUrl}
-                cartId={id}
-                cartCount={quantity}
-                isInCart={!!matchingCart}
-              />
-            </Flex>
-          );
-        })}
-        <Flex>
-          <Separator />
-          <TotalPriceBox>
-            <TotalPriceLabel>총 결제 금액</TotalPriceLabel>
-            <TotalPrice>{`${totalPrice.toLocaleString()}원`}</TotalPrice>
-          </TotalPriceBox>
-        </Flex>
-        <Modal.CloseTrigger>
-          <Modal.WideButton>닫기</Modal.WideButton>
-        </Modal.CloseTrigger>
-      </Modal.Container>
+      <CartModal />
     </Modal>
   );
 }
@@ -114,28 +72,6 @@ const ListTitleBox = styled(Flex)`
 
 const ListTitle = styled.h2`
   ${({ theme }) => theme.heading};
-`;
-
-const Separator = styled.div`
-  width: 100%;
-  border: 1px solid #0000001a;
-`;
-
-const TotalPriceBox = styled(Flex)`
-  height: 42px;
-
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const TotalPriceLabel = styled.p`
-  font-weight: 700;
-  font-size: 18px;
-`;
-
-const TotalPrice = styled.p`
-  font-weight: 700;
-  font-size: 24px;
 `;
 
 export default ShopPage;
