@@ -99,10 +99,29 @@ const addCartItem = http.post(BASE_URL, async ({ request }) => {
     return HttpResponse.json(undefined, { status: 201 });
   }
 });
+
 // 장바구니 아이템 삭제 DELETE
+const deleteCartItem = http.delete(`${BASE_URL}/:id`, ({ params }) => {
+  const { id } = params;
+  const cartItemId = Array.isArray(id) ? id[0] : id;
+  const convertedCartItemId = Number.parseInt(cartItemId, 10);
+  const itemIndex = cartItems.findIndex(
+    (item) => item.id === convertedCartItemId
+  );
+
+  if (itemIndex === -1) {
+    return HttpResponse.json(
+      { error: `cartItem not found; cartItemId=${convertedCartItemId}` },
+      { status: 404 }
+    );
+  }
+  cartItems.splice(itemIndex, 1);
+
+  return HttpResponse.json(undefined, { status: 204 });
+});
 
 // 장바구니 아이템 수량 변경 PATCH
 
-const cartItemHandler = [getCartItems, addCartItem];
+const cartItemHandler = [getCartItems, addCartItem, deleteCartItem];
 
 export default cartItemHandler;
