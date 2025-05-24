@@ -4,7 +4,7 @@ export interface Product {
   imageUrl: string;
   name: string;
   price: number;
-  quantity?: number;
+  quantity: number;
 }
 
 export interface CartProduct {

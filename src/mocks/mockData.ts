@@ -1,4 +1,6 @@
-export const products = {
+import {Product} from '../features/products/type/product';
+
+export const products: {content: Product[]} = {
   content: [
     {
       id: 1,

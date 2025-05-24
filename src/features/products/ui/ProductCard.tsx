@@ -26,7 +26,7 @@ export default function ProductCard({
 }: ProductCardProps) {
   const showError = useShowError();
   const [isCarting, setIsCarting] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const {refetch} = useApi(getCartProduct, 'cartItems');
 
   const handlePutCartClick = async () => {
@@ -38,6 +38,13 @@ export default function ProductCard({
     if (cartQuantity >= MAX_CART_QUANTITY) {
       showError?.(
         `장바구니에 담을 수 있는 최대 개수는 ${MAX_CART_QUANTITY}개입니다.`
+      );
+      return;
+    }
+
+    if (product.quantity < quantity) {
+      showError?.(
+        `장바구니에 현재 재고 ${product.quantity}개를 초과하여 담을 수 없습니다.`
       );
       return;
     }
