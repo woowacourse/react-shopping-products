@@ -1,0 +1,189 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "name": "메이토1",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 2,
+      "name": "메이토2",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 3,
+      "name": "메이토3",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 4,
+      "name": "메이토4",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 5,
+      "name": "메이토5",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 6,
+      "name": "메이토6",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 7,
+      "name": "메이토7",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 8,
+      "name": "메이토8",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 9,
+      "name": "메이토9",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 10,
+      "name": "메이토10",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 11,
+      "name": "메이토11",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 12,
+      "name": "메이토12",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 13,
+      "name": "메이토13",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 14,
+      "name": "메이토14",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 15,
+      "name": "메이토15",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 16,
+      "name": "메이토16",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 17,
+      "name": "메이토17",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 18,
+      "name": "메이토18",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 19,
+      "name": "메이토19",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    },
+    {
+      "id": 20,
+      "name": "메이토20",
+      "price": 1000,
+      "imageUrl": "",
+      "category": "식료품",
+      "quantity": 10
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 20,
+    "sort": {
+      "empty": false,
+      "sorted": true,
+      "unsorted": false
+    },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": false,
+  "totalElements": 51,
+  "totalPages": 3,
+  "size": 20,
+  "number": 0,
+  "sort": {
+    "empty": false,
+    "sorted": true,
+    "unsorted": false
+  },
+  "first": true,
+  "numberOfElements": 20,
+  "empty": false
+}
