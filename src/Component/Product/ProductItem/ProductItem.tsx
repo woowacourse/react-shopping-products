@@ -27,17 +27,17 @@ export default function ProductItem({
   name,
   price,
   imageUrl,
-  updateCartItems,
+  // updateCartItems,
   getMatchCartItem,
-  checkMax,
-}: ProductItemProps) {
+}: // checkMax,
+ProductItemProps) {
   const isItemInCart = Boolean(getMatchCartItem(id));
 
   const handleItemClick = useToggleCartItem(
-    id,
-    getMatchCartItem,
-    checkMax,
-    updateCartItems
+    id
+    // getMatchCartItem,
+    // checkMax,
+    // updateCartItems
   );
 
   return (

@@ -1,6 +1,6 @@
 import SelectBox from "../../Common/SelectBox/SelectBox";
 import { ProductTypes } from "../../../types/ProductTypes";
-import useCartContext from "../../../domain/contexts/useCartContext";
+// import useCartContext from "../../../domain/contexts/useCartContext";
 import { useProductFilters } from "../../../domain/hooks/useProductFilter";
 import {
   SelectBoxContainer,
@@ -27,9 +27,10 @@ const PRICE = [
 export default function ProductListToolbar({
   setProducts,
 }: ProductListToolbarProps) {
-  const { updateErrorMessage } = useCartContext();
+  // const { updateErrorMessage } = useCartContext();
   const { category, price, onCategoryChange, onPriceChange } =
-    useProductFilters(setProducts, updateErrorMessage);
+    // useProductFilters(setProducts, updateErrorMessage);
+    useProductFilters(setProducts);
 
   return (
     <Container>
