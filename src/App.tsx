@@ -5,6 +5,7 @@ import ShoppingCartProvider from "./contexts/shoppingCart/ShoppingCartProvider";
 import ProductsProvider from "./contexts/products/ProductsProvider";
 import CartModal from "./components/CartModal/CartModal";
 import { useState } from "react";
+import { APIProvider } from "./contexts/APIProvider/APIProvider";
 
 function App() {
   const [isOepn, setIsOpen] = useState(false);
@@ -14,15 +15,17 @@ function App() {
   };
 
   return (
-    <ProductsProvider>
-      <ShoppingCartProvider>
-        <div className={AppStyles}>
-          <Header onCartClick={handleModal} />
-          <ProductListPage />
-          <CartModal isOpen={isOepn} onModalClose={handleModal} />
-        </div>
-      </ShoppingCartProvider>
-    </ProductsProvider>
+    <APIProvider>
+      <ProductsProvider>
+        <ShoppingCartProvider>
+          <div className={AppStyles}>
+            <Header onCartClick={handleModal} />
+            <ProductListPage />
+            <CartModal isOpen={isOepn} onModalClose={handleModal} />
+          </div>
+        </ShoppingCartProvider>
+      </ProductsProvider>
+    </APIProvider>
   );
 }
 

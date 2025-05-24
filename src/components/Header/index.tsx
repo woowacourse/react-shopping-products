@@ -1,11 +1,16 @@
 import { css } from "@emotion/css";
-import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
+import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
+import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
+import ErrorToast from "../ErrorToast";
 
 interface HeaderProps {
   onCartClick: () => void;
 }
 const Header = ({ onCartClick }: HeaderProps) => {
-  const { cartItems } = useShoppingCartContext();
+  const { data, error } = useAPIContext({
+    name: "cartItems",
+    fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
+  });
 
   return (
     <header className={HeaderStyles}>
@@ -18,9 +23,10 @@ const Header = ({ onCartClick }: HeaderProps) => {
         className={IconStyles}
         onClick={onCartClick}
       />
-      {cartItems.length !== 0 && (
-        <div className={ShoppingCartCount}>{cartItems.length}</div>
+      {Array.isArray(data) && data.length > 0 && (
+        <div className={ShoppingCartCount}>{data.length}</div>
       )}
+      {error.isError && <ErrorToast errorMessage={error.errorMessage} />}
     </header>
   );
 };
