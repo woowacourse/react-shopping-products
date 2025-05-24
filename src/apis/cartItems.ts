@@ -35,6 +35,23 @@ export const CartItemsAPI = {
     const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems);
     return await fetchWithErrorHandling(apiUrl, options, false);
   },
+
+  updateQuantity: async (cartId: number, quantity: number) => {
+    const options: RequestInit = {
+      method: "PATCH",
+      headers: {
+        Authorization: `Basic ${import.meta.env.VITE_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quantity: quantity,
+      }),
+    };
+
+    const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
+    return await fetchWithErrorHandling(apiUrl, options, false);
+  },
+
   delete: async (cartId: number) => {
     const options: RequestInit = {
       method: "DELETE",

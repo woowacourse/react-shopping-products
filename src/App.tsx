@@ -19,10 +19,12 @@ const AppContent = () => {
 
   const {
     cartItems,
-    cartItemIds,
+    cartItemInfo,
     errorMessage: cartError,
     setErrorMessage: setCartError,
-    handleCartItemToggle,
+    handleAddToCart,
+    handleQuantityIncrease,
+    handleQuantityDecrease,
   } = useCartItems();
 
   const errorMessage = productError || cartError;
@@ -41,8 +43,10 @@ const AppContent = () => {
           <ProductList
             products={products}
             isLoading={isLoading}
-            cartItemIds={cartItemIds}
-            handleCartItemToggle={handleCartItemToggle}
+            cartItemInfo={cartItemInfo}
+            onAddToCart={handleAddToCart}
+            onQuantityIncrease={handleQuantityIncrease}
+            onQuantityDecrease={handleQuantityDecrease}
           />
           {!!errorMessage && (
             <ErrorToast
