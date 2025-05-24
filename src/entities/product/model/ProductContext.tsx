@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  PropsWithChildren,
+} from "react";
 import {
   CategoryOptionsKey,
   SortOptionsKey,
@@ -8,7 +13,8 @@ import useToast from "../../../shared/hooks/useToast";
 import { isErrorResponse } from "../../../shared/utils/typeGuard";
 import { ProductsAPI } from "../api/products";
 import { Products } from "./types";
-interface UseProductsReturn {
+
+export interface ProductContextType {
   products: Products | null;
   isLoading: boolean;
   selectedCategory: CategoryOptionsKey;
@@ -17,7 +23,9 @@ interface UseProductsReturn {
   setSelectedSortOption: React.Dispatch<React.SetStateAction<SortOptionsKey>>;
 }
 
-const useProducts = (): UseProductsReturn => {
+export const ProductContext = createContext<ProductContextType | null>(null);
+
+export const ProductProvider = ({ children }: PropsWithChildren) => {
   const [products, setProducts] = useState<Products | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] =
@@ -47,14 +55,18 @@ const useProducts = (): UseProductsReturn => {
     })();
   }, [selectedCategory, selectedSortOption]);
 
-  return {
-    products,
-    isLoading,
-    selectedCategory,
-    setSelectedCategory,
-    selectedSortOption,
-    setSelectedSortOption,
-  };
+  return (
+    <ProductContext.Provider
+      value={{
+        products,
+        isLoading,
+        selectedCategory,
+        setSelectedCategory,
+        selectedSortOption,
+        setSelectedSortOption,
+      }}
+    >
+      {children}
+    </ProductContext.Provider>
+  );
 };
-
-export default useProducts;

@@ -1,16 +1,10 @@
-import { Dispatch } from "react";
-import {
-  categoryOptions,
-  CategoryOptionsKey,
-} from "../../../../shared/config/filter";
+import { useProducts } from "../../../../entities/product/model/useProducts";
+import { categoryOptions } from "../../../../shared/config/filter";
 import SelectBox from "../../../../shared/ui/SelectBox/SelectBox";
 
-interface Props {
-  selectedCategory: CategoryOptionsKey;
-  setSelectedCategory: Dispatch<React.SetStateAction<CategoryOptionsKey>>;
-}
+const CategoryFilter = () => {
+  const { selectedCategory, setSelectedCategory } = useProducts();
 
-const CategoryFilter = ({ selectedCategory, setSelectedCategory }: Props) => {
   return (
     <SelectBox
       value={selectedCategory}

@@ -1,30 +1,26 @@
+import { useCartItems } from "../../../entities/cartItem/model/useCartItems";
+import { BaseProduct } from "../../../shared/api/types/response";
 import QuantitySelector from "../../../shared/ui/QuantitySelector/QuantitySelector";
 import AddCartItemButton from "./AddCartItemButton/AddCartItemButton";
 import * as S from "./ProductItem.styles";
 
-interface Props {
-  imageUrl: string;
-  name: string;
-  price: number;
-  currentQuantity: number;
-  maxQuantity: number;
-  increaseItemQuantity: () => void;
-  decreaseItemQuantity: () => void;
-  addProductInCart: () => void;
-}
-
 const CART_QUANTITY_THRESHOLD = 1;
 
 const ProductItem = ({
-  imageUrl,
+  id,
   name,
   price,
-  currentQuantity,
-  maxQuantity,
-  increaseItemQuantity,
-  decreaseItemQuantity,
-  addProductInCart,
-}: Props) => {
+  imageUrl,
+  quantity: maxQuantity,
+}: BaseProduct) => {
+  const {
+    quantityByProductId,
+    increaseItemQuantity,
+    decreaseItemQuantity,
+    addProductInCart,
+  } = useCartItems();
+
+  const currentQuantity = quantityByProductId(id);
   const isOutOfStock = maxQuantity <= 0;
   const isMaxQuantityReached = currentQuantity >= maxQuantity;
   const isInCart = currentQuantity >= CART_QUANTITY_THRESHOLD;
@@ -41,13 +37,13 @@ const ProductItem = ({
           {isInCart ? (
             <QuantitySelector
               quantity={currentQuantity}
-              onIncrease={increaseItemQuantity}
-              onDecrease={decreaseItemQuantity}
+              onIncrease={() => increaseItemQuantity(id)}
+              onDecrease={() => decreaseItemQuantity(id)}
               increaseDisabled={isMaxQuantityReached}
             />
           ) : (
             <AddCartItemButton
-              onClick={addProductInCart}
+              onClick={() => addProductInCart(id)}
               disabled={isMaxQuantityReached}
             />
           )}

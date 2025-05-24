@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { ModalProvider } from "./app/providers/ModalContext.tsx";
 import { ToastProvider } from "./app/providers/ToastContext.tsx";
+import { CartItemProvider } from "./entities/cartItem/model/CartItemContext.tsx";
+import { ProductProvider } from "./entities/product/model/ProductContext.tsx";
 
 async function enableMocking() {
   const { worker } = await import("./mocks/browser");
@@ -22,9 +24,13 @@ enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
       <ToastProvider>
-        <ModalProvider>
-          <App />
-        </ModalProvider>
+        <ProductProvider>
+          <CartItemProvider>
+            <ModalProvider>
+              <App />
+            </ModalProvider>
+          </CartItemProvider>
+        </ProductProvider>
       </ToastProvider>
     </React.StrictMode>
   );

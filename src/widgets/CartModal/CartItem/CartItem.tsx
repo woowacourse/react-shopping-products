@@ -1,29 +1,15 @@
+import { CartItemContent } from "../../../entities/cartItem/model/types";
+import { useCartItems } from "../../../entities/cartItem/model/useCartItems";
 import QuantitySelector from "../../../shared/ui/QuantitySelector/QuantitySelector";
 import * as S from "./CartItem.styles";
 
-interface Props {
-  imageUrl: string;
-  name: string;
-  price: number;
-  quantity: number;
-  increaseItemQuantity: () => void;
-  decreaseItemQuantity: () => void;
-  deleteProductInCart: () => void;
-  increaseDisabled?: boolean;
-  decreaseDisabled?: boolean;
-}
-
 const CartItem = ({
-  imageUrl,
-  name,
-  price,
-  quantity,
-  increaseItemQuantity,
-  decreaseItemQuantity,
-  deleteProductInCart,
-  increaseDisabled,
-  decreaseDisabled,
-}: Props) => {
+  quantity: currentQuantity,
+  product: { id: productId, name, price, imageUrl, quantity: maxQuantity },
+}: CartItemContent) => {
+  const { increaseItemQuantity, decreaseItemQuantity, deleteProductInCart } =
+    useCartItems();
+
   return (
     <S.CartItem>
       <S.CartItemImage $url={imageUrl} />
@@ -32,14 +18,15 @@ const CartItem = ({
           <S.CartItemName>{name}</S.CartItemName>
           <S.CartItemPrice>{price.toLocaleString()}원</S.CartItemPrice>
           <QuantitySelector
-            quantity={quantity}
-            onIncrease={increaseItemQuantity}
-            onDecrease={decreaseItemQuantity}
-            increaseDisabled={increaseDisabled}
-            decreaseDisabled={decreaseDisabled}
+            quantity={currentQuantity}
+            onIncrease={() => increaseItemQuantity(productId)}
+            onDecrease={() => decreaseItemQuantity(productId)}
+            increaseDisabled={currentQuantity >= maxQuantity}
           />
         </S.CartItemInfo>
-        <S.DeleteButton onClick={deleteProductInCart}>삭제</S.DeleteButton>
+        <S.DeleteButton onClick={() => deleteProductInCart(productId)}>
+          삭제
+        </S.DeleteButton>
       </S.CartItemWrapper>
     </S.CartItem>
   );
