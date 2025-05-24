@@ -19,7 +19,10 @@ export async function baseAPI<T>({
     body: body ? JSON.stringify(body) : null,
   });
   if (!result.ok) {
-    throw new Error('서버에서 에러가 발생했습니다.');
+    const resultString = await result.text();
+    const parsedResult = JSON.parse(resultString);
+
+    throw new Error(parsedResult.message);
   }
 
   if (method === 'GET') return result.json();

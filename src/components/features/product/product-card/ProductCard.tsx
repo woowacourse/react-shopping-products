@@ -64,8 +64,12 @@ function ProductCard({
       await updateCartItem(cartId, quantity);
       refetch();
       hideErrorMessage();
-    } catch {
-      showErrorMessage('장바구니에서 개수를 수정하는데 실패했습니다.');
+    } catch (error) {
+      if (error instanceof Error) {
+        showErrorMessage(error.message);
+      } else {
+        showErrorMessage('장바구니 수량 변경에 실패했습니다.');
+      }
     }
   };
 

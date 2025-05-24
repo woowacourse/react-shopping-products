@@ -127,8 +127,6 @@ export const handlers = [
     const raw = localStorage.getItem('cartItems');
     const cartItems: CartItemContent[] = raw ? JSON.parse(raw) : [];
 
-    console.log(cartItems);
-
     const updatedCartItems = cartItems.filter(
       (item) => String(item.id) !== String(id)
     );
@@ -143,8 +141,16 @@ export const handlers = [
     };
     const raw = localStorage.getItem('cartItems');
     const cartItems: CartItemContent[] = raw ? JSON.parse(raw) : [];
-
-    console.log(cartItems);
+    const patchingCartItem = cartItems.find((item) => item.id === Number(id));
+    if (!patchingCartItem || quantity > patchingCartItem?.product.quantity) {
+      return HttpResponse.json(
+        {
+          errorCode: 'OUT_OF_STOCK',
+          message: '재고 수량을 초과하여 담을 수 없습니다.',
+        },
+        { status: 404 }
+      );
+    }
 
     const updatedCartItems = cartItems.map((item) => {
       if (String(item.id) !== String(id)) return item;
@@ -152,7 +158,6 @@ export const handlers = [
       return { ...item, quantity };
     });
 
-    console.log(updatedCartItems);
     localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
 
     return HttpResponse.json(null, { status: 200 });
