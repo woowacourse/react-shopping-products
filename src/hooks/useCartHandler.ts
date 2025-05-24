@@ -39,7 +39,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   useEffect(() => {
     fetchTotalCartItems();
-  }, []);
+  }, [fetchTotalCartItems]);
 
   const handleAddCartItem = useCallback(
     async (productId: number, quantity: number) => {
