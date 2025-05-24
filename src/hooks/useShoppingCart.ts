@@ -6,6 +6,29 @@ import fetchRemoveProduct from "../apis/product/fetchRemoveProduct";
 import useErrorMessage from "./useErrorMessage";
 
 import toastMessage from "../utils/toastMessage";
+import fetchUpdateCartItemQuantity from "../apis/product/fetchUpdateCartItemQuantity";
+
+const getCartItems = async () => {
+  try {
+    const { content } = await fetchCartItems({
+      params: {
+        page: "0",
+        size: "50",
+      },
+    });
+
+    return content.map((item) => ({
+      ...item,
+      id: item.id.toString(),
+      product: { ...item.product, id: item.product.id.toString() },
+    }));
+  } catch (error) {
+    if (!(error instanceof Error)) {
+      throw error;
+    }
+    throw new Error(error.message);
+  }
+};
 
 const useShoppingCart = () => {
   const [selectedProductIdList, setSelectedProductIdList] = useState<string[]>(
@@ -89,6 +112,41 @@ const useShoppingCart = () => {
     }
   };
 
+  const handleIncreaseCartItemQuantity = async (productId: string) => {
+    try {
+      const PLUS_UNIT = 1;
+      const cartItems = await getCartItems();
+      const targetCartItem = cartItems.find(
+        (cartItem) => cartItem.product.id === productId
+      );
+
+      if (!targetCartItem) {
+        return;
+      }
+
+      const cartItemQuantity = targetCartItem.quantity;
+      const stockQuantity = targetCartItem.product.quantity;
+
+      if (cartItemQuantity + PLUS_UNIT > stockQuantity) {
+        showErrorMessage("재고 수량을 초과하여 담을 수 없습니다.");
+        return;
+      }
+
+      await fetchUpdateCartItemQuantity({
+        params: {
+          id: targetCartItem.id,
+          quantity: targetCartItem.quantity + PLUS_UNIT,
+        },
+      });
+    } catch (error) {
+      if (!(error instanceof Error)) {
+        return;
+      }
+
+      showErrorMessage(error.message);
+    }
+  };
+
   useEffect(() => {
     const loadCartItems = async () => {
       try {
@@ -121,6 +179,7 @@ const useShoppingCart = () => {
     errorMessage,
     handleAddProduct,
     handleRemoveProduct,
+    handleIncreaseCartItemQuantity,
   };
 };
 

@@ -16,6 +16,12 @@ type ApiRequestDeleteType = {
   useToken?: boolean;
 };
 
+type APIRequestPatchType = {
+  endpoint: string;
+  searchParams: Record<string, string | number>;
+  useToken?: boolean;
+};
+
 class ApiRequest {
   #baseUrl: string;
   #token: string;
@@ -86,6 +92,30 @@ class ApiRequest {
     const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error("상품을 빼는데 실패했습니다.");
+    }
+  }
+
+  async PATCH({
+    endpoint,
+    searchParams,
+    useToken = true,
+  }: APIRequestPatchType) {
+    const url = new URL(`${this.#baseUrl}${endpoint}`);
+
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...(useToken && { Authorization: `Basic ${this.#token}` }),
+      },
+      body: JSON.stringify(searchParams),
+    };
+
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      const data = await response.json();
+
+      throw new Error(data.message || "상품 수량 변경에 실패했습니다.");
     }
   }
 }
