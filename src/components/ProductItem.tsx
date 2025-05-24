@@ -7,14 +7,14 @@ import { MockProductsType } from '../mocks/dummy';
 
 interface ProductItemProps {
   product: MockProductsType;
-  isCartAdded: boolean;
+  quantityInCart: number;
   handleAddCartItem: (id: number, quantity: number) => void;
   handleRemoveCartItem: (id: number) => void;
 }
 
 const ProductItem = ({
   product,
-  isCartAdded,
+  quantityInCart,
   handleAddCartItem,
   handleRemoveCartItem,
 }: ProductItemProps) => {
@@ -33,7 +33,7 @@ const ProductItem = ({
           <ProductItemPrice>{product.price.toLocaleString()}원</ProductItemPrice>
         </ProductItemInfo>
 
-        {isCartAdded ? (
+        {quantityInCart > 0 ? (
           <QuantityController>
             <Button
               type="button"
