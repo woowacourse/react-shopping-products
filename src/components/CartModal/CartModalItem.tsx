@@ -20,7 +20,13 @@ const CartModalItem = ({
       <hr className={hrStyles} />
       <div className={infoStyles}>
         <div className={contentStyles}>
-          <img src={imgUrl} className={imageStyles} />
+          <img
+            src={imgUrl || "./default.png"}
+            className={imageStyles}
+            onError={(e) => {
+              e.currentTarget.src = "./default.png";
+            }}
+          />
           <div className={textContainerStyles}>
             <div className={nameStyles}>{name}</div>
             <div className={priceStyles}>{price}</div>

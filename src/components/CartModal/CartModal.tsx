@@ -1,26 +1,36 @@
 import { Modal } from "pongju-modal-component";
 import CartModalItem from "./CartModalItem";
 import CartTotalPrice from "./CartTotalPrice";
+import { CartItem } from "../../types/product.type";
 
 interface CartModalProps {
   isOpen: boolean;
   onModalClose: () => void;
+  cartItems: CartItem[];
 }
 
-const CartModal = ({ isOpen, onModalClose }: CartModalProps) => {
+const CartModal = ({ isOpen, onModalClose, cartItems }: CartModalProps) => {
+  const totalPrice = cartItems.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0
+  );
+
   return (
     <Modal isOpen={isOpen} onClose={onModalClose} position="bottom">
       <Modal.Backdrop>
         <Modal.Frame styled={{ width: "429px" }} autoModalFocus={false}>
           <Modal.Title title={"장바구니"} />
           <Modal.Body>
-            <CartModalItem
-              name="테스트"
-              imgUrl={"./sample.png"}
-              quantity={1}
-              price={5000}
-            />
-            <CartTotalPrice totalPrice={5000} />
+            {cartItems.map((item) => (
+              <CartModalItem
+                key={item.product.id}
+                name={item.product.name}
+                imgUrl={item.product.imageUrl}
+                quantity={item.quantity}
+                price={item.product.price}
+              />
+            ))}
+            <CartTotalPrice totalPrice={totalPrice} />
           </Modal.Body>
           <Modal.Button
             title={"닫기"}
