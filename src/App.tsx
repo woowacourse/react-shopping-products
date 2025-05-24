@@ -49,7 +49,7 @@ function App() {
     value: matchCategory[category],
   });
 
-  if (isLoading && !cartItems) {
+  if (isLoading) {
     return <div>loading...</div>;
   }
 
