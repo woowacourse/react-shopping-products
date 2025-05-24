@@ -1,14 +1,13 @@
-import { randomUUID } from 'crypto';
 import { http, HttpResponse } from 'msw';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 export const cartMockData = [
   {
-    id: '1',
+    id: 1,
     quantity: 1,
     product: {
-      id: '42',
+      id: 42,
       name: '프린세스 미용놀이',
       price: 1010,
       imageUrl:
@@ -17,10 +16,10 @@ export const cartMockData = [
     },
   },
   {
-    id: '2',
+    id: 2,
     quantity: 1,
     product: {
-      id: '34',
+      id: 34,
       name: '코카콜라 제로 1.5L',
       price: 2100,
       imageUrl:
@@ -384,22 +383,39 @@ export const handlers = [
   }),
   http.post(`${baseURL}/cart-items`, async ({ request }) => {
     const { productId, quantity } = await request.json();
+    const product = allProducts.find(
+      (product) => product.id.toString() === productId.toString()
+    );
+    if (!product)
+      throw new Error('handlers.ts 에서 Product를 찾을 수 없습니다');
     const newCartData = {
-      id: Date.now().toString(),
+      id: Date.now(),
       quantity,
-      product: allProducts.find((product) => product.id === Number(productId)),
+      product,
     };
     cartMockData.push(newCartData);
-    console.log('cartMockData ->', cartMockData);
     return HttpResponse.json(null, { status: 201 });
   }),
   http.delete(`${baseURL}/cart-items/:id`, ({ params }) => {
     const { id } = params;
-    console.log('DELETE id ->', id);
-    const targetIndex = cartMockData.findIndex((item) => item.id === id);
+    const targetIndex = cartMockData.findIndex(
+      (item) => item.id.toString() === id.toString()
+    );
     if (targetIndex !== -1) {
       cartMockData.splice(targetIndex, 1);
     }
     return new HttpResponse(null, { status: 204 });
+  }),
+  http.patch(`${baseURL}/cart-items/:id`, async ({ params, request }) => {
+    const { id } = params;
+    const { quantity } = await request.json();
+
+    const targetIndex = cartMockData.findIndex(
+      (cart) => cart.id.toString() === id.toString()
+    );
+    if (targetIndex !== -1) {
+      cartMockData[targetIndex].quantity = quantity;
+    }
+    return HttpResponse.json(null, { status: 204 });
   }),
 ];
