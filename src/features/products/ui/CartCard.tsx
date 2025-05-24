@@ -23,6 +23,13 @@ export default function CartCard({cartId, product, quantity}: Props) {
   const {refetch} = useApi(getCartProduct, 'cartItems');
 
   const handlePutCartClick = async () => {
+    if (product.quantity < count) {
+      showError?.(
+        `장바구니에 현재 재고 ${product.quantity}개를 초과하여 담을 수 없습니다.`
+      );
+      return;
+    }
+
     try {
       await deleteCartProduct(cartId);
       await postCartProduct(product.id, count);

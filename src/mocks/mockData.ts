@@ -1,4 +1,4 @@
-import {Product} from '../features/products/type/product';
+import {CartProduct, Product} from '../features/products/type/product';
 
 export const products: {content: Product[]} = {
   content: [
@@ -180,6 +180,37 @@ export const products: {content: Product[]} = {
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1bvoBgTtG0L-FBnZBsCOl5O-WcelpPH24IQ&s',
       category: '패션 잡화',
       quantity: 1,
+    },
+  ],
+};
+
+export const cartItem: {content: CartProduct[]} = {
+  content: [
+    {
+      id: 1234,
+      product: {
+        id: 4,
+        name: '달 무드등',
+        price: 28000,
+        imageUrl:
+          'https://thumbnail6.coupangcdn.com/thumbnails/remot…1ae02d28b4d1f4bd2a03a7389eb2b8cc4a45c1c9f7d9b.jpg',
+        category: '패션잡화',
+        quantity: 7,
+      },
+      quantity: 3,
+    },
+    {
+      id: 5678,
+      product: {
+        id: 5,
+        name: '동물 양말',
+        price: 20000,
+        imageUrl:
+          'https://m.cocosocks.com/web/product/medium/202503/940897aced51144109baa4d145def01f.jpg',
+        category: '패션잡화',
+        quantity: 8,
+      },
+      quantity: 7,
     },
   ],
 };

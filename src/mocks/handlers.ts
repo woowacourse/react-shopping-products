@@ -1,5 +1,6 @@
 import {http, HttpResponse} from 'msw';
-import {products} from './mockData';
+import {cartItem, products} from './mockData';
+import {Product} from '../features/products/type/product';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const handlers = [
@@ -18,5 +19,37 @@ export const handlers = [
       });
 
     return HttpResponse.json(products);
+  }),
+
+  http.get(BASE_URL + '/cart-items', () => {
+    return HttpResponse.json(cartItem);
+  }),
+
+  http.post(BASE_URL + '/cart-items', async ({request}) => {
+    const requestBody = (await request.json()) as {
+      productId: number;
+      quantity: number;
+    };
+    const productId = requestBody?.productId;
+    const quantity = requestBody?.quantity;
+
+    cartItem.content.push({
+      id: Math.floor(Math.random() * 1000000),
+      product: products.content.find(
+        (product) => product.id === productId
+      ) as Product,
+      quantity: quantity,
+    });
+
+    return new HttpResponse(null, {status: 201});
+  }),
+
+  http.delete(BASE_URL + '/cart-items/:productId', async ({params}) => {
+    const {productId} = params;
+
+    const targetId = Number(productId);
+    cartItem.content = cartItem.content.filter((item) => item.id !== targetId);
+
+    return new HttpResponse(null, {status: 201});
   }),
 ];
