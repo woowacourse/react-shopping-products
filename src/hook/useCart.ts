@@ -13,8 +13,10 @@ const useCart = () => {
     try {
       const response = await cartApi.getCartItems();
       setCartData(response);
+      return response;
     } catch (error) {
       setCartData([]);
+      return [];
     }
   };
 
