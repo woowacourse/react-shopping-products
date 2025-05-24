@@ -157,7 +157,7 @@ const updateCartItemQuantity = http.patch(
       return HttpResponse.json({ error: "Invalid quantity" }, { status: 400 });
     }
 
-    if (newQuantity > cartItems[itemIndex].quantity) {
+    if (newQuantity > cartItems[itemIndex].product.quantity) {
       return HttpResponse.json(
         {
           error: "out of stock",
@@ -167,7 +167,7 @@ const updateCartItemQuantity = http.patch(
       );
     }
 
-    cartItems[itemIndex].quantity = quantity;
+    cartItems[itemIndex].quantity = newQuantity;
 
     return HttpResponse.json(undefined, { status: 200 });
   }
