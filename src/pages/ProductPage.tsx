@@ -12,7 +12,7 @@ import CartModal from "../components/Cart/CartModal";
 const ProductPage = () => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const { products, filter, setFilter, sort, setSort } = useProducts();
-  const { cartItems, handleCartItem, cartItemsByProductId } = useCartItems();
+  const { cartItems, cartItemTotalPrice, handleCartItem, cartItemsByProductId } = useCartItems();
 
   return (
     <>
@@ -29,7 +29,13 @@ const ProductPage = () => {
           handleCartItem={handleCartItem}
         />
       </div>
-      <CartModal isCartModalOpen={isCartModalOpen} handleCartModalClose={() => setIsCartModalOpen(false)} />
+      <CartModal
+        isCartModalOpen={isCartModalOpen}
+        handleCartModalClose={() => setIsCartModalOpen(false)}
+        cartItems={cartItems!}
+        cartItemTotalPrice={cartItemTotalPrice!}
+        handleCartItem={handleCartItem}
+      />
     </>
   );
 };

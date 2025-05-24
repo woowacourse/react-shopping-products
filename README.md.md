@@ -62,10 +62,14 @@
       - [x] 0으로 업데이트할 경우, 장바구니에서 사라진다.!
   - [x] 품절 ui 구현
     - [x] 품절 상품일 시, 구매버튼 제어 -> disabled
-- [ ] 모달 구현
+- [x] 모달 구현
   - [x] npm i hoyychoi-modal-component 사용
   - [x] 모달 내부 ui 구현
     - [x] cartItemCard component 제작
     - [x] 버튼 컴포넌트
     - [x] 내부 삭제 및 닫기 버튼
-  - [ ] 모달 내부 로직 구현
+  - [x] 모달 내부 로직 구현
+    - [x] 갯수 변경 로직
+    - [x] 삭제 로직
+    - [x] 총합 로직
+  - [ ] product quantity 대비 -> cart에 담는 수 제한
