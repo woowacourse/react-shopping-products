@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-const DEFAULT_IMAGE_URL = "/default-image.webp";
+const DEFAULT_IMAGE_URL = "./default-image.webp";
 
 const isValidUrl = (url: string) =>
   url && (url.startsWith("http://") || url.startsWith("https://"));
