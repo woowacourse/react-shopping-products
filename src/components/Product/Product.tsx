@@ -24,7 +24,7 @@ function Product({ product, onClickAddCartItem, onClickModifyCartItem }: Product
   );
 
   const handleAddCartItem = () => {
-    onClickAddCartItem({ productId: id, quantity: 1 });
+    onClickAddCartItem?.({ productId: id, quantity: 1 });
     setCartQuantity(1);
   };
 
@@ -34,7 +34,7 @@ function Product({ product, onClickAddCartItem, onClickModifyCartItem }: Product
       return;
     }
 
-    onClickModifyCartItem({ productId: id, quantity: modifyQuantity });
+    onClickModifyCartItem?.({ productId: id, quantity: modifyQuantity });
     setCartQuantity(modifyQuantity);
   };
 

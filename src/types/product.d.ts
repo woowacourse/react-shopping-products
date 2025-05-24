@@ -8,8 +8,8 @@ export type ProductDataType = {
 };
 
 export type ActionType = {
-  onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
-  onClickModifyCartItem: ({ productId, quantity }: AddCartItemType) => void;
+  onClickAddCartItem?: ({ productId, quantity }: AddCartItemType) => void;
+  onClickModifyCartItem?: ({ productId, quantity }: AddCartItemType) => void;
 };
 
 export type ProductProps = {
