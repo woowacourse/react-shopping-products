@@ -5,7 +5,7 @@ import { useErrorContext } from "../../contexts/ErrorContext";
 import { URLS } from "../../constants/url";
 import QuantityButton from "../QuantityButton/QuantityButton";
 import { commonOpts } from "../../constants/requestHeader";
-import { useData } from "../../hooks/useData";
+import useQueryData from "@/hooks/useQueryData";
 import { useQueryContext } from "../../contexts/QueryContext";
 import { cartQueryOptions } from "@/constants/requestOptions";
 import { CartItem } from "@/types/cartContents";
@@ -23,7 +23,7 @@ export default function CartButton({
   const { showError } = useErrorContext();
 
   const { dataPool } = useQueryContext();
-  const { refetch: fetchCart } = useData("cart-items", cartQueryOptions);
+  const { loadData: loadCart } = useQueryData("cart-items", cartQueryOptions);
   const cartData = dataPool["cart-items"];
   const productsData = dataPool["products"];
 
@@ -57,7 +57,7 @@ export default function CartButton({
         throw new Error("장바구니에 50개 이상의 품목을 담을수 없습니다.");
       }
       await addCartItem();
-      await fetchCart();
+      await loadCart();
     } catch (err) {
       if (err instanceof Error) showError(err);
     } finally {

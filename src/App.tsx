@@ -9,7 +9,7 @@ import Spinner from "./components/Spinner/Spinner";
 import { useErrorContext } from "./contexts/ErrorContext";
 import { useQueryContext } from "./contexts/QueryContext";
 
-import { useData } from "./hooks/useData";
+import useQueryData from "./hooks/useQueryData";
 import { useProductQuery } from "./hooks/useProductQuery";
 
 import * as styles from "./App.style";
@@ -39,31 +39,31 @@ function App() {
   const productQuery = useProductQuery(productsQuery, categoryQuery);
 
   const {
-    loading: productFetchLoading,
-    error: productFetchError,
-    refetch: fetchProducts,
-  } = useData("products", { url: productQuery, ...productQueryOptions });
+    loading: productLoading,
+    error: productLoadError,
+    loadData: loadProducts,
+  } = useQueryData("products", { url: productQuery, ...productQueryOptions });
 
-  const { error: cartFetchError, refetch: fetchCart } = useData(
+  const { error: cartLoadError, loadData: loadCart } = useQueryData(
     "cart-items",
     cartQueryOptions
   );
   const productsData = dataPool?.products;
 
   useEffect(() => {
-    if (!dataPool?.products) fetchCart();
+    if (!dataPool?.products) loadCart();
   }, []);
 
   useEffect(() => {
-    fetchProducts();
+    loadProducts();
   }, [productQuery]);
 
   useEffect(() => {
-    const fetchError = productFetchError || cartFetchError;
+    const fetchError = productLoadError || cartLoadError;
     if (fetchError) {
       showError(fetchError);
     }
-  }, [productFetchError, cartFetchError, showError]);
+  }, [productLoadError, cartLoadError, showError]);
 
   const handleSelectCategory = (value: CategoryOptionType) => {
     setCategoryQuery(value);
@@ -92,7 +92,7 @@ function App() {
             onSelect={handleOrderBySelect}
           />
         </div>
-        {productFetchLoading ? (
+        {productLoading ? (
           <div style={{ marginBottom: "500px" }}>
             <Spinner size="medium" />
           </div>

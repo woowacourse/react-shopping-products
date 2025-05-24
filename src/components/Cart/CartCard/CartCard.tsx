@@ -2,13 +2,13 @@ import { cartQueryOptions } from "@/constants/requestOptions.ts";
 import { commonOpts } from "../../../constants/requestHeader.ts";
 import { URLS } from "../../../constants/url.ts";
 import { useErrorContext } from "../../../contexts/ErrorContext.tsx";
-import { useData } from "../../../hooks/useData.ts";
 import useFetch from "../../../hooks/useFetch.ts";
 import { CartItem } from "../../../types/cartContents.ts";
 import QuantityButton from "../../QuantityButton/QuantityButton.tsx";
 import Spinner from "../../Spinner/Spinner";
 import * as styles from "./CartCard.style.tsx";
 import { useState, useMemo, useEffect } from "react";
+import useQueryData from "../../../hooks/useQueryData.ts";
 
 interface CartCardProps {
   cartItem: CartItem;
@@ -22,8 +22,8 @@ function CartCard({ cartItem }: CartCardProps) {
     cartItem.product.imageUrl
   );
 
-  const { refetch: fetchCart } = useData("cart-items", cartQueryOptions);
-  const { fetcher: deleteItem } = useFetch(
+  const { loadData: loadCart } = useQueryData("cart-items", cartQueryOptions);
+  const { fetcher: deleteItem } = useFetch<CartItem>(
     `${URLS.CART_ITEMS}/${cartItem.id}`,
     { ...commonOpts, method: "DELETE" },
     false
@@ -50,7 +50,7 @@ function CartCard({ cartItem }: CartCardProps) {
     try {
       setDeleteLoading(true);
       await deleteItem();
-      await fetchCart();
+      await loadCart();
     } catch (error) {
       if (error instanceof Error) showError(error);
     } finally {

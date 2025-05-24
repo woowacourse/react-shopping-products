@@ -36,9 +36,17 @@ export const QueryContextProvider = ({ children }: { children: ReactNode }) => {
 
   const setData = useCallback(
     (key: DataKey, value: DataPoolMap[DataKey]) =>
-      setDataPool((prev) => ({ ...prev, [key]: value })),
+      setDataPool((prev) => {
+        // 값이 동일하면 이전 상태 그대로 반환
+        if (Object.is(prev[key], value)) {
+          return prev;
+        }
+        // 아니면 key만 덮어쓴 새 객체 반환
+        return { ...prev, [key]: value };
+      }),
     []
   );
+
   const setProductsQuery = useCallback(
     (query: OrderByOptionType) => {
       _setProductsQuery(query);
@@ -74,9 +82,7 @@ export const QueryContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   return (
-    <QueryContext.Provider value={{ ...value }}>
-      {children}
-    </QueryContext.Provider>
+    <QueryContext.Provider value={value}>{children}</QueryContext.Provider>
   );
 };
 

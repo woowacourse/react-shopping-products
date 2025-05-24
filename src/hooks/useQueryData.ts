@@ -1,4 +1,3 @@
-// useQuery.ts
 import { useState, useCallback, useEffect } from "react";
 import { ApiError } from "../constants/Error";
 import { createApiError } from "../util/createApiError";
@@ -13,7 +12,7 @@ type FetchOptions = {
   options?: Opts;
   immediate?: boolean;
 };
-export function useData<K extends DataKey>(
+function useQueryData<K extends DataKey>(
   key: K,
   { url, options, immediate = true }: FetchOptions
 ) {
@@ -22,7 +21,7 @@ export function useData<K extends DataKey>(
   const [loading, setLoading] = useState(!cached && immediate);
   const [error, setError] = useState<ApiError | null>(null);
 
-  const fetcher = useCallback(async () => {
+  const loadData = useCallback(async () => {
     controllers.current[key]?.abort();
 
     const controller = new AbortController();
@@ -62,11 +61,12 @@ export function useData<K extends DataKey>(
   }, [key, url]);
 
   useEffect(() => {
-    if (!cached && immediate) fetcher();
+    if (!cached && immediate) loadData();
     return () => controllers.current[key]?.abort();
-  }, [fetcher, immediate]);
+  }, [loadData, immediate]);
 
   const abort = () => controllers.current[key]?.abort();
 
-  return { data: cached, loading, error, refetch: fetcher, abort };
+  return { data: cached, loading, error, loadData, abort };
 }
+export default useQueryData;

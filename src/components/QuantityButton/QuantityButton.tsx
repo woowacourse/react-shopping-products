@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import useFetch from "../../hooks/useFetch";
 import { URLS } from "../../constants/url";
 import { commonOpts } from "../../constants/requestHeader";
-import { useData } from "../../hooks/useData";
+import useQueryData from "@/hooks/useQueryData";
 import { useErrorContext } from "../../contexts/ErrorContext";
 import { useQueryContext } from "../../contexts/QueryContext";
 import { cartQueryOptions } from "@/constants/requestOptions";
@@ -21,7 +21,7 @@ export default function QuantityButton({
   disableButtonWhenQuantityOne = false,
 }: QuantityButtonProps) {
   const [loading, setLoading] = useState(false);
-  const { refetch: fetchCart } = useData("cart-items", cartQueryOptions);
+  const { loadData: loadCart } = useQueryData("cart-items", cartQueryOptions);
 
   const { showError } = useErrorContext();
   const { dataPool } = useQueryContext();
@@ -59,18 +59,18 @@ export default function QuantityButton({
   );
 
   const performRequest = useCallback(
-    async (action: () => Promise<void>) => {
+    async (action: () => Promise<CartItem | undefined>) => {
       setLoading(true);
       try {
         await action();
-        await fetchCart();
+        await loadCart();
       } catch (error) {
         if (error instanceof Error) showError(error);
       } finally {
         setLoading(false);
       }
     },
-    [fetchCart, showError]
+    [loadCart, showError]
   );
 
   const handleMinusClick = useCallback(() => {

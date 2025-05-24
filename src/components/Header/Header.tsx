@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 
 import useFetch from "@/hooks/useFetch";
-import { useData } from "@/hooks/useData";
+import useQueryData from "@/hooks/useQueryData";
 import { useProductQuery } from "@/hooks/useProductQuery";
 
 import { useErrorContext } from "@/contexts/ErrorContext";
@@ -36,11 +36,11 @@ export default function Header() {
     [cartData]
   );
 
-  const { refetch: fetchProducts } = useData("products", {
+  const { loadData: loadProducts } = useQueryData("products", {
     url: productURL,
     ...productQueryOptions,
   });
-  const { refetch: fetchCart } = useData("cart-items", cartQueryOptions);
+  const { loadData: loadCart } = useQueryData("cart-items", cartQueryOptions);
 
   const { fetcher: orderCart } = useFetch(URLS.ORDERS, orderOptions, false, [
     cartData,
@@ -59,8 +59,8 @@ export default function Header() {
     try {
       setIsLoading(true);
       await orderCart();
-      await fetchCart();
-      await fetchProducts();
+      await loadCart();
+      await loadProducts();
     } catch (error) {
       if (error instanceof Error) showError(error);
     } finally {

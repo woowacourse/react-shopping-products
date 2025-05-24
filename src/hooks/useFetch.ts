@@ -5,12 +5,10 @@ import {
   DependencyList,
   useRef,
 } from "react";
-import { ApiError, ErrorType } from "../constants/Error";
+import { ApiError } from "../constants/Error";
 import { getErrorTypeByStatus } from "../util/getErrorTypeByStatus";
 import { getErrorMessage } from "../util/getErrorMessage";
 import { createApiError } from "../util/createApiError";
-
-// HTTP 상태 코드에 따른 에러 타입 매핑
 
 function useFetch<T>(
   url: string | URL,
@@ -25,29 +23,23 @@ function useFetch<T>(
   const controllerRef = useRef<AbortController | null>(null);
   const requestIdRef = useRef<number>(0);
 
-  const fetcher = useCallback(async (): Promise<void> => {
+  const fetcher = useCallback(async (): Promise<T | undefined> => {
+    // 이전 요청이 남아있으면 취소
     if (controllerRef.current) {
       controllerRef.current.abort();
     }
-
     const controller = new AbortController();
     controllerRef.current = controller;
     const currentRequestId = ++requestIdRef.current;
-
-    const fetchOptionsWithSignal = {
-      ...options,
-      signal: controller.signal,
-    };
 
     setIsLoading(true);
     setError(null);
 
     try {
-      const res = await fetch(url, fetchOptionsWithSignal);
+      const res = await fetch(url, { ...options, signal: controller.signal });
 
-      if (currentRequestId !== requestIdRef.current) {
-        return null; // Promise resolve with null
-      }
+      // 중복 요청 확인
+      if (currentRequestId !== requestIdRef.current) return;
 
       if (!res.ok) {
         const errorType = getErrorTypeByStatus(res.status);
@@ -59,32 +51,26 @@ function useFetch<T>(
         );
       }
 
-      // 201 Created, 204 No Content 처리
+      // 201/204 처리 (body 없음)
       if (res.status === 201 || res.status === 204) {
-        return;
+        return undefined;
       }
 
-      // JSON이 아닌 응답 처리
       const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        return;
+      if (!contentType?.includes("application/json")) {
+        return undefined;
       }
 
-      const json = await res.json();
+      const json = (await res.json()) as T;
 
-      // 요청이 이미 취소되었거나 다른 요청이 시작된 경우 처리 중단
-      if (currentRequestId !== requestIdRef.current) {
-        return;
-      }
+      if (currentRequestId !== requestIdRef.current) return;
 
-      setData(json as T);
+      setData(json);
+      return json;
     } catch (e) {
-      // 요청이 이미 취소되었거나 다른 요청이 시작된 경우 에러 처리 중단
-      if (currentRequestId !== requestIdRef.current) {
-        return;
-      }
+      if (currentRequestId !== requestIdRef.current) return;
       setError(createApiError(e));
-      throw e; // Re-throw the error so the caller can handle it
+      throw e;
     } finally {
       if (controllerRef.current === controller) {
         controllerRef.current = null;
@@ -97,22 +83,15 @@ function useFetch<T>(
 
   useEffect(() => {
     if (immediate) fetcher();
-    return () => {
-      controllerRef.current?.abort();
-    };
+    return () => controllerRef.current?.abort();
   }, [fetcher, immediate]);
 
-  // abort 함수 추가하여 수동 취소 가능하게 함
   const abort = useCallback(() => {
-    if (controllerRef.current) {
-      controllerRef.current.abort();
-      controllerRef.current = null;
-    }
+    controllerRef.current?.abort();
+    controllerRef.current = null;
   }, []);
 
   return { data, isLoading, error, fetcher, abort };
 }
 
-// 외부에서 사용할 수 있도록 타입과 상수 export
-export { ErrorType, ApiError };
 export default useFetch;
