@@ -18,7 +18,6 @@ const isProduct = (u: unknown): u is Product => {
     typeof o.category === "string"
   );
 };
-
 const isProductWithQuantity = (u: unknown): u is ProductWithQuantity =>
   isProduct(u) && typeof (u as ProductWithQuantity).quantity === "number";
 
@@ -32,9 +31,7 @@ const isCartItem = (u: unknown): u is CartItem => {
 };
 
 const isProductsRes = (u: unknown): u is DataResponseMap["products"] =>
-  isObj(u) &&
-  Array.isArray(u.content) &&
-  u.content.every(isProductWithQuantity);
+  isObj(u) && Array.isArray(u.content) && u.content.every(isProduct);
 
 const isCartItemsRes = (u: unknown): u is DataResponseMap["cart-items"] =>
   isObj(u) && Array.isArray(u.content) && u.content.every(isCartItem);
