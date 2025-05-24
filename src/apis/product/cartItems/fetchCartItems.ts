@@ -1,5 +1,5 @@
-import { FetchCartItemsResult } from "../../types/FetchCartItemsResult";
-import { apiRequest } from "../ApiRequest";
+import { FetchCartItemsResult } from "../../../types/FetchCartItemsResult";
+import { apiRequest } from "../../ApiRequest";
 
 type fetchCartItemsParams = {
   params?: {

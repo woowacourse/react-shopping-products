@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import fetchCartItems from "../apis/product/fetchCartItems";
-import fetchAddProduct from "../apis/product/fetchAddProduct";
-import fetchRemoveProduct from "../apis/product/fetchRemoveProduct";
+import fetchCartItems from "../apis/product/cartItems/fetchCartItems";
+import fetchAddProduct from "../apis/product/cartItems/fetchAddProduct";
+import fetchRemoveProduct from "../apis/product/cartItems/fetchRemoveProduct";
 
 import useErrorMessage from "./useErrorMessage";
 
 import toastMessage from "../utils/toastMessage";
-import fetchUpdateCartItemQuantity from "../apis/product/fetchUpdateCartItemQuantity";
+import fetchUpdateCartItemQuantity from "../apis/product/cartItems/fetchUpdateCartItemQuantity";
 import { CartItem } from "../types/FetchCartItemsResult";
 
 const getCartItems = async () => {

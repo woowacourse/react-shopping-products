@@ -1,4 +1,4 @@
-import { apiRequest } from "../ApiRequest";
+import { apiRequest } from "../../ApiRequest";
 
 type fetchUpdateCartItemQuantityParams = {
   params: {
