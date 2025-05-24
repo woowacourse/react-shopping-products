@@ -9,6 +9,7 @@ import {
 import { IMAGE_PATH } from "../../constants/imagePath";
 import CartToggleButton from "../CartToggleButton/CartToggleButton";
 import { useEffect, useRef } from "react";
+import QuantityController from "../QuantityController/QuantityController";
 
 type ProductCardProps = {
   id: number;
@@ -62,13 +63,17 @@ const ProductCard = ({
           <ProductCardName>{name}</ProductCardName>
           <ProductCardPrice>{price.toLocaleString()}원</ProductCardPrice>
         </ProductCardDetailTextWrapper>
-        <CartToggleButton
-          id={id}
-          isInBascket={isInBascket}
-          basketId={basketId}
-          isNotBasketCountMAX={isNotBasketCountMAX}
-          timeoutRef={timeoutRef}
-        />
+        {isInBascket ? (
+          <QuantityController />
+        ) : (
+          <CartToggleButton
+            id={id}
+            isInBascket={isInBascket}
+            basketId={basketId}
+            isNotBasketCountMAX={isNotBasketCountMAX}
+            timeoutRef={timeoutRef}
+          />
+        )}
       </ProductCardDetailWrapper>
     </ProductCardWrapper>
   );

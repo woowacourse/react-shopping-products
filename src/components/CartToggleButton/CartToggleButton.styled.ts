@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { CartToggleButtonWrapperProps } from "../components/CartToggleButton";
+import { CartToggleButtonWrapperProps } from "./CartToggleButton";
 
 export const CartToggleButtonWrapper = styled.div<CartToggleButtonWrapperProps>`
   display: flex;
