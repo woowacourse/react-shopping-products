@@ -20,8 +20,6 @@ const useCartItems = (): UseCartItemsReturn => {
   const [cartItems, setCartItems] = useState<CartItems | null>(null);
   const { showToast } = useToast();
 
-  console.log("cartItems: ", cartItems);
-
   useEffect(() => {
     (async () => {
       const response = await CartItemsAPI.get();
