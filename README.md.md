@@ -44,10 +44,10 @@
     - [x] 장바구니 데이터 구현
   - [ ] msw api 로직 구현
     - [x] products api
-    - [ ] cartItem api
+    - [x] cartItem api
       - [x] get (장바구니 조회)
       - [x] post (장바구니 담기)
-      - [ ] patch (장바구니 업데이트)
+      - [x] patch (장바구니 업데이트)
       - [x] delete (장바구니 삭제)
   - [ ] msw 연결
     - [x] products api 로직 연결 (sort, category)

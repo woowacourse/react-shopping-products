@@ -27,16 +27,35 @@ const postCartItems = http.post(
     return HttpResponse.json({ message: "Post" }, { status: 200 });
   },
 );
+const patchCartItems = http.patch(
+  `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:id`,
+  async ({ params, request }) => {
+    const cartItemId = Number(params.id);
+    const { quantity } = (await request.json()) as { quantity: number };
+
+    cartItems.content = cartItems.content.reduce((acc, item) => {
+      if (item.id === cartItemId) {
+        if (quantity !== 0) {
+          acc.push({ ...item, quantity });
+        }
+      } else {
+        acc.push(item);
+      }
+      return acc;
+    }, [] as Content[]);
+
+    return HttpResponse.json({ message: "Patch" }, { status: 200 });
+  },
+);
 
 const deleteCartItems = http.delete(
-  `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:productId`,
+  `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:id`,
   async ({ params }) => {
-    const productId = Number(params.productId);
-    console.log(productId);
-    cartItems.content = cartItems.content.filter((item) => item.id !== productId);
+    const cartItemId = Number(params.id);
+    cartItems.content = cartItems.content.filter((item) => item.id !== cartItemId);
 
     return HttpResponse.json({ message: "Delete" }, { status: 200 });
   },
 );
 
-export default [getCartItems, postCartItems, deleteCartItems];
+export default [getCartItems, postCartItems, patchCartItems, deleteCartItems];
