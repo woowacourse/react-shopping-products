@@ -1,15 +1,19 @@
 import styled from '@emotion/styled';
 
+import { useData } from '@/shared/context/useData';
+
 type ShoppingBagProps = {
-  count: number;
   onOpenModal: () => void;
 };
 
-export const ShoppingBag = ({ count = 0, onOpenModal }: ShoppingBagProps) => {
+export const ShoppingBag = ({ onOpenModal }: ShoppingBagProps) => {
+  const { cartData } = useData();
+  const cartDataLength = cartData.data?.length || 0;
+
   return (
     <StyledShoppingBagButton onClick={onOpenModal}>
       <StyledShoppingBagIcon src="./ShoppingBag.svg" alt="Shopping Bag" />
-      {count > 0 && <StyledShoppingBagCount>{count}</StyledShoppingBagCount>}
+      {cartDataLength > 0 && <StyledShoppingBagCount>{cartDataLength}</StyledShoppingBagCount>}
     </StyledShoppingBagButton>
   );
 };
