@@ -16,7 +16,7 @@ interface CartCardProps {
 type ImageStatus = "loading" | "loaded" | "error";
 
 function CartCard({ cartItem }: CartCardProps) {
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [imageStatus, setImageStatus] = useState<ImageStatus>("loading");
   const [finalImageUrl, setFinalImageUrl] = useState<string>(
     cartItem.product.imageUrl
@@ -48,13 +48,13 @@ function CartCard({ cartItem }: CartCardProps) {
   const fallbackImagePath = `${basePath}assets/fallback_image.png`;
   const handleCartItemDelete = async () => {
     try {
-      setDeleteLoading(true);
+      setIsDeleting(true);
       await deleteItem();
       await loadCart();
     } catch (error) {
       if (error instanceof Error) showError(error);
     } finally {
-      setDeleteLoading(false);
+      setIsDeleting(false);
     }
   };
 
@@ -107,7 +107,7 @@ function CartCard({ cartItem }: CartCardProps) {
       <button
         css={styles.cartCardDeleteCss}
         onClick={handleCartItemDelete}
-        disabled={deleteLoading}
+        disabled={isDeleting}
       >
         삭제
       </button>

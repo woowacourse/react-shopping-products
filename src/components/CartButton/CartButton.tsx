@@ -27,7 +27,7 @@ export default function CartButton({
   const cartData = dataPool["cart-items"];
   const productsData = dataPool["products"];
 
-  const [loading, setLoading] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const inCart = useMemo(
     () => cartData?.some((p) => p.product.id === productId),
@@ -51,7 +51,7 @@ export default function CartButton({
   );
 
   const handleAdd = async () => {
-    setLoading(true);
+    setIsAddingToCart(true);
     try {
       if ((cartData?.length ?? 0) >= 50) {
         throw new Error("장바구니에 50개 이상의 품목을 담을수 없습니다.");
@@ -61,7 +61,7 @@ export default function CartButton({
     } catch (err) {
       if (err instanceof Error) showError(err);
     } finally {
-      setLoading(false);
+      setIsAddingToCart(false);
     }
   };
 
@@ -71,7 +71,7 @@ export default function CartButton({
 
   const commonProps = {
     ...props,
-    disabled: loading || availableQty === 0,
+    disabled: isAddingToCart || availableQty === 0,
     css: [styles.buttonCss, styles.notInCartCss] as const,
   };
 
