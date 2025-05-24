@@ -35,7 +35,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
     fetchTotalCartItems();
   }, []);
 
-  const handleAddCartItems = useCallback(
+  const handleAddCartItem = useCallback(
     async (productId: number, quantity: number) => {
       await fetchCartItems({
         apiCall: () => addCartItems({ productId, quantity }),
@@ -49,7 +49,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
     [fetchCartItems, fetchTotalCartItems, handleErrorMessage],
   );
 
-  const handleRemoveCartItems = useCallback(
+  const handleRemoveCartItem = useCallback(
     async (id: number) => {
       const cartItems = data.get('cartItems') as CartItemType[];
       const cartId = getCartId(cartItems, id) as number;
@@ -69,8 +69,8 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
   return {
     cartItems: (data.get('cartItems') as CartItemType[]) ?? [],
     isCartItemsLoading: isLoading.get('cartItems') ?? false,
-    handleAddCartItems,
-    handleRemoveCartItems,
+    handleAddCartItem,
+    handleRemoveCartItem,
   };
 };
 

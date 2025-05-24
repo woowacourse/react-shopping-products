@@ -15,7 +15,7 @@ import { checkIsProductInCart } from '../../domain/cartItem.ts';
 
 export const ProductListPage = () => {
   const { errorMessage, handleErrorMessage } = useErrorHandler();
-  const { cartItems, handleAddCartItems, handleRemoveCartItems } = useCartHandler({
+  const { cartItems, handleAddCartItem, handleRemoveCartItem } = useCartHandler({
     handleErrorMessage,
   });
   const {
@@ -56,8 +56,8 @@ export const ProductListPage = () => {
             key={product.id}
             product={product}
             isCartAdded={checkIsProductInCart(cartItems, product.id)}
-            handleAddCartItem={handleAddCartItems}
-            handleRemoveCartItem={handleRemoveCartItems}
+            handleAddCartItem={handleAddCartItem}
+            handleRemoveCartItem={handleRemoveCartItem}
           />
         ))}
       </P.ProductItemContainer>
