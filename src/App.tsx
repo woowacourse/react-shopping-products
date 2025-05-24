@@ -23,8 +23,10 @@ export default App;
 const appStyle = css`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   max-width: 430px;
+  border-radius: 12px;
+  overflow: hidden;
   margin: 0 auto;
   background-color: #fff;
 `;
