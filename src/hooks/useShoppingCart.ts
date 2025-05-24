@@ -48,7 +48,7 @@ const useShoppingCart = () => {
 
   const handleAddProduct = async (productId: number) => {
     if (cartItems.length === 50) {
-      handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
+      showErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
       return;
     }
 
