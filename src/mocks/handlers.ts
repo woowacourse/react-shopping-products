@@ -105,7 +105,12 @@ export const handlers = [
         (item) => item.product.id === Number(productId)
       );
 
-      console.log(selectedCartItem, cartItems, productId);
+      if (Number(quantity) <= 0) {
+        cartItems = cartItems.filter(
+          (item) => String(item.product.id) !== productId
+        );
+        return HttpResponse.json({ message: "상품 제거" });
+      }
 
       // 장바구니에 이미 있는 상품인 경우
       if (selectedCartItem) {
@@ -147,9 +152,7 @@ export const handlers = [
     ({ params }) => {
       const { productId } = params;
 
-      cartItems = cartItems.filter(
-        (item) => String(item.product.id) !== productId
-      );
+      cartItems = cartItems.filter((item) => String(item.id) !== productId);
 
       return HttpResponse.json({ message: "상품 제거" });
     }

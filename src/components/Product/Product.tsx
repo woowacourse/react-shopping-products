@@ -23,7 +23,7 @@ function Product({ product, isInCart }: ProductProps) {
   ) => {
     const $product = event.currentTarget.closest("li");
     $product &&
-      addCartItemId($product.id, cartItemId ? cartItemId.cartQuantity + 1 : 0);
+      addCartItemId($product.id, cartItemId ? cartItemId.cartQuantity + 1 : 1);
   };
 
   const handleDecreaseProductQuantity = async (
@@ -38,6 +38,7 @@ function Product({ product, isInCart }: ProductProps) {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const $product = event.currentTarget.closest("li");
+    console.log($product);
     $product && removeCartItemId($product.id);
   };
 
