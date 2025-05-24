@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 import { BaseButton } from "./Modal.BaseButton.styled";
 
-import closeIcon from "../../assets/Close.svg";
+import closeIcon from "/Close.svg";
 import { useModalContext } from "../../../hooks/useModalContext";
 
 const ModalCloseButton = ({ $autoFocus = true }: { $autoFocus?: boolean }) => {
