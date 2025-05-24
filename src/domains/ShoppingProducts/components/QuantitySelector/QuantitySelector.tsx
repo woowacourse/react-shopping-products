@@ -19,11 +19,13 @@ export function QuantitySelector({
   const { dispatch } = useShoppingContext();
 
   const handleAddCount = async () => {
-    if (quantity + 1 > maxQuantity)
+    if (quantity === maxQuantity) {
       dispatch({
         type: "fetchCartFailure",
-        payload: `상품 재고를 초과하여 담을 수 없습니다. 현재 상품의 재고는 ${maxQuantity}개 입니다`,
+        payload: `재고 수량을 초과하여 담을 수 없습니다.`,
       });
+      return;
+    }
     await updateCartItem({ id: cartId, quantity: quantity + 1 });
     onChange();
   };

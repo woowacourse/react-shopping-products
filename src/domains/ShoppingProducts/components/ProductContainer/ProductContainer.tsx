@@ -58,7 +58,10 @@ export default function ProductContainer() {
                 maxQuantity={product.quantity ?? 10000}
               />
             ) : (
-              <Button onClick={() => handleAddCart(product.id)}>
+              <Button
+                onClick={() => handleAddCart(product.id)}
+                dataTestid="add-cart-button"
+              >
                 <img src="./add-shopping-cart.svg" />
                 <p>담기</p>
               </Button>

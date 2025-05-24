@@ -28,6 +28,7 @@ export function CartProduct({
   maxQuantity,
   onChange,
 }: CartProductProps) {
+  console.log("max ", name, maxQuantity);
   return (
     <section
       id={`cartProduct-${id}`}

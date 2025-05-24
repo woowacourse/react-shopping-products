@@ -7,6 +7,7 @@ interface ButtonProps {
   children: React.ReactNode;
   style?: ButtonStyleProps;
   size?: "sm" | "full";
+  dataTestid?: string;
 }
 
 export default function Button({
@@ -14,6 +15,7 @@ export default function Button({
   children,
   style = "primary",
   size = "sm",
+  dataTestid,
 }: ButtonProps) {
   const colorVariant = {
     primary: { backgroundColor: "#000000", color: "#FFFFFF", border: "none" },
@@ -38,6 +40,7 @@ export default function Button({
         size
       )}
       onClick={onClick}
+      data-testid={dataTestid}
     >
       {children}
     </button>

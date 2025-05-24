@@ -4,6 +4,10 @@ import { mockProductResponse } from "../mockProductResponse";
 
 let cartItems = [...mockCartItemResponse.content];
 
+export const resetCartItems = () => {
+  cartItems = [...mockCartItemResponse.content];
+};
+
 const findProductById = (id: number) => {
   const product = mockProductResponse.content.find(
     (product) => product.id === id
@@ -22,8 +26,11 @@ const errorResponse = (errorCode: string, message: string, status: number) => {
 };
 
 export const cartHandlers = [
-  http.get(`${import.meta.env.VITE_BASE_URL}/art-items`, () => {
-    return HttpResponse.json(cartItems);
+  http.get(`${import.meta.env.VITE_BASE_URL}/cart-items`, () => {
+    return HttpResponse.json({
+      ...mockCartItemResponse,
+      content: cartItems,
+    });
   }),
 
   http.post(
@@ -74,7 +81,7 @@ export const cartHandlers = [
     }
   ),
 
-  http.put(
+  http.patch(
     `${import.meta.env.VITE_BASE_URL}/cart-items/:id`,
     async ({ params, request }) => {
       const id = Number(params.id);
@@ -90,6 +97,8 @@ export const cartHandlers = [
         );
 
       const product = findProductById(item.product.id);
+
+      if (quantity <= 0) cartItems = cartItems.filter((item) => item.id !== id);
 
       if ((product?.quantity ?? 10000) < quantity) {
         return errorResponse(

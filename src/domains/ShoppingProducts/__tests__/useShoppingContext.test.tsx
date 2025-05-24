@@ -26,7 +26,7 @@ describe("useContext 훅을 이용해서 productList를 관리한다.", () => {
     );
 
     await waitFor(() => {
-      const products = screen.queryAllByTestId("product-component");
+      const products = screen.getAllByTestId("product-component");
       expect(products).toHaveLength(3);
     });
   });
@@ -47,7 +47,7 @@ describe("useContext 훅을 이용해서 cartProductList를 관리한다.", () =
     );
 
     await waitFor(() => {
-      const cartProducts = screen.queryAllByTestId("cart-product");
+      const cartProducts = screen.getAllByTestId("cart-product");
       expect(cartProducts).toHaveLength(2);
     });
   });

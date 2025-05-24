@@ -26,7 +26,7 @@ describe("msw를 사용해서 수량 필드가 추가된 api를 mocking한다.",
     );
 
     const product = await screen.findAllByTestId("product-component");
-    console.log(product);
+
     expect(product.length).toBe(mockProductResponse.content.length);
   });
 });
