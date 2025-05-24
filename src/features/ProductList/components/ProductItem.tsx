@@ -8,7 +8,7 @@ import { Text } from '@/shared/components/Text';
 import { QuantitySelector } from './QuantitySelector';
 
 import NoImage from '../../../../public/NoImage.svg';
-import { useControlQuantity } from '../hooks/useControlQuantity';
+import { useControlQuantity } from '../../CartList/hooks/useControlQuantity';
 import { Product } from '../types/Product';
 
 export const ProductItem = ({
@@ -18,7 +18,7 @@ export const ProductItem = ({
   imageUrl,
   quantity = 0,
 }: Pick<Product, 'id' | 'name' | 'imageUrl' | 'price' | 'quantity'>) => {
-  const { isInCart, cartItemQuantity, increaseQuantity, decreaseQuantity } = useControlQuantity(id);
+  const { isInCart, currentQuantity, increaseQuantity, decreaseQuantity } = useControlQuantity(id);
 
   const imgUrl = imageUrl?.includes('kream') || imageUrl.length == 0 ? NoImage : imageUrl;
 
@@ -58,8 +58,7 @@ export const ProductItem = ({
         <Flex direction="row" justifyContent="flex-end" alignItems="center" width="100%" gap="">
           {isInCart ? (
             <QuantitySelector
-              quantity={quantity}
-              count={cartItemQuantity}
+              count={currentQuantity}
               onIncrease={increaseQuantity}
               onDecrease={decreaseQuantity}
             />

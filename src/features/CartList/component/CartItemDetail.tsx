@@ -2,14 +2,14 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Button } from '@sebin0580/modal';
 
+import { useControlQuantity } from '@/features/CartList/hooks/useControlQuantity';
 import { QuantitySelector } from '@/features/ProductList/components/QuantitySelector';
-import { useControlQuantity } from '@/features/ProductList/hooks/useControlQuantity';
 import { CartItem } from '@/features/ProductList/types/Cart';
 import { Flex } from '@/shared/components/Flex';
 import { Text } from '@/shared/components/Text';
 
 export const CartItemDetail = ({ id, quantity, product }: CartItem) => {
-  const { increaseQuantity, decreaseQuantity } = useControlQuantity(id);
+  const { increaseQuantity, decreaseQuantity, removeCartItem } = useControlQuantity(id);
   return (
     <Flex
       direction="row"
@@ -47,7 +47,6 @@ export const CartItemDetail = ({ id, quantity, product }: CartItem) => {
             {product.price.toLocaleString()}원
           </Text>
           <QuantitySelector
-            quantity={product.quantity}
             count={quantity}
             onIncrease={increaseQuantity}
             onDecrease={decreaseQuantity}
@@ -62,7 +61,7 @@ export const CartItemDetail = ({ id, quantity, product }: CartItem) => {
         css={css`
           margin-top: 8px;
         `}
-        onClick={decreaseQuantity}
+        onClick={removeCartItem}
       >
         삭제
       </Button>
