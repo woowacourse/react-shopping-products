@@ -11,7 +11,7 @@ const CartModal = ({ isOpen, onModalClose }: CartModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onModalClose} position="bottom">
       <Modal.Backdrop>
-        <Modal.Frame styled={{ width: "429px" }}>
+        <Modal.Frame styled={{ width: "429px" }} autoModalFocus={false}>
           <Modal.Title title={"장바구니"} />
           <Modal.Body>
             <CartModalItem

@@ -1,7 +1,10 @@
 import { css } from "@emotion/css";
 import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
 
-const Header = () => {
+interface HeaderProps {
+  onCartClick: () => void;
+}
+const Header = ({ onCartClick }: HeaderProps) => {
   const { cartItems } = useShoppingCartContext();
 
   return (
@@ -9,7 +12,12 @@ const Header = () => {
       <a href="/" className={LogoStyles}>
         SHOP
       </a>
-      <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
+      <img
+        src="./shopIcon.svg"
+        alt="장바구니"
+        className={IconStyles}
+        onClick={onCartClick}
+      />
       {cartItems.length !== 0 && (
         <div className={ShoppingCartCount}>{cartItems.length}</div>
       )}
