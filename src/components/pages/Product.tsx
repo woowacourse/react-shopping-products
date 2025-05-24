@@ -3,8 +3,12 @@ import ItemCard from '../ItemCard/ItemCard';
 import Skeleton from '../Skeleton/Skeleton';
 import S from './Product.module.css';
 import useProductPage from '../../hooks/useProductPage';
+import Modal from '../Modal/Modal';
+import { useState } from 'react';
 
 const Product = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const {
     filter,
     sort,
@@ -19,7 +23,14 @@ const Product = () => {
 
   return (
     <>
-      <Header cartCount={cartLength} />
+      {isOpen && (
+        <Modal
+          handleClose={() => {
+            setIsOpen(false);
+          }}
+        />
+      )}
+      <Header onClickIcon={() => setIsOpen(true)} cartCount={cartLength} />
       <div className={S.contentContainer}>
         <div className={S.contentTop}>
           <h1 className={S.title}>bpple 상품 목록</h1>

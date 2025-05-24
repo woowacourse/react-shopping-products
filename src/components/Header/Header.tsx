@@ -1,22 +1,23 @@
 import S from './Header.module.css';
 
 interface HeaderProps {
+  onClickIcon: () => void;
   cartCount: number;
 }
-const Header = ({ cartCount }: HeaderProps) => {
+const Header = ({ onClickIcon: handleClickIcon, cartCount }: HeaderProps) => {
   return (
     <div className={S.container}>
       <p>SHOP</p>
-      <Cart count={cartCount} />
+      <Cart count={cartCount} onClick={handleClickIcon} />
     </div>
   );
 };
 
 export default Header;
 
-const Cart = ({ count }: { count: number }) => {
+const Cart = ({ count, onClick: handleClickIcon }: { count: number; onClick: () => void }) => {
   return (
-    <div className={S.cartContainer}>
+    <div data-testid="cart-icon" className={S.cartContainer} onClick={handleClickIcon}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="33"
