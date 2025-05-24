@@ -3,8 +3,8 @@ import {
   addCartItem,
   deleteCartItem,
   updateCartItem,
-} from '@/components/features/cart/api';
-import { useCartContext } from '@/components/features/cart/context';
+  useCartContext,
+} from '@/components/features/cart';
 import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
 import AddCartButton from './AddCartButton';

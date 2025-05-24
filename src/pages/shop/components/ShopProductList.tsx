@@ -1,5 +1,5 @@
 import { ProductCard, type Product } from '@/components/features/product';
-import { useCartContext } from '@/components/features/cart/context';
+import { useCartContext } from '@/components/features/cart';
 import styled from '@emotion/styled';
 
 function ShopProductList({

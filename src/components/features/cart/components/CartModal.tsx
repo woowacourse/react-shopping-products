@@ -1,8 +1,8 @@
 import { Flex } from '@/components/common';
-import { useCartContext } from '@/components/features/cart/context';
+import { useCartContext } from '@/components/features/cart';
 import styled from '@emotion/styled';
 import { Modal } from '@jae-o/modal-component-module';
-import ProductRowCard from '../product/product-card/ProductRowCard';
+import ProductRowCard from '../../product/product-card/ProductRowCard';
 
 function CartModal() {
   const { cartList } = useCartContext();

@@ -1,5 +1,5 @@
 import { Header } from '@/components/common';
-import { useCartContext } from '@/components/features/cart/context';
+import { useCartContext } from '@/components/features/cart';
 import { Modal } from '@jae-o/modal-component-module';
 import CartButton from './CartButton';
 
