@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
-import useOverlay from '../../../hook/useOverlay';
 import Toast from '.';
+import useBoolean from '../../../hook/useBoolean';
 
 type ToastContextType = {
   isVisible: boolean;
@@ -19,7 +19,11 @@ const ToastContext = createContext<ToastContextType>({
 });
 
 const ToastProvider = ({ children }: { children: React.ReactNode }) => {
-  const { isOpen: isVisible, open, close } = useOverlay();
+  const {
+    value: isVisible,
+    setTrue: open,
+    setFalse: close,
+  } = useBoolean(false);
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(true);
 
