@@ -1,22 +1,48 @@
 import styled from '@emotion/styled';
 import { useAPIDataContext } from '../../../context/APIDataProvider';
 import { getShoppingCartData } from '../../../api/cart';
+import { useState } from 'react';
+import { BasicModal } from '@dev-dino22/modal-components';
+import CartDetails from '../cart-details/CartDetails';
 
 function CartButton() {
   const { data: cartListData } = useAPIDataContext({
     fetcher: getShoppingCartData,
     name: 'cart',
   });
+  const [isOpened, setIsOpened] = useState(false);
+
+  const openCartModal = () => {
+    setIsOpened(true);
+  };
+
+  const closeCartModal = () => {
+    setIsOpened(false);
+  };
   const itemsCount = cartListData?.length || 0;
   return (
-    <Container data-testid="cart-button">
-      <CartIcon src="./assets/icons/Cart.svg" />
-      {itemsCount > 0 && (
-        <ItemsCountBox>
-          <ItemsCountText data-testid="cart-count">{itemsCount}</ItemsCountText>
-        </ItemsCountBox>
+    <>
+      <Container data-testid="cart-button" onClick={openCartModal}>
+        <CartIcon src="./assets/icons/Cart.svg" />
+        {itemsCount > 0 && (
+          <ItemsCountBox>
+            <ItemsCountText data-testid="cart-count">
+              {itemsCount}
+            </ItemsCountText>
+          </ItemsCountBox>
+        )}
+      </Container>{' '}
+      {isOpened && (
+        <BasicModal
+          titleText="장바구니"
+          modalPosition="bottom"
+          onClose={closeCartModal}
+          closeType="top"
+        >
+          <CartDetails />
+        </BasicModal>
       )}
-    </Container>
+    </>
   );
 }
 
