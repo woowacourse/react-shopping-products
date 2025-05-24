@@ -23,6 +23,7 @@ export const useCartList = () => {
         size: 50,
         sortBy: 'desc',
       });
+
       setCartList(data.content);
     } catch (error) {
       console.error(error);
@@ -60,9 +61,15 @@ export const useCartList = () => {
   const handleIncreaseQuantity = async (product: ProductElement) => {
     try {
       const cartItem = cartList.find((item) => item.product.id === product.id);
+      console.log('cartItem', cartItem);
+
       if (cartItem) {
-        await patchCart(cartItem.id, cartItem.quantity + 1);
-        await fetchData();
+        if (cartItem.quantity === cartItem.product.quantity) {
+          showToast(ERROR_MESSAGE.PRODUCT_MAX_QUANTITY);
+        } else {
+          await patchCart(cartItem.id, cartItem.quantity + 1);
+          await fetchData();
+        }
       }
     } catch (error) {
       console.error(error);

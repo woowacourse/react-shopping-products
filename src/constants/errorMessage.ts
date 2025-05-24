@@ -4,6 +4,7 @@ export const ERROR_MESSAGE = {
   CART_FETCH_FAIL: '장바구니 조회 중 오류가 발생했습니다.',
   CART_PRODUCT_REMOVE_FAIL: '장바구니 아이템 삭제를 실패했습니다',
   CART_PRODUCT_ADD_FAIL: '장바구니 아이템 추가를 실패했습니다',
+  PRODUCT_MAX_QUANTITY: '상품의 최대 수량입니다.',
   CART_PRODUCT_UPDATE_FAIL: '장바구니 아이템 수량 변경을 실패했습니다',
   MAX_CART_ITEM: '최대 장바구니 갯수는 50개 입니다.',
 };
