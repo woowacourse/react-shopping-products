@@ -30,6 +30,12 @@ const useCartItems = () => {
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
+
+    if (!targetCartItem) {
+      updateError('cartItems', 404);
+      return;
+    }
+
     try {
       await deleteCartItems(targetCartItem.id);
       fetchCartItems();
@@ -42,7 +48,12 @@ const useCartItems = () => {
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
-    const currentQuantity = targetCartItem?.quantity;
+
+    if (!targetCartItem) {
+      updateError('cartItems', 404);
+      return;
+    }
+    const currentQuantity = targetCartItem.quantity;
 
     try {
       await patchCartItems(targetCartItem.id, currentQuantity! + 1);
@@ -56,7 +67,12 @@ const useCartItems = () => {
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
-    const currentQuantity = targetCartItem?.quantity;
+    if (!targetCartItem) {
+      updateError('cartItems', 404);
+      return;
+    }
+
+    const currentQuantity = targetCartItem.quantity;
 
     if (currentQuantity === 1) {
       removeFromCart(productId);
