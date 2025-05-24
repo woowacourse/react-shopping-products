@@ -12,7 +12,7 @@ const handlers = [
     return HttpResponse.json({ content: MOCK_CART_ITEMS }, { status: 200 });
   }),
 
-  http.post<never, AddCartItemsProps>(/\/cart-items(?:\?.*)?$/, async ({ request }) => {
+  http.post<never, AddCartItemsProps>('/cart-items', async ({ request }) => {
     const { productId, quantity: addQuantity } = await request.json();
     const targetIndex = MOCK_PRODUCTS.findIndex((product) => product.id === productId);
     if (targetIndex === -1) {
@@ -44,7 +44,7 @@ const handlers = [
   }),
 
   http.patch<AddCartItemsParams, AddCartItemsProps>(
-    '/cart-items/:id',
+    /\/cart-items\/(?<id>\d+)$/,
     async ({ params, request }) => {
       const { quantity } = await request.json();
       const { id } = params;
@@ -59,8 +59,7 @@ const handlers = [
         );
       }
 
-      const targetItem = MOCK_CART_ITEMS[targetIndex];
-      MOCK_CART_ITEMS[targetIndex] = { ...targetItem, quantity };
+      MOCK_CART_ITEMS[targetIndex] = { ...MOCK_CART_ITEMS[targetIndex], quantity };
 
       return HttpResponse.json(
         { message: '장바구니 아이템 수량 변경에 성공했습니다.' },
