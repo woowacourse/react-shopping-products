@@ -43,7 +43,9 @@ const apiClient: ApiClientType = async <Response, RequestBody>({
   }
 
   if (isFetchError(response)) {
-    throw new Error(FETCH_ERROR_MESSAGE[String(response.status)]);
+    const errorBody = await response.json();
+    const message = errorBody.message ?? FETCH_ERROR_MESSAGE[String(response.status)];
+    throw new Error(message);
   }
 
   throw new Error(DEFAULT_ERROR_MESSAGE);
