@@ -1,5 +1,6 @@
 import { postCartItem } from "../../../api/cartItem";
-import { useCartContext } from "../../../hook/useContext/useContext";
+import { useShoppingContext } from "../../../hook/useContext/useShoppingContext";
+
 import { CartItemType } from "../../../types/cartItem";
 import { ProductType } from "../../../types/product";
 import Button from "../../unit/Button/Button";
@@ -12,10 +13,10 @@ interface ProductContainerProps {
 }
 
 export default function ProductContainer({ products }: ProductContainerProps) {
-  const { cartItemList, dispatch } = useCartContext();
+  const { cartItemList, dispatch } = useShoppingContext();
 
   const onChange = () => {
-    dispatch({ type: "update" });
+    dispatch({ type: "updateCartProduct" });
   };
 
   const AddToCartButton = (id: number) => {

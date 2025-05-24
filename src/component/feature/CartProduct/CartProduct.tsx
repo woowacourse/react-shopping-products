@@ -31,6 +31,7 @@ export function CartProduct({
       id={`cartProduct-${id}`}
       aria-label={`${id} 항목`}
       css={CartProductLayout}
+      data-testid="cart-product"
     >
       <img src={imageUrl} css={ProductImg} />
       <div css={TitleLayout}>

@@ -1,5 +1,4 @@
-import { useCartContext } from "../../../hook/useContext/useContext";
-import { ProductType } from "../../../types/product";
+import { useShoppingContext } from "../../../hook/useContext/useShoppingContext";
 import { Line } from "../../unit/Line/Line";
 import { CartProduct } from "../CartProduct/CartProduct";
 import {
@@ -9,13 +8,8 @@ import {
   PaymentsValue,
 } from "./CartProductContainer.style";
 
-interface CartProductContainerProps {
-  productList: ProductType[];
-}
-export default function CartProductContainer({
-  productList,
-}: CartProductContainerProps) {
-  const { cartItemList, dispatch } = useCartContext();
+export default function CartProductContainer() {
+  const { cartItemList, productList, dispatch } = useShoppingContext();
 
   return (
     <>
@@ -33,7 +27,7 @@ export default function CartProductContainer({
               name={cartProduct[0].name}
               price={cartProduct[0].price}
               quantity={cartItem.quantity}
-              onChange={() => dispatch({ type: "update" })}
+              onChange={() => dispatch({ type: "updateCartProduct" })}
             />
           );
         })}

@@ -1,6 +1,6 @@
 import { ProductResponse } from "../types/product";
 
-export const mockProductList: ProductResponse = {
+export const mockProductResponse: ProductResponse = {
   content: [
     {
       id: 26,

@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
-import { getProducts } from "../api/product";
+import { useState } from "react";
 import CartProductContainer from "../component/feature/CartProductContainer/CartProductContainer";
 import { Modal } from "../component/feature/Modal/Modal";
 import ProductContainer from "../component/feature/ProductContainer/ProductContainer";
@@ -11,8 +10,8 @@ import Button from "../component/unit/Button/Button";
 import Selector from "../component/unit/Selector/Selector";
 import Toast from "../component/unit/Toast/Toast";
 import { CategoryOption, FilterOption } from "../constants";
-import { useCartContext } from "../hook/useContext/useContext";
-import { ProductType } from "../types/product";
+
+import { useShoppingContext } from "../hook/useContext/useShoppingContext";
 import {
   cartIcon,
   cartIconContainer,
@@ -26,37 +25,21 @@ const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"
 const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
 
 export default function ShopPage() {
-  const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");
-  const [filterValue, setFilterValue] = useState<FilterOption>("낮은 가격순");
-  const [productList, setProductList] = useState<ProductType[]>([]);
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-
-  const { cartItemList } = useCartContext();
+  const {
+    cartItemList,
+    errorCart,
+    productList,
+    errorProduct,
+    loadingProduct,
+    dispatch,
+  } = useShoppingContext();
 
   const selectedProductCount = cartItemList.length;
 
   const handleClose = () => {
     setIsOpen(false);
   };
-
-  useEffect(() => {
-    setIsLoading(true);
-    (async () => {
-      try {
-        const response = await getProducts({
-          category: categoryValue,
-          sortBy: filterValue === "높은 가격순" ? "price,desc" : "price,asc",
-        });
-        setProductList(response.content);
-        setIsLoading(false);
-      } catch (e) {
-        setIsError(true);
-        setIsLoading(false);
-      }
-    })();
-  }, [filterValue, categoryValue]);
 
   return (
     <div
@@ -83,16 +66,19 @@ export default function ShopPage() {
               </div>
             )}
           </div>
-          {isError && (
-            <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>
+          {Boolean(errorCart) && (
+            <Toast>
+              {errorCart ? errorCart : errorProduct && errorProduct}
+            </Toast>
           )}
         </Header>
         <Main>
-          {isError ? (
+          {errorProduct ? (
             <div css={loadingLayout}>
-              데이터를 가져오는데 실패했습니다. <br /> 다시 시도해주세요
+              상품목록 데이터를 가져오는데 실패했습니다. <br /> 다시
+              시도해주세요
             </div>
-          ) : isLoading ? (
+          ) : loadingProduct ? (
             <div css={loadingLayout}>로딩중입니다</div>
           ) : productList.length === 0 ? (
             <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>
@@ -104,14 +90,14 @@ export default function ShopPage() {
                     dropDownOptions={dropdownOptions}
                     placeholder="전체"
                     onSelectChange={(value: CategoryOption) =>
-                      setCategoryValue(value)
+                      dispatch({ type: "changeCategory", payload: value })
                     }
                   />
                   <Selector
                     dropDownOptions={filterOptions}
                     placeholder="낮은 가격순"
                     onSelectChange={(value: FilterOption) =>
-                      setFilterValue(value)
+                      dispatch({ type: "changeFilter", payload: value })
                     }
                   />
                 </div>
@@ -136,7 +122,7 @@ export default function ShopPage() {
             장바구니에 추가된 목록이 없습니다. <br /> 상품을 먼저 추가해주세요
           </div>
         ) : (
-          <CartProductContainer productList={productList} />
+          <CartProductContainer />
         )}
       </Modal>
     </div>
