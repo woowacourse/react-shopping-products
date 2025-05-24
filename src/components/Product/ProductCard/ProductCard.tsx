@@ -82,7 +82,7 @@ function ProductCard({
             <p>품절</p>
           </div>
         )}
-        {productQuantity && productQuantity !== 0 && productQuantity < 3 && (
+        {productQuantity !== 0 && productQuantity && productQuantity < 3 && (
           <div css={styles.soldOutSoonCss}>
             <span className="track">
               <span className="msg">⚠️ 품절 임박! 서둘러 구매하세요!</span>
