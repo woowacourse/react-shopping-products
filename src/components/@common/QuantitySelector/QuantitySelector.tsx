@@ -1,6 +1,6 @@
 import * as S from "./QuantitySelector.styles";
-import PlusButton from "/plus.svg";
-import MinusButton from "/minus.svg";
+import PlusIcon from "/plus.svg";
+import MinusIcon from "/minus.svg";
 
 interface Props {
   quantity: number;
@@ -20,7 +20,7 @@ const QuantitySelector = ({
   return (
     <S.QuantitySelector>
       <S.ButtonIcon
-        src={MinusButton}
+        src={MinusIcon}
         alt="수량 감소"
         onClick={decreaseDisabled ? undefined : onDecrease}
         role="button"
@@ -29,7 +29,7 @@ const QuantitySelector = ({
       />
       {quantity}
       <S.ButtonIcon
-        src={PlusButton}
+        src={PlusIcon}
         alt="수량 증가"
         onClick={increaseDisabled ? undefined : onIncrease}
         role="button"

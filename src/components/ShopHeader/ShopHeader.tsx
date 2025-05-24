@@ -42,7 +42,7 @@ const ShopHeader = ({
     <S.Header>
       <S.Logo href="/">SHOP</S.Logo>
       <S.CartButton onClick={handleOpenCart}>
-        <S.CartIcon src={Cart} alt="장바구니" />
+        <S.CartIcon src={Cart} alt="cart" />
         {!!cartItemsCount && (
           <S.CartItemsCount>{cartItemsCount}</S.CartItemsCount>
         )}

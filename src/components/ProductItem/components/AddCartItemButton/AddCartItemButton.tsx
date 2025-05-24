@@ -1,18 +1,14 @@
 import * as S from "./AddCartItemButton.styles";
 import AddCart from "/add-cart.svg";
 
-interface Props {
-  onAdd: () => void;
-}
+interface Props extends React.ComponentProps<"button"> {}
 
-const AddCartItemButton = ({ onAdd }: Props) => {
+const AddCartItemButton = ({ disabled, ...props }: Props) => {
   return (
-    <>
-      <S.AddCartItemButton onClick={onAdd}>
-        <img src={AddCart} alt="장바구니에서 상품 추가" />
-        <S.Text>담기</S.Text>
-      </S.AddCartItemButton>
-    </>
+    <S.AddCartItemButton {...props} disabled={disabled}>
+      <img src={AddCart} alt="add-cart" />
+      <S.Text>{disabled ? "품절" : "담기"}</S.Text>
+    </S.AddCartItemButton>
   );
 };
 
