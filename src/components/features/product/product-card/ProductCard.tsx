@@ -3,7 +3,7 @@ import { useCartContext } from '@/context/useCartContext';
 import { useShopErrorContext } from '@/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
 import { addCartItem } from '../api/addCartItem';
-import { deleteCartItem } from '../api/deleteCartItem';
+import { updateCartItem } from '../api/updateCartItem';
 import AddCartButton from './AddCartButton';
 
 interface ProductProps {
@@ -54,6 +54,18 @@ function ProductCard({
   //   }
   // };
 
+  const handleUpdateCart = async (quantity: number) => {
+    try {
+      if (!cartId) return;
+
+      await updateCartItem(cartId, quantity);
+      refetch();
+      hideErrorMessage();
+    } catch {
+      showErrorMessage('장바구니에서 개수를 수정하는데 실패했습니다.');
+    }
+  };
+
   return (
     <Container data-testid={`product-${id}`}>
       <PreviewBox>
@@ -66,11 +78,11 @@ function ProductCard({
         </Flex>
         {isInCart ? (
           <UpdateCartBox>
-            <Button>
+            <Button onClick={() => handleUpdateCart((cartCount ?? 1) - 1)}>
               <img src="./assets/icons/Minus.svg" />
             </Button>
             <Text>{cartCount}</Text>
-            <Button>
+            <Button onClick={() => handleUpdateCart((cartCount ?? 1) + 1)}>
               <img src="./assets/icons/Plus.svg" />
             </Button>
           </UpdateCartBox>

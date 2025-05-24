@@ -136,4 +136,25 @@ export const handlers = [
 
     return new HttpResponse(null, { status: 204 });
   }),
+  http.patch(`${baseURL}/cart-items/:id`, async ({ params, request }) => {
+    const { id } = params;
+    const { quantity } = (await request.json()) as {
+      quantity: number;
+    };
+    const raw = localStorage.getItem('cartItems');
+    const cartItems: CartItemContent[] = raw ? JSON.parse(raw) : [];
+
+    console.log(cartItems);
+
+    const updatedCartItems = cartItems.map((item) => {
+      if (String(item.id) !== String(id)) return item;
+
+      return { ...item, quantity };
+    });
+
+    console.log(updatedCartItems);
+    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+
+    return HttpResponse.json(null, { status: 200 });
+  }),
 ];
