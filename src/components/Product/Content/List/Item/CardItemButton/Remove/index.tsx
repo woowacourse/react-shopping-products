@@ -1,30 +1,25 @@
 import Button from "@/components/Button";
 import removeCartItemIcon from "@/assets/icons/remove-cart-item.svg";
-import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
-import { getCartItems } from "@/apis/cartItems/getCartItems";
 import useMutation from "@/hooks/useMutation";
 import useToast from "@/hooks/useToast";
+import { useCartItemContext } from "@/contexts/CartItemProvider";
 
 interface RemoveCartItemButtonProps {
   id: number;
-  updateCartItems: (newCartItems: CartItemType[]) => void;
 }
 
-function RemoveCartItemButton({
-  id,
-  updateCartItems,
-}: RemoveCartItemButtonProps) {
+function RemoveCartItemButton({ id }: RemoveCartItemButtonProps) {
   const { mutate: removeFromCartMutate, isLoading } = useMutation(() =>
     removeCartItem(id)
   );
+  const { refetchCartItems } = useCartItemContext();
   const { addToast } = useToast();
 
   const handleRemoveCartItemButtonClick = () => {
     removeFromCartMutate(undefined, {
-      onSuccess: async () => {
-        const cartItems = await getCartItems();
-        updateCartItems(cartItems);
+      onSuccess: () => {
+        refetchCartItems();
       },
       onError: (error) => {
         addToast({

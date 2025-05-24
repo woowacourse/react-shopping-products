@@ -2,26 +2,25 @@ import Button from "@/components/Button";
 import addCartItemIcon from "@/assets/icons/add-cart-item.svg";
 import useMutation from "@/hooks/useMutation";
 import { addCartItems } from "@/apis/cartItems/addCartItems";
-import { getCartItems } from "@/apis/cartItems/getCartItems";
-import { CartItemType } from "@/apis/cartItems/cartItem.type";
+
 import useToast from "@/hooks/useToast";
+import { useCartItemContext } from "@/contexts/CartItemProvider";
 
 interface AddCartItemButtonProps {
   id: number;
-  updateCartItems: (newCartItems: CartItemType[]) => void;
 }
 
-function AddCartItemButton({ id, updateCartItems }: AddCartItemButtonProps) {
+function AddCartItemButton({ id }: AddCartItemButtonProps) {
   const { mutate: addToCartMutate, isLoading } = useMutation(() =>
     addCartItems({ productId: id, quantity: 1 })
   );
+  const { refetchCartItems } = useCartItemContext();
   const { addToast } = useToast();
 
   const handleAddCartItemButtonClick = () => {
     addToCartMutate(undefined, {
-      onSuccess: async () => {
-        const cartItems = await getCartItems();
-        updateCartItems(cartItems);
+      onSuccess: () => {
+        refetchCartItems();
       },
       onError: (error) => {
         addToast({
