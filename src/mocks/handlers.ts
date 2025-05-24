@@ -1,6 +1,7 @@
 import { http, HttpResponse } from "msw";
 
 export const handlers = [
+  // 상품 목록 조회
   http.get(`${import.meta.env.VITE_BASE_URL}/products`, ({ request }) => {
     const url = new URL(request.url);
     const params = url.searchParams;
@@ -43,7 +44,9 @@ export const handlers = [
 
     if (sort === "price,asc") {
       products.sort((a, b) => a.price - b.price);
-    } else if (sort === "price,desc") {
+    }
+
+    if (sort === "price,desc") {
       products.sort((a, b) => b.price - a.price);
     }
 
@@ -55,4 +58,40 @@ export const handlers = [
       content: data,
     });
   }),
+
+  // 장바구니 목록 조회
+  http.get(`${import.meta.env.VITE_BASE_URL}/cart-items`, ({ request }) => {
+    const url = new URL(request.url);
+    const params = url.searchParams;
+
+    const page = parseInt(params.get("page") || "0");
+    const size = parseInt(params.get("size") || "20");
+
+    const cartItems = [
+      {
+        id: 100,
+        quantity: 10,
+        product: {
+          id: 1,
+          name: "에어포스",
+          category: "패션잡화",
+          price: 100000,
+          imageUrl: "string",
+          quantity: "50",
+        },
+      },
+    ];
+
+    const start = page * size;
+    const end = start + size;
+    const data = cartItems.slice(start, end);
+
+    return HttpResponse.json({
+      content: data,
+    });
+  }),
+
+  // 장바구니에 상품 추가
+
+  // 장바구니에 상품 삭제
 ];
