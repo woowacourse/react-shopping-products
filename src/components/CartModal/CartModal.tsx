@@ -24,7 +24,7 @@ const CartModal = ({ isOpen, onModalClose }: CartModalProps) => {
           </Modal.Body>
           <Modal.Button
             title={"닫기"}
-            onClick={() => {}}
+            onClick={onModalClose}
             size="large"
             styled={{ height: "44px" }}
           />
