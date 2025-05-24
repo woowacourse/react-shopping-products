@@ -1,5 +1,4 @@
 import Button from "@/components/Button";
-import removeCartItemIcon from "@/assets/icons/remove-cart-item.svg";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
 import useMutation from "@/hooks/useMutation";
@@ -43,13 +42,12 @@ function RemoveCartItemButton({ id }: RemoveCartItemButton) {
       )}
 
       <Button
-        variant="secondary"
+        variant="outline"
         type="button"
         onClick={handleClick}
         disabled={isLoading}
       >
-        <img src={removeCartItemIcon} alt="장바구니 빼기" />
-        빼기
+        삭제
       </Button>
     </>
   );
