@@ -4,7 +4,7 @@ import * as Styled from "./ProductItem.styled";
 
 import defaultImage from "/defaultImage.png";
 import ProductAddButton from "../ProductAddButton/ProductAddButton";
-import ProductRemoveButton from "../ProductRemoveButton/ProductRemoveButton";
+import ProductQuantityControl from "../ProductQuantityControl/ProductQuantityControl";
 
 function ProductItem({
   product,
@@ -25,8 +25,10 @@ function ProductItem({
           </Styled.Contents>
           <Styled.ButtonWrapper>
             {isInCart ? (
-              <ProductRemoveButton
-                handleRemoveProduct={() =>
+              <ProductQuantityControl
+                quantity={1}
+                handlePlusQuantity={() => {}}
+                handleMinusQuantity={() =>
                   handleRemoveProduct(product.id.toString())
                 }
               />
