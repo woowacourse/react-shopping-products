@@ -33,7 +33,7 @@ export default function ShopPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { cartItemList, dispatch } = useCartContext();
+  const { cartItemList } = useCartContext();
 
   const selectedProductCount = cartItemList.length;
 
@@ -116,12 +116,7 @@ export default function ShopPage() {
                   />
                 </div>
               </TitleContainer>
-
-              <ProductContainer
-                products={productList}
-                cartItemList={cartItemList}
-                onChange={() => dispatch({ type: "update" })}
-              />
+              <ProductContainer products={productList} />
             </>
           )}
         </Main>

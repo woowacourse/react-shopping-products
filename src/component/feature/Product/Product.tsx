@@ -1,7 +1,3 @@
-import { postCartItem } from "../../../api/cartItem";
-import { CartItemType } from "../../../types/cartItem";
-import Button from "../../unit/Button/Button";
-import { QuantitySelector } from "../../unit/QuantitySelector/QuantitySelector";
 import {
   contentLayout,
   descriptionLayout,
@@ -16,8 +12,7 @@ interface ProductProps {
   imageUrl: string;
   name: string;
   price: number;
-  selectedCartItems: CartItemType[];
-  onChange: () => void;
+  children: React.ReactNode;
 }
 
 export default function Product({
@@ -25,39 +20,8 @@ export default function Product({
   imageUrl,
   name,
   price,
-  selectedCartItems,
-  onChange,
+  children,
 }: ProductProps) {
-  const isSelected = selectedCartItems.length !== 0;
-
-  const AddToCartButton = () => {
-    const handleClick = async () => {
-      await postCartItem({ productId: Number(id), quantity: 1 });
-      onChange();
-    };
-
-    return (
-      <Button onClick={handleClick}>
-        <img src="./add-shopping-cart.svg" />
-        <p>담기</p>
-      </Button>
-    );
-  };
-
-  // const RemoveFromCartButton = () => {
-  //   const handleClick = async () => {
-  //     await deleteCartItem({ id: Number(selectedCartItems[0].id) });
-  //     onChange();
-  //   };
-
-  //   return (
-  //     <Button onClick={handleClick} style="secondary">
-  //       <img src="./remove-shopping-cart.svg" />
-  //       <p>빼기</p>
-  //     </Button>
-  //   );
-  // };
-
   return (
     <div id={id.toString()} css={productLayout}>
       <img css={imgLayout} src={imageUrl ?? "./default-img.png"} />
@@ -66,16 +30,7 @@ export default function Product({
           <p css={productNameLayout}>{name}</p>
           <p css={priceLayout}>{price}</p>
         </div>
-        {isSelected ? (
-          <></>
-        ) : (
-          // <QuantitySelector
-          //   quantity={quantity}
-          //   cartId={id}
-          //   onChange={onChange}
-          // />
-          AddToCartButton()
-        )}
+        {children}
       </div>
     </div>
   );
