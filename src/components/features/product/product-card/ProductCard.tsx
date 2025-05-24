@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { addCartItem } from '../api/addCartItem';
 import { updateCartItem } from '../api/updateCartItem';
 import AddCartButton from './AddCartButton';
+import { deleteCartItem } from '../api/deleteCartItem';
 
 interface ProductProps {
   id: string;
@@ -29,7 +30,6 @@ function ProductCard({
 }: ProductProps) {
   const { cartCount: totalCartCount, refetch } = useCartContext();
   const { showErrorMessage, hideErrorMessage } = useShopErrorContext();
-  console.log(name, quantity);
 
   const handleAddCart = async () => {
     try {
@@ -45,17 +45,17 @@ function ProductCard({
     }
   };
 
-  // const handleDeleteCart = async () => {
-  //   try {
-  //     if (!cartId) return;
+  const handleDeleteCart = async () => {
+    try {
+      if (!cartId) return;
 
-  //     await deleteCartItem(cartId);
-  //     refetch();
-  //     hideErrorMessage();
-  //   } catch {
-  //     showErrorMessage('장바구니에서 삭제하는 데 실패했습니다.');
-  //   }
-  // };
+      await deleteCartItem(cartId);
+      refetch();
+      hideErrorMessage();
+    } catch {
+      showErrorMessage('장바구니에서 삭제하는 데 실패했습니다.');
+    }
+  };
 
   const handleUpdateCart = async (quantity: number) => {
     try {
@@ -84,19 +84,26 @@ function ProductCard({
           <ProductTitle>{name}</ProductTitle>
           <ProductPrice>{`${price.toLocaleString()}원`}</ProductPrice>
         </Flex>
-        {isInCart ? (
-          <UpdateCartBox>
-            <Button onClick={() => handleUpdateCart((cartCount ?? 1) - 1)}>
-              <img src="./assets/icons/Minus.svg" />
-            </Button>
-            <Text>{cartCount}</Text>
-            <Button onClick={() => handleUpdateCart((cartCount ?? 1) + 1)}>
-              <img src="./assets/icons/Plus.svg" />
-            </Button>
-          </UpdateCartBox>
-        ) : (
-          <AddCartButton onClick={handleAddCart} />
-        )}
+        {quantity !== 0 &&
+          (isInCart ? (
+            <UpdateCartBox>
+              {cartCount === 1 ? (
+                <Button onClick={handleDeleteCart}>
+                  <img src="./assets/icons/DeleteCart.svg" width={12} />
+                </Button>
+              ) : (
+                <Button onClick={() => handleUpdateCart((cartCount ?? 1) - 1)}>
+                  <img src="./assets/icons/Minus.svg" />
+                </Button>
+              )}
+              <Text>{cartCount}</Text>
+              <Button onClick={() => handleUpdateCart((cartCount ?? 1) + 1)}>
+                <img src="./assets/icons/Plus.svg" />
+              </Button>
+            </UpdateCartBox>
+          ) : (
+            <AddCartButton onClick={handleAddCart} />
+          ))}
       </InfoBox>
     </Container>
   );
