@@ -1,5 +1,13 @@
 import request from "../utils/request";
 
+export async function fetchCartItems() {
+  const data = await request({
+    method: "GET",
+    url: "/cart-items",
+  });
+  return data.content;
+}
+
 export async function changeCartQuantity({
   cartId,
   quantity,

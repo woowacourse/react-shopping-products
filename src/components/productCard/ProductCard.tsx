@@ -23,18 +23,9 @@ interface ProductCardProps {
     isAdded: boolean;
     quantity: number;
   };
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
-  fetchCartProducts: () => void;
 }
 
-function ProductCard({
-  cartInfo,
-  productInfo,
-  setCartItemIds,
-  fetchCartProducts,
-}: ProductCardProps) {
+function ProductCard({ cartInfo, productInfo }: ProductCardProps) {
   const { imageUrl, productId, name, price, isAdded, quantity } = productInfo;
   const { cartId, cartAmount } = cartInfo;
   const isSoldOut = quantity === 0;
@@ -57,8 +48,6 @@ function ProductCard({
           cartId={cartId}
           cartAmount={cartAmount}
           isAdded={isAdded}
-          setCartItemIds={setCartItemIds}
-          fetchCartProducts={fetchCartProducts}
         />
       </div>
     </div>

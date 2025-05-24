@@ -1,36 +1,31 @@
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
-import useFetchProducts from "../../hooks/useFetchProducts/useFetchProducts";
 import { CategoryType, SortType } from "../../types/index.types";
+import useProduct from "../../hooks/useProduct/useProduct";
+import fetchProducts from "../../api/fetchProducts";
+import { useCallback } from "react";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
+import useCart from "../../hooks/useCart/useCart";
 
 interface ProductCardListProps {
   category: CategoryType;
   sort: SortType;
-  cartItemIds: Record<"productId" | "cartId", number>[];
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
-  fetchCartProducts: () => void;
 }
 
-function ProductCardList({
-  category,
-  sort,
-  cartItemIds,
-  setCartItemIds,
-  fetchCartProducts,
-}: ProductCardListProps) {
-  const { products, isLoading } = useFetchProducts({
-    category,
-    sort,
+function ProductCardList({ category, sort }: ProductCardListProps) {
+  const { products } = useProduct({
+    fetchFn: useCallback(
+      () => fetchProducts({ category, sort }),
+      [category, sort]
+    ),
   });
+  const { cartItemIds } = useCart();
 
-  if (isLoading) return <ProductCardListSkeleton />;
+  if (products === null) return <ProductCardListSkeleton />;
 
   return (
     <div css={CardListContainer}>
-      {products?.content.map((data) => {
+      {products?.map((data) => {
         const cartInfo = {
           cartId: cartItemIds?.find((ids) => ids.productId === data.id)?.cartId,
           cartAmount: cartItemIds.length,
@@ -51,8 +46,6 @@ function ProductCardList({
             cartInfo={cartInfo}
             productInfo={productInfo}
             key={data.id}
-            setCartItemIds={setCartItemIds}
-            fetchCartProducts={fetchCartProducts}
           />
         );
       })}

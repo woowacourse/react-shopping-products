@@ -1,15 +1,11 @@
 import "./index.css";
 import "./reset.css";
-import useFetchCartProducts from "./hooks/useFetchCartProducts/useFetchCartProducts";
 import { useState } from "react";
 import ProductContainer from "./components/productContainer/ProductContainer";
 import Header from "./components/header/Header";
 import CartModal from "./components/cartModal/CartModal";
 
 function App() {
-  const { cartItemIds, setCartItemIds, fetchCartProducts } =
-    useFetchCartProducts();
-
   const [isOpen, setIsOpen] = useState(false);
 
   function modalOpen() {
@@ -22,12 +18,8 @@ function App() {
 
   return (
     <div className="container">
-      <Header openCartModal={modalOpen} cartItemAmount={cartItemIds.length} />
-      <ProductContainer
-        cartItemIds={cartItemIds}
-        setCartItemIds={setCartItemIds}
-        fetchCartProducts={fetchCartProducts}
-      />
+      <Header openCartModal={modalOpen} />
+      <ProductContainer />
       {isOpen && <CartModal onClose={modalClose} />}
     </div>
   );

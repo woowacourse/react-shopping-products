@@ -1,15 +1,17 @@
 import { CartStyle, PutItemCount } from "./CartButton.css";
+import useCart from "../../hooks/useCart/useCart";
 
 interface CartButtonProps {
-  cartItemAmount: number;
   onClick: () => void;
 }
 
-function CartButton({ cartItemAmount, onClick }: CartButtonProps) {
+function CartButton({ onClick }: CartButtonProps) {
+  const { cartItemIds } = useCart();
+
   return (
     <button css={CartStyle} onClick={onClick}>
       <img src="Cart.svg" alt="장바구니 아이콘" />
-      <div css={PutItemCount}>{cartItemAmount}</div>
+      <div css={PutItemCount}>{cartItemIds?.length}</div>
     </button>
   );
 }

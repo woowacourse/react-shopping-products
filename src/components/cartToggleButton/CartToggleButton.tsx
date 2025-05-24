@@ -10,10 +10,6 @@ interface CartToggleButtonProps {
   productId: number;
   cartId?: number;
   cartAmount: number;
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
-  fetchCartProducts: () => void;
 }
 
 function CartToggleButton({
@@ -23,13 +19,8 @@ function CartToggleButton({
   cartId,
   cartAmount,
   isAdded,
-  setCartItemIds,
-  fetchCartProducts,
 }: CartToggleButtonProps) {
-  const { removeItemToCart, addItemToCart } = useCartToggleButton({
-    setCartItemIds,
-    fetchCartProducts,
-  });
+  const { removeItemToCart, addItemToCart } = useCartToggleButton();
 
   const { cartQuantity, increase, decrease } = useCartQuantity({
     cartId,

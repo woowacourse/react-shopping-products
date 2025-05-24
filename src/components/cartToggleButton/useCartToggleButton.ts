@@ -1,3 +1,4 @@
+import useCart from "../../hooks/useCart/useCart";
 import { useToast } from "../../hooks/useToast/useToast";
 import { AddItemBody } from "../../types/request.types";
 import request from "../../utils/request";
@@ -14,18 +15,9 @@ interface RemoveItemToCartProps {
   productId: number;
 }
 
-interface useCartToggleButtonProps {
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
-  fetchCartProducts: () => void;
-}
-
-export default function useCartToggleButton({
-  setCartItemIds,
-  fetchCartProducts,
-}: useCartToggleButtonProps) {
+export default function useCartToggleButton() {
   const { showToast } = useToast();
+  const { setCartItemIds, refetchCartItems } = useCart();
 
   async function removeItemToCart({
     cartId,
@@ -55,7 +47,7 @@ export default function useCartToggleButton({
         url: "/cart-items",
         body: { productId, quantity: 1 },
       });
-      fetchCartProducts();
+      refetchCartItems();
     } catch {
       showToast("ADD");
     }

@@ -1,0 +1,28 @@
+import { useCallback, useContext, useEffect } from "react";
+import { CartContext } from "../../context/cartContext";
+import { CartItem } from "../useFetchCartProducts/index.types";
+import { fetchCartItems } from "../../api/cart";
+
+export default function useCart() {
+  const context = useContext(CartContext);
+  if (!context) throw new Error("CartProvider 내부에서 사용해야 합니다.");
+  const { cartItems, setCartItems, setCartItemIds, cartItemIds } = context;
+
+  const setData = useCallback(async () => {
+    const data = await fetchCartItems();
+    setCartItems(data);
+    if (data) {
+      setCartItemIds(
+        data.map((data: CartItem) => {
+          return { productId: data.product.id, cartId: data.id };
+        })
+      );
+    }
+  }, [setCartItems, setCartItemIds]);
+
+  useEffect(() => {
+    setData();
+  }, [setData]);
+
+  return { cartItems, refetchCartItems: setData, cartItemIds, setCartItemIds };
+}
