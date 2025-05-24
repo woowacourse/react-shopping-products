@@ -6,8 +6,8 @@ import { vi } from "vitest";
 import * as productApi from "../api/product";
 import * as cartApi from "../api/cartItem";
 import ShopPage from "../page/ShopPage";
-import { mockCartItemResponse } from "../mock/CartProducts";
-import { mockProductResponse } from "../mock/Products";
+import { mockCartItemResponse } from "../mock/mockCartItemResponse";
+import { mockProductResponse } from "../mock/mockProductResponse";
 import CartProductContainer from "../component/feature/CartProductContainer/CartProductContainer";
 import { ContextProvider } from "../context/ContextProvider";
 

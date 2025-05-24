@@ -6,7 +6,7 @@ import ShopPage from "../page/ShopPage";
 import { vi, Mock } from "vitest";
 import * as productApi from "../api/product";
 import * as cartApi from "../api/cartItem";
-import { mockProductResponse } from "../mock/Products";
+import { mockProductResponse } from "../mock/mockProductResponse";
 import { ContextProvider } from "../context/ContextProvider";
 
 describe("장바구니 추가 기능 테스트", () => {

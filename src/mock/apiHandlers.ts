@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { mockProductResponse } from "./Products";
+import { mockProductResponse } from "./mockProductResponse";
 
 export const handlers = [
   http.get("https://example.com/products", () => {
