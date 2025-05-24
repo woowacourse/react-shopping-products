@@ -8,11 +8,11 @@ interface AddCartItemsParams {
 }
 
 const handlers = [
-  http.get<never, CartItemType[]>('/cart-items', async () => {
+  http.get<never, CartItemType>(/\/cart-items(?:\?.*)?$/, () => {
     return HttpResponse.json({ content: MOCK_CART_ITEMS }, { status: 200 });
   }),
 
-  http.post<never, AddCartItemsProps>('/cart-items', async ({ request }) => {
+  http.post<never, AddCartItemsProps>(/\/cart-items(?:\?.*)?$/, async ({ request }) => {
     const { productId, quantity: addQuantity } = await request.json();
     const targetIndex = MOCK_PRODUCTS.findIndex((product) => product.id === productId);
     if (targetIndex === -1) {
