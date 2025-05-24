@@ -53,8 +53,8 @@ export function useDataContext({
       setData((prevData) => ({
         ...prevData,
         [key]: {
-          ...prevData[key],
           data: [],
+          ...prevData[key],
           isLoading: true,
           error: {
             isError: false,
