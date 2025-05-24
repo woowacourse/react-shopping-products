@@ -32,6 +32,16 @@ class HTTPClient {
     return response;
   }
 
+  async patch<T>(url: string, data: T) {
+    const response = await fetch(this.baseUrl + url, {
+      method: "PATCH",
+      headers: this.getHeaders(),
+      body: JSON.stringify(data),
+    });
+
+    return response;
+  }
+
   async delete(url: string) {
     const response = await fetch(this.baseUrl + url, {
       method: "DELETE",
