@@ -33,8 +33,7 @@ describe("validateByKey는", () => {
   });
 
   it("products 응답이 잘못되면 ApiError(422)를 던진다", () => {
-    // quantity 누락 → invalid
-    const badPayload = { content: [{ ...validProduct, quantity: undefined }] };
+    const badPayload = { content: [{ ...validProduct, name: undefined }] };
     expect(() => validateByKey("products", badPayload)).toThrow(ApiError);
     try {
       validateByKey("products", badPayload);
