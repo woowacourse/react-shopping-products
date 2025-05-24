@@ -3,16 +3,18 @@ import ProductCardList from '../components/ProductCardList';
 import ProductListToolBar from '../components/ProductListToolBar';
 import OrbitSpinner from '../components/OrbitSpinner/index';
 import { useProducts } from '../hooks/useProducts';
-// import { useShoppingCart } from '../hooks/useShoppingCart';
+import Header from '../components/Header';
+import { useShoppingCart } from '../hooks/useShoppingCart';
 
 const ProductListPage = () => {
   const products = useProducts();
-  // const shoppingCart = useShoppingCart();
+  const shoppingCart = useShoppingCart();
 
   return (
     <>
+      <Header shoppingCart={shoppingCart.data} />
       {products.error && <ErrorToast message={products.error} />}
-      {/* {shoppingCart.error && <ErrorToast message={shoppingCart.error} />} */}
+      {shoppingCart.error && <ErrorToast message={shoppingCart.error} />}
       <ProductListToolBar />
       {products.loading ? (
         <OrbitSpinner />

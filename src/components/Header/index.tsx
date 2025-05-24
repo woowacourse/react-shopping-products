@@ -1,17 +1,15 @@
 import { css } from '@emotion/css';
-import { useShoppingCartContext } from '../../contexts/useShoppingCartContext';
+import { CartItem } from '../../types/cart.type';
 
-const Header = () => {
-  const shoppingCart = useShoppingCartContext();
-
+const Header = ({ shoppingCart }: { shoppingCart: CartItem[] }) => {
   return (
     <header className={HeaderStyles}>
       <a href="/" className={LogoStyles}>
         SHOP
       </a>
       <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
-      {shoppingCart.cartItems.length !== 0 && (
-        <div className={ShoppingCartCount}>{shoppingCart.cartItems.length}</div>
+      {shoppingCart && shoppingCart.length !== 0 && (
+        <div className={ShoppingCartCount}>{shoppingCart.length}</div>
       )}
     </header>
   );

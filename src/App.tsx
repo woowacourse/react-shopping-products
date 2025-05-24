@@ -1,5 +1,4 @@
 import { css } from '@emotion/css';
-import Header from './components/Header';
 import ProductListPage from './pages/ProductListPage';
 import ShoppingCartProvider from './contexts/ShoppingCartProvider';
 import DataProvider from './contexts/DataContextProvider';
@@ -11,7 +10,6 @@ function App() {
       <ProductsProvider>
         <ShoppingCartProvider>
           <div className={AppStyles}>
-            <Header />
             <ProductListPage />
           </div>
         </ShoppingCartProvider>
