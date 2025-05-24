@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import StepperButton from "../Button/StepperButton";
+import Button from "../Button";
 
 interface ProductStepperProps {
   quantity: number;
@@ -14,9 +14,9 @@ const ProductStepper = ({
 }: ProductStepperProps) => {
   return (
     <div className={ProductStepperStyles}>
-      <StepperButton title="-" onClick={onIncreaseQuantity} />
+      <Button title="-" onClick={onIncreaseQuantity} />
       <div>{quantity}</div>
-      <StepperButton title="+" onClick={onDecreaseQuantity} />
+      <Button title="+" onClick={onDecreaseQuantity} />
     </div>
   );
 };
