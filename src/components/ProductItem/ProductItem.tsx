@@ -1,7 +1,8 @@
-import { Product } from "../../types/productType";
+import { Product, CartItem } from "../../types/productType";
 import CartActionButton from "./button/CartActionButton";
 import styled from "@emotion/styled";
 import QuantityAdjuster from "./QuantityAdjuster";
+import { useAPIData } from "../../contexts/DataContext";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
@@ -17,6 +18,10 @@ const ProductItem = ({
   addToCart: (product: Product) => void;
 }) => {
   const handleProductAddClick = () => addToCart(product);
+  const cartData = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
+  const cartItems = cartData?.data?.content || [];
+  const cartItem = cartItems.find((item) => item.product.id === product.id);
+  const quantity = cartItem ? cartItem.quantity : 0;
 
   return (
     <>
@@ -36,7 +41,7 @@ const ProductItem = ({
 
           <ButtonContainer>
             {isInCart ? (
-              <QuantityAdjuster count={10} />
+              <QuantityAdjuster count={quantity} />
             ) : (
               <CartActionButton variant="add" onClick={handleProductAddClick} />
             )}
