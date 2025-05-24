@@ -82,11 +82,28 @@ function ProductCard({
             <p>품절</p>
           </div>
         )}
+        {productQuantity && productQuantity < 3 && (
+          <div css={styles.soldOutSoonCss}>
+            <span className="track">
+              <span className="msg">⚠️ 품절 임박! 서둘러 구매하세요!</span>
+              <span className="msg" aria-hidden>
+                ⚠️ 품절 임박! 서둘러 구매하세요!
+              </span>
+            </span>
+          </div>
+        )}
       </div>
       <div css={styles.detailCss}>
         <h2>{title}</h2>
         <p>{`${price.toLocaleString()}원`}</p>
-        <CartButton productId={productId} cartItemId={Number(cartItemId)} />
+        <div css={styles.detailsContainerCss}>
+          <p>
+            {productQuantity === 0
+              ? "현재 구매할 수 없는 상품입니다."
+              : `재고: ${productQuantity}개`}
+          </p>
+          <CartButton productId={productId} cartItemId={Number(cartItemId)} />
+        </div>
       </div>
     </li>
   );
