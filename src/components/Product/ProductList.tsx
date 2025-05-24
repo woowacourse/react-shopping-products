@@ -51,6 +51,7 @@ const productListStyle = css`
   flex-wrap: wrap;
   justify-content: space-between;
   padding-top: 8px;
+  padding-bottom: 20px;
   row-gap: 20px;
   justify-items: center;
   overflow-y: scroll;

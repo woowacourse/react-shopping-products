@@ -44,9 +44,9 @@ ProductCard.Image = ({ src, alt }: ProductCardImageProps) => {
   );
 };
 
-ProductCard.Content = ({ children, gap = 27, ...props }: ProductCardContentProps) => {
+ProductCard.Content = ({ children, ...props }: ProductCardContentProps) => {
   return (
-    <div css={[contentStyle, { gap: `${gap}px` }]} {...props}>
+    <div css={[contentStyle]} {...props}>
       {children}
     </div>
   );
@@ -80,6 +80,7 @@ const hoverStyle = css`
 
 const imageContainerStyle = css`
   max-height: 112px;
+  min-height: 112px;
   overflow: hidden;
 `;
 
@@ -90,7 +91,9 @@ const imageStyle = css`
 `;
 
 const contentStyle = css`
+  height: 120px;
   padding: 15px 8px 8px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
