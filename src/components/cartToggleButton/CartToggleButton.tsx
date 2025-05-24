@@ -1,9 +1,11 @@
-import { useState } from "react";
 import CartManageButton from "../cartAddButton/CartManageButton";
-import { ButtonContainer, RemoveButton } from "./CartToggleButton.css";
+import { ButtonContainer } from "./CartToggleButton.css";
 import useCartToggleButton from "./useCartToggleButton";
+import useCartQuantity from "../../hooks/useCartQuantity/useCartQuantity";
 
 interface CartToggleButtonProps {
+  isSoldOut: boolean;
+  quantity: number;
   isAdded: boolean;
   productId: number;
   cartId?: number;
@@ -15,6 +17,8 @@ interface CartToggleButtonProps {
 }
 
 function CartToggleButton({
+  isSoldOut,
+  quantity,
   productId,
   cartId,
   cartAmount,
@@ -22,54 +26,37 @@ function CartToggleButton({
   setCartItemIds,
   fetchCartProducts,
 }: CartToggleButtonProps) {
-  const [quantity, setQuantity] = useState(1);
-
-  function increase() {
-    setQuantity((prev) => prev + 1);
-  }
-
-  function decrease() {
-    if (quantity === 1) {
-      removeItemToCart({ cartId, productId });
-      setQuantity(1);
-      return;
-    }
-    setQuantity((prev) => prev - 1);
-  }
-
   const { removeItemToCart, addItemToCart } = useCartToggleButton({
     setCartItemIds,
     fetchCartProducts,
   });
 
-  const buttonProps = isAdded
-    ? {
-        label: "빼기",
-        icon: "removeCart.svg",
-        onClick: () => removeItemToCart({ cartId, productId }),
-        styles: [ButtonContainer, RemoveButton],
-      }
-    : {
-        label: "담기",
-        icon: "addCart.svg",
-        onClick: () =>
-          addItemToCart({
-            productId,
-            cartAmount,
-          }),
-        styles: ButtonContainer,
-      };
+  const { cartQuantity, increase, decrease } = useCartQuantity({
+    cartId,
+    productId,
+    quantity,
+    removeItemToCart,
+  });
 
   return isAdded ? (
     <CartManageButton
-      quantity={quantity}
+      quantity={cartQuantity}
       increase={increase}
       decrease={decrease}
     />
   ) : (
-    <button css={buttonProps.styles} onClick={buttonProps.onClick}>
-      <img src={buttonProps.icon} alt={`${buttonProps.label} 아이콘`} />
-      <p>{buttonProps.label}</p>
+    <button
+      css={ButtonContainer}
+      onClick={() =>
+        addItemToCart({
+          productId,
+          cartAmount,
+        })
+      }
+      disabled={isSoldOut}
+    >
+      <img src={"addCart.svg"} alt={`담기 아이콘`} />
+      <p>{"담기"}</p>
     </button>
   );
 }

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { ToastContext } from "../../context/toastContext";
 import { createPortal } from "react-dom";
 import ErrorToast from "../errorToast/ErrorToast";
@@ -9,6 +9,7 @@ const ERROR_MESSAGE = {
   ADD: "장바구니 추가를 실패했습니다.",
   MINUS: "장바구니 삭제를 실패했습니다.",
   CART_MAX: "장바구니는 50개까지 가능합니다.",
+  CART_QUANTITY: "존재하는 수량보다 많이 담을 수 없습니다.",
 };
 
 const TOAST_TIME = 3000;
@@ -18,10 +19,10 @@ export type ERROR_TYPE = keyof typeof ERROR_MESSAGE;
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [message, setMessage] = useState("");
 
-  const showToast = (type: ERROR_TYPE) => {
+  const showToast = useCallback((type: ERROR_TYPE) => {
     setMessage(ERROR_MESSAGE[type]);
     setTimeout(() => setMessage(""), TOAST_TIME);
-  };
+  }, []);
 
   const renderLocation = document.querySelector(".container") ?? document.body;
 

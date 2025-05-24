@@ -44,6 +44,7 @@ function ProductCardList({
           isAdded: Boolean(
             cartItemIds?.find((ids) => ids.productId === data.id)
           ),
+          quantity: data.quantity,
         };
         return (
           <ProductCard

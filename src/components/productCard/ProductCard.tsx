@@ -21,6 +21,7 @@ interface ProductCardProps {
     price: number;
     imageUrl: string;
     isAdded: boolean;
+    quantity: number;
   };
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
@@ -34,12 +35,14 @@ function ProductCard({
   setCartItemIds,
   fetchCartProducts,
 }: ProductCardProps) {
-  const { imageUrl, productId, name, price, isAdded } = productInfo;
+  const { imageUrl, productId, name, price, isAdded, quantity } = productInfo;
   const { cartId, cartAmount } = cartInfo;
+  const isSoldOut = quantity === 0;
+
   return (
     <div css={ProductContainer}>
       <div css={ImageContainer}>
-        <div css={SoldOutImage}>품절</div>
+        {isSoldOut && <div css={SoldOutImage}>품절</div>}
         <img css={ProductImage} src={imageUrl}></img>
       </div>
       <div css={ContentContainer}>
@@ -48,6 +51,8 @@ function ProductCard({
       </div>
       <div css={ButtonContainer}>
         <CartToggleButton
+          isSoldOut={isSoldOut}
+          quantity={quantity}
           productId={productId}
           cartId={cartId}
           cartAmount={cartAmount}

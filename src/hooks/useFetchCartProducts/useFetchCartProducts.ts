@@ -15,6 +15,7 @@ function useFetchCartProducts() {
       errorType: "CART",
     });
     if (!cartProducts) return;
+
     setCartItemIds(
       cartProducts.content.map((data: CartItem) => {
         return { productId: data.product.id, cartId: data.id };
