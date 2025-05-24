@@ -5,6 +5,7 @@ import { Product } from "../../types/product.type";
 import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
 import { useAddShoppingCart } from "../../hooks/shoppingCart/useAddShoppingCart";
 import { useDeleteShoppingCart } from "../../hooks/shoppingCart/useDeleteShoppingCart";
+import ProductStepper from "../ProductStepper/ProductStepper";
 
 interface ProductCardProps {
   product: Product;
@@ -40,6 +41,11 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
         </h4>
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
+          <ProductStepper
+            quantity={5}
+            onDecreaseQuantity={() => {}}
+            onIncreaseQuantity={() => {}}
+          />
           {isInCart ? (
             <RemoveButton onClick={handleDelete} disabled={isShoppingLoading} />
           ) : (
@@ -90,5 +96,5 @@ const ProductName = css`
 
 const ButtonArea = css`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 `;
