@@ -1,3 +1,5 @@
+import { colors, radius } from "../../styles/theme";
+
 function MswStatus() {
   const isMswEnabled = import.meta.env.VITE_APP_USE_MSW;
   const env = import.meta.env.MODE;
@@ -13,10 +15,10 @@ function MswStatus() {
         bottom: "10px",
         right: "10px",
         padding: "8px 12px",
-        borderRadius: "4px",
+        borderRadius: radius.xs,
         fontSize: "12px",
-        backgroundColor: isMswEnabled ? "#4CAF50" : "#F44336",
-        color: "white",
+        backgroundColor: isMswEnabled ? colors.success : colors.warning,
+        color: colors.white,
         zIndex: 9999,
       }}
     >

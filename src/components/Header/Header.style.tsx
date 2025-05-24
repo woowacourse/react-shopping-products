@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { colors, radius } from "../../styles/theme";
 
 export const header = css({
   position: "fixed",
@@ -7,18 +8,18 @@ export const header = css({
   transform: "translate(-50%, 0)",
   height: "64px",
   width: "400px",
-  backgroundColor: "black",
+  backgroundColor: colors.black,
   padding: "24px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  borderRadius: "8px",
+  borderRadius: radius.md,
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.4)",
   backdropFilter: "blur(2px)",
   WebkitBackdropFilter: "blur(2px)",
   border: "1px solid rgba(255, 255, 255, 0.5)",
   zIndex: 100,
-  p: { color: "white", fontWeight: 800, fontSize: "20px" },
+  p: { color: colors.white, fontWeight: 800, fontSize: "20px" },
 });
 
 export const cartIcon = css({
@@ -32,8 +33,8 @@ export const cartIcon = css({
     position: "absolute",
     width: "18px",
     height: "18px",
-    borderRadius: "50%",
-    backgroundColor: "white",
+    borderRadius: radius.circle,
+    backgroundColor: colors.white,
     bottom: "0%",
     right: "0%",
     textAlign: "center",
@@ -67,9 +68,9 @@ export const totalPrice = css({
   marginTop: "16px",
   fontSize: "16px",
   button: {
-    backgroundColor: "black",
-    color: "white",
-    borderRadius: "8px",
+    backgroundColor: colors.black,
+    color: colors.white,
+    borderRadius: radius.md,
     padding: "8px 16px",
     border: "none",
     cursor: "pointer",
@@ -91,7 +92,7 @@ export const buttonContainer = css({
   marginTop: "16px",
   gap: "8px",
   button: {
-    borderRadius: "8px",
+    borderRadius: radius.md,
     padding: "8px 16px",
     cursor: "pointer",
     width: "100%",
@@ -110,17 +111,17 @@ export const buttonContainer = css({
 });
 
 export const orderButton = css({
-  backgroundColor: "black",
-  color: "white",
+  backgroundColor: colors.black,
+  color: colors.white,
   border: "none",
   transition:
     "background-color 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease",
   "&:hover": {
-    backgroundColor: "#333333",
+    backgroundColor: colors.gray[600],
     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
   },
   "&:active": {
-    backgroundColor: "#111111",
+    backgroundColor: colors.gray[900],
     transform: "scale(0.95)",
   },
   "&:disabled": {
@@ -131,17 +132,17 @@ export const orderButton = css({
 });
 
 export const closeButton = css({
-  backgroundColor: "white",
-  color: "black",
-  border: "1px solid #D0D0D0",
+  backgroundColor: colors.white,
+  color: colors.black,
+  border: `1px solid ${colors.gray[300]}`,
   transition:
     "background-color 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease",
   "&:hover": {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: colors.gray[50],
     boxShadow: "0 2px 6px rgba(0, 0, 0, 0.02)",
   },
   "&:active": {
-    backgroundColor: "#E0E0E0",
+    backgroundColor: colors.gray[200],
     transform: "scale(0.95)",
   },
 });
@@ -155,7 +156,7 @@ export const emptyCartContainer = css({
   padding: "2rem",
 
   textAlign: "center",
-  color: "#555",
+  color: colors.gray[500],
 
   img: {
     width: "200px",

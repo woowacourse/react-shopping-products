@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { colors, radius } from "../../../styles/theme";
 
 export const cartCardCss = css({
   display: "flex",
@@ -7,7 +8,7 @@ export const cartCardCss = css({
   flexDirection: "row",
   justifyContent: "flex-start",
   alignItems: "center",
-  borderBottom: "1px solid #E0E0E0",
+  borderBottom: `1px solid ${colors.gray[200]}`,
   minHeight: "120px",
 });
 
@@ -20,7 +21,7 @@ export const cartCardImageCss = css({
     width: "100%",
     height: "100%",
     objectFit: "cover",
-    borderRadius: "8px",
+    borderRadius: radius.md,
   },
 });
 
@@ -40,44 +41,44 @@ export const cartCardSoldOutCss = css({
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
+  backgroundColor: colors.overlay,
   width: "100%",
   height: "100%",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  borderRadius: "8px",
+  borderRadius: radius.md,
   p: {
     fontSize: "32px",
     fontWeight: "600",
-    color: "white",
+    color: colors.white,
   },
 });
 export const cartCardDeleteCss = css({
   width: "48px",
   height: "24px",
-  backgroundColor: "white",
-  color: "black",
-  border: "1px solid #E0E0E0",
-  borderRadius: "4px",
+  backgroundColor: colors.white,
+  color: colors.black,
+  border: `1px solid ${colors.gray[200]}`,
+  borderRadius: radius.xs,
   cursor: "pointer",
   marginLeft: "auto",
   transition: "background-color 0.3s ease, color 0.3s ease",
   "&:hover": {
-    backgroundColor: "#E0E0E0",
-    color: "black",
-    border: "1px solid #E0E0E0",
+    backgroundColor: colors.gray[200],
+    color: colors.black,
+    border: `1px solid ${colors.gray[200]}`,
   },
   "&:hover:enabled:focus": {
-    backgroundColor: "#E0E0E0",
-    color: "black",
-    border: "1px solid #E0E0E0",
+    backgroundColor: colors.gray[200],
+    color: colors.black,
+    border: `1px solid ${colors.gray[200]}`,
   },
   "&:disabled": {
-    backgroundColor: "#E0E0E0",
+    backgroundColor: colors.gray[200],
   },
   "&:disabled:hover": {
-    backgroundColor: "#E0E0E0",
-    color: "black",
+    backgroundColor: colors.gray[200],
+    color: colors.black,
   },
 });

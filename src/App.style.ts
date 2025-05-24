@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { colors, radius } from "./styles/theme";
 
 export const dropdownDivCss = css({
   display: "flex",
@@ -12,8 +13,8 @@ export const appCss = css({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.1)",
-  borderRadius: "8px",
+  boxShadow: `0px 0px 2px ${colors.overlayLight}`,
+  borderRadius: radius.md,
 });
 
 export const titleCss = css({

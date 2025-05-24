@@ -1,4 +1,5 @@
 import { css, keyframes } from "@emotion/react";
+import { colors, radius } from "../../styles/theme";
 
 const slideDown = keyframes`
   from {
@@ -21,11 +22,11 @@ export const selectBoxStyle = css({
   justifyContent: "space-between",
   alignItems: "center",
   width: "125px",
-  borderRadius: "8px",
+  borderRadius: radius.md,
   padding: "12px",
   fontSize: "14px",
-  backgroundColor: "white",
-  border: "1px solid #ccc",
+  backgroundColor: colors.white,
+  border: `1px solid ${colors.gray[300]}`,
   cursor: "pointer",
   textAlign: "left",
 
@@ -34,23 +35,23 @@ export const selectBoxStyle = css({
   },
   // 열릴때 살짝 들뜨는 느낌을 준다고 하네요.
   "&:focus": {
-    boxShadow: "0 0 0 2px rgba(0,112,243,0.3)",
+    boxShadow: `0 0 0 2px ${colors.primary}33`,
   },
 });
 
 export const openStyle = css({
-  borderColor: "#0070f3",
+  borderColor: colors.primary,
   img: {
     transform: "rotate(180deg)",
   },
 });
 
 export const selectedStyle = css({
-  color: "#333",
+  color: colors.gray[600],
 });
 
 export const unSelectedStyle = css({
-  color: "#aaa",
+  color: colors.gray[400],
 });
 
 export const listStyle = css({
@@ -59,8 +60,8 @@ export const listStyle = css({
   left: 0,
   zIndex: 10,
   width: "100%",
-  backgroundColor: "white",
-  border: "1px solid #ccc",
+  backgroundColor: colors.white,
+  border: `1px solid ${colors.gray[300]}`,
   borderTop: "none",
   maxHeight: "200px",
   overflowY: "auto",
@@ -73,6 +74,6 @@ export const itemStyle = css({
   fontSize: "14px",
   cursor: "pointer",
   "&:hover": {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: colors.gray[50],
   },
 });

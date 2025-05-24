@@ -1,4 +1,5 @@
 import { css, keyframes } from "@emotion/react";
+import { colors } from "../../../../styles/theme";
 
 const fadeIn = keyframes`
   from {
@@ -17,7 +18,7 @@ export const modalBackground = (position?: "center" | "bottom") =>
     left: 0,
     width: "100vw",
     height: "100vh",
-    backgroundColor: "#3333331A",
+    backgroundColor: colors.overlayLight,
     animation: `${fadeIn} 0.3s ease-in-out`,
     justifyContent: "center",
     alignItems: position === "center" ? "center" : "end",

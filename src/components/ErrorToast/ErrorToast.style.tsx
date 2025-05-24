@@ -1,11 +1,13 @@
 import { css } from "@emotion/react";
+import { colors, radius } from "../../styles/theme";
+
 export const toastCss = css({
-  background: "#FFC9C9",
+  background: colors.errorBg,
   width: "382px",
   padding: "12px 20px",
   margin: "0 auto",
   marginTop: "32px",
-  borderRadius: "8px",
+  borderRadius: radius.md,
   boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
   position: "fixed",
   top: "20px",
@@ -23,13 +25,13 @@ export const messageCss = css({
   margin: 0,
   fontSize: "16px",
   fontWeight: "500",
-  color: "#D63031",
+  color: colors.error,
 });
 
 export const closeButtonCss = css({
   background: "none",
   border: "none",
-  color: "#D63031",
+  color: colors.error,
   cursor: "pointer",
   fontSize: "18px",
   padding: "0 0 0 10px",

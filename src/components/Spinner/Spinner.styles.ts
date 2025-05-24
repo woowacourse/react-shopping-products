@@ -1,4 +1,5 @@
 import { css, keyframes } from "@emotion/react";
+import { colors, radius } from "../../styles/theme";
 
 const spin = keyframes`
   0% {
@@ -12,24 +13,24 @@ const spin = keyframes`
 export const smallStyle = css({
   width: "30px",
   height: "30px",
-  border: "3px solid rgba(0, 0, 0, 0.1)",
+  border: `3px solid ${colors.overlayLight}`,
 });
 
 export const mediumStyle = css({
   width: "50px",
   height: "50px",
-  border: "5px solid rgba(0, 0, 0, 0.1)",
+  border: `5px solid ${colors.overlayLight}`,
 });
 
 export const largeStyle = css({
   width: "70px",
   height: "70px",
-  border: "7px solid rgba(0, 0, 0, 0.1)",
+  border: `7px solid ${colors.overlayLight}`,
 });
 
 export const baseSpinnerStyle = css({
-  borderRadius: "50%",
-  borderTopColor: "#3498db",
+  borderRadius: radius.circle,
+  borderTopColor: colors.blue,
   animation: `${spin} 0.8s linear infinite`,
 });
 

@@ -1,4 +1,5 @@
 import { css, keyframes } from "@emotion/react";
+import { colors, radius } from "../../../../styles/theme";
 
 const slideIn = keyframes`
   from {
@@ -50,9 +51,9 @@ const getSizeStyles = (size?: "small" | "medium" | "large" | "full") => {
 export const modalContents = (size?: "small" | "medium" | "large" | "full") =>
   css({
     padding: "32px 32px",
-    background: "white",
-    color: "black",
-    borderRadius: "8px",
+    background: colors.white,
+    color: colors.black,
+    borderRadius: radius.md,
     position: "relative",
     display: "flex",
     flexDirection: "column",

@@ -1,9 +1,11 @@
 import { css } from "@emotion/react";
+import { colors, radius } from "../../styles/theme";
+
 export const buttonCss = css({
   width: "64px",
   height: "26px",
   padding: "4px 8px",
-  borderRadius: "4px",
+  borderRadius: radius.xs,
   border: "none",
 
   fontWeight: "600",
@@ -18,11 +20,11 @@ export const buttonCss = css({
 });
 
 export const inCartCss = css({
-  backgroundColor: "#EAEAEA",
-  color: "black",
+  backgroundColor: colors.gray[100],
+  color: colors.black,
 });
 
 export const notInCartCss = css({
-  backgroundColor: "black",
-  color: "white",
+  backgroundColor: colors.black,
+  color: colors.white,
 });

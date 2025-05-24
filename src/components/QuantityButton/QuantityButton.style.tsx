@@ -1,4 +1,6 @@
 import { css } from "@emotion/react";
+import { colors, radius } from "../../styles/theme";
+
 export const quantityButton = css({
   width: "24px",
   height: "24px",
@@ -7,15 +9,15 @@ export const quantityButton = css({
   justifyContent: "center",
   fontSize: "1.5rem",
   lineHeight: "12px",
-  borderRadius: "4px",
-  border: "1px solid #ddd",
+  borderRadius: radius.xs,
+  border: `1px solid ${colors.gray[300]}`,
   cursor: "pointer",
   transition: "background-color 0.3s ease, color 0.3s ease",
 
   "&:hover:not(:disabled)": {
-    backgroundColor: "#E0E0E0",
-    color: "black",
-    border: "1px solid #E0E0E0",
+    backgroundColor: colors.gray[200],
+    color: colors.black,
+    border: `1px solid ${colors.gray[200]}`,
   },
 
   "&:disabled": {

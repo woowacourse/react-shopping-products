@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { URLS } from "../../constants/url";
+import { colors, radius } from "../../styles/theme";
 
 interface ResponseData {
   [key: string]: unknown;
@@ -48,9 +49,9 @@ function MswDebug() {
         top: "10px",
         right: "10px",
         padding: "10px",
-        backgroundColor: "#f0f0f0",
-        border: "1px solid #ccc",
-        borderRadius: "5px",
+        backgroundColor: colors.gray[50],
+        border: `1px solid ${colors.gray[300]}`,
+        borderRadius: radius.sm,
         zIndex: 1000,
         maxWidth: "400px",
         maxHeight: "300px",
@@ -63,7 +64,7 @@ function MswDebug() {
         <strong>요청 URL:</strong> {requestInfo.url}
       </div>
       {requestInfo.error ? (
-        <div style={{ color: "red" }}>
+        <div style={{ color: colors.error }}>
           <strong>에러:</strong> {requestInfo.error}
         </div>
       ) : (

@@ -1,12 +1,13 @@
 import { css } from "@emotion/react";
+import { colors, radius } from "../../../styles/theme";
 
 export const cardCss = css({
   display: "flex",
   width: "182px",
   height: "250px",
   flexDirection: "column",
-  borderRadius: "8px",
-  backgroundColor: "white",
+  borderRadius: radius.md,
+  backgroundColor: colors.white,
   transition: "transform 0.3s",
   "&:hover": {
     transform: "scale(1.05)",
@@ -21,7 +22,7 @@ export const imageCss = css({
     width: "100%",
     height: "100%",
     objectFit: "cover",
-    borderRadius: "8px 8px 0 0",
+    borderRadius: `${radius.md} ${radius.md} 0 0`,
   },
 });
 
@@ -42,16 +43,16 @@ export const soldOutCss = css({
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
+  backgroundColor: colors.overlay,
   width: "100%",
   height: "100%",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  borderRadius: "8px 8px 0 0",
+  borderRadius: `${radius.md} ${radius.md} 0 0`,
   p: {
     fontSize: "32px",
     fontWeight: "600",
-    color: "white",
+    color: colors.white,
   },
 });
