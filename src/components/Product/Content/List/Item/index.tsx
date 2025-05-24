@@ -8,6 +8,7 @@ import { DataContext } from "@/context/DataContext";
 import QuantityCounter from "@/components/QuantityCounter";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
+import { updateCartItems } from "@/apis/cartItems/updateCartItems";
 interface ProductItemProps {
   product: ProductItemType;
   variant?: "default" | "cart";
@@ -32,9 +33,24 @@ function ProductItem({ product, variant }: ProductItemProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
 
-  const handleIncrease = () => setQuantity((prev) => prev + 1);
+  const handleIncrease = async () => {
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+
+    if (findCartItem) {
+      try {
+        await updateCartItems({
+          productId: findCartItem.product.id,
+          quantity: newQuantity,
+        });
+      } catch (error) {
+        console.error("수량 증가 실패", error);
+      }
+    }
+  };
   const handleDecrease = async () => {
     if (quantity === 1) {
+      // 수량 1이면 삭제
       if (findCartItem) {
         try {
           await removeCartItem(findCartItem.id);
@@ -48,11 +64,23 @@ function ProductItem({ product, variant }: ProductItemProps) {
           setIsAdded(false);
           setQuantity(1);
         } catch (error) {
-          console.error("Failed to remove item from cart:", error);
+          console.error("장바구니 삭제 실패:", error);
         }
       }
     } else {
-      setQuantity((prev) => prev - 1);
+      const newQuantity = quantity - 1;
+      setQuantity(newQuantity);
+
+      if (findCartItem) {
+        try {
+          await updateCartItems({
+            productId: findCartItem.product.id,
+            quantity: newQuantity,
+          });
+        } catch (error) {
+          console.error("수량 감소 실패", error);
+        }
+      }
     }
   };
   const handleAddToCart = () => {
