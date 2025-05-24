@@ -9,7 +9,7 @@ import * as cartApi from "../api/cartItem";
 import { mockProductResponse } from "../mock/Products";
 import { ContextProvider } from "../context/ContextProvider";
 
-describe("ShopPage - 장바구니 동작", () => {
+describe("장바구니 추가 기능 테스트", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 

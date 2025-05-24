@@ -4,6 +4,7 @@ export interface ProductType {
   price: number;
   imageUrl: string;
   category: string;
+  quantity?: number;
 }
 
 interface Sort {

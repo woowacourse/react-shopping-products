@@ -8,6 +8,7 @@ export const mockProductResponse: ProductResponse = {
       price: 100,
       imageUrl: "33",
       category: "식료품",
+      quantity: 3,
     },
     {
       id: 42,
@@ -16,6 +17,7 @@ export const mockProductResponse: ProductResponse = {
       imageUrl:
         "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202204/19/ed8eddd4-0edd-40ad-af7d-44a171577c92.jpg",
       category: "패션잡화",
+      quantity: 4,
     },
     {
       id: 34,
@@ -24,6 +26,7 @@ export const mockProductResponse: ProductResponse = {
       imageUrl:
         "https://sitem.ssgcdn.com/88/19/87/item/0000006871988_i1_750.jpg",
       category: "식료품",
+      quantity: 5,
     },
   ],
   pageable: {

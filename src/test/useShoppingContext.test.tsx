@@ -9,7 +9,7 @@ import ShopPage from "../page/ShopPage";
 import { mockCartItemResponse } from "../mock/CartProducts";
 import { mockProductResponse } from "../mock/Products";
 import CartProductContainer from "../component/feature/CartProductContainer/CartProductContainer";
-import { ContextProvider } from "./ContextProvider";
+import { ContextProvider } from "../context/ContextProvider";
 
 describe("useContext 훅을 이용해서 productList를 관리한다.", () => {
   beforeEach(() => {
