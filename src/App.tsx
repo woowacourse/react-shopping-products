@@ -13,7 +13,7 @@ import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import DotWaveSpinner from "./components/DotWaveSpinner/DotWaveSpinner";
 import useData from "./hooks/useData";
 import { END_POINT } from "./api/constants/endPoint";
-import { useDateContext } from "./contexts/DataContext";
+import { useDataContext } from "./contexts/DataContext";
 
 const categoryQueryMap: Record<CategoryKey, string | undefined> = {
   ALL: undefined,
@@ -30,7 +30,7 @@ const sortQueryMap: Record<SortKey, string | undefined> = {
 function App() {
   const [category, setCategory] = useState<CategoryKey>("ALL");
   const [sort, setSort] = useState<SortKey>("NONE");
-  const { basketProductsIds, error, setError, errorMessage, setErrorMessage } = useDateContext();
+  const { basketProductsIds, error, setError, errorMessage, setErrorMessage } = useDataContext();
 
   const {
     data: products,

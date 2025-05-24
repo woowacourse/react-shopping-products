@@ -5,16 +5,28 @@ import {
   QuantityControllerWrapper,
   Count,
 } from "./QuantityController.styled";
+import { deleteCartItem } from "../../api/cartItems";
+import { useDataContext } from "../../contexts/DataContext";
 
-const QuantityController = () => {
+type QuantityControllerProps = {
+  basketId?: number;
+};
+
+const QuantityController = ({ basketId }: QuantityControllerProps) => {
   const [quantity, setQuantity] = useState(1);
+  const { fetchCartItems } = useDataContext();
 
   const increase = () => {
     setQuantity((prev) => prev + 1);
   };
 
-  const decrease = () => {
-    if (quantity > 1) setQuantity((prev) => prev - 1);
+  const decrease = async () => {
+    if (quantity === 1 && basketId) {
+      await deleteCartItem(basketId);
+      await fetchCartItems();
+    } else if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
   };
 
   return (

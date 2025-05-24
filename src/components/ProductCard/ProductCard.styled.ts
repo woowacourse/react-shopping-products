@@ -26,6 +26,7 @@ export const ProductImage = styled.img`
 `;
 
 export const ProductCardDetailWrapper = styled.div`
+  height: 114px;
   padding: 15px 8px 8px 8px;
   display: flex;
   flex-direction: column;

@@ -73,7 +73,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useDateContext = () => {
+export const useDataContext = () => {
   const context = useContext(DataContext);
   if (!context)
     throw new Error("DateContext는 DataProvider 내에서 사용해주세요.");
