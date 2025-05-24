@@ -9,11 +9,10 @@ import useShoppingCart from "./hooks/useShoppingCart";
 
 function App() {
   const {
-    selectedProductIdList,
+    cartItems,
     loading,
     errorMessage,
     handleAddProduct,
-    handleRemoveProduct,
     handleIncreaseCartItemQuantity,
     handleDecreaseCartItemQuantity,
   } = useShoppingCart();
@@ -31,12 +30,11 @@ function App() {
   return (
     <Container>
       <Wrapper>
-        <Header selectedProductIdList={selectedProductIdList}></Header>
+        <Header cartItems={cartItems}></Header>
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         <ProductListContainer
-          selectedProductIdList={selectedProductIdList}
+          cartItems={cartItems}
           handleAddProduct={handleAddProduct}
-          handleRemoveProduct={handleRemoveProduct}
           handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
           handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
         />

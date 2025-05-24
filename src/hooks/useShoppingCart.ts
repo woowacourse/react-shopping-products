@@ -7,6 +7,7 @@ import useErrorMessage from "./useErrorMessage";
 
 import toastMessage from "../utils/toastMessage";
 import fetchUpdateCartItemQuantity from "../apis/product/fetchUpdateCartItemQuantity";
+import { CartItem } from "../types/FetchCartItemsResult";
 
 const getCartItems = async () => {
   try {
@@ -17,11 +18,7 @@ const getCartItems = async () => {
       },
     });
 
-    return content.map((item) => ({
-      ...item,
-      id: item.id.toString(),
-      product: { ...item.product, id: item.product.id.toString() },
-    }));
+    return content;
   } catch (error) {
     if (!(error instanceof Error)) {
       throw error;
@@ -31,9 +28,8 @@ const getCartItems = async () => {
 };
 
 const useShoppingCart = () => {
-  const [selectedProductIdList, setSelectedProductIdList] = useState<string[]>(
-    []
-  );
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
   const [loading, setLoading] = useState(true);
   const { errorMessage, handleErrorMessage } = useErrorMessage();
 
@@ -50,16 +46,11 @@ const useShoppingCart = () => {
     [handleErrorMessage]
   );
 
-  const handleAddProduct = async (productId: string) => {
-    if (selectedProductIdList.length === 50) {
+  const handleAddProduct = async (productId: number) => {
+    if (cartItems.length === 50) {
       handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
       return;
     }
-
-    setSelectedProductIdList((prevIdList) => {
-      const newIdListSet = new Set([...prevIdList, productId]);
-      return Array.from(newIdListSet);
-    });
 
     try {
       await fetchAddProduct({
@@ -68,6 +59,8 @@ const useShoppingCart = () => {
           quantity: "1",
         },
       });
+      const newCartItems = await getCartItems();
+      setCartItems(newCartItems);
     } catch (error) {
       if (!(error instanceof Error)) {
         return;
@@ -77,21 +70,10 @@ const useShoppingCart = () => {
     }
   };
 
-  const handleRemoveProduct = async (productId: string) => {
-    setSelectedProductIdList((prevIdList) => {
-      return prevIdList.filter((prevId) => prevId !== productId);
-    });
-
+  const handleRemoveProduct = async (productId: number) => {
     try {
-      const { content } = await fetchCartItems({
-        params: {
-          page: "0",
-          size: "50",
-        },
-      });
-
-      const targetCartItem = content.find(
-        (cartItem) => cartItem.product.id.toString() === productId
+      const targetCartItem = cartItems.find(
+        (cartItem) => cartItem.product.id === productId
       );
 
       if (!targetCartItem) {
@@ -103,6 +85,9 @@ const useShoppingCart = () => {
           productId: targetCartItem.id,
         },
       });
+      const newCartItems = await getCartItems();
+
+      setCartItems(newCartItems);
     } catch (error) {
       if (!(error instanceof Error)) {
         return;
@@ -112,10 +97,10 @@ const useShoppingCart = () => {
     }
   };
 
-  const handleIncreaseCartItemQuantity = async (productId: string) => {
+  const handleIncreaseCartItemQuantity = async (productId: number) => {
     try {
       const PLUS_UNIT = 1;
-      const cartItems = await getCartItems();
+
       const targetCartItem = cartItems.find(
         (cartItem) => cartItem.product.id === productId
       );
@@ -138,6 +123,9 @@ const useShoppingCart = () => {
           quantity: targetCartItem.quantity + PLUS_UNIT,
         },
       });
+      const newCartItems = await getCartItems();
+
+      setCartItems(newCartItems);
     } catch (error) {
       if (!(error instanceof Error)) {
         return;
@@ -147,10 +135,9 @@ const useShoppingCart = () => {
     }
   };
 
-  const handleDecreaseCartItemQuantity = async (productId: string) => {
+  const handleDecreaseCartItemQuantity = async (productId: number) => {
     try {
       const MINUS_UNIT = 1;
-      const cartItems = await getCartItems();
       const targetCartItem = cartItems.find(
         (cartItem) => cartItem.product.id === productId
       );
@@ -165,6 +152,8 @@ const useShoppingCart = () => {
           quantity: targetCartItem.quantity - MINUS_UNIT,
         },
       });
+      const newCartItems = await getCartItems();
+      setCartItems(newCartItems);
     } catch (error) {
       if (!(error instanceof Error)) {
         return;
@@ -177,16 +166,9 @@ const useShoppingCart = () => {
   useEffect(() => {
     const loadCartItems = async () => {
       try {
-        const { content } = await fetchCartItems({
-          params: {
-            page: "0",
-            size: "50",
-          },
-        });
+        const cartItems = await getCartItems();
 
-        setSelectedProductIdList(
-          content.map((item) => item.product.id.toString())
-        );
+        setCartItems(cartItems);
         setLoading(false);
       } catch (error) {
         if (!(error instanceof Error)) {
@@ -201,7 +183,7 @@ const useShoppingCart = () => {
   }, [showErrorMessage]);
 
   return {
-    selectedProductIdList,
+    cartItems,
     loading,
     errorMessage,
     handleAddProduct,

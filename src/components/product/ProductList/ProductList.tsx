@@ -3,33 +3,39 @@ import ProductItem from "../ProductItem/ProductItem";
 import { Product as ProductType } from "../../../types/Product";
 
 import * as Styled from "./ProductList.styled";
+import { CartItem } from "../../../types/FetchCartItemsResult";
 
 interface ProductListProps {
-  selectedProductIdList: string[];
+  cartItems: CartItem[];
   productList: readonly ProductType[];
-  handleAddProduct: (productId: string) => void;
-  handleRemoveProduct: (productId: string) => void;
-  handleIncreaseCartItemQuantity: (productId: string) => void;
-  handleDecreaseCartItemQuantity: (productId: string) => void;
+  handleAddProduct: (productId: number) => void;
+  handleIncreaseCartItemQuantity: (productId: number) => void;
+  handleDecreaseCartItemQuantity: (productId: number) => void;
 }
 
 function ProductList({
-  selectedProductIdList,
+  cartItems,
   productList,
   handleAddProduct,
-  handleRemoveProduct,
   handleIncreaseCartItemQuantity,
   handleDecreaseCartItemQuantity,
 }: ProductListProps) {
+  const cartItemsProductIdList = cartItems.map(
+    (cartItem) => cartItem.product.id
+  );
+
   return (
     <Styled.UlContainer>
       {productList.map((product) => (
         <ProductItem
           key={product.id}
           product={product}
-          isInCart={selectedProductIdList.includes(product.id.toString())}
+          isInCart={cartItemsProductIdList.includes(product.id)}
+          quantity={
+            cartItems.find((cartItem) => cartItem.product.id === product.id)
+              ?.quantity || 0
+          }
           handleAddProduct={handleAddProduct}
-          handleRemoveProduct={handleRemoveProduct}
           handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
           handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
         />

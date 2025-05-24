@@ -1,12 +1,13 @@
 import * as Styled from "./Header.styled";
 
 import shoppingBag from "/shoppingBag.svg";
+import { CartItem } from "../../../types/FetchCartItemsResult";
 
 interface HeaderProps {
-  selectedProductIdList: string[];
+  cartItems: CartItem[];
 }
 
-function Header({ selectedProductIdList }: HeaderProps) {
+function Header({ cartItems }: HeaderProps) {
   return (
     <Styled.Container>
       <a href="./">
@@ -16,7 +17,7 @@ function Header({ selectedProductIdList }: HeaderProps) {
         <Styled.Button>
           <Styled.Image src={shoppingBag} />
         </Styled.Button>
-        <Styled.ShoppingBag>{selectedProductIdList.length}</Styled.ShoppingBag>
+        <Styled.ShoppingBag>{cartItems.length}</Styled.ShoppingBag>
       </Styled.ButtonWrapper>
     </Styled.Container>
   );

@@ -30,10 +30,10 @@ vi.mock("../apis/product/fetchProductList", () => {
 });
 
 const fakeProps = {
-  selectedProductIdList: [],
+  cartItems: [],
   handleAddProduct: vi.fn(),
-  handleRemoveProduct: vi.fn(),
   handleIncreaseCartItemQuantity: vi.fn(),
+  handleDecreaseCartItemQuantity: vi.fn(),
 };
 
 describe("ProductListContainer 컴포넌트", () => {

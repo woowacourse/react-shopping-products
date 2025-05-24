@@ -9,6 +9,7 @@ import ProductQuantityControl from "../ProductQuantityControl/ProductQuantityCon
 function ProductItem({
   product,
   isInCart,
+  quantity,
   handleAddProduct,
   handleIncreaseCartItemQuantity,
   handleDecreaseCartItemQuantity,
@@ -27,17 +28,17 @@ function ProductItem({
           <Styled.ButtonWrapper>
             {isInCart ? (
               <ProductQuantityControl
-                quantity={1}
+                quantity={quantity}
                 handleIncreaseCartItemQuantity={() =>
-                  handleIncreaseCartItemQuantity(product.id.toString())
+                  handleIncreaseCartItemQuantity(product.id)
                 }
                 handleDecreaseCartItemQuantity={() =>
-                  handleDecreaseCartItemQuantity(product.id.toString())
+                  handleDecreaseCartItemQuantity(product.id)
                 }
               />
             ) : (
               <ProductAddButton
-                handleAddProduct={() => handleAddProduct(product.id.toString())}
+                handleAddProduct={() => handleAddProduct(product.id)}
               />
             )}
           </Styled.ButtonWrapper>

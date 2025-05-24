@@ -4,19 +4,18 @@ import Spinner from "../../common/Spinner/Spinner";
 
 import * as Styled from "./ProductListContainer.styled";
 import useProductList from "../../../hooks/useProductList";
+import { CartItem } from "../../../types/FetchCartItemsResult";
 
 interface ProductListContainerProps {
-  selectedProductIdList: string[];
-  handleAddProduct: (productId: string) => void;
-  handleRemoveProduct: (productId: string) => void;
-  handleIncreaseCartItemQuantity: (productId: string) => void;
-  handleDecreaseCartItemQuantity: (productId: string) => void;
+  cartItems: CartItem[];
+  handleAddProduct: (productId: number) => void;
+  handleIncreaseCartItemQuantity: (productId: number) => void;
+  handleDecreaseCartItemQuantity: (productId: number) => void;
 }
 
 function ProductListContainer({
-  selectedProductIdList,
+  cartItems,
   handleAddProduct,
-  handleRemoveProduct,
   handleIncreaseCartItemQuantity,
   handleDecreaseCartItemQuantity,
 }: ProductListContainerProps) {
@@ -30,10 +29,9 @@ function ProductListContainer({
         <Spinner />
       ) : (
         <ProductList
-          selectedProductIdList={selectedProductIdList}
+          cartItems={cartItems}
           productList={productList}
           handleAddProduct={handleAddProduct}
-          handleRemoveProduct={handleRemoveProduct}
           handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
           handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
         />
