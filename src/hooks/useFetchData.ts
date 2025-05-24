@@ -6,8 +6,8 @@ interface useFetchDataProps {
 }
 
 interface FetchDataProps<T> {
-  apiCall: () => Promise<T | undefined>;
-  onSuccess: (data?: T) => void;
+  apiCall: () => Promise<T | void>;
+  onSuccess: (data?: T | void) => void;
   onError: (error: Error | unknown) => void;
 }
 
@@ -18,8 +18,7 @@ const useFetchData = <T>({ dataName }: useFetchDataProps) => {
     async ({ apiCall, onSuccess, onError }: FetchDataProps<T>) => {
       try {
         handleLoading(true, dataName);
-        const fetchedData = await apiCall();
-        onSuccess(fetchedData);
+        onSuccess(await apiCall());
       } catch (error) {
         onError(error);
       } finally {
