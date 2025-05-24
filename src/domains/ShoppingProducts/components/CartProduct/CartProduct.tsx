@@ -15,6 +15,7 @@ interface CartProductProps {
   name: string;
   price: number;
   quantity: number;
+  maxQuantity: number;
   onChange: () => void;
 }
 
@@ -24,6 +25,7 @@ export function CartProduct({
   name,
   price,
   quantity,
+  maxQuantity,
   onChange,
 }: CartProductProps) {
   return (
@@ -37,7 +39,12 @@ export function CartProduct({
       <div css={TitleLayout}>
         <p css={ProductName}>{name}</p>
         <p css={ProductPrice}>{price.toLocaleString()}원</p>
-        <QuantitySelector quantity={quantity} cartId={id} onChange={onChange} />
+        <QuantitySelector
+          quantity={quantity}
+          cartId={id}
+          onChange={onChange}
+          maxQuantity={maxQuantity}
+        />
       </div>
       <div css={deleteButton}>
         <Button onClick={() => console.log("삭제")} style="ghost">

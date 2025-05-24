@@ -35,6 +35,7 @@ export default function CartProductContainer() {
               price={cartProduct[0].price}
               quantity={cartItem.quantity}
               onChange={() => dispatch({ type: "updateCartProduct" })}
+              maxQuantity={cartProduct[0].quantity ?? 100000}
             />
           );
         })}
