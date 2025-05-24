@@ -1,16 +1,10 @@
 import styled from '@emotion/styled';
 import SelectBox from '../Common/SelectBox';
-import { ProductTypes } from '../../types/ProductTypes';
 import { useState } from 'react';
 import getProducts from '../../api/getProducts';
+import { useAPIContext } from '../Common/Provider';
 
-interface ProductListToolbarProps {
-  setProducts: (products: ProductTypes[]) => void;
-}
-
-export default function ProductListToolbar({
-  setProducts,
-}: ProductListToolbarProps) {
+export default function ProductListToolbar() {
   const CATEGORY = [
     { name: '전체', value: 'all' },
     { name: '식료품', value: 'grocery' },
@@ -24,23 +18,23 @@ export default function ProductListToolbar({
   const [categoryValue, setCategoryValue] = useState('');
   const [priceValue, setPriceValue] = useState('');
 
+  const { requestData } = useAPIContext({
+    key: 'products',
+  });
+
   const handleCategoryChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { value } = e.target;
-    try {
-      const productsData = await getProducts(value === '전체' ? '' : value, {
-        page: 0,
-        size: 20,
-        sort: priceValue === '낮은 가격순' ? 'price,asc' : 'price,desc',
-      });
-      const productsContent = productsData.content;
-      setProducts(productsContent);
-    } catch (e) {
-      //
-    } finally {
-      //
-    }
+
+    requestData({
+      apiFn: () =>
+        getProducts(value === '전체' ? '' : value, {
+          page: 0,
+          size: 20,
+          sort: priceValue === '낮은 가격순' ? 'price,asc' : 'price,desc',
+        }),
+    });
 
     setCategoryValue(value);
   };
@@ -48,22 +42,14 @@ export default function ProductListToolbar({
   const handlePriceChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
 
-    try {
-      const productsData = await getProducts(
-        categoryValue === '전체' ? '' : categoryValue,
-        {
+    requestData({
+      apiFn: () =>
+        getProducts(categoryValue === '전체' ? '' : categoryValue, {
           page: 0,
           size: 20,
           sort: value === '낮은 가격순' ? 'price,asc' : 'price,desc',
-        }
-      );
-      const productsContent = productsData.content;
-      setProducts(productsContent);
-    } catch (e) {
-      //
-    } finally {
-      //
-    }
+        }),
+    });
 
     setPriceValue(value);
   };

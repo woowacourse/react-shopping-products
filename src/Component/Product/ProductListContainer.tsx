@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { ProductTypes } from '../../types/ProductTypes';
 import ProductList from './ProductList';
 import ProductListToolbar from './ProductListToolbar';
 import getProducts from '../../api/getProducts';
@@ -11,35 +9,17 @@ interface ProductListContainerProps {
   updateErrorMessage: (errorMessage: string) => void;
 }
 
-type Status = 'idle' | 'loading' | 'success' | 'error';
-
 export default function ProductListContainer({
   updateErrorMessage,
 }: ProductListContainerProps) {
-  const [products, setProducts] = useState<ProductTypes[]>([]);
-  const [status, setStatus] = useState<Status>('idle');
-
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        setStatus('loading');
-        const productsData = await getProducts();
-        const productsContent = productsData.content;
-        setProducts(productsContent);
-        setStatus('success');
-      } catch (e) {
-        setStatus('error');
-        updateErrorMessage(
-          ' 상품 목록 조회 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'
-        );
-      }
-    }
-    fetchProducts();
-  }, [updateErrorMessage]);
+  const { data: products, status } = useAPIContext({
+    apiFn: () => getProducts(),
+    key: 'products',
+  });
 
   return (
     <>
-      <ProductListToolbar setProducts={setProducts} />
+      <ProductListToolbar />
       {status === 'success' ? (
         <ProductList
           productList={products}
