@@ -36,6 +36,11 @@ function ShopPage() {
 
   const listPromiseData = useMemo(() => getProductList(filter), [filter]);
 
+  const totalPrice = cartList.reduce(
+    (acc, curCart) => acc + curCart.quantity * curCart.product.price,
+    0
+  );
+
   return (
     <Modal>
       <ShopHeader itemsCount={cartList.length} />
@@ -81,6 +86,13 @@ function ShopPage() {
             </Flex>
           );
         })}
+        <Flex>
+          <Separator />
+          <TotalPriceBox>
+            <TotalPriceLabel>총 결제 금액</TotalPriceLabel>
+            <TotalPrice>{`${totalPrice.toLocaleString()}원`}</TotalPrice>
+          </TotalPriceBox>
+        </Flex>
         <Modal.CloseTrigger>
           <Modal.WideButton>닫기</Modal.WideButton>
         </Modal.CloseTrigger>
@@ -107,6 +119,23 @@ const ListTitle = styled.h2`
 const Separator = styled.div`
   width: 100%;
   border: 1px solid #0000001a;
+`;
+
+const TotalPriceBox = styled(Flex)`
+  height: 42px;
+
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const TotalPriceLabel = styled.p`
+  font-weight: 700;
+  font-size: 18px;
+`;
+
+const TotalPrice = styled.p`
+  font-weight: 700;
+  font-size: 24px;
 `;
 
 export default ShopPage;
