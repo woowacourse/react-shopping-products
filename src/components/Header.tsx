@@ -1,11 +1,16 @@
 import { css } from "@emotion/react";
 import ShoppingBag from "./icons/ShoppingBag";
 
-const Header = ({ shoppingCount = 0 }: { shoppingCount?: number }) => {
+interface HeaderProps {
+  shoppingCount?: number;
+  handleCartClick: () => void;
+}
+
+const Header = ({ shoppingCount = 0, handleCartClick }: HeaderProps) => {
   return (
     <header css={headerStyle}>
       <span>SHOP</span>
-      <div css={shoppingBagStyle}>
+      <div css={shoppingBagStyle} onClick={handleCartClick}>
         <ShoppingBag />
         {shoppingCount !== 0 && <span css={shoppingBagCountStyle}>{shoppingCount}</span>}
       </div>
@@ -29,6 +34,7 @@ const headerStyle = css`
 
 const shoppingBagStyle = css`
   position: relative;
+  cursor: pointer;
 `;
 
 const shoppingBagCountStyle = css`
