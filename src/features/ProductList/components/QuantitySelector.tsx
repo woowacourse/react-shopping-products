@@ -5,18 +5,12 @@ import { Flex } from '@/shared/components/Flex';
 import { Text } from '@/shared/components/Text';
 
 export type QuantitySelectorProps = {
-  quantity: number;
   count: number;
   onIncrease: () => void;
   onDecrease: () => void;
 };
 
-export const QuantitySelector = ({
-  quantity,
-  count,
-  onIncrease,
-  onDecrease,
-}: QuantitySelectorProps) => {
+export const QuantitySelector = ({ count, onIncrease, onDecrease }: QuantitySelectorProps) => {
   return (
     <Flex direction="row" justifyContent="initial" alignItems="center" gap="8px">
       <StyledOutlineButton onClick={onDecrease}>-</StyledOutlineButton>
