@@ -1,19 +1,5 @@
 [
   {
-    "id": 26,
-    "name": "기세",
-    "price": 100,
-    "imageUrl": "33",
-    "category": "식료품"
-  },
-  {
-    "id": 58,
-    "name": "1",
-    "price": 100,
-    "imageUrl": "이런 URL은 없겠지",
-    "category": "식료품"
-  },
-  {
     "id": 34,
     "name": "코카콜라 제로 1.5L",
     "price": 2100,
@@ -25,13 +11,6 @@
     "name": "아샷추",
     "price": 3800,
     "imageUrl": "https://d2afncas1tel3t.cloudfront.net/wp-content/uploads/2023/12/%EC%95%84%EC%83%B7%EC%B6%94%EC%95%84%EC%9D%B4%EC%8A%A4%ED%8B%B0%EC%83%B7%EC%B6%94%EC%B9%B4%EB%94%94%EC%B9%B4%ED%8E%98%EC%9D%B8_1.png",
-    "category": "식료품"
-  },
-  {
-    "id": 61,
-    "name": "4",
-    "price": 4444,
-    "imageUrl": "ㅋ",
     "category": "식료품"
   },
   {
@@ -69,20 +48,7 @@
     "imageUrl": "https://www.esquirekorea.co.kr/resources_old/online/org_thumnail_image/eq/322f1c2e-fdd0-4b84-97ec-cfc8ee88c9d7.jpg",
     "category": "식료품"
   },
-  {
-    "id": 60,
-    "name": "3",
-    "price": 30000000,
-    "imageUrl": "이런 URL은 없겠지",
-    "category": "식료품"
-  },
-  {
-    "id": 43,
-    "name": "모쏠 캥거루라 태어나서 처음으로 데이트하는 ㄱㅋ",
-    "price": 99999999,
-    "imageUrl": "https://lh3.googleusercontent.com/proxy/odVKuwM6Z8vZILjEfxFUSrCUC3PC6XTDHYV4lEz4mKobFYjHQqhIF9WvOdMMd6CNVVZnLvghnsF9kTSih-tMTAy4_ndA6Gs3r3dgQ_wAMgmjkZAA",
-    "category": "식료품"
-  },
+
   {
     "id": 40,
     "name": "에리얼",
@@ -123,41 +89,6 @@
     "name": "앵그리버드",
     "price": 50000,
     "imageUrl": "https://media.bunjang.co.kr/product/223522208_%7Bcnt%7D_1683581287_w%7Bres%7D.jpg",
-    "category": "패션잡화"
-  },
-  {
-    "id": 1,
-    "name": "에어포스1",
-    "price": 100000,
-    "imageUrl": "https://kream-phinf.pstatic.net/MjAyNTA1MTNfMjI5/MDAxNzQ3MTA4MjUzOTg4.106G0-WfVU8g8ziNKgKJjc1_UXvF-2IatsA-Cz5mG1og.etXRFVPYqcs5J9HAfXpaHFPFHorGnZU4Nl7k4368rfog.PNG/a_090d2310040b4f9ca922f2498ae8ae3a.png?type=l",
-    "category": "패션잡화"
-  },
-  {
-    "id": 2,
-    "name": "에어포스2",
-    "price": 100000,
-    "imageUrl": "https://kream-phinf.pstatic.net/MjAyNTA1MTNfMjI5/MDAxNzQ3MTA4MjUzOTg4.106G0-WfVU8g8ziNKgKJjc1_UXvF-2IatsA-Cz5mG1og.etXRFVPYqcs5J9HAfXpaHFPFHorGnZU4Nl7k4368rfog.PNG/a_090d2310040b4f9ca922f2498ae8ae3a.png?type=l",
-    "category": "패션잡화"
-  },
-  {
-    "id": 3,
-    "name": "에어포스3",
-    "price": 100000,
-    "imageUrl": "https://kream-phinf.pstatic.net/MjAyNTA1MTNfMjI5/MDAxNzQ3MTA4MjUzOTg4.106G0-WfVU8g8ziNKgKJjc1_UXvF-2IatsA-Cz5mG1og.etXRFVPYqcs5J9HAfXpaHFPFHorGnZU4Nl7k4368rfog.PNG/a_090d2310040b4f9ca922f2498ae8ae3a.png?type=l",
-    "category": "패션잡화"
-  },
-  {
-    "id": 113,
-    "name": "에어포스1",
-    "price": 100000,
-    "imageUrl": "https://kream-phinf.pstatic.net/MjAyNTA1MTNfMjI5/MDAxNzQ3MTA4MjUzOTg4.106G0-WfVU8g8ziNKgKJjc1_UXvF-2IatsA-Cz5mG1og.etXRFVPYqcs5J9HAfXpaHFPFHorGnZU4Nl7k4368rfog.PNG/a_090d2310040b4f9ca922f2498ae8ae3a.png?type=l",
-    "category": "패션잡화"
-  },
-  {
-    "id": 9,
-    "name": "너에게난~ 해질녘 노을처럼~",
-    "price": 200000,
-    "imageUrl": "https://blog.kakaocdn.net/dn/qCz9R/btrmYEn7tZV/Uxh60wpS69qCFymU4WKOy0/img.jpg",
     "category": "패션잡화"
   },
   {
