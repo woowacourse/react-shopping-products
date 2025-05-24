@@ -27,8 +27,8 @@ export function useCartManagement({
       quantity,
     });
 
-    if (!res.ok) {
-      openToast('장바구니에 상품을 담지 못했습니다.', 'error');
+    if (res.errorCode) {
+      openToast(res.message, 'error');
       return false;
     }
 
@@ -40,8 +40,8 @@ export function useCartManagement({
     const cartId = carts?.filter((cart) => cart.product.id === productId)[0]?.id || 0;
     const res = await deleteCartItem({ cartId });
 
-    if (!res.ok) {
-      openToast('장바구니에 상품을 빼지 못했습니다.', 'error');
+    if (res.errorCode) {
+      openToast(res.message, 'error');
       return false;
     }
 
@@ -57,8 +57,8 @@ export function useCartManagement({
       quantity,
     });
 
-    if (!res.ok) {
-      openToast('장바구니의 수량을 변경하지 못했습니다.', 'error');
+    if (res.errorCode) {
+      openToast(res.message, 'error');
       return false;
     }
 
