@@ -11,7 +11,7 @@ import {
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorHandler from '../../hooks/useErrorHandler.ts';
-import { checkIsProductInCart } from '../../domain/cartItem.ts';
+import { extractCartQuantity } from '../../domain/cartItem.ts';
 
 export const ProductListPage = () => {
   const { errorMessage, handleErrorMessage } = useErrorHandler();
@@ -55,7 +55,7 @@ export const ProductListPage = () => {
           <ProductItem
             key={product.id}
             product={product}
-            isCartAdded={checkIsProductInCart(cartItems, product.id)}
+            quantityInCart={extractCartQuantity(cartItems, product.id)}
             handleAddCartItem={handleAddCartItem}
             handleRemoveCartItem={handleRemoveCartItem}
           />
