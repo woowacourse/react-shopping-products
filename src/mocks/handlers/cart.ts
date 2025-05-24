@@ -1,12 +1,17 @@
 import { http, HttpResponse } from 'msw';
 import { AddCartItemsProps } from '../../services/cartItemServices';
 import { MOCK_CART_ITEMS, MOCK_PRODUCTS } from '../dummy';
+import { CartItemType } from '../../types/data';
 
 interface AddCartItemsParams {
   id: string;
 }
 
 const handlers = [
+  http.get<never, CartItemType[]>('/cart-items', async () => {
+    return HttpResponse.json({ content: MOCK_CART_ITEMS }, { status: 200 });
+  }),
+
   http.post<never, AddCartItemsProps>('/cart-items', async ({ request }) => {
     const { productId, quantity: addQuantity } = await request.json();
     const targetIndex = MOCK_PRODUCTS.findIndex((product) => product.id === productId);
