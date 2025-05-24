@@ -7,12 +7,16 @@ interface AddCartItemsParams {
   id: string;
 }
 
+const addBaseURL = (endpoint: string) => {
+  return `${import.meta.env.VITE_API_BASE_URL}${endpoint}`;
+};
+
 const handlers = [
-  http.get<never, CartItemType>(/\/cart-items(?:\?.*)?$/, () => {
+  http.get<never, CartItemType>(addBaseURL('/cart-items'), () => {
     return HttpResponse.json({ content: MOCK_CART_ITEMS }, { status: 200 });
   }),
 
-  http.post<never, AddCartItemsProps>(/\/cart-items(?:\?.*)?$/, async ({ request }) => {
+  http.post<never, AddCartItemsProps>(addBaseURL('/cart-items'), async ({ request }) => {
     const { productId, quantity: addQuantity } = await request.json();
     const targetIndex = MOCK_PRODUCTS.findIndex((product) => product.id === productId);
     if (targetIndex === -1) {
@@ -45,7 +49,7 @@ const handlers = [
   }),
 
   http.patch<AddCartItemsParams, AddCartItemsProps>(
-    /\/cart-items\/(?<id>\d+)$/,
+    addBaseURL('/cart-items/:id'),
     async ({ params, request }) => {
       const { quantity } = await request.json();
       const { id } = params;

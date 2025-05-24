@@ -5,8 +5,12 @@ interface GetProductsParams {
   productId: string;
 }
 
+const addBaseURL = (endpoint: string) => {
+  return `${import.meta.env.VITE_API_BASE_URL}${endpoint}`;
+};
+
 const handlers = [
-  http.get<never, MockProductsType[]>(/\/products(?:\?.*)?$/, ({ request }) => {
+  http.get<never, MockProductsType[]>(addBaseURL('/products'), ({ request }) => {
     const url = new URL(request.url);
     const params = url.searchParams;
     const category = params.get('category');
@@ -25,12 +29,15 @@ const handlers = [
     return HttpResponse.json({ content: MOCK_PRODUCTS });
   }),
 
-  http.get<GetProductsParams, MockProductsType[]>('/products/:productId', async ({ params }) => {
-    const { productId } = params;
-    const targetProduct = MOCK_PRODUCTS.find(({ id }) => String(id) === productId);
+  http.get<GetProductsParams, MockProductsType[]>(
+    addBaseURL('/products/:productId'),
+    async ({ params }) => {
+      const { productId } = params;
+      const targetProduct = MOCK_PRODUCTS.find(({ id }) => String(id) === productId);
 
-    return HttpResponse.json(targetProduct);
-  }),
+      return HttpResponse.json(targetProduct);
+    },
+  ),
 ];
 
 export default handlers;
