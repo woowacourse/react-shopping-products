@@ -7,12 +7,12 @@ import { QueryProvider } from "./modules";
 function App() {
   return (
     <QueryProvider>
-      <S.Container>
+      <S.AppWrapper>
         <ErrorProvider>
           <ErrorPopup />
           <ProductsPage />
         </ErrorProvider>
-      </S.Container>
+      </S.AppWrapper>
     </QueryProvider>
   );
 }
