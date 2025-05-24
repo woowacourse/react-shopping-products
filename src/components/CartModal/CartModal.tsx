@@ -1,4 +1,5 @@
 import useModal from "../../hooks/useModal";
+import useToast from "../../hooks/useToast";
 import { CartItems } from "../../types/cartItems";
 import * as S from "./CartModal.styles";
 import ProductItem from "./components/ProductItem";
@@ -21,6 +22,19 @@ const CartModal = ({
   totalPriceInCart,
 }: Props) => {
   const { closeModal } = useModal();
+  const { showToast } = useToast();
+
+  const handleDecreaseItemQuantity = (productId: number) => {
+    const quantity = quantityByProductId(productId);
+    if (quantity <= 1) {
+      showToast({
+        message: "최소 1개 이상만 장바구니에 담을 수 있습니다.",
+        type: "warning",
+      });
+      return;
+    }
+    decreaseItemQuantity(productId);
+  };
 
   return (
     <S.CartModal>
@@ -37,7 +51,7 @@ const CartModal = ({
               increaseItemQuantity(productInfo.product.id)
             }
             decreaseItemQuantity={() =>
-              decreaseItemQuantity(productInfo.product.id)
+              handleDecreaseItemQuantity(productInfo.product.id)
             }
             deleteProductInCart={() =>
               deleteProductInCart(productInfo.product.id)
