@@ -13,38 +13,54 @@ export default class BaseApi {
       headers: BaseApi.getHeaders(),
       ...options,
     });
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+
+    throw new Error(`${response.status} ${response.statusText}`);
+
     return response.json();
   }
 
   protected static async post(path: string, options?: RequestInit) {
-    await fetch(`${BaseApi.baseUrl}${path}`, {
+    const response = await fetch(`${BaseApi.baseUrl}${path}`, {
       method: "POST",
       headers: BaseApi.getHeaders(),
       ...options,
     });
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+
+    return response.json();
   }
 
   protected static async put(path: string, options?: RequestInit) {
-    await fetch(`${BaseApi.baseUrl}${path}`, {
+    const response = await fetch(`${BaseApi.baseUrl}${path}`, {
       method: "PUT",
       headers: BaseApi.getHeaders(),
       ...options,
     });
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+
+    return response.json();
   }
 
   protected static async patch(path: string, options?: RequestInit) {
-    await fetch(`${BaseApi.baseUrl}${path}`, {
+    const response = await fetch(`${BaseApi.baseUrl}${path}`, {
       method: "PATCH",
       headers: BaseApi.getHeaders(),
       ...options,
     });
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+
+    return response.json();
   }
 
   protected static async delete(path: string, options?: RequestInit) {
-    await fetch(`${BaseApi.baseUrl}${path}`, {
+    const response = await fetch(`${BaseApi.baseUrl}${path}`, {
       method: "DELETE",
       headers: BaseApi.getHeaders(),
       ...options,
     });
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+
+    return response.json();
   }
 }

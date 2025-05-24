@@ -1,19 +1,11 @@
-import { CartItemApi } from "@/apis";
 import { ShoppingBagIcon } from "@/components/icons";
-import { useQuery } from "@/modules";
-import * as S from "./Header.styles";
-import ShoppingCartModal from "./ShoppingCartModal";
 import Modal from "../Modal/Modal";
 import Text from "../Text/Text";
+import * as S from "./Header.styles";
+import ShoppingBagCount from "./ShoppingBagCount";
+import ShoppingCartModal from "./ShoppingCartModal";
 
 export default function Header() {
-  const { data: cartItems } = useQuery({
-    queryFn: CartItemApi.getCartItems,
-    queryKey: "cartItems",
-  });
-
-  const shoppingCount = cartItems?.content?.length ?? 0;
-
   return (
     <S.HeaderWrapper>
       <Text variant="title-1" css={S.titleText}>
@@ -23,10 +15,9 @@ export default function Header() {
         <Modal.Trigger>
           <S.ShoppingBagWrapper>
             <ShoppingBagIcon />
-            {shoppingCount !== 0 && <S.ShoppingBagCount>{shoppingCount}</S.ShoppingBagCount>}
+            <ShoppingBagCount />
           </S.ShoppingBagWrapper>
         </Modal.Trigger>
-
         <ShoppingCartModal />
       </Modal.Wrapper>
     </S.HeaderWrapper>
