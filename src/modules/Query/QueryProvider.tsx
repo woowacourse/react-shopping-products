@@ -1,9 +1,8 @@
 import { StrictPropsWithChildren } from "@/types/strict";
 import { createContext, useContext, useState } from "react";
+import { Status } from "./types";
 
 interface QueryProviderProps extends StrictPropsWithChildren {}
-
-type Status = "idle" | "loading" | "success" | "error";
 
 interface QueryClientContextType {
   getQueryData: (queryKey: string) => unknown;
