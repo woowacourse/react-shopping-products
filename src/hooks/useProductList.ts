@@ -32,6 +32,26 @@ const useProductList = () => {
   const [category, setCategory] = useState<ProductCategory>(ALL_CATEGORY);
   const [sort, setSort] = useState<PriceSort>(LOW_PRICE_SORT_KEY);
 
+  const handleCategory = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLSelectElement>) => {
+    if (!isProductCategory(value)) {
+      return;
+    }
+
+    setCategory(value);
+  };
+
+  const handleSort = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLSelectElement>) => {
+    if (!isProductPriceSort(value)) {
+      return;
+    }
+
+    setSort(value);
+  };
+
   useEffect(() => {
     const loadProductList = async () => {
       try {
@@ -52,26 +72,6 @@ const useProductList = () => {
 
     loadProductList();
   }, [category, sort]);
-
-  const handleCategory = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!isProductCategory(value)) {
-      return;
-    }
-
-    setCategory(value);
-  };
-
-  const handleSort = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!isProductPriceSort(value)) {
-      return;
-    }
-
-    setSort(value);
-  };
 
   return { productList, handleCategory, handleSort };
 };
