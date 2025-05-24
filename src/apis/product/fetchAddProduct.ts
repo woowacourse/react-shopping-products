@@ -4,7 +4,7 @@ type fetchAddProductParams = {
   method: HttpMethod;
   params: {
     productId: string;
-    quantity: string;
+    quantity: number;
   };
 };
 

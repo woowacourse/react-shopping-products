@@ -91,7 +91,7 @@ const useCartItemsId = () => {
     }
   };
 
-  const addCartItemId = async (id: string) => {
+  const addCartItemId = async (id: string, quantity: number) => {
     dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
     if (cartItemsId.length >= 50) {
       handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
@@ -105,7 +105,7 @@ const useCartItemsId = () => {
         method: "POST",
         params: {
           productId: id,
-          quantity: "1",
+          quantity,
         },
       });
       dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });

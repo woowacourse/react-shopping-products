@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 
-const cartItems = [
+let cartItems = [
   {
     id: 100,
     quantity: 10,
@@ -92,7 +92,7 @@ export const handlers = [
     });
   }),
 
-  // 장바구니에 상품 추가
+  // 장바구니에 상품 수량 조절
   http.post(
     `${import.meta.env.VITE_BASE_URL}/cart-items`,
     async ({ request }) => {
@@ -100,8 +100,6 @@ export const handlers = [
         productId: string;
         quantity: string;
       };
-
-      console.log("Adding to cart:", productId, quantity);
 
       const selectedCartItem = cartItems.find(
         (item) => item.product.id === Number(productId)
@@ -111,7 +109,7 @@ export const handlers = [
 
       // 장바구니에 이미 있는 상품인 경우
       if (selectedCartItem) {
-        selectedCartItem.quantity += Number(quantity);
+        selectedCartItem.quantity = Number(quantity);
         return HttpResponse.json(
           { message: "장바구니에 상품이 추가되었습니다." },
           { status: 200 }
@@ -144,4 +142,16 @@ export const handlers = [
   ),
 
   // 장바구니에 상품 삭제
+  http.delete(
+    `${import.meta.env.VITE_BASE_URL}/cart-items/:productId`,
+    ({ params }) => {
+      const { productId } = params;
+
+      cartItems = cartItems.filter(
+        (item) => String(item.product.id) !== productId
+      );
+
+      return HttpResponse.json({ message: "상품 제거" });
+    }
+  ),
 ];

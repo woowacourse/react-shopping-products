@@ -18,11 +18,20 @@ function Product({ product, isInCart }: ProductProps) {
     (item) => item.productId === product.id.toString()
   );
 
-  const handleAddProduct = async (
+  const handleIncreaseProductQuantity = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const $product = event.currentTarget.closest("li");
-    $product && addCartItemId($product.id);
+    $product &&
+      addCartItemId($product.id, cartItemId ? cartItemId.cartQuantity + 1 : 0);
+  };
+
+  const handleDecreaseProductQuantity = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const $product = event.currentTarget.closest("li");
+    $product &&
+      addCartItemId($product.id, cartItemId ? cartItemId.cartQuantity - 1 : 0);
   };
 
   const handleRemoveProduct = async (
@@ -47,11 +56,13 @@ function Product({ product, isInCart }: ProductProps) {
             </Styled.ProductPrice>
           </Styled.Contents>
           <Styled.ButtonWrapper>
-            <Button color="light" onClick={handleRemoveProduct}>
+            <Button color="light" onClick={handleDecreaseProductQuantity}>
               -
             </Button>
+
             <p>{cartItemId ? cartItemId.cartQuantity : 0}</p>
-            <Button color="light" onClick={handleAddProduct}>
+
+            <Button color="light" onClick={handleIncreaseProductQuantity}>
               +
             </Button>
             {isInCart ? (
@@ -61,7 +72,7 @@ function Product({ product, isInCart }: ProductProps) {
               />
             ) : (
               <AddButton
-                handleAddProduct={handleAddProduct}
+                handleAddProduct={handleIncreaseProductQuantity}
                 disabled={!state.isSuccess}
               />
             )}
