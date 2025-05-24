@@ -4,6 +4,8 @@ interface QuantityControllerProps {
   quantity: number;
   position: 'start' | 'end';
   onAddClick?: () => void;
+  onIncreaseClick?: () => void;
+  onDecreaseClick?: () => void;
   onRemoveClick?: () => void;
   // onDecrease?: () => void;
 }
@@ -11,7 +13,8 @@ interface QuantityControllerProps {
 function QuantityController({
   quantity,
   position,
-  onAddClick,
+  onIncreaseClick,
+  onDecreaseClick,
   onRemoveClick,
 }: QuantityControllerProps) {
   return (
@@ -19,10 +22,14 @@ function QuantityController({
       <Icon
         src="./minusButton.png"
         alt="마이너스 버튼"
-        onClick={onRemoveClick}
+        onClick={quantity === 0 ? onRemoveClick : onDecreaseClick}
       />
       <QuantityText>{quantity}</QuantityText>
-      <Icon src="./plusButton.png" alt="플러스 버튼" onClick={onAddClick} />
+      <Icon
+        src="./plusButton.png"
+        alt="플러스 버튼"
+        onClick={onIncreaseClick}
+      />
     </Container>
   );
 }

@@ -21,7 +21,13 @@ interface ProductProps {
 function Product({ item }: ProductProps) {
   const { name, price, imageUrl } = item;
 
-  const { cartList, handleAddCart, handleRemoveCart } = useCartListContext();
+  const {
+    cartList,
+    handleAddCart,
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
+    handleRemoveCart,
+  } = useCartListContext();
 
   const cartItem = cartList.find((cartItem) => cartItem.product.id === item.id);
 
@@ -42,7 +48,8 @@ function Product({ item }: ProductProps) {
           <QuantityController
             position="end"
             quantity={cartItem.quantity}
-            onAddClick={() => handleAddCart(item)}
+            onIncreaseClick={() => handleIncreaseQuantity(item)}
+            onDecreaseClick={() => handleDecreaseQuantity(item)}
             onRemoveClick={() => handleRemoveCart(item)}
           />
         ) : (

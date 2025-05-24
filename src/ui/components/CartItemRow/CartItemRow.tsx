@@ -21,7 +21,8 @@ function CartItemRow({ item }: CartItemRowProps) {
   const { product, quantity } = item;
   const { name, price, imageUrl } = product;
 
-  const { handleAddCart, handleRemoveCart } = useCartListContext();
+  const { handleIncreaseQuantity, handleDecreaseQuantity, handleRemoveCart } =
+    useCartListContext();
   console.log(item);
   return (
     <Product>
@@ -34,12 +35,15 @@ function CartItemRow({ item }: CartItemRowProps) {
         <QuantityController
           position="start"
           quantity={quantity}
-          onAddClick={() => handleAddCart(product)}
+          onIncreaseClick={() => handleIncreaseQuantity(product)}
+          onDecreaseClick={() => handleDecreaseQuantity(product)}
           onRemoveClick={() => handleRemoveCart(product)}
         />
       </Info>
       <ButtonContainer>
-        <ButtonText>{DELETE_BUTTON_TEXT}</ButtonText>
+        <ButtonText onClick={() => handleRemoveCart(product)}>
+          {DELETE_BUTTON_TEXT}
+        </ButtonText>
       </ButtonContainer>
     </Product>
   );

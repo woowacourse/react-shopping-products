@@ -12,8 +12,8 @@ interface CartListContextType {
   error: ErrorType;
   fetchData: () => Promise<void>;
   handleAddCart: (product: ProductElement) => Promise<void>;
-  // handleIncreaseQuantity: (product: ProductElement) => Promise<void>;
-  // handleDecreaseQuantity: (product: ProductElement) => Promise<void>;
+  handleIncreaseQuantity: (product: ProductElement) => Promise<void>;
+  handleDecreaseQuantity: (product: ProductElement) => Promise<void>;
   handleRemoveCart: (product: ProductElement) => Promise<void>;
 }
 
