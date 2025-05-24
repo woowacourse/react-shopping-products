@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './styles/reset.css';
-
+import Provider from './Component/Common/Provider.tsx';
 async function enableMocking() {
   const { worker } = await import('./mock/browser');
 
@@ -17,7 +17,9 @@ async function enableMocking() {
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-      <App />
+      <Provider>
+        <App />
+      </Provider>
     </React.StrictMode>
   );
 });
