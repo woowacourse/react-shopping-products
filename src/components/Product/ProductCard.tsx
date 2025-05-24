@@ -2,11 +2,11 @@ import { css } from "@emotion/react";
 import { HTMLAttributes } from "react";
 import Text from "../common/Text";
 
-interface ProductCardProps {
+interface ProductCardProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-interface ProductCardImageProps {
+interface ProductCardImageProps extends HTMLAttributes<HTMLDivElement> {
   src: string;
   alt: string;
 }
@@ -16,25 +16,29 @@ interface ProductCardContentProps extends HTMLAttributes<HTMLDivElement> {
   gap?: number;
 }
 
-interface ProductCardTitleProps {
+interface ProductCardTitleProps extends HTMLAttributes<HTMLSpanElement> {
   text: string;
 }
 
-interface ProductCardPriceProps {
+interface ProductCardPriceProps extends HTMLAttributes<HTMLSpanElement> {
   price: number;
 }
 
-const ProductCard = ({ children }: ProductCardProps) => {
-  return <div css={[productCardStyle, hoverStyle]}>{children}</div>;
+const ProductCard = ({ children, ...props }: ProductCardProps) => {
+  return (
+    <div css={[productCardStyle, hoverStyle]} {...props}>
+      {children}
+    </div>
+  );
 };
 
 ProductCard.SoldOutCover = () => {
   return <div css={soldOutCoverContainerStyle}>품절</div>;
 };
 
-ProductCard.Image = ({ src, alt }: ProductCardImageProps) => {
+ProductCard.Image = ({ src, alt, ...props }: ProductCardImageProps) => {
   return (
-    <div css={imageContainerStyle}>
+    <div css={imageContainerStyle} {...props}>
       <img
         src={src}
         alt={alt}
@@ -56,12 +60,20 @@ ProductCard.Content = ({ children, ...props }: ProductCardContentProps) => {
   );
 };
 
-ProductCard.Title = ({ text }: ProductCardTitleProps) => {
-  return <Text variant="title-2">{text}</Text>;
+ProductCard.Title = ({ text, ...props }: ProductCardTitleProps) => {
+  return (
+    <Text variant="title-2" {...props}>
+      {text}
+    </Text>
+  );
 };
 
-ProductCard.Price = ({ price }: ProductCardPriceProps) => {
-  return <Text variant="body-2">{price.toLocaleString()}원</Text>;
+ProductCard.Price = ({ price, ...props }: ProductCardPriceProps) => {
+  return (
+    <Text variant="body-2" {...props}>
+      {price.toLocaleString()}원
+    </Text>
+  );
 };
 
 export default ProductCard;

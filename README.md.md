@@ -30,7 +30,7 @@
 
 ### 1단계 미비된 리팩토링 사항
 
-- [ ] productCard 컴포넌트에 기본 html 태그 타입 입히기 (style, className 주입할 수 있도록)
+- [x] productCard 컴포넌트에 기본 html 태그 타입 입히기 (style, className 주입할 수 있도록)
 - [x] sort 및 filter api 요청으로 변경
 - [ ] 데이터 전역에서 관리하기 -> data fetch 로직
 - [ ] 카테고리 정렬 -> 데이터 서버에서 받아오기
