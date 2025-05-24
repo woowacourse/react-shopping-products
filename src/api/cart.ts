@@ -1,15 +1,30 @@
 import { baseAPI } from './baseAPI';
 import { APIResponse } from './type';
-import { convertResponseToCart } from '../components/features/product/responseMapper';
-import { ProductContent } from './products';
+import { convertResponseToProduct, Product, ProductContent } from './products';
 
 export type CartResponse = APIResponse<CartContent>;
+
+export interface Cart {
+  id: string;
+  quantity: number;
+  product: Product;
+}
 
 export interface CartContent {
   id: number;
   quantity: number;
   product: ProductContent;
 }
+
+export const convertResponseToCart = ({
+  id,
+  quantity,
+  product,
+}: CartContent): Cart => ({
+  id: id.toString(),
+  quantity,
+  product: convertResponseToProduct(product),
+});
 
 export async function getShoppingCartData() {
   const params = new URLSearchParams();
@@ -33,6 +48,16 @@ export async function postCartItem(id: string) {
     body: {
       productId: id,
       quantity: 1,
+    },
+  });
+}
+
+export async function patchCartItem(cartId: string, quantity: number) {
+  return baseAPI({
+    method: 'PATCH',
+    path: `/cart-items/${cartId}`,
+    body: {
+      quantity,
     },
   });
 }

@@ -1,5 +1,4 @@
 import { baseAPI } from './baseAPI';
-import { convertResponseToProduct } from '../components/features/product/responseMapper';
 import { APIResponse } from './type';
 
 export enum Category {
@@ -15,7 +14,30 @@ export interface ProductContent {
   category: Category | null;
 }
 
+export type ProductCategoryType = '전체' | Category;
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: ProductCategoryType;
+}
+
 export type ProductResponse = APIResponse<ProductContent>;
+
+export const convertResponseToProduct = ({
+  id,
+  name,
+  price,
+  imageUrl,
+  category,
+}: ProductContent): Product => ({
+  id: id.toString(),
+  name: name ?? '',
+  price,
+  imageUrl: imageUrl ?? 'defaultImage',
+  category: (category ?? '전체') as ProductCategoryType,
+});
 
 export async function getProductsData(filterOption: {
   category: { value: string };
