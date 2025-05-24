@@ -11,7 +11,7 @@ import Selector from "../component/unit/Selector/Selector";
 import Toast from "../component/unit/Toast/Toast";
 import { CategoryOption, FilterOption } from "../constants";
 
-import { useShoppingContext } from "../hook/useContext/useShoppingContext";
+import { useShoppingContext } from "../context/useShoppingContext";
 import {
   cartIcon,
   cartIconContainer,

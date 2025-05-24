@@ -1,36 +1,11 @@
-import React, { createContext, useContext, useReducer } from "react";
-import { CategoryOption, FilterOption } from "../../constants";
-import { CartItemType } from "../../types/cartItem";
-import { ProductType } from "../../types/product";
-import { useCartProducts } from "../useCartProducts";
-import { useProducts } from "../useProducts";
-
-const ShoppingContext = createContext<
-  (ContextState & { dispatch: React.Dispatch<ContextAction> }) | null
->(null);
-
-export type ContextAction =
-  | { type: "updateCartProduct" }
-  | { type: "fetchCartSuccess"; payload: CartItemType[] }
-  | { type: "fetchCartFailure"; payload: string }
-  | { type: "updateProduct" }
-  | { type: "fetchProductSuccess"; payload: ProductType[] }
-  | { type: "fetchProductFailure"; payload: string }
-  | { type: "changeCategory"; payload: CategoryOption }
-  | { type: "changeFilter"; payload: FilterOption };
-
-interface ContextState {
-  category: CategoryOption;
-  filter: FilterOption;
-
-  cartItemList: CartItemType[];
-  loadingCart: boolean;
-  errorCart: string | null;
-
-  productList: ProductType[];
-  loadingProduct: boolean;
-  errorProduct: string | null;
-}
+import React, { useReducer } from "react";
+import { useCartProducts } from "../hook/useCartProducts";
+import { useProducts } from "../hook/useProducts";
+import {
+  ContextAction,
+  ContextState,
+  ShoppingContext,
+} from "./ShoppingContext";
 
 const initialValue: ContextState = {
   category: "전체",
@@ -58,14 +33,6 @@ export function ContextProvider({ children }: { children: React.ReactNode }) {
       {children}
     </ShoppingContext.Provider>
   );
-}
-
-export function useShoppingContext() {
-  const context = useContext(ShoppingContext);
-  if (!context) {
-    throw new Error("useCart must be used within a ShoppingProductsProvider");
-  }
-  return context;
 }
 
 function contextReducer(

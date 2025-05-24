@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { getCartItems } from "../api/cartItem";
-import { ContextAction } from "./useContext/useShoppingContext";
+import { ContextAction } from "../context/ShoppingContext";
 
 export function useCartProducts(
   dispatch: React.Dispatch<ContextAction>,

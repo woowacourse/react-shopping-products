@@ -1,4 +1,4 @@
-import { useShoppingContext } from "../../../hook/useContext/useShoppingContext";
+import { useShoppingContext } from "../../../context/useShoppingContext";
 import { Line } from "../../unit/Line/Line";
 import { CartProduct } from "../CartProduct/CartProduct";
 import {

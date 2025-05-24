@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getProducts } from "../api/product";
 import { CategoryOption, FilterOption } from "../constants";
-import { ContextAction } from "./useContext/useShoppingContext";
+import { ContextAction } from "../context/ShoppingContext";
 
 export function useProducts(
   dispatch: React.Dispatch<ContextAction>,
@@ -24,5 +24,5 @@ export function useProducts(
         });
       }
     })();
-  }, [loadingProduct, category, dispatch]);
+  }, [loadingProduct, category, filter, dispatch]);
 }
