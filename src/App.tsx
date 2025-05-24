@@ -61,7 +61,6 @@ function App() {
           <S.ProductListHeaderTitle>
             WoowaBros Product List
           </S.ProductListHeaderTitle>
-
           <S.ProductListFilterContainer>
             <CustomSelect
               id="category-select"

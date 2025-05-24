@@ -17,7 +17,7 @@ export default function CartCount({count, onPlusCount, onMinusCount}: Props) {
   `;
 
   return (
-    <CartingSection>
+    <CartCountSection>
       <CustomButton
         onClick={onMinusCount}
         iconUrl="./minusIcon.svg"
@@ -29,11 +29,11 @@ export default function CartCount({count, onPlusCount, onMinusCount}: Props) {
         iconUrl="./plusIcon.svg"
         css={className}
       />
-    </CartingSection>
+    </CartCountSection>
   );
 }
 
-const CartingSection = styled.div`
+const CartCountSection = styled.div`
   display: flex;
   gap: 13px;
   align-items: center;
