@@ -5,16 +5,15 @@ import { ModalProvider } from "./app/providers/ModalContext.tsx";
 import { ToastProvider } from "./app/providers/ToastContext.tsx";
 import { CartItemProvider } from "./entities/cartItem/model/providers/CartItemContext.tsx";
 import { ProductProvider } from "./entities/product/model/providers/ProductContext.tsx";
+import { BASE_URL } from "./shared/config/base.ts";
 
 async function enableMocking() {
   const { worker } = await import("./mocks/browser");
 
-  const baseUrl = import.meta.env.BASE_URL;
-
   return worker.start({
     serviceWorker: {
-      url: `${window.location.origin}${baseUrl}mockServiceWorker.js`,
-      options: { scope: baseUrl },
+      url: `${window.location.origin}${BASE_URL}mockServiceWorker.js`,
+      options: { scope: BASE_URL },
     },
     onUnhandledRequest: "bypass",
   });
