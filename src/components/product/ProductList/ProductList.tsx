@@ -9,6 +9,7 @@ interface ProductListProps {
   productList: readonly ProductType[];
   handleAddProduct: (productId: string) => void;
   handleRemoveProduct: (productId: string) => void;
+  handleIncreaseCartItemQuantity: (productId: string) => void;
 }
 
 function ProductList({
@@ -16,6 +17,7 @@ function ProductList({
   productList,
   handleAddProduct,
   handleRemoveProduct,
+  handleIncreaseCartItemQuantity,
 }: ProductListProps) {
   return (
     <Styled.UlContainer>
@@ -26,6 +28,7 @@ function ProductList({
           isInCart={selectedProductIdList.includes(product.id.toString())}
           handleAddProduct={handleAddProduct}
           handleRemoveProduct={handleRemoveProduct}
+          handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
         />
       ))}
     </Styled.UlContainer>

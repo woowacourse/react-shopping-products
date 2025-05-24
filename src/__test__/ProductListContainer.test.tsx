@@ -33,6 +33,7 @@ const fakeProps = {
   selectedProductIdList: [],
   handleAddProduct: vi.fn(),
   handleRemoveProduct: vi.fn(),
+  handleIncreaseCartItemQuantity: vi.fn(),
 };
 
 describe("ProductListContainer 컴포넌트", () => {

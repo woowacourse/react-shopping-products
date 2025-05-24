@@ -11,6 +11,7 @@ function ProductItem({
   isInCart,
   handleAddProduct,
   handleRemoveProduct,
+  handleIncreaseCartItemQuantity,
 }: ProductProps) {
   return (
     <li>
@@ -27,7 +28,9 @@ function ProductItem({
             {isInCart ? (
               <ProductQuantityControl
                 quantity={1}
-                handlePlusQuantity={() => {}}
+                handleIncreaseCartItemQuantity={() =>
+                  handleIncreaseCartItemQuantity(product.id.toString())
+                }
                 handleMinusQuantity={() =>
                   handleRemoveProduct(product.id.toString())
                 }
