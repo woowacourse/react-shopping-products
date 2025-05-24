@@ -1,43 +1,22 @@
 import styled from '@emotion/styled';
-import { updateCartItem, useCartContext } from '@/components/features/cart';
-import { useShopErrorContext } from '@/pages/shop/context';
+import { ComponentProps } from 'react';
 
 interface UpdateCartButtonProps {
-  type: 'plus' | 'minus';
-  cartId?: string;
-  cartCount: number;
+  actionType: 'plus' | 'minus' | 'delete';
 }
 
-function UpdateCartButton({ type, cartId, cartCount }: UpdateCartButtonProps) {
-  const { refetch } = useCartContext();
-  const { showErrorMessage, hideErrorMessage } = useShopErrorContext();
-
-  const handleUpdateCart = async (quantity: number) => {
-    try {
-      if (!cartId) return;
-
-      await updateCartItem(cartId, quantity);
-      refetch();
-      hideErrorMessage();
-    } catch (error) {
-      if (error instanceof Error) {
-        showErrorMessage(error.message);
-      } else {
-        showErrorMessage('장바구니 수량 변경에 실패했습니다.');
-      }
-    }
-  };
-
+function UpdateCartButton({
+  actionType,
+  ...props
+}: UpdateCartButtonProps & ComponentProps<'button'>) {
   return (
-    <Container
-      onClick={() =>
-        handleUpdateCart(type === 'plus' ? cartCount + 1 : cartCount - 1)
-      }
-    >
-      {type === 'plus' ? (
+    <Container {...props}>
+      {actionType === 'plus' ? (
         <img src="./assets/icons/Plus.svg" />
-      ) : (
+      ) : actionType === 'minus' ? (
         <img src="./assets/icons/Minus.svg" />
+      ) : (
+        <img src="./assets/icons/DeleteCart.svg" width={12} />
       )}
     </Container>
   );

@@ -1,7 +1,7 @@
 import { Flex } from '@/components/common';
 import styled from '@emotion/styled';
+import { useCartActions } from '../../cart/hooks/useCartActions';
 import AddCartButton from './AddCartButton';
-import DeleteCartButton from './DeleteCartButton';
 import UpdateCartButton from './UpdateCartButton';
 
 interface ProductProps {
@@ -25,6 +25,8 @@ function ProductCard({
   isInCart,
   quantity,
 }: ProductProps) {
+  const { addCart, deleteCart, updateCart } = useCartActions();
+
   return (
     <Container data-testid={`product-${id}`}>
       <PreviewBox>
@@ -44,23 +46,24 @@ function ProductCard({
           (isInCart ? (
             <UpdateCartBox>
               {cartCount === 1 ? (
-                <DeleteCartButton cartId={cartId} />
+                <UpdateCartButton
+                  actionType="delete"
+                  onClick={() => deleteCart(cartId)}
+                />
               ) : (
                 <UpdateCartButton
-                  type="minus"
-                  cartId={cartId}
-                  cartCount={cartCount}
+                  actionType="minus"
+                  onClick={() => updateCart(cartId, cartCount - 1)}
                 />
               )}
               <Text>{cartCount}</Text>
               <UpdateCartButton
-                type="plus"
-                cartId={cartId}
-                cartCount={cartCount}
+                actionType="plus"
+                onClick={() => updateCart(cartId, cartCount + 1)}
               />
             </UpdateCartBox>
           ) : (
-            <AddCartButton productId={id} />
+            <AddCartButton onClick={() => addCart(id)} />
           ))}
       </InfoBox>
     </Container>

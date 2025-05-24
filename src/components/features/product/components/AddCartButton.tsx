@@ -1,35 +1,9 @@
-import { useShopErrorContext } from '@/pages/shop/context';
 import styled from '@emotion/styled';
 import { ComponentProps } from 'react';
-import { addCartItem, useCartContext } from '../../cart';
 
-interface AddCartButtonProps {
-  productId: string;
-}
-
-function AddCartButton({
-  productId,
-  ...props
-}: AddCartButtonProps & ComponentProps<'button'>) {
-  const { cartCount: totalCartCount, refetch } = useCartContext();
-  const { showErrorMessage, hideErrorMessage } = useShopErrorContext();
-
-  const handleAddCart = async () => {
-    try {
-      if (totalCartCount >= 50) {
-        showErrorMessage('장바구니는 최대 50개까지 담을 수 있습니다.');
-        return;
-      }
-      await addCartItem(productId);
-      refetch();
-      hideErrorMessage();
-    } catch {
-      showErrorMessage('장바구니에 담는 데 실패했습니다.');
-    }
-  };
-
+function AddCartButton({ ...props }: ComponentProps<'button'>) {
   return (
-    <Container onClick={handleAddCart} {...props}>
+    <Container {...props}>
       <ButtonIcon src="./assets/icons/AddCart.svg" />
       <ButtonText>담기</ButtonText>
     </Container>

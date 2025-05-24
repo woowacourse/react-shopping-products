@@ -1,6 +1,6 @@
 import { Flex } from '@/components/common';
 import styled from '@emotion/styled';
-import DeleteCartButton from './DeleteCartButton';
+import { useCartActions } from '../../cart/hooks/useCartActions';
 import UpdateCartButton from './UpdateCartButton';
 
 interface ProductProps {
@@ -20,6 +20,8 @@ function ProductRowCard({
   price,
   imageUrl,
 }: ProductProps) {
+  const { deleteCart, updateCart } = useCartActions();
+
   return (
     <Container data-testid={`product-${id}`}>
       <PreviewBox>
@@ -41,16 +43,21 @@ function ProductRowCard({
         </Flex>
         <UpdateCartBox>
           {cartCount === 1 ? (
-            <DeleteCartButton cartId={cartId} />
+            <UpdateCartButton
+              actionType="delete"
+              onClick={() => deleteCart(cartId)}
+            />
           ) : (
             <UpdateCartButton
-              type="minus"
-              cartId={cartId}
-              cartCount={cartCount}
+              actionType="minus"
+              onClick={() => updateCart(cartId, cartCount - 1)}
             />
           )}
           <Text>{cartCount}</Text>
-          <UpdateCartButton type="plus" cartId={cartId} cartCount={cartCount} />
+          <UpdateCartButton
+            actionType="plus"
+            onClick={() => updateCart(cartId, cartCount + 1)}
+          />
         </UpdateCartBox>
       </InfoBox>
     </Container>
