@@ -102,9 +102,10 @@ const useShoppingCart = () => {
     }
   };
 
+  const QUANTITY_UNIT = 1;
+
   const handleIncreaseCartItemQuantity = async (productId: number) => {
     try {
-      const UNIT = 1;
       const targetCartItem = selectedCartItem(productId);
 
       if (!targetCartItem) {
@@ -114,7 +115,7 @@ const useShoppingCart = () => {
       const cartItemQuantity = targetCartItem.quantity;
       const stockQuantity = targetCartItem.product.quantity;
 
-      if (cartItemQuantity + UNIT > stockQuantity) {
+      if (cartItemQuantity + QUANTITY_UNIT > stockQuantity) {
         showErrorMessage("재고 수량을 초과하여 담을 수 없습니다.");
         return;
       }
@@ -122,7 +123,7 @@ const useShoppingCart = () => {
       await fetchUpdateCartItemQuantity({
         params: {
           id: targetCartItem.id,
-          quantity: targetCartItem.quantity + UNIT,
+          quantity: targetCartItem.quantity + QUANTITY_UNIT,
         },
       });
 
@@ -138,7 +139,6 @@ const useShoppingCart = () => {
 
   const handleDecreaseCartItemQuantity = async (productId: number) => {
     try {
-      const UNIT = 1;
       const targetCartItem = selectedCartItem(productId);
 
       if (!targetCartItem) {
@@ -148,7 +148,7 @@ const useShoppingCart = () => {
       await fetchUpdateCartItemQuantity({
         params: {
           id: targetCartItem.id,
-          quantity: targetCartItem.quantity - UNIT,
+          quantity: targetCartItem.quantity - QUANTITY_UNIT,
         },
       });
 
