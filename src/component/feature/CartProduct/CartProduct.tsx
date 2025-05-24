@@ -14,9 +14,18 @@ interface CartProductProps {
   imageUrl: string;
   name: string;
   price: number;
+  quantity: number;
+  onChange: () => void;
 }
 
-export function CartProduct({ id, imageUrl, name, price }: CartProductProps) {
+export function CartProduct({
+  id,
+  imageUrl,
+  name,
+  price,
+  quantity,
+  onChange,
+}: CartProductProps) {
   return (
     <section
       id={`cartProduct-${id}`}
@@ -27,7 +36,7 @@ export function CartProduct({ id, imageUrl, name, price }: CartProductProps) {
       <div css={TitleLayout}>
         <p css={ProductName}>{name}</p>
         <p css={ProductPrice}>{price}원</p>
-        <QuantitySelector />
+        <QuantitySelector quantity={quantity} cartId={id} onChange={onChange} />
       </div>
       <div css={deleteButton}>
         <Button onClick={() => console.log("삭제")} style="ghost">

@@ -1,4 +1,4 @@
-type optionMethod = "GET" | "POST" | "DELETE";
+type optionMethod = "GET" | "POST" | "DELETE" | "PATCH";
 
 export const getRequestOptions = (
   method: optionMethod,
@@ -53,6 +53,13 @@ export const apiClient = {
       fetch(
         `${import.meta.env.VITE_BASE_URL}${url}`,
         getRequestOptions("DELETE", undefined, withAuth)
+      )
+    ),
+  put: (url: string, body: Record<string, number>, withAuth = true) =>
+    tryFetch(() =>
+      fetch(
+        `${import.meta.env.VITE_BASE_URL}${url}`,
+        getRequestOptions("PATCH", body, withAuth)
       )
     ),
 };

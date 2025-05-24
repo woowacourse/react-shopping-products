@@ -28,3 +28,15 @@ export async function postCartItem({
 export async function deleteCartItem({ id }: { id: number }) {
   return apiClient.delete(`/cart-items/${id}`);
 }
+
+export async function updateCartItem({
+  id,
+  quantity,
+}: {
+  id: number;
+  quantity: number;
+}) {
+  return apiClient.put(`/cart-items/${id}`, {
+    quantity,
+  });
+}

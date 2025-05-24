@@ -173,10 +173,12 @@ export default function ShopPage() {
                 return (
                   <CartProduct
                     key={cartProduct[0].id}
-                    id={cartProduct[0].id}
+                    id={cartItem.id}
                     imageUrl={cartProduct[0].imageUrl}
                     name={cartProduct[0].name}
                     price={cartProduct[0].price}
+                    quantity={cartItem.quantity}
+                    onChange={updateCardItemList}
                   />
                 );
               })}
