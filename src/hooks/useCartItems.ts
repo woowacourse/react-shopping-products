@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { deleteCartItems, getCartItems, postCartItems } from "../apis/cartItem";
+import { deleteCartItems, getCartItems, patchCartItems, postCartItems } from "../apis/cartItem";
 import { GetCartItemsResponse } from "../types/cartItem";
 import { useErrorMessage, useLoading } from "../contexts";
 
@@ -32,10 +32,11 @@ const useCartItems = () => {
     }
   };
 
-  const removeCart = async (id: number) => {
+  const updateCart = async (id: number, quantity: number) => {
     setIsLoading(true);
+
     try {
-      await deleteCartItems({ productId: id });
+      await patchCartItems({ id, quantity });
       await getCartItem();
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
@@ -44,8 +45,21 @@ const useCartItems = () => {
     }
   };
 
-  const handleCartItem = (type: "add" | "patch" | "remove", id: number) => {
+  const removeCart = async (id: number) => {
+    setIsLoading(true);
+    try {
+      await deleteCartItems({ id });
+      await getCartItem();
+    } catch (e) {
+      if (e instanceof Error) setErrorMessage(e.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCartItem = (type: "add" | "update" | "remove", id: number, quantity?: number) => {
     if (type === "add") return addCart(id);
+    if (type === "update") return updateCart(id, quantity!);
     return removeCart(id);
   };
 
