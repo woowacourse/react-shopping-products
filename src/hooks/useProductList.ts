@@ -4,7 +4,7 @@ import { Product } from "../types/Product";
 import { ProductCategory } from "../types/ProductCategory";
 import { PriceSort } from "../types/Sort";
 
-import fetchProductList from "../apis/product/fetchProductList";
+import fetchProductList from "../apis/product/productList/fetchProductList";
 import {
   ALL_CATEGORY,
   CATEGORIES,

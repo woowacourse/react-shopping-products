@@ -1,11 +1,11 @@
-import { FetchProductListResult } from "../../types/FetchProductListResult";
-import { ProductCategory } from "../../types/ProductCategory";
-import { PriceSort } from "../../types/Sort";
-import { apiRequest } from "../ApiRequest";
+import { FetchProductListResult } from "../../../types/FetchProductListResult";
+import { ProductCategory } from "../../../types/ProductCategory";
+import { PriceSort } from "../../../types/Sort";
+import { apiRequest } from "../../ApiRequest";
 import {
   LOW_PRICE_SORT_KEY,
   ALL_CATEGORY,
-} from "../../constants/filterOptions";
+} from "../../../constants/filterOptions";
 
 type fetchProductListParams = {
   params?: {
