@@ -16,7 +16,6 @@ export default function ProductContainer() {
       상품목록 데이터를 가져오는데 실패했습니다. <br /> 다시 시도해주세요
     </div>;
 
-  console.log(productList);
   if (productList.length === 0) {
     <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>;
   }

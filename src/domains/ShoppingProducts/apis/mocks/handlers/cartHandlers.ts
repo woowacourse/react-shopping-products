@@ -22,54 +22,60 @@ const errorResponse = (errorCode: string, message: string, status: number) => {
 };
 
 export const cartHandlers = [
-  http.get("https://example.com/cart-items", () => {
+  http.get(`${import.meta.env.VITE_BASE_URL}/art-items`, () => {
     return HttpResponse.json(cartItems);
   }),
 
-  http.post("https://example.com/cart-items", async ({ request }) => {
-    const { productId, quantity } = (await request.json()) as {
-      productId: number;
-      quantity: number;
-    };
+  http.post(
+    `${import.meta.env.VITE_BASE_URL}/cart-items`,
+    async ({ request }) => {
+      const { productId, quantity } = (await request.json()) as {
+        productId: number;
+        quantity: number;
+      };
 
-    const product = findProductById(productId);
+      const product = findProductById(productId);
 
-    if (!product)
-      return errorResponse(
-        "PRODUCT_NOT_FOUND",
-        "존재하지 않는 상품입니다.",
-        404
-      );
+      if (!product)
+        return errorResponse(
+          "PRODUCT_NOT_FOUND",
+          "존재하지 않는 상품입니다.",
+          404
+        );
 
-    if ((product?.quantity ?? 10000) < quantity) {
-      return errorResponse(
-        "OUT_OF_STOCK",
-        "재고 수량을 초과하여 담을 수 없습니다.",
-        400
-      );
+      if ((product?.quantity ?? 10000) < quantity) {
+        return errorResponse(
+          "OUT_OF_STOCK",
+          "재고 수량을 초과하여 담을 수 없습니다.",
+          400
+        );
+      }
+
+      const newItem = {
+        id: Date.now(),
+        productId,
+        quantity,
+        product,
+      };
+
+      cartItems.push(newItem);
+
+      return HttpResponse.json({ status: 201 });
     }
+  ),
 
-    const newItem = {
-      id: Date.now(),
-      productId,
-      quantity,
-      product,
-    };
+  http.delete(
+    `${import.meta.env.VITE_BASE_URL}/cart-items/:id`,
+    ({ params }) => {
+      const id = Number(params.id);
+      cartItems = cartItems.filter((item) => item.id !== id);
 
-    cartItems.push(newItem);
-
-    return HttpResponse.json({ status: 201 });
-  }),
-
-  http.delete("https://example.com/cart-items/:id", ({ params }) => {
-    const id = Number(params.id);
-    cartItems = cartItems.filter((item) => item.id !== id);
-
-    return HttpResponse.json({ status: 204 });
-  }),
+      return HttpResponse.json({ status: 204 });
+    }
+  ),
 
   http.put(
-    "https://example.com/cart-items/:id",
+    `${import.meta.env.VITE_BASE_URL}/cart-items/:id`,
     async ({ params, request }) => {
       const id = Number(params.id);
       const { quantity } = (await request.json()) as { quantity: number };
