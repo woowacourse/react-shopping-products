@@ -1,8 +1,8 @@
 export interface PaginatedResponse<T> {
+  content: T[];
   totalElements: number;
   totalPages: number;
   size: number;
-  content: T[];
   number: number;
   sort: Sort;
   pageable: Pageable;

@@ -24,6 +24,8 @@ const useProducts = (): UseProductsReturn => {
     useState<SortOptionsKey>("낮은 가격 순");
   const { showToast } = useToast();
 
+  console.log("products: ", products);
+
   //TODO: products 자체를 바꾸는 게 아니라, products 는 그냥 상품 목록 전체를 관리하고 함수로 필터링한 상품 목록들 반환해주기
 
   useEffect(() => {
