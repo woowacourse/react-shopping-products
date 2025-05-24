@@ -4,7 +4,7 @@ const CartProductListLayout = css`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-height: 180px;
+  max-height: 208px;
   overflow-y: scroll;
 `;
 
