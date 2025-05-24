@@ -11,6 +11,13 @@ import {
 export default function CartProductContainer() {
   const { cartItemList, productList, dispatch } = useShoppingContext();
 
+  if (cartItemList.length === 0)
+    return (
+      <div>
+        장바구니에 추가된 목록이 없습니다. <br /> 상품을 먼저 추가해주세요
+      </div>
+    );
+
   return (
     <>
       <div css={CartProductContainerLayout}>

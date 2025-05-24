@@ -16,7 +16,6 @@ import {
   cartIcon,
   cartIconContainer,
   cartItemCount,
-  loadingLayout,
   pageLayout,
   selectorBoxLayout,
 } from "./ShopPage.style";
@@ -26,19 +25,15 @@ const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
 
 export default function ShopPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    cartItemList,
-    errorCart,
-    productList,
-    errorProduct,
-    loadingProduct,
-    dispatch,
-  } = useShoppingContext();
-
-  const selectedProductCount = cartItemList.length;
+  const { cartItemList, errorCart, errorProduct, dispatch } =
+    useShoppingContext();
 
   const handleClose = () => {
     setIsOpen(false);
+  };
+
+  const handleOpen = () => {
+    setIsOpen(true);
   };
 
   return (
@@ -56,13 +51,11 @@ export default function ShopPage() {
               css={cartIcon}
               src="./shopping-cart.svg"
               alt="장바구니 아이콘"
-              onClick={() => {
-                setIsOpen(true);
-              }}
+              onClick={handleOpen}
             />
-            {selectedProductCount !== 0 && (
+            {cartItemList.length !== 0 && (
               <div data-testid="cart-count" css={cartItemCount}>
-                {selectedProductCount}
+                {cartItemList.length}
               </div>
             )}
           </div>
@@ -73,38 +66,27 @@ export default function ShopPage() {
           )}
         </Header>
         <Main>
-          {errorProduct ? (
-            <div css={loadingLayout}>
-              상품목록 데이터를 가져오는데 실패했습니다. <br /> 다시
-              시도해주세요
-            </div>
-          ) : loadingProduct ? (
-            <div css={loadingLayout}>로딩중입니다</div>
-          ) : productList.length === 0 ? (
-            <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>
-          ) : (
-            <>
-              <TitleContainer title="bpple 상품 목록">
-                <div css={selectorBoxLayout}>
-                  <Selector
-                    dropDownOptions={dropdownOptions}
-                    placeholder="전체"
-                    onSelectChange={(value: CategoryOption) =>
-                      dispatch({ type: "changeCategory", payload: value })
-                    }
-                  />
-                  <Selector
-                    dropDownOptions={filterOptions}
-                    placeholder="낮은 가격순"
-                    onSelectChange={(value: FilterOption) =>
-                      dispatch({ type: "changeFilter", payload: value })
-                    }
-                  />
-                </div>
-              </TitleContainer>
-              <ProductContainer />
-            </>
-          )}
+          <>
+            <TitleContainer title="bpple 상품 목록">
+              <div css={selectorBoxLayout}>
+                <Selector
+                  dropDownOptions={dropdownOptions}
+                  placeholder="전체"
+                  onSelectChange={(value: CategoryOption) =>
+                    dispatch({ type: "changeCategory", payload: value })
+                  }
+                />
+                <Selector
+                  dropDownOptions={filterOptions}
+                  placeholder="낮은 가격순"
+                  onSelectChange={(value: FilterOption) =>
+                    dispatch({ type: "changeFilter", payload: value })
+                  }
+                />
+              </div>
+            </TitleContainer>
+            <ProductContainer />
+          </>
         </Main>
       </div>
       <Modal
@@ -117,13 +99,7 @@ export default function ShopPage() {
           </Button>
         }
       >
-        {cartItemList.length === 0 ? (
-          <div>
-            장바구니에 추가된 목록이 없습니다. <br /> 상품을 먼저 추가해주세요
-          </div>
-        ) : (
-          <CartProductContainer />
-        )}
+        <CartProductContainer />
       </Modal>
     </div>
   );

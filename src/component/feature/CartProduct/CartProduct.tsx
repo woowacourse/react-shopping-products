@@ -36,7 +36,7 @@ export function CartProduct({
       <img src={imageUrl} css={ProductImg} />
       <div css={TitleLayout}>
         <p css={ProductName}>{name}</p>
-        <p css={ProductPrice}>{price}원</p>
+        <p css={ProductPrice}>{price.toLocaleString()}원</p>
         <QuantitySelector quantity={quantity} cartId={id} onChange={onChange} />
       </div>
       <div css={deleteButton}>
