@@ -3,24 +3,25 @@ import { Product } from '../../types/product.type';
 import ProductCard from '../ProductCard';
 import { useShoppingCartContext } from '../../contexts/useShoppingCartContext';
 
-interface ProductCardListProps {
-  products: Product[];
-}
-
-const ProductCardList = ({ products }: ProductCardListProps) => {
+const ProductCardList = ({ products }: { products: Product[] }) => {
   const shoppingCart = useShoppingCartContext();
 
   return (
     <div className={ProductCardListStyles}>
-      {products.map((product) => {
-        const isInCart = shoppingCart.cartItems.some(
-          (item) => item.product.id === product.id
-        );
+      {products &&
+        products.map((product) => {
+          const isInCart = shoppingCart.cartItems.some(
+            (item) => item.product.id === product.id
+          );
 
-        return (
-          <ProductCard key={product.id} product={product} isInCart={isInCart} />
-        );
-      })}
+          return (
+            <ProductCard
+              key={product.id}
+              product={product}
+              isInCart={isInCart}
+            />
+          );
+        })}
     </div>
   );
 };

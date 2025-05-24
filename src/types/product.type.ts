@@ -9,19 +9,4 @@ interface Product {
   category: Category;
 }
 
-interface FetchProductsResponse {
-  content: Product[];
-  totalPages: number;
-}
-
-interface FetchProductsRequest {
-  endpoint: string;
-}
-
-export type {
-  Product,
-  Category,
-  SortOption,
-  FetchProductsResponse,
-  FetchProductsRequest,
-};
+export type { Product, Category, SortOption };
