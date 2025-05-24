@@ -26,16 +26,23 @@ const ItemCounter = ({
     setHasBeenAdded(isInCart);
   }, [initial, isInCart]);
 
-  const handleIncrement = () => {
-    const newCount = count + 1;
-
+  const handleIncrement = async () => {
     if (!hasBeenAdded && count === 0) {
-      setCount(1);
-      setHasBeenAdded(true);
-      onAddToCart();
+      try {
+        await onAddToCart();
+        setCount(1);
+        setHasBeenAdded(true);
+      } catch (error) {
+        console.warn('장바구니 담기 실패:', error);
+      }
     } else {
-      setCount(newCount);
-      onIncreaseQuantity();
+      const newCount = count + 1;
+      try {
+        await onIncreaseQuantity();
+        setCount(newCount);
+      } catch (error) {
+        console.warn('수량 증가 실패:', error);
+      }
     }
   };
 
