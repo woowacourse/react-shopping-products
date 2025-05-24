@@ -1,4 +1,7 @@
 import { useState } from "react";
+
+import { Modal } from "@kaori-killer/modal-component";
+
 import ProductList from "../ProductList/ProductList";
 import Filter from "../Filter/Filter";
 
@@ -43,7 +46,14 @@ function Main() {
     <Styled.Container>
       <Styled.ProductListTitle>bpple 상품 목록</Styled.ProductListTitle>
       <Filter handleCategory={handleCategory} handleSort={handleSort} />
-      <ProductList category={category} sort={sort} />
+      {/* <ProductList category={category} sort={sort} /> */}
+      <Modal isOpen={true} onClose={() => {}}>
+        <Modal.Content position="bottom" size="small">
+          <Modal.Title tag="h1" fontSize="25px" fontWeight="700">
+            Title이다!
+          </Modal.Title>
+        </Modal.Content>
+      </Modal>
     </Styled.Container>
   );
 }
