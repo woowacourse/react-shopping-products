@@ -32,5 +32,5 @@ export default async function getProducts(
 
   const data = await response.json();
 
-  return data;
+  return data.content;
 }
