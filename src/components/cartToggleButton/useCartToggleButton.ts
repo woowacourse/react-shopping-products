@@ -12,25 +12,20 @@ interface AddItemToCartProps {
 
 interface RemoveItemToCartProps {
   cartId?: number;
-  productId: number;
 }
 
 export default function useCartToggleButton() {
   const { showToast } = useToast();
-  const { setCartItemIds, refetchCartItems } = useCart();
+  const { setCartItems, setCartItemIds, refetchCartItems } = useCart();
 
-  async function removeItemToCart({
-    cartId,
-    productId,
-  }: RemoveItemToCartProps) {
+  async function removeItemToCart({ cartId }: RemoveItemToCartProps) {
     try {
       await request({
         method: "DELETE",
         url: `/cart-items/${cartId}`,
       });
-      setCartItemIds((prev) =>
-        prev.filter((ids) => ids.productId !== productId)
-      );
+      setCartItemIds((prev) => prev.filter((ids) => ids.cartId !== cartId));
+      setCartItems((prev) => prev!.filter((item) => item.id !== cartId));
     } catch {
       showToast("MINUS");
     }

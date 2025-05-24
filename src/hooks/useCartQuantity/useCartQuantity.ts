@@ -1,54 +1,52 @@
-import { useState } from "react";
 import { useToast } from "../useToast/useToast";
 import { changeCartQuantity } from "../../api/cart";
+import useCart from "../useCart/useCart";
 
 interface UseCartQuantityProps {
   cartId?: number;
-  productId: number;
   quantity: number;
-  removeItemToCart: ({
-    cartId,
-    productId,
-  }: {
-    cartId: number;
-    productId: number;
-  }) => void;
+  removeItemToCart: ({ cartId }: { cartId: number }) => void;
 }
 
 export default function useCartQuantity({
   cartId,
-  productId,
   quantity,
   removeItemToCart,
 }: UseCartQuantityProps) {
-  const [cartQuantity, setCartQuantity] = useState(1);
+  const { setCartQuantity, getCartQuantity } = useCart();
 
   const { showToast } = useToast();
 
   async function increase() {
     if (cartId === undefined || cartId === null) return;
 
-    if (quantity <= cartQuantity) {
+    const current = getCartQuantity({ cartId })!;
+    if (quantity <= current!) {
       showToast("CART_QUANTITY");
       return;
     }
 
-    changeCartQuantity({ cartId, quantity: cartQuantity + 1 });
-    setCartQuantity((prev) => prev + 1);
+    changeCartQuantity({ cartId, quantity: current + 1 });
+    setCartQuantity({ cartId, quantity: current + 1 });
   }
 
   function decrease() {
     if (cartId === undefined || cartId === null) return;
 
-    if (cartQuantity === 1) {
-      setCartQuantity(1);
-      removeItemToCart({ cartId, productId });
+    const current = getCartQuantity({ cartId })!;
+    if (current === 1) {
+      setCartQuantity({ cartId, quantity: 1 });
+      removeItemToCart({ cartId });
       return;
     }
 
-    changeCartQuantity({ cartId, quantity: cartQuantity - 1 });
-    setCartQuantity((prev) => prev - 1);
+    changeCartQuantity({ cartId, quantity: current - 1 });
+    setCartQuantity({ cartId, quantity: current - 1 });
   }
 
-  return { cartQuantity, increase, decrease };
+  return {
+    cartQuantity: getCartQuantity({ cartId: cartId! }),
+    increase,
+    decrease,
+  };
 }

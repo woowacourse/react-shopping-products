@@ -1,3 +1,4 @@
+import useCart from "../../hooks/useCart/useCart";
 import { useModalClose } from "../../hooks/useModalClose/useModalClose";
 import CartItem from "../cartItem/CartItem";
 import {
@@ -13,6 +14,7 @@ interface ModalProps {
 
 function Modal({ onClose }: ModalProps) {
   const { onClickOverlay } = useModalClose({ closeModal: onClose });
+  const { cartItems } = useCart();
 
   return (
     <>
@@ -20,8 +22,9 @@ function Modal({ onClose }: ModalProps) {
       <div css={ModalContainer}>
         <h2 css={ModalTitle}>장바구니</h2>
         <hr />
-        <CartItem />
-        <CartItem />
+        {cartItems?.map((data) => (
+          <CartItem {...data} />
+        ))}
         <button css={CloseButton} onClick={onClose}>
           닫기
         </button>

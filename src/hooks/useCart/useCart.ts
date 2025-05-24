@@ -8,6 +8,32 @@ export default function useCart() {
   if (!context) throw new Error("CartProvider 내부에서 사용해야 합니다.");
   const { cartItems, setCartItems, setCartItemIds, cartItemIds } = context;
 
+  function setCartQuantity({
+    cartId,
+    quantity,
+  }: {
+    cartId: number;
+    quantity: number;
+  }) {
+    let copy;
+    let cartItem;
+    if (cartItems) {
+      copy = [...cartItems];
+      cartItem = copy?.find((data) => data.id === cartId);
+    }
+    if (cartItem) {
+      cartItem.quantity = quantity;
+      if (copy) {
+        setCartItems(copy);
+      }
+    }
+  }
+
+  function getCartQuantity({ cartId }: { cartId: number }) {
+    const cartItem = cartItems?.find((data) => data.id === cartId);
+    return cartItem?.quantity;
+  }
+
   const setData = useCallback(async () => {
     const data = await fetchCartItems();
     setCartItems(data);
@@ -24,5 +50,13 @@ export default function useCart() {
     setData();
   }, [setData]);
 
-  return { cartItems, refetchCartItems: setData, cartItemIds, setCartItemIds };
+  return {
+    cartItems,
+    setCartItems,
+    refetchCartItems: setData,
+    cartItemIds,
+    setCartItemIds,
+    getCartQuantity,
+    setCartQuantity,
+  };
 }

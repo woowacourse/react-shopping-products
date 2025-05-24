@@ -1,3 +1,4 @@
+import { Product } from "../../types/response.types";
 import CartManageButton from "../cartAddButton/CartManageButton";
 import {
   CountContainer,
@@ -10,21 +11,22 @@ import {
   ProductImage,
 } from "./CartItem.css";
 
-function CartItem() {
+interface CartItemProps {
+  id: number;
+  product: Product;
+}
+
+function CartItem({ id, product }: CartItemProps) {
   return (
     <>
       <div css={ItemContainer}>
         <div css={ItemInfo}>
-          <img css={ProductImage} src="/sample.svg"></img>
+          <img css={ProductImage} src={product.imageUrl}></img>
           <div css={ItemContent}>
-            <h3 css={ItemTitle}>상품 이름</h3>
-            <p css={ItemPrice}>35,000원</p>
+            <h3 css={ItemTitle}>{product.name}</h3>
+            <p css={ItemPrice}>{product.price.toLocaleString()}원</p>
             <div css={CountContainer}>
-              <CartManageButton
-                quantity={3}
-                increase={() => {}}
-                decrease={() => {}}
-              />
+              <CartManageButton quantity={product.quantity} cartId={id} />
             </div>
           </div>
         </div>
