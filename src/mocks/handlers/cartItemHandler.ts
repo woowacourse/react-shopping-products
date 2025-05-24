@@ -168,6 +168,9 @@ const updateCartItemQuantity = http.patch(
     }
 
     cartItems[itemIndex].quantity = newQuantity;
+    if (newQuantity === 0) {
+      cartItems.splice(itemIndex, 1);
+    }
 
     return HttpResponse.json(undefined, { status: 200 });
   }
