@@ -46,6 +46,8 @@ export const shoppingCartHandler = [
       product,
     };
 
+    SHOPPING_CART_MOCK_DATA.content.push(cartItem);
+
     return HttpResponse.json(cartItem);
   }),
 
@@ -74,12 +76,3 @@ export const shoppingCartHandler = [
     return new HttpResponse(null, { status: 204 });
   }),
 ];
-
-// http.post(`${baseUrl}/cart-items`, async ({ request }) => {
-//   const { productId } = await request.json();
-//   const findData = PRODUCT_MOCK_DATA.content.find(
-//     ({ id }) => id === productId
-//   );
-//   console.log("findData", findData);
-//   // CART_DATA.push(findData);
-// }),
