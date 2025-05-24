@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../constants/config";
 import useModal from "../../hooks/useModal";
 import { CartItems } from "../../types/cartItems";
 import CartModal from "../CartModal/CartModal";
@@ -40,7 +41,7 @@ const ShopHeader = ({
 
   return (
     <S.Header>
-      <S.Logo href="/">SHOP</S.Logo>
+      <S.Logo href={BASE_URL}>SHOP</S.Logo>
       <S.CartButton onClick={handleOpenCart}>
         <S.CartIcon src={Cart} alt="cart" />
         {!!cartItemsCount && (
