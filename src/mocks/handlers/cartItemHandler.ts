@@ -3,6 +3,7 @@ import { http, HttpResponse } from "msw";
 const BASE_URL = `${import.meta.env.VITE_BASE_URL}/cart-items`;
 
 import { cartItems } from "../data/mockCartItem";
+import { allProductsData } from "../data/mockProducts";
 import { ALL_CATEGORY, CATEGORIES } from "../../constants/filterOptions";
 
 let cartItemId = 9999;
@@ -57,6 +58,24 @@ const addCartItem = http.post(BASE_URL, async ({ request }) => {
     if (existingCartItem) {
       return HttpResponse.json(
         { error: "cartItem already exists" },
+        { status: 400 }
+      );
+    }
+
+    const targetProduct = allProductsData.find((product) => {
+      return product.id === newProductId;
+    });
+
+    if (!targetProduct) {
+      return HttpResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    if (newQuantity > targetProduct.quantity) {
+      return HttpResponse.json(
+        {
+          error: "out of stock",
+          message: "재고 수량을 초과하여 담을 수 없습니다.",
+        },
         { status: 400 }
       );
     }
