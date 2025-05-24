@@ -3,7 +3,7 @@ import { createContext, PropsWithChildren } from 'react';
 import { getCartItemList } from '@/api/cart';
 import { getProductList } from '@/api/product';
 import { CartItem } from '@/features/ProductList/types/Cart';
-import { Product, ProductListResponse } from '@/features/ProductList/types/Product';
+import { Product } from '@/features/ProductList/types/Product';
 
 import { useFetchData } from '../hooks/useFetchData';
 

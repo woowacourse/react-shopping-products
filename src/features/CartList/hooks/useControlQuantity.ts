@@ -4,29 +4,29 @@ import { addCartItem, deleteCartItem, getCartItemList, updateCartItem } from '@/
 import { ToastContext } from '@/shared/context/ToastProvider';
 import { useData } from '@/shared/context/useData';
 
-export const useControlQuantity = (id: number) => {
+export const useControlQuantity = (productId: number) => {
   const { cartData } = useData();
   const { showToast } = useContext(ToastContext);
 
-  const cartItem = cartData.data?.find((item) => item.product.id === id);
-  const cartItemQuantity = cartItem?.quantity || 0;
+  const cartItem = cartData.data?.find((item) => item.product.id === productId);
+  const currentQuantity = cartItem?.quantity || 0;
   const isInCart = !!cartItem;
 
   const increaseQuantity = async () => {
-    if (cartItem && cartItemQuantity >= cartItem.product.quantity) {
+    if (cartItem && currentQuantity >= cartItem.product.quantity) {
       showToast('재고가 부족합니다.');
       return;
     }
     try {
       if (!isInCart) {
         await cartData.mutate(
-          () => addCartItem({ productId: id, quantity: 1 }).then(() => {}),
+          () => addCartItem({ productId: productId, quantity: 1 }).then(() => {}),
           getCartItemList
         );
       }
       if (isInCart) {
         await cartData.mutate(
-          () => updateCartItem(cartItem!.id, cartItemQuantity + 1),
+          () => updateCartItem(cartItem!.id, currentQuantity + 1),
           getCartItemList
         );
       }
@@ -35,7 +35,7 @@ export const useControlQuantity = (id: number) => {
     }
   };
 
-  const deleteCartItemById = async () => {
+  const removeCartItem = async () => {
     try {
       if (cartItem) {
         await cartData.mutate(() => deleteCartItem(cartItem.id), getCartItemList);
@@ -47,19 +47,19 @@ export const useControlQuantity = (id: number) => {
 
   const decreaseQuantity = async () => {
     try {
-      if (cartItem && cartItemQuantity !== 1) {
+      if (cartItem && currentQuantity !== 1) {
         await cartData.mutate(
-          () => updateCartItem(cartItem!.id, cartItemQuantity - 1),
+          () => updateCartItem(cartItem!.id, currentQuantity - 1),
           getCartItemList
         );
       }
-      if (cartItemQuantity === 1) {
-        await deleteCartItemById();
+      if (currentQuantity === 1) {
+        await removeCartItem();
       }
     } catch (error) {
       showToast('재고가 부족합니다.');
     }
   };
 
-  return { isInCart, cartItemQuantity, increaseQuantity, decreaseQuantity, deleteCartItemById };
+  return { isInCart, currentQuantity, increaseQuantity, decreaseQuantity, removeCartItem };
 };
