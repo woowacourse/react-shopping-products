@@ -7,33 +7,25 @@ import { Text } from '@/shared/components/Text';
 
 import { QuantitySelector } from './QuantitySelector';
 
+import NoImage from '../../../../public/NoImage.svg';
+import { useControlQuantity } from '../hooks/useControlQuantity';
 import { Product } from '../types/Product';
 
-type ProductItemProps = {
-  cartId: number;
-  isChecked: boolean;
-  cartQuantity: number;
-  onCartUpdate: () => void;
-  onUpdateCartItemQuantity: (id: number, quantity: number) => void;
-} & Pick<Product, 'name' | 'imageUrl' | 'price' | 'quantity'>;
-
 export const ProductItem = ({
-  cartId,
+  id,
   name,
   price,
   imageUrl,
   quantity = 0,
-  isChecked = true,
-  cartQuantity,
-  onCartUpdate,
-  onUpdateCartItemQuantity,
-}: ProductItemProps) => {
-  // const imgUrl = imageUrl?.includes('kream') || imageUrl.length == 0 ? NoImage : imageUrl;
+}: Pick<Product, 'id' | 'name' | 'imageUrl' | 'price' | 'quantity'>) => {
+  const { isInCart, cartItemQuantity, increaseQuantity, decreaseQuantity } = useControlQuantity(id);
+
+  const imgUrl = imageUrl?.includes('kream') || imageUrl.length == 0 ? NoImage : imageUrl;
 
   return (
     <StyledProductItemContainer>
       <StyledProductItemImageContainer>
-        <StyledProductItemImage src={imageUrl} alt={name} />
+        <StyledProductItemImage src={imgUrl} alt={name} />
         {quantity === 0 && (
           <>
             <StyledSoldOutImage />
@@ -64,18 +56,18 @@ export const ProductItem = ({
           {price.toLocaleString()}원
         </Text>
         <Flex direction="row" justifyContent="flex-end" alignItems="center" width="100%" gap="">
-          {isChecked ? (
+          {isInCart ? (
             <QuantitySelector
-              count={cartQuantity}
               quantity={quantity}
-              onIncrease={() => onUpdateCartItemQuantity(cartId, cartQuantity + 1)}
-              onDecrease={() => onUpdateCartItemQuantity(cartId, cartQuantity - 1)}
+              count={cartItemQuantity}
+              onIncrease={increaseQuantity}
+              onDecrease={decreaseQuantity}
             />
           ) : (
             <IconButton
               variant="primary"
               src="./AddCart.svg"
-              onClick={onCartUpdate}
+              onClick={increaseQuantity}
               disabled={quantity === 0}
             >
               담기
