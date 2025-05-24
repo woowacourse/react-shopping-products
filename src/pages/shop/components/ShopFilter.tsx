@@ -1,5 +1,4 @@
-import { Flex } from '@/components/common';
-import Dropdown from '@/components/common/Dropdown';
+import { Flex, Dropdown } from '@/components/common';
 
 const categoryOptions = [
   { label: '전체', value: '전체' },

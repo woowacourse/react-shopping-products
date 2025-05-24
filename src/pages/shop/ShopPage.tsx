@@ -4,11 +4,11 @@ import CartModal from '@/components/features/cart/CartModal';
 import { getProductList } from '@/components/features/product/api/getProductList';
 import { Product } from '@/components/features/product/type';
 import { useCartContext } from '@/context/useCartContext';
-import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
 import { Modal } from '@jae-o/modal-component-module';
 import { Suspense, useMemo, useState } from 'react';
 import { ShopFilter, ShopHeader, ShopProductList } from './components';
+import { useShopErrorContext } from './context';
 
 function ShopPage() {
   const [filter, setFilter] = useState({

@@ -1,5 +1,8 @@
-import ProductCard from '@/components/features/product/product-card/ProductCard';
-import { Cart, Product } from '@/components/features/product/type';
+import {
+  ProductCard,
+  type Cart,
+  type Product,
+} from '@/components/features/product';
 import styled from '@emotion/styled';
 
 function ShopProductList({
