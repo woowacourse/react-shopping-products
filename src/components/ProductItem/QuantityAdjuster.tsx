@@ -1,11 +1,23 @@
 import styled from "@emotion/styled";
 
-const QuantityAdjuster = ({ count }: { count: number }) => {
+const QuantityAdjuster = ({
+  count,
+  onIncreaseClick,
+  onDecreaseClick,
+}: {
+  count: number;
+  onIncreaseClick: () => void;
+  onDecreaseClick: () => void;
+}) => {
   return (
     <QuantityAdjusterContainer>
-      <QuantityAdjustButton>-</QuantityAdjustButton>
+      <QuantityAdjustButton onClick={() => onDecreaseClick()}>
+        -
+      </QuantityAdjustButton>
       <p>{count}</p>
-      <QuantityAdjustButton>+</QuantityAdjustButton>
+      <QuantityAdjustButton onClick={() => onIncreaseClick()}>
+        +
+      </QuantityAdjustButton>
     </QuantityAdjusterContainer>
   );
 };

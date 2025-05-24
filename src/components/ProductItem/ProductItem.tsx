@@ -11,11 +11,11 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
 const ProductItem = ({
   product,
   addToCart,
-  isInCart,
+  patchQuantity,
 }: {
   product: Product;
-  isInCart: boolean;
   addToCart: (product: Product) => void;
+  patchQuantity: (id: number, quantity: number) => void;
 }) => {
   const handleProductAddClick = () => addToCart(product);
   const cartData = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
@@ -40,8 +40,16 @@ const ProductItem = ({
           </TextContainer>
 
           <ButtonContainer>
-            {isInCart ? (
-              <QuantityAdjuster count={quantity} />
+            {cartItem ? (
+              <QuantityAdjuster
+                count={quantity}
+                onDecreaseClick={() => {
+                  patchQuantity(cartItem.id, quantity - 1);
+                }}
+                onIncreaseClick={() => {
+                  patchQuantity(cartItem.id, quantity + 1);
+                }}
+              />
             ) : (
               <CartActionButton variant="add" onClick={handleProductAddClick} />
             )}

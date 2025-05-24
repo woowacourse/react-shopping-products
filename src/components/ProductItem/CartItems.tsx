@@ -10,9 +10,10 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
 
 const CartItems = ({
   removeFromCart,
+  patchQuantity,
 }: {
-  refetch: () => void;
   removeFromCart: (id: number) => void;
+  patchQuantity: (id: number, quantity: number) => void;
 }) => {
   const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
   const handleProductRemoveClick = (id: number) => removeFromCart(id);
@@ -29,7 +30,11 @@ const CartItems = ({
           <CartItemDescription>
             <CartItemNameText>{cart.product.name}</CartItemNameText>
             <PriceText>{cart.product.price.toLocaleString()}원</PriceText>
-            <QuantityAdjuster count={cart.quantity} />
+            <QuantityAdjuster
+              count={cart.quantity}
+              onIncreaseClick={() => patchQuantity(cart.id, cart.quantity + 1)}
+              onDecreaseClick={() => patchQuantity(cart.id, cart.quantity - 1)}
+            />
           </CartItemDescription>
           <DeleteButtonContainer>
             <CartActionButton

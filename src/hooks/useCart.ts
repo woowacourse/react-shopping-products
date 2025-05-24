@@ -3,6 +3,7 @@ import { CartItem, Product } from "../types/productType";
 import postCartItems from "../api/postCartItems";
 import deleteCartItems from "../api/deleteCartItems";
 import getCartItems from "../api/getCartItems";
+import patchCartItemQuantity from "../api/patchCartItemQuantity";
 
 export const CART_MAX_COUNT = 50;
 
@@ -45,6 +46,15 @@ const useCart = ({
     }
   };
 
+  const patchQuantity = async (id: number, quantity: number) => {
+    const { error } = await patchCartItemQuantity(id, quantity);
+    setErrorMessage(error?.message || "");
+
+    if (!error?.message) {
+      refetch();
+    }
+  };
+
   const syncCart = async () => {
     const { data: cartData, error } = await getCartItems();
     setErrorMessage(error?.message || "");
@@ -60,7 +70,7 @@ const useCart = ({
     fetchData();
   }, []);
 
-  return { cart, addToCart, removeFromCart, syncCart };
+  return { cart, addToCart, removeFromCart, syncCart, patchQuantity };
 };
 
 export default useCart;

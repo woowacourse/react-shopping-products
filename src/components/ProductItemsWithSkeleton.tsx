@@ -7,15 +7,13 @@ import { useAPIData } from "../contexts/DataContext";
 type ProductItemWithSkeletonProps = {
   isLoading: boolean;
   addToCart: (product: Product) => void;
-};
-
-const isInCart = (cartItem: CartItem[], id: number) => {
-  return cartItem.some((item) => item.product.id === id);
+  patchQuantity: (id: number, quantity: number) => void;
 };
 
 const ProductItemsWithSkeleton = ({
   isLoading,
   addToCart,
+  patchQuantity,
 }: ProductItemWithSkeletonProps) => {
   const productData = useAPIData<{ data: { content: Product[] } }>("products");
   const cartData = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
@@ -33,7 +31,7 @@ const ProductItemsWithSkeleton = ({
         key={product.id}
         product={product}
         addToCart={addToCart}
-        isInCart={isInCart(cart, product.id)}
+        patchQuantity={patchQuantity}
       />
     ))
   );
