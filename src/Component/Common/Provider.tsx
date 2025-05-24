@@ -52,28 +52,28 @@ export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
   const [status, setStatus] = useState<DataStatus>({});
 
   const requestData = useCallback(async () => {
-    apiFn?.()
-      .then((res) => {
-        setStatus((prev) => ({ ...prev, [key]: 'loading' }));
-        setData((prev) => ({ ...prev, [key]: res }));
-        setStatus((prev) => ({ ...prev, [key]: 'success' }));
-      })
-      .catch(() => {
-        setStatus((prev) => ({ ...prev, [key]: 'error' }));
-      });
+    if (!apiFn) return;
+
+    try {
+      setStatus((prev) => ({ ...prev, [key]: 'loading' }));
+      const fetchedData = await apiFn();
+      setData((prev) => ({ ...prev, [key]: fetchedData }));
+      setStatus((prev) => ({ ...prev, [key]: 'success' }));
+    } catch (error) {
+      setStatus((prev) => ({ ...prev, [key]: 'error' }));
+    }
   }, [apiFn, key, setData]);
 
   const newRequestData = useCallback(
-    ({ apiFn }: { apiFn: () => Promise<T> }) => {
-      apiFn()
-        .then((res) => {
-          setStatus((prev) => ({ ...prev, [key]: 'loading' }));
-          setData((prev) => ({ ...prev, [key]: res }));
-          setStatus((prev) => ({ ...prev, [key]: 'success' }));
-        })
-        .catch(() => {
-          setStatus((prev) => ({ ...prev, [key]: 'error' }));
-        });
+    async ({ apiFn }: { apiFn: () => Promise<T> }) => {
+      try {
+        setStatus((prev) => ({ ...prev, [key]: 'loading' }));
+        const fetchedData = await apiFn();
+        setData((prev) => ({ ...prev, [key]: fetchedData }));
+        setStatus((prev) => ({ ...prev, [key]: 'success' }));
+      } catch (error) {
+        setStatus((prev) => ({ ...prev, [key]: 'error' }));
+      }
     },
     [key, setData]
   );
