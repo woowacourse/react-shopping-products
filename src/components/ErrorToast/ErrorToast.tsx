@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import * as styles from "./ErrorToast.style";
+import { createPortal } from "react-dom";
 
 export default function ErrorToast({
-  error,
+  message,
+  onClose,
   duration = 2000,
 }: {
-  error: Error;
+  message: string;
+  onClose: () => void;
   duration?: number;
 }) {
   const [visible, setVisible] = useState(true);
@@ -13,27 +16,29 @@ export default function ErrorToast({
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
+
+      setTimeout(onClose, 300);
     }, duration);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [duration]);
+  }, [duration, onClose]);
 
   const handleClose = () => {
     setVisible(false);
+    setTimeout(onClose, 300);
   };
 
-  if (!visible) return null;
-
-  return (
-    <div css={styles.toastCss}>
+  return createPortal(
+    <div css={[styles.toastCss, !visible && styles.fadeOutSmoothCss]}>
       <h2 css={styles.messageCss} id="error-toast-message">
-        {error.message}
+        {message}
       </h2>
       <button css={styles.closeButtonCss} onClick={handleClose}>
         ✕
       </button>
-    </div>
+    </div>,
+    document.body
   );
 }
