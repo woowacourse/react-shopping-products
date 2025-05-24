@@ -55,8 +55,6 @@ const useCartItems = (): UseCartItemsReturn => {
       quantity: productInfo.quantity,
     })) ?? [];
 
-  const quantityByCartId = (cartId: number) =>
-    allQuantities.find((item) => item.cartId === cartId)?.quantity ?? 0;
   const quantityByProductId = (productId: number) =>
     allQuantities.find((item) => item.productId === productId)?.quantity ?? 0;
 
@@ -75,7 +73,7 @@ const useCartItems = (): UseCartItemsReturn => {
     if (!currentProductId) return;
     await CartItemsAPI.patch(
       currentProductId.cartId,
-      quantityByCartId(currentProductId.cartId) - 1
+      quantityByProductId(currentProductId.productId) - 1
     );
 
     const response = await CartItemsAPI.get();
@@ -99,7 +97,7 @@ const useCartItems = (): UseCartItemsReturn => {
     if (!currentProductId) return;
     await CartItemsAPI.patch(
       currentProductId.cartId,
-      quantityByCartId(currentProductId.cartId) + 1
+      quantityByProductId(currentProductId.productId) + 1
     );
 
     const response = await CartItemsAPI.get();
