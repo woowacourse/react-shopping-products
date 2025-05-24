@@ -44,7 +44,7 @@ function Product({ product, isInCart }: ProductProps) {
             <Button color="light" onClick={handleRemoveProduct}>
               -
             </Button>
-            <p>수량</p>
+            <p>{product.quantity}</p>
             <Button color="light" onClick={handleAddProduct}>
               +
             </Button>

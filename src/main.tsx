@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 
+import { worker } from "./mocks/browser";
+
 import { ErrorMessageProvider } from "./context/ErrorMessageContext.tsx";
 import { CartItemsIdProvider } from "./context/CartItemsContext.tsx";
 
@@ -10,7 +12,6 @@ async function enableMocking() {
     return;
   }
 
-  const { worker } = await import("./mocks/browser.ts");
   return worker.start();
 }
 
