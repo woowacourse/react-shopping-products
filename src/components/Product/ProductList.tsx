@@ -14,42 +14,34 @@ interface ProductListProps {
 const ProductList = ({ productsData, cartItemsByProductId, handleCartItem }: ProductListProps) => {
   return (
     <div css={productListStyle}>
-      {productsData?.map((product) => (
-        <ProductCard key={product.id}>
-          <ProductCard.Image src={product.imageUrl} alt={product.name} />
-          <ProductCard.Content>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <ProductCard.Title text={product.name} />
-              <ProductCard.Price price={product.price} />
-            </div>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              {cartItemsByProductId[product.id] ? (
-                <QuantitySelector
-                  quantity={cartItemsByProductId[product.id].quantity}
-                  onIncrease={() =>
-                    handleCartItem(
-                      "update",
-                      cartItemsByProductId[product.id].cartItemId,
-                      cartItemsByProductId[product.id].quantity + 1,
-                    )
-                  }
-                  onDecrease={() =>
-                    handleCartItem(
-                      "update",
-                      cartItemsByProductId[product.id].cartItemId,
-                      cartItemsByProductId[product.id].quantity - 1,
-                    )
-                  }
-                />
-              ) : (
-                <IconButton icon={<AddCart />} variant="dark" onClick={() => handleCartItem("add", product.id)}>
-                  담기
-                </IconButton>
-              )}
-            </div>
-          </ProductCard.Content>
-        </ProductCard>
-      ))}
+      {productsData?.map((product) => {
+        const cartItem = cartItemsByProductId[product.id];
+
+        return (
+          <ProductCard key={product.id}>
+            <ProductCard.Image src={product.imageUrl} alt={product.name} />
+            <ProductCard.Content>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                <ProductCard.Title text={product.name} />
+                <ProductCard.Price price={product.price} />
+              </div>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                {cartItem ? (
+                  <QuantitySelector
+                    quantity={cartItem.quantity}
+                    onIncrease={() => handleCartItem("update", cartItem.cartItemId, cartItem.quantity + 1)}
+                    onDecrease={() => handleCartItem("update", cartItem.cartItemId, cartItem.quantity - 1)}
+                  />
+                ) : (
+                  <IconButton icon={<AddCart />} variant="dark" onClick={() => handleCartItem("add", product.id)}>
+                    담기
+                  </IconButton>
+                )}
+              </div>
+            </ProductCard.Content>
+          </ProductCard>
+        );
+      })}
     </div>
   );
 };
