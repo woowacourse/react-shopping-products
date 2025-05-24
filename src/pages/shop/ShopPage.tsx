@@ -62,7 +62,7 @@ function ShopPage() {
         position="bottom"
         style={{ maxHeight: 'calc(100% - 120px)', overflow: 'auto' }}
       >
-        {cartList.map(({ id, product }) => {
+        {cartList.map(({ id, quantity, product }) => {
           const matchingCart = cartList.find(
             (cart) => cart.product.id === product.id
           );
@@ -75,6 +75,7 @@ function ShopPage() {
                 price={product.price}
                 imageUrl={product.imageUrl}
                 cartId={id}
+                cartCount={quantity}
                 isInCart={!!matchingCart}
               />
             </Flex>
