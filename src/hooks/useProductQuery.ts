@@ -29,8 +29,9 @@ export function useProductQuery(
     const params = new URLSearchParams({
       ...defaultSearchParams,
       sort: sortParams[orderBy],
-      category: category === "전체" ? "" : category,
     });
+
+    if (category !== "전체") params.set("category", category);
 
     url.search = params.toString();
     return url;
