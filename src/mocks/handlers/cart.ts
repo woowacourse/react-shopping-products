@@ -64,6 +64,21 @@ const handlers = [
         );
       }
 
+      const targetProduct = MOCK_PRODUCTS[targetIndex];
+      if (quantity > targetProduct.quantity) {
+        return HttpResponse.json(
+          { errorCode: 'OUT_OF_STOCK', message: '재고 수량을 초과하여 담을 수 없습니다.' },
+          { status: 400 },
+        );
+      }
+
+      if (quantity < 1) {
+        return HttpResponse.json(
+          { errorCode: 'OUT_OF_STOCK', message: '장바구니 수량은 최소 1이상 담아야 합니다.' },
+          { status: 400 },
+        );
+      }
+
       MOCK_CART_ITEMS[targetIndex] = { ...MOCK_CART_ITEMS[targetIndex], quantity };
 
       return HttpResponse.json(
