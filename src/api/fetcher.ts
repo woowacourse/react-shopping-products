@@ -97,7 +97,9 @@ export const request = async <T>({
   const response = await fetch(url, config);
 
   if (!response.ok) {
-    throw new HttpError(response.status);
+    const errorBody = await response.json().catch(() => null); // 안전하게 시도
+    const message = errorBody?.message || `HTTP error ${response.status}`;
+    throw new Error(message); // 이 message가 토스트에 뜨게 됨
   }
 
   if (response.status === 204 || response.headers.get('content-length') === '0') {
