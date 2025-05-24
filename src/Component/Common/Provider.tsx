@@ -13,19 +13,26 @@ type DataStatus = Record<string, Status>;
 const Context = createContext<{
   data: Record<string, unknown>;
   setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
+  status: Record<string, Status>;
+  setStatus: React.Dispatch<React.SetStateAction<Record<string, Status>>>;
 }>({
   data: {},
   setData: () => {},
+  status: {},
+  setStatus: () => {},
 });
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState({});
+  const [status, setStatus] = useState<DataStatus>({});
 
   return (
     <Context.Provider
       value={{
         data,
         setData: setData,
+        status,
+        setStatus,
       }}
     >
       {children}
@@ -45,11 +52,12 @@ export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
     throw new Error('useAPIContext must be used within a Provider');
   }
 
-  const { data, setData } = context as {
+  const { data, setData, status, setStatus } = context as {
     data: Record<string, T>;
     setData: React.Dispatch<React.SetStateAction<Record<string, T>>>;
+    status: Record<string, Status>;
+    setStatus: React.Dispatch<React.SetStateAction<Record<string, Status>>>;
   };
-  const [status, setStatus] = useState<DataStatus>({});
 
   const requestData = useCallback(async () => {
     if (!apiFn) return;
