@@ -6,6 +6,7 @@ import useToast from "./useToast";
 import { TOAST_TYPES } from "../constants/toast";
 
 interface UseCartItemsReturn {
+  cartItems: CartItems | null;
   cartItemsCount: number;
   quantityByProductId: (productId: number) => number;
   decreaseItemQuantity: (productId: number) => Promise<void>;
@@ -13,7 +14,6 @@ interface UseCartItemsReturn {
   addProductInCart: (productId: number) => Promise<void>;
   deleteProductInCart: (productId: number) => Promise<void>;
   totalPriceInCart: number;
-  productIdsInCart: number[];
 }
 
 const useCartItems = (): UseCartItemsReturn => {
@@ -44,11 +44,6 @@ const useCartItems = (): UseCartItemsReturn => {
         cartId: productInfo.id,
         productId: productInfo.product.id,
       })) ?? [],
-    [cartItems?.content]
-  );
-
-  const productIdsInCart = useMemo(
-    () => cartItems?.content.map((productInfo) => productInfo.product.id) ?? [],
     [cartItems?.content]
   );
 
@@ -158,6 +153,7 @@ const useCartItems = (): UseCartItemsReturn => {
   };
 
   return {
+    cartItems,
     cartItemsCount,
     quantityByProductId,
     decreaseItemQuantity,
@@ -165,7 +161,6 @@ const useCartItems = (): UseCartItemsReturn => {
     addProductInCart,
     deleteProductInCart,
     totalPriceInCart,
-    productIdsInCart,
   };
 };
 

@@ -23,6 +23,7 @@ function App() {
   } = useProducts();
 
   const {
+    cartItems,
     cartItemsCount,
     quantityByProductId,
     decreaseItemQuantity,
@@ -30,21 +31,19 @@ function App() {
     addProductInCart,
     deleteProductInCart,
     totalPriceInCart,
-    productIdsInCart,
   } = useCartItems();
 
   return (
     <S.LayoutContainer>
       <S.LayoutWrapper id="custom-root">
         <ShopHeader
+          cartItems={cartItems}
           cartItemCount={cartItemsCount}
-          products={products}
           quantityByProductId={quantityByProductId}
           increaseItemQuantity={increaseItemQuantity}
           decreaseItemQuantity={decreaseItemQuantity}
           deleteProductInCart={deleteProductInCart}
           totalPriceInCart={totalPriceInCart}
-          productIdsInCart={productIdsInCart}
         />
         <S.Wrapper>
           <ProductsListTitle />
