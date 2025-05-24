@@ -71,10 +71,11 @@ const useCartItems = (): UseCartItemsReturn => {
     );
 
     if (!currentProductId) return;
-    await CartItemsAPI.patch(
-      currentProductId.cartId,
-      quantityByProductId(currentProductId.productId) - 1
-    );
+
+    const quantity = quantityByProductId(currentProductId.productId);
+
+    if (quantity <= 1) await CartItemsAPI.delete(currentProductId.cartId);
+    else await CartItemsAPI.patch(currentProductId.cartId, quantity - 1);
 
     const response = await CartItemsAPI.get();
 
