@@ -6,9 +6,17 @@ interface Props {
   quantity: number;
   onIncrease: () => void;
   onDecrease: () => void;
+  decreaseDisabled?: boolean;
+  increaseDisabled?: boolean;
 }
 
-const QuantitySelector = ({ quantity, onIncrease, onDecrease }: Props) => {
+const QuantitySelector = ({
+  quantity,
+  onIncrease,
+  onDecrease,
+  decreaseDisabled = false,
+  increaseDisabled = false,
+}: Props) => {
   return (
     <S.QuantitySelector>
       <S.ButtonIcon
@@ -17,6 +25,7 @@ const QuantitySelector = ({ quantity, onIncrease, onDecrease }: Props) => {
         onClick={onDecrease}
         role="button"
         tabIndex={0}
+        $disabled={decreaseDisabled}
       />
       {quantity}
       <S.ButtonIcon
@@ -25,6 +34,7 @@ const QuantitySelector = ({ quantity, onIncrease, onDecrease }: Props) => {
         onClick={onIncrease}
         role="button"
         tabIndex={0}
+        $disabled={increaseDisabled}
       />
     </S.QuantitySelector>
   );

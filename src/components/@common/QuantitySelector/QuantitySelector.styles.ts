@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 export const QuantitySelector = styled.div`
@@ -9,7 +10,7 @@ export const QuantitySelector = styled.div`
   line-height: 26px;
 `;
 
-export const ButtonIcon = styled.img`
+export const ButtonIcon = styled.img<{ $disabled: boolean }>`
   border: 1px solid #0000001a;
   border-radius: 8px;
   padding: 4px;
@@ -25,4 +26,19 @@ export const ButtonIcon = styled.img`
     background-color: #f0f0f0;
     transform: scale(0.95);
   }
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      opacity: 0.5;
+      cursor: default;
+      background-color: #f5f5f5;
+      border-color: #e0e0e0;
+
+      &:active {
+        transform: none;
+        border-color: #e0e0e0;
+        background-color: #f5f5f5;
+      }
+    `}}
 `;
