@@ -1,5 +1,5 @@
 import { Modal } from '@jae-o/modal-component-module';
-import Header from '../../../components/common/Header';
+import Header from '../../../../components/common/Header';
 import CartButton from './CartButton';
 
 function ShopHeader({ itemsCount }: { itemsCount: number }) {

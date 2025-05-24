@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { useShopErrorContext } from '../../shop/context/useShopErrorContext';
+import { useShopErrorContext } from '../../pages/shop/context/useShopErrorContext';
 import Flex from './Flex';
 
 function ErrorToastMessage() {

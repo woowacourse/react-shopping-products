@@ -1,5 +1,5 @@
 import { getShoppingCartList } from '@/components/features/product/api/getShoppingCartList';
-import { useShopErrorContext } from '@/shop/context/useShopErrorContext';
+import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
 import {
   createContext,
   useCallback,

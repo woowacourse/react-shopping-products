@@ -1,3 +1,4 @@
+import App from '@/App';
 import {
   fireEvent,
   render,
@@ -5,7 +6,6 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import App from '../../App';
 import { cartMockData } from '../__mocks__/cartData';
 import { productListMockData } from '../__mocks__/productListMockData';
 

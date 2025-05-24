@@ -4,9 +4,9 @@ import { getProductList } from '@/components/features/product/api/getProductList
 import ProductList from '@/components/features/product/product-list/ProductList';
 import { Product } from '@/components/features/product/type';
 import { useCartContext } from '@/context/useCartContext';
-import ShopFilter from '@/shop/components/filter/ShopFilter';
-import ShopHeader from '@/shop/components/header/ShopHeader';
-import { useShopErrorContext } from '@/shop/context/useShopErrorContext';
+import ShopFilter from '@/pages/shop/components/filter/ShopFilter';
+import ShopHeader from '@/pages/shop/components/header/ShopHeader';
+import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
 import { Suspense, useMemo, useState } from 'react';
 import { Modal } from '@jae-o/modal-component-module';

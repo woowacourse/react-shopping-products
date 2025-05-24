@@ -1,6 +1,6 @@
 import { Flex } from '@/components/common';
 import { useCartContext } from '@/context/useCartContext';
-import { useShopErrorContext } from '@/shop/context/useShopErrorContext';
+import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
 import { addCartItem } from '../api/addCartItem';
 import { deleteCartItem } from '../api/deleteCartItem';

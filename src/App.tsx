@@ -4,7 +4,7 @@ import CartProvider from './context/CartProvider';
 import reset from './global/style/reset';
 import { theme } from './global/style/theme';
 import ShopPage from './pages/shop/ShopPage';
-import ShopErrorProvider from './shop/context/ShopErrorProvider';
+import ShopErrorProvider from './pages/shop/context/ShopErrorProvider';
 
 function App() {
   return (
