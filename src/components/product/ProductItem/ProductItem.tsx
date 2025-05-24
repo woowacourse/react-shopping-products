@@ -14,10 +14,13 @@ function ProductItem({
   handleIncreaseCartItemQuantity,
   handleDecreaseCartItemQuantity,
 }: ProductProps) {
+  const isSoldOut = product.quantity === 0;
+
   return (
     <li>
       <Styled.Container>
         <Styled.Image src={product.imageUrl || defaultImage} />
+        {isSoldOut && <Styled.ProductInfo> 품절 </Styled.ProductInfo>}
         <Styled.Wrapper>
           <Styled.Contents>
             <Styled.ProductTitle>{product.name}</Styled.ProductTitle>
@@ -39,6 +42,7 @@ function ProductItem({
             ) : (
               <ProductAddButton
                 handleAddProduct={() => handleAddProduct(product.id)}
+                disabled={isSoldOut}
               />
             )}
           </Styled.ButtonWrapper>

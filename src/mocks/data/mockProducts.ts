@@ -90,7 +90,7 @@ export const allProductsData = [
     price: 8,
     imageUrl: "",
     category: "식료품",
-    quantity: 10,
+    quantity: 0,
   },
   {
     id: 66,
