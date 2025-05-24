@@ -8,6 +8,12 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
 };
 
+const plus = (arr: number[]) => {
+  return arr.reduce((current, total) => {
+    return current + total;
+  });
+};
+
 const CartItems = ({
   removeFromCart,
   patchQuantity,
@@ -17,10 +23,11 @@ const CartItems = ({
 }) => {
   const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
   const handleProductRemoveClick = (id: number) => removeFromCart(id);
+  if (!cartItems) return null;
 
   return (
     <>
-      {cartItems?.data.content.map((cart) => (
+      {cartItems.data.content.map((cart) => (
         <CartItemContainer key={cart.product.name}>
           <CartItemImage
             src={cart.product.imageUrl}
@@ -47,7 +54,14 @@ const CartItems = ({
 
       <TotalAmountContainer>
         <TotalAmountText>총 결제 금액</TotalAmountText>
-        <TotalAmount>95,000</TotalAmount>
+        <TotalAmount>
+          {plus(
+            cartItems.data.content.map(
+              (cart) => cart.quantity * cart.product.price
+            )
+          ).toLocaleString()}
+          원
+        </TotalAmount>
       </TotalAmountContainer>
     </>
   );
