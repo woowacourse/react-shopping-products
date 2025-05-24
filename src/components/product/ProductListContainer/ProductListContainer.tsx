@@ -10,6 +10,7 @@ interface ProductListContainerProps {
   handleAddProduct: (productId: string) => void;
   handleRemoveProduct: (productId: string) => void;
   handleIncreaseCartItemQuantity: (productId: string) => void;
+  handleDecreaseCartItemQuantity: (productId: string) => void;
 }
 
 function ProductListContainer({
@@ -17,6 +18,7 @@ function ProductListContainer({
   handleAddProduct,
   handleRemoveProduct,
   handleIncreaseCartItemQuantity,
+  handleDecreaseCartItemQuantity,
 }: ProductListContainerProps) {
   const { productList, handleCategory, handleSort } = useProductList();
 
@@ -33,6 +35,7 @@ function ProductListContainer({
           handleAddProduct={handleAddProduct}
           handleRemoveProduct={handleRemoveProduct}
           handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
+          handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
         />
       )}
     </Styled.Container>

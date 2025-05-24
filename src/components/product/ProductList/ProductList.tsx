@@ -10,6 +10,7 @@ interface ProductListProps {
   handleAddProduct: (productId: string) => void;
   handleRemoveProduct: (productId: string) => void;
   handleIncreaseCartItemQuantity: (productId: string) => void;
+  handleDecreaseCartItemQuantity: (productId: string) => void;
 }
 
 function ProductList({
@@ -18,6 +19,7 @@ function ProductList({
   handleAddProduct,
   handleRemoveProduct,
   handleIncreaseCartItemQuantity,
+  handleDecreaseCartItemQuantity,
 }: ProductListProps) {
   return (
     <Styled.UlContainer>
@@ -29,6 +31,7 @@ function ProductList({
           handleAddProduct={handleAddProduct}
           handleRemoveProduct={handleRemoveProduct}
           handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
+          handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
         />
       ))}
     </Styled.UlContainer>

@@ -10,8 +10,8 @@ function ProductItem({
   product,
   isInCart,
   handleAddProduct,
-  handleRemoveProduct,
   handleIncreaseCartItemQuantity,
+  handleDecreaseCartItemQuantity,
 }: ProductProps) {
   return (
     <li>
@@ -31,8 +31,8 @@ function ProductItem({
                 handleIncreaseCartItemQuantity={() =>
                   handleIncreaseCartItemQuantity(product.id.toString())
                 }
-                handleMinusQuantity={() =>
-                  handleRemoveProduct(product.id.toString())
+                handleDecreaseCartItemQuantity={() =>
+                  handleDecreaseCartItemQuantity(product.id.toString())
                 }
               />
             ) : (

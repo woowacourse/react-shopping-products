@@ -6,4 +6,5 @@ export interface ProductProps {
   handleAddProduct: (productId: string) => void;
   handleRemoveProduct: (productId: string) => void;
   handleIncreaseCartItemQuantity: (productId: string) => void;
+  handleDecreaseCartItemQuantity: (productId: string) => void;
 }

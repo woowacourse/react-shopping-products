@@ -147,6 +147,33 @@ const useShoppingCart = () => {
     }
   };
 
+  const handleDecreaseCartItemQuantity = async (productId: string) => {
+    try {
+      const MINUS_UNIT = 1;
+      const cartItems = await getCartItems();
+      const targetCartItem = cartItems.find(
+        (cartItem) => cartItem.product.id === productId
+      );
+
+      if (!targetCartItem) {
+        return;
+      }
+
+      await fetchUpdateCartItemQuantity({
+        params: {
+          id: targetCartItem.id,
+          quantity: targetCartItem.quantity - MINUS_UNIT,
+        },
+      });
+    } catch (error) {
+      if (!(error instanceof Error)) {
+        return;
+      }
+
+      showErrorMessage(error.message);
+    }
+  };
+
   useEffect(() => {
     const loadCartItems = async () => {
       try {
@@ -180,6 +207,7 @@ const useShoppingCart = () => {
     handleAddProduct,
     handleRemoveProduct,
     handleIncreaseCartItemQuantity,
+    handleDecreaseCartItemQuantity,
   };
 };
 

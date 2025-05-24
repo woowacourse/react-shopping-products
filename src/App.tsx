@@ -15,6 +15,7 @@ function App() {
     handleAddProduct,
     handleRemoveProduct,
     handleIncreaseCartItemQuantity,
+    handleDecreaseCartItemQuantity,
   } = useShoppingCart();
 
   if (loading) {
@@ -37,6 +38,7 @@ function App() {
           handleAddProduct={handleAddProduct}
           handleRemoveProduct={handleRemoveProduct}
           handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
+          handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
         />
       </Wrapper>
     </Container>

@@ -5,15 +5,15 @@ import minusIcon from "/minus.svg";
 function ProductQuantityControl({
   quantity,
   handleIncreaseCartItemQuantity,
-  handleMinusQuantity,
+  handleDecreaseCartItemQuantity,
 }: {
   quantity: number;
   handleIncreaseCartItemQuantity: () => void;
-  handleMinusQuantity: () => void;
+  handleDecreaseCartItemQuantity: () => void;
 }) {
   return (
     <Styled.Container>
-      <Styled.Button onClick={handleMinusQuantity}>
+      <Styled.Button onClick={handleDecreaseCartItemQuantity}>
         <Styled.OperatorIcon src={minusIcon} />
       </Styled.Button>
       <Styled.Quantity>{quantity}</Styled.Quantity>
