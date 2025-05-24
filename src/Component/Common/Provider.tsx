@@ -34,7 +34,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 }
 
 interface APIContextProps<T> {
-  apiFn: () => Promise<T>;
+  apiFn?: () => Promise<T>;
   key: string;
 }
 
@@ -42,7 +42,7 @@ export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
   const context = useContext(Context);
 
   if (context === undefined) {
-    throw new Error('ususeAPIContext must be used within a Provider');
+    throw new Error('useAPIContext must be used within a Provider');
   }
 
   const { data, setData } = context as {
@@ -52,7 +52,7 @@ export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
   const [status, setStatus] = useState<DataStatus>({});
 
   const requestData = useCallback(async () => {
-    apiFn()
+    apiFn?.()
       .then((res) => {
         setStatus((prev) => ({ ...prev, [key]: 'loading' }));
         setData((prev) => ({ ...prev, [key]: res }));
@@ -63,15 +63,31 @@ export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
       });
   }, [apiFn, key, setData]);
 
+  const newRequestData = useCallback(
+    ({ apiFn }: { apiFn: () => Promise<T> }) => {
+      apiFn()
+        .then((res) => {
+          setStatus((prev) => ({ ...prev, [key]: 'loading' }));
+          setData((prev) => ({ ...prev, [key]: res }));
+          setStatus((prev) => ({ ...prev, [key]: 'success' }));
+        })
+        .catch(() => {
+          setStatus((prev) => ({ ...prev, [key]: 'error' }));
+        });
+    },
+    [key, setData]
+  );
+
   useEffect(() => {
     if (data[key]) return;
 
     requestData();
-  }, [key]);
+  }, [requestData, key]);
 
   return {
     data: data[key],
     refetchData: requestData,
+    requestData: newRequestData,
     status: status[key],
   };
 }
