@@ -9,7 +9,7 @@ import useCartItems from "../hooks/useCartItems";
 
 const ProductPage = () => {
   const { products, filter, setFilter, sort, setSort } = useProducts();
-  const { cartItems, handleCartItem, cartItemIds } = useCartItems();
+  const { cartItems, handleCartItem, cartItemsByProductId } = useCartItems();
   return (
     <>
       <Header shoppingCount={cartItems?.length} />
@@ -19,7 +19,11 @@ const ProductPage = () => {
           <Select options={OPTION.FILTER} selectedItem={filter} setSelectedItem={setFilter} />
           <Select options={OPTION.SORT} selectedItem={sort} setSelectedItem={setSort} />
         </div>
-        <ProductList productsData={products} cartItemIds={cartItemIds} handleCartItem={handleCartItem} />
+        <ProductList
+          productsData={products}
+          cartItemsByProductId={cartItemsByProductId}
+          handleCartItem={handleCartItem}
+        />
       </div>
     </>
   );

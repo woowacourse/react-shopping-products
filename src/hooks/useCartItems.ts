@@ -44,7 +44,7 @@ const useCartItems = () => {
     }
   };
 
-  const handleCartItem = (type: "add" | "remove", id: number) => {
+  const handleCartItem = (type: "add" | "patch" | "remove", id: number) => {
     if (type === "add") return addCart(id);
     return removeCart(id);
   };
@@ -53,12 +53,18 @@ const useCartItems = () => {
     getCartItem();
   }, [getCartItem]);
 
-  const cartItemIds = Object.fromEntries((cartItemsResponse?.content || []).map((item) => [item.product.id, item.id]));
+  // productId : {cartItemId: , quantity: }
+  const cartItemsByProductId = Object.fromEntries(
+    (cartItemsResponse?.content || []).map((item) => [
+      item.product.id,
+      { cartItemId: item.id, quantity: item.quantity },
+    ]),
+  );
 
   return {
     cartItems: cartItemsResponse?.content,
     handleCartItem,
-    cartItemIds,
+    cartItemsByProductId,
   };
 };
 

@@ -7,11 +7,11 @@ import AddCart from "../icons/AddCart";
 
 interface ProductListProps {
   productsData: Content[];
-  cartItemIds: Record<string, number>;
+  cartItemsByProductId: Record<string, Record<"cartItemId" | "quantity", number>>;
   handleCartItem: (type: "add" | "remove", id: number) => void;
 }
 
-const ProductList = ({ productsData, cartItemIds, handleCartItem }: ProductListProps) => {
+const ProductList = ({ productsData, cartItemsByProductId, handleCartItem }: ProductListProps) => {
   return (
     <div css={productListStyle}>
       {productsData?.map((product) => (
@@ -23,11 +23,11 @@ const ProductList = ({ productsData, cartItemIds, handleCartItem }: ProductListP
               <ProductCard.Price price={product.price} />
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              {cartItemIds[product.id] ? (
+              {cartItemsByProductId[product.id] ? (
                 <IconButton
                   icon={<RemoveCart />}
                   variant="light"
-                  onClick={() => handleCartItem("remove", cartItemIds[product.id])}
+                  onClick={() => handleCartItem("remove", cartItemsByProductId[product.id].cartItemId)}
                 >
                   빼기
                 </IconButton>
