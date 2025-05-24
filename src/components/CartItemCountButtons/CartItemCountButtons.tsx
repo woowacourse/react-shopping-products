@@ -14,11 +14,11 @@ function CartItemCountButtons({ quantity, onClickModifyCartItem }: CartItemCount
   const buttonStyle = { width: '24px', height: '24px', border: '1px solid rgb(0, 0, 0, 0.1)' };
 
   return (
-    <>
+    <div>
       <Button
         radius={'8px'}
         style={buttonStyle}
-        onClick={() => onClickModifyCartItem(quantity - 1)}
+        onClick={() => onClickModifyCartItem?.(quantity - 1)}
       >
         -
       </Button>
@@ -26,11 +26,11 @@ function CartItemCountButtons({ quantity, onClickModifyCartItem }: CartItemCount
       <Button
         radius={'8px'}
         style={buttonStyle}
-        onClick={() => onClickModifyCartItem(quantity + 1)}
+        onClick={() => onClickModifyCartItem?.(quantity + 1)}
       >
         +
       </Button>
-    </>
+    </div>
   );
 }
 
