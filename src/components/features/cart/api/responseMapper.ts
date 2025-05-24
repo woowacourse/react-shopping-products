@@ -1,5 +1,5 @@
 import { convertResponseToProduct } from '../../product/api/responseMapper';
-import { Cart } from '../type';
+import { type Cart } from '../type';
 import { CartItemContent } from './type';
 
 export const convertResponseToCart = ({

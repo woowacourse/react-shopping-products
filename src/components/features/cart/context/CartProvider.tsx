@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Cart } from '../type';
+import { type Cart } from '../type';
 
 export const CartContext = createContext<{
   cartList: Cart[];
