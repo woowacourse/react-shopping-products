@@ -2,22 +2,26 @@ import { useDataContext } from '../contexts/useDataContext';
 import { useData } from './useData';
 import { Product } from '../types/product.type';
 import { useMemo } from 'react';
+import { fetchProducts } from '../APIs/productApi';
 
 export const useProducts = () => {
   const { state } = useDataContext();
-  console.log(state);
   const category: string = state.products?.category ?? '전체';
-  const sortKey: string = state.products?.sort ?? 'price,asc';
+  const sort: string = state.products?.sort ?? 'price,asc';
 
   const endpoint = useMemo(() => {
     const params = new URLSearchParams({
       page: '0',
       size: '20',
-      sort: sortKey,
+      sort,
       ...(category !== '전체' ? { category } : {}),
     });
     return `/products?${params.toString()}`;
-  }, [category, sortKey]);
+  }, [category, sort]);
 
-  return useData<Product[]>({ key: 'products', endpoint });
+  return useData<Product[]>({
+    key: 'products',
+    endpoint,
+    fetchFunction: fetchProducts,
+  });
 };

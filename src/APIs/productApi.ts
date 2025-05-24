@@ -2,7 +2,7 @@ import { Product } from '../types/product.type';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
-async function fetchProducts(endpoint: string): Promise<Product[]> {
+export async function fetchProducts(endpoint: string): Promise<Product[]> {
   try {
     const response = await fetch(`${baseUrl}${endpoint}`);
 
@@ -16,5 +16,3 @@ async function fetchProducts(endpoint: string): Promise<Product[]> {
     throw new Error('Error fetching products:' + error);
   }
 }
-
-export default fetchProducts;
