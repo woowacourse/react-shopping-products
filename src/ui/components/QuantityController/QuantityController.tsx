@@ -2,6 +2,7 @@ import { Container, Icon, QuantityText } from './QuantityController.styles';
 
 interface QuantityControllerProps {
   quantity: number;
+  position: 'start' | 'end';
   onAddClick?: () => void;
   onRemoveClick?: () => void;
   // onDecrease?: () => void;
@@ -9,13 +10,12 @@ interface QuantityControllerProps {
 
 function QuantityController({
   quantity,
+  position,
   onAddClick,
   onRemoveClick,
-}: // onIncrease,
-// onDecrease,
-QuantityControllerProps) {
+}: QuantityControllerProps) {
   return (
-    <Container>
+    <Container position={position}>
       <Icon
         src="./minusButton.png"
         alt="마이너스 버튼"

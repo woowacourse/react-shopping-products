@@ -1,9 +1,15 @@
 import styled from '@emotion/styled';
 
-export const Container = styled.div`
+export const Container = styled.div<{ position: 'start' | 'end' }>`
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: ${({ position }) => {
+    if (position === 'start') {
+      return 'flex-start';
+    } else if (position === 'end') {
+      return 'flex-end';
+    }
+  }};
   align-items: center;
 `;
 

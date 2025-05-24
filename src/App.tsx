@@ -10,13 +10,16 @@ import ProductList from './ui/components/ProductList/ProductList';
 import Title from './ui/components/Title/Title';
 import { CATEGORY, SORT_PRICE } from './constants/productConfig';
 import {
+  CART_MODAL_TITLE,
   PRODUCT_SECTION_TITLE,
   SHOPPING_MALL_TITLE,
 } from './constants/shopInfoConfig';
 import { useProductListContext } from './context/ProductContext';
 import { useCartListContext } from './context/CartContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useToastContext } from './context/ToastContext';
+import Modal from './ui/components/Modal/Modal';
+import CartModal from './ui/components/CartModal/CartModal';
 
 function App() {
   const {
@@ -36,6 +39,15 @@ function App() {
   } = useCartListContext();
 
   const { toast, showToast } = useToastContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     if (productError.isError) {
@@ -50,7 +62,7 @@ function App() {
     <>
       <Global styles={GlobalStyle} />
       <Layout>
-        <Header title={SHOPPING_MALL_TITLE} />
+        <Header title={SHOPPING_MALL_TITLE} onModalOpen={handleModalOpen} />
         {toast.isToast && <Toast message={toast.message} />}
         {isProductLoading || (isCartLoading && <LoadingSpinner duration={2} />)}
         {!isProductLoading && !isCartLoading && (
@@ -74,6 +86,9 @@ function App() {
             />
           </Section>
         )}
+        <Modal isModalOpen={isModalOpen} onModalClose={handleModalClose}>
+          <CartModal onClose={handleModalClose} />
+        </Modal>
       </Layout>
     </>
   );
