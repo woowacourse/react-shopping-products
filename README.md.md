@@ -63,7 +63,7 @@
   - [x] 품절 ui 구현
     - [x] 품절 상품일 시, 구매버튼 제어 -> disabled
 - [ ] 모달 구현
-  - [ ] npm i hoyychoi-modal-component 사용
+  - [x] npm i hoyychoi-modal-component 사용
   - [ ] 모달 내부 ui 구현
     - [ ] 버튼 컴포넌트
     - [ ] 내부 삭제 버튼
