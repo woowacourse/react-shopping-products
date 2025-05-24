@@ -4,8 +4,9 @@ export const fallbackContainerCss = css({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  justifyContent: "center",
   gap: "4rem",
-  height: "800px",
+  height: "650px",
   width: "320px",
 });
 

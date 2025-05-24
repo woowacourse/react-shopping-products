@@ -74,7 +74,15 @@ function App() {
 
   return (
     <div css={styles.appCss}>
-      <div style={{ width: 380 }}>
+      <div
+        style={{
+          width: 380,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <h2 css={styles.titleCss}>마빈 잡화점</h2>
         <div css={styles.dropdownDivCss}>
           <Header />

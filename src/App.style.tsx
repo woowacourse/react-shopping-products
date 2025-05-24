@@ -10,6 +10,7 @@ export const dropdownDivCss = css({
 
 export const appCss = css({
   width: "420px",
+  height: "100vh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
