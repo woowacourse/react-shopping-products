@@ -10,10 +10,10 @@ import {
 } from '../../constants/systemConstants';
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useProductHandler from '../../hooks/useProductHandler.ts';
-import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
+import useErrorHandler from '../../hooks/useErrorHandler.ts';
 
 export const ProductListPage = () => {
-  const { errorMessage, handleErrorMessage } = useErrorMessageContext();
+  const { errorMessage, handleErrorMessage } = useErrorHandler();
   const { cartItems, handleAddCartItems, handleRemoveCartItems } = useCartHandler({
     handleErrorMessage,
   });

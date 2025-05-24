@@ -5,7 +5,6 @@ import { getProducts } from '../../services/productServices';
 import type { ProductItemType } from '../../types/data';
 import { render, screen } from '@testing-library/react';
 import { ProductListPage } from './ProductListPage';
-import { ErrorMessageProvider } from '../../context/ErrorMessageContext';
 import { PRODUCT_LIST_ITEM_COUNT } from '../../constants/systemConstants';
 import type React from 'react';
 import userEvent from '@testing-library/user-event';
@@ -20,11 +19,7 @@ const mockProducts: ProductItemType[] = Array.from({ length: 25 }, (_, index) =>
 }));
 
 const TestCartProvider = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ErrorMessageProvider>
-      <DataProvider>{children}</DataProvider>
-    </ErrorMessageProvider>
-  );
+  return <DataProvider>{children}</DataProvider>;
 };
 
 vi.mock('../../services/productServices', () => ({
