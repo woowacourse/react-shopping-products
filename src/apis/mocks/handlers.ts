@@ -7,12 +7,31 @@ const productsUrl = `${SHOP_API.baseUrl}/products`
   .replace(":/", "://");
 
 export const handlers = [
-  http.get(productsUrl, () => {
-    const totalElements = productsData.length;
-    const totalPages = Math.ceil(totalElements / 20);
+  http.get(productsUrl, ({ request }) => {
+    const url = new URL(request.url);
+    const category = url.searchParams.get("category");
+    const sort = url.searchParams.get("sort");
+
+    let filteredProducts = productsData;
+    if (category) {
+      filteredProducts = filteredProducts.filter(
+        (item) => item.category === category
+      );
+    }
+
+    if (sort) {
+      const [, sortOrderType] = sort.split(",");
+      filteredProducts = filteredProducts.sort((a, b) => {
+        const priceDelta = a.price - b.price;
+        return sortOrderType === "desc" ? -priceDelta : priceDelta;
+      });
+    }
+
+    const totalElements = filteredProducts.length;
+    const totalPages = Math.ceil(filteredProducts.length / 20);
 
     return HttpResponse.json({
-      content: productsData,
+      content: filteredProducts,
       pageable: {
         pageNumber: 0,
         pageSize: 20,
