@@ -19,6 +19,8 @@ const useFocusTrap = <T extends HTMLElement>() => {
         return;
       }
 
+      firstElement.focus();
+
       if (e.shiftKey) {
         if (document.activeElement === firstElement) {
           e.preventDefault();
