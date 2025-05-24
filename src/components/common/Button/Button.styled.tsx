@@ -25,6 +25,11 @@ const StyledButton = styled.button<ButtonProps>`
   font-size: 12px;
   cursor: pointer;
   ${({ color }) => buttonColors[color]};
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `;
 
 export default StyledButton;
