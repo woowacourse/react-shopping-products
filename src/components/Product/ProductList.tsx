@@ -2,13 +2,13 @@ import { css } from "@emotion/react";
 import { Content } from "../../types/product";
 import ProductCard from "./ProductCard";
 import IconButton from "../common/Button/IconButton";
-import RemoveCart from "../icons/RemoveCart";
 import AddCart from "../icons/AddCart";
+import QuantitySelector from "../QuantitySelector";
 
 interface ProductListProps {
   productsData: Content[];
   cartItemsByProductId: Record<string, Record<"cartItemId" | "quantity", number>>;
-  handleCartItem: (type: "add" | "remove", id: number) => void;
+  handleCartItem: (type: "add" | "update" | "remove", id: number, quantity?: number) => void;
 }
 
 const ProductList = ({ productsData, cartItemsByProductId, handleCartItem }: ProductListProps) => {
@@ -24,13 +24,23 @@ const ProductList = ({ productsData, cartItemsByProductId, handleCartItem }: Pro
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               {cartItemsByProductId[product.id] ? (
-                <IconButton
-                  icon={<RemoveCart />}
-                  variant="light"
-                  onClick={() => handleCartItem("remove", cartItemsByProductId[product.id].cartItemId)}
-                >
-                  빼기
-                </IconButton>
+                <QuantitySelector
+                  quantity={cartItemsByProductId[product.id].quantity}
+                  onIncrease={() =>
+                    handleCartItem(
+                      "update",
+                      cartItemsByProductId[product.id].cartItemId,
+                      cartItemsByProductId[product.id].quantity + 1,
+                    )
+                  }
+                  onDecrease={() =>
+                    handleCartItem(
+                      "update",
+                      cartItemsByProductId[product.id].cartItemId,
+                      cartItemsByProductId[product.id].quantity - 1,
+                    )
+                  }
+                />
               ) : (
                 <IconButton icon={<AddCart />} variant="dark" onClick={() => handleCartItem("add", product.id)}>
                   담기
