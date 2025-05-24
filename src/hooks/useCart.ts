@@ -8,8 +8,10 @@ export const CART_MAX_COUNT = 50;
 
 const useCart = ({
   setErrorMessage,
+  refetchCartItems: refetch,
 }: {
   setErrorMessage: (errorMessage: string) => void;
+  refetchCartItems: () => void;
 }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
@@ -24,7 +26,7 @@ const useCart = ({
     setErrorMessage(error?.message || "");
 
     if (!error?.message) {
-      await syncCart();
+      refetch();
     }
   };
 
@@ -39,7 +41,7 @@ const useCart = ({
     setErrorMessage(error?.message || "");
 
     if (!error?.message) {
-      await syncCart();
+      refetch();
     }
   };
 

@@ -1,12 +1,11 @@
 import styled from "@emotion/styled";
+import { useAPIData } from "../../contexts/DataContext";
+import { CartItem } from "../../types/productType";
 
-const CartIconButton = ({
-  cartItemCount,
-  onClick,
-}: {
-  cartItemCount: number;
-  onClick: () => void;
-}) => {
+const CartIconButton = ({ onClick }: { onClick: () => void }) => {
+  const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
+  const cartItemCount = cartItems?.data.content.length ?? 0;
+
   return (
     <CartIconButtonContainer onClick={onClick}>
       <img src="./cartIcon.png" alt="cart icon" />

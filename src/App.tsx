@@ -11,22 +11,43 @@ import useCart from "./hooks/useCart";
 import useProducts from "./hooks/useProducts";
 import Modal from "./components/Modal/Modal";
 import CartItems from "./components/ProductItem/CartItems";
+import { APIProvider, useAPI } from "./contexts/DataContext";
+import getCartItems from "./api/getCartItems";
+import getProducts from "./api/getProducts";
 
-function App() {
-  const [errorMessage, setErrorMessage] = useState("");
-  const { isLoading, withLoading } = useLoading();
-  const { cart, addToCart } = useCart({
-    setErrorMessage,
+function AppContent() {
+  const { withLoading, isLoading } = useLoading();
+  const { refetch: refetchCartItems } = useAPI({
+    fetcher: getCartItems,
+    name: "cartItems",
   });
+
+  const { refetch: refetchProducts } = useAPI({
+    fetcher: () => {
+      return getProducts({
+        category: selectedCategory,
+        priceOrder: priceOrder,
+      });
+    },
+    name: "products",
+  });
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { addToCart, removeFromCart } = useCart({
+    setErrorMessage,
+    refetchCartItems,
+  });
+
   const {
     handleCategoryChange,
     handlePriceOrderChange,
     selectedCategory,
     priceOrder,
-    products,
   } = useProducts({
     withLoading,
     setErrorMessage,
+    refetchProducts,
   });
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const openCartModal = () => {
@@ -35,7 +56,7 @@ function App() {
 
   return (
     <Layout>
-      <Header cartItemCount={cart.length} openCartModal={openCartModal} />
+      <Header openCartModal={openCartModal} />
       {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
       <ProductPageContainer>
         <ProductPageHeader>bppl 상품 목록</ProductPageHeader>
@@ -56,9 +77,7 @@ function App() {
         <ProductListContainer>
           <ProductItemsWithSkeleton
             isLoading={isLoading}
-            products={products}
             addToCart={addToCart}
-            cart={cart}
           />
         </ProductListContainer>
         <Modal
@@ -68,10 +87,21 @@ function App() {
           position="bottom"
           title="장바구니"
         >
-          <CartItems cart={cart} />
+          <CartItems
+            refetch={refetchCartItems}
+            removeFromCart={removeFromCart}
+          />
         </Modal>
       </ProductPageContainer>
     </Layout>
+  );
+}
+
+function App() {
+  return (
+    <APIProvider>
+      <AppContent />
+    </APIProvider>
   );
 }
 
@@ -87,8 +117,7 @@ const ProductPageContainer = styled.div`
   flex-direction: column;
   gap: 30px;
   margin: 30px 25px;
-  height: calc(100vh - 64px - 60px);};
-
+  height: calc(100vh - 64px - 60px);
 `;
 
 const ProductPageHeader = styled.div`

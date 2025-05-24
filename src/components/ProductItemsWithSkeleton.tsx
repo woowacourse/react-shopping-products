@@ -2,12 +2,11 @@ import { CartItem, Product } from "../types/productType";
 import ProductItem from "./ProductItem/ProductItem";
 import ProductItemSkeleton from "./ProductItem/ProductItemSkeleton";
 import { PRODUCT_TYPE_COUNT } from "../hooks/useProducts";
+import { useAPIData } from "../contexts/DataContext";
 
 type ProductItemWithSkeletonProps = {
   isLoading: boolean;
-  products: Product[];
   addToCart: (product: Product) => void;
-  cart: CartItem[];
 };
 
 const isInCart = (cartItem: CartItem[], id: number) => {
@@ -16,10 +15,16 @@ const isInCart = (cartItem: CartItem[], id: number) => {
 
 const ProductItemsWithSkeleton = ({
   isLoading,
-  products,
   addToCart,
-  cart,
 }: ProductItemWithSkeletonProps) => {
+  const productData = useAPIData<{ data: { content: Product[] } }>("products");
+  const cartData = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
+
+  const products = productData?.data.content;
+  const cart = cartData?.data.content;
+
+  if (!products || !cart) return null;
+
   return isLoading ? (
     <ProductItemSkeletons />
   ) : (

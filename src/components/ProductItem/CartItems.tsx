@@ -1,16 +1,25 @@
 import styled from "@emotion/styled";
-import { CartItem } from "../../types/productType";
 import QuantityAdjuster from "./QuantityAdjuster";
 import CartActionButton from "./button/CartActionButton";
+import { useAPIData } from "../../contexts/DataContext";
+import { CartItem } from "../../types/productType";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
 };
 
-const CartItems = ({ cart }: { cart: CartItem[] }) => {
+const CartItems = ({
+  removeFromCart,
+}: {
+  refetch: () => void;
+  removeFromCart: (id: number) => void;
+}) => {
+  const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
+  const handleProductRemoveClick = (id: number) => removeFromCart(id);
+
   return (
     <>
-      {cart.map((cart) => (
+      {cartItems?.data.content.map((cart) => (
         <CartItemContainer key={cart.product.name}>
           <CartItemImage
             src={cart.product.imageUrl}
@@ -23,7 +32,10 @@ const CartItems = ({ cart }: { cart: CartItem[] }) => {
             <QuantityAdjuster count={cart.quantity} />
           </CartItemDescription>
           <DeleteButtonContainer>
-            <CartActionButton variant="remove" onClick={() => {}} />
+            <CartActionButton
+              variant="remove"
+              onClick={() => handleProductRemoveClick(cart.product.id)}
+            />
           </DeleteButtonContainer>
         </CartItemContainer>
       ))}
