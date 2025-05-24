@@ -94,7 +94,9 @@ export default function ProductCard({
         <S.ProductName>{product.name}</S.ProductName>
         <S.ProductCategory>{product.category}</S.ProductCategory>
         <S.ProductPrice>{formatPrice(product.price)}원</S.ProductPrice>
-        <S.ProductQuantity>수량: {product.quantity}개</S.ProductQuantity>
+        {product.quantity !== undefined && (
+          <S.ProductQuantity>수량: {product.quantity}개</S.ProductQuantity>
+        )}
       </S.ContentSection>
 
       <S.ButtonSection isCarting={isCarting}>
