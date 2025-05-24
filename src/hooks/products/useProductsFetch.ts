@@ -19,7 +19,7 @@ export function useProductsFetch(sort: string, category: string) {
     (async () => {
       setIsLoading(true);
       try {
-        const { content } = await getProducts({ endpoint });
+        const content = await getProducts({ endpoint });
         setProducts(content);
         setError(INITIAL_ERROR);
       } catch {
