@@ -121,7 +121,63 @@ const deleteCartItem = http.delete(`${BASE_URL}/:id`, ({ params }) => {
 });
 
 // 장바구니 아이템 수량 변경 PATCH
+const updateCartItemQuantity = http.patch(
+  `${BASE_URL}/:id`,
+  async ({ params, request }) => {
+    const { id } = params;
+    const cartItemId = Array.isArray(id) ? id[0] : id;
+    const convertedCartItemId = Number.parseInt(cartItemId, 10);
+    const itemIndex = cartItems.findIndex(
+      (item) => item.id === convertedCartItemId
+    );
 
-const cartItemHandler = [getCartItems, addCartItem, deleteCartItem];
+    if (itemIndex === -1) {
+      return HttpResponse.json(
+        { error: `cartItem not found; cartItemId=${convertedCartItemId}` },
+        { status: 404 }
+      );
+    }
+
+    const updatedData = await request.json();
+    if (
+      !updatedData ||
+      typeof updatedData !== "object" ||
+      !("quantity" in updatedData)
+    ) {
+      return HttpResponse.json(
+        { error: "Invalid request body" },
+        { status: 400 }
+      );
+    }
+
+    const { quantity } = updatedData;
+    const newQuantity = Number.parseInt(quantity, 10);
+
+    if (typeof quantity !== "number" || quantity < 0) {
+      return HttpResponse.json({ error: "Invalid quantity" }, { status: 400 });
+    }
+
+    if (newQuantity > cartItems[itemIndex].quantity) {
+      return HttpResponse.json(
+        {
+          error: "out of stock",
+          message: "재고 수량을 초과하여 담을 수 없습니다.",
+        },
+        { status: 400 }
+      );
+    }
+
+    cartItems[itemIndex].quantity = quantity;
+
+    return HttpResponse.json(undefined, { status: 200 });
+  }
+);
+
+const cartItemHandler = [
+  getCartItems,
+  addCartItem,
+  deleteCartItem,
+  updateCartItemQuantity,
+];
 
 export default cartItemHandler;
