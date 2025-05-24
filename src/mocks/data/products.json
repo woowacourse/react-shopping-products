@@ -4,144 +4,159 @@
 		"name": "스마트폰",
 		"price": 699,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "식료품"   
+		"category": "식료품",
+    "quantity": 0
 	},
 	{
 		"id": 1,
 		"name": "노트북",
 		"price": 999,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "패션잡화"
+		"category": "패션잡화",
+    "quantity": 2 
 	},
 	{
 		"id": 2,
 		"name": "헤드폰",
 		"price": 199,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-
-		"category": "패션잡화"
+		"category": "패션잡화",
+		"quantity": 3
 	},
 	{
 		"id": 3,
 		"name": "스마트워치",
 		"price": 299,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-
-		"category": "식료품"
+		"category": "식료품",
+    "quantity": 10
 	},
 	{
 		"id": 4,
 		"name": "태블릿",
 		"price": 399,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-
-		"category": "패션잡화"
+		"category": "패션잡화",
+    "quantity": 0 
 	},
 	{
 		"id": 5,
 		"name": "카메라",
 		"price": 599,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "패션잡화"
+		"category": "패션잡화",
+    "quantity": 1
 	},
 	{
 		"id": 6,
 		"name": "게임콘솔",
 		"price": 499,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "식료품"
+		"category": "식료품",
+    "quantity": 50
 	},
 	{
 		"id": 7,
 		"name": "블루투스스피커",
 		"price": 99,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "식료품"
+		"category": "식료품",
+    "quantity": 20
 	},
 	{
 		"id": 8,
 		"name": "모니터",
 		"price": 199,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "패션잡화"
+		"category": "패션잡화",
+    "quantity": 50
 	},
 	{
 		"id": 9,
 		"name": "외장하드",
 		"price": 89,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-
-		"category": "식료품"
+		"category": "식료품",
+		"quantity": 10
 	},
 	{
 		"id": 10,
 		"name": "전자책리더기",
 		"price": 129,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "식료품"
+		"category": "식료품",
+		"quantity": 50
 	},
 	{
 		"id": 11,
 		"name": "휴대용충전기",
 		"price": 49,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "식료품"
+		"category": "식료품",
+		"quantity": 50
 	},
 	{
 		"id": 12,
 		"name": "무선마우스",
 		"price": 29,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "식료품"
+		"category": "식료품",
+		"quantity": 2
 	},
 	{
 		"id": 13,
 		"name": "무선키보드",
 		"price": 59,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "패션잡화"
+		"category": "패션잡화",
+		"quantity": 50
 	},
 	{
 		"id": 14,
 		"name": "웹캠",
 		"price": 79,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "패션잡화"
+		"category": "패션잡화",
+		"quantity": 50
 	},
 	{
 		"id": 15,
 		"name": "VR헤드셋",
 		"price": 399,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "식료품"
+		"category": "식료품",
+		"quantity": 50
 	},
 	{
 		"id": 16,
 		"name": "스마트전구",
 		"price": 19,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "패션잡화"
+		"category": "패션잡화",
+		"quantity": 0
 	},
 	{
 		"id": 17,
 		"name": "드론",
 		"price": 799,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "식료품"
+		"category": "식료품",
+    "quantity": 1 
 	},
 	{
 		"id": 18,
 		"name": "액션카메라",
 		"price": 249,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-
-		"category": "패션잡화"
+		"category": "패션잡화",
+		"quantity": 2
 	},
 	{
 		"id": 19,
 		"name": "피트니스트래커",
 		"price": 149,
 		"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-		"category": "패션잡화"
+		"category": "패션잡화",
+		"quantity": 0
 	}
 ]
