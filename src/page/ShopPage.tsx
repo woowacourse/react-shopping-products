@@ -26,6 +26,7 @@ import Button from "../component/unit/Button/Button";
 import { CartProduct } from "../component/feature/CartProduct/CartProduct";
 import { CartProductListLayout } from "../component/feature/CartProduct/CartProduct.style";
 import { Line } from "../component/unit/Line/Line";
+import { css } from "@emotion/react";
 
 const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
 const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
@@ -80,66 +81,73 @@ export default function ShopPage() {
   }, []);
 
   return (
-    <div css={pageLayout}>
-      <Header>
-        <p>SHOP</p>
-        <div css={cartIconContainer}>
-          <img
-            css={cartIcon}
-            src="./shopping-cart.svg"
-            alt="장바구니 아이콘"
-            onClick={() => {
-              setIsOpen(true);
-            }}
-          />
-          {selectedProductCount !== 0 && (
-            <div data-testid="cart-count" css={cartItemCount}>
-              {selectedProductCount}
-            </div>
-          )}
-        </div>
-        {isError && (
-          <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>
-        )}
-      </Header>
-      <Main>
-        {isError ? (
-          <div css={loadingLayout}>
-            데이터를 가져오는데 실패했습니다. <br /> 다시 시도해주세요
-          </div>
-        ) : isLoading ? (
-          <div css={loadingLayout}>로딩중입니다</div>
-        ) : productList.length === 0 ? (
-          <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>
-        ) : (
-          <>
-            <TitleContainer title="bpple 상품 목록">
-              <div css={selectorBoxLayout}>
-                <Selector
-                  dropDownOptions={dropdownOptions}
-                  placeholder="전체"
-                  onSelectChange={(value: CategoryOption) =>
-                    setCategoryValue(value)
-                  }
-                />
-                <Selector
-                  dropDownOptions={filterOptions}
-                  placeholder="낮은 가격순"
-                  onSelectChange={(value: FilterOption) =>
-                    setFilterValue(value)
-                  }
-                />
-              </div>
-            </TitleContainer>
-
-            <ProductContainer
-              products={productList}
-              cartItemList={cartItemList}
-              onChange={updateCardItemList}
+    <div
+      css={css`
+        position: relative;
+        width: 430px;
+      `}
+    >
+      <div css={pageLayout}>
+        <Header>
+          <p>SHOP</p>
+          <div css={cartIconContainer}>
+            <img
+              css={cartIcon}
+              src="./shopping-cart.svg"
+              alt="장바구니 아이콘"
+              onClick={() => {
+                setIsOpen(true);
+              }}
             />
-          </>
-        )}
-      </Main>
+            {selectedProductCount !== 0 && (
+              <div data-testid="cart-count" css={cartItemCount}>
+                {selectedProductCount}
+              </div>
+            )}
+          </div>
+          {isError && (
+            <Toast>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</Toast>
+          )}
+        </Header>
+        <Main>
+          {isError ? (
+            <div css={loadingLayout}>
+              데이터를 가져오는데 실패했습니다. <br /> 다시 시도해주세요
+            </div>
+          ) : isLoading ? (
+            <div css={loadingLayout}>로딩중입니다</div>
+          ) : productList.length === 0 ? (
+            <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>
+          ) : (
+            <>
+              <TitleContainer title="bpple 상품 목록">
+                <div css={selectorBoxLayout}>
+                  <Selector
+                    dropDownOptions={dropdownOptions}
+                    placeholder="전체"
+                    onSelectChange={(value: CategoryOption) =>
+                      setCategoryValue(value)
+                    }
+                  />
+                  <Selector
+                    dropDownOptions={filterOptions}
+                    placeholder="낮은 가격순"
+                    onSelectChange={(value: FilterOption) =>
+                      setFilterValue(value)
+                    }
+                  />
+                </div>
+              </TitleContainer>
+
+              <ProductContainer
+                products={productList}
+                cartItemList={cartItemList}
+                onChange={updateCardItemList}
+              />
+            </>
+          )}
+        </Main>
+      </div>
 
       <Modal
         isOpen={isOpen}
@@ -155,28 +163,30 @@ export default function ShopPage() {
             장바구니에 추가된 목록이 없습니다. <br /> 상품을 먼저 추가해주세요
           </div>
         ) : (
-          <div css={CartProductListLayout}>
-            {cartItemList.map((cartItem) => {
-              const cartProduct = productList.filter(
-                (product) => cartItem.product.id === product.id
-              );
-              if (cartProduct.length === 0) return;
-              return (
-                <CartProduct
-                  key={cartProduct[0].id}
-                  id={cartProduct[0].id}
-                  imageUrl={cartProduct[0].imageUrl}
-                  name={cartProduct[0].name}
-                  price={cartProduct[0].price}
-                />
-              );
-            })}
+          <>
+            <div css={CartProductListLayout}>
+              {cartItemList.map((cartItem) => {
+                const cartProduct = productList.filter(
+                  (product) => cartItem.product.id === product.id
+                );
+                if (cartProduct.length === 0) return;
+                return (
+                  <CartProduct
+                    key={cartProduct[0].id}
+                    id={cartProduct[0].id}
+                    imageUrl={cartProduct[0].imageUrl}
+                    name={cartProduct[0].name}
+                    price={cartProduct[0].price}
+                  />
+                );
+              })}
+            </div>
             <Line />
             <div css={PaymentsLayout}>
               <p css={PaymentsLabel}> 총 결제 금액</p>
               <p css={PaymentsValue}>95,000원</p>
             </div>
-          </div>
+          </>
         )}
       </Modal>
     </div>

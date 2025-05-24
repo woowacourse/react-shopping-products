@@ -8,6 +8,8 @@ function App() {
       css={css`
         display: flex;
         justify-content: center;
+        height: 100vh;
+        background-color: aliceblue;
       `}
     >
       <GlobalStyle />

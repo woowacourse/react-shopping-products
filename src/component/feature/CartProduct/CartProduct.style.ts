@@ -4,6 +4,8 @@ const CartProductListLayout = css`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  max-height: 180px;
+  overflow-y: scroll;
 `;
 
 const CartProductLayout = css`

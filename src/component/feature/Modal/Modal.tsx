@@ -1,4 +1,3 @@
-import { useLockUserInteraction } from "../../../hook/usePreventEvent";
 import {
   ModalBackdrop,
   ModalContainer,
@@ -16,8 +15,6 @@ interface ModalProps {
 }
 
 export function Modal({ isOpen, children, title, footer }: ModalProps) {
-  useLockUserInteraction(isOpen);
-
   return (
     <section
       aria-labelledby="modal-title"

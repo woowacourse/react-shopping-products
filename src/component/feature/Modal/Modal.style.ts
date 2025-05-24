@@ -3,12 +3,14 @@ import { css } from "@emotion/react";
 const ModalLayout = (isOpen: boolean) => {
   return css`
     position: absolute;
+    top: 0;
     display: ${isOpen ? "flex" : "none"};
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100vh;
+    z-index: 10;
   `;
 };
 
@@ -39,6 +41,9 @@ const ModalTitle = css`
 `;
 
 const ModalContent = css`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   width: 100%;
 `;
 
