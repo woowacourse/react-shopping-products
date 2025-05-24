@@ -1,5 +1,5 @@
-import Button from "../../unit/Button/Button";
-import { QuantitySelector } from "../../unit/QuantitySelector/QuantitySelector";
+import Button from "../../../../components/Button/Button";
+import { QuantitySelector } from "../../../../components/QuantitySelector/QuantitySelector";
 import {
   CartProductLayout,
   deleteButton,

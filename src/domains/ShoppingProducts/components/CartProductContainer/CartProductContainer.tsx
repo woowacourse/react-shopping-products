@@ -1,5 +1,5 @@
-import { useShoppingContext } from "../../../context/useShoppingContext";
-import { Line } from "../../unit/Line/Line";
+import { useShoppingContext } from "../../../../context/useShoppingContext";
+import { Line } from "../../../../components/Line/Line";
 import { CartProduct } from "../CartProduct/CartProduct";
 import {
   CartProductContainerLayout,

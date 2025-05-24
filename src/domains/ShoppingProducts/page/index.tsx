@@ -1,24 +1,24 @@
 import { css } from "@emotion/react";
 import { useState } from "react";
-import CartProductContainer from "../component/feature/CartProductContainer/CartProductContainer";
-import { Modal } from "../component/feature/Modal/Modal";
-import ProductContainer from "../component/feature/ProductContainer/ProductContainer";
-import TitleContainer from "../component/feature/TitleContainer/titleContainer";
-import Header from "../component/layout/Header/Header";
-import Main from "../component/layout/Main/Main";
-import Button from "../component/unit/Button/Button";
-import Selector from "../component/unit/Selector/Selector";
-import Toast from "../component/unit/Toast/Toast";
-import { CategoryOption, FilterOption } from "../constants";
+import CartProductContainer from "../components/CartProductContainer/CartProductContainer";
+import { Modal } from "../components/Modal/Modal";
+import ProductContainer from "../components/ProductContainer/ProductContainer";
+import TitleContainer from "../components/TitleContainer/titleContainer";
+import Header from "../../../containers/Header/Header";
+import Main from "../../../containers/Main/Main";
+import Button from "../../../components/Button/Button";
+import Selector from "../../../components/Selector/Selector";
+import Toast from "../../../components/Toast/Toast";
+import { CategoryOption, FilterOption } from "../../../constants";
 
-import { useShoppingContext } from "../context/useShoppingContext";
+import { useShoppingContext } from "../../../context/useShoppingContext";
 import {
   cartIcon,
   cartIconContainer,
   cartItemCount,
   pageLayout,
   selectorBoxLayout,
-} from "./ShopPage.style";
+} from "./index.style";
 
 const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
 const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];

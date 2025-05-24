@@ -5,10 +5,10 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
 import * as productApi from "../api/product";
 import * as cartApi from "../api/cartItem";
-import ShopPage from "../page/ShopPage";
+import ShopPage from "../domains/ShoppingProducts/page";
 import { mockCartItemResponse } from "../mock/mockCartItemResponse";
 import { mockProductResponse } from "../mock/mockProductResponse";
-import CartProductContainer from "../component/feature/CartProductContainer/CartProductContainer";
+import CartProductContainer from "../domains/ShoppingProducts/components/CartProductContainer/CartProductContainer";
 import { ContextProvider } from "../context/ContextProvider";
 
 describe("useContext 훅을 이용해서 productList를 관리한다.", () => {

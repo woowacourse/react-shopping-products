@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import ShopPage from "./page/ShopPage";
+import ShopPage from "./domains/ShoppingProducts/page";
 import GlobalStyle from "./GlobalStyle";
 import { ContextProvider } from "./context/ContextProvider";
 

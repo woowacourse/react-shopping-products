@@ -1,4 +1,4 @@
-import { updateCartItem } from "../../../api/cartItem";
+import { updateCartItem } from "../../api/cartItem";
 import { IconButton } from "../IconButton/IconButton";
 import { QuantitySelectorLayout } from "./QuantitySelector.style";
 

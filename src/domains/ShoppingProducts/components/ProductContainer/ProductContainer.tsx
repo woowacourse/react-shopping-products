@@ -1,9 +1,9 @@
-import { postCartItem } from "../../../api/cartItem";
-import { useShoppingContext } from "../../../context/useShoppingContext";
-import { loadingLayout } from "../../../page/ShopPage.style";
-import { CartItemType } from "../../../types/cartItem";
-import Button from "../../unit/Button/Button";
-import { QuantitySelector } from "../../unit/QuantitySelector/QuantitySelector";
+import { postCartItem } from "../../../../api/cartItem";
+import { useShoppingContext } from "../../../../context/useShoppingContext";
+import { loadingLayout } from "../../page/index.style";
+import { CartItemType } from "../../../../types/cartItem";
+import Button from "../../../../components/Button/Button";
+import { QuantitySelector } from "../../../../components/QuantitySelector/QuantitySelector";
 import Product from "../Product/Product";
 import { ProductContainerLayout } from "./ProductContainer.style";
 

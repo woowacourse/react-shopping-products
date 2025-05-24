@@ -2,7 +2,7 @@ vi.mock("../api/product");
 vi.mock("../api/cartItem");
 
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import ShopPage from "../page/ShopPage";
+import ShopPage from "../domains/ShoppingProducts/page";
 import { vi, Mock } from "vitest";
 import * as productApi from "../api/product";
 import * as cartApi from "../api/cartItem";
