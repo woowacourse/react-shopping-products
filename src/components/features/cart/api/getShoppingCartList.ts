@@ -1,7 +1,7 @@
 import { baseAPI } from '@/api/baseAPI';
+import { buildQueryString } from '@/api/buildQueryString';
 import { convertResponseToCart } from './responseMapper';
 import { CartItemsResponse } from './type';
-import { buildQueryString } from '@/api/buildQueryString';
 
 export async function getShoppingCartList() {
   const initialPage = 0;

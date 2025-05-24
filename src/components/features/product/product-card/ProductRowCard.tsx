@@ -1,10 +1,12 @@
 import { Flex } from '@/components/common';
-import { useCartContext } from '@/context/useCartContext';
+import {
+  addCartItem,
+  deleteCartItem,
+  updateCartItem,
+} from '@/components/features/cart/api';
+import { useCartContext } from '@/components/features/cart/context';
 import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
-import { addCartItem } from '../api/addCartItem';
-import { deleteCartItem } from '../api/deleteCartItem';
-import { updateCartItem } from '../api/updateCartItem';
 import AddCartButton from './AddCartButton';
 
 interface ProductProps {

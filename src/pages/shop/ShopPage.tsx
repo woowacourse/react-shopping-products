@@ -1,8 +1,8 @@
 import { wrapPromise } from '@/api/wrapPromise';
 import { ErrorToastMessage, Flex, Loading } from '@/components/common';
-import CartModal from '@/components/features/cart/CartModal';
-import { getProductList } from '@/components/features/product/api/getProductList';
+import { CartModal } from '@/components/features/cart';
 import { type Product } from '@/components/features/product';
+import { getProductList } from '@/components/features/product/api';
 import styled from '@emotion/styled';
 import { Modal } from '@jae-o/modal-component-module';
 import { Suspense, useMemo, useState } from 'react';

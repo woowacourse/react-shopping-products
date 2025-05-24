@@ -1,5 +1,5 @@
 import { Flex } from '@/components/common';
-import { useCartContext } from '@/context/useCartContext';
+import { useCartContext } from '@/components/features/cart/context';
 import styled from '@emotion/styled';
 import { Modal } from '@jae-o/modal-component-module';
 import ProductRowCard from '../product/product-card/ProductRowCard';

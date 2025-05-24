@@ -1,4 +1,4 @@
-import { getShoppingCartList } from '@/components/features/product/api/getShoppingCartList';
+import { getShoppingCartList } from '@/components/features/cart/api';
 import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
 import {
   createContext,
@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Cart } from '../components/features/product/type';
+import { Cart } from '../type';
 
 export const CartContext = createContext<{
   cartList: Cart[];
