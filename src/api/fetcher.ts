@@ -24,7 +24,6 @@ export const fetcher = {
       token,
       body,
       method: 'POST',
-
       returnOriginalOnNoContent: true,
     });
   },

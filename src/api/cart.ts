@@ -30,13 +30,6 @@ export const updateCartItem = async (cartId: number, newQuantity: number) => {
       quantity: newQuantity,
     },
   });
-
-  const data = await fetcher.get<CartResponse>({
-    baseUrl: ENV.BASE_URL + 'cart-items',
-    token: ENV.TOKEN,
-  });
-
-  return data.content;
 };
 
 export const getCartItemList = async ({
@@ -55,11 +48,4 @@ export const getCartItemList = async ({
 
 export const deleteCartItem = async (cartItemId: number) => {
   await fetcher.delete({ baseUrl: ENV.BASE_URL + `cart-items/${cartItemId}`, token: ENV.TOKEN });
-
-  const data = await fetcher.get<CartResponse>({
-    baseUrl: ENV.BASE_URL + 'cart-items',
-    token: ENV.TOKEN,
-  });
-
-  return data.content;
 };
