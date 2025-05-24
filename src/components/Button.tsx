@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ComponentProps } from 'react';
 
-type VariantsProps = 'smallBlack' | 'smallGrey' | 'smallSquareWhite';
+type VariantsProps = 'smallBlack' | 'bigBlack' | 'smallGrey' | 'smallSquareWhite';
 
 interface ButtonProps extends Pick<ComponentProps<'button'>, 'type' | 'name' | 'id' | 'onClick'> {
   children: React.ReactNode;
@@ -14,6 +14,13 @@ const buttonStyles = {
     max-width: 65px;
     height: 29px;
     padding: 4px 8px;
+    background-color: var(--color-black);
+    color: var(--color-white);
+  `,
+
+  bigBlack: css`
+    height: 44px;
+    padding: 10px 0;
     background-color: var(--color-black);
     color: var(--color-white);
   `,

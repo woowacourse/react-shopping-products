@@ -8,9 +8,9 @@ import { ProductItemType } from '../types/data';
 interface ProductItemProps {
   product: ProductItemType;
   quantityInCart: number;
-  handleAddCartItem: (id: number, quantity: number) => void;
   handleIncreaseQuantity: (id: number, quantity: number) => void;
   handleDecreaseQuantity: (id: number, quantity: number) => void;
+  handleAddCartItem?: (id: number, quantity: number) => void;
 }
 
 const ProductItem = ({
@@ -24,6 +24,12 @@ const ProductItem = ({
 
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
+  };
+
+  const handleAddButtonClick = (productId: number, quantity: number) => {
+    if (handleAddCartItem) {
+      handleAddCartItem(productId, quantity);
+    }
   };
 
   return (
@@ -63,7 +69,7 @@ const ProductItem = ({
             id="startAdd"
             name="담기"
             variant="smallBlack"
-            onClick={() => handleAddCartItem(product.id, 1)}
+            onClick={() => handleAddButtonClick(product.id, 1)}
           >
             <CartIconContainer>
               <CartAddIcon src={AddShoppingCartIcon} alt="장바구니 담기" />
