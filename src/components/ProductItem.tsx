@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import Button from './Button';
-import { ProductItemType } from '../types/data';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
-import RemoveShoppingCartIcon from '/public/icon/remove-shopping-cart.svg';
-import { useState } from 'react';
+import AddIcon from '/public/icon/add-icon.svg';
+import SubIcon from '/public/icon/sub-icon.svg';
+import { MockProductsType } from '../mocks/dummy';
 
 interface ProductItemProps {
-  product: ProductItemType;
+  product: MockProductsType;
   isCartAdded: boolean;
   handleAddCartItem: (id: number, quantity: number) => void;
   handleRemoveCartItem: (id: number) => void;
@@ -24,8 +24,6 @@ const ProductItem = ({
     event.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
   };
 
-  const [quantity, setQuantity] = useState(0);
-
   return (
     <ProductItemContainer>
       <ProductItemImage src={product.imageUrl} alt={product.name} onError={handleImageError} />
@@ -36,39 +34,39 @@ const ProductItem = ({
         </ProductItemInfo>
 
         {isCartAdded ? (
-          <Button
-            type="button"
-            id="remove"
-            name="빼기"
-            variant="smallGrey"
-            onClick={() => handleRemoveCartItem(product.id)}
-          >
-            <CartIconContainer>
-              <CartAddIcon src={RemoveShoppingCartIcon} alt="장바구니 빼기" />
-              빼기
-            </CartIconContainer>
-          </Button>
+          <QuantityController>
+            <Button
+              type="button"
+              id="add"
+              name="추가"
+              variant="smallSquareWhite"
+              onClick={() => handleAddCartItem(product.id, 1)}
+            >
+              <ControllerIcon src={AddIcon} alt="아이템 수량 추가" />
+            </Button>
+            {product.quantity}
+            <Button
+              type="button"
+              id="subtract"
+              name="감소"
+              variant="smallSquareWhite"
+              onClick={() => handleRemoveCartItem(product.id)}
+            >
+              <ControllerIcon src={SubIcon} alt="아이템 수량 감소" />
+            </Button>
+          </QuantityController>
         ) : (
           <Button
             type="button"
-            id="add"
+            id="startAdd"
             name="담기"
             variant="smallBlack"
-            onClick={() => handleAddCartItem(product.id, 3)}
+            onClick={() => handleAddCartItem(product.id, 1)}
           >
             <CartIconContainer>
               <CartAddIcon src={AddShoppingCartIcon} alt="장바구니 담기" />
               담기
             </CartIconContainer>
-            <Button
-              type="button"
-              id="add"
-              name="추가"
-              variant="smallBlack"
-              onClick={() => handleAddCartItem(product.id, 3)}
-            >
-              {quantity}
-            </Button>
           </Button>
         )}
       </ProductItemCard>
@@ -131,6 +129,19 @@ const CartIconContainer = styled.div`
 
 const CartAddIcon = styled.img`
   width: 16px;
+`;
+
+const QuantityController = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: var(--font-size-placeholder);
+  font-weight: var(--font-size-placeholder);
+`;
+
+const ControllerIcon = styled.img`
+  width: 12px;
 `;
 
 export default ProductItem;
