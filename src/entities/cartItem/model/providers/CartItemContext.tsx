@@ -18,7 +18,7 @@ export interface CartItemContextType {
   decreaseItemQuantity: (productId: number) => Promise<void>;
   increaseItemQuantity: (productId: number) => Promise<void>;
   addProductInCart: (productId: number) => Promise<void>;
-  deleteProductInCart: (productId: number) => Promise<void>;
+  deleteProductInCart: (cartId: number) => Promise<void>;
   totalPriceInCart: number;
 }
 
@@ -107,14 +107,8 @@ export const CartItemProvider = ({ children }: PropsWithChildren) => {
     await fetchCartItems();
   };
 
-  const deleteProductInCart = async (productId: number) => {
-    const currentProductId = cartItemIds.find(
-      (productInfo) => productInfo.productId === productId
-    );
-
-    if (!currentProductId) return;
-    await CartItemsAPI.delete(currentProductId.cartId);
-
+  const deleteProductInCart = async (cartId: number) => {
+    await CartItemsAPI.delete(cartId);
     await fetchCartItems();
   };
 

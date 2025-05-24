@@ -4,6 +4,7 @@ import QuantitySelector from "../../../shared/ui/QuantitySelector/QuantitySelect
 import * as S from "./CartItem.styles";
 
 const CartItem = ({
+  id: cartId,
   quantity: currentQuantity,
   product: { id: productId, name, price, imageUrl, quantity: maxQuantity },
 }: CartItemContent) => {
@@ -24,7 +25,7 @@ const CartItem = ({
             increaseDisabled={currentQuantity >= maxQuantity}
           />
         </S.CartItemInfo>
-        <S.DeleteButton onClick={() => deleteProductInCart(productId)}>
+        <S.DeleteButton onClick={() => deleteProductInCart(cartId)}>
           삭제
         </S.DeleteButton>
       </S.CartItemWrapper>
