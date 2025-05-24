@@ -74,6 +74,8 @@ export const handlers = [
   http.get('*/products', ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get('category') || '전체';
+    console.log('category', category);
+    const priceOrder = url.searchParams.get('sort') || 'price%2Casc';
 
     let filteredProducts;
 
@@ -83,6 +85,12 @@ export const handlers = [
       filteredProducts = mockProducts.filter(
         (product) => product.category === category
       );
+    }
+
+    if (priceOrder === 'price%2Casc') {
+      filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (priceOrder === 'price%2Cdesc') {
+      filteredProducts.sort((a, b) => b.price - a.price);
     }
 
     return HttpResponse.json(

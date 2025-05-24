@@ -1,145 +1,62 @@
-import { useState } from 'react';
-import { Product, CartItem } from '../App';
+import { Product } from '../App';
 import getCartItems from '../api/getCartItems';
 import postCartItems from '../api/postCartItems';
 import deleteCartItems from '../api/deleteCartItems';
 import patchCartItems from '../api/patchCartItems';
-
-type ErrorState = {
-  isError: boolean;
-  status: number | null;
-};
+import { useDataContext } from '../components/contexts/dataContext';
 
 const useCartItems = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<ErrorState>({
-    isError: false,
-    status: null,
+  const {
+    data: cartItems,
+    refetch: fetchCartItems,
+    isLoading,
+    error,
+    updateError,
+  } = useDataContext({
+    fetcher: getCartItems,
+    key: 'cartItems',
   });
 
-  const fetchCartItems = async () => {
-    if (isLoading) return;
-
-    setIsLoading(true);
-    try {
-      const { data, status } = await getCartItems();
-      setCartItems(data.content);
-      setError({ isError: false, status: Number(status) });
-    } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const addToCart = async (product: Product) => {
-    if (isLoading) return;
-    setIsLoading(true);
-
     try {
-      const { status } = await postCartItems(product);
-      await fetchCartItems();
-      setError({ isError: false, status });
+      await postCartItems(product);
+      fetchCartItems();
     } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
+      updateError('cartItems', e instanceof Error ? Number(e.message) : null);
     }
   };
 
   const removeFromCart = async (productId: number) => {
-    if (isLoading) return;
-    setIsLoading(true);
-
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
-
-    if (!targetCartItem) {
-      setError({
-        isError: true,
-        status: 404,
-      });
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      const { status } = await deleteCartItems(targetCartItem.id);
-      await fetchCartItems();
-      setError({ isError: false, status });
+      await deleteCartItems(targetCartItem.id);
+      fetchCartItems();
     } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
+      updateError('cartItems', e instanceof Error ? Number(e.message) : null);
     }
   };
 
   const increaseCartItemQuantity = async (productId: number) => {
-    if (isLoading) return;
-    setIsLoading(true);
-
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
     const currentQuantity = targetCartItem?.quantity;
-
-    if (!targetCartItem) {
-      setError({
-        isError: true,
-        status: 404,
-      });
-      setIsLoading(false);
-      return;
-    }
 
     try {
-      const { status } = await patchCartItems(
-        targetCartItem.id,
-        currentQuantity! + 1
-      );
-      await fetchCartItems();
-      setError({ isError: false, status });
+      await patchCartItems(targetCartItem.id, currentQuantity! + 1);
+      fetchCartItems();
     } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
+      updateError('cartItems', e instanceof Error ? Number(e.message) : null);
     }
   };
-  const decreaseCartItemQuantity = async (productId: number) => {
-    if (isLoading) return;
-    setIsLoading(true);
 
+  const decreaseCartItemQuantity = async (productId: number) => {
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
     const currentQuantity = targetCartItem?.quantity;
-
-    if (!targetCartItem) {
-      setError({
-        isError: true,
-        status: 404,
-      });
-      setIsLoading(false);
-      return;
-    }
 
     if (currentQuantity === 1) {
       removeFromCart(productId);
@@ -147,20 +64,10 @@ const useCartItems = () => {
     }
 
     try {
-      const { status } = await patchCartItems(
-        targetCartItem.id,
-        currentQuantity! - 1
-      );
-      await fetchCartItems();
-      setError({ isError: false, status });
+      await patchCartItems(targetCartItem.id, currentQuantity! - 1);
+      fetchCartItems();
     } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
+      updateError('cartItems', e instanceof Error ? Number(e.message) : null);
     }
   };
 

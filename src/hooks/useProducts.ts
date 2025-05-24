@@ -1,36 +1,25 @@
-import { useState } from 'react';
-import { Product } from '../App';
 import getProducts, { GetProductsProps } from '../api/getProducts';
+import { useDataContext } from '../components/contexts/dataContext';
 
-type ErrorState = {
-  isError: boolean;
-  status: number | null;
+type UseProductsProps = {
+  category?: '전체' | '패션잡화' | '식료품';
+  priceOrder?: '낮은 가격순' | '높은 가격순';
 };
-
-const useProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState<ErrorState>({
-    isError: false,
-    status: null,
+const useProducts = ({ category, priceOrder }: UseProductsProps) => {
+  const {
+    data: products,
+    refetch: fetchProducts,
+    isLoading,
+    error,
+  } = useDataContext({
+    fetcher: getProducts,
+    key: 'products',
+    fetcherParams: {
+      category,
+      priceOrder,
+    } as GetProductsProps,
   });
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchProducts = async (options: GetProductsProps = {}) => {
-    try {
-      setIsLoading(true);
-      const { data, status } = await getProducts(options);
-      setProducts(data.content);
-      setError({ isError: false, status: Number(status) });
-    } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  console.log('products', products);
   return {
     products,
     error,

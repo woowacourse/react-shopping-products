@@ -49,7 +49,6 @@ function getBackgroundColor({
   isSoldOut?: boolean;
 }) {
   if (isSoldOut) {
-    console.log('sold out');
     return '#EAEAEA';
   }
   return variant === 'add' ? 'black' : '#EAEAEA';

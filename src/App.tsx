@@ -1,9 +1,10 @@
 import './reset.css';
 import styled from '@emotion/styled';
 import './app.css';
-import ProductPage from './pages/ProductListPage';
+import ProductListPage from './pages/ProductListPage';
 import CartItemsProvider from './components/providers/CartItemsProvider';
-import ProductsProvider from './components/providers/ProductsProvider';
+// import ProductsProvider from './components/providers/ProductsProvider';
+import DataProvider from './components/providers/DataProvider';
 
 export type Product = {
   id: number;
@@ -25,13 +26,11 @@ export type PriceOrder = '낮은 가격순' | '높은 가격순';
 
 function App() {
   return (
-    <CartItemsProvider>
-      <ProductsProvider>
-        <Layout>
-          <ProductPage />
-        </Layout>
-      </ProductsProvider>
-    </CartItemsProvider>
+    <DataProvider>
+      <Layout>
+        <ProductListPage />
+      </Layout>
+    </DataProvider>
   );
 }
 

@@ -1,6 +1,6 @@
 import { Product } from '../../App';
+import useCartItems from '../../hooks/useCartItems';
 import isValidImageUrl from '../../utils/isValidImageUrl';
-import { useCartItemsContext } from '../contexts/cartItemsContext';
 import QuantityStepper from '../QuantityStepper';
 import CartActionButton from './button/CartActionButton';
 import styled from '@emotion/styled';
@@ -22,7 +22,7 @@ const ProductItem = ({
     removeFromCart,
     increaseCartItemQuantity,
     decreaseCartItemQuantity,
-  } = useCartItemsContext();
+  } = useCartItems();
 
   const handleClickIncrementButton = () => {
     increaseCartItemQuantity(product.id);
@@ -35,7 +35,6 @@ const ProductItem = ({
     }
     decreaseCartItemQuantity(product.id);
   };
-  console.log('product', product);
 
   return (
     <ProductItemContainer>

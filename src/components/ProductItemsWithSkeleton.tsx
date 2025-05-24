@@ -1,12 +1,16 @@
+import useCartItems from '../hooks/useCartItems';
+import useProducts from '../hooks/useProducts';
 import isInCart from '../utils/isIncart';
-import { useCartItemsContext } from './contexts/cartItemsContext';
-import { useProductsContext } from './contexts/productsContext';
 import ProductItem from './ProductItem';
 import ProductItemSkeleton from './ProductItem/ProductItemSkeleton';
 
 const ProductItemsWithSkeleton = () => {
-  const { cartItems } = useCartItemsContext();
-  const { products, isLoading } = useProductsContext();
+  const { cartItems } = useCartItems();
+
+  const { products, isLoading } = useProducts({
+    category: '전체',
+    priceOrder: '낮은 가격순',
+  });
 
   return isLoading ? (
     <ProductItemSkeletons />

@@ -6,22 +6,22 @@ import ProductItemsWithSkeleton from '../components/ProductItemsWithSkeleton';
 import ErrorMessage from '../components/ErrorMessage';
 import getProductErrorMessage from '../utils/getProductErrorMessage';
 import Header from '../components/header/Header';
-import { useCartItemsContext } from '../components/contexts/cartItemsContext';
+
 import getCartErrorMessage from '../utils/getCartErrorMessage';
 import Modal from '../components/Modal';
-import { useProductsContext } from '../components/contexts/productsContext';
+import useProducts from '../hooks/useProducts';
+import useCartItems from '../hooks/useCartItems';
 
 const ProductListPage = () => {
-  const { error, fetchProducts } = useProductsContext();
-  const {
-    cartItems,
-    error: cartItemsError,
-    fetchCartItems,
-  } = useCartItemsContext();
-
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
   const [priceOrder, setPriceOrder] = useState<PriceOrder>('낮은 가격순');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { fetchProducts, error } = useProducts({
+    category: selectedCategory,
+    priceOrder,
+  });
+
+  const { cartItems, error: cartItemsError, fetchCartItems } = useCartItems();
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -35,28 +35,15 @@ const ProductListPage = () => {
 
   const handleCategoryChange = async (category: Category) => {
     setSelectedCategory(category);
-
-    await fetchProducts({
-      category,
-      priceOrder,
-    });
   };
 
   const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
     setPriceOrder(priceOrder);
-
-    await fetchProducts({
-      priceOrder,
-      category: selectedCategory,
-    });
   };
 
   useEffect(() => {
-    fetchProducts({
-      category: selectedCategory,
-      priceOrder,
-    });
-  }, []);
+    fetchProducts();
+  }, [selectedCategory, priceOrder]);
 
   return (
     <>
