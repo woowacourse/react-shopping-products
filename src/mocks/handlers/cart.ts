@@ -12,7 +12,7 @@ const handlers = [
     return HttpResponse.json({ content: MOCK_CART_ITEMS }, { status: 200 });
   }),
 
-  http.post<never, AddCartItemsProps>('/cart-items', async ({ request }) => {
+  http.post<never, AddCartItemsProps>(/\/cart-items(?:\?.*)?$/, async ({ request }) => {
     const { productId, quantity: addQuantity } = await request.json();
     const targetIndex = MOCK_PRODUCTS.findIndex((product) => product.id === productId);
     if (targetIndex === -1) {
@@ -31,10 +31,11 @@ const handlers = [
     }
 
     MOCK_CART_ITEMS.push({
-      id: MOCK_CART_ITEMS.length + 1,
+      id: Math.max(...MOCK_CART_ITEMS.map(({ id }) => id)) + 1,
       quantity: addQuantity,
       product: targetProduct,
     });
+
     MOCK_PRODUCTS[targetIndex] = {
       ...targetProduct,
       quantity: targetProduct.quantity - addQuantity,
