@@ -86,7 +86,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         },
       });
     },
-    [fetchCartItems, fetchTotalCartItems, handleErrorMessage],
+    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage],
   );
 
   const handleDecreaseQuantity = useCallback(
@@ -103,7 +103,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         },
       });
     },
-    [fetchCartItems, fetchTotalCartItems, handleErrorMessage],
+    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage],
   );
 
   return {
