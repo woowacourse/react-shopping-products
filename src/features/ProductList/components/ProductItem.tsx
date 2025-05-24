@@ -126,6 +126,9 @@ export const StyledProductItemContainer = styled.div<{ variant?: 'default' | 'mo
   border-radius: 8px;
   background-color: #ffffff;
   box-shadow: ${({ variant }) => (variant === 'modal' ? '0' : '0px 4px 8px rgba(0, 0, 0, 0.1)')};
+  align-items: center;
+  padding-bottom: ${({ variant }) => (variant === 'modal' ? '12px' : '0')};
+  border-bottom: ${({ variant }) => (variant === 'modal' ? '1px solid #ddd' : '0')};
 `;
 
 export const StyledProductItemImage = styled.img<{ variant?: 'default' | 'modal' }>`
