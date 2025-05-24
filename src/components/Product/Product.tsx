@@ -45,6 +45,7 @@ function Product({ product, isInCart }: ProductProps) {
   return (
     <li id={product.id.toString()}>
       <Styled.Container>
+        {product.quantity === 0 && <Styled.SoldOut> 품절</Styled.SoldOut>}
         <Styled.Image
           src={product.imageUrl ?? defaultImage}
           onError={(e) => (e.currentTarget.src = defaultImage)}

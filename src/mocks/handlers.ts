@@ -30,7 +30,7 @@ const products = [
     category: "패션잡화",
     price: 5000000000,
     imageUrl: "string",
-    quantity: 10,
+    quantity: 0,
   },
   {
     id: 3,
