@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { delay, http, HttpResponse, HttpResponseResolver } from 'msw';
 const mockProducts = [
   {
     id: 1,
@@ -74,7 +74,6 @@ export const handlers = [
   http.get('*/products', ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get('category') || '전체';
-    console.log('category', category);
     const priceOrder = url.searchParams.get('sort') || 'price%2Casc';
 
     let filteredProducts;
@@ -122,9 +121,10 @@ export const handlers = [
     }
 
     cartItem.quantity = body.quantity;
-
+    await delay(1000); // Simulate network delay
     return HttpResponse.json(cartItem, { status: 200 });
   }),
+
   http.delete('*/cart-items/:id', ({ params }) => {
     const id = Number(params.id);
 

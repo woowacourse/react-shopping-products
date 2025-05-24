@@ -19,7 +19,6 @@ const useProducts = ({ category, priceOrder }: UseProductsProps) => {
       priceOrder,
     } as GetProductsProps,
   });
-  console.log('products', products);
   return {
     products,
     error,

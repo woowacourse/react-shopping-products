@@ -13,27 +13,6 @@ type useDataContextProps = {
   fetcherParams?: Record<string, any>;
 };
 
-/*
-data = {
- products :{
-  products: [],
-  isLoading: false,
-  error: {
-    isError: false,
-    status: null,
-  },
- },
-  cartItems: {
-    cartItems: [],
-    isLoading: false,
-    error: {
-      isError: false,
-      status: null,
-    },
-  },
-}
-*/
-
 export function useDataContext({
   fetcher,
   key,
@@ -46,7 +25,6 @@ export function useDataContext({
   }
 
   const { data, setData } = context;
-  console.log('useDataContext data', data);
 
   const request = useCallback(async () => {
     try {
@@ -62,13 +40,14 @@ export function useDataContext({
           },
         },
       }));
+
       const { data: fetchedData, status } = await fetcher(fetcherParams);
+
       setData((prevData) => ({
         ...prevData,
         [key]: {
           ...prevData[key],
           data: fetchedData.content,
-          isLoading: false,
           error: {
             isError: false,
             status: Number(status),
@@ -81,7 +60,6 @@ export function useDataContext({
           ...prevData,
           [key]: {
             ...prevData[key],
-            isLoading: false,
             error: {
               isError: true,
               status: Number(e.message),
@@ -93,7 +71,6 @@ export function useDataContext({
           ...prevData,
           [key]: {
             ...prevData[key],
-            isLoading: false,
             error: {
               isError: true,
               status: null,

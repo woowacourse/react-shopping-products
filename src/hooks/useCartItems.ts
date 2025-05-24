@@ -4,6 +4,7 @@ import postCartItems from '../api/postCartItems';
 import deleteCartItems from '../api/deleteCartItems';
 import patchCartItems from '../api/patchCartItems';
 import { useDataContext } from '../components/contexts/dataContext';
+import { useState } from 'react';
 
 const useCartItems = () => {
   const {
@@ -17,9 +18,17 @@ const useCartItems = () => {
     key: 'cartItems',
   });
 
+  const [isFetching, setIsFetching] = useState(false);
+
   const addToCart = async (product: Product) => {
+    if (isFetching) {
+      return;
+    }
+
     try {
+      setIsFetching(true);
       await postCartItems(product);
+      setIsFetching(false);
       fetchCartItems();
     } catch (e) {
       updateError('cartItems', e instanceof Error ? Number(e.message) : null);
@@ -27,6 +36,10 @@ const useCartItems = () => {
   };
 
   const removeFromCart = async (productId: number) => {
+    if (isFetching) {
+      return;
+    }
+
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
@@ -37,7 +50,9 @@ const useCartItems = () => {
     }
 
     try {
+      setIsFetching(true);
       await deleteCartItems(targetCartItem.id);
+      setIsFetching(false);
       fetchCartItems();
     } catch (e) {
       updateError('cartItems', e instanceof Error ? Number(e.message) : null);
@@ -45,6 +60,11 @@ const useCartItems = () => {
   };
 
   const increaseCartItemQuantity = async (productId: number) => {
+    console.log('useCartItem안 isFetching', isFetching);
+    if (isFetching) {
+      return;
+    }
+
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
@@ -56,7 +76,9 @@ const useCartItems = () => {
     const currentQuantity = targetCartItem.quantity;
 
     try {
+      setIsFetching(true);
       await patchCartItems(targetCartItem.id, currentQuantity! + 1);
+      setIsFetching(false);
       fetchCartItems();
     } catch (e) {
       updateError('cartItems', e instanceof Error ? Number(e.message) : null);
@@ -64,6 +86,10 @@ const useCartItems = () => {
   };
 
   const decreaseCartItemQuantity = async (productId: number) => {
+    if (isFetching) {
+      return;
+    }
+
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
@@ -80,7 +106,9 @@ const useCartItems = () => {
     }
 
     try {
+      setIsFetching(true);
       await patchCartItems(targetCartItem.id, currentQuantity! - 1);
+      setIsFetching(false);
       fetchCartItems();
     } catch (e) {
       updateError('cartItems', e instanceof Error ? Number(e.message) : null);
