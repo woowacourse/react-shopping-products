@@ -20,5 +20,6 @@ export async function apiClient<T>(
     throw new Error("Network response was not ok");
   }
 
-  return response.json();
+  const text = await response.text();
+  return text ? (JSON.parse(text) as T) : ({} as T);
 }

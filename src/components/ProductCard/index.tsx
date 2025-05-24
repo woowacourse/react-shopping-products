@@ -1,27 +1,50 @@
 import { css } from "@emotion/css";
 import RemoveButton from "../Button/RemoveButton";
 import AddButton from "../Button/AddButton";
-import { Product } from "../../types/product.type";
-import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
-import { useAddShoppingCart } from "../../hooks/shoppingCart/useAddShoppingCart";
-import { useDeleteShoppingCart } from "../../hooks/shoppingCart/useDeleteShoppingCart";
+import { CartItem, Product } from "../../types/product.type";
 import ProductStepper from "../ProductStepper/ProductStepper";
+import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
+import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
+import addShoppingCart from "../../APIs/shoppingCart/addShoppingCart";
+import deleteShoppingCart from "../../APIs/shoppingCart/deleteShoppingCart";
 
 interface ProductCardProps {
   product: Product;
+  cartItems: CartItem[];
   isInCart: boolean;
 }
 
-const ProductCard = ({ product, isInCart }: ProductCardProps) => {
+const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const { cartItems } = useShoppingCartContext();
   const cartItemId = cartItems.find(
     (item) => item.product.id === product.id
   )?.id;
 
-  const { handleAdd } = useAddShoppingCart(product.id);
-  const { handleDelete } = useDeleteShoppingCart(cartItemId);
-  const { isShoppingLoading } = useShoppingCartContext();
+  const { refetch: refetchCart } = useAPIContext({
+    name: "cartItems",
+    fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
+  });
+
+  const handleAdd = async () => {
+    try {
+      const endpoint = "/cart-items";
+      const requestBody = { productId: id, quantity: 1 };
+      await addShoppingCart({ endpoint, requestBody });
+      refetchCart();
+    } catch (err) {
+      console.error("장바구니 추가 실패:", err);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const endpoint = "/cart-items";
+      await deleteShoppingCart({ endpoint, cartItemId: cartItemId! });
+      refetchCart();
+    } catch (err) {
+      console.error("장바구니 삭제 실패:", err);
+    }
+  };
 
   return (
     <div key={id} className={CardFrame}>
@@ -47,9 +70,9 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
             onIncreaseQuantity={() => {}}
           />
           {isInCart ? (
-            <RemoveButton onClick={handleDelete} disabled={isShoppingLoading} />
+            <RemoveButton onClick={handleDelete} disabled={false} />
           ) : (
-            <AddButton onClick={handleAdd} disabled={isShoppingLoading} />
+            <AddButton onClick={handleAdd} disabled={false} />
           )}
         </div>
       </div>
