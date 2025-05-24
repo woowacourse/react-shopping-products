@@ -107,10 +107,12 @@ const Container = styled.div`
 `;
 
 const ItemList = styled.div`
+  max-height: 300px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-bottom: 32px;
+  overflow-y: auto;
 `;
 
 const ItemContainer = styled.div`
