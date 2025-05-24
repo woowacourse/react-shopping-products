@@ -44,7 +44,7 @@ export const productsData: Products = {
       imageUrl:
         "https://i.namu.wiki/i/5ISYTfYvAdrL8uIoYVlMZ0sJCQWOgRHTdcerXSErt2gVgaxEzXAcUhcgJVpVwKFccpD5N8cg_M656GL0O3O2jw.webp",
       category: "식료품",
-      quantity: 0,
+      quantity: 1,
     },
     {
       id: 6,

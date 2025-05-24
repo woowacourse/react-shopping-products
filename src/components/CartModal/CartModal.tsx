@@ -28,7 +28,6 @@ const CartModal = ({
       <S.ScrollContainer>
         {cartItems?.content.map((productInfo) => {
           const quantity = quantityByProductId(productInfo.product.id);
-          const isMinQuantity = quantity <= 1;
           const isMaxQuantity = quantity >= productInfo.product.quantity;
 
           return (
@@ -48,7 +47,6 @@ const CartModal = ({
                 deleteProductInCart(productInfo.product.id)
               }
               increaseDisabled={isMaxQuantity}
-              decreaseDisabled={isMinQuantity}
             />
           );
         })}
