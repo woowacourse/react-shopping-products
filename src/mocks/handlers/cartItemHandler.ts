@@ -50,6 +50,17 @@ const addCartItem = http.post(BASE_URL, async ({ request }) => {
     const newProductId = Number.parseInt(productId, 10);
     const newQuantity = Number.parseInt(quantity, 10);
 
+    const existingCartItem = cartItems.find(
+      (item) => item.product.id === newProductId
+    );
+
+    if (existingCartItem) {
+      return HttpResponse.json(
+        { error: "cartItem already exists" },
+        { status: 400 }
+      );
+    }
+
     const currentCartItemId = cartItemId++;
 
     const newCartItem = {
