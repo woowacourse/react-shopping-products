@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { Content } from "../../types/product";
 import ProductCard from "./ProductCard";
-import Button from "../common/Button";
+import IconButton from "../common/Button/IconButton";
 import RemoveCart from "../icons/RemoveCart";
 import AddCart from "../icons/AddCart";
 
@@ -24,17 +24,17 @@ const ProductList = ({ productsData, cartItemIds, handleCartItem }: ProductListP
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               {cartItemIds[product.id] ? (
-                <Button
+                <IconButton
                   icon={<RemoveCart />}
                   variant="light"
                   onClick={() => handleCartItem("remove", cartItemIds[product.id])}
                 >
                   빼기
-                </Button>
+                </IconButton>
               ) : (
-                <Button icon={<AddCart />} variant="dark" onClick={() => handleCartItem("add", product.id)}>
+                <IconButton icon={<AddCart />} variant="dark" onClick={() => handleCartItem("add", product.id)}>
                   담기
-                </Button>
+                </IconButton>
               )}
             </div>
           </ProductCard.Content>
