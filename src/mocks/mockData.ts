@@ -52,7 +52,7 @@ export const products = {
       imageUrl:
         'https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg',
       category: '식료품',
-      quantity: 6,
+      quantity: 0,
     },
     {
       id: 7,

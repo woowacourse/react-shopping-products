@@ -74,16 +74,22 @@ export default function ProductCard({
 
   return (
     <S.ProductCardContainer>
-      <S.ImageSection
-        src={product.imageUrl}
-        alt={product.name}
-        onError={(e) => (e.currentTarget.src = './emptyImage.jpg')}
-      />
+      <S.ImageSection>
+        <S.Image
+          src={product.imageUrl}
+          alt={product.name}
+          onError={(e) => (e.currentTarget.src = './emptyImage.jpg')}
+        />
+        {product.quantity === 0 && <S.SoldOut>품절</S.SoldOut>}
+      </S.ImageSection>
+
       <S.ContentSection>
         <S.ProductName>{product.name}</S.ProductName>
         <S.ProductCategory>{product.category}</S.ProductCategory>
         <S.ProductPrice>{formatPrice(product.price)}원</S.ProductPrice>
+        <S.ProductQuantity>수량: {product.quantity}개</S.ProductQuantity>
       </S.ContentSection>
+
       <S.ButtonSection isCarting={isCarting}>
         {isCarting && (
           <CartCount
