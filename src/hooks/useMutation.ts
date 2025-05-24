@@ -6,13 +6,13 @@ interface MutateOptions<_, TResult> {
 }
 
 const useMutation = <TData, TResult>(
-  mutationFn: (data?: TData) => Promise<TResult>
+  mutationFn: (data: TData) => Promise<TResult>
 ) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const mutate = async (
-    data?: TData,
+    data: TData,
     options?: MutateOptions<TData, TResult>
   ) => {
     setIsLoading(true);
