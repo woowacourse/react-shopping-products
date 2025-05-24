@@ -9,7 +9,7 @@ import ShopPage from "../page";
 import { mockCartItemResponse } from "../apis/mocks/mockCartItemResponse";
 import { mockProductResponse } from "../apis/mocks/mockProductResponse";
 import CartProductContainer from "../components/CartProductContainer/CartProductContainer";
-import { ContextProvider } from "../context/ContextProvider";
+import { ShoppingProvider } from "../context/ShoppingProvider";
 
 describe("useContext 훅을 이용해서 productList를 관리한다.", () => {
   beforeEach(() => {
@@ -20,9 +20,9 @@ describe("useContext 훅을 이용해서 productList를 관리한다.", () => {
     vi.spyOn(productApi, "getProducts").mockResolvedValue(mockProductResponse);
 
     render(
-      <ContextProvider>
+      <ShoppingProvider>
         <ShopPage />
-      </ContextProvider>
+      </ShoppingProvider>
     );
 
     await waitFor(() => {
@@ -41,9 +41,9 @@ describe("useContext 훅을 이용해서 cartProductList를 관리한다.", () =
     vi.spyOn(cartApi, "getCartItems").mockResolvedValue(mockCartItemResponse);
 
     render(
-      <ContextProvider>
+      <ShoppingProvider>
         <CartProductContainer />
-      </ContextProvider>
+      </ShoppingProvider>
     );
 
     await waitFor(() => {

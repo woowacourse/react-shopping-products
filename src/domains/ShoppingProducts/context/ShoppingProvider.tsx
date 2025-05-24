@@ -20,7 +20,7 @@ const initialValue: ContextState = {
   errorProduct: null,
 };
 
-export function ContextProvider({ children }: { children: React.ReactNode }) {
+export function ShoppingProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer<
     React.Reducer<ContextState, ContextAction>
   >(contextReducer, initialValue);

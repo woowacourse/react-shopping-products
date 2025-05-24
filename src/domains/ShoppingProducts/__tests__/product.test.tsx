@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { server } from "../../../mocks/node";
 import { ProductType } from "../apis/types/product";
-import { ContextProvider } from "../context/ContextProvider";
+
 import ShopPage from "../page";
 import { mockProductResponse } from "../apis/mocks/mockProductResponse";
+import { ShoppingProvider } from "../context/ShoppingProvider";
 
 beforeAll(() => server.listen());
 afterAll(() => server.close());
@@ -20,9 +21,9 @@ describe("msw를 사용해서 수량 필드가 추가된 api를 mocking한다.",
 
   it("서버에서 모킹된 데이터를 불러올 수 있다", async () => {
     render(
-      <ContextProvider>
+      <ShoppingProvider>
         <ShopPage />
-      </ContextProvider>
+      </ShoppingProvider>
     );
 
     const product = await screen.findAllByTestId("product-component");

@@ -2,8 +2,9 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { server } from "../../../mocks/node";
 import { resetCartItems } from "../apis/mocks/handlers/cartHandlers";
 import CartProductContainer from "../components/CartProductContainer/CartProductContainer";
-import { ContextProvider } from "../context/ContextProvider";
+
 import ShopPage from "../page";
+import { ShoppingProvider } from "../context/ShoppingProvider";
 
 beforeAll(() => server.listen());
 afterAll(() => server.close());
@@ -15,9 +16,9 @@ afterEach(() => {
 describe.skip("장바구니 기능 테스트", () => {
   it("장바구니 아이템을 불러온다.", async () => {
     render(
-      <ContextProvider>
+      <ShoppingProvider>
         <CartProductContainer />
-      </ContextProvider>
+      </ShoppingProvider>
     );
     const cartProducts = await screen.findAllByTestId("cart-product");
     expect(cartProducts).toHaveLength(2);
@@ -25,9 +26,9 @@ describe.skip("장바구니 기능 테스트", () => {
 
   it("장바구니 버튼 클릭 시 아이템이 추가되고 수량이 갱신된다", async () => {
     render(
-      <ContextProvider>
+      <ShoppingProvider>
         <ShopPage />
-      </ContextProvider>
+      </ShoppingProvider>
     );
 
     const prevCartCount = await screen.findByTestId("cart-count");
@@ -47,9 +48,9 @@ describe.skip("장바구니 기능 테스트", () => {
 
     beforeEach(async () => {
       render(
-        <ContextProvider>
+        <ShoppingProvider>
           <CartProductContainer />
-        </ContextProvider>
+        </ShoppingProvider>
       );
 
       plusButton = (await screen.findAllByTestId("quantity-plus-button"))[0];
@@ -92,9 +93,9 @@ describe.skip("장바구니 기능 테스트", () => {
 describe("msw를 사용해서 수량 필드가 추가된 api를 mocking한다.", () => {
   it("재고를 초과하여 장바구니에 담을 수 없다", async () => {
     render(
-      <ContextProvider>
+      <ShoppingProvider>
         <ShopPage />
-      </ContextProvider>
+      </ShoppingProvider>
     );
 
     const plusButton = (
