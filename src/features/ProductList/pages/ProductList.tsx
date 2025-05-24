@@ -4,8 +4,8 @@ import { useModal } from '@sebin0580/modal';
 import { AppLayout } from '@/shared/components/AppLayout';
 import { Flex } from '@/shared/components/Flex';
 import { Header } from '@/shared/components/Header';
-import { Loading } from '@/shared/components/Loading';
 import { Text } from '@/shared/components/Text';
+import { useData } from '@/shared/context/useData';
 
 import { Select } from '../../../shared/components/Select/index';
 import { AddBottomSheet } from '../../CartList/component/AddBottomSheet';
@@ -13,21 +13,13 @@ import { ProductItem } from '../components/ProductItem';
 import { ShoppingBag } from '../components/ShoppingBag';
 import { CATEGORY, CategoryType, PRICE, PriceType } from '../constants/product';
 import { ProductListContainer } from '../container/ProductListContainer';
-import { useShopping } from '../hooks/useShopping';
+import { useProductFilter } from '../hooks/useProductFilter';
 
 export const ProductListPage = () => {
-  const {
-    cartData,
-    filteredData,
-    isLoading,
-    categorySelect,
-    priceSelect,
-    toggleCartItem,
-    updateCartItemQuantity,
-    handleCategorySelect,
-    handlePriceSelect,
-  } = useShopping();
+  const { productData } = useData();
   const { isOpen, handleOpenModal, handleCloseModal } = useModal();
+  const { categorySelect, priceSelect, handleCategorySelect, handlePriceSelect } =
+    useProductFilter();
 
   return (
     <>
@@ -45,7 +37,7 @@ export const ProductListPage = () => {
               SHOP
             </Text>
           }
-          right={<ShoppingBag count={cartData.length} onOpenModal={handleOpenModal} />}
+          right={<ShoppingBag onOpenModal={handleOpenModal} />}
         />
         <Flex
           direction="column"
@@ -105,59 +97,13 @@ export const ProductListPage = () => {
               flex: 1;
             `}
           >
-            {isLoading ? (
-              <Flex
-                direction="column"
-                gap="0px"
-                justifyContent="center"
-                alignItems="center"
-                css={css`
-                  width: 100%;
-                  height: 600px;
-                `}
-              >
-                <Loading size="xl" />
-              </Flex>
-            ) : filteredData.length > 0 ? (
-              <ProductListContainer>
-                {filteredData.map((item) => (
-                  <ProductItem
-                    key={item.id}
-                    cartId={item.cartId}
-                    isChecked={item.isChecked}
-                    name={item.name}
-                    price={item.price}
-                    imageUrl={item.imageUrl}
-                    quantity={item.quantity}
-                    cartQuantity={item.cartQuantity}
-                    onCartUpdate={() => toggleCartItem(item.id)}
-                    onUpdateCartItemQuantity={updateCartItemQuantity}
-                  />
-                ))}
-              </ProductListContainer>
-            ) : (
-              <Text
-                type="Body"
-                css={css`
-                  padding: 20px;
-                  justify-self: center;
-                  align-self: center;
-                `}
-              >
-                데이터가 존재하지 않습니다.
-              </Text>
-            )}
+            <ProductListContainer>
+              {productData?.data?.map((item) => <ProductItem key={item.id} {...item} />)}
+            </ProductListContainer>
           </Flex>
         </Flex>
       </AppLayout>
-      <AddBottomSheet
-        title="장바구니"
-        isOpen={isOpen}
-        onClose={handleCloseModal}
-        cartData={cartData}
-        onUpdateCartItemQuantity={updateCartItemQuantity}
-        onDeleteCartItem={toggleCartItem}
-      />
+      <AddBottomSheet title="장바구니" isOpen={isOpen} onClose={handleCloseModal} />
     </>
   );
 };
