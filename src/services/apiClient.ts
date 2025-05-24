@@ -12,7 +12,7 @@ interface ApiClientProps<RequestBody> {
 type ApiClientType = {
   <Response, RequestBody>(
     options: ApiClientProps<RequestBody> & {
-      method: 'POST' | 'DELETE';
+      method: 'POST' | 'DELETE' | 'PATCH';
     },
   ): Promise<Response>;
 

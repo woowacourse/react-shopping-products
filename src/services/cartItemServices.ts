@@ -25,3 +25,11 @@ export const addCartItems = async (cartItem: AddCartItemsProps) => {
 export const removeCartItems = async (id: number) => {
   await apiClient({ method: 'DELETE', URI: `/cart-items/${id}` });
 };
+
+export const increaseCartItems = async (id: number, quantity: number) => {
+  await apiClient({ method: 'PATCH', URI: `/cart-items/${id}`, body: { quantity } });
+};
+
+export const decreaseCartItems = async (id: number, quantity: number) => {
+  await apiClient({ method: 'PATCH', URI: `/cart-items/${id}`, body: { quantity } });
+};

@@ -15,9 +15,10 @@ import { extractCartQuantity } from '../../domain/cartItem.ts';
 
 export const ProductListPage = () => {
   const { errorMessage, handleErrorMessage } = useErrorHandler();
-  const { cartItems, handleAddCartItem, handleRemoveCartItem } = useCartHandler({
-    handleErrorMessage,
-  });
+  const { cartItems, handleAddCartItem, handleIncreaseQuantity, handleDecreaseQuantity } =
+    useCartHandler({
+      handleErrorMessage,
+    });
   const {
     products,
     isProductsLoading,
@@ -57,7 +58,8 @@ export const ProductListPage = () => {
             product={product}
             quantityInCart={extractCartQuantity(cartItems, product.id)}
             handleAddCartItem={handleAddCartItem}
-            handleRemoveCartItem={handleRemoveCartItem}
+            handleIncreaseQuantity={handleIncreaseQuantity}
+            handleDecreaseQuantity={handleDecreaseQuantity}
           />
         ))}
       </P.ProductItemContainer>

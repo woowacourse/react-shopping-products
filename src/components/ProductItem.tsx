@@ -3,20 +3,22 @@ import Button from './Button';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import AddIcon from '/public/icon/add-icon.svg';
 import SubIcon from '/public/icon/sub-icon.svg';
-import { MockProductsType } from '../mocks/dummy';
+import { ProductItemType } from '../types/data';
 
 interface ProductItemProps {
-  product: MockProductsType;
+  product: ProductItemType;
   quantityInCart: number;
   handleAddCartItem: (id: number, quantity: number) => void;
-  handleRemoveCartItem: (id: number) => void;
+  handleIncreaseQuantity: (id: number, quantity: number) => void;
+  handleDecreaseQuantity: (id: number, quantity: number) => void;
 }
 
 const ProductItem = ({
   product,
   quantityInCart,
   handleAddCartItem,
-  handleRemoveCartItem,
+  handleIncreaseQuantity,
+  handleDecreaseQuantity,
 }: ProductItemProps) => {
   const DEFAULT_PRODUCT_IMAGE = './default-product.png';
 
@@ -40,7 +42,7 @@ const ProductItem = ({
               id="add"
               name="추가"
               variant="smallSquareWhite"
-              onClick={() => handleAddCartItem(product.id, 1)}
+              onClick={() => handleIncreaseQuantity(product.id, quantityInCart + 1)}
             >
               <ControllerIcon src={AddIcon} alt="아이템 수량 추가" />
             </Button>
@@ -50,7 +52,7 @@ const ProductItem = ({
               id="subtract"
               name="감소"
               variant="smallSquareWhite"
-              onClick={() => handleRemoveCartItem(product.id)}
+              onClick={() => handleDecreaseQuantity(product.id, quantityInCart - 1)}
             >
               <ControllerIcon src={SubIcon} alt="아이템 수량 감소" />
             </Button>
