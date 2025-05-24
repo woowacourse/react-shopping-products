@@ -8,8 +8,6 @@ import { useMutation, useQuery } from "@/modules";
 import { GetCartItemsResponse } from "@/types";
 
 export default function useCartItem() {
-  const { showError } = useError();
-
   const { data: products, status: productsStatus } = useQuery({
     queryFn: ProductApi.getAllProducts,
     queryKey: "products",
@@ -24,15 +22,27 @@ export default function useCartItem() {
     queryKey: "cartItems",
   });
 
-  const { mutate: mutatePostCartItem } = useMutation<PostCartItemsParams, void, GetCartItemsResponse>({
+  const { mutate: mutatePostCartItem, status: postCartItemStatus } = useMutation<
+    PostCartItemsParams,
+    void,
+    GetCartItemsResponse
+  >({
     mutationFn: CartItemApi.postCartItems,
     queryKey: "cartItems",
   });
-  const { mutate: mutatePatchCartItem } = useMutation<PatchCartItemsParams, void, GetCartItemsResponse>({
+  const { mutate: mutatePatchCartItem, status: patchCartItemStatus } = useMutation<
+    PatchCartItemsParams,
+    void,
+    GetCartItemsResponse
+  >({
     mutationFn: CartItemApi.patchCartItems,
     queryKey: "cartItems",
   });
-  const { mutate: mutateDeleteCartItem } = useMutation<DeleteCartItemsParams, void, GetCartItemsResponse>({
+  const { mutate: mutateDeleteCartItem, status: deleteCartItemStatus } = useMutation<
+    DeleteCartItemsParams,
+    void,
+    GetCartItemsResponse
+  >({
     mutationFn: CartItemApi.deleteCartItems,
     queryKey: "cartItems",
   });
@@ -42,13 +52,6 @@ export default function useCartItem() {
 
     const product = products?.content.find((item) => item.id === productId);
     if (!product) return;
-
-    const stock = product.stock;
-
-    if (stock < (cartItem?.quantity ?? 0) + 1) {
-      showError("재고가 부족합니다.");
-      return;
-    }
 
     if (!cartItem) {
       await mutatePostCartItem({ productId });
@@ -79,7 +82,7 @@ export default function useCartItem() {
 
     if (!cartItem) return;
 
-    if (!cartItem || cartItem.quantity === 1) {
+    if (cartItem.quantity === 1) {
       await mutateDeleteCartItem({ cartItemId: cartItem.id }, (prev) => {
         const newCartContent = [...prev.content];
         return {
@@ -115,5 +118,8 @@ export default function useCartItem() {
     cartItemsStatus,
     products,
     cartItems,
+    postCartItemStatus,
+    patchCartItemStatus,
+    deleteCartItemStatus,
   };
 }

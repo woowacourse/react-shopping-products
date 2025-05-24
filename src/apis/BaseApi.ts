@@ -15,7 +15,7 @@ export default class BaseApi {
     });
     if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
 
-    throw new Error(`${response.status} ${response.statusText}`);
+    // throw new Error(`${response.status} ${response.statusText}`);
 
     return response.json();
   }
