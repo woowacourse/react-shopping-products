@@ -6,8 +6,16 @@ import { useAPIContext } from "../contexts/APIProvider/useAPIContext";
 import getProducts from "../APIs/products/getProducts";
 import { Category, Product, SortOption } from "../types/product.type";
 import { useMemo, useState } from "react";
+import Header from "../components/Header";
+import CartModal from "../components/CartModal/CartModal";
+import getShoppingCart from "../APIs/shoppingCart/getShoppingCart";
 
-const ProductListPage = () => {
+interface ProductListPageProps {
+  handleModal: () => void;
+  isOpen: boolean;
+}
+
+const ProductListPage = ({ isOpen, handleModal }: ProductListPageProps) => {
   const [category, setCategory] = useState<Category>("전체");
   const [sort, setSort] = useState<SortOption>("낮은 가격순");
 
@@ -42,8 +50,14 @@ const ProductListPage = () => {
     fetcher: () => getProducts({ endpoint }),
   });
 
+  const { data: cartItems, error: cartError } = useAPIContext({
+    name: "cartItems",
+    fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
+  });
+
   return (
     <>
+      <Header onCartClick={handleModal} cartItems={cartItems ?? []} />
       <ProductListToolBar
         category={category}
         sort={sort}
@@ -51,11 +65,20 @@ const ProductListPage = () => {
         setSort={handleSortChange}
       />
       {error.isError && <ErrorToast errorMessage={error.errorMessage} />}
+      {cartError.isError && (
+        <ErrorToast errorMessage={cartError.errorMessage} />
+      )}
+
       {isLoading ? (
         <OrbitSpinner />
       ) : (
-        data && <ProductCardList products={data} />
+        data && <ProductCardList products={data} cartItems={cartItems ?? []} />
       )}
+      <CartModal
+        isOpen={isOpen}
+        onModalClose={handleModal}
+        cartItems={cartItems ?? []}
+      />
     </>
   );
 };

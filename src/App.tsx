@@ -1,9 +1,5 @@
 import { css } from "@emotion/css";
-import Header from "./components/Header";
 import ProductListPage from "./pages/ProductListPage";
-import ShoppingCartProvider from "./contexts/shoppingCart/ShoppingCartProvider";
-import ProductsProvider from "./contexts/products/ProductsProvider";
-import CartModal from "./components/CartModal/CartModal";
 import { useState } from "react";
 import { APIProvider } from "./contexts/APIProvider/APIProvider";
 
@@ -16,15 +12,9 @@ function App() {
 
   return (
     <APIProvider>
-      <ProductsProvider>
-        <ShoppingCartProvider>
-          <div className={AppStyles}>
-            <Header onCartClick={handleModal} />
-            <ProductListPage />
-            <CartModal isOpen={isOepn} onModalClose={handleModal} />
-          </div>
-        </ShoppingCartProvider>
-      </ProductsProvider>
+      <div className={AppStyles}>
+        <ProductListPage isOpen={isOepn} handleModal={handleModal} />
+      </div>
     </APIProvider>
   );
 }
