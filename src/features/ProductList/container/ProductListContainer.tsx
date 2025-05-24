@@ -1,16 +1,51 @@
 import { PropsWithChildren, useRef } from 'react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { Flex } from '@/shared/components/Flex';
+import { Loading } from '@/shared/components/Loading';
+import { Text } from '@/shared/components/Text';
+import { useData } from '@/shared/context/useData';
 import { useScrollStatus } from '@/shared/hooks/useScrollStatus';
 
 export const ProductListContainer = ({ children }: PropsWithChildren) => {
+  const { productData } = useData();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const { isScrolled } = useScrollStatus(containerRef);
-
+  // TODO : 간헐적으로 OverLay가 안보이는 현상 수정 필요
   return (
     <StyledOuterContainer>
-      <StyledGradientOverlay isScrolled={isScrolled} />
-      <StyledProductListContainer ref={containerRef}>{children}</StyledProductListContainer>
+      {productData?.isLoading ? (
+        <Flex
+          direction="column"
+          gap="0px"
+          justifyContent="center"
+          alignItems="center"
+          css={css`
+            width: 100%;
+            height: 600px;
+          `}
+        >
+          <Loading size="xl" />
+        </Flex>
+      ) : productData.data?.length === 0 ? (
+        <Text
+          type="Body"
+          css={css`
+            padding: 20px;
+            justify-self: center;
+            align-self: center;
+          `}
+        >
+          데이터가 존재하지 않습니다.
+        </Text>
+      ) : (
+        <>
+          <StyledGradientOverlay isScrolled={isScrolled} />
+          <StyledProductListContainer ref={containerRef}>{children}</StyledProductListContainer>
+        </>
+      )}
     </StyledOuterContainer>
   );
 };
@@ -34,6 +69,7 @@ const StyledGradientOverlay = styled.div<{ isScrolled: boolean }>`
   opacity: ${({ isScrolled }) => (isScrolled ? 1 : 0)};
   transition: opacity 0.3s ease-in-out;
   pointer-events: none;
+  z-index: 10;
 `;
 
 const StyledProductListContainer = styled.div`
