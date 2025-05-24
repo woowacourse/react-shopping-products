@@ -5,18 +5,20 @@ import {
   QuantityControllerWrapper,
   Count,
 } from "./QuantityController.styled";
-import { deleteCartItem } from "../../api/cartItems";
+import { deleteCartItem, postCartItems } from "../../api/cartItems";
 import { useDataContext } from "../../contexts/DataContext";
 
 type QuantityControllerProps = {
+  id: number;
   basketId?: number;
 };
 
-const QuantityController = ({ basketId }: QuantityControllerProps) => {
+const QuantityController = ({ id, basketId }: QuantityControllerProps) => {
   const [quantity, setQuantity] = useState(1);
   const { fetchCartItems } = useDataContext();
 
   const increase = () => {
+    postCartItems(id, quantity);
     setQuantity((prev) => prev + 1);
   };
 

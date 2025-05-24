@@ -2,6 +2,7 @@ import apiRequest from "./utils/apiRequest";
 import { END_POINT } from "./constants/endPoint";
 
 export type CartItem = {
+  productId: number;
   id: number;
   quantity: number;
   product: {
@@ -28,12 +29,15 @@ export const getCartItems = async (): Promise<CartItem[]> => {
   return response.content;
 };
 
-export const postCartItems = async (productId: number): Promise<void> => {
+export const postCartItems = async (
+  productId: number,
+  quantity: number
+): Promise<void> => {
   await apiRequest<void>(END_POINT.CART, {
     method: "POST",
     body: JSON.stringify({
       productId,
-      quantity: 1,
+      quantity: quantity,
     }),
   });
 };

@@ -1,3 +1,12 @@
+export type Product = {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+  quantity: number;
+};
+
 export const mockProducts = Array.from({ length: 20 }, (_, i) => ({
   id: i + 1,
   name: `상품 ${i + 1}`,

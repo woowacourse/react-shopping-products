@@ -82,7 +82,7 @@ const handleCartToggleButton = async ({
       })
     )
       return;
-    await postCartItems(productId);
+    await postCartItems(productId, 1);
   } else if (basketId !== undefined) {
     await deleteCartItem(basketId);
   }
