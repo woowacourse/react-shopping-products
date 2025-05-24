@@ -57,6 +57,8 @@ export const ModalHeaderStyle = css`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ddd;
 
   img {
     cursor: pointer;
@@ -82,6 +84,7 @@ export const ModalBodyStyle = css`
 
 export const ModalFooterStyle = (align: 'left' | 'center' | 'right' = 'right') => css`
   display: flex;
+  flex-direction: column;
   justify-content: ${align === 'left' ? 'flex-start' : align === 'center' ? 'center' : 'flex-end'};
   gap: 10px;
 `;
