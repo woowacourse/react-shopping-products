@@ -46,6 +46,7 @@ export const useCartList = () => {
   const handleAddCart = async (product: ProductElement) => {
     if (cartList?.length === MAX_CART_ITEM_COUNT) {
       console.error(ERROR_MESSAGE.MAX_CART_ITEM);
+      showToast(ERROR_MESSAGE.MAX_CART_ITEM);
       // setIsError(true);
       return;
     }
