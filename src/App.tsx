@@ -13,6 +13,7 @@ function App() {
     loading,
     errorMessage,
     handleAddProduct,
+    handleRemoveProduct,
     handleIncreaseCartItemQuantity,
     handleDecreaseCartItemQuantity,
   } = useShoppingCart();
@@ -30,7 +31,12 @@ function App() {
   return (
     <Container>
       <Wrapper>
-        <Header cartItems={cartItems}></Header>
+        <Header
+          cartItems={cartItems}
+          handleRemoveProduct={handleRemoveProduct}
+          handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
+          handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
+        />
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
         <ProductListContainer
           cartItems={cartItems}
