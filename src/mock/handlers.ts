@@ -5,7 +5,7 @@ import { ProductTypes } from '../types/ProductTypes';
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 export const handlers = [
-  http.get(`${baseUrl}/products`, async ({ request }) => {
+  http.get(`${baseUrl}/products`, ({ request }) => {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get('page') || '0');
     const size = Number(url.searchParams.get('size') || '20');
