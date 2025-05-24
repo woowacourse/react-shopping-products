@@ -19,25 +19,19 @@ function CartModal() {
       position="bottom"
       style={{ maxHeight: 'calc(100% - 120px)', overflow: 'auto' }}
     >
-      {cartList.map(({ id, quantity, product }) => {
-        const matchingCart = cartList.find(
-          (cart) => cart.product.id === product.id
-        );
-        return (
-          <Flex>
-            <Separator />
-            <ProductRowCard
-              id={product.id}
-              name={product.name}
-              price={product.price}
-              imageUrl={product.imageUrl}
-              cartId={id}
-              cartCount={quantity}
-              isInCart={!!matchingCart}
-            />
-          </Flex>
-        );
-      })}
+      {cartList.map(({ id, quantity, product }) => (
+        <Flex>
+          <Separator />
+          <ProductRowCard
+            id={product.id}
+            name={product.name}
+            price={product.price}
+            imageUrl={product.imageUrl}
+            cartId={id}
+            cartCount={quantity}
+          />
+        </Flex>
+      ))}
       <Flex>
         <Separator />
         <TotalPriceBox>

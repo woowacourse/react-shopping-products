@@ -18,7 +18,7 @@ function ShopProductList({
           <ProductCard
             key={id}
             id={id}
-            cartId={matchingCart?.id ?? null}
+            cartId={matchingCart?.id}
             cartCount={matchingCart?.quantity ?? 0}
             name={name}
             price={price}

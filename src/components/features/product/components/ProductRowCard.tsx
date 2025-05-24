@@ -1,22 +1,15 @@
 import { Flex } from '@/components/common';
-import {
-  addCartItem,
-  deleteCartItem,
-  updateCartItem,
-  useCartContext,
-} from '@/components/features/cart';
-import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
 import styled from '@emotion/styled';
-import AddCartButton from './AddCartButton';
+import DeleteCartButton from './DeleteCartButton';
+import UpdateCartButton from './UpdateCartButton';
 
 interface ProductProps {
   id: string;
-  cartId: string | null;
-  cartCount: number | null;
+  cartId?: string;
+  cartCount: number;
   name: string;
   price: number;
   imageUrl: string;
-  isInCart: boolean;
 }
 
 function ProductRowCard({
@@ -26,53 +19,7 @@ function ProductRowCard({
   name,
   price,
   imageUrl,
-  isInCart,
 }: ProductProps) {
-  const { cartCount: totalCartCount, refetch } = useCartContext();
-  const { showErrorMessage, hideErrorMessage } = useShopErrorContext();
-
-  const handleAddCart = async () => {
-    try {
-      if (totalCartCount >= 50) {
-        showErrorMessage('장바구니는 최대 50개까지 담을 수 있습니다.');
-        return;
-      }
-      await addCartItem(id);
-      refetch();
-      hideErrorMessage();
-    } catch {
-      showErrorMessage('장바구니에 담는 데 실패했습니다.');
-    }
-  };
-
-  const handleDeleteCart = async () => {
-    try {
-      if (!cartId) return;
-
-      await deleteCartItem(cartId);
-      refetch();
-      hideErrorMessage();
-    } catch {
-      showErrorMessage('장바구니에서 삭제하는 데 실패했습니다.');
-    }
-  };
-
-  const handleUpdateCart = async (quantity: number) => {
-    try {
-      if (!cartId) return;
-
-      await updateCartItem(cartId, quantity);
-      refetch();
-      hideErrorMessage();
-    } catch (error) {
-      if (error instanceof Error) {
-        showErrorMessage(error.message);
-      } else {
-        showErrorMessage('장바구니 수량 변경에 실패했습니다.');
-      }
-    }
-  };
-
   return (
     <Container data-testid={`product-${id}`}>
       <PreviewBox>
@@ -92,25 +39,19 @@ function ProductRowCard({
             <DeleteButtonText>삭제</DeleteButtonText>
           </DeleteButton>
         </Flex>
-        {isInCart ? (
-          <UpdateCartBox>
-            {cartCount === 1 ? (
-              <Button onClick={handleDeleteCart}>
-                <img src="./assets/icons/DeleteCart.svg" width={12} />
-              </Button>
-            ) : (
-              <Button onClick={() => handleUpdateCart((cartCount ?? 1) - 1)}>
-                <img src="./assets/icons/Minus.svg" />
-              </Button>
-            )}
-            <Text>{cartCount}</Text>
-            <Button onClick={() => handleUpdateCart((cartCount ?? 1) + 1)}>
-              <img src="./assets/icons/Plus.svg" />
-            </Button>
-          </UpdateCartBox>
-        ) : (
-          <AddCartButton onClick={handleAddCart} />
-        )}
+        <UpdateCartBox>
+          {cartCount === 1 ? (
+            <DeleteCartButton cartId={cartId} />
+          ) : (
+            <UpdateCartButton
+              type="minus"
+              cartId={cartId}
+              cartCount={cartCount}
+            />
+          )}
+          <Text>{cartCount}</Text>
+          <UpdateCartButton type="plus" cartId={cartId} cartCount={cartCount} />
+        </UpdateCartBox>
       </InfoBox>
     </Container>
   );
@@ -181,17 +122,6 @@ const Text = styled.p`
   line-height: 15px;
   text-align: center;
   vertical-align: middle;
-`;
-
-const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-
-  border: 1px solid #0000001a;
-  border-radius: 8px;
 `;
 
 export default ProductRowCard;
