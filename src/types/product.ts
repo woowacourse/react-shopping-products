@@ -18,6 +18,7 @@ export interface Content {
   price: number;
   imageUrl: string;
   category: string;
+  quantity?: number;
 }
 
 export interface Pageable {
