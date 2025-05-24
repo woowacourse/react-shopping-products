@@ -87,6 +87,27 @@ const handlers = [
       );
     },
   ),
+
+  http.delete(addBaseURL('/cart-items/:id'), async ({ params }) => {
+    const { id } = params;
+    const targetIndex = MOCK_CART_ITEMS.findIndex((cart) => cart.id === Number(id));
+    if (targetIndex === -1) {
+      return HttpResponse.json(
+        {
+          errorCode: 'NOT_FOUND',
+          message: '장바구니의 상품을 찾을 수 없습니다. 장바구니 id를 확인해주세요.',
+        },
+        { status: 404 },
+      );
+    }
+
+    MOCK_CART_ITEMS.splice(targetIndex, 1);
+
+    return HttpResponse.json(
+      { message: '장바구니 아이템 수량 변경에 성공했습니다.' },
+      { status: 200 },
+    );
+  }),
 ];
 
 export default handlers;
