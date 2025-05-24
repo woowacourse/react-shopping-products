@@ -1,16 +1,22 @@
+import Button from "../common/Button/Button";
+
+import AddButton from "../AddButton/AddButton";
+import RemoveButton from "../RemoveButton/RemoveButton";
+import useCartItemsId from "../../hooks/useCartItemsId";
+
 import { ProductProps } from "./Product.types";
 
 import * as Styled from "./Product.styled";
 
 import defaultImage from "/defaultImage.png";
 
-import AddButton from "../AddButton/AddButton";
-import RemoveButton from "../RemoveButton/RemoveButton";
-import useCartItemsId from "../../hooks/useCartItemsId";
-import Button from "../common/Button/Button";
-
 function Product({ product, isInCart }: ProductProps) {
-  const { state, addCartItemId, removeCartItemId } = useCartItemsId();
+  const { state, cartItemsId, addCartItemId, removeCartItemId } =
+    useCartItemsId();
+
+  const cartItemId = cartItemsId.find(
+    (item) => item.productId === product.id.toString()
+  );
 
   const handleAddProduct = async (
     event: React.MouseEvent<HTMLButtonElement>
@@ -44,11 +50,10 @@ function Product({ product, isInCart }: ProductProps) {
             <Button color="light" onClick={handleRemoveProduct}>
               -
             </Button>
-            <p>{product.quantity}</p>
+            <p>{cartItemId ? cartItemId.cartQuantity : 0}</p>
             <Button color="light" onClick={handleAddProduct}>
               +
             </Button>
-
             {isInCart ? (
               <RemoveButton
                 handleRemoveProduct={handleRemoveProduct}

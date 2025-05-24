@@ -1,5 +1,47 @@
 import { http, HttpResponse } from "msw";
 
+const cartItems = [
+  {
+    id: 100,
+    quantity: 10,
+    product: {
+      id: 1,
+      name: "에어포스",
+      category: "패션잡화",
+      price: 100000,
+      imageUrl: "string",
+      quantity: "50",
+    },
+  },
+];
+
+const products = [
+  {
+    id: 1,
+    name: "에어포스",
+    category: "패션잡화",
+    price: 100000,
+    imageUrl: "string",
+    quantity: "50",
+  },
+  {
+    id: 2,
+    name: "후드티",
+    category: "패션잡화",
+    price: 50000,
+    imageUrl: "string",
+    quantity: "1",
+  },
+  {
+    id: 3,
+    name: "바나나",
+    category: "식료품",
+    price: 20000,
+    imageUrl: "string",
+    quantity: "5",
+  },
+];
+
 export const handlers = [
   // 상품 목록 조회
   http.get(`${import.meta.env.VITE_BASE_URL}/products`, ({ request }) => {
@@ -11,48 +53,22 @@ export const handlers = [
     const page = parseInt(params.get("page") || "0");
     const size = parseInt(params.get("size") || "20");
 
-    let products = [
-      {
-        id: 1,
-        name: "에어포스",
-        category: "패션잡화",
-        price: 100000,
-        imageUrl: "string",
-        quantity: "50",
-      },
-      {
-        id: 2,
-        name: "후드티",
-        category: "패션잡화",
-        price: 50000,
-        imageUrl: "string",
-        quantity: "1",
-      },
-      {
-        id: 3,
-        name: "바나나",
-        category: "식료품",
-        price: 20000,
-        imageUrl: "string",
-        quantity: "5",
-      },
-    ];
-
+    let filteredProducts = products;
     if (category && category !== "전체") {
-      products = products.filter((p) => p.category === category);
+      filteredProducts = products.filter((p) => p.category === category);
     }
 
     if (sort === "price,asc") {
-      products.sort((a, b) => a.price - b.price);
+      filteredProducts.sort((a, b) => a.price - b.price);
     }
 
     if (sort === "price,desc") {
-      products.sort((a, b) => b.price - a.price);
+      filteredProducts.sort((a, b) => b.price - a.price);
     }
 
     const start = page * size;
     const end = start + size;
-    const data = products.slice(start, end);
+    const data = filteredProducts.slice(start, end);
 
     return HttpResponse.json({
       content: data,
@@ -67,21 +83,6 @@ export const handlers = [
     const page = parseInt(params.get("page") || "0");
     const size = parseInt(params.get("size") || "20");
 
-    const cartItems = [
-      {
-        id: 100,
-        quantity: 10,
-        product: {
-          id: 1,
-          name: "에어포스",
-          category: "패션잡화",
-          price: 100000,
-          imageUrl: "string",
-          quantity: "50",
-        },
-      },
-    ];
-
     const start = page * size;
     const end = start + size;
     const data = cartItems.slice(start, end);
@@ -92,6 +93,55 @@ export const handlers = [
   }),
 
   // 장바구니에 상품 추가
+  http.post(
+    `${import.meta.env.VITE_BASE_URL}/cart-items`,
+    async ({ request }) => {
+      const { productId, quantity } = (await request.json()) as {
+        productId: string;
+        quantity: string;
+      };
+
+      console.log("Adding to cart:", productId, quantity);
+
+      const selectedCartItem = cartItems.find(
+        (item) => item.product.id === Number(productId)
+      );
+
+      console.log(selectedCartItem, cartItems, productId);
+
+      // 장바구니에 이미 있는 상품인 경우
+      if (selectedCartItem) {
+        selectedCartItem.quantity += Number(quantity);
+        return HttpResponse.json(
+          { message: "장바구니에 상품이 추가되었습니다." },
+          { status: 200 }
+        );
+      }
+
+      // 장바구니에 없는 상품인 경우
+      const selectedProduct = products.find(
+        (product) => product.id.toString() === productId
+      );
+      if (!selectedProduct) {
+        return HttpResponse.json(
+          { message: "존재하지 않는 상품입니다." },
+          { status: 404 }
+        );
+      }
+      const newCardItems = {
+        id: cartItems.length + 1,
+        quantity: Number(quantity),
+        product: { ...selectedProduct, quantity: "1" },
+      };
+
+      cartItems.push(newCardItems);
+
+      return HttpResponse.json(
+        { message: "장바구니에 상품이 추가되었습니다." },
+        { status: 200 }
+      );
+    }
+  ),
 
   // 장바구니에 상품 삭제
 ];

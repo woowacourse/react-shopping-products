@@ -81,6 +81,7 @@ const useCartItemsId = () => {
         content.map((cartItem: CartItem) => ({
           productId: cartItem.product.id.toString(),
           cartId: cartItem.id.toString(),
+          cartQuantity: cartItem.quantity,
         }))
       );
       dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
@@ -160,7 +161,12 @@ const useCartItemsId = () => {
     }
   };
 
-  return { state, cartItemsId, addCartItemId, removeCartItemId };
+  return {
+    state,
+    cartItemsId,
+    addCartItemId,
+    removeCartItemId,
+  };
 };
 
 export default useCartItemsId;

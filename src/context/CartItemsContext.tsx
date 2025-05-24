@@ -9,6 +9,7 @@ import {
 type ItemId = {
   cartId: string;
   productId: string;
+  cartQuantity: number;
 };
 
 type CartItemsContextType = {
