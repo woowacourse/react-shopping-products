@@ -37,6 +37,8 @@ export const ERROR_MESSAGES: Record<string, string> = {
   "Insufficient Stock": "재고가 부족합니다.",
   "Invalid Quantity": "수량은 0보다 커야 합니다.",
   "Unhandled Request": "처리할 수 없는 요청입니다.",
+  "Invalid Data": "유효하지 않은 데이터입니다.",
+  "Unprocessable Entity": "처리할 수 없는 엔티티입니다.",
 
   "Cart Fetching Error": "장바구니 정보를 가져오는 중 오류가 발생했습니다.",
   "Product Fetching Error": "제품 정보를 가져오는 중 오류가 발생했습니다.",
@@ -45,6 +47,7 @@ export const ERROR_MESSAGES: Record<string, string> = {
 
   // HTTP 상태 코드 기반 에러 메시지
   "400": "잘못된 요청입니다.",
+  "422": "유효하지 않은 데이터입니다.",
   "401": "인증이 필요합니다.",
   "403": "접근 권한이 없습니다.",
   "404": "요청한 리소스를 찾을 수 없습니다.",

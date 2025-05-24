@@ -4,7 +4,8 @@ import { createApiError } from "../util/createApiError";
 import { getErrorTypeByStatus } from "../util/getErrorTypeByStatus";
 import { getErrorMessage } from "../util/getErrorMessage";
 import { useQueryContext } from "../contexts/QueryContext";
-import { DataKey, DataPoolMap, DataResponseMap } from "../types/data-types";
+import { DataKey, DataPoolMap } from "../types/data-types";
+import { validateByKey } from "@/util/validationTool";
 
 type Opts = Omit<RequestInit, "method" | "signal">;
 type FetchOptions = {
@@ -46,10 +47,12 @@ function useQueryData<K extends DataKey>(
         );
 
       const type = res.headers.get("content-type");
+
       if (!type || !type.includes("application/json")) return;
 
-      const json = (await res.json()) as DataResponseMap[K];
-      setData(key, json.content);
+      const jsonData = await res.json();
+      const validated = validateByKey(key, jsonData);
+      setData(key, validated.content);
     } catch (e) {
       if ((e as DOMException).name !== "AbortError")
         setError(createApiError(e));
