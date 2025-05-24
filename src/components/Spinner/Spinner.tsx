@@ -1,4 +1,4 @@
-import * as styles from "./Spinner.styles";
+import * as styles from "./Spinner.style.tsx";
 
 interface SpinnerProps {
   size?: "small" | "medium" | "large";
@@ -6,13 +6,13 @@ interface SpinnerProps {
 
 const Spinner = ({ size = "medium" }: SpinnerProps) => {
   return (
-    <div css={styles.containerStyle} data-testid="loading-spinner">
+    <div css={styles.containerCss} data-testid="loading-spinner">
       <div
         css={[
-          size === "small" && styles.smallStyle,
-          size === "medium" && styles.mediumStyle,
-          size === "large" && styles.largeStyle,
-          styles.baseSpinnerStyle,
+          size === "small" && styles.smallCss,
+          size === "medium" && styles.mediumCss,
+          size === "large" && styles.largeCss,
+          styles.baseSpinnerCss,
         ]}
       />
     </div>

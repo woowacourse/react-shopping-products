@@ -4,7 +4,7 @@ interface ModalContentProps extends ComponentProps<"div"> {}
 
 function Content({ children, ...props }: ModalContentProps) {
   return (
-    <div css={styles.modalContents} {...props}>
+    <div css={styles.modalContentsCss} {...props}>
       {children}
     </div>
   );

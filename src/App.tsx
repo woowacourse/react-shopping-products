@@ -12,7 +12,7 @@ import { useQueryContext } from "./contexts/QueryContext";
 import useQueryData from "./hooks/useQueryData";
 import { useProductQuery } from "./hooks/useProductQuery";
 
-import * as styles from "./App.style";
+import * as styles from "./App.style.tsx";
 
 import { CATEGORY_OPTIONS, ORDER_BY_OPTIONS } from "./constants/categoryOption";
 

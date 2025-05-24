@@ -20,7 +20,7 @@ export default function QuantityButton({
   cartItemId,
   disableButtonWhenQuantityOne = false,
 }: QuantityButtonProps) {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { loadData: loadCart } = useQueryData("cart-items", cartQueryOptions);
 
   const { showError } = useErrorContext();
@@ -60,14 +60,14 @@ export default function QuantityButton({
 
   const performRequest = useCallback(
     async (action: () => Promise<CartItem | undefined>) => {
-      setLoading(true);
+      setIsLoading(true);
       try {
         await action();
         await loadCart();
       } catch (error) {
         if (error instanceof Error) showError(error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     },
     [loadCart, showError]
@@ -92,19 +92,19 @@ export default function QuantityButton({
   }, [deleteError, increaseError, decreaseError, showError]);
 
   return (
-    <div css={styles.quantityButtonContainer}>
+    <div css={styles.quantityButtonContainerCss}>
       <button
-        css={styles.quantityButton}
+        css={styles.quantityButtonCss}
         onClick={handleMinusClick}
-        disabled={loading || (disableButtonWhenQuantityOne && quantity === 1)}
+        disabled={isLoading || (disableButtonWhenQuantityOne && quantity === 1)}
       >
         -
       </button>
       <span>{quantity}</span>
       <button
-        css={styles.quantityButton}
+        css={styles.quantityButtonCss}
         onClick={handlePlusClick}
-        disabled={loading}
+        disabled={isLoading}
       >
         +
       </button>

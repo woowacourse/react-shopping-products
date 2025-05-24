@@ -23,7 +23,7 @@ export default function Header() {
   const { dataPool, productsQuery, categoryQuery } = useQueryContext();
   const { showError } = useErrorContext();
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isOrderProcessing, setIsOrderProcessing] = useState(false);
   const cartData = dataPool["cart-items"] || [];
   const productURL = useProductQuery(productsQuery, categoryQuery);
 
@@ -57,14 +57,14 @@ export default function Header() {
 
   const handleOrder = async () => {
     try {
-      setIsLoading(true);
+      setIsOrderProcessing(true);
       await orderCart();
       await loadCart();
       await loadProducts();
     } catch (error) {
       if (error instanceof Error) showError(error);
     } finally {
-      setIsLoading(false);
+      setIsOrderProcessing(false);
       setIsCartOpen(false);
     }
   };
@@ -72,13 +72,13 @@ export default function Header() {
   const renderCartContent = () => {
     if (!cartData.length) {
       return (
-        <div css={styles.emptyCartContainer}>
+        <div css={styles.emptyCartContainerCss}>
           <img src="assets/fallback.png" alt="텅빈 카트" />
           근데 장바구니가 텅 비었나부렁!
-          <div css={styles.buttonContainer}>
+          <div css={styles.buttonContainerCss}>
             <button
               onClick={() => setIsCartOpen(false)}
-              css={styles.closeButton}
+              css={styles.closeButtonCss}
             >
               닫기
             </button>
@@ -91,18 +91,21 @@ export default function Header() {
       <>
         <CartList cartData={cartData} />
 
-        <div css={styles.totalPrice}>
+        <div css={styles.totalPriceCss}>
           <label>총 가격</label>
           <span>{totalPrice.toLocaleString("ko-KR")}원</span>
         </div>
-        <div css={styles.buttonContainer}>
-          <button onClick={() => setIsCartOpen(false)} css={styles.closeButton}>
+        <div css={styles.buttonContainerCss}>
+          <button
+            onClick={() => setIsCartOpen(false)}
+            css={styles.closeButtonCss}
+          >
             닫기
           </button>
           <button
             onClick={handleOrder}
-            css={styles.orderButton}
-            disabled={isLoading}
+            css={styles.orderButtonCss}
+            disabled={isOrderProcessing}
           >
             주문하기
           </button>
@@ -112,11 +115,11 @@ export default function Header() {
   };
 
   return (
-    <header css={styles.header}>
+    <header css={styles.headerCss}>
       <p>SHOP</p>
 
       <button
-        css={styles.cartIcon}
+        css={styles.cartIconCss}
         onClick={() => setIsCartOpen(true)}
         disabled={!cartData.length}
       >
