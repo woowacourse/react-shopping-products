@@ -6,7 +6,7 @@ import Cart from "/cart.svg";
 
 interface Props {
   cartItems: CartItems | null;
-  cartItemCount: number;
+  cartItemsCount: number;
   quantityByProductId: (productId: number) => number;
   increaseItemQuantity: (productId: number) => Promise<void>;
   decreaseItemQuantity: (productId: number) => Promise<void>;
@@ -16,7 +16,7 @@ interface Props {
 
 const ShopHeader = ({
   cartItems,
-  cartItemCount,
+  cartItemsCount,
   quantityByProductId,
   increaseItemQuantity,
   decreaseItemQuantity,
@@ -43,7 +43,9 @@ const ShopHeader = ({
       <S.Logo href="/">SHOP</S.Logo>
       <S.CartButton onClick={handleOpenCart}>
         <S.CartIcon src={Cart} alt="장바구니" />
-        {!!cartItemCount && <S.CartItemCount>{cartItemCount}</S.CartItemCount>}
+        {!!cartItemsCount && (
+          <S.CartItemsCount>{cartItemsCount}</S.CartItemsCount>
+        )}
       </S.CartButton>
     </S.Header>
   );

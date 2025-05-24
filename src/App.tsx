@@ -38,7 +38,7 @@ function App() {
       <S.LayoutWrapper id="custom-root">
         <ShopHeader
           cartItems={cartItems}
-          cartItemCount={cartItemsCount}
+          cartItemsCount={cartItemsCount}
           quantityByProductId={quantityByProductId}
           increaseItemQuantity={increaseItemQuantity}
           decreaseItemQuantity={decreaseItemQuantity}

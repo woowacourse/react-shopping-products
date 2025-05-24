@@ -31,7 +31,7 @@ export const CartIcon = styled.img`
   -webkit-user-drag: none;
 `;
 
-export const CartItemCount = styled.div`
+export const CartItemsCount = styled.div`
   position: absolute;
   right: 24px;
   bottom: 12px;
