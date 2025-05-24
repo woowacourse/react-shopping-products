@@ -47,6 +47,7 @@ export const StyledTitle = styled.div`
   font-weight: 700;
   font-size: 18px;
   line-height: 100%;
+  margin: 10px 0;
 `;
 export const StyledDescription = styled.div`
   font-weight: 500;
