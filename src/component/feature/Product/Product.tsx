@@ -1,6 +1,5 @@
 import { postCartItem } from "../../../api/cartItem";
 import { CartItemType } from "../../../types/cartItem";
-
 import Button from "../../unit/Button/Button";
 import { QuantitySelector } from "../../unit/QuantitySelector/QuantitySelector";
 import {
@@ -67,7 +66,16 @@ export default function Product({
           <p css={productNameLayout}>{name}</p>
           <p css={priceLayout}>{price}</p>
         </div>
-        {isSelected ? <QuantitySelector /> : AddToCartButton()}
+        {isSelected ? (
+          <></>
+        ) : (
+          // <QuantitySelector
+          //   quantity={quantity}
+          //   cartId={id}
+          //   onChange={onChange}
+          // />
+          AddToCartButton()
+        )}
       </div>
     </div>
   );

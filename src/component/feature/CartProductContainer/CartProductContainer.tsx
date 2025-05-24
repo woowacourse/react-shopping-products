@@ -1,0 +1,48 @@
+import { useCartContext } from "../../../hook/CartContext";
+import { ProductType } from "../../../types/product";
+import { Line } from "../../unit/Line/Line";
+import { CartProduct } from "../CartProduct/CartProduct";
+import {
+  CartProductContainerLayout,
+  PaymentsLabel,
+  PaymentsLayout,
+  PaymentsValue,
+} from "./CartProductContainer.style";
+
+interface CartProductContainerProps {
+  productList: ProductType[];
+}
+export default function CartProductContainer({
+  productList,
+}: CartProductContainerProps) {
+  const { cartItemList, dispatch } = useCartContext();
+
+  return (
+    <>
+      <div css={CartProductContainerLayout}>
+        {cartItemList.map((cartItem) => {
+          const cartProduct = productList.filter(
+            (product) => cartItem.product.id === product.id
+          );
+          if (cartProduct.length === 0) return;
+          return (
+            <CartProduct
+              key={cartProduct[0].id}
+              id={cartItem.id}
+              imageUrl={cartProduct[0].imageUrl}
+              name={cartProduct[0].name}
+              price={cartProduct[0].price}
+              quantity={cartItem.quantity}
+              onChange={() => dispatch({ type: "update" })}
+            />
+          );
+        })}
+      </div>
+      <Line />
+      <div css={PaymentsLayout}>
+        <p css={PaymentsLabel}> 총 결제 금액</p>
+        <p css={PaymentsValue}>95,000원</p>
+      </div>
+    </>
+  );
+}

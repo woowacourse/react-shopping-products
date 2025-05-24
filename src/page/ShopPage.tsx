@@ -1,14 +1,17 @@
+import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
-import { getCartItems } from "../api/cartItem";
 import getProducts from "../api/product";
-import Header from "../component/layout/Header/Header";
-import Main from "../component/layout/Main/Main";
+import CartProductContainer from "../component/feature/CartProductContainer/CartProductContainer";
+import { Modal } from "../component/feature/Modal/Modal";
 import ProductContainer from "../component/feature/ProductContainer/ProductContainer";
 import TitleContainer from "../component/feature/TitleContainer/titleContainer";
+import Header from "../component/layout/Header/Header";
+import Main from "../component/layout/Main/Main";
+import Button from "../component/unit/Button/Button";
 import Selector from "../component/unit/Selector/Selector";
 import Toast from "../component/unit/Toast/Toast";
 import { CategoryOption, FilterOption } from "../constants";
-import { CartItemType } from "../types/cartItem";
+import { useCartContext } from "../hook/CartContext";
 import { ProductType } from "../types/product";
 import {
   cartIcon,
@@ -16,17 +19,8 @@ import {
   cartItemCount,
   loadingLayout,
   pageLayout,
-  PaymentsLabel,
-  PaymentsLayout,
-  PaymentsValue,
   selectorBoxLayout,
 } from "./ShopPage.style";
-import { Modal } from "../component/feature/Modal/Modal";
-import Button from "../component/unit/Button/Button";
-import { CartProduct } from "../component/feature/CartProduct/CartProduct";
-import { CartProductListLayout } from "../component/feature/CartProduct/CartProduct.style";
-import { Line } from "../component/unit/Line/Line";
-import { css } from "@emotion/react";
 
 const dropdownOptions: CategoryOption[] = ["전체", "식료품", "패션잡화"];
 const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
@@ -35,25 +29,13 @@ export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>("전체");
   const [filterValue, setFilterValue] = useState<FilterOption>("낮은 가격순");
   const [productList, setProductList] = useState<ProductType[]>([]);
-  const [cartItemList, setCartItemList] = useState<CartItemType[]>([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectedProductCount = cartItemList.length;
+  const { cartItemList, dispatch } = useCartContext();
 
-  const updateCardItemList = async () => {
-    (async () => {
-      try {
-        const response = await getCartItems({
-          sortBy: "asc",
-        });
-        setCartItemList(response.content);
-      } catch (e) {
-        setIsError(true);
-      }
-    })();
-  };
+  const selectedProductCount = cartItemList.length;
 
   const handleClose = () => {
     setIsOpen(false);
@@ -75,10 +57,6 @@ export default function ShopPage() {
       }
     })();
   }, [filterValue, categoryValue]);
-
-  useEffect(() => {
-    updateCardItemList();
-  }, []);
 
   return (
     <div
@@ -142,7 +120,7 @@ export default function ShopPage() {
               <ProductContainer
                 products={productList}
                 cartItemList={cartItemList}
-                onChange={updateCardItemList}
+                onChange={() => dispatch({ type: "update" })}
               />
             </>
           )}
@@ -163,32 +141,7 @@ export default function ShopPage() {
             장바구니에 추가된 목록이 없습니다. <br /> 상품을 먼저 추가해주세요
           </div>
         ) : (
-          <>
-            <div css={CartProductListLayout}>
-              {cartItemList.map((cartItem) => {
-                const cartProduct = productList.filter(
-                  (product) => cartItem.product.id === product.id
-                );
-                if (cartProduct.length === 0) return;
-                return (
-                  <CartProduct
-                    key={cartProduct[0].id}
-                    id={cartItem.id}
-                    imageUrl={cartProduct[0].imageUrl}
-                    name={cartProduct[0].name}
-                    price={cartProduct[0].price}
-                    quantity={cartItem.quantity}
-                    onChange={updateCardItemList}
-                  />
-                );
-              })}
-            </div>
-            <Line />
-            <div css={PaymentsLayout}>
-              <p css={PaymentsLabel}> 총 결제 금액</p>
-              <p css={PaymentsValue}>95,000원</p>
-            </div>
-          </>
+          <CartProductContainer productList={productList} />
         )}
       </Modal>
     </div>

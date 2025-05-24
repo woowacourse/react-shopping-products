@@ -1,13 +1,5 @@
 import { css } from "@emotion/react";
 
-const CartProductListLayout = css`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  max-height: 208px;
-  overflow-y: scroll;
-`;
-
 const CartProductLayout = css`
   display: flex;
   gap: 16px;
@@ -46,7 +38,6 @@ const deleteButton = css`
 `;
 
 export {
-  CartProductListLayout,
   CartProductLayout,
   ProductImg,
   TitleLayout,
