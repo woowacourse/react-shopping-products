@@ -6,8 +6,8 @@ export const ErrorToast = styled.div`
   background-color: #ffc9c9;
   font-size: 12px;
   font-weight: 500;
-  position: absolute;
-  top: 0;
+  position: fixed;
+  bottom: 0;
   left: 0;
   text-align: center;
   line-height: 40px;

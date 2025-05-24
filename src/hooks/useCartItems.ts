@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import { CartItemsAPI } from "../apis/cartItems";
 import { isErrorResponse } from "../utils/typeGuard";
 import { CartItems } from "../apis/types/cartItems";
+import { Products } from "../apis/types/products";
 
-const useCartItems = () => {
+interface UseCartItemsProps {
+  products: Products | null;
+}
+
+const useCartItems = ({ products }: UseCartItemsProps) => {
   const [cartItems, setCartItems] = useState<CartItems | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -29,7 +34,19 @@ const useCartItems = () => {
       quantity: productInfo.quantity,
     })) ?? [];
 
+  const getProductStock = (productId: number): number => {
+    const product = products?.content.find((p) => p.id === productId);
+    return product?.quantity ?? 0;
+  };
+
   const handleAddToCart = async (productId: number) => {
+    const stockQuantity = getProductStock(productId);
+
+    if (stockQuantity <= 0) {
+      setErrorMessage("품절된 상품입니다.");
+      return;
+    }
+
     await CartItemsAPI.post(productId);
     await refreshCartItems();
   };
@@ -38,8 +55,14 @@ const useCartItems = () => {
     const currentItem = cartItemInfo.find(
       (item) => item.productId === productId
     );
+    const stockQuantity = getProductStock(productId);
 
     if (currentItem) {
+      if (currentItem.quantity >= stockQuantity) {
+        setErrorMessage("재고 수량을 초과할 수 없습니다.");
+        return;
+      }
+
       await CartItemsAPI.updateQuantity(
         currentItem.cartId,
         currentItem.quantity + 1

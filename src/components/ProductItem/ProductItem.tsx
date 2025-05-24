@@ -43,6 +43,7 @@ const ProductItem = ({
         </S.ProductPrice>
         {isInCart ? (
           <QuantityController
+            stockQuantity={quantity}
             cartQuantity={cartQuantity}
             onIncrease={() => onQuantityIncrease(id)}
             onDecrease={() => onQuantityDecrease(id)}

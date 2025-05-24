@@ -4,20 +4,24 @@ import PlusIcon from "./components/PlusIcon/PlusIcon";
 
 interface QuantityControllerProps {
   cartQuantity: number;
+  stockQuantity: number;
   onIncrease: () => void;
   onDecrease: () => void;
 }
 
 const QuantityController = ({
   cartQuantity,
+  stockQuantity,
   onIncrease,
   onDecrease,
 }: QuantityControllerProps) => {
+  const isMaxQuantity = cartQuantity >= stockQuantity;
+
   return (
     <QuantityControllerContainer>
       <MinusIcon onClick={onDecrease} />
       <QuantityText>{cartQuantity}</QuantityText>
-      <PlusIcon onClick={onIncrease} />
+      <PlusIcon onClick={onIncrease} disabled={isMaxQuantity} />
     </QuantityControllerContainer>
   );
 };

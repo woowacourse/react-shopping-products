@@ -25,7 +25,7 @@ const AppContent = () => {
     handleAddToCart,
     handleQuantityIncrease,
     handleQuantityDecrease,
-  } = useCartItems();
+  } = useCartItems({ products });
 
   const errorMessage = productError || cartError;
   const setErrorMessage = productError ? setProductError : setCartError;

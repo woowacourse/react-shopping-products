@@ -1,15 +1,23 @@
-const PlusIcon = ({ onClick }: { onClick: () => void }) => {
+interface PlusIconProps {
+  onClick?: () => void;
+  disabled?: boolean;
+}
+
+const PlusIcon = ({ onClick, disabled = false }: PlusIconProps) => {
   return (
     <svg
       onClick={onClick}
       role="button"
-      tabIndex={0}
+      tabIndex={disabled ? -1 : 0}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      style={{ cursor: "pointer" }}
+      style={{
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.5 : 1,
+      }}
     >
       <rect width="24" height="24" rx="8" fill="white" />
       <rect
