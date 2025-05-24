@@ -17,11 +17,11 @@ export const createApiUrl = (
       searchParams.append(key, String(value));
     }
   }
-  const url = `${SHOP_API.baseUrl}/${endpoint}`
-    .replace(/\/+/g, "/")
-    .replace(":/", "://");
 
-  return `${url}?${searchParams.toString()}`;
+  const baseUrl = `${SHOP_API.baseUrl}/${endpoint}`;
+  const query = searchParams.toString();
+
+  return query ? `${baseUrl}?${query}` : baseUrl;
 };
 
 export const fetchWithErrorHandling = async <T>(

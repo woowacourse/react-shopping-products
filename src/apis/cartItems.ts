@@ -19,6 +19,7 @@ export const CartItemsAPI = {
     const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems, params);
     return await fetchWithErrorHandling<CartItems>(apiUrl, options);
   },
+
   post: async (productId: number) => {
     const options: RequestInit = {
       method: "POST",
@@ -37,6 +38,9 @@ export const CartItemsAPI = {
   },
 
   updateQuantity: async (cartId: number, quantity: number) => {
+    const endpoint = `${SHOP_API.endpoint.cartItems}/${cartId}`;
+    const apiUrl = createApiUrl(endpoint);
+
     const options: RequestInit = {
       method: "PATCH",
       headers: {
@@ -48,11 +52,13 @@ export const CartItemsAPI = {
       }),
     };
 
-    const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
     return await fetchWithErrorHandling(apiUrl, options, false);
   },
 
   delete: async (cartId: number) => {
+    const endpoint = `${SHOP_API.endpoint.cartItems}/${cartId}`;
+    const apiUrl = createApiUrl(endpoint);
+
     const options: RequestInit = {
       method: "DELETE",
       headers: {
@@ -60,7 +66,6 @@ export const CartItemsAPI = {
       },
     };
 
-    const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
     return await fetchWithErrorHandling(apiUrl, options, false);
   },
 };
