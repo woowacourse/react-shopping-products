@@ -10,3 +10,8 @@ export interface AddCartItems {
   productId: number;
   quantity: number;
 }
+
+export interface UpdateCartItemQuantity {
+  id: number;
+  quantity: number;
+}

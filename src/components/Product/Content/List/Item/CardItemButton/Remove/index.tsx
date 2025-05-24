@@ -1,22 +1,22 @@
-import Button from "@/components/Button";
-import removeCartItemIcon from "@/assets/icons/remove-cart-item.svg";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import useMutation from "@/hooks/useMutation";
 import useToast from "@/hooks/useToast";
 import { useCartItemContext } from "@/contexts/CartItemProvider";
+import MinusIcon from "@assets/icons/minus.svg";
+import * as S from "./RemoveCartItemButton.styled";
 
 interface RemoveCartItemButtonProps {
-  id: number;
+  cartItemId: number;
 }
 
-function RemoveCartItemButton({ id }: RemoveCartItemButtonProps) {
+function RemoveCartItemButton({ cartItemId }: RemoveCartItemButtonProps) {
   const { mutate: removeFromCartMutate, isLoading } = useMutation(() =>
-    removeCartItem(id)
+    removeCartItem(cartItemId)
   );
   const { refetchCartItems } = useCartItemContext();
   const { addToast } = useToast();
 
-  const handleRemoveCartItemButtonClick = () => {
+  const onRemoveCartItem = () => {
     removeFromCartMutate(undefined, {
       onSuccess: () => {
         refetchCartItems();
@@ -32,15 +32,9 @@ function RemoveCartItemButton({ id }: RemoveCartItemButtonProps) {
 
   return (
     <>
-      <Button
-        variant="secondary"
-        type="button"
-        onClick={handleRemoveCartItemButtonClick}
-        disabled={isLoading}
-      >
-        <img src={removeCartItemIcon} alt="장바구니 빼기" />
-        빼기
-      </Button>
+      <S.Button type="button" onClick={onRemoveCartItem} disabled={isLoading}>
+        <img src={MinusIcon} alt="장바구니에서 제거" />
+      </S.Button>
     </>
   );
 }
