@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { expect, Mock, vi } from "vitest";
-import { CartItemsAPI } from "../apis/cartItems";
-import useCartItems from "../hooks/useCartItems";
+import { CartItemsAPI } from "../entities/cartItem/api/cartItems";
+import useCartItems from "../shared/hooks/useCartItems";
 import { act } from "react";
 
 vi.mock("../apis/products", () => ({

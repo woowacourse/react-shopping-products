@@ -1,4 +1,4 @@
-import { Products } from "../../types/products";
+import { Products } from "../../entities/product/model/types";
 
 export const productsData: Products = {
   content: [

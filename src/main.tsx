@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { ModalProvider } from "./contexts/ModalContext.tsx";
-import { ToastProvider } from "./contexts/ToastContext.tsx";
+import { ModalProvider } from "./app/providers/ModalContext.tsx";
+import { ToastProvider } from "./app/providers/ToastContext.tsx";
 
 async function enableMocking() {
   const { worker } = await import("./mocks/browser");

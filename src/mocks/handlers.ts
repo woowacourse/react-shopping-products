@@ -1,6 +1,6 @@
 import { delay, http, HttpResponse } from "msw";
-import { SHOP_API } from "../apis/configs";
-import { CategoryOptionsKey } from "../constants/filter";
+import { SHOP_API } from "../shared/api/config";
+import { CategoryOptionsKey } from "../shared/config/filter";
 import { cartItemsData } from "./data/cartItems";
 import { productsData } from "./data/products";
 
