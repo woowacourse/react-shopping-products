@@ -29,7 +29,9 @@ export default function Navbar({cartQuantity}: NavbarProps) {
       <S.NavbarContainer>
         <S.Logo>SHOP</S.Logo>
         <S.CartIconContainer onClick={() => setIsOpen(true)}>
-          <S.CartQuantity>{cartQuantity}</S.CartQuantity>
+          <S.CartQuantity data-testid="cart-quantity">
+            {cartQuantity}
+          </S.CartQuantity>
           <S.CartIcon src="./cartIcon.svg" />
         </S.CartIconContainer>
       </S.NavbarContainer>
