@@ -3,8 +3,10 @@ import {
   descriptionLayout,
   imgLayout,
   priceLayout,
+  productImg,
   productLayout,
   productNameLayout,
+  soldOutLayout,
 } from "./Product.style";
 
 interface ProductProps {
@@ -12,6 +14,7 @@ interface ProductProps {
   imageUrl: string;
   name: string;
   price: number;
+  maxQuantity?: number;
   children: React.ReactNode;
 }
 
@@ -20,11 +23,15 @@ export default function Product({
   imageUrl,
   name,
   price,
+  maxQuantity,
   children,
 }: ProductProps) {
   return (
     <div data-testid="product-component" id={id.toString()} css={productLayout}>
-      <img css={imgLayout} src={imageUrl ?? "./default-img.png"} />
+      <div css={imgLayout}>
+        {maxQuantity === 0 && <div css={soldOutLayout}>품절</div>}
+        <img css={productImg} src={imageUrl ?? "./default-img.png"} />
+      </div>
       <div css={contentLayout}>
         <div css={descriptionLayout}>
           <p css={productNameLayout}>{name}</p>

@@ -28,6 +28,14 @@ export const mockProductResponse: ProductResponse = {
       category: "식료품",
       quantity: 5,
     },
+    {
+      id: 34,
+      name: "잠이와요 잠이와 ........",
+      price: 999000000000,
+      imageUrl: "https://img.stibee.com/61433_1660088998.jpeg",
+      category: "식료품",
+      quantity: 0,
+    },
   ],
   pageable: {
     pageNumber: 0,

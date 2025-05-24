@@ -49,6 +49,7 @@ export default function ProductContainer() {
             imageUrl={product.imageUrl}
             name={product.name}
             price={product.price}
+            maxQuantity={product.quantity ?? 10000}
           >
             {isSelected ? (
               <QuantitySelector

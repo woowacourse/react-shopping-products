@@ -103,7 +103,7 @@
   ```
 
 - 배포
-- [ ] 리뷰어가 쉽게 확인할 수 있도록, 개발환경 뿐만 아니라, 프로덕션 환경에서도 MSW 를 start 한다.
+- [x] 리뷰어가 쉽게 확인할 수 있도록, 개발환경 뿐만 아니라, 프로덕션 환경에서도 MSW 를 start 한다.
 
 - Library
 - [x] 스타일링에는 CSS Module, styled-components, emotion 중 한 가지를 선택하여 사용한다.

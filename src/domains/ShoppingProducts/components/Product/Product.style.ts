@@ -12,9 +12,30 @@ const productLayout = css`
 `;
 
 const imgLayout = css`
+  position: relative;
   border-radius: 8px 8px 0 0;
   width: 100%;
   height: 50%;
+`;
+
+const productImg = css`
+  width: 100%;
+  height: 100%;
+`;
+
+const soldOutLayout = css`
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #00000059;
+
+  color: white;
+  font-weight: 600;
+  font-size: 35px;
 `;
 
 const contentLayout = css`
@@ -48,6 +69,8 @@ const priceLayout = css`
 export {
   productLayout,
   imgLayout,
+  productImg,
+  soldOutLayout,
   contentLayout,
   descriptionLayout,
   productNameLayout,
