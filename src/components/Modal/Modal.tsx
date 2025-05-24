@@ -1,4 +1,4 @@
-import { useKeyPress } from "../../../../hook/useKeyPress";
+import { useKeyPress } from "../../hooks/useKeyPress";
 import {
   ModalBackdrop,
   ModalContainer,

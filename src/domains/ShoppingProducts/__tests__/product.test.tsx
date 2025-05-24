@@ -1,5 +1,5 @@
-import { server } from "../mock/node";
-import { ProductType } from "../types/product";
+import { server } from "../../../mocks/node";
+import { ProductType } from "../apis/types/product";
 
 server.listen();
 

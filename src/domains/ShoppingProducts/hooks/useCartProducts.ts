@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getCartItems } from "../api/cartItem";
+import { getCartItems } from "../apis/cartItem";
 import { ContextAction } from "../context/ShoppingContext";
 
 export function useCartProducts(

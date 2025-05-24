@@ -2,12 +2,12 @@ vi.mock("../api/product");
 vi.mock("../api/cartItem");
 
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import ShopPage from "../domains/ShoppingProducts/page";
+import ShopPage from "../page";
 import { vi, Mock } from "vitest";
 import * as productApi from "../apis/product";
 import * as cartApi from "../apis/cartItem";
-import { mockProductResponse } from "../domains/ShoppingProducts/apis/mocks/mockProductResponse";
-import { ContextProvider } from "../domains/ShoppingProducts/context/ContextProvider";
+import { mockProductResponse } from "../apis/mocks/mockProductResponse";
+import { ContextProvider } from "../context/ContextProvider";
 
 describe("장바구니 추가 기능 테스트", () => {
   beforeEach(() => {

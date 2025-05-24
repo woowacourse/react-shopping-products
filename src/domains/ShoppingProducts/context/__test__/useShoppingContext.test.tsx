@@ -3,13 +3,13 @@ vi.mock("../../api/cartItem");
 
 import { render, screen, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
-import * as productApi from "../apis/product";
-import * as cartApi from "../apis/cartItem";
-import ShopPage from "../domains/ShoppingProducts/page";
-import { mockCartItemResponse } from "../domains/ShoppingProducts/apis/mocks/mockCartItemResponse";
-import { mockProductResponse } from "../domains/ShoppingProducts/apis/mocks/mockProductResponse";
-import CartProductContainer from "../domains/ShoppingProducts/components/CartProductContainer/CartProductContainer";
-import { ContextProvider } from "../domains/ShoppingProducts/context/ContextProvider";
+import * as productApi from "../../apis/product";
+import * as cartApi from "../../apis/cartItem";
+import ShopPage from "../../page";
+import { mockCartItemResponse } from "../../apis/mocks/mockCartItemResponse";
+import { mockProductResponse } from "../../apis/mocks/mockProductResponse";
+import CartProductContainer from "../../components/CartProductContainer/CartProductContainer";
+import { ContextProvider } from "../ContextProvider";
 
 describe("useContext 훅을 이용해서 productList를 관리한다.", () => {
   beforeEach(() => {

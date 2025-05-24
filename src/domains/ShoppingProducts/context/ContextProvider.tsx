@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
-import { useCartProducts } from "../hook/useCartProducts";
-import { useProducts } from "../hook/useProducts";
+import { useCartProducts } from "../hooks/useCartProducts";
+import { useProducts } from "../hooks/useProducts";
 import {
   ContextAction,
   ContextState,

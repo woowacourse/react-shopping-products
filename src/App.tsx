@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import ShopPage from "./domains/ShoppingProducts/page";
 import GlobalStyle from "./GlobalStyle";
-import { ContextProvider } from "./context/ContextProvider";
+import { ContextProvider } from "./domains/ShoppingProducts/context/ContextProvider";
 
 function App() {
   return (

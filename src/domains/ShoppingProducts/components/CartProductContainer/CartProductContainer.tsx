@@ -1,4 +1,4 @@
-import { useShoppingContext } from "../../../../context/useShoppingContext";
+import { useShoppingContext } from "../../context/useShoppingContext";
 import { Line } from "../../../../components/Line/Line";
 import { CartProduct } from "../CartProduct/CartProduct";
 import {

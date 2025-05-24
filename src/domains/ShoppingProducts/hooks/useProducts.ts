@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { getProducts } from "../api/product";
-import { CategoryOption, FilterOption } from "../constants";
+
+import { CategoryOption, FilterOption } from "../../../constants";
 import { ContextAction } from "../context/ShoppingContext";
+import { getProducts } from "../apis/product";
 
 export function useProducts(
   dispatch: React.Dispatch<ContextAction>,

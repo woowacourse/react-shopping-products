@@ -1,11 +1,11 @@
-import { postCartItem } from "../../../../api/cartItem";
-import { useShoppingContext } from "../../../../context/useShoppingContext";
+import { useShoppingContext } from "../../context/useShoppingContext";
 import { loadingLayout } from "../../page/index.style";
-import { CartItemType } from "../../../../types/cartItem";
+import { CartItemType } from "../../apis/types/cartItem";
 import Button from "../../../../components/Button/Button";
-import { QuantitySelector } from "../../../../components/QuantitySelector/QuantitySelector";
+import { QuantitySelector } from "../QuantitySelector/QuantitySelector";
 import Product from "../Product/Product";
 import { ProductContainerLayout } from "./ProductContainer.style";
+import { postCartItem } from "../../apis/cartItem";
 
 export default function ProductContainer() {
   const { cartItemList, productList, errorProduct, loadingProduct, dispatch } =

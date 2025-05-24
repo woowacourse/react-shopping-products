@@ -1,6 +1,6 @@
-import { CategoryOption, FilterOption } from "../constants";
-import { CartItemType } from "../types/cartItem";
-import { ProductType } from "../types/product";
+import { CategoryOption, FilterOption } from "../../../constants";
+import { CartItemType } from "../apis/types/cartItem";
+import { ProductType } from "../apis/types/product";
 import React, { createContext } from "react";
 
 export interface ContextState {
