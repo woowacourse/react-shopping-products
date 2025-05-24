@@ -1,4 +1,3 @@
-import { Modal } from "hoyychoi-modal-component";
 import { css } from "@emotion/react";
 import Select from "../components/common/Select";
 import Header from "../components/Header";
@@ -8,12 +7,13 @@ import Text from "../components/common/Text";
 import useProducts from "../hooks/useProducts";
 import useCartItems from "../hooks/useCartItems";
 import { useState } from "react";
-import { createPortal } from "react-dom";
+import CartModal from "../components/Cart/CartModal";
 
 const ProductPage = () => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const { products, filter, setFilter, sort, setSort } = useProducts();
   const { cartItems, handleCartItem, cartItemsByProductId } = useCartItems();
+
   return (
     <>
       <Header shoppingCount={cartItems?.length} handleCartClick={() => setIsCartModalOpen(true)} />
@@ -29,22 +29,7 @@ const ProductPage = () => {
           handleCartItem={handleCartItem}
         />
       </div>
-      {isCartModalOpen &&
-        createPortal(
-          <Modal show={isCartModalOpen} onHide={() => setIsCartModalOpen(false)}>
-            <Modal.BackDrop />
-            <Modal.Container size="large">
-              <Modal.Header className="blue" style={{ color: "red" }} closeButton>
-                <Modal.Title>Title</Modal.Title>
-              </Modal.Header>
-              <Modal.Body className="blue" style={{ color: "red" }}>
-                body입니다.
-              </Modal.Body>
-              <Modal.Footer>footer입니다.</Modal.Footer>
-            </Modal.Container>
-          </Modal>,
-          document.body,
-        )}
+      <CartModal isCartModalOpen={isCartModalOpen} handleCartModalClose={() => setIsCartModalOpen(false)} />
     </>
   );
 };
