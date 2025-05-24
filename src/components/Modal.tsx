@@ -30,7 +30,7 @@ const Modal = ({ open, onClose, title, children }: ModalProps) => {
   return (
     <ModalContainer ref={modalRef} onClick={handleClickOutside} onClose={onClose}>
       <Title>{title}</Title>
-      {children}
+      <ModalContent>{children}</ModalContent>
       <Button type="button" id="closeButton" name="닫기" variant="bigBlack" onClick={onClose}>
         닫기
       </Button>
@@ -46,10 +46,11 @@ const ModalContainer = styled.dialog`
 
   width: 100%;
   max-width: var(--max-width-container);
-  max-height: 50%;
+  max-height: 50vh;
 
   display: flex;
   flex-direction: column;
+  gap: 24px;
 
   border: none;
   border-radius: 8px;
@@ -57,6 +58,11 @@ const ModalContainer = styled.dialog`
 
 const Title = styled.h2`
   color: var(--color-black);
-  font-size: var(--font-size-subtitle);
-  font-weight: var(--font-weight-subtitle);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-title);
+`;
+
+const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
 `;

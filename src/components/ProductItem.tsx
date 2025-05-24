@@ -47,7 +47,7 @@ const ProductItem = ({
               type="button"
               id="add"
               name="추가"
-              variant="smallSquareWhite"
+              variant="smallWhite"
               onClick={() => handleIncreaseQuantity(product.id, quantityInCart + 1)}
             >
               <ControllerIcon src={AddIcon} alt="아이템 수량 추가" />
@@ -57,7 +57,7 @@ const ProductItem = ({
               type="button"
               id="subtract"
               name="감소"
-              variant="smallSquareWhite"
+              variant="smallWhite"
               onClick={() => handleDecreaseQuantity(product.id, quantityInCart - 1)}
             >
               <ControllerIcon src={SubIcon} alt="아이템 수량 감소" />
