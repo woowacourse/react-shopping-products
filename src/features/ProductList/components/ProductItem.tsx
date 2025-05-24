@@ -4,11 +4,10 @@ import { Flex } from '@/shared/components/Flex';
 import { IconButton } from '@/shared/components/IconButton';
 import { Text } from '@/shared/components/Text';
 
-import NoImage from '../../../../public/NoImage.svg';
 import { Product } from '../types/Product';
 import ItemCounter from './ItemCounter';
 
-const FALLBACK_IMAGE_SRC = NoImage;
+const FALLBACK_IMAGE_SRC = '/NoImage.svg';
 
 type ProductItemProps = {
   isChecked: boolean;

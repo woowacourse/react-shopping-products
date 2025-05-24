@@ -9,7 +9,6 @@ import {
   StyledOptionsContainer,
 } from './Select.styled';
 
-import Arrow from '../../../../public/arrow.png';
 import { Text } from '../Text';
 
 export type Props = {
@@ -30,7 +29,7 @@ export const Select = ({ selectedOptions, maxWidth = '200px', children, ...props
         <Text type="Body">{selectedOptions ?? '전체'}</Text>
         <StyledSelectIcon
           isOpen={isOpen}
-          src={Arrow}
+          src={'/arrow.png'}
           alt="arrow"
           css={css`
             padding: 2px 0 0 0;
