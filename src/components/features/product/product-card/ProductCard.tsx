@@ -14,6 +14,7 @@ interface ProductProps {
   price: number;
   imageUrl: string;
   isInCart: boolean;
+  quantity: number;
 }
 
 function ProductCard({
@@ -24,9 +25,11 @@ function ProductCard({
   price,
   imageUrl,
   isInCart,
+  quantity,
 }: ProductProps) {
   const { cartCount: totalCartCount, refetch } = useCartContext();
   const { showErrorMessage, hideErrorMessage } = useShopErrorContext();
+  console.log(name, quantity);
 
   const handleAddCart = async () => {
     try {
@@ -70,6 +73,11 @@ function ProductCard({
     <Container data-testid={`product-${id}`}>
       <PreviewBox>
         <PreviewImage src={imageUrl} />
+        {quantity === 0 && (
+          <SoldOutOverlay>
+            <SoldOutText>품절</SoldOutText>
+          </SoldOutOverlay>
+        )}
       </PreviewBox>
       <InfoBox>
         <Flex flexDirection="column" gap="sm" alignItems="flex-start">
@@ -104,12 +112,31 @@ const Container = styled(Flex)`
 const PreviewBox = styled.div`
   width: 100%;
   height: 112px;
+  position: relative;
 `;
 
 const PreviewImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+const SoldOutOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 112px;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SoldOutText = styled.p`
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
 `;
 
 const InfoBox = styled(Flex)`

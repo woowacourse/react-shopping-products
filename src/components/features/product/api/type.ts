@@ -28,6 +28,7 @@ export interface ProductContent {
   price: number;
   imageUrl: null | string;
   category: Category | null;
+  quantity: number;
 }
 
 export type Category = '식료품' | '패션잡화';

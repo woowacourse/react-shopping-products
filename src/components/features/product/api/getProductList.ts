@@ -28,5 +28,6 @@ export async function getProductList(filterOption: {
   const productsData = data?.content.map((product) =>
     convertResponseToProduct(product)
   );
+
   return productsData ?? [];
 }

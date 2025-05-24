@@ -13,7 +13,7 @@ function ProductList({
 
   return (
     <Container>
-      {products.map(({ id, name, price, imageUrl }) => {
+      {products.map(({ id, name, price, imageUrl, quantity }) => {
         const matchingCart = cartList.find((cart) => cart.product.id === id);
         return (
           <ProductCard
@@ -25,6 +25,7 @@ function ProductList({
             price={price}
             imageUrl={imageUrl}
             isInCart={Boolean(matchingCart)}
+            quantity={quantity}
           />
         );
       })}
