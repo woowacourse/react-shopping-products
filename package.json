@@ -13,6 +13,7 @@
     "format": "prettier --write .",
     "type-check": "tsc --noEmit"
   },
+  "homepage": "https://jonghwan-kim.github.io/react-shopping-products",
   "dependencies": {
     "@emotion/css": "^11.13.5",
     "@emotion/react": "^11.14.0",
