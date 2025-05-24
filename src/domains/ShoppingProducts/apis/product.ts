@@ -1,6 +1,6 @@
-import { CategoryOption, sortOption } from "../constants";
-import { ProductResponse } from "../types/product";
-import { apiClient } from "../utils/apiUtils";
+import { CategoryOption, sortOption } from "../../../constants";
+import { ProductResponse } from "./types/product";
+import { apiClient } from "./utils/apiUtils";
 
 interface getProductProps {
   category: CategoryOption;

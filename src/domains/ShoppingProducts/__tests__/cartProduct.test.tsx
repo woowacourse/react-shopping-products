@@ -13,11 +13,16 @@ describe("장바구니 추가 기능 테스트", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    (productApi.getProducts as Mock).mockResolvedValue(mockProductResponse);
-    (cartApi.getCartItems as Mock).mockResolvedValue({
+    vi.spyOn(productApi, "getProducts").mockResolvedValue(mockProductResponse);
+    vi.spyOn(cartApi, "getCartItems").mockResolvedValue({
       content: [],
     });
-    (cartApi.postCartItem as Mock).mockResolvedValue({});
+    vi.spyOn(cartApi, "postCartItem").mockResolvedValue(
+      new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      })
+    );
   });
 
   it("장바구니 버튼 클릭 시 아이템이 추가되고 수량이 갱신된다", async () => {

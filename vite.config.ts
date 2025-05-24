@@ -12,6 +12,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: "./src/setup.ts", // 설정 파일 경로
+    setupFiles: "./src/setupTest.ts", // 설정 파일 경로
   },
 });
