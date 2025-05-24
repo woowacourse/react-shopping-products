@@ -10,7 +10,7 @@ let cartItems = [
       category: "패션잡화",
       price: 100000,
       imageUrl: "string",
-      quantity: "50",
+      quantity: 12,
     },
   },
 ];
@@ -22,15 +22,15 @@ const products = [
     category: "패션잡화",
     price: 100000,
     imageUrl: "string",
-    quantity: "50",
+    quantity: 12,
   },
   {
     id: 2,
     name: "후드티",
     category: "패션잡화",
-    price: 50000,
+    price: 5000000000,
     imageUrl: "string",
-    quantity: "1",
+    quantity: 10,
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const products = [
     category: "식료품",
     price: 20000,
     imageUrl: "string",
-    quantity: "5",
+    quantity: 5,
   },
 ];
 
@@ -53,16 +53,16 @@ export const handlers = [
     const page = parseInt(params.get("page") || "0");
     const size = parseInt(params.get("size") || "20");
 
-    let filteredProducts = products;
+    let filteredProducts = [...products];
     if (category && category !== "전체") {
-      filteredProducts = products.filter((p) => p.category === category);
+      filteredProducts = filteredProducts.filter(
+        (p) => p.category === category
+      );
     }
 
     if (sort === "price,asc") {
       filteredProducts.sort((a, b) => a.price - b.price);
-    }
-
-    if (sort === "price,desc") {
+    } else if (sort === "price,desc") {
       filteredProducts.sort((a, b) => b.price - a.price);
     }
 
@@ -92,7 +92,7 @@ export const handlers = [
     });
   }),
 
-  // 장바구니에 상품 수량 조절
+  // 장바구니 상품 추가/수량 변경
   http.post(
     `${import.meta.env.VITE_BASE_URL}/cart-items`,
     async ({ request }) => {
@@ -101,44 +101,52 @@ export const handlers = [
         quantity: string;
       };
 
+      const numericQuantity = Number(quantity);
+      const numericProductId = Number(productId);
+
       const selectedCartItem = cartItems.find(
-        (item) => item.product.id === Number(productId)
+        (item) => item.product.id === numericProductId
       );
-
-      if (Number(quantity) <= 0) {
-        cartItems = cartItems.filter(
-          (item) => String(item.product.id) !== productId
-        );
-        return HttpResponse.json({ message: "상품 제거" });
-      }
-
-      // 장바구니에 이미 있는 상품인 경우
-      if (selectedCartItem) {
-        selectedCartItem.quantity = Number(quantity);
-        return HttpResponse.json(
-          { message: "장바구니에 상품이 추가되었습니다." },
-          { status: 200 }
-        );
-      }
-
-      // 장바구니에 없는 상품인 경우
       const selectedProduct = products.find(
-        (product) => product.id.toString() === productId
+        (product) => product.id === numericProductId
       );
+
       if (!selectedProduct) {
         return HttpResponse.json(
           { message: "존재하지 않는 상품입니다." },
           { status: 404 }
         );
       }
-      const newCardItems = {
+
+      if (numericQuantity > selectedProduct.quantity) {
+        return HttpResponse.json(
+          { message: "상품의 현재 수량을 초과할 수 없습니다." },
+          { status: 400 }
+        );
+      }
+
+      if (numericQuantity <= 0) {
+        cartItems = cartItems.filter(
+          (item) => item.product.id !== numericProductId
+        );
+        return HttpResponse.json({ message: "상품 제거" });
+      }
+
+      if (selectedCartItem) {
+        selectedCartItem.quantity = numericQuantity;
+        return HttpResponse.json(
+          { message: "수량 변경 완료" },
+          { status: 200 }
+        );
+      }
+
+      const newCartItem = {
         id: cartItems.length + 1,
-        quantity: Number(quantity),
-        product: { ...selectedProduct, quantity: "1" },
+        quantity: numericQuantity,
+        product: { ...selectedProduct },
       };
 
-      cartItems.push(newCardItems);
-
+      cartItems.push(newCartItem);
       return HttpResponse.json(
         { message: "장바구니에 상품이 추가되었습니다." },
         { status: 200 }
@@ -146,12 +154,11 @@ export const handlers = [
     }
   ),
 
-  // 장바구니에 상품 삭제
+  // 장바구니 상품 삭제
   http.delete(
     `${import.meta.env.VITE_BASE_URL}/cart-items/:productId`,
     ({ params }) => {
       const { productId } = params;
-
       cartItems = cartItems.filter((item) => String(item.id) !== productId);
 
       return HttpResponse.json({ message: "상품 제거" });
