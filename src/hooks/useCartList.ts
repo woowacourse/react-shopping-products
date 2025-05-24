@@ -3,7 +3,6 @@ import { addCart, getCartItem, patchCart, removeCart } from '../api/fetchCart';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { CartItem, ErrorType, ProductElement } from '../types/type';
 import { MAX_CART_ITEM_COUNT } from '../constants/cartConfig';
-import { getCartId } from '../utils/getCartId';
 import { useToastContext } from '../context/ToastContext';
 
 export const useCartList = () => {
