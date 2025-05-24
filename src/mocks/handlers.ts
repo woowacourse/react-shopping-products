@@ -2,6 +2,7 @@ import { CONFIG, PATH } from "@/constants";
 import { http, HttpResponse } from "msw";
 import { CART_ITEMS_DATA } from "./datas/cartItems";
 import { PRODUCTS_DATA } from "./datas/products";
+import { PatchCartItemsParams, PostCartItemsParams } from "@/apis/CartItemApi";
 
 export let cartItems = [...CART_ITEMS_DATA.content];
 
@@ -21,7 +22,7 @@ export const handlers = [
   }),
 
   http.post(`${CONFIG.apiUrl}${PATH.cartItems}`, async ({ request }) => {
-    const { productId, quantity = 1 } = await request.json();
+    const { productId, quantity = 1 } = (await request.json()) as PostCartItemsParams;
     const product = PRODUCTS_DATA.content.find((product) => product.id === productId);
 
     if (!product) {
@@ -62,7 +63,7 @@ export const handlers = [
 
   http.patch(`${CONFIG.apiUrl}${PATH.cartItems}/:cartItemId`, async ({ params, request }) => {
     const { cartItemId } = params;
-    const { quantity } = await request.json();
+    const { quantity } = (await request.json()) as PatchCartItemsParams;
     const item = cartItems.find((item) => item.id === Number(cartItemId));
     if (!item) return HttpResponse.json({ message: "Cart item not found" }, { status: 404 });
 

@@ -1,9 +1,9 @@
 import { ErrorPopup } from "@/components";
-import { ErrorProvider, useError } from "@/context";
+import { ErrorProvider } from "@/context";
 import { QueryProvider } from "@/modules/Query";
 import { useCartItem } from "@/pages/products/hooks";
-import { renderHook, act, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { act, renderHook, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 describe("useCartItem", () => {
   describe("정상 케이스", () => {
