@@ -1,96 +1,58 @@
-// import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-// import ShopPage from "../page/ShopPage";
-// import { mockProductList } from "../mock/Products";
-// import { vi, Mock } from "vitest";
-// import * as productApi from "../api/product";
-// import * as cartApi from "../api/cartItem";
+vi.mock("../api/product");
+vi.mock("../api/cartItem");
 
-// vi.mock("../api/product", () => ({
-//   getProducts: vi.fn(),
-//   default: vi.fn(),
-// }));
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import ShopPage from "../page/ShopPage";
+import { vi, Mock } from "vitest";
+import * as productApi from "../api/product";
+import * as cartApi from "../api/cartItem";
+import { mockProductResponse } from "../mock/Products";
+import { ContextProvider } from "../context/ContextProvider";
 
-// vi.mock("../api/cartItem", () => ({
-//   getCartItems: vi.fn(),
-//   postCartItem: vi.fn(),
-//   deleteCartItem: vi.fn(),
-// }));
+describe("ShopPage - 장바구니 동작", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
 
-// describe("ShopPage - 장바구니 동작", () => {
-//   beforeEach(() => {
-//     vi.clearAllMocks(); // ✅ 모든 mock의 호출 기록 초기화
+    (productApi.getProducts as Mock).mockResolvedValue(mockProductResponse);
+    (cartApi.getCartItems as Mock).mockResolvedValue({
+      content: [],
+    });
+    (cartApi.postCartItem as Mock).mockResolvedValue({});
+  });
 
-//     (productApi.default as Mock).mockResolvedValue(mockProductList);
-//     (cartApi.getCartItems as Mock).mockResolvedValue({
-//       content: [],
-//     });
-//     (cartApi.postCartItem as Mock).mockResolvedValue({});
-//   });
+  it("장바구니 버튼 클릭 시 아이템이 추가되고 수량이 갱신된다", async () => {
+    render(
+      <ContextProvider>
+        <ShopPage />
+      </ContextProvider>
+    );
 
-//   it("장바구니 버튼 클릭 시 아이템이 추가되고 수량이 갱신된다", async () => {
-//     render(<ShopPage />);
+    const product = await screen.findByText("기세");
+    expect(product).toBeInTheDocument();
 
-//     const product = await screen.findByText("기세");
-//     expect(product).toBeInTheDocument();
+    const cartButtons = screen.getAllByRole("button", { name: /(담기)/i });
+    expect(cartButtons.length).toBeGreaterThan(0);
 
-//     const cartButtons = screen.getAllByRole("button", { name: /(담기|빼기)/i });
-//     expect(cartButtons.length).toBeGreaterThan(0);
+    (cartApi.getCartItems as Mock).mockResolvedValueOnce({
+      content: [
+        {
+          id: 1,
+          quantity: 1,
+          product: mockProductResponse.content[0],
+        },
+      ],
+    });
 
-//     (cartApi.getCartItems as Mock).mockResolvedValueOnce({
-//       content: [
-//         {
-//           id: 1,
-//           quantity: 1,
-//           product: mockProductList.content[0],
-//         },
-//       ],
-//     });
+    fireEvent.click(cartButtons[0]);
 
-//     fireEvent.click(cartButtons[0]);
+    await waitFor(() => {
+      const cartButtons = screen.getByTestId("cart-count");
+      expect(cartButtons).toHaveTextContent("1");
+    });
 
-//     await waitFor(() => {
-//       const cartButtons = screen.getByTestId("cart-count");
-//       expect(cartButtons).toHaveTextContent("1");
-//     });
-
-//     expect(cartApi.postCartItem).toHaveBeenCalledWith({
-//       productId: mockProductList.content[0].id,
-//       quantity: 1,
-//     });
-//     expect(cartApi.getCartItems).toHaveBeenCalledTimes(2);
-//   });
-
-//   it("사용자가 '빼기' 버튼을 누르면, 장바구니에서 제외된다", async () => {
-//     (productApi.default as Mock).mockResolvedValue(mockProductList);
-//     (cartApi.getCartItems as Mock).mockResolvedValueOnce({
-//       content: [
-//         {
-//           id: 1,
-//           quantity: 1,
-//           product: mockProductList.content[0],
-//         },
-//       ],
-//     });
-
-//     render(<ShopPage />);
-
-//     const product = await screen.findByText("기세");
-//     expect(product).toBeInTheDocument();
-
-//     const removeButtons = screen.getAllByRole("button", { name: /빼기/i });
-//     expect(removeButtons.length).toBeGreaterThan(0);
-
-//     (cartApi.getCartItems as Mock).mockResolvedValueOnce({ content: [] });
-//     (cartApi.deleteCartItem as Mock).mockResolvedValue({});
-
-//     fireEvent.click(removeButtons[0]);
-
-//     await waitFor(() => {
-//       const badge = screen.queryByTestId("cart-count");
-//       expect(badge).not.toBeInTheDocument();
-//     });
-
-//     expect(cartApi.deleteCartItem).toHaveBeenCalledTimes(1);
-//     expect(cartApi.getCartItems).toHaveBeenCalledTimes(2);
-//   });
-// });
+    expect(cartApi.postCartItem).toHaveBeenCalledWith({
+      productId: mockProductResponse.content[0].id,
+      quantity: 1,
+    });
+  });
+});
