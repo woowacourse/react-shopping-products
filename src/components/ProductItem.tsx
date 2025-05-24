@@ -44,7 +44,7 @@ const ProductItem = ({
             >
               <ControllerIcon src={AddIcon} alt="아이템 수량 추가" />
             </Button>
-            {product.quantity}
+            {quantityInCart}
             <Button
               type="button"
               id="subtract"
