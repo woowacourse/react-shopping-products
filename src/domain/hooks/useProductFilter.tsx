@@ -3,20 +3,25 @@ import getProducts from "../../api/getProducts";
 import type { ProductTypes } from "../../types/ProductTypes";
 import useCartContext from "../contexts/useCartContext";
 
-export type FilterValue = "all" | "grocery" | "fashion" | "low" | "high";
+export type FilterValue =
+  | "all"
+  | "grocery"
+  | "fashion"
+  | "낮은 가격순"
+  | "높은 가격순";
 
 export function useProductFilters(
   setProducts: (prods: ProductTypes[]) => void
 ) {
   const [category, setCategory] = useState<FilterValue>("all");
-  const [price, setPrice] = useState<FilterValue>("low");
+  const [price, setPrice] = useState<FilterValue>("낮은 가격순");
   const { updateErrorMessage: onError } = useCartContext();
 
   const fetchProducts = useCallback(
     async (category: FilterValue, price: FilterValue) => {
       try {
         const categoryParam = category === "all" ? "" : category;
-        const sortParam = price === "low" ? "price,asc" : "price,desc";
+        const sortParam = price === "낮은 가격순" ? "price,asc" : "price,desc";
         const { content } = await getProducts(categoryParam, {
           page: 0,
           size: 20,
