@@ -75,8 +75,13 @@ const useCartItems = () => {
     ]),
   );
 
+  const totalPrice = cartItemsResponse?.content.reduce((acc, cartItem) => {
+    return (acc += cartItem.quantity * cartItem.product.price);
+  }, 0);
+
   return {
     cartItems: cartItemsResponse?.content,
+    cartItemTotalPrice: totalPrice,
     handleCartItem,
     cartItemsByProductId,
   };
