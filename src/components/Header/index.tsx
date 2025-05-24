@@ -3,13 +3,14 @@ import CartItemButton from "@components/CartItemButton";
 
 interface HeaderProps {
   quantity: number;
+  onClick?: () => void;
 }
 
-function Header({ quantity }: HeaderProps) {
+function Header({ quantity, onClick }: HeaderProps) {
   return (
     <S.Header>
       <S.Logo href="/">SHOP</S.Logo>
-      <CartItemButton quantity={quantity} />
+      <CartItemButton quantity={quantity} onClick={onClick} />
     </S.Header>
   );
 }
