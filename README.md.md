@@ -33,6 +33,7 @@
 - [ ] productCard 컴포넌트에 기본 html 태그 타입 입히기 (style, className 주입할 수 있도록)
 - [x] sort 및 filter api 요청으로 변경
 - [ ] 데이터 전역에서 관리하기 -> data fetch 로직
+- [ ] 카테고리 정렬 -> 데이터 서버에서 받아오기
 
 ### 기능 명세서
 
@@ -59,7 +60,8 @@
   - [x] 장바구니 갯수 조절 로직
     - [x] patch api 연결
       - [x] 0으로 업데이트할 경우, 장바구니에서 사라진다.!
-  - [ ] 품절 ui 구현
+  - [x] 품절 ui 구현
+    - [x] 품절 상품일 시, 구매버튼 제어 -> disabled
 - [ ] 모달 구현
   - [ ] npm i hoyychoi-modal-component 사용
   - [ ] 모달 내부 ui 구현

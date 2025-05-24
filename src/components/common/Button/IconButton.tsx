@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
-import { HTMLAttributes } from "react";
+import { ButtonHTMLAttributes } from "react";
 
 type IconButtonVariant = "dark" | "light";
 
-interface IconButtonProps extends HTMLAttributes<HTMLButtonElement> {
+interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";

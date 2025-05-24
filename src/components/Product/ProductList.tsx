@@ -15,15 +15,17 @@ const ProductList = ({ productsData, cartItemsByProductId, handleCartItem }: Pro
   return (
     <div css={productListStyle}>
       {productsData?.map((product) => {
-        const cartItem = cartItemsByProductId[product.id];
+        const { id, imageUrl, name, price, quantity } = product;
+        const cartItem = cartItemsByProductId[id];
 
         return (
-          <ProductCard key={product.id}>
-            <ProductCard.Image src={product.imageUrl} alt={product.name} />
+          <ProductCard key={id}>
+            {quantity === 0 && <ProductCard.SoldOutCover />}
+            <ProductCard.Image src={imageUrl} alt={name} />
             <ProductCard.Content>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                <ProductCard.Title text={product.name} />
-                <ProductCard.Price price={product.price} />
+                <ProductCard.Title text={name} />
+                <ProductCard.Price price={price} />
               </div>
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 {cartItem ? (
@@ -33,7 +35,12 @@ const ProductList = ({ productsData, cartItemsByProductId, handleCartItem }: Pro
                     onDecrease={() => handleCartItem("update", cartItem.cartItemId, cartItem.quantity - 1)}
                   />
                 ) : (
-                  <IconButton icon={<AddCart />} variant="dark" onClick={() => handleCartItem("add", product.id)}>
+                  <IconButton
+                    icon={<AddCart />}
+                    variant="dark"
+                    disabled={quantity === 0}
+                    onClick={() => handleCartItem("add", id)}
+                  >
                     담기
                   </IconButton>
                 )}
