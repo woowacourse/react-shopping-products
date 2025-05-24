@@ -46,21 +46,29 @@ const useShoppingCart = () => {
     [handleErrorMessage]
   );
 
-  const handleAddProduct = async (productId: number) => {
-    if (cartItems.length === 50) {
-      showErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
-      return;
-    }
+  const selectedCartItem = (productId: number) =>
+    cartItems.find((cartItem) => cartItem.product.id === productId);
 
+  const updateCartItems = async () => {
+    const newCartItems = await getCartItems();
+    setCartItems(newCartItems);
+  };
+
+  const handleAddProduct = async (productId: number) => {
     try {
+      if (cartItems.length === 50) {
+        showErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
+        return;
+      }
+
       await fetchAddProduct({
         params: {
           productId: productId,
           quantity: "1",
         },
       });
-      const newCartItems = await getCartItems();
-      setCartItems(newCartItems);
+
+      await updateCartItems();
     } catch (error) {
       if (!(error instanceof Error)) {
         return;
@@ -72,9 +80,7 @@ const useShoppingCart = () => {
 
   const handleRemoveProduct = async (productId: number) => {
     try {
-      const targetCartItem = cartItems.find(
-        (cartItem) => cartItem.product.id === productId
-      );
+      const targetCartItem = selectedCartItem(productId);
 
       if (!targetCartItem) {
         return;
@@ -85,9 +91,8 @@ const useShoppingCart = () => {
           productId: targetCartItem.id,
         },
       });
-      const newCartItems = await getCartItems();
 
-      setCartItems(newCartItems);
+      await updateCartItems();
     } catch (error) {
       if (!(error instanceof Error)) {
         return;
@@ -99,11 +104,8 @@ const useShoppingCart = () => {
 
   const handleIncreaseCartItemQuantity = async (productId: number) => {
     try {
-      const PLUS_UNIT = 1;
-
-      const targetCartItem = cartItems.find(
-        (cartItem) => cartItem.product.id === productId
-      );
+      const UNIT = 1;
+      const targetCartItem = selectedCartItem(productId);
 
       if (!targetCartItem) {
         return;
@@ -112,7 +114,7 @@ const useShoppingCart = () => {
       const cartItemQuantity = targetCartItem.quantity;
       const stockQuantity = targetCartItem.product.quantity;
 
-      if (cartItemQuantity + PLUS_UNIT > stockQuantity) {
+      if (cartItemQuantity + UNIT > stockQuantity) {
         showErrorMessage("재고 수량을 초과하여 담을 수 없습니다.");
         return;
       }
@@ -120,12 +122,11 @@ const useShoppingCart = () => {
       await fetchUpdateCartItemQuantity({
         params: {
           id: targetCartItem.id,
-          quantity: targetCartItem.quantity + PLUS_UNIT,
+          quantity: targetCartItem.quantity + UNIT,
         },
       });
-      const newCartItems = await getCartItems();
 
-      setCartItems(newCartItems);
+      await updateCartItems();
     } catch (error) {
       if (!(error instanceof Error)) {
         return;
@@ -137,10 +138,8 @@ const useShoppingCart = () => {
 
   const handleDecreaseCartItemQuantity = async (productId: number) => {
     try {
-      const MINUS_UNIT = 1;
-      const targetCartItem = cartItems.find(
-        (cartItem) => cartItem.product.id === productId
-      );
+      const UNIT = 1;
+      const targetCartItem = selectedCartItem(productId);
 
       if (!targetCartItem) {
         return;
@@ -149,11 +148,11 @@ const useShoppingCart = () => {
       await fetchUpdateCartItemQuantity({
         params: {
           id: targetCartItem.id,
-          quantity: targetCartItem.quantity - MINUS_UNIT,
+          quantity: targetCartItem.quantity - UNIT,
         },
       });
-      const newCartItems = await getCartItems();
-      setCartItems(newCartItems);
+
+      await updateCartItems();
     } catch (error) {
       if (!(error instanceof Error)) {
         return;
@@ -166,9 +165,7 @@ const useShoppingCart = () => {
   useEffect(() => {
     const loadCartItems = async () => {
       try {
-        const cartItems = await getCartItems();
-
-        setCartItems(cartItems);
+        await updateCartItems();
         setLoading(false);
       } catch (error) {
         if (!(error instanceof Error)) {
