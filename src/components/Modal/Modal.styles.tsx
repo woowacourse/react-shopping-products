@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import type { ModalProps } from "./Modal";
-import { Device } from "@/hooks/useDevice";
+import { Device } from "@/hooks";
 
 const modalSize = {
   small: "320px",

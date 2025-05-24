@@ -1,1 +1,3 @@
-export { default as useCartItemsQuery } from "./query/useCartItemsQuery";
+export { default as useAutoFocus } from "./useAutoFocus/useAutoFocus";
+export { default as useDevice } from "./useDevice/useDevice";
+export * from "./useDevice";

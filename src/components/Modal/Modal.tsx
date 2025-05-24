@@ -6,8 +6,7 @@ import { createPortal } from "react-dom";
 import * as S from "./Modal.styles";
 import { StrictPropsWithChildren } from "@/types/strict";
 import Button, { ButtonProps } from "../Button/Button";
-import { useDevice } from "@/hooks/useDevice";
-import { useAutoFocus } from "@/hooks/useAutoFocus";
+import { useAutoFocus, useDevice } from "@/hooks";
 import { CloseIcon } from "../icons";
 
 type ModalContext = {
