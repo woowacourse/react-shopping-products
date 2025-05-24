@@ -9,12 +9,17 @@ import {
   StyledCountText,
 } from "./Header.styles";
 
-export default function Header() {
+interface HeaderProps {
+  onOpenModal: () => void;
+}
+
+export default function Header({ onOpenModal }: HeaderProps) {
   const { status, cartItems } = useCartContext();
+
   return (
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
-      <StyledButton type="button">
+      <StyledButton type="button" onClick={onOpenModal}>
         <StyledImg src={shoppingBagIcon} alt="shoppingBagIcon" />
         {status === "success" && (
           <CountBox>
