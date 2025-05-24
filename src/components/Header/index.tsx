@@ -1,17 +1,14 @@
 import { css } from "@emotion/css";
-import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
-import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
-import ErrorToast from "../ErrorToast";
+// import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
+// import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
+// import ErrorToast from "../ErrorToast";
+import { CartItem } from "../../types/product.type";
 
 interface HeaderProps {
   onCartClick: () => void;
+  cartItems: CartItem[];
 }
-const Header = ({ onCartClick }: HeaderProps) => {
-  const { data, error } = useAPIContext({
-    name: "cartItems",
-    fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
-  });
-
+const Header = ({ onCartClick, cartItems }: HeaderProps) => {
   return (
     <header className={HeaderStyles}>
       <a href="/" className={LogoStyles}>
@@ -23,10 +20,9 @@ const Header = ({ onCartClick }: HeaderProps) => {
         className={IconStyles}
         onClick={onCartClick}
       />
-      {Array.isArray(data) && data.length > 0 && (
-        <div className={ShoppingCartCount}>{data.length}</div>
+      {cartItems.length > 0 && (
+        <div className={ShoppingCartCount}>{cartItems.length}</div>
       )}
-      {error.isError && <ErrorToast errorMessage={error.errorMessage} />}
     </header>
   );
 };
