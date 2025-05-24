@@ -49,7 +49,10 @@ const ProductItem = ({
             onDecrease={() => onQuantityDecrease(id)}
           />
         ) : (
-          <AddToCartButton onAdd={() => onAddToCart(id)} />
+          <AddToCartButton
+            onAdd={() => onAddToCart(id)}
+            disabled={quantity === 0}
+          />
         )}
       </S.ProductWrapper>
     </S.ProductContainer>
