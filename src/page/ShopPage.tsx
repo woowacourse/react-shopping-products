@@ -102,7 +102,7 @@ export default function ShopPage() {
                   />
                 </div>
               </TitleContainer>
-              <ProductContainer products={productList} />
+              <ProductContainer />
             </>
           )}
         </Main>

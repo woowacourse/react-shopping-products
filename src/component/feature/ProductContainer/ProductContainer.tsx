@@ -1,19 +1,13 @@
 import { postCartItem } from "../../../api/cartItem";
 import { useShoppingContext } from "../../../context/useShoppingContext";
-
 import { CartItemType } from "../../../types/cartItem";
-import { ProductType } from "../../../types/product";
 import Button from "../../unit/Button/Button";
 import { QuantitySelector } from "../../unit/QuantitySelector/QuantitySelector";
 import Product from "../Product/Product";
 import { ProductContainerLayout } from "./ProductContainer.style";
 
-interface ProductContainerProps {
-  products: ProductType[];
-}
-
-export default function ProductContainer({ products }: ProductContainerProps) {
-  const { cartItemList, dispatch } = useShoppingContext();
+export default function ProductContainer() {
+  const { cartItemList, productList, dispatch } = useShoppingContext();
 
   const onChange = () => {
     dispatch({ type: "updateCartProduct" });
@@ -35,7 +29,7 @@ export default function ProductContainer({ products }: ProductContainerProps) {
 
   return (
     <div css={ProductContainerLayout}>
-      {products.map((product) => {
+      {productList.map((product) => {
         const selectedCardItems = cartItemList.filter(
           (cartItem: CartItemType) => Number(product.id) === cartItem.product.id
         );
