@@ -3,6 +3,7 @@ import CartItemCard from "./CartItemCard";
 import QuantitySelector from "../common/QuantitySelector";
 import { css } from "@emotion/react";
 import Text from "../common/Text";
+import Button from "../common/Button/Button";
 
 interface CartModalProps {
   isCartModalOpen: boolean;
@@ -35,7 +36,7 @@ const CartModal = ({ isCartModalOpen, handleCartModalClose }: CartModalProps) =>
                     <CartItemCard.Title text={name} />
                     <CartItemCard.Price price={price} />
                   </div>
-                  <button>삭제</button>
+                  <Button text="삭제" variant="secondary" size="sm" />
                 </div>
                 <QuantitySelector quantity={quantity} onIncrease={() => {}} onDecrease={() => {}} />
               </CartItemCard.Content>
@@ -88,7 +89,7 @@ const CartModal = ({ isCartModalOpen, handleCartModalClose }: CartModalProps) =>
         </Modal.Body>
         <Modal.Footer>
           <Modal.Trigger>
-            <Modal.Button style={{ width: "100%" }}>닫기</Modal.Button>
+            <Button text="닫기" variant="primary" size="full" />
           </Modal.Trigger>
         </Modal.Footer>
       </Modal.Container>
