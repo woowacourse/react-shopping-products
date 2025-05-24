@@ -2,17 +2,18 @@ import { useEffect, useCallback } from 'react';
 import { Product } from '../types/product.type';
 import { CartItem } from '../types/cart.type';
 import { useDataContext } from '../contexts/useDataContext';
-import fetchProducts from '../APIs/productApi';
 
-interface UseDataOptions {
+interface UseDataOptions<T> {
   key: string;
   endpoint: string;
+  fetchFunction: (endpoint: string) => Promise<T>;
 }
 
-export const useData = <T = CartItem[] | Product[] | null>({
+export const useData = <T extends CartItem[] | Product[] | null>({
   key,
   endpoint,
-}: UseDataOptions) => {
+  fetchFunction,
+}: UseDataOptions<T>) => {
   const { state, setData, setLoading, setError } = useDataContext();
 
   const fetchData = useCallback(async () => {
@@ -20,14 +21,14 @@ export const useData = <T = CartItem[] | Product[] | null>({
     setError(key, null);
 
     try {
-      const data = await fetchProducts(endpoint);
+      const data = await fetchFunction(endpoint);
       setData(key, data);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
       setError(key, errorMessage);
     }
-  }, [key, endpoint, setData, setLoading, setError]);
+  }, [key, endpoint, setData, setLoading, setError, fetchFunction]);
 
   useEffect(() => {
     fetchData();

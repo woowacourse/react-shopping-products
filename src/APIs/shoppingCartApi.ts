@@ -6,11 +6,9 @@ import {
 } from '../types/cart.type';
 import apiRequest from './apiRequestWithAuth';
 
-const PARAMS = new URLSearchParams({ page: '0', size: '50' }).toString();
-
 async function getShoppingCart(endpoint: string): Promise<CartItem[]> {
   const response = await apiRequest<null, ShoppingCartResponse>({
-    endpoint: `${endpoint}?${PARAMS}`,
+    endpoint: `${endpoint}`,
   });
   return response.content;
 }
