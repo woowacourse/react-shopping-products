@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { Product } from '../type';
+import { Product } from '../../../../api/products';
 import ProductCard from './product-card/ProductCard';
 
 function ProductList({

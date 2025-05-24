@@ -46,7 +46,7 @@ export async function postCartItem(id: string) {
     method: 'POST',
     path: `/cart-items`,
     body: {
-      productId: id,
+      productId: Number(id),
       quantity: 1,
     },
   });
