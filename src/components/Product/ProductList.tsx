@@ -3,7 +3,7 @@ import { Content } from "../../types/product";
 import ProductCard from "./ProductCard";
 import IconButton from "../common/Button/IconButton";
 import AddCart from "../icons/AddCart";
-import QuantitySelector from "../QuantitySelector";
+import QuantitySelector from "../common/QuantitySelector";
 
 interface ProductListProps {
   productsData: Content[];

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
-import DecreaseSign from "./icons/DecreaseSign";
-import IncreaseSign from "./icons/IncreaseSign";
+import DecreaseSign from "../icons/DecreaseSign";
+import IncreaseSign from "../icons/IncreaseSign";
 
 interface QuantitySelectorProps {
   quantity: number;
