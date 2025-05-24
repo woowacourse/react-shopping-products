@@ -12,7 +12,6 @@ type ApiRequestPostType = {
 
 type ApiRequestDeleteType = {
   endpoint: string;
-  searchParams: Record<string, string | number>;
   useToken?: boolean;
 };
 
@@ -74,12 +73,8 @@ class ApiRequest {
     }
   }
 
-  async DELETE({
-    endpoint,
-    searchParams,
-    useToken = true,
-  }: ApiRequestDeleteType) {
-    const url = new URL(`${this.#baseUrl}${endpoint}${searchParams.productId}`);
+  async DELETE({ endpoint, useToken = true }: ApiRequestDeleteType) {
+    const url = new URL(`${this.#baseUrl}${endpoint}`);
 
     const options = {
       method: "DELETE",
