@@ -17,7 +17,7 @@ interface CartHandlerProps {
 }
 
 const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
-  const { data, setData, isLoading } = useDataContext();
+  const { data, setData, isLoading, handleLoading } = useDataContext();
   const { fetchData: fetchCartItems } = useFetchData<MockCartItemType[]>({
     dataName: 'cartItems',
   });
@@ -34,8 +34,9 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
         handleErrorMessage(message);
       },
+      handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
     });
-  }, [fetchCartItems, handleErrorMessage]);
+  }, [fetchCartItems, handleErrorMessage, handleLoading]);
 
   useEffect(() => {
     fetchTotalCartItems();
@@ -50,9 +51,10 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
         },
+        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
       });
     },
-    [fetchCartItems, fetchTotalCartItems, handleErrorMessage],
+    [fetchCartItems, fetchTotalCartItems, handleErrorMessage, handleLoading],
   );
 
   const handleRemoveCartItem = useCallback(
@@ -67,9 +69,10 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
         },
+        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
       });
     },
-    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage],
+    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage, handleLoading],
   );
 
   const handleIncreaseQuantity = useCallback(
@@ -84,9 +87,10 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
         },
+        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
       });
     },
-    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage],
+    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage, handleLoading],
   );
 
   const handleDecreaseQuantity = useCallback(
@@ -101,9 +105,10 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
         },
+        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
       });
     },
-    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage],
+    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage, handleLoading],
   );
 
   return {

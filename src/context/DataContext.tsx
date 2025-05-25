@@ -8,7 +8,6 @@ interface DataContextType {
   data: Map<string, unknown>;
   setData: React.Dispatch<SetStateAction<Map<string, unknown>>>;
   isLoading: Map<string, boolean>;
-  setIsLoading: React.Dispatch<SetStateAction<Map<string, boolean>>>;
   handleLoading: (dataLoading: boolean, dataName: string) => void;
   errorMessage: string;
   setErrorMessage: React.Dispatch<SetStateAction<string>>;
@@ -32,7 +31,6 @@ export const DataProvider = ({ children }: DataContextProps) => {
         data,
         setData,
         isLoading,
-        setIsLoading,
         handleLoading,
         errorMessage,
         setErrorMessage,

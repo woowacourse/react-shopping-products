@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import useDataContext from './useDataContext';
 
 interface useFetchDataProps {
   dataName: string;
@@ -9,13 +8,12 @@ interface FetchDataProps<T> {
   apiCall: () => Promise<T | void>;
   onSuccess: (data?: T | void) => void;
   onError: (error: Error | unknown) => void;
+  handleLoading: (isLoading: boolean, dataName: string) => void;
 }
 
 const useFetchData = <T>({ dataName }: useFetchDataProps) => {
-  const { handleLoading } = useDataContext();
-
   const fetchData = useCallback(
-    async ({ apiCall, onSuccess, onError }: FetchDataProps<T>) => {
+    async ({ apiCall, onSuccess, onError, handleLoading }: FetchDataProps<T>) => {
       try {
         handleLoading(true, dataName);
         onSuccess(await apiCall());
@@ -25,7 +23,7 @@ const useFetchData = <T>({ dataName }: useFetchDataProps) => {
         handleLoading(false, dataName);
       }
     },
-    [handleLoading, dataName],
+    [dataName],
   );
 
   return {

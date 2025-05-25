@@ -12,7 +12,7 @@ interface ProductListProps {
 }
 
 const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
-  const { data, setData, isLoading } = useDataContext();
+  const { data, setData, isLoading, handleLoading } = useDataContext();
   const { fetchData: fetchProducts } = useFetchData<MockProductsType[]>({
     dataName: 'products',
   });
@@ -31,8 +31,9 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
         const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
         handleErrorMessage(message);
       },
+      handleLoading: (isLoading) => handleLoading(isLoading, 'products'),
     });
-  }, [fetchProducts, handleErrorMessage, categoryOption, sortOption]);
+  }, [fetchProducts, handleErrorMessage, categoryOption, sortOption, handleLoading]);
 
   useEffect(() => {
     fetchTotalProducts();
