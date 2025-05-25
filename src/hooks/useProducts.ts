@@ -1,6 +1,6 @@
 import { useDataContext } from '../contexts/useDataContext';
 import { useData } from './useData';
-import { Product } from '../types/product.type';
+import { Product } from '../components/ProductCardList/product.type';
 import { useMemo } from 'react';
 import { fetchProducts } from '../APIs/productApi';
 

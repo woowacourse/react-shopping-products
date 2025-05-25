@@ -1,4 +1,4 @@
-import { CartItem } from '../types/cart.type';
+import { CartItem } from '../components/ShoppingCartModal/cart.type';
 
 type HttpMethod = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
 

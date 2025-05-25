@@ -5,8 +5,8 @@ import React, {
   useCallback,
 } from 'react';
 import { ApiContextState } from '../APIs/api.type';
-import { CartItem } from '../types/cart.type';
-import { Product } from '../types/product.type';
+import { CartItem } from '../components/ShoppingCartModal/cart.type';
+import { Product } from '../components/ProductCardList/product.type';
 
 interface DataContextType {
   state: ApiContextState;

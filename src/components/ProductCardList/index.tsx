@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import { Product } from '../../types/product.type';
+import { Product } from './product.type';
 import ProductCard from '../ProductCard';
 
 const ProductCardList = ({ products }: { products: Product[] }) => {

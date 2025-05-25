@@ -1,4 +1,4 @@
-import { Product } from '../types/product.type';
+import { Product } from '../components/ProductCardList/product.type';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 

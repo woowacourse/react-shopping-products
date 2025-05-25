@@ -1,10 +1,10 @@
 import { css } from '@emotion/css';
 import QuantitySpinner from '../Button/QuantitySpinner';
 import AddButton from '../Button/AddButton';
-import { Product } from '../../types/product.type';
+import { Product } from '../ProductCardList/product.type';
 import { useShoppingCart } from '../../hooks/useShoppingCart';
 import { useEffect, useState } from 'react';
-import { CartItem } from '../../types/cart.type';
+import { CartItem } from '../ShoppingCartModal/cart.type';
 
 interface ProductCardProps {
   product: Product;

@@ -2,7 +2,7 @@ import {
   CartItem,
   ShoppingCartRequestBody,
   ShoppingCartRequest,
-} from '../types/cart.type';
+} from '../components/ShoppingCartModal/cart.type';
 import apiRequestWithAuth from './apiRequestWithAuth';
 
 async function getShoppingCart(endpoint: string): Promise<CartItem[]> {

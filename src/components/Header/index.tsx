@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import { CartItem } from '../../types/cart.type';
+import { CartItem } from '../ShoppingCartModal/cart.type';
 
 interface HeaderProps {
   shoppingCart: CartItem[];

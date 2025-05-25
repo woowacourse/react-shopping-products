@@ -1,5 +1,5 @@
 import { useData } from './useData';
-import { CartItem } from '../types/cart.type';
+import { CartItem } from '../components/ShoppingCartModal/cart.type';
 import {
   addShoppingCart,
   deleteShoppingCart,

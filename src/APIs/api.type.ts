@@ -1,5 +1,5 @@
-import { CartItem } from '../types/cart.type';
-import { Product } from '../types/product.type';
+import { CartItem } from '../components/ShoppingCartModal/cart.type';
+import { Product } from '../components/ProductCardList/product.type';
 
 interface ApiState<T = CartItem[] | Product[]> {
   data: T | null;

@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import { CartItem } from '../../types/cart.type';
+import { CartItem } from './cart.type';
 import QuantitySpinner from '../Button/QuantitySpinner';
 import { useShoppingCart } from '../../hooks/useShoppingCart';
 

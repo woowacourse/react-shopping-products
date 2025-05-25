@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
-import { Product } from '../types/product.type';
-import { CartItem } from '../types/cart.type';
+import { Product } from '../components/ProductCardList/product.type';
+import { CartItem } from '../components/ShoppingCartModal/cart.type';
 import { useDataContext } from '../contexts/useDataContext';
 
 interface UseDataOptions<T> {
