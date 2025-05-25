@@ -35,7 +35,9 @@ function App() {
         <Header onOpenModal={handleModalToggle} />
         <ProductContainer setErrorTrue={setErrorTrue} />
         {isError && <ErrorToast errorMessage={errorMessage} />}
-        {isOpen && <Modal onClose={handleModalToggle} />}
+        {isOpen && (
+          <Modal onClose={handleModalToggle} setErrorTrue={setErrorTrue} />
+        )}
       </DataProvider>
     </div>
   );

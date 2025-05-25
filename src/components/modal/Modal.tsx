@@ -1,4 +1,5 @@
 import { useData } from "../../hooks/useData";
+import { ERROR_TYPE } from "../../hooks/useError";
 import CartItem from "./CartItem";
 import {
   CloseButton,
@@ -10,10 +11,12 @@ import TotalPrice from "./TotalPrice";
 
 interface ModalProps {
   onClose: () => void;
+  setErrorTrue: (value: ERROR_TYPE) => void;
 }
 
-function Modal({ onClose }: ModalProps) {
-  const { products, cartItemIds } = useData();
+function Modal({ onClose, setErrorTrue }: ModalProps) {
+  const { products, cartItemIds, setCartItemIds, fetchCartProducts } =
+    useData();
 
   const cartItems = products?.content.map((product) => {
     const match = cartItemIds.find((item) => item.productId === product.id);
@@ -37,15 +40,27 @@ function Modal({ onClose }: ModalProps) {
       <div css={ModalContainer}>
         <h2 css={ModalTitle}>장바구니</h2>
         <hr />
-        {cartItems?.map((item) =>
-          item ? (
+        {cartItemIds.map((cartItem) => {
+          const matchedProduct = products?.content.find(
+            (p) => p.id === cartItem.productId
+          );
+
+          if (!matchedProduct) return null;
+
+          return (
             <CartItem
-              key={item.product.id}
-              product={item.product}
-              quantity={item.quantity}
+              key={matchedProduct.id}
+              product={matchedProduct}
+              quantity={cartItem.quantity}
+              cartId={cartItem.cartId}
+              productId={cartItem.productId}
+              productQuantity={matchedProduct.quantity}
+              setErrorTrue={setErrorTrue}
+              fetchCartProducts={fetchCartProducts}
+              setCartItemIds={setCartItemIds}
             />
-          ) : null
-        )}
+          );
+        })}
         <TotalPrice totalPrice={totalPrice} />
         <button css={CloseButton} onClick={onClose}>
           닫기
