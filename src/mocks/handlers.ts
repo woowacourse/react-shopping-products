@@ -121,7 +121,6 @@ export const handlers = [
     }
 
     cartItem.quantity = body.quantity;
-    await delay(1000); // Simulate network delay
     return HttpResponse.json(cartItem, { status: 200 });
   }),
 

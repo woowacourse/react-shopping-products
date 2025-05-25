@@ -8,12 +8,9 @@ import getProductErrorMessage from '../utils/getProductErrorMessage';
 import Header from '../components/header/Header';
 
 import getCartErrorMessage from '../utils/getCartErrorMessage';
-import Modal from '../components/Modal';
 import useProducts from '../hooks/useProducts';
 import useCartItems from '../hooks/useCartItems';
-import ProductItemModalCard from '../components/ProductItem/ProductItemModalCard';
-import Flex from '../components/commons/Flex';
-import CartTotalAmount from '../components/cart/CartTotalAmount';
+import CartModal from '../components/cart/CartModal';
 
 const ProductListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
@@ -54,35 +51,10 @@ const ProductListPage = () => {
         cartItemCount={cartItems.length}
         handleOpenModal={handleOpenModal}
       />
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        position="bottom"
-        size="small"
-      >
-        <Modal.Title title="장바구니"></Modal.Title>
-        <Modal.Contents>
-          <Flex flexDirection="column">
-            <Divider />
-            {cartItems.map((cartItem) => (
-              <>
-                <ProductItemModalCard
-                  key={cartItem.id}
-                  product={cartItem.product}
-                />
-                <Divider />
-              </>
-            ))}
-            <CartTotalAmount total={1000} />
-          </Flex>
-        </Modal.Contents>
-        <Modal.Button
-          title="닫기"
-          backgroundColor="black"
-          textColor="white"
-          onClick={handleCloseModal}
-        />
-      </Modal>
+      <CartModal
+        isModalOpen={isModalOpen}
+        handleCloseModal={handleCloseModal}
+      />
       {cartItemsError.isError && (
         <ErrorMessage
           errorMessage={getCartErrorMessage(cartItemsError.status)}
@@ -146,11 +118,4 @@ const ProductListContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const Divider = styled.hr`
-  border: none;
-  height: 1px;
-  background-color: #e0e0e0;
-  margin: 16px 0;
 `;

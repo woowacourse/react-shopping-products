@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import useCartItems from '../../hooks/useCartItems';
+
 const CartTotalAmount = () => {
   const { cartItems } = useCartItems();
   const total = cartItems.reduce((acc, item) => {
