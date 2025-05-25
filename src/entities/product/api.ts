@@ -1,10 +1,7 @@
-import { createApiUrl, fetchAPI } from "../../../shared/api/apiClient";
-import { SHOP_API } from "../../../shared/api/config";
-import {
-  CategoryOptionsKey,
-  SortOptionsKey,
-} from "../../../shared/config/filter";
-import { Products } from "../model/types/response";
+import { createApiUrl, fetchAPI } from "../../shared/api/apiClient";
+import { SHOP_API } from "../../shared/api/config";
+import { CategoryOptionsKey, SortOptionsKey } from "../../shared/config/filter";
+import { Products } from "./response";
 
 const sortOptionsMap: Record<SortOptionsKey, string> = {
   "낮은 가격 순": "price,asc",

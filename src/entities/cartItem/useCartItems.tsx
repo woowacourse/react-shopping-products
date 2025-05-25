@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from "react";
-import useToast from "../../../../shared/hooks/useToast";
-import { CartItemsAPI } from "../../api/cartItems";
-import { CartItems } from "../types/response";
-import { useAPI } from "../../../../shared/hooks/useAPI";
-import { isApiError } from "../../../../shared/api/apiClient";
-import { TOAST_TYPES } from "../../../../shared/config/toast";
+import { isApiError } from "../../shared/api/apiClient";
+import { TOAST_TYPES } from "../../shared/config/toast";
+import { useAPI } from "../../shared/hooks/useAPI";
+import useToast from "../../shared/hooks/useToast";
+import { CartItemsAPI } from "./api";
+import { CartItems } from "./response";
 
 interface UseCartItemsResult {
   cartItems: CartItems | null;

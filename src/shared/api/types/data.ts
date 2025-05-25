@@ -1,5 +1,5 @@
-import { CartItems } from "../../../entities/cartItem/model/types/response";
-import { Products } from "../../../entities/product/model/types/response";
+import { CartItems } from "../../../entities/cartItem/response";
+import { Products } from "../../../entities/product/response";
 
 export type ApiDataKey = "products" | "cartItems";
 

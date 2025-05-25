@@ -1,6 +1,6 @@
-import { createApiUrl, fetchAPI } from "../../../shared/api/apiClient";
-import { SHOP_API } from "../../../shared/api/config";
-import { CartItems } from "../model/types/response";
+import { createApiUrl, fetchAPI } from "../../shared/api/apiClient";
+import { SHOP_API } from "../../shared/api/config";
+import { CartItems } from "./response";
 
 const CART_ITEMS_BASE_URL = createApiUrl(SHOP_API.endpoint.cartItems);
 

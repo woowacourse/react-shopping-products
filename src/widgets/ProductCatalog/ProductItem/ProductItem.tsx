@@ -1,4 +1,4 @@
-import { useCartItems } from "../../../entities/cartItem/model/providers/useCartItems";
+import { useCartItems } from "../../../entities/cartItem/useCartItems";
 import { BaseProduct } from "../../../shared/api/types/response";
 import QuantitySelector from "../../../shared/ui/QuantitySelector/QuantitySelector";
 import AddCartItemButton from "./AddCartItemButton/AddCartItemButton";

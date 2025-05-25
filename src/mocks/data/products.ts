@@ -1,4 +1,4 @@
-import { Products } from "../../entities/product/model/types/response";
+import { Products } from "../../entities/product/response";
 
 export const productsData: Products = {
   content: [

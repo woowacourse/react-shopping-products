@@ -1,4 +1,4 @@
-import { useProducts } from "../../../../entities/product/model/hooks/useProducts";
+import { useProducts } from "../../../../entities/product/useProducts";
 import { categoryOptions } from "../../../../shared/config/filter";
 import SelectBox from "../../../../shared/ui/SelectBox/SelectBox";
 

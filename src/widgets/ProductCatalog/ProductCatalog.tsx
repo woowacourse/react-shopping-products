@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useProducts } from "../../entities/product/model/hooks/useProducts";
+import { useProducts } from "../../entities/product/useProducts";
 import { TOAST_TYPES } from "../../shared/config/toast";
 import useToast from "../../shared/hooks/useToast";
 import * as S from "./ProductCatalog.styles";
