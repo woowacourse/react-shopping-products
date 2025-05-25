@@ -1,10 +1,4 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { TOAST_TYPES, ToastType } from "../../shared/config/toast";
 import Toast from "../../shared/ui/Toast/Toast";
 
@@ -20,7 +14,7 @@ interface ShowToastProps {
 
 export const ToastContext = createContext<ToastContextType | null>(null);
 
-export const ToastProvider = ({ children }: PropsWithChildren) => {
+export const ToastProvider = ({ children }: React.PropsWithChildren) => {
   const [message, setMessage] = useState("");
   const [type, setType] = useState<ToastType>(TOAST_TYPES.INFO);
   const toastTimer = useRef<NodeJS.Timeout | null>(null);

@@ -1,8 +1,7 @@
-import { PropsWithChildren } from "react";
 import Portal from "../Portal/Portal";
 import * as S from "./Modal.styles";
 
-type Props = PropsWithChildren<{
+type Props = React.PropsWithChildren<{
   open: boolean;
   onClose: () => void;
 }>;

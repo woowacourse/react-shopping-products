@@ -1,6 +1,6 @@
-import { createContext, PropsWithChildren, useCallback, useState } from "react";
-import { ApiDataKey, ApiDataTypeMap } from "../../shared/api/types/data";
+import { createContext, useCallback, useState } from "react";
 import { ApiResponse } from "../../shared/api/apiClient";
+import { ApiDataKey, ApiDataTypeMap } from "../../shared/api/types/data";
 
 type ApiDataState = {
   [K in ApiDataKey]?: ApiResponse<ApiDataTypeMap[K]>;
@@ -17,7 +17,7 @@ export interface APIContextType {
 
 export const APIContext = createContext<APIContextType>({} as APIContextType);
 
-export const APIProvider = ({ children }: PropsWithChildren) => {
+export const APIProvider = ({ children }: React.PropsWithChildren) => {
   const [data, setData] = useState<ApiDataState>({});
 
   const fetchData = useCallback(
