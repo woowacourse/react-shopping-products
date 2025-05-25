@@ -1,12 +1,13 @@
 import { css } from "@emotion/css";
-import RemoveButton from "../Button/RemoveButton";
 import AddButton from "../Button/AddButton";
 import { CartItem, Product } from "../../types/product.type";
 import ProductStepper from "../ProductStepper/ProductStepper";
 import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
 import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
 import addShoppingCart from "../../APIs/shoppingCart/addShoppingCart";
-import deleteShoppingCart from "../../APIs/shoppingCart/deleteShoppingCart";
+import Button from "../Button";
+import { useState } from "react";
+import updateCartItemQuantity from "../../APIs/shoppingCart/updateCartItemQuantity";
 
 interface ProductCardProps {
   product: Product;
@@ -15,10 +16,13 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [localQuantity, setLocalQuantity] = useState(
+    cartItems.find((item) => item.product.id === product.id)?.quantity || 1
+  );
   const { id, name, price, imageUrl } = product;
-  const cartItemId = cartItems.find(
-    (item) => item.product.id === product.id
-  )?.id;
+  const cartItem = cartItems.find((item) => item.product.id === id);
+  const cartItemId = cartItem?.id;
 
   const { refetch: refetchCart } = useAPIContext({
     name: "cartItems",
@@ -36,15 +40,22 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
     }
   };
 
-  const handleDelete = async () => {
+  const handleUpdate = async () => {
     try {
-      const endpoint = "/cart-items";
-      await deleteShoppingCart({ endpoint, cartItemId: cartItemId! });
+      await updateCartItemQuantity({
+        endpoint: `/cart-items/${cartItemId}`,
+        requestBody: {
+          quantity: localQuantity,
+        },
+      });
+      setIsEditing(false);
       refetchCart();
     } catch (err) {
-      console.error("장바구니 삭제 실패:", err);
+      console.error("수량 수정 실패:", err);
     }
   };
+
+  console.log("렌더링", name);
 
   return (
     <div key={id} className={CardFrame}>
@@ -64,13 +75,35 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
         </h4>
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
-          <ProductStepper
-            quantity={5}
-            onDecreaseQuantity={() => {}}
-            onIncreaseQuantity={() => {}}
-          />
           {isInCart ? (
-            <RemoveButton onClick={handleDelete} disabled={false} />
+            <>
+              <ProductStepper
+                quantity={localQuantity}
+                onDecreaseQuantity={() =>
+                  setLocalQuantity((prev) => (prev > 0 ? prev - 1 : 0))
+                }
+                onIncreaseQuantity={() => setLocalQuantity((prev) => prev + 1)}
+                disabled={!isEditing}
+              />
+              {isEditing ? (
+                <Button
+                  title="✅ 확인"
+                  onClick={handleUpdate}
+                  textStyled={{ fontSize: "12px" }}
+                  buttonStyled={{ width: "50px" }}
+                />
+              ) : (
+                <Button
+                  title="🛒 수량수정"
+                  onClick={() => {
+                    setLocalQuantity(cartItem?.quantity || 1);
+                    setIsEditing(true);
+                  }}
+                  textStyled={{ fontSize: "12px" }}
+                  buttonStyled={{ width: "auto", padding: "0 8px" }}
+                />
+              )}
+            </>
           ) : (
             <AddButton onClick={handleAdd} disabled={false} />
           )}
