@@ -8,7 +8,6 @@ async function getProducts({
 }: FetchProductsRequest): Promise<Product[]> {
   try {
     const url = `${baseUrl}${endpoint}`;
-    console.log("url : ", url);
     const data = await apiClient<FetchProductsResponse>("GET", url);
     return data.content;
   } catch (error) {

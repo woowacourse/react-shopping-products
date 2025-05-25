@@ -1,7 +1,4 @@
 import { css } from "@emotion/css";
-// import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
-// import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
-// import ErrorToast from "../ErrorToast";
 import { CartItem } from "../../types/product.type";
 
 interface HeaderProps {

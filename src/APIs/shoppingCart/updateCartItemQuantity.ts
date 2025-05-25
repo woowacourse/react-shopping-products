@@ -10,7 +10,6 @@ async function updateCartItemQuantity({
 }: ShoppingCartProps): Promise<CartItem[]> {
   try {
     const url = `${baseUrl}${endpoint}`;
-    console.log("url : ", url);
     await apiClient<ShoppingCartResponse>("PATCH", url, requestBody);
 
     const params = {
@@ -26,7 +25,6 @@ async function updateCartItemQuantity({
 
     return responseDate;
   } catch (error) {
-    console.log(error);
     throw new Error("Error updating cart item quantity:" + error);
   }
 }

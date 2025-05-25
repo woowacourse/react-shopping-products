@@ -25,7 +25,6 @@ async function addShoppingCart({
 
     return responseDate;
   } catch (error) {
-    console.log(error);
     throw new Error("Error fetching products:" + error);
   }
 }
