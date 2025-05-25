@@ -1,9 +1,9 @@
 import { createContext, PropsWithChildren, useCallback, useState } from "react";
 import { ApiDataKey, ApiDataTypeMap } from "../../shared/api/types/data";
-import { ApiError } from "../../shared/api/apiClient";
+import { ApiResponse } from "../../shared/api/apiClient";
 
 type ApiDataState = {
-  [K in ApiDataKey]?: ApiDataTypeMap[K] | ApiError;
+  [K in ApiDataKey]?: ApiResponse<ApiDataTypeMap[K]>;
 };
 
 export interface APIContextType {
@@ -11,7 +11,7 @@ export interface APIContextType {
   setData: React.Dispatch<React.SetStateAction<ApiDataState>>;
   fetchData: <K extends ApiDataKey>(
     key: K,
-    fetcher: () => Promise<ApiDataTypeMap[K] | ApiError>
+    fetcher: () => Promise<ApiResponse<ApiDataTypeMap[K]>>
   ) => Promise<void>;
 }
 
@@ -23,7 +23,7 @@ export const APIProvider = ({ children }: PropsWithChildren) => {
   const fetchData = useCallback(
     async <K extends ApiDataKey>(
       key: K,
-      fetcher: () => Promise<ApiDataTypeMap[K] | ApiError>
+      fetcher: () => Promise<ApiResponse<ApiDataTypeMap[K]>>
     ) => {
       try {
         const result = await fetcher();

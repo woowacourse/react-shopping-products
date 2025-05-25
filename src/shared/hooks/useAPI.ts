@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo } from "react";
 import { APIContext } from "../../app/providers/APIContext";
-import { ApiError, isApiError } from "../api/apiClient";
+import { ApiResponse, isApiError } from "../api/apiClient";
 import { ApiDataKey, ApiDataTypeMap } from "../api/types/data";
 
 interface APIResult<T> {
@@ -12,7 +12,7 @@ interface APIResult<T> {
 
 export const useAPI = <K extends ApiDataKey>(
   key: K,
-  fetcher: () => Promise<ApiDataTypeMap[K] | ApiError>
+  fetcher: () => Promise<ApiResponse<ApiDataTypeMap[K]>>
 ): APIResult<ApiDataTypeMap[K]> => {
   const { data, fetchData } = useContext(APIContext);
 

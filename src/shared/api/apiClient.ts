@@ -5,6 +5,12 @@ export interface ApiError {
   status?: number;
 }
 
+export interface ApiSuccess {
+  success: true;
+}
+
+export type ApiResponse<T> = T | ApiError;
+
 export const isApiError = (
   response: unknown
 ): response is { error: string } => {
@@ -14,6 +20,16 @@ export const isApiError = (
     typeof response === "object" &&
     "error" in response &&
     typeof (response as ApiError).error === "string"
+  );
+};
+
+export const isApiSuccess = (response: unknown): response is ApiSuccess => {
+  return (
+    response !== null &&
+    response !== undefined &&
+    typeof response === "object" &&
+    "success" in response &&
+    (response as ApiSuccess).success === true
   );
 };
 
@@ -40,11 +56,11 @@ const ERROR_MESSAGES: Record<number, string> = {
   500: "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
 };
 
-export const fetchAPI = async <T>(
+export const fetchAPI = async <T = ApiSuccess>(
   url: string,
   options?: RequestInit,
   parseJson: boolean = true
-): Promise<T | ApiError> => {
+): Promise<ApiResponse<T>> => {
   try {
     const response = await fetch(url, applyDefaultHeaders(options));
 
@@ -56,8 +72,8 @@ export const fetchAPI = async <T>(
       return { error: message, status };
     }
 
-    if (parseJson) return response.json();
-    return {} as T;
+    if (parseJson) return await response.json();
+    return { success: true } as T;
   } catch (error) {
     if (error instanceof Error) {
       return { error: `네트워크 에러: ${error.message}` };
