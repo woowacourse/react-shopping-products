@@ -9,8 +9,27 @@ const mockCart: { content: CartItem[] } = {
 export const handlers = [
   http.get(
     "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products",
-    () => {
-      return HttpResponse.json(mockProducts);
+    ({ request }) => {
+      const url = new URL(request.url);
+      const category = url.searchParams.get("category");
+      const sort = url.searchParams.get("sort");
+
+      let filtered = [...mockProducts.content];
+
+      if (category && category !== "ALL") {
+        filtered = filtered.filter((item) => item.category === category);
+      }
+
+      if (sort === "price_asc") {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sort === "price_desc") {
+        filtered.sort((a, b) => b.price - a.price);
+      }
+
+      return HttpResponse.json({
+        ...mockProducts,
+        content: filtered,
+      });
     }
   ),
   http.get(
