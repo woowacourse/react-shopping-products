@@ -4,6 +4,8 @@ import Button from "../Button";
 import deleteShoppingCart from "../../APIs/shoppingCart/deleteShoppingCart";
 import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
 import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
+import { useState } from "react";
+import updateCartItemQuantity from "../../APIs/shoppingCart/updateCartItemQuantity";
 
 interface CartModalItemProps {
   name: string;
@@ -20,15 +22,32 @@ const CartModalItem = ({
   price,
   quantity,
 }: CartModalItemProps) => {
+  const [localQuantity, setLocalQuantity] = useState(quantity);
+
   const { refetch: refetchCart } = useAPIContext({
     name: "cartItems",
     fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
   });
 
+  const handleQuantityChange = async (newQuantity: number) => {
+    setLocalQuantity(newQuantity);
+
+    try {
+      await updateCartItemQuantity({
+        endpoint: `/cart-items/${cartItemId}`,
+        requestBody: {
+          quantity: newQuantity,
+        },
+      });
+      refetchCart();
+    } catch (err) {
+      console.error("수량 수정 실패:", err);
+    }
+  };
+
   const handleDelete = async () => {
     try {
-      const endpoint = "/cart-items";
-      await deleteShoppingCart({ endpoint, cartItemId: cartItemId! });
+      await deleteShoppingCart({ endpoint: "/cart-items", cartItemId });
       refetchCart();
     } catch (err) {
       console.error("장바구니 삭제 실패:", err);
@@ -51,9 +70,13 @@ const CartModalItem = ({
             <div className={nameStyles}>{name}</div>
             <div className={priceStyles}>{price}</div>
             <ProductStepper
-              quantity={quantity}
-              onDecreaseQuantity={() => {}}
-              onIncreaseQuantity={() => {}}
+              quantity={localQuantity}
+              onDecreaseQuantity={() =>
+                localQuantity > 0
+                  ? handleQuantityChange(localQuantity - 1)
+                  : handleQuantityChange(0)
+              }
+              onIncreaseQuantity={() => handleQuantityChange(localQuantity + 1)}
             />
           </div>
         </div>
