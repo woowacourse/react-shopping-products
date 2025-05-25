@@ -1,9 +1,13 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Product from './Product';
-import { ProductElement } from '../../../types/product';
+import Product from '../ui/components/Product/Product';
+import { ProductElement } from '../types/product';
 
 describe('Product 컴포넌트', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   const mockProduct: ProductElement = {
     product: {
       id: 1,
@@ -23,15 +27,15 @@ describe('Product 컴포넌트', () => {
 
   it('상품 정보가 올바르게 표시되어야 한다', () => {
     render(
-      <Product 
+      <Product
         item={mockProduct}
         onAddCart={mockOnAddCart}
         onRemoveCart={mockOnRemoveCart}
       />
     );
 
-    expect(screen.getByText('테스트 상품')).toBeInTheDocument();
-    expect(screen.getByText('10,000원')).toBeInTheDocument();
+    expect(screen.getByText('테스트 상품')).toBeTruthy();
+    expect(screen.getByText('10,000원')).toBeTruthy();
   });
 
   it('품절 상품일 때 SOLDOUT이 표시되어야 한다', () => {
@@ -41,27 +45,28 @@ describe('Product 컴포넌트', () => {
     };
 
     render(
-      <Product 
+      <Product
         item={soldOutProduct}
         onAddCart={mockOnAddCart}
         onRemoveCart={mockOnRemoveCart}
       />
     );
 
-    expect(screen.getByText('SOLDOUT')).toBeInTheDocument();
+    expect(screen.getByText('SOLDOUT')).toBeTruthy();
   });
 
   it('장바구니에 없는 상품은 담기 버튼이 표시되어야 한다', () => {
     render(
-      <Product 
+      <Product
         item={mockProduct}
         onAddCart={mockOnAddCart}
         onRemoveCart={mockOnRemoveCart}
       />
     );
 
-    const addButton = screen.getByRole('button');
-    expect(addButton).toHaveTextContent('담기');
+    const buttons = screen.getAllByRole('button');
+    const addButton = buttons.find(button => button.textContent === '담기');
+    expect(addButton).toBeTruthy();
   });
 
   it('장바구니에 있는 상품은 수량 조절 버튼이 표시되어야 한다', () => {
@@ -72,7 +77,7 @@ describe('Product 컴포넌트', () => {
     };
 
     render(
-      <Product 
+      <Product
         item={inCartProduct}
         onAddCart={mockOnAddCart}
         onRemoveCart={mockOnRemoveCart}
@@ -81,22 +86,25 @@ describe('Product 컴포넌트', () => {
       />
     );
 
-    expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getByText('−')).toBeInTheDocument();
-    expect(screen.getByText('+')).toBeInTheDocument();
+    expect(screen.getByText('2')).toBeTruthy();
+    expect(screen.getByText('−')).toBeTruthy();
+    expect(screen.getByText('+')).toBeTruthy();
   });
 
   it('담기 버튼 클릭 시 onAddCart가 호출되어야 한다', async () => {
     render(
-      <Product 
+      <Product
         item={mockProduct}
         onAddCart={mockOnAddCart}
         onRemoveCart={mockOnRemoveCart}
       />
     );
 
-    const addButton = screen.getByRole('button');
-    fireEvent.click(addButton);
+    const buttons = screen.getAllByRole('button');
+    const addButton = buttons.find(button => button.textContent === '담기');
+    if (addButton) {
+      fireEvent.click(addButton);
+    }
 
     expect(mockOnAddCart).toHaveBeenCalledWith(mockProduct);
   });

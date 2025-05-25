@@ -1,16 +1,20 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { getProducts } from '../api/products';
 import { ProductType } from '../types/product';
 import { useData } from './useData';
+import { useToast } from '../context/ToastContext';
+import { ERROR_MESSAGES } from '../constants/errorMessages';
 
 interface ProductsResponse {
   content: ProductType[];
   totalElements: number;
   totalPages: number;
-  [key: string]: any;
+  size: number;
+  number: number;
 }
 
 export function useProducts(sortType: string, category: string = '전체') {
+  const { showToast } = useToast();
   const key = useMemo(() => `products-${sortType}-${category}`, [sortType, category]);
 
   const fetcher = async () => {
@@ -26,6 +30,12 @@ export function useProducts(sortType: string, category: string = '전체') {
       refetchOnMount: false, // 캐시가 있으면 재요청하지 않음
     }
   );
+
+  useEffect(() => {
+    if (error) {
+      showToast(ERROR_MESSAGES.productsFetchError);
+    }
+  }, [error, showToast]);
 
   return {
     products: data?.content || [],
