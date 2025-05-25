@@ -1,12 +1,13 @@
 import { ComponentProps } from "react";
 import { StyledSelect } from "./SelectBox.styles";
 
-type Options = {
-  name: string;
+export type Option = {
+  label: string;
+  value: string;
 };
 
 interface SelectBoxProps {
-  options: Options[];
+  options: Option[];
 }
 
 export default function SelectBox({
@@ -15,9 +16,9 @@ export default function SelectBox({
 }: SelectBoxProps & ComponentProps<"select">) {
   return (
     <StyledSelect {...props}>
-      {options.map(({ name }) => (
-        <option key={name} value={name}>
-          {name}
+      {options.map(({ label, value }) => (
+        <option key={label} value={value}>
+          {label}
         </option>
       ))}
     </StyledSelect>

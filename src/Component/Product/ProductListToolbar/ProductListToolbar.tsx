@@ -1,36 +1,37 @@
 import SelectBox from "../../Common/SelectBox/SelectBox";
-import { ProductTypes } from "../../../types/ProductTypes";
 // import useCartContext from "../../../domain/contexts/useCartContext";
 import { useProductFilters } from "../../../domain/hooks/useProductFilter";
 import {
-  SelectBoxContainer,
+  CATEGORY_OPTIONS,
+  CategoryValue,
+  PRICE_OPTIONS,
+  SortValue,
+} from "../ProductListContainer/ProductListContainer";
+import {
   Container,
-  Title,
-  Label,
   FirstSelectWrapper,
+  Label,
+  SelectBoxContainer,
+  Title,
 } from "./ProductListToolbar.styles";
 
 interface ProductListToolbarProps {
-  setProducts: (products: ProductTypes[]) => void;
+  category: CategoryValue;
+  price: SortValue;
+  setCategory: React.Dispatch<React.SetStateAction<CategoryValue>>;
+  setPrice: React.Dispatch<React.SetStateAction<SortValue>>;
 }
 
-const CATEGORY = [
-  { name: "전체", value: "all" },
-  { name: "식료품", value: "grocery" },
-  { name: "패션잡화", value: "fashion" },
-];
-const PRICE = [
-  { name: "낮은 가격순", value: "low" },
-  { name: "높은 가격순", value: "high" },
-];
-
 export default function ProductListToolbar({
-  setProducts,
+  category,
+  price,
+  setCategory,
+  setPrice,
 }: ProductListToolbarProps) {
-  // const { updateErrorMessage } = useCartContext();
-  const { category, price, onCategoryChange, onPriceChange } =
-    // useProductFilters(setProducts, updateErrorMessage);
-    useProductFilters(setProducts);
+  const { onCategoryChange, onPriceChange } = useProductFilters(
+    setCategory,
+    setPrice
+  );
 
   return (
     <Container>
@@ -41,7 +42,7 @@ export default function ProductListToolbar({
           <SelectBox
             value={category}
             onChange={onCategoryChange}
-            options={CATEGORY}
+            options={CATEGORY_OPTIONS}
             name="category"
             id="category"
           />
@@ -51,7 +52,7 @@ export default function ProductListToolbar({
           <SelectBox
             value={price}
             onChange={onPriceChange}
-            options={PRICE}
+            options={PRICE_OPTIONS}
             name="price"
             id="price"
           />
