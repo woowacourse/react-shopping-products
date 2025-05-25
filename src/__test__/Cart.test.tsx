@@ -1,7 +1,5 @@
 import { screen, fireEvent, within, act } from '@testing-library/react';
 
-import { productsData } from '@/shared/mocks/handlers/product/products.data';
-
 import { renderProductListPage } from './ProductList.test';
 
 describe('ProductListPage 담기 동작', () => {
@@ -33,26 +31,45 @@ describe('ProductListPage 담기 동작', () => {
     expect(withinHeader.getByText('1')).toBeInTheDocument();
   });
 
-  it('추가된 상품을 BottomSheet에서 확인할 수 있다.', async () => {
+  it('+ 버튼을 클릭하면 수량이 1 증가한다.', async () => {
     // Given : 상품 목록을 받았을 때
     renderProductListPage();
 
-    // When : 유저가 장바구니 아이콘을 클릭했을 때
-    const header = screen.getByRole('banner');
-    const withinHeader = within(header);
-    const shoppingBagIcon = withinHeader.getByRole('button');
+    // When : 유저가 + 버튼을 클릭했을 때
+    const plusButton = await screen.findAllByRole('button', {
+      name: /\+$/,
+    });
+    const firstProductButton = plusButton[0];
+    const cardElement = firstProductButton.closest('div');
+    expect(cardElement).toBeInTheDocument();
+
     await act(async () => {
-      fireEvent.click(shoppingBagIcon);
+      fireEvent.click(firstProductButton);
     });
 
-    // Then : BottomSheet이 화면에 보이고, 추가된 상품이 보여진다.
-    const bottomSheet = screen.getByRole('dialog');
-    const withinBottomSheet = within(bottomSheet);
-    screen.debug(bottomSheet);
-    expect(withinBottomSheet.getByText('장바구니')).toBeInTheDocument();
+    // Then : 상단의 수량이 1 증가한다.
+    const utils = within(cardElement!);
+    expect(utils.getByText('2')).toBeInTheDocument();
+  });
 
-    const sortedByPrice = [...productsData.content].sort((a, b) => a.price - b.price);
-    const cheapestProductName = sortedByPrice[0].name;
-    expect(withinBottomSheet.getByText(cheapestProductName)).toBeInTheDocument();
+  it('- 버튼을 클릭하면 수량이 1 감소한다.', async () => {
+    // Given : 상품 목록을 받았을 때
+    renderProductListPage();
+
+    // When : 유저가 + 버튼을 클릭했을 때
+    const minusButton = await screen.findAllByRole('button', {
+      name: /-$/,
+    });
+    const firstProductButton = minusButton[0];
+    const cardElement = firstProductButton.closest('div');
+    expect(cardElement).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.click(firstProductButton);
+    });
+
+    // Then : 상단의 수량이 1 감소한다.
+    const utils = within(cardElement!);
+    expect(utils.getByText('1')).toBeInTheDocument();
   });
 });
