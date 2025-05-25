@@ -67,12 +67,7 @@ function Product({ product, isInCart }: ProductProps) {
             <Button color="light" onClick={handleIncreaseProductQuantity}>
               +
             </Button>
-            {isInCart ? (
-              <RemoveButton
-                handleRemoveProduct={handleRemoveProduct}
-                disabled={!state.isSuccess}
-              />
-            ) : (
+            {!isInCart && (
               <AddButton
                 handleAddProduct={handleIncreaseProductQuantity}
                 disabled={!state.isSuccess}
