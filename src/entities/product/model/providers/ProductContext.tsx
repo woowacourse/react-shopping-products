@@ -10,9 +10,9 @@ import {
 } from "../../../../shared/config/filter";
 import { TOAST_TYPES } from "../../../../shared/config/toast";
 import useToast from "../../../../shared/hooks/useToast";
-import { isErrorResponse } from "../../../../shared/utils/typeGuard";
 import { ProductsAPI } from "../../api/products";
 import { Products } from "../types/response";
+import { isApiError } from "../../../../shared/api/apiClient";
 
 export interface ProductContextType {
   products: Products | null;
@@ -43,7 +43,7 @@ export const ProductProvider = ({ children }: PropsWithChildren) => {
       );
       setIsLoading(false);
 
-      if (isErrorResponse(response)) {
+      if (isApiError(response)) {
         showToast({
           message: response.error,
           type: TOAST_TYPES.ERROR,

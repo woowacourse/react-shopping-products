@@ -1,6 +1,5 @@
+import { createApiUrl, fetchAPI } from "../../../shared/api/apiClient";
 import { SHOP_API } from "../../../shared/api/config";
-import { createApiUrl } from "../../../shared/api/createApiUrl";
-import { fetchWithErrorHandling } from "../../../shared/api/errorHandlers";
 import { CartItems } from "../model/types/response";
 
 const CART_ITEMS_BASE_URL = createApiUrl(SHOP_API.endpoint.cartItems);
@@ -14,7 +13,7 @@ export const CartItemsAPI = {
 
     const options: RequestInit = { method: "GET" };
     const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems, params);
-    return await fetchWithErrorHandling<CartItems>(apiUrl, options);
+    return await fetchAPI<CartItems>(apiUrl, options);
   },
 
   post: async (productId: number) => {
@@ -24,13 +23,13 @@ export const CartItemsAPI = {
       body: JSON.stringify({ productId, quantity: 1 }),
     };
 
-    return await fetchWithErrorHandling(CART_ITEMS_BASE_URL, options, false);
+    return await fetchAPI(CART_ITEMS_BASE_URL, options, false);
   },
 
   delete: async (cartId: number) => {
     const options: RequestInit = { method: "DELETE" };
     const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
-    return await fetchWithErrorHandling(apiUrl, options, false);
+    return await fetchAPI(apiUrl, options, false);
   },
 
   patch: async (cartId: number, quantity: number) => {
@@ -40,6 +39,6 @@ export const CartItemsAPI = {
       body: JSON.stringify({ id: cartId, quantity }),
     };
     const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
-    return await fetchWithErrorHandling(apiUrl, options, false);
+    return await fetchAPI(apiUrl, options, false);
   },
 };

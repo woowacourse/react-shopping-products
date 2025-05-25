@@ -1,8 +1,9 @@
 import { createContext, PropsWithChildren, useCallback, useState } from "react";
 import { ApiDataKey, ApiDataTypeMap } from "../../shared/api/types/data";
+import { ApiError } from "../../shared/api/apiClient";
 
 type ApiDataState = {
-  [K in ApiDataKey]?: ApiDataTypeMap[K] | { error: string };
+  [K in ApiDataKey]?: ApiDataTypeMap[K] | ApiError;
 };
 
 export interface APIContextType {
@@ -10,7 +11,7 @@ export interface APIContextType {
   setData: React.Dispatch<React.SetStateAction<ApiDataState>>;
   fetchData: <K extends ApiDataKey>(
     key: K,
-    fetcher: () => Promise<ApiDataTypeMap[K]>
+    fetcher: () => Promise<ApiDataTypeMap[K] | ApiError>
   ) => Promise<void>;
 }
 
@@ -22,13 +23,18 @@ export const APIProvider = ({ children }: PropsWithChildren) => {
   const fetchData = useCallback(
     async <K extends ApiDataKey>(
       key: K,
-      fetcher: () => Promise<ApiDataTypeMap[K]>
+      fetcher: () => Promise<ApiDataTypeMap[K] | ApiError>
     ) => {
       try {
         const result = await fetcher();
         setData((prev) => ({ ...prev, [key]: result }));
       } catch (error) {
-        setData((prev) => ({ ...prev, [key]: { error } }));
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "알 수 없는 오류가 발생했습니다.";
+
+        setData((prev) => ({ ...prev, [key]: { error: errorMessage } }));
       }
     },
     []

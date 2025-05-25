@@ -1,6 +1,5 @@
+import { createApiUrl, fetchAPI } from "../../../shared/api/apiClient";
 import { SHOP_API } from "../../../shared/api/config";
-import { createApiUrl } from "../../../shared/api/createApiUrl";
-import { fetchWithErrorHandling } from "../../../shared/api/errorHandlers";
 import {
   CategoryOptionsKey,
   SortOptionsKey,
@@ -31,6 +30,6 @@ export const ProductsAPI = {
     }
 
     const apiUrl = createApiUrl(SHOP_API.endpoint.products, params);
-    return await fetchWithErrorHandling<Products>(apiUrl);
+    return await fetchAPI<Products>(apiUrl);
   },
 };

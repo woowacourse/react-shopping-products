@@ -5,9 +5,9 @@ import {
   useMemo,
   useState,
 } from "react";
+import { isApiError } from "../../../../shared/api/apiClient";
 import { TOAST_TYPES } from "../../../../shared/config/toast";
 import useToast from "../../../../shared/hooks/useToast";
-import { isErrorResponse } from "../../../../shared/utils/typeGuard";
 import { CartItemsAPI } from "../../api/cartItems";
 import { CartItems } from "../types/response";
 
@@ -31,7 +31,7 @@ export const CartItemProvider = ({ children }: PropsWithChildren) => {
   const fetchCartItems = async () => {
     const response = await CartItemsAPI.get();
 
-    if (isErrorResponse(response)) {
+    if (isApiError(response)) {
       showToast({
         message: response.error,
         type: TOAST_TYPES.ERROR,
