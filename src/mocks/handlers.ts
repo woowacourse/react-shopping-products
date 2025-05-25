@@ -8,7 +8,7 @@ const mockCart: { content: CartItem[] } = {
 
 export const handlers = [
   http.get(
-    "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products",
+    "https://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products",
     ({ request }) => {
       const url = new URL(request.url);
       const category = url.searchParams.get("category");
@@ -33,19 +33,19 @@ export const handlers = [
     }
   ),
   http.get(
-    "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products/{id}",
+    "https://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products/{id}",
     () => {
       return HttpResponse.json(mockProducts);
     }
   ),
   http.get(
-    "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items",
+    "https://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items",
     () => {
       return HttpResponse.json(mockCart);
     }
   ),
   http.post(
-    "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items",
+    "https://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items",
     async ({ request }) => {
       const { productId, quantity } = (await request.json()) as {
         productId: number;
@@ -64,7 +64,7 @@ export const handlers = [
     }
   ),
   http.delete(
-    "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:id",
+    "https://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:id",
     ({ params }) => {
       mockCart.content = mockCart.content.filter(
         (item) => item.id !== Number(params.id)
@@ -73,7 +73,7 @@ export const handlers = [
     }
   ),
   http.patch(
-    "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:id",
+    "https://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:id",
     async ({ request, params }) => {
       const cartItemId = Number(params.id);
       const { quantity } = (await request.json()) as { quantity: number };

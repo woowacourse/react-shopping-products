@@ -15,7 +15,7 @@ interface Params {
   setCartItemIds?: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId" | "quantity", number>[]>
   >;
-  setToggle: (val: boolean) => void;
+  setToggle?: (val: boolean) => void;
 }
 
 export function useCartItemActions({
@@ -63,7 +63,7 @@ export function useCartItemActions({
         setCartItemIds: setCartItemIds ?? (() => {}),
         setErrorTrue,
       });
-      setToggle(false);
+      setToggle?.(false);
     } catch {
       console.log("삭제실패");
     }
