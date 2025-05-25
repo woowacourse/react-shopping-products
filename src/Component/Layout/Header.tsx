@@ -1,11 +1,12 @@
-// import { useCartContext } from "../../../domain/contexts/CartContext";
-// import CountBox from "../CountBox/CountBox";
+import CountBox from "./CountBox";
+import getShoppingCart from "../../api/getShoppingCart";
+import { useAPI } from "../../domain/contexts/APIContext";
 import {
   StyledHeader,
   StyledSpan,
   StyledButton,
   StyledImg,
-  // StyledCountText,
+  StyledCountText,
 } from "../../styles/Layout/Header.styles";
 
 interface HeaderProps {
@@ -13,20 +14,24 @@ interface HeaderProps {
 }
 
 export default function Header({ onOpenModal }: HeaderProps) {
-  // const { status, cartItems } = useCartContext();
+  const { data, status } = useAPI({
+    fetcher: () => getShoppingCart(),
+    name: "cart",
+  });
 
+  const cartCount = data?.content?.length ?? 0;
   return (
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
       <StyledButton type="button" onClick={onOpenModal}>
         <StyledImg src="/assets/shoppingBagIcon.png" alt="shoppingBagIcon" />
-        {/* {status === "success" && (
+        {status === "success" && (
           <CountBox>
             <StyledCountText data-testid="cart-count">
-              {cartItems.length}
+              {cartCount}
             </StyledCountText>
           </CountBox>
-        )} */}
+        )}
       </StyledButton>
     </StyledHeader>
   );
