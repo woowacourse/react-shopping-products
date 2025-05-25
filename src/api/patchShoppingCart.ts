@@ -18,6 +18,9 @@ export default async function patchShoppingCart(
   });
 
   if (!response.ok) {
-    throw new Error('에러 발생');
+    const errorBody = await response.json();
+    throw new Error(
+      errorBody.message ?? '장바구니 수량 수정 중 오류가 발생했습니다.'
+    );
   }
 }
