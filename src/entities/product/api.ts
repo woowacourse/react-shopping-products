@@ -1,4 +1,4 @@
-import { createApiUrl, fetchAPI } from "../../shared/api/apiClient";
+import { ApiError, createApiUrl, fetchAPI } from "../../shared/api/apiClient";
 import { SHOP_API } from "../../shared/api/config";
 import { CategoryOptionsKey, SortOptionsKey } from "../../shared/config/filter";
 import { Products } from "./response";
@@ -12,7 +12,7 @@ export const ProductsAPI = {
   get: async (
     category: CategoryOptionsKey,
     selectedSortOption: SortOptionsKey
-  ) => {
+  ): Promise<Products | ApiError> => {
     const params: Record<string, string> = {
       page: "0",
       size: "20",

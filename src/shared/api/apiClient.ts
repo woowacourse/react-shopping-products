@@ -52,23 +52,17 @@ export const fetchAPI = async <T>(
       const status = response.status;
       const message =
         ERROR_MESSAGES[status] || `에러가 발생했습니다. (코드: ${status})`;
-      return {
-        error: message,
-        status,
-      };
+
+      return { error: message, status };
     }
 
     if (parseJson) return response.json();
     return {} as T;
   } catch (error) {
     if (error instanceof Error) {
-      return {
-        error: `네트워크 에러: ${error.message}`,
-      };
+      return { error: `네트워크 에러: ${error.message}` };
     }
 
-    return {
-      error: "예기치 못한 오류가 발생했습니다. 다시 시도해주세요.",
-    };
+    return { error: "예기치 못한 오류가 발생했습니다. 다시 시도해주세요." };
   }
 };

@@ -81,22 +81,34 @@ export const useCartItems = (): UseCartItemsResult => {
 
       const quantity = quantityByProductId(currentProductId.productId);
 
-      let response;
       if (quantity <= 1) {
-        response = await CartItemsAPI.delete(currentProductId.cartId);
+        const response = await CartItemsAPI.delete(currentProductId.cartId);
+
+        if (response && isApiError(response)) {
+          showToast({
+            message: response.error,
+            type: TOAST_TYPES.ERROR,
+          });
+          return;
+        }
+
+        showToast({
+          message: "상품이 장바구니에서 삭제되었습니다.",
+          type: TOAST_TYPES.SUCCESS,
+        });
       } else {
-        response = await CartItemsAPI.patch(
+        const response = await CartItemsAPI.patch(
           currentProductId.cartId,
           quantity - 1
         );
-      }
 
-      if (isApiError(response)) {
-        showToast({
-          message: response.error,
-          type: TOAST_TYPES.ERROR,
-        });
-        return;
+        if (response && isApiError(response)) {
+          showToast({
+            message: response.error,
+            type: TOAST_TYPES.ERROR,
+          });
+          return;
+        }
       }
 
       refetch();
@@ -117,7 +129,7 @@ export const useCartItems = (): UseCartItemsResult => {
         quantityByProductId(currentProductId.productId) + 1
       );
 
-      if (isApiError(response)) {
+      if (response && isApiError(response)) {
         showToast({
           message: response.error,
           type: TOAST_TYPES.ERROR,
@@ -134,7 +146,7 @@ export const useCartItems = (): UseCartItemsResult => {
     async (productId: number) => {
       const response = await CartItemsAPI.post(productId);
 
-      if (isApiError(response)) {
+      if (response && isApiError(response)) {
         showToast({
           message: response.error,
           type: TOAST_TYPES.ERROR,
@@ -156,13 +168,18 @@ export const useCartItems = (): UseCartItemsResult => {
     async (cartId: number) => {
       const response = await CartItemsAPI.delete(cartId);
 
-      if (isApiError(response)) {
+      if (response && isApiError(response)) {
         showToast({
           message: response.error,
           type: TOAST_TYPES.ERROR,
         });
         return;
       }
+
+      showToast({
+        message: "상품이 장바구니에서 삭제되었습니다.",
+        type: TOAST_TYPES.SUCCESS,
+      });
 
       refetch();
     },
