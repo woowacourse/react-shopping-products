@@ -1,4 +1,5 @@
 import getProducts, { GetProductsProps } from '../api/getProducts';
+import { Product } from '../App';
 import { useDataContext } from '../components/contexts/dataContext';
 
 type UseProductsProps = {
@@ -11,7 +12,7 @@ const useProducts = ({ category, priceOrder }: UseProductsProps) => {
     refetch: fetchProducts,
     isLoading,
     error,
-  } = useDataContext({
+  } = useDataContext<Product>({
     fetcher: getProducts,
     key: 'products',
     fetcherParams: {

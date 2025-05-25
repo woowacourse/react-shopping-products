@@ -1,4 +1,4 @@
-import { Product } from '../App';
+import { CartItem, Product } from '../App';
 import getCartItems from '../api/getCartItems';
 import postCartItems from '../api/postCartItems';
 import deleteCartItems from '../api/deleteCartItems';
@@ -13,7 +13,7 @@ const useCartItems = () => {
     isLoading,
     error,
     updateError,
-  } = useDataContext({
+  } = useDataContext<CartItem>({
     fetcher: getCartItems,
     key: 'cartItems',
   });
