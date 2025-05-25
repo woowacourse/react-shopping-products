@@ -86,8 +86,8 @@
 
 - [x] vi.mock -> msw 바탕 테스트 코드로 수정
 - [x] useProducts
-- [ ] useCartItems
-  - [ ] post (장바구니 처음 담기)
-  - [ ] patch (장바구니 갯수)
-    - [ ] 담는 수 제한 에러 확인
-  - [ ] delete (장바구니 삭제)
+- [x] useCartItems
+  - [x] post (장바구니 처음 담기)
+  - [x] patch (장바구니 갯수)
+    - [x] 담는 수 제한 에러 확인
+  - [x] delete (장바구니 삭제)
