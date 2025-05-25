@@ -14,20 +14,20 @@ interface HeaderProps {
 }
 
 export default function Header({ onOpenModal }: HeaderProps) {
-  const { status, cartItems } = useCartContext();
+  // const { status, cartItems } = useCartContext();
 
   return (
     <StyledHeader>
       <StyledSpan>SHOP</StyledSpan>
       <StyledButton type="button" onClick={onOpenModal}>
         <StyledImg src={shoppingBagIcon} alt="shoppingBagIcon" />
-        {status === "success" && (
+        {/* {status === "success" && (
           <CountBox>
             <StyledCountText data-testid="cart-count">
               {cartItems.length}
             </StyledCountText>
           </CountBox>
-        )}
+        )} */}
       </StyledButton>
     </StyledHeader>
   );

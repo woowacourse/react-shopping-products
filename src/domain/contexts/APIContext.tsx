@@ -7,6 +7,8 @@ import {
   type PropsWithChildren,
 } from "react";
 
+type Status = "idle" | "loading" | "success" | "error";
+
 const APIContext = createContext<{
   data: Record<string, unknown>;
   setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
@@ -33,22 +35,46 @@ export function useAPI<T>({
   name: string;
 }) {
   const { data, setData } = useContext(APIContext);
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const request = useCallback(() => {
-    fetcher().then((res) => {
-      setData((data) => {
-        return { ...data, [name]: res };
-      });
-    });
+  const request = useCallback(async () => {
+    setErrorMessage("");
+    setStatus("loading");
+
+    try {
+      const res = await fetcher();
+
+      if (!res) {
+        setStatus("error");
+        setErrorMessage(
+          `${name}을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.`
+        );
+        return;
+      }
+
+      setData((prev) => ({ ...prev, [name]: res }));
+      setStatus("success");
+    } catch (err: unknown) {
+      setStatus("error");
+      setErrorMessage(
+        err instanceof Error
+          ? err.message
+          : `${name}을 불러오는 중 알 수 없는 오류가 발생했습니다.`
+      );
+    }
   }, [fetcher, name, setData]);
 
   useEffect(() => {
-    const hasData = data[name];
-    if (hasData) {
-      return;
+    if (data[name] == null) {
+      request();
     }
-    request();
   }, [data, name, request]);
 
-  return { data: data[name] as T | undefined, refetch: request };
+  return {
+    data: data[name] as T | undefined,
+    status,
+    errorMessage,
+    refetch: request,
+  };
 }
