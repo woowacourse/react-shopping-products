@@ -27,6 +27,7 @@ const ProductItemListCard = ({ product, isInCart }: ProductItemProps) => {
           width="100%"
           style={{
             padding: '8px',
+            boxSizing: 'border-box',
           }}
         >
           <ProductItemInfo product={product} />
@@ -48,6 +49,7 @@ export default ProductItemListCard;
 
 const ProductItemContainer = styled.div`
   height: 240px;
+
   border-radius: 8px;
   position: relative;
 `;
