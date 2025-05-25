@@ -43,6 +43,26 @@ export const handlers = [
     return HttpResponse.json(cartItem);
   }),
 
+  //장바구니에 상품 추가
+  http.post(`${baseUrl}/cart-items`, async ({ request }) => {
+    const body = await request.json();
+    const { productId, quantity } = body as {
+      productId: number;
+      quantity: number;
+    };
+
+    if (quantity > 50) {
+      return HttpResponse.json(
+        {
+          errorCode: "OUT_OF_STOCK",
+          message: "재고 수량을 초과하여 담을 수 없습니다.",
+        },
+        { status: 400 }
+      );
+    }
+    return HttpResponse.json(productId);
+  }),
+
   // 장바구니 상품 수량 변경
   http.patch(`${baseUrl}/cart-items/:id`, async ({ params, request }) => {
     const { id } = params;
@@ -52,13 +72,12 @@ export const handlers = [
 
     const item = cartItemData.content.find((item) => item.id === Number(id));
     if (!item) {
-      console.log("Item not found:", id);
       return HttpResponse.json(
         { message: "Cart item not found" },
         { status: 404 }
       );
     }
-    item.product.quantity = quantity;
+    item.quantity = quantity;
 
     return HttpResponse.json(item);
   }),
