@@ -8,6 +8,8 @@ import { ToastProvider } from "./app/providers/ToastContext.tsx";
 import { BASE_URL } from "./shared/config/base.ts";
 
 async function enableMocking() {
+  if (!import.meta.env.VITE_USE_MOCK) return;
+
   const { worker } = await import("./mocks/browser");
 
   return worker.start({
