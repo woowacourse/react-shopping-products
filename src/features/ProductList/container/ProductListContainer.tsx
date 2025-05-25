@@ -10,7 +10,6 @@ import { useScrollStatus } from '@/shared/hooks/useScrollStatus';
 
 export const ProductListContainer = ({ children }: PropsWithChildren) => {
   const { productData } = useData();
-
   const containerRef = useRef<HTMLDivElement>(null);
   const { isScrolled } = useScrollStatus(containerRef);
   // TODO : 간헐적으로 OverLay가 안보이는 현상 수정 필요
@@ -64,7 +63,6 @@ const StyledGradientOverlay = styled.div<{ isScrolled: boolean }>`
   left: 20px;
   right: 20px;
   height: 25px;
-  padding: 0 -20px;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), transparent);
   opacity: ${({ isScrolled }) => (isScrolled ? 1 : 0)};
   transition: opacity 0.3s ease-in-out;
