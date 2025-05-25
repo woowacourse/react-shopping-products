@@ -1,51 +1,48 @@
-import { useState, useEffect } from "react";
-import { ResponseProduct } from "../api/types";
+import { useState, useMemo } from "react";
+import { ResponseProduct, ResponseCartItem } from "../api/types";
 import getCartItemList from "../api/CartItemListApi";
 import AddProductItemApi from "../api/AddProductItemApi";
 import RemoveProductItemApi from "../api/RemoveProductItemApi";
 import UpdateCartItemApi from "../api/UpdateCartItemApi";
 import { CART_MAX_COUNT } from "../constants/constants";
+import { useDataFetch } from "./useDataFetch";
 import { useDataContext } from "../context/DataContext";
 
 export const useCart = (productList: ResponseProduct[]) => {
-  const { state, setCartItemsLoading, setCartItemsData, setCartItemsError } =
-    useDataContext();
-
+  const { setCartItemsData } = useDataContext();
   const [isUpdatingCart, setIsUpdatingCart] = useState<Record<number, boolean>>(
     {}
   );
+
+  const cartFetcher = useMemo(() => {
+    return () => getCartItemList({});
+  }, []);
 
   const {
     data: cartItemList,
     loading: cartItemListLoading,
     error,
-  } = state.cartItems;
+    refetch: refreshCartItemList,
+  } = useDataFetch<ResponseCartItem[]>("cart-items", cartFetcher, {
+    deps: [],
+    retryCount: 1,
+    retryDelay: 500,
+  });
+
   const cartItemListErrorMessage = error || "";
 
   const handleCartErrorMessage = (message: string) => {
-    setCartItemsError(message);
-    setTimeout(() => {
-      setCartItemsError(null);
-    }, 3000);
-  };
-
-  const refreshCartItemList = async () => {
-    try {
-      const rawCartItemList = await getCartItemList({});
-      setCartItemsData(rawCartItemList);
-    } catch (error) {
-      if (error instanceof Error) {
-        setCartItemsError(error.message);
-      }
-    }
+    console.error("Cart error:", message);
   };
 
   const getCartQuantityForProduct = (productId: number): number => {
+    if (!cartItemList) return 0;
     const cartItem = cartItemList.find((item) => item.product.id === productId);
     return cartItem ? cartItem.quantity : 0;
   };
 
   const getCartItemIdForProduct = (productId: number): number | null => {
+    if (!cartItemList) return null;
     const cartItem = cartItemList.find((item) => item.product.id === productId);
     return cartItem ? cartItem.id : null;
   };
@@ -54,11 +51,13 @@ export const useCart = (productList: ResponseProduct[]) => {
     productId: number,
     newQuantity: number
   ) => {
+    if (!cartItemList) return;
+
     const existingItemIndex = cartItemList.findIndex(
       (item) => item.product.id === productId
     );
 
-    let updatedCartItems = [...cartItemList];
+    let updatedCartItems: ResponseCartItem[];
 
     if (existingItemIndex >= 0) {
       if (newQuantity <= 0) {
@@ -66,6 +65,7 @@ export const useCart = (productList: ResponseProduct[]) => {
           (_, index) => index !== existingItemIndex
         );
       } else {
+        updatedCartItems = [...cartItemList];
         updatedCartItems[existingItemIndex] = {
           ...updatedCartItems[existingItemIndex],
           quantity: newQuantity,
@@ -74,7 +74,7 @@ export const useCart = (productList: ResponseProduct[]) => {
     } else if (newQuantity > 0) {
       const product = productList.find((p) => p.id === productId);
       if (product) {
-        const newCartItem = {
+        const newCartItem: ResponseCartItem = {
           id: productId,
           quantity: newQuantity,
           product: {
@@ -87,7 +87,11 @@ export const useCart = (productList: ResponseProduct[]) => {
           },
         };
         updatedCartItems = [...cartItemList, newCartItem];
+      } else {
+        return;
       }
+    } else {
+      return;
     }
 
     setCartItemsData(updatedCartItems);
@@ -106,7 +110,7 @@ export const useCart = (productList: ResponseProduct[]) => {
       updateCartItemOptimistically(productId, newQuantity);
 
       if (currentQuantity === 0) {
-        if (cartItemList.length >= CART_MAX_COUNT) {
+        if ((cartItemList?.length || 0) >= CART_MAX_COUNT) {
           updateCartItemOptimistically(productId, currentQuantity);
           handleCartErrorMessage(
             `장바구니에는 최대 ${CART_MAX_COUNT}개의 상품만 담을 수 있습니다.`
@@ -174,7 +178,7 @@ export const useCart = (productList: ResponseProduct[]) => {
 
   const handleRemoveFromCart = async (cartItemId: number) => {
     try {
-      const cartItem = cartItemList.find((item) => item.id === cartItemId);
+      const cartItem = cartItemList?.find((item) => item.id === cartItemId);
       if (cartItem) {
         updateCartItemOptimistically(cartItem.product.id, 0);
       }
@@ -190,24 +194,8 @@ export const useCart = (productList: ResponseProduct[]) => {
     }
   };
 
-  useEffect(() => {
-    const fetchCartItemList = async () => {
-      try {
-        setCartItemsLoading(true);
-        const rawCartItemList = await getCartItemList({});
-        setCartItemsData(rawCartItemList);
-      } catch (error) {
-        if (error instanceof Error) {
-          setCartItemsError(error.message);
-        }
-      }
-    };
-
-    fetchCartItemList();
-  }, [setCartItemsLoading, setCartItemsData, setCartItemsError]);
-
   return {
-    cartItemList,
+    cartItemList: cartItemList || [],
     cartItemListLoading,
     cartItemListErrorMessage,
 

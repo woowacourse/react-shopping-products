@@ -1,60 +1,44 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
+import { ResponseProduct } from "../api/types";
 import getProductList from "../api/ProductListApi";
-import { useDataContext } from "../context/DataContext";
+import { useDataFetch } from "./useDataFetch";
 
 export const useProducts = () => {
-  const { state, setProductsLoading, setProductsData, setProductsError } =
-    useDataContext();
-
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
+
+  const productFetcher = useMemo(() => {
+    return () => {
+      return getProductList({ category, sort });
+    };
+  }, [category, sort]);
 
   const {
     data: productList,
     loading: productListLoading,
     error,
-  } = state.products;
+    refetch,
+  } = useDataFetch<ResponseProduct[]>("products", productFetcher, {
+    deps: [category, sort],
+    retryCount: 2,
+    retryDelay: 1000,
+  });
+
   const productListErrorMessage = error || "";
 
   const handleProductErrorMessage = (message: string) => {
-    setProductsError(message);
-    setTimeout(() => {
-      setProductsError(null);
-    }, 3000);
+    console.error("Product error:", message);
   };
 
-  useEffect(() => {
-    const fetchProductList = async () => {
-      try {
-        setProductsLoading(true);
-        setProductsError(null);
-
-        const rawProductList = await getProductList({
-          category: category,
-          sort: sort,
-        });
-
-        setProductsData(rawProductList);
-      } catch (error) {
-        if (error instanceof Error) {
-          setProductsError(error.message);
-        }
-      }
-    };
-
-    fetchProductList();
-  }, [category, sort, setProductsLoading, setProductsData, setProductsError]);
-
   return {
-    productList,
+    productList: productList || [],
     productListLoading,
     productListErrorMessage,
-
     category,
     sort,
-
     setCategory,
     setSort,
     setErrorMessage: handleProductErrorMessage,
+    refetch,
   };
 };
