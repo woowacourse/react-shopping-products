@@ -11,10 +11,12 @@ const ErrorToast = ({ errorMessage }: { errorMessage: string }) => {
 export default ErrorToast;
 
 const ErrorToastStyles = css`
-  width: 430px;
+  width: 420px;
   position: fixed;
-  top: 64px;
+  bottom: 64px;
   background-color: #ffc9c9;
   text-align: center;
+  border-radius: 8px;
   padding: 12px 0;
+  z-index: 2000;
 `;
