@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { StyledSelect } from "./SelectBox.styles";
+import { StyledSelect } from "../../styles/Common/SelectBox.styles";
 
 export type Option = {
   label: string;

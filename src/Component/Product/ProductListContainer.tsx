@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import getProducts from "../../../api/getProducts";
-import { useAPI } from "../../../domain/contexts/APIContext";
-import ErrorBox from "../../Common/ErrorBox/ErrorBox";
-import Spinner from "../../Common/Spinner";
-import ProductList from "../ProductList/ProductList";
-import ProductListToolbar from "../ProductListToolbar/ProductListToolbar";
-import { StyledSpinnerWrapper } from "./ProductListContainer.styles";
-import { Option } from "../../Common/SelectBox/SelectBox";
+import getProducts from "../../api/getProducts";
+import { useAPI } from "../../domain/contexts/APIContext";
+import ErrorBox from "../Common/ErrorBox";
+import Spinner from "../Common/Spinner";
+import ProductList from "./ProductList";
+import ProductListToolbar from "./ProductListToolbar";
+import { StyledSpinnerWrapper } from "../../styles/Product/ProductListContainer.styles";
+import { Option } from "../Common/SelectBox";
 
 export type CategoryValue = "all" | "grocery" | "fashion";
 export type SortValue = "low" | "high";

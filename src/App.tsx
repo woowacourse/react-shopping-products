@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Modal from "./Component/Common/Modal/Modal";
-import Body from "./Component/Layout/Body/Body";
-import Header from "./Component/Layout/Header/Header";
-import ProductListContainer from "./Component/Product/ProductListContainer/ProductListContainer";
+// import Modal from "./Component/Common/Modal/Modal";
+import Body from "./Component/Layout/Body";
+import Header from "./Component/Layout/Header";
+import ProductListContainer from "./Component/Product/ProductListContainer";
 import { APIProvider } from "./domain/contexts/APIContext";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
 export default App;
 
 function AppContent() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [, setIsModalOpen] = useState(false);
 
   return (
     <>

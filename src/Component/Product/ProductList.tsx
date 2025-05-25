@@ -1,5 +1,5 @@
-import ProductItem from "../ProductItem/ProductItem";
-import { StyledUl } from "./ProductList.styles";
+import { StyledUl } from "../../styles/Product/ProductList.styles";
+import ProductItem from "./ProductItem";
 
 export type Product = {
   id: number;

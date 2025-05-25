@@ -1,5 +1,5 @@
 import { ComponentProps, PropsWithChildren } from "react";
-import { StyledBody } from "./Body.styles";
+import { StyledBody } from "../../styles/Layout/Body.styles";
 
 export default function Body({
   children,

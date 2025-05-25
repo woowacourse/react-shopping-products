@@ -1,19 +1,19 @@
-import SelectBox from "../../Common/SelectBox/SelectBox";
-// import useCartContext from "../../../domain/contexts/useCartContext";
-import { useProductFilters } from "../../../domain/hooks/useProductFilter";
-import {
-  CATEGORY_OPTIONS,
-  CategoryValue,
-  PRICE_OPTIONS,
-  SortValue,
-} from "../ProductListContainer/ProductListContainer";
+import { useProductFilters } from "../../domain/hooks/useProductFilter";
 import {
   Container,
   FirstSelectWrapper,
   Label,
   SelectBoxContainer,
   Title,
-} from "./ProductListToolbar.styles";
+} from "../../styles/Product/ProductListToolbar.styles";
+import SelectBox from "../Common/SelectBox";
+import {
+  CATEGORY_OPTIONS,
+  CategoryValue,
+  PRICE_OPTIONS,
+  SortValue,
+} from "./ProductListContainer";
+// import useCartContext from "../../../domain/contexts/useCartContext";
 
 interface ProductListToolbarProps {
   category: CategoryValue;

@@ -1,4 +1,4 @@
-import { StyledCountBox } from "./CountBox.styles";
+import { StyledCountBox } from "../../styles/Layout/CountBox.styles";
 
 interface CountBoxProps {
   children: React.ReactNode;

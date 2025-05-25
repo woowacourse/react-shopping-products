@@ -1,5 +1,4 @@
 // import { useToggleCartItem } from "../../../domain/hooks/useToggleCartItem";
-import { Product } from "../ProductList/ProductList";
 import {
   StyledButtonWrapper,
   StyledImgWrapper,
@@ -8,7 +7,8 @@ import {
   StyledProductInfo,
   StyledProductInfoWrapper,
   StyledTitle,
-} from "./ProductItem.styles";
+} from "../../styles/Product/ProductItem.styles";
+import { Product } from "./ProductList";
 
 type ProductItemProps = Product & {
   // updateCartItems: () => Promise<void>;

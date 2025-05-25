@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import {
   StyledModalBackground,
   StyledModalContainer,
@@ -5,8 +6,7 @@ import {
   StyledModalBody,
   StyledModalList,
   StyledModalItem,
-} from "./Modal.styles";
-import { createPortal } from "react-dom";
+} from "../../styles/Common/Modal.styles";
 
 interface ModalProps {
   isModalOpen: boolean;

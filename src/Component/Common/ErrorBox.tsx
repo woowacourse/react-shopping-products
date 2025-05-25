@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { StyledDiv, StyledSpan } from "./ErrorBox.styles";
+import { StyledDiv, StyledSpan } from "../../styles/Common/ErrorBox.styles";
 
 type ErrorBoxProps = PropsWithChildren<object>;
 
