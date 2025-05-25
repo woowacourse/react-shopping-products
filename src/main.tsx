@@ -4,13 +4,24 @@ import App from "./App.tsx";
 import "./styles/index.css";
 
 async function enableMocking() {
-  // 개발상태이면 연결하겠다.
-  if (process.env.NODE_ENV !== "development") {
-    return;
-  }
+  const isDev = location.hostname === "localhost";
+  const isGithubPages = location.hostname === "h0ngju.github.io";
 
   const { worker } = await import("./mocks/browser");
-  return worker.start();
+
+  if (isGithubPages) {
+    return worker.start({
+      serviceWorker: {
+        url: "/react-shopping-products/mockServiceWorker.js",
+      },
+    });
+  }
+
+  if (isDev) {
+    return worker.start();
+  }
+
+  return;
 }
 
 enableMocking().then(() => {
