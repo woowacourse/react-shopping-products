@@ -18,7 +18,7 @@ const mockProducts: ProductItemType[] = Array.from({ length: 25 }, (_, index) =>
   imageUrl: `/images/product-${index + 1}.jpg`,
 }));
 
-const TestCartProvider = ({ children }: { children: React.ReactNode }) => {
+const TestDataProvider = ({ children }: { children: React.ReactNode }) => {
   return <DataProvider>{children}</DataProvider>;
 };
 
@@ -47,9 +47,9 @@ describe('상품 목록 조회 테스트', () => {
     (getProducts as Mock).mockResolvedValueOnce(mockProducts);
 
     render(
-      <TestCartProvider>
+      <TestDataProvider>
         <ProductListPage />
-      </TestCartProvider>,
+      </TestDataProvider>,
     );
     const items = await screen.findAllByText(/상품 \d+/);
     expect(items).toHaveLength(PRODUCT_LIST_ITEM_COUNT);
@@ -60,9 +60,9 @@ describe('상품 목록 조회 테스트', () => {
     (getProducts as Mock).mockRejectedValueOnce(new Error(ERROR_MESSAGE));
 
     render(
-      <TestCartProvider>
+      <TestDataProvider>
         <ProductListPage />
-      </TestCartProvider>,
+      </TestDataProvider>,
     );
     const error = await screen.findByText(ERROR_MESSAGE);
     expect(error).toBeInTheDocument();
@@ -73,9 +73,9 @@ describe('상품 목록 조회 테스트', () => {
     (getProducts as Mock).mockReturnValueOnce(pendingPromise);
 
     render(
-      <TestCartProvider>
+      <TestDataProvider>
         <ProductListPage />
-      </TestCartProvider>,
+      </TestDataProvider>,
     );
     expect(screen.getByTestId('product-list-skeleton')).toBeInTheDocument();
   });
@@ -84,9 +84,9 @@ describe('상품 목록 조회 테스트', () => {
 describe('상품 정렬 및 필터링 테스트', () => {
   it('카테고리 필터링 기능이 작동한다.', async () => {
     render(
-      <TestCartProvider>
+      <TestDataProvider>
         <ProductListPage />
-      </TestCartProvider>,
+      </TestDataProvider>,
     );
 
     const categorySelect = await screen.findAllByText('전체');
@@ -110,9 +110,9 @@ describe('상품 정렬 및 필터링 테스트', () => {
 
   it('가격 정렬 기능이 작동한다.', async () => {
     render(
-      <TestCartProvider>
+      <TestDataProvider>
         <ProductListPage />
-      </TestCartProvider>,
+      </TestDataProvider>,
     );
 
     const sortSelect = await screen.findAllByText('높은 가격순');
