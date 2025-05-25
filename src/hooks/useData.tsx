@@ -14,12 +14,12 @@ import { categoryType, sortType } from "../types/index.types";
 import { getQueryString } from "../utils/getQueryString";
 
 interface DataContextType {
-  cartItemIds: Record<"productId" | "cartId", number>[];
+  cartItemIds: Record<"productId" | "cartId" | "quantity", number>[];
   products: ProductPageResponse | null;
   fetchCartProducts: () => void;
   fetchProducts: (category: categoryType, sort: sortType) => void;
   setCartItemIds: Dispatch<
-    SetStateAction<Record<"productId" | "cartId", number>[]>
+    SetStateAction<Record<"productId" | "cartId" | "quantity", number>[]>
   >;
   isLoading: boolean;
 }
@@ -46,7 +46,7 @@ export function DataProvider({
   } = useResource<ProductPageResponse>(setErrorTrue, "PRODUCTS");
 
   const [cartItemIds, setCartItemIds] = useState<
-    Record<"productId" | "cartId", number>[]
+    Record<"productId" | "cartId" | "quantity", number>[]
   >([]);
 
   const fetchCartProducts = useCallback(() => {
@@ -72,6 +72,7 @@ export function DataProvider({
           return {
             productId: item.product.id,
             cartId: item.id,
+            quantity: item.quantity,
           };
         })
       );

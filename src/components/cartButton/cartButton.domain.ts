@@ -1,6 +1,11 @@
 import { ERROR_TYPE } from "../../hooks/useError";
 import request from "../../utils/request";
 
+interface PlusItemProps {
+  cartId: number | undefined;
+  quantity: number | undefined;
+  syncCartWithServer: () => void;
+}
 interface AddItemToCartProps {
   productId: number;
   cartAmount: number;
@@ -15,6 +20,27 @@ interface RemoveItemToCartProps {
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId", number>[]>
   >;
+}
+
+export async function PlusItem({
+  cartId,
+  quantity,
+  syncCartWithServer,
+}: PlusItemProps) {
+  try {
+    await request({
+      headers: {
+        Authorization: import.meta.env.VITE_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "PATCH",
+      url: `/cart-items/${cartId}`,
+      body: { quantity: (quantity ?? 0) + 1 },
+    });
+    syncCartWithServer();
+  } catch {
+    console.log("굿");
+  }
 }
 
 export async function addItemToCart({

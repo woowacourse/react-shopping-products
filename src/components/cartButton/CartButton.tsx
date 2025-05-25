@@ -1,8 +1,7 @@
-import { addItemToCart } from "./cartButton.domain";
+import { addItemToCart, PlusItem } from "./cartButton.domain";
 import { useData } from "../../hooks/useData";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { ButtonContainer } from "./CartButton.css";
-import { useEffect } from "react";
 
 interface CartToggleButtonProps {
   isToggled: boolean;
@@ -10,6 +9,7 @@ interface CartToggleButtonProps {
   productId: number;
   cartId?: number;
   cartAmount: number;
+  quantity?: number;
   setErrorTrue: (type: ERROR_TYPE) => void;
 }
 
@@ -18,6 +18,7 @@ function CartToggleButton({
   setToggle,
   productId,
   cartId,
+  quantity,
   cartAmount,
   setErrorTrue,
 }: CartToggleButtonProps) {
@@ -33,7 +34,19 @@ function CartToggleButton({
       });
       setToggle(!isToggled);
     } catch {
-      console.log("추가실패");
+      console.log("추가 실패");
+    }
+  };
+
+  const handlePlusButton = async () => {
+    try {
+      await PlusItem({
+        cartId,
+        quantity,
+        syncCartWithServer: fetchCartProducts,
+      });
+    } catch {
+      console.log("추가 실패");
     }
   };
 
@@ -54,8 +67,8 @@ function CartToggleButton({
     return (
       <>
         <button>-</button>
-        <p>1</p>
-        <button>+</button>
+        <p>{quantity}</p>
+        <button onClick={handlePlusButton}>+</button>
       </>
     );
   }

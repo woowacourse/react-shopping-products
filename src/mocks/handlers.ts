@@ -1,6 +1,10 @@
 import { http, HttpResponse } from "msw";
 import mockProducts from "./mockProducts.json";
-import mockCart from "./mockCart.json";
+import { CartItem } from "../types/response.types";
+
+const mockCart: { content: CartItem[] } = {
+  content: [],
+};
 
 export const handlers = [
   http.get(
@@ -47,6 +51,21 @@ export const handlers = [
         (item) => item.id !== Number(params.id)
       );
       return HttpResponse.json(null);
+    }
+  ),
+  http.patch(
+    "http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:id",
+    async ({ request, params }) => {
+      const cartItemId = Number(params.id);
+      const { quantity } = (await request.json()) as { quantity: number };
+
+      const item = mockCart.content.find((item) => item.id === cartItemId);
+      if (item) {
+        item.quantity = quantity;
+        return HttpResponse.json(item);
+      }
+
+      return HttpResponse.json({ message: "Not found" }, { status: 404 });
     }
   ),
 ];

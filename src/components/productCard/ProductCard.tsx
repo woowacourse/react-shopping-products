@@ -28,7 +28,6 @@ function ProductCard({
   setToggle,
 }: ProductCardProps) {
   const { cartItemIds } = useData();
-
   const cartMatch = cartItemIds.find((item) => item.productId === product.id);
 
   return (
@@ -51,6 +50,7 @@ function ProductCard({
           productId={product.id}
           cartId={cartMatch?.cartId}
           cartAmount={cartItemIds.length}
+          quantity={cartMatch?.quantity}
           isToggled={isToggled}
           setToggle={setToggle}
           setErrorTrue={setErrorTrue}
