@@ -45,9 +45,18 @@ export const cartHandlers = [
     const { quantity } = (await request.json()) as { quantity: number };
     const cartItemIndex = cartDataCopy.content.findIndex((item) => item.id === cartItemId);
     const cartItem = cartDataCopy.content[cartItemIndex];
+    const productItemMaxQuantity = cartItem?.product.quantity;
     if (cartItem) {
       cartItem.quantity = quantity;
     }
+
+    if (quantity > productItemMaxQuantity) {
+      return HttpResponse.json(
+        { errorCode: 'OUT_OF_STOCK', message: '재고 수량을 초과하여 담을 수 없습니다.' },
+        { status: 400 }
+      );
+    }
+
     return HttpResponse.json({ success: true });
   }),
 

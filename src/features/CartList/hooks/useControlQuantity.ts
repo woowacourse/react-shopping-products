@@ -14,12 +14,6 @@ export const useControlQuantity = (productId: number) => {
   const isInCart = !!cartItem;
 
   const increaseQuantity = async () => {
-    if (cartItem && currentQuantity >= cartItem.product.quantity) {
-      showToast(
-        `"${cartItem?.product.name}" 상품의 최대 구매 수량은 ${cartItem.product.quantity}개 입니다.`
-      );
-      return;
-    }
     try {
       if (!isInCart) {
         await cartData.mutate(
@@ -34,7 +28,11 @@ export const useControlQuantity = (productId: number) => {
         );
       }
     } catch (error) {
-      showToast('장바구니에 상품을 추가할 수 없습니다.');
+      const errorResponse = (error as Error)?.message;
+      showToast(
+        errorResponse ??
+          `"${cartItem?.product.name}" 상품의 최대 구매 수량은 ${cartItem?.product.quantity}개 입니다.`
+      );
     }
   };
 
