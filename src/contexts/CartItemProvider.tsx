@@ -1,5 +1,6 @@
 import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
+import useToast from "@/hooks/useToast";
 import {
   createContext,
   ReactNode,
@@ -34,23 +35,26 @@ interface CartItemProviderProps {
 
 export function CartItemProvider({ children }: CartItemProviderProps) {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const { addToast } = useToast();
 
-  useEffect(() => {
-    const fetchCartItems = async () => {
+  const fetchCartItems = useCallback(async () => {
+    try {
       const cartItems = await getCartItems();
       setCartItems(cartItems);
-    };
+    } catch {
+      addToast({
+        type: "error",
+        message: "장바구니 상품을 불러오는데 실패했습니다.",
+      });
+    }
+  }, []);
 
+  useEffect(() => {
     fetchCartItems();
-  }, []);
-
-  const refetchCartItems = useCallback(async () => {
-    const cartItems = await getCartItems();
-    setCartItems(cartItems);
-  }, []);
+  }, [fetchCartItems]);
 
   return (
-    <CartItemContext value={{ cartItems, refetchCartItems }}>
+    <CartItemContext value={{ cartItems, refetchCartItems: fetchCartItems }}>
       {children}
     </CartItemContext>
   );
