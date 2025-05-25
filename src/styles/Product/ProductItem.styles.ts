@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
-import { ProductTypes } from "../../../types/ProductTypes";
+import { ProductType } from "../../types/ProductType";
 
 export const StyledLi = styled.li`
   height: 224px;
   border-radius: 8px;
 `;
 
-type ImgWrapperProps = Pick<ProductTypes, "imageUrl">;
-type StyledButtonProps = Pick<ProductTypes, "isItemInCart">;
+type ImgWrapperProps = Pick<ProductType, "imageUrl">;
+type StyledButtonProps = Pick<ProductType, "isItemInCart">;
 
 export const StyledImgWrapper = styled.div<ImgWrapperProps>`
   width: 100%;
