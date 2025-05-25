@@ -55,11 +55,6 @@ export default function ProductItem({
   const handleControlClick = async (type: 'increase' | 'decrease') => {
     try {
       if (type === 'increase') {
-        if (quantity === cartItemQuantity) {
-          updateErrorMessage('수량 초과');
-          setDisabled(true);
-          return;
-        }
         if (checkMax()) throw new Error('50개 초과');
 
         if (cartItemQuantity === 0) await postShoppingCart(id, 1);
@@ -80,7 +75,14 @@ export default function ProductItem({
 
       updateCartItems();
     } catch (error) {
-      //
+      if (error instanceof Error) {
+        if (error.message === '수량 초과 에러') {
+          updateErrorMessage('수량 초과');
+          setDisabled(true);
+        }
+      } else {
+        console.error('알 수 없는 에러:', error);
+      }
     }
   };
 
