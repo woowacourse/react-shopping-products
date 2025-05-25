@@ -5,7 +5,7 @@ import useQuery from "./useQuery";
 
 const useCartItems = () => {
   const { setErrorMessage } = useErrorMessage();
-  const { setIsLoading } = useLoading();
+  const { startMutating, endMutating } = useLoading();
 
   const { data, refetch } = useQuery<GetCartItemsResponse>({
     queryKey: "/cart-items",
@@ -13,39 +13,38 @@ const useCartItems = () => {
   });
 
   const addCart = async (id: number) => {
-    setIsLoading(true);
+    startMutating();
     try {
       await postCartItems({ quantity: 1, productId: id });
       await refetch();
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
     } finally {
-      setIsLoading(false);
+      endMutating();
     }
   };
 
   const updateCart = async (id: number, quantity: number) => {
-    setIsLoading(true);
-
+    startMutating();
     try {
       await patchCartItems({ id, quantity });
       await refetch();
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
     } finally {
-      setIsLoading(false);
+      endMutating();
     }
   };
 
   const removeCart = async (id: number) => {
-    setIsLoading(true);
+    startMutating();
     try {
       await deleteCartItems({ id });
       await refetch();
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
     } finally {
-      setIsLoading(false);
+      endMutating();
     }
   };
 

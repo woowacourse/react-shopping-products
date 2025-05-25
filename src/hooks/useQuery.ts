@@ -10,7 +10,7 @@ interface UseQueryProps<T> {
 const useQuery = <T>({ queryKey, fetchFn }: UseQueryProps<T>) => {
   const query = useQueryClient();
   const [, forceRender] = useState({});
-  const { setIsLoading } = useLoading();
+  const { startFetching, endFetching } = useLoading();
   const { setErrorMessage } = useErrorMessage();
 
   const state = query.get<T>(queryKey);
@@ -20,18 +20,17 @@ const useQuery = <T>({ queryKey, fetchFn }: UseQueryProps<T>) => {
     query.subscribe(queryKey, reRenderFn);
 
     if (!state) {
-      setIsLoading(true);
-
+      startFetching();
       query
         .refetch(queryKey, fetchFn)
         .catch((e) => {
           if (e instanceof Error) setErrorMessage(e.message);
         })
-        .finally(() => setIsLoading(false));
+        .finally(() => endFetching());
     }
 
     return () => query.unsubscribe(queryKey, reRenderFn);
-  }, [queryKey, fetchFn, query, state, setIsLoading, setErrorMessage]);
+  }, [queryKey, fetchFn, query, state, setErrorMessage, startFetching, endFetching]);
 
   return {
     data: state?.data || null,

@@ -4,7 +4,7 @@ import { useLoading } from "../../contexts";
 const Spinner = () => {
   const { isLoading } = useLoading();
 
-  if (isLoading)
+  if (isLoading.isFetching)
     return (
       <div css={[spinnerWrapper, orbitSpin]} className="active">
         <div css={orbitSpinner}>
@@ -12,6 +12,19 @@ const Spinner = () => {
           <div css={orbit}>
             <div css={[satellite, satellite1]} />
             <div css={[satellite, satellite2]} />
+          </div>
+        </div>
+      </div>
+    );
+
+  if (isLoading.isMutating)
+    return (
+      <div css={[orbitSpin]} className="active">
+        <div css={orbitSpinner}>
+          <div css={planet} style={{ backgroundColor: "#fff" }} />
+          <div css={orbit}>
+            <div css={[satellite, satellite1]} style={{ backgroundColor: "#fff" }} />
+            <div css={[satellite, satellite2]} style={{ backgroundColor: "#fff" }} />
           </div>
         </div>
       </div>
