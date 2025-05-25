@@ -1,12 +1,15 @@
 import './styles/reset.css';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
 import { ToastProvider } from './context/Toast/ToastProvider';
+import { DataProvider } from './context/DataStore/DataProvider';
 
 function App() {
   return (
-    <ToastProvider>
-      <ProductsPage />
-    </ToastProvider>
+    <DataProvider>
+      <ToastProvider>
+        <ProductsPage />
+      </ToastProvider>
+    </DataProvider>
   );
 }
 
