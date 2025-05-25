@@ -52,39 +52,39 @@ describe('삼품 목록을 조회할 시', () => {
   });
 
   it('서버에 상품 목록이 정상적으로 불러올 경우 20개의 상품 목록이 보여진다', async () => {
-    const productItems = await screen.findAllByTestId(/product-/);
+    const productList = await screen.findAllByRole('list');
 
-    expect(productItems.length).toBeLessThanOrEqual(20);
+    expect(productList.length).toBeLessThanOrEqual(20);
 
-    productItems.forEach((item) => {
-      expect(item.getAttribute('data-testid')).not.toBeNull();
+    productList.forEach((item) => {
+      expect(item.getAttribute('id')).not.toBeNull();
     });
   });
 
   it('카테고리를 "패션잡화"로 선택하면 해당 상품만 목록에 렌더링된다', async () => {
-    const dropdownButtons = await screen.findAllByTestId(/filter-/);
-    fireEvent.click(dropdownButtons[0]);
+    const categoryButton = await screen.findByLabelText('카테고리 선택');
+    fireEvent.click(categoryButton);
 
     const fashionOption = await screen.findByText('패션잡화');
     fireEvent.click(fashionOption);
 
-    await waitFor(() => {
-      const items = screen.getAllByTestId(/product-list/);
+    await waitFor(async () => {
+      const items = await screen.findAllByRole('list');
       expect(items).toHaveLength(1);
     });
   });
 
   it('정렬을 "높은 가격순"으로 선택하면 가장 비싼 상품이 먼저 렌더링된다', async () => {
-    const dropdownButtons = await screen.findAllByTestId(/filter-/);
-    fireEvent.click(dropdownButtons[1]);
+    const sortButton = await screen.findByLabelText('정렬 방식 선택');
+    fireEvent.click(sortButton);
 
     const descOption = await screen.findByText('높은 가격순');
     fireEvent.click(descOption);
 
-    await waitFor(async () => {
-      const items = await screen.findAllByTestId(/product-\d+/);
-      const renderedTexts = items.map((item) => item.textContent ?? '');
+    const productList = await screen.findAllByRole('listitem');
 
+    await waitFor(async () => {
+      const renderedTexts = productList.map((item) => item.textContent ?? '');
       const expectedSorted = [...productListMockData]
         .sort((a, b) => b.price - a.price)
         .map((item) => item.name ?? '');
