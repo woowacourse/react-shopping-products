@@ -6,12 +6,13 @@ import { CartListProvider } from './context/CartContext.tsx';
 import { ToastProvider } from './context/ToastContext.tsx';
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
-    return;
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'production'
+  ) {
+    const { worker } = await import('./mocks/browser');
+    return worker.start({ onUnhandledRequest: 'bypass' });
   }
-
-  const { worker } = await import('./mocks/browser');
-  return worker.start({ onUnhandledRequest: 'bypass' });
 }
 
 enableMocking().then(() => {
