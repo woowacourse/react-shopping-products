@@ -4,6 +4,7 @@ import {
   addShoppingCart,
   deleteShoppingCart,
   getShoppingCart,
+  updateShoppingCart,
 } from '../APIs/shoppingCartApi';
 import { useCallback } from 'react';
 
@@ -42,5 +43,17 @@ export const useShoppingCart = () => {
     [refetch]
   );
 
-  return { data, loading, error, add, remove };
+  const update = useCallback(
+    async (cartItemId: number, quantity: number) => {
+      await updateShoppingCart({
+        endpoint: `/cart-items/${cartItemId}`,
+        requestBody: { quantity },
+      });
+
+      await refetch();
+    },
+    [refetch]
+  );
+
+  return { data, loading, error, add, remove, update };
 };

@@ -27,4 +27,17 @@ async function deleteShoppingCart(request: ShoppingCartRequest): Promise<void> {
   });
 }
 
-export { addShoppingCart, deleteShoppingCart, getShoppingCart };
+async function updateShoppingCart(request: ShoppingCartRequest): Promise<void> {
+  await apiRequestWithAuth<ShoppingCartRequestBody>({
+    endpoint: `${request.endpoint}`,
+    method: 'PATCH',
+    body: request.requestBody,
+  });
+}
+
+export {
+  addShoppingCart,
+  deleteShoppingCart,
+  getShoppingCart,
+  updateShoppingCart,
+};
