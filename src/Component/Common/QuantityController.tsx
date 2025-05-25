@@ -31,8 +31,9 @@ export default function QuantityController({
 
   const handleIncrease = async () => {
     if (count >= maxCount) {
-      throw new Error("50개 초과");
+      throw new Error("재고 수량을 초과할 수 없습니다.");
     }
+
     await patchShoppingCart(productId, count + 1);
     refetch();
   };
