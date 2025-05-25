@@ -1,10 +1,8 @@
 import { useCallback, useMemo } from "react";
-import { isApiError } from "../../shared/api/apiClient";
-import { TOAST_TYPES } from "../../shared/config/toast";
 import { useAPI } from "../../shared/hooks/useAPI";
-import useToast from "../../shared/hooks/useToast";
 import { CartItemsAPI } from "./api";
 import { CartItems } from "./response";
+import useApiResponseToasts from "../../shared/hooks/useApiResponseToasts";
 
 interface UseCartItemsResult {
   cartItems: CartItems | null;
@@ -23,7 +21,7 @@ interface UseCartItemsResult {
 }
 
 export const useCartItems = (): UseCartItemsResult => {
-  const { showToast } = useToast();
+  const { handleError, handleSuccess } = useApiResponseToasts();
 
   const fetcher = useCallback(() => CartItemsAPI.get(), []);
 
@@ -83,37 +81,19 @@ export const useCartItems = (): UseCartItemsResult => {
 
       if (quantity <= 1) {
         const response = await CartItemsAPI.delete(currentProductId.cartId);
-
-        if (response && isApiError(response)) {
-          showToast({
-            message: response.error,
-            type: TOAST_TYPES.ERROR,
-          });
-          return;
-        }
-
-        showToast({
-          message: "상품이 장바구니에서 삭제되었습니다.",
-          type: TOAST_TYPES.SUCCESS,
-        });
+        if (handleError(response)) return;
+        handleSuccess(response, "상품이 장바구니에서 삭제되었습니다.");
       } else {
         const response = await CartItemsAPI.patch(
           currentProductId.cartId,
           quantity - 1
         );
-
-        if (response && isApiError(response)) {
-          showToast({
-            message: response.error,
-            type: TOAST_TYPES.ERROR,
-          });
-          return;
-        }
+        if (handleError(response)) return;
       }
 
       refetch();
     },
-    [cartItemIds, quantityByProductId, refetch, showToast]
+    [cartItemIds, quantityByProductId, refetch, handleError, handleSuccess]
   );
 
   const increaseItemQuantity = useCallback(
@@ -129,61 +109,35 @@ export const useCartItems = (): UseCartItemsResult => {
         quantityByProductId(currentProductId.productId) + 1
       );
 
-      if (response && isApiError(response)) {
-        showToast({
-          message: response.error,
-          type: TOAST_TYPES.ERROR,
-        });
-        return;
-      }
+      if (handleError(response)) return;
 
       refetch();
     },
-    [cartItemIds, quantityByProductId, refetch, showToast]
+    [cartItemIds, quantityByProductId, refetch, handleError]
   );
 
   const addProductInCart = useCallback(
     async (productId: number) => {
       const response = await CartItemsAPI.post(productId);
 
-      if (response && isApiError(response)) {
-        showToast({
-          message: response.error,
-          type: TOAST_TYPES.ERROR,
-        });
-        return;
-      }
-
-      showToast({
-        message: "상품이 장바구니에 추가되었습니다.",
-        type: TOAST_TYPES.SUCCESS,
-      });
+      if (handleError(response)) return;
+      handleSuccess(response, "상품이 장바구니에서 추가되었습니다.");
 
       refetch();
     },
-    [refetch, showToast]
+    [refetch, handleError, handleSuccess]
   );
 
   const deleteProductInCart = useCallback(
     async (cartId: number) => {
       const response = await CartItemsAPI.delete(cartId);
 
-      if (response && isApiError(response)) {
-        showToast({
-          message: response.error,
-          type: TOAST_TYPES.ERROR,
-        });
-        return;
-      }
-
-      showToast({
-        message: "상품이 장바구니에서 삭제되었습니다.",
-        type: TOAST_TYPES.SUCCESS,
-      });
+      if (handleError(response)) return;
+      handleSuccess(response, "상품이 장바구니에서 삭제되었습니다.");
 
       refetch();
     },
-    [refetch, showToast]
+    [refetch, handleError, handleSuccess]
   );
 
   return {

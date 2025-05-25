@@ -2,10 +2,12 @@ import { useCartItems } from "../../entities/cartItem/useCartItems";
 import useModal from "../../shared/hooks/useModal";
 import CartItem from "./CartItem/CartItem";
 import * as S from "./CartModal.styles";
+import useApiResponseToasts from "../../shared/hooks/useApiResponseToasts";
 
 const CartModal = () => {
   const { closeModal } = useModal();
-  const { cartItems, totalPriceInCart } = useCartItems();
+  const { cartItems, totalPriceInCart, error } = useCartItems();
+  useApiResponseToasts(error);
 
   return (
     <S.CartModal>
