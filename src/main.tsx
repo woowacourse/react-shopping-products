@@ -5,9 +5,12 @@ import './index.css';
 import { App } from './App.tsx';
 
 async function enableMocking() {
-
   const { worker } = await import('./mocks/browser'); //Dynamic import
-  return worker.start();
+  await worker.start({
+    serviceWorker: {
+      url: '/react-shopping-products/mockServiceWorker.js',
+    },
+  });
 }
 
 enableMocking().then(() => {
