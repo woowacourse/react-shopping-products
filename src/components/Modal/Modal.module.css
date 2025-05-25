@@ -30,7 +30,15 @@
   animation: lift-up 0.2s linear forwards;
 }
 
+.cartItemContainer > * {
+  padding-top: 8px;
+  margin-bottom: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 .totalPriceContainer {
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -42,7 +50,7 @@
   font-size: 24px;
 }
 
-.content button {
+.closeButton {
   cursor: pointer;
   width: 100%;
   border-radius: 5px;
@@ -54,7 +62,7 @@
   transition: 0.3s background;
 }
 
-.content button:hover {
+.closeButton:hover {
   background: #222;
 }
 
