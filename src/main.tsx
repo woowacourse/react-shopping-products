@@ -8,7 +8,9 @@ async function enableMocking() {
   const { worker } = await import("./mocks/browser"); //Dynamic import
   await worker.start({
     serviceWorker: {
-      url: "/react-shopping-products/mockServiceWorker.js",
+      url: `${
+        import.meta.env.BASE_URL
+      }/react-shopping-products/mockServiceWorker.js`,
     },
   });
 }
