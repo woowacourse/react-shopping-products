@@ -10,9 +10,10 @@ import {
   productCardStyle,
 } from './ProductCard.styles';
 import { CartItem, Product } from '../../../types/common';
-import { IconAddCart, IconRemoveCart } from '../../../asset';
+import { IconAddCart } from '../../../asset';
 import { useContext } from 'react';
 import CartContext from '../../../context/cartContext/cartContext';
+import CartController from '../CartController/CartController';
 
 interface ProductCardProps extends Omit<Product, 'category'> {}
 
@@ -49,10 +50,11 @@ const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
         </div>
         <div css={productCardButtonContainerStyle}>
           {inCart ? (
-            <Button variant="gray" onClick={() => handleClick(id)}>
-              <img src={IconRemoveCart} alt="remove cart" />
-              빼기
-            </Button>
+            <CartController
+              quantity={productCartQuantity ?? 0}
+              cartItemId={productCartId ?? 0}
+              patchCartItemQuantity={patchCart}
+            />
           ) : (
             <Button variant="default" onClick={() => handleClick(id)}>
               <img src={IconAddCart} alt="add cart" />
