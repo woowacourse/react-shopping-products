@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { cartApi } from '../api/cart';
 import { CartItem } from '../types/common';
 import { useToast } from '../component/@common/Toast/context/toastContext';
@@ -11,7 +11,7 @@ const useCart = () => {
     loadCartData();
   }, []);
 
-  const loadCartData = async () => {
+  const loadCartData = useCallback(async () => {
     try {
       const response = await cartApi.getCartItems();
       setCartData(response);
@@ -20,42 +20,48 @@ const useCart = () => {
       setCartData([]);
       // TODO: Fallback page 또는 에러 처리 로직 추가
     }
-  };
+  }, []);
 
-  const addCart = async (productId: number) => {
-    try {
-      await cartApi.addToCart(productId);
+  const addCart = useCallback(
+    async (productId: number) => {
+      try {
+        await cartApi.addToCart(productId);
 
-      loadCartData();
-      openToast('상품이 장바구니에 추가되었습니다.', true);
-    } catch (error) {
-      openToast('장바구니 담기에 실패했어요...', false);
-    }
-  };
-
-  const removeCart = async (cartId: number) => {
-    try {
-      const cartItem = cartData.filter(
-        (item: CartItem) => item.product.id === cartId
-      );
-
-      if (!cartItem) {
-        console.error('장바구니에서 해당 상품을 찾을 수 없습니다:', cartId);
-        openToast('장바구니에서 상품을 찾을 수 없습니다.', false);
-        return;
+        loadCartData();
+        openToast('상품이 장바구니에 추가되었습니다.', true);
+      } catch (error) {
+        openToast('장바구니 담기에 실패했어요...', false);
       }
+    },
+    [loadCartData, openToast]
+  );
 
-      const targetId = cartItem[0].id;
+  const removeCart = useCallback(
+    async (cartId: number) => {
+      try {
+        const cartItem = cartData.filter(
+          (item: CartItem) => item.product.id === cartId
+        );
 
-      await cartApi.removeFromCart(targetId);
+        if (!cartItem) {
+          console.error('장바구니에서 해당 상품을 찾을 수 없습니다:', cartId);
+          openToast('장바구니에서 상품을 찾을 수 없습니다.', false);
+          return;
+        }
 
-      await loadCartData();
-      openToast('상품이 장바구니에서 제거되었습니다.', true);
-    } catch (error) {
-      console.error('장바구니 아이템 삭제 중 오류 발생:', error);
-      openToast('장바구니 빼기에 실패했어요...', false);
-    }
-  };
+        const targetId = cartItem[0].id;
+
+        await cartApi.removeFromCart(targetId);
+
+        await loadCartData();
+        openToast('상품이 장바구니에서 제거되었습니다.', true);
+      } catch (error) {
+        console.error('장바구니 아이템 삭제 중 오류 발생:', error);
+        openToast('장바구니 빼기에 실패했어요...', false);
+      }
+    },
+    [cartData, loadCartData, openToast]
+  );
 
   return { cartData, loadCartData, addCart, removeCart };
 };
