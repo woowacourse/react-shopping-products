@@ -22,7 +22,9 @@ function CartItemBottomSheet({
       <CartItemList cartItems={cartItems} />
       <S.TotalPriceBox>
         <S.TotalPriceText>총 결제 금액</S.TotalPriceText>
-        <S.TotalPriceValue>{totalPrice.toLocaleString()}원</S.TotalPriceValue>
+        <S.TotalPriceValue data-testid="total-cart-item-price">
+          {totalPrice.toLocaleString()}원
+        </S.TotalPriceValue>
       </S.TotalPriceBox>
     </BottomSheet>
   );
