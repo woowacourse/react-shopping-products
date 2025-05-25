@@ -9,6 +9,7 @@ type ProductListProps = {
   isLoadingProducts: boolean;
   products?: ProductDataType[];
   onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
+  onClickUpdateCartItem: ({ productId, quantity }: { productId: number; quantity: number }) => void;
   onClickDeleteCartItem: ({ productId }: { productId: number }) => void;
 };
 
@@ -16,6 +17,7 @@ function ProductList({
   isLoadingProducts,
   products,
   onClickAddCartItem,
+  onClickUpdateCartItem,
   onClickDeleteCartItem,
 }: ProductListProps) {
   if (isLoadingProducts) {
@@ -29,6 +31,7 @@ function ProductList({
           key={product.id}
           {...product}
           onClickAddCartItem={onClickAddCartItem}
+          onClickUpdateCartItem={onClickUpdateCartItem}
           onClickDeleteCartItem={onClickDeleteCartItem}
         />
       ))}

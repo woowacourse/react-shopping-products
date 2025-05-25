@@ -21,10 +21,11 @@ function ProductsPage() {
   const { sort, handleChangeSort } = useProductSort();
   const { isLoading: isLoadingProducts, products } = useGetProducts({ category, sort });
   const { carts, refetchCarts } = useGetCarts();
-  const { handleAddCartItem, handleDeleteCartItem, itemCount } = useCartManagement({
-    refetchCarts,
-    carts,
-  });
+  const { handleAddCartItem, handleUpdateCartItem, handleDeleteCartItem, itemCount } =
+    useCartManagement({
+      refetchCarts,
+      carts,
+    });
 
   return (
     <div className={productPageContainer}>
@@ -44,6 +45,7 @@ function ProductsPage() {
             isLoadingProducts={isLoadingProducts}
             products={getProcessedCartArr({ carts, products })}
             onClickAddCartItem={handleAddCartItem}
+            onClickUpdateCartItem={handleUpdateCartItem}
             onClickDeleteCartItem={handleDeleteCartItem}
           />
         )}

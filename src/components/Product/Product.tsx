@@ -1,5 +1,5 @@
+import { useState } from 'react';
 import AddButton from '../AddButton/AddButton';
-import DeleteButton from '../DeleteButton/DeleteButton';
 import { ProductProps } from '../../types/product';
 import {
   productContainer,
@@ -9,6 +9,9 @@ import {
   productPrice,
   buttonWrapper,
   productSoldOutOverlay,
+  quantityButton,
+  quantityDisplay,
+  quantityControlContainer,
 } from './Product.style';
 import isValidImageUrl from '../../utils/isValidImageUrl';
 import { DEFAULT_IMAGE_URL } from '../../constants/products';
@@ -21,9 +24,38 @@ function Product({
   quantity,
   isAdd,
   onClickAddCartItem,
+  onClickUpdateCartItem,
   onClickDeleteCartItem,
 }: ProductProps) {
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
   const isOutOfStock = quantity === 0;
+
+  const handleIncreaseQuantity = () => {
+    if (selectedQuantity < quantity) {
+      const newQuantity = selectedQuantity + 1;
+      setSelectedQuantity(newQuantity);
+      if (isAdd) {
+        onClickUpdateCartItem({ productId: id, quantity: newQuantity });
+      }
+    }
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (selectedQuantity === 1) {
+      onClickDeleteCartItem({ productId: id });
+      setSelectedQuantity(1);
+      return;
+    }
+
+    if (selectedQuantity > 1) {
+      const newQuantity = selectedQuantity - 1;
+      setSelectedQuantity(newQuantity);
+    }
+  };
+
+  const handleAddToCart = () => {
+    onClickAddCartItem({ productId: id, quantity: selectedQuantity });
+  };
 
   return (
     <li className={productContainer}>
@@ -44,11 +76,28 @@ function Product({
       <div className={productContent}>
         <div className={productTitle}>{name}</div>
         <div className={productPrice}>{price}원</div>
+        <div className={`${productPrice} quantity-info`}>재고: {quantity}개</div>
         <div className={buttonWrapper}>
           {isAdd ? (
-            <DeleteButton onClick={() => onClickDeleteCartItem({ productId: id })} />
+            <div className={quantityControlContainer}>
+              <button
+                className={quantityButton}
+                onClick={handleDecreaseQuantity}
+                disabled={isOutOfStock}
+              >
+                -
+              </button>
+              <span className={quantityDisplay}>{selectedQuantity}</span>
+              <button
+                className={quantityButton}
+                onClick={handleIncreaseQuantity}
+                disabled={isOutOfStock || selectedQuantity >= quantity}
+              >
+                +
+              </button>
+            </div>
           ) : (
-            <AddButton onClick={() => onClickAddCartItem({ productId: id, quantity: 1 })} />
+            <AddButton onClick={handleAddToCart} disabled={isOutOfStock} />
           )}
         </div>
       </div>
