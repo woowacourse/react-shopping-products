@@ -5,12 +5,13 @@ import useCartItems from '../../../hooks/useCartItems';
 type AddCartItemButtonProps = {
   product: Product;
 };
+
 type ButtonProps = {
   disabled?: boolean;
 };
 
 const AddCartItemButton = ({ product }: AddCartItemButtonProps) => {
-  const { addToCart, isLoading: isCartItemsLoading } = useCartItems();
+  const { addToCart } = useCartItems();
 
   const handleClickAddButton = () => {
     addToCart(product);
@@ -19,11 +20,7 @@ const AddCartItemButton = ({ product }: AddCartItemButtonProps) => {
   const isSoldOut = product.quantity === 0;
 
   return (
-    <Button
-      onClick={handleClickAddButton}
-      disabled={isCartItemsLoading || isSoldOut}
-      isSoldOut={isSoldOut}
-    >
+    <Button onClick={handleClickAddButton} disabled={isSoldOut}>
       <AddIcon />
       담기
     </Button>
@@ -52,5 +49,5 @@ const Button = styled.button<ButtonProps>`
   justify-content: center;
   align-items: center;
   gap: 6px;
-  cursor: ${({ isSoldOut }) => (isSoldOut ? 'not-allowed' : 'pointer')};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `;
