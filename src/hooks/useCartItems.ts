@@ -72,6 +72,7 @@ const useCartItems = ({ products }: UseCartItemsProps) => {
       if (currentItem) {
         if (currentItem.quantity >= stockQuantity) {
           setErrorMessage("재고 수량을 초과할 수 없습니다.");
+          await refreshCartItems();
           return;
         }
 
