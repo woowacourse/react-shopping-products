@@ -7,7 +7,7 @@ export default defineConfig({
       jsxImportSource: "@emotion/react",
     }),
   ],
-  base: "/react-shopping-products/",
+  base: "/",
 
   test: {
     environment: "jsdom",
