@@ -33,7 +33,7 @@ export const ProductItem = ({
   onDelete,
 }: ProductItemProps) => {
   return (
-    <StyledProductItemContainer variant={variant}>
+    <StyledProductItemContainer variant={variant} data-testid="product-item">
       <StyledImageWrapper variant={variant}>
         <StyledProductItemImage
           src={imageUrl}
@@ -103,7 +103,6 @@ export const ProductItem = ({
               src="./AddCart.svg"
               onClick={onAddCart}
               aria-label="장바구니 담기"
-              disabled={quantity === 0}
             >
               담기
             </IconButton>

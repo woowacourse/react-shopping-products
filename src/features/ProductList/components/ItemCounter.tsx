@@ -68,7 +68,9 @@ const ItemCounter = ({
         variant="secondary"
         style={{ width: '25px', height: '25px' }}
       />
-      <span style={{ minWidth: '24px', textAlign: 'center' }}>{count === 0 ? 1 : count}</span>
+      <span data-testid="cart-quantity" style={{ minWidth: '24px', textAlign: 'center' }}>
+        {count === 0 ? 1 : count}
+      </span>
       <IconButton
         src="/plus.svg"
         aria-label="증가"

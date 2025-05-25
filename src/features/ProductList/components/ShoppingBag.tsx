@@ -13,7 +13,7 @@ export const ShoppingBag = ({ handleShowModal }: ShoppingBagProps) => {
   const count = cartData.length;
 
   return (
-    <StyledShoppingBagButton onClick={handleShowModal}>
+    <StyledShoppingBagButton onClick={handleShowModal} aria-label="장바구니">
       <StyledShoppingBagIcon src="./ShoppingBag.svg" alt="Shopping Bag" />
       {count > 0 && <StyledShoppingBagCount>{count}</StyledShoppingBagCount>}
     </StyledShoppingBagButton>
