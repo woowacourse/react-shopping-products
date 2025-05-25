@@ -1,11 +1,17 @@
+import { APIContext } from '@/shared/context/APIContext';
 import styled from '@emotion/styled';
+import { useContext } from 'react';
+import { CartItem } from '../types/Cart';
 
 type ShoppingBagProps = {
-  count: number;
   handleShowModal: () => void;
 };
 
-export const ShoppingBag = ({ count = 0, handleShowModal }: ShoppingBagProps) => {
+export const ShoppingBag = ({ handleShowModal }: ShoppingBagProps) => {
+  const { data } = useContext(APIContext);
+  const cartData = Object.values(data['cartItem'] ?? {}) as CartItem[];
+  const count = cartData.length;
+
   return (
     <StyledShoppingBagButton onClick={handleShowModal}>
       <StyledShoppingBagIcon src="./ShoppingBag.svg" alt="Shopping Bag" />
