@@ -1,5 +1,6 @@
 import { http } from 'msw';
 import { productsHandlers } from './productsHandlers';
+import { cartHandlers } from './cartHandlers';
 
 export const handlers = [
   http.get('/api/test', () => {
@@ -11,4 +12,5 @@ export const handlers = [
   }),
 
   ...productsHandlers,
+  ...cartHandlers,
 ];
