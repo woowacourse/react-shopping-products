@@ -5,6 +5,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const PRODUCTS_URL = `${BASE_URL}/products`;
 
 export const productsHandlers = [
+  // 상품 목록 조회
   http.get(PRODUCTS_URL, ({ request }) => {
     const url = new URL(request.url);
     const categoryOption = url.searchParams.get("category");
