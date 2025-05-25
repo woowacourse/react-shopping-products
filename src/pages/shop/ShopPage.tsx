@@ -1,11 +1,8 @@
-import { wrapPromise } from '@/api/wrapPromise';
-import { ErrorToastMessage, Flex, Loading } from '@/components/common';
+import { ErrorToastMessage, Flex } from '@/components/common';
 import { CartModal } from '@/components/features/cart';
-import { type Product } from '@/components/features/product';
-import { getProductList } from '@/components/features/product/api';
 import styled from '@emotion/styled';
 import { Modal } from '@jae-o/modal-component-module';
-import { Suspense, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { ShopFilter, ShopHeader, ShopProductList } from './components';
 
 function ShopPage() {
@@ -28,8 +25,6 @@ function ShopPage() {
     }));
   };
 
-  const listPromiseData = useMemo(() => getProductList(filter), [filter]);
-
   return (
     <Modal>
       <ShopHeader />
@@ -42,9 +37,7 @@ function ShopPage() {
             handleSortOption={handleSortOption}
           />
         </ListTitleBox>
-        <Suspense fallback={<Loading />}>
-          <ShopProductList resource={wrapPromise<Product[]>(listPromiseData)} />
-        </Suspense>
+        <ShopProductList filter={filter} />
         <ErrorToastMessage />
       </ProductListContainer>
       <CartModal />

@@ -1,14 +1,43 @@
-import { ProductCard, type Product } from '@/components/features/product';
+import {
+  getProductList,
+  ProductCard,
+  type Product,
+} from '@/components/features/product';
 import { useCartContext } from '@/components/features/cart';
 import styled from '@emotion/styled';
+import { useJaeO } from '@/hooks/useJaeO';
+import { Loading } from '@/components/common';
+import { buildQueryString } from '@/api/buildQueryString';
 
 function ShopProductList({
-  resource,
+  filter,
 }: {
-  resource: { read: () => Product[] };
+  filter: { category: string; sort: string };
 }) {
-  const products = resource.read();
+  const queryString = buildQueryString([
+    {
+      name: 'category',
+      value: filter.category !== '전체' && filter.category,
+    },
+    { name: 'page', value: 0 },
+    { name: 'size', value: 20 },
+    { name: 'sort', value: `price,${filter.sort}` },
+  ]);
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = useJaeO<Product[]>({
+    path: `/products?${queryString}`,
+    fetchFn: () => {
+      return getProductList(filter);
+    },
+  });
   const { cartList } = useCartContext();
+
+  if (isLoading) return <Loading />;
+
+  if (isError) return <div>데이터를 불러오는데 실패했습니다.</div>;
 
   return (
     <Container>
