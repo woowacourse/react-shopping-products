@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useCartActions } from '../../cart/hooks/useCartActions';
 import AddCartButton from './AddCartButton';
 import UpdateCartButton from './UpdateCartButton';
+import { isValidImageUrl } from '@/util/isValidImageUrl';
 
 interface ProductProps {
   id: string;
@@ -30,7 +31,14 @@ function ProductCard({
   return (
     <Container data-testid={`product-${id}`}>
       <PreviewBox>
-        <PreviewImage src={imageUrl} />
+        <PreviewImage
+          src={
+            isValidImageUrl(imageUrl)
+              ? imageUrl
+              : './assets/img/default_product.png'
+          }
+          alt="상품 이미지"
+        />
         {quantity === 0 && (
           <SoldOutOverlay>
             <SoldOutText>품절</SoldOutText>

@@ -2,6 +2,7 @@ import { Flex } from '@/components/common';
 import styled from '@emotion/styled';
 import { useCartActions } from '../../cart/hooks/useCartActions';
 import UpdateCartButton from './UpdateCartButton';
+import { isValidImageUrl } from '@/util/isValidImageUrl';
 
 interface ProductProps {
   id: string;
@@ -25,7 +26,14 @@ function ProductRowCard({
   return (
     <Container data-testid={`product-${id}`}>
       <PreviewBox>
-        <PreviewImage src={imageUrl} />
+        <PreviewImage
+          src={
+            isValidImageUrl(imageUrl)
+              ? imageUrl
+              : './assets/img/default_product.png'
+          }
+          alt="상품 이미지"
+        />
       </PreviewBox>
       <InfoBox>
         <Flex
