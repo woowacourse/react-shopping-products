@@ -6,7 +6,7 @@ import {
   ProductPrice,
   ButtonContainer,
 } from "./ProductCard.css";
-import CartToggleButton from "../cartToggleButton/CartToggleButton";
+import CartToggleButton from "../cartButton/CartButton";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { useData } from "../../hooks/useData";
 import { ProductPageResponse } from "../../types/response.types";
@@ -14,9 +14,16 @@ import { ProductPageResponse } from "../../types/response.types";
 interface ProductCardProps {
   product: ProductPageResponse["content"][number];
   setErrorTrue: (type: ERROR_TYPE) => void;
+  isToggled: boolean;
+  setToggle: (value: boolean) => void;
 }
 
-function ProductCard({ product, setErrorTrue }: ProductCardProps) {
+function ProductCard({
+  product,
+  setErrorTrue,
+  isToggled,
+  setToggle,
+}: ProductCardProps) {
   const { cartItemIds } = useData();
 
   const cartMatch = cartItemIds.find((item) => item.productId === product.id);
@@ -40,7 +47,8 @@ function ProductCard({ product, setErrorTrue }: ProductCardProps) {
           productId={product.id}
           cartId={cartMatch?.cartId}
           cartAmount={cartItemIds.length}
-          isAdded={Boolean(cartMatch)}
+          isToggled={isToggled}
+          setToggle={setToggle}
           setErrorTrue={setErrorTrue}
         />
       </div>

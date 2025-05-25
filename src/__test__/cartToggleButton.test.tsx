@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import CartToggleButton from "../components/cartToggleButton/CartToggleButton";
+import CartToggleButton from "../components/cartButton/CartButton";
 import { CartProvider } from "../hooks/useCart";
-import * as domain from "../components/cartToggleButton/cartToggleButton.domain";
+import * as domain from "../components/cartButton/cartButton.domain";
 
 describe("CartToggleButton (mock 기반)", () => {
   it("담기 버튼 클릭 시 addItemToCart가 호출되고 버튼이 비활성화된다", async () => {

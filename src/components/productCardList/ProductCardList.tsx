@@ -3,6 +3,7 @@ import { CardListContainer } from "./ProductCardList.css";
 import { ERROR_TYPE } from "../../hooks/useError";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
 import { useData } from "../../hooks/useData";
+import { useState } from "react";
 
 interface ProductCardListProps {
   setErrorTrue: (type: ERROR_TYPE) => void;
@@ -10,6 +11,16 @@ interface ProductCardListProps {
 
 function ProductCardList({ setErrorTrue }: ProductCardListProps) {
   const { products, isLoading } = useData();
+  const [toggleStates, setToggleStates] = useState<Record<number, boolean>>({});
+
+  const toggleButton = (productId: number, value: boolean) => {
+    setToggleStates((prev) => ({
+      ...prev,
+      [productId]: value,
+    }));
+  };
+
+  if (isLoading) return <ProductCardListSkeleton />;
 
   if (isLoading) return <ProductCardListSkeleton />;
 
@@ -19,6 +30,8 @@ function ProductCardList({ setErrorTrue }: ProductCardListProps) {
         <ProductCard
           key={product.id}
           product={product}
+          isToggled={!!toggleStates[product.id]}
+          setToggle={(val) => toggleButton(product.id, val)}
           setErrorTrue={setErrorTrue}
         />
       ))}
