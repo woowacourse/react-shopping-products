@@ -11,7 +11,7 @@ const ProductPage = () => {
   return (
     <>
       <div css={containerStyle}>
-        <Text variant="title-1">bpple 상품 목록</Text>
+        <Text variant="title-1">호이초이의 상품 목록</Text>
         <div css={selectBoxStyle}>
           <Select options={OPTION.FILTER} selectedItem={filter} setSelectedItem={setFilter} />
           <Select options={OPTION.SORT} selectedItem={sort} setSelectedItem={setSort} />
