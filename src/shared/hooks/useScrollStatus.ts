@@ -20,7 +20,7 @@ export const useScrollStatus = (ref: RefObject<HTMLDivElement>) => {
         currentRef.removeEventListener('scroll', handleScroll);
       }
     };
-  }, [handleScroll, ref]);
+  });
 
   return {
     isScrolled,
