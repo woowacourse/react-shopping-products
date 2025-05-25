@@ -24,4 +24,6 @@ export default async function postShoppingCart(
         `상품을 장바구니에 추가하는데 실패했습니다 (${response.status})`
     );
   }
+  const data = await response.json();
+  return data;
 }
