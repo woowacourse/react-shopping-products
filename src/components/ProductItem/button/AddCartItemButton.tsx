@@ -6,7 +6,7 @@ type AddCartItemButtonProps = {
   product: Product;
 };
 type ButtonProps = {
-  isSoldOut?: boolean;
+  disabled?: boolean;
 };
 
 const AddCartItemButton = ({ product }: AddCartItemButtonProps) => {
@@ -42,7 +42,7 @@ const Image = styled.img`
 `;
 
 const Button = styled.button<ButtonProps>`
-  background-color: black;
+  background-color: ${({ disabled }) => (disabled ? '#AEAEAE' : 'black')};
   color: white;
   border: none;
   width: 70px;
