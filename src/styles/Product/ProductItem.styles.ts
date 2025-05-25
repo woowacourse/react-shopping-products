@@ -7,7 +7,6 @@ export const StyledLi = styled.li`
 `;
 
 type ImgWrapperProps = Pick<ProductType, "imageUrl">;
-type StyledButtonProps = Pick<ProductType, "isItemInCart">;
 
 export const StyledImgWrapper = styled.div<ImgWrapperProps>`
   width: 100%;
@@ -37,14 +36,14 @@ export const StyledPrice = styled.span`
   font-size: 12px;
 `;
 
-export const StyledButton = styled.button<StyledButtonProps>`
+export const StyledButton = styled.button`
   width: 59px;
   height: 24px;
   padding: 4px 8px;
   gap: 4px;
   border-radius: 4px;
-  background-color: ${(props) => (props.isItemInCart ? "#000000" : "#EAEAEA")};
-  color: ${(props) => (props.isItemInCart ? "#FFFFFF" : "#000000")};
+  background-color: black;
+  color: white;
   display: flex;
   justify-content: center;
   gap: 4px;
