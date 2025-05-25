@@ -15,6 +15,7 @@ const ProductListPageSkeleton = () => {
 
       <P.ProductItemContainer>
         {Array.from({ length: PRODUCT_LIST_ITEM_COUNT }, (_, index) => (
+          //biome-ignore lint/suspicious/noArrayIndexKey: Skeleton UI는 고정된 구조를 렌더링하기 때문에 key로 index 사용이 안전
           <SkeletonProductItem key={index} />
         ))}
       </P.ProductItemContainer>

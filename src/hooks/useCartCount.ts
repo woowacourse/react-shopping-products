@@ -3,35 +3,35 @@ import type { ProductItemType } from '../types/data';
 interface UseCartCountProps {
   cartInCount: number;
   product: ProductItemType;
-  handleUpdateCartItems: (productId: number, quantity: number) => void;
-  handleAddCartItems: (productId: number) => void;
-  handleRemoveCartItems: (productId: number) => void;
+  onUpdateCartItems: (productId: number, quantity: number) => void;
+  onAddCartItems: (productId: number) => void;
+  onRemoveCartItems: (productId: number) => void;
 }
 
 const useCartCount = ({
   cartInCount,
   product,
-  handleUpdateCartItems,
-  handleAddCartItems,
-  handleRemoveCartItems,
+  onUpdateCartItems,
+  onAddCartItems,
+  onRemoveCartItems,
 }: UseCartCountProps) => {
   const handlePlusCount = () => {
     const newCartInCount = cartInCount + 1;
     if (newCartInCount > product.quantity) return;
     if (cartInCount > 0) {
-      handleUpdateCartItems(product.id, newCartInCount);
+      onUpdateCartItems(product.id, newCartInCount);
       return;
     }
-    handleAddCartItems(product.id);
+    onAddCartItems(product.id);
   };
 
   const handleMinusCount = () => {
     const newCartInCount = cartInCount - 1;
     if (cartInCount !== 1) {
-      handleUpdateCartItems(product.id, newCartInCount);
+      onUpdateCartItems(product.id, newCartInCount);
       return;
     }
-    handleRemoveCartItems(product.id);
+    onRemoveCartItems(product.id);
   };
 
   return { handlePlusCount, handleMinusCount };

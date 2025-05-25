@@ -9,17 +9,17 @@ import useCartCount from '../../hooks/useCartCount';
 interface ProductItemProps {
   cartInCount: number;
   product: ProductItemType;
-  handleAddCartItems: (productId: number) => void;
-  handleRemoveCartItems: (productId: number) => void;
-  handleUpdateCartItems: (productId: number, quantity: number) => void;
+  onAddCartItems: (productId: number) => void;
+  onRemoveCartItems: (productId: number) => void;
+  onUpdateCartItems: (productId: number, quantity: number) => void;
 }
 
 const ProductItem = ({
   cartInCount,
   product,
-  handleAddCartItems,
-  handleRemoveCartItems,
-  handleUpdateCartItems,
+  onAddCartItems,
+  onRemoveCartItems,
+  onUpdateCartItems,
 }: ProductItemProps) => {
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const DEFAULT_PRODUCT_IMAGE = './default-product.png';
@@ -32,9 +32,9 @@ const ProductItem = ({
   const { handlePlusCount, handleMinusCount } = useCartCount({
     cartInCount,
     product,
-    handleUpdateCartItems,
-    handleAddCartItems,
-    handleRemoveCartItems,
+    onUpdateCartItems,
+    onAddCartItems,
+    onRemoveCartItems,
   });
 
   return (
@@ -60,8 +60,8 @@ const ProductItem = ({
           <CounterControl
             count={cartInCount}
             maxCount={product.quantity}
-            handlePlusCount={handlePlusCount}
-            handleMinusCount={handleMinusCount}
+            onPlusCount={handlePlusCount}
+            onMinusCount={handleMinusCount}
           />
         ) : (
           <Button

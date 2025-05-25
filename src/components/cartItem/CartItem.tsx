@@ -5,23 +5,23 @@ import useCartCount from '../../hooks/useCartCount';
 
 interface CartItemProps {
   cartItem: CartItemType;
-  handleAddCartItems: (productId: number) => void;
-  handleRemoveCartItems: (productId: number) => void;
-  handleUpdateCartItems: (productId: number, quantity: number) => void;
+  onAddCartItems: (productId: number) => void;
+  onRemoveCartItems: (productId: number) => void;
+  onUpdateCartItems: (productId: number, quantity: number) => void;
 }
 
 const CartItem = ({
   cartItem,
-  handleAddCartItems,
-  handleRemoveCartItems,
-  handleUpdateCartItems,
+  onAddCartItems,
+  onRemoveCartItems,
+  onUpdateCartItems,
 }: CartItemProps) => {
   const { handlePlusCount, handleMinusCount } = useCartCount({
     cartInCount: cartItem.quantity,
     product: cartItem.product,
-    handleUpdateCartItems,
-    handleAddCartItems,
-    handleRemoveCartItems,
+    onUpdateCartItems,
+    onAddCartItems,
+    onRemoveCartItems,
   });
 
   return (
@@ -33,8 +33,8 @@ const CartItem = ({
         <CounterControl
           count={cartItem.quantity}
           maxCount={cartItem.product.quantity}
-          handlePlusCount={handlePlusCount}
-          handleMinusCount={handleMinusCount}
+          onPlusCount={handlePlusCount}
+          onMinusCount={handleMinusCount}
         />
       </S.CartItemInfoContainer>
     </S.CartItemContainer>

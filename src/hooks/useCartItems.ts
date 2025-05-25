@@ -5,54 +5,34 @@ import {
 } from '../services/cartItemServices';
 import tryApiCall from '../util/tryApiCall';
 import type { CartItemType } from '../types/data';
-import { useState, useEffect } from 'react';
-import { getCartItems } from '../services/cartItemServices';
+import type { DataResourceType } from '../types/data';
 
-const useCartItems = ({
-  handleErrorMessage,
-}: {
+interface UseCartItemsProps {
+  dataResource: DataResourceType<CartItemType[]>;
   handleErrorMessage: (errorMessage: string) => void;
-}) => {
-  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+}
 
-  useEffect(() => {
-    fetchCartItems();
-  }, []);
-
-  const fetchCartItems = async () => {
-    const items = await tryApiCall<CartItemType[]>(getCartItems, handleErrorMessage);
-    if (!items) return;
-
-    setCartItems(items);
-  };
-
+const useCartItems = ({ dataResource, handleErrorMessage }: UseCartItemsProps) => {
   const handleAddCartItems = async (productId: number) => {
     const addCartItemInfo = {
       productId: productId,
       quantity: 1,
     };
     await tryApiCall(async () => await addCartItems(addCartItemInfo), handleErrorMessage);
-    const items = await tryApiCall<CartItemType[]>(
-      async () => await getCartItems(),
-      handleErrorMessage,
-    );
-    if (!items) return;
-
-    setCartItems(items);
+    await dataResource.refetch();
+    if (!dataResource.data) return;
   };
 
   const handleRemoveCartItems = async (productId: number) => {
-    const removeItemCartId = cartItems.find((cartItem) => cartItem.product.id === productId)?.id;
+    const removeItemCartId = dataResource.data?.find(
+      (cartItem) => cartItem.product.id === productId,
+    )?.id;
 
     if (removeItemCartId) {
       await tryApiCall(async () => await removeCartItems(removeItemCartId), handleErrorMessage);
-      const items = await tryApiCall<CartItemType[]>(
-        async () => await getCartItems(),
-        handleErrorMessage,
-      );
-      if (!items) return;
 
-      setCartItems(items);
+      await dataResource.refetch();
+      if (!dataResource.data) return;
     }
   };
 
@@ -65,16 +45,11 @@ const useCartItems = ({
       handleErrorMessage,
     );
 
-    const items = await tryApiCall<CartItemType[]>(
-      async () => await getCartItems(),
-      handleErrorMessage,
-    );
-    if (!items) return;
-
-    setCartItems(items);
+    await dataResource.refetch();
+    if (!dataResource.data) return;
   };
 
-  return { cartItems, handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems };
+  return { handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems };
 };
 
 export default useCartItems;

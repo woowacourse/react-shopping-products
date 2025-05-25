@@ -3,20 +3,18 @@ import styled from '@emotion/styled';
 interface CounterControlProps {
   count: number;
   maxCount: number;
-  // TODO : handle을 on으로 시작하는 함수명으로 변경
-  handlePlusCount: () => void;
-  handleMinusCount: () => void;
+  onPlusCount: () => void;
+  onMinusCount: () => void;
 }
 
 const CounterControl = (props: CounterControlProps) => {
-  const { count, maxCount, handlePlusCount, handleMinusCount } = props;
-  console.log(count);
+  const { count, maxCount, onPlusCount, onMinusCount } = props;
 
   return (
     <CountButtonContainer>
-      <CounterButton onClick={handleMinusCount}>-</CounterButton>
+      <CounterButton onClick={onMinusCount}>-</CounterButton>
       <CountNumber>{count}</CountNumber>
-      <CounterButton onClick={handlePlusCount} disabled={count >= maxCount}>
+      <CounterButton onClick={onPlusCount} disabled={count >= maxCount}>
         +
       </CounterButton>
     </CountButtonContainer>

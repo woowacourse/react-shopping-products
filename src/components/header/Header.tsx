@@ -3,8 +3,9 @@ import Logo from '/public/logo.svg';
 import CartIcon from '/public/icon/cart.svg';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
-import useCartContext from '../../hooks/useCartContext';
 import { countDistinct } from '../../util/countDistinct';
+import useDataContext from '../../hooks/useDataContext';
+import type { CartItemType } from '../../types/data';
 
 interface HeaderProps {
   onCartModalOpen: () => void;
@@ -12,7 +13,7 @@ interface HeaderProps {
 
 const Header = ({ onCartModalOpen }: HeaderProps) => {
   const navigate = useNavigate();
-  const { cartItems } = useCartContext();
+  const { cartItemsResource } = useDataContext();
 
   return (
     <S.HeaderContainer>
@@ -21,9 +22,11 @@ const Header = ({ onCartModalOpen }: HeaderProps) => {
       </S.HeaderLogoButton>
       <S.HeaderCartButton onClick={onCartModalOpen}>
         <img src={CartIcon} alt="장바구니" />
-        {cartItems.length !== 0 && (
+        {cartItemsResource.data?.length !== 0 && (
           <S.HeaderItemCount>
-            {countDistinct(cartItems.map((cartItem) => cartItem.product.id))}
+            {countDistinct(
+              cartItemsResource.data?.map((cartItem: CartItemType) => cartItem.product.id) ?? [],
+            )}
           </S.HeaderItemCount>
         )}
       </S.HeaderCartButton>

@@ -2,7 +2,7 @@ import ErrorToast from '../../components/common/errorToast/ErrorToast';
 import ProductItem from '../../components/productItem/ProductItem';
 import Select from '../../components/select/Select';
 import * as P from './ProductListPage.styles.tsx';
-import useCartContext from '../../hooks/useCartContext';
+import useDataContext from '../../hooks/useDataContext';
 import {
   CATEGORY_OPTIONS,
   SELECT_SORT_OPTIONS,
@@ -12,6 +12,7 @@ import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
 import { getCartInCount } from '../../util/cartUtils';
+import useCartItems from '../../hooks/useCartItems';
 
 export const ProductListPage = () => {
   const { errorMessage, handleErrorMessage } = useErrorMessageContext();
@@ -26,8 +27,11 @@ export const ProductListPage = () => {
   } = useProductHandler({
     handleErrorMessage,
   });
-  const { cartItems, handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems } =
-    useCartContext();
+  const { cartItemsResource } = useDataContext();
+  const { handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems } = useCartItems({
+    dataResource: cartItemsResource,
+    handleErrorMessage,
+  });
 
   if (loadingState === 'loadingInitial') {
     return <ProductListPageSkeleton />;
@@ -41,12 +45,12 @@ export const ProductListPage = () => {
         <Select
           value={categoryOption}
           options={CATEGORY_OPTIONS}
-          handleSelectedValue={(value) => handleCategoryOption(value)}
+          onSelectedValue={(value) => handleCategoryOption(value)}
         />
         <Select
           value={sortOption}
           options={SELECT_SORT_OPTIONS}
-          handleSelectedValue={(value) => handleSortOption(value)}
+          onSelectedValue={(value) => handleSortOption(value)}
         />
       </P.SelectContainer>
 
@@ -54,11 +58,11 @@ export const ProductListPage = () => {
         {products.slice(0, PRODUCT_LIST_ITEM_COUNT).map((product) => (
           <ProductItem
             key={product.id}
-            cartInCount={getCartInCount(cartItems, product.id)}
+            cartInCount={getCartInCount(cartItemsResource.data ?? [], product.id)}
             product={product}
-            handleAddCartItems={handleAddCartItems}
-            handleRemoveCartItems={handleRemoveCartItems}
-            handleUpdateCartItems={handleUpdateCartItems}
+            onAddCartItems={handleAddCartItems}
+            onRemoveCartItems={handleRemoveCartItems}
+            onUpdateCartItems={handleUpdateCartItems}
           />
         ))}
       </P.ProductItemContainer>
