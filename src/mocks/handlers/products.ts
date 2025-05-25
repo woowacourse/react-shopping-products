@@ -15,18 +15,18 @@ const handlers = [
     const params = url.searchParams;
     const category = params.get('category');
     const sortParam = params.get('sort') ?? '';
-    const [field, order] = sortParam.split(',');
+    const [sortField, sortOrder] = sortParam.split(',');
 
     let mockProducts = [...MOCK_PRODUCTS];
-    if (field && field !== '전체') {
+    if (category && category !== '전체') {
       mockProducts = mockProducts.filter((p) => p.category === category);
     }
 
-    if (field === 'price') {
-      mockProducts.sort((a, b) => (order === 'desc' ? b.price - a.price : a.price - b.price));
+    if (sortField === 'price') {
+      mockProducts.sort((a, b) => (sortOrder === 'desc' ? b.price - a.price : a.price - b.price));
     }
 
-    return HttpResponse.json({ content: MOCK_PRODUCTS });
+    return HttpResponse.json({ content: [...mockProducts] });
   }),
 
   http.get<GetProductsParams, MockProductsType[]>(
