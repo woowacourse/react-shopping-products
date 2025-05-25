@@ -33,6 +33,7 @@ type CartToggleButtonProps = {
   basketId?: number;
   isNotBasketCountMAX: boolean;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+  isSoldOut?: boolean;
 };
 
 export type CartToggleButtonWrapperProps = {
@@ -95,6 +96,7 @@ const CartToggleButton = ({
   basketId,
   isNotBasketCountMAX,
   timeoutRef,
+  isSoldOut,
 }: CartToggleButtonProps) => {
   const imageSrc = isInBascket
     ? IMAGE_PATH.SHOPPIN_CART_REMOVE
@@ -102,26 +104,28 @@ const CartToggleButton = ({
   const { fetchCartItems, setError, setErrorMessage } = useDataContext();
 
   return (
-    <CartToggleButtonWrapper
-      isInBascket={isInBascket}
-      onClick={() =>
-        handleCartToggleButton({
-          isInBascket,
-          productId: id,
-          basketId,
-          isNotBasketCountMAX,
-          timeoutRef,
-          fetchCartItems,
-          setError,
-          setErrorMessage,
-        })
-      }
-    >
-      <img src={imageSrc} alt="shopping_cart" />
-      <CartToggleButtonText isInBascket={isInBascket}>
-        {isInBascket ? "빼기" : "담기"}
-      </CartToggleButtonText>
-    </CartToggleButtonWrapper>
+    !isSoldOut && (
+      <CartToggleButtonWrapper
+        isInBascket={isInBascket}
+        onClick={() =>
+          handleCartToggleButton({
+            isInBascket,
+            productId: id,
+            basketId,
+            isNotBasketCountMAX,
+            timeoutRef,
+            fetchCartItems,
+            setError,
+            setErrorMessage,
+          })
+        }
+      >
+        <img src={imageSrc} alt="shopping_cart" />
+        <CartToggleButtonText isInBascket={isInBascket}>
+          {isInBascket ? "빼기" : "담기"}
+        </CartToggleButtonText>
+      </CartToggleButtonWrapper>
+    )
   );
 };
 

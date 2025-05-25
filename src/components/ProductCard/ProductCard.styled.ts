@@ -18,6 +18,10 @@ export const ProductCardWrapper = styled.div`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 `;
 
+export const ProductImageWrapper = styled.div`
+  position: relative;
+`;
+
 export const ProductImage = styled.img`
   width: 182px;
   height: 112px;
@@ -52,4 +56,20 @@ export const ProductCardPrice = styled.div`
   color: #0a0d13;
   font-size: 12px;
   font-weight: 500;
+`;
+
+export const SoldOutOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
 `;
