@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-import { useDropdownContext } from './context/dropdownContext';
+import { useDisclosureContext } from '../../../context/disclosureContext/disclosureContext';
 import { dropdownItemStyle } from './Dropdown.styles';
 
 interface DropdownItemProps extends ComponentProps<'li'> {
@@ -9,7 +9,7 @@ interface DropdownItemProps extends ComponentProps<'li'> {
 }
 
 const DropdownItem = ({ content, handleClick, ...rest }: DropdownItemProps) => {
-  const { close } = useDropdownContext();
+  const { close } = useDisclosureContext();
 
   const handleSelect = () => {
     close();
