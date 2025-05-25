@@ -1,18 +1,20 @@
 import Button from "@/components/Button";
 import addCartItemIcon from "@/assets/icons/add-cart-item.svg";
-import useMutation from "@/hooks/useMutation";
 import { addCartItems } from "@/apis/cartItems/addCartItems";
-import { getCartItems } from "@/apis/cartItems/getCartItems";
+// import { getCartItems } from "@/apis/cartItems/getCartItems";
+import useMutation from "@/hooks/useMutation";
+// import { CartItemType } from "@/types/cartItem";
 import AlertToast from "@/components/AlertToast";
 import { useContext } from "react";
 import { DataContext } from "@/context/DataContext";
+import { getCartItems } from "@/apis/cartItems/getCartItems";
 
 interface AddCartItemButton {
   id: number;
-  onClick?: () => void;
+  disabled: boolean;
 }
 
-function AddCartItemButton({ id, onClick }: AddCartItemButton) {
+function AddCartItemButton({ id, disabled }: AddCartItemButton) {
   const { mutate, isLoading, error } = useMutation(() =>
     addCartItems({ productId: id, quantity: 1 })
   );
@@ -26,6 +28,8 @@ function AddCartItemButton({ id, onClick }: AddCartItemButton) {
   const { setData } = context;
 
   const handleClick = async () => {
+    if (disabled) return; // 선택적 방어 코드
+
     try {
       await mutate();
       const updatedCartItems = await getCartItems();
@@ -34,7 +38,6 @@ function AddCartItemButton({ id, onClick }: AddCartItemButton) {
         ...prev,
         cartItemData: updatedCartItems,
       }));
-      onClick?.();
     } catch (error) {
       // mutate에서 에러가 발생한 경우 이후 로직을 실행하지 않게 try-catch문을 사용합니다.
     }
@@ -45,11 +48,12 @@ function AddCartItemButton({ id, onClick }: AddCartItemButton) {
       {error?.message && (
         <AlertToast key={error.message} type="error" message={error.message} />
       )}
+
       <Button
         variant="primary"
         type="button"
         onClick={handleClick}
-        disabled={isLoading}
+        disabled={isLoading || disabled}
       >
         <img src={addCartItemIcon} alt="장바구니 담기" />
         담기
