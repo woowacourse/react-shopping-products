@@ -3,25 +3,29 @@ import CartActionButton from "./button/CartActionButton";
 import styled from "@emotion/styled";
 import QuantityAdjuster from "./QuantityAdjuster";
 import { useAPIData } from "../../contexts/DataContext";
+import { useAPI } from "../../contexts/DataContext";
+import getCartItems from "../../api/getCartItems";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
 };
 
-const ProductItem = ({
-  product,
-  addToCart,
-  patchQuantity,
-}: {
-  product: Product;
-  addToCart: (product: Product) => void;
-  patchQuantity: (id: number, quantity: number) => void;
-}) => {
-  const handleProductAddClick = () => addToCart(product);
+const ProductItem = ({ product }: { product: Product }) => {
   const cartData = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
   const cartItems = cartData?.data?.content || [];
   const cartItem = cartItems.find((item) => item.product.id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
+
+  const { addToCart, patchQuantity } = useAPI({
+    fetcher: getCartItems,
+    name: "cartItems",
+  });
+
+  const handleProductAddClick = () => addToCart(product, cartItems.length);
+  const handleIncreaseQuantity = (id: number, quantity: number) =>
+    patchQuantity(id, quantity);
+  const handleDecreaseQuantity = (id: number, quantity: number) =>
+    patchQuantity(id, quantity);
 
   return (
     <>
@@ -49,11 +53,11 @@ const ProductItem = ({
               <QuantityAdjuster
                 count={quantity}
                 onDecreaseClick={() => {
-                  patchQuantity(cartItem.id, quantity - 1);
+                  handleDecreaseQuantity(cartItem.id, quantity - 1);
                 }}
-                onIncreaseClick={() => {
-                  patchQuantity(cartItem.id, quantity + 1);
-                }}
+                onIncreaseClick={() =>
+                  handleIncreaseQuantity(cartItem.id, quantity + 1)
+                }
               />
             ) : (
               <CartActionButton variant="add" onClick={handleProductAddClick} />

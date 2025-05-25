@@ -5,6 +5,10 @@ import { useAPIData } from "../../contexts/DataContext";
 import { CartItem } from "../../types/productType";
 import deleteCartItems from "../../api/deleteCartItems";
 import patchCartItemQuantity from "../../api/patchCartItemQuantity";
+import { useAPI } from "../../contexts/DataContext";
+import getCartItems from "../../api/getCartItems";
+import { useContext } from "react";
+import { APIContext } from "../../contexts/DataContext";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
@@ -17,19 +21,37 @@ const plus = (arr: number[]) => {
   });
 };
 
-const CartItems = ({ refetch }: { refetch: () => Promise<void> }) => {
+const CartItems = () => {
+  const { refetch: refetchCartItems } = useAPI({
+    fetcher: getCartItems,
+    name: "cartItems",
+  });
+  const { setErrorMessage } = useContext(APIContext);
+
   const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
   const handleProductRemoveClick = (id: number) => removeFromCart(id);
   if (!cartItems) return null;
 
   const removeFromCart = async (productId: number) => {
-    await deleteCartItems(productId);
-    refetch();
+    const { error } = await deleteCartItems(productId);
+
+    if (!error?.message) {
+      setErrorMessage("");
+      return refetchCartItems();
+    }
+
+    setErrorMessage(error.message);
   };
 
   const patchQuantity = async (id: number, quantity: number) => {
-    await patchCartItemQuantity(id, quantity);
-    refetch();
+    const { error } = await patchCartItemQuantity(id, quantity);
+
+    if (!error?.message) {
+      setErrorMessage("");
+      return refetchCartItems();
+    }
+
+    setErrorMessage(error.message);
   };
 
   return (

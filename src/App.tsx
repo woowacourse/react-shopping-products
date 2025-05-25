@@ -7,15 +7,16 @@ import ProductItemsWithSkeleton from "./components/ProductItemsWithSkeleton";
 import ErrorMessage from "./components/ErrorMessage";
 import Select from "./components/Select";
 import useLoading from "./hooks/useLoading";
-import useCart from "./hooks/useCart";
 import useProducts from "./hooks/useProducts";
 import Modal from "./components/Modal/Modal";
 import CartItems from "./components/ProductItem/CartItems";
-import { APIProvider, useAPI } from "./contexts/DataContext";
+import { APIProvider, useAPI, APIContext } from "./contexts/DataContext";
 import getCartItems from "./api/getCartItems";
 import getProducts from "./api/getProducts";
+import { useContext } from "react";
 
 function AppContent() {
+  const { errorMessage, setErrorMessage } = useContext(APIContext);
   const { withLoading, isLoading } = useLoading();
   const { refetch: refetchCartItems } = useAPI({
     fetcher: getCartItems,
@@ -30,13 +31,6 @@ function AppContent() {
       });
     },
     name: "products",
-  });
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const { addToCart, patchQuantity } = useCart({
-    setErrorMessage,
-    refetchCartItems,
   });
 
   const {
@@ -75,11 +69,7 @@ function AppContent() {
           />
         </SelectContainer>
         <ProductListContainer>
-          <ProductItemsWithSkeleton
-            isLoading={isLoading}
-            addToCart={addToCart}
-            patchQuantity={patchQuantity}
-          />
+          <ProductItemsWithSkeleton isLoading={isLoading} />
         </ProductListContainer>
         <Modal
           isOpen={isCartModalOpen}
@@ -88,7 +78,7 @@ function AppContent() {
           position="bottom"
           title="장바구니"
         >
-          <CartItems refetch={refetchCartItems} />
+          <CartItems />
         </Modal>
       </ProductPageContainer>
     </Layout>

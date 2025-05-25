@@ -30,20 +30,6 @@ const useProducts = ({
     refetch();
   }, [selectedCategory, priceOrder]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     withLoading(async () => {
-  //       const { data, error } = await getProducts();
-  //       setErrorMessage(error?.message || "");
-  //       if (!error?.message) {
-  //         setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
-  //       }
-  //     });
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   return {
     handleCategoryChange,
     handlePriceOrderChange,
