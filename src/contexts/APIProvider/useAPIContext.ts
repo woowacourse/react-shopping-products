@@ -15,7 +15,7 @@ export function useAPIContext<T>({ name, fetcher }: useAPIContextType<T>) {
   const { data, setData, isLoading, setIsLoading, error, setError } = context;
 
   const request = useCallback(async () => {
-    setIsLoading(true);
+    setIsLoading((prev) => ({ ...prev, [name]: true }));
     try {
       const res = await fetcher();
       setData((prev) => ({ ...prev, [name]: res }));
@@ -32,12 +32,13 @@ export function useAPIContext<T>({ name, fetcher }: useAPIContextType<T>) {
         },
       }));
     } finally {
-      setIsLoading(false);
+      setIsLoading((prev) => ({ ...prev, [name]: true }));
     }
   }, [fetcher, name, setData, setIsLoading, setError]);
 
   useEffect(() => {
     console.log("effect", data);
+    console.log("name", name);
     if (data[name] === undefined) {
       request();
     }
@@ -47,7 +48,7 @@ export function useAPIContext<T>({ name, fetcher }: useAPIContextType<T>) {
 
   return {
     data: data[name] as T | undefined,
-    isLoading,
+    isLoading: isLoading[name] ?? false,
     error: error[name] ?? { isError: false, errorMessage: "" },
     refetch: request,
   };

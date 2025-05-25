@@ -21,12 +21,10 @@ const ProductListPage = ({ isOpen, handleModal }: ProductListPageProps) => {
 
   const handleCategoryChange = (newCategory: Category) => {
     setCategory(newCategory);
-    refetch();
   };
 
   const handleSortChange = (newSort: SortOption) => {
     setSort(newSort);
-    refetch();
   };
 
   const endpoint = useMemo(() => {
@@ -42,10 +40,13 @@ const ProductListPage = ({ isOpen, handleModal }: ProductListPageProps) => {
 
     return `/products?${params.toString()}`;
   }, [category, sort]);
-
   const name = `products-${category}-${sort}`;
 
-  const { data, isLoading, error, refetch } = useAPIContext<Product[]>({
+  const {
+    data: products,
+    isLoading,
+    error,
+  } = useAPIContext<Product[]>({
     name,
     fetcher: () => getProducts({ endpoint }),
   });
@@ -69,11 +70,15 @@ const ProductListPage = ({ isOpen, handleModal }: ProductListPageProps) => {
         <ErrorToast errorMessage={cartError.errorMessage} />
       )}
 
-      {isLoading ? (
+      {isLoading && !products ? (
         <OrbitSpinner />
       ) : (
-        data && <ProductCardList products={data} cartItems={cartItems ?? []} />
+        <ProductCardList
+          products={products ?? []}
+          cartItems={cartItems ?? []}
+        />
       )}
+
       <CartModal
         isOpen={isOpen}
         onModalClose={handleModal}
