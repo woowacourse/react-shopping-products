@@ -1,9 +1,10 @@
 import { createApiUrl, fetchWithErrorHandling, SHOP_API } from "./configs";
 import { CartItems } from "./types/cartItems";
 import { PaginationParams } from "./types/pagination";
+import { isErrorResponse } from "../utils/typeGuard";
 
 export const CartItemsAPI = {
-  get: async () => {
+  get: async (): Promise<CartItems> => {
     const params: PaginationParams = {
       page: 0,
       size: 50,
@@ -17,10 +18,16 @@ export const CartItemsAPI = {
     };
 
     const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems, params);
-    return await fetchWithErrorHandling<CartItems>(apiUrl, options);
+    const response = await fetchWithErrorHandling<CartItems>(apiUrl, options);
+
+    if (isErrorResponse(response)) {
+      throw new Error(response.error);
+    }
+
+    return response as CartItems;
   },
 
-  post: async (productId: number) => {
+  post: async (productId: number): Promise<void> => {
     const options: RequestInit = {
       method: "POST",
       headers: {
@@ -34,10 +41,14 @@ export const CartItemsAPI = {
     };
 
     const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems);
-    return await fetchWithErrorHandling(apiUrl, options, false);
+    const response = await fetchWithErrorHandling(apiUrl, options, false);
+
+    if (isErrorResponse(response)) {
+      throw new Error(response.error);
+    }
   },
 
-  updateQuantity: async (cartId: number, quantity: number) => {
+  updateQuantity: async (cartId: number, quantity: number): Promise<void> => {
     const endpoint = `${SHOP_API.endpoint.cartItems}/${cartId}`;
     const apiUrl = createApiUrl(endpoint);
 
@@ -52,10 +63,14 @@ export const CartItemsAPI = {
       }),
     };
 
-    return await fetchWithErrorHandling(apiUrl, options, false);
+    const response = await fetchWithErrorHandling(apiUrl, options, false);
+
+    if (isErrorResponse(response)) {
+      throw new Error(response.error);
+    }
   },
 
-  delete: async (cartId: number) => {
+  delete: async (cartId: number): Promise<void> => {
     const endpoint = `${SHOP_API.endpoint.cartItems}/${cartId}`;
     const apiUrl = createApiUrl(endpoint);
 
@@ -66,6 +81,10 @@ export const CartItemsAPI = {
       },
     };
 
-    return await fetchWithErrorHandling(apiUrl, options, false);
+    const response = await fetchWithErrorHandling(apiUrl, options, false);
+
+    if (isErrorResponse(response)) {
+      throw new Error(response.error);
+    }
   },
 };

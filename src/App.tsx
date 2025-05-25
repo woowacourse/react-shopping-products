@@ -8,6 +8,7 @@ import useProducts from "./hooks/useProducts";
 import useCartItems from "./hooks/useCartItems";
 import ProductList from "./components/ProductList/ProductList";
 import { ProductFilterProvider } from "./contexts/ProductFilterContext";
+import { DataProvider } from "./contexts/DataContext";
 import { useState } from "react";
 import CartModal from "./components/CartModal/CartModal";
 
@@ -35,6 +36,7 @@ const AppContent = () => {
 
   const openCartModal = () => setIsCartModalOpen(true);
   const closeCartModal = () => setIsCartModalOpen(false);
+
   return (
     <S.LayoutContainer>
       <S.LayoutWrapper>
@@ -80,9 +82,11 @@ const AppContent = () => {
 
 function App() {
   return (
-    <ProductFilterProvider>
-      <AppContent />
-    </ProductFilterProvider>
+    <DataProvider>
+      <ProductFilterProvider>
+        <AppContent />
+      </ProductFilterProvider>
+    </DataProvider>
   );
 }
 

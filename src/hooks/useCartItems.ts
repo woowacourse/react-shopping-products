@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { CartItemsAPI } from "../apis/cartItems";
-import { isErrorResponse } from "../utils/typeGuard";
 import { CartItems } from "../apis/types/cartItems";
 import { Products } from "../apis/types/products";
+import { useData } from "./useData";
 
 interface UseCartItemsProps {
   products: Products | null;
 }
 
 const useCartItems = ({ products }: UseCartItemsProps) => {
-  const [cartItems, setCartItems] = useState<CartItems | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
-  useEffect(() => {
-    refreshCartItems();
+  const fetcher = useCallback(() => {
+    return CartItemsAPI.get();
   }, []);
 
-  const refreshCartItems = async () => {
-    const response = await CartItemsAPI.get();
-
-    if (isErrorResponse(response)) {
-      setErrorMessage(response.error);
-      return;
-    }
-
-    setCartItems(response as CartItems);
-  };
+  const {
+    data: cartItems,
+    error: errorMessage,
+    setError: setErrorMessage,
+    refetch: refreshCartItems,
+  } = useData<CartItems>({
+    key: "cartItems",
+    fetcher,
+    dependencies: [],
+  });
 
   const cartItemInfo =
     cartItems?.content.map((productInfo) => ({
@@ -34,71 +31,112 @@ const useCartItems = ({ products }: UseCartItemsProps) => {
       quantity: productInfo.quantity,
     })) ?? [];
 
-  const getProductStock = (productId: number): number => {
-    const product = products?.content.find((p) => p.id === productId);
-    return product?.quantity ?? 0;
-  };
+  const getProductStock = useCallback(
+    (productId: number): number => {
+      const product = products?.content.find((p) => p.id === productId);
+      return product?.quantity ?? 0;
+    },
+    [products]
+  );
 
-  const handleAddToCart = async (productId: number) => {
-    const stockQuantity = getProductStock(productId);
+  const handleAddToCart = useCallback(
+    async (productId: number) => {
+      const stockQuantity = getProductStock(productId);
 
-    if (stockQuantity <= 0) {
-      setErrorMessage("품절된 상품입니다.");
-      return;
-    }
-
-    await CartItemsAPI.post(productId);
-    await refreshCartItems();
-  };
-
-  const handleQuantityIncrease = async (productId: number) => {
-    const currentItem = cartItemInfo.find(
-      (item) => item.productId === productId
-    );
-    const stockQuantity = getProductStock(productId);
-
-    if (currentItem) {
-      if (currentItem.quantity >= stockQuantity) {
-        setErrorMessage("재고 수량을 초과할 수 없습니다.");
+      if (stockQuantity <= 0) {
+        setErrorMessage("품절된 상품입니다.");
         return;
       }
 
-      await CartItemsAPI.updateQuantity(
-        currentItem.cartId,
-        currentItem.quantity + 1
-      );
-      await refreshCartItems();
-    }
-  };
-
-  const handleQuantityDecrease = async (productId: number) => {
-    const currentItem = cartItemInfo.find(
-      (item) => item.productId === productId
-    );
-
-    if (currentItem) {
-      if (currentItem.quantity === 1) {
-        await CartItemsAPI.delete(currentItem.cartId);
-      } else {
-        await CartItemsAPI.updateQuantity(
-          currentItem.cartId,
-          currentItem.quantity - 1
+      try {
+        await CartItemsAPI.post(productId);
+        await refreshCartItems();
+      } catch (error) {
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "장바구니 추가에 실패했습니다."
         );
       }
-      await refreshCartItems();
-    }
-  };
+    },
+    [getProductStock, setErrorMessage, refreshCartItems]
+  );
 
-  const handleRemoveFromCart = async (productId: number) => {
-    const currentItem = cartItemInfo.find(
-      (item) => item.productId === productId
-    );
+  const handleQuantityIncrease = useCallback(
+    async (productId: number) => {
+      const currentItem = cartItemInfo.find(
+        (item) => item.productId === productId
+      );
+      const stockQuantity = getProductStock(productId);
 
-    if (currentItem) {
-      await CartItemsAPI.delete(currentItem.cartId);
-      await refreshCartItems();
-    }
-  };
+      if (currentItem) {
+        if (currentItem.quantity >= stockQuantity) {
+          setErrorMessage("재고 수량을 초과할 수 없습니다.");
+          return;
+        }
+
+        try {
+          await CartItemsAPI.updateQuantity(
+            currentItem.cartId,
+            currentItem.quantity + 1
+          );
+          await refreshCartItems();
+        } catch (error) {
+          setErrorMessage(
+            error instanceof Error ? error.message : "수량 증가에 실패했습니다."
+          );
+        }
+      }
+    },
+    [cartItemInfo, getProductStock, setErrorMessage, refreshCartItems]
+  );
+
+  const handleQuantityDecrease = useCallback(
+    async (productId: number) => {
+      const currentItem = cartItemInfo.find(
+        (item) => item.productId === productId
+      );
+
+      if (currentItem) {
+        try {
+          if (currentItem.quantity === 1) {
+            await CartItemsAPI.delete(currentItem.cartId);
+          } else {
+            await CartItemsAPI.updateQuantity(
+              currentItem.cartId,
+              currentItem.quantity - 1
+            );
+          }
+          await refreshCartItems();
+        } catch (error) {
+          setErrorMessage(
+            error instanceof Error ? error.message : "수량 감소에 실패했습니다."
+          );
+        }
+      }
+    },
+    [cartItemInfo, setErrorMessage, refreshCartItems]
+  );
+
+  const handleRemoveFromCart = useCallback(
+    async (productId: number) => {
+      const currentItem = cartItemInfo.find(
+        (item) => item.productId === productId
+      );
+
+      if (currentItem) {
+        try {
+          await CartItemsAPI.delete(currentItem.cartId);
+          await refreshCartItems();
+        } catch (error) {
+          setErrorMessage(
+            error instanceof Error ? error.message : "상품 삭제에 실패했습니다."
+          );
+        }
+      }
+    },
+    [cartItemInfo, setErrorMessage, refreshCartItems]
+  );
 
   return {
     cartItemInfo,
