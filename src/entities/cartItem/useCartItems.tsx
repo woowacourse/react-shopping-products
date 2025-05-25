@@ -121,7 +121,7 @@ export const useCartItems = (): UseCartItemsResult => {
       const response = await CartItemsAPI.post(productId);
 
       if (handleError(response)) return;
-      handleSuccess(response, "상품이 장바구니에서 추가되었습니다.");
+      handleSuccess(response, "상품이 장바구니에 추가되었습니다.");
 
       refetch();
     },

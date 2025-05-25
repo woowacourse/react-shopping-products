@@ -1,11 +1,12 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
+import { http, HttpResponse } from "msw";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 import { APIProvider } from "../app/providers/APIContext";
+import { CartItemContent } from "../entities/cartItem/response";
 import { useCartItems } from "../entities/cartItem/useCartItems";
-import { SHOP_API } from "../shared/api/config";
 import { server } from "../mocks/server";
-import { http, HttpResponse } from "msw";
+import { SHOP_API } from "../shared/api/config";
 
 const mockHandleError = vi.fn();
 const mockHandleSuccess = vi.fn();
@@ -42,78 +43,91 @@ describe("useCartItems 훅", () => {
 
   describe("장바구니 상품 관리", () => {
     it("상품을 장바구니에 추가할 수 있다", async () => {
-      const { result } = renderHook(() => useCartItems(), { wrapper });
-
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
-
+      let cartContent = [] as CartItemContent[];
       const newProductId = 1;
 
       server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: cartContent,
+          });
+        }),
+
         http.post(
           `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`,
           async ({ request }) => {
-            const requestBody = (await request.json()) as {
+            const body = (await request.json()) as {
               productId: number;
               quantity: number;
             };
 
-            if (requestBody.productId === newProductId) {
-              return HttpResponse.json({
-                success: true,
-                message: "상품이 장바구니에 추가되었습니다.",
-              });
-            }
-            return HttpResponse.json({ success: false }, { status: 400 });
-          }
-        )
-      );
-
-      const refetchSpy = vi.spyOn(result.current, "refetchCartItems");
-
-      await act(async () => {
-        await result.current.addProductInCart(newProductId);
-      });
-
-      expect(mockHandleSuccess).toHaveBeenCalledWith(
-        expect.objectContaining({ success: true }),
-        "상품이 장바구니에 추가되었습니다."
-      );
-      expect(refetchSpy).toHaveBeenCalled();
-    });
-
-    it("상품을 장바구니에서 삭제할 수 있다", async () => {
-      server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
-          return HttpResponse.json({
-            content: [
+            cartContent = [
               {
                 id: 101,
                 product: {
-                  id: 1,
+                  id: body.productId,
                   name: "테스트용 상품",
                   price: 15000,
                   category: "테스트",
                   imageUrl: "test.jpg",
                   quantity: 10,
                 },
-                quantity: 2,
+                quantity: body.quantity || 1,
               },
-            ],
-          });
-        })
+            ];
+
+            return HttpResponse.json({
+              success: true,
+              message: "상품이 장바구니에 추가되었습니다.",
+            });
+          }
+        )
       );
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
       await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-      const cartId = result.current.cartItems?.content[0]?.id;
-      if (!cartId) throw new Error("테스트 데이터가 없습니다");
+      expect(result.current.cartItems?.content.length).toBe(0);
+
+      await act(async () => {
+        await result.current.addProductInCart(newProductId);
+      });
+
+      expect(result.current.cartItems?.content.length).toBe(1);
+      expect(result.current.cartItems?.content[0].product.id).toBe(
+        newProductId
+      );
+      expect(result.current.cartItems?.content[0].quantity).toBe(1);
+    });
+
+    it("상품을 장바구니에서 삭제할 수 있다", async () => {
+      let cartContent = [
+        {
+          id: 101,
+          product: {
+            id: 1,
+            name: "테스트용 상품",
+            price: 15000,
+            category: "테스트",
+            imageUrl: "test.jpg",
+            quantity: 10,
+          },
+          quantity: 2,
+        },
+      ];
 
       server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: cartContent,
+          });
+        }),
+
         http.delete(
-          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`,
+          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
           () => {
+            cartContent = [];
             return HttpResponse.json({
               success: true,
               message: "상품이 장바구니에서 삭제되었습니다.",
@@ -122,22 +136,26 @@ describe("useCartItems 훅", () => {
         )
       );
 
-      const refetchSpy = vi.spyOn(result.current, "refetchCartItems");
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+      expect(result.current.cartItems?.content.length).toBe(1);
+      const cartId = result.current.cartItems?.content[0]?.id ?? 0;
+      expect(cartId).toBe(101);
 
       await act(async () => {
         await result.current.deleteProductInCart(cartId);
       });
 
-      expect(mockHandleSuccess).toHaveBeenCalledWith(
-        expect.objectContaining({ success: true }),
-        "상품이 장바구니에서 삭제되었습니다."
-      );
-      expect(refetchSpy).toHaveBeenCalled();
+      expect(result.current.cartItems?.content.length).toBe(0);
     });
   });
 
   describe("장바구니 상품 수량 관리", () => {
     it("상품 수량을 증가시킬 수 있다", async () => {
+      let updatedQuantity = 2;
+
       server.use(
         http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
           return HttpResponse.json({
@@ -152,118 +170,113 @@ describe("useCartItems 훅", () => {
                   imageUrl: "test.jpg",
                   quantity: 10,
                 },
-                quantity: 2,
-              },
-            ],
-          });
-        })
-      );
-
-      const { result } = renderHook(() => useCartItems(), { wrapper });
-
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
-
-      const firstCartItem = result.current.cartItems?.content[0];
-      const productId = firstCartItem?.product.id;
-      const cartId = firstCartItem?.id;
-
-      if (!productId || !cartId) throw new Error("테스트 데이터가 없습니다");
-
-      server.use(
-        http.patch(
-          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`,
-          async () => {
-            return HttpResponse.json({ success: true });
-          }
-        )
-      );
-
-      const refetchSpy = vi.spyOn(result.current, "refetchCartItems");
-
-      await act(async () => {
-        await result.current.increaseItemQuantity(productId);
-      });
-
-      expect(refetchSpy).toHaveBeenCalled();
-    });
-
-    it("상품 수량을 감소시킬 수 있다", async () => {
-      server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
-          return HttpResponse.json({
-            content: [
-              {
-                id: 101,
-                product: {
-                  id: 1,
-                  name: "테스트용 상품",
-                  price: 15000,
-                  category: "테스트",
-                  imageUrl: "test.jpg",
-                  quantity: 10,
-                },
-                quantity: 2,
-              },
-            ],
-          });
-        })
-      );
-
-      const { result } = renderHook(() => useCartItems(), { wrapper });
-
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
-
-      const firstCartItem = result.current.cartItems?.content[0];
-      const productId = firstCartItem?.product.id;
-      const cartId = firstCartItem?.id;
-      const quantity = firstCartItem?.quantity || 0;
-
-      if (!productId || !cartId || quantity <= 1) {
-        throw new Error("테스트를 위한 적절한 데이터가 없습니다");
-      }
-
-      server.use(
-        http.patch(
-          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`,
-          async () => {
-            return HttpResponse.json({ success: true });
-          }
-        )
-      );
-
-      const refetchSpy = vi.spyOn(result.current, "refetchCartItems");
-
-      await act(async () => {
-        await result.current.decreaseItemQuantity(productId);
-      });
-
-      expect(refetchSpy).toHaveBeenCalled();
-    });
-
-    it("수량이 1이면 감소시 상품이 삭제된다", async () => {
-      server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
-          return HttpResponse.json({
-            content: [
-              {
-                id: 101,
-                product: {
-                  id: 1,
-                  name: "테스트용 상품",
-                  price: 15000,
-                  category: "테스트",
-                  imageUrl: "test.jpg",
-                  quantity: 10,
-                },
-                quantity: 1,
+                quantity: updatedQuantity, // 2 -> 3
               },
             ],
           });
         }),
+
+        http.patch(
+          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
+          async () => {
+            updatedQuantity += 1;
+            return HttpResponse.json({ success: true });
+          }
+        )
+      );
+
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+      expect(result.current.cartItems?.content[0].quantity).toBe(2);
+
+      await act(async () => {
+        await result.current.increaseItemQuantity(1);
+      });
+
+      expect(result.current.cartItems?.content[0].quantity).toBe(3);
+    });
+
+    it("상품 수량을 감소시킬 수 있다", async () => {
+      let updatedQuantity = 2;
+
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: [
+              {
+                id: 101,
+                product: {
+                  id: 1,
+                  name: "테스트용 상품",
+                  price: 15000,
+                  category: "테스트",
+                  imageUrl: "test.jpg",
+                  quantity: 10,
+                },
+                quantity: updatedQuantity, // 2 -> 1
+              },
+            ],
+          });
+        }),
+        http.patch(
+          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
+          async () => {
+            updatedQuantity -= 1;
+            return HttpResponse.json({ success: true });
+          }
+        )
+      );
+
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+      expect(result.current.cartItems?.content[0].quantity).toBe(2);
+
+      await act(async () => {
+        await result.current.decreaseItemQuantity(1);
+      });
+
+      expect(result.current.cartItems?.content[0].quantity).toBe(1);
+    });
+
+    it("수량이 1이면 감소시 상품이 삭제된다", async () => {
+      let deleted = false;
+
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          if (deleted) {
+            return HttpResponse.json({
+              content: [],
+            });
+          }
+
+          return HttpResponse.json({
+            content: [
+              {
+                id: 101,
+                product: {
+                  id: 1,
+                  name: "테스트용 상품",
+                  price: 15000,
+                  category: "테스트",
+                  imageUrl: "test.jpg",
+                  quantity: 10,
+                },
+                quantity: 1, // 수량 1
+              },
+            ],
+          });
+        }),
+
         http.delete(
           `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
           () => {
-            return HttpResponse.json({ success: true });
+            deleted = true;
+            return HttpResponse.json({
+              success: true,
+              message: "상품이 장바구니에서 삭제되었습니다.",
+            });
           }
         )
       );
@@ -275,14 +288,15 @@ describe("useCartItems 훅", () => {
       expect(
         result.current.cartItems?.content.some((item) => item.id === 101)
       ).toBe(true);
-
-      const refetchSpy = vi.spyOn(result.current, "refetchCartItems");
+      expect(result.current.cartItems?.content[0].quantity).toBe(1);
 
       await act(async () => {
         await result.current.decreaseItemQuantity(1);
       });
 
-      expect(refetchSpy).toHaveBeenCalled();
+      expect(
+        result.current.cartItems?.content.some((item) => item.id === 101)
+      ).toBe(false);
     });
   });
 
