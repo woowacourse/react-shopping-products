@@ -2,13 +2,14 @@ import ErrorToast from "../components/ErrorToast";
 import ProductCardList from "../components/ProductCardList";
 import ProductListToolBar from "../components/ProductListToolBar";
 import OrbitSpinner from "../components/OrbitSpinner/index";
-import { useAPIContext } from "../contexts/APIProvider/useAPIContext";
+import { useAPIContext } from "../contexts/API/useAPIContext";
 import getProducts from "../APIs/products/getProducts";
 import { Category, Product, SortOption } from "../types/product.type";
 import { useMemo, useState } from "react";
 import Header from "../components/Header";
 import CartModal from "../components/CartModal/CartModal";
 import getShoppingCart from "../APIs/shoppingCart/getShoppingCart";
+import { useErrorContext } from "../contexts/Error/ErrorContext";
 
 interface ProductListPageProps {
   handleModal: () => void;
@@ -18,6 +19,7 @@ interface ProductListPageProps {
 const ProductListPage = ({ isOpen, handleModal }: ProductListPageProps) => {
   const [category, setCategory] = useState<Category>("전체");
   const [sort, setSort] = useState<SortOption>("낮은 가격순");
+  const { error } = useErrorContext();
 
   const handleCategoryChange = (newCategory: Category) => {
     setCategory(newCategory);
@@ -42,16 +44,12 @@ const ProductListPage = ({ isOpen, handleModal }: ProductListPageProps) => {
   }, [category, sort]);
   const name = `products-${category}-${sort}`;
 
-  const {
-    data: products,
-    isLoading,
-    error,
-  } = useAPIContext<Product[]>({
+  const { data: products, isLoading } = useAPIContext<Product[]>({
     name,
     fetcher: () => getProducts({ endpoint }),
   });
 
-  const { data: cartItems, error: cartError } = useAPIContext({
+  const { data: cartItems } = useAPIContext({
     name: "cartItems",
     fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
   });
@@ -66,10 +64,6 @@ const ProductListPage = ({ isOpen, handleModal }: ProductListPageProps) => {
         setSort={handleSortChange}
       />
       {error.isError && <ErrorToast errorMessage={error.errorMessage} />}
-      {cartError.isError && (
-        <ErrorToast errorMessage={cartError.errorMessage} />
-      )}
-
       {isLoading && !products ? (
         <OrbitSpinner />
       ) : (

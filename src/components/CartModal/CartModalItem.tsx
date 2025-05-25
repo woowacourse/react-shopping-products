@@ -2,10 +2,11 @@ import { css } from "@emotion/css";
 import ProductStepper from "../ProductStepper/ProductStepper";
 import Button from "../Button";
 import deleteShoppingCart from "../../APIs/shoppingCart/deleteShoppingCart";
-import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
+import { useAPIContext } from "../../contexts/API/useAPIContext";
 import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
 import { useState } from "react";
 import updateCartItemQuantity from "../../APIs/shoppingCart/updateCartItemQuantity";
+import { useErrorContext } from "../../contexts/Error/ErrorContext";
 
 interface CartModalItemProps {
   name: string;
@@ -28,6 +29,7 @@ const CartModalItem = ({
     name: "cartItems",
     fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
   });
+  const { handleError } = useErrorContext();
 
   const handleQuantityChange = async (newQuantity: number) => {
     setLocalQuantity(newQuantity);
@@ -41,7 +43,10 @@ const CartModalItem = ({
       });
       refetchCart();
     } catch (err) {
-      console.error("수량 수정 실패:", err);
+      handleError({
+        isError: true,
+        errorMessage: "장바구니 수량 업데이트에 실패했습니다.",
+      });
     }
   };
 
@@ -50,7 +55,10 @@ const CartModalItem = ({
       await deleteShoppingCart({ endpoint: "/cart-items", cartItemId });
       refetchCart();
     } catch (err) {
-      console.error("장바구니 삭제 실패:", err);
+      handleError({
+        isError: true,
+        errorMessage: "장바구니에서 삭제하지 못하였습니다.",
+      });
     }
   };
 

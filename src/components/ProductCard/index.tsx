@@ -1,7 +1,7 @@
 import AddButton from "../Button/AddButton";
 import { CartItem, Product } from "../../types/product.type";
 import ProductStepper from "../ProductStepper/ProductStepper";
-import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
+import { useAPIContext } from "../../contexts/API/useAPIContext";
 import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
 import addShoppingCart from "../../APIs/shoppingCart/addShoppingCart";
 import Button from "../Button";
@@ -16,6 +16,7 @@ import {
   ImageOverlay,
   ProductName,
 } from "./style";
+import { useErrorContext } from "../../contexts/Error/ErrorContext";
 
 interface ProductCardProps {
   product: Product;
@@ -35,10 +36,12 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
     product.quantity !== undefined
       ? product.quantity === cartItem?.quantity
       : false; // product.quantity는 MSW에서만 제공
-  const { error, refetch: refetchCart } = useAPIContext({
+
+  const { refetch: refetchCart } = useAPIContext({
     name: "cartItems",
     fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
   });
+  const { handleError } = useErrorContext();
 
   const handleAdd = async () => {
     try {
@@ -47,7 +50,10 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
       await addShoppingCart({ endpoint, requestBody });
       refetchCart();
     } catch (err) {
-      console.error("장바구니 추가 실패:", err);
+      handleError({
+        isError: true,
+        errorMessage: "장바구니에 추가하지 못했습니다.",
+      });
     }
   };
 
@@ -66,7 +72,10 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
       setIsEditing(false);
       refetchCart();
     } catch (err) {
-      console.error("수량 수정 실패:", err);
+      handleError({
+        isError: true,
+        errorMessage: "장바구니 수량 업데이트에 실패했습니다.",
+      });
     }
   };
 
