@@ -43,19 +43,13 @@ vi.mock("../apis/product/fetchProductList", () => {
   };
 });
 
-const fakeProps = {
-  cartItems: [],
-  handleAddProduct: vi.fn(),
-  handleRemoveProduct: vi.fn(),
-};
-
 describe("Main 컴포넌트", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("상품 목록이 성공적으로 렌더링된다", async () => {
-    renderWithProviders(<Main {...fakeProps} />);
+    renderWithProviders(<Main />);
 
     expect(await screen.findByText("사과")).toBeInTheDocument();
     expect(screen.getByText("바나나")).toBeInTheDocument();
@@ -64,7 +58,7 @@ describe("Main 컴포넌트", () => {
   });
 
   it("카테고리를 식료품으로 변경 시 fetchProductList 재호출된다", async () => {
-    renderWithProviders(<Main {...fakeProps} />);
+    renderWithProviders(<Main />);
 
     const selects = screen.getAllByRole("combobox");
     const categorySelect = selects[0];
@@ -80,7 +74,7 @@ describe("Main 컴포넌트", () => {
   });
 
   it("카테고리를 패션잡화로 변경 시 짱구인형과 철수인형이 보인다.", async () => {
-    renderWithProviders(<Main {...fakeProps} />);
+    renderWithProviders(<Main />);
 
     const selects = screen.getAllByRole("combobox");
     const categorySelect = selects[0];
@@ -96,7 +90,7 @@ describe("Main 컴포넌트", () => {
   });
 
   it("정렬 기준을 가격 내림차순으로 변경 시 fetchProductList 재호출된다", async () => {
-    renderWithProviders(<Main {...fakeProps} />);
+    renderWithProviders(<Main />);
 
     const selects = screen.getAllByRole("combobox");
     const sortSelect = selects[1];
