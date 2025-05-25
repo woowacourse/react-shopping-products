@@ -202,7 +202,35 @@ export const handlers = [
       );
     }
 
+    const newCartItem = {
+      id: Number(productId) + 7000,
+      product: item,
+      quantity: 1,
+    };
+
+    cartItems.push(newCartItem);
+
     return HttpResponse.json({ status: 200 });
+  }),
+
+  http.delete(`${BASE_URL}cart-items/:id`, ({ params }) => {
+    const id = Number(params.id);
+
+    const index = cartItems.findIndex((item) => item.id === id);
+
+    if (index === -1) {
+      return HttpResponse.json(
+        { errorCode: "NOT_FOUND", message: "해당 아이템을 찾을 수 없습니다." },
+        { status: 404 }
+      );
+    }
+
+    cartItems.splice(index, 1);
+
+    return HttpResponse.json(
+      { message: "아이템이 삭제되었습니다." },
+      { status: 200 }
+    );
   }),
 
   http.patch(`${BASE_URL}cart-items/:id`, async ({ params, request }) => {
@@ -218,7 +246,7 @@ export const handlers = [
       );
     }
 
-    if (item?.quantity < Number(quantity)) {
+    if (item?.product.quantity < Number(quantity)) {
       return HttpResponse.json(
         {
           errorCode: "OUT_OF_STOCK",
@@ -227,6 +255,15 @@ export const handlers = [
         { status: 400 }
       );
     }
+
+    const itemIndex = cartItems.findIndex((item) => item.id === Number(id));
+    if (Number(quantity) === 0) {
+      cartItems.splice(itemIndex, 1);
+    } else {
+      item.quantity = Number(quantity);
+    }
+
+    item.quantity = Number(quantity);
 
     return HttpResponse.json({ status: 200 });
   }),
