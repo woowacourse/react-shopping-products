@@ -56,3 +56,12 @@ export const removeCart = (id: number) => fetchWithAuth(
   { method: 'DELETE' },
   '장바구니 아이템 삭제를 실패했습니다.'
 );
+
+export const updateCartQuantity = (id: number, quantity: number) => fetchWithAuth(
+  `/cart-items/${id}`,
+  {
+    method: 'PATCH',
+    body: JSON.stringify({ quantity }),
+  },
+  '장바구니 수량 변경을 실패했습니다.'
+);

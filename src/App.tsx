@@ -28,6 +28,7 @@ function App() {
     isError,
     handleAddCart,
     handleRemoveCart,
+    handleUpdateQuantity,
   } = useCartActions(mappedSortType, category);
 
   const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -68,6 +69,7 @@ function App() {
           onSort={handleSortPrice}
           onAddCart={handleAddCart}
           onRemoveCart={handleRemoveCart}
+          onUpdateQuantity={handleUpdateQuantity}
           cart={cart?.content || null}
           products={transformedProducts}
           sort={sort}

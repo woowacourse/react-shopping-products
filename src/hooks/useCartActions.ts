@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { ProductElement } from '../types/product';
-import { addCart, removeCart } from '../api/cart';
+import { addCart, removeCart, updateCartQuantity } from '../api/cart';
 import { MAX_CART_ITEM_TYPE } from '../constants/productConfig';
 import { ERROR_MESSAGES } from '../constants/errorMessages';
 import { useProductsWithCart } from './useProductsWithCart';
@@ -55,6 +55,21 @@ export function useCartActions(sortType: string, category: string = '전체') {
     }
   }, [fetchCart, resetErrors, showToast]);
 
+  const handleUpdateQuantity = useCallback(async (cartItemId: number, quantity: number) => {
+    try {
+      await updateCartQuantity(cartItemId, quantity);
+      await fetchCart();
+    } catch (error: any) {
+      if (error.message?.includes('재고')) {
+        showToast(error.message);
+      } else {
+        showToast('수량 변경에 실패했습니다.');
+      }
+      console.error('Failed to update quantity:', error);
+      resetErrors();
+    }
+  }, [fetchCart, resetErrors, showToast]);
+
   return {
     transformedProducts,
     cart,
@@ -62,6 +77,7 @@ export function useCartActions(sortType: string, category: string = '전체') {
     isError,
     handleAddCart,
     handleRemoveCart,
+    handleUpdateQuantity,
     resetErrors,
     fetchProduct
   };
