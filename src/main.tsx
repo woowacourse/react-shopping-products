@@ -4,11 +4,7 @@ import App from "./App.tsx";
 import "./styles/reset.css";
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== "development") {
-    return;
-  }
   const { worker } = await import("./mocks/browser");
-
   return worker.start();
 }
 
@@ -19,9 +15,3 @@ enableMocking().then(() => {
     </React.StrictMode>,
   );
 });
-
-// ReactDOM.createRoot(document.getElementById("root")!).render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-// );
