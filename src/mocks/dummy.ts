@@ -13,7 +13,7 @@ export const MOCK_PRODUCTS: MockProductsType[] = Array.from({ length: 20 }, (_, 
   name: `상품 ${index + 1}`,
   category: index % 2 === 0 ? '식료품' : '패션잡화',
   price: 1000 + index * 100,
-  imageUrl: `/images/product-${index + 1}.jpg`,
+  imageUrl: index % 3 === 0 ? `/images/product-${index + 1}.jpg` : '/example.png',
   quantity: 5,
 }));
 
