@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     define: {
-      "import.meta.env.VITE_BASE_URL": JSON.stringify(env.VITE_BASE_URL),
+      "import.meta.env.VITE_BASE_URL": JSON.stringify(env.VITE_BASE_URL || ""),
       "import.meta.env.VITE_USER_TOKEN": JSON.stringify(env.VITE_USER_TOKEN),
     },
     test: {
