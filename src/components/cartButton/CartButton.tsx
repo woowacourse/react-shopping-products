@@ -2,6 +2,7 @@ import { addItemToCart } from "./cartButton.domain";
 import { useData } from "../../hooks/useData";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { ButtonContainer } from "./CartButton.css";
+import { useEffect } from "react";
 
 interface CartToggleButtonProps {
   isToggled: boolean;

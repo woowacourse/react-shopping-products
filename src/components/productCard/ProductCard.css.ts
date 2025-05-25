@@ -1,6 +1,8 @@
 import { css } from "@emotion/react";
 
 export const ProductContainer = css`
+  position: relative;
+  z-index: 1;
   width: 182px;
   height: 224px;
   border-radius: 8px;
@@ -32,4 +34,22 @@ export const ProductPrice = css`
 export const ButtonContainer = css`
   display: flex;
   justify-content: flex-end;
+`;
+
+export const SoldOutText = css`
+  position: absolute;
+  top: 56px;
+  left: 50%;
+  width: 100%;
+  height: 112px;
+  text-align: center;
+  line-height: 300%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 35px;
+  font-weight: 600;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  pointer-events: none;
 `;

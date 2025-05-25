@@ -5,6 +5,7 @@ import {
   ContentContainer,
   ProductPrice,
   ButtonContainer,
+  SoldOutText,
 } from "./ProductCard.css";
 import CartToggleButton from "../cartButton/CartButton";
 import { ERROR_TYPE } from "../../hooks/useError";
@@ -13,8 +14,9 @@ import { ProductPageResponse } from "../../types/response.types";
 
 interface ProductCardProps {
   product: ProductPageResponse["content"][number];
-  setErrorTrue: (type: ERROR_TYPE) => void;
   isToggled: boolean;
+  isSoldOut: boolean;
+  setErrorTrue: (type: ERROR_TYPE) => void;
   setToggle: (value: boolean) => void;
 }
 
@@ -22,6 +24,7 @@ function ProductCard({
   product,
   setErrorTrue,
   isToggled,
+  isSoldOut,
   setToggle,
 }: ProductCardProps) {
   const { cartItemIds } = useData();
@@ -38,6 +41,7 @@ function ProductCard({
           e.currentTarget.src = "/fallBack.png";
         }}
       />
+      {isSoldOut && <p css={SoldOutText}>품절</p>}
       <div css={ContentContainer}>
         <h3 css={ProductTitle}>{product.name}</h3>
         <p css={ProductPrice}>{product.price.toLocaleString()}원</p>

@@ -6,6 +6,7 @@ export const ModalOverlay = css`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.35);
+  z-index: 100;
 `;
 
 export const ModalContainer = css`
@@ -18,6 +19,7 @@ export const ModalContainer = css`
   border-radius: 8px;
   overflow-y: auto;
   padding: 24px 16px;
+  z-index: 100;
 `;
 
 export const ModalTitle = css`

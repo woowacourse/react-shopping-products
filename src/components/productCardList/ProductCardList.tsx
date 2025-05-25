@@ -22,8 +22,6 @@ function ProductCardList({ setErrorTrue }: ProductCardListProps) {
 
   if (isLoading) return <ProductCardListSkeleton />;
 
-  if (isLoading) return <ProductCardListSkeleton />;
-
   return (
     <div css={CardListContainer}>
       {products?.content.map((product) => (
@@ -31,6 +29,7 @@ function ProductCardList({ setErrorTrue }: ProductCardListProps) {
           key={product.id}
           product={product}
           isToggled={!!toggleStates[product.id]}
+          isSoldOut={product.quantity === 0}
           setToggle={(val) => toggleButton(product.id, val)}
           setErrorTrue={setErrorTrue}
         />
