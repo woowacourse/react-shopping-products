@@ -9,6 +9,7 @@ import useData from "@/hooks/useData";
 import { CartItemType } from "@/types/cartItem";
 import styled from "@emotion/styled";
 import { useState } from "react";
+import * as S from "./ProductPage.styled";
 
 function ProductPage() {
   const { data: cartItemData, isLoading } = useData<CartItemType[]>({
@@ -37,72 +38,28 @@ function ProductPage() {
         <Modal position="bottom" isOpen={isOpen} onClose={handleClick}>
           <Modal.Title>장바구니</Modal.Title>
 
-          <ItemContent>
+          <S.ItemContent>
             {cartItemData.map((item) => (
-              <ItemWrapper key={item.id}>
+              <S.ItemWrapper key={item.id}>
                 <ProductItem
                   product={item.product}
                   variant="cart"
                 ></ProductItem>
-                <ButtonWrapper>
+                <S.ButtonWrapper>
                   <RemoveCartItemButton id={item.id}></RemoveCartItemButton>
-                </ButtonWrapper>
-              </ItemWrapper>
+                </S.ButtonWrapper>
+              </S.ItemWrapper>
             ))}
-          </ItemContent>
-          <PriceWrapper>
+          </S.ItemContent>
+          <S.PriceWrapper>
             <Modal.Title>총 결제 금액</Modal.Title>
-
             <Modal.Title>{price}원</Modal.Title>
-          </PriceWrapper>
-
-          <CloseButton onClick={handleClick}>닫기</CloseButton>
+          </S.PriceWrapper>
+          <S.CloseButton onClick={handleClick}>닫기</S.CloseButton>
         </Modal>
       )}
     </>
   );
 }
-
-const ItemWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #eaeaea;
-  border-top: 1px solid #eaeaea;
-  padding: 20px 0px;
-  align-items: stretch;
-`;
-
-const ItemContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`;
-
-const PriceWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-top: 20px;
-`;
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  height: 100%;
-`;
-
-const CloseButton = styled.button`
-  padding: 10px 20px;
-  border-radius: 8px;
-  background-color: #333333;
-  color: white;
-  border: none;
-  cursor: pointer;
-`;
 
 export default ProductPage;
