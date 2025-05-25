@@ -4,8 +4,8 @@ import { CategoryOption } from '../types/common';
 const useCategory = () => {
   const [category, setCategory] = useState<CategoryOption>('전체');
 
-  const selectCategory = (category: string) => {
-    setCategory(category as CategoryOption);
+  const selectCategory = (category: CategoryOption) => {
+    setCategory(category);
   };
 
   const resetCategory = () => {
