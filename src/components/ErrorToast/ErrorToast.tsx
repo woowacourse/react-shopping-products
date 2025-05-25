@@ -11,7 +11,7 @@ const ErrorToast = ({ errorMessage, setErrorMessage }: ErrorToastProps) => {
     if (errorMessage) {
       const timer = setTimeout(() => {
         setErrorMessage("");
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
