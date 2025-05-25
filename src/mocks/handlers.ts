@@ -60,7 +60,15 @@ export const handlers = [
         { status: 400 }
       );
     }
-    return HttpResponse.json(productId);
+
+    const newCartItem = {
+      id: productId,
+      quantity,
+      product: productData.content.find((p) => p.id === productId)!,
+    };
+
+    cartItemData.content.push(newCartItem);
+    return HttpResponse.json(newCartItem);
   }),
 
   // 장바구니 상품 수량 변경
