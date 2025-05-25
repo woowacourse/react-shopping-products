@@ -20,7 +20,12 @@ function ProductCard({ id, name, price, imageUrl, quantity }: ProductProps) {
         {isSoldOut && <PreviewText>품절</PreviewText>}
       </PreviewBox>
       <InfoBox>
-        <Flex flexDirection="column" gap="sm" alignItems="flex-start">
+        <Flex
+          flexDirection="column"
+          gap="sm"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
           <ProductTitle>{name}</ProductTitle>
           <ProductPrice>{`${price.toLocaleString()}원`}</ProductPrice>
         </Flex>
