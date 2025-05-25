@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import Modal from "./Component/Common/Modal/Modal";
+import Modal from "./Component/Common/Modal";
 import Body from "./Component/Layout/Body";
 import Header from "./Component/Layout/Header";
 import ProductListContainer from "./Component/Product/ProductListContainer";
@@ -16,7 +16,7 @@ function App() {
 export default App;
 
 function AppContent() {
-  const [, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
@@ -26,7 +26,7 @@ function AppContent() {
           <ProductListContainer />
         </Body>
       </div>
-      {/* <Modal isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> */}
+      <Modal isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }
