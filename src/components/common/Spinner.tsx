@@ -21,10 +21,10 @@ const Spinner = () => {
     return (
       <div css={[orbitSpin]} className="active">
         <div css={orbitSpinner}>
-          <div css={planet} style={{ backgroundColor: "#fff" }} />
-          <div css={orbit}>
-            <div css={[satellite, satellite1]} style={{ backgroundColor: "#fff" }} />
-            <div css={[satellite, satellite2]} style={{ backgroundColor: "#fff" }} />
+          <div css={planet} style={{ backgroundColor: "#000" }} />
+          <div css={orbit} style={{ borderColor: "#000" }}>
+            <div css={[satellite, satellite1]} style={{ backgroundColor: "#000" }} />
+            <div css={[satellite, satellite2]} style={{ backgroundColor: "#000" }} />
           </div>
         </div>
       </div>
