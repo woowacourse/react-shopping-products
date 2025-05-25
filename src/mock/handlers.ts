@@ -1,10 +1,130 @@
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, bypass } from 'msw';
 import fullProductList from './products.json';
 import { ProductTypes } from '../types/ProductTypes';
+import { CartItemTypes } from '../types/CartItemType';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
+type CartItemRequestBody = {
+  productId: number;
+  quantity: number;
+};
+
+type CartItemPatchRequestBody = {
+  id: number;
+  quantity: number;
+};
+
+const inMemoryUpdates: Record<number, { quantity: number; productId: number }> =
+  {};
+
 export const handlers = [
+  http.post<Record<string, never>, CartItemRequestBody>(
+    `${baseUrl}/cart-items`,
+    async ({ request }) => {
+      const cloned = request.clone();
+
+      const body = await request.json();
+      if (!body) return;
+
+      const { productId } = body as CartItemRequestBody;
+
+      const products = [...fullProductList.content];
+
+      const matchProduct = products.find((product) => product.id === productId);
+
+      if (matchProduct?.quantity === 0) {
+        return HttpResponse.json(
+          {
+            ...body,
+            message: '수량 초과 에러',
+          },
+          {
+            status: 500,
+          }
+        );
+      }
+
+      const realReq = bypass(cloned);
+      const realRes = await fetch(realReq);
+
+      return new HttpResponse(body, {
+        status: 200,
+        headers: realRes.headers,
+      });
+    }
+  ),
+  http.patch<{ id: string }, CartItemPatchRequestBody>(
+    `${baseUrl}/cart-items/:id`,
+    async ({ request }) => {
+      const cloned = request.clone();
+
+      const body = await request.json();
+      const { id, quantity } = body as CartItemPatchRequestBody;
+
+      const prevQuantity = inMemoryUpdates[Number(id)].quantity;
+      inMemoryUpdates[Number(id)] = {
+        ...inMemoryUpdates[Number(id)],
+        quantity,
+      };
+      const currentQuantity = inMemoryUpdates[Number(id)].quantity;
+
+      const products = [...fullProductList.content];
+
+      const productId = inMemoryUpdates[Number(id)].productId;
+      const matchProduct = products.find((product) => product.id === productId);
+
+      if (
+        prevQuantity < currentQuantity &&
+        matchProduct &&
+        matchProduct.quantity + 1 === quantity
+      ) {
+        return HttpResponse.json(
+          {
+            ...body,
+            message: '수량 초과 에러',
+          },
+          {
+            status: 500,
+          }
+        );
+      }
+
+      const realReq = bypass(cloned);
+      const realRes = await fetch(realReq);
+
+      return new HttpResponse(body, {
+        status: 200,
+        headers: realRes.headers,
+      });
+    }
+  ),
+  http.get(`${baseUrl}/cart-items`, async ({ request }) => {
+    const realReq = bypass(request);
+
+    const realRes = await fetch(realReq);
+    const realBody = await realRes.json();
+
+    const mergedContent = realBody.content.map((item: CartItemTypes) => {
+      if (!inMemoryUpdates[item.id]) {
+        inMemoryUpdates[item.id] = {
+          quantity: item.quantity,
+          productId: item.product.id,
+        };
+      } else if (inMemoryUpdates[item.id].quantity !== item.quantity) {
+        inMemoryUpdates[item.id] = {
+          quantity: inMemoryUpdates[item.id].quantity,
+          productId: item.product.id,
+        };
+      }
+
+      return inMemoryUpdates[item.id] != null
+        ? { ...item, quantity: inMemoryUpdates[item.id].quantity }
+        : item;
+    });
+
+    return HttpResponse.json({ ...realBody, content: mergedContent });
+  }),
   http.get(`${baseUrl}/products`, ({ request }) => {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get('page') || '0');

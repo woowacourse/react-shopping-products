@@ -11,6 +11,7 @@ async function enableMocking() {
     findWorker(scriptUrl) {
       return scriptUrl.endsWith('mockServiceWorker.js');
     },
+    onUnhandledRequest: 'bypass',
   });
 }
 
