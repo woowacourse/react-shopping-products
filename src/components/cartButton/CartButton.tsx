@@ -6,7 +6,11 @@ import {
 } from "./cartButton.domain";
 import { useData } from "../../hooks/useData";
 import { ERROR_TYPE } from "../../hooks/useError";
-import { ButtonContainer } from "./CartButton.css";
+import {
+  ButtonContainer,
+  ControlButtonContainer,
+  CountControlButton,
+} from "./CartButton.css";
 
 interface CartButtonProps {
   isToggled: boolean;
@@ -93,11 +97,15 @@ function CartButton({
 
   if (isToggled) {
     return (
-      <>
-        <button onClick={handleMinusButton}>-</button>
+      <div css={ControlButtonContainer}>
+        <button css={CountControlButton} onClick={handleMinusButton}>
+          -
+        </button>
         <p>{quantity}</p>
-        <button onClick={handlePlusButton}>+</button>
-      </>
+        <button css={CountControlButton} onClick={handlePlusButton}>
+          +
+        </button>
+      </div>
     );
   }
 

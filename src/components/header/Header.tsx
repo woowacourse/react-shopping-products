@@ -1,4 +1,4 @@
-import CartButton from "./CartButton";
+import CartIconButton from "./CartIconButton";
 import { HeaderContainer, HeaderTitle } from "./Header.css";
 
 interface HeaderProps {
@@ -8,7 +8,7 @@ function Header({ onOpenModal }: HeaderProps) {
   return (
     <div css={HeaderContainer}>
       <div css={HeaderTitle}>SHOP</div>
-      <CartButton onOpenModal={onOpenModal} />
+      <CartIconButton onOpenModal={onOpenModal} />
     </div>
   );
 }
