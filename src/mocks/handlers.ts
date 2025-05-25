@@ -5,7 +5,7 @@ import { ENV } from '@/api/env';
 
 const baseUrl = ENV.BASE_URL;
 
-let cartData: any[] = [...fullCartData.content];
+export let cartData: any[] = [...fullCartData.content];
 
 type Product = {
   id: number;
@@ -87,7 +87,7 @@ export const handlers = [
 
     if ((existing?.quantity ?? 0) + quantity > stock) {
       return HttpResponse.json(
-        { errorCode: 'OUT_OF_STOCK', message: '재고 수량을 초과하여 담을 수 없습니다.' },
+        { errorCode: 'OUT_OF_STOCK', message: '품절된 상품은 장바구니에 담을 수 없습니다.' },
         { status: 400 }
       );
     }
