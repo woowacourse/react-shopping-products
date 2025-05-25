@@ -61,7 +61,7 @@ export const ModalProductItemContainer = Styled.div`
   align-items: flex-start;
   gap: 16px;
   width: 100%;
-  padding: 16px;
+  padding: 8px;
   border-radius: 8px;
   background-color: white;
 `;

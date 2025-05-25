@@ -4,6 +4,7 @@ import { ResponseCartItem } from "../../api/types";
 import { useState } from "react";
 import Modal from "../common/Modal/Modal";
 import ProductItem from "../ProductItem/ProductItem";
+import React from "react";
 
 interface HeaderProps {
   cartItemList: ResponseCartItem[];
@@ -63,19 +64,21 @@ function Header({
             {cartItemList.length === 0 ? (
               <S.EmptyCartMessage>장바구니가 비어있습니다.</S.EmptyCartMessage>
             ) : (
-              cartItemList.map((item) => (
-                <ProductItem
-                  key={item.id}
-                  product={item.product}
-                  cartItemList={cartItemList}
-                  onAddToCart={onAddToCart}
-                  onRemoveFromCart={onRemoveFromCart}
-                  setErrorMessage={setErrorMessage}
-                  onIncreaseQuantity={onIncreaseQuantity}
-                  onDecreaseQuantity={onDecreaseQuantity}
-                  getCartQuantityForProduct={getCartQuantityForProduct}
-                  isInModal={true}
-                />
+              cartItemList.map((item, index) => (
+                <React.Fragment key={item.id}>
+                  <ProductItem
+                    product={item.product}
+                    cartItemList={cartItemList}
+                    onAddToCart={onAddToCart}
+                    onRemoveFromCart={onRemoveFromCart}
+                    setErrorMessage={setErrorMessage}
+                    onIncreaseQuantity={onIncreaseQuantity}
+                    onDecreaseQuantity={onDecreaseQuantity}
+                    getCartQuantityForProduct={getCartQuantityForProduct}
+                    isInModal={true}
+                  />
+                  {index < cartItemList.length - 1 && <S.ModalDivider />}
+                </React.Fragment>
               ))
             )}
           </S.CartItemsContainer>
@@ -88,7 +91,7 @@ function Header({
                   <S.TotalPriceLabel>총 결제금액</S.TotalPriceLabel>
                   <S.TotalPrice>{totalPrice.toLocaleString()}원</S.TotalPrice>
                 </S.TotalPriceContainer>
-                <S.OrderButton>주문하기</S.OrderButton>
+                <S.CloseButton>닫기</S.CloseButton>
               </S.CartSummary>
             </>
           )}

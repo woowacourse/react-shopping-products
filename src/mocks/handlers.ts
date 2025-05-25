@@ -4,8 +4,8 @@ import { ResponseProduct, ResponseCartItem } from "../api/types";
 const API_URL = import.meta.env.VITE_BASE_URL;
 
 const initializeCartItems = (): ResponseCartItem[] => {
-  return Array.from({ length: 5 }, (_, index) => {
-    const productId = index + 1;
+  return Array.from({ length: 4 }, (_, index) => {
+    const productId = index + 2;
     return {
       id: productId,
       quantity: (index % 3) + 1,

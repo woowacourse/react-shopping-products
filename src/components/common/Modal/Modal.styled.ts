@@ -31,7 +31,6 @@ export const ModalContent = Styled.div`
   h2 {
     font-size: 18px;
     font-weight: 700;
-    margin-bottom: 20px;
   }
 
   img {
@@ -44,7 +43,6 @@ export const ModalContent = Styled.div`
   hr {
     border: none;
     border-top: 1px solid #eaeaea;
-    margin: 20px 0;
   }
 
   & > button {

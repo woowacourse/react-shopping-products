@@ -80,7 +80,7 @@ export const EmptyCartMessage = Styled.div`
 
 export const CartSummary = Styled.div`
   padding: 20px 24px;
-  background-color: #f8f9fa;
+
 `;
 
 export const TotalPriceContainer = Styled.div`
@@ -102,13 +102,14 @@ export const TotalPrice = Styled.span`
   color: #2c5aa0;
 `;
 
-export const OrderButton = Styled.button`
+export const CloseButton = Styled.button`
   width: 100%;
+  height: 44px;
   padding: 14px;
-  background-color: #2c5aa0;
+  background-color: #000000;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
