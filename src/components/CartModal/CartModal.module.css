@@ -30,6 +30,11 @@
   animation: lift-up 0.2s linear forwards;
 }
 
+.cartItemContainer {
+  height: 450px;
+  overflow-y: auto;
+}
+
 .cartItemContainer > * {
   padding-top: 8px;
   margin-bottom: 24px;
