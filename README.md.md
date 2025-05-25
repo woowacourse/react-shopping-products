@@ -78,3 +78,6 @@
     - [x] 총합 로직
   - [x] product quantity 대비 -> cart에 담는 수 제한
     - [x] api 에러로 제한 -> throw new Error 메시지
+  - [ ] cartModal 상태 전역에서 관리
+  - [x] cartModal context 생성
+  - [ ] cartModal Component 상위에서 관리
