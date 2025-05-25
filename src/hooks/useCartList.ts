@@ -62,7 +62,6 @@ export const useCartList = () => {
   const handleIncreaseQuantity = async (product: ProductElement) => {
     try {
       const cartItem = cartList.find((item) => item.product.id === product.id);
-      console.log('cartItem', cartItem);
 
       if (cartItem) {
         if (cartItem.quantity === cartItem.product.quantity) {
