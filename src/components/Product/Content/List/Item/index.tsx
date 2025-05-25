@@ -9,6 +9,7 @@ import QuantityCounter from "@/components/QuantityCounter";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
 import { updateCartItems } from "@/apis/cartItems/updateCartItems";
+
 interface ProductItemProps {
   product: ProductItemType;
   variant?: "default" | "cart";
@@ -26,16 +27,15 @@ function ProductItem({ product, variant }: ProductItemProps) {
   const { id, name, price, imageUrl } = product;
   const findCartItem = cartItemData.find(({ product }) => product.id === id);
 
+  const quantity = findCartItem ? findCartItem.quantity : 1;
   const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = defaultImage;
   };
 
-  const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
 
   const handleIncrease = async () => {
     const newQuantity = quantity + 1;
-    setQuantity(newQuantity);
 
     if (findCartItem) {
       try {
@@ -43,6 +43,11 @@ function ProductItem({ product, variant }: ProductItemProps) {
           productId: findCartItem.product.id,
           quantity: newQuantity,
         });
+        const updatedCartItems = await getCartItems();
+        setData((prev) => ({
+          ...prev,
+          cartItemData: updatedCartItems,
+        }));
       } catch (error) {
         console.error("수량 증가 실패", error);
       }
@@ -52,8 +57,8 @@ function ProductItem({ product, variant }: ProductItemProps) {
     if (quantity === 1) {
       // 수량 1이면 삭제
       if (findCartItem) {
+        await removeCartItem(findCartItem.id);
         try {
-          await removeCartItem(findCartItem.id);
           const updatedCartItems = await getCartItems();
 
           setData((prev) => ({
@@ -62,14 +67,12 @@ function ProductItem({ product, variant }: ProductItemProps) {
           }));
 
           setIsAdded(false);
-          setQuantity(1);
         } catch (error) {
           console.error("장바구니 삭제 실패:", error);
         }
       }
     } else {
       const newQuantity = quantity - 1;
-      setQuantity(newQuantity);
 
       if (findCartItem) {
         try {
@@ -77,14 +80,16 @@ function ProductItem({ product, variant }: ProductItemProps) {
             productId: findCartItem.product.id,
             quantity: newQuantity,
           });
+          const updatedCartItems = await getCartItems();
+          setData((prev) => ({
+            ...prev,
+            cartItemData: updatedCartItems,
+          }));
         } catch (error) {
           console.error("수량 감소 실패", error);
         }
       }
     }
-  };
-  const handleAddToCart = () => {
-    setIsAdded(true);
   };
 
   return (
@@ -99,7 +104,7 @@ function ProductItem({ product, variant }: ProductItemProps) {
         </S.ProductInfo>
         <S.ButtonWrapper variant={variant}>
           {!isAdded && !findCartItem ? (
-            <AddCartItemButton id={id} onClick={handleAddToCart} />
+            <AddCartItemButton id={id} />
           ) : (
             findCartItem && (
               <QuantityCounter
