@@ -22,25 +22,29 @@ const CartModal = ({ isModalOpen, handleCloseModal }: CartModalProps) => {
       <Modal.Title title="장바구니"></Modal.Title>
       <Modal.Contents>
         <Flex flexDirection="column">
-          <Divider />
-          {cartItems.map((cartItem) => (
-            <>
-              <ProductItemModalCard
-                key={cartItem.id}
-                product={cartItem.product}
-              />
+          <Layout>
+            <CartItemsContainer>
               <Divider />
-            </>
-          ))}
-          <CartTotalAmount />
+              {cartItems.map((cartItem) => (
+                <>
+                  <ProductItemModalCard
+                    key={cartItem.id}
+                    product={cartItem.product}
+                  />
+                  <Divider />
+                </>
+              ))}
+            </CartItemsContainer>
+            <CartTotalAmount />
+            <Modal.Button
+              title="닫기"
+              backgroundColor="black"
+              textColor="white"
+              onClick={handleCloseModal}
+            />
+          </Layout>
         </Flex>
       </Modal.Contents>
-      <Modal.Button
-        title="닫기"
-        backgroundColor="black"
-        textColor="white"
-        onClick={handleCloseModal}
-      />
     </Modal>
   );
 };
@@ -52,4 +56,19 @@ const Divider = styled.hr`
   height: 1px;
   background-color: #e0e0e0;
   margin: 16px 0;
+`;
+
+const Layout = styled.div`
+  max-height: 95%;
+`;
+
+const CartItemsContainer = styled.div`
+  max-height: 85%;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE & Edge */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 `;

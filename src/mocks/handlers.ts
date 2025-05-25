@@ -56,6 +56,14 @@ const mockProducts = [
     category: '식료품',
     quantity: 8,
   },
+  {
+    id: 8,
+    name: `홈런볼`,
+    price: 1500,
+    imageUrl: 'https://example.com/kancho.jpg',
+    category: '식료품',
+    quantity: 8,
+  },
 ];
 const mockCartItems = [
   {

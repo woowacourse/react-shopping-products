@@ -12,7 +12,7 @@ type FlexProps = {
   gap?: string;
   width?: string;
   height?: string;
-  css?: { [key: string]: string };
+  style?: React.CSSProperties;
 };
 
 const Flex = ({
@@ -22,7 +22,7 @@ const Flex = ({
   gap,
   width,
   height,
-  css,
+  style,
 }: FlexProps) => {
   return (
     <FlexContainer
@@ -31,7 +31,7 @@ const Flex = ({
       width={width}
       height={height}
       gap={gap}
-      css={css}
+      style={style}
     >
       {children}
     </FlexContainer>
@@ -51,7 +51,6 @@ type FlexContainerProps = {
   gap?: string;
   width?: string;
   height?: string;
-  css?: { [key: string]: string };
 };
 
 const FlexContainer = styled.div<FlexContainerProps>`
@@ -62,5 +61,4 @@ const FlexContainer = styled.div<FlexContainerProps>`
   gap: ${({ gap }) => gap || '0'};
   width: ${({ width }) => width || '100%'};
   height: ${({ height }) => height || '100%'};
-  ${({ css }) => css};
 `;

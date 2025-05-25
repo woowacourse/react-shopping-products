@@ -24,6 +24,7 @@ const ModalLayout = styled.div<PositionProps & SizeProps>`
   position: relative;
   width: ${({ $position, $size }) =>
     $position === 'bottom' ? '100%' : getModalWidth($size)};
+  max-height: 100%;
   z-index: 500;
   background-color: white;
   border-radius: 8px;
