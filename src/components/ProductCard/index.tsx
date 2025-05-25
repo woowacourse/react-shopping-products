@@ -1,9 +1,10 @@
 import { css } from '@emotion/css';
-import RemoveButton from '../Button/RemoveButton';
+import QuantitySpinner from '../Button/QuantitySpinner';
 import AddButton from '../Button/AddButton';
 import { Product } from '../../types/product.type';
 import { useShoppingCart } from '../../hooks/useShoppingCart';
 import { useEffect, useState } from 'react';
+import { CartItem } from '../../types/cart.type';
 
 interface ProductCardProps {
   product: Product;
@@ -11,11 +12,11 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const { data, add, remove } = useShoppingCart();
-  const [cartItemId, setCartItemId] = useState<number | null>(null);
+  const { data, add, remove, update } = useShoppingCart();
+  const [cartItem, setCartItem] = useState<CartItem | null>(null);
 
   useEffect(() => {
-    setCartItemId(data.find((ci) => ci.product.id === id)?.id ?? null);
+    setCartItem(data?.find((ci) => ci.product.id === id) ?? null);
   }, [data, id]);
 
   return (
@@ -34,8 +35,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <h4 className={ProductName}>{name}</h4>
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
-          {cartItemId ? (
-            <RemoveButton onClick={() => remove(cartItemId)} />
+          {cartItem ? (
+            <QuantitySpinner
+              quantity={cartItem.quantity}
+              handleDelete={() => remove(cartItem.id)}
+              handleIncrease={() => update(cartItem.id, cartItem.quantity + 1)}
+              handleDecrease={() => update(cartItem.id, cartItem.quantity - 1)}
+            />
           ) : (
             <AddButton onClick={() => add(id)} />
           )}
