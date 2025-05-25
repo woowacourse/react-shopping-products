@@ -2,7 +2,7 @@ import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import useMutation from "@/hooks/useMutation";
 import useToast from "@/hooks/useToast";
 import { useCartItemContext } from "@/contexts/CartItemProvider";
-import MinusIcon from "@assets/icons/minus.svg";
+import RemoveCartItemIcon from "@assets/icons/remove-cart-item.svg";
 import * as S from "./RemoveCartItemButton.styled";
 
 interface RemoveCartItemButtonProps {
@@ -33,7 +33,7 @@ function RemoveCartItemButton({ cartItemId }: RemoveCartItemButtonProps) {
   return (
     <>
       <S.Button type="button" onClick={onRemoveCartItem} disabled={isLoading}>
-        <img src={MinusIcon} alt="장바구니에서 제거" />
+        <img src={RemoveCartItemIcon} alt="장바구니에서 제거" />
       </S.Button>
     </>
   );
