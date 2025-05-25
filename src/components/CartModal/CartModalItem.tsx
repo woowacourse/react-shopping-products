@@ -1,20 +1,40 @@
 import { css } from "@emotion/css";
 import ProductStepper from "../ProductStepper/ProductStepper";
 import Button from "../Button";
+import deleteShoppingCart from "../../APIs/shoppingCart/deleteShoppingCart";
+import { useAPIContext } from "../../contexts/APIProvider/useAPIContext";
+import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
 
 interface CartModalItemProps {
   name: string;
   imgUrl: string;
   price: number;
   quantity: number;
+  cartItemId: number;
 }
 
 const CartModalItem = ({
+  cartItemId,
   name,
   imgUrl,
   price,
   quantity,
 }: CartModalItemProps) => {
+  const { refetch: refetchCart } = useAPIContext({
+    name: "cartItems",
+    fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
+  });
+
+  const handleDelete = async () => {
+    try {
+      const endpoint = "/cart-items";
+      await deleteShoppingCart({ endpoint, cartItemId: cartItemId! });
+      refetchCart();
+    } catch (err) {
+      console.error("장바구니 삭제 실패:", err);
+    }
+  };
+
   return (
     <div className={itemStyles}>
       <hr className={hrStyles} />
@@ -39,7 +59,7 @@ const CartModalItem = ({
         </div>
         <Button
           title={"삭제"}
-          onClick={() => {}}
+          onClick={handleDelete}
           buttonStyled={{ width: "40px", height: "24px" }}
           textStyled={{ fontSize: "12px" }}
         />

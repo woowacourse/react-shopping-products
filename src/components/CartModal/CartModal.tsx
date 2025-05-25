@@ -23,6 +23,7 @@ const CartModal = ({ isOpen, onModalClose, cartItems }: CartModalProps) => {
           <Modal.Body>
             {cartItems.map((item) => (
               <CartModalItem
+                cartItemId={item.id}
                 key={item.product.id}
                 name={item.product.name}
                 imgUrl={item.product.imageUrl}
