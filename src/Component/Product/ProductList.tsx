@@ -16,13 +16,7 @@ export default function ProductList({ productList }: ProductListProps) {
   return (
     <StyledUl>
       {productList.map((item) => (
-        <ProductItem
-          key={item.id}
-          {...item}
-          // updateCartItems={updateCartItems}
-          // getMatchCartItem={getMatchCartItem}
-          // checkMax={checkMax}
-        />
+        <ProductItem key={item.id} {...item} />
       ))}
     </StyledUl>
   );
