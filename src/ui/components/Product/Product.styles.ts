@@ -10,6 +10,7 @@ export const Container = styled.li`
 export const ProductImageContainer = styled.div`
   width: 182px;
   height: 112px;
+  position: relative;
 `;
 
 export const ImageContainer = styled.div`
@@ -112,4 +113,77 @@ export const CartRemoveButtonText = styled.span`
   font-size: 12px;
   line-height: 15px;
   color: #000000;
+`;
+
+export const SoldOutOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+`;
+
+export const SoldOutText = styled.span`
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+`;
+
+export const StepperContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  margin-right: 8px;
+  margin-top: 0;
+`;
+
+export const StepperButton = styled.button`
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 18px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+  }
+
+  &:active {
+    background-color: #e8e8e8;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    &:hover {
+      background-color: white;
+      border-color: #ddd;
+    }
+  }
+`;
+
+export const StepperQuantity = styled.span`
+  min-width: 30px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  user-select: none;
 `;

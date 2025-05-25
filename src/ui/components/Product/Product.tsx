@@ -9,6 +9,8 @@ import {
   StepperContainer,
   StepperButton,
   StepperQuantity,
+  SoldOutOverlay,
+  SoldOutText,
 } from './Product.styles';
 import { ProductElement } from '../../../types/product';
 import { woowaLogo } from "../../../assets";
@@ -31,6 +33,8 @@ function Product({ item, onAddCart, onRemoveCart, onUpdateQuantity, cartQuantity
   }
 
   const isImage = product.imageUrl.length > 15;
+  // quantity가 undefined인 경우도 처리
+  const isSoldOut = product.quantity !== undefined && product.quantity === 0;
 
   const handleAddCart = async () => {
     setIsLoading(true);
@@ -95,6 +99,11 @@ function Product({ item, onAddCart, onRemoveCart, onUpdateQuantity, cartQuantity
             </ImageContainer>
           )
         }
+        {isSoldOut && (
+          <SoldOutOverlay>
+            <SoldOutText>SOLDOUT</SoldOutText>
+          </SoldOutOverlay>
+        )}
       </ProductImageContainer>
       <Detail>
         <ProductName>{product.name}</ProductName>
@@ -102,16 +111,16 @@ function Product({ item, onAddCart, onRemoveCart, onUpdateQuantity, cartQuantity
       </Detail>
       {isInCart ? (
         <StepperContainer>
-          <StepperButton onClick={handleDecreaseQuantity} disabled={isLoading}>
+          <StepperButton onClick={handleDecreaseQuantity} disabled={isLoading || isSoldOut}>
             −
           </StepperButton>
           <StepperQuantity>{cartQuantity}</StepperQuantity>
-          <StepperButton onClick={handleIncreaseQuantity} disabled={isLoading}>
+          <StepperButton onClick={handleIncreaseQuantity} disabled={isLoading || isSoldOut}>
             +
           </StepperButton>
         </StepperContainer>
       ) : (
-        <AddButton onClick={handleAddCart} disabled={isLoading} />
+        <AddButton onClick={handleAddCart} disabled={isLoading || isSoldOut} />
       )}
     </Container>
   );
