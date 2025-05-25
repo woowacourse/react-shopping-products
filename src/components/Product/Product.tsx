@@ -11,8 +11,7 @@ import * as Styled from "./Product.styled";
 import defaultImage from "/defaultImage.png";
 
 function Product({ product, isInCart }: ProductProps) {
-  const { state, cartItemsId, addCartItemId, removeCartItemId } =
-    useCartItemsId();
+  const { state, cartItemsId, addCartItemId } = useCartItemsId();
 
   const cartItemId = cartItemsId.find(
     (item) => item.productId === product.id.toString()
@@ -32,14 +31,6 @@ function Product({ product, isInCart }: ProductProps) {
     const $product = event.currentTarget.closest("li");
     $product &&
       addCartItemId($product.id, cartItemId ? cartItemId.cartQuantity - 1 : 0);
-  };
-
-  const handleRemoveProduct = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    console.log($product);
-    $product && removeCartItemId($product.id);
   };
 
   return (

@@ -16,13 +16,11 @@ function Header() {
       <a href="./">
         <Styled.Title>SHOP</Styled.Title>
       </a>
-      <Styled.ButtonWrapper>
+      <Styled.ButtonWrapper onClick={handleOpen}>
         <Styled.Button>
           <Styled.Image src={shoppingBag} />
         </Styled.Button>
-        <Styled.ShoppingBag onClick={handleOpen}>
-          {cartItemsId.length}
-        </Styled.ShoppingBag>
+        <Styled.ShoppingBag>{cartItemsId.length}</Styled.ShoppingBag>
         <CartModal isOpen={isOpen} handleClose={handleClose} />
       </Styled.ButtonWrapper>
     </Styled.Container>
