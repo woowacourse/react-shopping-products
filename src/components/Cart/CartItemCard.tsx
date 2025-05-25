@@ -86,6 +86,7 @@ const CartItemCardStyle = css`
 
 const imageContainerStyle = css`
   max-width: 80px;
+  min-width: 80px;
   max-height: 80px;
   border-radius: 8px;
   overflow: hidden;
