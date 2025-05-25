@@ -11,7 +11,7 @@ const allProducts = [
     price: 100,
     imageUrl: '33',
     category: '식료품',
-    quantity: 10,
+    quantity: 3,
   },
   {
     id: 58,
@@ -19,6 +19,7 @@ const allProducts = [
     price: 100,
     imageUrl: '이런 URL은 없겠지',
     category: '식료품',
+    quantity: 5,
   },
   {
     id: 34,
@@ -70,7 +71,7 @@ const allProducts = [
     imageUrl:
       'https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg',
     category: '식료품',
-    quantity: 50,
+    quantity: 5,
   },
   {
     id: 31,
@@ -79,7 +80,7 @@ const allProducts = [
     imageUrl:
       'https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/218/20dddd283cca0cb01c9ac7285f20b704_res.jpeg',
     category: '식료품',
-    quantity: 50,
+    quantity: 7,
   },
   {
     id: 30,
@@ -88,7 +89,7 @@ const allProducts = [
     imageUrl:
       'https://www.esquirekorea.co.kr/resources_old/online/org_thumnail_image/eq/322f1c2e-fdd0-4b84-97ec-cfc8ee88c9d7.jpg',
     category: '식료품',
-    quantity: 10,
+    quantity: 2,
   },
   {
     id: 60,
@@ -96,6 +97,7 @@ const allProducts = [
     price: 30000000,
     imageUrl: '이런 URL은 없겠지',
     category: '식료품',
+    quantity: 10,
   },
   {
     id: 43,
@@ -104,6 +106,7 @@ const allProducts = [
     imageUrl:
       'https://lh3.googleusercontent.com/proxy/odVKuwM6Z8vZILjEfxFUSrCUC3PC6XTDHYV4lEz4mKobFYjHQqhIF9WvOdMMd6CNVVZnLvghnsF9kTSih-tMTAy4_ndA6Gs3r3dgQ_wAMgmjkZAA',
     category: '식료품',
+    quantity: 1,
   },
   {
     id: 40,
@@ -112,6 +115,7 @@ const allProducts = [
     imageUrl:
       'https://i.namu.wiki/i/Flt-SDlty8ckiV5lxLr40M6HtBx0bwlGYs5FVYglOkQvCX0LeXtHOzE4qH6NfHci0DR9a7xr9OS3Bvlhi6JX0g.webp',
     category: '식료품',
+    quantity: 2,
   },
   {
     id: 42,
@@ -120,6 +124,7 @@ const allProducts = [
     imageUrl:
       'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202204/19/ed8eddd4-0edd-40ad-af7d-44a171577c92.jpg',
     category: '패션잡화',
+    quantity: 10,
   },
   {
     id: 5,
@@ -163,6 +168,7 @@ const allProducts = [
     imageUrl:
       'https://kream-phinf.pstatic.net/MjAyNTA1MTNfMjI5/MDAxNzQ3MTA4MjUzOTg4.106G0-WfVU8g8ziNKgKJjc1_UXvF-2IatsA-Cz5mG1og.etXRFVPYqcs5J9HAfXpaHFPFHorGnZU4Nl7k4368rfog.PNG/a_090d2310040b4f9ca922f2498ae8ae3a.png?type=l',
     category: '패션잡화',
+    quantity: 3,
   },
   {
     id: 2,
@@ -216,6 +222,7 @@ const allProducts = [
     imageUrl:
       'https://i.namu.wiki/i/kQCwKHpwjePBTPXPTIizJSE0alohKKRlsGOJSrPhAdsODckkF05KNDV27xdydVqHLEdgM7yQu6NSUL-gE0t9SZH_cmaY8tMquJnfLQv5shH_pSdvsRc87hCcO5V3WBZrTwR23NYzoJJEoQIHWqAM4Q.webp',
     category: '패션잡화',
+    quantity: 3,
   },
   {
     id: 33,
