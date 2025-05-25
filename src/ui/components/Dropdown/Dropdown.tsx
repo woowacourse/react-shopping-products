@@ -4,13 +4,12 @@ interface DropdownProps {
   value: string;
   placeholder?: string;
   options: readonly string[];
-  // onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-  onChange: (value: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 function Dropdown({ value, placeholder, options, onChange }: DropdownProps) {
   return (
-    <Container value={value} onChange={(e) => onChange(e.target.value)}>
+    <Container value={value} onChange={(e) => onChange(e)}>
       {placeholder && (
         <option value="" disabled={!value}>
           {placeholder}

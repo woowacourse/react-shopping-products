@@ -1,5 +1,4 @@
 import AddButton from './AddButton';
-import RemoveButton from './RemoveButton';
 import {
   Container,
   ProductImageContainer,
@@ -18,6 +17,7 @@ import QuantityController from '../QuantityController/QuantityController';
 
 interface ProductProps {
   item: ProductElement;
+  // refetch: () => void;
 }
 
 function Product({ item }: ProductProps) {
