@@ -3,3 +3,8 @@
   box-sizing: border-box;
   font-family: 'Noto Sans';
 }
+
+button {
+  cursor: pointer;
+  user-select: none;
+}

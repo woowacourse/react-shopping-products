@@ -15,6 +15,7 @@
 .cartContainer {
   position: relative;
   cursor: pointer;
+  user-select: none;
 }
 
 .cartCount {
