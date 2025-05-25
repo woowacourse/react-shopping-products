@@ -23,7 +23,7 @@ interface RemoveItemToCartProps {
   productId: number;
   setErrorTrue: (type: ERROR_TYPE) => void;
   setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
+    React.SetStateAction<Record<"productId" | "cartId" | "quantity", number>[]>
   >;
 }
 
