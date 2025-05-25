@@ -39,11 +39,7 @@ const useCart = () => {
   const removeCart = useCallback(
     async (cartId: number) => {
       try {
-        const targetId = cartData.find(
-          (item: CartItem) => item.product.id === cartId
-        )?.id;
-
-        await cartApi.removeFromCart(targetId as number);
+        await cartApi.removeFromCart(cartId);
 
         await loadCartData();
         openToast('상품이 장바구니에서 제거되었습니다.', true);
@@ -51,7 +47,7 @@ const useCart = () => {
         openToast('장바구니 빼기에 실패했어요...', false);
       }
     },
-    [cartData, loadCartData, openToast]
+    [loadCartData, openToast]
   );
 
   const patchCart = useCallback(
