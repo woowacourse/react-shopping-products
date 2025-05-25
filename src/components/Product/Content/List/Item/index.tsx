@@ -2,13 +2,14 @@ import { ProductItemType } from "@/types/product";
 import AddCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Add";
 import * as S from "./ProductItem.styled";
 import defaultImage from "@/assets/images/planet-error.png";
-import { SyntheticEvent, useContext, useState } from "react";
+import { SyntheticEvent, useContext } from "react";
 import { CartItemType } from "@/types/cartItem";
 import { DataContext } from "@/context/DataContext";
 import QuantityCounter from "@/components/QuantityCounter";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
 import { updateCartItems } from "@/apis/cartItems/updateCartItems";
+import AlertToast from "@/components/AlertToast";
 
 interface ProductItemProps {
   product: ProductItemType;
@@ -20,22 +21,31 @@ function ProductItem({ product, variant }: ProductItemProps) {
 
   if (!context)
     throw new Error("DataContext must be used within a DataProvider");
-  const { data, setData } = context;
+  const { data, setData, error, setError } = context;
 
   const cartItemData = data.cartItemData as CartItemType[];
 
-  const { id, name, price, imageUrl } = product;
+  const { id, name, price, imageUrl, quantity } = product;
   const findCartItem = cartItemData.find(({ product }) => product.id === id);
 
-  const quantity = findCartItem ? findCartItem.quantity : 1;
+  const cartQuantity = findCartItem ? findCartItem.quantity : 1;
   const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = defaultImage;
   };
 
-  const [isAdded, setIsAdded] = useState(false);
-
   const handleIncrease = async () => {
-    const newQuantity = quantity + 1;
+    const newQuantity = cartQuantity + 1;
+
+    if (newQuantity > quantity) {
+      setError((prev) => ({
+        ...prev,
+        cartItemData:
+          error instanceof Error
+            ? error.message
+            : "재고 수량을 초과해서 담을 수 없습니다.",
+      }));
+      return;
+    }
 
     if (findCartItem) {
       try {
@@ -50,11 +60,18 @@ function ProductItem({ product, variant }: ProductItemProps) {
         }));
       } catch (error) {
         console.error("수량 증가 실패", error);
+        setError((prev) => ({
+          ...prev,
+          cartItemData:
+            error instanceof Error
+              ? error.message
+              : "알 수 없는 오류가 발생하였습니다.",
+        }));
       }
     }
   };
   const handleDecrease = async () => {
-    if (quantity === 1) {
+    if (cartQuantity === 1) {
       // 수량 1이면 삭제
       if (findCartItem) {
         await removeCartItem(findCartItem.id);
@@ -65,14 +82,12 @@ function ProductItem({ product, variant }: ProductItemProps) {
             ...prev,
             cartItemData: updatedCartItems,
           }));
-
-          setIsAdded(false);
         } catch (error) {
           console.error("장바구니 삭제 실패:", error);
         }
       }
     } else {
-      const newQuantity = quantity - 1;
+      const newQuantity = cartQuantity - 1;
 
       if (findCartItem) {
         try {
@@ -94,7 +109,15 @@ function ProductItem({ product, variant }: ProductItemProps) {
 
   return (
     <S.Item variant={variant}>
+      {error.cartItemData && (
+        <AlertToast type="error" message={error.cartItemData} />
+      )}{" "}
       <S.ImageWrapper variant={variant}>
+        {quantity <= 0 && (
+          <S.ItemBackDrop>
+            <S.SoldOutText>품 절</S.SoldOutText>
+          </S.ItemBackDrop>
+        )}
         <S.ProductImage src={imageUrl} alt={name} onError={handleImageError} />
       </S.ImageWrapper>
       <S.Content variant={variant}>
@@ -103,16 +126,14 @@ function ProductItem({ product, variant }: ProductItemProps) {
           <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
         </S.ProductInfo>
         <S.ButtonWrapper variant={variant}>
-          {!isAdded && !findCartItem ? (
-            <AddCartItemButton id={id} />
+          {!findCartItem ? (
+            <AddCartItemButton id={id} disabled={quantity <= 0} />
           ) : (
-            findCartItem && (
-              <QuantityCounter
-                quantity={quantity}
-                onIncrease={handleIncrease}
-                onDecrease={handleDecrease}
-              />
-            )
+            <QuantityCounter
+              quantity={cartQuantity}
+              onIncrease={handleIncrease}
+              onDecrease={handleDecrease}
+            />
           )}
         </S.ButtonWrapper>
       </S.Content>
