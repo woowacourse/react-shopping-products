@@ -28,7 +28,7 @@ const Modal = () => {
         <S.ModalTotalPriceContainer>
           <S.ModalBr />
           <S.ModalTotalPriceContentContainer>
-            <S.ModalTotalPriceTitleText>총 주문 금액</S.ModalTotalPriceTitleText>
+            <S.ModalTotalPriceTitleText>총 결제 금액</S.ModalTotalPriceTitleText>
             <S.ModalTotalPriceText>{totalPrice.toLocaleString()}원</S.ModalTotalPriceText>
           </S.ModalTotalPriceContentContainer>
         </S.ModalTotalPriceContainer>
