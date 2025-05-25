@@ -54,7 +54,26 @@ const useCart = () => {
     [cartData, loadCartData, openToast]
   );
 
-  return { cartData, loadCartData, addCart, removeCart };
+  const patchCart = useCallback(
+    async (cartItemId: number, quantity: number) => {
+      try {
+        await cartApi.patchCartItemQuantity(cartItemId, quantity);
+        await loadCartData();
+        openToast('장바구니 수량이 변경되었습니다.', true);
+      } catch (error) {
+        openToast('장바구니 수량 변경에 실패했어요...', false);
+      }
+    },
+    [loadCartData, openToast]
+  );
+
+  return {
+    cartData,
+    loadCartData,
+    addCart,
+    removeCart,
+    patchCart,
+  };
 };
 
 export default useCart;

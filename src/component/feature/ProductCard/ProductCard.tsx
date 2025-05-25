@@ -17,7 +17,15 @@ import CartContext from '../../../context/cartContext/cartContext';
 interface ProductCardProps extends Omit<Product, 'category'> {}
 
 const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
-  const { cartData, addCart, removeCart } = useContext(CartContext);
+  const { cartData, addCart, removeCart, patchCart } = useContext(CartContext);
+
+  const productCartId = cartData.find(
+    (item: CartItem) => item.product.id === id
+  )?.id;
+
+  const productCartQuantity = cartData.find(
+    (item: CartItem) => item.product.id === id
+  )?.quantity;
 
   const inCart = cartData.some((item: CartItem) => item.product.id === id);
 
