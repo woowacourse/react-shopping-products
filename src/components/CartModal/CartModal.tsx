@@ -15,6 +15,7 @@ interface CartModalProps {
   products: Products | null;
   onQuantityIncrease: (productId: number) => void;
   onQuantityDecrease: (productId: number) => void;
+  onRemove: (productId: number) => void;
 }
 
 const CartModal = ({
@@ -23,6 +24,7 @@ const CartModal = ({
   products,
   onQuantityDecrease,
   onQuantityIncrease,
+  onRemove,
 }: CartModalProps) => {
   const productList = products?.content || [];
 
@@ -53,7 +55,11 @@ const CartModal = ({
           cartItems.map((item) => (
             <CartItem key={item.cartId}>
               <ProductImage src={item.imageUrl} alt={item.name} />
-              <ProductInfo>
+              <ProductInfoContainer>
+                <DeleteButton onClick={() => onRemove(item.productId)}>
+                  삭제
+                </DeleteButton>
+
                 <ProductName>{item.name}</ProductName>
                 <ProductPrice>{item.price?.toLocaleString()}원</ProductPrice>
                 <QuantityController
@@ -62,7 +68,7 @@ const CartModal = ({
                   onIncrease={() => onQuantityIncrease(item.productId)}
                   onDecrease={() => onQuantityDecrease(item.productId)}
                 />
-              </ProductInfo>
+              </ProductInfoContainer>
             </CartItem>
           ))
         )}
@@ -96,6 +102,7 @@ export const CartContent = styled.div`
 
 export const EmptyCart = styled.div`
   text-align: center;
+  margin-top: 100px;
   padding: 40px 20px;
 `;
 
@@ -118,10 +125,23 @@ export const ProductImage = styled.img`
   margin-right: 12px;
 `;
 
-export const ProductInfo = styled.div`
+const ProductInfoContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+  flex: 1;
+`;
+
+const DeleteButton = styled.button`
+  position: absolute;
+  top: -2px;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
 `;
 
 export const ProductName = styled.div`
@@ -134,16 +154,11 @@ export const ProductPrice = styled.div`
   margin-bottom: 4px;
 `;
 
-export const ProductQuantity = styled.div`
-  color: #666;
-  font-size: 14px;
-`;
-
 export const CloseButton = styled.button`
   background-color: #333333;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 8px;
   border-radius: 4px;
   cursor: pointer;
   width: 100%;

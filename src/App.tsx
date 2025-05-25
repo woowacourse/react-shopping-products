@@ -26,6 +26,7 @@ const AppContent = () => {
     handleAddToCart,
     handleQuantityIncrease,
     handleQuantityDecrease,
+    handleRemoveFromCart,
   } = useCartItems({ products });
 
   const errorMessage = productError || cartError;
@@ -69,6 +70,7 @@ const AppContent = () => {
             onClose={closeCartModal}
             onQuantityIncrease={handleQuantityIncrease}
             onQuantityDecrease={handleQuantityDecrease}
+            onRemove={handleRemoveFromCart}
           />
         )}
       </S.LayoutWrapper>

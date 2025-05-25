@@ -89,6 +89,17 @@ const useCartItems = ({ products }: UseCartItemsProps) => {
     }
   };
 
+  const handleRemoveFromCart = async (productId: number) => {
+    const currentItem = cartItemInfo.find(
+      (item) => item.productId === productId
+    );
+
+    if (currentItem) {
+      await CartItemsAPI.delete(currentItem.cartId);
+      await refreshCartItems();
+    }
+  };
+
   return {
     cartItemInfo,
     errorMessage,
@@ -96,6 +107,7 @@ const useCartItems = ({ products }: UseCartItemsProps) => {
     handleAddToCart,
     handleQuantityIncrease,
     handleQuantityDecrease,
+    handleRemoveFromCart,
   };
 };
 
