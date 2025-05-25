@@ -1,7 +1,8 @@
 import { css } from "@emotion/css";
 import ProductListPage from "./pages/ProductListPage";
 import { useState } from "react";
-import { APIProvider } from "./contexts/APIProvider/APIProvider";
+import { APIProvider } from "./contexts/API/APIProvider";
+import { ErrorProvider } from "./contexts/Error/ErrorProvider";
 
 function App() {
   const [isOepn, setIsOpen] = useState(false);
@@ -12,9 +13,11 @@ function App() {
 
   return (
     <APIProvider>
-      <div className={AppStyles}>
-        <ProductListPage isOpen={isOepn} handleModal={handleModal} />
-      </div>
+      <ErrorProvider>
+        <div className={AppStyles}>
+          <ProductListPage isOpen={isOepn} handleModal={handleModal} />
+        </div>
+      </ErrorProvider>
     </APIProvider>
   );
 }
