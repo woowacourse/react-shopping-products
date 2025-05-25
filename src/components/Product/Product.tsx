@@ -8,6 +8,7 @@ import {
   productTitle,
   productPrice,
   buttonWrapper,
+  productSoldOutOverlay,
 } from './Product.style';
 import isValidImageUrl from '../../utils/isValidImageUrl';
 import { DEFAULT_IMAGE_URL } from '../../constants/products';
@@ -17,12 +18,20 @@ function Product({
   imageUrl,
   name,
   price,
+  quantity,
   isAdd,
   onClickAddCartItem,
   onClickDeleteCartItem,
 }: ProductProps) {
+  const isOutOfStock = quantity === 0;
+
   return (
     <li className={productContainer}>
+      {isOutOfStock && (
+        <div className={productSoldOutOverlay}>
+          <span>품절</span>
+        </div>
+      )}
       <img
         src={isValidImageUrl(imageUrl) ? imageUrl : DEFAULT_IMAGE_URL}
         alt="product"
