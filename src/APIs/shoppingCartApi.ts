@@ -2,38 +2,29 @@ import {
   CartItem,
   ShoppingCartRequestBody,
   ShoppingCartRequest,
-  ShoppingCartResponse,
 } from '../types/cart.type';
-import apiRequest from './apiRequestWithAuth';
+import apiRequestWithAuth from './apiRequestWithAuth';
 
 async function getShoppingCart(endpoint: string): Promise<CartItem[]> {
-  const response = await apiRequest<null, ShoppingCartResponse>({
+  const response = await apiRequestWithAuth<null>({
     endpoint: `${endpoint}`,
   });
-  return response.content;
+  return response;
 }
 
-async function addShoppingCart(
-  request: ShoppingCartRequest
-): Promise<CartItem[]> {
-  await apiRequest<ShoppingCartRequestBody>({
+async function addShoppingCart(request: ShoppingCartRequest): Promise<void> {
+  await apiRequestWithAuth<ShoppingCartRequestBody>({
     endpoint: request.endpoint,
     method: 'POST',
     body: request.requestBody,
   });
-
-  return await getShoppingCart(request.endpoint);
 }
 
-async function deleteShoppingCart(
-  request: ShoppingCartRequest
-): Promise<CartItem[]> {
-  await apiRequest<null>({
+async function deleteShoppingCart(request: ShoppingCartRequest): Promise<void> {
+  await apiRequestWithAuth({
     endpoint: `${request.endpoint}/${request.cartItemId}`,
     method: 'DELETE',
   });
-
-  return await getShoppingCart(request.endpoint);
 }
 
 export { addShoppingCart, deleteShoppingCart, getShoppingCart };

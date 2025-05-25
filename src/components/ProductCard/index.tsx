@@ -2,18 +2,21 @@ import { css } from '@emotion/css';
 import RemoveButton from '../Button/RemoveButton';
 import AddButton from '../Button/AddButton';
 import { Product } from '../../types/product.type';
-import { useAddShoppingCart } from '../../hooks/useAddShoppingCart';
-import { useDeleteShoppingCart } from '../../hooks/useDeleteShoppingCart';
+import { useShoppingCart } from '../../hooks/useShoppingCart';
+import { useEffect, useState } from 'react';
 
 interface ProductCardProps {
   product: Product;
-  isInCart: boolean;
 }
 
-const ProductCard = ({ product, isInCart }: ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const addShoppingCart = useAddShoppingCart(product.id);
-  const deleteShoppingCart = useDeleteShoppingCart(product.id);
+  const { data, add, remove } = useShoppingCart();
+  const [cartItemId, setCartItemId] = useState<number | null>(null);
+
+  useEffect(() => {
+    setCartItemId(data.find((ci) => ci.product.id === id)?.id ?? null);
+  }, [data, id]);
 
   return (
     <div key={id} className={CardFrame}>
@@ -31,10 +34,10 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
         <h4 className={ProductName}>{name}</h4>
         <p>{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
-          {isInCart ? (
-            <RemoveButton onClick={deleteShoppingCart} />
+          {cartItemId ? (
+            <RemoveButton onClick={() => remove(cartItemId)} />
           ) : (
-            <AddButton onClick={addShoppingCart} />
+            <AddButton onClick={() => add(id)} />
           )}
         </div>
       </div>

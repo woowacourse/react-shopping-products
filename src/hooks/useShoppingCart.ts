@@ -1,13 +1,46 @@
 import { useData } from './useData';
 import { CartItem } from '../types/cart.type';
-import { getShoppingCart } from '../APIs/shoppingCartApi';
+import {
+  addShoppingCart,
+  deleteShoppingCart,
+  getShoppingCart,
+} from '../APIs/shoppingCartApi';
+import { useCallback } from 'react';
 
 const PARAMS = new URLSearchParams({ page: '0', size: '50' }).toString();
 
 export const useShoppingCart = () => {
-  return useData<CartItem[]>({
+  const { data, loading, error, refetch } = useData<CartItem[]>({
     key: 'cart-items',
     endpoint: `/cart-items?${PARAMS}`,
     fetchFunction: getShoppingCart,
   });
+
+  const add = useCallback(
+    async (productId: number) => {
+      await addShoppingCart({
+        endpoint: '/cart-items',
+        requestBody: { productId, quantity: 1 },
+      });
+
+      await refetch();
+    },
+    [refetch]
+  );
+
+  const remove = useCallback(
+    async (cartItemId: number | null) => {
+      if (!cartItemId) return;
+
+      await deleteShoppingCart({
+        endpoint: `/cart-items`,
+        cartItemId,
+      });
+
+      await refetch();
+    },
+    [refetch]
+  );
+
+  return { data, loading, error, add, remove };
 };
