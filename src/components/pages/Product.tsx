@@ -3,7 +3,7 @@ import ItemCard from '../ItemCard/ItemCard';
 import Skeleton from '../Skeleton/Skeleton';
 import S from './Product.module.css';
 import useProductPage from '../../hooks/useProductPage';
-import Modal from '../Modal/Modal';
+import CartModal from '../CartModal/CartModal';
 import { useState } from 'react';
 
 const Product = () => {
@@ -15,7 +15,7 @@ const Product = () => {
   return (
     <>
       {isOpen && (
-        <Modal
+        <CartModal
           handleClose={() => {
             setIsOpen(false);
           }}

@@ -1,11 +1,11 @@
 import ItemModalCard from '../ItemModalCard/ItemModalCard';
-import S from './Modal.module.css';
+import S from './CartModal.module.css';
 
 interface ModalProps {
   handleClose: () => void;
 }
 
-const Modal = ({ handleClose }: ModalProps) => {
+const CartModal = ({ handleClose }: ModalProps) => {
   return (
     <div className={S.container}>
       <div data-testid="modal-overlay" className={S.overlay} onClick={handleClose} />
@@ -27,4 +27,4 @@ const Modal = ({ handleClose }: ModalProps) => {
   );
 };
 
-export default Modal;
+export default CartModal;

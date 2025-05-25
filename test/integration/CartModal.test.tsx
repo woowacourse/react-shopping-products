@@ -6,7 +6,7 @@ beforeEach(() => {
   render(<App />);
 });
 
-describe('모달 작동 테스트', () => {
+describe('장바구니 모달 작동 테스트', () => {
   it('장바구니 버튼을 누르면 장바구니 모달이 나타난다.', async () => {
     const cartButton = await screen.findByTestId('cart-icon');
     fireEvent.click(cartButton);
