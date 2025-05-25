@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Flex } from '../../../../common';
 import ToggleCartButton from './cart-button/ToggleCartButton';
+import ProductPreviewImage from '../../../../common/ProductPreviewImage';
 
 interface ProductProps {
   id: string;
@@ -11,19 +12,19 @@ interface ProductProps {
 }
 
 function ProductCard({ id, name, price, imageUrl, quantity }: ProductProps) {
-  const isSoldout = quantity === 0;
+  const isSoldOut = quantity === 0;
   return (
     <Container data-testid={`product-${id}`}>
       <PreviewBox>
-        <PreviewImage src={imageUrl} isSoldout={isSoldout} />
-        {isSoldout && <PreviewText>품절</PreviewText>}
+        <ProductPreviewImage imageSource={imageUrl} isSoldOut={isSoldOut} />
+        {isSoldOut && <PreviewText>품절</PreviewText>}
       </PreviewBox>
       <InfoBox>
         <Flex flexDirection="column" gap="sm" alignItems="flex-start">
           <ProductTitle>{name}</ProductTitle>
           <ProductPrice>{`${price.toLocaleString()}원`}</ProductPrice>
         </Flex>
-        {!isSoldout && <ToggleCartButton productId={id} />}
+        {!isSoldOut && <ToggleCartButton productId={id} />}
       </InfoBox>
     </Container>
   );
@@ -51,13 +52,6 @@ const PreviewText = styled.p`
   position: absolute;
   color: white;
   ${({ theme }) => theme.heading};
-`;
-
-const PreviewImage = styled.img<{ isSoldout: boolean }>`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  ${({ isSoldout }) => isSoldout && `filter: grayscale(100%) brightness(0.5);`}
 `;
 
 const InfoBox = styled(Flex)`
