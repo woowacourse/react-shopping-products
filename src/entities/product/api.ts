@@ -11,15 +11,12 @@ const sortOptionsMap: Record<SortOptionsKey, string> = {
 } as const;
 
 export const ProductsAPI = {
-  get: async (
-    category: CategoryOptionsKey,
-    selectedSortOption: SortOptionsKey
-  ) => {
+  get: async (category: CategoryOptionsKey, sortOption: SortOptionsKey) => {
     const params: Record<string, string> = { page: "0", size: "20" };
 
     if (category !== "전체") params.category = category;
-    if (selectedSortOption && sortOptionsMap[selectedSortOption]) {
-      params.sort = sortOptionsMap[selectedSortOption];
+    if (sortOption && sortOptionsMap[sortOption]) {
+      params.sort = sortOptionsMap[sortOption];
     }
 
     return getData<Products>(createApiUrl(URL, params));
