@@ -35,12 +35,7 @@ const ProductList = ({ productsData, cartItemsByProductId, handleCartItem }: Pro
                     onDecrease={() => handleCartItem("update", cartItem.cartItemId, cartItem.quantity - 1)}
                   />
                 ) : (
-                  <IconButton
-                    icon={<AddCart />}
-                    variant="dark"
-                    disabled={quantity === 0}
-                    onClick={() => handleCartItem("add", id)}
-                  >
+                  <IconButton icon={<AddCart />} variant="dark" onClick={() => handleCartItem("add", id)}>
                     담기
                   </IconButton>
                 )}

@@ -14,13 +14,17 @@ const postCartItems = http.post(
   `http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items`,
   async ({ request }) => {
     const newCartItem = (await request.json()) as { productId: number; quantity: number };
+    const currentProduct = products.content.find((product) => product.id === newCartItem.productId);
+
+    if (newCartItem.quantity > currentProduct!.quantity) {
+      return HttpResponse.json({ message: "재고 수량을 초과하여 담을 수 없습니다." }, { status: 400 });
+    }
 
     const maxId = cartItems.content.length > 0 ? Math.max(...cartItems.content.map((item) => item.id)) : 0;
-
     const newCartItemData: Content = {
       id: maxId + 1,
       quantity: newCartItem.quantity,
-      product: products.content.find((product) => product.id === newCartItem.productId)!,
+      product: currentProduct!,
     };
 
     cartItems.content.push(newCartItemData);
@@ -32,6 +36,11 @@ const patchCartItems = http.patch(
   async ({ params, request }) => {
     const cartItemId = Number(params.id);
     const { quantity } = (await request.json()) as { quantity: number };
+    const currentCartItem = cartItems.content.find((cartItem) => cartItem.id === cartItemId);
+
+    if (quantity > currentCartItem!.product.quantity!) {
+      return HttpResponse.json({ message: "재고 수량을 초과하여 담을 수 없습니다." }, { status: 400 });
+    }
 
     cartItems.content = cartItems.content.reduce((acc, item) => {
       if (item.id === cartItemId) {

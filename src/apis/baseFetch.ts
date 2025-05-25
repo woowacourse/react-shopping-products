@@ -10,7 +10,10 @@ const baseFetch = async <T>(url: string, options?: RequestInit, parseJson: boole
     ...options,
   });
 
-  if (!response.ok) throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+  if (!response.ok) {
+    const errorBody = await response.json();
+    throw new Error(errorBody.message || "오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+  }
 
   return parseJson ? response.json() : (undefined as T);
 };

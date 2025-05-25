@@ -72,4 +72,5 @@
     - [x] 갯수 변경 로직
     - [x] 삭제 로직
     - [x] 총합 로직
-  - [ ] product quantity 대비 -> cart에 담는 수 제한
+  - [x] product quantity 대비 -> cart에 담는 수 제한
+    - [x] api 에러로 제한 -> throw new Error 메시지
