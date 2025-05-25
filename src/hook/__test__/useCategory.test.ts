@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
-import useCategory from './useCategory';
+import useCategory from '../useCategory';
 
 describe('useCategory', () => {
   it('초기 카테고리는 "전체"이다.', () => {

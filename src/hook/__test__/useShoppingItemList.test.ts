@@ -1,9 +1,9 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import useShoppingItemList from './useShoppingItemList';
+import useShoppingItemList from '../useShoppingItemList';
 
-import { apiRequest } from '../api/apiRequest';
+import { apiRequest } from '../../api/apiRequest';
 
 const mockProducts = {
   content: [
@@ -38,7 +38,7 @@ const mockProducts = {
   ],
 };
 
-vi.mock('../api/apiRequest', () => ({
+vi.mock('../../api/apiRequest', () => ({
   apiRequest: vi.fn(),
 }));
 

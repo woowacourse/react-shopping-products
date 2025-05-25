@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
-import useDisclosure from './useDisclosure';
+import useDisclosure from '../useDisclosure';
 
 describe('useDisclosure', () => {
   it('초기 상태는 닫혀있다.', () => {

@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import useCart from './useCart';
-import { cartApi } from '../api/cart';
-import { CartItem } from '../types/common';
+import useCart from '../useCart';
+import { cartApi } from '../../api/cart';
+import { CartItem } from '../../types/common';
 
-vi.mock('../api/cart', () => ({
+vi.mock('../../api/cart', () => ({
   cartApi: {
     getCartItems: vi.fn(),
   },
@@ -12,10 +12,6 @@ vi.mock('../api/cart', () => ({
 
 describe('useCart 훅', () => {
   beforeEach(() => {
-    vi.resetAllMocks();
-  });
-
-  afterEach(() => {
     vi.resetAllMocks();
   });
 
@@ -48,7 +44,7 @@ describe('useCart 훅', () => {
 
   it('장바구니 데이터 가져오기 실패 시 에러 처리가 된다', async () => {
     vi.mocked(cartApi.getCartItems).mockRejectedValueOnce(
-      new Error('API 오류')
+      new Error('장바구니 데이터 가져오기 실패')
     );
 
     const { result } = renderHook(() => useCart());
