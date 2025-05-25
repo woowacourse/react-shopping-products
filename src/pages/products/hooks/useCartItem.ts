@@ -3,7 +3,6 @@ import { DeleteCartItemsParams, PatchCartItemsParams } from "@/apis/CartItemApi"
 import { CartItemApi, ProductApi } from "@/apis";
 
 import { PostCartItemsParams } from "@/apis/CartItemApi";
-import { useError } from "@/context";
 import { useMutation, useQuery } from "@/modules";
 import { GetCartItemsResponse } from "@/types";
 
