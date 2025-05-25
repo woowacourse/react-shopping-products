@@ -21,11 +21,6 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
     name: 'cart',
   });
 
-  const cartInfo = {
-    cartId: '',
-    isInCart: false,
-  };
-
   const handleAddCart = useCallback(async () => {
     try {
       if (!cartListData) return;
@@ -74,27 +69,21 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
     return null;
   }
 
-  cartListData.forEach((cart) => {
-    if (cart.product.id === productId) {
-      cartInfo.cartId = cart.id;
-      cartInfo.isInCart = true;
-    }
-  });
+  const cart = cartListData.find((cart) => cart.product.id === productId);
+  if (!cart) return <AddCartButton onAddCartClick={handleAddCart} {...props} />;
 
-  const itemQuantity = cartListData.find(
-    (cart) => cart.product.id === productId
-  )?.quantity;
+  const itemQuantity = cart.quantity;
+  const productMaxQuantity = cart.product.quantity;
 
-  return cartInfo.isInCart ? (
+  return (
     <Counter
       canBeZero={true}
       count={itemQuantity || 0}
-      onMinusClick={() => handleMinusQuantity(cartInfo.cartId)}
-      onPlusClick={() => handlePlusQuantity(cartInfo.cartId)}
+      maxCount={productMaxQuantity}
+      onMinusClick={() => handleMinusQuantity(cart.id)}
+      onPlusClick={() => handlePlusQuantity(cart.id)}
       {...props}
     />
-  ) : (
-    <AddCartButton onAddCartClick={handleAddCart} {...props} />
   );
 }
 
