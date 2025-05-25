@@ -80,7 +80,7 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
   };
 
   return (
-    <div key={id} className={CardFrame}>
+    <div key={id} className={CardFrame} data-testid="product-card">
       <div className={ImageFrame}>
         {soldOut && <div className={ImageOverlay}>품절</div>}
         <img
@@ -96,7 +96,7 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
         <h4 className={ProductName} data-testid="product-name">
           {name}
         </h4>
-        <p>{price.toLocaleString()}원</p>
+        <p data-testid="product-price">{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
           {isInCart ? (
             <>

@@ -18,7 +18,9 @@ const Header = ({ onCartClick, cartItems }: HeaderProps) => {
         onClick={onCartClick}
       />
       {cartItems.length > 0 && (
-        <div className={ShoppingCartCount}>{cartItems.length}</div>
+        <div className={ShoppingCartCount} data-testid="shopping-cart-count">
+          {cartItems.length}
+        </div>
       )}
     </header>
   );

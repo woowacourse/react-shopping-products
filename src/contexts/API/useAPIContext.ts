@@ -28,15 +28,14 @@ export function useAPIContext<T>({ name, fetcher }: useAPIContextType<T>) {
         errorMessage: "상품을 불러오지 못했습니다.",
       });
     } finally {
-      setIsLoading((prev) => ({ ...prev, [name]: true }));
+      setIsLoading((prev) => ({ ...prev, [name]: false }));
     }
   }, [fetcher, name, setData, setIsLoading, handleError]);
 
   useEffect(() => {
-    if (data[name] === undefined) {
-      request();
-    }
-  }, [data, name, request]);
+    if (data[name] !== undefined) return;
+    request();
+  }, [name]);
 
   return {
     data: data[name] as T | undefined,

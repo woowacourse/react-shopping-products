@@ -5,7 +5,7 @@ import OrbitSpinner from "../components/OrbitSpinner/index";
 import { useAPIContext } from "../contexts/API/useAPIContext";
 import getProducts from "../APIs/products/getProducts";
 import { Category, Product, SortOption } from "../types/product.type";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Header from "../components/Header";
 import CartModal from "../components/CartModal/CartModal";
 import getShoppingCart from "../APIs/shoppingCart/getShoppingCart";
@@ -42,11 +42,14 @@ const ProductListPage = ({ isOpen, handleModal }: ProductListPageProps) => {
 
     return `/products?${params.toString()}`;
   }, [category, sort]);
+  const fetchProducts = useCallback(() => {
+    return getProducts({ endpoint });
+  }, [endpoint]);
   const name = `products-${category}-${sort}`;
 
   const { data: products, isLoading } = useAPIContext<Product[]>({
     name,
-    fetcher: () => getProducts({ endpoint }),
+    fetcher: fetchProducts,
   });
 
   const { data: cartItems } = useAPIContext({
