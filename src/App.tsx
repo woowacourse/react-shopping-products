@@ -1,11 +1,14 @@
 import { ErrorProvider } from './context/ErrorContext';
+import { DataProvider } from './context/DataContext';
 import ProductPage from './pages/ProductPage';
 import './styles/reset.css';
 
 function App() {
   return (
     <ErrorProvider>
-      <ProductPage />
+      <DataProvider>
+        <ProductPage />
+      </DataProvider>
     </ErrorProvider>
   );
 }

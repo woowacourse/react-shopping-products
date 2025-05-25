@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useCallback } from 'react';
 import { getProducts, ProductResponse } from '../api/products';
-import { useError } from '../context/ErrorContext';
-import { ERROR_MSG } from '../constants/errorMessage';
+import { useData } from './useData';
 
 type useFetchProductsProps = {
   category: string;
@@ -16,39 +15,31 @@ export const useFetchProducts = ({
   categoryQueryMap,
   sortQueryMap,
 }: useFetchProductsProps) => {
-  const [products, setProducts] = useState<ProductResponse[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const { errorMessage, setErrorMessage, clearErrorMessage } = useError();
+  const fetchProducts = useCallback(async () => {
+    const matchedCategory = categoryQueryMap[category];
+    const matchedSort = sortQueryMap[sort];
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        clearErrorMessage();
+    const data = await getProducts({
+      page: 0,
+      size: 20,
+      ...(matchedSort && { sort: matchedSort }),
+      ...(matchedCategory && { category: matchedCategory }),
+    });
 
-        const matchedCategory = categoryQueryMap[category];
-        const matchedSort = sortQueryMap[sort];
+    return data.content;
+  }, [category, sort, categoryQueryMap, sortQueryMap]);
 
-        const data = await getProducts({
-          page: 0,
-          size: 20,
-          ...(matchedSort && { sort: matchedSort }),
-          ...(matchedCategory && { category: matchedCategory }),
-        });
-        setProducts(data.content);
-      } catch (error) {
-        console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, error);
-        setErrorMessage(ERROR_MSG.PRODUCT_FETCH_FAIL);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchProducts();
-  }, [category, sort, clearErrorMessage, setErrorMessage, categoryQueryMap, sortQueryMap]);
+  const key = `products-${category}-${sort}`;
+
+  const { data, isLoading, error } = useData<ProductResponse[]>({
+    key,
+    fetchFn: fetchProducts,
+    deps: [category, sort],
+  });
 
   return {
-    data: products,
+    data: data || [],
     isLoading,
-    error: errorMessage,
+    error,
   };
 };
