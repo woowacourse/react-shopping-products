@@ -135,9 +135,8 @@ const ProductItemImage = styled.img<{ modal: boolean }>`
   height: 100%;
   display: block;
   width: 100%;
-  object-fit: cover;
 
-  ${({ modal }) => modal && `width: 100px; height: 100%; border-radius: 8px;`}
+  ${({ modal }) => modal && `height: 100%; border-radius: 8px;`}
 `;
 
 const ProductItemCard = styled.div<{ modal: boolean }>`
