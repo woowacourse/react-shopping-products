@@ -9,4 +9,5 @@ export const IMAGE_PATH = Object.freeze({
   CHEVRON_UP: './chevron-up.svg',
   BUTTON_MINUS: './button-minus.svg',
   BUTTON_PLUS: './button-plus.svg',
+  DEFAULT_MODAL: './default-modal-cart-item.svg',
 });
