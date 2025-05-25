@@ -1,5 +1,5 @@
 import { DataContext } from "@/context/DataContext";
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 
 interface UseDataProps<T> {
   fetchFn: () => Promise<T>;
@@ -13,34 +13,34 @@ const useData = <T>({ fetchFn, name }: UseDataProps<T>) => {
     throw new Error("useData는 DataProvider 내부에서 사용되어야 합니다.");
   }
 
-  const { data, setData, isLoading, setIsLoading } = context;
+  const { data, setData, isLoading, setIsLoading, setRefetchFunction } =
+    context;
+
+  const fetchData = useCallback(async () => {
+    setIsLoading((prev) => ({ ...prev, [name]: true }));
+    try {
+      const response = await fetchFn();
+      setData((prev) => ({ ...prev, [name]: response }));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, [name]: false }));
+    }
+  }, [fetchFn, name, setData, setIsLoading]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading((prevData) => ({
-        ...prevData,
-        [name]: true,
-      }));
-      try {
-        const response = await fetchFn();
-        setData((prevData) => ({
-          ...prevData,
-          [name]: response,
-        }));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading((prevData) => ({
-          ...prevData,
-          [name]: false,
-        }));
-      }
-    };
+    setRefetchFunction(name, fetchData);
+  }, [fetchData, name, setRefetchFunction]);
 
+  useEffect(() => {
     fetchData();
-  }, [name, fetchFn, setData, setIsLoading]);
+  }, [fetchData]);
 
-  return { data: data[name] as T, isLoading: isLoading[name] ?? false };
+  return {
+    data: data[name] as T,
+    isLoading: isLoading[name] ?? false,
+    refetch: fetchData,
+  };
 };
 
 export default useData;
