@@ -1,11 +1,11 @@
 import { useData } from "../../hooks/useData";
-import { CartStyle, PutItemCount } from "./CartButton.css";
+import { CartStyle, PutItemCount } from "./CartIconButton.css";
 
-interface CartButtonProps {
+interface CartIconButtonProps {
   onOpenModal: () => void;
 }
 
-function CartButton({ onOpenModal }: CartButtonProps) {
+function CartIconButton({ onOpenModal }: CartIconButtonProps) {
   const { cartItemIds } = useData();
   return (
     <button css={CartStyle} onClick={onOpenModal}>
@@ -15,4 +15,4 @@ function CartButton({ onOpenModal }: CartButtonProps) {
   );
 }
 
-export default CartButton;
+export default CartIconButton;
