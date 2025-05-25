@@ -39,12 +39,38 @@ export function useAPI<T>({
 }) {
   const { data, setData } = useContext(APIContext);
 
-  const request = useCallback(() => {
-    fetcher().then((res) => {
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     withLoading(async () => {
+  //       const { data, error } = await getProducts();
+  //       setErrorMessage(error?.message || "");
+  //       if (!error?.message) {
+  //         setProducts(data.content.slice(0, PRODUCT_TYPE_COUNT));
+  //       }
+  //     });
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // const request = useCallback(() => {
+  //   fetcher().then((res) => {
+  //     setData((data) => {
+  //       return { ...data, [name]: res };
+  //     });
+  //   });
+  // }, [fetcher, name, setData]);
+  const request = useCallback(async () => {
+    try {
+      const res = await fetcher();
       setData((data) => {
         return { ...data, [name]: res };
       });
-    });
+      // setErrorMessage("");
+    } catch (error) {
+      // setErrorMessage(error?.message || "에러가 발생했습니다.");
+      console.log("hi");
+    }
   }, [fetcher, name, setData]);
 
   useEffect(() => {

@@ -34,7 +34,7 @@ function AppContent() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { addToCart, removeFromCart, patchQuantity } = useCart({
+  const { addToCart, patchQuantity } = useCart({
     setErrorMessage,
     refetchCartItems,
   });
@@ -88,10 +88,7 @@ function AppContent() {
           position="bottom"
           title="장바구니"
         >
-          <CartItems
-            removeFromCart={removeFromCart}
-            patchQuantity={patchQuantity}
-          />
+          <CartItems refetch={refetchCartItems} />
         </Modal>
       </ProductPageContainer>
     </Layout>

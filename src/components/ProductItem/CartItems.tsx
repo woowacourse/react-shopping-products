@@ -3,6 +3,8 @@ import QuantityAdjuster from "./QuantityAdjuster";
 import CartActionButton from "./button/CartActionButton";
 import { useAPIData } from "../../contexts/DataContext";
 import { CartItem } from "../../types/productType";
+import deleteCartItems from "../../api/deleteCartItems";
+import patchCartItemQuantity from "../../api/patchCartItemQuantity";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
@@ -14,16 +16,20 @@ const plus = (arr: number[]) => {
   });
 };
 
-const CartItems = ({
-  removeFromCart,
-  patchQuantity,
-}: {
-  removeFromCart: (id: number) => void;
-  patchQuantity: (id: number, quantity: number) => void;
-}) => {
+const CartItems = ({ refetch }: { refetch: () => Promise<void> }) => {
   const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
   const handleProductRemoveClick = (id: number) => removeFromCart(id);
   if (!cartItems) return null;
+
+  const removeFromCart = async (productId: number) => {
+    await deleteCartItems(productId);
+    refetch();
+  };
+
+  const patchQuantity = async (id: number, quantity: number) => {
+    await patchCartItemQuantity(id, quantity);
+    refetch();
+  };
 
   return (
     <>
@@ -46,7 +52,7 @@ const CartItems = ({
           <DeleteButtonContainer>
             <CartActionButton
               variant="remove"
-              onClick={() => handleProductRemoveClick(cart.product.id)}
+              onClick={() => handleProductRemoveClick(cart.id)}
             />
           </DeleteButtonContainer>
         </CartItemContainer>
