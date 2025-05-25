@@ -6,27 +6,24 @@ import useSort from './useSort';
 import { Product } from '../types/common';
 import { productApi } from '../api/product';
 
-interface FetchState<T> {
-  data: T[];
+export interface FetchState {
+  data: Product[];
   error: Error | null;
   isLoading: boolean;
 }
 
-const initialState: FetchState<Product> = {
+const initialState: FetchState = {
   data: [],
   error: null,
   isLoading: false,
 };
 
-type FetchAction<T> =
+type FetchAction =
   | { type: 'FETCH_START' }
-  | { type: 'FETCH_SUCCESS'; payload: T[] }
+  | { type: 'FETCH_SUCCESS'; payload: Product[] }
   | { type: 'FETCH_ERROR'; payload: Error };
 
-const fetchReducer = <T>(
-  state: FetchState<T>,
-  action: FetchAction<T>
-): FetchState<T> => {
+const fetchReducer = (state: FetchState, action: FetchAction): FetchState => {
   switch (action.type) {
     case 'FETCH_START':
       return { ...state, isLoading: true };
