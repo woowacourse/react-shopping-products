@@ -59,8 +59,8 @@ MSW를 이용해 서버의 다양한 응답을 시뮬레이션하고, 그 시나
 - Data fetching hook
 
   - [ ] 서버 API 통신 결과를 Single Source of Truth (SSOT) 원칙에 따라 관리할 수 있도록, 커스텀 훅을 직접 개발한다.
-  - [ ] GET method 를 사용하는 모든 API에 이 커스텀 훅을 적용한다.
-    - [ ] GET /cart-items , GET /products API 를 통일된 인터페이스로 data fetching 할 수 있어야 한다.
+  - [ ] GET method를 사용하는 모든 API에 이 커스텀 훅을 적용한다.
+    - [ ] GET /cart-items , GET /products API를 통일된 인터페이스로 data fetching 할 수 있어야 한다.
     - [ ] ex) useData, useResource 등의 이름으로 선언할 수 있다.
   - [ ] 반환값에는 데이터, 로딩 여부, 에러 정보 등이 포함되어야 한다.
   - [ ] Context API를 활용한다. 단, API 마다 Provider를 따로 만들지 않고, 하나의 Context에서 관리할 수 있어야 한다.
@@ -69,10 +69,38 @@ MSW를 이용해 서버의 다양한 응답을 시뮬레이션하고, 그 시나
 
 - MSW
 
-  - [ ] 안정적인 테스트 환경을 만들기 위해 MSW를 사용한다.
+  - [x] 안정적인 테스트 환경을 만들기 위해 MSW를 사용한다.
     - [ ] 서버 API의 다양한 케이스를 MSW와 RTL을 활용하여 테스트한다.
-  - [ ] 서버 API 를 시뮬레이션 하기 위해 MSW를 사용한다.
-    - [ ] 서버 API에서 아직 구현되지 않은 부분을 MSW를 통해 미리 테스트해본다. 
+  - [x] 서버 API를 시뮬레이션 하기 위해 MSW를 사용한다.
+    - [x] 서버 API에서 아직 구현되지 않은 부분을 MSW를 통해 미리 테스트해본다. 
+  - 서버와 협의했지만, 서버가 구현되지 않은 API 스펙은 다음과 같다.
+
+```
+1. 모든 API 의 상품 타입에 남은 수량(quantity) 필드 추가
+
+GET /products/{id}
+{
+  "id": 1,
+  "name": "에어포스",
+  "price": 100000
+  "imageUrl": "string",
+  "category": "string",
+  "quantity": 50
+}
+
+
+2. 재고를 초과하여 장바구니를 담으려고 하면 에러 발생
+
+POST /cart-items
+400 Bad Request
+Content-Type: application/json
+{
+  "errorCode": "OUT_OF_STOCK",
+  "message": "재고 수량을 초과하여 담을 수 없습니다.",
+}
+
+3. PATCH /cart-items/{id} 도 위와 동일
+```
 
 - 배포 
 
