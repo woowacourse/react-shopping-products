@@ -84,9 +84,9 @@ export async function addItemToCart({
 }: AddItemToCartProps) {
   try {
     if (cartAmount >= 50) {
-      setErrorTrue("CART_MAX");
-      return;
+      return setErrorTrue("CART_MAX");
     }
+
     await request({
       headers: {
         Authorization: import.meta.env.VITE_TOKEN,

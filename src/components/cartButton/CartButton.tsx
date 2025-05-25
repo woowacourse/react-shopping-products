@@ -32,6 +32,9 @@ function CartButton({
   const { setCartItemIds, fetchCartProducts } = useData();
 
   const showCountButton = async () => {
+    if (productQuantity === 0) {
+      return setErrorTrue("CART_ADD");
+    }
     try {
       await addItemToCart({
         productId,
