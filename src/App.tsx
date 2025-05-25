@@ -1,19 +1,13 @@
 import { css } from '@emotion/css';
 import ProductListPage from './pages/ProductListPage';
-import ShoppingCartProvider from './contexts/ShoppingCartProvider';
 import DataProvider from './contexts/DataContextProvider';
-import ProductsProvider from './contexts/ProductsProvider';
 
 function App() {
   return (
     <DataProvider>
-      <ProductsProvider>
-        <ShoppingCartProvider>
-          <div className={AppStyles}>
-            <ProductListPage />
-          </div>
-        </ShoppingCartProvider>
-      </ProductsProvider>
+      <div className={AppStyles}>
+        <ProductListPage />
+      </div>
     </DataProvider>
   );
 }

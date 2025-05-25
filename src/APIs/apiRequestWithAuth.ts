@@ -1,3 +1,5 @@
+import { CartItem } from '../types/cart.type';
+
 type HttpMethod = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
 
 interface ApiRequestParams<T> {
@@ -16,11 +18,11 @@ const headers: HeadersInit = {
   Authorization: `Basic ${credentials}`,
 };
 
-async function apiRequestWithAuth<TRequest, TResponse = void>({
+async function apiRequestWithAuth<TRequest>({
   endpoint,
   method = 'GET',
   body,
-}: ApiRequestParams<TRequest>): Promise<TResponse> {
+}: ApiRequestParams<TRequest>): Promise<CartItem[]> {
   const options: RequestInit = {
     method,
     headers,
@@ -37,10 +39,10 @@ async function apiRequestWithAuth<TRequest, TResponse = void>({
   }
 
   const contentType = response.headers.get('content-type');
-  if (contentType !== 'application/json') return {} as TResponse;
+  if (contentType !== 'application/json') return {} as CartItem[];
 
   const data = await response.json();
-  return data;
+  return data.content;
 }
 
 export default apiRequestWithAuth;

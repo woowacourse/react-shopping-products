@@ -14,10 +14,6 @@ interface ShoppingCartRequest {
   cartItemId?: number;
 }
 
-interface ShoppingCartResponse {
-  content: CartItem[];
-}
-
 interface PostRequestBody {
   productId: number;
   quantity: number;
@@ -31,7 +27,6 @@ export type {
   CartItem,
   ShoppingCartRequestBody,
   ShoppingCartRequest,
-  ShoppingCartResponse,
   PostRequestBody,
   PatchRequestBody,
 };
