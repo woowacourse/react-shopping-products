@@ -23,7 +23,7 @@ const ProductCatalog = () => {
         type: TOAST_TYPES.ERROR,
       });
     }
-  }, [error]);
+  }, [error, showToast]);
 
   return (
     <S.ProductCatalog>

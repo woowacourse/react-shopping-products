@@ -60,16 +60,19 @@ export const useProducts = (): UseProductsResult => {
 
   useEffect(() => {
     refetch();
-  }, [category, sortOption]);
+  }, [category, sortOption, refetch]);
 
   return {
     products,
     error,
     isLoading,
+
     category,
     setCategory,
+
     sortOption,
     setSortOption,
+
     refetchProducts: refetch,
   };
 };

@@ -5,7 +5,6 @@ import App from "./App.tsx";
 import { APIProvider } from "./app/providers/APIContext.tsx";
 import { ModalProvider } from "./app/providers/ModalContext.tsx";
 import { ToastProvider } from "./app/providers/ToastContext.tsx";
-import { CartItemProvider } from "./entities/cartItem/model/providers/CartItemContext.tsx";
 import { BASE_URL } from "./shared/config/base.ts";
 
 async function enableMocking() {
@@ -26,11 +25,9 @@ enableMocking().then(() => {
       <BrowserRouter>
         <ToastProvider>
           <APIProvider>
-            <CartItemProvider>
-              <ModalProvider>
-                <App />
-              </ModalProvider>
-            </CartItemProvider>
+            <ModalProvider>
+              <App />
+            </ModalProvider>
           </APIProvider>
         </ToastProvider>
       </BrowserRouter>

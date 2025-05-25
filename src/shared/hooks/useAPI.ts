@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { APIContext } from "../../app/providers/APIContext";
 import { ApiError, isApiError } from "../api/apiClient";
 import { ApiDataKey, ApiDataTypeMap } from "../api/types/data";
@@ -34,8 +34,10 @@ export const useAPI = <K extends ApiDataKey>(
     return { data: value as ApiDataTypeMap[K], error: null, isLoading: false };
   }, [data, key]);
 
-  return {
-    ...result,
-    refetch: () => fetchData(key, fetcher),
-  };
+  const refetch = useCallback(
+    () => fetchData(key, fetcher),
+    [fetchData, key, fetcher]
+  );
+
+  return { ...result, refetch };
 };
