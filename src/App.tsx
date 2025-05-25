@@ -16,6 +16,7 @@ import { ERROR_MESSAGES } from "./constants/errorMessages";
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
   const [category, setCategory] = useState<CategoryType>('전체');
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
   const {showToast} = useToast();
 
@@ -56,13 +57,36 @@ function App() {
     <>
       <Global styles={GlobalStyle}/>
       <Layout>
-        <Header title="SHOP" totalCartProducts={cart && cart.totalElements}/>
+        <Header
+          title="SHOP"
+          totalCartProducts={cart && cart.totalElements}
+          onClickCart={() => setIsCartModalOpen(true)}
+        />
         <ToastList/>
-        <Modal position='bottom' title='장바구니' onClose={() => console.log('close')}>
-          {cart &&
-            <Cart cart={cart}/>
-          }
-        </Modal>
+        {isCartModalOpen && (
+          <Modal
+            position='bottom'
+            title='장바구니'
+            onClose={() => setIsCartModalOpen(false)}
+          >
+            {cart && (
+              <Cart
+                cart={cart}
+                onUpdateQuantity={handleUpdateQuantity}
+                onRemoveItem={async (cartItemId: number) => {
+                  const item = cart.content.find(item => item.id === cartItemId);
+                  if (item) {
+                    await handleRemoveCart({
+                      product: item.product,
+                      cartId: item.id,
+                      isInCart: true
+                    });
+                  }
+                }}
+              />
+            )}
+          </Modal>
+        )}
         {isLoading && <LoadingSpinner duration={2}/>}
         <ProductSection
           onFilter={handleFilterCategory}

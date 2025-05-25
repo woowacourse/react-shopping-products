@@ -163,3 +163,10 @@ export const StepperQuantity = styled.span`
   color: #333;
   user-select: none;
 `;
+
+export const EmptyCartContainer = styled(Container)`
+  padding: 40px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+`;

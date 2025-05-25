@@ -11,16 +11,54 @@ import {
   StepperQuantity
 } from "./Cart.styles";
 import { CartItem as CartItemType } from "../../../types/product";
+import { useState } from "react";
 
 interface CartItemProps {
   cart: CartItemType;
+  onUpdateQuantity?: (cartItemId: number, quantity: number) => Promise<void>;
+  onRemoveItem?: (cartItemId: number) => Promise<void>;
 }
 
-function CartItem({cart}: CartItemProps) {
-  const { product, quantity } = cart;
+function CartItem({cart, onUpdateQuantity, onRemoveItem}: CartItemProps) {
+  const { id, product, quantity } = cart;
   const { name, price, imageUrl } = product;
+  const [isLoading, setIsLoading] = useState(false);
 
   const imageSrc = imageUrl || woowaLogo;
+
+  const handleIncreaseQuantity = async () => {
+    if (!onUpdateQuantity || isLoading) return;
+    setIsLoading(true);
+    try {
+      await onUpdateQuantity(id, quantity + 1);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDecreaseQuantity = async () => {
+    if (!onUpdateQuantity || isLoading) return;
+    if (quantity <= 1) {
+      await handleRemove();
+      return;
+    }
+    setIsLoading(true);
+    try {
+      await onUpdateQuantity(id, quantity - 1);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemove = async () => {
+    if (!onRemoveItem || isLoading) return;
+    setIsLoading(true);
+    try {
+      await onRemoveItem(id);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <CartProduct>
@@ -29,12 +67,18 @@ function CartItem({cart}: CartItemProps) {
         <ProductTitle>{name}</ProductTitle>
         <ProductPrice>{price.toLocaleString()}원</ProductPrice>
         <StepperContainer>
-          <StepperButton>−</StepperButton>
+          <StepperButton onClick={handleDecreaseQuantity} disabled={isLoading}>
+            −
+          </StepperButton>
           <StepperQuantity>{quantity}</StepperQuantity>
-          <StepperButton>+</StepperButton>
+          <StepperButton onClick={handleIncreaseQuantity} disabled={isLoading}>
+            +
+          </StepperButton>
         </StepperContainer>
       </CartContent>
-      <DeleteButton>삭제</DeleteButton>
+      <DeleteButton onClick={handleRemove} disabled={isLoading}>
+        삭제
+      </DeleteButton>
     </CartProduct>
   );
 }

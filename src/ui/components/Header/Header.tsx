@@ -4,13 +4,14 @@ import { cartDefaultIcon, cartStockIcon } from "../../../assets";
 interface HeaderProps {
   title: string;
   totalCartProducts: number | null;
+  onClickCart?: () => void;
 }
 
-function Header({ title, totalCartProducts }: HeaderProps) {
+function Header({ title, totalCartProducts, onClickCart }: HeaderProps) {
   return (
     <Container>
       <Title>{title}</Title>
-      <Button>
+      <Button onClick={onClickCart}>
         {totalCartProducts && totalCartProducts > 0 ? (
           <>
             <Icon src={cartStockIcon} alt="장바구니 아이콘" />

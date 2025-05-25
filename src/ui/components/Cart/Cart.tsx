@@ -1,25 +1,40 @@
 import CartItem from "./CartItem";
-import {Container} from "./Cart.styles";
+import CartTotal from "./CartTotal";
+import EmptyCart from "./EmptyCart";
 import { CartResponse } from "../../../types/product";
-import CartTotal from "./CartTotal.tsx";
+import { Container } from "./Cart.styles";
 
 interface CartProps {
   cart: CartResponse;
+  onUpdateQuantity?: (cartItemId: number, quantity: number) => Promise<void>;
+  onRemoveItem?: (cartItemId: number) => Promise<void>;
 }
 
-function Cart({cart}: CartProps) {
+function Cart({ cart, onUpdateQuantity, onRemoveItem }: CartProps) {
   if (!cart || !cart.content) {
     return null;
   }
 
+  const isEmptyCart = cart.content.length === 0;
+
+  if (isEmptyCart) {
+    return <EmptyCart />;
+  }
+
   return (
     <>
-    <Container>
-      {cart.content.map((item) => (
-        <CartItem key={item.id} cart={item} />
-      ))}
-    </Container>
-    <CartTotal cart={cart}/>
+      <Container>
+        {isEmptyCart && <EmptyCart />}
+        {cart.content.map((item) => (
+          <CartItem
+            key={item.id}
+            cart={item}
+            onUpdateQuantity={onUpdateQuantity}
+            onRemoveItem={onRemoveItem}
+          />
+        ))}
+      </Container>
+      <CartTotal cart={cart} />
     </>
   );
 }
