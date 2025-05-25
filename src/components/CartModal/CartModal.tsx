@@ -116,7 +116,7 @@ export const CartItem = styled.div`
   padding: 12px;
   border-bottom: 1px solid #eee;
 
-  &:first-child {
+  &:first-of-type {
     border-top: 1px solid #eee;
   }
 `;
