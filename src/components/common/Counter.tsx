@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 interface CounterProps {
   canBeZero?: boolean;
   count: number;
+  maxCount?: number;
   onMinusClick: () => void;
   onPlusClick: () => void;
 }
@@ -10,17 +11,13 @@ interface CounterProps {
 function Counter({
   canBeZero = false,
   count,
+  maxCount = -1,
   onMinusClick,
   onPlusClick,
   ...props
 }: CounterProps) {
-  const TrashIcon = (
-    <span role="img" aria-label="delete">
-      🗑️
-    </span>
-  );
-
   const showTrash = canBeZero === true && count === 1;
+  const isMaxCountReached = maxCount > 0 && count >= maxCount;
 
   return (
     <QuantityControls {...props}>
@@ -29,18 +26,25 @@ function Counter({
         disabled={!canBeZero && count <= 1}
         aria-label={showTrash ? '삭제' : '수량 감소'}
       >
-        {showTrash ? TrashIcon : '−'}
+        {showTrash ? <TrashIcon src="./assets/icons/Trash.svg" /> : '−'}
       </QuantityButton>
       <QuantityDisplay>{count}</QuantityDisplay>
       <QuantityButton
         onClick={onPlusClick}
         aria-label={showTrash ? '삭제' : '수량 감소'}
+        disabled={isMaxCountReached}
       >
         +
       </QuantityButton>
     </QuantityControls>
   );
 }
+
+const TrashIcon = styled.img`
+  width: 16px;
+  height: 16px;
+`;
+
 const QuantityControls = styled.div`
   display: flex;
   align-items: center;
