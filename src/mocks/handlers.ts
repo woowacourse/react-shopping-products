@@ -3,6 +3,46 @@ import { END_POINT } from "../api/constants/endPoint";
 import { mockProducts } from "./data/products";
 import { mockCartItems } from "./data/cartItems";
 
+const handleUpsertCartItem = async (request: Request) => {
+  const { productId, quantity } = (await request.json()) as {
+    productId: number;
+    quantity: number;
+  };
+
+  const product = mockProducts.find((p) => p.id === productId);
+  if (!product) {
+    return HttpResponse.json(
+      { errorCode: "NOT_FOUND", message: "상품을 찾을 수 없습니다." },
+      { status: 404 }
+    );
+  }
+
+  if (quantity > product.quantity) {
+    return HttpResponse.json(
+      {
+        errorCode: "OUT_OF_STOCK",
+        message: "재고 수량을 초과하여 담을 수 없습니다.",
+      },
+      { status: 400 }
+    );
+  }
+
+  const existing = mockCartItems.find((item) => item.productId === productId);
+
+  if (existing) {
+    existing.quantity += quantity;
+  } else {
+    mockCartItems.push({
+      id: Date.now(),
+      productId,
+      quantity,
+      product,
+    });
+  }
+
+  return HttpResponse.json({}, { status: 200 });
+};
+
 export const handlers = [
   http.get(END_POINT.PRODUCT, ({ request }) => {
     const url = new URL(request.url);
@@ -49,44 +89,11 @@ export const handlers = [
   }),
 
   http.post(END_POINT.CART, async ({ request }) => {
-    const { productId, quantity } = (await request.json()) as {
-      productId: number;
-      quantity: number;
-    };
+    return handleUpsertCartItem(request);
+  }),
 
-    const product = mockProducts.find((p) => p.id === productId);
-
-    if (!product) {
-      return HttpResponse.json(
-        { errorCode: "NOT_FOUND", message: "상품을 찾을 수 없습니다." },
-        { status: 404 }
-      );
-    }
-
-    if (quantity > product.quantity) {
-      return HttpResponse.json(
-        {
-          errorCode: "OUT_OF_STOCK",
-          message: "재고 수량을 초과하여 담을 수 없습니다.",
-        },
-        { status: 400 }
-      );
-    }
-
-    const existing = mockCartItems.find((item) => item.productId === productId);
-
-    if (existing) {
-      existing.quantity += quantity;
-    } else {
-      mockCartItems.push({
-        id: Date.now(),
-        productId,
-        quantity,
-        product,
-      });
-    }
-
-    return HttpResponse.json({}, { status: 200 });
+  http.patch(END_POINT.CART, async ({ request }) => {
+    return handleUpsertCartItem(request);
   }),
 
   http.delete(`${END_POINT.CART}/:id`, ({ params }) => {
