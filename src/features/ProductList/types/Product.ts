@@ -32,3 +32,8 @@ export type NewCartItem = {
   productId: number;
   quantity: number;
 };
+
+export type UpdateCartItem = {
+  cartId: number;
+  newQuantity: number;
+};
