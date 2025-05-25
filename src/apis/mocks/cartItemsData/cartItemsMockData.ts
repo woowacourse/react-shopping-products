@@ -10,6 +10,7 @@ export const cartItemsMockData = {
         imageUrl:
           "https://thumbnail6.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/794f/cecbea5bdc654a11ae02d28b4d1f4bd2a03a7389eb2b8cc4a45c1c9f7d9b.jpg",
         category: "패션잡화",
+        quantity: 10,
       },
     },
   ],

@@ -55,7 +55,8 @@ export const cartItemsHandlers = [
       const cartItemIndex = cartItemsMockData.content.findIndex(
         ({ id }) => id === Number(cartItemId)
       );
-      const productQuantity = cartItemsMockData.content[cartItemIndex].quantity;
+      const productQuantity =
+        cartItemsMockData.content[cartItemIndex].product.quantity;
       if (productQuantity < quantity) {
         return HttpResponse.json(
           {
