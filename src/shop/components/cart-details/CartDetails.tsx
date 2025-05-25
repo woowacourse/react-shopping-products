@@ -1,51 +1,51 @@
 'use client';
 
 import styled from '@emotion/styled';
-import { useCallback } from 'react';
 import {
   deleteCartItem,
   getShoppingCartData,
   patchCartItem,
 } from '../../../api/cart';
 import Counter from '../../../components/common/Counter';
+import Image from '../../../components/common/Image';
 import { useAPIDataContext } from '../../../context/APIDataProvider';
 import { showToast } from '../../../utils/toast/showToast';
 
-export default function CartDetails() {
+export default function CartDetails({
+  onCloseClick,
+}: {
+  onCloseClick: () => void;
+}) {
   const { data: cartListData, refetch: cartRefetch } = useAPIDataContext({
     fetcher: getShoppingCartData,
     name: 'cart',
   });
 
-  const handlePlusQuantity = useCallback(
-    async (cartId: string) => {
-      try {
-        if (!cartListData) return;
-        const cart = cartListData.find((cart) => cart.id === cartId);
-        if (!cart) throw new Error('장바구니에 해당 아이템이 없습니다.');
-        await patchCartItem(cartId, cart.quantity + 1);
-        await cartRefetch();
-      } catch (e) {
-        showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
-      }
-    },
-    [cartListData, cartRefetch]
-  );
+  const isCartEmpty = !cartListData || cartListData.length === 0;
 
-  const handleMinusQuantity = useCallback(
-    async (cartId: string) => {
-      try {
-        if (!cartListData || cartListData.length >= 50) return;
-        const cart = cartListData.find((cart) => cart.id === cartId);
-        if (!cart) throw new Error('장바구니에 해당 아이템이 없습니다.');
-        await patchCartItem(cartId, cart.quantity - 1);
-        await cartRefetch();
-      } catch (e) {
-        showToast('장바구니에서 뺴는 데 실패했습니다.', 'error');
-      }
-    },
-    [cartListData, cartRefetch]
-  );
+  const handlePlusQuantity = async (cartId: string) => {
+    try {
+      if (!cartListData) return;
+      const cart = cartListData.find((cart) => cart.id === cartId);
+      if (!cart) throw new Error('장바구니에 해당 아이템이 없습니다.');
+      await patchCartItem(cartId, cart.quantity + 1);
+      await cartRefetch();
+    } catch (e) {
+      showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
+    }
+  };
+
+  const handleMinusQuantity = async (cartId: string) => {
+    try {
+      if (!cartListData || cartListData.length >= 50) return;
+      const cart = cartListData.find((cart) => cart.id === cartId);
+      if (!cart) throw new Error('장바구니에 해당 아이템이 없습니다.');
+      await patchCartItem(cartId, cart.quantity - 1);
+      await cartRefetch();
+    } catch (e) {
+      showToast('장바구니에서 뺴는 데 실패했습니다.', 'error');
+    }
+  };
 
   if (!cartListData) {
     return <div>장바구니를 불러오는 중...</div>;
@@ -68,26 +68,40 @@ export default function CartDetails() {
   return (
     <Container>
       <ItemList>
-        {cartListData?.map((cart) => (
-          <ItemContainer key={cart.id}>
-            <ProductImage src={cart.product.imageUrl} alt={cart.product.name} />
-
-            <ProductInfo>
-              <ProductName>{cart.product.name}</ProductName>
-              <ProductPrice>{formatPrice(cart.product.price)}</ProductPrice>
-              <Counter
-                canBeZero={false}
-                count={cart.quantity}
-                onPlusClick={() => handlePlusQuantity(cart.id)}
-                onMinusClick={() => handleMinusQuantity(cart.id)}
+        {isCartEmpty ? (
+          <EmptyCartBox>
+            <EmptyCartImage src="./assets/icons/DeleteCart.svg" />
+            <EmptyCartText>장바구니에 담긴 상품이 없습니다.</EmptyCartText>
+          </EmptyCartBox>
+        ) : (
+          cartListData?.map((cart) => (
+            <ItemContainer key={cart.id}>
+              <Image
+                width="80px"
+                height="80px"
+                imageSource={cart.product.imageUrl}
+                altText={`${cart.product.name} 상품 이미지`}
+                isSoldOut={cart.product.quantity === 0}
               />
-            </ProductInfo>
 
-            <DeleteButton onClick={() => removeItem(cart.id)}>
-              삭제
-            </DeleteButton>
-          </ItemContainer>
-        ))}
+              <ProductInfo>
+                <ProductName>{cart.product.name}</ProductName>
+                <ProductPrice>{formatPrice(cart.product.price)}</ProductPrice>
+                <Counter
+                  canBeZero={false}
+                  count={cart.quantity}
+                  maxCount={cart.product.quantity}
+                  onPlusClick={() => handlePlusQuantity(cart.id)}
+                  onMinusClick={() => handleMinusQuantity(cart.id)}
+                />
+              </ProductInfo>
+
+              <DeleteButton onClick={() => removeItem(cart.id)}>
+                삭제
+              </DeleteButton>
+            </ItemContainer>
+          ))
+        )}
       </ItemList>
 
       <TotalSection>
@@ -95,7 +109,7 @@ export default function CartDetails() {
         <TotalAmount>{formatPrice(totalAmount)}</TotalAmount>
       </TotalSection>
 
-      <CheckoutButton>닫기</CheckoutButton>
+      <CheckoutButton onClick={onCloseClick}>닫기</CheckoutButton>
     </Container>
   );
 }
@@ -125,14 +139,6 @@ const ItemContainer = styled.div`
   &:last-child {
     border-bottom: none;
   }
-`;
-
-const ProductImage = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  object-fit: cover;
-  background-color: #f5f5f5;
 `;
 
 const ProductInfo = styled.div`
@@ -205,4 +211,29 @@ const CheckoutButton = styled.button`
   &:hover {
     background-color: #555;
   }
+`;
+
+const EmptyCartBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  height: 120px;
+  font-size: 16px;
+  text-align: center;
+  padding: 32px;
+`;
+
+const EmptyCartImage = styled.img`
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  opacity: 0.3;
+`;
+
+const EmptyCartText = styled.p`
+  width: 100%;
+  color: grey;
+  ${({ theme }) => theme.body2}
 `;
