@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import AddButton from "../Button/AddButton";
 import { CartItem, Product } from "../../types/product.type";
 import ProductStepper from "../ProductStepper/ProductStepper";
@@ -8,6 +7,15 @@ import addShoppingCart from "../../APIs/shoppingCart/addShoppingCart";
 import Button from "../Button";
 import { useState } from "react";
 import updateCartItemQuantity from "../../APIs/shoppingCart/updateCartItemQuantity";
+import {
+  ButtonArea,
+  CardFrame,
+  CardImage,
+  CardInfo,
+  ImageFrame,
+  ImageOverlay,
+  ProductName,
+} from "./style";
 
 interface ProductCardProps {
   product: Product;
@@ -23,7 +31,10 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
   const cartItem = cartItems.find((item) => item.product.id === id);
   const cartItemId = cartItem?.id;
-  const soldOut = product.quantity === cartItem?.quantity;
+  const soldOut =
+    product.quantity !== undefined
+      ? product.quantity === cartItem?.quantity
+      : false; // product.quantity는 MSW에서만 제공
   const { error, refetch: refetchCart } = useAPIContext({
     name: "cartItems",
     fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
@@ -58,9 +69,6 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
       console.error("수량 수정 실패:", err);
     }
   };
-
-  console.log("렌더링", name);
-  console.log("에러 상태:", error);
 
   return (
     <div key={id} className={CardFrame}>
@@ -120,60 +128,3 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
 };
 
 export default ProductCard;
-
-const CardFrame = css`
-  width: 100%;
-  height: 224px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-`;
-
-const ImageFrame = css`
-  width: 182px;
-  height: 112px;
-  position: relative;
-  overflow: hidden;
-`;
-const ImageOverlay = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 182px;
-  height: 112px;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-  color: white;
-  font-weight: 600;
-  font-size: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CardImage = css`
-  width: 100%;
-  height: 100%;
-  border: none;
-  object-fit: cover;
-`;
-
-const CardInfo = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 16px 8px 8px 8px;
-  gap: 8px;
-`;
-
-const ProductName = css`
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const ButtonArea = css`
-  display: flex;
-  justify-content: space-between;
-`;
