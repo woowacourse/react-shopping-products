@@ -13,7 +13,7 @@ function ProductList({
     throw new Error('상품 목록을 불러오는 중 오류가 발생했습니다.');
   }
   return (
-    <Container id="product-list" data-testid="product-list">
+    <Container id="product-list">
       {products.map(({ id, name, price, imageUrl, quantity }) => {
         return (
           <ProductCard
@@ -30,7 +30,7 @@ function ProductList({
   );
 }
 
-const Container = styled.div`
+const Container = styled.ul`
   width: fit-content;
   display: grid;
   grid-template-columns: 1fr 1fr;

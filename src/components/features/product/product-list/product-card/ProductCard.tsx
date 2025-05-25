@@ -14,7 +14,7 @@ interface ProductProps {
 function ProductCard({ id, name, price, imageUrl, quantity }: ProductProps) {
   const isSoldOut = quantity === 0;
   return (
-    <Container data-testid={`product-${id}`}>
+    <Container as="li">
       <PreviewBox>
         <Image
           imageSource={imageUrl}
