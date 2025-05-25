@@ -22,4 +22,5 @@ export const Toast = styled.div<{ $type: ToastType }>`
   top: 64px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 1000;
 `;
