@@ -15,7 +15,7 @@ interface Params {
   setCartItemIds?: React.Dispatch<
     React.SetStateAction<Record<"productId" | "cartId" | "quantity", number>[]>
   >;
-  onRemoveCallback?: () => void;
+  setToggle: (val: boolean) => void;
 }
 
 export function useCartItemActions({
@@ -26,7 +26,7 @@ export function useCartItemActions({
   setErrorTrue,
   fetchCartProducts,
   setCartItemIds,
-  onRemoveCallback,
+  setToggle,
 }: Params) {
   const handlePlus = async () => {
     try {
@@ -63,7 +63,7 @@ export function useCartItemActions({
         setCartItemIds: setCartItemIds ?? (() => {}),
         setErrorTrue,
       });
-      onRemoveCallback?.();
+      setToggle(false);
     } catch {
       console.log("삭제실패");
     }

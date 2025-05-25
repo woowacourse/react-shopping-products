@@ -35,6 +35,7 @@ function CartButton({
     setErrorTrue,
     fetchCartProducts,
     setCartItemIds,
+    setToggle,
   });
   const showCountButton = async () => {
     if (productQuantity === 0) {
