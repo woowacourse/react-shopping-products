@@ -18,6 +18,10 @@ const QuantityStepper = ({ product }: QuantityStepperProps) => {
     cartItems.find((item) => item.product.id === product.id)?.quantity || 0;
 
   const handleClickIncrementButton = () => {
+    if (cartItemQuantity === product.quantity) {
+      alert('재고가 부족합니다.');
+      return;
+    }
     increaseCartItemQuantity(product.id);
   };
 
