@@ -2,7 +2,7 @@ const cartMockData = {
   content: [
     {
       id: 1,
-      quantity: 1,
+      quantity: 2,
       product: {
         id: 1,
         name: '에어포스1',
@@ -15,7 +15,7 @@ const cartMockData = {
     },
     {
       id: 2,
-      quantity: 1,
+      quantity: 3,
       product: {
         id: 2,
         name: '에어포스2',
@@ -41,7 +41,7 @@ const cartMockData = {
     },
     {
       id: 4,
-      quantity: 1,
+      quantity: 2,
       product: {
         id: 24,
         name: '부리부리 원형 테이블',

@@ -48,9 +48,13 @@ const Product = () => {
                 name={name}
                 price={price}
                 isCart={cartInfo.id !== -1}
+                quantity={cartInfo.quantity}
                 maxQuantity={quantity}
                 onAddCart={() => handleCartProducts('add', { id })}
                 onRemoveCart={() => handleCartProducts('remove', { id: cartInfo.id })}
+                onPatchCart={(quantity: number) =>
+                  handleCartProducts('patch', { id: cartInfo.id, quantity })
+                }
               />
             ))}
           </div>

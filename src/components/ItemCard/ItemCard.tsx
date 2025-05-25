@@ -5,9 +5,11 @@ interface ItemCardProps {
   name: string;
   price: number;
   isCart: boolean;
+  quantity: number;
   maxQuantity: number;
   onAddCart: () => void;
   onRemoveCart: () => void;
+  onPatchCart: (quantity: number) => void;
 }
 
 const ItemCard = ({
@@ -15,10 +17,19 @@ const ItemCard = ({
   name,
   price,
   isCart,
+  quantity,
   maxQuantity,
   onAddCart,
   onRemoveCart,
+  onPatchCart,
 }: ItemCardProps) => {
+  const handleRemoveItem = () => {
+    if (quantity !== 1) onPatchCart(quantity - 1);
+    else onRemoveCart();
+  };
+
+  const handleAddItem = () => onPatchCart(quantity + 1);
+
   return (
     <div className={S.cardContainer}>
       <div className={S.imageContainer}>
@@ -45,9 +56,9 @@ const ItemCard = ({
         <div className={S.buttonContainer}>
           {isCart ? (
             <div className={S.cartAmountContainer}>
-              <button>-</button>
-              <p>10</p>
-              <button>+</button>
+              <button onClick={handleRemoveItem}>-</button>
+              <p>{quantity}</p>
+              <button onClick={handleAddItem}>+</button>
             </div>
           ) : (
             <button className={S.addCartButton} onClick={onAddCart}>

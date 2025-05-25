@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { CART_URL, PRODUCT_URL } from '../constants/endpoint';
-import { CartProduct, filterType, Product, SortingType } from '../types';
+import { filterType, Product, SortingType } from '../types';
 import productsMockData from './data/productsMockData';
 import cartMockData from './data/cartMockData';
 import { filterProductList, getElementById, sortProductList } from '../utils';
@@ -61,11 +61,15 @@ export const handlers = [
     const body = await request.json();
 
     const { quantity } = body as { quantity: number };
-    const cart = getElementById<CartProduct[]>(cartMockData.content, cartId);
+    const cartIndex = cartMockData.content.findIndex((item) => item.id === cartId);
 
-    if (!cartId || quantity < 1 || cart.length === 0) return HttpResponse.error();
+    if (!cartId || quantity < 1 || cartIndex === -1) return HttpResponse.error();
 
-    if (quantity > cart[0].quantity)
+    const cartItem = cartMockData.content[cartIndex];
+
+    console.log(quantity, cartItem.product.quantity);
+
+    if (quantity > cartItem.product.quantity)
       return HttpResponse.json(
         {
           errorCode: 'OUT_OF_STOCK',
@@ -74,7 +78,10 @@ export const handlers = [
         { status: 400 }
       );
 
-    cartMockData.content = [...cartMockData.content, { ...cart[0], quantity }];
+    cartMockData.content[cartIndex] = {
+      ...cartItem,
+      quantity,
+    };
 
     return HttpResponse.json({ ok: true }, { status: 200 });
   }),
