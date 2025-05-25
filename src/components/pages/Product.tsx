@@ -9,17 +9,8 @@ import { useState } from 'react';
 const Product = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    filter,
-    sort,
-    setFilter,
-    setSort,
-    cartLength,
-    mergedData,
-    loading,
-    handleAddCart,
-    handleRemoveCart,
-  } = useProductPage();
+  const { filter, sort, setFilter, setSort, cartLength, mergedData, loading, handleCartProducts } =
+    useProductPage();
 
   return (
     <>
@@ -58,8 +49,8 @@ const Product = () => {
                 price={price}
                 isCart={cartInfo.id !== -1}
                 maxQuantity={quantity}
-                onAddCart={() => handleAddCart(id)}
-                onRemoveCart={() => handleRemoveCart(cartInfo.id)}
+                onAddCart={() => handleCartProducts('add', { id })}
+                onRemoveCart={() => handleCartProducts('remove', { id: cartInfo.id })}
               />
             ))}
           </div>

@@ -4,6 +4,7 @@ import { CART_URL } from '../constants/endpoint';
 import { USER_TOKEN } from '../constants/env';
 import useError from './useError';
 import useFetch from './useFetch';
+import { addCart, removeCart } from '../utils/api';
 
 export default function useCart() {
   const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
@@ -25,9 +26,40 @@ export default function useCart() {
     }
   }, [fetchData, showError]);
 
+  const handleCartProducts = useCallback(
+    async (keyword: 'add' | 'remove' | 'patch', options: { id: number; quantity?: number }) => {
+      switch (keyword) {
+        case 'add': {
+          try {
+            await addCart(options.id);
+            await fetchCartProducts();
+          } catch (error) {
+            if (error instanceof Error) showError(error.message);
+          }
+          break;
+        }
+        case 'remove': {
+          try {
+            await removeCart(options.id);
+            await fetchCartProducts();
+          } catch (error) {
+            if (error instanceof Error) showError(error.message);
+          }
+          break;
+        }
+        case 'patch': {
+          break;
+        }
+        default:
+          break;
+      }
+    },
+    [fetchCartProducts, showError]
+  );
+
   useEffect(() => {
     fetchCartProducts();
   }, [fetchCartProducts]);
 
-  return { cartProducts, fetchCartProducts, loading };
+  return { cartProducts, handleCartProducts, fetchCartProducts, loading };
 }
