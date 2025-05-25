@@ -4,24 +4,33 @@ import { mockProducts } from "./data/products";
 import { mockCartItems } from "./data/cartItems";
 
 export const handlers = [
-  http.get(END_POINT.PRODUCT, () => {
-    return HttpResponse.json({
-      content: mockProducts,
-    });
-  }),
+  http.get(END_POINT.PRODUCT, ({ request }) => {
+    const url = new URL(request.url);
+    const category = url.searchParams.get("category");
+    const sort = url.searchParams.get("sort");
 
-  http.get(`${END_POINT.PRODUCT}/:id`, ({ params }) => {
-    const id = Number(params.id);
-    const product = mockProducts.find((p) => p.id === id);
+    let result = [...mockProducts];
 
-    if (!product) {
-      return HttpResponse.json(
-        { message: "상품을 찾을 수 없습니다." },
-        { status: 404 }
-      );
+    if (category) {
+      result = result.filter((product) => product.category === category);
     }
 
-    return HttpResponse.json(product);
+    if (sort === "price,asc") {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sort === "price,desc") {
+      result.sort((a, b) => b.price - a.price);
+    }
+
+    const page = Number(url.searchParams.get("page")) || 0;
+    const size = Number(url.searchParams.get("size")) || 20;
+    const paginated = result.slice(page * size, (page + 1) * size);
+
+    return HttpResponse.json({
+      content: paginated,
+      page,
+      size,
+      totalElements: result.length,
+    });
   }),
 
   http.get(END_POINT.CART, ({ request }) => {
