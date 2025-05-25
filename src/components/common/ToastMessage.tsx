@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import Flex from './Flex';
-import { createPortal } from 'react-dom';
 
 type MessageType = 'error' | 'info';
 
@@ -10,16 +9,13 @@ interface ToastMeesageProps {
 }
 
 function ToastMessage({ message, type }: ToastMeesageProps) {
-  return createPortal(
-    <Container type={type}>
-      <ErrorText>{message}</ErrorText>
-    </Container>,
-    document.body
+  return (
+    <Container>
+      <Wrapper type={type}>
+        <ErrorText>{message}</ErrorText>
+      </Wrapper>
+    </Container>
   );
-}
-
-export function showToastMessage(type: MessageType, message: string) {
-  createPortal(<ToastMessage type={type} message={message} />, document.body);
 }
 
 const MESSAGE_TYPE_COLOR_MAP: Record<MessageType, string> = {
@@ -27,12 +23,19 @@ const MESSAGE_TYPE_COLOR_MAP: Record<MessageType, string> = {
   info: '#ffffff',
 };
 
-const Container = styled(Flex)<{ type: MessageType }>`
-  width: 1000px;
-  height: 40px;
+const Container = styled.div`
+  width: 100%;
   position: fixed;
-  top: 0;
+  bottom: 60px;
+  display: flex;
+  justify-content: center;
+`;
+
+const Wrapper = styled(Flex)<{ type: MessageType }>`
+  width: 400px;
+  height: 40px;
   background-color: ${({ type }) => MESSAGE_TYPE_COLOR_MAP[type]};
+  border-radius: 8px;
 `;
 
 const ErrorText = styled.p`
