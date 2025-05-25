@@ -30,12 +30,8 @@ export default QuantityController;
 
 const QuantityControllerContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
   gap: 8px;
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
+  align-items: center;
 `;
 
 const QuantityText = styled.span`

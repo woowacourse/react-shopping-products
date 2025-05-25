@@ -90,7 +90,6 @@ const useCartItems = ({ products }: UseCartItemsProps) => {
   };
 
   return {
-    cartItems,
     cartItemInfo,
     errorMessage,
     setErrorMessage,

@@ -42,12 +42,14 @@ const ProductItem = ({
           {price.toLocaleString()}원
         </S.ProductPrice>
         {isInCart ? (
-          <QuantityController
-            stockQuantity={quantity}
-            cartQuantity={cartQuantity}
-            onIncrease={() => onQuantityIncrease(id)}
-            onDecrease={() => onQuantityDecrease(id)}
-          />
+          <QuantityControllerWrapper>
+            <QuantityController
+              stockQuantity={quantity}
+              cartQuantity={cartQuantity}
+              onIncrease={() => onQuantityIncrease(id)}
+              onDecrease={() => onQuantityDecrease(id)}
+            />
+          </QuantityControllerWrapper>
         ) : (
           <AddToCartButton
             onAdd={() => onAddToCart(id)}
@@ -83,4 +85,12 @@ export const OutOfStockOverlay = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 8px 8px 0 0;
+`;
+
+export const QuantityControllerWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
 `;

@@ -9,7 +9,7 @@ import useCartItems from "./hooks/useCartItems";
 import ProductList from "./components/ProductList/ProductList";
 import { ProductFilterProvider } from "./contexts/ProductFilterContext";
 import { useState } from "react";
-import Modal from "./components/@common/Modal/Modal";
+import CartModal from "./components/CartModal/CartModal";
 
 const AppContent = () => {
   const {
@@ -20,7 +20,6 @@ const AppContent = () => {
   } = useProducts();
 
   const {
-    cartItems,
     cartItemInfo,
     errorMessage: cartError,
     setErrorMessage: setCartError,
@@ -39,7 +38,7 @@ const AppContent = () => {
     <S.LayoutContainer>
       <S.LayoutWrapper>
         <ShopHeader
-          cartItemCount={cartItems?.content.length ?? 0}
+          cartItemCount={cartItemInfo.length ?? 0}
           onCartClick={openCartModal}
         />
         <S.Wrapper>
@@ -64,12 +63,12 @@ const AppContent = () => {
           )}
         </S.Wrapper>
         {isCartModalOpen && (
-          <Modal
-            title="장바구니"
-            position="bottom"
-            size="small"
-            content={<div>내용</div>}
+          <CartModal
+            cartItemInfo={cartItemInfo}
+            products={products}
             onClose={closeCartModal}
+            onQuantityIncrease={handleQuantityIncrease}
+            onQuantityDecrease={handleQuantityDecrease}
           />
         )}
       </S.LayoutWrapper>
