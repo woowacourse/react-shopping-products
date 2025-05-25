@@ -35,8 +35,13 @@ export function Modal({
       role="dialog"
       aria-modal="true"
       css={ModalLayout(isOpen)}
+      data-testid="modal"
     >
-      <div css={ModalBackdrop} onClick={handleClose} />
+      <div
+        css={ModalBackdrop}
+        onClick={handleClose}
+        data-testid="modal-backdrop"
+      />
       <div css={ModalContainer}>
         <header id="modal-title" css={ModalTitle}>
           {title}

@@ -11,7 +11,6 @@ export function useCartProducts(
       try {
         const res = await getCartItems({ sortBy: "asc" });
         dispatch({ type: "success", queryKey: "cart", payload: res.content });
-        console.log(res.content);
       } catch (err) {
         dispatch({
           type: "error",

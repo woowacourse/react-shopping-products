@@ -52,6 +52,7 @@ export default function ShopPage() {
               src="./shopping-cart.svg"
               alt="장바구니 아이콘"
               onClick={handleOpen}
+              data-testid="cart-icon"
             />
             {cart.item.length !== 0 && (
               <div data-testid="cart-count" css={cartItemCount}>

@@ -150,6 +150,7 @@ describe("msw를 사용해서 수량 필드가 추가된 api를 mocking한다.",
       </ShoppingProvider>
     );
   });
+
   it("재고를 초과하여 장바구니에 담을 수 없다", async () => {
     const plusButton = (
       await screen.findAllByTestId("quantity-plus-button")
