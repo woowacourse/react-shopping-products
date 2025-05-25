@@ -2,15 +2,22 @@ import Header from '../components/Header/Header';
 import ItemCard from '../components/ItemCard/ItemCard';
 import Skeleton from '../components/Skeleton/Skeleton';
 import S from './Product.module.css';
-import useProductPage from '../hooks/useProductPage';
 import CartModal from '../components/CartModal/CartModal';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { DataContext } from '../contexts/DataContext';
 
 const Product = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const { filter, sort, setFilter, setSort, cartLength, mergedData, loading, handleCartProducts } =
-    useProductPage();
+  const {
+    filter,
+    setFilter,
+    sort,
+    setSort,
+    cartLength,
+    mergedData,
+    productsLoading,
+    handleCartProducts,
+  } = useContext(DataContext);
 
   return (
     <>
@@ -39,7 +46,7 @@ const Product = () => {
             </select>
           </div>
         </div>
-        {loading ? (
+        {productsLoading ? (
           <Skeleton length={10} />
         ) : (
           <div className={S.itemContainer}>

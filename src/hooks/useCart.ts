@@ -70,5 +70,5 @@ export default function useCart() {
     fetchCartProducts();
   }, [fetchCartProducts]);
 
-  return { cartProducts, handleCartProducts, fetchCartProducts, loading };
+  return { cartProducts, handleCartProducts, loading };
 }
