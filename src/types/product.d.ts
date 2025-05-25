@@ -11,6 +11,7 @@ export type ProductDataType = {
 
 export type ProductProps = ProductDataType & {
   onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
+  onClickUpdateCartItem: ({ productId, quantity }: { productId: number; quantity: number }) => void;
   onClickDeleteCartItem: ({ productId }: { productId: number }) => void;
 };
 
