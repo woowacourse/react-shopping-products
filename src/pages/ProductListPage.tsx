@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Select from '../components/Select';
+import Select from '../components/commons/Select';
 import { useEffect, useState } from 'react';
 import { Category, PriceOrder } from '../App';
 import ProductItemsWithSkeleton from '../components/ProductItemsWithSkeleton';
@@ -11,6 +11,9 @@ import getCartErrorMessage from '../utils/getCartErrorMessage';
 import Modal from '../components/Modal';
 import useProducts from '../hooks/useProducts';
 import useCartItems from '../hooks/useCartItems';
+import ProductItemModalCard from '../components/ProductItem/ProductItemModalCard';
+import Flex from '../components/commons/Flex';
+import CartTotalAmount from '../components/cart/CartTotalAmount';
 
 const ProductListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
@@ -58,6 +61,21 @@ const ProductListPage = () => {
         size="small"
       >
         <Modal.Title title="장바구니"></Modal.Title>
+        <Modal.Contents>
+          <Flex flexDirection="column">
+            <Divider />
+            {cartItems.map((cartItem) => (
+              <>
+                <ProductItemModalCard
+                  key={cartItem.id}
+                  product={cartItem.product}
+                />
+                <Divider />
+              </>
+            ))}
+            <CartTotalAmount total={1000} />
+          </Flex>
+        </Modal.Contents>
         <Modal.Button
           title="닫기"
           backgroundColor="black"
@@ -128,4 +146,11 @@ const ProductListContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const Divider = styled.hr`
+  border: none;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 16px 0;
 `;
