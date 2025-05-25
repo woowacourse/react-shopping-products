@@ -17,7 +17,7 @@ const useProducts = () => {
   const { filter, sort } = productsOption;
 
   const { data } = useQuery<GetProductResponse>({
-    queryKey: "/products",
+    queryKey: `/products?filter=${filter}&sort=${sort}`,
     fetchFn: () =>
       getProducts({
         category: filter === "전체" ? "" : filter,
