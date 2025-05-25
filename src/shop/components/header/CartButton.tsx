@@ -22,7 +22,11 @@ function CartButton() {
   const itemsCount = cartListData?.length || 0;
   return (
     <>
-      <Container onClick={openCartModal}>
+      <Container
+        onClick={openCartModal}
+        role="cart-button"
+        aria-label="장바구니 열기"
+      >
         <CartIcon src="./assets/icons/Cart.svg" />
         {itemsCount > 0 && (
           <ItemsCountBox>

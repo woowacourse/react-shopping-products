@@ -34,6 +34,10 @@ jest.mock('../../api/cart', () => ({
     if (!cartItem) {
       throw new Error(`${cartId} id를 가진 Cart가 존재하지 않습니다.`);
     }
+    const maxQuantity = cartItem.product.quantity;
+    if (quantity < 1 || quantity > maxQuantity) {
+      throw new Error(`재고와 수량이 맞지 않습니다. 현재 재고: ${maxQuantity}`);
+    }
     cartItem.quantity = quantity;
     return Promise.resolve();
   }),
@@ -48,35 +52,43 @@ jest.mock('../../api/baseAPI', () => ({
 }));
 
 describe('SHOP 페이지에 접속 시', () => {
+  beforeEach(() => {});
   afterEach(() => {
-    currentCart = [...cartMockData];
+    currentCart = JSON.parse(JSON.stringify(cartMockData));
     jest.clearAllMocks();
   });
 
-  it('장바구니 아이콘에 현재 장바구니 아이템 수가 표시된다', async () => {
+  it('장바구니 모달 E2E 테스트 - Product List에서 추가한 상품 수량만큼 장바구니가 업데이트되고, 모달에서도 수량을 조절 가능하며 총 결제 금액이 표시된다', async () => {
     render(<App />);
 
-    const cartButton = await screen.findByLabelText('현재 장바구니 목록 수');
-    expect(cartButton.textContent).toBe('2');
-  });
-
-  it('빼기 버튼 클릭 시 장바구니 아이콘 숫자가 -1 감소한다', async () => {
-    render(<App />);
-
-    const cartCountText = await screen.findByLabelText('현재 장바구니 목록 수');
-    expect(cartCountText.textContent).toBe('2');
-
-    const firstProductCard = await screen.findAllByRole('listitem');
-
-    const buttons = await within(firstProductCard[1]).findAllByRole('button');
-    fireEvent.click(buttons[0]);
-
-    const newCartCountText = await screen.findByLabelText(
-      '현재 장바구니 목록 수'
+    const productList = await screen.findAllByRole('listitem');
+    const productAddButton = await within(productList[1]).findByLabelText(
+      '수량 증가'
     );
+    fireEvent.click(productAddButton);
 
+    const cartButton = await screen.findAllByRole('cart-button');
+    fireEvent.click(cartButton[0]);
+
+    const cartProductInfos = await screen.findAllByRole('cart-product-info');
     await waitFor(() => {
-      expect(newCartCountText.textContent).toBe('1');
+      expect(cartProductInfos.length).toBe(2);
     });
+
+    const quantityText = await within(cartProductInfos[0]).findByLabelText(
+      '수량'
+    );
+    expect(quantityText.textContent).toBe('2');
+
+    const addQuantityButton = await within(cartProductInfos[0]).findByLabelText(
+      '수량 증가'
+    );
+    fireEvent.click(addQuantityButton);
+    await waitFor(() => {
+      expect(quantityText.textContent).toBe('3');
+    });
+
+    const totalPriceText = await screen.findByLabelText(/^총 결제 금액은/);
+    expect(totalPriceText.textContent).toBe('5,130원');
   });
 });

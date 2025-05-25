@@ -70,7 +70,14 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
   }
 
   const cart = cartListData.find((cart) => cart.product.id === productId);
-  if (!cart) return <AddCartButton onAddCartClick={handleAddCart} {...props} />;
+  if (!cart)
+    return (
+      <AddCartButton
+        onAddCartClick={handleAddCart}
+        aria-label="장바구니 담기"
+        {...props}
+      />
+    );
 
   const itemQuantity = cart.quantity;
   const productMaxQuantity = cart.product.quantity;

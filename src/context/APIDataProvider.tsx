@@ -60,7 +60,7 @@ export function useAPIDataContext<T>({
         ...prev,
         [name]: { data: null, loading: false, error: e },
       }));
-      showToast('장바구니를 불러오는데 실패했습니다', 'error');
+      showToast('데이터 요청에 실패하였습니다.', 'error');
     }
   }, [name, setState]);
 

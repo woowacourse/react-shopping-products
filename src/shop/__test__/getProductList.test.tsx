@@ -41,7 +41,7 @@ jest.mock('../../api/baseAPI', () => ({
     .mockImplementation(() => Promise.resolve(productListMockData)),
 }));
 
-describe('삼품 목록을 조회할 시', () => {
+describe('상품 목록을 조회할 시', () => {
   beforeEach(() => {
     render(<App />);
   });

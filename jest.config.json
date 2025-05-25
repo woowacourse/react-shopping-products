@@ -1,4 +1,16 @@
 {
-  "preset": "ts-jest",
-  "testEnvironment": "jsdom"
+  "preset": "ts-jest/presets/default-esm",
+  "testEnvironment": "jsdom",
+  "transform": {
+    "^.+\\.[tj]sx?$": ["ts-jest", { "useESM": true }]
+  },
+  "transformIgnorePatterns": [
+    "/node_modules/(?!(?:@dev-dino22/modal-components)/)"
+  ],
+  "extensionsToTreatAsEsm": [".ts", ".tsx"],
+  "globals": {
+    "ts-jest": {
+      "useESM": true
+    }
+  }
 }

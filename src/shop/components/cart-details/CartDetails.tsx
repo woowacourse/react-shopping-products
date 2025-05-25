@@ -84,7 +84,7 @@ export default function CartDetails({
                 isSoldOut={cart.product.quantity === 0}
               />
 
-              <ProductInfo>
+              <ProductInfo aria-label="상품 정보" role="cart-product-info">
                 <ProductName>{cart.product.name}</ProductName>
                 <ProductPrice>{formatPrice(cart.product.price)}</ProductPrice>
                 <Counter
@@ -107,7 +107,9 @@ export default function CartDetails({
 
       <TotalSection>
         <TotalLabel>총 결제 금액</TotalLabel>
-        <TotalAmount>{formatPrice(totalAmount)}</TotalAmount>
+        <TotalAmount aria-label={`총 결제 금액은 ${totalAmount}원 입니다`}>
+          {formatPrice(totalAmount)}
+        </TotalAmount>
       </TotalSection>
 
       <CheckoutButton onClick={onCloseClick} autoFocus={isCartEmpty}>
@@ -151,18 +153,12 @@ const ProductInfo = styled.div`
   gap: 8px;
 `;
 
-const ProductName = styled.h3`
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
-  color: #000;
+const ProductName = styled.p`
+  ${({ theme }) => theme.body1}
 `;
 
 const ProductPrice = styled.p`
-  font-size: 14px;
-  font-weight: 500;
-  margin: 0;
-  color: #000;
+  ${({ theme }) => theme.body2}
 `;
 
 const DeleteButton = styled.button`
@@ -171,7 +167,7 @@ const DeleteButton = styled.button`
   border-radius: 6px;
   background-color: #fff;
   color: #666;
-  font-size: 14px;
+  ${({ theme }) => theme.body2}
   cursor: pointer;
 
   &:hover {
@@ -189,15 +185,11 @@ const TotalSection = styled.div`
 `;
 
 const TotalLabel = styled.span`
-  font-size: 18px;
-  font-weight: 600;
-  color: #000;
+  ${({ theme }) => theme.subheading}
 `;
 
 const TotalAmount = styled.span`
-  font-size: 24px;
-  font-weight: bold;
-  color: #000;
+  ${({ theme }) => theme.subheading}
 `;
 
 const CheckoutButton = styled.button`
@@ -207,8 +199,7 @@ const CheckoutButton = styled.button`
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  ${({ theme }) => theme.title}
   cursor: pointer;
 
   &:hover {
@@ -223,7 +214,6 @@ const EmptyCartBox = styled.div`
   align-items: center;
   gap: 16px;
   height: 120px;
-  font-size: 16px;
   text-align: center;
   padding: 32px;
 `;

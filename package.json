@@ -12,7 +12,7 @@
     "deploy": "vite build --base=/react-shopping-products/ --minify=false && npx gh-pages -d dist"
   },
   "dependencies": {
-    "@dev-dino22/modal-components": "^0.1.9",
+    "@dev-dino22/modal-components": "^0.2.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "i": "^0.3.7",
