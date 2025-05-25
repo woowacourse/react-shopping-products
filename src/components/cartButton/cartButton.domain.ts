@@ -37,7 +37,7 @@ export async function PlusItem({
   setErrorTrue,
   syncCartWithServer,
 }: PlusItemProps) {
-  if ((quantity ?? 0) > productQuantity) {
+  if ((quantity ?? 0) >= productQuantity) {
     return setErrorTrue("CART_ADD");
   }
   try {

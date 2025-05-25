@@ -59,7 +59,6 @@ export const handlers = [
           product,
         });
       }
-      console.log(mockCart);
 
       return HttpResponse.json(null);
     }
@@ -80,7 +79,6 @@ export const handlers = [
       const { quantity } = (await request.json()) as { quantity: number };
 
       const item = mockCart.content.find((item) => item.id === cartItemId);
-      console.log(mockCart);
       if (item) {
         item.quantity = quantity;
         return HttpResponse.json(item);
