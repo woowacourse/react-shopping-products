@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Arrow from './Arrow';
 
 export type DropdownOptionType = {
@@ -34,13 +34,16 @@ function Dropdown({
     }
   };
 
-  const handleSelect = (option: DropdownOptionType) => {
-    setOpen(false);
-    onSelectHandler(option);
-  };
+  const handleSelect = useCallback(
+    (option: DropdownOptionType) => {
+      setOpen(false);
+      onSelectHandler(option);
+    },
+    [onSelectHandler]
+  );
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    const onCloseOutsideClick = (e: MouseEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(e.target as Node)
@@ -48,8 +51,8 @@ function Dropdown({
         setOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', onCloseOutsideClick);
+    return () => document.removeEventListener('mousedown', onCloseOutsideClick);
   }, []);
 
   useEffect(() => {
@@ -73,7 +76,7 @@ function Dropdown({
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [open, focusedIndex, options]);
+  }, [open, focusedIndex, options, handleSelect]);
 
   return (
     <DropdownContainer ref={dropdownRef} {...props}>

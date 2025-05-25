@@ -6,6 +6,7 @@ interface CounterProps {
   maxCount?: number;
   onMinusClick: () => void;
   onPlusClick: () => void;
+  autoFocus?: boolean;
 }
 
 function Counter({
@@ -14,6 +15,7 @@ function Counter({
   maxCount = -1,
   onMinusClick,
   onPlusClick,
+  autoFocus = false,
   ...props
 }: CounterProps) {
   const showTrash = canBeZero === true && count === 1;
@@ -25,6 +27,7 @@ function Counter({
         onClick={onMinusClick}
         disabled={!canBeZero && count <= 1}
         aria-label={showTrash ? '삭제' : '수량 감소'}
+        autoFocus={autoFocus}
       >
         {showTrash ? <TrashIcon src="./assets/icons/Trash.svg" /> : '−'}
       </QuantityButton>

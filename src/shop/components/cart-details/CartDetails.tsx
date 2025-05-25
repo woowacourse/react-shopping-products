@@ -93,6 +93,7 @@ export default function CartDetails({
                   maxCount={cart.product.quantity}
                   onPlusClick={() => handlePlusQuantity(cart.id)}
                   onMinusClick={() => handleMinusQuantity(cart.id)}
+                  autoFocus={true}
                 />
               </ProductInfo>
 
@@ -109,7 +110,9 @@ export default function CartDetails({
         <TotalAmount>{formatPrice(totalAmount)}</TotalAmount>
       </TotalSection>
 
-      <CheckoutButton onClick={onCloseClick}>닫기</CheckoutButton>
+      <CheckoutButton onClick={onCloseClick} autoFocus={isCartEmpty}>
+        닫기
+      </CheckoutButton>
     </Container>
   );
 }

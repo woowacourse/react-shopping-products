@@ -22,11 +22,11 @@ function CartButton() {
   const itemsCount = cartListData?.length || 0;
   return (
     <>
-      <Container data-testid="cart-button" onClick={openCartModal}>
+      <Container onClick={openCartModal}>
         <CartIcon src="./assets/icons/Cart.svg" />
         {itemsCount > 0 && (
           <ItemsCountBox>
-            <ItemsCountText data-testid="cart-count">
+            <ItemsCountText aria-label="현재 장바구니 목록 수">
               {itemsCount}
             </ItemsCountText>
           </ItemsCountBox>
