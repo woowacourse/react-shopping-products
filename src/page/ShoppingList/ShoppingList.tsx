@@ -57,7 +57,7 @@ const ShoppingList = () => {
                   {categoryOptions.map((option) => (
                     <Dropdown.Item
                       key={option}
-                      handleClick={selectCategory}
+                      onClick={selectCategory}
                       content={option}
                     />
                   ))}
@@ -74,7 +74,7 @@ const ShoppingList = () => {
                   {sortOptions.map((option) => (
                     <Dropdown.Item
                       key={option}
-                      handleClick={selectSort}
+                      onClick={selectSort}
                       content={option}
                     />
                   ))}

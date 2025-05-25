@@ -3,17 +3,25 @@ import { ComponentProps } from 'react';
 import { useDisclosureContext } from '../../../context/disclosureContext/disclosureContext';
 import { dropdownItemStyle } from './Dropdown.styles';
 
-interface DropdownItemProps extends ComponentProps<'li'> {
-  handleClick: (content: string) => void;
-  content: string;
+import { CategoryOption } from '../../../types/common';
+import { SortOption } from '../../../types/common';
+
+interface DropdownItemProps<T extends CategoryOption | SortOption>
+  extends Omit<ComponentProps<'li'>, 'onClick'> {
+  content: T;
+  onClick: (content: T) => void;
 }
 
-const DropdownItem = ({ content, handleClick, ...rest }: DropdownItemProps) => {
+const DropdownItem = <T extends CategoryOption | SortOption>({
+  content,
+  onClick,
+  ...rest
+}: DropdownItemProps<T>) => {
   const { close } = useDisclosureContext();
 
   const handleSelect = () => {
     close();
-    handleClick?.(content);
+    onClick?.(content);
   };
 
   return (
