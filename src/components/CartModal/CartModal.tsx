@@ -88,7 +88,11 @@ const CartModal = ({
       size="small"
       content={content}
       onClose={onClose}
-      buttonElements={[<CloseButton onClick={onClose}>닫기</CloseButton>]}
+      buttonElements={[
+        <CloseButton key="close" onClick={onClose}>
+          닫기
+        </CloseButton>,
+      ]}
     />
   );
 };
