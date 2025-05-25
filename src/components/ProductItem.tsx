@@ -92,7 +92,6 @@ const ProductItem = ({
 };
 
 const ProductItemContainer = styled.div<{ modal: boolean }>`
-  position: relative;
   display: flex;
   flex-direction: column;
   max-width: 182px;
@@ -106,8 +105,7 @@ const ProductItemContainer = styled.div<{ modal: boolean }>`
 
 const SoldOutWrapper = styled.div<{ isSoldOut: boolean }>`
   position: relative;
-  width: 100%;
-  overflow: hidden;
+  height: 50%;
 
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;

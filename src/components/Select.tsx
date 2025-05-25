@@ -86,6 +86,7 @@ const OptionsContainer = styled.ul`
   position: absolute;
   top: calc(100% + 4px);
   animation: ${fadeIn} 0.3s ease;
+  z-index: var(--z-index-header);
 `;
 
 const OptionItem = styled.li`
