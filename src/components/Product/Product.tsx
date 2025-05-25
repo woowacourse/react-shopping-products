@@ -1,7 +1,7 @@
 import Button from "../common/Button/Button";
 
 import AddButton from "../AddButton/AddButton";
-import RemoveButton from "../RemoveButton/RemoveButton";
+
 import useCartItemsId from "../../hooks/useCartItemsId";
 
 import { ProductProps } from "./Product.types";
@@ -58,15 +58,17 @@ function Product({ product, isInCart }: ProductProps) {
             </Styled.ProductPrice>
           </Styled.Contents>
           <Styled.ButtonWrapper>
-            <Button color="light" onClick={handleDecreaseProductQuantity}>
-              -
-            </Button>
-
-            <p>{cartItemId ? cartItemId.cartQuantity : 0}</p>
-
-            <Button color="light" onClick={handleIncreaseProductQuantity}>
-              +
-            </Button>
+            {isInCart && (
+              <>
+                <Button color="light" onClick={handleDecreaseProductQuantity}>
+                  -
+                </Button>
+                <p>{cartItemId ? cartItemId.cartQuantity : 0}</p>
+                <Button color="light" onClick={handleIncreaseProductQuantity}>
+                  +
+                </Button>
+              </>
+            )}
             {!isInCart && (
               <AddButton
                 handleAddProduct={handleIncreaseProductQuantity}
