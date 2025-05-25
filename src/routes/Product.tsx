@@ -1,9 +1,9 @@
-import Header from '../Header/Header';
-import ItemCard from '../ItemCard/ItemCard';
-import Skeleton from '../Skeleton/Skeleton';
+import Header from '../components/Header/Header';
+import ItemCard from '../components/ItemCard/ItemCard';
+import Skeleton from '../components/Skeleton/Skeleton';
 import S from './Product.module.css';
-import useProductPage from '../../hooks/useProductPage';
-import CartModal from '../CartModal/CartModal';
+import useProductPage from '../hooks/useProductPage';
+import CartModal from '../components/CartModal/CartModal';
 import { useState } from 'react';
 
 const Product = () => {

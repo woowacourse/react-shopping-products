@@ -1,5 +1,5 @@
 import S from './App.module.css';
-import Product from './components/pages/Product';
+import Product from './routes/Product';
 import { ErrorProvider } from './contexts/ErrorContext';
 
 function App() {
