@@ -104,7 +104,7 @@ Content-Type: application/json
 
 - 배포 
 
-  - [ ] 리뷰어가 쉽게 확인할 수 있도록, 개발환경 뿐만 아니라, 프로덕션 환경에서도 MSW를 start 한다.
+  - [x] 리뷰어가 쉽게 확인할 수 있도록, 개발환경 뿐만 아니라, 프로덕션 환경에서도 MSW를 start 한다.
 
 - Library
 
