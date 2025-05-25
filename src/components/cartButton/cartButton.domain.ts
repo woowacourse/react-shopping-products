@@ -6,6 +6,11 @@ interface PlusItemProps {
   quantity: number | undefined;
   syncCartWithServer: () => void;
 }
+interface MinusItemProps {
+  cartId: number | undefined;
+  quantity: number | undefined;
+  syncCartWithServer: () => void;
+}
 interface AddItemToCartProps {
   productId: number;
   cartAmount: number;
@@ -39,7 +44,27 @@ export async function PlusItem({
     });
     syncCartWithServer();
   } catch {
-    console.log("굿");
+    console.log("추가 실패");
+  }
+}
+export async function MinusItem({
+  cartId,
+  quantity,
+  syncCartWithServer,
+}: MinusItemProps) {
+  try {
+    await request({
+      headers: {
+        Authorization: import.meta.env.VITE_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "PATCH",
+      url: `/cart-items/${cartId}`,
+      body: { quantity: (quantity ?? 0) - 1 },
+    });
+    syncCartWithServer();
+  } catch {
+    console.log("빼기 실패");
   }
 }
 

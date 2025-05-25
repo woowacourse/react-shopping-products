@@ -1,4 +1,4 @@
-import { addItemToCart, PlusItem } from "./cartButton.domain";
+import { addItemToCart, MinusItem, PlusItem } from "./cartButton.domain";
 import { useData } from "../../hooks/useData";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { ButtonContainer } from "./CartButton.css";
@@ -50,6 +50,18 @@ function CartToggleButton({
     }
   };
 
+  const handleMinusButton = async () => {
+    try {
+      await MinusItem({
+        cartId,
+        quantity,
+        syncCartWithServer: fetchCartProducts,
+      });
+    } catch {
+      console.log("빼기 실패");
+    }
+  };
+
   // const handleRemove = async () => {
   //   try {
   //     await removeItemToCart({
@@ -66,7 +78,7 @@ function CartToggleButton({
   if (isToggled) {
     return (
       <>
-        <button>-</button>
+        <button onClick={handleMinusButton}>-</button>
         <p>{quantity}</p>
         <button onClick={handlePlusButton}>+</button>
       </>
