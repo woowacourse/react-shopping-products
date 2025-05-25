@@ -14,11 +14,14 @@ import { IconAddCart } from '../../../asset';
 import { useContext } from 'react';
 import CartContext from '../../../context/cartContext/cartContext';
 import CartController from '../CartController/CartController';
+import { getImageUrl } from '../../../util/getImgUrl';
 
 interface ProductCardProps extends Omit<Product, 'category'> {}
 
 const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
-  const { cartData, addCart, removeCart, patchCart } = useContext(CartContext);
+  const { cartData, addCart, patchCart } = useContext(CartContext);
+
+  const newImageUrl = getImageUrl(imageUrl) ? imageUrl : './image/default.jpeg';
 
   const productCartId = cartData.find(
     (item: CartItem) => item.product.id === id
@@ -31,17 +34,13 @@ const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
   const inCart = cartData.some((item: CartItem) => item.product.id === id);
 
   const handleClick = async (productId: number) => {
-    if (inCart) {
-      removeCart(productId);
-    } else {
-      addCart(productId);
-    }
+    addCart(productId);
   };
 
   return (
     <section css={productCardStyle}>
       <div css={productCardImageContainerStyle}>
-        <img css={productCardImageStyle} src={imageUrl} alt={name} />
+        <img css={productCardImageStyle} src={newImageUrl} alt={name} />
       </div>
       <div css={productCardContentStyle}>
         <div css={productCardContentHeaderStyle}>

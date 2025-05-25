@@ -6,6 +6,8 @@ import ToastProvider from './component/@common/Toast/context/toastProvider';
 import Toast from './component/@common/Toast/Toast';
 import CartProvider from './context/cartContext/cartProvider';
 import ShoppingItemProvider from './context/shoppingItemContext/shoppingItemProvider';
+import ModalProvider from './context/modalContext/modalProvider';
+import CartModal from './component/feature/CartModal/CartModal';
 
 export type SortOption = '높은 가격순' | '낮은 가격순';
 
@@ -16,11 +18,14 @@ function App() {
         <Global styles={GlobalStyle} />
         <ToastProvider>
           <ShoppingItemProvider>
-            <CartProvider>
-              <Header />
-              <ShoppingList />
-              <Toast />
-            </CartProvider>
+            <ModalProvider>
+              <CartProvider>
+                <Header />
+                <ShoppingList />
+                <Toast />
+                <CartModal />
+              </CartProvider>
+            </ModalProvider>
           </ShoppingItemProvider>
         </ToastProvider>
       </ThemeProvider>
