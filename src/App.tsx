@@ -27,7 +27,7 @@ export type PriceOrder = '낮은 가격순' | '높은 가격순';
 function App() {
   return (
     <DataProvider>
-      <Layout>
+      <Layout id="main">
         <ProductListPage />
       </Layout>
     </DataProvider>
