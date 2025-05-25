@@ -1,10 +1,9 @@
 import { useEffect, useReducer } from 'react';
 
-import useCategory from './useCategory';
-import useSort from './useSort';
-
 import { Product } from '../types/common';
 import { productApi } from '../api/product';
+import useCategory from './useCategory';
+import useSort from './useSort';
 
 export interface FetchState {
   data: Product[];
@@ -37,8 +36,8 @@ const fetchReducer = (state: FetchState, action: FetchAction): FetchState => {
 };
 
 const useShoppingItemList = () => {
-  const { category, selectCategory, resetCategory } = useCategory();
-  const { sortType, selectSort, resetSort } = useSort();
+  const { category, selectCategory } = useCategory();
+  const { sortType, selectSort } = useSort();
   const [state, dispatch] = useReducer(fetchReducer, initialState);
 
   useEffect(() => {
@@ -66,18 +65,17 @@ const useShoppingItemList = () => {
   }, [category, sortType]);
 
   const retryFetch = () => {
-    resetCategory();
-    resetSort();
+    dispatch({ type: 'FETCH_START' });
   };
 
   return {
     data: state.data,
-    selectSort,
-    selectCategory,
-    sortType,
-    category,
     error: state.error,
     isLoading: state.isLoading,
+    selectCategory,
+    selectSort,
+    category,
+    sortType,
     retryFetch,
   };
 };

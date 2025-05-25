@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { CategoryOption } from '../types/common';
 
 const useCategory = () => {
   const [category, setCategory] = useState<CategoryOption>('전체');
 
-  const selectCategory = (category: CategoryOption) => {
-    setCategory(category);
-  };
+  const selectCategory = useCallback(
+    (category: CategoryOption) => {
+      setCategory(category);
+    },
+    [setCategory]
+  );
 
-  const resetCategory = () => {
+  const resetCategory = useCallback(() => {
     setCategory('전체');
-  };
+  }, [setCategory]);
 
   return {
     category,

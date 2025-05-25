@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import {
   ShoppingListFilterItemStyle,
   ShoppingListFilterStyle,
@@ -10,8 +12,8 @@ import ArrowIcon from '../../component/@common/ArrowIcon/ArrowIcon';
 import ErrorFallback from '../../component/@common/ErrorFallback/ErrorFallback';
 
 import { CategoryOption, SortOption } from '../../types/common';
-import useShoppingItemList from '../../hook/useShoppingItemList';
 import ProductList from '../../component/feature/ProductList/ProductList';
+import ShoppingItemContext from '../../context/shoppingItemContext/shoppingItemContext';
 
 const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
 const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
@@ -19,14 +21,14 @@ const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
 const ShoppingList = () => {
   const {
     data,
-    selectSort,
-    selectCategory,
-    sortType,
-    category,
     error,
     isLoading,
+    selectCategory,
+    selectSort,
+    category,
+    sortType,
     retryFetch,
-  } = useShoppingItemList();
+  } = useContext(ShoppingItemContext);
 
   // 에러가 있을 경우 ErrorFallback 표시
   if (error) {
