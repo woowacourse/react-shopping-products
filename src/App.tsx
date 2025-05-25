@@ -1,18 +1,23 @@
 import { css } from "@emotion/react";
-import ShopPage from "./page/ShopPage";
+import ShopPage from "./domains/ShoppingProducts/page";
 import GlobalStyle from "./GlobalStyle";
+import { ShoppingProvider } from "./domains/ShoppingProducts/context/ShoppingProvider";
 
 function App() {
   return (
-    <div
-      css={css`
-        display: flex;
-        justify-content: center;
-      `}
-    >
-      <GlobalStyle />
-      <ShopPage />
-    </div>
+    <ShoppingProvider>
+      <div
+        css={css`
+          display: flex;
+          justify-content: center;
+          height: 100vh;
+          background-color: aliceblue;
+        `}
+      >
+        <GlobalStyle />
+        <ShopPage />
+      </div>
+    </ShoppingProvider>
   );
 }
 
