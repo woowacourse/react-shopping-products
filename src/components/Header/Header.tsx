@@ -31,7 +31,7 @@ const Cart = ({ count, onClick: handleClickIcon }: { count: number; onClick: () 
       </svg>
       {count !== 0 && (
         <div className={S.cartCount}>
-          <p>{count}</p>
+          <p data-testid="cart-count">{count}</p>
         </div>
       )}
     </div>
