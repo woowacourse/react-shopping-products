@@ -15,7 +15,7 @@ import { getCartInCount } from '../../util/cartUtils';
 import useCartItems from '../../hooks/useCartItems';
 
 export const ProductListPage = () => {
-  const { errorMessage, handleErrorMessage } = useErrorMessageContext();
+  const { errorMessage, handleErrorMessage, isToastVisible } = useErrorMessageContext();
 
   const {
     products,
@@ -42,7 +42,7 @@ export const ProductListPage = () => {
       data-testid="product-list-container"
       $isDimmed={loadingState === 'loadingFilter'}
     >
-      {errorMessage.length > 0 && <ErrorToast errorMessage={errorMessage} />}
+      {errorMessage && <ErrorToast message={errorMessage} visible={isToastVisible} />}
       <P.Title>bpple 상품 목록</P.Title>
       <P.SelectContainer>
         <Select

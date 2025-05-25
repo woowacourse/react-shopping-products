@@ -1,14 +1,13 @@
 import { createContext } from 'react';
 
-interface ErrorMessageContextProps {
-  children: React.ReactNode;
-  errorMessage: string;
-  handleErrorMessage: (errorMessage: string) => void;
-}
-
 interface ErrorMessageContextType {
   errorMessage: string;
   handleErrorMessage: (errorMessage: string) => void;
+  isToastVisible: boolean;
+}
+
+interface ErrorMessageContextProps extends ErrorMessageContextType {
+  children: React.ReactNode;
 }
 
 export const ErrorMessageContext = createContext<ErrorMessageContextType | null>(null);
@@ -16,12 +15,14 @@ export const ErrorMessageContext = createContext<ErrorMessageContextType | null>
 export const ErrorMessageProvider = ({
   errorMessage,
   handleErrorMessage,
+  isToastVisible,
   children,
 }: ErrorMessageContextProps) => {
   return (
     <ErrorMessageContext.Provider
       value={{
         errorMessage,
+        isToastVisible,
         handleErrorMessage,
       }}
     >

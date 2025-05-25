@@ -49,7 +49,11 @@ const TestProviders = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <DataProvider dataResource={mockDataResource}>
-      <ErrorMessageProvider errorMessage={errorMessage} handleErrorMessage={setErrorMessage}>
+      <ErrorMessageProvider
+        errorMessage={errorMessage}
+        handleErrorMessage={setErrorMessage}
+        isToastVisible={true}
+      >
         {children}
       </ErrorMessageProvider>
     </DataProvider>
@@ -135,7 +139,11 @@ describe('상품 목록 조회 테스트', () => {
 
     render(
       <TestProviders>
-        <ErrorMessageProvider errorMessage={errorMessage} handleErrorMessage={vi.fn()}>
+        <ErrorMessageProvider
+          errorMessage={errorMessage}
+          handleErrorMessage={vi.fn()}
+          isToastVisible={true}
+        >
           <ProductListPage />
         </ErrorMessageProvider>
       </TestProviders>,

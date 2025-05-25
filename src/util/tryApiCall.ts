@@ -1,3 +1,8 @@
+import {
+  ERROR_MESSAGE_DURATION,
+  ERROR_MESSAGE_ANIMATION_DELAY,
+} from '../constants/systemConstants';
+
 const tryApiCall = async <T>(
   apiCall: () => Promise<T>,
   handleErrorToast: (errorMessage: string) => void,
@@ -10,7 +15,7 @@ const tryApiCall = async <T>(
       handleErrorToast(error.message);
       setTimeout(() => {
         handleErrorToast('');
-      }, 3000);
+      }, ERROR_MESSAGE_DURATION + ERROR_MESSAGE_ANIMATION_DELAY);
     }
     return undefined;
   }

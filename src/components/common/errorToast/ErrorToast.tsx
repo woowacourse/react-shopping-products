@@ -1,13 +1,14 @@
 import * as S from './ErrorToast.styles';
 
 interface ErrorToastProps {
-  errorMessage: string;
+  message: string;
+  visible: boolean;
 }
 
-const ErrorToast = ({ errorMessage }: ErrorToastProps) => {
+const ErrorToast = ({ message, visible }: ErrorToastProps) => {
   return (
-    <S.ErrorToastContainer data-testid="error-message" $isVisible={errorMessage.length !== 0}>
-      {errorMessage}
+    <S.ErrorToastContainer data-testid="error-message" $isVisible={visible}>
+      {message}
     </S.ErrorToastContainer>
   );
 };

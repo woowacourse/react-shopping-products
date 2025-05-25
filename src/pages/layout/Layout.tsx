@@ -10,12 +10,26 @@ import useCartItems from '../../hooks/useCartItems';
 import { DataProvider } from '../../context/DataContext';
 import CartModal from '../../components/cartModal/CartModal';
 import type { CartItemType, ProductItemType } from '../../types/data';
+import {
+  ERROR_MESSAGE_DURATION,
+  ERROR_MESSAGE_ANIMATION_DELAY,
+} from '../../constants/systemConstants';
 
 const Layout = () => {
-  // TODO : 에러메세지 context가 아닌 일반 상태로 관리
   const [errorMessage, setErrorMessage] = useState('');
-  const handleErrorMessage = (errorMessage: string) => {
-    setErrorMessage(errorMessage);
+
+  const [isToastVisible, setIsToastVisible] = useState(false);
+  const handleErrorMessage = (message: string) => {
+    setErrorMessage(message);
+    setIsToastVisible(true);
+
+    setTimeout(() => {
+      setIsToastVisible(false);
+    }, ERROR_MESSAGE_DURATION);
+
+    setTimeout(() => {
+      setErrorMessage('');
+    }, ERROR_MESSAGE_DURATION + ERROR_MESSAGE_ANIMATION_DELAY);
   };
 
   const cartItemsResource = useData<CartItemType[]>({
@@ -46,7 +60,11 @@ const Layout = () => {
 
   return (
     <DataProvider dataResource={{ ...dataResources }}>
-      <ErrorMessageProvider errorMessage={errorMessage} handleErrorMessage={handleErrorMessage}>
+      <ErrorMessageProvider
+        errorMessage={errorMessage}
+        handleErrorMessage={handleErrorMessage}
+        isToastVisible={isToastVisible}
+      >
         <S.LayoutContainer>
           <Header onCartModalOpen={handleCartModalOpen} />
           <Outlet />

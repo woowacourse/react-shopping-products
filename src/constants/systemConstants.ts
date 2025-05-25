@@ -13,4 +13,4 @@ export const DEFAULT_PAGE = 0;
 export const DEFAULT_SIZE = 20;
 
 export const ERROR_MESSAGE_DURATION = 3000;
-export const ERROR_MESSAGE_ANIMATION_DELAY = 300;
+export const ERROR_MESSAGE_ANIMATION_DELAY = 200;

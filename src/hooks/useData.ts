@@ -20,7 +20,6 @@ const useData = <T>({ fetchFunc }: UseDataProps<T>): DataResourceType<T> => {
       return newData;
     } catch (error) {
       if (error instanceof Error) {
-        // TODO : 여기서 반환한 에러 errorToast에 반영
         setError(error);
       }
       setLoadingState('success');
