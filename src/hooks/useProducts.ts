@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Category, PriceOrder } from "../types/productType";
 
 export const PRODUCT_TYPE_COUNT = 20;
@@ -14,19 +14,21 @@ const useProducts = ({
   const [selectedCategory, setSelectedCategory] = useState<Category>("전체");
   const [priceOrder, setPriceOrder] = useState<PriceOrder>("낮은 가격순");
 
-  const handleCategoryChange = async (category: Category) => {
+  const handleCategoryChange = (category: Category) => {
     withLoading(async () => {
       setSelectedCategory(category);
-      refetch();
     });
   };
 
   const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
     withLoading(async () => {
       setPriceOrder(priceOrder);
-      refetch();
     });
   };
+
+  useEffect(() => {
+    refetch();
+  }, [selectedCategory, priceOrder]);
 
   // useEffect(() => {
   //   const fetchData = async () => {

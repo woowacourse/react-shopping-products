@@ -128,6 +128,22 @@ const products = [
     quantity: 50,
   },
   {
+    id: 50,
+    name: "밥",
+    price: 10,
+    imageUrl: "",
+    category: "식료품",
+    quantity: 50,
+  },
+  {
+    id: 51,
+    name: "초밥",
+    price: 10,
+    imageUrl: "",
+    category: "식료품",
+    quantity: 50,
+  },
+  {
     id: 23,
     name: "리바이 아커만",
     price: 60000000,
@@ -179,8 +195,31 @@ const cartItems = [
 ];
 
 export const handlers = [
-  http.get(`${BASE_URL}products?sort=price%252Casc`, () => {
-    return HttpResponse.json({ content: products });
+  http.get(`${BASE_URL}products`, ({ request }) => {
+    const url = new URL(request.url);
+    const category = url.searchParams.get("category");
+    const sort = url.searchParams.get("sort");
+
+    let filteredProducts = [...products];
+
+    if (category && category !== "전체") {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.category === category
+      );
+    }
+
+    if (sort) {
+      const [field, order] = decodeURIComponent(sort).split(",");
+      if (field === "price") {
+        filteredProducts.sort((a, b) => {
+          if (order === "asc") return a.price - b.price;
+          if (order === "desc") return b.price - a.price;
+          return 0;
+        });
+      }
+    }
+
+    return HttpResponse.json({ content: filteredProducts });
   }),
 
   http.get(`${BASE_URL}cart-items`, () => {
