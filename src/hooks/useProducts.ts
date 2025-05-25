@@ -4,10 +4,18 @@ import { GetProductResponse } from "../types/product";
 import { useErrorMessage, useLoading } from "../contexts";
 import { FilterType, SortType } from "../types";
 
+type ProductsOption = {
+  filter: FilterType;
+  sort: SortType;
+};
+
 const useProducts = () => {
   const [productsResponse, setProductsResponse] = useState<GetProductResponse>();
-  const [filter, setFilter] = useState<FilterType>("전체");
-  const [sort, setSort] = useState<SortType>("높은 가격순");
+  const [productsOption, setProductsOption] = useState<ProductsOption>({
+    filter: "전체",
+    sort: "높은 가격순",
+  });
+  const { filter, sort } = productsOption;
 
   const { setErrorMessage } = useErrorMessage();
   const { setIsLoading } = useLoading();
@@ -35,10 +43,10 @@ const useProducts = () => {
 
   return {
     products: productsResponse?.content || [],
-    filter,
-    setFilter,
-    sort,
-    setSort,
+    filter: productsOption.filter,
+    sort: productsOption.sort,
+    setFilter: (filter: FilterType) => setProductsOption((prev) => ({ ...prev, filter })),
+    setSort: (sort: SortType) => setProductsOption((prev) => ({ ...prev, sort })),
   };
 };
 
