@@ -57,6 +57,16 @@ export default function ProductContainer() {
                 onChange={updateCartProduct}
                 maxQuantity={product.quantity ?? 10000}
               />
+            ) : product.quantity === 0 ? (
+              <Button
+                onClick={() => handleAddCart(product.id)}
+                dataTestid="remove-cart-button"
+                style="secondary"
+                disabled
+              >
+                <img src="./remove-shopping-cart.svg" />
+                <p>품절</p>
+              </Button>
             ) : (
               <Button
                 onClick={() => handleAddCart(product.id)}

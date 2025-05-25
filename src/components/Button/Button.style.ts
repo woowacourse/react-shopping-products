@@ -4,7 +4,8 @@ const buttonLayout = (
   backgroundColor: string,
   color: string,
   border: string = "none",
-  size: "sm" | "full" = "sm"
+  size: "sm" | "full" = "sm",
+  disabled: boolean
 ) => {
   const sizeVarient = {
     sm: {
@@ -36,6 +37,8 @@ const buttonLayout = (
     font-size: ${sizeVarient[size].fontSize};
     text-align: center;
     white-space: nowrap;
+
+    cursor: ${disabled ? "not-allowed" : "pointer"};
   `;
 };
 

@@ -1,8 +1,10 @@
+import { ButtonHTMLAttributes } from "react";
 import { buttonLayout } from "./Button.style";
 
 type ButtonStyleProps = "primary" | "secondary" | "ghost";
 
-interface ButtonProps {
+interface ButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "style"> {
   onClick: () => void;
   children: React.ReactNode;
   style?: ButtonStyleProps;
@@ -16,6 +18,7 @@ export default function Button({
   style = "primary",
   size = "sm",
   dataTestid,
+  disabled = false,
 }: ButtonProps) {
   const colorVariant = {
     primary: { backgroundColor: "#000000", color: "#FFFFFF", border: "none" },
@@ -37,10 +40,12 @@ export default function Button({
         colorVariant[style].backgroundColor,
         colorVariant[style].color,
         colorVariant[style].border,
-        size
+        size,
+        disabled
       )}
       onClick={onClick}
       data-testid={dataTestid}
+      disabled={disabled}
     >
       {children}
     </button>

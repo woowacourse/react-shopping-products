@@ -10,7 +10,7 @@ const ModalLayout = (isOpen: boolean) => {
     align-items: center;
     width: 100%;
     height: 100vh;
-    z-index: 10;
+    z-index: 1;
   `;
 };
 
