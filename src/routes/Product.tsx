@@ -16,6 +16,8 @@ const Product = () => {
     <>
       {isOpen && (
         <CartModal
+          cartItemData={mergedData.filter(({ cartInfo }) => cartInfo.id !== -1)}
+          handleCartProducts={handleCartProducts}
           handleClose={() => {
             setIsOpen(false);
           }}

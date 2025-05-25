@@ -1,6 +1,30 @@
 import S from './ItemModalCard.module.css';
 
-const ItemModalCard = ({ imageUrl = './images/default-image.png' }) => {
+interface ItemModalCardProps {
+  imageUrl: string;
+  name: string;
+  price: number;
+  quantity: number;
+  onRemoveCart: () => void;
+  onPatchCart: (quantity: number) => void;
+}
+
+const ItemModalCard = ({
+  imageUrl,
+  name,
+  price,
+  quantity,
+  onPatchCart,
+  onRemoveCart,
+}: ItemModalCardProps) => {
+  const handleRemoveItem = () => {
+    if (quantity !== 1) onPatchCart(quantity - 1);
+  };
+
+  const handleAddItem = () => onPatchCart(quantity + 1);
+
+  const handleDeleteItem = () => onRemoveCart();
+
   return (
     <div className={S.container}>
       <img
@@ -15,15 +39,17 @@ const ItemModalCard = ({ imageUrl = './images/default-image.png' }) => {
       <div className={S.contentContainer}>
         <div className={S.infoContainer}>
           <div className={S.itemInfo}>
-            <p className={S.itemTitle}>상품 이름</p>
-            <p className={S.itemPrice}>35,000원</p>
+            <p className={S.itemTitle}>{name}</p>
+            <p className={S.itemPrice}>{price.toLocaleString()}원</p>
           </div>
-          <button className={S.itemRemoveButton}>삭제</button>
+          <button className={S.itemRemoveButton} onClick={handleDeleteItem}>
+            삭제
+          </button>
         </div>
         <div className={S.cartAmountContainer}>
-          <button>-</button>
-          <p>10</p>
-          <button>+</button>
+          <button onClick={handleRemoveItem}>-</button>
+          <p>{quantity}</p>
+          <button onClick={handleAddItem}>+</button>
         </div>
       </div>
     </div>
