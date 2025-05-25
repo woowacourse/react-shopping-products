@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px 0 24px 0;
+  margin: 24px 0 24px 0;
   gap: 24px;
 `;
 
@@ -34,6 +34,7 @@ export const CartContent = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   padding: 9px 16px;
+  flex: 1;
 `;
 
 export const ProductTitle = styled.h2`
@@ -70,4 +71,46 @@ export const DeleteButton = styled.button`
   &:hover {
     background-color: #0000001A;
   }
+`;
+
+export const TotalContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 54px;
+  margin: 24px 0;
+  padding: 30px 0;
+  border-top: 1px solid #0000001A;
+`;
+
+export const Title = styled.h2`
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 16px;
+`;
+
+export const TotalPrice = styled.h1`
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+  text-align: right;
+`;
+
+export const CloseButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: white;
+  height: 44px;
+  border-radius: 5px;
+  background-color: #333333;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 100%;
+  text-align: center;
+  cursor: pointer;
 `;

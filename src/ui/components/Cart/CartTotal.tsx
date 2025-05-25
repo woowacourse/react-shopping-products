@@ -1,0 +1,29 @@
+import { CartResponse } from "../../../types/product";
+import { CloseButton, Title, TotalContainer, TotalPrice } from "./Cart.styles";
+
+interface CartProps {
+  cart: CartResponse;
+}
+
+function CartTotal({cart}: CartProps) {
+  if (!cart || !cart.content) {
+    return null;
+  }
+
+  const totalPrice = cart.content.reduce((total, item) => {
+    return total + item.product.price * item.quantity;
+  }, 0);
+
+  return (
+    <>
+      <TotalContainer>
+        <Title>총 결제 금액</Title>
+        <TotalPrice>{totalPrice.toLocaleString()}원</TotalPrice>
+      </TotalContainer>
+      <CloseButton>닫기</CloseButton>
+    </>
+  );
+}
+
+export default CartTotal;
+
