@@ -5,10 +5,22 @@ interface ButtonProps {
   onClick: () => void;
   buttonStyled?: React.CSSProperties;
   textStyled?: React.CSSProperties;
+  disabled?: boolean;
 }
-const Button = ({ title, onClick, buttonStyled, textStyled }: ButtonProps) => {
+const Button = ({
+  title,
+  onClick,
+  buttonStyled,
+  textStyled,
+  disabled,
+}: ButtonProps) => {
   return (
-    <button onClick={onClick} className={ButtonStyles} style={buttonStyled}>
+    <button
+      onClick={onClick}
+      className={ButtonStyles}
+      style={buttonStyled}
+      disabled={disabled}
+    >
       <div className={ButtonTextStyles} style={textStyled}>
         {title}
       </div>

@@ -20,6 +20,7 @@ export default AddButton;
 const AddButtonStyles = css`
   ${ButtonStyles};
   background-color: black;
+  margin-left: auto;
 `;
 
 const AddButtonTextStyles = css`

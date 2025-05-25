@@ -5,18 +5,20 @@ interface ProductStepperProps {
   quantity: number;
   onIncreaseQuantity: () => void;
   onDecreaseQuantity: () => void;
+  disabled?: boolean;
 }
 
 const ProductStepper = ({
   quantity,
   onIncreaseQuantity,
   onDecreaseQuantity,
+  disabled = false,
 }: ProductStepperProps) => {
   return (
     <div className={ProductStepperStyles}>
-      <Button title="-" onClick={onIncreaseQuantity} />
+      <Button title="-" onClick={onDecreaseQuantity} disabled={disabled} />
       <div>{quantity}</div>
-      <Button title="+" onClick={onDecreaseQuantity} />
+      <Button title="+" onClick={onIncreaseQuantity} disabled={disabled} />
     </div>
   );
 };
