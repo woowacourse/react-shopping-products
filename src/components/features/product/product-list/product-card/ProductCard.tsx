@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Flex } from '../../../../common';
 import ToggleCartButton from './cart-button/ToggleCartButton';
-import ProductPreviewImage from '../../../../common/ProductPreviewImage';
+import Image from '../../../../common/Image';
 
 interface ProductProps {
   id: string;
@@ -16,7 +16,11 @@ function ProductCard({ id, name, price, imageUrl, quantity }: ProductProps) {
   return (
     <Container data-testid={`product-${id}`}>
       <PreviewBox>
-        <ProductPreviewImage imageSource={imageUrl} isSoldOut={isSoldOut} />
+        <Image
+          imageSource={imageUrl}
+          isSoldOut={isSoldOut}
+          position="absolute"
+        />
         {isSoldOut && <PreviewText>품절</PreviewText>}
       </PreviewBox>
       <InfoBox>
@@ -61,6 +65,7 @@ const PreviewText = styled.p`
 `;
 
 const InfoBox = styled(Flex)`
+  height: 120px;
   padding: 12px;
   align-items: flex-end;
 `;
