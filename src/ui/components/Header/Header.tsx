@@ -1,4 +1,7 @@
-import { useCartListContext } from '../../../context/CartContext';
+import { useCallback } from 'react';
+import { getCartItem } from '../../../api/fetchCart';
+import { useAPI } from '../../../hooks/useAPI';
+import { CartItem } from '../../../types/type';
 import { Button, Container, Icon, CartStock, Title } from './Header.styles';
 
 interface HeaderProps {
@@ -7,8 +10,17 @@ interface HeaderProps {
 }
 
 function Header({ title, onModalOpen }: HeaderProps) {
-  const { cartList } = useCartListContext();
-  const totalCartProducts = cartList.length;
+  const fetchCartItems = useCallback(() => {
+    return getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
+      (res) => res.content
+    );
+  }, []);
+
+  const { data: cartList } = useAPI<CartItem[]>({
+    fetcher: fetchCartItems,
+    name: 'cartItems',
+  });
+  const totalCartProducts = cartList?.length;
 
   return (
     <Container>
