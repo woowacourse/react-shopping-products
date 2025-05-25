@@ -5,6 +5,7 @@ export type ProductDataType = {
   imageUrl: string;
   name: string;
   price: number;
+  quantity: number;
   isAdd: boolean;
 };
 
@@ -19,4 +20,5 @@ export type ProductDTOType = {
   price: number;
   imageUrl: string;
   category: string;
+  quantity: number;
 };
