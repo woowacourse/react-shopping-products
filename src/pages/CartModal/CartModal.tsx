@@ -25,9 +25,8 @@ export const CartModal = ({ open, setOpen }: CartModalProps) => {
       <ModalProductsWrapper>
         {products.map((product) => {
           return (
-            <ModalProductItem>
+            <ModalProductItem key={product.id}>
               <ProductItem
-                key={product.id}
                 product={product}
                 quantityInCart={extractCartQuantity(cartItems, product.id)}
                 handleIncreaseQuantity={handleIncreaseQuantity}
@@ -52,7 +51,7 @@ export const CartModal = ({ open, setOpen }: CartModalProps) => {
         <Price>
           {products
             .reduce((acc, cur) => {
-              return acc + cur.price;
+              return acc + cur.price * extractCartQuantity(cartItems, cur.id);
             }, 0)
             .toLocaleString()}
           원
@@ -63,8 +62,9 @@ export const CartModal = ({ open, setOpen }: CartModalProps) => {
 };
 
 const ModalProductsWrapper = styled.ul`
-  max-height: 70%;
+  max-height: 50%;
   overflow-y: auto;
+  padding: 0 16px;
 `;
 
 const ModalProductItem = styled.li`
