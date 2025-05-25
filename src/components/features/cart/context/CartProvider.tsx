@@ -1,5 +1,5 @@
 import { getShoppingCartList } from '@/components/features/cart';
-import { useShopErrorContext } from '@/pages/shop/context/useShopErrorContext';
+import { showErrorToast } from '@/services/toastStore';
 import {
   createContext,
   useCallback,
@@ -17,17 +17,15 @@ export const CartContext = createContext<{
 
 function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartList, setCartList] = useState<Cart[]>([]);
-  const { showErrorMessage, hideErrorMessage } = useShopErrorContext();
 
   const getShoppingCartDataHandler = useCallback(async () => {
     try {
       const cartsData = await getShoppingCartList();
       if (cartsData) setCartList(cartsData);
-      hideErrorMessage();
     } catch {
-      showErrorMessage('장바구니를 불러오는 데 실패했습니다.');
+      showErrorToast('장바구니를 불러오는 데 실패했습니다.');
     }
-  }, [showErrorMessage, hideErrorMessage]);
+  }, []);
 
   const refetch = () => {
     getShoppingCartDataHandler();

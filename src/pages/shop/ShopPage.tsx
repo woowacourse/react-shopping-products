@@ -7,14 +7,12 @@ import styled from '@emotion/styled';
 import { Modal } from '@jae-o/modal-component-module';
 import { Suspense, useMemo, useState } from 'react';
 import { ShopFilter, ShopHeader, ShopProductList } from './components';
-import { useShopErrorContext } from './context';
 
 function ShopPage() {
   const [filter, setFilter] = useState({
     category: '전체',
     sort: 'asc',
   });
-  const { isError } = useShopErrorContext();
 
   const handleCategoryOption = (value: string) => {
     setFilter((prev) => ({
@@ -47,7 +45,7 @@ function ShopPage() {
         <Suspense fallback={<Loading />}>
           <ShopProductList resource={wrapPromise<Product[]>(listPromiseData)} />
         </Suspense>
-        {isError && <ErrorToastMessage />}
+        <ErrorToastMessage />
       </ProductListContainer>
       <CartModal />
     </Modal>

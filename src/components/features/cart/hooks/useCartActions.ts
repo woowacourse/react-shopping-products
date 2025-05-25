@@ -1,4 +1,4 @@
-import { useShopErrorContext } from '@/pages/shop/context';
+import { showErrorToast } from '@/services/toastStore';
 import {
   addCartItem,
   deleteCartItem,
@@ -8,19 +8,17 @@ import {
 
 export function useCartActions() {
   const { cartCount: totalCartCount, refetch } = useCartContext();
-  const { showErrorMessage, hideErrorMessage } = useShopErrorContext();
 
   const addCart = async (productId: string) => {
     try {
       if (totalCartCount >= 50) {
-        showErrorMessage('장바구니는 최대 50개까지 담을 수 있습니다.');
+        showErrorToast('장바구니는 최대 50개까지 담을 수 있습니다.');
         return;
       }
       await addCartItem(productId);
       refetch();
-      hideErrorMessage();
     } catch {
-      showErrorMessage('장바구니에 담는 데 실패했습니다.');
+      showErrorToast('장바구니에 담는 데 실패했습니다.');
     }
   };
 
@@ -30,9 +28,8 @@ export function useCartActions() {
 
       await deleteCartItem(cartId);
       refetch();
-      hideErrorMessage();
     } catch {
-      showErrorMessage('장바구니에서 삭제하는 데 실패했습니다.');
+      showErrorToast('장바구니에서 삭제하는 데 실패했습니다.');
     }
   };
 
@@ -42,12 +39,11 @@ export function useCartActions() {
 
       await updateCartItem(cartId, quantity);
       refetch();
-      hideErrorMessage();
     } catch (error) {
       if (error instanceof Error) {
-        showErrorMessage(error.message);
+        showErrorToast(error.message);
       } else {
-        showErrorMessage('장바구니 수량 변경에 실패했습니다.');
+        showErrorToast('장바구니 수량 변경에 실패했습니다.');
       }
     }
   };

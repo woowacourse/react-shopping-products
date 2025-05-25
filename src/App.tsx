@@ -4,7 +4,6 @@ import { CartProvider } from './components/features/cart/context';
 import reset from './global/style/reset';
 import { theme } from './global/style/theme';
 import ShopPage from './pages/shop/ShopPage';
-import { ShopErrorProvider } from './pages/shop/context';
 
 function App() {
   return (
@@ -12,11 +11,9 @@ function App() {
       <Global styles={reset} />
       <MobileLayout>
         <ThemeProvider theme={theme}>
-          <ShopErrorProvider>
-            <CartProvider>
-              <ShopPage />
-            </CartProvider>
-          </ShopErrorProvider>
+          <CartProvider>
+            <ShopPage />
+          </CartProvider>
         </ThemeProvider>
       </MobileLayout>
     </>
