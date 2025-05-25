@@ -5,7 +5,8 @@ interface DataContextProps {
   setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
   isLoading: Record<string, unknown>;
   setIsLoading: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
-  //   error: string | null;
+  error: Record<string, string | null>;
+  setError: React.Dispatch<React.SetStateAction<Record<string, string | null>>>;
   refetchFunctions: Record<string, () => Promise<void>>;
   setRefetchFunction: (name: string, refetchFn: () => Promise<void>) => void;
 }
@@ -15,6 +16,7 @@ export const DataContext = createContext<DataContextProps | null>(null);
 export function DataProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<Record<string, unknown>>({});
   const [isLoading, setIsLoading] = useState<Record<string, boolean>>({});
+  const [error, setError] = useState<Record<string, string | null>>({});
   const [refetchFunctions, setRefetchFunctions] = useState<
     Record<string, () => Promise<void>>
   >({});
@@ -25,7 +27,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     },
     []
   );
-  //   const [error, setError] = useState<string | null>(null);
 
   return (
     <DataContext.Provider
@@ -34,6 +35,8 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         setData,
         isLoading,
         setIsLoading,
+        error,
+        setError,
         refetchFunctions,
         setRefetchFunction,
         // error,
