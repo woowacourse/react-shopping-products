@@ -39,6 +39,7 @@ const HeaderStyles = css`
   justify-content: space-between;
   align-items: center;
   padding: 24px;
+  z-index: 1000;
 `;
 
 const LogoStyles = css`

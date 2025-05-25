@@ -23,8 +23,8 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
   const cartItem = cartItems.find((item) => item.product.id === id);
   const cartItemId = cartItem?.id;
-
-  const { refetch: refetchCart } = useAPIContext({
+  const soldOut = product.quantity === cartItem?.quantity;
+  const { error, refetch: refetchCart } = useAPIContext({
     name: "cartItems",
     fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
   });
@@ -42,6 +42,10 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
 
   const handleUpdate = async () => {
     try {
+      if (localQuantity > cartItem!.product.quantity)
+        throw new Error(
+          "현재 남은 수량은 " + cartItem!.product.quantity + "개 입니다."
+        );
       await updateCartItemQuantity({
         endpoint: `/cart-items/${cartItemId}`,
         requestBody: {
@@ -56,10 +60,12 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
   };
 
   console.log("렌더링", name);
+  console.log("에러 상태:", error);
 
   return (
     <div key={id} className={CardFrame}>
       <div className={ImageFrame}>
+        {soldOut && <div className={ImageOverlay}>품절</div>}
         <img
           src={imageUrl || "./default.png"}
           alt={name}
@@ -80,7 +86,7 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
               <ProductStepper
                 quantity={localQuantity}
                 onDecreaseQuantity={() =>
-                  setLocalQuantity((prev) => (prev > 0 ? prev - 1 : 0))
+                  setLocalQuantity((prev) => (prev > 1 ? prev - 1 : 1))
                 }
                 onIncreaseQuantity={() => setLocalQuantity((prev) => prev + 1)}
                 disabled={!isEditing}
@@ -126,6 +132,23 @@ const CardFrame = css`
 const ImageFrame = css`
   width: 182px;
   height: 112px;
+  position: relative;
+  overflow: hidden;
+`;
+const ImageOverlay = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 182px;
+  height: 112px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  color: white;
+  font-weight: 600;
+  font-size: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const CardImage = css`
