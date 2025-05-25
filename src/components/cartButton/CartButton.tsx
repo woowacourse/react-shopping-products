@@ -1,9 +1,4 @@
-import {
-  addItemToCart,
-  MinusItem,
-  PlusItem,
-  removeItemToCart,
-} from "./cartButton.domain";
+import { addItemToCart } from "./cartButton.domain";
 import { useData } from "../../hooks/useData";
 import { ERROR_TYPE } from "../../hooks/useError";
 import {
@@ -11,6 +6,7 @@ import {
   ControlButtonContainer,
   CountControlButton,
 } from "./CartButton.css";
+import { useCartItemActions } from "../../hooks/useCartItemActions";
 
 interface CartButtonProps {
   isToggled: boolean;
@@ -25,16 +21,24 @@ interface CartButtonProps {
 
 function CartButton({
   isToggled,
-  setToggle,
   productId,
   cartId,
   productQuantity,
   quantity,
   cartAmount,
   setErrorTrue,
+  setToggle,
 }: CartButtonProps) {
   const { setCartItemIds, fetchCartProducts } = useData();
-
+  const { handlePlus, handleMinus } = useCartItemActions({
+    cartId,
+    productId,
+    productQuantity,
+    quantity,
+    setErrorTrue,
+    fetchCartProducts,
+    setCartItemIds,
+  });
   const showCountButton = async () => {
     if (productQuantity === 0) {
       return setErrorTrue("CART_ADD");
@@ -52,57 +56,14 @@ function CartButton({
     }
   };
 
-  const handlePlusButton = async () => {
-    try {
-      await PlusItem({
-        cartId,
-        productQuantity,
-        quantity,
-        setErrorTrue,
-        syncCartWithServer: fetchCartProducts,
-      });
-    } catch {
-      console.log("추가 실패");
-    }
-  };
-
-  const handleMinusButton = async () => {
-    if (quantity === 1) {
-      setToggle(!isToggled);
-      return handleRemove();
-    }
-    try {
-      await MinusItem({
-        cartId,
-        quantity,
-        syncCartWithServer: fetchCartProducts,
-      });
-    } catch {
-      console.log("빼기 실패");
-    }
-  };
-
-  const handleRemove = async () => {
-    try {
-      await removeItemToCart({
-        cartId,
-        productId,
-        setCartItemIds,
-        setErrorTrue,
-      });
-    } catch {
-      console.log("삭제실패");
-    }
-  };
-
   if (isToggled) {
     return (
       <div css={ControlButtonContainer}>
-        <button css={CountControlButton} onClick={handleMinusButton}>
+        <button css={CountControlButton} onClick={handleMinus}>
           -
         </button>
         <p>{quantity}</p>
-        <button css={CountControlButton} onClick={handlePlusButton}>
+        <button css={CountControlButton} onClick={handlePlus}>
           +
         </button>
       </div>

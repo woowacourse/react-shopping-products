@@ -1,10 +1,7 @@
+import { useCartItemActions } from "../../hooks/useCartItemActions";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { Product } from "../../types/response.types";
-import {
-  MinusItem,
-  PlusItem,
-  removeItemToCart,
-} from "../cartButton/cartButton.domain";
+
 import {
   CountContainer,
   CountControlButton,
@@ -40,46 +37,15 @@ function CartItem({
   productId,
   setCartItemIds,
 }: CartItemProps) {
-  const handlePlusButton = async () => {
-    try {
-      await PlusItem({
-        cartId,
-        productQuantity,
-        quantity,
-        setErrorTrue,
-        syncCartWithServer: fetchCartProducts,
-      });
-    } catch {
-      console.log("추가 실패");
-    }
-  };
-
-  const handleMinusButton = async () => {
-    if (quantity === 1) {
-      return handleRemove();
-    }
-    try {
-      await MinusItem({
-        cartId,
-        quantity,
-        syncCartWithServer: fetchCartProducts,
-      });
-    } catch {
-      console.log("빼기 실패");
-    }
-  };
-  const handleRemove = async () => {
-    try {
-      await removeItemToCart({
-        cartId,
-        productId,
-        setCartItemIds,
-        setErrorTrue,
-      });
-    } catch {
-      console.log("삭제실패");
-    }
-  };
+  const { handlePlus, handleMinus, handleRemove } = useCartItemActions({
+    cartId,
+    productId,
+    productQuantity,
+    quantity,
+    setErrorTrue,
+    fetchCartProducts,
+    setCartItemIds,
+  });
   return (
     <>
       <div css={ItemContainer}>
@@ -91,11 +57,11 @@ function CartItem({
               {(product.price * quantity).toLocaleString()}원
             </p>
             <div css={CountContainer}>
-              <button css={CountControlButton} onClick={handleMinusButton}>
+              <button css={CountControlButton} onClick={handleMinus}>
                 -
               </button>
               <p>{quantity}</p>
-              <button css={CountControlButton} onClick={handlePlusButton}>
+              <button css={CountControlButton} onClick={handlePlus}>
                 +
               </button>
             </div>
