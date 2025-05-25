@@ -7,7 +7,7 @@ export const productsMockData = {
       imageUrl:
         "https://thumbnail6.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/794f/cecbea5bdc654a11ae02d28b4d1f4bd2a03a7389eb2b8cc4a45c1c9f7d9b.jpg",
       category: "패션잡화",
-      quantity: 50,
+      quantity: 10,
     },
     {
       id: 5,
@@ -16,7 +16,7 @@ export const productsMockData = {
       imageUrl:
         "https://m.cocosocks.com/web/product/medium/202503/940897aced51144109baa4d145def01f.jpg",
       category: "패션잡화",
-      quantity: 50,
+      quantity: 5,
     },
     {
       id: 6,
@@ -25,7 +25,7 @@ export const productsMockData = {
       imageUrl:
         "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
       category: "식료품",
-      quantity: 50,
+      quantity: 10,
     },
     {
       id: 7,
@@ -34,7 +34,7 @@ export const productsMockData = {
       imageUrl:
         "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb5H3cg%2FbtsMRVqcfYF%2FvbKfazkKNY7I5CGkF1Ye9k%2Fimg.png",
       category: "식료품",
-      quantity: 50,
+      quantity: 20,
     },
     {
       id: 8,
@@ -43,7 +43,7 @@ export const productsMockData = {
       imageUrl:
         "https://media.bunjang.co.kr/product/223522208_%7Bcnt%7D_1683581287_w%7Bres%7D.jpg",
       category: "패션잡화",
-      quantity: 50,
+      quantity: 10,
     },
     {
       id: 9,
@@ -52,7 +52,7 @@ export const productsMockData = {
       imageUrl:
         "https://blog.kakaocdn.net/dn/qCz9R/btrmYEn7tZV/Uxh60wpS69qCFymU4WKOy0/img.jpg",
       category: "패션잡화",
-      quantity: 50,
+      quantity: 5,
     },
     {
       id: 22,
@@ -61,7 +61,7 @@ export const productsMockData = {
       imageUrl:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZeoCnBP_VbQ4pLozKbZOIu6B0A9FB3gaeQA&s",
       category: "패션잡화",
-      quantity: 50,
+      quantity: 5,
     },
     {
       id: 23,
@@ -70,7 +70,7 @@ export const productsMockData = {
       imageUrl:
         "https://image.zeta-ai.io/profile-image/793bf4d3-03de-4ac3-afe1-95be8a9bc62c/29cd5c72-f872-4dba-8be1-21ba51e4487f.jpeg?w=1080&q=90&f=webp",
       category: "패션잡화",
-      quantity: 50,
+      quantity: 10,
     },
     {
       id: 24,
@@ -79,7 +79,7 @@ export const productsMockData = {
       imageUrl:
         "https://cafe24.poxo.com/ec01/dmswo9075/HOvhRhvOk+Cp2KY4JuusAqBst4wtnsfbyXcejHyxMmXKvNELh5kEAFzUfK9ehG6ogDMwTwYJTLHHXeYVBq809g==/_/web/product/big/202408/19deee5e9d060d80a4180e2b2ecb6ce8.jpg",
       category: "패션잡화",
-      quantity: 50,
+      quantity: 15,
     },
     {
       id: 25,
@@ -88,7 +88,7 @@ export const productsMockData = {
       imageUrl:
         "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20171018_6%2F1508253136417Dlrjh_PNG%2FCdq22zpVpr92_XHROlHbxjJ0.png&type=sc960_832",
       category: "식료품",
-      quantity: 50,
+      quantity: 20,
     },
     {
       id: 27,
@@ -97,7 +97,7 @@ export const productsMockData = {
       imageUrl:
         "https://image.ohousecdn.com/i/bucketplace-v2-development/uploads/cards/snapshots/171653801239329270.jpeg?w=256&h=366&c=c",
       category: "식료품",
-      quantity: 50,
+      quantity: 10,
     },
     {
       id: 28,
@@ -115,7 +115,7 @@ export const productsMockData = {
       imageUrl:
         "https://i.namu.wiki/i/kQCwKHpwjePBTPXPTIizJSE0alohKKRlsGOJSrPhAdsODckkF05KNDV27xdydVqHLEdgM7yQu6NSUL-gE0t9SZH_cmaY8tMquJnfLQv5shH_pSdvsRc87hCcO5V3WBZrTwR23NYzoJJEoQIHWqAM4Q.webp",
       category: "패션잡화",
-      quantity: 50,
+      quantity: 5,
     },
     {
       id: 30,
@@ -124,7 +124,7 @@ export const productsMockData = {
       imageUrl:
         "https://www.esquirekorea.co.kr/resources_old/online/org_thumnail_image/eq/322f1c2e-fdd0-4b84-97ec-cfc8ee88c9d7.jpg",
       category: "식료품",
-      quantity: 50,
+      quantity: 10,
     },
     {
       id: 31,
@@ -133,7 +133,70 @@ export const productsMockData = {
       imageUrl:
         "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/218/20dddd283cca0cb01c9ac7285f20b704_res.jpeg",
       category: "식료품",
-      quantity: 50,
+      quantity: 10,
+    },
+    {
+      id: 32,
+      name: "튀김 신발",
+      price: 800000,
+      imageUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1bvoBgTtG0L-FBnZBsCOl5O-WcelpPH24IQ&s",
+      category: "패션 잡화",
+      quantity: 10,
+    },
+    {
+      id: 33,
+      name: "iPhone 16 Pro Max 1TB",
+      price: 2500000,
+      imageUrl:
+        "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQeMsjn-bl-bsreQfbsyA2l4EFwO5tsVDTYqUJY8GEctU6S1FkPyt7SxuALsS-9LZn2zXMvubxe5e0n_bEXY_JpTT_MsTfkQ1_MZuCD_FaFFzM5gM-YSxm3u246nBAM32NdyosLnQ&usqp=CAc",
+      category: "패션잡화",
+      quantity: 10,
+    },
+    {
+      id: 34,
+      name: "코카콜라 제로 1.5L",
+      price: 2100,
+      imageUrl:
+        "https://sitem.ssgcdn.com/88/19/87/item/0000006871988_i1_750.jpg",
+      category: "식료품",
+      quantity: 10,
+    },
+    {
+      id: 40,
+      name: "에리얼",
+      price: 123456789,
+      imageUrl:
+        "https://i.namu.wiki/i/Flt-SDlty8ckiV5lxLr40M6HtBx0bwlGYs5FVYglOkQvCX0LeXtHOzE4qH6NfHci0DR9a7xr9OS3Bvlhi6JX0g.webp",
+      category: "식료품",
+      quantity: 10,
+    },
+    {
+      id: 42,
+      name: "프린세스 미용놀이",
+      price: 1010,
+      imageUrl:
+        "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202204/19/ed8eddd4-0edd-40ad-af7d-44a171577c92.jpg",
+      category: "패션잡화",
+      quantity: 1,
+    },
+    {
+      id: 43,
+      name: "모쏠 캥거루라 태어나서 처음으로 데이트하는 ㄱㅋ",
+      price: 99999999,
+      imageUrl:
+        "https://lh3.googleusercontent.com/proxy/odVKuwM6Z8vZILjEfxFUSrCUC3PC6XTDHYV4lEz4mKobFYjHQqhIF9WvOdMMd6CNVVZnLvghnsF9kTSih-tMTAy4_ndA6Gs3r3dgQ_wAMgmjkZAA",
+      category: "식료품",
+      quantity: 10,
+    },
+    {
+      id: 57,
+      name: "후추",
+      price: 23000,
+      imageUrl:
+        "https://i.namu.wiki/i/t4M8eo-01JpLUZLIrpTD5vqBnquZLvQrGZJ4Dl3lcXtbk5AOlyK2k3k-VOQQNhFyor-zEHGhlEn60FisBPIqjF8i2xRq10Dbc_Hgg5IbSGM0ROgmychWXYmJzU95XhFmpLMhgUyUGPMv7S9-6Jh6PQ.webp",
+      category: "패션잡화",
+      quantity: 10,
     },
   ],
   pageable: {
