@@ -1,16 +1,23 @@
 import { css } from '@emotion/css';
 import { CartItem } from '../../types/cart.type';
 
-const Header = ({ shoppingCart }: { shoppingCart: CartItem[] }) => {
+interface HeaderProps {
+  shoppingCart: CartItem[];
+  handleOpen: () => void;
+}
+
+const Header = ({ shoppingCart, handleOpen }: HeaderProps) => {
   return (
     <header className={HeaderStyles}>
       <a href="/" className={LogoStyles}>
         SHOP
       </a>
-      <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
-      {shoppingCart && shoppingCart.length !== 0 && (
-        <div className={ShoppingCartCount}>{shoppingCart.length}</div>
-      )}
+      <button className={buttonStyles} onClick={handleOpen}>
+        <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
+        {shoppingCart && shoppingCart.length !== 0 && (
+          <div className={ShoppingCartCount}>{shoppingCart.length}</div>
+        )}
+      </button>
     </header>
   );
 };
@@ -40,7 +47,6 @@ const IconStyles = css`
   width: 32px;
   height: 32px;
   color: white;
-  cursor: pointer;
 `;
 
 const ShoppingCartCount = css`
@@ -57,4 +63,9 @@ const ShoppingCartCount = css`
   color: black;
   font-size: 12px;
   font-weight: 800;
+`;
+
+const buttonStyles = css`
+  all: unset;
+  cursor: pointer;
 `;
