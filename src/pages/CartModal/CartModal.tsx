@@ -31,6 +31,7 @@ export const CartModal = ({ open, setOpen }: CartModalProps) => {
                 quantityInCart={extractCartQuantity(cartItems, product.id)}
                 handleIncreaseQuantity={handleIncreaseQuantity}
                 handleDecreaseQuantity={handleDecreaseQuantity}
+                modal={true}
               />
 
               <DeleteButton
@@ -68,16 +69,23 @@ const ModalProductsWrapper = styled.ul`
 `;
 
 const ModalProductItem = styled.li`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px;
+
   display: flex;
   justify-content: space-between;
 
-  padding-top: 8px;
+  padding-top: 6px;
+  padding-bottom: 12px;
   border-top: 1px solid var(--color-grey);
 `;
 
 const DeleteButton = styled(ButtonContainer)`
   max-width: fit-content;
   padding: 4px 8px;
+
+  border-radius: 4px;
 `;
 
 const PriceContainer = styled.p`

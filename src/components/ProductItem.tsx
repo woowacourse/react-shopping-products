@@ -11,6 +11,7 @@ interface ProductItemProps {
   handleIncreaseQuantity: (id: number, quantity: number) => void;
   handleDecreaseQuantity: (id: number, quantity: number) => void;
   handleAddCartItem?: (id: number, quantity: number) => void;
+  modal?: boolean;
 }
 
 const ProductItem = ({
@@ -19,6 +20,7 @@ const ProductItem = ({
   handleAddCartItem,
   handleIncreaseQuantity,
   handleDecreaseQuantity,
+  modal = false,
 }: ProductItemProps) => {
   const DEFAULT_PRODUCT_IMAGE = './default-product.png';
 
@@ -33,10 +35,15 @@ const ProductItem = ({
   };
 
   return (
-    <ProductItemContainer>
-      <ProductItemImage src={product.imageUrl} alt={product.name} onError={handleImageError} />
-      <ProductItemCard>
-        <ProductItemInfo>
+    <ProductItemContainer modal={modal}>
+      <ProductItemImage
+        src={product.imageUrl}
+        alt={product.name}
+        onError={handleImageError}
+        modal={modal}
+      />
+      <ProductItemCard modal={modal}>
+        <ProductItemInfo modal={modal}>
           <ProductItemTitle>{product.name}</ProductItemTitle>
           <ProductItemPrice>{product.price.toLocaleString()}원</ProductItemPrice>
         </ProductItemInfo>
@@ -82,7 +89,7 @@ const ProductItem = ({
   );
 };
 
-const ProductItemContainer = styled.div`
+const ProductItemContainer = styled.div<{ modal: boolean }>`
   display: flex;
   flex-direction: column;
   max-width: 182px;
@@ -90,23 +97,29 @@ const ProductItemContainer = styled.div`
   gap: 8px;
   border-radius: 8px;
   background-color: var(--color-white);
+
+  ${({ modal }) => modal && `flex-direction: row; width: 100%;`}
 `;
 
-const ProductItemImage = styled.img`
+const ProductItemImage = styled.img<{ modal: boolean }>`
   height: 50%;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
+
+  ${({ modal }) => modal && `width: 100px; height: 100%; border-radius: 8px;`}
 `;
 
-const ProductItemCard = styled.div`
+const ProductItemCard = styled.div<{ modal: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 27px;
   margin: 8px;
   align-items: end;
+
+  ${({ modal }) => modal && `gap: 10px`}
 `;
 
-const ProductItemInfo = styled.div`
+const ProductItemInfo = styled.div<{ modal: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: end;

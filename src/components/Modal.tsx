@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Button from './Button';
+import { ButtonContainer } from './Button';
 import { useEffect, useRef } from 'react';
 
 interface ModalProps {
@@ -31,9 +31,15 @@ const Modal = ({ open, onClose, title, children }: ModalProps) => {
     <ModalContainer ref={modalRef} onClick={handleClickOutside} onClose={onClose}>
       <Title>{title}</Title>
       <ModalContent>{children}</ModalContent>
-      <Button type="button" id="closeButton" name="닫기" variant="bigBlack" onClick={onClose}>
+      <CloseButton
+        type="button"
+        id="closeButton"
+        name="닫기"
+        $variant="smallBlack"
+        onClick={onClose}
+      >
         닫기
-      </Button>
+      </CloseButton>
     </ModalContainer>
   );
 };
@@ -65,7 +71,19 @@ const Title = styled.h2`
   font-weight: var(--font-weight-title);
 `;
 
+const CloseButton = styled(ButtonContainer)`
+  width: 100%;
+  max-width: 100%;
+  height: 44px;
+  padding: 10px 0;
+
+  font-weight: var(--font-weight-subtitle);
+  line-height: 1.8;
+`;
+
 const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
+
+  overflow: auto;
 `;
