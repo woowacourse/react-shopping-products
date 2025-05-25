@@ -25,16 +25,6 @@ export default async function getProducts(
 
   if (category) params.append("category", category);
   const response = await fetch(`${baseUrl}/products?${params}`);
-
-  if (!response.ok) {
-    if (!response.ok) {
-      throw new Error(
-        `상품 목록을 가져오는데 실패했습니다. 상태 코드: ${response.status}`
-      );
-    }
-  }
-
   const data = await response.json();
-
   return data;
 }
