@@ -8,6 +8,7 @@ const products = [
     price: 1010,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 1,
   },
   {
     id: 5,
@@ -16,6 +17,7 @@ const products = [
     imageUrl:
       "https://m.cocosocks.com/web/product/medium/202503/940897aced51144109baa4d145def01f.jpg",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 57,
@@ -23,6 +25,7 @@ const products = [
     price: 23000,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 0,
   },
   {
     id: 4,
@@ -30,6 +33,7 @@ const products = [
     price: 28000,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 8,
@@ -38,6 +42,7 @@ const products = [
     imageUrl:
       "https://media.bunjang.co.kr/product/223522208_%7Bcnt%7D_1683581287_w%7Bres%7D.jpg",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 1,
@@ -45,6 +50,7 @@ const products = [
     price: 100000,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 2,
@@ -52,6 +58,7 @@ const products = [
     price: 100000,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 3,
@@ -59,6 +66,7 @@ const products = [
     price: 100000,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 9,
@@ -67,6 +75,7 @@ const products = [
     imageUrl:
       "https://blog.kakaocdn.net/dn/qCz9R/btrmYEn7tZV/Uxh60wpS69qCFymU4WKOy0/img.jpg",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 22,
@@ -75,6 +84,7 @@ const products = [
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZeoCnBP_VbQ4pLozKbZOIu6B0A9FB3gaeQA&s",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 29,
@@ -82,6 +92,7 @@ const products = [
     price: 850000,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 33,
@@ -89,6 +100,7 @@ const products = [
     price: 2500000,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 37,
@@ -96,6 +108,7 @@ const products = [
     price: 3000000,
     imageUrl: "https://image.yes24.com/goods/84933797/XL",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 24,
@@ -103,6 +116,7 @@ const products = [
     price: 3210000,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 93,
@@ -111,6 +125,7 @@ const products = [
     imageUrl:
       "https://mblogthumb-phinf.pstatic.net/data2/2004/8/2/82/2-7595.jpg?type=w420",
     category: "패션잡화",
+    quantity: 50,
   },
   {
     id: 23,
@@ -118,11 +133,101 @@ const products = [
     price: 60000000,
     imageUrl: "",
     category: "패션잡화",
+    quantity: 50,
+  },
+];
+
+const cartItems = [
+  {
+    id: 7264,
+    product: {
+      id: 42,
+      name: "프린세스 미용놀이",
+      price: 1010,
+      imageUrl: "",
+      category: "패션잡화",
+      quantity: 1,
+    },
+    quantity: 1,
+  },
+  {
+    id: 7275,
+    product: {
+      id: 5,
+      name: "동물 양말",
+      price: 20000,
+      imageUrl:
+        "https://m.cocosocks.com/web/product/medium/202503/940897aced51144109baa4d145def01f.jpg",
+      category: "패션잡화",
+      quantity: 10,
+    },
+    quantity: 1,
+  },
+  {
+    id: 7204,
+    product: {
+      id: 22,
+      name: "앵버잠옷",
+      price: 200000,
+      imageUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZeoCnBP_VbQ4pLozKbZOIu6B0A9FB3gaeQA&s",
+      category: "패션잡화",
+      quantity: 20,
+    },
+    quantity: 1,
   },
 ];
 
 export const handlers = [
   http.get(`${BASE_URL}products?sort=price%252Casc`, () => {
     return HttpResponse.json({ content: products });
+  }),
+
+  http.get(`${BASE_URL}cart-items`, () => {
+    return HttpResponse.json({ content: cartItems });
+  }),
+
+  http.post(`${BASE_URL}cart-items`, async ({ request }) => {
+    const newItem = await request.json();
+    const { productId } = newItem;
+    const item = products.find((item) => item.id === Number(productId));
+
+    if (item?.quantity === 0) {
+      return HttpResponse.json(
+        {
+          errorCode: "OUT_OF_STOCK",
+          message: "재고 수량을 초과하여 담을 수 없습니다.",
+        },
+        { status: 400 }
+      );
+    }
+
+    return HttpResponse.json({ status: 200 });
+  }),
+
+  http.patch(`${BASE_URL}cart-items/:id`, async ({ params, request }) => {
+    const newItem = await request.json();
+    const { quantity } = newItem;
+    const { id } = params;
+    const item = cartItems.find((item) => item.id === Number(id));
+
+    if (!item) {
+      return HttpResponse.json(
+        { errorCode: "NOT_FOUND", message: "상품을 찾을 수 없습니다." },
+        { status: 404 }
+      );
+    }
+
+    if (item?.quantity < Number(quantity)) {
+      return HttpResponse.json(
+        {
+          errorCode: "OUT_OF_STOCK",
+          message: "재고 수량을 초과하여 담을 수 없습니다.",
+        },
+        { status: 400 }
+      );
+    }
+
+    return HttpResponse.json({ status: 200 });
   }),
 ];

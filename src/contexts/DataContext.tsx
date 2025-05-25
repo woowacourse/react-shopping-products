@@ -69,7 +69,6 @@ export function useAPI<T>({
       // setErrorMessage("");
     } catch (error) {
       // setErrorMessage(error?.message || "에러가 발생했습니다.");
-      console.log("hi");
     }
   }, [fetcher, name, setData]);
 
