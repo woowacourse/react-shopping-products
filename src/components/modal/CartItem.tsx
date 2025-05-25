@@ -1,10 +1,9 @@
 import { useCartItemActions } from "../../hooks/useCartItemActions";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { Product } from "../../types/response.types";
+import ControlButton from "../controlButton/ControlButton";
 
 import {
-  CountContainer,
-  CountControlButton,
   DeleteButton,
   ItemContainer,
   ItemContent,
@@ -56,15 +55,11 @@ function CartItem({
             <p css={ItemPrice}>
               {(product.price * quantity).toLocaleString()}원
             </p>
-            <div css={CountContainer}>
-              <button css={CountControlButton} onClick={handleMinus}>
-                -
-              </button>
-              <p>{quantity}</p>
-              <button css={CountControlButton} onClick={handlePlus}>
-                +
-              </button>
-            </div>
+            <ControlButton
+              handleMinus={handleMinus}
+              handlePlus={handlePlus}
+              quantity={quantity}
+            />
           </div>
         </div>
         <button css={DeleteButton} onClick={handleRemove}>
