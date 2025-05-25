@@ -4,9 +4,11 @@ import {
   CartProduct,
   CartProductImage,
   DeleteButton,
-  ProductDescription,
   ProductPrice,
-  ProductTitle
+  ProductTitle,
+  StepperContainer,
+  StepperButton,
+  StepperQuantity
 } from "./Cart.styles";
 import { CartItem as CartItemType } from "../../../types/product";
 
@@ -15,7 +17,7 @@ interface CartItemProps {
 }
 
 function CartItem({cart}: CartItemProps) {
-  const { product } = cart;
+  const { product, quantity } = cart;
   const { name, price, imageUrl } = product;
 
   const imageSrc = imageUrl || woowaLogo;
@@ -26,7 +28,11 @@ function CartItem({cart}: CartItemProps) {
       <CartContent>
         <ProductTitle>{name}</ProductTitle>
         <ProductPrice>{price.toLocaleString()}원</ProductPrice>
-        <ProductDescription>버튼 추가</ProductDescription>
+        <StepperContainer>
+          <StepperButton>−</StepperButton>
+          <StepperQuantity>{quantity}</StepperQuantity>
+          <StepperButton>+</StepperButton>
+        </StepperContainer>
       </CartContent>
       <DeleteButton>삭제</DeleteButton>
     </CartProduct>
