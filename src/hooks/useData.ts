@@ -2,37 +2,44 @@ import { useEffect, useState } from 'react';
 import type { DataResourceType } from '../types/data';
 import type { LoadingStateType } from '../types/types';
 
-interface UseDataProps<T> {
-  fetchFunc: () => Promise<T>;
+interface UseDataProps<T, A extends unknown[]> {
+  fetchFunc: (...args: A) => Promise<T>;
+  defaultArgs: A;
 }
 
-const useData = <T>({ fetchFunc }: UseDataProps<T>): DataResourceType<T> => {
+const useData = <T, A extends unknown[]>({
+  fetchFunc,
+  defaultArgs,
+}: UseDataProps<T, A>): DataResourceType<T> & { refetch: (...args: A) => Promise<T | null> } => {
   const [data, setData] = useState<T | null>(null);
   const [loadingState, setLoadingState] = useState<LoadingStateType>('loadingInitial');
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = async (...args: A): Promise<T | null> => {
     setLoadingState('loadingInitial');
     try {
-      const newData = await fetchFunc();
-      setData(newData);
+      const result = await fetchFunc(...args);
+      setData(result);
       setLoadingState('success');
-      return newData;
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error);
-      }
+      return result;
+    } catch (err) {
+      if (err instanceof Error) setError(err);
       setLoadingState('success');
       return null;
     }
   };
 
-  //biome-ignore lint/correctness/useExhaustiveDependencies: --
+  // biome-ignore lint/correctness/useExhaustiveDependencies: --
   useEffect(() => {
-    fetchData();
+    fetchData(...defaultArgs);
   }, []);
 
-  return { data, loadingState, error, refetch: fetchData };
+  return {
+    data,
+    loadingState,
+    error,
+    refetch: fetchData,
+  };
 };
 
 export default useData;
