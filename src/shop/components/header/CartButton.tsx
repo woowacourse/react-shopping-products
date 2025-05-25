@@ -37,9 +37,9 @@ function CartButton() {
           titleText="장바구니"
           modalPosition="bottom"
           onClose={closeCartModal}
-          closeType="top"
+          closeType="none"
         >
-          <CartDetails />
+          <CartDetails onCloseClick={closeCartModal} />
         </BasicModal>
       )}
     </>
