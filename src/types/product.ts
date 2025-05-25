@@ -6,4 +6,5 @@ export interface ProductItemType {
   price: number;
   imageUrl: string;
   category: ProductCategory;
+  quantity: number;
 }
