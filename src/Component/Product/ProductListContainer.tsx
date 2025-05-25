@@ -13,7 +13,7 @@ export type CategoryValue = "all" | "grocery" | "fashion";
 export type SortValue = "low" | "high";
 
 export interface SelectOption extends Option {
-  param: string; // API 요청 시 쿼리로 사용할 실제 파라미터
+  param: string;
 }
 
 export const CATEGORY_OPTIONS: SelectOption[] = [
@@ -36,7 +36,11 @@ export default function ProductListContainer() {
   )!.param;
   const sortParam = PRICE_OPTIONS.find((o) => o.value === price)!.param;
 
-  const { data, status, refetch } = useAPI({
+  const {
+    data: products,
+    status,
+    refetch,
+  } = useAPI({
     fetcher: () =>
       getProducts(categoryParam, {
         page: 0,
@@ -75,7 +79,7 @@ export default function ProductListContainer() {
         setPrice={setPrice}
       />
 
-      <ProductList productList={data.content} />
+      <ProductList productList={products.content} />
     </>
   );
 }
