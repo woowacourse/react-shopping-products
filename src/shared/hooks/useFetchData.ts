@@ -20,7 +20,14 @@ export const useFetchData = <T>(options?: UseFetchDataOptions<T>) => {
   const fetch = useCallback(async (apiCall: () => Promise<T>) => {
     setData((prev) => ({ ...prev, isLoading: true, error: null }));
     try {
-      const result = await apiCall();
+      const promises = [apiCall()];
+
+      if (process.env.NODE_ENV !== 'test') {
+        promises.push(new Promise((resolve) => setTimeout(resolve, 2000)));
+      }
+
+      const [result] = await Promise.all(promises);
+
       setData({ data: result, isLoading: false, error: null });
     } catch (e) {
       setData((prev) => ({ ...prev, error: e as Error }));

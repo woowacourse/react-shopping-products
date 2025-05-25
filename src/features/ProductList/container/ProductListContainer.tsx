@@ -12,10 +12,10 @@ export const ProductListContainer = ({ children }: PropsWithChildren) => {
   const { productData } = useData();
   const containerRef = useRef<HTMLDivElement>(null);
   const { isScrolled } = useScrollStatus(containerRef);
-  // TODO : 간헐적으로 OverLay가 안보이는 현상 수정 필요
+
   return (
-    <StyledOuterContainer>
-      {productData?.isLoading ? (
+    <StyledOuterContainer isLoading={productData.isLoading}>
+      {productData.isLoading ? (
         <Flex
           direction="column"
           gap="0px"
@@ -49,12 +49,20 @@ export const ProductListContainer = ({ children }: PropsWithChildren) => {
   );
 };
 
-const StyledOuterContainer = styled.div`
+const StyledOuterContainer = styled.div<{ isLoading: boolean }>`
   position: relative;
   width: 100%;
   height: 100%;
   max-height: 670px;
   padding-bottom: 20px;
+
+  & > * {
+    transition:
+      opacity 0.4s ease-in-out,
+      transform 0.4s ease-in-out;
+    opacity: ${({ isLoading }) => (isLoading ? 1 : 1)};
+    transform: ${({ isLoading }) => (isLoading ? 'translateY(0)' : 'translateY(0)')};
+  }
 `;
 
 const StyledGradientOverlay = styled.div<{ isScrolled: boolean }>`
