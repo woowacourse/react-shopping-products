@@ -70,6 +70,7 @@ const CartModal = ({
       size="small"
       content={content}
       onClose={onClose}
+      buttonElements={[<CloseButton onClick={onClose}>닫기</CloseButton>]}
     />
   );
 };
@@ -124,4 +125,14 @@ export const ProductPrice = styled.div`
 export const ProductQuantity = styled.div`
   color: #666;
   font-size: 14px;
+`;
+
+export const CloseButton = styled.button`
+  background-color: #333333;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
 `;
