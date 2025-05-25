@@ -7,7 +7,11 @@ if (
   import.meta.env.VITE_ENABLE_MSW === "true"
 ) {
   const { worker } = await import("./mocks/browser");
-  await worker.start();
+  await worker.start({
+    serviceWorker: {
+      url: `${import.meta.env.BASE_URL}mockServiceWorker.js`,
+    },
+  });
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
