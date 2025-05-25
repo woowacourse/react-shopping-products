@@ -25,7 +25,7 @@ export function useAPI<T>({ fetcher, name }: UseAPIProps<T>) {
         ...prev,
         [name]: {
           isError: true,
-          errorMessage: (e as Error)?.message,
+          errorMessage: (e as Error).message,
         },
       }));
     } finally {
@@ -34,13 +34,15 @@ export function useAPI<T>({ fetcher, name }: UseAPIProps<T>) {
   }, [fetcher, name, setState, setIsLoading, setError]);
 
   useEffect(() => {
+    if (state[name] !== undefined || error[name] !== undefined) return;
+
     request();
-  }, [request]);
+  }, [name, state, request]);
 
   return {
     data: state[name] as T | null,
-    isLoading: isLoading[name],
-    error: error[name],
+    isLoading: isLoading[name] || false,
+    error: error[name] || { isError: false, errorMessage: '' },
     refetch: request,
   };
 }

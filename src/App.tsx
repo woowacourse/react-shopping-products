@@ -8,41 +8,63 @@ import { DropdownContainer, Section } from './App.styles';
 import Dropdown from './ui/components/Dropdown/Dropdown';
 import ProductList from './ui/components/ProductList/ProductList';
 import Title from './ui/components/Title/Title';
-import { CATEGORY, SORT_PRICE } from './constants/productConfig';
+import {
+  CATEGORY,
+  SORT_PRICE,
+  SORT_PRICE_MAP,
+} from './constants/productConfig';
 import {
   PRODUCT_SECTION_TITLE,
   SHOPPING_MALL_TITLE,
 } from './constants/shopInfoConfig';
-import { useProductListContext } from './context/ProductContext';
-import { useCartListContext } from './context/CartContext';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useToastContext } from './context/ToastContext';
 import Modal from './ui/components/Modal/Modal';
 import CartModal from './ui/components/CartModal/CartModal';
-import { CategoryType, SortKeyType } from './types/type';
+import {
+  CartItem,
+  CategoryType,
+  ProductElement,
+  SortKeyType,
+} from './types/type';
+import { getCartItem } from './api/fetchCart';
+import { useAPI } from './hooks/useAPI';
+import { getProduct } from './api/fetchProduct';
 
 function App() {
-  const {
-    isLoading: isProductLoading,
-    error: productError,
-    // category,
-    // sortBy,
-    handleSortPrice,
-    handleFilterCategory,
-  } = useProductListContext();
-
-  const {
-    isLoading: isCartLoading,
-    error: cartError,
-    handleAddCart,
-    handleRemoveCart,
-  } = useCartListContext();
-
   const { toast, showToast } = useToastContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [category, setCategory] = useState<CategoryType>(CATEGORY[0]);
   const [sortBy, setSortBy] = useState<SortKeyType>(SORT_PRICE[0]);
+
+  const mappedSortType = useMemo(() => {
+    return SORT_PRICE_MAP[sortBy];
+  }, [sortBy]);
+
+  const fetchProductList = useCallback(async () => {
+    return await getProduct({ page: 0, size: 50, sortBy: mappedSortType }).then(
+      (res) => res.content
+    );
+  }, [mappedSortType]);
+
+  const { isLoading: isProductLoading, error: productError } = useAPI<
+    ProductElement[]
+  >({
+    fetcher: fetchProductList,
+    name: `productList-${mappedSortType}`,
+  });
+
+  const fetchCartItems = useCallback(async () => {
+    return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
+      (res) => res.content
+    );
+  }, []);
+
+  const { isLoading: isCartLoading, error: cartError } = useAPI<CartItem[]>({
+    fetcher: fetchCartItems,
+    name: 'cartItems',
+  });
 
   const handleModalOpen = () => {
     setIsModalOpen(true);

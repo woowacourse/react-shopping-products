@@ -12,7 +12,10 @@ interface ProductListProps {
 }
 
 function ProductList({ category, sortBy }: ProductListProps) {
-  const mappedSortType = SORT_PRICE_MAP[sortBy];
+  const mappedSortType = useMemo(() => {
+    return SORT_PRICE_MAP[sortBy];
+  }, [sortBy]);
+
   const fetchProductList = useCallback(async () => {
     return await getProduct({ page: 0, size: 50, sortBy: mappedSortType }).then(
       (res) => res.content
@@ -21,7 +24,7 @@ function ProductList({ category, sortBy }: ProductListProps) {
 
   const { data: productList } = useAPI<ProductElement[]>({
     fetcher: fetchProductList,
-    name: `productList`,
+    name: `productList-${mappedSortType}`,
   });
 
   const filteredProductList = useMemo(() => {
