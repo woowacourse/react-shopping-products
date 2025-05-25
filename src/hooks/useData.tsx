@@ -13,7 +13,7 @@ import { useResource } from "./useResource";
 import { categoryType, sortType } from "../types/index.types";
 import { getQueryString } from "../utils/getQueryString";
 
-interface DataContextType {
+export interface DataContextType {
   cartItemIds: Record<"productId" | "cartId" | "quantity", number>[];
   products: ProductPageResponse | null;
   fetchCartProducts: () => void;
