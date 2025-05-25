@@ -10,8 +10,8 @@ interface HeaderProps {
 }
 
 function Header({ title, onModalOpen }: HeaderProps) {
-  const fetchCartItems = useCallback(() => {
-    return getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
+  const fetchCartItems = useCallback(async () => {
+    return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
       (res) => res.content
     );
   }, []);
