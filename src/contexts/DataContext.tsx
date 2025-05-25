@@ -32,17 +32,7 @@ interface DataContext {
   cartLoading: boolean;
 }
 
-export const DataContext = createContext<DataContext>({
-  filter: '',
-  setFilter: () => {},
-  sort: '',
-  setSort: () => {},
-  cartLength: 0,
-  mergedData: [],
-  productsLoading: false,
-  handleCartProducts: async () => {},
-  cartLoading: false,
-});
+export const DataContext = createContext<DataContext | null>(null);
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const [filter, setFilter] = useState('');
