@@ -7,4 +7,6 @@ export const IMAGE_PATH = Object.freeze({
   DEFAULT_FASHION: './default-fashion.svg',
   CHEVRON_DOWN: './chevron-down.svg',
   CHEVRON_UP: './chevron-up.svg',
+  BUTTON_MINUS: './button-minus.svg',
+  BUTTON_PLUS: './button-plus.svg',
 });
