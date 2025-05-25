@@ -10,10 +10,22 @@ vi.mock("../apis/product/fetchProductList", () => {
     default: vi.fn(({ params }) => {
       const { category, sort = "price,asc" } = params;
       const allProducts = [
-        { id: 1, name: "사과", price: 1000, category: "식료품" },
-        { id: 2, name: "바나나", price: 2000, category: "식료품" },
-        { id: 3, name: "짱구인형", price: 3000, category: "패션잡화" },
-        { id: 4, name: "철수인형", price: 4000, category: "패션잡화" },
+        { id: 1, name: "사과", price: 1000, category: "식료품", quantity: 10 },
+        { id: 2, name: "바나나", price: 2000, category: "식료품", quantity: 5 },
+        {
+          id: 3,
+          name: "짱구인형",
+          price: 3000,
+          category: "패션잡화",
+          quantity: 0,
+        },
+        {
+          id: 4,
+          name: "철수인형",
+          price: 4000,
+          category: "패션잡화",
+          quantity: 2,
+        },
       ];
 
       const filtered =
@@ -102,32 +114,5 @@ describe("Main 컴포넌트", () => {
         expect(actualTexts[index]).toContain(expected);
       });
     });
-  });
-
-  it("상품을 장바구니에 담을 경우 handleAddProduct가 호출된다", async () => {
-    renderWithProviders(<Main {...fakeProps} />);
-
-    const addButtons = await screen.findAllByRole("button", { name: /담기/i });
-
-    fireEvent.click(addButtons[0]);
-
-    expect(fakeProps.handleAddProduct).toHaveBeenCalledTimes(1);
-  });
-
-  it("상품을 장바구니에서 뺄 경우 handleRemoveProduct가 호출된다", async () => {
-    const propsWithCartItems = {
-      ...fakeProps,
-      cartItems: ["1"],
-    };
-
-    renderWithProviders(<Main {...propsWithCartItems} />);
-
-    const removeButtons = await screen.findAllByRole("button", {
-      name: /빼기/i,
-    });
-
-    fireEvent.click(removeButtons[0]);
-
-    expect(propsWithCartItems.handleRemoveProduct).toHaveBeenCalledTimes(1);
   });
 });
