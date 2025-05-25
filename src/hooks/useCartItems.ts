@@ -1,30 +1,22 @@
-import { useCallback, useEffect, useState } from "react";
 import { deleteCartItems, getCartItems, patchCartItems, postCartItems } from "../apis/cartItem";
 import { GetCartItemsResponse } from "../types/cartItem";
 import { useErrorMessage, useLoading } from "../contexts";
+import useQuery from "./useQuery";
 
 const useCartItems = () => {
-  const [cartItemsResponse, setCartItemsResponse] = useState<GetCartItemsResponse>();
   const { setErrorMessage } = useErrorMessage();
   const { setIsLoading } = useLoading();
 
-  const getCartItem = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await getCartItems({ page: 0, size: 20 });
-      setCartItemsResponse(data);
-    } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [setErrorMessage, setIsLoading]);
+  const { data, refetch } = useQuery<GetCartItemsResponse>({
+    queryKey: "/cart-items",
+    fetchFn: () => getCartItems({ page: 0, size: 20 }),
+  });
 
   const addCart = async (id: number) => {
     setIsLoading(true);
     try {
       await postCartItems({ quantity: 1, productId: id });
-      await getCartItem();
+      await refetch();
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
     } finally {
@@ -37,7 +29,7 @@ const useCartItems = () => {
 
     try {
       await patchCartItems({ id, quantity });
-      await getCartItem();
+      await refetch();
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
     } finally {
@@ -49,7 +41,7 @@ const useCartItems = () => {
     setIsLoading(true);
     try {
       await deleteCartItems({ id });
-      await getCartItem();
+      await refetch();
     } catch (e) {
       if (e instanceof Error) setErrorMessage(e.message);
     } finally {
@@ -63,24 +55,17 @@ const useCartItems = () => {
     return removeCart(id);
   };
 
-  useEffect(() => {
-    getCartItem();
-  }, [getCartItem]);
-
   // productId : {cartItemId: , quantity: }
   const cartItemsByProductId = Object.fromEntries(
-    (cartItemsResponse?.content || []).map((item) => [
-      item.product.id,
-      { cartItemId: item.id, quantity: item.quantity },
-    ]),
+    (data?.content || []).map((item) => [item.product.id, { cartItemId: item.id, quantity: item.quantity }]),
   );
 
-  const totalPrice = cartItemsResponse?.content.reduce((acc, cartItem) => {
+  const totalPrice = data?.content.reduce((acc, cartItem) => {
     return (acc += cartItem.quantity * cartItem.product.price);
   }, 0);
 
   return {
-    cartItems: cartItemsResponse?.content,
+    cartItems: data?.content,
     cartItemTotalPrice: totalPrice,
     handleCartItem,
     cartItemsByProductId,

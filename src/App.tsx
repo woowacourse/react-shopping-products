@@ -3,16 +3,23 @@ import ErrorPopup from "./components/common/ErrorPopup";
 import { ErrorProvider, LoadingProvider } from "./contexts";
 import ProductPage from "./pages/ProductPage";
 import Spinner from "./components/common/Spinner";
+import { QueryProvider } from "./contexts/QueryContext";
+import Header from "./components/Header";
+import CartModal from "./components/Cart/CartModal";
 
 function App() {
   return (
     <LoadingProvider>
       <ErrorProvider>
-        <div css={appStyle}>
-          <ProductPage />
-          <ErrorPopup />
-          <Spinner />
-        </div>
+        <QueryProvider>
+          <div css={appStyle}>
+            <Header />
+            <ProductPage />
+            <CartModal />
+            <ErrorPopup />
+            <Spinner />
+          </div>
+        </QueryProvider>
       </ErrorProvider>
     </LoadingProvider>
   );
