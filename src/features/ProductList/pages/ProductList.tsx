@@ -13,10 +13,13 @@ import { CATEGORY, SORT_ORDER } from '../constants/product';
 import { ProductListContainer } from '../container/ProductListContainer';
 import { useShopping } from '../hooks/useShopping';
 import { Modal } from '@/shared/components/Modal';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import PriceSummary from '../components/PriceSummary';
+import { APIContext } from '@/shared/context/APIContext';
 
 export const ProductListPage = () => {
+  const { data } = useContext(APIContext);
+  const cartData = Object.values(data['cartItem'] ?? {});
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
@@ -24,7 +27,6 @@ export const ProductListPage = () => {
   };
 
   const {
-    cartData,
     filteredData,
     isLoading,
     addCartItem,
@@ -56,7 +58,7 @@ export const ProductListPage = () => {
               SHOP
             </Text>
           }
-          right={<ShoppingBag count={cartData.length} handleShowModal={handleShowModal} />}
+          right={<ShoppingBag handleShowModal={handleShowModal} />}
         />
         <Flex
           direction="column"
