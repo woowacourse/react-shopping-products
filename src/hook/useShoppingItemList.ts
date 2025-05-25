@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import useCategory from './useCategory';
 import useSort from './useSort';
@@ -6,17 +6,47 @@ import useSort from './useSort';
 import { Product } from '../types/common';
 import { productApi } from '../api/product';
 
+interface FetchState<T> {
+  data: T[];
+  error: Error | null;
+  isLoading: boolean;
+}
+
+const initialState: FetchState<Product> = {
+  data: [],
+  error: null,
+  isLoading: false,
+};
+
+type FetchAction<T> =
+  | { type: 'FETCH_START' }
+  | { type: 'FETCH_SUCCESS'; payload: T[] }
+  | { type: 'FETCH_ERROR'; payload: Error };
+
+const fetchReducer = <T>(
+  state: FetchState<T>,
+  action: FetchAction<T>
+): FetchState<T> => {
+  switch (action.type) {
+    case 'FETCH_START':
+      return { ...state, isLoading: true };
+    case 'FETCH_SUCCESS':
+      return { ...state, data: action.payload, error: null, isLoading: false };
+    case 'FETCH_ERROR':
+      return { ...state, error: action.payload, data: [], isLoading: false };
+    default:
+      return state;
+  }
+};
+
 const useShoppingItemList = () => {
   const { category, selectCategory, resetCategory } = useCategory();
   const { sortType, selectSort, resetSort } = useSort();
-  const [data, setData] = useState<Product[]>([]);
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [state, dispatch] = useReducer(fetchReducer, initialState);
 
   useEffect(() => {
-    setIsLoading(true);
     const fetchData = async () => {
-      setError(null);
+      dispatch({ type: 'FETCH_START' });
 
       try {
         const response = await productApi.getProductList({
@@ -24,15 +54,14 @@ const useShoppingItemList = () => {
           category,
         });
 
-        setData(response);
+        dispatch({ type: 'FETCH_SUCCESS', payload: response });
       } catch (error) {
-        console.error('Failed to fetch products:', error);
-        setError(
-          new Error('상품 목록을 불러오는데 실패했습니다. 다시 시도해주세요.')
-        );
-        setData([]);
-      } finally {
-        setIsLoading(false);
+        dispatch({
+          type: 'FETCH_ERROR',
+          payload: new Error(
+            '상품 목록을 불러오는데 실패했습니다. 다시 시도해주세요.'
+          ),
+        });
       }
     };
 
@@ -45,13 +74,13 @@ const useShoppingItemList = () => {
   };
 
   return {
-    data,
+    data: state.data,
     selectSort,
     selectCategory,
     sortType,
     category,
-    error,
-    isLoading,
+    error: state.error,
+    isLoading: state.isLoading,
     retryFetch,
   };
 };
