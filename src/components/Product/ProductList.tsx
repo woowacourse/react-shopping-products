@@ -4,17 +4,18 @@ import ProductCard from "./ProductCard";
 import IconButton from "../common/Button/IconButton";
 import AddCart from "../icons/AddCart";
 import QuantitySelector from "../common/QuantitySelector";
+import useCartItems from "../../hooks/useCartItems";
 
 interface ProductListProps {
-  productsData: Content[];
-  cartItemsByProductId: Record<string, Record<"cartItemId" | "quantity", number>>;
-  handleCartItem: (type: "add" | "update" | "remove", id: number, quantity?: number) => void;
+  products: Content[];
 }
 
-const ProductList = ({ productsData, cartItemsByProductId, handleCartItem }: ProductListProps) => {
+const ProductList = ({ products }: ProductListProps) => {
+  const { handleCartItem, cartItemsByProductId } = useCartItems();
+
   return (
     <div css={productListStyle}>
-      {productsData?.map((product) => {
+      {products?.map((product) => {
         const { id, imageUrl, name, price, quantity } = product;
         const cartItem = cartItemsByProductId[id];
 

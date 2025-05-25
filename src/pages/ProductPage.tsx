@@ -4,11 +4,9 @@ import ProductList from "../components/Product/ProductList";
 import { OPTION } from "../constants";
 import Text from "../components/common/Text";
 import useProducts from "../hooks/useProducts";
-import useCartItems from "../hooks/useCartItems";
 
 const ProductPage = () => {
   const { products, filter, setFilter, sort, setSort } = useProducts();
-  const { handleCartItem, cartItemsByProductId } = useCartItems();
 
   return (
     <>
@@ -18,11 +16,7 @@ const ProductPage = () => {
           <Select options={OPTION.FILTER} selectedItem={filter} setSelectedItem={setFilter} />
           <Select options={OPTION.SORT} selectedItem={sort} setSelectedItem={setSort} />
         </div>
-        <ProductList
-          productsData={products}
-          cartItemsByProductId={cartItemsByProductId}
-          handleCartItem={handleCartItem}
-        />
+        <ProductList products={products} />
       </div>
     </>
   );
