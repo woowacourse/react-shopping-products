@@ -14,7 +14,7 @@ const wrapper = ({ children }: React.PropsWithChildren) => (
   </MemoryRouter>
 );
 
-describe("useProducts 훅: 상품 필터링 및 정렬 기능", () => {
+describe("useProducts 훅", () => {
   it("초기 상태가 올바르게 설정된다", async () => {
     const { result } = renderHook(() => useProducts(), { wrapper });
 
