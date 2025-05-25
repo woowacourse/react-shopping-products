@@ -6,9 +6,11 @@ import { QuantitySelector } from "../QuantitySelector/QuantitySelector";
 import Product from "../Product/Product";
 import { ProductContainerLayout } from "./ProductContainer.style";
 import { postCartItem } from "../../apis/cartItem";
+import { useFilteredProducts } from "../../hooks/useFilteredProducts";
 
 export default function ProductContainer() {
   const { cart, product, dispatch } = useShoppingContext();
+  const filteredProduct = useFilteredProducts();
 
   if (product.error)
     <div css={loadingLayout}>
@@ -32,7 +34,7 @@ export default function ProductContainer() {
 
   return (
     <div css={ProductContainerLayout}>
-      {product.item.map((product) => {
+      {filteredProduct.map((product) => {
         const selectedCardItems = cart.item.filter(
           (cartItem: CartItemType) => Number(product.id) === cartItem.product.id
         );

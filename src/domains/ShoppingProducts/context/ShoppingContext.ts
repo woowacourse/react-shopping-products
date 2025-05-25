@@ -13,6 +13,8 @@ type PayloadMap = {
 export type ContextState = {
   handleChangeFilter: (value: FilterOption) => void;
   handleChangeCategory: (value: CategoryOption) => void;
+  category: CategoryOption;
+  filter: FilterOption;
 } & {
   [K in keyof PayloadMap]: {
     item: PayloadMap[K][];

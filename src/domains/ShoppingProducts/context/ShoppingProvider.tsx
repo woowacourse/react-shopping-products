@@ -11,6 +11,8 @@ import {
 const initialValue: ContextState = {
   handleChangeFilter: () => {},
   handleChangeCategory: () => {},
+  filter: "낮은 가격순",
+  category: "전체",
   cart: { item: [], loading: false, error: null },
   product: { item: [], loading: false, error: null },
 };
@@ -20,12 +22,14 @@ export function ShoppingProvider({ children }: { children: React.ReactNode }) {
     React.Reducer<ContextState, ContextAction>
   >(contextReducer, initialValue);
 
-  const { filter, category, handleChangeFilter, handleChangeCategory } =
+  const { handleChangeFilter, handleChangeCategory, filter, category } =
     useFilter(dispatch);
   state.handleChangeFilter = handleChangeFilter;
   state.handleChangeCategory = handleChangeCategory;
+  state.filter = filter;
+  state.category = category;
 
-  useProducts(dispatch, state.product.loading, category, filter);
+  useProducts(dispatch, state.product.loading);
   useCartProducts(dispatch, state.cart.loading);
 
   return (

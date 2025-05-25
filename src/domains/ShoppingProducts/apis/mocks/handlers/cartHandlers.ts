@@ -3,6 +3,7 @@ import { mockCartItemResponse } from "../mockCartItemResponse";
 import { mockProductResponse } from "../mockProductResponse";
 import { CartItemType } from "../../types/cartItem";
 
+const products = structuredClone(mockProductResponse.content);
 export function createCartHandlers() {
   let cartItems: CartItemType[] = JSON.parse(
     JSON.stringify(mockCartItemResponse.content)
@@ -13,9 +14,7 @@ export function createCartHandlers() {
   };
 
   const findProductById = (id: number) => {
-    const product = mockProductResponse.content.find(
-      (product) => product.id === id
-    );
+    const product = products.find((product) => product.id === id);
     return product;
   };
 
