@@ -10,6 +10,7 @@ import { useFetchProducts } from '../hooks/useFetchProducts';
 import { useFetchCartItems } from '../hooks/useFetchCartItems';
 import { Container } from '../styles/common';
 import { ProductCardContainer } from '../styles/ProductCard';
+import Modal from '../components/Modal/Modal';
 
 function ProductPage() {
   const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
@@ -31,6 +32,7 @@ function ProductPage() {
 
   return (
     <Container>
+      <Modal />
       <Header />
       {errorMessage !== '' && <ErrorMessage errorMessage={errorMessage} />}
       {productsLoading && <DotWaveSpinner />}
