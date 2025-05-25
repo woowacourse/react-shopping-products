@@ -3,10 +3,10 @@ import Button from './Button';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import AddIcon from '/public/icon/add-icon.svg';
 import SubIcon from '/public/icon/sub-icon.svg';
-import { ProductItemType } from '../types/data';
+import { MockProductsType } from '../mocks/dummy';
 
 interface ProductItemProps {
-  product: ProductItemType;
+  product: MockProductsType;
   quantityInCart: number;
   handleIncreaseQuantity: (id: number, quantity: number) => void;
   handleDecreaseQuantity: (id: number, quantity: number) => void;
@@ -36,12 +36,14 @@ const ProductItem = ({
 
   return (
     <ProductItemContainer modal={modal}>
-      <ProductItemImage
-        src={product.imageUrl}
-        alt={product.name}
-        onError={handleImageError}
-        modal={modal}
-      />
+      <SoldOutWrapper isSoldOut={product.quantity === 0}>
+        <ProductItemImage
+          src={product.imageUrl}
+          alt={product.name}
+          onError={handleImageError}
+          modal={modal}
+        />
+      </SoldOutWrapper>
       <ProductItemCard modal={modal}>
         <ProductItemInfo modal={modal}>
           <ProductItemTitle>{product.name}</ProductItemTitle>
@@ -90,6 +92,7 @@ const ProductItem = ({
 };
 
 const ProductItemContainer = styled.div<{ modal: boolean }>`
+  position: relative;
   display: flex;
   flex-direction: column;
   max-width: 182px;
@@ -101,10 +104,38 @@ const ProductItemContainer = styled.div<{ modal: boolean }>`
   ${({ modal }) => modal && `flex-direction: row; width: 100%;`}
 `;
 
-const ProductItemImage = styled.img<{ modal: boolean }>`
-  height: 50%;
+const SoldOutWrapper = styled.div<{ isSoldOut: boolean }>`
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
+
+  ${({ isSoldOut }) =>
+    isSoldOut &&
+    `
+      &::after {
+        content: '품절';
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-black);
+        opacity: 0.7;
+        color: var(--color-white);
+        font-size: var(--font-size-title);
+        font-weight: var(--font-weight-title);
+      }
+    `}
+`;
+
+const ProductItemImage = styled.img<{ modal: boolean }>`
+  height: 100%;
+  display: block;
+  width: 100%;
+  object-fit: cover;
 
   ${({ modal }) => modal && `width: 100px; height: 100%; border-radius: 8px;`}
 `;
