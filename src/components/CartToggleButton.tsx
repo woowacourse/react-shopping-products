@@ -3,26 +3,19 @@ import { IMAGE_PATH } from '../constants/imagePath';
 import { ERROR_MSG } from '../constants/errorMessage';
 import { useError } from '../context/ErrorContext';
 import { MAX_CART_COUNT } from '../constants/magicNumber';
-import { CartProductIds } from '../hooks/useFetchCartItems';
+import { useFetchCartItems } from '../hooks/useFetchCartItems';
 
 type CartToggleButtonProps = {
   id: number;
-  cartProductsIds: CartProductIds[];
-  addToCart: (productId: number) => Promise<void>;
-  removeFromCart: (cartId: number) => Promise<void>;
 };
 
 export type CartToggleButtonWrapperProps = {
   isInCart: boolean;
 };
 
-const CartToggleButton = ({
-  id,
-  cartProductsIds,
-  addToCart,
-  removeFromCart,
-}: CartToggleButtonProps) => {
+const CartToggleButton = ({ id }: CartToggleButtonProps) => {
   const { setErrorMessage } = useError();
+  const { data: cartProductsIds, addToCart, removeFromCart } = useFetchCartItems();
 
   const isInCart = cartProductsIds.some((item) => item.productId === id);
   const cartId = cartProductsIds.find((item) => item.productId === id)?.cartId;

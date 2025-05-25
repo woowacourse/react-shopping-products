@@ -4,10 +4,10 @@ import ProductCard from '../components/ProductCard';
 import SelectDropdownContainer from '../components/SelectDropdown/SelectDropdownContainer';
 import ErrorMessage from '../components/ErrorMessage';
 import DotWaveSpinner from '../components/DotWaveSpinner';
-import { useFetchProducts } from '../hooks/useFetchProducts';
-import { useFetchCartItems } from '../hooks/useFetchCartItems';
 import { CATEGORY, SORT } from '../constants/selectOption';
 import { CategoryKey, SortKey, categoryQueryMap, sortQueryMap } from '../types/selectOptions';
+import { useFetchProducts } from '../hooks/useFetchProducts';
+import { useFetchCartItems } from '../hooks/useFetchCartItems';
 import { Container } from '../styles/common';
 import { ProductCardContainer } from '../styles/ProductCard';
 
@@ -26,13 +26,7 @@ function ProductPage() {
     sortQueryMap,
   });
 
-  const {
-    data: cartProductsIds,
-    error: cartError,
-    addToCart,
-    removeFromCart,
-  } = useFetchCartItems();
-
+  const { error: cartError } = useFetchCartItems();
   const errorMessage = productsError || cartError;
 
   return (
@@ -57,9 +51,6 @@ function ProductPage() {
                 category={category}
                 price={price}
                 imageUrl={imageUrl}
-                cartProductsIds={cartProductsIds}
-                addToCart={addToCart}
-                removeFromCart={removeFromCart}
               />
             ))}
           </ProductCardContainer>
