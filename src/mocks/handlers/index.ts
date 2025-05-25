@@ -1,4 +1,5 @@
 import { http } from 'msw';
+import { productsHandlers } from './productsHandlers';
 
 export const handlers = [
   http.get('/api/test', () => {
@@ -8,4 +9,6 @@ export const handlers = [
       },
     });
   }),
+
+  ...productsHandlers,
 ];
