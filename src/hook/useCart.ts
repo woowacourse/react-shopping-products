@@ -39,24 +39,15 @@ const useCart = () => {
   const removeCart = useCallback(
     async (cartId: number) => {
       try {
-        const cartItem = cartData.filter(
+        const targetId = cartData.find(
           (item: CartItem) => item.product.id === cartId
-        );
+        )?.id;
 
-        if (!cartItem) {
-          console.error('장바구니에서 해당 상품을 찾을 수 없습니다:', cartId);
-          openToast('장바구니에서 상품을 찾을 수 없습니다.', false);
-          return;
-        }
-
-        const targetId = cartItem[0].id;
-
-        await cartApi.removeFromCart(targetId);
+        await cartApi.removeFromCart(targetId as number);
 
         await loadCartData();
         openToast('상품이 장바구니에서 제거되었습니다.', true);
       } catch (error) {
-        console.error('장바구니 아이템 삭제 중 오류 발생:', error);
         openToast('장바구니 빼기에 실패했어요...', false);
       }
     },
