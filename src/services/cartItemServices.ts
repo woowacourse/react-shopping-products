@@ -1,13 +1,13 @@
-import { CartItemType } from '../types/data';
+import { MockCartItemType } from '../mocks/dummy';
 import apiClient from './apiClient';
 
-interface AddCartItemsProps {
+export interface AddCartItemsProps {
   productId: number;
   quantity: number;
 }
 
 interface CartItemsResponse {
-  content: CartItemType[];
+  content: MockCartItemType[];
 }
 
 export const getCartItems = async () => {
@@ -24,4 +24,12 @@ export const addCartItems = async (cartItem: AddCartItemsProps) => {
 
 export const removeCartItems = async (id: number) => {
   await apiClient({ method: 'DELETE', URI: `/cart-items/${id}` });
+};
+
+export const increaseCartItems = async (id: number, quantity: number) => {
+  await apiClient({ method: 'PATCH', URI: `/cart-items/${id}`, body: { quantity } });
+};
+
+export const decreaseCartItems = async (id: number, quantity: number) => {
+  await apiClient({ method: 'PATCH', URI: `/cart-items/${id}`, body: { quantity } });
 };

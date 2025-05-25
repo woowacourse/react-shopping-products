@@ -3,26 +3,39 @@ import Logo from '/public/logo.svg';
 import CartIcon from '/public/icon/cart.svg';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
-import useCartContext from '../hooks/useCartContext';
 import countDistinct from '../util/countDistinct';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import useCartHandler from '../hooks/useCartHandler';
+import useErrorHandler from '../hooks/useErrorHandler';
+import { CartModal } from '../pages/CartModal/CartModal';
 
 const Header = () => {
-  const { cartItemsIds } = useCartContext();
+  const [open, setOpen] = useState(false);
+  const { handleErrorMessage } = useErrorHandler();
+
+  const { cartItems } = useCartHandler({
+    handleErrorMessage,
+  });
+  const cartIds = cartItems.map(({ id }) => id);
+
+  const modalRoot = document.getElementById('root')!;
 
   return (
-    <HeaderContainer>
-      <HeaderLogoButton>
-        <Link to={ROUTES.PRODUCT_LIST_PAGE}>
-          <img src={Logo} alt="헤더 로고" />
-        </Link>
-      </HeaderLogoButton>
-      <HeaderCartButton>
-        <img src={CartIcon} alt="장바구니" />
-        {cartItemsIds.length !== 0 && (
-          <HeaderItemCount>{countDistinct(cartItemsIds)}</HeaderItemCount>
-        )}
-      </HeaderCartButton>
-    </HeaderContainer>
+    <>
+      <HeaderContainer>
+        <HeaderLogoButton>
+          <Link to={ROUTES.PRODUCT_LIST_PAGE}>
+            <img src={Logo} alt="헤더 로고" />
+          </Link>
+        </HeaderLogoButton>
+        <HeaderCartButton onClick={() => setOpen(true)}>
+          <img src={CartIcon} alt="장바구니" />
+          {cartItems.length !== 0 && <HeaderItemCount>{countDistinct(cartIds)}</HeaderItemCount>}
+        </HeaderCartButton>
+      </HeaderContainer>
+      {open && createPortal(<CartModal open={open} setOpen={setOpen} />, modalRoot)}
+    </>
   );
 };
 

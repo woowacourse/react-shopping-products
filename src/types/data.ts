@@ -1,4 +1,4 @@
-export type FetchMethodType = 'GET' | 'POST' | 'DELETE';
+export type FetchMethodType = 'GET' | 'POST' | 'DELETE' | 'PATCH';
 
 export type CategoryType = '전체' | '식료품' | '패션잡화';
 
