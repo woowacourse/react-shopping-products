@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { Global, css } from '@emotion/react';
+import { Global, css } from "@emotion/react";
 
 const resetCss = css`
   html,

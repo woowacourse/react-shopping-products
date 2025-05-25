@@ -1,1 +1,1 @@
-export type VariantsProps = 'smallBlack' | 'largeBlack';
+export type VariantsProps = "smallBlack" | "largeBlack";
