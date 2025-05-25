@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import AddButton from '../AddButton/AddButton';
 import { ProductProps } from '../../types/product';
 import {
@@ -15,6 +14,7 @@ import {
 } from './Product.style';
 import isValidImageUrl from '../../utils/isValidImageUrl';
 import { DEFAULT_IMAGE_URL } from '../../constants/products';
+import useProductQuantity from '../../hooks/useProductQuantity';
 
 function Product({
   id,
@@ -27,35 +27,20 @@ function Product({
   onClickUpdateCartItem,
   onClickDeleteCartItem,
 }: ProductProps) {
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
-  const isOutOfStock = quantity === 0;
-
-  const handleIncreaseQuantity = () => {
-    if (selectedQuantity < quantity) {
-      const newQuantity = selectedQuantity + 1;
-      setSelectedQuantity(newQuantity);
-      if (isAdd) {
-        onClickUpdateCartItem({ productId: id, quantity: newQuantity });
-      }
-    }
-  };
-
-  const handleDecreaseQuantity = () => {
-    if (selectedQuantity === 1) {
-      onClickDeleteCartItem({ productId: id });
-      setSelectedQuantity(1);
-      return;
-    }
-
-    if (selectedQuantity > 1) {
-      const newQuantity = selectedQuantity - 1;
-      setSelectedQuantity(newQuantity);
-    }
-  };
-
-  const handleAddToCart = () => {
-    onClickAddCartItem({ productId: id, quantity: selectedQuantity });
-  };
+  const {
+    selectedQuantity,
+    isOutOfStock,
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
+    handleAddToCart,
+  } = useProductQuantity({
+    id,
+    quantity,
+    isAdd,
+    onClickUpdateCartItem,
+    onClickDeleteCartItem,
+    onClickAddCartItem,
+  });
 
   return (
     <li className={productContainer}>
