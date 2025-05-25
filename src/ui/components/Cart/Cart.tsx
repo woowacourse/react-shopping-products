@@ -8,9 +8,10 @@ interface CartProps {
   cart: CartResponse;
   onUpdateQuantity?: (cartItemId: number, quantity: number) => Promise<void>;
   onRemoveItem?: (cartItemId: number) => Promise<void>;
+  onClose?: () => void;
 }
 
-function Cart({ cart, onUpdateQuantity, onRemoveItem }: CartProps) {
+function Cart({ cart, onUpdateQuantity, onRemoveItem, onClose }: CartProps) {
   if (!cart || !cart.content) {
     return null;
   }
@@ -34,7 +35,7 @@ function Cart({ cart, onUpdateQuantity, onRemoveItem }: CartProps) {
           />
         ))}
       </Container>
-      <CartTotal cart={cart} />
+      <CartTotal cart={cart} onClose={onClose} />
     </>
   );
 }

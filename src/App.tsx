@@ -83,6 +83,7 @@ function App() {
                     });
                   }
                 }}
+                onClose={() => setIsCartModalOpen(false)}
               />
             )}
           </Modal>
