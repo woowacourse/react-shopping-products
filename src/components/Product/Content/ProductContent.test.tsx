@@ -16,22 +16,25 @@ let { mockProductItems } = vi.hoisted(() => {
         id: 1,
         name: "메이토",
         price: 1000,
-        imageUrl: "",
+        imageUrl: "3",
         category: "식료품",
+        quantity: 0,
       },
       {
         id: 2,
         name: "토마토",
         price: 10000,
-        imageUrl: "",
+        imageUrl: "2",
         category: "식료품",
+        quantity: 1,
       },
       {
         id: 3,
         name: "우비",
         price: 100000,
-        imageUrl: "",
+        imageUrl: "1",
         category: "패션잡화",
+        quantity: 1,
       },
     ],
   };
@@ -83,8 +86,6 @@ describe("ProductContent Component", () => {
       fireEvent.click(
         within(filterDropdown).getByTestId(`dropdown-option-${category.label}`)
       );
-      // 모든 비동기 작업이 완료될 때까지 기다림
-      await new Promise((resolve) => setTimeout(resolve, 100));
     });
 
     await waitFor(() => {
@@ -121,8 +122,6 @@ describe("ProductContent Component", () => {
           `dropdown-option-${sortOption.label}`
         )
       );
-      // 모든 비동기 작업이 완료될 때까지 기다림
-      await new Promise((resolve) => setTimeout(resolve, 100));
     });
 
     await waitFor(() => {
@@ -150,6 +149,18 @@ describe("ProductContent Component", () => {
       "토마토",
       "메이토",
     ]);
+  });
+
+  it("상품이 품절인 경우 담기 버튼을 렌더링하지 않고 이미지에 품절 텍스트가 렌더링된다.", async () => {
+    await act(async () => {
+      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
+    });
+
+    const list = screen.getByRole("list");
+    expect(list).toBeInTheDocument();
+    const listItems = within(list).getAllByRole("listitem");
+    expect(within(listItems[0]).getByText("품절")).toBeInTheDocument();
+    expect(within(listItems[0]).queryByText("담기")).not.toBeInTheDocument();
   });
 
   it("등록된 상품이 없을 때 상품 목록 리스트가 렌더링되지 않고 대체 텍스트가 렌더링된다.", async () => {
