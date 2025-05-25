@@ -47,6 +47,7 @@ const Container = styled(Flex)`
 const PreviewBox = styled.div`
   position: relative;
   width: 100%;
+  height: 112px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,13 +61,17 @@ const PreviewText = styled.p`
 `;
 
 const InfoBox = styled(Flex)`
-  padding: 8px;
-  gap: 24px;
+  padding: 12px;
   align-items: flex-end;
 `;
 
 const ProductTitle = styled.p`
   ${({ theme }) => theme.title};
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const ProductPrice = styled.p`
