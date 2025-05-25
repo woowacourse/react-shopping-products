@@ -20,13 +20,13 @@ export const useControlQuantity = (productId: number) => {
     try {
       if (!isInCart) {
         await cartData.mutate(
-          () => addCartItem({ productId: productId, quantity: 1 }).then(() => {}),
+          () => addCartItem({ productId: productId, quantity: 1 }),
           getCartItemList
         );
       }
       if (isInCart) {
         await cartData.mutate(
-          () => updateCartItem(cartItem!.id, currentQuantity + 1),
+          () => updateCartItem({ cartId: cartItem!.id, newQuantity: currentQuantity + 1 }),
           getCartItemList
         );
       }
@@ -49,7 +49,7 @@ export const useControlQuantity = (productId: number) => {
     try {
       if (cartItem && currentQuantity !== 1) {
         await cartData.mutate(
-          () => updateCartItem(cartItem!.id, currentQuantity - 1),
+          () => updateCartItem({ cartId: cartItem!.id, newQuantity: currentQuantity - 1 }),
           getCartItemList
         );
       }
