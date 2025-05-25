@@ -3,8 +3,8 @@ import ItemCard from '../components/ItemCard/ItemCard';
 import Skeleton from '../components/Skeleton/Skeleton';
 import S from './Product.module.css';
 import CartModal from '../components/CartModal/CartModal';
-import { useContext, useState } from 'react';
-import { DataContext } from '../contexts/DataContext';
+import { useState } from 'react';
+import useFetchData from '../hooks/useFetchData';
 
 const Product = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,14 +17,12 @@ const Product = () => {
     mergedData,
     productsLoading,
     handleCartProducts,
-  } = useContext(DataContext);
+  } = useFetchData();
 
   return (
     <>
       {isOpen && (
         <CartModal
-          cartItemData={mergedData.filter(({ cartInfo }) => cartInfo.id !== -1)}
-          handleCartProducts={handleCartProducts}
           handleClose={() => {
             setIsOpen(false);
           }}

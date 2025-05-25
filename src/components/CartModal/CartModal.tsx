@@ -1,30 +1,15 @@
 import ItemModalCard from '../ItemModalCard/ItemModalCard';
 import S from './CartModal.module.css';
+import useFetchData from '../../hooks/useFetchData';
 
 interface ModalProps {
-  cartItemData: {
-    cartInfo: {
-      id: number;
-      quantity: number;
-    };
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-    category: string;
-    quantity: number;
-  }[];
-  handleCartProducts: (
-    keyword: 'add' | 'remove' | 'patch',
-    options: {
-      id: number;
-      quantity?: number;
-    }
-  ) => Promise<void>;
   handleClose: () => void;
 }
 
-const CartModal = ({ cartItemData, handleClose, handleCartProducts }: ModalProps) => {
+const CartModal = ({ handleClose }: ModalProps) => {
+  const { mergedData, handleCartProducts } = useFetchData();
+  const cartItemData = mergedData.filter(({ cartInfo }) => cartInfo.id !== -1);
+
   const totalPrice = cartItemData.reduce(
     (acc, { cartInfo, price }) => acc + cartInfo.quantity * price,
     0
