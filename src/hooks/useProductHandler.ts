@@ -49,7 +49,7 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
 
   return {
     products: (data.get('products') as MockProductsType[]) ?? [],
-    isProductsLoading: isLoading.get('products') ?? false,
+    isProductsLoading: isLoading.get('products') ?? true,
     categoryOption,
     handleCategoryOption,
     sortOption,

@@ -21,6 +21,9 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
   const { fetchData: fetchCartItems } = useFetchData<MockCartItemType[]>({
     dataName: 'cartItems',
   });
+  const { fetchData: updateCartItems } = useFetchData<MockCartItemType[]>({
+    dataName: 'cartItemsUpdate',
+  });
 
   const fetchTotalCartItems = useCallback(async () => {
     await fetchCartItems({
@@ -44,17 +47,17 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleAddCartItem = useCallback(
     async (productId: number, quantity: number) => {
-      await fetchCartItems({
+      await updateCartItems({
         apiCall: () => addCartItems({ productId, quantity }),
         onSuccess: fetchTotalCartItems,
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
         },
-        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
+        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItemsUpdate'),
       });
     },
-    [fetchCartItems, fetchTotalCartItems, handleErrorMessage, handleLoading],
+    [fetchTotalCartItems, handleErrorMessage, handleLoading, updateCartItems],
   );
 
   const handleRemoveCartItem = useCallback(
@@ -62,17 +65,17 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
       const cartItems = data.get('cartItems') as MockCartItemType[];
       const cartId = getCartId(cartItems, productId) as number;
 
-      await fetchCartItems({
+      await updateCartItems({
         apiCall: () => removeCartItems(cartId),
         onSuccess: fetchTotalCartItems,
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
         },
-        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
+        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItemsUpdate'),
       });
     },
-    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage, handleLoading],
+    [data, fetchTotalCartItems, handleErrorMessage, handleLoading, updateCartItems],
   );
 
   const handleIncreaseQuantity = useCallback(
@@ -80,17 +83,17 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
       const cartItems = data.get('cartItems') as MockCartItemType[];
       const cartId = getCartId(cartItems, productId) as number;
 
-      await fetchCartItems({
+      await updateCartItems({
         apiCall: () => increaseCartItems(cartId, quantity),
         onSuccess: fetchTotalCartItems,
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
         },
-        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
+        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItemsUpdate'),
       });
     },
-    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage, handleLoading],
+    [data, fetchTotalCartItems, handleErrorMessage, handleLoading, updateCartItems],
   );
 
   const handleDecreaseQuantity = useCallback(
@@ -98,22 +101,22 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
       const cartItems = data.get('cartItems') as MockCartItemType[];
       const cartId = getCartId(cartItems, productId) as number;
 
-      await fetchCartItems({
+      await updateCartItems({
         apiCall: () => decreaseCartItems(cartId, quantity),
         onSuccess: fetchTotalCartItems,
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
         },
-        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
+        handleLoading: (isLoading) => handleLoading(isLoading, 'cartItemsUpdate'),
       });
     },
-    [data, fetchCartItems, fetchTotalCartItems, handleErrorMessage, handleLoading],
+    [data, fetchTotalCartItems, handleErrorMessage, handleLoading, updateCartItems],
   );
 
   return {
     cartItems: (data.get('cartItems') as MockCartItemType[]) ?? [],
-    isCartItemsLoading: isLoading.get('cartItems') ?? false,
+    isCartItemsLoading: isLoading.get('cartItems') ?? true,
     handleAddCartItem,
     handleRemoveCartItem,
     handleIncreaseQuantity,
