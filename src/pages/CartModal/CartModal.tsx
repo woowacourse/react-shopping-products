@@ -25,7 +25,7 @@ export const CartModal = ({ open, setOpen }: CartModalProps) => {
       <ModalProductsWrapper>
         {products.map((product) => {
           return (
-            <ModalProductItem key={product.id}>
+            <ModalProductItem key={product.id} data-testid="modal-product-items">
               <ProductItem
                 product={product}
                 quantityInCart={extractCartQuantity(cartItems, product.id)}
