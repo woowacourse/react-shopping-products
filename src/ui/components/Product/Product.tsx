@@ -8,30 +8,42 @@ import {
   ProductName,
   SoldoutBakcgound,
   SoldOutText,
-  // SoldoutBakcgound,
-  // SoldOutText,
 } from './Product.styles';
-import { ProductElement } from '../../../types/type';
-import { useCartListContext } from '../../../context/CartContext';
+import { CartItem, ProductElement } from '../../../types/type';
 import QuantityController from '../QuantityController/QuantityController';
+import { useCartActions } from '../../../hooks/useCartAction';
+import { useCallback } from 'react';
+import { getCartItem } from '../../../api/fetchCart';
+import { useAPI } from '../../../hooks/useAPI';
 
 interface ProductProps {
   item: ProductElement;
-  // refetch: () => void;
 }
 
 function Product({ item }: ProductProps) {
   const { name, price, imageUrl, quantity } = item;
 
+  const fetchCartItems = useCallback(async () => {
+    return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
+      (res) => res.content
+    );
+  }, []);
+
+  const { data: cartList } = useAPI<CartItem[]>({
+    fetcher: fetchCartItems,
+    name: 'cartItems',
+  });
+
   const {
-    cartList,
     handleAddCart,
     handleIncreaseQuantity,
     handleDecreaseQuantity,
     handleRemoveCart,
-  } = useCartListContext();
+  } = useCartActions();
 
-  const cartItem = cartList.find((cartItem) => cartItem.product.id === item.id);
+  const cartItem = cartList?.find(
+    (cartItem) => cartItem.product.id === item.id
+  );
 
   return (
     <Container>
@@ -56,7 +68,7 @@ function Product({ item }: ProductProps) {
           onRemoveClick={() => handleRemoveCart(item)}
         />
       ) : (
-        <AddButton onClick={() => handleAddCart(item)} isDisable={!quantity} />
+        <AddButton onClick={() => handleAddCart(item)} />
       )}
     </Container>
   );

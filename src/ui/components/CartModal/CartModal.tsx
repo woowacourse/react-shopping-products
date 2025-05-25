@@ -1,10 +1,9 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   CART_MODAL_CLOSE_BUTTON_TEXT,
   CART_MODAL_TITLE,
   TOTAL_PRICE_TEXT,
 } from '../../../constants/shopInfoConfig';
-import { useCartListContext } from '../../../context/CartContext';
 import {
   Button,
   ModalAction,
@@ -16,16 +15,28 @@ import {
   TotalPriceText,
 } from './CartModal.styles';
 import CartItemRow from '../CartItemRow/CartItemRow';
+import { getCartItem } from '../../../api/fetchCart';
+import { useAPI } from '../../../hooks/useAPI';
+import { CartItem } from '../../../types/type';
 
 interface CartModalProps {
   onClose: () => void;
 }
 
 function CartModal({ onClose }: CartModalProps) {
-  const { cartList } = useCartListContext();
+  const fetchCartItems = useCallback(async () => {
+    return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
+      (res) => res.content
+    );
+  }, []);
+
+  const { data: cartList } = useAPI<CartItem[]>({
+    fetcher: fetchCartItems,
+    name: 'cartItems',
+  });
 
   const totalPrice = useMemo(() => {
-    return cartList.reduce(
+    return cartList?.reduce(
       (acc, item) => acc + item.product.price * item.quantity,
       0
     );
@@ -37,13 +48,13 @@ function CartModal({ onClose }: CartModalProps) {
         <ModalTitle>{CART_MODAL_TITLE}</ModalTitle>
       </ModalHeader>
       <ProductContainer>
-        {cartList.map((item) => (
+        {cartList?.map((item) => (
           <CartItemRow key={item.id} item={item} />
         ))}
       </ProductContainer>
       <PriceContainer>
         <TotalPriceText>{TOTAL_PRICE_TEXT}</TotalPriceText>
-        <TotalPrice>{totalPrice.toLocaleString()}원</TotalPrice>
+        <TotalPrice>{totalPrice?.toLocaleString()}원</TotalPrice>
       </PriceContainer>
       <ModalAction>
         <Button onClick={onClose}>{CART_MODAL_CLOSE_BUTTON_TEXT}</Button>

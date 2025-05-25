@@ -1,5 +1,5 @@
 import { DELETE_BUTTON_TEXT } from '../../../constants/shopInfoConfig';
-import { useCartListContext } from '../../../context/CartContext';
+import { useCartActions } from '../../../hooks/useCartAction';
 import { CartItem } from '../../../types/type';
 import QuantityController from '../QuantityController/QuantityController';
 import {
@@ -22,7 +22,8 @@ function CartItemRow({ item }: CartItemRowProps) {
   const { name, price, imageUrl } = product;
 
   const { handleIncreaseQuantity, handleDecreaseQuantity, handleRemoveCart } =
-    useCartListContext();
+    useCartActions();
+
   return (
     <Product>
       <ImageContainer>
