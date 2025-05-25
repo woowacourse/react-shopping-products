@@ -15,29 +15,20 @@ export const apiRequest = async <T>(
     ...options.headers,
   };
 
-  try {
-    const response = await fetch(url, {
-      method: options.method || 'GET',
-      headers,
-      body: options.body ? JSON.stringify(options.body) : undefined,
-    });
+  const response = await fetch(url, {
+    method: options.method || 'GET',
+    headers,
+    body: options.body ? JSON.stringify(options.body) : undefined,
+  });
 
-    validateResponse(response);
+  validateResponse(response);
 
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.includes('application/json')) {
-      return await response.json();
-    }
-
-    return response as T;
-  } catch (error) {
-    console.error('API 요청 중 오류 발생:', error);
-    if (error instanceof Error) {
-      throw new Error(`API 요청 오류: ${error.message}`);
-    }
-
-    throw new Error('API 요청 오류');
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    return await response.json();
   }
+
+  return response as T;
 };
 
 const validateResponse = (response: Response) => {
