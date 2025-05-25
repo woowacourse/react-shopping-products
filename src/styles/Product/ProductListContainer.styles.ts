@@ -7,3 +7,13 @@ export const StyledSpinnerWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+export const StyledDiv = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 64px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
