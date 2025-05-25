@@ -6,7 +6,7 @@ export const useProductList = () => {
   const [categorySelect, setCategorySelect] = useState('전체');
   const [priceSelect, setPriceSelect] = useState('전체');
 
-  const { refetch, isLoading } = useProductListRequest(categorySelect, priceSelect);
+  const { refetch, isLoading } = useProductListRequest(priceSelect, categorySelect);
 
   const handleCategorySelect = (category: string) => {
     setCategorySelect(category);
