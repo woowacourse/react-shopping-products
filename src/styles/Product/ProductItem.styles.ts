@@ -74,6 +74,7 @@ export const StyledQuantityController = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 `;
 
 export const StyledButtonText = styled.span`

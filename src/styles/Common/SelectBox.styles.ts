@@ -6,4 +6,5 @@ export const StyledSelect = styled.select`
   border-radius: 8px;
   border: 1px solid #0000001a;
   padding: 8px;
+  cursor: pointer;
 `;
