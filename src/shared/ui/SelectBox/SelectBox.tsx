@@ -2,7 +2,7 @@ import * as S from "./SelectBox.styles";
 
 interface Props<T extends string = string> {
   value: T;
-  onChange: React.Dispatch<React.SetStateAction<T>>;
+  onChange: (value: T) => void;
   options: readonly T[] | T[];
 }
 

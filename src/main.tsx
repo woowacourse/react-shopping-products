@@ -1,9 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
-import { APIProvider } from "./app/providers/ApiContext.tsx";
+import { APIProvider } from "./app/providers/APIContext.tsx";
 import { ModalProvider } from "./app/providers/ModalContext.tsx";
 import { ToastProvider } from "./app/providers/ToastContext.tsx";
+import { CartItemProvider } from "./entities/cartItem/model/providers/CartItemContext.tsx";
 import { BASE_URL } from "./shared/config/base.ts";
 
 async function enableMocking() {
@@ -21,13 +23,17 @@ async function enableMocking() {
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-      <ToastProvider>
-        <APIProvider>
-          <ModalProvider>
-            <App />
-          </ModalProvider>
-        </APIProvider>
-      </ToastProvider>
+      <BrowserRouter>
+        <ToastProvider>
+          <APIProvider>
+            <CartItemProvider>
+              <ModalProvider>
+                <App />
+              </ModalProvider>
+            </CartItemProvider>
+          </APIProvider>
+        </ToastProvider>
+      </BrowserRouter>
     </React.StrictMode>
   );
 });

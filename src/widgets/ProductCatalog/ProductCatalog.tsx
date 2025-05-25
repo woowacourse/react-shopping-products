@@ -1,4 +1,7 @@
-import { useProducts } from "../../entities/product/model/providers/useProducts";
+import { useEffect } from "react";
+import { useProducts } from "../../entities/product/model/hooks/useProducts";
+import { TOAST_TYPES } from "../../shared/config/toast";
+import useToast from "../../shared/hooks/useToast";
 import * as S from "./ProductCatalog.styles";
 import CategoryFilter from "./ProductControlPanel/CategoryFilter/CategoryFilter";
 import ProductSorter from "./ProductControlPanel/ProductSorter/ProductSorter";
@@ -10,7 +13,17 @@ const ProductsSkeleton = Array.from({ length: 6 }).map((_, index) => (
 ));
 
 const ProductCatalog = () => {
-  const { isLoading, products } = useProducts();
+  const { isLoading, products, error } = useProducts();
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    if (error) {
+      showToast({
+        message: error,
+        type: TOAST_TYPES.ERROR,
+      });
+    }
+  }, [error]);
 
   return (
     <S.ProductCatalog>

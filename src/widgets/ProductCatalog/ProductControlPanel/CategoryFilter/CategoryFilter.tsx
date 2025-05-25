@@ -1,14 +1,14 @@
-import { useProducts } from "../../../../entities/product/model/providers/useProducts";
+import { useProducts } from "../../../../entities/product/model/hooks/useProducts";
 import { categoryOptions } from "../../../../shared/config/filter";
 import SelectBox from "../../../../shared/ui/SelectBox/SelectBox";
 
 const CategoryFilter = () => {
-  const { selectedCategory, setSelectedCategory } = useProducts();
+  const { category, setCategory } = useProducts();
 
   return (
     <SelectBox
-      value={selectedCategory}
-      onChange={setSelectedCategory}
+      value={category}
+      onChange={setCategory}
       options={categoryOptions}
     />
   );

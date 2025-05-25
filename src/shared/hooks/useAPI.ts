@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo } from "react";
-import { APIContext } from "../../app/providers/ApiContext";
+import { APIContext } from "../../app/providers/APIContext";
 import { ApiError, isApiError } from "../api/apiClient";
 import { ApiDataKey, ApiDataTypeMap } from "../api/types/data";
 

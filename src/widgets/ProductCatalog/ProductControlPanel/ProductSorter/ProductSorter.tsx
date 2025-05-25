@@ -1,14 +1,14 @@
-import { useProducts } from "../../../../entities/product/model/providers/useProducts";
+import { useProducts } from "../../../../entities/product/model/hooks/useProducts";
 import { sortOptions } from "../../../../shared/config/filter";
 import SelectBox from "../../../../shared/ui/SelectBox/SelectBox";
 
 const ProductSorter = () => {
-  const { selectedSortOption, setSelectedSortOption } = useProducts();
+  const { sortOption, setSortOption } = useProducts();
 
   return (
     <SelectBox
-      value={selectedSortOption}
-      onChange={setSelectedSortOption}
+      value={sortOption}
+      onChange={setSortOption}
       options={sortOptions}
     />
   );
