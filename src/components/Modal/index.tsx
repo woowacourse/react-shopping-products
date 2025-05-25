@@ -1,3 +1,4 @@
+import closeIcon from '../../assets/close-icon.png';
 import {
   BackDrop,
   ModalLayout,
@@ -112,7 +113,7 @@ const Title = ({ title }: ModalTitleProps) => {
 const CloseButton = () => {
   const modalContext = useModalContext();
 
-  return <CloseIcon onClick={modalContext.onClose} />;
+  return <CloseIcon src={closeIcon} onClick={modalContext.onClose} />;
 };
 
 interface ModalContentsProps {

@@ -1,7 +1,7 @@
 import useCartItems from '../hooks/useCartItems';
 import useProducts from '../hooks/useProducts';
 import isInCart from '../utils/isIncart';
-import ProductItem from './ProductItem';
+import ProductItemListCard from './ProductItem/ProductItemListCard';
 import ProductItemSkeleton from './ProductItem/ProductItemSkeleton';
 
 const ProductItemsWithSkeleton = () => {
@@ -19,7 +19,7 @@ const ProductItemsWithSkeleton = () => {
       const cartItem = cartItems.find((item) => item.product.id === product.id);
       const cartItemQuantity = cartItem ? cartItem.quantity : 0;
       return (
-        <ProductItem
+        <ProductItemListCard
           key={product.id}
           product={product}
           cartItemQuantity={cartItemQuantity}

@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-import closeIcon from '../../assets/close-icon.png';
+import styled from '@emotion/styled';
 
 type PositionProps = {
   $position: 'center' | 'bottom';
@@ -47,10 +46,7 @@ function getModalWidth(size: 'small' | 'medium' | 'large') {
   }
 }
 
-const CloseIcon = styled.img.attrs({
-  src: closeIcon,
-  alt: 'Close Icon',
-})`
+const CloseIcon = styled.img`
   position: absolute;
   top: 30px;
   right: 20px;
