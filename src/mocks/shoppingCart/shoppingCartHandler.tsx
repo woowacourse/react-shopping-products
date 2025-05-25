@@ -62,7 +62,7 @@ export const shoppingCartHandler = [
     }
 
     const index = SHOPPING_CART_MOCK_DATA.content.findIndex(
-      (item) => item.id === id
+      (item) => item.product.id === id
     );
     if (index === -1) {
       return HttpResponse.json(
@@ -74,5 +74,32 @@ export const shoppingCartHandler = [
     SHOPPING_CART_MOCK_DATA.content.splice(index, 1);
 
     return new HttpResponse(null, { status: 204 });
+  }),
+
+  http.patch(`${baseUrl}/cart-items/:id`, async ({ request, params }) => {
+    const id = Number(params.id);
+    const { quantity } = (await request.json()) as { quantity: number };
+
+    if (!id || typeof quantity !== "number") {
+      return HttpResponse.json(
+        { error: "잘못된 요청입니다. (id 또는 quantity 누락)" },
+        { status: 400 }
+      );
+    }
+
+    const item = SHOPPING_CART_MOCK_DATA.content.find(
+      (cartItem) => cartItem.product.id === id
+    );
+
+    if (!item) {
+      return HttpResponse.json(
+        { error: "해당 상품이 장바구니에 없습니다." },
+        { status: 404 }
+      );
+    }
+
+    item.quantity = quantity;
+
+    return HttpResponse.json(item, { status: 200 });
   }),
 ];
