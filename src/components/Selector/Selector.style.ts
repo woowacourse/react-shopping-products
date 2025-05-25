@@ -13,6 +13,8 @@ const DropDownOptions = css`
   font-size: 10.63px;
   color: #4f4f4f;
   padding: 8px;
+  z-index: 2;
+  background-color: white;
 
   &:hover,
   &:focus {
