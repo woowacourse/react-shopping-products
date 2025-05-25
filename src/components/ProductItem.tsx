@@ -52,7 +52,7 @@ const ProductItem = ({
           <QuantityController>
             <Button
               type="button"
-              id="add"
+              id={`add-${product.id}`}
               name="추가"
               variant="smallWhite"
               onClick={() => handleIncreaseQuantity(product.id, quantityInCart + 1)}
@@ -62,7 +62,7 @@ const ProductItem = ({
             {quantityInCart}
             <Button
               type="button"
-              id="subtract"
+              id={`subtract-${product.id}`}
               name="감소"
               variant="smallWhite"
               onClick={() => handleDecreaseQuantity(product.id, quantityInCart - 1)}
@@ -73,7 +73,7 @@ const ProductItem = ({
         ) : (
           <Button
             type="button"
-            id="startAdd"
+            id={`start-add-${product.id}`}
             name="담기"
             variant="smallBlack"
             onClick={() => handleAddButtonClick(product.id, 1)}

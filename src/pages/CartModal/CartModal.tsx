@@ -36,7 +36,7 @@ export const CartModal = ({ open, setOpen }: CartModalProps) => {
 
               <DeleteButton
                 type="button"
-                id="deleteButton"
+                id={`delete-button-${product.id}`}
                 name="삭제"
                 $variant="smallWhite"
                 onClick={() => handleRemoveCartItem(product.id)}

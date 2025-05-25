@@ -33,7 +33,7 @@ const Modal = ({ open, onClose, title, children }: ModalProps) => {
       <ModalContent>{children}</ModalContent>
       <CloseButton
         type="button"
-        id="closeButton"
+        id={`close-button-${title}`}
         name="닫기"
         $variant="smallBlack"
         onClick={onClose}
