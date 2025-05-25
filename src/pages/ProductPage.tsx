@@ -37,7 +37,7 @@ function ProductPage() {
 
   return (
     <Container>
-      <Header cartCount={cartProductsIds.length} />
+      <Header />
       {errorMessage !== '' && <ErrorMessage errorMessage={errorMessage} />}
       {productsLoading && <DotWaveSpinner />}
       {!productsLoading && (

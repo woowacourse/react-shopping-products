@@ -1,11 +1,11 @@
 import { HeaderWrapper, CartWrapper, CartCountTextWrapper } from '../styles/Header';
 import { IMAGE_PATH } from '../constants/imagePath';
+import { useFetchCartItems } from '../hooks/useFetchCartItems';
 
-type HeaderProps = {
-  cartCount: number;
-};
+const Header = () => {
+  const { data: cartProductsIds } = useFetchCartItems();
+  const cartCount = cartProductsIds.length;
 
-const Header = ({ cartCount }: HeaderProps) => {
   return (
     <HeaderWrapper>
       <img src={IMAGE_PATH.HEADER_TITLE} />
