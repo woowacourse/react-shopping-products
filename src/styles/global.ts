@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 
 export const globalStyle = css`
   body {
-    max-width: 400px;
+    max-width: 450px;
     width: 100%;
     justify-self: center;
     display: flex;
