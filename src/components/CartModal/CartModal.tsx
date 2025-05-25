@@ -38,29 +38,41 @@ const CartModal = ({
       stockQuantity: product?.quantity,
     };
   });
-  console.log("Cart Items:", cartItemInfo);
+
+  const totalPrice = cartItems.reduce((sum, item) => {
+    const itemTotal = (item.price ?? 0) * item.cartQuantity;
+    return sum + itemTotal;
+  }, 0);
+
   const content = (
-    <CartContent>
-      {cartItems.length === 0 ? (
-        <EmptyCart>장바구니가 비어있습니다.</EmptyCart>
-      ) : (
-        cartItems.map((item) => (
-          <CartItem key={item.cartId}>
-            <ProductImage src={item.imageUrl} alt={item.name} />
-            <ProductInfo>
-              <ProductName>{item.name}</ProductName>
-              <ProductPrice>{item.price?.toLocaleString()}원</ProductPrice>
-              <QuantityController
-                stockQuantity={item.stockQuantity ?? 0}
-                cartQuantity={item.cartQuantity}
-                onIncrease={() => onQuantityIncrease(item.productId)}
-                onDecrease={() => onQuantityDecrease(item.productId)}
-              />
-            </ProductInfo>
-          </CartItem>
-        ))
+    <>
+      <CartContent>
+        {cartItems.length === 0 ? (
+          <EmptyCart>장바구니가 비어있습니다.</EmptyCart>
+        ) : (
+          cartItems.map((item) => (
+            <CartItem key={item.cartId}>
+              <ProductImage src={item.imageUrl} alt={item.name} />
+              <ProductInfo>
+                <ProductName>{item.name}</ProductName>
+                <ProductPrice>{item.price?.toLocaleString()}원</ProductPrice>
+                <QuantityController
+                  stockQuantity={item.stockQuantity ?? 0}
+                  cartQuantity={item.cartQuantity}
+                  onIncrease={() => onQuantityIncrease(item.productId)}
+                  onDecrease={() => onQuantityDecrease(item.productId)}
+                />
+              </ProductInfo>
+            </CartItem>
+          ))
+        )}
+      </CartContent>
+      {cartItems.length > 0 && (
+        <TotalPriceWrapper>
+          총 결제 금액<TotalPrice>{totalPrice.toLocaleString()}원</TotalPrice>
+        </TotalPriceWrapper>
       )}
-    </CartContent>
+    </>
   );
 
   return (
@@ -78,7 +90,7 @@ const CartModal = ({
 export default CartModal;
 
 export const CartContent = styled.div`
-  max-height: 400px;
+  height: 340px;
   overflow-y: auto;
 `;
 
@@ -135,4 +147,18 @@ export const CloseButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
+`;
+const TotalPriceWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 12px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 12px;
+`;
+
+const TotalPrice = styled.span`
+  margin-left: 8px;
+  font-size: 20px;
 `;
