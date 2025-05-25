@@ -4,8 +4,8 @@ import { SortOption } from '../types/common';
 const useSort = () => {
   const [sortType, setSortType] = useState<SortOption>('낮은 가격순');
 
-  const selectSort = (content: string) => {
-    setSortType(content as SortOption);
+  const selectSort = (content: SortOption) => {
+    setSortType(content);
   };
 
   const resetSort = () => {
