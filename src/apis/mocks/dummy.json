@@ -81,14 +81,6 @@
     "quantity": 1
   },
   {
-    "id": 57,
-    "name": "후추",
-    "price": 23000,
-    "imageUrl": "https://i.namu.wiki/i/t4M8eo-01JpLUZLIrpTD5vqBnquZLvQrGZJ4Dl3lcXtbk5AOlyK2k3k-VOQQNhFyor-zEHGhlEn60FisBPIqjF8i2xRq10Dbc_Hgg5IbSGM0ROgmychWXYmJzU95XhFmpLMhgUyUGPMv7S9-6Jh6PQ.webp",
-    "category": "패션잡화",
-    "quantity": 10
-  },
-  {
     "id": 4,
     "name": "달 무드등",
     "price": 28000,
@@ -111,14 +103,6 @@
     "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZeoCnBP_VbQ4pLozKbZOIu6B0A9FB3gaeQA&s",
     "category": "패션잡화",
     "quantity": 6
-  },
-  {
-    "id": 29,
-    "name": "19×19×19 큐브",
-    "price": 850000,
-    "imageUrl": "https://i.namu.wiki/i/kQCwKHpwjePBTPXPTIizJSE0alohKKRlsGOJSrPhAdsODckkF05KNDV27xdydVqHLEdgM7yQu6NSUL-gE0t9SZH_cmaY8tMquJnfLQv5shH_pSdvsRc87hCcO5V3WBZrTwR23NYzoJJEoQIHWqAM4Q.webp",
-    "category": "패션잡화",
-    "quantity": 20
   },
   {
     "id": 33,

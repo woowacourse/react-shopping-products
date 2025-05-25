@@ -5,7 +5,14 @@ import App from "./App.tsx";
 async function enableMocking() {
   const { worker } = await import("./apis/mocks/browser.ts");
 
+  const isLocalhost = location.hostname === "localhost";
+
   return worker.start({
+    serviceWorker: {
+      url: isLocalhost
+        ? "/mockServiceWorker.js"
+        : "/react-shopping-products/mockServiceWorker.js",
+    },
     onUnhandledRequest: "bypass",
   });
 }
