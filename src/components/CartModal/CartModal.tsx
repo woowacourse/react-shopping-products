@@ -58,7 +58,7 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
 
   return createPortal(
     <Modal isOpen={isOpen} onClose={handleClose}>
-      <Modal.Content position="bottom" size="large">
+      <Modal.Content position="bottom" size="medium">
         <Modal.Header direction="row" align="start" justify="start">
           <Modal.Title tag="h1" fontSize="25px" fontWeight="700">
             장바구니
