@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
-import { getCartItems, postCartItems, deleteCartItem } from '../api/cartItems';
+import { getCartItems, postCartItems, deleteCartItem, patchCartItem } from '../api/cartItems';
 import { useData } from './useData';
 import { ERROR_MSG } from '../constants/errorMessage';
 
 export type CartProductIds = {
   productId: number;
   cartId: number;
+  quantity: number;
 };
 
 export const useFetchCartItems = () => {
@@ -14,6 +15,7 @@ export const useFetchCartItems = () => {
     const mapped: CartProductIds[] = data.map((item) => ({
       productId: item.product.id,
       cartId: item.id,
+      quantity: item.quantity,
     }));
     return mapped;
   }, []);
@@ -41,11 +43,21 @@ export const useFetchCartItems = () => {
     }
   };
 
+  const updateCartItem = async (cartId: number, quantity: number) => {
+    try {
+      await patchCartItem(cartId, quantity);
+      refetch();
+    } catch (error) {
+      console.error(ERROR_MSG.CART_UPDATE_FAIL, error);
+    }
+  };
+
   return {
     data: data || [],
     isLoading,
     error,
     addToCart,
     removeFromCart,
+    updateCartItem,
   };
 };

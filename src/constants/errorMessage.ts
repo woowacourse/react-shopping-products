@@ -6,4 +6,5 @@ export const ERROR_MSG = {
   CART_LIMIT_EXCEEDED: `장바구니에는 최대 ${MAX_CART_COUNT}종류의 상품만 담을 수 있습니다.`,
   CART_ADD_FAIL: '장바구니에 상품을 추가하지 못했습니다.',
   CART_REMOVE_FAIL: '장바구니에서 상품을 제거하지 못했습니다.',
+  CART_UPDATE_FAIL: '장바구니에서 상품 수량을 변경하지 못했습니다.',
 };

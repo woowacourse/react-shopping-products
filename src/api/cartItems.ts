@@ -43,3 +43,12 @@ export const deleteCartItem = async (cartId: number): Promise<void> => {
     method: 'DELETE',
   });
 };
+
+export const patchCartItem = async (cartId: number, quantity: number): Promise<void> => {
+  return await apiRequest<void>(`${END_POINT.CART}/${cartId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      quantity,
+    }),
+  });
+};
