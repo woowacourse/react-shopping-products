@@ -1,7 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { AddCartItemsProps } from '../../services/cartItemServices';
-import { MOCK_CART_ITEMS, MOCK_PRODUCTS } from '../dummy';
-import { CartItemType } from '../../types/data';
+import { MOCK_CART_ITEMS, MOCK_PRODUCTS, MockCartItemType } from '../dummy';
 
 interface AddCartItemsParams {
   id: string;
@@ -12,7 +11,7 @@ const addBaseURL = (endpoint: string) => {
 };
 
 const handlers = [
-  http.get<never, CartItemType>(addBaseURL('/cart-items'), () => {
+  http.get<never, MockCartItemType>(addBaseURL('/cart-items'), () => {
     return HttpResponse.json({ content: MOCK_CART_ITEMS }, { status: 200 });
   }),
 

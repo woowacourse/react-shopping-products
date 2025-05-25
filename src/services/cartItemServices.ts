@@ -1,4 +1,4 @@
-import { CartItemType } from '../types/data';
+import { MockCartItemType } from '../mocks/dummy';
 import apiClient from './apiClient';
 
 export interface AddCartItemsProps {
@@ -7,7 +7,7 @@ export interface AddCartItemsProps {
 }
 
 interface CartItemsResponse {
-  content: CartItemType[];
+  content: MockCartItemType[];
 }
 
 export const getCartItems = async () => {

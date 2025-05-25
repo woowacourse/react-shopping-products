@@ -4,6 +4,10 @@ export interface MockProductsType extends ProductItemType {
   quantity: number;
 }
 
+export interface MockCartItemType extends CartItemType {
+  product: MockProductsType;
+}
+
 export const MOCK_PRODUCTS: MockProductsType[] = Array.from({ length: 20 }, (_, index) => ({
   id: index + 1,
   name: `상품 ${index + 1}`,
@@ -13,7 +17,7 @@ export const MOCK_PRODUCTS: MockProductsType[] = Array.from({ length: 20 }, (_, 
   quantity: 20,
 }));
 
-export const MOCK_CART_ITEMS: CartItemType[] = Array.from({ length: 5 }, (_, index) => ({
+export const MOCK_CART_ITEMS: MockCartItemType[] = Array.from({ length: 5 }, (_, index) => ({
   id: index + 1,
   quantity: 3,
   product: MOCK_PRODUCTS[index],

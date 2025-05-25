@@ -6,11 +6,11 @@ import {
   increaseCartItems,
   removeCartItems,
 } from '../services/cartItemServices';
-import { CartItemType } from '../types/data';
 import useFetchData from './useFetchData';
 import { DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 import { getCartId } from '../domain/cartItem';
 import useDataContext from './useDataContext';
+import { MockCartItemType } from '../mocks/dummy';
 
 interface CartHandlerProps {
   handleErrorMessage: (errorMessage: string) => void;
@@ -18,7 +18,7 @@ interface CartHandlerProps {
 
 const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
   const { data, setData, isLoading } = useDataContext();
-  const { fetchData: fetchCartItems } = useFetchData<CartItemType[]>({
+  const { fetchData: fetchCartItems } = useFetchData<MockCartItemType[]>({
     dataName: 'cartItems',
   });
 
@@ -57,7 +57,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleRemoveCartItem = useCallback(
     async (productId: number) => {
-      const cartItems = data.get('cartItems') as CartItemType[];
+      const cartItems = data.get('cartItems') as MockCartItemType[];
       const cartId = getCartId(cartItems, productId) as number;
 
       await fetchCartItems({
@@ -74,7 +74,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleIncreaseQuantity = useCallback(
     async (productId: number, quantity: number) => {
-      const cartItems = data.get('cartItems') as CartItemType[];
+      const cartItems = data.get('cartItems') as MockCartItemType[];
       const cartId = getCartId(cartItems, productId) as number;
 
       await fetchCartItems({
@@ -91,7 +91,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleDecreaseQuantity = useCallback(
     async (productId: number, quantity: number) => {
-      const cartItems = data.get('cartItems') as CartItemType[];
+      const cartItems = data.get('cartItems') as MockCartItemType[];
       const cartId = getCartId(cartItems, productId) as number;
 
       await fetchCartItems({
@@ -107,7 +107,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
   );
 
   return {
-    cartItems: (data.get('cartItems') as CartItemType[]) ?? [],
+    cartItems: (data.get('cartItems') as MockCartItemType[]) ?? [],
     isCartItemsLoading: isLoading.get('cartItems') ?? false,
     handleAddCartItem,
     handleRemoveCartItem,
