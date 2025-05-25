@@ -25,7 +25,7 @@ const ProductItemListCard = ({ product, isInCart }: ProductItemProps) => {
           justifyContent="space-between"
           height="50%"
           width="100%"
-          css={{
+          style={{
             padding: '8px',
           }}
         >

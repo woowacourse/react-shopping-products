@@ -1,4 +1,4 @@
-import { delay, http, HttpResponse, HttpResponseResolver } from 'msw';
+import { http, HttpResponse } from 'msw';
 const mockProducts = [
   {
     id: 1,
@@ -117,7 +117,6 @@ export const handlers = [
   }),
   http.patch('*/cart-items/:id', async ({ request, params }) => {
     const cartItemId = Number(params.id);
-    const body = await request.json(); // { quantity: number }
 
     const cartItem = mockCartItems.find((item) => item.id === cartItemId);
 
@@ -128,7 +127,6 @@ export const handlers = [
       );
     }
 
-    cartItem.quantity = body.quantity;
     return HttpResponse.json(cartItem, { status: 200 });
   }),
 

@@ -60,7 +60,6 @@ const useCartItems = () => {
   };
 
   const increaseCartItemQuantity = async (productId: number) => {
-    console.log('useCartItem안 isFetching', isFetching);
     if (isFetching) {
       return;
     }

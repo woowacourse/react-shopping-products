@@ -11,7 +11,6 @@ import {
 } from './Modal.styled';
 import { useEffect, useRef } from 'react';
 import { createContext } from 'react';
-import { createPortal } from 'react-dom';
 import useModalContext from './hooks/useModalContext';
 
 type ModalProps = {
@@ -156,7 +155,7 @@ const Button = ({
   );
 };
 
-const Input = ({ placeholder }) => {
+const Input = ({ placeholder }: { placeholder: string }) => {
   return <ModalInput placeholder={placeholder} />;
 };
 

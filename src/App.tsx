@@ -2,8 +2,6 @@ import './reset.css';
 import styled from '@emotion/styled';
 import './app.css';
 import ProductListPage from './pages/ProductListPage';
-import CartItemsProvider from './components/providers/CartItemsProvider';
-// import ProductsProvider from './components/providers/ProductsProvider';
 import DataProvider from './components/providers/DataProvider';
 
 export type Product = {

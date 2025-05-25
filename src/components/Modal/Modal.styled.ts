@@ -70,10 +70,10 @@ const ModalContents = styled.div`
 `;
 
 type ModalButtonProps = {
-  $backgroundColor: string;
-  $textColor: string;
-  $size: 'small' | 'medium' | 'large';
-  $border: string;
+  $backgroundColor?: string;
+  $textColor?: string;
+  $size?: 'small' | 'medium' | 'large';
+  $border?: string;
 };
 
 const ModalButton = styled.button<ModalButtonProps>`
