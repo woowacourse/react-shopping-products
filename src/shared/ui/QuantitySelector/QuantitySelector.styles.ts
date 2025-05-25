@@ -30,7 +30,7 @@ export const ButtonIcon = styled.img<{ $disabled: boolean }>`
   ${({ $disabled }) =>
     $disabled &&
     css`
-      opacity: 0.5;
+      opacity: 0.4;
       cursor: default;
       background-color: #f5f5f5;
       border-color: #e0e0e0;
