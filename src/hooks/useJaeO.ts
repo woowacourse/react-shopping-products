@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 const cache = new Map<string, { data: unknown; updatedAt: number }>();
 
@@ -16,29 +16,10 @@ export function useJaeO<T>({ path, fetchFn, onError }: useJaeOProps<T>) {
   const fetchFnRef = useRef(fetchFn);
   const onErrorRef = useRef(onError);
 
-  useEffect(() => {
-    fetchFnRef.current = fetchFn;
-  }, [fetchFn]);
-
-  useEffect(() => {
-    onErrorRef.current = onError;
-  }, [onError]);
-
-  useEffect(() => {
-    let ignore = false;
-
-    const cached = cache.get(path);
-    const cacheHit = !!cached;
-
-    const loadData = async () => {
+  const fetchAndSetData = useCallback(
+    async (ignore: boolean) => {
       setIsLoading(true);
       setIsError(false);
-
-      if (cacheHit) {
-        setData(cached.data as T);
-        setIsLoading(false);
-        return;
-      }
 
       try {
         const data = await fetchFnRef.current();
@@ -54,14 +35,37 @@ export function useJaeO<T>({ path, fetchFn, onError }: useJaeOProps<T>) {
           setIsLoading(false);
         }
       }
-    };
+    },
+    [path]
+  );
 
-    loadData();
+  const refetch = useCallback(() => {
+    return fetchAndSetData(false);
+  }, [fetchAndSetData]);
+
+  useEffect(() => {
+    fetchFnRef.current = fetchFn;
+  }, [fetchFn]);
+
+  useEffect(() => {
+    onErrorRef.current = onError;
+  }, [onError]);
+
+  useEffect(() => {
+    let ignore = false;
+
+    const cached = cache.get(path);
+    if (cached) {
+      setData(cached.data as T);
+      setIsLoading(false);
+    } else {
+      fetchAndSetData(ignore);
+    }
 
     return () => {
       ignore = true;
     };
-  }, [path]);
+  }, [fetchAndSetData, path]);
 
-  return { data, isLoading, isError };
+  return { data, isLoading, isError, refetch };
 }

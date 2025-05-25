@@ -11,7 +11,7 @@ export const CartContext = createContext<{
 } | null>(null);
 
 function CartProvider({ children }: { children: React.ReactNode }) {
-  const { data: cartList } = useJaeO<Cart[]>({
+  const { data: cartList, refetch } = useJaeO<Cart[]>({
     path: '/cart-items',
     fetchFn: () => {
       return getShoppingCartList();
@@ -22,7 +22,7 @@ function CartProvider({ children }: { children: React.ReactNode }) {
   const cartCount = useMemo(() => cartList.length, [cartList]);
 
   return (
-    <CartContext.Provider value={{ cartList, cartCount, refetch: () => {} }}>
+    <CartContext.Provider value={{ cartList, cartCount, refetch }}>
       {children}
     </CartContext.Provider>
   );
