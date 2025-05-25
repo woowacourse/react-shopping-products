@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 export const Item = styled.li<{ variant?: "default" | "cart" }>`
   display: flex;
   gap: 16px;
+  width: 100%;
 
   ${({ variant }) =>
     variant === "cart"
@@ -50,6 +51,7 @@ export const ImageWrapper = styled.div<{ variant?: "default" | "cart" }>`
     aspect-ratio: 1/1;
     max-height: 218px;
   `};
+  position: relative;
   overflow: hidden;
 `;
 
@@ -90,4 +92,27 @@ export const ButtonWrapper = styled.div<{ variant?: "default" | "cart" }>`
       : `
     justify-content: right;
   `};
+`;
+
+export const ItemBackDrop = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  border-radius: 8px 8px 0 0;
+  z-index: 1000;
+`;
+
+export const SoldOutText = styled.p`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 35px;
+  letter-spacing: 10%;
+  font-weight: bold;
+  z-index: 1000;
 `;
