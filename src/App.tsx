@@ -6,8 +6,9 @@ import ErrorBox from "./components/common/ErrorBox/ErrorBox";
 import LoadingIcon from "./components/Icon/LoadingIcon";
 import { useProducts } from "./hooks/useProducts";
 import { useCart } from "./hooks/useCart";
+import { DataProvider } from "./context/DataContext";
 
-function App() {
+function AppContent() {
   const {
     productList,
     productListLoading,
@@ -65,6 +66,14 @@ function App() {
         <ErrorBox text={cartItemListErrorMessage} backgroundColor="#FFC9C9" />
       </S.Wrap>
     </S.AppContainer>
+  );
+}
+
+function App() {
+  return (
+    <DataProvider>
+      <AppContent />
+    </DataProvider>
   );
 }
 

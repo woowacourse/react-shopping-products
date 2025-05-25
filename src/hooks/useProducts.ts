@@ -1,45 +1,55 @@
 import { useState, useEffect } from "react";
-import { ResponseProduct } from "../api/types";
 import getProductList from "../api/ProductListApi";
+import { useDataContext } from "../context/DataContext";
 
 export const useProducts = () => {
-  const [productList, setProductList] = useState<ResponseProduct[]>([]);
-  const [productListLoading, setProductListLoading] = useState(true);
-  const [productListErrorMessage, setProductListErrorMessage] = useState("");
+  const { state, setProductsLoading, setProductsData, setProductsError } =
+    useDataContext();
+
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
 
+  const {
+    data: productList,
+    loading: productListLoading,
+    error,
+  } = state.products;
+  const productListErrorMessage = error || "";
+
   const handleProductErrorMessage = (message: string) => {
-    setProductListErrorMessage("");
+    setProductsError(message);
     setTimeout(() => {
-      setProductListErrorMessage(message);
-    }, 10);
+      setProductsError(null);
+    }, 3000);
   };
 
   useEffect(() => {
     const fetchProductList = async () => {
       try {
-        setProductListLoading(true);
+        setProductsLoading(true);
+        setProductsError(null);
+
         const rawProductList = await getProductList({
           category: category,
           sort: sort,
         });
-        setProductList(rawProductList);
+
+        setProductsData(rawProductList);
       } catch (error) {
         if (error instanceof Error) {
-          handleProductErrorMessage(error.message);
+          setProductsError(error.message);
         }
-      } finally {
-        setProductListLoading(false);
       }
     };
+
     fetchProductList();
-  }, [category, sort]);
+  }, [category, sort, setProductsLoading, setProductsData, setProductsError]);
 
   return {
     productList,
     productListLoading,
     productListErrorMessage,
+
     category,
     sort,
 
