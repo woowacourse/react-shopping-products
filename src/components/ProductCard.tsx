@@ -7,7 +7,7 @@ import {
   ProductImage,
 } from '../styles/ProductCard';
 import { IMAGE_PATH } from '../constants/imagePath';
-import CartToggleButton from './CartToggleButton';
+import CartBottomButtonContainer from './CartBottomButton/CartBottomButtonContainer';
 
 type ProductCardProps = {
   id: number;
@@ -36,7 +36,7 @@ const ProductCard = ({ id, name, price, imageUrl, category }: ProductCardProps) 
           <ProductCardName>{name}</ProductCardName>
           <ProductCardPrice>{price.toLocaleString()}원</ProductCardPrice>
         </ProductCardDetailTextWrapper>
-        <CartToggleButton id={id} />
+        <CartBottomButtonContainer id={id} />
       </ProductCardDetailWrapper>
     </ProductCardWrapper>
   );
