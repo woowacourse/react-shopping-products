@@ -32,4 +32,27 @@ describe('ProductListPage 담기 동작', () => {
     const withinHeader = within(header);
     expect(withinHeader.getByText('1')).toBeInTheDocument();
   });
+
+  it('추가된 상품을 BottomSheet에서 확인할 수 있다.', async () => {
+    // Given : 상품 목록을 받았을 때
+    renderProductListPage();
+
+    // When : 유저가 장바구니 아이콘을 클릭했을 때
+    const header = screen.getByRole('banner');
+    const withinHeader = within(header);
+    const shoppingBagIcon = withinHeader.getByRole('button');
+    await act(async () => {
+      fireEvent.click(shoppingBagIcon);
+    });
+
+    // Then : BottomSheet이 화면에 보이고, 추가된 상품이 보여진다.
+    const bottomSheet = screen.getByRole('dialog');
+    const withinBottomSheet = within(bottomSheet);
+    screen.debug(bottomSheet);
+    expect(withinBottomSheet.getByText('장바구니')).toBeInTheDocument();
+
+    const sortedByPrice = [...productsData.content].sort((a, b) => a.price - b.price);
+    const cheapestProductName = sortedByPrice[0].name;
+    expect(withinBottomSheet.getByText(cheapestProductName)).toBeInTheDocument();
+  });
 });
