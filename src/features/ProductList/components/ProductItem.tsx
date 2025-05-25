@@ -6,8 +6,10 @@ import { Text } from '@/shared/components/Text';
 
 import { Product } from '../types/Product';
 import ItemCounter from './ItemCounter';
+import NoImage from '../../../../public/NoImage.svg';
+import AddCart from '../../../../public/AddCart.svg';
 
-const FALLBACK_IMAGE_SRC = '/NoImage.svg';
+const FALLBACK_IMAGE_SRC = NoImage;
 
 type ProductItemProps = {
   isChecked: boolean;
@@ -100,7 +102,7 @@ export const ProductItem = ({
           ) : (
             <IconButton
               variant="primary"
-              src="./AddCart.svg"
+              src={AddCart}
               onClick={onAddCart}
               aria-label="장바구니 담기"
             >

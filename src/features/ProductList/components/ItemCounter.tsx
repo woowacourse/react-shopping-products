@@ -1,5 +1,7 @@
 import { IconButton } from '@/shared/components/IconButton';
 import { useEffect, useState } from 'react';
+import minus from '../../../../public/minus.svg';
+import plus from '../../../../public/plus.svg';
 
 interface ItemCounterProps {
   initial?: number;
@@ -62,7 +64,7 @@ const ItemCounter = ({
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
       <IconButton
-        src="/minus.svg"
+        src={minus}
         aria-label="감소"
         onClick={handleDecrement}
         variant="secondary"
@@ -72,7 +74,7 @@ const ItemCounter = ({
         {count === 0 ? 1 : count}
       </span>
       <IconButton
-        src="/plus.svg"
+        src={plus}
         aria-label="증가"
         onClick={handleIncrement}
         variant="secondary"

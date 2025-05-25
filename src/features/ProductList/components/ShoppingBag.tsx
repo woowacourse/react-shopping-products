@@ -2,6 +2,7 @@ import { APIContext } from '@/shared/context/APIContext';
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { CartItem } from '../types/Cart';
+import ShoppingBagSvg from '../../../../public/ShoppingBag.svg';
 
 type ShoppingBagProps = {
   handleShowModal: () => void;
@@ -14,7 +15,7 @@ export const ShoppingBag = ({ handleShowModal }: ShoppingBagProps) => {
 
   return (
     <StyledShoppingBagButton onClick={handleShowModal} aria-label="장바구니">
-      <StyledShoppingBagIcon src="./ShoppingBag.svg" alt="Shopping Bag" />
+      <StyledShoppingBagIcon src={ShoppingBagSvg} alt="Shopping Bag" />
       {count > 0 && <StyledShoppingBagCount>{count}</StyledShoppingBagCount>}
     </StyledShoppingBagButton>
   );
