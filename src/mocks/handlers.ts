@@ -29,7 +29,7 @@ export const handlers = [
       const page = url.searchParams.get("page") || "0";
       const size = url.searchParams.get("size") || "20";
 
-      await delay(200);
+      await delay(100);
 
       let filteredProducts = [...productsData.content];
       if (category && category !== "전체") {
@@ -88,7 +88,7 @@ export const handlers = [
       const page = url.searchParams.get("page") || "0";
       const size = url.searchParams.get("size") || "50";
 
-      await delay(200);
+      await delay(100);
 
       const pageNum = parseInt(page);
       const sizeNum = parseInt(size);
@@ -155,7 +155,7 @@ export const handlers = [
         currentCartItems.numberOfElements = currentCartItems.content.length;
       }
 
-      await delay(200);
+      await delay(100);
       return HttpResponse.json(cartItem, { status: 201 });
     }
   ),
@@ -183,7 +183,7 @@ export const handlers = [
       currentCartItems.totalElements = currentCartItems.content.length;
       currentCartItems.numberOfElements = currentCartItems.content.length;
 
-      await delay(200);
+      await delay(100);
       return new HttpResponse(null, { status: 204 });
     }
   ),
@@ -210,7 +210,7 @@ export const handlers = [
 
       currentCartItems.content[itemIndex].quantity = quantity;
 
-      await delay(200);
+      await delay(100);
       return HttpResponse.json(currentCartItems.content[itemIndex]);
     }
   ),
