@@ -70,7 +70,23 @@ export const StyledButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
+export const StyledQuantityController = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
 export const StyledButtonText = styled.span`
   font-size: 12px;
   font-weight: 600;
+`;
+
+export const StyledcontrollButton = styled.span`
+  width: 24px;
+  height: 24px;
+`;
+
+export const StyledControllImg = styled.img`
+  display: flex;
+  align-items: center;
 `;
