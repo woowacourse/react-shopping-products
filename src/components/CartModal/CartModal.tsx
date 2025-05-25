@@ -37,7 +37,7 @@ const CartModal = ({ isOpen, onModalClose, cartItems }: CartModalProps) => {
             title={"닫기"}
             onClick={onModalClose}
             size="large"
-            styled={{ height: "44px" }}
+            styled={{ height: "80px" }}
           />
         </Modal.Frame>
       </Modal.Backdrop>
