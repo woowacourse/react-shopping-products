@@ -9,7 +9,7 @@ export const ErrorToastContainer = styled.div<{ $isVisible: boolean }>`
   padding: 12px 0;
   box-sizing: border-box;
   text-align: center;
-  color: var(--color-dark-grey);
+  color: var(--color-white);
   position: fixed;
   left: 0;
   top: var(--height-header);

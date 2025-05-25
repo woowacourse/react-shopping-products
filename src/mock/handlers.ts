@@ -6,8 +6,6 @@ interface CartItemProps {
   quantity: number;
 }
 
-// TODO : MSW 응답 코드 추상화
-
 const getRequestURL = (url: string) => {
   return `${import.meta.env.VITE_API_BASE_URL}${url}`;
 };

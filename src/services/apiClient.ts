@@ -10,6 +10,7 @@ const apiClient = async <T = unknown>({ method, URI, body }: ApiClientProps<T>) 
   const basicToken = btoa(
     `${import.meta.env.VITE_API_USERNAME}:${import.meta.env.VITE_API_PASSWORD}`,
   );
+  // biome-ignore lint/style/useTemplate: --
   const requestURL = `${import.meta.env.VITE_API_BASE_URL}` + URI;
   const response = await fetch(requestURL, {
     method,

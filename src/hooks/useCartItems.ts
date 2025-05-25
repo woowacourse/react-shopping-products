@@ -20,7 +20,9 @@ const useCartItems = ({ dataResource, handleErrorMessage }: UseCartItemsProps) =
     };
     await tryApiCall(async () => await addCartItems(addCartItemInfo), handleErrorMessage);
     await dataResource.refetch();
-    if (!dataResource.data) return;
+    if (dataResource.error) {
+      handleErrorMessage(dataResource.error.message);
+    }
   };
 
   const handleRemoveCartItems = async (productId: number) => {
@@ -32,7 +34,9 @@ const useCartItems = ({ dataResource, handleErrorMessage }: UseCartItemsProps) =
       await tryApiCall(async () => await removeCartItems(removeItemCartId), handleErrorMessage);
 
       await dataResource.refetch();
-      if (!dataResource.data) return;
+      if (dataResource.error) {
+        handleErrorMessage(dataResource.error.message);
+      }
     }
   };
 
@@ -46,7 +50,9 @@ const useCartItems = ({ dataResource, handleErrorMessage }: UseCartItemsProps) =
     );
 
     await dataResource.refetch();
-    if (!dataResource.data) return;
+    if (dataResource.error) {
+      handleErrorMessage(dataResource.error.message);
+    }
   };
 
   return { handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems };
