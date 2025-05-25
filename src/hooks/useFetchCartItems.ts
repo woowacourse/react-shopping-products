@@ -7,6 +7,9 @@ export type CartProductIds = {
   productId: number;
   cartId: number;
   quantity: number;
+  name: string;
+  price: number;
+  imageUrl: string;
 };
 
 export const useFetchCartItems = () => {
@@ -16,6 +19,9 @@ export const useFetchCartItems = () => {
       productId: item.product.id,
       cartId: item.id,
       quantity: item.quantity,
+      name: item.product.name,
+      price: item.product.price,
+      imageUrl: item.product.imageUrl,
     }));
     return mapped;
   }, []);
