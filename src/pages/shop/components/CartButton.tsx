@@ -1,19 +1,22 @@
 import styled from '@emotion/styled';
+import { Modal } from '@jae-o/modal-component-module';
 
 function CartButton({ itemsCount }: { itemsCount: number }) {
   return (
-    <Container data-testid="cart-button">
-      <CartIcon src="./assets/icons/Cart.svg" />
-      {itemsCount > 0 && (
-        <ItemsCountBox>
-          <ItemsCountText>{itemsCount}</ItemsCountText>
-        </ItemsCountBox>
-      )}
-    </Container>
+    <Modal.OpenTrigger>
+      <Container data-testid="cart-button">
+        <CartIcon src="./assets/icons/Cart.svg" />
+        {itemsCount > 0 && (
+          <ItemsCountBox>
+            <ItemsCountText>{itemsCount}</ItemsCountText>
+          </ItemsCountBox>
+        )}
+      </Container>
+    </Modal.OpenTrigger>
   );
 }
 
-const Container = styled.button`
+const Container = styled.div`
   position: relative;
   width: 44px;
   height: 44px;
