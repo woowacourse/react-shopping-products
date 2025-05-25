@@ -7,17 +7,19 @@ type DataContextValue = {
 
 export const DataContext = createContext<DataContextValue | null>(null);
 
-type useDataContextProps = {
-  fetcher: (args?: any) => Promise<any>;
+type useDataContextProps<TResult> = {
+  fetcher: (
+    args?: any
+  ) => Promise<{ data: { content: TResult }; status: number }>;
   key: string;
   fetcherParams?: Record<string, any>;
 };
 
-export function useDataContext({
+export function useDataContext<TResult>({
   fetcher,
   key,
   fetcherParams,
-}: useDataContextProps) {
+}: useDataContextProps<TResult>) {
   const context = useContext(DataContext);
 
   if (!context) {
@@ -31,7 +33,7 @@ export function useDataContext({
       setData((prevData) => ({
         ...prevData,
         [key]: {
-          data: [],
+          data: [] as TResult[],
           ...prevData[key],
           isLoading: true,
           error: {
@@ -114,7 +116,7 @@ export function useDataContext({
 
   if (!data[key]) {
     return {
-      data: [],
+      data: [] as TResult[],
       refetch: request,
       isLoading: false,
       error: {
@@ -126,7 +128,7 @@ export function useDataContext({
   }
 
   return {
-    data: data[key].data,
+    data: data[key].data as TResult[],
     refetch: request,
     isLoading: data[key]?.isLoading,
     error: data[key]?.error,

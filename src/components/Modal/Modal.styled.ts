@@ -93,7 +93,7 @@ const ModalButton = styled.button<ModalButtonProps>`
   }
 `;
 
-function getSize(size: 'small' | 'medium' | 'large') {
+function getSize(size: 'small' | 'medium' | 'large' | undefined) {
   switch (size) {
     case 'small':
       return '80px';
