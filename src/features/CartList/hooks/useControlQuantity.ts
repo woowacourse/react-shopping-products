@@ -9,12 +9,15 @@ export const useControlQuantity = (productId: number) => {
   const { showToast } = useContext(ToastContext);
 
   const cartItem = cartData.data?.find((item) => item.product.id === productId);
+
   const currentQuantity = cartItem?.quantity || 0;
   const isInCart = !!cartItem;
 
   const increaseQuantity = async () => {
     if (cartItem && currentQuantity >= cartItem.product.quantity) {
-      showToast('재고가 부족합니다.');
+      showToast(
+        `"${cartItem?.product.name}" 상품의 최대 구매 수량은 ${cartItem.product.quantity}개 입니다.`
+      );
       return;
     }
     try {
@@ -26,12 +29,12 @@ export const useControlQuantity = (productId: number) => {
       }
       if (isInCart) {
         await cartData.mutate(
-          () => updateCartItem({ cartId: cartItem!.id, newQuantity: currentQuantity + 1 }),
+          () => updateCartItem({ cartId: cartItem.id, newQuantity: currentQuantity + 1 }),
           getCartItemList
         );
       }
     } catch (error) {
-      showToast('장바구니에서 상품를 더할 수 없습니다.');
+      showToast('장바구니에 상품을 추가할 수 없습니다.');
     }
   };
 
@@ -41,7 +44,7 @@ export const useControlQuantity = (productId: number) => {
         await cartData.mutate(() => deleteCartItem(cartItem.id), getCartItemList);
       }
     } catch (error) {
-      showToast('장바구니에서 상품을 삭제할 수 없습니다.');
+      showToast(`장바구니에서 ${cartItem?.product.name} 상품을 삭제할 수 없습니다.`);
     }
   };
 
@@ -49,7 +52,7 @@ export const useControlQuantity = (productId: number) => {
     try {
       if (cartItem && currentQuantity !== 1) {
         await cartData.mutate(
-          () => updateCartItem({ cartId: cartItem!.id, newQuantity: currentQuantity - 1 }),
+          () => updateCartItem({ cartId: cartItem.id, newQuantity: currentQuantity - 1 }),
           getCartItemList
         );
       }
@@ -57,7 +60,7 @@ export const useControlQuantity = (productId: number) => {
         await removeCartItem();
       }
     } catch (error) {
-      showToast('재고가 부족합니다.');
+      showToast(`장바구니에서 ${cartItem?.product.name} 상품을 삭제할 수 없습니다.`);
     }
   };
 
