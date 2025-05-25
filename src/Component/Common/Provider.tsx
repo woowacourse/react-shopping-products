@@ -59,31 +59,21 @@ export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
     setStatus: React.Dispatch<React.SetStateAction<Record<string, Status>>>;
   };
 
-  const requestData = useCallback(async () => {
-    if (!apiFn) return;
+  const requestData = useCallback(
+    async (override?: { apiFn: () => Promise<T> }) => {
+      const fn = override?.apiFn ?? apiFn;
+      if (!fn) return;
 
-    try {
-      setStatus((prev) => ({ ...prev, [key]: 'loading' }));
-      const fetchedData = await apiFn();
-      setData((prev) => ({ ...prev, [key]: fetchedData }));
-      setStatus((prev) => ({ ...prev, [key]: 'success' }));
-    } catch (error) {
-      setStatus((prev) => ({ ...prev, [key]: 'error' }));
-    }
-  }, [apiFn, key, setData]);
-
-  const newRequestData = useCallback(
-    async ({ apiFn }: { apiFn: () => Promise<T> }) => {
       try {
         setStatus((prev) => ({ ...prev, [key]: 'loading' }));
-        const fetchedData = await apiFn();
+        const fetchedData = await fn();
         setData((prev) => ({ ...prev, [key]: fetchedData }));
         setStatus((prev) => ({ ...prev, [key]: 'success' }));
-      } catch (error) {
+      } catch {
         setStatus((prev) => ({ ...prev, [key]: 'error' }));
       }
     },
-    [key, setData]
+    [apiFn, key, setData, setStatus]
   );
 
   useEffect(() => {
@@ -94,8 +84,8 @@ export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
 
   return {
     data: data[key],
-    refetchData: requestData,
-    requestData: newRequestData,
+    refetchData: () => requestData(),
+    requestData: requestData,
     status: status[key],
   };
 }
