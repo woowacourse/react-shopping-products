@@ -4,23 +4,13 @@ import QuantitySelector from "../common/QuantitySelector";
 import { css } from "@emotion/react";
 import Text from "../common/Text";
 import Button from "../common/Button/Button";
-import { Content } from "../../types/cartItem";
+import { useCartModal } from "../../contexts/CartModalContext";
+import useCartItems from "../../hooks/useCartItems";
 
-interface CartModalProps {
-  isCartModalOpen: boolean;
-  handleCartModalClose: () => void;
-  cartItems: Content[];
-  cartItemTotalPrice: number;
-  handleCartItem: (type: "add" | "update" | "remove", id: number, quantity?: number) => void;
-}
+const CartModal = () => {
+  const { isCartModalOpen, handleCartModalClose } = useCartModal();
+  const { cartItems, cartItemTotalPrice, handleCartItem } = useCartItems();
 
-const CartModal = ({
-  isCartModalOpen,
-  handleCartModalClose,
-  cartItems,
-  cartItemTotalPrice,
-  handleCartItem,
-}: CartModalProps) => {
   return (
     <Modal show={isCartModalOpen} onHide={handleCartModalClose}>
       <Modal.BackDrop />

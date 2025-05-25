@@ -5,6 +5,7 @@ import ProductPage from "./pages/ProductPage";
 import Spinner from "./components/common/Spinner";
 import { QueryProvider } from "./contexts/QueryContext";
 import Header from "./components/Header";
+import { CartModalProvider } from "./contexts/CartModalContext";
 import CartModal from "./components/Cart/CartModal";
 
 function App() {
@@ -12,13 +13,15 @@ function App() {
     <LoadingProvider>
       <ErrorProvider>
         <QueryProvider>
-          <div css={appStyle}>
-            <Header />
-            <ProductPage />
-            <CartModal />
-            <ErrorPopup />
-            <Spinner />
-          </div>
+          <CartModalProvider>
+            <div css={appStyle}>
+              <Header />
+              <ProductPage />
+              <CartModal />
+              <ErrorPopup />
+              <Spinner />
+            </div>
+          </CartModalProvider>
         </QueryProvider>
       </ErrorProvider>
     </LoadingProvider>
