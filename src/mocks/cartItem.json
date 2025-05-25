@@ -1,17 +1,6 @@
 {
   "content": [
     {
-      "id": 1,
-      "quantity": 1,
-      "product": {
-        "id": 1,
-        "name": "메이토1",
-        "price": 1000,
-        "imageUrl": "",
-        "category": "식료품"
-      }
-    },
-    {
       "id": 2,
       "quantity": 2,
       "product": {
