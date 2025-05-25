@@ -66,7 +66,7 @@ export const cartItemsHandlers = [
         );
       }
 
-      cartItemsMockData.content[cartItemIndex].quantity = Number(quantity);
+      cartItemsMockData.content[cartItemIndex].quantity = quantity;
       return HttpResponse.json(
         {
           message: "장바구니 상품 수량을 변경했습니다.",
