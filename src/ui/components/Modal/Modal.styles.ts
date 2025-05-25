@@ -3,13 +3,11 @@ import { css } from '@emotion/react';
 import { ModalContainerProps } from './Modal';
 
 export const Layout = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   inset: 0;
   background-color: #00000059;
   z-index: 10;
-  width: 100vw;
-  height: 100vh;
 `;
 
 export const Overlay = styled.div`
@@ -37,7 +35,7 @@ export const ModalContainer = styled.div<ModalContainerProps>`
   position: absolute;
   background-color: #ffffff;
   border: none;
-  padding: 24px 32px;
+  padding: 24px 16px;
   overflow-y: auto;
 
     ${({size, width, height}) => {
