@@ -1,29 +1,27 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import useProducts from "../hooks/useProducts";
-import { getProducts } from "../apis/product";
-import { mockProductsResponse } from "./mocks/mockProducts";
 import { ErrorProvider, LoadingProvider } from "../contexts";
+import { server } from "../mocks/node";
+import { QueryProvider } from "../contexts/QueryContext";
+import MOCKING_PRODUCT_DATA from "../../src/mocks/data/products.json";
 
-// 1. API 함수 모킹
-vi.mock("../apis/product");
-
-const mockedGetProducts = vi.mocked(getProducts);
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <ErrorProvider>
-    <LoadingProvider>{children}</LoadingProvider>
-  </ErrorProvider>
+  <LoadingProvider>
+    <ErrorProvider>
+      <QueryProvider>{children}</QueryProvider>
+    </ErrorProvider>
+  </LoadingProvider>
 );
 
 describe("useProducts 훅 테스트", () => {
-  beforeEach(() => {
-    mockedGetProducts.mockResolvedValue(mockProductsResponse);
-  });
-
   it("전체 상품을 불러올 수 있다.", async () => {
     const { result } = renderHook(() => useProducts(), { wrapper });
     await waitFor(() => {
-      expect(result.current.products).toEqual(mockProductsResponse.content.sort((a, b) => b.price - a.price));
+      expect(result.current.products).toEqual(MOCKING_PRODUCT_DATA.content.sort((a, b) => b.price - a.price));
     });
   });
 

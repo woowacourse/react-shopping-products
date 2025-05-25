@@ -84,8 +84,8 @@
 
 테스트 코드
 
-- [ ] vi.mock -> msw 바탕 테스트 코드로 수정
-- [ ] useProducts
+- [x] vi.mock -> msw 바탕 테스트 코드로 수정
+- [x] useProducts
 - [ ] useCartItems
   - [ ] post (장바구니 처음 담기)
   - [ ] patch (장바구니 갯수)
