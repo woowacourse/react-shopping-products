@@ -21,7 +21,6 @@ const ErrorToastContainer = styled.div<{ $isVisible: boolean }>`
   text-align: center;
   color: var(--color-dark-grey);
   position: fixed;
-  left: 0;
   top: var(--height-header);
   z-index: var(--z-index-toast);
 
