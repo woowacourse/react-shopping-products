@@ -33,6 +33,11 @@
 - [x] productCard 컴포넌트에 기본 html 태그 타입 입히기 (style, className 주입할 수 있도록)
 - [x] sort 및 filter api 요청으로 변경
 - [ ] 데이터 전역에서 관리하기 -> data fetch 로직
+  - [x] loading, error, data 한 번에 관리하기
+    - [ ] loading 및 error는 우선 전역상태랑 함께 관리
+  - [x] provider 추상화
+    - [x] provider 내부에서 정적 데이터 관리 (상태 x)
+  - [x] provider 전체 렌더링 -> 각각의 컴포넌트에서만 렌더링
 
 ### 기능 명세서
 
