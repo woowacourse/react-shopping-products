@@ -11,13 +11,8 @@ export const useShopping = () => {
   const product = Object.values(data['product'] ?? {}) as Product[];
   const cartData = Object.values(data['cartItem'] ?? {}) as CartItem[];
   const { addToCart, increaseQuantity, decreaseQuantity, deleteFromCart } = useCart();
-  const {
-    isLoading: isProductLoading,
-    categorySelect,
-    priceSelect,
-    handleCategorySelect,
-    handlePriceSelect,
-  } = useProductList();
+  const { isLoading, categorySelect, priceSelect, handleCategorySelect, handlePriceSelect } =
+    useProductList();
 
   const filteredData = useMemo(() => {
     return product.map((item) => {
@@ -61,7 +56,7 @@ export const useShopping = () => {
   return {
     cartData,
     filteredData,
-    isLoading: isProductLoading,
+    isLoading,
     addCartItem,
     updateCartQuantity,
     deleteFromCart,
