@@ -41,8 +41,11 @@ const Modal = ({ open, onClose, title, children }: ModalProps) => {
 export default Modal;
 
 const ModalContainer = styled.dialog`
-  margin-bottom: 0;
-  padding: 24px 16px;
+  margin: 0 auto;
+  top: auto;
+  bottom: 0;
+  padding: 32px 24px;
+  box-sizing: border-box;
 
   width: 100%;
   max-width: var(--max-width-container);
