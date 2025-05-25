@@ -13,9 +13,7 @@ interface CartItemModalContentProps {
 export default function CartItemModalContent({
   updateErrorMessage,
 }: CartItemModalContentProps) {
-  const { data: cartItems, refetchData: updateCartItems } = useAPIContext<
-    CartItemTypes[]
-  >({
+  const { data: cartItems, requestData } = useAPIContext<CartItemTypes[]>({
     apiFn: () => getShoppingCart(),
     key: 'cartItems',
   });
@@ -28,7 +26,10 @@ export default function CartItemModalContent({
   const handleDeleteClick = async (cartItemId: number) => {
     try {
       await deleteShoppingCart(cartItemId);
-      await updateCartItems();
+      requestData({
+        apiFn: () => getShoppingCart(),
+        skipLoading: true,
+      });
     } catch (error) {
       //
     }

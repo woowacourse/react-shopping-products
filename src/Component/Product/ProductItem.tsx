@@ -24,10 +24,7 @@ export default function ProductItem({
   isRow,
   updateErrorMessage,
 }: ProductTypes & SetProducts) {
-  const { data: cartItems, refetchData: updateCartItems } = useAPIContext<
-    CartItemTypes[]
-  >({
-    apiFn: () => getShoppingCart(),
+  const { data: cartItems, requestData } = useAPIContext<CartItemTypes[]>({
     key: 'cartItems',
   });
 
@@ -73,7 +70,10 @@ export default function ProductItem({
         }
       }
 
-      updateCartItems();
+      requestData({
+        apiFn: () => getShoppingCart(),
+        skipLoading: true,
+      });
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === '수량 초과 에러') {

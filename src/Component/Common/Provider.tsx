@@ -43,9 +43,14 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 interface APIContextProps<T> {
   apiFn?: () => Promise<T>;
   key: string;
+  skipLoading?: boolean;
 }
 
-export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
+export function useAPIContext<T>({
+  apiFn,
+  key,
+  skipLoading,
+}: APIContextProps<T>) {
   const context = useContext(Context);
 
   if (context === undefined) {
@@ -60,12 +65,15 @@ export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
   };
 
   const requestData = useCallback(
-    async (override?: { apiFn: () => Promise<T> }) => {
+    async (override?: { apiFn: () => Promise<T>; skipLoading?: boolean }) => {
       const fn = override?.apiFn ?? apiFn;
+      const skip = override?.skipLoading ?? skipLoading;
       if (!fn) return;
 
       try {
-        setStatus((prev) => ({ ...prev, [key]: 'loading' }));
+        if (!skip) {
+          setStatus((prev) => ({ ...prev, [key]: 'loading' }));
+        }
         const fetchedData = await fn();
         setData((prev) => ({ ...prev, [key]: fetchedData }));
         setStatus((prev) => ({ ...prev, [key]: 'success' }));
@@ -73,11 +81,11 @@ export function useAPIContext<T>({ apiFn, key }: APIContextProps<T>) {
         setStatus((prev) => ({ ...prev, [key]: 'error' }));
       }
     },
-    [apiFn, key, setData, setStatus]
+    [apiFn, key, skipLoading, setData, setStatus]
   );
 
   useEffect(() => {
-    if (data[key]) return;
+    if (data[key] || !apiFn) return;
 
     requestData();
   }, [requestData, key]);
