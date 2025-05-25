@@ -13,7 +13,6 @@ import {
   PRICE_OPTIONS,
   SortValue,
 } from "./ProductListContainer";
-// import useCartContext from "../../../domain/contexts/useCartContext";
 
 interface ProductListToolbarProps {
   category: CategoryValue;
