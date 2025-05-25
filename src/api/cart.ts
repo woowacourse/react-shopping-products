@@ -22,8 +22,16 @@ const fetchWithAuth = async (
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText || errorMessage || `API 요청 실패: ${response.status}`);
+    const contentType = response.headers.get('Content-Type');
+    const isJsonResponse = contentType && contentType.includes('application/json');
+    
+    if (isJsonResponse) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || errorMessage || `API 요청 실패: ${response.status}`);
+    } else {
+      const errorText = await response.text();
+      throw new Error(errorText || errorMessage || `API 요청 실패: ${response.status}`);
+    }
   }
 
   const contentType = response.headers.get('Content-Type');

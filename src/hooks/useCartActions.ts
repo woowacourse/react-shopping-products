@@ -30,9 +30,13 @@ export function useCartActions(sortType: string, category: string = '전체') {
     try {
       await addCart(product.product.id);
       await fetchCart();
-    } catch {
-      showToast(ERROR_MESSAGES.failedAddCart);
-      console.error(ERROR_MESSAGES.failedAddCart);
+    } catch (error) {
+      if (error instanceof Error && error.message?.includes('재고')) {
+        showToast(error.message);
+      } else {
+        showToast(ERROR_MESSAGES.failedAddCart);
+      }
+      console.error('카트 추가 실패:', error);
       resetErrors();
     }
   }, [cart, fetchCart, resetErrors, showToast]);
@@ -59,13 +63,13 @@ export function useCartActions(sortType: string, category: string = '전체') {
     try {
       await updateCartQuantity(cartItemId, quantity);
       await fetchCart();
-    } catch (error: any) {
-      if (error.message?.includes('재고')) {
+    } catch (error) {
+      if (error instanceof Error && error.message?.includes('재고')) {
         showToast(error.message);
       } else {
         showToast('수량 변경에 실패했습니다.');
       }
-      console.error('Failed to update quantity:', error);
+      console.error('수량 변경 실패:', error);
       resetErrors();
     }
   }, [fetchCart, resetErrors, showToast]);
