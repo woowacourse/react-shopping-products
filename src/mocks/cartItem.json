@@ -8,8 +8,7 @@
         "name": "메이토1",
         "price": 1000,
         "imageUrl": "",
-        "category": "식료품",
-        "quantity": 0
+        "category": "식료품"
       }
     },
     {
@@ -20,8 +19,7 @@
         "name": "메이토2",
         "price": 2000,
         "imageUrl": "",
-        "category": "식료품",
-        "quantity": 0
+        "category": "식료품"
       }
     },
     {
@@ -32,8 +30,7 @@
         "name": "메이토3",
         "price": 3000,
         "imageUrl": "",
-        "category": "식료품",
-        "quantity": 0
+        "category": "식료품"
       }
     },
     {
@@ -44,8 +41,7 @@
         "name": "메이토4",
         "price": 4000,
         "imageUrl": "",
-        "category": "식료품",
-        "quantity": 0
+        "category": "식료품"
       }
     },
     {
@@ -56,8 +52,7 @@
         "name": "메이토5",
         "price": 5000,
         "imageUrl": "",
-        "category": "식료품",
-        "quantity": 0
+        "category": "식료품"
       }
     }
   ]
