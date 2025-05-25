@@ -7,7 +7,7 @@ const mockCart: { content: CartItem[] } = {
 };
 
 export const handlers = [
-  http.get(`${import.meta.env.BASE_URL}/products`, ({ request }) => {
+  http.get("/products", ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get("category");
     const sort = url.searchParams.get("sort");
@@ -29,13 +29,13 @@ export const handlers = [
       content: filtered,
     });
   }),
-  http.get(`${import.meta.env.BASE_URL}/products/{id}`, () => {
+  http.get("/products/{id}", () => {
     return HttpResponse.json(mockProducts);
   }),
-  http.get(`${import.meta.env.BASE_URL}/cart-items`, () => {
+  http.get("/cart-items", () => {
     return HttpResponse.json(mockCart);
   }),
-  http.post(`${import.meta.env.BASE_URL}/cart-items`, async ({ request }) => {
+  http.post("/cart-items", async ({ request }) => {
     const { productId, quantity } = (await request.json()) as {
       productId: number;
       quantity: number;
@@ -51,25 +51,22 @@ export const handlers = [
 
     return HttpResponse.json(null);
   }),
-  http.delete(`${import.meta.env.BASE_URL}/cart-items/:id`, ({ params }) => {
+  http.delete("/cart-items/:id", ({ params }) => {
     mockCart.content = mockCart.content.filter(
       (item) => item.id !== Number(params.id)
     );
     return HttpResponse.json(null);
   }),
-  http.patch(
-    `${import.meta.env.BASE_URL}/cart-items/:id`,
-    async ({ request, params }) => {
-      const cartItemId = Number(params.id);
-      const { quantity } = (await request.json()) as { quantity: number };
+  http.patch("/cart-items/:id", async ({ request, params }) => {
+    const cartItemId = Number(params.id);
+    const { quantity } = (await request.json()) as { quantity: number };
 
-      const item = mockCart.content.find((item) => item.id === cartItemId);
-      if (item) {
-        item.quantity = quantity;
-        return HttpResponse.json(item);
-      }
-
-      return HttpResponse.json({ message: "Not found" }, { status: 404 });
+    const item = mockCart.content.find((item) => item.id === cartItemId);
+    if (item) {
+      item.quantity = quantity;
+      return HttpResponse.json(item);
     }
-  ),
+
+    return HttpResponse.json({ message: "Not found" }, { status: 404 });
+  }),
 ];
