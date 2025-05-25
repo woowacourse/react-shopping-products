@@ -3,7 +3,7 @@ import { buttonStyle } from './Button.styles';
 import { SerializedStyles } from '@emotion/react';
 
 interface ButtonProps extends ComponentProps<'button'> {
-  variant?: 'default' | 'gray' | 'gray3';
+  variant?: 'default' | 'gray' | 'gray3' | 'white';
   icon?: React.ReactNode;
   css?: SerializedStyles;
 }

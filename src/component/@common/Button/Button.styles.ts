@@ -37,4 +37,14 @@ export const buttonStyle = {
 
     color: ${theme.color.white};
   `,
+
+  white: css`
+    ${buttonDefaultStyle}
+
+    border-radius: 4px;
+    background: ${theme.color.white};
+    border: 1px solid ${theme.color.gray1};
+
+    color: ${theme.color.black};
+  `,
 };
