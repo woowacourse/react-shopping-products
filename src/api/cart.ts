@@ -1,5 +1,5 @@
 import { CartResponse } from '@/features/ProductList/types/Cart';
-import { NewCartItem, ProductQuery } from '@/features/ProductList/types/Product';
+import { NewCartItem, ProductQuery, UpdateCartItem } from '@/features/ProductList/types/Product';
 
 import { ENV } from './env';
 import { fetcher } from './fetcher';
@@ -13,16 +13,9 @@ export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
       quantity,
     },
   });
-
-  const data = await fetcher.get<CartResponse>({
-    baseUrl: ENV.BASE_URL + 'cart-items',
-    token: ENV.TOKEN,
-  });
-
-  return data.content;
 };
 
-export const updateCartItem = async (cartId: number, newQuantity: number) => {
+export const updateCartItem = async ({ cartId, newQuantity }: UpdateCartItem) => {
   await fetcher.patch({
     baseUrl: ENV.BASE_URL + `cart-items/${cartId}`,
     token: ENV.TOKEN,
