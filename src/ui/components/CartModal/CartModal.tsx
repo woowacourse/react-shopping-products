@@ -15,7 +15,6 @@ import {
   TotalPrice,
   TotalPriceText,
 } from './CartModal.styles';
-import { useProductListContext } from '../../../context/ProductContext';
 import CartItemRow from '../CartItemRow/CartItemRow';
 
 interface CartModalProps {

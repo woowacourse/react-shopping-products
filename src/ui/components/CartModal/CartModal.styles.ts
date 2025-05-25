@@ -16,6 +16,18 @@ export const ModalTitle = styled.h3`
 
 export const ProductContainer = styled.ul`
   margin: 10px 0;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0 16px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
 `;
 
 export const PriceContainer = styled.div`
