@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import useCartItems from '../../../hooks/useCartItems';
 import { Product } from '../../../App';
+import ErrorMessage from '../../ErrorMessage';
+import { useEffect, useState } from 'react';
 
 type QuantityStepperProps = {
   product: Product;
@@ -13,13 +15,14 @@ const QuantityStepper = ({ product }: QuantityStepperProps) => {
     increaseCartItemQuantity,
     decreaseCartItemQuantity,
   } = useCartItems();
+  const [isOutOfStock, setIsOutOfStock] = useState(false);
 
   const cartItemQuantity =
     cartItems.find((item) => item.product.id === product.id)?.quantity || 0;
 
   const handleClickIncrementButton = () => {
     if (cartItemQuantity === product.quantity) {
-      alert('재고가 부족합니다.');
+      setIsOutOfStock(true);
       return;
     }
     increaseCartItemQuantity(product.id);
@@ -33,16 +36,29 @@ const QuantityStepper = ({ product }: QuantityStepperProps) => {
     decreaseCartItemQuantity(product.id);
   };
 
+  useEffect(() => {
+    if (isOutOfStock) {
+      const timer = setTimeout(() => {
+        setIsOutOfStock(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isOutOfStock]);
+
   return (
-    <QuantityStepperContainer>
-      <QuantityStepperButton onClick={handleClickDecrementButton}>
-        -
-      </QuantityStepperButton>
-      <QuantityDisplay>{cartItemQuantity}</QuantityDisplay>
-      <QuantityStepperButton onClick={handleClickIncrementButton}>
-        +
-      </QuantityStepperButton>
-    </QuantityStepperContainer>
+    <>
+      {isOutOfStock && <ErrorMessage errorMessage="재고가 부족합니다." />}
+
+      <QuantityStepperContainer>
+        <QuantityStepperButton onClick={handleClickDecrementButton}>
+          -
+        </QuantityStepperButton>
+        <QuantityDisplay>{cartItemQuantity}</QuantityDisplay>
+        <QuantityStepperButton onClick={handleClickIncrementButton}>
+          +
+        </QuantityStepperButton>
+      </QuantityStepperContainer>
+    </>
   );
 };
 
