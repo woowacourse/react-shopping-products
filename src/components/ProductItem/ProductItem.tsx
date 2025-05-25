@@ -26,11 +26,16 @@ const ProductItem = ({
   return (
     <>
       <ProductItemContainer>
-        <ProductItemImage
-          src={product.imageUrl}
-          alt={product.name}
-          onError={handleImageError}
-        />
+        <ProductItemWrapper>
+          <ProductItemImage
+            src={product.imageUrl}
+            alt={product.name}
+            quantity={product.quantity ?? 0}
+            onError={handleImageError}
+          />
+          {product.quantity === 0 && <SoldOutText>품절</SoldOutText>}
+        </ProductItemWrapper>
+
         <ProductItemInfoContainer>
           <TextContainer>
             <ProductItemName>{product.name}</ProductItemName>
@@ -83,11 +88,31 @@ const TextContainer = styled.div`
   gap: 10px;
 `;
 
-const ProductItemImage = styled.img`
-  height: 50%;
+const ProductItemWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   border-radius: 8px 8px 0px 0px;
-  object-fit: cover;
+  overflow: hidden;
 `;
+
+const ProductItemImage = styled.img<{ quantity: number }>`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: ${({ quantity }) => (quantity === 0 ? "brightness(0.5)" : "none")};
+`;
+
+const SoldOutText = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 35px;
+  font-weight: 600;
+`;
+
 const ProductItemName = styled.p`
   font-size: 18px;
   font-weight: 700;
