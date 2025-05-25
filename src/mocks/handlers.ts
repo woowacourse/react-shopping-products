@@ -117,6 +117,7 @@ export const handlers = [
   }),
   http.patch('*/cart-items/:id', async ({ request, params }) => {
     const cartItemId = Number(params.id);
+    const { quantity } = (await request.json()) as { quantity: number };
 
     const cartItem = mockCartItems.find((item) => item.id === cartItemId);
 
@@ -127,6 +128,7 @@ export const handlers = [
       );
     }
 
+    cartItem.quantity = quantity;
     return HttpResponse.json(cartItem, { status: 200 });
   }),
 
