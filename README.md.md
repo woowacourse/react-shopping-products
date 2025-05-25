@@ -81,3 +81,13 @@
   - [x] cartModal 상태 전역에서 관리
   - [x] cartModal context 생성
   - [x] cartModal Component 상위에서 관리
+
+테스트 코드
+
+- [ ] vi.mock -> msw 바탕 테스트 코드로 수정
+- [ ] useProducts
+- [ ] useCartItems
+  - [ ] post (장바구니 처음 담기)
+  - [ ] patch (장바구니 갯수)
+    - [ ] 담는 수 제한 에러 확인
+  - [ ] delete (장바구니 삭제)
