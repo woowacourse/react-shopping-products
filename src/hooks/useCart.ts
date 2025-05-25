@@ -5,6 +5,8 @@ import { USER_TOKEN } from '../constants/env';
 import useError from './useError';
 import useFetch from './useFetch';
 import { addCart, removeCart } from '../utils/api';
+import patchCart from '../utils/api/patchCart';
+import ERROR_MESSAGE from '../constants/ERROR_MESSAGE';
 
 export default function useCart() {
   const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
@@ -48,6 +50,13 @@ export default function useCart() {
           break;
         }
         case 'patch': {
+          try {
+            if (options.quantity === undefined) throw new Error(ERROR_MESSAGE.PATCH_CART);
+            await patchCart(options.id, options.quantity);
+            await fetchCartProducts();
+          } catch (error) {
+            if (error instanceof Error) showError(error.message);
+          }
           break;
         }
         default:

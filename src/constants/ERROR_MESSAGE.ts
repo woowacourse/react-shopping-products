@@ -8,6 +8,7 @@ const ERROR_MESSAGE: Record<string, string> = {
   WRONG_SERVER: '서버에 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
   ADD_CART: '장바구니 추가 중 오류가 발생했습니다. 다시 시도해주세요.',
   REMOVE_CART: '장바구니 제거 중 오류가 발생했습니다. 다시 시도해주세요.',
+  PATCH_CART: '장바구니 수량 변경 중 오류가 발생했습니다. 다시 시도해주세요.',
 } as const;
 
 export default ERROR_MESSAGE;
