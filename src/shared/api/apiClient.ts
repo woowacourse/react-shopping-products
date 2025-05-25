@@ -41,6 +41,10 @@ export const createApiUrl = (
   return `${SHOP_API.baseUrl}${endpoint}?${searchParams.toString()}`;
 };
 
+export const createResourceUrl = (endpoint: string, resourceId: number) => {
+  return `${SHOP_API.baseUrl}${endpoint}/${resourceId}`;
+};
+
 const applyDefaultHeaders = (options: RequestInit = {}): RequestInit => {
   return {
     ...options,
@@ -81,4 +85,68 @@ export const fetchAPI = async <T = ApiSuccess>(
 
     return { error: "예기치 못한 오류가 발생했습니다. 다시 시도해주세요." };
   }
+};
+
+export const getData = async <T>(
+  url: string,
+  options: Omit<RequestInit, "method"> = {}
+): Promise<ApiResponse<T>> => {
+  return fetchAPI<T>(url, {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const postData = async <T = ApiSuccess>(
+  url: string,
+  data?: unknown,
+  options: Omit<RequestInit, "method" | "body"> = {}
+): Promise<ApiResponse<T>> => {
+  return fetchAPI<T>(
+    url,
+    {
+      ...options,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+      body: data ? JSON.stringify(data) : undefined,
+    },
+    false
+  );
+};
+
+export const deleteData = async <T = ApiSuccess>(
+  url: string,
+  options: Omit<RequestInit, "method"> = {}
+): Promise<ApiResponse<T>> => {
+  return fetchAPI<T>(
+    url,
+    {
+      ...options,
+      method: "DELETE",
+    },
+    false
+  );
+};
+
+export const patchData = async <T = ApiSuccess>(
+  url: string,
+  data?: unknown,
+  options: Omit<RequestInit, "method" | "body"> = {}
+): Promise<ApiResponse<T>> => {
+  return fetchAPI<T>(
+    url,
+    {
+      ...options,
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+      body: data ? JSON.stringify(data) : undefined,
+    },
+    false
+  );
 };

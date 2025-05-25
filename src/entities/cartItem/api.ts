@@ -1,44 +1,33 @@
-import { createApiUrl, fetchAPI } from "../../shared/api/apiClient";
+import {
+  createApiUrl,
+  createResourceUrl,
+  deleteData,
+  getData,
+  patchData,
+  postData,
+} from "../../shared/api/apiClient";
 import { SHOP_API } from "../../shared/api/config";
 import { CartItems } from "./response";
 
-const CART_ITEMS_BASE_URL = createApiUrl(SHOP_API.endpoint.cartItems);
+const URL = SHOP_API.endpoint.cartItems;
 
 export const CartItemsAPI = {
   get: async () => {
-    const params: Record<string, string> = {
-      page: "0",
-      size: "50",
-    };
-
-    const options: RequestInit = { method: "GET" };
-    const apiUrl = createApiUrl(SHOP_API.endpoint.cartItems, params);
-    return await fetchAPI<CartItems>(apiUrl, options);
+    const params: Record<string, string> = { page: "0", size: "50" };
+    return getData<CartItems>(createApiUrl(URL, params));
   },
 
   post: async (productId: number) => {
-    const options: RequestInit = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId, quantity: 1 }),
-    };
-
-    return await fetchAPI(CART_ITEMS_BASE_URL, options, false);
+    const data = { productId, quantity: 1 };
+    return postData(createApiUrl(URL), data);
   },
 
   delete: async (cartId: number) => {
-    const options: RequestInit = { method: "DELETE" };
-    const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
-    return await fetchAPI(apiUrl, options, false);
+    return deleteData(createResourceUrl(URL, cartId));
   },
 
   patch: async (cartId: number, quantity: number) => {
-    const options: RequestInit = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: cartId, quantity }),
-    };
-    const apiUrl = `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/${cartId}`;
-    return await fetchAPI(apiUrl, options, false);
+    const data = { id: cartId, quantity };
+    return patchData(createResourceUrl(URL, cartId), data);
   },
 };
