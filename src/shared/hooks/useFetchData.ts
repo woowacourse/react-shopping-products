@@ -30,9 +30,15 @@ export const useFetchData = <T>(options?: UseFetchDataOptions<T>) => {
 
   const mutate = useCallback(
     async (apiCall: () => Promise<void>, refetchFn?: () => Promise<T>) => {
-      await apiCall();
-      if (refetchFn) {
-        await fetch(refetchFn);
+      try {
+        setData((prev) => ({ ...prev, error: null }));
+        await apiCall();
+        if (refetchFn) {
+          await fetch(refetchFn);
+        }
+      } catch (error) {
+        setData((prev) => ({ ...prev, error: error as Error }));
+        throw error;
       }
     },
     [fetch]
