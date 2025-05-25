@@ -1,16 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
-import "./index.css";
 import App from "./App";
+import "./index.css";
 
 async function enableMocking() {
-  const { worker } = await import("./mocks/browser"); //Dynamic import
+  const { worker } = await import("./mocks/browser");
   await worker.start({
     serviceWorker: {
-      url: `${
-        import.meta.env.BASE_URL
-      }/react-shopping-products/mockServiceWorker.js`,
+      url: "./mockServiceWorker.js",
     },
   });
 }
