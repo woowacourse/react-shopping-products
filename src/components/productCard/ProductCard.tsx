@@ -50,6 +50,7 @@ function ProductCard({
           productId={product.id}
           cartId={cartMatch?.cartId}
           cartAmount={cartItemIds.length}
+          productQuantity={product.quantity}
           quantity={cartMatch?.quantity}
           isToggled={isToggled}
           setToggle={setToggle}

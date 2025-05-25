@@ -6,6 +6,7 @@ const ERROR_MESSAGE = {
   ADD: "장바구니 추가를 실패했습니다.",
   MINUS: "장바구니 삭제를 실패했습니다.",
   CART_MAX: "장바구니는 50개까지 가능합니다.",
+  CART_ADD: "재고 수량을 초과하여 담을 수 없습니다.",
 };
 
 export type ERROR_TYPE = keyof typeof ERROR_MESSAGE;

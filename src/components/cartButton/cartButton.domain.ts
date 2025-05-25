@@ -2,13 +2,16 @@ import { ERROR_TYPE } from "../../hooks/useError";
 import request from "../../utils/request";
 
 interface PlusItemProps {
-  cartId: number | undefined;
-  quantity: number | undefined;
+  cartId?: number;
+  productQuantity: number;
+  quantity?: number;
+  setErrorTrue: (type: ERROR_TYPE) => void;
+
   syncCartWithServer: () => void;
 }
 interface MinusItemProps {
-  cartId: number | undefined;
-  quantity: number | undefined;
+  cartId?: number;
+  quantity?: number;
   syncCartWithServer: () => void;
 }
 interface AddItemToCartProps {
@@ -29,9 +32,14 @@ interface RemoveItemToCartProps {
 
 export async function PlusItem({
   cartId,
+  productQuantity,
   quantity,
+  setErrorTrue,
   syncCartWithServer,
 }: PlusItemProps) {
+  if ((quantity ?? 0) > productQuantity) {
+    return setErrorTrue("CART_ADD");
+  }
   try {
     await request({
       headers: {

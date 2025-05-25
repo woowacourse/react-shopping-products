@@ -8,25 +8,27 @@ import { useData } from "../../hooks/useData";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { ButtonContainer } from "./CartButton.css";
 
-interface CartToggleButtonProps {
+interface CartButtonProps {
   isToggled: boolean;
   setToggle: (val: boolean) => void;
   productId: number;
   cartId?: number;
   cartAmount: number;
+  productQuantity: number;
   quantity?: number;
   setErrorTrue: (type: ERROR_TYPE) => void;
 }
 
-function CartToggleButton({
+function CartButton({
   isToggled,
   setToggle,
   productId,
   cartId,
+  productQuantity,
   quantity,
   cartAmount,
   setErrorTrue,
-}: CartToggleButtonProps) {
+}: CartButtonProps) {
   const { setCartItemIds, fetchCartProducts } = useData();
 
   const showCountButton = async () => {
@@ -47,7 +49,9 @@ function CartToggleButton({
     try {
       await PlusItem({
         cartId,
+        productQuantity,
         quantity,
+        setErrorTrue,
         syncCartWithServer: fetchCartProducts,
       });
     } catch {
@@ -102,4 +106,4 @@ function CartToggleButton({
   );
 }
 
-export default CartToggleButton;
+export default CartButton;
