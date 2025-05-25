@@ -10,10 +10,11 @@ export function useCartProducts(
     (async () => {
       try {
         const res = await getCartItems({ sortBy: "asc" });
-        dispatch({ type: "fetchCartSuccess", payload: res.content });
+        dispatch({ type: "success", queryKey: "cart", payload: res.content });
       } catch (err) {
         dispatch({
-          type: "fetchCartFailure",
+          type: "error",
+          queryKey: "cart",
           payload: "장바구니 불러오기 실패",
         });
       }

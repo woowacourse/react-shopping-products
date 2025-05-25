@@ -17,10 +17,15 @@ export function useProducts(
           category: category,
           sortBy: filter === "높은 가격순" ? "price,desc" : "price,asc",
         });
-        dispatch({ type: "fetchProductSuccess", payload: res.content });
+        dispatch({
+          type: "success",
+          queryKey: "product",
+          payload: res.content,
+        });
       } catch (err) {
         dispatch({
-          type: "fetchProductFailure",
+          type: "error",
+          queryKey: "product",
           payload: "상품록록 불러오기 실패",
         });
       }

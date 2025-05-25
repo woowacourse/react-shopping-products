@@ -1,30 +1,43 @@
-import { CategoryOption, FilterOption } from "../../../constants";
+import React, { createContext } from "react";
 import { CartItemType } from "../apis/types/cartItem";
 import { ProductType } from "../apis/types/product";
-import React, { createContext } from "react";
+import { CategoryOption, FilterOption } from "../../../constants";
 
-export interface ContextState {
+export type queryKeyType = "cart" | "product";
+
+type PayloadMap = {
+  cart: CartItemType;
+  product: ProductType;
+};
+
+export type ContextState = {
+  handleChangeFilter: (value: FilterOption) => void;
+  handleChangeCategory: (value: CategoryOption) => void;
+} & {
+  [K in keyof PayloadMap]: {
+    item: PayloadMap[K][];
+    loading: boolean;
+    error: string | null;
+  };
+};
+
+type ProductFilter = {
   category: CategoryOption;
   filter: FilterOption;
+};
 
-  cartItemList: CartItemType[];
-  loadingCart: boolean;
-  errorCart: string | null;
+type BaseAction<K extends keyof PayloadMap> =
+  | {
+      type: "update";
+      queryKey: K;
+      payload?: ProductFilter;
+    }
+  | { type: "success"; queryKey: K; payload: PayloadMap[K][] }
+  | { type: "error"; queryKey: K; payload: string };
 
-  productList: ProductType[];
-  loadingProduct: boolean;
-  errorProduct: string | null;
-}
-
-export type ContextAction =
-  | { type: "updateCartProduct" }
-  | { type: "fetchCartSuccess"; payload: CartItemType[] }
-  | { type: "fetchCartFailure"; payload: string }
-  | { type: "updateProduct" }
-  | { type: "fetchProductSuccess"; payload: ProductType[] }
-  | { type: "fetchProductFailure"; payload: string }
-  | { type: "changeCategory"; payload: CategoryOption }
-  | { type: "changeFilter"; payload: FilterOption };
+export type ContextAction = {
+  [K in keyof PayloadMap]: BaseAction<K>;
+}[keyof PayloadMap];
 
 export const ShoppingContext = createContext<
   (ContextState & { dispatch: React.Dispatch<ContextAction> }) | null

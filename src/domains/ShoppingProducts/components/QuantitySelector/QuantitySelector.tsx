@@ -21,7 +21,8 @@ export function QuantitySelector({
   const handleAddCount = async () => {
     if (quantity === maxQuantity) {
       dispatch({
-        type: "fetchCartFailure",
+        type: "error",
+        queryKey: "cart",
         payload: `재고 수량을 초과하여 담을 수 없습니다.`,
       });
       return;

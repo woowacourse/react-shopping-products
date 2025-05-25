@@ -27,7 +27,26 @@ describe("msw를 사용해서 수량 필드가 추가된 api를 mocking한다.",
     );
 
     const product = await screen.findAllByTestId("product-component");
-
     expect(product.length).toBe(mockProductResponse.content.length);
+  });
+
+  it('수량이 0인 상품은 "품절" 표시가 된다', async () => {
+    render(
+      <ShoppingProvider>
+        <ShopPage />
+      </ShoppingProvider>
+    );
+
+    const soldOutProducts = mockProductResponse.content.filter(
+      (product) => product.quantity === 0
+    );
+
+    for (const soldOutProduct of soldOutProducts) {
+      const productElement = await screen.findByText(soldOutProduct.name);
+      const parent = productElement.closest(
+        '[data-testid="product-component"]'
+      );
+      expect(parent).toHaveTextContent("품절");
+    }
   });
 });

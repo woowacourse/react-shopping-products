@@ -1,4 +1,6 @@
 import { productHandlers } from "./productHandlers";
-import { cartHandlers } from "./cartHandlers";
+import { createCartHandlers } from "./cartHandlers";
 
+const { cartHandlers, resetCartItems } = createCartHandlers();
+export { resetCartItems };
 export const handlers = [...productHandlers, ...cartHandlers];

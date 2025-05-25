@@ -25,7 +25,7 @@ const filterOptions: FilterOption[] = ["낮은 가격순", "높은 가격순"];
 
 export default function ShopPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const { cartItemList, errorCart, errorProduct, dispatch } =
+  const { cart, product, handleChangeCategory, handleChangeFilter } =
     useShoppingContext();
 
   const handleClose = () => {
@@ -53,15 +53,15 @@ export default function ShopPage() {
               alt="장바구니 아이콘"
               onClick={handleOpen}
             />
-            {cartItemList.length !== 0 && (
+            {cart.item.length !== 0 && (
               <div data-testid="cart-count" css={cartItemCount}>
-                {cartItemList.length}
+                {cart.item.length}
               </div>
             )}
           </div>
-          {Boolean(errorCart) && (
+          {Boolean(cart.error) && (
             <Toast>
-              {errorCart ? errorCart : errorProduct && errorProduct}
+              {cart.error ? cart.error : product.error && product.error}
             </Toast>
           )}
         </Header>
@@ -72,16 +72,12 @@ export default function ShopPage() {
                 <Selector
                   dropDownOptions={dropdownOptions}
                   placeholder="전체"
-                  onSelectChange={(value: CategoryOption) =>
-                    dispatch({ type: "changeCategory", payload: value })
-                  }
+                  onSelectChange={handleChangeCategory}
                 />
                 <Selector
                   dropDownOptions={filterOptions}
                   placeholder="낮은 가격순"
-                  onSelectChange={(value: FilterOption) =>
-                    dispatch({ type: "changeFilter", payload: value })
-                  }
+                  onSelectChange={handleChangeFilter}
                 />
               </div>
             </TitleContainer>

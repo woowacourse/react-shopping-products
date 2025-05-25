@@ -29,7 +29,7 @@ export const mockProductResponse: ProductResponse = {
       quantity: 5,
     },
     {
-      id: 34,
+      id: 64,
       name: "잠이와요 잠이와 ........",
       price: 999000000000,
       imageUrl: "https://img.stibee.com/61433_1660088998.jpeg",

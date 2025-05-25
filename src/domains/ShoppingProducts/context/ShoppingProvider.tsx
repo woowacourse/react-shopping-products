@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import { useCartProducts } from "../hooks/useCartProducts";
+import { useFilter } from "../hooks/useFilter";
 import { useProducts } from "../hooks/useProducts";
 import {
   ContextAction,
@@ -8,16 +9,10 @@ import {
 } from "./ShoppingContext";
 
 const initialValue: ContextState = {
-  category: "전체",
-  filter: "낮은 가격순",
-
-  cartItemList: [],
-  loadingCart: false,
-  errorCart: null,
-
-  productList: [],
-  loadingProduct: false,
-  errorProduct: null,
+  handleChangeFilter: () => {},
+  handleChangeCategory: () => {},
+  cart: { item: [], loading: false, error: null },
+  product: { item: [], loading: false, error: null },
 };
 
 export function ShoppingProvider({ children }: { children: React.ReactNode }) {
@@ -25,8 +20,13 @@ export function ShoppingProvider({ children }: { children: React.ReactNode }) {
     React.Reducer<ContextState, ContextAction>
   >(contextReducer, initialValue);
 
-  useProducts(dispatch, state.loadingCart, state.category, state.filter);
-  useCartProducts(dispatch, state.loadingCart);
+  const { filter, category, handleChangeFilter, handleChangeCategory } =
+    useFilter(dispatch);
+  state.handleChangeFilter = handleChangeFilter;
+  state.handleChangeCategory = handleChangeCategory;
+
+  useProducts(dispatch, state.product.loading, category, filter);
+  useCartProducts(dispatch, state.cart.loading);
 
   return (
     <ShoppingContext.Provider value={{ ...state, dispatch }}>
@@ -39,46 +39,35 @@ function contextReducer(
   state: ContextState,
   action: ContextAction
 ): ContextState {
+  const key = action.queryKey;
+
   switch (action.type) {
-    case "updateCartProduct":
-      return { ...state, loadingCart: true, errorCart: null };
-    case "fetchCartSuccess":
+    case "update":
       return {
         ...state,
-        cartItemList: action.payload,
-        loadingCart: false,
-        errorCart: null,
+        [key]: {
+          item: state[key].item,
+          loading: true,
+          error: null,
+        },
       };
-    case "fetchCartFailure":
+    case "success":
       return {
         ...state,
-        loadingCart: false,
-        errorCart: action.payload,
+        [key]: {
+          item: action.payload,
+          loading: false,
+          error: null,
+        },
       };
-    case "updateProduct":
-      return { ...state, loadingProduct: true, errorProduct: null };
-    case "fetchProductSuccess":
+    case "error":
       return {
         ...state,
-        productList: action.payload,
-        loadingProduct: false,
-        errorProduct: null,
-      };
-    case "fetchProductFailure":
-      return {
-        ...state,
-        loadingProduct: false,
-        errorProduct: action.payload,
-      };
-    case "changeCategory":
-      return {
-        ...state,
-        category: action.payload,
-      };
-    case "changeFilter":
-      return {
-        ...state,
-        filter: action.payload,
+        [key]: {
+          item: state[key].item,
+          loading: false,
+          error: action.payload,
+        },
       };
     default:
       return state;

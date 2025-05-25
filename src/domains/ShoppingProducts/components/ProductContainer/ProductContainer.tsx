@@ -8,22 +8,21 @@ import { ProductContainerLayout } from "./ProductContainer.style";
 import { postCartItem } from "../../apis/cartItem";
 
 export default function ProductContainer() {
-  const { cartItemList, productList, errorProduct, loadingProduct, dispatch } =
-    useShoppingContext();
+  const { cart, product, dispatch } = useShoppingContext();
 
-  if (errorProduct)
+  if (product.error)
     <div css={loadingLayout}>
       상품목록 데이터를 가져오는데 실패했습니다. <br /> 다시 시도해주세요
     </div>;
 
-  if (productList.length === 0) {
+  if (product.item.length === 0) {
     <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>;
   }
 
-  if (loadingProduct) <div css={loadingLayout}>로딩중입니다</div>;
+  if (product.loading) <div css={loadingLayout}>로딩중입니다</div>;
 
   const updateCartProduct = () => {
-    dispatch({ type: "updateCartProduct" });
+    dispatch({ type: "update", queryKey: "cart" });
   };
 
   const handleAddCart = async (id: number) => {
@@ -33,12 +32,12 @@ export default function ProductContainer() {
 
   return (
     <div css={ProductContainerLayout}>
-      {productList.map((product) => {
-        const selectedCardItems = cartItemList.filter(
+      {product.item.map((product) => {
+        const selectedCardItems = cart.item.filter(
           (cartItem: CartItemType) => Number(product.id) === cartItem.product.id
         );
         const isSelected = selectedCardItems.length !== 0;
-        const cartProduct = cartItemList.filter(
+        const cartProduct = cart.item.filter(
           (cartItem) => cartItem.product.id === product.id
         );
 

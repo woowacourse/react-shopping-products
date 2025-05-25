@@ -9,9 +9,9 @@ import {
 } from "./CartProductContainer.style";
 
 export default function CartProductContainer() {
-  const { cartItemList, productList, dispatch } = useShoppingContext();
+  const { cart, product, dispatch } = useShoppingContext();
 
-  if (cartItemList.length === 0)
+  if (cart.item.length === 0)
     return (
       <div>
         장바구니에 추가된 목록이 없습니다. <br /> 상품을 먼저 추가해주세요
@@ -19,12 +19,12 @@ export default function CartProductContainer() {
     );
 
   const calculateTotalPrice = () => {
-    return cartItemList.reduce((total, cartItem) => {
-      const product = productList.find(
-        (product) => product.id === cartItem.product.id
+    return cart.item.reduce((total, cartItem) => {
+      const productItem = product.item.find(
+        (productItem) => productItem.id === cartItem.product.id
       );
-      if (product) {
-        return total + product.price * cartItem.quantity;
+      if (productItem) {
+        return total + productItem.price * cartItem.quantity;
       }
       return total;
     }, 0);
@@ -33,9 +33,9 @@ export default function CartProductContainer() {
   return (
     <>
       <div css={CartProductContainerLayout}>
-        {cartItemList.map((cartItem) => {
-          const cartProduct = productList.filter(
-            (product) => cartItem.product.id === product.id
+        {cart.item.map((cartItem) => {
+          const cartProduct = product.item.filter(
+            (productItem) => cartItem.product.id === productItem.id
           );
           if (cartProduct.length === 0) return;
           return (
@@ -46,7 +46,7 @@ export default function CartProductContainer() {
               name={cartProduct[0].name}
               price={cartProduct[0].price}
               quantity={cartItem.quantity}
-              onChange={() => dispatch({ type: "updateCartProduct" })}
+              onChange={() => dispatch({ type: "update", queryKey: "cart" })}
               maxQuantity={cartProduct[0].quantity ?? 100000}
             />
           );
