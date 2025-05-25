@@ -1,6 +1,6 @@
 import { credentials } from "./apiConfig";
 
-export type Method = "GET" | "POST" | "DELETE";
+export type Method = "GET" | "POST" | "DELETE" | "PATCH";
 
 export async function apiClient<T>(
   method: Method,
