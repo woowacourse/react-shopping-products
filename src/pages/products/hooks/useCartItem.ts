@@ -110,9 +110,20 @@ export default function useCartItem() {
     }
   };
 
+  const deleteCartItem = async (cartItemId: number) => {
+    await mutateDeleteCartItem({ cartItemId }, (prev) => {
+      const newCartContent = [...prev.content];
+      return {
+        ...prev,
+        content: newCartContent.filter((item) => item.id !== cartItemId),
+      };
+    });
+  };
+
   return {
     increaseCartItem,
     decreaseCartItem,
+    deleteCartItem,
     productsStatus,
     cartItemsStatus,
     products,

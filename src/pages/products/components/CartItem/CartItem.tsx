@@ -1,37 +1,24 @@
+import { Button, PlusMinusButton } from "@/components";
 import { GetCartItemsResponse } from "@/types";
-import * as S from "./CartItem.styles";
-import { PlusMinusButton, Button } from "@/components";
 import { css } from "@emotion/react";
-import { CartItemApi } from "@/apis";
+import { useCartItem } from "../../hooks";
+import * as S from "./CartItem.styles";
 
 interface CartItemProps {
   cartItem: GetCartItemsResponse["content"][number];
   refetchCartItems: () => Promise<void>;
 }
 
-export default function CartItem({ cartItem, refetchCartItems }: CartItemProps) {
+export default function CartItem({ cartItem }: CartItemProps) {
   const {
     product: { imageUrl, price, name },
     quantity,
   } = cartItem;
 
-  const handleDecreaseCartItem = async () => {
-    await CartItemApi.patchCartItems({ cartItemId: cartItem.id, quantity: quantity - 1 });
-    await refetchCartItems();
-  };
-
-  const handleIncreaseCartItem = async () => {
-    await CartItemApi.patchCartItems({ cartItemId: cartItem.id, quantity: quantity + 1 });
-    await refetchCartItems();
-  };
-
-  const handleDeleteCartItem = async () => {
-    await CartItemApi.deleteCartItems({ cartItemId: cartItem.id });
-    await refetchCartItems();
-  };
+  const { increaseCartItem, decreaseCartItem, deleteCartItem } = useCartItem();
 
   return (
-    <S.CartItemWrapper>
+    <S.ProductCardCartItemWrapper>
       <S.CartItemImageWrapper>
         <S.CartItemImage src={imageUrl} alt={name} />
       </S.CartItemImageWrapper>
@@ -40,11 +27,13 @@ export default function CartItem({ cartItem, refetchCartItems }: CartItemProps) 
         <S.CartItemPrice>{price.toLocaleString()}원</S.CartItemPrice>
         <PlusMinusButton
           quantity={quantity}
-          onAddButtonClick={handleIncreaseCartItem}
-          onMinusButtonClick={handleDecreaseCartItem}
+          onAddButtonClick={() => increaseCartItem(cartItem.product.id)}
+          onMinusButtonClick={() => decreaseCartItem(cartItem.product.id)}
         />
         <Button
-          onClick={handleDeleteCartItem}
+          onClick={async () => {
+            await deleteCartItem(cartItem.id);
+          }}
           css={css`
             position: absolute;
             right: 0;
@@ -58,6 +47,6 @@ export default function CartItem({ cartItem, refetchCartItems }: CartItemProps) 
           삭제
         </Button>
       </S.CartItemInfoWrapper>
-    </S.CartItemWrapper>
+    </S.ProductCardCartItemWrapper>
   );
 }
