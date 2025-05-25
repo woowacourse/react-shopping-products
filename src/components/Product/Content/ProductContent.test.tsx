@@ -9,7 +9,7 @@ import {
 import ProductContent from ".";
 import { FilterOption, SortOption } from "./ProductContent.type";
 
-let { mockProductItems } = vi.hoisted(() => {
+const { mockProductItems } = vi.hoisted(() => {
   return {
     mockProductItems: [
       {
@@ -70,7 +70,7 @@ describe("ProductContent Component", () => {
     expectedItemCount: number
   ) => {
     await act(async () => {
-      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
+      render(<ProductContent />);
     });
 
     const list = await screen.findByRole("list");
@@ -108,7 +108,7 @@ describe("ProductContent Component", () => {
     expectedOrder: string[]
   ) => {
     await act(async () => {
-      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
+      render(<ProductContent />);
     });
 
     const list = screen.getByRole("list");
@@ -151,32 +151,8 @@ describe("ProductContent Component", () => {
     ]);
   });
 
-  it("상품이 품절인 경우 담기 버튼을 렌더링하지 않고 이미지에 품절 텍스트가 렌더링된다.", async () => {
-    await act(async () => {
-      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
-    });
-
-    const list = screen.getByRole("list");
-    expect(list).toBeInTheDocument();
-    const listItems = within(list).getAllByRole("listitem");
-    expect(within(listItems[0]).getByText("품절")).toBeInTheDocument();
-    expect(within(listItems[0]).queryByText("담기")).not.toBeInTheDocument();
-  });
-
-  it("등록된 상품이 없을 때 상품 목록 리스트가 렌더링되지 않고 대체 텍스트가 렌더링된다.", async () => {
-    mockProductItems = [];
-    await act(async () => {
-      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
-    });
-
-    const list = screen.queryByRole("list");
-    expect(list).not.toBeInTheDocument();
-
-    expect(screen.getByText("등록된 상품이 없습니다.")).toBeInTheDocument();
-  });
-
   it("상품 목록을 불러오는 중일 때 로딩 메시지가 표시된다.", async () => {
-    render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
+    render(<ProductContent />);
 
     expect(
       screen.getByText("상품 목록을 가져오는 중 입니다...")

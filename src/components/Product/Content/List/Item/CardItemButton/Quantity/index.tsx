@@ -51,7 +51,9 @@ function CartItemQuantityButton({
           <img src={MinusIcon} alt="수량 1개 빼기" />
         </S.Button>
       )}
-      <S.QuantityText>{quantity}</S.QuantityText>
+      <S.QuantityText data-testid="current-cart-item-quantity">
+        {quantity}
+      </S.QuantityText>
       <S.Button
         type="button"
         onClick={() => onUpdateCartItemQuantity(quantity + 1)}
