@@ -37,20 +37,20 @@
 
 ### 기능 명세서
 
-- [ ] msw 적용하기
+- [x] msw 적용하기
 
   - [x] 서비스 워커 등록
   - [x] msw 에서 사용할 모킹 데이터 구현
     - [x] 프로덕트 데이터 구현 (+quantity 추가되어야함.)
     - [x] 장바구니 데이터 구현
-  - [ ] msw api 로직 구현
+  - [x] msw api 로직 구현
     - [x] products api
     - [x] cartItem api
       - [x] get (장바구니 조회)
       - [x] post (장바구니 담기)
       - [x] patch (장바구니 업데이트)
       - [x] delete (장바구니 삭제)
-  - [ ] msw 연결
+  - [x] msw 연결
     - [x] products api 로직 연결 (sort, category)
     - [x] cartItem api 로직 연결
 
