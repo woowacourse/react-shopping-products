@@ -64,7 +64,7 @@ const ProductCard = ({
           <ProductCardPrice>{price.toLocaleString()}원</ProductCardPrice>
         </ProductCardDetailTextWrapper>
         {isInBascket ? (
-          <QuantityController id={id} basketId={basketId}/>
+          <QuantityController id={id} basketId={basketId} timeoutRef={timeoutRef}/>
         ) : (
           <CartToggleButton
             id={id}
