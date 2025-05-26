@@ -9,8 +9,10 @@ async function getCarts(page = 0, size = CART_LIMIT) {
   });
 
   if (!res.ok) {
+    const errorData = await res.json();
     throw new Error(
-      `장바구니 목록을 불러오는 중 오류가 발생했습니다 (${res.status} ${res.statusText})`,
+      errorData.message ||
+        `장바구니 목록을 불러오는 중 오류가 발생했습니다 (${res.status} ${res.statusText})`,
     );
   }
   const data = await res.json();
