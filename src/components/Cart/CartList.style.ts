@@ -32,3 +32,10 @@ export const cartTextBlock = css({
   gap: '4px',
   fontSize: '14px'
 });
+
+export const titleCss = css({
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  width: '140px'
+});

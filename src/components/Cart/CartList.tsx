@@ -1,3 +1,4 @@
+import { deleteCartItem } from '../../api/deleteCartItem';
 import getCartItems from '../../api/getCartItems';
 import createCartItemsViewModel, { CartItemViewModel } from '../../api/model/createCartItemsViewModel';
 import patchCartItem from '../../api/patchCartItem';
@@ -20,6 +21,9 @@ export default function CartList({
   const viewModel = createCartItemsViewModel(cartItems);
 
   const handleMinus = async (item: CartItemViewModel) => {
+    if (item.cartQuantity - 1 <= 0) {
+      await deleteCartItem(item.id);
+    }
     await patchCartItem(item.id, item.cartQuantity - 1);
     await refetchCart();
   };
@@ -38,7 +42,7 @@ export default function CartList({
               <Image src={item.imageUrl} alt={`${item.title} 상품 이미지`} />
             </div>
             <div css={styles.cartTextBlock}>
-              <h3>{item.title}</h3>
+              <h3 css={styles.titleCss}>{item.title}</h3>
               <p>{item.price}</p>
               <Counter
                 value={item.cartQuantity}

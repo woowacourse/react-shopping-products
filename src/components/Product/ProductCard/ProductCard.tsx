@@ -6,6 +6,7 @@ import patchCartItem from '../../../api/patchCartItem';
 import { useApiContext } from '../../../contexts/ApiContext';
 import getCartItems from '../../../api/getCartItems';
 import { OrderByOptionType } from '../../../types/categoryOption';
+import { deleteCartItem } from '../../../api/deleteCartItem';
 
 interface ProductCardProps {
   title: string;
@@ -32,9 +33,13 @@ export default function ProductCard({
   const { fetcher: refetchCart } = useApiContext({ fetchFn: getCartItems, key: 'getCartItems' });
 
   const handleMinus = async () => {
+    if (cartQuantity - 1 <= 0) {
+      await deleteCartItem(cartItemId);
+    }
     await patchCartItem(cartItemId, cartQuantity - 1);
     await refetchCart();
   };
+
   const handlePlus = async () => {
     if (cartQuantity >= productQuantity) return;
     await patchCartItem(cartItemId, cartQuantity + 1);
