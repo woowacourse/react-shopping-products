@@ -4,12 +4,9 @@ const BASE_URL = `${import.meta.env.VITE_BASE_URL}/cart-items`;
 
 import { cartItems } from "../data/mockCartItem";
 import { allProductsData } from "../data/mockProducts";
-import { ALL_CATEGORY, CATEGORIES } from "../../constants/filterOptions";
 
 let cartItemId = 9999;
-const categories = CATEGORIES.filter((category) => category !== ALL_CATEGORY);
 
-// 장바구니 목록 조회 GET
 const getCartItems = http.get(BASE_URL, ({ request }) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page");
@@ -37,7 +34,6 @@ const getCartItems = http.get(BASE_URL, ({ request }) => {
   return HttpResponse.json(response);
 });
 
-// 장바구니에 아이템 추가 POST
 const addCartItem = http.post(BASE_URL, async ({ request }) => {
   const newProduct = await request.json();
 
@@ -86,12 +82,7 @@ const addCartItem = http.post(BASE_URL, async ({ request }) => {
       id: currentCartItemId,
       quantity: newQuantity,
       product: {
-        id: newProductId,
-        name: currentCartItemId.toString(),
-        price: Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000,
-        imageUrl: "",
-        category: categories[Math.floor(Math.random() * categories.length)],
-        quantity: 10,
+        ...targetProduct,
       },
     };
     cartItems.push(newCartItem);
@@ -100,7 +91,6 @@ const addCartItem = http.post(BASE_URL, async ({ request }) => {
   }
 });
 
-// 장바구니 아이템 삭제 DELETE
 const deleteCartItem = http.delete(`${BASE_URL}/:id`, ({ params }) => {
   const { id } = params;
   const cartItemId = Array.isArray(id) ? id[0] : id;
@@ -120,7 +110,6 @@ const deleteCartItem = http.delete(`${BASE_URL}/:id`, ({ params }) => {
   return HttpResponse.json(undefined, { status: 204 });
 });
 
-// 장바구니 아이템 수량 변경 PATCH
 const updateCartItemQuantity = http.patch(
   `${BASE_URL}/:id`,
   async ({ params, request }) => {
