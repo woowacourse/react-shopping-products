@@ -1,26 +1,31 @@
-import { useEffect, useState } from 'react';
-import { cartApi } from '../api/cart';
+import { useRef } from 'react';
 import { CartItem } from '../types/common';
+import { useResource } from './useResource';
+
+const CART_ITEMS_URL = '/cart-items';
 
 const useCart = () => {
-  const [cartData, setCartData] = useState<CartItem[]>([]);
+  const paramsRef = useRef({ page: 0, size: 50 });
 
-  useEffect(() => {
-    fetchCartData();
-  }, []);
+  const {
+    data: cartDataResponse,
+    isLoading,
+    error,
+    refetch: fetchCartData,
+  } = useResource<{ content: CartItem[] }>(CART_ITEMS_URL, {
+    params: paramsRef.current,
+    initialData: { content: [] },
+    autoFetch: true,
+  });
 
-  const fetchCartData = async () => {
-    try {
-      const response = await cartApi.getCartItems();
-      setCartData(response);
-      return response;
-    } catch (error) {
-      setCartData([]);
-      return [];
-    }
+  const cartData = cartDataResponse?.content || [];
+
+  return {
+    cartData,
+    isLoading,
+    error,
+    fetchCartData,
   };
-
-  return { cartData, fetchCartData };
 };
 
 export default useCart;
