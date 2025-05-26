@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { IMAGE_PATH } from "../../constants/imagePath";
 import {
   Button,
@@ -17,13 +16,13 @@ type QuantityControllerProps = {
 };
 
 const QuantityController = ({ id, basketId, timeoutRef, size }: QuantityControllerProps) => {
-  const [quantity, setQuantity] = useState(1);
-  const { fetchCartItems, setError, setErrorMessage } = useDataContext();
+  const { cartItems, fetchCartItems, setError, setErrorMessage } = useDataContext();
+  const quantity = cartItems?.find((item) => item.productId === id)?.quantity ?? 1;
 
   const increase = async () => {
     try {
-      await postCartItems(id, quantity);
-      setQuantity((prev) => prev + 1);
+      await postCartItems(id, 1);
+      fetchCartItems();
     } catch (e) {
       setError(true);
 
@@ -43,9 +42,10 @@ const QuantityController = ({ id, basketId, timeoutRef, size }: QuantityControll
   const decrease = async () => {
     if (quantity === 1 && basketId) {
       await deleteCartItem(basketId);
-      await fetchCartItems();
+      fetchCartItems();
     } else if (quantity > 1) {
-      setQuantity((prev) => prev - 1);
+      await postCartItems(id, -1);
+      fetchCartItems();
     }
   };
 
