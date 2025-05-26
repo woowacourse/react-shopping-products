@@ -15,7 +15,7 @@ function QuantityCounter({
 }: QuantityCounterProps) {
   return (
     <S.Container>
-      <S.Button onClick={onDecrease}>
+      <S.Button onClick={onDecrease} data-testid="decrease-button">
         <S.Icon src={minusIcon} alt="Decrease" />
       </S.Button>
       <S.Quantity>{quantity}</S.Quantity>
