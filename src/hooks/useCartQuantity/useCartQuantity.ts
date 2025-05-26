@@ -1,6 +1,7 @@
 import { useToast } from "../useToast/useToast";
 import { changeCartQuantity } from "../../api/cart";
 import { useData } from "../../components/dataProvider/DataProvider";
+import { CartItem } from "../../types/response.types";
 
 interface UseCartQuantityProps {
   cartId?: number;
@@ -16,10 +17,10 @@ export default function useCartQuantity({
   const { data, setData } = useData();
   const { showToast } = useToast();
 
+  const current = getCartQuantity(data.cart, cartId);
+
   async function increase() {
     if (cartId == null) return;
-
-    const current = data.cart.find((item) => item.id === cartId)?.quantity ?? 0;
 
     if (quantity <= current) {
       showToast("CART_QUANTITY");
@@ -38,8 +39,6 @@ export default function useCartQuantity({
 
   function decrease() {
     if (cartId == null) return;
-
-    const current = data.cart.find((item) => item.id === cartId)?.quantity ?? 0;
 
     if (current === 1) {
       removeItemToCart({ cartId });
@@ -60,9 +59,14 @@ export default function useCartQuantity({
       ),
     }));
   }
+
   return {
-    cartQuantity: data.cart.find((item) => item.id === cartId)?.quantity ?? 0,
+    cartQuantity: current,
     increase,
     decrease,
   };
+}
+
+function getCartQuantity(cartData: CartItem[], cartId: number | undefined) {
+  return cartData.find((item) => item.id === cartId)?.quantity ?? 0;
 }
