@@ -86,6 +86,10 @@ export const ModalProductItemName = styled.div`
   font-size: 16px;
   font-weight: 700;
   color: #000;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
 `;
 
 export const ModalProductItemPrice = styled.div`
