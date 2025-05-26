@@ -8,13 +8,11 @@ import {
   productPrice,
   buttonWrapper,
   productSoldOutOverlay,
-  quantityButton,
-  quantityDisplay,
-  quantityControlContainer,
 } from './Product.style';
 import isValidImageUrl from '../../utils/isValidImageUrl';
 import { DEFAULT_IMAGE_URL } from '../../constants/products';
 import useProductQuantity from '../../hooks/useProductQuantity';
+import QuantityControlBox from '../QuantityControlBox/QuantityControlBox';
 
 function Product({
   id,
@@ -64,23 +62,13 @@ function Product({
         <div className={`${productPrice} quantity-info`}>재고: {quantity}개</div>
         <div className={buttonWrapper}>
           {isAdd ? (
-            <div className={quantityControlContainer}>
-              <button
-                className={quantityButton}
-                onClick={handleDecreaseQuantity}
-                disabled={isOutOfStock}
-              >
-                -
-              </button>
-              <span className={quantityDisplay}>{selectedQuantity}</span>
-              <button
-                className={quantityButton}
-                onClick={handleIncreaseQuantity}
-                disabled={isOutOfStock || selectedQuantity >= quantity}
-              >
-                +
-              </button>
-            </div>
+            <QuantityControlBox
+              handleDecreaseQuantity={handleDecreaseQuantity}
+              handleIncreaseQuantity={handleIncreaseQuantity}
+              isOutOfStock={isOutOfStock}
+              selectedQuantity={selectedQuantity}
+              quantity={quantity}
+            />
           ) : (
             <AddButton onClick={handleAddToCart} disabled={isOutOfStock} />
           )}
