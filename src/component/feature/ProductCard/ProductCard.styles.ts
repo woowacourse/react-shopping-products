@@ -51,3 +51,7 @@ export const productCardButtonContainerStyle = css`
   align-items: center;
   justify-content: flex-end;
 `;
+
+export const soldOutTextClass = css`
+  color: red;
+`;
