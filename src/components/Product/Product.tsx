@@ -13,16 +13,8 @@ import isValidImageUrl from '../../utils/isValidImageUrl';
 import { DEFAULT_IMAGE_URL } from '../../constants/products';
 import useProductQuantity from '../../hooks/useProductQuantity';
 import QuantityControlBox from '../QuantityControlBox/QuantityControlBox';
-import useGetCarts from '../../hooks/useGetCartItems';
-import useCartManagement from '../../hooks/useCartManagement';
 
 function Product({ id, imageUrl, name, price, quantity, isAdd }: ProductDataType) {
-  const { carts, refetchCarts } = useGetCarts();
-  const { handleAddCartItem, handleUpdateCartItem, handleDeleteCartItem } = useCartManagement({
-    refetchCarts,
-    carts,
-  });
-
   const {
     selectedQuantity,
     isOutOfStock,
@@ -33,9 +25,6 @@ function Product({ id, imageUrl, name, price, quantity, isAdd }: ProductDataType
     id,
     quantity,
     isAdd,
-    onClickUpdateCartItem: handleUpdateCartItem,
-    onClickDeleteCartItem: handleDeleteCartItem,
-    onClickAddCartItem: handleAddCartItem,
   });
 
   return (

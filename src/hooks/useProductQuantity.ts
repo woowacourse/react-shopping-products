@@ -1,32 +1,28 @@
-import { useState } from 'react';
-import { AddCartItemType } from '../types/cartItem';
+import useGetCarts from './useGetCartItems';
+import useCartManagement from './useCartManagement';
 
 type UseProductQuantityProps = {
   id: number;
   quantity: number;
   isAdd: boolean;
-  onClickUpdateCartItem: ({ productId, quantity }: { productId: number; quantity: number }) => void;
-  onClickDeleteCartItem: ({ productId }: { productId: number }) => void;
-  onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
 };
 
-function useProductQuantity({
-  id,
-  quantity,
-  isAdd,
-  onClickUpdateCartItem,
-  onClickDeleteCartItem,
-  onClickAddCartItem,
-}: UseProductQuantityProps) {
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
+function useProductQuantity({ id, quantity, isAdd }: UseProductQuantityProps) {
+  const { carts, refetchCarts } = useGetCarts();
+  const { handleAddCartItem, handleUpdateCartItem, handleDeleteCartItem } = useCartManagement({
+    refetchCarts,
+    carts,
+  });
+
+  const cartItem = carts?.find((cart) => cart.product.id === id);
+  const selectedQuantity = cartItem ? cartItem.quantity : 1;
   const isOutOfStock = quantity === 0;
 
   const handleIncreaseQuantity = () => {
     if (selectedQuantity < quantity) {
       const newQuantity = selectedQuantity + 1;
-      setSelectedQuantity(newQuantity);
       if (isAdd) {
-        onClickUpdateCartItem({ productId: id, quantity: newQuantity });
+        handleUpdateCartItem({ productId: id, quantity: newQuantity });
       }
     }
   };
@@ -34,23 +30,21 @@ function useProductQuantity({
   const handleDecreaseQuantity = () => {
     if (selectedQuantity === 1) {
       if (isAdd) {
-        onClickDeleteCartItem({ productId: id });
+        handleDeleteCartItem({ productId: id });
       }
-      setSelectedQuantity(1);
       return;
     }
 
     if (selectedQuantity > 1) {
       const newQuantity = selectedQuantity - 1;
-      setSelectedQuantity(newQuantity);
       if (isAdd) {
-        onClickUpdateCartItem({ productId: id, quantity: newQuantity });
+        handleUpdateCartItem({ productId: id, quantity: newQuantity });
       }
     }
   };
 
   const handleAddToCart = () => {
-    onClickAddCartItem({ productId: id, quantity: selectedQuantity });
+    handleAddCartItem({ productId: id, quantity: selectedQuantity });
   };
 
   return {
