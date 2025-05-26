@@ -5,6 +5,7 @@ export const MOCK_PRODUCTS = [
     price: 3210000,
     imageUrl: "https://example.com/table.jpg",
     category: "패션잡화",
+    quantity: 1,
   },
   {
     id: 25,
@@ -12,6 +13,7 @@ export const MOCK_PRODUCTS = [
     price: 5000,
     imageUrl: "https://example.com/gimbap.png",
     category: "식료품",
+    quantity: 2,
   },
 ];
 
@@ -25,6 +27,7 @@ export const CART_DUMMY = [
       price: 4800,
       imageUrl: "https://example.com/abara.jpg",
       category: "식료품",
+      quantity: 1,
     },
   },
   {
@@ -36,6 +39,7 @@ export const CART_DUMMY = [
       price: 3210000,
       imageUrl: "https://example.com/table.jpg",
       category: "패션잡화",
+      quantity: 2,
     },
   },
 ];

@@ -42,7 +42,7 @@ describe("<App />", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     mockedGetProducts.mockResolvedValue({ content: MOCK_PRODUCTS });
-    mockedPostCart.mockResolvedValue();
+    mockedPostCart.mockResolvedValue({});
     mockedDeleteCart.mockResolvedValue();
   });
 
