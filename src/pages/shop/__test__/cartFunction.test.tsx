@@ -1,5 +1,4 @@
 import App from '@/App';
-import '@testing-library/jest-dom';
 import {
   cleanup,
   fireEvent,
@@ -118,7 +117,7 @@ describe('SHOP 페이지에 접속 시', () => {
     });
   });
 
-  it('품절된 상품 카드에는 "품절" 오버레이 문구가 표시된다', async () => {
+  it('개수가 0개인 상품 카드에는 "품절" 오버레이 문구가 표시된다', async () => {
     const soldOutProductCard = await screen.findByTestId('product-26');
 
     const soldOutText = within(soldOutProductCard).getByText('품절');
