@@ -1,6 +1,7 @@
 import { apiRequest } from '.';
 import { CartItem } from '../types/common';
 import { CartResponse } from '../types/response';
+import { ApiError, ErrorCode } from '../types/error';
 
 const BASE_URL = '/cart-items';
 export const cartApi = {
@@ -12,13 +13,47 @@ export const cartApi = {
   },
 
   addToCart: async (productId: number): Promise<CartItem> => {
-    return apiRequest<CartItem>(`${BASE_URL}`, {
-      method: 'POST',
-      body: {
-        productId,
-        quantity: 1,
-      },
-    });
+    try {
+      return await apiRequest<CartItem>(`${BASE_URL}`, {
+        method: 'POST',
+        body: {
+          productId,
+          quantity: 1,
+        },
+      });
+    } catch (error) {
+      // 에러 코드에 따른 처리
+      if (error instanceof Error) {
+        // API 에러 응답인지 확인
+        const errorData = tryParseApiError(error.message);
+        if (errorData && errorData.errorCode === ErrorCode.OUT_OF_STOCK) {
+          throw new Error(errorData.message);
+        }
+      }
+      throw error;
+    }
+  },
+
+  updateCartItem: async (
+    cartItemId: number,
+    quantity: number
+  ): Promise<CartItem> => {
+    try {
+      return await apiRequest<CartItem>(`${BASE_URL}/${cartItemId}`, {
+        method: 'PATCH',
+        body: {
+          quantity,
+        },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        const errorData = tryParseApiError(error.message);
+        if (errorData && errorData.errorCode === ErrorCode.OUT_OF_STOCK) {
+          throw new Error(errorData.message);
+        }
+      }
+      throw error;
+    }
   },
 
   removeFromCart: async (cartItemId: number): Promise<void> => {
@@ -27,3 +62,16 @@ export const cartApi = {
     });
   },
 };
+
+function tryParseApiError(errorMsg: string): ApiError | null {
+  try {
+    const jsonMatch = errorMsg.match(/\{.*\}/);
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0]) as ApiError;
+    }
+    return null;
+  } catch (e) {
+    console.error('Error parsing API error:', e);
+    return null;
+  }
+}
