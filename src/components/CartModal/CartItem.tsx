@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { CartDataType } from '../../contexts/CartContext';
 import CartItemCountButtons from '../CartItemCountButtons/CartItemCountButtons';
 import {
@@ -22,14 +21,18 @@ function CartItem({
   deleteItemFromCart: ({ productId }: { productId: number }) => Promise<boolean>;
 }) {
   const { id, price, name, imageUrl } = cart.product;
-  const [cartQuantity, setCartQuantity] = useState(cart.quantity);
+  const cartQuantity = cart.quantity;
 
   const handleModifyCartItem = async (quantity: number) => {
-    const res = await modifyCartItem({ productId: id, quantity: quantity });
+    if (quantity === 0) {
+      if (window.confirm('장바구니에 담긴 상품을 삭제하겠습니까?')) {
+        deleteItemFromCart({ productId: id });
+      }
 
-    if (res) {
-      setCartQuantity(quantity);
+      return;
     }
+
+    modifyCartItem({ productId: id, quantity: quantity });
   };
 
   return (
