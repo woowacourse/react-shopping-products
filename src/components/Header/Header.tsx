@@ -1,15 +1,15 @@
+import { useStoreContext } from "../Context/StoreContext";
 import HeaderCart from "../Image/HeaderCart";
-import { useCartContext } from "../Context/CartProvider";
 import S from "./Header.module.css";
 
-const Header = () => {
-	const { cartProducts } = useCartContext();
+const Header = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+	const { cartProducts } = useStoreContext();
 	const cartCount = cartProducts.length;
 
 	return (
 		<div className={S.container}>
 			<p>SHOP</p>
-			<HeaderCart count={cartCount} />
+			<HeaderCart count={cartCount} setIsOpen={setIsOpen} />
 		</div>
 	);
 };

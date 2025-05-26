@@ -1,16 +1,13 @@
 import ItemCard from "../ItemCard/ItemCard";
-import mergeProducts from "../../utils/mergeProducts";
 import ItemCardFilterSort from "../ItemCard/ItemCardFilterSort";
-import { useCartContext } from "../Context/CartProvider";
-import { useProductContext } from "../Context/ProductProvider";
 import S from "./ProductContent.module.css";
 import SkeletonList from "../Skeleton/SkeletonList";
 import SkeletonCard from "../Skeleton/SkeletonCard";
+import { useStoreContext } from "../Context/StoreContext";
+import { MergedProduct } from "../../types";
 
 const ProductContent = () => {
-	const { products, loading } = useProductContext();
-	const { cartProducts } = useCartContext();
-	const mergedData = mergeProducts(products, cartProducts);
+	const { mergedProducts, loading } = useStoreContext();
 
 	return (
 		<div className={S.contentContainer}>
@@ -24,8 +21,8 @@ const ProductContent = () => {
 				</div>
 			) : (
 				<div className={S.itemContainer}>
-					{mergedData.map(({ id, imageUrl, name, price, cartInfo }) => (
-						<ItemCard key={id} id={id} imageUrl={imageUrl} name={name} price={price} cartInfo={cartInfo} />
+					{mergedProducts.map((mergedProduct: MergedProduct) => (
+						<ItemCard key={mergedProduct.id} mergedProduct={mergedProduct} />
 					))}
 				</div>
 			)}

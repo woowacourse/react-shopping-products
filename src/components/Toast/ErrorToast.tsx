@@ -1,11 +1,8 @@
-import { useCartContext } from "../Context/CartProvider";
-import { useProductContext } from "../Context/ProductProvider";
+import { useStoreContext } from "../Context/StoreContext";
 import S from "./ErrorToast.module.css";
 
 const ErrorToast = () => {
-	const { cartError } = useCartContext();
-	const { productError } = useProductContext();
-
+	const { productError, cartError } = useStoreContext();
 	return (
 		(cartError || productError) && (
 			<div className={S.toastContainer}>
