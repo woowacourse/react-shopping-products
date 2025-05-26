@@ -40,6 +40,11 @@ const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
   return (
     <section css={productCardStyle}>
       <div css={productCardImageContainerStyle}>
+        {quantity === 0 && (
+          <div css={productCardSoldOutStyle}>
+            <Text variant="title">품절</Text>
+          </div>
+        )}
         <img css={productCardImageStyle} src={newImageUrl} alt={name} />
       </div>
       <div css={productCardContentStyle}>
@@ -51,13 +56,17 @@ const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
           {inCart ? (
             <CartController
               quantity={productCartQuantity ?? 0}
-              cartItemId={productCartId ?? 0}
+              cartItemInfo={productCartInfo!}
               patchCartItemQuantity={patchCart}
             />
           ) : (
-            <Button variant="default" onClick={() => handleClick(id)}>
+            <Button
+              variant={quantity === 0 ? 'gray' : 'default'}
+              onClick={() => handleClick(id)}
+              disabled={quantity === 0}
+            >
               <img src={IconAddCart} alt="add cart" />
-              담기
+              {quantity === 0 ? '품절' : '담기'}
             </Button>
           )}
         </div>
