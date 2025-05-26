@@ -16,7 +16,6 @@ function useOverlay(closeModal: () => void) {
         closeModal();
       }
     }
-    console.log('useOverlay');
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
