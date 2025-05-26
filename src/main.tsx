@@ -4,9 +4,7 @@ import App from './App.tsx';
 import './index.css';
 import { worker } from './mocks/browser.ts';
 
-if (process.env.NODE_ENV === 'development') {
-  await worker.start();
-}
+await worker.start();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
