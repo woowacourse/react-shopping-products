@@ -8,8 +8,12 @@ function useData<T>({
   fetcher: () => Promise<T>;
   name: string;
 }) {
-  const { data, setData, loadingStates, updateLoadingState } =
+  const { data, setData, loadingStates, updateLoadingState, isInProvider } =
     useContext(ApiContext);
+
+  if (!isInProvider) {
+    throw new Error("useData must be used within an ApiProvider");
+  }
 
   const request = useCallback(async () => {
     updateLoadingState(name, true);

@@ -5,11 +5,13 @@ export const ApiContext = createContext<{
   setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
   loadingStates: Record<string, boolean>;
   updateLoadingState: (name: string, loading: boolean) => void;
+  isInProvider: boolean;
 }>({
   data: {},
   setData: () => {},
   loadingStates: {},
   updateLoadingState: () => {},
+  isInProvider: false,
 });
 
 export function ApiProvider({ children }: PropsWithChildren) {
@@ -28,7 +30,13 @@ export function ApiProvider({ children }: PropsWithChildren) {
 
   return (
     <ApiContext.Provider
-      value={{ data, setData, loadingStates, updateLoadingState }}
+      value={{
+        data,
+        setData,
+        loadingStates,
+        updateLoadingState,
+        isInProvider: true,
+      }}
     >
       {children}
     </ApiContext.Provider>
