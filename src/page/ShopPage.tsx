@@ -6,8 +6,9 @@ import ProductContainer from '../component/ProductContainer/ProductContainer';
 import Selector from '../component/Selector/Selector';
 import TitleContainer from '../component/TitleContainer/titleContainer';
 import Toast from '../component/Toast/Toast';
-import { useCartItem } from '../hook/useCartItem';
-import { useProductList } from '../hook/useProductList';
+import { useAPI } from '../hook/APIContext';
+import { getCartItem } from '../api/cartItem';
+import { getProduct } from '../api/product';
 
 interface ProductItem {
   id: number;
@@ -80,8 +81,26 @@ export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>('전체');
   const [filterValue, setFilterValue] = useState<FilterOption>('낮은 가격순');
 
-  const { cartItemList, isError: cartError, updateCartItemList } = useCartItem();
-  const { productList, isError: productError } = useProductList(categoryValue, filterValue);
+  const {
+    data: cartResponse,
+    isError: cartError,
+    refetch: updateCartItemList,
+  } = useAPI({
+    name: 'cartItems',
+    fetcher: () => getCartItem({ sortBy: 'asc' }),
+  });
+
+  const { data: productResponse, isError: productError } = useAPI({
+    name: `products-${categoryValue}-${filterValue}`,
+    fetcher: () =>
+      getProduct({
+        category: categoryValue,
+        sortBy: filterValue === '높은 가격순' ? 'price,desc' : 'price,asc',
+      }),
+  });
+
+  const cartItemList = cartResponse?.content ?? [];
+  const productList = productResponse?.content ?? [];
 
   const selectedProducts = cartItemList.length;
 
