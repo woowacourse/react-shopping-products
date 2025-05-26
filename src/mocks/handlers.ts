@@ -79,14 +79,9 @@ export const handlers = [
     const cartProductId = Number(params.id);
     const { quantity } = (await request.json()) as { quantity: number };
 
-    console.log('params', params);
-
     cartProducts.forEach((item) => {
       if (item.id === cartProductId) {
-        console.log('item', item);
-        console.log('cartProductId', cartProductId);
         item.quantity = quantity;
-        console.log('updateditem', item);
       }
     });
 
