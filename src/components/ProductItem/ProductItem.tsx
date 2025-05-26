@@ -1,8 +1,8 @@
 import * as S from './ProductItem.styled';
 import AddProductIcon from '../Icon/AddProductIcon';
 import Button from '../common/Button/Button';
-import RemoveProductIcon from '../Icon/RemoveProductIcon';
 import blackDefaultImage from '../../assets/blackDefaultImage.png';
+import QuantityButton from '../common/QuantityButton/QuantityButton';
 import { ResponseProduct } from '../../api/types';
 import { isItemInCart } from './utils';
 import { useProductItem } from './hooks/useProductItem';
@@ -26,15 +26,14 @@ function ProductItem({ product }: { product: ResponseProduct }) {
           <S.ProductName>{product.name}</S.ProductName>
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
-        <Button
-          keyWord={keyword}
-          onClick={() => {
-            isInCart ? handleProductItem('remove', product.id) : handleProductItem('add', product.id);
-          }}
-        >
-          {isInCart ? <RemoveProductIcon /> : <AddProductIcon />}
-          {text}
-        </Button>
+        {isInCart ? (
+          <QuantityButton />
+        ) : (
+          <Button keyWord={keyword} onClick={() => handleProductItem('add', product.id)}>
+            <AddProductIcon />
+            {text}
+          </Button>
+        )}
       </S.ProductItemBottom>
     </S.ProductItemContainer>
   );
