@@ -15,7 +15,7 @@ import { IconAddCart } from '../../../asset';
 import { useContext } from 'react';
 import CartContext from '../../../context/cartContext/cartContext';
 import CartController from '../CartController/CartController';
-import { getImageUrl } from '../../../util/getImgUrl';
+import { isValidImageUrl } from '../../../util/isValidImageUrl';
 
 interface ProductCardProps extends Omit<Product, 'category'> {}
 
@@ -28,7 +28,9 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const { cartData, addCart, patchCart } = useContext(CartContext);
 
-  const newImageUrl = getImageUrl(imageUrl) ? imageUrl : './image/default.jpeg';
+  const newImageUrl = isValidImageUrl(imageUrl)
+    ? imageUrl
+    : './image/default.jpeg';
 
   const productCartInfo = cartData.find(
     (item: CartItem) => item.product.id === id

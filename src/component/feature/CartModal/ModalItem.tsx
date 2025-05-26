@@ -13,7 +13,7 @@ import {
 } from './style/ModalItem.styles';
 import CartContext from '../../../context/cartContext/cartContext';
 import { useContext } from 'react';
-import { getImageUrl } from '../../../util/getImgUrl';
+import { isValidImageUrl } from '../../../util/isValidImageUrl';
 
 interface ModalItemProps {
   cartItem: CartItem;
@@ -23,7 +23,7 @@ const ModalItem = ({ cartItem }: ModalItemProps) => {
   const { patchCart, removeCart } = useContext(CartContext);
   const DEFAULT_IMAGE = './image/default.jpeg';
 
-  const imgUrl = getImageUrl(cartItem.product.imageUrl)
+  const imgUrl = isValidImageUrl(cartItem.product.imageUrl)
     ? cartItem.product.imageUrl
     : DEFAULT_IMAGE;
 
