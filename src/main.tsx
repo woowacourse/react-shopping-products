@@ -5,7 +5,16 @@ import App from "./App.tsx";
 async function enableMocking() {
   const { worker } = await import("./mocks/browser.ts");
 
-  return worker.start({ onUnhandledRequest: "bypass" }).then(() => {});
+  const isLocalHost = process.env.NODE_ENV === "development";
+
+  return worker.start({
+    onUnhandledRequest: "bypass",
+    serviceWorker: {
+      url: isLocalHost
+        ? "/mockServiceWorker.js"
+        : "/react-shopping-products/mockServiceWorker.js",
+    },
+  });
 }
 
 enableMocking().then(() => {
