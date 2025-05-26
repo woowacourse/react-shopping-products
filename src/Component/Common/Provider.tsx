@@ -81,14 +81,14 @@ export function useAPIContext<T>({
         setStatus((prev) => ({ ...prev, [key]: 'error' }));
       }
     },
-    [apiFn, key, skipLoading, setData, setStatus]
+    [skipLoading, setData, setStatus, key]
   );
 
   useEffect(() => {
     if (data[key] || !apiFn) return;
 
     requestData();
-  }, [requestData, key]);
+  }, []);
 
   return {
     data: data[key],
