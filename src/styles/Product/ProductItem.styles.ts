@@ -91,3 +91,16 @@ export const StyledControllImg = styled.img`
   display: flex;
   align-items: center;
 `;
+
+export const StyledSoldOutOvelay = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  width: 193px;
+  height: 112px;
+  top: 35px;
+  weight: 600;
+  font-size: 35px;
+  background-color: #00000059;
+`;

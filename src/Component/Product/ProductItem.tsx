@@ -12,12 +12,19 @@ import {
   StyledProductInfo,
   StyledProductInfoWrapper,
   StyledTitle,
+  StyledSoldOutOvelay,
 } from "../../styles/Product/ProductItem.styles";
 import { CartItem } from "../Common/Modal";
 import { Product } from "./ProductList";
 import QuantityController from "../Common/QuantityController";
 
-export default function ProductItem({ id, name, price, imageUrl }: Product) {
+export default function ProductItem({
+  id,
+  name,
+  price,
+  imageUrl,
+  quantity,
+}: Product) {
   const { data, refetch } = useAPI({
     fetcher: () => getShoppingCart(),
     name: "cart",
@@ -29,35 +36,39 @@ export default function ProductItem({ id, name, price, imageUrl }: Product) {
 
   return (
     <StyledLi id={String(id)}>
-      <StyledImgWrapper imageUrl={imageUrl}></StyledImgWrapper>
+      <StyledImgWrapper imageUrl={imageUrl}>
+        {quantity === 0 && <StyledSoldOutOvelay>품절</StyledSoldOutOvelay>}
+      </StyledImgWrapper>
       <StyledProductInfoWrapper>
         <StyledProductInfo>
           <StyledTitle>{name}</StyledTitle>
           <StyledPrice>{price.toLocaleString("ko")}원</StyledPrice>
         </StyledProductInfo>
-        <StyledButtonWrapper>
-          {count === 0 ? (
-            <StyledButton
-              onClick={async () => {
-                await postShoppingCart(id, 1);
-                refetch();
-              }}
-              data-testid={`add-btn-${id}`}
-            >
-              <StyledImg
-                src="/assets/addShoppingCartIcon.png"
-                alt="addShoppingCartIcon"
+        {quantity !== 0 && (
+          <StyledButtonWrapper>
+            {count === 0 ? (
+              <StyledButton
+                onClick={async () => {
+                  await postShoppingCart(id, 1);
+                  refetch();
+                }}
+                data-testid={`add-btn-${id}`}
+              >
+                <StyledImg
+                  src="/assets/addShoppingCartIcon.png"
+                  alt="addShoppingCartIcon"
+                />
+                <StyledButtonText>담기</StyledButtonText>
+              </StyledButton>
+            ) : (
+              <QuantityController
+                productId={id}
+                count={count}
+                refetch={refetch}
               />
-              <StyledButtonText>담기</StyledButtonText>
-            </StyledButton>
-          ) : (
-            <QuantityController
-              productId={id}
-              count={count}
-              refetch={refetch}
-            />
-          )}
-        </StyledButtonWrapper>
+            )}
+          </StyledButtonWrapper>
+        )}
       </StyledProductInfoWrapper>
     </StyledLi>
   );
