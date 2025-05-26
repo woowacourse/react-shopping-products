@@ -9,6 +9,7 @@
 	color: #0a0d13;
 	background: #ffc9c9;
 	animation: active 3s ease forwards;
+  z-index: 10;
 }
 
 @keyframes active {
