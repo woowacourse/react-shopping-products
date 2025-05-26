@@ -7,7 +7,10 @@ if (process.env.NODE_ENV === 'development' || import.meta.env.VITE_USE_MSW === '
   worker
     .start({
       serviceWorker: {
-        url: '/react-shopping-products/mockServiceWorker.js',
+        url:
+          window.location.hostname === 'localhost'
+            ? '/mockServiceWorker.js'
+            : '/react-shopping-products/mockServiceWorker.js',
       },
     })
     .then(() => {
