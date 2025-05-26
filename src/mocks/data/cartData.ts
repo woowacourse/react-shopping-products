@@ -9,8 +9,8 @@ export let mockCartItems: cartDataType[] = [
   },
   {
     id: 2,
-    quantity: 1,
-    product: mockProducts[2],
+    quantity: 3,
+    product: mockProducts[1],
   },
 ];
 
@@ -63,8 +63,8 @@ export const cartDataStore = {
       },
       {
         id: 2,
-        quantity: 1,
-        product: mockProducts[2],
+        quantity: 3,
+        product: mockProducts[1],
       },
     ];
     cartIdCounter = 3;
