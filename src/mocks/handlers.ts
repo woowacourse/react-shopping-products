@@ -67,8 +67,6 @@ export const handlers = [
 
     const cartItem = cartMockData.content[cartIndex];
 
-    console.log(quantity, cartItem.product.quantity);
-
     if (quantity > cartItem.product.quantity)
       return HttpResponse.json(
         {
