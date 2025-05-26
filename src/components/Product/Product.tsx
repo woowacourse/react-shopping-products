@@ -61,7 +61,7 @@ function Product({
         <div className={productPrice}>{price}원</div>
         <div className={`${productPrice} quantity-info`}>재고: {quantity}개</div>
         <div className={buttonWrapper}>
-          {isAdd ? (
+          {isAdd && !isOutOfStock ? (
             <QuantityControlBox
               handleDecreaseQuantity={handleDecreaseQuantity}
               handleIncreaseQuantity={handleIncreaseQuantity}
@@ -70,7 +70,7 @@ function Product({
               quantity={quantity}
             />
           ) : (
-            <AddButton onClick={handleAddToCart} disabled={isOutOfStock} />
+            <AddButton onClick={handleAddToCart} />
           )}
         </div>
       </div>
