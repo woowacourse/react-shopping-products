@@ -1,3 +1,4 @@
+import { useState } from "react";
 import deleteShoppingCart from "../../api/deleteShoppingCart";
 import patchShoppingCart from "../../api/patchShoppingCart";
 import {
@@ -6,20 +7,20 @@ import {
   StyledControllImg,
   StyledButtonText,
 } from "../../styles/Product/ProductItem.styles";
+import ErrorBox from "./ErrorBox";
 
 interface QuantityControllerProps {
   productId: number;
   count: number;
-  maxCount?: number;
   refetch: () => void;
 }
 
 export default function QuantityController({
   productId,
   count,
-  maxCount = 50,
   refetch,
 }: QuantityControllerProps) {
+  const [errorMessage, setErrorMessage] = useState("");
   const handleDecrease = async () => {
     if (count === 1) {
       await deleteShoppingCart(productId);
@@ -30,34 +31,40 @@ export default function QuantityController({
   };
 
   const handleIncrease = async () => {
-    if (count >= maxCount) {
-      throw new Error("재고 수량을 초과할 수 없습니다.");
+    try {
+      await patchShoppingCart(productId, count + 1);
+      refetch();
+    } catch (error) {
+      setErrorMessage((error as Error).message);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
     }
-
-    await patchShoppingCart(productId, count + 1);
-    refetch();
   };
 
   return (
-    <StyledQuantityController>
-      <StyledcontrollButton
-        onClick={handleDecrease}
-        data-testid={`remove-btn-${productId}`}
-      >
-        <StyledControllImg
-          src="/assets/decreaseItemButtonIcon.png"
-          alt="decreaseItemButtonIcon"
-        />
-      </StyledcontrollButton>
+    <>
+      {errorMessage && <ErrorBox>{errorMessage}</ErrorBox>}
+      <StyledQuantityController>
+        <StyledcontrollButton
+          onClick={handleDecrease}
+          data-testid={`remove-btn-${productId}`}
+        >
+          <StyledControllImg
+            src="/assets/decreaseItemButtonIcon.png"
+            alt="decreaseItemButtonIcon"
+          />
+        </StyledcontrollButton>
 
-      <StyledButtonText>{count}</StyledButtonText>
+        <StyledButtonText>{count}</StyledButtonText>
 
-      <StyledcontrollButton onClick={handleIncrease}>
-        <StyledControllImg
-          src="/assets/increaseItemButtonIcon.png"
-          alt="increaseItemButtonIcon"
-        />
-      </StyledcontrollButton>
-    </StyledQuantityController>
+        <StyledcontrollButton onClick={handleIncrease}>
+          <StyledControllImg
+            src="/assets/increaseItemButtonIcon.png"
+            alt="increaseItemButtonIcon"
+          />
+        </StyledcontrollButton>
+      </StyledQuantityController>
+    </>
   );
 }

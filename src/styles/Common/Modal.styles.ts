@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const StyledModalBackground = styled.div<{
+export const ModalBackground = styled.div<{
   isModalOpen: boolean;
 }>`
   position: fixed;
@@ -19,10 +19,10 @@ export const StyledModalBackground = styled.div<{
   margin: 0 auto;
 `;
 
-export const StyledModalContainer = styled.div`
+export const ModalContainer = styled.div`
   position: absolute;
   top: 430px;
-  width: 429px;
+  width: 450px;
   height: 500px;
   background-color: white;
   border-radius: 8px 8px 0 0;
@@ -32,14 +32,14 @@ export const StyledModalContainer = styled.div`
   flex-direction: column;
 `;
 
-export const StyledModalBody = styled.div`
+export const ModalBody = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 0;
   gap: 16px;
 `;
 
-export const StyledModalList = styled.ul`
+export const ModalList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -47,7 +47,7 @@ export const StyledModalList = styled.ul`
   overflow-y: auto;
 `;
 
-export const StyledModalItem = styled.li`
+export const ModalItem = styled.li`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -57,7 +57,7 @@ export const StyledModalItem = styled.li`
   border-top: 1px solid #0000001a;
 `;
 
-export const StyledProductInfo = styled.div`
+export const ProductInfo = styled.div`
   display: flex;
   flex-direction: column;
   width: 397px;
@@ -65,7 +65,7 @@ export const StyledProductInfo = styled.div`
   gap: 8px;
 `;
 
-export const StyledModalHeaderTitle = styled.span`
+export const ModalHeaderTitle = styled.span`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -76,13 +76,13 @@ export const StyledModalHeaderTitle = styled.span`
   padding: 10px;
 `;
 
-export const StyledModalimg = styled.img`
+export const Modalimg = styled.img`
   width: 80px;
   height: 80px;
   border-radius: 8px;
 `;
 
-export const StyledModalItemInfo = styled.div`
+export const ModalItemInfo = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -90,7 +90,7 @@ export const StyledModalItemInfo = styled.div`
   position: relative;
 `;
 
-export const StyledModalTitle = styled.span`
+export const ModalTitle = styled.span`
   max-width: 200px;
   height: 19px;
   top: 4px;
@@ -98,14 +98,14 @@ export const StyledModalTitle = styled.span`
   font-size: 16px;
 `;
 
-export const StyledModalItemPrice = styled.span`
+export const ModalItemPrice = styled.span`
   max-width: 200px;
   height: 15px;
   font-weight: 500;
   font-size: 12px;
 `;
 
-export const StyledModalFooter = styled.div`
+export const ModalFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -115,20 +115,20 @@ export const StyledModalFooter = styled.div`
   padding: 20px 10px;
 `;
 
-export const StyledModalFooterTitle = styled.span`
+export const ModalFooterTitle = styled.span`
   width: 82px;
   height: 16px;
   font-weight: 700;
   font-size: 16px;
 `;
 
-export const StyledModalTotalPrice = styled.span`
+export const ModalTotalPrice = styled.span`
   max-width: 200px;
   font-weight: 700;
   font-size: 24px;
 `;
 
-export const StyledModalCloseButton = styled.button`
+export const ModalCloseButton = styled.button`
   margin-top: 12px;
   background-color: #333333;
   color: white;
@@ -138,13 +138,13 @@ export const StyledModalCloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const StyledModalDeleteImg = styled.img`
+export const ModalDeleteImg = styled.img`
   width: 40px;
   height: 24px;
   cursor: pointer;
 `;
 
-export const StyledItemHeaderRow = styled.div`
+export const ItemHeaderRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

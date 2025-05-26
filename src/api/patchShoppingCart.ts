@@ -15,9 +15,8 @@ export default async function patchShoppingCart(
   });
 
   if (!response.ok) {
-    throw new Error(
-      `장바구니 정보를 업데이트하는데 실패했습니다. 상태 코드: ${response.status}`
-    );
+    const data = await response.json();
+    throw new Error(data.error);
   }
 
   const data = await response.json();

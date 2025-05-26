@@ -25,6 +25,9 @@ export default async function getProducts(
 
   if (category) params.append("category", category);
   const response = await fetch(`${baseUrl}/products?${params}`);
+  if (!response.ok) {
+    throw new Error(`응답 실패: ${response.status}`);
+  }
   const data = await response.json();
   return data;
 }
