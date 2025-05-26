@@ -51,7 +51,6 @@ function Product({ id, imageUrl, name, price, quantity, isAdd }: ProductDataType
       <div className={productContent}>
         <div className={productTitle}>{name}</div>
         <div className={productPrice}>{price}원</div>
-        <div className={`${productPrice} quantity-info`}>재고: {quantity}개</div>
         <div className={buttonWrapper}>
           {isAdd && !isOutOfStock ? (
             <QuantityControlBox
