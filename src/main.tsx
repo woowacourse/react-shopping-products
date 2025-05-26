@@ -6,7 +6,11 @@ import { worker } from './mocks/browser.ts';
 
 async function prepare() {
   if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development') {
-    await worker.start();
+    await worker.start({
+      serviceWorker: {
+        url: '/react-shopping-products/mockServiceWorker.js',
+      },
+    });
   }
 }
 
