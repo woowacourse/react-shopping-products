@@ -9,12 +9,13 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "deploy": "vite build --base=/react-shopping-products/ --minify=false && npx gh-pages -d dist"
+    "deploy": "tsc && vite build --base=/react-shopping-products/ && npx gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/css": "^11.13.5",
     "@emotion/react": "^11.14.0",
     "@sanghee01/modal": "^0.0.11",
+    "msw": "^2.3.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
@@ -32,7 +33,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "jsdom": "^26.1.0",
-    "msw": "^2.3.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",

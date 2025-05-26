@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
+  const shouldEnableMocking = import.meta.env.VITE_ENABLE_MSW === 'true';
+
+  if (!shouldEnableMocking) {
     return;
   }
 
