@@ -8,5 +8,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  build: {
+    rollupOptions: {
+      external: ['vitest'], // 혹은 expect 관련 테스트 종속성 제외
+    },
+  },
+
   plugins: [react()],
 });
