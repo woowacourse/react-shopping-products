@@ -11,5 +11,10 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  build: {
+    rollupOptions: {
+      external: ['*.test.tsx'], // ✅ 또는 '*.test.tsx'
+    },
+  },
   plugins: [react()],
 });
