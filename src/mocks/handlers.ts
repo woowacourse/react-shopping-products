@@ -28,6 +28,17 @@ const handleUpsertCartItem = async (request: Request) => {
   }
 
   const existing = mockCartItems.find((item) => item.productId === productId);
+  const currentQuantity = existing?.quantity ?? 0;
+
+  if (currentQuantity + quantity > product.quantity) {
+    return HttpResponse.json(
+      {
+        errorCode: "OUT_OF_STOCK",
+        message: "재고 수량을 초과하여 담을 수 없습니다.",
+      },
+      { status: 400 }
+    );
+  }
 
   if (existing) {
     existing.quantity += quantity;
