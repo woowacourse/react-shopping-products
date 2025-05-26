@@ -5,7 +5,7 @@ import getCartItems from '../../api/getCartItems';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import Header from './Header';
 import { useCallback, useState } from 'react';
-import DetailModal from '../Modal/DetailModal';
+import CartModal from '../Modal/CartModal';
 import CartList from '../Cart/CartList';
 import Image from '../Image/Image';
 import { CartItemViewModel } from '../../api/model/createCartItemsViewModel';
@@ -59,7 +59,7 @@ function HomeHeader() {
         }
       />
       {isAlertOpen && cartItems?.content && (
-        <DetailModal
+        <CartModal
           isOpen={isAlertOpen}
           onClose={() => setAlertOpen(false)}
           content={

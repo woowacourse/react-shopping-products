@@ -13,10 +13,14 @@ export interface ProductCardViewModel {
   imageUrl: string;
   isInCart: boolean;
   cartItemId?: number;
-  quantity: number;
+  cartQuantity: number; // 장바구니에 담긴 수량
+  productQuantity: number; // 상품의 전체 재고 수량
 }
 
-export function createProductListViewModel({ products, cartItems }: createProductListViewModelParams) {
+export function createProductListViewModel({
+  products,
+  cartItems
+}: createProductListViewModelParams): ProductCardViewModel[] {
   if (!products) return [];
 
   return products.map((product) => {
@@ -28,7 +32,8 @@ export function createProductListViewModel({ products, cartItems }: createProduc
       imageUrl: product.imageUrl,
       isInCart: !!matchedCart,
       cartItemId: matchedCart?.id,
-      quantity: product.quantity
+      cartQuantity: matchedCart?.quantity ?? 0,
+      productQuantity: product.quantity
     };
   });
 }

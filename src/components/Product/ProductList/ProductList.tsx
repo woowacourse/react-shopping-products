@@ -73,7 +73,12 @@ export default function ProductList() {
       ) : (
         <ul css={styles.listCss}>
           {productListViewModel.map((productCard) => (
-            <ProductCard key={productCard.id} {...productCard} onClick={() => handleCartToggle(productCard)} />
+            <ProductCard
+              key={productCard.id}
+              orderBy={orderBy}
+              {...productCard}
+              onClick={() => handleCartToggle(productCard)}
+            />
           ))}
         </ul>
       )}

@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import Modal from './Modal/Modal';
 import Button from '../Button/Button';
 
-export default function DetailModal({ isOpen, onClose, title, content }: DetailModalProps) {
+export default function CartModal({ isOpen, onClose, title, content }: CartModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} position="bottom" size="small">
       <Modal.BackDrop css={backdropCss} />
@@ -18,7 +18,7 @@ export default function DetailModal({ isOpen, onClose, title, content }: DetailM
   );
 }
 
-interface DetailModalProps {
+interface CartModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;

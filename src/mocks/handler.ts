@@ -10,9 +10,13 @@ type PostProductRequestBody = {
   quantity: number;
 };
 
+type PatchProductRequestBody = {
+  quantity: number;
+};
+
 export const handlers = [
   // 상품 목록 조회
-  http.get(new RegExp(`${URLS.PRODUCTS}/*`), ({ request }) => {
+  http.get(URLS.PRODUCTS, ({ request }) => {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get('page') ?? 0);
     const size = Number(url.searchParams.get('size') ?? 50);
@@ -77,6 +81,20 @@ export const handlers = [
     return new HttpResponse(null, { status: 201 });
   }),
 
+  // 장바구니 개수 변경
+  http.patch('/cart-items/:cartItemId', async ({ params, request }) => {
+    const idToPatch = Number(params.cartItemId);
+    const { quantity } = (await request.json()) as PatchProductRequestBody;
+
+    serverCartItems.content = serverCartItems.content.map((item) => {
+      if (item.id == idToPatch) {
+        return { ...item, quantity };
+      }
+      return item;
+    });
+
+    return new HttpResponse(null, { status: 200 });
+  }),
   // 장바구니 아이템 삭제
   http.delete('/cart-items/:cartItemId', ({ params }) => {
     const idToDelete = Number(params.cartItemId);
