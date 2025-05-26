@@ -1,0 +1,306 @@
+[
+  {
+    "id": 1,
+    "name": "에어포스1",
+    "price": 100000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 2,
+    "name": "에어포스2",
+    "price": 100000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 3,
+    "name": "에어포스3",
+    "price": 100000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 4,
+    "name": "달 무드등",
+    "price": 28000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 5,
+    "name": "동물 양말",
+    "price": 20000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 6,
+    "name": "플라망고",
+    "price": 8130,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 7,
+    "name": "메이통통이",
+    "price": 11100000,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 8,
+    "name": "앵그리버드",
+    "price": 50000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 9,
+    "name": "너에게난~ 해질녘 노을처럼~",
+    "price": 200000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 22,
+    "name": "앵버잠옷",
+    "price": 200000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 23,
+    "name": "리바이 아커만",
+    "price": 60000000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 24,
+    "name": "부리부리 원형 테이블",
+    "price": 3210000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 25,
+    "name": "얌샘김밥",
+    "price": 5000,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 26,
+    "name": "기세",
+    "price": 100,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 27,
+    "name": "아바라",
+    "price": 4800,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 28,
+    "name": "아샷추",
+    "price": 3800,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 29,
+    "name": "19×19×19 큐브",
+    "price": 850000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 30,
+    "name": "민초 피자",
+    "price": 48000,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 31,
+    "name": "민초 치킨",
+    "price": 47000,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 32,
+    "name": "튀김 신발",
+    "price": 800000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 33,
+    "name": "iPhone 16 Pro Max 1TB",
+    "price": 2500000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 34,
+    "name": "코카콜라 제로 1.5L",
+    "price": 2100,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 35,
+    "name": "패셔니스타 유담이",
+    "price": 300000000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 36,
+    "name": "패셔니스타 유담이",
+    "price": 300000000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 37,
+    "name": "패셔니스타 유담이",
+    "price": 3000000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 40,
+    "name": "에리얼",
+    "price": 123456789,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 42,
+    "name": "프린세스 미용놀이",
+    "price": 1010,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 43,
+    "name": "모쏠 캥거루라 태어나서 처음으로 데이트하는 ㄱㅋ",
+    "price": 99999999,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 57,
+    "name": "후추",
+    "price": 23000,
+    "category": "패션잡화",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 58,
+    "name": "1",
+    "price": 100,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 60,
+    "name": "3",
+    "price": 30000000,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 61,
+    "name": "4",
+    "price": 4444,
+    "category": "식료품",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 62,
+    "name": "5",
+    "price": 5555,
+    "category": "5555",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 63,
+    "name": "6",
+    "price": 6666,
+    "category": "6666",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 65,
+    "name": "8888",
+    "price": 8,
+    "category": "8",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 66,
+    "name": "9",
+    "price": 9,
+    "category": "9",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 67,
+    "name": "10",
+    "price": 10,
+    "category": "10",
+    "imageUrl": null,
+    "quantity": 1
+  },
+  {
+    "id": 68,
+    "name": "11",
+    "price": 11,
+    "category": "11",
+    "imageUrl": null,
+    "quantity": 1
+  }
+]
