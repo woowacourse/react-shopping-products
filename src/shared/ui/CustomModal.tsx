@@ -11,6 +11,18 @@ interface CustomModalProps {
 
 export default function CustomModal({ isOpen, onClose, position = 'center', children }: CustomModalProps) {
   useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     const handleESC = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();

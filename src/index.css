@@ -151,3 +151,9 @@ input[type='number']::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
