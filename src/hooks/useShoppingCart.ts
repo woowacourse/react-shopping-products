@@ -1,12 +1,13 @@
+import { useCallback } from 'react';
 import { useData } from './useData';
+import { useDataContext } from '../contexts/useDataContext'; // ← 추가!
 import { CartItem } from '../components/ShoppingCartModal/cart.type';
 import {
   addShoppingCart,
   deleteShoppingCart,
-  getShoppingCart,
   updateShoppingCart,
+  getShoppingCart,
 } from '../APIs/shoppingCartApi';
-import { useCallback } from 'react';
 
 const PARAMS = new URLSearchParams({ page: '0', size: '50' }).toString();
 
@@ -17,42 +18,83 @@ export const useShoppingCart = () => {
     fetchFunction: getShoppingCart,
   });
 
+  const { setError, setLoading } = useDataContext();
+
   const add = useCallback(
     async (productId: number) => {
-      await addShoppingCart({
-        endpoint: '/cart-items',
-        requestBody: { productId, quantity: 1 },
-      });
-
-      await refetch();
+      setLoading('cart-items', true);
+      try {
+        await addShoppingCart({
+          endpoint: '/cart-items',
+          requestBody: { productId, quantity: 1 },
+        });
+        await refetch();
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : '장바구니 추가 중 알 수 없는 오류가 발생했습니다.';
+        setError('cart-items', message);
+        setTimeout(() => {
+          setError('cart-items', null);
+        }, 3000);
+      } finally {
+        setLoading('cart-items', false);
+      }
     },
-    [refetch]
+    [refetch, setError, setLoading]
   );
 
   const remove = useCallback(
     async (cartItemId: number | null) => {
-      if (!cartItemId) return;
+      if (cartItemId == null) return;
 
-      await deleteShoppingCart({
-        endpoint: `/cart-items`,
-        cartItemId,
-      });
-
-      await refetch();
+      setLoading('cart-items', true);
+      try {
+        await deleteShoppingCart({
+          endpoint: '/cart-items',
+          cartItemId,
+        });
+        await refetch();
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : '장바구니 삭제 중 알 수 없는 오류가 발생했습니다.';
+        setError('cart-items', message);
+        setTimeout(() => {
+          setError('cart-items', null);
+        }, 3000);
+      } finally {
+        setLoading('cart-items', false);
+      }
     },
-    [refetch]
+    [refetch, setError, setLoading]
   );
 
   const update = useCallback(
     async (cartItemId: number, quantity: number) => {
-      await updateShoppingCart({
-        endpoint: `/cart-items/${cartItemId}`,
-        requestBody: { quantity },
-      });
-
-      await refetch();
+      setLoading('cart-items', true);
+      try {
+        await updateShoppingCart({
+          endpoint: `/cart-items/${cartItemId}`,
+          requestBody: { quantity },
+        });
+        await refetch();
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : '장바구니 수량 수정 중 알 수 없는 오류가 발생했습니다.';
+        setError('cart-items', message);
+        setTimeout(() => {
+          setError('cart-items', null);
+        }, 3000);
+      } finally {
+        setLoading('cart-items', false);
+      }
     },
-    [refetch]
+    [refetch, setError, setLoading]
   );
 
   return { data, loading, error, add, remove, update };

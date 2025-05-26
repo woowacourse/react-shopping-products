@@ -35,7 +35,12 @@ async function apiRequestWithAuth<TRequest>({
   const response = await fetch(`${baseUrl}${endpoint}`, options);
 
   if (!response.ok) {
-    throw new Error(`Network response was not ok: ${response.statusText}`);
+    if (response.status === 404) {
+      throw new Error('상품을 찾을 수 없습니다.');
+    }
+    if (response.status === 400) {
+      throw new Error('재고 수량을 초과하여 담을 수 없습니다.');
+    }
   }
 
   const contentType = response.headers.get('content-type');
