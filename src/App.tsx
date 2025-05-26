@@ -25,7 +25,6 @@ const SORT_OPTIONS = [
 
 function App() {
   const [category, setCategory] = useState<Category>('all');
-  const [cartTypeQuantity, setCartTypeQuantity] = useState<number>(0);
 
   const { products, cartProducts, fetchProducts, error, setError, isLoading, setSortValue } =
     useProductsWithCartContext();
@@ -43,10 +42,6 @@ function App() {
     };
     getProducts();
   }, [fetchProducts]);
-
-  useEffect(() => {
-    setCartTypeQuantity(cartProducts.length);
-  }, [cartProducts]);
 
   useEffect(() => {
     if (error !== '') {
@@ -67,7 +62,7 @@ function App() {
     <>
       <Navbar
         cartProducts={cartProducts}
-        cartTypeQuantity={cartTypeQuantity}
+        cartTypeQuantity={cartProducts.length}
         errorMessage={error}
         setError={setError}
       />
