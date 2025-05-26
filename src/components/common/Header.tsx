@@ -16,9 +16,11 @@ function Header({ title, right }: HeaderProps) {
 }
 
 const HeaderContainer = styled.header`
-  width: 100%;
+  width: 440px;
   height: 64px;
   display: flex;
+  position: fixed;
+  top: 0;
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;

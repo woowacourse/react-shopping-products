@@ -5,7 +5,6 @@ import { createElement } from 'react';
 export type ToastType = 'error' | 'info';
 
 export function showToast(message: string, type: ToastType = 'info') {
-  console.log('showToast', message, type);
   const container = document.createElement('div');
   document.body.appendChild(container);
 

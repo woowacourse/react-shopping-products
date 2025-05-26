@@ -18,8 +18,9 @@ export async function baseAPI<T>({
     },
     body: body ? JSON.stringify(body) : null,
   });
-  if (!result.ok) {
-    throw new Error('서버에서 에러가 발생했습니다.');
+
+  if (method === 'GET' && !result.ok) {
+    throw new Error('GET 요청에 실패하였습니다.');
   }
 
   if (method === 'GET') return result.json();

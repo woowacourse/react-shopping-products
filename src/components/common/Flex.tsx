@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { PropsWithChildren } from 'react';
+import { ElementType, PropsWithChildren } from 'react';
 
 interface FlexProps {
   flexDirection?: 'row' | 'column';
@@ -7,6 +7,7 @@ interface FlexProps {
   alignItems?: 'flex-start' | 'center' | 'stretch' | 'flex-end';
   gap?: GapType;
   className?: string;
+  as?: ElementType;
 }
 
 type GapType = 'xs' | 'sm' | 'md' | 'lg';

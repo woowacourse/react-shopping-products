@@ -5,6 +5,10 @@ export const theme = {
     font-size: 28px;
     font-weight: 700;
   `,
+  subheading: css`
+    font-size: 20px;
+    font-weight: 700;
+  `,
   title: css`
     font-size: 16px;
     font-weight: 700;
