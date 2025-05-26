@@ -26,15 +26,24 @@ type CartModalProps = {
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   
     useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          onClose();
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
+
       return () => {
+        window.removeEventListener("keydown", handleKeyDown);
         document.body.style.overflow = "auto";
       };
-    }, []);
+    }, [onClose]);
   
     return (
-      <Overlay>
-        <ModalContainer>
+      <Overlay onClick={onClose}>
+        <ModalContainer onClick={(e) => e.stopPropagation()}>
           <Title>장바구니</Title>
   
           <CartItemList>
