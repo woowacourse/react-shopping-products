@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import { CartItem } from '../../page/ShopPage';
 import Button from '../Button/Button';
-import { useState } from 'react';
 import Stepper from '../Stepper/Stepper';
-import { postCartItem, putCartItem, deleteCartItem } from '../../api/cartItem';
+import Toast from '../Toast/Toast';
+import useCartQuantity from '../../hook/useCartQuantity';
 
 const productLayout = css`
   display: flex;
@@ -14,12 +14,36 @@ const productLayout = css`
   width: 182px;
   height: 224px;
   gap: 15px;
+  position: relative;
 `;
 
 const imgLayout = css`
   border-radius: 8px 8px 0 0;
   width: 100%;
+  height: 100%;
+`;
+
+const imgWrapper = css`
+  position: relative;
+  width: 100%;
   height: 50%;
+  border-radius: 8px 8px 0 0;
+`;
+
+const soldOutOverlay = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: red;
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px 8px 0 0;
 `;
 
 const contentLayout = css`
@@ -50,74 +74,29 @@ const priceLayout = css`
   font-weight: 500;
 `;
 
-const imgWrapper = css`
-  position: relative;
-  width: 100%;
-  height: 50%;
-  border-radius: 8px 8px 0 0;
-`;
-
-const soldOutOverlay = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.7);
-  color: red;
-  font-weight: bold;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px 8px 0 0;
-`;
-
 interface ProductProps {
   id: string;
   imageUrl: string;
   name: string;
   price: string;
+  stock: number;
   selectedCardItems: CartItem[];
   onChange: () => void;
 }
 
-export default function Product({ id, imageUrl, name, price, selectedCardItems, onChange }: ProductProps) {
-  const selectedCartItem = selectedCardItems[0];
-  const initialQuantity = selectedCartItem?.quantity ?? 0;
-  const [quantity, setQuantity] = useState(initialQuantity);
-
-  const handleAddToCart = async () => {
-    await postCartItem({ productId: Number(id), quantity: 1 });
-    setQuantity(1);
-    onChange();
-  };
-
-  const handleIncrease = async () => {
-    const nextQuantity = quantity + 1;
-    await putCartItem({ id: selectedCartItem.id, quantity: nextQuantity });
-    setQuantity(nextQuantity);
-    onChange();
-  };
-
-  const handleDecrease = async () => {
-    const nextQuantity = quantity - 1;
-
-    if (nextQuantity === 0) {
-      await deleteCartItem({ id: selectedCartItem.id });
-    } else {
-      await putCartItem({ id: selectedCartItem.id, quantity: nextQuantity });
-    }
-
-    setQuantity(nextQuantity);
-    onChange();
-  };
+export default function Product({ id, imageUrl, name, price, stock, selectedCardItems, onChange }: ProductProps) {
+  const { quantity, showToast, handleAddToCart, handleIncrease, handleDecrease } = useCartQuantity({
+    productId: Number(id),
+    stock,
+    selectedCartItem: selectedCardItems[0],
+    onChange,
+  });
 
   return (
     <div id={id} css={productLayout}>
       <div css={imgWrapper}>
         <img css={imgLayout} src={imageUrl ?? './default-img.png'} />
-        {Number(price) === 0 && <div css={soldOutOverlay}>품절</div>}
+        {stock === 0 && <div css={soldOutOverlay}>품절</div>}
       </div>
       <div css={contentLayout}>
         <div css={descriptionLayout}>
@@ -134,6 +113,8 @@ export default function Product({ id, imageUrl, name, price, selectedCardItems, 
           <Stepper quantity={quantity} onIncrease={handleIncrease} onDecrease={handleDecrease} />
         )}
       </div>
+
+      {showToast && <Toast>재고 수량을 초과할 수 없습니다.</Toast>}
     </div>
   );
 }

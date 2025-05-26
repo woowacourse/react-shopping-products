@@ -39,7 +39,7 @@ export async function postCartItem({ productId, quantity }: PostCartItemProps) {
   return fetch(`${CART_URL}`, options);
 }
 
-export async function deleteCartItem({ id }: { id: number }) {
+export async function deleteCartItem(id: number) {
   const options = {
     method: 'DELETE',
     headers: {
@@ -52,7 +52,7 @@ export async function deleteCartItem({ id }: { id: number }) {
 
 export async function putCartItem({ id, quantity }: { id: number; quantity: number }) {
   const options = {
-    method: 'PUT',
+    method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}==`,

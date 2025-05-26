@@ -12,7 +12,7 @@ export function useCartItemToggle({ productId, selectedCartItem, onSuccess }: Us
 
   const toggle = async () => {
     if (isSelected) {
-      await deleteCartItem({ id: Number(selectedCartItem!.id) });
+      await deleteCartItem(Number(selectedCartItem!.id));
     } else {
       await postCartItem({ productId, quantity: 1 });
     }

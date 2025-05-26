@@ -9,6 +9,7 @@ import Toast from '../component/Toast/Toast';
 import { useAPI } from '../hook/APIContext';
 import { getCartItem } from '../api/cartItem';
 import { getProduct } from '../api/product';
+import CartModal from '../component/Modal/CartModal';
 
 interface ProductItem {
   id: number;
@@ -16,6 +17,7 @@ interface ProductItem {
   price: number;
   imageUrl: string;
   category: string;
+  stock: number;
 }
 
 const pageLayout = css`
@@ -80,6 +82,7 @@ export type sortOption = 'price,asc' | 'price,desc';
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>('전체');
   const [filterValue, setFilterValue] = useState<FilterOption>('낮은 가격순');
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
   const {
     data: cartResponse,
@@ -108,7 +111,13 @@ export default function ShopPage() {
     <div css={pageLayout}>
       <Header title="SHOP">
         <div css={cartIconContainer}>
-          <img css={cartIcon} src="./shopping-cart.svg" alt="장바구니 아이콘" onClick={() => console.log('click')} />
+          <img
+            css={cartIcon}
+            src="./shopping-cart.svg"
+            alt="장바구니 아이콘"
+            onClick={() => setIsCartModalOpen(true)}
+          />
+
           {selectedProducts > 0 && (
             <div data-testid="cart-count" css={cartItemCount}>
               {selectedProducts}
@@ -141,6 +150,9 @@ export default function ShopPage() {
           <div css={loadingLayout}>로딩중입니다</div>
         )}
       </Body>
+      {isCartModalOpen && (
+        <CartModal cartItems={cartItemList} onClose={() => setIsCartModalOpen(false)} onChange={updateCartItemList} />
+      )}
     </div>
   );
 }
