@@ -145,4 +145,47 @@ export const cartHandlers = [
       return HttpResponse.json(newCartItem, { status: 201 });
     }
   }),
+
+  http.delete(`${import.meta.env.VITE_API_URL}/cart-items/:id`, async ({ request, params }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    if (!authHeader) {
+      return HttpResponse.json({ message: '인증이 필요합니다.' }, { status: 401 });
+    }
+
+    const cartItemId = parseInt(params.id as string);
+
+    if (isNaN(cartItemId)) {
+      return HttpResponse.json(
+        {
+          errorCode: 'INVALID_ID',
+          message: '유효하지 않은 장바구니 아이템 ID입니다.',
+        },
+        { status: 400 },
+      );
+    }
+
+    const cartItemIndex = mockCartItems.findIndex((item) => item.id === cartItemId);
+
+    if (cartItemIndex === -1) {
+      return HttpResponse.json(
+        {
+          errorCode: 'CART_ITEM_NOT_FOUND',
+          message: '장바구니에서 해당 상품을 찾을 수 없습니다.',
+        },
+        { status: 404 },
+      );
+    }
+
+    const deletedItem = mockCartItems[cartItemIndex];
+    mockCartItems.splice(cartItemIndex, 1);
+
+    return HttpResponse.json(
+      {
+        message: '장바구니에서 상품이 삭제되었습니다.',
+        deletedItem,
+      },
+      { status: 200 },
+    );
+  }),
 ];
