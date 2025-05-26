@@ -1,13 +1,13 @@
 import { useContext, useCallback, useEffect } from "react";
 import { ApiContext } from "../context/ApiContext/ApiContext";
 
-function useData<T>({
+const useData = <T>({
   fetcher,
   name,
 }: {
   fetcher: () => Promise<T>;
   name: string;
-}) {
+}) => {
   const { data, setData, loadingStates, updateLoadingState, isInProvider } =
     useContext(ApiContext);
 
@@ -41,6 +41,6 @@ function useData<T>({
     refetch: request,
     loading: loadingStates[name] ?? true,
   };
-}
+};
 
 export default useData;
