@@ -10,7 +10,6 @@ import {
   soldout,
 } from './Product.style';
 import CartItemCountButtons from '../CartItemCountButtons/CartItemCountButtons';
-import { useState } from 'react';
 import useGetCarts from '../../hooks/useGetCarts';
 import { useToast } from '../../hooks/useToast';
 
@@ -19,13 +18,10 @@ function Product({ product, onClickAddCartItem, onClickModifyCartItem }: Product
 
   const { openToast } = useToast();
   const { carts } = useGetCarts();
-  const [cartQuantity, setCartQuantity] = useState(
-    carts?.find((cart) => cart.product.id === id)?.quantity || 0,
-  );
+  const cartQuantity = carts?.find((cart) => cart.product.id === id)?.quantity || 0;
 
   const handleAddCartItem = () => {
     onClickAddCartItem?.({ productId: id, quantity: 1 });
-    setCartQuantity(1);
   };
 
   const handleModifyCartItem = (modifyQuantity: number) => {
@@ -35,7 +31,6 @@ function Product({ product, onClickAddCartItem, onClickModifyCartItem }: Product
     }
 
     onClickModifyCartItem?.({ productId: id, quantity: modifyQuantity });
-    setCartQuantity(modifyQuantity);
   };
 
   return (
