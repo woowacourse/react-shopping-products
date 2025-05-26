@@ -4,6 +4,7 @@ import addCart from "../utils/api/addCart";
 import fetchData from "../utils/api/fetchData";
 import { useState, useEffect } from "react";
 import removeCart from "../utils/api/removeCart";
+import updateCartItemCount from "../utils/api/updateCart";
 
 export default function useCart() {
 	const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
@@ -20,7 +21,7 @@ export default function useCart() {
 		}
 	};
 
-	const updateCartItem = async (type: string, id: number) => {
+	const updateCartItem = async (type: string, id: number, quantity: number | undefined) => {
 		if (type === "add") {
 			try {
 				await addCart(id);
@@ -35,6 +36,15 @@ export default function useCart() {
 				if (error instanceof Error) setCartError(error.message);
 			}
 		}
+
+		if (type === "change") {
+			try {
+				await updateCartItemCount(id, quantity);
+			} catch (error) {
+				if (error instanceof Error) setCartError(error.message);
+			}
+		}
+
 		fetchCartProducts();
 	};
 

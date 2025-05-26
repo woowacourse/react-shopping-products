@@ -1,0 +1,13 @@
+.container{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cartQuantity{
+  padding: 0 8px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  color:  #0A0D13;
+}

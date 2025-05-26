@@ -4,6 +4,7 @@ export interface Product {
 	price: number;
 	imageUrl: string;
 	category: string;
+	quantity: number;
 }
 
 export interface CartProduct {
@@ -16,7 +17,9 @@ export interface CartInfo {
 	id: number;
 	quantity: number;
 }
-
+export interface MergedProduct extends Product {
+	cartInfo: CartInfo | null;
+}
 export interface Info {
 	content: Product[];
 	[key: string]: unknown;
