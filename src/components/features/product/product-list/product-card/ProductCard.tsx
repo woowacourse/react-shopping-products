@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Flex } from '../../../../common';
 import ToggleCartButton from './cart-button/ToggleCartButton';
 import Image from '../../../../common/Image';
+import { memo } from 'react';
 
 interface ProductProps {
   id: string;
@@ -11,7 +12,13 @@ interface ProductProps {
   quantity: number;
 }
 
-function ProductCard({ id, name, price, imageUrl, quantity }: ProductProps) {
+const ProductCard = memo(function ProductCard({
+  id,
+  name,
+  price,
+  imageUrl,
+  quantity,
+}: ProductProps) {
   const isSoldOut = quantity === 0;
   return (
     <Container as="li">
@@ -37,7 +44,7 @@ function ProductCard({ id, name, price, imageUrl, quantity }: ProductProps) {
       </InfoBox>
     </Container>
   );
-}
+});
 
 const Container = styled(Flex)`
   width: 182px;
