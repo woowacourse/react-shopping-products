@@ -1,16 +1,15 @@
-import { ChangeEvent } from 'react';
 import { Container } from './Dropdown.styles';
 
 interface DropdownProps {
   value: string;
   placeholder?: string;
-  options: string[];
-  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  options: readonly string[];
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 function Dropdown({ value, placeholder, options, onChange }: DropdownProps) {
   return (
-    <Container value={value} onChange={onChange}>
+    <Container value={value} onChange={(e) => onChange(e)}>
       {placeholder && (
         <option value="" disabled={!value}>
           {placeholder}

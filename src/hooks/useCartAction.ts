@@ -1,0 +1,73 @@
+import { addCart, patchCart, removeCart, getCartItem } from '../api/fetchCart';
+import { useToastContext } from '../context/ToastContext';
+import { CartItem, ProductElement } from '../types/type';
+import { useCallback } from 'react';
+import { useAPI } from './useAPI';
+
+export const useCartActions = () => {
+  const { showToast } = useToastContext();
+
+  const fetchCartItems = useCallback(async () => {
+    return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
+      (res) => res.content
+    );
+  }, []);
+
+  const { data: cartList, refetch } = useAPI<CartItem[]>({
+    fetcher: fetchCartItems,
+    name: 'cartItems',
+  });
+
+  const handleAddCart = async (product: ProductElement) => {
+    try {
+      if (!cartList) return;
+      await addCart(product.id);
+      refetch();
+    } catch (error) {
+      showToast((error as Error).message);
+    }
+  };
+
+  const handleIncreaseQuantity = async (product: ProductElement) => {
+    try {
+      if (!cartList) return;
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (!cartItem) return;
+      await patchCart(cartItem.id, cartItem.quantity + 1);
+      await refetch();
+    } catch (error) {
+      showToast((error as Error).message);
+    }
+  };
+
+  const handleDecreaseQuantity = async (product: ProductElement) => {
+    try {
+      if (!cartList) return;
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (!cartItem) return;
+      await patchCart(cartItem.id, cartItem.quantity - 1);
+      await refetch();
+    } catch (error) {
+      showToast((error as Error).message);
+    }
+  };
+
+  const handleRemoveCart = async (product: ProductElement) => {
+    try {
+      if (!cartList) return;
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (!cartItem) return;
+      await removeCart(cartItem.id);
+      await refetch();
+    } catch (error) {
+      showToast((error as Error).message);
+    }
+  };
+
+  return {
+    handleAddCart,
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
+    handleRemoveCart,
+  };
+};

@@ -1,23 +1,45 @@
 import Product from '../Product/Product';
-import { ProductWithCartInfo } from '../../../types/product';
+import { CategoryType, ProductElement, SortKeyType } from '../../../types/type';
 import { List } from './ProductList.styles';
+import { useCallback, useMemo } from 'react';
+import { getProduct } from '../../../api/fetchProduct';
+import { useAPI } from '../../../hooks/useAPI';
+import { SORT_PRICE_MAP } from '../../../constants/productConfig';
 
 interface ProductListProps {
-  products: ProductWithCartInfo[];
-  onAddCart: (product: ProductWithCartInfo) => Promise<void>;
-  onRemoveCart: (product: ProductWithCartInfo) => Promise<void>;
+  category: CategoryType;
+  sortBy: SortKeyType;
 }
 
-function ProductList({ onAddCart, onRemoveCart, products }: ProductListProps) {
+function ProductList({ category, sortBy }: ProductListProps) {
+  const mappedSortType = useMemo(() => {
+    return SORT_PRICE_MAP[sortBy];
+  }, [sortBy]);
+
+  const fetchProductList = useCallback(async () => {
+    return await getProduct({ page: 0, size: 50, sortBy: mappedSortType }).then(
+      (res) => res.content
+    );
+  }, [mappedSortType]);
+
+  const { data: productList } = useAPI<ProductElement[]>({
+    fetcher: fetchProductList,
+    name: `productList-${mappedSortType}`,
+  });
+
+  const filteredProductList = useMemo(() => {
+    if (category === '전체') {
+      return productList;
+    }
+    return productList?.filter(
+      (item: ProductElement) => item.category === category
+    );
+  }, [category, productList]);
+
   return (
     <List>
-      {products?.map((item: ProductWithCartInfo) => (
-        <Product
-          key={item.id}
-          item={item}
-          onAddCart={onAddCart}
-          onRemoveCart={onRemoveCart}
-        />
+      {filteredProductList?.map((item: ProductElement) => (
+        <Product key={item.id} item={item} />
       ))}
     </List>
   );
