@@ -1,89 +1,116 @@
-import { useState } from 'react';
-import { Product, CartItem } from '../App';
+import { CartItem, Product } from '../App';
 import getCartItems from '../api/getCartItems';
 import postCartItems from '../api/postCartItems';
 import deleteCartItems from '../api/deleteCartItems';
-
-type ErrorState = {
-  isError: boolean;
-  status: number | null;
-};
+import patchCartItems from '../api/patchCartItems';
+import { useDataContext } from '../components/contexts/dataContext';
+import { useState } from 'react';
 
 const useCartItems = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<ErrorState>({
-    isError: false,
-    status: null,
+  const {
+    data: cartItems,
+    refetch: fetchCartItems,
+    isLoading,
+    error,
+    updateError,
+  } = useDataContext<CartItem>({
+    fetcher: getCartItems,
+    key: 'cartItems',
   });
 
-  const fetchCartItems = async () => {
-    if (isLoading) return;
-
-    setIsLoading(true);
-    try {
-      const { data, status } = await getCartItems();
-      setCartItems(data.content);
-      setError({ isError: false, status: Number(status) });
-    } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [isFetching, setIsFetching] = useState(false);
 
   const addToCart = async (product: Product) => {
-    if (isLoading) return;
-    setIsLoading(true);
+    if (isFetching) {
+      return;
+    }
 
     try {
-      const { status } = await postCartItems(product);
-      await fetchCartItems();
-      setError({ isError: false, status });
+      setIsFetching(true);
+      await postCartItems(product);
+      setIsFetching(false);
+      fetchCartItems();
     } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
+      updateError('cartItems', e instanceof Error ? Number(e.message) : null);
     }
   };
 
   const removeFromCart = async (productId: number) => {
-    if (isLoading) return;
-    setIsLoading(true);
+    if (isFetching) {
+      return;
+    }
 
     const targetCartItem = cartItems.find(
       (cartItem) => cartItem.product.id === productId
     );
 
     if (!targetCartItem) {
-      setError({
-        isError: true,
-        status: 404,
-      });
-      setIsLoading(false);
+      updateError('cartItems', 404);
       return;
     }
 
     try {
-      const { status } = await deleteCartItems(targetCartItem.id);
-      await fetchCartItems();
-      setError({ isError: false, status });
+      setIsFetching(true);
+      await deleteCartItems(targetCartItem.id);
+      setIsFetching(false);
+      fetchCartItems();
     } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
+      updateError('cartItems', e instanceof Error ? Number(e.message) : null);
+    }
+  };
+
+  const increaseCartItemQuantity = async (productId: number) => {
+    if (isFetching) {
+      return;
+    }
+
+    const targetCartItem = cartItems.find(
+      (cartItem) => cartItem.product.id === productId
+    );
+
+    if (!targetCartItem) {
+      updateError('cartItems', 404);
+      return;
+    }
+    const currentQuantity = targetCartItem.quantity;
+
+    try {
+      setIsFetching(true);
+      await patchCartItems(targetCartItem.id, currentQuantity! + 1);
+      setIsFetching(false);
+      fetchCartItems();
+    } catch (e) {
+      updateError('cartItems', e instanceof Error ? Number(e.message) : null);
+    }
+  };
+
+  const decreaseCartItemQuantity = async (productId: number) => {
+    if (isFetching) {
+      return;
+    }
+
+    const targetCartItem = cartItems.find(
+      (cartItem) => cartItem.product.id === productId
+    );
+    if (!targetCartItem) {
+      updateError('cartItems', 404);
+      return;
+    }
+
+    const currentQuantity = targetCartItem.quantity;
+
+    if (currentQuantity === 1) {
+      removeFromCart(productId);
+      return;
+    }
+
+    try {
+      setIsFetching(true);
+      await patchCartItems(targetCartItem.id, currentQuantity! - 1);
+      setIsFetching(false);
+      fetchCartItems();
+    } catch (e) {
+      updateError('cartItems', e instanceof Error ? Number(e.message) : null);
     }
   };
 
@@ -94,6 +121,8 @@ const useCartItems = () => {
     fetchCartItems,
     addToCart,
     removeFromCart,
+    increaseCartItemQuantity,
+    decreaseCartItemQuantity,
   };
 };
 
