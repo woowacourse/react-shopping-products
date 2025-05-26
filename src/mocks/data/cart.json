@@ -7,7 +7,8 @@
 			"name": "태블릿",
 			"price": 399,
 			"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-			"category": "패션잡화"
+			"category": "패션잡화",
+      "quantity": 2
 		}
 	},
 	{
@@ -18,7 +19,8 @@
 			"name": "전자책리더기",
 			"price": 129,
 			"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-			"category": "식료품"
+			"category": "식료품",
+      "quantity": 50
 		}
 	},
 	{
@@ -29,7 +31,8 @@
 			"name": "웹캠",
 			"price": 79,
 			"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-			"category": "패션잡화"
+			"category": "패션잡화",
+      "quantity": 50
 		}
 	},
 	{
@@ -40,7 +43,8 @@
 			"name": "드론",
 			"price": 799,
 			"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-			"category": "식료품"
+			"category": "식료품",
+			"quantity": 2
 		}
 	},
 	{
@@ -51,7 +55,8 @@
 			"name": "피트니스트래커",
 			"price": 149,
 			"imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
-			"category": "패션잡화"
+			"category": "패션잡화",
+			"quantity": 1
 		}
 	}
 ]
