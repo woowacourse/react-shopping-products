@@ -43,12 +43,6 @@ function App() {
     getProducts();
   }, [fetchProducts]);
 
-  useEffect(() => {
-    if (error !== '') {
-      setError(error);
-    }
-  }, [error]);
-
   const filteredProducts =
     category === 'all'
       ? products

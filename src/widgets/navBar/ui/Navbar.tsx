@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ErrorToast from '../../../shared/ui/ErrorToast';
 import * as S from './Navbar.styles';
 import CustomModal from '../../../shared/ui/CustomModal';
@@ -15,15 +15,15 @@ interface NavbarProps {
 export default function Navbar({ cartProducts, cartTypeQuantity, errorMessage, setError }: NavbarProps) {
   const [visibleError, setVisibleError] = useState(errorMessage);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(0);
 
-  useEffect(() => {
-    const total = cartProducts.reduce((acc, cartProduct) => {
-      const quantity = cartProduct.quantity ?? 0;
-      return acc + cartProduct.product.price * quantity;
-    }, 0);
-    setTotalPrice(total);
-  }, [cartProducts]);
+  const totalPrice = useMemo(
+    () =>
+      cartProducts.reduce((acc, cartProduct) => {
+        const quantity = cartProduct.quantity ?? 0;
+        return acc + cartProduct.product.price * quantity;
+      }, 0),
+    [cartProducts]
+  );
 
   useEffect(() => {
     if (errorMessage) {
