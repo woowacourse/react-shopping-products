@@ -18,7 +18,7 @@ function ProductItem({
 }: {
   product: ResponseProduct;
   cartItemList: ResponseCartItem[];
-  onAddToCart: (productId: number) => Promise<void>;
+  onAddToCart: (productId: number, quantity: number) => Promise<void>;
   onRemoveFromCart: (cartItemId: number) => Promise<void>;
   setErrorMessage: (message: string) => void;
   onIncreaseQuantity: (productId: number) => Promise<void>;
@@ -43,7 +43,7 @@ function ProductItem({
           await onRemoveFromCart(cartItemId);
         }
       } else {
-        await onAddToCart(product.id);
+        await onAddToCart(product.id, 1);
       }
     } catch (error) {
       if (error instanceof Error) {

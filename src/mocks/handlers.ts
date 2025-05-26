@@ -77,12 +77,16 @@ export const handlers = [
       productId: number;
       quantity: number;
     };
+    const productQuantity = productId === 1 ? 0 : 50 - (productId % 10);
 
-    if (quantity > 50) {
+    if (productQuantity === 0 || quantity > productQuantity) {
       return HttpResponse.json(
         {
           errorCode: "OUT_OF_STOCK",
-          message: "재고 수량을 초과하여 담을 수 없습니다.",
+          message:
+            productQuantity === 0
+              ? "해당 상품은 품절되었습니다."
+              : "재고 수량을 초과하여 담을 수 없습니다.",
         },
         { status: 400 }
       );
@@ -97,7 +101,7 @@ export const handlers = [
         price: 10000 * ((productId % 5) + 1),
         imageUrl: `https://cdn.jsdelivr.net/gh/bunju20/bunju-blog-images@main/images/CleanShot%202025-05-21%20at%2016.37.43%402x.webp`,
         category: productId % 2 === 0 ? "식료품" : "패션잡화",
-        quantity: 50 - (productId % 10),
+        quantity: productQuantity,
       },
     };
 
@@ -116,13 +120,30 @@ export const handlers = [
   }),
 
   http.patch(`${API_URL}/cart-items/:id`, async ({ params, request }) => {
-    console.log("MSW가 장바구니 수정 요청을 가로챘습니다:", params.id);
+    console.log("MSW가 장바구니 수정 요청을 가로챴습니다:", params.id);
 
     const body = await request.json();
     const { quantity } = body as { quantity: number };
     const cartItemId = Number(params.id);
 
-    if (quantity > 50) {
+    const cartItemIndex = cartItemStore.findIndex(
+      (item) => item.id === cartItemId
+    );
+
+    if (cartItemIndex === -1) {
+      return HttpResponse.json(
+        {
+          errorCode: "CART_ITEM_NOT_FOUND",
+          message: "장바구니 상품을 찾을 수 없습니다.",
+        },
+        { status: 404 }
+      );
+    }
+
+    const cartItem = cartItemStore[cartItemIndex];
+    const productQuantity = cartItem.product.quantity!;
+
+    if (quantity > productQuantity) {
       return HttpResponse.json(
         {
           errorCode: "OUT_OF_STOCK",
@@ -132,21 +153,7 @@ export const handlers = [
       );
     }
 
-    const cartItemIndex = cartItemStore.findIndex(
-      (item) => item.id === cartItemId
-    );
-
-    if (cartItemIndex !== -1) {
-      cartItemStore[cartItemIndex].quantity = quantity;
-      return HttpResponse.json(cartItemStore[cartItemIndex]);
-    }
-
-    return HttpResponse.json(
-      {
-        errorCode: "CART_ITEM_NOT_FOUND",
-        message: "장바구니 상품을 찾을 수 없습니다.",
-      },
-      { status: 404 }
-    );
+    cartItemStore[cartItemIndex].quantity = quantity;
+    return HttpResponse.json(cartItemStore[cartItemIndex]);
   }),
 ];

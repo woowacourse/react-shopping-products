@@ -15,13 +15,14 @@ function AppContent() {
     productListErrorMessage,
     setCategory,
     setSort,
-    setErrorMessage: setProductErrorMessage,
   } = useProducts();
 
   const {
     cartItemList,
     cartItemListLoading,
     cartItemListErrorMessage,
+    cartActionErrorMessage,
+    setCartActionErrorMessage,
     handleIncreaseQuantity,
     handleDecreaseQuantity,
     handleAddToCart,
@@ -45,7 +46,7 @@ function AppContent() {
               onIncreaseQuantity={handleIncreaseQuantity}
               onDecreaseQuantity={handleDecreaseQuantity}
               getCartQuantityForProduct={getCartQuantityForProduct}
-              setErrorMessage={setProductErrorMessage}
+              setErrorMessage={setCartActionErrorMessage}
             />
             <S.MiddleContainer>
               <ProductControl setCategory={setCategory} setSort={setSort} />
@@ -57,13 +58,14 @@ function AppContent() {
                 onIncreaseQuantity={handleIncreaseQuantity}
                 onDecreaseQuantity={handleDecreaseQuantity}
                 getCartQuantityForProduct={getCartQuantityForProduct}
-                setErrorMessage={setProductErrorMessage}
+                setErrorMessage={setCartActionErrorMessage}
               />
             </S.MiddleContainer>
           </>
         )}
         <ErrorBox text={productListErrorMessage} backgroundColor="#FFC9C9" />
         <ErrorBox text={cartItemListErrorMessage} backgroundColor="#FFC9C9" />
+        <ErrorBox text={cartActionErrorMessage} backgroundColor="#FFC9C9" />
       </S.Wrap>
     </S.AppContainer>
   );

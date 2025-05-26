@@ -8,7 +8,7 @@ import React from "react";
 
 interface HeaderProps {
   cartItemList: ResponseCartItem[];
-  onAddToCart: (productId: number) => Promise<void>;
+  onAddToCart: (productId: number, quantity: number) => Promise<void>;
   onRemoveFromCart: (cartItemId: number) => Promise<void>;
   onIncreaseQuantity: (productId: number) => Promise<void>;
   onDecreaseQuantity: (productId: number) => Promise<void>;

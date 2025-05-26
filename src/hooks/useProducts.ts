@@ -27,7 +27,9 @@ export const useProducts = () => {
   const productListErrorMessage = error || "";
 
   const handleProductErrorMessage = (message: string) => {
-    console.error("Product error:", message);
+    if (message) {
+      throw new Error(message);
+    }
   };
 
   return {

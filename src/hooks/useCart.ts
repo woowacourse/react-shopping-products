@@ -14,6 +14,9 @@ export const useCart = (productList: ResponseProduct[]) => {
     {}
   );
 
+  const [cartActionErrorMessage, setCartActionErrorMessage] =
+    useState<string>("");
+
   const cartFetcher = useMemo(() => {
     return () => getCartItemList({});
   }, []);
@@ -32,7 +35,7 @@ export const useCart = (productList: ResponseProduct[]) => {
   const cartItemListErrorMessage = error || "";
 
   const handleCartErrorMessage = (message: string) => {
-    console.error("Cart error:", message);
+    setCartActionErrorMessage(message); // 에러 상태 업데이트
   };
 
   const getCartQuantityForProduct = (productId: number): number => {
@@ -102,6 +105,7 @@ export const useCart = (productList: ResponseProduct[]) => {
 
     try {
       setIsUpdatingCart((prev) => ({ ...prev, [productId]: true }));
+      setCartActionErrorMessage(""); // 에러 초기화
 
       const currentQuantity = getCartQuantityForProduct(productId);
       const cartItemId = getCartItemIdForProduct(productId);
@@ -142,6 +146,7 @@ export const useCart = (productList: ResponseProduct[]) => {
 
     try {
       setIsUpdatingCart((prev) => ({ ...prev, [productId]: true }));
+      setCartActionErrorMessage(""); // 에러 초기화
 
       const currentQuantity = getCartQuantityForProduct(productId);
       const cartItemId = getCartItemIdForProduct(productId);
@@ -172,12 +177,21 @@ export const useCart = (productList: ResponseProduct[]) => {
     }
   };
 
-  const handleAddToCart = async (productId: number) => {
-    await handleIncreaseQuantity(productId);
+  const handleAddToCart = async (productId: number, quantity: number) => {
+    try {
+      setCartActionErrorMessage(""); // 에러 초기화
+      await AddProductItemApi(productId, quantity);
+      await refreshCartItemList();
+    } catch (error) {
+      if (error instanceof Error) {
+        handleCartErrorMessage(error.message); // 수정된 에러 처리 함수 사용
+      }
+    }
   };
 
   const handleRemoveFromCart = async (cartItemId: number) => {
     try {
+      setCartActionErrorMessage(""); // 에러 초기화
       const cartItem = cartItemList?.find((item) => item.id === cartItemId);
       if (cartItem) {
         updateCartItemOptimistically(cartItem.product.id, 0);
@@ -198,6 +212,8 @@ export const useCart = (productList: ResponseProduct[]) => {
     cartItemList: cartItemList || [],
     cartItemListLoading,
     cartItemListErrorMessage,
+    cartActionErrorMessage,
+    setCartActionErrorMessage,
 
     handleIncreaseQuantity,
     handleDecreaseQuantity,

@@ -14,7 +14,7 @@ function ProductList({
 }: {
   productList: ResponseProduct[];
   cartItemList: ResponseCartItem[];
-  onAddToCart: (productId: number) => Promise<void>;
+  onAddToCart: (productId: number, quantity: number) => Promise<void>;
   onRemoveFromCart: (cartItemId: number) => Promise<void>;
   setErrorMessage: (message: string) => void;
   onIncreaseQuantity: (productId: number) => Promise<void>;
