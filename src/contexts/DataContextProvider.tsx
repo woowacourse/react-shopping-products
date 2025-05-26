@@ -3,6 +3,7 @@ import React, {
   useReducer,
   PropsWithChildren,
   useCallback,
+  useMemo,
 } from 'react';
 import { CartItem } from '../components/ShoppingCartModal/cart.type';
 import { Product } from '../components/ProductCardList/product.type';
@@ -46,22 +47,30 @@ const DataProvider: React.FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: 'SET_SORT', key: 'products', sort });
   }, []);
 
-  return (
-    <DataContext.Provider
-      value={{
-        state,
-        setData,
-        setLoading,
-        setError,
-        clearError,
-        initApi,
-        setCategory,
-        setSort,
-      }}
-    >
-      {children}
-    </DataContext.Provider>
+  const value = useMemo(
+    () => ({
+      state,
+      setData,
+      setLoading,
+      setError,
+      clearError,
+      initApi,
+      setCategory,
+      setSort,
+    }),
+    [
+      state,
+      setData,
+      setLoading,
+      setError,
+      clearError,
+      initApi,
+      setCategory,
+      setSort,
+    ]
   );
+
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };
 
 export default DataProvider;
