@@ -5,7 +5,7 @@ import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { CategoryType, SortType } from "../../types/index.types";
 import { useData } from "../dataProvider/DataProvider";
-import fetchProducts from "../../api/fetchProducts";
+import fetchProducts from "../../api/products";
 
 function ProductContainer() {
   const { fetchData } = useData();

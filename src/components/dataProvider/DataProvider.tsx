@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { Product } from "../../types/response.types";
 import { CartItem } from "../../types/response.types";
-import fetchProducts from "../../api/fetchProducts";
+import fetchProducts from "../../api/products";
 import { fetchCartItems } from "../../api/cart";
 
 interface DataContextType {
