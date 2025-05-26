@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef } from 'react';
-import { ToastContext } from '../context/ToastContext';
+import { ToastContext } from '../context/Toast/ToastContext';
 import { ToastvariantType } from '../components/common/Toast/Toast';
 
 export function useToast(message: string | null | undefined, variant: ToastvariantType = 'error') {

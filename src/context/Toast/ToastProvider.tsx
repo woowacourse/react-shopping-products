@@ -1,7 +1,7 @@
 import { useReducer, ReactNode, useCallback } from 'react';
 import { ToastContext } from './ToastContext';
-import { ToastType, ToastvariantType } from '../components/common/Toast/Toast';
-import Toast from '../components/common/Toast/Toast';
+import { ToastType, ToastvariantType } from '../../components/common/Toast/Toast';
+import Toast from '../../components/common/Toast/Toast';
 
 type Action = { type: 'ADD'; toast: ToastType } | { type: 'REMOVE'; id: number };
 

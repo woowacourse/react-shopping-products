@@ -5,11 +5,13 @@ export type ProductDataType = {
   imageUrl: string;
   name: string;
   price: number;
+  quantity: number;
   isAdd: boolean;
 };
 
 export type ProductProps = ProductDataType & {
   onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
+  onClickUpdateCartItem: ({ productId, quantity }: { productId: number; quantity: number }) => void;
   onClickDeleteCartItem: ({ productId }: { productId: number }) => void;
 };
 
@@ -19,4 +21,5 @@ export type ProductDTOType = {
   price: number;
   imageUrl: string;
   category: string;
+  quantity: number;
 };
