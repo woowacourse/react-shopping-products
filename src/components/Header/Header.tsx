@@ -15,7 +15,7 @@ function Header() {
       <S.HeaderTitle>SHOP</S.HeaderTitle>
       <S.HeaderIconContainer onClick={() => setIsOpen((prev) => !prev)}>
         <BagIcon />
-        {cartItemList.length > 0 && <S.CartBadge>{cartItemList.length}</S.CartBadge>}
+        {cartItemList.length > 0 && <S.CartBadge data-testid='cart-count'>{cartItemList.length}</S.CartBadge>}
       </S.HeaderIconContainer>
       {isOpen && (
         <Modal onClose={close}>

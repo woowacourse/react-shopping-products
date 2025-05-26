@@ -4,7 +4,7 @@ import { ResponseProduct } from '../../api/types';
 
 function ProductList({ productList }: { productList: ResponseProduct[] }) {
   return (
-    <S.ProductListContainer>
+    <S.ProductListContainer data-testid='product-list'>
       {productList.map((product) => (
         <ProductItem key={product.id} product={product} />
       ))}
