@@ -23,7 +23,12 @@ export const fetchAPI = async ({
   });
 
   if (!response.ok) {
-    throw new Error(errorMessage);
+    let message = errorMessage;
+    const errorBody = await response.json();
+    if (errorBody?.message) {
+      message = errorBody.message;
+    }
+    throw new Error(message);
   }
 
   return response;

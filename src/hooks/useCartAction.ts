@@ -21,23 +21,28 @@ export const useCartActions = () => {
   });
 
   const handleAddCart = async (product: ProductElement) => {
-    if (!cartList) return;
-    if (cartList.length >= MAX_CART_ITEM_COUNT) {
-      showToast(ERROR_MESSAGE.MAX_CART_ITEM);
+    try {
+      if (!cartList) return;
+      await addCart(product.id);
+      refetch();
+    } catch (error) {
+      showToast((error as Error).message);
     }
-    await addCart(product.id);
-    refetch();
   };
 
   const handleIncreaseQuantity = async (product: ProductElement) => {
-    if (!cartList) return;
-    const cartItem = cartList.find((item) => item.product.id === product.id);
-    if (!cartItem) return;
-    if (cartItem.quantity >= cartItem.product.quantity) {
-      return showToast(ERROR_MESSAGE.PRODUCT_MAX_QUANTITY);
+    try {
+      if (!cartList) return;
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (!cartItem) return;
+      // if (cartItem.quantity >= cartItem.product.quantity) {
+      //   return showToast(ERROR_MESSAGE.PRODUCT_MAX_QUANTITY);
+      // }
+      await patchCart(cartItem.id, cartItem.quantity + 1);
+      await refetch();
+    } catch (error) {
+      showToast((error as Error).message);
     }
-    await patchCart(cartItem.id, cartItem.quantity + 1);
-    await refetch();
   };
 
   const handleDecreaseQuantity = async (product: ProductElement) => {

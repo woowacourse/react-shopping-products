@@ -68,7 +68,7 @@ function Product({ item }: ProductProps) {
           onRemoveClick={() => handleRemoveCart(item)}
         />
       ) : (
-        <AddButton onClick={() => handleAddCart(item)} />
+        <AddButton onClick={() => handleAddCart(item)} isDisable={!quantity} />
       )}
     </Container>
   );

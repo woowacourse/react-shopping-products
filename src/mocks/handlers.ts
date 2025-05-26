@@ -1,8 +1,8 @@
 import { http, HttpResponse } from 'msw';
-// import { productList } from './productData';
 import productData from './productData.json';
-import CartData from './cartData.json';
+import cartData from './cartData.json';
 import { ProductElement } from '../types/type';
+import { ERROR_MESSAGE } from '../constants/errorMessage';
 
 export const handlers = [
   http.get(`${import.meta.env.VITE_API_BASE_URL}/products`, ({ request }) => {
@@ -39,6 +39,76 @@ export const handlers = [
   }),
 
   http.get(`${import.meta.env.VITE_API_BASE_URL}/cart-items`, () => {
-    return HttpResponse.json(CartData);
+    return HttpResponse.json(cartData);
   }),
+
+  http.post(
+    `${import.meta.env.VITE_API_BASE_URL}/cart-items`,
+    async ({ request }) => {
+      const body = (await request.json()) as {
+        productId: number;
+        quantity: number;
+      };
+      const { productId, quantity } = body;
+
+      const product = productData.content.find((p) => p.id === productId);
+      if (!product) {
+        return;
+      }
+
+      if (cartData.content.length >= 50) {
+        return HttpResponse.json(
+          {
+            message: ERROR_MESSAGE.MAX_CART_ITEM,
+          },
+          { status: 400 }
+        );
+      }
+
+      const newCartItem = {
+        id: Math.max(...cartData.content.map((c) => c.id), 0) + 1,
+        product: product,
+        quantity,
+      };
+
+      cartData.content.push(newCartItem);
+
+      return HttpResponse.json(newCartItem, { status: 201 });
+    }
+  ),
+
+  http.patch(
+    `${import.meta.env.VITE_API_BASE_URL}/cart-items/:id`,
+    async ({ request, params }) => {
+      const id = Number(params.id);
+      const body = (await request.json()) as { quantity: number };
+      const quantity = body.quantity;
+
+      // 해당 cart item 찾기
+      const cartItem = cartData.content.find((item) => item.id === id);
+      if (!cartItem) {
+        return;
+      }
+
+      const product = productData.content.find(
+        (p) => p.id === cartItem.product.id
+      );
+      if (!product) {
+        return;
+      }
+      if (quantity > product.quantity) {
+        return HttpResponse.json(
+          {
+            message: ERROR_MESSAGE.PRODUCT_MAX_QUANTITY,
+          },
+          { status: 400 }
+        );
+      }
+
+      // 정상적으로 수량 업데이트
+      cartItem.quantity = quantity;
+
+      return HttpResponse.json(cartItem, { status: 200 });
+    }
+  ),
 ];
