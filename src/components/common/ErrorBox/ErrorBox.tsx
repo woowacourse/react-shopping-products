@@ -1,18 +1,18 @@
 import { TOAST_DURATION_TIME } from '../../../constants/constants';
+import { useCartItemList } from '../../../pages/productListPage/context/useCartContext';
 import * as S from './ErrorBox.styled';
-import { Dispatch, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ErrorBoxProps {
   backgroundColor: string;
-  text: string;
-  setErrorMessage: Dispatch<React.SetStateAction<string>>;
 }
 
-function ErrorBox({ backgroundColor, text, setErrorMessage }: ErrorBoxProps) {
+function ErrorBox({ backgroundColor }: ErrorBoxProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { errorMessage, setErrorMessage } = useCartItemList();
 
   useEffect(() => {
-    if (text) {
+    if (errorMessage) {
       setIsOpen(true);
       const timer = setTimeout(() => {
         setIsOpen(false);
@@ -21,14 +21,14 @@ function ErrorBox({ backgroundColor, text, setErrorMessage }: ErrorBoxProps) {
 
       return () => clearTimeout(timer);
     }
-  }, [text]);
+  }, [errorMessage]);
 
-  if (!text) return null;
+  if (!errorMessage) return null;
 
   return (
     isOpen && (
       <S.ErrorBoxContainer backgroundColor={backgroundColor}>
-        <p>{text}</p>
+        <p>{errorMessage}</p>
       </S.ErrorBoxContainer>
     )
   );

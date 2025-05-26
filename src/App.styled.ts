@@ -7,7 +7,7 @@ export const Global = Styled.div`
 `;
 
 export const Wrap = Styled.div`
-  width:430px;
+  width:480px;
   height:100vh;
   background: white;
   position: relative;

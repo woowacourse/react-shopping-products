@@ -71,7 +71,7 @@ const Satellite2 = styled(Satellite)`
 
 function LoadingIcon() {
   return (
-    <LoadingIconContainer>
+    <LoadingIconContainer role='status' aria-label='로딩 중'>
       <OrbitSpinner>
         <Planet />
         <Orbit>
