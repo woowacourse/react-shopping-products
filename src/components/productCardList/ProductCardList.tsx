@@ -1,51 +1,39 @@
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
-import { CategoryType, SortType } from "../../types/index.types";
-import useProduct from "../../hooks/useProduct/useProduct";
-import fetchProducts from "../../api/fetchProducts";
-import { useCallback } from "react";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
-import useCart from "../../hooks/useCart/useCart";
+import { useData } from "../dataProvider/DataProvider";
 
-interface ProductCardListProps {
-  category: CategoryType;
-  sort: SortType;
-}
+function ProductCardList() {
+  const { data } = useData();
 
-function ProductCardList({ category, sort }: ProductCardListProps) {
-  const { products } = useProduct({
-    fetchFn: useCallback(
-      () => fetchProducts({ category, sort }),
-      [category, sort]
-    ),
-  });
-  const { cartItemIds } = useCart();
-
-  if (products === null) return <ProductCardListSkeleton />;
+  if (data.products === null) return <ProductCardListSkeleton />;
 
   return (
     <div css={CardListContainer}>
-      {products?.map((data) => {
+      {data.products?.map((item) => {
+        const cartItem = data.cart.find(
+          (cartItem) => cartItem.product.id === item.id
+        );
+
         const cartInfo = {
-          cartId: cartItemIds?.find((ids) => ids.productId === data.id)?.cartId,
-          cartAmount: cartItemIds.length,
+          cartId: cartItem?.id,
+          cartAmount: data.cart.length,
         };
 
         const productInfo = {
-          productId: data.id,
-          name: data.name,
-          price: data.price,
-          imageUrl: data.imageUrl,
-          isAdded: Boolean(
-            cartItemIds?.find((ids) => ids.productId === data.id)
-          ),
-          quantity: data.quantity,
+          productId: item.id,
+          name: item.name,
+          price: item.price,
+          imageUrl: item.imageUrl,
+          isAdded: Boolean(cartItem),
+          quantity: item.quantity,
         };
+
         return (
           <ProductCard
             cartInfo={cartInfo}
             productInfo={productInfo}
-            key={data.id}
+            key={item.id}
           />
         );
       })}

@@ -1,6 +1,6 @@
 import { useToast } from "../useToast/useToast";
 import { changeCartQuantity } from "../../api/cart";
-import useCart from "../useCart/useCart";
+import { useData } from "../../components/dataProvider/DataProvider";
 
 interface UseCartQuantityProps {
   cartId?: number;
@@ -13,39 +13,55 @@ export default function useCartQuantity({
   quantity,
   removeItemToCart,
 }: UseCartQuantityProps) {
-  const { setCartQuantity, getCartQuantity } = useCart();
-
+  const { data, setData } = useData();
   const { showToast } = useToast();
 
   async function increase() {
-    if (cartId === undefined || cartId === null) return;
+    if (cartId == null) return;
 
-    const current = getCartQuantity({ cartId })!;
-    if (quantity <= current!) {
+    const current = data.cart.find((item) => item.id === cartId)?.quantity ?? 0;
+
+    if (quantity <= current) {
       showToast("CART_QUANTITY");
       return;
     }
 
-    changeCartQuantity({ cartId, quantity: current + 1 });
-    setCartQuantity({ cartId, quantity: current + 1 });
+    await changeCartQuantity({ cartId, quantity: current + 1 });
+
+    setData((prev) => ({
+      ...prev,
+      cart: prev.cart.map((item) =>
+        item.id === cartId ? { ...item, quantity: current + 1 } : item
+      ),
+    }));
   }
 
   function decrease() {
-    if (cartId === undefined || cartId === null) return;
+    if (cartId == null) return;
 
-    const current = getCartQuantity({ cartId })!;
+    const current = data.cart.find((item) => item.id === cartId)?.quantity ?? 0;
+
     if (current === 1) {
-      setCartQuantity({ cartId, quantity: 1 });
       removeItemToCart({ cartId });
+
+      setData((prev) => ({
+        ...prev,
+        cart: prev.cart.filter((item) => item.id !== cartId),
+      }));
       return;
     }
 
     changeCartQuantity({ cartId, quantity: current - 1 });
-    setCartQuantity({ cartId, quantity: current - 1 });
-  }
 
+    setData((prev) => ({
+      ...prev,
+      cart: prev.cart.map((item) =>
+        item.id === cartId ? { ...item, quantity: current - 1 } : item
+      ),
+    }));
+  }
   return {
-    cartQuantity: getCartQuantity({ cartId: cartId! }),
+    cartQuantity: data.cart.find((item) => item.id === cartId)?.quantity ?? 0,
     increase,
     decrease,
   };

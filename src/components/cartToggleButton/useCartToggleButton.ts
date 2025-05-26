@@ -1,7 +1,8 @@
-import useCart from "../../hooks/useCart/useCart";
+import { fetchCartItems } from "../../api/cart";
 import { useToast } from "../../hooks/useToast/useToast";
 import { AddItemBody } from "../../types/request.types";
 import request from "../../utils/request";
+import { useData } from "../dataProvider/DataProvider";
 
 const MAX_CART_AMOUNT = 50;
 
@@ -16,7 +17,7 @@ interface RemoveItemToCartProps {
 
 export default function useCartToggleButton() {
   const { showToast } = useToast();
-  const { setCartItems, setCartItemIds, refetchCartItems } = useCart();
+  const { setData, fetchData } = useData();
 
   async function removeItemToCart({ cartId }: RemoveItemToCartProps) {
     try {
@@ -24,8 +25,12 @@ export default function useCartToggleButton() {
         method: "DELETE",
         url: `/cart-items/${cartId}`,
       });
-      setCartItemIds((prev) => prev.filter((ids) => ids.cartId !== cartId));
-      setCartItems((prev) => prev!.filter((item) => item.id !== cartId));
+      setData((prev) => {
+        return {
+          ...prev,
+          cart: prev.cart.filter((item) => item.id !== cartId),
+        };
+      });
     } catch {
       showToast("MINUS");
     }
@@ -42,7 +47,7 @@ export default function useCartToggleButton() {
         url: "/cart-items",
         body: { productId, quantity: 1 },
       });
-      refetchCartItems();
+      fetchData("cart", fetchCartItems);
     } catch {
       showToast("ADD");
     }

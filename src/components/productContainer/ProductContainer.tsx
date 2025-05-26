@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Filter from "../filter/Filter";
 import ProductCardList from "../productCardList/ProductCardList";
 import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { CategoryType, SortType } from "../../types/index.types";
+import { useData } from "../dataProvider/DataProvider";
+import fetchProducts from "../../api/fetchProducts";
 
 function ProductContainer() {
+  const { fetchData } = useData();
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryType>("전체");
   const [selectedSort, setSelectedSort] = useState<SortType>("낮은 가격순");
+
+  useEffect(() => {
+    fetchData("products", () =>
+      fetchProducts({ category: selectedCategory, sort: selectedSort })
+    );
+  }, [selectedCategory, selectedSort, fetchData]);
 
   return (
     <div css={Container}>
@@ -20,7 +29,7 @@ function ProductContainer() {
         />
         <Sort selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
       </div>
-      <ProductCardList category={selectedCategory} sort={selectedSort} />
+      <ProductCardList />
     </div>
   );
 }

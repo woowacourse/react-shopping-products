@@ -1,5 +1,6 @@
 import { Product } from "../../types/response.types";
 import CartManageButton from "../cartAddButton/CartManageButton";
+import useCartToggleButton from "../cartToggleButton/useCartToggleButton";
 import {
   CountContainer,
   DeleteButton,
@@ -17,6 +18,8 @@ interface CartItemProps {
 }
 
 function CartItem({ id, product }: CartItemProps) {
+  const { removeItemToCart } = useCartToggleButton();
+
   return (
     <>
       <div css={ItemContainer}>
@@ -30,7 +33,12 @@ function CartItem({ id, product }: CartItemProps) {
             </div>
           </div>
         </div>
-        <button css={DeleteButton}>삭제</button>
+        <button
+          onClick={() => removeItemToCart({ cartId: id })}
+          css={DeleteButton}
+        >
+          삭제
+        </button>
       </div>
       <hr />
     </>

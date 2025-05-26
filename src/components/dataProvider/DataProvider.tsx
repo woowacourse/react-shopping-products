@@ -1,54 +1,64 @@
-import {
+import React, {
   createContext,
-  PropsWithChildren,
-  useCallback,
   useContext,
-  useEffect,
   useState,
+  useEffect,
+  ReactNode,
 } from "react";
+import { Product } from "../../types/response.types";
+import { CartItem } from "../../hooks/useFetchCartProducts/index.types";
+import fetchProducts from "../../api/fetchProducts";
+import { fetchCartItems } from "../../api/cart";
 
-const DataContext = createContext<{
-  data: Record<string, unknown>;
-  setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
-}>({
-  data: {},
-  setData: () => {},
-});
+interface DataContextType {
+  data: {
+    products: Product[];
+    cart: CartItem[];
+  };
+  fetchData: (
+    key: keyof DataContextType["data"],
+    fetchFn: () => Promise<unknown>
+  ) => Promise<void>;
+  setData: React.Dispatch<React.SetStateAction<DataContextType["data"]>>;
+}
 
-export function DataProvider({ children }: PropsWithChildren) {
-  const [data, setData] = useState({});
+const DataContext = createContext<DataContextType | undefined>(undefined);
+
+export const DataProvider = ({ children }: { children: ReactNode }) => {
+  const [data, setData] = useState<{ products: Product[]; cart: CartItem[] }>({
+    products: [],
+    cart: [],
+  });
+
+  async function fetchData<T>(
+    key: keyof DataContextType["data"],
+    fetchFn: () => Promise<T>
+  ) {
+    const result = await fetchFn();
+    setData((prev) => ({
+      ...prev,
+      [key]: result,
+    }));
+  }
+
+  useEffect(() => {
+    fetchData<Product[]>("products", () =>
+      fetchProducts({ category: "전체", sort: "낮은 가격순" })
+    );
+    fetchData<CartItem[]>("cart", fetchCartItems);
+  }, []);
 
   return (
-    <DataContext.Provider value={{ data, setData }}>
+    <DataContext.Provider value={{ data, fetchData, setData }}>
       {children}
     </DataContext.Provider>
   );
-}
+};
 
-export function useData<T>({
-  fetchFn,
-  key,
-}: {
-  fetchFn: () => Promise<T>;
-  key: string;
-}) {
-  const { data, setData } = useContext(DataContext);
-
-  const request = useCallback(() => {
-    fetchFn().then((res) => {
-      setData((prev) => {
-        return { ...prev, [key]: res };
-      });
-    });
-  }, [fetchFn, setData, key]);
-
-  useEffect(() => {
-    const hasData = data[key];
-    if (hasData) {
-      return;
-    }
-    request();
-  }, [data, request, key]);
-
-  return { data: data[key] as T, reFetcher: request };
-}
+export const useData = () => {
+  const context = useContext(DataContext);
+  if (!context) {
+    throw new Error("useData must be used within a DataProvider");
+  }
+  return context;
+};
