@@ -35,9 +35,7 @@ export function useAPI<T>({
       }
       setErrorMessage(error.message);
     } finally {
-      //   setTimeout(() => {
       setIsLoading(false);
-      //   }, 3000);
     }
   }, [fetcher, name, setData, setErrorMessage, setIsLoading]);
 
