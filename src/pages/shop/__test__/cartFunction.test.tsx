@@ -122,6 +122,6 @@ describe('SHOP 페이지에 접속 시', () => {
 
     const soldOutText = within(soldOutProductCard).getByText('품절');
 
-    expect(soldOutText).toBeInTheDocument();
+    expect(soldOutText).toBeTruthy();
   });
 });

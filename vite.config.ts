@@ -2,18 +2,12 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   publicDir: 'public',
-  base: 'https://jaeyoung-kwon.github.io/react-shopping-products/',
+  base: '/react-shopping-products/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-    },
-  },
-  build: {
-    rollupOptions: {
-      external: ['*.test.tsx'], // ✅ 또는 '*.test.tsx'
     },
   },
   plugins: [react()],
