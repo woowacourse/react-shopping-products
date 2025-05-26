@@ -1,3 +1,4 @@
+
 import { Product, CartItem } from "../../types/productType";
 import CartActionButton from "./button/CartActionButton";
 import styled from "@emotion/styled";

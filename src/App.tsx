@@ -31,7 +31,6 @@ function AppContent() {
     },
     name: "products",
   });
-
   const {
     handleCategoryChange,
     handlePriceOrderChange,
@@ -95,7 +94,6 @@ function App() {
     </APIProvider>
   );
 }
-
 const Layout = styled.div`
   width: 500px;
   height: 100vh;
