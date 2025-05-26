@@ -11,7 +11,6 @@ const removeCart = async (cartId: number) => {
 			},
 			method: "DELETE",
 		});
-		console.log(response);
 
 		handleHttpError(response);
 	} catch (error) {
