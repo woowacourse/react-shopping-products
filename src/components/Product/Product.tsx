@@ -11,6 +11,7 @@ import {
 } from './Product.style';
 import isValidImageUrl from '../../utils/isValidImageUrl';
 import { DEFAULT_IMAGE_URL } from '../../constants/products';
+import { getImageUrl } from '../../utils/getImageUrl';
 import useProductQuantity from '../../hooks/useProductQuantity';
 import QuantityControlBox from '../QuantityControlBox/QuantityControlBox';
 
@@ -27,6 +28,10 @@ function Product({ id, imageUrl, name, price, quantity, isAdd }: ProductDataType
     isAdd,
   });
 
+  const finalImageUrl = isValidImageUrl(imageUrl)
+    ? getImageUrl(imageUrl)
+    : getImageUrl(DEFAULT_IMAGE_URL);
+
   return (
     <li className={productContainer}>
       {isOutOfStock && (
@@ -35,11 +40,11 @@ function Product({ id, imageUrl, name, price, quantity, isAdd }: ProductDataType
         </div>
       )}
       <img
-        src={isValidImageUrl(imageUrl) ? imageUrl : DEFAULT_IMAGE_URL}
+        src={finalImageUrl}
         alt="product"
         className={productImage}
         onError={(e) => {
-          e.currentTarget.src = DEFAULT_IMAGE_URL;
+          e.currentTarget.src = getImageUrl(DEFAULT_IMAGE_URL);
           e.currentTarget.onerror = null;
         }}
       />

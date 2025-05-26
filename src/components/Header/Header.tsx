@@ -1,5 +1,6 @@
 import Button from '../common/Button/Button';
 import useGetCarts from '../../hooks/useGetCartItems';
+import { getImageUrl } from '../../utils/getImageUrl';
 import { cartImg, count, headerContainer, headerTitle } from './Header.style';
 
 interface HeaderProps {
@@ -14,7 +15,7 @@ function Header({ onCartClick }: HeaderProps) {
     <div className={headerContainer}>
       <div className={headerTitle}>SHOP</div>
       <Button onClick={onCartClick}>
-        <img src="./images/cart.png" alt="cart" className={cartImg} />
+        <img src={getImageUrl('./images/cart.png')} alt="cart" className={cartImg} />
         <span className={count}>{itemCount}</span>
       </Button>
     </div>

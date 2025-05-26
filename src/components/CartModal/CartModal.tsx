@@ -3,6 +3,7 @@ import useGetCarts from '../../hooks/useGetCartItems';
 import useCartManagement from '../../hooks/useCartManagement';
 import QuantityControlBox from '../QuantityControlBox/QuantityControlBox';
 import DeleteButton from '../DeleteButton/DeleteButton';
+import { getImageUrl } from '../../utils/getImageUrl';
 import {
   cartModalContent,
   cartItem,
@@ -58,7 +59,7 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
                   <div key={cart.id} className={cartItem}>
                     <div className={cartItemContent}>
                       <img
-                        src={cart.product.imageUrl}
+                        src={getImageUrl(cart.product.imageUrl)}
                         alt={cart.product.name}
                         className={cartItemImage}
                       />
