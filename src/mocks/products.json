@@ -11,7 +11,7 @@
     {
       "id": 2,
       "name": "메이토2",
-      "price": 1000,
+      "price": 2000,
       "imageUrl": "",
       "category": "식료품",
       "quantity": 10
@@ -157,7 +157,7 @@
       "name": "메이토20",
       "price": 1000,
       "imageUrl": "",
-      "category": "식료품",
+      "category": "패션잡화",
       "quantity": 10
     }
   ],
