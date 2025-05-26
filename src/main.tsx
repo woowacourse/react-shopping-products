@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
-import { ProductListProvider } from './context/ProductContext.tsx';
-import { CartListProvider } from './context/CartContext.tsx';
 import { ToastProvider } from './context/ToastContext.tsx';
+import { APIProvider } from './context/APIContext.tsx';
 
 async function enableMocking() {
   if (
@@ -19,11 +18,9 @@ enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <ToastProvider>
-        <ProductListProvider>
-          <CartListProvider>
-            <App />
-          </CartListProvider>
-        </ProductListProvider>
+        <APIProvider>
+          <App />
+        </APIProvider>
       </ToastProvider>
     </React.StrictMode>
   );
