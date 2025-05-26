@@ -86,15 +86,17 @@ export const handlers = [
     const idToPatch = Number(params.cartItemId);
     const { quantity } = (await request.json()) as PatchProductRequestBody;
 
-    serverCartItems.content = serverCartItems.content.map((item) => {
-      if (item.id == idToPatch) {
-        return { ...item, quantity };
-      }
-      return item;
-    });
+    if (quantity === 0) {
+      serverCartItems.content = serverCartItems.content.filter((item) => item.id !== idToPatch);
+    } else {
+      serverCartItems.content = serverCartItems.content.map((item) =>
+        item.id === idToPatch ? { ...item, quantity } : item
+      );
+    }
 
     return new HttpResponse(null, { status: 200 });
   }),
+
   // 장바구니 아이템 삭제
   http.delete(`${URLS.CART_ITEMS}/:cartItemId`, ({ params }) => {
     const idToDelete = Number(params.cartItemId);
