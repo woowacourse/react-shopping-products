@@ -44,11 +44,11 @@ type CartModalProps = {
                 <ItemDetails>
                   <ItemName>{item.product.name}</ItemName>
                   <ItemPrice>{item.product.price.toLocaleString()}원</ItemPrice>
-  
                   <QuantityController
                     id={item.productId}
                     basketId={item.id}
                     timeoutRef={timeoutRef}
+                    size="small"
                   />
                 </ItemDetails>
                 <DeleteButton>삭제</DeleteButton>

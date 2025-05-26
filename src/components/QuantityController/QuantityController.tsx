@@ -13,9 +13,10 @@ type QuantityControllerProps = {
   id: number;
   basketId?: number;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+  size?: "default" | "small";
 };
 
-const QuantityController = ({ id, basketId, timeoutRef }: QuantityControllerProps) => {
+const QuantityController = ({ id, basketId, timeoutRef, size }: QuantityControllerProps) => {
   const [quantity, setQuantity] = useState(1);
   const { fetchCartItems, setError, setErrorMessage } = useDataContext();
 
@@ -49,12 +50,12 @@ const QuantityController = ({ id, basketId, timeoutRef }: QuantityControllerProp
   };
 
   return (
-    <QuantityControllerWrapper>
-      <Button onClick={decrease}>
+    <QuantityControllerWrapper size={size}>
+      <Button size={size} onClick={decrease}>
         <img src={IMAGE_PATH.MINUS_ICON} alt="minus-icon" />
       </Button>
-      <Count>{quantity}</Count>
-      <Button onClick={increase}>
+      <Count size={size}>{quantity}</Count>
+      <Button size={size} onClick={increase}>
         <img src={IMAGE_PATH.PLUS_ICON} alt="plus-icon" />
       </Button>
     </QuantityControllerWrapper>

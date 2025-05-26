@@ -58,11 +58,13 @@ export const ItemDetails = styled.div`
 export const ItemName = styled.div`
   font-weight: bold;
   font-size: 14px;
+  margin-bottom: 5px;
 `;
 
 export const ItemPrice = styled.div`
   font-size: 13px;
   margin-top: 4px;
+  margin-bottom: 10px;
 `;
 
 export const DeleteButton = styled.button`
