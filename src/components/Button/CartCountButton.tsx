@@ -1,4 +1,3 @@
-// src/components/Button/CartCountButton.tsx
 import { MergedProduct } from "../../types";
 import S from "./CartCountButton.module.css";
 
