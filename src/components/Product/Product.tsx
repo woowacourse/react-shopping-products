@@ -1,5 +1,5 @@
 import AddButton from '../AddButton/AddButton';
-import { ProductProps } from '../../types/product';
+import { ProductDataType } from '../../types/product';
 import {
   productContainer,
   productImage,
@@ -13,18 +13,16 @@ import isValidImageUrl from '../../utils/isValidImageUrl';
 import { DEFAULT_IMAGE_URL } from '../../constants/products';
 import useProductQuantity from '../../hooks/useProductQuantity';
 import QuantityControlBox from '../QuantityControlBox/QuantityControlBox';
+import useGetCarts from '../../hooks/useGetCartItems';
+import useCartManagement from '../../hooks/useCartManagement';
 
-function Product({
-  id,
-  imageUrl,
-  name,
-  price,
-  quantity,
-  isAdd,
-  onClickAddCartItem,
-  onClickUpdateCartItem,
-  onClickDeleteCartItem,
-}: ProductProps) {
+function Product({ id, imageUrl, name, price, quantity, isAdd }: ProductDataType) {
+  const { carts, refetchCarts } = useGetCarts();
+  const { handleAddCartItem, handleUpdateCartItem, handleDeleteCartItem } = useCartManagement({
+    refetchCarts,
+    carts,
+  });
+
   const {
     selectedQuantity,
     isOutOfStock,
@@ -35,9 +33,9 @@ function Product({
     id,
     quantity,
     isAdd,
-    onClickUpdateCartItem,
-    onClickDeleteCartItem,
-    onClickAddCartItem,
+    onClickUpdateCartItem: handleUpdateCartItem,
+    onClickDeleteCartItem: handleDeleteCartItem,
+    onClickAddCartItem: handleAddCartItem,
   });
 
   return (
