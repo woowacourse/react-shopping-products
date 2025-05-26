@@ -13,7 +13,7 @@ async function enableMocking() {
     return worker.start({
       onUnhandledRequest: 'bypass',
       serviceWorker: {
-        url: '/shopping-mall/mockServiceWorker.js', // <- 경로 설정
+        url: '/react-shopping-products/mockServiceWorker.js',
       },
     });
   }
