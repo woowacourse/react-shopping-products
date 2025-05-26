@@ -6,12 +6,12 @@ import { getCartItemId } from '../utils';
 export const useProductItem = () => {
   const { cartItemList, setCartItemList, setErrorMessage } = useCartItemList();
 
-  async function handleProductItem(action: string, productId: number) {
+  async function handleProductItem(action: string, productId: number, quantity?: number) {
     try {
-      if (action === 'remove') {
+      if (action === 'update') {
         const cartItemId = getCartItemId(productId, cartItemList);
         if (cartItemId) {
-          await cartApi.delete(cartItemId);
+          await cartApi.patch(quantity!, cartItemId);
         }
       } else {
         if (cartItemList.length >= CART_MAX_COUNT) {

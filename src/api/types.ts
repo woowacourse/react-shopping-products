@@ -4,6 +4,7 @@ export interface ResponseProduct {
   price: number;
   imageUrl: string;
   category: string;
+  quantity?: number;
 }
 
 export interface ResponseDefault<T> {
@@ -40,7 +41,7 @@ export interface ResponseCartItem {
   product: ResponseProduct;
 }
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export interface ApiConfigType {
   method: HttpMethod;

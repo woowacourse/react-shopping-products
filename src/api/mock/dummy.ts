@@ -87,7 +87,7 @@ export const dummyData = {
       price: 2000,
       imageUrl: 'https://static.megamart.com/product/image/1004/10047316/10047316_1_960.jpg',
       category: '식료품',
-      quantity: 50,
+      quantity: 2,
     },
     {
       id: 28,

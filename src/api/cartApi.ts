@@ -36,4 +36,16 @@ export const cartApi = {
 
     return response;
   },
+  patch: async (quantity: number, cartItemId: number) => {
+    const apiConfigs: ApiConfigType = {
+      method: 'PATCH',
+      isAuthorization: true,
+      body: {
+        quantity,
+      },
+    };
+    const response = await apiClient<ResponseCartItem, { cartItemId: number }>(apiConfigs, `/cart-items/${cartItemId}`, { cartItemId });
+
+    return response;
+  },
 };

@@ -148,4 +148,55 @@ export const handlers = [
       empty: false,
     });
   }),
+  http.patch(`${BASE_URL}/cart-items/:id`, async ({ request, params }) => {
+    const { id } = params;
+    const { quantity } = (await request.json()) as RequestCartItem;
+    const productQuantity = productCart.filter((item) => item.id === Number(id))[0].product.quantity;
+
+    if (quantity > productQuantity!) {
+      return HttpResponse.json(
+        {
+          message: '재고 수량을 초과하여 담을 수 없습니다.',
+        },
+        { status: 400 }
+      );
+    }
+    productCart = productCart
+      .map((item) => {
+        if (item.id === Number(id)) {
+          item.quantity = quantity;
+        }
+
+        return item;
+      })
+      .filter((item) => item.quantity > 0);
+    return HttpResponse.json({
+      content: productCart,
+      pageable: {
+        pageNumber: 0,
+        pageSize: 20,
+        sort: {
+          empty: false,
+          sorted: true,
+          unsorted: false,
+        },
+        offset: 0,
+        paged: true,
+        unpaged: false,
+      },
+      last: false,
+      totalElements: 51,
+      totalPages: 3,
+      size: 20,
+      number: 0,
+      sort: {
+        empty: false,
+        sorted: true,
+        unsorted: false,
+      },
+      first: true,
+      numberOfElements: 20,
+      empty: false,
+    });
+  }),
 ];

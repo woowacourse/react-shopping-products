@@ -2,14 +2,14 @@ import * as S from './ProductItem.styled';
 import AddProductIcon from '../Icon/AddProductIcon';
 import Button from '../common/Button/Button';
 import blackDefaultImage from '../../assets/blackDefaultImage.png';
-import QuantityButton from '../common/QuantityButton/QuantityButton';
+import QuantityButton from '../QuantityButton/QuantityButton';
 import { ResponseProduct } from '../../api/types';
-import { isItemInCart } from './utils';
 import { useProductItem } from './hooks/useProductItem';
+import { isItemInCart } from './utils';
 
 function ProductItem({ product }: { product: ResponseProduct }) {
   const { cartItemList, handleProductItem } = useProductItem();
-  const { isInCart, text, keyword } = isItemInCart(product.id, cartItemList);
+  const { quantity, isInCart, text, keyword } = isItemInCart(product.id, cartItemList);
 
   return (
     <S.ProductItemContainer>
@@ -27,7 +27,11 @@ function ProductItem({ product }: { product: ResponseProduct }) {
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
         {isInCart ? (
-          <QuantityButton />
+          <QuantityButton
+            quantity={quantity!}
+            handleAddQuantity={() => handleProductItem('update', product.id, quantity! + 1)}
+            handleSubtractQuantity={() => handleProductItem('update', product.id, quantity! - 1)}
+          />
         ) : (
           <Button keyWord={keyword} onClick={() => handleProductItem('add', product.id)}>
             <AddProductIcon />
