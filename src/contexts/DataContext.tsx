@@ -47,13 +47,13 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const basketProductsIds = cartItems
-  ? cartItems
-      .filter((item) => item.product)
-      .map((item) => ({
-        productId: item.product.id,
-        basketId: item.id,
-      }))
-  : [];
+    ? cartItems
+        .filter((item) => item.product)
+        .map((item) => ({
+          productId: item.product.id,
+          basketId: item.id,
+        }))
+    : [];
 
   return (
     <DataContext.Provider

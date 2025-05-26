@@ -12,7 +12,7 @@ interface ApiResponse<T> {
 
 const useData = <T>(
   url: string,
-  { queryParams, dependencies = [] }: UseDataOptions = {}
+  { queryParams, dependencies = [] }: UseDataOptions = {},
 ) => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);

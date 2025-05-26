@@ -23,14 +23,17 @@ type CartModalProps = {
   onClose: () => void;
 };
 
-const handleDeleteProduct = async (basketId: number, fetchCartItems: () => void) => {
+const handleDeleteProduct = async (
+  basketId: number,
+  fetchCartItems: () => void,
+) => {
   await deleteCartItem(basketId);
   fetchCartItems();
-}
+};
 
 const CartModal = ({ onClose }: CartModalProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const {cartItems, fetchCartItems} = useDataContext();
+  const { cartItems, fetchCartItems } = useDataContext();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -67,7 +70,11 @@ const CartModal = ({ onClose }: CartModalProps) => {
                   size="small"
                 />
               </ItemDetails>
-              <DeleteButton onClick={() => handleDeleteProduct(item.id, fetchCartItems)}>삭제</DeleteButton>
+              <DeleteButton
+                onClick={() => handleDeleteProduct(item.id, fetchCartItems)}
+              >
+                삭제
+              </DeleteButton>
             </CartItem>
           ))}
         </CartItemList>

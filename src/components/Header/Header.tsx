@@ -22,10 +22,7 @@ const Header = ({ basketCount }: HeaderProps) => {
           {basketCount !== 0 && (
             <BasketCountTextWrapper>{basketCount}</BasketCountTextWrapper>
           )}
-          <img
-            src={IMAGE_PATH.SHOPPING_BASKET}
-            alt="basket"
-          />
+          <img src={IMAGE_PATH.SHOPPING_BASKET} alt="basket" />
         </BasketWrapper>
       </HeaderWrapper>
 

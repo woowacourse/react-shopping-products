@@ -23,6 +23,6 @@ export const resetCartItems = () => {
       productId: 2,
       quantity: 1,
       product: mockProducts[1],
-    }
+    },
   );
 };

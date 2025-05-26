@@ -15,9 +15,16 @@ type QuantityControllerProps = {
   size?: "default" | "small";
 };
 
-const QuantityController = ({ id, basketId, timeoutRef, size }: QuantityControllerProps) => {
-  const { cartItems, fetchCartItems, setError, setErrorMessage } = useDataContext();
-  const quantity = cartItems?.find((item) => item.productId === id)?.quantity ?? 1;
+const QuantityController = ({
+  id,
+  basketId,
+  timeoutRef,
+  size,
+}: QuantityControllerProps) => {
+  const { cartItems, fetchCartItems, setError, setErrorMessage } =
+    useDataContext();
+  const quantity =
+    cartItems?.find((item) => item.productId === id)?.quantity ?? 1;
 
   const increase = async () => {
     try {
@@ -37,7 +44,6 @@ const QuantityController = ({ id, basketId, timeoutRef, size }: QuantityControll
       setErrorMessage(ERROR_MSG.OUT_OF_STOCK);
     }
   };
-  
 
   const decrease = async () => {
     if (quantity === 1 && basketId) {

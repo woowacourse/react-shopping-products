@@ -30,7 +30,8 @@ const sortQueryMap: Record<SortKey, string | undefined> = {
 function App() {
   const [category, setCategory] = useState<CategoryKey>("ALL");
   const [sort, setSort] = useState<SortKey>("NONE");
-  const { basketProductsIds, error, setError, errorMessage, setErrorMessage } = useDataContext();
+  const { basketProductsIds, error, setError, errorMessage, setErrorMessage } =
+    useDataContext();
 
   const {
     data: products,
@@ -41,7 +42,9 @@ function App() {
       page: 0,
       size: 20,
       ...(sortQueryMap[sort] && { sort: sortQueryMap[sort] }),
-      ...(categoryQueryMap[category] && { category: categoryQueryMap[category] }),
+      ...(categoryQueryMap[category] && {
+        category: categoryQueryMap[category],
+      }),
     },
     dependencies: [category, sort],
   });

@@ -17,7 +17,6 @@ beforeEach(() => {
   resetCartItems();
 });
 
-
 describe("장바구니 API - MSW 기반 테스트", () => {
   test("getCartItems 호출 시 mockCartItems 배열을 반환한다", async () => {
     const items = await getCartItems();

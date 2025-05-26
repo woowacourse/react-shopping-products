@@ -16,7 +16,7 @@ async function main() {
       <DataProvider>
         <App />
       </DataProvider>
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 }
 

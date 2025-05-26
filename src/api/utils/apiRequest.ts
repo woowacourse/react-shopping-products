@@ -14,7 +14,7 @@ interface APIError extends Error {
 
 const apiRequest = async <T>(
   url: string,
-  options: RequestOptions = {}
+  options: RequestOptions = {},
 ): Promise<T> => {
   const { queryParams, headers, ...restOptions } = options;
 
@@ -44,7 +44,7 @@ const apiRequest = async <T>(
   if (!response.ok) {
     const errorBody = await response.json();
     const error = new Error(
-      `API 요청 실패: ${response.status} ${JSON.stringify(errorBody)}`
+      `API 요청 실패: ${response.status} ${JSON.stringify(errorBody)}`,
     ) as APIError;
 
     error.response = {

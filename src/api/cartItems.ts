@@ -30,7 +30,7 @@ export const getCartItems = async (): Promise<CartItem[]> => {
 
 export const postCartItems = async (
   productId: number,
-  quantity: number
+  quantity: number,
 ): Promise<void> => {
   await apiRequest<void>(END_POINT.CART, {
     method: "POST",

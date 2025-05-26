@@ -13,7 +13,7 @@ const handleUpsertCartItem = async (request: Request) => {
   if (!product) {
     return HttpResponse.json(
       { errorCode: "NOT_FOUND", message: "상품을 찾을 수 없습니다." },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -23,7 +23,7 @@ const handleUpsertCartItem = async (request: Request) => {
         errorCode: "OUT_OF_STOCK",
         message: "재고 수량을 초과하여 담을 수 없습니다.",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -36,7 +36,7 @@ const handleUpsertCartItem = async (request: Request) => {
         errorCode: "OUT_OF_STOCK",
         message: "재고 수량을 초과하여 담을 수 없습니다.",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -117,7 +117,7 @@ export const handlers = [
           errorCode: "NOT_FOUND",
           message: "장바구니 항목을 찾을 수 없습니다.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 

@@ -33,12 +33,12 @@ describe("CartModal 기능 테스트", () => {
   test("장바구니 총 결제 금액이 올바르게 계산된다", () => {
     const total = mockCartItems.reduce(
       (sum, item) => sum + item.product.price * item.quantity,
-      0
+      0,
     );
 
     expect(total).toBe(
       mockCartItems[0].product.price * mockCartItems[0].quantity +
-        mockCartItems[1].product.price * mockCartItems[1].quantity
+        mockCartItems[1].product.price * mockCartItems[1].quantity,
     );
   });
 
@@ -64,7 +64,7 @@ describe("CartModal 기능 테스트", () => {
     render(
       <DataProvider>
         <App />
-      </DataProvider>
+      </DataProvider>,
     );
 
     const basketIcon = screen.getByAltText("basket");
@@ -77,7 +77,7 @@ describe("CartModal 기능 테스트", () => {
     render(
       <DataProvider>
         <App />
-      </DataProvider>
+      </DataProvider>,
     );
 
     const addButtons = await screen.findAllByText("담기");
@@ -94,7 +94,7 @@ describe("CartModal 기능 테스트", () => {
     render(
       <DataProvider>
         <App />
-      </DataProvider>
+      </DataProvider>,
     );
 
     const basketIcon = screen.getByAltText("basket");
@@ -110,26 +110,25 @@ describe("CartModal 기능 테스트", () => {
     render(
       <DataProvider>
         <App />
-      </DataProvider>
+      </DataProvider>,
     );
-  
+
     const basketIcon = screen.getByAltText("basket");
     fireEvent.click(basketIcon);
-  
+
     await screen.findByText("장바구니");
-  
+
     const overlay = screen.getByTestId("overlay");
     fireEvent.click(overlay);
-  
+
     expect(screen.queryByText("장바구니")).not.toBeInTheDocument();
   });
-  
 
   test("ESC 키를 누르면 모달이 닫힌다", async () => {
     render(
       <DataProvider>
         <App />
-      </DataProvider>
+      </DataProvider>,
     );
 
     const basketIcon = screen.getByAltText("basket");
@@ -143,7 +142,7 @@ describe("CartModal 기능 테스트", () => {
     render(
       <DataProvider>
         <App />
-      </DataProvider>
+      </DataProvider>,
     );
 
     const addButtons = await screen.findAllByText("담기");
@@ -156,7 +155,7 @@ describe("CartModal 기능 테스트", () => {
     fireEvent.click(deleteButtons[0]);
 
     expect(
-      screen.queryByText((text) => text.includes("상품 1"))
+      screen.queryByText((text) => text.includes("상품 1")),
     ).not.toBeInTheDocument();
   });
 });
