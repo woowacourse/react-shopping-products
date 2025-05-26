@@ -1,18 +1,15 @@
 import { ReactNode } from 'react';
 import { css } from '@emotion/react';
 import Modal from './Modal/Modal';
-import Button from '../Button/Button';
 
-export default function CartModal({ isOpen, onClose, title, content }: CartModalProps) {
+export default function CartModal({ isOpen, onClose, title, content, footer }: CartModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} position="bottom" size="small">
       <Modal.BackDrop css={backdropCss} />
       <Modal.Content css={contentCss}>
         {Boolean(title) && <Modal.Title css={titleCss}>{title}</Modal.Title>}
         {content}
-        <Modal.Footer css={buttonCss}>
-          <Button onClick={onClose}>닫기</Button>
-        </Modal.Footer>
+        <Modal.Footer>{footer}</Modal.Footer>
       </Modal.Content>
     </Modal>
   );
@@ -24,6 +21,7 @@ interface CartModalProps {
   title?: string;
   content: ReactNode;
   confirmText?: string;
+  footer: ReactNode;
 }
 
 const backdropCss = css({
@@ -43,8 +41,4 @@ const titleCss = css({
   fontSize: '18px',
   fontWeight: '700',
   color: '#000'
-});
-
-const buttonCss = css({
-  width: '100%'
 });

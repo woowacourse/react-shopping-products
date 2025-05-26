@@ -27,7 +27,6 @@ export default function ProductCard({
   onClick,
   productQuantity,
   cartQuantity,
-
   cartItemId
 }: ProductCardProps) {
   const { fetcher: refetchCart } = useApiContext({ fetchFn: getCartItems, key: 'getCartItems' });

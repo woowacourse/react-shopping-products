@@ -11,6 +11,8 @@ import Image from '../Image/Image';
 import { CartItemViewModel } from '../../api/model/createCartItemsViewModel';
 import { deleteCartItem } from '../../api/deleteCartItem';
 import { useErrorContext } from '../../contexts/ErrorContext';
+import Button from '../Button/Button';
+import { css } from '@emotion/react';
 
 function HomeHeader() {
   const [isAlertOpen, setAlertOpen] = useState(false);
@@ -47,6 +49,8 @@ function HomeHeader() {
     [refetchCart, showError]
   );
 
+  const totalPrice = cartItems?.content.reduce((acc, item) => acc + item.quantity * item.product.price, 0);
+
   return (
     <>
       <Header
@@ -62,9 +66,20 @@ function HomeHeader() {
         <CartModal
           isOpen={isAlertOpen}
           onClose={() => setAlertOpen(false)}
+          title="장바구니"
           content={
             <div css={styles.modalContent}>
               <CartList cartItems={cartItems?.content} onClick={handleDeleteCart} />
+            </div>
+          }
+          footer={
+            <div css={footerCss}>
+              <div css={totalPriceCss}>
+                <p>총 결제 금액</p> <p>{totalPrice?.toLocaleString() + '원'}</p>
+              </div>
+              <Button css={buttonCss} onClick={() => setAlertOpen(false)}>
+                닫기
+              </Button>
             </div>
           }
         />
@@ -73,3 +88,27 @@ function HomeHeader() {
   );
 }
 export default HomeHeader;
+
+const totalPriceCss = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+
+  '& > p:first-of-type': {
+    fontWeight: 700
+  },
+  '& > p:last-of-type': {
+    fontSize: '24px',
+    fontWeight: 700
+  }
+});
+
+const footerCss = css({
+  width: '100%',
+  gap: '24px',
+  display: 'flex',
+  flexDirection: 'column'
+});
+const buttonCss = css({
+  width: '100%'
+});
