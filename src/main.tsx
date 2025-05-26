@@ -3,7 +3,7 @@ import App from './App.tsx';
 import { worker } from './mocks/browser.ts';
 import React from 'react';
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || import.meta.env.VITE_USE_MSW === 'true') {
   worker.start().then(() => {
     createRoot(document.getElementById('root')!).render(
       <React.StrictMode>
