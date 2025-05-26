@@ -6,8 +6,6 @@ import CartItemCount from "./CartItemCount";
 const CartItem = ({ product }: { product: MergedProduct }) => {
 	const { updateCartItem } = useCartState();
 
-	console.log(product);
-
 	return (
 		<div className={S.cartContainer}>
 			<img src={product.imageUrl} alt="상품 이미지" className={S.cartImg} />
