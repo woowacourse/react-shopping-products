@@ -79,9 +79,12 @@ export function useData<T>(
 
       if (retryCountRef.current < mergedOptions.retry!) {
         retryCountRef.current++;
+        const delay = mergedOptions.retryDelay! * Math.pow(2, retryCountRef.current - 1); // Exponential backoff
         setTimeout(() => {
-          fetchData();
-        }, mergedOptions.retryDelay);
+          if (abortControllerRef.current && !abortControllerRef.current.signal.aborted) {
+            fetchData();
+          }
+        }, delay);
         return;
       }
 

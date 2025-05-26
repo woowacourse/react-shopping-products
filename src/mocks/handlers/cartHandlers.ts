@@ -3,7 +3,7 @@ import { mockCartItems } from '../data/mockCartItem';
 import { mockProducts, mockProductStock } from '../data/mockProducts';
 import { CartItem } from '../../types/product';
 
-const API_URL = 'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com';
+const API_URL = 'https://api.example.com';
 
 // 메모리에 장바구니 데이터 저장
 let cartItems: CartItem[] = [...mockCartItems.content];

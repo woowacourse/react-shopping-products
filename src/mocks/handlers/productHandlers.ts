@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { mockProducts, mockProductStock } from '../data/mockProducts';
 import { ProductType } from '../../types/product';
 
-const API_URL = 'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com';
+const API_URL = 'https://api.example.com';
 
 type SortOrder = 'asc' | 'desc';
 
