@@ -20,6 +20,9 @@ export const ModalContainer = styled.div`
   border-radius: 16px 16px 0 0;
   padding: 24px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
 `;
 
 export const Title = styled.h2`
@@ -34,6 +37,8 @@ export const CartItemList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
 `;
 
 export const CartItem = styled.div`
