@@ -3,12 +3,10 @@ import fetchCartItems from "../apis/product/cartItems/fetchCartItems";
 import fetchAddProduct from "../apis/product/cartItems/fetchAddProduct";
 import fetchRemoveProduct from "../apis/product/cartItems/fetchRemoveProduct";
 
-import useErrorMessage from "./useErrorMessage";
-
-import toastMessage from "../utils/toastMessage";
 import fetchUpdateCartItemQuantity from "../apis/product/cartItems/fetchUpdateCartItemQuantity";
 
 import useData from "./useData";
+import useToast from "./useToast";
 
 const getCartItems = async () => {
   try {
@@ -38,20 +36,7 @@ const useShoppingCart = () => {
     name: "cartItems",
   });
 
-  const { errorMessage, handleErrorMessage } = useErrorMessage();
-
-  const showErrorMessage = useCallback(
-    (message: string) => {
-      toastMessage({
-        message,
-        updateMessage: handleErrorMessage,
-        resetMessage: () => {
-          handleErrorMessage("");
-        },
-      });
-    },
-    [handleErrorMessage]
-  );
+  const { showToast } = useToast();
 
   const selectedCartItem = useCallback(
     (productId: number) =>
@@ -67,7 +52,10 @@ const useShoppingCart = () => {
     async (productId: number) => {
       try {
         if (cartItems.length === 50) {
-          showErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
+          showToast({
+            message: "장바구니에 최대 추가 가능한 개수는 50개 입니다.",
+            type: "error",
+          });
           return;
         }
 
@@ -84,10 +72,10 @@ const useShoppingCart = () => {
           return;
         }
 
-        showErrorMessage(error.message);
+        showToast({ message: error.message, type: "error" });
       }
     },
-    [cartItems, showErrorMessage, updateCartItems]
+    [cartItems, showToast, updateCartItems]
   );
 
   const handleRemoveProduct = useCallback(
@@ -111,10 +99,10 @@ const useShoppingCart = () => {
           return;
         }
 
-        showErrorMessage(error.message);
+        showToast({ message: error.message, type: "error" });
       }
     },
-    [selectedCartItem, showErrorMessage, updateCartItems]
+    [selectedCartItem, showToast, updateCartItems]
   );
 
   const QUANTITY_UNIT = 1;
@@ -132,7 +120,10 @@ const useShoppingCart = () => {
         const stockQuantity = targetCartItem.product.quantity;
 
         if (cartItemQuantity + QUANTITY_UNIT > stockQuantity) {
-          showErrorMessage("재고 수량을 초과하여 담을 수 없습니다.");
+          showToast({
+            message: "재고 수량을 초과하여 담을 수 없습니다.",
+            type: "error",
+          });
           return;
         }
 
@@ -149,10 +140,10 @@ const useShoppingCart = () => {
           return;
         }
 
-        showErrorMessage(error.message);
+        showToast({ message: error.message, type: "error" });
       }
     },
-    [selectedCartItem, showErrorMessage, updateCartItems]
+    [selectedCartItem, showToast, updateCartItems]
   );
 
   const handleDecreaseCartItemQuantity = useCallback(
@@ -177,16 +168,15 @@ const useShoppingCart = () => {
           return;
         }
 
-        showErrorMessage(error.message);
+        showToast({ message: error.message, type: "error" });
       }
     },
-    [selectedCartItem, showErrorMessage, updateCartItems]
+    [selectedCartItem, showToast, updateCartItems]
   );
 
   return {
     cartItems,
     loading,
-    errorMessage,
     handleAddProduct,
     handleRemoveProduct,
     handleIncreaseCartItemQuantity,
