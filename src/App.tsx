@@ -45,11 +45,6 @@ function AppContent() {
     if (!isCartModalOpen) setIsCartModalOpen(true);
   };
 
-  // if(isLoading){
-  //   return <Skeleton></Skeleton>
-  // }
-  console.log(`app`, isLoading);
-
   return (
     <Layout>
       <Header openCartModal={openCartModal} />
