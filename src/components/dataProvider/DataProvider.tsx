@@ -4,9 +4,10 @@ import React, {
   useState,
   useEffect,
   ReactNode,
+  useCallback,
 } from "react";
 import { Product } from "../../types/response.types";
-import { CartItem } from "../../hooks/useFetchCartProducts/index.types";
+import { CartItem } from "../../types/response.types";
 import fetchProducts from "../../api/fetchProducts";
 import { fetchCartItems } from "../../api/cart";
 
@@ -30,23 +31,26 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     cart: [],
   });
 
-  async function fetchData<T>(
-    key: keyof DataContextType["data"],
-    fetchFn: () => Promise<T>
-  ) {
-    const result = await fetchFn();
-    setData((prev) => ({
-      ...prev,
-      [key]: result,
-    }));
-  }
+  const fetchData = useCallback(
+    async function <T>(
+      key: keyof DataContextType["data"],
+      fetchFn: () => Promise<T>
+    ): Promise<void> {
+      const result = await fetchFn();
+      setData((prev) => ({
+        ...prev,
+        [key]: result,
+      }));
+    },
+    [setData]
+  );
 
   useEffect(() => {
     fetchData<Product[]>("products", () =>
       fetchProducts({ category: "전체", sort: "낮은 가격순" })
     );
     fetchData<CartItem[]>("cart", fetchCartItems);
-  }, []);
+  }, [fetchData]);
 
   return (
     <DataContext.Provider value={{ data, fetchData, setData }}>

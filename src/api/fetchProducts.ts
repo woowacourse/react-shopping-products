@@ -1,5 +1,5 @@
-import { ProductPageResponse } from "../hooks/useFetchProducts/index.types";
 import { CategoryType, SortType } from "../types/index.types";
+import { ProductPageResponse } from "../types/response.types";
 import request from "../utils/request";
 
 interface FetchProductsProps {

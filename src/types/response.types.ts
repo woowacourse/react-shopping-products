@@ -20,3 +20,37 @@ export interface Pageable {
   unpaged: boolean;
   sort: Sort;
 }
+
+export interface ProductPageResponse {
+  content: Product[];
+  pageable: Pageable;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+  first: boolean;
+  size: number;
+  number: number;
+  numberOfElements: number;
+  empty: boolean;
+  sort: Sort;
+}
+
+export interface CartItem {
+  id: number;
+  quantity: number;
+  product: Product;
+}
+
+export interface CartProduct {
+  content: CartItem[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: Pageable;
+  size: number;
+  sort: Sort;
+  totalElements: number;
+  totalPages: number;
+}
