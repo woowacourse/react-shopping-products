@@ -1,7 +1,7 @@
 import {
   CategoryValue,
   SortValue,
-} from "../../Component/Product/ProductListContainer/ProductListContainer";
+} from "../../Component/Product/ProductListContainer";
 
 export function useProductFilters(
   setCategory: React.Dispatch<React.SetStateAction<CategoryValue>>,
