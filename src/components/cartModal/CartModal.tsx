@@ -1,6 +1,6 @@
 import { useModalClose } from "../../hooks/useModalClose/useModalClose";
 import CartItem from "../cartItem/CartItem";
-import { useData } from "../dataProvider/DataProvider";
+import { useData } from "../../provider/DataProvider";
 import {
   CloseButton,
   ModalContainer,

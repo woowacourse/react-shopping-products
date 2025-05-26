@@ -1,6 +1,6 @@
 import { useToast } from "../useToast/useToast";
 import { changeCartQuantity } from "../../api/cart";
-import { useData } from "../../components/dataProvider/DataProvider";
+import { useData } from "../../provider/DataProvider";
 import { CartItem } from "../../types/response.types";
 
 interface UseCartQuantityProps {

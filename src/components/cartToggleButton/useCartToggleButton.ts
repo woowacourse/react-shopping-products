@@ -2,7 +2,7 @@ import { fetchCartItems } from "../../api/cart";
 import { useToast } from "../../hooks/useToast/useToast";
 import { AddItemBody } from "../../types/request.types";
 import request from "../../utils/request";
-import { useData } from "../dataProvider/DataProvider";
+import { useData } from "../../provider/DataProvider";
 
 const MAX_CART_AMOUNT = 50;
 

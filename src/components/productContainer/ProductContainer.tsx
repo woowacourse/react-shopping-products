@@ -4,7 +4,7 @@ import ProductCardList from "../productCardList/ProductCardList";
 import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { CategoryType, SortType } from "../../types/index.types";
-import { useData } from "../dataProvider/DataProvider";
+import { useData } from "../../provider/DataProvider";
 import fetchProducts from "../../api/products";
 
 function ProductContainer() {

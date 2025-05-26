@@ -1,7 +1,7 @@
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
-import { useData } from "../dataProvider/DataProvider";
+import { useData } from "../../provider/DataProvider";
 
 function ProductCardList() {
   const { data } = useData();
