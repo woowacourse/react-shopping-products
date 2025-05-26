@@ -50,7 +50,6 @@ export const soldout = css`
   color: white;
   font-size: 35px;
   font-weight: bold;
-  z-index: 1;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 `;
