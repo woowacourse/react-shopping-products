@@ -44,12 +44,31 @@ export const handlers = [
     return new HttpResponse(null, {status: 201});
   }),
 
-  http.delete(BASE_URL + '/cart-items/:productId', async ({params}) => {
-    const {productId} = params;
+  http.delete(BASE_URL + '/cart-items/:cartId', async ({params}) => {
+    const {cartId} = params;
 
-    const targetId = Number(productId);
+    const targetId = Number(cartId);
     cartItem.content = cartItem.content.filter((item) => item.id !== targetId);
 
-    return new HttpResponse(null, {status: 201});
+    return new HttpResponse(null, {status: 200});
+  }),
+
+  http.patch(BASE_URL + '/cart-items/:cartId', async ({params, request}) => {
+    const {cartId} = params;
+    const requestBody = (await request.json()) as {
+      quantity: number;
+    };
+    const quantity = requestBody?.quantity;
+
+    const targetId = Number(cartId);
+    const index = cartItem.content.findIndex((item) => item.id === targetId);
+    const item = cartItem.content[index];
+
+    cartItem.content[index] = {
+      ...item,
+      quantity: quantity,
+    };
+
+    return new HttpResponse(null, {status: 200});
   }),
 ];

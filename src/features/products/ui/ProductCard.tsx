@@ -52,6 +52,7 @@ export default function ProductCard({
     try {
       await postCartProduct(product.id, quantity);
       refetch();
+      setQuantity(1);
     } catch (e) {
       showError?.('상품 추가 중에 문제가 발생했습니다.');
     }
