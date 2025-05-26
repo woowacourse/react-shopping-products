@@ -9,25 +9,25 @@ import {
 import { cartMockData } from '../__mocks__/cartData';
 import { productListMockData } from '../__mocks__/productListMockData';
 
-jest.mock('../../components/features/product/api/getShoppingCartList', () => ({
+jest.mock('../../../components/features/cart/api', () => ({
   getShoppingCartList: jest
     .fn()
     .mockImplementation(() => Promise.resolve(cartMockData)),
 }));
 
-jest.mock('../../components/features/product/api/getProductList', () => ({
+jest.mock('../../../components/features/product/api', () => ({
   getProductList: jest.fn((filterOption) => {
     const { category, sort } = filterOption;
 
     let filtered = [...productListMockData];
 
-    if (category.value !== '전체') {
-      filtered = filtered.filter((item) => item.category === category.value);
+    if (category !== '전체') {
+      filtered = filtered.filter((item) => item.category === category);
     }
 
-    if (sort.value === 'asc') {
+    if (sort === 'asc') {
       filtered.sort((a, b) => a.price - b.price);
-    } else if (sort.value === 'desc') {
+    } else if (sort === 'desc') {
       filtered.sort((a, b) => b.price - a.price);
     }
 
@@ -35,7 +35,7 @@ jest.mock('../../components/features/product/api/getProductList', () => ({
   }),
 }));
 
-jest.mock('../../api/baseAPI', () => ({
+jest.mock('@/api/baseAPI', () => ({
   baseAPI: jest
     .fn()
     .mockImplementation(() => Promise.resolve(productListMockData)),

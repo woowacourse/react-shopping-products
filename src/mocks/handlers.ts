@@ -1,4 +1,4 @@
-import { CartItemContent } from '@/components/features/product/api/type';
+import { CartItemContent } from '@/components/features/cart/api/type';
 import { http, HttpResponse } from 'msw';
 import products from './data/mock-products.json';
 
@@ -26,8 +26,10 @@ export const handlers = [
     const totalElements = filtered.length;
     const totalPages = Math.ceil(filtered.length / 20);
 
+    const slicedProducts = filtered.slice(0, 20);
+
     return HttpResponse.json({
-      content: filtered,
+      content: slicedProducts,
       pageable: {
         pageNumber: 0,
         pageSize: 20,

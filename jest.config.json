@@ -1,7 +1,19 @@
 {
-  "preset": "ts-jest",
+  "preset": "ts-jest/presets/default-esm",
   "testEnvironment": "jsdom",
+  "transform": {
+    "^.+\\.[tj]sx?$": ["ts-jest", { "useESM": true }]
+  },
   "moduleNameMapper": {
     "^@/(.*)$": "<rootDir>/src/$1"
+  },
+  "transformIgnorePatterns": [
+    "/node_modules/(?!@jae-o/modal-component-module)"
+  ],
+  "extensionsToTreatAsEsm": [".ts", ".tsx"],
+  "globals": {
+    "ts-jest": {
+      "useESM": true
+    }
   }
 }
