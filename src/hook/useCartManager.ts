@@ -19,6 +19,12 @@ const useCartManager = () => {
 
   const handleRemoveCart = async (productId: number) => {
     try {
+      if (!Array.isArray(cartData)) {
+        console.error('cartData가 배열이 아닙니다:', cartData);
+        openToast('장바구니 데이터를 처리할 수 없습니다.', false);
+        return;
+      }
+
       const cartItem = cartData.find(
         (item: CartItem) => item.product.id === productId
       );
