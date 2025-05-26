@@ -4,12 +4,14 @@ import ProductCard from '../components/ProductCard';
 import SelectDropdownContainer from '../components/SelectDropdown/SelectDropdownContainer';
 import ErrorMessage from '../components/ErrorMessage';
 import DotWaveSpinner from '../components/DotWaveSpinner';
-import { useFetchProducts } from '../hooks/useFetchProducts';
-import { useFetchCartItems } from '../hooks/useFetchCartItems';
 import { CATEGORY, SORT } from '../constants/selectOption';
 import { CategoryKey, SortKey, categoryQueryMap, sortQueryMap } from '../types/selectOptions';
+import { useFetchProducts } from '../hooks/useFetchProducts';
+import { useFetchCartItems } from '../hooks/useFetchCartItems';
+import { useError } from '../context/ErrorContext';
 import { Container } from '../styles/common';
 import { ProductCardContainer } from '../styles/ProductCard';
+import Modal from '../components/Modal/Modal';
 
 function ProductPage() {
   const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
@@ -26,18 +28,15 @@ function ProductPage() {
     sortQueryMap,
   });
 
-  const {
-    data: cartProductsIds,
-    error: cartError,
-    addToCart,
-    removeFromCart,
-  } = useFetchCartItems();
+  const { error: cartError } = useFetchCartItems();
+  const { errorMessage: contextErrorMessage } = useError();
 
-  const errorMessage = productsError || cartError;
+  const errorMessage = productsError || cartError || contextErrorMessage;
 
   return (
     <Container>
-      <Header cartCount={cartProductsIds.length} />
+      <Modal />
+      <Header />
       {errorMessage !== '' && <ErrorMessage errorMessage={errorMessage} />}
       {productsLoading && <DotWaveSpinner />}
       {!productsLoading && (
@@ -57,9 +56,6 @@ function ProductPage() {
                 category={category}
                 price={price}
                 imageUrl={imageUrl}
-                cartProductsIds={cartProductsIds}
-                addToCart={addToCart}
-                removeFromCart={removeFromCart}
               />
             ))}
           </ProductCardContainer>
