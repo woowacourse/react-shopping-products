@@ -7,6 +7,7 @@ export type Product = {
   price: number;
   imageUrl: string;
   category: string;
+  quantity: number;
 };
 interface ProductListProps {
   productList: Product[];
@@ -15,9 +16,9 @@ interface ProductListProps {
 export default function ProductList({ productList }: ProductListProps) {
   return (
     <StyledUl>
-      {productList.map((item) => (
-        <ProductItem key={item.id} {...item} />
-      ))}
+      {productList.map((item) => {
+        return <ProductItem key={item.id} {...item} />;
+      })}
     </StyledUl>
   );
 }

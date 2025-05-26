@@ -15,7 +15,7 @@ export const shoppingCartHandler = [
     const idOption = url.searchParams.get("id");
     const quantityOption = url.searchParams.get("quantity");
 
-    let items = SHOPPING_CART_MOCK_DATA.content;
+    let items = SHOPPING_CART_MOCK_DATA;
 
     if (idOption !== null) {
       items = items.filter(({ id }) => id === Number(idOption));
@@ -34,7 +34,7 @@ export const shoppingCartHandler = [
 
   http.post(`${baseUrl}/cart-items`, async ({ request }) => {
     const { productId, quantity } = (await request.json()) as CartRequestBody;
-    const product = PRODUCT_MOCK_DATA.content.find((p) => p.id === productId);
+    const product = PRODUCT_MOCK_DATA.find((p) => p.id === productId);
 
     if (!product) {
       return HttpResponse.json({ error: "Product not found" }, { status: 400 });
@@ -43,10 +43,17 @@ export const shoppingCartHandler = [
     const cartItem = {
       id: product.id,
       quantity,
-      product,
+      product: product as {
+        id: number;
+        name: string;
+        price: number;
+        imageUrl: string;
+        category: string;
+        quantity: number;
+      },
     };
 
-    SHOPPING_CART_MOCK_DATA.content.push(cartItem);
+    SHOPPING_CART_MOCK_DATA.push(cartItem);
 
     return HttpResponse.json(cartItem);
   }),
@@ -61,7 +68,7 @@ export const shoppingCartHandler = [
       );
     }
 
-    const index = SHOPPING_CART_MOCK_DATA.content.findIndex(
+    const index = SHOPPING_CART_MOCK_DATA.findIndex(
       (item) => item.product.id === id
     );
     if (index === -1) {
@@ -71,7 +78,7 @@ export const shoppingCartHandler = [
       );
     }
 
-    SHOPPING_CART_MOCK_DATA.content.splice(index, 1);
+    SHOPPING_CART_MOCK_DATA.splice(index, 1);
 
     return new HttpResponse(null, { status: 204 });
   }),
@@ -87,7 +94,7 @@ export const shoppingCartHandler = [
       );
     }
 
-    const item = SHOPPING_CART_MOCK_DATA.content.find(
+    const item = SHOPPING_CART_MOCK_DATA.find(
       (cartItem) => cartItem.product.id === id
     );
 
@@ -95,6 +102,13 @@ export const shoppingCartHandler = [
       return HttpResponse.json(
         { error: "해당 상품이 장바구니에 없습니다." },
         { status: 404 }
+      );
+    }
+
+    if (quantity > item.product.quantity) {
+      return HttpResponse.json(
+        { error: "재고 수량을 초과하여 담을 수 없습니다." },
+        { status: 409 }
       );
     }
 

@@ -11,8 +11,8 @@ export const productHandler = [
 
     const filteredCategoryProducts =
       categoryOption === null
-        ? PRODUCT_MOCK_DATA.content
-        : PRODUCT_MOCK_DATA.content.filter(
+        ? PRODUCT_MOCK_DATA
+        : PRODUCT_MOCK_DATA.filter(
             ({ category }) => category === categoryOption
           );
     const filteredPriceProducts = filteredCategoryProducts.sort((a, b) =>

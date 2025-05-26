@@ -10,6 +10,7 @@ import {
   StyledDiv,
 } from "../../styles/Product/ProductListContainer.styles";
 import { Option } from "../Common/SelectBox";
+import { Product } from "./ProductList";
 
 export type CategoryValue = "all" | "grocery" | "fashion";
 export type SortValue = "low" | "high";
@@ -81,7 +82,16 @@ export default function ProductListContainer() {
         setPrice={setPrice}
       />
 
-      <ProductList productList={products.content} />
+      {/* <ProductList productList={products.content} /> */}
+      {/* <ProductList
+        productList={(products.content as ProductItemWrapper[]).map((item) => ({
+          ...item.product,
+        }))}
+      /> */}
+
+      <ProductList
+        productList={products.content as Product[]} // 또는 그냥 products.content
+      />
     </>
   );
 }
