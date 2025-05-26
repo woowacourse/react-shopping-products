@@ -49,6 +49,30 @@ const priceLayout = css`
   font-size: 12px;
   font-weight: 500;
 `;
+
+const imgWrapper = css`
+  position: relative;
+  width: 100%;
+  height: 50%;
+  border-radius: 8px 8px 0 0;
+`;
+
+const soldOutOverlay = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: red;
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px 8px 0 0;
+`;
+
 interface ProductProps {
   id: string;
   imageUrl: string;
@@ -91,7 +115,10 @@ export default function Product({ id, imageUrl, name, price, selectedCardItems, 
 
   return (
     <div id={id} css={productLayout}>
-      <img css={imgLayout} src={imageUrl ?? './default-img.png'} />
+      <div css={imgWrapper}>
+        <img css={imgLayout} src={imageUrl ?? './default-img.png'} />
+        {Number(price) === 0 && <div css={soldOutOverlay}>품절</div>}
+      </div>
       <div css={contentLayout}>
         <div css={descriptionLayout}>
           <p css={productNameLayout}>{name}</p>
