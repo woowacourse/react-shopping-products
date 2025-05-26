@@ -15,7 +15,19 @@ describe("useCart", () => {
 		const { result } = renderHook(() => useCart());
 
 		act(() => {
-			result.current.updateCartItem("add", 20);
+			result.current.updateCartItem("add", 20, undefined);
+		});
+
+		await waitFor(() => {
+			expect(result.current.cartProducts).toEqual(getCartState());
+		});
+	});
+
+	it("장바구니에 등록된 특정 상품의 수량을 변경한다", async () => {
+		const { result } = renderHook(() => useCart());
+
+		act(() => {
+			result.current.updateCartItem("change", 1, 10);
 		});
 
 		await waitFor(() => {
@@ -27,7 +39,7 @@ describe("useCart", () => {
 		const { result } = renderHook(() => useCart());
 
 		act(() => {
-			result.current.updateCartItem("remove", 1);
+			result.current.updateCartItem("remove", 1, undefined);
 		});
 
 		await waitFor(() => {
