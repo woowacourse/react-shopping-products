@@ -25,6 +25,7 @@ describe('useCart 훅', () => {
           price: 10000,
           imageUrl: 'test.jpg',
           category: '패션잡화',
+          quantity: 1,
         },
         quantity: 1,
       },

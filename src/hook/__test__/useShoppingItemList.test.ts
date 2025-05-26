@@ -13,6 +13,7 @@ const mockProducts = {
       price: 10000,
       imageUrl: 'image1.jpg',
       category: '패션잡화',
+      quantity: 1,
     },
     {
       id: 2,
@@ -20,6 +21,7 @@ const mockProducts = {
       price: 11000,
       imageUrl: 'image2.jpg',
       category: '식료품',
+      quantity: 1,
     },
     {
       id: 3,
@@ -27,6 +29,7 @@ const mockProducts = {
       price: 15000,
       imageUrl: 'image3.jpg',
       category: '패션잡화',
+      quantity: 1,
     },
     {
       id: 4,
@@ -34,6 +37,7 @@ const mockProducts = {
       price: 30000,
       imageUrl: 'image4.jpg',
       category: '식료품',
+      quantity: 1,
     },
   ],
 };
