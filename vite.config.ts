@@ -3,8 +3,6 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
 export default defineConfig({
-  publicDir: 'public',
-  base: '/react-shopping-products/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
