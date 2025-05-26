@@ -4,6 +4,8 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  publicDir: 'public',
+  base: 'https://jaeyoung-kwon.github.io/react-shopping-products/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
