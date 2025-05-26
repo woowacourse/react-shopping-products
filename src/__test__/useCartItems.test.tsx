@@ -1,282 +1,518 @@
-import { renderHook, waitFor } from "@testing-library/react";
-import { expect, Mock, vi } from "vitest";
-import { CartItemsAPI } from "../apis/cartItems";
-import useCartItems from "../hooks/useCartItems";
-import { act } from "react";
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { http, HttpResponse } from "msw";
+import { MemoryRouter } from "react-router-dom";
+import { vi } from "vitest";
+import { APIProvider } from "../app/providers/APIContext";
+import { CartItemContent } from "../entities/cartItem/response";
+import { useCartItems } from "../entities/cartItem/useCartItems";
+import { server } from "../mocks/server";
+import { SHOP_API } from "../shared/api/config";
 
-vi.mock("../apis/products", () => ({
-  ProductsAPI: {
-    get: vi.fn(),
-  },
+const mockHandleError = vi.fn();
+const mockHandleSuccess = vi.fn();
+
+vi.mock("../shared/hooks/useApiResponseToasts", () => ({
+  default: () => ({
+    handleError: mockHandleError,
+    handleSuccess: mockHandleSuccess,
+  }),
 }));
 
-vi.mock("../apis/cartItems", () => ({
-  CartItemsAPI: {
-    get: vi.fn(),
-    post: vi.fn(),
-    delete: vi.fn(),
-  },
-}));
+const wrapper = ({ children }: React.PropsWithChildren) => (
+  <MemoryRouter>
+    <APIProvider>{children}</APIProvider>
+  </MemoryRouter>
+);
 
-const mockProducts = {
-  content: [
-    {
-      id: 1,
-      name: "테스트 상품1",
-      price: 10000,
-      imageUrl: "/test1.jpg",
-      category: "식료품",
-    },
-    {
-      id: 2,
-      name: "테스트 상품2",
-      price: 20000,
-      imageUrl: "/test2.jpg",
-      category: "패션잡화",
-    },
-  ],
-  totalElements: 2,
-  totalPages: 1,
-  size: 2,
-  number: 0,
-  sort: { empty: false, sorted: true, unsorted: false },
-  pageable: {
-    offset: 0,
-    pageNumber: 0,
-    pageSize: 20,
-    paged: true,
-    unpaged: false,
-    sort: { empty: false, sorted: true, unsorted: false },
-  },
-  numberOfElements: 2,
-  first: true,
-  last: true,
-  empty: false,
-};
+describe("useCartItems 훅", () => {
+  it("초기 상태가 올바르게 설정된다", async () => {
+    const { result } = renderHook(() => useCartItems(), { wrapper });
 
-const emptyCartItems = {
-  content: [],
-  totalElements: 0,
-  totalPages: 0,
-  size: 0,
-  number: 0,
-  sort: { empty: false, sorted: true, unsorted: false },
-  pageable: {
-    offset: 0,
-    pageNumber: 0,
-    pageSize: 50,
-    paged: true,
-    unpaged: false,
-    sort: { empty: false, sorted: true, unsorted: false },
-  },
-  numberOfElements: 0,
-  first: true,
-  last: true,
-  empty: true,
-};
-
-const cartWithOneItem = {
-  ...emptyCartItems,
-  content: [
-    {
-      id: 100,
-      quantity: 1,
-      product: mockProducts.content[0],
-    },
-  ],
-  totalElements: 1,
-  numberOfElements: 1,
-  empty: false,
-};
-
-const cartWithTwoItems = {
-  ...emptyCartItems,
-  content: [
-    {
-      id: 100,
-      quantity: 1,
-      product: mockProducts.content[0],
-    },
-    {
-      id: 101,
-      quantity: 1,
-      product: mockProducts.content[1],
-    },
-  ],
-  totalElements: 2,
-  numberOfElements: 2,
-  empty: false,
-};
-
-describe("useCartItems 훅 - 장바구니의 상품 개수 표시 기능", () => {
-  const mockSetErrorMessage = vi.fn();
-
-  beforeEach(() => {
-    vi.resetAllMocks();
-  });
-
-  it("초기 상태가 올바르게 설정된다.", async () => {
-    (CartItemsAPI.get as Mock).mockResolvedValue(emptyCartItems);
-
-    const { result } = renderHook(() => useCartItems(mockSetErrorMessage));
+    expect(result.current.cartItems).toBeNull();
+    expect(result.current.error).toBeNull();
+    expect(result.current.loading).toBe(true);
 
     await waitFor(() => {
-      expect(CartItemsAPI.get).toHaveBeenCalled();
+      expect(result.current.loading).toBe(false);
+      expect(result.current.cartItems).not.toBeNull();
     });
 
     expect(result.current.cartItemsCount).toBe(0);
-    expect(result.current.isProductInCart(1)).toBe(false);
-    expect(result.current.isProductInCart(2)).toBe(false);
+    expect(result.current.totalPriceInCart).toBe(0);
   });
 
-  it("장바구니에 여러 상품이 있을 경우, 장바구니 상품의 정확한 개수를 반환하고, 상품 포함 여부를 올바르게 확인한다.", async () => {
-    (CartItemsAPI.get as Mock).mockResolvedValue(cartWithTwoItems);
+  describe("장바구니 상품 관리", () => {
+    it("상품을 장바구니에 추가할 수 있다", async () => {
+      let cartContent = [] as CartItemContent[];
+      const newProductId = 1;
 
-    const { result } = renderHook(() => useCartItems(mockSetErrorMessage));
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: cartContent,
+          });
+        }),
 
-    await waitFor(() => {
-      expect(CartItemsAPI.get).toHaveBeenCalled();
-    });
+        http.post(
+          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`,
+          async ({ request }) => {
+            const body = (await request.json()) as {
+              productId: number;
+              quantity: number;
+            };
 
-    expect(result.current.cartItemsCount).toBe(2);
+            cartContent = [
+              {
+                id: 101,
+                product: {
+                  id: body.productId,
+                  name: "테스트용 상품",
+                  price: 15000,
+                  category: "테스트",
+                  imageUrl: "test.jpg",
+                  quantity: 10,
+                },
+                quantity: body.quantity || 1,
+              },
+            ];
 
-    expect(result.current.isProductInCart(1)).toBe(true);
-    expect(result.current.isProductInCart(2)).toBe(true);
-    expect(result.current.isProductInCart(3)).toBe(false);
-  });
-
-  it("handleCartItemToggle로 상품을 장바구니에 추가할 수 있다.", async () => {
-    (CartItemsAPI.get as Mock)
-      .mockResolvedValueOnce(emptyCartItems)
-      .mockResolvedValueOnce(cartWithOneItem);
-
-    (CartItemsAPI.post as Mock).mockResolvedValue(undefined);
-
-    const { result } = renderHook(() => useCartItems(mockSetErrorMessage));
-
-    await waitFor(() => {
-      expect(CartItemsAPI.get).toHaveBeenCalled();
-    });
-
-    expect(result.current.cartItemsCount).toBe(0);
-
-    await act(async () => {
-      await result.current.handleCartItemToggle(1);
-    });
-
-    expect(CartItemsAPI.post).toHaveBeenCalledWith(1);
-    expect(CartItemsAPI.get).toHaveBeenCalledTimes(2);
-
-    expect(result.current.cartItemsCount).toBe(1);
-    expect(result.current.isProductInCart(1)).toBe(true);
-  });
-
-  it("handleCartItemToggle로 상품을 장바구니에서 제거할 수 있다.", async () => {
-    (CartItemsAPI.get as Mock)
-      .mockResolvedValueOnce(cartWithTwoItems)
-      .mockResolvedValueOnce(cartWithOneItem);
-
-    (CartItemsAPI.delete as Mock).mockResolvedValue(undefined);
-
-    const { result } = renderHook(() => useCartItems(mockSetErrorMessage));
-
-    await waitFor(() => {
-      expect(CartItemsAPI.get).toHaveBeenCalled();
-    });
-
-    expect(result.current.cartItemsCount).toBe(2);
-    expect(result.current.isProductInCart(1)).toBe(true);
-    expect(result.current.isProductInCart(2)).toBe(true);
-
-    await act(async () => {
-      await result.current.handleCartItemToggle(2);
-    });
-
-    expect(CartItemsAPI.delete).toHaveBeenCalledWith(101);
-    expect(CartItemsAPI.get).toHaveBeenCalledTimes(2);
-
-    expect(result.current.cartItemsCount).toBe(1);
-    expect(result.current.isProductInCart(1)).toBe(true);
-    expect(result.current.isProductInCart(2)).toBe(false);
-  });
-
-  it("연속적으로 상품 추가 및 제거하는 경우에도 올바르게 작동한다.", async () => {
-    (CartItemsAPI.get as Mock)
-      .mockResolvedValueOnce(emptyCartItems)
-      .mockResolvedValueOnce(cartWithOneItem)
-      .mockResolvedValueOnce(cartWithTwoItems)
-      .mockResolvedValueOnce(cartWithOneItem);
-
-    (CartItemsAPI.post as Mock).mockResolvedValue(undefined);
-    (CartItemsAPI.delete as Mock).mockResolvedValue(undefined);
-
-    const { result } = renderHook(() => useCartItems(mockSetErrorMessage));
-
-    await waitFor(() => {
-      expect(CartItemsAPI.get).toHaveBeenCalled();
-    });
-    expect(result.current.cartItemsCount).toBe(0);
-
-    await act(async () => {
-      await result.current.handleCartItemToggle(1);
-    });
-    expect(CartItemsAPI.post).toHaveBeenCalledWith(1);
-    expect(result.current.cartItemsCount).toBe(1);
-    expect(result.current.isProductInCart(1)).toBe(true);
-    expect(result.current.isProductInCart(2)).toBe(false);
-
-    await act(async () => {
-      await result.current.handleCartItemToggle(2);
-    });
-    expect(CartItemsAPI.post).toHaveBeenCalledWith(2);
-    expect(result.current.cartItemsCount).toBe(2);
-    expect(result.current.isProductInCart(1)).toBe(true);
-    expect(result.current.isProductInCart(2)).toBe(true);
-
-    await act(async () => {
-      await result.current.handleCartItemToggle(2);
-    });
-    expect(CartItemsAPI.delete).toHaveBeenCalledWith(101);
-    expect(result.current.cartItemsCount).toBe(1);
-    expect(result.current.isProductInCart(1)).toBe(true);
-    expect(result.current.isProductInCart(2)).toBe(false);
-  });
-
-  it("API 에러 발생 시 에러 메시지를 설정한다.", async () => {
-    (CartItemsAPI.get as Mock).mockResolvedValue({
-      error: "장바구니를 불러오는 중 오류가 발생했습니다.",
-    });
-
-    renderHook(() => useCartItems(mockSetErrorMessage));
-
-    await waitFor(() => {
-      expect(mockSetErrorMessage).toHaveBeenCalledWith(
-        "장바구니를 불러오는 중 오류가 발생했습니다."
+            return HttpResponse.json({
+              success: true,
+              message: "상품이 장바구니에 추가되었습니다.",
+            });
+          }
+        )
       );
-    });
-  });
 
-  it("상품 추가 후 API 에러 발생 시 에러 메시지를 설정한다.", async () => {
-    (CartItemsAPI.get as Mock)
-      .mockResolvedValueOnce(emptyCartItems)
-      .mockResolvedValueOnce({
-        error: "장바구니 업데이트 중 오류가 발생했습니다.",
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      expect(result.current.cartItems?.content.length).toBe(0);
+
+      await act(async () => {
+        await result.current.addProductInCart(newProductId);
       });
 
-    (CartItemsAPI.post as Mock).mockResolvedValue(undefined);
-
-    const { result } = renderHook(() => useCartItems(mockSetErrorMessage));
-
-    await waitFor(() => {
-      expect(CartItemsAPI.get).toHaveBeenCalled();
+      expect(result.current.cartItems?.content.length).toBe(1);
+      expect(result.current.cartItems?.content[0].product.id).toBe(
+        newProductId
+      );
+      expect(result.current.cartItems?.content[0].quantity).toBe(1);
     });
 
-    await act(async () => {
-      await result.current.handleCartItemToggle(1);
+    it("상품을 장바구니에서 삭제할 수 있다", async () => {
+      let cartContent = [
+        {
+          id: 101,
+          product: {
+            id: 1,
+            name: "테스트용 상품",
+            price: 15000,
+            category: "테스트",
+            imageUrl: "test.jpg",
+            quantity: 10,
+          },
+          quantity: 2,
+        },
+      ];
+
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: cartContent,
+          });
+        }),
+
+        http.delete(
+          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
+          () => {
+            cartContent = [];
+            return HttpResponse.json({
+              success: true,
+              message: "상품이 장바구니에서 삭제되었습니다.",
+            });
+          }
+        )
+      );
+
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      expect(result.current.cartItems?.content.length).toBe(1);
+      const cartId = result.current.cartItems?.content[0]?.id ?? 0;
+      expect(cartId).toBe(101);
+
+      await act(async () => {
+        await result.current.deleteProductInCart(cartId);
+      });
+
+      expect(result.current.cartItems?.content.length).toBe(0);
+    });
+  });
+
+  describe("장바구니 상품 수량 관리", () => {
+    it("상품 수량을 증가시킬 수 있다", async () => {
+      let updatedQuantity = 2;
+
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: [
+              {
+                id: 101,
+                product: {
+                  id: 1,
+                  name: "테스트용 상품",
+                  price: 15000,
+                  category: "테스트",
+                  imageUrl: "test.jpg",
+                  quantity: 10,
+                },
+                quantity: updatedQuantity, // 2 -> 3
+              },
+            ],
+          });
+        }),
+
+        http.patch(
+          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
+          async () => {
+            updatedQuantity += 1;
+            return HttpResponse.json({ success: true });
+          }
+        )
+      );
+
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      expect(result.current.cartItems?.content[0].quantity).toBe(2);
+
+      await act(async () => {
+        await result.current.increaseItemQuantity(1);
+      });
+
+      expect(result.current.cartItems?.content[0].quantity).toBe(3);
     });
 
-    expect(mockSetErrorMessage).toHaveBeenCalledWith(
-      "장바구니 업데이트 중 오류가 발생했습니다."
-    );
+    it("상품 수량을 감소시킬 수 있다", async () => {
+      let updatedQuantity = 2;
+
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: [
+              {
+                id: 101,
+                product: {
+                  id: 1,
+                  name: "테스트용 상품",
+                  price: 15000,
+                  category: "테스트",
+                  imageUrl: "test.jpg",
+                  quantity: 10,
+                },
+                quantity: updatedQuantity, // 2 -> 1
+              },
+            ],
+          });
+        }),
+        http.patch(
+          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
+          async () => {
+            updatedQuantity -= 1;
+            return HttpResponse.json({ success: true });
+          }
+        )
+      );
+
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      expect(result.current.cartItems?.content[0].quantity).toBe(2);
+
+      await act(async () => {
+        await result.current.decreaseItemQuantity(1);
+      });
+
+      expect(result.current.cartItems?.content[0].quantity).toBe(1);
+    });
+
+    it("수량이 1이면 감소시 상품이 삭제된다", async () => {
+      let deleted = false;
+
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          if (deleted) {
+            return HttpResponse.json({
+              content: [],
+            });
+          }
+
+          return HttpResponse.json({
+            content: [
+              {
+                id: 101,
+                product: {
+                  id: 1,
+                  name: "테스트용 상품",
+                  price: 15000,
+                  category: "테스트",
+                  imageUrl: "test.jpg",
+                  quantity: 10,
+                },
+                quantity: 1, // 수량 1
+              },
+            ],
+          });
+        }),
+
+        http.delete(
+          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
+          () => {
+            deleted = true;
+            return HttpResponse.json({
+              success: true,
+              message: "상품이 장바구니에서 삭제되었습니다.",
+            });
+          }
+        )
+      );
+
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      expect(
+        result.current.cartItems?.content.some((item) => item.id === 101)
+      ).toBe(true);
+      expect(result.current.cartItems?.content[0].quantity).toBe(1);
+
+      await act(async () => {
+        await result.current.decreaseItemQuantity(1);
+      });
+
+      expect(
+        result.current.cartItems?.content.some((item) => item.id === 101)
+      ).toBe(false);
+    });
+  });
+
+  describe("오류 처리", () => {
+    it("API 오류 발생 시 handleError가 호출된다", async () => {
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      server.use(
+        http.post(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json(
+            { success: false, message: "오류 발생" },
+            { status: 400 }
+          );
+        })
+      );
+
+      const refetchSpy = vi.spyOn(result.current, "refetchCartItems");
+
+      await act(async () => {
+        await result.current.addProductInCart(999);
+      });
+
+      expect(mockHandleError).toHaveBeenCalled();
+      expect(refetchSpy).not.toHaveBeenCalled(); // 오류 발생 시 refetch 호출되지 않음
+    });
+  });
+
+  describe("데이터 다시 가져오기", () => {
+    it("refetchCartItems 호출 시 데이터를 다시 가져온다", async () => {
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      let fetchCount = 0;
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          fetchCount++;
+          return HttpResponse.json({
+            content: [
+              {
+                id: fetchCount * 100,
+                product: {
+                  id: fetchCount,
+                  name: `상품 ${fetchCount}`,
+                  price: 5000,
+                  category: "패션잡화",
+                  imageUrl: "image.jpg",
+                  quantity: 10,
+                },
+                quantity: fetchCount,
+              },
+            ],
+          });
+        })
+      );
+
+      const initialId = result.current.cartItems?.content[0]?.id;
+
+      await act(async () => result.current.refetchCartItems());
+
+      await waitFor(() => {
+        const newId = result.current.cartItems?.content[0]?.id;
+        expect(newId).not.toBe(initialId);
+      });
+    });
+  });
+
+  describe("데이터 계산", () => {
+    it("cartItemsCount가 올바르게 계산된다", async () => {
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: [
+              {
+                id: 101,
+                product: {
+                  id: 1,
+                  name: "상품1",
+                  price: 10000,
+                  imageUrl: "image1.jpg",
+                  category: "식료품",
+                  quantity: 3,
+                },
+                quantity: 2,
+              },
+              {
+                id: 102,
+                product: {
+                  id: 2,
+                  name: "상품2",
+                  price: 20000,
+                  category: "식료품",
+                  imageUrl: "image2.jpg",
+                  quantity: 5,
+                },
+                quantity: 1,
+              },
+              {
+                id: 103,
+                product: {
+                  id: 3,
+                  name: "상품3",
+                  price: 5000,
+                  category: "식료품",
+                  imageUrl: "image3.jpg",
+                  quantity: 8,
+                },
+                quantity: 3,
+              },
+            ],
+          });
+        })
+      );
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      expect(result.current.cartItemsCount).toBe(3);
+    });
+
+    it("totalPriceInCart가 올바르게 계산된다", async () => {
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: [
+              {
+                id: 101,
+                product: {
+                  id: 1,
+                  name: "상품1",
+                  price: 10000,
+                  imageUrl: "image1.jpg",
+                  category: "식료품",
+                  quantity: 3,
+                },
+                quantity: 2,
+              },
+              {
+                id: 102,
+                product: {
+                  id: 2,
+                  name: "상품2",
+                  price: 20000,
+                  category: "식료품",
+                  imageUrl: "image2.jpg",
+                  quantity: 5,
+                },
+                quantity: 1,
+              },
+              {
+                id: 103,
+                product: {
+                  id: 3,
+                  name: "상품3",
+                  price: 5000,
+                  category: "식료품",
+                  imageUrl: "image3.jpg",
+                  quantity: 8,
+                },
+                quantity: 3,
+              },
+            ],
+          });
+        })
+      );
+
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      expect(result.current.totalPriceInCart).toBe(55000);
+    });
+
+    it("quantityByProductId가 올바른 수량을 반환한다", async () => {
+      server.use(
+        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+          return HttpResponse.json({
+            content: [
+              {
+                id: 101,
+                product: {
+                  id: 1,
+                  name: "상품1",
+                  price: 10000,
+                  category: "식료품",
+                  imageUrl: "image1.jpg",
+                  quantity: 10,
+                },
+                quantity: 2,
+              },
+              {
+                id: 102,
+                product: {
+                  id: 2,
+                  name: "상품2",
+                  price: 20000,
+                  category: "패션잡화",
+                  imageUrl: "image2.jpg",
+                  quantity: 5,
+                },
+                quantity: 3,
+              },
+            ],
+          });
+        })
+      );
+
+      const { result } = renderHook(() => useCartItems(), { wrapper });
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+
+      expect(result.current.quantityByProductId(1)).toBe(2);
+      expect(result.current.quantityByProductId(2)).toBe(3);
+      expect(result.current.quantityByProductId(3)).toBe(0); // 존재하지 않는 상품
+    });
   });
 });
