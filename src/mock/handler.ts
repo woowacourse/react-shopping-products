@@ -11,68 +11,62 @@ const cartItems: Array<{
 let cartItemIdCounter = 1;
 
 export const handlers = [
-  http.get(
-    'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/products',
-    ({ request }) => {
-      const url = new URL(request.url);
-      const category = url.searchParams.get('category');
-      const sort = url.searchParams.get('sort');
-      const size = parseInt(url.searchParams.get('size') || '20');
+  http.get(`${import.meta.env.VITE_API_BASE_URL}/products`, ({ request }) => {
+    const url = new URL(request.url);
+    const category = url.searchParams.get('category');
+    const sort = url.searchParams.get('sort');
+    const size = parseInt(url.searchParams.get('size') || '20');
 
-      let filteredProducts = [...mockProducts];
-      if (category && category !== '전체') {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.category === category
-        );
-      }
-
-      if (sort) {
-        if (sort === 'price,desc') {
-          filteredProducts.sort((a, b) => b.price - a.price);
-        } else if (sort === 'price,asc') {
-          filteredProducts.sort((a, b) => a.price - b.price);
-        }
-      }
-
-      const slicedProducts = filteredProducts.slice(0, size);
-
-      return HttpResponse.json({
-        content: slicedProducts,
-        totalElements: filteredProducts.length,
-        totalPages: 1,
-        size: slicedProducts.length,
-        number: 0,
-      });
+    let filteredProducts = [...mockProducts];
+    if (category && category !== '전체') {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.category === category
+      );
     }
-  ),
 
-  http.get(
-    'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items',
-    ({ request }) => {
-      const url = new URL(request.url);
-      const page = parseInt(url.searchParams.get('page') || '0');
-      const size = parseInt(url.searchParams.get('size') || '50');
-
-      const cartItemsWithProduct = cartItems.map((item) => {
-        const product = mockProducts.find((p) => p.id === item.productId);
-        return {
-          ...item,
-          product: product || null,
-        };
-      });
-
-      return HttpResponse.json({
-        content: cartItemsWithProduct,
-        totalElements: cartItems.length,
-        totalPages: Math.ceil(cartItems.length / size),
-        size: cartItemsWithProduct.length,
-        number: page,
-      });
+    if (sort) {
+      if (sort === 'price,desc') {
+        filteredProducts.sort((a, b) => b.price - a.price);
+      } else if (sort === 'price,asc') {
+        filteredProducts.sort((a, b) => a.price - b.price);
+      }
     }
-  ),
+
+    const slicedProducts = filteredProducts.slice(0, size);
+
+    return HttpResponse.json({
+      content: slicedProducts,
+      totalElements: filteredProducts.length,
+      totalPages: 1,
+      size: slicedProducts.length,
+      number: 0,
+    });
+  }),
+
+  http.get(`${import.meta.env.VITE_API_BASE_URL}/cart-items`, ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '0');
+    const size = parseInt(url.searchParams.get('size') || '50');
+
+    const cartItemsWithProduct = cartItems.map((item) => {
+      const product = mockProducts.find((p) => p.id === item.productId);
+      return {
+        ...item,
+        product: product || null,
+      };
+    });
+
+    return HttpResponse.json({
+      content: cartItemsWithProduct,
+      totalElements: cartItems.length,
+      totalPages: Math.ceil(cartItems.length / size),
+      size: cartItemsWithProduct.length,
+      number: page,
+    });
+  }),
 
   http.post(
-    'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items',
+    `${import.meta.env.VITE_API_BASE_URL}/cart-items`,
     async ({ request }) => {
       const body = (await request.json()) as {
         productId: number;
@@ -109,7 +103,7 @@ export const handlers = [
   ),
 
   http.delete(
-    'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:cartItemId',
+    `${import.meta.env.VITE_API_BASE_URL}/cart-items/:cartItemId`,
     ({ params }) => {
       const cartItemId = parseInt(params.cartItemId as string);
 
@@ -126,7 +120,7 @@ export const handlers = [
   ),
 
   http.patch(
-    'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com/cart-items/:cartItemId',
+    `${import.meta.env.VITE_API_BASE_URL}/cart-items/:cartItemId`,
     async ({ params, request }) => {
       const cartItemId = parseInt(params.cartItemId as string);
       const body = (await request.json()) as { quantity: number };
