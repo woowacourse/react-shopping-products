@@ -5,9 +5,7 @@ import App from "./App.tsx";
 async function enableMocking() {
   const { worker } = await import("./mocks/browser.ts");
 
-  return worker.start({ onUnhandledRequest: "bypass" }).then(() => {
-    console.log("Mocking enabled");
-  });
+  return worker.start({ onUnhandledRequest: "bypass" }).then(() => {});
 }
 
 enableMocking().then(() => {
