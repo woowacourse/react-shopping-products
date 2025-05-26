@@ -10,6 +10,7 @@ import {
   ProductImage,
 } from './CartItem.style';
 import { CartItemParamType } from '../../types/cartItem';
+import Button from '../common/Button/Button';
 
 function CartItem({
   cart,
@@ -49,9 +50,9 @@ function CartItem({
             />
           </div>
         </div>
-        <button className={DeleteButton} onClick={() => deleteItemFromCart({ productId: id })}>
+        <Button className={DeleteButton} onClick={() => deleteItemFromCart({ productId: id })}>
           삭제
-        </button>
+        </Button>
       </div>
       <hr />
     </>

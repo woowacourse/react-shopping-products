@@ -54,4 +54,5 @@ export const DeleteButton = css`
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   background-color: white;
+  cursor: pointer;
 `;
