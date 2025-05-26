@@ -29,6 +29,8 @@ const isTestEnv =
   process.env.NODE_ENV === 'test' ||
   (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'test');
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export const handlers = [
   http.post<Record<string, never>, CartItemRequestBody>(
     `${baseUrl}/cart-items`,
@@ -44,7 +46,7 @@ export const handlers = [
 
       const matchProduct = products.find((product) => product.id === productId);
 
-      if (isTestEnv) {
+      if (isTestEnv || isProduction) {
         const newItem = {
           id: Date.now(),
           quantity: 1,
@@ -91,7 +93,7 @@ export const handlers = [
         (cartItem) => cartItem.id === id
       )!;
 
-      if (isTestEnv) {
+      if (isTestEnv || isProduction) {
         if (quantity === 0) {
           shoppingCartData.splice(matchIndex, 1);
         } else {
@@ -142,7 +144,7 @@ export const handlers = [
     }
   ),
   http.get(`${baseUrl}/cart-items`, async ({ request }) => {
-    if (isTestEnv) {
+    if (isTestEnv || isProduction) {
       return HttpResponse.json({ content: shoppingCartData });
     }
     const realReq = bypass(request);
