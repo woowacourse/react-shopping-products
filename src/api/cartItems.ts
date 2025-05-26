@@ -1,13 +1,12 @@
 import apiRequest from "./utils/apiRequest";
 import { END_POINT } from "./constants/endPoint";
+import { Product } from "../mocks/data/products";
 
 export type CartItem = {
   productId: number;
   id: number;
   quantity: number;
-  product: {
-    id: number;
-  };
+  product: Product;
 };
 
 type GetCartItemsResponse = {
