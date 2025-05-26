@@ -49,3 +49,18 @@ export async function deleteCartItem({ id }: { id: number }) {
 
   return fetch(`${CART_URL}/${id}`, options);
 }
+
+export async function putCartItem({ id, quantity }: { id: number; quantity: number }) {
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}==`,
+    },
+    body: JSON.stringify({
+      quantity,
+    }),
+  };
+
+  return fetch(`${CART_URL}/${id}`, options);
+}

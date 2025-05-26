@@ -2,7 +2,8 @@ import { css } from '@emotion/react';
 
 interface StepperProps {
   quantity: number;
-  onClick: () => void;
+  onIncrease: () => void;
+  onDecrease: () => void;
 }
 
 const stepperLayout = css`
@@ -29,17 +30,17 @@ const stepperTextBox = css`
   font-size: 12px;
 `;
 
-export default function Stepper({ onClick }: StepperProps) {
+export default function Stepper({ quantity, onIncrease, onDecrease }: StepperProps) {
   return (
     <div css={stepperLayout}>
       <div css={stepperButtonContainer}>
-        <img css={stepperButton} src="./minus-quantity.svg" alt="minus-stepper" onClick={onClick} />
+        <img css={stepperButton} src="./minus-quantity.svg" alt="minus" onClick={onDecrease} />
       </div>
       <div css={stepperTextBox}>
-        <p>1</p>
+        <p>{quantity}</p>
       </div>
       <div css={stepperButtonContainer}>
-        <img css={stepperButton} src="./add-quantity.svg" alt="add-stepper" onClick={onClick} />
+        <img css={stepperButton} src="./add-quantity.svg" alt="plus" onClick={onIncrease} />
       </div>
     </div>
   );

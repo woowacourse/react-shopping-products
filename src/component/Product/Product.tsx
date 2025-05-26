@@ -1,16 +1,9 @@
 import { css } from '@emotion/react';
 import { CartItem } from '../../page/ShopPage';
 import Button from '../Button/Button';
-import { useCartItemToggle } from '../../hook/useCartItemToggle';
-
-interface ProductProps {
-  id: string;
-  imageUrl: string;
-  name: string;
-  price: string;
-  selectedCardItems: CartItem[];
-  onChange: () => void;
-}
+import { useState } from 'react';
+import Stepper from '../Stepper/Stepper';
+import { postCartItem, putCartItem, deleteCartItem } from '../../api/cartItem';
 
 const productLayout = css`
   display: flex;
@@ -56,27 +49,45 @@ const priceLayout = css`
   font-size: 12px;
   font-weight: 500;
 `;
+interface ProductProps {
+  id: string;
+  imageUrl: string;
+  name: string;
+  price: string;
+  selectedCardItems: CartItem[];
+  onChange: () => void;
+}
 
 export default function Product({ id, imageUrl, name, price, selectedCardItems, onChange }: ProductProps) {
-  const { isSelected, toggle } = useCartItemToggle({
-    productId: Number(id),
-    selectedCartItem: selectedCardItems[0],
-    onSuccess: onChange,
-  });
+  const selectedCartItem = selectedCardItems[0];
+  const initialQuantity = selectedCartItem?.quantity ?? 0;
+  const [quantity, setQuantity] = useState(initialQuantity);
 
-  const addProduct = () => (
-    <Button onClick={toggle}>
-      <img src="./add-shopping-cart.svg" />
-      <p>담기</p>
-    </Button>
-  );
+  const handleAddToCart = async () => {
+    await postCartItem({ productId: Number(id), quantity: 1 });
+    setQuantity(1);
+    onChange();
+  };
 
-  const removeProduct = () => (
-    <Button onClick={toggle} style="secondary">
-      <img src="./remove-shopping-cart.svg" />
-      <p>빼기</p>
-    </Button>
-  );
+  const handleIncrease = async () => {
+    const nextQuantity = quantity + 1;
+    await putCartItem({ id: selectedCartItem.id, quantity: nextQuantity });
+    setQuantity(nextQuantity);
+    onChange();
+  };
+
+  const handleDecrease = async () => {
+    const nextQuantity = quantity - 1;
+
+    if (nextQuantity === 0) {
+      await deleteCartItem({ id: selectedCartItem.id });
+    } else {
+      await putCartItem({ id: selectedCartItem.id, quantity: nextQuantity });
+    }
+
+    setQuantity(nextQuantity);
+    onChange();
+  };
 
   return (
     <div id={id} css={productLayout}>
@@ -86,7 +97,15 @@ export default function Product({ id, imageUrl, name, price, selectedCardItems, 
           <p css={productNameLayout}>{name}</p>
           <p css={priceLayout}>{price}</p>
         </div>
-        {isSelected ? removeProduct() : addProduct()}
+
+        {quantity === 0 ? (
+          <Button onClick={handleAddToCart}>
+            <img src="./add-shopping-cart.svg" />
+            <p>담기</p>
+          </Button>
+        ) : (
+          <Stepper quantity={quantity} onIncrease={handleIncrease} onDecrease={handleDecrease} />
+        )}
       </div>
     </div>
   );
