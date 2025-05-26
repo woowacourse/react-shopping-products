@@ -12,13 +12,13 @@ async function startApp() {
 
     console.log("MSW 워커 로드됨:", !!worker);
 
-    await worker
-      .start({
-        onUnhandledRequest: "warn",
-      })
-      .catch((error: Error) => {
-        console.error("MSW 시작 실패:", error);
-      });
+    await worker.start({
+      serviceWorker: {
+        // GitHub Pages의 base path를 고려한 경로
+        url: "/react-shopping-products/mockServiceWorker.js",
+      },
+      onUnhandledRequest: "warn",
+    });
 
     console.log("🔶 MSW 모의 서버가 성공적으로 시작되었습니다.");
   } catch (error) {

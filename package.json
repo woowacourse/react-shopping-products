@@ -3,13 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://bunju20.github.io/react-shopping-products",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && npx msw init dist/",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "deploy": "vite build --base=/react-shopping-products/ --minify=false && npx gh-pages -d dist"
+    "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -38,7 +39,8 @@
   },
   "msw": {
     "workerDirectory": [
-      "public"
+      "public",
+      "dist"
     ]
   }
 }
