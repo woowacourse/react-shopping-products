@@ -5,7 +5,7 @@
     "price": 100000,
     "category": "패션잡화",
     "imageUrl": null,
-    "quantity": 1
+    "quantity": 0
   },
   {
     "id": 2,
@@ -29,7 +29,7 @@
     "price": 28000,
     "category": "패션잡화",
     "imageUrl": null,
-    "quantity": 1
+    "quantity": 10
   },
   {
     "id": 5,
@@ -37,7 +37,7 @@
     "price": 20000,
     "category": "패션잡화",
     "imageUrl": null,
-    "quantity": 1
+    "quantity": 3
   },
   {
     "id": 6,
@@ -45,7 +45,7 @@
     "price": 8130,
     "category": "식료품",
     "imageUrl": null,
-    "quantity": 1
+    "quantity": 5
   },
   {
     "id": 7,
@@ -53,7 +53,7 @@
     "price": 11100000,
     "category": "식료품",
     "imageUrl": null,
-    "quantity": 1
+    "quantity": 7
   },
   {
     "id": 8,
