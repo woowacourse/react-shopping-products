@@ -2,30 +2,11 @@ import { createPortal } from "react-dom";
 import getShoppingCart from "../../api/getShoppingCart";
 import { useAPI } from "../../domain/contexts/APIContext";
 import { StyledDiv } from "../../styles/Common/ErrorBox.styles";
-import {
-  StyledModalBackground,
-  StyledModalBody,
-  StyledModalContainer,
-  StyledModalList,
-  StyledModalItem,
-  StyledModalimg,
-  StyledModalHeaderTitle,
-  StyledModalItemInfo,
-  StyledModalTitle,
-  StyledModalItemPrice,
-  StyledModalFooter,
-  StyledModalFooterTitle,
-  StyledModalTotalPrice,
-  StyledModalCloseButton,
-  StyledItemHeaderRow,
-  StyledModalDeleteImg,
-} from "../../styles/Common/Modal.styles";
-
-import { StyledSpinnerWrapper } from "../../styles/Product/ProductListContainer.styles";
+import * as S from "../../styles/Common/Modal.styles";
 import ErrorBox from "./ErrorBox";
-import Spinner from "./Spinner";
 import QuantityController from "./QuantityController";
 import { CartItemTypes } from "../../types/CartItemType";
+import deleteShoppingCart from "../../api/deleteShoppingCart";
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -54,14 +35,6 @@ export default function Modal({ isModalOpen, onClose }: ModalProps) {
     return null;
   }
 
-  if (status === "loading" || status === "idle") {
-    return (
-      <StyledSpinnerWrapper>
-        <Spinner size={100} color="red" />
-      </StyledSpinnerWrapper>
-    );
-  }
-
   if (status === "error") {
     return (
       <StyledDiv>
@@ -77,53 +50,58 @@ export default function Modal({ isModalOpen, onClose }: ModalProps) {
     0
   );
 
+  const handleDelete = async (productId: number) => {
+    await deleteShoppingCart(productId);
+    refetch();
+  };
+
   const modalContent = (
     <div>
-      <StyledModalBackground isModalOpen={isModalOpen}>
-        <StyledModalContainer>
-          <StyledModalHeaderTitle>
+      <S.ModalBackground isModalOpen={isModalOpen}>
+        <S.ModalContainer>
+          <S.ModalHeaderTitle>
             <h4>장바구니</h4>
-          </StyledModalHeaderTitle>
-          <StyledModalBody>
-            <StyledModalList>
+          </S.ModalHeaderTitle>
+          <S.ModalBody>
+            <S.ModalList>
               {data.content.map((item: CartItem) => (
-                <StyledModalItem key={item.id}>
-                  <StyledModalimg
+                <S.ModalItem key={item.id}>
+                  <S.Modalimg
                     src={item.product.imageUrl}
                     alt={item.product.name}
                   />
-                  <StyledModalItemInfo>
-                    <StyledItemHeaderRow>
-                      <StyledModalTitle>{item.product.name}</StyledModalTitle>
-                      <StyledModalDeleteImg
-                        src="/assets/deleteButtonIcon.png"
-                        alt="delete"
-                      />
-                    </StyledItemHeaderRow>
-                    <StyledModalItemPrice>
+                  <S.ModalItemInfo>
+                    <S.ItemHeaderRow>
+                      <S.ModalTitle>{item.product.name}</S.ModalTitle>
+                      <button onClick={() => handleDelete(item.product.id)}>
+                        <S.ModalDeleteImg
+                          src="/assets/deleteButtonIcon.png"
+                          alt="delete"
+                        />
+                      </button>
+                    </S.ItemHeaderRow>
+                    <S.ModalItemPrice>
                       {item.product.price.toLocaleString("ko")}원
-                    </StyledModalItemPrice>
+                    </S.ModalItemPrice>
                     <QuantityController
                       productId={item.product.id}
                       count={item.quantity}
                       refetch={refetch}
                     />
-                  </StyledModalItemInfo>
-                </StyledModalItem>
+                  </S.ModalItemInfo>
+                </S.ModalItem>
               ))}
-            </StyledModalList>
-          </StyledModalBody>
-          <StyledModalFooter>
-            <StyledModalFooterTitle>총 결제 금액</StyledModalFooterTitle>
-            <StyledModalTotalPrice>
+            </S.ModalList>
+          </S.ModalBody>
+          <S.ModalFooter>
+            <S.ModalFooterTitle>총 결제 금액</S.ModalFooterTitle>
+            <S.ModalTotalPrice>
               {totalPrice.toLocaleString("ko-KR")}원
-            </StyledModalTotalPrice>
-          </StyledModalFooter>
-          <StyledModalCloseButton onClick={onClose}>
-            닫기
-          </StyledModalCloseButton>
-        </StyledModalContainer>
-      </StyledModalBackground>
+            </S.ModalTotalPrice>
+          </S.ModalFooter>
+          <S.ModalCloseButton onClick={onClose}>닫기</S.ModalCloseButton>
+        </S.ModalContainer>
+      </S.ModalBackground>
     </div>
   );
 
