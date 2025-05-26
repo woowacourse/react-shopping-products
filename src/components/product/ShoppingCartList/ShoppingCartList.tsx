@@ -1,22 +1,26 @@
 import * as Styled from "./ShoppingCartList.styled";
-import { CartItem } from "../../../types/FetchCartItemsResult";
+
 import ShoppingCartItem from "../ShoppingCartItem/ShoppingCartItem";
+import useShoppingCart from "../../../hooks/useShoppingCart";
+import Spinner from "../../common/Spinner/Spinner";
 
 interface ShoppingCartListProps {
-  cartItems: CartItem[];
   handleCloseModal: () => void;
-  handleRemoveProduct: (productId: number) => void;
-  handleIncreaseCartItemQuantity: (productId: number) => void;
-  handleDecreaseCartItemQuantity: (productId: number) => void;
 }
 
-function ShoppingCartList({
-  cartItems,
-  handleCloseModal,
-  handleRemoveProduct,
-  handleIncreaseCartItemQuantity,
-  handleDecreaseCartItemQuantity,
-}: ShoppingCartListProps) {
+function ShoppingCartList({ handleCloseModal }: ShoppingCartListProps) {
+  const {
+    cartItems,
+    loading,
+    handleRemoveProduct,
+    handleIncreaseCartItemQuantity,
+    handleDecreaseCartItemQuantity,
+  } = useShoppingCart();
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.product.price * item.quantity,
     0
@@ -27,6 +31,7 @@ function ShoppingCartList({
       <Styled.UlContainer>
         {cartItems.map((cartItem) => (
           <ShoppingCartItem
+            key={cartItem.product.id}
             cartItem={cartItem}
             handleRemoveProduct={handleRemoveProduct}
             handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
