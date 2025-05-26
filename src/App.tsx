@@ -5,8 +5,9 @@ import ProductList from "./components/ProductList/ProductList";
 import ErrorBox from "./components/common/ErrorBox/ErrorBox";
 import LoadingIcon from "./components/Icon/LoadingIcon";
 import { useProducts } from "./hooks/useProducts";
-import { useCart } from "./hooks/useCart";
+import { useCart } from "./context/CartContext";
 import { DataProvider } from "./context/DataContext";
+import { CartProvider } from "./context/CartContext";
 
 function AppContent() {
   const {
@@ -18,17 +19,10 @@ function AppContent() {
   } = useProducts();
 
   const {
-    cartItemList,
     cartItemListLoading,
     cartItemListErrorMessage,
     cartActionErrorMessage,
-    setCartActionErrorMessage,
-    handleIncreaseQuantity,
-    handleDecreaseQuantity,
-    handleAddToCart,
-    handleRemoveFromCart,
-    getCartQuantityForProduct,
-  } = useCart(productList);
+  } = useCart();
 
   const isLoading = productListLoading || cartItemListLoading;
 
@@ -39,27 +33,10 @@ function AppContent() {
           <LoadingIcon />
         ) : (
           <>
-            <Header
-              cartItemList={cartItemList}
-              onAddToCart={handleAddToCart}
-              onRemoveFromCart={handleRemoveFromCart}
-              onIncreaseQuantity={handleIncreaseQuantity}
-              onDecreaseQuantity={handleDecreaseQuantity}
-              getCartQuantityForProduct={getCartQuantityForProduct}
-              setErrorMessage={setCartActionErrorMessage}
-            />
+            <Header />
             <S.MiddleContainer>
               <ProductControl setCategory={setCategory} setSort={setSort} />
-              <ProductList
-                productList={productList}
-                cartItemList={cartItemList}
-                onAddToCart={handleAddToCart}
-                onRemoveFromCart={handleRemoveFromCart}
-                onIncreaseQuantity={handleIncreaseQuantity}
-                onDecreaseQuantity={handleDecreaseQuantity}
-                getCartQuantityForProduct={getCartQuantityForProduct}
-                setErrorMessage={setCartActionErrorMessage}
-              />
+              <ProductList productList={productList} />
             </S.MiddleContainer>
           </>
         )}
@@ -74,9 +51,17 @@ function AppContent() {
 function App() {
   return (
     <DataProvider>
-      <AppContent />
+      <CartProviderWrapper>
+        <AppContent />
+      </CartProviderWrapper>
     </DataProvider>
   );
+}
+
+function CartProviderWrapper({ children }: { children: React.ReactNode }) {
+  const { productList } = useProducts();
+
+  return <CartProvider productList={productList}>{children}</CartProvider>;
 }
 
 export default App;

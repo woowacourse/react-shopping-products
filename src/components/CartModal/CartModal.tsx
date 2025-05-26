@@ -1,32 +1,17 @@
 import * as S from "./CartModal.styled";
 import { useEffect } from "react";
 import ProductItem from "../ProductItem/ProductItem";
-import { ResponseCartItem } from "../../api/types";
 import React from "react";
+import { useCart } from "../../context/CartContext";
 
 interface CartModalProps {
   isOpen: boolean;
   onClose: () => void;
-  cartItemList: ResponseCartItem[];
-  onAddToCart: (productId: number, quantity: number) => Promise<void>;
-  onRemoveFromCart: (cartItemId: number) => Promise<void>;
-  onIncreaseQuantity: (productId: number) => Promise<void>;
-  onDecreaseQuantity: (productId: number) => Promise<void>;
-  getCartQuantityForProduct: (productId: number) => number;
-  setErrorMessage: (message: string) => void;
 }
 
-function CartModal({
-  isOpen,
-  onClose,
-  cartItemList,
-  onAddToCart,
-  onRemoveFromCart,
-  onIncreaseQuantity,
-  onDecreaseQuantity,
-  getCartQuantityForProduct,
-  setErrorMessage,
-}: CartModalProps) {
+function CartModal({ isOpen, onClose }: CartModalProps) {
+  const { cartItemList } = useCart();
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -69,17 +54,7 @@ function CartModal({
             ) : (
               cartItemList.map((item, index) => (
                 <React.Fragment key={item.id}>
-                  <ProductItem
-                    product={item.product}
-                    cartItemList={cartItemList}
-                    onAddToCart={onAddToCart}
-                    onRemoveFromCart={onRemoveFromCart}
-                    setErrorMessage={setErrorMessage}
-                    onIncreaseQuantity={onIncreaseQuantity}
-                    onDecreaseQuantity={onDecreaseQuantity}
-                    getCartQuantityForProduct={getCartQuantityForProduct}
-                    isInModal={true}
-                  />
+                  <ProductItem product={item.product} isInModal={true} />
                   {index < cartItemList.length - 1 && <S.ModalDivider />}
                 </React.Fragment>
               ))

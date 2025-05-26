@@ -2,30 +2,27 @@ import * as S from "./ProductItem.styled";
 import AddProductIcon from "../Icon/AddProductIcon";
 import Button from "../common/Button/Button";
 import blackDefaultImage from "../../assets/blackDefaultImage.png";
-import { ResponseCartItem, ResponseProduct } from "../../api/types";
+import { ResponseProduct } from "../../api/types";
 import QuantityButton from "../common/QuantityButton/QuantityButton";
+import { useCart } from "../../context/CartContext";
 
 function ProductItem({
   product,
-  cartItemList,
-  onAddToCart,
-  onRemoveFromCart,
-  setErrorMessage,
-  onIncreaseQuantity,
-  onDecreaseQuantity,
-  getCartQuantityForProduct,
   isInModal = false,
 }: {
   product: ResponseProduct;
-  cartItemList: ResponseCartItem[];
-  onAddToCart: (productId: number, quantity: number) => Promise<void>;
-  onRemoveFromCart: (cartItemId: number) => Promise<void>;
-  setErrorMessage: (message: string) => void;
-  onIncreaseQuantity: (productId: number) => Promise<void>;
-  onDecreaseQuantity: (productId: number) => Promise<void>;
-  getCartQuantityForProduct: (productId: number) => number;
   isInModal?: boolean;
 }) {
+  const {
+    cartItemList,
+    handleAddToCart,
+    handleRemoveFromCart,
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
+    getCartQuantityForProduct,
+    setCartActionErrorMessage,
+  } = useCart();
+
   function isInCart(productId: number) {
     return cartItemList.some((item) => item.product.id === productId);
   }
@@ -40,14 +37,14 @@ function ProductItem({
       if (action === "remove") {
         const cartItemId = getCartItemId(product.id);
         if (cartItemId) {
-          await onRemoveFromCart(cartItemId);
+          await handleRemoveFromCart(cartItemId);
         }
       } else {
-        await onAddToCart(product.id, 1);
+        await handleAddToCart(product.id, 1);
       }
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage(error.message);
+        setCartActionErrorMessage(error.message);
       }
     }
   }
@@ -82,8 +79,8 @@ function ProductItem({
           {isInCart(product.id) ? (
             <QuantityButton
               quantity={getCartQuantityForProduct(product.id)}
-              onIncrease={() => onIncreaseQuantity(product.id)}
-              onDecrease={() => onDecreaseQuantity(product.id)}
+              onIncrease={() => handleIncreaseQuantity(product.id)}
+              onDecrease={() => handleDecreaseQuantity(product.id)}
             />
           ) : (
             <Button
@@ -121,8 +118,8 @@ function ProductItem({
         {isInCart(product.id) ? (
           <QuantityButton
             quantity={getCartQuantityForProduct(product.id)}
-            onIncrease={() => onIncreaseQuantity(product.id)}
-            onDecrease={() => onDecreaseQuantity(product.id)}
+            onIncrease={() => handleIncreaseQuantity(product.id)}
+            onDecrease={() => handleDecreaseQuantity(product.id)}
           />
         ) : (
           <Button
