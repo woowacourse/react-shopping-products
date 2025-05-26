@@ -1,7 +1,6 @@
 import { Flex } from '@/components/common';
 import { isValidImageUrl } from '@/util/isValidImageUrl';
 import styled from '@emotion/styled';
-import '@testing-library/jest-dom';
 import { useCartActions } from '../../cart/hooks/useCartActions';
 import AddCartButton from './AddCartButton';
 import UpdateCartButton from './UpdateCartButton';
