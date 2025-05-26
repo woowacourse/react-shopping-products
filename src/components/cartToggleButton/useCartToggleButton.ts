@@ -1,5 +1,5 @@
 import { fetchCartItems } from "../../api/cart";
-import { useToast } from "../../hooks/useToast/useToast";
+import { useToast } from "../../provider/ToastProvider";
 import { AddItemBody } from "../../types/request.types";
 import request from "../../utils/request";
 import { useData } from "../../provider/DataProvider";

@@ -1,7 +1,7 @@
-import { ReactNode, useCallback, useState } from "react";
-import { ToastContext } from "../../context/toastContext";
+import { ReactNode, useCallback, useContext, useState } from "react";
 import { createPortal } from "react-dom";
-import ErrorToast from "../errorToast/ErrorToast";
+import { createContext } from "react";
+import ErrorToast from "../components/errorToast/ErrorToast";
 
 const ERROR_MESSAGE = {
   CART: "장바구니 정보를 불러오는데 실패했습니다.",
@@ -15,6 +15,12 @@ const ERROR_MESSAGE = {
 const TOAST_TIME = 3000;
 
 export type ERROR_TYPE = keyof typeof ERROR_MESSAGE;
+
+interface ToastContextType {
+  showToast: (type: ERROR_TYPE) => void;
+}
+
+export const ToastContext = createContext<ToastContextType | null>(null);
 
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [message, setMessage] = useState("");
@@ -33,3 +39,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     </ToastContext.Provider>
   );
 }
+
+export const useToast = () => {
+  const context = useContext(ToastContext);
+  if (!context) {
+    throw new Error("useToast는 ToastProvider 안에서만 사용할 수 있습니다.");
+  }
+  return context;
+};

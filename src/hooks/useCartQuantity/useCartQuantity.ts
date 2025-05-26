@@ -1,4 +1,4 @@
-import { useToast } from "../useToast/useToast";
+import { useToast } from "../../provider/ToastProvider";
 import { changeCartQuantity } from "../../api/cart";
 import { useData } from "../../provider/DataProvider";
 import { CartItem } from "../../types/response.types";

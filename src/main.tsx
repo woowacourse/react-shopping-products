@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { ToastProvider } from "./components/toastProvider/ToastProvider.tsx";
+import { ToastProvider } from "./provider/ToastProvider.tsx";
 import { DataProvider } from "./provider/DataProvider.tsx";
 
 async function enableMocking() {
