@@ -10,7 +10,12 @@ async function enableMocking() {
     process.env.NODE_ENV === 'production'
   ) {
     const { worker } = await import('./mocks/browser');
-    return worker.start({ onUnhandledRequest: 'bypass' });
+    return worker.start({
+      onUnhandledRequest: 'bypass',
+      serviceWorker: {
+        url: '/shopping-mall/mockServiceWorker.js', // <- 경로 설정
+      },
+    });
   }
 }
 
