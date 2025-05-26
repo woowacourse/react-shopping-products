@@ -1,25 +1,23 @@
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
-import { worker } from './mocks/browser.ts';
 import { ErrorContextProvider } from './contexts/ErrorContext.tsx';
-import './index.css';
 import { ApiProvider } from './contexts/ApiContext.tsx';
+import './index.css';
 
-if (import.meta.env.VITE_ENABLE_MSW === 'true') {
-  worker
-    .start({
-      onUnhandledRequest: 'bypass'
-    })
-    .then(() => {
-      createRoot(document.getElementById('root')!).render(
-        <ErrorContextProvider>
-          <ApiProvider>
-            <App />
-          </ApiProvider>
-        </ErrorContextProvider>
-      );
-    });
-} else {
+async function enableMocking() {
+  const { worker } = await import('./mocks/browser.ts');
+
+  const isLocalhost = location.hostname === 'localhost';
+
+  await worker.start({
+    serviceWorker: {
+      url: isLocalhost ? '/mockServiceWorker.js' : '/react-shopping-products/mockServiceWorker.js'
+    },
+    onUnhandledRequest: 'bypass'
+  });
+}
+
+enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(
     <ErrorContextProvider>
       <ApiProvider>
@@ -27,4 +25,4 @@ if (import.meta.env.VITE_ENABLE_MSW === 'true') {
       </ApiProvider>
     </ErrorContextProvider>
   );
-}
+});

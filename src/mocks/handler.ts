@@ -40,12 +40,12 @@ export const handlers = [
   }),
 
   // 장바구니 목록 조회
-  http.get('/cart-items', () => {
+  http.get(URLS.CART_ITEMS, () => {
     return HttpResponse.json(serverCartItems);
   }),
 
   // 장바구니 아이템 추가
-  http.post('/cart-items', async ({ request }) => {
+  http.post(URLS.CART_ITEMS, async ({ request }) => {
     const { productId, quantity } = (await request.json()) as PostProductRequestBody;
 
     if (quantity > 5) {
@@ -82,7 +82,7 @@ export const handlers = [
   }),
 
   // 장바구니 개수 변경
-  http.patch('/cart-items/:cartItemId', async ({ params, request }) => {
+  http.patch(`${URLS.CART_ITEMS}/:cartItemId`, async ({ params, request }) => {
     const idToPatch = Number(params.cartItemId);
     const { quantity } = (await request.json()) as PatchProductRequestBody;
 
@@ -96,7 +96,7 @@ export const handlers = [
     return new HttpResponse(null, { status: 200 });
   }),
   // 장바구니 아이템 삭제
-  http.delete('/cart-items/:cartItemId', ({ params }) => {
+  http.delete(`${URLS.CART_ITEMS}/:cartItemId`, ({ params }) => {
     const idToDelete = Number(params.cartItemId);
 
     serverCartItems.content = serverCartItems.content.filter((item) => item.id !== idToDelete);
