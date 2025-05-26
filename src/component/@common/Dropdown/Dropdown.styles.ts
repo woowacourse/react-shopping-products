@@ -30,6 +30,7 @@ export const dropdownListStyle = css`
 
   position: absolute;
   top: 100%;
+  z-index: 10000;
 `;
 
 export const dropdownItemStyle = css`
