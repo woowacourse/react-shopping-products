@@ -1,51 +1,20 @@
 import Header from "./components/product/Header/Header";
 import ProductListContainer from "./components/product/ProductListContainer/ProductListContainer";
-import Spinner from "./components/common/Spinner/Spinner";
-import ErrorMessage from "./components/product/ErrorMessage/ErrorMessage";
 
 import styled from "@emotion/styled";
 
-import useShoppingCart from "./hooks/useShoppingCart";
+import { ApiProvider } from "./context/ApiContext/ApiContext";
 
 function App() {
-  const {
-    cartItems,
-    loading,
-    errorMessage,
-    handleAddProduct,
-    handleRemoveProduct,
-    handleIncreaseCartItemQuantity,
-    handleDecreaseCartItemQuantity,
-  } = useShoppingCart();
-
-  if (loading) {
-    return (
+  return (
+    <ApiProvider>
       <Container>
         <Wrapper>
-          <Spinner />
+          <Header />
+          <ProductListContainer />
         </Wrapper>
       </Container>
-    );
-  }
-
-  return (
-    <Container>
-      <Wrapper>
-        <Header
-          cartItems={cartItems}
-          handleRemoveProduct={handleRemoveProduct}
-          handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
-          handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
-        />
-        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-        <ProductListContainer
-          cartItems={cartItems}
-          handleAddProduct={handleAddProduct}
-          handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
-          handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
-        />
-      </Wrapper>
-    </Container>
+    </ApiProvider>
   );
 }
 

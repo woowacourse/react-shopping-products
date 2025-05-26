@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { Product } from "../types/Product";
 import { ProductCategory } from "../types/ProductCategory";
 import { PriceSort } from "../types/Sort";
 
@@ -11,6 +10,8 @@ import {
   LOW_PRICE_SORT_KEY,
   PRICE_SORTS_KEYS,
 } from "../constants/filterOptions";
+
+import useData from "./useData";
 
 const contains = <T extends string>(
   value: string,
@@ -28,52 +29,70 @@ const isProductPriceSort = (value: string): value is PriceSort => {
 };
 
 const useProductList = () => {
-  const [productList, setProductList] = useState<Product[] | null>(null);
   const [category, setCategory] = useState<ProductCategory>(ALL_CATEGORY);
   const [sort, setSort] = useState<PriceSort>(LOW_PRICE_SORT_KEY);
 
-  const handleCategory = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!isProductCategory(value)) {
-      return;
-    }
+  const getProductList = useCallback(async () => {
+    try {
+      const { content } = await fetchProductList({
+        params: {
+          category,
+          sort,
+          page: "0",
+          size: "20",
+        },
+      });
 
-    setCategory(value);
-  };
-
-  const handleSort = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!isProductPriceSort(value)) {
-      return;
-    }
-
-    setSort(value);
-  };
-
-  useEffect(() => {
-    const loadProductList = async () => {
-      try {
-        const { content } = await fetchProductList({
-          params: {
-            category,
-            sort,
-            page: "0",
-            size: "20",
-          },
-        });
-
-        setProductList(content);
-      } catch (error) {
-        console.log(error);
+      return content;
+    } catch (error) {
+      if (!(error instanceof Error)) {
+        throw error;
       }
-    };
-
-    loadProductList();
+      throw new Error(error.message);
+    }
   }, [category, sort]);
 
-  return { productList, handleCategory, handleSort };
+  const {
+    data: productList,
+    loading,
+    refetch,
+  } = useData({
+    fetcher: getProductList,
+    name: "productList",
+  });
+
+  const handleCategory = useCallback(
+    ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) => {
+      if (!isProductCategory(value)) {
+        return;
+      }
+
+      setCategory(value);
+    },
+    []
+  );
+
+  const handleSort = useCallback(
+    ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) => {
+      if (!isProductPriceSort(value)) {
+        return;
+      }
+
+      setSort(value);
+    },
+    []
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [category, refetch, sort]);
+
+  return {
+    productList,
+    loading,
+    handleCategory,
+    handleSort,
+  };
 };
 
 export default useProductList;
