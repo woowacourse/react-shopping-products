@@ -20,16 +20,19 @@ const initialState: FetchState = {
 type FetchAction =
   | { type: 'FETCH_START' }
   | { type: 'FETCH_SUCCESS'; payload: Product[] }
-  | { type: 'FETCH_ERROR'; payload: Error };
+  | { type: 'FETCH_ERROR'; payload: Error }
+  | { type: 'FETCH_END' };
 
 const fetchReducer = (state: FetchState, action: FetchAction): FetchState => {
   switch (action.type) {
     case 'FETCH_START':
       return { ...state, isLoading: true };
     case 'FETCH_SUCCESS':
-      return { ...state, data: action.payload, error: null, isLoading: false };
+      return { ...state, data: action.payload, error: null, isLoading: true };
     case 'FETCH_ERROR':
-      return { ...state, error: action.payload, data: [], isLoading: false };
+      return { ...state, error: action.payload, data: [], isLoading: true };
+    case 'FETCH_END':
+      return { ...state, isLoading: false };
     default:
       return state;
   }
@@ -58,6 +61,8 @@ const useShoppingItemList = () => {
             '상품 목록을 불러오는데 실패했습니다. 다시 시도해주세요.'
           ),
         });
+      } finally {
+        dispatch({ type: 'FETCH_END' });
       }
     };
 
