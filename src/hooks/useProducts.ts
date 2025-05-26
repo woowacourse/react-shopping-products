@@ -4,10 +4,8 @@ import { Category, PriceOrder } from "../types/productType";
 export const PRODUCT_TYPE_COUNT = 20;
 
 const useProducts = ({
-  withLoading,
   refetchProducts: refetch,
 }: {
-  withLoading: (asyncCallback: () => Promise<void>) => void;
   setErrorMessage: (errorMessage: string) => void;
   refetchProducts: () => void;
 }) => {
@@ -15,15 +13,11 @@ const useProducts = ({
   const [priceOrder, setPriceOrder] = useState<PriceOrder>("낮은 가격순");
 
   const handleCategoryChange = (category: Category) => {
-    withLoading(async () => {
-      setSelectedCategory(category);
-    });
+    setSelectedCategory(category);
   };
 
   const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
-    withLoading(async () => {
-      setPriceOrder(priceOrder);
-    });
+    setPriceOrder(priceOrder);
   };
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { CartItem, Product } from "../types/productType";
 import ProductItem from "./ProductItem/ProductItem";
 import ProductItemSkeleton from "./ProductItem/ProductItemSkeleton";
 import { PRODUCT_TYPE_COUNT } from "../hooks/useProducts";
-import { useAPIData } from "../contexts/DataContext";
+import { useAPIData } from "../hooks/useApi";
 
 type ProductItemWithSkeletonProps = {
   isLoading: boolean;

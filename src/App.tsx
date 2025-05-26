@@ -6,19 +6,18 @@ import "./app.css";
 import ProductItemsWithSkeleton from "./components/ProductItemsWithSkeleton";
 import ErrorMessage from "./components/ErrorMessage";
 import Select from "./components/Select";
-import useLoading from "./hooks/useLoading";
 import useProducts from "./hooks/useProducts";
 import Modal from "./components/Modal/Modal";
 import CartItems from "./components/ProductItem/CartItems";
-import { APIProvider, useAPI, APIContext } from "./contexts/DataContext";
+import { APIProvider, APIContext } from "./contexts/DataContext";
+import { useAPI } from "./hooks/useApi";
 import getCartItems from "./api/getCartItems";
 import getProducts from "./api/getProducts";
 import { useContext } from "react";
 
 function AppContent() {
-  const { errorMessage, setErrorMessage } = useContext(APIContext);
-  const { withLoading, isLoading } = useLoading();
-  const { refetch: refetchCartItems } = useAPI({
+  const { errorMessage, setErrorMessage, isLoading } = useContext(APIContext);
+  useAPI({
     fetcher: getCartItems,
     name: "cartItems",
   });
@@ -39,7 +38,6 @@ function AppContent() {
     selectedCategory,
     priceOrder,
   } = useProducts({
-    withLoading,
     setErrorMessage,
     refetchProducts,
   });

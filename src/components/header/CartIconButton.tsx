@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useAPIData } from "../../contexts/DataContext";
+import { useAPIData } from "../../hooks/useApi";
 import { CartItem } from "../../types/productType";
 
 const CartIconButton = ({ onClick }: { onClick: () => void }) => {

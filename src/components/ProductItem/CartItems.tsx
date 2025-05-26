@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import QuantityAdjuster from "./QuantityAdjuster";
 import CartActionButton from "./button/CartActionButton";
-import { useAPIData } from "../../contexts/DataContext";
+import { useAPI, useAPIData } from "../../hooks/useApi";
 import { CartItem } from "../../types/productType";
 import deleteCartItems from "../../api/deleteCartItems";
 import patchCartItemQuantity from "../../api/patchCartItemQuantity";
-import { useAPI } from "../../contexts/DataContext";
+
 import getCartItems from "../../api/getCartItems";
 import { useContext } from "react";
 import { APIContext } from "../../contexts/DataContext";
@@ -14,7 +14,7 @@ const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
 };
 
-const plus = (arr: number[]) => {
+const getTotalAmount = (arr: number[]) => {
   if (arr.length === 0) return 0;
   return arr.reduce((current, total) => {
     return current + total;
@@ -84,7 +84,7 @@ const CartItems = () => {
       <TotalAmountContainer>
         <TotalAmountText>총 결제 금액</TotalAmountText>
         <TotalAmount>
-          {plus(
+          {getTotalAmount(
             cartItems.data.content.map(
               (cart) => cart.quantity * cart.product.price
             )

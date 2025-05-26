@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const products = [
+const PRODUCTS_MOCK_DATA = [
   {
     id: 42,
     name: "프린세스 미용놀이",
@@ -153,7 +153,7 @@ const products = [
   },
 ];
 
-const cartItems = [
+const CART_ITEMS_MOCK_DATA = [
   {
     id: 7264,
     product: {
@@ -200,7 +200,7 @@ export const handlers = [
     const category = url.searchParams.get("category");
     const sort = url.searchParams.get("sort");
 
-    let filteredProducts = [...products];
+    let filteredProducts = [...PRODUCTS_MOCK_DATA];
 
     if (category && category !== "전체") {
       filteredProducts = filteredProducts.filter(
@@ -223,13 +223,15 @@ export const handlers = [
   }),
 
   http.get(`${BASE_URL}cart-items`, () => {
-    return HttpResponse.json({ content: cartItems });
+    return HttpResponse.json({ content: CART_ITEMS_MOCK_DATA });
   }),
 
   http.post(`${BASE_URL}cart-items`, async ({ request }) => {
     const newItem = await request.json();
     const { productId } = newItem;
-    const item = products.find((item) => item.id === Number(productId));
+    const item = PRODUCTS_MOCK_DATA.find(
+      (item) => item.id === Number(productId)
+    );
 
     if (item?.quantity === 0) {
       return HttpResponse.json(
@@ -247,7 +249,7 @@ export const handlers = [
       quantity: 1,
     };
 
-    cartItems.push(newCartItem);
+    CART_ITEMS_MOCK_DATA.push(newCartItem);
 
     return HttpResponse.json({ status: 200 });
   }),
@@ -255,7 +257,7 @@ export const handlers = [
   http.delete(`${BASE_URL}cart-items/:id`, ({ params }) => {
     const id = Number(params.id);
 
-    const index = cartItems.findIndex((item) => item.id === id);
+    const index = CART_ITEMS_MOCK_DATA.findIndex((item) => item.id === id);
 
     if (index === -1) {
       return HttpResponse.json(
@@ -264,7 +266,7 @@ export const handlers = [
       );
     }
 
-    cartItems.splice(index, 1);
+    CART_ITEMS_MOCK_DATA.splice(index, 1);
 
     return HttpResponse.json(
       { message: "아이템이 삭제되었습니다." },
@@ -276,7 +278,7 @@ export const handlers = [
     const newItem = await request.json();
     const { quantity } = newItem;
     const { id } = params;
-    const item = cartItems.find((item) => item.id === Number(id));
+    const item = CART_ITEMS_MOCK_DATA.find((item) => item.id === Number(id));
 
     if (!item) {
       return HttpResponse.json(
@@ -295,9 +297,11 @@ export const handlers = [
       );
     }
 
-    const itemIndex = cartItems.findIndex((item) => item.id === Number(id));
+    const itemIndex = CART_ITEMS_MOCK_DATA.findIndex(
+      (item) => item.id === Number(id)
+    );
     if (Number(quantity) === 0) {
-      cartItems.splice(itemIndex, 1);
+      CART_ITEMS_MOCK_DATA.splice(itemIndex, 1);
     } else {
       item.quantity = Number(quantity);
     }

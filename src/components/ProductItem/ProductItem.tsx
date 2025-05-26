@@ -2,8 +2,7 @@ import { Product, CartItem } from "../../types/productType";
 import CartActionButton from "./button/CartActionButton";
 import styled from "@emotion/styled";
 import QuantityAdjuster from "./QuantityAdjuster";
-import { useAPIData } from "../../contexts/DataContext";
-import { useAPI } from "../../contexts/DataContext";
+import { useAPI, useAPIData } from "../../hooks/useApi";
 import getCartItems from "../../api/getCartItems";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
