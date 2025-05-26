@@ -1,10 +1,15 @@
 import * as path from "path";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
+  base: mode === "production" ? "/react-shopping-products/" : "/",
+  test: {
+    gloals: true,
+    environment: "jsdom",
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -12,4 +17,4 @@ export default defineConfig({
       "@components": path.resolve(__dirname, "./src/components"),
     },
   },
-});
+}));
