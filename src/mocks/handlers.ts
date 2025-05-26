@@ -5,9 +5,28 @@ import cartItemData from "./cartItem.json";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 export const handlers = [
-  http.get(`${baseUrl}/products`, () => {
-    return HttpResponse.json(productData);
+  http.get(`${baseUrl}/products`, ({ request }) => {
+    const url = new URL(request.url);
+    const category = url.searchParams.get("category");
+    const sort = url.searchParams.get("sort");
+
+    let filtered = [...productData.content];
+
+    if (category) {
+      filtered = filtered.filter((item) => item.category === category);
+    }
+
+    if (sort === "price,asc") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sort === "price,desc") {
+      filtered.sort((a, b) => b.price - a.price);
+    }
+
+    return HttpResponse.json({
+      content: filtered,
+    });
   }),
+
   http.get(`${baseUrl}/cart-items`, () => {
     return HttpResponse.json(cartItemData);
   }),
