@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { ProductElement } from '../types/product';
-import { addCart, removeCart } from '../api/cart';
+import { addCart, removeCart, updateCartQuantity } from '../api/cart';
 import { MAX_CART_ITEM_TYPE } from '../constants/productConfig';
 import { ERROR_MESSAGES } from '../constants/errorMessages';
 import { useProductsWithCart } from './useProductsWithCart';
@@ -30,9 +30,13 @@ export function useCartActions(sortType: string, category: string = '전체') {
     try {
       await addCart(product.product.id);
       await fetchCart();
-    } catch {
-      showToast(ERROR_MESSAGES.failedAddCart);
-      console.error(ERROR_MESSAGES.failedAddCart);
+    } catch (error) {
+      if (error instanceof Error && error.message?.includes('재고')) {
+        showToast(error.message);
+      } else {
+        showToast(ERROR_MESSAGES.failedAddCart);
+      }
+      console.error('카트 추가 실패:', error);
       resetErrors();
     }
   }, [cart, fetchCart, resetErrors, showToast]);
@@ -55,6 +59,21 @@ export function useCartActions(sortType: string, category: string = '전체') {
     }
   }, [fetchCart, resetErrors, showToast]);
 
+  const handleUpdateQuantity = useCallback(async (cartItemId: number, quantity: number) => {
+    try {
+      await updateCartQuantity(cartItemId, quantity);
+      await fetchCart();
+    } catch (error) {
+      if (error instanceof Error && error.message?.includes('재고')) {
+        showToast(error.message);
+      } else {
+        showToast('수량 변경에 실패했습니다.');
+      }
+      console.error('수량 변경 실패:', error);
+      resetErrors();
+    }
+  }, [fetchCart, resetErrors, showToast]);
+
   return {
     transformedProducts,
     cart,
@@ -62,6 +81,7 @@ export function useCartActions(sortType: string, category: string = '전체') {
     isError,
     handleAddCart,
     handleRemoveCart,
+    handleUpdateQuantity,
     resetErrors,
     fetchProduct
   };

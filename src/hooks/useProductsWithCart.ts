@@ -41,15 +41,16 @@ export function useProductsWithCart(sortType: string, category: string = '전체
       name: item.name,
       price: item.price,
       imageUrl: item.imageUrl,
-      category: item.category
+      category: item.category,
+      quantity: item.quantity
     },
     isInCart: item.isInCart,
     cartId: item.cartId
   }));
 
   const resetErrors = () => {
-    setProductsError(false);
-    setCartError(false);
+    setProductsError();
+    setCartError();
   };
 
   return {

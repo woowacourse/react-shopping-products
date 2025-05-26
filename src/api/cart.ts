@@ -22,8 +22,16 @@ const fetchWithAuth = async (
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText || errorMessage || `API 요청 실패: ${response.status}`);
+    const contentType = response.headers.get('Content-Type');
+    const isJsonResponse = contentType && contentType.includes('application/json');
+    
+    if (isJsonResponse) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || errorMessage || `API 요청 실패: ${response.status}`);
+    } else {
+      const errorText = await response.text();
+      throw new Error(errorText || errorMessage || `API 요청 실패: ${response.status}`);
+    }
   }
 
   const contentType = response.headers.get('Content-Type');
@@ -55,4 +63,13 @@ export const removeCart = (id: number) => fetchWithAuth(
   `/cart-items/${id}`,
   { method: 'DELETE' },
   '장바구니 아이템 삭제를 실패했습니다.'
+);
+
+export const updateCartQuantity = (id: number, quantity: number) => fetchWithAuth(
+  `/cart-items/${id}`,
+  {
+    method: 'PATCH',
+    body: JSON.stringify({ quantity }),
+  },
+  '장바구니 수량 변경을 실패했습니다.'
 );

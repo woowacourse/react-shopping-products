@@ -1,5 +1,4 @@
 import AddButton from './AddButton';
-import RemoveButton from './RemoveButton';
 import {
   Container,
   ProductImageContainer,
@@ -7,6 +6,11 @@ import {
   Detail,
   Price,
   ProductName, ImageContainer, EmptyImage,
+  StepperContainer,
+  StepperButton,
+  StepperQuantity,
+  SoldOutOverlay,
+  SoldOutText,
 } from './Product.styles';
 import { ProductElement } from '../../../types/product';
 import { woowaLogo } from "../../../assets";
@@ -16,17 +20,21 @@ interface ProductProps {
   item: ProductElement;
   onAddCart: (product: ProductElement) => Promise<void>;
   onRemoveCart: (product: ProductElement) => Promise<void>;
+  onUpdateQuantity?: (cartItemId: number, quantity: number) => Promise<void>;
+  cartQuantity?: number;
 }
 
-function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
+function Product({ item, onAddCart, onRemoveCart, onUpdateQuantity, cartQuantity = 1 }: ProductProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const { product, isInCart } = item;
+  const { product, isInCart, cartId } = item;
 
   if (!product) {
     return null;
   }
 
   const isImage = product.imageUrl.length > 15;
+  // quantity가 undefined인 경우도 처리
+  const isSoldOut = product.quantity !== undefined && product.quantity === 0;
 
   const handleAddCart = async () => {
     setIsLoading(true);
@@ -46,11 +54,44 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
     }
   };
 
+  const handleIncreaseQuantity = async () => {
+    if (!cartId || !onUpdateQuantity) return;
+    setIsLoading(true);
+    try {
+      await onUpdateQuantity(cartId, cartQuantity + 1);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDecreaseQuantity = async () => {
+    if (!cartId || !onUpdateQuantity) return;
+
+    if (cartQuantity <= 1) {
+      await handleRemoveCart();
+    } else {
+      setIsLoading(true);
+      try {
+        await onUpdateQuantity(cartId, cartQuantity - 1);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <Container>
       <ProductImageContainer>
         {isImage ?
-          <ProductImage src={product.imageUrl} alt={product.name}/>
+          <ProductImage
+            src={product.imageUrl}
+            alt={product.name}
+            onError={e => {
+              const img = e.currentTarget;
+              img.onerror = null;
+              img.src = woowaLogo;
+            }}
+          />
           : (
             <ImageContainer>
               <EmptyImage src={woowaLogo} alt={product.name}/>
@@ -58,15 +99,28 @@ function Product({ item, onAddCart, onRemoveCart }: ProductProps) {
             </ImageContainer>
           )
         }
+        {isSoldOut && (
+          <SoldOutOverlay>
+            <SoldOutText>SOLDOUT</SoldOutText>
+          </SoldOutOverlay>
+        )}
       </ProductImageContainer>
       <Detail>
         <ProductName>{product.name}</ProductName>
         <Price>{`${product.price.toLocaleString()}원`}</Price>
       </Detail>
       {isInCart ? (
-        <RemoveButton onClick={handleRemoveCart} disabled={isLoading} />
+        <StepperContainer>
+          <StepperButton onClick={handleDecreaseQuantity} disabled={isLoading || isSoldOut}>
+            −
+          </StepperButton>
+          <StepperQuantity>{cartQuantity}</StepperQuantity>
+          <StepperButton onClick={handleIncreaseQuantity} disabled={isLoading || isSoldOut}>
+            +
+          </StepperButton>
+        </StepperContainer>
       ) : (
-        <AddButton onClick={handleAddCart} disabled={isLoading} />
+        <AddButton onClick={handleAddCart} disabled={isLoading || isSoldOut} />
       )}
     </Container>
   );

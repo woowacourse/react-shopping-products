@@ -1,31 +1,21 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { getCartItem } from '../api/cart';
 import { CartResponse, CartItem } from '../types/product';
+import { useData } from './useData';
 
 export function useCart() {
-  const [cart, setCart] = useState<CartResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const fetcher = async () => {
+    return await getCartItem();
+  };
 
-  const fetchCart = useCallback(async () => {
-    setIsLoading(true);
-    setIsError(false);
-
-    try {
-      const cartData = await getCartItem();
-
-      setCart(cartData);
-    } catch (e) {
-      console.error(e);
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
+  const { data: cart, error, isLoading, refetch: fetchCart } = useData<CartResponse>(
+    'cart-items',
+    fetcher,
+    {
+      cacheTime: 1 * 60 * 1000, // 1분
+      refetchOnMount: true, // 항상 최신 데이터 fetch
     }
-  }, []);
-
-  useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+  );
 
   const isInCart = useCallback((productId: number) => {
     if (!cart?.content) {
@@ -45,5 +35,13 @@ export function useCart() {
     return cartItem ? cartItem.id : null;
   }, [cart]);
 
-  return { cart, isLoading, isError, setIsError, fetchCart, isInCart, getCartItemId };
+  return {
+    cart,
+    isLoading,
+    isError: !!error,
+    setIsError: () => {}, // 기존 API 호환성을 위해 유지
+    fetchCart,
+    isInCart,
+    getCartItemId
+  };
 }

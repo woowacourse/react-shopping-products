@@ -1,7 +1,5 @@
 import { useToast } from '../../../context/ToastContext';
 import Toast from './Toast';
-import styled from '@emotion/styled';
-
 
 function ToastList() {
   const { toasts } = useToast();

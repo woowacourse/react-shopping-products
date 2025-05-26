@@ -16,16 +16,19 @@ interface ProductSectionProps {
   onSort: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onAddCart: (product: ProductElement) => Promise<void>;
   onRemoveCart: (product: ProductElement) => Promise<void>;
+  onUpdateQuantity?: (cartItemId: number, quantity: number) => Promise<void>;
 }
 
 function ProductSection({
   products,
+  cart,
   sort,
   category,
   onFilter,
   onSort,
   onAddCart,
   onRemoveCart,
+  onUpdateQuantity,
 }: ProductSectionProps) {
   return (
     <Section>
@@ -37,7 +40,9 @@ function ProductSection({
       <ProductList
         onAddCart={onAddCart}
         onRemoveCart={onRemoveCart}
+        onUpdateQuantity={onUpdateQuantity}
         products={products}
+        cart={cart}
       />
     </Section>
   );
