@@ -10,13 +10,13 @@ type CartAddButtonProps = {
 };
 
 const CartAddButton = ({ id }: CartAddButtonProps) => {
-  const { setErrorMessage } = useError();
+  const { showTemporaryError } = useError();
   const { data: cartProductsIds, addToCart } = useFetchCartItems();
 
   const handleCartAddButton = async () => {
     try {
       if (cartProductsIds.length >= MAX_CART_COUNT) {
-        setErrorMessage(ERROR_MSG.CART_LIMIT_EXCEEDED);
+        showTemporaryError(ERROR_MSG.CART_LIMIT_EXCEEDED);
         return;
       }
       await addToCart(id);

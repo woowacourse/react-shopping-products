@@ -8,6 +8,7 @@ import { CATEGORY, SORT } from '../constants/selectOption';
 import { CategoryKey, SortKey, categoryQueryMap, sortQueryMap } from '../types/selectOptions';
 import { useFetchProducts } from '../hooks/useFetchProducts';
 import { useFetchCartItems } from '../hooks/useFetchCartItems';
+import { useError } from '../context/ErrorContext';
 import { Container } from '../styles/common';
 import { ProductCardContainer } from '../styles/ProductCard';
 import Modal from '../components/Modal/Modal';
@@ -28,7 +29,9 @@ function ProductPage() {
   });
 
   const { error: cartError } = useFetchCartItems();
-  const errorMessage = productsError || cartError;
+  const { errorMessage: contextErrorMessage } = useError();
+
+  const errorMessage = productsError || cartError || contextErrorMessage;
 
   return (
     <Container>
