@@ -45,5 +45,7 @@ export const useData = <T extends CartItem[] | Product[] | null>({
     loading: currentState.loading,
     error: currentState.error,
     refetch: fetchData,
+    setLoading,
+    setError,
   };
 };

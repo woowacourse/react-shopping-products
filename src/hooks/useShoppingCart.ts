@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useData } from './useData';
-import { useDataContext } from '../contexts/useDataContext'; // ← 추가!
 import { CartItem } from '../components/ShoppingCartModal/cart.type';
 import {
   addShoppingCart,
@@ -12,13 +11,13 @@ import {
 const PARAMS = new URLSearchParams({ page: '0', size: '50' }).toString();
 
 export const useShoppingCart = () => {
-  const { data, loading, error, refetch } = useData<CartItem[]>({
+  const { data, loading, error, refetch, setLoading, setError } = useData<
+    CartItem[]
+  >({
     key: 'cart-items',
     endpoint: `/cart-items?${PARAMS}`,
     fetchFunction: getShoppingCart,
   });
-
-  const { setError, setLoading } = useDataContext();
 
   const add = useCallback(
     async (productId: number) => {
