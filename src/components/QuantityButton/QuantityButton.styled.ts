@@ -3,7 +3,6 @@ import Styled from '@emotion/styled';
 export const QuantityContainer = Styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
 `;
 

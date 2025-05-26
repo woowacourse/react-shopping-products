@@ -5,11 +5,9 @@ import blackDefaultImage from '../../assets/blackDefaultImage.png';
 import QuantityButton from '../QuantityButton/QuantityButton';
 import { ResponseProduct } from '../../api/types';
 import { useProductItem } from './hooks/useProductItem';
-import { isItemInCart } from './utils';
 
 function ProductItem({ product }: { product: ResponseProduct }) {
-  const { cartItemList, handleProductItem } = useProductItem();
-  const { quantity, isInCart, text, keyword } = isItemInCart(product.id, cartItemList);
+  const { quantity, isInCart, text, keyword, handleProductItem } = useProductItem(product.id);
 
   return (
     <S.ProductItemContainer>

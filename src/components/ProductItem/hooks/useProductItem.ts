@@ -1,10 +1,11 @@
 import { cartApi } from '../../../api/cartApi';
 import { CART_MAX_COUNT } from '../../../constants/constants';
 import { useCartItemList } from '../../../pages/productListPage/context/useCartContext';
-import { getCartItemId } from '../utils';
+import { getCartItemId, isItemInCart } from '../utils';
 
-export const useProductItem = () => {
+export const useProductItem = (id: number) => {
   const { cartItemList, setCartItemList, setErrorMessage } = useCartItemList();
+  const { quantity, isInCart, text, keyword } = isItemInCart(id, cartItemList);
 
   async function handleProductItem(action: string, productId: number, quantity?: number) {
     try {
@@ -12,6 +13,11 @@ export const useProductItem = () => {
         const cartItemId = getCartItemId(productId, cartItemList);
         if (cartItemId) {
           await cartApi.patch(quantity!, cartItemId);
+        }
+      } else if (action === 'delete') {
+        const cartItemId = getCartItemId(productId, cartItemList);
+        if (cartItemId) {
+          await cartApi.delete(cartItemId);
         }
       } else {
         if (cartItemList.length >= CART_MAX_COUNT) {
@@ -30,5 +36,5 @@ export const useProductItem = () => {
     }
   }
 
-  return { cartItemList, handleProductItem };
+  return { quantity, isInCart, text, keyword, handleProductItem };
 };
