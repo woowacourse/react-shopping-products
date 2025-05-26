@@ -16,7 +16,11 @@ import { SORT } from '../../constants/products';
 import useProductCategory from '../../hooks/useProductCategory';
 import getProcessedCartArr from '../../utils/getProcessedCartArr';
 
-function ProductsPage() {
+interface ProductsPageProps {
+  onCartClick: () => void;
+}
+
+function ProductsPage({ onCartClick }: ProductsPageProps) {
   const { category, handleChangeCategory } = useProductCategory();
   const { sort, handleChangeSort } = useProductSort();
   const { isLoading: isLoadingProducts, products } = useGetProducts({ category, sort });
@@ -29,7 +33,7 @@ function ProductsPage() {
 
   return (
     <div className={productPageContainer}>
-      <Header />
+      <Header onCartClick={onCartClick} />
       <div className={productWrapper}>
         <h1 className={productPageTitle}>bpple 상품 목록</h1>
         <div className={productPageSelectBoxContainer}>
