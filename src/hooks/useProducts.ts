@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { ResponseProduct } from "../api/types";
-import getProductList from "../api/ProductListApi";
+import getProductList from "../api/productListApi";
 import { useDataFetch } from "./useDataFetch";
 
 export const useProducts = () => {

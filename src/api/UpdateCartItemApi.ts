@@ -1,6 +1,6 @@
 import { fetcher } from "./fetcher";
 
-async function UpdateCartItemApi(cartItemId: number, quantity: number) {
+async function updateCartItemApi(cartItemId: number, quantity: number) {
   return fetcher(`/cart-items/${cartItemId}`, {
     method: "PATCH",
     body: {
@@ -9,4 +9,4 @@ async function UpdateCartItemApi(cartItemId: number, quantity: number) {
   });
 }
 
-export default UpdateCartItemApi;
+export default updateCartItemApi;

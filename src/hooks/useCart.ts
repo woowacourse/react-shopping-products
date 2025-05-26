@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
 import { ResponseProduct, ResponseCartItem } from "../api/types";
-import getCartItemList from "../api/CartItemListApi";
-import AddProductItemApi from "../api/AddProductItemApi";
-import RemoveProductItemApi from "../api/RemoveProductItemApi";
-import UpdateCartItemApi from "../api/UpdateCartItemApi";
+import getCartItemList from "../api/cartItemListApi";
+import addProductItemApi from "../api/addProductItemApi";
+import removeProductItemApi from "../api/removeProductItemApi";
+import updateCartItemApi from "../api/updateCartItemApi";
 import { CART_MAX_COUNT } from "../constants/constants";
 import { useDataFetch } from "./useDataFetch";
 import { useDataContext } from "../context/DataContext";
@@ -121,10 +121,10 @@ export const useCart = (productList: ResponseProduct[]) => {
           );
           return;
         }
-        await AddProductItemApi(productId, 1);
+        await addProductItemApi(productId, 1);
       } else {
         if (cartItemId) {
-          await UpdateCartItemApi(cartItemId, newQuantity);
+          await updateCartItemApi(cartItemId, newQuantity);
         }
       }
 
@@ -156,11 +156,11 @@ export const useCart = (productList: ResponseProduct[]) => {
 
       if (currentQuantity <= 1) {
         if (cartItemId) {
-          await RemoveProductItemApi(cartItemId);
+          await removeProductItemApi(cartItemId);
         }
       } else {
         if (cartItemId) {
-          await UpdateCartItemApi(cartItemId, newQuantity);
+          await updateCartItemApi(cartItemId, newQuantity);
         }
       }
 
@@ -180,7 +180,7 @@ export const useCart = (productList: ResponseProduct[]) => {
   const handleAddToCart = async (productId: number, quantity: number) => {
     try {
       setCartActionErrorMessage(""); // 에러 초기화
-      await AddProductItemApi(productId, quantity);
+      await addProductItemApi(productId, quantity);
       await refreshCartItemList();
     } catch (error) {
       if (error instanceof Error) {
@@ -197,7 +197,7 @@ export const useCart = (productList: ResponseProduct[]) => {
         updateCartItemOptimistically(cartItem.product.id, 0);
       }
 
-      await RemoveProductItemApi(cartItemId);
+      await removeProductItemApi(cartItemId);
       await refreshCartItemList();
     } catch (error) {
       await refreshCartItemList();
