@@ -14,11 +14,19 @@ export default function CountControl({
 }: CountControlProps) {
   return (
     <StyledWrapper>
-      <StyledButton onClick={() => onClick('decrease')} disabled={count === 0}>
+      <StyledButton
+        onClick={() => onClick('decrease')}
+        disabled={count === 0}
+        data-testid="decrease-button"
+      >
         <StyledImg src="./minusIcon.png" alt="minus icon" />
       </StyledButton>
       <StyledText>{count}</StyledText>
-      <StyledButton onClick={() => onClick('increase')} disabled={disabled}>
+      <StyledButton
+        onClick={() => onClick('increase')}
+        disabled={disabled}
+        data-testid="increase-button"
+      >
         <StyledImg src="./plusIcon.png" alt="plus icon" />
       </StyledButton>
     </StyledWrapper>
