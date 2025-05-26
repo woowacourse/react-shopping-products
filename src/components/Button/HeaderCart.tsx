@@ -1,6 +1,10 @@
 import S from "./HeaderCart.module.css";
 
-const HeaderCart = ({ count, setIsOpen }: { count: number; setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+interface HeaderCartPorps {
+	count: number;
+	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const HeaderCart = ({ count, setIsOpen }: HeaderCartPorps) => {
 	return (
 		<>
 			<button className={S.cartContainer} onClick={() => setIsOpen(true)}>

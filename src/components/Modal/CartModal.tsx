@@ -4,7 +4,11 @@ import CartItem from "../Cart/CartItem";
 import S from "./CartModal.module.css";
 import { useMergedProducts } from "../Context/StoreContext";
 
-const CartModal = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+interface CartModalProps {
+	isOpen: boolean;
+	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const CartModal = ({ isOpen, setIsOpen }: CartModalProps) => {
 	const mergedProducts = useMergedProducts();
 	const cartInfo = mergedProducts.filter((product) => product.cartInfo);
 	const totalAmount = cartInfo.reduce((sum, product) => {
