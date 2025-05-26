@@ -1,113 +1,124 @@
 import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-
+import { describe, it, expect, beforeEach } from 'vitest';
+import { http, HttpResponse } from 'msw';
+import { server } from '../../test/setup';
 import useShoppingItemList from '../useShoppingItemList';
+import { Product } from '../../types/common';
 
-import { apiRequest } from '../../api/apiRequest';
+// 상수 정의
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const PRODUCTS_ENDPOINT = `${API_BASE_URL}/products`;
 
-const mockProducts = {
-  content: [
-    {
-      id: 1,
-      name: '상품 1',
-      price: 10000,
-      imageUrl: 'image1.jpg',
-      category: '패션잡화',
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: '상품 2',
-      price: 11000,
-      imageUrl: 'image2.jpg',
-      category: '식료품',
-      quantity: 1,
-    },
-    {
-      id: 3,
-      name: '상품 3',
-      price: 15000,
-      imageUrl: 'image3.jpg',
-      category: '패션잡화',
-      quantity: 1,
-    },
-    {
-      id: 4,
-      name: '상품 4',
-      price: 30000,
-      imageUrl: 'image4.jpg',
-      category: '식료품',
-      quantity: 1,
-    },
-  ],
+// 테스트 데이터 팩토리
+const createMockProduct = (overrides: Partial<Product> = {}): Product => ({
+  id: 1,
+  name: '상품 1',
+  price: 10000,
+  imageUrl: 'image1.jpg',
+  category: '패션잡화',
+  quantity: 1,
+  ...overrides,
+});
+
+const mockProducts: Product[] = [
+  createMockProduct({
+    id: 1,
+    name: '상품 1',
+    price: 10000,
+    category: '패션잡화',
+  }),
+  createMockProduct({
+    id: 2,
+    name: '상품 2',
+    price: 11000,
+    category: '식료품',
+  }),
+  createMockProduct({
+    id: 3,
+    name: '상품 3',
+    price: 15000,
+    category: '패션잡화',
+  }),
+  createMockProduct({
+    id: 4,
+    name: '상품 4',
+    price: 30000,
+    category: '식료품',
+  }),
+];
+
+// 응답 데이터 생성 헬퍼
+const createProductResponse = (content: Product[]) => ({
+  content,
+  totalElements: content.length,
+  totalPages: content.length > 0 ? 1 : 0,
+  size: content.length,
+  number: 0,
+});
+
+// MSW 핸들러 헬퍼 함수들
+const mockGetProducts = (products: Product[] = mockProducts) => {
+  return http.get(PRODUCTS_ENDPOINT, ({ request }) => {
+    const url = new URL(request.url);
+    const category = url.searchParams.get('category');
+    const sort = url.searchParams.get('sort');
+
+    let filteredProducts = [...products];
+
+    // 카테고리 필터링
+    if (category && category !== '전체') {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.category === category
+      );
+    }
+
+    // 정렬
+    if (sort === 'price,desc') {
+      filteredProducts.sort((a, b) => b.price - a.price);
+    } else if (sort === 'price,asc') {
+      filteredProducts.sort((a, b) => a.price - b.price);
+    }
+
+    return HttpResponse.json(createProductResponse(filteredProducts));
+  });
 };
 
-vi.mock('../../api/apiRequest', () => ({
-  apiRequest: vi.fn(),
-}));
+const mockGetProductsError = () => {
+  return http.get(PRODUCTS_ENDPOINT, () => {
+    return HttpResponse.error();
+  });
+};
 
-const mockApiRequest = vi.mocked(apiRequest);
+// 테스트 유틸리티
+const waitForAsyncUpdate = () =>
+  new Promise((resolve) => setTimeout(resolve, 0));
 
 describe('useShoppingItemList', () => {
   beforeEach(() => {
-    vi.resetAllMocks();
-    mockApiRequest.mockImplementation((url: string) => {
-      const urlObj = new URL(url, 'http://localhost');
-      const category = urlObj.searchParams.get('category');
-      const sort = urlObj.searchParams.get('sort');
-
-      let filteredProducts = [...mockProducts.content];
-
-      // 카테고리 필터링
-      if (category) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.category === category
-        );
-      }
-
-      // 정렬
-      if (sort === 'price,desc') {
-        filteredProducts.sort((a, b) => b.price - a.price);
-      } else if (sort === 'price,asc') {
-        filteredProducts.sort((a, b) => a.price - b.price);
-      }
-
-      return Promise.resolve({ content: filteredProducts });
-    });
+    server.resetHandlers();
   });
 
-  it('초기 상태는 빈 배열과 null 에러, false 로딩 상태이다.', async () => {
+  it('초기 상태에서 상품 목록을 성공적으로 가져온다', async () => {
+    server.use(mockGetProducts());
+
     const { result } = renderHook(() => useShoppingItemList());
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await waitForAsyncUpdate();
     });
 
-    expect(result.current.data).toEqual(mockProducts.content);
+    expect(result.current.data).toEqual(mockProducts);
     expect(result.current.error).toBeNull();
     expect(result.current.isLoading).toBe(false);
   });
 
-  it('상품 목록을 성공적으로 가져온다.', async () => {
-    const { result } = renderHook(() => useShoppingItemList());
-
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
-
-    expect(result.current.data).toEqual(mockProducts.content);
-    expect(result.current.error).toBeNull();
-    expect(result.current.isLoading).toBe(false);
-  });
-
-  it('상품 목록 가져오기에 실패하면 에러가 설정된다.', async () => {
-    const error = new Error('API 오류');
-    mockApiRequest.mockRejectedValueOnce(error);
+  it('상품 목록 가져오기에 실패하면 에러가 설정된다', async () => {
+    server.use(mockGetProductsError());
 
     const { result } = renderHook(() => useShoppingItemList());
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await waitForAsyncUpdate();
     });
 
     expect(result.current.data).toEqual([]);
@@ -118,49 +129,94 @@ describe('useShoppingItemList', () => {
     expect(result.current.isLoading).toBe(false);
   });
 
-  it('카테고리가 변경되면 해당 카테고리의 상품만 가져온다.', async () => {
+  it('카테고리가 변경되면 해당 카테고리의 상품만 가져온다', async () => {
+    server.use(mockGetProducts());
+
     const { result } = renderHook(() => useShoppingItemList());
 
     await act(async () => {
       result.current.selectCategory('식료품');
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await waitForAsyncUpdate();
     });
 
-    const expectedData = mockProducts.content.filter(
+    const expectedData = mockProducts.filter(
       (product) => product.category === '식료품'
     );
 
     expect(result.current.data).toEqual(expectedData);
+    expect(result.current.category).toBe('식료품');
   });
 
-  it('정렬 방식이 변경되면 가격순으로 정렬된 상품을 가져온다.', async () => {
+  it('정렬 방식이 변경되면 가격순으로 정렬된 상품을 가져온다', async () => {
+    server.use(mockGetProducts());
+
     const { result } = renderHook(() => useShoppingItemList());
 
     await act(async () => {
       result.current.selectSort('높은 가격순');
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await waitForAsyncUpdate();
     });
 
-    const expectedData = [...mockProducts.content].sort(
-      (a, b) => b.price - a.price
-    );
+    const expectedData = [...mockProducts].sort((a, b) => b.price - a.price);
 
     expect(result.current.data).toEqual(expectedData);
+    expect(result.current.sortType).toBe('높은 가격순');
   });
 
-  it('카테고리와 정렬을 동시에 적용할 수 있다.', async () => {
+  it('카테고리와 정렬을 동시에 적용할 수 있다', async () => {
+    server.use(mockGetProducts());
+
     const { result } = renderHook(() => useShoppingItemList());
 
     await act(async () => {
       result.current.selectCategory('패션잡화');
       result.current.selectSort('높은 가격순');
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await waitForAsyncUpdate();
     });
 
-    const expectedData = mockProducts.content
+    const expectedData = mockProducts
       .filter((product) => product.category === '패션잡화')
       .sort((a, b) => b.price - a.price);
 
     expect(result.current.data).toEqual(expectedData);
+    expect(result.current.category).toBe('패션잡화');
+    expect(result.current.sortType).toBe('높은 가격순');
+  });
+
+  it('낮은 가격순 정렬이 올바르게 작동한다', async () => {
+    server.use(mockGetProducts());
+
+    const { result } = renderHook(() => useShoppingItemList());
+
+    await act(async () => {
+      result.current.selectSort('낮은 가격순');
+      await waitForAsyncUpdate();
+    });
+
+    const expectedData = [...mockProducts].sort((a, b) => a.price - b.price);
+
+    expect(result.current.data).toEqual(expectedData);
+    expect(result.current.sortType).toBe('낮은 가격순');
+  });
+
+  it('전체 카테고리 선택 시 모든 상품을 가져온다', async () => {
+    server.use(mockGetProducts());
+
+    const { result } = renderHook(() => useShoppingItemList());
+
+    // 먼저 특정 카테고리 선택
+    await act(async () => {
+      result.current.selectCategory('식료품');
+      await waitForAsyncUpdate();
+    });
+
+    // 전체 카테고리로 변경
+    await act(async () => {
+      result.current.selectCategory('전체');
+      await waitForAsyncUpdate();
+    });
+
+    expect(result.current.data).toEqual(mockProducts);
+    expect(result.current.category).toBe('전체');
   });
 });
