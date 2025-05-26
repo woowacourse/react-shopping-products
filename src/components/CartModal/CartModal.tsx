@@ -33,12 +33,7 @@ const CartModal = ({ isOpen, onModalClose, cartItems }: CartModalProps) => {
             ))}
             <CartTotalPrice totalPrice={totalPrice} />
           </Modal.Body>
-          <Modal.Button
-            title={"닫기"}
-            onClick={onModalClose}
-            size="large"
-            styled={{ height: "80px" }}
-          />
+          <Modal.Button title={"닫기"} onClick={onModalClose} size="large" />
         </Modal.Frame>
       </Modal.Backdrop>
     </Modal>

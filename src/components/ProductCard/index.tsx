@@ -74,7 +74,8 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
     } catch (err) {
       handleError({
         isError: true,
-        errorMessage: "장바구니 수량 업데이트에 실패했습니다.",
+        errorMessage:
+          "현재 남은 수량은 " + cartItem!.product.quantity + "개 입니다.",
       });
     }
   };
