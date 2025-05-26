@@ -89,7 +89,15 @@ export default function CartItemRow({ item, onChange }: CartItemRowProps) {
   return (
     <div css={cartItemLayout} key={item.id}>
       <div css={imageWrapper}>
-        <img css={imageStyle} src={item.product.imageUrl} />
+        <img
+          css={imageStyle}
+          src={item.product.imageUrl}
+          onError={(e) => {
+            const target = e.currentTarget;
+            target.onerror = null;
+            target.src = './default-img.png';
+          }}
+        />
       </div>
       <div css={infoWrapper}>
         <div css={namePriceRow}>

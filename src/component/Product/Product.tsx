@@ -95,7 +95,16 @@ export default function Product({ id, imageUrl, name, price, stock, selectedCard
   return (
     <div id={id} css={productLayout}>
       <div css={imgWrapper}>
-        <img css={imgLayout} src={imageUrl ?? './default-img.png'} />
+        <img
+          css={imgLayout}
+          src={imageUrl}
+          alt={name}
+          onError={(e) => {
+            const target = e.currentTarget;
+            target.onerror = null;
+            target.src = './default-img.png';
+          }}
+        />
         {stock === 0 && <div css={soldOutOverlay}>품절</div>}
       </div>
       <div css={contentLayout}>
