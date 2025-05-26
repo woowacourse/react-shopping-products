@@ -30,10 +30,10 @@ describe("useCartItems 훅", () => {
 
     expect(result.current.cartItems).toBeNull();
     expect(result.current.error).toBeNull();
-    expect(result.current.isLoading).toBe(true);
+    expect(result.current.loading).toBe(true);
 
     await waitFor(() => {
-      expect(result.current.isLoading).toBe(false);
+      expect(result.current.loading).toBe(false);
       expect(result.current.cartItems).not.toBeNull();
     });
 
@@ -86,7 +86,7 @@ describe("useCartItems 훅", () => {
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       expect(result.current.cartItems?.content.length).toBe(0);
 
@@ -138,7 +138,7 @@ describe("useCartItems 훅", () => {
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       expect(result.current.cartItems?.content.length).toBe(1);
       const cartId = result.current.cartItems?.content[0]?.id ?? 0;
@@ -186,7 +186,7 @@ describe("useCartItems 훅", () => {
       );
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       expect(result.current.cartItems?.content[0].quantity).toBe(2);
 
@@ -229,7 +229,7 @@ describe("useCartItems 훅", () => {
       );
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       expect(result.current.cartItems?.content[0].quantity).toBe(2);
 
@@ -283,7 +283,7 @@ describe("useCartItems 훅", () => {
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       expect(
         result.current.cartItems?.content.some((item) => item.id === 101)
@@ -304,7 +304,7 @@ describe("useCartItems 훅", () => {
     it("API 오류 발생 시 handleError가 호출된다", async () => {
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       server.use(
         http.post(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
@@ -330,7 +330,7 @@ describe("useCartItems 훅", () => {
     it("refetchCartItems 호출 시 데이터를 다시 가져온다", async () => {
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       let fetchCount = 0;
       server.use(
@@ -414,7 +414,7 @@ describe("useCartItems 훅", () => {
       );
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       expect(result.current.cartItemsCount).toBe(3);
     });
@@ -467,7 +467,7 @@ describe("useCartItems 훅", () => {
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       expect(result.current.totalPriceInCart).toBe(55000);
     });
@@ -508,7 +508,7 @@ describe("useCartItems 훅", () => {
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
 
-      await waitFor(() => expect(result.current.isLoading).toBe(false));
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       expect(result.current.quantityByProductId(1)).toBe(2);
       expect(result.current.quantityByProductId(2)).toBe(3);

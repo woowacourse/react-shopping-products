@@ -20,10 +20,10 @@ describe("useProducts 훅", () => {
 
     expect(result.current.products).toBeNull();
     expect(result.current.error).toBeNull();
-    expect(result.current.isLoading).toBe(true);
+    expect(result.current.loading).toBe(true);
 
     await waitFor(() => {
-      expect(result.current.isLoading).toBe(false);
+      expect(result.current.loading).toBe(false);
       expect(result.current.products).not.toBeNull();
     });
 
@@ -38,7 +38,7 @@ describe("useProducts 훅", () => {
       const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.loading).toBe(false);
       });
 
       await act(async () => {
@@ -67,7 +67,7 @@ describe("useProducts 훅", () => {
       const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.loading).toBe(false);
       });
 
       await act(async () => {
@@ -97,7 +97,7 @@ describe("useProducts 훅", () => {
       const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.loading).toBe(false);
       });
 
       await act(async () => {
@@ -140,7 +140,7 @@ describe("useProducts 훅", () => {
       const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.loading).toBe(false);
       });
 
       const callCount = getSpy.mock.calls.length;
@@ -152,7 +152,7 @@ describe("useProducts 훅", () => {
       expect(getSpy.mock.calls.length).toBeGreaterThan(callCount);
 
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.loading).toBe(false);
         expect(result.current.products).not.toBeNull();
       });
     });
@@ -163,7 +163,7 @@ describe("useProducts 훅", () => {
       const { result } = renderHook(() => useProducts(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
+        expect(result.current.loading).toBe(false);
         expect(result.current.products).not.toBeNull();
       });
 

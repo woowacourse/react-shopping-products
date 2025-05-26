@@ -6,7 +6,7 @@ import { ApiDataKey, ApiDataTypeMap } from "../api/types/data";
 interface APIResult<T> {
   data: T | null;
   error: string | null;
-  isLoading: boolean;
+  loading: boolean;
   refetch: () => void;
 }
 
@@ -24,14 +24,14 @@ export const useAPI = <K extends ApiDataKey>(
     const value = data[key];
 
     if (!value) {
-      return { data: null, error: null, isLoading: true };
+      return { data: null, error: null, loading: true };
     }
 
     if (isApiError(value)) {
-      return { data: null, error: value.error, isLoading: false };
+      return { data: null, error: value.error, loading: false };
     }
 
-    return { data: value as ApiDataTypeMap[K], error: null, isLoading: false };
+    return { data: value as ApiDataTypeMap[K], error: null, loading: false };
   }, [data, key]);
 
   const refetch = useCallback(

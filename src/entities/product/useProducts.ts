@@ -8,7 +8,7 @@ import { Products } from "./response";
 export interface UseProductsResult {
   products: Products | null;
   error: string | null;
-  isLoading: boolean;
+  loading: boolean;
 
   category: CategoryOptionsKey;
   setCategory: (newCategory: CategoryOptionsKey) => void;
@@ -51,7 +51,7 @@ export const useProducts = (): UseProductsResult => {
   const {
     data: products,
     error,
-    isLoading,
+    loading,
     refetch,
   } = useAPI("products", fetcher);
 
@@ -62,7 +62,7 @@ export const useProducts = (): UseProductsResult => {
   return {
     products,
     error,
-    isLoading,
+    loading,
 
     category,
     setCategory,

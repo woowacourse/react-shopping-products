@@ -21,30 +21,30 @@ const ProductItem = ({
   } = useCartItems();
 
   const currentQuantity = quantityByProductId(id);
-  const isOutOfStock = maxQuantity <= 0;
-  const isMaxQuantityReached = currentQuantity >= maxQuantity;
-  const isInCart = currentQuantity >= CART_QUANTITY_THRESHOLD;
+  const outOfStock = maxQuantity <= 0;
+  const reachedMaxQuantity = currentQuantity >= maxQuantity;
+  const existsInCart = currentQuantity >= CART_QUANTITY_THRESHOLD;
 
   return (
     <S.ProductContainer>
       <S.ProductImage $url={imageUrl}>
-        {isOutOfStock && <S.SoldOutOverlay>SOLD OUT</S.SoldOutOverlay>}
+        {outOfStock && <S.SoldOutOverlay>SOLD OUT</S.SoldOutOverlay>}
       </S.ProductImage>
       <S.ProductWrapper>
         <S.ProductName>{name}</S.ProductName>
         <S.ProductPrice>{price.toLocaleString()}원</S.ProductPrice>
         <S.QuantityWrapper>
-          {isInCart ? (
+          {existsInCart ? (
             <QuantitySelector
               quantity={currentQuantity}
               onIncrease={() => increaseItemQuantity(id)}
               onDecrease={() => decreaseItemQuantity(id)}
-              increaseDisabled={isMaxQuantityReached}
+              increaseDisabled={reachedMaxQuantity}
             />
           ) : (
             <AddCartItemButton
               onClick={() => addProductInCart(id)}
-              disabled={isMaxQuantityReached}
+              disabled={reachedMaxQuantity}
             />
           )}
         </S.QuantityWrapper>

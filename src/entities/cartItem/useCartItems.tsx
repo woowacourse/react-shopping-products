@@ -8,7 +8,7 @@ interface UseCartItemsResult {
   cartItems: CartItems | null;
   cartItemsCount: number;
   error: string | null;
-  isLoading: boolean;
+  loading: boolean;
   totalPriceInCart: number;
 
   quantityByProductId: (productId: number) => number;
@@ -28,7 +28,7 @@ export const useCartItems = (): UseCartItemsResult => {
   const {
     data: cartItems,
     error,
-    isLoading,
+    loading,
     refetch,
   } = useAPI("cartItems", fetcher);
 
@@ -143,7 +143,7 @@ export const useCartItems = (): UseCartItemsResult => {
   return {
     cartItems,
     cartItemsCount,
-    isLoading,
+    loading,
     error,
     totalPriceInCart,
 

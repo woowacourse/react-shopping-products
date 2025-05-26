@@ -11,7 +11,7 @@ const ProductsSkeleton = Array.from({ length: 6 }).map((_, index) => (
 ));
 
 const ProductCatalog = () => {
-  const { isLoading, products, error } = useProducts();
+  const { loading, products, error } = useProducts();
   useApiResponseToasts(error);
 
   return (
@@ -22,7 +22,7 @@ const ProductCatalog = () => {
         <ProductSorter />
       </S.ProductControlPanel>
       <S.ProductGrid>
-        {!isLoading
+        {!loading
           ? products?.content.map((productInfo) => (
               <ProductItem key={productInfo.id} {...productInfo} />
             ))
