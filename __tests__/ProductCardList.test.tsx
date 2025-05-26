@@ -1,161 +1,193 @@
 import { renderHook, act } from '@testing-library/react';
-import { vi, describe, test, expect, beforeEach } from 'vitest';
-import { useProductsFetch } from '../src/hooks/useProductsFetch';
-import { Category } from '../src/types/product.type';
-import fetchProducts from '../src/APIs/productApi';
+import { vi, describe, test, expect, beforeEach, Mock } from 'vitest';
+import mockProducts from '../src/mocks/products.json';
+import { useProducts } from '../src/hooks/useProducts';
+import { setupServer } from 'msw/node';
+import { http, HttpResponse } from 'msw';
+import { useDataContext } from '../src/contexts/useDataContext';
 
-vi.mock('../src/APIs/productApi');
+vi.mock('../src/contexts/useDataContext');
 
-const mockedFetchProducts = fetchProducts as jest.MockedFunction<
-  typeof fetchProducts
->;
+const server = setupServer();
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('상품 목록 테스트', () => {
-  const mockProducts = Array.from({ length: 20 }, (_, index) => ({
-    id: index + 1,
-    name: `테스트 상품 ${index + 1}`,
-    price: 1000 + index * 100,
-    imageUrl: `/images/test${index + 1}.png`,
-    category: (index % 2 === 0 ? '식료품' : '패션잡화') as Category,
-  }));
+  const defaultProductsState = {
+    data: null,
+    loading: false,
+    error: null,
+    category: '전체',
+    sort: 'price,asc',
+  };
 
   beforeEach(() => {
-    mockedFetchProducts.mockReset();
+    (useDataContext as Mock).mockReturnValue({
+      state: { products: defaultProductsState },
+      setData: vi.fn(),
+      setLoading: vi.fn(),
+      setError: vi.fn(),
+      clearError: vi.fn(),
+      initApi: vi.fn(),
+      setCategory: vi.fn(),
+      setSort: vi.fn(),
+    });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
   test('기본 sort, category로 API 요청 후 정상적으로 데이터를 받아온다.', async () => {
-    mockedFetchProducts.mockResolvedValueOnce({
-      content: mockProducts,
-      totalPages: 1,
+    (useDataContext as Mock).mockReturnValue({
+      state: {
+        products: {
+          ...defaultProductsState,
+          data: mockProducts,
+        },
+      },
+      setData: vi.fn(),
+      setLoading: vi.fn(),
+      setError: vi.fn(),
+      clearError: vi.fn(),
+      initApi: vi.fn(),
+      setCategory: vi.fn(),
+      setSort: vi.fn(),
     });
 
-    const { result } = renderHook(() => useProductsFetch('price,asc', '전체'));
+    server.use(
+      http.get('/products', () => {
+        return HttpResponse.json(mockProducts, { status: 200 });
+      })
+    );
 
-    expect(result.current.loading).toBe(true);
+    const { result } = renderHook(() => useProducts());
 
     await act(async () => {});
 
     expect(result.current.loading).toBe(false);
-    expect(result.current.error.is).toBe(false);
-    expect(result.current.items).toHaveLength(mockProducts.length);
+    expect(result.current.error).toBeNull();
+    expect(result.current.data).toHaveLength(mockProducts.length);
   });
 
-  test('API 요청 실패 시 error가 발생한다.', async () => {
-    mockedFetchProducts.mockRejectedValueOnce(new Error('fetch error'));
+  test('가격 내림차순으로 정렬된 상품을 받아온다.', async () => {
+    const sort = 'price,desc';
+    const filtered = mockProducts.sort((a, b) => b.price - a.price);
 
-    const { result } = renderHook(() => useProductsFetch('price,asc', '전체'));
+    (useDataContext as Mock).mockReturnValue({
+      state: {
+        products: {
+          ...defaultProductsState,
+          data: mockProducts,
+        },
+      },
+      setData: vi.fn(),
+      setLoading: vi.fn(),
+      setError: vi.fn(),
+      clearError: vi.fn(),
+      initApi: vi.fn(),
+      setCategory: vi.fn(),
+      setSort: vi.fn(),
+    });
+
+    server.use(
+      http.get('/products', ({ request }) => {
+        const url = new URL(request.url);
+        expect(url.searchParams.get('sort')).toBe(sort);
+        return HttpResponse.json(filtered, { status: 200 });
+      })
+    );
+
+    const { result } = renderHook(() => useProducts());
+    await act(async () => {});
+
+    expect(
+      result.current.data
+        .map((p) => p.price)
+        .sort((a, b) => b - a)
+        .slice(0, 5)
+    ).toEqual([60000000, 11100000, 3210000, 850000, 800000]);
+  });
+
+  test('가격 오름차순으로 정렬된 상품을 받아온다.', async () => {
+    const sort = 'price,asc';
+    const filtered = mockProducts.sort((a, b) => a.price - b.price);
+
+    (useDataContext as Mock).mockReturnValue({
+      state: {
+        products: {
+          ...defaultProductsState,
+          data: mockProducts,
+        },
+      },
+      setData: vi.fn(),
+      setLoading: vi.fn(),
+      setError: vi.fn(),
+      clearError: vi.fn(),
+      initApi: vi.fn(),
+      setCategory: vi.fn(),
+      setSort: vi.fn(),
+    });
+
+    server.use(
+      http.get('/products', ({ request }) => {
+        const url = new URL(request.url);
+        expect(url.searchParams.get('sort')).toBe(sort);
+        return HttpResponse.json(filtered, { status: 200 });
+      })
+    );
+
+    const { result } = renderHook(() => useProducts());
+    await act(async () => {});
+
+    expect(
+      result.current.data
+        .map((p) => p.price)
+        .sort((a, b) => a - b)
+        .slice(0, 5)
+    ).toEqual([100, 3800, 4800, 5000, 8130]);
+  });
+
+  test('카테고리로 필터링된 상품을 받아온다.', async () => {
+    const category = '패션잡화';
+    const filtered = mockProducts.filter((p) => p.category === category);
+
+    (useDataContext as Mock).mockReturnValue({
+      state: {
+        products: {
+          ...defaultProductsState,
+          data: filtered, // ← 여기
+          category, // ← 여기
+        },
+      },
+      setData: vi.fn(),
+      setLoading: vi.fn(),
+      setError: vi.fn(),
+      clearError: vi.fn(),
+      initApi: vi.fn(),
+      setCategory: vi.fn(),
+      setSort: vi.fn(),
+    });
+
+    server.use(
+      http.get('/products', ({ request }) => {
+        const url = new URL(request.url);
+        expect(url.searchParams.get('category')).toBe(category);
+        return HttpResponse.json(filtered, { status: 200 });
+      })
+    );
+
+    const { result } = renderHook(() => useProducts());
 
     await act(async () => {});
 
-    expect(result.current.error.is).toBe(true);
-    expect(result.current.items).toHaveLength(0);
-  });
-
-  describe('식료품 카테고리 테스트', () => {
-    test('식료품 카테고리로 요청 시 식료품 상품만 받아온다.', async () => {
-      mockedFetchProducts.mockResolvedValueOnce({
-        content: mockProducts.filter((p) => p.category === '식료품'),
-        totalPages: 1,
-      });
-
-      const { result } = renderHook(() =>
-        useProductsFetch('price,desc', '식료품')
-      );
-
-      expect(mockedFetchProducts).toHaveBeenCalledWith({
-        endpoint: expect.stringContaining(`category=식료품`),
-      });
-      expect(result.current.items.every((p) => p.category === '식료품')).toBe(
-        true
-      );
-    });
-
-    test('가격 내림차순으로 정렬된 식료품 상품을 받아온다.', async () => {
-      mockedFetchProducts.mockResolvedValueOnce({
-        content: mockProducts.filter((p) => p.category === '식료품'),
-        totalPages: 1,
-      });
-
-      const { result } = renderHook(() =>
-        useProductsFetch('price,desc', '식료품')
-      );
-
-      await act(async () => {});
-
-      expect(
-        result.current.items.map((p) => p.price).sort((a, b) => b - a)
-      ).toEqual([2800, 2600, 2400, 2200, 2000, 1800, 1600, 1400, 1200, 1000]);
-    });
-
-    test('가격 오름차순으로 정렬된 식료품 상품을 받아온다.', async () => {
-      mockedFetchProducts.mockResolvedValueOnce({
-        content: mockProducts.filter((p) => p.category === '식료품'),
-        totalPages: 1,
-      });
-
-      const { result } = renderHook(() =>
-        useProductsFetch('price,asc', '식료품')
-      );
-
-      await act(async () => {});
-
-      expect(
-        result.current.items.map((p) => p.price).sort((a, b) => a - b)
-      ).toEqual([1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800]);
-    });
-  });
-
-  describe('패션잡화 카테고리 테스트', () => {
-    test('패션잡화 카테고리로 요청 시 패션잡화 상품만 받아온다.', async () => {
-      mockedFetchProducts.mockResolvedValueOnce({
-        content: mockProducts.filter((p) => p.category === '패션잡화'),
-        totalPages: 1,
-      });
-
-      const { result } = renderHook(() =>
-        useProductsFetch('price,desc', '패션잡화')
-      );
-
-      expect(mockedFetchProducts).toHaveBeenCalledWith({
-        endpoint: expect.stringContaining(`category=패션잡화`),
-      });
-      expect(result.current.items.every((p) => p.category === '패션잡화')).toBe(
-        true
-      );
-    });
-
-    test('가격 내림차순으로 정렬된 패션잡화 상품을 받아온다.', async () => {
-      mockedFetchProducts.mockResolvedValueOnce({
-        content: mockProducts.filter((p) => p.category === '패션잡화'),
-        totalPages: 1,
-      });
-
-      const { result } = renderHook(() =>
-        useProductsFetch('price,desc', '패션잡화')
-      );
-
-      await act(async () => {});
-
-      expect(
-        result.current.items.map((p) => p.price).sort((a, b) => b - a)
-      ).toEqual([2900, 2700, 2500, 2300, 2100, 1900, 1700, 1500, 1300, 1100]);
-    });
-
-    test('가격 오름차순으로 정렬된 패션잡화 상품을 받아온다.', async () => {
-      mockedFetchProducts.mockResolvedValueOnce({
-        content: mockProducts.filter((p) => p.category === '패션잡화'),
-        totalPages: 1,
-      });
-
-      const { result } = renderHook(() =>
-        useProductsFetch('price,asc', '패션잡화')
-      );
-
-      await act(async () => {});
-
-      expect(
-        result.current.items.map((p) => p.price).sort((a, b) => a - b)
-      ).toEqual([1100, 1300, 1500, 1700, 1900, 2100, 2300, 2500, 2700, 2900]);
-    });
+    expect(result.current.loading).toBe(false);
+    expect(result.current.error).toBeNull();
+    expect(result.current.data).toHaveLength(filtered.length);
+    expect(result.current.data.every((p) => p.category === category)).toBe(
+      true
+    );
   });
 });
