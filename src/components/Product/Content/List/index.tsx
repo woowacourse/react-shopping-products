@@ -7,7 +7,7 @@ interface ProductListProps {
 }
 
 function ProductList({ data }: ProductListProps) {
-  if (!data) return null; // 또는 로딩 스피너
+  if (!data) return null;
 
   return (
     <>

@@ -7,7 +7,6 @@ import ProductItem from "@/components/Product/Content/List/Item";
 import RemoveCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Remove";
 import useData from "@/hooks/useData";
 import { CartItemType } from "@/types/cartItem";
-import styled from "@emotion/styled";
 import { useState } from "react";
 import * as S from "./ProductPage.styled";
 
