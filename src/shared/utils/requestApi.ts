@@ -1,4 +1,4 @@
-type Method = 'GET' | 'POST' | 'DELETE' | 'PUT';
+type Method = 'GET' | 'POST' | 'DELETE' | 'PATCH';
 
 interface ApiClientProps {
   endPoint: string;
@@ -13,6 +13,8 @@ export const apiClient = {
     requestApi('POST', endPoint, headers, body),
   delete: ({endPoint, headers}: ApiClientProps) =>
     requestApi('DELETE', endPoint, headers),
+  update: ({endPoint, headers, body}: ApiClientProps) =>
+    requestApi('PATCH', endPoint, headers, body),
 };
 
 const requestApi = async (

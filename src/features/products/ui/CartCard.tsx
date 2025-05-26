@@ -7,8 +7,8 @@ import {deleteCartProduct} from '../../cart/api/deleteCartProduct';
 import {useShowError} from '../../../shared/provider/errorProvider';
 import {useApi} from '../provider/apiProvider';
 import {getCartProduct} from '../../cart/api/getCartProduct';
-import {postCartProduct} from '../../cart/api/postCartProduct';
 import {formatPrice} from '../../../shared/utils/formatPrice';
+import {updateCartProduct} from '../../cart/api/updateCartProduct';
 
 type Props = {
   cartId: number;
@@ -31,8 +31,7 @@ export default function CartCard({cartId, product, quantity}: Props) {
     }
 
     try {
-      await deleteCartProduct(cartId);
-      await postCartProduct(product.id, count);
+      await updateCartProduct(cartId, count);
       refetch();
     } catch (e) {
       showError?.('상품 추가 중에 문제가 발생했습니다.');
