@@ -5,7 +5,7 @@ interface CartContextType {
   cartData: CartItem[];
   addCart: (productId: number) => void;
   removeCart: (productId: number) => void;
-  patchCart: (cartItemId: number, quantity: number) => void;
+  patchCart: (cartItemId: number, quantity: number, productId: number) => void;
 }
 
 const CartContext = createContext<CartContextType>({

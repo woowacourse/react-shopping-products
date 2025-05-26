@@ -1,4 +1,5 @@
 import { IconPlus, IconMinus } from '../../../asset';
+import { CartItem } from '../../../types/common';
 import {
   cartControllerStyle,
   controlButtonStyle,
@@ -6,25 +7,41 @@ import {
 
 const CartController = ({
   quantity,
-  cartItemId,
+  cartItemInfo,
   patchCartItemQuantity,
 }: {
   quantity: number;
-  cartItemId: number;
-  patchCartItemQuantity: (cartItemId: number, quantity: number) => void;
+  cartItemInfo: CartItem;
+  patchCartItemQuantity: (
+    cartItemId: number,
+    quantity: number,
+    productId: number
+  ) => void;
 }) => {
   return (
     <div css={cartControllerStyle}>
       <button
         css={controlButtonStyle}
-        onClick={() => patchCartItemQuantity(cartItemId, quantity - 1)}
+        onClick={() =>
+          patchCartItemQuantity(
+            cartItemInfo.id,
+            quantity - 1,
+            cartItemInfo.product.id
+          )
+        }
       >
         <img src={IconMinus} alt="minus" />
       </button>
       <span>{quantity}</span>
       <button
         css={controlButtonStyle}
-        onClick={() => patchCartItemQuantity(cartItemId, quantity + 1)}
+        onClick={() =>
+          patchCartItemQuantity(
+            cartItemInfo.id,
+            quantity + 1,
+            cartItemInfo.product.id
+          )
+        }
       >
         <img src={IconPlus} alt="plus" />
       </button>

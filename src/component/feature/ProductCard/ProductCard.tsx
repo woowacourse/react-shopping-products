@@ -7,6 +7,7 @@ import {
   productCardContentStyle,
   productCardImageContainerStyle,
   productCardImageStyle,
+  productCardSoldOutStyle,
   productCardStyle,
 } from './ProductCard.styles';
 import { CartItem, Product } from '../../../types/common';
@@ -18,18 +19,22 @@ import { getImageUrl } from '../../../util/getImgUrl';
 
 interface ProductCardProps extends Omit<Product, 'category'> {}
 
-const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
+const ProductCard = ({
+  id,
+  name,
+  price,
+  imageUrl,
+  quantity,
+}: ProductCardProps) => {
   const { cartData, addCart, patchCart } = useContext(CartContext);
 
   const newImageUrl = getImageUrl(imageUrl) ? imageUrl : './image/default.jpeg';
 
-  const productCartId = cartData.find(
+  const productCartInfo = cartData.find(
     (item: CartItem) => item.product.id === id
-  )?.id;
+  );
 
-  const productCartQuantity = cartData.find(
-    (item: CartItem) => item.product.id === id
-  )?.quantity;
+  const productCartQuantity = productCartInfo?.quantity;
 
   const inCart = cartData.some((item: CartItem) => item.product.id === id);
 

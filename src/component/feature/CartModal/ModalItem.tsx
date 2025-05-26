@@ -59,7 +59,7 @@ const ModalItem = ({ cartItem }: ModalItemProps) => {
         </Text>
         <CartController
           quantity={cartItem.quantity}
-          cartItemId={cartItem.id}
+          cartItemInfo={cartItem}
           patchCartItemQuantity={patchCart}
         />
       </div>
