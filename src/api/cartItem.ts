@@ -3,32 +3,31 @@ interface PostCartItemProps {
   quantity: number;
 }
 
+export const CART_URL = `${import.meta.env.VITE_BASE_URL}/cart-items`;
+
 export async function getCartItem({ sortBy }: { sortBy: string }) {
   const options = {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}==`,
     },
   };
 
   const params = new URLSearchParams({
-    page: "0",
-    size: "50",
+    page: '0',
+    size: '50',
     sort: sortBy,
   });
 
-  return fetch(
-    `${import.meta.env.VITE_BASE_URL}/cart-items?${params.toString()}`,
-    options
-  ).then((res) => res.json());
+  return fetch(`${CART_URL}?${params.toString()}`, options).then((res) => res.json());
 }
 
 export async function postCartItem({ productId, quantity }: PostCartItemProps) {
   const options = {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}==`,
     },
     body: JSON.stringify({
@@ -37,16 +36,16 @@ export async function postCartItem({ productId, quantity }: PostCartItemProps) {
     }),
   };
 
-  return fetch(`${import.meta.env.VITE_BASE_URL}/cart-items`, options);
+  return fetch(`${CART_URL}`, options);
 }
 
 export async function deleteCartItem({ id }: { id: number }) {
   const options = {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
       Authorization: `Basic ${import.meta.env.VITE_USER_TOKEN}==`,
     },
   };
 
-  return fetch(`${import.meta.env.VITE_BASE_URL}/cart-items/${id}`, options);
+  return fetch(`${CART_URL}/${id}`, options);
 }
