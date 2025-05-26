@@ -2,10 +2,10 @@ import Modal from "dslgpgh-modal";
 import { useLayoutEffect } from "react";
 import CartItem from "../Cart/CartItem";
 import S from "./CartModal.module.css";
-import { useStoreContext } from "../Context/StoreContext";
+import { useMergedProducts } from "../Context/StoreContext";
 
 const CartModal = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
-	const { mergedProducts } = useStoreContext();
+	const mergedProducts = useMergedProducts();
 	const cartInfo = mergedProducts.filter((product) => product.cartInfo);
 	const totalAmount = cartInfo.reduce((sum, product) => {
 		if (!product.cartInfo) {

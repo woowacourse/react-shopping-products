@@ -3,11 +3,12 @@ import ItemCardFilterSort from "../ItemCard/ItemCardFilterSort";
 import S from "./ProductContent.module.css";
 import SkeletonList from "../Skeleton/SkeletonList";
 import SkeletonCard from "../Skeleton/SkeletonCard";
-import { useStoreContext } from "../Context/StoreContext";
 import { MergedProduct } from "../../types";
+import { useMergedProducts, useProductState } from "../Context/StoreContext";
 
 const ProductContent = () => {
-	const { mergedProducts, loading } = useStoreContext();
+	const { loading } = useProductState();
+	const mergedProducts = useMergedProducts();
 
 	return (
 		<div className={S.contentContainer}>

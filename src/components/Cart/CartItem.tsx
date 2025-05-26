@@ -1,10 +1,10 @@
 import { MergedProduct } from "../../types";
-import { useStoreContext } from "../Context/StoreContext";
+import { useCartState } from "../Context/StoreContext";
 import S from "./CartItem.module.css";
 import CartItemCount from "./CartItemCount";
 
 const CartItem = ({ product }: { product: MergedProduct }) => {
-	const { updateCartItem } = useStoreContext();
+	const { updateCartItem } = useCartState();
 
 	return (
 		<div className={S.cartContainer}>

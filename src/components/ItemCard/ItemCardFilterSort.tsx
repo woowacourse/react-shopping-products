@@ -1,10 +1,10 @@
 import { FILTER_OPTIONS, FilterType, SORT_OPTIONS, SortType } from "../../types";
-import { useStoreContext } from "../Context/StoreContext";
+import { useProductState } from "../Context/StoreContext";
 import Select from "../Select/Select";
 import S from "./ItemCardFilterSort.module.css";
 
 const ItemCardFilterSort = () => {
-	const { filter, sort, setFilter, setSort } = useStoreContext();
+	const { filter, sort, setFilter, setSort } = useProductState();
 
 	return (
 		<div className={S.dropdownContainer}>

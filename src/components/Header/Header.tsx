@@ -1,9 +1,9 @@
-import { useStoreContext } from "../Context/StoreContext";
+import { useCartState } from "../Context/StoreContext";
 import HeaderCart from "../Button/HeaderCart";
 import S from "./Header.module.css";
 
 const Header = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
-	const { cartProducts } = useStoreContext();
+	const { cartProducts } = useCartState();
 	const cartCount = cartProducts.length;
 
 	return (
