@@ -5,10 +5,11 @@ import { useProducts } from '../src/hooks/useProducts';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import { useDataContext } from '../src/contexts/useDataContext';
+import { handlers } from '../src/mocks/handlers';
 
 vi.mock('../src/contexts/useDataContext');
 
-const server = setupServer();
+const server = setupServer(...handlers);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

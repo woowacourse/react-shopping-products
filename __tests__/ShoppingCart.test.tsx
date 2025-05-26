@@ -8,10 +8,11 @@ import { useShoppingCart } from '../src/hooks/useShoppingCart';
 import DataProvider from '../src/contexts/DataContextProvider';
 import mockProducts from '../src/mocks/products.json';
 import { Category } from '../src/components/ProductCardList/product.type';
+import { handlers } from '../src/mocks/handlers';
 
 vi.mock('../src/hooks/useShoppingCart');
 
-const server = setupServer();
+const server = setupServer(...handlers);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

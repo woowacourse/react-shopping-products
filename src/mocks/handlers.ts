@@ -6,8 +6,7 @@ import mockProducts from './products.json';
 export const cartItems: CartItem[] = [];
 
 export const handlers = [
-  // 상품 조회
-  http.get(`${import.meta.env.VITE_BASE_URL}/products`, ({ request }) => {
+  http.get(`${import.meta.env.VITE_BASE_URL}/products*`, ({ request }) => {
     const url = new URL(request.url);
     const sortParam = url.searchParams.get('sort');
     const categoryParam = url.searchParams.get('category');
@@ -29,11 +28,10 @@ export const handlers = [
     return HttpResponse.json({ content: sorted });
   }),
 
-  http.get(`${import.meta.env.VITE_BASE_URL}/cart-items`, () => {
+  http.get(`${import.meta.env.VITE_BASE_URL}/cart-items*`, () => {
     return HttpResponse.json({ content: cartItems });
   }),
 
-  // 장바구니 담기 실패 – 재고 초과
   http.post(
     `${import.meta.env.VITE_BASE_URL}/cart-items`,
     async ({ request }) => {
@@ -52,7 +50,6 @@ export const handlers = [
       }
 
       if (product.quantity < quantity) {
-        console.log(product.quantity, quantity);
         return HttpResponse.json(
           {
             errorCode: 'OUT_OF_STOCK',
@@ -72,7 +69,6 @@ export const handlers = [
     }
   ),
 
-  // 장바구니 수정 실패도 동일하게
   http.patch(
     `${import.meta.env.VITE_BASE_URL}/cart-items/:cartItemId`,
     async ({ params, request }) => {
