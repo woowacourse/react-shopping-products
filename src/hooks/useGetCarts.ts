@@ -1,13 +1,39 @@
-import { useCartContext } from '../contexts/CartContext';
+import { useCallback, useEffect } from 'react';
+import { useResource } from './useResource';
+import getCarts from '../api/getCarts';
+import { CartDataType } from '../contexts/CartContext';
 
-function useGetCarts() {
-  const { carts, isLoading, isError, cartItemCount, fetchCarts } = useCartContext();
+export default function useGetCarts() {
+  const cartsFetcher = useCallback(async () => {
+    return await getCarts();
+  }, []);
 
-  const refetchCarts = async () => {
-    return await fetchCarts(false);
+  const {
+    data: carts,
+    isLoading,
+    isFetching,
+    isError,
+    fetchData,
+  } = useResource<CartDataType[]>('carts', cartsFetcher);
+
+  useEffect(() => {
+    if (!carts && !isLoading) {
+      fetchData(undefined, true);
+    }
+  }, [carts, isLoading, fetchData]);
+
+  const refetchCarts = useCallback(async () => {
+    return await fetchData(undefined, false);
+  }, [fetchData]);
+
+  const cartItemCount = carts ? new Set(carts.map((cart) => cart.product.id)).size : 0;
+
+  return {
+    isLoading,
+    isFetching,
+    isError,
+    carts,
+    cartItemCount,
+    refetchCarts,
   };
-
-  return { isLoading, isError, carts, cartItemCount, refetchCarts };
 }
-
-export default useGetCarts;

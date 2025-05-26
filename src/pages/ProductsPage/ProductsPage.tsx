@@ -4,7 +4,6 @@ import useGetCarts from '../../hooks/useGetCarts';
 import { productPageContainer } from './ProductsPage.style';
 import { useToast } from '../../hooks/useToast';
 import ProductContent from '../../components/ProductContent/ProductContent';
-import { ProductProvider } from '../../contexts/ProductContext';
 import CartModal from '../../components/CartModal/CartModal';
 
 function ProductsPage() {
@@ -21,10 +20,8 @@ function ProductsPage() {
   return (
     <div className={productPageContainer}>
       {isLoading && <div>로딩중...</div>}
-      <Header onClickCartIcon ={() => setIsOpenCartModal(true)} />
-      <ProductProvider>
-        <ProductContent />
-      </ProductProvider>
+      <Header onClickCartIcon={() => setIsOpenCartModal(true)} />
+      <ProductContent />
       {isOpenCartModal && <CartModal onClose={() => setIsOpenCartModal(false)} />}
     </div>
   );

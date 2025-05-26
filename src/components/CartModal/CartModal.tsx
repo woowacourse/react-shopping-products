@@ -1,5 +1,5 @@
-import { useCartContext } from '../../contexts/CartContext';
 import { useCartManagement } from '../../hooks/useCartManager';
+import useGetCarts from '../../hooks/useGetCarts';
 import { useModalClose } from '../../hooks/useModalClose';
 import CartItem from './CartItem';
 import {
@@ -16,11 +16,11 @@ interface ModalProps {
 }
 
 function CartModal({ onClose }: ModalProps) {
-  const { carts, cartItemCount, fetchCarts } = useCartContext();
+  const { carts, cartItemCount, refetchCarts } = useGetCarts();
   const { modifyCartItem, deleteItemFromCart } = useCartManagement({
     cartItemCount,
     carts,
-    refetchCarts: fetchCarts,
+    refetchCarts,
   });
   const { onClickOverlay } = useModalClose({ closeModal: onClose });
   const price = carts?.reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0);

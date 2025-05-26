@@ -1,18 +1,18 @@
 import { productPageTitle, productWrapper } from './ProductContent.style';
 import ProductList from '../ProductList/ProductList';
 import Filter from '../Filter/Filter';
-import { useCartContext } from '../../contexts/CartContext';
 import { useProductFilter } from '../../hooks/useProductFilter';
 import { useCartManagement } from '../../hooks/useCartManager';
+import useGetCarts from '../../hooks/useGetCarts';
 
 function ProductContent() {
-  const { carts, cartItemCount, fetchCarts } = useCartContext();
+  const { carts, cartItemCount, refetchCarts } = useGetCarts();
   const { category, sort, handleChangeCategory, handleChangeSort } = useProductFilter();
 
   const { addCartItem, modifyCartItem } = useCartManagement({
     cartItemCount,
     carts,
-    refetchCarts: fetchCarts,
+    refetchCarts,
   });
 
   return (
