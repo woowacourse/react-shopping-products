@@ -6,9 +6,14 @@ export const ProductItemContainer = Styled.div`
   border-radius:8px;
   overflow:hidden;
 `;
+export const ProductItemImageContainer = Styled.div`
+  position: relative;
+  height:112px;
+  width:100%;
+`;
 
 export const ProductItemImage = Styled.img`
-  height:112px;
+  height:100%;
   width:100%;
   object-fit:cover;
 `;
@@ -35,4 +40,21 @@ export const ProductName = Styled.p`
 
 export const ProductPrice = Styled.p`
   font-size:12px;
+`;
+
+export const NoProductItem = Styled.button`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const NoProductItemText = Styled.b`
+  color: white;
+  font-size: 22px;
 `;

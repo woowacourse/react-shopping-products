@@ -6,7 +6,7 @@ export const dummyData = {
       price: 153000,
       imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRk3Se794LWmMDyG2Z6qkSjaGXqu7i59Gt-A&s',
       category: '패션잡화',
-      quantity: 50,
+      quantity: 0,
     },
     {
       id: 5,
@@ -87,7 +87,7 @@ export const dummyData = {
       price: 2000,
       imageUrl: 'https://static.megamart.com/product/image/1004/10047316/10047316_1_960.jpg',
       category: '식료품',
-      quantity: 2,
+      quantity: 0,
     },
     {
       id: 28,
