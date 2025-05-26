@@ -52,6 +52,12 @@ export const StyledModalTitle = Styled(Modal.Title)`
 export const StyledModalContainer = Styled.div`
   display: flex;
   flex-direction: column;
+  gap: 16px;
+`;
+
+export const NoCartProductText = Styled.p`
+  font-size:16px;
+  margin-top:16px;
 `;
 
 export const CloseButton = Styled(Modal.CloseButton)`
@@ -61,14 +67,12 @@ export const CloseButton = Styled(Modal.CloseButton)`
   padding:12px;
   border-radius:8px;
   cursor: pointer;
-  margin-top: 16px;
 `;
 
 export const productPriceContainer = Styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-top: 16px;
   font-size: 20px;
   font-weight: 700;
 `;

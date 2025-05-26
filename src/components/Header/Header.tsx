@@ -24,7 +24,7 @@ function Header() {
             <S.StyledModalTitle>장바구니</S.StyledModalTitle>
             <S.StyledModalContainer>
               {cartItemList.length === 0 ? (
-                <p>장바구니에 담긴 상품이 없습니다.</p>
+                <S.NoCartProductText>장바구니에 담긴 상품이 없습니다.</S.NoCartProductText>
               ) : (
                 <ul>
                   {cartItemList.map((item) => {
