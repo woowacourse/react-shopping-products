@@ -33,7 +33,7 @@ function useData<T>({
   }, [data, name, request]);
 
   return {
-    data: data[name] as T,
+    data: (data[name] ?? []) as T,
     refetch: request,
     loading: loadingStates[name] ?? true,
   };
