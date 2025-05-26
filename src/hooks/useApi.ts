@@ -15,25 +15,31 @@ export function useAPI<T>({
   fetcher,
   name,
 }: {
-  fetcher: () => Promise<{ data: T; error: any }>;
+  fetcher: () => Promise<{ data: T; error: null | { message: string } }>;
   name: string;
 }) {
-  const { data, setData, setErrorMessage, isLoading, setIsLoading } =
+  const { data, setData, setErrorMessage, setIsLoading } =
     useContext(APIContext);
 
   const request = useCallback(async () => {
-    const res = await fetcher();
-    const error = res.error;
-    if (!error?.message) {
-      setErrorMessage("");
-      setData((data) => {
-        return { ...data, [name]: res };
-      });
-      return;
-    }
+    try {
+      const res = await fetcher();
+      const error = res?.error;
 
-    setErrorMessage(error.message);
-  }, [fetcher, name, setData]);
+      if (!error?.message) {
+        setErrorMessage("");
+        setData((data) => {
+          return { ...data, [name]: res };
+        });
+        return;
+      }
+      setErrorMessage(error.message);
+    } finally {
+      //   setTimeout(() => {
+      setIsLoading(false);
+      //   }, 3000);
+    }
+  }, [fetcher, name, setData, setErrorMessage, setIsLoading]);
 
   useEffect(() => {
     const hasData = data[name];

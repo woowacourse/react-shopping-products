@@ -12,14 +12,14 @@ export const APIContext = createContext<{
   setData: () => {},
   errorMessage: "",
   setErrorMessage: () => {},
-  isLoading: false,
+  isLoading: true,
   setIsLoading: () => {},
 });
 
 export function APIProvider({ children }: PropsWithChildren) {
   const [data, setData] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <APIContext.Provider

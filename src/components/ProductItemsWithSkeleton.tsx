@@ -1,4 +1,4 @@
-import { CartItem, Product } from "../types/productType";
+import { Product } from "../types/productType";
 import ProductItem from "./ProductItem/ProductItem";
 import ProductItemSkeleton from "./ProductItem/ProductItemSkeleton";
 import { PRODUCT_TYPE_COUNT } from "../hooks/useProducts";
@@ -12,19 +12,15 @@ const ProductItemsWithSkeleton = ({
   isLoading,
 }: ProductItemWithSkeletonProps) => {
   const productData = useAPIData<{ data: { content: Product[] } }>("products");
-  const cartData = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
-
   const products = productData?.data.content;
-  const cart = cartData?.data.content;
-
-  if (!products || !cart) return null;
 
   return isLoading ? (
     <ProductItemSkeletons />
   ) : (
-    products.map((product) => (
-      <ProductItem key={product.id} product={product} />
-    ))
+    products &&
+      products.map((product) => (
+        <ProductItem key={product.id} product={product} />
+      ))
   );
 };
 

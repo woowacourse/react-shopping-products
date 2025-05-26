@@ -4,7 +4,7 @@ import { useState } from "react";
 type SelectPropsType<T extends string> = {
   optionList: T[];
   value: T | null;
-  setValue: (args: T) => Promise<void>;
+  setValue: (args: T) => void;
   id: string;
 };
 
