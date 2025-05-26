@@ -8,29 +8,27 @@ const fetchWithErrorHandling = async (
   });
 
   const status = response.status;
+  const contentType = response.headers.get("Content-Type") || "";
+
+  let errorBody = null;
+
+  if (contentType.includes("application/json")) {
+    errorBody = await response.json();
+  }
 
   if (!response.ok) {
     return {
       data: null,
       error: {
         code: status,
-        message: getErrorMessage(status),
+        errorCode: errorBody?.errorCode || "",
+        message: errorBody?.message || getErrorMessage(status),
       },
     };
   }
 
-  const contentType = response.headers.get("Content-Type") || "";
-
-  if (contentType.includes("application/json")) {
-    const data = await response.json();
-    return {
-      data,
-      error: null,
-    };
-  }
-
   return {
-    data: null,
+    data: errorBody,
     error: null,
   };
 };
