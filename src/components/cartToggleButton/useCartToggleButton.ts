@@ -1,8 +1,8 @@
-import { fetchCartItems } from "../../api/cart";
 import { useToast } from "../../provider/ToastProvider";
 import { AddItemBody } from "../../types/request.types";
 import request from "../../utils/request";
 import { useData } from "../../provider/DataProvider";
+import { fetchCartItems } from "../../api/cart";
 
 const MAX_CART_AMOUNT = 50;
 
@@ -46,6 +46,26 @@ export default function useCartToggleButton() {
         method: "POST",
         url: "/cart-items",
         body: { productId, quantity: 1 },
+      });
+      setData((prev) => {
+        return {
+          ...prev,
+          cart: [
+            ...prev.cart,
+            {
+              quantity: 1,
+              id: 0,
+              product: {
+                category: "식료품",
+                id: productId,
+                imageUrl: "",
+                name: "",
+                price: 0,
+                quantity: 0,
+              },
+            },
+          ],
+        };
       });
       fetchData("cart", fetchCartItems);
     } catch {
