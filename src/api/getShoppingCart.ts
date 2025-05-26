@@ -34,5 +34,5 @@ export default async function getShoppingCart(
 
   const data = await response.json();
 
-  return data;
+  return data.content;
 }
