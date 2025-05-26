@@ -1,5 +1,5 @@
 import { useStoreContext } from "../Context/StoreContext";
-import HeaderCart from "../Image/HeaderCart";
+import HeaderCart from "../Button/HeaderCart";
 import S from "./Header.module.css";
 
 const Header = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
