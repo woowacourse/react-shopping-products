@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 
 async function enableMocking() {
-  if (import.meta.env.DEV) {
-    const { worker } = await import('./mock/browser');
-    return worker.start({
-      onUnhandledRequest: 'bypass',
-    });
-  }
+  const { worker } = await import('./mock/browser');
+  return worker.start({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+      url: import.meta.env.DEV
+        ? '/mockServiceWorker.js'
+        : '/react-shopping-products/mockServiceWorker.js',
+    },
+  });
 }
 
 enableMocking().then(() => {
