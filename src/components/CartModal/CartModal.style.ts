@@ -36,4 +36,12 @@ export const CloseButton = css`
   background-color: #333333;
   border-radius: 5px;
   margin-top: 24px;
+  cursor: pointer;
+`;
+
+export const EmptyCart = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
 `;

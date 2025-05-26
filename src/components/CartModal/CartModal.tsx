@@ -2,7 +2,13 @@ import { useCartContext } from '../../contexts/CartContext';
 import { useCartManagement } from '../../hooks/useCartManager';
 import { useModalClose } from '../../hooks/useModalClose';
 import CartItem from './CartItem';
-import { CloseButton, ModalContainer, ModalOverlay, ModalTitle } from './CartModal.style';
+import {
+  CloseButton,
+  EmptyCart,
+  ModalContainer,
+  ModalOverlay,
+  ModalTitle,
+} from './CartModal.style';
 import TotalPrice from './TotalPrice';
 
 interface ModalProps {
@@ -26,13 +32,17 @@ function CartModal({ onClose }: ModalProps) {
         <h2 className={ModalTitle}>장바구니</h2>
         <hr />
         <div>
-          {carts?.map((cart) => (
-            <CartItem
-              cart={cart}
-              modifyCartItem={modifyCartItem}
-              deleteItemFromCart={deleteItemFromCart}
-            />
-          ))}
+          {carts && carts.length === 0 ? (
+            <div className={EmptyCart}>장바구니에 담긴 상품이 없습니다.</div>
+          ) : (
+            carts?.map((cart) => (
+              <CartItem
+                cart={cart}
+                modifyCartItem={modifyCartItem}
+                deleteItemFromCart={deleteItemFromCart}
+              />
+            ))
+          )}
         </div>
         <TotalPrice price={price} />
         <button className={CloseButton} onClick={onClose}>
