@@ -7,7 +7,6 @@ interface QuantityControllerProps {
   onIncreaseClick?: () => void;
   onDecreaseClick?: () => void;
   onRemoveClick?: () => void;
-  // onDecrease?: () => void;
 }
 
 function QuantityController({
