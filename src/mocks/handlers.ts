@@ -84,7 +84,6 @@ export const handlers = [
       const body = (await request.json()) as { quantity: number };
       const quantity = body.quantity;
 
-      // 해당 cart item 찾기
       const cartItem = cartData.content.find((item) => item.id === id);
       if (!cartItem) {
         return;
@@ -105,10 +104,22 @@ export const handlers = [
         );
       }
 
-      // 정상적으로 수량 업데이트
       cartItem.quantity = quantity;
 
       return HttpResponse.json(cartItem, { status: 200 });
+    }
+  ),
+
+  http.delete(
+    `${import.meta.env.VITE_API_BASE_URL}/cart-items/:id`,
+    ({ params }) => {
+      const id = Number(params.id);
+
+      const index = cartData.content.findIndex((item) => item.id === id);
+
+      cartData.content.splice(index, 1);
+
+      return HttpResponse.json(cartData, { status: 200 });
     }
   ),
 ];

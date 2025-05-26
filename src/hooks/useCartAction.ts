@@ -1,6 +1,4 @@
 import { addCart, patchCart, removeCart, getCartItem } from '../api/fetchCart';
-import { MAX_CART_ITEM_COUNT } from '../constants/cartConfig';
-import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { useToastContext } from '../context/ToastContext';
 import { CartItem, ProductElement } from '../types/type';
 import { useCallback } from 'react';
@@ -35,9 +33,6 @@ export const useCartActions = () => {
       if (!cartList) return;
       const cartItem = cartList.find((item) => item.product.id === product.id);
       if (!cartItem) return;
-      // if (cartItem.quantity >= cartItem.product.quantity) {
-      //   return showToast(ERROR_MESSAGE.PRODUCT_MAX_QUANTITY);
-      // }
       await patchCart(cartItem.id, cartItem.quantity + 1);
       await refetch();
     } catch (error) {
@@ -46,19 +41,27 @@ export const useCartActions = () => {
   };
 
   const handleDecreaseQuantity = async (product: ProductElement) => {
-    if (!cartList) return;
-    const cartItem = cartList.find((item) => item.product.id === product.id);
-    if (!cartItem) return;
-    await patchCart(cartItem.id, cartItem.quantity - 1);
-    await refetch();
+    try {
+      if (!cartList) return;
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (!cartItem) return;
+      await patchCart(cartItem.id, cartItem.quantity - 1);
+      await refetch();
+    } catch (error) {
+      showToast((error as Error).message);
+    }
   };
 
   const handleRemoveCart = async (product: ProductElement) => {
-    if (!cartList) return;
-    const cartItem = cartList.find((item) => item.product.id === product.id);
-    if (!cartItem) return;
-    await removeCart(cartItem.id);
-    await refetch();
+    try {
+      if (!cartList) return;
+      const cartItem = cartList.find((item) => item.product.id === product.id);
+      if (!cartItem) return;
+      await removeCart(cartItem.id);
+      await refetch();
+    } catch (error) {
+      showToast((error as Error).message);
+    }
   };
 
   return {
