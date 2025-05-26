@@ -1,5 +1,5 @@
 import { Product } from "../../types/response.types";
-import CartManageButton from "../cartAddButton/CartManageButton";
+import CartManageButton from "../cartManageButton/CartManageButton";
 import useCartToggleButton from "../cartToggleButton/useCartToggleButton";
 import {
   CountContainer,

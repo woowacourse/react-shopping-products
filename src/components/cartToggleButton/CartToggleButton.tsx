@@ -1,4 +1,4 @@
-import CartManageButton from "../cartAddButton/CartManageButton";
+import CartManageButton from "../cartManageButton/CartManageButton";
 import { ButtonContainer } from "./CartToggleButton.css";
 import useCartToggleButton from "./useCartToggleButton";
 

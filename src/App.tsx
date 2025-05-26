@@ -1,20 +1,12 @@
 import "./index.css";
 import "./reset.css";
-import { useState } from "react";
 import ProductContainer from "./components/productContainer/ProductContainer";
 import Header from "./components/header/Header";
 import CartModal from "./components/cartModal/CartModal";
+import useModal from "./hooks/useModal";
 
 function App() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  function modalOpen() {
-    setIsOpen(true);
-  }
-
-  function modalClose() {
-    setIsOpen(false);
-  }
+  const { isOpen, modalClose, modalOpen } = useModal();
 
   return (
     <div className="container">
