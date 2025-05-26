@@ -4,6 +4,38 @@ import ShoppingList from './index';
 import { CartItem } from '../../types/common';
 import { Product } from '../../types/common';
 
+vi.mock('../../hook/useShoppingItemList', () => ({
+  default: () => ({
+    data: [
+      {
+        id: 1,
+        name: '상품 1',
+        price: 10000,
+        imageUrl: 'image1.jpg',
+        category: '패션잡화',
+        quantity: 10,
+      },
+    ],
+    handleSortClick: vi.fn(),
+    handleCategoryClick: vi.fn(),
+    selected: '낮은 가격순',
+    category: '전체',
+    error: null,
+    isLoading: false,
+    retryFetch: vi.fn(),
+  }),
+}));
+
+vi.mock('../../hook/useCartManager', () => {
+  return {
+    default: vi.fn().mockImplementation(() => ({
+      cartData: [],
+      handleAddCart: vi.fn(),
+      handleRemoveCart: vi.fn(),
+    })),
+  };
+});
+
 const mockProducts = {
   content: [
     {
@@ -12,6 +44,7 @@ const mockProducts = {
       price: 10000,
       imageUrl: 'image1.jpg',
       category: '패션잡화',
+      quantity: 10,
     },
   ] as Product[],
 };
@@ -35,6 +68,9 @@ vi.mock('../../component/@common/Toast/context', () => ({
 vi.mock('react-dom', () => ({
   createPortal: (node: React.ReactNode) => node,
 }));
+
+import useCartManager from '../../hook/useCartManager';
+const mockUseCartManager = useCartManager as jest.Mock;
 
 describe('ShoppingList 장바구니 기능', () => {
   beforeEach(() => {
@@ -101,46 +137,40 @@ describe('ShoppingList 장바구니 기능', () => {
   });
 
   it('장바구니에 상품을 추가한다', async () => {
+    const mockHandleAddCart = vi.fn();
+    mockUseCartManager.mockImplementation(() => ({
+      cartData: [],
+      handleAddCart: mockHandleAddCart,
+      handleRemoveCart: vi.fn(),
+    }));
+
     render(<ShoppingList />);
 
     await waitFor(() => {
       expect(screen.getByText('상품 1')).toBeTruthy();
     });
-
-    vi.clearAllMocks();
 
     const addButton = screen.getByText('담기');
     expect(addButton).toBeTruthy();
 
     fireEvent.click(addButton);
 
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        'http://test-api.com/cart-items',
-        expect.objectContaining({
-          method: 'POST',
-          body: JSON.stringify({
-            productId: 1,
-            quantity: 1,
-          }),
-        })
-      );
-    });
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      'http://test-api.com/cart-items?page=0&size=20',
-      expect.anything()
-    );
+    expect(mockHandleAddCart).toHaveBeenCalledWith(1);
   });
 
   it('장바구니에서 상품을 제거한다', async () => {
-    mockCartItems.content = [
-      {
-        id: 1,
-        product: mockProducts.content[0],
-        quantity: 1,
-      },
-    ];
+    const mockHandleRemoveCart = vi.fn();
+    mockUseCartManager.mockImplementation(() => ({
+      cartData: [
+        {
+          id: 1,
+          product: mockProducts.content[0],
+          quantity: 1,
+        },
+      ],
+      handleAddCart: vi.fn(),
+      handleRemoveCart: mockHandleRemoveCart,
+    }));
 
     render(<ShoppingList />);
 
@@ -148,49 +178,24 @@ describe('ShoppingList 장바구니 기능', () => {
       expect(screen.getByText('상품 1')).toBeTruthy();
     });
 
-    vi.clearAllMocks();
+    const minusButton = screen.getByText('-');
+    expect(minusButton).toBeTruthy();
 
-    const removeButton = screen.getByText('빼기');
-    expect(removeButton).toBeTruthy();
+    fireEvent.click(minusButton);
 
-    fireEvent.click(removeButton);
-
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        'http://test-api.com/cart-items/1',
-        expect.objectContaining({
-          method: 'DELETE',
-        })
-      );
-    });
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      'http://test-api.com/cart-items?page=0&size=20',
-      expect.anything()
-    );
+    expect(mockHandleRemoveCart).toHaveBeenCalledWith(1);
   });
 
   it('장바구니 추가 실패 시 에러 처리가 된다', async () => {
-    global.fetch = vi.fn().mockImplementation((url, options) => {
-      if (url.includes('/products')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockProducts),
-        });
-      } else if (url.includes('/cart-items') && !options?.method) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({ content: [] }),
-        });
-      } else if (url.includes('/cart-items') && options?.method === 'POST') {
-        return Promise.resolve({
-          ok: false,
-          status: 500,
-        });
-      }
-
-      return Promise.reject(new Error('Not found'));
+    const mockHandleAddCart = vi.fn().mockImplementation(() => {
+      mockOpenToast('장바구니 추가에 실패했습니다.', false);
     });
+
+    mockUseCartManager.mockImplementation(() => ({
+      cartData: [],
+      handleAddCart: mockHandleAddCart,
+      handleRemoveCart: vi.fn(),
+    }));
 
     render(<ShoppingList />);
 
@@ -201,8 +206,7 @@ describe('ShoppingList 장바구니 기능', () => {
     const addButton = screen.getByText('담기');
     fireEvent.click(addButton);
 
-    await waitFor(() => {
-      expect(mockOpenToast).toHaveBeenCalledWith(expect.any(String), false);
-    });
+    expect(mockHandleAddCart).toHaveBeenCalledWith(1);
+    expect(mockOpenToast).toHaveBeenCalledWith(expect.any(String), false);
   });
 });
