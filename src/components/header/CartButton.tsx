@@ -1,5 +1,5 @@
 import { CartStyle, PutItemCount } from "./CartButton.css";
-import { useData } from "../dataProvider/DataProvider";
+import { useData } from "../../provider/DataProvider";
 
 interface CartButtonProps {
   onClick: () => void;
