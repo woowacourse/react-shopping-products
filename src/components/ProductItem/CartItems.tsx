@@ -3,12 +3,7 @@ import QuantityAdjuster from "./QuantityAdjuster";
 import CartActionButton from "./button/CartActionButton";
 import { useAPI, useAPIData } from "../../hooks/useApi";
 import { CartItem } from "../../types/productType";
-import deleteCartItems from "../../api/deleteCartItems";
-import patchCartItemQuantity from "../../api/patchCartItemQuantity";
-
 import getCartItems from "../../api/getCartItems";
-import { useContext } from "react";
-import { APIContext } from "../../contexts/DataContext";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
@@ -22,37 +17,14 @@ const getTotalAmount = (arr: number[]) => {
 };
 
 const CartItems = () => {
-  const { refetch: refetchCartItems } = useAPI({
+  const { patchQuantity, removeFromCart } = useAPI({
     fetcher: getCartItems,
     name: "cartItems",
   });
-  const { setErrorMessage } = useContext(APIContext);
 
   const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
   const handleProductRemoveClick = (id: number) => removeFromCart(id);
   if (!cartItems) return null;
-
-  const removeFromCart = async (productId: number) => {
-    const { error } = await deleteCartItems(productId);
-
-    if (!error?.message) {
-      setErrorMessage("");
-      return refetchCartItems();
-    }
-
-    setErrorMessage(error.message);
-  };
-
-  const patchQuantity = async (id: number, quantity: number) => {
-    const { error } = await patchCartItemQuantity(id, quantity);
-
-    if (!error?.message) {
-      setErrorMessage("");
-      return refetchCartItems();
-    }
-
-    setErrorMessage(error.message);
-  };
 
   return (
     <>
