@@ -7,6 +7,7 @@ interface Product {
   price: number;
   imageUrl: string;
   category: Category;
+  quantity: number;
 }
 
 export type { Product, Category, SortOption };

@@ -11,7 +11,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { id, name, price, imageUrl } = product;
+  const { id, name, price, imageUrl, quantity } = product;
   const { data, add, remove, update } = useShoppingCart();
   const [cartItem, setCartItem] = useState<CartItem | null>(null);
 
@@ -30,6 +30,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
             e.currentTarget.src = './default.png';
           }}
         />
+        {(quantity === 0 || (cartItem && cartItem.quantity === quantity)) && (
+          <div className={SoldOut}>품절</div>
+        )}
       </div>
       <div className={CardInfo}>
         <h4 className={ProductName}>{name}</h4>
@@ -64,6 +67,7 @@ const CardFrame = css`
 const ImageFrame = css`
   width: 182px;
   height: 112px;
+  position: relative;
 `;
 
 const CardImage = css`
@@ -91,4 +95,19 @@ const ProductName = css`
 const ButtonArea = css`
   display: flex;
   justify-content: flex-end;
+`;
+
+const SoldOut = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 35px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
