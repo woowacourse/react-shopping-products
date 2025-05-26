@@ -3,7 +3,7 @@ import { CartItem } from '../components/ShoppingCartModal/cart.type';
 import { Product } from '../components/ProductCardList/product.type';
 import mockProducts from './products.json';
 
-const cartItems: CartItem[] = [];
+export const cartItems: CartItem[] = [];
 
 export const handlers = [
   // 상품 조회
