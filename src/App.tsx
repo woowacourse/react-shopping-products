@@ -31,12 +31,6 @@ function App() {
     useProductsWithCartContext();
 
   useEffect(() => {
-    if (error !== '') {
-      setError(error);
-    }
-  }, [error]);
-
-  useEffect(() => {
     const getProducts = async () => {
       try {
         await fetchProducts();
