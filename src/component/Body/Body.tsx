@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css } from '@emotion/react';
 
 const bodyLayout = css`
   display: flex;
@@ -11,5 +11,5 @@ const bodyLayout = css`
 `;
 
 export default function Body({ children }: { children: React.ReactNode }) {
-  return <body css={bodyLayout}>{children}</body>;
+  return <main css={bodyLayout}>{children}</main>;
 }

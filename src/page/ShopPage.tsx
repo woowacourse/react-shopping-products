@@ -6,8 +6,10 @@ import ProductContainer from '../component/ProductContainer/ProductContainer';
 import Selector from '../component/Selector/Selector';
 import TitleContainer from '../component/TitleContainer/titleContainer';
 import Toast from '../component/Toast/Toast';
-import { useCartItem } from '../hook/useCartItem';
-import { useProductList } from '../hook/useProductList';
+import { useAPI } from '../hook/APIContext';
+import { getCartItem } from '../api/cartItem';
+import { getProduct } from '../api/product';
+import CartModal from '../component/Modal/CartModal';
 
 interface ProductItem {
   id: number;
@@ -15,6 +17,7 @@ interface ProductItem {
   price: number;
   imageUrl: string;
   category: string;
+  stock: number;
 }
 
 const pageLayout = css`
@@ -79,9 +82,28 @@ export type sortOption = 'price,asc' | 'price,desc';
 export default function ShopPage() {
   const [categoryValue, setCategoryValue] = useState<CategoryOption>('전체');
   const [filterValue, setFilterValue] = useState<FilterOption>('낮은 가격순');
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
-  const { cartItemList, isError: cartError, updateCartItemList } = useCartItem();
-  const { productList, isError: productError } = useProductList(categoryValue, filterValue);
+  const {
+    data: cartResponse,
+    isError: cartError,
+    refetch: updateCartItemList,
+  } = useAPI({
+    name: 'cartItems',
+    fetcher: () => getCartItem({ sortBy: 'asc' }),
+  });
+
+  const { data: productResponse, isError: productError } = useAPI({
+    name: `products-${categoryValue}-${filterValue}`,
+    fetcher: () =>
+      getProduct({
+        category: categoryValue,
+        sortBy: filterValue === '높은 가격순' ? 'price,desc' : 'price,asc',
+      }),
+  });
+
+  const cartItemList = cartResponse?.content ?? [];
+  const productList = productResponse?.content ?? [];
 
   const selectedProducts = cartItemList.length;
 
@@ -89,7 +111,13 @@ export default function ShopPage() {
     <div css={pageLayout}>
       <Header title="SHOP">
         <div css={cartIconContainer}>
-          <img css={cartIcon} src="./shopping-cart.svg" alt="장바구니 아이콘" onClick={() => console.log('click')} />
+          <img
+            css={cartIcon}
+            src="./shopping-cart.svg"
+            alt="장바구니 아이콘"
+            onClick={() => setIsCartModalOpen(true)}
+          />
+
           {selectedProducts > 0 && (
             <div data-testid="cart-count" css={cartItemCount}>
               {selectedProducts}
@@ -122,6 +150,9 @@ export default function ShopPage() {
           <div css={loadingLayout}>로딩중입니다</div>
         )}
       </Body>
+      {isCartModalOpen && (
+        <CartModal cartItems={cartItemList} onClose={() => setIsCartModalOpen(false)} onChange={updateCartItemList} />
+      )}
     </div>
   );
 }
