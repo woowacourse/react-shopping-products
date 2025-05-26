@@ -22,9 +22,7 @@ export const cartApi = {
         },
       });
     } catch (error) {
-      // 에러 코드에 따른 처리
       if (error instanceof Error) {
-        // API 에러 응답인지 확인
         const errorData = tryParseApiError(error.message);
         if (errorData && errorData.errorCode === ErrorCode.OUT_OF_STOCK) {
           throw new Error(errorData.message);
