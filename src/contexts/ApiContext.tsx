@@ -40,8 +40,10 @@ export function useApiContext<T>({
   const request = useCallback(async () => {
     setIsLoading(true);
     setError(null);
+
     try {
       const res = await fetchFn();
+
       setData((prev) => ({ ...prev, [key]: res }));
     } catch (e) {
       setError(e instanceof Error ? e : new Error('Unknown error'));

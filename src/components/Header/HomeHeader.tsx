@@ -8,10 +8,10 @@ import { useCallback, useState } from 'react';
 import CartModal from '../Modal/CartModal';
 import CartList from '../Cart/CartList';
 import Image from '../Image/Image';
-import { CartItemViewModel } from '../../api/model/createCartItemsViewModel';
 import { deleteCartItem } from '../../api/deleteCartItem';
 import { useErrorContext } from '../../contexts/ErrorContext';
 import Button from '../Button/Button';
+import { CartItemViewModel } from '../../api/model/createCartItemViewModel';
 
 function HomeHeader() {
   const [isAlertOpen, setAlertOpen] = useState(false);
@@ -74,7 +74,8 @@ function HomeHeader() {
           footer={
             <div css={styles.footerCss}>
               <div css={styles.totalPriceCss}>
-                <p>총 결제 금액</p> <p>{totalPrice?.toLocaleString() + '원'}</p>
+                <p>총 결제 금액</p>
+                <p>{totalPrice?.toLocaleString() + '원'}</p>
               </div>
               <Button css={styles.buttonCss} onClick={() => setAlertOpen(false)}>
                 닫기

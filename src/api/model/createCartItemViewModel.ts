@@ -10,8 +10,8 @@ export interface CartItemViewModel {
   productQuantity: number; // 상품의 재고 수량
 }
 
-const createCartItemsViewModel = (cartItems: CartItem[]): CartItemViewModel[] => {
-  return cartItems?.map((item) => ({
+export function createCartItemViewModel(item: CartItem): CartItemViewModel {
+  return {
     id: item.id,
     productId: item.product.id,
     title: item.product.name,
@@ -19,7 +19,7 @@ const createCartItemsViewModel = (cartItems: CartItem[]): CartItemViewModel[] =>
     price: `${item.product.price.toLocaleString()}원`,
     cartQuantity: item.quantity,
     productQuantity: item.product.quantity
-  }));
-};
+  };
+}
 
-export default createCartItemsViewModel;
+export default createCartItemViewModel;
