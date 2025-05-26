@@ -3,7 +3,7 @@ import {
   API_ERROR_MESSAGES,
 } from "./constants/errorMessages";
 
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 interface FetchOptions {
   method?: HttpMethod;

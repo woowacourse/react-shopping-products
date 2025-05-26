@@ -1,6 +1,6 @@
 import { fetcher } from "./fetcher";
 
-async function AddProductItemApi(productId: number, quantity: number) {
+async function addProductItemApi(productId: number, quantity: number) {
   return fetcher("/cart-items", {
     method: "POST",
     body: {
@@ -10,4 +10,4 @@ async function AddProductItemApi(productId: number, quantity: number) {
   });
 }
 
-export default AddProductItemApi;
+export default addProductItemApi;

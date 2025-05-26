@@ -1,7 +1,7 @@
 import Styled from "@emotion/styled";
 
 export const AppContainer = Styled.div`
-  background-color:gray;
+  background-color: #D7E8CD;
   display:flex;
   justify-content:center;
 `;

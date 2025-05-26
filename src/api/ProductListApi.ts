@@ -24,3 +24,4 @@ async function getProductList({
   });
 }
 export default getProductList;
+
