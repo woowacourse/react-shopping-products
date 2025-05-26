@@ -69,11 +69,15 @@ export const ItemPrice = styled.div`
 
 export const DeleteButton = styled.button`
   font-size: 13px;
-  background: #f5f5f5;
   border: 1px solid #ccc;
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
+  align-self: flex-start;
+
+  &:hover {
+    background: #f5f5f5;
+  }
 `;
 
 export const TotalSection = styled.div`
