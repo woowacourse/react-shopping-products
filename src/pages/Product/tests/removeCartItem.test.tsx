@@ -1,11 +1,6 @@
-import {
-  render,
-  screen,
-  act,
-  waitFor,
-  fireEvent,
-} from "@testing-library/react";
-import ProductPage from "../ProductPage";
+import { render, screen, act, waitFor } from "@testing-library/react";
+import { DataProvider } from "@/context/DataContext";
+import App from "@/App";
 
 const { mockProductItems } = vi.hoisted(() => {
   return {
@@ -26,7 +21,7 @@ const { mockCartItems } = vi.hoisted(() => {
     mockCartItems: [
       {
         id: 1,
-        quantity: 2,
+        quantity: 1,
         product: {
           id: 26,
           name: "기세",
@@ -62,14 +57,18 @@ vi.mock("@/apis/products/getProducts", () => ({
 describe("ProductPage Component", () => {
   it("상품에서 '빼기' 버튼을 클릭했을 때 헤더에 감소한 숫자가 잘 반영된다.", async () => {
     await act(async () => {
-      render(<ProductPage />);
+      render(
+        <DataProvider>
+          <App />
+        </DataProvider>
+      );
     });
 
     await waitFor(() => {
       expect(screen.queryByTestId("cart-item-quantity")?.textContent).toBe("1");
     });
 
-    fireEvent.click(screen.getByText("빼기"));
+    screen.queryByTestId("decrease-button")?.click();
 
     await waitFor(() => {
       expect(
