@@ -2,9 +2,19 @@ type RequestOptions = RequestInit & {
   queryParams?: Record<string, string | number | undefined>;
 };
 
+interface APIError extends Error {
+  response: {
+    status: number;
+    data: {
+      errorCode: string;
+      message?: string;
+    };
+  };
+}
+
 const apiRequest = async <T>(
   url: string,
-  options: RequestOptions = {},
+  options: RequestOptions = {}
 ): Promise<T> => {
   const { queryParams, headers, ...restOptions } = options;
 
@@ -32,8 +42,17 @@ const apiRequest = async <T>(
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`API 요청 실패: ${response.status} ${errorText}`);
+    const errorBody = await response.json();
+    const error = new Error(
+      `API 요청 실패: ${response.status} ${JSON.stringify(errorBody)}`
+    ) as APIError;
+
+    error.response = {
+      status: response.status,
+      data: errorBody,
+    };
+
+    throw error;
   }
 
   const contentType = response.headers.get("Content-Type");

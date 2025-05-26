@@ -1,4 +1,4 @@
-import { Product } from "./products";
+import { mockProducts, Product } from "./products";
 
 export type CartItem = {
   id: number;
@@ -10,5 +10,19 @@ export type CartItem = {
 export let mockCartItems: CartItem[] = [];
 
 export const resetCartItems = () => {
-  mockCartItems = [];
+  mockCartItems.length = 0;
+  mockCartItems.push(
+    {
+      id: 1,
+      productId: 1,
+      quantity: 2,
+      product: mockProducts[0],
+    },
+    {
+      id: 2,
+      productId: 2,
+      quantity: 1,
+      product: mockProducts[1],
+    }
+  );
 };

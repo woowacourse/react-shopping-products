@@ -49,7 +49,7 @@ const CartModal = ({ onClose }: CartModalProps) => {
   }, [onClose]);
 
   return (
-    <Overlay onClick={onClose}>
+    <Overlay data-testid="overlay" onClick={onClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <Title>장바구니</Title>
 
