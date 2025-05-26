@@ -19,10 +19,11 @@ export default function Navbar({cartQuantity}: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const {data: cartItems} = useApi(getCartProduct, 'cartItems');
-  const totalPrice = cartItems?.content.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
-    0
-  );
+  const totalPrice =
+    cartItems?.content.reduce(
+      (acc, item) => acc + item.product.price * item.quantity,
+      0
+    ) || 0;
 
   return (
     <S.NavbarWrapper>
