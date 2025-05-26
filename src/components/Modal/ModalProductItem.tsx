@@ -38,7 +38,7 @@ const ModalProductItem = ({ id, cartId, name, price, imageUrl }: ModalProductIte
         <S.ModalProductItemContentContainer>
           <div id="left-container">
             <S.ModalProductItemName>{name}</S.ModalProductItemName>
-            <S.ModalProductItemPrice>{price}</S.ModalProductItemPrice>
+            <S.ModalProductItemPrice>{price.toLocaleString()}원</S.ModalProductItemPrice>
             <CartUpdateButton id={id} />
           </div>
           <S.ModalProductItemDeleteButton onClick={handleDeleteButton}>
