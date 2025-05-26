@@ -3,9 +3,14 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 
 async function enableMocking() {
-  const { worker } = await import('./api/mocks/browser.ts'); //Dynamic import하는 것이 눈에 띄였다.
-
+  const { worker } = await import('./api/mocks/browser.ts');
+  const isLocalhost = location.hostname === 'localhost';
   return worker.start({
+    serviceWorker: {
+      url: isLocalhost
+        ? '/mockServiceWorker.js'
+        : '/react-shopping-products/mockServiceWorker.js',
+    },
     onUnhandledRequest: 'bypass',
   });
 }

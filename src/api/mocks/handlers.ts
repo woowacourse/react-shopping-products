@@ -2,7 +2,11 @@ import { http, HttpResponse } from 'msw';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-export const cartMockData = [];
+export const cartMockData: {
+  id: number;
+  quantity: number;
+  product: (typeof allProducts)[number];
+}[] = [];
 
 const allProducts = [
   {
@@ -390,7 +394,10 @@ export const handlers = [
     });
   }),
   http.post(`${baseURL}/cart-items`, async ({ request }) => {
-    const { productId, quantity } = await request.json();
+    const { productId, quantity } = (await request.json()) as {
+      productId: number;
+      quantity: number;
+    };
     const product = allProducts.find(
       (product) => product.id.toString() === productId.toString()
     );
@@ -416,7 +423,7 @@ export const handlers = [
   }),
   http.patch(`${baseURL}/cart-items/:id`, async ({ params, request }) => {
     const { id } = params;
-    const { quantity } = await request.json();
+    const { quantity } = (await request.json()) as { quantity: number };
 
     const targetIndex = cartMockData.findIndex(
       (cart) => cart.id.toString() === id.toString()
