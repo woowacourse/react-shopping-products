@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useContext } from 'react';
-import { cartApi } from '../api/cart';
 import { CartItem, Product } from '../types/common';
 import { useToast } from '../component/@common/Toast/context/toastContext';
 import ShoppingItemContext from '../context/shoppingItemContext/shoppingItemContext';
+import { cartService } from '../service/cart';
 
 const useCart = () => {
   const [cartData, setCartData] = useState<CartItem[]>([]);
@@ -15,9 +15,9 @@ const useCart = () => {
 
   const loadCartData = useCallback(async () => {
     try {
-      const response = await cartApi.getCartItems();
+      const response = await cartService.getCartItems();
       setCartData(response);
-    } catch (error) {
+    } catch {
       setCartData([]);
     }
   }, []);
@@ -29,9 +29,9 @@ const useCart = () => {
           throw new Error('상품의 재고가 없습니다.');
         }
 
-        await cartApi.addToCart(productId);
+        const response = await cartService.addCartItem(productId);
 
-        await loadCartData();
+        setCartData(response);
         openToast('상품이 장바구니에 추가되었습니다.', true);
       } catch (error) {
         if (error instanceof Error) {
@@ -41,32 +41,36 @@ const useCart = () => {
         }
       }
     },
-    [loadCartData, openToast, data]
+    [openToast, data]
   );
 
   const removeCart = useCallback(
     async (cartId: number) => {
       try {
-        await cartApi.removeFromCart(cartId);
+        const response = await cartService.removeCartItem(cartId);
 
-        await loadCartData();
+        setCartData(response);
         openToast('상품이 장바구니에서 제거되었습니다.', true);
       } catch {
         openToast('장바구니 빼기에 실패했어요...', false);
       }
     },
-    [loadCartData, openToast]
+    [openToast]
   );
 
   const patchCart = useCallback(
     async (cartItemId: number, quantity: number, productId: number) => {
       try {
-        const isMaxQuantity = checkMaxQuantity(quantity, data, productId);
-        if (isMaxQuantity) {
+        if (isMaxQuantity(quantity, data, productId)) {
           throw new Error('최대 수량에 도달했습니다.');
         }
-        await cartApi.patchCartItemQuantity(cartItemId, quantity);
-        await loadCartData();
+
+        const response = await cartService.patchCartItemQuantity(
+          cartItemId,
+          quantity
+        );
+
+        setCartData(response);
         openToast('장바구니 수량이 변경되었습니다.', true);
       } catch (error) {
         if (error instanceof Error) {
@@ -76,7 +80,7 @@ const useCart = () => {
         }
       }
     },
-    [loadCartData, openToast, data]
+    [openToast, data]
   );
 
   return {
@@ -94,7 +98,7 @@ const isSoldOut = (productId: number, data: Product[]) => {
   return data?.find((item) => item.id === productId)?.quantity === 0;
 };
 
-const checkMaxQuantity = (
+const isMaxQuantity = (
   quantity: number,
   data: Product[],
   productId: number
