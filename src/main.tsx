@@ -5,12 +5,15 @@ import { ToastProvider } from "./provider/ToastProvider.tsx";
 import { DataProvider } from "./provider/DataProvider.tsx";
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== "development") {
-    return;
-  }
-
   const { worker } = await import("./mocks/browser");
-  return worker.start();
+  return worker.start({
+    serviceWorker: {
+      url:
+        window.location.hostname === "localhost"
+          ? "/mockServiceWorker.js"
+          : "/react-shopping-products/mockServiceWorker.js",
+    },
+  });
 }
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
