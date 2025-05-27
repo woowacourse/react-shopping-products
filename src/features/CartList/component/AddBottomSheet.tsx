@@ -18,6 +18,7 @@ export const AddBottomSheet = ({
   const totalPrice = cartData.data?.reduce((acc, item) => {
     return acc + item.product.price * item.quantity;
   }, 0);
+
   return (
     <Modal
       position="bottom"
@@ -43,7 +44,7 @@ export const AddBottomSheet = ({
         `}
       >
         <Text type="Body">총 결제 금액</Text>
-        <Text type="Heading">{totalPrice?.toLocaleString()}원</Text>
+        <Text type="Heading">{totalPrice ? `${totalPrice?.toLocaleString()}` : '0'}원</Text>
       </Flex>
       <Button size="lg" onClick={onClose} width="100%">
         닫기
