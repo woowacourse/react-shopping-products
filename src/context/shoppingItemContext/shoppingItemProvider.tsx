@@ -3,38 +3,13 @@ import useShoppingItemList from '../../hook/useShoppingItemList';
 import ShoppingItemContext from './shoppingItemContext';
 
 const ShoppingItemProvider = ({ children }: { children: React.ReactNode }) => {
-  const {
-    data,
-    error,
-    isLoading,
-    selectCategory,
-    selectSort,
-    category,
-    sortType,
-    retryFetch,
-  } = useShoppingItemList();
+  const shoppingItemList = useShoppingItemList();
 
   const value = useMemo(
     () => ({
-      data,
-      error,
-      isLoading,
-      selectCategory,
-      selectSort,
-      category,
-      sortType,
-      retryFetch,
+      ...shoppingItemList,
     }),
-    [
-      data,
-      error,
-      isLoading,
-      selectCategory,
-      selectSort,
-      category,
-      sortType,
-      retryFetch,
-    ]
+    [shoppingItemList]
   );
 
   return (
