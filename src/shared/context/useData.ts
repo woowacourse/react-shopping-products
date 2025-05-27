@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
-import { DataContext } from './DataProvider';
+import { ShoppingDataContext } from './ShoppingDataProvider';
 import { ToastContext } from './ToastProvider';
 
 export const useData = () => {
-  const context = useContext(DataContext);
+  const context = useContext(ShoppingDataContext);
   const { showToast } = useContext(ToastContext);
 
   if (!context) {

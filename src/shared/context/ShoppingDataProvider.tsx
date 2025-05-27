@@ -24,7 +24,7 @@ type DataContextType = {
   [K in keyof DataMap]: UseDataReturn<DataMap[K]>;
 };
 
-export const DataContext = createContext<DataContextType>({
+export const ShoppingDataContext = createContext<DataContextType>({
   productData: {
     data: null,
     isLoading: false,
@@ -41,7 +41,7 @@ export const DataContext = createContext<DataContextType>({
   },
 });
 
-export const DataProvider = ({ children }: PropsWithChildren) => {
+export const ShoppingDataProvider = ({ children }: PropsWithChildren) => {
   const productData = useFetchData<Product[]>({
     autoFetch: getProductList,
   });
@@ -49,5 +49,9 @@ export const DataProvider = ({ children }: PropsWithChildren) => {
     autoFetch: getCartItemList,
   });
 
-  return <DataContext.Provider value={{ productData, cartData }}>{children}</DataContext.Provider>;
+  return (
+    <ShoppingDataContext.Provider value={{ productData, cartData }}>
+      {children}
+    </ShoppingDataContext.Provider>
+  );
 };

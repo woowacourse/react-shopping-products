@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
 
 import { ProductListPage } from '@/features/ProductList';
-import { DataProvider } from '@/shared/context/DataProvider';
+import { DataProvider } from '@/shared/context/ShoppingDataProvider';
 import { productsData } from '@/shared/mocks/handlers/product/products.data';
 
 export const renderProductListPage = () =>
