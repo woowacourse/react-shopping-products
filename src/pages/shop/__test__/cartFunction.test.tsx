@@ -107,7 +107,6 @@ describe('SHOP 페이지에 접속 시', () => {
   it('장바구니에 담겨있는 상품에서 "-" 버튼 클릭 시 장바구니 아이콘 숫자가 -1 감소한다', async () => {
     const firstProductCard = await screen.findByTestId('product-34');
     const buttons = await within(firstProductCard).findAllByRole('button');
-    console.log('buttons', buttons);
     fireEvent.click(buttons[0]); // 빼기 버튼 클릭
 
     const cartButton = await screen.findByTestId('cart-button');
