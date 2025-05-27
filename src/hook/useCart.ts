@@ -51,7 +51,7 @@ const useCart = () => {
 
         await loadCartData();
         openToast('상품이 장바구니에서 제거되었습니다.', true);
-      } catch (error) {
+      } catch {
         openToast('장바구니 빼기에 실패했어요...', false);
       }
     },
