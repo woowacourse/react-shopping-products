@@ -6,7 +6,7 @@ export const products = {
       price: 12510,
       imageUrl: "https://example.com/image_1.jpg",
       category: "식료품",
-      quantity: 0,
+      quantity: 1,
     },
     {
       id: 2,

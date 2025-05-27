@@ -1,32 +1,24 @@
-import { render, screen, waitFor } from "@testing-library/react";
+// @vitest-environment jsdom
+import { render, screen } from "@testing-library/react";
 import ProductCardList from "../components/productCardList/ProductCardList";
-import { expect, test } from "vitest";
-import { ToastProvider } from "../components/toastProvider/ToastProvider";
+import { expect, describe, it } from "vitest";
+import { ToastProvider } from "../provider/ToastProvider";
+import { DataProvider } from "../provider/DataProvider";
 
-test("ProductCardList는 API에서 상품을 받아와 20개의 상품을 렌더링한다", async () => {
-  function Wrapper() {
-    return (
-      <ProductCardList
-        category="전체"
-        sort="낮은 가격순"
-        cartItemIds={[]}
-        setCartItemIds={() => {}}
-        fetchCartProducts={() => {}}
-      />
+describe("ProductCardList 컴포넌트", () => {
+  it("상품 데이터를 받아오면 상품 목록을 렌더링한다", async () => {
+    render(
+      <DataProvider>
+        <ToastProvider>
+          <ProductCardList />
+        </ToastProvider>
+      </DataProvider>
     );
-  }
 
-  render(
-    <ToastProvider>
-      <Wrapper />
-    </ToastProvider>
-  );
+    const productNames = await screen.findAllByRole("heading", { level: 3 });
+    expect(productNames).toHaveLength(16);
 
-  await waitFor(
-    () => {
-      const headings = screen.getAllByRole("heading", { level: 3 });
-      expect(headings).toHaveLength(20);
-    },
-    { timeout: 3000 }
-  );
+    expect(screen.getByText("망고")).toBeInTheDocument();
+    expect(screen.getByText("12,510원")).toBeInTheDocument();
+  });
 });
