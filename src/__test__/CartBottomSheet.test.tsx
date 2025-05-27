@@ -37,33 +37,34 @@ describe('CartBottomSheet 테스트', () => {
 
     return { bottomSheet, withinBottomSheet };
   };
+  describe('상품 목록이 렌더 된 후, 장바구니에 담긴 데이터가 존재할 때', () => {
+    it('유저가 추가된 상품을 BottomSheet에서 확인할 수 있다.', async () => {
+      // Given : 상품 목록을 받았을 때
+      const { withinBottomSheet } = await setupCartBottomSheet();
 
-  it('추가된 상품을 BottomSheet에서 확인할 수 있다.', async () => {
-    // Given : 상품 목록을 받았을 때
-    const { withinBottomSheet } = await setupCartBottomSheet();
+      // When : 유저가 장바구니 아이콘을 클릭했을 때
+      expect(withinBottomSheet.getByText('장바구니')).toBeInTheDocument();
 
-    // When : 유저가 장바구니 아이콘을 클릭했을 때
-    expect(withinBottomSheet.getByText('장바구니')).toBeInTheDocument();
+      const sortedByPrice = [...productsData.content].sort((a, b) => a.price - b.price);
+      const cheapestProductName = sortedByPrice[0].name;
+      expect(withinBottomSheet.getByText(cheapestProductName)).toBeInTheDocument();
 
-    const sortedByPrice = [...productsData.content].sort((a, b) => a.price - b.price);
-    const cheapestProductName = sortedByPrice[0].name;
-    expect(withinBottomSheet.getByText(cheapestProductName)).toBeInTheDocument();
+      cleanup();
+    });
 
-    cleanup();
-  });
+    it('유저가 삭제 버튼을 클릭하면 장바구니에서 상품을 삭제할 수 있다.', async () => {
+      // Given : 상품 목록을 받았을 때
+      const { withinBottomSheet } = await setupCartBottomSheet();
+      expect(withinBottomSheet.getByText('장바구니')).toBeInTheDocument();
 
-  it('장바구니에서 상품을 삭제할 수 있다.', async () => {
-    // Given : 상품 목록을 받았을 때
-    const { withinBottomSheet } = await setupCartBottomSheet();
-    expect(withinBottomSheet.getByText('장바구니')).toBeInTheDocument();
+      // When : 유저가 삭제 버튼을 클릭했을 때
+      const deleteButton = await screen.findAllByRole('button', { name: /삭제$/ });
+      const firstDeleteButton = deleteButton[0];
+      await user.click(firstDeleteButton);
 
-    // When : 유저가 삭제 버튼을 클릭했을 때
-    const deleteButton = await screen.findAllByRole('button', { name: /삭제$/ });
-    const firstDeleteButton = deleteButton[0];
-    await user.click(firstDeleteButton);
-
-    // Then : 장바구니에서 상품이 삭제된다.
-    expect(withinBottomSheet.getByText('장바구니')).toBeInTheDocument();
-    expect(withinBottomSheet.queryByText(productsData.content[0].name)).not.toBeInTheDocument();
+      // Then : 장바구니에서 상품이 삭제된다.
+      expect(withinBottomSheet.getByText('장바구니')).toBeInTheDocument();
+      expect(withinBottomSheet.queryByText(productsData.content[0].name)).not.toBeInTheDocument();
+    });
   });
 });

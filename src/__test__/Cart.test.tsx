@@ -32,38 +32,39 @@ describe('ProductListPage 담기 동작', () => {
     const withinHeader = within(header);
     expect(withinHeader.getByText('1')).toBeInTheDocument();
   });
+  describe('상품 목록이 렌더링 된 이후, 장바구니에 담긴 데이터가 존재할 때', () => {
+    it('유저가 + 버튼을 클릭하면 수량이 1 증가한다.', async () => {
+      // Given : 상품 목록을 받았을 때
+      renderProductListPage();
 
-  it('+ 버튼을 클릭하면 수량이 1 증가한다.', async () => {
-    // Given : 상품 목록을 받았을 때
-    renderProductListPage();
+      // When : 유저가 + 버튼을 클릭했을 때
+      const plusButton = await screen.findAllByRole('button', {
+        name: /\+$/,
+      });
+      const firstProductButton = plusButton[0];
+      const cardElement = firstProductButton.closest('div');
+      await user.click(firstProductButton);
 
-    // When : 유저가 + 버튼을 클릭했을 때
-    const plusButton = await screen.findAllByRole('button', {
-      name: /\+$/,
+      // Then : 상단의 수량이 1 증가한다.
+      const utils = within(cardElement!);
+      expect(utils.getByText('2')).toBeInTheDocument();
     });
-    const firstProductButton = plusButton[0];
-    const cardElement = firstProductButton.closest('div');
-    await user.click(firstProductButton);
 
-    // Then : 상단의 수량이 1 증가한다.
-    const utils = within(cardElement!);
-    expect(utils.getByText('2')).toBeInTheDocument();
-  });
+    it('유저가 - 버튼을 클릭하면 수량이 1 감소한다.', async () => {
+      // Given : 상품 목록을 받았을 때
+      renderProductListPage();
 
-  it('- 버튼을 클릭하면 수량이 1 감소한다.', async () => {
-    // Given : 상품 목록을 받았을 때
-    renderProductListPage();
+      // When : 유저가 + 버튼을 클릭했을 때
+      const minusButton = await screen.findAllByRole('button', {
+        name: /-$/,
+      });
+      const firstProductButton = minusButton[0];
+      const cardElement = firstProductButton.closest('div');
+      await user.click(firstProductButton);
 
-    // When : 유저가 + 버튼을 클릭했을 때
-    const minusButton = await screen.findAllByRole('button', {
-      name: /-$/,
+      // Then : 상단의 수량이 1 감소한다.
+      const utils = within(cardElement!);
+      expect(utils.getByText('1')).toBeInTheDocument();
     });
-    const firstProductButton = minusButton[0];
-    const cardElement = firstProductButton.closest('div');
-    await user.click(firstProductButton);
-
-    // Then : 상단의 수량이 1 감소한다.
-    const utils = within(cardElement!);
-    expect(utils.getByText('1')).toBeInTheDocument();
   });
 });
