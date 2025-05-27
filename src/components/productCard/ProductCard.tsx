@@ -34,7 +34,13 @@ function ProductCard({ cartInfo, productInfo }: ProductCardProps) {
     <div css={ProductContainer}>
       <div css={ImageContainer}>
         {isSoldOut && <div css={SoldOutImage}>품절</div>}
-        <img css={ProductImage} src={imageUrl}></img>
+        <img
+          css={ProductImage}
+          src={imageUrl}
+          onError={(e) => {
+            e.currentTarget.src = "default_product.png";
+          }}
+        ></img>
       </div>
       <div css={ContentContainer}>
         <h3 css={ProductTitle}>{name}</h3>
