@@ -31,7 +31,7 @@ const useCart = () => {
 
         await cartApi.addToCart(productId);
 
-        loadCartData();
+        await loadCartData();
         openToast('상품이 장바구니에 추가되었습니다.', true);
       } catch (error) {
         if (error instanceof Error) {
