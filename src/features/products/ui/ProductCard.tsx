@@ -43,7 +43,7 @@ export default function ProductCard({ product, setError }: ProductCardProps) {
         <S.ProductName>{product.name}</S.ProductName>
         <S.ProductCategory>{product.category}</S.ProductCategory>
         <S.ProductPrice data-testid='product-price'>{product.price}</S.ProductPrice>
-        <S.ProductQuantity>재고: {product.quantity}</S.ProductQuantity>
+        <S.ProductQuantity data-testid='product-quantity'>재고: {product.quantity}</S.ProductQuantity>
       </S.ContentSection>
       <S.ButtonSection>
         {!isCartSelected ? (

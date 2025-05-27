@@ -78,7 +78,7 @@ export default function CartQuantitySelector({
     <S.CartQuantityContainer>
       <S.CartQuantitySelectorButton onClick={handleMinusClick}>-</S.CartQuantitySelectorButton>
       <S.CartQuantityNumber>{cartProductQuantity}</S.CartQuantityNumber>
-      <S.CartQuantitySelectorButton onClick={handlePlusClick} disabled={isProductSoldOut}>
+      <S.CartQuantitySelectorButton data-testid='plus-button' onClick={handlePlusClick} disabled={isProductSoldOut}>
         +
       </S.CartQuantitySelectorButton>
     </S.CartQuantityContainer>

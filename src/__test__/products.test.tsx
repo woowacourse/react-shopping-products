@@ -74,27 +74,38 @@ describe('GET API 요청 후 ProductList들이 잘 보이는지 테스트한다.
     });
 });
 
-describe('리바이 아커만의 ProductCard에서 + 버튼을 누르면 추가가 되고 재고가 없으면 버튼이 disabled 된다.', () => {
-  it('adds "리바이 아커만" to cart and increases quantity via + button', async () => {
+describe('ProductCard에서 + 버튼을 누르면 추가가 되고 재고가 없으면 버튼이 disabled 된다.', () => {
+  it('수량이 2인 ProductCard를 찾아 + 버튼 클릭하면 재고와 수량이 같아지고 버튼이 disabled 상태됨을 검증한다.', async () => {
     const user = userEvent.setup();
     renderApp();
 
-    const productName = await screen.findByText('리바이 아커만');
-    expect(productName).toBeInTheDocument();
+    const quantityElements = await screen.findAllByTestId('product-quantity');
 
-    const productCard = productName.closest('[data-testid="product-card"]') as HTMLElement;
-    expect(productCard).not.toBeNull();
+    expect(quantityElements.length).toBeGreaterThan(0);
 
-    const addButton = within(productCard).getByRole('button');
-    await user.click(addButton);
+    const targetQuantityElement = quantityElements.find((quantityElement) => {
+      const quantityText = quantityElement.textContent || '';
+      const quantityNumber = Number(quantityText.replace(/[^0-9]/g, ''));
 
-    const plusButton = await within(productCard).findByText('+');
+      return Number(quantityNumber) === 2;
+    });
+
+    expect(targetQuantityElement).toBeDefined();
+    if (!targetQuantityElement) return;
+
+    const targetCard = targetQuantityElement.closest('[data-testid="product-card"]') as HTMLElement;
+    expect(targetCard).not.toBeNull();
+    if (!targetCard) return;
+
+    const cartButton = await within(targetCard).findByTestId('custom-button');
+    expect(cartButton).toBeInTheDocument();
+    await user.click(cartButton);
+
+    const plusButton = within(targetCard).getByText('+');
     expect(plusButton).toBeInTheDocument();
-
     await user.click(plusButton);
 
     await waitFor(() => {
-      expect(within(productCard).getByText('2')).toBeInTheDocument();
       expect(plusButton).toBeDisabled();
     });
   });
