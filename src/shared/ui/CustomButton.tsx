@@ -2,8 +2,8 @@ import {SerializedStyles} from '@emotion/react';
 import * as S from './CustomButton.styles';
 
 interface CustomButtonProps {
-  iconUrl: string;
-  title: string;
+  iconUrl?: string;
+  title?: string;
   css?: SerializedStyles;
   onClick: () => void;
 }
@@ -16,8 +16,8 @@ export default function CustomButton({
 }: CustomButtonProps) {
   return (
     <S.CustomButton onClick={onClick} css={css}>
-      <S.ButtonIcon src={iconUrl} />
-      <S.ButtonTitle>{title}</S.ButtonTitle>
+      {iconUrl && <S.ButtonIcon src={iconUrl} alt="icon" />}
+      {title && <S.ButtonTitle>{title}</S.ButtonTitle>}
     </S.CustomButton>
   );
 }

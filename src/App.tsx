@@ -3,10 +3,12 @@ import CustomSelect from './shared/ui/CustomSelect';
 import ProductCard from './features/products/ui/ProductCard';
 import {filterByValue} from './shared/utils/filterByValue';
 import {matchCategory} from './features/products/utils/matchCategory';
-import useGetProductsWithCart from './features/products/hooks/useGetProductsWithCart';
 import {useEffect, useState} from 'react';
 import {Product} from './features/products/type/product';
 import * as S from './App.styles';
+import {getProducts} from './features/products/api/getProducts';
+import {getCartProduct} from './features/cart/api/getCartProduct';
+import {useApi} from './features/products/provider/apiProvider';
 
 type Category = keyof typeof matchCategory;
 
@@ -29,30 +31,36 @@ function App() {
   const [category, setCategory] = useState<Category>('all');
   const [sortValue, setSortValue] = useState('');
 
-  const {products, fetchProducts, isLoading, error} =
-    useGetProductsWithCart(sortValue);
-
-  const cartQuantity = products.filter((product) => product.isCart).length;
+  const {
+    data: products,
+    isLoading,
+    refetch: refetchProducts,
+  } = useApi(() => getProducts(sortValue), 'products');
 
   useEffect(() => {
-    fetchProducts();
+    refetchProducts();
   }, [sortValue]);
 
+  const {data: cartItems} = useApi(getCartProduct, 'cartItems');
+
   const filteredProducts = filterByValue<Product, 'category'>({
-    array: products,
+    array: products?.content || [],
     compare: 'category',
     value: matchCategory[category],
   });
 
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
+
   return (
     <>
-      <Navbar cartQuantity={cartQuantity} errorMessage={error} />
+      <Navbar cartQuantity={cartItems?.content.length} />
       <S.ProductListWrapper>
         <S.ProductListHeader>
           <S.ProductListHeaderTitle>
             WoowaBros Product List
           </S.ProductListHeaderTitle>
-
           <S.ProductListFilterContainer>
             <CustomSelect
               id="category-select"
@@ -67,20 +75,20 @@ function App() {
           </S.ProductListFilterContainer>
         </S.ProductListHeader>
 
-        {isLoading && products.length === 0 ? (
-          <div>loading...</div>
-        ) : (
-          <S.ProductList data-testid="product-list">
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onRefetch={fetchProducts}
-                cartQuantity={cartQuantity}
-              />
-            ))}
-          </S.ProductList>
-        )}
+        <S.ProductList data-testid="product-list">
+          {filteredProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              cartQuantity={cartItems?.content.length}
+              cartId={
+                cartItems?.content.find(
+                  (item) => item.product.id === product.id
+                )?.id
+              }
+            />
+          ))}
+        </S.ProductList>
       </S.ProductListWrapper>
     </>
   );
