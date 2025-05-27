@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 
 export const CartQuantityContainer = styled.div`
-  width: 24px;
-  height: 24px;
   display: flex;
   justify-content: end;
   align-items: center;
