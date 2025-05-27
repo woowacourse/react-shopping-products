@@ -6,7 +6,7 @@ import {Product} from '../type/product';
 import * as S from './ProductCard.styles';
 import {useShowError} from '../../../shared/provider/errorProvider';
 import {useState} from 'react';
-import CartCount from './CartCount';
+import CartCount from '../../cart/ui/CartCount';
 import {formatPrice} from '../../../shared/utils/formatPrice';
 import {useApi} from '../provider/apiProvider';
 import {getCartProduct} from '../../cart/api/getCartProduct';

@@ -3,7 +3,7 @@ import * as S from './Navbar.styles';
 import {useErrorToast} from '../../../shared/provider/errorProvider';
 import {useState} from 'react';
 import Modal from '../../../shared/ui/Modal';
-import CartCard from '../../../features/products/ui/CartCard';
+import CartCard from '../../../features/cart/ui/CartCard';
 import {useApi} from '../../../features/products/provider/apiProvider';
 import {getCartProduct} from '../../../features/cart/api/getCartProduct';
 import CustomButton from '../../../shared/ui/CustomButton';

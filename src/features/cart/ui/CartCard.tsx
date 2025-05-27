@@ -2,13 +2,13 @@ import {useState} from 'react';
 import CustomButton from '../../../shared/ui/CustomButton';
 import * as S from './CartCard.styles';
 import CartCount from './CartCount';
-import {Product} from '../type/product';
-import {deleteCartProduct} from '../../cart/api/deleteCartProduct';
+import {Product} from '../../products/type/product';
+import {deleteCartProduct} from '../api/deleteCartProduct';
 import {useShowError} from '../../../shared/provider/errorProvider';
-import {useApi} from '../provider/apiProvider';
-import {getCartProduct} from '../../cart/api/getCartProduct';
+import {useApi} from '../../products/provider/apiProvider';
+import {getCartProduct} from '../api/getCartProduct';
 import {formatPrice} from '../../../shared/utils/formatPrice';
-import {updateCartProduct} from '../../cart/api/updateCartProduct';
+import {updateCartProduct} from '../api/updateCartProduct';
 
 type Props = {
   cartId: number;
@@ -39,13 +39,13 @@ export default function CartCard({cartId, product, quantity}: Props) {
   };
 
   const handleDeleteCartClick = async () => {
-    if (cartId)
-      try {
-        await deleteCartProduct(cartId);
-        refetch();
-      } catch (e) {
-        showError?.('삭제하는 중에 문제가 발생했습니다.');
-      }
+    if (!cartId) return;
+    try {
+      await deleteCartProduct(cartId);
+      refetch();
+    } catch (e) {
+      showError?.('삭제하는 중에 문제가 발생했습니다.');
+    }
   };
   return (
     <>
