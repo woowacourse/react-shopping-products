@@ -1,4 +1,4 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {describe, it, expect} from 'vitest';
 import App from '../App';
@@ -50,10 +50,9 @@ describe('필터링 및 정렬 테스트', () => {
         <App />
       </ApiProvider>
     );
-    await waitFor(() => {
+    await waitFor(async () => {
       const select = screen.getByTestId('category-select');
-      userEvent.selectOptions(select, '식료품');
-
+      await userEvent.selectOptions(select, '식료품');
       const productList = screen.getByTestId('product-list');
 
       for (let i = 0; i < productList.children.length; i++) {
@@ -75,9 +74,9 @@ describe('필터링 및 정렬 테스트', () => {
         <App />
       </ApiProvider>
     );
-    await waitFor(() => {
+    await waitFor(async () => {
       const select = screen.getByTestId('sort-select');
-      userEvent.selectOptions(select, '낮은 가격순');
+      await userEvent.selectOptions(select, '낮은 가격순');
 
       const productList = screen.getByTestId('product-list');
       const firstItem = productList.children[0];
@@ -104,8 +103,8 @@ describe('상품 담기/빼기', () => {
 
     const cartButton = await screen.findAllByText('담기');
 
-    fireEvent.click(cartButton[0]);
-    fireEvent.click(cartButton[0]);
+    await userEvent.click(cartButton[0]);
+    await userEvent.click(cartButton[0]);
 
     const afterQuantity = (await screen.findByTestId('cart-quantity'))
       .textContent as string;
@@ -125,7 +124,7 @@ describe('상품 담기/빼기', () => {
 
     const cartButton = await screen.findAllByText('빼기');
 
-    fireEvent.click(cartButton[0]);
+    await userEvent.click(cartButton[0]);
 
     const afterQuantity = (await screen.findByTestId('cart-quantity'))
       .textContent as string;
