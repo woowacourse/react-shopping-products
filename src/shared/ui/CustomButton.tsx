@@ -16,7 +16,7 @@ export default function CustomButton({
 }: CustomButtonProps) {
   return (
     <S.CustomButton onClick={onClick} css={css}>
-      {iconUrl && <S.ButtonIcon src={iconUrl} />}
+      {iconUrl && <S.ButtonIcon src={iconUrl} alt="icon" />}
       {title && <S.ButtonTitle>{title}</S.ButtonTitle>}
     </S.CustomButton>
   );

@@ -33,7 +33,7 @@ export default function Navbar({cartQuantity}: NavbarProps) {
           <S.CartQuantity data-testid="cart-quantity">
             {cartQuantity}
           </S.CartQuantity>
-          <S.CartIcon src="./cartIcon.svg" />
+          <S.CartIcon src="./cartIcon.svg" alt="icon" />
         </S.CartIconContainer>
       </S.NavbarContainer>
       {error && <ErrorToast errorMessage={error} />}
