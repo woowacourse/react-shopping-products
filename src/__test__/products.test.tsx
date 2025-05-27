@@ -56,11 +56,20 @@ describe('GET API 요청 후 ProductList들이 잘 보이는지 테스트한다.
       await waitFor(() => {
         const productList = screen.getByTestId('product-list');
         expect(productList.children.length).toBeGreaterThan(0);
-        const firstItem = productList.children[0];
-        const lastItem = productList.children[19];
 
-        expect(firstItem.textContent).toContain('100');
-        expect(lastItem.textContent).toContain('60000000');
+        const productCards = screen.getAllByTestId('product-card');
+
+        const extractPrice = (card: HTMLElement) => {
+          const priceText = card.querySelector('[data-testid="product-price"]')?.textContent || '';
+          const numeric = priceText.replace(/[^0-9]/g, '');
+          return Number(numeric);
+        };
+
+        const prices = productCards.map(extractPrice);
+
+        for (let i = 1; i < prices.length; i++) {
+          expect(prices[i]).toBeGreaterThanOrEqual(prices[i - 1]);
+        }
       });
     });
 });
