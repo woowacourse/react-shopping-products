@@ -6,7 +6,7 @@ import {ErrorProvider} from './shared/provider/errorProvider.tsx';
 import {ApiProvider} from './features/products/provider/apiProvider.tsx';
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
+  if (import.meta.env.MODE !== 'mock') {
     return;
   }
 
