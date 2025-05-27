@@ -1,44 +1,98 @@
-import { ReactNode } from 'react';
-import { css } from '@emotion/react';
 import Modal from './Modal/Modal';
-
-export default function CartModal({ isOpen, onClose, title, content, footer }: CartModalProps) {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} position="bottom" size="small">
-      <Modal.BackDrop css={backdropCss} />
-      <Modal.Content css={contentCss}>
-        {Boolean(title) && <Modal.Title css={titleCss}>{title}</Modal.Title>}
-        {content}
-        <Modal.Footer>{footer}</Modal.Footer>
-      </Modal.Content>
-    </Modal>
-  );
-}
+import * as styles from './CartModal.style';
+import Button from '../Button/Button';
+import Counter from '../Counter/Counter';
+import Image from '../Image/Image';
+import { RemoveFromCartButton } from '../CartButton/CartButton';
+import { useApiContext } from '../../contexts/ApiContext';
+import { useErrorContext } from '../../contexts/ErrorContext';
+import getCartItems from '../../api/getCartItems';
+import patchCartItem from '../../api/patchCartItem';
+import { deleteCartItem } from '../../api/deleteCartItem';
+import { createCartItemViewModel } from '../../api/model/createCartItemViewModel';
 
 interface CartModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
-  content: ReactNode;
-  confirmText?: string;
-  footer: ReactNode;
 }
 
-const backdropCss = css({
-  backgroundColor: 'rgba(0, 0, 0, 0.35)'
-});
+export default function CartModal({ isOpen, onClose }: CartModalProps) {
+  const { showError } = useErrorContext();
+  const { data: cartItems, fetcher: refetchCart } = useApiContext({ fetchFn: getCartItems, key: 'getCartItems' });
+  const items = cartItems?.content ?? [];
 
-const contentCss = css({
-  width: '380px',
+  const totalPrice = items.reduce((acc, item) => acc + item.quantity * item.product.price, 0);
 
-  backgroundColor: 'white',
-  padding: '24px 32px',
-  borderRadius: '8px',
-  gap: '12px'
-});
+  const handleDeleteCart = async (id: number) => {
+    try {
+      await deleteCartItem(id);
+      await refetchCart();
+    } catch (err) {
+      if (err instanceof Error) showError(err);
+    }
+  };
 
-const titleCss = css({
-  fontSize: '18px',
-  fontWeight: '700',
-  color: '#000'
-});
+  const handleQuantityChange = async (id: number, newQuantity: number) => {
+    try {
+      await patchCartItem(id, newQuantity);
+      await refetchCart();
+    } catch (err) {
+      if (err instanceof Error) showError(err);
+    }
+  };
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} position="bottom" size="small">
+      <Modal.BackDrop css={styles.backdropCss} />
+      <Modal.Content css={styles.contentCss}>
+        <Modal.Title css={styles.titleCss}>장바구니</Modal.Title>
+
+        <div css={styles.modalContent}>
+          {items.map((item) => {
+            const viewModel = createCartItemViewModel(item);
+
+            return (
+              <div key={viewModel.id} css={styles.cartItemWrapper}>
+                <div css={styles.cartItem}>
+                  <div css={styles.cartImageWrapper}>
+                    <Image src={viewModel.imageUrl} alt={`${viewModel.title} 상품 이미지`} />
+                  </div>
+                  <div css={styles.cartTextBlock}>
+                    <h3 css={styles.titleCss}>{viewModel.title}</h3>
+                    <p>{viewModel.price}</p>
+                    <Counter
+                      value={viewModel.cartQuantity}
+                      onDecrement={() =>
+                        viewModel.cartQuantity > 1 && handleQuantityChange(viewModel.id, viewModel.cartQuantity - 1)
+                      }
+                      onIncrement={() => {
+                        if (viewModel.cartQuantity >= viewModel.productQuantity) {
+                          showError(new Error('수량을 초과해서 담을 수 없어요.'));
+                          return;
+                        }
+                        handleQuantityChange(viewModel.id, viewModel.cartQuantity + 1);
+                      }}
+                    />
+                  </div>
+                </div>
+                <RemoveFromCartButton onClick={() => handleDeleteCart(viewModel.id)} />
+              </div>
+            );
+          })}
+        </div>
+
+        <Modal.Footer>
+          <div css={styles.footerCss}>
+            <div css={styles.totalPriceCss}>
+              <p>총 결제 금액</p>
+              <p>{totalPrice.toLocaleString()}원</p>
+            </div>
+            <Button css={styles.buttonCss} onClick={onClose}>
+              닫기
+            </Button>
+          </div>
+        </Modal.Footer>
+      </Modal.Content>
+    </Modal>
+  );
+}

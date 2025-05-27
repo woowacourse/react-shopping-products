@@ -25,29 +25,3 @@ export const cartIcon = css({
     fontSize: '14px'
   }
 });
-
-export const modalContent = css({ maxHeight: '444px', overflowY: 'auto' });
-
-export const totalPriceCss = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-
-  '& > p:first-of-type': {
-    fontWeight: 700
-  },
-  '& > p:last-of-type': {
-    fontSize: '24px',
-    fontWeight: 700
-  }
-});
-
-export const footerCss = css({
-  width: '100%',
-  gap: '24px',
-  display: 'flex',
-  flexDirection: 'column'
-});
-export const buttonCss = css({
-  width: '100%'
-});

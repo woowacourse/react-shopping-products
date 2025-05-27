@@ -1,23 +1,26 @@
+import { deleteCartItem } from '../../api/deleteCartItem';
 import getCartItems from '../../api/getCartItems';
 import { createCartItemViewModel, CartItemViewModel } from '../../api/model/createCartItemViewModel';
 import patchCartItem from '../../api/patchCartItem';
 import { useApiContext } from '../../contexts/ApiContext';
 import { useErrorContext } from '../../contexts/ErrorContext';
-import { CartItem } from '../../types/cartContents';
 import { RemoveFromCartButton } from '../CartButton/CartButton';
 import Counter from '../Counter/Counter';
 import Image from '../Image/Image';
 import * as styles from './CartList.style';
 
-export default function CartList({
-  cartItems,
-  onClick
-}: {
-  cartItems: CartItem[];
-  onClick: (cartItem: CartItemViewModel) => Promise<void>;
-}) {
+export default function CartList() {
   const { showError } = useErrorContext();
-  const { fetcher: refetchCart } = useApiContext({ fetchFn: getCartItems, key: 'getCartItems' });
+  const { data: cartItems, fetcher: refetchCart } = useApiContext({ fetchFn: getCartItems, key: 'getCartItems' });
+
+  const handleDeleteCart = async (cartItem: CartItemViewModel) => {
+    try {
+      await deleteCartItem(cartItem.id);
+      await refetchCart();
+    } catch (err) {
+      if (err instanceof Error) showError(err);
+    }
+  };
 
   const handleMinus = async (item: CartItemViewModel) => {
     try {
@@ -47,7 +50,7 @@ export default function CartList({
 
   return (
     <>
-      {cartItems.map((item) => {
+      {cartItems?.content.map((item) => {
         const viewModel = createCartItemViewModel(item);
 
         return (
@@ -66,7 +69,7 @@ export default function CartList({
                 />
               </div>
             </div>
-            <RemoveFromCartButton onClick={() => onClick(viewModel)} />
+            <RemoveFromCartButton onClick={() => handleDeleteCart(viewModel)} />
           </div>
         );
       })}
