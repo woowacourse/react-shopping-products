@@ -1,7 +1,8 @@
 import { useToast } from "../../provider/ToastProvider";
 import { changeCartQuantity } from "../../api/cart";
 import { useData } from "../../provider/DataProvider";
-import { CartItem } from "../../types/response.types";
+import { CartItemType } from "../../types/response.types";
+import { fetchCartItems } from "../../api/cart";
 
 interface UseCartQuantityProps {
   cartId?: number;
@@ -14,10 +15,11 @@ export default function useCartQuantity({
   quantity,
   removeItemToCart,
 }: UseCartQuantityProps) {
-  const { data, setData } = useData();
+  const { getData, refetch } = useData();
   const { showToast } = useToast();
 
-  const current = getCartQuantity(data.cart, cartId);
+  const cartItems = getData<CartItemType[]>("cart") ?? [];
+  const current = getCartQuantity(cartItems, cartId);
 
   async function increase() {
     if (cartId == null) return;
@@ -27,37 +29,30 @@ export default function useCartQuantity({
       return;
     }
 
-    await changeCartQuantity({ cartId, quantity: current + 1 });
+    try {
+      await changeCartQuantity({ cartId, quantity: current + 1 });
 
-    setData((prev) => ({
-      ...prev,
-      cart: prev.cart.map((item) =>
-        item.id === cartId ? { ...item, quantity: current + 1 } : item
-      ),
-    }));
+      await refetch("cart", fetchCartItems);
+    } catch (error) {
+      showToast("CART");
+    }
   }
 
-  function decrease() {
+  async function decrease() {
     if (cartId == null) return;
 
     if (current === 1) {
       removeItemToCart({ cartId });
-
-      setData((prev) => ({
-        ...prev,
-        cart: prev.cart.filter((item) => item.id !== cartId),
-      }));
       return;
     }
 
-    changeCartQuantity({ cartId, quantity: current - 1 });
+    try {
+      await changeCartQuantity({ cartId, quantity: current - 1 });
 
-    setData((prev) => ({
-      ...prev,
-      cart: prev.cart.map((item) =>
-        item.id === cartId ? { ...item, quantity: current - 1 } : item
-      ),
-    }));
+      await refetch("cart", fetchCartItems);
+    } catch (error) {
+      showToast("CART");
+    }
   }
 
   return {
@@ -67,6 +62,6 @@ export default function useCartQuantity({
   };
 }
 
-function getCartQuantity(cartData: CartItem[], cartId: number | undefined) {
+function getCartQuantity(cartData: CartItemType[], cartId: number | undefined) {
   return cartData.find((item) => item.id === cartId)?.quantity ?? 0;
 }

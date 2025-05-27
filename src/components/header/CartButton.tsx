@@ -1,19 +1,28 @@
 import { CartStyle, PutItemCount } from "./CartButton.css";
 import { useData } from "../../provider/DataProvider";
+import { useEffect } from "react";
+import { fetchCartItems } from "../../api/cart";
+import { CartItemType } from "../../types/response.types";
 
 interface CartButtonProps {
   onClick: () => void;
 }
 
-function CartButton({ onClick }: CartButtonProps) {
-  const { data } = useData();
+export default function CartButton({ onClick }: CartButtonProps) {
+  const { getData, fetchData } = useData();
+
+  useEffect(() => {
+    fetchData<CartItemType[]>("cart", fetchCartItems);
+  }, [fetchData]);
+
+  const cartItems = getData<CartItemType[]>("cart") ?? [];
+
+  console.log(cartItems);
 
   return (
     <button css={CartStyle} onClick={onClick}>
       <img src="Cart.svg" alt="장바구니 아이콘" />
-      <div css={PutItemCount}>{data.cart.length}</div>
+      <div css={PutItemCount}>{cartItems.length}</div>
     </button>
   );
 }
-
-export default CartButton;

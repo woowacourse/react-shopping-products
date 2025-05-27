@@ -1,9 +1,9 @@
 import "./index.css";
 import "./reset.css";
-import ProductContainer from "./components/productContainer/ProductContainer";
 import Header from "./components/header/Header";
-import CartModal from "./components/cartModal/CartModal";
 import useModal from "./hooks/useModal";
+import CartModal from "./components/cartModal/CartModal";
+import ProductContainer from "./components/productContainer/ProductContainer";
 
 function App() {
   const { isOpen, modalClose, modalOpen } = useModal();

@@ -1,5 +1,5 @@
-import { CartItem } from "../../types/response.types";
+import { CartItemType } from "../../types/response.types";
 
-export const carts: { content: CartItem[] } = {
+export const carts: { content: CartItemType[] } = {
   content: [],
 };

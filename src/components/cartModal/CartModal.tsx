@@ -7,6 +7,7 @@ import {
   ModalOverlay,
   ModalTitle,
 } from "./CartModal.css";
+import { CartItemType } from "../../types/response.types";
 
 interface ModalProps {
   onClose: () => void;
@@ -14,7 +15,9 @@ interface ModalProps {
 
 function Modal({ onClose }: ModalProps) {
   const { onClickOverlay } = useModalClose({ closeModal: onClose });
-  const { data } = useData();
+  const { getData } = useData();
+
+  const cartItems = getData<CartItemType[]>("cart") ?? [];
 
   return (
     <>
@@ -22,7 +25,7 @@ function Modal({ onClose }: ModalProps) {
       <div css={ModalContainer}>
         <h2 css={ModalTitle}>장바구니</h2>
         <hr />
-        {data.cart?.map((data) => (
+        {cartItems?.map((data) => (
           <CartItem {...data} />
         ))}
         <button css={CloseButton} onClick={onClose}>

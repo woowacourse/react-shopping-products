@@ -1,58 +1,138 @@
-import React, {
+import {
   createContext,
   useContext,
   useState,
-  useEffect,
   ReactNode,
   useCallback,
 } from "react";
-import { CartItem, Product } from "../types/response.types";
-import fetchProducts from "../api/products";
-import { fetchCartItems } from "../api/cart";
+
+interface CacheItem<T> {
+  data: T;
+  updatedAt: number;
+  loading: boolean;
+  error: Error | null;
+}
 
 interface DataContextType {
-  data: {
-    products: Product[];
-    cart: CartItem[];
-  };
-  fetchData: (
-    key: keyof DataContextType["data"],
-    fetchFn: () => Promise<unknown>
+  getData: <T>(key: string) => T | undefined;
+  fetchData: <T>(
+    key: string,
+    fetchFn: () => Promise<T>,
+    options?: { cacheTime?: number }
   ) => Promise<void>;
-  setData: React.Dispatch<React.SetStateAction<DataContextType["data"]>>;
+  refetch: <T>(key: string, fetchFn: () => Promise<T>) => Promise<void>;
+  loading: (key: string) => boolean;
+  error: (key: string) => Error | null;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
+const DEFAULT_CACHE_TIME = 5 * 60 * 1000;
+
 export const DataProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState<{ products: Product[]; cart: CartItem[] }>({
-    products: [],
-    cart: [],
-  });
+  const [cache, setCache] = useState<Record<string, CacheItem<unknown>>>({});
 
   const fetchData = useCallback(
     async function <T>(
-      key: keyof DataContextType["data"],
-      fetchFn: () => Promise<T>
+      key: string,
+      fetchFn: () => Promise<T>,
+      options: { cacheTime?: number } = {}
     ): Promise<void> {
-      const result = await fetchFn();
-      setData((prev) => ({
+      const now = Date.now();
+      const cacheTime = options.cacheTime ?? DEFAULT_CACHE_TIME;
+      const existing = cache[key];
+
+      if (existing && now - existing.updatedAt < cacheTime) return;
+
+      setCache((prev) => ({
         ...prev,
-        [key]: result,
+        [key]: {
+          data: prev[key]?.data ?? undefined,
+          updatedAt: now,
+          loading: true,
+          error: null,
+        },
       }));
+
+      try {
+        const data = await fetchFn();
+        setCache((prev) => ({
+          ...prev,
+          [key]: {
+            data,
+            updatedAt: Date.now(),
+            loading: false,
+            error: null,
+          },
+        }));
+      } catch (error) {
+        setCache((prev) => ({
+          ...prev,
+          [key]: {
+            data: undefined,
+            updatedAt: Date.now(),
+            loading: false,
+            error: error as Error,
+          },
+        }));
+      }
     },
-    [setData]
+    [cache]
   );
 
-  useEffect(() => {
-    fetchData<Product[]>("products", () =>
-      fetchProducts({ category: "전체", sort: "낮은 가격순" })
-    );
-    fetchData<CartItem[]>("cart", fetchCartItems);
-  }, [fetchData]);
+  const refetch = useCallback(async function <T>(
+    key: string,
+    fetchFn: () => Promise<T>
+  ): Promise<void> {
+    setCache((prev) => ({
+      ...prev,
+      [key]: {
+        data: prev[key]?.data ?? undefined,
+        updatedAt: Date.now(),
+        loading: true,
+        error: null,
+      },
+    }));
+
+    try {
+      const data = await fetchFn();
+      setCache((prev) => ({
+        ...prev,
+        [key]: {
+          data,
+          updatedAt: Date.now(),
+          loading: false,
+          error: null,
+        },
+      }));
+    } catch (error) {
+      setCache((prev) => ({
+        ...prev,
+        [key]: {
+          data: undefined,
+          updatedAt: Date.now(),
+          loading: false,
+          error: error as Error,
+        },
+      }));
+    }
+  },
+  []);
+
+  const getData = useCallback(
+    <T,>(key: string): T | undefined => {
+      return cache[key]?.data as T | undefined;
+    },
+    [cache]
+  );
+
+  const loading = (key: string) => cache[key]?.loading ?? false;
+  const error = (key: string) => cache[key]?.error ?? null;
 
   return (
-    <DataContext.Provider value={{ data, fetchData, setData }}>
+    <DataContext.Provider
+      value={{ getData, fetchData, refetch, loading, error }}
+    >
       {children}
     </DataContext.Provider>
   );
@@ -63,7 +143,5 @@ export const useData = () => {
   if (!context) {
     throw new Error("useData must be used within a DataProvider");
   }
-
-  
   return context;
 };

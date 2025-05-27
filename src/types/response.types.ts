@@ -35,14 +35,14 @@ export interface ProductPageResponse {
   sort: Sort;
 }
 
-export interface CartItem {
+export interface CartItemType {
   id: number;
   quantity: number;
   product: Product;
 }
 
 export interface CartProduct {
-  content: CartItem[];
+  content: CartItemType[];
   empty: boolean;
   first: boolean;
   last: boolean;

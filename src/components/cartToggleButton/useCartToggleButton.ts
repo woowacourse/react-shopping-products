@@ -17,7 +17,7 @@ interface RemoveItemToCartProps {
 
 export default function useCartToggleButton() {
   const { showToast } = useToast();
-  const { setData, fetchData } = useData();
+  const { refetch } = useData();
 
   async function removeItemToCart({ cartId }: RemoveItemToCartProps) {
     try {
@@ -25,12 +25,7 @@ export default function useCartToggleButton() {
         method: "DELETE",
         url: `/cart-items/${cartId}`,
       });
-      setData((prev) => {
-        return {
-          ...prev,
-          cart: prev.cart.filter((item) => item.id !== cartId),
-        };
-      });
+      await refetch("cart", fetchCartItems);
     } catch {
       showToast("MINUS");
     }
@@ -47,27 +42,7 @@ export default function useCartToggleButton() {
         url: "/cart-items",
         body: { productId, quantity: 1 },
       });
-      setData((prev) => {
-        return {
-          ...prev,
-          cart: [
-            ...prev.cart,
-            {
-              quantity: 1,
-              id: 0,
-              product: {
-                category: "식료품",
-                id: productId,
-                imageUrl: "",
-                name: "",
-                price: 0,
-                quantity: 0,
-              },
-            },
-          ],
-        };
-      });
-      fetchData("cart", fetchCartItems);
+      await refetch("cart", fetchCartItems);
     } catch {
       showToast("ADD");
     }
