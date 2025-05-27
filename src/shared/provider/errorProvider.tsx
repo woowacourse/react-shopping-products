@@ -3,6 +3,7 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useRef,
   useState,
 } from 'react';
 
@@ -15,11 +16,18 @@ const ErrorContext = createContext<ErrorContextType | undefined>(undefined);
 
 export function ErrorProvider({children}: {children: ReactNode}) {
   const [error, setError] = useState('');
+  const timerRef = useRef<number | null>(null);
 
   const showError = useCallback((errorMessage: string) => {
     setError(errorMessage);
-    setTimeout(() => {
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = window.setTimeout(() => {
       setError('');
+      timerRef.current = null;
     }, 2000);
   }, []);
 
