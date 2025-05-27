@@ -1,4 +1,5 @@
 import { screen, act, fireEvent, within, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe } from 'vitest';
 
 import { productsData } from '@/shared/mocks/handlers/product/products.data';
@@ -6,6 +7,12 @@ import { productsData } from '@/shared/mocks/handlers/product/products.data';
 import { renderProductListPage } from './ProductList.test';
 
 describe('CartBottomSheet 테스트', () => {
+  let user: ReturnType<typeof userEvent.setup>;
+
+  beforeEach(() => {
+    user = userEvent.setup();
+  });
+
   const setupCartBottomSheet = async () => {
     renderProductListPage();
 
@@ -17,18 +24,13 @@ describe('CartBottomSheet 테스트', () => {
 
     const cardElement = firstProductButton.closest('div');
     expect(cardElement).toBeInTheDocument();
-
-    await act(async () => {
-      fireEvent.click(firstProductButton);
-    });
+    await user.click(firstProductButton);
 
     const header = screen.getByRole('banner');
     const withinHeader = within(header);
     const shoppingBagIcon = withinHeader.getByRole('button');
 
-    await act(async () => {
-      fireEvent.click(shoppingBagIcon);
-    });
+    await user.click(shoppingBagIcon);
 
     const bottomSheet = screen.getByRole('dialog');
     const withinBottomSheet = within(bottomSheet);
@@ -58,9 +60,7 @@ describe('CartBottomSheet 테스트', () => {
     // When : 유저가 삭제 버튼을 클릭했을 때
     const deleteButton = await screen.findAllByRole('button', { name: /삭제$/ });
     const firstDeleteButton = deleteButton[0];
-    await act(async () => {
-      fireEvent.click(firstDeleteButton);
-    });
+    await user.click(firstDeleteButton);
 
     // Then : 장바구니에서 상품이 삭제된다.
     expect(withinBottomSheet.getByText('장바구니')).toBeInTheDocument();

@@ -1,8 +1,14 @@
-import { screen, fireEvent, within, act } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { renderProductListPage } from './ProductList.test';
 
 describe('ProductListPage 담기 동작', () => {
+  let user: ReturnType<typeof userEvent.setup>;
+
+  beforeEach(() => {
+    user = userEvent.setup();
+  });
   it('담기 버튼을 클릭하면 -/+ 버튼과 수량 1이 보여지고 헤더에 존재하는 장바구니 아이콘에 숫자 1이 더해진다.', async () => {
     // Given : 상품 목록을 받았을 때
     renderProductListPage();
@@ -14,11 +20,7 @@ describe('ProductListPage 담기 동작', () => {
     const firstProductButton = productButtons[0];
 
     const cardElement = firstProductButton.closest('div');
-    expect(cardElement).toBeInTheDocument();
-
-    await act(async () => {
-      fireEvent.click(firstProductButton);
-    });
+    await user.click(firstProductButton);
 
     // Then : 장바구니에 상품이 담겼는지 확인한다.
     const utils = within(cardElement!);
@@ -41,11 +43,7 @@ describe('ProductListPage 담기 동작', () => {
     });
     const firstProductButton = plusButton[0];
     const cardElement = firstProductButton.closest('div');
-    expect(cardElement).toBeInTheDocument();
-
-    await act(async () => {
-      fireEvent.click(firstProductButton);
-    });
+    await user.click(firstProductButton);
 
     // Then : 상단의 수량이 1 증가한다.
     const utils = within(cardElement!);
@@ -62,11 +60,7 @@ describe('ProductListPage 담기 동작', () => {
     });
     const firstProductButton = minusButton[0];
     const cardElement = firstProductButton.closest('div');
-    expect(cardElement).toBeInTheDocument();
-
-    await act(async () => {
-      fireEvent.click(firstProductButton);
-    });
+    await user.click(firstProductButton);
 
     // Then : 상단의 수량이 1 감소한다.
     const utils = within(cardElement!);
