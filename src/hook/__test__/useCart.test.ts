@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { server } from '../../test/setup';
-import useCart from '../useCart';
+import useCart from '../cart/useCart';
 import { CartItem } from '../../types/common';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;

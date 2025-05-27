@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import useCart from '../../hook/useCart';
+import useCart from '../../hook/cart/useCart';
 import CartContext from './cartContext';
 
 const CartProvider = ({ children }: { children: React.ReactNode }) => {
