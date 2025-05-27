@@ -25,9 +25,7 @@ const useCart = () => {
   const addCart = useCallback(
     async (productId: number) => {
       try {
-        const isSoldOut = checkProductQuantity(productId, data);
-
-        if (isSoldOut) {
+        if (isSoldOut(productId, data)) {
           throw new Error('상품의 재고가 없습니다.');
         }
 
@@ -92,7 +90,7 @@ const useCart = () => {
 
 export default useCart;
 
-const checkProductQuantity = (productId: number, data: Product[]) => {
+const isSoldOut = (productId: number, data: Product[]) => {
   return data?.find((item) => item.id === productId)?.quantity === 0;
 };
 
