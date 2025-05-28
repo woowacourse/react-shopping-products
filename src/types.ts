@@ -1,3 +1,5 @@
+import Product from './routes/Product';
+
 export interface Product {
   id: number;
   name: string;
@@ -23,17 +25,11 @@ export interface Info {
   [key: string]: unknown;
 }
 
-export interface MergedData {
+export interface MergedData extends Product {
   cartInfo: {
     id: number;
     quantity: number;
   };
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-  quantity: number;
 }
 
 export type SortingType = 'asc' | 'desc';
