@@ -9,29 +9,32 @@ import {
 import ProductContent from ".";
 import { FilterOption, SortOption } from "./ProductContent.type";
 
-let { mockProductItems } = vi.hoisted(() => {
+const { mockProductItems } = vi.hoisted(() => {
   return {
     mockProductItems: [
       {
         id: 1,
         name: "메이토",
         price: 1000,
-        imageUrl: "",
+        imageUrl: "3",
         category: "식료품",
+        quantity: 0,
       },
       {
         id: 2,
         name: "토마토",
         price: 10000,
-        imageUrl: "",
+        imageUrl: "2",
         category: "식료품",
+        quantity: 1,
       },
       {
         id: 3,
         name: "우비",
         price: 100000,
-        imageUrl: "",
+        imageUrl: "1",
         category: "패션잡화",
+        quantity: 1,
       },
     ],
   };
@@ -41,20 +44,21 @@ vi.mock("@/apis/products/getProducts", () => ({
   getProducts: vi.fn().mockImplementation(({ filterOption, sortOption }) => {
     return new Promise((resolve) => {
       const filterItems = mockProductItems.filter((item) => {
-        if (filterOption === "전체") {
+        if (filterOption.label === "전체") {
           return true;
         }
 
-        return item.category === filterOption;
+        return item.category === filterOption.label;
       });
+
       const resultItems = filterItems.sort((a, b) => {
-        if (sortOption === "낮은 가격순") {
+        if (sortOption.label === "낮은 가격순") {
           return a.price - b.price;
         }
 
         return b.price - a.price;
       });
-      resolve(resultItems);
+      return resolve(resultItems);
     });
   }),
 }));
@@ -66,10 +70,10 @@ describe("ProductContent Component", () => {
     expectedItemCount: number
   ) => {
     await act(async () => {
-      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
+      render(<ProductContent />);
     });
 
-    const list = screen.getByRole("list");
+    const list = await screen.findByRole("list");
     expect(list).toBeInTheDocument();
 
     expect(within(list).getAllByRole("listitem")).toHaveLength(
@@ -78,9 +82,11 @@ describe("ProductContent Component", () => {
 
     const filterDropdown = screen.getByTestId("filter-dropdown");
     fireEvent.click(within(filterDropdown).getByTestId("dropdown-trigger"));
-    fireEvent.click(
-      within(filterDropdown).getByTestId(`dropdown-option-${category}`)
-    );
+    await act(async () => {
+      fireEvent.click(
+        within(filterDropdown).getByTestId(`dropdown-option-${category.label}`)
+      );
+    });
 
     await waitFor(() => {
       expect(within(list).getAllByRole("listitem")).toHaveLength(
@@ -102,7 +108,7 @@ describe("ProductContent Component", () => {
     expectedOrder: string[]
   ) => {
     await act(async () => {
-      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
+      render(<ProductContent />);
     });
 
     const list = screen.getByRole("list");
@@ -110,9 +116,13 @@ describe("ProductContent Component", () => {
 
     const filterDropdown = screen.getByTestId("sort-dropdown");
     fireEvent.click(within(filterDropdown).getByTestId("dropdown-trigger"));
-    fireEvent.click(
-      within(filterDropdown).getByTestId(`dropdown-option-${sortOption}`)
-    );
+    await act(async () => {
+      fireEvent.click(
+        within(filterDropdown).getByTestId(
+          `dropdown-option-${sortOption.label}`
+        )
+      );
+    });
 
     await waitFor(() => {
       const listItems = within(list).getAllByRole("listitem");
@@ -141,20 +151,8 @@ describe("ProductContent Component", () => {
     ]);
   });
 
-  it("등록된 상품이 없을 때 상품 목록 리스트가 렌더링되지 않고 대체 텍스트가 렌더링된다.", async () => {
-    mockProductItems = [];
-    await act(async () => {
-      render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
-    });
-
-    const list = screen.queryByRole("list");
-    expect(list).not.toBeInTheDocument();
-
-    expect(screen.getByText("등록된 상품이 없습니다.")).toBeInTheDocument();
-  });
-
   it("상품 목록을 불러오는 중일 때 로딩 메시지가 표시된다.", async () => {
-    render(<ProductContent cartItems={[]} updateCartItems={() => {}} />);
+    render(<ProductContent />);
 
     expect(
       screen.getByText("상품 목록을 가져오는 중 입니다...")

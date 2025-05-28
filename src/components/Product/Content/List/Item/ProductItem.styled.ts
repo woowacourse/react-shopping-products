@@ -9,11 +9,26 @@ export const Item = styled.li`
   border: 1px solid #eaeaea;
 `;
 
-export const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div<{ isSoldOut: boolean }>`
   width: 100%;
   aspect-ratio: 1/1;
   border-bottom: 1px solid #acacac;
   max-height: 218px;
+  position: relative;
+`;
+
+export const SoldOutText = styled.p`
+  position: absolute;
+  color: #ffffff;
+  font-size: 35px;
+  font-weight: 600;
+  background-color: rgba(0, 0, 0, 0.65);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 3.5px;
 `;
 
 export const ProductImage = styled.img`

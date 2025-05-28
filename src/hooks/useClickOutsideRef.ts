@@ -1,8 +1,8 @@
-import { type LegacyRef, useEffect, useRef } from "react";
+import { type RefObject, useEffect, useRef } from "react";
 
 const useClickOutsideRef = <T extends HTMLElement>(
   callback: () => void
-): LegacyRef<T> => {
+): RefObject<T | null> => {
   const ref = useRef<T>(null);
 
   useEffect(

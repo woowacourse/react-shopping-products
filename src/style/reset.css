@@ -136,6 +136,7 @@ button {
   outline: none;
   background-color: transparent;
   padding: 0;
+  cursor: pointer;
 }
 
 input:-webkit-autofill,

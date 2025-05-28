@@ -4,17 +4,11 @@ import FilterSortControl from "./FilterSortControl";
 import { Suspense, useMemo, useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
 import { getProducts } from "@/apis/products/getProducts";
-import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Fallback from "@/components/Fallback";
 import { FILTER_OPTIONS, SORT_OPTIONS } from "./ProductContent.constant";
 
-interface ProductContentProps {
-  cartItems: CartItemType[];
-  updateCartItems: (newCartItems: CartItemType[]) => void;
-}
-
-function ProductContent({ cartItems, updateCartItems }: ProductContentProps) {
+function ProductContent() {
   const [filterOption, setFilterOption] = useState<FilterOption>(
     FILTER_OPTIONS[0]
   );
@@ -57,11 +51,7 @@ function ProductContent({ cartItems, updateCartItems }: ProductContentProps) {
             />
           }
         >
-          <ProductList
-            resource={productResource}
-            cartItems={cartItems}
-            updateCartItems={updateCartItems}
-          />
+          <ProductList resource={productResource} />
         </ErrorBoundary>
       </Suspense>
     </S.Container>

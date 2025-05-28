@@ -5,10 +5,10 @@ import ToastContent from "./ToastContent";
 
 interface ToastProps {
   limit?: number; // 토스트 개수, 기본 값 3
-  autoClose?: number; // 자동으로 토스트가 제거되는 시간, 기본 값 3000ms
+  duration?: number; // 자동으로 토스트가 제거되는 시간, 기본 값 3000ms
 }
 
-function Toast({ limit = 3, autoClose = 3000 }: ToastProps) {
+function Toast({ limit = 3, duration = 3000 }: ToastProps) {
   const [toastInfos, setToastInfos] = useState<ToastInfo[]>([]);
 
   useEffect(() => {
@@ -19,9 +19,9 @@ function Toast({ limit = 3, autoClose = 3000 }: ToastProps) {
 
       setToastInfos((prev) => [...prev, { id, type, message }]);
 
-      setTimeout(() => {
+      window.setTimeout(() => {
         setToastInfos((prev) => prev.filter((toast) => toast.id !== id));
-      }, autoClose);
+      }, duration);
     };
 
     const toastService = ToastService.getInstance();
@@ -31,7 +31,7 @@ function Toast({ limit = 3, autoClose = 3000 }: ToastProps) {
     return () => {
       toastService.unsubscribe(addToast);
     };
-  }, [toastInfos.length, limit, autoClose]);
+  }, [toastInfos.length, limit, duration]);
 
   const deleteToast = (id: string) => {
     setToastInfos((prev) => prev.filter((toastInfo) => toastInfo.id !== id));
@@ -43,7 +43,7 @@ function Toast({ limit = 3, autoClose = 3000 }: ToastProps) {
         <ToastContent
           key={id}
           id={id}
-          autoClose={autoClose}
+          duration={duration}
           type={type}
           message={message}
           onClose={deleteToast}
