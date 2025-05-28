@@ -7,16 +7,11 @@ import * as S from "./ProductCard.styles";
 interface ProductCardProps {
   product: Product;
   cartItem: CartItem | undefined;
-  handleIncreaseCartItem: (productId: number) => void;
-  handleDecreaseCartItem: (productId: number) => void;
+  onIncreaseCartItem: (productId: number) => void;
+  onDecreaseCartItem: (productId: number) => void;
 }
 
-export default function ProductCard({
-  product,
-  handleIncreaseCartItem,
-  handleDecreaseCartItem,
-  cartItem,
-}: ProductCardProps) {
+export default function ProductCard({ product, onIncreaseCartItem, onDecreaseCartItem, cartItem }: ProductCardProps) {
   const isSoldOut = product.stock === 0;
 
   return (
@@ -49,14 +44,14 @@ export default function ProductCard({
             <div css={S.buttonWrapper}>
               <PlusMinusButton
                 quantity={cartItem.quantity}
-                onAddButtonClick={() => handleIncreaseCartItem(product.id)}
-                onMinusButtonClick={() => handleDecreaseCartItem(product.id)}
+                onAddButtonClick={() => onIncreaseCartItem(product.id)}
+                onMinusButtonClick={() => onDecreaseCartItem(product.id)}
               />
             </div>
           ) : (
             <Button
               onClick={() => {
-                handleIncreaseCartItem(product.id);
+                onIncreaseCartItem(product.id);
               }}
             >
               <AddCartIcon />

@@ -55,8 +55,8 @@ export default function ProductList() {
               key={product.id}
               product={product}
               cartItem={cartItems?.content.find((item) => item.product.id === product.id)}
-              handleIncreaseCartItem={increaseCartItem}
-              handleDecreaseCartItem={decreaseCartItem}
+              onIncreaseCartItem={increaseCartItem}
+              onDecreaseCartItem={decreaseCartItem}
             />
           ))}
       </S.CardWrapper>
