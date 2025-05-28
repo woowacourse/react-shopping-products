@@ -5,7 +5,7 @@ import { APIProvider } from "./contexts/API/APIProvider";
 import { ErrorProvider } from "./contexts/Error/ErrorProvider";
 
 function App() {
-  const [isOepn, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleModal = () => {
     setIsOpen((prev) => !prev);
@@ -15,7 +15,7 @@ function App() {
     <APIProvider>
       <ErrorProvider>
         <div className={AppStyles}>
-          <ProductListPage isOpen={isOepn} handleModal={handleModal} />
+          <ProductListPage isOpen={isOpen} handleModal={handleModal} />
         </div>
       </ErrorProvider>
     </APIProvider>
