@@ -92,7 +92,7 @@ export const StyledControllImg = styled.img`
   align-items: center;
 `;
 
-export const StyledSoldOutOvelay = styled.div`
+export const StyledSoldOutOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

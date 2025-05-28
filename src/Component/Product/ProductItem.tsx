@@ -12,7 +12,7 @@ import {
   StyledProductInfo,
   StyledProductInfoWrapper,
   StyledTitle,
-  StyledSoldOutOvelay,
+  StyledSoldOutOverlay,
 } from "../../styles/Product/ProductItem.styles";
 import { CartItem } from "../Common/Modal";
 import { Product } from "./ProductList";
@@ -37,7 +37,7 @@ export default function ProductItem({
   return (
     <StyledLi id={String(id)}>
       <StyledImgWrapper imageUrl={imageUrl}>
-        {quantity === 0 && <StyledSoldOutOvelay>품절</StyledSoldOutOvelay>}
+        {quantity === 0 && <StyledSoldOutOverlay>품절</StyledSoldOutOverlay>}
       </StyledImgWrapper>
       <StyledProductInfoWrapper>
         <StyledProductInfo>
