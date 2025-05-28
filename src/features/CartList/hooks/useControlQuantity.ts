@@ -37,10 +37,9 @@ export const useControlQuantity = (productId: number) => {
   };
 
   const removeCartItem = async () => {
+    if (!cartItem) return;
     try {
-      if (cartItem) {
-        await cartData.mutate(() => deleteCartItem(cartItem.id), getCartItemList);
-      }
+      await cartData.mutate(() => deleteCartItem(cartItem.id), getCartItemList);
     } catch (error) {
       showToast(`장바구니에서 ${cartItem?.product.name} 상품을 삭제할 수 없습니다.`);
     }
