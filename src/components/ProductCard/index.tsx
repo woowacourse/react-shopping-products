@@ -11,6 +11,7 @@ import {
   CardFrame,
   CardImage,
   CardInfo,
+  CurrentQuantity,
   ImageFrame,
   ImageOverlay,
   ProductName,
@@ -95,6 +96,7 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
           {name}
         </h4>
         <p data-testid="product-price">{price.toLocaleString()}원</p>
+        <p className={CurrentQuantity}>⚠️ {product.quantity}개 남았어요</p>
         <div className={ButtonArea}>
           {isInCart ? (
             <>

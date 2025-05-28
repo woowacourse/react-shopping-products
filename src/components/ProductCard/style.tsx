@@ -2,7 +2,6 @@ import { css } from "@emotion/css";
 
 const CardFrame = css`
   width: 100%;
-  height: 224px;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -57,6 +56,10 @@ const ButtonArea = css`
   justify-content: space-between;
 `;
 
+const CurrentQuantity = css`
+  font-size: 12px;
+`;
+
 export {
   CardFrame,
   ImageFrame,
@@ -65,4 +68,5 @@ export {
   CardInfo,
   ProductName,
   ButtonArea,
+  CurrentQuantity,
 };
