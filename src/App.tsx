@@ -1,14 +1,32 @@
-import AppContent from "./AppContent";
-import { CartProvider } from "./contexts/CartProvider";
+import { useState } from "react";
+import Modal from "./Component/Common/Modal";
+import Body from "./Component/Layout/Body";
+import Header from "./Component/Layout/Header";
+import ProductListContainer from "./Component/Product/ProductListContainer";
+import { APIProvider } from "./domain/contexts/APIContext";
 
 function App() {
   return (
-    <>
-      <CartProvider>
-        <AppContent />
-      </CartProvider>
-    </>
+    <APIProvider>
+      <AppContent />
+    </APIProvider>
   );
 }
 
 export default App;
+
+function AppContent() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  return (
+    <>
+      <div>
+        <Header onOpenModal={() => setIsModalOpen(true)} />
+        <Body>
+          <ProductListContainer />
+        </Body>
+      </div>
+      <Modal isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
+  );
+}
