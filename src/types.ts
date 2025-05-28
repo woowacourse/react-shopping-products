@@ -23,5 +23,19 @@ export interface Info {
   [key: string]: unknown;
 }
 
+export interface MergedData {
+  cartInfo: {
+    id: number;
+    quantity: number;
+  };
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+  quantity: number;
+}
+
 export type SortingType = 'asc' | 'desc';
 export type filterType = '식료품' | '패션잡화';
+export type HandleCartProductsKeyword = 'add' | 'remove' | 'patch';

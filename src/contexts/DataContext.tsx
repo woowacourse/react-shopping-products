@@ -2,6 +2,7 @@ import { createContext, ReactNode, useMemo, useState } from 'react';
 import useProducts from '../hooks/useProducts';
 import useCart from '../hooks/useCart';
 import { getMergedData } from '../utils';
+import { HandleCartProductsKeyword, MergedData } from '../types';
 
 interface DataContext {
   filter: string;
@@ -9,21 +10,10 @@ interface DataContext {
   sort: string;
   setSort: React.Dispatch<React.SetStateAction<string>>;
   cartLength: number;
-  mergedData: {
-    cartInfo: {
-      id: number;
-      quantity: number;
-    };
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-    category: string;
-    quantity: number;
-  }[];
+  mergedData: MergedData[];
   productsLoading: boolean;
   handleCartProducts: (
-    keyword: 'add' | 'remove' | 'patch',
+    keyword: HandleCartProductsKeyword,
     options: {
       id: number;
       quantity?: number;
