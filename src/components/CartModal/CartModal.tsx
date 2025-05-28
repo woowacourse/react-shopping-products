@@ -1,6 +1,8 @@
 import ItemModalCard from '../ItemModalCard/ItemModalCard';
 import S from './CartModal.module.css';
 import useFetchData from '../../hooks/useFetchData';
+import NothingInfo from '../NothingInfo/NothingInfo';
+import ERROR_MESSAGE from '../../constants/ERROR_MESSAGE';
 
 interface ModalProps {
   isOpen: boolean;
@@ -23,19 +25,23 @@ const CartModal = ({ isOpen, handleClose }: ModalProps) => {
         <div className={S.content}>
           <p className={S.title}>장바구니</p>
           <div className={S.cartItemContainer}>
-            {cartItemData?.map(({ id, imageUrl, name, price, cartInfo }) => (
-              <ItemModalCard
-                key={id}
-                imageUrl={imageUrl}
-                name={name}
-                price={price * cartInfo.quantity}
-                quantity={cartInfo.quantity}
-                onRemoveCart={() => handleCartProducts('remove', { id: cartInfo.id })}
-                onPatchCart={(quantity: number) =>
-                  handleCartProducts('patch', { id: cartInfo.id, quantity })
-                }
-              />
-            ))}
+            {cartItemData.length !== 0 ? (
+              cartItemData?.map(({ id, imageUrl, name, price, cartInfo }) => (
+                <ItemModalCard
+                  key={id}
+                  imageUrl={imageUrl}
+                  name={name}
+                  price={price * cartInfo.quantity}
+                  quantity={cartInfo.quantity}
+                  onRemoveCart={() => handleCartProducts('remove', { id: cartInfo.id })}
+                  onPatchCart={(quantity: number) =>
+                    handleCartProducts('patch', { id: cartInfo.id, quantity })
+                  }
+                />
+              ))
+            ) : (
+              <NothingInfo description={ERROR_MESSAGE.NO_CART} />
+            )}
           </div>
           <div className={S.totalPriceContainer}>
             <p>총 결제 금액</p>

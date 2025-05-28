@@ -1,4 +1,6 @@
 const ERROR_MESSAGE: Record<string, string> = {
+  NO_PRODUCTS: '불러온 상품 목록이 없습니다.',
+  NO_CART: '장바구니가 비어있습니다.',
   NO_INTERNET: '인터넷 오류입니다. 확인 후 다시 시도해주세요.',
   WRONG_REQUEST: '잘못된 요청입니다. 다시 시도해주세요.',
   OUT_OF_STOCK: '재고 수량을 초과하여 담을 수 없습니다.',
