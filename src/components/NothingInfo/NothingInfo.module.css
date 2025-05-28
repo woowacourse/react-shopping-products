@@ -1,0 +1,13 @@
+.container {
+  user-select: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.nothingImage {
+  margin: 20px 0px;
+  width: 40%;
+}
