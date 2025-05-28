@@ -8,7 +8,7 @@ function App() {
     <div className={S.container}>
       <ErrorProvider>
         <DataProvider>
-          <Product />;
+          <Product />
         </DataProvider>
       </ErrorProvider>
     </div>
