@@ -5,7 +5,7 @@ import OrbitSpinner from "../components/OrbitSpinner/index";
 import { useAPIContext } from "../contexts/API/useAPIContext";
 import getProducts from "../APIs/products/getProducts";
 import { Category, Product, SortOption } from "../types/product.type";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import CartModal from "../components/CartModal/CartModal";
 import getShoppingCart from "../APIs/shoppingCart/getShoppingCart";
@@ -56,6 +56,18 @@ const ProductListPage = ({ isOpen, handleModal }: ProductListPageProps) => {
     name: "cartItems",
     fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
 
   return (
     <>
