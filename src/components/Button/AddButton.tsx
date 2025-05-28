@@ -21,6 +21,9 @@ const AddButtonStyles = css`
   ${ButtonStyles};
   background-color: black;
   margin-left: auto;
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 const AddButtonTextStyles = css`

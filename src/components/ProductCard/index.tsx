@@ -126,7 +126,7 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
               )}
             </>
           ) : (
-            <AddButton onClick={handleAdd} disabled={false} />
+            <AddButton onClick={handleAdd} disabled={soldOut} />
           )}
         </div>
       </div>

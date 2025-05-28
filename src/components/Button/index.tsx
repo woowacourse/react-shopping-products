@@ -37,6 +37,9 @@ const ButtonStyles = css`
   background-color: #ffffff;
   border: 1px solid #e5e5e5;
   cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 const ButtonTextStyles = css`

@@ -17,7 +17,7 @@ const ProductStepper = ({
   return (
     <div className={ProductStepperStyles}>
       <Button title="-" onClick={onDecreaseQuantity} disabled={disabled} />
-      <div data-testid="stepper-qunatity">{quantity}</div>
+      <div data-testid="stepper-quantity">{quantity}</div>
       <Button title="+" onClick={onIncreaseQuantity} disabled={disabled} />
     </div>
   );
