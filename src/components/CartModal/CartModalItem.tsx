@@ -1,5 +1,4 @@
 import { css } from "@emotion/css";
-import ProductStepper from "../ProductStepper/ProductStepper";
 import Button from "../Button";
 import deleteShoppingCart from "../../APIs/shoppingCart/deleteShoppingCart";
 import { useAPIContext } from "../../contexts/API/useAPIContext";
@@ -7,6 +6,7 @@ import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
 import { useState } from "react";
 import updateCartItemQuantity from "../../APIs/shoppingCart/updateCartItemQuantity";
 import { useErrorContext } from "../../contexts/Error/ErrorContext";
+import Stepper from "../Stepper";
 
 interface CartModalItemProps {
   name: string;
@@ -77,7 +77,7 @@ const CartModalItem = ({
           <div className={textContainerStyles}>
             <div className={nameStyles}>{name}</div>
             <div className={priceStyles}>{price}</div>
-            <ProductStepper
+            <Stepper
               quantity={localQuantity}
               onDecreaseQuantity={() =>
                 localQuantity > 0

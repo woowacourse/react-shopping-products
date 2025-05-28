@@ -1,21 +1,21 @@
 import { css } from "@emotion/css";
 import Button from "../Button";
 
-interface ProductStepperProps {
+interface StepperProps {
   quantity: number;
   onIncreaseQuantity: () => void;
   onDecreaseQuantity: () => void;
   disabled?: boolean;
 }
 
-const ProductStepper = ({
+const Stepper = ({
   quantity,
   onIncreaseQuantity,
   onDecreaseQuantity,
   disabled = false,
-}: ProductStepperProps) => {
+}: StepperProps) => {
   return (
-    <div className={ProductStepperStyles}>
+    <div className={StepperStyles}>
       <Button title="-" onClick={onDecreaseQuantity} disabled={disabled} />
       <div data-testid="stepper-quantity">{quantity}</div>
       <Button title="+" onClick={onIncreaseQuantity} disabled={disabled} />
@@ -23,7 +23,7 @@ const ProductStepper = ({
   );
 };
 
-const ProductStepperStyles = css`
+const StepperStyles = css`
   display: flex;
   border-radius: 8px;
   gap: 8px;
@@ -31,4 +31,4 @@ const ProductStepperStyles = css`
   cursor: pointer;
 `;
 
-export default ProductStepper;
+export default Stepper;

@@ -1,6 +1,5 @@
 import AddButton from "../Button/AddButton";
 import { CartItem, Product } from "../../types/product.type";
-import ProductStepper from "../ProductStepper/ProductStepper";
 import { useAPIContext } from "../../contexts/API/useAPIContext";
 import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
 import addShoppingCart from "../../APIs/shoppingCart/addShoppingCart";
@@ -17,6 +16,7 @@ import {
   ProductName,
 } from "./style";
 import { useErrorContext } from "../../contexts/Error/ErrorContext";
+import Stepper from "../Stepper";
 
 interface ProductCardProps {
   product: Product;
@@ -98,7 +98,7 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
         <div className={ButtonArea}>
           {isInCart ? (
             <>
-              <ProductStepper
+              <Stepper
                 quantity={localQuantity}
                 onDecreaseQuantity={() =>
                   setLocalQuantity((prev) => (prev > 1 ? prev - 1 : 1))
