@@ -23,8 +23,9 @@ const CartModal = ({ isOpen, handleClose }: ModalProps) => {
         <div className={S.content}>
           <p className={S.title}>장바구니</p>
           <div className={S.cartItemContainer}>
-            {cartItemData?.map(({ imageUrl, name, price, cartInfo }) => (
+            {cartItemData?.map(({ id, imageUrl, name, price, cartInfo }) => (
               <ItemModalCard
+                key={id}
                 imageUrl={imageUrl}
                 name={name}
                 price={price * cartInfo.quantity}
