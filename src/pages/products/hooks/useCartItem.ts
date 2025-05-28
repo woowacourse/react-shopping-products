@@ -27,7 +27,6 @@ export default function useCartItem() {
     GetCartItemsResponse
   >({
     mutationFn: CartItemApi.postCartItems,
-    queryKey: "cartItems",
   });
   const { mutate: mutatePatchCartItem, status: patchCartItemStatus } = useMutation<
     PatchCartItemsParams,
@@ -35,7 +34,6 @@ export default function useCartItem() {
     GetCartItemsResponse
   >({
     mutationFn: CartItemApi.patchCartItems,
-    queryKey: "cartItems",
   });
   const { mutate: mutateDeleteCartItem, status: deleteCartItemStatus } = useMutation<
     DeleteCartItemsParams,
@@ -43,7 +41,6 @@ export default function useCartItem() {
     GetCartItemsResponse
   >({
     mutationFn: CartItemApi.deleteCartItems,
-    queryKey: "cartItems",
   });
 
   const increaseCartItem = async (productId: number) => {
@@ -61,16 +58,20 @@ export default function useCartItem() {
           cartItemId: cartItem.id,
           quantity: cartItem.quantity + 1,
         },
-        (prev) => {
-          const currentCartItemIndex = prev.content.findIndex((item) => item.product.id === productId);
+        {
+          onMutate: (queryClient) => {
+            const prevCartItems = queryClient.getQueryData("cartItems") as GetCartItemsResponse;
 
-          const newCartContent = [...prev.content];
-          newCartContent[currentCartItemIndex] = {
-            ...newCartContent[currentCartItemIndex],
-            quantity: cartItem.quantity + 1,
-          };
+            const currentCartItemIndex = prevCartItems.content.findIndex((item) => item.product.id === productId);
 
-          return { ...prev, content: newCartContent };
+            const newCartContent = [...prevCartItems.content];
+            newCartContent[currentCartItemIndex] = {
+              ...newCartContent[currentCartItemIndex],
+              quantity: cartItem.quantity + 1,
+            };
+
+            queryClient.setQueryData("cartItems", { ...prevCartItems, content: newCartContent });
+          },
         },
       );
     }
@@ -82,42 +83,62 @@ export default function useCartItem() {
     if (!cartItem) return;
 
     if (cartItem.quantity === 1) {
-      await mutateDeleteCartItem({ cartItemId: cartItem.id }, (prev) => {
-        const newCartContent = [...prev.content];
-        return {
-          ...prev,
-          content: newCartContent.filter((item) => item.product.id !== productId),
-        };
-      });
+      await mutateDeleteCartItem(
+        { cartItemId: cartItem.id },
+        {
+          onMutate: (queryClient) => {
+            const prevCartItems = queryClient.getQueryData("cartItems") as GetCartItemsResponse;
+
+            const newCartContent = [...prevCartItems.content];
+
+            queryClient.setQueryData("cartItems", {
+              ...prevCartItems,
+              content: newCartContent.filter((item) => item.product.id !== productId),
+            });
+          },
+        },
+      );
     } else {
       await mutatePatchCartItem(
         {
           cartItemId: cartItem.id,
           quantity: cartItem.quantity - 1,
         },
-        (prev) => {
-          const currentCartItemIndex = prev.content.findIndex((item) => item.product.id === productId);
+        {
+          onMutate: (queryClient) => {
+            const prevCartItems = queryClient.getQueryData("cartItems") as GetCartItemsResponse;
 
-          const newCartContent = [...prev.content];
-          newCartContent[currentCartItemIndex] = {
-            ...newCartContent[currentCartItemIndex],
-            quantity: cartItem.quantity - 1,
-          };
+            const currentCartItemIndex = prevCartItems.content.findIndex((item) => item.product.id === productId);
 
-          return { ...prev, content: newCartContent };
+            const newCartContent = [...prevCartItems.content];
+            newCartContent[currentCartItemIndex] = {
+              ...newCartContent[currentCartItemIndex],
+              quantity: cartItem.quantity - 1,
+            };
+
+            queryClient.setQueryData("cartItems", { ...prevCartItems, content: newCartContent });
+          },
         },
       );
     }
   };
 
   const deleteCartItem = async (cartItemId: number) => {
-    await mutateDeleteCartItem({ cartItemId }, (prev) => {
-      const newCartContent = [...prev.content];
-      return {
-        ...prev,
-        content: newCartContent.filter((item) => item.id !== cartItemId),
-      };
-    });
+    await mutateDeleteCartItem(
+      { cartItemId },
+      {
+        onMutate: (queryClient) => {
+          const prevCartItems = queryClient.getQueryData("cartItems") as GetCartItemsResponse;
+
+          const newCartContent = [...prevCartItems.content];
+
+          queryClient.setQueryData("cartItems", {
+            ...prevCartItems,
+            content: newCartContent.filter((item) => item.id !== cartItemId),
+          });
+        },
+      },
+    );
   };
 
   return {

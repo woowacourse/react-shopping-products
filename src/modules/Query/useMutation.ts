@@ -4,30 +4,29 @@ import { Status } from "./types";
 
 interface UseMutationProps<TRequest, TResponse> {
   mutationFn: (variables: TRequest) => Promise<TResponse>;
-  queryKey: string;
+}
+
+interface MutateOptions {
+  onMutate: (queryClient: ReturnType<typeof useQueryClient>) => void;
 }
 
 export default function useMutation<TRequest, TResponse, TOptimisticResponse = TResponse>({
   mutationFn,
-  queryKey,
 }: UseMutationProps<TRequest, TResponse>) {
-  const { getQueryData, setQueryData } = useQueryClient();
+  const queryClient = useQueryClient();
+
   const [status, setStatus] = useState<Status>("idle");
 
-  const mutate = async (variables: TRequest, optimisticUpdate?: (prev: TOptimisticResponse) => TResponse) => {
-    const prevData = getQueryData(queryKey) as TOptimisticResponse;
-
+  const mutate = async (variables: TRequest, options?: MutateOptions) => {
     try {
       setStatus("loading");
-      if (optimisticUpdate) {
-        await mutationFn(variables);
-        setQueryData(queryKey, optimisticUpdate(prevData));
-      } else {
-        await mutationFn(variables);
-      }
+
+      await mutationFn(variables);
+
+      options?.onMutate?.(queryClient);
+
       setStatus("success");
     } catch (error) {
-      setQueryData(queryKey, prevData);
       setStatus("error");
       throw error;
     }
