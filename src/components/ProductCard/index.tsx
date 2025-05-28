@@ -32,10 +32,7 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
   const cartItem = cartItems.find((item) => item.product.id === id);
   const cartItemId = cartItem?.id;
-  const soldOut =
-    product.quantity !== undefined
-      ? product.quantity === cartItem?.quantity
-      : false; // product.quantity는 MSW에서만 제공
+  const soldOut = product.quantity === 0;
 
   const { refetch: refetchCart } = useAPIContext({
     name: "cartItems",

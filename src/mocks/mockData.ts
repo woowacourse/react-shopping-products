@@ -124,7 +124,7 @@ export const mockProducts: Product[] = [
     price: 100,
     imageUrl: "33",
     category: "식료품",
-    quantity: 4,
+    quantity: 0,
   },
   {
     id: 27,
