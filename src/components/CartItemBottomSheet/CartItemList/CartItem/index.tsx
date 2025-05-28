@@ -4,7 +4,7 @@ import defaultImage from "@/assets/images/planet-error.png";
 import { CartItemType } from "@/apis/cartItems/cartItem.type";
 import CartItemQuantityButton from "@/components/Product/Content/List/Item/CardItemButton/Quantity";
 import useMutation from "@/hooks/useMutation";
-import { removeCartItem } from "@/apis/cartItems/removeCartItem";
+import { deleteCartItem } from "@/apis/cartItems/deleteCartItem";
 import useToast from "@/hooks/useToast";
 import { useCartItemContext } from "@/contexts/CartItemProvider";
 
@@ -13,12 +13,12 @@ interface CartItemProps extends CartItemType {}
 function CartItem({ id, quantity, product }: CartItemProps) {
   const { imageUrl, name, price } = product;
   const { mutate: removeFromCartMutate, isLoading } = useMutation(() =>
-    removeCartItem(id)
+    deleteCartItem(id)
   );
   const { refetchCartItems } = useCartItemContext();
   const { addToast } = useToast();
 
-  const onRemoveCartItem = () => {
+  const removeCartItem = () => {
     removeFromCartMutate(undefined, {
       onSuccess: () => {
         refetchCartItems();
@@ -47,7 +47,7 @@ function CartItem({ id, quantity, product }: CartItemProps) {
         <CartItemQuantityButton cartItemId={id} quantity={quantity} />
         <S.RemoveCartItemButton
           type="button"
-          onClick={onRemoveCartItem}
+          onClick={removeCartItem}
           disabled={isLoading}
         >
           삭제

@@ -1,4 +1,4 @@
-import { removeCartItem } from "@/apis/cartItems/removeCartItem";
+import { deleteCartItem } from "@/apis/cartItems/deleteCartItem";
 import useMutation from "@/hooks/useMutation";
 import useToast from "@/hooks/useToast";
 import { useCartItemContext } from "@/contexts/CartItemProvider";
@@ -11,12 +11,12 @@ interface RemoveCartItemButtonProps {
 
 function RemoveCartItemButton({ cartItemId }: RemoveCartItemButtonProps) {
   const { mutate: removeFromCartMutate, isLoading } = useMutation(() =>
-    removeCartItem(cartItemId)
+    deleteCartItem(cartItemId)
   );
   const { refetchCartItems } = useCartItemContext();
   const { addToast } = useToast();
 
-  const onRemoveCartItem = () => {
+  const removeCartItem = () => {
     removeFromCartMutate(undefined, {
       onSuccess: () => {
         refetchCartItems();
@@ -32,7 +32,7 @@ function RemoveCartItemButton({ cartItemId }: RemoveCartItemButtonProps) {
 
   return (
     <>
-      <S.Button type="button" onClick={onRemoveCartItem} disabled={isLoading}>
+      <S.Button type="button" onClick={removeCartItem} disabled={isLoading}>
         <img src={RemoveCartItemIcon} alt="장바구니에서 제거" />
       </S.Button>
     </>

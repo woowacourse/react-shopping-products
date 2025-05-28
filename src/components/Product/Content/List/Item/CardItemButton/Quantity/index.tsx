@@ -2,7 +2,7 @@ import * as S from "./CartItemQuantityButton.styled";
 import PlusIcon from "@assets/icons/plus.svg";
 import MinusIcon from "@assets/icons/minus.svg";
 import RemoveCartItemButton from "../Remove";
-import { updateCartItemQuantity } from "@/apis/cartItems/updateCartItemQuantity";
+import { patchCartItemQuantity } from "@/apis/cartItems/patchCartItemQuantity";
 import useMutation from "@/hooks/useMutation";
 import useToast from "@/hooks/useToast";
 import { useCartItemContext } from "@/contexts/CartItemProvider";
@@ -16,12 +16,12 @@ function CartItemQuantityButton({
   quantity,
 }: CartItemQuantityButtonProps) {
   const { mutate: updateCartItemQuantityMutate, isLoading } = useMutation(
-    updateCartItemQuantity
+    patchCartItemQuantity
   );
   const { refetchCartItems } = useCartItemContext();
   const { addToast } = useToast();
 
-  const onUpdateCartItemQuantity = (quantity: number) => {
+  const updateCartItemQuantity = (quantity: number) => {
     updateCartItemQuantityMutate(
       { id: cartItemId, quantity },
       {
@@ -45,7 +45,7 @@ function CartItemQuantityButton({
       ) : (
         <S.Button
           type="button"
-          onClick={() => onUpdateCartItemQuantity(quantity - 1)}
+          onClick={() => updateCartItemQuantity(quantity - 1)}
           disabled={isLoading}
         >
           <img src={MinusIcon} alt="수량 1개 빼기" />
@@ -56,7 +56,7 @@ function CartItemQuantityButton({
       </S.QuantityText>
       <S.Button
         type="button"
-        onClick={() => onUpdateCartItemQuantity(quantity + 1)}
+        onClick={() => updateCartItemQuantity(quantity + 1)}
         disabled={isLoading}
       >
         <img src={PlusIcon} alt="수량 1개 추가" />

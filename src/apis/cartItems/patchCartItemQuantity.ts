@@ -1,7 +1,7 @@
 import { httpClient } from "../httpClient";
 import { UpdateCartItemQuantity } from "./cartItem.type";
 
-export const updateCartItemQuantity = async ({
+export const patchCartItemQuantity = async ({
   id,
   quantity,
 }: UpdateCartItemQuantity) => {
