@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type DataState<T> = {
   data: T | null;
@@ -50,5 +50,5 @@ export const useFetchData = <T>(options?: UseFetchDataOptions<T>) => {
     }
   }, [fetch, options?.autoFetch]);
 
-  return useMemo(() => ({ ...data, fetch, mutate }), [data, fetch, mutate]);
+  return { ...data, fetch, mutate };
 };
