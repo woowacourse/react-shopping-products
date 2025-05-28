@@ -11,17 +11,14 @@ const Header = ({ onCartClick, cartItems }: HeaderProps) => {
       <a href="/" className={LogoStyles}>
         SHOP
       </a>
-      <img
-        src="./shopIcon.svg"
-        alt="장바구니"
-        className={IconStyles}
-        onClick={onCartClick}
-      />
-      {cartItems.length > 0 && (
-        <div className={ShoppingCartCount} data-testid="shopping-cart-count">
-          {cartItems.length}
-        </div>
-      )}
+      <section className={ShoppingCartSection} onClick={onCartClick}>
+        <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
+        {cartItems.length > 0 && (
+          <div className={ShoppingCartCount} data-testid="shopping-cart-count">
+            {cartItems.length}
+          </div>
+        )}
+      </section>
     </header>
   );
 };
@@ -69,4 +66,8 @@ const ShoppingCartCount = css`
   color: black;
   font-size: 12px;
   font-weight: 800;
+`;
+
+const ShoppingCartSection = css`
+  cursor: pointer;
 `;
