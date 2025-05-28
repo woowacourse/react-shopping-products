@@ -21,13 +21,12 @@ const Product = () => {
 
   return (
     <>
-      {isOpen && (
-        <CartModal
-          handleClose={() => {
-            setIsOpen(false);
-          }}
-        />
-      )}
+      <CartModal
+        isOpen={isOpen}
+        handleClose={() => {
+          setIsOpen(false);
+        }}
+      />
       <Header onClickIcon={() => setIsOpen(true)} cartCount={cartLength} />
       <div className={S.contentContainer}>
         <div className={S.contentTop}>
