@@ -20,13 +20,13 @@ export const useControlQuantity = (productId: number) => {
           () => addCartItem({ productId: productId, quantity: 1 }),
           getCartItemList
         );
+        return;
       }
-      if (isInCart) {
-        await cartData.mutate(
-          () => updateCartItem({ cartId: cartItem.id, newQuantity: currentQuantity + 1 }),
-          getCartItemList
-        );
-      }
+
+      await cartData.mutate(
+        () => updateCartItem({ cartId: cartItem.id, newQuantity: currentQuantity + 1 }),
+        getCartItemList
+      );
     } catch (error) {
       const errorResponse = (error as Error)?.message;
       showToast(
