@@ -6,6 +6,7 @@
   font-display: swap;
 }
 
+html,
 #root {
   background-color: beige;
 }
