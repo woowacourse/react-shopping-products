@@ -1,5 +1,5 @@
 import { CartResponse } from '@/features/ProductList/types/Cart';
-import { NewCartItem, ProductQuery } from '@/features/ProductList/types/Product';
+import { NewCartItem, ProductQuery, UpdateCartItem } from '@/features/ProductList/types/Product';
 
 import { ENV } from './env';
 import { fetcher } from './fetcher';
@@ -13,13 +13,16 @@ export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
       quantity,
     },
   });
+};
 
-  const data = await fetcher.get<CartResponse>({
-    baseUrl: ENV.BASE_URL + 'cart-items',
+export const updateCartItem = async ({ cartId, newQuantity }: UpdateCartItem) => {
+  await fetcher.patch({
+    baseUrl: ENV.BASE_URL + `cart-items/${cartId}`,
     token: ENV.TOKEN,
+    body: {
+      quantity: newQuantity,
+    },
   });
-
-  return data.content;
 };
 
 export const getCartItemList = async ({
@@ -38,11 +41,4 @@ export const getCartItemList = async ({
 
 export const deleteCartItem = async (cartItemId: number) => {
   await fetcher.delete({ baseUrl: ENV.BASE_URL + `cart-items/${cartItemId}`, token: ENV.TOKEN });
-
-  const data = await fetcher.get<CartResponse>({
-    baseUrl: ENV.BASE_URL + 'cart-items',
-    token: ENV.TOKEN,
-  });
-
-  return data.content;
 };

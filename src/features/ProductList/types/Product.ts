@@ -4,6 +4,7 @@ export type Product = {
   price: number;
   imageUrl: string;
   category: string;
+  quantity: number;
 };
 
 export type ProductListResponse = {
@@ -30,4 +31,9 @@ export type ProductQuery = {
 export type NewCartItem = {
   productId: number;
   quantity: number;
+};
+
+export type UpdateCartItem = {
+  cartId: number;
+  newQuantity: number;
 };

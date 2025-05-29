@@ -1,45 +1,28 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { describe, expect, it } from 'vitest';
 
 import { ProductListPage } from '@/features/ProductList';
+import { ShoppingDataProvider } from '@/shared/context/ShoppingDataProvider';
+import { productsData } from '@/shared/mocks/handlers/product/products.data';
 
-vi.mock('@/shared/components/Toast', () => ({
-  Toast: {
-    show: vi.fn(),
-  },
-}));
+export const renderProductListPage = () =>
+  render(
+    <ShoppingDataProvider>
+      <ProductListPage />
+    </ShoppingDataProvider>
+  );
 
-vi.mock('@/api/product', () => ({
-  getProductList: vi.fn(),
-}));
+describe('ProductList 테스트', () => {
+  it('상품 리스트를 조회할 수 있다..', async () => {
+    // Given : 상품 목록을 받았을 때
+    // When : 유저가 화면에 들어왔을 때
+    renderProductListPage();
 
-vi.mock('@/features/ProductList/hooks/useShopping', () => ({
-  useShopping: () => ({
-    cartData: [],
-    filteredData: [
-      { id: 1, name: '상품 1', price: 10000, imageUrl: '', isChecked: false },
-      { id: 2, name: '상품 2', price: 20000, imageUrl: '', isChecked: false },
-    ],
-    isLoading: false,
-    toggleCartItem: vi.fn(),
-    categorySelect: '전체',
-    priceSelect: '전체',
-    handleCategorySelect: vi.fn(),
-    handlePriceSelect: vi.fn(),
-  }),
-}));
-
-describe('ProductList', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('상품 목록을 올바르게 렌더링한다', async () => {
-    render(<ProductListPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText('상품 1')).toBeDefined();
-      expect(screen.getByText('상품 2')).toBeDefined();
+    const productButton = await screen.findAllByRole('button', {
+      name: /담기$/,
     });
+    // Then : 상품 목록이 화면에 보여진다.
+    expect(productButton.length).toBe(productsData.content.length);
   });
 });

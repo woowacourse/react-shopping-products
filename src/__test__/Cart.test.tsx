@@ -1,56 +1,70 @@
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
-import { vi } from 'vitest';
+import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import { getCartItemList, addCartItem } from '@/api/cart';
-import { getProductList } from '@/api/product';
-import { ProductListPage } from '@/features/ProductList';
-import { CartItem } from '@/features/ProductList/types/Cart';
-
-vi.mock('@/api/product', () => ({ getProductList: vi.fn() }));
-vi.mock('@/api/cart', () => ({
-  getCartItemList: vi.fn(),
-  addCartItem: vi.fn(),
-  deleteCartItem: vi.fn(),
-}));
-
-vi.mock('@/shared/hooks/useApiRequest', () => ({
-  useApiRequest: () => ({
-    isLoading: false,
-    handleRequest: async <T, R = T>(
-      apiCall: () => Promise<T>,
-      setCallback: (data: T) => R
-    ): Promise<T | R | undefined> => {
-      return apiCall().then(setCallback);
-    },
-  }),
-}));
+import { renderProductListPage } from './ProductList.test';
 
 describe('ProductListPage 담기 동작', () => {
-  const sampleProducts = [
-    { id: 1, name: '상품 1', price: 1000, imageUrl: 'img1.png', category: '식료품' },
-  ];
-  const initialCart: CartItem[] = [];
-  const afterAddCart = [{ id: 10, product: sampleProducts[0] }];
+  let user: ReturnType<typeof userEvent.setup>;
 
   beforeEach(() => {
-    (getProductList as jest.Mock).mockResolvedValue(sampleProducts);
-    (getCartItemList as jest.Mock).mockResolvedValue(initialCart);
-    (addCartItem as jest.Mock).mockResolvedValue(afterAddCart);
+    user = userEvent.setup();
   });
+  it('담기 버튼을 클릭하면 -/+ 버튼과 수량 1이 보여지고 헤더에 존재하는 장바구니 아이콘에 숫자 1이 더해진다.', async () => {
+    // Given : 상품 목록을 받았을 때
+    renderProductListPage();
 
-  it('상품의 “담기”버튼 클릭 시 헤더 내부에 존재하는 장바구니 count가 1 증가한다', async () => {
-    render(<ProductListPage />);
+    // When : 유저가 담기 버튼을 클릭했을 때
+    const productButtons = await screen.findAllByRole('button', {
+      name: /담기$/,
+    });
+    const firstProductButton = productButtons[0];
 
-    await waitFor(() => screen.getByText('상품 1'));
+    const cardElement = firstProductButton.closest('div');
+    await user.click(firstProductButton);
 
-    const bagButton = screen.getByRole('button', { name: /Shopping Bag/i });
+    // Then : 장바구니에 상품이 담겼는지 확인한다.
+    const utils = within(cardElement!);
+    expect(utils.getByRole('button', { name: '+' })).toBeInTheDocument();
+    expect(utils.getByRole('button', { name: '-' })).toBeInTheDocument();
+    expect(utils.getByText('1')).toBeInTheDocument();
 
-    expect(within(bagButton).queryByText('1'));
+    const header = screen.getByRole('banner');
+    const withinHeader = within(header);
+    expect(withinHeader.getByText('1')).toBeInTheDocument();
+  });
+  describe('상품 목록이 렌더링 된 이후, 장바구니에 담긴 데이터가 존재할 때', () => {
+    it('유저가 + 버튼을 클릭하면 수량이 1 증가한다.', async () => {
+      // Given : 상품 목록을 받았을 때
+      renderProductListPage();
 
-    fireEvent.click(screen.getByRole('button', { name: /담기/i }));
+      // When : 유저가 + 버튼을 클릭했을 때
+      const plusButton = await screen.findAllByRole('button', {
+        name: /\+$/,
+      });
+      const firstProductButton = plusButton[0];
+      const cardElement = firstProductButton.closest('div');
+      await user.click(firstProductButton);
 
-    await waitFor(() => {
-      expect(within(bagButton).getByText('1')).toBeDefined();
+      // Then : 상단의 수량이 1 증가한다.
+      const utils = within(cardElement!);
+      expect(utils.getByText('2')).toBeInTheDocument();
+    });
+
+    it('유저가 - 버튼을 클릭하면 수량이 1 감소한다.', async () => {
+      // Given : 상품 목록을 받았을 때
+      renderProductListPage();
+
+      // When : 유저가 + 버튼을 클릭했을 때
+      const minusButton = await screen.findAllByRole('button', {
+        name: /-$/,
+      });
+      const firstProductButton = minusButton[0];
+      const cardElement = firstProductButton.closest('div');
+      await user.click(firstProductButton);
+
+      // Then : 상단의 수량이 1 감소한다.
+      const utils = within(cardElement!);
+      expect(utils.getByText('1')).toBeInTheDocument();
     });
   });
 });

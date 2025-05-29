@@ -14,11 +14,12 @@ export const isValidStatusCode = (status: number): status is StatusCode => {
 export class HttpError extends Error {
   public readonly status: number | undefined;
 
-  constructor(status: number) {
-    const message = isValidStatusCode(status)
+  constructor(status: number, data?: { message?: string }) {
+    const serverMessage = data?.message;
+    const fallbackMessage = isValidStatusCode(status)
       ? STATUS_MESSAGE[status]
       : '알 수 없는 오류가 발생했습니다.';
-    super(message);
+    super(serverMessage || fallbackMessage);
     this.status = status;
   }
 }

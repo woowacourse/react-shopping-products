@@ -7,7 +7,7 @@ export const StyledModalContainer = styled.div`
   height: 50px;
   position: fixed;
   background-color: rgba(253, 169, 169);
-  top: 8%;
+  top: 64px;
   left: 50%;
   transform: translateX(-50%);
   border-radius: 4px;
@@ -20,7 +20,7 @@ export const StyledModalContainer = styled.div`
     }
     100% {
       opacity: 1;
-      top: 8%;
+      top: 64px;
     }
   }
 
