@@ -168,14 +168,6 @@
     "quantity": 4
   },
   {
-    "id": 113,
-    "name": "에어포스1",
-    "price": 100000,
-    "imageUrl": "https://kream-phinf.pstatic.net/MjAyNTA1MTNfMjI5/MDAxNzQ3MTA4MjUzOTg4.106G0-WfVU8g8ziNKgKJjc1_UXvF-2IatsA-Cz5mG1og.etXRFVPYqcs5J9HAfXpaHFPFHorGnZU4Nl7k4368rfog.PNG/a_090d2310040b4f9ca922f2498ae8ae3a.png?type=l",
-    "category": "패션잡화",
-    "quantity": 17
-  },
-  {
     "id": 9,
     "name": "너에게난~ 해질녘 노을처럼~",
     "price": 200000,
@@ -260,7 +252,7 @@
     "name": "튀김 신발",
     "price": 800000,
     "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1bvoBgTtG0L-FBnZBsCOl5O-WcelpPH24IQ&s",
-    "category": "패션 잡화",
+    "category": "패션잡화",
     "quantity": 11
   },
   {

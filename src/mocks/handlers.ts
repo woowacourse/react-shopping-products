@@ -1,16 +1,29 @@
 import { CartItemContent } from '@/components/features/cart/api/type';
 import { http, HttpResponse } from 'msw';
-import products from './data/mock-products.json';
+import productsMockData from './data/mock-products.json';
+import cartItemsMockData from './data/mock-cart-items.json';
+import { ProductContent } from '@/components/features/product/api/type';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
+
+let inMemoryCartItems = [...cartItemsMockData] as CartItemContent[];
+
+export function resetCartItems() {
+  inMemoryCartItems = [...cartItemsMockData] as CartItemContent[];
+}
 
 export const handlers = [
   http.get(`${baseURL}/products`, ({ request }) => {
     const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '0', 10);
+    const size = parseInt(url.searchParams.get('size') || '20', 10);
     const category = url.searchParams.get('category');
     const sort = url.searchParams.get('sort');
 
-    let filtered = products;
+    const start = page * size;
+    const end = start + size;
+
+    let filtered = productsMockData;
     if (category) {
       filtered = filtered.filter((item) => item.category === category);
     }
@@ -23,13 +36,12 @@ export const handlers = [
       });
     }
 
+    const content = filtered.slice(start, end);
     const totalElements = filtered.length;
     const totalPages = Math.ceil(filtered.length / 20);
 
-    const slicedProducts = filtered.slice(0, 20);
-
     return HttpResponse.json({
-      content: slicedProducts,
+      content,
       pageable: {
         pageNumber: 0,
         pageSize: 20,
@@ -45,7 +57,7 @@ export const handlers = [
       last: totalElements <= 20,
       totalElements,
       totalPages,
-      size: 20,
+      size,
       number: 0,
       sort: {
         empty: false,
@@ -57,16 +69,20 @@ export const handlers = [
       empty: false,
     });
   }),
-  http.get(`${baseURL}/cart-items`, () => {
-    // localStorage에서 장바구니 데이터 가져오기
-    const raw = localStorage.getItem('cartItems');
-    const cartItems = raw ? JSON.parse(raw) : [];
+  http.get(`${baseURL}/cart-items`, ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '0', 10);
+    const size = parseInt(url.searchParams.get('size') || '20', 10);
 
-    const totalElements = cartItems.length;
-    const totalPages = Math.ceil(cartItems.length / 20);
+    const start = page * size;
+    const end = start + size;
+
+    const content = inMemoryCartItems.slice(start, end);
+    const totalElements = inMemoryCartItems.length;
+    const totalPages = Math.ceil(totalElements / size);
 
     return HttpResponse.json({
-      content: cartItems,
+      content,
       pageable: {
         pageNumber: 0,
         pageSize: 20,
@@ -82,7 +98,7 @@ export const handlers = [
       last: true,
       totalElements,
       totalPages,
-      size: 20,
+      size,
       number: 0,
       sort: {
         empty: false,
@@ -99,12 +115,10 @@ export const handlers = [
       productId: string;
       quantity: number;
     };
-    const raw = localStorage.getItem('cartItems');
-    const cartItems: CartItemContent[] = raw ? JSON.parse(raw) : [];
 
-    const addingProduct = products.find(
+    const addingProduct = productsMockData.find(
       (item) => item.id === Number(productId)
-    );
+    ) as ProductContent;
     if (!addingProduct) {
       return HttpResponse.json(
         { message: '상품을 찾을 수 없습니다.' },
@@ -112,27 +126,23 @@ export const handlers = [
       );
     }
 
-    const newCartItems = [
-      ...cartItems,
+    inMemoryCartItems = [
+      ...inMemoryCartItems,
       {
         id: Date.now(),
         quantity,
         product: addingProduct,
       },
     ];
-    localStorage.setItem('cartItems', JSON.stringify(newCartItems));
 
     return HttpResponse.json(null, { status: 201 });
   }),
   http.delete(`${baseURL}/cart-items/:id`, ({ params }) => {
     const { id } = params;
-    const raw = localStorage.getItem('cartItems');
-    const cartItems: CartItemContent[] = raw ? JSON.parse(raw) : [];
 
-    const updatedCartItems = cartItems.filter(
+    inMemoryCartItems = inMemoryCartItems.filter(
       (item) => String(item.id) !== String(id)
     );
-    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
 
     return new HttpResponse(null, { status: 204 });
   }),
@@ -141,9 +151,10 @@ export const handlers = [
     const { quantity } = (await request.json()) as {
       quantity: number;
     };
-    const raw = localStorage.getItem('cartItems');
-    const cartItems: CartItemContent[] = raw ? JSON.parse(raw) : [];
-    const patchingCartItem = cartItems.find((item) => item.id === Number(id));
+
+    const patchingCartItem = inMemoryCartItems.find(
+      (item) => item.id === Number(id)
+    );
     if (!patchingCartItem || quantity > patchingCartItem?.product.quantity) {
       return HttpResponse.json(
         {
@@ -154,13 +165,9 @@ export const handlers = [
       );
     }
 
-    const updatedCartItems = cartItems.map((item) => {
-      if (String(item.id) !== String(id)) return item;
-
-      return { ...item, quantity };
-    });
-
-    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    inMemoryCartItems = inMemoryCartItems.map((item) =>
+      String(item.id) === String(id) ? { ...item, quantity } : item
+    );
 
     return HttpResponse.json(null, { status: 200 });
   }),
