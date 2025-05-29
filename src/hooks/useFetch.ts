@@ -79,7 +79,7 @@ function useFetch<T>(
         setIsLoading(false);
       }
     }
-  }, [url, ...deps]);
+  }, [url, options, ...deps]);
 
   useEffect(() => {
     if (immediate) fetcher();

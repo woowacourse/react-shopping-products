@@ -61,7 +61,7 @@ function useQueryData<K extends DataKey>(
         controllers.current[key] = null;
       setLoading(false);
     }
-  }, [key, url]);
+  }, [key, options, url]);
 
   useEffect(() => {
     if (!cached && immediate) loadData();
