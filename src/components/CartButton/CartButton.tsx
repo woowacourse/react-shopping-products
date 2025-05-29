@@ -1,121 +1,86 @@
 import * as styles from "./CartButton.style";
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps, useState, useMemo } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useErrorContext } from "../../contexts/ErrorContext";
 import { URLS } from "../../constants/url";
-import { useCartContext } from "../../contexts/CartContext";
+import QuantityButton from "../QuantityButton/QuantityButton";
+import { commonOpts } from "../../constants/requestHeader";
+import useQueryData from "@/hooks/useQueryData";
+import { useQueryContext } from "../../contexts/QueryContext";
+import { cartQueryOptions } from "@/constants/requestOptions";
+import { CartItem } from "@/types/cartContents";
+
 interface CartButtonProps extends ComponentProps<"button"> {
-  isInCart: boolean;
-  refetchCart: () => Promise<void>;
   productId: number;
-  cartItemId?: number;
+  cartItemId: number;
 }
 
 export default function CartButton({
-  isInCart,
-  refetchCart,
   productId,
   cartItemId,
   ...props
 }: CartButtonProps) {
   const { showError } = useErrorContext();
-  const { cartLength } = useCartContext();
-  const [isFetchLoading, setIsFetchLoading] = useState(false);
 
-  const { fetcher: deleteCartItem, error: deleteError } = useFetch(
-    `${URLS.CART_ITEMS}/${cartItemId}`,
-    {
-      headers: {
-        Authorization: `Basic ${btoa(
-          `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-        )}`,
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-    },
-    false
+  const { dataPool } = useQueryContext();
+  const { loadData: loadCart } = useQueryData("cart-items", cartQueryOptions);
+  const cartData = dataPool["cart-items"];
+  const productsData = dataPool["products"];
+
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+  const inCart = useMemo(
+    () => cartData?.some((p) => p.product.id === productId),
+    [cartData, productId]
   );
-  const { fetcher: addCartItem, error: addError } = useFetch(
-    URLS.CART_ITEMS,
-    {
-      headers: {
-        Authorization: `Basic ${btoa(
-          `${import.meta.env.VITE_USER_ID}:${import.meta.env.VITE_PASSWORD}`
-        )}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        productId: productId,
-        quantity: 1,
-      }),
-    },
-    false
+  const availableQty = useMemo(
+    () => productsData?.find((p) => p.id === productId)?.quantity ?? 0,
+    [productsData, productId]
   );
 
-  useEffect(() => {
-    if (deleteError) {
-      showError(deleteError);
-    }
-  }, [deleteError]);
-
-  useEffect(() => {
-    if (addError) {
-      showError(addError);
-    }
-  }, [addError]);
-
-  const handleDeleteCartItem = async () => {
-    try {
-      setIsFetchLoading(true);
-      await deleteCartItem();
-      await refetchCart();
-    } catch (error) {
-      if (error instanceof Error) {
-        showError(error);
-      }
-    } finally {
-      setIsFetchLoading(false);
-    }
+  const addOptions = {
+    ...commonOpts,
+    method: "POST",
+    body: JSON.stringify({ productId, quantity: 1 }),
   };
 
-  const handleAddCartItem = async () => {
+  const { fetcher: addCartItem } = useFetch<CartItem>(
+    URLS.CART_ITEMS,
+    addOptions,
+    false
+  );
+
+  const handleAdd = async () => {
+    setIsAddingToCart(true);
     try {
-      setIsFetchLoading(true);
-      if (cartLength && cartLength >= 50) {
-        throw new Error(`장바구니 갯수가 50개 이상 담을수 없습니다.`);
+      if ((cartData?.length ?? 0) >= 50) {
+        throw new Error("장바구니에 50개 이상의 품목을 담을수 없습니다.");
       }
       await addCartItem();
-      await refetchCart();
-    } catch (error) {
-      if (error instanceof Error) {
-        showError(error);
-      }
+      await loadCart();
+    } catch (err) {
+      if (err instanceof Error) showError(err);
     } finally {
-      setIsFetchLoading(false);
+      setIsAddingToCart(false);
     }
   };
-  return (
-    <button
-      {...props}
-      disabled={isFetchLoading}
-      onClick={isInCart ? handleDeleteCartItem : handleAddCartItem}
-      css={[
-        styles.buttonCss,
-        isInCart ? styles.inCartCss : styles.notInCartCss,
-      ]}
-    >
-      {isInCart ? (
-        <>
-          <img src="assets/emptyCart.svg" />
-          <span>빼기</span>
-        </>
-      ) : (
-        <>
-          <img src="assets/filledCart.svg" />
-          <span>담기</span>
-        </>
-      )}
-    </button>
-  );
+
+  if (inCart) {
+    return <QuantityButton productId={productId} cartItemId={cartItemId} />;
+  }
+
+  const commonProps = {
+    ...props,
+    disabled: isAddingToCart || availableQty === 0,
+    css: [styles.buttonCss, styles.notInCartCss] as const,
+  };
+
+  if (availableQty !== 0) {
+    return (
+      <button {...commonProps} onClick={handleAdd}>
+        <img src="assets/filledCart.svg" alt="장바구니 아이콘" />
+        <span>담기</span>
+      </button>
+    );
+  }
 }

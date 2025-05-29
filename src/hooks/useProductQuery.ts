@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { URLS } from "../constants/url";
-import { OrderByOptionType } from "../types/categoryOption";
+import { CategoryOptionType, OrderByOptionType } from "../types/categoryOption";
 const defaultSearchParams = {
   page: "0",
   size: "50",
@@ -10,14 +10,30 @@ const sortParams: Record<OrderByOptionType, string> = {
   "높은 가격순": "price,desc",
 };
 
-export function useProductQuery(orderBy: OrderByOptionType) {
+export function useProductQuery(
+  orderBy: OrderByOptionType,
+  category: CategoryOptionType
+) {
   return useMemo(() => {
-    const url = new URL(URLS.PRODUCTS);
+    if (!orderBy) {
+      return URLS.PRODUCTS;
+    }
+
+    // 상대 경로인 경우 현재 origin을 사용하여 완전한 URL 생성
+    const baseUrl = URLS.PRODUCTS.startsWith("/")
+      ? `${window.location.origin}${URLS.PRODUCTS}`
+      : URLS.PRODUCTS;
+
+    const url = new URL(baseUrl);
+
     const params = new URLSearchParams({
       ...defaultSearchParams,
       sort: sortParams[orderBy],
     });
+
+    if (category !== "전체") params.set("category", category);
+
     url.search = params.toString();
     return url;
-  }, [orderBy]);
+  }, [orderBy, category]);
 }

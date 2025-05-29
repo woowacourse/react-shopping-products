@@ -1,6 +1,6 @@
-import { Product } from "./product";
+import { ProductWithQuantity } from "./product";
 export interface CartItem {
   id: number;
   quantity: number;
-  product: Product;
+  product: ProductWithQuantity;
 }

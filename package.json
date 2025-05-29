@@ -4,11 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "VITE_APP_USE_MSW=true vite --host",
+    "dev:msw": "VITE_APP_USE_MSW=true vite",
     "build": "tsc && vite build",
+    "build:msw": "VITE_APP_USE_MSW=true tsc && vite build",
     "deploy": "vite build --base=/react-shopping-products && npx gh-pages -d dist",
+    "deploy:msw": "VITE_APP_USE_MSW=true vite build --base=/react-shopping-products/ && npx gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
     "test": "vitest"
   },
   "homepage": "https://spoyodevelop.github.io/react-shopping-products",
@@ -17,11 +19,11 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@testing-library/user-event": "^14.6.1",
     "@emotion/babel-plugin": "^11.13.5",
     "@emotion/react": "^11.14.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^15.0.7",
+    "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.11",
     "@types/react": "^18.2.66",
@@ -32,10 +34,16 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "jsdom": "^26.1.0",
     "msw": "^2.3.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vitest": "^1.6.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

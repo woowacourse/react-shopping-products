@@ -1,4 +1,4 @@
-import { CartItem } from "../../../types/cartContents";
+import { useQueryContext } from "../../../contexts/QueryContext";
 import { Product } from "../../../types/product";
 import Fallback from "../../Fallback/Fallback";
 import ProductCard from "../ProductCard/ProductCard";
@@ -6,15 +6,11 @@ import * as styles from "./ProductList.style";
 
 interface ProductListProps {
   products?: Product[];
-  cartItems?: CartItem[];
-  refetchCart: () => Promise<void>;
 }
 
-export default function ProductList({
-  products,
-  cartItems,
-  refetchCart,
-}: ProductListProps) {
+export default function ProductList({ products }: ProductListProps) {
+  const { dataPool } = useQueryContext();
+  const cartData = dataPool["cart-items"];
   if (!products) {
     return <Fallback />;
   }
@@ -29,13 +25,11 @@ export default function ProductList({
             key={id}
             productId={id}
             cartItemId={
-              cartItems?.find((cartItem) => cartItem.product.id === id)?.id
+              cartData?.find((cartItem) => cartItem.product.id === id)?.id
             }
             price={price}
             title={name}
             imageUrl={imageUrl}
-            refetchCart={refetchCart}
-            isItemInCart={Boolean(cartItems?.some((p) => p.product.id === id))}
           />
         );
       })}
