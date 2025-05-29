@@ -1,7 +1,18 @@
+/* eslint-disable no-restricted-exports */
+import path from 'path';
+
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
   test: {
-    exclude: ['node_modules', 'dist'], // vitest 설정
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./vitest.setup.ts'],
+    include: ['src/**/*.test.{ts,tsx}', '__test__/**/*.test.{ts,tsx}'],
   },
 });

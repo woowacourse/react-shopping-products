@@ -1,54 +1,15 @@
-import App from '@/App';
-import {
-  cleanup,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
-import { cartMockData } from '../__mocks__/cartData';
-import { productListMockData } from '../__mocks__/productListMockData';
-
-jest.mock('../../../components/features/cart/api', () => ({
-  getShoppingCartList: jest
-    .fn()
-    .mockImplementation(() => Promise.resolve(cartMockData)),
-}));
-
-jest.mock('../../../components/features/product/api', () => ({
-  getProductList: jest.fn((filterOption) => {
-    const { category, sort } = filterOption;
-
-    let filtered = [...productListMockData];
-
-    if (category !== '전체') {
-      filtered = filtered.filter((item) => item.category === category);
-    }
-
-    if (sort === 'asc') {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (sort === 'desc') {
-      filtered.sort((a, b) => b.price - a.price);
-    }
-
-    return Promise.resolve(filtered);
-  }),
-}));
-
-jest.mock('@/api/baseAPI', () => ({
-  baseAPI: jest
-    .fn()
-    .mockImplementation(() => Promise.resolve(productListMockData)),
-}));
+import { CartProvider } from '@/components/features/cart';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import ShopPage from '../ShopPage';
+import productsMockData from '@/mocks/data/mock-products.json';
 
 describe('삼품 목록 기능 테스트', () => {
   beforeEach(() => {
-    render(<App />);
-  });
-
-  afterEach(() => {
-    cleanup();
-    jest.clearAllMocks();
+    render(
+      <CartProvider>
+        <ShopPage />
+      </CartProvider>
+    );
   });
 
   it('서버에 상품 목록이 정상적으로 불러올 경우 20개의 상품 목록이 보여진다', async () => {
@@ -70,7 +31,7 @@ describe('삼품 목록 기능 테스트', () => {
 
     await waitFor(() => {
       const items = screen.getAllByTestId(/product-/);
-      expect(items).toHaveLength(1);
+      expect(items).toHaveLength(8);
     });
   });
 
@@ -85,12 +46,12 @@ describe('삼품 목록 기능 테스트', () => {
       const items = await screen.findAllByTestId(/product-/);
       const renderedTexts = items.map((item) => item.textContent ?? '');
 
-      const expectedSorted = [...productListMockData]
+      const expectedSorted = [...productsMockData]
         .sort((a, b) => b.price - a.price)
-        .map((item) => item.name ?? '');
+        .map((item) => item.name ?? '')
+        .slice(0, 20);
 
       expectedSorted.forEach((expectedName, idx) => {
-        console.log(expectedName, renderedTexts);
         expect(renderedTexts[idx]).toContain(expectedName);
       });
     });

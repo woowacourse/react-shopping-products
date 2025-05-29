@@ -8,9 +8,9 @@ const baseURL = import.meta.env.VITE_BASE_URL;
 
 let inMemoryCartItems = [...cartItemsMockData] as CartItemContent[];
 
-export function resetCartItems() {
+export const resetCartItems = () => {
   inMemoryCartItems = [...cartItemsMockData] as CartItemContent[];
-}
+};
 
 export const handlers = [
   http.get(`${baseURL}/products`, ({ request }) => {
