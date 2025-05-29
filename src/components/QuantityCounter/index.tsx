@@ -15,11 +15,16 @@ function QuantityCounter({
 }: QuantityCounterProps) {
   return (
     <S.Container>
-      <S.Button onClick={onDecrease} data-testid="decrease-button">
+      <S.Button
+        onClick={onDecrease}
+        data-testid="decrease-button"
+        role="button"
+        aria-label="빼기"
+      >
         <S.Icon src={minusIcon} alt="Decrease" />
       </S.Button>
       <S.Quantity>{quantity}</S.Quantity>
-      <S.Button onClick={onIncrease}>
+      <S.Button onClick={onIncrease} role="button" aria-label="더하기">
         <S.Icon src={plusIcon} alt="Increase" />
       </S.Button>
     </S.Container>

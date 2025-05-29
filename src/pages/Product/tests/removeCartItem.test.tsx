@@ -1,5 +1,11 @@
-import { render, screen, act, waitFor } from "@testing-library/react";
-import { DataProvider } from "@/context/APIContext";
+import {
+  render,
+  screen,
+  act,
+  waitFor,
+  fireEvent,
+} from "@testing-library/react";
+import { APIProvider } from "@/context/APIContext";
 import App from "@/App";
 
 const { mockProductItems } = vi.hoisted(() => {
@@ -58,9 +64,9 @@ describe("ProductPage Component", () => {
   it("상품에서 '빼기' 버튼을 클릭했을 때 헤더에 감소한 숫자가 잘 반영된다.", async () => {
     await act(async () => {
       render(
-        <DataProvider>
+        <APIProvider>
           <App />
-        </DataProvider>
+        </APIProvider>
       );
     });
 
@@ -68,7 +74,9 @@ describe("ProductPage Component", () => {
       expect(screen.queryByTestId("cart-item-quantity")?.textContent).toBe("1");
     });
 
-    screen.queryByTestId("decrease-button")?.click();
+    await waitFor(() => {
+      fireEvent.click(screen.getByRole("button", { name: "빼기" }));
+    });
 
     await waitFor(() => {
       expect(
