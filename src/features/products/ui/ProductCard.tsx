@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import CustomButton from '../../../shared/ui/CustomButton';
 import * as S from './ProductCard.styles';
 import CartQuantitySelector from './CartQuantitySelector';
