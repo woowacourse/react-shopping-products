@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { CartItemTypes } from "../types/CartItemType";
-import getShoppingCart from "../api/getShoppingCart";
+import getShoppingCart from "../api/shoppingCart/getShoppingCart";
 import { findIsCartItem, isCartFull } from "../utils/cart";
 
 type Status = "idle" | "loading" | "success" | "error";

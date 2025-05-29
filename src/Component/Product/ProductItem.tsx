@@ -1,5 +1,5 @@
-import getShoppingCart from "../../api/getShoppingCart";
-import postShoppingCart from "../../api/postShoppingCart";
+import getShoppingCart from "../../api/shoppingCart/getShoppingCart";
+import postShoppingCart from "../../api/shoppingCart/postShoppingCart";
 import { useAPI } from "../../domain/contexts/APIContext";
 import {
   StyledButton,
@@ -49,7 +49,7 @@ export default function ProductItem({
             {count === 0 ? (
               <StyledButton
                 onClick={async () => {
-                  await postShoppingCart(id, 1);
+                  await postShoppingCart({ productId: id, quantity: 1 });
                   refetch();
                 }}
                 data-testid={`add-btn-${id}`}

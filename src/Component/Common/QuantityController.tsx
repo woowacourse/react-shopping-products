@@ -1,6 +1,6 @@
 import { useState } from "react";
-import deleteShoppingCart from "../../api/deleteShoppingCart";
-import patchShoppingCart from "../../api/patchShoppingCart";
+import deleteShoppingCart from "../../api/shoppingCart/deleteShoppingCart";
+import patchShoppingCart from "../../api/shoppingCart/patchShoppingCart";
 import {
   StyledQuantityController,
   StyledcontrollButton,
@@ -25,14 +25,14 @@ export default function QuantityController({
     if (count === 1) {
       await deleteShoppingCart(productId);
     } else {
-      await patchShoppingCart(productId, count - 1);
+      await patchShoppingCart({ productId: productId, quantity: count - 1 });
     }
     refetch();
   };
 
   const handleIncrease = async () => {
     try {
-      await patchShoppingCart(productId, count + 1);
+      await patchShoppingCart({ productId: productId, quantity: count + 1 });
       refetch();
     } catch (error) {
       setErrorMessage((error as Error).message);

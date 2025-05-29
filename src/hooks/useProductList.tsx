@@ -1,6 +1,5 @@
-// src/hooks/useProductList.ts
 import { useEffect } from "react";
-import getProducts from "../api/getProducts";
+import getProducts from "../api/product/getProducts";
 import { useAPI } from "../domain/contexts/APIContext";
 import {
   CategoryValue,

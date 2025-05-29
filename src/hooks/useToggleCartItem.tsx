@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import postShoppingCart from "../api/postShoppingCart";
-import deleteShoppingCart from "../api/deleteShoppingCart";
+import postShoppingCart from "../api/shoppingCart/postShoppingCart";
+import deleteShoppingCart from "../api/shoppingCart/deleteShoppingCart";
 import type { CartItemTypes } from "../types/CartItemType";
 
 export function useToggleCartItem(
@@ -17,7 +17,7 @@ export function useToggleCartItem(
     if (existing) {
       await deleteShoppingCart(existing.id);
     } else {
-      await postShoppingCart(productId, 1);
+      await postShoppingCart({ productId: productId, quantity: 1 });
     }
     await updateCartItems();
   }, [productId, getMatchCartItem, checkMax, updateCartItems]);

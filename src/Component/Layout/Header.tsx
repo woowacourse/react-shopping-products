@@ -1,5 +1,5 @@
 import CountBox from "./CountBox";
-import getShoppingCart from "../../api/getShoppingCart";
+import getShoppingCart from "../../api/shoppingCart/getShoppingCart";
 import { useAPI } from "../../domain/contexts/APIContext";
 import {
   StyledHeader,
@@ -18,7 +18,6 @@ export default function Header({ onOpenModal }: HeaderProps) {
     fetcher: () => getShoppingCart(),
     name: "cart",
   });
-
   const cartCount = data?.content?.length ?? 0;
   return (
     <StyledHeader>

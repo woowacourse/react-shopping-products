@@ -1,12 +1,12 @@
 import { createPortal } from "react-dom";
-import getShoppingCart from "../../api/getShoppingCart";
+import getShoppingCart from "../../api/shoppingCart/getShoppingCart";
 import { useAPI } from "../../domain/contexts/APIContext";
 import { StyledDiv } from "../../styles/Common/ErrorBox.styles";
 import * as S from "../../styles/Common/Modal.styles";
 import ErrorBox from "./ErrorBox";
 import QuantityController from "./QuantityController";
 import { CartItemTypes } from "../../types/CartItemType";
-import deleteShoppingCart from "../../api/deleteShoppingCart";
+import deleteShoppingCart from "../../api/shoppingCart/deleteShoppingCart";
 
 interface ModalProps {
   isModalOpen: boolean;
