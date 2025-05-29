@@ -45,7 +45,7 @@ function ProductRowCard({
             <CartProductTitle>{name}</CartProductTitle>
             <CartProductPrice>{`${price.toLocaleString()}원`}</CartProductPrice>
           </CartProductInfo>
-          <DeleteButton>
+          <DeleteButton onClick={() => deleteCart(cartId)}>
             <DeleteButtonText>삭제</DeleteButtonText>
           </DeleteButton>
         </Flex>
