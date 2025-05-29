@@ -32,6 +32,10 @@ export const StyledButton = styled.button<IconButtonProps>`
   border-radius: 4px;
   gap: 2px;
   cursor: pointer;
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 
   ${({ variant }) => buttonStyles[variant ?? 'primary']}
 `;

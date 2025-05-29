@@ -1,25 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useCartRequest } from './useCartRequest';
-
-import { CartItem } from '../types/Cart';
-
 export const useCart = () => {
-  const [cartData, setCartData] = useState<CartItem[]>([]);
 
-  const handleCartData = useCallback((cartData: CartItem[]) => {
-    setCartData(cartData);
-  }, []);
-
-  const { fetchCartProductData, addToCart, deleteFromCart } = useCartRequest(handleCartData);
+  const { refetch, addToCart, increaseQuantity, decreaseQuantity, deleteFromCart } =
+    useCartRequest();
 
   useEffect(() => {
-    fetchCartProductData();
-  }, [fetchCartProductData]);
+    refetch();
+  }, [refetch]);
 
   return {
-    cartData,
     addToCart,
+    increaseQuantity,
+    decreaseQuantity,
     deleteFromCart,
   };
 };

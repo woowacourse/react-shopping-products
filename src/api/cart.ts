@@ -3,11 +3,32 @@ import { NewCartItem, ProductQuery } from '@/features/ProductList/types/Product'
 
 import { fetcher } from './fetcher';
 
-export const addCartItem = async ({ productId, quantity }: NewCartItem) => {
+export const addCartItem = async ({
+  productId,
+  quantity,
+}: {
+  productId: number;
+  quantity: number;
+}) => {
   await fetcher.post({
     endpoint: 'cart-items',
     body: {
       productId,
+      quantity,
+    },
+  });
+
+  const data = await fetcher.get<CartResponse>({
+    endpoint: 'cart-items',
+  });
+
+  return data.content;
+};
+
+export const setCartQuantity = async ({ cartItemId, quantity }: NewCartItem) => {
+  await fetcher.patch({
+    endpoint: `cart-items/${cartItemId}`,
+    body: {
       quantity,
     },
   });

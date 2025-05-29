@@ -1,34 +1,25 @@
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 
 import { getProductList } from '@/api/product';
-import { useApiRequest } from '@/shared/hooks/useApiRequest';
 
 import { Product } from '../types/Product';
+import { useAPI } from '@/shared/context/APIContext';
 
-export const useProductListRequest = (
-  setProduct: (data: Product[]) => void,
-  priceSelect: string,
-  categorySelect: string
-) => {
-  const { handleRequest, isLoading } = useApiRequest();
+export const useProductListRequest = (priceSelect: string, categorySelect: string) => {
+  const query = useMemo(
+    () => ({
+      page: 0,
+      size: 20,
+      sort: priceSelect !== '전체' && priceSelect ? `price,${priceSelect}` : '',
+      category: categorySelect === '전체' ? '' : categorySelect,
+    }),
+    [priceSelect, categorySelect]
+  );
 
-  const fetchProductData = useCallback(async () => {
-    return handleRequest(
-      () =>
-        getProductList({
-          page: 0,
-          size: 20,
-          sort: priceSelect !== '전체' && priceSelect ? `price,${priceSelect}` : '',
-          category: categorySelect === '전체' ? '' : categorySelect,
-        }),
-      (data) => {
-        setProduct(data);
-        return data;
-      },
-      [],
-      { delay: 2000 }
-    );
-  }, [categorySelect, handleRequest, priceSelect, setProduct]);
+  const { refetch, isLoading } = useAPI<Product[]>({
+    name: 'product',
+    fetcher: () => getProductList(query),
+  });
 
-  return { fetchProductData, isLoading };
+  return { refetch, isLoading };
 };

@@ -12,13 +12,13 @@ export type IconButtonProps = {
   /**
    * Sets the button content.
    */
-  children: ReactNode;
+  children?: ReactNode;
 } & ComponentProps<'button'>;
 
 export const IconButton = ({ variant = 'primary', src, children, ...props }: IconButtonProps) => {
   return (
     <StyledButton variant={variant} {...props}>
-      <StyledImgIcon src={src} alt="icon" />
+      {src && <StyledImgIcon src={src} alt="icon" />}
       {children}
     </StyledButton>
   );

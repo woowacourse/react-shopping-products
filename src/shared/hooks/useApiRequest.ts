@@ -27,7 +27,6 @@ export const useApiRequest = () => {
         const error = err instanceof Error ? err : new Error(String(err));
         showToast(error.message);
         onError && onError(error);
-        errorData && onSuccess(errorData);
         throw error;
       } finally {
         setIsLoading(false);

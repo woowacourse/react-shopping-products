@@ -1,0 +1,95 @@
+{
+  "totalElements": 20,
+  "totalPages": 1,
+  "size": 20,
+  "content": [
+    {
+      "id": 1003,
+      "quantity": 1,
+      "product": {
+        "id": 3,
+        "name": "에어포스3",
+        "price": 100000,
+        "imageUrl": "https://thumbnail6.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/794f/cecbea5bdc654a11ae02d28b4d1f4bd2a03a7389eb2b8cc4a45c1c9f7d9b.jpg",
+        "category": "패션잡화"
+      }
+    },
+    {
+      "id": 1004,
+      "quantity": 1,
+      "product": {
+        "id": 4,
+        "name": "달 무드등",
+        "price": 28000,
+        "imageUrl": "https://thumbnail6.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/794f/cecbea5bdc654a11ae02d28b4d1f4bd2a03a7389eb2b8cc4a45c1c9f7d9b.jpg",
+        "category": "패션잡화"
+      }
+    },
+    {
+      "id": 1005,
+      "quantity": 1,
+      "product": {
+        "id": 5,
+        "name": "동물 양말",
+        "price": 20000,
+        "imageUrl": "https://m.cocosocks.com/web/product/medium/202503/940897aced51144109baa4d145def01f.jpg",
+        "category": "패션잡화"
+      }
+    },
+    {
+      "id": 1006,
+      "quantity": 1,
+      "product": {
+        "id": 6,
+        "name": "플라망고",
+        "price": 8130,
+        "imageUrl": "https://velog.velcdn.com/images/minsungje/post/c27c57cb-fcbb-4641-b72d-0e2030739ae7/image.jpg",
+        "category": "식료품"
+      }
+    },
+    {
+      "id": 1007,
+      "quantity": 1,
+      "product": {
+        "id": 7,
+        "name": "메이통통이",
+        "price": 11100000,
+        "imageUrl": "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb5H3cg%2FbtsMRVqcfYF%2FvbKfazkKNY7I5CGkF1Ye9k%2Fimg.png",
+        "category": "식료품"
+      }
+    },
+    {
+      "id": 1008,
+      "quantity": 1,
+      "product": {
+        "id": 8,
+        "name": "앵그리버드",
+        "price": 50000,
+        "imageUrl": "https://media.bunjang.co.kr/product/223522208_%7Bcnt%7D_1683581287_w%7Bres%7D.jpg",
+        "category": "패션잡화"
+      }
+    }
+  ],
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "pageable": {
+    "offset": 0,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "paged": true,
+    "pageNumber": 0,
+    "pageSize": 20,
+    "unpaged": false
+  },
+  "first": true,
+  "last": true,
+  "numberOfElements": 20,
+  "empty": false
+}

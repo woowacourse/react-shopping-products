@@ -2,7 +2,9 @@ import { PropsWithChildren } from 'react';
 import styled from '@emotion/styled';
 
 export const ProductListContainer = ({ children }: PropsWithChildren) => {
-  return <StyledProductListContainer>{children}</StyledProductListContainer>;
+  return (
+    <StyledProductListContainer data-testid="product-list">{children}</StyledProductListContainer>
+  );
 };
 
 const StyledProductListContainer = styled.div`
