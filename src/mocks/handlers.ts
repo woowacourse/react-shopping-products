@@ -3,6 +3,7 @@ import productData from "./products.json";
 import cartItemData from "./cartItem.json";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
+const MAX_CART_ITEM_QUANTITY = 50;
 
 export const handlers = [
   http.get(`${baseUrl}/products`, ({ request }) => {
@@ -70,7 +71,7 @@ export const handlers = [
       quantity: number;
     };
 
-    if (quantity > 50) {
+    if (quantity > MAX_CART_ITEM_QUANTITY) {
       return HttpResponse.json(
         {
           errorCode: "OUT_OF_STOCK",
