@@ -1,5 +1,5 @@
 import { render, screen, act, waitFor, within } from "@testing-library/react";
-import { DataProvider } from "@/context/APIContext";
+import { APIProvider } from "@/context/APIContext";
 import App from "@/App";
 import { ProductItemType } from "@/types/product";
 import { vi, describe, it, beforeEach, expect } from "vitest";
@@ -55,9 +55,9 @@ describe("ProductContent - 품절 상태 테스트", () => {
   it("품절 상품에 '품 절' 텍스트가 렌더링되고, 장바구니 버튼이 비활성화된다", async () => {
     await act(async () => {
       render(
-        <DataProvider>
+        <APIProvider>
           <App />
-        </DataProvider>
+        </APIProvider>
       );
     });
 

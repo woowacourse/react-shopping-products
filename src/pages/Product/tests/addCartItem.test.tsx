@@ -5,7 +5,7 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
-import { DataProvider } from "@/context/APIContext";
+import { APIProvider } from "@/context/APIContext";
 import App from "@/App";
 
 const { mockProductItems } = vi.hoisted(() => {
@@ -76,9 +76,9 @@ describe("addCartItem 테스트", () => {
   it("상품에서 '담기' 버튼을 클릭했을 때 헤더에 증가한 숫자가 잘 반영된다.", async () => {
     await act(async () => {
       render(
-        <DataProvider>
+        <APIProvider>
           <App />
-        </DataProvider>
+        </APIProvider>
       );
     });
 

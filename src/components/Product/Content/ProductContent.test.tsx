@@ -7,7 +7,7 @@ import {
   within,
 } from "@testing-library/react";
 import { FilterOption, SortOption } from "./ProductContent.type";
-import { DataProvider } from "@/context/APIContext";
+import { APIProvider } from "@/context/APIContext";
 import App from "@/App";
 import { ProductItemType } from "@/types/product";
 
@@ -72,9 +72,9 @@ describe("ProductContent Component", () => {
   ) => {
     await act(async () => {
       render(
-        <DataProvider>
+        <APIProvider>
           <App />
-        </DataProvider>
+        </APIProvider>
       );
     });
 
@@ -130,9 +130,9 @@ describe("ProductContent Component", () => {
     mockProductItems = [];
     await act(async () => {
       render(
-        <DataProvider>
+        <APIProvider>
           <App />
-        </DataProvider>
+        </APIProvider>
       );
     });
 
@@ -150,9 +150,9 @@ describe("ProductContent - Sorting Tests", () => {
   ) => {
     await act(async () => {
       render(
-        <DataProvider>
+        <APIProvider>
           <App />
-        </DataProvider>
+        </APIProvider>
       );
     });
     await waitFor(() => {
