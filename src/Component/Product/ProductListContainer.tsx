@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import getProducts from "../../api/getProducts";
-import { useAPI } from "../../domain/contexts/APIContext";
+import { useState } from "react";
 import ErrorBox from "../Common/ErrorBox";
 import Spinner from "../Common/Spinner";
 import ProductList from "./ProductList";
@@ -11,6 +9,7 @@ import {
 } from "../../styles/Product/ProductListContainer.styles";
 import { Option } from "../Common/SelectBox";
 import { Product } from "./ProductList";
+import { useProductList } from "../../hooks/useProductList";
 
 export type CategoryValue = "all" | "grocery" | "fashion";
 export type SortValue = "low" | "high";
@@ -33,29 +32,7 @@ export const PRICE_OPTIONS: SelectOption[] = [
 export default function ProductListContainer() {
   const [category, setCategory] = useState<CategoryValue>("all");
   const [price, setPrice] = useState<SortValue>("low");
-
-  const categoryParam = CATEGORY_OPTIONS.find(
-    (o) => o.value === category
-  )!.param;
-  const sortParam = PRICE_OPTIONS.find((o) => o.value === price)!.param;
-
-  const {
-    data: products,
-    status,
-    refetch,
-  } = useAPI({
-    fetcher: () =>
-      getProducts(categoryParam, {
-        page: 0,
-        size: 20,
-        sort: sortParam,
-      }),
-    name: "products",
-  });
-
-  useEffect(() => {
-    refetch();
-  }, [category, price]);
+  const { products, status } = useProductList(category, price);
 
   if (status === "loading" || status === "idle") {
     return (
@@ -82,16 +59,7 @@ export default function ProductListContainer() {
         setPrice={setPrice}
       />
 
-      {/* <ProductList productList={products.content} /> */}
-      {/* <ProductList
-        productList={(products.content as ProductItemWrapper[]).map((item) => ({
-          ...item.product,
-        }))}
-      /> */}
-
-      <ProductList
-        productList={products.content as Product[]} // 또는 그냥 products.content
-      />
+      <ProductList productList={products.content as Product[]} />
     </>
   );
 }
