@@ -186,7 +186,7 @@ const QuantityController = styled.div`
   gap: 6px;
 
   font-size: var(--font-size-placeholder);
-  font-weight: var(--font-size-placeholder);
+  font-weight: var(--font-weight-placeholder);
 `;
 
 const ControllerIcon = styled.img`
