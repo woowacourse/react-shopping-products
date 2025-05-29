@@ -3,17 +3,17 @@ import * as S from "./ProductList.styled";
 import { ProductItemType } from "@/types/product";
 
 interface ProductListProps {
-  data: ProductItemType[];
+  productItemList: ProductItemType[];
 }
 
-function ProductList({ data }: ProductListProps) {
-  if (!data) return null;
+function ProductList({ productItemList }: ProductListProps) {
+  if (!productItemList) return null;
 
   return (
     <>
-      {data.length > 0 ? (
+      {productItemList.length > 0 ? (
         <S.ProductList>
-          {data.map((productItem) => (
+          {productItemList.map((productItem) => (
             <ProductItem
               key={productItem.id}
               product={productItem}
