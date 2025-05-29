@@ -1,4 +1,4 @@
-import { DataContext } from "@/context/DataContext";
+import { APIContext } from "@/context/APIContext";
 import { useCallback, useContext, useEffect } from "react";
 
 interface UseDataProps<T> {
@@ -7,7 +7,7 @@ interface UseDataProps<T> {
 }
 
 const useData = <T>({ fetchFn, name }: UseDataProps<T>) => {
-  const context = useContext(DataContext);
+  const context = useContext(APIContext);
 
   if (!context) {
     throw new Error("useData는 DataProvider 내부에서 사용되어야 합니다.");

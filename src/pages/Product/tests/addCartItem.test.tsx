@@ -5,7 +5,7 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
-import { DataProvider } from "@/context/DataContext";
+import { DataProvider } from "@/context/APIContext";
 import App from "@/App";
 
 const { mockProductItems } = vi.hoisted(() => {

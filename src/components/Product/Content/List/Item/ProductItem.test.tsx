@@ -1,5 +1,5 @@
 import { render, screen, act, waitFor, within } from "@testing-library/react";
-import { DataProvider } from "@/context/DataContext";
+import { DataProvider } from "@/context/APIContext";
 import App from "@/App";
 import { ProductItemType } from "@/types/product";
 import { vi, describe, it, beforeEach, expect } from "vitest";

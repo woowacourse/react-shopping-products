@@ -7,7 +7,7 @@ import {
   within,
 } from "@testing-library/react";
 import { FilterOption, SortOption } from "./ProductContent.type";
-import { DataProvider } from "@/context/DataContext";
+import { DataProvider } from "@/context/APIContext";
 import App from "@/App";
 import { ProductItemType } from "@/types/product";
 

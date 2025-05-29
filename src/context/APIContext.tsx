@@ -1,6 +1,6 @@
 import { createContext, useCallback, useState } from "react";
 
-interface DataContextProps {
+interface APIContextProps {
   data: Record<string, unknown>;
   setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
   isLoading: Record<string, unknown>;
@@ -11,9 +11,9 @@ interface DataContextProps {
   setRefetchFunction: (name: string, refetchFn: () => Promise<void>) => void;
 }
 
-export const DataContext = createContext<DataContextProps | null>(null);
+export const APIContext = createContext<APIContextProps | null>(null);
 
-export function DataProvider({ children }: { children: React.ReactNode }) {
+export function APIProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<Record<string, unknown>>({});
   const [isLoading, setIsLoading] = useState<Record<string, boolean>>({});
   const [error, setError] = useState<Record<string, string | null>>({});
@@ -29,7 +29,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <DataContext.Provider
+    <APIContext.Provider
       value={{
         data,
         setData,
@@ -43,6 +43,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-    </DataContext.Provider>
+    </APIContext.Provider>
   );
 }

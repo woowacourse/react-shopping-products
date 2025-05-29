@@ -4,7 +4,7 @@ import * as S from "./ProductItem.styled";
 import defaultImage from "@/assets/images/planet-error.png";
 import { SyntheticEvent, useContext } from "react";
 import { CartItemType } from "@/types/cartItem";
-import { DataContext } from "@/context/DataContext";
+import { APIContext } from "@/context/APIContext";
 import QuantityCounter from "@/components/QuantityCounter";
 import { removeCartItem } from "@/apis/cartItems/removeCartItem";
 import { getCartItems } from "@/apis/cartItems/getCartItems";
@@ -17,10 +17,10 @@ interface ProductItemProps {
 }
 
 function ProductItem({ product, variant }: ProductItemProps) {
-  const context = useContext(DataContext);
+  const context = useContext(APIContext);
 
   if (!context)
-    throw new Error("DataContext must be used within a DataProvider");
+    throw new Error("APIContext must be used within a DataProvider");
   const { data, setData, error, setError } = context;
 
   const cartItemData = data.cartItemData as CartItemType[];

@@ -4,7 +4,7 @@ import { getCartItems } from "@/apis/cartItems/getCartItems";
 import useMutation from "@/hooks/useMutation";
 import AlertToast from "@/components/AlertToast";
 import { useContext } from "react";
-import { DataContext } from "@/context/DataContext";
+import { APIContext } from "@/context/APIContext";
 
 interface RemoveCartItemButton {
   id: number;
@@ -13,7 +13,7 @@ interface RemoveCartItemButton {
 function RemoveCartItemButton({ id }: RemoveCartItemButton) {
   const { mutate, isLoading, error } = useMutation(() => removeCartItem(id));
 
-  const context = useContext(DataContext);
+  const context = useContext(APIContext);
 
   if (!context) {
     throw new Error("RemoveCartItemButton must be used within a DataProvider");
