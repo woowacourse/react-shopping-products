@@ -20,7 +20,7 @@ function CartModal() {
       style={{ maxHeight: 'calc(100% - 120px)', overflow: 'auto' }}
     >
       {cartList.map(({ id, quantity, product }) => (
-        <Flex>
+        <Flex key={id}>
           <Separator />
           <ProductRowCard
             id={product.id}
