@@ -29,7 +29,7 @@ const handlers = [
     return HttpResponse.json({ content: [...mockProducts] });
   }),
 
-  http.get<GetProductsParams, MockProductsType[]>(
+  http.get<GetProductsParams, MockProductsType>(
     addBaseURL('/products/:productId'),
     async ({ params }) => {
       const { productId } = params;
