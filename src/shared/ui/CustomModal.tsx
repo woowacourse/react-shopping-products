@@ -11,14 +11,19 @@ interface CustomModalProps {
 
 export default function CustomModal({ isOpen, onClose, position = 'center', children }: CustomModalProps) {
   useEffect(() => {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
     if (isOpen) {
       document.body.classList.add('modal-open');
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     } else {
       document.body.classList.remove('modal-open');
+      document.body.style.paddingRight = '';
     }
 
     return () => {
       document.body.classList.remove('modal-open');
+      document.body.style.paddingRight = '';
     };
   }, [isOpen]);
 
