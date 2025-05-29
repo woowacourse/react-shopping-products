@@ -72,7 +72,7 @@ export const ModalHeaderTitle = styled.span`
   width: 67px;
   height: 22px;
   font-weight: 700;
-  size: 18px;
+  font-size: 18px;
   padding: 10px;
 `;
 
@@ -109,7 +109,6 @@ export const ModalFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 12px;
   border-top: 1px solid #0000001a;
   margin-top: 12px;
   padding: 20px 10px;

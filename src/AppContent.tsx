@@ -1,7 +1,7 @@
-import Header from "./Component/Layout/Header/Header";
-import Body from "./Component/Layout/Body/Body";
-import ProductListContainer from "./Component/Product/ProductListContainer/ProductListContainer";
-import ErrorBox from "./Component/Common/ErrorBox/ErrorBox";
+import Header from "./Component/Layout/Header";
+import Body from "./Component/Layout/Body";
+import ProductListContainer from "./Component/Product/ProductListContainer";
+import ErrorBox from "./Component/Common/ErrorBox";
 import useCartContext from "./contexts/CartContext";
 import styled from "@emotion/styled";
 
