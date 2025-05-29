@@ -21,6 +21,7 @@ export const useProductFilter = () => {
     setPriceSelect(selectedPrice);
     await products.fetch(() => getProductList({ sort: `price,${selectedPrice}` }));
   };
+
   return {
     categorySelect,
     priceSelect,

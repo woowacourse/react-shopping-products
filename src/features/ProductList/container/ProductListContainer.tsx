@@ -7,46 +7,77 @@ import { Loading } from '@/shared/components/Loading';
 import { Text } from '@/shared/components/Text';
 import { useData } from '@/shared/context/useData';
 import { useScrollStatus } from '@/shared/hooks/useScrollStatus';
+type ProductContainerWrapperProps = {
+  content?: React.ReactNode;
+  isLoading: boolean;
+  isScrolled: boolean;
+  containerRef: React.RefObject<HTMLDivElement>;
+} & PropsWithChildren;
+
+const ProductContainerWrapper = ({
+  content,
+  isLoading,
+  isScrolled,
+  containerRef,
+  children,
+}: ProductContainerWrapperProps) => {
+  return (
+    <StyledOuterContainer isLoading={isLoading}>
+      {content}
+      <StyledGradientOverlay isScrolled={isScrolled} />
+      <StyledProductListContainer ref={containerRef}>{children}</StyledProductListContainer>
+    </StyledOuterContainer>
+  );
+};
+
+const LoadingContent = () => (
+  <Flex
+    direction="column"
+    gap="0px"
+    justifyContent="center"
+    alignItems="center"
+    css={css`
+      width: 100%;
+      height: 600px;
+    `}
+  >
+    <Loading size="xl" />
+  </Flex>
+);
+
+const EmptyContent = () => (
+  <Text
+    type="Body"
+    css={css`
+      padding: 20px;
+      justify-self: center;
+      align-self: center;
+    `}
+  >
+    데이터가 존재하지 않습니다.
+  </Text>
+);
 
 export const ProductListContainer = ({ children }: PropsWithChildren) => {
   const { productData } = useData();
   const containerRef = useRef<HTMLDivElement>(null);
   const { isScrolled } = useScrollStatus(containerRef);
 
-  return (
-    <StyledOuterContainer isLoading={productData.isLoading}>
-      {productData.isLoading ? (
-        <Flex
-          direction="column"
-          gap="0px"
-          justifyContent="center"
-          alignItems="center"
-          css={css`
-            width: 100%;
-            height: 600px;
-          `}
-        >
-          <Loading size="xl" />
-        </Flex>
-      ) : productData.data?.length === 0 ? (
-        <Text
-          type="Body"
-          css={css`
-            padding: 20px;
-            justify-self: center;
-            align-self: center;
-          `}
-        >
-          데이터가 존재하지 않습니다.
-        </Text>
-      ) : (
-        <>
-          <StyledGradientOverlay isScrolled={isScrolled} />
-          <StyledProductListContainer ref={containerRef}>{children}</StyledProductListContainer>
-        </>
-      )}
-    </StyledOuterContainer>
-  );
+  const commonProps = {
+    children,
+    isLoading: productData.isLoading,
+    isScrolled,
+    containerRef,
+  };
+
+  if (productData.isLoading) {
+    return <ProductContainerWrapper {...commonProps} content={<LoadingContent />} />;
+  }
+
+  if (productData.data?.length === 0) {
+    return <ProductContainerWrapper {...commonProps} content={<EmptyContent />} />;
+  }
+  return <ProductContainerWrapper {...commonProps} />;
 };
 
 const StyledOuterContainer = styled.div<{ isLoading: boolean }>`
