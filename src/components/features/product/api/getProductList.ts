@@ -1,19 +1,25 @@
 import { baseAPI } from '@/api/baseAPI';
-import { DropdownOptionType } from '@/components/common/type';
+import { buildQueryString } from '@/api/buildQueryString';
 import { convertResponseToProduct } from './responseMapper';
 import { ProductsResponse } from './type';
 
 export async function getProductList(filterOption: {
-  category: DropdownOptionType;
-  sort: DropdownOptionType;
+  category: string;
+  sort: string;
 }) {
   const page = 0;
   const size = 20;
-  const categoryPath =
-    filterOption.category.value !== '전체'
-      ? `category=${filterOption.category.value}&`
-      : '';
-  const basePath = `/products?${categoryPath}page=${page}&size=${size}&sort=price,${filterOption.sort.value}`;
+  const queryString = buildQueryString([
+    {
+      name: 'category',
+      value: filterOption.category !== '전체' && filterOption.category,
+    },
+    { name: 'page', value: page },
+    { name: 'size', value: size },
+    { name: 'sort', value: `price,${filterOption.sort}` },
+  ]);
+
+  const basePath = `/products?${queryString}`;
 
   const data = await baseAPI<ProductsResponse>({
     method: 'GET',
@@ -22,5 +28,6 @@ export async function getProductList(filterOption: {
   const productsData = data?.content.map((product) =>
     convertResponseToProduct(product)
   );
+
   return productsData ?? [];
 }

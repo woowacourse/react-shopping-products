@@ -1,25 +1,16 @@
+import { useErrorToast } from '@/hooks/useErrorToast';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
-import { useShopErrorContext } from '../../shop/context/useShopErrorContext';
 import Flex from './Flex';
 
 function ErrorToastMessage() {
-  const [toast, setToast] = useState(true);
-  const { errorMessage, hideErrorMessage } = useShopErrorContext();
+  const message = useErrorToast();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setToast(false);
-      hideErrorMessage();
-    }, 3000);
-  }, [hideErrorMessage]);
+  if (!message) return null;
 
   return (
-    toast && (
-      <Container>
-        <ErrorText>{errorMessage}</ErrorText>
-      </Container>
-    )
+    <Container>
+      <ErrorText>{message}</ErrorText>
+    </Container>
   );
 }
 

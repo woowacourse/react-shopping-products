@@ -1,23 +1,22 @@
 import { Global, ThemeProvider } from '@emotion/react';
 import MobileLayout from './components/common/MobileLayout';
+import { CartProvider } from './components/features/cart/context';
 import reset from './global/style/reset';
 import { theme } from './global/style/theme';
 import ShopPage from './pages/shop/ShopPage';
-import CartProvider from './context/CartProvider';
-import ShopErrorProvider from './shop/context/ShopErrorProvider';
 
 function App() {
   return (
-    <MobileLayout>
+    <>
       <Global styles={reset} />
-      <ThemeProvider theme={theme}>
-        <ShopErrorProvider>
+      <MobileLayout>
+        <ThemeProvider theme={theme}>
           <CartProvider>
             <ShopPage />
           </CartProvider>
-        </ShopErrorProvider>
-      </ThemeProvider>
-    </MobileLayout>
+        </ThemeProvider>
+      </MobileLayout>
+    </>
   );
 }
 

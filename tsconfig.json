@@ -20,6 +20,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    /* Testing */
+    "types": ["jest", "@testing-library/jest-dom", "node"],
+    "esModuleInterop": true,
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

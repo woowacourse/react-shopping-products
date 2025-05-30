@@ -6,7 +6,6 @@ interface FlexProps {
   justifyContent?: 'flex-start' | 'center' | 'space-between' | 'space-around';
   alignItems?: 'flex-start' | 'center' | 'stretch' | 'flex-end';
   gap?: GapType;
-  className?: string;
 }
 
 type GapType = 'xs' | 'sm' | 'md' | 'lg';
@@ -18,12 +17,8 @@ const GAP_MAP: Record<GapType, string> = {
   lg: '24px',
 };
 
-function Flex({ className, children, ...props }: PropsWithChildren<FlexProps>) {
-  return (
-    <Container className={className} {...props}>
-      {children}
-    </Container>
-  );
+function Flex({ children, ...props }: PropsWithChildren<FlexProps>) {
+  return <Container {...props}>{children}</Container>;
 }
 
 const Container = styled.div<FlexProps>`

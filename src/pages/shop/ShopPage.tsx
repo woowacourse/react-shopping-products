@@ -1,64 +1,47 @@
-import { wrapPromise } from '@/api/wrapPromise';
-import { ErrorToastMessage, Flex, Loading } from '@/components/common';
-import { DropdownOptionType } from '@/components/common/type';
-import { getProductList } from '@/components/features/product/api/getProductList';
-import ProductList from '@/components/features/product/product-list/ProductList';
-import { Product } from '@/components/features/product/type';
-import { useCartContext } from '@/context/useCartContext';
-import ShopFilter from '@/shop/components/filter/ShopFilter';
-import ShopHeader from '@/shop/components/header/ShopHeader';
-import { useShopErrorContext } from '@/shop/context/useShopErrorContext';
+import { ErrorToastMessage, Flex } from '@/components/common';
+import { CartModal } from '@/components/features/cart';
 import styled from '@emotion/styled';
-import { Suspense, useMemo, useState } from 'react';
+import { Modal } from '@jae-o/modal-component-module';
+import { useState } from 'react';
+import { ShopFilter, ShopHeader, ShopProductList } from './components';
 
 function ShopPage() {
-  const [filterOption, setFilterOption] = useState({
-    category: { label: '전체', value: '전체' },
-    sort: { label: '낮은 가격순', value: 'asc' },
+  const [filter, setFilter] = useState({
+    category: '전체',
+    sort: 'asc',
   });
-  const { isError } = useShopErrorContext();
-  const { cartList } = useCartContext();
 
-  const handleCategoryOption = (option: DropdownOptionType) => {
-    setFilterOption((prev) => ({
+  const handleCategoryOption = (value: string) => {
+    setFilter((prev) => ({
       ...prev,
-      category: option,
+      category: value,
     }));
   };
 
-  const handleSortOption = (option: DropdownOptionType) => {
-    setFilterOption((prev) => ({
+  const handleSortOption = (value: string) => {
+    setFilter((prev) => ({
       ...prev,
-      sort: option,
+      sort: value,
     }));
   };
-
-  const listPromiseData = useMemo(
-    () => getProductList(filterOption),
-    [filterOption]
-  );
 
   return (
-    <>
-      <ShopHeader itemsCount={cartList.length} />
+    <Modal>
+      <ShopHeader />
       <ProductListContainer>
         <ListTitleBox>
           <ListTitle>Apple 상품 목록</ListTitle>
           <ShopFilter
-            filterOption={filterOption}
+            filter={filter}
             handleCategoryOption={handleCategoryOption}
             handleSortOption={handleSortOption}
           />
         </ListTitleBox>
-        <Suspense fallback={<Loading />}>
-          <ProductList
-            resource={wrapPromise<Product[]>(listPromiseData)}
-            cartList={cartList}
-          />
-        </Suspense>
-        {isError && <ErrorToastMessage />}
+        <ShopProductList filter={filter} />
+        <ErrorToastMessage />
       </ProductListContainer>
-    </>
+      <CartModal />
+    </Modal>
   );
 }
 

@@ -19,7 +19,16 @@ export async function baseAPI<T>({
     body: body ? JSON.stringify(body) : null,
   });
   if (!result.ok) {
-    throw new Error('서버에서 에러가 발생했습니다.');
+    let errorMessage = '알 수 없는 에러가 발생했습니다.';
+    try {
+      const json = await result.clone().json();
+      errorMessage = json.message ?? errorMessage;
+    } catch {
+      const text = await result.text();
+      errorMessage = text || errorMessage;
+    }
+
+    throw new Error(errorMessage);
   }
 
   if (method === 'GET') return result.json();
