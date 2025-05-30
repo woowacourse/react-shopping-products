@@ -1,9 +1,6 @@
-export type Product = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl?: string;
-  category: string;
+import { ProductResponse } from "../../api/products";
+
+export type Product = ProductResponse & {
   quantity: number;
 };
 

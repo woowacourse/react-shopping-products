@@ -7,6 +7,7 @@ export type ProductRequest = {
   sort?: string;
   category?: string;
 };
+
 export type ProductResponse = {
   id: number;
   name: string;
@@ -37,11 +38,11 @@ export const getProducts = async ({
 };
 
 export const getProductById = async (
-  productId: number,
+  productId: number
 ): Promise<ProductResponse> => {
   try {
     return await apiRequest<ProductResponse>(
-      `${END_POINT.PRODUCT}/${productId}`,
+      `${END_POINT.PRODUCT}/${productId}`
     );
   } catch (e) {
     console.error("❌ getProductById 실패:", e);
