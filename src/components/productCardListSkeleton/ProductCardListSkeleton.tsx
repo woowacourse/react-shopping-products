@@ -41,7 +41,6 @@ function ProductCardSkeleton() {
 }
 
 function ProductCardListSkeleton() {
-  console.log("스켈레톤");
   return (
     <div css={CardListContainer} data-testid="product-skeleton">
       {Array.from({ length: 20 }).map((_, i) => (

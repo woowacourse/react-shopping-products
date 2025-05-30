@@ -20,9 +20,9 @@ export const handlers = [
         filtered = filtered.filter((item) => item.category === category);
       }
 
-      if (sort === "price_asc") {
+      if (sort === "price,asc") {
         filtered.sort((a, b) => a.price - b.price);
-      } else if (sort === "price_desc") {
+      } else if (sort === "price,desc") {
         filtered.sort((a, b) => b.price - a.price);
       }
 
