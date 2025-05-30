@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import * as S from './CounterControl.styles';
 
 interface CounterControlProps {
   count: number;
@@ -11,40 +11,14 @@ const CounterControl = (props: CounterControlProps) => {
   const { count, maxCount, onPlusCount, onMinusCount } = props;
 
   return (
-    <CountButtonContainer>
-      <CounterButton onClick={onMinusCount}>-</CounterButton>
-      <CountNumber>{count}</CountNumber>
-      <CounterButton onClick={onPlusCount} disabled={count >= maxCount}>
+    <S.CountButtonContainer>
+      <S.CounterButton onClick={onMinusCount}>-</S.CounterButton>
+      <S.CountNumber>{count}</S.CountNumber>
+      <S.CounterButton onClick={onPlusCount} disabled={count >= maxCount}>
         +
-      </CounterButton>
-    </CountButtonContainer>
+      </S.CounterButton>
+    </S.CountButtonContainer>
   );
 };
-
-const CountButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-`;
-
-const CounterButton = styled.button`
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--color-light-grey);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:disabled {
-    cursor: not-allowed;
-    background-color: var(--color-light-grey);
-    color: var(--color-white);
-  }
-`;
-
-const CountNumber = styled.span`
-  font-size: var(--font-size-body);
-`;
 
 export default CounterControl;
