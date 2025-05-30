@@ -2,6 +2,7 @@ import * as S from './CardItem.styles';
 import CounterControl from '../common/counterControl/CounterControl';
 import type { CartItemType } from '../../types/data';
 import useCartCount from '../../hooks/useCartCount';
+import { handleImageError } from '../../util/handleImageError';
 
 interface CartItemProps {
   cartItem: CartItemType;
@@ -26,7 +27,7 @@ const CartItem = ({
 
   return (
     <S.CartItemContainer>
-      <S.CartItemImage src="./default-product.png" />
+      <S.CartItemImage src={cartItem.product.imageUrl} onError={handleImageError} />
       <S.CartItemInfoContainer>
         <S.CartItemName>{cartItem.product.name}</S.CartItemName>
         <S.CartItemPrice>{cartItem.product.price}</S.CartItemPrice>

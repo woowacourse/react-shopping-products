@@ -1,96 +1,81 @@
-import * as S from "./ProductItem.styles";
-import Button from "../common/button/Button";
-import type { ProductItemType } from "../../types/data";
-import AddShoppingCartIcon from "/public/icon/add-shopping-cart.svg";
-import CounterControl from "../common/counterControl/CounterControl";
-import { CLIENT_ERROR_MESSAGE } from "../../constants/errorMessages";
-import useCartCount from "../../hooks/useCartCount";
-
+import * as S from './ProductItem.styles';
+import Button from '../common/button/Button';
+import type { ProductItemType } from '../../types/data';
+import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
+import CounterControl from '../common/counterControl/CounterControl';
+import { CLIENT_ERROR_MESSAGE } from '../../constants/errorMessages';
+import useCartCount from '../../hooks/useCartCount';
+import { handleImageError } from '../../util/handleImageError';
 interface ProductItemProps {
-	cartInCount: number;
-	product: ProductItemType;
-	onAddCartItems: (productId: number) => void;
-	onRemoveCartItems: (productId: number) => void;
-	onUpdateCartItems: (productId: number, quantity: number) => void;
+  cartInCount: number;
+  product: ProductItemType;
+  onAddCartItems: (productId: number) => void;
+  onRemoveCartItems: (productId: number) => void;
+  onUpdateCartItems: (productId: number, quantity: number) => void;
 }
 
 const ProductItem = ({
-	cartInCount,
-	product,
-	onAddCartItems,
-	onRemoveCartItems,
-	onUpdateCartItems,
+  cartInCount,
+  product,
+  onAddCartItems,
+  onRemoveCartItems,
+  onUpdateCartItems,
 }: ProductItemProps) => {
-	const handleImageError = (
-		event: React.SyntheticEvent<HTMLImageElement, Event>,
-	) => {
-		const DEFAULT_PRODUCT_IMAGE = "./default-product.png";
-		event.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
-	};
+  const isMaxCountReached = cartInCount >= product.quantity;
+  const isOutOfStock = product.quantity === 0;
 
-	const isMaxCountReached = cartInCount >= product.quantity;
-	const isOutOfStock = product.quantity === 0;
+  const { handlePlusCount, handleMinusCount } = useCartCount({
+    cartInCount,
+    product,
+    onUpdateCartItems,
+    onAddCartItems,
+    onRemoveCartItems,
+  });
 
-	const { handlePlusCount, handleMinusCount } = useCartCount({
-		cartInCount,
-		product,
-		onUpdateCartItems,
-		onAddCartItems,
-		onRemoveCartItems,
-	});
+  return (
+    <S.ProductItemContainer>
+      <S.ProductItemImageContainer>
+        <S.ProductItemImage
+          src={product.imageUrl}
+          onError={handleImageError}
+          alt={`${product.name} 사진`}
+        />
+        {isOutOfStock && <S.ProductItemOutOfStockOverlay>품 절</S.ProductItemOutOfStockOverlay>}
+      </S.ProductItemImageContainer>
+      <S.ProductItemCard>
+        <S.ProductItemInfo>
+          <S.ProductItemTitle data-testid="product-name">{product.name}</S.ProductItemTitle>
+          <S.ProductItemPrice>{product.price.toLocaleString()}원</S.ProductItemPrice>
+          {isMaxCountReached && !isOutOfStock && (
+            <S.OutOfStockText>{CLIENT_ERROR_MESSAGE.OUT_OF_STOCK}</S.OutOfStockText>
+          )}
+        </S.ProductItemInfo>
 
-	return (
-		<S.ProductItemContainer>
-			<S.ProductItemImageContainer>
-				<S.ProductItemImage
-					src={product.imageUrl}
-					onError={handleImageError}
-					alt={`${product.name} 사진`}
-				/>
-				{isOutOfStock && (
-					<S.ProductItemOutOfStockOverlay>품 절</S.ProductItemOutOfStockOverlay>
-				)}
-			</S.ProductItemImageContainer>
-			<S.ProductItemCard>
-				<S.ProductItemInfo>
-					<S.ProductItemTitle data-testid="product-name">
-						{product.name}
-					</S.ProductItemTitle>
-					<S.ProductItemPrice>
-						{product.price.toLocaleString()}원
-					</S.ProductItemPrice>
-					{isMaxCountReached && !isOutOfStock && (
-						<S.OutOfStockText>
-							{CLIENT_ERROR_MESSAGE.OUT_OF_STOCK}
-						</S.OutOfStockText>
-					)}
-				</S.ProductItemInfo>
-
-				{cartInCount > 0 ? (
-					<CounterControl
-						count={cartInCount}
-						maxCount={product.quantity}
-						onPlusCount={handlePlusCount}
-						onMinusCount={handleMinusCount}
-					/>
-				) : (
-					<Button
-						type="button"
-						id="add"
-						name="담기"
-						variant="smallBlack"
-						onClick={handlePlusCount}
-						disabled={isOutOfStock}
-					>
-						<S.CartIconContainer>
-							<S.CartAddIcon src={AddShoppingCartIcon} alt="장바구니 담기" />
-							담기
-						</S.CartIconContainer>
-					</Button>
-				)}
-			</S.ProductItemCard>
-		</S.ProductItemContainer>
-	);
+        {cartInCount > 0 ? (
+          <CounterControl
+            count={cartInCount}
+            maxCount={product.quantity}
+            onPlusCount={handlePlusCount}
+            onMinusCount={handleMinusCount}
+          />
+        ) : (
+          <Button
+            type="button"
+            id="add"
+            name="담기"
+            variant="smallBlack"
+            onClick={handlePlusCount}
+            disabled={isOutOfStock}
+          >
+            <S.CartIconContainer>
+              <S.CartAddIcon src={AddShoppingCartIcon} alt="장바구니 담기" />
+              담기
+            </S.CartIconContainer>
+          </Button>
+        )}
+      </S.ProductItemCard>
+    </S.ProductItemContainer>
+  );
 };
 
 export default ProductItem;
