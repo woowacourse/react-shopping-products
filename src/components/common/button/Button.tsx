@@ -1,21 +1,22 @@
 import * as S from './Button.styles';
 import type { ComponentProps } from 'react';
-import type { VariantsProps } from '../../../types/styleVariants';
-
+import type { SizeProps, ColorProps } from '../../../types/styleVariants';
 interface ButtonProps
   extends Pick<ComponentProps<'button'>, 'type' | 'name' | 'id' | 'onClick' | 'disabled'> {
   children: React.ReactNode;
-  variant: VariantsProps;
+  size: SizeProps;
+  color: ColorProps;
 }
 
-const Button = ({ children, variant, ...buttonProps }: ButtonProps) => {
+const Button = ({ children, size, color, ...buttonProps }: ButtonProps) => {
   return (
     <S.ButtonContainer
       type={buttonProps.type}
       name={buttonProps.name}
       id={buttonProps.id}
       onClick={buttonProps.onClick}
-      $variant={variant}
+      $size={size}
+      $color={color}
       disabled={buttonProps.disabled}
     >
       {children}

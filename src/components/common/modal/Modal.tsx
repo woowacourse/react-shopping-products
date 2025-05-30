@@ -34,7 +34,14 @@ const Modal = ({ isOpen, onClose, children, title, hideCloseButton = false }: Mo
             <S.Title>{title}</S.Title>
             <S.ModalContent>{children}</S.ModalContent>
             {!hideCloseButton && (
-              <Button variant="largeBlack" name="닫기" onClick={onClose} type="button" id="close">
+              <Button
+                size="large"
+                color="black"
+                name="닫기"
+                onClick={onClose}
+                type="button"
+                id="close"
+              >
                 닫기
               </Button>
             )}

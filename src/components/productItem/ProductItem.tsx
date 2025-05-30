@@ -63,7 +63,8 @@ const ProductItem = ({
             type="button"
             id="add"
             name="담기"
-            variant="smallBlack"
+            size="small"
+            color="black"
             onClick={handlePlusCount}
             disabled={isOutOfStock}
           >
