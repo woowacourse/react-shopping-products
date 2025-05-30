@@ -52,6 +52,9 @@ const ItemCard = ({
         <div className={S.itemDescription}>
           <p className={S.cardName}>{name}</p>
           <p>{price.toLocaleString()}원</p>
+          <p style={{ fontSize: '12px' }}>
+            <b>{maxQuantity}</b>개 남음!
+          </p>
         </div>
         <div className={S.buttonContainer}>
           {isCart ? (
