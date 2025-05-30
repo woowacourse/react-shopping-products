@@ -17,7 +17,8 @@ const patchCart = async (cartId: number, quantity: number) => {
 
     await handleHttpError(response);
   } catch (error) {
-    if (error instanceof Error) throw new Error(error.message);
+    console.error('fetch 실패:', error);
+    throw error;
   }
 };
 
