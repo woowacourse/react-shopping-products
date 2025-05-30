@@ -13,7 +13,7 @@ import { useResource } from "./useResource";
 import { categoryType, sortType } from "../types/index.types";
 import { getQueryString } from "../utils/getQueryString";
 
-export interface DataContextType {
+export interface CartProductContextType {
   cartItemIds: Record<"productId" | "cartId" | "quantity", number>[];
   products: ProductPageResponse | null;
   fetchCartProducts: () => void;
@@ -24,9 +24,9 @@ export interface DataContextType {
   isLoading: boolean;
 }
 
-const DataContext = createContext<DataContextType | null>(null);
+const CartProductContext = createContext<CartProductContextType | null>(null);
 
-export function DataProvider({
+export function CartProductProvider({
   children,
   setErrorTrue,
 }: {
@@ -80,7 +80,7 @@ export function DataProvider({
   }, [cartItemsResponse]);
 
   return (
-    <DataContext.Provider
+    <CartProductContext.Provider
       value={{
         cartItemIds,
         setCartItemIds,
@@ -91,12 +91,12 @@ export function DataProvider({
       }}
     >
       {children}
-    </DataContext.Provider>
+    </CartProductContext.Provider>
   );
 }
 
-export function useData() {
-  const context = useContext(DataContext);
-  if (!context) throw new Error("DataProvider로 감싸야 합니다.");
+export function useCartProduct() {
+  const context = useContext(CartProductContext);
+  if (!context) throw new Error("CartProductProvider로 감싸야 합니다.");
   return context;
 }

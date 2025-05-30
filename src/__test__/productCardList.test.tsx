@@ -3,12 +3,13 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import ProductCardList from "../components/productCardList/ProductCardList";
 import { ProductPageResponse } from "../types/response.types";
-import { useData } from "../hooks/useData";
-import { DataContextType } from "../hooks/useData";
+import { useCartProduct } from "../hooks/useCartProduct";
+import { CartProductContextType } from "../hooks/useCartProduct";
 
 vi.mock("../hooks/useData");
 
-const mockedUseData = useData as unknown as jest.Mock<DataContextType>;
+const mockedUseData =
+  useCartProduct as unknown as jest.Mock<CartProductContextType>;
 
 describe("ProductCardList 컴포넌트", () => {
   const setErrorTrue = vi.fn();

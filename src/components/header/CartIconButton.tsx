@@ -1,4 +1,4 @@
-import { useData } from "../../hooks/useData";
+import { useCartProduct } from "../../hooks/useCartProduct";
 import { CartStyle, PutItemCount } from "./CartIconButton.css";
 
 interface CartIconButtonProps {
@@ -6,7 +6,7 @@ interface CartIconButtonProps {
 }
 
 function CartIconButton({ onOpenModal }: CartIconButtonProps) {
-  const { cartItemIds } = useData();
+  const { cartItemIds } = useCartProduct();
   return (
     <button css={CartStyle} onClick={onOpenModal}>
       <img src="Cart.svg" alt="장바구니 아이콘" />

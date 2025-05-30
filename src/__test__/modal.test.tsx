@@ -2,8 +2,8 @@ import "@testing-library/jest-dom";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Modal from "../components/modal/Modal";
-import { useData } from "../hooks/useData";
-import type { DataContextType } from "../hooks/useData";
+import { useCartProduct } from "../hooks/useCartProduct";
+import type { CartProductContextType } from "../hooks/useCartProduct";
 import type { MockedFunction } from "vitest";
 
 vi.mock("../hooks/useData");
@@ -36,7 +36,9 @@ describe("Modal", () => {
     { productId: 2, cartId: 102, quantity: 3 },
   ];
 
-  const mockedUseData = useData as MockedFunction<() => DataContextType>;
+  const mockedUseData = useCartProduct as MockedFunction<
+    () => CartProductContextType
+  >;
 
   mockedUseData.mockReturnValue({
     cartItemIds: mockCartItemIds,

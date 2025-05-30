@@ -9,7 +9,7 @@ import {
 } from "./ProductCard.css";
 import CartToggleButton from "../cartButton/CartButton";
 import { ERROR_TYPE } from "../../hooks/useError";
-import { useData } from "../../hooks/useData";
+import { useCartProduct } from "../../hooks/useCartProduct";
 import { ProductPageResponse } from "../../types/response.types";
 
 interface ProductCardProps {
@@ -27,7 +27,7 @@ function ProductCard({
   isSoldOut,
   setToggle,
 }: ProductCardProps) {
-  const { cartItemIds } = useData();
+  const { cartItemIds } = useCartProduct();
   const cartMatch = cartItemIds.find((item) => item.productId === product.id);
 
   return (

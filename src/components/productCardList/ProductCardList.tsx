@@ -2,7 +2,7 @@ import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
 import { ERROR_TYPE } from "../../hooks/useError";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
-import { useData } from "../../hooks/useData";
+import { useCartProduct } from "../../hooks/useCartProduct";
 import { useState } from "react";
 
 interface ProductCardListProps {
@@ -10,7 +10,7 @@ interface ProductCardListProps {
 }
 
 function ProductCardList({ setErrorTrue }: ProductCardListProps) {
-  const { products, isLoading } = useData();
+  const { products, isLoading } = useCartProduct();
   const [toggleStates, setToggleStates] = useState<Record<number, boolean>>({});
 
   const toggleButton = (productId: number, value: boolean) => {

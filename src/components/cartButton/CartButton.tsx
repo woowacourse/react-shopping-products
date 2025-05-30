@@ -1,5 +1,5 @@
 import { addItemToCart } from "./cartButton.domain";
-import { useData } from "../../hooks/useData";
+import { useCartProduct } from "../../hooks/useCartProduct";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { ButtonContainer } from "./CartButton.css";
 import { useCartItemActions } from "../../hooks/useCartItemActions";
@@ -26,7 +26,7 @@ function CartButton({
   setErrorTrue,
   setToggle,
 }: CartButtonProps) {
-  const { setCartItemIds, fetchCartProducts } = useData();
+  const { setCartItemIds, fetchCartProducts } = useCartProduct();
   const { handlePlus, handleMinus } = useCartItemActions({
     cartId,
     productId,

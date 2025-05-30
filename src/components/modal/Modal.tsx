@@ -1,4 +1,4 @@
-import { useData } from "../../hooks/useData";
+import { useCartProduct } from "../../hooks/useCartProduct";
 import { ERROR_TYPE } from "../../hooks/useError";
 import CartItem from "./CartItem";
 import {
@@ -16,7 +16,7 @@ interface ModalProps {
 
 function Modal({ onClose, setErrorTrue }: ModalProps) {
   const { products, cartItemIds, setCartItemIds, fetchCartProducts } =
-    useData();
+    useCartProduct();
 
   const cartItems = products?.content.map((product) => {
     const match = cartItemIds.find((item) => item.productId === product.id);
