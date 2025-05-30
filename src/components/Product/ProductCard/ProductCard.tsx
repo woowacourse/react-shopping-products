@@ -13,7 +13,7 @@ interface ProductCardProps {
   imageUrl: string;
   isInCart: boolean;
   productQuantity: number;
-  onClick: () => void;
+  onAddCart: () => void;
   orderBy: OrderByOptionType;
   cartItemId?: number | undefined;
   cartQuantity: number;
@@ -24,7 +24,7 @@ export default function ProductCard({
   price,
   imageUrl,
   isInCart,
-  onClick,
+  onAddCart,
   productQuantity,
   cartQuantity,
   cartItemId
@@ -52,7 +52,7 @@ export default function ProductCard({
       <div css={styles.detailCss}>
         <h2>{title}</h2>
         <p>{price}</p>
-        {!isInCart && !soldOut && <AddToCartButton disabled={productQuantity == 0} onClick={onClick} />}
+        {!isInCart && !soldOut && <AddToCartButton disabled={productQuantity == 0} onClick={onAddCart} />}
         {isInCart && <Counter value={cartQuantity} onIncrement={handlePlus} onDecrement={handleMinus} />}
       </div>
     </li>

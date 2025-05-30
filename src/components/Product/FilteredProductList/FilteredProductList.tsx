@@ -8,7 +8,6 @@ import { CartItemResponse, ProductResponse } from '../../../types/response';
 import getProducts from '../../../api/getProducts';
 import useErrorHandler from '../../../hooks/useErrorHandler';
 import { ProductCardModel, productCardModelMapper } from '../../../api/model/productCardModelMapper';
-import { deleteCartItem } from '../../../api/deleteCartItem';
 import postCartItem from '../../../api/postCartItem';
 import { useApiContext } from '../../../contexts/ApiContext';
 import getCartItems from '../../../api/getCartItems';
@@ -44,14 +43,9 @@ export default function FilteredProductList({
 
   const productListModel = filteredProducts?.map((product) => productCardModelMapper(product, cartItems?.content));
 
-  const handleCartToggle = useCallback(
+  const handleAddCart = useCallback(
     async (product: ProductCardModel) => {
       try {
-        if (product.isInCart) {
-          await deleteCartItem(product.cartItemId!);
-          await refetchCart();
-          return;
-        }
         await postCartItem(product.id, 1);
         await refetchCart();
       } catch (err) {
@@ -70,7 +64,7 @@ export default function FilteredProductList({
           key={productCard.id}
           orderBy={orderBy}
           {...productCard}
-          onClick={() => handleCartToggle(productCard)}
+          onAddCart={() => handleAddCart(productCard)}
         />
       ))}
     </ul>
