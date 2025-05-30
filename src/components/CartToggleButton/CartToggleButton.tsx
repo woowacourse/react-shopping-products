@@ -7,6 +7,7 @@ import { ERROR_MSG } from "../../constants/errorMessage";
 import { deleteCartItem, postCartItems } from "../../api/cartItems";
 import { useDataContext } from "../../contexts/DataContext";
 import { showErrorMessageProps } from "../ProductCard/ProductCard";
+import { ADD_TO_CART_QUANTITY } from "../../constants/basket";
 
 type SharedToggleProps = {
   isNotBasketCountMAX: boolean;
@@ -82,7 +83,7 @@ const handleCartToggleButton = async ({
       return;
 
     try {
-      await postCartItems(productId, 1);
+      await postCartItems(productId, ADD_TO_CART_QUANTITY);
     } catch (error) {
       showErrorMessage({ timeoutRef, setError, setErrorMessage, errorMessage: ERROR_MSG.ADD_BASKET_FAIL });
     }

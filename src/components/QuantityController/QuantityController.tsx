@@ -8,6 +8,7 @@ import { deleteCartItem, postCartItems } from "../../api/cartItems";
 import { useDataContext } from "../../contexts/DataContext";
 import { ERROR_MSG } from "../../constants/errorMessage";
 import { showErrorMessageProps } from "../ProductCard/ProductCard";
+import { ADD_TO_CART_QUANTITY, REMOVE_FROM_CART_QUANTITY } from "../../constants/basket";
 
 type QuantityControllerProps = {
   id: number;
@@ -31,7 +32,7 @@ const QuantityController = ({
 
   const increase = async () => {
     try {
-      await postCartItems(id, 1);
+      await postCartItems(id, ADD_TO_CART_QUANTITY);
       fetchCartItems();
     } catch (e) {
       showErrorMessage({
@@ -58,7 +59,7 @@ const QuantityController = ({
       }
     } else if (quantity > 1) {
       try {
-        await postCartItems(id, -1);
+        await postCartItems(id, REMOVE_FROM_CART_QUANTITY);
         await fetchCartItems();
       } catch (error) {
         showErrorMessage({
