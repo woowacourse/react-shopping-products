@@ -57,12 +57,7 @@ export default function FilteredProductList({
   return (
     <ul css={styles.listCss}>
       {productListModel?.map((productCard) => (
-        <ProductCard
-          key={productCard.id}
-          orderBy={orderBy}
-          {...productCard}
-          onAddCart={() => handleAddCart(productCard)}
-        />
+        <ProductCard key={productCard.id} {...productCard} onAddCart={() => handleAddCart(productCard)} />
       ))}
     </ul>
   );

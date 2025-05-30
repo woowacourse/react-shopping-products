@@ -3,8 +3,8 @@ import Counter from '../../Counter/Counter';
 import Image from '../../Image/Image';
 import * as styles from './ProductCard.style';
 import patchCartItem from '../../../api/patchCartItem';
-import { OrderByOptionType } from '../../../types/categoryOption';
 import useCartItems from '../../../hooks/api/useCartItems';
+import { useErrorContext } from '../../../contexts/ErrorContext';
 
 interface ProductCardProps {
   title: string;
@@ -13,12 +13,33 @@ interface ProductCardProps {
   isInCart: boolean;
   productQuantity: number;
   onAddCart: () => void;
-  orderBy: OrderByOptionType;
-  cartItemId?: number | undefined;
+  cartItemId?: number;
   cartQuantity: number;
 }
 
-export default function ProductCard({
+export default function ProductCard(props: ProductCardProps) {
+  if (props.productQuantity === 0) {
+    return <SoldOutProductCard {...props} />;
+  }
+
+  return <PurchasableProductCard {...props} />;
+}
+
+export function SoldOutProductCard({ title, price, imageUrl }: Pick<ProductCardProps, 'title' | 'price' | 'imageUrl'>) {
+  return (
+    <li css={styles.cardCss}>
+      <div css={styles.imageWrapperCss}>
+        <Image css={[styles.imageCss, styles.disabledImageCss]} src={imageUrl} alt={`${title}상품`} />
+        <p css={styles.soldOutCss}>SOLD OUT</p>
+      </div>
+      <div css={styles.detailCss}>
+        <h2>{title}</h2>
+        <p>{price}</p>
+      </div>
+    </li>
+  );
+}
+export function PurchasableProductCard({
   title,
   price,
   imageUrl,
@@ -29,6 +50,7 @@ export default function ProductCard({
   cartItemId
 }: ProductCardProps) {
   const { fetcher: refetchCart } = useCartItems();
+  const { showError } = useErrorContext();
 
   const handleMinus = async () => {
     await patchCartItem(cartItemId, cartQuantity - 1);
@@ -37,21 +59,25 @@ export default function ProductCard({
 
   const handlePlus = async () => {
     if (cartQuantity >= productQuantity) return;
-    await patchCartItem(cartItemId, cartQuantity + 1);
-    await refetchCart();
+    try {
+      await patchCartItem(cartItemId, cartQuantity + 1);
+      await refetchCart();
+    } catch (e) {
+      if (e instanceof Error) {
+        showError(e);
+      }
+    }
   };
 
-  const soldOut = productQuantity == 0;
   return (
     <li css={styles.cardCss}>
       <div css={styles.imageWrapperCss}>
-        <Image css={[styles.imageCss, soldOut && styles.disabledImageCss]} src={imageUrl} alt={`${title}상품`} />
-        {soldOut && <p css={styles.soldOutCss}>SOLD OUT</p>}
+        <Image css={styles.imageCss} src={imageUrl} alt={`${title}상품`} />
       </div>
       <div css={styles.detailCss}>
         <h2>{title}</h2>
         <p>{price}</p>
-        {!isInCart && !soldOut && <AddToCartButton disabled={productQuantity == 0} onClick={onAddCart} />}
+        {!isInCart && <AddToCartButton onClick={onAddCart} />}
         {isInCart && <Counter value={cartQuantity} onIncrement={handlePlus} onDecrement={handleMinus} />}
       </div>
     </li>
