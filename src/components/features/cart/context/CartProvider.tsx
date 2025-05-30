@@ -12,7 +12,7 @@ export const CartContext = createContext<{
 
 function CartProvider({ children }: { children: React.ReactNode }) {
   const { data: cartList, refetch } = useJaeO<Cart[]>({
-    path: '/cart-items',
+    fetchKey: '/cart-items',
     fetchFn: () => {
       return getShoppingCartList();
     },

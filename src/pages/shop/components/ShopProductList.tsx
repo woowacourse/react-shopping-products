@@ -28,7 +28,7 @@ function ShopProductList({
     isLoading,
     isError,
   } = useJaeO<Product[]>({
-    path: `/products?${queryString}`,
+    fetchKey: `/products?${queryString}`,
     fetchFn: () => {
       return getProductList(filter);
     },

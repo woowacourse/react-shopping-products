@@ -3,14 +3,16 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 const cache = new Map<string, { data: unknown; updatedAt: number }>();
 
 interface useJaeOProps<T> {
-  path: string;
+  fetchKey: string;
   fetchFn: () => Promise<T>;
   onError?: () => void;
 }
 
-export function useJaeO<T>({ path, fetchFn, onError }: useJaeOProps<T>) {
-  const [data, setData] = useState<T>(() => (cache.get(path)?.data ?? []) as T);
-  const [isLoading, setIsLoading] = useState(!cache.get(path));
+export function useJaeO<T>({ fetchKey, fetchFn, onError }: useJaeOProps<T>) {
+  const [data, setData] = useState<T>(
+    () => (cache.get(fetchKey)?.data ?? []) as T
+  );
+  const [isLoading, setIsLoading] = useState(!cache.get(fetchKey));
   const [isError, setIsError] = useState(false);
 
   const fetchFnRef = useRef(fetchFn);
@@ -24,7 +26,7 @@ export function useJaeO<T>({ path, fetchFn, onError }: useJaeOProps<T>) {
       try {
         const data = await fetchFnRef.current();
         if (!ignore) {
-          cache.set(path, { data, updatedAt: Date.now() });
+          cache.set(fetchKey, { data, updatedAt: Date.now() });
           setData(data);
         }
       } catch {
@@ -36,7 +38,7 @@ export function useJaeO<T>({ path, fetchFn, onError }: useJaeOProps<T>) {
         }
       }
     },
-    [path]
+    [fetchKey]
   );
 
   const refetch = useCallback(() => {
@@ -54,7 +56,7 @@ export function useJaeO<T>({ path, fetchFn, onError }: useJaeOProps<T>) {
   useEffect(() => {
     let ignore = false;
 
-    const cached = cache.get(path);
+    const cached = cache.get(fetchKey);
     if (cached) {
       setData(cached.data as T);
       setIsLoading(false);
@@ -65,7 +67,7 @@ export function useJaeO<T>({ path, fetchFn, onError }: useJaeOProps<T>) {
     return () => {
       ignore = true;
     };
-  }, [fetchAndSetData, path]);
+  }, [fetchAndSetData, fetchKey]);
 
   return { data, isLoading, isError, refetch };
 }
