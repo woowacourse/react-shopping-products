@@ -42,10 +42,6 @@ export async function PlusItem({
   }
   try {
     await request({
-      headers: {
-        Authorization: import.meta.env.VITE_TOKEN,
-        "Content-Type": "application/json",
-      },
       method: "PATCH",
       url: `/cart-items/${cartId}`,
       body: { quantity: (quantity ?? 0) + 1 },
@@ -62,10 +58,6 @@ export async function MinusItem({
 }: MinusItemProps) {
   try {
     await request({
-      headers: {
-        Authorization: import.meta.env.VITE_TOKEN,
-        "Content-Type": "application/json",
-      },
       method: "PATCH",
       url: `/cart-items/${cartId}`,
       body: { quantity: (quantity ?? 0) - 1 },
@@ -88,10 +80,6 @@ export async function addItemToCart({
     }
 
     await request({
-      headers: {
-        Authorization: import.meta.env.VITE_TOKEN,
-        "Content-Type": "application/json",
-      },
       method: "POST",
       url: "/cart-items",
       body: { productId, quantity: 1 },
@@ -110,10 +98,6 @@ export async function removeItemToCart({
 }: RemoveItemToCartProps) {
   try {
     await request({
-      headers: {
-        Authorization: import.meta.env.VITE_TOKEN,
-        "Content-Type": "application/json",
-      },
       method: "DELETE",
       url: `/cart-items/${cartId}`,
     });

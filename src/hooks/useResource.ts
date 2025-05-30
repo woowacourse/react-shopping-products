@@ -16,10 +16,6 @@ export function useResource<T>(
         const res: T = await request({
           method: "GET",
           url,
-          headers: {
-            Authorization: import.meta.env.VITE_TOKEN,
-            "Content-Type": "application/json",
-          },
         });
         setData(res);
       } catch {
