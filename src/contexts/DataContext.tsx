@@ -32,7 +32,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
         ...prev,
         [key]: {
           ...prev[key],
-          data: null,
+          data: newState.data ?? prev[key]?.data ?? null,
           isLoading: false,
           error: "",
           ...newState,
