@@ -3,7 +3,7 @@ import { useAPIContext } from '../Component/Common/Provider';
 
 function useProducts() {
   const { data: products, status } = useAPIContext({
-    apiFn: () => getProducts(),
+    defaultApiFn: () => getProducts(),
     key: 'products',
   });
 

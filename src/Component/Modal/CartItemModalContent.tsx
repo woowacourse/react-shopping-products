@@ -14,7 +14,7 @@ export default function CartItemModalContent({
   updateErrorMessage,
 }: CartItemModalContentProps) {
   const { data: cartItems, requestData } = useAPIContext<CartItemTypes[]>({
-    apiFn: () => getShoppingCart(),
+    defaultApiFn: () => getShoppingCart(),
     key: 'cartItems',
   });
 

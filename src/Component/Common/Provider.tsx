@@ -41,15 +41,15 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 }
 
 interface APIContextProps<T> {
-  apiFn?: () => Promise<T>;
+  defaultApiFn?: () => Promise<T>;
   key: string;
-  skipLoading?: boolean;
+  defaultSkipLoading?: boolean;
 }
 
 export function useAPIContext<T>({
-  apiFn,
+  defaultApiFn,
   key,
-  skipLoading,
+  defaultSkipLoading,
 }: APIContextProps<T>) {
   const context = useContext(Context);
 
@@ -66,8 +66,8 @@ export function useAPIContext<T>({
 
   const requestData = useCallback(
     async (override?: { apiFn: () => Promise<T>; skipLoading?: boolean }) => {
-      const fn = override?.apiFn ?? apiFn;
-      const skip = override?.skipLoading ?? skipLoading;
+      const fn = override?.apiFn ?? defaultApiFn;
+      const skip = override?.skipLoading ?? defaultSkipLoading;
       if (!fn) return;
 
       try {
@@ -81,11 +81,11 @@ export function useAPIContext<T>({
         setStatus((prev) => ({ ...prev, [key]: 'error' }));
       }
     },
-    [skipLoading, setData, setStatus, key]
+    [defaultSkipLoading, setData, setStatus, key]
   );
 
   useEffect(() => {
-    if (data[key] || !apiFn) return;
+    if (data[key] || !defaultApiFn) return;
 
     requestData();
   }, []);
