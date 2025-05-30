@@ -15,6 +15,7 @@ export const Background = styled.div`
 
 export const ModalContainer = styled.div`
   max-width: var(--max-width-container);
+  max-height: 70vh;
   width: 100%;
   border-radius: 8px;
   background-color: #fff;
@@ -69,4 +70,16 @@ export const ModalButton = styled.button`
 
 export const ModalContent = styled.main`
   flex: 1;
+  overflow: auto;
+
+  &::after {
+    content: '';
+    display: block;
+    height: 30px;
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent, var(--color-white));
+    pointer-events: none;
+  }
 `;

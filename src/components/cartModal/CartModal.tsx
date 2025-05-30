@@ -1,6 +1,5 @@
 import Modal from '../common/modal/Modal';
 import CartItem from '../cartItem/CartItem';
-import Button from '../common/button/Button';
 import type { CartItemType } from '../../types/data';
 import useDataContext from '../../hooks/useDataContext';
 
@@ -29,9 +28,6 @@ const CartModal = (props: CartModalProps) => {
           onUpdateCartItems={onUpdateCartItems}
         />
       ))}
-      <Button variant="largeBlack" name="닫기" onClick={onModalClose} type="button" id="close">
-        닫기
-      </Button>
     </Modal>
   );
 };
