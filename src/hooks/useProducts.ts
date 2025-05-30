@@ -15,7 +15,10 @@ export default function useProducts({
   const { requestURL } = useProductQueryURL({ page, size, sortingType, filterType });
   const { showError } = useError();
 
-  const products = productsInfo.content;
+  const products = [
+    ...productsInfo.content.filter(({ quantity }) => quantity !== 0),
+    ...productsInfo.content.filter(({ quantity }) => quantity === 0),
+  ];
 
   useEffect(() => {
     const fetchProducts = async () => {

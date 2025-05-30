@@ -8,6 +8,26 @@
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25);
 }
 
+.imageContainer {
+  position: relative;
+}
+
+.overlay {
+  user-select: none;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 35px;
+  font-weight: bold;
+}
+
 .cardImg {
   width: 100%;
   height: 112px;
@@ -23,7 +43,7 @@
   justify-content: space-between;
   margin-top: 12px;
   padding: 0 8px;
-  gap: 27px;
+  gap: 2px;
 }
 
 .itemDescription {
@@ -43,14 +63,34 @@
   word-break: break-all;
 }
 
-.buttonWrap {
+.buttonContainer {
   display: flex;
   flex-direction: row-reverse;
   justify-content: end;
 }
 
+.cartAmountContainer {
+  min-width: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+
+.cartAmountContainer button {
+  background: none;
+  border: 2px solid #eaeaea;
+  border-radius: 5px;
+  width: 24px;
+  height: 24px;
+  transition: 0.3s background;
+}
+
+.cartAmountContainer button:hover {
+  background: #eaeaea;
+}
+
 .addCartButton {
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -62,7 +102,6 @@
 }
 
 .removeCartButton {
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;

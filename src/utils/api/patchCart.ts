@@ -2,24 +2,24 @@ import { CART_URL } from '../../constants/endpoint';
 import { USER_TOKEN } from '../../constants/env';
 import handleHttpError from '../handleHTTPError';
 
-const addCart = async (productId: number, quantity = 1) => {
+const patchCart = async (cartId: number, quantity: number) => {
   try {
-    const response = await fetch(CART_URL, {
+    const response = await fetch(`${CART_URL}/${cartId}`, {
       headers: {
         'content-type': 'application/json',
         Authorization: `Basic ${USER_TOKEN}`,
       },
-      method: 'POST',
+      method: 'PATCH',
       body: JSON.stringify({
-        productId,
         quantity,
       }),
     });
 
     await handleHttpError(response);
   } catch (error) {
-    if (error instanceof Error) throw new Error(error.message);
+    console.error('fetch 실패:', error);
+    throw error;
   }
 };
 
-export default addCart;
+export default patchCart;

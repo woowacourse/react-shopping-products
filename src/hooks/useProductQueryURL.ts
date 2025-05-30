@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { PRODUCT_URL } from '../constants/endpoint';
-import getQueryURL from '../utils/getQueryURL';
+import { getQueryURL } from '../utils';
 
 const useProductQueryURL = ({ page = '0', size = '20', sortingType = '', filterType = '' }) => {
   const requestURL = useMemo(() => {

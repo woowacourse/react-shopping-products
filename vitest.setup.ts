@@ -1,5 +1,6 @@
 import { beforeAll, afterEach, afterAll } from 'vitest';
 import { server } from './src/mocks/server';
+import '@testing-library/jest-dom';
 
 // 모든 테스트 케이스가 실행되기 전에 한 번 실행되는 함수
 beforeAll(() => {
