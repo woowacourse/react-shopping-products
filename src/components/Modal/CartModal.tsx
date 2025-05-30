@@ -62,9 +62,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                     <p>{viewModel.price}</p>
                     <Counter
                       value={viewModel.cartQuantity}
-                      onDecrement={() =>
-                        viewModel.cartQuantity > 1 && handleQuantityChange(viewModel.id, viewModel.cartQuantity - 1)
-                      }
+                      onDecrement={() => handleQuantityChange(viewModel.id, viewModel.cartQuantity - 1)}
                       onIncrement={() => {
                         if (viewModel.cartQuantity >= viewModel.productQuantity) {
                           showError(new Error('수량을 초과해서 담을 수 없어요.'));

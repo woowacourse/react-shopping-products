@@ -53,12 +53,21 @@ export function PurchasableProductCard({
   const { showError } = useErrorContext();
 
   const handleMinus = async () => {
-    await patchCartItem(cartItemId, cartQuantity - 1);
-    await refetchCart();
+    try {
+      await patchCartItem(cartItemId, cartQuantity - 1);
+      await refetchCart();
+    } catch (e) {
+      if (e instanceof Error) {
+        showError(e);
+      }
+    }
   };
 
   const handlePlus = async () => {
-    if (cartQuantity >= productQuantity) return;
+    if (cartQuantity >= productQuantity) {
+      showError(new Error('수량을 초과해서 담을 수 없어요.'));
+      return;
+    }
     try {
       await patchCartItem(cartItemId, cartQuantity + 1);
       await refetchCart();
