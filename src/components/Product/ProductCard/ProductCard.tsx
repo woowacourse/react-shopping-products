@@ -85,7 +85,7 @@ export function PurchasableProductCard({
       </div>
       <div css={styles.detailCss}>
         <h2>{title}</h2>
-        <p>{price}</p>
+        <p data-testid="product-price">{price}</p>
         {!isInCart && <AddToCartButton onClick={onAddCart} />}
         {isInCart && <Counter value={cartQuantity} onIncrement={handlePlus} onDecrement={handleMinus} />}
       </div>

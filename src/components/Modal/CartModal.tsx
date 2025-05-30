@@ -47,12 +47,12 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
       <Modal.Content css={styles.contentCss}>
         <Modal.Title css={styles.titleCss}>장바구니</Modal.Title>
 
-        <div css={styles.modalContent}>
+        <ul css={styles.modalContent}>
           {items.map((item) => {
             const viewModel = cartItemMapper(item);
 
             return (
-              <div key={viewModel.id} css={styles.cartItemWrapper}>
+              <li key={viewModel.id} css={styles.cartItemWrapper}>
                 <div css={styles.cartItem}>
                   <div css={styles.cartImageWrapper}>
                     <Image src={viewModel.imageUrl} alt={`${viewModel.title} 상품 이미지`} />
@@ -74,10 +74,10 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                   </div>
                 </div>
                 <RemoveFromCartButton onClick={() => handleDeleteCart(viewModel.id)} />
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
 
         <Modal.Footer>
           <div css={styles.footerCss}>
