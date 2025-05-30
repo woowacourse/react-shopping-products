@@ -59,13 +59,12 @@ function ProductItem({ product, variant }: ProductItemProps) {
           cartItemData: updatedCartItems,
         }));
       } catch (error) {
-        console.error("수량 증가 실패", error);
         setError((prev) => ({
           ...prev,
           cartItemData:
             error instanceof Error
               ? error.message
-              : "알 수 없는 오류가 발생하였습니다.",
+              : "상품의 수량을 증가시키는 과정에서 오류가 발생하였습니다.",
         }));
       }
     }
@@ -83,7 +82,13 @@ function ProductItem({ product, variant }: ProductItemProps) {
             cartItemData: updatedCartItems,
           }));
         } catch (error) {
-          console.error("장바구니 삭제 실패:", error);
+          setError((prev) => ({
+            ...prev,
+            cartItemData:
+              error instanceof Error
+                ? error.message
+                : "장바구니에서 상품을 삭제하는 과정에서 오류가 발생하였습니다.",
+          }));
         }
       }
     } else {
@@ -101,7 +106,13 @@ function ProductItem({ product, variant }: ProductItemProps) {
             cartItemData: updatedCartItems,
           }));
         } catch (error) {
-          console.error("수량 감소 실패", error);
+          setError((prev) => ({
+            ...prev,
+            cartItemData:
+              error instanceof Error
+                ? error.message
+                : "상품의 수량을 감소시키는 과정에서 오류가 발생하였습니다.",
+          }));
         }
       }
     }
