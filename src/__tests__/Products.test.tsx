@@ -3,15 +3,14 @@ import { getProducts } from "../api/products";
 
 describe("상품 API 실제 호출 테스트", () => {
   test("최대 20개의 상품 데이터를 가져온다", async () => {
-    const data = await getProducts({ page: 0, size: 20 });
+    const result = await getProducts({ page: 0, size: 20 });
 
-    expect(data.content.length).toBeLessThanOrEqual(20);
-
-    expect(data).toHaveProperty("totalPages");
-    expect(Array.isArray(data.content)).toBe(true);
-    expect(data.content[0]).toHaveProperty("id");
-    expect(data.content[0]).toHaveProperty("name");
-    expect(data.content[0]).toHaveProperty("price");
+    expect(result.content.length).toBeLessThanOrEqual(20);
+    expect(Array.isArray(result.content)).toBe(true);
+    expect(result).toHaveProperty("totalPages");
+    expect(result.content[0]).toHaveProperty("id");
+    expect(result.content[0]).toHaveProperty("name");
+    expect(result.content[0]).toHaveProperty("price");
   });
 
   describe("상품 API 카테고리 필터 테스트", () => {
@@ -28,7 +27,6 @@ describe("상품 API 실제 호출 테스트", () => {
       const allAreFashion = result.content.every(
         (product) => product.category === "패션잡화",
       );
-
       expect(allAreFashion).toBe(true);
     });
 
@@ -45,8 +43,17 @@ describe("상품 API 실제 호출 테스트", () => {
       const allAreFood = result.content.every(
         (product) => product.category === "식료품",
       );
-
       expect(allAreFood).toBe(true);
+    });
+
+    test("존재하지 않는 카테고리로 요청 시 빈 배열이 반환된다", async () => {
+      const result = await getProducts({
+        page: 0,
+        size: 20,
+        category: "전자기기",
+      });
+
+      expect(result.content.length).toBe(0);
     });
   });
 

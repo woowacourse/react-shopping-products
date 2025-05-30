@@ -5,10 +5,14 @@ import {
   ProductCardName,
   ProductCardPrice,
   ProductImage,
+  SoldOutOverlay,
+  ProductImageWrapper,
 } from "./ProductCard.styled";
 import { IMAGE_PATH } from "../../constants/imagePath";
 import CartToggleButton from "../CartToggleButton/CartToggleButton";
 import { useEffect, useRef } from "react";
+import QuantityController from "../QuantityController/QuantityController";
+import { mockProducts } from "../../mocks/data/products";
 
 type ProductCardProps = {
   id: number;
@@ -39,6 +43,9 @@ const ProductCard = ({
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const product = mockProducts.find((p) => p.id === id);
+  const isSoldOut = product?.quantity === 0;
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -49,26 +56,38 @@ const ProductCard = ({
 
   return (
     <ProductCardWrapper>
-      <ProductImage
-        src={imageSrc}
-        alt={name}
-        onError={(e) => {
-          const target = e.currentTarget;
-          target.src = defaultSrc;
-        }}
-      />
+      <ProductImageWrapper>
+        <ProductImage
+          src={imageSrc}
+          alt={name}
+          onError={(e) => {
+            const target = e.currentTarget;
+            target.src = defaultSrc;
+          }}
+        />
+        {isSoldOut && <SoldOutOverlay>품 절</SoldOutOverlay>}
+      </ProductImageWrapper>
       <ProductCardDetailWrapper>
         <ProductCardDetailTextWrapper>
           <ProductCardName>{name}</ProductCardName>
           <ProductCardPrice>{price.toLocaleString()}원</ProductCardPrice>
         </ProductCardDetailTextWrapper>
-        <CartToggleButton
-          id={id}
-          isInBascket={isInBascket}
-          basketId={basketId}
-          isNotBasketCountMAX={isNotBasketCountMAX}
-          timeoutRef={timeoutRef}
-        />
+        {isInBascket ? (
+          <QuantityController
+            id={id}
+            basketId={basketId}
+            timeoutRef={timeoutRef}
+          />
+        ) : (
+          <CartToggleButton
+            id={id}
+            isInBascket={isInBascket}
+            basketId={basketId}
+            isNotBasketCountMAX={isNotBasketCountMAX}
+            timeoutRef={timeoutRef}
+            isSoldOut={isSoldOut}
+          />
+        )}
       </ProductCardDetailWrapper>
     </ProductCardWrapper>
   );

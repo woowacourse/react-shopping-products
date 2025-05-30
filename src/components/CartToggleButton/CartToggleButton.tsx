@@ -5,8 +5,8 @@ import {
 import { IMAGE_PATH } from "../../constants/imagePath";
 import { ERROR_MSG } from "../../constants/errorMessage";
 import { deleteCartItem, postCartItems } from "../../api/cartItems";
-import { useCartContext } from "../../contexts/CartContext";
-import { useUIContext } from "../../contexts/UIContext";
+import { useCartContext, useUIContext } from "../../contexts/DataContext";
+import { ADD_TO_CART_QUANTITY } from "../../constants/basket";
 
 type SharedToggleProps = {
   isNotBasketCountMAX: boolean;
@@ -16,6 +16,7 @@ type SharedToggleProps = {
 type addProductInBasketProps = SharedToggleProps & {
   setError: (value: boolean) => void;
   setErrorMessage: (value: string) => void;
+  showErrorMessage: (msg: string) => void
 };
 
 type handleCartToggleButtonProps = SharedToggleProps & {
@@ -23,9 +24,10 @@ type handleCartToggleButtonProps = SharedToggleProps & {
   isInBascket: boolean;
   productId: number;
   basketId?: number;
-  fetchCartItems: (value?: boolean) => Promise<void>;
+  fetchCartItems: (value?: boolean) => void;
   setError: (value: boolean) => void;
   setErrorMessage: (value: string) => void;
+  showErrorMessage: (msg: string) => void
 };
 
 type CartToggleButtonProps = {
@@ -34,6 +36,7 @@ type CartToggleButtonProps = {
   basketId?: number;
   isNotBasketCountMAX: boolean;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+  isSoldOut?: boolean;
 };
 
 export type CartToggleButtonWrapperProps = {
@@ -42,22 +45,10 @@ export type CartToggleButtonWrapperProps = {
 
 const canAddProductToBasket = ({
   isNotBasketCountMAX,
-  setError,
-  timeoutRef,
-  setErrorMessage,
+  showErrorMessage
 }: addProductInBasketProps) => {
   if (!isNotBasketCountMAX) {
-    setError(true);
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      setError(false);
-    }, 2000);
-
-    setErrorMessage(ERROR_MSG.BASKET_LIMIT_EXCEEDED);
+    showErrorMessage(ERROR_MSG.BASKET_LIMIT_EXCEEDED);
     return false;
   }
   return true;
@@ -72,6 +63,7 @@ const handleCartToggleButton = async ({
   fetchCartItems,
   setError,
   setErrorMessage,
+  showErrorMessage,
 }: handleCartToggleButtonProps) => {
   if (!isInBascket) {
     if (
@@ -80,14 +72,29 @@ const handleCartToggleButton = async ({
         setError,
         timeoutRef,
         setErrorMessage,
+        showErrorMessage,
       })
     )
       return;
-    await postCartItems(productId);
+
+    try {
+      await postCartItems(productId, ADD_TO_CART_QUANTITY);
+    } catch (error) {
+      showErrorMessage(ERROR_MSG.ADD_BASKET_FAIL);
+    }
   } else if (basketId !== undefined) {
-    await deleteCartItem(basketId);
+    try {
+      await deleteCartItem(basketId);
+    } catch (error) {
+      showErrorMessage(ERROR_MSG.DELETE_BASKET_FAIL);
+    }
   }
-  await fetchCartItems(false);
+  try {
+    await fetchCartItems(false);
+  } catch (error) {
+    showErrorMessage(ERROR_MSG.PRODUCT_FETCH_FAIL);
+  }
+  
 };
 
 const CartToggleButton = ({
@@ -96,34 +103,38 @@ const CartToggleButton = ({
   basketId,
   isNotBasketCountMAX,
   timeoutRef,
+  isSoldOut,
 }: CartToggleButtonProps) => {
   const imageSrc = isInBascket
     ? IMAGE_PATH.SHOPPIN_CART_REMOVE
     : IMAGE_PATH.SHOPPIN_CART_ADD;
-  const { fetchCartItems } = useCartContext();
-  const { setError, setErrorMessage } = useUIContext();
+    const { fetchCartItems } = useCartContext();
+    const { setError, setErrorMessage, showErrorMessage } = useUIContext();
 
   return (
-    <CartToggleButtonWrapper
-      isInBascket={isInBascket}
-      onClick={() =>
-        handleCartToggleButton({
-          isInBascket,
-          productId: id,
-          basketId,
-          isNotBasketCountMAX,
-          timeoutRef,
-          fetchCartItems,
-          setError,
-          setErrorMessage,
-        })
-      }
-    >
-      <img src={imageSrc} alt="shopping_cart" />
-      <CartToggleButtonText isInBascket={isInBascket}>
-        {isInBascket ? "빼기" : "담기"}
-      </CartToggleButtonText>
-    </CartToggleButtonWrapper>
+    !isSoldOut && (
+      <CartToggleButtonWrapper
+        isInBascket={isInBascket}
+        onClick={() =>
+          handleCartToggleButton({
+            isInBascket,
+            productId: id,
+            basketId,
+            isNotBasketCountMAX,
+            timeoutRef,
+            fetchCartItems,
+            setError,
+            setErrorMessage,
+            showErrorMessage,
+          })
+        }
+      >
+        <img src={imageSrc} alt="shopping_cart" />
+        <CartToggleButtonText isInBascket={isInBascket}>
+          {isInBascket ? "빼기" : "담기"}
+        </CartToggleButtonText>
+      </CartToggleButtonWrapper>
+    )
   );
 };
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header/Header";
 import ProductCard from "./components/ProductCard/ProductCard";
 import SelectDropdownContainer from "./components/SelectDropdown/SelectDropdownContainer";
-import { getProducts, ProductResponse } from "./api/products";
+import { ProductResponse } from "./api/products";
 import { CategoryKey, SortKey } from "./constants/selectOption";
 import { MAX_BASKET_COUNT } from "./constants/basket";
 import { Container } from "./styles/common";
@@ -11,8 +11,9 @@ import "./styles/reset.css";
 import { ERROR_MSG } from "./constants/errorMessage";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import DotWaveSpinner from "./components/DotWaveSpinner/DotWaveSpinner";
-import { useCartContext } from "./contexts/CartContext";
-import { useUIContext } from "./contexts/UIContext";
+import useData from "./hooks/useData";
+import { END_POINT } from "./api/constants/endPoint";
+import { useCartContext, useUIContext } from "./contexts/DataContext";
 
 const categoryQueryMap: Record<CategoryKey, string | undefined> = {
   ALL: undefined,
@@ -27,41 +28,34 @@ const sortQueryMap: Record<SortKey, string | undefined> = {
 };
 
 function App() {
-  const [products, setProducts] = useState<ProductResponse[]>([]);
   const [category, setCategory] = useState<CategoryKey>("ALL");
   const [sort, setSort] = useState<SortKey>("NONE");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { basketProductsIds, fetchCartItems } = useCartContext();
-  const { error, setError, errorMessage, setErrorMessage } = useUIContext();
+  const {basketProductsIds} = useCartContext();
+  const {error, setError, errorMessage, setErrorMessage} = useUIContext();
+
+  const {
+    data: products,
+    isLoading,
+    error: fetchError,
+  } = useData<ProductResponse[]>(END_POINT.PRODUCT, {
+    queryParams: {
+      page: 0,
+      size: 20,
+      ...(sortQueryMap[sort] && { sort: sortQueryMap[sort] }),
+      ...(categoryQueryMap[category] && {
+        category: categoryQueryMap[category],
+      }),
+    },
+    dependencies: [category, sort],
+  });
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        const matchedCategory = categoryQueryMap[category];
-        const matchedSort = sortQueryMap[sort];
-
-        const data = await getProducts({
-          page: 0,
-          size: 20,
-          ...(matchedSort && { sort: matchedSort }),
-          ...(matchedCategory && { category: matchedCategory }),
-        });
-        setProducts(data.content);
-      } catch (error) {
-        setError(true);
-        setErrorMessage(ERROR_MSG.PRODUCT_FETCH_FAIL);
-        console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchProducts();
-  }, [category, sort]);
-
-  useEffect(() => {
-    fetchCartItems(true);
-  }, []);
+    if (fetchError) {
+      setError(true);
+      setErrorMessage(ERROR_MSG.PRODUCT_FETCH_FAIL);
+      console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, fetchError);
+    }
+  }, [fetchError, setError, setErrorMessage]);
 
   return (
     <Container>
@@ -75,7 +69,7 @@ function App() {
         setSort={setSort}
       />
       <ProductCardContainer>
-        {products.map((product) => (
+        {products?.map((product) => (
           <ProductCard
             key={product.id}
             id={product.id}

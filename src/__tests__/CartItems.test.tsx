@@ -1,43 +1,58 @@
-import { describe, test, expect, vi, beforeEach } from "vitest";
-import * as cartApi from "../api/cartItems";
-import mockCartItemsResponse from "./mockCartItems.json";
+import { describe, test, expect, beforeAll, afterEach, afterAll } from "vitest";
+import { setupServer } from "msw/node";
+import { handlers } from "../mocks/handlers";
+import { getCartItems, postCartItems, deleteCartItem } from "../api/cartItems";
+import { resetCartItems, mockCartItems } from "../mocks/data/cartItems";
 
-const mockCartItems = mockCartItemsResponse.content;
+const server = setupServer(...handlers);
 
-vi.mock("../api/cartItems");
+beforeAll(() => server.listen());
+afterEach(() => {
+  server.resetHandlers();
+  resetCartItems();
+});
+afterAll(() => server.close());
+beforeEach(() => {
+  server.resetHandlers();
+  resetCartItems();
+});
 
-describe("장바구니 API - Mock 데이터 기반 테스트", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
+describe("장바구니 API - MSW 기반 테스트", () => {
+  test("getCartItems 호출 시 mockCartItems 배열을 반환한다", async () => {
+    const items = await getCartItems();
 
-  test("getCartItems 호출 시 10개의 mock 데이터를 배열로 반환한다", async () => {
-    vi.mocked(cartApi.getCartItems).mockResolvedValue(mockCartItems);
-
-    const items = await cartApi.getCartItems();
-
-    expect(Array.isArray(items)).toBe(true);
-    expect(items.length).toBe(10);
-    expect(items[0].product.id).toBe(1);
+    expect(items[0].product.name).toBeDefined();
+    expect(items[0].product.imageUrl).toMatch(/^http/);
   });
 
   test("장바구니에 상품을 추가할 수 있다", async () => {
-    const spy = vi.spyOn(cartApi, "postCartItems").mockResolvedValue(undefined);
+    await postCartItems(1, 1);
 
-    await cartApi.postCartItems(1);
+    const items = await getCartItems();
+    const found = items.find((item) => item.productId === 1);
 
-    expect(spy).toHaveBeenCalledWith(1);
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(found).toBeDefined();
+    expect(found?.quantity).toBeGreaterThan(0);
   });
 
   test("장바구니에서 상품을 삭제할 수 있다", async () => {
-    const spy = vi
-      .spyOn(cartApi, "deleteCartItem")
-      .mockResolvedValue(undefined);
+    const existingId = mockCartItems[0].id;
+    await deleteCartItem(existingId);
 
-    await cartApi.deleteCartItem(1004);
+    const items = await getCartItems();
+    expect(items.find((item) => item.id === existingId)).toBeUndefined();
+  });
 
-    expect(spy).toHaveBeenCalledWith(1004);
-    expect(spy).toHaveBeenCalledTimes(1);
+  test("재고를 초과하면 400 에러를 반환한다", async () => {
+    const OVER_LIMIT_QUANTITY = 9999;
+
+    await expect(postCartItems(1, OVER_LIMIT_QUANTITY)).rejects.toMatchObject({
+      response: {
+        status: 400,
+        data: {
+          errorCode: "OUT_OF_STOCK",
+        },
+      },
+    });
   });
 });
