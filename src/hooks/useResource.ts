@@ -7,12 +7,10 @@ export function useResource<T>(
   errorType: ERROR_TYPE
 ) {
   const [data, setData] = useState<T | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = useCallback(
     async (url: string) => {
       try {
-        setIsLoading(true);
         const res: T = await request({
           method: "GET",
           url,
@@ -20,12 +18,10 @@ export function useResource<T>(
         setData(res);
       } catch {
         setErrorTrue(errorType);
-      } finally {
-        setIsLoading(false);
       }
     },
     [setErrorTrue, errorType]
   );
 
-  return { data, fetchData, isLoading };
+  return { data, fetchData };
 }

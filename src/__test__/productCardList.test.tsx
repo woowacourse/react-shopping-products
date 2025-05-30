@@ -30,7 +30,6 @@ describe("ProductCardList 컴포넌트", () => {
 
     mockedUseData.mockReturnValue({
       products: mockedProducts,
-      isLoading: false,
       cartItemIds: [],
       fetchCartProducts: vi.fn(),
       fetchProducts: vi.fn(),
@@ -77,7 +76,6 @@ describe("ProductCardList 컴포넌트", () => {
 
     mockedUseData.mockReturnValue({
       products: sortedProducts,
-      isLoading: false,
       cartItemIds: [],
       fetchCartProducts: vi.fn(),
       fetchProducts: vi.fn(),
@@ -127,7 +125,6 @@ describe("ProductCardList 컴포넌트", () => {
 
     mockedUseData.mockReturnValue({
       products: sortedByName,
-      isLoading: false,
       cartItemIds: [],
       fetchCartProducts: vi.fn(),
       fetchProducts: vi.fn(),
@@ -144,7 +141,6 @@ describe("ProductCardList 컴포넌트", () => {
   it("로딩 중일 때 Skeleton UI가 렌더링되어야 한다", () => {
     mockedUseData.mockReturnValue({
       products: null,
-      isLoading: true,
       cartItemIds: [],
       fetchCartProducts: vi.fn(),
       fetchProducts: vi.fn(),
@@ -173,7 +169,6 @@ describe("ProductCardList 컴포넌트", () => {
 
     mockedUseData.mockReturnValue({
       products: soldOutProduct,
-      isLoading: false,
       cartItemIds: [],
       fetchCartProducts: vi.fn(),
       fetchProducts: vi.fn(),

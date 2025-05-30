@@ -21,7 +21,6 @@ export interface CartProductContextType {
   setCartItemIds: Dispatch<
     SetStateAction<Record<"productId" | "cartId" | "quantity", number>[]>
   >;
-  isLoading: boolean;
 }
 
 const CartProductContext = createContext<CartProductContextType | null>(null);
@@ -33,17 +32,12 @@ export function CartProductProvider({
   children: React.ReactNode;
   setErrorTrue: (type: ERROR_TYPE) => void;
 }) {
-  const {
-    data: cartItemsResponse,
-    fetchData: fetchCartData,
-    isLoading: isCartLoading,
-  } = useResource<{ content: CartItem[] }>(setErrorTrue, "CART");
+  const { data: cartItemsResponse, fetchData: fetchCartData } = useResource<{
+    content: CartItem[];
+  }>(setErrorTrue, "CART");
 
-  const {
-    data: products,
-    fetchData: fetchProductData,
-    isLoading: isProductsLoading,
-  } = useResource<ProductPageResponse>(setErrorTrue, "PRODUCTS");
+  const { data: products, fetchData: fetchProductData } =
+    useResource<ProductPageResponse>(setErrorTrue, "PRODUCTS");
 
   const [cartItemIds, setCartItemIds] = useState<
     Record<"productId" | "cartId" | "quantity", number>[]
@@ -87,7 +81,6 @@ export function CartProductProvider({
         products,
         fetchCartProducts,
         fetchProducts,
-        isLoading: isCartLoading || isProductsLoading,
       }}
     >
       {children}

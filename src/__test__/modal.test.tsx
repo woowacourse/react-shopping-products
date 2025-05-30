@@ -46,7 +46,6 @@ describe("Modal", () => {
     fetchCartProducts: vi.fn(),
     fetchProducts: vi.fn(),
     setCartItemIds: vi.fn(),
-    isLoading: false,
   });
 
   it("카트 아이템과 총 금액이 렌더링된다", () => {

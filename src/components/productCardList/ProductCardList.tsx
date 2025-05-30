@@ -20,7 +20,7 @@ function ProductCardList({ setErrorTrue }: ProductCardListProps) {
     }));
   };
 
-  if (isLoading) return <ProductCardListSkeleton />;
+  if (!products) return <ProductCardListSkeleton />;
 
   return (
     <div css={CardListContainer}>
