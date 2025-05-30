@@ -7,6 +7,7 @@ import getCartItems from "../../api/getCartItems";
 import useCart from "../../hooks/useCart";
 import { useContext } from "react";
 import { APIContext } from "../../contexts/DataContext";
+import { CART_ITEMS_KEY } from "../../constants/dataKey";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
@@ -30,7 +31,9 @@ const CartItems = () => {
     refetch,
   });
 
-  const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
+  const cartItems = useAPIData<{ data: { content: CartItem[] } }>(
+    CART_ITEMS_KEY
+  );
   const handleProductRemoveClick = (id: number) => removeFromCart(id);
   if (!cartItems) return null;
 

@@ -7,13 +7,16 @@ import getCartItems from "../../api/getCartItems";
 import useCart from "../../hooks/useCart";
 import { useContext } from "react";
 import { APIContext } from "../../contexts/DataContext";
+import { CART_ITEMS_KEY } from "../../constants/dataKey";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
 };
 
 const ProductItem = ({ product }: { product: Product }) => {
-  const cartData = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
+  const cartData = useAPIData<{ data: { content: CartItem[] } }>(
+    CART_ITEMS_KEY
+  );
   const cartItems = cartData?.data?.content || [];
   const cartItem = cartItems.find((item) => item.product.id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;

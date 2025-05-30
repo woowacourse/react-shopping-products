@@ -3,6 +3,7 @@ import ProductItem from "./ProductItem/ProductItem";
 import ProductItemSkeleton from "./ProductItem/ProductItemSkeleton";
 import { PRODUCT_TYPE_COUNT } from "../hooks/useProducts";
 import { useAPIData } from "../hooks/useApi";
+import { PRODUCTS_KEY } from "../constants/dataKey";
 
 type ProductItemWithSkeletonProps = {
   isLoading: boolean;
@@ -11,7 +12,9 @@ type ProductItemWithSkeletonProps = {
 const ProductItemsWithSkeleton = ({
   isLoading,
 }: ProductItemWithSkeletonProps) => {
-  const productData = useAPIData<{ data: { content: Product[] } }>("products");
+  const productData = useAPIData<{ data: { content: Product[] } }>(
+    PRODUCTS_KEY
+  );
   const products = productData?.data.content;
 
   return isLoading ? (

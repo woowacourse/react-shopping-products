@@ -1,9 +1,12 @@
 import styled from "@emotion/styled";
 import { useAPIData } from "../../hooks/useApi";
 import { CartItem } from "../../types/productType";
+import { CART_ITEMS_KEY } from "../../constants/dataKey";
 
 const CartIconButton = ({ onClick }: { onClick: () => void }) => {
-  const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");
+  const cartItems = useAPIData<{ data: { content: CartItem[] } }>(
+    CART_ITEMS_KEY
+  );
   const cartItemCount = cartItems?.data.content.length ?? 0;
 
   return (
