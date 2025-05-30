@@ -15,9 +15,12 @@ const Modal = ({ isOpen, onClose, children, title, hideCloseButton = false }: Mo
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
-    window.addEventListener('keyup', handleEsc);
+    if (isOpen) {
+      window.addEventListener('keyup', handleEsc);
+      document.body.style.overflow = 'hidden';
+    }
     return () => window.removeEventListener('keyup', handleEsc);
-  }, [onClose]);
+  }, [onClose, isOpen]);
   return (
     <>
       {isOpen && (
