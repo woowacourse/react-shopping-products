@@ -4,6 +4,7 @@ import { useData } from "../../provider/DataProvider";
 import { CartItemType } from "../../types/response.types";
 import { fetchCartItems } from "../../api/cart";
 
+const MIN_QUANTITY = 1;
 interface UseCartQuantityProps {
   cartId?: number;
   quantity: number;
@@ -41,7 +42,7 @@ export default function useCartQuantity({
   async function decrease() {
     if (cartId == null) return;
 
-    if (current === 1) {
+    if (current === MIN_QUANTITY) {
       removeItemToCart({ cartId });
       return;
     }
