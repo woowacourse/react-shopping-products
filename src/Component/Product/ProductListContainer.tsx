@@ -1,9 +1,8 @@
 import ProductList from './ProductList';
 import ProductListToolbar from './ProductListToolbar';
-import getProducts from '../../api/getProducts';
 import Spinner from '../Common/Spinner';
 import styled from '@emotion/styled';
-import { useAPIContext } from '../Common/Provider';
+import useProducts from '../../hooks/useProducts';
 
 interface ProductListContainerProps {
   updateErrorMessage: (errorMessage: string) => void;
@@ -12,10 +11,7 @@ interface ProductListContainerProps {
 export default function ProductListContainer({
   updateErrorMessage,
 }: ProductListContainerProps) {
-  const { data: products, status } = useAPIContext({
-    apiFn: () => getProducts(),
-    key: 'products',
-  });
+  const { products, status } = useProducts();
 
   return (
     <>
