@@ -6,7 +6,6 @@ import { IMAGE_PATH } from "../../constants/imagePath";
 import { ERROR_MSG } from "../../constants/errorMessage";
 import { deleteCartItem, postCartItems } from "../../api/cartItems";
 import { useCartContext, useUIContext } from "../../contexts/DataContext";
-import { showErrorMessageProps } from "../ProductCard/ProductCard";
 import { ADD_TO_CART_QUANTITY } from "../../constants/basket";
 
 type SharedToggleProps = {
@@ -17,7 +16,7 @@ type SharedToggleProps = {
 type addProductInBasketProps = SharedToggleProps & {
   setError: (value: boolean) => void;
   setErrorMessage: (value: string) => void;
-  showErrorMessage: (props: showErrorMessageProps) => void;
+  showErrorMessage: (msg: string) => void
 };
 
 type handleCartToggleButtonProps = SharedToggleProps & {
@@ -28,7 +27,7 @@ type handleCartToggleButtonProps = SharedToggleProps & {
   fetchCartItems: (value?: boolean) => void;
   setError: (value: boolean) => void;
   setErrorMessage: (value: string) => void;
-  showErrorMessage: (props: showErrorMessageProps) => void;
+  showErrorMessage: (msg: string) => void
 };
 
 type CartToggleButtonProps = {
@@ -38,7 +37,6 @@ type CartToggleButtonProps = {
   isNotBasketCountMAX: boolean;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
   isSoldOut?: boolean;
-  showErrorMessage: (props: showErrorMessageProps) => void;
 };
 
 export type CartToggleButtonWrapperProps = {
@@ -47,13 +45,10 @@ export type CartToggleButtonWrapperProps = {
 
 const canAddProductToBasket = ({
   isNotBasketCountMAX,
-  setError,
-  timeoutRef,
-  setErrorMessage,
-  showErrorMessage, 
+  showErrorMessage
 }: addProductInBasketProps) => {
   if (!isNotBasketCountMAX) {
-    showErrorMessage({ timeoutRef, setError, setErrorMessage, errorMessage: ERROR_MSG.BASKET_LIMIT_EXCEEDED });
+    showErrorMessage(ERROR_MSG.BASKET_LIMIT_EXCEEDED);
     return false;
   }
   return true;
@@ -85,19 +80,19 @@ const handleCartToggleButton = async ({
     try {
       await postCartItems(productId, ADD_TO_CART_QUANTITY);
     } catch (error) {
-      showErrorMessage({ timeoutRef, setError, setErrorMessage, errorMessage: ERROR_MSG.ADD_BASKET_FAIL });
+      showErrorMessage(ERROR_MSG.ADD_BASKET_FAIL);
     }
   } else if (basketId !== undefined) {
     try {
       await deleteCartItem(basketId);
     } catch (error) {
-      showErrorMessage({ timeoutRef, setError, setErrorMessage, errorMessage: ERROR_MSG.DELETE_BASKET_FAIL });
+      showErrorMessage(ERROR_MSG.DELETE_BASKET_FAIL);
     }
   }
   try {
     await fetchCartItems(false);
   } catch (error) {
-    showErrorMessage({ timeoutRef, setError, setErrorMessage, errorMessage: ERROR_MSG.PRODUCT_FETCH_FAIL });
+    showErrorMessage(ERROR_MSG.PRODUCT_FETCH_FAIL);
   }
   
 };
@@ -109,13 +104,12 @@ const CartToggleButton = ({
   isNotBasketCountMAX,
   timeoutRef,
   isSoldOut,
-  showErrorMessage,
 }: CartToggleButtonProps) => {
   const imageSrc = isInBascket
     ? IMAGE_PATH.SHOPPIN_CART_REMOVE
     : IMAGE_PATH.SHOPPIN_CART_ADD;
     const { fetchCartItems } = useCartContext();
-    const { setError, setErrorMessage } = useUIContext();
+    const { setError, setErrorMessage, showErrorMessage } = useUIContext();
 
   return (
     !isSoldOut && (

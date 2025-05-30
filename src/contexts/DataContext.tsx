@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import { CartItem } from "../api/cartItems";
 import { END_POINT } from "../api/constants/endPoint";
 import { ProductResponse } from "../api/products";
@@ -16,6 +16,7 @@ interface UIState {
   errorMessage: string;
   setError: (v: boolean) => void;
   setErrorMessage: (msg: string) => void;
+  showErrorMessage: (msg: string) => void;
 }
 
 interface CartState {
@@ -57,6 +58,14 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const showErrorMessage = (msg: string) => {
+    setError(true);
+    setErrorMessage(msg);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setError(false), 2000);
+  };
 
   const basketProductsIds = cartItems
     ? cartItems
@@ -68,7 +77,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     : [];
 
   const contextValue: DataContextType = {
-    ui: { error, errorMessage, setError, setErrorMessage },
+    ui: { error, errorMessage, setError, setErrorMessage, showErrorMessage },
     cart: { cartItems, basketProductsIds, fetchCartItems },
     product: { products, refetchProducts },
     isLoading: isCartLoading || isProductLoading,
