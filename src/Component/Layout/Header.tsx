@@ -1,19 +1,14 @@
 import styled from '@emotion/styled';
 import { Modal } from '../Modal';
 import CartItemModalContent from '../Modal/CartItemModalContent';
-import { CartItemTypes } from '../../types/CartItemType';
-import getShoppingCart from '../../api/getShoppingCart';
-import { useAPIContext } from '../Common/Provider';
+import useCartItems from '../../hooks/useCartItems';
 
 interface HeaderProps {
   updateErrorMessage: (errorMessage: string) => void;
 }
 
 export default function Header({ updateErrorMessage }: HeaderProps) {
-  const { data: cartItems, status } = useAPIContext<CartItemTypes[]>({
-    apiFn: () => getShoppingCart(),
-    key: 'cartItems',
-  });
+  const { cartItems, status } = useCartItems();
 
   return (
     <StyledHeader>
