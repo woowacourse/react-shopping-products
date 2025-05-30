@@ -20,7 +20,7 @@ const CartModal = ({ isOpen, handleClose }: ModalProps) => {
 
   return (
     isOpen && (
-      <div className={S.container}>
+      <div id="modal" className={S.container}>
         <div data-testid="modal-overlay" className={S.overlay} onClick={handleClose} />
         <div className={S.content}>
           <p className={S.title}>장바구니</p>

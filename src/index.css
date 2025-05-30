@@ -8,3 +8,7 @@ button {
   cursor: pointer;
   user-select: none;
 }
+
+body:has(#modal) {
+  overflow-y: hidden;
+}
