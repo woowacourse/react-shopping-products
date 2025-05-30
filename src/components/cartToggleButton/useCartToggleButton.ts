@@ -3,6 +3,7 @@ import { AddItemBody } from "../../types/request.types";
 import request from "../../utils/request";
 import { useData } from "../../provider/DataProvider";
 import { fetchCartItems } from "../../api/cart";
+import { ERROR_MESSAGE } from "../../constants/errorMessage";
 
 const MAX_CART_AMOUNT = 50;
 
@@ -27,14 +28,14 @@ export default function useCartToggleButton() {
       });
       await refetch("cart", fetchCartItems);
     } catch {
-      showToast("MINUS");
+      showToast(ERROR_MESSAGE.MINUS);
     }
   }
 
   async function addItemToCart({ cartAmount, productId }: AddItemToCartProps) {
     try {
       if (cartAmount >= MAX_CART_AMOUNT) {
-        showToast("CART_MAX");
+        showToast(ERROR_MESSAGE.CART_MAX);
         return;
       }
       await request<AddItemBody>({
@@ -44,7 +45,7 @@ export default function useCartToggleButton() {
       });
       await refetch("cart", fetchCartItems);
     } catch {
-      showToast("ADD");
+      showToast(ERROR_MESSAGE.ADD);
     }
   }
 

@@ -3,8 +3,10 @@ import { changeCartQuantity } from "../../api/cart";
 import { useData } from "../../provider/DataProvider";
 import { CartItemType } from "../../types/response.types";
 import { fetchCartItems } from "../../api/cart";
+import { ERROR_MESSAGE } from "../../constants/errorMessage";
 
 const MIN_QUANTITY = 1;
+
 interface UseCartQuantityProps {
   cartId?: number;
   quantity: number;
@@ -26,7 +28,7 @@ export default function useCartQuantity({
     if (cartId == null) return;
 
     if (quantity <= current) {
-      showToast("CART_QUANTITY");
+      showToast(ERROR_MESSAGE.CART_QUANTITY);
       return;
     }
 
@@ -35,7 +37,7 @@ export default function useCartQuantity({
 
       await refetch("cart", fetchCartItems);
     } catch (error) {
-      showToast("CART");
+      showToast(ERROR_MESSAGE.CART);
     }
   }
 
@@ -52,7 +54,7 @@ export default function useCartQuantity({
 
       await refetch("cart", fetchCartItems);
     } catch (error) {
-      showToast("CART");
+      showToast(ERROR_MESSAGE.CART);
     }
   }
 
