@@ -1,16 +1,16 @@
 import { CartItem } from '../../types/cartContents';
 
-export interface CartItemViewModel {
+export interface CartItemModel {
   id: number;
   productId: number;
   title: string;
   imageUrl: string;
   price: string;
-  cartQuantity: number; // 장바구니에 담긴 수량
-  productQuantity: number; // 상품의 재고 수량
+  cartQuantity: number;
+  productQuantity: number;
 }
 
-export function createCartItemViewModel(item: CartItem): CartItemViewModel {
+export const cartItemMapper = (item: CartItem): CartItemModel => {
   return {
     id: item.id,
     productId: item.product.id,
@@ -20,6 +20,4 @@ export function createCartItemViewModel(item: CartItem): CartItemViewModel {
     cartQuantity: item.quantity,
     productQuantity: item.product.quantity
   };
-}
-
-export default createCartItemViewModel;
+};

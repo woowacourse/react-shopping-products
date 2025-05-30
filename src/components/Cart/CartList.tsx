@@ -1,6 +1,6 @@
 import { deleteCartItem } from '../../api/deleteCartItem';
 import getCartItems from '../../api/getCartItems';
-import { createCartItemViewModel, CartItemViewModel } from '../../api/model/createCartItemViewModel';
+import { cartItemMapper, CartItemModel } from '../../api/model/cartItemMapper';
 import patchCartItem from '../../api/patchCartItem';
 import { useApiContext } from '../../contexts/ApiContext';
 import { useErrorContext } from '../../contexts/ErrorContext';
@@ -13,7 +13,7 @@ export default function CartList() {
   const { showError } = useErrorContext();
   const { data: cartItems, fetcher: refetchCart } = useApiContext({ fetchFn: getCartItems, key: 'getCartItems' });
 
-  const handleDeleteCart = async (cartItem: CartItemViewModel) => {
+  const handleDeleteCart = async (cartItem: CartItemModel) => {
     try {
       await deleteCartItem(cartItem.id);
       await refetchCart();
@@ -22,7 +22,7 @@ export default function CartList() {
     }
   };
 
-  const handleMinus = async (item: CartItemViewModel) => {
+  const handleMinus = async (item: CartItemModel) => {
     try {
       await patchCartItem(item.id, item.cartQuantity - 1);
       await refetchCart();
@@ -33,7 +33,7 @@ export default function CartList() {
     }
   };
 
-  const handlePlus = async (item: CartItemViewModel) => {
+  const handlePlus = async (item: CartItemModel) => {
     if (item.cartQuantity >= item.productQuantity) {
       showError(new Error('수량을 초과해서 담을 수 없어요.'));
       return;
@@ -51,25 +51,25 @@ export default function CartList() {
   return (
     <>
       {cartItems?.content.map((item) => {
-        const viewModel = createCartItemViewModel(item);
+        const cartItem = cartItemMapper(item);
 
         return (
-          <div key={viewModel.id} css={styles.cartItemWrapper}>
+          <div key={cartItem.id} css={styles.cartItemWrapper}>
             <div css={styles.cartItem}>
               <div css={styles.cartImageWrapper}>
-                <Image src={viewModel.imageUrl} alt={`${viewModel.title} 상품 이미지`} />
+                <Image src={cartItem.imageUrl} alt={`${cartItem.title} 상품 이미지`} />
               </div>
               <div css={styles.cartTextBlock}>
-                <h3 css={styles.titleCss}>{viewModel.title}</h3>
-                <p>{viewModel.price}</p>
+                <h3 css={styles.titleCss}>{cartItem.title}</h3>
+                <p>{cartItem.price}</p>
                 <Counter
-                  value={viewModel.cartQuantity}
-                  onDecrement={() => handleMinus(viewModel)}
-                  onIncrement={() => handlePlus(viewModel)}
+                  value={cartItem.cartQuantity}
+                  onDecrement={() => handleMinus(cartItem)}
+                  onIncrement={() => handlePlus(cartItem)}
                 />
               </div>
             </div>
-            <RemoveFromCartButton onClick={() => handleDeleteCart(viewModel)} />
+            <RemoveFromCartButton onClick={() => handleDeleteCart(cartItem)} />
           </div>
         );
       })}

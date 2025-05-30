@@ -9,7 +9,7 @@ import { useErrorContext } from '../../contexts/ErrorContext';
 import getCartItems from '../../api/getCartItems';
 import patchCartItem from '../../api/patchCartItem';
 import { deleteCartItem } from '../../api/deleteCartItem';
-import { createCartItemViewModel } from '../../api/model/createCartItemViewModel';
+import { cartItemMapper } from '../../api/model/cartItemMapper';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -49,7 +49,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
 
         <div css={styles.modalContent}>
           {items.map((item) => {
-            const viewModel = createCartItemViewModel(item);
+            const viewModel = cartItemMapper(item);
 
             return (
               <div key={viewModel.id} css={styles.cartItemWrapper}>

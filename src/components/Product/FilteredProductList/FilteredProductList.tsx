@@ -7,7 +7,7 @@ import { useErrorContext } from '../../../contexts/ErrorContext';
 import { CartItemResponse, ProductResponse } from '../../../types/response';
 import getProducts from '../../../api/getProducts';
 import useErrorHandler from '../../../hooks/useErrorHandler';
-import { createProductListViewModel, ProductCardViewModel } from '../../../api/model/createProductListModel';
+import { ProductCardModel, productCardModelMapper } from '../../../api/model/productCardModelMapper';
 import { deleteCartItem } from '../../../api/deleteCartItem';
 import postCartItem from '../../../api/postCartItem';
 import { useApiContext } from '../../../contexts/ApiContext';
@@ -42,13 +42,10 @@ export default function FilteredProductList({
 
   useErrorHandler(productFetchError);
 
-  const productListViewModel = createProductListViewModel({
-    products: filteredProducts,
-    cartItems: cartItems?.content
-  });
+  const productListModel = filteredProducts?.map((product) => productCardModelMapper(product, cartItems?.content));
 
   const handleCartToggle = useCallback(
-    async (product: ProductCardViewModel) => {
+    async (product: ProductCardModel) => {
       try {
         if (product.isInCart) {
           await deleteCartItem(product.cartItemId!);
@@ -68,7 +65,7 @@ export default function FilteredProductList({
 
   return (
     <ul css={styles.listCss}>
-      {productListViewModel.map((productCard) => (
+      {productListModel?.map((productCard) => (
         <ProductCard
           key={productCard.id}
           orderBy={orderBy}
