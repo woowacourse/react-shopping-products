@@ -18,11 +18,21 @@ export const buttonCss = css({
 });
 
 export const inCartCss = css({
-  backgroundColor: '#EAEAEA',
-  color: 'black'
+  color: 'black',
+  border: ' 1px solid rgba(0, 0, 0, 0.10)',
+  fontSize: '12px',
+  borderRadius: '4px',
+  height: '24px',
+  padding: '4px 8px',
+  justifyContent: 'center'
 });
 
 export const notInCartCss = css({
   backgroundColor: 'black',
-  color: 'white'
+  color: 'white',
+
+  ':disabled': {
+    backgroundColor: '#EAEAEA',
+    color: 'white'
+  }
 });
