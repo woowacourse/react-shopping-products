@@ -6,6 +6,7 @@ import { IMAGE_PATH } from "../../constants/imagePath";
 import { ERROR_MSG } from "../../constants/errorMessage";
 import { deleteCartItem, postCartItems } from "../../api/cartItems";
 import { useDataContext } from "../../contexts/DataContext";
+import { showErrorMessageProps } from "../ProductCard/ProductCard";
 
 type SharedToggleProps = {
   isNotBasketCountMAX: boolean;
@@ -15,6 +16,7 @@ type SharedToggleProps = {
 type addProductInBasketProps = SharedToggleProps & {
   setError: (value: boolean) => void;
   setErrorMessage: (value: string) => void;
+  showErrorMessage: (props: showErrorMessageProps) => void;
 };
 
 type handleCartToggleButtonProps = SharedToggleProps & {
@@ -25,6 +27,7 @@ type handleCartToggleButtonProps = SharedToggleProps & {
   fetchCartItems: (value?: boolean) => void;
   setError: (value: boolean) => void;
   setErrorMessage: (value: string) => void;
+  showErrorMessage: (props: showErrorMessageProps) => void;
 };
 
 type CartToggleButtonProps = {
@@ -34,6 +37,7 @@ type CartToggleButtonProps = {
   isNotBasketCountMAX: boolean;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
   isSoldOut?: boolean;
+  showErrorMessage: (props: showErrorMessageProps) => void;
 };
 
 export type CartToggleButtonWrapperProps = {
@@ -45,19 +49,10 @@ const canAddProductToBasket = ({
   setError,
   timeoutRef,
   setErrorMessage,
+  showErrorMessage, 
 }: addProductInBasketProps) => {
   if (!isNotBasketCountMAX) {
-    setError(true);
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      setError(false);
-    }, 2000);
-
-    setErrorMessage(ERROR_MSG.BASKET_LIMIT_EXCEEDED);
+    showErrorMessage({ timeoutRef, setError, setErrorMessage, errorMessage: ERROR_MSG.BASKET_LIMIT_EXCEEDED });
     return false;
   }
   return true;
@@ -72,6 +67,7 @@ const handleCartToggleButton = async ({
   fetchCartItems,
   setError,
   setErrorMessage,
+  showErrorMessage,
 }: handleCartToggleButtonProps) => {
   if (!isInBascket) {
     if (
@@ -80,14 +76,29 @@ const handleCartToggleButton = async ({
         setError,
         timeoutRef,
         setErrorMessage,
+        showErrorMessage,
       })
     )
       return;
-    await postCartItems(productId, 1);
+
+    try {
+      await postCartItems(productId, 1);
+    } catch (error) {
+      showErrorMessage({ timeoutRef, setError, setErrorMessage, errorMessage: ERROR_MSG.ADD_BASKET_FAIL });
+    }
   } else if (basketId !== undefined) {
-    await deleteCartItem(basketId);
+    try {
+      await deleteCartItem(basketId);
+    } catch (error) {
+      showErrorMessage({ timeoutRef, setError, setErrorMessage, errorMessage: ERROR_MSG.DELETE_BASKET_FAIL });
+    }
   }
-  await fetchCartItems(false);
+  try {
+    await fetchCartItems(false);
+  } catch (error) {
+    showErrorMessage({ timeoutRef, setError, setErrorMessage, errorMessage: ERROR_MSG.PRODUCT_FETCH_FAIL });
+  }
+  
 };
 
 const CartToggleButton = ({
@@ -97,6 +108,7 @@ const CartToggleButton = ({
   isNotBasketCountMAX,
   timeoutRef,
   isSoldOut,
+  showErrorMessage,
 }: CartToggleButtonProps) => {
   const imageSrc = isInBascket
     ? IMAGE_PATH.SHOPPIN_CART_REMOVE
@@ -117,6 +129,7 @@ const CartToggleButton = ({
             fetchCartItems,
             setError,
             setErrorMessage,
+            showErrorMessage,
           })
         }
       >

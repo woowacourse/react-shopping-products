@@ -7,12 +7,14 @@ import {
 import { deleteCartItem, postCartItems } from "../../api/cartItems";
 import { useDataContext } from "../../contexts/DataContext";
 import { ERROR_MSG } from "../../constants/errorMessage";
+import { showErrorMessageProps } from "../ProductCard/ProductCard";
 
 type QuantityControllerProps = {
   id: number;
   basketId?: number;
   timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
   size?: "default" | "small";
+  showErrorMessage: (props: showErrorMessageProps) => void;
 };
 
 const QuantityController = ({
@@ -20,6 +22,7 @@ const QuantityController = ({
   basketId,
   timeoutRef,
   size,
+  showErrorMessage,
 }: QuantityControllerProps) => {
   const { cartItems, fetchCartItems, setError, setErrorMessage } =
     useDataContext();
@@ -31,29 +34,42 @@ const QuantityController = ({
       await postCartItems(id, 1);
       fetchCartItems();
     } catch (e) {
-      setError(true);
-
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-
-      timeoutRef.current = setTimeout(() => {
-        setError(false);
-      }, 2000);
-
-      setErrorMessage(ERROR_MSG.OUT_OF_STOCK);
+      showErrorMessage({
+        timeoutRef,
+        setError,
+        setErrorMessage,
+        errorMessage: ERROR_MSG.OUT_OF_STOCK,
+      });
     }
   };
 
   const decrease = async () => {
     if (quantity === 1 && basketId) {
-      await deleteCartItem(basketId);
-      fetchCartItems();
+      try {
+        await deleteCartItem(basketId);
+        await fetchCartItems();
+      } catch (error) {
+        showErrorMessage({
+          timeoutRef,
+          setError,
+          setErrorMessage,
+          errorMessage: ERROR_MSG.DELETE_BASKET_FAIL,
+        });
+      }
     } else if (quantity > 1) {
-      await postCartItems(id, -1);
-      fetchCartItems();
+      try {
+        await postCartItems(id, -1);
+        await fetchCartItems();
+      } catch (error) {
+        showErrorMessage({
+          timeoutRef,
+          setError,
+          setErrorMessage,
+          errorMessage: ERROR_MSG.ADD_BASKET_FAIL,
+        });
+      }
     }
-  };
+  };  
 
   return (
     <QuantityControllerWrapper size={size}>

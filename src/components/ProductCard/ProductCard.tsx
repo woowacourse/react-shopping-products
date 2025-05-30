@@ -25,6 +25,33 @@ type ProductCardProps = {
   isNotBasketCountMAX: boolean;
 };
 
+export type showErrorMessageProps = {
+  timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>;
+  setError: (value: boolean) => void;
+  setErrorMessage: (value: string) => void;
+  errorMessage: string;
+};
+
+
+const showErrorMessage = ({
+  timeoutRef,
+  setError,
+  setErrorMessage,
+  errorMessage,
+}: showErrorMessageProps) => {
+  setError(true);
+
+  if (timeoutRef.current) {
+    clearTimeout(timeoutRef.current);
+  }
+
+  timeoutRef.current = setTimeout(() => {
+    setError(false);
+  }, 2000);
+
+  setErrorMessage(errorMessage);
+};
+
 const ProductCard = ({
   id,
   name,
@@ -77,6 +104,7 @@ const ProductCard = ({
             id={id}
             basketId={basketId}
             timeoutRef={timeoutRef}
+            showErrorMessage={showErrorMessage}
           />
         ) : (
           <CartToggleButton
@@ -86,6 +114,7 @@ const ProductCard = ({
             isNotBasketCountMAX={isNotBasketCountMAX}
             timeoutRef={timeoutRef}
             isSoldOut={isSoldOut}
+            showErrorMessage={showErrorMessage}
           />
         )}
       </ProductCardDetailWrapper>
