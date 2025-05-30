@@ -6,7 +6,7 @@ import { ApiProvider } from '../contexts/ApiContext';
 import HomeHeader from '../components/Header/HomeHeader';
 import { CartItemResponse, ProductResponse } from '../types/response';
 import { URLS } from '../constants/url';
-import ProductList from '../components/Product/ProductList/ProductList';
+import App from '../App';
 const server = setupServer(...handlers);
 
 beforeAll(() => server.listen());
@@ -17,7 +17,7 @@ it('상품 리스트를 조회할 수 있다.', async () => {
   render(
     <ErrorContextProvider>
       <ApiProvider>
-        <ProductList />
+        <App />
       </ApiProvider>
     </ErrorContextProvider>
   );
@@ -39,7 +39,7 @@ it('상품을 장바구니에 담으면 헤더에서 장바구니 숫자가 증�
     <ErrorContextProvider>
       <ApiProvider>
         <HomeHeader />
-        <ProductList />
+        <App />
       </ApiProvider>
     </ErrorContextProvider>
   );

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import { handlers } from '../mocks/handler';
 import { ErrorContextProvider } from '../contexts/ErrorContext';
@@ -6,7 +6,6 @@ import { ApiProvider } from '../contexts/ApiContext';
 import { CartItemResponse } from '../types/response';
 import { URLS } from '../constants/url';
 import App from '../App';
-import HomeHeader from '../components/Header/HomeHeader';
 
 const server = setupServer(...handlers);
 
@@ -47,9 +46,11 @@ it('헤더를 클릭하면 장바구니에 담긴 아이템들이 렌더링된�
   const cartButton = await screen.findByAltText('cart-icon');
   fireEvent.click(cartButton);
 
-  const cartCountElement = await screen.findAllByRole('listitem');
+  const modal = await screen.findByTestId('cart-modal');
 
-  expect(cartCountElement).toHaveLength(productItems.content.length);
+  const cartItems = within(modal).getAllByRole('listitem');
+
+  expect(cartItems).toHaveLength(productItems.content.length);
 });
 
 it('헤더를 클릭하면 모달에 합산 금액이 보여진다.', async () => {
@@ -59,7 +60,7 @@ it('헤더를 클릭하면 모달에 합산 금액이 보여진다.', async () =
   render(
     <ErrorContextProvider>
       <ApiProvider>
-        <HomeHeader />
+        <App />
       </ApiProvider>
     </ErrorContextProvider>
   );

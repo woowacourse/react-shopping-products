@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import ProductList from '../components/Product/ProductList/ProductList';
 import { setupServer } from 'msw/node';
 import { handlers } from '../mocks/handler';
 import { ErrorContextProvider } from '../contexts/ErrorContext';
 import { ApiProvider } from '../contexts/ApiContext';
+import App from '../App';
 
 const server = setupServer(...handlers);
 
@@ -16,7 +16,7 @@ describe('ProductList 컴포넌트', () => {
     render(
       <ErrorContextProvider>
         <ApiProvider>
-          <ProductList />
+          <App />
         </ApiProvider>
       </ErrorContextProvider>
     );
@@ -26,12 +26,12 @@ describe('ProductList 컴포넌트', () => {
   });
 });
 
-describe('ProductList 컴포넌트 필터링', () => {
+describe('필터링', () => {
   it('카테고리를 선택하면 해당 상품만 렌더링된다', async () => {
     render(
       <ErrorContextProvider>
         <ApiProvider>
-          <ProductList />
+          <App />
         </ApiProvider>
       </ErrorContextProvider>
     );
@@ -52,7 +52,7 @@ it('정렬 옵션에서 높은 가격순을 선택하면 상품들이 가격 내
   render(
     <ErrorContextProvider>
       <ApiProvider>
-        <ProductList />
+        <App />
       </ApiProvider>
     </ErrorContextProvider>
   );
