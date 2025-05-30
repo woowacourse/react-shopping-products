@@ -21,7 +21,6 @@ const useCartItems = ({ products }: UseCartItemsProps) => {
   } = useData<CartItems>({
     key: "cartItems",
     fetcher,
-    dependencies: [],
   });
 
   const cartItemInfo =

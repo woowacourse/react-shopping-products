@@ -4,14 +4,12 @@ import { DataContext } from "../contexts/DataContext";
 interface UseDataOptions<T> {
   key: string;
   fetcher: () => Promise<T>;
-  dependencies?: any[];
   enabled?: boolean;
 }
 
 export const useData = <T>({
   key,
   fetcher,
-  dependencies = [],
   enabled = true,
 }: UseDataOptions<T>) => {
   const context = useContext(DataContext);
@@ -53,7 +51,7 @@ export const useData = <T>({
 
   useEffect(() => {
     fetchData();
-  }, [fetchData, ...dependencies]);
+  }, [fetchData]);
 
   return {
     data: state.data,

@@ -19,7 +19,6 @@ const useProducts = () => {
   } = useData<Products>({
     key: "products",
     fetcher,
-    dependencies: [],
   });
 
   return {
