@@ -3,44 +3,57 @@ import { CartItem, Product } from "../types/productType";
 import postCartItems from "../api/postCartItems";
 import deleteCartItems from "../api/deleteCartItems";
 import getCartItems from "../api/getCartItems";
+import patchCartItemQuantity from "../api/patchCartItemQuantity";
 
 export const CART_MAX_COUNT = 50;
 
 const useCart = ({
   setErrorMessage,
+  refetch,
 }: {
   setErrorMessage: (errorMessage: string) => void;
+  refetch: () => void;
 }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = async (product: Product) => {
-    if (cart.length > CART_MAX_COUNT) {
+  const addToCart = async (product: Product, cartCount: number) => {
+    if (cartCount + 1 > CART_MAX_COUNT) {
       setErrorMessage(
         `장바구니에 담을 수 있는 상품은 최대 ${CART_MAX_COUNT}개입니다.`
       );
       return;
     }
+
     const { error } = await postCartItems(product);
-    setErrorMessage(error?.message || "");
 
     if (!error?.message) {
-      await syncCart();
+      setErrorMessage("");
+      return refetch();
     }
+
+    setErrorMessage(error.message);
   };
 
-  const removeFromCart = async (productId: number) => {
-    const cartItem = cart.find((item) => item.product.id === productId);
-    if (!cartItem) {
-      return;
-    }
-
-    const cartItemId = cartItem.id;
-    const { error } = await deleteCartItems(cartItemId);
+  const patchQuantity = async (id: number, quantity: number) => {
+    const { error } = await patchCartItemQuantity(id, quantity);
     setErrorMessage(error?.message || "");
 
     if (!error?.message) {
-      await syncCart();
+      setErrorMessage("");
+      return refetch();
     }
+
+    setErrorMessage(error.message);
+  };
+  const removeFromCart = async (productId: number) => {
+    const { error } = await deleteCartItems(productId);
+
+    if (!error?.message) {
+      setErrorMessage("");
+      return refetch();
+    }
+
+    setErrorMessage(error.message);
   };
 
   const syncCart = async () => {
@@ -58,7 +71,7 @@ const useCart = ({
     fetchData();
   }, []);
 
-  return { cart, addToCart, removeFromCart, syncCart };
+  return { cart, addToCart, removeFromCart, patchQuantity, syncCart };
 };
 
 export default useCart;

@@ -4,6 +4,9 @@ import CartActionButton from "./button/CartActionButton";
 import { useAPI, useAPIData } from "../../hooks/useApi";
 import { CartItem } from "../../types/productType";
 import getCartItems from "../../api/getCartItems";
+import useCart from "../../hooks/useCart";
+import { useContext } from "react";
+import { APIContext } from "../../contexts/DataContext";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
@@ -17,9 +20,14 @@ const getTotalAmount = (arr: number[]) => {
 };
 
 const CartItems = () => {
-  const { patchQuantity, removeFromCart } = useAPI({
+  const { setErrorMessage } = useContext(APIContext);
+  const { refetch } = useAPI({
     fetcher: getCartItems,
     name: "cartItems",
+  });
+  const { patchQuantity, removeFromCart } = useCart({
+    setErrorMessage,
+    refetch,
   });
 
   const cartItems = useAPIData<{ data: { content: CartItem[] } }>("cartItems");

@@ -1,10 +1,12 @@
-
 import { Product, CartItem } from "../../types/productType";
 import CartActionButton from "./button/CartActionButton";
 import styled from "@emotion/styled";
 import QuantityAdjuster from "./QuantityAdjuster";
 import { useAPI, useAPIData } from "../../hooks/useApi";
 import getCartItems from "../../api/getCartItems";
+import useCart from "../../hooks/useCart";
+import { useContext } from "react";
+import { APIContext } from "../../contexts/DataContext";
 
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   e.currentTarget.src = "./nullImage.png";
@@ -15,11 +17,13 @@ const ProductItem = ({ product }: { product: Product }) => {
   const cartItems = cartData?.data?.content || [];
   const cartItem = cartItems.find((item) => item.product.id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
+  const { setErrorMessage } = useContext(APIContext);
 
-  const { addToCart, patchQuantity } = useAPI({
+  const { refetch } = useAPI({
     fetcher: getCartItems,
     name: "cartItems",
   });
+  const { patchQuantity, addToCart } = useCart({ setErrorMessage, refetch });
 
   const handleProductAddClick = () => addToCart(product, cartItems.length);
   const handleIncreaseQuantity = (id: number, quantity: number) =>
