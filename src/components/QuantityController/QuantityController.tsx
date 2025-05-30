@@ -5,10 +5,13 @@ import {
   Count,
 } from "./QuantityController.styled";
 import { deleteCartItem, postCartItems } from "../../api/cartItems";
-import { useDataContext } from "../../contexts/DataContext";
+import { useCartContext, useUIContext } from "../../contexts/DataContext";
 import { ERROR_MSG } from "../../constants/errorMessage";
 import { showErrorMessageProps } from "../ProductCard/ProductCard";
-import { ADD_TO_CART_QUANTITY, REMOVE_FROM_CART_QUANTITY } from "../../constants/basket";
+import {
+  ADD_TO_CART_QUANTITY,
+  REMOVE_FROM_CART_QUANTITY,
+} from "../../constants/basket";
 
 type QuantityControllerProps = {
   id: number;
@@ -25,8 +28,9 @@ const QuantityController = ({
   size,
   showErrorMessage,
 }: QuantityControllerProps) => {
-  const { cartItems, fetchCartItems, setError, setErrorMessage } =
-    useDataContext();
+  const { cartItems, fetchCartItems } = useCartContext();
+  const { setError, setErrorMessage } = useUIContext();
+
   const quantity =
     cartItems?.find((item) => item.productId === id)?.quantity ?? 1;
 
@@ -70,7 +74,7 @@ const QuantityController = ({
         });
       }
     }
-  };  
+  };
 
   return (
     <QuantityControllerWrapper size={size}>

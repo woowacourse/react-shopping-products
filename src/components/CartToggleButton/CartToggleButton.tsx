@@ -5,7 +5,7 @@ import {
 import { IMAGE_PATH } from "../../constants/imagePath";
 import { ERROR_MSG } from "../../constants/errorMessage";
 import { deleteCartItem, postCartItems } from "../../api/cartItems";
-import { useDataContext } from "../../contexts/DataContext";
+import { useCartContext, useUIContext } from "../../contexts/DataContext";
 import { showErrorMessageProps } from "../ProductCard/ProductCard";
 import { ADD_TO_CART_QUANTITY } from "../../constants/basket";
 
@@ -114,7 +114,8 @@ const CartToggleButton = ({
   const imageSrc = isInBascket
     ? IMAGE_PATH.SHOPPIN_CART_REMOVE
     : IMAGE_PATH.SHOPPIN_CART_ADD;
-  const { fetchCartItems, setError, setErrorMessage } = useDataContext();
+    const { fetchCartItems } = useCartContext();
+    const { setError, setErrorMessage } = useUIContext();
 
   return (
     !isSoldOut && (

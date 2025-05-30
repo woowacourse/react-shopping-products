@@ -17,7 +17,7 @@ import {
 } from "./CartModal.styled";
 import QuantityController from "../QuantityController/QuantityController";
 import { deleteCartItem } from "../../api/cartItems";
-import { useDataContext } from "../../contexts/DataContext";
+import { useCartContext } from "../../contexts/DataContext";
 
 type CartModalProps = {
   onClose: () => void;
@@ -33,7 +33,7 @@ const handleDeleteProduct = async (
 
 const CartModal = ({ onClose }: CartModalProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { cartItems, fetchCartItems } = useDataContext();
+  const { cartItems, fetchCartItems } = useCartContext();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

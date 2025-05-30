@@ -11,17 +11,29 @@ export type BasketProductInfo = {
 
 type BasketProductInfos = BasketProductInfo[];
 
-interface DataContextType {
-  cartItems: CartItem[] | null;
-  products: ProductResponse[] | null;
-  basketProductsIds: BasketProductInfos;
-  isLoading: boolean;
+interface UIState {
   error: boolean;
   errorMessage: string;
   setError: (v: boolean) => void;
   setErrorMessage: (msg: string) => void;
+}
+
+interface CartState {
+  cartItems: CartItem[] | null;
+  basketProductsIds: BasketProductInfos;
   fetchCartItems: () => void;
+}
+
+interface ProductState {
+  products: ProductResponse[] | null;
   refetchProducts: () => void;
+}
+
+interface DataContextType {
+  ui: UIState;
+  cart: CartState;
+  product: ProductState;
+  isLoading: boolean;
 }
 
 export const DataContext = createContext<DataContextType | null>(null);
@@ -55,29 +67,23 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         }))
     : [];
 
-  return (
-    <DataContext.Provider
-      value={{
-        cartItems,
-        products,
-        basketProductsIds,
-        isLoading: isCartLoading || isProductLoading,
-        error,
-        errorMessage,
-        setError,
-        setErrorMessage,
-        fetchCartItems,
-        refetchProducts,
-      }}
-    >
-      {children}
-    </DataContext.Provider>
-  );
+  const contextValue: DataContextType = {
+    ui: { error, errorMessage, setError, setErrorMessage },
+    cart: { cartItems, basketProductsIds, fetchCartItems },
+    product: { products, refetchProducts },
+    isLoading: isCartLoading || isProductLoading,
+  };
+
+  return <DataContext.Provider value={contextValue}>{children}</DataContext.Provider>;
 };
 
 export const useDataContext = () => {
   const context = useContext(DataContext);
   if (!context)
-    throw new Error("DateContext는 DataProvider 내에서 사용해주세요.");
+    throw new Error("DataContext는 DataProvider 내에서 사용해주세요.");
   return context;
 };
+
+export const useCartContext = () => useDataContext().cart;
+export const useProductContext = () => useDataContext().product;
+export const useUIContext = () => useDataContext().ui;
