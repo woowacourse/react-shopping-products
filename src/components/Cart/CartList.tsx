@@ -1,9 +1,8 @@
 import { deleteCartItem } from '../../api/deleteCartItem';
-import getCartItems from '../../api/getCartItems';
 import { cartItemMapper, CartItemModel } from '../../api/model/cartItemMapper';
 import patchCartItem from '../../api/patchCartItem';
-import { useApiContext } from '../../contexts/ApiContext';
 import { useErrorContext } from '../../contexts/ErrorContext';
+import useCartItems from '../../hooks/api/useCartItems';
 import { RemoveFromCartButton } from '../CartButton/CartButton';
 import Counter from '../Counter/Counter';
 import Image from '../Image/Image';
@@ -11,7 +10,7 @@ import * as styles from './CartList.style';
 
 export default function CartList() {
   const { showError } = useErrorContext();
-  const { data: cartItems, fetcher: refetchCart } = useApiContext({ fetchFn: getCartItems, key: 'getCartItems' });
+  const { data: cartItems, fetcher: refetchCart } = useCartItems();
 
   const handleDeleteCart = async (cartItem: CartItemModel) => {
     try {

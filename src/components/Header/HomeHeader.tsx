@@ -1,12 +1,10 @@
 import * as styles from './HomeHeader.style';
-import { useApiContext } from '../../contexts/ApiContext';
-import { CartItemResponse } from '../../types/response';
-import getCartItems from '../../api/getCartItems';
 import useErrorHandler from '../../hooks/useErrorHandler';
 import Header from './Header';
 import { useState } from 'react';
 import CartModal from '../Modal/CartModal';
 import Image from '../Image/Image';
+import useCartItems from '../../hooks/api/useCartItems';
 
 function HomeHeader() {
   const [isAlertOpen, setAlertOpen] = useState(false);
@@ -14,14 +12,8 @@ function HomeHeader() {
   const handleToggle = () => {
     setAlertOpen((prev) => !prev);
   };
-  const {
-    data: cartItems,
-    error: cartFetchError,
-    isLoading
-  } = useApiContext<CartItemResponse>({
-    fetchFn: getCartItems,
-    key: 'getCartItems'
-  });
+
+  const { data: cartItems, error: cartFetchError, isLoading } = useCartItems();
 
   useErrorHandler(cartFetchError);
 

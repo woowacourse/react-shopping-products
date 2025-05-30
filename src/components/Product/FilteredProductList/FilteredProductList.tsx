@@ -4,13 +4,13 @@ import ProductCard from '../ProductCard/ProductCard';
 import { useCallback } from 'react';
 import { CategoryOptionType, OrderByOptionType } from '../../../types/categoryOption';
 import { useErrorContext } from '../../../contexts/ErrorContext';
-import { CartItemResponse, ProductResponse } from '../../../types/response';
+import { ProductResponse } from '../../../types/response';
 import getProducts from '../../../api/getProducts';
 import useErrorHandler from '../../../hooks/useErrorHandler';
 import { ProductCardModel, productCardModelMapper } from '../../../api/model/productCardModelMapper';
 import postCartItem from '../../../api/postCartItem';
 import { useApiContext } from '../../../contexts/ApiContext';
-import getCartItems from '../../../api/getCartItems';
+import useCartItems from '../../../hooks/api/useCartItems';
 
 export default function FilteredProductList({
   category,
@@ -31,10 +31,7 @@ export default function FilteredProductList({
     deps: [orderBy]
   });
 
-  const { data: cartItems, fetcher: refetchCart } = useApiContext<CartItemResponse>({
-    fetchFn: getCartItems,
-    key: 'getCartItems'
-  });
+  const { data: cartItems, fetcher: refetchCart } = useCartItems();
 
   const filteredProducts =
     category === '전체' ? products?.content : products?.content.filter((item) => item.category === category);

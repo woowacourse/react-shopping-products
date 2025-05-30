@@ -4,12 +4,11 @@ import Button from '../Button/Button';
 import Counter from '../Counter/Counter';
 import Image from '../Image/Image';
 import { RemoveFromCartButton } from '../CartButton/CartButton';
-import { useApiContext } from '../../contexts/ApiContext';
 import { useErrorContext } from '../../contexts/ErrorContext';
-import getCartItems from '../../api/getCartItems';
 import patchCartItem from '../../api/patchCartItem';
 import { deleteCartItem } from '../../api/deleteCartItem';
 import { cartItemMapper } from '../../api/model/cartItemMapper';
+import useCartItems from '../../hooks/api/useCartItems';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -18,7 +17,8 @@ interface CartModalProps {
 
 export default function CartModal({ isOpen, onClose }: CartModalProps) {
   const { showError } = useErrorContext();
-  const { data: cartItems, fetcher: refetchCart } = useApiContext({ fetchFn: getCartItems, key: 'getCartItems' });
+  const { data: cartItems, fetcher: refetchCart } = useCartItems();
+
   const items = cartItems?.content ?? [];
 
   const totalPrice = items.reduce((acc, item) => acc + item.quantity * item.product.price, 0);

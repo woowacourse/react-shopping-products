@@ -3,9 +3,8 @@ import Counter from '../../Counter/Counter';
 import Image from '../../Image/Image';
 import * as styles from './ProductCard.style';
 import patchCartItem from '../../../api/patchCartItem';
-import { useApiContext } from '../../../contexts/ApiContext';
-import getCartItems from '../../../api/getCartItems';
 import { OrderByOptionType } from '../../../types/categoryOption';
+import useCartItems from '../../../hooks/api/useCartItems';
 
 interface ProductCardProps {
   title: string;
@@ -29,7 +28,7 @@ export default function ProductCard({
   cartQuantity,
   cartItemId
 }: ProductCardProps) {
-  const { fetcher: refetchCart } = useApiContext({ fetchFn: getCartItems, key: 'getCartItems' });
+  const { fetcher: refetchCart } = useCartItems();
 
   const handleMinus = async () => {
     await patchCartItem(cartItemId, cartQuantity - 1);
