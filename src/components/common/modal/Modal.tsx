@@ -19,7 +19,11 @@ const Modal = ({ isOpen, onClose, children, title, hideCloseButton = false }: Mo
       window.addEventListener('keyup', handleEsc);
       document.body.style.overflow = 'hidden';
     }
-    return () => window.removeEventListener('keyup', handleEsc);
+
+    return () => {
+      window.removeEventListener('keyup', handleEsc);
+      document.body.style.overflow = 'auto';
+    };
   }, [onClose, isOpen]);
   return (
     <>
