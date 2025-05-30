@@ -1,9 +1,9 @@
-import { addItemToCart } from "./cartButton.domain";
 import { useCartProduct } from "../../hooks/useCartProduct";
 import { ERROR_TYPE } from "../../hooks/useError";
 import { ButtonContainer } from "./CartButton.css";
 import { useCartItemActions } from "../../hooks/useCartItemActions";
 import ControlButton from "../controlButton/ControlButton";
+import { addCartItem } from "../api/addCartItem";
 
 interface CartButtonProps {
   isToggled: boolean;
@@ -42,7 +42,7 @@ function CartButton({
       return setErrorTrue("CART_ADD");
     }
     try {
-      await addItemToCart({
+      await addCartItem({
         productId,
         cartAmount,
         syncCartWithServer: fetchCartProducts,

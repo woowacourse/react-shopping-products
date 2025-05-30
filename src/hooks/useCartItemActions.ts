@@ -1,8 +1,5 @@
-import {
-  MinusItem,
-  PlusItem,
-  removeItemToCart,
-} from "../components/cartButton/cartButton.domain";
+import { removeCartItem } from "../components/api/removeCartItem";
+import { MinusCartItem, PlusCartItem } from "../components/api/updateCartItem";
 import { ERROR_TYPE } from "./useError";
 
 interface Params {
@@ -30,7 +27,7 @@ export function useCartItemActions({
 }: Params) {
   const handlePlus = async () => {
     try {
-      await PlusItem({
+      await PlusCartItem({
         cartId,
         productQuantity,
         quantity,
@@ -45,7 +42,7 @@ export function useCartItemActions({
   const handleMinus = async () => {
     if (quantity === 1) return handleRemove();
     try {
-      await MinusItem({
+      await MinusCartItem({
         cartId,
         quantity,
         syncCartWithServer: fetchCartProducts,
@@ -57,7 +54,7 @@ export function useCartItemActions({
 
   const handleRemove = async () => {
     try {
-      await removeItemToCart({
+      await removeCartItem({
         cartId,
         productId,
         setCartItemIds: setCartItemIds ?? (() => {}),
