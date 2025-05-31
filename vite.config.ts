@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [react()],
   base: mode === "production" ? "/react-shopping-products/" : "/",
   test: {
-    gloals: true,
+    globals: true,
     environment: "jsdom",
   },
   resolve: {
