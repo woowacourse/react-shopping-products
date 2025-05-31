@@ -6,12 +6,12 @@ import ErrorFallback from "@/components/Fallback/ErrorFallback";
 import LoadingFallback from "@/components/Fallback/LoadingFallback";
 import { useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
-import useGeyProductQuery from "@/hooks/useGetProductQuery";
+import useGetProductQuery from "@/hooks/useGetProductQuery";
 
 function ProductContent() {
   const [filterOption, setFilterOption] = useState<FilterOption>("전체");
   const [sortOption, setSortOption] = useState<SortOption>("낮은 가격순");
-  const { data: productData, isLoading } = useGeyProductQuery(
+  const { data: productData, isLoading } = useGetProductQuery(
     filterOption,
     sortOption
   );
