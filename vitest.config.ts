@@ -6,7 +6,7 @@ export default defineConfig({
   test: {
     globals: true, // describe, it, expect 등을 전역으로 사용하게 해줍니다 (RTL과 함께 자주 사용)
     environment: "jsdom", // <--- 이 줄을 추가 또는 수정합니다.
-    // setupFiles: "./setupTests.ts", // @testing-library/jest-dom 등의 설정을 위한 파일 (사용하고 있다면)
+    setupFiles: "./src/setpupTests.ts",
     // 다른 Vitest 설정들...
   },
 });
