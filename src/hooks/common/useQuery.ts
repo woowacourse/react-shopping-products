@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "../../contexts/QueryContext";
-import { useErrorMessage, useLoading } from "../../contexts";
+import { useErrorMessage } from "../../contexts";
 
 interface UseQueryProps<T> {
   queryKey: string;
@@ -10,7 +10,6 @@ interface UseQueryProps<T> {
 const useQuery = <T>({ queryKey, fetchFn }: UseQueryProps<T>) => {
   const query = useQueryClient();
   const [, forceRender] = useState({});
-  const { startFetching, endFetching } = useLoading();
   const { setErrorMessage } = useErrorMessage();
 
   const state = query.get<T>(queryKey);
@@ -20,17 +19,13 @@ const useQuery = <T>({ queryKey, fetchFn }: UseQueryProps<T>) => {
     query.subscribe(queryKey, reRenderFn);
 
     if (!state) {
-      startFetching();
-      query
-        .refetch(queryKey, fetchFn)
-        .catch((e) => {
-          if (e instanceof Error) setErrorMessage(e.message);
-        })
-        .finally(() => endFetching());
+      query.refetch(queryKey, fetchFn).catch((e) => {
+        if (e instanceof Error) setErrorMessage(e.message);
+      });
     }
 
     return () => query.unsubscribe(queryKey, reRenderFn);
-  }, [queryKey, fetchFn, query, state, setErrorMessage, startFetching, endFetching]);
+  }, [queryKey, fetchFn, query, state, setErrorMessage]);
 
   return {
     data: state?.data || null,

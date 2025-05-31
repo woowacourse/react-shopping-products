@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import ErrorPopup from "./components/common/ErrorPopup";
-import { ErrorProvider, LoadingProvider } from "./contexts";
+import { ErrorProvider } from "./contexts";
 import ProductPage from "./pages/ProductPage";
 import Spinner from "./components/common/Spinner";
 import { QueryProvider } from "./contexts/QueryContext";
@@ -10,21 +10,19 @@ import CartModal from "./components/Cart/CartModal";
 
 function App() {
   return (
-    <LoadingProvider>
-      <ErrorProvider>
-        <QueryProvider>
-          <CartModalProvider>
-            <div css={appStyle}>
-              <Spinner />
-              <Header />
-              <ProductPage />
-              <CartModal />
-              <ErrorPopup />
-            </div>
-          </CartModalProvider>
-        </QueryProvider>
-      </ErrorProvider>
-    </LoadingProvider>
+    <ErrorProvider>
+      <QueryProvider>
+        <CartModalProvider>
+          <div css={appStyle}>
+            <Spinner />
+            <Header />
+            <ProductPage />
+            <CartModal />
+            <ErrorPopup />
+          </div>
+        </CartModalProvider>
+      </QueryProvider>
+    </ErrorProvider>
   );
 }
 
