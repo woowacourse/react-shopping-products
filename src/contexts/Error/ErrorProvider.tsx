@@ -25,9 +25,6 @@ export const ErrorProvider = ({ children }: PropsWithChildren) => {
 
   const handleError = (newError: ErrorState) => {
     setError(newError);
-    setTimeout(() => {
-      setError(INITIAL_ERROR);
-    }, 3000);
   };
 
   return (
