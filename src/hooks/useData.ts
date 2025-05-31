@@ -1,8 +1,9 @@
 import { useEffect, useCallback } from 'react';
 import { useDataContext } from '../context/DataContext';
+import type { CacheKey } from '../utils/cacheKeys';
 
 interface UseDataOptions<T> {
-  key: string;
+  key: CacheKey;
   fetchFn: () => Promise<T>;
   deps?: unknown[];
 }

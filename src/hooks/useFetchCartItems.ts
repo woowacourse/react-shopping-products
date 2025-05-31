@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { getCartItems, postCartItems, deleteCartItem, patchCartItem } from '../api/cartItems';
 import { useData } from './useData';
 import { ERROR_MSG } from '../constants/errorMessage';
+import { createCartItemsKey } from '../utils/cacheKeys';
 
 export type CartProductIds = {
   productId: number;
@@ -26,8 +27,10 @@ export const useFetchCartItems = () => {
     return mapped;
   }, []);
 
+  const key = createCartItemsKey();
+
   const { data, isLoading, error, refetch } = useData<CartProductIds[]>({
-    key: 'cart-items',
+    key,
     fetchFn: fetchCartItems,
   });
 

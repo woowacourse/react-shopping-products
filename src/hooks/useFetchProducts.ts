@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { getProducts, ProductResponse } from '../api/products';
 import { useData } from './useData';
 import { CategoryKey, SortKey, getCategoryByKey, getSortByKey } from '../types/selectOptions';
+import { createProductsKey } from '../utils/cacheKeys';
 
 type useFetchProductsProps = {
   category: CategoryKey;
@@ -23,8 +24,7 @@ export const useFetchProducts = ({ category, sort }: useFetchProductsProps) => {
     return data.content;
   }, [category, sort]);
 
-  const key = `products-${category}-${sort}`;
-  console.log(key);
+  const key = createProductsKey(category, sort);
 
   const { data, isLoading, error } = useData<ProductResponse[]>({
     key,
