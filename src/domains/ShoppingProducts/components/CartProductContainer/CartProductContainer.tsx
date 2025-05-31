@@ -7,9 +7,14 @@ import {
   PaymentsLayout,
   PaymentsValue,
 } from "./CartProductContainer.style";
+import { useCalculateTotalPrice } from "../../hooks/useCalculateTotalPrice";
 
 export default function CartProductContainer() {
   const { cart, product, dispatch } = useShoppingContext();
+  const totalPrice = useCalculateTotalPrice({
+    cartItem: cart.item,
+    productItem: product.item,
+  });
 
   if (cart.item.length === 0)
     return (
@@ -17,18 +22,6 @@ export default function CartProductContainer() {
         장바구니에 추가된 목록이 없습니다. <br /> 상품을 먼저 추가해주세요
       </div>
     );
-
-  const calculateTotalPrice = () => {
-    return cart.item.reduce((total, cartItem) => {
-      const productItem = product.item.find(
-        (productItem) => productItem.id === cartItem.product.id
-      );
-      if (productItem) {
-        return total + productItem.price * cartItem.quantity;
-      }
-      return total;
-    }, 0);
-  };
 
   return (
     <>
@@ -55,7 +48,7 @@ export default function CartProductContainer() {
       <Line />
       <div css={PaymentsLayout}>
         <p css={PaymentsLabel}> 총 결제 금액</p>
-        <p css={PaymentsValue}>{calculateTotalPrice().toLocaleString()}원</p>
+        <p css={PaymentsValue}>{totalPrice.toLocaleString()}원</p>
       </div>
     </>
   );

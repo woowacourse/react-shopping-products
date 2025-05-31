@@ -13,7 +13,6 @@ export function useKeyPress({
 }: useKeyPressProps) {
   useEffect(() => {
     if (!enabled) return;
-    console.log("hi");
     const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === targetKey) {
         onKeyMatch();
