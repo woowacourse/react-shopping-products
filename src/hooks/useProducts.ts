@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { ProductsAPI } from "../apis/products";
 import { useProductFilter } from "./useProductFilter";
 import { Products } from "../apis/types/products";
-import { useData } from "./useData";
+import { useData } from "../contexts/DataContext";
 
 const useProducts = () => {
   const { selectedCategory, selectedSortOption } = useProductFilter();

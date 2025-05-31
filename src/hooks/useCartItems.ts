@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { CartItemsAPI } from "../apis/cartItems";
 import { CartItems } from "../apis/types/cartItems";
 import { Products } from "../apis/types/products";
-import { useData } from "./useData";
+import { useData } from "../contexts/DataContext";
 
 interface UseCartItemsProps {
   products: Products | null;
