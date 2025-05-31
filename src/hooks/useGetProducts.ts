@@ -17,15 +17,16 @@ type UseGetProductsReturn = {
 };
 
 function useGetProducts({ sort, category }: UseGetProductsParams): UseGetProductsReturn {
-  const fetcher = useCallback(() => {
-    return getProducts({
+  const fetchFilteredProducts = useCallback(async () => {
+    const products = await getProducts({
       category,
       sortKey: 'price',
       sortOrder: sort,
     });
+    return products;
   }, [category, sort]);
 
-  const { data, loading, error } = useData('products', fetcher);
+  const { data, loading, error } = useData('products', fetchFilteredProducts);
 
   useToast(error, 'error');
 

@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useData } from './useData';
 import getCarts from '../api/getCarts';
 import { cartDataType } from '../types/cartItem';
@@ -12,7 +13,12 @@ type UseGetCartsReturn = {
 };
 
 function useGetCarts(): UseGetCartsReturn {
-  const { data, loading, error, refetch } = useData('cart-items', getCarts);
+  const fetchUserCartItems = useCallback(async () => {
+    const cartItems = await getCarts();
+    return cartItems;
+  }, []);
+
+  const { data, loading, error, refetch } = useData('cart-items', fetchUserCartItems);
 
   useToast(error, 'error');
 
