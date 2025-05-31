@@ -96,7 +96,9 @@
 
 - [ ] useMutation 만들기 (post,delete, patch 전용 useQuery같은 계층)
 - [ ] 로딩 상태 처리
-  - [ ] 지역 로딩과 fallback 로딩 분기처리
+  - [ ] 로딩 통합하기 -> 로딩 provider 제거 -> QueryContext 이용해서 관리
+- [ ] QueryContext store 객체 ref로 수정
+- [ ] QueryContext 내부에서 로딩 컴포넌트로 연결
 - [ ] 훅 역할 분리하기
 - [ ] cartItem과 product 인터페이스(타입) 공통화
 - [x] QueryState data타입 수정 (null 처리)
