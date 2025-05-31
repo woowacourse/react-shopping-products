@@ -54,9 +54,9 @@ export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
       store[queryKey].state = { data: result, isLoading: false, error: null };
     } catch (e) {
       if (e instanceof Error) store[queryKey].state = { data: null, isLoading: false, error: e };
+    } finally {
+      notify(queryKey);
     }
-
-    notify(queryKey);
   };
 
   return <QueryContext.Provider value={{ get, subscribe, unsubscribe, refetch }}>{children}</QueryContext.Provider>;
