@@ -94,7 +94,7 @@
 
 ### 피드백 바탕 수정사항
 
-- [ ] useMutation 만들기 (post,delete, patch 전용 useQuery같은 계층)
+- [x] useMutation 만들기 (post,delete, patch 전용 useQuery같은 계층)
 - [ ] 로딩 상태 처리
   - [ ] 로딩 통합하기 -> 로딩 provider 제거 -> QueryContext 이용해서 관리
 - [ ] QueryContext store 객체 ref로 수정

@@ -16,12 +16,23 @@ const store: Record<
   }
 > = {};
 
+// mutation 단발성 저장소
+const mutationStore: {
+  isLoading: boolean;
+  error: Error | null;
+} = {
+  isLoading: false,
+  error: null,
+};
+
 // 하위 컴포넌트에서 공유할 context
 interface QueryContextType {
   get: <T>(queryKey: string) => QueryState<T> | undefined;
   subscribe: (queryKey: string, reRenderFn: Subscriber) => void;
   unsubscribe: (queryKey: string, reRenderFn: Subscriber) => void;
   refetch: <T>(queryKey: string, fn: () => Promise<T>) => Promise<void>;
+  startMutating: () => void;
+  endMutating: (e?: Error) => void;
 }
 
 const QueryContext = createContext<QueryContextType | null>(null);
@@ -59,7 +70,32 @@ export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  return <QueryContext.Provider value={{ get, subscribe, unsubscribe, refetch }}>{children}</QueryContext.Provider>;
+  // mutation
+  const startMutating = () => {
+    mutationStore.isLoading = true;
+    mutationStore.error = null;
+  };
+
+  const endMutating = (error?: Error) => {
+    mutationStore.isLoading = false;
+    mutationStore.error = error ?? null;
+  };
+
+  return (
+    <QueryContext.Provider
+      value={{
+        get,
+        subscribe,
+        unsubscribe,
+        refetch,
+        // mutation
+        startMutating,
+        endMutating,
+      }}
+    >
+      {children}
+    </QueryContext.Provider>
+  );
 };
 
 export const useQueryClient = () => {
