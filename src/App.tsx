@@ -11,6 +11,7 @@ import { ProductFilterProvider } from "./contexts/ProductFilterContext";
 import { DataProvider } from "./contexts/DataContext";
 import { useState } from "react";
 import CartModal from "./components/CartModal/CartModal";
+import useCartHandlers from "./hooks/useCartHandlers";
 
 const AppContent = () => {
   const {
@@ -24,11 +25,20 @@ const AppContent = () => {
     cartItemInfo,
     errorMessage: cartError,
     setErrorMessage: setCartError,
+    refreshCartItems,
+  } = useCartItems();
+
+  const {
     handleAddToCart,
     handleQuantityIncrease,
     handleQuantityDecrease,
     handleRemoveFromCart,
-  } = useCartItems({ products });
+  } = useCartHandlers({
+    products,
+    cartItemInfo,
+    onError: setCartError,
+    onRefresh: refreshCartItems,
+  });
 
   const errorMessage = productError || cartError;
   const setErrorMessage = productError ? setProductError : setCartError;
