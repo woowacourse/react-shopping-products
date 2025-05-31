@@ -7,7 +7,7 @@ import { ResponseProduct } from '../../api/types';
 import { useProductItem } from './hooks/useProductItem';
 
 function ProductItem({ product }: { product: ResponseProduct }) {
-  const { quantity, isInCart, text, keyword, handleProductItem } = useProductItem(product.id);
+  const { quantity, isItemInCart, text, keyword, handleProductItem } = useProductItem(product.id);
 
   return (
     <S.ProductItemContainer>
@@ -32,7 +32,7 @@ function ProductItem({ product }: { product: ResponseProduct }) {
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
         {product.quantity! > 0 &&
-          (isInCart ? (
+          (isItemInCart ? (
             <QuantityButton
               quantity={quantity!}
               maxStock={product.quantity!}

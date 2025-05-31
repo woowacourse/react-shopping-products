@@ -2,12 +2,12 @@ import { cartApi } from '../../../api/cartApi';
 import { CART_MAX_COUNT } from '../../../constants/constants';
 import { useError } from '../../../contexts/ErrorContext';
 import { useCartItemList } from '../../../pages/productListPage/context/useCartContext';
-import { getCartItemId, isItemInCart } from '../utils';
+import { getCartItemId, getCartItemState } from '../utils';
 
 export const useProductItem = (id: number) => {
   const { cartItemList, setCartItemList } = useCartItemList();
   const { showError } = useError();
-  const { quantity, isInCart, text, keyword } = isItemInCart(id, cartItemList);
+  const { quantity, isItemInCart, text, keyword } = getCartItemState(id, cartItemList);
 
   async function handleProductItem(action: string, productId: number, quantity?: number) {
     try {
@@ -38,5 +38,5 @@ export const useProductItem = (id: number) => {
     }
   }
 
-  return { quantity, isInCart, text, keyword, handleProductItem };
+  return { quantity, isItemInCart, text, keyword, handleProductItem };
 };
