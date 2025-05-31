@@ -11,7 +11,7 @@ type fetchCartItemsParams = {
 const fetchCartItems = async ({
   params = { page: "0", size: "50" },
 }: fetchCartItemsParams) => {
-  const data = await apiRequest.GET<FetchCartItemsResult>({
+  const data = await apiRequest.get<FetchCartItemsResult>({
     endpoint: "/cart-items",
     searchParams: params,
     useToken: true,
