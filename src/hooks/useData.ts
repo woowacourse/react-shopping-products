@@ -11,7 +11,7 @@ interface UseDataOptions<T> {
 interface UseDataResult<T> {
   data: T | null;
   isLoading: boolean;
-  error: string;
+  error: string | null;
   refetch: () => Promise<void>;
 }
 

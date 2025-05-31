@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface DataStateItem<T = unknown> {
   data: T | null;
   isLoading: boolean;
-  error: string;
+  error: string | null;
 }
 
 interface DataState {
@@ -24,14 +24,14 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setState((prev) => ({
         ...prev,
-        [key]: { data: prev[key]?.data || null, isLoading: true, error: '' },
+        [key]: { data: prev[key]?.data || null, isLoading: true, error: null },
       }));
 
       const data = await fetchFn();
 
       setState((prev) => ({
         ...prev,
-        [key]: { data, isLoading: false, error: '' },
+        [key]: { data, isLoading: false, error: null },
       }));
     } catch (error) {
       setState((prev) => ({
