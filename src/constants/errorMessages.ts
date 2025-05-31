@@ -11,3 +11,9 @@ export const DEFAULT_ERROR_MESSAGE = '저런! 예기치 못한 문제가 발생�
 export const DEV_ERROR_MESSAGE = {
   INVALID_PROVIDER: (providerName: string) => `${providerName}안에서 사용해야 합니다.`,
 };
+
+export const CLIENT_ERROR_MESSAGE = {
+  OUT_OF_STOCK: '최대 구매 수량에 도달했어요',
+};
+
+export const EMPTY_CART_MESSAGE = '장바구니가 비었습니다.';

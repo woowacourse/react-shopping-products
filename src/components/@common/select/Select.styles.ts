@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { fadeIn } from '../../animations/animations';
+import { fadeIn } from '../../../animations/animations';
 import { css } from '@emotion/react';
 
 export const SelectContainer = styled.div`
@@ -7,6 +7,7 @@ export const SelectContainer = styled.div`
   max-width: 125px;
   cursor: pointer;
   position: relative;
+  z-index: var(--z-index-select);
 `;
 
 export const SelectField = styled.button<{ $isOpen: boolean }>`

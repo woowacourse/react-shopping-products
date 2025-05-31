@@ -1,1 +1,2 @@
-export type VariantsProps = 'smallBlack' | 'smallGrey';
+export type SizeProps = 'small' | 'large';
+export type ColorProps = 'black' | 'grey';
