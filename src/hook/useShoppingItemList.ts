@@ -54,7 +54,7 @@ const useShoppingItemList = () => {
         });
 
         dispatch({ type: 'FETCH_SUCCESS', payload: response });
-      } catch (error) {
+      } catch {
         dispatch({
           type: 'FETCH_ERROR',
           payload: new Error(
