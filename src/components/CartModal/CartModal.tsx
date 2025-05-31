@@ -1,6 +1,6 @@
 import { useCartManagement } from '../../hooks/useCartManager';
+import { useCloseOnESC } from '../../hooks/useCloseESC';
 import useGetCarts from '../../hooks/useGetCarts';
-import { useModalClose } from '../../hooks/useModalClose';
 import CartItem from './CartItem';
 import {
   CloseButton,
@@ -22,12 +22,20 @@ function CartModal({ onClose }: ModalProps) {
     carts,
     refetchCarts,
   });
-  const { onClickOverlay } = useModalClose({ closeModal: onClose });
+
+  useCloseOnESC({ closeModal: onClose });
+
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).id === 'modal-overlay') {
+      onClose();
+    }
+  };
+
   const price = carts?.reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0);
 
   return (
     <>
-      <div id="modal-overlay" className={ModalOverlay} onClick={onClickOverlay} />
+      <div id="modal-overlay" className={ModalOverlay} onClick={handleOverlayClick} />
       <div className={ModalContainer}>
         <h2 className={ModalTitle}>장바구니</h2>
         <hr />
