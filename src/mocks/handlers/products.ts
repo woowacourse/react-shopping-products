@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
-import { MOCK_PRODUCTS, MockProductsType } from '../dummy';
+import { MOCK_PRODUCTS } from '../dummy';
+import { ProductItemType } from '../../types/data';
 
 interface GetProductsParams {
   productId: string;
@@ -10,7 +11,7 @@ const addBaseURL = (endpoint: string) => {
 };
 
 const handlers = [
-  http.get<never, MockProductsType[]>(addBaseURL('/products'), ({ request }) => {
+  http.get<never, ProductItemType[]>(addBaseURL('/products'), ({ request }) => {
     const url = new URL(request.url);
     const params = url.searchParams;
     const category = params.get('category');
@@ -29,7 +30,7 @@ const handlers = [
     return HttpResponse.json({ content: [...mockProducts] });
   }),
 
-  http.get<GetProductsParams, MockProductsType>(
+  http.get<GetProductsParams, ProductItemType>(
     addBaseURL('/products/:productId'),
     async ({ params }) => {
       const { productId } = params;

@@ -10,7 +10,7 @@ import useFetchData from './useFetchData';
 import { DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 import { getCartId } from '../domain/cartItem';
 import useDataContext from './useDataContext';
-import { MockCartItemType } from '../mocks/dummy';
+import { CartItemType } from '../types/data';
 
 interface CartHandlerProps {
   handleErrorMessage: (errorMessage: string) => void;
@@ -18,10 +18,10 @@ interface CartHandlerProps {
 
 const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
   const { data, setData, isLoading, handleLoading } = useDataContext();
-  const { fetchData: fetchCartItems } = useFetchData<MockCartItemType[]>({
+  const { fetchData: fetchCartItems } = useFetchData<CartItemType[]>({
     dataName: 'cartItems',
   });
-  const { fetchData: updateCartItems } = useFetchData<MockCartItemType[]>({
+  const { fetchData: updateCartItems } = useFetchData<CartItemType[]>({
     dataName: 'cartItemsUpdate',
   });
 
@@ -62,7 +62,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleRemoveCartItem = useCallback(
     async (productId: number) => {
-      const cartItems = data.get('cartItems') as MockCartItemType[];
+      const cartItems = data.get('cartItems') as CartItemType[];
       const cartId = getCartId(cartItems, productId) as number;
 
       await updateCartItems({
@@ -80,7 +80,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleIncreaseQuantity = useCallback(
     async (productId: number, quantity: number) => {
-      const cartItems = data.get('cartItems') as MockCartItemType[];
+      const cartItems = data.get('cartItems') as CartItemType[];
       const cartId = getCartId(cartItems, productId) as number;
 
       await updateCartItems({
@@ -98,7 +98,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleDecreaseQuantity = useCallback(
     async (productId: number, quantity: number) => {
-      const cartItems = data.get('cartItems') as MockCartItemType[];
+      const cartItems = data.get('cartItems') as CartItemType[];
       const cartId = getCartId(cartItems, productId) as number;
 
       await updateCartItems({
@@ -115,7 +115,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
   );
 
   return {
-    cartItems: (data.get('cartItems') as MockCartItemType[]) ?? [],
+    cartItems: data.get('cartItems') ?? [],
     isCartItemsLoading: isLoading.get('cartItems') ?? true,
     handleAddCartItem,
     handleRemoveCartItem,

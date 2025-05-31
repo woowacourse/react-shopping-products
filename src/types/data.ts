@@ -12,6 +12,7 @@ export interface ProductItemType {
   category: CategoryType;
   price: number;
   imageUrl: string;
+  quantity: number;
 }
 
 export interface CartItemType {

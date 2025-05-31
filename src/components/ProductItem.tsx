@@ -3,10 +3,10 @@ import Button from './Button';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
 import AddIcon from '/public/icon/add-icon.svg';
 import SubIcon from '/public/icon/sub-icon.svg';
-import { MockProductsType } from '../mocks/dummy';
+import { ProductItemType } from '../types/data';
 
 interface ProductItemProps {
-  product: MockProductsType;
+  product: ProductItemType;
   quantityInCart: number;
   handleIncreaseQuantity: (id: number, quantity: number) => void;
   handleDecreaseQuantity: (id: number, quantity: number) => void;

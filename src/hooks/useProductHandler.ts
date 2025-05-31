@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getProducts } from '../services/productServices';
 import { CATEGORY_OPTIONS, SELECT_SORT_OPTIONS, SORT_OPTIONS } from '../constants/systemConstants';
-import { CategoryType, SelectedSortType } from '../types/data';
+import { CategoryType, ProductItemType, SelectedSortType } from '../types/data';
 import useFetchData from './useFetchData';
 import { DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 import useDataContext from './useDataContext';
-import { MockProductsType } from '../mocks/dummy';
 
 interface ProductListProps {
   handleErrorMessage: (errorMessage: string) => void;
@@ -13,7 +12,7 @@ interface ProductListProps {
 
 const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
   const { data, setData, isLoading, handleLoading } = useDataContext();
-  const { fetchData: fetchProducts } = useFetchData<MockProductsType[]>({
+  const { fetchData: fetchProducts } = useFetchData<ProductItemType[]>({
     dataName: 'products',
   });
   const [categoryOption, setCategoryOption] = useState(CATEGORY_OPTIONS[0]);
@@ -48,7 +47,7 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
   };
 
   return {
-    products: (data.get('products') as MockProductsType[]) ?? [],
+    products: data.get('products') ?? [],
     isProductsLoading: isLoading.get('products') ?? true,
     categoryOption,
     handleCategoryOption,

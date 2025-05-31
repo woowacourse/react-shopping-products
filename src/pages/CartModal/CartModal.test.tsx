@@ -10,8 +10,9 @@ import {
   increaseCartItems,
   removeCartItems,
 } from '../../services/cartItemServices';
-import { MOCK_CART_ITEMS, MockCartItemType } from '../../mocks/dummy';
+import { MOCK_CART_ITEMS } from '../../mocks/dummy';
 import { CartModal } from './CartModal';
+import { CartItemType } from '../../types/data';
 
 vi.mock('../../services/cartItemServices', () => ({
   getCartItems: vi.fn(),
@@ -28,7 +29,7 @@ const TestCartModal: React.FC = () => {
   );
 };
 
-let mockCartItems: MockCartItemType[];
+let mockCartItems: CartItemType[];
 let mockShowModal: Mock;
 let mockClose: Mock;
 

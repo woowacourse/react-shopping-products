@@ -6,8 +6,9 @@ import { PRODUCT_LIST_ITEM_COUNT } from '../../constants/systemConstants';
 import type React from 'react';
 import userEvent from '@testing-library/user-event';
 import { DataProvider } from '../../context/DataContext';
-import { MOCK_PRODUCTS, MockProductsType } from '../../mocks/dummy';
+import { MOCK_PRODUCTS } from '../../mocks/dummy';
 import { delay, http, HttpResponse } from 'msw';
+import { ProductItemType } from '../../types/data';
 
 const TestDataProvider = ({ children }: { children: React.ReactNode }) => {
   return <DataProvider>{children}</DataProvider>;
@@ -32,7 +33,7 @@ describe('상품 목록 조회 테스트', () => {
     const ERROR_MESSAGE = 'API Error';
 
     server.use(
-      http.get<never, MockProductsType[]>(`${import.meta.env.VITE_API_BASE_URL}/products`, () => {
+      http.get<never, ProductItemType[]>(`${import.meta.env.VITE_API_BASE_URL}/products`, () => {
         return HttpResponse.json({ message: ERROR_MESSAGE }, { status: 500 });
       }),
     );

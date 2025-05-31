@@ -1,8 +1,8 @@
-import { MockProductsType } from '../mocks/dummy';
+import { ProductItemType } from '../types/data';
 import apiClient from './apiClient';
 
 interface ProductsResponse {
-  content: MockProductsType[];
+  content: ProductItemType[];
 }
 
 export const getProducts = async (categoryOption: string = '전체', sortOption: string = 'asc') => {
