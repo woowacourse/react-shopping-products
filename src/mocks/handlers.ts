@@ -3,9 +3,10 @@ import productData from './productData.json';
 import cartData from './cartData.json';
 import { ProductElement } from '../types/type';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
+import { API_CONFIG } from '../constants/APIConfig';
 
 export const handlers = [
-  http.get(`${import.meta.env.VITE_API_BASE_URL}/products`, ({ request }) => {
+  http.get(`${API_CONFIG.BASE_URL}/products`, ({ request }) => {
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '0');
     const size = parseInt(url.searchParams.get('size') || '10');
@@ -38,47 +39,44 @@ export const handlers = [
     });
   }),
 
-  http.get(`${import.meta.env.VITE_API_BASE_URL}/cart-items`, () => {
+  http.get(`${API_CONFIG.BASE_URL}/cart-items`, () => {
     return HttpResponse.json(cartData);
   }),
 
-  http.post(
-    `${import.meta.env.VITE_API_BASE_URL}/cart-items`,
-    async ({ request }) => {
-      const body = (await request.json()) as {
-        productId: number;
-        quantity: number;
-      };
-      const { productId, quantity } = body;
+  http.post(`${API_CONFIG.BASE_URL}/cart-items`, async ({ request }) => {
+    const body = (await request.json()) as {
+      productId: number;
+      quantity: number;
+    };
+    const { productId, quantity } = body;
 
-      const product = productData.content.find((p) => p.id === productId);
-      if (!product) {
-        return;
-      }
-
-      if (cartData.content.length >= 50) {
-        return HttpResponse.json(
-          {
-            message: ERROR_MESSAGE.MAX_CART_ITEM,
-          },
-          { status: 400 }
-        );
-      }
-
-      const newCartItem = {
-        id: Math.max(...cartData.content.map((c) => c.id), 0) + 1,
-        product: product,
-        quantity,
-      };
-
-      cartData.content.push(newCartItem);
-
-      return HttpResponse.json(newCartItem, { status: 201 });
+    const product = productData.content.find((p) => p.id === productId);
+    if (!product) {
+      return;
     }
-  ),
+
+    if (cartData.content.length >= 50) {
+      return HttpResponse.json(
+        {
+          message: ERROR_MESSAGE.MAX_CART_ITEM,
+        },
+        { status: 400 }
+      );
+    }
+
+    const newCartItem = {
+      id: Math.max(...cartData.content.map((c) => c.id), 0) + 1,
+      product: product,
+      quantity,
+    };
+
+    cartData.content.push(newCartItem);
+
+    return HttpResponse.json(newCartItem, { status: 201 });
+  }),
 
   http.patch(
-    `${import.meta.env.VITE_API_BASE_URL}/cart-items/:id`,
+    `${API_CONFIG.BASE_URL}/cart-items/:id`,
     async ({ request, params }) => {
       const id = Number(params.id);
       const body = (await request.json()) as { quantity: number };
@@ -110,16 +108,13 @@ export const handlers = [
     }
   ),
 
-  http.delete(
-    `${import.meta.env.VITE_API_BASE_URL}/cart-items/:id`,
-    ({ params }) => {
-      const id = Number(params.id);
+  http.delete(`${API_CONFIG.BASE_URL}/cart-items/:id`, ({ params }) => {
+    const id = Number(params.id);
 
-      const index = cartData.content.findIndex((item) => item.id === id);
+    const index = cartData.content.findIndex((item) => item.id === id);
 
-      cartData.content.splice(index, 1);
+    cartData.content.splice(index, 1);
 
-      return HttpResponse.json(cartData, { status: 200 });
-    }
-  ),
+    return HttpResponse.json(cartData, { status: 200 });
+  }),
 ];

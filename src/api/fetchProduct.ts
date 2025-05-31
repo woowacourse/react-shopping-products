@@ -1,3 +1,4 @@
+import { API_CONFIG } from '../constants/APIConfig';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { fetchAPI } from './fetchAPI';
 
@@ -8,9 +9,7 @@ interface getProductProps {
 }
 
 export const getProduct = async ({ page, size, sortBy }: getProductProps) => {
-  const url = `${
-    import.meta.env.VITE_API_BASE_URL
-  }/products?page=${page}&size=${size}&sort=price,${sortBy}&sort=id,desc`;
+  const url = `${API_CONFIG.BASE_URL}/products?page=${page}&size=${size}&sort=price,${sortBy}&sort=id,desc`;
 
   const response = await fetchAPI({
     url: url,

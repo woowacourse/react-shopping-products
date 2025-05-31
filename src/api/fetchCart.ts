@@ -1,3 +1,4 @@
+import { API_CONFIG } from '../constants/APIConfig';
 import { CART_CONFIG } from '../constants/cartConfig';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { CartResponse } from '../types/type';
@@ -13,9 +14,7 @@ export const getCartItem = async ({
   size,
   sortBy,
 }: getCartItemProps): Promise<CartResponse> => {
-  const url = `${
-    import.meta.env.VITE_API_BASE_URL
-  }/cart-items?page=${page}&size=${size}&sort=${sortBy}`;
+  const url = `${API_CONFIG.BASE_URL}/cart-items?page=${page}&size=${size}&sort=${sortBy}`;
 
   const response = await fetchAPI({
     url: url,
@@ -28,7 +27,7 @@ export const getCartItem = async ({
 };
 
 export const addCart = async (id: number) => {
-  const url = `${import.meta.env.VITE_API_BASE_URL}/cart-items`;
+  const url = `${API_CONFIG.BASE_URL}/cart-items`;
 
   const response = await fetchAPI({
     url: url,
@@ -43,7 +42,7 @@ export const addCart = async (id: number) => {
 };
 
 export const patchCart = async (id: number, quantity: number) => {
-  const url = `${import.meta.env.VITE_API_BASE_URL}/cart-items/${id}`;
+  const url = `${API_CONFIG.BASE_URL}/cart-items/${id}`;
   const response = await fetchAPI({
     url: url,
     options: {
@@ -56,7 +55,7 @@ export const patchCart = async (id: number, quantity: number) => {
 };
 
 export const removeCart = async (id: number) => {
-  const url = `${import.meta.env.VITE_API_BASE_URL}/cart-items/${id}`;
+  const url = `${API_CONFIG.BASE_URL}/cart-items/${id}`;
 
   const response = await fetchAPI({
     url: url,
