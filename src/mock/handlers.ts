@@ -21,6 +21,17 @@ export const handlers = [
   http.get(getRequestURL('/products/:id'), async ({ params }) => {
     const { id } = params;
     const product = mockData.find((product) => product.id === Number(id));
+
+    if (!product) {
+      return new Response(
+        JSON.stringify({
+          errorCode: 'NOT_FOUND',
+          message: '상품이 존재하지 않습니다.',
+        }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } },
+      );
+    }
+
     return new Response(JSON.stringify({ content: product }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -38,6 +49,16 @@ export const handlers = [
     const newItem = (await request.json()) as CartItemProps;
 
     const { productId, quantity } = newItem;
+    if (typeof productId !== 'number' || typeof quantity !== 'number' || quantity <= 0) {
+      return new Response(
+        JSON.stringify({
+          errorCode: 'INVALID_INPUT',
+          message: '잘못된 요청입니다.',
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } },
+      );
+    }
+
     const product = mockData.find((data) => data.id === Number(productId));
 
     if (!product) {
