@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useCallback } from 'react';
 
 import { Product } from '../types/common';
 import { productApi } from '../api/product';
@@ -69,9 +69,9 @@ const useShoppingItemList = () => {
     fetchData();
   }, [category, sortType]);
 
-  const retryFetch = () => {
+  const retryFetch = useCallback(() => {
     dispatch({ type: 'FETCH_START' });
-  };
+  }, [dispatch]);
 
   return {
     data: state.data,
