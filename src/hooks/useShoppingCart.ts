@@ -1,25 +1,23 @@
-import { useCallback } from 'react';
 import { useData } from './useData';
 import { CartItem } from '../components/ShoppingCartModal/cart.type';
 import {
   addShoppingCart,
   deleteShoppingCart,
-  updateShoppingCart,
   getShoppingCart,
+  updateShoppingCart,
 } from '../APIs/shoppingCartApi';
+import { useCallback } from 'react';
 
 const PARAMS = new URLSearchParams({ page: '0', size: '50' }).toString();
 
 export const useShoppingCart = () => {
-  const { data, loading, error, refetch, setLoading, setError } = useData<
-    CartItem[]
-  >({
+  const { data, error, setLoading, setError, refetch } = useData<CartItem[]>({
     key: 'cart-items',
     endpoint: `/cart-items?${PARAMS}`,
     fetchFunction: getShoppingCart,
   });
 
-  const add = useCallback(
+  const create = useCallback(
     async (productId: number) => {
       setLoading('cart-items', true);
       try {
@@ -35,13 +33,13 @@ export const useShoppingCart = () => {
             : '장바구니 추가 중 알 수 없는 오류가 발생했습니다.';
         setError('cart-items', message);
         setTimeout(() => {
-          setError('cart-items', null);
+          setError('cart-items', '');
         }, 3000);
       } finally {
         setLoading('cart-items', false);
       }
     },
-    [refetch, setError, setLoading]
+    [setError, setLoading, refetch]
   );
 
   const remove = useCallback(
@@ -62,7 +60,7 @@ export const useShoppingCart = () => {
             : '장바구니 삭제 중 알 수 없는 오류가 발생했습니다.';
         setError('cart-items', message);
         setTimeout(() => {
-          setError('cart-items', null);
+          setError('cart-items', '');
         }, 3000);
       } finally {
         setLoading('cart-items', false);
@@ -87,7 +85,7 @@ export const useShoppingCart = () => {
             : '장바구니 수량 수정 중 알 수 없는 오류가 발생했습니다.';
         setError('cart-items', message);
         setTimeout(() => {
-          setError('cart-items', null);
+          setError('cart-items', '');
         }, 3000);
       } finally {
         setLoading('cart-items', false);
@@ -96,5 +94,5 @@ export const useShoppingCart = () => {
     [refetch, setError, setLoading]
   );
 
-  return { data, loading, error, add, remove, update };
+  return { data, error, create, remove, update };
 };

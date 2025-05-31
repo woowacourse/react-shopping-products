@@ -2,22 +2,24 @@ import { css } from '@emotion/css';
 import QuantitySpinner from '../Button/QuantitySpinner';
 import AddButton from '../Button/AddButton';
 import { Product } from '../ProductCardList/product.type';
-import { useShoppingCart } from '../../hooks/useShoppingCart';
-import { useEffect, useState } from 'react';
 import { CartItem } from '../ShoppingCartModal/cart.type';
 
 interface ProductCardProps {
   product: Product;
+  cartItem: CartItem | null;
+  create: (productId: number) => Promise<void>;
+  remove: (cartItemId: number) => Promise<void>;
+  update: (cartItemId: number, quantity: number) => Promise<void>;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({
+  product,
+  cartItem,
+  create,
+  remove,
+  update,
+}: ProductCardProps) => {
   const { id, name, price, imageUrl, quantity } = product;
-  const { data, add, remove, update } = useShoppingCart();
-  const [cartItem, setCartItem] = useState<CartItem | null>(null);
-
-  useEffect(() => {
-    setCartItem(data?.find((ci) => ci.product.id === id) ?? null);
-  }, [data, id]);
 
   return (
     <div key={id} className={CardFrame}>
@@ -46,7 +48,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               handleDecrease={() => update(cartItem.id, cartItem.quantity - 1)}
             />
           ) : (
-            <AddButton onClick={() => add(id)} />
+            <AddButton onClick={() => create(id)} />
           )}
         </div>
       </div>

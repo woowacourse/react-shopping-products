@@ -1,13 +1,34 @@
 import { css } from '@emotion/css';
 import { Product } from './product.type';
 import ProductCard from '../ProductCard';
+import { CartItem } from '../ShoppingCartModal/cart.type';
 
-const ProductCardList = ({ products }: { products: Product[] }) => {
+interface ProductCardListProps {
+  products: Product[];
+  shoppingCart: {
+    data: CartItem[];
+    create: (productId: number) => Promise<void>;
+    remove: (cartItemId: number) => Promise<void>;
+    update: (cartItemId: number, quantity: number) => Promise<void>;
+  };
+}
+
+const ProductCardList = ({ products, shoppingCart }: ProductCardListProps) => {
   return (
     <div className={ProductCardListStyles}>
       {products &&
         products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            cartItem={
+              shoppingCart.data.find((ci) => ci.product.id === product.id) ??
+              null
+            }
+            create={shoppingCart.create}
+            remove={shoppingCart.remove}
+            update={shoppingCart.update}
+          />
         ))}
     </div>
   );

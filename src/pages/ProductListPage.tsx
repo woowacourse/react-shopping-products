@@ -25,7 +25,7 @@ const ProductListPage = () => {
       {products.loading ? (
         <OrbitSpinner />
       ) : (
-        <ProductCardList products={products.data} />
+        <ProductCardList products={products.data} shoppingCart={shoppingCart} />
       )}
       <ShoppingCartModal isOpen={isOpen} onClose={handleClose}>
         <div className={ItemListStyles}>

@@ -2,11 +2,11 @@ import { CartItem } from '../components/ShoppingCartModal/cart.type';
 import { Product } from '../components/ProductCardList/product.type';
 
 interface ApiState<T = CartItem[] | Product[]> {
-  data: T | null;
+  data: T;
   loading: boolean;
-  error: string | null;
-  category: string;
-  sort: string;
+  error: string;
+  category?: string;
+  sort?: string;
 }
 
 interface ApiContextState {

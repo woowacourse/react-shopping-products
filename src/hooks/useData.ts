@@ -18,11 +18,11 @@ export const useData = <T extends CartItem[] | Product[] | null>({
 
   const fetchData = useCallback(async () => {
     setLoading(key, true);
-    setError(key, null);
+    setError(key, '');
 
     try {
       const data = await fetchFunction(endpoint);
-      setData(key, data);
+      setData(key, data ?? []);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
@@ -35,17 +35,17 @@ export const useData = <T extends CartItem[] | Product[] | null>({
   }, [fetchData]);
 
   const currentState = state[key] || {
-    data: null,
+    data: [],
     loading: false,
-    error: null,
+    error: '',
   };
 
   return {
     data: currentState.data as T,
     loading: currentState.loading,
     error: currentState.error,
-    refetch: fetchData,
     setLoading,
     setError,
+    refetch: fetchData,
   };
 };

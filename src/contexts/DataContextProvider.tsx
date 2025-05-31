@@ -14,29 +14,35 @@ import { DataContextType } from './data.type';
 export const DataContext = createContext<DataContextType | null>(null);
 
 const DataProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [state, dispatch] = useReducer(dataReducer, {});
-
-  const setData = useCallback(
-    (key: string, data: CartItem[] | Product[] | null) => {
-      dispatch({ type: 'SET_DATA', key, data });
+  const [state, dispatch] = useReducer(dataReducer, {
+    products: {
+      data: [],
+      loading: false,
+      error: '',
+      category: '전체',
+      sort: 'price,asc',
     },
-    []
-  );
+    'cart-items': {
+      data: [],
+      loading: false,
+      error: '',
+    },
+  });
+
+  const setData = useCallback((key: string, data: CartItem[] | Product[]) => {
+    dispatch({ type: 'SET_DATA', key, data });
+  }, []);
 
   const setLoading = useCallback((key: string, loading: boolean) => {
     dispatch({ type: 'SET_LOADING', key, loading });
   }, []);
 
-  const setError = useCallback((key: string, error: string | null) => {
+  const setError = useCallback((key: string, error: string) => {
     dispatch({ type: 'SET_ERROR', key, error });
   }, []);
 
   const clearError = useCallback((key: string) => {
     dispatch({ type: 'CLEAR_ERROR', key });
-  }, []);
-
-  const initApi = useCallback((key: string) => {
-    dispatch({ type: 'INIT_API', key });
   }, []);
 
   const setCategory = useCallback((category: string) => {
@@ -54,20 +60,10 @@ const DataProvider: React.FC<PropsWithChildren> = ({ children }) => {
       setLoading,
       setError,
       clearError,
-      initApi,
       setCategory,
       setSort,
     }),
-    [
-      state,
-      setData,
-      setLoading,
-      setError,
-      clearError,
-      initApi,
-      setCategory,
-      setSort,
-    ]
+    [state, setData, setLoading, setError, clearError, setCategory, setSort]
   );
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

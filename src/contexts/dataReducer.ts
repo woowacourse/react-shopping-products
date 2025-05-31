@@ -1,24 +1,13 @@
 import { ApiContextState } from '../APIs/api.type';
 import { DataAction } from './data.type';
 
-const INITIAL_STATE = {
-  data: null,
-  loading: false,
-  error: null,
-  category: '',
-  sort: '',
-};
-
 export const dataReducer = (
   state: ApiContextState,
   action: DataAction
 ): ApiContextState => {
-  const prev = state[action.key] ?? INITIAL_STATE;
+  const prev = state[action.key];
 
   switch (action.type) {
-    case 'INIT_API':
-      return { ...state, [action.key]: { ...INITIAL_STATE } };
-
     case 'SET_CATEGORY':
       return {
         ...state,
@@ -37,7 +26,7 @@ export const dataReducer = (
           ...prev,
           data: action.data,
           loading: false,
-          error: null,
+          error: '',
         },
       };
 
@@ -56,7 +45,7 @@ export const dataReducer = (
     case 'CLEAR_ERROR':
       return {
         ...state,
-        [action.key]: { ...prev, error: null },
+        [action.key]: { ...prev, error: '' },
       };
 
     default:
