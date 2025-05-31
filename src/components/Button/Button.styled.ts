@@ -10,7 +10,6 @@ const buttonTheme: Record<ButtonVariants, Record<string, string>> = {
 export const Button = styled.button<{ variant: ButtonVariants }>`
   background-color: ${({ variant }) => buttonTheme[variant].background};
   color: ${({ variant }) => buttonTheme[variant].text};
-  padding: 8px 12px;
   padding: ${({ variant }) => (variant === "outline" ? "4px 8px" : "8px 16px")};
   display: flex;
   gap: 4px;
@@ -30,6 +29,7 @@ export const Button = styled.button<{ variant: ButtonVariants }>`
     if (variant === "outline") {
       return `12px`;
     }
+    return "14px";
   }};
 
   white-space: nowrap;
