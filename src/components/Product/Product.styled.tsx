@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 export const Container = styled.div`
   width: 182px;
   height: 224px;
+  position: relative;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -14,6 +15,20 @@ export const Image = styled.img`
   height: 112px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+`;
+
+export const SoldOut = styled.div`
+  width: 100%;
+  height: 112px;
+  background-color: #00000059;
+  position: absolute;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: 700;
+  font-size: 30px;
 `;
 
 export const Wrapper = styled.div`
