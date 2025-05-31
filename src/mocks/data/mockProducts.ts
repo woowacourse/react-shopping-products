@@ -1,4 +1,6 @@
-export const allProductsData = [
+import { Product } from "../../types/Product";
+
+export const allProductsData: Product[] = [
   {
     id: 34,
     name: "코카콜라 제로 1.5L",

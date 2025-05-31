@@ -1,4 +1,6 @@
-export const cartItems = [
+import { CartItem } from "../../types/FetchCartItemsResult";
+
+export const cartItems: CartItem[] = [
   {
     id: 6614,
     quantity: 1,
