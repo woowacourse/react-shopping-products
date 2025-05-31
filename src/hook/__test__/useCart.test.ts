@@ -44,28 +44,20 @@ const mockGetCartItemsError = () => {
   });
 };
 
-const mockAddCartItem = (cartItem: CartItem) => {
-  return http.post(CART_ITEMS_ENDPOINT, () => {
-    return HttpResponse.json(cartItem);
-  });
-};
-
-const mockDeleteCartItem = (cartItemId: number) => {
-  return http.delete(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, () => {
-    return new HttpResponse(null, { status: 204 });
-  });
-};
-
-const mockPatchCartItem = (cartItemId: number, cartItem: CartItem) => {
-  return http.patch(`${CART_ITEMS_ENDPOINT}/${cartItemId}`, () => {
-    return HttpResponse.json(cartItem);
-  });
-};
-
 describe('useCart 훅', () => {
   beforeEach(() => {
     // 각 테스트 전에 핸들러 리셋
     server.resetHandlers();
+  });
+
+  it('장바구니 초기 데이터는 빈 배열이다', async () => {
+    const { result } = renderHook(() => useCart());
+
+    await act(async () => {
+      await result.current.loadCartData();
+    });
+
+    expect(result.current.cartData).toEqual([]);
   });
 
   it('장바구니 데이터를 성공적으로 가져온다', async () => {
@@ -95,65 +87,86 @@ describe('useCart 훅', () => {
   });
 
   it('장바구니에 상품을 성공적으로 추가한다', async () => {
-    const newCartItem = createMockCartItem({
-      id: 2,
-      product: {
-        id: 102,
-        name: '새 상품',
-        price: 20000,
-        imageUrl: 'new.jpg',
-        category: '패션잡화',
-        quantity: 5,
-      },
-    });
-
-    server.use(mockAddCartItem(newCartItem), mockGetCartItems([newCartItem]));
-
     const { result } = renderHook(() => useCart());
 
     await act(async () => {
-      await result.current.addCart(102);
+      await result.current.addCart(4);
     });
 
-    expect(result.current.cartData).toEqual([newCartItem]);
+    expect(result.current.cartData.length).toBe(1);
+
+    await act(async () => {
+      const cartItem = result.current.cartData[0];
+      await result.current.removeCart(cartItem.id);
+    });
   });
 
   it('장바구니에서 상품을 성공적으로 제거한다', async () => {
-    server.use(mockDeleteCartItem(1), mockGetCartItems([]));
-
     const { result } = renderHook(() => useCart());
 
     await act(async () => {
-      await result.current.removeCart(1);
+      await result.current.addCart(4);
+    });
+
+    await act(async () => {
+      const cartItem = result.current.cartData[0];
+      await result.current.removeCart(cartItem.id);
     });
 
     expect(result.current.cartData).toEqual([]);
   });
 
-  it('장바구니 상품 수량을 성공적으로 변경한다', async () => {
-    const updatedCartItem = createMockCartItem({
-      product: {
-        id: 101,
-        name: '테스트 상품',
-        price: 10000,
-        imageUrl: 'test.jpg',
-        category: '패션잡화',
-        quantity: 10,
-      },
-      quantity: 3,
-    });
-
-    server.use(
-      mockPatchCartItem(1, updatedCartItem),
-      mockGetCartItems([updatedCartItem])
-    );
-
+  it('장바구니 상품 수량을 성공적으로 증가시킨다', async () => {
     const { result } = renderHook(() => useCart());
 
     await act(async () => {
-      await result.current.patchCart(1, 3, 101);
+      await result.current.addCart(4);
     });
 
-    expect(result.current.cartData).toEqual([updatedCartItem]);
+    await act(async () => {
+      const cartItem = result.current.cartData[0];
+      await result.current.increaseCart(
+        cartItem.id,
+        cartItem.quantity + 1,
+        cartItem.product.id
+      );
+    });
+
+    expect(result.current.cartData[0].quantity).toBe(2);
+
+    await act(async () => {
+      const cartItem = result.current.cartData[0];
+      await result.current.removeCart(cartItem.id);
+    });
+  });
+
+  it('장바구니 상품 수량을 성공적으로 감소시킨다', async () => {
+    const { result } = renderHook(() => useCart());
+
+    await act(async () => {
+      await result.current.addCart(4);
+    });
+
+    console.log(result.current.cartData);
+
+    expect(result.current.cartData[0].quantity).toBe(1);
+
+    await act(async () => {
+      const cartItem = result.current.cartData[0];
+      await result.current.increaseCart(
+        cartItem.id,
+        cartItem.quantity + 1,
+        cartItem.product.id
+      );
+    });
+
+    expect(result.current.cartData[0].quantity).toBe(2);
+
+    await act(async () => {
+      const cartItem = result.current.cartData[0];
+      await result.current.decreaseCart(cartItem.id, cartItem.quantity - 1);
+    });
+
+    expect(result.current.cartData[0].quantity).toBe(1);
   });
 });
