@@ -13,6 +13,7 @@ import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
 import { getCartInCount } from '../../util/cartUtils';
 import useCartItems from '../../hooks/useCartItems';
+import ErrorFallBack from '../../components/@common/errorFallBack/ErrorFallBack.tsx';
 
 export const ProductListPage = () => {
   const { errorMessage, handleErrorMessage, isToastVisible } = useErrorMessageContext();
@@ -31,6 +32,9 @@ export const ProductListPage = () => {
 
   if (loadingState === 'loadingInitial') {
     return <ProductListPageSkeleton />;
+  }
+  if (loadingState === 'error') {
+    return <ErrorFallBack />;
   }
 
   return (

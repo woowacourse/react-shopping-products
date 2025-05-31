@@ -24,7 +24,7 @@ const useData = <T, A extends unknown[]>({
       return result;
     } catch (err) {
       if (err instanceof Error) setError(err);
-      setLoadingState('success');
+      setLoadingState('error');
       return null;
     }
   };
