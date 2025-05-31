@@ -35,10 +35,6 @@ export function useResource<T, P = void>(key: string, fetcher: (params: P) => Pr
           isLoading: false,
           isFetching: false,
         });
-
-        setTimeout(() => {
-          updateResource(key, { isError: false });
-        }, 3000);
       }
     },
     [key, fetcher, updateResource],
