@@ -4,61 +4,37 @@ import Header from '../../components/header/Header';
 import useData from '../../hooks/@common/useData';
 import { getCartItems } from '../../services/cartItemServices';
 import { getProducts } from '../../services/productServices';
-import { useState } from 'react';
 import { ErrorMessageProvider } from '../../context/ErrorMessageContext';
 import useCartItems from '../../hooks/features/useCartItems';
 import { DataProvider } from '../../context/DataContext';
 import CartModal from '../../components/features/cartModal/CartModal';
 import type { CartItemType, ProductItemType } from '../../types/data';
 import { CATEGORY_OPTIONS, SELECT_SORT_OPTIONS } from '../../constants/systemConstants';
-import {
-  ERROR_MESSAGE_DURATION,
-  ERROR_MESSAGE_ANIMATION_DELAY,
-} from '../../constants/systemConstants';
+import useModal from '../../hooks/@common/useModal';
+import useErrorToast from '../../hooks/@common/useErrorToast';
 
 const Layout = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isToastVisible, setIsToastVisible] = useState(false);
-  const handleErrorMessage = (message: string) => {
-    setErrorMessage(message);
-    setIsToastVisible(true);
-
-    setTimeout(() => {
-      setIsToastVisible(false);
-    }, ERROR_MESSAGE_DURATION);
-
-    setTimeout(() => {
-      setErrorMessage('');
-    }, ERROR_MESSAGE_DURATION + ERROR_MESSAGE_ANIMATION_DELAY);
-  };
-
   const cartItemsResource = useData<CartItemType[], []>({
     fetchFunc: getCartItems,
     defaultArgs: [],
   });
-
   const productItemsResource = useData<ProductItemType[], [string, string]>({
     fetchFunc: getProducts,
     defaultArgs: [CATEGORY_OPTIONS[0], SELECT_SORT_OPTIONS[0]],
   });
-
   const dataResources = {
     cartItemsResource: cartItemsResource,
     productItemsResource: productItemsResource,
   };
+
+  const { errorMessage, isToastVisible, handleErrorMessage } = useErrorToast();
 
   const { handleAddCartItem, handleRemoveCartItem, handleUpdateCartItem } = useCartItems({
     dataResource: cartItemsResource,
     handleErrorMessage,
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
+  const { isModalOpen, handleModalOpen, handleModalClose } = useModal();
 
   return (
     <DataProvider dataResource={{ ...dataResources }}>
