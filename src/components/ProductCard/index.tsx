@@ -30,7 +30,7 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   });
 
   const cartItem = cartItems?.find((item) => item.product.id === product.id);
-  const { localQuantity, handleOnIncrease, handleOnDecrease } =
+  const { isLoading, localQuantity, handleOnIncrease, handleOnDecrease } =
     useCartItemQuantity(cartItem);
   const soldOut = product.quantity === 0;
 
@@ -74,6 +74,7 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
               quantity={localQuantity}
               onDecreaseQuantity={handleOnDecrease}
               onIncreaseQuantity={handleOnIncrease}
+              isLoading={isLoading}
             />
           ) : (
             <AddButton onClick={handleAdd} disabled={soldOut} />

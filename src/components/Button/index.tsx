@@ -6,20 +6,22 @@ interface ButtonProps {
   buttonStyled?: React.CSSProperties;
   textStyled?: React.CSSProperties;
   disabled?: boolean;
+  isLoading?: boolean;
 }
 const Button = ({
   title,
   onClick,
   buttonStyled,
   textStyled,
-  disabled,
+  disabled = false,
+  isLoading = false,
 }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={ButtonStyles}
+      className={isLoading ? ButtonLoadingStyles : ButtonStyles}
       style={buttonStyled}
-      disabled={disabled}
+      disabled={disabled || isLoading}
     >
       <div className={ButtonTextStyles} style={textStyled}>
         {title}
@@ -39,6 +41,18 @@ const ButtonStyles = css`
   cursor: pointer;
   &:disabled {
     cursor: not-allowed;
+  }
+`;
+
+const ButtonLoadingStyles = css`
+  border-radius: 8px;
+  width: 24px;
+  height: 24px;
+  background-color: #e5e5e5;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+  &:disabled {
+    cursor: wait;
   }
 `;
 

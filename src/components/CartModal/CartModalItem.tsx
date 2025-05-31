@@ -17,8 +17,13 @@ const CartModalItem = ({
   imgUrl,
   price,
 }: CartModalItemProps) => {
-  const { localQuantity, handleOnIncrease, handleOnDecrease, handleDelete } =
-    useCartItemQuantity(cartItem);
+  const {
+    isLoading,
+    localQuantity,
+    handleOnIncrease,
+    handleOnDecrease,
+    handleDelete,
+  } = useCartItemQuantity(cartItem);
 
   return (
     <div className={itemStyles}>
@@ -39,6 +44,7 @@ const CartModalItem = ({
               quantity={localQuantity}
               onDecreaseQuantity={handleOnDecrease}
               onIncreaseQuantity={handleOnIncrease}
+              isLoading={isLoading}
             />
           </div>
         </div>
@@ -47,6 +53,7 @@ const CartModalItem = ({
           onClick={handleDelete}
           buttonStyled={{ width: "40px", height: "24px" }}
           textStyled={{ fontSize: "12px" }}
+          isLoading={isLoading}
         />
       </div>
     </div>

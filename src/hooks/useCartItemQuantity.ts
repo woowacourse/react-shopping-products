@@ -15,6 +15,7 @@ export function useCartItemQuantity(cartItem?: CartItem | null) {
   const product = cartItem?.product;
 
   const [localQuantity, setLocalQuantity] = useState(cartItem?.quantity || 1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (cartItem?.quantity !== undefined) {
@@ -24,6 +25,7 @@ export function useCartItemQuantity(cartItem?: CartItem | null) {
 
   const updateQuantity = async (newQuantity: number) => {
     if (!product) return;
+    setIsLoading(true);
     try {
       if (newQuantity > product.quantity)
         throw new Error(`현재 남은 수량은 ${product.quantity}개 입니다.`);
@@ -35,15 +37,19 @@ export function useCartItemQuantity(cartItem?: CartItem | null) {
       setLocalQuantity(newQuantity);
       refetchCart();
     } catch (err) {
+      console.log(err);
       handleError({
         isError: true,
         errorMessage: `현재 남은 수량은 ${product.quantity}개 입니다.`,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDelete = async () => {
     if (!cartItem) return;
+    setIsLoading(true);
     try {
       await deleteShoppingCart({
         endpoint: "/cart-items",
@@ -55,6 +61,8 @@ export function useCartItemQuantity(cartItem?: CartItem | null) {
         isError: true,
         errorMessage: "장바구니에서 삭제하지 못했습니다.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -83,5 +91,6 @@ export function useCartItemQuantity(cartItem?: CartItem | null) {
     handleOnIncrease,
     handleOnDecrease,
     handleDelete,
+    isLoading,
   };
 }
