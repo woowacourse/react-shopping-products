@@ -1,79 +1,61 @@
-import { css } from '@emotion/react';
 import CustomButton from '../../../shared/ui/CustomButton';
-import { deleteCartProduct } from '../../cart/api/deleteCartProduct';
-import { Product } from '../type/product';
 import * as S from './ProductCard.styles';
-import { CART_MAX_LIMIT } from '../../cart/constants/cart';
-import { addCartProduct } from '../../cart/api/addCartProduct';
+import CartQuantitySelector from './CartQuantitySelector';
+import { useProductsWithCartContext } from '../../../shared/contexts/productsWithCart/useProductsWithCartContext';
+import { Product } from '../../../shared/contexts/productsWithCart/types';
 
 interface ProductCardProps {
   product: Product;
-  onRefetch: () => void;
-  cartQuantity: number;
-  setErrors: (error: string) => void;
+  setError: (error: string) => void;
 }
 
-export default function ProductCard({ product, onRefetch, cartQuantity, setErrors }: ProductCardProps) {
-  const handleProductCart = async () => {
-    setErrors('');
-    try {
-      if (product.isCart && product.cartProductId) {
-        await deleteCartProduct(product.cartProductId);
-        alert('장바구니에서 삭제되었습니다.');
-        onRefetch();
+export default function ProductCard({ product, setError }: ProductCardProps) {
+  const { toggleCartSelection, selectedProductIds } = useProductsWithCartContext();
 
-        return;
-      }
+  const isCartSelected = selectedProductIds.includes(product.id);
 
-      if (cartQuantity >= CART_MAX_LIMIT) {
-        setErrors('장바구니에 담을 수 있는 최대 개수는 50개입니다.');
-        return;
-      }
-
-      if (product.isCart) {
-        setErrors('이미 장바구니에 담긴 상품입니다.');
-        return;
-      }
-
-      await addCartProduct(product.id);
-      alert('장바구니에 담겼습니다.');
-      onRefetch();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('장바구니 처리 중 에러 발생:', error);
-        setErrors('장바구니 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
-      }
-    }
+  const handleProductCart = () => {
+    toggleCartSelection(product.id);
   };
 
-  const iconUrl = product.isCart ? './deleteCartIcon.svg' : './addCartIcon.svg';
-  const title = product.isCart ? '빼기' : '담기';
-  const buttonStyle = product.isCart
-    ? css`
-        background-color: #fff;
-        color: #000;
-        border: 1px solid #000;
-      `
-    : css``;
+  const cartProductId = product.cartProductId ?? -1;
+  const cartProductQuantity = product.cartProductQuantity || 1;
+
+  const isProductSoldOut: boolean =
+    product.cartProductQuantity !== undefined && product.cartProductQuantity >= product.quantity;
 
   return (
-    <S.ProductCardContainer>
-      <S.ImageSection
-        src={product.imageUrl}
-        alt={product.name}
-        onError={(e) => {
-          const target = e.currentTarget;
-          target.onerror = null;
-          target.src = './default-product.jpg';
-        }}
-      />
+    <S.ProductCardContainer data-testid='product-card'>
+      <S.ImageWrapper>
+        <S.ImageSection
+          src={product.imageUrl}
+          alt={product.name}
+          onError={(e) => {
+            const target = e.currentTarget;
+            target.onerror = null;
+            target.src = './default-product.jpg';
+          }}
+        />
+        {isProductSoldOut && <S.SoldOutOverlay>품절</S.SoldOutOverlay>}
+      </S.ImageWrapper>
       <S.ContentSection>
         <S.ProductName>{product.name}</S.ProductName>
         <S.ProductCategory>{product.category}</S.ProductCategory>
-        <S.ProductPrice>{product.price}</S.ProductPrice>
+        <S.ProductPrice data-testid='product-price'>{product.price}</S.ProductPrice>
+        <S.ProductQuantity data-testid='product-quantity'>재고: {product.quantity}</S.ProductQuantity>
       </S.ContentSection>
       <S.ButtonSection>
-        <CustomButton iconUrl={iconUrl} title={title} onClick={handleProductCart} css={buttonStyle} />
+        {!isCartSelected ? (
+          <CustomButton onClick={handleProductCart} disabled={isProductSoldOut} />
+        ) : (
+          <CartQuantitySelector
+            productId={product.id}
+            cartProductId={cartProductId}
+            cartProductQuantity={cartProductQuantity}
+            setError={setError}
+            isProductSoldOut={isProductSoldOut}
+          />
+        )}
       </S.ButtonSection>
     </S.ProductCardContainer>
   );

@@ -1,14 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ErrorToast from '../../../shared/ui/ErrorToast';
 import * as S from './Navbar.styles';
+import CustomModal from '../../../shared/ui/CustomModal';
+import { CartProduct } from '../../../features/products/type/product';
+import CartProductCard from '../../../features/cart/ui/CartProductCard';
 
 interface NavbarProps {
-  cartQuantity: number;
+  cartProducts: CartProduct[];
+  cartTypeQuantity: number;
   errorMessage: string;
+  setError: (error: string) => void;
 }
 
-export default function Navbar({ cartQuantity, errorMessage }: NavbarProps) {
+export default function Navbar({ cartProducts, cartTypeQuantity, errorMessage, setError }: NavbarProps) {
   const [visibleError, setVisibleError] = useState(errorMessage);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const totalPrice = useMemo(
+    () =>
+      cartProducts.reduce((acc, cartProduct) => {
+        const quantity = cartProduct.quantity ?? 0;
+        return acc + cartProduct.product.price * quantity;
+      }, 0),
+    [cartProducts]
+  );
 
   useEffect(() => {
     if (errorMessage) {
@@ -21,18 +36,38 @@ export default function Navbar({ cartQuantity, errorMessage }: NavbarProps) {
     }
   }, [errorMessage]);
 
-  const handleLogoClick = () => {};
-
   return (
-    <S.NavbarWrapper>
-      <S.NavbarContainer>
-        <S.Logo onClick={handleLogoClick}>SHOP</S.Logo>
-        <S.CartIconContainer>
-          <S.CartQuantity>{cartQuantity}</S.CartQuantity>
-          <S.CartIcon src='./cartIcon.svg' alt='cart icon' />
-        </S.CartIconContainer>
-      </S.NavbarContainer>
-      {visibleError && <ErrorToast errorMessage={visibleError} />}
-    </S.NavbarWrapper>
+    <>
+      <S.NavbarWrapper>
+        <S.NavbarContainer>
+          <S.Logo>SHOP</S.Logo>
+          <S.CartIconButtonContainer onClick={() => setIsModalOpen(true)}>
+            <S.CartQuantity>{cartTypeQuantity}</S.CartQuantity>
+            <S.CartIcon src='./cartIcon.svg' alt='cart icon' />
+          </S.CartIconButtonContainer>
+        </S.NavbarContainer>
+        {visibleError && <ErrorToast errorMessage={visibleError} />}
+      </S.NavbarWrapper>
+      {isModalOpen && (
+        <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} position='bottom'>
+          <S.ModalContentContainer>
+            <S.ModalContentHeader>장바구니</S.ModalContentHeader>
+            <S.ModalContentBody>
+              {cartProducts.length > 0 ? (
+                cartProducts.map((cartProduct) => (
+                  <CartProductCard key={cartProduct.id} cartProduct={cartProduct} setError={setError} />
+                ))
+              ) : (
+                <S.ModalEmptyTitle>장바구니에 상품을 담아주세요.</S.ModalEmptyTitle>
+              )}
+            </S.ModalContentBody>
+            <S.ModalTotalPriceContainer>
+              <S.ModalTotalPriceLabel>총 결제 금액</S.ModalTotalPriceLabel>
+              <S.ModalTotalPrice>{totalPrice.toLocaleString()}원</S.ModalTotalPrice>
+            </S.ModalTotalPriceContainer>
+          </S.ModalContentContainer>
+        </CustomModal>
+      )}
+    </>
   );
 }

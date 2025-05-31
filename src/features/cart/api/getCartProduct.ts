@@ -5,6 +5,6 @@ interface GetCartProductResponse {
   content: CartProduct[];
 }
 
-export const getCartProduct = async ({ page = 0, size = 20 }) => {
+export const getCartProduct = ({ page = 0, size = 20 }) => {
   return httpClient.get<GetCartProductResponse>(`/cart-items?page=${page}&size=${size}`);
 };

@@ -50,4 +50,19 @@ export const httpClient = {
     if (!response.ok) throw new Error(response.statusText);
     return response.json();
   },
+  patch: async <T>(url: string, body: unknown): Promise<T | void> => {
+    const response = await fetch(`${API_BASE_URL}${url}`, {
+      method: 'PATCH',
+      headers: defaultHeaders,
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) throw new Error(response.statusText);
+    // 현재 server에서 Response body가 비어있어서 아래 로직을 추가
+    const contentType = response.headers.get('content-type');
+    if (contentType?.includes('application/json')) {
+      return response.json();
+    }
+
+    return;
+  },
 };
