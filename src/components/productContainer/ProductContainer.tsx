@@ -5,15 +5,14 @@ import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { CategoryType, SortType } from "../../types/index.types";
 import { useData } from "../../provider/DataProvider";
-import fetchProducts from "../../api/products";
-import { useToast } from "../../provider/ToastProvider";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
+import useFetchData from "../../hooks/useFetchData/useFetchData";
 
 const DATA_NAME = "products";
 
 function ProductContainer() {
-  const { showToast } = useToast();
-  const { fetchData, loading, error } = useData();
+  const { fetchData, loading } = useData();
+  const { getProducts } = useFetchData();
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryType>("전체");
@@ -21,13 +20,11 @@ function ProductContainer() {
 
   useEffect(() => {
     fetchData(DATA_NAME, () =>
-      fetchProducts({ category: selectedCategory, sort: selectedSort })
+      getProducts({ category: selectedCategory, sort: selectedSort })
     );
-  }, [selectedCategory, selectedSort, fetchData]);
+  }, [selectedCategory, selectedSort, fetchData, getProducts]);
 
   if (loading(DATA_NAME)) return <ProductCardListSkeleton />;
-
-  if (error(DATA_NAME)) showToast("데이터 로딩중 에러가 발생했습니다.");
 
   return (
     <div css={Container}>

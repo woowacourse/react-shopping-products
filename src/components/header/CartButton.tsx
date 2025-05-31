@@ -1,19 +1,20 @@
 import { CartStyle, PutItemCount } from "./CartButton.css";
 import { useData } from "../../provider/DataProvider";
 import { useEffect } from "react";
-import { fetchCartItems } from "../../api/cart";
 import { CartItemType } from "../../types/response.types";
+import useFetchData from "../../hooks/useFetchData/useFetchData";
 
 interface CartButtonProps {
   onClick: () => void;
 }
 
 export default function CartButton({ onClick }: CartButtonProps) {
+  const { getCartItems } = useFetchData();
   const { getData, fetchData, loading } = useData();
 
   useEffect(() => {
-    fetchData<CartItemType[]>("cart", fetchCartItems);
-  }, [fetchData]);
+    fetchData<CartItemType[]>("cart", getCartItems);
+  }, [fetchData, getCartItems]);
 
   if (loading("cart")) return "로딩중...";
 

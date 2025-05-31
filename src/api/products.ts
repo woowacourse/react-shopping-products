@@ -2,7 +2,7 @@ import { CategoryType, SortType } from "../types/index.types";
 import { ProductPageResponse } from "../types/response.types";
 import request from "../utils/request";
 
-interface FetchProductsProps {
+export interface FetchProductsProps {
   category: CategoryType;
   sort: SortType;
 }

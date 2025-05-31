@@ -10,7 +10,6 @@ interface CacheItem<T> {
   data: T;
   updatedAt: number;
   loading: boolean;
-  error: Error | null;
 }
 
 interface DataContextType {
@@ -22,7 +21,6 @@ interface DataContextType {
   ) => Promise<void>;
   refetch: <T>(key: string, fetchFn: () => Promise<T>) => Promise<void>;
   loading: (key: string) => boolean;
-  error: (key: string) => Error | null;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -50,7 +48,6 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
           data: prev[key]?.data ?? undefined,
           updatedAt: now,
           loading: true,
-          error: null,
         },
       }));
 
@@ -62,7 +59,6 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
             data,
             updatedAt: Date.now(),
             loading: false,
-            error: null,
           },
         }));
       } catch (error) {
@@ -72,7 +68,6 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
             data: undefined,
             updatedAt: Date.now(),
             loading: false,
-            error: error as Error,
           },
         }));
       }
@@ -90,7 +85,6 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
         data: prev[key]?.data ?? undefined,
         updatedAt: Date.now(),
         loading: true,
-        error: null,
       },
     }));
 
@@ -102,7 +96,6 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
           data,
           updatedAt: Date.now(),
           loading: false,
-          error: null,
         },
       }));
     } catch (error) {
@@ -112,7 +105,6 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
           data: undefined,
           updatedAt: Date.now(),
           loading: false,
-          error: error as Error,
         },
       }));
     }
@@ -127,12 +119,9 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const loading = (key: string) => cache[key]?.loading ?? false;
-  const error = (key: string) => cache[key]?.error ?? null;
 
   return (
-    <DataContext.Provider
-      value={{ getData, fetchData, refetch, loading, error }}
-    >
+    <DataContext.Provider value={{ getData, fetchData, refetch, loading }}>
       {children}
     </DataContext.Provider>
   );
