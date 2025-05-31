@@ -6,21 +6,21 @@ interface ApiRequestParams<T> {
   body?: T;
 }
 
-async function apiRequestWithAuth<TRequest, TResponse = void>({
+const username = import.meta.env.VITE_USERNAME;
+const password = import.meta.env.VITE_PASSWORD;
+const baseUrl = import.meta.env.VITE_BASE_URL;
+const credentials = btoa(`${username}:${password}`);
+
+const headers: HeadersInit = {
+  'Content-Type': 'application/json',
+  Authorization: `Basic ${credentials}`,
+};
+
+async function apiRequestWithAuth<TRequest, TResponse>({
   endpoint,
   method = 'GET',
   body,
 }: ApiRequestParams<TRequest>): Promise<TResponse> {
-  const username = import.meta.env.VITE_USERNAME;
-  const password = import.meta.env.VITE_PASSWORD;
-  const baseUrl = import.meta.env.VITE_BASE_URL;
-  const credentials = btoa(`${username}:${password}`);
-
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    Authorization: `Basic ${credentials}`,
-  };
-
   const options: RequestInit = {
     method,
     headers,
@@ -33,15 +33,19 @@ async function apiRequestWithAuth<TRequest, TResponse = void>({
   const response = await fetch(`${baseUrl}${endpoint}`, options);
 
   if (!response.ok) {
-    throw new Error(`Network response was not ok: ${response.statusText}`);
+    if (response.status === 404) {
+      throw new Error('상품을 찾을 수 없습니다.');
+    }
+    if (response.status === 400) {
+      throw new Error('재고 수량을 초과하여 담을 수 없습니다.');
+    }
   }
 
-  if (response.status === 200) {
-    const data = await response.json();
-    return data;
-  }
+  const contentType = response.headers.get('content-type');
+  if (contentType !== 'application/json') return {} as TResponse;
 
-  return null as TResponse;
+  const data = await response.json();
+  return data.content;
 }
 
 export default apiRequestWithAuth;

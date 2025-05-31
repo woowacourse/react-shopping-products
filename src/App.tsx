@@ -1,20 +1,14 @@
-// import { useState } from "react";
-import { css } from "@emotion/css";
-import Header from "./components/Header";
-import ProductListPage from "./pages/ProductListPage";
-import ProductsProvider from "./contexts/ProductsProvider";
-import ShoppingCartProvider from "./contexts/ShoppingCartProvider";
+import { css } from '@emotion/css';
+import ProductListPage from './pages/ProductListPage';
+import DataProvider from './contexts/DataContextProvider';
 
 function App() {
   return (
-    <ProductsProvider>
-      <ShoppingCartProvider>
-        <div className={AppStyles}>
-          <Header />
-          <ProductListPage />
-        </div>
-      </ShoppingCartProvider>
-    </ProductsProvider>
+    <DataProvider>
+      <div className={AppStyles}>
+        <ProductListPage />
+      </div>
+    </DataProvider>
   );
 }
 

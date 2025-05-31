@@ -17,4 +17,5 @@ const ErrorToastStyles = css`
   background-color: #ffc9c9;
   text-align: center;
   padding: 12px 0;
+  z-index: 100;
 `;

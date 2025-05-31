@@ -1,4 +1,3 @@
-import { ButtonStyles } from './Button.emotion';
 import { css } from '@emotion/css';
 
 interface AddButtonProps {
@@ -17,7 +16,12 @@ const AddButton = ({ onClick }: AddButtonProps) => {
 export default AddButton;
 
 const AddButtonStyles = css`
-  ${ButtonStyles};
+  border-radius: 4px;
+  display: flex;
+  padding: 4px 8px;
+  gap: 4px;
+  border: none;
+  cursor: pointer;
   background-color: black;
 `;
 
