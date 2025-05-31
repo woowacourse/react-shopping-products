@@ -21,7 +21,9 @@ export const cartApi = {
       },
     };
 
-    await apiClient<ResponseCartItem, AddCartParamsType>(apiConfigs, `/cart-items`);
+    const response = await apiClient<ResponseCartItem, AddCartParamsType>(apiConfigs, `/cart-items`);
+
+    return response;
   },
   delete: async (cartItemId: number) => {
     const apiConfigs: ApiConfigType = {
