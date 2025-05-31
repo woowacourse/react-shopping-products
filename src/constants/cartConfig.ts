@@ -1,1 +1,4 @@
-export const MAX_CART_ITEM_COUNT = 50;
+export const CART_CONFIG = {
+  DEFAULT_QUANTITY: 1,
+  MAX_CART_ITEM_COUNT: 50,
+};

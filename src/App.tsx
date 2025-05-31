@@ -13,10 +13,7 @@ import {
   SORT_PRICE,
   SORT_PRICE_MAP,
 } from './constants/productConfig';
-import {
-  PRODUCT_SECTION_TITLE,
-  SHOPPING_MALL_TITLE,
-} from './constants/shopInfoConfig';
+import { SHOP_INFO } from './constants/shopInfoConfig';
 import { useEffect, useState } from 'react';
 import { useToastContext } from './context/ToastContext';
 import Modal from './ui/components/Modal/Modal';
@@ -81,12 +78,15 @@ function App() {
     <>
       <Global styles={GlobalStyle} />
       <Layout>
-        <Header title={SHOPPING_MALL_TITLE} onModalOpen={handleModalOpen} />
+        <Header
+          title={SHOP_INFO.SHOPPING_MALL_TITLE}
+          onModalOpen={handleModalOpen}
+        />
         {toastQueue.length > 0 && <Toast message={toastQueue[0].message} />}
         {(isProductLoading || isCartLoading) && <LoadingSpinner duration={2} />}
         {!isProductLoading && !isCartLoading && (
           <Section>
-            <Title title={PRODUCT_SECTION_TITLE} />
+            <Title title={SHOP_INFO.PRODUCT_SECTION_TITLE} />
             <DropdownContainer>
               <Dropdown
                 value={category}

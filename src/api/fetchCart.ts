@@ -1,3 +1,4 @@
+import { CART_CONFIG } from '../constants/cartConfig';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { CartResponse } from '../types/type';
 import { fetchAPI } from './fetchAPI';
@@ -33,7 +34,7 @@ export const addCart = async (id: number) => {
     url: url,
     options: {
       method: 'POST',
-      body: { productId: id, quantity: 1 },
+      body: { productId: id, quantity: CART_CONFIG.DEFAULT_QUANTITY },
     },
     errorMessage: ERROR_MESSAGE.CART_PRODUCT_ADD_FAIL,
   });

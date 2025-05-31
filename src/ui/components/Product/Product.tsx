@@ -14,6 +14,7 @@ import QuantityController from '../QuantityController/QuantityController';
 import { useCartActions } from '../../../hooks/useCartAction';
 import { useAPI } from '../../../hooks/useAPI';
 import { fetchCartItem } from '../../../utils/getCartItem';
+import { SHOP_INFO } from '../../../constants/shopInfoConfig';
 
 interface ProductProps {
   item: ProductElement;
@@ -44,7 +45,7 @@ function Product({ item }: ProductProps) {
         <ProductImage src={imageUrl} alt={name} />
         {quantity === 0 && (
           <SoldoutBackground>
-            <SoldOutText>품절</SoldOutText>
+            <SoldOutText>{SHOP_INFO.SOLD_OUT_TEXT}</SoldOutText>
           </SoldoutBackground>
         )}
       </ProductImageContainer>

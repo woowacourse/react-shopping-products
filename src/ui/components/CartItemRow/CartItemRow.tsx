@@ -1,4 +1,4 @@
-import { DELETE_BUTTON_TEXT } from '../../../constants/shopInfoConfig';
+import { SHOP_INFO } from '../../../constants/shopInfoConfig';
 import { useCartActions } from '../../../hooks/useCartAction';
 import { CartItem } from '../../../types/type';
 import QuantityController from '../QuantityController/QuantityController';
@@ -42,7 +42,7 @@ function CartItemRow({ item }: CartItemRowProps) {
       </Info>
       <ButtonContainer>
         <ButtonText onClick={() => handleRemoveCart(product)}>
-          {DELETE_BUTTON_TEXT}
+          {SHOP_INFO.DELETE_BUTTON_TEXT}
         </ButtonText>
       </ButtonContainer>
     </Product>

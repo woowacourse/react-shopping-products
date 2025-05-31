@@ -2,7 +2,7 @@ import Product from '../Product/Product';
 import { CategoryType, ProductElement, SortKeyType } from '../../../types/type';
 import { List } from './ProductList.styles';
 import { useAPI } from '../../../hooks/useAPI';
-import { SORT_PRICE_MAP } from '../../../constants/productConfig';
+import { CATEGORY, SORT_PRICE_MAP } from '../../../constants/productConfig';
 import { fetchProductList } from '../../../utils/getProductList';
 
 interface ProductListProps {
@@ -18,7 +18,7 @@ function ProductList({ category, sortBy }: ProductListProps) {
   });
 
   const filteredProductList = (() => {
-    if (category === '전체') {
+    if (category === CATEGORY[0]) {
       return productList;
     }
     return productList?.filter(

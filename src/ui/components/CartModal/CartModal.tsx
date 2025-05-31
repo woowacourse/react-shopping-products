@@ -1,8 +1,4 @@
-import {
-  CART_MODAL_CLOSE_BUTTON_TEXT,
-  CART_MODAL_TITLE,
-  TOTAL_PRICE_TEXT,
-} from '../../../constants/shopInfoConfig';
+import { SHOP_INFO } from '../../../constants/shopInfoConfig';
 import {
   Button,
   ModalAction,
@@ -36,7 +32,7 @@ function CartModal({ onClose }: CartModalProps) {
   return (
     <>
       <ModalHeader>
-        <ModalTitle>{CART_MODAL_TITLE}</ModalTitle>
+        <ModalTitle>{SHOP_INFO.CART_MODAL_TITLE}</ModalTitle>
       </ModalHeader>
       <ProductContainer>
         {cartList?.map((item) => (
@@ -44,11 +40,13 @@ function CartModal({ onClose }: CartModalProps) {
         ))}
       </ProductContainer>
       <PriceContainer>
-        <TotalPriceText>{TOTAL_PRICE_TEXT}</TotalPriceText>
+        <TotalPriceText>{SHOP_INFO.TOTAL_PRICE_TEXT}</TotalPriceText>
         <TotalPrice>{totalPrice?.toLocaleString()}원</TotalPrice>
       </PriceContainer>
       <ModalAction>
-        <Button onClick={onClose}>{CART_MODAL_CLOSE_BUTTON_TEXT}</Button>
+        <Button onClick={onClose}>
+          {SHOP_INFO.CART_MODAL_CLOSE_BUTTON_TEXT}
+        </Button>
       </ModalAction>
     </>
   );
