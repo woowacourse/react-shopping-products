@@ -1,14 +1,15 @@
 import Header from '../../components/Header/Header';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useGetCarts from '../../hooks/useGetCarts';
 import { productPageContainer } from './ProductsPage.style';
 import { useToast } from '../../hooks/useToast';
 import ProductContent from '../../components/ProductContent/ProductContent';
-import { ProductProvider } from '../../contexts/ProductContext';
+import CartModal from '../../components/CartModal/CartModal';
 
 function ProductsPage() {
-  const { isLoading, isError, carts, cartItemCount, refetchCarts } = useGetCarts();
+  const { isLoading, isError } = useGetCarts();
   const { openToast } = useToast();
+  const [isOpenCartModal, setIsOpenCartModal] = useState(false);
 
   useEffect(() => {
     if (isError) {
@@ -16,16 +17,12 @@ function ProductsPage() {
     }
   }, [isError, openToast]);
 
-  if (isLoading) {
-    return <div>로딩중...</div>;
-  }
-
   return (
     <div className={productPageContainer}>
-      <Header cartItemCount={cartItemCount} />
-      <ProductProvider>
-        <ProductContent cartItemCount={cartItemCount} carts={carts} refetchCarts={refetchCarts} />
-      </ProductProvider>
+      {isLoading && <div>로딩중...</div>}
+      <Header onClickCartIcon={() => setIsOpenCartModal(true)} />
+      <ProductContent />
+      {isOpenCartModal && <CartModal onClose={() => setIsOpenCartModal(false)} />}
     </div>
   );
 }

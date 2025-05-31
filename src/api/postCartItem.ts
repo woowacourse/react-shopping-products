@@ -11,7 +11,7 @@ async function postCartItem({ productId, quantity }: { productId: number; quanti
     }),
   });
 
-  return res;
+  return await res.json();
 }
 
 export default postCartItem;

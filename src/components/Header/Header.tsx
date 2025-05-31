@@ -1,11 +1,14 @@
+import useGetCarts from '../../hooks/useGetCarts';
 import Button from '../common/Button/Button';
 import { cartImg, count, headerContainer, headerTitle } from './Header.style';
 
-function Header({ cartItemCount }: { cartItemCount: number }) {
+function Header({ onClickCartIcon }: { onClickCartIcon: () => void }) {
+  const { cartItemCount } = useGetCarts();
+
   return (
     <div className={headerContainer}>
       <div className={headerTitle}>SHOP</div>
-      <Button>
+      <Button onClick={onClickCartIcon}>
         <img src="./images/cart.png" alt="cart" className={cartImg} />
         <span className={count}>{cartItemCount}</span>
       </Button>

@@ -1,14 +1,14 @@
 import './styles/reset.css';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
 import ToastProvider from './contexts/ToastContext';
-import { CartProvider } from './contexts/CartContext';
+import { DataProvider } from './contexts/DataContext';
 
 function App() {
   return (
     <ToastProvider>
-      <CartProvider>
+      <DataProvider>
         <ProductsPage />
-      </CartProvider>
+      </DataProvider>
     </ToastProvider>
   );
 }
