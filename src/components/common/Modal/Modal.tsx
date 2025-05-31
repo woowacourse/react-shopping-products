@@ -1,4 +1,4 @@
-import { ComponentProps, useCallback, useEffect } from "react";
+import { ComponentProps } from "react";
 
 import ModalBackdrop from "./Modal.Backdrop";
 import ModalButtonWrapper from "./Modal.ButtonWrapper";
@@ -11,6 +11,7 @@ import ModalTitle from "./Modal.Title";
 import Portal from "./Portal";
 
 import { ModalContext } from "../../../hooks/useModalContext";
+import useEscapeKey from "../../../hooks/useEscapeKey";
 
 export type ModalProps = {
   /**
@@ -56,21 +57,7 @@ export const Modal = (props: ModalProps) => {
     closeByBackdrop = true,
   } = props;
 
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Escape" && closeByEscapeKey) {
-        onClose();
-      }
-    },
-    [closeByEscapeKey, onClose]
-  );
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleKeyDown]);
+  useEscapeKey(onClose, closeByEscapeKey);
 
   return (
     <ModalContext.Provider value={props}>
