@@ -1,16 +1,19 @@
 import { MergedProduct } from "../../types";
-import CartCountButton from "../Button/CartCountButton";
 import { useCartState } from "../Context/StoreContext";
+import { useCartQuantity } from "../../hooks/useCartQuantity";
+import PlusButton from "../Button/PlusButton";
+import MinusButton from "../Button/MinusButton";
 import S from "./CartItemCount.module.css";
 
 const CartItemCount = ({ mergedProduct }: { mergedProduct: MergedProduct }) => {
 	const { updateCartItem } = useCartState();
+	const { handleIncrease, handleDecrease, isIncreaseDisabled, isDecreaseDisabled, quantity } = useCartQuantity({ mergedProduct, onUpdate: updateCartItem });
 
 	return (
 		<div className={S.container}>
-			<CartCountButton type="minus" mergedProduct={mergedProduct} onUpdate={updateCartItem} />
-			<p className={S.cartQuantity}>{mergedProduct.cartInfo?.quantity}</p>
-			<CartCountButton type="plus" mergedProduct={mergedProduct} onUpdate={updateCartItem} />
+			<MinusButton onClick={handleDecrease} isDisabled={isDecreaseDisabled} />
+			<p className={S.cartQuantity}>{quantity}</p>
+			<PlusButton onClick={handleIncrease} isDisabled={isIncreaseDisabled} />
 		</div>
 	);
 };
