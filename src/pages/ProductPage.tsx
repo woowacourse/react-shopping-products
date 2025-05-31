@@ -4,8 +4,7 @@ import ProductCard from '../components/ProductCard';
 import SelectDropdownContainer from '../components/SelectDropdown/SelectDropdownContainer';
 import ErrorMessage from '../components/ErrorMessage';
 import DotWaveSpinner from '../components/DotWaveSpinner';
-import { CATEGORY, SORT } from '../constants/selectOption';
-import { CategoryKey, SortKey, categoryQueryMap, sortQueryMap } from '../types/selectOptions';
+import { CategoryKey, SortKey, CATEGORY_KEYS, SORT_KEYS } from '../types/selectOptions';
 import { useFetchProducts } from '../hooks/useFetchProducts';
 import { useFetchCartItems } from '../hooks/useFetchCartItems';
 import { useError } from '../context/ErrorContext';
@@ -14,8 +13,8 @@ import { ProductCardContainer } from '../styles/ProductCard';
 import Modal from '../components/Modal/Modal';
 
 function ProductPage() {
-  const [category, setCategory] = useState<CategoryKey>(CATEGORY[0]);
-  const [sort, setSort] = useState<SortKey>(SORT[0]);
+  const [category, setCategory] = useState<CategoryKey>(CATEGORY_KEYS[0]);
+  const [sort, setSort] = useState<SortKey>(SORT_KEYS[0]);
 
   const {
     data: products,
@@ -24,12 +23,17 @@ function ProductPage() {
   } = useFetchProducts({
     category,
     sort,
-    categoryQueryMap,
-    sortQueryMap,
   });
 
   const { error: cartError } = useFetchCartItems();
   const { errorMessage: contextErrorMessage } = useError();
+
+  const handleCategoryChange = (category: CategoryKey) => {
+    setCategory(category);
+  };
+  const handleSortChange = (sort: SortKey) => {
+    setSort(sort);
+  };
 
   const errorMessage = productsError || cartError || contextErrorMessage;
 
@@ -44,8 +48,8 @@ function ProductPage() {
           <SelectDropdownContainer
             category={category}
             sort={sort}
-            setCategory={setCategory}
-            setSort={setSort}
+            handleCategoryChange={handleCategoryChange}
+            handleSortChange={handleSortChange}
           />
           <ProductCardContainer>
             {products.map(({ id, name, category, price, imageUrl }) => (

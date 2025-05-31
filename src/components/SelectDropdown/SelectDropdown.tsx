@@ -7,28 +7,21 @@ import {
   DropdownLiWrapper,
 } from '../../styles/SelectDropdown';
 import { IMAGE_PATH } from '../../constants/imagePath';
-import { CATEGORY, SORT } from '../../constants/selectOption';
 
-type OptionType = (typeof CATEGORY)[number] | (typeof SORT)[number];
-
-type SelectDropdownProps<T extends OptionType> = {
-  title: T;
-  options: readonly T[];
-  onSelect: (value: T) => void;
+type SelectDropdownProps = {
+  title: string;
+  options: readonly string[];
+  onSelect: (value: string) => void;
 };
 
-const SelectDropdown = <T extends OptionType>({
-  title,
-  options,
-  onSelect,
-}: SelectDropdownProps<T>) => {
+const SelectDropdown = ({ title, options, onSelect }: SelectDropdownProps) => {
   const [open, setOpen] = useState(false);
 
   const toggleSelectDropdown = () => {
     setOpen(!open);
   };
 
-  const handleDropDown = (value: T) => {
+  const handleDropDown = (value: string) => {
     onSelect(value);
     setOpen(false);
   };

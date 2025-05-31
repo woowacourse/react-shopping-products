@@ -1,35 +1,30 @@
 import { useCallback } from 'react';
 import { getProducts, ProductResponse } from '../api/products';
 import { useData } from './useData';
+import { CategoryKey, SortKey, getCategoryByKey, getSortByKey } from '../types/selectOptions';
 
 type useFetchProductsProps = {
-  category: string;
-  sort: string;
-  categoryQueryMap: Record<string, string | undefined>;
-  sortQueryMap: Record<string, string | undefined>;
+  category: CategoryKey;
+  sort: SortKey;
 };
 
-export const useFetchProducts = ({
-  category,
-  sort,
-  categoryQueryMap,
-  sortQueryMap,
-}: useFetchProductsProps) => {
+export const useFetchProducts = ({ category, sort }: useFetchProductsProps) => {
   const fetchProducts = useCallback(async () => {
-    const matchedCategory = categoryQueryMap[category];
-    const matchedSort = sortQueryMap[sort];
+    const categoryConfig = getCategoryByKey(category);
+    const sortConfig = getSortByKey(sort);
 
     const data = await getProducts({
       page: 0,
       size: 20,
-      ...(matchedSort && { sort: matchedSort }),
-      ...(matchedCategory && { category: matchedCategory }),
+      ...(sortConfig.apiValue && { sort: sortConfig.apiValue }),
+      ...(categoryConfig.apiValue && { category: categoryConfig.apiValue }),
     });
 
     return data.content;
-  }, [category, sort, categoryQueryMap, sortQueryMap]);
+  }, [category, sort]);
 
   const key = `products-${category}-${sort}`;
+  console.log(key);
 
   const { data, isLoading, error } = useData<ProductResponse[]>({
     key,
