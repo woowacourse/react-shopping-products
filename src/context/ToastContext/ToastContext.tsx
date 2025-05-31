@@ -11,11 +11,7 @@ export const ToastContext = createContext<{
     type: "success" | "error";
     duration?: number;
   }) => void;
-  isInToastProvider: boolean;
-}>({
-  showToast: () => {},
-  isInToastProvider: false,
-});
+} | null>(null);
 
 export function ToastProvider({ children }: PropsWithChildren) {
   const [toastMessage, setToastMessage] = useState("");
@@ -51,7 +47,6 @@ export function ToastProvider({ children }: PropsWithChildren) {
     <ToastContext.Provider
       value={{
         showToast,
-        isInToastProvider: true,
       }}
     >
       {toastMessage && (
