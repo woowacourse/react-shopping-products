@@ -1,4 +1,4 @@
-import { delay, http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw";
 import products from "../data/products.json";
 import { PRODUCT_URL } from "../../constants/endpoint";
 import filterProductList from "../../../test/utils/filterProductList";
@@ -17,9 +17,5 @@ export const productHandler = [
 		if (sort) resultProducts = sortProductList(resultProducts, sort.split(",")[1] as SortType);
 
 		return HttpResponse.json({ content: resultProducts });
-	}),
-
-	http.all("*", async () => {
-		await delay(100);
 	}),
 ];
