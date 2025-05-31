@@ -33,7 +33,7 @@ export const useFetchProducts = ({ category, sort }: useFetchProductsProps) => {
   });
 
   return {
-    data: data || [],
+    data: data ?? [],
     isLoading,
     error,
   };

@@ -21,28 +21,27 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, setState] = useState<DataState>({});
 
+  const updateState = (key: string, newState: Partial<DataStateItem>) => {
+    setState((prev) => {
+      const currentState = prev[key] || { data: null, isLoading: false, error: null };
+      return {
+        ...prev,
+        [key]: { ...currentState, ...newState },
+      };
+    });
+  };
+
   const fetchData = async <T,>(key: string, fetchFn: () => Promise<T>) => {
+    updateState(key, { isLoading: true, error: null });
+
     try {
-      setState((prev) => ({
-        ...prev,
-        [key]: { data: prev[key]?.data || null, isLoading: true, error: null },
-      }));
-
       const data = await fetchFn();
-
-      setState((prev) => ({
-        ...prev,
-        [key]: { data, isLoading: false, error: null },
-      }));
+      updateState(key, { data, isLoading: false });
     } catch (error) {
-      setState((prev) => ({
-        ...prev,
-        [key]: {
-          data: prev[key]?.data || null,
-          isLoading: false,
-          error: error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.',
-        },
-      }));
+      updateState(key, {
+        isLoading: false,
+        error: error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.',
+      });
     }
   };
 
