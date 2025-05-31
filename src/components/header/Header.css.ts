@@ -10,6 +10,7 @@ export const HeaderContainer = css`
   align-items: center;
   padding: 24px;
   position: sticky;
+  top: 0;
   z-index: 1;
 `;
 
