@@ -2,6 +2,7 @@ import { useState } from 'react';
 import patchCartItem from '../api/patchCartItem';
 import { cartDataType } from '../types/cartItem';
 import { useToast } from './useToast';
+import { findCartId } from '../utils/findCartId';
 
 function useUpdateCartItem({
   refetchCarts,
@@ -22,7 +23,7 @@ function useUpdateCartItem({
     productId: number;
     quantity: number;
   }) => {
-    const cartId = carts?.filter((cart) => cart.product.id === productId)[0].id || 0;
+    const cartId = findCartId(carts, productId);
 
     try {
       await patchCartItem({ cartId, quantity });

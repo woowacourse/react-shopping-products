@@ -2,6 +2,7 @@ import { useState } from 'react';
 import deleteCartItem from '../api/deleteCartItem';
 import { cartDataType } from '../types/cartItem';
 import { useToast } from './useToast';
+import { findCartId } from '../utils/findCartId';
 
 function useDeleteCartItem({
   refetchCarts,
@@ -16,7 +17,7 @@ function useDeleteCartItem({
   useToast(errorDeleteCartItemMessage, 'error');
 
   const handleDeleteCartItem = async ({ productId }: { productId: number }) => {
-    const cartId = carts?.filter((cart) => cart.product.id === productId)[0].id || 0;
+    const cartId = findCartId(carts, productId);
 
     try {
       await deleteCartItem({ cartId });
