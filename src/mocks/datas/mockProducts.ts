@@ -10,7 +10,7 @@ export interface Product {
 export const mockProducts: Product[] = [
   {
     id: 58,
-    name: '1',
+    name: 'ㅎ',
     price: 100,
     imageUrl: '이런 URL은 없겠지',
     category: '식료품',

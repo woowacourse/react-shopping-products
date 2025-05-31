@@ -7,7 +7,7 @@ export interface CartItem {
 }
 
 export const mockCartItems: CartItem[] = [
-  { id: 1, quantity: 2, product: mockProducts[0] },
+  { id: 1, quantity: 1, product: mockProducts[0] },
   { id: 2, quantity: 1, product: mockProducts[1] },
   { id: 3, quantity: 3, product: mockProducts[4] },
   { id: 4, quantity: 1, product: mockProducts[5] },
