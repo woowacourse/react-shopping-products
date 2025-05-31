@@ -1,5 +1,5 @@
 import Modal from "dslgpgh-modal";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import CartItem from "../Cart/CartItem";
 import S from "./CartModal.module.css";
 import { useMergedProducts } from "../../hooks/useMergedProducts";
@@ -17,7 +17,7 @@ const CartModal = ({ isOpen, setIsOpen }: CartModalProps) => {
 		return sum + product.price * product.cartInfo.quantity;
 	}, 0);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!isOpen) return;
 
 		document.body.style.overflow = "hidden";
