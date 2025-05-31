@@ -1,9 +1,9 @@
 import { IconCart, IconLogo } from '../../../asset';
-import CardQuantity from '../CardQuantity';
 import { CartStyle, HeaderStyle } from './Header.styles';
 import * as Dialog from '../Dialog/Dialog';
 import CartSheet from '../../feature/CartSheet';
 import useCartManager from '../../../hook/useCartManager';
+import CartQuantity from '../CartQuantity';
 
 const Header = ({ count }: { count: number }) => {
   const { cartData, handleRemoveCart, fetchCartData } = useCartManager();
@@ -21,7 +21,7 @@ const Header = ({ count }: { count: number }) => {
 
         <Dialog.Trigger css={CartStyle} onBeforeOpen={handleBeforeOpen}>
           <img src={IconCart} alt="cart" />
-          {count > 0 && <CardQuantity>{count}</CardQuantity>}
+          {count > 0 && <CartQuantity>{count}</CartQuantity>}
         </Dialog.Trigger>
       </section>
 
