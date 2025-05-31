@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Modal from "../components/modal/Modal";
+import { CartProductProvider } from "../hooks/useCartProduct";
 
 const mockCartItemIds = [
   { productId: 1, cartId: 101, quantity: 2 },
@@ -31,7 +32,7 @@ const mockProducts = {
   size: 2,
 };
 
-vi.mock("../../hooks/useCartProduct", () => ({
+vi.mock("../hooks/useCartProduct", () => ({
   useCartProduct: () => ({
     cartItemIds: mockCartItemIds,
     products: mockProducts,
@@ -39,7 +40,19 @@ vi.mock("../../hooks/useCartProduct", () => ({
     fetchProducts: vi.fn(),
     setCartItemIds: vi.fn(),
   }),
+  CartProductProvider: ({ children }: { children: React.ReactNode }) =>
+    children,
 }));
+
+vi.mock("../hooks/useError", () => ({
+  useError: () => ({
+    setErrorTrue: vi.fn(),
+  }),
+}));
+
+const renderWithProvider = (ui: React.ReactElement) => {
+  return render(<CartProductProvider>{ui}</CartProductProvider>);
+};
 
 describe("Modal", () => {
   const mockClose = vi.fn();
@@ -49,7 +62,7 @@ describe("Modal", () => {
   });
 
   it("카트 아이템과 총 금액이 렌더링된다", () => {
-    render(<Modal onClose={mockClose} />);
+    renderWithProvider(<Modal onClose={mockClose} />);
 
     expect(screen.getByText("사과")).toBeInTheDocument();
     expect(screen.getByText("바나나")).toBeInTheDocument();
@@ -59,7 +72,7 @@ describe("Modal", () => {
   });
 
   it("닫기 버튼 클릭 시 onClose 호출된다", () => {
-    render(<Modal onClose={mockClose} />);
+    renderWithProvider(<Modal onClose={mockClose} />);
     fireEvent.click(screen.getByText("닫기"));
     expect(mockClose).toHaveBeenCalled();
   });

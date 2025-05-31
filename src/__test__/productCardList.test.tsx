@@ -5,13 +5,43 @@ import ProductCardList from "../components/productCardList/ProductCardList";
 import { ProductPageResponse } from "../types/response.types";
 import { useCartProduct } from "../hooks/useCartProduct";
 import { CartProductContextType } from "../hooks/useCartProduct";
+import { CartProductProvider } from "../hooks/useCartProduct";
 
-vi.mock("../hooks/useCartProduct");
+vi.mock("../hooks/useCartProduct", () => ({
+  useCartProduct: vi.fn(),
+  CartProductProvider: ({ children }: { children: React.ReactNode }) =>
+    children,
+}));
+
+vi.mock("../hooks/useError", () => ({
+  useError: () => ({
+    setErrorTrue: vi.fn(),
+  }),
+}));
+
+vi.mock("../hooks/useCartItemActions", () => ({
+  useCartItemActions: () => ({
+    handlePlus: vi.fn(),
+    handleMinus: vi.fn(),
+  }),
+}));
+
+vi.mock("../api/addCartItem", () => ({
+  addCartItem: vi.fn(),
+}));
 
 const mockedUseData =
   useCartProduct as unknown as jest.Mock<CartProductContextType>;
 
+const renderWithProvider = (ui: React.ReactElement) => {
+  return render(<CartProductProvider>{ui}</CartProductProvider>);
+};
+
 describe("ProductCardList 컴포넌트", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("20개의 상품을 렌더링해야 한다", async () => {
     const mockedProducts: ProductPageResponse = {
       content: Array.from({ length: 20 }, (_, i) => ({
@@ -34,7 +64,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList />);
+    renderWithProvider(<ProductCardList />);
 
     const headings = await screen.findAllByRole("heading", { level: 3 });
     expect(headings).toHaveLength(20);
@@ -80,7 +110,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList />);
+    renderWithProvider(<ProductCardList />);
 
     const prices = await screen.findAllByText(/원$/);
     const numbers = prices.map((el) =>
@@ -129,7 +159,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList />);
+    renderWithProvider(<ProductCardList />);
 
     const names = await screen.findAllByRole("heading", { level: 3 });
     const result = names.map((el) => el.textContent);
@@ -145,7 +175,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList />);
+    renderWithProvider(<ProductCardList />);
     expect(screen.getByTestId("product-skeleton")).toBeInTheDocument();
   });
 
@@ -173,7 +203,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList />);
+    renderWithProvider(<ProductCardList />);
 
     const soldOutText = await screen.findByText("품절");
     expect(soldOutText).toBeInTheDocument();
