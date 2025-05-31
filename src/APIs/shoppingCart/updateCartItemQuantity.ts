@@ -1,16 +1,16 @@
 import { CartItem } from "../../types/product.type";
-import { baseUrl } from ".././apiConfig";
+import { baseUrl } from "../apiConfig";
 import { apiClient } from "../APIClient";
 import getShoppingCart from "./getShoppingCart";
 import { ShoppingCartProps, ShoppingCartResponse } from "./types";
 
-async function addShoppingCart({
+async function updateCartItemQuantity({
   endpoint,
   requestBody,
 }: ShoppingCartProps): Promise<CartItem[]> {
   try {
     const url = `${baseUrl}${endpoint}`;
-    await apiClient<ShoppingCartResponse>("POST", url, requestBody);
+    await apiClient<ShoppingCartResponse>("PATCH", url, requestBody);
 
     const params = {
       page: "0",
@@ -20,13 +20,13 @@ async function addShoppingCart({
     const query = new URLSearchParams(params).toString();
 
     const responseDate = await getShoppingCart({
-      endpoint: `${endpoint}?${query}`,
+      endpoint: `/cart-items?${query}`,
     });
 
     return responseDate;
   } catch (error) {
-    throw new Error("Error fetching products:" + error);
+    throw new Error("Error updating cart item quantity:" + error);
   }
 }
 
-export default addShoppingCart;
+export default updateCartItemQuantity;

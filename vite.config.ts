@@ -4,7 +4,8 @@ import { configDefaults } from "vitest/config";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/react-shopping-products/",
+  base:
+    process.env.NODE_ENV === "production" ? "/react-shopping-products/" : "/",
   plugins: [react()],
   test: {
     globals: true,

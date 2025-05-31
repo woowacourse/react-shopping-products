@@ -1,17 +1,17 @@
+import { Product } from "../../types/product.type";
 import { apiClient } from "../APIClient";
 import { baseUrl } from "../apiConfig";
 import { FetchProductsRequest, FetchProductsResponse } from "./type";
 
 async function getProducts({
   endpoint,
-}: FetchProductsRequest): Promise<FetchProductsResponse> {
+}: FetchProductsRequest): Promise<Product[]> {
   try {
     const url = `${baseUrl}${endpoint}`;
     const data = await apiClient<FetchProductsResponse>("GET", url);
-    if (!data) throw new Error("Error fetching data");
-    return { content: data.content, totalPages: data.totalPages };
+    return data.content;
   } catch (error) {
-    throw new Error("Error fetching products:" + error);
+    throw new Error("getProducts error: 상품을 불러오지 못했습니다.");
   }
 }
 

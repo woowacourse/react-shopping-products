@@ -1,20 +1,24 @@
-// import { useState } from "react";
 import { css } from "@emotion/css";
-import Header from "./components/Header";
 import ProductListPage from "./pages/ProductListPage";
-import ShoppingCartProvider from "./contexts/shoppingCart/ShoppingCartProvider";
-import ProductsProvider from "./contexts/products/ProductsProvider";
+import { useState } from "react";
+import { APIProvider } from "./contexts/API/APIProvider";
+import { ErrorProvider } from "./contexts/Error/ErrorProvider";
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleModal = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
-    <ProductsProvider>
-      <ShoppingCartProvider>
+    <APIProvider>
+      <ErrorProvider>
         <div className={AppStyles}>
-          <Header />
-          <ProductListPage />
+          <ProductListPage isOpen={isOpen} handleModal={handleModal} />
         </div>
-      </ShoppingCartProvider>
-    </ProductsProvider>
+      </ErrorProvider>
+    </APIProvider>
   );
 }
 

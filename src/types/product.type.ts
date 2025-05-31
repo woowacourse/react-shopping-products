@@ -10,6 +10,7 @@ interface Product {
   price: number;
   imageUrl: string;
   category: Category;
+  quantity: number;
 }
 
 interface CartItem {
