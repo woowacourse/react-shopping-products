@@ -44,7 +44,7 @@ export const OptionList = styled.ul`
   top: 40px;
   left: 0%;
   width: 100%;
-  z-index: 998;
+  z-index: 1500;
 
   &::-webkit-scrollbar {
     width: 0px;
