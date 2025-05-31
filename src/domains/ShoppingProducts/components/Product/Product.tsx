@@ -30,7 +30,11 @@ export default function Product({
     <div data-testid="product-component" id={id.toString()} css={productLayout}>
       <div css={imgLayout}>
         {maxQuantity === 0 && <div css={soldOutLayout}>품절</div>}
-        <img css={productImg} src={imageUrl ?? "./default-img.png"} />
+        <img
+          css={productImg}
+          src={imageUrl ?? "./default-img.png"}
+          alt="productImg"
+        />
       </div>
       <div css={contentLayout}>
         <div css={descriptionLayout}>
