@@ -4,6 +4,7 @@ import DisclosureProvider from '../../../context/disclosureContext/disclosurePro
 import DropdownTrigger from './DropdownTrigger';
 import DropdownList from './DropdownList';
 import DropdownItem from './DropdownItem';
+import DropdownArrowIcon from './DropdownArrowIcon';
 
 interface DropdownProps extends ComponentProps<'div'> {}
 
@@ -15,5 +16,6 @@ Dropdown.Root = Dropdown;
 Dropdown.Trigger = DropdownTrigger;
 Dropdown.List = DropdownList;
 Dropdown.Item = DropdownItem;
+Dropdown.ArrowIcon = DropdownArrowIcon;
 
 export default Dropdown;

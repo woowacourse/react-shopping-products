@@ -8,7 +8,6 @@ import {
 } from './ShoppingList.styles';
 import Text from '../../component/@common/Text/Text';
 import Dropdown from '../../component/@common/Dropdown/Dropdown';
-import ArrowIcon from '../../component/@common/ArrowIcon/ArrowIcon';
 import ErrorFallback from '../../component/@common/ErrorFallback/ErrorFallback';
 
 import { CategoryOption, SortOption } from '../../types/common';
@@ -53,7 +52,7 @@ const ShoppingList = () => {
               <Dropdown.Root>
                 <Dropdown.Trigger>
                   {category}
-                  <ArrowIcon />
+                  <Dropdown.ArrowIcon />
                 </Dropdown.Trigger>
                 <Dropdown.List>
                   {categoryOptions.map((option) => (
@@ -70,7 +69,7 @@ const ShoppingList = () => {
               <Dropdown.Root>
                 <Dropdown.Trigger>
                   {sortType}
-                  <ArrowIcon />
+                  <Dropdown.ArrowIcon />
                 </Dropdown.Trigger>
                 <Dropdown.List>
                   {sortOptions.map((option) => (
