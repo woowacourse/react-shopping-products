@@ -61,7 +61,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
             loading: false,
           },
         }));
-      } catch (error) {
+      } catch {
         setCache((prev) => ({
           ...prev,
           [key]: {
