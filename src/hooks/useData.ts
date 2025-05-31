@@ -14,9 +14,9 @@ interface UseDataResult<T> extends DataStateItem<T> {
 }
 
 export function useData<T>({ key, fetchFn, deps = [] }: UseDataOptions<T>): UseDataResult<T> {
-  const { state, fetchData } = useDataContext();
+  const { fetchData, getTypedData } = useDataContext();
 
-  const currentState = state[key] || { data: null, isLoading: false, error: null };
+  const currentState = getTypedData<T>(key);
 
   const refetch = useCallback(() => {
     return fetchData<T>(key, fetchFn);
@@ -28,9 +28,7 @@ export function useData<T>({ key, fetchFn, deps = [] }: UseDataOptions<T>): UseD
   }, [key, ...deps]);
 
   return {
-    data: currentState.data as T | null,
-    isLoading: currentState.isLoading,
-    error: currentState.error,
+    ...currentState,
     refetch,
   };
 }

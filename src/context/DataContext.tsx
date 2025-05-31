@@ -13,6 +13,7 @@ interface DataState {
 interface DataContextType {
   state: DataState;
   fetchData: <T>(key: string, fetchFn: () => Promise<T>) => Promise<void>;
+  getTypedData: <T>(key: string) => DataStateItem<T>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -45,7 +46,16 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  return <DataContext.Provider value={{ state, fetchData }}>{children}</DataContext.Provider>;
+  const getTypedData = <T,>(key: string): DataStateItem<T> => {
+    const defaultState: DataStateItem<T> = { data: null, isLoading: false, error: null };
+    return (state[key] as DataStateItem<T>) || defaultState;
+  };
+
+  return (
+    <DataContext.Provider value={{ state, fetchData, getTypedData }}>
+      {children}
+    </DataContext.Provider>
+  );
 };
 
 export const useDataContext = () => {
