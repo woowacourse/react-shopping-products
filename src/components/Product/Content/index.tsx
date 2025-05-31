@@ -4,24 +4,17 @@ import FilterSortControl from "./FilterSortControl";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ErrorFallback from "@/components/Fallback/ErrorFallback";
 import LoadingFallback from "@/components/Fallback/LoadingFallback";
-import useData from "@/hooks/useData";
-import { ProductItemType } from "@/types/product";
-import { getProducts } from "@/apis/products/getProducts";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { FilterOption, SortOption } from "./ProductContent.type";
+import useGeyProductQuery from "@/hooks/useGetProductQuery";
 
 function ProductContent() {
   const [filterOption, setFilterOption] = useState<FilterOption>("전체");
   const [sortOption, setSortOption] = useState<SortOption>("낮은 가격순");
-
-  const fetchProducts = useCallback(() => {
-    return getProducts({ filterOption, sortOption });
-  }, [filterOption, sortOption]);
-
-  const { data: productData, isLoading } = useData<ProductItemType[]>({
-    fetchFn: fetchProducts,
-    name: "productData",
-  });
+  const { data: productData, isLoading } = useGeyProductQuery(
+    filterOption,
+    sortOption
+  );
 
   return (
     <S.Container>
