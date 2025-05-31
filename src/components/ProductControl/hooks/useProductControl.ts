@@ -21,6 +21,8 @@ export const useProductControl = (setProductList: React.Dispatch<React.SetStateA
       }
 
       const rawProductList = await productApi.get({
+        size: 20,
+        page: 0,
         category: newCategory,
         sort: newSort,
       });

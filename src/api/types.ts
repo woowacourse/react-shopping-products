@@ -50,8 +50,8 @@ export interface ApiConfigType {
 }
 
 export interface initializeApiParamsType {
-  size: string;
-  page: string;
+  size: number;
+  page: number;
 }
 
 export interface ProductParamsType extends initializeApiParamsType {

@@ -2,11 +2,7 @@ import { apiClient } from './apiClient';
 import { AddCartParamsType, ApiConfigType, initializeApiParamsType, ResponseCartItem, ResponseDefault } from './types';
 
 export const cartApi = {
-  get: async () => {
-    const params = {
-      size: '20',
-      page: '0',
-    };
+  get: async (params: initializeApiParamsType) => {
     const apiConfigs: ApiConfigType = {
       method: 'GET',
       isAuthorization: true,

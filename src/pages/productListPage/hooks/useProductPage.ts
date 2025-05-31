@@ -14,7 +14,13 @@ export const useProductPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [rawCartItemList, rawProductList] = await Promise.all([cartApi.get(), productApi.get({ category: '', sort: 'price,asc' })]);
+        const [rawCartItemList, rawProductList] = await Promise.all([
+          cartApi.get({
+            size: 20,
+            page: 0,
+          }),
+          productApi.get({ size: 20, page: 0, category: '', sort: 'price,asc' }),
+        ]);
 
         setCartItemList(rawCartItemList);
         setProductList(rawProductList);

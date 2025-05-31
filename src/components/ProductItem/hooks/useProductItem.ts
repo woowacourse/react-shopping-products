@@ -29,7 +29,10 @@ export const useProductItem = (id: number) => {
         await cartApi.post(productId, 1);
       }
 
-      const rawCartItemList = await cartApi.get();
+      const rawCartItemList = await cartApi.get({
+        size: 20,
+        page: 0,
+      });
       setCartItemList(rawCartItemList);
     } catch (error) {
       if (error instanceof Error) {
