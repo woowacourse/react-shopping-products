@@ -1,9 +1,9 @@
-import { useToast } from "../../provider/ToastProvider";
-import { AddItemBody } from "../../types/request.types";
-import request from "../../utils/request";
-import { useData } from "../../provider/DataProvider";
-import { fetchCartItems } from "../../api/cart";
-import { ERROR_MESSAGE } from "../../constants/errorMessage";
+import { useToast } from "../provider/ToastProvider";
+import { AddItemBody } from "../types/request.types";
+import request from "../utils/request";
+import { useData } from "../provider/DataProvider";
+import { fetchCartItems } from "../api/cart";
+import { ERROR_MESSAGE } from "../constants/errorMessage";
 
 const MAX_CART_AMOUNT = 50;
 
@@ -16,7 +16,7 @@ interface RemoveItemToCartProps {
   cartId?: number;
 }
 
-export default function useCartToggleButton() {
+export default function useCartAddRemove() {
   const { showToast } = useToast();
   const { refetch } = useData();
 

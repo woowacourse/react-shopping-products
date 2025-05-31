@@ -1,6 +1,6 @@
 import { Product } from "../../types/response.types";
 import CartManageButton from "../cartManageButton/CartManageButton";
-import useCartToggleButton from "../cartToggleButton/useCartToggleButton";
+import useCartAddRemove from "../../hooks/useCartAddRemove";
 import {
   CountContainer,
   DeleteButton,
@@ -18,7 +18,7 @@ interface CartItemProps {
 }
 
 function CartItem({ id, product }: CartItemProps) {
-  const { removeItemToCart } = useCartToggleButton();
+  const { removeItemToCart } = useCartAddRemove();
 
   return (
     <>

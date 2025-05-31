@@ -1,6 +1,6 @@
 import CartManageButton from "../cartManageButton/CartManageButton";
 import { ButtonContainer } from "./CartToggleButton.css";
-import useCartToggleButton from "./useCartToggleButton";
+import useCartAddRemove from "../../hooks/useCartAddRemove";
 
 interface CartToggleButtonProps {
   isSoldOut: boolean;
@@ -19,7 +19,7 @@ function CartToggleButton({
   cartAmount,
   isAdded,
 }: CartToggleButtonProps) {
-  const { addItemToCart } = useCartToggleButton();
+  const { addItemToCart } = useCartAddRemove();
 
   return isAdded ? (
     <CartManageButton quantity={quantity} cartId={cartId} />

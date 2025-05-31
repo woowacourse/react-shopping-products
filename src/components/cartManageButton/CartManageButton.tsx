@@ -1,5 +1,5 @@
 import useCartQuantity from "../../hooks/useCartQuantity";
-import useCartToggleButton from "../cartToggleButton/useCartToggleButton";
+import useCartAddRemove from "../../hooks/useCartAddRemove";
 import { Button, Container, Text } from "./CartManageButton.css";
 
 interface CartManageButtonProps {
@@ -11,7 +11,7 @@ export default function CartManageButton({
   cartId,
   quantity,
 }: CartManageButtonProps) {
-  const { removeItemToCart } = useCartToggleButton();
+  const { removeItemToCart } = useCartAddRemove();
 
   const { cartQuantity, increase, decrease } = useCartQuantity({
     cartId,
