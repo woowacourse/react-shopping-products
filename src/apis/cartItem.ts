@@ -12,8 +12,13 @@ interface PostCartItemsParams {
   quantity: number;
 }
 
+interface PatchCartItemsParams {
+  id: number;
+  quantity: number;
+}
+
 interface DeleteCartItemsParams {
-  productId: number;
+  id: number;
 }
 
 export const getCartItems = async ({ page, size, sort = "asc" }: GetCartItemsParams): Promise<GetCartItemsResponse> => {
@@ -31,6 +36,17 @@ export const postCartItems = async ({ productId, quantity }: PostCartItemsParams
   );
 };
 
-export const deleteCartItems = async ({ productId }: DeleteCartItemsParams) => {
-  return baseFetch(`/cart-items/${productId}`, { method: "DELETE" }, false);
+export const patchCartItems = async ({ id, quantity }: PatchCartItemsParams) => {
+  return baseFetch(
+    `/cart-items/${id}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ quantity }),
+    },
+    false,
+  );
+};
+
+export const deleteCartItems = async ({ id }: DeleteCartItemsParams) => {
+  return baseFetch(`/cart-items/${id}`, { method: "DELETE" }, false);
 };

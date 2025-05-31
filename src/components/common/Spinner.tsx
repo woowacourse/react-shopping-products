@@ -1,10 +1,19 @@
 import { css } from "@emotion/react";
-import { useLoading } from "../../contexts";
+import { useQueryClient } from "../../contexts/QueryContext";
+import { useEffect, useState } from "react";
 
 const Spinner = () => {
-  const { isLoading } = useLoading();
+  const { isFetching, isMutating, subscribeLoading, unsubscribeLoading } = useQueryClient();
+  const [, forceRender] = useState({});
 
-  if (isLoading)
+  useEffect(() => {
+    const reRenderFn = () => forceRender({});
+    subscribeLoading(reRenderFn);
+
+    return () => unsubscribeLoading(reRenderFn);
+  }, [subscribeLoading, unsubscribeLoading]);
+
+  if (isFetching())
     return (
       <div css={[spinnerWrapper, orbitSpin]} className="active">
         <div css={orbitSpinner}>
@@ -12,6 +21,19 @@ const Spinner = () => {
           <div css={orbit}>
             <div css={[satellite, satellite1]} />
             <div css={[satellite, satellite2]} />
+          </div>
+        </div>
+      </div>
+    );
+
+  if (isMutating())
+    return (
+      <div css={[orbitSpin]} className="active">
+        <div css={orbitSpinner}>
+          <div css={planet} style={{ backgroundColor: "#000" }} />
+          <div css={orbit} style={{ borderColor: "#000" }}>
+            <div css={[satellite, satellite1]} style={{ backgroundColor: "#000" }} />
+            <div css={[satellite, satellite2]} style={{ backgroundColor: "#000" }} />
           </div>
         </div>
       </div>

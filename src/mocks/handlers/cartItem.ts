@@ -1,0 +1,63 @@
+import { http, HttpResponse } from "msw";
+import MOCKING_CART_ITEMS_DATA from "../data/cartItems.json";
+import MOCKING_PRODUCT_DATA from "../data/products.json";
+import { CartItem, GetCartItemsResponse } from "../../types/cartItem";
+
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+const products = { ...MOCKING_PRODUCT_DATA };
+const cartItems: GetCartItemsResponse = { ...MOCKING_CART_ITEMS_DATA }; // 초기 데이터 복사
+
+const getCartItems = http.get(`${BASE_URL}/cart-items`, () => {
+  return HttpResponse.json(cartItems);
+});
+
+const postCartItems = http.post(`${BASE_URL}/cart-items`, async ({ request }) => {
+  const newCartItem = (await request.json()) as { productId: number; quantity: number };
+  const currentProduct = products.content.find((product) => product.id === newCartItem.productId);
+
+  if (newCartItem.quantity > currentProduct!.quantity) {
+    return HttpResponse.json({ message: "재고 수량을 초과하여 담을 수 없습니다." }, { status: 400 });
+  }
+
+  const maxId = cartItems.content.length > 0 ? Math.max(...cartItems.content.map((item) => item.id)) : 0;
+  const newCartItemData: CartItem = {
+    id: maxId + 1,
+    quantity: newCartItem.quantity,
+    product: currentProduct!,
+  };
+
+  cartItems.content.push(newCartItemData);
+  return HttpResponse.json({ message: "Post" }, { status: 200 });
+});
+const patchCartItems = http.patch(`${BASE_URL}/cart-items/:id`, async ({ params, request }) => {
+  const cartItemId = Number(params.id);
+  const { quantity } = (await request.json()) as { quantity: number };
+  const currentCartItem = cartItems.content.find((cartItem) => cartItem.id === cartItemId);
+
+  if (quantity > currentCartItem!.product.quantity!) {
+    return HttpResponse.json({ message: "재고 수량을 초과하여 담을 수 없습니다." }, { status: 400 });
+  }
+
+  cartItems.content = cartItems.content.reduce((acc, item) => {
+    if (item.id === cartItemId) {
+      if (quantity !== 0) {
+        acc.push({ ...item, quantity });
+      }
+    } else {
+      acc.push(item);
+    }
+    return acc;
+  }, [] as CartItem[]);
+
+  return HttpResponse.json({ message: "Patch" }, { status: 200 });
+});
+
+const deleteCartItems = http.delete(`${BASE_URL}/cart-items/:id`, async ({ params }) => {
+  const cartItemId = Number(params.id);
+  cartItems.content = cartItems.content.filter((item) => item.id !== cartItemId);
+
+  return HttpResponse.json({ message: "Delete" }, { status: 200 });
+});
+
+export default [getCartItems, postCartItems, patchCartItems, deleteCartItems];

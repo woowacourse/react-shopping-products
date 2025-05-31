@@ -1,13 +1,18 @@
 import { css } from "@emotion/react";
 import ShoppingBag from "./icons/ShoppingBag";
 
-const Header = ({ shoppingCount = 0 }: { shoppingCount?: number }) => {
+import useCartItems from "../hooks/useCartItems";
+import { useCartModal } from "../contexts/CartModalContext";
+
+const Header = () => {
+  const { cartItems } = useCartItems();
+  const { handleCartModalOpen } = useCartModal();
   return (
     <header css={headerStyle}>
       <span>SHOP</span>
-      <div css={shoppingBagStyle}>
+      <div css={shoppingBagStyle} onClick={handleCartModalOpen}>
         <ShoppingBag />
-        {shoppingCount !== 0 && <span css={shoppingBagCountStyle}>{shoppingCount}</span>}
+        {cartItems?.length !== 0 && <span css={shoppingBagCountStyle}>{cartItems?.length}</span>}
       </div>
     </header>
   );
@@ -29,6 +34,7 @@ const headerStyle = css`
 
 const shoppingBagStyle = css`
   position: relative;
+  cursor: pointer;
 `;
 
 const shoppingBagCountStyle = css`

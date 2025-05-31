@@ -1,16 +1,16 @@
 import { css } from "@emotion/react";
-import { HTMLAttributes } from "react";
+import { ButtonHTMLAttributes } from "react";
 
-type ButtonVariant = "dark" | "light";
+type IconButtonVariant = "dark" | "light";
 
-interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
+interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
-  variant?: ButtonVariant;
+  variant?: IconButtonVariant;
 }
 
-const Button = ({ children, icon, iconPosition = "left", variant = "dark", ...props }: ButtonProps) => {
+const IconButton = ({ children, icon, iconPosition = "left", variant = "dark", ...props }: IconButtonProps) => {
   return (
     <button css={buttonStyle(variant)} {...props}>
       {iconPosition === "left" && icon}
@@ -20,9 +20,9 @@ const Button = ({ children, icon, iconPosition = "left", variant = "dark", ...pr
   );
 };
 
-export default Button;
+export default IconButton;
 
-const buttonStyle = (variant: ButtonVariant) => css`
+const buttonStyle = (variant: IconButtonVariant) => css`
   display: flex;
   gap: 4px;
   align-items: center;
@@ -35,7 +35,7 @@ const buttonStyle = (variant: ButtonVariant) => css`
   ${selectVariant(variant)}
 `;
 
-const selectVariant = (variant: ButtonVariant) => {
+const selectVariant = (variant: IconButtonVariant) => {
   switch (variant) {
     case "dark":
       return css`
