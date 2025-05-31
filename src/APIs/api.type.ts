@@ -1,7 +1,4 @@
-import { CartItem } from '../components/ShoppingCartModal/cart.type';
-import { Product } from '../components/ProductCardList/product.type';
-
-interface ApiState<T = CartItem[] | Product[]> {
+interface ApiState<T> {
   data: T;
   loading: boolean;
   error: string;
@@ -9,8 +6,8 @@ interface ApiState<T = CartItem[] | Product[]> {
   sort?: string;
 }
 
-interface ApiContextState {
-  [key: string]: ApiState;
+interface ApiContextState<T> {
+  [key: string]: ApiState<T>;
 }
 
 export type { ApiState, ApiContextState };

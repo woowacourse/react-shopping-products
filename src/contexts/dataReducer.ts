@@ -1,10 +1,12 @@
 import { ApiContextState } from '../APIs/api.type';
+import { Product } from '../components/ProductCardList/product.type';
+import { CartItem } from '../components/ShoppingCartModal/cart.type';
 import { DataAction } from './data.type';
 
 export const dataReducer = (
-  state: ApiContextState,
+  state: ApiContextState<CartItem[] | Product[]>,
   action: DataAction
-): ApiContextState => {
+): ApiContextState<CartItem[] | Product[]> => {
   const prev = state[action.key];
 
   switch (action.type) {

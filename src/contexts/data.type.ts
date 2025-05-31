@@ -3,7 +3,7 @@ import { Product } from '../components/ProductCardList/product.type';
 import { ApiContextState } from '../APIs/api.type';
 
 interface DataContextType {
-  state: ApiContextState;
+  state: ApiContextState<CartItem[] | Product[]>;
   setData: (key: string, data: CartItem[] | Product[]) => void;
   setLoading: (key: string, loading: boolean) => void;
   setError: (key: string, error: string) => void;
