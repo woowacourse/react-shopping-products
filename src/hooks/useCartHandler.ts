@@ -63,8 +63,12 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleRemoveCartItem = useCallback(
     async (productId: number) => {
-      const cartItems = data.get('cartItems') as CartItemType[];
-      const cartId = getCartId(cartItems, productId) as number;
+      const cartItems = data.get('cartItems');
+      if (!cartItems) {
+        throw new Error('장바구니에 해당 상품이 없어, 삭제에 실패했습니다.');
+      }
+
+      const cartId = getCartId(cartItems, productId);
 
       await updateCartItems({
         apiCall: () => removeCartItems(cartId),
@@ -81,8 +85,12 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleIncreaseQuantity = useCallback(
     async (productId: number, quantity: number) => {
-      const cartItems = data.get('cartItems') as CartItemType[];
-      const cartId = getCartId(cartItems, productId) as number;
+      const cartItems = data.get('cartItems');
+      if (!cartItems) {
+        throw new Error('장바구니에 해당 상품이 없어, 수량 추가에 실패했습니다.');
+      }
+
+      const cartId = getCartId(cartItems, productId);
 
       await updateCartItems({
         apiCall: () => increaseCartItems(cartId, quantity),
@@ -99,8 +107,12 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   const handleDecreaseQuantity = useCallback(
     async (productId: number, quantity: number) => {
-      const cartItems = data.get('cartItems') as CartItemType[];
-      const cartId = getCartId(cartItems, productId) as number;
+      const cartItems = data.get('cartItems');
+      if (!cartItems) {
+        throw new Error('장바구니에 해당 상품이 없어, 수량 감소에 실패했습니다.');
+      }
+
+      const cartId = getCartId(cartItems, productId);
 
       await updateCartItems({
         apiCall: () => decreaseCartItems(cartId, quantity),
