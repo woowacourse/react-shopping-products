@@ -98,10 +98,9 @@ export const handlers = [
     async ({ request }) => {
       const { productId, quantity } = (await request.json()) as {
         productId: string;
-        quantity: string;
+        quantity: number;
       };
 
-      const numericQuantity = Number(quantity);
       const numericProductId = Number(productId);
 
       const selectedCartItem = cartItems.find(
@@ -118,14 +117,14 @@ export const handlers = [
         );
       }
 
-      if (numericQuantity > selectedProduct.quantity) {
+      if (quantity > selectedProduct.quantity) {
         return HttpResponse.json(
           { message: "상품의 현재 수량을 초과할 수 없습니다." },
           { status: 400 }
         );
       }
 
-      if (numericQuantity <= 0) {
+      if (quantity <= 0) {
         cartItems = cartItems.filter(
           (item) => item.product.id !== numericProductId
         );
@@ -133,7 +132,7 @@ export const handlers = [
       }
 
       if (selectedCartItem) {
-        selectedCartItem.quantity = numericQuantity;
+        selectedCartItem.quantity = quantity;
         return HttpResponse.json(
           { message: "수량 변경 완료" },
           { status: 200 }
@@ -142,7 +141,7 @@ export const handlers = [
 
       const newCartItem = {
         id: cartItems.length + 1,
-        quantity: numericQuantity,
+        quantity: quantity,
         product: { ...selectedProduct },
       };
 
