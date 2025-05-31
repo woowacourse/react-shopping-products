@@ -4,20 +4,21 @@ import { Product as ProductType } from "../../../types/Product";
 
 import * as Styled from "./ProductList.styled";
 
-import useShoppingCart from "../../../hooks/shoppingCart/useShoppingCart";
+import useShoppingCartData from "../../../hooks/shoppingCart/useShoppingCartData";
+import useShoppingCartActions from "../../../hooks/shoppingCart/useShoppingCartActions";
 
 interface ProductListProps {
   productList: readonly ProductType[];
 }
 
 function ProductList({ productList }: ProductListProps) {
-  const {
-    cartItems,
+  const { cartItems } = useShoppingCartData();
 
+  const {
     handleAddProduct,
     handleIncreaseCartItemQuantity,
     handleDecreaseCartItemQuantity,
-  } = useShoppingCart();
+  } = useShoppingCartActions();
 
   const cartItemsProductIdList = cartItems.map(
     (cartItem) => cartItem.product.id

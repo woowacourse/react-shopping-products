@@ -1,25 +1,22 @@
 import * as Styled from "./ShoppingCartList.styled";
 
 import ShoppingCartItem from "../ShoppingCartItem/ShoppingCartItem";
-import useShoppingCart from "../../../hooks/shoppingCart/useShoppingCart";
-import Spinner from "../../common/Spinner/Spinner";
+
+import useShoppingCartData from "../../../hooks/shoppingCart/useShoppingCartData";
+import useShoppingCartActions from "../../../hooks/shoppingCart/useShoppingCartActions";
 
 interface ShoppingCartListProps {
   handleCloseModal: () => void;
 }
 
 function ShoppingCartList({ handleCloseModal }: ShoppingCartListProps) {
+  const { cartItems } = useShoppingCartData();
+
   const {
-    cartItems,
-    loading,
     handleRemoveProduct,
     handleIncreaseCartItemQuantity,
     handleDecreaseCartItemQuantity,
-  } = useShoppingCart();
-
-  if (loading) {
-    return <Spinner />;
-  }
+  } = useShoppingCartActions();
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.product.price * item.quantity,

@@ -1,52 +1,15 @@
 import { useCallback } from "react";
-import fetchCartItems from "../../apis/product/cartItems/fetchCartItems";
 import fetchAddProduct from "../../apis/product/cartItems/fetchAddProduct";
 import fetchRemoveProduct from "../../apis/product/cartItems/fetchRemoveProduct";
-
 import fetchUpdateCartItemQuantity from "../../apis/product/cartItems/fetchUpdateCartItemQuantity";
-
-import useData from "../useData";
 import useToast from "../useToast";
+import useCartItemsData from "./useShoppingCartData"; // 데이터 관련 훅 import
 
-const getCartItems = async () => {
-  try {
-    const { content } = await fetchCartItems({
-      params: {
-        page: "0",
-        size: "50",
-      },
-    });
+const QUANTITY_UNIT = 1;
 
-    return content;
-  } catch (error) {
-    if (!(error instanceof Error)) {
-      throw error;
-    }
-    throw new Error(error.message);
-  }
-};
-
-const useShoppingCart = () => {
-  const {
-    data: cartItems,
-    refetch,
-    loading,
-  } = useData({
-    fetcher: getCartItems,
-    name: "cartItems",
-  });
-
+const useShoppingCartActions = () => {
+  const { cartItems, updateCartItems, selectedCartItem } = useCartItemsData();
   const { showToast } = useToast();
-
-  const selectedCartItem = useCallback(
-    (productId: number) =>
-      cartItems.find((cartItem) => cartItem.product.id === productId),
-    [cartItems]
-  );
-
-  const updateCartItems = useCallback(async () => {
-    await refetch();
-  }, [refetch]);
 
   const handleAddProduct = useCallback(
     async (productId: number) => {
@@ -58,20 +21,17 @@ const useShoppingCart = () => {
           });
           return;
         }
-
         await fetchAddProduct({
           params: {
             productId: productId,
             quantity: "1",
           },
         });
-
         await updateCartItems();
       } catch (error) {
         if (!(error instanceof Error)) {
           return;
         }
-
         showToast({ message: error.message, type: "error" });
       }
     },
@@ -82,43 +42,34 @@ const useShoppingCart = () => {
     async (productId: number) => {
       try {
         const targetCartItem = selectedCartItem(productId);
-
         if (!targetCartItem) {
           return;
         }
-
         await fetchRemoveProduct({
           params: {
             productId: targetCartItem.id,
           },
         });
-
         await updateCartItems();
       } catch (error) {
         if (!(error instanceof Error)) {
           return;
         }
-
         showToast({ message: error.message, type: "error" });
       }
     },
     [selectedCartItem, showToast, updateCartItems]
   );
 
-  const QUANTITY_UNIT = 1;
-
   const handleIncreaseCartItemQuantity = useCallback(
     async (productId: number) => {
       try {
         const targetCartItem = selectedCartItem(productId);
-
         if (!targetCartItem) {
           return;
         }
-
         const cartItemQuantity = targetCartItem.quantity;
         const stockQuantity = targetCartItem.product.quantity;
-
         if (cartItemQuantity + QUANTITY_UNIT > stockQuantity) {
           showToast({
             message: "재고 수량을 초과하여 담을 수 없습니다.",
@@ -126,20 +77,17 @@ const useShoppingCart = () => {
           });
           return;
         }
-
         await fetchUpdateCartItemQuantity({
           params: {
             id: targetCartItem.id,
-            quantity: targetCartItem.quantity + QUANTITY_UNIT,
+            quantity: cartItemQuantity + QUANTITY_UNIT,
           },
         });
-
         await updateCartItems();
       } catch (error) {
         if (!(error instanceof Error)) {
           return;
         }
-
         showToast({ message: error.message, type: "error" });
       }
     },
@@ -150,24 +98,20 @@ const useShoppingCart = () => {
     async (productId: number) => {
       try {
         const targetCartItem = selectedCartItem(productId);
-
         if (!targetCartItem) {
           return;
         }
-
         await fetchUpdateCartItemQuantity({
           params: {
             id: targetCartItem.id,
             quantity: targetCartItem.quantity - QUANTITY_UNIT,
           },
         });
-
         await updateCartItems();
       } catch (error) {
         if (!(error instanceof Error)) {
           return;
         }
-
         showToast({ message: error.message, type: "error" });
       }
     },
@@ -175,8 +119,6 @@ const useShoppingCart = () => {
   );
 
   return {
-    cartItems,
-    loading,
     handleAddProduct,
     handleRemoveProduct,
     handleIncreaseCartItemQuantity,
@@ -184,4 +126,4 @@ const useShoppingCart = () => {
   };
 };
 
-export default useShoppingCart;
+export default useShoppingCartActions;

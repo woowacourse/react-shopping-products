@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Modal } from "../../common/Modal";
 import ShoppingCartList from "../ShoppingCartList/ShoppingCartList";
 
-import useShoppingCart from "../../../hooks/shoppingCart/useShoppingCart";
+import useShoppingCartData from "../../../hooks/shoppingCart/useShoppingCartData";
 
 function Header() {
   const [openModal, setOpenModal] = useState(false);
@@ -18,7 +18,7 @@ function Header() {
     setOpenModal(false);
   };
 
-  const { cartItems } = useShoppingCart();
+  const { cartItems } = useShoppingCartData();
 
   return (
     <Styled.Container>
