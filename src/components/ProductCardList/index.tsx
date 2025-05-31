@@ -15,7 +15,7 @@ interface ProductCardListProps {
 
 const ProductCardList = ({ products, shoppingCart }: ProductCardListProps) => {
   return (
-    <div className={ProductCardListStyles}>
+    <div className={ProductCardListStyles} data-testid="product-list">
       {products &&
         products.map((product) => (
           <ProductCard

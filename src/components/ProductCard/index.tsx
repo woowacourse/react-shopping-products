@@ -22,7 +22,7 @@ const ProductCard = ({
   const { id, name, price, imageUrl, quantity } = product;
 
   return (
-    <div key={id} className={CardFrame}>
+    <div key={id} className={CardFrame} data-testid="product-card">
       <div className={ImageFrame}>
         <img
           src={imageUrl || './default.png'}
@@ -37,8 +37,10 @@ const ProductCard = ({
         )}
       </div>
       <div className={CardInfo}>
-        <h4 className={ProductName}>{name}</h4>
-        <p>{price.toLocaleString()}원</p>
+        <h4 className={ProductName} data-testid="product-name">
+          {name}
+        </h4>
+        <p data-testid="product-price">{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
           {cartItem ? (
             <QuantitySpinner

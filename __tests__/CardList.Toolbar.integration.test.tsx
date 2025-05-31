@@ -1,4 +1,3 @@
-// __tests__/ProductListToolBar.integration.test.tsx
 import React from 'react';
 import {
   render,
@@ -11,32 +10,7 @@ import { describe, test, expect, beforeAll, afterEach, afterAll } from 'vitest';
 import mockProducts from '../src/mocks/products.json';
 import { http, HttpResponse } from 'msw';
 import { server } from './setupTests';
-import DataProvider from '../src/contexts/DataContextProvider';
-import ProductListToolBar from '../src/components/ProductListToolBar';
-import { useProducts } from '../src/hooks/useProducts';
-
-const TestApp = () => {
-  const { data, loading, error } = useProducts();
-
-  return (
-    <>
-      <ProductListToolBar />
-      {loading && <div data-testid="loading">로딩중...</div>}
-      {error && <div data-testid="error">{error}</div>}
-      {!loading && !error && (
-        <div data-testid="product-list">
-          {data?.map((p) => (
-            <div key={p.id} data-testid="product-card">
-              <span className="product-name">{p.name}</span> |
-              <span className="product-category">{p.category}</span> |
-              <span className="product-price">{p.price}</span>
-            </div>
-          ))}
-        </div>
-      )}
-    </>
-  );
-};
+import App from '../src/App';
 
 beforeAll(() => server.listen());
 afterEach(() => {
@@ -59,21 +33,15 @@ describe('ProductListToolBar + ProductCardList 통합 테스트', () => {
       })
     );
 
-    render(
-      <DataProvider>
-        <TestApp />
-      </DataProvider>
-    );
+    render(<App />);
 
     await act(async () => {
       await screen.findByTestId('product-list');
     });
 
-    const cards = screen.getAllByTestId('product-card');
-    expect(cards).toHaveLength(20);
-    expect(
-      cards.map((c) => c.querySelector('.product-name')!.textContent)
-    ).toEqual([
+    const cardNames = screen.getAllByTestId('product-name');
+    expect(cardNames).toHaveLength(20);
+    expect(cardNames.map((c) => c.textContent)).toEqual([
       '기세',
       '아샷추',
       '아바라',
@@ -97,7 +65,7 @@ describe('ProductListToolBar + ProductCardList 통합 테스트', () => {
     ]);
   });
 
-  test('사용자가 “높은 가격순” 선택 시, sort=price,desc 요청 → 내림차순으로 화면 갱신', async () => {
+  test('사용자가 “높은 가격순” 선택 시, sort=price,desc 요청 → 내림차순으로 화면 갱신한다.', async () => {
     const sortDesc = 'price,desc';
     const filteredDesc = [...mockProducts].sort((a, b) => b.price - a.price);
 
@@ -109,11 +77,7 @@ describe('ProductListToolBar + ProductCardList 통합 테스트', () => {
       })
     );
 
-    render(
-      <DataProvider>
-        <TestApp />
-      </DataProvider>
-    );
+    render(<App />);
 
     const sortingSelect = screen.getAllByRole('combobox');
     fireEvent.change(sortingSelect[1], { target: { value: '높은 가격순' } });
@@ -122,10 +86,12 @@ describe('ProductListToolBar + ProductCardList 통합 테스트', () => {
       await screen.findByTestId('product-list');
     });
 
-    const cards = screen.getAllByTestId('product-card');
-    expect(cards).toHaveLength(20);
+    const cardPrices = screen.getAllByTestId('product-price');
+    expect(cardPrices).toHaveLength(20);
     expect(
-      cards.map((c) => Number(c.querySelector('.product-price')!.textContent))
+      cardPrices.map((c) =>
+        Number(c.textContent?.replace(/,/g, '').replace('원', ''))
+      )
     ).toEqual([
       60000000, 11100000, 3210000, 850000, 800000, 200000, 200000, 100000,
       100000, 100000, 50000, 48000, 47000, 28000, 20000, 8130, 5000, 4800, 3800,
@@ -133,7 +99,7 @@ describe('ProductListToolBar + ProductCardList 통합 테스트', () => {
     ]);
   });
 
-  test('사용자가 “낮은 가격순” 선택 시, sort=price,asc 요청 → 오름차순으로 화면 갱신', async () => {
+  test('사용자가 “낮은 가격순” 선택 시, sort=price,asc 요청 → 오름차순으로 화면 갱신한다.', async () => {
     const sortAsc = 'price,asc';
     const filteredAsc = [...mockProducts].sort((a, b) => a.price - b.price);
 
@@ -145,11 +111,7 @@ describe('ProductListToolBar + ProductCardList 통합 테스트', () => {
       })
     );
 
-    render(
-      <DataProvider>
-        <TestApp />
-      </DataProvider>
-    );
+    render(<App />);
 
     const sortingSelect = screen.getAllByRole('combobox');
     fireEvent.change(sortingSelect[1], { target: { value: '낮은 가격순' } });
@@ -158,10 +120,12 @@ describe('ProductListToolBar + ProductCardList 통합 테스트', () => {
       await screen.findByTestId('product-list');
     });
 
-    const cards = screen.getAllByTestId('product-card');
-    expect(cards).toHaveLength(20);
+    const cardPrices = screen.getAllByTestId('product-price');
+    expect(cardPrices).toHaveLength(20);
     expect(
-      cards.map((c) => Number(c.querySelector('.product-price')!.textContent))
+      cardPrices.map((c) =>
+        Number(c.textContent?.replace(/,/g, '').replace('원', ''))
+      )
     ).toEqual([
       100, 3800, 4800, 5000, 8130, 20000, 28000, 47000, 48000, 50000, 100000,
       100000, 100000, 200000, 200000, 800000, 850000, 3210000, 11100000,
@@ -169,42 +133,81 @@ describe('ProductListToolBar + ProductCardList 통합 테스트', () => {
     ]);
   });
 
-  test.each(['패션잡화', '식료품'])(
-    '사용자가 “카테고리=%s” 선택 시, category=%s 요청 → 카테고리 필터링된 결과만 화면에 보여줌',
-    async (category) => {
-      const filteredCat = [...mockProducts].filter(
-        (p) => p.category === category
-      );
+  test('사용자가 “패션잡화” 선택 시, category=패션잡화 요청 → 카테고리 필터링된 결과만 화면에 보여준다.', async () => {
+    const category = '패션잡화';
+    const filteredCat = [...mockProducts].filter(
+      (p) => p.category === category
+    );
 
-      server.use(
-        http.get('/products*', ({ request }) => {
-          const url = new URL(request.url);
-          expect(url.searchParams.get('category')).toBe(category);
-          return HttpResponse.json({ content: filteredCat }, { status: 200 });
-        })
-      );
+    server.use(
+      http.get('/products*', ({ request }) => {
+        const url = new URL(request.url);
+        expect(url.searchParams.get('category')).toBe(category);
+        return HttpResponse.json({ content: filteredCat }, { status: 200 });
+      })
+    );
 
-      render(
-        <DataProvider>
-          <TestApp />
-        </DataProvider>
-      );
+    render(<App />);
 
-      const categorySelect = screen.getAllByRole('combobox');
-      fireEvent.change(categorySelect[0], { target: { value: category } });
+    const categorySelect = screen.getAllByRole('combobox');
+    fireEvent.change(categorySelect[0], { target: { value: category } });
 
-      await act(async () => {
-        await screen.findByTestId('product-list');
-      });
+    await act(async () => {
+      await screen.findByTestId('product-list');
+    });
 
-      const cards = screen.getAllByTestId('product-card');
-      expect(cards.length).toBe(filteredCat.length);
-      expect(
-        cards.every(
-          (card) =>
-            card.querySelector('.product-category')?.textContent === category
-        )
-      ).toBe(true);
-    }
-  );
+    const cardNames = screen.getAllByTestId('product-name');
+    expect(cardNames.length).toBe(12);
+    expect(cardNames.map((c) => c.textContent)).toEqual([
+      '동물 양말',
+      '달 무드등',
+      '앵그리버드',
+      '에어포스1',
+      '에어포스2',
+      '에어포스3',
+      '너에게난~ 해질녘 노을처럼~',
+      '앵버잠옷',
+      '튀김 신발',
+      '19x19x19 큐브',
+      '부리부리 원형 테이블',
+      '리바이 아커만',
+    ]);
+  });
+
+  test('사용자가 "식료품" 선택 시, category=식료품 요청 → 카테고리 필터링된 결과만 화면에 보여준다.', async () => {
+    const category = '식료품';
+    const filteredCat = [...mockProducts].filter(
+      (p) => p.category === category
+    );
+
+    server.use(
+      http.get('/products*', ({ request }) => {
+        const url = new URL(request.url);
+        expect(url.searchParams.get('category')).toBe(category);
+        return HttpResponse.json({ content: filteredCat }, { status: 200 });
+      })
+    );
+
+    render(<App />);
+
+    const categorySelect = screen.getAllByRole('combobox');
+    fireEvent.change(categorySelect[0], { target: { value: category } });
+
+    await act(async () => {
+      await screen.findByTestId('product-list');
+    });
+
+    const cardNames = screen.getAllByTestId('product-name');
+    expect(cardNames.length).toBe(8);
+    expect(cardNames.map((c) => c.textContent)).toEqual([
+      '기세',
+      '아샷추',
+      '아바라',
+      '얌샘김밥',
+      '플라망고',
+      '민초 치킨',
+      '민초 피자',
+      '메이통통이',
+    ]);
+  });
 });
