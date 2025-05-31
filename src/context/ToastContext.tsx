@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState } from 'react';
 
 interface ToastContextType {
-  toast: ToastType;
-  showToast: (message: string) => void;
+  toastQueue: ToastType[];
+  addToast: (message: string) => void;
+  removeToast: (id: number) => void;
 }
 
 interface ToastProviderProps {
@@ -10,27 +11,28 @@ interface ToastProviderProps {
 }
 
 interface ToastType {
-  isToast: boolean;
+  id: number;
   message: string;
 }
 
 export const ToastContext = createContext<ToastContextType | null>(null);
 
 export const ToastProvider = ({ children }: ToastProviderProps) => {
-  const [toast, setToast] = useState<ToastType>({
-    isToast: false,
-    message: '',
-  });
+  const [toastQueue, setToastQueue] = useState<ToastType[]>([]);
+  const addToast = (message: string) => {
+    const newToast: ToastType = {
+      id: Date.now(),
+      message,
+    };
+    setToastQueue((prev) => [...prev, newToast]);
+  };
 
-  const showToast = (message: string) => {
-    setToast({ isToast: true, message });
-    setTimeout(() => {
-      setToast({ isToast: false, message: '' });
-    }, 3000);
+  const removeToast = (id: number) => {
+    setToastQueue((prev) => prev.filter((toast) => toast.id !== id));
   };
 
   return (
-    <ToastContext.Provider value={{ toast, showToast }}>
+    <ToastContext.Provider value={{ toastQueue, addToast, removeToast }}>
       {children}
     </ToastContext.Provider>
   );

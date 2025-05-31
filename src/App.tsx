@@ -32,7 +32,7 @@ import { useAPI } from './hooks/useAPI';
 import { getProduct } from './api/fetchProduct';
 
 function App() {
-  const { toast, showToast } = useToastContext();
+  const { toastQueue, removeToast } = useToastContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [category, setCategory] = useState<CategoryType>(CATEGORY[0]);
@@ -85,20 +85,20 @@ function App() {
   };
 
   useEffect(() => {
-    if (productError.isError) {
-      showToast(productError.errorMessage);
+    if (toastQueue.length > 0) {
+      const timer = setTimeout(() => {
+        removeToast(toastQueue[0].id);
+      }, 3000);
+      return () => clearTimeout(timer);
     }
-    if (cartError.isError) {
-      showToast(cartError.errorMessage);
-    }
-  }, [productError.isError, cartError.isError]);
+  }, [toastQueue]);
 
   return (
     <>
       <Global styles={GlobalStyle} />
       <Layout>
         <Header title={SHOPPING_MALL_TITLE} onModalOpen={handleModalOpen} />
-        {toast.isToast && <Toast message={toast.message} />}
+        {toastQueue.length > 0 && <Toast message={toastQueue[0].message} />}
         {(isProductLoading || isCartLoading) && <LoadingSpinner duration={2} />}
         {!isProductLoading && !isCartLoading && (
           <Section>

@@ -3,9 +3,10 @@ import { useToastContext } from '../context/ToastContext';
 import { CartItem, ProductElement } from '../types/type';
 import { useCallback } from 'react';
 import { useAPI } from './useAPI';
+import { ERROR_MESSAGE } from '../constants/errorMessage';
 
 export const useCartActions = () => {
-  const { showToast } = useToastContext();
+  const { addToast } = useToastContext();
 
   const fetchCartItems = useCallback(async () => {
     return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
@@ -24,7 +25,7 @@ export const useCartActions = () => {
       await addCart(product.id);
       refetch();
     } catch (error) {
-      showToast((error as Error).message);
+      addToast((error as Error).message);
     }
   };
 
@@ -33,10 +34,12 @@ export const useCartActions = () => {
       if (!cartList) return;
       const cartItem = cartList.find((item) => item.product.id === product.id);
       if (!cartItem) return;
+      if (cartItem.quantity === cartItem.product.quantity)
+        throw new Error(ERROR_MESSAGE.PRODUCT_MAX_QUANTITY);
       await patchCart(cartItem.id, cartItem.quantity + 1);
       await refetch();
     } catch (error) {
-      showToast((error as Error).message);
+      addToast((error as Error).message);
     }
   };
 
@@ -48,7 +51,7 @@ export const useCartActions = () => {
       await patchCart(cartItem.id, cartItem.quantity - 1);
       await refetch();
     } catch (error) {
-      showToast((error as Error).message);
+      addToast((error as Error).message);
     }
   };
 
@@ -60,7 +63,7 @@ export const useCartActions = () => {
       await removeCart(cartItem.id);
       await refetch();
     } catch (error) {
-      showToast((error as Error).message);
+      addToast((error as Error).message);
     }
   };
 
