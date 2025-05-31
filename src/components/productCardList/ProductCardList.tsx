@@ -1,51 +1,33 @@
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
-import { ERROR_TYPE } from "../../hooks/useError";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
-import { useCart } from "../../hooks/useCart";
-import { ProductPageResponse } from "../../types/response.types";
+import { useCartProduct } from "../../hooks/useCartProduct";
+import { useState } from "react";
 
-interface ProductCardListProps {
-  products: ProductPageResponse | null;
-  isLoading: boolean;
-  setErrorTrue: (type: ERROR_TYPE) => void;
-}
+function ProductCardList() {
+  const { products } = useCartProduct();
+  const [toggleStates, setToggleStates] = useState<Record<number, boolean>>({});
 
-function ProductCardList({
-  products,
-  isLoading,
-  setErrorTrue,
-}: ProductCardListProps) {
-  const { cartItemIds } = useCart();
+  const toggleButton = (productId: number, value: boolean) => {
+    setToggleStates((prev) => ({
+      ...prev,
+      [productId]: value,
+    }));
+  };
 
-  if (isLoading) return <ProductCardListSkeleton />;
+  if (!products) return <ProductCardListSkeleton />;
 
   return (
     <div css={CardListContainer}>
-      {products?.content.map((data) => {
-        const cartInfo = {
-          cartId: cartItemIds?.find((ids) => ids.productId === data.id)?.cartId,
-          cartAmount: cartItemIds.length,
-        };
-
-        const productInfo = {
-          productId: data.id,
-          name: data.name,
-          price: data.price,
-          imageUrl: data.imageUrl,
-          isAdded: Boolean(
-            cartItemIds?.find((ids) => ids.productId === data.id)
-          ),
-        };
-        return (
-          <ProductCard
-            cartInfo={cartInfo}
-            productInfo={productInfo}
-            key={data.id}
-            setErrorTrue={setErrorTrue}
-          />
-        );
-      })}
+      {products?.content.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          isToggled={!!toggleStates[product.id]}
+          isSoldOut={product.quantity === 0}
+          setToggle={(val) => toggleButton(product.id, val)}
+        />
+      ))}
     </div>
   );
 }

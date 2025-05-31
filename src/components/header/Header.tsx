@@ -1,11 +1,14 @@
-import CartButton from "./CartButton";
+import CartIconButton from "./CartIconButton";
 import { HeaderContainer, HeaderTitle } from "./Header.css";
 
-function Header() {
+interface HeaderProps {
+  onOpenModal: () => void;
+}
+function Header({ onOpenModal }: HeaderProps) {
   return (
     <div css={HeaderContainer}>
       <div css={HeaderTitle}>SHOP</div>
-      <CartButton />
+      <CartIconButton onOpenModal={onOpenModal} />
     </div>
   );
 }
