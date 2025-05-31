@@ -3,12 +3,14 @@ import { useEffect, useReducer } from "react";
 import fetchCartItems from "../apis/product/fetchCartItems";
 import fetchAddProduct from "../apis/product/fetchAddProduct";
 import fetchRemoveProduct from "../apis/product/fetchRemoveProduct";
+import fetchPatchProduct from "../apis/product/fetchPatchProduct";
 
 import { useErrorMessageContext } from "../context/ErrorMessageContext";
 import { useCartItemsIdContext } from "../context/CartItemsContext";
 
+import { getFriendlyMessage } from "../context/utils/getFriendlyMessage";
+
 import CartItem from "../types/CartItem";
-import fetchPatchProduct from "../apis/product/fetchPatchProduct";
 
 const INIT_STATE = {
   isLoading: false,
@@ -87,7 +89,8 @@ const useCartItemsId = () => {
       );
       dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
     } catch (error) {
-      handleErrorMessage("장바구니 목록을 불러오는데 실패했습니다.");
+      error instanceof Error &&
+        handleErrorMessage(getFriendlyMessage(error.message));
       dispatch({ type: ACTION_TYPE.FETCH_FAIL });
     }
   };
@@ -103,8 +106,9 @@ const useCartItemsId = () => {
         },
       });
       dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
-    } catch {
-      handleErrorMessage("장바구니에 상품을 추가하는데 실패했습니다.");
+    } catch (error) {
+      error instanceof Error &&
+        handleErrorMessage(getFriendlyMessage(error.message));
       dispatch({ type: ACTION_TYPE.FETCH_FAIL });
     }
 
@@ -113,7 +117,8 @@ const useCartItemsId = () => {
       await fetchData();
       dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
     } catch (error) {
-      handleErrorMessage("상품 목록을 불러오는데 실패했습니다.");
+      error instanceof Error &&
+        handleErrorMessage(getFriendlyMessage(error.message));
       dispatch({ type: ACTION_TYPE.FETCH_FAIL });
     }
 
@@ -138,9 +143,10 @@ const useCartItemsId = () => {
         },
       });
       dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
-    } catch {
+    } catch (error) {
       dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-      handleErrorMessage("장바구니의 수량을 변경하는데 실패했습니다.");
+      error instanceof Error &&
+        handleErrorMessage(getFriendlyMessage(error.message));
     }
     try {
       dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
@@ -148,7 +154,8 @@ const useCartItemsId = () => {
       dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
     } catch (error) {
       dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-      handleErrorMessage("장바구니 데이터를 불러오지 못했습니다.");
+      error instanceof Error &&
+        handleErrorMessage(getFriendlyMessage(error.message));
     }
     dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
   };

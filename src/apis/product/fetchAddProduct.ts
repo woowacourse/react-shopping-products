@@ -25,7 +25,7 @@ const fetchAddProduct = async ({ method, params }: fetchAddProductParams) => {
 
   const response = await fetch(url, options);
   if (!response.ok) {
-    throw new Error("상품이 이미 존재합니다.");
+    throw new Error("상품을 추가할 수 없습니다.");
   }
 };
 
