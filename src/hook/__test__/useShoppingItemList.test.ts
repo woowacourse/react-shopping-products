@@ -89,10 +89,6 @@ const mockGetProductsError = () => {
   });
 };
 
-// 테스트 유틸리티
-const waitForAsyncUpdate = () =>
-  new Promise((resolve) => setTimeout(resolve, 0));
-
 describe('useShoppingItemList', () => {
   beforeEach(() => {
     server.resetHandlers();
@@ -103,9 +99,7 @@ describe('useShoppingItemList', () => {
 
     const { result } = renderHook(() => useShoppingItemList());
 
-    await act(async () => {
-      await waitForAsyncUpdate();
-    });
+    await act(async () => null);
 
     expect(result.current.data).toEqual(mockProducts);
     expect(result.current.error).toBeNull();
@@ -117,9 +111,7 @@ describe('useShoppingItemList', () => {
 
     const { result } = renderHook(() => useShoppingItemList());
 
-    await act(async () => {
-      await waitForAsyncUpdate();
-    });
+    await act(async () => null);
 
     expect(result.current.data).toEqual([]);
     expect(result.current.error).toBeInstanceOf(Error);
@@ -136,7 +128,6 @@ describe('useShoppingItemList', () => {
 
     await act(async () => {
       result.current.selectCategory('식료품');
-      await waitForAsyncUpdate();
     });
 
     const expectedData = mockProducts.filter(
@@ -154,7 +145,6 @@ describe('useShoppingItemList', () => {
 
     await act(async () => {
       result.current.selectSort('높은 가격순');
-      await waitForAsyncUpdate();
     });
 
     const expectedData = [...mockProducts].sort((a, b) => b.price - a.price);
@@ -171,7 +161,6 @@ describe('useShoppingItemList', () => {
     await act(async () => {
       result.current.selectCategory('패션잡화');
       result.current.selectSort('높은 가격순');
-      await waitForAsyncUpdate();
     });
 
     const expectedData = mockProducts
@@ -190,7 +179,6 @@ describe('useShoppingItemList', () => {
 
     await act(async () => {
       result.current.selectSort('낮은 가격순');
-      await waitForAsyncUpdate();
     });
 
     const expectedData = [...mockProducts].sort((a, b) => a.price - b.price);
@@ -207,13 +195,11 @@ describe('useShoppingItemList', () => {
     // 먼저 특정 카테고리 선택
     await act(async () => {
       result.current.selectCategory('식료품');
-      await waitForAsyncUpdate();
     });
 
     // 전체 카테고리로 변경
     await act(async () => {
       result.current.selectCategory('전체');
-      await waitForAsyncUpdate();
     });
 
     expect(result.current.data).toEqual(mockProducts);
