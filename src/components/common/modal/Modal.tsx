@@ -1,6 +1,7 @@
 import * as S from './Modal.styles';
 import { useEffect } from 'react';
 import Button from '../button/Button';
+import useFocusTrap from '../../../hooks/useFocusTrap';
 
 interface ModalProps {
   isOpen: boolean;
@@ -25,12 +26,14 @@ const Modal = ({ isOpen, onClose, children, title, hideCloseButton = false }: Mo
       document.body.style.overflow = 'auto';
     };
   }, [onClose, isOpen]);
+
+  const { containerRef } = useFocusTrap({ isActive: isOpen });
   return (
     <>
       {isOpen && (
         <>
           <S.Background onClick={onClose} />
-          <S.ModalContainer>
+          <S.ModalContainer ref={containerRef}>
             <S.Title>{title}</S.Title>
             <S.ModalContent>{children}</S.ModalContent>
             {!hideCloseButton && (
