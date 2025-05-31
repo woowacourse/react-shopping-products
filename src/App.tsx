@@ -99,7 +99,7 @@ function App() {
       <Layout>
         <Header title={SHOPPING_MALL_TITLE} onModalOpen={handleModalOpen} />
         {toast.isToast && <Toast message={toast.message} />}
-        {isProductLoading || (isCartLoading && <LoadingSpinner duration={2} />)}
+        {(isProductLoading || isCartLoading) && <LoadingSpinner duration={2} />}
         {!isProductLoading && !isCartLoading && (
           <Section>
             <Title title={PRODUCT_SECTION_TITLE} />
