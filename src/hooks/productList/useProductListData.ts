@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { ProductCategory } from "../types/ProductCategory";
-import { PriceSort } from "../types/Sort";
-import fetchProductList from "../apis/product/productList/fetchProductList";
-import useData from "./useData";
+import { ProductCategory } from "../../types/ProductCategory";
+import { PriceSort } from "../../types/Sort";
+import fetchProductList from "../../apis/product/productList/fetchProductList";
+import useData from "../useData";
 
 const useProductListData = ({
   category,

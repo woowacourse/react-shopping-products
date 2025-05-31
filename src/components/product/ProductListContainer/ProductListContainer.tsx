@@ -3,7 +3,7 @@ import Filter from "../Filter/Filter";
 import Spinner from "../../common/Spinner/Spinner";
 
 import * as Styled from "./ProductListContainer.styled";
-import useProductList from "../../../hooks/useProductList";
+import useProductList from "../../../hooks/productList/useProductList";
 
 function ProductListContainer() {
   const { productList, loading, handleCategory, handleSort } = useProductList();

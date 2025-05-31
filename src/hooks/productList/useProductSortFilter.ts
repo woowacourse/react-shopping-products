@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
-import { PriceSort } from "../types/Sort";
+import { PriceSort } from "../../types/Sort";
 import {
   LOW_PRICE_SORT_KEY,
   PRICE_SORTS_KEYS,
-} from "../constants/filterOptions";
+} from "../../constants/filterOptions";
 
 const contains = <T extends string>(
   value: string,

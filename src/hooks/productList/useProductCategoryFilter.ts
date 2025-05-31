@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { ProductCategory } from "../types/ProductCategory";
-import { ALL_CATEGORY, CATEGORIES } from "../constants/filterOptions";
+import { ProductCategory } from "../../types/ProductCategory";
+import { ALL_CATEGORY, CATEGORIES } from "../../constants/filterOptions";
 
 const contains = <T extends string>(
   value: string,
