@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
-import productData from "./products.json";
-import cartItemData from "./cartItem.json";
+import { mockProductData } from "./products";
+import { mockCartData } from "./cartItem";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const MAX_CART_ITEM_QUANTITY = 50;
@@ -11,7 +11,7 @@ export const handlers = [
     const category = url.searchParams.get("category");
     const sort = url.searchParams.get("sort");
 
-    let filtered = [...productData.content];
+    let filtered = [...mockProductData.content];
 
     if (category) {
       filtered = filtered.filter((item) => item.category === category);
@@ -29,13 +29,15 @@ export const handlers = [
   }),
 
   http.get(`${baseUrl}/cart-items`, () => {
-    return HttpResponse.json(cartItemData);
+    return HttpResponse.json(mockCartData);
   }),
 
   //상품 상세 조회
   http.get(`${baseUrl}/products/:id`, ({ params }) => {
     const { id } = params;
-    const product = productData.content.find((item) => item.id === Number(id));
+    const product = mockProductData.content.find(
+      (item) => item.id === Number(id)
+    );
     if (!product) {
       return HttpResponse.json(
         { message: "Product not found" },
@@ -49,7 +51,7 @@ export const handlers = [
   // 장바구니 상품 목록 조회
   http.get(`${baseUrl}/cart-items/:id`, ({ params }) => {
     const { id } = params;
-    const cartItem = cartItemData.content.find(
+    const cartItem = mockCartData.content.find(
       (item) => item.id === Number(id)
     );
 
@@ -84,10 +86,10 @@ export const handlers = [
     const newCartItem = {
       id: productId,
       quantity,
-      product: productData.content.find((p) => p.id === productId)!,
+      product: mockProductData.content.find((p) => p.id === productId)!,
     };
 
-    cartItemData.content.push(newCartItem);
+    mockCartData.content.push(newCartItem);
     return HttpResponse.json(newCartItem);
   }),
 
@@ -98,7 +100,7 @@ export const handlers = [
 
     const { quantity } = body as { quantity: number };
 
-    const item = cartItemData.content.find((item) => item.id === Number(id));
+    const item = mockCartData.content.find((item) => item.id === Number(id));
     if (!item) {
       return HttpResponse.json(
         { message: "Cart item not found" },
@@ -112,7 +114,7 @@ export const handlers = [
 
   http.delete(`${baseUrl}/cart-items/:id`, ({ params }) => {
     const { id } = params;
-    const targetIndex = cartItemData.content.findIndex(
+    const targetIndex = mockCartData.content.findIndex(
       (item) => item.id === Number(id)
     );
 
@@ -122,7 +124,7 @@ export const handlers = [
         { status: 404 }
       );
     }
-    const deletedItem = cartItemData.content.splice(targetIndex, 1)[0];
+    const deletedItem = mockCartData.content.splice(targetIndex, 1)[0];
 
     return HttpResponse.json(deletedItem);
   }),
