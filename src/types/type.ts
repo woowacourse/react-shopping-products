@@ -35,3 +35,5 @@ export interface CartResponse {
 export type SortKeyType = keyof typeof SORT_PRICE_MAP;
 
 export type CategoryType = '전체' | '식료품' | '패션잡화';
+
+export type SortType = 'asc' | 'desc';

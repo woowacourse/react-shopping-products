@@ -6,15 +6,14 @@ import {
   Detail,
   Price,
   ProductName,
-  SoldoutBakcgound,
+  SoldoutBackground,
   SoldOutText,
 } from './Product.styles';
 import { CartItem, ProductElement } from '../../../types/type';
 import QuantityController from '../QuantityController/QuantityController';
 import { useCartActions } from '../../../hooks/useCartAction';
-import { useCallback } from 'react';
-import { getCartItem } from '../../../api/fetchCart';
 import { useAPI } from '../../../hooks/useAPI';
+import { fetchCartItem } from '../../../utils/getCartItem';
 
 interface ProductProps {
   item: ProductElement;
@@ -23,14 +22,8 @@ interface ProductProps {
 function Product({ item }: ProductProps) {
   const { name, price, imageUrl, quantity } = item;
 
-  const fetchCartItems = useCallback(async () => {
-    return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
-      (res) => res.content
-    );
-  }, []);
-
   const { data: cartList } = useAPI<CartItem[]>({
-    fetcher: fetchCartItems,
+    fetcher: fetchCartItem,
     name: 'cartItems',
   });
 
@@ -50,9 +43,9 @@ function Product({ item }: ProductProps) {
       <ProductImageContainer>
         <ProductImage src={imageUrl} alt={name} />
         {quantity === 0 && (
-          <SoldoutBakcgound>
+          <SoldoutBackground>
             <SoldOutText>품절</SoldOutText>
-          </SoldoutBakcgound>
+          </SoldoutBackground>
         )}
       </ProductImageContainer>
       <Detail>

@@ -1,21 +1,15 @@
-import { addCart, patchCart, removeCart, getCartItem } from '../api/fetchCart';
+import { addCart, patchCart, removeCart } from '../api/fetchCart';
 import { useToastContext } from '../context/ToastContext';
 import { CartItem, ProductElement } from '../types/type';
-import { useCallback } from 'react';
 import { useAPI } from './useAPI';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
+import { fetchCartItem } from '../utils/getCartItem';
 
 export const useCartActions = () => {
   const { addToast } = useToastContext();
 
-  const fetchCartItems = useCallback(async () => {
-    return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
-      (res) => res.content
-    );
-  }, []);
-
   const { data: cartList, refetch } = useAPI<CartItem[]>({
-    fetcher: fetchCartItems,
+    fetcher: fetchCartItem,
     name: 'cartItems',
   });
 

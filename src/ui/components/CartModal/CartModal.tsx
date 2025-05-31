@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   CART_MODAL_CLOSE_BUTTON_TEXT,
   CART_MODAL_TITLE,
@@ -15,23 +15,17 @@ import {
   TotalPriceText,
 } from './CartModal.styles';
 import CartItemRow from '../CartItemRow/CartItemRow';
-import { getCartItem } from '../../../api/fetchCart';
 import { useAPI } from '../../../hooks/useAPI';
 import { CartItem } from '../../../types/type';
+import { fetchCartItem } from '../../../utils/getCartItem';
 
 interface CartModalProps {
   onClose: () => void;
 }
 
 function CartModal({ onClose }: CartModalProps) {
-  const fetchCartItems = useCallback(async () => {
-    return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
-      (res) => res.content
-    );
-  }, []);
-
   const { data: cartList } = useAPI<CartItem[]>({
-    fetcher: fetchCartItems,
+    fetcher: fetchCartItem,
     name: 'cartItems',
   });
 

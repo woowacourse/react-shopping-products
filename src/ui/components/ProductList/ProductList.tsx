@@ -1,10 +1,10 @@
 import Product from '../Product/Product';
 import { CategoryType, ProductElement, SortKeyType } from '../../../types/type';
 import { List } from './ProductList.styles';
-import { useCallback, useMemo } from 'react';
-import { getProduct } from '../../../api/fetchProduct';
+import { useMemo } from 'react';
 import { useAPI } from '../../../hooks/useAPI';
 import { SORT_PRICE_MAP } from '../../../constants/productConfig';
+import { fetchProductList } from '../../../utils/getProductList';
 
 interface ProductListProps {
   category: CategoryType;
@@ -16,14 +16,8 @@ function ProductList({ category, sortBy }: ProductListProps) {
     return SORT_PRICE_MAP[sortBy];
   }, [sortBy]);
 
-  const fetchProductList = useCallback(async () => {
-    return await getProduct({ page: 0, size: 50, sortBy: mappedSortType }).then(
-      (res) => res.content
-    );
-  }, [mappedSortType]);
-
   const { data: productList } = useAPI<ProductElement[]>({
-    fetcher: fetchProductList,
+    fetcher: () => fetchProductList(mappedSortType),
     name: `productList-${mappedSortType}`,
   });
 

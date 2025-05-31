@@ -17,7 +17,7 @@ import {
   PRODUCT_SECTION_TITLE,
   SHOPPING_MALL_TITLE,
 } from './constants/shopInfoConfig';
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useToastContext } from './context/ToastContext';
 import Modal from './ui/components/Modal/Modal';
 import CartModal from './ui/components/CartModal/CartModal';
@@ -27,9 +27,9 @@ import {
   ProductElement,
   SortKeyType,
 } from './types/type';
-import { getCartItem } from './api/fetchCart';
 import { useAPI } from './hooks/useAPI';
-import { getProduct } from './api/fetchProduct';
+import { fetchCartItem } from './utils/getCartItem';
+import { fetchProductList } from './utils/getProductList';
 
 function App() {
   const { toastQueue, removeToast } = useToastContext();
@@ -42,25 +42,13 @@ function App() {
     return SORT_PRICE_MAP[sortBy];
   }, [sortBy]);
 
-  const fetchProductList = useCallback(async () => {
-    return await getProduct({ page: 0, size: 50, sortBy: mappedSortType }).then(
-      (res) => res.content
-    );
-  }, [mappedSortType]);
-
   const { isLoading: isProductLoading } = useAPI<ProductElement[]>({
-    fetcher: fetchProductList,
+    fetcher: () => fetchProductList(mappedSortType),
     name: `productList-${mappedSortType}`,
   });
 
-  const fetchCartItems = useCallback(async () => {
-    return await getCartItem({ page: 0, size: 50, sortBy: 'desc' }).then(
-      (res) => res.content
-    );
-  }, []);
-
   const { isLoading: isCartLoading } = useAPI<CartItem[]>({
-    fetcher: fetchCartItems,
+    fetcher: fetchCartItem,
     name: 'cartItems',
   });
 
