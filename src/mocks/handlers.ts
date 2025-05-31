@@ -145,8 +145,6 @@ export const handlers = [
         product: { ...selectedProduct },
       };
 
-      console.log(cartItems);
-
       cartItems.push(newCartItem);
       return HttpResponse.json(
         { message: "장바구니에 상품이 추가되었습니다." },

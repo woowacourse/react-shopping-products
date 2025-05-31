@@ -17,7 +17,8 @@ interface CartModalProps {
 }
 
 function CartModal({ isOpen, handleClose }: CartModalProps) {
-  const { cartItemsId, addCartItemId, removeCartItemId } = useCartItemsId();
+  const { cartItemsId, addCartItemId, patchCartItemId, removeCartItemId } =
+    useCartItemsId();
   const { state, productList } = useProductList({
     category: "전체",
     sort: "id,asc",
@@ -39,7 +40,7 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
     quantity: number
   ) => {
     const $product = event.currentTarget.closest("li");
-    $product && addCartItemId($product.id, Math.max(quantity - 1, 0));
+    $product && patchCartItemId($product.id, Math.max(quantity - 1, 0));
   };
 
   const handleIncreaseProductQuantity = async (
@@ -47,7 +48,8 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
     quantity: number
   ) => {
     const $product = event.currentTarget.closest("li");
-    $product && addCartItemId($product.id, quantity + 1);
+
+    $product && patchCartItemId($product.id, quantity + 1);
   };
 
   const handleRemoveProduct = async (

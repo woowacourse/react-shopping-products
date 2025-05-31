@@ -11,18 +11,29 @@ import * as Styled from "./Product.styled";
 import defaultImage from "/defaultImage.png";
 
 function Product({ product, isInCart }: ProductProps) {
-  const { state, cartItemsId, addCartItemId } = useCartItemsId();
+  const { state, cartItemsId, addCartItemId, patchCartItemId } =
+    useCartItemsId();
 
   const cartItemId = cartItemsId.find(
     (item) => item.productId === product.id.toString()
   );
+
+  const handleAddProduct = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const $product = event.currentTarget.closest("li");
+    $product && addCartItemId($product.id, 1);
+  };
 
   const handleIncreaseProductQuantity = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const $product = event.currentTarget.closest("li");
     $product &&
-      addCartItemId($product.id, cartItemId ? cartItemId.cartQuantity + 1 : 1);
+      patchCartItemId(
+        cartItemId ? cartItemId.cartId.toString() : "",
+        cartItemId ? cartItemId.cartQuantity + 1 : 1
+      );
   };
 
   const handleDecreaseProductQuantity = async (
@@ -30,13 +41,16 @@ function Product({ product, isInCart }: ProductProps) {
   ) => {
     const $product = event.currentTarget.closest("li");
     $product &&
-      addCartItemId($product.id, cartItemId ? cartItemId.cartQuantity - 1 : 0);
+      patchCartItemId(
+        cartItemId ? cartItemId.cartId.toString() : "",
+        cartItemId ? cartItemId.cartQuantity - 1 : 0
+      );
   };
 
   return (
     <li id={product.id.toString()}>
       <Styled.Container>
-        {product.quantity === 0 && <Styled.SoldOut> 품절</Styled.SoldOut>}
+        {product.quantity === 0 && <Styled.SoldOut>품절</Styled.SoldOut>}
         <Styled.Image
           src={product.imageUrl ?? defaultImage}
           onError={(e) => (e.currentTarget.src = defaultImage)}
@@ -62,7 +76,7 @@ function Product({ product, isInCart }: ProductProps) {
             )}
             {!isInCart && (
               <AddButton
-                handleAddProduct={handleIncreaseProductQuantity}
+                handleAddProduct={handleAddProduct}
                 disabled={!state.isSuccess}
               />
             )}

@@ -8,6 +8,7 @@ import { useErrorMessageContext } from "../context/ErrorMessageContext";
 import { useCartItemsIdContext } from "../context/CartItemsContext";
 
 import CartItem from "../types/CartItem";
+import fetchPatchProduct from "../apis/product/fetchPatchProduct";
 
 const INIT_STATE = {
   isLoading: false,
@@ -92,13 +93,6 @@ const useCartItemsId = () => {
   };
 
   const addCartItemId = async (id: string, quantity: number) => {
-    dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
-    if (cartItemsId.length >= 50) {
-      handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
-      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-      return;
-    }
-
     try {
       dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
       await fetchAddProduct({
@@ -123,6 +117,39 @@ const useCartItemsId = () => {
       dispatch({ type: ACTION_TYPE.FETCH_FAIL });
     }
 
+    dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
+  };
+
+  const patchCartItemId = async (id: string, quantity: number) => {
+    dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
+    if (cartItemsId.length >= 50) {
+      handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
+      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
+      return;
+    }
+
+    try {
+      dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
+      await fetchPatchProduct({
+        method: "PATCH",
+        params: {
+          productId: id,
+          quantity,
+        },
+      });
+      dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
+    } catch {
+      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
+      handleErrorMessage("장바구니의 수량을 변경하는데 실패했습니다.");
+    }
+    try {
+      dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
+      await fetchData();
+      dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
+    } catch (error) {
+      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
+      handleErrorMessage("장바구니 데이터를 불러오지 못했습니다.");
+    }
     dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
   };
 
@@ -165,6 +192,7 @@ const useCartItemsId = () => {
     state,
     cartItemsId,
     addCartItemId,
+    patchCartItemId,
     removeCartItemId,
   };
 };
