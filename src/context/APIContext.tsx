@@ -3,7 +3,7 @@ import { createContext, useCallback, useState } from "react";
 interface APIContextProps {
   data: Record<string, unknown>;
   setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
-  isLoading: Record<string, unknown>;
+  isLoading: Record<string, boolean>;
   setIsLoading: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
   error: Record<string, string | null>;
   setError: React.Dispatch<React.SetStateAction<Record<string, string | null>>>;
