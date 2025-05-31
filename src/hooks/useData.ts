@@ -1,5 +1,5 @@
 import { APIContext } from "@/context/APIContext";
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 
 interface UseDataProps<T> {
   fetchFn: () => Promise<T>;
@@ -16,6 +16,8 @@ const useData = <T>({ fetchFn, name }: UseDataProps<T>) => {
   const { data, setData, isLoading, setIsLoading, setRefetchFunction } =
     context;
 
+  const hasdRefetch = useRef(false);
+
   const fetchData = useCallback(async () => {
     setIsLoading((prev) => ({ ...prev, [name]: true }));
     try {
@@ -29,12 +31,17 @@ const useData = <T>({ fetchFn, name }: UseDataProps<T>) => {
   }, [fetchFn, name, setData, setIsLoading]);
 
   useEffect(() => {
-    setRefetchFunction(name, fetchData);
+    if (!hasdRefetch.current) {
+      setRefetchFunction(name, fetchData);
+      hasdRefetch.current = true;
+    }
   }, [fetchData, name, setRefetchFunction]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (data[name] === undefined) {
+      fetchData();
+    }
+  }, [data, name, fetchData]);
 
   return {
     data: data[name] as T,
