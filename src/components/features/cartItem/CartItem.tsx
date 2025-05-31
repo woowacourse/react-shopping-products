@@ -1,8 +1,8 @@
 import * as S from './CardItem.styles';
-import CounterControl from '../@common/counterControl/CounterControl';
-import type { CartItemType } from '../../types/data';
-import useCartCount from '../../hooks/useCartCount';
-import { handleImageError } from '../../util/handleImageError';
+import CounterControl from '../../@common/counterControl/CounterControl';
+import type { CartItemType } from '../../../types/data';
+import useCartCount from '../../../hooks/features/useCartCount';
+import { handleImageError } from '../../../util/handleImageError';
 
 interface CartItemProps {
   cartItem: CartItemType;

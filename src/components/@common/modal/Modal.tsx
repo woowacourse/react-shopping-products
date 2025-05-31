@@ -1,7 +1,7 @@
 import * as S from './Modal.styles';
 import { useEffect } from 'react';
 import Button from '../button/Button';
-import useFocusTrap from '../../../hooks/useFocusTrap';
+import useFocusTrap from '../../../hooks/@common/useFocusTrap';
 import ModalPortal from './ModalPortal';
 
 interface ModalProps {

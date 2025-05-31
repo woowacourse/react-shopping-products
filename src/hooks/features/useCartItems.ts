@@ -2,10 +2,10 @@ import {
   addCartItems,
   removeCartItems,
   updateCartItemQuantity,
-} from '../services/cartItemServices';
-import tryApiCall from '../util/tryApiCall';
-import type { CartItemType } from '../types/data';
-import type { DataResourceType } from '../types/data';
+} from '../../services/cartItemServices';
+import tryApiCall from '../../util/tryApiCall';
+import type { CartItemType } from '../../types/data';
+import type { DataResourceType } from '../../types/data';
 
 interface UseCartItemsProps {
   dataResource: DataResourceType<CartItemType[]>;

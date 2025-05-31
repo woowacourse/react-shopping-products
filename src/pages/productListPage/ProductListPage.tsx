@@ -1,6 +1,6 @@
 import ErrorToast from '../../components/@common/errorToast/ErrorToast.tsx';
-import ProductItem from '../../components/productItem/ProductItem';
-import Select from '../../components/select/Select';
+import ProductItem from '../../components/features/productItem/ProductItem.tsx';
+import Select from '../../components/@common/select/Select';
 import * as P from './ProductListPage.styles.tsx';
 import useDataContext from '../../hooks/useDataContext';
 import {
@@ -9,10 +9,10 @@ import {
   PRODUCT_LIST_ITEM_COUNT,
 } from '../../constants/systemConstants';
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
-import useProductHandler from '../../hooks/useProductHandler.ts';
+import useProductHandler from '../../hooks/features/useProductHandler';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
 import { getCountInCart } from '../../util/cartUtils';
-import useCartItems from '../../hooks/useCartItems';
+import useCartItems from '../../hooks/features/useCartItems';
 import ErrorFallBack from '../../components/@common/errorFallBack/ErrorFallBack.tsx';
 import { DEFAULT_ERROR_MESSAGE } from '../../constants/errorMessages';
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { CATEGORY_OPTIONS, SELECT_SORT_OPTIONS } from '../constants/systemConstants';
-import type { ProductItemType, DataResourceType } from '../types/data';
+import { CATEGORY_OPTIONS, SELECT_SORT_OPTIONS } from '../../constants/systemConstants';
+import type { ProductItemType, DataResourceType } from '../../types/data';
 
 interface ProductListProps {
   dataResource: DataResourceType<ProductItemType[], [string, string]>;

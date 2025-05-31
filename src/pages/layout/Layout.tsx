@@ -1,14 +1,14 @@
 import * as S from './Layout.styles';
 import { Outlet } from 'react-router-dom';
 import Header from '../../components/header/Header';
-import useData from '../../hooks/useData';
+import useData from '../../hooks/@common/useData';
 import { getCartItems } from '../../services/cartItemServices';
 import { getProducts } from '../../services/productServices';
 import { useState } from 'react';
 import { ErrorMessageProvider } from '../../context/ErrorMessageContext';
-import useCartItems from '../../hooks/useCartItems';
+import useCartItems from '../../hooks/features/useCartItems';
 import { DataProvider } from '../../context/DataContext';
-import CartModal from '../../components/cartModal/CartModal';
+import CartModal from '../../components/features/cartModal/CartModal';
 import type { CartItemType, ProductItemType } from '../../types/data';
 import { CATEGORY_OPTIONS, SELECT_SORT_OPTIONS } from '../../constants/systemConstants';
 import {
@@ -52,12 +52,12 @@ const Layout = () => {
     handleErrorMessage,
   });
 
-  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-  const handleCartModalOpen = () => {
-    setIsCartModalOpen(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
   };
-  const handleCartModalClose = () => {
-    setIsCartModalOpen(false);
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -68,11 +68,11 @@ const Layout = () => {
         isToastVisible={isToastVisible}
       >
         <S.LayoutContainer>
-          <Header onCartModalOpen={handleCartModalOpen} />
+          <Header onCartModalOpen={handleModalOpen} />
           <Outlet />
           <CartModal
-            isCartModalOpen={isCartModalOpen}
-            onModalClose={handleCartModalClose}
+            isCartModalOpen={isModalOpen}
+            onModalClose={handleModalClose}
             onAddCartItem={handleAddCartItem}
             onRemoveCartItem={handleRemoveCartItem}
             onUpdateCartItem={handleUpdateCartItem}

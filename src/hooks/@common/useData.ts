@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { DataResourceType } from '../types/data';
-import type { LoadingStateType } from '../types/types';
+import type { DataResourceType } from '../../types/data';
+import type { LoadingStateType } from '../../types/types';
 
 interface UseDataProps<T, A extends unknown[]> {
   fetchFunc: (...args: A) => Promise<T>;

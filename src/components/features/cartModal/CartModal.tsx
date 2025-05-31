@@ -1,8 +1,8 @@
-import Modal from '../@common/modal/Modal';
+import Modal from '../../@common/modal/Modal';
 import CartItem from '../cartItem/CartItem';
-import type { CartItemType } from '../../types/data';
-import useDataContext from '../../hooks/useDataContext';
-import { EMPTY_CART_MESSAGE } from '../../constants/errorMessages';
+import type { CartItemType } from '../../../types/data';
+import useDataContext from '../../../hooks/useDataContext';
+import { EMPTY_CART_MESSAGE } from '../../../constants/errorMessages';
 
 interface CartModalProps {
   isCartModalOpen: boolean;

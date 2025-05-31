@@ -1,4 +1,4 @@
-import type { ProductItemType } from '../types/data';
+import type { ProductItemType } from '../../types/data';
 
 interface UseCartCountProps {
   cartInCount: number;
