@@ -30,6 +30,7 @@ export const dropdownListStyle = css`
 
   position: absolute;
   top: 100%;
+  z-index: 10000;
 `;
 
 export const dropdownItemStyle = css`
@@ -42,4 +43,12 @@ export const dropdownItemStyle = css`
   &:hover {
     background: ${theme.color.gray1};
   }
+`;
+
+export const dropdownArrowIconStyle = (isOpen: boolean) => css`
+  transform: ${isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
+  transition: transform 0.3s ease;
+
+  width: 1.5rem;
+  height: 1.5rem;
 `;

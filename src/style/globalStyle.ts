@@ -34,6 +34,7 @@ const GlobalStyle = css`
   }
 
   #root {
+    position: relative;
     width: 100%;
     min-width: var(--min-width);
     max-width: var(--max-width);

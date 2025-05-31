@@ -1,11 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 
-export default defineConfig({
-  base: '/react-shopping-products/',
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/react-shopping-products/' : '/',
   plugins: [
     react({
       jsxImportSource: '@emotion/react',
     }),
   ],
-});
+  server: {
+    port: 5173,
+  },
+}));

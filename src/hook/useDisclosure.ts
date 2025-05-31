@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 const useDisclosure = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const open = () => {
+  const open = useCallback(() => {
     setIsOpen(true);
-  };
+  }, []);
 
-  const close = () => {
+  const close = useCallback(() => {
     setIsOpen(false);
-  };
+  }, []);
 
-  const toggle = () => {
+  const toggle = useCallback(() => {
     setIsOpen((prev) => !prev);
-  };
+  }, []);
 
   return { isOpen, open, close, toggle };
 };

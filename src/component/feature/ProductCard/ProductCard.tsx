@@ -7,32 +7,68 @@ import {
   productCardContentStyle,
   productCardImageContainerStyle,
   productCardImageStyle,
+  productCardSoldOutStyle,
   productCardStyle,
 } from './ProductCard.styles';
 import { CartItem, Product } from '../../../types/common';
-import { IconAddCart, IconRemoveCart } from '../../../asset';
+import { IconAddCart } from '../../../asset';
 import { useContext } from 'react';
 import CartContext from '../../../context/cartContext/cartContext';
+import CartController from '../CartController/CartController';
+import { isValidImageUrl } from '../../../util/isValidImageUrl';
 
 interface ProductCardProps extends Omit<Product, 'category'> {}
 
-const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
-  const { cartData, addCart, removeCart } = useContext(CartContext);
+const ProductCard = ({
+  id,
+  name,
+  price,
+  imageUrl,
+  quantity,
+}: ProductCardProps) => {
+  const { cartData, addCart, increaseCart, decreaseCart } =
+    useContext(CartContext);
+
+  const newImageUrl = isValidImageUrl(imageUrl)
+    ? imageUrl
+    : './image/default.jpeg';
+
+  const productCartInfo = cartData.find(
+    (item: CartItem) => item.product.id === id
+  );
+
+  const productCartQuantity = productCartInfo?.quantity;
 
   const inCart = cartData.some((item: CartItem) => item.product.id === id);
 
-  const handleClick = async (productId: number) => {
-    if (inCart) {
-      removeCart(productId);
-    } else {
-      addCart(productId);
-    }
+  const handleAddClick = async (productId: number) => {
+    addCart(productId);
+  };
+
+  const handleIncreaseClick = () => {
+    if (!productCartInfo) return;
+    increaseCart(
+      productCartInfo.id,
+      productCartInfo.quantity + 1,
+      productCartInfo.product.id
+    );
+  };
+
+  const handleDecreaseClick = () => {
+    if (!productCartInfo) return;
+
+    decreaseCart(productCartInfo.id, productCartInfo.quantity - 1);
   };
 
   return (
     <section css={productCardStyle}>
       <div css={productCardImageContainerStyle}>
-        <img css={productCardImageStyle} src={imageUrl} alt={name} />
+        {quantity === 0 && (
+          <div css={productCardSoldOutStyle}>
+            <Text variant="title">품절</Text>
+          </div>
+        )}
+        <img css={productCardImageStyle} src={newImageUrl} alt={name} />
       </div>
       <div css={productCardContentStyle}>
         <div css={productCardContentHeaderStyle}>
@@ -41,14 +77,19 @@ const ProductCard = ({ id, name, price, imageUrl }: ProductCardProps) => {
         </div>
         <div css={productCardButtonContainerStyle}>
           {inCart ? (
-            <Button variant="gray" onClick={() => handleClick(id)}>
-              <img src={IconRemoveCart} alt="remove cart" />
-              빼기
-            </Button>
+            <CartController
+              quantity={productCartQuantity ?? 0}
+              onDecreaseCartClick={handleDecreaseClick}
+              onIncreaseCartClick={handleIncreaseClick}
+            />
           ) : (
-            <Button variant="default" onClick={() => handleClick(id)}>
+            <Button
+              variant={quantity === 0 ? 'gray' : 'default'}
+              onClick={() => handleAddClick(id)}
+              disabled={quantity === 0}
+            >
               <img src={IconAddCart} alt="add cart" />
-              담기
+              {quantity === 0 ? '품절' : '담기'}
             </Button>
           )}
         </div>

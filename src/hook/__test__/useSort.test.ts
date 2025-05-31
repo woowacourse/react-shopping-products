@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
-import useSort from './useSort';
+import useSort from '../useSort';
 
 describe('useSort', () => {
   it('초기 정렬은 오름차순이다.', () => {

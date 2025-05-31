@@ -35,4 +35,14 @@ export const cartApi = {
       headers: defaultHeaders,
     });
   },
+
+  patchCartItemQuantity: async (cartItemId: number, quantity: number) => {
+    return apiRequest(`/cart-items/${cartItemId}`, {
+      method: 'PATCH',
+      body: {
+        quantity,
+      },
+      headers: defaultHeaders,
+    });
+  },
 };
