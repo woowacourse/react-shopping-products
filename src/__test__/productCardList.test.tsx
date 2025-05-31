@@ -6,14 +6,12 @@ import { ProductPageResponse } from "../types/response.types";
 import { useCartProduct } from "../hooks/useCartProduct";
 import { CartProductContextType } from "../hooks/useCartProduct";
 
-vi.mock("../hooks/useData");
+vi.mock("../hooks/useCartProduct");
 
 const mockedUseData =
   useCartProduct as unknown as jest.Mock<CartProductContextType>;
 
 describe("ProductCardList 컴포넌트", () => {
-  const setErrorTrue = vi.fn();
-
   it("20개의 상품을 렌더링해야 한다", async () => {
     const mockedProducts: ProductPageResponse = {
       content: Array.from({ length: 20 }, (_, i) => ({
@@ -36,7 +34,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList setErrorTrue={setErrorTrue} />);
+    render(<ProductCardList />);
 
     const headings = await screen.findAllByRole("heading", { level: 3 });
     expect(headings).toHaveLength(20);
@@ -82,7 +80,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList setErrorTrue={setErrorTrue} />);
+    render(<ProductCardList />);
 
     const prices = await screen.findAllByText(/원$/);
     const numbers = prices.map((el) =>
@@ -131,7 +129,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList setErrorTrue={setErrorTrue} />);
+    render(<ProductCardList />);
 
     const names = await screen.findAllByRole("heading", { level: 3 });
     const result = names.map((el) => el.textContent);
@@ -147,7 +145,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList setErrorTrue={setErrorTrue} />);
+    render(<ProductCardList />);
     expect(screen.getByTestId("product-skeleton")).toBeInTheDocument();
   });
 
@@ -175,7 +173,7 @@ describe("ProductCardList 컴포넌트", () => {
       setCartItemIds: vi.fn(),
     });
 
-    render(<ProductCardList setErrorTrue={setErrorTrue} />);
+    render(<ProductCardList />);
 
     const soldOutText = await screen.findByText("품절");
     expect(soldOutText).toBeInTheDocument();

@@ -1,99 +1,110 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import CartButton from "../components/cartButton/CartButton";
-import * as domain from "../components/cartButton/cartButton.domain";
 
-vi.mock("../hooks/useData", () => ({
-  useData: () => ({
+const mockAddCartItem = vi.fn();
+const mockHandlePlus = vi.fn();
+const mockHandleMinus = vi.fn();
+const mockSetErrorTrue = vi.fn();
+
+vi.mock("../../hooks/useCartProduct", () => ({
+  useCartProduct: () => ({
     setCartItemIds: vi.fn(),
     fetchCartProducts: vi.fn(),
   }),
 }));
 
+vi.mock("../../hooks/useError", () => ({
+  useError: () => ({
+    setErrorTrue: mockSetErrorTrue,
+  }),
+}));
+
+vi.mock("../../hooks/useCartItemActions", () => ({
+  useCartItemActions: () => ({
+    handlePlus: mockHandlePlus,
+    handleMinus: mockHandleMinus,
+  }),
+}));
+
+vi.mock("../api/addCartItem", () => ({
+  addCartItem: mockAddCartItem,
+}));
+
 describe("CartButton", () => {
   const defaultProps = {
+    isToggled: false,
+    setToggle: vi.fn(),
     productId: 4,
     cartId: 10,
     cartAmount: 1,
     productQuantity: 10,
     quantity: 1,
-    setErrorTrue: vi.fn(),
-    setToggle: vi.fn(),
   };
 
-  it("담기 버튼 클릭 시 addItemToCart 호출", async () => {
-    const mockAdd = vi
-      .spyOn(domain, "addItemToCart")
-      .mockResolvedValue(undefined);
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-    render(<CartButton {...defaultProps} isToggled={false} />);
+  it("담기 버튼이 렌더링되어야 한다", () => {
+    render(<CartButton {...defaultProps} />);
+    expect(screen.getByText("담기")).toBeInTheDocument();
+  });
 
-    const button = await screen.findByText("담기");
+  it("담기 버튼 클릭 시 addCartItem 호출", () => {
+    render(<CartButton {...defaultProps} />);
+
+    const button = screen.getByText("담기");
     fireEvent.click(button);
 
-    expect(mockAdd).toBeCalled();
+    expect(mockAddCartItem).toHaveBeenCalled();
   });
 
-  it("+ 버튼 클릭 시 PlusItem 호출", async () => {
-    const mockPlus = vi.spyOn(domain, "PlusItem").mockResolvedValue(undefined);
+  it("isToggled가 true일 때 ControlButton이 렌더링되어야 한다", () => {
+    render(<CartButton {...defaultProps} isToggled={true} />);
+    expect(screen.getByRole("button")).toBeInTheDocument();
+  });
 
+  it("+ 버튼 클릭 시 handlePlus 호출", () => {
     render(<CartButton {...defaultProps} isToggled={true} />);
 
-    const plusButton = await screen.findByText("+");
+    const plusButton = screen.getByText("+");
     fireEvent.click(plusButton);
 
-    expect(mockPlus).toBeCalled();
+    expect(mockHandlePlus).toHaveBeenCalled();
   });
 
-  it("- 버튼 클릭 시 MinusItem 호출", async () => {
-    const mockMinus = vi
-      .spyOn(domain, "MinusItem")
-      .mockResolvedValue(undefined);
-
+  it("- 버튼 클릭 시 handleMinus 호출", () => {
     render(<CartButton {...defaultProps} isToggled={true} quantity={2} />);
 
-    const minusButton = await screen.findByText("-");
+    const minusButton = screen.getByText("-");
     fireEvent.click(minusButton);
 
-    expect(mockMinus).toBeCalled();
+    expect(mockHandleMinus).toHaveBeenCalled();
   });
 
-  it("수량 1에서 감소 버튼 클릭 시 removeItemToCart 호출", async () => {
-    const mockRemove = vi
-      .spyOn(domain, "removeItemToCart")
-      .mockResolvedValue(undefined);
-
+  it("수량 1에서 감소 버튼 클릭 시 handleMinus 호출", () => {
     render(<CartButton {...defaultProps} isToggled={true} quantity={1} />);
 
-    const minusButton = await screen.findByText("-");
+    const minusButton = screen.getByText("-");
     fireEvent.click(minusButton);
 
-    expect(mockRemove).toBeCalled();
+    expect(mockHandleMinus).toHaveBeenCalled();
   });
-  it("최대 수량에서 + 버튼 클릭 시 setErrorTrue 호출", async () => {
-    const setErrorTrue = vi.fn();
 
-    vi.spyOn(domain, "PlusItem").mockImplementation(
-      async ({ quantity, productQuantity, setErrorTrue }) => {
-        if ((quantity ?? 0) >= productQuantity) {
-          setErrorTrue("CART_ADD");
-        }
-      }
-    );
-
+  it("최대 수량에서 + 버튼 클릭 시 setErrorTrue 호출", () => {
     render(
       <CartButton
         {...defaultProps}
         isToggled={true}
         quantity={10}
         productQuantity={10}
-        setErrorTrue={setErrorTrue}
       />
     );
 
-    const plusButton = await screen.findByText("+");
+    const plusButton = screen.getByText("+");
     fireEvent.click(plusButton);
 
-    expect(setErrorTrue).toHaveBeenCalledWith("CART_ADD");
+    expect(mockSetErrorTrue).toHaveBeenCalledWith("CART_ADD");
   });
 });
