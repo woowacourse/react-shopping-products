@@ -1,56 +1,38 @@
 import { deleteCartItems, getCartItems, patchCartItems, postCartItems } from "../apis/cartItem";
 import { GetCartItemsResponse } from "../types/cartItem";
-import { useErrorMessage, useLoading } from "../contexts";
+import { useErrorMessage } from "../contexts";
 import useQuery from "./common/useQuery";
+import useMutation from "./common/useMutation";
 
 const useCartItems = () => {
   const { setErrorMessage } = useErrorMessage();
-  const { startMutating, endMutating } = useLoading();
 
   const { data, refetch } = useQuery<GetCartItemsResponse>({
     queryKey: "/cart-items",
     fetchFn: () => getCartItems({ page: 0, size: 20 }),
   });
 
-  const addCart = async (id: number) => {
-    startMutating();
-    try {
-      await postCartItems({ quantity: 1, productId: id });
-      await refetch();
-    } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
-    } finally {
-      endMutating();
-    }
-  };
+  const { mutate: addCart } = useMutation((id: number) => postCartItems({ productId: id, quantity: 1 }), {
+    onSuccess: async () => await refetch(),
+    onError: (e) => setErrorMessage(e.message),
+  });
 
-  const updateCart = async (id: number, quantity: number) => {
-    startMutating();
-    try {
-      await patchCartItems({ id, quantity });
-      await refetch();
-    } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
-    } finally {
-      endMutating();
-    }
-  };
+  const { mutate: updateCart } = useMutation(
+    (variables: { id: number; quantity: number }) => patchCartItems(variables),
+    {
+      onSuccess: async () => await refetch(),
+      onError: (e) => setErrorMessage(e.message),
+    },
+  );
 
-  const removeCart = async (id: number) => {
-    startMutating();
-    try {
-      await deleteCartItems({ id });
-      await refetch();
-    } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
-    } finally {
-      endMutating();
-    }
-  };
+  const { mutate: removeCart } = useMutation((id: number) => deleteCartItems({ id }), {
+    onSuccess: async () => await refetch(),
+    onError: (e) => setErrorMessage(e.message),
+  });
 
   const handleCartItem = (type: "add" | "update" | "remove", id: number, quantity?: number) => {
     if (type === "add") return addCart(id);
-    if (type === "update") return updateCart(id, quantity!);
+    if (type === "update") return updateCart({ id, quantity: quantity! });
     return removeCart(id);
   };
 
