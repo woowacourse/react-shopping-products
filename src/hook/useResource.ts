@@ -29,7 +29,6 @@ export default function useResource<T>(
     data: options.initialData || null,
     isLoading: false,
     error: null,
-    timestamp: null,
   };
 
   const fetchResource = useCallback(async () => {

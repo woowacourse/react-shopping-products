@@ -4,7 +4,6 @@ export interface ResourceState<T> {
   data: T | null;
   isLoading: boolean;
   error: Error | null;
-  timestamp: number | null;
 }
 
 interface DataState {
@@ -31,7 +30,6 @@ function dataReducer(state: DataState, action: DataAction): DataState {
             data: state.resources[action.resourceId]?.data || null,
             isLoading: true,
             error: null,
-            timestamp: state.resources[action.resourceId]?.timestamp || null,
           },
         },
       };
@@ -44,7 +42,6 @@ function dataReducer(state: DataState, action: DataAction): DataState {
             data: action.data,
             isLoading: false,
             error: null,
-            timestamp: Date.now(),
           },
         },
       };
@@ -57,7 +54,6 @@ function dataReducer(state: DataState, action: DataAction): DataState {
             data: state.resources[action.resourceId]?.data || null,
             isLoading: false,
             error: action.error,
-            timestamp: state.resources[action.resourceId]?.timestamp || null,
           },
         },
       };
