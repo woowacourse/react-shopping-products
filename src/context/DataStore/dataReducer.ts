@@ -19,7 +19,6 @@ export const dataReducer = (state: DataStore, action: DataAction): DataStore => 
           data: action.data,
           loading: false,
           error: null,
-          lastFetch: Date.now(),
         },
       };
 

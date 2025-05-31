@@ -7,7 +7,6 @@ export type APIState<T> = {
   data: T | null;
   loading: boolean;
   error: string | null;
-  lastFetch?: number;
 };
 
 export type ProductsAPIState = APIState<ProductDTOType[]>;
