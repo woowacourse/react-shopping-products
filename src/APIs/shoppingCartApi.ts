@@ -6,14 +6,14 @@ import {
 import apiRequestWithAuth from './apiRequestWithAuth';
 
 async function getShoppingCart(endpoint: string): Promise<CartItem[]> {
-  const response = await apiRequestWithAuth<null>({
+  const response = await apiRequestWithAuth<null, CartItem[]>({
     endpoint: `${endpoint}`,
   });
   return response;
 }
 
 async function addShoppingCart(request: ShoppingCartRequest): Promise<void> {
-  await apiRequestWithAuth<ShoppingCartRequestBody>({
+  await apiRequestWithAuth<ShoppingCartRequestBody, void>({
     endpoint: request.endpoint,
     method: 'POST',
     body: request.requestBody,
@@ -28,7 +28,7 @@ async function deleteShoppingCart(request: ShoppingCartRequest): Promise<void> {
 }
 
 async function updateShoppingCart(request: ShoppingCartRequest): Promise<void> {
-  await apiRequestWithAuth<ShoppingCartRequestBody>({
+  await apiRequestWithAuth<ShoppingCartRequestBody, void>({
     endpoint: `${request.endpoint}`,
     method: 'PATCH',
     body: request.requestBody,
