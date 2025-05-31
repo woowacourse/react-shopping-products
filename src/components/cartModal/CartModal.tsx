@@ -2,6 +2,7 @@ import Modal from '../@common/modal/Modal';
 import CartItem from '../cartItem/CartItem';
 import type { CartItemType } from '../../types/data';
 import useDataContext from '../../hooks/useDataContext';
+import { EMPTY_CART_MESSAGE } from '../../constants/errorMessages';
 
 interface CartModalProps {
   isCartModalOpen: boolean;
@@ -18,15 +19,19 @@ const CartModal = (props: CartModalProps) => {
 
   return (
     <Modal isOpen={isCartModalOpen} onClose={onModalClose} title="장바구니">
-      {cartItemsResource.data?.map((cartItem: CartItemType) => (
-        <CartItem
-          key={cartItem.product.id}
-          cartItem={cartItem}
-          onAddCartItem={onAddCartItem}
-          onRemoveCartItem={onRemoveCartItem}
-          onUpdateCartItem={onUpdateCartItem}
-        />
-      ))}
+      {cartItemsResource.data?.length === 0 ? (
+        <h2>{EMPTY_CART_MESSAGE}</h2>
+      ) : (
+        cartItemsResource.data?.map((cartItem: CartItemType) => (
+          <CartItem
+            key={cartItem.product.id}
+            cartItem={cartItem}
+            onAddCartItem={onAddCartItem}
+            onRemoveCartItem={onRemoveCartItem}
+            onUpdateCartItem={onUpdateCartItem}
+          />
+        ))
+      )}
     </Modal>
   );
 };

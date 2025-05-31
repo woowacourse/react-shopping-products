@@ -14,6 +14,7 @@ import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
 import { getCountInCart } from '../../util/cartUtils';
 import useCartItems from '../../hooks/useCartItems';
 import ErrorFallBack from '../../components/@common/errorFallBack/ErrorFallBack.tsx';
+import { DEFAULT_ERROR_MESSAGE } from '../../constants/errorMessages';
 
 export const ProductListPage = () => {
   const { errorMessage, handleErrorMessage, isToastVisible } = useErrorMessageContext();
@@ -34,7 +35,7 @@ export const ProductListPage = () => {
     return <ProductListPageSkeleton />;
   }
   if (loadingState === 'error') {
-    return <ErrorFallBack />;
+    return <ErrorFallBack message={DEFAULT_ERROR_MESSAGE} />;
   }
 
   return (
