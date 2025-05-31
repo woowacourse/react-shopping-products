@@ -1,7 +1,7 @@
 import { deleteCartItems, getCartItems, patchCartItems, postCartItems } from "../apis/cartItem";
 import { GetCartItemsResponse } from "../types/cartItem";
 import { useErrorMessage, useLoading } from "../contexts";
-import useQuery from "./useQuery";
+import useQuery from "./common/useQuery";
 
 const useCartItems = () => {
   const { setErrorMessage } = useErrorMessage();

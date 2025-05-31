@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useQueryClient } from "../contexts/QueryContext";
-import { useErrorMessage, useLoading } from "../contexts";
+import { useQueryClient } from "../../contexts/QueryContext";
+import { useErrorMessage, useLoading } from "../../contexts";
 
 interface UseQueryProps<T> {
   queryKey: string;

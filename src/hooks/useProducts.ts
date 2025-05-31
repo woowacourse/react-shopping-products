@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getProducts } from "../apis/product";
 import { GetProductResponse } from "../types/product";
 import { FilterType, SortType } from "../types";
-import useQuery from "./useQuery";
+import useQuery from "./common/useQuery";
 
 type ProductsOption = {
   filter: FilterType;
