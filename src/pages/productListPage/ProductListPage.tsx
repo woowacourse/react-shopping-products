@@ -11,7 +11,7 @@ import {
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useProductHandler from '../../hooks/useProductHandler.ts';
 import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
-import { getCartInCount } from '../../util/cartUtils';
+import { getCountInCart } from '../../util/cartUtils';
 import useCartItems from '../../hooks/useCartItems';
 import ErrorFallBack from '../../components/@common/errorFallBack/ErrorFallBack.tsx';
 
@@ -61,7 +61,7 @@ export const ProductListPage = () => {
         {productItemsResource.data?.slice(0, PRODUCT_LIST_ITEM_COUNT).map((product) => (
           <ProductItem
             key={product.id}
-            cartInCount={getCartInCount(cartItemsResource.data ?? [], product.id)}
+            cartInCount={getCountInCart(cartItemsResource.data ?? [], product.id)}
             product={product}
             onAddCartItems={handleAddCartItems}
             onRemoveCartItems={handleRemoveCartItems}
