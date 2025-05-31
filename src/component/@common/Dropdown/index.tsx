@@ -1,16 +1,21 @@
 import { ComponentProps } from 'react';
-import useOverlay from '../../../hook/useOverlay';
 import {
   dropdownItemStyle,
   dropdownListStyle,
   dropdownTriggerStyle,
 } from './Dropdown.styles';
 import { DropdownContext, useDropdownContext } from './context.ts';
+import useBoolean from '../../../hook/useBoolean.ts';
 
 interface DropdownProps extends ComponentProps<'div'> {}
 
 const Dropdown = ({ children }: DropdownProps) => {
-  const { isOpen, open, close, toggle } = useOverlay();
+  const {
+    value: isOpen,
+    setTrue: open,
+    setFalse: close,
+    toggle,
+  } = useBoolean(false);
 
   return (
     <DropdownContext.Provider value={{ isOpen, open, close, toggle }}>

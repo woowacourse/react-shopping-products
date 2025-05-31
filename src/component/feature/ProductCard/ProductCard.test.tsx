@@ -5,8 +5,8 @@ import ProductCard from './index';
 vi.mock('../../@common/Toast/context', () => ({
   useToast: () => ({
     openToast: vi.fn(),
-    isVisible: false,
     closeToast: vi.fn(),
+    isVisible: false,
   }),
 }));
 
@@ -16,6 +16,8 @@ describe('ProductCard 컴포넌트', () => {
     name: '테스트 상품',
     price: 10000,
     imageUrl: 'test.jpg',
+    category: '패션잡화',
+    quantity: 10,
   };
 
   it('담기 버튼 클릭 시 handleAddCart 함수가 호출된다', () => {
@@ -28,6 +30,8 @@ describe('ProductCard 컴포넌트', () => {
         isInCart={false}
         handleAddCart={mockHandleAddCart}
         handleRemoveCart={mockHandleRemoveCart}
+        cartData={[]}
+        quantity={10}
       />
     );
 
@@ -41,9 +45,24 @@ describe('ProductCard 컴포넌트', () => {
     expect(mockHandleAddCart).toHaveBeenCalledWith(1);
   });
 
-  it('빼기 버튼 클릭 시 handleRemoveCart 함수가 호출된다', () => {
+  it('카운트 버튼의 마이너스 버튼 클릭 시 handleRemoveCart 함수가 호출된다', () => {
     const mockHandleAddCart = vi.fn();
     const mockHandleRemoveCart = vi.fn();
+
+    const mockCartData = [
+      {
+        id: 1,
+        product: {
+          id: 1,
+          name: '테스트 상품',
+          price: 10000,
+          imageUrl: 'test.jpg',
+          category: '패션잡화',
+          quantity: 10,
+        },
+        quantity: 1,
+      },
+    ];
 
     render(
       <ProductCard
@@ -51,13 +70,15 @@ describe('ProductCard 컴포넌트', () => {
         isInCart={true}
         handleAddCart={mockHandleAddCart}
         handleRemoveCart={mockHandleRemoveCart}
+        cartData={mockCartData}
+        quantity={10}
       />
     );
 
-    const removeButton = screen.getByText('빼기');
-    expect(removeButton).toBeTruthy();
+    const minusButton = screen.getByText('-');
+    expect(minusButton).toBeTruthy();
 
-    fireEvent.click(removeButton);
+    fireEvent.click(minusButton);
 
     expect(mockHandleRemoveCart).toHaveBeenCalledWith(1);
   });
@@ -72,11 +93,28 @@ describe('ProductCard 컴포넌트', () => {
         isInCart={false}
         handleAddCart={mockHandleAddCart}
         handleRemoveCart={mockHandleRemoveCart}
+        cartData={[]}
+        quantity={10}
       />
     );
 
     expect(screen.getByText('담기')).toBeTruthy();
-    expect(screen.queryByText('빼기')).toBeNull();
+    expect(screen.queryByText('-')).toBeNull();
+
+    const mockCartData = [
+      {
+        id: 1,
+        product: {
+          id: 1,
+          name: '테스트 상품',
+          price: 10000,
+          imageUrl: 'test.jpg',
+          category: '패션잡화',
+          quantity: 10,
+        },
+        quantity: 1,
+      },
+    ];
 
     rerender(
       <ProductCard
@@ -84,10 +122,12 @@ describe('ProductCard 컴포넌트', () => {
         isInCart={true}
         handleAddCart={mockHandleAddCart}
         handleRemoveCart={mockHandleRemoveCart}
+        cartData={mockCartData}
+        quantity={10}
       />
     );
 
-    expect(screen.getByText('빼기')).toBeTruthy();
+    expect(screen.getByText('-')).toBeTruthy();
     expect(screen.queryByText('담기')).toBeNull();
   });
 });

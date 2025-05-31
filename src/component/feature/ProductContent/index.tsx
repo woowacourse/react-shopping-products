@@ -73,6 +73,7 @@ const ProductContent = ({
             isInCart={isInCart}
             handleAddCart={handleAddCart}
             handleRemoveCart={handleRemoveCart}
+            cartData={cartData}
           />
         );
       })}

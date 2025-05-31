@@ -22,6 +22,7 @@ export const dropdownListStyle = css`
   align-items: flex-start;
   gap: 0.8rem;
 
+  z-index: 5;
   width: 10rem;
 
   border-radius: 8px;

@@ -16,4 +16,6 @@ export const HeaderStyle = css`
 
 export const CartStyle = css`
   position: relative;
+
+  cursor: pointer;
 `;
