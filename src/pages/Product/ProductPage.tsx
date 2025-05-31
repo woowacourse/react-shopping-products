@@ -1,20 +1,15 @@
-import { getCartItems } from "@/apis/cartItems/getCartItems";
 import LoadingFallback from "@/components/Fallback/LoadingFallback";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
 import ProductContent from "@/components/Product/Content";
 import ProductItem from "@/components/Product/Content/List/Item";
 import RemoveCartItemButton from "@/components/Product/Content/List/Item/CardItemButton/Remove";
-import useData from "@/hooks/useData";
-import { CartItemType } from "@/types/cartItem";
 import { useState } from "react";
 import * as S from "./ProductPage.styled";
+import useGetCartItemsQuery from "@/hooks/useGetCartItemsQuery";
 
 function ProductPage() {
-  const { data: cartItemData, isLoading } = useData<CartItemType[]>({
-    fetchFn: getCartItems,
-    name: "cartItemData",
-  });
+  const { data: cartItemData, isLoading } = useGetCartItemsQuery();
 
   const [isOpen, setIsOpen] = useState(false);
 
