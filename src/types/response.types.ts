@@ -6,6 +6,7 @@ export interface Product {
   category: string;
   quantity: number;
 }
+
 export interface Sort {
   empty: boolean;
   sorted: boolean;

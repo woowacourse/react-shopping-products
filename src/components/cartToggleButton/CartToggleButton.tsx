@@ -5,6 +5,7 @@ import useCartAddRemove from "../../hooks/useCartAddRemove";
 interface CartToggleButtonProps {
   isSoldOut: boolean;
   quantity: number;
+
   isAdded: boolean;
   productId: number;
   cartId?: number;
@@ -14,6 +15,7 @@ interface CartToggleButtonProps {
 function CartToggleButton({
   isSoldOut,
   quantity,
+
   productId,
   cartId,
   cartAmount,
