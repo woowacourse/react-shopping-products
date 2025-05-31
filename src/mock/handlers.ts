@@ -1,5 +1,6 @@
 import { http } from 'msw';
 import { mockData, mockCartData } from './mockData';
+import { resolveCartItems } from './utils/resolveCartItems';
 
 interface CartItemProps {
   productId: number;
@@ -39,7 +40,7 @@ export const handlers = [
   }),
 
   http.get(getRequestURL('/cart-items'), async () => {
-    return new Response(JSON.stringify({ content: [...mockCartData] }), {
+    return new Response(JSON.stringify({ content: [...resolveCartItems()] }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -83,7 +84,7 @@ export const handlers = [
 
     mockCartData.push({
       id: mockCartData.length + 1,
-      product: product,
+      productId: product.id,
       quantity: quantity,
     });
 
@@ -99,7 +100,7 @@ export const handlers = [
     const updateItem = (await request.json()) as CartItemProps;
     const { quantity } = updateItem;
 
-    const cartIndex = mockCartData.findIndex((cartItem) => cartItem.product.id === Number(id));
+    const cartIndex = mockCartData.findIndex((cartItem) => cartItem.productId === Number(id));
     const productIndex = mockData.findIndex((product) => product.id === Number(id));
 
     if (cartIndex === -1) {
