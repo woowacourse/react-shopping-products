@@ -10,7 +10,7 @@ function useCartManagement({
   refetchCarts,
   carts,
 }: {
-  refetchCarts: () => void;
+  refetchCarts: () => Promise<void>;
   carts: cartDataType[] | null;
 }) {
   const [isErrorAddCartItem, setIsErrorAddCartItem] = useState(false);
@@ -38,7 +38,7 @@ function useCartManagement({
         productId,
         quantity,
       });
-      refetchCarts();
+      await refetchCarts();
     } catch (error) {
       setIsErrorAddCartItem(true);
       setErrorAddCartItemMessage(
@@ -60,7 +60,7 @@ function useCartManagement({
 
     try {
       await patchCartItem({ cartId, quantity });
-      refetchCarts();
+      await refetchCarts();
     } catch (error) {
       setIsErrorUpdateCartItem(true);
       setErrorUpdateCartItemMessage(
@@ -76,7 +76,7 @@ function useCartManagement({
 
     try {
       await deleteCartItem({ cartId });
-      refetchCarts();
+      await refetchCarts();
     } catch (error) {
       setIsErrorDeleteCartItem(true);
       setErrorDeleteCartItemMessage(

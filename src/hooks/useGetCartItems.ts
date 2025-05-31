@@ -8,7 +8,7 @@ type UseGetCartsReturn = {
   isError: boolean;
   errorMessage: string;
   carts: cartDataType[] | null;
-  refetchCarts: () => Promise<cartDataType[] | undefined>;
+  refetchCarts: () => Promise<void>;
 };
 
 function useGetCarts(): UseGetCartsReturn {
@@ -17,17 +17,12 @@ function useGetCarts(): UseGetCartsReturn {
   const errorMessage = error || '';
   useToast(errorMessage);
 
-  const refetchCarts = async (): Promise<cartDataType[] | undefined> => {
-    await refetch();
-    return data || undefined;
-  };
-
   return {
     carts: data,
     isLoading: loading,
     isError: !!error,
     errorMessage,
-    refetchCarts,
+    refetchCarts: refetch,
   };
 }
 
