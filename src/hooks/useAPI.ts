@@ -26,9 +26,8 @@ export function useAPI<T>({ fetcher, name }: UseAPIProps<T>) {
 
   useEffect(() => {
     if (state[name] !== undefined) return;
-
     request();
-  }, [name, state, request]);
+  }, [name, state[name], request]);
 
   return {
     data: state[name] as T | null,
