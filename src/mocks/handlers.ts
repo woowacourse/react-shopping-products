@@ -140,10 +140,12 @@ export const handlers = [
       }
 
       const newCartItem = {
-        id: cartItems.length + 1,
+        id: Math.max(...cartItems.map((item) => item.id), 0) + 1,
         quantity: quantity,
         product: { ...selectedProduct },
       };
+
+      console.log(cartItems);
 
       cartItems.push(newCartItem);
       return HttpResponse.json(
