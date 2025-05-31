@@ -4,7 +4,7 @@ import { CartItem, Product } from '../../types/common';
 import { cartService } from '../../service/cart';
 import ShoppingItemContext from '../../context/shoppingItemContext/shoppingItemContext';
 
-type patchCartProps = {
+type increaseCartProps = {
   onSuccess: (value: CartItem[]) => void;
 };
 
@@ -20,7 +20,7 @@ const isMaxQuantity = (
   return quantity > productQuantity;
 };
 
-export const usePatchCart = ({ onSuccess }: patchCartProps) => {
+export const useIncreaseCart = ({ onSuccess }: increaseCartProps) => {
   const { openToast } = useToast();
   const { data } = useContext(ShoppingItemContext);
 
@@ -37,12 +37,12 @@ export const usePatchCart = ({ onSuccess }: patchCartProps) => {
         );
 
         onSuccess(response);
-        openToast('장바구니 수량이 변경되었습니다.', true);
+        openToast('장바구니 수량이 증가되었습니다.', true);
       } catch (error) {
         if (error instanceof Error) {
           openToast(error.message, false);
         } else {
-          openToast('장바구니 수량 변경에 실패했어요...', false);
+          openToast('장바구니 수량 증가에 실패했어요...', false);
         }
       }
     },

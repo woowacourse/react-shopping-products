@@ -5,14 +5,20 @@ interface CartContextType {
   cartData: CartItem[];
   addCart: (productId: number) => void;
   removeCart: (productId: number) => void;
-  patchCart: (cartItemId: number, quantity: number, productId: number) => void;
+  increaseCart: (
+    cartItemId: number,
+    quantity: number,
+    productId: number
+  ) => void;
+  decreaseCart: (cartItemId: number, quantity: number) => void;
 }
 
 const CartContext = createContext<CartContextType>({
   cartData: [],
   addCart: () => {},
   removeCart: () => {},
-  patchCart: () => {},
+  increaseCart: () => {},
+  decreaseCart: () => {},
 });
 
 export default CartContext;
