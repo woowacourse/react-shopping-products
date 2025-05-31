@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { CategoryOptionType, SelectType, SortOptionType } from '../types';
 import { productApi } from '../../../api/productApi';
 import { ResponseProduct } from '../../../api/types';
-import { useCartItemList } from '../../../pages/productListPage/context/useCartContext';
+import { useError } from '../../../contexts/ErrorContext';
 
 export const useProductControl = (setProductList: React.Dispatch<React.SetStateAction<ResponseProduct[]>>) => {
   const [category, setCategory] = useState<CategoryOptionType>('');
   const [sort, setSort] = useState<SortOptionType>('price,asc');
-  const { setErrorMessage } = useCartItemList();
+  const { showError } = useError();
 
   async function handleSelectChange(selectedValue: CategoryOptionType | SortOptionType, type: SelectType) {
     try {
@@ -27,7 +27,7 @@ export const useProductControl = (setProductList: React.Dispatch<React.SetStateA
       setProductList(rawProductList);
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage(error.message);
+        showError(error.message);
       }
     }
   }

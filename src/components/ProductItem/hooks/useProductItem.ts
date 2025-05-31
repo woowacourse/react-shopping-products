@@ -1,10 +1,12 @@
 import { cartApi } from '../../../api/cartApi';
 import { CART_MAX_COUNT } from '../../../constants/constants';
+import { useError } from '../../../contexts/ErrorContext';
 import { useCartItemList } from '../../../pages/productListPage/context/useCartContext';
 import { getCartItemId, isItemInCart } from '../utils';
 
 export const useProductItem = (id: number) => {
-  const { cartItemList, setCartItemList, setErrorMessage } = useCartItemList();
+  const { cartItemList, setCartItemList } = useCartItemList();
+  const { showError } = useError();
   const { quantity, isInCart, text, keyword } = isItemInCart(id, cartItemList);
 
   async function handleProductItem(action: string, productId: number, quantity?: number) {
@@ -21,7 +23,7 @@ export const useProductItem = (id: number) => {
         }
       } else {
         if (cartItemList.length >= CART_MAX_COUNT) {
-          setErrorMessage('장바구니에는 최대 50개의 상품만 담을 수 있습니다.');
+          showError('장바구니에는 최대 50개의 상품만 담을 수 있습니다.');
           return;
         }
         await cartApi.post(productId, 1);
@@ -31,7 +33,7 @@ export const useProductItem = (id: number) => {
       setCartItemList(rawCartItemList);
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage(error.message);
+        showError(error.message);
       }
     }
   }
