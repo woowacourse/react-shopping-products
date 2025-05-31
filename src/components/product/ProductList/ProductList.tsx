@@ -4,7 +4,7 @@ import { Product as ProductType } from "../../../types/Product";
 
 import * as Styled from "./ProductList.styled";
 
-import useShoppingCart from "../../../hooks/useShoppingCart";
+import useShoppingCart from "../../../hooks/shoppingCart/useShoppingCart";
 
 interface ProductListProps {
   productList: readonly ProductType[];

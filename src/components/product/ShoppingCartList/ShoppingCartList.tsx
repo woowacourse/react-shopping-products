@@ -1,7 +1,7 @@
 import * as Styled from "./ShoppingCartList.styled";
 
 import ShoppingCartItem from "../ShoppingCartItem/ShoppingCartItem";
-import useShoppingCart from "../../../hooks/useShoppingCart";
+import useShoppingCart from "../../../hooks/shoppingCart/useShoppingCart";
 import Spinner from "../../common/Spinner/Spinner";
 
 interface ShoppingCartListProps {

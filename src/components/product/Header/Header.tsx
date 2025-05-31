@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Modal } from "../../common/Modal";
 import ShoppingCartList from "../ShoppingCartList/ShoppingCartList";
 
-import useShoppingCart from "../../../hooks/useShoppingCart";
+import useShoppingCart from "../../../hooks/shoppingCart/useShoppingCart";
 
 function Header() {
   const [openModal, setOpenModal] = useState(false);
