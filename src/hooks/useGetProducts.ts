@@ -25,9 +25,7 @@ function useGetProducts({ sort, category }: UseGetProductsParams): UseGetProduct
     });
   }, [category, sort]);
 
-  const { data, loading, error } = useData('products', fetcher, {
-    dependencies: [sort, category],
-  });
+  const { data, loading, error } = useData('products', fetcher);
 
   const errorMessage = error || '';
   useToast(errorMessage);

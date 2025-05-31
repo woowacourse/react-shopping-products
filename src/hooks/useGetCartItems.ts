@@ -12,9 +12,7 @@ type UseGetCartsReturn = {
 };
 
 function useGetCarts(): UseGetCartsReturn {
-  const { data, loading, error, refetch } = useData('cart-items', getCarts, {
-    dependencies: [],
-  });
+  const { data, loading, error, refetch } = useData('cart-items', getCarts);
 
   const errorMessage = error || '';
   useToast(errorMessage);
