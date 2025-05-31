@@ -1,11 +1,11 @@
-import { FetchProductListResult } from "../../types/FetchProductListResult";
-import { ProductCategory } from "../../types/ProductCategory";
-import { PriceSort } from "../../types/Sort";
-import { apiRequest } from "../ApiRequest";
+import { FetchProductListResult } from "../../../types/FetchProductListResult";
+import { ProductCategory } from "../../../types/ProductCategory";
+import { PriceSort } from "../../../types/Sort";
+import { apiRequest } from "../../ApiRequest";
 import {
   LOW_PRICE_SORT_KEY,
   ALL_CATEGORY,
-} from "../../constants/filterOptions";
+} from "../../../constants/filterOptions";
 
 type fetchProductListParams = {
   params?: {
@@ -21,7 +21,7 @@ const fetchProductList = async ({
 }: fetchProductListParams) => {
   const { category, ...rest } = params;
 
-  const data = await apiRequest.GET<FetchProductListResult>({
+  const data = await apiRequest.get<FetchProductListResult>({
     endpoint: "/products",
     searchParams: category === ALL_CATEGORY ? rest : params,
   });

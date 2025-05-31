@@ -1,4 +1,4 @@
-import { apiRequest } from "../ApiRequest";
+import { apiRequest } from "../../ApiRequest";
 
 type fetchRemoveProductParams = {
   params: {
@@ -7,9 +7,10 @@ type fetchRemoveProductParams = {
 };
 
 const fetchRemoveProduct = async ({ params }: fetchRemoveProductParams) => {
-  await apiRequest.DELETE({
-    endpoint: "/cart-items/",
-    searchParams: params,
+  const { productId } = params;
+
+  await apiRequest.delete({
+    endpoint: `/cart-items/${productId}`,
   });
 };
 

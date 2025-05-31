@@ -7,6 +7,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 `;
 
 export const Image = styled.img`
@@ -14,6 +15,18 @@ export const Image = styled.img`
   height: 112px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+`;
+
+export const ProductInfo = styled.p`
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 100%;
+
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  user-select: none;
 `;
 
 export const Wrapper = styled.div`

@@ -3,35 +3,16 @@ import Filter from "../Filter/Filter";
 import Spinner from "../../common/Spinner/Spinner";
 
 import * as Styled from "./ProductListContainer.styled";
-import useProductList from "../../../hooks/useProductList";
+import useProductList from "../../../hooks/productList/useProductList";
 
-interface ProductListContainerProps {
-  selectedProductIdList: string[];
-  handleAddProduct: (productId: string) => void;
-  handleRemoveProduct: (productId: string) => void;
-}
-
-function ProductListContainer({
-  selectedProductIdList,
-  handleAddProduct,
-  handleRemoveProduct,
-}: ProductListContainerProps) {
-  const { productList, handleCategory, handleSort } = useProductList();
+function ProductListContainer() {
+  const { productList, loading, handleCategory, handleSort } = useProductList();
 
   return (
     <Styled.Container>
       <Styled.ProductListTitle>bpple 상품 목록</Styled.ProductListTitle>
       <Filter handleCategory={handleCategory} handleSort={handleSort} />
-      {productList === null ? (
-        <Spinner />
-      ) : (
-        <ProductList
-          selectedProductIdList={selectedProductIdList}
-          productList={productList}
-          handleAddProduct={handleAddProduct}
-          handleRemoveProduct={handleRemoveProduct}
-        />
-      )}
+      {loading ? <Spinner /> : <ProductList productList={productList} />}
     </Styled.Container>
   );
 }

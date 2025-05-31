@@ -4,28 +4,40 @@ import { Product as ProductType } from "../../../types/Product";
 
 import * as Styled from "./ProductList.styled";
 
+import useShoppingCartData from "../../../hooks/shoppingCart/useShoppingCartData";
+import useShoppingCartActions from "../../../hooks/shoppingCart/useShoppingCartActions";
+
 interface ProductListProps {
-  selectedProductIdList: string[];
   productList: readonly ProductType[];
-  handleAddProduct: (productId: string) => void;
-  handleRemoveProduct: (productId: string) => void;
 }
 
-function ProductList({
-  selectedProductIdList,
-  productList,
-  handleAddProduct,
-  handleRemoveProduct,
-}: ProductListProps) {
+function ProductList({ productList }: ProductListProps) {
+  const { cartItems } = useShoppingCartData();
+
+  const {
+    handleAddProduct,
+    handleIncreaseCartItemQuantity,
+    handleDecreaseCartItemQuantity,
+  } = useShoppingCartActions();
+
+  const cartItemsProductIdList = cartItems.map(
+    (cartItem) => cartItem.product.id
+  );
+
   return (
     <Styled.UlContainer>
       {productList.map((product) => (
         <ProductItem
           key={product.id}
           product={product}
-          isInCart={selectedProductIdList.includes(product.id.toString())}
+          isInCart={cartItemsProductIdList.includes(product.id)}
+          quantity={
+            cartItems.find((cartItem) => cartItem.product.id === product.id)
+              ?.quantity || 0
+          }
           handleAddProduct={handleAddProduct}
-          handleRemoveProduct={handleRemoveProduct}
+          handleIncreaseCartItemQuantity={handleIncreaseCartItemQuantity}
+          handleDecreaseCartItemQuantity={handleDecreaseCartItemQuantity}
         />
       ))}
     </Styled.UlContainer>

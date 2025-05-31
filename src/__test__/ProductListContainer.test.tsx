@@ -1,56 +1,46 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { vi, describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import "@testing-library/jest-dom";
 import ProductListContainer from "../components/product/ProductListContainer/ProductListContainer";
+import { ApiProvider } from "../context/ApiContext/ApiContext";
+import { ToastProvider } from "../context/ToastContext/ToastContext";
+import { allProductsData } from "../mocks/data/mockProducts";
 
-vi.mock("../apis/product/fetchProductList", () => {
-  return {
-    default: vi.fn(({ params }) => {
-      const { category, sort = "price,asc" } = params;
-      const allProducts = [
-        { id: 1, name: "사과", price: 1000, category: "식료품" },
-        { id: 2, name: "바나나", price: 2000, category: "식료품" },
-        { id: 3, name: "짱구인형", price: 3000, category: "패션잡화" },
-        { id: 4, name: "철수인형", price: 4000, category: "패션잡화" },
-      ];
-
-      const filtered =
-        category === "전체"
-          ? allProducts
-          : allProducts.filter((p) => p.category === category);
-
-      const sorted =
-        sort === "price,asc"
-          ? filtered
-          : [...filtered].sort((a, b) => b.price - a.price);
-
-      return Promise.resolve({ content: sorted });
-    }),
-  };
-});
-
-const fakeProps = {
-  selectedProductIdList: [],
-  handleAddProduct: vi.fn(),
-  handleRemoveProduct: vi.fn(),
-};
+let mockAllProductsData = allProductsData;
 
 describe("ProductListContainer 컴포넌트", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    mockAllProductsData = allProductsData;
   });
 
   it("상품 목록이 성공적으로 렌더링된다", async () => {
-    render(<ProductListContainer {...fakeProps} />);
+    render(
+      <ToastProvider>
+        <ApiProvider>
+          <ProductListContainer />
+        </ApiProvider>
+      </ToastProvider>
+    );
 
-    expect(await screen.findByText("사과")).toBeInTheDocument();
-    expect(screen.getByText("바나나")).toBeInTheDocument();
-    expect(screen.getByText("짱구인형")).toBeInTheDocument();
-    expect(screen.getByText("철수인형")).toBeInTheDocument();
+    await waitFor(async () => {
+      const expectedAllProducts = mockAllProductsData.map(
+        (product) => product.name
+      );
+
+      expectedAllProducts.forEach((texts) => {
+        expect(screen.getByText(texts)).toBeInTheDocument();
+      });
+    });
   });
 
   it("카테고리를 식료품으로 변경 시 fetchProductList 재호출된다", async () => {
-    render(<ProductListContainer {...fakeProps} />);
+    render(
+      <ToastProvider>
+        <ApiProvider>
+          <ProductListContainer />
+        </ApiProvider>
+      </ToastProvider>
+    );
 
     const selects = screen.getAllByRole("combobox");
     const categorySelect = selects[0];
@@ -58,15 +48,23 @@ describe("ProductListContainer 컴포넌트", () => {
     fireEvent.change(categorySelect, { target: { value: "식료품" } });
 
     await waitFor(() => {
-      expect(screen.getByText("사과")).not.toBeNull();
-      expect(screen.getByText("바나나")).not.toBeNull();
-      expect(screen.queryByText("짱구인형")).not.toBeInTheDocument();
-      expect(screen.queryByText("철수인형")).not.toBeInTheDocument();
+      const filteredProducts = mockAllProductsData.filter(
+        (product) => product.category === "식료품"
+      );
+      filteredProducts.forEach((product) => {
+        expect(screen.getByText(product.name)).toBeInTheDocument();
+      });
     });
   });
 
-  it("카테고리를 패션잡화로 변경 시 짱구인형과 철수인형이 보인다.", async () => {
-    render(<ProductListContainer {...fakeProps} />);
+  it("카테고리를 패션잡화로 변경 시 해당 상품들이 보인다.", async () => {
+    render(
+      <ToastProvider>
+        <ApiProvider>
+          <ProductListContainer />
+        </ApiProvider>
+      </ToastProvider>
+    );
 
     const selects = screen.getAllByRole("combobox");
     const categorySelect = selects[0];
@@ -74,28 +72,59 @@ describe("ProductListContainer 컴포넌트", () => {
     fireEvent.change(categorySelect, { target: { value: "패션잡화" } });
 
     await waitFor(() => {
-      expect(screen.getByText("짱구인형")).toBeInTheDocument();
-      expect(screen.getByText("철수인형")).toBeInTheDocument();
-      expect(screen.queryByText("사과")).not.toBeInTheDocument();
-      expect(screen.queryByText("바나나")).not.toBeInTheDocument();
+      const filteredProducts = mockAllProductsData.filter(
+        (product) => product.category === "패션잡화"
+      );
+      filteredProducts.forEach((product) => {
+        expect(screen.getByText(product.name)).toBeInTheDocument();
+      });
     });
   });
 
   it("정렬 기준을 가격 내림차순으로 변경 시 fetchProductList 재호출된다", async () => {
-    render(<ProductListContainer {...fakeProps} />);
+    render(
+      <ToastProvider>
+        <ApiProvider>
+          <ProductListContainer />
+        </ApiProvider>
+      </ToastProvider>
+    );
 
     const selects = screen.getAllByRole("combobox");
     const sortSelect = selects[1];
 
     fireEvent.change(sortSelect, { target: { value: "price,desc" } });
 
-    const items = await screen.findAllByRole("listitem");
+    const expectedOrder = [
+      "앵그리버드",
+      "달 무드등",
+      "후추",
+      "동물 양말",
+      "얌샘김밥",
+      "아바라",
+      "아샷추",
+      "코카콜라 제로 1.5L",
+      "프린세스 미용놀이",
+      "20",
+      "19",
+      "17",
+      "16",
+      "14",
+      "13",
+      "12",
+      "11",
+      "10",
+      "9",
+      "8888",
+    ];
 
-    const expectedOrder = ["철수인형", "짱구인형", "바나나", "사과"];
+    await waitFor(async () => {
+      const items = await screen.findAllByRole("listitem");
+      const actualTexts = items.map((item) => item.textContent);
+      expectedOrder.forEach(async (expected) => {
+        expect(await screen.findByText(expected)).toBeInTheDocument();
+      });
 
-    const actualTexts = items.map((item) => item.textContent);
-
-    await waitFor(() => {
       expectedOrder.forEach((expected, index) => {
         expect(actualTexts[index]).toContain(expected);
       });

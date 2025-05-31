@@ -1,14 +1,14 @@
-import { apiRequest } from "../ApiRequest";
+import { apiRequest } from "../../ApiRequest";
 
 type fetchAddProductParams = {
   params: {
-    productId: string;
+    productId: number;
     quantity: string;
   };
 };
 
 const fetchAddProduct = async ({ params }: fetchAddProductParams) => {
-  await apiRequest.POST({
+  await apiRequest.post({
     endpoint: "/cart-items",
     searchParams: params,
   });
