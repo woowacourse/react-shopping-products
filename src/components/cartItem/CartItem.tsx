@@ -6,23 +6,23 @@ import { handleImageError } from '../../util/handleImageError';
 
 interface CartItemProps {
   cartItem: CartItemType;
-  onAddCartItems: (productId: number) => void;
-  onRemoveCartItems: (productId: number) => void;
-  onUpdateCartItems: (productId: number, quantity: number) => void;
+  onAddCartItem: (productId: number) => void;
+  onRemoveCartItem: (productId: number) => void;
+  onUpdateCartItem: (productId: number, quantity: number) => void;
 }
 
 const CartItem = ({
   cartItem,
-  onAddCartItems,
-  onRemoveCartItems,
-  onUpdateCartItems,
+  onAddCartItem,
+  onRemoveCartItem,
+  onUpdateCartItem,
 }: CartItemProps) => {
   const { handlePlusCount, handleMinusCount } = useCartCount({
     cartInCount: cartItem.quantity,
     product: cartItem.product,
-    onUpdateCartItems,
-    onAddCartItems,
-    onRemoveCartItems,
+    onUpdateCartItem,
+    onAddCartItem,
+    onRemoveCartItem,
   });
 
   return (
