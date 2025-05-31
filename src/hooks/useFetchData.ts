@@ -3,6 +3,7 @@ import { fetchCartItems } from "../api/cart";
 import fetchProducts, { FetchProductsProps } from "../api/products";
 import { useToast } from "../provider/ToastProvider";
 import { CartItemType, Product } from "../types/response.types";
+import { ERROR_MESSAGE } from "../constants/errorMessage";
 
 function useFetchData() {
   const { showToast } = useToast();
@@ -12,7 +13,7 @@ function useFetchData() {
     try {
       cartItems = await fetchCartItems();
     } catch {
-      showToast("장바구니 정보를 로딩하는 중 에러가 발생했습니다.");
+      showToast(ERROR_MESSAGE.CART_LOADING);
     }
 
     return cartItems;
@@ -24,7 +25,7 @@ function useFetchData() {
       try {
         products = await fetchProducts({ category, sort });
       } catch {
-        showToast("상품 정보를 로딩하는 중 에러가 발생했습니다.");
+        showToast(ERROR_MESSAGE.PRODUCT_LOADING);
       }
 
       return products;
