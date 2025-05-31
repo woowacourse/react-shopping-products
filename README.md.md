@@ -95,17 +95,15 @@
 ### 피드백 바탕 수정사항
 
 - [x] useMutation 만들기 (post,delete, patch 전용 useQuery같은 계층)
-- [ ] 로딩 상태 처리
+- [x] 로딩 상태 처리
   - [x] 로딩 통합하기
     - [x] 로딩 provider 제거
     - [x] QueryContext 이용해서 로딩 관리
-- [ ] QueryContext store 객체 ref로 수정
-- [ ] QueryContext 내부에서 로딩 컴포넌트로 연결
+- [x] QueryContext 내부에서 로딩 컴포넌트로 연결
 - [ ] 훅 역할 분리하기
 - [x] cartItem과 product 인터페이스(타입) 공통화
 - [x] QueryState data타입 수정 (null 처리)
 - [x] QueryContext 내부 refetch 메소드 notify 동작 finally 처리
 - [x] useBooleanState 훅 제작하기
-- [ ] LoadingContext 내부 state 객체 분리 (각각의 loading 상태로)
 - [ ] CartItemCard 컴포넌트 타입 extends 수정 (실제 element 사용과 가까운 공통 컴포넌트만 html 속성 상속)
 - [x] css) 0px -> 0
