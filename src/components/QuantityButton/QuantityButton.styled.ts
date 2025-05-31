@@ -13,7 +13,7 @@ export const QuantityText = Styled.p`
   min-width: 18px;
 `;
 
-export const QuantityButton = Styled.button`
+export const QuantityButton = Styled.button<{ isDisabled?: boolean }>`
   width: 24px;
   aspect-ratio: 1 / 1;
   display: flex;
@@ -22,5 +22,6 @@ export const QuantityButton = Styled.button`
   border: 1px solid #eaeaea;
   border-radius: 8px;
   font-size: 16px;
-  cursor: pointer;
+  cursor: ${(props) => (props.isDisabled ? 'not-allowed' : 'pointer')};
+  opacity: ${(props) => (props.isDisabled ? '0.5' : '1')};
 `;

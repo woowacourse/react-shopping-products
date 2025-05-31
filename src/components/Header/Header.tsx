@@ -28,8 +28,8 @@ function Header() {
               ) : (
                 <ul>
                   {cartItemList.map((item) => {
-                    const { imageUrl, name, price, id } = item.product;
-                    return <ModalItem key={id} itemId={id} imageUrl={imageUrl} name={name} price={price} />;
+                    const { imageUrl, name, price, id, quantity } = item.product;
+                    return <ModalItem key={id} maxStock={quantity!} itemId={id} imageUrl={imageUrl} name={name} price={price} />;
                   })}
                 </ul>
               )}

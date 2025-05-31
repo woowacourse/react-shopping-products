@@ -2,7 +2,7 @@ import * as S from './ModalItem.styled';
 import QuantityButton from '../QuantityButton/QuantityButton';
 import { useProductItem } from '../ProductItem/hooks/useProductItem';
 
-function ModalItem({ itemId, imageUrl, name, price }: { itemId: number; imageUrl: string; name: string; price: number }) {
+function ModalItem({ maxStock, itemId, imageUrl, name, price }: { maxStock: number; itemId: number; imageUrl: string; name: string; price: number }) {
   const { quantity, handleProductItem } = useProductItem(itemId);
   return (
     <S.StyledItem>
@@ -12,6 +12,7 @@ function ModalItem({ itemId, imageUrl, name, price }: { itemId: number; imageUrl
         <p>{(price * quantity!).toLocaleString()}원</p>
         <QuantityButton
           quantity={quantity!}
+          maxStock={maxStock}
           handleAddQuantity={() => handleProductItem('update', itemId, quantity! + 1)}
           handleSubtractQuantity={() => handleProductItem('update', itemId, quantity! - 1)}
         />

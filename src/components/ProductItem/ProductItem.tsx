@@ -35,6 +35,7 @@ function ProductItem({ product }: { product: ResponseProduct }) {
           (isInCart ? (
             <QuantityButton
               quantity={quantity!}
+              maxStock={product.quantity!}
               handleAddQuantity={() => handleProductItem('update', product.id, quantity! + 1)}
               handleSubtractQuantity={() => handleProductItem('update', product.id, quantity! - 1)}
             />
