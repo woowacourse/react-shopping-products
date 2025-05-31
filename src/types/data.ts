@@ -20,3 +20,12 @@ export interface CartItemType {
   product: ProductItemType;
   quantity: number;
 }
+
+export type DataMapType = {
+  cartItems: CartItemType[];
+  products: ProductItemType[];
+};
+
+export type DataType = {
+  [K in keyof DataMapType]: DataMapType[K];
+};

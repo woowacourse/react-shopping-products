@@ -5,6 +5,7 @@ import { CategoryType, ProductItemType, SelectedSortType } from '../types/data';
 import useFetchData from './useFetchData';
 import { DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 import useDataContext from './useDataContext';
+import DataMap from '../context/DataMap';
 
 interface ProductListProps {
   handleErrorMessage: (errorMessage: string) => void;
@@ -23,7 +24,7 @@ const useProductHandler = ({ handleErrorMessage }: ProductListProps) => {
       apiCall: () => getProducts(categoryOption, SORT_OPTIONS.get(sortOption)),
       onSuccess: (newData) => {
         if (newData) {
-          setData((prev) => new Map(prev).set('products', newData));
+          setData((prev) => new DataMap(prev).set('products', newData));
         }
       },
       onError: (error) => {

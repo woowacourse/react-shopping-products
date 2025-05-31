@@ -11,6 +11,7 @@ import { DEFAULT_ERROR_MESSAGE } from '../constants/errorMessages';
 import { getCartId } from '../domain/cartItem';
 import useDataContext from './useDataContext';
 import { CartItemType } from '../types/data';
+import DataMap from '../context/DataMap';
 
 interface CartHandlerProps {
   handleErrorMessage: (errorMessage: string) => void;
@@ -30,7 +31,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
       apiCall: getCartItems,
       onSuccess: (newData) => {
         if (newData) {
-          setData((prev) => new Map(prev).set('cartItems', newData));
+          setData((prev) => new DataMap(prev).set('cartItems', newData));
         }
       },
       onError: (error) => {
