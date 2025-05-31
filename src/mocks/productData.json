@@ -14,7 +14,7 @@
       "price": 100000,
       "imageUrl": "./coke.jpeg",
       "category": "패션잡화",
-      "quantity": 5
+      "quantity": 8
     },
     {
       "id": 3,
@@ -22,7 +22,7 @@
       "price": 100000,
       "imageUrl": "./coke.jpeg",
       "category": "패션잡화",
-      "quantity": 7
+      "quantity": 2
     },
     {
       "id": 4,
