@@ -17,8 +17,7 @@ interface CartModalProps {
 }
 
 function CartModal({ isOpen, handleClose }: CartModalProps) {
-  const { cartItemsId, addCartItemId, patchCartItemId, removeCartItemId } =
-    useCartItemsId();
+  const { cartItemsId, patchCartItemId, removeCartItemId } = useCartItemsId();
   const { state, productList } = useProductList({
     category: "전체",
     sort: "id,asc",
