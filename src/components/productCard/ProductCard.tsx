@@ -28,6 +28,7 @@ interface ProductCardProps {
 function ProductCard({ cartInfo, productInfo }: ProductCardProps) {
   const { imageUrl, productId, name, price, isAdded, quantity } = productInfo;
   const { cartId, cartAmount } = cartInfo;
+
   const isSoldOut = quantity === 0;
 
   return (

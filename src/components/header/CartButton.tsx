@@ -9,11 +9,13 @@ interface CartButtonProps {
 }
 
 export default function CartButton({ onClick }: CartButtonProps) {
-  const { getData, fetchData } = useData();
+  const { getData, fetchData, loading } = useData();
 
   useEffect(() => {
     fetchData<CartItemType[]>("cart", fetchCartItems);
   }, [fetchData]);
+
+  if (loading("cart")) return "로딩중...";
 
   const cartItems = getData<CartItemType[]>("cart") ?? [];
 
