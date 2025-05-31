@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
+import useBooleanState from "../hooks/common/useBooleanState";
 
 interface CartModalContextType {
   isCartModalOpen: boolean;
@@ -9,9 +10,7 @@ interface CartModalContextType {
 const CartModalContext = createContext<CartModalContextType | undefined>(undefined);
 
 export const CartModalProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-  const handleCartModalOpen = () => setIsCartModalOpen(true);
-  const handleCartModalClose = () => setIsCartModalOpen(false);
+  const [isCartModalOpen, handleCartModalOpen, handleCartModalClose] = useBooleanState(false);
 
   return (
     <CartModalContext.Provider value={{ isCartModalOpen, handleCartModalOpen, handleCartModalClose }}>
