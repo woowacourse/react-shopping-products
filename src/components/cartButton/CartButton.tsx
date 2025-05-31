@@ -1,5 +1,5 @@
 import { useCartProduct } from "../../hooks/useCartProduct";
-import { ERROR_TYPE } from "../../hooks/useError";
+import { useError } from "../../hooks/useError";
 import { ButtonContainer } from "./CartButton.css";
 import { useCartItemActions } from "../../hooks/useCartItemActions";
 import ControlButton from "../controlButton/ControlButton";
@@ -13,7 +13,6 @@ interface CartButtonProps {
   cartAmount: number;
   productQuantity: number;
   quantity?: number;
-  setErrorTrue: (type: ERROR_TYPE) => void;
 }
 
 function CartButton({
@@ -23,10 +22,10 @@ function CartButton({
   productQuantity,
   quantity,
   cartAmount,
-  setErrorTrue,
   setToggle,
 }: CartButtonProps) {
   const { setCartItemIds, fetchCartProducts } = useCartProduct();
+  const { setErrorTrue } = useError();
   const { handlePlus, handleMinus } = useCartItemActions({
     cartId,
     productId,

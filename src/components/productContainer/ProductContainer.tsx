@@ -4,14 +4,9 @@ import ProductCardList from "../productCardList/ProductCardList";
 import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { categoryType, sortType } from "../../types/index.types";
-import { ERROR_TYPE } from "../../hooks/useError";
 import { useCartProduct } from "../../hooks/useCartProduct";
 
-interface ProductContainerProps {
-  setErrorTrue: (type: ERROR_TYPE) => void;
-}
-
-function ProductContainer({ setErrorTrue }: ProductContainerProps) {
+function ProductContainer() {
   const [selectedCategory, setSelectedCategory] =
     useState<categoryType>("전체");
   const [selectedSort, setSelectedSort] = useState<sortType>("낮은 가격순");
@@ -32,7 +27,7 @@ function ProductContainer({ setErrorTrue }: ProductContainerProps) {
         />
         <Sort selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
       </div>
-      <ProductCardList setErrorTrue={setErrorTrue} />
+      <ProductCardList />
     </div>
   );
 }

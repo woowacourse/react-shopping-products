@@ -1,16 +1,11 @@
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
-import { ERROR_TYPE } from "../../hooks/useError";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
 import { useCartProduct } from "../../hooks/useCartProduct";
 import { useState } from "react";
 
-interface ProductCardListProps {
-  setErrorTrue: (type: ERROR_TYPE) => void;
-}
-
-function ProductCardList({ setErrorTrue }: ProductCardListProps) {
-  const { products, isLoading } = useCartProduct();
+function ProductCardList() {
+  const { products } = useCartProduct();
   const [toggleStates, setToggleStates] = useState<Record<number, boolean>>({});
 
   const toggleButton = (productId: number, value: boolean) => {
@@ -31,7 +26,6 @@ function ProductCardList({ setErrorTrue }: ProductCardListProps) {
           isToggled={!!toggleStates[product.id]}
           isSoldOut={product.quantity === 0}
           setToggle={(val) => toggleButton(product.id, val)}
-          setErrorTrue={setErrorTrue}
         />
       ))}
     </div>

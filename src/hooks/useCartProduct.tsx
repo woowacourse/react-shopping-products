@@ -8,7 +8,7 @@ import {
   Dispatch,
 } from "react";
 import { CartItem, ProductPageResponse } from "../types/response.types";
-import { ERROR_TYPE } from "./useError";
+import { useError } from "./useError";
 import { useResource } from "./useResource";
 import { categoryType, sortType } from "../types/index.types";
 import { getQueryString } from "../utils/getQueryString";
@@ -27,11 +27,10 @@ const CartProductContext = createContext<CartProductContextType | null>(null);
 
 export function CartProductProvider({
   children,
-  setErrorTrue,
 }: {
   children: React.ReactNode;
-  setErrorTrue: (type: ERROR_TYPE) => void;
 }) {
+  const { setErrorTrue } = useError();
   const { data: cartItemsResponse, fetchData: fetchCartData } = useResource<{
     content: CartItem[];
   }>(setErrorTrue, "CART");

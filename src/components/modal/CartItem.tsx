@@ -1,5 +1,5 @@
 import { useCartItemActions } from "../../hooks/useCartItemActions";
-import { ERROR_TYPE } from "../../hooks/useError";
+import { useError } from "../../hooks/useError";
 import { Product } from "../../types/response.types";
 import ControlButton from "../controlButton/ControlButton";
 
@@ -19,7 +19,6 @@ interface CartItemProps {
   cartId: number;
   productId: number;
   productQuantity: number;
-  setErrorTrue: (value: ERROR_TYPE) => void;
   fetchCartProducts: () => void;
   setCartItemIds: React.Dispatch<
     React.SetStateAction<Record<"quantity" | "cartId" | "productId", number>[]>
@@ -31,11 +30,11 @@ function CartItem({
   quantity,
   cartId,
   productQuantity,
-  setErrorTrue,
   fetchCartProducts,
   productId,
   setCartItemIds,
 }: CartItemProps) {
+  const { setErrorTrue } = useError();
   const { handlePlus, handleMinus, handleRemove } = useCartItemActions({
     cartId,
     productId,

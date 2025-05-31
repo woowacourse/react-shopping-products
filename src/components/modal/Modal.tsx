@@ -1,5 +1,4 @@
 import { useCartProduct } from "../../hooks/useCartProduct";
-import { ERROR_TYPE } from "../../hooks/useError";
 import CartItem from "./CartItem";
 import {
   CloseButton,
@@ -11,10 +10,9 @@ import TotalPrice from "./TotalPrice";
 
 interface ModalProps {
   onClose: () => void;
-  setErrorTrue: (value: ERROR_TYPE) => void;
 }
 
-function Modal({ onClose, setErrorTrue }: ModalProps) {
+function Modal({ onClose }: ModalProps) {
   const { products, cartItemIds, setCartItemIds, fetchCartProducts } =
     useCartProduct();
 
@@ -55,7 +53,6 @@ function Modal({ onClose, setErrorTrue }: ModalProps) {
               cartId={cartItem.cartId}
               productId={cartItem.productId}
               productQuantity={matchedProduct.quantity}
-              setErrorTrue={setErrorTrue}
               fetchCartProducts={fetchCartProducts}
               setCartItemIds={setCartItemIds}
             />

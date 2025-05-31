@@ -8,7 +8,6 @@ import {
   SoldOutText,
 } from "./ProductCard.css";
 import CartToggleButton from "../cartButton/CartButton";
-import { ERROR_TYPE } from "../../hooks/useError";
 import { useCartProduct } from "../../hooks/useCartProduct";
 import { ProductPageResponse } from "../../types/response.types";
 
@@ -16,13 +15,11 @@ interface ProductCardProps {
   product: ProductPageResponse["content"][number];
   isToggled: boolean;
   isSoldOut: boolean;
-  setErrorTrue: (type: ERROR_TYPE) => void;
   setToggle: (value: boolean) => void;
 }
 
 function ProductCard({
   product,
-  setErrorTrue,
   isToggled,
   isSoldOut,
   setToggle,
@@ -54,7 +51,6 @@ function ProductCard({
           quantity={cartMatch?.quantity}
           isToggled={isToggled}
           setToggle={setToggle}
-          setErrorTrue={setErrorTrue}
         />
       </div>
     </div>
