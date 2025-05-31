@@ -1,5 +1,5 @@
 import * as S from './CardItem.styles';
-import CounterControl from '../common/counterControl/CounterControl';
+import CounterControl from '../@common/counterControl/CounterControl';
 import type { CartItemType } from '../../types/data';
 import useCartCount from '../../hooks/useCartCount';
 import { handleImageError } from '../../util/handleImageError';

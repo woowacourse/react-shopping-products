@@ -9,8 +9,6 @@ const useFocusTrap = ({ isActive }: { isActive: boolean }) => {
       'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
     );
 
-    console.log(focusableElements);
-
     if (!focusableElements) return;
 
     const firstElement = focusableElements[0];

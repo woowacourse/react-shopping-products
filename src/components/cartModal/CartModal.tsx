@@ -1,4 +1,4 @@
-import Modal from '../common/modal/Modal';
+import Modal from '../@common/modal/Modal';
 import CartItem from '../cartItem/CartItem';
 import type { CartItemType } from '../../types/data';
 import useDataContext from '../../hooks/useDataContext';
@@ -15,7 +15,6 @@ const CartModal = (props: CartModalProps) => {
   const { isCartModalOpen, onModalClose, onAddCartItems, onRemoveCartItems, onUpdateCartItems } =
     props;
   const { cartItemsResource } = useDataContext();
-  console.log(cartItemsResource.data);
 
   return (
     <Modal isOpen={isCartModalOpen} onClose={onModalClose} title="장바구니">

@@ -1,8 +1,8 @@
 import * as S from './ProductItem.styles';
-import Button from '../common/button/Button';
+import Button from '../@common/button/Button';
 import type { ProductItemType } from '../../types/data';
 import AddShoppingCartIcon from '/public/icon/add-shopping-cart.svg';
-import CounterControl from '../common/counterControl/CounterControl';
+import CounterControl from '../@common/counterControl/CounterControl';
 import { CLIENT_ERROR_MESSAGE } from '../../constants/errorMessages';
 import useCartCount from '../../hooks/useCartCount';
 import { handleImageError } from '../../util/handleImageError';

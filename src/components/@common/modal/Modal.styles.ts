@@ -29,7 +29,6 @@ export const ModalContainer = styled.div`
   box-sizing: border-box;
   gap: 24px;
 
-  width: 100vw;
   animation: 0.3s ease-in-out ${fadeInModal};
 `;
 

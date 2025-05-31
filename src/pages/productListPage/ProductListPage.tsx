@@ -1,4 +1,4 @@
-import ErrorToast from '../../components/common/errorToast/ErrorToast';
+import ErrorToast from '../../components/@common/errorToast/ErrorToast.tsx';
 import ProductItem from '../../components/productItem/ProductItem';
 import Select from '../../components/select/Select';
 import * as P from './ProductListPage.styles.tsx';

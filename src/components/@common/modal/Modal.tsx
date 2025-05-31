@@ -2,6 +2,7 @@ import * as S from './Modal.styles';
 import { useEffect } from 'react';
 import Button from '../button/Button';
 import useFocusTrap from '../../../hooks/useFocusTrap';
+import ModalPortal from './ModalPortal';
 
 interface ModalProps {
   isOpen: boolean;
@@ -31,7 +32,7 @@ const Modal = ({ isOpen, onClose, children, title, hideCloseButton = false }: Mo
   return (
     <>
       {isOpen && (
-        <>
+        <ModalPortal>
           <S.Background onClick={onClose} />
           <S.ModalContainer ref={containerRef}>
             <S.Title>{title}</S.Title>
@@ -49,7 +50,7 @@ const Modal = ({ isOpen, onClose, children, title, hideCloseButton = false }: Mo
               </Button>
             )}
           </S.ModalContainer>
-        </>
+        </ModalPortal>
       )}
     </>
   );
