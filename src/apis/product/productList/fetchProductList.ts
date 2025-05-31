@@ -21,7 +21,7 @@ const fetchProductList = async ({
 }: fetchProductListParams) => {
   const { category, ...rest } = params;
 
-  const data = await apiRequest.GET<FetchProductListResult>({
+  const data = await apiRequest.get<FetchProductListResult>({
     endpoint: "/products",
     searchParams: category === ALL_CATEGORY ? rest : params,
   });

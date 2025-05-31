@@ -12,7 +12,7 @@ const fetchUpdateCartItemQuantity = async ({
 }: fetchUpdateCartItemQuantityParams) => {
   const { id, quantity } = params;
 
-  await apiRequest.PATCH({
+  await apiRequest.patch({
     endpoint: `/cart-items/${id}`,
     searchParams: { quantity },
   });

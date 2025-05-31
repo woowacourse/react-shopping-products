@@ -9,7 +9,7 @@ type fetchRemoveProductParams = {
 const fetchRemoveProduct = async ({ params }: fetchRemoveProductParams) => {
   const { productId } = params;
 
-  await apiRequest.DELETE({
+  await apiRequest.delete({
     endpoint: `/cart-items/${productId}`,
   });
 };

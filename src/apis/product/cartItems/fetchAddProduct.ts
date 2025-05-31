@@ -8,7 +8,7 @@ type fetchAddProductParams = {
 };
 
 const fetchAddProduct = async ({ params }: fetchAddProductParams) => {
-  await apiRequest.POST({
+  await apiRequest.post({
     endpoint: "/cart-items",
     searchParams: params,
   });

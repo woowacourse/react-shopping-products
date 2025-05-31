@@ -30,7 +30,7 @@ class ApiRequest {
     this.#token = token;
   }
 
-  async GET<T>({
+  async get<T>({
     endpoint,
     searchParams,
     useToken = false,
@@ -55,7 +55,7 @@ class ApiRequest {
     return response.json();
   }
 
-  async POST({ endpoint, searchParams, useToken = true }: ApiRequestPostType) {
+  async post({ endpoint, searchParams, useToken = true }: ApiRequestPostType) {
     const url = new URL(`${this.#baseUrl}${endpoint}`);
 
     const options = {
@@ -73,7 +73,7 @@ class ApiRequest {
     }
   }
 
-  async DELETE({ endpoint, useToken = true }: ApiRequestDeleteType) {
+  async delete({ endpoint, useToken = true }: ApiRequestDeleteType) {
     const url = new URL(`${this.#baseUrl}${endpoint}`);
 
     const options = {
@@ -90,7 +90,7 @@ class ApiRequest {
     }
   }
 
-  async PATCH({
+  async patch({
     endpoint,
     searchParams,
     useToken = true,
