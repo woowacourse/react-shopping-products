@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useAPIContext } from '../context/APIContext';
+import { useToastContext } from '../context/ToastContext';
 
 interface UseAPIProps<T> {
   fetcher: () => Promise<T>;
@@ -7,34 +8,24 @@ interface UseAPIProps<T> {
 }
 
 export function useAPI<T>({ fetcher, name }: UseAPIProps<T>) {
-  const { state, setState, isLoading, setIsLoading, error, setError } =
-    useAPIContext();
+  const { state, setState, isLoading, setIsLoading } = useAPIContext();
+  const { addToast } = useToastContext();
 
   const request = useCallback(async () => {
     setIsLoading((prev) => ({ ...prev, [name]: true }));
-    setError((prev) => ({
-      ...prev,
-      [name]: { isError: false, errorMessage: '' },
-    }));
 
     try {
       const result = await fetcher();
       setState((prev) => ({ ...prev, [name]: result }));
     } catch (e) {
-      setError((prev) => ({
-        ...prev,
-        [name]: {
-          isError: true,
-          errorMessage: (e as Error).message,
-        },
-      }));
+      addToast((e as Error).message);
     } finally {
       setIsLoading((prev) => ({ ...prev, [name]: false }));
     }
-  }, [fetcher, name, setState, setIsLoading, setError]);
+  }, [fetcher, name, setState, setIsLoading]);
 
   useEffect(() => {
-    if (state[name] !== undefined || error[name] !== undefined) return;
+    if (state[name] !== undefined) return;
 
     request();
   }, [name, state, request]);
@@ -42,7 +33,6 @@ export function useAPI<T>({ fetcher, name }: UseAPIProps<T>) {
   return {
     data: state[name] as T | null,
     isLoading: isLoading[name] || false,
-    error: error[name] || { isError: false, errorMessage: '' },
     refetch: request,
   };
 }

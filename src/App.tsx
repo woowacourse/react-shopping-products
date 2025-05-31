@@ -48,9 +48,7 @@ function App() {
     );
   }, [mappedSortType]);
 
-  const { isLoading: isProductLoading, error: productError } = useAPI<
-    ProductElement[]
-  >({
+  const { isLoading: isProductLoading } = useAPI<ProductElement[]>({
     fetcher: fetchProductList,
     name: `productList-${mappedSortType}`,
   });
@@ -61,7 +59,7 @@ function App() {
     );
   }, []);
 
-  const { isLoading: isCartLoading, error: cartError } = useAPI<CartItem[]>({
+  const { isLoading: isCartLoading } = useAPI<CartItem[]>({
     fetcher: fetchCartItems,
     name: 'cartItems',
   });
