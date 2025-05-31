@@ -91,3 +91,16 @@
   - [x] patch (장바구니 갯수)
     - [x] 담는 수 제한 에러 확인
   - [x] delete (장바구니 삭제)
+
+### 피드백 바탕 수정사항
+
+- [ ] useMutation 만들기 (post,delete, patch 전용 useQuery같은 계층)
+- [ ] 로딩 상태 처리
+  - [ ] 지역 로딩과 fallback 로딩 분기처리
+- [ ] 훅 역할 분리하기
+- [ ] cartItem과 product 인터페이스(타입) 공통화
+- [ ] QueryState 타입 수정 처리
+- [ ] QueryContext 내부 refetch 메소드 notify 동작 finally 처리
+- [ ] LoadingContext 내부 state 객체 분리 (각각의 loading 상태로)
+- [ ] CartItemCard 컴포넌트 타입 extends 수정 (실제 element 사용과 가까운 공통 컴포넌트만 html 속성 상속)
+- [ ] css) 0px -> 0
