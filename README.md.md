@@ -100,7 +100,7 @@
     - [x] 로딩 provider 제거
     - [x] QueryContext 이용해서 로딩 관리
 - [x] QueryContext 내부에서 로딩 컴포넌트로 연결
-- [ ] 훅 역할 분리하기
+- [x] 훅 역할 분리하기
 - [x] cartItem과 product 인터페이스(타입) 공통화
 - [x] QueryState data타입 수정 (null 처리)
 - [x] QueryContext 내부 refetch 메소드 notify 동작 finally 처리
