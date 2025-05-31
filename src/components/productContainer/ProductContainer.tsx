@@ -6,7 +6,7 @@ import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { CategoryType, SortType } from "../../types/index.types";
 import { useData } from "../../provider/DataProvider";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
-import useFetchData from "../../hooks/useFetchData/useFetchData";
+import useFetchData from "../../hooks/useFetchData";
 
 const DATA_NAME = "products";
 

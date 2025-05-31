@@ -1,9 +1,9 @@
-import { useToast } from "../../provider/ToastProvider";
-import { changeCartQuantity } from "../../api/cart";
-import { useData } from "../../provider/DataProvider";
-import { CartItemType } from "../../types/response.types";
-import { fetchCartItems } from "../../api/cart";
-import { ERROR_MESSAGE } from "../../constants/errorMessage";
+import { useToast } from "../provider/ToastProvider";
+import { changeCartQuantity } from "../api/cart";
+import { useData } from "../provider/DataProvider";
+import { CartItemType } from "../types/response.types";
+import { fetchCartItems } from "../api/cart";
+import { ERROR_MESSAGE } from "../constants/errorMessage";
 
 const MIN_QUANTITY = 1;
 

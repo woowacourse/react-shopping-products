@@ -2,7 +2,7 @@ import { CartStyle, PutItemCount } from "./CartButton.css";
 import { useData } from "../../provider/DataProvider";
 import { useEffect } from "react";
 import { CartItemType } from "../../types/response.types";
-import useFetchData from "../../hooks/useFetchData/useFetchData";
+import useFetchData from "../../hooks/useFetchData";
 
 interface CartButtonProps {
   onClick: () => void;

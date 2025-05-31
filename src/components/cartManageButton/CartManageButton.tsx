@@ -1,4 +1,4 @@
-import useCartQuantity from "../../hooks/useCartQuantity/useCartQuantity";
+import useCartQuantity from "../../hooks/useCartQuantity";
 import useCartToggleButton from "../cartToggleButton/useCartToggleButton";
 import { Button, Container, Text } from "./CartManageButton.css";
 

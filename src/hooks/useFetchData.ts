@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { fetchCartItems } from "../../api/cart";
-import fetchProducts, { FetchProductsProps } from "../../api/products";
-import { useToast } from "../../provider/ToastProvider";
-import { CartItemType, Product } from "../../types/response.types";
+import { fetchCartItems } from "../api/cart";
+import fetchProducts, { FetchProductsProps } from "../api/products";
+import { useToast } from "../provider/ToastProvider";
+import { CartItemType, Product } from "../types/response.types";
 
 function useFetchData() {
   const { showToast } = useToast();

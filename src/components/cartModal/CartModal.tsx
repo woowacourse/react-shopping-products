@@ -1,4 +1,4 @@
-import { useModalClose } from "../../hooks/useModalClose/useModalClose";
+import { useModalClose } from "../../hooks/useModalClose";
 import CartItem from "../cartItem/CartItem";
 import { useData } from "../../provider/DataProvider";
 import {
