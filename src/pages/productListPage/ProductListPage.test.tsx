@@ -1,44 +1,24 @@
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
-import type { Mock } from 'vitest';
-import { getProducts } from '../../services/productServices';
-import type { ProductItemType } from '../../types/data';
+import { server } from '../../mocks/server';
 import { render, screen } from '@testing-library/react';
 import { ProductListPage } from './ProductListPage';
 import { PRODUCT_LIST_ITEM_COUNT } from '../../constants/systemConstants';
 import type React from 'react';
 import userEvent from '@testing-library/user-event';
 import { DataProvider } from '../../context/DataContext';
-import { MOCK_PRODUCTS } from '../../mocks/dummy';
+import { MOCK_PRODUCTS, MockProductsType } from '../../mocks/dummy';
+import { delay, http, HttpResponse } from 'msw';
 
 const TestDataProvider = ({ children }: { children: React.ReactNode }) => {
   return <DataProvider>{children}</DataProvider>;
 };
 
-vi.mock('../../services/productServices', () => ({
-  getProducts: vi.fn(),
-}));
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('상품 목록 조회 테스트', () => {
-  beforeEach(() => {
-    (getProducts as Mock).mockClear();
-    (getProducts as Mock).mockImplementation((categoryOption, sortOption) => {
-      let result = [...MOCK_PRODUCTS];
-      if (categoryOption && categoryOption !== '전체') {
-        result = result.filter((p) => p.category === categoryOption);
-      }
-      if (sortOption === 'desc') {
-        result = result.sort((a, b) => b.price - a.price);
-      } else if (sortOption === 'asc') {
-        result = result.sort((a, b) => a.price - b.price);
-      }
-      return Promise.resolve(result.slice(0, PRODUCT_LIST_ITEM_COUNT));
-    });
-  });
-
-  it('최대 20개의 상품을 렌더링할 수 있다.', async () => {
-    (getProducts as Mock).mockResolvedValueOnce(MOCK_PRODUCTS);
-
+  it(`최대 ${PRODUCT_LIST_ITEM_COUNT}개의 상품을 렌더링할 수 있다.`, async () => {
     render(
       <TestDataProvider>
         <ProductListPage />
@@ -50,7 +30,12 @@ describe('상품 목록 조회 테스트', () => {
 
   it('api 요청 실패 시, 에러 메시지가 나타난다.', async () => {
     const ERROR_MESSAGE = 'API Error';
-    (getProducts as Mock).mockRejectedValueOnce(new Error(ERROR_MESSAGE));
+
+    server.use(
+      http.get<never, MockProductsType[]>(`${import.meta.env.VITE_API_BASE_URL}/products`, () => {
+        return HttpResponse.json({ message: ERROR_MESSAGE }, { status: 500 });
+      }),
+    );
 
     render(
       <TestDataProvider>
@@ -62,9 +47,12 @@ describe('상품 목록 조회 테스트', () => {
   });
 
   it('api 요청 중에는 스켈레톤이 표시된다.', async () => {
-    const pendingPromise = new Promise<ProductItemType[]>(() => {});
-    (getProducts as Mock).mockReturnValueOnce(pendingPromise);
-
+    server.use(
+      http.get(`${import.meta.env.VITE_API_BASE_URL}/products`, async () => {
+        await delay(5000);
+        return HttpResponse.json({ content: MOCK_PRODUCTS });
+      }),
+    );
     render(
       <TestDataProvider>
         <ProductListPage />
