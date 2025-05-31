@@ -96,7 +96,9 @@
 
 - [x] useMutation 만들기 (post,delete, patch 전용 useQuery같은 계층)
 - [ ] 로딩 상태 처리
-  - [ ] 로딩 통합하기 -> 로딩 provider 제거 -> QueryContext 이용해서 관리
+  - [x] 로딩 통합하기
+    - [ ] 로딩 provider 제거
+    - [x] QueryContext 이용해서 로딩 관리
 - [ ] QueryContext store 객체 ref로 수정
 - [ ] QueryContext 내부에서 로딩 컴포넌트로 연결
 - [ ] 훅 역할 분리하기

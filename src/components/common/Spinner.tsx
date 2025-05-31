@@ -1,10 +1,19 @@
 import { css } from "@emotion/react";
-import { useLoading } from "../../contexts";
+import { useQueryClient } from "../../contexts/QueryContext";
+import { useEffect, useState } from "react";
 
 const Spinner = () => {
-  const { isLoading } = useLoading();
+  const { isFetching, isMutating, subscribeLoading, unsubscribeLoading } = useQueryClient();
+  const [, forceRender] = useState({});
 
-  if (isLoading.isFetching)
+  useEffect(() => {
+    const reRenderFn = () => forceRender({});
+    subscribeLoading(reRenderFn);
+
+    return () => unsubscribeLoading(reRenderFn);
+  }, [subscribeLoading, unsubscribeLoading]);
+
+  if (isFetching())
     return (
       <div css={[spinnerWrapper, orbitSpin]} className="active">
         <div css={orbitSpinner}>
@@ -17,7 +26,7 @@ const Spinner = () => {
       </div>
     );
 
-  if (isLoading.isMutating)
+  if (isMutating())
     return (
       <div css={[orbitSpin]} className="active">
         <div css={orbitSpinner}>

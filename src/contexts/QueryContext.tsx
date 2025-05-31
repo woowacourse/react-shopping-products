@@ -25,6 +25,9 @@ const mutationStore: {
   error: null,
 };
 
+// 로딩 컴포넌트 위치
+let loadingSubscriber: Subscriber | null = null;
+
 // 하위 컴포넌트에서 공유할 context
 interface QueryContextType {
   get: <T>(queryKey: string) => QueryState<T> | undefined;
@@ -33,6 +36,10 @@ interface QueryContextType {
   refetch: <T>(queryKey: string, fn: () => Promise<T>) => Promise<void>;
   startMutating: () => void;
   endMutating: (e?: Error) => void;
+  isFetching: () => boolean;
+  isMutating: () => boolean;
+  subscribeLoading: (reRenderFn: Subscriber) => void;
+  unsubscribeLoading: (reRenderFn: Subscriber) => void;
 }
 
 const QueryContext = createContext<QueryContextType | null>(null);
@@ -53,12 +60,18 @@ export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
     store[queryKey].subscribers.delete(reRenderFn);
   };
 
+  const subscribeLoading = (reRenderFn: Subscriber) => (loadingSubscriber = reRenderFn);
+  const unsubscribeLoading = () => (loadingSubscriber = null);
+
+  const notifyLoading = () => loadingSubscriber?.();
+
   const notify = (queryKey: string) => {
     store[queryKey].subscribers.forEach((fn) => fn());
   };
 
   const refetch = async function <T>(queryKey: string, fn: () => Promise<T>) {
     store[queryKey].state = { data: null, isLoading: true, error: null };
+    notifyLoading();
 
     try {
       const result = await fn();
@@ -67,6 +80,7 @@ export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
       if (e instanceof Error) store[queryKey].state = { data: null, isLoading: false, error: e };
     } finally {
       notify(queryKey);
+      notifyLoading();
     }
   };
 
@@ -74,12 +88,18 @@ export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
   const startMutating = () => {
     mutationStore.isLoading = true;
     mutationStore.error = null;
+    notifyLoading();
   };
 
   const endMutating = (error?: Error) => {
     mutationStore.isLoading = false;
     mutationStore.error = error ?? null;
+    notifyLoading();
   };
+
+  // loading
+  const isFetching = () => Object.values(store).some((entry) => entry.state.isLoading);
+  const isMutating = () => mutationStore.isLoading;
 
   return (
     <QueryContext.Provider
@@ -88,9 +108,16 @@ export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
         subscribe,
         unsubscribe,
         refetch,
+
         // mutation
         startMutating,
         endMutating,
+
+        // loading
+        isFetching,
+        isMutating,
+        subscribeLoading,
+        unsubscribeLoading,
       }}
     >
       {children}

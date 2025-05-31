@@ -15,11 +15,11 @@ function App() {
         <QueryProvider>
           <CartModalProvider>
             <div css={appStyle}>
+              <Spinner />
               <Header />
               <ProductPage />
               <CartModal />
               <ErrorPopup />
-              <Spinner />
             </div>
           </CartModalProvider>
         </QueryProvider>
