@@ -21,7 +21,7 @@ const QuantitySpinner = ({
       >
         -
       </button>
-      <span>{quantity}</span>
+      <span data-testid="cart-item-quantity">{quantity}</span>
       <button className={QuantitySpinnerButtonStyles} onClick={handleIncrease}>
         +
       </button>

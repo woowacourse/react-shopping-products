@@ -12,10 +12,16 @@ const Header = ({ shoppingCart, handleOpen }: HeaderProps) => {
       <a href="/" className={LogoStyles}>
         SHOP
       </a>
-      <button className={buttonStyles} onClick={handleOpen}>
+      <button
+        className={buttonStyles}
+        onClick={handleOpen}
+        data-testid="cart-button"
+      >
         <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
         {shoppingCart && shoppingCart.length !== 0 && (
-          <div className={ShoppingCartCount}>{shoppingCart.length}</div>
+          <div className={ShoppingCartCount} data-testid="cart-badge">
+            {shoppingCart.length}
+          </div>
         )}
       </button>
     </header>
