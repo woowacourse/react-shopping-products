@@ -13,9 +13,10 @@ interface ProductListProps {
 
 function ProductList({ category, sortBy }: ProductListProps) {
   const mappedSortType = SORT_PRICE_MAP[sortBy];
+
   const { data: productList } = useAPI<ProductElement[]>({
     fetcher: () => fetchProductList(mappedSortType),
-    name: API_CONFIG.PRODUCT_NAME,
+    name: `${API_CONFIG.PRODUCT_NAME}-${mappedSortType}`,
   });
 
   const filteredProductList = (() => {

@@ -21,7 +21,7 @@ function QuantityController({
       <Icon
         src="./minusButton.png"
         alt="마이너스 버튼"
-        onClick={quantity === 0 ? onRemoveClick : onDecreaseClick}
+        onClick={quantity === 1 ? onRemoveClick : onDecreaseClick}
       />
       <QuantityText>{quantity}</QuantityText>
       <Icon

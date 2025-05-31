@@ -40,7 +40,7 @@ function App() {
 
   const { isLoading: isProductLoading } = useAPI<ProductElement[]>({
     fetcher: () => fetchProductList(mappedSortType),
-    name: API_CONFIG.PRODUCT_NAME,
+    name: `${API_CONFIG.PRODUCT_NAME}-${mappedSortType}`,
   });
 
   const { isLoading: isCartLoading } = useAPI<CartItem[]>({
