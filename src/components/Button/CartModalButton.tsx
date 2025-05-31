@@ -1,12 +1,14 @@
-// src/components/Button/HeaderCart.tsx
+import { useCartInfo } from "../../hooks/useCartInfo";
 import S from "./CartModalButton.module.css";
 
 interface HeaderCartProps {
-	count: number;
 	onClick: () => void;
 }
 
-const CartModalButton = ({ count, onClick }: HeaderCartProps) => {
+const CartModalButton = ({ onClick }: HeaderCartProps) => {
+	const cartItems = useCartInfo();
+	const cartCount = cartItems.length;
+
 	return (
 		<button className={S.cartContainer} onClick={onClick}>
 			<svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
@@ -15,9 +17,9 @@ const CartModalButton = ({ count, onClick }: HeaderCartProps) => {
 					fill="white"
 				/>
 			</svg>
-			{count !== 0 && (
+			{cartCount !== 0 && (
 				<div className={S.cartCount}>
-					<p>{count}</p>
+					<p>{cartCount}</p>
 				</div>
 			)}
 		</button>

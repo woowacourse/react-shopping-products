@@ -1,21 +1,19 @@
+// src/components/Modal/CartModal.tsx
 import Modal from "dslgpgh-modal";
 import { useEffect } from "react";
 import CartItem from "../Cart/CartItem";
 import S from "./CartModal.module.css";
-import { useMergedProducts } from "../../hooks/useMergedProducts";
+import { useCartInfo } from "../../hooks/useCartInfo";
+import { useTotalAmount } from "../../hooks/useTotalAmount";
+
 interface CartModalProps {
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const CartModal = ({ isOpen, setIsOpen }: CartModalProps) => {
-	const mergedProducts = useMergedProducts();
-	const cartInfo = mergedProducts.filter((product) => product.cartInfo);
-	const totalAmount = cartInfo.reduce((sum, product) => {
-		if (!product.cartInfo) {
-			return sum;
-		}
-		return sum + product.price * product.cartInfo.quantity;
-	}, 0);
+	const cartItems = useCartInfo();
+	const totalAmount = useTotalAmount();
 
 	useEffect(() => {
 		if (!isOpen) return;
@@ -31,7 +29,7 @@ const CartModal = ({ isOpen, setIsOpen }: CartModalProps) => {
 		<Modal isOpen={isOpen} onClose={() => setIsOpen(false)} modalPosition={"bottom"} size={"full"}>
 			<Modal.Header>장바구니</Modal.Header>
 			<Modal.Body>
-				{cartInfo.map((product) => (
+				{cartItems.map((product) => (
 					<CartItem product={product} key={product.id} />
 				))}
 				<div className={S.totalPriceContainer}>
