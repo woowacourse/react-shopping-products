@@ -15,6 +15,7 @@ import { useCartActions } from '../../../hooks/useCartAction';
 import { useAPI } from '../../../hooks/useAPI';
 import { fetchCartItem } from '../../../utils/getCartItem';
 import { SHOP_INFO } from '../../../constants/shopInfoConfig';
+import { API_CONFIG } from '../../../constants/APIConfig';
 
 interface ProductProps {
   item: ProductElement;
@@ -25,7 +26,7 @@ function Product({ item }: ProductProps) {
 
   const { data: cartList } = useAPI<CartItem[]>({
     fetcher: fetchCartItem,
-    name: 'cartItems',
+    name: API_CONFIG.CART_NAME,
   });
 
   const {

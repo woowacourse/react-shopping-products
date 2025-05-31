@@ -2,6 +2,7 @@ import { useAPI } from '../../../hooks/useAPI';
 import { CartItem } from '../../../types/type';
 import { Button, Container, Icon, CartStock, Title } from './Header.styles';
 import { fetchCartItem } from '../../../utils/getCartItem';
+import { API_CONFIG } from '../../../constants/APIConfig';
 
 interface HeaderProps {
   title: string;
@@ -11,7 +12,7 @@ interface HeaderProps {
 function Header({ title, onModalOpen }: HeaderProps) {
   const { data: cartList } = useAPI<CartItem[]>({
     fetcher: fetchCartItem,
-    name: 'cartItems',
+    name: API_CONFIG.CART_NAME,
   });
   const totalCartProducts = cartList?.length;
 

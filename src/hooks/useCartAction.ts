@@ -4,13 +4,14 @@ import { CartItem, ProductElement } from '../types/type';
 import { useAPI } from './useAPI';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { fetchCartItem } from '../utils/getCartItem';
+import { API_CONFIG } from '../constants/APIConfig';
 
 export const useCartActions = () => {
   const { addToast } = useToastContext();
 
   const { data: cartList, refetch } = useAPI<CartItem[]>({
     fetcher: fetchCartItem,
-    name: 'cartItems',
+    name: API_CONFIG.CART_NAME,
   });
 
   const handleAddCart = async (product: ProductElement) => {

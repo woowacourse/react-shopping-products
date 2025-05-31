@@ -13,6 +13,7 @@ import CartItemRow from '../CartItemRow/CartItemRow';
 import { useAPI } from '../../../hooks/useAPI';
 import { CartItem } from '../../../types/type';
 import { fetchCartItem } from '../../../utils/getCartItem';
+import { API_CONFIG } from '../../../constants/APIConfig';
 
 interface CartModalProps {
   onClose: () => void;
@@ -21,7 +22,7 @@ interface CartModalProps {
 function CartModal({ onClose }: CartModalProps) {
   const { data: cartList } = useAPI<CartItem[]>({
     fetcher: fetchCartItem,
-    name: 'cartItems',
+    name: API_CONFIG.CART_NAME,
   });
 
   const totalPrice = cartList?.reduce(

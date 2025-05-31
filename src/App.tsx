@@ -27,6 +27,7 @@ import {
 import { useAPI } from './hooks/useAPI';
 import { fetchCartItem } from './utils/getCartItem';
 import { fetchProductList } from './utils/getProductList';
+import { API_CONFIG } from './constants/APIConfig';
 
 function App() {
   const { toastQueue, removeToast } = useToastContext();
@@ -39,12 +40,12 @@ function App() {
 
   const { isLoading: isProductLoading } = useAPI<ProductElement[]>({
     fetcher: () => fetchProductList(mappedSortType),
-    name: `productList-${mappedSortType}`,
+    name: API_CONFIG.PRODUCT_NAME,
   });
 
   const { isLoading: isCartLoading } = useAPI<CartItem[]>({
     fetcher: fetchCartItem,
-    name: 'cartItems',
+    name: API_CONFIG.CART_NAME,
   });
 
   const handleModalOpen = () => {
