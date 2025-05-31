@@ -48,7 +48,7 @@ const selectSize = (size: ButtonSize) => {
     case "full":
       return css`
         width: 100%;
-        padding: 13px 0px;
+        padding: 13px 0;
         font-size: 15px;
       `;
     case "sm":
