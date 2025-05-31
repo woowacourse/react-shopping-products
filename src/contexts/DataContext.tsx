@@ -19,9 +19,7 @@ interface DataContextType {
   clearError: (key: string) => void;
 }
 
-export const DataContext = createContext<DataContextType | undefined>(
-  undefined
-);
+const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider = ({ children }: { children: ReactNode }) => {
   const [dataStore, setDataStore] = useState<Record<string, DataState>>({});
