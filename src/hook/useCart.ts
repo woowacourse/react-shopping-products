@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { CartItem } from '../types/common';
-import { useResource } from './useResource';
+import useResource from './useResource';
 
 const CART_ITEMS_URL = '/cart-items';
 

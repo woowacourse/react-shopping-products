@@ -1,17 +1,15 @@
 import { http, HttpResponse } from 'msw';
 import { MAX_STOCK } from '../../constant/product';
 
-// 타입 확장: 기존 Product 타입에 quantity 필드 추가
 interface ProductWithStock {
   id: number;
   name: string;
   price: number;
   imageUrl: string;
   category: string;
-  quantity: number; // 재고 수량 필드 추가
+  quantity: number;
 }
 
-// 목업 상품 데이터
 const products: ProductWithStock[] = [
   {
     id: 1,
@@ -47,9 +45,7 @@ const products: ProductWithStock[] = [
   },
 ];
 
-// 상품 API 핸들러
 export const productHandlers = [
-  // 상품 목록 조회
   http.get('/products', ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get('category');
@@ -57,14 +53,12 @@ export const productHandlers = [
 
     let filteredProducts = [...products];
 
-    // 카테고리 필터링
     if (category) {
       filteredProducts = filteredProducts.filter(
         (product) => product.category === category
       );
     }
 
-    // 정렬
     if (sort) {
       const [field, order] = sort.split(',');
       if (field === 'price') {
@@ -96,7 +90,6 @@ export const productHandlers = [
     });
   }),
 
-  // 상품 상세 조회
   http.get('/products/:id', ({ params }) => {
     const id = Number(params.id);
     const product = products.find((p) => p.id === id);

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { CategoryOption, SortOption } from '../types/common';
 import { ProductListResponse } from '../types/response';
-import { useResource } from './useResource';
+import useResource from './useResource';
 
 const PRODUCTS_URL = '/products';
 
@@ -28,10 +28,8 @@ const useProductData = (
     return params;
   }, [categoryOption, sortOption]);
 
-  // 이전 params 값을 저장하기 위한 ref
   const prevParamsRef = useRef<string>('');
 
-  // useResource 훅을 사용하여 데이터 요청
   const {
     data: responseData,
     isLoading,
@@ -70,7 +68,6 @@ const useProductData = (
     autoFetch: true,
   });
 
-  // params가 변경될 때마다 refetch 호출
   useEffect(() => {
     const currentParams = JSON.stringify(getParams());
     if (prevParamsRef.current && prevParamsRef.current !== currentParams) {

@@ -14,10 +14,7 @@ import {
   overlay,
   trigger,
 } from './Dialog.styles';
-import useBoolean from '../../../hook/useBoolean';
-import useOverlay from '../../../hook/useOverlay';
-import useFocusRef from '../../../hook/useFocusRef';
-import useMergeRefs from '../../../hook/useMergeRefs';
+import { useBoolean, useOverlay, useFocusRef, useMergeRefs } from '@/hook';
 
 interface DialogContextType {
   open: () => void;

@@ -9,7 +9,7 @@ interface UseResourceOptions<T> {
   params?: Record<string, string | number>;
 }
 
-export function useResource<T>(
+export default function useResource<T>(
   url: string,
   options: UseResourceOptions<T> = {}
 ): ResourceState<T> & { refetch: () => Promise<void> } {

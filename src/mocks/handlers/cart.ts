@@ -1,14 +1,12 @@
 import { http, HttpResponse } from 'msw';
 import { MAX_STOCK } from '../../constant/product';
 
-// 장바구니 아이템 타입 정의
 interface CartItemWithId {
   id: number;
   productId: number;
   quantity: number;
 }
 
-// 상품 타입 정의
 interface ProductWithStock {
   id: number;
   name: string;
@@ -18,7 +16,6 @@ interface ProductWithStock {
   quantity: number;
 }
 
-// 목업 상품 데이터 (product.ts와 동일한 데이터)
 const products: ProductWithStock[] = [
   {
     id: 1,
@@ -54,15 +51,11 @@ const products: ProductWithStock[] = [
   },
 ];
 
-// 장바구니 아이템 목록 (DB 역할)
 const cartItems: CartItemWithId[] = [];
 let nextCartId = 1;
 
-// 장바구니 API 핸들러
 export const cartHandlers = [
-  // 장바구니 목록 조회
   http.get('/cart-items', () => {
-    // 장바구니 아이템과 상품 정보를 조합
     const cartItemsWithProduct = cartItems.map((item) => {
       const product = products.find((p) => p.id === item.productId);
       return {
@@ -77,7 +70,6 @@ export const cartHandlers = [
     });
   }),
 
-  // 장바구니 추가
   http.post('/cart-items', async ({ request }) => {
     const body = await request.json();
     const { productId, quantity } = body as {
@@ -85,7 +77,6 @@ export const cartHandlers = [
       quantity: number;
     };
 
-    // 상품 존재 확인
     const product = products.find((p) => p.id === productId);
     if (!product) {
       return new HttpResponse(
@@ -97,13 +88,11 @@ export const cartHandlers = [
       );
     }
 
-    // 기존 장바구니 아이템 확인
     const existingCartItem = cartItems.find(
       (item) => item.productId === productId
     );
     const currentQuantity = existingCartItem ? existingCartItem.quantity : 0;
 
-    // 재고 확인
     if (currentQuantity + quantity > product.quantity) {
       return new HttpResponse(
         JSON.stringify({
@@ -114,7 +103,6 @@ export const cartHandlers = [
       );
     }
 
-    // 기존 장바구니 아이템이 있으면 수량 업데이트
     if (existingCartItem) {
       existingCartItem.quantity += quantity;
 
@@ -125,7 +113,6 @@ export const cartHandlers = [
       });
     }
 
-    // 새 장바구니 아이템 추가
     const newCartItem = {
       id: nextCartId++,
       productId,
@@ -141,13 +128,11 @@ export const cartHandlers = [
     });
   }),
 
-  // 장바구니 아이템 수정 (PATCH)
   http.patch('/cart-items/:id', async ({ params, request }) => {
     const id = Number(params.id);
     const body = await request.json();
     const { quantity } = body as { quantity: number };
 
-    // 장바구니 아이템 찾기
     const cartItem = cartItems.find((item) => item.id === id);
     if (!cartItem) {
       return new HttpResponse(
@@ -159,7 +144,6 @@ export const cartHandlers = [
       );
     }
 
-    // 상품 정보 가져오기
     const product = products.find((p) => p.id === cartItem.productId);
     if (!product) {
       return new HttpResponse(
@@ -171,7 +155,6 @@ export const cartHandlers = [
       );
     }
 
-    // 재고 확인
     if (quantity > product.quantity) {
       return new HttpResponse(
         JSON.stringify({
@@ -182,7 +165,6 @@ export const cartHandlers = [
       );
     }
 
-    // 수량 업데이트
     cartItem.quantity = quantity;
 
     return HttpResponse.json({
@@ -192,11 +174,9 @@ export const cartHandlers = [
     });
   }),
 
-  // 장바구니 아이템 삭제
   http.delete('/cart-items/:id', ({ params }) => {
     const id = Number(params.id);
 
-    // 아이템 존재 확인
     const cartItemIndex = cartItems.findIndex((item) => item.id === id);
     if (cartItemIndex === -1) {
       return new HttpResponse(
@@ -208,7 +188,6 @@ export const cartHandlers = [
       );
     }
 
-    // 아이템 삭제
     cartItems.splice(cartItemIndex, 1);
 
     return new HttpResponse(null, { status: 204 });
