@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 import MOCKING_CART_ITEMS_DATA from "../data/cartItems.json";
 import MOCKING_PRODUCT_DATA from "../data/products.json";
-import { Content, GetCartItemsResponse } from "../../types/cartItem";
+import { CartItem, GetCartItemsResponse } from "../../types/cartItem";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -21,7 +21,7 @@ const postCartItems = http.post(`${BASE_URL}/cart-items`, async ({ request }) =>
   }
 
   const maxId = cartItems.content.length > 0 ? Math.max(...cartItems.content.map((item) => item.id)) : 0;
-  const newCartItemData: Content = {
+  const newCartItemData: CartItem = {
     id: maxId + 1,
     quantity: newCartItem.quantity,
     product: currentProduct!,
@@ -48,7 +48,7 @@ const patchCartItems = http.patch(`${BASE_URL}/cart-items/:id`, async ({ params,
       acc.push(item);
     }
     return acc;
-  }, [] as Content[]);
+  }, [] as CartItem[]);
 
   return HttpResponse.json({ message: "Patch" }, { status: 200 });
 });
