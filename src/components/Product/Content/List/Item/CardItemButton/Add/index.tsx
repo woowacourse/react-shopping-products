@@ -22,7 +22,7 @@ function AddCartItemButton({ id, disabled }: AddCartItemButton) {
   const context = useContext(APIContext);
 
   if (!context) {
-    throw new Error("RemoveCartItemButton must be used within a DataProvider");
+    throw new Error("AddCartItemButton must be used within a DataProvider");
   }
 
   const { setData } = context;
