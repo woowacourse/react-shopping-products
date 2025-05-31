@@ -67,7 +67,7 @@ export const ModalButton = styled.button`
   }
 `;
 
-export const ModalContent = styled.main`
+export const ScrollSection = styled.main`
   flex: 1;
   overflow: auto;
 
