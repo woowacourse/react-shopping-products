@@ -10,7 +10,7 @@ export const handlers = [
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '0');
     const size = parseInt(url.searchParams.get('size') || '10');
-    const sortParams = url.searchParams.getAll('sort'); // 여러 sort 가능
+    const sortParams = url.searchParams.getAll('sort');
 
     let content = [...productData.content];
 
@@ -70,7 +70,7 @@ export const handlers = [
       quantity,
     };
 
-    cartData.content.push(newCartItem);
+    cartData.content = [...cartData.content, newCartItem];
 
     return HttpResponse.json(newCartItem, { status: 201 });
   }),
@@ -102,7 +102,9 @@ export const handlers = [
         );
       }
 
-      cartItem.quantity = quantity;
+      cartData.content = cartData.content.map((item) =>
+        item.id === id ? { ...item, quantity } : item
+      );
 
       return HttpResponse.json(cartItem, { status: 200 });
     }
@@ -111,9 +113,7 @@ export const handlers = [
   http.delete(`${API_CONFIG.BASE_URL}/cart-items/:id`, ({ params }) => {
     const id = Number(params.id);
 
-    const index = cartData.content.findIndex((item) => item.id === id);
-
-    cartData.content.splice(index, 1);
+    cartData.content = cartData.content.filter((item) => item.id !== id);
 
     return HttpResponse.json(cartData, { status: 200 });
   }),
