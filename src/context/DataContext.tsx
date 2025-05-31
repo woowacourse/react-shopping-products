@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface DataStateItem<T = unknown> {
+export interface DataStateItem<T = unknown> {
   data: T | null;
   isLoading: boolean;
   error: string | null;
