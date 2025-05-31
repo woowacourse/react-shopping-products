@@ -2,16 +2,16 @@ import { css } from "@emotion/react";
 import { HTMLAttributes } from "react";
 import Text from "../common/Text";
 
-interface ProductCardProps extends HTMLAttributes<HTMLDivElement> {
+interface ProductCardProps {
   children: React.ReactNode;
 }
 
-interface ProductCardImageProps extends HTMLAttributes<HTMLDivElement> {
+interface ProductCardImageProps {
   src: string;
   alt: string;
 }
 
-interface ProductCardContentProps extends HTMLAttributes<HTMLDivElement> {
+interface ProductCardContentProps {
   children: React.ReactNode;
   gap?: number;
 }
@@ -24,21 +24,17 @@ interface ProductCardPriceProps extends HTMLAttributes<HTMLSpanElement> {
   price: number;
 }
 
-const ProductCard = ({ children, ...props }: ProductCardProps) => {
-  return (
-    <div css={[productCardStyle, hoverStyle]} {...props}>
-      {children}
-    </div>
-  );
+const ProductCard = ({ children }: ProductCardProps) => {
+  return <div css={[productCardStyle, hoverStyle]}>{children}</div>;
 };
 
 ProductCard.SoldOutCover = () => {
   return <div css={soldOutCoverContainerStyle}>품절</div>;
 };
 
-ProductCard.Image = ({ src, alt, ...props }: ProductCardImageProps) => {
+ProductCard.Image = ({ src, alt }: ProductCardImageProps) => {
   return (
-    <div css={imageContainerStyle} {...props}>
+    <div css={imageContainerStyle}>
       <img
         src={src}
         alt={alt}
@@ -52,12 +48,8 @@ ProductCard.Image = ({ src, alt, ...props }: ProductCardImageProps) => {
   );
 };
 
-ProductCard.Content = ({ children, ...props }: ProductCardContentProps) => {
-  return (
-    <div css={[contentStyle]} {...props}>
-      {children}
-    </div>
-  );
+ProductCard.Content = ({ children }: ProductCardContentProps) => {
+  return <div css={[contentStyle]}>{children}</div>;
 };
 
 ProductCard.Title = ({ text, ...props }: ProductCardTitleProps) => {

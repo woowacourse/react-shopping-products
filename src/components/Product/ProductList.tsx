@@ -1,13 +1,13 @@
 import { css } from "@emotion/react";
-import { Content } from "../../types/product";
 import ProductCard from "./ProductCard";
 import IconButton from "../common/Button/IconButton";
 import AddCart from "../icons/AddCart";
 import QuantitySelector from "../common/QuantitySelector";
 import useCartItems from "../../hooks/useCartItems";
+import { Product } from "../../types";
 
 interface ProductListProps {
-  products: Content[];
+  products: Product[];
 }
 
 const ProductList = ({ products }: ProductListProps) => {
