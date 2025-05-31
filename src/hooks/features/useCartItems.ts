@@ -6,6 +6,7 @@ import {
 import tryApiCall from '../../util/tryApiCall';
 import type { CartItemType } from '../../types/data';
 import type { DataResourceType } from '../../types/data';
+import { useEffect } from 'react';
 
 interface UseCartItemsProps {
   dataResource: DataResourceType<CartItemType[]>;
@@ -13,6 +14,12 @@ interface UseCartItemsProps {
 }
 
 const useCartItems = ({ dataResource, handleErrorMessage }: UseCartItemsProps) => {
+  useEffect(() => {
+    if (dataResource.error) {
+      handleErrorMessage(dataResource.error.message);
+    }
+  }, [dataResource.error]);
+
   const handleAddCartItem = async (productId: number) => {
     const addCartItemInfo = {
       productId: productId,
@@ -20,6 +27,7 @@ const useCartItems = ({ dataResource, handleErrorMessage }: UseCartItemsProps) =
     };
     await tryApiCall(async () => await addCartItems(addCartItemInfo), handleErrorMessage);
     await dataResource.refetch();
+
     if (dataResource.error) {
       handleErrorMessage(dataResource.error.message);
     }

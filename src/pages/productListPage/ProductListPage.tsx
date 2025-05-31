@@ -34,9 +34,6 @@ export const ProductListPage = () => {
   if (loadingState === 'loadingInitial') {
     return <ProductListPageSkeleton />;
   }
-  if (loadingState === 'error') {
-    return <ErrorFallBack message={DEFAULT_ERROR_MESSAGE} />;
-  }
 
   return (
     <P.ProductListPageContainer
@@ -44,32 +41,38 @@ export const ProductListPage = () => {
       $isDimmed={loadingState === 'loadingFilter'}
     >
       {errorMessage && <ErrorToast message={errorMessage} visible={isToastVisible} />}
-      <P.Title>bpple 상품 목록</P.Title>
-      <P.SelectContainer>
-        <Select
-          value={categoryOption}
-          options={CATEGORY_OPTIONS}
-          onSelectedValue={(value) => handleCategoryOption(value)}
-        />
-        <Select
-          value={sortOption}
-          options={SELECT_SORT_OPTIONS}
-          onSelectedValue={(value) => handleSortOption(value)}
-        />
-      </P.SelectContainer>
+      {loadingState === 'error' ? (
+        <ErrorFallBack message={DEFAULT_ERROR_MESSAGE} />
+      ) : (
+        <>
+          <P.Title>bpple 상품 목록</P.Title>
+          <P.SelectContainer>
+            <Select
+              value={categoryOption}
+              options={CATEGORY_OPTIONS}
+              onSelectedValue={(value) => handleCategoryOption(value)}
+            />
+            <Select
+              value={sortOption}
+              options={SELECT_SORT_OPTIONS}
+              onSelectedValue={(value) => handleSortOption(value)}
+            />
+          </P.SelectContainer>
 
-      <P.ProductItemContainer>
-        {productItemsResource.data?.slice(0, PRODUCT_LIST_ITEM_COUNT).map((product) => (
-          <ProductItem
-            key={product.id}
-            cartInCount={getCountInCart(cartItemsResource.data ?? [], product.id)}
-            product={product}
-            onAddCartItem={handleAddCartItem}
-            onRemoveCartItem={handleRemoveCartItem}
-            onUpdateCartItem={handleUpdateCartItem}
-          />
-        ))}
-      </P.ProductItemContainer>
+          <P.ProductItemContainer>
+            {productItemsResource.data?.slice(0, PRODUCT_LIST_ITEM_COUNT).map((product) => (
+              <ProductItem
+                key={product.id}
+                cartInCount={getCountInCart(cartItemsResource.data ?? [], product.id)}
+                product={product}
+                onAddCartItem={handleAddCartItem}
+                onRemoveCartItem={handleRemoveCartItem}
+                onUpdateCartItem={handleUpdateCartItem}
+              />
+            ))}
+          </P.ProductItemContainer>
+        </>
+      )}
     </P.ProductListPageContainer>
   );
 };

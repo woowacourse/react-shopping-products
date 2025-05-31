@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CATEGORY_OPTIONS, SELECT_SORT_OPTIONS } from '../../constants/systemConstants';
 import type { ProductItemType, DataResourceType } from '../../types/data';
 
@@ -10,6 +10,12 @@ interface ProductListProps {
 const useProductHandler = ({ dataResource, handleErrorMessage }: ProductListProps) => {
   const [categoryOption, setCategoryOption] = useState(CATEGORY_OPTIONS[0]);
   const [sortOption, setSortOption] = useState(SELECT_SORT_OPTIONS[0]);
+
+  useEffect(() => {
+    if (dataResource.error) {
+      handleErrorMessage(dataResource.error.message);
+    }
+  }, [dataResource.error]);
 
   const handleCategoryOption = async (value: string) => {
     setCategoryOption(value);

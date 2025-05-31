@@ -23,8 +23,10 @@ const useData = <T, A extends unknown[]>({
       setLoadingState('success');
       return result;
     } catch (err) {
-      if (err instanceof Error) setError(err);
-      setLoadingState('error');
+      if (err instanceof Error) {
+        setError(err);
+        setLoadingState('error');
+      }
       return null;
     }
   };
