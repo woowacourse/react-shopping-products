@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import {
   CART_MODAL_CLOSE_BUTTON_TEXT,
   CART_MODAL_TITLE,
@@ -29,12 +28,10 @@ function CartModal({ onClose }: CartModalProps) {
     name: 'cartItems',
   });
 
-  const totalPrice = useMemo(() => {
-    return cartList?.reduce(
-      (acc, item) => acc + item.product.price * item.quantity,
-      0
-    );
-  }, [cartList]);
+  const totalPrice = cartList?.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0
+  );
 
   return (
     <>

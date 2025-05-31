@@ -17,7 +17,7 @@ import {
   PRODUCT_SECTION_TITLE,
   SHOPPING_MALL_TITLE,
 } from './constants/shopInfoConfig';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useToastContext } from './context/ToastContext';
 import Modal from './ui/components/Modal/Modal';
 import CartModal from './ui/components/CartModal/CartModal';
@@ -38,9 +38,7 @@ function App() {
   const [category, setCategory] = useState<CategoryType>(CATEGORY[0]);
   const [sortBy, setSortBy] = useState<SortKeyType>(SORT_PRICE[0]);
 
-  const mappedSortType = useMemo(() => {
-    return SORT_PRICE_MAP[sortBy];
-  }, [sortBy]);
+  const mappedSortType = SORT_PRICE_MAP[sortBy];
 
   const { isLoading: isProductLoading } = useAPI<ProductElement[]>({
     fetcher: () => fetchProductList(mappedSortType),

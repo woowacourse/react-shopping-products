@@ -1,7 +1,6 @@
 import Product from '../Product/Product';
 import { CategoryType, ProductElement, SortKeyType } from '../../../types/type';
 import { List } from './ProductList.styles';
-import { useMemo } from 'react';
 import { useAPI } from '../../../hooks/useAPI';
 import { SORT_PRICE_MAP } from '../../../constants/productConfig';
 import { fetchProductList } from '../../../utils/getProductList';
@@ -12,23 +11,20 @@ interface ProductListProps {
 }
 
 function ProductList({ category, sortBy }: ProductListProps) {
-  const mappedSortType = useMemo(() => {
-    return SORT_PRICE_MAP[sortBy];
-  }, [sortBy]);
-
+  const mappedSortType = SORT_PRICE_MAP[sortBy];
   const { data: productList } = useAPI<ProductElement[]>({
     fetcher: () => fetchProductList(mappedSortType),
     name: `productList-${mappedSortType}`,
   });
 
-  const filteredProductList = useMemo(() => {
+  const filteredProductList = (() => {
     if (category === '전체') {
       return productList;
     }
     return productList?.filter(
       (item: ProductElement) => item.category === category
     );
-  }, [category, productList]);
+  })();
 
   return (
     <List>

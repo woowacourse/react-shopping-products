@@ -101,7 +101,7 @@ export const CartRemoveButtonText = styled.span`
   color: #000000;
 `;
 
-export const SoldoutBakcgound = styled.div`
+export const SoldoutBackground = styled.div`
   position: absolute;
   top: 0;
   left: 0;
