@@ -102,16 +102,13 @@ export function useData<T>({
     }
   }, [key, fetcher, enabled, setState]);
 
-  const setError = useCallback(
-    (errorMessage: string) => {
-      setState(key, { error: errorMessage });
-    },
-    [key, setState]
-  );
+  const setError = (errorMessage: string) => {
+    setState(key, { error: errorMessage });
+  };
 
-  const clearErrorHandler = useCallback(() => {
+  const clearErrorHandler = () => {
     clearError(key);
-  }, [key, clearError]);
+  };
 
   useEffect(() => {
     fetchData();
