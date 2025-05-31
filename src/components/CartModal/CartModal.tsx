@@ -1,6 +1,5 @@
 import { Modal } from '@sanghee01/modal';
 import useGetCarts from '../../hooks/useGetCartItems';
-import useCartManagement from '../../hooks/useCartManagement';
 import QuantityControlBox from '../QuantityControlBox/QuantityControlBox';
 import DeleteButton from '../DeleteButton/DeleteButton';
 import { getImageUrl } from '../../utils/getImageUrl';
@@ -21,6 +20,8 @@ import {
   cartItemContent,
   cartItemInfoContainer,
 } from './CartModal.style';
+import useDeleteCartItem from '../../hooks/useDeleteCartItem';
+import useUpdateCartItem from '../../hooks/useUpdateCartItem';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -29,7 +30,11 @@ interface CartModalProps {
 
 function CartModal({ isOpen, onClose }: CartModalProps) {
   const { carts, refetchCarts } = useGetCarts();
-  const { handleUpdateCartItem, handleDeleteCartItem } = useCartManagement({
+  const { handleDeleteCartItem } = useDeleteCartItem({
+    refetchCarts,
+    carts,
+  });
+  const { handleUpdateCartItem } = useUpdateCartItem({
     refetchCarts,
     carts,
   });

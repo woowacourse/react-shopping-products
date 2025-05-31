@@ -1,5 +1,7 @@
 import useGetCarts from './useGetCartItems';
-import useCartManagement from './useCartManagement';
+import useAddCartItem from './useAddCartItem';
+import useDeleteCartItem from './useDeleteCartItem';
+import useUpdateCartItem from './useUpdateCartItem';
 
 type UseProductQuantityProps = {
   id: number;
@@ -9,7 +11,15 @@ type UseProductQuantityProps = {
 
 function useProductQuantity({ id, quantity, isAdd }: UseProductQuantityProps) {
   const { carts, refetchCarts } = useGetCarts();
-  const { handleAddCartItem, handleUpdateCartItem, handleDeleteCartItem } = useCartManagement({
+  const { handleAddCartItem } = useAddCartItem({
+    refetchCarts,
+    carts,
+  });
+  const { handleDeleteCartItem } = useDeleteCartItem({
+    refetchCarts,
+    carts,
+  });
+  const { handleUpdateCartItem } = useUpdateCartItem({
     refetchCarts,
     carts,
   });
