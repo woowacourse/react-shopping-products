@@ -44,8 +44,14 @@ const mockDataResource = {
   },
 };
 
-const TestProviders = ({ children }: { children: React.ReactNode }) => {
-  const [errorMessage, setErrorMessage] = useState('');
+const TestProviders = ({
+  children,
+  initialErrorMessage = '',
+}: {
+  children: React.ReactNode;
+  initialErrorMessage?: string;
+}) => {
+  const [errorMessage, setErrorMessage] = useState(initialErrorMessage);
 
   return (
     <DataProvider dataResource={mockDataResource}>
@@ -140,14 +146,8 @@ describe('상품 목록 조회 테스트', () => {
     });
 
     render(
-      <TestProviders>
-        <ErrorMessageProvider
-          errorMessage={errorMessage}
-          handleErrorMessage={vi.fn()}
-          isToastVisible={true}
-        >
-          <ProductListPage />
-        </ErrorMessageProvider>
+      <TestProviders initialErrorMessage={errorMessage}>
+        <ProductListPage />
       </TestProviders>,
     );
     expect(screen.getByTestId('error-message')).toHaveTextContent(errorMessage);
