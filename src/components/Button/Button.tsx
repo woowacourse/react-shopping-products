@@ -37,11 +37,11 @@ export default function Button({
   return (
     <button
       css={buttonLayout(
+        size,
+        disabled,
         colorVariant[style].backgroundColor,
         colorVariant[style].color,
-        colorVariant[style].border,
-        size,
-        disabled
+        colorVariant[style].border
       )}
       onClick={onClick}
       data-testid={dataTestid}

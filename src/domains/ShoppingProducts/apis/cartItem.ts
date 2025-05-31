@@ -36,7 +36,7 @@ export async function updateCartItem({
   id: number;
   quantity: number;
 }) {
-  return apiClient.put(`/cart-items/${id}`, {
+  return apiClient.patch(`/cart-items/${id}`, {
     quantity,
   });
 }

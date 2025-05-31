@@ -55,7 +55,7 @@ export const apiClient = {
         getRequestOptions("DELETE", undefined, withAuth)
       )
     ),
-  put: (url: string, body: Record<string, number>, withAuth = true) =>
+  patch: (url: string, body: Record<string, number>, withAuth = true) =>
     tryFetch(() =>
       fetch(
         `${import.meta.env.VITE_BASE_URL}${url}`,

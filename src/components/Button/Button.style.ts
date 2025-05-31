@@ -1,11 +1,11 @@
 import { css } from "@emotion/react";
 
 const buttonLayout = (
+  size: "sm" | "full" = "sm",
+  disabled: boolean,
   backgroundColor: string,
   color: string,
-  border: string = "none",
-  size: "sm" | "full" = "sm",
-  disabled: boolean
+  border: string = "none"
 ) => {
   const sizeVarient = {
     sm: {
