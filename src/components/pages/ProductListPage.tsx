@@ -9,10 +9,14 @@ import { StoreProvider } from "../Context/StoreContext";
 const ProductListPage = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
+	const openModal = () => {
+		setIsOpen(true);
+	};
+
 	return (
 		<StoreProvider>
 			<div className={S.container}>
-				<Header setIsOpen={setIsOpen} />
+				<Header onClick={openModal} />
 				<ErrorToast />
 				<ProductContent />
 				<CartModal isOpen={isOpen} setIsOpen={setIsOpen} />
