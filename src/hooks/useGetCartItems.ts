@@ -14,14 +14,13 @@ type UseGetCartsReturn = {
 function useGetCarts(): UseGetCartsReturn {
   const { data, loading, error, refetch } = useData('cart-items', getCarts);
 
-  const errorMessage = error || '';
-  useToast(errorMessage);
+  useToast(error, 'error');
 
   return {
     carts: data,
     isLoading: loading,
     isError: !!error,
-    errorMessage,
+    errorMessage: error || '',
     refetchCarts: refetch,
   };
 }

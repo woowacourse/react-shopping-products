@@ -16,16 +16,19 @@ function useCartManagement({
   const [isErrorAddCartItem, setIsErrorAddCartItem] = useState(false);
   const [isErrorDeleteCartItem, setIsErrorDeleteCartItem] = useState(false);
   const [isErrorUpdateCartItem, setIsErrorUpdateCartItem] = useState(false);
-  const [errorAddCartItemMessage, setErrorAddCartItemMessage] = useState('');
-  const [errorDeleteCartItemMessage, setErrorDeleteCartItemMessage] = useState('');
-  const [errorUpdateCartItemMessage, setErrorUpdateCartItemMessage] = useState('');
+  const [errorAddCartItemMessage, setErrorAddCartItemMessage] = useState<string | null>(null);
+  const [errorDeleteCartItemMessage, setErrorDeleteCartItemMessage] = useState<string | null>(null);
+  const [errorUpdateCartItemMessage, setErrorUpdateCartItemMessage] = useState<string | null>(null);
   const [isOverItemCounts, setIsOverItemCounts] = useState(false);
   const [itemCount, setItemCount] = useState(0);
 
-  useToast(errorAddCartItemMessage);
-  useToast(errorDeleteCartItemMessage);
-  useToast(errorUpdateCartItemMessage);
-  useToast(isOverItemCounts ? `장바구니는 최대 ${CART_LIMIT}개의 상품을 담을 수 있습니다.` : null);
+  useToast(errorAddCartItemMessage, 'error');
+  useToast(errorDeleteCartItemMessage, 'error');
+  useToast(errorUpdateCartItemMessage, 'error');
+  useToast(
+    isOverItemCounts ? `장바구니는 최대 ${CART_LIMIT}개의 상품을 담을 수 있습니다.` : null,
+    'error',
+  );
 
   const handleAddCartItem = async ({ productId, quantity }: AddCartItemType) => {
     if (itemCount >= CART_LIMIT) {
@@ -39,6 +42,8 @@ function useCartManagement({
         quantity,
       });
       await refetchCarts();
+      setErrorAddCartItemMessage(null);
+      setIsErrorAddCartItem(false);
     } catch (error) {
       setIsErrorAddCartItem(true);
       setErrorAddCartItemMessage(
@@ -61,6 +66,8 @@ function useCartManagement({
     try {
       await patchCartItem({ cartId, quantity });
       await refetchCarts();
+      setErrorUpdateCartItemMessage(null);
+      setIsErrorUpdateCartItem(false);
     } catch (error) {
       setIsErrorUpdateCartItem(true);
       setErrorUpdateCartItemMessage(
@@ -77,6 +84,8 @@ function useCartManagement({
     try {
       await deleteCartItem({ cartId });
       await refetchCarts();
+      setErrorDeleteCartItemMessage(null);
+      setIsErrorDeleteCartItem(false);
     } catch (error) {
       setIsErrorDeleteCartItem(true);
       setErrorDeleteCartItemMessage(
@@ -93,6 +102,10 @@ function useCartManagement({
     }
   }, [carts]);
 
+  useEffect(() => {
+    if (!isErrorAddCartItem) setIsOverItemCounts(false);
+  }, [isErrorAddCartItem]);
+
   return {
     handleAddCartItem,
     handleUpdateCartItem,
@@ -102,9 +115,9 @@ function useCartManagement({
     isErrorUpdateCartItem,
     isOverItemCounts,
     itemCount,
-    errorAddCartItemMessage,
-    errorDeleteCartItemMessage,
-    errorUpdateCartItemMessage,
+    errorAddCartItemMessage: errorAddCartItemMessage || '',
+    errorDeleteCartItemMessage: errorDeleteCartItemMessage || '',
+    errorUpdateCartItemMessage: errorUpdateCartItemMessage || '',
   };
 }
 

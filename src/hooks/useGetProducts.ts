@@ -27,14 +27,13 @@ function useGetProducts({ sort, category }: UseGetProductsParams): UseGetProduct
 
   const { data, loading, error } = useData('products', fetcher);
 
-  const errorMessage = error || '';
-  useToast(errorMessage);
+  useToast(error, 'error');
 
   return {
     products: data,
     isLoading: loading,
     isError: !!error,
-    errorMessage,
+    errorMessage: error || '',
   };
 }
 
