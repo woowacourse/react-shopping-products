@@ -47,7 +47,7 @@ const Layout = () => {
     productItemsResource: productItemsResource,
   };
 
-  const { handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems } = useCartItems({
+  const { handleAddCartItem, handleRemoveCartItem, handleUpdateCartItem } = useCartItems({
     dataResource: cartItemsResource,
     handleErrorMessage,
   });
@@ -73,9 +73,9 @@ const Layout = () => {
           <CartModal
             isCartModalOpen={isCartModalOpen}
             onModalClose={handleCartModalClose}
-            onAddCartItems={handleAddCartItems}
-            onRemoveCartItems={handleRemoveCartItems}
-            onUpdateCartItems={handleUpdateCartItems}
+            onAddCartItem={handleAddCartItem}
+            onRemoveCartItem={handleRemoveCartItem}
+            onUpdateCartItem={handleUpdateCartItem}
           />
         </S.LayoutContainer>
       </ErrorMessageProvider>

@@ -9,17 +9,17 @@ import { handleImageError } from '../../util/handleImageError';
 interface ProductItemProps {
   cartInCount: number;
   product: ProductItemType;
-  onAddCartItems: (productId: number) => void;
-  onRemoveCartItems: (productId: number) => void;
-  onUpdateCartItems: (productId: number, quantity: number) => void;
+  onAddCartItem: (productId: number) => void;
+  onRemoveCartItem: (productId: number) => void;
+  onUpdateCartItem: (productId: number, quantity: number) => void;
 }
 
 const ProductItem = ({
   cartInCount,
   product,
-  onAddCartItems,
-  onRemoveCartItems,
-  onUpdateCartItems,
+  onAddCartItem,
+  onRemoveCartItem,
+  onUpdateCartItem,
 }: ProductItemProps) => {
   const isMaxCountReached = cartInCount >= product.quantity;
   const isOutOfStock = product.quantity === 0;
@@ -27,9 +27,9 @@ const ProductItem = ({
   const { handlePlusCount, handleMinusCount } = useCartCount({
     cartInCount,
     product,
-    onUpdateCartItems,
-    onAddCartItems,
-    onRemoveCartItems,
+    onUpdateCartItem,
+    onAddCartItem,
+    onRemoveCartItem,
   });
 
   return (

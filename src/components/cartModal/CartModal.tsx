@@ -6,13 +6,13 @@ import useDataContext from '../../hooks/useDataContext';
 interface CartModalProps {
   isCartModalOpen: boolean;
   onModalClose: () => void;
-  onAddCartItems: (productId: number) => void;
-  onRemoveCartItems: (productId: number) => void;
-  onUpdateCartItems: (productId: number, quantity: number) => void;
+  onAddCartItem: (productId: number) => void;
+  onRemoveCartItem: (productId: number) => void;
+  onUpdateCartItem: (productId: number, quantity: number) => void;
 }
 
 const CartModal = (props: CartModalProps) => {
-  const { isCartModalOpen, onModalClose, onAddCartItems, onRemoveCartItems, onUpdateCartItems } =
+  const { isCartModalOpen, onModalClose, onAddCartItem, onRemoveCartItem, onUpdateCartItem } =
     props;
   const { cartItemsResource } = useDataContext();
 
@@ -22,9 +22,9 @@ const CartModal = (props: CartModalProps) => {
         <CartItem
           key={cartItem.product.id}
           cartItem={cartItem}
-          onAddCartItems={onAddCartItems}
-          onRemoveCartItems={onRemoveCartItems}
-          onUpdateCartItems={onUpdateCartItems}
+          onAddCartItem={onAddCartItem}
+          onRemoveCartItem={onRemoveCartItem}
+          onUpdateCartItem={onUpdateCartItem}
         />
       ))}
     </Modal>

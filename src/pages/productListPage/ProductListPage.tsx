@@ -25,7 +25,7 @@ export const ProductListPage = () => {
       handleErrorMessage,
     });
 
-  const { handleAddCartItems, handleRemoveCartItems, handleUpdateCartItems } = useCartItems({
+  const { handleAddCartItem, handleRemoveCartItem, handleUpdateCartItem } = useCartItems({
     dataResource: cartItemsResource,
     handleErrorMessage,
   });
@@ -63,9 +63,9 @@ export const ProductListPage = () => {
             key={product.id}
             cartInCount={getCountInCart(cartItemsResource.data ?? [], product.id)}
             product={product}
-            onAddCartItems={handleAddCartItems}
-            onRemoveCartItems={handleRemoveCartItems}
-            onUpdateCartItems={handleUpdateCartItems}
+            onAddCartItem={handleAddCartItem}
+            onRemoveCartItem={handleRemoveCartItem}
+            onUpdateCartItem={handleUpdateCartItem}
           />
         ))}
       </P.ProductItemContainer>
