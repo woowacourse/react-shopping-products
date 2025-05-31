@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import type { CacheKey } from '../utils/cacheKeys';
 
 export interface DataStateItem<T = unknown> {
   data: T | null;
@@ -6,14 +7,12 @@ export interface DataStateItem<T = unknown> {
   error: string | null;
 }
 
-interface DataState {
-  [key: string]: DataStateItem;
-}
+type DataState = Partial<Record<CacheKey, DataStateItem>>;
 
 interface DataContextType {
   state: DataState;
-  fetchData: <T>(key: string, fetchFn: () => Promise<T>) => Promise<void>;
-  getTypedData: <T>(key: string) => DataStateItem<T>;
+  fetchData: <T>(key: CacheKey, fetchFn: () => Promise<T>) => Promise<void>;
+  getTypedData: <T>(key: CacheKey) => DataStateItem<T>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -21,7 +20,7 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, setState] = useState<DataState>({});
 
-  const updateState = (key: string, newState: Partial<DataStateItem>) => {
+  const updateState = (key: CacheKey, newState: Partial<DataStateItem>) => {
     setState((prev) => {
       const currentState = prev[key] || { data: null, isLoading: false, error: null };
       return {
@@ -31,7 +30,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
   };
 
-  const fetchData = async <T,>(key: string, fetchFn: () => Promise<T>) => {
+  const fetchData = async <T,>(key: CacheKey, fetchFn: () => Promise<T>) => {
     updateState(key, { isLoading: true, error: null });
 
     try {
@@ -45,7 +44,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const getTypedData = <T,>(key: string): DataStateItem<T> => {
+  const getTypedData = <T,>(key: CacheKey): DataStateItem<T> => {
     const defaultState: DataStateItem<T> = { data: null, isLoading: false, error: null };
     return (state[key] as DataStateItem<T>) || defaultState;
   };
