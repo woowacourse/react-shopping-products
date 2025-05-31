@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import useProducts from "../hooks/useProducts";
-import { ErrorProvider, LoadingProvider } from "../contexts";
+import { ErrorProvider } from "../contexts";
 import { server } from "../mocks/node";
 import { QueryProvider } from "../contexts/QueryContext";
 import MOCKING_PRODUCT_DATA from "../../src/mocks/data/products.json";
@@ -10,11 +10,9 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <LoadingProvider>
-    <ErrorProvider>
-      <QueryProvider>{children}</QueryProvider>
-    </ErrorProvider>
-  </LoadingProvider>
+  <ErrorProvider>
+    <QueryProvider>{children}</QueryProvider>
+  </ErrorProvider>
 );
 
 describe("useProducts 훅 테스트", () => {

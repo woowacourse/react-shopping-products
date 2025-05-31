@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import useCartItems from "../hooks/useCartItems";
-import { ErrorProvider, LoadingProvider } from "../contexts";
+import { ErrorProvider } from "../contexts";
 import { server } from "../mocks/node";
 import { QueryProvider } from "../contexts/QueryContext";
 import MOCKING_CART_ITEMS_DATA from "../../src/mocks/data/cartItems.json";
@@ -11,11 +11,9 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <LoadingProvider>
-    <ErrorProvider>
-      <QueryProvider>{children}</QueryProvider>
-    </ErrorProvider>
-  </LoadingProvider>
+  <ErrorProvider>
+    <QueryProvider>{children}</QueryProvider>
+  </ErrorProvider>
 );
 
 describe("useCartItems 훅 테스트", () => {
