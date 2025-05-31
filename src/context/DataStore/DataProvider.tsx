@@ -1,11 +1,30 @@
-import React, { useReducer, ReactNode } from 'react';
-import { DataContext } from './DataContext';
+import React, { createContext, useReducer, ReactNode } from 'react';
 import { dataReducer } from './dataReducer';
-import { initialState } from './constants';
+import { DataStore, DataAction } from '../../types/dataStore';
+
+type DataContextValue = {
+  state: DataStore;
+  dispatch: React.Dispatch<DataAction>;
+};
 
 type DataProviderProps = {
   children: ReactNode;
 };
+
+const initialState: DataStore = {
+  products: {
+    data: null,
+    loading: false,
+    error: null,
+  },
+  'cart-items': {
+    data: null,
+    loading: false,
+    error: null,
+  },
+};
+
+export const DataContext = createContext<DataContextValue | undefined>(undefined);
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(dataReducer, initialState);
