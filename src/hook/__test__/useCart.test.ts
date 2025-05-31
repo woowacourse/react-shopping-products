@@ -5,7 +5,8 @@ import { server } from '../../test/setup';
 import useCart from '../cart/useCart';
 import { CartItem } from '../../types/common';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL =
+  'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com';
 const CART_ITEMS_ENDPOINT = `${API_BASE_URL}/cart-items`;
 
 const createMockCartItem = (overrides: Partial<CartItem> = {}): CartItem => ({

@@ -6,7 +6,8 @@ import useShoppingItemList from '../useShoppingItemList';
 import { Product } from '../../types/common';
 
 // 상수 정의
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL =
+  'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com';
 const PRODUCTS_ENDPOINT = `${API_BASE_URL}/products`;
 
 // 테스트 데이터 팩토리
