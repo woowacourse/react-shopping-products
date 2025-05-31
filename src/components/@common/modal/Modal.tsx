@@ -18,12 +18,12 @@ const Modal = ({ isOpen, onClose, children, title, hideCloseButton = false }: Mo
       if (e.key === 'Escape') onClose();
     };
     if (isOpen) {
-      window.addEventListener('keyup', handleEsc);
+      window.addEventListener('keydown', handleEsc);
       document.body.style.overflow = 'hidden';
     }
 
     return () => {
-      window.removeEventListener('keyup', handleEsc);
+      window.removeEventListener('keydown', handleEsc);
       document.body.style.overflow = 'auto';
     };
   }, [onClose, isOpen]);
