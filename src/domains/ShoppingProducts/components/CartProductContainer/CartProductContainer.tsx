@@ -8,9 +8,29 @@ import {
   PaymentsValue,
 } from "./CartProductContainer.style";
 import { useCalculateTotalPrice } from "../../hooks/useCalculateTotalPrice";
+import { useMemo } from "react";
+import { CartItemType } from "../../apis/types/cartItem";
+import { ProductType } from "../../apis/types/product";
 
+type CartProductItem = {
+  cartItem: CartItemType;
+  productItem: ProductType;
+};
 export default function CartProductContainer() {
   const { cart, product, dispatch } = useShoppingContext();
+
+  const cartProductItems: CartProductItem[] = useMemo(() => {
+    console.log("장바구니 상품 목록을 계산합니다.");
+    return cart.item
+      .map((cartItem) => {
+        const productItem = product.item.find(
+          (productItem) => productItem.id === cartItem.product.id
+        );
+        return productItem ? { cartItem, productItem } : null;
+      })
+      .filter((item) => item !== null);
+  }, [cart.item, product.item]);
+
   const totalPrice = useCalculateTotalPrice({
     cartItem: cart.item,
     productItem: product.item,
@@ -26,21 +46,17 @@ export default function CartProductContainer() {
   return (
     <>
       <div css={CartProductContainerLayout}>
-        {cart.item.map((cartItem) => {
-          const cartProduct = product.item.filter(
-            (productItem) => cartItem.product.id === productItem.id
-          );
-          if (cartProduct.length === 0) return;
+        {cartProductItems.map(({ cartItem, productItem }) => {
           return (
             <CartProduct
-              key={cartProduct[0].id}
+              key={productItem.id}
               id={cartItem.id}
-              imageUrl={cartProduct[0].imageUrl}
-              name={cartProduct[0].name}
-              price={cartProduct[0].price}
+              imageUrl={productItem.imageUrl}
+              name={productItem.name}
+              price={productItem.price}
               quantity={cartItem.quantity}
               onChange={() => dispatch({ type: "update", queryKey: "cart" })}
-              maxQuantity={cartProduct[0].quantity ?? 100000}
+              maxQuantity={productItem.quantity ?? 100000}
             />
           );
         })}
