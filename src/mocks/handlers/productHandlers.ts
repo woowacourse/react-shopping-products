@@ -13,11 +13,13 @@ const sortProducts = (products: Product[], sortKey: string, sortOrder: SortOrder
       bValue = bValue.toLowerCase();
     }
 
-    if (sortOrder === 'asc') {
-      return aValue > bValue ? 1 : -1;
-    } else {
-      return aValue < bValue ? 1 : -1;
+    if (aValue < bValue) {
+      return sortOrder === 'asc' ? -1 : 1;
     }
+    if (aValue > bValue) {
+      return sortOrder === 'asc' ? 1 : -1;
+    }
+    return 0;
   });
 };
 
@@ -34,8 +36,12 @@ export const productHandlers = [
     }
 
     if (sortParam) {
-      const [sortKey, sortOrder] = sortParam.split('%2C') as [string, SortOrder];
-      filteredProducts = sortProducts(filteredProducts, sortKey, sortOrder);
+      const decodedSort = decodeURIComponent(sortParam);
+      const [sortKey, sortOrder] = decodedSort.split(',') as [string, SortOrder];
+
+      if (sortKey && sortOrder) {
+        filteredProducts = sortProducts(filteredProducts, sortKey, sortOrder);
+      }
     }
 
     const response: { content: Product[] } = {
