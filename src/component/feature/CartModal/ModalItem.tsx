@@ -20,7 +20,7 @@ interface ModalItemProps {
 }
 
 const ModalItem = ({ cartItem }: ModalItemProps) => {
-  const { patchCart, removeCart } = useContext(CartContext);
+  const { removeCart, increaseCart, decreaseCart } = useContext(CartContext);
   const DEFAULT_IMAGE = './image/default.jpeg';
 
   const imgUrl = isValidImageUrl(cartItem.product.imageUrl)
@@ -29,6 +29,14 @@ const ModalItem = ({ cartItem }: ModalItemProps) => {
 
   const removeCartItem = () => {
     removeCart(cartItem.id);
+  };
+
+  const handleIncreaseClick = () => {
+    increaseCart(cartItem.id, cartItem.quantity + 1, cartItem.product.id);
+  };
+
+  const handleDecreaseClick = () => {
+    decreaseCart(cartItem.id, cartItem.quantity - 1);
   };
 
   return (
@@ -59,8 +67,8 @@ const ModalItem = ({ cartItem }: ModalItemProps) => {
         </Text>
         <CartController
           quantity={cartItem.quantity}
-          cartItemInfo={cartItem}
-          patchCartItemQuantity={patchCart}
+          onDecreaseCartClick={handleDecreaseClick}
+          onIncreaseCartClick={handleIncreaseClick}
         />
       </div>
     </div>

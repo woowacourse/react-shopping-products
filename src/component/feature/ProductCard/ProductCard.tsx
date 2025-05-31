@@ -26,7 +26,8 @@ const ProductCard = ({
   imageUrl,
   quantity,
 }: ProductCardProps) => {
-  const { cartData, addCart, patchCart } = useContext(CartContext);
+  const { cartData, addCart, increaseCart, decreaseCart } =
+    useContext(CartContext);
 
   const newImageUrl = isValidImageUrl(imageUrl)
     ? imageUrl
@@ -40,8 +41,23 @@ const ProductCard = ({
 
   const inCart = cartData.some((item: CartItem) => item.product.id === id);
 
-  const handleClick = async (productId: number) => {
+  const handleAddClick = async (productId: number) => {
     addCart(productId);
+  };
+
+  const handleIncreaseClick = () => {
+    if (!productCartInfo) return;
+    increaseCart(
+      productCartInfo.id,
+      productCartInfo.quantity + 1,
+      productCartInfo.product.id
+    );
+  };
+
+  const handleDecreaseClick = () => {
+    if (!productCartInfo) return;
+
+    decreaseCart(productCartInfo.id, productCartInfo.quantity - 1);
   };
 
   return (
@@ -63,13 +79,13 @@ const ProductCard = ({
           {inCart ? (
             <CartController
               quantity={productCartQuantity ?? 0}
-              cartItemInfo={productCartInfo!}
-              patchCartItemQuantity={patchCart}
+              onDecreaseCartClick={handleDecreaseClick}
+              onIncreaseCartClick={handleIncreaseClick}
             />
           ) : (
             <Button
               variant={quantity === 0 ? 'gray' : 'default'}
-              onClick={() => handleClick(id)}
+              onClick={() => handleAddClick(id)}
               disabled={quantity === 0}
             >
               <img src={IconAddCart} alt="add cart" />
