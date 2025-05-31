@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import { useState } from "react";
 import Button from "../../../components/Button/Button";
 import { Modal } from "../../../components/Modal/Modal";
@@ -16,6 +15,7 @@ import {
   cartIcon,
   cartIconContainer,
   cartItemCount,
+  containerLayout,
   pageLayout,
   selectorBoxLayout,
 } from "./index.style";
@@ -37,12 +37,7 @@ export default function ShopPage() {
   };
 
   return (
-    <div
-      css={css`
-        position: relative;
-        width: 430px;
-      `}
-    >
+    <div css={containerLayout}>
       <div css={pageLayout}>
         <Header>
           <p>SHOP</p>

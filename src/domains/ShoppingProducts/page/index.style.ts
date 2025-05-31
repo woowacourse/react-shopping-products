@@ -1,5 +1,10 @@
 import { css } from "@emotion/react";
 
+const containerLayout = css`
+  position: relative;
+  width: 430px;
+`;
+
 const pageLayout = css`
   width: 430px;
   background-color: white;
@@ -49,6 +54,7 @@ const loadingLayout = css`
 `;
 
 export {
+  containerLayout,
   pageLayout,
   selectorBoxLayout,
   cartIcon,
