@@ -3,9 +3,6 @@ import { CartItem, Product } from "../../types/product.type";
 import { useAPIContext } from "../../contexts/API/useAPIContext";
 import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
 import addShoppingCart from "../../APIs/shoppingCart/addShoppingCart";
-import Button from "../Button";
-import { useState } from "react";
-import updateCartItemQuantity from "../../APIs/shoppingCart/updateCartItemQuantity";
 import {
   ButtonArea,
   CardFrame,
@@ -18,62 +15,36 @@ import {
 } from "./style";
 import { useErrorContext } from "../../contexts/Error/ErrorContext";
 import Stepper from "../Stepper";
+import { useCartItemQuantity } from "../../hooks/useCartItemQuantity";
 
 interface ProductCardProps {
   product: Product;
-  cartItems: CartItem[];
   isInCart: boolean;
 }
 
-const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [localQuantity, setLocalQuantity] = useState(
-    cartItems.find((item) => item.product.id === product.id)?.quantity || 1
-  );
+const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const cartItem = cartItems.find((item) => item.product.id === id);
-  const cartItemId = cartItem?.id;
-  const soldOut = product.quantity === 0;
-
-  const { refetch: refetchCart } = useAPIContext({
+  const { data: cartItems, refetch: refetchCart } = useAPIContext<CartItem[]>({
     name: "cartItems",
     fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
   });
+
+  const cartItem = cartItems?.find((item) => item.product.id === product.id);
+  const { localQuantity, handleOnIncrease, handleOnDecrease } =
+    useCartItemQuantity(cartItem);
+  const soldOut = product.quantity === 0;
+
   const { handleError } = useErrorContext();
 
   const handleAdd = async () => {
     try {
-      const endpoint = "/cart-items";
       const requestBody = { productId: id, quantity: 1 };
-      await addShoppingCart({ endpoint, requestBody });
+      await addShoppingCart({ endpoint: "/cart-items", requestBody });
       refetchCart();
     } catch (err) {
       handleError({
         isError: true,
         errorMessage: "장바구니에 추가하지 못했습니다.",
-      });
-    }
-  };
-
-  const handleUpdate = async () => {
-    try {
-      if (localQuantity > cartItem!.product.quantity)
-        throw new Error(
-          "현재 남은 수량은 " + cartItem!.product.quantity + "개 입니다."
-        );
-      await updateCartItemQuantity({
-        endpoint: `/cart-items/${cartItemId}`,
-        requestBody: {
-          quantity: localQuantity,
-        },
-      });
-      setIsEditing(false);
-      refetchCart();
-    } catch (err) {
-      handleError({
-        isError: true,
-        errorMessage:
-          "현재 남은 수량은 " + cartItem!.product.quantity + "개 입니다.",
       });
     }
   };
@@ -99,34 +70,11 @@ const ProductCard = ({ product, isInCart, cartItems }: ProductCardProps) => {
         <p className={CurrentQuantity}>⚠️ {product.quantity}개 남았어요</p>
         <div className={ButtonArea}>
           {isInCart ? (
-            <>
-              <Stepper
-                quantity={localQuantity}
-                onDecreaseQuantity={() =>
-                  setLocalQuantity((prev) => (prev > 1 ? prev - 1 : 1))
-                }
-                onIncreaseQuantity={() => setLocalQuantity((prev) => prev + 1)}
-                disabled={!isEditing}
-              />
-              {isEditing ? (
-                <Button
-                  title="✅ 확인"
-                  onClick={handleUpdate}
-                  textStyled={{ fontSize: "12px" }}
-                  buttonStyled={{ width: "50px" }}
-                />
-              ) : (
-                <Button
-                  title="🛒 수량수정"
-                  onClick={() => {
-                    setLocalQuantity(cartItem?.quantity || 1);
-                    setIsEditing(true);
-                  }}
-                  textStyled={{ fontSize: "12px" }}
-                  buttonStyled={{ width: "auto", padding: "0 8px" }}
-                />
-              )}
-            </>
+            <Stepper
+              quantity={localQuantity}
+              onDecreaseQuantity={handleOnDecrease}
+              onIncreaseQuantity={handleOnIncrease}
+            />
           ) : (
             <AddButton onClick={handleAdd} disabled={soldOut} />
           )}

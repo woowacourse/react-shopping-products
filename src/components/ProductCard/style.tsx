@@ -53,7 +53,7 @@ const ProductName = css`
 
 const ButtonArea = css`
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
 `;
 
 const CurrentQuantity = css`

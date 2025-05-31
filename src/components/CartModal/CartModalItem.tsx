@@ -1,66 +1,24 @@
 import { css } from "@emotion/css";
 import Button from "../Button";
-import deleteShoppingCart from "../../APIs/shoppingCart/deleteShoppingCart";
-import { useAPIContext } from "../../contexts/API/useAPIContext";
-import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
-import { useState } from "react";
-import updateCartItemQuantity from "../../APIs/shoppingCart/updateCartItemQuantity";
-import { useErrorContext } from "../../contexts/Error/ErrorContext";
 import Stepper from "../Stepper";
+import { CartItem } from "../../types/product.type";
+import { useCartItemQuantity } from "../../hooks/useCartItemQuantity";
 
 interface CartModalItemProps {
+  cartItem: CartItem;
   name: string;
   imgUrl: string;
   price: number;
-  quantity: number;
-  cartItemId: number;
 }
 
 const CartModalItem = ({
-  cartItemId,
+  cartItem,
   name,
   imgUrl,
   price,
-  quantity,
 }: CartModalItemProps) => {
-  const [localQuantity, setLocalQuantity] = useState(quantity);
-
-  const { refetch: refetchCart } = useAPIContext({
-    name: "cartItems",
-    fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
-  });
-  const { handleError } = useErrorContext();
-
-  const handleQuantityChange = async (newQuantity: number) => {
-    setLocalQuantity(newQuantity);
-
-    try {
-      await updateCartItemQuantity({
-        endpoint: `/cart-items/${cartItemId}`,
-        requestBody: {
-          quantity: newQuantity,
-        },
-      });
-      refetchCart();
-    } catch (err) {
-      handleError({
-        isError: true,
-        errorMessage: "장바구니 수량 업데이트에 실패했습니다.",
-      });
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await deleteShoppingCart({ endpoint: "/cart-items", cartItemId });
-      refetchCart();
-    } catch (err) {
-      handleError({
-        isError: true,
-        errorMessage: "장바구니에서 삭제하지 못하였습니다.",
-      });
-    }
-  };
+  const { localQuantity, handleOnIncrease, handleOnDecrease, handleDelete } =
+    useCartItemQuantity(cartItem);
 
   return (
     <div className={itemStyles}>
@@ -79,12 +37,8 @@ const CartModalItem = ({
             <div className={priceStyles}>{price}</div>
             <Stepper
               quantity={localQuantity}
-              onDecreaseQuantity={() =>
-                localQuantity > 0
-                  ? handleQuantityChange(localQuantity - 1)
-                  : handleQuantityChange(0)
-              }
-              onIncreaseQuantity={() => handleQuantityChange(localQuantity + 1)}
+              onDecreaseQuantity={handleOnDecrease}
+              onIncreaseQuantity={handleOnIncrease}
             />
           </div>
         </div>

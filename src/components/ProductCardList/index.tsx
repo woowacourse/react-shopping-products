@@ -16,12 +16,7 @@ const ProductCardList = ({ products, cartItems }: ProductCardListProps) => {
         );
 
         return (
-          <ProductCard
-            key={product.id}
-            product={product}
-            isInCart={isInCart}
-            cartItems={cartItems}
-          />
+          <ProductCard key={product.id} product={product} isInCart={isInCart} />
         );
       })}
     </div>

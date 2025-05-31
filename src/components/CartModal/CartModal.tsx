@@ -2,6 +2,7 @@ import { Modal } from "pongju-modal-component";
 import CartModalItem from "./CartModalItem";
 import CartTotalPrice from "./CartTotalPrice";
 import { CartItem } from "../../types/product.type";
+// import ProductCard from "../ProductCard";
 
 interface CartModalProps {
   isOpen: boolean;
@@ -23,11 +24,10 @@ const CartModal = ({ isOpen, onModalClose, cartItems }: CartModalProps) => {
           <Modal.Body>
             {cartItems.map((item) => (
               <CartModalItem
-                cartItemId={item.id}
+                cartItem={item}
                 key={item.product.id}
                 name={item.product.name}
                 imgUrl={item.product.imageUrl}
-                quantity={item.quantity}
                 price={item.product.price}
               />
             ))}
