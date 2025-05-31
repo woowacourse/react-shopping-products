@@ -4,16 +4,14 @@ import Header from '../../components/Header/Header';
 import ProductList from '../../components/ProductList/ProductList';
 import useGetProducts from '../../hooks/useGetProducts';
 import useGetCarts from '../../hooks/useGetCartItems';
-import { CATEGORY } from '../../constants/products';
+import useProductShowControl from '../../hooks/useProductShowControl';
+import { CATEGORY, SORT } from '../../constants/products';
 import {
   productPageContainer,
   productWrapper,
   productPageTitle,
   productPageSelectBoxContainer,
 } from './ProductsPage.style';
-import useProductSort from '../../hooks/useProductSort';
-import { SORT } from '../../constants/products';
-import useProductCategory from '../../hooks/useProductCategory';
 import getProcessedCartArr from '../../utils/getProcessedCartArr';
 
 interface ProductsPageProps {
@@ -21,9 +19,11 @@ interface ProductsPageProps {
 }
 
 function ProductsPage({ onCartClick }: ProductsPageProps) {
-  const { category, handleChangeCategory } = useProductCategory();
-  const { sort, handleChangeSort } = useProductSort();
-  const { isLoading: isLoadingProducts, products } = useGetProducts({ category, sort });
+  const { showSettings, handleChangeCategory, handleChangeSort } = useProductShowControl();
+  const { isLoading: isLoadingProducts, products } = useGetProducts({
+    category: showSettings.category,
+    sort: showSettings.sort,
+  });
   const { carts } = useGetCarts();
 
   const processedProducts = useMemo(() => {
