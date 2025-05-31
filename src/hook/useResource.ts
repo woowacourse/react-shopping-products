@@ -19,7 +19,7 @@ export default function useResource<T>(
   const paramsRef = useRef(options.params);
   useEffect(() => {
     paramsRef.current = options.params;
-  }, []);
+  }, [options.params]);
 
   const resourceIdRef = useRef(createResourceId(url, paramsRef.current));
 
