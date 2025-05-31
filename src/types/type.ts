@@ -9,24 +9,6 @@ export interface ProductElement {
   quantity?: number;
 }
 
-// export interface mockProductElement {
-//   id: number;
-//   name: string;
-//   price: number;
-//   category: string;
-//   imageUrl: string;
-//   quantity: number;
-// }
-
-// export interface ProductWithCartInfo extends ProductElement {
-//   cartId?: number;
-//   isInCart: boolean;
-// }
-
-// export interface CartType {
-//   totalElements: number;
-// }
-
 export interface CartItem {
   id: number;
   quantity: number;
