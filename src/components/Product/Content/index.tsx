@@ -40,7 +40,7 @@ function ProductContent() {
             <ErrorFallback message="상품 목록을 가져오는 중 에러가 발생하였습니다." />
           }
         >
-          <ProductList data={productData} />
+          <ProductList productItemList={productData} />
         </ErrorBoundary>
       )}
     </S.Container>
