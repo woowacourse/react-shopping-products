@@ -1,22 +1,22 @@
 // src/components/Header/Header.tsx
 import { useCartState } from "../Context/StoreContext";
-import HeaderCart from "../Button/HeaderCart";
-import S from "./Header.module.css";
+import CartModalButton from "../Button/CartModalButton";
+import S from "./CartHeader.module.css";
 
 interface HeaderProps {
 	onClick: () => void;
 }
 
-const Header = ({ onClick }: HeaderProps) => {
+const CartHeader = ({ onClick }: HeaderProps) => {
 	const { cartProducts } = useCartState();
 	const cartCount = cartProducts.length;
 
 	return (
 		<div className={S.container}>
 			<p>SHOP</p>
-			<HeaderCart count={cartCount} onClick={onClick} />
+			<CartModalButton count={cartCount} onClick={onClick} />
 		</div>
 	);
 };
 
-export default Header;
+export default CartHeader;

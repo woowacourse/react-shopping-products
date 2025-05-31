@@ -1,12 +1,12 @@
 // src/components/Button/HeaderCart.tsx
-import S from "./HeaderCart.module.css";
+import S from "./CartModalButton.module.css";
 
 interface HeaderCartProps {
 	count: number;
 	onClick: () => void;
 }
 
-const HeaderCart = ({ count, onClick }: HeaderCartProps) => {
+const CartModalButton = ({ count, onClick }: HeaderCartProps) => {
 	return (
 		<button className={S.cartContainer} onClick={onClick}>
 			<svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
@@ -24,4 +24,4 @@ const HeaderCart = ({ count, onClick }: HeaderCartProps) => {
 	);
 };
 
-export default HeaderCart;
+export default CartModalButton;
