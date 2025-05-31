@@ -25,7 +25,7 @@ export function Modal({
 }: ModalProps) {
   useKeyPress({
     targetKey: "Escape",
-    enabled: !isOpen,
+    enabled: isOpen,
     onKeyMatch: handleClose,
   });
 
