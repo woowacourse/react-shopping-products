@@ -3,6 +3,7 @@ import { ApiContextState } from '../src/APIs/api.type';
 import { Product } from '../src/components/ProductCardList/product.type';
 import { CartItem } from '../src/components/ShoppingCartModal/cart.type';
 import { DataAction } from '../src/contexts/data.type';
+import { describe, test, expect } from 'vitest';
 
 describe('dataReducer 테스트', () => {
   const initialState: ApiContextState<CartItem[] | Product[]> = {
