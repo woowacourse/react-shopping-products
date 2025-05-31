@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import deleteCartItem from '../api/deleteCartItem';
 import { cartDataType } from '../types/cartItem';
-import { useToast } from './useToast';
+import { useAsyncHandler } from './useAsyncHandler';
 import { findCartId } from '../utils/findCartId';
 
 function useDeleteCartItem({
@@ -11,33 +10,23 @@ function useDeleteCartItem({
   refetchCarts: () => Promise<void>;
   carts: cartDataType[] | null;
 }) {
-  const [isErrorDeleteCartItem, setIsErrorDeleteCartItem] = useState(false);
-  const [errorDeleteCartItemMessage, setErrorDeleteCartItemMessage] = useState<string | null>(null);
-
-  useToast(errorDeleteCartItemMessage, 'error');
+  const { handleAsyncOperation, error, clearError } = useAsyncHandler(
+    '장바구니에서 상품을 삭제하는 중 오류가 발생했습니다',
+  );
 
   const handleDeleteCartItem = async ({ productId }: { productId: number }) => {
     const cartId = findCartId(carts, productId);
 
-    try {
+    await handleAsyncOperation(async () => {
       await deleteCartItem({ cartId });
       await refetchCarts();
-      setErrorDeleteCartItemMessage(null);
-      setIsErrorDeleteCartItem(false);
-    } catch (error) {
-      setIsErrorDeleteCartItem(true);
-      setErrorDeleteCartItemMessage(
-        error instanceof Error
-          ? error.message
-          : '장바구니에 상품을 삭제하는 중 오류가 발생했습니다',
-      );
-    }
+    });
   };
 
   return {
     handleDeleteCartItem,
-    isErrorDeleteCartItem,
-    errorDeleteCartItemMessage: errorDeleteCartItemMessage || '',
+    error: error || '',
+    clearError,
   };
 }
 

@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import patchCartItem from '../api/patchCartItem';
 import { cartDataType } from '../types/cartItem';
-import { useToast } from './useToast';
+import { useAsyncHandler } from './useAsyncHandler';
 import { findCartId } from '../utils/findCartId';
 
 function useUpdateCartItem({
@@ -11,10 +10,9 @@ function useUpdateCartItem({
   refetchCarts: () => Promise<void>;
   carts: cartDataType[] | null;
 }) {
-  const [isErrorUpdateCartItem, setIsErrorUpdateCartItem] = useState(false);
-  const [errorUpdateCartItemMessage, setErrorUpdateCartItemMessage] = useState<string | null>(null);
-
-  useToast(errorUpdateCartItemMessage, 'error');
+  const { handleAsyncOperation, error, clearError } = useAsyncHandler(
+    '장바구니 수량을 업데이트하는 중 오류가 발생했습니다',
+  );
 
   const handleUpdateCartItem = async ({
     productId,
@@ -25,25 +23,16 @@ function useUpdateCartItem({
   }) => {
     const cartId = findCartId(carts, productId);
 
-    try {
+    await handleAsyncOperation(async () => {
       await patchCartItem({ cartId, quantity });
       await refetchCarts();
-      setErrorUpdateCartItemMessage(null);
-      setIsErrorUpdateCartItem(false);
-    } catch (error) {
-      setIsErrorUpdateCartItem(true);
-      setErrorUpdateCartItemMessage(
-        error instanceof Error
-          ? error.message
-          : '장바구니 수량을 업데이트하는 중 오류가 발생했습니다',
-      );
-    }
+    });
   };
 
   return {
     handleUpdateCartItem,
-    isErrorUpdateCartItem,
-    errorUpdateCartItemMessage: errorUpdateCartItemMessage || '',
+    error: error || '',
+    clearError,
   };
 }
 

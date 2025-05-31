@@ -28,19 +28,19 @@ function useProductQuantity({ id, quantity, isAdd }: UseProductQuantityProps) {
   const selectedQuantity = cartItem ? cartItem.quantity : 1;
   const isOutOfStock = quantity === 0;
 
-  const handleIncreaseQuantity = () => {
+  const handleIncreaseQuantity = async () => {
     if (selectedQuantity < quantity) {
       const newQuantity = selectedQuantity + 1;
       if (isAdd) {
-        handleUpdateCartItem({ productId: id, quantity: newQuantity });
+        await handleUpdateCartItem({ productId: id, quantity: newQuantity });
       }
     }
   };
 
-  const handleDecreaseQuantity = () => {
+  const handleDecreaseQuantity = async () => {
     if (selectedQuantity === 1) {
       if (isAdd) {
-        handleDeleteCartItem({ productId: id });
+        await handleDeleteCartItem({ productId: id });
       }
       return;
     }
@@ -48,13 +48,13 @@ function useProductQuantity({ id, quantity, isAdd }: UseProductQuantityProps) {
     if (selectedQuantity > 1) {
       const newQuantity = selectedQuantity - 1;
       if (isAdd) {
-        handleUpdateCartItem({ productId: id, quantity: newQuantity });
+        await handleUpdateCartItem({ productId: id, quantity: newQuantity });
       }
     }
   };
 
-  const handleAddToCart = () => {
-    handleAddCartItem({ productId: id, quantity: selectedQuantity });
+  const handleAddToCart = async () => {
+    await handleAddCartItem({ productId: id, quantity: selectedQuantity });
   };
 
   return {
