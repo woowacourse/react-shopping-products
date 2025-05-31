@@ -7,7 +7,7 @@ import {
   SortOption,
 } from "@/components/Product/Content/ProductContent.type";
 
-const useGeyProductQuery = (
+const useGetProductQuery = (
   filterOption: FilterOption,
   sortOption: SortOption
 ) => {
@@ -16,8 +16,8 @@ const useGeyProductQuery = (
   }, [filterOption, sortOption]);
   return useData<ProductItemType[]>({
     fetchFn: fetchProducts,
-    name: "productData",
+    name: `productData-${filterOption}-${sortOption}`,
   });
 };
 
-export default useGeyProductQuery;
+export default useGetProductQuery;
