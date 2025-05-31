@@ -15,10 +15,10 @@ function App() {
         <CartModalProvider>
           <div css={appStyle}>
             <Spinner />
+            <ErrorPopup />
             <Header />
             <ProductPage />
             <CartModal />
-            <ErrorPopup />
           </div>
         </CartModalProvider>
       </QueryProvider>
