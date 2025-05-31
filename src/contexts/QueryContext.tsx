@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
 interface QueryState<T> {
-  data: T;
+  data: T | null;
   isLoading: boolean;
   error: Error | null;
 }

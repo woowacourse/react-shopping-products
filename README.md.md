@@ -99,7 +99,7 @@
   - [ ] 지역 로딩과 fallback 로딩 분기처리
 - [ ] 훅 역할 분리하기
 - [ ] cartItem과 product 인터페이스(타입) 공통화
-- [ ] QueryState 타입 수정 처리
+- [x] QueryState data타입 수정 (null 처리)
 - [ ] QueryContext 내부 refetch 메소드 notify 동작 finally 처리
 - [ ] LoadingContext 내부 state 객체 분리 (각각의 loading 상태로)
 - [ ] CartItemCard 컴포넌트 타입 extends 수정 (실제 element 사용과 가까운 공통 컴포넌트만 html 속성 상속)
