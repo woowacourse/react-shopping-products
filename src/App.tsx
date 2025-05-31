@@ -8,8 +8,12 @@ import useProducts from "./hooks/useProducts";
 import useCartItems from "./hooks/useCartItems";
 import ProductList from "./components/ProductList/ProductList";
 import { ProductFilterProvider } from "./contexts/ProductFilterContext";
+import { DataProvider } from "./contexts/DataContext";
+import { useState } from "react";
+import CartModal from "./components/CartModal/CartModal";
+import useCartHandlers from "./hooks/useCartHandlers";
 
-function App() {
+const AppContent = () => {
   const {
     products,
     isLoading,
@@ -18,43 +22,81 @@ function App() {
   } = useProducts();
 
   const {
-    cartItems,
-    cartItemIds,
+    cartItemInfo,
     errorMessage: cartError,
     setErrorMessage: setCartError,
-    handleCartItemToggle,
+    refreshCartItems,
   } = useCartItems();
+
+  const {
+    handleAddToCart,
+    handleQuantityIncrease,
+    handleQuantityDecrease,
+    handleRemoveFromCart,
+  } = useCartHandlers({
+    products,
+    cartItemInfo,
+    onError: setCartError,
+    onRefresh: refreshCartItems,
+  });
 
   const errorMessage = productError || cartError;
   const setErrorMessage = productError ? setProductError : setCartError;
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+
+  const openCartModal = () => setIsCartModalOpen(true);
+  const closeCartModal = () => setIsCartModalOpen(false);
 
   return (
-    <ProductFilterProvider>
-      <S.LayoutContainer>
-        <S.LayoutWrapper>
-          <ShopHeader cartItemCount={cartItems?.content.length ?? 0} />
-          <S.Wrapper>
-            <ProductsListTitle />
-            <S.ProductControlPanel>
-              <CategoryFilter />
-              <ProductSorter />
-            </S.ProductControlPanel>
-            <ProductList
-              products={products}
-              isLoading={isLoading}
-              cartItemIds={cartItemIds}
-              handleCartItemToggle={handleCartItemToggle}
+    <S.LayoutContainer>
+      <S.LayoutWrapper>
+        <ShopHeader
+          cartItemCount={cartItemInfo.length ?? 0}
+          onCartClick={openCartModal}
+        />
+        <S.Wrapper>
+          <ProductsListTitle />
+          <S.ProductControlPanel>
+            <CategoryFilter />
+            <ProductSorter />
+          </S.ProductControlPanel>
+          <ProductList
+            products={products}
+            isLoading={isLoading}
+            cartItemInfo={cartItemInfo}
+            onAddToCart={handleAddToCart}
+            onQuantityIncrease={handleQuantityIncrease}
+            onQuantityDecrease={handleQuantityDecrease}
+          />
+          {!!errorMessage && (
+            <ErrorToast
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
             />
-            {!!errorMessage && (
-              <ErrorToast
-                errorMessage={errorMessage}
-                setErrorMessage={setErrorMessage}
-              />
-            )}
-          </S.Wrapper>
-        </S.LayoutWrapper>
-      </S.LayoutContainer>
-    </ProductFilterProvider>
+          )}
+        </S.Wrapper>
+        {isCartModalOpen && (
+          <CartModal
+            cartItemInfo={cartItemInfo}
+            products={products}
+            onClose={closeCartModal}
+            onQuantityIncrease={handleQuantityIncrease}
+            onQuantityDecrease={handleQuantityDecrease}
+            onRemove={handleRemoveFromCart}
+          />
+        )}
+      </S.LayoutWrapper>
+    </S.LayoutContainer>
+  );
+};
+
+function App() {
+  return (
+    <DataProvider>
+      <ProductFilterProvider>
+        <AppContent />
+      </ProductFilterProvider>
+    </DataProvider>
   );
 }
 

@@ -9,12 +9,12 @@ export const ProductContainer = styled.div`
   background-color: #fff;
 `;
 
-export const ProductImage = styled.img<{ $url: string }>`
+export const ProductImage = styled.img`
   width: 100%;
-  height: 50%;
-  background: no-repeat url(${({ $url }) => `${$url}`});
-  background-size: cover;
+  height: 100%;
+  object-fit: cover;
   border-radius: 8px 8px 0 0;
+  user-select: none;
 `;
 
 export const ProductWrapper = styled.div`
@@ -22,6 +22,8 @@ export const ProductWrapper = styled.div`
   flex-direction: column;
   padding: 15px 8px 8px;
   border-radius: 0 0 8px 8px;
+  width: 166px;
+
   height: 50%;
   position: relative;
   border: 1px solid #0000001a;

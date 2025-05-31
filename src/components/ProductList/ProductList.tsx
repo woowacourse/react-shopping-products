@@ -1,4 +1,4 @@
-import { Products } from "../../types/products";
+import { Products } from "../../apis/types/products";
 import ProductItemSkeleton from "../ProductItem/components/ProductItemSkeleton/ProductItemSkeleton";
 import ProductItem from "../ProductItem/ProductItem";
 import * as S from "./ProductList.styles";
@@ -6,32 +6,39 @@ import * as S from "./ProductList.styles";
 type ProductListProps = {
   products: Products | null;
   isLoading: boolean;
-  cartItemIds: {
+  cartItemInfo: {
     cartId: number;
     productId: number;
+    quantity: number;
   }[];
-  handleCartItemToggle: (productId: number) => Promise<void>;
+  onAddToCart: (productId: number) => void;
+  onQuantityIncrease: (productId: number) => void;
+  onQuantityDecrease: (productId: number) => void;
 };
 
 const ProductList = ({
   isLoading,
   products,
-  cartItemIds,
-  handleCartItemToggle,
+  cartItemInfo,
+  onAddToCart,
+  onQuantityIncrease,
+  onQuantityDecrease,
 }: ProductListProps) => {
   return (
     <S.ProductGrid>
       {!isLoading ? (
-        products?.content.map(({ id, imageUrl, name, price }) => (
+        products?.content.map(({ id, imageUrl, name, price, quantity }) => (
           <ProductItem
             key={id}
+            id={id}
+            quantity={quantity}
             imageUrl={imageUrl}
             name={name}
             price={price}
-            isAdd={cartItemIds.some(
-              (productInfo) => productInfo.productId === id
-            )}
-            handleCartItemToggle={() => handleCartItemToggle(id)}
+            cartItemInfo={cartItemInfo}
+            onAddToCart={onAddToCart}
+            onQuantityIncrease={onQuantityIncrease}
+            onQuantityDecrease={onQuantityDecrease}
           />
         ))
       ) : (

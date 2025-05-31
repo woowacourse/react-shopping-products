@@ -9,10 +9,11 @@ export const CartItemButton = styled.button<{ $isAdd: boolean }>`
   border-radius: 4px;
   display: flex;
   gap: 4px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   position: absolute;
   right: 8px;
   bottom: 8px;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
 export const CartItemAddText = styled.span`
