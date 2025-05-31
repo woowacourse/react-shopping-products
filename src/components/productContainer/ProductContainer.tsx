@@ -1,24 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Filter from "../filter/Filter";
 import ProductCardList from "../productCardList/ProductCardList";
 import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { CategoryType, SortType } from "../../types/index.types";
-interface ProductContainerProps {
-  cartItemIds: Record<"productId" | "cartId", number>[];
-  setCartItemIds: React.Dispatch<
-    React.SetStateAction<Record<"productId" | "cartId", number>[]>
-  >;
-  fetchCartProducts: () => void;
-}
-function ProductContainer({
-  cartItemIds,
-  setCartItemIds,
-  fetchCartProducts,
-}: ProductContainerProps) {
+import { useData } from "../../provider/DataProvider";
+import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
+import useFetchData from "../../hooks/useFetchData";
+
+const DATA_NAME = "products";
+
+function ProductContainer() {
+  const { fetchData, loading } = useData();
+  const { getProducts } = useFetchData();
+
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryType>("전체");
   const [selectedSort, setSelectedSort] = useState<SortType>("낮은 가격순");
+
+  useEffect(() => {
+    fetchData(DATA_NAME, () =>
+      getProducts({ category: selectedCategory, sort: selectedSort })
+    );
+  }, [selectedCategory, selectedSort, fetchData, getProducts]);
+
+  if (loading(DATA_NAME)) return <ProductCardListSkeleton />;
 
   return (
     <div css={Container}>
@@ -30,13 +36,7 @@ function ProductContainer({
         />
         <Sort selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
       </div>
-      <ProductCardList
-        category={selectedCategory}
-        sort={selectedSort}
-        cartItemIds={cartItemIds}
-        setCartItemIds={setCartItemIds}
-        fetchCartProducts={fetchCartProducts}
-      />
+      <ProductCardList />
     </div>
   );
 }

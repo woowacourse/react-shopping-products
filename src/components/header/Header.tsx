@@ -2,14 +2,14 @@ import CartButton from "./CartButton";
 import { HeaderContainer, HeaderTitle } from "./Header.css";
 
 interface HeaderProps {
-  cartItemAmount: number;
+  openCartModal: () => void;
 }
 
-function Header({ cartItemAmount }: HeaderProps) {
+function Header({ openCartModal }: HeaderProps) {
   return (
     <div css={HeaderContainer}>
       <div css={HeaderTitle}>SHOP</div>
-      <CartButton cartItemAmount={cartItemAmount} />
+      <CartButton onClick={openCartModal} />
     </div>
   );
 }

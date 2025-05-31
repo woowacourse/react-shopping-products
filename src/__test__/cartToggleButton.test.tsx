@@ -1,67 +1,50 @@
 // @vitest-environment jsdom
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { useEffect } from "react";
 import CartToggleButton from "../components/cartToggleButton/CartToggleButton";
 import "@testing-library/jest-dom";
-import useFetchCartProducts from "../hooks/useFetchCartProducts/useFetchCartProducts";
-import { ToastProvider } from "../components/toastProvider/ToastProvider";
+import { ToastProvider } from "../provider/ToastProvider";
+import { DataProvider } from "../provider/DataProvider";
+
 const TEST_PRODUCT_ID = 4;
 
-describe("CartToggleButton 통합 테스트", () => {
-  it("처음에는 '담기' 버튼이 보이고 클릭 시 장바구니에 추가되며 '빼기' 버튼으로 전환된다", async () => {
-    const Wrapper = () => {
-      const { cartItemIds, setCartItemIds, fetchCartProducts } =
-        useFetchCartProducts();
-
-      useEffect(() => {
-        fetchCartProducts();
-      }, [fetchCartProducts]);
-
-      const item = cartItemIds.find(
-        (item) => item.productId === TEST_PRODUCT_ID
-      );
-
-      return (
-        <CartToggleButton
-          productId={TEST_PRODUCT_ID}
-          cartId={item?.cartId}
-          isAdded={!!item}
-          cartAmount={cartItemIds.length}
-          setCartItemIds={setCartItemIds}
-          fetchCartProducts={fetchCartProducts}
-        />
-      );
-    };
-
+describe("CartToggleButton 컴포넌트", () => {
+  it("상품이 장바구니에 없을 때는 '담기' 버튼이 보인다", () => {
     render(
-      <ToastProvider>
-        <Wrapper />
-      </ToastProvider>
+      <DataProvider>
+        <ToastProvider>
+          <CartToggleButton
+            productId={TEST_PRODUCT_ID}
+            isAdded={false}
+            isSoldOut={false}
+            quantity={10}
+            cartAmount={0}
+          />
+        </ToastProvider>
+      </DataProvider>
     );
 
-    const addBtn = await screen.findByText("담기");
-    expect(addBtn).toBeInTheDocument();
+    expect(screen.getByText("담기")).toBeInTheDocument();
+  });
 
-    fireEvent.click(addBtn);
-
-    await waitFor(
-      async () => {
-        const removeBtn = await screen.findByText("빼기");
-        expect(removeBtn).toBeInTheDocument();
-      },
-      { timeout: 3000 }
+  it("상품이 장바구니에 있을 때는 수량 조절 버튼이 보인다", () => {
+    render(
+      <DataProvider>
+        <ToastProvider>
+          <CartToggleButton
+            productId={TEST_PRODUCT_ID}
+            cartId={1}
+            isAdded={true}
+            isSoldOut={false}
+            quantity={10}
+            cartAmount={0}
+          />
+        </ToastProvider>
+      </DataProvider>
     );
 
-    const removeBtn = await screen.findByText("빼기");
-    fireEvent.click(removeBtn);
-
-    await waitFor(
-      async () => {
-        const newAddBtn = await screen.findByText("담기");
-        expect(newAddBtn).toBeInTheDocument();
-      },
-      { timeout: 3000 }
-    );
+    expect(screen.getByRole("button", { name: "-" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "+" })).toBeInTheDocument();
+    expect(screen.getByText("0")).toBeInTheDocument();
   });
 });
