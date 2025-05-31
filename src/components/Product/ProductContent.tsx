@@ -4,7 +4,8 @@ import S from "./ProductContent.module.css";
 import SkeletonList from "../Skeleton/SkeletonList";
 import SkeletonCard from "../Skeleton/SkeletonCard";
 import { MergedProduct } from "../../types";
-import { useMergedProducts, useProductState } from "../Context/StoreContext";
+import { useProductState } from "../Context/StoreContext";
+import { useMergedProducts } from "../../hooks/useMergedProducts";
 
 const ProductContent = () => {
 	const { loading } = useProductState();

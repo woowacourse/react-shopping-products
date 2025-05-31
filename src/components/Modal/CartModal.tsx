@@ -2,8 +2,7 @@ import Modal from "dslgpgh-modal";
 import { useLayoutEffect } from "react";
 import CartItem from "../Cart/CartItem";
 import S from "./CartModal.module.css";
-import { useMergedProducts } from "../Context/StoreContext";
-
+import { useMergedProducts } from "../../hooks/useMergedProducts";
 interface CartModalProps {
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;

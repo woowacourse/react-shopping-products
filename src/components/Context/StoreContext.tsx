@@ -1,8 +1,9 @@
-import { createContext, useContext, useMemo } from "react";
+// src/components/Context/StoreContext.tsx
+import { createContext, useContext } from "react";
 import useCart from "../../hooks/useCart";
 import useProducts from "../../hooks/useProducts";
-import mergeProducts from "../../utils/mergeProducts";
-import { CartProduct, FilterType, MergedProduct, Product, SortType } from "../../types";
+import { CartProduct, FilterType, Product, SortType } from "../../types";
+
 interface ProductState {
 	products: Product[];
 	loading: boolean;
@@ -22,7 +23,6 @@ interface CartState {
 interface StoreContextType {
 	product: ProductState;
 	cart: CartState;
-	mergedProducts: MergedProduct[];
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -30,7 +30,6 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 export function StoreProvider({ children }: { children: React.ReactNode }) {
 	const productState = useProducts();
 	const cartState = useCart();
-	const mergedProducts = useMemo(() => mergeProducts(productState.products, cartState.cartProducts), [productState.products, cartState.cartProducts]);
 
 	const value = {
 		product: {
@@ -47,7 +46,6 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 			cartError: cartState.cartError,
 			updateCartItem: cartState.updateCartItem,
 		},
-		mergedProducts,
 	};
 
 	return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
@@ -63,10 +61,4 @@ export function useCartState() {
 	const context = useContext(StoreContext);
 	if (!context) throw new Error("useCartState는 StoreProvider 내부에서만 사용해야 합니다");
 	return context.cart;
-}
-
-export function useMergedProducts() {
-	const context = useContext(StoreContext);
-	if (!context) throw new Error("useMergedProducts는 StoreProvider 내부에서만 사용해야 합니다");
-	return context.mergedProducts;
 }
