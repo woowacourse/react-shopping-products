@@ -9,10 +9,6 @@ interface UseCartItemsProps {
 }
 
 const useCartItems = ({ products }: UseCartItemsProps) => {
-  const fetcher = useCallback(() => {
-    return CartItemsAPI.get();
-  }, []);
-
   const {
     data: cartItems,
     error: errorMessage,
@@ -20,7 +16,7 @@ const useCartItems = ({ products }: UseCartItemsProps) => {
     refetch: refreshCartItems,
   } = useData<CartItems>({
     key: "cartItems",
-    fetcher,
+    fetcher: CartItemsAPI.get,
   });
 
   const cartItemInfo =
