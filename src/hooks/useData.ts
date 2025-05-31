@@ -16,7 +16,7 @@ const useData = <T>({ fetchFn, name }: UseDataProps<T>) => {
   const { data, setData, isLoading, setIsLoading, setRefetchFunction } =
     context;
 
-  const hasdRefetch = useRef(false);
+  const hasRefetch = useRef(false);
 
   const fetchData = useCallback(async () => {
     setIsLoading((prev) => ({ ...prev, [name]: true }));
@@ -31,9 +31,9 @@ const useData = <T>({ fetchFn, name }: UseDataProps<T>) => {
   }, [fetchFn, name, setData, setIsLoading]);
 
   useEffect(() => {
-    if (!hasdRefetch.current) {
+    if (!hasRefetch.current) {
       setRefetchFunction(name, fetchData);
-      hasdRefetch.current = true;
+      hasRefetch.current = true;
     }
   }, [fetchData, name, setRefetchFunction]);
 
