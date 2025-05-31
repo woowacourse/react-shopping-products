@@ -6,13 +6,6 @@
   border-top: 1px solid rgba(0, 0, 0, 0.10);
 }
 
-.cartImg{
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
 .cartInfo{
   display: flex;
   flex-direction: column;
