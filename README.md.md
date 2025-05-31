@@ -100,7 +100,7 @@
 - [ ] QueryContext store 객체 ref로 수정
 - [ ] QueryContext 내부에서 로딩 컴포넌트로 연결
 - [ ] 훅 역할 분리하기
-- [ ] cartItem과 product 인터페이스(타입) 공통화
+- [x] cartItem과 product 인터페이스(타입) 공통화
 - [x] QueryState data타입 수정 (null 처리)
 - [ ] QueryContext 내부 refetch 메소드 notify 동작 finally 처리
 - [ ] LoadingContext 내부 state 객체 분리 (각각의 loading 상태로)
