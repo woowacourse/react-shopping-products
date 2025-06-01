@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { mockProducts } from '../data/productsData';
+import { createErrorResponse } from '../utils/createErrorResponse';
 
 export const productsHandlers = [
   http.get('*/products', ({ request }) => {
@@ -33,10 +34,7 @@ export const productsHandlers = [
     const product = mockProducts.find((p) => p.id === productId);
 
     if (!product) {
-      return new HttpResponse(null, {
-        status: 404,
-        statusText: 'Product Not Found',
-      });
+      return createErrorResponse('PRODUCT_NOT_FOUND', '상품을 찾을 수 없습니다.', 404);
     }
 
     return HttpResponse.json(product);
