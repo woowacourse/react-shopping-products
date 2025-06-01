@@ -1,38 +1,45 @@
 import { createPortal } from "react-dom";
-import getShoppingCart from "../../api/shoppingCart/getShoppingCart";
-import { useAPI } from "../../domain/contexts/APIContext";
 import * as Error from "../../styles/Common/ErrorBox.styles";
 import * as S from "../../styles/Common/Modal.styles";
 import ErrorBox from "./ErrorBox";
 import QuantityController from "./QuantityController";
-import { CartItemTypes } from "../../types/CartItemType";
 import deleteShoppingCart from "../../api/shoppingCart/deleteShoppingCart";
 
 interface ModalProps {
   isModalOpen: boolean;
   onClose: () => void;
-}
-
-export interface CartItem {
-  id: number;
-  quantity: number;
-  product: {
+  cartItems: {
     id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-    category: string;
-  };
+    quantity: number;
+    product: {
+      id: number;
+      name: string;
+      price: number;
+      imageUrl: string;
+      category: string;
+    };
+  }[];
+  cartStatus: "idle" | "loading" | "success" | "error";
+  refetchCart: () => void;
 }
 
-export default function Modal({ isModalOpen, onClose }: ModalProps) {
-  const { data, status, refetch } = useAPI({
-    fetcher: () => getShoppingCart(),
-    name: "cart",
-  });
-
+export default function Modal({
+  isModalOpen,
+  onClose,
+  cartItems,
+  cartStatus,
+  refetchCart,
+}: ModalProps) {
   if (!isModalOpen) {
     return null;
+  }
+
+  if (cartStatus === "loading") {
+    return (
+      <Error.Div>
+        <ErrorBox>장바구니 로딩 중…</ErrorBox>
+      </Error.Div>
+    );
   }
 
   if (status === "error") {
@@ -43,16 +50,18 @@ export default function Modal({ isModalOpen, onClose }: ModalProps) {
     );
   }
 
-  const totalPrice = data.content.reduce(
-    (sum: number, { product, quantity }: CartItemTypes) => {
-      return sum + product.price * quantity;
-    },
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
     0
   );
 
   const handleDelete = async (productId: number) => {
-    await deleteShoppingCart(productId);
-    refetch();
+    try {
+      await deleteShoppingCart(productId);
+      refetchCart();
+    } catch (err) {
+      console.error("아이템 삭제 실패:", err);
+    }
   };
 
   const modalContent = (
@@ -64,7 +73,7 @@ export default function Modal({ isModalOpen, onClose }: ModalProps) {
           </S.ModalHeaderTitle>
           <S.ModalBody>
             <S.ModalList>
-              {data.content.map((item: CartItem) => (
+              {cartItems.map((item) => (
                 <S.ModalItem key={item.id}>
                   <S.Modalimg
                     src={item.product.imageUrl}
@@ -86,7 +95,7 @@ export default function Modal({ isModalOpen, onClose }: ModalProps) {
                     <QuantityController
                       productId={item.product.id}
                       count={item.quantity}
-                      refetch={refetch}
+                      refetch={refetchCart}
                     />
                   </S.ModalItemInfo>
                 </S.ModalItem>

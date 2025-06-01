@@ -43,7 +43,13 @@ function AppContent() {
           <ProductListContainer />
         </Body>
       </div>
-      <Modal isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <Modal
+        isModalOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        cartItems={cartItems}
+        cartStatus={cartStatus}
+        refetchCart={refetchCart}
+      />
     </>
   );
 }
