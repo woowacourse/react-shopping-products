@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { useCartProducts } from "../hooks/useCartProducts";
+
 import { useFilter } from "../hooks/useFilter";
 import { useProducts } from "../hooks/useProducts";
 import {
@@ -7,6 +7,7 @@ import {
   ContextState,
   ShoppingContext,
 } from "./ShoppingContext";
+import { useFetchCartItems } from "../hooks/useFetchCartItems";
 
 const initialValue: ContextState = {
   handleChangeFilter: () => {},
@@ -34,7 +35,7 @@ export function ShoppingProvider({ children }: { children: React.ReactNode }) {
   };
 
   useProducts(dispatch, state.product.loading);
-  useCartProducts(dispatch, state.cart.loading);
+  useFetchCartItems(dispatch, state.cart.loading);
 
   return (
     <ShoppingContext.Provider value={{ ...contextValue, dispatch }}>

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getCartItems } from "../apis/cartItem";
 import { ContextAction } from "../context/ShoppingContext";
 
-export function useCartProducts(
+export function useFetchCartItems(
   dispatch: React.Dispatch<ContextAction>,
   loadingCart: boolean
 ) {
