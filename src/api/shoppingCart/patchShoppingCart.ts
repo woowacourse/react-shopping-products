@@ -1,4 +1,4 @@
-import { shoppingCartApi } from "./indexShoppingCart";
+import { indexshoppingCartApi } from "./indexshoppingCartApi";
 
 interface patchShoppingCartProps {
   productId: number;
@@ -9,5 +9,5 @@ export default function patchShoppingCart({
   productId,
   quantity,
 }: patchShoppingCartProps) {
-  return shoppingCartApi.patch(`/cart-items/${productId}`, { quantity });
+  return indexshoppingCartApi.patch(`/cart-items/${productId}`, { quantity });
 }
