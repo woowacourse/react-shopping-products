@@ -111,7 +111,7 @@ export function createCartHandlers() {
           cartItems = cartItems.filter((item) => item.id !== id);
         }
 
-        if ((product?.quantity ?? 10000) < quantity) {
+        if ((product?.quantity ?? DEFAULT_STOCK_QUANTITY) < quantity) {
           return errorResponse(
             "OUT_OF_STOCK",
             "재고 수량을 초과하여 담을 수 없습니다.",
