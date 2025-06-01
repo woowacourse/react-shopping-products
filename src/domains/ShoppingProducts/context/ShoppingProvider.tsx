@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 
 import { useFilter } from "../hooks/useFilter";
-import { useProducts } from "../hooks/useProducts";
+import { useFetchProductItems } from "../hooks/useFetchProductItems";
 import {
   ContextAction,
   ContextState,
@@ -34,7 +34,7 @@ export function ShoppingProvider({ children }: { children: React.ReactNode }) {
     category,
   };
 
-  useProducts(dispatch, state.product.loading);
+  useFetchProductItems(dispatch, state.product.loading);
   useFetchCartItems(dispatch, state.cart.loading);
 
   return (

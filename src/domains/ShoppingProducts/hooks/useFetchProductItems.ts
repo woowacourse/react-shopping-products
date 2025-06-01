@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { getProducts } from "../apis/product";
 import { ContextAction } from "../context/ShoppingContext";
-export function useProducts(
+export function useFetchProductItems(
   dispatch: React.Dispatch<ContextAction>,
   loadingProduct: boolean
 ) {
