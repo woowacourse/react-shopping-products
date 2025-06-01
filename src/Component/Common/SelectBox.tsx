@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { StyledSelect } from "../../styles/Common/SelectBox.styles";
+import * as S from "../../styles/Common/SelectBox.styles";
 
 export type Option = {
   label: string;
@@ -15,12 +15,12 @@ export default function SelectBox({
   ...props
 }: SelectBoxProps & ComponentProps<"select">) {
   return (
-    <StyledSelect {...props}>
+    <S.Select {...props}>
       {options.map(({ label, value }) => (
         <option key={label} value={value}>
           {label}
         </option>
       ))}
-    </StyledSelect>
+    </S.Select>
   );
 }

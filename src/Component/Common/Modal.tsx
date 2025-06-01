@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
 import getShoppingCart from "../../api/shoppingCart/getShoppingCart";
 import { useAPI } from "../../domain/contexts/APIContext";
-import { StyledDiv } from "../../styles/Common/ErrorBox.styles";
+import * as Error from "../../styles/Common/ErrorBox.styles";
 import * as S from "../../styles/Common/Modal.styles";
 import ErrorBox from "./ErrorBox";
 import QuantityController from "./QuantityController";
@@ -37,9 +37,9 @@ export default function Modal({ isModalOpen, onClose }: ModalProps) {
 
   if (status === "error") {
     return (
-      <StyledDiv>
+      <Error.Div>
         <ErrorBox>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</ErrorBox>
-      </StyledDiv>
+      </Error.Div>
     );
   }
 
