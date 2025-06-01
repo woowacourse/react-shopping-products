@@ -4,7 +4,7 @@ import { Status } from "./types";
 
 interface QueryProviderProps extends StrictPropsWithChildren {}
 
-interface QueryClientContextType {
+export interface QueryClientContextType {
   getQueryData: (queryKey: string) => unknown;
   setQueryData: (queryKey: string, data: unknown) => void;
   getQueryStatus: (queryKey: string) => Status;
