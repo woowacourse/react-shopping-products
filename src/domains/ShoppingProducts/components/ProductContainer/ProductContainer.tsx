@@ -1,27 +1,29 @@
-import { useShoppingContext } from "../../context/useShoppingContext";
-import { loadingLayout } from "../../page/index.style";
-import { CartItemType } from "../../apis/types/cartItem";
 import Button from "../../../../components/Button/Button";
-import { QuantitySelector } from "../QuantitySelector/QuantitySelector";
-import Product from "../Product/Product";
-import { ProductContainerLayout } from "./ProductContainer.style";
 import { postCartItem } from "../../apis/cartItem";
+import { useShoppingContext } from "../../context/useShoppingContext";
 import { useFilteredProducts } from "../../hooks/useFilteredProducts";
+import { loadingLayout } from "../../page/index.style";
+import Product from "../Product/Product";
+import { QuantitySelector } from "../QuantitySelector/QuantitySelector";
+import { ProductContainerLayout } from "./ProductContainer.style";
 
 export default function ProductContainer() {
   const { cart, product, dispatch } = useShoppingContext();
   const filteredProduct = useFilteredProducts();
 
   if (product.error)
-    <div css={loadingLayout}>
-      상품목록 데이터를 가져오는데 실패했습니다. <br /> 다시 시도해주세요
-    </div>;
+    return (
+      <div css={loadingLayout}>
+        상품목록 데이터를 가져오는데 실패했습니다. <br /> 다시 시도해주세요
+      </div>
+    );
+
+  console.log(product.loading);
+  if (product.loading) return <div css={loadingLayout}>로딩중입니다</div>;
 
   if (product.item.length === 0) {
-    <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>;
+    return <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>;
   }
-
-  if (product.loading) <div css={loadingLayout}>로딩중입니다</div>;
 
   const updateCartProduct = () => {
     dispatch({ type: "update", queryKey: "cart" });
@@ -36,12 +38,10 @@ export default function ProductContainer() {
     <div css={ProductContainerLayout}>
       {filteredProduct.map((product) => {
         const selectedCardItems = cart.item.filter(
-          (cartItem: CartItemType) => Number(product.id) === cartItem.product.id
-        );
-        const isSelected = selectedCardItems.length !== 0;
-        const cartProduct = cart.item.filter(
           (cartItem) => cartItem.product.id === product.id
         );
+
+        const isSelected = selectedCardItems.length !== 0;
 
         return (
           <Product
@@ -54,8 +54,8 @@ export default function ProductContainer() {
           >
             {isSelected ? (
               <QuantitySelector
-                quantity={cartProduct[0].quantity}
-                cartId={cartProduct[0].id}
+                quantity={selectedCardItems[0].quantity}
+                cartId={selectedCardItems[0].id}
                 onChange={updateCartProduct}
                 maxQuantity={product.quantity ?? 10000}
               />
