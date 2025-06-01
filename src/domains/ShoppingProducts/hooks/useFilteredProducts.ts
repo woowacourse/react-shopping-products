@@ -2,9 +2,7 @@ import { useMemo } from "react";
 import { useShoppingContext } from "../context/useShoppingContext";
 
 export function useFilteredProducts() {
-  const context = useShoppingContext();
-
-  const { product, filter, category } = context;
+  const { product, filter, category } = useShoppingContext();
 
   return useMemo(() => {
     let result = [...product.item];
