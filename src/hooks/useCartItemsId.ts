@@ -163,17 +163,11 @@ const useCartItemsId = () => {
   const removeCartItemId = async (id: string) => {
     try {
       dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
-      const cartItem = cartItemsId.find((itemId) => itemId.productId === id);
-
-      if (!cartItem) {
-        dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-        throw new Error("삭제할 상품을 찾을 수 없습니다.");
-      }
 
       await fetchRemoveProduct({
         method: "DELETE",
         params: {
-          productId: cartItem.cartId,
+          productId: id,
         },
       });
       dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
