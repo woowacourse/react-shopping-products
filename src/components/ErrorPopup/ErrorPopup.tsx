@@ -17,17 +17,17 @@ export default function ErrorPopup() {
     return () => clearTimeout(timer);
   }, [error, hideError]);
 
-  // useEffect(() => {
-  //   const networkError = () => showError({ type: "network", message: "네트워크 연결이 끊겼습니다." });
-  //   window.addEventListener("offline", networkError);
-  //   return () => window.removeEventListener("offline", networkError);
-  // }, [showError]);
+  useEffect(() => {
+    const networkError = () => showError({ type: "network", message: "네트워크 연결이 끊겼습니다." });
+    window.addEventListener("offline", networkError);
+    return () => window.removeEventListener("offline", networkError);
+  }, [showError]);
 
-  // useEffect(() => {
-  //   const networkNormal = () => hideError();
-  //   window.addEventListener("online", networkNormal);
-  //   return () => window.removeEventListener("online", networkNormal);
-  // }, [hideError]);
+  useEffect(() => {
+    const networkNormal = () => hideError();
+    window.addEventListener("online", networkNormal);
+    return () => window.removeEventListener("online", networkNormal);
+  }, [hideError]);
 
   if (!error) return null;
   return (

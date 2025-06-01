@@ -7,9 +7,20 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
 }
 
-export default function Button({ backgroundColor = "#000", children, isLoading = false, ...props }: ButtonProps) {
+export default function Button({
+  backgroundColor = "#000",
+  children,
+  isLoading = false,
+  onClick,
+  ...props
+}: ButtonProps) {
   return (
-    <S.Button backgroundColor={backgroundColor} isLoading={isLoading} {...props}>
+    <S.Button
+      backgroundColor={backgroundColor}
+      isLoading={isLoading}
+      onClick={(event) => !isLoading && onClick?.(event)}
+      {...props}
+    >
       {children}
     </S.Button>
   );

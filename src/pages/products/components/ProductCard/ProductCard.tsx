@@ -51,8 +51,8 @@ export default function ProductCard({
             <div css={S.buttonWrapper}>
               <PlusMinusButton
                 quantity={cartItem.quantity}
-                onAddButtonClick={() => !isLoading && onIncreaseCartItem(product.id)}
-                onMinusButtonClick={() => !isLoading && onDecreaseCartItem(product.id)}
+                onAddButtonClick={() => onIncreaseCartItem(product.id)}
+                onMinusButtonClick={() => onDecreaseCartItem(product.id)}
                 isLoading={isLoading}
               />
             </div>
@@ -61,6 +61,7 @@ export default function ProductCard({
               onClick={() => {
                 onIncreaseCartItem(product.id);
               }}
+              isLoading={isLoading}
             >
               <AddCartIcon />
               <Text color="#fff">담기</Text>

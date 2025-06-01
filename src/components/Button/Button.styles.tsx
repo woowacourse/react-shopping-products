@@ -9,6 +9,6 @@ export const Button = styled.button<{ backgroundColor: string; isLoading: boolea
   background-color: ${({ backgroundColor }) => backgroundColor};
   border-radius: 4px;
   border: none;
-  cursor: pointer;
+  cursor: ${({ isLoading }) => (isLoading ? "not-allowed" : "pointer")};
   opacity: ${({ isLoading }) => (isLoading ? 0.5 : 1)};
 `;
