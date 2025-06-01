@@ -36,6 +36,9 @@ export default function CartItem({ cartItem }: CartItemProps) {
           quantity={quantity}
           onAddButtonClick={() => increaseCartItem(cartItem.product.id)}
           onMinusButtonClick={() => decreaseCartItem(cartItem.product.id)}
+          isLoading={
+            patchCartItemStatus === "loading" || postCartItemStatus === "loading" || deleteCartItemStatus === "loading"
+          }
         />
         <Button
           onClick={async () => {

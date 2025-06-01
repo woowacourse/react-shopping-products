@@ -6,7 +6,7 @@ import { PatchCartItemsParams, PostCartItemsParams } from "@/apis/CartItemApi";
 
 export let cartItems = [...CART_ITEMS_DATA.content];
 
-export let MOCK_DELAY = 0; // ms
+export let MOCK_DELAY = 100; // ms
 export let ERROR_PROBABILITY = 0; // 0~1 (0.2 = 20% 확률)
 
 export function setMockDelay(ms: number) {

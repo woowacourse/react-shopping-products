@@ -1,4 +1,5 @@
 import { ProductApi } from "@/apis";
+import { useError } from "@/context";
 import { useCartItemsQuery } from "@/modules/CartItemQuery/useCartItemsQuery";
 import { useDeleteCartItemMutation } from "@/modules/CartItemQuery/useDeleteCartItemMutation";
 import { usePatchCartItemMutation } from "@/modules/CartItemQuery/usePatchCartItemMutation";
@@ -18,6 +19,8 @@ export default function useCartItem() {
 
   const { data: cartItems, status: cartItemsStatus, refetch: refetchCartItems } = useCartItemsQuery();
 
+  const { showError, hideError, error } = useError();
+
   const { mutate: mutatePostCartItem, status: postCartItemStatus } = usePostCartItemMutation();
   const { mutate: mutatePatchCartItem, status: patchCartItemStatus } = usePatchCartItemMutation();
   const { mutate: mutateDeleteCartItem, status: deleteCartItemStatus } = useDeleteCartItemMutation();
@@ -29,10 +32,12 @@ export default function useCartItem() {
     if (!product) return;
 
     if (!cartItem) {
-      await mutatePostCartItem({ productId });
+      await mutatePostCartItem(
+        { productId },
+        { onError: () => showError({ type: "server", message: "재고가 부족합니다." }) },
+      );
       await refetchCartItems();
     } else {
-      // 쓰로틀링
       mutatePatchCartItem(
         {
           cartItemId: cartItem.id,
@@ -40,7 +45,10 @@ export default function useCartItem() {
         },
         {
           onMutate: (queryClient) => optimisticIncreaseCartItem(queryClient, productId),
-          onError: refetchCartItems,
+          onError: () => {
+            refetchCartItems();
+            showError({ type: "server", message: "재고가 부족합니다." });
+          },
         },
       );
     }
@@ -67,6 +75,10 @@ export default function useCartItem() {
         },
         {
           onMutate: (queryClient) => optimisticDecreaseCartItem(queryClient, productId),
+          onError: () => {
+            refetchCartItems();
+            showError({ type: "server", message: "재고가 부족합니다." });
+          },
         },
       );
     }

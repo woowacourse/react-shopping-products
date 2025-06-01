@@ -11,22 +11,23 @@ export default function ErrorPopup() {
     if (error?.type === "network") return;
 
     const timer = setTimeout(() => {
+      console.log(1);
       hideError();
     }, 3000);
     return () => clearTimeout(timer);
   }, [error, hideError]);
 
-  useEffect(() => {
-    const networkError = () => showError({ type: "network", message: "네트워크 연결이 끊겼습니다." });
-    window.addEventListener("offline", networkError);
-    return () => window.removeEventListener("offline", networkError);
-  }, [showError]);
+  // useEffect(() => {
+  //   const networkError = () => showError({ type: "network", message: "네트워크 연결이 끊겼습니다." });
+  //   window.addEventListener("offline", networkError);
+  //   return () => window.removeEventListener("offline", networkError);
+  // }, [showError]);
 
-  useEffect(() => {
-    const networkNormal = () => hideError();
-    window.addEventListener("online", networkNormal);
-    return () => window.removeEventListener("online", networkNormal);
-  }, [hideError]);
+  // useEffect(() => {
+  //   const networkNormal = () => hideError();
+  //   window.addEventListener("online", networkNormal);
+  //   return () => window.removeEventListener("online", networkNormal);
+  // }, [hideError]);
 
   if (!error) return null;
   return (

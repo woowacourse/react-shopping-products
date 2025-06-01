@@ -15,7 +15,6 @@ export default function PlusMinusButton({
   quantity,
   isLoading,
 }: PlusMinusButtonProps) {
-  console.log(quantity, isLoading);
   return (
     <S.ButtonWrapper>
       <Button css={S.controlButton} onClick={onMinusButtonClick} isLoading={isLoading}>

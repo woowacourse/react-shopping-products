@@ -1,12 +1,10 @@
 import { Select, Spinner, Text } from "@/components";
-import { CATEGORY, DEFAULT_FILTER, DEFAULT_SORT, SORT } from "../../constants";
+import { useState } from "react";
 import { ProductCard } from "..";
+import { CATEGORY, DEFAULT_FILTER, DEFAULT_SORT, SORT } from "../../constants";
 import { useCartItem } from "../../hooks";
+import { Category, Sort } from "../../types";
 import * as S from "./ProductList.styles";
-import { useEffect, useState } from "react";
-import { Sort } from "../../types";
-import { Category } from "../../types";
-import { useError } from "@/context";
 
 export default function ProductList() {
   const [filter, setFilter] = useState<Category>(DEFAULT_FILTER);
@@ -23,16 +21,6 @@ export default function ProductList() {
     patchCartItemStatus,
     postCartItemStatus,
   } = useCartItem();
-
-  const { showError, hideError, error } = useError();
-
-  useEffect(() => {
-    if (error?.type === "network") return;
-
-    if (postCartItemStatus === "error" || patchCartItemStatus === "error" || deleteCartItemStatus === "error")
-      showError({ type: "server", message: "재고가 부족합니다." });
-    else hideError();
-  }, [postCartItemStatus, patchCartItemStatus, deleteCartItemStatus]);
 
   const isLoading = productsStatus === "loading" || cartItemsStatus === "loading";
 
