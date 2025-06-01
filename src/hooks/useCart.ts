@@ -1,56 +1,59 @@
 import { CART_URL } from "../constants/endpoint";
 import { CartProduct } from "../types";
+import { useData } from "../components/Context/DataContext";
+import { useError } from "../components/Context/ErrorContext";
 import addCart from "../utils/api/addCart";
-import fetchData from "../utils/api/fetchData";
-import { useState, useEffect } from "react";
 import removeCart from "../utils/api/removeCart";
 import updateCartItemCount from "../utils/api/updateCart";
+import fetchData from "../utils/api/fetchData";
 
-export default function useCart() {
-	const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
-	const [cartError, setCartError] = useState<string>("");
+export const useCart = () => {
+	const { data: cartItems, refetch } = useData<CartProduct[]>({
+		fetcher: () => fetchData({ url: CART_URL }),
+		name: "cartItems",
+	});
+	const { setError, clearError } = useError();
 
-	const fetchCartProducts = async () => {
+	const handleAddToCart = async (productId: number) => {
 		try {
-			const data = await fetchData({ url: CART_URL });
-			setCartProducts(data);
+			clearError("addCart");
+			await addCart(productId);
+			refetch();
 		} catch (error) {
 			if (error instanceof Error) {
-				setCartError(error.message);
+				setError("addCart", error.message);
 			}
 		}
 	};
 
-	const updateCartItem = async (type: string, id: number, quantity: number | undefined) => {
-		if (type === "add") {
-			try {
-				await addCart(id);
-			} catch (error) {
-				if (error instanceof Error) setCartError(error.message);
+	const handleRemoveFromCart = async (productId: number) => {
+		try {
+			clearError("removeCart");
+			await removeCart(productId);
+			refetch();
+		} catch (error) {
+			if (error instanceof Error) {
+				setError("removeCart", error.message);
 			}
 		}
-		if (type === "remove") {
-			try {
-				await removeCart(id);
-			} catch (error) {
-				if (error instanceof Error) setCartError(error.message);
-			}
-		}
-
-		if (type === "change") {
-			try {
-				await updateCartItemCount(id, quantity);
-			} catch (error) {
-				if (error instanceof Error) setCartError(error.message);
-			}
-		}
-
-		fetchCartProducts();
 	};
 
-	useEffect(() => {
-		fetchCartProducts();
-	}, []);
+	const handleUpdateQuantity = async (productId: number, quantity: number) => {
+		try {
+			clearError("updateCart");
+			await updateCartItemCount(productId, quantity);
+			refetch();
+		} catch (error) {
+			if (error instanceof Error) {
+				setError("updateCart", error.message);
+			}
+		}
+	};
 
-	return { cartProducts, cartError, updateCartItem };
-}
+	return {
+		cartItems: cartItems || [],
+		handleAddToCart,
+		handleRemoveFromCart,
+		handleUpdateQuantity,
+	};
+};

@@ -1,13 +1,13 @@
-import { useCartInfo } from "./useCartInfo";
+import { useCart } from "./useCart";
 
 export const useTotalAmount = () => {
-	const cartItems = useCartInfo();
+	const { cartItems } = useCart();
 
-	const totalAmount = cartItems.reduce((sum, product) => {
-		if (!product.cartInfo) {
+	const totalAmount = cartItems.reduce((sum, cart) => {
+		if (!cart) {
 			return sum;
 		}
-		return sum + product.price * product.cartInfo.quantity;
+		return sum + cart.product.price * cart.quantity;
 	}, 0);
 
 	return totalAmount;

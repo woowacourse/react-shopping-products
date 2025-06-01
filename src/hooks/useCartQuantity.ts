@@ -1,35 +1,39 @@
 import { MergedProduct } from "../types";
-
+import { useCart } from "./useCart";
 interface UseCartQuantityProps {
 	mergedProduct: MergedProduct;
-	onUpdate: (type: string, id: number, quantity?: number) => void;
 }
 
-export const useCartQuantity = ({ mergedProduct, onUpdate }: UseCartQuantityProps) => {
+export const useCartQuantity = ({ mergedProduct }: UseCartQuantityProps) => {
+	const { handleRemoveFromCart, handleUpdateQuantity } = useCart();
 	const handleIncrease = () => {
-		if (!mergedProduct.cartInfo) return;
-		onUpdate("change", mergedProduct.cartInfo.id, mergedProduct.cartInfo.quantity + 1);
+		if (!mergedProduct.id || !mergedProduct.quantity) return;
+		handleUpdateQuantity(mergedProduct.id, mergedProduct.quantity + 1);
 	};
 
 	const handleDecrease = () => {
-		if (!mergedProduct.cartInfo) return;
+		if (!mergedProduct.id || !mergedProduct.quantity) return;
 
-		if (mergedProduct.cartInfo.quantity === 1) {
-			onUpdate("remove", mergedProduct.cartInfo.id);
+		if (mergedProduct.quantity === 1) {
+			handleRemoveFromCart(mergedProduct.id);
 			return;
 		}
 
-		onUpdate("change", mergedProduct.cartInfo.id, mergedProduct.cartInfo.quantity - 1);
+		handleUpdateQuantity(mergedProduct.id, mergedProduct.quantity - 1);
 	};
 
-	const isIncreaseDisabled = mergedProduct.quantity === mergedProduct.cartInfo?.quantity;
-	const isDecreaseDisabled = mergedProduct.cartInfo?.quantity === 0;
+	const checkIncreaseDisabled = () => {
+		if (mergedProduct.quantity) {
+			return mergedProduct.product.quantity <= mergedProduct.quantity;
+		}
+
+		return true;
+	};
 
 	return {
 		handleIncrease,
 		handleDecrease,
-		isIncreaseDisabled,
-		isDecreaseDisabled,
-		quantity: mergedProduct.cartInfo?.quantity ?? 0,
+		isIncreaseDisabled: checkIncreaseDisabled(),
+		quantity: mergedProduct.quantity ?? 0,
 	};
 };
