@@ -68,6 +68,8 @@ export function useAPI<T>({
   useEffect(() => {
     if (data[name] == null) {
       request();
+    } else {
+      setStatus("success");
     }
   }, [data, name, request]);
 
