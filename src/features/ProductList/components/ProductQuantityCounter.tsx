@@ -4,7 +4,7 @@ import minus from '../../../../public/minus.svg';
 import plus from '../../../../public/plus.svg';
 
 interface ProductQuantityCounterProps {
-  initial?: number;
+  initialQuantity?: number;
   isInCart: boolean;
   onAddToCart: () => void;
   onIncreaseQuantity: () => void;
@@ -13,20 +13,20 @@ interface ProductQuantityCounterProps {
 }
 
 const ProductQuantityCounter = ({
-  initial = 1,
+  initialQuantity = 1,
   isInCart,
   onAddToCart,
   onIncreaseQuantity,
   onDecreaseQuantity,
   onRemoveFromCart,
 }: ProductQuantityCounterProps) => {
-  const [count, setCount] = useState(initial);
+  const [count, setCount] = useState(initialQuantity);
   const [hasBeenAdded, setHasBeenAdded] = useState(isInCart);
 
   useEffect(() => {
-    setCount(initial);
+    setCount(initialQuantity);
     setHasBeenAdded(isInCart);
-  }, [initial, isInCart]);
+  }, [initialQuantity, isInCart]);
 
   const handleIncrement = async () => {
     if (!hasBeenAdded && count === 0) {
