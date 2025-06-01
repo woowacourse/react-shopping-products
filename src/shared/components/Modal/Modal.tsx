@@ -25,11 +25,15 @@ import {
   ModalTitleProps,
 } from './types/Modal.types';
 
-const ModalContext = createContext<ModalContextType>({
-  onHide: () => {
-    throw new Error('ModalContext must be used within a ModalProvider');
-  },
-});
+const ModalContext = createContext<ModalContextType | undefined>(undefined);
+
+export const useModalContext = () => {
+  const context = useContext(ModalContext);
+  if (!context) {
+    throw new Error('useModalContext must be used within a ModalProvider');
+  }
+  return context;
+};
 
 export const Modal = ({
   show,
@@ -63,7 +67,7 @@ export const Modal = ({
 };
 
 const ModalHeader = ({ closeButton = false, children }: ModalHeaderProps) => {
-  const { onHide } = useContext(ModalContext);
+  const { onHide } = useModalContext();
 
   return (
     <div css={ModalHeaderStyle}>
