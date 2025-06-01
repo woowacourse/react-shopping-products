@@ -116,7 +116,7 @@ describe("useCartItem", () => {
       expect(result.current.cartItems.content.some((i) => i.product.id === item.product.id)).toBe(false);
     });
   });
-  describe.only("예외 케이스", () => {
+  describe("예외 케이스", () => {
     it("increaseCartItem: 재고 수량을 초과하여 담을 수 없다.", async () => {
       const { result } = await act(async () =>
         renderHook(() => useCartItem(), {
