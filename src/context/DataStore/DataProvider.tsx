@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useReducer, ReactNode, useMemo } from 'react';
 import { dataReducer } from './dataReducer';
 import { DataStore, DataAction } from '../../types/dataStore';
 
@@ -29,10 +29,13 @@ export const DataContext = createContext<DataContextValue | undefined>(undefined
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(dataReducer, initialState);
 
-  const contextValue = {
-    state,
-    dispatch,
-  };
+  const contextValue = useMemo(
+    () => ({
+      state,
+      dispatch,
+    }),
+    [state, dispatch],
+  );
 
   return <DataContext.Provider value={contextValue}>{children}</DataContext.Provider>;
 };
