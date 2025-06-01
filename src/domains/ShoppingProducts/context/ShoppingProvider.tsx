@@ -24,16 +24,20 @@ export function ShoppingProvider({ children }: { children: React.ReactNode }) {
 
   const { handleChangeFilter, handleChangeCategory, filter, category } =
     useFilter(dispatch);
-  state.handleChangeFilter = handleChangeFilter;
-  state.handleChangeCategory = handleChangeCategory;
-  state.filter = filter;
-  state.category = category;
+
+  const contextValue = {
+    ...state,
+    handleChangeFilter,
+    handleChangeCategory,
+    filter,
+    category,
+  };
 
   useProducts(dispatch, state.product.loading);
   useCartProducts(dispatch, state.cart.loading);
 
   return (
-    <ShoppingContext.Provider value={{ ...state, dispatch }}>
+    <ShoppingContext.Provider value={{ ...contextValue, dispatch }}>
       {children}
     </ShoppingContext.Provider>
   );
