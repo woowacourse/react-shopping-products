@@ -24,14 +24,14 @@ export default function ProductList() {
     postCartItemStatus,
   } = useCartItem();
 
-  const { showError, hideError } = useError();
+  const { showError, hideError, error } = useError();
 
   useEffect(() => {
-    if (postCartItemStatus === "error" || patchCartItemStatus === "error" || deleteCartItemStatus === "error") {
-      showError("재고가 부족합니다.");
-    } else {
-      hideError();
-    }
+    if (error?.type === "network") return;
+
+    if (postCartItemStatus === "error" || patchCartItemStatus === "error" || deleteCartItemStatus === "error")
+      showError({ type: "server", message: "재고가 부족합니다." });
+    else hideError();
   }, [postCartItemStatus, patchCartItemStatus, deleteCartItemStatus]);
 
   const isLoading = productsStatus === "loading" || cartItemsStatus === "loading";
