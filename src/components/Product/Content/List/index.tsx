@@ -1,27 +1,23 @@
-import { ProductItemType } from "@/types/product";
 import ProductItem from "./Item";
 import * as S from "./ProductList.styled";
-import { CartItemType, SetCartItems } from "@/types/cartItem";
+import { ProductItemType } from "@/types/product";
 
 interface ProductListProps {
-  resource: { read: () => ProductItemType[] };
-  cartItems: CartItemType[];
-  setCartItems: SetCartItems;
+  productItemList: ProductItemType[];
 }
 
-function ProductList({ resource, cartItems, setCartItems }: ProductListProps) {
-  const products = resource.read();
+function ProductList({ productItemList }: ProductListProps) {
+  if (!productItemList) return null;
 
   return (
     <>
-      {products.length > 0 ? (
+      {productItemList.length > 0 ? (
         <S.ProductList>
-          {products.map((productItem) => (
+          {productItemList.map((productItem) => (
             <ProductItem
               key={productItem.id}
               product={productItem}
-              cartItems={cartItems}
-              setCartItems={setCartItems}
+              variant="default"
             />
           ))}
         </S.ProductList>
