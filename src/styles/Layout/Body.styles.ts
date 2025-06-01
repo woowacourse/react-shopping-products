@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const StyledBody = styled.div`
+export const Body = styled.div`
   padding: 36px 24px;
   margin: 0px;
   display: flex;

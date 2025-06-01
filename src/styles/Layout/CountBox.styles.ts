@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const StyledCountBox = styled.div`
+export const CountBox = styled.div`
   width: 19px;
   height: 19px;
   background-color: white;

@@ -1,11 +1,5 @@
 import CountBox from "./CountBox";
-import {
-  StyledHeader,
-  StyledSpan,
-  StyledButton,
-  StyledImg,
-  StyledCountText,
-} from "../../styles/Layout/Header.styles";
+import * as S from "../../styles/Layout/Header.styles";
 
 interface HeaderProps {
   onOpenModal: () => void;
@@ -19,18 +13,16 @@ export default function Header({
   cartItemCount,
 }: HeaderProps) {
   return (
-    <StyledHeader>
-      <StyledSpan>SHOP</StyledSpan>
-      <StyledButton type="button" onClick={onOpenModal}>
-        <StyledImg src="/assets/shoppingBagIcon.png" alt="shoppingBagIcon" />
+    <S.Header>
+      <S.Span>SHOP</S.Span>
+      <S.Button type="button" onClick={onOpenModal}>
+        <S.Img src="/assets/shoppingBagIcon.png" alt="shoppingBagIcon" />
         {cartStatus === "success" && (
           <CountBox>
-            <StyledCountText data-testid="cart-count">
-              {cartItemCount}
-            </StyledCountText>
+            <S.CountText data-testid="cart-count">{cartItemCount}</S.CountText>
           </CountBox>
         )}
-      </StyledButton>
-    </StyledHeader>
+      </S.Button>
+    </S.Header>
   );
 }

@@ -1,11 +1,9 @@
-import { StyledCountBox } from "../../styles/Layout/CountBox.styles";
+import * as S from "../../styles/Layout/CountBox.styles";
 
 interface CountBoxProps {
   children: React.ReactNode;
 }
 
 export default function CountBox({ children }: CountBoxProps) {
-  return (
-    <StyledCountBox data-testid="cart-count-box">{children}</StyledCountBox>
-  );
+  return <S.CountBox data-testid="cart-count-box">{children}</S.CountBox>;
 }

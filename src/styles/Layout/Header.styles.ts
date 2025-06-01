@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const StyledHeader = styled.header`
+export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,12 +9,12 @@ export const StyledHeader = styled.header`
   height: 64px;
 `;
 
-export const StyledSpan = styled.span`
+export const Span = styled.span`
   color: #ffffff;
   font-weight: 800;
 `;
 
-export const StyledButton = styled.button`
+export const Button = styled.button`
   width: 24px;
   height: 24px;
   padding: 0px;
@@ -24,11 +24,11 @@ export const StyledButton = styled.button`
   position: relative;
 `;
 
-export const StyledImg = styled.img`
+export const Img = styled.img`
   width: 24px;
   height: 24px;
 `;
 
-export const StyledCountText = styled.span`
+export const CountText = styled.span`
   font-weight: 700;
 `;
