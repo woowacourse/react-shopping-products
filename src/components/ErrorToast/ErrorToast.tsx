@@ -3,7 +3,7 @@ import * as S from "./ErrorToast.styles";
 
 interface ErrorToastProps {
   errorMessage: string;
-  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  setErrorMessage: (errorMessage: string) => void;
 }
 
 const ErrorToast = ({ errorMessage, setErrorMessage }: ErrorToastProps) => {
@@ -11,7 +11,7 @@ const ErrorToast = ({ errorMessage, setErrorMessage }: ErrorToastProps) => {
     if (errorMessage) {
       const timer = setTimeout(() => {
         setErrorMessage("");
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }

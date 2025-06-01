@@ -1,58 +1,28 @@
-import { useEffect, useState } from "react";
 import { CartItemsAPI } from "../apis/cartItems";
-import { isErrorResponse } from "../utils/typeGuard";
 import { CartItems } from "../apis/types/cartItems";
+import { useData } from "../contexts/DataContext";
 
 const useCartItems = () => {
-  const [cartItems, setCartItems] = useState<CartItems | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const {
+    data: cartItems,
+    error: fetchError,
+    refetch: refreshCartItems,
+  } = useData<CartItems>({
+    key: "cartItems",
+    fetcher: CartItemsAPI.get,
+  });
 
-  useEffect(() => {
-    (async () => {
-      const response = await CartItemsAPI.get();
-
-      if (isErrorResponse(response)) {
-        setErrorMessage(response.error);
-        return;
-      }
-
-      setCartItems(response as CartItems);
-    })();
-  }, []);
-
-  const cartItemIds =
+  const cartItemInfo =
     cartItems?.content.map((productInfo) => ({
       cartId: productInfo.id,
       productId: productInfo.product.id,
+      quantity: productInfo.quantity,
     })) ?? [];
 
-  const handleCartItemToggle = async (productId: number) => {
-    const currentProductId = cartItemIds.find(
-      (productInfo) => productInfo.productId === productId
-    );
-
-    if (currentProductId) {
-      await CartItemsAPI.delete(currentProductId.cartId);
-    } else {
-      await CartItemsAPI.post(productId);
-    }
-
-    const response = await CartItemsAPI.get();
-
-    if (isErrorResponse(response)) {
-      setErrorMessage(response.error);
-      return;
-    }
-
-    setCartItems(response as CartItems);
-  };
-
   return {
-    cartItems,
-    cartItemIds,
-    errorMessage,
-    setErrorMessage,
-    handleCartItemToggle,
+    cartItemInfo,
+    fetchError,
+    refreshCartItems,
   };
 };
 

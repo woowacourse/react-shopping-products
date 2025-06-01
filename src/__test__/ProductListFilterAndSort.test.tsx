@@ -218,7 +218,6 @@ describe("상품 목록 카테고리 필터링 및 정렬 기능 테스트", () 
     });
 
     const sortedPrices = [...productPrices].sort((a, b) => b - a);
-    console.log(sortedPrices);
     expect(productPrices).toEqual(sortedPrices);
 
     const productNames = productItems.map(

@@ -6,6 +6,7 @@ export interface BaseProduct {
   price: number;
   imageUrl: string;
   category: string;
+  quantity: number;
 }
 
 export type Products = PaginatedResponse<BaseProduct>;

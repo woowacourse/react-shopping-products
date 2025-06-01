@@ -17,7 +17,11 @@ export const createApiUrl = (
       searchParams.append(key, String(value));
     }
   }
-  return `${SHOP_API.baseUrl}${endpoint}?${searchParams.toString()}`;
+
+  const baseUrl = `${SHOP_API.baseUrl}/${endpoint}`;
+  const query = searchParams.toString();
+
+  return query ? `${baseUrl}?${query}` : baseUrl;
 };
 
 export const fetchWithErrorHandling = async <T>(
