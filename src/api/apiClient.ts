@@ -12,16 +12,23 @@ export const apiClient = async <T, P>(apiConfigs: ApiConfigType, query: string, 
     },
     ...(apiConfigs.body && { body: JSON.stringify(apiConfigs.body) }),
   };
+  try {
+    const response = await fetch(newUrl, options);
+    if (!response.ok) {
+      const errorMessage = await response.json();
+      throw new Error(errorMessage.message || API_ERROR_MESSAGES[response.status] || DEFAULT_ERROR_MESSAGE);
+    }
 
-  const response = await fetch(newUrl, options);
-  if (!response.ok) {
-    const errorMessage = await response.json();
-    throw new Error(errorMessage.message || API_ERROR_MESSAGES[response.status] || DEFAULT_ERROR_MESSAGE);
+    if (response.headers.get('Content-Type')?.includes('application/json')) {
+      return response.json();
+    }
+
+    return response as T;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(`API Request: ${error}`);
+      throw new Error(error.message);
+    }
+    throw new Error(DEFAULT_ERROR_MESSAGE);
   }
-
-  if (response.headers.get('Content-Type')?.includes('application/json')) {
-    return response.json();
-  }
-
-  return response as T;
 };
