@@ -7,11 +7,9 @@ export default function ErrorPopup() {
   const { error, hideError, showError } = useError();
 
   useEffect(() => {
-    console.log(error);
     if (error?.type === "network") return;
 
     const timer = setTimeout(() => {
-      console.log(1);
       hideError();
     }, 3000);
     return () => clearTimeout(timer);
