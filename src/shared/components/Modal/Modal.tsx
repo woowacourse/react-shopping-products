@@ -1,7 +1,7 @@
 import { createContext, useContext, useRef } from 'react';
 
 import { useFocusTrap } from '@/shared/hooks/useFocusTrap';
-import useKeyEscClose from '@/shared/hooks/useKeyEscClose';
+import useKeyEscClose from '@/shared/hooks/useKeyPress';
 
 import BaseButton from '../Button';
 import CancelButton from './Button/CancelButton';
@@ -42,7 +42,7 @@ export const Modal = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useFocusTrap(containerRef, show);
-  useKeyEscClose(onHide);
+  useKeyEscClose('Escape', onHide, { eventType: 'keydown' });
 
   return (
     <ModalContext.Provider value={{ onHide }}>
