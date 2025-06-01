@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { Z_INDEX } from "../../constants";
 
 const DropDownIcon = css`
   position: absolute;
@@ -13,7 +14,7 @@ const DropDownOptions = css`
   font-size: 10.63px;
   color: #4f4f4f;
   padding: 8px;
-  z-index: 2;
+  z-index: ${Z_INDEX.DROPDOWN};
   background-color: white;
 
   &:hover,

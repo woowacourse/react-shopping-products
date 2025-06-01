@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { Z_INDEX } from "../../constants";
 
 const headerLayout = css`
   position: sticky;
@@ -17,7 +18,7 @@ const headerLayout = css`
   font-size: 20px;
   font-weight: 800;
 
-  z-index: 1;
+  z-index: ${Z_INDEX.HEADER};
 `;
 
 export { headerLayout };
