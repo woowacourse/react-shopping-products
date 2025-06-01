@@ -24,11 +24,13 @@ export default function ProductList() {
     postCartItemStatus,
   } = useCartItem();
 
-  const { showError } = useError();
+  const { showError, hideError } = useError();
 
   useEffect(() => {
     if (postCartItemStatus === "error" || patchCartItemStatus === "error" || deleteCartItemStatus === "error") {
       showError("재고가 부족합니다.");
+    } else {
+      hideError();
     }
   }, [postCartItemStatus, patchCartItemStatus, deleteCartItemStatus]);
 
