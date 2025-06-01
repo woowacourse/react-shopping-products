@@ -12,7 +12,7 @@ export type ModalProps = {
 
 export const Toast = ({ message, ...props }: ModalProps) => {
   return createPortal(
-    <StyledModalContainer>
+    <StyledModalContainer data-testid="toast">
       <StyledModalContent role="dialog" aria-modal="true" {...props}>
         {message}
       </StyledModalContent>

@@ -12,18 +12,35 @@ import { ShoppingBag } from '../components/ShoppingBag';
 import { CATEGORY, SORT_ORDER } from '../constants/product';
 import { ProductListContainer } from '../container/ProductListContainer';
 import { useShopping } from '../hooks/useShopping';
+import { Modal } from '@/shared/components/Modal';
+import { useContext, useState } from 'react';
+import PriceSummary from '../components/PriceSummary';
+import { APIContext } from '@/shared/context/APIContext';
 
 export const ProductListPage = () => {
+  const { data } = useContext(APIContext);
+  const cartData = Object.values(data['cartItem'] ?? {});
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    setShowModal((prev) => !prev);
+  };
+
   const {
-    cartData,
     filteredData,
     isLoading,
-    toggleCartItem,
+    addCartItem,
+    updateCartQuantity,
+    deleteFromCart,
     categorySelect,
     priceSelect,
     handleCategorySelect,
     handlePriceSelect,
   } = useShopping();
+
+  const cartTotalPrice = cartData.reduce((sum, item) => {
+    return sum + item.product.price * item.quantity;
+  }, 0);
 
   return (
     <>
@@ -41,7 +58,7 @@ export const ProductListPage = () => {
               SHOP
             </Text>
           }
-          right={<ShoppingBag count={cartData.length} />}
+          right={<ShoppingBag handleShowModal={handleShowModal} />}
         />
         <Flex
           direction="column"
@@ -114,19 +131,76 @@ export const ProductListPage = () => {
               </Flex>
             ) : (
               <ProductListContainer>
-                {filteredData.map((item) => (
-                  <ProductItem
-                    key={item.id}
-                    isChecked={item.isChecked}
-                    name={item.name}
-                    price={item.price}
-                    imageUrl={item.imageUrl}
-                    onCartUpdate={() => toggleCartItem(item.id)}
-                  />
-                ))}
+                {filteredData.map((item) => {
+                  const cartItem = cartData.find((cartItem) => cartItem.product.id === item.id);
+
+                  return (
+                    <ProductItem
+                      key={item.id}
+                      isChecked={item.isChecked}
+                      name={item.name}
+                      price={item.price}
+                      imageUrl={item.imageUrl}
+                      quantity={item.quantity}
+                      cartCount={cartItem?.quantity || 0}
+                      onAddCart={() => addCartItem(item.id)}
+                      onIncrease={() =>
+                        cartItem && updateCartQuantity(cartItem.id, +1, cartItem.quantity)
+                      }
+                      onDecrease={() =>
+                        cartItem && updateCartQuantity(cartItem.id, -1, cartItem.quantity)
+                      }
+                    />
+                  );
+                })}
               </ProductListContainer>
             )}
           </Flex>
+          <Modal show={showModal} onHide={handleShowModal} position="bottom">
+            <Modal.Header>
+              <Modal.Title>장바구니</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {filteredData.filter((item) => item.isChecked).length === 0 ? (
+                <Text type="Body" weight="medium" color="gray">
+                  장바구니가 비었습니다.
+                </Text>
+              ) : (
+                filteredData
+                  .filter((item) => item.isChecked)
+                  .map((item) => {
+                    const cartItem = cartData.find((cartItem) => cartItem.product.id === item.id);
+
+                    return (
+                      <ProductItem
+                        key={item.id}
+                        isChecked={item.isChecked}
+                        name={item.name}
+                        price={item.price}
+                        imageUrl={item.imageUrl}
+                        quantity={item.quantity}
+                        cartCount={cartItem?.quantity || 0}
+                        onAddCart={() => addCartItem(item.id)}
+                        onIncrease={() =>
+                          cartItem && updateCartQuantity(cartItem.id, +1, cartItem.quantity)
+                        }
+                        onDecrease={() =>
+                          cartItem && updateCartQuantity(cartItem.id, -1, cartItem.quantity)
+                        }
+                        onDelete={() => cartItem && deleteFromCart(cartItem.id)}
+                        variant="modal"
+                      />
+                    );
+                  })
+              )}
+            </Modal.Body>
+            <Modal.Footer buttonAlign="center">
+              <PriceSummary label="총 결제 금액" amount={cartTotalPrice} />
+              <Modal.CancelButton onClick={handleShowModal} width="100%">
+                닫기
+              </Modal.CancelButton>
+            </Modal.Footer>
+          </Modal>
         </Flex>
       </AppLayout>
     </>

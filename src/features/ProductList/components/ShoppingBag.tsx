@@ -1,13 +1,21 @@
+import { APIContext } from '@/shared/context/APIContext';
 import styled from '@emotion/styled';
+import { useContext } from 'react';
+import { CartItem } from '../types/Cart';
+import ShoppingBagSvg from '../../../../public/ShoppingBag.svg';
 
 type ShoppingBagProps = {
-  count: number;
+  handleShowModal: () => void;
 };
 
-export const ShoppingBag = ({ count = 0 }: ShoppingBagProps) => {
+export const ShoppingBag = ({ handleShowModal }: ShoppingBagProps) => {
+  const { data } = useContext(APIContext);
+  const cartData = Object.values(data['cartItem'] ?? {}) as CartItem[];
+  const count = cartData.length;
+
   return (
-    <StyledShoppingBagButton>
-      <StyledShoppingBagIcon src="./ShoppingBag.svg" alt="Shopping Bag" />
+    <StyledShoppingBagButton onClick={handleShowModal} aria-label="장바구니">
+      <StyledShoppingBagIcon src={ShoppingBagSvg} alt="Shopping Bag" />
       {count > 0 && <StyledShoppingBagCount>{count}</StyledShoppingBagCount>}
     </StyledShoppingBagButton>
   );

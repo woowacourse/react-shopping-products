@@ -2,17 +2,11 @@ import { useEffect, useState } from 'react';
 
 import { useProductListRequest } from './useProductListRequest';
 
-import { Product } from '../types/Product';
-
 export const useProductList = () => {
-  const [product, setProduct] = useState<Product[]>([]);
   const [categorySelect, setCategorySelect] = useState('전체');
   const [priceSelect, setPriceSelect] = useState('전체');
-  const { fetchProductData, isLoading } = useProductListRequest(
-    setProduct,
-    priceSelect,
-    categorySelect
-  );
+
+  const { refetch, isLoading } = useProductListRequest(priceSelect, categorySelect);
 
   const handleCategorySelect = (category: string) => {
     setCategorySelect(category);
@@ -23,12 +17,12 @@ export const useProductList = () => {
   };
 
   useEffect(() => {
-    fetchProductData();
-  }, [fetchProductData]);
+    refetch(); // 필터 바뀔 때마다 다시 요청
+  }, [priceSelect, categorySelect]);
 
   return {
     isLoading,
-    product,
+    // product,
     categorySelect,
     priceSelect,
     handleCategorySelect,
