@@ -1,24 +1,24 @@
 import { useState } from "react";
 
-interface MutateOptions<_, TResult> {
-  onSuccess?: (result: TResult) => void;
+interface MutateOptions<_, TData> {
+  onSuccess?: (result: TData) => void;
   onError?: (error: Error) => void;
 }
 
-const useMutation = <TData, TResult>(
-  mutationFn: (data?: TData) => Promise<TResult>
+const useMutation = <TVariables, TData>(
+  mutationFn: (variables: TVariables) => Promise<TData>
 ) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const mutate = async (
-    data?: TData,
-    options?: MutateOptions<TData, TResult>
+    variables: TVariables,
+    options?: MutateOptions<TVariables, TData>
   ) => {
     setIsLoading(true);
 
     try {
-      const result = await mutationFn(data);
+      const result = await mutationFn(variables);
 
       if (options?.onSuccess) {
         options.onSuccess(result);

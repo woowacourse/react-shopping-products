@@ -49,6 +49,21 @@ class HTTPClient {
     return response;
   }
 
+  async patch<T>(url: string, data: T) {
+    const headers = {
+      "Content-Type": "application/json",
+      ...(this.apiKey && { Authorization: this.apiKey }),
+    };
+
+    const response = await fetch(this.baseUrl + url, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify(data),
+    });
+
+    return response;
+  }
+
   setApiKey(apiKey: string) {
     this.apiKey = apiKey;
   }

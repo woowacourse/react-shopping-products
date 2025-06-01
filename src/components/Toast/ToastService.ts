@@ -6,7 +6,7 @@ export interface ToastInfo {
   message: string;
 }
 
-type ToastObserver = (array: ToastInfo) => void;
+type ToastObserver = (toastInfo: ToastInfo) => void;
 
 export class ToastService {
   private static instance: ToastService;

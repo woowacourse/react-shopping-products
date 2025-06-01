@@ -7,11 +7,11 @@ import errorToastIcon from "@assets/icons/error-toast.svg";
 import warningToastIcon from "@assets/icons/warning-toast.svg";
 import infoToastIcon from "@assets/icons/info-toast.svg";
 
-interface ToastMessageProps {
+interface ToastContentProps {
   id: string;
   type: ToastType;
   message: string;
-  autoClose: number;
+  duration: number;
   onClose: (id: string) => void;
 }
 
@@ -38,15 +38,15 @@ function ToastContent({
   id,
   type,
   message,
-  autoClose,
+  duration,
   onClose,
-}: ToastMessageProps) {
+}: ToastContentProps) {
   const [isUnmountDelayed, setIsUnmountDelayed] = useState(false);
   const closeAnimationDuration = 500;
-  const delayTime = autoClose - closeAnimationDuration;
+  const delayTime = duration - closeAnimationDuration;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = window.setTimeout(() => {
       setIsUnmountDelayed(true);
     }, delayTime);
 
@@ -57,7 +57,7 @@ function ToastContent({
 
   const handleCloseButtonClick = (id: string) => {
     setIsUnmountDelayed(true);
-    setTimeout(() => {
+    window.setTimeout(() => {
       onClose(id);
     }, closeAnimationDuration);
   };
@@ -81,7 +81,7 @@ function ToastContent({
         </S.ContentBox>
         <S.Progress>
           <S.ProgressBox toastColor={ToastEffect[type].backGroundColor}>
-            <S.ProgressBar animationDuration={autoClose} />
+            <S.ProgressBar animationDuration={duration} />
           </S.ProgressBox>
         </S.Progress>
       </S.Container>

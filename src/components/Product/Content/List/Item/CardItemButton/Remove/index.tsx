@@ -1,30 +1,25 @@
-import Button from "@/components/Button";
-import removeCartItemIcon from "@/assets/icons/remove-cart-item.svg";
-import { CartItemType } from "@/apis/cartItems/cartItem.type";
-import { removeCartItem } from "@/apis/cartItems/removeCartItem";
-import { getCartItems } from "@/apis/cartItems/getCartItems";
+import { deleteCartItem } from "@/apis/cartItems/deleteCartItem";
 import useMutation from "@/hooks/useMutation";
 import useToast from "@/hooks/useToast";
+import { useCartItemContext } from "@/contexts/CartItemProvider";
+import RemoveCartItemIcon from "@assets/icons/remove-cart-item.svg";
+import * as S from "./RemoveCartItemButton.styled";
 
 interface RemoveCartItemButtonProps {
-  id: number;
-  updateCartItems: (newCartItems: CartItemType[]) => void;
+  cartItemId: number;
 }
 
-function RemoveCartItemButton({
-  id,
-  updateCartItems,
-}: RemoveCartItemButtonProps) {
+function RemoveCartItemButton({ cartItemId }: RemoveCartItemButtonProps) {
   const { mutate: removeFromCartMutate, isLoading } = useMutation(() =>
-    removeCartItem(id)
+    deleteCartItem(cartItemId)
   );
+  const { refetchCartItems } = useCartItemContext();
   const { addToast } = useToast();
 
-  const handleRemoveCartItemButtonClick = () => {
+  const removeCartItem = () => {
     removeFromCartMutate(undefined, {
-      onSuccess: async () => {
-        const cartItems = await getCartItems();
-        updateCartItems(cartItems);
+      onSuccess: () => {
+        refetchCartItems();
       },
       onError: (error) => {
         addToast({
@@ -37,15 +32,9 @@ function RemoveCartItemButton({
 
   return (
     <>
-      <Button
-        variant="secondary"
-        type="button"
-        onClick={handleRemoveCartItemButtonClick}
-        disabled={isLoading}
-      >
-        <img src={removeCartItemIcon} alt="장바구니 빼기" />
-        빼기
-      </Button>
+      <S.Button type="button" onClick={removeCartItem} disabled={isLoading}>
+        <img src={RemoveCartItemIcon} alt="장바구니에서 제거" />
+      </S.Button>
     </>
   );
 }
