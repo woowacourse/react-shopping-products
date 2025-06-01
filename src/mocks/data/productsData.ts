@@ -1,6 +1,6 @@
 import { ProductDTOType } from '../../types/product';
 
-export const mockProducts: (ProductDTOType & { quantity: number })[] = [
+export const mockProducts: ProductDTOType[] = [
   {
     id: 1,
     name: '에어포스',
