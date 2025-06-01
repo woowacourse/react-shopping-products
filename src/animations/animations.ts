@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react';
+import { keyframes } from "@emotion/react";
 
 export const fadeIn = keyframes`
     from{
@@ -30,4 +30,14 @@ export const shimmer = keyframes`
   100% {
     background-position: 300%;
   }
+`;
+
+export const fadeInModal = keyframes`
+    from{
+        transform: translateY(10px);
+    }
+    to{
+        transform: translateY(0);
+    }
+    
 `;

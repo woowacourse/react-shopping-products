@@ -1,8 +1,12 @@
-export type CategoryType = '전체' | '식료품' | '패션잡화';
+import type { LoadingStateType } from './types';
+import type { CategoryType } from './types';
 
-export type SelectedSortType = '높은 가격순' | '낮은 가격순';
-
-export type SortType = 'desc' | 'asc';
+export interface DataResourceType<T, A extends unknown[] = []> {
+  data: T | null;
+  loadingState: LoadingStateType;
+  error: Error | null;
+  refetch: (...args: A) => Promise<T | null>;
+}
 
 export interface ProductItemType {
   id: number;
@@ -10,6 +14,7 @@ export interface ProductItemType {
   category: CategoryType;
   price: number;
   imageUrl: string;
+  quantity: number;
 }
 
 export interface CartItemType {

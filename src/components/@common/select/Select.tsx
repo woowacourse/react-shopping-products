@@ -1,20 +1,20 @@
 import * as S from './Select.styles';
 import { useRef, useState } from 'react';
-import useOutsideClick from '../../hooks/useOutsideClick';
+import useOutsideClick from '../../../hooks/@common/useOutsideClick';
 import SelectDownIcon from '/public/icon/select-down-icon.svg';
 
 interface SelectProps {
   options: string[];
   value: string;
-  handleSelectedValue: (value: string) => void;
+  onSelectedValue: (value: string) => void;
 }
 
-const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
+const Select = ({ options, value, onSelectedValue }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(0);
 
   const handleSelectOption = (option: string) => {
-    handleSelectedValue(option);
+    onSelectedValue(option);
     setIsOpen(false);
   };
 
@@ -67,11 +67,13 @@ const Select = ({ options, value, handleSelectedValue }: SelectProps) => {
         <S.SelectIcon src={SelectDownIcon} alt="옵션 열기" />
       </S.SelectField>
       {isOpen && (
+        //biome-ignore lint/a11y/useSemanticElements: --
         <S.OptionsContainer role="listbox">
           {options.map((option, index) => (
             <S.OptionItem
               id={`option-${option}`}
               key={option}
+              //biome-ignore lint/a11y/useSemanticElements: --
               role="option"
               onClick={() => handleSelectOption(option)}
               aria-selected={option === selectedValue}

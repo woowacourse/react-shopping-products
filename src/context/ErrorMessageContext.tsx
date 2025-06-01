@@ -1,31 +1,33 @@
-import { createContext } from 'react';
-
-interface ErrorMessageContextProps {
-  children: React.ReactNode;
-  errorMessage: string;
-  handleErrorMessage: (errorMessage: string) => void;
-}
+import { createContext } from "react";
 
 interface ErrorMessageContextType {
-  errorMessage: string;
-  handleErrorMessage: (errorMessage: string) => void;
+	errorMessage: string;
+	handleErrorMessage: (errorMessage: string) => void;
+	isToastVisible: boolean;
 }
 
-export const ErrorMessageContext = createContext<ErrorMessageContextType | null>(null);
+interface ErrorMessageContextProps extends ErrorMessageContextType {
+	children: React.ReactNode;
+}
+
+export const ErrorMessageContext =
+	createContext<ErrorMessageContextType | null>(null);
 
 export const ErrorMessageProvider = ({
-  errorMessage,
-  handleErrorMessage,
-  children,
+	errorMessage,
+	handleErrorMessage,
+	isToastVisible,
+	children,
 }: ErrorMessageContextProps) => {
-  return (
-    <ErrorMessageContext.Provider
-      value={{
-        errorMessage,
-        handleErrorMessage,
-      }}
-    >
-      {children}
-    </ErrorMessageContext.Provider>
-  );
+	return (
+		<ErrorMessageContext.Provider
+			value={{
+				errorMessage,
+				isToastVisible,
+				handleErrorMessage,
+			}}
+		>
+			{children}
+		</ErrorMessageContext.Provider>
+	);
 };

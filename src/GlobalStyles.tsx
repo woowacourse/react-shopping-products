@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { Global, css } from '@emotion/react';
+import { Global, css } from "@emotion/react";
 
 const resetCss = css`
   html,
@@ -137,7 +137,8 @@ const themeVariables = css`
     --color-white: #ffffff;
     --color-light-grey: #e1e1e1;
     --color-grey: #d7d7d7;
-    --color-red: #ffc9c9;
+    --color-red: #f54d4d;
+    --color-light-red: #ffc9c9;
 
     --font-family: 'Noto Sans KR';
     --font-size-title: 24px;
@@ -155,8 +156,11 @@ const themeVariables = css`
     --height-header: 66px;
     --max-width-container: 430px;
 
-    --z-index-header: 2;
-    --z-index-toast: 1;
+    --z-index-header: 3;
+    --z-index-toast: 2;
+    --z-index-select: 1;
+    --z-index-modal-background: 50;
+    --z-index-modal: 100;
   }
 `;
 
