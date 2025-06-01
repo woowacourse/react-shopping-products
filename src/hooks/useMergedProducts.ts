@@ -1,14 +1,12 @@
-// src/hooks/useMergedProducts.ts
 import { useMemo } from "react";
-import { useProductState } from "../components/Context/StoreContext";
-import { useCartState } from "../components/Context/StoreContext";
 import mergeProducts from "../utils/mergeProducts";
+import { useCart } from "./useCart";
+import { useProducts } from "./useProducts";
 
-export function useMergedProducts() {
-	const { products } = useProductState();
-	const { cartProducts } = useCartState();
+export const useMergedProducts = () => {
+	const { cartItems } = useCart();
+	const { products, loading } = useProducts();
+	const mergedProducts = useMemo(() => mergeProducts(products, cartItems), [products, cartItems]);
 
-	const mergedProducts = useMemo(() => mergeProducts(products, cartProducts), [products, cartProducts]);
-
-	return mergedProducts;
-}
+	return { mergedProducts, loading };
+};

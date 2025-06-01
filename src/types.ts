@@ -17,8 +17,10 @@ export interface CartInfo {
 	id: number;
 	quantity: number;
 }
-export interface MergedProduct extends Product {
-	cartInfo: CartInfo | null;
+export interface MergedProduct {
+	id?: number;
+	quantity?: number;
+	product: Product;
 }
 export interface Info {
 	content: Product[];
