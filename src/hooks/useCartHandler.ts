@@ -26,6 +26,54 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
     dataName: 'cartItemsUpdate',
   });
 
+  const setTempCartItem = useCallback(
+    (productId: number, newQuantity: number) => {
+      setData((prev) => {
+        const products = prev.get('products') ?? [];
+        const targetItem = products.find((item) => item.id === productId);
+        if (!targetItem) {
+          throw new Error('해당 상품이 존재하지 않습니다. 상품 목록을 확인해주세요.');
+        }
+
+        return new DataMap(prev).set('cartItems', [
+          ...(prev.get('cartItems') ?? []),
+          { id: -productId, quantity: newQuantity, product: targetItem },
+        ]);
+      });
+    },
+    [setData],
+  );
+
+  const removeTempCartItem = useCallback(
+    (cartId: number) => {
+      setData((prev) => {
+        const cartItems = prev.get('cartItems') ?? [];
+        const nonTempCartItem = cartItems.filter((item) => item.id !== cartId);
+        return new DataMap(prev).set('cartItems', nonTempCartItem);
+      });
+    },
+    [setData],
+  );
+
+  const setTempCartItemsQuantity = useCallback(
+    (cartId: number, newQuantity: number) => {
+      setData((prev) => {
+        const cartItems = prev.get('cartItems') ?? [];
+        const targetItem = cartItems.find((item) => item.id === cartId);
+        if (!targetItem) {
+          throw new Error('장바구니에 해당 상품이 없습니다. 장바구니를 확인해주세요.');
+        }
+
+        const existingItems = cartItems.filter((item) => item.id !== cartId);
+        return new DataMap(prev).set('cartItems', [
+          ...existingItems,
+          { ...targetItem, quantity: newQuantity },
+        ]);
+      });
+    },
+    [setData],
+  );
+
   const fetchTotalCartItems = useCallback(async () => {
     await fetchCartItems({
       apiCall: getCartItems,
@@ -40,7 +88,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
       },
       handleLoading: (isLoading) => handleLoading(isLoading, 'cartItems'),
     });
-  }, [fetchCartItems, handleErrorMessage, handleLoading]);
+  }, [fetchCartItems, handleErrorMessage, handleLoading, setData]);
 
   useEffect(() => {
     fetchTotalCartItems();
@@ -50,7 +98,10 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
     async (productId: number, quantity: number) => {
       await updateCartItems({
         apiCall: () => addCartItems({ productId, quantity }),
-        onSuccess: fetchTotalCartItems,
+        onSuccess: async () => {
+          setTempCartItem(productId, quantity);
+          await fetchTotalCartItems();
+        },
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
@@ -58,7 +109,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         handleLoading: (isLoading) => handleLoading(isLoading, 'cartItemsUpdate'),
       });
     },
-    [fetchTotalCartItems, handleErrorMessage, handleLoading, updateCartItems],
+    [fetchTotalCartItems, handleErrorMessage, handleLoading, updateCartItems, setTempCartItem],
   );
 
   const handleRemoveCartItem = useCallback(
@@ -72,7 +123,10 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
       await updateCartItems({
         apiCall: () => removeCartItems(cartId),
-        onSuccess: fetchTotalCartItems,
+        onSuccess: async () => {
+          removeTempCartItem(cartId);
+          await fetchTotalCartItems();
+        },
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
@@ -80,7 +134,14 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         handleLoading: (isLoading) => handleLoading(isLoading, 'cartItemsUpdate'),
       });
     },
-    [data, fetchTotalCartItems, handleErrorMessage, handleLoading, updateCartItems],
+    [
+      data,
+      fetchTotalCartItems,
+      handleErrorMessage,
+      handleLoading,
+      updateCartItems,
+      removeTempCartItem,
+    ],
   );
 
   const handleIncreaseQuantity = useCallback(
@@ -94,7 +155,10 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
       await updateCartItems({
         apiCall: () => increaseCartItems(cartId, quantity),
-        onSuccess: fetchTotalCartItems,
+        onSuccess: async () => {
+          setTempCartItemsQuantity(cartId, quantity);
+          await fetchTotalCartItems();
+        },
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
@@ -102,7 +166,14 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         handleLoading: (isLoading) => handleLoading(isLoading, 'cartItemsUpdate'),
       });
     },
-    [data, fetchTotalCartItems, handleErrorMessage, handleLoading, updateCartItems],
+    [
+      data,
+      fetchTotalCartItems,
+      handleErrorMessage,
+      handleLoading,
+      updateCartItems,
+      setTempCartItemsQuantity,
+    ],
   );
 
   const handleDecreaseQuantity = useCallback(
@@ -116,7 +187,10 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
       await updateCartItems({
         apiCall: () => decreaseCartItems(cartId, quantity),
-        onSuccess: fetchTotalCartItems,
+        onSuccess: async () => {
+          setTempCartItemsQuantity(cartId, quantity);
+          await fetchTotalCartItems();
+        },
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
           handleErrorMessage(message);
@@ -124,7 +198,14 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         handleLoading: (isLoading) => handleLoading(isLoading, 'cartItemsUpdate'),
       });
     },
-    [data, fetchTotalCartItems, handleErrorMessage, handleLoading, updateCartItems],
+    [
+      data,
+      fetchTotalCartItems,
+      handleErrorMessage,
+      handleLoading,
+      updateCartItems,
+      setTempCartItemsQuantity,
+    ],
   );
 
   return {
