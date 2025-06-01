@@ -1,7 +1,7 @@
 import { cartDataType } from '../../types/cartItem';
 import { mockProducts } from './productsData';
 
-export let mockCartItems: cartDataType[] = [
+const INITIAL_CART_DATA: cartDataType[] = [
   {
     id: 1,
     quantity: 2,
@@ -14,6 +14,7 @@ export let mockCartItems: cartDataType[] = [
   },
 ];
 
+export let mockCartItems: cartDataType[] = [...INITIAL_CART_DATA];
 export let cartIdCounter = 3;
 
 export const cartDataStore = {
@@ -55,18 +56,7 @@ export const cartDataStore = {
   },
 
   reset: () => {
-    mockCartItems = [
-      {
-        id: 1,
-        quantity: 2,
-        product: mockProducts[0],
-      },
-      {
-        id: 2,
-        quantity: 3,
-        product: mockProducts[1],
-      },
-    ];
+    mockCartItems = [...INITIAL_CART_DATA];
     cartIdCounter = 3;
   },
 };
