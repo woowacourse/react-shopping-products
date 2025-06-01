@@ -8,10 +8,10 @@ import S from "./ItemCard.module.css";
 const ItemCard = ({ mergedProduct }: { mergedProduct: MergedProduct }) => {
 	return (
 		<div className={S.cardContainer}>
-			<Image src={mergedProduct.imageUrl} alt="상품 이미지" className="card" />
-			{mergedProduct.quantity === 0 && <CartItemSoldOut />}
+			<Image src={mergedProduct.product.imageUrl} alt="상품 이미지" className="card" />
+			{mergedProduct.product.quantity === 0 && <CartItemSoldOut />}
 			<div className={S.contentContainer}>
-				<ItemCardInfo name={mergedProduct.name} price={mergedProduct.price} />
+				<ItemCardInfo name={mergedProduct.product.name} price={mergedProduct.product.price} />
 				<div className={S.buttonWrap}>
 					<ItemCardButton mergedProduct={mergedProduct} />
 				</div>
