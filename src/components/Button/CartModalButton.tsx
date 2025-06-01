@@ -1,12 +1,11 @@
-import { useCartInfo } from "../../hooks/useCartInfo";
+import { useCart } from "../../hooks/useCart";
 import S from "./CartModalButton.module.css";
-
 interface HeaderCartProps {
 	onClick: () => void;
 }
 
 const CartModalButton = ({ onClick }: HeaderCartProps) => {
-	const cartItems = useCartInfo();
+	const { cartItems } = useCart();
 	const cartCount = cartItems.length;
 
 	return (
