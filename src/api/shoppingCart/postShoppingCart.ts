@@ -1,4 +1,4 @@
-import { indexshoppingCartApi } from "./indexshoppingCartApi";
+import { indexShoppingCartApi } from "./indexShoppingCartApi";
 
 interface postShoppingCartProps {
   productId: number;
@@ -9,5 +9,5 @@ export default function postShoppingCart({
   productId,
   quantity,
 }: postShoppingCartProps) {
-  return indexshoppingCartApi.post(`/cart-items/${productId}`, { quantity });
+  return indexShoppingCartApi.post(`/cart-items/${productId}`, { quantity });
 }
