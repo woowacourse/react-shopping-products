@@ -6,7 +6,7 @@ function ModalItem({ maxStock, itemId, imageUrl, name, price }: { maxStock: numb
   const { quantity, handleProductItem } = useProductItem(itemId);
   return (
     <S.StyledItem>
-      <img src={imageUrl} alt={name} style={{ width: '80px', aspectRatio: '1/1', borderRadius: '8px' }} />
+      <S.StyledItemImage src={imageUrl} alt={name} />
       <S.StyledItemInfo>
         <S.StyledItemInfoTitle>{name}</S.StyledItemInfoTitle>
         <p>{(price * quantity!).toLocaleString()}원</p>

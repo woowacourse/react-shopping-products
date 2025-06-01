@@ -8,6 +8,12 @@ export const StyledItem = Styled.li`
   gap:16px;
 `;
 
+export const StyledItemImage = Styled.img`
+  width: 80px;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+`;
+
 export const StyledItemInfo = Styled.div`
   display: flex;
   flex-direction: column;
