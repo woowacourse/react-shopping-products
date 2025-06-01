@@ -1,5 +1,6 @@
 import Button from "../../../../components/Button/Button";
 import { deleteCartItem } from "../../apis/cartItem";
+import { useShoppingContext } from "../../context/useShoppingContext";
 import { QuantitySelector } from "../QuantitySelector/QuantitySelector";
 import {
   CartProductLayout,
@@ -29,9 +30,20 @@ export function CartProduct({
   maxQuantity,
   onChange,
 }: CartProductProps) {
+  const { dispatch } = useShoppingContext();
+
   const handleDelete = async () => {
-    await deleteCartItem({ id });
-    onChange();
+    try {
+      await deleteCartItem({ id });
+      onChange();
+    } catch (error) {
+      dispatch({
+        type: "error",
+        queryKey: "cart",
+        payload: "장바구니 상품 삭제에 실패했습니다.",
+      });
+      console.error("장바구니 상품 삭제에 실패했습니다:", error);
+    }
   };
 
   return (
