@@ -35,3 +35,21 @@ export const buttonWrapper = css`
   bottom: 10px;
   right: 10px;
 `;
+
+export const soldout = css`
+  width: 100%;
+  height: 50%;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0, 0.35);
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+`;

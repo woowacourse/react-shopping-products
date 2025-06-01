@@ -1,5 +1,4 @@
-export type AddCartItemType = {
-    productId: number;
-    quantity: number;
-  };
-  
+export type CartItemParamType = {
+  productId: number;
+  quantity: number;
+};
