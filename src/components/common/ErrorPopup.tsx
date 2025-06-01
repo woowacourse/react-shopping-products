@@ -7,10 +7,12 @@ const ErrorPopup = () => {
   const { errorMessage, clearErrorMessage } = useErrorMessage();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       clearErrorMessage();
     }, 3000);
-  }, [clearErrorMessage]);
+
+    return () => clearTimeout(timer);
+  }, [errorMessage, clearErrorMessage]);
 
   if (errorMessage)
     return (

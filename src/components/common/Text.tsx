@@ -1,15 +1,20 @@
 import { css } from "@emotion/react";
+import { HTMLAttributes } from "react";
 
 type TextVariant = "title-1" | "title-2" | "title-3" | "body-1" | "body-2" | "body-3";
 
-interface TextProps {
+interface TextProps extends HTMLAttributes<HTMLSpanElement> {
   variant: TextVariant;
   color?: string;
   children: React.ReactNode;
 }
 
-const Text = ({ variant, color = "#000", children }: TextProps) => {
-  return <span css={textStyle(variant, color)}>{children}</span>;
+const Text = ({ variant, color = "#000", children, ...props }: TextProps) => {
+  return (
+    <span css={textStyle(variant, color)} {...props}>
+      {children}
+    </span>
+  );
 };
 
 export default Text;

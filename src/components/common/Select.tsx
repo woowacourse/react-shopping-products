@@ -5,7 +5,7 @@ import TopArrow from "../icons/TopArrow";
 interface SelectProps<T> {
   options: T[];
   selectedItem: T;
-  setSelectedItem: React.Dispatch<React.SetStateAction<T>>;
+  setSelectedItem: (value: T) => void;
 }
 
 const Select = <T extends string>({ options, selectedItem, setSelectedItem }: SelectProps<T>) => {

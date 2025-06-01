@@ -1,43 +1,38 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { getProducts } from "../apis/product";
 import { GetProductResponse } from "../types/product";
-import { useErrorMessage, useLoading } from "../contexts";
 import { FilterType, SortType } from "../types";
+import useQuery from "./common/useQuery";
+
+type ProductsOption = {
+  filter: FilterType;
+  sort: SortType;
+};
 
 const useProducts = () => {
-  const [productsResponse, setProductsResponse] = useState<GetProductResponse>();
-  const [filter, setFilter] = useState<FilterType>("전체");
-  const [sort, setSort] = useState<SortType>("높은 가격순");
+  const [productsOption, setProductsOption] = useState<ProductsOption>({
+    filter: "전체",
+    sort: "높은 가격순",
+  });
+  const { filter, sort } = productsOption;
 
-  const { setErrorMessage } = useErrorMessage();
-  const { setIsLoading } = useLoading();
-
-  const getProduct = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await getProducts({ page: 0, size: 20 });
-      setProductsResponse(data);
-    } catch (e) {
-      if (e instanceof Error) setErrorMessage(e.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [setErrorMessage, setIsLoading]);
-
-  const filteredAndSortedProducts = productsResponse?.content
-    .filter((product) => filter === "전체" || product.category === filter)
-    .sort((a, b) => (sort === "높은 가격순" ? b.price - a.price : a.price - b.price));
-
-  useEffect(() => {
-    getProduct();
-  }, [getProduct]);
+  const { data } = useQuery<GetProductResponse>({
+    queryKey: `/products?filter=${filter}&sort=${sort}`,
+    fetchFn: () =>
+      getProducts({
+        category: filter === "전체" ? "" : filter,
+        page: 0,
+        size: 20,
+        sort: sort === "낮은 가격순" ? "asc" : "desc",
+      }),
+  });
 
   return {
-    products: filteredAndSortedProducts || [],
-    filter,
-    setFilter,
-    sort,
-    setSort,
+    products: data?.content || [],
+    filter: productsOption.filter,
+    sort: productsOption.sort,
+    setFilter: (filter: FilterType) => setProductsOption((prev) => ({ ...prev, filter })),
+    setSort: (sort: SortType) => setProductsOption((prev) => ({ ...prev, sort })),
   };
 };
 
