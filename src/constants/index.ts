@@ -4,6 +4,6 @@ export type sortOption = "price,asc" | "price,desc";
 
 export const Z_INDEX = {
   HEADER: 1,
-  MODAL: 2,
-  DROPDOWN: 3,
+  DROPDOWN: 2,
+  MODAL: 3,
 };
