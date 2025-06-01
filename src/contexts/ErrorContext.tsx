@@ -1,21 +1,52 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useState } from 'react';
+import styled from '@emotion/styled';
 import ErrorBox from '../components/common/ErrorBox/ErrorBox';
+import { createContext, PropsWithChildren, useCallback, useContext, useState } from 'react';
+
+interface ErrorItem {
+  id: string;
+  message: string;
+}
 
 type ErrorContextType = {
+  errors: ErrorItem[];
   showError: (message: string) => void;
+  removeError: (id: string) => void;
+  clearAllErrors: () => void;
 };
 
 export const ErrorContext = createContext<ErrorContextType | null>(null);
 
 function ErrorProvider({ children }: PropsWithChildren) {
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errors, setErrors] = useState<ErrorItem[]>([]);
+
   const showError = useCallback((message: string) => {
-    setErrorMessage(message);
+    const newError: ErrorItem = {
+      id: `error-${Date.now()}-${Math.random()}`,
+      message,
+    };
+
+    setErrors((prev) => {
+      const newErrors = [...prev, newError];
+      return newErrors.length > 3 ? newErrors.slice(-3) : newErrors;
+    });
   }, []);
+
+  const removeError = useCallback((id: string) => {
+    setErrors((prev) => prev.filter((error) => error.id !== id));
+  }, []);
+
+  const clearAllErrors = useCallback(() => {
+    setErrors([]);
+  }, []);
+
   return (
-    <ErrorContext.Provider value={{ showError }}>
+    <ErrorContext.Provider value={{ errors, showError, removeError, clearAllErrors }}>
       {children}
-      {errorMessage && <ErrorBox message={errorMessage} backgroundColor='#FFC9C9' />}
+      <ErrorContainer>
+        {errors.map((error) => (
+          <ErrorBox key={error.id} errorId={error.id} message={error.message} backgroundColor='#FFC9C9' onClose={removeError} />
+        ))}
+      </ErrorContainer>
     </ErrorContext.Provider>
   );
 }
@@ -27,5 +58,17 @@ export const useError = () => {
   }
   return context;
 };
+
+const ErrorContainer = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 64px;
+  right: 0;
+  z-index: 999;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
 
 export default ErrorProvider;
