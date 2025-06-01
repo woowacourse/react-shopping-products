@@ -4,22 +4,10 @@ import type { Mock } from 'vitest';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import type React from 'react';
 import { DataProvider } from '../../context/DataContext';
-import {
-  decreaseCartItems,
-  getCartItems,
-  increaseCartItems,
-  removeCartItems,
-} from '../../services/cartItemServices';
 import { MOCK_CART_ITEMS } from '../../mocks/dummy';
 import { CartModal } from './CartModal';
 import { CartItemType } from '../../types/data';
-
-vi.mock('../../services/cartItemServices', () => ({
-  getCartItems: vi.fn(),
-  removeCartItems: vi.fn(),
-  increaseCartItems: vi.fn(),
-  decreaseCartItems: vi.fn(),
-}));
+import { server } from '../../mocks/server';
 
 const TestCartModal: React.FC = () => {
   return (
@@ -29,24 +17,25 @@ const TestCartModal: React.FC = () => {
   );
 };
 
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
 let mockCartItems: CartItemType[];
 let mockShowModal: Mock;
 let mockClose: Mock;
 
+beforeEach(() => {
+  mockCartItems = [...MOCK_CART_ITEMS];
+
+  mockShowModal = vi.fn();
+  mockClose = vi.fn();
+  window.HTMLDialogElement.prototype.showModal = mockShowModal;
+  window.HTMLDialogElement.prototype.close = mockClose;
+});
+
 describe('장바구니 아이템 조회 테스트', () => {
-  beforeEach(() => {
-    (getCartItems as Mock).mockClear();
-    mockCartItems = [...MOCK_CART_ITEMS];
-
-    mockShowModal = vi.fn();
-    mockClose = vi.fn();
-    window.HTMLDialogElement.prototype.showModal = mockShowModal;
-    window.HTMLDialogElement.prototype.close = mockClose;
-  });
-
   it('장바구니 아이템의 세부 내용이 렌더링된다.', async () => {
-    (getCartItems as Mock).mockResolvedValueOnce(mockCartItems);
-
     render(<TestCartModal />);
 
     await waitFor(() => {
@@ -68,16 +57,15 @@ describe('장바구니 아이템 조회 테스트', () => {
 
 describe('장바구니 아이템 수량 변경 테스트', () => {
   it('+ 버튼을 클릭했을 때 수량이 증가한다.', async () => {
-    (getCartItems as Mock).mockResolvedValueOnce(mockCartItems);
-
     render(<TestCartModal />);
 
     await waitFor(() => {
       expect(screen.getByText('장바구니')).toBeInTheDocument();
     });
 
-    const MUST_SHOW_INDEX = 0;
-    const targetId = mockCartItems[MUST_SHOW_INDEX].id;
+    const MUST_SHOW_INDEX = 1;
+    const items = screen.getAllByTestId('modal-product-items');
+    const item = items[MUST_SHOW_INDEX];
     const initialQuantity = mockCartItems[MUST_SHOW_INDEX].quantity;
 
     const increaseButtons = await screen.findAllByRole('button', {
@@ -87,21 +75,20 @@ describe('장바구니 아이템 수량 변경 테스트', () => {
     fireEvent.click(increaseButton);
 
     await waitFor(() => {
-      expect(increaseCartItems).toHaveBeenCalledWith(targetId, initialQuantity + 1);
+      expect(within(item).getByText(String(initialQuantity + 1))).toBeInTheDocument();
     });
   });
 
   it('- 버튼을 클릭했을 때 수량이 감소한다.', async () => {
-    (getCartItems as Mock).mockResolvedValueOnce(mockCartItems);
-
     render(<TestCartModal />);
 
     await waitFor(() => {
       expect(screen.getByText('장바구니')).toBeInTheDocument();
     });
 
-    const MUST_SHOW_INDEX = 0;
-    const targetId = mockCartItems[MUST_SHOW_INDEX].id;
+    const MUST_SHOW_INDEX = 1;
+    const items = screen.getAllByTestId('modal-product-items');
+    const item = items[MUST_SHOW_INDEX];
     const initialQuantity = mockCartItems[MUST_SHOW_INDEX].quantity;
 
     const decreaseButtons = await screen.findAllByRole('button', {
@@ -111,17 +98,13 @@ describe('장바구니 아이템 수량 변경 테스트', () => {
     fireEvent.click(decreaseButton);
 
     await waitFor(() => {
-      expect(decreaseCartItems).toHaveBeenCalledWith(targetId, initialQuantity - 1);
+      expect(within(item).getByText(String(initialQuantity - 1))).toBeInTheDocument();
     });
   });
 });
 
 describe('장바구니 아이템 삭제 테스트', () => {
   it('삭제 버튼이 정상적으로 작동한다', async () => {
-    (getCartItems as Mock)
-      .mockResolvedValueOnce(mockCartItems)
-      .mockResolvedValueOnce(mockCartItems.slice(1));
-
     render(<TestCartModal />);
 
     await waitFor(() => {
@@ -129,7 +112,6 @@ describe('장바구니 아이템 삭제 테스트', () => {
     });
 
     const MUST_SHOW_INDEX = 0;
-    const targetId = mockCartItems[MUST_SHOW_INDEX].id;
 
     const deleteButtons = await screen.findAllByRole('button', {
       name: '삭제',
@@ -138,7 +120,6 @@ describe('장바구니 아이템 삭제 테스트', () => {
     fireEvent.click(deleteButton);
 
     await waitFor(() => {
-      expect(removeCartItems).toHaveBeenCalledWith(targetId);
       expect(
         screen.queryByText(mockCartItems[MUST_SHOW_INDEX].product.name),
       ).not.toBeInTheDocument();
