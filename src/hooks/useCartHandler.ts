@@ -12,6 +12,7 @@ import { getCartId } from '../domain/cartItem';
 import useDataContext from './useDataContext';
 import { CartItemType } from '../types/data';
 import DataMap from '../context/DataMap';
+import retryFetch from '../util/retryFetch';
 
 interface CartHandlerProps {
   handleErrorMessage: (errorMessage: string) => void;
@@ -100,7 +101,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         apiCall: () => addCartItems({ productId, quantity }),
         onSuccess: async () => {
           setTempCartItem(productId, quantity);
-          await fetchTotalCartItems();
+          await retryFetch({ apiCall: fetchTotalCartItems });
         },
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
@@ -125,7 +126,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         apiCall: () => removeCartItems(cartId),
         onSuccess: async () => {
           removeTempCartItem(cartId);
-          await fetchTotalCartItems();
+          await retryFetch({ apiCall: fetchTotalCartItems });
         },
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
@@ -157,7 +158,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         apiCall: () => increaseCartItems(cartId, quantity),
         onSuccess: async () => {
           setTempCartItemsQuantity(cartId, quantity);
-          await fetchTotalCartItems();
+          await retryFetch({ apiCall: fetchTotalCartItems });
         },
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
@@ -189,7 +190,7 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
         apiCall: () => decreaseCartItems(cartId, quantity),
         onSuccess: async () => {
           setTempCartItemsQuantity(cartId, quantity);
-          await fetchTotalCartItems();
+          await retryFetch({ apiCall: fetchTotalCartItems });
         },
         onError: (error) => {
           const message = error instanceof Error ? error.message : DEFAULT_ERROR_MESSAGE;
