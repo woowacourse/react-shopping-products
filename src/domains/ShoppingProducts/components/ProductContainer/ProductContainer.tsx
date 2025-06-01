@@ -1,37 +1,29 @@
-import Button from "../../../../components/Button/Button";
-import { postCartItem } from "../../apis/cartItem";
 import { useShoppingContext } from "../../context/useShoppingContext";
 import { useFilteredProducts } from "../../hooks/useFilteredProducts";
 import { loadingLayout } from "../../page/index.style";
 import Product from "../Product/Product";
 import { QuantitySelector } from "../QuantitySelector/QuantitySelector";
+import { ProductActionButton } from "./ProductActionButton";
 import { ProductContainerLayout } from "./ProductContainer.style";
 
+function StatusMessage({ message }: { message: string }) {
+  return <div css={loadingLayout}>{message}</div>;
+}
 export default function ProductContainer() {
   const { cart, product, dispatch } = useShoppingContext();
   const filteredProduct = useFilteredProducts();
 
   if (product.error)
     return (
-      <div css={loadingLayout}>
-        상품목록 데이터를 가져오는데 실패했습니다. <br /> 다시 시도해주세요
-      </div>
+      <StatusMessage message="상품목록 데이터를 가져오는데 실패했습니다." />
     );
 
-  console.log(product.loading);
-  if (product.loading) return <div css={loadingLayout}>로딩중입니다</div>;
-
-  if (product.item.length === 0) {
-    return <div css={loadingLayout}>상품목록에 상품이 없습니다.</div>;
-  }
+  if (product.loading) return <StatusMessage message="로딩중입니다" />;
+  if (product.item.length === 0)
+    return <StatusMessage message="상품목록에 상품이 없습니다." />;
 
   const updateCartProduct = () => {
     dispatch({ type: "update", queryKey: "cart" });
-  };
-
-  const handleAddCart = async (id: number) => {
-    await postCartItem({ productId: id, quantity: 1 });
-    updateCartProduct();
   };
 
   return (
@@ -59,24 +51,12 @@ export default function ProductContainer() {
                 onChange={updateCartProduct}
                 maxQuantity={product.quantity ?? 10000}
               />
-            ) : product.quantity === 0 ? (
-              <Button
-                onClick={() => handleAddCart(product.id)}
-                dataTestid="remove-cart-button"
-                style="secondary"
-                disabled
-              >
-                <img src="./remove-shopping-cart.svg" />
-                <p>품절</p>
-              </Button>
             ) : (
-              <Button
-                onClick={() => handleAddCart(product.id)}
-                dataTestid="add-cart-button"
-              >
-                <img src="./add-shopping-cart.svg" />
-                <p>담기</p>
-              </Button>
+              <ProductActionButton
+                productQuantity={product.quantity ?? 0}
+                onChange={updateCartProduct}
+                productId={product.id}
+              />
             )}
           </Product>
         );
