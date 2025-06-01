@@ -11,7 +11,6 @@ function Header() {
   const { cartItemsId } = useCartItemsId();
   const { isOpen, handleOpen, handleClose } = Modal.useModal();
 
-  console.log("Hello", isOpen);
   return (
     <Styled.Container>
       <a href="./">

@@ -11,7 +11,7 @@ export const Container = styled.header`
   padding-right: 24px;
 
   position: fixed;
-
+  z-index: 1000;
   a {
     text-decoration: none;
   }
