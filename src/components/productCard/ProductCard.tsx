@@ -5,54 +5,52 @@ import {
   ContentContainer,
   ProductPrice,
   ButtonContainer,
+  SoldOutText,
 } from "./ProductCard.css";
-import CartToggleButton from "../cartToggleButton/CartToggleButton";
-import { ERROR_TYPE } from "../../hooks/useError";
+import CartToggleButton from "../cartButton/CartButton";
+import { useCartProduct } from "../../hooks/useCartProduct";
+import { ProductPageResponse } from "../../types/response.types";
 
 interface ProductCardProps {
-  cartInfo: {
-    cartId?: number;
-    cartAmount: number;
-  };
-  productInfo: {
-    productId: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-    isAdded: boolean;
-  };
-  setErrorTrue: (type: ERROR_TYPE) => void;
+  product: ProductPageResponse["content"][number];
+  isToggled: boolean;
+  isSoldOut: boolean;
+  setToggle: (value: boolean) => void;
 }
 
 function ProductCard({
-  cartInfo,
-  productInfo,
-  setErrorTrue,
+  product,
+  isToggled,
+  isSoldOut,
+  setToggle,
 }: ProductCardProps) {
-  const { imageUrl, productId, name, price, isAdded } = productInfo;
-  const { cartId, cartAmount } = cartInfo;
+  const { cartItemIds } = useCartProduct();
+  const cartMatch = cartItemIds.find((item) => item.productId === product.id);
 
   return (
     <div css={ProductContainer}>
       <img
         css={ProductImage}
-        src={imageUrl || "/fallBack.png"}
+        src={product.imageUrl || "/fallBack.png"}
         alt="상품 이미지"
         onError={(e) => {
           e.currentTarget.src = "/fallBack.png";
         }}
       />
+      {isSoldOut && <p css={SoldOutText}>품절</p>}
       <div css={ContentContainer}>
-        <h3 css={ProductTitle}>{name}</h3>
-        <p css={ProductPrice}>{price.toLocaleString()}원</p>
+        <h3 css={ProductTitle}>{product.name}</h3>
+        <p css={ProductPrice}>{product.price.toLocaleString()}원</p>
       </div>
       <div css={ButtonContainer}>
         <CartToggleButton
-          productId={productId}
-          cartId={cartId}
-          cartAmount={cartAmount}
-          isAdded={isAdded}
-          setErrorTrue={setErrorTrue}
+          productId={product.id}
+          cartId={cartMatch?.cartId}
+          cartAmount={cartItemIds.length}
+          productQuantity={product.quantity}
+          quantity={cartMatch?.quantity}
+          isToggled={isToggled}
+          setToggle={setToggle}
         />
       </div>
     </div>

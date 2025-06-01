@@ -7,6 +7,8 @@ export default defineConfig({
       jsxImportSource: "@emotion/react",
     }),
   ],
+  base: "/",
+
   test: {
     environment: "jsdom",
     globals: true,
