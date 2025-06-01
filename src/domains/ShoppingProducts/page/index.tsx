@@ -55,10 +55,8 @@ export default function ShopPage() {
               </div>
             )}
           </div>
-          {Boolean(cart.error) && (
-            <Toast>
-              {cart.error ? cart.error : product.error && product.error}
-            </Toast>
+          {(cart.error || product.error) && (
+            <Toast>{cart.error || product.error}</Toast>
           )}
         </Header>
         <Main>
