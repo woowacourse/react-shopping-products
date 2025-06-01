@@ -13,9 +13,7 @@ interface MutateOptions {
   onError?: (error: unknown) => void;
 }
 
-export default function useMutation<TRequest, TResponse, TOptimisticResponse = TResponse>({
-  mutationFn,
-}: UseMutationProps<TRequest, TResponse>) {
+export default function useMutation<TRequest, TResponse>({ mutationFn }: UseMutationProps<TRequest, TResponse>) {
   const queryClient = useQueryClient();
 
   const [status, setStatus] = useState<Status>("idle");

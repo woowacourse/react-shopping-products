@@ -18,7 +18,7 @@ export default function useCartItem() {
     queryKey: "cartItems",
   });
 
-  const { showError } = useError();
+  const { showError, error } = useError();
 
   const { mutate: mutatePostCartItem, status: postCartItemStatus } = useMutation<PostCartItemsParams, void>({
     mutationFn: CartItemApi.postCartItems,
@@ -31,6 +31,8 @@ export default function useCartItem() {
   });
 
   const increaseCartItem = async (productId: number) => {
+    if (error) return;
+
     const cartItem = cartItems?.content.find((item) => item.product.id === productId);
 
     const product = products?.content.find((item) => item.id === productId);
@@ -60,6 +62,8 @@ export default function useCartItem() {
   };
 
   const decreaseCartItem = async (productId: number) => {
+    if (error) return;
+
     const cartItem = cartItems?.content.find((item) => item.product.id === productId);
 
     if (!cartItem) return;
