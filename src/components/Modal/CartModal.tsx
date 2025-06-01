@@ -1,18 +1,17 @@
-// src/components/Modal/CartModal.tsx
 import Modal from "dslgpgh-modal";
 import { useEffect } from "react";
 import CartItem from "../Cart/CartItem";
 import S from "./CartModal.module.css";
-import { useCartInfo } from "../../hooks/useCartInfo";
 import { useTotalAmount } from "../../hooks/useTotalAmount";
+import { useCart } from "../../hooks/useCart";
 
 interface CartModalProps {
 	isOpen: boolean;
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	onClick: () => void;
 }
 
-const CartModal = ({ isOpen, setIsOpen }: CartModalProps) => {
-	const cartItems = useCartInfo();
+const CartModal = ({ isOpen, onClick }: CartModalProps) => {
+	const { cartItems } = useCart();
 	const totalAmount = useTotalAmount();
 
 	useEffect(() => {
@@ -26,11 +25,11 @@ const CartModal = ({ isOpen, setIsOpen }: CartModalProps) => {
 	}, [isOpen]);
 
 	return (
-		<Modal isOpen={isOpen} onClose={() => setIsOpen(false)} modalPosition={"bottom"} size={"full"}>
+		<Modal isOpen={isOpen} onClose={onClick} modalPosition={"bottom"} size={"full"}>
 			<Modal.Header>장바구니</Modal.Header>
 			<Modal.Body>
-				{cartItems.map((product) => (
-					<CartItem product={product} key={product.id} />
+				{cartItems.map((cartItem) => (
+					<CartItem mergedProduct={cartItem} key={cartItem.id} />
 				))}
 				<div className={S.totalPriceContainer}>
 					<p className={S.totalText}>총 결제 금액</p>
@@ -39,7 +38,7 @@ const CartModal = ({ isOpen, setIsOpen }: CartModalProps) => {
 			</Modal.Body>
 
 			<Modal.Footer>
-				<Modal.ActionButton onClick={() => setIsOpen(false)}>닫기</Modal.ActionButton>
+				<Modal.ActionButton onClick={onClick}>닫기</Modal.ActionButton>
 			</Modal.Footer>
 		</Modal>
 	);

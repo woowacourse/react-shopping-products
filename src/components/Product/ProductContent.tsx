@@ -4,12 +4,10 @@ import S from "./ProductContent.module.css";
 import SkeletonList from "../Skeleton/SkeletonList";
 import SkeletonCard from "../Skeleton/SkeletonCard";
 import { MergedProduct } from "../../types";
-import { useProductState } from "../Context/StoreContext";
 import { useMergedProducts } from "../../hooks/useMergedProducts";
 
 const ProductContent = () => {
-	const { loading } = useProductState();
-	const mergedProducts = useMergedProducts();
+	const { mergedProducts, loading } = useMergedProducts();
 
 	return (
 		<div className={S.contentContainer}>
@@ -24,7 +22,7 @@ const ProductContent = () => {
 			) : (
 				<div className={S.itemContainer}>
 					{mergedProducts.map((mergedProduct: MergedProduct) => (
-						<ItemCard key={mergedProduct.id} mergedProduct={mergedProduct} />
+						<ItemCard key={mergedProduct.product.id} mergedProduct={mergedProduct} />
 					))}
 				</div>
 			)}

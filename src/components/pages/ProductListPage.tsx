@@ -4,7 +4,8 @@ import ProductContent from "../Product/ProductContent";
 import S from "./ProductListPage.module.css";
 import { useState } from "react";
 import CartModal from "../Modal/CartModal";
-import { StoreProvider } from "../Context/StoreContext";
+import { DataProvider } from "../Context/DataContext";
+import { ErrorProvider } from "../Context/ErrorContext";
 
 const ProductListPage = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -13,15 +14,21 @@ const ProductListPage = () => {
 		setIsOpen(true);
 	};
 
+	const closeModal = () => {
+		setIsOpen(false);
+	};
+
 	return (
-		<StoreProvider>
-			<div className={S.container}>
-				<CartHeader onClick={openModal} />
-				<ErrorToast />
-				<ProductContent />
-				<CartModal isOpen={isOpen} setIsOpen={setIsOpen} />
-			</div>
-		</StoreProvider>
+		<DataProvider>
+			<ErrorProvider>
+				<div className={S.container}>
+					<CartHeader onClick={openModal} />
+					<ErrorToast />
+					<ProductContent />
+					<CartModal isOpen={isOpen} onClick={closeModal} />
+				</div>
+			</ErrorProvider>
+		</DataProvider>
 	);
 };
 
