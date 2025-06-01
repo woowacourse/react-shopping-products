@@ -32,7 +32,7 @@ export function useProductList(category: CategoryValue, price: SortValue) {
 
   useEffect(() => {
     refetch();
-  }, [category, price, refetch]);
+  }, [category, price]);
 
   return { products, status };
 }
