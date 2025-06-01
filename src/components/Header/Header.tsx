@@ -11,6 +11,7 @@ function Header() {
   const { cartItemsId } = useCartItemsId();
   const { isOpen, handleOpen, handleClose } = Modal.useModal();
 
+  console.log("Hello", isOpen);
   return (
     <Styled.Container>
       <a href="./">
@@ -21,8 +22,8 @@ function Header() {
           <Styled.Image src={shoppingBag} />
         </Styled.Button>
         <Styled.ShoppingBag>{cartItemsId.length}</Styled.ShoppingBag>
-        <CartModal isOpen={isOpen} handleClose={handleClose} />
       </Styled.ButtonWrapper>
+      <CartModal isOpen={isOpen} handleClose={handleClose} />
     </Styled.Container>
   );
 }
