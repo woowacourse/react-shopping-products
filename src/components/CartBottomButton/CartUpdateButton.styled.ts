@@ -15,7 +15,7 @@ export const CartUpdateButton = styled.button`
   justify-content: center;
 `;
 
-export const CartUpdateButtonText = styled.div`
+export const CartUpdateButtonText = styled.p`
   color: #0a0d13;
   text-align: center;
   font-size: 12px;
