@@ -32,13 +32,15 @@ export default function useCartItem() {
       await mutatePostCartItem({ productId });
       await refetchCartItems();
     } else {
-      await mutatePatchCartItem(
+      // 쓰로틀링
+      mutatePatchCartItem(
         {
           cartItemId: cartItem.id,
           quantity: cartItem.quantity + 1,
         },
         {
           onMutate: (queryClient) => optimisticIncreaseCartItem(queryClient, productId),
+          onError: refetchCartItems,
         },
       );
     }

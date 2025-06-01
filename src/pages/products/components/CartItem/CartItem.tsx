@@ -15,7 +15,14 @@ export default function CartItem({ cartItem }: CartItemProps) {
     quantity,
   } = cartItem;
 
-  const { increaseCartItem, decreaseCartItem, deleteCartItem } = useCartItem();
+  const {
+    increaseCartItem,
+    decreaseCartItem,
+    deleteCartItem,
+    patchCartItemStatus,
+    postCartItemStatus,
+    deleteCartItemStatus,
+  } = useCartItem();
 
   return (
     <S.ProductCardCartItemWrapper>

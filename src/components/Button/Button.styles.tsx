@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const Button = styled.button<{ backgroundColor: string }>`
+export const Button = styled.button<{ backgroundColor: string; isLoading: boolean }>`
   display: flex;
   gap: 4px;
   justify-content: center;
@@ -10,4 +10,5 @@ export const Button = styled.button<{ backgroundColor: string }>`
   border-radius: 4px;
   border: none;
   cursor: pointer;
+  opacity: ${({ isLoading }) => (isLoading ? 0.5 : 1)};
 `;

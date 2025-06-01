@@ -59,6 +59,11 @@ export default function ProductList() {
               cartItem={cartItems?.content.find((item) => item.product.id === product.id)}
               onIncreaseCartItem={increaseCartItem}
               onDecreaseCartItem={decreaseCartItem}
+              isLoading={
+                postCartItemStatus === "loading" ||
+                patchCartItemStatus === "loading" ||
+                deleteCartItemStatus === "loading"
+              }
             />
           ))}
       </S.CardWrapper>

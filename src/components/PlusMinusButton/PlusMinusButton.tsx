@@ -6,12 +6,19 @@ interface PlusMinusButtonProps {
   onAddButtonClick: () => void;
   onMinusButtonClick: () => void;
   quantity: number;
+  isLoading?: boolean;
 }
 
-export default function PlusMinusButton({ onAddButtonClick, onMinusButtonClick, quantity }: PlusMinusButtonProps) {
+export default function PlusMinusButton({
+  onAddButtonClick,
+  onMinusButtonClick,
+  quantity,
+  isLoading,
+}: PlusMinusButtonProps) {
+  console.log(quantity, isLoading);
   return (
     <S.ButtonWrapper>
-      <Button css={S.controlButton} onClick={onMinusButtonClick}>
+      <Button css={S.controlButton} onClick={onMinusButtonClick} isLoading={isLoading}>
         <Text css={S.controlButtonText} variant="body-0">
           -
         </Text>
@@ -19,7 +26,7 @@ export default function PlusMinusButton({ onAddButtonClick, onMinusButtonClick, 
       <Text variant="body-2" css={S.quantityText}>
         {quantity}
       </Text>
-      <Button css={S.controlButton} onClick={onAddButtonClick}>
+      <Button css={S.controlButton} onClick={onAddButtonClick} isLoading={isLoading}>
         <Text css={S.controlButtonText} variant="body-0">
           +
         </Text>

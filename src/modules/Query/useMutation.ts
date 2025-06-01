@@ -7,7 +7,10 @@ interface UseMutationProps<TRequest, TResponse> {
 }
 
 interface MutateOptions {
-  onMutate: (queryClient: ReturnType<typeof useQueryClient>) => void;
+  onMutate?: (queryClient: ReturnType<typeof useQueryClient>) => void;
+  onSuccess?: (queryClient: ReturnType<typeof useQueryClient>) => void;
+  onSettled?: (queryClient: ReturnType<typeof useQueryClient>) => void;
+  onError?: (error: unknown) => void;
 }
 
 export default function useMutation<TRequest, TResponse, TOptimisticResponse = TResponse>({
@@ -21,14 +24,19 @@ export default function useMutation<TRequest, TResponse, TOptimisticResponse = T
     try {
       setStatus("loading");
 
+      options?.onMutate?.(queryClient);
+
       await mutationFn(variables);
 
-      options?.onMutate?.(queryClient);
+      options?.onSuccess?.(queryClient);
 
       setStatus("success");
     } catch (error) {
       setStatus("error");
+      options?.onError?.(error);
       throw error;
+    } finally {
+      options?.onSettled?.(queryClient);
     }
   };
 

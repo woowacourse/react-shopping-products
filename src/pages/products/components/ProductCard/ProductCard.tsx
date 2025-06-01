@@ -9,9 +9,16 @@ interface ProductCardProps {
   cartItem: CartItem | undefined;
   onIncreaseCartItem: (productId: number) => void;
   onDecreaseCartItem: (productId: number) => void;
+  isLoading: boolean;
 }
 
-export default function ProductCard({ product, onIncreaseCartItem, onDecreaseCartItem, cartItem }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  onIncreaseCartItem,
+  onDecreaseCartItem,
+  cartItem,
+  isLoading,
+}: ProductCardProps) {
   const isSoldOut = product.stock === 0;
 
   return (
@@ -44,8 +51,9 @@ export default function ProductCard({ product, onIncreaseCartItem, onDecreaseCar
             <div css={S.buttonWrapper}>
               <PlusMinusButton
                 quantity={cartItem.quantity}
-                onAddButtonClick={() => onIncreaseCartItem(product.id)}
-                onMinusButtonClick={() => onDecreaseCartItem(product.id)}
+                onAddButtonClick={() => !isLoading && onIncreaseCartItem(product.id)}
+                onMinusButtonClick={() => !isLoading && onDecreaseCartItem(product.id)}
+                isLoading={isLoading}
               />
             </div>
           ) : (
