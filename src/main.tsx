@@ -15,9 +15,11 @@ const test = async () => {
 
 test().then(() => {
   ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
+    // <React.StrictMode>
+    <>
       <Global styles={globalStyle} />
       <App />
-    </React.StrictMode>
+    </>
+    // </React.StrictMode>
   );
 });
