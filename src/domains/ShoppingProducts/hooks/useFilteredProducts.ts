@@ -3,7 +3,6 @@ import { useShoppingContext } from "../context/useShoppingContext";
 
 export function useFilteredProducts() {
   const context = useShoppingContext();
-  if (!context) throw new Error("No context");
 
   const { product, filter, category } = context;
 
