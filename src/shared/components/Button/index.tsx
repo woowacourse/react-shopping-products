@@ -1,5 +1,5 @@
-import { baseButtonStyle } from "../styles";
-import { ModalButtonProps } from "../types/Modal.types";
+import { baseButtonStyle } from '../Modal/styles';
+import { ModalButtonProps } from '../Modal/types/Modal.types';
 
 const BaseButton = ({ children, css: overrideCss, disabled, ...rest }: ModalButtonProps) => {
   return (

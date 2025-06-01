@@ -1,6 +1,6 @@
 import { CancelButtonStyle } from '../styles';
 import { ModalButtonProps } from '../types/Modal.types';
-import ModalButton from './Button';
+import ModalButton from '../../Button';
 
 interface CancelButtonProps extends ModalButtonProps {
   variation?: 'primary' | 'secondary';

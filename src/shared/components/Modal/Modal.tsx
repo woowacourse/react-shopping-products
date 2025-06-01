@@ -3,7 +3,7 @@ import { createContext, useContext, useRef } from 'react';
 import { useFocusTrap } from '@/shared/hooks/useFocusTrap';
 import useKeyEscClose from '@/shared/hooks/useKeyEscClose';
 
-import BaseButton from './Button/Button';
+import BaseButton from '../Button';
 import CancelButton from './Button/CancelButton';
 import ConfirmButton from './Button/ConfirmButton';
 import {
