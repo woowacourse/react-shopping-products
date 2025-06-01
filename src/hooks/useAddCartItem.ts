@@ -20,7 +20,9 @@ function useAddCartItem({
   );
 
   useToast(
-    isOverItemCounts ? `장바구니는 최대 ${CART_LIMIT}개의 상품을 담을 수 있습니다.` : null,
+    !error && isOverItemCounts
+      ? `장바구니는 최대 ${CART_LIMIT}개의 상품을 담을 수 있습니다.`
+      : null,
     'error',
   );
 
