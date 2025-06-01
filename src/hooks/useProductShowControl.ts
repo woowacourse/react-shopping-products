@@ -16,7 +16,7 @@ type UseProductShowControlReturn = {
 function useProductShowControl(): UseProductShowControlReturn {
   const [showSettings, setShowSettings] = useState<ProductShowSettings>({
     category: CATEGORY[0],
-    sort: SORT.asc,
+    sort: Object.entries(SORT)[0][1],
   });
 
   const handleChangeCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +32,6 @@ function useProductShowControl(): UseProductShowControlReturn {
 
   const handleChangeSort = (e: React.ChangeEvent<HTMLInputElement>) => {
     const validSort = Object.entries(SORT).find(([key]) => key === e.target.value);
-
     if (validSort) {
       const [, sortValue] = validSort;
       setShowSettings((prev) => ({
