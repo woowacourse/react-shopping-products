@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { Modal } from "@kaori-killer/modal-component";
 
 import Spinner from "../common/Spinner/Spinner";
-
 import useProductList from "../../hooks/useProductList";
 import useCartItemsId from "../../hooks/useCartItemsId";
 
@@ -23,40 +22,37 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
     sort: "id,asc",
   });
 
+  const getCartItem = (productId: number) =>
+    cartItemsId.find((item) => item.productId === productId.toString());
+
+  const getCartQuantity = (productId: number) =>
+    getCartItem(productId)?.cartQuantity ?? 0;
+
+  const patchCartItemByProductId = (productId: number, quantity: number) => {
+    const cartItem = getCartItem(productId);
+    if (!cartItem) return;
+    patchCartItemId(cartItem.cartId, quantity);
+  };
+
+  const removeCartItemByProductId = (productId: number) => {
+    const cartItem = getCartItem(productId);
+    if (!cartItem) return;
+    removeCartItemId(cartItem.cartId);
+  };
+
+  const handleDecreaseProductQuantity = (productId: number) => {
+    const quantity = getCartQuantity(productId);
+    patchCartItemByProductId(productId, Math.max(quantity - 1, 0));
+  };
+
+  const handleIncreaseProductQuantity = (productId: number) => {
+    const quantity = getCartQuantity(productId);
+    patchCartItemByProductId(productId, quantity + 1);
+  };
+
   const selectedProducts = productList.filter((product) =>
     cartItemsId.some((item) => item.productId === product.id.toString())
   );
-
-  const getCartQuantity = (productId: string) => {
-    return (
-      cartItemsId.find((item) => item.productId === productId)?.cartQuantity ??
-      0
-    );
-  };
-
-  const handleDecreaseProductQuantity = async (
-    event: React.MouseEvent<HTMLButtonElement>,
-    quantity: number
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    $product && patchCartItemId($product.id, Math.max(quantity - 1, 0));
-  };
-
-  const handleIncreaseProductQuantity = async (
-    event: React.MouseEvent<HTMLButtonElement>,
-    quantity: number
-  ) => {
-    const $product = event.currentTarget.closest("li");
-
-    $product && patchCartItemId($product.id, quantity + 1);
-  };
-
-  const handleRemoveProduct = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    $product && removeCartItemId($product.id);
-  };
 
   return createPortal(
     <Modal isOpen={isOpen} onClose={handleClose}>
@@ -78,11 +74,11 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
           {state.isSuccess && (
             <Styled.List>
               {selectedProducts.map((product) => {
-                const productId = product.id.toString();
+                const productId = product.id;
                 const cartQuantity = getCartQuantity(productId);
 
                 return (
-                  <Styled.ListItem key={product.id} id={productId}>
+                  <Styled.ListItem key={productId}>
                     <Styled.Image
                       src={product.imageUrl ?? defaultImage}
                       onError={(e) => (e.currentTarget.src = defaultImage)}
@@ -94,23 +90,25 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
                       </Styled.Price>
                       <Styled.QuantityControl>
                         <button
-                          onClick={(event) =>
-                            handleDecreaseProductQuantity(event, cartQuantity)
+                          onClick={() =>
+                            handleDecreaseProductQuantity(productId)
                           }
                         >
                           -
                         </button>
                         <p>{cartQuantity}</p>
                         <button
-                          onClick={(event) =>
-                            handleIncreaseProductQuantity(event, cartQuantity)
+                          onClick={() =>
+                            handleIncreaseProductQuantity(productId)
                           }
                         >
                           +
                         </button>
                       </Styled.QuantityControl>
                     </Styled.Info>
-                    <Styled.RemoveButton onClick={handleRemoveProduct}>
+                    <Styled.RemoveButton
+                      onClick={() => removeCartItemByProductId(productId)}
+                    >
                       삭제
                     </Styled.RemoveButton>
                   </Styled.ListItem>
@@ -126,7 +124,7 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
             <span>
               {selectedProducts
                 .reduce((total, item) => {
-                  const quantity = getCartQuantity(item.id.toString());
+                  const quantity = getCartQuantity(item.id);
                   return total + quantity * item.price;
                 }, 0)
                 .toLocaleString()}

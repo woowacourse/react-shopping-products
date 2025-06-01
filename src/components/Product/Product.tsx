@@ -18,33 +18,22 @@ function Product({ product, isInCart }: ProductProps) {
     (item) => item.productId === product.id.toString()
   );
 
-  const handleAddProduct = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    $product && addCartItemId($product.id, 1);
+  const handleAddProduct = async () => {
+    addCartItemId(product.id.toString(), 1);
   };
 
-  const handleIncreaseProductQuantity = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    $product &&
-      patchCartItemId(
-        cartItemId ? cartItemId.cartId.toString() : "",
-        cartItemId ? cartItemId.cartQuantity + 1 : 1
-      );
+  const handleIncreaseProductQuantity = async () => {
+    patchCartItemId(
+      cartItemId ? cartItemId.cartId.toString() : "",
+      cartItemId ? cartItemId.cartQuantity + 1 : 1
+    );
   };
 
-  const handleDecreaseProductQuantity = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    $product &&
-      patchCartItemId(
-        cartItemId ? cartItemId.cartId.toString() : "",
-        cartItemId ? cartItemId.cartQuantity - 1 : 0
-      );
+  const handleDecreaseProductQuantity = async () => {
+    patchCartItemId(
+      cartItemId ? cartItemId.cartId.toString() : "",
+      cartItemId ? cartItemId.cartQuantity - 1 : 0
+    );
   };
 
   return (
