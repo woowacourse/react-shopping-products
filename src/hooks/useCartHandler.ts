@@ -18,7 +18,7 @@ interface CartHandlerProps {
 }
 
 const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
-  const { data, setData, isLoading, handleLoading } = useDataContext();
+  const { data, setData, handleLoading } = useDataContext();
   const { fetchData: fetchCartItems } = useFetchData<CartItemType[]>({
     dataName: 'cartItems',
   });
@@ -129,7 +129,6 @@ const useCartHandler = ({ handleErrorMessage }: CartHandlerProps) => {
 
   return {
     cartItems: data.get('cartItems') ?? [],
-    isCartItemsLoading: isLoading.get('cartItems') ?? true,
     handleAddCartItem,
     handleRemoveCartItem,
     handleIncreaseQuantity,
