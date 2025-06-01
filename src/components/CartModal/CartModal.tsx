@@ -19,6 +19,7 @@ import {
   closeButton,
   cartItemContent,
   cartItemInfoContainer,
+  cartItemsContainer,
 } from './CartModal.style';
 import useDeleteCartItem from '../../hooks/useDeleteCartItem';
 import useUpdateCartItem from '../../hooks/useUpdateCartItem';
@@ -60,41 +61,43 @@ function CartModal({ isOpen, onClose }: CartModalProps) {
               <div className={emptyCart}>장바구니가 비어있습니다.</div>
             ) : (
               <>
-                {carts.map((cart) => (
-                  <div key={cart.id} className={cartItem}>
-                    <div className={cartItemContent}>
-                      <img
-                        src={getImageUrl(cart.product.imageUrl)}
-                        alt={cart.product.name}
-                        className={cartItemImage}
-                      />
-                      <div className={cartItemInfoContainer}>
-                        <div className={cartItemInfo}>
-                          <div className={cartItemName}>{cart.product.name}</div>
-                          <div className={cartItemPrice}>
-                            {cart.product.price.toLocaleString()}원
+                <div className={cartItemsContainer}>
+                  {carts.map((cart) => (
+                    <div key={cart.id} className={cartItem}>
+                      <div className={cartItemContent}>
+                        <img
+                          src={getImageUrl(cart.product.imageUrl)}
+                          alt={cart.product.name}
+                          className={cartItemImage}
+                        />
+                        <div className={cartItemInfoContainer}>
+                          <div className={cartItemInfo}>
+                            <div className={cartItemName}>{cart.product.name}</div>
+                            <div className={cartItemPrice}>
+                              {cart.product.price.toLocaleString()}원
+                            </div>
+                          </div>
+                          <div className={cartItemControls}>
+                            <QuantityControlBox
+                              handleDecreaseQuantity={() =>
+                                handleQuantityChange(cart.product.id, cart.quantity - 1)
+                              }
+                              handleIncreaseQuantity={() =>
+                                handleQuantityChange(cart.product.id, cart.quantity + 1)
+                              }
+                              isOutOfStock={false}
+                              selectedQuantity={cart.quantity}
+                              quantity={cart.product.quantity}
+                            />
                           </div>
                         </div>
-                        <div className={cartItemControls}>
-                          <QuantityControlBox
-                            handleDecreaseQuantity={() =>
-                              handleQuantityChange(cart.product.id, cart.quantity - 1)
-                            }
-                            handleIncreaseQuantity={() =>
-                              handleQuantityChange(cart.product.id, cart.quantity + 1)
-                            }
-                            isOutOfStock={false}
-                            selectedQuantity={cart.quantity}
-                            quantity={cart.product.quantity}
-                          />
-                        </div>
                       </div>
+                      <DeleteButton
+                        onClick={() => handleDeleteCartItem({ productId: cart.product.id })}
+                      />
                     </div>
-                    <DeleteButton
-                      onClick={() => handleDeleteCartItem({ productId: cart.product.id })}
-                    />
-                  </div>
-                ))}
+                  ))}
+                </div>
                 <div className={totalPrice}>
                   <span className={totalLabel}>총 결제 금액</span>
                   <span className={totalAmount}>{totalAmountValue.toLocaleString()}원</span>

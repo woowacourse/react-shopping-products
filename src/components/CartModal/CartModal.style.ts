@@ -3,9 +3,8 @@ import { css } from '@emotion/css';
 export const cartModalContainer = css`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 429px;
+  max-height: 80vh;
   margin: 0 auto;
   padding-top: 10px;
 `;
@@ -13,9 +12,15 @@ export const cartModalContainer = css`
 export const cartModalContent = css`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
+  flex: 1;
+`;
+
+export const cartItemsContainer = css`
+  flex: 1;
+  overflow-y: auto;
+  max-height: calc(80vh - 200px);
+  padding: 10px 20px;
 `;
 
 export const cartItem = css`
@@ -80,12 +85,14 @@ export const cartItemControls = css`
 
 export const totalPrice = css`
   width: 100%;
-
-  margin-top: 24px;
+  margin-top: 16px;
   padding: 20px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-top: 2px solid #f0f0f0;
+  background-color: #fff;
+  flex-shrink: 0;
 `;
 
 export const totalLabel = css`
