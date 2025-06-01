@@ -1,14 +1,14 @@
 import styled from "@emotion/styled";
 import { ProductType } from "../../types/ProductType";
 
-export const StyledLi = styled.li`
+type ImgWrapperProps = Pick<ProductType, "imageUrl">;
+
+export const Li = styled.li`
   height: 224px;
   border-radius: 8px;
 `;
 
-type ImgWrapperProps = Pick<ProductType, "imageUrl">;
-
-export const StyledImgWrapper = styled.div<ImgWrapperProps>`
+export const ImgWrapper = styled.div<ImgWrapperProps>`
   width: 100%;
   height: 50%;
   background-image: ${(props) => `url(${props.imageUrl})`};
@@ -17,7 +17,7 @@ export const StyledImgWrapper = styled.div<ImgWrapperProps>`
   border-radius: 8px 8px 0px 0px;
 `;
 
-export const StyledProductInfoWrapper = styled.div`
+export const ProductInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -26,17 +26,17 @@ export const StyledProductInfoWrapper = styled.div`
   box-sizing: border-box;
 `;
 
-export const StyledTitle = styled.span`
+export const Title = styled.span`
   font-weight: 700;
   font-size: 14px;
 `;
 
-export const StyledPrice = styled.span`
+export const Price = styled.span`
   font-weight: 500;
   font-size: 12px;
 `;
 
-export const StyledButton = styled.button`
+export const Button = styled.button`
   width: 59px;
   height: 24px;
   padding: 4px 8px;
@@ -52,47 +52,47 @@ export const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-export const StyledImg = styled.img`
+export const Img = styled.img`
   width: 15px;
   height: 15px;
 `;
 
-export const StyledProductInfo = styled.div`
+export const ProductInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
 `;
 
-export const StyledButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   display: flex;
   flex-grow: 1;
   align-items: flex-end;
   justify-content: flex-end;
 `;
 
-export const StyledQuantityController = styled.div`
+export const QuantityController = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
 `;
 
-export const StyledButtonText = styled.span`
+export const ButtonText = styled.span`
   font-size: 12px;
   font-weight: 600;
 `;
 
-export const StyledcontrollButton = styled.span`
+export const controllButton = styled.span`
   width: 24px;
   height: 24px;
 `;
 
-export const StyledControllImg = styled.img`
+export const ControllImg = styled.img`
   display: flex;
   align-items: center;
 `;
 
-export const StyledSoldOutOverlay = styled.div`
+export const SoldOutOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const StyledUl = styled.ul`
+export const Ul = styled.ul`
   display: grid;
   list-style-type: none;
   padding: 0;

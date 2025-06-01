@@ -1,22 +1,13 @@
-import getShoppingCart from "../../api/shoppingCart/getShoppingCart";
 import postShoppingCart from "../../api/shoppingCart/postShoppingCart";
-import { useAPI } from "../../domain/contexts/APIContext";
-import {
-  StyledButton,
-  StyledButtonText,
-  StyledButtonWrapper,
-  StyledImg,
-  StyledImgWrapper,
-  StyledLi,
-  StyledPrice,
-  StyledProductInfo,
-  StyledProductInfoWrapper,
-  StyledTitle,
-  StyledSoldOutOverlay,
-} from "../../styles/Product/ProductItem.styles";
+import * as S from "../../styles/Product/ProductItem.styles";
 import { CartItem } from "../Common/Modal";
 import { Product } from "./ProductList";
 import QuantityController from "../Common/QuantityController";
+
+type ProductItemProps = {
+  cartItems: CartItem[];
+  refetch: () => Promise<void>;
+} & Product;
 
 export default function ProductItem({
   id,
@@ -24,42 +15,38 @@ export default function ProductItem({
   price,
   imageUrl,
   quantity,
-}: Product) {
-  const { data, refetch } = useAPI({
-    fetcher: () => getShoppingCart(),
-    name: "cart",
-  });
-
+  cartItems,
+  refetch,
+}: ProductItemProps) {
   const count =
-    data?.content.find((item: CartItem) => item.product.id === id)?.quantity ||
-    0;
+    cartItems.find((item: CartItem) => item.product.id === id)?.quantity || 0;
 
   return (
-    <StyledLi id={String(id)}>
-      <StyledImgWrapper imageUrl={imageUrl}>
-        {quantity === 0 && <StyledSoldOutOverlay>품절</StyledSoldOutOverlay>}
-      </StyledImgWrapper>
-      <StyledProductInfoWrapper>
-        <StyledProductInfo>
-          <StyledTitle>{name}</StyledTitle>
-          <StyledPrice>{price.toLocaleString("ko")}원</StyledPrice>
-        </StyledProductInfo>
+    <S.Li id={String(id)}>
+      <S.ImgWrapper imageUrl={imageUrl}>
+        {quantity === 0 && <S.SoldOutOverlay>품절</S.SoldOutOverlay>}
+      </S.ImgWrapper>
+      <S.ProductInfoWrapper>
+        <S.ProductInfo>
+          <S.Title>{name}</S.Title>
+          <S.Price>{price.toLocaleString("ko")}원</S.Price>
+        </S.ProductInfo>
         {quantity !== 0 && (
-          <StyledButtonWrapper>
+          <S.ButtonWrapper>
             {count === 0 ? (
-              <StyledButton
+              <S.Button
                 onClick={async () => {
                   await postShoppingCart({ productId: id, quantity: 1 });
                   refetch();
                 }}
                 data-testid={`add-btn-${id}`}
               >
-                <StyledImg
+                <S.Img
                   src="/assets/addShoppingCartIcon.png"
                   alt="addShoppingCartIcon"
                 />
-                <StyledButtonText>담기</StyledButtonText>
-              </StyledButton>
+                <S.ButtonText>담기</S.ButtonText>
+              </S.Button>
             ) : (
               <QuantityController
                 productId={id}
@@ -67,9 +54,9 @@ export default function ProductItem({
                 refetch={refetch}
               />
             )}
-          </StyledButtonWrapper>
+          </S.ButtonWrapper>
         )}
-      </StyledProductInfoWrapper>
-    </StyledLi>
+      </S.ProductInfoWrapper>
+    </S.Li>
   );
 }

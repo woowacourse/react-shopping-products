@@ -3,10 +3,7 @@ import ErrorBox from "../Common/ErrorBox";
 import Spinner from "../Common/Spinner";
 import ProductList from "./ProductList";
 import ProductListToolbar from "./ProductListToolbar";
-import {
-  StyledSpinnerWrapper,
-  StyledDiv,
-} from "../../styles/Product/ProductListContainer.styles";
+import * as S from "../../styles/Product/ProductListContainer.styles";
 import { Option } from "../Common/SelectBox";
 import { Product } from "./ProductList";
 import { useProductList } from "../../hooks/useProductList";
@@ -36,17 +33,17 @@ export default function ProductListContainer() {
 
   if (status === "loading" || status === "idle") {
     return (
-      <StyledSpinnerWrapper>
+      <S.SpinnerWrapper>
         <Spinner size={100} color="red" />
-      </StyledSpinnerWrapper>
+      </S.SpinnerWrapper>
     );
   }
 
   if (status === "error") {
     return (
-      <StyledDiv>
+      <S.Div>
         <ErrorBox>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</ErrorBox>
-      </StyledDiv>
+      </S.Div>
     );
   }
 

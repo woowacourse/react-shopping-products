@@ -1,11 +1,4 @@
-import { useProductFilters } from "../../domain/hooks/useProductFilter";
-import {
-  Container,
-  FirstSelectWrapper,
-  Label,
-  SelectBoxContainer,
-  Title,
-} from "../../styles/Product/ProductListToolbar.styles";
+import * as S from "../../styles/Product/ProductListToolbar.styles";
 import SelectBox from "../Common/SelectBox";
 import {
   CATEGORY_OPTIONS,
@@ -27,36 +20,31 @@ export default function ProductListToolbar({
   setCategory,
   setPrice,
 }: ProductListToolbarProps) {
-  const { onCategoryChange, onPriceChange } = useProductFilters(
-    setCategory,
-    setPrice
-  );
-
   return (
-    <Container>
-      <Title>bpple 상품 목록</Title>
-      <SelectBoxContainer>
-        <FirstSelectWrapper>
-          <Label htmlFor="category">카테고리</Label>
+    <S.Container>
+      <S.Title>bpple 상품 목록</S.Title>
+      <S.SelectBoxContainer>
+        <S.FirstSelectWrapper>
+          <S.Label htmlFor="category">카테고리</S.Label>
           <SelectBox
-            value={category}
-            onChange={onCategoryChange}
-            options={CATEGORY_OPTIONS}
-            name="category"
             id="category"
+            name="category"
+            value={category}
+            options={CATEGORY_OPTIONS}
+            onChange={(e) => setCategory(e.target.value as CategoryValue)}
           />
-        </FirstSelectWrapper>
+        </S.FirstSelectWrapper>
         <div>
-          <Label htmlFor="price">가격</Label>
+          <S.Label htmlFor="price">가격</S.Label>
           <SelectBox
-            value={price}
-            onChange={onPriceChange}
-            options={PRICE_OPTIONS}
-            name="price"
             id="price"
+            name="price"
+            value={price}
+            options={PRICE_OPTIONS}
+            onChange={(e) => setPrice(e.target.value as SortValue)}
           />
         </div>
-      </SelectBoxContainer>
-    </Container>
+      </S.SelectBoxContainer>
+    </S.Container>
   );
 }

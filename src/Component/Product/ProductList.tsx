@@ -1,4 +1,6 @@
-import { StyledUl } from "../../styles/Product/ProductList.styles";
+import getShoppingCart from "../../api/shoppingCart/getShoppingCart";
+import { useAPI } from "../../domain/contexts/APIContext";
+import * as S from "../../styles/Product/ProductList.styles";
 import ProductItem from "./ProductItem";
 
 export type Product = {
@@ -9,16 +11,29 @@ export type Product = {
   category: string;
   quantity: number;
 };
+
 interface ProductListProps {
   productList: Product[];
 }
 
 export default function ProductList({ productList }: ProductListProps) {
+  const { data: cartItems, refetch } = useAPI({
+    fetcher: () => getShoppingCart(),
+    name: "cart",
+  });
+
   return (
-    <StyledUl>
+    <S.Ul>
       {productList.map((item) => {
-        return <ProductItem key={item.id} {...item} />;
+        return (
+          <ProductItem
+            key={item.id}
+            {...item}
+            cartItems={cartItems.content}
+            refetch={refetch}
+          />
+        );
       })}
-    </StyledUl>
+    </S.Ul>
   );
 }

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const StyledSpinnerWrapper = styled.div`
+export const SpinnerWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -8,7 +8,7 @@ export const StyledSpinnerWrapper = styled.div`
   justify-content: center;
 `;
 
-export const StyledDiv = styled.div`
+export const Div = styled.div`
   position: absolute;
   width: 100%;
   top: 64px;

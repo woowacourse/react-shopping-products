@@ -1,12 +1,7 @@
 import { useState } from "react";
 import deleteShoppingCart from "../../api/shoppingCart/deleteShoppingCart";
 import patchShoppingCart from "../../api/shoppingCart/patchShoppingCart";
-import {
-  StyledQuantityController,
-  StyledcontrollButton,
-  StyledControllImg,
-  StyledButtonText,
-} from "../../styles/Product/ProductItem.styles";
+import * as S from "../../styles/Product/ProductItem.styles";
 import ErrorBox from "./ErrorBox";
 
 interface QuantityControllerProps {
@@ -45,26 +40,26 @@ export default function QuantityController({
   return (
     <>
       {errorMessage && <ErrorBox>{errorMessage}</ErrorBox>}
-      <StyledQuantityController>
-        <StyledcontrollButton
+      <S.QuantityController>
+        <S.controllButton
           onClick={handleDecrease}
           data-testid={`remove-btn-${productId}`}
         >
-          <StyledControllImg
+          <S.ControllImg
             src="/assets/decreaseItemButtonIcon.png"
             alt="decreaseItemButtonIcon"
           />
-        </StyledcontrollButton>
+        </S.controllButton>
 
-        <StyledButtonText>{count}</StyledButtonText>
+        <S.ButtonText>{count}</S.ButtonText>
 
-        <StyledcontrollButton onClick={handleIncrease}>
-          <StyledControllImg
+        <S.controllButton onClick={handleIncrease}>
+          <S.ControllImg
             src="/assets/increaseItemButtonIcon.png"
             alt="increaseItemButtonIcon"
           />
-        </StyledcontrollButton>
-      </StyledQuantityController>
+        </S.controllButton>
+      </S.QuantityController>
     </>
   );
 }
