@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import minus from '../../../../public/minus.svg';
 import plus from '../../../../public/plus.svg';
 
-interface ItemCounterProps {
+interface ProductQuantityCounterProps {
   initial?: number;
   isInCart: boolean;
   onAddToCart: () => void;
@@ -12,14 +12,14 @@ interface ItemCounterProps {
   onRemoveFromCart: () => void;
 }
 
-const ItemCounter = ({
+const ProductQuantityCounter = ({
   initial = 1,
   isInCart,
   onAddToCart,
   onIncreaseQuantity,
   onDecreaseQuantity,
   onRemoveFromCart,
-}: ItemCounterProps) => {
+}: ProductQuantityCounterProps) => {
   const [count, setCount] = useState(initial);
   const [hasBeenAdded, setHasBeenAdded] = useState(isInCart);
 
@@ -84,4 +84,4 @@ const ItemCounter = ({
   );
 };
 
-export default ItemCounter;
+export default ProductQuantityCounter;

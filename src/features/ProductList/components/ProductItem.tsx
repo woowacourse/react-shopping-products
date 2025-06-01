@@ -5,7 +5,7 @@ import { IconButton } from '@/shared/components/IconButton';
 import { Text } from '@/shared/components/Text';
 
 import { Product } from '../types/Product';
-import ItemCounter from './ItemCounter';
+import ProductQuantityCounter from './ProductQuantityCounter';
 import NoImage from '../../../../public/NoImage.svg';
 import AddCart from '../../../../public/AddCart.svg';
 
@@ -91,7 +91,7 @@ export const ProductItem = ({
           gap=""
         >
           {isChecked ? (
-            <ItemCounter
+            <ProductQuantityCounter
               initial={cartCount}
               isInCart={isChecked}
               onAddToCart={onAddCart}
