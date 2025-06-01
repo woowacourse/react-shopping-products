@@ -1,7 +1,7 @@
 import { css } from "@emotion/css";
 import FilterDropDown from "./FilterDropDown";
 import SortingDropDown from "./SortingDropDown";
-import { useProductsContext } from "../../contexts/products/useProductsContext";
+
 import {
   CATEGORY,
   Category,
@@ -9,37 +9,45 @@ import {
   SortOption,
 } from "../../types/product.type";
 
-const ProductListToolBar = () => {
-  const { handleChangeSort, handleChangeCategory } = useProductsContext();
+interface ProductListToolBarProps {
+  category: Category;
+  sort: SortOption;
+  setCategory: (newCategory: Category) => void;
+  setSort: (newSort: SortOption) => void;
+}
 
-  const isCategoryOption = (value: string): value is Category => {
-    return CATEGORY.includes(value);
+const ProductListToolBar = ({
+  category,
+  sort,
+  setCategory,
+  setSort,
+}: ProductListToolBarProps) => {
+  const isCategoryOption = (value: string): value is Category =>
+    CATEGORY.includes(value);
+  const isSortOption = (value: string): value is SortOption =>
+    SORT_OPTION.includes(value);
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (isCategoryOption(e.target.value)) setCategory(e.target.value);
   };
 
-  const isSortOption = (value: string): value is SortOption => {
-    return SORT_OPTION.includes(value);
-  };
-
-  const handleFilterChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    if (isCategoryOption(e.target.value)) handleChangeCategory(e.target.value);
-  };
-
-  const handleSortingChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    if (isSortOption(e.target.value)) handleChangeSort(e.target.value);
+  const handleSortingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (isSortOption(e.target.value)) setSort(e.target.value);
   };
 
   return (
     <section className={ToolBarSectionStyles}>
       <h1>bpple 상품 목록</h1>
       <div className={ProductListToolBarStyles}>
-        <FilterDropDown options={CATEGORY} handleChange={handleFilterChange} />
+        <FilterDropDown
+          options={CATEGORY}
+          handleChange={handleFilterChange}
+          value={category}
+        />
         <SortingDropDown
           options={SORT_OPTION}
           handleChange={handleSortingChange}
+          value={sort}
         />
       </div>
     </section>

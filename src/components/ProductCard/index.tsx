@@ -1,10 +1,21 @@
-import { css } from "@emotion/css";
-import RemoveButton from "../Button/RemoveButton";
 import AddButton from "../Button/AddButton";
-import { Product } from "../../types/product.type";
-import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
-import { useAddShoppingCart } from "../../hooks/shoppingCart/useAddShoppingCart";
-import { useDeleteShoppingCart } from "../../hooks/shoppingCart/useDeleteShoppingCart";
+import { CartItem, Product } from "../../types/product.type";
+import { useAPIContext } from "../../contexts/API/useAPIContext";
+import getShoppingCart from "../../APIs/shoppingCart/getShoppingCart";
+import addShoppingCart from "../../APIs/shoppingCart/addShoppingCart";
+import {
+  ButtonArea,
+  CardFrame,
+  CardImage,
+  CardInfo,
+  CurrentQuantity,
+  ImageFrame,
+  ImageOverlay,
+  ProductName,
+} from "./style";
+import { useErrorContext } from "../../contexts/Error/ErrorContext";
+import Stepper from "../Stepper";
+import { useCartItemQuantity } from "../../hooks/useCartItemQuantity";
 
 interface ProductCardProps {
   product: Product;
@@ -13,18 +24,35 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, isInCart }: ProductCardProps) => {
   const { id, name, price, imageUrl } = product;
-  const { cartItems } = useShoppingCartContext();
-  const cartItemId = cartItems.find(
-    (item) => item.product.id === product.id
-  )?.id;
+  const { data: cartItems, refetch: refetchCart } = useAPIContext<CartItem[]>({
+    name: "cartItems",
+    fetcher: () => getShoppingCart({ endpoint: "/cart-items" }),
+  });
 
-  const { handleAdd } = useAddShoppingCart(product.id);
-  const { handleDelete } = useDeleteShoppingCart(cartItemId);
-  const { isShoppingLoading } = useShoppingCartContext();
+  const cartItem = cartItems?.find((item) => item.product.id === product.id);
+  const { isLoading, localQuantity, handleOnIncrease, handleOnDecrease } =
+    useCartItemQuantity(cartItem);
+  const soldOut = product.quantity === 0;
+
+  const { handleError } = useErrorContext();
+
+  const handleAdd = async () => {
+    try {
+      const requestBody = { productId: id, quantity: 1 };
+      await addShoppingCart({ endpoint: "/cart-items", requestBody });
+      refetchCart();
+    } catch (err) {
+      handleError({
+        isError: true,
+        errorMessage: "장바구니에 추가하지 못했습니다.",
+      });
+    }
+  };
 
   return (
-    <div key={id} className={CardFrame}>
+    <div key={id} className={CardFrame} data-testid="product-card">
       <div className={ImageFrame}>
+        {soldOut && <div className={ImageOverlay}>품절</div>}
         <img
           src={imageUrl || "./default.png"}
           alt={name}
@@ -38,12 +66,18 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
         <h4 className={ProductName} data-testid="product-name">
           {name}
         </h4>
-        <p>{price.toLocaleString()}원</p>
+        <p data-testid="product-price">{price.toLocaleString()}원</p>
+        <p className={CurrentQuantity}>⚠️ {product.quantity}개 남았어요</p>
         <div className={ButtonArea}>
           {isInCart ? (
-            <RemoveButton onClick={handleDelete} disabled={isShoppingLoading} />
+            <Stepper
+              quantity={localQuantity}
+              onDecreaseQuantity={handleOnDecrease}
+              onIncreaseQuantity={handleOnIncrease}
+              isLoading={isLoading}
+            />
           ) : (
-            <AddButton onClick={handleAdd} disabled={isShoppingLoading} />
+            <AddButton onClick={handleAdd} disabled={soldOut} />
           )}
         </div>
       </div>
@@ -52,43 +86,3 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
 };
 
 export default ProductCard;
-
-const CardFrame = css`
-  width: 100%;
-  height: 224px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-`;
-
-const ImageFrame = css`
-  width: 182px;
-  height: 112px;
-`;
-
-const CardImage = css`
-  width: 100%;
-  height: 100%;
-  border: none;
-  object-fit: cover;
-`;
-
-const CardInfo = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 16px 8px 8px 8px;
-  gap: 8px;
-`;
-
-const ProductName = css`
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const ButtonArea = css`
-  display: flex;
-  justify-content: flex-end;
-`;

@@ -1,18 +1,24 @@
 import { css } from "@emotion/css";
-import { useShoppingCartContext } from "../../contexts/shoppingCart/useShoppingCartContext";
+import { CartItem } from "../../types/product.type";
 
-const Header = () => {
-  const { cartItems } = useShoppingCartContext();
-
+interface HeaderProps {
+  onCartClick: () => void;
+  cartItems: CartItem[];
+}
+const Header = ({ onCartClick, cartItems }: HeaderProps) => {
   return (
     <header className={HeaderStyles}>
       <a href="/" className={LogoStyles}>
         SHOP
       </a>
-      <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
-      {cartItems.length !== 0 && (
-        <div className={ShoppingCartCount}>{cartItems.length}</div>
-      )}
+      <section className={ShoppingCartSection} onClick={onCartClick}>
+        <img src="./shopIcon.svg" alt="장바구니" className={IconStyles} />
+        {cartItems.length > 0 && (
+          <div className={ShoppingCartCount} data-testid="shopping-cart-count">
+            {cartItems.length}
+          </div>
+        )}
+      </section>
     </header>
   );
 };
@@ -29,6 +35,7 @@ const HeaderStyles = css`
   justify-content: space-between;
   align-items: center;
   padding: 24px;
+  z-index: 1000;
 `;
 
 const LogoStyles = css`
@@ -59,4 +66,8 @@ const ShoppingCartCount = css`
   color: black;
   font-size: 12px;
   font-weight: 800;
+`;
+
+const ShoppingCartSection = css`
+  cursor: pointer;
 `;
