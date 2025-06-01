@@ -5,8 +5,7 @@ import { useData } from "../contexts/DataContext";
 const useCartItems = () => {
   const {
     data: cartItems,
-    error: errorMessage,
-    setError: setErrorMessage,
+    error: fetchError,
     refetch: refreshCartItems,
   } = useData<CartItems>({
     key: "cartItems",
@@ -22,8 +21,7 @@ const useCartItems = () => {
 
   return {
     cartItemInfo,
-    errorMessage,
-    setErrorMessage,
+    fetchError,
     refreshCartItems,
   };
 };

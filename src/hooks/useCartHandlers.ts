@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { CartItemsAPI } from "../apis/cartItems";
 import { Products } from "../apis/types/products";
 
-interface UseCartActionsProps {
+interface UseCartHandlersProps {
   products: Products | null;
   cartItemInfo: Array<{
     cartId: number;
@@ -18,7 +18,7 @@ const useCartHandlers = ({
   cartItemInfo,
   onError,
   onRefresh,
-}: UseCartActionsProps) => {
+}: UseCartHandlersProps) => {
   const getProductStock = useCallback(
     (productId: number): number => {
       const product = products?.content.find((p) => p.id === productId);

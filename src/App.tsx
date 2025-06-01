@@ -6,6 +6,7 @@ import ShopHeader from "./components/ShopHeader/ShopHeader";
 import * as S from "./styles/Layout.styles";
 import useProducts from "./hooks/useProducts";
 import useCartItems from "./hooks/useCartItems";
+import useErrorManager from "./hooks/useErrorManager";
 import ProductList from "./components/ProductList/ProductList";
 import { ProductFilterProvider } from "./contexts/ProductFilterContext";
 import { DataProvider } from "./contexts/DataContext";
@@ -23,10 +24,16 @@ const AppContent = () => {
 
   const {
     cartItemInfo,
-    errorMessage: cartError,
-    setErrorMessage: setCartError,
+    fetchError: cartFetchError,
     refreshCartItems,
   } = useCartItems();
+
+  const { cartHandlerError, displayError } = useErrorManager({
+    productError,
+    setProductError,
+    cartFetchError,
+    refreshCartItems,
+  });
 
   const {
     handleAddToCart,
@@ -36,12 +43,10 @@ const AppContent = () => {
   } = useCartHandlers({
     products,
     cartItemInfo,
-    onError: setCartError,
+    onError: cartHandlerError,
     onRefresh: refreshCartItems,
   });
 
-  const errorMessage = productError || cartError;
-  const setErrorMessage = productError ? setProductError : setCartError;
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
   const openCartModal = () => setIsCartModalOpen(true);
@@ -68,10 +73,10 @@ const AppContent = () => {
             onQuantityIncrease={handleQuantityIncrease}
             onQuantityDecrease={handleQuantityDecrease}
           />
-          {!!errorMessage && (
+          {displayError && (
             <ErrorToast
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
+              errorMessage={displayError.message}
+              setErrorMessage={displayError.clear}
             />
           )}
         </S.Wrapper>
