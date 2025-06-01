@@ -1,36 +1,46 @@
 import { TOAST_DURATION_TIME } from '../../../constants/constants';
 import * as S from './ErrorBox.styled';
-import { Dispatch, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ErrorBoxProps {
+  errorId?: string;
+  message?: string;
   backgroundColor: string;
-  text: string;
-  setErrorMessage: Dispatch<React.SetStateAction<string>>;
+  onClose?: (id: string) => void;
 }
 
-function ErrorBox({ backgroundColor, text, setErrorMessage }: ErrorBoxProps) {
+function ErrorBox({ errorId, message, backgroundColor, onClose }: ErrorBoxProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (text) {
+    if (message) {
       setIsOpen(true);
+
       const timer = setTimeout(() => {
         setIsOpen(false);
-        setErrorMessage('');
+
+        if (errorId && onClose) {
+          onClose(errorId);
+        }
       }, TOAST_DURATION_TIME);
 
       return () => clearTimeout(timer);
     }
-  }, [text]);
+  }, [message, errorId, onClose]);
 
-  if (!text) return null;
+  const handleCloseClick = () => {
+    setIsOpen(false);
+    if (errorId && onClose) {
+      onClose(errorId);
+    }
+  };
+
+  if (!message) return null;
 
   return (
-    isOpen && (
-      <S.ErrorBoxContainer backgroundColor={backgroundColor}>
-        <p>{text}</p>
-      </S.ErrorBoxContainer>
-    )
+    <S.ErrorBoxContainer backgroundColor={backgroundColor} isOpen={isOpen} onClick={handleCloseClick}>
+      <p>{message}</p>
+    </S.ErrorBoxContainer>
   );
 }
 

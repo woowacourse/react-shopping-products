@@ -1,5 +1,7 @@
 export interface CartItemState {
-  isInCart: boolean;
+  isItemInCart: boolean;
   text: string;
   keyword: 'remove' | 'add';
+  cartItemId?: number;
+  quantity?: number;
 }
