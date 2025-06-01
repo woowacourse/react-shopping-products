@@ -18,52 +18,40 @@ export const useCartRequest = () => {
 
   const addToCart = useCallback(
     async (productId: number, quantity: number = 1) => {
-      return handleRequest(
-        () =>
-          addCartItem({
-            productId,
-            quantity,
-          }),
-        async () => {
-          await refetch();
-        }
-      );
+      return handleRequest({
+        request: () => addCartItem({ productId, quantity }),
+        onSuccess: async () => await refetch(),
+      });
     },
     [handleRequest, refetch]
   );
 
   const increaseQuantity = useCallback(
     async (cartItemId: number, currentQuantity: number) => {
-      return handleRequest(
-        () => setCartQuantity({ cartItemId, quantity: currentQuantity + 1 }),
-        async () => {
-          await refetch();
-        }
-      );
+      return handleRequest({
+        request: () => setCartQuantity({ cartItemId, quantity: currentQuantity + 1 }),
+        onSuccess: async () => await refetch(),
+      });
     },
     [handleRequest, refetch]
   );
 
   const decreaseQuantity = useCallback(
     async (cartItemId: number, currentQuantity: number) => {
-      return handleRequest(
-        () => setCartQuantity({ cartItemId, quantity: currentQuantity - 1 }),
-        async () => {
-          await refetch();
-        }
-      );
+      return handleRequest({
+        request: () => setCartQuantity({ cartItemId, quantity: currentQuantity - 1 }),
+        onSuccess: async () => await refetch(),
+      });
     },
     [handleRequest, refetch]
   );
 
   const deleteFromCart = useCallback(
     async (cartItemId: number) => {
-      return handleRequest(
-        () => deleteCartItem(cartItemId),
-        async () => {
-          await refetch();
-        }
-      );
+      return handleRequest({
+        request: () => deleteCartItem(cartItemId),
+        onSuccess: async () => await refetch(),
+      });
     },
     [handleRequest, refetch]
   );

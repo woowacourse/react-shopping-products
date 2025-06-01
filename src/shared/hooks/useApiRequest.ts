@@ -7,13 +7,19 @@ export const useApiRequest = () => {
   const { showToast } = useContext(ToastContext);
 
   const handleRequest = useCallback(
-    async <T, R = T>(
-      apiCall: () => Promise<T>,
-      onSuccess: (data: T) => R,
-      errorData?: T,
-      options?: { delay?: number },
-      onError?: (error: Error) => void
-    ): Promise<T | R | undefined> => {
+    async <T, R = T>({
+      request,
+      onSuccess,
+      onError,
+      errorData,
+      options,
+    }: {
+      request: () => Promise<T>;
+      onSuccess?: (data: T) => R | Promise<R>;
+      onError?: (error: Error) => void;
+      errorData?: T;
+      options?: { delay?: number };
+    }): Promise<T | R | undefined> => {
       try {
         setIsLoading(true);
 
@@ -21,7 +27,7 @@ export const useApiRequest = () => {
           await new Promise((resolve) => setTimeout(resolve, options.delay));
         }
 
-        const data = await apiCall();
+        const data = await request();
         return onSuccess ? onSuccess(data) : data;
       } catch (err) {
         const error = err instanceof Error ? err : new Error(String(err));
