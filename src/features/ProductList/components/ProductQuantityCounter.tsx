@@ -30,21 +30,13 @@ const ProductQuantityCounter = ({
 
   const handleIncrement = async () => {
     if (!hasBeenAdded && count === 0) {
-      try {
-        await onAddToCart();
-        setCount(1);
-        setHasBeenAdded(true);
-      } catch (error) {
-        console.warn('장바구니 담기 실패:', error);
-      }
+      await onAddToCart();
+      setCount(1);
+      setHasBeenAdded(true);
     } else {
       const newCount = count + 1;
-      try {
-        await onIncreaseQuantity();
-        setCount(newCount);
-      } catch (error) {
-        console.warn('수량 증가 실패:', error);
-      }
+      await onIncreaseQuantity();
+      setCount(newCount);
     }
   };
 
