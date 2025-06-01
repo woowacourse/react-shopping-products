@@ -4,18 +4,23 @@ import * as Styled from "./ProductItem.styled";
 
 import defaultImage from "/defaultImage.png";
 import ProductAddButton from "../ProductAddButton/ProductAddButton";
-import ProductRemoveButton from "../ProductRemoveButton/ProductRemoveButton";
+import ProductQuantityControl from "../ProductQuantityControl/ProductQuantityControl";
 
 function ProductItem({
   product,
   isInCart,
+  quantity,
   handleAddProduct,
-  handleRemoveProduct,
+  handleIncreaseCartItemQuantity,
+  handleDecreaseCartItemQuantity,
 }: ProductProps) {
+  const isSoldOut = product.quantity === 0;
+
   return (
     <li>
       <Styled.Container>
-        <Styled.Image src={product.imageUrl ?? defaultImage} />
+        <Styled.Image src={product.imageUrl || defaultImage} />
+        {isSoldOut && <Styled.ProductInfo> 품절 </Styled.ProductInfo>}
         <Styled.Wrapper>
           <Styled.Contents>
             <Styled.ProductTitle>{product.name}</Styled.ProductTitle>
@@ -25,14 +30,19 @@ function ProductItem({
           </Styled.Contents>
           <Styled.ButtonWrapper>
             {isInCart ? (
-              <ProductRemoveButton
-                handleRemoveProduct={() =>
-                  handleRemoveProduct(product.id.toString())
+              <ProductQuantityControl
+                quantity={quantity}
+                handleIncreaseCartItemQuantity={() =>
+                  handleIncreaseCartItemQuantity(product.id)
+                }
+                handleDecreaseCartItemQuantity={() =>
+                  handleDecreaseCartItemQuantity(product.id)
                 }
               />
             ) : (
               <ProductAddButton
-                handleAddProduct={() => handleAddProduct(product.id.toString())}
+                handleAddProduct={() => handleAddProduct(product.id)}
+                disabled={isSoldOut}
               />
             )}
           </Styled.ButtonWrapper>

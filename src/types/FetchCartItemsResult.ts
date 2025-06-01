@@ -17,7 +17,7 @@ export type FetchCartItemsResult = {
   content: CartItem[];
 } & BaseFetchItemsResult;
 
-type CartItem = {
+export type CartItem = {
   id: number;
   quantity: number;
   product: Product;
