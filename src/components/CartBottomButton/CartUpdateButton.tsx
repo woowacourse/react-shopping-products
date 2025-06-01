@@ -1,6 +1,6 @@
 import { IMAGE_PATH } from '../../constants/imagePath';
 import { useFetchCartItems } from '../../hooks/useFetchCartItems';
-import * as S from '../../styles/CartUpdateButton';
+import * as S from './CartUpdateButton.styled';
 
 type CartUpdateButtonProps = {
   id: number;

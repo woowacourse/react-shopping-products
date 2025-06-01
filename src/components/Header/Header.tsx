@@ -1,6 +1,6 @@
-import { HeaderWrapper, CartWrapper, CartCountTextWrapper } from '../styles/Header';
-import { IMAGE_PATH } from '../constants/imagePath';
-import { useFetchCartItems } from '../hooks/useFetchCartItems';
+import { HeaderWrapper, CartWrapper, CartCountTextWrapper } from './Header.styled';
+import { IMAGE_PATH } from '../../constants/imagePath';
+import { useFetchCartItems } from '../../hooks/useFetchCartItems';
 import { useModalContext } from 'oa-modal-components';
 
 const Header = () => {

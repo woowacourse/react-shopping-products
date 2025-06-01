@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import Header from '../components/Header';
-import ProductCard from '../components/ProductCard';
+import Header from '../components/Header/Header';
+import ProductCard from '../components/ProductCard/ProductCard';
 import SelectDropdownContainer from '../components/SelectDropdown/SelectDropdownContainer';
-import ErrorMessage from '../components/ErrorMessage';
-import DotWaveSpinner from '../components/DotWaveSpinner';
+import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
+import DotWaveSpinner from '../components/DotWaveSpinner/DotWaveSpinner';
 import { CategoryKey, SortKey, CATEGORY_KEYS, SORT_KEYS } from '../types/selectOptions';
 import { useFetchProducts } from '../hooks/useFetchProducts';
 import { useFetchCartItems } from '../hooks/useFetchCartItems';
 import { useError } from '../context/ErrorContext';
 import { Container } from '../styles/common';
-import { ProductCardContainer } from '../styles/ProductCard';
+import { ProductCardContainer } from '../components/ProductCard/ProductCard.styled';
 import Modal from '../components/Modal/Modal';
 
 function ProductPage() {

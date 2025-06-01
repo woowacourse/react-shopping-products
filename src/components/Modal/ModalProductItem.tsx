@@ -1,6 +1,6 @@
 import { IMAGE_PATH } from '../../constants/imagePath';
 import CartUpdateButton from '../CartBottomButton/CartUpdateButton';
-import * as S from '../../styles/Modal';
+import * as S from './Modal.styled';
 import { useFetchCartItems } from '../../hooks/useFetchCartItems';
 import { ERROR_MSG } from '../../constants/errorMessage';
 

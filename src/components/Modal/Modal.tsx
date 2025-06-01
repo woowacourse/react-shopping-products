@@ -1,5 +1,5 @@
 import { Modal as ModalComponent } from 'oa-modal-components';
-import * as S from '../../styles/Modal';
+import * as S from './Modal.styled';
 import ModalProductItem from './ModalProductItem';
 import { useFetchCartItems } from '../../hooks/useFetchCartItems';
 

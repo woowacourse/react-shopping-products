@@ -1,4 +1,4 @@
-import { CartAddButtonWrapper, CartAddButtonText } from '../../styles/CartAddButton';
+import { CartAddButtonWrapper, CartAddButtonText } from './CartAddButton.styled';
 import { IMAGE_PATH } from '../../constants/imagePath';
 import { ERROR_MSG } from '../../constants/errorMessage';
 import { useError } from '../../context/ErrorContext';

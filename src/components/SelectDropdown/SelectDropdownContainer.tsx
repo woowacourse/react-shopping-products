@@ -1,5 +1,5 @@
 import SelectDropdown from './SelectDropdown';
-import { Container, Header } from '../../styles/SelectDropdown';
+import * as S from './SelectDropdown.styled';
 import {
   CategoryKey,
   SortKey,
@@ -36,8 +36,8 @@ const SelectDropdownContainer = ({
 
   return (
     <>
-      <Header>bpple 상품 목록</Header>
-      <Container>
+      <S.Header>bpple 상품 목록</S.Header>
+      <S.Container>
         <SelectDropdown
           title={CATEGORIES[category].label}
           options={CATEGORY_LABELS}
@@ -48,7 +48,7 @@ const SelectDropdownContainer = ({
           options={SORT_LABELS}
           onSelect={handleSortSelect}
         />
-      </Container>
+      </S.Container>
     </>
   );
 };

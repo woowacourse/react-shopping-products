@@ -1,11 +1,5 @@
 import { useState } from 'react';
-import {
-  SelectDropdownWrapper,
-  DropdownWrapper,
-  DropdownTitleWrapper,
-  DropdownUlWrapper,
-  DropdownLiWrapper,
-} from '../../styles/SelectDropdown';
+import * as S from './SelectDropdown.styled';
 import { IMAGE_PATH } from '../../constants/imagePath';
 
 type SelectDropdownProps = {
@@ -27,25 +21,25 @@ const SelectDropdown = ({ title, options, onSelect }: SelectDropdownProps) => {
   };
 
   return (
-    <SelectDropdownWrapper>
-      <DropdownWrapper onClick={toggleSelectDropdown}>
-        <DropdownTitleWrapper>{title}</DropdownTitleWrapper>
+    <S.SelectDropdownWrapper>
+      <S.DropdownWrapper onClick={toggleSelectDropdown}>
+        <S.DropdownTitleWrapper>{title}</S.DropdownTitleWrapper>
         {open ? (
           <img src={IMAGE_PATH.CHEVRON_UP} alt="chevron-up" />
         ) : (
           <img src={IMAGE_PATH.CHEVRON_DOWN} alt="chevron-down" />
         )}
-      </DropdownWrapper>
+      </S.DropdownWrapper>
       {open && (
-        <DropdownUlWrapper>
+        <S.DropdownUlWrapper>
           {options.map((option) => (
-            <DropdownLiWrapper key={option} onClick={() => handleDropDown(option)}>
+            <S.DropdownLiWrapper key={option} onClick={() => handleDropDown(option)}>
               {option}
-            </DropdownLiWrapper>
+            </S.DropdownLiWrapper>
           ))}
-        </DropdownUlWrapper>
+        </S.DropdownUlWrapper>
       )}
-    </SelectDropdownWrapper>
+    </S.SelectDropdownWrapper>
   );
 };
 
