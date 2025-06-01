@@ -4,6 +4,8 @@ import { mockProductResponse } from "../mockProductResponse";
 import { CartItemType } from "../../types/cartItem";
 
 const products = structuredClone(mockProductResponse.content);
+const DEFAULT_STOCK_QUANTITY = 10000;
+
 export function createCartHandlers() {
   let cartItems: CartItemType[] = JSON.parse(
     JSON.stringify(mockCartItemResponse.content)
@@ -57,7 +59,7 @@ export function createCartHandlers() {
             404
           );
 
-        if ((product?.quantity ?? 10000) < quantity) {
+        if ((product?.quantity ?? DEFAULT_STOCK_QUANTITY) < quantity) {
           return errorResponse(
             "OUT_OF_STOCK",
             "재고 수량을 초과하여 담을 수 없습니다.",
