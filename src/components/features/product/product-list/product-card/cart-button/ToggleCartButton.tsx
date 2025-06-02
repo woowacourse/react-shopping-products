@@ -54,7 +54,7 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
   const handleMinusQuantity = useCallback(
     async (cartId: string) => {
       try {
-        if (!cartListData || cartListData.length >= 50) return;
+        if (!cartListData || cartListData.length < 1) return;
         const cart = cartListData.find((cart) => cart.id === cartId);
         if (!cart) throw new Error('장바구니에 해당 아이템이 없습니다.');
         if (cart.quantity === 1) await deleteCartItem(cartId);
