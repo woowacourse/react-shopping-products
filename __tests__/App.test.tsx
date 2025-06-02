@@ -29,9 +29,14 @@ describe('장바구니 담기 빼기시 Header의 장바구니 종류 개수 변
     const itemSpan = screen.getByText(selectedProduct);
     const itemLi = itemSpan.closest('li')!;
     const addBtn = within(itemLi).getByText('담기');
+
     await userEvent.click(addBtn);
 
-    const increaseButton = await screen.findByTestId('increase-button');
+    console.log('####################################');
+    screen.debug(itemLi);
+    console.log('####################################');
+
+    const increaseButton = await within(itemLi).findByTestId('increase-button');
     await userEvent.click(increaseButton);
 
     const updatedCountEl = await screen.findByTestId('cart-count');
@@ -52,10 +57,8 @@ describe('장바구니 담기 빼기시 Header의 장바구니 종류 개수 변
 
     const itemSpan = screen.getByText(selectedProduct);
     const itemLi = itemSpan.closest('li')!;
-    const addBtn = within(itemLi).getByText('담기');
-    await userEvent.click(addBtn);
 
-    const decreaseButton = await screen.findByTestId('decrease-button');
+    const decreaseButton = await within(itemLi).findByTestId('decrease-button');
     await userEvent.click(decreaseButton);
 
     const updatedCountEl = await screen.findByTestId('cart-count');
