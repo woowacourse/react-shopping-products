@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import {
   ShoppingListFilterItemStyle,
   ShoppingListFilterStyle,
@@ -6,12 +8,11 @@ import {
 } from './ShoppingList.styles';
 import Text from '../../component/@common/Text/Text';
 import Dropdown from '../../component/@common/Dropdown/Dropdown';
-import ArrowIcon from '../../component/@common/ArrowIcon/ArrowIcon';
 import ErrorFallback from '../../component/@common/ErrorFallback/ErrorFallback';
 
 import { CategoryOption, SortOption } from '../../types/common';
-import useShoppingItemList from '../../hook/useShoppingItemList';
 import ProductList from '../../component/feature/ProductList/ProductList';
+import ShoppingItemContext from '../../context/shoppingItemContext/shoppingItemContext';
 
 const categoryOptions: CategoryOption[] = ['전체', '패션잡화', '식료품'];
 const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
@@ -19,14 +20,14 @@ const sortOptions: SortOption[] = ['높은 가격순', '낮은 가격순'];
 const ShoppingList = () => {
   const {
     data,
-    selectSort,
-    selectCategory,
-    sortType,
-    category,
     error,
     isLoading,
+    selectCategory,
+    selectSort,
+    category,
+    sortType,
     retryFetch,
-  } = useShoppingItemList();
+  } = useContext(ShoppingItemContext);
 
   // 에러가 있을 경우 ErrorFallback 표시
   if (error) {
@@ -51,13 +52,13 @@ const ShoppingList = () => {
               <Dropdown.Root>
                 <Dropdown.Trigger>
                   {category}
-                  <ArrowIcon />
+                  <Dropdown.ArrowIcon />
                 </Dropdown.Trigger>
                 <Dropdown.List>
                   {categoryOptions.map((option) => (
                     <Dropdown.Item
                       key={option}
-                      handleClick={selectCategory}
+                      onClick={selectCategory}
                       content={option}
                     />
                   ))}
@@ -68,13 +69,13 @@ const ShoppingList = () => {
               <Dropdown.Root>
                 <Dropdown.Trigger>
                   {sortType}
-                  <ArrowIcon />
+                  <Dropdown.ArrowIcon />
                 </Dropdown.Trigger>
                 <Dropdown.List>
                   {sortOptions.map((option) => (
                     <Dropdown.Item
                       key={option}
-                      handleClick={selectSort}
+                      onClick={selectSort}
                       content={option}
                     />
                   ))}

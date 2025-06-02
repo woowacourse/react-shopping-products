@@ -1,23 +1,23 @@
 import { createContext, useContext } from 'react';
 
-type DropdownContextType = {
+type DisclosureContextType = {
   isOpen: boolean;
   open: () => void;
   close: () => void;
   toggle: () => void;
 };
 
-export const DropdownContext = createContext<DropdownContextType>({
+export const DisclosureContext = createContext<DisclosureContextType>({
   isOpen: false,
   open: () => {},
   close: () => {},
   toggle: () => {},
 });
 
-export const useDropdownContext = () => {
-  const context = useContext(DropdownContext);
+export const useDisclosureContext = () => {
+  const context = useContext(DisclosureContext);
   if (!context) {
-    throw new Error('DropdownContext not found');
+    throw new Error('DisclosureContext not found');
   }
   return context;
 };

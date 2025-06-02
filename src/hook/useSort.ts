@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { SortOption } from '../types/common';
 
 const useSort = () => {
   const [sortType, setSortType] = useState<SortOption>('낮은 가격순');
 
-  const selectSort = (content: string) => {
-    setSortType(content as SortOption);
-  };
+  const selectSort = useCallback(
+    (content: SortOption) => {
+      setSortType(content);
+    },
+    [setSortType]
+  );
 
-  const resetSort = () => {
+  const resetSort = useCallback(() => {
     setSortType('낮은 가격순');
-  };
+  }, [setSortType]);
 
   return {
     sortType,

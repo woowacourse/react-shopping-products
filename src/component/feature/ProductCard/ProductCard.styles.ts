@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { theme } from '../../../style';
 
 export const productCardStyle = css`
   display: flex;
@@ -18,6 +19,7 @@ export const productCardStyle = css`
 export const productCardImageContainerStyle = css`
   width: 18.2rem;
   height: 11.2rem;
+  position: relative;
 `;
 
 export const productCardImageStyle = css`
@@ -50,4 +52,18 @@ export const productCardButtonContainerStyle = css`
   width: 100%;
   align-items: center;
   justify-content: flex-end;
+`;
+
+export const productCardSoldOutStyle = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: ${theme.color.white};
 `;

@@ -1,12 +1,12 @@
 import { ComponentProps } from 'react';
 
-import { useDropdownContext } from './context/dropdownContext';
+import { useDisclosureContext } from '../../../context/disclosureContext/disclosureContext';
 import { dropdownTriggerStyle } from './Dropdown.styles';
 
 interface DropdownTriggerProps extends ComponentProps<'div'> {}
 
 const DropdownTrigger = ({ children, ...rest }: DropdownTriggerProps) => {
-  const { toggle } = useDropdownContext();
+  const { toggle } = useDisclosureContext();
 
   return (
     <div onClick={toggle} css={dropdownTriggerStyle} {...rest}>
