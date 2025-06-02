@@ -85,10 +85,7 @@ const ProductCard = ({
         </div>
         <div css={productCardButtonContainerStyle}>
           {showCountButton ? (
-            <CountButton
-              initialCount={currentQuantity}
-              onCountChange={handleCountChange}
-            />
+            <CountButton count={currentQuantity} onChange={handleCountChange} />
           ) : (
             <Button
               variant="default"

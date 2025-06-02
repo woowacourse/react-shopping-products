@@ -1,27 +1,23 @@
-import { useState, useEffect } from 'react';
 import {
   countButtonButtonStyle,
   countButtonContainer,
 } from './CountButton.styles';
 
 interface CountButtonProps {
-  initialCount?: number;
-  onCountChange?: (count: number) => void;
+  count: number;
+  onChange: (newCount: number) => void;
+  isLoading?: boolean;
 }
 
-const CountButton = ({ initialCount = 0, onCountChange }: CountButtonProps) => {
-  const [count, setCount] = useState(initialCount);
-
-  useEffect(() => {
-    setCount(initialCount);
-  }, [initialCount]);
-
+const CountButton = ({
+  count,
+  onChange,
+  isLoading = false,
+}: CountButtonProps) => {
   const handleCount = (type: 'plus' | 'minus') => {
     const newCount = type === 'plus' ? count + 1 : Math.max(0, count - 1);
-    setCount(newCount);
-
-    if (onCountChange) {
-      onCountChange(newCount);
+    if (count !== newCount) {
+      onChange(newCount);
     }
   };
 
@@ -30,12 +26,16 @@ const CountButton = ({ initialCount = 0, onCountChange }: CountButtonProps) => {
       <button
         css={countButtonButtonStyle}
         onClick={() => handleCount('minus')}
-        disabled={count === 0}
+        disabled={count === 0 || isLoading}
       >
         -
       </button>
       <span>{count}</span>
-      <button css={countButtonButtonStyle} onClick={() => handleCount('plus')}>
+      <button
+        css={countButtonButtonStyle}
+        onClick={() => handleCount('plus')}
+        disabled={isLoading}
+      >
         +
       </button>
     </div>
