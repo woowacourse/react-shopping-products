@@ -37,16 +37,21 @@ export default function ProductItem({
     return cartItems?.length === 50;
   };
 
-  const [active, setActive] = useState(isRow);
-  const [disabled, setDisabled] = useState(false);
-
   const cartItemQuantity = getMatchCartItem(id)?.quantity ?? 0;
   const isItemInCart = getMatchCartItem(id) ? true : false;
   const cartItemId = getMatchCartItem(id)?.id;
 
-  const handleItemClick = () => {
+  const [disabled, setDisabled] = useState(false);
+
+  const active = isRow || cartItemQuantity > 0;
+
+  const handleItemClick = async () => {
     if (quantity === 0) return;
-    setActive((prev) => !prev);
+
+    await postShoppingCart(id, 1);
+    requestData({
+      apiFn: () => getShoppingCart(),
+    });
   };
 
   const handleControlClick = async (type: 'increase' | 'decrease') => {
