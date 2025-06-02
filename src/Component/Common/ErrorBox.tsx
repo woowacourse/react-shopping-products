@@ -1,6 +1,16 @@
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 export default function ErrorBox({ children }: { children: React.ReactNode }) {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!visible) return null;
+
   return (
     <StyledDiv>
       <StyledSpan>{children}</StyledSpan>
