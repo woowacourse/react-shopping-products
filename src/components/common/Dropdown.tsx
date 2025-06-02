@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Arrow from './Arrow';
+import { useBoolean } from '../../hooks/useBoolean';
 
 export type DropdownOptionType = {
   label: string;
@@ -20,12 +21,12 @@ function Dropdown({
   placeholder?: string;
   autoFocus?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [open, , closeDropdown, toggleDropdown] = useBoolean(false);
 
   const toggleOpen = () => {
-    setOpen((prev) => !prev);
+    toggleDropdown();
     if (!open) {
       const selectedIdx = options.findIndex(
         (option) => option.value === selectedValue?.value
@@ -36,10 +37,10 @@ function Dropdown({
 
   const handleSelect = useCallback(
     (option: DropdownOptionType) => {
-      setOpen(false);
+      closeDropdown();
       onSelectHandler(option);
     },
-    [onSelectHandler]
+    [onSelectHandler, closeDropdown]
   );
 
   useEffect(() => {
@@ -48,7 +49,7 @@ function Dropdown({
         dropdownRef.current &&
         !dropdownRef.current.contains(e.target as Node)
       ) {
-        setOpen(false);
+        closeDropdown();
       }
     };
     document.addEventListener('mousedown', onCloseOutsideClick);
@@ -60,7 +61,7 @@ function Dropdown({
       if (!open) return;
 
       if (e.key === 'Escape') {
-        setOpen(false);
+        closeDropdown();
       } else if (e.key === 'ArrowDown') {
         setFocusedIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
         e.preventDefault();
@@ -76,7 +77,7 @@ function Dropdown({
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [open, focusedIndex, options, handleSelect]);
+  }, [open, focusedIndex, options, handleSelect, closeDropdown]);
 
   return (
     <DropdownContainer ref={dropdownRef} {...props}>

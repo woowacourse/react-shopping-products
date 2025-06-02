@@ -1,24 +1,17 @@
 import styled from '@emotion/styled';
 import { useAPIDataContext } from '../../../context/APIDataProvider';
 import { getShoppingCartData } from '../../../api/cart';
-import { useState } from 'react';
 import { BasicModal } from '@dev-dino22/modal-components';
 import CartDetails from '../cart-details/CartDetails';
+import { useBoolean } from '../../../hooks/useBoolean';
 
 function CartButton() {
   const { data: cartListData } = useAPIDataContext({
     fetcher: getShoppingCartData,
     name: 'cart',
   });
-  const [isOpened, setIsOpened] = useState(false);
+  const [isOpenCartModal, openCartModal, closeCartModal] = useBoolean(false);
 
-  const openCartModal = () => {
-    setIsOpened(true);
-  };
-
-  const closeCartModal = () => {
-    setIsOpened(false);
-  };
   const itemsCount = cartListData?.length || 0;
   return (
     <>
@@ -36,7 +29,7 @@ function CartButton() {
           </ItemsCountBox>
         )}
       </Container>{' '}
-      {isOpened && (
+      {isOpenCartModal && (
         <BasicModal
           titleText="장바구니"
           modalPosition="bottom"
