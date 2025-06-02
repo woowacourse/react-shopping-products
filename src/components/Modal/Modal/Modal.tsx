@@ -12,13 +12,13 @@ import useEscKeydown from '../../../hooks/useEscKeydown';
 import useScrollBlock from '../../../hooks/useScrollBlock';
 import { useClickAway } from '../../../hooks/useClickAway';
 
-function ModalMain({ isOpen, size, onClose, position, children }: ModalMainProps) {
+function ModalMain({ isOpen, size, onClose, position, children, ...props }: ModalMainProps) {
   useEscKeydown(onClose);
   useScrollBlock(isOpen);
 
   if (!isOpen) return null;
   return (
-    <ModalPortal>
+    <ModalPortal {...props}>
       <ModalContext.Provider value={{ onClose, position, size }}>{children}</ModalContext.Provider>
     </ModalPortal>
   );

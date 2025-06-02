@@ -30,7 +30,6 @@ it('장바구니에 있는 아이템 수만큼 숫자가 표시된다.', async (
   expect(cartCountElement).toBeInTheDocument();
   expect(cartCountElement).toHaveTextContent(String(expectedLength));
 });
-
 it('헤더를 클릭하면 장바구니에 담긴 아이템들이 렌더링된다.', async () => {
   const res = await fetch(URLS.CART_ITEMS);
   const productItems: CartItemResponse = await res.json();
@@ -40,14 +39,14 @@ it('헤더를 클릭하면 장바구니에 담긴 아이템들이 렌더링된�
       <ApiProvider>
         <App />
       </ApiProvider>
-    </ErrorContextProvider>
+    </ErrorContextProvider>,
+    { container: document.body }
   );
 
   const cartButton = await screen.findByAltText('cart-icon');
   fireEvent.click(cartButton);
 
   const modal = await screen.findByTestId('cart-modal');
-
   const cartItems = within(modal).getAllByRole('listitem');
 
   expect(cartItems).toHaveLength(productItems.content.length);

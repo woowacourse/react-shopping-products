@@ -42,9 +42,9 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} position="bottom" size="small">
+    <Modal data-testid="cart-modal" isOpen={isOpen} onClose={onClose} position="bottom" size="small">
       <Modal.BackDrop css={styles.backdropCss} />
-      <Modal.Content test-id="cart-modal" css={styles.contentCss}>
+      <Modal.Content css={styles.contentCss}>
         <Modal.Title css={styles.titleCss}>장바구니</Modal.Title>
 
         <ul css={styles.modalContent}>
