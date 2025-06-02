@@ -10,3 +10,4 @@ async function updateCartItemApi(cartItemId: number, quantity: number) {
 }
 
 export default updateCartItemApi;
+  

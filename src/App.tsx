@@ -51,17 +51,11 @@ function AppContent() {
 function App() {
   return (
     <DataProvider>
-      <CartProviderWrapper>
+      <CartProvider>
         <AppContent />
-      </CartProviderWrapper>
+      </CartProvider>
     </DataProvider>
   );
-}
-
-function CartProviderWrapper({ children }: { children: React.ReactNode }) {
-  const { productList } = useProducts();
-
-  return <CartProvider productList={productList}>{children}</CartProvider>;
 }
 
 export default App;

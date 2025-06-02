@@ -28,11 +28,10 @@ const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 interface CartProviderProps {
   children: React.ReactNode;
-  productList: ResponseProduct[];
 }
 
-export function CartProvider({ children, productList }: CartProviderProps) {
-  const { setCartItemsData } = useDataContext();
+export function CartProvider({ children }: CartProviderProps) {
+  const { setData, getData } = useDataContext();
   const [isUpdatingCart, setIsUpdatingCart] = useState<Record<number, boolean>>(
     {}
   );
@@ -48,7 +47,7 @@ export function CartProvider({ children, productList }: CartProviderProps) {
     loading: cartItemListLoading,
     error,
     refetch: refreshCartItemList,
-  } = useDataFetch<ResponseCartItem[]>("cart-items", cartFetcher, {
+  } = useDataFetch<ResponseCartItem[]>("cartItems", cartFetcher, {
     deps: [],
     retryCount: 1,
     retryDelay: 500,
@@ -101,6 +100,10 @@ export function CartProvider({ children, productList }: CartProviderProps) {
         };
       }
     } else if (newQuantity > 0) {
+      // DataContext에서 products 데이터 가져오기
+      const productsState = getData<ResponseProduct>("products");
+      const productList = productsState?.data || [];
+
       const product = productList.find((p) => p.id === productId);
       if (product) {
         const newCartItem: ResponseCartItem = {
@@ -123,7 +126,7 @@ export function CartProvider({ children, productList }: CartProviderProps) {
       return;
     }
 
-    setCartItemsData(updatedCartItems);
+    setData("cartItems", updatedCartItems);
   };
 
   const handleIncreaseQuantity = async (productId: number) => {

@@ -14,7 +14,6 @@ async function startApp() {
 
     await worker.start({
       serviceWorker: {
-        // GitHub Pages의 base path를 고려한 경로
         url: "/react-shopping-products/mockServiceWorker.js",
       },
       onUnhandledRequest: "warn",

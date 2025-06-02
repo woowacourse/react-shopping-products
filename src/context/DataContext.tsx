@@ -4,100 +4,76 @@ import React, {
   useReducer,
   useCallback,
 } from "react";
-import { ResponseProduct, ResponseCartItem } from "../api/types";
 
-interface AppDataState {
-  products: {
-    data: ResponseProduct[];
-    loading: boolean;
-    error: string | null;
-  };
-
-  cartItems: {
-    data: ResponseCartItem[];
-    loading: boolean;
-    error: string | null;
-  };
+interface DataState<T> {
+  data: T[];
+  loading: boolean;
+  error: string | null;
 }
 
-const initialState: AppDataState = {
-  products: {
-    data: [],
-    loading: true,
-    error: null,
-  },
-  cartItems: {
-    data: [],
-    loading: true,
-    error: null,
-  },
-};
+interface AppDataState {
+  [key: string]: DataState<unknown>;
+}
+
+const initialState: AppDataState = {};
 
 type DataAction =
-  | { type: "SET_PRODUCTS_LOADING"; loading: boolean }
-  | { type: "SET_PRODUCTS_DATA"; data: ResponseProduct[] }
-  | { type: "SET_PRODUCTS_ERROR"; error: string | null }
-  | { type: "SET_CART_ITEMS_LOADING"; loading: boolean }
-  | { type: "SET_CART_ITEMS_DATA"; data: ResponseCartItem[] }
-  | { type: "SET_CART_ITEMS_ERROR"; error: string | null };
+  | { type: "SET_LOADING"; key: string; loading: boolean }
+  | { type: "SET_DATA"; key: string; data: unknown[] }
+  | { type: "SET_ERROR"; key: string; error: string | null }
+  | { type: "RESET_STATE"; key: string }
+  | { type: "INIT_STATE"; key: string; initialData?: DataState<unknown> };
 
 function dataReducer(state: AppDataState, action: DataAction): AppDataState {
+  const { key } = action;
+
   switch (action.type) {
-    case "SET_PRODUCTS_LOADING":
+    case "INIT_STATE":
       return {
         ...state,
-        products: {
-          ...state.products,
+        [key]: action.initialData || {
+          data: [],
+          loading: true,
+          error: null,
+        },
+      };
+
+    case "SET_LOADING":
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
           loading: action.loading,
         },
       };
 
-    case "SET_PRODUCTS_DATA":
+    case "SET_DATA":
       return {
         ...state,
-        products: {
+        [key]: {
           data: action.data,
           loading: false,
           error: null,
         },
       };
 
-    case "SET_PRODUCTS_ERROR":
+    case "SET_ERROR":
       return {
         ...state,
-        products: {
-          ...state.products,
+        [key]: {
+          ...state[key],
           loading: false,
           error: action.error,
         },
       };
 
-    case "SET_CART_ITEMS_LOADING":
+    case "RESET_STATE":
       return {
         ...state,
-        cartItems: {
-          ...state.cartItems,
-          loading: action.loading,
-        },
-      };
-
-    case "SET_CART_ITEMS_DATA":
-      return {
-        ...state,
-        cartItems: {
-          data: action.data,
-          loading: false,
+        [key]: {
+          data: [],
+          loading: true,
           error: null,
-        },
-      };
-
-    case "SET_CART_ITEMS_ERROR":
-      return {
-        ...state,
-        cartItems: {
-          ...state.cartItems,
-          loading: false,
-          error: action.error,
         },
       };
 
@@ -109,13 +85,13 @@ function dataReducer(state: AppDataState, action: DataAction): AppDataState {
 interface DataContextValue {
   state: AppDataState;
 
-  setProductsLoading: (loading: boolean) => void;
-  setProductsData: (data: ResponseProduct[]) => void;
-  setProductsError: (error: string | null) => void;
+  initState: (key: string, initialData?: DataState<unknown>) => void;
+  setLoading: (key: string, loading: boolean) => void;
+  setData: <T>(key: string, data: T[]) => void;
+  setError: (key: string, error: string | null) => void;
+  resetState: (key: string) => void;
 
-  setCartItemsLoading: (loading: boolean) => void;
-  setCartItemsData: (data: ResponseCartItem[]) => void;
-  setCartItemsError: (error: string | null) => void;
+  getData: <T>(key: string) => DataState<T> | undefined;
 }
 
 const DataContext = createContext<DataContextValue | undefined>(undefined);
@@ -123,38 +99,44 @@ const DataContext = createContext<DataContextValue | undefined>(undefined);
 export function DataProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(dataReducer, initialState);
 
-  const setProductsLoading = useCallback((loading: boolean) => {
-    dispatch({ type: "SET_PRODUCTS_LOADING", loading });
+  const initState = useCallback(
+    (key: string, initialData?: DataState<unknown>) => {
+      dispatch({ type: "INIT_STATE", key, initialData });
+    },
+    []
+  );
+
+  const setLoading = useCallback((key: string, loading: boolean) => {
+    dispatch({ type: "SET_LOADING", key, loading });
   }, []);
 
-  const setProductsData = useCallback((data: ResponseProduct[]) => {
-    dispatch({ type: "SET_PRODUCTS_DATA", data });
+  const setData = useCallback(<T,>(key: string, data: T[]) => {
+    dispatch({ type: "SET_DATA", key, data });
   }, []);
 
-  const setProductsError = useCallback((error: string | null) => {
-    dispatch({ type: "SET_PRODUCTS_ERROR", error });
+  const setError = useCallback((key: string, error: string | null) => {
+    dispatch({ type: "SET_ERROR", key, error });
   }, []);
 
-  const setCartItemsLoading = useCallback((loading: boolean) => {
-    dispatch({ type: "SET_CART_ITEMS_LOADING", loading });
+  const resetState = useCallback((key: string) => {
+    dispatch({ type: "RESET_STATE", key });
   }, []);
 
-  const setCartItemsData = useCallback((data: ResponseCartItem[]) => {
-    dispatch({ type: "SET_CART_ITEMS_DATA", data });
-  }, []);
-
-  const setCartItemsError = useCallback((error: string | null) => {
-    dispatch({ type: "SET_CART_ITEMS_ERROR", error });
-  }, []);
+  const getData = useCallback(
+    <T,>(key: string): DataState<T> | undefined => {
+      return state[key] as DataState<T>;
+    },
+    [state]
+  );
 
   const value: DataContextValue = {
     state,
-    setProductsLoading,
-    setProductsData,
-    setProductsError,
-    setCartItemsLoading,
-    setCartItemsData,
-    setCartItemsError,
+    initState,
+    setLoading,
+    setData,
+    setError,
+    resetState,
+    getData,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
@@ -166,4 +148,24 @@ export function useDataContext(): DataContextValue {
     throw new Error("useDataContext must be used within a DataProvider");
   }
   return context;
+}
+
+export function useDataState<T>(key: string) {
+  const { getData, setLoading, setData, setError, resetState, initState } =
+    useDataContext();
+
+  React.useEffect(() => {
+    const currentData = getData<T>(key);
+    if (!currentData) {
+      initState(key);
+    }
+  }, [key, getData, initState]);
+
+  return {
+    data: getData<T>(key),
+    setLoading: (loading: boolean) => setLoading(key, loading),
+    setData: (data: T[]) => setData(key, data),
+    setError: (error: string | null) => setError(key, error),
+    resetState: () => resetState(key),
+  };
 }

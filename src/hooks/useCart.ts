@@ -9,7 +9,7 @@ import { useDataFetch } from "./useDataFetch";
 import { useDataContext } from "../context/DataContext";
 
 export const useCart = (productList: ResponseProduct[]) => {
-  const { setCartItemsData } = useDataContext();
+  const { setData } = useDataContext();
   const [isUpdatingCart, setIsUpdatingCart] = useState<Record<number, boolean>>(
     {}
   );
@@ -26,7 +26,7 @@ export const useCart = (productList: ResponseProduct[]) => {
     loading: cartItemListLoading,
     error,
     refetch: refreshCartItemList,
-  } = useDataFetch<ResponseCartItem[]>("cart-items", cartFetcher, {
+  } = useDataFetch<ResponseCartItem[]>("cartItems", cartFetcher, {
     deps: [],
     retryCount: 1,
     retryDelay: 500,
@@ -35,7 +35,7 @@ export const useCart = (productList: ResponseProduct[]) => {
   const cartItemListErrorMessage = error || "";
 
   const handleCartErrorMessage = (message: string) => {
-    setCartActionErrorMessage(message); // 에러 상태 업데이트
+    setCartActionErrorMessage(message);
   };
 
   const getCartQuantityForProduct = (productId: number): number => {
@@ -97,7 +97,8 @@ export const useCart = (productList: ResponseProduct[]) => {
       return;
     }
 
-    setCartItemsData(updatedCartItems);
+    // 개선된 DataContext 사용
+    setData("cartItems", updatedCartItems);
   };
 
   const handleIncreaseQuantity = async (productId: number) => {
@@ -105,7 +106,7 @@ export const useCart = (productList: ResponseProduct[]) => {
 
     try {
       setIsUpdatingCart((prev) => ({ ...prev, [productId]: true }));
-      setCartActionErrorMessage(""); // 에러 초기화
+      setCartActionErrorMessage("");
 
       const currentQuantity = getCartQuantityForProduct(productId);
       const cartItemId = getCartItemIdForProduct(productId);
@@ -146,7 +147,7 @@ export const useCart = (productList: ResponseProduct[]) => {
 
     try {
       setIsUpdatingCart((prev) => ({ ...prev, [productId]: true }));
-      setCartActionErrorMessage(""); // 에러 초기화
+      setCartActionErrorMessage("");
 
       const currentQuantity = getCartQuantityForProduct(productId);
       const cartItemId = getCartItemIdForProduct(productId);
@@ -179,19 +180,19 @@ export const useCart = (productList: ResponseProduct[]) => {
 
   const handleAddToCart = async (productId: number, quantity: number) => {
     try {
-      setCartActionErrorMessage(""); // 에러 초기화
+      setCartActionErrorMessage("");
       await addProductItemApi(productId, quantity);
       await refreshCartItemList();
     } catch (error) {
       if (error instanceof Error) {
-        handleCartErrorMessage(error.message); // 수정된 에러 처리 함수 사용
+        handleCartErrorMessage(error.message);
       }
     }
   };
 
   const handleRemoveFromCart = async (cartItemId: number) => {
     try {
-      setCartActionErrorMessage(""); // 에러 초기화
+      setCartActionErrorMessage("");
       const cartItem = cartItemList?.find((item) => item.id === cartItemId);
       if (cartItem) {
         updateCartItemOptimistically(cartItem.product.id, 0);

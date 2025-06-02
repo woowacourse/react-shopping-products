@@ -1,6 +1,5 @@
 import { useEffect, useCallback, useRef } from "react";
 import { useDataContext } from "../context/DataContext";
-import { ResponseProduct, ResponseCartItem } from "../api/types";
 
 interface FetchOptions {
   autoFetch?: boolean;
@@ -16,12 +15,13 @@ interface FetchResult<T> {
   refetch: () => Promise<void>;
 }
 
-export function useDataFetch<T extends ResponseProduct[] | ResponseCartItem[]>(
+export function useDataFetch<T>(
   key: string,
   fetcher: (() => Promise<T>) | null,
   options: FetchOptions = {}
 ): FetchResult<T> {
-  const { state } = useDataContext();
+  const { getData, setLoading, setData, setError, initState } =
+    useDataContext();
   const {
     autoFetch = true,
     deps = [],
@@ -31,28 +31,15 @@ export function useDataFetch<T extends ResponseProduct[] | ResponseCartItem[]>(
 
   const retryCountRef = useRef(0);
   const isMountedRef = useRef(true);
-
-  // 이전 deps 저장 (깊은 비교용)
   const prevDepsRef = useRef<unknown[]>([]);
   const isFirstRenderRef = useRef(true);
 
-  function getCurrentState() {
-    if (key === "products") {
-      return state.products;
-    } else if (key === "cart-items") {
-      return state.cartItems;
+  useEffect(() => {
+    const currentData = getData<T>(key);
+    if (!currentData) {
+      initState(key);
     }
-    return { data: null, loading: false, error: null };
-  }
-
-  const {
-    setProductsLoading,
-    setProductsData,
-    setProductsError,
-    setCartItemsLoading,
-    setCartItemsData,
-    setCartItemsError,
-  } = useDataContext();
+  }, [key, getData, initState]);
 
   const depsChanged = useCallback(() => {
     const currentDeps = deps;
@@ -60,7 +47,7 @@ export function useDataFetch<T extends ResponseProduct[] | ResponseCartItem[]>(
 
     if (isFirstRenderRef.current) {
       isFirstRenderRef.current = false;
-      return true; // 첫 렌더링에서는 항상 true
+      return true;
     }
 
     if (currentDeps.length !== prevDeps.length) {
@@ -79,43 +66,15 @@ export function useDataFetch<T extends ResponseProduct[] | ResponseCartItem[]>(
   const executeFetch = async (): Promise<void> => {
     if (!fetcher || !isMountedRef.current) return;
 
-    let setLoading: (loading: boolean) => void;
-    let setData:
-      | ((data: ResponseProduct[]) => void)
-      | ((data: ResponseCartItem[]) => void);
-    let setError: (error: string | null) => void;
-
-    if (key === "products") {
-      setLoading = setProductsLoading;
-      setData = setProductsData;
-      setError = setProductsError;
-    } else if (key === "cart-items") {
-      setLoading = setCartItemsLoading;
-      setData = setCartItemsData;
-      setError = setCartItemsError;
-    } else {
-      console.warn(`[useDataFetch] 알 수 없는 키: ${key}`);
-      return;
-    }
-
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(key, true);
+      setError(key, null);
 
       const result = await fetcher();
 
       if (!isMountedRef.current) return;
 
-      if (key === "products") {
-        (setData as (data: ResponseProduct[]) => void)(
-          result as ResponseProduct[]
-        );
-      } else if (key === "cart-items") {
-        (setData as (data: ResponseCartItem[]) => void)(
-          result as ResponseCartItem[]
-        );
-      }
-
+      setData(key, Array.isArray(result) ? result : [result]);
       retryCountRef.current = 0;
     } catch (error) {
       console.error(`[useDataFetch ${key}] 에러 발생:`, error);
@@ -136,7 +95,7 @@ export function useDataFetch<T extends ResponseProduct[] | ResponseCartItem[]>(
         return;
       }
 
-      setError(errorMessage);
+      setError(key, errorMessage);
       retryCountRef.current = 0;
     }
   };
@@ -171,12 +130,12 @@ export function useDataFetch<T extends ResponseProduct[] | ResponseCartItem[]>(
     }
   }, [autoFetch, fetcher, depsChanged]);
 
-  const currentState = getCurrentState();
+  const currentState = getData<T>(key);
 
   return {
-    data: currentState.data as T,
-    loading: currentState.loading,
-    error: currentState.error,
+    data: (currentState?.data as T) || ([] as T),
+    loading: currentState?.loading || false,
+    error: currentState?.error || null,
     refetch,
   };
 }
