@@ -1,10 +1,8 @@
 import { Modal } from '.';
 import styled from '@emotion/styled';
 import ProductListItem from '../Product/ProductListItem';
-import { CartItemTypes } from '../../types/CartItemType';
 import deleteShoppingCart from '../../api/deleteShoppingCart';
-import { useAPIContext } from '../Common/Provider';
-import getShoppingCart from '../../api/getShoppingCart';
+import useRequestCartItems from '../../hooks/useRequestCartItems';
 
 interface CartItemModalContentProps {
   updateErrorMessage: (errorMessage: string) => void;
@@ -13,10 +11,7 @@ interface CartItemModalContentProps {
 export default function CartItemModalContent({
   updateErrorMessage,
 }: CartItemModalContentProps) {
-  const { data: cartItems, requestData } = useAPIContext<CartItemTypes[]>({
-    defaultApiFn: () => getShoppingCart(),
-    key: 'cartItems',
-  });
+  const { data: cartItems, requestData } = useRequestCartItems();
 
   const totalPrice = cartItems.reduce(
     (a, b) => a + b.product.price * b.quantity,
@@ -26,10 +21,7 @@ export default function CartItemModalContent({
   const handleDeleteClick = async (cartItemId: number) => {
     try {
       await deleteShoppingCart(cartItemId);
-      requestData({
-        apiFn: () => getShoppingCart(),
-        skipLoading: true,
-      });
+      requestData({ skipLoading: true });
     } catch (error) {
       //
     }

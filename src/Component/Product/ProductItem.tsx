@@ -1,13 +1,11 @@
 import styled from '@emotion/styled';
 import { ProductTypes } from '../../types/ProductTypes';
 import postShoppingCart from '../../api/postShoppingCart';
-import { CartItemTypes } from '../../types/CartItemType';
 import { useState } from 'react';
 import CountControl from './CountControl';
 import patchShoppingCart from '../../api/patchShoppingCart';
 import { css } from '@emotion/react';
-import getShoppingCart from '../../api/getShoppingCart';
-import { useAPIContext } from '../Common/Provider';
+import useRequestCartItems from '../../hooks/useRequestCartItems';
 
 type SetProducts = {
   quantity: number;
@@ -24,9 +22,7 @@ export default function ProductItem({
   isRow,
   updateErrorMessage,
 }: ProductTypes & SetProducts) {
-  const { data: cartItems, requestData } = useAPIContext<CartItemTypes[]>({
-    key: 'cartItems',
-  });
+  const { data: cartItems, requestData } = useRequestCartItems();
 
   const getMatchCartItem = (id: number) => {
     const match = cartItems?.find((e) => e.product.id === id);
@@ -49,9 +45,7 @@ export default function ProductItem({
     if (quantity === 0) return;
 
     await postShoppingCart(id, 1);
-    requestData({
-      apiFn: () => getShoppingCart(),
-    });
+    requestData({ skipLoading: true });
   };
 
   const handleControlClick = async (type: 'increase' | 'decrease') => {
@@ -75,9 +69,7 @@ export default function ProductItem({
         }
       }
 
-      requestData({
-        apiFn: () => getShoppingCart(),
-      });
+      requestData({ skipLoading: true });
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === '수량 초과 에러') {
