@@ -3,6 +3,10 @@ import { useDataContext } from "../context/DataContext";
 
 interface FetchOptions {
   autoFetch?: boolean;
+  /**
+   * 의존성 배열 - React useEffect와 동일한 얕은 비교 방식
+   * 객체나 배열 참조값 변경은 감지되지 않습니다.
+   */
   deps?: unknown[];
   retryCount?: number;
   retryDelay?: number;
