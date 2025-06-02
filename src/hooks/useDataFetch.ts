@@ -8,15 +8,12 @@ interface FetchOptions {
    * 객체나 배열 참조값 변경은 감지되지 않습니다.
    */
   deps?: unknown[];
-  retryCount?: number;
-  retryDelay?: number;
 }
 
 interface FetchResult<T> {
   data: T;
   loading: boolean;
   error: string | null;
-  refetch: () => Promise<void>;
 }
 
 export function useDataFetch<T>(
@@ -26,17 +23,9 @@ export function useDataFetch<T>(
 ): FetchResult<T> {
   const { getData, setLoading, setData, setError, initState } =
     useDataContext();
-  const {
-    autoFetch = true,
-    deps = [],
-    retryCount = 0,
-    retryDelay = 1000,
-  } = options;
+  const { autoFetch = true, deps = [] } = options;
 
-  const retryCountRef = useRef(0);
-  const isMountedRef = useRef(true);
-  const prevDepsRef = useRef<unknown[]>([]);
-  const isFirstRenderRef = useRef(true);
+  const prevDepsRef = useRef<unknown[] | null>(null);
 
   useEffect(() => {
     const currentData = getData<T>(key);
@@ -49,8 +38,7 @@ export function useDataFetch<T>(
     const currentDeps = deps;
     const prevDeps = prevDepsRef.current;
 
-    if (isFirstRenderRef.current) {
-      isFirstRenderRef.current = false;
+    if (prevDeps === null) {
       return true;
     }
 
@@ -68,58 +56,22 @@ export function useDataFetch<T>(
   }, [deps]);
 
   const executeFetch = async (): Promise<void> => {
-    if (!fetcher || !isMountedRef.current) return;
+    if (!fetcher) return;
 
     try {
       setLoading(key, true);
       setError(key, null);
 
       const result = await fetcher();
-
-      if (!isMountedRef.current) return;
-
       setData(key, Array.isArray(result) ? result : [result]);
-      retryCountRef.current = 0;
     } catch (error) {
       console.error(`[useDataFetch ${key}] 에러 발생:`, error);
 
-      if (!isMountedRef.current) return;
-
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
-
-      if (retryCountRef.current < retryCount) {
-        retryCountRef.current += 1;
-
-        setTimeout(() => {
-          if (isMountedRef.current) {
-            executeFetch();
-          }
-        }, retryDelay);
-        return;
-      }
-
       setError(key, errorMessage);
-      retryCountRef.current = 0;
     }
   };
-
-  const refetch = useCallback(async (): Promise<void> => {
-    if (!fetcher) {
-      console.warn(`[useDataFetch ${key}] refetch 호출되었지만 fetcher가 없음`);
-      return;
-    }
-
-    retryCountRef.current = 0;
-    await executeFetch();
-  }, [fetcher, key]);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
-    };
-  }, []);
 
   useEffect(() => {
     if (!autoFetch || !fetcher) {
@@ -140,6 +92,5 @@ export function useDataFetch<T>(
     data: (currentState?.data as T) || ([] as T),
     loading: currentState?.loading || false,
     error: currentState?.error || null,
-    refetch,
   };
 }

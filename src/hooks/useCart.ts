@@ -25,11 +25,8 @@ export const useCart = (productList: ResponseProduct[]) => {
     data: cartItemList,
     loading: cartItemListLoading,
     error,
-    refetch: refreshCartItemList,
   } = useDataFetch<ResponseCartItem[]>("cartItems", cartFetcher, {
     deps: [],
-    retryCount: 1,
-    retryDelay: 500,
   });
 
   const cartItemListErrorMessage = error || "";
@@ -97,7 +94,6 @@ export const useCart = (productList: ResponseProduct[]) => {
       return;
     }
 
-    // 개선된 DataContext 사용
     setData("cartItems", updatedCartItems);
   };
 
@@ -128,8 +124,6 @@ export const useCart = (productList: ResponseProduct[]) => {
           await updateCartItemApi(cartItemId, newQuantity);
         }
       }
-
-      await refreshCartItemList();
     } catch (error) {
       const currentQuantity = getCartQuantityForProduct(productId);
       updateCartItemOptimistically(productId, currentQuantity - 1);
@@ -164,8 +158,6 @@ export const useCart = (productList: ResponseProduct[]) => {
           await updateCartItemApi(cartItemId, newQuantity);
         }
       }
-
-      await refreshCartItemList();
     } catch (error) {
       const currentQuantity = getCartQuantityForProduct(productId);
       updateCartItemOptimistically(productId, currentQuantity + 1);
@@ -182,7 +174,6 @@ export const useCart = (productList: ResponseProduct[]) => {
     try {
       setCartActionErrorMessage("");
       await addProductItemApi(productId, quantity);
-      await refreshCartItemList();
     } catch (error) {
       if (error instanceof Error) {
         handleCartErrorMessage(error.message);
@@ -199,10 +190,7 @@ export const useCart = (productList: ResponseProduct[]) => {
       }
 
       await removeProductItemApi(cartItemId);
-      await refreshCartItemList();
     } catch (error) {
-      await refreshCartItemList();
-
       if (error instanceof Error) {
         handleCartErrorMessage(error.message);
       }

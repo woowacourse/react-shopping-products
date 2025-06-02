@@ -17,20 +17,11 @@ export const useProducts = () => {
     data: productList,
     loading: productListLoading,
     error,
-    refetch,
   } = useDataFetch<ResponseProduct[]>("products", productFetcher, {
     deps: [category, sort],
-    retryCount: 2,
-    retryDelay: 1000,
   });
 
   const productListErrorMessage = error || "";
-
-  const handleProductErrorMessage = (message: string) => {
-    if (message) {
-      throw new Error(message);
-    }
-  };
 
   return {
     productList: productList || [],
@@ -40,7 +31,5 @@ export const useProducts = () => {
     sort,
     setCategory,
     setSort,
-    setErrorMessage: handleProductErrorMessage,
-    refetch,
   };
 };

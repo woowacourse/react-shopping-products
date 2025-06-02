@@ -46,11 +46,8 @@ export function CartProvider({ children }: CartProviderProps) {
     data: cartItemList,
     loading: cartItemListLoading,
     error,
-    refetch: refreshCartItemList,
   } = useDataFetch<ResponseCartItem[]>("cartItems", cartFetcher, {
     deps: [],
-    retryCount: 1,
-    retryDelay: 500,
   });
 
   const cartItemListErrorMessage = error || "";
@@ -156,8 +153,6 @@ export function CartProvider({ children }: CartProviderProps) {
           await updateCartItemApi(cartItemId, newQuantity);
         }
       }
-
-      await refreshCartItemList();
     } catch (error) {
       const currentQuantity = getCartQuantityForProduct(productId);
       updateCartItemOptimistically(productId, currentQuantity - 1);
@@ -192,8 +187,6 @@ export function CartProvider({ children }: CartProviderProps) {
           await updateCartItemApi(cartItemId, newQuantity);
         }
       }
-
-      await refreshCartItemList();
     } catch (error) {
       const currentQuantity = getCartQuantityForProduct(productId);
       updateCartItemOptimistically(productId, currentQuantity + 1);
@@ -210,7 +203,6 @@ export function CartProvider({ children }: CartProviderProps) {
     try {
       setCartActionErrorMessage("");
       await addProductItemApi(productId, quantity);
-      await refreshCartItemList();
     } catch (error) {
       if (error instanceof Error) {
         handleCartErrorMessage(error.message);
@@ -229,10 +221,7 @@ export function CartProvider({ children }: CartProviderProps) {
       }
 
       await removeProductItemApi(cartItemId);
-      await refreshCartItemList();
     } catch (error) {
-      await refreshCartItemList();
-
       if (error instanceof Error) {
         handleCartErrorMessage(error.message);
       }
