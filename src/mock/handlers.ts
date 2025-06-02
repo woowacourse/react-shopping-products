@@ -1,8 +1,7 @@
-import { http, HttpResponse, bypass } from 'msw';
+import { http, HttpResponse } from 'msw';
 import fullProductList from './products.json';
 import shoppingCart from './shoppingCart.json';
 import { ProductTypes } from '../types/ProductTypes';
-import { CartItemTypes } from '../types/CartItemType';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -16,27 +15,26 @@ type CartItemPatchRequestBody = {
   quantity: number;
 };
 
-const inMemoryUpdates: Record<number, { quantity: number; productId: number }> =
-  {};
-
 let shoppingCartData = [...shoppingCart.content];
 
 export function resetCartState() {
   shoppingCartData = JSON.parse(JSON.stringify(shoppingCart.content));
 }
 
-const isTestEnv =
-  process.env.NODE_ENV === 'test' ||
-  (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'test');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
 export const handlers = [
+  http.delete(`${baseUrl}/cart-items/:id`, async ({ params }) => {
+    const id = params.id as string;
+
+    const matchIndex = shoppingCartData.findIndex(
+      (cartItem) => cartItem.id === Number(id)
+    )!;
+
+    shoppingCartData.splice(matchIndex, 1);
+    return HttpResponse.json({ status: 200 });
+  }),
   http.post<Record<string, never>, CartItemRequestBody>(
     `${baseUrl}/cart-items`,
     async ({ request }) => {
-      const cloned = request.clone();
-
       const body = await request.json();
       if (!body) return;
 
@@ -45,16 +43,6 @@ export const handlers = [
       const products = [...fullProductList.content];
 
       const matchProduct = products.find((product) => product.id === productId);
-
-      if (isTestEnv || isProduction) {
-        const newItem = {
-          id: Date.now(),
-          quantity: 1,
-          product: matchProduct!,
-        };
-        shoppingCartData.push(newItem);
-        return HttpResponse.json(newItem, { status: 200 });
-      }
 
       if (matchProduct?.quantity === 0) {
         return HttpResponse.json(
@@ -68,20 +56,18 @@ export const handlers = [
         );
       }
 
-      const realReq = bypass(cloned);
-      const realRes = await fetch(realReq);
-
-      return new HttpResponse(body, {
-        status: 200,
-        headers: realRes.headers,
-      });
+      const newItem = {
+        id: Date.now(),
+        quantity: 1,
+        product: matchProduct!,
+      };
+      shoppingCartData.push(newItem);
+      return HttpResponse.json(newItem, { status: 200 });
     }
   ),
   http.patch<{ id: string }, CartItemPatchRequestBody>(
     `${baseUrl}/cart-items/:id`,
     async ({ request }) => {
-      const cloned = request.clone();
-
       const body = await request.json();
       const { id, quantity } = body as CartItemPatchRequestBody;
 
@@ -93,30 +79,25 @@ export const handlers = [
         (cartItem) => cartItem.id === id
       )!;
 
-      if (isTestEnv || isProduction) {
-        if (quantity === 0) {
-          shoppingCartData.splice(matchIndex, 1);
-        } else {
-          const copy = { ...matchCartItem };
-          copy.quantity = quantity;
+      const products = [...fullProductList.content];
+      const matchProduct = products.find(
+        (product) => product.id === matchCartItem.product.id
+      );
 
-          shoppingCartData[matchIndex] = copy;
-        }
-
-        return HttpResponse.json(body, { status: 200 });
-      }
-
-      const prevQuantity = inMemoryUpdates[Number(id)].quantity;
-      inMemoryUpdates[Number(id)] = {
-        ...inMemoryUpdates[Number(id)],
+      const prevQuantity = shoppingCartData[matchIndex].quantity;
+      shoppingCartData[matchIndex] = {
+        ...shoppingCartData[matchIndex],
         quantity,
       };
-      const currentQuantity = inMemoryUpdates[Number(id)].quantity;
+      const currentQuantity = shoppingCartData[matchIndex].quantity;
 
-      const products = [...fullProductList.content];
-
-      const productId = inMemoryUpdates[Number(id)].productId;
-      const matchProduct = products.find((product) => product.id === productId);
+      if (quantity === 0) {
+        shoppingCartData.splice(matchIndex, 1);
+      } else {
+        const copy = { ...matchCartItem };
+        copy.quantity = quantity;
+        shoppingCartData[matchIndex] = copy;
+      }
 
       if (
         prevQuantity < currentQuantity &&
@@ -134,43 +115,11 @@ export const handlers = [
         );
       }
 
-      const realReq = bypass(cloned);
-      const realRes = await fetch(realReq);
-
-      return new HttpResponse(body, {
-        status: 200,
-        headers: realRes.headers,
-      });
+      return HttpResponse.json(body, { status: 200 });
     }
   ),
-  http.get(`${baseUrl}/cart-items`, async ({ request }) => {
-    if (isTestEnv || isProduction) {
-      return HttpResponse.json({ content: shoppingCartData });
-    }
-    const realReq = bypass(request);
-
-    const realRes = await fetch(realReq);
-    const realBody = await realRes.json();
-
-    const mergedContent = realBody.content.map((item: CartItemTypes) => {
-      if (!inMemoryUpdates[item.id]) {
-        inMemoryUpdates[item.id] = {
-          quantity: item.quantity,
-          productId: item.product.id,
-        };
-      } else if (inMemoryUpdates[item.id].quantity !== item.quantity) {
-        inMemoryUpdates[item.id] = {
-          quantity: inMemoryUpdates[item.id].quantity,
-          productId: item.product.id,
-        };
-      }
-
-      return inMemoryUpdates[item.id] != null
-        ? { ...item, quantity: inMemoryUpdates[item.id].quantity }
-        : item;
-    });
-
-    return HttpResponse.json({ ...realBody, content: mergedContent });
+  http.get(`${baseUrl}/cart-items`, async () => {
+    return HttpResponse.json({ content: shoppingCartData });
   }),
   http.get(`${baseUrl}/products`, ({ request }) => {
     const url = new URL(request.url);
