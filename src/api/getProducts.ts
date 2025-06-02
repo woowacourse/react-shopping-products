@@ -1,10 +1,10 @@
-type PageableType = {
+export type PageableType = {
   page: number;
   size: number;
   sort?: string;
 };
 
-const PAGEABLE_DEFAULT = {
+export const PAGEABLE_DEFAULT = {
   page: 0,
   size: 20,
   sort: '',

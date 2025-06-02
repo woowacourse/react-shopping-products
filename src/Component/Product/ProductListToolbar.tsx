@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import SelectBox from '../Common/SelectBox';
 import { useState } from 'react';
-import getProducts from '../../api/getProducts';
-import { useAPIContext } from '../Common/Provider';
+import useRequestProducts from '../../hooks/useRequestProducts';
 
 const CATEGORY = [
   { name: '전체', value: 'all' },
@@ -18,22 +17,17 @@ export default function ProductListToolbar() {
   const [categoryValue, setCategoryValue] = useState('');
   const [priceValue, setPriceValue] = useState('');
 
-  const { requestData } = useAPIContext({
-    key: 'products',
-  });
+  const { requestData } = useRequestProducts();
 
   const handleCategoryChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { value } = e.target;
 
-    requestData({
-      apiFn: () =>
-        getProducts(value === '전체' ? '' : value, {
-          page: 0,
-          size: 20,
-          sort: priceValue === '낮은 가격순' ? 'price,asc' : 'price,desc',
-        }),
+    requestData(value === '전체' ? '' : value, {
+      page: 0,
+      size: 20,
+      sort: priceValue === '낮은 가격순' ? 'price,asc' : 'price,desc',
     });
 
     setCategoryValue(value);
@@ -42,13 +36,10 @@ export default function ProductListToolbar() {
   const handlePriceChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
 
-    requestData({
-      apiFn: () =>
-        getProducts(categoryValue === '전체' ? '' : categoryValue, {
-          page: 0,
-          size: 20,
-          sort: value === '낮은 가격순' ? 'price,asc' : 'price,desc',
-        }),
+    requestData(categoryValue === '전체' ? '' : categoryValue, {
+      page: 0,
+      size: 20,
+      sort: value === '낮은 가격순' ? 'price,asc' : 'price,desc',
     });
 
     setPriceValue(value);
