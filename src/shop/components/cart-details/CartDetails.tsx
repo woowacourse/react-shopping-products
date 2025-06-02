@@ -9,7 +9,7 @@ import {
 import Counter from '../../../components/common/Counter';
 import Image from '../../../components/common/Image';
 import { useAPIDataContext } from '../../../context/APIDataProvider';
-import { showToast } from '../../../utils/toast/showToast';
+import { useToastContext } from '../../../context/ToastProvider';
 
 export default function CartDetails({
   onCloseClick,
@@ -20,6 +20,8 @@ export default function CartDetails({
     fetcher: getShoppingCartData,
     name: 'cart',
   });
+
+  const { showToast } = useToastContext();
 
   const isCartEmpty = !cartListData || cartListData.length === 0;
 

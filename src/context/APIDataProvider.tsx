@@ -6,7 +6,7 @@ import {
   useState,
   type PropsWithChildren,
 } from 'react';
-import { showToast } from '../utils/toast/showToast';
+import { useToastContext } from './ToastProvider';
 
 type APIStateMap = Record<
   string,
@@ -42,6 +42,7 @@ export function useAPIDataContext<T>({
   name: string;
 }) {
   const { state, setState } = useContext(APIContext);
+  const { showToast } = useToastContext();
 
   const request = useCallback(async () => {
     setState((prev) => ({

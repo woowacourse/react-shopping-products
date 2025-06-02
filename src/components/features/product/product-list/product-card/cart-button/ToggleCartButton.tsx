@@ -7,9 +7,9 @@ import {
   postCartItem,
 } from '../../../../../../api/cart';
 import { useAPIDataContext } from '../../../../../../context/APIDataProvider';
-import { showToast } from '../../../../../../utils/toast/showToast';
 import Counter from '../../../../../common/Counter';
 import AddCartButton from './AddCartButton';
+import { useToastContext } from '../../../../../../context/ToastProvider';
 
 interface ToggleCartButtonProps extends ComponentProps<'button'> {
   productId: string;
@@ -20,6 +20,8 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
     fetcher: getShoppingCartData,
     name: 'cart',
   });
+
+  const { showToast } = useToastContext();
 
   const handleAddCart = useCallback(async () => {
     try {

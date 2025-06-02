@@ -6,9 +6,15 @@ type MessageType = 'error' | 'info';
 interface ToastMeesageProps {
   message: string;
   type: MessageType;
+  onClose: () => void;
 }
 
-function ToastMessage({ message, type }: ToastMeesageProps) {
+function ToastMessage({ message, type, onClose }: ToastMeesageProps) {
+  setTimeout(() => {
+    if (onClose) {
+      onClose();
+    }
+  }, 3000);
   return (
     <Container>
       <Wrapper type={type}>
@@ -25,10 +31,6 @@ const MESSAGE_TYPE_COLOR_MAP: Record<MessageType, string> = {
 
 const Container = styled.div`
   width: 100%;
-  position: fixed;
-  bottom: 60px;
-  display: flex;
-  justify-content: center;
 `;
 
 const Wrapper = styled(Flex)<{ type: MessageType }>`
