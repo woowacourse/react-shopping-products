@@ -72,7 +72,6 @@ export default function ProductItem({
 
       requestData({
         apiFn: () => getShoppingCart(),
-        skipLoading: true,
       });
     } catch (error) {
       if (error instanceof Error) {

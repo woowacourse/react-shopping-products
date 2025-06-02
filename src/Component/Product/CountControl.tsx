@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useAPIContext } from '../Common/Provider';
 
 interface CountControlProps {
   count: number;
@@ -12,11 +13,17 @@ export default function CountControl({
   onClick,
   disabled,
 }: CountControlProps) {
+  const { status } = useAPIContext({
+    key: 'cartItems',
+  });
+
+  const canClick = status === 'success';
+
   return (
     <StyledWrapper>
       <StyledButton
         onClick={() => onClick('decrease')}
-        disabled={count === 0}
+        disabled={!canClick || count === 0}
         data-testid="decrease-button"
       >
         <StyledImg src="./minusIcon.png" alt="minus icon" />
@@ -24,7 +31,7 @@ export default function CountControl({
       <StyledText>{count}</StyledText>
       <StyledButton
         onClick={() => onClick('increase')}
-        disabled={disabled}
+        disabled={disabled || !canClick}
         data-testid="increase-button"
       >
         <StyledImg src="./plusIcon.png" alt="plus icon" />
