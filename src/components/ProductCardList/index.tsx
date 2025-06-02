@@ -1,26 +1,35 @@
 import { css } from '@emotion/css';
-import { Product } from '../../types/product.type';
+import { Product } from './product.type';
 import ProductCard from '../ProductCard';
-import { useShoppingCartContext } from '../../contexts/useShoppingCartContext';
+import { CartItem } from '../ShoppingCartModal/cart.type';
 
 interface ProductCardListProps {
   products: Product[];
+  shoppingCart: {
+    data: CartItem[];
+    create: (productId: number) => Promise<void>;
+    remove: (cartItemId: number) => Promise<void>;
+    update: (cartItemId: number, quantity: number) => Promise<void>;
+  };
 }
 
-const ProductCardList = ({ products }: ProductCardListProps) => {
-  const shoppingCart = useShoppingCartContext();
-
+const ProductCardList = ({ products, shoppingCart }: ProductCardListProps) => {
   return (
-    <div className={ProductCardListStyles}>
-      {products.map((product) => {
-        const isInCart = shoppingCart.items.some(
-          (item) => item.product.id === product.id
-        );
-
-        return (
-          <ProductCard key={product.id} product={product} isInCart={isInCart} />
-        );
-      })}
+    <div className={ProductCardListStyles} data-testid="product-list">
+      {products &&
+        products.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            cartItem={
+              shoppingCart.data.find((ci) => ci.product.id === product.id) ??
+              null
+            }
+            create={shoppingCart.create}
+            remove={shoppingCart.remove}
+            update={shoppingCart.update}
+          />
+        ))}
     </div>
   );
 };

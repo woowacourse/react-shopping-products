@@ -1,27 +1,28 @@
 import { css } from '@emotion/css';
-import RemoveButton from '../Button/RemoveButton';
+import QuantitySpinner from '../Button/QuantitySpinner';
 import AddButton from '../Button/AddButton';
-import { Product } from '../../types/product.type';
-import { useShoppingCartContext } from '../../contexts/useShoppingCartContext';
-import { useAddShoppingCart } from '../../hooks/useAddShoppingCart';
-import { useDeleteShoppingCart } from '../../hooks/useDeleteShoppingCart';
+import { Product } from '../ProductCardList/product.type';
+import { CartItem } from '../ShoppingCartModal/cart.type';
 
 interface ProductCardProps {
   product: Product;
-  isInCart: boolean;
+  cartItem: CartItem | null;
+  create: (productId: number) => Promise<void>;
+  remove: (cartItemId: number) => Promise<void>;
+  update: (cartItemId: number, quantity: number) => Promise<void>;
 }
 
-const ProductCard = ({ product, isInCart }: ProductCardProps) => {
-  const { id, name, price, imageUrl } = product;
-  const shoppingCart = useShoppingCartContext();
-  const cartItemId = shoppingCart.items.find(
-    (item) => item.product.id === product.id
-  )?.id;
-  const addShoppingCart = useAddShoppingCart(product.id);
-  const deleteShoppingCart = useDeleteShoppingCart(cartItemId);
+const ProductCard = ({
+  product,
+  cartItem,
+  create,
+  remove,
+  update,
+}: ProductCardProps) => {
+  const { id, name, price, imageUrl, quantity } = product;
 
   return (
-    <div key={id} className={CardFrame}>
+    <div key={id} className={CardFrame} data-testid="product-card">
       <div className={ImageFrame}>
         <img
           src={imageUrl || './default.png'}
@@ -31,15 +32,25 @@ const ProductCard = ({ product, isInCart }: ProductCardProps) => {
             e.currentTarget.src = './default.png';
           }}
         />
+        {(quantity === 0 || (cartItem && cartItem.quantity === quantity)) && (
+          <div className={SoldOut}>품절</div>
+        )}
       </div>
       <div className={CardInfo}>
-        <h4 className={ProductName}>{name}</h4>
-        <p>{price.toLocaleString()}원</p>
+        <h4 className={ProductName} data-testid="product-name">
+          {name}
+        </h4>
+        <p data-testid="product-price">{price.toLocaleString()}원</p>
         <div className={ButtonArea}>
-          {isInCart ? (
-            <RemoveButton onClick={deleteShoppingCart} />
+          {cartItem ? (
+            <QuantitySpinner
+              quantity={cartItem.quantity}
+              handleDelete={() => remove(cartItem.id)}
+              handleIncrease={() => update(cartItem.id, cartItem.quantity + 1)}
+              handleDecrease={() => update(cartItem.id, cartItem.quantity - 1)}
+            />
           ) : (
-            <AddButton onClick={addShoppingCart} />
+            <AddButton onClick={() => create(id)} />
           )}
         </div>
       </div>
@@ -60,6 +71,7 @@ const CardFrame = css`
 const ImageFrame = css`
   width: 182px;
   height: 112px;
+  position: relative;
 `;
 
 const CardImage = css`
@@ -87,4 +99,19 @@ const ProductName = css`
 const ButtonArea = css`
   display: flex;
   justify-content: flex-end;
+`;
+
+const SoldOut = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 35px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

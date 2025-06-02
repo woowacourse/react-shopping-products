@@ -1,35 +1,27 @@
 import { css } from '@emotion/css';
 import FilterDropDown from './FilterDropDown';
 import SortingDropDown from './SortingDropDown';
-import { useProductsContext } from '../../contexts/useProductsContext';
 import { CATEGORY, SORT_OPTION } from './toolBar.constant';
+import { useDataContext } from '../../contexts/useDataContext';
 
-import { isCategory, isSortOption } from '../../utils/typeGuard';
 const ProductListToolBar = () => {
-  const products = useProductsContext();
-
-  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    if (isCategory(value)) {
-      products.updateCategory(value);
-    }
-  };
-
-  const handleSortingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    if (isSortOption(value)) {
-      products.updateSort(value);
-    }
-  };
+  const { setCategory, setSort } = useDataContext();
 
   return (
     <section className={ToolBarSectionStyles}>
       <h1>bpple 상품 목록</h1>
       <div className={ProductListToolBarStyles}>
-        <FilterDropDown options={CATEGORY} handleChange={handleFilterChange} />
+        <FilterDropDown
+          options={CATEGORY}
+          handleChange={(e) => setCategory(e.target.value)}
+        />
         <SortingDropDown
           options={SORT_OPTION}
-          handleChange={handleSortingChange}
+          handleChange={(e) =>
+            setSort(
+              e.target.value === '낮은 가격순' ? 'price,asc' : 'price,desc'
+            )
+          }
         />
       </div>
     </section>
