@@ -1,7 +1,13 @@
 {
-  "preset": "ts-jest",
   "testEnvironment": "jsdom",
+  "transform": {
+    "^.+\\.[tj]sx?$": ["ts-jest"]
+  },
   "moduleNameMapper": {
     "^@/(.*)$": "<rootDir>/src/$1"
-  }
+  },
+  "transformIgnorePatterns": [
+    "/node_modules/(?!@jae-o/modal-component-module)"
+  ],
+  "extensionsToTreatAsEsm": [".ts", ".tsx"]
 }

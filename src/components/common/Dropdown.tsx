@@ -1,50 +1,41 @@
+import { useClickOutsideRef } from '@/hooks/useClickOutsideRef';
 import styled from '@emotion/styled';
-import { ComponentProps, useEffect, useRef, useState } from 'react';
+import { ComponentProps, useState } from 'react';
 import Arrow from './Arrow';
-import { DropdownOptionType } from './type';
 
-interface DropdownProps<T> {
+interface DropdownProps<T extends { label: string; value: string }> {
   options: T[];
-  selectedValue: T | null;
-  onSelectHandler: (option: T) => void;
+  selectedValue: string | null;
+  onSelectOption: (optionValue: string) => void;
   placeholder?: string;
 }
 
-function Dropdown<T extends DropdownOptionType>({
+function Dropdown<T extends { label: string; value: string }>({
   options,
   selectedValue,
-  onSelectHandler,
+  onSelectOption,
   placeholder,
   ...props
 }: DropdownProps<T> & ComponentProps<'div'>) {
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useClickOutsideRef<HTMLDivElement>(() => setOpen(false));
 
-  const toggleOpen = () => setOpen((prev) => !prev);
+  const toggle = () => setOpen((prev) => !prev);
 
-  const handleSelect = (option: T) => {
+  const selectedLabel = options.find(
+    (option) => option.value === selectedValue
+  )?.label;
+
+  const onOptionSelected = (value: string) => {
     setOpen(false);
-    onSelectHandler(option);
+    onSelectOption(value);
   };
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   return (
     <DropdownContainer ref={dropdownRef} {...props}>
-      <DropdownToggle onClick={toggleOpen}>
+      <DropdownToggle onClick={toggle}>
         <DropdownText isSelected={selectedValue !== null}>
-          {selectedValue?.label || (placeholder ?? '')}
+          {selectedLabel || (placeholder ?? '')}
         </DropdownText>
         <Arrow width={16} direction={open ? 'up' : 'down'} />
       </DropdownToggle>
@@ -53,7 +44,7 @@ function Dropdown<T extends DropdownOptionType>({
           <DropdownMenuItem
             key={option.value}
             data-value={option.value}
-            onClick={() => handleSelect(option)}
+            onClick={() => onOptionSelected(option.value)}
           >
             {option.label}
           </DropdownMenuItem>
