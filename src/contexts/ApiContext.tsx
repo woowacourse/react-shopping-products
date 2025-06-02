@@ -1,6 +1,5 @@
 import {
   createContext,
-  DependencyList,
   Dispatch,
   SetStateAction,
   useCallback,
@@ -24,15 +23,7 @@ export function ApiProvider({ children }: PropsWithChildren) {
   return <ApiContext.Provider value={{ data, setData }}>{children}</ApiContext.Provider>;
 }
 
-export function useApiContext<T>({
-  fetchFn,
-  key,
-  deps
-}: {
-  fetchFn: () => Promise<T>;
-  key: string;
-  deps?: DependencyList;
-}) {
+export function useApiContext<T>({ fetchFn, key }: { fetchFn: () => Promise<T>; key: string }) {
   const { data, setData } = useContext(ApiContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -56,7 +47,7 @@ export function useApiContext<T>({
     if (data[key] === undefined) {
       request();
     }
-  }, [data, key, request, deps]);
+  }, [data, key, request]);
 
   return {
     data: data[key] as T | undefined,
