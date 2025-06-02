@@ -9,7 +9,7 @@ export const HeaderWrapper = styled.div`
   justify-content: space-between;
   padding: 16px 24px;
 `;
-export const CartWrapper = styled.div`
+export const CartWrapper = styled.button`
   position: relative;
 `;
 

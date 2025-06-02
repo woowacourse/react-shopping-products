@@ -1,54 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useCallback } from 'react';
 import { getProducts, ProductResponse } from '../api/products';
-import { useError } from '../context/ErrorContext';
-import { ERROR_MSG } from '../constants/errorMessage';
+import { useData } from './useData';
+import { CategoryKey, SortKey, getCategoryByKey, getSortByKey } from '../types/selectOptions';
+import { createProductsKey } from '../utils/cacheKeys';
 
 type useFetchProductsProps = {
-  category: string;
-  sort: string;
-  categoryQueryMap: Record<string, string | undefined>;
-  sortQueryMap: Record<string, string | undefined>;
+  category: CategoryKey;
+  sort: SortKey;
 };
 
-export const useFetchProducts = ({
-  category,
-  sort,
-  categoryQueryMap,
-  sortQueryMap,
-}: useFetchProductsProps) => {
-  const [products, setProducts] = useState<ProductResponse[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const { errorMessage, setErrorMessage, clearErrorMessage } = useError();
+export const useFetchProducts = ({ category, sort }: useFetchProductsProps) => {
+  const fetchProducts = useCallback(async () => {
+    const categoryConfig = getCategoryByKey(category);
+    const sortConfig = getSortByKey(sort);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        clearErrorMessage();
+    const data = await getProducts({
+      page: 0,
+      size: 20,
+      ...(sortConfig.apiValue && { sort: sortConfig.apiValue }),
+      ...(categoryConfig.apiValue && { category: categoryConfig.apiValue }),
+    });
 
-        const matchedCategory = categoryQueryMap[category];
-        const matchedSort = sortQueryMap[sort];
+    return data.content;
+  }, [category, sort]);
 
-        const data = await getProducts({
-          page: 0,
-          size: 20,
-          ...(matchedSort && { sort: matchedSort }),
-          ...(matchedCategory && { category: matchedCategory }),
-        });
-        setProducts(data.content);
-      } catch (error) {
-        console.error(ERROR_MSG.PRODUCT_FETCH_FAIL, error);
-        setErrorMessage(ERROR_MSG.PRODUCT_FETCH_FAIL);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchProducts();
-  }, [category, sort, clearErrorMessage, setErrorMessage, categoryQueryMap, sortQueryMap]);
+  const key = createProductsKey(category, sort);
+
+  const { data, isLoading, error } = useData<ProductResponse[]>({
+    key,
+    fetchFn: fetchProducts,
+    deps: [category, sort],
+  });
 
   return {
-    data: products,
+    data: data ?? [],
     isLoading,
-    error: errorMessage,
+    error,
   };
 };

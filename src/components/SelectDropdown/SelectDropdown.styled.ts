@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const Header = styled.div`
   color: #000000;
@@ -29,6 +29,7 @@ export const DropdownWrapper = styled.div`
   gap: 8px;
   border: 1px solid #acacac;
   border-radius: 6px;
+  cursor: pointer;
 
   &:focus {
     outline: 1px solid black;
