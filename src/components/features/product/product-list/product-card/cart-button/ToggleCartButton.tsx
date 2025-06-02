@@ -34,21 +34,21 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
     } catch (e) {
       showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
     }
-  }, [cartListData, productId, cartRefetch]);
+  }, [cartListData, productId, cartRefetch, showToast]);
 
   const handlePlusQuantity = useCallback(
     async (cartId: string) => {
       try {
         if (!cartListData) return;
         const cart = cartListData.find((cart) => cart.id === cartId);
-        if (!cart) throw new Error('장바구니에 해당 아이템이 없습니다.');
+        if (!cart) throw new Error();
         await patchCartItem(cartId, cart.quantity + 1);
         await cartRefetch();
       } catch (e) {
         showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
       }
     },
-    [cartListData, cartRefetch]
+    [cartListData, cartRefetch, showToast]
   );
 
   const handleMinusQuantity = useCallback(
@@ -64,7 +64,7 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
         showToast('장바구니에서 뺴는 데 실패했습니다.', 'error');
       }
     },
-    [cartListData, cartRefetch]
+    [cartListData, cartRefetch, showToast]
   );
 
   if (!cartListData) {
