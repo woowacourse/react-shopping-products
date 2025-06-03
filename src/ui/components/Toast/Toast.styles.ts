@@ -1,5 +1,16 @@
 import styled from '@emotion/styled';
 
+export const Container = styled.div`
+  position: fixed;
+  width: 100%;
+  top: 64px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+`;
+
 export const ToastContainer = styled.div`
   width: 100%;
   height: 40px;

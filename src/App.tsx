@@ -56,12 +56,12 @@ function App() {
     <>
       <Global styles={GlobalStyle} />
       <Layout>
+        <ToastList />
         <Header
           title="SHOP"
           totalCartProducts={cart && cart.totalElements}
           onClickCart={() => setIsCartModalOpen(true)}
         />
-        <ToastList />
         {isCartModalOpen && (
           <Modal position="bottom" title="장바구니" onClose={() => setIsCartModalOpen(false)}>
             {cart && (
