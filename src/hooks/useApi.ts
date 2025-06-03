@@ -17,21 +17,23 @@ export function useAPI<T>({
     useContext(APIContext);
 
   const request = useCallback(async () => {
-    try {
-      const res = await fetcher();
-      const error = res?.error;
+    const res = await fetcher();
 
-      if (!error?.message) {
-        setErrorMessage("");
-        setData((data) => {
-          return { ...data, [name]: res };
-        });
-        return;
-      }
-      setErrorMessage(error.message);
-    } finally {
+    const error = res?.error;
+
+    if (name === "products") {
       setIsLoading(false);
     }
+
+    if (!error?.message) {
+      setErrorMessage("");
+      setData((data) => {
+        return { ...data, [name]: res };
+      });
+      return;
+    }
+
+    setErrorMessage(error.message);
   }, [fetcher, name, setData, setErrorMessage, setIsLoading]);
 
   useEffect(() => {

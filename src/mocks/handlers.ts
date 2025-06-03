@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, delay } from "msw";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const PRODUCTS_MOCK_DATA = [
@@ -195,7 +195,7 @@ const CART_ITEMS_MOCK_DATA = [
 ];
 
 export const handlers = [
-  http.get(`${BASE_URL}products`, ({ request }) => {
+  http.get(`${BASE_URL}products`, async ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get("category");
     const sort = url.searchParams.get("sort");
@@ -218,11 +218,12 @@ export const handlers = [
         });
       }
     }
-
+    await delay(1000);
     return HttpResponse.json({ content: filteredProducts });
   }),
 
-  http.get(`${BASE_URL}cart-items`, () => {
+  http.get(`${BASE_URL}cart-items`, async () => {
+    await delay(1000);
     return HttpResponse.json({ content: CART_ITEMS_MOCK_DATA });
   }),
 
