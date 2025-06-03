@@ -11,11 +11,11 @@ export default function Counter({ value, onIncrement, onDecrement }: CounterProp
   return (
     <div css={counterWrapper}>
       <button onClick={onDecrement}>
-        <Image src="assets/minus.svg" />
+        <Image src="assets/minus.svg" alt="수량 감소" />
       </button>
       <span css={valueCss}>{value}</span>
       <button onClick={onIncrement}>
-        <Image src="assets/plus.svg" />
+        <Image src="assets/plus.svg" alt="수량 증가" />
       </button>
     </div>
   );

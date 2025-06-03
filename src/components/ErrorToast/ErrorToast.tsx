@@ -16,7 +16,7 @@ export default function ErrorToast({
   }, [duration, onClose]);
 
   return (
-    <div css={styles.toastCss}>
+    <div data-testid="error-toast" css={styles.toastCss}>
       <h2 css={styles.messageCss}>{error.message}</h2>
       <button css={styles.closeButtonCss} onClick={onClose}>
         ✕

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import { handlers } from '../mocks/handler';
 import { ErrorContextProvider } from '../contexts/ErrorContext';
@@ -69,4 +69,51 @@ it('정렬 옵션에서 높은 가격순을 선택하면 상품들이 가격 내
   const sorted = [...prices].sort((a, b) => b - a);
 
   expect(prices).toEqual(sorted);
+});
+
+describe('담기 버튼 클릭 시', () => {
+  it('상품 목록에서 담기 버튼을 누르면, 수량을 조절할 수 있다.', async () => {
+    render(
+      <ErrorContextProvider>
+        <ApiProvider>
+          <App />
+        </ApiProvider>
+      </ErrorContextProvider>
+    );
+
+    const addButtons = await screen.findAllByRole('button', { name: '담기' });
+    fireEvent.click(addButtons[0]);
+
+    const plusImages = await screen.findAllByAltText('수량 증가');
+
+    const plusButton = plusImages[0].closest('button');
+    fireEvent.click(plusButton!);
+
+    const quantity = await screen.findByText('2');
+    expect(quantity).toBeInTheDocument();
+  });
+});
+
+it('상품의 수량을 초과하여 담을 수 없다.', async () => {
+  render(
+    <ErrorContextProvider>
+      <ApiProvider>
+        <App />
+      </ApiProvider>
+    </ErrorContextProvider>
+  );
+
+  const addButtons = await screen.findAllByRole('button', { name: '담기' });
+  fireEvent.click(addButtons[0]);
+
+  const plusButtons = await screen.findAllByAltText('수량 증가');
+  const plusButton = plusButtons[0].closest('button')!;
+
+  for (let i = 0; i < 5; i++) fireEvent.click(plusButton);
+  fireEvent.click(plusButton); // 초과 시도
+
+  const toast = await screen.findByTestId('error-toast');
+  screen.debug(toast);
+  // expect(toast).toBeTruthy();
+  // expect(toast).toHaveTextContent('수량을 초과해서 담을 수 없어요');
 });
