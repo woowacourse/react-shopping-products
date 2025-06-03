@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
-import { CartItem, Product } from "../types/productType";
+import { Product } from "../types/productType";
 import postCartItems from "../api/postCartItems";
 import deleteCartItems from "../api/deleteCartItems";
-import getCartItems from "../api/getCartItems";
 import patchCartItemQuantity from "../api/patchCartItemQuantity";
 
 export const CART_MAX_COUNT = 50;
@@ -14,8 +12,6 @@ const useCart = ({
   setErrorMessage: (errorMessage: string) => void;
   refetch: () => void;
 }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-
   const addToCart = async (product: Product, cartCount: number) => {
     if (cartCount + 1 > CART_MAX_COUNT) {
       setErrorMessage(
@@ -45,6 +41,7 @@ const useCart = ({
 
     setErrorMessage(error.message);
   };
+
   const removeFromCart = async (productId: number) => {
     const { error } = await deleteCartItems(productId);
 
@@ -56,22 +53,7 @@ const useCart = ({
     setErrorMessage(error.message);
   };
 
-  const syncCart = async () => {
-    const { data: cartData, error } = await getCartItems();
-    setErrorMessage(error?.message || "");
-    const cartItems = cartData.content;
-    setCart(cartItems);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await syncCart();
-    };
-
-    fetchData();
-  }, []);
-
-  return { cart, addToCart, removeFromCart, patchQuantity, syncCart };
+  return { addToCart, removeFromCart, patchQuantity };
 };
 
 export default useCart;
