@@ -43,9 +43,5 @@ export const useProducts = ({ sort, filter, size = 20, page = 0 }: UseProductsPa
 	return {
 		products: products || [],
 		loading,
-		// filter,
-		// setFilter,
-		// sort,
-		// setSort,
 	};
 };
