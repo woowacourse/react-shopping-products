@@ -43,11 +43,6 @@ export function useAPIDataContext<T>({
   const { state, setState } = useContext(APIContext);
 
   const request = useCallback(async () => {
-    setState((prev) => ({
-      ...prev,
-      [name]: { data: null, loading: true, error: null },
-    }));
-
     try {
       const result = await fetcher();
       setState((prev) => ({
