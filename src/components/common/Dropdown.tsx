@@ -60,19 +60,27 @@ function Dropdown({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!open) return;
 
-      if (e.key === 'Escape') {
-        closeDropdown();
-      } else if (e.key === 'ArrowDown') {
-        setFocusedIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
-        e.preventDefault();
-      } else if (e.key === 'ArrowUp') {
-        setFocusedIndex((prev) => (prev > 0 ? prev - 1 : options.length - 1));
-        e.preventDefault();
-      } else if (e.key === 'Enter' || e.key === ' ') {
-        if (focusedIndex >= 0 && open) {
-          handleSelect(options[focusedIndex]);
-        }
-        e.preventDefault();
+      switch (e.key) {
+        case 'Escape':
+          closeDropdown();
+          break;
+        case 'ArrowDown':
+          setFocusedIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
+          e.preventDefault();
+          break;
+        case 'ArrowUp':
+          setFocusedIndex((prev) => (prev > 0 ? prev - 1 : options.length - 1));
+          e.preventDefault();
+          break;
+        case 'Enter':
+        case ' ':
+          if (focusedIndex >= 0 && open) {
+            handleSelect(options[focusedIndex]);
+          }
+          e.preventDefault();
+          break;
+        default:
+          break;
       }
     };
     document.addEventListener('keydown', handleKeyDown);
