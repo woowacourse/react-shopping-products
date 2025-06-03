@@ -42,7 +42,7 @@ function AppContent() {
   });
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const openCartModal = () => {
-    if (!isCartModalOpen) setIsCartModalOpen(true);
+    setIsCartModalOpen(true);
   };
 
   return (
