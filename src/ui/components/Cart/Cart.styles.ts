@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const Container = styled.div`
   display: flex;
@@ -16,8 +16,8 @@ export const CartProduct = styled.div`
   align-items: flex-start;
   width: 100%;
   height: 100%;
-  padding: 8px 0 0 0 ;
-  border-top: 1px solid #0000001A;
+  padding: 8px 0 0 0;
+  border-top: 1px solid #0000001a;
 `;
 
 export const CartProductImage = styled.img`
@@ -25,7 +25,7 @@ export const CartProductImage = styled.img`
   height: 80px;
   background-color: #ccc;
   border-radius: 8px;
-    object-fit: cover;
+  object-fit: cover;
 `;
 
 export const CartContent = styled.div`
@@ -62,14 +62,14 @@ export const DeleteButton = styled.button`
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
-  color: #0A0D13;
+  color: #0a0d13;
   border-radius: 4px;
-  border: 1px solid #0000001A;
+  border: 1px solid #0000001a;
   cursor: pointer;
   background-color: white;
 
   &:hover {
-    background-color: #0000001A;
+    background-color: #0000001a;
   }
 `;
 
@@ -82,7 +82,7 @@ export const TotalContainer = styled.div`
   height: 54px;
   margin: 24px 0;
   padding: 30px 0;
-  border-top: 1px solid #0000001A;
+  border-top: 1px solid #0000001a;
 `;
 
 export const Title = styled.h2`
@@ -113,55 +113,6 @@ export const CloseButton = styled.div`
   line-height: 100%;
   text-align: center;
   cursor: pointer;
-`;
-
-export const StepperContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 8px;
-`;
-
-export const StepperButton = styled.button`
-  width: 24px;
-  height: 24px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: white;
-  font-size: 18px;
-  font-weight: 500;
-  color: #666;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: #f5f5f5;
-    border-color: #ccc;
-  }
-
-  &:active {
-    background-color: #e8e8e8;
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    &:hover {
-      background-color: white;
-      border-color: #ddd;
-    }
-  }
-`;
-
-export const StepperQuantity = styled.span`
-  min-width: 40px;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  user-select: none;
 `;
 
 export const EmptyCartContainer = styled(Container)`
