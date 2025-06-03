@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef, useReducer } from 'react';
 import { useDataContext } from '../context/DataContext';
 
 interface UseDataOptions {
@@ -28,7 +28,8 @@ export function useData<T>(
   options: UseDataOptions = {},
 ): UseDataReturn<T> {
   const { getCache, setCache } = useDataContext();
-  const [, forceUpdate] = useState({});
+  // 컴포넌트 리렌더링을 강제하기 위한 카운터
+  const [, forceUpdate] = useReducer((x: number) => x + 1, 0);
   const abortControllerRef = useRef<AbortController | null>(null);
   const retryCountRef = useRef(0);
 
@@ -69,7 +70,7 @@ export function useData<T>(
       isLoading: true,
       error: null,
     });
-    forceUpdate({});
+    forceUpdate();
 
     try {
       const data = await fetcher();
@@ -81,7 +82,7 @@ export function useData<T>(
         lastFetchedAt: Date.now(),
       });
       retryCountRef.current = 0;
-      forceUpdate({});
+      forceUpdate();
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
         return;
@@ -105,7 +106,7 @@ export function useData<T>(
         lastFetchedAt: cached.lastFetchedAt,
       });
       retryCountRef.current = 0;
-      forceUpdate({});
+      forceUpdate();
     }
   }, [key, fetcher, cached, setCache, mergedOptions.retry, mergedOptions.retryDelay]);
 
