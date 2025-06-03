@@ -50,8 +50,6 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
 
   const handlePlusQuantity = async (cartId: string) => {
     try {
-      const cart = cartListData.find((cart) => cart.id === cartId);
-      if (!cart) throw new Error();
       await patchCartItem(cartId, cart.quantity + 1);
       await cartRefetch();
     } catch (e) {
@@ -62,8 +60,6 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
   const handleMinusQuantity = async (cartId: string) => {
     try {
       if (cartListData.length < 1) return;
-      const cart = cartListData.find((cart) => cart.id === cartId);
-      if (!cart) throw new Error('장바구니에 해당 아이템이 없습니다.');
       if (cart.quantity === 1) await deleteCartItem(cartId);
       if (cart.quantity > 1) await patchCartItem(cartId, cart.quantity - 1);
       await cartRefetch();
