@@ -42,8 +42,18 @@ export function useData<T>(
   };
 
   const isCacheValid = useCallback(() => {
-    if (!cached.lastFetchedAt) return false;
-    if (!mergedOptions.cacheTime) return true;
+    if (!cached.lastFetchedAt) {
+      return false;
+    }
+
+    if (mergedOptions.cacheTime == null) {
+      return true;
+    }
+
+    if (mergedOptions.cacheTime <= 0) {
+      return false;
+    }
+
     return Date.now() - cached.lastFetchedAt < mergedOptions.cacheTime;
   }, [cached.lastFetchedAt, mergedOptions.cacheTime]);
 
