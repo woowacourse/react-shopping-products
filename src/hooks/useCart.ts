@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useContext } from "react";
 import { ResponseProduct, ResponseCartItem } from "../api/types";
 import getCartItemList from "../api/cartItemListApi";
 import addProductItemApi from "../api/addProductItemApi";
@@ -7,13 +7,20 @@ import updateCartItemApi from "../api/updateCartItemApi";
 import { CART_MAX_COUNT } from "../constants/constants";
 import { useDataFetch } from "./useDataFetch";
 import { useDataContext } from "../context/DataContext";
+import { CartContext } from "../context/CartContext";
 
-export const useCart = (productList: ResponseProduct[]) => {
-  const { setData } = useDataContext();
+export const useCart = () => {
+  const { getData } = useDataContext();
+
+  const cartContext = useContext(CartContext);
+  if (!cartContext) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+  const { cartItems, setCartItems } = cartContext;
+
   const [isUpdatingCart, setIsUpdatingCart] = useState<Record<number, boolean>>(
     {}
   );
-
   const [cartActionErrorMessage, setCartActionErrorMessage] =
     useState<string>("");
 
@@ -29,6 +36,12 @@ export const useCart = (productList: ResponseProduct[]) => {
     deps: [],
   });
 
+  useEffect(() => {
+    if (cartItemList) {
+      setCartItems(cartItemList);
+    }
+  }, [cartItemList, setCartItems]);
+
   const cartItemListErrorMessage = error || "";
 
   const handleCartErrorMessage = (message: string) => {
@@ -36,14 +49,14 @@ export const useCart = (productList: ResponseProduct[]) => {
   };
 
   const getCartQuantityForProduct = (productId: number): number => {
-    if (!cartItemList) return 0;
-    const cartItem = cartItemList.find((item) => item.product.id === productId);
+    if (!cartItems) return 0;
+    const cartItem = cartItems.find((item) => item.product.id === productId);
     return cartItem ? cartItem.quantity : 0;
   };
 
   const getCartItemIdForProduct = (productId: number): number | null => {
-    if (!cartItemList) return null;
-    const cartItem = cartItemList.find((item) => item.product.id === productId);
+    if (!cartItems) return null;
+    const cartItem = cartItems.find((item) => item.product.id === productId);
     return cartItem ? cartItem.id : null;
   };
 
@@ -51,9 +64,9 @@ export const useCart = (productList: ResponseProduct[]) => {
     productId: number,
     newQuantity: number
   ) => {
-    if (!cartItemList) return;
+    if (!cartItems) return;
 
-    const existingItemIndex = cartItemList.findIndex(
+    const existingItemIndex = cartItems.findIndex(
       (item) => item.product.id === productId
     );
 
@@ -61,17 +74,20 @@ export const useCart = (productList: ResponseProduct[]) => {
 
     if (existingItemIndex >= 0) {
       if (newQuantity <= 0) {
-        updatedCartItems = cartItemList.filter(
+        updatedCartItems = cartItems.filter(
           (_, index) => index !== existingItemIndex
         );
       } else {
-        updatedCartItems = [...cartItemList];
+        updatedCartItems = [...cartItems];
         updatedCartItems[existingItemIndex] = {
           ...updatedCartItems[existingItemIndex],
           quantity: newQuantity,
         };
       }
     } else if (newQuantity > 0) {
+      const productsState = getData<ResponseProduct>("products");
+      const productList = productsState?.data || [];
+
       const product = productList.find((p) => p.id === productId);
       if (product) {
         const newCartItem: ResponseCartItem = {
@@ -86,7 +102,7 @@ export const useCart = (productList: ResponseProduct[]) => {
             quantity: product.quantity,
           },
         };
-        updatedCartItems = [...cartItemList, newCartItem];
+        updatedCartItems = [...cartItems, newCartItem];
       } else {
         return;
       }
@@ -94,7 +110,7 @@ export const useCart = (productList: ResponseProduct[]) => {
       return;
     }
 
-    setData("cartItems", updatedCartItems);
+    setCartItems(updatedCartItems);
   };
 
   const handleIncreaseQuantity = async (productId: number) => {
@@ -111,7 +127,7 @@ export const useCart = (productList: ResponseProduct[]) => {
       updateCartItemOptimistically(productId, newQuantity);
 
       if (currentQuantity === 0) {
-        if ((cartItemList?.length || 0) >= CART_MAX_COUNT) {
+        if ((cartItems?.length || 0) >= CART_MAX_COUNT) {
           updateCartItemOptimistically(productId, currentQuantity);
           handleCartErrorMessage(
             `장바구니에는 최대 ${CART_MAX_COUNT}개의 상품만 담을 수 있습니다.`
@@ -184,7 +200,7 @@ export const useCart = (productList: ResponseProduct[]) => {
   const handleRemoveFromCart = async (cartItemId: number) => {
     try {
       setCartActionErrorMessage("");
-      const cartItem = cartItemList?.find((item) => item.id === cartItemId);
+      const cartItem = cartItems?.find((item) => item.id === cartItemId);
       if (cartItem) {
         updateCartItemOptimistically(cartItem.product.id, 0);
       }
@@ -198,7 +214,7 @@ export const useCart = (productList: ResponseProduct[]) => {
   };
 
   return {
-    cartItemList: cartItemList || [],
+    cartItemList: cartItems || [],
     cartItemListLoading,
     cartItemListErrorMessage,
     cartActionErrorMessage,

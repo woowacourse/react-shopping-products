@@ -2,7 +2,7 @@ import * as S from "./CartModal.styled";
 import { useEffect } from "react";
 import ProductItem from "../ProductItem/ProductItem";
 import React from "react";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../hooks/useCart";
 
 interface CartModalProps {
   isOpen: boolean;

@@ -2,7 +2,7 @@ import * as S from "./Header.styled";
 import BagIcon from "../Icon/BagIcon";
 import { useState } from "react";
 import CartModal from "../CartModal/CartModal";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../hooks/useCart";
 
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);

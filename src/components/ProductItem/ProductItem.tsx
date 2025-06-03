@@ -4,7 +4,7 @@ import Button from "../common/Button/Button";
 import blackDefaultImage from "../../assets/blackDefaultImage.png";
 import { ResponseProduct } from "../../api/types";
 import QuantityButton from "../common/QuantityButton/QuantityButton";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../hooks/useCart";
 
 function ProductItem({
   product,

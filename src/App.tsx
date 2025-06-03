@@ -5,7 +5,7 @@ import ProductList from "./components/ProductList/ProductList";
 import ErrorBox from "./components/common/ErrorBox/ErrorBox";
 import LoadingIcon from "./components/Icon/LoadingIcon";
 import { useProducts } from "./hooks/useProducts";
-import { useCart } from "./context/CartContext";
+import { useCart } from "./hooks/useCart"; // hooks에서 import
 import { DataProvider } from "./context/DataContext";
 import { CartProvider } from "./context/CartContext";
 
