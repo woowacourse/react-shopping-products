@@ -42,10 +42,8 @@ export function useData<K extends APIKey>(
   }, [key, fetcher, dispatch]);
 
   useEffect(() => {
-    if (!currentState.data && !currentState.error) {
-      fetchData();
-    }
-  }, [fetchData, currentState.data, currentState.error]);
+    fetchData();
+  }, [fetchData]);
 
   return {
     data: currentState.data as APIDataType<K> | null,
