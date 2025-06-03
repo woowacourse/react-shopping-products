@@ -1,4 +1,4 @@
-import { ComponentProps, useCallback } from 'react';
+import { ComponentProps } from 'react';
 
 import {
   deleteCartItem,
@@ -7,9 +7,9 @@ import {
   postCartItem,
 } from '../../../../../../api/cart';
 import { useAPIDataContext } from '../../../../../../context/APIDataProvider';
+import { useToastContext } from '../../../../../../context/ToastProvider';
 import Counter from '../../../../../common/Counter';
 import AddCartButton from './AddCartButton';
-import { useToastContext } from '../../../../../../context/ToastProvider';
 
 interface ToggleCartButtonProps extends ComponentProps<'button'> {
   productId: string;
@@ -23,55 +23,22 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
 
   const { showToast } = useToastContext();
 
-  const handleAddCart = useCallback(async () => {
+  if (!cartListData) {
+    return null;
+  }
+
+  const handleAddCart = async () => {
     try {
-      if (!cartListData) return;
-      if (cartListData.length >= 50) {
-        return;
-      }
+      if (cartListData.length >= 50) return;
       await postCartItem(productId);
       cartRefetch();
     } catch (e) {
       showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
     }
-  }, [cartListData, productId, cartRefetch, showToast]);
-
-  const handlePlusQuantity = useCallback(
-    async (cartId: string) => {
-      try {
-        if (!cartListData) return;
-        const cart = cartListData.find((cart) => cart.id === cartId);
-        if (!cart) throw new Error();
-        await patchCartItem(cartId, cart.quantity + 1);
-        await cartRefetch();
-      } catch (e) {
-        showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
-      }
-    },
-    [cartListData, cartRefetch, showToast]
-  );
-
-  const handleMinusQuantity = useCallback(
-    async (cartId: string) => {
-      try {
-        if (!cartListData || cartListData.length < 1) return;
-        const cart = cartListData.find((cart) => cart.id === cartId);
-        if (!cart) throw new Error('장바구니에 해당 아이템이 없습니다.');
-        if (cart.quantity === 1) await deleteCartItem(cartId);
-        if (cart.quantity > 1) await patchCartItem(cartId, cart.quantity - 1);
-        await cartRefetch();
-      } catch (e) {
-        showToast('장바구니에서 뺴는 데 실패했습니다.', 'error');
-      }
-    },
-    [cartListData, cartRefetch, showToast]
-  );
-
-  if (!cartListData) {
-    return null;
-  }
+  };
 
   const cart = cartListData.find((cart) => cart.product.id === productId);
+
   if (!cart)
     return (
       <AddCartButton
@@ -80,6 +47,30 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
         {...props}
       />
     );
+
+  const handlePlusQuantity = async (cartId: string) => {
+    try {
+      const cart = cartListData.find((cart) => cart.id === cartId);
+      if (!cart) throw new Error();
+      await patchCartItem(cartId, cart.quantity + 1);
+      await cartRefetch();
+    } catch (e) {
+      showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
+    }
+  };
+
+  const handleMinusQuantity = async (cartId: string) => {
+    try {
+      if (cartListData.length < 1) return;
+      const cart = cartListData.find((cart) => cart.id === cartId);
+      if (!cart) throw new Error('장바구니에 해당 아이템이 없습니다.');
+      if (cart.quantity === 1) await deleteCartItem(cartId);
+      if (cart.quantity > 1) await patchCartItem(cartId, cart.quantity - 1);
+      await cartRefetch();
+    } catch (e) {
+      showToast('장바구니에서 뺴는 데 실패했습니다.', 'error');
+    }
+  };
 
   const itemQuantity = cart.quantity;
   const productMaxQuantity = cart.product.quantity;
