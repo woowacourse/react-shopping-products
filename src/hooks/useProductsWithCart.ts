@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useProducts } from './useProducts';
 import { useCart } from './useCart';
-import { ProductElement } from "../types/product";
+import { ProductElement } from '../types/product';
 
 export function useProductsWithCart(sortType: string, category: string = '전체') {
   const {
@@ -9,7 +9,7 @@ export function useProductsWithCart(sortType: string, category: string = '전체
     isLoading: isProductsLoading,
     isError: isProductsError,
     setIsError: setProductsError,
-    fetchProduct
+    fetchProduct,
   } = useProducts(sortType, category);
 
   const {
@@ -19,7 +19,7 @@ export function useProductsWithCart(sortType: string, category: string = '전체
     setIsError: setCartError,
     fetchCart,
     isInCart,
-    getCartItemId
+    getCartItemId,
   } = useCart();
 
   const isLoading = isProductsLoading || isCartLoading;
@@ -28,24 +28,24 @@ export function useProductsWithCart(sortType: string, category: string = '전체
   const productsWithCartInfo = useMemo(() => {
     const productArray = Array.isArray(products) ? products : [];
 
-    return productArray.map(product => ({
+    return productArray.map((product) => ({
       ...product,
       isInCart: isInCart(product.id),
-      cartId: getCartItemId(product.id)
+      cartId: getCartItemId(product.id),
     }));
   }, [products, isInCart, getCartItemId]);
 
-  const transformedProducts: ProductElement[] = productsWithCartInfo.map(item => ({
+  const transformedProducts: ProductElement[] = productsWithCartInfo.map((item) => ({
     product: {
       id: item.id,
       name: item.name,
       price: item.price,
       imageUrl: item.imageUrl,
       category: item.category,
-      quantity: item.quantity
+      quantity: item.quantity,
     },
     isInCart: item.isInCart,
-    cartId: item.cartId
+    cartId: item.cartId,
   }));
 
   const resetErrors = () => {
@@ -60,6 +60,6 @@ export function useProductsWithCart(sortType: string, category: string = '전체
     isError,
     resetErrors,
     fetchCart,
-    fetchProduct
+    fetchProduct,
   };
 }

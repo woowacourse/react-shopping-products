@@ -1,4 +1,4 @@
-import { EmptyCartContainer } from "./Cart.styles";
+import { EmptyCartContainer } from './Cart.styles';
 
 function EmptyCart() {
   return (

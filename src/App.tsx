@@ -3,22 +3,22 @@ import Layout from './ui/components/Layout/Layout';
 import Header from './ui/components/Header/Header';
 import ProductSection from './ui/components/ProductSection/ProductSection';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
-import ToastList from "./ui/components/Toast/ToastList";
-import Cart from "./ui/components/Cart/Cart";
+import ToastList from './ui/components/Toast/ToastList';
+import Cart from './ui/components/Cart/Cart';
 import React, { useState, useEffect } from 'react';
-import { Modal } from "./ui/components/Modal";
+import { Modal } from './ui/components/Modal';
 import { Global } from '@emotion/react';
 import { SortType, CategoryType } from './types/product';
 import { useCartActions } from './hooks/useCartActions';
 import { useToast } from './context/ToastContext';
-import { ERROR_MESSAGES } from "./constants/errorMessages";
+import { ERROR_MESSAGES } from './constants/errorMessages';
 
 function App() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
   const [category, setCategory] = useState<CategoryType>('전체');
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
-  const {showToast} = useToast();
+  const { showToast } = useToast();
 
   const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
 
@@ -33,14 +33,13 @@ function App() {
   } = useCartActions(mappedSortType, category);
 
   const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const {value} = e.target;
+    const { value } = e.target;
 
-    if (value === '전체' || value === '식료품' || value === '패션잡화')
-      setCategory(value);
+    if (value === '전체' || value === '식료품' || value === '패션잡화') setCategory(value);
   };
 
   const handleSortPrice = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const {value} = e.target;
+    const { value } = e.target;
 
     if (value === '낮은 가격 순' || value === '높은 가격 순') {
       setSort(value);
@@ -55,31 +54,27 @@ function App() {
 
   return (
     <>
-      <Global styles={GlobalStyle}/>
+      <Global styles={GlobalStyle} />
       <Layout>
         <Header
           title="SHOP"
           totalCartProducts={cart && cart.totalElements}
           onClickCart={() => setIsCartModalOpen(true)}
         />
-        <ToastList/>
+        <ToastList />
         {isCartModalOpen && (
-          <Modal
-            position='bottom'
-            title='장바구니'
-            onClose={() => setIsCartModalOpen(false)}
-          >
+          <Modal position="bottom" title="장바구니" onClose={() => setIsCartModalOpen(false)}>
             {cart && (
               <Cart
                 cart={cart}
                 onUpdateQuantity={handleUpdateQuantity}
                 onRemoveItem={async (cartItemId: number) => {
-                  const item = cart.content.find(item => item.id === cartItemId);
+                  const item = cart.content.find((item) => item.id === cartItemId);
                   if (item) {
                     await handleRemoveCart({
                       product: item.product,
                       cartId: item.id,
-                      isInCart: true
+                      isInCart: true,
                     });
                   }
                 }}
@@ -88,7 +83,7 @@ function App() {
             )}
           </Modal>
         )}
-        {isLoading && <LoadingSpinner duration={2}/>}
+        {isLoading && <LoadingSpinner duration={2} />}
         <ProductSection
           onFilter={handleFilterCategory}
           onSort={handleSortPrice}

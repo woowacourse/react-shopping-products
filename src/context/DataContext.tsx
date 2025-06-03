@@ -30,17 +30,23 @@ interface DataProviderProps {
 export function DataProvider({ children }: DataProviderProps) {
   const [cache] = useState(new Map<string, CacheData>());
 
-  const setCache = useCallback((key: string, data: CacheData) => {
-    cache.set(key, data);
-  }, [cache]);
+  const setCache = useCallback(
+    (key: string, data: CacheData) => {
+      cache.set(key, data);
+    },
+    [cache],
+  );
 
-  const clearCache = useCallback((key?: string) => {
-    if (key) {
-      cache.delete(key);
-    } else {
-      cache.clear();
-    }
-  }, [cache]);
+  const clearCache = useCallback(
+    (key?: string) => {
+      if (key) {
+        cache.delete(key);
+      } else {
+        cache.clear();
+      }
+    },
+    [cache],
+  );
 
   const value: DataContextType = {
     cache,
@@ -48,9 +54,5 @@ export function DataProvider({ children }: DataProviderProps) {
     clearCache,
   };
 
-  return (
-    <DataContext.Provider value={value}>
-      {children}
-    </DataContext.Provider>
-  );
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

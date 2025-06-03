@@ -1,5 +1,5 @@
 import { Button, Container, Icon, CartStock, Title } from './Header.styles';
-import { cartDefaultIcon, cartStockIcon } from "../../../assets";
+import { cartDefaultIcon, cartStockIcon } from '../../../assets';
 
 interface HeaderProps {
   title: string;

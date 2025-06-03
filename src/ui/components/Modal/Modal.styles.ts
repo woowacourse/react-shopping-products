@@ -16,18 +16,18 @@ export const Overlay = styled.div`
 `;
 
 export const sizeStyles = {
-    sm: {
-        width: '320px',
-        height: '206px',
-    },
-    md: {
-        width: '480px',
-        height: '206px',
-    },
-    lg: {
-        width: '600px',
-        height: '206px',
-    },
+  sm: {
+    width: '320px',
+    height: '206px',
+  },
+  md: {
+    width: '480px',
+    height: '206px',
+  },
+  lg: {
+    width: '600px',
+    height: '206px',
+  },
 };
 
 export const ModalContainer = styled.div<ModalContainerProps>`
@@ -38,36 +38,36 @@ export const ModalContainer = styled.div<ModalContainerProps>`
   padding: 24px 16px;
   overflow-y: auto;
 
-    ${({size, width, height}) => {
-        if (width || height) {
-            return css`
-                width: ${width || 'auto'};
-                height: ${height || 'auto'};
-            `;
-        }
+  ${({ size, width, height }) => {
+    if (width || height) {
+      return css`
+        width: ${width || 'auto'};
+        height: ${height || 'auto'};
+      `;
+    }
 
-        if (size && sizeStyles[size]) {
-            return css`
-                width: ${sizeStyles[size].width};
-                height: ${sizeStyles[size].height};
-            `;
-        }
+    if (size && sizeStyles[size]) {
+      return css`
+        width: ${sizeStyles[size].width};
+        height: ${sizeStyles[size].height};
+      `;
+    }
 
-        return css`
-            width: 480px;
-            height: 157px;
-        `;
-    }}
+    return css`
+      width: 480px;
+      height: 157px;
+    `;
+  }}
 
   ${({ position }) =>
-  position === 'center'
-    ? css`
+    position === 'center'
+      ? css`
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
           border-radius: 8px;
         `
-    : css`
+      : css`
           bottom: 0;
           border-top-left-radius: 8px;
           border-top-right-radius: 8px;

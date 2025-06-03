@@ -1,12 +1,12 @@
-import { CartResponse } from "../../../types/product";
-import { CloseButton, Title, TotalContainer, TotalPrice } from "./Cart.styles";
+import { CartResponse } from '../../../types/product';
+import { CloseButton, Title, TotalContainer, TotalPrice } from './Cart.styles';
 
 interface CartProps {
   cart: CartResponse;
   onClose?: () => void;
 }
 
-function CartTotal({cart, onClose}: CartProps) {
+function CartTotal({ cart, onClose }: CartProps) {
   if (!cart || !cart.content) {
     return null;
   }
@@ -27,4 +27,3 @@ function CartTotal({cart, onClose}: CartProps) {
 }
 
 export default CartTotal;
-

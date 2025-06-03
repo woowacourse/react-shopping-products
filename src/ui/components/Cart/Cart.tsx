@@ -1,8 +1,8 @@
-import CartItem from "./CartItem";
-import CartTotal from "./CartTotal";
-import EmptyCart from "./EmptyCart";
-import { CartResponse } from "../../../types/product";
-import { Container } from "./Cart.styles";
+import CartItem from './CartItem';
+import CartTotal from './CartTotal';
+import EmptyCart from './EmptyCart';
+import { CartResponse } from '../../../types/product';
+import { Container } from './Cart.styles';
 
 interface CartProps {
   cart: CartResponse;
@@ -41,4 +41,3 @@ function Cart({ cart, onUpdateQuantity, onRemoveItem, onClose }: CartProps) {
 }
 
 export default Cart;
-

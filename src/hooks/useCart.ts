@@ -8,32 +8,39 @@ export function useCart() {
     return await getCartItem();
   };
 
-  const { data: cart, error, isLoading, refetch: fetchCart } = useData<CartResponse>(
-    'cart-items',
-    fetcher,
-    {
-      cacheTime: 1 * 60 * 1000, // 1분
-      refetchOnMount: true, // 항상 최신 데이터 fetch
-    }
+  const {
+    data: cart,
+    error,
+    isLoading,
+    refetch: fetchCart,
+  } = useData<CartResponse>('cart-items', fetcher, {
+    cacheTime: 1 * 60 * 1000, // 1분
+    refetchOnMount: true, // 항상 최신 데이터 fetch
+  });
+
+  const isInCart = useCallback(
+    (productId: number) => {
+      if (!cart?.content) {
+        return false;
+      }
+
+      return cart.content.some((item: CartItem) => item.product.id === productId);
+    },
+    [cart],
   );
 
-  const isInCart = useCallback((productId: number) => {
-    if (!cart?.content) {
-      return false;
-    }
+  const getCartItemId = useCallback(
+    (productId: number) => {
+      if (!cart?.content) {
+        return null;
+      }
 
-    return cart.content.some((item: CartItem) => item.product.id === productId)
-  }, [cart]);
+      const cartItem = cart.content.find((item: CartItem) => item.product.id === productId);
 
-  const getCartItemId = useCallback((productId: number) => {
-    if (!cart?.content) {
-      return null;
-    }
-
-    const cartItem = cart.content.find((item: CartItem) => item.product.id === productId);
-
-    return cartItem ? cartItem.id : null;
-  }, [cart]);
+      return cartItem ? cartItem.id : null;
+    },
+    [cart],
+  );
 
   return {
     cart,
@@ -42,6 +49,6 @@ export function useCart() {
     setIsError: () => {}, // 기존 API 호환성을 위해 유지
     fetchCart,
     isInCart,
-    getCartItemId
+    getCartItemId,
   };
 }

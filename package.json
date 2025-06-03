@@ -7,6 +7,7 @@
     "dev": "vite dev --host 0.0.0.0",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prettier:write": "prettier --write \"src/**/*.{ts,tsx}\"",
     "preview": "vite preview",
     "test": "vitest",
     "deploy": "vite build --base=/react-shopping-products/ --minify=false && npx gh-pages -d dist"
@@ -31,6 +32,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "msw": "^2.8.4",
+    "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",

@@ -25,7 +25,7 @@ const DEFAULT_OPTIONS: UseDataOptions = {
 export function useData<T>(
   key: string,
   fetcher: () => Promise<T>,
-  options: UseDataOptions = {}
+  options: UseDataOptions = {},
 ): UseDataReturn<T> {
   const { cache, setCache } = useDataContext();
   const [, forceUpdate] = useState({});

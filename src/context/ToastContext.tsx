@@ -15,16 +15,12 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined);
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  const showToast = ( message: string) => {
+  const showToast = (message: string) => {
     const id = Date.now();
     setToasts((prevToasts) => [...prevToasts, { message, id }]);
   };
 
-  return (
-    <ToastContext.Provider value={{ toasts, showToast }}>
-      {children}
-    </ToastContext.Provider>
-  );
+  return <ToastContext.Provider value={{ toasts, showToast }}>{children}</ToastContext.Provider>;
 }
 
 export function useToast() {

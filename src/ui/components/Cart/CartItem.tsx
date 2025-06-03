@@ -1,4 +1,5 @@
-import {woowaLogo} from "../../../assets";
+import Stepper from '../Stepper/Stepper.tsx';
+import { woowaLogo } from '../../../assets';
 import {
   CartContent,
   CartProduct,
@@ -6,12 +7,9 @@ import {
   DeleteButton,
   ProductPrice,
   ProductTitle,
-  StepperContainer,
-  StepperButton,
-  StepperQuantity
-} from "./Cart.styles";
-import { CartItem as CartItemType } from "../../../types/product";
-import { useState } from "react";
+} from './Cart.styles';
+import { CartItem as CartItemType } from '../../../types/product';
+import { useState } from 'react';
 
 interface CartItemProps {
   cart: CartItemType;
@@ -19,7 +17,7 @@ interface CartItemProps {
   onRemoveItem?: (cartItemId: number) => Promise<void>;
 }
 
-function CartItem({cart, onUpdateQuantity, onRemoveItem}: CartItemProps) {
+function CartItem({ cart, onUpdateQuantity, onRemoveItem }: CartItemProps) {
   const { id, product, quantity } = cart;
   const { name, price, imageUrl } = product;
   const [isLoading, setIsLoading] = useState(false);
@@ -62,19 +60,15 @@ function CartItem({cart, onUpdateQuantity, onRemoveItem}: CartItemProps) {
 
   return (
     <CartProduct>
-      <CartProductImage src={imageSrc}/>
+      <CartProductImage src={imageSrc} />
       <CartContent>
         <ProductTitle>{name}</ProductTitle>
         <ProductPrice>{price.toLocaleString()}원</ProductPrice>
-        <StepperContainer>
-          <StepperButton onClick={handleDecreaseQuantity} disabled={isLoading}>
-            −
-          </StepperButton>
-          <StepperQuantity>{quantity}</StepperQuantity>
-          <StepperButton onClick={handleIncreaseQuantity} disabled={isLoading}>
-            +
-          </StepperButton>
-        </StepperContainer>
+        <Stepper
+          quantity={quantity}
+          onIncrease={handleIncreaseQuantity}
+          onDecrease={handleDecreaseQuantity}
+        />
       </CartContent>
       <DeleteButton onClick={handleRemove} disabled={isLoading}>
         삭제
@@ -84,4 +78,3 @@ function CartItem({cart, onUpdateQuantity, onRemoveItem}: CartItemProps) {
 }
 
 export default CartItem;
-

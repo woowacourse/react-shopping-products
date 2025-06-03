@@ -1,13 +1,13 @@
-import {useEffect, useRef, KeyboardEvent} from 'react';
+import { useEffect, useRef, KeyboardEvent } from 'react';
 
 type UseFocusTrapProps<T extends HTMLElement = HTMLElement> = {
   initialFocusRef?: React.RefObject<T>;
   onEscape?: () => void;
-}
+};
 
 export function useFocusTrap<T extends HTMLElement = HTMLElement>({
   initialFocusRef,
-  onEscape
+  onEscape,
 }: UseFocusTrapProps<T> = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -17,7 +17,7 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>({
     }
 
     const focusableElements = containerRef.current.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
 
     return Array.from(focusableElements);
@@ -72,6 +72,6 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>({
 
   return {
     containerRef,
-    handleKeyDown
+    handleKeyDown,
   };
 }

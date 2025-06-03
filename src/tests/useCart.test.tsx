@@ -15,16 +15,14 @@ vi.mock('../hooks/useData', async () => {
     ...actual,
     useData: (key: string, fetcher: () => Promise<any>, options: any = {}) => {
       return actual.useData(key, fetcher, { ...options, retry: 0 });
-    }
+    },
   };
 });
 
 function Wrapper({ children }: { children: ReactNode }) {
   return (
     <ToastProvider>
-      <DataProvider>
-        {children}
-      </DataProvider>
+      <DataProvider>{children}</DataProvider>
     </ToastProvider>
   );
 }
@@ -40,18 +38,18 @@ describe('useCart 훅', () => {
         {
           id: 100,
           product: { id: 1, name: '첫번째 상품', price: 10000, imageUrl: '', category: '' },
-          quantity: 1
+          quantity: 1,
         },
         {
           id: 200,
           product: { id: 2, name: '두번째 상품', price: 20000, imageUrl: '', category: '' },
-          quantity: 2
+          quantity: 2,
         },
       ],
       totalElements: 2,
       totalPages: 1,
       size: 10,
-      number: 0
+      number: 0,
     };
     mockedGetCartItem.mockResolvedValueOnce(fakeData);
 
@@ -98,13 +96,13 @@ describe('useCart 훅', () => {
         {
           id: 300,
           product: { id: 3, name: '세번째 상품', price: 30000, imageUrl: '', category: '' },
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ],
       totalElements: 1,
       totalPages: 1,
       size: 10,
-      number: 0
+      number: 0,
     };
     mockedGetCartItem.mockResolvedValueOnce(fakeData);
 

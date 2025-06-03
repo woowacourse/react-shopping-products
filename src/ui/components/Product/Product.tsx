@@ -1,20 +1,21 @@
 import AddButton from './AddButton';
+import Stepper from '../Stepper/Stepper';
+import { useState } from 'react';
 import {
   Container,
   ProductImageContainer,
   ProductImage,
   Detail,
   Price,
-  ProductName, ImageContainer, EmptyImage,
+  ProductName,
+  ImageContainer,
+  EmptyImage,
   StepperContainer,
-  StepperButton,
-  StepperQuantity,
   SoldOutOverlay,
   SoldOutText,
 } from './Product.styles';
 import { ProductElement } from '../../../types/product';
-import { woowaLogo } from "../../../assets";
-import { useState } from 'react';
+import { woowaLogo } from '../../../assets';
 
 interface ProductProps {
   item: ProductElement;
@@ -24,7 +25,13 @@ interface ProductProps {
   cartQuantity?: number;
 }
 
-function Product({ item, onAddCart, onRemoveCart, onUpdateQuantity, cartQuantity = 1 }: ProductProps) {
+function Product({
+  item,
+  onAddCart,
+  onRemoveCart,
+  onUpdateQuantity,
+  cartQuantity = 1,
+}: ProductProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { product, isInCart, cartId } = item;
 
@@ -82,23 +89,22 @@ function Product({ item, onAddCart, onRemoveCart, onUpdateQuantity, cartQuantity
   return (
     <Container>
       <ProductImageContainer>
-        {isImage ?
+        {isImage ? (
           <ProductImage
             src={product.imageUrl}
             alt={product.name}
-            onError={e => {
+            onError={(e) => {
               const img = e.currentTarget;
               img.onerror = null;
               img.src = woowaLogo;
             }}
           />
-          : (
-            <ImageContainer>
-              <EmptyImage src={woowaLogo} alt={product.name}/>
-              <p>이미지가 없습니다</p>
-            </ImageContainer>
-          )
-        }
+        ) : (
+          <ImageContainer>
+            <EmptyImage src={woowaLogo} alt={product.name} />
+            <p>이미지가 없습니다</p>
+          </ImageContainer>
+        )}
         {isSoldOut && (
           <SoldOutOverlay>
             <SoldOutText>SOLDOUT</SoldOutText>
@@ -111,13 +117,12 @@ function Product({ item, onAddCart, onRemoveCart, onUpdateQuantity, cartQuantity
       </Detail>
       {isInCart ? (
         <StepperContainer>
-          <StepperButton onClick={handleDecreaseQuantity} disabled={isLoading || isSoldOut}>
-            −
-          </StepperButton>
-          <StepperQuantity>{cartQuantity}</StepperQuantity>
-          <StepperButton onClick={handleIncreaseQuantity} disabled={isLoading || isSoldOut}>
-            +
-          </StepperButton>
+          <Stepper
+            quantity={cartQuantity}
+            onIncrease={handleIncreaseQuantity}
+            onDecrease={handleDecreaseQuantity}
+            isLoading={isLoading}
+          />
         </StepperContainer>
       ) : (
         <AddButton onClick={handleAddCart} disabled={isLoading || isSoldOut} />

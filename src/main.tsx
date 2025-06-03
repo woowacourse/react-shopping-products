@@ -1,6 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.tsx';
 import { ToastProvider } from './context/ToastContext';
 import { DataProvider } from './context/DataContext';
 
@@ -24,26 +24,28 @@ async function enableMocking() {
   });
 }
 
-enableMocking().then(() => {
-  ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-      <DataProvider>
-        <ToastProvider>
-          <App />
-        </ToastProvider>
-      </DataProvider>
-    </React.StrictMode>
-  );
-}).catch((error) => {
-  console.error('Failed to start MSW:', error);
-  // MSW 실패 시에도 앱을 렌더링
-  ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-      <DataProvider>
-        <ToastProvider>
-          <App />
-        </ToastProvider>
-      </DataProvider>
-    </React.StrictMode>
-  );
-});
+enableMocking()
+  .then(() => {
+    ReactDOM.createRoot(document.getElementById('root')!).render(
+      <React.StrictMode>
+        <DataProvider>
+          <ToastProvider>
+            <App />
+          </ToastProvider>
+        </DataProvider>
+      </React.StrictMode>,
+    );
+  })
+  .catch((error) => {
+    console.error('Failed to start MSW:', error);
+    // MSW 실패 시에도 앱을 렌더링
+    ReactDOM.createRoot(document.getElementById('root')!).render(
+      <React.StrictMode>
+        <DataProvider>
+          <ToastProvider>
+            <App />
+          </ToastProvider>
+        </DataProvider>
+      </React.StrictMode>,
+    );
+  });

@@ -6,7 +6,11 @@ const API_URL = 'https://api.example.com';
 
 type SortOrder = 'asc' | 'desc';
 
-const sortProducts = (products: ProductType[], sortKey: string, sortOrder: SortOrder): ProductType[] => {
+const sortProducts = (
+  products: ProductType[],
+  sortKey: string,
+  sortOrder: SortOrder,
+): ProductType[] => {
   return [...products].sort((a, b) => {
     if (sortKey === 'price') {
       const diff = a.price - b.price;
@@ -50,7 +54,7 @@ export const productHandlers = [
           const [, secondarySortOrder] = sortParams[1].split(',') as [string, SortOrder];
           // 가격이 같은 그룹들을 id로 정렬
           const priceGroups = new Map<number, ProductType[]>();
-          filteredProducts.forEach(product => {
+          filteredProducts.forEach((product) => {
             const group = priceGroups.get(product.price) || [];
             group.push(product);
             priceGroups.set(product.price, group);
@@ -76,9 +80,9 @@ export const productHandlers = [
     const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
     // quantity(재고) 정보 추가 - README의 미구현 API 스펙에 따라
-    const productsWithStock = paginatedProducts.map(product => ({
+    const productsWithStock = paginatedProducts.map((product) => ({
       ...product,
-      quantity: mockProductStock[product.id] || 0
+      quantity: mockProductStock[product.id] || 0,
     }));
 
     const response = {
@@ -87,13 +91,13 @@ export const productHandlers = [
         sort: {
           empty: sortParams.length === 0,
           sorted: sortParams.length > 0,
-          unsorted: sortParams.length === 0
+          unsorted: sortParams.length === 0,
         },
         offset: startIndex,
         pageNumber: Number(page),
         pageSize: Number(size),
         paged: true,
-        unpaged: false
+        unpaged: false,
       },
       last: endIndex >= filteredProducts.length,
       totalElements: filteredProducts.length,
@@ -104,10 +108,10 @@ export const productHandlers = [
       sort: {
         empty: sortParams.length === 0,
         sorted: sortParams.length > 0,
-        unsorted: sortParams.length === 0
+        unsorted: sortParams.length === 0,
       },
       numberOfElements: paginatedProducts.length,
-      empty: paginatedProducts.length === 0
+      empty: paginatedProducts.length === 0,
     };
 
     return HttpResponse.json(response);
@@ -116,19 +120,16 @@ export const productHandlers = [
   // GET /products/:id - 개별 상품 조회 (README의 미구현 API 스펙)
   http.get(`${API_URL}/products/:id`, ({ params }) => {
     const id = Number(params.id);
-    const product = mockProducts.find(p => p.id === id);
+    const product = mockProducts.find((p) => p.id === id);
 
     if (!product) {
-      return HttpResponse.json(
-        { message: '상품을 찾을 수 없습니다.' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ message: '상품을 찾을 수 없습니다.' }, { status: 404 });
     }
 
     // quantity 필드 추가 - README의 미구현 API 스펙에 따라
     return HttpResponse.json({
       ...product,
-      quantity: mockProductStock[product.id] || 0
+      quantity: mockProductStock[product.id] || 0,
     });
-  })
+  }),
 ];

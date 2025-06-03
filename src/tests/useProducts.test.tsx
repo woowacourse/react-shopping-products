@@ -23,16 +23,14 @@ vi.mock('../hooks/useData', async () => {
     ...actual,
     useData: (key: string, fetcher: () => Promise<any>, options: any = {}) => {
       return actual.useData(key, fetcher, { ...options, retry: 0 });
-    }
+    },
   };
 });
 
 function Wrapper({ children }: { children: ReactNode }) {
   return (
     <ToastProvider>
-      <DataProvider>
-        {children}
-      </DataProvider>
+      <DataProvider>{children}</DataProvider>
     </ToastProvider>
   );
 }
@@ -45,19 +43,23 @@ describe('useProducts 훅', () => {
   it('정상적으로 상품을 가져오면 상태값이 업데이트된다', async () => {
     const fakeData = {
       content: [
-        { id: 1, name: '테스트 상품', price: 10000, imageUrl: '', category: 'electronics', quantity: 10 }
+        {
+          id: 1,
+          name: '테스트 상품',
+          price: 10000,
+          imageUrl: '',
+          category: 'electronics',
+          quantity: 10,
+        },
       ],
       totalElements: 1,
       totalPages: 1,
       size: 10,
-      number: 0
+      number: 0,
     };
     mockedGetProducts.mockResolvedValueOnce(fakeData);
 
-    const { result } = renderHook(
-      () => useProducts('asc', 'electronics'),
-      { wrapper: Wrapper }
-    );
+    const { result } = renderHook(() => useProducts('asc', 'electronics'), { wrapper: Wrapper });
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
@@ -71,18 +73,13 @@ describe('useProducts 훅', () => {
   it('상품 가져오기 실패 시 에러 상태가 true가 되고 토스트를 띄운다', async () => {
     mockedGetProducts.mockRejectedValueOnce(new Error('fail'));
 
-    const { result } = renderHook(
-      () => useProducts('desc', 'apparel'),
-      { wrapper: Wrapper }
-    );
+    const { result } = renderHook(() => useProducts('desc', 'apparel'), { wrapper: Wrapper });
 
     await waitFor(() => {
       expect(result.current.isError).toBe(true);
     });
 
     expect(result.current.isLoading).toBe(false);
-    expect(mockShowToast).toHaveBeenCalledWith(
-      ERROR_MESSAGES.productsFetchError
-    );
+    expect(mockShowToast).toHaveBeenCalledWith(ERROR_MESSAGES.productsFetchError);
   });
 });

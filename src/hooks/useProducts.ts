@@ -22,14 +22,10 @@ export function useProducts(sortType: string, category: string = '전체') {
     return response as ProductsResponse;
   };
 
-  const { data, error, isLoading, refetch } = useData<ProductsResponse>(
-    key,
-    fetcher,
-    {
-      cacheTime: 5 * 60 * 1000, // 5분
-      refetchOnMount: false, // 캐시가 있으면 재요청하지 않음
-    }
-  );
+  const { data, error, isLoading, refetch } = useData<ProductsResponse>(key, fetcher, {
+    cacheTime: 5 * 60 * 1000, // 5분
+    refetchOnMount: false, // 캐시가 있으면 재요청하지 않음
+  });
 
   useEffect(() => {
     if (error) {

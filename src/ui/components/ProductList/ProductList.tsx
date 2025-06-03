@@ -10,13 +10,19 @@ interface ProductListProps {
   onUpdateQuantity?: (cartItemId: number, quantity: number) => Promise<void>;
 }
 
-function ProductList({ products, cart, onAddCart, onRemoveCart, onUpdateQuantity }: ProductListProps) {
+function ProductList({
+  products,
+  cart,
+  onAddCart,
+  onRemoveCart,
+  onUpdateQuantity,
+}: ProductListProps) {
   const getCartQuantity = (productId: number): number => {
     if (!cart) {
       return 1;
     }
 
-    const cartItem = cart.find(item => item.product.id === productId);
+    const cartItem = cart.find((item) => item.product.id === productId);
     return cartItem?.quantity || 1;
   };
 

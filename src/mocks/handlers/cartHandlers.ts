@@ -7,7 +7,7 @@ const API_URL = 'https://api.example.com';
 
 // 메모리에 장바구니 데이터 저장
 let cartItems: CartItem[] = [...mockCartItems.content];
-let cartIdCounter = Math.max(...cartItems.map(item => item.id), 0) + 1;
+let cartIdCounter = Math.max(...cartItems.map((item) => item.id), 0) + 1;
 
 export const cartHandlers = [
   // GET /cart-items
@@ -33,13 +33,13 @@ export const cartHandlers = [
         sort: {
           empty: false,
           sorted: true,
-          unsorted: false
+          unsorted: false,
         },
         offset: startIndex,
         pageNumber: Number(page),
         pageSize: Number(size),
         paged: true,
-        unpaged: false
+        unpaged: false,
       },
       last: endIndex >= cartItems.length,
       totalElements: cartItems.length,
@@ -50,10 +50,10 @@ export const cartHandlers = [
       sort: {
         empty: false,
         sorted: true,
-        unsorted: false
+        unsorted: false,
       },
       numberOfElements: paginatedItems.length,
-      empty: paginatedItems.length === 0
+      empty: paginatedItems.length === 0,
     };
 
     return HttpResponse.json(response);
@@ -64,22 +64,16 @@ export const cartHandlers = [
     // Authorization 헤더 체크 (실제 서버와 동일하게)
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Basic ')) {
-      return HttpResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json() as { productId: number; quantity?: number };
+    const body = (await request.json()) as { productId: number; quantity?: number };
     const { productId, quantity = 1 } = body;
 
     // 상품 존재 확인
-    const product = mockProducts.find(p => p.id === productId);
+    const product = mockProducts.find((p) => p.id === productId);
     if (!product) {
-      return HttpResponse.json(
-        { message: '상품을 찾을 수 없습니다.' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ message: '상품을 찾을 수 없습니다.' }, { status: 404 });
     }
 
     // 재고 확인 (README의 MSW 스펙에 따라)
@@ -88,23 +82,23 @@ export const cartHandlers = [
       return HttpResponse.json(
         {
           errorCode: 'OUT_OF_STOCK',
-          message: '재고 수량을 초과하여 담을 수 없습니다.'
+          message: '재고 수량을 초과하여 담을 수 없습니다.',
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // 이미 장바구니에 있는지 확인
-    const existingItem = cartItems.find(item => item.product.id === productId);
+    const existingItem = cartItems.find((item) => item.product.id === productId);
     if (existingItem) {
       // 이미 있으면 수량 증가 (재고 체크)
       if (existingItem.quantity + quantity > stock) {
         return HttpResponse.json(
           {
             errorCode: 'OUT_OF_STOCK',
-            message: '재고 수량을 초과하여 담을 수 없습니다.'
+            message: '재고 수량을 초과하여 담을 수 없습니다.',
           },
-          { status: 400 }
+          { status: 400 },
         );
       }
       existingItem.quantity += quantity;
@@ -115,7 +109,7 @@ export const cartHandlers = [
     if (cartItems.length >= 50) {
       return HttpResponse.json(
         { message: '장바구니는 최대 50개까지 담을 수 있습니다.' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -123,7 +117,7 @@ export const cartHandlers = [
     const newCartItem: CartItem = {
       id: cartIdCounter++,
       quantity: quantity,
-      product: product
+      product: product,
     };
 
     cartItems.push(newCartItem);
@@ -136,20 +130,14 @@ export const cartHandlers = [
     // Authorization 헤더 체크
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Basic ')) {
-      return HttpResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
     const id = Number(params.id);
-    const index = cartItems.findIndex(item => item.id === id);
+    const index = cartItems.findIndex((item) => item.id === id);
 
     if (index === -1) {
-      return HttpResponse.json(
-        { message: '장바구니 아이템을 찾을 수 없습니다.' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ message: '장바구니 아이템을 찾을 수 없습니다.' }, { status: 404 });
     }
 
     cartItems.splice(index, 1);
@@ -161,21 +149,15 @@ export const cartHandlers = [
     // Authorization 헤더 체크
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Basic ')) {
-      return HttpResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json() as { quantity: number };
+    const body = (await request.json()) as { quantity: number };
     const id = Number(params.id);
-    const cartItem = cartItems.find(item => item.id === id);
+    const cartItem = cartItems.find((item) => item.id === id);
 
     if (!cartItem) {
-      return HttpResponse.json(
-        { message: '장바구니 아이템을 찾을 수 없습니다.' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ message: '장바구니 아이템을 찾을 수 없습니다.' }, { status: 404 });
     }
 
     // 재고 확인 (README의 MSW 스펙에 따라)
@@ -184,21 +166,18 @@ export const cartHandlers = [
       return HttpResponse.json(
         {
           errorCode: 'OUT_OF_STOCK',
-          message: '재고 수량을 초과하여 담을 수 없습니다.'
+          message: '재고 수량을 초과하여 담을 수 없습니다.',
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (body.quantity <= 0) {
-      return HttpResponse.json(
-        { message: '수량은 1개 이상이어야 합니다.' },
-        { status: 400 }
-      );
+      return HttpResponse.json({ message: '수량은 1개 이상이어야 합니다.' }, { status: 400 });
     }
 
     cartItem.quantity = body.quantity;
 
     return HttpResponse.json(cartItem);
-  })
+  }),
 ];
