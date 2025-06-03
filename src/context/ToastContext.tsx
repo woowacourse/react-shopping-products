@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode, useCallback, useRef } from 'react';
 
 interface ToastMessage {
   message: string;
@@ -16,15 +16,16 @@ const DEFAULT_DURATION = 3000;
 
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const toastIdCounter = useRef(0);
 
-  const showToast = (message: string, duration: number = DEFAULT_DURATION) => {
-    const id = Date.now();
+  const showToast = useCallback((message: string, duration: number = DEFAULT_DURATION) => {
+    const id = ++toastIdCounter.current;
     setToasts((prevToasts) => [...prevToasts, { message, id }]);
 
     setTimeout(() => {
       setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
     }, duration);
-  };
+  }, []);
 
   return <ToastContext.Provider value={{ toasts, showToast }}>{children}</ToastContext.Provider>;
 }
