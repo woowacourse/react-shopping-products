@@ -3,7 +3,7 @@ import App from '../App';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { useProducts } from '../hooks/useProducts';
-import { addCart, removeCart } from '../api/cart';
+import { addCart, removeCart } from '../api/fetchCart';
 
 vi.mock('../hooks/useProducts');
 vi.mock('../api/cart');

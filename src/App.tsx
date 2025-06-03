@@ -4,10 +4,6 @@ import Header from './ui/components/Header/Header';
 import Toast from './ui/components/Toast/Toast';
 import LoadingSpinner from './ui/components/LoadingSpinner/LoadingSpinner';
 import { Global } from '@emotion/react';
-import React, { useState } from 'react';
-import { addCart, removeCart } from './api/cart';
-import { useProducts } from './hooks/useProducts';
-import { CategoryType, SortType, ProductWithCartInfo } from './types/product';
 import { DropdownContainer, Section } from './App.styles';
 import Dropdown from './ui/components/Dropdown/Dropdown';
 import ProductList from './ui/components/ProductList/ProductList';
@@ -17,98 +13,99 @@ import {
   SORT_PRICE,
   SORT_PRICE_MAP,
 } from './constants/productConfig';
+import { SHOP_INFO } from './constants/shopInfoConfig';
+import { useEffect, useState } from 'react';
+import { useToastContext } from './context/ToastContext';
+import Modal from './ui/components/Modal/Modal';
+import CartModal from './ui/components/CartModal/CartModal';
 import {
-  PRODUCT_SECTION_TITLE,
-  SHOPPING_MALL_TITLE,
-} from './constants/shopInfoConfig';
-import { MAX_CART_ITEM_COUNT } from './constants/cartConfig';
-import { ERROR_MESSAGE } from './constants/errorMessage';
+  CartItem,
+  CategoryType,
+  ProductElement,
+  SortKeyType,
+} from './types/type';
+import { useAPI } from './hooks/useAPI';
+import { fetchCartItem } from './utils/getCartItem';
+import { fetchProductList } from './utils/getProductList';
+import { API_CONFIG } from './constants/APIConfig';
 
 function App() {
-  const [sort, setSort] = useState<SortType>('낮은 가격 순');
-  const [category, setCategory] = useState<CategoryType>('전체');
+  const { toastQueue, removeToast } = useToastContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const mappedSortType = SORT_PRICE_MAP[sort];
+  const [category, setCategory] = useState<CategoryType>(CATEGORY[0]);
+  const [sortBy, setSortBy] = useState<SortKeyType>(SORT_PRICE[0]);
 
-  const { products, cart, isLoading, isError, setIsError, fetchData } =
-    useProducts(mappedSortType, category);
+  const mappedSortType = SORT_PRICE_MAP[sortBy];
 
-  const handleAddCart = async (product: ProductWithCartInfo) => {
-    if (cart?.totalElements === MAX_CART_ITEM_COUNT) {
-      console.error(ERROR_MESSAGE.MAX_CART_ITEM);
-      setIsError(true);
-      return;
-    }
+  const { isLoading: isProductLoading } = useAPI<ProductElement[]>({
+    fetcher: () => fetchProductList(mappedSortType),
+    name: `${API_CONFIG.PRODUCT_NAME}-${mappedSortType}`,
+  });
 
-    try {
-      await addCart(product.id);
-      await fetchData();
-    } catch (error) {
-      console.error(error);
-      setIsError(true);
-    }
+  const { isLoading: isCartLoading } = useAPI<CartItem[]>({
+    fetcher: fetchCartItem,
+    name: API_CONFIG.CART_NAME,
+  });
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
   };
 
-  const handleRemoveCart = async (product: ProductWithCartInfo) => {
-    try {
-      if (product.cartId) {
-        await removeCart(product.cartId);
-        await fetchData();
-      }
-    } catch (error) {
-      console.error(error);
-      setIsError(true);
-    }
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
-  const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-
-    if (CATEGORY.includes(value)) {
-      setCategory(value as CategoryType);
-    }
+    setCategory(value as CategoryType);
   };
 
-  const handleSortPrice = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSortBy = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-
-    if (SORT_PRICE.includes(value)) {
-      setSort(value as SortType);
-    }
+    setSortBy(value as SortKeyType);
   };
+
+  useEffect(() => {
+    if (toastQueue.length > 0) {
+      const timer = setTimeout(() => {
+        removeToast(toastQueue[0].id);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastQueue]);
 
   return (
     <>
       <Global styles={GlobalStyle} />
       <Layout>
         <Header
-          title={SHOPPING_MALL_TITLE}
-          totalCartProducts={cart && cart.totalElements}
+          title={SHOP_INFO.SHOPPING_MALL_TITLE}
+          onModalOpen={handleModalOpen}
         />
-        {isError && <Toast message={ERROR_MESSAGE.TOAST} />}
-        {isLoading && <LoadingSpinner duration={2} />}
-        {!isLoading && (
+        {toastQueue.length > 0 && <Toast message={toastQueue[0].message} />}
+        {(isProductLoading || isCartLoading) && <LoadingSpinner duration={2} />}
+        {!isProductLoading && !isCartLoading && (
           <Section>
-            <Title title={PRODUCT_SECTION_TITLE} />
+            <Title title={SHOP_INFO.PRODUCT_SECTION_TITLE} />
             <DropdownContainer>
               <Dropdown
                 value={category}
                 options={CATEGORY}
-                onChange={handleFilterCategory}
+                onChange={handleCategory}
               />
               <Dropdown
-                value={sort}
+                value={sortBy}
                 options={SORT_PRICE}
-                onChange={handleSortPrice}
+                onChange={handleSortBy}
               />
             </DropdownContainer>
-            <ProductList
-              onAddCart={handleAddCart}
-              onRemoveCart={handleRemoveCart}
-              products={products}
-            />
+            <ProductList category={category} sortBy={sortBy} />
           </Section>
         )}
+        <Modal isModalOpen={isModalOpen} onModalClose={handleModalClose}>
+          <CartModal onClose={handleModalClose} />
+        </Modal>
       </Layout>
     </>
   );

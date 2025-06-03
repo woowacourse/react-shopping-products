@@ -1,0 +1,404 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "name": "에어포스1",
+      "price": 100000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 2
+    },
+    {
+      "id": 2,
+      "name": "에어포스2",
+      "price": 100000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 8
+    },
+    {
+      "id": 3,
+      "name": "에어포스3",
+      "price": 100000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 2
+    },
+    {
+      "id": 4,
+      "name": "달 무드등",
+      "price": 28000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 7
+    },
+    {
+      "id": 5,
+      "name": "동물 양말",
+      "price": 20000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 0
+    },
+    {
+      "id": 6,
+      "name": "플라망고",
+      "price": 8130,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 6
+    },
+    {
+      "id": 7,
+      "name": "메이통통이",
+      "price": 11100000,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 4
+    },
+    {
+      "id": 8,
+      "name": "앵그리버드",
+      "price": 50000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 4
+    },
+    {
+      "id": 9,
+      "name": "너에게난~ 해질녘 노을처럼~",
+      "price": 200000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 7
+    },
+    {
+      "id": 22,
+      "name": "앵버잠옷",
+      "price": 200000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 8
+    },
+    {
+      "id": 23,
+      "name": "리바이 아커만",
+      "price": 60000000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 7
+    },
+    {
+      "id": 24,
+      "name": "부리부리 원형 테이블",
+      "price": 3210000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 3
+    },
+    {
+      "id": 25,
+      "name": "얌샘김밥",
+      "price": 5000,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 4
+    },
+    {
+      "id": 26,
+      "name": "기세",
+      "price": 100,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 2
+    },
+    {
+      "id": 27,
+      "name": "아바라",
+      "price": 4800,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 3
+    },
+    {
+      "id": 28,
+      "name": "아샷추",
+      "price": 3800,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 5
+    },
+    {
+      "id": 29,
+      "name": "19×19×19 큐브",
+      "price": 850000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 8
+    },
+    {
+      "id": 30,
+      "name": "민초 피자",
+      "price": 48000,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 9
+    },
+    {
+      "id": 31,
+      "name": "민초 치킨",
+      "price": 47000,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 8
+    },
+    {
+      "id": 32,
+      "name": "튀김 신발",
+      "price": 800000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션 잡화",
+      "quantity": 7
+    },
+    {
+      "id": 33,
+      "name": "iPhone 16 Pro Max 1TB",
+      "price": 2500000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 1
+    },
+    {
+      "id": 34,
+      "name": "코카콜라 제로 1.5L",
+      "price": 2100,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 5
+    },
+    {
+      "id": 36,
+      "name": "패셔니스타 유담이",
+      "price": 300000000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 8
+    },
+    {
+      "id": 37,
+      "name": "패셔니스타 유담이",
+      "price": 3000000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 10
+    },
+    {
+      "id": 40,
+      "name": "에리얼",
+      "price": 123456789,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 6
+    },
+    {
+      "id": 42,
+      "name": "프린세스 미용놀이",
+      "price": 1010,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 8
+    },
+    {
+      "id": 43,
+      "name": "모쏠 캥거루라 태어나서 처음으로 데이트하는 ㄱㅋ",
+      "price": 99999999,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 1
+    },
+    {
+      "id": 57,
+      "name": "후추",
+      "price": 23000,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 10
+    },
+    {
+      "id": 58,
+      "name": "1",
+      "price": 100,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 1
+    },
+    {
+      "id": 60,
+      "name": "3",
+      "price": 30000000,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 7
+    },
+    {
+      "id": 61,
+      "name": "4",
+      "price": 4444,
+      "imageUrl": "./coke.jpeg",
+      "category": "식료품",
+      "quantity": 1
+    },
+    {
+      "id": 62,
+      "name": "5",
+      "price": 5555,
+      "imageUrl": "./coke.jpeg",
+      "category": "5555",
+      "quantity": 1
+    },
+    {
+      "id": 63,
+      "name": "6",
+      "price": 6666,
+      "imageUrl": "./coke.jpeg",
+      "category": "6666",
+      "quantity": 7
+    },
+    {
+      "id": 65,
+      "name": "8888",
+      "price": 8,
+      "imageUrl": "./coke.jpeg",
+      "category": "8",
+      "quantity": 3
+    },
+    {
+      "id": 66,
+      "name": "9",
+      "price": 9,
+      "imageUrl": "./coke.jpeg",
+      "category": "9",
+      "quantity": 9
+    },
+    {
+      "id": 67,
+      "name": "10",
+      "price": 10,
+      "imageUrl": "./coke.jpeg",
+      "category": "10",
+      "quantity": 7
+    },
+    {
+      "id": 68,
+      "name": "11",
+      "price": 11,
+      "imageUrl": "./coke.jpeg",
+      "category": "11",
+      "quantity": 10
+    },
+    {
+      "id": 69,
+      "name": "12",
+      "price": 12,
+      "imageUrl": "./coke.jpeg",
+      "category": "12",
+      "quantity": 8
+    },
+    {
+      "id": 70,
+      "name": "13",
+      "price": 13,
+      "imageUrl": "./coke.jpeg",
+      "category": "13",
+      "quantity": 5
+    },
+    {
+      "id": 71,
+      "name": "14",
+      "price": 14,
+      "imageUrl": "./coke.jpeg",
+      "category": "14",
+      "quantity": 8
+    },
+    {
+      "id": 73,
+      "name": "16",
+      "price": 16,
+      "imageUrl": "./coke.jpeg",
+      "category": "16",
+      "quantity": 4
+    },
+    {
+      "id": 74,
+      "name": "17",
+      "price": 17,
+      "imageUrl": "./coke.jpeg",
+      "category": "17",
+      "quantity": 4
+    },
+    {
+      "id": 76,
+      "name": "19",
+      "price": 19,
+      "imageUrl": "./coke.jpeg",
+      "category": "19",
+      "quantity": 1
+    },
+    {
+      "id": 77,
+      "name": "20",
+      "price": 20,
+      "imageUrl": "./coke.jpeg",
+      "category": "20",
+      "quantity": 2
+    },
+    {
+      "id": 78,
+      "name": "21",
+      "price": 21,
+      "imageUrl": "./coke.jpeg",
+      "category": "21",
+      "quantity": 3
+    },
+    {
+      "id": 79,
+      "name": "22",
+      "price": 22,
+      "imageUrl": "./coke.jpeg",
+      "category": "22",
+      "quantity": 3
+    },
+    {
+      "id": 80,
+      "name": "23",
+      "price": 23,
+      "imageUrl": "./coke.jpeg",
+      "category": "23",
+      "quantity": 4
+    },
+    {
+      "id": 81,
+      "name": "24",
+      "price": 24,
+      "imageUrl": "./coke.jpeg",
+      "category": "24",
+      "quantity": 2
+    },
+    {
+      "id": 82,
+      "name": "25",
+      "price": 25,
+      "imageUrl": "./coke.jpeg",
+      "category": "25",
+      "quantity": 2
+    },
+    {
+      "id": 93,
+      "name": "강자의 포즈",
+      "price": 8001444,
+      "imageUrl": "./coke.jpeg",
+      "category": "패션잡화",
+      "quantity": 5
+    }
+  ]
+}

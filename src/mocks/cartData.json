@@ -1,0 +1,64 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "product": {
+        "id": 1,
+        "name": "에어포스1",
+        "price": 100000,
+        "imageUrl": "./coke.jpeg",
+        "category": "패션잡화",
+        "quantity": 2
+      },
+      "quantity": 2
+    },
+    {
+      "id": 2,
+      "product": {
+        "id": 2,
+        "name": "에어포스2",
+        "price": 100000,
+        "imageUrl": "./coke.jpeg",
+        "category": "패션잡화",
+        "quantity": 8
+      },
+      "quantity": 5
+    },
+    {
+      "id": 3,
+      "product": {
+        "id": 3,
+        "name": "에어포스3",
+        "price": 100000,
+        "imageUrl": "./coke.jpeg",
+        "category": "패션잡화",
+        "quantity": 2
+      },
+      "quantity": 2
+    },
+    {
+      "id": 4,
+      "product": {
+        "id": 65,
+        "name": "8888",
+        "price": 100000,
+        "imageUrl": "./coke.jpeg",
+        "category": "8",
+        "quantity": 3
+      },
+      "quantity": 2
+    },
+    {
+      "id": 5,
+      "product": {
+        "id": 66,
+        "name": "9",
+        "price": 100000,
+        "imageUrl": "./coke.jpeg",
+        "category": "9",
+        "quantity": 9
+      },
+      "quantity": 2
+    }
+  ]
+}

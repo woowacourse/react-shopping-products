@@ -1,9 +1,32 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.tsx';
+import { ToastProvider } from './context/ToastContext.tsx';
+import { APIProvider } from './context/APIContext.tsx';
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+async function enableMocking() {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'production'
+  ) {
+    const { worker } = await import('./mocks/browser');
+    return worker.start({
+      onUnhandledRequest: 'bypass',
+      serviceWorker: {
+        url: '/react-shopping-products/mockServiceWorker.js',
+      },
+    });
+  }
+}
+
+enableMocking().then(() => {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <ToastProvider>
+        <APIProvider>
+          <App />
+        </APIProvider>
+      </ToastProvider>
+    </React.StrictMode>
+  );
+});

@@ -8,6 +8,7 @@ export const Container = styled.li`
 `;
 
 export const ProductImageContainer = styled.div`
+  position: relative;
   width: 182px;
   height: 112px;
 `;
@@ -44,7 +45,9 @@ export const Price = styled.span`
   margin: 8px 0 0 0;
 `;
 
-export const CartAddButton = styled.button`
+export const CartAddButton = styled.button<{
+  disabled: boolean;
+}>`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -55,10 +58,11 @@ export const CartAddButton = styled.button`
   gap: 4px;
   padding: 4px 8px 4px 8px;
   border: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   margin-left: auto;
   margin-right: 8px;
-  background-color: #000000;
+  background-color: ${({ disabled }) =>
+    disabled ? 'rgba(0, 0, 0, 0.5)' : '#000000'};
 `;
 
 export const CartRemoveButton = styled.button`
@@ -95,4 +99,24 @@ export const CartRemoveButtonText = styled.span`
   font-size: 12px;
   line-height: 15px;
   color: #000000;
+`;
+
+export const SoldoutBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  justify-content: center;
+`;
+
+export const SoldOutText = styled.span`
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
 `;

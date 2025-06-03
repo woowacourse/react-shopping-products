@@ -4,9 +4,14 @@ interface fetchAPIProps {
     method: string;
     body?: object;
   };
+  errorMessage: string;
 }
 
-export const fetchAPI = async ({ url, options }: fetchAPIProps) => {
+export const fetchAPI = async ({
+  url,
+  options,
+  errorMessage,
+}: fetchAPIProps) => {
   const { method, body } = options;
   const response = await fetch(url, {
     method: method,
@@ -16,6 +21,15 @@ export const fetchAPI = async ({ url, options }: fetchAPIProps) => {
     },
     ...(body && { body: JSON.stringify(body) }),
   });
+
+  if (!response.ok) {
+    let message = errorMessage;
+    const errorBody = await response.json();
+    if (errorBody?.message) {
+      message = errorBody.message;
+    }
+    throw new Error(message);
+  }
 
   return response;
 };
