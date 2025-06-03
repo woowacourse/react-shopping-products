@@ -27,14 +27,14 @@ export function useData<T>(
   fetcher: () => Promise<T>,
   options: UseDataOptions = {},
 ): UseDataReturn<T> {
-  const { cache, setCache } = useDataContext();
+  const { getCache, setCache } = useDataContext();
   const [, forceUpdate] = useState({});
   const abortControllerRef = useRef<AbortController | null>(null);
   const retryCountRef = useRef(0);
 
   const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
 
-  const cached = cache.get(key) || {
+  const cached = getCache<T>(key) || {
     data: null,
     error: null,
     isLoading: false,
@@ -116,7 +116,7 @@ export function useData<T>(
   }, [key]);
 
   return {
-    data: cached.data as T | null,
+    data: cached.data,
     error: cached.error,
     isLoading: cached.isLoading,
     refetch,

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
-interface CacheData<T = any> {
+interface CacheData<T> {
   data: T | null;
   error: Error | null;
   isLoading: boolean;
@@ -8,8 +8,9 @@ interface CacheData<T = any> {
 }
 
 interface DataContextType {
-  cache: Map<string, CacheData>;
-  setCache: (key: string, data: CacheData) => void;
+  cache: Map<string, CacheData<unknown>>;
+  getCache: <T>(key: string) => CacheData<T> | undefined;
+  setCache: <T>(key: string, data: CacheData<T>) => void;
   clearCache: (key?: string) => void;
 }
 
@@ -28,11 +29,18 @@ interface DataProviderProps {
 }
 
 export function DataProvider({ children }: DataProviderProps) {
-  const [cache] = useState(new Map<string, CacheData>());
+  const [cache] = useState(new Map<string, CacheData<unknown>>());
+
+  const getCache = useCallback(
+    <T,>(key: string): CacheData<T> | undefined => {
+      return cache.get(key) as CacheData<T> | undefined;
+    },
+    [cache],
+  );
 
   const setCache = useCallback(
-    (key: string, data: CacheData) => {
-      cache.set(key, data);
+    <T,>(key: string, data: CacheData<T>) => {
+      cache.set(key, data as CacheData<unknown>);
     },
     [cache],
   );
@@ -50,6 +58,7 @@ export function DataProvider({ children }: DataProviderProps) {
 
   const value: DataContextType = {
     cache,
+    getCache,
     setCache,
     clearCache,
   };
