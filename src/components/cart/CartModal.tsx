@@ -4,6 +4,7 @@ import Modal from '../Modal';
 import ProductItemModalCard from '../ProductItem/ProductItemModalCard';
 import CartTotalAmount from './CartTotalAmount';
 import useCartItems from '../../hooks/useCartItems';
+import EmptyCart from './EmptyCart';
 
 type CartModalProps = {
   isModalOpen: boolean;
@@ -23,16 +24,22 @@ const CartModal = ({ isModalOpen, handleCloseModal }: CartModalProps) => {
       <Modal.Contents>
         <Flex flexDirection="column">
           <Layout>
-            <CartItemsContainer>
-              <Divider />
-              {cartItems.map((cartItem) => (
-                <div key={cartItem.id}>
-                  <ProductItemModalCard product={cartItem.product} />
+            {cartItems.length === 0 ? (
+              <EmptyCart />
+            ) : (
+              <>
+                <CartItemsContainer>
                   <Divider />
-                </div>
-              ))}
-            </CartItemsContainer>
-            <CartTotalAmount />
+                  {cartItems.map((cartItem) => (
+                    <div key={cartItem.id}>
+                      <ProductItemModalCard product={cartItem.product} />
+                      <Divider />
+                    </div>
+                  ))}
+                </CartItemsContainer>
+                <CartTotalAmount />
+              </>
+            )}
             <Modal.Button
               title="닫기"
               backgroundColor="black"
