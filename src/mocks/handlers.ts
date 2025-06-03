@@ -99,7 +99,7 @@ export const handlers = [
       },
     };
 
-    cartItemStore.push(newCartItem);
+    cartItemStore = [...cartItemStore, newCartItem];
 
     return HttpResponse.json(newCartItem, { status: 201 });
   }),
@@ -143,7 +143,10 @@ export const handlers = [
       );
     }
 
-    cartItemStore[cartItemIndex].quantity = quantity;
+    cartItemStore = cartItemStore.map((item, index) =>
+      index === cartItemIndex ? { ...item, quantity } : item
+    );
+
     return HttpResponse.json(cartItemStore[cartItemIndex]);
   }),
 ];
