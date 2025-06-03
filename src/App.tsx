@@ -8,7 +8,7 @@ import Cart from './ui/components/Cart/Cart';
 import React, { useState, useEffect } from 'react';
 import { Modal } from './ui/components/Modal';
 import { Global } from '@emotion/react';
-import { SortType, CategoryType } from './types/product';
+import { SortType, CategoryType, SortKeyType } from './types/product';
 import { useCartActions } from './hooks/useCartActions';
 import { useToast } from './context/ToastContext';
 import { ERROR_MESSAGES } from './constants/errorMessages';
@@ -20,7 +20,12 @@ function App() {
 
   const { showToast } = useToast();
 
-  const mappedSortType = sort === '낮은 가격 순' ? 'asc' : 'desc';
+  const sortTypeToKey: Record<SortType, SortKeyType> = {
+    '낮은 가격 순': 'asc',
+    '높은 가격 순': 'desc',
+  };
+
+  const mappedSortType = sortTypeToKey[sort];
 
   const {
     transformedProducts,
