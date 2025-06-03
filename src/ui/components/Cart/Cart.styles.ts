@@ -98,7 +98,7 @@ export const TotalPrice = styled.h1`
   text-align: right;
 `;
 
-export const CloseButton = styled.div`
+export const CartCloseButton = styled.button`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -107,12 +107,17 @@ export const CloseButton = styled.div`
   color: white;
   height: 44px;
   border-radius: 5px;
+  border: none;
   background-color: #333333;
   font-weight: 700;
   font-size: 15px;
   line-height: 100%;
   text-align: center;
   cursor: pointer;
+
+  &:hover {
+    background-color: #444444;
+  }
 `;
 
 export const EmptyCartContainer = styled(Container)`
