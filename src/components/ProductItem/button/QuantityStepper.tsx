@@ -20,8 +20,10 @@ const QuantityStepper = ({ product }: QuantityStepperProps) => {
   const cartItemQuantity =
     cartItems.find((item) => item.product.id === product.id)?.quantity || 0;
 
+  const isMaxQuantity = cartItemQuantity === product.quantity;
+
   const handleClickIncrementButton = () => {
-    if (cartItemQuantity === product.quantity) {
+    if (isMaxQuantity) {
       setIsOutOfStock(true);
       return;
     }
@@ -54,7 +56,10 @@ const QuantityStepper = ({ product }: QuantityStepperProps) => {
           -
         </QuantityStepperButton>
         <QuantityDisplay>{cartItemQuantity}</QuantityDisplay>
-        <QuantityStepperButton onClick={handleClickIncrementButton}>
+        <QuantityStepperButton
+          onClick={handleClickIncrementButton}
+          disabled={isMaxQuantity}
+        >
           +
         </QuantityStepperButton>
       </QuantityStepperContainer>
@@ -72,14 +77,18 @@ const QuantityStepperContainer = styled.div`
   height: 30px;
 `;
 
-const QuantityStepperButton = styled.button`
+type QuantityStepperButtonProps = {
+  disabled?: boolean;
+};
+
+const QuantityStepperButton = styled.button<QuantityStepperButtonProps>`
   width: 30px;
   height: 30px;
   font-size: 24px;
   border: 1px solid rgb(221, 221, 221);
   background-color: white;
   border-radius: 12px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `;
 
 const QuantityDisplay = styled.div`
