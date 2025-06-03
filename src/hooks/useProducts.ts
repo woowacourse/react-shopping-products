@@ -1,16 +1,21 @@
 import { PRODUCT_URL } from "../constants/endpoint";
 import { FilterType, SortType } from "../types";
 import { useData } from "../components/Context/DataContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import fetchData from "../utils/api/fetchData";
 import getQueryURL from "../utils/getQueryURL";
 
-export const useProducts = () => {
-	const [filter, setFilter] = useState<FilterType>("");
-	const [sort, setSort] = useState<SortType>("asc");
+interface UseProductsParams {
+	sort: SortType;
+	filter: FilterType;
+	size?: number;
+	page?: number;
+}
+
+export const useProducts = ({ sort, filter, size = 20, page = 0 }: UseProductsParams) => {
 	const query = {
-		page: "0",
-		size: "20",
+		page: page.toString(),
+		size: size.toString(),
 		...(sort && { sort: `price,${sort}` }),
 		...(filter && { category: filter }),
 	};
@@ -38,9 +43,9 @@ export const useProducts = () => {
 	return {
 		products: products || [],
 		loading,
-		filter,
-		setFilter,
-		sort,
-		setSort,
+		// filter,
+		// setFilter,
+		// sort,
+		// setSort,
 	};
 };

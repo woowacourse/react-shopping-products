@@ -3,17 +3,27 @@ import ItemCardFilterSort from "../ItemCard/ItemCardFilterSort";
 import S from "./ProductContent.module.css";
 import SkeletonList from "../Skeleton/SkeletonList";
 import SkeletonCard from "../Skeleton/SkeletonCard";
-import { MergedProduct } from "../../types";
+import { FilterType, MergedProduct, SortType } from "../../types";
 import { useMergedProducts } from "../../hooks/useMergedProducts";
+import { useState } from "react";
 
 const ProductContent = () => {
-	const { mergedProducts, loading } = useMergedProducts();
+	const [filter, setFilter] = useState<FilterType>("");
+	const [sort, setSort] = useState<SortType>("asc");
+	const { mergedProducts, loading } = useMergedProducts({ filter, sort });
+
+	const selectFilter = (filter: FilterType) => {
+		setFilter(filter);
+	};
+	const selectSort = (sort: SortType) => {
+		setSort(sort);
+	};
 
 	return (
 		<div className={S.contentContainer}>
 			<div className={S.contentTop}>
 				<h1 className={S.title}>bpple 상품 목록</h1>
-				<ItemCardFilterSort />
+				<ItemCardFilterSort filter={filter} selectFilter={selectFilter} sort={sort} selectSort={selectSort} />
 			</div>
 			{loading ? (
 				<div className={S.itemContainer}>
