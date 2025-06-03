@@ -80,7 +80,6 @@ const ModalButton = styled.button<ModalButtonProps>`
   background-color: ${({ $backgroundColor }) => $backgroundColor || '#ffffff'};
   color: ${({ $textColor }) => $textColor || '#000000'};
   width: ${({ $size }) => getSize($size)};
-  color: white;
   border: ${({ $border }) => $border || 'none'};
   border-radius: 4px;
   padding: 10px 20px;
