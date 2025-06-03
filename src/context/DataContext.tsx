@@ -84,13 +84,16 @@ function dataReducer(state: AppDataState, action: DataAction): AppDataState {
 
 interface DataContextValue {
   state: AppDataState;
-
   initState: (key: string, initialData?: DataState<unknown>) => void;
   setLoading: (key: string, loading: boolean) => void;
   setData: <T>(key: string, data: T[]) => void;
   setError: (key: string, error: string | null) => void;
   resetState: (key: string) => void;
+  getData: <T>(key: string) => DataState<T> | undefined;
+}
 
+interface DataContextReadOnlyValue {
+  state: AppDataState;
   getData: <T>(key: string) => DataState<T> | undefined;
 }
 
@@ -148,6 +151,20 @@ export function useDataContext(): DataContextValue {
     throw new Error("useDataContext must be used within a DataProvider");
   }
   return context;
+}
+
+export function useDataContextReadOnly(): DataContextReadOnlyValue {
+  const context = useContext(DataContext);
+  if (!context) {
+    throw new Error(
+      "useDataContextReadOnly must be used within a DataProvider"
+    );
+  }
+
+  return {
+    state: context.state,
+    getData: context.getData,
+  };
 }
 
 export function useDataState<T>(key: string) {

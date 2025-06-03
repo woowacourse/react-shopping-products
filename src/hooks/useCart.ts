@@ -6,11 +6,11 @@ import removeProductItemApi from "../api/removeProductItemApi";
 import updateCartItemApi from "../api/updateCartItemApi";
 import { CART_MAX_COUNT } from "../constants/constants";
 import { useDataFetch } from "./useDataFetch";
-import { useDataContext } from "../context/DataContext";
+import { useDataContextReadOnly } from "../context/DataContext"; // 읽기 전용 사용
 import { CartContext } from "../context/CartContext";
 
 export const useCart = () => {
-  const { getData } = useDataContext();
+  const { getData } = useDataContextReadOnly();
 
   const cartContext = useContext(CartContext);
   if (!cartContext) {
