@@ -18,6 +18,7 @@ const CartIconButton = ({
     <CartIconButtonContainer
       aria-label={labelText}
       onClick={onClickCartIconButton}
+      data-testid="cart-icon-button"
     >
       <img src="/cartIcon.svg" />
       {cartItemCount !== 0 && (

@@ -13,4 +13,14 @@ describe('Header 컴포넌트', () => {
     const badge = screen.queryByText('0');
     expect(badge).toBeNull();
   });
+
+  it('장바구니 버튼을 누르면 모달이 열리는 함수가 호출된다', () => {
+    const handleOpenModal = jest.fn();
+    render(<Header cartItemCount={0} handleOpenModal={handleOpenModal} />);
+
+    const cartIconButton = screen.getByTestId('cart-icon-button');
+    cartIconButton.click();
+
+    expect(handleOpenModal).toHaveBeenCalled();
+  });
 });
