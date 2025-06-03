@@ -11,11 +11,6 @@ async function enableMocking() {
 
   const { worker } = await import('./mocks/browser');
 
-  // MSW 초기화 전에 로컬 스토리지 클리어 (캐시 문제 방지)
-  if (typeof window !== 'undefined') {
-    window.localStorage.clear();
-  }
-
   return worker.start({
     serviceWorker: {
       url: '/react-shopping-products/mockServiceWorker.js',
