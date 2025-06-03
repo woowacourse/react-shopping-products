@@ -19,11 +19,6 @@ const ProductItemImage = ({ product, height, width }: ProductItemProps) => {
       onError={(e: ImageEvent) => {
         e.currentTarget.src = 'fallback.svg';
       }}
-      onLoad={(e: ImageEvent) => {
-        if (!isValidImageUrl(e.currentTarget.src)) {
-          e.currentTarget.src = 'fallback.svg';
-        }
-      }}
       height={height}
       width={width}
     />
