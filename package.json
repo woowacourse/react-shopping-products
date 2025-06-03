@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "homepage": "https://shuyeon.github.io/react-shopping-products",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "dev:mock": "vite --mode mock"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
