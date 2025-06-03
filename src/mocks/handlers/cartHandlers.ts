@@ -2,16 +2,14 @@ import { http, HttpResponse } from 'msw';
 import { mockCartItems } from '../data/mockCartItem';
 import { mockProducts, mockProductStock } from '../data/mockProducts';
 import { CartItem } from '../../types/product';
-
-const API_URL = 'https://api.example.com';
+import { mockUrl } from '../../api/config';
 
 // 메모리에 장바구니 데이터 저장
-let cartItems: CartItem[] = [...mockCartItems.content];
+const cartItems: CartItem[] = [...mockCartItems.content];
 let cartIdCounter = Math.max(...cartItems.map((item) => item.id), 0) + 1;
 
 export const cartHandlers = [
-  // GET /cart-items
-  http.get(`${API_URL}/cart-items`, ({ request }) => {
+  http.get(`${mockUrl}/cart-items`, ({ request }) => {
     const url = new URL(request.url);
     const page = url.searchParams.get('page') || '0';
     const size = url.searchParams.get('size') || '50';
@@ -60,7 +58,7 @@ export const cartHandlers = [
   }),
 
   // POST /cart-items
-  http.post(`${API_URL}/cart-items`, async ({ request }) => {
+  http.post(`${mockUrl}/cart-items`, async ({ request }) => {
     // Authorization 헤더 체크 (실제 서버와 동일하게)
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Basic ')) {
@@ -126,7 +124,7 @@ export const cartHandlers = [
   }),
 
   // DELETE /cart-items/:id
-  http.delete(`${API_URL}/cart-items/:id`, ({ request, params }) => {
+  http.delete(`${mockUrl}/cart-items/:id`, ({ request, params }) => {
     // Authorization 헤더 체크
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Basic ')) {
@@ -145,7 +143,7 @@ export const cartHandlers = [
   }),
 
   // PATCH /cart-items/:id (수량 변경)
-  http.patch(`${API_URL}/cart-items/:id`, async ({ request, params }) => {
+  http.patch(`${mockUrl}/cart-items/:id`, async ({ request, params }) => {
     // Authorization 헤더 체크
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Basic ')) {

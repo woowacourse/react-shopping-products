@@ -5,7 +5,7 @@ import { ToastProvider } from './context/ToastContext';
 import { DataProvider } from './context/DataContext';
 
 async function enableMocking() {
-  if (!import.meta.env.VITE_ENABLE_MSW) {
+  if (import.meta.env.VITE_USE_MSW !== 'true') {
     return;
   }
 

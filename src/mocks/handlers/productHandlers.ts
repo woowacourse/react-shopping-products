@@ -1,8 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { mockProducts, mockProductStock } from '../data/mockProducts';
 import { ProductType } from '../../types/product';
-
-const API_URL = 'https://api.example.com';
+import { mockUrl } from '../../api/config';
 
 type SortOrder = 'asc' | 'desc';
 
@@ -27,7 +26,7 @@ const sortProducts = (
 };
 
 export const productHandlers = [
-  http.get(`${API_URL}/products`, ({ request }) => {
+  http.get(`${mockUrl}/products`, ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get('category');
     const page = url.searchParams.get('page') || '0';
@@ -118,7 +117,7 @@ export const productHandlers = [
   }),
 
   // GET /products/:id - 개별 상품 조회 (README의 미구현 API 스펙)
-  http.get(`${API_URL}/products/:id`, ({ params }) => {
+  http.get(`${mockUrl}/products/:id`, ({ params }) => {
     const id = Number(params.id);
     const product = mockProducts.find((p) => p.id === id);
 
