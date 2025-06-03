@@ -109,9 +109,9 @@ export function useData<T>(
     }
   }, [key, fetcher, cached, setCache, mergedOptions.retry, mergedOptions.retryDelay]);
 
-  const refetch = useCallback(async () => {
+  const refetch = async () => {
     await fetchData();
-  }, [fetchData]);
+  };
 
   useEffect(() => {
     if (!isCacheValid() || (mergedOptions.refetchOnMount && !cached.data)) {
