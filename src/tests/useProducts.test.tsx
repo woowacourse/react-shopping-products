@@ -48,7 +48,7 @@ describe('useProducts 훅', () => {
           name: '테스트 상품',
           price: 10000,
           imageUrl: '',
-          category: 'electronics',
+          category: '식료품',
           quantity: 10,
         },
       ],
@@ -59,7 +59,7 @@ describe('useProducts 훅', () => {
     };
     mockedGetProducts.mockResolvedValueOnce(fakeData);
 
-    const { result } = renderHook(() => useProducts('asc', 'electronics'), { wrapper: Wrapper });
+    const { result } = renderHook(() => useProducts('asc', '식료품'), { wrapper: Wrapper });
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
@@ -73,7 +73,7 @@ describe('useProducts 훅', () => {
   it('상품 가져오기 실패 시 에러 상태가 true가 되고 토스트를 띄운다', async () => {
     mockedGetProducts.mockRejectedValueOnce(new Error('fail'));
 
-    const { result } = renderHook(() => useProducts('desc', 'apparel'), { wrapper: Wrapper });
+    const { result } = renderHook(() => useProducts('desc', '패션잡화'), { wrapper: Wrapper });
 
     await waitFor(() => {
       expect(result.current.isError).toBe(true);
