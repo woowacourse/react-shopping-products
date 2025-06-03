@@ -23,6 +23,6 @@ export async function baseAPI<T>({
     throw new Error('GET 요청에 실패하였습니다.');
   }
 
-  if (method === 'GET') return result.json();
-  return null;
+  if (result.status === 204) return null;
+  return result.json();
 }
