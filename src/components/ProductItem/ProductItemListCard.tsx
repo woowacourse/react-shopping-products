@@ -9,7 +9,6 @@ import ProductItemSoldOut from './contents/ProductItemSoldOut';
 
 type ProductItemProps = {
   product: Product;
-  cartItemQuantity: number;
   isInCart: boolean;
 };
 
