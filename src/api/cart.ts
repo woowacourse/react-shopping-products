@@ -1,5 +1,6 @@
 import { CartResponse } from '../types/product';
 import { baseUrl } from './config';
+import { CART_ITEM_INITIAL_QUANTITY } from '../constants/productConfig';
 
 const fetchWithAuth = async (
   endpoint: string,
@@ -56,7 +57,7 @@ export const addCart = (id: number) =>
     '/cart-items',
     {
       method: 'POST',
-      body: JSON.stringify({ productId: id, quantity: 1 }),
+      body: JSON.stringify({ productId: id, quantity: CART_ITEM_INITIAL_QUANTITY }),
     },
     '장바구니 아이템 추가를 실패했습니다.',
   );
