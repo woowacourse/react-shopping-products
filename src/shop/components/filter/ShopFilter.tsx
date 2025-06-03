@@ -23,7 +23,7 @@ function ShopFilter({
         selectedValue={filterOption.category}
         onSelectHandler={handleCategoryOption}
         aria-label="카테고리 선택"
-        autoFocus={true}
+        autoFocus
       />
       <Dropdown
         options={[

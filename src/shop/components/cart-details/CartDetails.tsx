@@ -95,7 +95,7 @@ export default function CartDetails({
                   maxCount={cart.product.quantity}
                   onPlusClick={() => handlePlusQuantity(cart.id)}
                   onMinusClick={() => handleMinusQuantity(cart.id)}
-                  autoFocus={true}
+                  autoFocus
                 />
               </ProductInfo>
 
