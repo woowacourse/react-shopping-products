@@ -1,21 +1,34 @@
-import Header from "../Header/Header";
+import CartHeader from "../Header/CartHeader";
 import ErrorToast from "../Toast/ErrorToast";
 import ProductContent from "../Product/ProductContent";
-import { CartProvider } from "../Context/CartProvider";
-import { ProductProvider } from "../Context/ProductProvider";
 import S from "./ProductListPage.module.css";
+import { useState } from "react";
+import CartModal from "../Modal/CartModal";
+import { DataProvider } from "../Context/DataContext";
+import { ErrorProvider } from "../Context/ErrorContext";
 
 const ProductListPage = () => {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+
+	const openModal = () => {
+		setIsOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsOpen(false);
+	};
+
 	return (
-		<CartProvider>
-			<div className={S.container}>
-				<Header />
-				<ProductProvider>
+		<DataProvider>
+			<ErrorProvider>
+				<div className={S.container}>
+					<CartHeader onClick={openModal} />
 					<ErrorToast />
 					<ProductContent />
-				</ProductProvider>
-			</div>
-		</CartProvider>
+					<CartModal isOpen={isOpen} onClick={closeModal} />
+				</div>
+			</ErrorProvider>
+		</DataProvider>
 	);
 };
 

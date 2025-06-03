@@ -2,14 +2,17 @@ import { CART_URL } from "../../constants/endpoint";
 import { USER_TOKEN } from "../../constants/env";
 import handleHttpError from "../handleHTTPError";
 
-const removeCart = async (cartId: number) => {
+const updateCartItemCount = async (id: number, quantity = 1) => {
 	try {
-		const response = await fetch(`${CART_URL}/${cartId}`, {
+		const response = await fetch(`${CART_URL}/${id}`, {
 			headers: {
 				"content-type": "application/json",
 				Authorization: `Basic ${USER_TOKEN}`,
 			},
-			method: "DELETE",
+			method: "PATCH",
+			body: JSON.stringify({
+				quantity,
+			}),
 		});
 
 		handleHttpError(response);
@@ -18,4 +21,4 @@ const removeCart = async (cartId: number) => {
 	}
 };
 
-export default removeCart;
+export default updateCartItemCount;

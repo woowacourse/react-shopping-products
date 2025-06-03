@@ -1,29 +1,22 @@
-import { CartInfo } from "../../types";
-import ItemCardImage from "./ItemCardImage";
+import { MergedProduct } from "../../types";
 import ItemCardInfo from "./ItemCardInfo";
 import ItemCardButton from "./ItemCardButton";
+import Image from "../Image/Image";
+import CartItemSoldOut from "../Cart/CartItemSoldOut";
 import S from "./ItemCard.module.css";
 
-interface ItemCardProps {
-	id: number;
-	imageUrl: string;
-	name: string;
-	price: number;
-	cartInfo: CartInfo | null;
-}
-
-const ItemCard = ({ id, imageUrl, name, price, cartInfo }: ItemCardProps) => {
+const ItemCard = ({ mergedProduct }: { mergedProduct: MergedProduct }) => {
 	return (
 		<div className={S.cardContainer}>
-			<ItemCardImage imageUrl={imageUrl} />
+			<Image src={mergedProduct.product.imageUrl} alt="상품 이미지" className="card" />
+			{mergedProduct.product.quantity === 0 && <CartItemSoldOut />}
 			<div className={S.contentContainer}>
-				<ItemCardInfo name={name} price={price} />
+				<ItemCardInfo name={mergedProduct.product.name} price={mergedProduct.product.price} />
 				<div className={S.buttonWrap}>
-					<ItemCardButton productId={id} cartInfo={cartInfo} />
+					<ItemCardButton mergedProduct={mergedProduct} />
 				</div>
 			</div>
 		</div>
 	);
 };
-
 export default ItemCard;

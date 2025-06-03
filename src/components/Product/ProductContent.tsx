@@ -1,22 +1,29 @@
 import ItemCard from "../ItemCard/ItemCard";
-import mergeProducts from "../../utils/mergeProducts";
 import ItemCardFilterSort from "../ItemCard/ItemCardFilterSort";
-import { useCartContext } from "../Context/CartProvider";
-import { useProductContext } from "../Context/ProductProvider";
 import S from "./ProductContent.module.css";
 import SkeletonList from "../Skeleton/SkeletonList";
 import SkeletonCard from "../Skeleton/SkeletonCard";
+import { FilterType, MergedProduct, SortType } from "../../types";
+import { useMergedProducts } from "../../hooks/useMergedProducts";
+import { useState } from "react";
 
 const ProductContent = () => {
-	const { products, loading } = useProductContext();
-	const { cartProducts } = useCartContext();
-	const mergedData = mergeProducts(products, cartProducts);
+	const [filter, setFilter] = useState<FilterType>("");
+	const [sort, setSort] = useState<SortType>("asc");
+	const { mergedProducts, loading } = useMergedProducts({ filter, sort });
+
+	const selectFilter = (filter: FilterType) => {
+		setFilter(filter);
+	};
+	const selectSort = (sort: SortType) => {
+		setSort(sort);
+	};
 
 	return (
 		<div className={S.contentContainer}>
 			<div className={S.contentTop}>
 				<h1 className={S.title}>bpple 상품 목록</h1>
-				<ItemCardFilterSort />
+				<ItemCardFilterSort filter={filter} selectFilter={selectFilter} sort={sort} selectSort={selectSort} />
 			</div>
 			{loading ? (
 				<div className={S.itemContainer}>
@@ -24,8 +31,8 @@ const ProductContent = () => {
 				</div>
 			) : (
 				<div className={S.itemContainer}>
-					{mergedData.map(({ id, imageUrl, name, price, cartInfo }) => (
-						<ItemCard key={id} id={id} imageUrl={imageUrl} name={name} price={price} cartInfo={cartInfo} />
+					{mergedProducts.map((mergedProduct: MergedProduct) => (
+						<ItemCard key={mergedProduct.product.id} mergedProduct={mergedProduct} />
 					))}
 				</div>
 			)}

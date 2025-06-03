@@ -1,5 +1,9 @@
 .cartContainer {
 	position: relative;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .cartCount {

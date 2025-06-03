@@ -1,46 +1,47 @@
 import { PRODUCT_URL } from "../constants/endpoint";
-import getQueryURL from "../utils/getQueryURL";
-import { FilterType, Product, SortType } from "../types";
-import { useState, useEffect } from "react";
+import { FilterType, SortType } from "../types";
+import { useData } from "../components/Context/DataContext";
+import { useEffect } from "react";
 import fetchData from "../utils/api/fetchData";
+import getQueryURL from "../utils/getQueryURL";
 
-interface UseProductsProps {
-	page?: string;
-	size?: string;
+interface UseProductsParams {
+	sort: SortType;
+	filter: FilterType;
+	size?: number;
+	page?: number;
 }
 
-export default function useProducts({ page = "0", size = "20" }: UseProductsProps = {}) {
-	const [filter, setFilter] = useState<FilterType>("");
-	const [sort, setSort] = useState<SortType>("asc");
-	const [products, setProducts] = useState<Product[]>([]);
-	const [loading, setLoading] = useState<boolean>(true);
-	const [productError, setProductError] = useState<string>("");
-
+export const useProducts = ({ sort, filter, size = 20, page = 0 }: UseProductsParams) => {
 	const query = {
-		page,
-		size,
+		page: page.toString(),
+		size: size.toString(),
 		...(sort && { sort: `price,${sort}` }),
 		...(filter && { category: filter }),
 	};
 	const url = getQueryURL(PRODUCT_URL, query);
 
-	const fetchProducts = async () => {
-		try {
-			setLoading(true);
-			const data = await fetchData({ url });
-			setProducts(data);
-		} catch (error) {
-			if (error instanceof Error) {
-				setProductError(error.message);
-			}
-		} finally {
-			setLoading(false);
-		}
-	};
+	const {
+		data: products,
+		refetch,
+		loading,
+		setLoading,
+	} = useData({
+		fetcher: () =>
+			fetchData({
+				url,
+			}),
+		name: "products",
+	});
 
 	useEffect(() => {
-		fetchProducts();
+		setLoading(true);
+		refetch();
+		setLoading(false);
 	}, [url]);
 
-	return { products, loading, filter, setFilter, sort, setSort, productError };
-}
+	return {
+		products: products || [],
+		loading,
+	};
+};

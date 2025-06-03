@@ -1,17 +1,19 @@
-import { useCartContext } from "../Context/CartProvider";
-import { useProductContext } from "../Context/ProductProvider";
+import { useError } from "../Context/ErrorContext";
 import S from "./ErrorToast.module.css";
 
 const ErrorToast = () => {
-	const { cartError } = useCartContext();
-	const { productError } = useProductContext();
+	const { errors } = useError();
+	const errorMessages = Object.values(errors);
+	if (errorMessages.length === 0) return null;
 
 	return (
-		(cartError || productError) && (
-			<div className={S.toastContainer}>
-				<p className={S.toastText}>{cartError || productError}</p>
-			</div>
-		)
+		<div className={S.toastContainer}>
+			{errorMessages.map((message, index) => (
+				<div key={index} className={S.toast}>
+					{message}
+				</div>
+			))}
+		</div>
 	);
 };
 
