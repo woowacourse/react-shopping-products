@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect } from 'react';
+import { createContext, useContext } from 'react';
 
 type DataContextValue = {
   data: Record<string, any>;
@@ -7,131 +7,10 @@ type DataContextValue = {
 
 export const DataContext = createContext<DataContextValue | null>(null);
 
-type useDataContextProps<TResult> = {
-  fetcher: (
-    args?: any
-  ) => Promise<{ data: { content: TResult }; status: number }>;
-  key: string;
-  fetcherParams?: Record<string, any>;
-};
-
-export function useDataContext<TResult>({
-  fetcher,
-  key,
-  fetcherParams,
-}: useDataContextProps<TResult>) {
+export const useDataContext = () => {
   const context = useContext(DataContext);
-
   if (!context) {
-    throw new Error('DataProvider 안에 DataContext를 사용해야 합니다.');
+    throw new Error('DataProvider 안에서 사용되어야 합니다.');
   }
-
-  const { data, setData } = context;
-
-  const request = useCallback(async () => {
-    try {
-      setData((prevData) => ({
-        ...prevData,
-        [key]: {
-          data: [] as TResult[],
-          ...prevData[key],
-          isLoading: true,
-          error: {
-            isError: false,
-            status: null,
-          },
-        },
-      }));
-
-      const { data: fetchedData, status } = await fetcher(fetcherParams);
-
-      setData((prevData) => ({
-        ...prevData,
-        [key]: {
-          ...prevData[key],
-          data: fetchedData.content,
-          error: {
-            isError: false,
-            status: Number(status),
-          },
-        },
-      }));
-    } catch (e) {
-      if (e instanceof Error) {
-        setData((prevData) => ({
-          ...prevData,
-          [key]: {
-            ...prevData[key],
-            error: {
-              isError: true,
-              status: Number(e.message),
-            },
-          },
-        }));
-      } else {
-        setData((prevData) => ({
-          ...prevData,
-          [key]: {
-            ...prevData[key],
-            error: {
-              isError: true,
-              status: null,
-            },
-          },
-        }));
-      }
-    } finally {
-      setData((prevData) => ({
-        ...prevData,
-        [key]: {
-          ...prevData[key],
-          isLoading: false,
-        },
-      }));
-    }
-  }, [fetcher, fetcherParams, key, setData]);
-
-  useEffect(() => {
-    const hasData = data[key];
-    if (hasData) {
-      return;
-    }
-
-    request();
-  }, [fetcher, key, request]);
-
-  const updateError = (key: string, status: number | null) => {
-    setData((prev) => ({
-      ...prev,
-      [key]: {
-        ...prev[key],
-        isLoading: false,
-        error: {
-          isError: true,
-          status,
-        },
-      },
-    }));
-  };
-
-  if (!data[key]) {
-    return {
-      data: [] as TResult[],
-      refetch: request,
-      isLoading: false,
-      error: {
-        isError: false,
-        status: null,
-      },
-      updateError,
-    };
-  }
-
-  return {
-    data: data[key].data as TResult[],
-    refetch: request,
-    isLoading: data[key]?.isLoading,
-    error: data[key]?.error,
-    updateError,
-  };
-}
+  return context;
+};
