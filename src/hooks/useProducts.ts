@@ -1,6 +1,6 @@
 import { useMemo, useEffect } from 'react';
 import { getProducts } from '../api/products';
-import { ProductType } from '../types/product';
+import { CategoryType, ProductType, SortKeyType } from '../types/product';
 import { useData } from './useData';
 import { useToast } from '../context/ToastContext';
 import { ERROR_MESSAGES } from '../constants/errorMessages';
@@ -13,7 +13,7 @@ interface ProductsResponse {
   number: number;
 }
 
-export function useProducts(sortType: string, category: string = '전체') {
+export function useProducts(sortType: SortKeyType, category: CategoryType = '전체') {
   const { showToast } = useToast();
   const key = useMemo(() => `products-${sortType}-${category}`, [sortType, category]);
 
