@@ -26,13 +26,10 @@ const CartModal = ({ isModalOpen, handleCloseModal }: CartModalProps) => {
             <CartItemsContainer>
               <Divider />
               {cartItems.map((cartItem) => (
-                <>
-                  <ProductItemModalCard
-                    key={cartItem.id}
-                    product={cartItem.product}
-                  />
+                <div key={cartItem.id}>
+                  <ProductItemModalCard product={cartItem.product} />
                   <Divider />
-                </>
+                </div>
               ))}
             </CartItemsContainer>
             <CartTotalAmount />
