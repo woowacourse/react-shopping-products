@@ -69,6 +69,5 @@ export function useToastContext() {
   if (!context) {
     throw new Error('컨텍스트는 Provider 내부에서만 사용할 수 있습니다.');
   }
-  console.log('useToastContext called');
   return context;
 }
