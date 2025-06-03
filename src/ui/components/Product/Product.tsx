@@ -66,6 +66,8 @@ function Product({
     setIsLoading(true);
     try {
       await onUpdateQuantity(cartId, cartQuantity + 1);
+    } catch (error) {
+      console.error('Failed to update quantity:', error);
     } finally {
       setIsLoading(false);
     }
@@ -80,6 +82,8 @@ function Product({
       setIsLoading(true);
       try {
         await onUpdateQuantity(cartId, cartQuantity - 1);
+      } catch (error) {
+        console.error('Failed to update quantity:', error);
       } finally {
         setIsLoading(false);
       }
