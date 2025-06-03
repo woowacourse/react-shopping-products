@@ -1,3 +1,5 @@
+import { allProductsMSW } from './productListMockData';
+
 export const cartMockData = [
   {
     id: '1',
@@ -24,3 +26,9 @@ export const cartMockData = [
     },
   },
 ];
+
+export const cartMockDataMSW: {
+  id: number;
+  quantity: number;
+  product: (typeof allProductsMSW)[number];
+}[] = [];
