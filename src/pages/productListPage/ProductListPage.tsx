@@ -2,7 +2,7 @@ import ErrorToast from '../../components/ErrorToast';
 import ProductItem from '../../components/ProductItem';
 import Select from '../../components/Select';
 import * as P from './ProductListPage.styles.tsx';
-import useCartContext from '../../hooks/useCartContext';
+import useCartHandler from '../../hooks/useCartHandler.ts';
 import {
   CATEGORY_OPTIONS,
   SELECT_SORT_OPTIONS,
@@ -10,16 +10,18 @@ import {
 } from '../../constants/systemConstants';
 import ProductListPageSkeleton from './ProductListPageSkeleton.tsx';
 import useProductHandler from '../../hooks/useProductHandler.ts';
-import useErrorMessageContext from '../../hooks/useErrorMessageContext.ts';
+import useErrorHandler from '../../hooks/useErrorHandler.ts';
+import { extractCartQuantity } from '../../domain/cartItem.ts';
 
 export const ProductListPage = () => {
-  const { cartItemsIds, handleAddCartItemsIds, handleRemoveCartItemsIds } = useCartContext();
-
-  const { errorMessage, handleErrorMessage } = useErrorMessageContext();
-
+  const { errorMessage, handleErrorMessage } = useErrorHandler();
+  const { cartItems, handleAddCartItem, handleIncreaseQuantity, handleDecreaseQuantity } =
+    useCartHandler({
+      handleErrorMessage,
+    });
   const {
     products,
-    isLoading,
+    isProductsLoading,
     categoryOption,
     sortOption,
     handleCategoryOption,
@@ -28,7 +30,7 @@ export const ProductListPage = () => {
     handleErrorMessage,
   });
 
-  if (isLoading) {
+  if (isProductsLoading) {
     return <ProductListPageSkeleton />;
   }
 
@@ -54,9 +56,10 @@ export const ProductListPage = () => {
           <ProductItem
             key={product.id}
             product={product}
-            isCartAdded={cartItemsIds.includes(product.id)}
-            handleAddCartItem={handleAddCartItemsIds}
-            handleRemoveCartItem={handleRemoveCartItemsIds}
+            quantityInCart={extractCartQuantity(cartItems, product.id)}
+            handleAddCartItem={handleAddCartItem}
+            handleIncreaseQuantity={handleIncreaseQuantity}
+            handleDecreaseQuantity={handleDecreaseQuantity}
           />
         ))}
       </P.ProductItemContainer>

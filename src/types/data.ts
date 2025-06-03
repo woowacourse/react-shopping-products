@@ -1,4 +1,4 @@
-export type FetchMethodType = 'GET' | 'POST' | 'DELETE';
+export type FetchMethodType = 'GET' | 'POST' | 'DELETE' | 'PATCH';
 
 export type CategoryType = '전체' | '식료품' | '패션잡화';
 
@@ -12,6 +12,7 @@ export interface ProductItemType {
   category: CategoryType;
   price: number;
   imageUrl: string;
+  quantity: number;
 }
 
 export interface CartItemType {
@@ -19,3 +20,12 @@ export interface CartItemType {
   product: ProductItemType;
   quantity: number;
 }
+
+export type DataMapType = {
+  cartItems: CartItemType[];
+  products: ProductItemType[];
+};
+
+export type DataType = {
+  [K in keyof DataMapType]: DataMapType[K];
+};
