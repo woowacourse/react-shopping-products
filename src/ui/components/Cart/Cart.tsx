@@ -18,10 +18,6 @@ function Cart({ cart, onUpdateQuantity, onRemoveItem, onClose }: CartProps) {
 
   const isEmptyCart = cart.content.length === 0;
 
-  if (isEmptyCart) {
-    return <EmptyCart />;
-  }
-
   return (
     <>
       <Container>
