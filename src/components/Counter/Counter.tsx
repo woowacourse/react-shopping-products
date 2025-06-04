@@ -13,7 +13,9 @@ export default function Counter({ value, onIncrement, onDecrement }: CounterProp
       <button onClick={onDecrement}>
         <Image src="assets/minus.svg" alt="수량 감소" />
       </button>
-      <span css={valueCss}>{value}</span>
+      <span data-testid={`product-quantity`} css={valueCss}>
+        {value}
+      </span>
       <button onClick={onIncrement}>
         <Image src="assets/plus.svg" alt="수량 증가" />
       </button>

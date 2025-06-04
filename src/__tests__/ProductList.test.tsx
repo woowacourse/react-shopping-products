@@ -117,7 +117,6 @@ it('상품의 수량을 초과하여 담을 수 없다.', async () => {
 
   fireEvent.click(plusButton);
 
-  // 에러 토스트가 나타나는지 확인
-  const toast = await screen.findByTestId('error-toast');
-  expect(toast).toHaveTextContent('수량을 초과해서 담을 수 없어요');
+  const quantityElements = await screen.findAllByTestId('product-quantity');
+  expect(quantityElements[0]).toHaveTextContent('5');
 });
