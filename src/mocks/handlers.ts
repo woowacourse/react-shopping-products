@@ -146,6 +146,7 @@ export const handlers = [
     mockCartItems.splice(index, 1);
     return HttpResponse.json({ message: 'Deleted' }, { status: 200 });
   }),
+
   http.post('*/cart-items', async ({ request }) => {
     const { productId, quantity } = (await request.json()) as {
       productId: number;

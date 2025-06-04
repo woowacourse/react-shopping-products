@@ -1,28 +1,77 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { CartItem, Product } from '../App';
 import getCartItems from '../api/getCartItems';
 import postCartItems from '../api/postCartItems';
 import deleteCartItems from '../api/deleteCartItems';
 import patchCartItems from '../api/patchCartItems';
 import { useDataContext } from '../components/contexts/dataContext';
-import useFetcherOnly from './useFetchOnly';
+import useApiRequest from './useApiRequest';
+
+const key = 'cartItems';
 
 const useCartItems = () => {
-  const key = 'cartItems';
   const { data: contextData, setData } = useDataContext();
 
   const {
     data: fetchedCartItems,
     isLoading,
-    error,
-    refetch: fetchCartItems,
-  } = useFetcherOnly<CartItem>({
-    fetcher: getCartItems,
+    error: fetchError,
+    request: fetchCartItems,
+  } = useApiRequest<void, CartItem>({
+    method: 'GET',
+    requestFn: getCartItems,
     enabled: !contextData[key],
   });
 
-  const [isFetching, setIsFetching] = useState(false);
+  const {
+    request: postCartItemRequest,
+    isLoading: isPosting,
+    error: postError,
+  } = useApiRequest<Product>({
+    method: 'POST',
+    requestFn: postCartItems,
+    enabled: false,
+  });
 
+  const {
+    request: patchCartItemRequest,
+    isLoading: isPatching,
+    error: patchError,
+  } = useApiRequest<{ cartItemId: number; quantity: number }>({
+    method: 'PATCH',
+    requestFn: patchCartItems,
+    enabled: false,
+  });
+
+  const {
+    request: deleteCartItemRequest,
+    isLoading: isDeleting,
+    error: deleteError,
+  } = useApiRequest<number>({
+    method: 'DELETE',
+    requestFn: deleteCartItems,
+    enabled: false,
+  });
+
+  const totalError = {
+    isError: Boolean(
+      postError?.isError ||
+        patchError?.isError ||
+        deleteError?.isError ||
+        fetchError?.isError
+    ),
+    status:
+      postError?.status ||
+      patchError?.status ||
+      deleteError?.status ||
+      fetchError?.status ||
+      null,
+  };
+  console.log('fetchError', fetchError);
+  console.log('postError', postError);
+  console.log('patchError', patchError);
+  console.log('deleteError', deleteError);
+  console.log('에러!?', totalError);
   const cartItems = contextData[key]?.data ?? [];
 
   useEffect(() => {
@@ -37,80 +86,42 @@ const useCartItems = () => {
     }
   }, [fetchedCartItems, key, setData]);
 
-  const handleError = (status: number | null) => {
-    setData((prev) => ({
-      ...prev,
-      [key]: {
-        ...prev[key],
-        isLoading: false,
-        error: {
-          isError: true,
-          status,
-        },
-      },
-    }));
-  };
-
   const addToCart = async (product: Product) => {
-    if (isFetching) return;
+    if (isPosting) return;
 
-    try {
-      setIsFetching(true);
-      await postCartItems(product);
-      fetchCartItems();
-    } catch (e) {
-      handleError(e instanceof Error ? Number(e.message) : null);
-    } finally {
-      setIsFetching(false);
-    }
+    await postCartItemRequest(product);
+    fetchCartItems();
   };
 
   const removeFromCart = async (productId: number) => {
-    if (isFetching) return;
+    if (isDeleting) return;
 
     const target = cartItems.find((item) => item.product.id === productId);
-    if (!target) {
-      handleError(404);
-      return;
-    }
 
-    try {
-      setIsFetching(true);
-      await deleteCartItems(target.id);
-      fetchCartItems();
-    } catch (e) {
-      handleError(e instanceof Error ? Number(e.message) : null);
-    } finally {
-      setIsFetching(false);
-    }
+    await deleteCartItemRequest(target.id);
+    fetchCartItems();
   };
 
   const increaseCartItemQuantity = async (productId: number) => {
-    if (isFetching) return;
+    if (isPatching) return;
 
     const target = cartItems.find((item) => item.product.id === productId);
     if (!target) {
-      handleError(404);
       return;
     }
 
-    try {
-      setIsFetching(true);
-      await patchCartItems(target.id, target.quantity + 1);
-      fetchCartItems();
-    } catch (e) {
-      handleError(e instanceof Error ? Number(e.message) : null);
-    } finally {
-      setIsFetching(false);
-    }
+    await patchCartItemRequest({
+      cartItemId: target.id,
+      quantity: target.quantity + 1,
+    });
+    fetchCartItems();
   };
 
   const decreaseCartItemQuantity = async (productId: number) => {
-    if (isFetching) return;
+    if (isPatching) return;
 
     const target = cartItems.find((item) => item.product.id === productId);
     if (!target) {
-      handleError(404);
       return;
     }
 
@@ -119,21 +130,17 @@ const useCartItems = () => {
       return;
     }
 
-    try {
-      setIsFetching(true);
-      await patchCartItems(target.id, target.quantity - 1);
-      fetchCartItems();
-    } catch (e) {
-      handleError(e instanceof Error ? Number(e.message) : null);
-    } finally {
-      setIsFetching(false);
-    }
+    await patchCartItemRequest({
+      cartItemId: target.id,
+      quantity: target.quantity - 1,
+    });
+    fetchCartItems();
   };
 
   return {
     cartItems,
     isLoading,
-    error,
+    error: totalError,
     fetchCartItems,
     addToCart,
     removeFromCart,

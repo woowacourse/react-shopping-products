@@ -2,7 +2,7 @@ import { useDataContext } from '../components/contexts/dataContext';
 import getProducts from '../api/getProducts';
 import { Product } from '../App';
 import { useEffect } from 'react';
-import useFetcherOnly from './useFetchOnly';
+import useApiRequest from './useApiRequest';
 
 type UseProductsProps = {
   category?: '전체' | '패션잡화' | '식료품';
@@ -17,12 +17,14 @@ const useProducts = ({ category, priceOrder }: UseProductsProps) => {
     data: fetchedProducts,
     isLoading,
     error,
-    refetch,
-  } = useFetcherOnly<Product>({
-    fetcher: getProducts,
-    fetcherParams: { category, priceOrder },
+    request,
+  } = useApiRequest<UseProductsProps, Product>({
+    method: 'GET',
+    requestFn: getProducts,
+    params: { category, priceOrder },
     enabled: !contextData[key]?.data,
   });
+  console.log('에러?', error);
 
   useEffect(() => {
     if (!fetchedProducts) return;
@@ -42,7 +44,7 @@ const useProducts = ({ category, priceOrder }: UseProductsProps) => {
     products,
     isLoading,
     error,
-    fetchProducts: refetch,
+    fetchProducts: request,
   };
 };
 

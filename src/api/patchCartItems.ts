@@ -1,6 +1,12 @@
 import safeFetch from './safeFetch';
 
-const patchCartItems = async (cartItemId: number, quantity: number) => {
+const patchCartItems = async ({
+  cartItemId,
+  quantity,
+}: {
+  cartItemId: number;
+  quantity: number;
+}) => {
   const options = {
     method: 'PATCH',
     headers: {
