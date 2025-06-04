@@ -37,4 +37,16 @@ export const SHOPPING_CART_MOCK_DATA = [
     },
     quantity: 1,
   },
+  {
+    id: 72604,
+    product: {
+      id: 24,
+      name: "부리부리 원형 테이블",
+      price: 3210000,
+      imageUrl: "",
+      category: "패션잡화",
+      quantity: 50,
+    },
+    quantity: 1,
+  },
 ];
