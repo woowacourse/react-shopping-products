@@ -3,11 +3,11 @@ import { vi, describe, it, beforeEach, afterEach, expect } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import * as apiModule from "../../src/api/product/getProducts";
+import * as apiModule from "../../api/product/getProducts";
 import {
   ProductsApiProvider,
   useProductsApi,
-} from "../../src/domain/contexts/ProductApiContext";
+} from "../../domain/contexts/ProductApiContext";
 
 function TestComponent() {
   const { productsData, productsStatus, productsError, refetchProducts } =

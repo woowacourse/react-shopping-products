@@ -3,11 +3,11 @@ import { vi, describe, it, beforeEach, expect } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import * as apiModule from "../../src/api/shoppingCart/getShoppingCart";
+import * as apiModule from "../../api/shoppingCart/getShoppingCart";
 import {
   CartApiProvider,
   useCartApi,
-} from "../../src/domain/contexts/CartApiContext";
+} from "../../domain/contexts/CartApiContext";
 
 describe("useCartApi test", () => {
   beforeEach(() => {
