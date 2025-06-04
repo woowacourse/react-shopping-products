@@ -2,14 +2,19 @@ import { useEffect, useState } from 'react';
 import { postCartItem, putCartItem, deleteCartItem } from '../api/cartItem';
 import { CartItem } from '../page/ShopPage';
 
-interface UseCartQuantityProps {
+interface useCartItemControllerProps {
   productId: number;
   stock: number;
   selectedCartItem?: CartItem;
   onChange: () => void;
 }
 
-export default function useCartQuantity({ productId, stock, selectedCartItem, onChange }: UseCartQuantityProps) {
+export default function useCartItemController({
+  productId,
+  stock,
+  selectedCartItem,
+  onChange,
+}: useCartItemControllerProps) {
   const [quantity, setQuantity] = useState(selectedCartItem?.quantity ?? 0);
   const [showToast, setShowToast] = useState(false);
 

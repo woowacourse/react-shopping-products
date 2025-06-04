@@ -3,7 +3,7 @@ import { CartItem } from '../../page/ShopPage';
 import Button from '../Button/Button';
 import Stepper from '../Stepper/Stepper';
 import Toast from '../Toast/Toast';
-import useCartQuantity from '../../hook/useCartQuantity';
+import useCartItemController from '../../hook/useCartItemController';
 
 const productLayout = css`
   display: flex;
@@ -85,7 +85,7 @@ interface ProductProps {
 }
 
 export default function Product({ id, imageUrl, name, price, stock, selectedCardItems, onChange }: ProductProps) {
-  const { quantity, showToast, handleAddToCart, handleIncrease, handleDecrease } = useCartQuantity({
+  const { quantity, showToast, handleAddToCart, handleIncrease, handleDecrease } = useCartItemController({
     productId: Number(id),
     stock,
     selectedCartItem: selectedCardItems[0],
