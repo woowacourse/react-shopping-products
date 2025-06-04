@@ -38,9 +38,8 @@ export default function Stepper({ quantity, onIncrease, onDecrease }: StepperPro
           <img src="./minus-quantity.svg" alt="minus" />
         </button>
       </div>
-      <div css={stepperTextBox}>
-        <p>{quantity}</p>
-      </div>
+      <span css={stepperTextBox}>{quantity}</span>
+
       <div css={stepperButtonContainer}>
         <button css={stepperButton} onClick={onIncrease}>
           <img css={stepperButton} src="./add-quantity.svg" alt="plus" onClick={onIncrease} />
