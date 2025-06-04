@@ -16,7 +16,7 @@ interface ModalProps {
       name: string;
       price: number;
       imageUrl: string;
-      category: string;
+      category?: string;
     };
   }[];
   cartStatus: "idle" | "loading" | "success" | "error";

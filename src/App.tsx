@@ -3,15 +3,19 @@ import Modal from "./Component/Common/Modal";
 import Body from "./Component/Layout/Body";
 import Header from "./Component/Layout/Header";
 import ProductListContainer from "./Component/Product/ProductListContainer";
-import { APIProvider } from "./domain/contexts/APIContext";
-import { useAPI } from "./domain/contexts/APIContext";
-import getShoppingCart from "./api/shoppingCart/getShoppingCart";
+import { CartApiProvider, useCartApi } from "./domain/contexts/CartApiContext";
+import {
+  ProductsApiProvider,
+  useProductsApi,
+} from "./domain/contexts/ProductApiContext";
 
 function App() {
   return (
-    <APIProvider>
-      <AppContent />
-    </APIProvider>
+    <CartApiProvider>
+      <ProductsApiProvider>
+        <AppContent />
+      </ProductsApiProvider>
+    </CartApiProvider>
   );
 }
 
@@ -19,17 +23,14 @@ export default App;
 
 function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const {
-    data: cartData,
-    status: cartStatus,
-    refetch: refetchCart,
-  } = useAPI({
-    fetcher: () => getShoppingCart(),
-    name: "cart",
-  });
+  const { cartData, cartStatus, refetchCart } = useCartApi();
+  // const { productsData, productsStatus } = useProductsApi();
+  // const { productsData, productsStatus, productsError, refetchProducts } = useProductsApi();
 
-  const cartItems = cartData?.content ?? [];
+  const cartItems = cartData ?? [];
   const cartItemCount = cartItems.length;
+
+  console.log("cartItems: ", cartItems);
 
   return (
     <>
@@ -40,7 +41,7 @@ function AppContent() {
           cartItemCount={cartItemCount}
         />
         <Body>
-          <ProductListContainer />
+          {/* <ProductListContainer products={productsData ?? []} /> */}
         </Body>
       </div>
       <Modal
