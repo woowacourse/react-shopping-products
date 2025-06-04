@@ -11,6 +11,7 @@ export function useProductsWithCart(
     products,
     isLoading: isProductsLoading,
     isError: isProductsError,
+    error: productsError,
     fetchProduct,
   } = useProducts(sortType, category);
 
@@ -54,6 +55,7 @@ export function useProductsWithCart(
     cart,
     isLoading,
     isError,
+    error: productsError,
     fetchCart,
     fetchProduct,
   };

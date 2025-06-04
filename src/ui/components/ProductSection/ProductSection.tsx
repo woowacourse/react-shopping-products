@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Title from '../Title/Title';
 import Dropdown from '../Dropdown/Dropdown';
 import ProductList from '../ProductList/ProductList';
@@ -12,6 +12,8 @@ import {
 import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
 import { SortType, CategoryType, SortKeyType } from '../../../types/product';
 import { useProductsWithCart } from '../../../hooks/useProductsWithCart';
+import { useToast } from '../../../context/ToastContext';
+import { ERROR_MESSAGES } from '../../../constants/errorMessages';
 
 function ProductSection() {
   const [sort, setSort] = useState<SortType>('낮은 가격 순');
@@ -23,11 +25,19 @@ function ProductSection() {
   };
   const mappedSortType = sortTypeToKey[sort];
 
+  const { showToast } = useToast();
   const {
     transformedProducts: products,
     isLoading,
     isError,
+    error,
   } = useProductsWithCart(mappedSortType, category);
+
+  useEffect(() => {
+    if (error) {
+      showToast(ERROR_MESSAGES.productsFetchError);
+    }
+  }, [error, showToast]);
 
   const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
