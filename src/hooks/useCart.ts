@@ -46,7 +46,6 @@ export function useCart() {
     cart,
     isLoading,
     isError: !!error,
-    setIsError: () => {}, // 기존 API 호환성을 위해 유지
     fetchCart,
     isInCart,
     getCartItemId,

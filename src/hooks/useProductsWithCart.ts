@@ -11,7 +11,6 @@ export function useProductsWithCart(
     products,
     isLoading: isProductsLoading,
     isError: isProductsError,
-    setIsError: setProductsError,
     fetchProduct,
   } = useProducts(sortType, category);
 
@@ -19,7 +18,6 @@ export function useProductsWithCart(
     cart,
     isLoading: isCartLoading,
     isError: isCartError,
-    setIsError: setCartError,
     fetchCart,
     isInCart,
     getCartItemId,
@@ -51,17 +49,11 @@ export function useProductsWithCart(
     cartId: item.cartId,
   }));
 
-  const resetErrors = () => {
-    setProductsError();
-    setCartError();
-  };
-
   return {
     transformedProducts,
     cart,
     isLoading,
     isError,
-    resetErrors,
     fetchCart,
     fetchProduct,
   };

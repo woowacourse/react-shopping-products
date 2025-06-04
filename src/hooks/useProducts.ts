@@ -37,7 +37,6 @@ export function useProducts(sortType: SortKeyType, category: CategoryType = '전
     products: data?.content || [],
     isLoading,
     isError: !!error,
-    setIsError: () => {},
     fetchProduct: refetch,
   };
 }
