@@ -4,11 +4,16 @@ import { css } from "@emotion/react";
 type CartActionButtonProps = {
   variant: "add" | "remove";
   onClick: () => void;
+  testId: string;
 };
 
-const CartActionButton = ({ variant, onClick }: CartActionButtonProps) => {
+const CartActionButton = ({
+  variant,
+  onClick,
+  testId,
+}: CartActionButtonProps) => {
   return (
-    <Button onClick={onClick} variant={variant}>
+    <Button onClick={onClick} variant={variant} data-testid={testId}>
       {variant === "add" && <AddIcon />}
       {variant === "add" ? "담기" : "삭제"}
     </Button>
@@ -45,7 +50,34 @@ const buttonVariantStyle = {
   },
 };
 
-const Button = styled.button<CartActionButtonProps>`
+// const Button = styled.button<CartActionButtonProps>`
+//   ${({ variant }) => {
+//     const style = buttonVariantStyle[variant];
+//     return css`
+//       background-color: ${style.backgroundColor};
+//       color: ${style.color};
+//       width: ${style.width};
+//       height: ${style.height};
+//       border-radius: 4px;
+//       border: ${style.border};
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       gap: 6px;
+//       cursor: pointer;
+
+//       &:hover {
+//         background-color: ${style.hoverColor};
+//       }
+
+//       &:active {
+//         background-color: gray;
+//       }
+//     `;
+//   }}
+// `;
+
+const Button = styled.button<{ variant: "add" | "remove" }>`
   ${({ variant }) => {
     const style = buttonVariantStyle[variant];
     return css`

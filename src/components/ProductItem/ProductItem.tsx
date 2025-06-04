@@ -65,9 +65,14 @@ const ProductItem = ({ product }: { product: Product }) => {
                 onIncreaseClick={() =>
                   handleIncreaseQuantity(cartItem.id, quantity + 1)
                 }
+                testId={product.id}
               />
             ) : (
-              <CartActionButton variant="add" onClick={handleProductAddClick} />
+              <CartActionButton
+                variant="add"
+                onClick={handleProductAddClick}
+                testId={`add-button${product.id}`}
+              />
             )}
           </ButtonContainer>
         </ProductItemInfoContainer>
