@@ -1,21 +1,27 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
-const useOverlay = () => {
-  const [isOpen, setIsOpen] = useState(false);
+function useOverlay(closeModal: () => void) {
+  function handleClickOverlay(
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    id: string
+  ) {
+    if (e.target instanceof HTMLElement && e.target.id === id) {
+      closeModal();
+    }
+  }
 
-  const open = () => {
-    setIsOpen(true);
-  };
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    }
 
-  const close = () => {
-    setIsOpen(false);
-  };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [closeModal]);
 
-  const toggle = () => {
-    setIsOpen((prev) => !prev);
-  };
-
-  return { isOpen, open, close, toggle };
-};
+  return { handleClickOverlay };
+}
 
 export default useOverlay;

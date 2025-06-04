@@ -1,55 +1,60 @@
-import { useCallback, useEffect, useState } from 'react';
-import { CategoryOption, Product, SortOption } from '../types/common';
+import { useCallback, useEffect, useRef } from 'react';
+import { CategoryOption, SortOption } from '../types/common';
 import { ProductListResponse } from '../types/response';
-import { apiRequest } from '../api';
+import useResource from './useResource';
+import { getInitialProductData } from '@/util/productUtil';
+
+const PRODUCTS_URL = '/products';
 
 const useProductData = (
   sortOption: SortOption,
   categoryOption: CategoryOption
 ) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const getParams = useCallback(() => {
+    const params: Record<string, string | number> = {
+      page: 0,
+      size: 20,
+    };
 
-  const getRequestUrl = useCallback(() => {
-    const categoryParam =
-      categoryOption === '전체' ? '' : `&category=${categoryOption}`;
-    const sortParam =
-      sortOption === '높은 가격순' ? '&sort=price,desc' : '&sort=price,asc';
-    return `/products?page=0&size=20${categoryParam}${sortParam}`;
+    if (categoryOption !== '전체') {
+      params.category = categoryOption;
+    }
+
+    if (sortOption === '높은 가격순') {
+      params.sort = 'price,desc';
+    } else {
+      params.sort = 'price,asc';
+    }
+
+    return params;
   }, [categoryOption, sortOption]);
 
-  const fetchProducts = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
+  const prevParamsRef = useRef<string>('');
 
-    try {
-      const response = await apiRequest<ProductListResponse>(getRequestUrl());
-      setProducts(response.content);
-    } catch (error) {
-      console.error('Failed to fetch products:', error);
-      setError(
-        new Error('상품 목록을 불러오는데 실패했습니다. 다시 시도해주세요.')
-      );
-      setProducts([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [getRequestUrl]);
+  const {
+    data: responseData,
+    isLoading,
+    error,
+    refetch,
+  } = useResource<ProductListResponse>(PRODUCTS_URL, {
+    params: getParams(),
+    initialData: getInitialProductData(),
+    autoFetch: true,
+  });
 
   useEffect(() => {
-    fetchProducts();
-  }, [categoryOption, sortOption, fetchProducts]);
-
-  const retryFetch = () => {
-    fetchProducts();
-  };
+    const currentParams = JSON.stringify(getParams());
+    if (prevParamsRef.current && prevParamsRef.current !== currentParams) {
+      refetch();
+    }
+    prevParamsRef.current = currentParams;
+  }, [sortOption, categoryOption, refetch, getParams]);
 
   return {
-    products,
+    products: responseData?.content || [],
     error,
     isLoading,
-    retryFetch,
+    retryFetch: refetch,
   };
 };
 
