@@ -1,11 +1,11 @@
 import postShoppingCart from "../../api/shoppingCart/postShoppingCart";
 import * as S from "../../styles/Product/ProductItem.styles";
-import { CartItem } from "../Common/Modal";
+import { CartItemTypes } from "../../types/CartItemType";
 import { Product } from "./ProductList";
 import QuantityController from "../Common/QuantityController";
 
 type ProductItemProps = {
-  cartItems: CartItem[];
+  cartItems: CartItemTypes[];
   refetch: () => Promise<void>;
 } & Product;
 
@@ -19,7 +19,8 @@ export default function ProductItem({
   refetch,
 }: ProductItemProps) {
   const count =
-    cartItems.find((item: CartItem) => item.product.id === id)?.quantity || 0;
+    cartItems.find((item: CartItemTypes) => item.product.id === id)?.quantity ||
+    0;
 
   return (
     <S.Li id={String(id)}>
