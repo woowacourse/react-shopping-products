@@ -67,11 +67,7 @@ const useCartItems = () => {
       fetchError?.status ||
       null,
   };
-  console.log('fetchError', fetchError);
-  console.log('postError', postError);
-  console.log('patchError', patchError);
-  console.log('deleteError', deleteError);
-  console.log('에러!?', totalError);
+
   const cartItems = contextData[key]?.data ?? [];
 
   useEffect(() => {

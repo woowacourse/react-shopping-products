@@ -1,6 +1,5 @@
 const safeFetch = async (endPoint: string, options?: RequestInit) => {
   const url = `${import.meta.env.VITE_BASE_URL}${endPoint}`;
-  // console.log(`Fetching URL: ${url}`);
   const defaultHeaders = {
     Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTHORIZATION}`,
   };
