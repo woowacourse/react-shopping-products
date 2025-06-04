@@ -11,6 +11,7 @@ import {
 } from './ProductSection.styles';
 import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
 import { SortType, CategoryType, SortKeyType } from '../../../types/product';
+import { useCartActions } from '../../../hooks/useCartActions';
 import { useProductsWithCart } from '../../../hooks/useProductsWithCart';
 import { useToast } from '../../../context/ToastContext';
 import { ERROR_MESSAGES } from '../../../constants/errorMessages';
@@ -26,13 +27,18 @@ function ProductSection() {
   const mappedSortType = sortTypeToKey[sort];
 
   const { showToast } = useToast();
+  
   const {
     transformedProducts: products,
     isLoading,
     isError,
-    error,
-  } = useProductsWithCart(mappedSortType, category);
-
+    handleAddCart,
+    handleRemoveCart,
+    handleUpdateQuantity,
+  } = useCartActions(mappedSortType, category);
+  
+  const { error } = useProductsWithCart(mappedSortType, category);
+  
   useEffect(() => {
     if (error) {
       showToast(ERROR_MESSAGES.productsFetchError);
@@ -65,7 +71,12 @@ function ProductSection() {
       ) : !isError && products.length === 0 ? (
         <EmptyMessage>상품이 존재하지 않습니다.</EmptyMessage>
       ) : (
-        <ProductList products={products} />
+        <ProductList 
+          products={products}
+          onAddCart={handleAddCart}
+          onRemoveCart={handleRemoveCart}
+          onUpdateQuantity={handleUpdateQuantity}
+        />
       )}
     </Section>
   );

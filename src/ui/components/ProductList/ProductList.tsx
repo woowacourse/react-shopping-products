@@ -3,15 +3,16 @@ import { ProductElement } from '../../../types/product';
 import { List } from './ProductList.styles';
 import { CART_ITEM_INITIAL_QUANTITY } from '../../../constants/productConfig';
 import { useCart } from '../../../hooks/useCart';
-import { useCartActions } from '../../../hooks/useCartActions';
 
 interface ProductListProps {
   products: ProductElement[];
+  onAddCart: (product: ProductElement) => Promise<void>;
+  onRemoveCart: (product: ProductElement) => Promise<void>;
+  onUpdateQuantity: (cartItemId: number, quantity: number) => Promise<void>;
 }
 
-function ProductList({ products }: ProductListProps) {
+function ProductList({ products, onAddCart, onRemoveCart, onUpdateQuantity }: ProductListProps) {
   const { cart } = useCart();
-  const { handleAddCart, handleRemoveCart, handleUpdateQuantity } = useCartActions();
 
   const getCartQuantity = (productId: number): number => {
     if (!cart) {
@@ -28,9 +29,9 @@ function ProductList({ products }: ProductListProps) {
         <Product
           key={product?.product?.id}
           item={product}
-          onAddCart={handleAddCart}
-          onRemoveCart={handleRemoveCart}
-          onUpdateQuantity={handleUpdateQuantity}
+          onAddCart={onAddCart}
+          onRemoveCart={onRemoveCart}
+          onUpdateQuantity={onUpdateQuantity}
           cartQuantity={getCartQuantity(product.product.id)}
         />
       ))}
