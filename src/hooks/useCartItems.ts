@@ -67,6 +67,7 @@ const useCartItems = () => {
       fetchError?.status ||
       null,
   };
+  console.log(contextData[key]?.data);
 
   const cartItems = contextData[key]?.data ?? [];
 

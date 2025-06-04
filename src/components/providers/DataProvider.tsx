@@ -6,7 +6,7 @@ type DataProviderProps = {
 };
 
 const DataProvider = ({ children }: DataProviderProps) => {
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState({});
 
   return (
     <DataContext.Provider value={{ data, setData }}>

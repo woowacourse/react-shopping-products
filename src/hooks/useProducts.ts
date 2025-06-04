@@ -24,6 +24,7 @@ const useProducts = ({ category, priceOrder }: UseProductsProps) => {
     params: { category, priceOrder },
     enabled: !contextData[key]?.data,
   });
+  console.log(contextData[key]);
 
   useEffect(() => {
     if (!fetchedProducts) return;
