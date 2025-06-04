@@ -1,7 +1,11 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 const ErrorMessage = ({ errorMessage }: { errorMessage: string }) => {
-  return <ErrorContainer>{errorMessage}</ErrorContainer>;
+  return (
+    <ErrorContainer data-testid={"error-message"}>
+      {errorMessage}
+    </ErrorContainer>
+  );
 };
 
 export default ErrorMessage;

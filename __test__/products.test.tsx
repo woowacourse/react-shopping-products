@@ -8,6 +8,7 @@ import App from "../src/App";
 import React from "react";
 import patchCartItemQuantity from "../src/api/patchCartItemQuantity";
 import { Mock } from "vitest";
+import { error } from "console";
 
 vi.mock("../src/api/getProducts");
 vi.mock("../src/api/getCartItems");
@@ -179,7 +180,7 @@ const CART_MOCK_DATA = [
       price: 10,
       imageUrl: "",
       category: "식료품",
-      quantity: 50,
+      quantity: 4,
     },
     quantity: 3,
   },
@@ -208,10 +209,18 @@ describe("상품 목록 테스트", () => {
     (patchCartItemQuantity as Mock).mockImplementation(
       async (id: number, quantity: number) => {
         const cartItem = CART_MOCK_DATA.find((item) => item.id === id);
-        if (cartItem) {
-          cartItem.quantity = quantity;
+        if (cartItem && cartItem?.product.quantity >= cartItem?.quantity) {
+          return (cartItem.quantity = quantity);
         }
-        return {};
+
+        return {
+          data: null,
+          error: {
+            code: 400,
+            errorCode: "",
+            message: "현재 수량을 초과하여 담을 수 없습니다.",
+          },
+        };
       }
     );
   });
@@ -257,6 +266,7 @@ describe("상품 목록 테스트", () => {
     const minusButton = await screen.findByTestId(
       `minus-button${CART_MOCK_DATA[0].product.id}`
     );
+    console.log(CART_MOCK_DATA[0].quantity, CART_MOCK_DATA[0].product.quantity);
     await userEvent.click(minusButton);
 
     await waitFor(() => {
@@ -275,5 +285,25 @@ describe("상품 목록 테스트", () => {
       `product-image${PRODUCTS_MOCK_DATA[2].id}`
     );
     expect(productImage.textContent).toBe("품절");
+  });
+});
+
+describe("에러 테스트", () => {
+  it("상품의 현재 수량을 초과하여 담을 수 없다.", async () => {
+    render(<App />);
+
+    const plusButton = await screen.findByTestId(
+      `plus-button${CART_MOCK_DATA[0].product.id}`
+    );
+    await userEvent.click(plusButton);
+    await userEvent.click(plusButton);
+    await userEvent.click(plusButton);
+    await waitFor(() => {
+      const errorMessage = screen.getByTestId(`error-message`);
+
+      expect(errorMessage.textContent).toBe(
+        "현재 수량을 초과하여 담을 수 없습니다."
+      );
+    });
   });
 });

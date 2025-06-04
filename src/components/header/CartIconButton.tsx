@@ -10,7 +10,7 @@ const CartIconButton = ({ onClick }: { onClick: () => void }) => {
   const cartItemCount = cartItems?.data.content.length ?? 0;
 
   return (
-    <CartIconButtonContainer onClick={onClick}>
+    <CartIconButtonContainer onClick={onClick} data-testid={"cart-icon"}>
       <img src="./cartIcon.png" alt="cart icon" />
       {cartItemCount !== 0 && <CartItemCount> {cartItemCount}</CartItemCount>}
     </CartIconButtonContainer>
