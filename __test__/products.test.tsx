@@ -249,6 +249,7 @@ describe("상품 목록 테스트", () => {
       expect(quantityAdjuster.textContent).toBe(String(initialCount + 1));
     });
   });
+
   it("-버튼을 누르면 상품 수량이 감소한다.", async () => {
     render(<App />);
     const initialCount = CART_MOCK_DATA[0].quantity;
@@ -265,5 +266,9 @@ describe("상품 목록 테스트", () => {
 
       expect(quantityAdjuster.textContent).toBe(String(initialCount - 1));
     });
+  });
+
+  it("상품 수량이 0일 경우 품절 UI를 표시한다.", async () => {
+    render(<App />);
   });
 });

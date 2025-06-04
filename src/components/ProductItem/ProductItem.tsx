@@ -41,7 +41,7 @@ const ProductItem = ({ product }: { product: Product }) => {
           <ProductItemImage
             src={product.imageUrl}
             alt={product.name}
-            quantity={product.quantity ?? 0}
+            quantity={product.quantity}
             onError={handleImageError}
           />
           {product.quantity === 0 && <SoldOutText>품절</SoldOutText>}
@@ -71,7 +71,7 @@ const ProductItem = ({ product }: { product: Product }) => {
               <CartActionButton
                 variant="add"
                 onClick={handleProductAddClick}
-                testId={`add-button${product.id}`}
+                testId={product.id}
               />
             )}
           </ButtonContainer>
@@ -112,7 +112,7 @@ const ProductItemWrapper = styled.div`
   overflow: hidden;
 `;
 
-const ProductItemImage = styled.img<{ quantity: number }>`
+const ProductItemImage = styled.img<{ quantity: number | undefined }>`
   width: 100%;
   height: 100%;
   object-fit: cover;

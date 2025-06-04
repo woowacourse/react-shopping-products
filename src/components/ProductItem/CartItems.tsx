@@ -53,12 +53,14 @@ const CartItems = () => {
               count={cart.quantity}
               onIncreaseClick={() => patchQuantity(cart.id, cart.quantity + 1)}
               onDecreaseClick={() => patchQuantity(cart.id, cart.quantity - 1)}
+              testId={cart.product.id}
             />
           </CartItemDescription>
           <DeleteButtonContainer>
             <CartActionButton
               variant="remove"
               onClick={() => handleProductRemoveClick(cart.id)}
+              testId={cart.product.id}
             />
           </DeleteButtonContainer>
         </CartItemContainer>
