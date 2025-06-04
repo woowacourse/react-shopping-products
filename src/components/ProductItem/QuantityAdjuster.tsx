@@ -13,11 +13,17 @@ const QuantityAdjuster = ({
 }) => {
   return (
     <QuantityAdjusterContainer>
-      <QuantityAdjustButton onClick={() => onDecreaseClick()}>
+      <QuantityAdjustButton
+        onClick={() => onDecreaseClick()}
+        data-testid={`minus-button${testId}`}
+      >
         -
       </QuantityAdjustButton>
       <p data-testid={`count${testId}`}>{count}</p>
-      <QuantityAdjustButton onClick={() => onIncreaseClick()}>
+      <QuantityAdjustButton
+        onClick={() => onIncreaseClick()}
+        data-testid={`plus-button${testId}`}
+      >
         +
       </QuantityAdjustButton>
     </QuantityAdjusterContainer>

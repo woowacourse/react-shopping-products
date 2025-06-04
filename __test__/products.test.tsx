@@ -6,12 +6,13 @@ import { screen, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../src/App";
 import React from "react";
-import { Product } from "../src/types/productType";
+import patchCartItemQuantity from "../src/api/patchCartItemQuantity";
 import { Mock } from "vitest";
 
 vi.mock("../src/api/getProducts");
 vi.mock("../src/api/getCartItems");
 vi.mock("../src/api/postCartItems");
+vi.mock("../src/api/patchCartItemQuantity");
 
 const mockedgetProducts = getProducts as unknown as jest.Mock;
 const mockedgetCartItems = getCartItems as unknown as jest.Mock;
@@ -24,6 +25,14 @@ const PRODUCTS_MOCK_DATA = [
     imageUrl: "",
     category: "패션잡화",
     quantity: 1,
+  },
+  {
+    id: 51,
+    name: "초밥",
+    price: 10,
+    imageUrl: "",
+    category: "식료품",
+    quantity: 50,
   },
   {
     id: 5,
@@ -150,14 +159,7 @@ const PRODUCTS_MOCK_DATA = [
     category: "식료품",
     quantity: 50,
   },
-  {
-    id: 51,
-    name: "초밥",
-    price: 10,
-    imageUrl: "",
-    category: "식료품",
-    quantity: 50,
-  },
+
   {
     id: 23,
     name: "리바이 아커만",
@@ -203,9 +205,18 @@ describe("상품 목록 테스트", () => {
       });
       return {};
     });
+    (patchCartItemQuantity as Mock).mockImplementation(
+      async (id: number, quantity: number) => {
+        const cartItem = CART_MOCK_DATA.find((item) => item.id === id);
+        if (cartItem) {
+          cartItem.quantity = quantity;
+        }
+        return {};
+      }
+    );
   });
 
-  it("담기 버튼을 누르면 담은 수량이 보인다.", async () => {
+  it("담기 버튼을 누르면 담은 수량(1)이 보인다.", async () => {
     render(<App />);
 
     const addButton = await screen.findByTestId(
@@ -218,6 +229,41 @@ describe("상품 목록 테스트", () => {
         `count${PRODUCTS_MOCK_DATA[0].id}`
       );
       expect(quantityAdjuster.textContent).toBe("1");
+    });
+  });
+
+  it("+버튼을 누르면 상품 수량이 추가된다.", async () => {
+    render(<App />);
+    const initialCount = CART_MOCK_DATA[0].quantity;
+
+    const plusButton = await screen.findByTestId(
+      `plus-button${CART_MOCK_DATA[0].product.id}`
+    );
+    await userEvent.click(plusButton);
+
+    await waitFor(() => {
+      const quantityAdjuster = screen.getByTestId(
+        `count${CART_MOCK_DATA[0].product.id}`
+      );
+
+      expect(quantityAdjuster.textContent).toBe(String(initialCount + 1));
+    });
+  });
+  it("-버튼을 누르면 상품 수량이 감소한다.", async () => {
+    render(<App />);
+    const initialCount = CART_MOCK_DATA[0].quantity;
+
+    const minusButton = await screen.findByTestId(
+      `minus-button${CART_MOCK_DATA[0].product.id}`
+    );
+    await userEvent.click(minusButton);
+
+    await waitFor(() => {
+      const quantityAdjuster = screen.getByTestId(
+        `count${CART_MOCK_DATA[0].product.id}`
+      );
+
+      expect(quantityAdjuster.textContent).toBe(String(initialCount - 1));
     });
   });
 });
