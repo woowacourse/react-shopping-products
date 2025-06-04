@@ -115,13 +115,11 @@ export function useData<T>(
   };
 
   useEffect(() => {
-    // 캐시가 유효하지 않거나, refetchOnMount가 true이고 데이터가 없을 때
     if (!isCacheValid() || (mergedOptions.refetchOnMount && !cached.data)) {
       fetchData();
     }
 
     return () => {
-      // 컴포넌트 언마운트 또는 key 변경 시 진행 중인 요청 취소
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
