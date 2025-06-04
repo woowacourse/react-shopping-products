@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
 import Product from '../ui/components/Product/Product';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ProductElement } from '../types/product';
 
 describe('Product 컴포넌트', () => {
@@ -21,9 +21,9 @@ describe('Product 컴포넌트', () => {
     cartId: null,
   };
 
-  const mockOnAddCart = vi.fn();
-  const mockOnRemoveCart = vi.fn();
-  const mockOnUpdateQuantity = vi.fn();
+  const mockOnAddCart = vi.fn().mockResolvedValue(undefined);
+  const mockOnRemoveCart = vi.fn().mockResolvedValue(undefined);
+  const mockOnUpdateQuantity = vi.fn().mockResolvedValue(undefined);
 
   it('상품 정보가 올바르게 표시되어야 한다', () => {
     render(
@@ -90,6 +90,8 @@ describe('Product 컴포넌트', () => {
       fireEvent.click(addButton);
     }
 
-    expect(mockOnAddCart).toHaveBeenCalledWith(mockProduct);
+    await waitFor(() => {
+      expect(mockOnAddCart).toHaveBeenCalledWith(mockProduct);
+    });
   });
 });

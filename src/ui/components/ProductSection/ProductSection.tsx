@@ -27,7 +27,7 @@ function ProductSection() {
   const mappedSortType = sortTypeToKey[sort];
 
   const { showToast } = useToast();
-  
+
   const {
     transformedProducts: products,
     isLoading,
@@ -36,9 +36,9 @@ function ProductSection() {
     handleRemoveCart,
     handleUpdateQuantity,
   } = useCartActions(mappedSortType, category);
-  
+
   const { error } = useProductsWithCart(mappedSortType, category);
-  
+
   useEffect(() => {
     if (error) {
       showToast(ERROR_MESSAGES.productsFetchError);
@@ -71,7 +71,7 @@ function ProductSection() {
       ) : !isError && products.length === 0 ? (
         <EmptyMessage>상품이 존재하지 않습니다.</EmptyMessage>
       ) : (
-        <ProductList 
+        <ProductList
           products={products}
           onAddCart={handleAddCart}
           onRemoveCart={handleRemoveCart}

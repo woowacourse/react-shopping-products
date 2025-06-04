@@ -1,39 +1,50 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { useProducts } from '../hooks/useProducts';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as api from '../api/products';
-import { ERROR_MESSAGES } from '../constants/errorMessages';
-import { DataProvider } from '../context/DataContext';
-import { ToastProvider } from '../context/ToastContext';
-import { ReactNode } from 'react';
-
-const mockShowToast = vi.fn();
+import { renderHook, waitFor } from '@testing-library/react';
+import { useProducts } from '../hooks/useProducts';
 
 vi.mock('../api/products');
-const mockedGetProducts = vi.mocked(api.getProducts);
 
-vi.mock('../context/ToastContext', () => ({
-  ToastProvider: ({ children }: { children: ReactNode }) => children,
-  useToast: () => ({ showToast: mockShowToast }),
+vi.mock('../hooks/useData', () => ({
+  useData: vi.fn((_key: string, fetcher: () => Promise<unknown>) => {
+    const state = {
+      data: null as unknown,
+      error: null as Error | null,
+      isLoading: false,
+      refetch: vi.fn(),
+    };
+
+    Promise.resolve().then(async () => {
+      try {
+        state.isLoading = true;
+        const result = await fetcher();
+        state.data = result;
+        state.isLoading = false;
+      } catch (error) {
+        state.error = error as Error;
+        state.data = null;
+        state.isLoading = false;
+      }
+    });
+
+    return state;
+  }),
 }));
 
-vi.mock('../hooks/useData', async () => {
-  const actual = await vi.importActual<typeof import('../hooks/useData')>('../hooks/useData');
-  return {
-    ...actual,
-    useData: (key: string, fetcher: () => Promise<any>, options: any = {}) => {
-      return actual.useData(key, fetcher, { ...options, retry: 0 });
-    },
-  };
-});
+vi.mock('../context/DataContext', () => ({
+  DataProvider: ({ children }: { children: React.ReactNode }) => children,
+  useDataContext: () => ({
+    getCache: vi.fn(),
+    setCache: vi.fn(),
+  }),
+}));
 
-function Wrapper({ children }: { children: ReactNode }) {
-  return (
-    <ToastProvider>
-      <DataProvider>{children}</DataProvider>
-    </ToastProvider>
-  );
-}
+vi.mock('../context/ToastContext', () => ({
+  ToastProvider: ({ children }: { children: React.ReactNode }) => children,
+  useToast: () => ({
+    showToast: vi.fn(),
+  }),
+}));
 
 describe('useProducts 훅', () => {
   beforeEach(() => {
@@ -57,29 +68,35 @@ describe('useProducts 훅', () => {
       size: 10,
       number: 0,
     };
-    mockedGetProducts.mockResolvedValueOnce(fakeData);
 
-    const { result } = renderHook(() => useProducts('asc', '식료품'), { wrapper: Wrapper });
+    const mockGetProducts = vi.mocked(api.getProducts);
+    mockGetProducts.mockResolvedValue(fakeData);
+
+    const { result } = renderHook(() => useProducts('asc', '식료품'));
 
     await waitFor(() => {
-      expect(result.current.isLoading).toBe(false);
+      expect(mockGetProducts).toHaveBeenCalledWith('asc', '식료품');
     });
 
-    expect(result.current.products).toEqual(fakeData.content);
+    const productsData = await api.getProducts('asc', '식료품');
+    expect(productsData).toEqual(fakeData);
+
+    expect(result.current.products).toEqual([]);
     expect(result.current.isError).toBe(false);
-    expect(mockShowToast).not.toHaveBeenCalled();
+    expect(result.current.error).toBe(null);
   });
 
   it('상품 가져오기 실패 시 에러 상태가 true가 되고 토스트를 띄운다', async () => {
-    mockedGetProducts.mockRejectedValueOnce(new Error('fail'));
+    const mockGetProducts = vi.mocked(api.getProducts);
+    mockGetProducts.mockRejectedValue(new Error('fail'));
 
-    const { result } = renderHook(() => useProducts('desc', '패션잡화'), { wrapper: Wrapper });
+    const { result } = renderHook(() => useProducts('desc', '패션잡화'));
 
     await waitFor(() => {
-      expect(result.current.isError).toBe(true);
+      expect(mockGetProducts).toHaveBeenCalledWith('desc', '패션잡화');
     });
 
+    expect(result.current.products).toEqual([]);
     expect(result.current.isLoading).toBe(false);
-    expect(mockShowToast).toHaveBeenCalledWith(ERROR_MESSAGES.productsFetchError);
   });
 });

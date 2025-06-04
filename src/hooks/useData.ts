@@ -15,22 +15,22 @@ interface UseDataOptions {
    * cacheTime: undefined // 무제한 캐시
    */
   cacheTime?: number;
-  
+
   /**
    * 컴포넌트 마운트 시 데이터 재요청 여부
    * @default true
-   * @description 
+   * @description
    * - true: 캐시가 있어도 마운트 시 재요청
    * - false: 유효한 캐시가 있으면 재요청하지 않음
    */
   refetchOnMount?: boolean;
-  
+
   /**
    * 요청 실패 시 재시도 횟수
    * @default 3
    */
   retry?: number;
-  
+
   /**
    * 재시도 간격 (밀리초)
    * @default 1000
@@ -64,20 +64,20 @@ const DEFAULT_OPTIONS: UseDataOptions = {
 
 /**
  * 범용 데이터 fetching 훅
- * 
+ *
  * @template T - 반환될 데이터의 타입
  * @param {string} key - 캐시 키 (고유해야 함)
  * @param {() => Promise<T>} fetcher - 데이터를 가져오는 비동기 함수
  * @param {UseDataOptions} [options={}] - 옵션 설정
  * @returns {UseDataReturn<T>} 데이터, 에러, 로딩 상태 및 refetch 함수
- * 
+ *
  * @example
  * // 기본 사용법
  * const { data, error, isLoading } = useData(
  *   'users',
  *   () => fetchUsers()
  * );
- * 
+ *
  * @example
  * // 캐시 설정과 함께 사용
  * const { data, refetch } = useData(
@@ -89,15 +89,15 @@ const DEFAULT_OPTIONS: UseDataOptions = {
  *     retry: 5,                   // 5번 재시도
  *   }
  * );
- * 
+ *
  * @example
  * // 수동 재요청
  * const { data, refetch } = useData('products', fetchProducts);
- * 
+ *
  * const handleRefresh = async () => {
  *   await refetch(); // 캐시 무시하고 새로 요청
  * };
- * 
+ *
  * @example
  * // 실시간 데이터 (캐시 사용 안 함)
  * const { data } = useData(
@@ -105,13 +105,13 @@ const DEFAULT_OPTIONS: UseDataOptions = {
  *   () => fetchRealtimePrice(),
  *   { cacheTime: 0 } // 항상 새로운 데이터 요청
  * );
- * 
+ *
  * @remarks
  * - key가 변경되면 이전 요청은 자동으로 취소됩니다
  * - 컴포넌트 언마운트 시 진행 중인 요청이 자동으로 취소됩니다
  * - 동일한 key를 사용하는 여러 컴포넌트는 캐시를 공유합니다
  * - 재시도는 exponential backoff 전략을 사용합니다 (1초, 2초, 4초...)
- * 
+ *
  * @see {@link UseDataOptions} 사용 가능한 옵션
  * @see {@link UseDataReturn} 반환값 설명
  */
