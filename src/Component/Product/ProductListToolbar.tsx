@@ -1,3 +1,4 @@
+import { useProductsApi } from "../../domain/contexts/ProductApiContext";
 import * as S from "../../styles/Product/ProductListToolbar.styles";
 import SelectBox from "../Common/SelectBox";
 import {
@@ -14,12 +15,36 @@ interface ProductListToolbarProps {
   setPrice: React.Dispatch<React.SetStateAction<SortValue>>;
 }
 
+const getCategory = (category: CategoryValue) => {
+  const categoryValue = CATEGORY_OPTIONS.find(
+    ({ value }) => value === category
+  );
+  return categoryValue?.param;
+};
+
+const getPriceSort = (price: SortValue) => {
+  const priceSort = PRICE_OPTIONS.find(({ value }) => value === price);
+  return priceSort?.param;
+};
+
 export default function ProductListToolbar({
   category,
   price,
   setCategory,
   setPrice,
 }: ProductListToolbarProps) {
+  const { refetchProducts } = useProductsApi();
+
+  const handleCategoryChange = (category: CategoryValue) => {
+    setCategory(category);
+    refetchProducts(getCategory(category), getPriceSort(price));
+  };
+
+  const handlePriceSortChange = (price: SortValue) => {
+    setPrice(price);
+    refetchProducts(getCategory(category), getPriceSort(price));
+  };
+
   return (
     <S.Container>
       <S.Title>bpple 상품 목록</S.Title>
@@ -31,7 +56,9 @@ export default function ProductListToolbar({
             name="category"
             value={category}
             options={CATEGORY_OPTIONS}
-            onChange={(e) => setCategory(e.target.value as CategoryValue)}
+            onChange={(e) =>
+              handleCategoryChange(e.target.value as CategoryValue)
+            }
           />
         </S.FirstSelectWrapper>
         <div>
@@ -41,7 +68,7 @@ export default function ProductListToolbar({
             name="price"
             value={price}
             options={PRICE_OPTIONS}
-            onChange={(e) => setPrice(e.target.value as SortValue)}
+            onChange={(e) => handlePriceSortChange(e.target.value as SortValue)}
           />
         </div>
       </S.SelectBoxContainer>

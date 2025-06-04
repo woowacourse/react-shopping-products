@@ -4,12 +4,17 @@ export interface ApiClientConfig {
 }
 
 export function createApiClient({ baseUrl, headers = {} }: ApiClientConfig) {
+  const defaultHeaders = {
+    "Content-Type": "application/json",
+    ...headers,
+  };
+
   async function request<T>(
     path: string,
     options: RequestInit = {}
   ): Promise<T> {
     const res = await fetch(`${baseUrl}${path}`, {
-      headers,
+      headers: defaultHeaders,
       ...options,
     });
     const data = await res.json();

@@ -4,10 +4,7 @@ import Body from "./Component/Layout/Body";
 import Header from "./Component/Layout/Header";
 import ProductListContainer from "./Component/Product/ProductListContainer";
 import { CartApiProvider, useCartApi } from "./domain/contexts/CartApiContext";
-import {
-  ProductsApiProvider,
-  useProductsApi,
-} from "./domain/contexts/ProductApiContext";
+import { ProductsApiProvider } from "./domain/contexts/ProductApiContext";
 
 function App() {
   return (
@@ -24,13 +21,9 @@ export default App;
 function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { cartData, cartStatus, refetchCart } = useCartApi();
-  // const { productsData, productsStatus } = useProductsApi();
-  // const { productsData, productsStatus, productsError, refetchProducts } = useProductsApi();
 
   const cartItems = cartData ?? [];
   const cartItemCount = cartItems.length;
-
-  console.log("cartItems: ", cartItems);
 
   return (
     <>
@@ -41,7 +34,7 @@ function AppContent() {
           cartItemCount={cartItemCount}
         />
         <Body>
-          {/* <ProductListContainer products={productsData ?? []} /> */}
+          <ProductListContainer />
         </Body>
       </div>
       <Modal

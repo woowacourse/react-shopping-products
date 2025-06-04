@@ -1,7 +1,6 @@
-import getShoppingCart from "../../api/shoppingCart/getShoppingCart";
-import { useAPI } from "../../domain/contexts/APIContext";
 import * as S from "../../styles/Product/ProductList.styles";
 import ProductItem from "./ProductItem";
+import { useCartApi } from "../../domain/contexts/CartApiContext";
 
 export type Product = {
   id: number;
@@ -17,23 +16,19 @@ interface ProductListProps {
 }
 
 export default function ProductList({ productList }: ProductListProps) {
-  const { data: cartItems, refetch } = useAPI({
-    fetcher: () => getShoppingCart(),
-    name: "cart",
-  });
+  const { cartData, refetchCart } = useCartApi();
+  const cartItems = cartData ?? [];
 
   return (
     <S.Ul>
-      {productList.map((item) => {
-        return (
-          <ProductItem
-            key={item.id}
-            {...item}
-            cartItems={cartItems.content}
-            refetch={refetch}
-          />
-        );
-      })}
+      {productList.map((item) => (
+        <ProductItem
+          key={item.id}
+          {...item}
+          cartItems={cartItems}
+          refetch={refetchCart}
+        />
+      ))}
     </S.Ul>
   );
 }

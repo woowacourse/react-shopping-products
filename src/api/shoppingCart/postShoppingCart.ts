@@ -9,5 +9,5 @@ export default function postShoppingCart({
   productId,
   quantity,
 }: postShoppingCartProps) {
-  return indexShoppingCartApi.post(`/cart-items/${productId}`, { quantity });
+  return indexShoppingCartApi.post(`/cart-items`, { productId, quantity });
 }

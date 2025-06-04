@@ -6,6 +6,7 @@ import QuantityController from "./QuantityController";
 import deleteShoppingCart from "../../api/shoppingCart/deleteShoppingCart";
 
 interface ModalProps {
+  children?: React.ReactNode;
   isModalOpen: boolean;
   onClose: () => void;
   cartItems: {
@@ -42,7 +43,7 @@ export default function Modal({
     );
   }
 
-  if (status === "error") {
+  if (cartStatus === "error") {
     return (
       <Error.Div>
         <ErrorBox>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</ErrorBox>

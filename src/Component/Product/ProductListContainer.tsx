@@ -6,7 +6,7 @@ import ProductListToolbar from "./ProductListToolbar";
 import * as S from "../../styles/Product/ProductListContainer.styles";
 import { Option } from "../Common/SelectBox";
 import { Product } from "./ProductList";
-import { useProductList } from "../../hooks/useProductList";
+import { useProductsApi } from "../../domain/contexts/ProductApiContext";
 
 export type CategoryValue = "all" | "grocery" | "fashion";
 export type SortValue = "low" | "high";
@@ -29,9 +29,10 @@ export const PRICE_OPTIONS: SelectOption[] = [
 export default function ProductListContainer() {
   const [category, setCategory] = useState<CategoryValue>("all");
   const [price, setPrice] = useState<SortValue>("low");
-  const { products, status } = useProductList(category, price);
 
-  if (status === "loading" || status === "idle") {
+  const { productsData, productsStatus } = useProductsApi();
+
+  if (productsStatus === "loading" || productsStatus === "idle") {
     return (
       <S.SpinnerWrapper>
         <Spinner size={100} color="red" />
@@ -39,7 +40,7 @@ export default function ProductListContainer() {
     );
   }
 
-  if (status === "error") {
+  if (productsStatus === "error") {
     return (
       <S.Div>
         <ErrorBox>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</ErrorBox>
@@ -56,7 +57,7 @@ export default function ProductListContainer() {
         setPrice={setPrice}
       />
 
-      <ProductList productList={products.content as Product[]} />
+      <ProductList productList={productsData as unknown as Product[]} />
     </>
   );
 }
