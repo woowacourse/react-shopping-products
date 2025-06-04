@@ -12,10 +12,6 @@
     "test": "vitest"
   },
   "homepage": "https://youdame.github.io/react-shopping-products",
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.13.5",
     "@emotion/react": "^11.14.0",
@@ -42,5 +38,8 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "dependencies": {
+    "seo-meta-react-modal": "^0.1.4"
   }
 }

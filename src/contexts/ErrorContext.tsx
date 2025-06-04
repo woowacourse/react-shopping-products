@@ -16,7 +16,7 @@ export const ErrorContextProvider = ({ children }: { children: ReactNode }) => {
   return (
     <ErrorContext.Provider value={{ showError }}>
       {children}
-      {error && <ErrorToast error={error} />}
+      {error && <ErrorToast error={error} onClose={() => setError(null)} />}
     </ErrorContext.Provider>
   );
 };

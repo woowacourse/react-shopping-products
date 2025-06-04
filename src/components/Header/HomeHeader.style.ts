@@ -25,3 +25,10 @@ export const cartIcon = css({
     fontSize: '14px'
   }
 });
+
+export const cartIcons = css`
+  cursor: pointer;
+  font-size: 10px;
+  display: flex;
+  flex-direction: column-reverse;
+`;
