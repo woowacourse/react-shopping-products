@@ -109,11 +109,15 @@ it('상품의 수량을 초과하여 담을 수 없다.', async () => {
   const plusButtons = await screen.findAllByAltText('수량 증가');
   const plusButton = plusButtons[0].closest('button')!;
 
-  for (let i = 0; i < 5; i++) fireEvent.click(plusButton);
-  fireEvent.click(plusButton); // 초과 시도
+  for (let i = 0; i < 5; i++) {
+    await waitFor(() => {
+      fireEvent.click(plusButton);
+    });
+  }
 
+  fireEvent.click(plusButton);
+
+  // 에러 토스트가 나타나는지 확인
   const toast = await screen.findByTestId('error-toast');
-  screen.debug(toast);
-  // expect(toast).toBeTruthy();
-  // expect(toast).toHaveTextContent('수량을 초과해서 담을 수 없어요');
+  expect(toast).toHaveTextContent('수량을 초과해서 담을 수 없어요');
 });
