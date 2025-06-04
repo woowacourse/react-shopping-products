@@ -37,7 +37,7 @@ const ProductItem = ({ product }: { product: Product }) => {
   return (
     <>
       <ProductItemContainer>
-        <ProductItemWrapper>
+        <ProductItemWrapper data-testid={`product-image${product.id}`}>
           <ProductItemImage
             src={product.imageUrl}
             alt={product.name}

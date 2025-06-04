@@ -41,7 +41,7 @@ const PRODUCTS_MOCK_DATA = [
     imageUrl:
       "https://m.cocosocks.com/web/product/medium/202503/940897aced51144109baa4d145def01f.jpg",
     category: "패션잡화",
-    quantity: 50,
+    quantity: 0,
   },
   {
     id: 57,
@@ -270,5 +270,10 @@ describe("상품 목록 테스트", () => {
 
   it("상품 수량이 0일 경우 품절 UI를 표시한다.", async () => {
     render(<App />);
+
+    const productImage = await screen.findByTestId(
+      `product-image${PRODUCTS_MOCK_DATA[2].id}`
+    );
+    expect(productImage.textContent).toBe("품절");
   });
 });
