@@ -50,7 +50,7 @@ export function useAPI<T>({ name, fetcher }: { name: string; fetcher: () => Prom
   }, [fetcher, name, setData, setError, setLoading]);
 
   useEffect(() => {
-    if (!data[name]) {
+    if (!Object.prototype.hasOwnProperty.call(data, name)) {
       request();
     }
   }, [name, data, request]);
