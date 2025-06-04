@@ -1,41 +1,50 @@
-import { useState } from 'react';
+import { useDataContext } from '../components/contexts/dataContext';
+import getProducts from '../api/getProducts';
 import { Product } from '../App';
-import getProducts, { GetProductsProps } from '../api/getProducts';
+import { useEffect } from 'react';
+import useApiRequest from './useApiRequest';
 
-type ErrorState = {
-  isError: boolean;
-  status: number | null;
+type UseProductsProps = {
+  category?: '전체' | '패션잡화' | '식료품';
+  priceOrder?: '낮은 가격순' | '높은 가격순';
 };
+const key = 'products';
 
-const useProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState<ErrorState>({
-    isError: false,
-    status: null,
+const useProducts = ({ category, priceOrder }: UseProductsProps) => {
+  const { data: contextData, setData } = useDataContext();
+
+  const {
+    data: fetchedProducts,
+    isLoading,
+    error,
+    request,
+  } = useApiRequest<UseProductsProps, Product>({
+    method: 'GET',
+    requestFn: getProducts,
+    params: { category, priceOrder },
+    enabled: !contextData[key]?.data,
   });
-  const [isLoading, setIsLoading] = useState(true);
+  console.log(contextData[key]);
 
-  const fetchProducts = async (options: GetProductsProps = {}) => {
-    try {
-      setIsLoading(true);
-      const { data, status } = await getProducts(options);
-      setProducts(data.content);
-      setError({ isError: false, status: Number(status) });
-    } catch (e) {
-      if (e instanceof Error) {
-        setError({ isError: true, status: Number(e.message) });
-      } else {
-        setError({ isError: true, status: null });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    if (!fetchedProducts) return;
+
+    setData((prev) => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        data: fetchedProducts,
+      },
+    }));
+  }, [fetchedProducts, setData]);
+
+  const products = contextData[key]?.data || [];
+
   return {
     products,
-    error,
     isLoading,
-    fetchProducts,
+    error,
+    fetchProducts: request,
   };
 };
 

@@ -1,57 +1,65 @@
 import styled from '@emotion/styled';
-import Select from '../components/Select';
+import Select from '../components/commons/Select';
 import { useEffect, useState } from 'react';
-import { CartItem, Category, PriceOrder, Product } from '../App';
+import { Category, PriceOrder } from '../App';
 import ProductItemsWithSkeleton from '../components/ProductItemsWithSkeleton';
 import ErrorMessage from '../components/ErrorMessage';
 import getProductErrorMessage from '../utils/getProductErrorMessage';
+import Header from '../components/header/Header';
+
+import getCartErrorMessage from '../utils/getCartErrorMessage';
 import useProducts from '../hooks/useProducts';
+import useCartItems from '../hooks/useCartItems';
+import CartModal from '../components/cart/CartModal';
 
-type ProductPageProps = {
-  cartItems: CartItem[];
-  isCartItemsLoading: boolean;
-  addToCart: (product: Product) => Promise<void>;
-  removeFromCart: (productId: number) => Promise<void>;
-};
-
-const ProductPage = ({
-  cartItems,
-  isCartItemsLoading,
-  addToCart,
-  removeFromCart,
-}: ProductPageProps) => {
-  const { products, isLoading, error, fetchProducts } = useProducts();
-
+const ProductListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
   const [priceOrder, setPriceOrder] = useState<PriceOrder>('낮은 가격순');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { fetchProducts, error } = useProducts({
+    category: selectedCategory,
+    priceOrder,
+  });
+
+  const { cartItems, error: cartItemsError, fetchCartItems } = useCartItems();
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
 
   const handleCategoryChange = async (category: Category) => {
     setSelectedCategory(category);
-
-    await fetchProducts({
-      category,
-      priceOrder,
-    });
   };
 
   const handlePriceOrderChange = async (priceOrder: PriceOrder) => {
     setPriceOrder(priceOrder);
-
-    await fetchProducts({
-      priceOrder,
-      category: selectedCategory,
-    });
   };
 
   useEffect(() => {
-    fetchProducts({
-      category: selectedCategory,
-      priceOrder,
-    });
-  }, []);
+    fetchProducts();
+  }, [selectedCategory, priceOrder]);
 
   return (
     <>
+      <Header
+        cartItemCount={cartItems.length}
+        handleOpenModal={handleOpenModal}
+      />
+      <CartModal
+        isModalOpen={isModalOpen}
+        handleCloseModal={handleCloseModal}
+      />
+      {cartItemsError.isError && (
+        <ErrorMessage
+          errorMessage={getCartErrorMessage(cartItemsError.status)}
+        />
+      )}
       {error.isError && (
         <ErrorMessage errorMessage={getProductErrorMessage(error.status)} />
       )}
@@ -72,21 +80,14 @@ const ProductPage = ({
           />
         </SelectContainer>
         <ProductListContainer>
-          <ProductItemsWithSkeleton
-            products={products}
-            isLoading={isLoading}
-            cartItems={cartItems}
-            isCartItemsLoading={isCartItemsLoading}
-            addToCart={addToCart}
-            removeFromCart={removeFromCart}
-          />
+          <ProductItemsWithSkeleton />
         </ProductListContainer>
       </ProductPageContainer>
     </>
   );
 };
 
-export default ProductPage;
+export default ProductListPage;
 
 const ProductPageContainer = styled.div`
   display: flex;

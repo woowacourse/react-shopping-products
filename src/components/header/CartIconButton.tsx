@@ -1,13 +1,25 @@
 import styled from '@emotion/styled';
 
-const CartIconButton = ({ cartItemCount }: { cartItemCount: number }) => {
+type CartIconButtonProps = {
+  cartItemCount: number;
+  onClickCartIconButton: () => void;
+};
+
+const CartIconButton = ({
+  cartItemCount,
+  onClickCartIconButton,
+}: CartIconButtonProps) => {
   const labelText =
     cartItemCount === 0
       ? '장바구니 버튼, 비어 있음'
       : `장바구니 버튼, ${cartItemCount}개 담김`;
 
   return (
-    <CartIconButtonContainer aria-label={labelText}>
+    <CartIconButtonContainer
+      aria-label={labelText}
+      onClick={onClickCartIconButton}
+      data-testid="cart-icon-button"
+    >
       <img src="/cartIcon.svg" />
       {cartItemCount !== 0 && (
         <CartItemCount data-testid="cart-item-count">
