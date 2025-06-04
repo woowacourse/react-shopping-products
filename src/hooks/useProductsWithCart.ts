@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
 import { useProducts } from './useProducts';
 import { useCart } from './useCart';
-import { ProductElement } from '../types/product';
+import { CategoryType, ProductElement, SortKeyType } from '../types/product';
 
-export function useProductsWithCart(sortType: string, category: string = '전체') {
+export function useProductsWithCart(
+  sortType: SortKeyType = 'asc',
+  category: CategoryType = '전체',
+) {
   const {
     products,
     isLoading: isProductsLoading,

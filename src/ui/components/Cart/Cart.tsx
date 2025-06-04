@@ -1,22 +1,34 @@
 import CartItem from './CartItem';
 import CartTotal from './CartTotal';
 import EmptyCart from './EmptyCart';
-import { CartResponse } from '../../../types/product';
 import { Container } from './Cart.styles';
+import { useCart } from '../../../hooks/useCart';
+import { useCartActions } from '../../../hooks/useCartActions';
 
 interface CartProps {
-  cart: CartResponse;
-  onUpdateQuantity?: (cartItemId: number, quantity: number) => Promise<void>;
-  onRemoveItem?: (cartItemId: number) => Promise<void>;
   onClose?: () => void;
 }
 
-function Cart({ cart, onUpdateQuantity, onRemoveItem, onClose }: CartProps) {
+function Cart({ onClose }: CartProps) {
+  const { cart } = useCart();
+  const { handleUpdateQuantity, handleRemoveCart } = useCartActions();
+
   if (!cart || !cart.content) {
     return null;
   }
 
   const isEmptyCart = cart.content.length === 0;
+
+  const handleRemoveItem = async (cartItemId: number) => {
+    const item = cart.content.find((item) => item.id === cartItemId);
+    if (item) {
+      await handleRemoveCart({
+        product: item.product,
+        cartId: item.id,
+        isInCart: true,
+      });
+    }
+  };
 
   return (
     <>
@@ -26,8 +38,8 @@ function Cart({ cart, onUpdateQuantity, onRemoveItem, onClose }: CartProps) {
           <CartItem
             key={item.id}
             cart={item}
-            onUpdateQuantity={onUpdateQuantity}
-            onRemoveItem={onRemoveItem}
+            onUpdateQuantity={handleUpdateQuantity}
+            onRemoveItem={handleRemoveItem}
           />
         ))}
       </Container>

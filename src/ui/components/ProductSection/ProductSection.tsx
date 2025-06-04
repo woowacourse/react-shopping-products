@@ -1,49 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Title from '../Title/Title';
 import Dropdown from '../Dropdown/Dropdown';
 import ProductList from '../ProductList/ProductList';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { DropdownContainer, Section } from './ProductSection.styles';
 import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
-import { SortType, CategoryType, CartItem } from '../../../types/product';
-import { ProductElement } from '../../../types/product';
+import { SortType, CategoryType, SortKeyType } from '../../../types/product';
+import { useProductsWithCart } from '../../../hooks/useProductsWithCart';
 
-interface ProductSectionProps {
-  products: ProductElement[];
-  cart?: CartItem[] | null;
-  sort: SortType;
-  category: CategoryType;
-  onFilter: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  onSort: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  onAddCart: (product: ProductElement) => Promise<void>;
-  onRemoveCart: (product: ProductElement) => Promise<void>;
-  onUpdateQuantity?: (cartItemId: number, quantity: number) => Promise<void>;
-}
+function ProductSection() {
+  const [sort, setSort] = useState<SortType>('낮은 가격 순');
+  const [category, setCategory] = useState<CategoryType>('전체');
 
-function ProductSection({
-  products,
-  cart,
-  sort,
-  category,
-  onFilter,
-  onSort,
-  onAddCart,
-  onRemoveCart,
-  onUpdateQuantity,
-}: ProductSectionProps) {
+  const sortTypeToKey: Record<SortType, SortKeyType> = {
+    '낮은 가격 순': 'asc',
+    '높은 가격 순': 'desc',
+  };
+  const mappedSortType = sortTypeToKey[sort];
+
+  const {
+    transformedProducts: products,
+    isLoading,
+    isError,
+  } = useProductsWithCart(mappedSortType, category);
+
+  const handleFilterCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    if (value === '전체' || value === '식료품' || value === '패션잡화') setCategory(value);
+  };
+
+  const handleSortPrice = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    if (value === '낮은 가격 순' || value === '높은 가격 순') {
+      setSort(value);
+    }
+  };
+
   return (
     <Section>
       <Title title="우테코 상품 목록" />
       <DropdownContainer>
-        <Dropdown value={category} options={CATEGORY} onChange={onFilter} />
-        <Dropdown value={sort} options={SORT_PRICE} onChange={onSort} />
+        <Dropdown value={category} options={CATEGORY} onChange={handleFilterCategory} />
+        <Dropdown value={sort} options={SORT_PRICE} onChange={handleSortPrice} />
       </DropdownContainer>
-      <ProductList
-        onAddCart={onAddCart}
-        onRemoveCart={onRemoveCart}
-        onUpdateQuantity={onUpdateQuantity}
-        products={products}
-        cart={cart}
-      />
+      {isLoading ? (
+        <LoadingSpinner duration={2} />
+      ) : !isError && products.length === 0 ? (
+        <div>상품이 존재하지 않습니다.</div>
+      ) : (
+        <ProductList products={products} />
+      )}
     </Section>
   );
 }

@@ -40,7 +40,7 @@ function Product({
   }
 
   const isImage = product.imageUrl.length > 15;
-  // quantity가 undefined인 경우도 처리
+
   const isSoldOut = product.quantity !== undefined && product.quantity === 0;
 
   const handleAddCart = async () => {

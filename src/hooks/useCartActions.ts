@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
-import { ProductElement } from '../types/product';
+import { CategoryType, ProductElement, SortKeyType } from '../types/product';
 import { addCart, removeCart, updateCartQuantity } from '../api/cart';
-import { MAX_CART_ITEM_TYPE } from '../constants/productConfig';
-import { ERROR_MESSAGES } from '../constants/errorMessages';
 import { useProductsWithCart } from './useProductsWithCart';
 import { useToast } from '../context/ToastContext';
+import { MAX_CART_ITEM_TYPE } from '../constants/productConfig';
+import { ERROR_MESSAGES } from '../constants/errorMessages';
 
-export function useCartActions(sortType: string, category: string = '전체') {
+export function useCartActions(sortType: SortKeyType = 'asc', category: CategoryType = '전체') {
   const { transformedProducts, cart, isLoading, isError, fetchCart, resetErrors, fetchProduct } =
     useProductsWithCart(sortType, category);
 
