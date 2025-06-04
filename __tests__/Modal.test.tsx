@@ -1,44 +1,62 @@
-// import { vi, describe, it, afterEach } from "vitest";
-// import { render } from "@testing-library/react";
-// import { Modal } from "storybook/internal/components";
+import React from "react";
+import { vi, describe, it, afterEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import Modal from "../src/Component/Common/Modal";
 
-// describe("<Modal />", () => {
-//   afterEach(() => {
-//     vi.clearAllMocks();
-//     vi.resetAllMocks();
-//   });
+describe("<Modal />", () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+    vi.resetAllMocks();
+  });
 
-//   it("모달이 닫힐 때 onClose가 호출된다", () => {
-//     const onClose = vi.fn();
-//     render(
-//       <Modal isOpen={true} onClose={onClose}>
-//         모달 내용
-//       </Modal>
-//     );
+  it("모달이 닫힐 때 onClose가 호출된다", async () => {
+    const onClose = vi.fn();
+    render(
+      <Modal
+        isModalOpen={true}
+        onClose={onClose}
+        cartItems={[]}
+        cartStatus="success"
+        refetchCart={() => {}}
+      >
+        모달 내용
+      </Modal>
+    );
 
-//     const closeButton = screen.getByRole("button", { name: /닫기/i });
-//     userEvent.click(closeButton);
+    const closeButton = await screen.findByRole("button", { name: /닫기/i });
+    await userEvent.click(closeButton);
 
-//     expect(onClose).toHaveBeenCalledTimes(1);
-//   });
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
 
-//   it("isOpen이 false일 때 모달이 렌더링되지 않는다", () => {
-//     render(
-//       <Modal isOpen={false} onClose={() => {}}>
-//         모달 내용
-//       </Modal>
-//     );
+  it("isModalOpen이 false일 때 모달이 렌더링되지 않는다", () => {
+    render(
+      <Modal
+        isModalOpen={false}
+        onClose={() => {}}
+        cartItems={[]}
+        cartStatus="success"
+        refetchCart={() => {}}
+      >
+        모달 내용
+      </Modal>
+    );
+    expect(screen.queryByText("총 결제 금액")).not.toBeInTheDocument();
+  });
 
-//     expect(screen.queryByText("모달 내용")).not.toBeInTheDocument();
-//   });
-
-//   it("isOpen이 true일 때 모달이 렌더링된다", () => {
-//     render(
-//       <Modal isOpen={true} onClose={() => {}}>
-//         모달 내용
-//       </Modal>
-//     );
-
-//     expect(screen.getByText("모달 내용")).toBeInTheDocument();
-//   });
-// });
+  it("isModalOpen이 true일 때 모달이 렌더링된다", () => {
+    render(
+      <Modal
+        isModalOpen={true}
+        onClose={() => {}}
+        cartItems={[]}
+        cartStatus="success"
+        refetchCart={() => {}}
+      >
+        모달 내용
+      </Modal>
+    );
+    expect(screen.queryByText("총 결제 금액")).toBeInTheDocument();
+  });
+});
