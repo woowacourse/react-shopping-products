@@ -2,8 +2,9 @@ import { css } from '@emotion/react';
 import { CartItem } from '../../page/ShopPage';
 import Stepper from '../Stepper/Stepper';
 import Toast from '../Toast/Toast';
-import useCartQuantity from '../../hook/useCartQuantity';
+
 import { deleteCartItem } from '../../api/cartItem';
+import useCartItemController from '../../hook/useCartItemController';
 
 interface CartItemRowProps {
   item: CartItem;
@@ -70,7 +71,7 @@ const deleteButton = css`
 `;
 
 export default function CartItemRow({ item, onChange }: CartItemRowProps) {
-  const { quantity, showToast, handleIncrease, handleDecrease } = useCartQuantity({
+  const { quantity, showToast, handleIncrease, handleDecrease } = useCartItemController({
     productId: item.product.id,
     stock: item.product.stock,
     selectedCartItem: item,
@@ -87,7 +88,7 @@ export default function CartItemRow({ item, onChange }: CartItemRowProps) {
   };
 
   return (
-    <div css={cartItemLayout} key={item.id}>
+    <div css={cartItemLayout}>
       <div css={imageWrapper}>
         <img
           css={imageStyle}
