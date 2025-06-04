@@ -6,6 +6,25 @@ interface StepperProps {
   onDecrease: () => void;
 }
 
+export default function Stepper({ quantity, onIncrease, onDecrease }: StepperProps) {
+  return (
+    <div css={stepperLayout}>
+      <div css={stepperButtonContainer}>
+        <button css={stepperButton} onClick={onDecrease}>
+          <img src="./minus-quantity.svg" alt="minus" />
+        </button>
+      </div>
+      <span css={stepperTextBox}>{quantity}</span>
+
+      <div css={stepperButtonContainer}>
+        <button css={stepperButton} onClick={onIncrease}>
+          <img css={stepperButton} src="./add-quantity.svg" alt="plus" onClick={onIncrease} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const stepperLayout = css`
   display: flex;
   justify-content: flex-end;
@@ -29,22 +48,3 @@ const stepperTextBox = css`
   font-family: Noto Sans;
   font-size: 12px;
 `;
-
-export default function Stepper({ quantity, onIncrease, onDecrease }: StepperProps) {
-  return (
-    <div css={stepperLayout}>
-      <div css={stepperButtonContainer}>
-        <button css={stepperButton} onClick={onDecrease}>
-          <img src="./minus-quantity.svg" alt="minus" />
-        </button>
-      </div>
-      <span css={stepperTextBox}>{quantity}</span>
-
-      <div css={stepperButtonContainer}>
-        <button css={stepperButton} onClick={onIncrease}>
-          <img css={stepperButton} src="./add-quantity.svg" alt="plus" onClick={onIncrease} />
-        </button>
-      </div>
-    </div>
-  );
-}

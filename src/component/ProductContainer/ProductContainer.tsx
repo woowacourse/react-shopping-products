@@ -1,6 +1,6 @@
-import { css } from "@emotion/react";
-import { CartItem } from "../../page/ShopPage";
-import Product from "../Product/Product";
+import { css } from '@emotion/react';
+import { CartItem } from '../../page/ShopPage';
+import Product from '../Product/Product';
 
 export interface Product {
   id: string;
@@ -15,17 +15,7 @@ interface ProductContainerProps {
   onChange: () => void;
 }
 
-const ProductContainerLayout = css`
-  display: grid;
-  justify-content: space-between;
-  grid-template-columns: repeat(2, auto);
-`;
-
-export default function ProductContainer({
-  products,
-  cartItemList,
-  onChange,
-}: ProductContainerProps) {
+export default function ProductContainer({ products, cartItemList, onChange }: ProductContainerProps) {
   return (
     <div css={ProductContainerLayout}>
       {products.map((product) => {
@@ -46,3 +36,9 @@ export default function ProductContainer({
     </div>
   );
 }
+
+const ProductContainerLayout = css`
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: repeat(2, auto);
+`;

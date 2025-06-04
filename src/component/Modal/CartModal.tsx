@@ -8,6 +8,29 @@ interface CartModalProps {
   onClose: () => void;
 }
 
+export default function CartModal({ cartItems, onClose, onChange }: CartModalProps) {
+  const totalPrice = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  return (
+    <div css={backdrop} onClick={onClose}>
+      <div css={modal} onClick={(e) => e.stopPropagation()}>
+        <h3 css={modalTitle}>장바구니</h3>
+        <hr css={modalTitleLine} />
+        {cartItems.map((item) => (
+          <CartItemRow key={item.id} item={item} onChange={onChange} />
+        ))}
+        <hr css={modalTitleLine} />
+        <div css={totalPriceContainer}>
+          <strong>총 결제 금액</strong> <p css={priceText}>{totalPrice.toLocaleString()}원</p>
+        </div>
+        <button css={modalButton} onClick={onClose}>
+          닫기
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const backdrop = css`
   position: fixed;
   bottom: 0;
@@ -67,26 +90,3 @@ const priceText = css`
   color: #000;
   font-size: 24px;
 `;
-
-export default function CartModal({ cartItems, onClose, onChange }: CartModalProps) {
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-
-  return (
-    <div css={backdrop} onClick={onClose}>
-      <div css={modal} onClick={(e) => e.stopPropagation()}>
-        <h3 css={modalTitle}>장바구니</h3>
-        <hr css={modalTitleLine} />
-        {cartItems.map((item) => (
-          <CartItemRow key={item.id} item={item} onChange={onChange} />
-        ))}
-        <hr css={modalTitleLine} />
-        <div css={totalPriceContainer}>
-          <strong>총 결제 금액</strong> <p css={priceText}>{totalPrice.toLocaleString()}원</p>
-        </div>
-        <button css={modalButton} onClick={onClose}>
-          닫기
-        </button>
-      </div>
-    </div>
-  );
-}

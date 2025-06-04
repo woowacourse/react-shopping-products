@@ -1,10 +1,18 @@
-import { css } from "@emotion/react";
+import { css } from '@emotion/react';
 
 interface HeaderProps {
   title: string;
   children?: React.ReactNode;
 }
 
+export default function Header({ title, children }: HeaderProps) {
+  return (
+    <header css={headerLayout}>
+      {title}
+      {children}
+    </header>
+  );
+}
 const headerLayout = css`
   position: relative;
   display: flex;
@@ -16,16 +24,7 @@ const headerLayout = css`
   height: 64px;
   background-color: black;
   color: #fff;
-  font-family: "Noto Sans";
+  font-family: 'Noto Sans';
   font-size: 20px;
   font-weight: 800;
 `;
-
-export default function Header({ title, children }: HeaderProps) {
-  return (
-    <header css={headerLayout}>
-      {title}
-      {children}
-    </header>
-  );
-}

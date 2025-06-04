@@ -5,6 +5,60 @@ import Stepper from '../Stepper/Stepper';
 import Toast from '../Toast/Toast';
 import useCartItemController from '../../hook/useCartItemController';
 
+interface ProductProps {
+  id: string;
+  imageUrl: string;
+  name: string;
+  price: string;
+  stock: number;
+  selectedCardItems: CartItem[];
+  onChange: () => void;
+}
+
+export default function Product({ id, imageUrl, name, price, stock, selectedCardItems, onChange }: ProductProps) {
+  const { quantity, showToast, handleAddToCart, handleIncrease, handleDecrease } = useCartItemController({
+    productId: Number(id),
+    stock,
+    selectedCartItem: selectedCardItems[0],
+    onChange,
+  });
+
+  return (
+    <div id={id} css={productLayout}>
+      <div css={imgWrapper}>
+        <img
+          css={imgLayout}
+          src={imageUrl}
+          alt={name}
+          onError={(e) => {
+            const target = e.currentTarget;
+            target.onerror = null;
+            target.src = './default-img.png';
+          }}
+        />
+        {stock === 0 && <div css={soldOutOverlay}>품절</div>}
+      </div>
+      <div css={contentLayout}>
+        <div css={descriptionLayout}>
+          <p css={productNameLayout}>{name}</p>
+          <p css={priceLayout}>{price}</p>
+        </div>
+
+        {quantity === 0 ? (
+          <Button onClick={handleAddToCart}>
+            <img src="./add-shopping-cart.svg" />
+            <p>담기</p>
+          </Button>
+        ) : (
+          <Stepper quantity={quantity} onIncrease={handleIncrease} onDecrease={handleDecrease} />
+        )}
+      </div>
+
+      {showToast && <Toast>재고 수량을 초과할 수 없습니다.</Toast>}
+    </div>
+  );
+}
+
 const productLayout = css`
   display: flex;
   flex-direction: column;
@@ -73,57 +127,3 @@ const priceLayout = css`
   font-size: 12px;
   font-weight: 500;
 `;
-
-interface ProductProps {
-  id: string;
-  imageUrl: string;
-  name: string;
-  price: string;
-  stock: number;
-  selectedCardItems: CartItem[];
-  onChange: () => void;
-}
-
-export default function Product({ id, imageUrl, name, price, stock, selectedCardItems, onChange }: ProductProps) {
-  const { quantity, showToast, handleAddToCart, handleIncrease, handleDecrease } = useCartItemController({
-    productId: Number(id),
-    stock,
-    selectedCartItem: selectedCardItems[0],
-    onChange,
-  });
-
-  return (
-    <div id={id} css={productLayout}>
-      <div css={imgWrapper}>
-        <img
-          css={imgLayout}
-          src={imageUrl}
-          alt={name}
-          onError={(e) => {
-            const target = e.currentTarget;
-            target.onerror = null;
-            target.src = './default-img.png';
-          }}
-        />
-        {stock === 0 && <div css={soldOutOverlay}>품절</div>}
-      </div>
-      <div css={contentLayout}>
-        <div css={descriptionLayout}>
-          <p css={productNameLayout}>{name}</p>
-          <p css={priceLayout}>{price}</p>
-        </div>
-
-        {quantity === 0 ? (
-          <Button onClick={handleAddToCart}>
-            <img src="./add-shopping-cart.svg" />
-            <p>담기</p>
-          </Button>
-        ) : (
-          <Stepper quantity={quantity} onIncrease={handleIncrease} onDecrease={handleDecrease} />
-        )}
-      </div>
-
-      {showToast && <Toast>재고 수량을 초과할 수 없습니다.</Toast>}
-    </div>
-  );
-}
