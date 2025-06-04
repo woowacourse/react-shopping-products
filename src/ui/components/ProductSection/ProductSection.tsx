@@ -3,7 +3,12 @@ import Title from '../Title/Title';
 import Dropdown from '../Dropdown/Dropdown';
 import ProductList from '../ProductList/ProductList';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
-import { DropdownContainer, Section } from './ProductSection.styles';
+import {
+  DropdownContainer,
+  Section,
+  EmptyMessage,
+  LoadingContainer,
+} from './ProductSection.styles';
 import { CATEGORY, SORT_PRICE } from '../../../constants/productConfig';
 import { SortType, CategoryType, SortKeyType } from '../../../types/product';
 import { useProductsWithCart } from '../../../hooks/useProductsWithCart';
@@ -44,9 +49,11 @@ function ProductSection() {
         <Dropdown value={sort} options={SORT_PRICE} onChange={handleSortPrice} />
       </DropdownContainer>
       {isLoading ? (
-        <LoadingSpinner duration={2} />
+        <LoadingContainer>
+          <LoadingSpinner duration={2} />
+        </LoadingContainer>
       ) : !isError && products.length === 0 ? (
-        <div>상품이 존재하지 않습니다.</div>
+        <EmptyMessage>상품이 존재하지 않습니다.</EmptyMessage>
       ) : (
         <ProductList products={products} />
       )}
