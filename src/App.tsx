@@ -4,6 +4,7 @@ import { APIDataProvider } from './context/APIDataProvider';
 import reset from './global/style/reset';
 import { theme } from './global/style/theme';
 import ShopPage from './pages/shop/ShopPage';
+import { ToastProvider } from './context/ToastProvider';
 
 function App() {
   return (
@@ -11,9 +12,11 @@ function App() {
       <Global styles={reset} />
       <ThemeProvider theme={theme}>
         <MobileLayout>
-          <APIDataProvider>
-            <ShopPage />
-          </APIDataProvider>
+          <ToastProvider>
+            <APIDataProvider>
+              <ShopPage />
+            </APIDataProvider>
+          </ToastProvider>
         </MobileLayout>
       </ThemeProvider>
     </>

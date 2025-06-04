@@ -22,7 +22,8 @@ function ShopFilter({
         ]}
         selectedValue={filterOption.category}
         onSelectHandler={handleCategoryOption}
-        data-testid="filter-category"
+        aria-label="카테고리 선택"
+        autoFocus
       />
       <Dropdown
         options={[
@@ -31,7 +32,7 @@ function ShopFilter({
         ]}
         selectedValue={filterOption.sort}
         onSelectHandler={handleSortOption}
-        data-testid="filter-sort"
+        aria-label="정렬 방식 선택"
       />
     </Flex>
   );

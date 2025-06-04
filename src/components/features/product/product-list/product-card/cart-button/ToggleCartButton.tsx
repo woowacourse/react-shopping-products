@@ -1,14 +1,15 @@
-import { ComponentProps, useCallback } from 'react';
+import { ComponentProps } from 'react';
 
-import DeleteCartButton from './DeleteCartButton';
-import AddCartButton from './AddCartButton';
-import { showToast } from '../../../../../../utils/toast/showToast';
-import { useAPIDataContext } from '../../../../../../context/APIDataProvider';
 import {
   deleteCartItem,
   getShoppingCartData,
+  patchCartItem,
   postCartItem,
 } from '../../../../../../api/cart';
+import { useAPIDataContext } from '../../../../../../context/APIDataProvider';
+import { useToastContext } from '../../../../../../context/ToastProvider';
+import Counter from '../../../../../common/Counter';
+import AddCartButton from './AddCartButton';
 
 interface ToggleCartButtonProps extends ComponentProps<'button'> {
   productId: string;
@@ -20,52 +21,65 @@ function ToggleCartButton({ productId, ...props }: ToggleCartButtonProps) {
     name: 'cart',
   });
 
-  const cartInfo = {
-    cartId: '',
-    isInCart: false,
-  };
+  const { showToast } = useToastContext();
 
-  const handleAddCart = useCallback(async () => {
+  if (!cartListData) {
+    return null;
+  }
+
+  const handleAddCart = async () => {
     try {
-      if (!cartListData) return;
-      if (cartListData.length >= 50) {
-        return;
-      }
+      if (cartListData.length >= 50) return;
       await postCartItem(productId);
       cartRefetch();
     } catch (e) {
       showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
     }
-  }, [cartListData, productId, cartRefetch]);
+  };
 
-  const handleDeleteCart = useCallback(async () => {
+  const cart = cartListData.find((cart) => cart.product.id === productId);
+
+  if (!cart)
+    return (
+      <AddCartButton
+        onAddCartClick={handleAddCart}
+        aria-label="장바구니 담기"
+        {...props}
+      />
+    );
+
+  const handlePlusQuantity = async (cartId: string) => {
     try {
-      if (!cartListData) return;
-      const item = cartListData.find(({ product }) => product.id === productId);
-      const cartId = item?.id;
-      if (!cartId) {
-        return;
-      }
-      await deleteCartItem(cartId);
-      cartRefetch();
+      await patchCartItem(cartId, cart.quantity + 1);
+      await cartRefetch();
     } catch (e) {
-      showToast('장바구니에 삭제하는 데 실패했습니다.', 'error');
+      showToast('장바구니에 추가하는 데 실패했습니다.', 'error');
     }
-  }, [cartListData, productId, cartRefetch]);
-  if (!cartListData) {
-    return null;
-  }
-  cartListData.forEach((cart) => {
-    if (cart.product.id === productId) {
-      cartInfo.cartId = cart.id;
-      cartInfo.isInCart = true;
-    }
-  });
+  };
 
-  return cartInfo.isInCart ? (
-    <DeleteCartButton onDeleteCartClick={handleDeleteCart} {...props} />
-  ) : (
-    <AddCartButton onAddCartClick={handleAddCart} {...props} />
+  const handleMinusQuantity = async (cartId: string) => {
+    try {
+      if (cartListData.length < 1) return;
+      if (cart.quantity === 1) await deleteCartItem(cartId);
+      if (cart.quantity > 1) await patchCartItem(cartId, cart.quantity - 1);
+      await cartRefetch();
+    } catch (e) {
+      showToast('장바구니에서 뺴는 데 실패했습니다.', 'error');
+    }
+  };
+
+  const itemQuantity = cart.quantity;
+  const productMaxQuantity = cart.product.quantity;
+
+  return (
+    <Counter
+      canBeZero={true}
+      count={itemQuantity || 0}
+      maxCount={productMaxQuantity}
+      onMinusClick={() => handleMinusQuantity(cart.id)}
+      onPlusClick={() => handlePlusQuantity(cart.id)}
+      {...props}
+    />
   );
 }
 

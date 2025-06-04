@@ -12,10 +12,11 @@
     "deploy": "vite build --base=/react-shopping-products/ --minify=false && npx gh-pages -d dist"
   },
   "dependencies": {
+    "@dev-dino22/modal-components": "^0.2.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "react": "^0.0.0-experimental-c4676e72-20250520",
-    "react-dom": "^0.0.0-experimental-c4676e72-20250520"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
