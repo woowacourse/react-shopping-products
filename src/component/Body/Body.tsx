@@ -1,4 +1,8 @@
-import { css } from "@emotion/react";
+import { css } from '@emotion/react';
+
+export default function Body({ children }: { children: React.ReactNode }) {
+  return <main css={bodyLayout}>{children}</main>;
+}
 
 const bodyLayout = css`
   display: flex;
@@ -9,7 +13,3 @@ const bodyLayout = css`
   gap: 28px;
   min-height: 100vh;
 `;
-
-export default function Body({ children }: { children: React.ReactNode }) {
-  return <body css={bodyLayout}>{children}</body>;
-}

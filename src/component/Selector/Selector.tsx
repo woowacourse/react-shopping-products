@@ -1,26 +1,19 @@
-import { ComponentProps, useEffect, useRef, useState } from "react";
-import { css } from "@emotion/react";
+import { ComponentProps, useEffect, useRef, useState } from 'react';
+import { css } from '@emotion/react';
 
-interface SelectorProps<T> extends ComponentProps<"button"> {
+interface SelectorProps<T> extends ComponentProps<'button'> {
   dropDownOptions: T[];
   placeholder: string;
   onSelectChange: (value: T) => void;
 }
 
-function Selector<T>({
-  dropDownOptions,
-  placeholder,
-  onSelectChange,
-  ref,
-}: SelectorProps<T>) {
+function Selector<T>({ dropDownOptions, placeholder, onSelectChange, ref }: SelectorProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>(placeholder);
   const [focusIndex, setFocusIndex] = useState(0);
   const divRef = useRef<(HTMLLIElement | null)[]>([]);
 
-  const handleSelectedOption = (
-    e: React.MouseEvent<HTMLUListElement> | React.KeyboardEvent
-  ) => {
+  const handleSelectedOption = (e: React.MouseEvent<HTMLUListElement> | React.KeyboardEvent) => {
     const targetId = (e.target as HTMLDivElement).id;
     setSelectedValue(targetId);
     setIsOpen(false);
@@ -29,11 +22,11 @@ function Selector<T>({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     const target = e.target as HTMLUListElement | HTMLButtonElement;
-    if (e.key === "ArrowDown") {
+    if (e.key === 'ArrowDown') {
       setFocusIndex((prev) => Math.min(dropDownOptions.length, prev + 1));
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === 'ArrowUp') {
       setFocusIndex((prev) => Math.max(0, prev - 1));
-    } else if (e.key === "Enter" && !(target instanceof HTMLButtonElement)) {
+    } else if (e.key === 'Enter' && !(target instanceof HTMLButtonElement)) {
       handleSelectedOption(e);
     }
   };
@@ -53,10 +46,7 @@ function Selector<T>({
       >
         {selectedValue}
       </button>
-      <img
-        css={DropDownIcon}
-        src={`./${!isOpen ? "chevron-up" : "chevron-down"}.png`}
-      />
+      <img css={DropDownIcon} src={`./${!isOpen ? 'chevron-up' : 'chevron-down'}.png`} />
       {isOpen && (
         <ul css={DropDownContainer} onClick={(e) => handleSelectedOption(e)}>
           {dropDownOptions.map((option, index) => (
@@ -102,8 +92,8 @@ const DropDownOptions = css`
 `;
 
 const DropDownDefault = (isOpen: boolean) => {
-  const borderColor = isOpen ? "#000" : "#acacac";
-  const color = "#000";
+  const borderColor = isOpen ? '#000' : '#acacac';
+  const color = '#000';
 
   return css`
     display: flex;
@@ -131,6 +121,7 @@ const DropDownContainer = css`
   border-radius: 5px;
   background-color: white;
   list-style-type: none;
+  z-index: 1000;
 `;
 
 const SelectorContainer = css`
