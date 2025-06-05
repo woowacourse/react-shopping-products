@@ -9,7 +9,9 @@ export const HeaderContainer = css`
   color: white;
   align-items: center;
   padding: 24px;
-  position: fixed;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 `;
 
 export const HeaderTitle = css`

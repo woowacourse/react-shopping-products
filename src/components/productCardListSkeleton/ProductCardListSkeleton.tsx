@@ -1,4 +1,3 @@
-// ProductCardListSkeleton.tsx
 import {
   ProductContainer,
   ProductImage,

@@ -1,16 +1,19 @@
 import { CartStyle, PutItemCount } from "./CartButton.css";
+import { useCartQuery } from "../../hooks/useData";
 
 interface CartButtonProps {
-  cartItemAmount: number;
+  onClick: () => void;
 }
 
-function CartButton({ cartItemAmount }: CartButtonProps) {
+export default function CartButton({ onClick }: CartButtonProps) {
+  const { data: cartItems, isLoading } = useCartQuery();
+
+  if (isLoading) return "로딩중...";
+
   return (
-    <button css={CartStyle}>
+    <button css={CartStyle} onClick={onClick}>
       <img src="Cart.svg" alt="장바구니 아이콘" />
-      <div css={PutItemCount}>{cartItemAmount}</div>
+      <div css={PutItemCount}>{cartItems.length}</div>
     </button>
   );
 }
-
-export default CartButton;
