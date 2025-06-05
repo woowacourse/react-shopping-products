@@ -3,11 +3,13 @@ import { createContext, useState, useContext, ReactNode, useCallback, useRef } f
 interface ToastMessage {
   message: string;
   id: number;
+  duration: number;
 }
 
 interface ToastContextType {
   toasts: ToastMessage[];
   showToast: (message: string, duration?: number) => void;
+  removeToast: (id: number) => void;
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
@@ -18,16 +20,20 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const toastIdCounter = useRef(0);
 
-  const showToast = useCallback((message: string, duration: number = DEFAULT_DURATION) => {
-    const id = ++toastIdCounter.current;
-    setToasts((prevToasts) => [...prevToasts, { message, id }]);
-
-    setTimeout(() => {
-      setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
-    }, duration);
+  const removeToast = useCallback((id: number) => {
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
   }, []);
 
-  return <ToastContext.Provider value={{ toasts, showToast }}>{children}</ToastContext.Provider>;
+  const showToast = useCallback((message: string, duration: number = DEFAULT_DURATION) => {
+    const id = ++toastIdCounter.current;
+    setToasts((prevToasts) => [...prevToasts, { message, id, duration }]);
+  }, []);
+
+  return (
+    <ToastContext.Provider value={{ toasts, showToast, removeToast }}>
+      {children}
+    </ToastContext.Provider>
+  );
 }
 
 export function useToast() {
