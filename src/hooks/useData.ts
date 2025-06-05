@@ -1,5 +1,6 @@
-import { useEffect, useCallback, useRef, useReducer } from 'react';
+import { useEffect, useCallback, useReducer } from 'react';
 import { useDataContext } from '../context/DataContext';
+import { requestManager } from '../utils/requestManager';
 
 /**
  * useData 훅의 설정 옵션
@@ -121,10 +122,7 @@ export function useData<T>(
   options: UseDataOptions = {},
 ): UseDataReturn<T> {
   const { getCache, setCache } = useDataContext();
-  // 컴포넌트 리렌더링을 강제하기 위한 카운터
   const [, forceUpdate] = useReducer((x: number) => x + 1, 0);
-  const abortControllerRef = useRef<AbortController | null>(null);
-  const retryCountRef = useRef(0);
 
   const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
 
@@ -162,11 +160,7 @@ export function useData<T>(
    * - 실패 시 재시도 로직 적용
    */
   const fetchData = useCallback(async () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-
-    abortControllerRef.current = new AbortController();
+    requestManager.abort(key);
 
     setCache(key, {
       ...cached,
@@ -176,7 +170,29 @@ export function useData<T>(
     forceUpdate();
 
     try {
-      const data = await fetcher();
+      const data = await requestManager.execute(key, async () => {
+        const maxRetries = mergedOptions.retry as number;
+        const baseDelay = mergedOptions.retryDelay as number;
+
+        const executeWithRetry = async (remainRetries: number): Promise<T> => {
+          try {
+            return await fetcher();
+          } catch (error) {
+            if (remainRetries <= 1) {
+              throw error;
+            }
+
+            const retryCount = maxRetries - remainRetries;
+            const waitTime = baseDelay * Math.pow(2, retryCount);
+
+            await new Promise((resolve) => setTimeout(resolve, waitTime));
+
+            return executeWithRetry(remainRetries - 1);
+          }
+        };
+
+        return executeWithRetry(maxRetries);
+      });
 
       setCache(key, {
         data,
@@ -184,31 +200,16 @@ export function useData<T>(
         isLoading: false,
         lastFetchedAt: Date.now(),
       });
-      retryCountRef.current = 0;
+
       forceUpdate();
     } catch (error) {
-      if (error instanceof Error && error.name === 'AbortError') {
-        return;
-      }
-
-      if (retryCountRef.current < mergedOptions.retry!) {
-        retryCountRef.current++;
-        const delay = mergedOptions.retryDelay! * Math.pow(2, retryCountRef.current - 1); // Exponential backoff
-        setTimeout(() => {
-          if (abortControllerRef.current && !abortControllerRef.current.signal.aborted) {
-            fetchData();
-          }
-        }, delay);
-        return;
-      }
-
       setCache(key, {
         data: cached.data,
         error: error instanceof Error ? error : new Error('Unknown error'),
         isLoading: false,
         lastFetchedAt: cached.lastFetchedAt,
       });
-      retryCountRef.current = 0;
+
       forceUpdate();
     }
   }, [key, fetcher, cached, setCache, mergedOptions.retry, mergedOptions.retryDelay]);
@@ -218,14 +219,14 @@ export function useData<T>(
   };
 
   useEffect(() => {
-    if (!isCacheValid() || (mergedOptions.refetchOnMount && !cached.data)) {
+    const isFetchRequired = !isCacheValid() || (mergedOptions.refetchOnMount && !cached.data);
+
+    if (isFetchRequired) {
       fetchData();
     }
 
     return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
+      requestManager.abort(key);
     };
   }, [key, fetchData, isCacheValid, mergedOptions.refetchOnMount, cached.data]);
 
