@@ -1,9 +1,8 @@
 import { useToast } from "../provider/ToastProvider";
 import { changeCartQuantity } from "../api/cart";
-import { useData } from "../provider/DataProvider";
 import { CartItemType } from "../types/response.types";
-import { fetchCartItems } from "../api/cart";
 import { ERROR_MESSAGE } from "../constants/errorMessage";
+import { useCartQuery } from "./useData";
 
 const MIN_QUANTITY = 1;
 
@@ -18,10 +17,9 @@ export default function useCartQuantity({
   quantity,
   removeItemToCart,
 }: UseCartQuantityProps) {
-  const { getData, refetch } = useData();
-  const { showToast } = useToast();
+  const { data: cartItems, refetch: refetchCartItems } = useCartQuery();
 
-  const cartItems = getData<CartItemType[]>("cart") ?? [];
+  const { showToast } = useToast();
   const current = getCartQuantity(cartItems, cartId);
 
   async function increase() {
@@ -35,7 +33,7 @@ export default function useCartQuantity({
     try {
       await changeCartQuantity({ cartId, quantity: current + 1 });
 
-      await refetch("cart", fetchCartItems);
+      await refetchCartItems();
     } catch (error) {
       showToast(ERROR_MESSAGE.CART);
     }
@@ -52,7 +50,7 @@ export default function useCartQuantity({
     try {
       await changeCartQuantity({ cartId, quantity: current - 1 });
 
-      await refetch("cart", fetchCartItems);
+      await refetchCartItems();
     } catch (error) {
       showToast(ERROR_MESSAGE.CART);
     }

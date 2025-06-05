@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useCallback,
-} from "react";
+import { createContext, useState, ReactNode, useCallback } from "react";
 
 interface CacheItem<T> {
   data: T;
@@ -23,7 +17,9 @@ interface DataContextType {
   loading: (key: string) => boolean;
 }
 
-const DataContext = createContext<DataContextType | undefined>(undefined);
+export const DataContext = createContext<DataContextType | undefined>(
+  undefined
+);
 
 const DEFAULT_CACHE_TIME = 5 * 60 * 1000;
 
@@ -125,12 +121,4 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </DataContext.Provider>
   );
-};
-
-export const useData = () => {
-  const context = useContext(DataContext);
-  if (!context) {
-    throw new Error("useData must be used within a DataProvider");
-  }
-  return context;
 };

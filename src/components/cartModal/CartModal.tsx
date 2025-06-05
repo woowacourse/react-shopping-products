@@ -1,13 +1,12 @@
 import { useModalClose } from "../../hooks/useModalClose";
 import CartItem from "../cartItem/CartItem";
-import { useData } from "../../provider/DataProvider";
 import {
   CloseButton,
   ModalContainer,
   ModalOverlay,
   ModalTitle,
 } from "./CartModal.css";
-import { CartItemType } from "../../types/response.types";
+import { useCartQuery } from "../../hooks/useData";
 
 interface ModalProps {
   onClose: () => void;
@@ -15,9 +14,7 @@ interface ModalProps {
 
 function Modal({ onClose }: ModalProps) {
   const { onClickOverlay } = useModalClose({ closeModal: onClose });
-  const { getData } = useData();
-
-  const cartItems = getData<CartItemType[]>("cart") ?? [];
+  const { data: cartItems } = useCartQuery();
 
   return (
     <>

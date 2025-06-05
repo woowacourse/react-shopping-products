@@ -1,9 +1,8 @@
 import { useToast } from "../provider/ToastProvider";
 import { AddItemBody } from "../types/request.types";
 import request from "../utils/request";
-import { useData } from "../provider/DataProvider";
-import { fetchCartItems } from "../api/cart";
 import { ERROR_MESSAGE } from "../constants/errorMessage";
+import { useCartQuery } from "./useData";
 
 const MAX_CART_AMOUNT = 50;
 
@@ -18,7 +17,7 @@ interface RemoveItemToCartProps {
 
 export default function useCartAddRemove() {
   const { showToast } = useToast();
-  const { refetch } = useData();
+  const { refetch: refetchCartItems } = useCartQuery();
 
   async function removeItemToCart({ cartId }: RemoveItemToCartProps) {
     try {
@@ -26,7 +25,7 @@ export default function useCartAddRemove() {
         method: "DELETE",
         url: `/cart-items/${cartId}`,
       });
-      await refetch("cart", fetchCartItems);
+      await refetchCartItems();
     } catch {
       showToast(ERROR_MESSAGE.MINUS);
     }
@@ -43,7 +42,7 @@ export default function useCartAddRemove() {
         url: "/cart-items",
         body: { productId, quantity: 1 },
       });
-      await refetch("cart", fetchCartItems);
+      await refetchCartItems();
     } catch {
       showToast(ERROR_MESSAGE.ADD);
     }

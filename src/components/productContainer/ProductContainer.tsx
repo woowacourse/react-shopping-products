@@ -1,30 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Filter from "../filter/Filter";
 import ProductCardList from "../productCardList/ProductCardList";
 import Sort from "../sort/Sort";
 import { Container, SelectContainer, Title } from "./ProductContainer.css";
 import { CategoryType, SortType } from "../../types/index.types";
-import { useData } from "../../provider/DataProvider";
 import ProductCardListSkeleton from "../productCardListSkeleton/ProductCardListSkeleton";
-import useFetchData from "../../hooks/useFetchData";
-
-const DATA_NAME = "products";
+import { useProductQuery } from "../../hooks/useData";
 
 function ProductContainer() {
-  const { fetchData, loading } = useData();
-  const { getProducts } = useFetchData();
-
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryType>("전체");
   const [selectedSort, setSelectedSort] = useState<SortType>("낮은 가격순");
 
-  useEffect(() => {
-    fetchData(DATA_NAME, () =>
-      getProducts({ category: selectedCategory, sort: selectedSort })
-    );
-  }, [selectedCategory, selectedSort, fetchData, getProducts]);
+  const { isLoading } = useProductQuery({
+    category: selectedCategory,
+    sort: selectedSort,
+  });
 
-  if (loading(DATA_NAME)) return <ProductCardListSkeleton />;
+  if (isLoading) return <ProductCardListSkeleton />;
 
   return (
     <div css={Container}>
@@ -36,7 +29,7 @@ function ProductContainer() {
         />
         <Sort selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
       </div>
-      <ProductCardList />
+      <ProductCardList category={selectedCategory} sort={selectedSort} />
     </div>
   );
 }

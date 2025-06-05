@@ -1,13 +1,17 @@
 import ProductCard from "../productCard/ProductCard";
 import { CardListContainer } from "./ProductCardList.css";
-import { useData } from "../../provider/DataProvider";
-import { CartItemType, Product } from "../../types/response.types";
+import { useCartQuery, useProductQuery } from "../../hooks/useData";
+import { CategoryType, SortType } from "../../types/index.types";
 
-function ProductCardList() {
-  const { getData } = useData();
-
-  const products = getData<Product[]>("products") || [];
-  const cart = getData<CartItemType[]>("cart") || [];
+function ProductCardList({
+  category,
+  sort,
+}: {
+  category: CategoryType;
+  sort: SortType;
+}) {
+  const { data: products } = useProductQuery({ category, sort });
+  const { data: cart } = useCartQuery();
 
   return (
     <div css={CardListContainer}>
