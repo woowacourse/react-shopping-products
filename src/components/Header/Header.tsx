@@ -20,7 +20,7 @@ function Header() {
         <Styled.Button>
           <Styled.Image src={shoppingBag} />
         </Styled.Button>
-        <Styled.ShoppingBag>{cartItemsId.length}</Styled.ShoppingBag>
+        <Styled.ShoppingBag>{cartItemsId?.length}</Styled.ShoppingBag>
       </Styled.ButtonWrapper>
       <CartModal isOpen={isOpen} handleClose={handleClose} />
     </Styled.Container>

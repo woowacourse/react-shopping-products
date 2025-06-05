@@ -1,196 +1,79 @@
-import { useEffect, useReducer } from "react";
+import { useErrorMessageContext } from "../context/ErrorMessageContext";
+import { getFriendlyMessage } from "../context/utils/getFriendlyMessage";
 
-import fetchCartItems from "../apis/product/fetchCartItems";
 import fetchAddProduct from "../apis/product/fetchAddProduct";
 import fetchRemoveProduct from "../apis/product/fetchRemoveProduct";
 import fetchPatchProduct from "../apis/product/fetchPatchProduct";
-
-import { useErrorMessageContext } from "../context/ErrorMessageContext";
-import { useCartItemsIdContext } from "../context/CartItemsContext";
-
-import { getFriendlyMessage } from "../context/utils/getFriendlyMessage";
+import fetchCartItems from "../apis/product/fetchCartItems";
 
 import CartItem from "../types/CartItem";
-
-const INIT_STATE = {
-  isLoading: false,
-  isFetching: false,
-  isSuccess: false,
-  isFail: false,
-};
-
-const ACTION_TYPE = {
-  FETCH_LOADING: "FETCH_LOADING",
-  FETCH_FETCHING: "FETCH_FETCHING",
-  FETCH_SUCCESS: "FETCH_SUCCESS",
-  FETCH_FAIL: "FETCH_FAIL",
-};
-
-const reducer = (state: typeof INIT_STATE, action: { type: string }) => {
-  switch (action.type) {
-    case ACTION_TYPE.FETCH_LOADING:
-      return {
-        isLoading: true,
-        isFetching: false,
-        isSuccess: false,
-        isFail: false,
-      };
-    case ACTION_TYPE.FETCH_FETCHING:
-      return {
-        isLoading: false,
-        isFetching: true,
-        isSuccess: false,
-        isFail: false,
-      };
-    case ACTION_TYPE.FETCH_SUCCESS:
-      return {
-        isFetching: false,
-        isLoading: false,
-        isSuccess: true,
-        isFail: false,
-      };
-    case ACTION_TYPE.FETCH_FAIL:
-      return {
-        isFetching: false,
-        isLoading: false,
-        isSuccess: false,
-        isFail: true,
-      };
-    default:
-      return state;
-  }
-};
+import { useResource } from "./useResource";
 
 const useCartItemsId = () => {
-  const [state, dispatch] = useReducer(reducer, INIT_STATE);
-  const { cartItemsId, handleCartItemsId } = useCartItemsIdContext();
   const { handleErrorMessage } = useErrorMessageContext();
 
-  useEffect(() => {
-    dispatch({ type: ACTION_TYPE.FETCH_LOADING });
-    fetchData();
-  }, []);
+  const {
+    data: cartItemsId,
+    isLoading,
+    isFetching,
+    isSuccess,
+    isError,
+    refetch,
+  } = useResource<CartItem[]>("cartItems", async () => {
+    const { content } = await fetchCartItems({
+      method: "GET",
+      params: { page: "0", size: "50" },
+    });
+    return content;
+  });
 
-  const fetchData = async () => {
+  const addCartItemId = async (productId: string, quantity: number) => {
     try {
-      const { content } = await fetchCartItems({
-        method: "GET",
-        params: {
-          page: "0",
-          size: "50",
-        },
-      });
-      handleCartItemsId(
-        content.map((cartItem: CartItem) => ({
-          productId: cartItem.product.id.toString(),
-          cartId: cartItem.id.toString(),
-          cartQuantity: cartItem.quantity,
-        }))
-      );
-      dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
-    } catch (error) {
-      error instanceof Error &&
-        handleErrorMessage(getFriendlyMessage(error.message));
-      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-    }
-  };
-
-  const addCartItemId = async (id: string, quantity: number) => {
-    try {
-      dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
       await fetchAddProduct({
         method: "POST",
-        params: {
-          productId: id,
-          quantity,
-        },
+        params: { productId, quantity },
       });
-      dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
+      await refetch();
     } catch (error) {
-      error instanceof Error &&
+      if (error instanceof Error) {
         handleErrorMessage(getFriendlyMessage(error.message));
-      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
+      }
     }
-
-    try {
-      dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
-      await fetchData();
-      dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
-    } catch (error) {
-      error instanceof Error &&
-        handleErrorMessage(getFriendlyMessage(error.message));
-      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-    }
-
-    dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
   };
 
-  const patchCartItemId = async (id: string, quantity: number) => {
-    dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
-    if (cartItemsId.length >= 50) {
-      handleErrorMessage("장바구니에 최대 추가 가능한 개수는 50개 입니다.");
-      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-      return;
-    }
-
+  const patchCartItemId = async (productId: string, quantity: number) => {
     try {
-      dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
       await fetchPatchProduct({
         method: "PATCH",
-        params: {
-          productId: id,
-          quantity,
-        },
+        params: { productId, quantity },
       });
-      dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
+      await refetch();
     } catch (error) {
-      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-      error instanceof Error &&
+      if (error instanceof Error) {
         handleErrorMessage(getFriendlyMessage(error.message));
+      }
     }
-    try {
-      dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
-      await fetchData();
-      dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
-    } catch (error) {
-      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-      error instanceof Error &&
-        handleErrorMessage(getFriendlyMessage(error.message));
-    }
-    dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
   };
 
-  const removeCartItemId = async (id: string) => {
+  const removeCartItemId = async (productId: string) => {
     try {
-      dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
-
       await fetchRemoveProduct({
         method: "DELETE",
-        params: {
-          productId: id,
-        },
+        params: { productId },
       });
-      dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
+      await refetch();
     } catch (error) {
-      error instanceof Error &&
-        handleErrorMessage(
-          error.message || "장바구니에서 상품을 삭제하는데 실패했습니다."
-        );
-      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
-    }
-
-    try {
-      dispatch({ type: ACTION_TYPE.FETCH_FETCHING });
-      await fetchData();
-      dispatch({ type: ACTION_TYPE.FETCH_SUCCESS });
-    } catch (error) {
-      handleErrorMessage("상품 목록을 불러오는데 실패했습니다.");
-      dispatch({ type: ACTION_TYPE.FETCH_FAIL });
+      handleErrorMessage("상품 삭제에 실패했습니다.");
     }
   };
 
   return {
-    state,
+    state: {
+      isLoading,
+      isFetching,
+      isSuccess,
+      isError,
+    },
     cartItemsId,
     addCartItemId,
     patchCartItemId,

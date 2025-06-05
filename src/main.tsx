@@ -5,7 +5,6 @@ import App from "./App.tsx";
 import { worker } from "./mocks/browser";
 
 import { ErrorMessageProvider } from "./context/ErrorMessageContext.tsx";
-import { CartItemsIdProvider } from "./context/CartItemsContext.tsx";
 import { ResourcesProvider } from "./context/ResourcesContext.tsx";
 
 // 리뷰어가 쉽게 확인할 수 있도록, 개발환경 뿐만 아니라, 프로덕션 환경에서도 MSW 를 start 한다.
@@ -18,9 +17,7 @@ enableMocking().then(() => {
     <React.StrictMode>
       <ResourcesProvider>
         <ErrorMessageProvider>
-          <CartItemsIdProvider>
-            <App />
-          </CartItemsIdProvider>
+          <App />
         </ErrorMessageProvider>
       </ResourcesProvider>
     </React.StrictMode>

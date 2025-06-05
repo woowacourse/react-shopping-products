@@ -19,7 +19,6 @@ const fetchCartItems = async ({
   params = { page: "0", size: "50" },
 }: fetchCartItemsParams): Promise<FetchCartItemsResult> => {
   const url = new URL(BASE_URL);
-
   url.search = new URLSearchParams(params).toString();
 
   const options = {
@@ -36,7 +35,6 @@ const fetchCartItems = async ({
   }
 
   const data = await response.json();
-
   return data;
 };
 

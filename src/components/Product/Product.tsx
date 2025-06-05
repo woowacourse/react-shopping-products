@@ -1,5 +1,4 @@
 import Button from "../common/Button/Button";
-
 import AddButton from "../AddButton/AddButton";
 
 import useCartItemsId from "../../hooks/useCartItemsId";
@@ -10,30 +9,29 @@ import * as Styled from "./Product.styled";
 
 import defaultImage from "/defaultImage.png";
 
-function Product({ product, isInCart }: ProductProps) {
+function Product({ product }: ProductProps) {
   const { state, cartItemsId, addCartItemId, patchCartItemId } =
     useCartItemsId();
 
-  const cartItemId = cartItemsId.find(
-    (item) => item.productId === product.id.toString()
+  const cartItem = cartItemsId.find(
+    (item) => Number(item.product.id) === Number(product.id)
   );
 
+  const isInCart = Boolean(cartItem);
+
   const handleAddProduct = async () => {
-    addCartItemId(product.id.toString(), 1);
+    await addCartItemId(product.id.toString(), 1);
   };
 
   const handleIncreaseProductQuantity = async () => {
-    patchCartItemId(
-      cartItemId ? cartItemId.cartId.toString() : "",
-      cartItemId ? cartItemId.cartQuantity + 1 : 1
-    );
+    if (!cartItem) return;
+    await patchCartItemId(cartItem.id.toString(), cartItem.quantity + 1);
   };
 
   const handleDecreaseProductQuantity = async () => {
-    patchCartItemId(
-      cartItemId ? cartItemId.cartId.toString() : "",
-      cartItemId ? cartItemId.cartQuantity - 1 : 0
-    );
+    if (!cartItem) return;
+    const nextQuantity = cartItem.quantity - 1;
+    await patchCartItemId(cartItem.id.toString(), Math.max(0, nextQuantity));
   };
 
   return (
@@ -51,19 +49,19 @@ function Product({ product, isInCart }: ProductProps) {
               {`${product.price.toLocaleString()}원`}
             </Styled.ProductPrice>
           </Styled.Contents>
+
           <Styled.ButtonWrapper>
-            {isInCart && (
+            {isInCart && cartItem ? (
               <>
                 <Button color="light" onClick={handleDecreaseProductQuantity}>
                   -
                 </Button>
-                <p>{cartItemId ? cartItemId.cartQuantity : 0}</p>
+                <p>{cartItem.quantity}</p>
                 <Button color="light" onClick={handleIncreaseProductQuantity}>
                   +
                 </Button>
               </>
-            )}
-            {!isInCart && (
+            ) : (
               <AddButton
                 handleAddProduct={handleAddProduct}
                 disabled={!state.isSuccess}

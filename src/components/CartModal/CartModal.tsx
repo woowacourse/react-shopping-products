@@ -1,13 +1,10 @@
 import { createPortal } from "react-dom";
-
 import { Modal } from "@kaori-killer/modal-component";
 
-import Spinner from "../common/Spinner/Spinner";
 import useProductList from "../../hooks/useProductList";
 import useCartItemsId from "../../hooks/useCartItemsId";
 
 import defaultImage from "/defaultImage.png";
-
 import * as Styled from "./CartModal.styled";
 
 interface CartModalProps {
@@ -16,28 +13,32 @@ interface CartModalProps {
 }
 
 function CartModal({ isOpen, handleClose }: CartModalProps) {
-  const { cartItemsId, patchCartItemId, removeCartItemId } = useCartItemsId();
-  const { state, productList } = useProductList({
+  const { cartItemsId, patchCartItemId, removeCartItemId, state } =
+    useCartItemsId();
+  const { productList, state: productState } = useProductList({
     category: "전체",
     sort: "id,asc",
   });
 
-  const getCartItem = (productId: number) =>
-    cartItemsId.find((item) => item.productId === productId.toString());
+  const isSuccess = state.isSuccess && productState.isSuccess;
 
-  const getCartQuantity = (productId: number) =>
-    getCartItem(productId)?.cartQuantity ?? 0;
+  const getCartItem = (productId: number) =>
+    cartItemsId.find((item) => Number(item.product.id) === productId);
+
+  const getCartQuantity = (productId: number) => {
+    return getCartItem(productId)?.quantity ?? 0;
+  };
 
   const patchCartItemByProductId = (productId: number, quantity: number) => {
     const cartItem = getCartItem(productId);
     if (!cartItem) return;
-    patchCartItemId(cartItem.cartId, quantity);
+    patchCartItemId(cartItem.id.toString(), quantity);
   };
 
   const removeCartItemByProductId = (productId: number) => {
     const cartItem = getCartItem(productId);
     if (!cartItem) return;
-    removeCartItemId(cartItem.cartId);
+    removeCartItemId(cartItem.id.toString());
   };
 
   const handleDecreaseProductQuantity = (productId: number) => {
@@ -50,9 +51,14 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
     patchCartItemByProductId(productId, quantity + 1);
   };
 
-  const selectedProducts = productList.filter((product) =>
-    cartItemsId.some((item) => item.productId === product.id.toString())
-  );
+  const selectedProducts = isSuccess
+    ? productList.filter((product) =>
+        cartItemsId?.some(
+          (item) =>
+            item?.product && Number(item.product.id) === Number(product.id)
+        )
+      )
+    : [];
 
   return createPortal(
     <Modal isOpen={isOpen} onClose={handleClose}>
@@ -65,13 +71,11 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
         </Modal.Header>
 
         <Modal.Body>
-          {state.isLoading && <Spinner />}
-
-          {state.isSuccess && selectedProducts.length === 0 && (
+          {isSuccess && selectedProducts.length === 0 && (
             <p>장바구니에 담긴 상품이 없습니다.</p>
           )}
 
-          {state.isSuccess && (
+          {isSuccess && selectedProducts.length > 0 && (
             <Styled.List>
               {selectedProducts.map((product) => {
                 const productId = product.id;
@@ -98,9 +102,9 @@ function CartModal({ isOpen, handleClose }: CartModalProps) {
                         </button>
                         <p>{cartQuantity}</p>
                         <button
-                          onClick={() =>
-                            handleIncreaseProductQuantity(productId)
-                          }
+                          onClick={() => {
+                            handleIncreaseProductQuantity(productId);
+                          }}
                         >
                           +
                         </button>

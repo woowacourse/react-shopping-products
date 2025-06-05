@@ -3,58 +3,51 @@ import { useResourcesContext } from "../context/ResourcesContext";
 
 type Fetcher<T> = () => Promise<T>;
 
-export const useResource = <T>(
-  key: string,
-  fetcher: Fetcher<T>,
-  options?: { enabled?: boolean }
-) => {
-  const { resources, updateResource, resetResource } = useResourcesContext();
+export const useResource = <T>(key: string, fetcher: Fetcher<T>) => {
+  const { resources, getInitialState, updateResource } = useResourcesContext();
+  const resource = resources[key] ?? getInitialState();
 
-  const state = resources[key] ?? {
-    data: null,
-    isLoading: false,
-    isFetching: false,
-    isSuccess: false,
-    isError: false,
-  };
+  const fetchAndUpdate = useCallback(async () => {
+    const prev = resources[key] ?? getInitialState();
 
-  const fetchData = useCallback(async () => {
-    updateResource<T>(key, () => ({
-      data: null,
+    updateResource(key, {
+      ...prev,
       isLoading: true,
       isFetching: true,
-      isSuccess: false,
       isError: false,
-    }));
+      isSuccess: false,
+    });
 
     try {
       const data = await fetcher();
-      updateResource<T>(key, () => ({
+      updateResource(key, {
+        ...prev,
         data,
         isLoading: false,
         isFetching: false,
         isSuccess: true,
         isError: false,
-      }));
-    } catch (error) {
-      updateResource<T>(key, () => ({
-        data: null,
+      });
+    } catch {
+      updateResource(key, {
+        ...prev,
         isLoading: false,
         isFetching: false,
         isSuccess: false,
         isError: true,
-      }));
+      });
     }
-  }, [key, fetcher, updateResource]);
+  }, [key, fetcher, updateResource, resources, getInitialState]);
 
   useEffect(() => {
-    if (options?.enabled === false) return;
-    fetchData();
-  }, [fetchData, options?.enabled]);
+    if (resources[key]) return;
+    fetchAndUpdate();
+  }, [key, resources, fetchAndUpdate]);
+
+  const refetch = fetchAndUpdate;
 
   return {
-    ...state,
-    refetch: fetchData,
-    reset: () => resetResource(key),
+    ...(resource as typeof resource & { data: T }),
+    refetch,
   };
 };

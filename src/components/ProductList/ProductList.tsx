@@ -1,14 +1,13 @@
 import Product from "../Product/Product";
 import Spinner from "../common/Spinner/Spinner";
 
-import { useCartItemsIdContext } from "../../context/CartItemsContext";
-
 import useProductList from "../../hooks/useProductList";
 
 import { Sort } from "../../types/Sort";
 import { ProductCategory } from "../../types/ProductCategory";
 
 import * as Styled from "./ProductList.styled";
+import useCartItemsId from "../../hooks/useCartItemsId";
 
 interface ProductListProps {
   category: ProductCategory;
@@ -16,7 +15,7 @@ interface ProductListProps {
 }
 
 function ProductList({ category, sort }: ProductListProps) {
-  const { cartItemsId } = useCartItemsIdContext();
+  const { cartItemsId } = useCartItemsId();
   const { state, productList } = useProductList({
     category,
     sort,

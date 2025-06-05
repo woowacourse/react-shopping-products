@@ -6,8 +6,8 @@ import {
   useContext,
 } from "react";
 
-type ResourceState<T> = {
-  data: T | null;
+type ResourceState = {
+  data: unknown;
   isLoading: boolean;
   isFetching: boolean;
   isSuccess: boolean;
@@ -15,59 +15,40 @@ type ResourceState<T> = {
 };
 
 type Resources = {
-  [key: string]: ResourceState<any>;
+  [key: string]: ResourceState;
 };
 
 type ResourcesContextType = {
   resources: Resources;
-  updateResource: <T>(
-    key: string,
-    updater: (prevState: ResourceState<T>) => ResourceState<T>
-  ) => void;
-  resetResource: (key: string) => void;
+  getInitialState: () => ResourceState;
+  updateResource: (key: string, resource: ResourceState) => void;
 };
 
-const getInitialState = <T,>(): ResourceState<T> => ({
-  data: null,
+const getInitialState = (): ResourceState => ({
+  data: [],
   isLoading: false,
   isFetching: false,
   isSuccess: false,
   isError: false,
 });
 
-export const ResourcesContext = createContext<ResourcesContextType | undefined>(
+const ResourcesContext = createContext<ResourcesContextType | undefined>(
   undefined
 );
 
 export const ResourcesProvider = ({ children }: { children: ReactNode }) => {
   const [resources, setResources] = useState<Resources>({});
 
-  const updateResource = useCallback(
-    <T,>(
-      key: string,
-      updater: (prevState: ResourceState<T>) => ResourceState<T>
-    ) => {
-      setResources((prevResources) => {
-        const prevState = prevResources[key] ?? getInitialState<T>();
-        return {
-          ...prevResources,
-          [key]: updater(prevState),
-        };
-      });
-    },
-    []
-  );
-
-  const resetResource = useCallback((key: string) => {
+  const updateResource = useCallback((key: string, resource: ResourceState) => {
     setResources((prevResources) => ({
       ...prevResources,
-      [key]: getInitialState(),
+      [key]: resource,
     }));
   }, []);
 
   return (
     <ResourcesContext.Provider
-      value={{ resources, updateResource, resetResource }}
+      value={{ resources, getInitialState, updateResource }}
     >
       {children}
     </ResourcesContext.Provider>

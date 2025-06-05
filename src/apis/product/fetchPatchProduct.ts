@@ -13,7 +13,6 @@ const TOKEN = import.meta.env.VITE_TOKEN;
 
 const fetchPatchProduct = async ({ method, params }: fetchAddProductParams) => {
   const url = new URL(BASE_URL + "/" + params.productId);
-
   const options = {
     method,
     headers: {
