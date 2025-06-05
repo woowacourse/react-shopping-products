@@ -8,8 +8,6 @@ import {
   Detail,
   Price,
   ProductName,
-  ImageContainer,
-  EmptyImage,
   StepperContainer,
   SoldOutOverlay,
   SoldOutText,
@@ -38,8 +36,6 @@ function Product({
   if (!product) {
     return null;
   }
-
-  const isImage = product.imageUrl.length > 15;
 
   const isSoldOut = product.quantity !== undefined && product.quantity === 0;
 
@@ -93,22 +89,15 @@ function Product({
   return (
     <Container>
       <ProductImageContainer>
-        {isImage ? (
-          <ProductImage
-            src={product.imageUrl}
-            alt={product.name}
-            onError={(e) => {
-              const img = e.currentTarget;
-              img.onerror = null;
-              img.src = woowaLogo;
-            }}
-          />
-        ) : (
-          <ImageContainer>
-            <EmptyImage src={woowaLogo} alt={product.name} />
-            <p>이미지가 없습니다</p>
-          </ImageContainer>
-        )}
+        <ProductImage
+          src={product.imageUrl}
+          alt={product.name}
+          onError={(e) => {
+            const img = e.currentTarget;
+            img.onerror = null;
+            img.src = woowaLogo;
+          }}
+        />
         {isSoldOut && (
           <SoldOutOverlay>
             <SoldOutText>SOLDOUT</SoldOutText>

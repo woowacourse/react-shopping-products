@@ -13,26 +13,13 @@ export const ProductImageContainer = styled.div`
   position: relative;
 `;
 
-export const ImageContainer = styled.div`
+export const ProductImage = styled.img`
   width: 182px;
   height: 112px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-export const EmptyImage = styled.img`
-  width: 80px;
-  height: 60px;
-  margin-bottom: 20px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-`;
-
-export const ProductImage = styled.img`
-  width: 182px;
-  height: 112px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   object-fit: cover;
