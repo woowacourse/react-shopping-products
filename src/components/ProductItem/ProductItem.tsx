@@ -1,23 +1,28 @@
 import * as S from "./ProductItem.styled";
 import AddProductIcon from "../Icon/AddProductIcon";
 import Button from "../common/Button/Button";
-import RemoveProductIcon from "../Icon/RemoveProductIcon";
 import blackDefaultImage from "../../assets/blackDefaultImage.png";
-import { ResponseCartItem, ResponseProduct } from "../../api/types";
+import { ResponseProduct } from "../../api/types";
+import QuantityButton from "../common/QuantityButton/QuantityButton";
+import { useCart } from "../../hooks/useCart";
 
 function ProductItem({
   product,
-  cartItemList,
-  onAddToCart,
-  onRemoveFromCart,
-  setErrorMessage,
+  isInModal = false,
 }: {
   product: ResponseProduct;
-  cartItemList: ResponseCartItem[];
-  onAddToCart: (productId: number) => Promise<void>;
-  onRemoveFromCart: (cartItemId: number) => Promise<void>;
-  setErrorMessage: (message: string) => void;
+  isInModal?: boolean;
 }) {
+  const {
+    cartItemList,
+    handleAddToCart,
+    handleRemoveFromCart,
+    handleIncreaseQuantity,
+    handleDecreaseQuantity,
+    getCartQuantityForProduct,
+    setCartActionErrorMessage,
+  } = useCart();
+
   function isInCart(productId: number) {
     return cartItemList.some((item) => item.product.id === productId);
   }
@@ -32,16 +37,62 @@ function ProductItem({
       if (action === "remove") {
         const cartItemId = getCartItemId(product.id);
         if (cartItemId) {
-          await onRemoveFromCart(cartItemId);
+          await handleRemoveFromCart(cartItemId);
         }
       } else {
-        await onAddToCart(product.id);
+        await handleAddToCart(product.id, 1);
       }
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage(error.message);
+        setCartActionErrorMessage(error.message);
       }
     }
+  }
+
+  const isSoldOut = product.quantity === 0;
+
+  if (isInModal) {
+    return (
+      <S.ModalProductItemContainer>
+        <S.ModalImageContainer>
+          <S.ModalProductItemImage
+            src={product.imageUrl}
+            alt={product.name}
+            onError={(e) => {
+              e.currentTarget.src = blackDefaultImage;
+              e.currentTarget.onerror = null;
+            }}
+          />
+          {isSoldOut && (
+            <S.ModalSoldOutOverlay>
+              <S.SoldOutText>품절</S.SoldOutText>
+            </S.ModalSoldOutOverlay>
+          )}
+        </S.ModalImageContainer>
+
+        <S.ModalProductContent>
+          <S.ModalProductName>{product.name}</S.ModalProductName>
+          <S.ModalProductPrice>
+            {product.price.toLocaleString()}원
+          </S.ModalProductPrice>
+
+          {isInCart(product.id) ? (
+            <QuantityButton
+              quantity={getCartQuantityForProduct(product.id)}
+              onIncrease={() => handleIncreaseQuantity(product.id)}
+              onDecrease={() => handleDecreaseQuantity(product.id)}
+            />
+          ) : (
+            <Button
+              text="담기"
+              icon={<AddProductIcon />}
+              variation="dark"
+              onClick={() => handleProductItem("add")}
+            />
+          )}
+        </S.ModalProductContent>
+      </S.ModalProductItemContainer>
+    );
   }
 
   return (
@@ -54,17 +105,21 @@ function ProductItem({
           e.currentTarget.onerror = null;
         }}
       />
+      {isSoldOut && (
+        <S.SoldOutOverlay>
+          <S.SoldOutText>품절</S.SoldOutText>
+        </S.SoldOutOverlay>
+      )}
       <S.ProductItemBottom>
         <S.ProductItemDetailBox>
           <S.ProductName>{product.name}</S.ProductName>
           <S.ProductPrice>{product.price.toLocaleString()}원</S.ProductPrice>
         </S.ProductItemDetailBox>
         {isInCart(product.id) ? (
-          <Button
-            text="삭제"
-            icon={<RemoveProductIcon />}
-            variation="light"
-            onClick={() => handleProductItem("remove")}
+          <QuantityButton
+            quantity={getCartQuantityForProduct(product.id)}
+            onIncrease={() => handleIncreaseQuantity(product.id)}
+            onDecrease={() => handleDecreaseQuantity(product.id)}
           />
         ) : (
           <Button

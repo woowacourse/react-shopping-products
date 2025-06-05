@@ -5,7 +5,7 @@ export interface ResponseProduct {
   imageUrl: string;
   category: string;
   isInCart?: boolean;
-  quantity?: number;
+  quantity: number;
 }
 
 export interface ResponseCartItem {
