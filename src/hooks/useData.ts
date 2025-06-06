@@ -1,6 +1,7 @@
 import { useEffect, useCallback, useReducer } from 'react';
 import { useDataContext } from '../context/DataContext';
-import { requestManager } from '../utils/requestManager';
+
+const ongoingRequests = new Map<string, boolean>();
 
 /**
  * useData 훅의 설정 옵션
@@ -134,33 +135,17 @@ export function useData<T>(
   };
 
   /**
-   * 캐시 유효성 검사
-   * @returns {boolean} 캐시가 유효한지 여부
-   */
-  const isCacheValid = useCallback(() => {
-    if (!cached.lastFetchedAt) {
-      return false;
-    }
-
-    if (mergedOptions.cacheTime == null) {
-      return true;
-    }
-
-    if (mergedOptions.cacheTime <= 0) {
-      return false;
-    }
-
-    return Date.now() - cached.lastFetchedAt < mergedOptions.cacheTime;
-  }, [cached.lastFetchedAt, mergedOptions.cacheTime]);
-
-  /**
    * 데이터 fetch 실행
-   * - 진행 중인 요청이 있으면 취소
+   * - 진행 중인 요청이 있으면 새로운 요청을 시작하지 않음
    * - 로딩 상태 업데이트
    * - 실패 시 재시도 로직 적용
    */
   const fetchData = useCallback(async () => {
-    requestManager.abort(key);
+    if (ongoingRequests.get(key)) {
+      return;
+    }
+
+    ongoingRequests.set(key, true);
 
     setCache(key, {
       ...cached,
@@ -170,29 +155,27 @@ export function useData<T>(
     forceUpdate();
 
     try {
-      const data = await requestManager.execute(key, async () => {
-        const maxRetries = mergedOptions.retry as number;
-        const baseDelay = mergedOptions.retryDelay as number;
+      const maxRetries = mergedOptions.retry as number;
+      const baseDelay = mergedOptions.retryDelay as number;
 
-        const executeWithRetry = async (remainRetries: number): Promise<T> => {
-          try {
-            return await fetcher();
-          } catch (error) {
-            if (remainRetries <= 1) {
-              throw error;
-            }
-
-            const retryCount = maxRetries - remainRetries;
-            const waitTime = baseDelay * Math.pow(2, retryCount);
-
-            await new Promise((resolve) => setTimeout(resolve, waitTime));
-
-            return executeWithRetry(remainRetries - 1);
+      const executeWithRetry = async (remainRetries: number): Promise<T> => {
+        try {
+          return await fetcher();
+        } catch (error) {
+          if (remainRetries <= 1) {
+            throw error;
           }
-        };
 
-        return executeWithRetry(maxRetries);
-      });
+          const retryCount = maxRetries - remainRetries;
+          const waitTime = baseDelay * Math.pow(2, retryCount);
+
+          await new Promise((resolve) => setTimeout(resolve, waitTime));
+
+          return executeWithRetry(remainRetries - 1);
+        }
+      };
+
+      const data = await executeWithRetry(maxRetries);
 
       setCache(key, {
         data,
@@ -211,6 +194,8 @@ export function useData<T>(
       });
 
       forceUpdate();
+    } finally {
+      ongoingRequests.set(key, false);
     }
   }, [key, fetcher, cached, setCache, mergedOptions.retry, mergedOptions.retryDelay]);
 
@@ -219,16 +204,30 @@ export function useData<T>(
   };
 
   useEffect(() => {
-    const isFetchRequired = !isCacheValid() || (mergedOptions.refetchOnMount && !cached.data);
+    if (ongoingRequests.get(key)) {
+      return;
+    }
 
-    if (isFetchRequired) {
+    const cachedData = getCache<T>(key);
+    if (cachedData?.data && cachedData.lastFetchedAt) {
+      const isValidCache =
+        mergedOptions.cacheTime == null ||
+        (mergedOptions.cacheTime > 0 &&
+          Date.now() - cachedData.lastFetchedAt < mergedOptions.cacheTime);
+
+      if (isValidCache && !mergedOptions.refetchOnMount) {
+        return;
+      }
+    }
+
+    if (!ongoingRequests.get(key)) {
       fetchData();
     }
 
     return () => {
-      requestManager.abort(key);
+      ongoingRequests.delete(key);
     };
-  }, [key, fetchData, isCacheValid, mergedOptions.refetchOnMount, cached.data]);
+  }, [key]);
 
   return {
     data: cached.data,
