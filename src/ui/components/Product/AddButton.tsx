@@ -1,9 +1,5 @@
-import {
-  CartAddButton,
-  CartButtonImg,
-  CartAddButtonText,
-} from './Product.styles';
-import { addShoppingCart } from "../../../assets";
+import { CartAddButton, CartButtonImg, CartAddButtonText } from './Product.styles';
+import { addShoppingCart } from '../../../assets';
 
 interface AddButtonProps {
   onClick: () => void;

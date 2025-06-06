@@ -15,3 +15,20 @@ export const DropdownContainer = styled.div`
   justify-content: space-between;
   margin-bottom: 28px;
 `;
+
+export const EmptyMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  font-size: 16px;
+  text-align: center;
+`;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  width: 100%;
+`;

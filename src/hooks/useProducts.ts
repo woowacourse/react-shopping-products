@@ -1,35 +1,34 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useMemo } from 'react';
 import { getProducts } from '../api/products';
-import { ProductType } from '../types/product';
-import { useToast } from "../context/ToastContext";
-import { ERROR_MESSAGES } from "../constants/errorMessages";
+import { CategoryType, ProductType, SortKeyType } from '../types/product';
+import { useData } from './useData';
 
-export function useProducts(sortType: string, category: string = '전체') {
-  const [products, setProducts] = useState<ProductType[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const { showToast } = useToast();
+interface ProductsResponse {
+  content: ProductType[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+}
 
-  const fetchProduct = useCallback(async () => {
-    setIsLoading(true);
-    setIsError(false);
+export function useProducts(sortType: SortKeyType, category: CategoryType = '전체') {
+  const key = useMemo(() => `products-${sortType}-${category}`, [sortType, category]);
 
-    try {
-      const productsData = await getProducts(sortType, category);
+  const fetcher = async () => {
+    const response = await getProducts(sortType, category);
+    return response as ProductsResponse;
+  };
 
-      setProducts(productsData.content);
-    } catch (e) {
-      console.error(e);
-      setIsError(true);
-      showToast(ERROR_MESSAGES.productsFetchError);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [sortType, category, showToast]);
+  const { data, error, isLoading, refetch } = useData<ProductsResponse>(key, fetcher, {
+    cacheTime: 5 * 60 * 1000, // 5분
+    refetchOnMount: false, // 캐시가 있으면 재요청하지 않음
+  });
 
-  useEffect(() => {
-    fetchProduct();
-  }, [fetchProduct]);
-
-  return { products, isLoading, isError, setIsError, fetchProduct };
+  return {
+    products: data?.content || [],
+    isLoading,
+    isError: !!error,
+    error,
+    fetchProduct: refetch,
+  };
 }

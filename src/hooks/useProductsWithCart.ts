@@ -1,25 +1,27 @@
 import { useMemo } from 'react';
 import { useProducts } from './useProducts';
 import { useCart } from './useCart';
-import { ProductElement } from "../types/product";
+import { CategoryType, ProductElement, SortKeyType } from '../types/product';
 
-export function useProductsWithCart(sortType: string, category: string = '전체') {
+export function useProductsWithCart(
+  sortType: SortKeyType = 'asc',
+  category: CategoryType = '전체',
+) {
   const {
     products,
     isLoading: isProductsLoading,
     isError: isProductsError,
-    setIsError: setProductsError,
-    fetchProduct
+    error: productsError,
+    fetchProduct,
   } = useProducts(sortType, category);
 
   const {
     cart,
     isLoading: isCartLoading,
     isError: isCartError,
-    setIsError: setCartError,
     fetchCart,
     isInCart,
-    getCartItemId
+    getCartItemId,
   } = useCart();
 
   const isLoading = isProductsLoading || isCartLoading;
@@ -28,37 +30,33 @@ export function useProductsWithCart(sortType: string, category: string = '전체
   const productsWithCartInfo = useMemo(() => {
     const productArray = Array.isArray(products) ? products : [];
 
-    return productArray.map(product => ({
+    return productArray.map((product) => ({
       ...product,
       isInCart: isInCart(product.id),
-      cartId: getCartItemId(product.id)
+      cartId: getCartItemId(product.id),
     }));
   }, [products, isInCart, getCartItemId]);
 
-  const transformedProducts: ProductElement[] = productsWithCartInfo.map(item => ({
+  const transformedProducts: ProductElement[] = productsWithCartInfo.map((item) => ({
     product: {
       id: item.id,
       name: item.name,
       price: item.price,
       imageUrl: item.imageUrl,
-      category: item.category
+      category: item.category,
+      quantity: item.quantity,
     },
     isInCart: item.isInCart,
-    cartId: item.cartId
+    cartId: item.cartId,
   }));
-
-  const resetErrors = () => {
-    setProductsError(false);
-    setCartError(false);
-  };
 
   return {
     transformedProducts,
     cart,
     isLoading,
     isError,
-    resetErrors,
+    error: productsError,
     fetchCart,
-    fetchProduct
+    fetchProduct,
   };
 }

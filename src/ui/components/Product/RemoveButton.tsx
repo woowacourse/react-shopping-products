@@ -1,9 +1,5 @@
-import {
-  CartRemoveButton,
-  CartButtonImg,
-  CartRemoveButtonText,
-} from './Product.styles';
-import { removeShoppingCart } from "../../../assets";
+import { CartRemoveButton, CartButtonImg, CartRemoveButtonText } from './Product.styles';
+import { removeShoppingCart } from '../../../assets';
 
 interface RemoveButtonProps {
   onClick: () => void;

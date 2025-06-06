@@ -1,17 +1,18 @@
 import { Button, Container, Icon, CartStock, Title } from './Header.styles';
-import { cartDefaultIcon, cartStockIcon } from "../../../assets";
+import { cartDefaultIcon, cartStockIcon } from '../../../assets';
 
 interface HeaderProps {
   title: string;
-  totalCartProducts: number | null;
+  totalCartProducts: number;
+  onClickCart?: () => void;
 }
 
-function Header({ title, totalCartProducts }: HeaderProps) {
+function Header({ title, totalCartProducts, onClickCart }: HeaderProps) {
   return (
     <Container>
       <Title>{title}</Title>
-      <Button>
-        {totalCartProducts && totalCartProducts > 0 ? (
+      <Button onClick={onClickCart}>
+        {totalCartProducts > 0 ? (
           <>
             <Icon src={cartStockIcon} alt="장바구니 아이콘" />
             <CartStock>{totalCartProducts}</CartStock>

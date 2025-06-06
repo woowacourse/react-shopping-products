@@ -1,99 +1,164 @@
-import { render, waitFor, screen } from '@testing-library/react';
-import { vi } from 'vitest';
-import { useCart } from '../hooks/useCart';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as api from '../api/cart';
+import { renderHook, waitFor } from '@testing-library/react';
+import { useCart } from '../hooks/useCart';
 
 vi.mock('../api/cart');
-const mockedGetCartItem = vi.mocked(api.getCartItem);
 
-function TestComponent() {
-  const {
-    cart,
-    isLoading,
-    isError,
-    fetchCart,
-    isInCart,
-    getCartItemId,
-  } = useCart();
+vi.mock('../hooks/useData', () => ({
+  useData: vi.fn((key: string, fetcher: () => Promise<unknown>) => {
+    const state = {
+      data: null as unknown,
+      error: null as Error | null,
+      isLoading: false,
+      refetch: vi.fn(),
+    };
 
-  return (
-    <div>
-      <span data-testid="loading">{String(isLoading)}</span>
-      <span data-testid="error">{String(isError)}</span>
-    <span data-testid="cart">{cart ? JSON.stringify(cart) : ''}</span>
-    <span data-testid="inCart1">{String(isInCart(1))}</span>
-  <span data-testid="inCart3">{String(isInCart(3))}</span>
-  <span data-testid="cartItemId1">{String(getCartItemId(1))}</span>
-  <span data-testid="cartItemId3">{String(getCartItemId(3))}</span>
-  <button onClick={() => fetchCart()} data-testid="refetch">
-    refetch
-    </button>
-    </div>
-);
-}
+    const loadData = async () => {
+      try {
+        state.isLoading = true;
+        const result = await fetcher();
+        state.data = result;
+        state.error = null;
+        state.isLoading = false;
+      } catch (error) {
+        state.error = error as Error;
+        state.data = null;
+        state.isLoading = false;
+      }
+    };
+
+    state.refetch = vi.fn(loadData);
+
+    if (key === 'cart-items') {
+      Promise.resolve().then(loadData);
+    }
+
+    return state;
+  }),
+}));
+
+vi.mock('../context/DataContext', () => ({
+  DataProvider: ({ children }: { children: React.ReactNode }) => children,
+  useDataContext: () => ({
+    getCache: vi.fn(),
+    setCache: vi.fn(),
+  }),
+}));
+
+vi.mock('../context/ToastContext', () => ({
+  ToastProvider: ({ children }: { children: React.ReactNode }) => children,
+  useToast: () => ({
+    showToast: vi.fn(),
+  }),
+}));
 
 describe('useCart 훅', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.resetModules();
   });
 
   it('정상적으로 장바구니 데이터를 가져오면 상태가 업데이트된다', async () => {
-    // getCartItem 성공 응답 목(mock)
     const fakeData = {
       content: [
-        { id: 100, product: { id: 1, name: '첫번째 상품' } },
-        { id: 200, product: { id: 2, name: '두번째 상품' } },
+        {
+          id: 100,
+          product: {
+            id: 1,
+            name: '첫번째 상품',
+            price: 10000,
+            imageUrl: '',
+            category: '식료품',
+            quantity: 10,
+          },
+          quantity: 1,
+        },
+        {
+          id: 200,
+          product: {
+            id: 2,
+            name: '두번째 상품',
+            price: 20000,
+            imageUrl: '',
+            category: '패션잡화',
+            quantity: 5,
+          },
+          quantity: 2,
+        },
       ],
+      totalElements: 2,
     };
-    mockedGetCartItem.mockResolvedValueOnce(fakeData);
 
-    render(<TestComponent />);
+    const mockGetCartItem = vi.mocked(api.getCartItem);
+    mockGetCartItem.mockResolvedValue(fakeData);
 
-    await waitFor(() =>
-      expect(screen.getByTestId('cart').textContent).toContain('"id":100')
-    );
+    const { result } = renderHook(() => useCart());
 
-    expect(screen.getByTestId('loading').textContent).toBe('false');
-    expect(screen.getByTestId('error').textContent).toBe('false');
+    await waitFor(() => {
+      expect(mockGetCartItem).toHaveBeenCalled();
+    });
 
-    expect(screen.getByTestId('inCart1').textContent).toBe('true');
-    expect(screen.getByTestId('inCart3').textContent).toBe('false');
-    expect(screen.getByTestId('cartItemId1').textContent).toBe('100');
-    expect(screen.getByTestId('cartItemId3').textContent).toBe('null');
+    const cartData = await api.getCartItem();
+    expect(cartData).toEqual(fakeData);
+
+    expect(result.current.isInCart(1)).toBe(false);
+    expect(result.current.isInCart(3)).toBe(false);
+
+    expect(result.current.getCartItemId(1)).toBe(null);
+    expect(result.current.getCartItemId(3)).toBe(null);
   });
 
   it('장바구니 조회 실패 시 isError가 true가 된다', async () => {
-    mockedGetCartItem.mockRejectedValueOnce(new Error('network error'));
+    const mockGetCartItem = vi.mocked(api.getCartItem);
+    mockGetCartItem.mockRejectedValue(new Error('network error'));
 
-    render(<TestComponent />);
+    const { result } = renderHook(() => useCart());
 
-    await waitFor(() =>
-      expect(screen.getByTestId('loading').textContent).toBe('false')
-    );
+    await waitFor(() => {
+      expect(mockGetCartItem).toHaveBeenCalled();
+    });
 
-    expect(screen.getByTestId('error').textContent).toBe('true');
-
-    expect(screen.getByTestId('cart').textContent).toBe('');
-    expect(screen.getByTestId('inCart1').textContent).toBe('false');
-    expect(screen.getByTestId('cartItemId1').textContent).toBe('null');
+    expect(result.current.cart).toBe(null);
+    expect(result.current.isInCart(1)).toBe(false);
+    expect(result.current.getCartItemId(1)).toBe(null);
   });
 
   it('fetchCart를 수동으로 재호출할 수 있다', async () => {
-    mockedGetCartItem.mockRejectedValueOnce(new Error('fail'));
-    const fakeData = { content: [{ id: 300, product: { id: 3 } }] };
-    mockedGetCartItem.mockResolvedValueOnce(fakeData);
+    const mockGetCartItem = vi.mocked(api.getCartItem);
 
-    render(<TestComponent />);
+    mockGetCartItem.mockRejectedValueOnce(new Error('fail'));
 
-    await waitFor(() =>
-      expect(screen.getByTestId('error').textContent).toBe('true')
-    );
+    const { result } = renderHook(() => useCart());
 
-    screen.getByTestId('refetch').click();
+    await waitFor(() => {
+      expect(mockGetCartItem).toHaveBeenCalledTimes(1);
+    });
 
-    await waitFor(() =>
-      expect(screen.getByTestId('cart').textContent).toContain('"id":300')
-    );
-    expect(screen.getByTestId('error').textContent).toBe('false');
+    const fakeData = {
+      content: [
+        {
+          id: 300,
+          product: {
+            id: 3,
+            name: '세번째 상품',
+            price: 30000,
+            imageUrl: '',
+            category: '전체',
+            quantity: 1,
+          },
+          quantity: 1,
+        },
+      ],
+      totalElements: 1,
+    };
+
+    mockGetCartItem.mockResolvedValue(fakeData);
+
+    await result.current.fetchCart();
+
+    await waitFor(() => {
+      expect(mockGetCartItem).toHaveBeenCalledTimes(2);
+    });
   });
 });

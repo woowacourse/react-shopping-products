@@ -1,2 +1,2 @@
-export const baseUrl =
-  'http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com';
+export const mockUrl = 'https://api.example.com';
+export const baseUrl = import.meta.env.VITE_API_URL || mockUrl;
