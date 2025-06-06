@@ -1,11 +1,11 @@
 import { useState, useCallback } from "react";
-import getProducts from "../api/getProducts";
-import type { ProductTypes } from "../types/ProductTypes";
+import getProducts from "../api/product/getProducts";
+import type { ProductType } from "../types/ProductType";
 
 export type FilterValue = "all" | "grocery" | "fashion" | "low" | "high";
 
 export function useProductFilters(
-  setProducts: (prods: ProductTypes[]) => void,
+  setProducts: (prods: ProductType[]) => void,
   onError: (msg: string) => void
 ) {
   const [category, setCategory] = useState<FilterValue>("all");
