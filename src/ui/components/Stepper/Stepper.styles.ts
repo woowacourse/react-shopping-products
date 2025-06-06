@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 export const StepperContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   margin-top: 8px;
 `;
 
