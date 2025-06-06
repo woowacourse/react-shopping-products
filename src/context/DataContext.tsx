@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, ReactNode, useReducer } from 'react';
 
 interface CacheData<T> {
   data: T | null;
@@ -30,6 +30,7 @@ interface DataProviderProps {
 
 export function DataProvider({ children }: DataProviderProps) {
   const [cache] = useState(new Map<string, CacheData<unknown>>());
+  const [, forceUpdate] = useReducer((x: number) => x + 1, 0);
 
   const getCache = useCallback(
     <T,>(key: string): CacheData<T> | undefined => {
@@ -41,6 +42,7 @@ export function DataProvider({ children }: DataProviderProps) {
   const setCache = useCallback(
     <T,>(key: string, data: CacheData<T>) => {
       cache.set(key, data as CacheData<unknown>);
+      forceUpdate();
     },
     [cache],
   );
@@ -52,6 +54,7 @@ export function DataProvider({ children }: DataProviderProps) {
       } else {
         cache.clear();
       }
+      forceUpdate();
     },
     [cache],
   );

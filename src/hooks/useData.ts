@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useReducer } from 'react';
+import { useEffect, useCallback, useReducer, useMemo } from 'react';
 import { useDataContext } from '../context/DataContext';
 
 const ongoingRequests = new Map<string, boolean>();
@@ -134,6 +134,9 @@ export function useData<T>(
     lastFetchedAt: null,
   };
 
+  // cached를 useMemo로 감싸서 의존성 문제 해결
+  const cachedData = useMemo(() => cached, [cached]);
+
   /**
    * 데이터 fetch 실행
    * - 진행 중인 요청이 있으면 새로운 요청을 시작하지 않음
@@ -147,12 +150,18 @@ export function useData<T>(
 
     ongoingRequests.set(key, true);
 
+    const currentCache = getCache<T>(key) || {
+      data: null,
+      error: null,
+      isLoading: false,
+      lastFetchedAt: null,
+    };
+
     setCache(key, {
-      ...cached,
+      ...currentCache,
       isLoading: true,
       error: null,
     });
-    forceUpdate();
 
     try {
       const maxRetries = mergedOptions.retry as number;
@@ -183,52 +192,37 @@ export function useData<T>(
         isLoading: false,
         lastFetchedAt: Date.now(),
       });
-
-      forceUpdate();
     } catch (error) {
+      const latestCache = getCache<T>(key) || currentCache;
+
       setCache(key, {
-        data: cached.data,
+        data: latestCache.data,
         error: error instanceof Error ? error : new Error('Unknown error'),
         isLoading: false,
-        lastFetchedAt: cached.lastFetchedAt,
+        lastFetchedAt: latestCache.lastFetchedAt,
       });
-
-      forceUpdate();
     } finally {
-      ongoingRequests.set(key, false);
+      ongoingRequests.delete(key);
     }
-  }, [key, fetcher, cached, setCache, mergedOptions.retry, mergedOptions.retryDelay]);
+  }, [key, fetcher, getCache, setCache, mergedOptions.retry, mergedOptions.retryDelay]);
 
   const refetch = async () => {
     await fetchData();
   };
 
   useEffect(() => {
+    // 이미 진행 중인 요청이 있으면 스킵
     if (ongoingRequests.get(key)) {
       return;
     }
 
+    // 캐시된 데이터 확인
     const cachedData = getCache<T>(key);
 
-    if (!cachedData) {
+    // 캐시가 없거나 데이터가 없으면 요청
+    if (!cachedData || !cachedData.data) {
       fetchData();
-      return;
     }
-
-    if (cachedData.data && cachedData.lastFetchedAt) {
-      const isValidCache =
-        mergedOptions.cacheTime == null ||
-        (mergedOptions.cacheTime > 0 &&
-          Date.now() - cachedData.lastFetchedAt < mergedOptions.cacheTime);
-
-      // 캐시가 유효하고 refetchOnMount가 false면 스킵
-      if (isValidCache && !mergedOptions.refetchOnMount) {
-        return;
-      }
-    }
-
-    // 캐시가 만료되었거나 refetchOnMount가 true인 경우 요청
-    fetchData();
 
     return () => {
       ongoingRequests.delete(key);
@@ -236,10 +230,15 @@ export function useData<T>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
+  // Context 업데이트로 인한 리렌더링 강제
+  useEffect(() => {
+    forceUpdate();
+  }, [cached.data]);
+
   return {
-    data: cached.data,
-    error: cached.error,
-    isLoading: cached.isLoading,
+    data: cachedData.data,
+    error: cachedData.error,
+    isLoading: cachedData.isLoading,
     refetch,
   };
 }

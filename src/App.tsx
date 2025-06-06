@@ -20,7 +20,7 @@ function App() {
         <ToastList />
         <Header
           title="SHOP"
-          totalCartProducts={cart && cart.totalElements}
+          totalCartProducts={cart?.totalElements ?? 0}
           onClickCart={() => setIsCartModalOpen(true)}
         />
         {isCartModalOpen && (
