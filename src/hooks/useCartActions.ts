@@ -7,7 +7,7 @@ import { MAX_CART_ITEM_TYPE } from '../constants/productConfig';
 import { ERROR_MESSAGES } from '../constants/errorMessages';
 
 export function useCartActions(sortType: SortKeyType = 'asc', category: CategoryType = '전체') {
-  const { transformedProducts, cart, isLoading, isError, fetchCart, resetErrors, fetchProduct } =
+  const { transformedProducts, cart, isLoading, isError, fetchCart, fetchProduct } =
     useProductsWithCart(sortType, category);
 
   const { showToast } = useToast();
@@ -17,7 +17,6 @@ export function useCartActions(sortType: SortKeyType = 'asc', category: Category
       if (cart?.totalElements === MAX_CART_ITEM_TYPE) {
         showToast(ERROR_MESSAGES.maxCartItemType);
         console.error(ERROR_MESSAGES.maxCartItemType);
-        resetErrors();
         return;
       }
 
@@ -31,10 +30,9 @@ export function useCartActions(sortType: SortKeyType = 'asc', category: Category
           showToast(ERROR_MESSAGES.failedAddCart);
         }
         console.error('카트 추가 실패:', error);
-        resetErrors();
       }
     },
-    [cart, fetchCart, resetErrors, showToast],
+    [cart, fetchCart, showToast],
   );
 
   const handleRemoveCart = useCallback(
@@ -42,7 +40,6 @@ export function useCartActions(sortType: SortKeyType = 'asc', category: Category
       if (!product.cartId) {
         showToast(ERROR_MESSAGES.invalidCartID);
         console.error(ERROR_MESSAGES.invalidCartID);
-        resetErrors();
         return;
       }
 
@@ -52,10 +49,9 @@ export function useCartActions(sortType: SortKeyType = 'asc', category: Category
       } catch (error) {
         showToast(ERROR_MESSAGES.failedRemoveCart);
         console.error(ERROR_MESSAGES.failedRemoveCart, error);
-        resetErrors();
       }
     },
-    [fetchCart, resetErrors, showToast],
+    [fetchCart, showToast],
   );
 
   const handleUpdateQuantity = useCallback(
@@ -70,10 +66,9 @@ export function useCartActions(sortType: SortKeyType = 'asc', category: Category
           showToast('수량 변경에 실패했습니다.');
         }
         console.error('수량 변경 실패:', error);
-        resetErrors();
       }
     },
-    [fetchCart, resetErrors, showToast],
+    [fetchCart, showToast],
   );
 
   return {
@@ -84,7 +79,6 @@ export function useCartActions(sortType: SortKeyType = 'asc', category: Category
     handleAddCart,
     handleRemoveCart,
     handleUpdateQuantity,
-    resetErrors,
     fetchProduct,
   };
 }
