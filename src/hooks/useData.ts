@@ -209,24 +209,31 @@ export function useData<T>(
     }
 
     const cachedData = getCache<T>(key);
-    if (cachedData?.data && cachedData.lastFetchedAt) {
+
+    if (!cachedData) {
+      fetchData();
+      return;
+    }
+
+    if (cachedData.data && cachedData.lastFetchedAt) {
       const isValidCache =
         mergedOptions.cacheTime == null ||
         (mergedOptions.cacheTime > 0 &&
           Date.now() - cachedData.lastFetchedAt < mergedOptions.cacheTime);
 
+      // 캐시가 유효하고 refetchOnMount가 false면 스킵
       if (isValidCache && !mergedOptions.refetchOnMount) {
         return;
       }
     }
 
-    if (!ongoingRequests.get(key)) {
-      fetchData();
-    }
+    // 캐시가 만료되었거나 refetchOnMount가 true인 경우 요청
+    fetchData();
 
     return () => {
       ongoingRequests.delete(key);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
   return {
