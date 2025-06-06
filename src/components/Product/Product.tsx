@@ -1,33 +1,43 @@
+import Button from "../common/Button/Button";
+import AddButton from "../AddButton/AddButton";
+
+import useCartItemsId from "../../hooks/useCartItemsId";
+
 import { ProductProps } from "./Product.types";
 
 import * as Styled from "./Product.styled";
 
 import defaultImage from "/defaultImage.png";
 
-import AddButton from "../AddButton/AddButton";
-import RemoveButton from "../RemoveButton/RemoveButton";
-import useCartItemsId from "../../hooks/useCartItemsId";
+function Product({ product }: ProductProps) {
+  const { state, cartItemsId, addCartItemId, patchCartItemId } =
+    useCartItemsId();
 
-function Product({ product, isInCart }: ProductProps) {
-  const { state, addCartItemId, removeCartItemId } = useCartItemsId();
+  const cartItem = cartItemsId.find(
+    (item) => Number(item.product.id) === Number(product.id)
+  );
 
-  const handleAddProduct = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    $product && addCartItemId($product.id);
+  const isInCart = Boolean(cartItem);
+
+  const handleAddProduct = async () => {
+    await addCartItemId(product.id.toString(), 1);
   };
 
-  const handleRemoveProduct = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const $product = event.currentTarget.closest("li");
-    $product && removeCartItemId($product.id);
+  const handleIncreaseProductQuantity = async () => {
+    if (!cartItem) return;
+    await patchCartItemId(cartItem.id.toString(), cartItem.quantity + 1);
+  };
+
+  const handleDecreaseProductQuantity = async () => {
+    if (!cartItem) return;
+    const nextQuantity = cartItem.quantity - 1;
+    await patchCartItemId(cartItem.id.toString(), Math.max(0, nextQuantity));
   };
 
   return (
     <li id={product.id.toString()}>
       <Styled.Container>
+        {product.quantity === 0 && <Styled.SoldOut>품절</Styled.SoldOut>}
         <Styled.Image
           src={product.imageUrl ?? defaultImage}
           onError={(e) => (e.currentTarget.src = defaultImage)}
@@ -39,12 +49,18 @@ function Product({ product, isInCart }: ProductProps) {
               {`${product.price.toLocaleString()}원`}
             </Styled.ProductPrice>
           </Styled.Contents>
+
           <Styled.ButtonWrapper>
-            {isInCart ? (
-              <RemoveButton
-                handleRemoveProduct={handleRemoveProduct}
-                disabled={!state.isSuccess}
-              />
+            {isInCart && cartItem ? (
+              <>
+                <Button color="light" onClick={handleDecreaseProductQuantity}>
+                  -
+                </Button>
+                <p>{cartItem.quantity}</p>
+                <Button color="light" onClick={handleIncreaseProductQuantity}>
+                  +
+                </Button>
+              </>
             ) : (
               <AddButton
                 handleAddProduct={handleAddProduct}
