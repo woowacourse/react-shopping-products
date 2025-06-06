@@ -8,8 +8,10 @@ async function deleteCartItem({ cartId }: { cartId: number }) {
   });
 
   if (!res.ok) {
+    const errorData = await res.json();
     throw new Error(
-      `장바구니에서 상품을 삭제하는 중 오류가 발생했습니다 (${res.status} ${res.statusText})`,
+      errorData.message ||
+        `장바구니에서 상품을 삭제하는 중 오류가 발생했습니다 (${res.status} ${res.statusText})`,
     );
   }
 

@@ -1,41 +1,34 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
+import { useData } from './useData';
 import getCarts from '../api/getCarts';
 import { cartDataType } from '../types/cartItem';
 import { useToast } from './useToast';
 
-function useGetCarts() {
-  const [carts, setCarts] = useState<cartDataType[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+type UseGetCartsReturn = {
+  isLoading: boolean;
+  isError: boolean;
+  errorMessage: string;
+  carts: cartDataType[] | null;
+  refetchCarts: () => Promise<void>;
+};
 
-  useToast(errorMessage);
-
-  const fetchCarts = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const data = await getCarts();
-      setCarts(data);
-      return data;
-    } catch (error) {
-      setIsError(true);
-      setErrorMessage(
-        error instanceof Error ? error.message : '장바구니 정보를 불러오지 못했습니다',
-      );
-    } finally {
-      setIsLoading(false);
-    }
+function useGetCarts(): UseGetCartsReturn {
+  const fetchUserCartItems = useCallback(async () => {
+    const cartItems = await getCarts();
+    return cartItems;
   }, []);
 
-  useEffect(() => {
-    fetchCarts();
-  }, [fetchCarts]);
+  const { data, loading, error, refetch } = useData('cart-items', fetchUserCartItems);
 
-  const refetchCarts = useCallback(async () => {
-    return await fetchCarts();
-  }, [fetchCarts]);
+  useToast(error, 'error');
 
-  return { isLoading, isError, errorMessage, carts, refetchCarts };
+  return {
+    carts: data,
+    isLoading: loading,
+    isError: !!error,
+    errorMessage: error || '',
+    refetchCarts: refetch,
+  };
 }
 
 export default useGetCarts;

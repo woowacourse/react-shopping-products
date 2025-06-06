@@ -7,6 +7,25 @@ export const productContainer = css`
   position: relative;
 `;
 
+export const productSoldOutOverlay = css`
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+
+  & span {
+    color: white;
+    font-size: 35px;
+    font-weight: 600;
+    letter-spacing: 3px;
+  }
+`;
+
 export const productImage = css`
   width: 100%;
   height: 50%;

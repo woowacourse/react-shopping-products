@@ -1,32 +1,41 @@
-import { useEffect, useState } from 'react';
-import { ProductDTOType } from '../types/product';
+import { useCallback } from 'react';
+import { useData } from './useData';
 import getProducts from '../api/getProducts';
 import { useToast } from './useToast';
+import { ProductDTOType } from '../types/product';
 
-function useGetProducts({ sort, category }: { sort: string; category: string }) {
-  const [products, setProducts] = useState<ProductDTOType[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+type UseGetProductsParams = {
+  sort: string;
+  category: string;
+};
 
-  useToast(errorMessage);
+type UseGetProductsReturn = {
+  isLoading: boolean;
+  isError: boolean;
+  errorMessage: string;
+  products: ProductDTOType[] | null;
+};
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const data = await getProducts({ category: category, sortKey: 'price', sortOrder: sort });
-        setProducts(data);
-      } catch (error) {
-        setIsError(true);
-        setErrorMessage(error instanceof Error ? error.message : '상품 정보를 불러오지 못했습니다');
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, [sort, category]);
+function useGetProducts({ sort, category }: UseGetProductsParams): UseGetProductsReturn {
+  const fetchFilteredProducts = useCallback(async () => {
+    const products = await getProducts({
+      category,
+      sortKey: 'price',
+      sortOrder: sort,
+    });
+    return products;
+  }, [category, sort]);
 
-  return { isLoading, isError, errorMessage, products };
+  const { data, loading, error } = useData('products', fetchFilteredProducts);
+
+  useToast(error, 'error');
+
+  return {
+    products: data,
+    isLoading: loading,
+    isError: !!error,
+    errorMessage: error || '',
+  };
 }
 
 export default useGetProducts;

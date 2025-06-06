@@ -1,6 +1,5 @@
 import { ProductDataType } from '../../types/product';
 import Product from '../Product/Product';
-import { AddCartItemType } from '../../types/cartItem';
 import { ProductListSkeleton } from '../Skeleton/Skeleton';
 import { ProductListContainer } from './ProductList.style';
 import { DEFAULT_SKELETON_ITEM_COUNT } from '../../constants/skeleton';
@@ -8,16 +7,9 @@ import { DEFAULT_SKELETON_ITEM_COUNT } from '../../constants/skeleton';
 type ProductListProps = {
   isLoadingProducts: boolean;
   products?: ProductDataType[];
-  onClickAddCartItem: ({ productId, quantity }: AddCartItemType) => void;
-  onClickDeleteCartItem: ({ productId }: { productId: number }) => void;
 };
 
-function ProductList({
-  isLoadingProducts,
-  products,
-  onClickAddCartItem,
-  onClickDeleteCartItem,
-}: ProductListProps) {
+function ProductList({ isLoadingProducts, products }: ProductListProps) {
   if (isLoadingProducts) {
     return <ProductListSkeleton count={DEFAULT_SKELETON_ITEM_COUNT} />;
   }
@@ -25,12 +17,7 @@ function ProductList({
   return (
     <ul className={ProductListContainer}>
       {products?.map((product) => (
-        <Product
-          key={product.id}
-          {...product}
-          onClickAddCartItem={onClickAddCartItem}
-          onClickDeleteCartItem={onClickDeleteCartItem}
-        />
+        <Product key={product.id} {...product} />
       ))}
     </ul>
   );
