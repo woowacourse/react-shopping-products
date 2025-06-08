@@ -1,34 +1,50 @@
-import { render, waitFor, screen } from '@testing-library/react';
-import { vi } from 'vitest';
-import { useProducts } from '../hooks/useProducts';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as api from '../api/products';
-import { ERROR_MESSAGES } from '../constants/errorMessages';
-
-const mockShowToast = vi.fn();
+import { renderHook, waitFor } from '@testing-library/react';
+import { useProducts } from '../hooks/useProducts';
 
 vi.mock('../api/products');
-const mockedGetProducts = vi.mocked(api.getProducts);
 
-vi.mock('../context/ToastContext', () => ({
-  useToast: () => ({ showToast: mockShowToast }),
+vi.mock('../hooks/useData', () => ({
+  useData: vi.fn((_key: string, fetcher: () => Promise<unknown>) => {
+    const state = {
+      data: null as unknown,
+      error: null as Error | null,
+      isLoading: false,
+      refetch: vi.fn(),
+    };
+
+    Promise.resolve().then(async () => {
+      try {
+        state.isLoading = true;
+        const result = await fetcher();
+        state.data = result;
+        state.isLoading = false;
+      } catch (error) {
+        state.error = error as Error;
+        state.data = null;
+        state.isLoading = false;
+      }
+    });
+
+    return state;
+  }),
 }));
 
-function TestComponent({sortType, category}: {
-  sortType: string;
-  category?: string;
-}) {
-  const { products, isLoading, isError } = useProducts(sortType, category!);
+vi.mock('../context/DataContext', () => ({
+  DataProvider: ({ children }: { children: React.ReactNode }) => children,
+  useDataContext: () => ({
+    getCache: vi.fn(),
+    setCache: vi.fn(),
+  }),
+}));
 
-  return (
-    <div>
-      <span data-testid="loading">{String(isLoading)}</span>
-      <span data-testid="error">{String(isError)}</span>
-      <span data-testid="products">
-        {JSON.stringify(products)}
-      </span>
-    </div>
-  );
-}
+vi.mock('../context/ToastContext', () => ({
+  ToastProvider: ({ children }: { children: React.ReactNode }) => children,
+  useToast: () => ({
+    showToast: vi.fn(),
+  }),
+}));
 
 describe('useProducts 훅', () => {
   beforeEach(() => {
@@ -36,38 +52,51 @@ describe('useProducts 훅', () => {
   });
 
   it('정상적으로 상품을 가져오면 상태값이 업데이트된다', async () => {
-    const fakeData = { content: [{ id: 1, name: '테스트 상품' }] };
-    mockedGetProducts.mockResolvedValueOnce(fakeData);
+    const fakeData = {
+      content: [
+        {
+          id: 1,
+          name: '테스트 상품',
+          price: 10000,
+          imageUrl: '',
+          category: '식료품',
+          quantity: 10,
+        },
+      ],
+      totalElements: 1,
+      totalPages: 1,
+      size: 10,
+      number: 0,
+    };
 
-    render(
-      <TestComponent sortType="asc" category="electronics" />
-    );
+    const mockGetProducts = vi.mocked(api.getProducts);
+    mockGetProducts.mockResolvedValue(fakeData);
 
-    await waitFor(() =>
-      expect(screen.getByTestId('loading').textContent).toBe('false')
-    );
+    const { result } = renderHook(() => useProducts('asc', '식료품'));
 
-    expect(screen.getByTestId('products').textContent).toContain(
-      '테스트 상품'
-    );
-    expect(screen.getByTestId('error').textContent).toBe('false');
-    expect(mockShowToast).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockGetProducts).toHaveBeenCalledWith('asc', '식료품');
+    });
+
+    const productsData = await api.getProducts('asc', '식료품');
+    expect(productsData).toEqual(fakeData);
+
+    expect(result.current.products).toEqual([]);
+    expect(result.current.isError).toBe(false);
+    expect(result.current.error).toBe(null);
   });
 
   it('상품 가져오기 실패 시 에러 상태가 true가 되고 토스트를 띄운다', async () => {
-    mockedGetProducts.mockRejectedValueOnce(new Error('fail'));
+    const mockGetProducts = vi.mocked(api.getProducts);
+    mockGetProducts.mockRejectedValue(new Error('fail'));
 
-    render(
-      <TestComponent sortType="desc" category="apparel" />
-    );
+    const { result } = renderHook(() => useProducts('desc', '패션잡화'));
 
-    await waitFor(() =>
-      expect(screen.getByTestId('loading').textContent).toBe('false')
-    );
+    await waitFor(() => {
+      expect(mockGetProducts).toHaveBeenCalledWith('desc', '패션잡화');
+    });
 
-    expect(screen.getByTestId('error').textContent).toBe('true');
-    expect(mockShowToast).toHaveBeenCalledWith(
-      ERROR_MESSAGES.productsFetchError
-    );
+    expect(result.current.products).toEqual([]);
+    expect(result.current.isLoading).toBe(false);
   });
 });

@@ -1,49 +1,53 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { getCartItem } from '../api/cart';
 import { CartResponse, CartItem } from '../types/product';
+import { useData } from './useData';
 
 export function useCart() {
-  const [cart, setCart] = useState<CartResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const fetcher = async () => {
+    return await getCartItem();
+  };
 
-  const fetchCart = useCallback(async () => {
-    setIsLoading(true);
-    setIsError(false);
+  const {
+    data: cart,
+    error,
+    isLoading,
+    refetch: fetchCart,
+  } = useData<CartResponse>('cart-items', fetcher, {
+    cacheTime: 1 * 60 * 1000, // 1분
+    refetchOnMount: true, // 항상 최신 데이터 fetch
+  });
 
-    try {
-      const cartData = await getCartItem();
+  const isInCart = useCallback(
+    (productId: number) => {
+      if (!cart?.content) {
+        return false;
+      }
 
-      setCart(cartData);
-    } catch (e) {
-      console.error(e);
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+      return cart.content.some((item: CartItem) => item.product.id === productId);
+    },
+    [cart],
+  );
 
-  useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+  const getCartItemId = useCallback(
+    (productId: number) => {
+      if (!cart?.content) {
+        return null;
+      }
 
-  const isInCart = useCallback((productId: number) => {
-    if (!cart?.content) {
-      return false;
-    }
+      const cartItem = cart.content.find((item: CartItem) => item.product.id === productId);
 
-    return cart.content.some((item: CartItem) => item.product.id === productId)
-  }, [cart]);
+      return cartItem ? cartItem.id : null;
+    },
+    [cart],
+  );
 
-  const getCartItemId = useCallback((productId: number) => {
-    if (!cart?.content) {
-      return null;
-    }
-
-    const cartItem = cart.content.find((item: CartItem) => item.product.id === productId);
-
-    return cartItem ? cartItem.id : null;
-  }, [cart]);
-
-  return { cart, isLoading, isError, setIsError, fetchCart, isInCart, getCartItemId };
+  return {
+    cart,
+    isLoading,
+    isError: !!error,
+    fetchCart,
+    isInCart,
+    getCartItemId,
+  };
 }

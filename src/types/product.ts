@@ -2,7 +2,7 @@ export type ProductElement = {
   product: ProductType;
   cartId: number | null;
   isInCart: boolean;
-}
+};
 
 export type ProductType = {
   category: string;
@@ -10,7 +10,8 @@ export type ProductType = {
   imageUrl: string;
   name: string;
   price: number;
-}
+  quantity?: number;
+};
 
 export type CartItem = {
   id: number;
@@ -22,12 +23,12 @@ export type CartItem = {
     imageUrl: string;
     category: string;
   };
-}
+};
 
 export type CartResponse = {
   content: CartItem[];
   totalElements: number;
-}
+};
 
 export enum SortOrder {
   'asc' = '낮은 가격 순',

@@ -1,59 +1,75 @@
 import { useCallback } from 'react';
-import { ProductElement } from '../types/product';
-import { addCart, removeCart } from '../api/cart';
+import { CategoryType, ProductElement, SortKeyType } from '../types/product';
+import { addCart, removeCart, updateCartQuantity } from '../api/cart';
+import { useProductsWithCart } from './useProductsWithCart';
+import { useToast } from '../context/ToastContext';
 import { MAX_CART_ITEM_TYPE } from '../constants/productConfig';
 import { ERROR_MESSAGES } from '../constants/errorMessages';
-import { useProductsWithCart } from './useProductsWithCart';
-import { useToast } from "../context/ToastContext";
 
-export function useCartActions(sortType: string, category: string = '전체') {
-  const {
-    transformedProducts,
-    cart,
-    isLoading,
-    isError,
-    fetchCart,
-    resetErrors,
-    fetchProduct
-  } = useProductsWithCart(sortType, category);
+export function useCartActions(sortType: SortKeyType = 'asc', category: CategoryType = '전체') {
+  const { transformedProducts, cart, isLoading, isError, fetchCart, fetchProduct } =
+    useProductsWithCart(sortType, category);
 
   const { showToast } = useToast();
 
-  const handleAddCart = useCallback(async (product: ProductElement) => {
-    if (cart?.totalElements === MAX_CART_ITEM_TYPE) {
-      showToast(ERROR_MESSAGES.maxCartItemType);
-      console.error(ERROR_MESSAGES.maxCartItemType);
-      resetErrors();
-      return;
-    }
+  const handleAddCart = useCallback(
+    async (product: ProductElement) => {
+      if (cart?.totalElements === MAX_CART_ITEM_TYPE) {
+        showToast(ERROR_MESSAGES.maxCartItemType);
+        console.error(ERROR_MESSAGES.maxCartItemType);
+        return;
+      }
 
-    try {
-      await addCart(product.product.id);
-      await fetchCart();
-    } catch {
-      showToast(ERROR_MESSAGES.failedAddCart);
-      console.error(ERROR_MESSAGES.failedAddCart);
-      resetErrors();
-    }
-  }, [cart, fetchCart, resetErrors, showToast]);
+      try {
+        await addCart(product.product.id);
+        await fetchCart();
+      } catch (error) {
+        if (error instanceof Error && error.message?.includes('재고')) {
+          showToast(error.message);
+        } else {
+          showToast(ERROR_MESSAGES.failedAddCart);
+        }
+        console.error('카트 추가 실패:', error);
+      }
+    },
+    [cart, fetchCart, showToast],
+  );
 
-  const handleRemoveCart = useCallback(async (product: ProductElement) => {
-    if (!product.cartId) {
-      showToast(ERROR_MESSAGES.invalidCartID);
-      console.error(ERROR_MESSAGES.invalidCartID);
-      resetErrors();
-      return;
-    }
+  const handleRemoveCart = useCallback(
+    async (product: ProductElement) => {
+      if (!product.cartId) {
+        showToast(ERROR_MESSAGES.invalidCartID);
+        console.error(ERROR_MESSAGES.invalidCartID);
+        return;
+      }
 
-    try {
-      await removeCart(product.cartId);
-      await fetchCart();
-    } catch (error) {
-      showToast(ERROR_MESSAGES.failedRemoveCart);
-      console.error(ERROR_MESSAGES.failedRemoveCart, error);
-      resetErrors();
-    }
-  }, [fetchCart, resetErrors, showToast]);
+      try {
+        await removeCart(product.cartId);
+        await fetchCart();
+      } catch (error) {
+        showToast(ERROR_MESSAGES.failedRemoveCart);
+        console.error(ERROR_MESSAGES.failedRemoveCart, error);
+      }
+    },
+    [fetchCart, showToast],
+  );
+
+  const handleUpdateQuantity = useCallback(
+    async (cartItemId: number, quantity: number) => {
+      try {
+        await updateCartQuantity(cartItemId, quantity);
+        await fetchCart();
+      } catch (error) {
+        if (error instanceof Error && error.message?.includes('재고')) {
+          showToast(error.message);
+        } else {
+          showToast('수량 변경에 실패했습니다.');
+        }
+        console.error('수량 변경 실패:', error);
+      }
+    },
+    [fetchCart, showToast],
+  );
 
   return {
     transformedProducts,
@@ -62,7 +78,7 @@ export function useCartActions(sortType: string, category: string = '전체') {
     isError,
     handleAddCart,
     handleRemoveCart,
-    resetErrors,
-    fetchProduct
+    handleUpdateQuantity,
+    fetchProduct,
   };
 }
