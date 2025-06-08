@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
-import { ApiResponse, isApiError, isApiSuccess } from "../api/apiClient";
-import { TOAST_TYPES } from "../config/toast";
-import useToast from "./useToast";
+import { ApiResponse, isApiError, isApiSuccess } from "../../apis/apiClient";
+import { TOAST_TYPES } from "../../shared/config/toast";
+import useToast from "../../shared/hooks/useToast";
 
 const useApiResponseToasts = (autoWatchError?: string | null) => {
   const { showToast } = useToast();

@@ -1,4 +1,4 @@
-import { CartItems } from "../../entities/cartItem/response";
+import { CartItems } from "../../apis/types/response";
 
 export const cartItemsData: CartItems = {
   content: [],

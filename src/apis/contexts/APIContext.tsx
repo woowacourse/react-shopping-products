@@ -1,6 +1,6 @@
 import { createContext, useCallback, useState } from "react";
-import { ApiResponse } from "../../shared/api/apiClient";
-import { ApiDataKey, ApiDataTypeMap } from "../../shared/api/types/data";
+import { ApiResponse } from "../../apis/apiClient";
+import { ApiDataKey, ApiDataTypeMap } from "../../apis/types/data";
 
 type ApiDataState = {
   [K in ApiDataKey]?: ApiResponse<ApiDataTypeMap[K]>;

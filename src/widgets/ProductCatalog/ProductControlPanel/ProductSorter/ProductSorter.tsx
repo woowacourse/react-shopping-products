@@ -1,5 +1,5 @@
-import { useProducts } from "../../../../entities/product/useProducts";
-import { sortOptions } from "../../../../shared/config/filter";
+import { sortOptions } from "../../../../features/product/config/filter";
+import { useProducts } from "../../../../features/product/hooks/useProducts";
 import SelectBox from "../../../../shared/ui/SelectBox/SelectBox";
 
 const ProductSorter = () => {

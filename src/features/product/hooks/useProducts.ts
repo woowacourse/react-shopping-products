@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { CategoryOptionsKey, SortOptionsKey } from "../../shared/config/filter";
-import { useAPI } from "../../shared/hooks/useAPI";
-import { ProductsAPI } from "./api";
-import { Products } from "./response";
+import { useAPI } from "../../../apis/contexts/useAPI";
+import { Products } from "../../../apis/types/response";
+import { ProductsAPI } from "../apis/ProductsAPI";
+import { CategoryOptionsKey, SortOptionsKey } from "../config/filter";
 
 export interface UseProductsResult {
   products: Products | null;

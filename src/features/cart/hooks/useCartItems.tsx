@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from "react";
-import { useAPI } from "../../shared/hooks/useAPI";
-import { CartItemsAPI } from "./api";
-import { CartItems } from "./response";
-import useApiResponseToasts from "../../shared/hooks/useApiResponseToasts";
+import { CartItemsAPI } from "../apis/CartItemsAPI";
+import { CartItems } from "../../../apis/types/response";
+import { useAPI } from "../../../apis/contexts/useAPI";
+import useApiResponseToasts from "../../../apis/contexts/useApiResponseToasts";
 
 interface UseCartItemsResult {
   cartItems: CartItems | null;

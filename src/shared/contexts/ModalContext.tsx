@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import Modal from "../../shared/ui/Modal/Modal";
+import Modal from "../ui/Modal/Modal";
 
 interface ModalContextType {
   openModal: (modalContent: React.ReactNode) => void;

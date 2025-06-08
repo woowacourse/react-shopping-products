@@ -5,9 +5,9 @@ import {
   getData,
   patchData,
   postData,
-} from "../../shared/api/apiClient";
-import { SHOP_API } from "../../shared/api/config";
-import { CartItems } from "./response";
+} from "../../../apis/apiClient";
+import { SHOP_API } from "../../../apis/config";
+import { CartItems } from "../../../apis/types/response";
 
 const URL = SHOP_API.endpoint.cartItems;
 

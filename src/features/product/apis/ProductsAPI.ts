@@ -1,7 +1,7 @@
-import { createApiUrl, getData } from "../../shared/api/apiClient";
-import { SHOP_API } from "../../shared/api/config";
-import { CategoryOptionsKey, SortOptionsKey } from "../../shared/config/filter";
-import { Products } from "./response";
+import { createApiUrl, getData } from "../../../apis/apiClient";
+import { SHOP_API } from "../../../apis/config";
+import { Products } from "../../../apis/types/response";
+import { CategoryOptionsKey, SortOptionsKey } from "../config/filter";
 
 const URL = SHOP_API.endpoint.products;
 

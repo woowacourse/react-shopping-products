@@ -1,8 +1,8 @@
-import { useCartItems } from "../../entities/cartItem/useCartItems";
+import useApiResponseToasts from "../../apis/contexts/useApiResponseToasts";
+import { useCartItems } from "../../features/cart/hooks/useCartItems";
 import useModal from "../../shared/hooks/useModal";
 import CartItem from "./CartItem/CartItem";
 import * as S from "./CartModal.styles";
-import useApiResponseToasts from "../../shared/hooks/useApiResponseToasts";
 
 const CartModal = () => {
   const { closeModal } = useModal();

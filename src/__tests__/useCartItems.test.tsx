@@ -2,16 +2,17 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
-import { APIProvider } from "../app/providers/APIContext";
-import { CartItemContent } from "../entities/cartItem/response";
-import { useCartItems } from "../entities/cartItem/useCartItems";
 import { server } from "../__mocks__/server";
-import { SHOP_API } from "../shared/api/config";
+import { SHOP_API } from "../apis/config";
+import { APIProvider } from "../apis/contexts/APIContext";
+import { CartItemContent } from "../apis/types/response";
+import { useCartItems } from "../features/cart/hooks/useCartItems";
+import { ToastProvider } from "../shared/contexts/ToastContext";
 
 const mockHandleError = vi.fn();
 const mockHandleSuccess = vi.fn();
 
-vi.mock("../shared/hooks/useApiResponseToasts", () => ({
+vi.mock("../apis/contexts/useApiResponseToasts.ts", () => ({
   default: () => ({
     handleError: mockHandleError,
     handleSuccess: mockHandleSuccess,
@@ -20,7 +21,9 @@ vi.mock("../shared/hooks/useApiResponseToasts", () => ({
 
 const wrapper = ({ children }: React.PropsWithChildren) => (
   <MemoryRouter>
-    <APIProvider>{children}</APIProvider>
+    <ToastProvider>
+      <APIProvider>{children}</APIProvider>
+    </ToastProvider>
   </MemoryRouter>
 );
 

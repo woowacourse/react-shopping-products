@@ -1,5 +1,5 @@
-import { useProducts } from "../../entities/product/useProducts";
-import useApiResponseToasts from "../../shared/hooks/useApiResponseToasts";
+import useApiResponseToasts from "../../apis/contexts/useApiResponseToasts";
+import { useProducts } from "../../features/product/hooks/useProducts";
 import * as S from "./ProductCatalog.styles";
 import CategoryFilter from "./ProductControlPanel/CategoryFilter/CategoryFilter";
 import ProductSorter from "./ProductControlPanel/ProductSorter/ProductSorter";

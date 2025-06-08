@@ -1,5 +1,5 @@
-import { useCartItems } from "../../entities/cartItem/useCartItems";
-import { BASE_URL } from "../../shared/config/base";
+import { useCartItems } from "../../features/cart/hooks/useCartItems";
+import { BASE_URL } from "../../app/config/base";
 import useModal from "../../shared/hooks/useModal";
 import CartModal from "../CartModal/CartModal";
 import * as S from "./ShopHeader.styles";

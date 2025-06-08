@@ -1,5 +1,5 @@
-import { useProducts } from "../../../../entities/product/useProducts";
-import { categoryOptions } from "../../../../shared/config/filter";
+import { useProducts } from "../../../../features/product/hooks/useProducts";
+import { categoryOptions } from "../../../../features/product/config/filter";
 import SelectBox from "../../../../shared/ui/SelectBox/SelectBox";
 
 const CategoryFilter = () => {

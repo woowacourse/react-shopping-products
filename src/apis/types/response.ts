@@ -35,3 +35,12 @@ export interface Sort {
   sorted: boolean;
   unsorted: boolean;
 }
+
+export interface CartItemContent {
+  id: number;
+  quantity: number;
+  product: BaseProduct;
+}
+
+export type CartItems = PaginatedResponse<CartItemContent>;
+export type Products = PaginatedResponse<BaseProduct>;

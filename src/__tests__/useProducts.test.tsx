@@ -1,16 +1,22 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { APIProvider } from "../app/providers/APIContext";
-import { Products } from "../entities/product/response";
-import { useProducts } from "../entities/product/useProducts";
-import { SHOP_API } from "../shared/api/config";
-import { CategoryOptionsKey, SortOptionsKey } from "../shared/config/filter";
 import { vi } from "vitest";
-import { ProductsAPI } from "../entities/product/api";
+import { SHOP_API } from "../apis/config";
+import { APIProvider } from "../apis/contexts/APIContext";
+import { Products } from "../apis/types/response";
+import { ProductsAPI } from "../features/product/apis/ProductsAPI";
+import {
+  CategoryOptionsKey,
+  SortOptionsKey,
+} from "../features/product/config/filter";
+import { useProducts } from "../features/product/hooks/useProducts";
+import { ToastProvider } from "../shared/contexts/ToastContext";
 
 const wrapper = ({ children }: React.PropsWithChildren) => (
   <MemoryRouter initialEntries={["/?category=전체&sort=낮은 가격 순"]}>
-    <APIProvider>{children}</APIProvider>
+    <ToastProvider>
+      <APIProvider>{children}</APIProvider>
+    </ToastProvider>
   </MemoryRouter>
 );
 

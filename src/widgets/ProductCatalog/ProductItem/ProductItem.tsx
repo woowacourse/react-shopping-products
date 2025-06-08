@@ -1,5 +1,5 @@
-import { useCartItems } from "../../../entities/cartItem/useCartItems";
-import { BaseProduct } from "../../../shared/api/types/response";
+import { BaseProduct } from "../../../apis/types/response";
+import { useCartItems } from "../../../features/cart/hooks/useCartItems";
 import QuantitySelector from "../../../shared/ui/QuantitySelector/QuantitySelector";
 import AddCartItemButton from "./AddCartItemButton/AddCartItemButton";
 import * as S from "./ProductItem.styles";

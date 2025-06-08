@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { APIProvider } from "./apis/contexts/APIContext.tsx";
 import App from "./App.tsx";
-import { APIProvider } from "./app/providers/APIContext.tsx";
-import { ModalProvider } from "./app/providers/ModalContext.tsx";
-import { ToastProvider } from "./app/providers/ToastContext.tsx";
-import { BASE_URL } from "./shared/config/base.ts";
+import { BASE_URL } from "./app/config/base.ts";
+import { ModalProvider } from "./shared/contexts/ModalContext.tsx";
+import { ToastProvider } from "./shared/contexts/ToastContext.tsx";
 
 async function enableMocking() {
   if (!import.meta.env.VITE_USE_MOCK) return;

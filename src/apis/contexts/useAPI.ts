@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo } from "react";
-import { APIContext } from "../../app/providers/APIContext";
-import { ApiResponse, isApiError } from "../api/apiClient";
-import { ApiDataKey, ApiDataTypeMap } from "../api/types/data";
+import { ApiResponse, isApiError } from "../apiClient";
+import { ApiDataKey, ApiDataTypeMap } from "../types/data";
+import { APIContext } from "./APIContext";
 
 interface APIResult<T> {
   data: T | null;

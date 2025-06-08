@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useRef, useState } from "react";
-import { TOAST_TYPES, ToastType } from "../../shared/config/toast";
+import { TOAST_TYPES, ToastType } from "../config/toast";
 import Toast from "../../shared/ui/Toast/Toast";
 
 interface ToastContextType {
