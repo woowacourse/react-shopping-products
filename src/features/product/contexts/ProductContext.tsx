@@ -51,18 +51,16 @@ export const ProductProvider = ({ children }: PropsWithChildren) => {
     (newCategory: CategoryOptionsKey) => {
       searchParams.set("category", newCategory);
       setSearchParams(searchParams);
-      fetchData();
     },
-    [searchParams, setSearchParams, fetchData]
+    [searchParams, setSearchParams]
   );
 
   const setSortOption = useCallback(
     (newSort: SortOptionsKey) => {
       searchParams.set("sort", newSort);
       setSearchParams(searchParams);
-      fetchData();
     },
-    [searchParams, setSearchParams, fetchData]
+    [searchParams, setSearchParams]
   );
 
   const contextValue = useMemo(
