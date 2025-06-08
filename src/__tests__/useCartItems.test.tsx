@@ -4,10 +4,10 @@ import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 import { server } from "../__mocks__/server";
 import { APIProvider } from "../apis/contexts/APIContext";
-import { CartItemContent } from "../apis/types/response";
+import { API_BASE_URL } from "../apis/httpClient";
+import { CartItem } from "../apis/types/response";
 import { useCartItems } from "../features/cart/hooks/useCartItems";
 import { ToastProvider } from "../shared/contexts/ToastContext";
-import { API_BASE_URL } from "../apis/httpClient";
 
 const CART_ITEMS_URL = "cart-items";
 
@@ -48,7 +48,7 @@ describe("useCartItems 훅", () => {
 
   describe("장바구니 상품 관리", () => {
     it("상품을 장바구니에 추가할 수 있다", async () => {
-      let cartContent = [] as CartItemContent[];
+      let cartContent = [] as CartItem[];
       const newProductId = 1;
 
       server.use(
@@ -90,17 +90,15 @@ describe("useCartItems 훅", () => {
 
       await waitFor(() => expect(result.current.loading).toBe(false));
 
-      expect(result.current.cartItems?.content.length).toBe(0);
+      expect(result.current.cartItems?.length).toBe(0);
 
       await act(async () => {
         await result.current.addProductInCart(newProductId);
       });
 
-      expect(result.current.cartItems?.content.length).toBe(1);
-      expect(result.current.cartItems?.content[0].product.id).toBe(
-        newProductId
-      );
-      expect(result.current.cartItems?.content[0].quantity).toBe(1);
+      expect(result.current.cartItems?.length).toBe(1);
+      expect(result.current.cartItems?.[0].product.id).toBe(newProductId);
+      expect(result.current.cartItems?.[0].quantity).toBe(1);
     });
 
     it("상품을 장바구니에서 삭제할 수 있다", async () => {
@@ -139,15 +137,15 @@ describe("useCartItems 훅", () => {
 
       await waitFor(() => expect(result.current.loading).toBe(false));
 
-      expect(result.current.cartItems?.content.length).toBe(1);
-      const cartId = result.current.cartItems?.content[0]?.id ?? 0;
+      expect(result.current.cartItems?.length).toBe(1);
+      const cartId = result.current.cartItems?.[0]?.id ?? 0;
       expect(cartId).toBe(101);
 
       await act(async () => {
         await result.current.deleteProductInCart(cartId);
       });
 
-      expect(result.current.cartItems?.content.length).toBe(0);
+      expect(result.current.cartItems?.length).toBe(0);
     });
   });
 
@@ -184,13 +182,13 @@ describe("useCartItems 훅", () => {
       const { result } = renderHook(() => useCartItems(), { wrapper });
       await waitFor(() => expect(result.current.loading).toBe(false));
 
-      expect(result.current.cartItems?.content[0].quantity).toBe(2);
+      expect(result.current.cartItems?.[0].quantity).toBe(2);
 
       await act(async () => {
         await result.current.increaseItemQuantity(1);
       });
 
-      expect(result.current.cartItems?.content[0].quantity).toBe(3);
+      expect(result.current.cartItems?.[0].quantity).toBe(3);
     });
 
     it("상품 수량을 감소시킬 수 있다", async () => {
@@ -224,13 +222,13 @@ describe("useCartItems 훅", () => {
       const { result } = renderHook(() => useCartItems(), { wrapper });
       await waitFor(() => expect(result.current.loading).toBe(false));
 
-      expect(result.current.cartItems?.content[0].quantity).toBe(2);
+      expect(result.current.cartItems?.[0].quantity).toBe(2);
 
       await act(async () => {
         await result.current.decreaseItemQuantity(1);
       });
 
-      expect(result.current.cartItems?.content[0].quantity).toBe(1);
+      expect(result.current.cartItems?.[0].quantity).toBe(1);
     });
 
     it("수량이 1이면 감소시 상품이 삭제된다", async () => {
@@ -275,18 +273,18 @@ describe("useCartItems 훅", () => {
 
       await waitFor(() => expect(result.current.loading).toBe(false));
 
-      expect(
-        result.current.cartItems?.content.some((item) => item.id === 101)
-      ).toBe(true);
-      expect(result.current.cartItems?.content[0].quantity).toBe(1);
+      expect(result.current.cartItems?.some((item) => item.id === 101)).toBe(
+        true
+      );
+      expect(result.current.cartItems?.[0].quantity).toBe(1);
 
       await act(async () => {
         await result.current.decreaseItemQuantity(1);
       });
 
-      expect(
-        result.current.cartItems?.content.some((item) => item.id === 101)
-      ).toBe(false);
+      expect(result.current.cartItems?.some((item) => item.id === 101)).toBe(
+        false
+      );
     });
   });
 
@@ -345,12 +343,12 @@ describe("useCartItems 훅", () => {
         })
       );
 
-      const initialId = result.current.cartItems?.content[0]?.id;
+      const initialId = result.current.cartItems?.[0]?.id;
 
       await act(async () => result.current.refetchCartItems());
 
       await waitFor(() => {
-        const newId = result.current.cartItems?.content[0]?.id;
+        const newId = result.current.cartItems?.[0]?.id;
         expect(newId).not.toBe(initialId);
       });
     });

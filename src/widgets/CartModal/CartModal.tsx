@@ -13,7 +13,7 @@ const CartModal = () => {
     <S.CartModal>
       <S.Title>장바구니</S.Title>
       <S.ScrollContainer>
-        {cartItems?.content.map((productInfo) => {
+        {cartItems?.map((productInfo) => {
           return <CartItem key={productInfo.id} {...productInfo} />;
         })}
       </S.ScrollContainer>

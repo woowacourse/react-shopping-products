@@ -1,8 +1,8 @@
-import { CartItems, Products } from "./response";
+import { Product, CartItem } from "./response";
 
 export type ApiDataKey = "products" | "cartItems";
 
 export interface ApiDataTypeMap {
-  products: Products;
-  cartItems: CartItems;
+  products: Product[];
+  cartItems: CartItem[];
 }

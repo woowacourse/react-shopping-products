@@ -18,7 +18,7 @@ export const useAPI = <K extends ApiDataKey>(
 
   useEffect(() => {
     if (!data[key]) fetchData(key, fetcher);
-  }, [key, fetcher, data, fetchData]);
+  }, [key, fetcher, fetchData]);
 
   const result = useMemo(() => {
     const value = data[key];

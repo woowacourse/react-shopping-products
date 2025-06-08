@@ -1,8 +1,8 @@
 import { delay, http, HttpResponse } from "msw";
 import { CategoryOptionsKey } from "../features/product/config/filter";
-import { cartItemsData } from "./data/cartItems";
-import { productsData } from "./data/products";
 import { API_BASE_URL } from "../apis/httpClient";
+import { CartItem, Product } from "../apis/types/response";
+import products from "./data/products.json";
 
 interface PostCartItemsRequestBody {
   productId: number;
@@ -14,7 +14,7 @@ interface PatchCartItemsRequestBody {
   quantity: number;
 }
 
-const currentCartItems = { ...cartItemsData };
+let cartItems: CartItem[] = [];
 
 export const handlers = [
   /**
@@ -24,12 +24,10 @@ export const handlers = [
     const url = new URL(request.url);
     const category = url.searchParams.get("category") as CategoryOptionsKey;
     const sort = url.searchParams.get("sort");
-    const page = url.searchParams.get("page") || "0";
-    const size = url.searchParams.get("size") || "20";
 
     await delay(100);
 
-    let filteredProducts = [...productsData.content];
+    let filteredProducts = [...products] as Product[];
     if (category && category !== "전체") {
       filteredProducts = filteredProducts.filter(
         (product) => product.category === category
@@ -45,69 +43,14 @@ export const handlers = [
       }
     }
 
-    const pageNum = parseInt(page);
-    const sizeNum = parseInt(size);
-    const startIndex = pageNum * sizeNum;
-    const endIndex = startIndex + sizeNum;
-    const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
-
-    const response = {
-      content: paginatedProducts,
-      totalElements: filteredProducts.length,
-      totalPages: Math.ceil(filteredProducts.length / sizeNum),
-      size: sizeNum,
-      number: pageNum,
-      sort: { empty: !sort, sorted: !!sort, unsorted: !sort },
-      pageable: {
-        offset: startIndex,
-        sort: { empty: !sort, sorted: !!sort, unsorted: !sort },
-        paged: true,
-        pageNumber: pageNum,
-        pageSize: sizeNum,
-        unpaged: false,
-      },
-      first: pageNum === 0,
-      last: (pageNum + 1) * sizeNum >= filteredProducts.length,
-      numberOfElements: paginatedProducts.length,
-      empty: paginatedProducts.length === 0,
-    };
-
-    return HttpResponse.json(response);
+    return HttpResponse.json(filteredProducts);
   }),
 
   /**
    * CartItems API : GET
    */
-  http.get(`${API_BASE_URL}cart-items`, async ({ request }) => {
-    const url = new URL(request.url);
-    const page = url.searchParams.get("page") || "0";
-    const size = url.searchParams.get("size") || "50";
-
-    await delay(100);
-
-    const pageNum = parseInt(page);
-    const sizeNum = parseInt(size);
-    const startIndex = pageNum * sizeNum;
-    const endIndex = Math.min(
-      startIndex + sizeNum,
-      currentCartItems.content.length
-    );
-    const paginatedCartItems = currentCartItems.content.slice(
-      startIndex,
-      endIndex
-    );
-
-    const response = {
-      ...currentCartItems,
-      content: paginatedCartItems,
-      size: sizeNum,
-      number: pageNum,
-      first: pageNum === 0,
-      last: endIndex >= currentCartItems.content.length,
-      numberOfElements: paginatedCartItems.length,
-    };
-
-    return HttpResponse.json(response);
+  http.get(`${API_BASE_URL}cart-items`, async () => {
+    return HttpResponse.json(cartItems);
   }),
 
   /**
@@ -117,7 +60,7 @@ export const handlers = [
     const { productId, quantity = 1 } =
       (await request.json()) as PostCartItemsRequestBody;
 
-    const product = productsData.content.find((p) => p.id === productId);
+    const product = products.find((p) => p.id === productId);
 
     if (!product) {
       return new HttpResponse(null, {
@@ -126,25 +69,22 @@ export const handlers = [
       });
     }
 
-    const existingItemIndex = currentCartItems.content.findIndex(
+    const existingItemIndex = cartItems.findIndex(
       (item) => item.product.id === productId
     );
 
-    let cartItem;
+    let cartItem: CartItem;
 
     if (existingItemIndex >= 0) {
-      currentCartItems.content[existingItemIndex].quantity = quantity;
-      cartItem = currentCartItems.content[existingItemIndex];
+      cartItems[existingItemIndex].quantity = quantity;
+      cartItem = cartItems[existingItemIndex];
     } else {
       cartItem = {
         id: productId + 100,
         product,
         quantity,
       };
-      currentCartItems.content.push(cartItem);
-
-      currentCartItems.totalElements = currentCartItems.content.length;
-      currentCartItems.numberOfElements = currentCartItems.content.length;
+      cartItems.push(cartItem);
     }
 
     await delay(100);
@@ -156,21 +96,17 @@ export const handlers = [
    */
   http.delete(`${API_BASE_URL}cart-items/:cartId`, async ({ params }) => {
     const { cartId } = params;
+    const cartIdNum = Number(cartId);
 
-    const initialLength = currentCartItems.content.length;
-    currentCartItems.content = currentCartItems.content.filter(
-      (item) => item.id !== Number(cartId)
-    );
+    const initialLength = cartItems.length;
+    cartItems = cartItems.filter((item) => item.id !== cartIdNum);
 
-    if (currentCartItems.content.length === initialLength) {
+    if (cartItems.length === initialLength) {
       return new HttpResponse(null, {
         status: 404,
         statusText: "Not found",
       });
     }
-
-    currentCartItems.totalElements = currentCartItems.content.length;
-    currentCartItems.numberOfElements = currentCartItems.content.length;
 
     await delay(100);
     return new HttpResponse(null, { status: 204 });
@@ -183,9 +119,7 @@ export const handlers = [
     const { id: cartId, quantity } =
       (await request.json()) as PatchCartItemsRequestBody;
 
-    const itemIndex = currentCartItems.content.findIndex(
-      (item) => item.id === Number(cartId)
-    );
+    const itemIndex = cartItems.findIndex((item) => item.id === Number(cartId));
 
     if (itemIndex === -1) {
       return new HttpResponse(null, {
@@ -194,9 +128,9 @@ export const handlers = [
       });
     }
 
-    currentCartItems.content[itemIndex].quantity = quantity;
+    cartItems[itemIndex].quantity = quantity;
 
     await delay(100);
-    return HttpResponse.json(currentCartItems.content[itemIndex]);
+    return HttpResponse.json(cartItems[itemIndex]);
   }),
 ];

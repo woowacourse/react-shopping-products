@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from "react";
 import { CartItemsAPI } from "../apis/CartItemsAPI";
-import { CartItems } from "../../../apis/types/response";
 import { useAPI } from "../../../apis/contexts/useAPI";
 import useApiResponseToasts from "../../../apis/contexts/useApiResponseToasts";
+import { CartItem } from "../../../apis/types/response";
 
 interface UseCartItemsResult {
-  cartItems: CartItems | null;
+  cartItems: CartItem[] | null;
   cartItemsCount: number;
   error: string | null;
   loading: boolean;
@@ -34,23 +34,23 @@ export const useCartItems = (): UseCartItemsResult => {
 
   const cartItemIds = useMemo(
     () =>
-      cartItems?.content.map((productInfo) => ({
+      cartItems?.map((productInfo) => ({
         cartId: productInfo.id,
         productId: productInfo.product.id,
       })) ?? [],
-    [cartItems?.content]
+    [cartItems]
   );
 
-  const cartItemsCount = cartItems?.content.length ?? 0;
+  const cartItemsCount = cartItems?.length ?? 0;
 
   const allQuantities = useMemo(
     () =>
-      cartItems?.content.map((productInfo) => ({
+      cartItems?.map((productInfo) => ({
         cartId: productInfo.id,
         productId: productInfo.product.id,
         quantity: productInfo.quantity,
       })) ?? [],
-    [cartItems?.content]
+    [cartItems]
   );
 
   const quantityByProductId = useCallback(
@@ -61,12 +61,12 @@ export const useCartItems = (): UseCartItemsResult => {
 
   const totalPriceInCart = useMemo(
     () =>
-      cartItems?.content.reduce((total, productInfo) => {
+      cartItems?.reduce((total, productInfo) => {
         const price = productInfo.product?.price ?? 0;
         const quantity = productInfo.quantity ?? 0;
         return total + price * quantity;
       }, 0) ?? 0,
-    [cartItems?.content]
+    [cartItems]
   );
 
   const decreaseItemQuantity = useCallback(

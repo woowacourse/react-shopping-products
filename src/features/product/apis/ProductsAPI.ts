@@ -1,5 +1,5 @@
 import { httpClient } from "../../../apis/httpClient";
-import { Products } from "../../../apis/types/response";
+import { Product } from "../../../apis/types/response";
 import { CategoryOptionsKey, SortOptionsKey } from "../config/filter";
 
 const ERROR_MESSAGE = "상품 데이터를 가져오는 데 실패했습니다.";
@@ -13,7 +13,7 @@ export const ProductsAPI = {
   get: async (
     category: CategoryOptionsKey,
     sortOption: SortOptionsKey
-  ): Promise<Products> => {
+  ): Promise<Product[]> => {
     const params: Record<string, string> = { page: "0", size: "20" };
 
     if (category !== "전체") params.category = category;
@@ -22,10 +22,12 @@ export const ProductsAPI = {
     }
 
     const response = await httpClient.get(
-      `/products?${new URLSearchParams(params).toString()}`
+      `products?${new URLSearchParams(params).toString()}`
     );
     if (!response.ok) throw new Error(ERROR_MESSAGE);
 
-    return await response.json();
+    const data = await response.json();
+    console.log(data);
+    return data;
   },
 };

@@ -1,5 +1,5 @@
 import { httpClient } from "../../../apis/httpClient";
-import { CartItems } from "../../../apis/types/response";
+import { CartItem } from "../../../apis/types/response";
 
 const ERROR_MESSAGE = {
   GET: "장바구니를 가져오는 데 실패했습니다.",
@@ -9,14 +9,14 @@ const ERROR_MESSAGE = {
 };
 
 export const CartItemsAPI = {
-  get: async (): Promise<CartItems> => {
+  get: async (): Promise<CartItem[]> => {
     const params = new URLSearchParams({
       page: "0",
       size: "50",
       sort: "asc",
     });
 
-    const response = await httpClient.get(`/cart-items?${params.toString()}`);
+    const response = await httpClient.get(`cart-items?${params.toString()}`);
     if (!response.ok) throw new Error(ERROR_MESSAGE.GET);
 
     const data = await response.json();
@@ -24,7 +24,7 @@ export const CartItemsAPI = {
   },
 
   post: async (productId: number) => {
-    const response = await httpClient.patch(`/cart-items`, {
+    const response = await httpClient.patch(`cart-items`, {
       productId,
       quantity: 1,
     });
@@ -33,7 +33,7 @@ export const CartItemsAPI = {
   },
 
   delete: async (cartId: number) => {
-    const response = await httpClient.delete(`/cart-items/${cartId}`);
+    const response = await httpClient.delete(`cart-items/${cartId}`);
 
     if (!response.ok) throw new Error(ERROR_MESSAGE.DELETE);
   },

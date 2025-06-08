@@ -23,7 +23,7 @@ const ProductCatalog = () => {
       </S.ProductControlPanel>
       <S.ProductGrid>
         {!loading
-          ? products?.content.map((productInfo) => (
+          ? products?.map((productInfo) => (
               <ProductItem key={productInfo.id} {...productInfo} />
             ))
           : ProductsSkeleton}

@@ -1,4 +1,4 @@
-import { BaseProduct } from "../../../apis/types/response";
+import { Product } from "../../../apis/types/response";
 import { useCartItems } from "../../../features/cart/hooks/useCartItems";
 import QuantitySelector from "../../../shared/ui/QuantitySelector/QuantitySelector";
 import AddCartItemButton from "./AddCartItemButton/AddCartItemButton";
@@ -12,7 +12,7 @@ const ProductItem = ({
   price,
   imageUrl,
   quantity: maxQuantity,
-}: BaseProduct) => {
+}: Product) => {
   const {
     quantityByProductId,
     increaseItemQuantity,

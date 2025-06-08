@@ -1,12 +1,12 @@
 import { useCallback, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAPI } from "../../../apis/contexts/useAPI";
-import { Products } from "../../../apis/types/response";
 import { ProductsAPI } from "../apis/ProductsAPI";
 import { CategoryOptionsKey, SortOptionsKey } from "../config/filter";
+import { Product } from "../../../apis/types/response";
 
 export interface UseProductsResult {
-  products: Products | null;
+  products: Product[] | null;
   error: string | null;
   loading: boolean;
 
@@ -57,7 +57,7 @@ export const useProducts = (): UseProductsResult => {
 
   useEffect(() => {
     refetch();
-  }, [category, sortOption, refetch]);
+  }, [category, sortOption]);
 
   return {
     products,
