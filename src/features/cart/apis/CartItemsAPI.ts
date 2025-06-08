@@ -19,12 +19,11 @@ export const CartItemsAPI = {
     const response = await httpClient.get(`cart-items?${params.toString()}`);
     if (!response.ok) throw new Error(ERROR_MESSAGE.GET);
 
-    const data = await response.json();
-    return data.content;
+    return await response.json();
   },
 
   post: async (productId: number) => {
-    const response = await httpClient.patch(`cart-items`, {
+    const response = await httpClient.post(`cart-items`, {
       productId,
       quantity: 1,
     });
@@ -39,7 +38,7 @@ export const CartItemsAPI = {
   },
 
   patch: async (cartId: number, quantity: number) => {
-    const response = await httpClient.patch(`/cart-items/${cartId}`, {
+    const response = await httpClient.patch(`cart-items/${cartId}`, {
       id: cartId,
       quantity,
     });

@@ -1,5 +1,5 @@
 import { CartItem as CartItemType } from "../../../apis/types/response";
-import { useCartItems } from "../../../features/cart/hooks/useCartItems";
+import { useCart } from "../../../features/cart/hooks/useCart";
 import QuantitySelector from "../../../shared/ui/QuantitySelector/QuantitySelector";
 import * as S from "./CartItem.styles";
 
@@ -9,7 +9,7 @@ const CartItem = ({
   product: { id: productId, name, price, imageUrl, quantity: maxQuantity },
 }: CartItemType) => {
   const { increaseItemQuantity, decreaseItemQuantity, deleteProductInCart } =
-    useCartItems();
+    useCart();
 
   return (
     <S.CartItem>

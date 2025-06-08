@@ -26,8 +26,6 @@ export const ProductsAPI = {
     );
     if (!response.ok) throw new Error(ERROR_MESSAGE);
 
-    const data = await response.json();
-    console.log(data);
-    return data;
+    return await response.json();
   },
 };

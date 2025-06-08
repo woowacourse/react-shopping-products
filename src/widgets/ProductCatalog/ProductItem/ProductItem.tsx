@@ -1,5 +1,5 @@
 import { Product } from "../../../apis/types/response";
-import { useCartItems } from "../../../features/cart/hooks/useCartItems";
+import { useCart } from "../../../features/cart/hooks/useCart";
 import QuantitySelector from "../../../shared/ui/QuantitySelector/QuantitySelector";
 import AddCartItemButton from "./AddCartItemButton/AddCartItemButton";
 import * as S from "./ProductItem.styles";
@@ -18,7 +18,7 @@ const ProductItem = ({
     increaseItemQuantity,
     decreaseItemQuantity,
     addProductInCart,
-  } = useCartItems();
+  } = useCart();
 
   const currentQuantity = quantityByProductId(id);
   const outOfStock = maxQuantity <= 0;

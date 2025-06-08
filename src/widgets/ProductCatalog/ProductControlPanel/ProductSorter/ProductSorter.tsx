@@ -1,9 +1,9 @@
 import { sortOptions } from "../../../../features/product/config/filter";
-import { useProducts } from "../../../../features/product/hooks/useProducts";
+import { useProduct } from "../../../../features/product/hooks/useProduct";
 import SelectBox from "../../../../shared/ui/SelectBox/SelectBox";
 
 const ProductSorter = () => {
-  const { sortOption, setSortOption } = useProducts();
+  const { sortOption, setSortOption } = useProduct();
 
   return (
     <SelectBox

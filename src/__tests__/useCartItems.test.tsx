@@ -6,7 +6,7 @@ import { server } from "../__mocks__/server";
 import { APIProvider } from "../apis/contexts/APIContext";
 import { API_BASE_URL } from "../apis/httpClient";
 import { CartItem } from "../apis/types/response";
-import { useCartItems } from "../features/cart/hooks/useCartItems";
+import { useCartItems } from "../features/cart/hooks/useCart";
 import { ToastProvider } from "../shared/contexts/ToastContext";
 
 const CART_ITEMS_URL = "cart-items";

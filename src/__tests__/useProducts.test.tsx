@@ -8,7 +8,7 @@ import {
   CategoryOptionsKey,
   SortOptionsKey,
 } from "../features/product/config/filter";
-import { useProducts } from "../features/product/hooks/useProducts";
+import { useProducts } from "../features/product/hooks/useProduct";
 import { ToastProvider } from "../shared/contexts/ToastContext";
 import { API_BASE_URL } from "../apis/httpClient";
 
