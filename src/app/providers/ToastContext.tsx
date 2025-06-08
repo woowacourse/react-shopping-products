@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { TOAST_TYPES, ToastType } from "../../shared/config/toast";
 import Toast from "../../shared/ui/Toast/Toast";
 
@@ -28,24 +28,23 @@ export const ToastProvider = ({ children }: React.PropsWithChildren) => {
     };
   }, []);
 
-  const showToast = ({
-    message,
-    type = TOAST_TYPES.INFO,
-    duration = 4000,
-  }: ShowToastProps) => {
-    if (toastTimer.current) {
-      clearTimeout(toastTimer.current);
-      toastTimer.current = null;
-    }
+  const showToast = useCallback(
+    ({ message, type = TOAST_TYPES.INFO, duration = 4000 }: ShowToastProps) => {
+      if (toastTimer.current) {
+        clearTimeout(toastTimer.current);
+        toastTimer.current = null;
+      }
 
-    setType(type);
-    setMessage(message);
+      setType(type);
+      setMessage(message);
 
-    toastTimer.current = setTimeout(() => {
-      setMessage("");
-      toastTimer.current = null;
-    }, duration);
-  };
+      toastTimer.current = setTimeout(() => {
+        setMessage("");
+        toastTimer.current = null;
+      }, duration);
+    },
+    []
+  );
 
   return (
     <ToastContext.Provider value={{ showToast }}>
