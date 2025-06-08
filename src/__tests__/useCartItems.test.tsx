@@ -5,7 +5,7 @@ import { vi } from "vitest";
 import { APIProvider } from "../app/providers/APIContext";
 import { CartItemContent } from "../entities/cartItem/response";
 import { useCartItems } from "../entities/cartItem/useCartItems";
-import { server } from "../mocks/server";
+import { server } from "../__mocks__/server";
 import { SHOP_API } from "../shared/api/config";
 
 const mockHandleError = vi.fn();

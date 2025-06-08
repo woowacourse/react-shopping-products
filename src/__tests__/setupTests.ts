@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
 import { afterEach, vi } from "vitest";
-import { server } from "../mocks/server";
+import { server } from "../__mocks__/server";
 
 beforeEach(() => vi.resetAllMocks());
 beforeAll(() => server.listen());
