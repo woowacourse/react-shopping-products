@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { ApiResponse, isApiError, isApiSuccess } from "../../apis/apiClient";
+import { ApiResponse, isApiError, isApiSuccess } from "../apiResponse";
 import { TOAST_TYPES } from "../../shared/config/toast";
 import useToast from "../../shared/hooks/useToast";
 

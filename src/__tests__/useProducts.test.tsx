@@ -1,7 +1,6 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
-import { SHOP_API } from "../apis/config";
 import { APIProvider } from "../apis/contexts/APIContext";
 import { Products } from "../apis/types/response";
 import { ProductsAPI } from "../features/product/apis/ProductsAPI";
@@ -11,6 +10,9 @@ import {
 } from "../features/product/config/filter";
 import { useProducts } from "../features/product/hooks/useProducts";
 import { ToastProvider } from "../shared/contexts/ToastContext";
+import { API_BASE_URL } from "../apis/httpClient";
+
+const PRODUCTS_URL = "products";
 
 const wrapper = ({ children }: React.PropsWithChildren) => (
   <MemoryRouter initialEntries={["/?category=전체&sort=낮은 가격 순"]}>
@@ -57,7 +59,7 @@ describe("useProducts 훅", () => {
 
     it("카테고리 매개변수로 직접 API를 호출하면 필터링된 결과를 반환한다", async () => {
       const response = await fetch(
-        `${SHOP_API.baseUrl}${SHOP_API.endpoint.products}?category=패션잡화`
+        `${API_BASE_URL}${PRODUCTS_URL}?category=패션잡화`
       );
       const data = (await response.json()) as Products;
 
@@ -86,7 +88,7 @@ describe("useProducts 훅", () => {
 
     it("정렬 매개변수로 직접 API를 호출하면 필터링된 결과를 반환한다", async () => {
       const response = await fetch(
-        `${SHOP_API.baseUrl}${SHOP_API.endpoint.products}?sort=price,desc`
+        `${API_BASE_URL}${PRODUCTS_URL}?sort=price,desc`
       );
       const data = (await response.json()) as Products;
       const prices = data.content.map((product) => product.price);
@@ -124,7 +126,7 @@ describe("useProducts 훅", () => {
 
     it("카테고리와 정렬 매개변수로 직접 API를 호출하면 필터링된 결과를 반환한다", async () => {
       const response = await fetch(
-        `${SHOP_API.baseUrl}${SHOP_API.endpoint.products}?category=패션잡화&sort=price,desc`
+        `${API_BASE_URL}${PRODUCTS_URL}?category=패션잡화&sort=price,desc`
       );
       const data = (await response.json()) as Products;
 

@@ -1,9 +1,8 @@
-import { createApiUrl, getData } from "../../../apis/apiClient";
-import { SHOP_API } from "../../../apis/config";
+import { httpClient } from "../../../apis/httpClient";
 import { Products } from "../../../apis/types/response";
 import { CategoryOptionsKey, SortOptionsKey } from "../config/filter";
 
-const URL = SHOP_API.endpoint.products;
+const ERROR_MESSAGE = "상품 데이터를 가져오는 데 실패했습니다.";
 
 const sortOptionsMap: Record<SortOptionsKey, string> = {
   "낮은 가격 순": "price,asc",
@@ -11,7 +10,10 @@ const sortOptionsMap: Record<SortOptionsKey, string> = {
 } as const;
 
 export const ProductsAPI = {
-  get: async (category: CategoryOptionsKey, sortOption: SortOptionsKey) => {
+  get: async (
+    category: CategoryOptionsKey,
+    sortOption: SortOptionsKey
+  ): Promise<Products> => {
     const params: Record<string, string> = { page: "0", size: "20" };
 
     if (category !== "전체") params.category = category;
@@ -19,6 +21,11 @@ export const ProductsAPI = {
       params.sort = sortOptionsMap[sortOption];
     }
 
-    return getData<Products>(createApiUrl(URL, params));
+    const response = await httpClient.get(
+      `/products?${new URLSearchParams(params).toString()}`
+    );
+    if (!response.ok) throw new Error(ERROR_MESSAGE);
+
+    return await response.json();
   },
 };

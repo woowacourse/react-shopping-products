@@ -3,11 +3,13 @@ import { http, HttpResponse } from "msw";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 import { server } from "../__mocks__/server";
-import { SHOP_API } from "../apis/config";
 import { APIProvider } from "../apis/contexts/APIContext";
 import { CartItemContent } from "../apis/types/response";
 import { useCartItems } from "../features/cart/hooks/useCartItems";
 import { ToastProvider } from "../shared/contexts/ToastContext";
+import { API_BASE_URL } from "../apis/httpClient";
+
+const CART_ITEMS_URL = "cart-items";
 
 const mockHandleError = vi.fn();
 const mockHandleSuccess = vi.fn();
@@ -50,41 +52,38 @@ describe("useCartItems 훅", () => {
       const newProductId = 1;
 
       server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.get(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           return HttpResponse.json({
             content: cartContent,
           });
         }),
 
-        http.post(
-          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`,
-          async ({ request }) => {
-            const body = (await request.json()) as {
-              productId: number;
-              quantity: number;
-            };
+        http.post(`${API_BASE_URL}${CART_ITEMS_URL}`, async ({ request }) => {
+          const body = (await request.json()) as {
+            productId: number;
+            quantity: number;
+          };
 
-            cartContent = [
-              {
-                id: 101,
-                product: {
-                  id: body.productId,
-                  name: "테스트용 상품",
-                  price: 15000,
-                  category: "테스트",
-                  imageUrl: "test.jpg",
-                  quantity: 10,
-                },
-                quantity: body.quantity || 1,
+          cartContent = [
+            {
+              id: 101,
+              product: {
+                id: body.productId,
+                name: "테스트용 상품",
+                price: 15000,
+                category: "테스트",
+                imageUrl: "test.jpg",
+                quantity: 10,
               },
-            ];
+              quantity: body.quantity || 1,
+            },
+          ];
 
-            return HttpResponse.json({
-              success: true,
-              message: "상품이 장바구니에 추가되었습니다.",
-            });
-          }
-        )
+          return HttpResponse.json({
+            success: true,
+            message: "상품이 장바구니에 추가되었습니다.",
+          });
+        })
       );
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
@@ -121,22 +120,19 @@ describe("useCartItems 훅", () => {
       ];
 
       server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.get(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           return HttpResponse.json({
             content: cartContent,
           });
         }),
 
-        http.delete(
-          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
-          () => {
-            cartContent = [];
-            return HttpResponse.json({
-              success: true,
-              message: "상품이 장바구니에서 삭제되었습니다.",
-            });
-          }
-        )
+        http.delete(`${API_BASE_URL}${CART_ITEMS_URL}/101`, () => {
+          cartContent = [];
+          return HttpResponse.json({
+            success: true,
+            message: "상품이 장바구니에서 삭제되었습니다.",
+          });
+        })
       );
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
@@ -160,7 +156,7 @@ describe("useCartItems 훅", () => {
       let updatedQuantity = 2;
 
       server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.get(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           return HttpResponse.json({
             content: [
               {
@@ -179,13 +175,10 @@ describe("useCartItems 훅", () => {
           });
         }),
 
-        http.patch(
-          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
-          async () => {
-            updatedQuantity += 1;
-            return HttpResponse.json({ success: true });
-          }
-        )
+        http.patch(`${API_BASE_URL}${CART_ITEMS_URL}/101`, async () => {
+          updatedQuantity += 1;
+          return HttpResponse.json({ success: true });
+        })
       );
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
@@ -204,7 +197,7 @@ describe("useCartItems 훅", () => {
       let updatedQuantity = 2;
 
       server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.get(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           return HttpResponse.json({
             content: [
               {
@@ -222,13 +215,10 @@ describe("useCartItems 훅", () => {
             ],
           });
         }),
-        http.patch(
-          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
-          async () => {
-            updatedQuantity -= 1;
-            return HttpResponse.json({ success: true });
-          }
-        )
+        http.patch(`${API_BASE_URL}${CART_ITEMS_URL}/101`, async () => {
+          updatedQuantity -= 1;
+          return HttpResponse.json({ success: true });
+        })
       );
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
@@ -247,7 +237,7 @@ describe("useCartItems 훅", () => {
       let deleted = false;
 
       server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.get(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           if (deleted) {
             return HttpResponse.json({
               content: [],
@@ -272,16 +262,13 @@ describe("useCartItems 훅", () => {
           });
         }),
 
-        http.delete(
-          `${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}/101`,
-          () => {
-            deleted = true;
-            return HttpResponse.json({
-              success: true,
-              message: "상품이 장바구니에서 삭제되었습니다.",
-            });
-          }
-        )
+        http.delete(`${API_BASE_URL}${CART_ITEMS_URL}/101`, () => {
+          deleted = true;
+          return HttpResponse.json({
+            success: true,
+            message: "상품이 장바구니에서 삭제되었습니다.",
+          });
+        })
       );
 
       const { result } = renderHook(() => useCartItems(), { wrapper });
@@ -310,7 +297,7 @@ describe("useCartItems 훅", () => {
       await waitFor(() => expect(result.current.loading).toBe(false));
 
       server.use(
-        http.post(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.post(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           return HttpResponse.json(
             { success: false, message: "오류 발생" },
             { status: 400 }
@@ -337,7 +324,7 @@ describe("useCartItems 훅", () => {
 
       let fetchCount = 0;
       server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.get(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           fetchCount++;
           return HttpResponse.json({
             content: [
@@ -372,7 +359,7 @@ describe("useCartItems 훅", () => {
   describe("데이터 계산", () => {
     it("cartItemsCount가 올바르게 계산된다", async () => {
       server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.get(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           return HttpResponse.json({
             content: [
               {
@@ -424,7 +411,7 @@ describe("useCartItems 훅", () => {
 
     it("totalPriceInCart가 올바르게 계산된다", async () => {
       server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.get(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           return HttpResponse.json({
             content: [
               {
@@ -477,7 +464,7 @@ describe("useCartItems 훅", () => {
 
     it("quantityByProductId가 올바른 수량을 반환한다", async () => {
       server.use(
-        http.get(`${SHOP_API.baseUrl}${SHOP_API.endpoint.cartItems}`, () => {
+        http.get(`${API_BASE_URL}${CART_ITEMS_URL}`, () => {
           return HttpResponse.json({
             content: [
               {

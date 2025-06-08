@@ -1,33 +1,49 @@
-import {
-  createApiUrl,
-  createResourceUrl,
-  deleteData,
-  getData,
-  patchData,
-  postData,
-} from "../../../apis/apiClient";
-import { SHOP_API } from "../../../apis/config";
+import { httpClient } from "../../../apis/httpClient";
 import { CartItems } from "../../../apis/types/response";
 
-const URL = SHOP_API.endpoint.cartItems;
+const ERROR_MESSAGE = {
+  GET: "장바구니를 가져오는 데 실패했습니다.",
+  POST: "상품을 장바구니에 추가하는 데 실패했습니다.",
+  DELETE: "장바구니에서 상품을 삭제하는 데 실패했습니다.",
+  PATCH: "장바구니 상품 수량을 변경하는 데 실패했습니다.",
+};
 
 export const CartItemsAPI = {
-  get: async () => {
-    const params: Record<string, string> = { page: "0", size: "50" };
-    return getData<CartItems>(createApiUrl(URL, params));
+  get: async (): Promise<CartItems> => {
+    const params = new URLSearchParams({
+      page: "0",
+      size: "50",
+      sort: "asc",
+    });
+
+    const response = await httpClient.get(`/cart-items?${params.toString()}`);
+    if (!response.ok) throw new Error(ERROR_MESSAGE.GET);
+
+    const data = await response.json();
+    return data.content;
   },
 
   post: async (productId: number) => {
-    const data = { productId, quantity: 1 };
-    return postData(createApiUrl(URL), data);
+    const response = await httpClient.patch(`/cart-items`, {
+      productId,
+      quantity: 1,
+    });
+
+    if (!response.ok) throw new Error(ERROR_MESSAGE.POST);
   },
 
   delete: async (cartId: number) => {
-    return deleteData(createResourceUrl(URL, cartId));
+    const response = await httpClient.delete(`/cart-items/${cartId}`);
+
+    if (!response.ok) throw new Error(ERROR_MESSAGE.DELETE);
   },
 
   patch: async (cartId: number, quantity: number) => {
-    const data = { id: cartId, quantity };
-    return patchData(createResourceUrl(URL, cartId), data);
+    const response = await httpClient.patch(`/cart-items/${cartId}`, {
+      id: cartId,
+      quantity,
+    });
+
+    if (!response.ok) throw new Error(ERROR_MESSAGE.PATCH);
   },
 };

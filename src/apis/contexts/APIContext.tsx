@@ -1,5 +1,5 @@
 import { createContext, useCallback, useState } from "react";
-import { ApiResponse } from "../../apis/apiClient";
+import { ApiResponse } from "../apiResponse";
 import { ApiDataKey, ApiDataTypeMap } from "../../apis/types/data";
 
 type ApiDataState = {
