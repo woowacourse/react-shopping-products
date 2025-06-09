@@ -1,6 +1,6 @@
-import { FETCH_TYPES } from "./../config/fetch";
 import { useCallback, useReducer } from "react";
 import { TOAST_TYPES } from "../config/toast";
+import { FETCH_TYPES } from "./../config/fetch";
 import useToast from "./useToast";
 
 type FetchState<T> = {
@@ -36,10 +36,10 @@ function fetchReducer<T>(
   }
 }
 
-export default function useFetch<T, P = void>(
+const useFetch = <T, P = void>(
   fetch: (params: P) => Promise<T>,
   showError = true
-) {
+) => {
   const { showToast } = useToast();
   const [state, dispatch] = useReducer(fetchReducer<T>, {
     data: null,
@@ -69,4 +69,6 @@ export default function useFetch<T, P = void>(
   );
 
   return { ...state, fetchData };
-}
+};
+
+export default useFetch;

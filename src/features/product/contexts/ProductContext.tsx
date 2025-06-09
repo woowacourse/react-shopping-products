@@ -21,7 +21,6 @@ export interface ProductContextType {
   products: Product[];
   refetch: () => Promise<void>;
   loading: boolean;
-  error: boolean;
 
   category: CategoryOptionsKey;
   setCategory: (newCategory: CategoryOptionsKey) => void;
@@ -42,7 +41,7 @@ export const ProductProvider = ({ children }: PropsWithChildren) => {
     []
   );
 
-  const { data, loading, error, success, fetchData } = useFetch<
+  const { data, loading, success, fetchData } = useFetch<
     Product[],
     ProductParams
   >(fetchProducts);
@@ -86,7 +85,6 @@ export const ProductProvider = ({ children }: PropsWithChildren) => {
       products,
       refetch,
       loading,
-      error,
 
       category,
       setCategory,
@@ -98,7 +96,6 @@ export const ProductProvider = ({ children }: PropsWithChildren) => {
       products,
       refetch,
       loading,
-      error,
 
       category,
       setCategory,

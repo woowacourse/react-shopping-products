@@ -8,15 +8,13 @@ import {
 } from "react";
 import { CartItem } from "../../../apis/types/response";
 import useFetch from "../../../shared/hooks/useFetch";
+import useMutation from "../../../shared/hooks/useMutation";
 import { CartItemsAPI } from "../apis/CartItemsAPI";
-import useToast from "../../../shared/hooks/useToast";
-import { TOAST_TYPES } from "../../../shared/config/toast";
 
 export interface CartContextType {
   cartItems: CartItem[];
   refetch: () => Promise<void>;
   loading: boolean;
-  error: boolean;
 
   cartItemsCount: number;
   totalPriceInCart: number;
@@ -32,11 +30,9 @@ export const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: PropsWithChildren) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const { data, loading, error, success, fetchData } = useFetch<CartItem[]>(
-    () => CartItemsAPI.get()
+  const { data, loading, success, fetchData } = useFetch<CartItem[]>(() =>
+    CartItemsAPI.get()
   );
-
-  const { showToast } = useToast();
 
   useEffect(() => {
     if (data && success) {
@@ -54,8 +50,6 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       })) ?? [],
     [cartItems]
   );
-
-  const cartItemsCount = cartItems?.length ?? 0;
 
   const allQuantities = useMemo(
     () =>
@@ -83,116 +77,79 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
     [cartItems]
   );
 
+  const { mutate: deleteCartItem } = useMutation<number>(
+    (cartId) => CartItemsAPI.delete(cartId),
+    {
+      successMessage: "상품이 장바구니에서 삭제되었습니다.",
+      onSuccess: () => fetchData(),
+    }
+  );
+
+  const { mutate: updateCartItemQuantity } = useMutation<{
+    cartId: number;
+    quantity: number;
+  }>(({ cartId, quantity }) => CartItemsAPI.patch(cartId, quantity), {
+    onSuccess: () => fetchData(),
+  });
+
+  const { mutate: addToCart } = useMutation<number>(
+    (productId) => CartItemsAPI.post(productId),
+    {
+      successMessage: "상품이 장바구니에 추가되었습니다.",
+      onSuccess: () => fetchData(),
+    }
+  );
+
   const decreaseItemQuantity = useCallback(
     async (productId: number) => {
-      const currentProductId = cartItemIds.find(
+      const currentItem = cartItemIds.find(
         (productInfo) => productInfo.productId === productId
       );
 
-      if (!currentProductId) return;
-
-      const quantity = quantityByProductId(currentProductId.productId);
+      if (!currentItem) return;
+      const quantity = quantityByProductId(currentItem.productId);
 
       if (quantity <= 1) {
-        try {
-          await CartItemsAPI.delete(currentProductId.cartId);
-
-          showToast({
-            message: "상품이 장바구니에서 삭제되었습니다.",
-            type: TOAST_TYPES.SUCCESS,
-          });
-        } catch (error) {
-          const message =
-            error instanceof Error
-              ? error.message
-              : "알 수 없는 오류가 발생했습니다.";
-
-          showToast({ message, type: TOAST_TYPES.ERROR });
-        }
+        await deleteCartItem(currentItem.cartId);
       } else {
-        try {
-          await CartItemsAPI.patch(currentProductId.cartId, quantity - 1);
-        } catch (error) {
-          const message =
-            error instanceof Error
-              ? error.message
-              : "알 수 없는 오류가 발생했습니다.";
-
-          showToast({ message, type: TOAST_TYPES.ERROR });
-        }
+        await updateCartItemQuantity({
+          cartId: currentItem.cartId,
+          quantity: quantity - 1,
+        });
       }
-
-      fetchData();
     },
-    [cartItemIds, quantityByProductId, fetchData, showToast]
+    [cartItemIds, quantityByProductId, deleteCartItem, updateCartItemQuantity]
   );
 
   const increaseItemQuantity = useCallback(
     async (productId: number) => {
-      const currentProductId = cartItemIds.find(
+      const currentItem = cartItemIds.find(
         (productInfo) => productInfo.productId === productId
       );
 
-      if (!currentProductId) return;
+      if (!currentItem) return;
+      const quantity = quantityByProductId(currentItem.productId);
 
-      try {
-        await CartItemsAPI.patch(
-          currentProductId.cartId,
-          quantityByProductId(currentProductId.productId) + 1
-        );
-        fetchData();
-      } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "알 수 없는 오류가 발생했습니다.";
-
-        showToast({ message, type: TOAST_TYPES.ERROR });
-      }
+      await updateCartItemQuantity({
+        cartId: currentItem.cartId,
+        quantity: quantity + 1,
+      });
     },
-    [fetchData, cartItemIds, quantityByProductId, showToast]
+    [cartItemIds, quantityByProductId, updateCartItemQuantity]
   );
 
   const addProductInCart = useCallback(
     async (productId: number) => {
-      try {
-        await CartItemsAPI.post(productId);
-        fetchData();
-
-        showToast({
-          message: "상품이 장바구니에 추가되었습니다.",
-          type: TOAST_TYPES.SUCCESS,
-        });
-      } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "알 수 없는 오류가 발생했습니다.";
-        showToast({ message, type: TOAST_TYPES.ERROR });
-      }
+      await addToCart(productId);
     },
-    [fetchData, showToast]
+    [addToCart]
   );
 
   const deleteProductInCart = useCallback(
     async (cartId: number) => {
-      try {
-        await CartItemsAPI.delete(cartId);
-        fetchData();
-
-        showToast({
-          message: "상품이 장바구니에서 삭제되었습니다.",
-          type: TOAST_TYPES.SUCCESS,
-        });
-      } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "알 수 없는 오류가 발생했습니다.";
-        showToast({ message, type: TOAST_TYPES.ERROR });
-      }
+      await deleteCartItem(cartId);
     },
-    [fetchData, showToast]
+    [deleteCartItem]
   );
 
   const contextValue = useMemo(
@@ -200,11 +157,8 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       cartItems: cartItems || [],
       refetch,
       loading,
-      error,
-
-      cartItemsCount,
+      cartItemsCount: cartItems?.length ?? 0,
       totalPriceInCart,
-
       quantityByProductId,
       decreaseItemQuantity,
       increaseItemQuantity,
@@ -215,11 +169,7 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       cartItems,
       refetch,
       loading,
-      error,
-
-      cartItemsCount,
       totalPriceInCart,
-
       quantityByProductId,
       decreaseItemQuantity,
       increaseItemQuantity,
