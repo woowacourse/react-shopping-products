@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useProduct } from "../hooks/useProduct";
 
 const ProductInitializer = () => {
-  const { fetchData } = useProduct();
+  const { refetch } = useProduct();
 
   useEffect(() => {
-    if (fetchData) fetchData();
-  }, [fetchData]);
+    if (refetch) refetch();
+  }, []);
 
   return null;
 };

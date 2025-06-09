@@ -7,13 +7,12 @@ import ProductSorter from "./ProductControlPanel/ProductSorter/ProductSorter";
 import ProductItem from "./ProductItem/ProductItem";
 import ProductItemSkeleton from "./ProductItemSkeleton/ProductItemSkeleton";
 
-// TODO: 로딩 상태 관리하기
 const ProductsSkeleton = Array.from({ length: 6 }).map((_, index) => (
   <ProductItemSkeleton key={index} />
 ));
 
 const ProductCatalog = () => {
-  const { products } = useProduct();
+  const { products, loading } = useProduct();
 
   return (
     <S.ProductCatalog>
@@ -25,14 +24,11 @@ const ProductCatalog = () => {
         <ProductSorter />
       </S.ProductControlPanel>
       <S.ProductGrid>
-        {/* {!loading
+        {!loading
           ? products?.map((productInfo) => (
               <ProductItem key={productInfo.id} {...productInfo} />
             ))
-          : ProductsSkeleton} */}
-        {products?.map((productInfo) => (
-          <ProductItem key={productInfo.id} {...productInfo} />
-        ))}
+          : ProductsSkeleton}
       </S.ProductGrid>
     </S.ProductCatalog>
   );

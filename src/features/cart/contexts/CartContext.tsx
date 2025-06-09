@@ -2,17 +2,19 @@ import {
   createContext,
   PropsWithChildren,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from "react";
 import { CartItem } from "../../../apis/types/response";
+import useFetch from "../../../shared/hooks/useFetch";
 import { CartItemsAPI } from "../apis/CartItemsAPI";
-import useToast from "../../../shared/hooks/useToast";
-import { TOAST_TYPES } from "../../../shared/config/toast";
 
 export interface CartContextType {
   cartItems: CartItem[];
-  fetchData: () => Promise<void>;
+  refetch: () => Promise<void>;
+  loading: boolean;
+  error: boolean;
 
   cartItemsCount: number;
   totalPriceInCart: number;
@@ -28,19 +30,17 @@ export const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: PropsWithChildren) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const { showToast } = useToast();
+  const { data, loading, error, success, fetchData } = useFetch<CartItem[]>(
+    () => CartItemsAPI.get()
+  );
 
-  const fetchData = useCallback(async () => {
-    try {
-      setCartItems(await CartItemsAPI.get());
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "알 수 없는 오류가 발생했습니다.";
-      showToast({ message, type: TOAST_TYPES.ERROR });
+  useEffect(() => {
+    if (data && success) {
+      setCartItems(data);
     }
-  }, [showToast]);
+  }, [data, success]);
+
+  const refetch = useCallback(() => fetchData(), [fetchData]);
 
   const cartItemIds = useMemo(
     () =>
@@ -125,21 +125,21 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
 
   const addProductInCart = useCallback(
     async (productId: number) => {
-      try {
-        await CartItemsAPI.post(productId);
-        fetchData();
-      } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "알 수 없는 오류가 발생했습니다.";
-        showToast({ message, type: TOAST_TYPES.ERROR });
-      }
+      // try {
+      await CartItemsAPI.post(productId);
+      fetchData();
+      // } catch (error) {
+      // const message =
+      //   error instanceof Error
+      //     ? error.message
+      //     : "알 수 없는 오류가 발생했습니다.";
+      // showToast({ message, type: TOAST_TYPES.ERROR });
+      // }
 
       // if (handleError(response)) return;
       // handleSuccess(response, "상품이 장바구니에 추가되었습니다.");
     },
-    [fetchData, showToast]
+    [fetchData]
   );
 
   const deleteProductInCart = useCallback(
@@ -156,8 +156,10 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
 
   const contextValue = useMemo(
     () => ({
-      cartItems,
-      fetchData,
+      cartItems: cartItems || [],
+      refetch,
+      loading,
+      error,
 
       cartItemsCount,
       totalPriceInCart,
@@ -170,7 +172,9 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
     }),
     [
       cartItems,
-      fetchData,
+      refetch,
+      loading,
+      error,
 
       cartItemsCount,
       totalPriceInCart,

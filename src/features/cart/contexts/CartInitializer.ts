@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useCart } from "../hooks/useCart";
 
 const CartInitializer = () => {
-  const { fetchData } = useCart();
+  const { refetch } = useCart();
 
   useEffect(() => {
-    if (fetchData) fetchData();
-  }, [fetchData]);
+    if (refetch) refetch();
+  }, []);
 
   return null;
 };
