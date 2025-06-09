@@ -8,6 +8,8 @@ const ERROR_MESSAGE = {
   PATCH: "장바구니 상품 수량을 변경하는 데 실패했습니다.",
 };
 
+const ENDPOINT = "cart-items";
+
 export const CartItemsAPI = {
   get: async (): Promise<CartItem[]> => {
     const params = new URLSearchParams({
@@ -16,14 +18,14 @@ export const CartItemsAPI = {
       sort: "asc",
     });
 
-    const response = await httpClient.get(`cart-items?${params.toString()}`);
+    const response = await httpClient.get(`${ENDPOINT}?${params.toString()}`);
     if (!response.ok) throw new Error(ERROR_MESSAGE.GET);
 
     return await response.json();
   },
 
   post: async (productId: number) => {
-    const response = await httpClient.post(`cart-items`, {
+    const response = await httpClient.post(`${ENDPOINT}`, {
       productId,
       quantity: 1,
     });
@@ -32,13 +34,13 @@ export const CartItemsAPI = {
   },
 
   delete: async (cartId: number) => {
-    const response = await httpClient.delete(`cart-items/${cartId}`);
+    const response = await httpClient.delete(`${ENDPOINT}/${cartId}`);
 
     if (!response.ok) throw new Error(ERROR_MESSAGE.DELETE);
   },
 
   patch: async (cartId: number, quantity: number) => {
-    const response = await httpClient.patch(`cart-items/${cartId}`, {
+    const response = await httpClient.patch(`${ENDPOINT}/${cartId}`, {
       id: cartId,
       quantity,
     });

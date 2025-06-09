@@ -4,6 +4,8 @@ import { CategoryOptionsKey, SortOptionsKey } from "../config/filter";
 
 const ERROR_MESSAGE = "상품 데이터를 가져오는 데 실패했습니다.";
 
+const ENDPOINT = "products";
+
 const sortOptionsMap: Record<SortOptionsKey, string> = {
   "낮은 가격 순": "price,asc",
   "높은 가격 순": "price,desc",
@@ -22,7 +24,7 @@ export const ProductsAPI = {
     }
 
     const response = await httpClient.get(
-      `products?${new URLSearchParams(params).toString()}`
+      `${ENDPOINT}?${new URLSearchParams(params).toString()}`
     );
     if (!response.ok) throw new Error(ERROR_MESSAGE);
 

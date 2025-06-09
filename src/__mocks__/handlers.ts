@@ -4,6 +4,11 @@ import { API_BASE_URL } from "../apis/httpClient";
 import { CartItem, Product } from "../apis/types/response";
 import products from "./data/products.json";
 
+const ENDPOINT = {
+  PRODUCTS: "products",
+  CART_ITEMS: "cart-items",
+};
+
 interface PostCartItemsRequestBody {
   productId: number;
   quantity: number;
@@ -20,7 +25,7 @@ export const handlers = [
   /**
    * Products API : GET
    */
-  http.get(`${API_BASE_URL}products`, async ({ request }) => {
+  http.get(`${API_BASE_URL}${ENDPOINT.PRODUCTS}`, async ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get("category") as CategoryOptionsKey;
     const sort = url.searchParams.get("sort");
@@ -49,14 +54,14 @@ export const handlers = [
   /**
    * CartItems API : GET
    */
-  http.get(`${API_BASE_URL}cart-items`, async () => {
+  http.get(`${API_BASE_URL}${ENDPOINT.CART_ITEMS}`, async () => {
     return HttpResponse.json(cartItems);
   }),
 
   /**
    * CartItems API : POST
    */
-  http.post(`${API_BASE_URL}cart-items`, async ({ request }) => {
+  http.post(`${API_BASE_URL}${ENDPOINT.CART_ITEMS}`, async ({ request }) => {
     const { productId, quantity = 1 } =
       (await request.json()) as PostCartItemsRequestBody;
 
@@ -94,43 +99,51 @@ export const handlers = [
   /**
    * CartItems API : DELETE
    */
-  http.delete(`${API_BASE_URL}cart-items/:cartId`, async ({ params }) => {
-    const { cartId } = params;
-    const cartIdNum = Number(cartId);
+  http.delete(
+    `${API_BASE_URL}${ENDPOINT.CART_ITEMS}/:cartId`,
+    async ({ params }) => {
+      const { cartId } = params;
+      const cartIdNum = Number(cartId);
 
-    const initialLength = cartItems.length;
-    cartItems = cartItems.filter((item) => item.id !== cartIdNum);
+      const initialLength = cartItems.length;
+      cartItems = cartItems.filter((item) => item.id !== cartIdNum);
 
-    if (cartItems.length === initialLength) {
-      return new HttpResponse(null, {
-        status: 404,
-        statusText: "Not found",
-      });
+      if (cartItems.length === initialLength) {
+        return new HttpResponse(null, {
+          status: 404,
+          statusText: "Not found",
+        });
+      }
+
+      await delay(100);
+      return new HttpResponse(null, { status: 204 });
     }
-
-    await delay(100);
-    return new HttpResponse(null, { status: 204 });
-  }),
+  ),
 
   /**
    * CartItems API : PATCH
    */
-  http.patch(`${API_BASE_URL}cart-items/:cartId`, async ({ request }) => {
-    const { id: cartId, quantity } =
-      (await request.json()) as PatchCartItemsRequestBody;
+  http.patch(
+    `${API_BASE_URL}${ENDPOINT.CART_ITEMS}/:cartId`,
+    async ({ request }) => {
+      const { id: cartId, quantity } =
+        (await request.json()) as PatchCartItemsRequestBody;
 
-    const itemIndex = cartItems.findIndex((item) => item.id === Number(cartId));
+      const itemIndex = cartItems.findIndex(
+        (item) => item.id === Number(cartId)
+      );
 
-    if (itemIndex === -1) {
-      return new HttpResponse(null, {
-        status: 404,
-        statusText: "Not found",
-      });
+      if (itemIndex === -1) {
+        return new HttpResponse(null, {
+          status: 404,
+          statusText: "Not found",
+        });
+      }
+
+      cartItems[itemIndex].quantity = quantity;
+
+      await delay(100);
+      return HttpResponse.json(cartItems[itemIndex]);
     }
-
-    cartItems[itemIndex].quantity = quantity;
-
-    await delay(100);
-    return HttpResponse.json(cartItems[itemIndex]);
-  }),
+  ),
 ];
