@@ -1,131 +1,67 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../src/App';
-import getProducts from '../src/api/getProducts';
-import getShoppingCart from '../src/api/getShoppingCart';
-import postShoppingCart from '../src/api/postShoppingCart';
-import deleteShoppingCart from '../src/api/deleteShoppingCart';
-import type { MockedFunction } from 'vitest';
+import Provider from '../src/Component/Common/Provider';
+import { server } from '../src/mock/server';
+import { resetCartState } from '../src/mock/handlers';
+import productData from '../src/mock/products.json';
+import cartItem from '../src/mock/shoppingCart.json';
 
-const mockedGetProducts = getProducts as MockedFunction<typeof getProducts>;
-const mockedGetCart = getShoppingCart as MockedFunction<typeof getShoppingCart>;
-const mockedPostCart = postShoppingCart as MockedFunction<
-  typeof postShoppingCart
->;
-const mockedDeleteCart = deleteShoppingCart as MockedFunction<
-  typeof deleteShoppingCart
->;
-const DUMMY = [
-  {
-    id: 24,
-    name: '부리부리 원형 테이블',
-    price: 3210000,
-    imageUrl: 'https://example.com/table.jpg',
-    category: '패션잡화',
-  },
-  {
-    id: 25,
-    name: '얌샘김밥',
-    price: 5000,
-    imageUrl: 'https://example.com/gimbap.png',
-    category: '식료품',
-  },
-];
-
-const CART_DUMMY = [
-  {
-    id: 836,
-    quantity: 1,
-    product: {
-      id: 27,
-      name: '아바라',
-      price: 4800,
-      imageUrl: 'https://example.com/abara.jpg',
-      category: '식료품',
-    },
-  },
-  {
-    id: 920,
-    quantity: 1,
-    product: {
-      id: 24,
-      name: '부리부리 원형 테이블',
-      price: 3210000,
-      imageUrl: 'https://example.com/table.jpg',
-      category: '패션잡화',
-    },
-  },
-];
-
-const SINGLE_ITEM = [CART_DUMMY[1]];
-
-vi.mock('../src/api/getProducts', () => ({
-  __esModule: true,
-  default: vi.fn(),
-}));
-vi.mock('../src/api/getShoppingCart', () => ({
-  __esModule: true,
-  default: vi.fn(),
-}));
-vi.mock('../src/api/postShoppingCart', () => ({
-  __esModule: true,
-  default: vi.fn(),
-}));
-vi.mock('../src/api/deleteShoppingCart', () => ({
-  __esModule: true,
-  default: vi.fn(),
-}));
-
-describe('<App />', () => {
+describe('장바구니 담기 빼기시 Header의 장바구니 종류 개수 변화 테스트', () => {
   beforeEach(() => {
+    resetCartState();
+    server.resetHandlers();
     vi.resetAllMocks();
-    mockedGetProducts.mockResolvedValue({ content: DUMMY });
-    mockedPostCart.mockResolvedValue();
-    mockedDeleteCart.mockResolvedValue();
   });
+  it('장바구니 수량 조절 버튼으로 새로운 물품에 대해 증가 버튼 클릭 시 장바구니에 담긴 물건 종류의 개수가 증가한다.', async () => {
+    render(
+      <Provider>
+        <App />
+      </Provider>
+    );
+    const selectedProduct = productData.content[1].name;
+    const originLength = cartItem.content.length;
 
-  it('장바구니 제거 시 cart-count가 2 → 1로 감소한다', async () => {
-    mockedGetCart
-      .mockResolvedValueOnce({ content: CART_DUMMY })
-      .mockResolvedValueOnce({ content: SINGLE_ITEM });
+    const initialCountEl = await screen.findByTestId('cart-count');
+    expect(initialCountEl.textContent).toEqual(originLength.toString());
 
-    render(<App />);
-
-    const count2 = await screen.findByTestId('cart-count');
-    expect(count2).toHaveTextContent('2');
-
-    const itemSpan = screen.getByText('부리부리 원형 테이블');
-    const itemLi = itemSpan.closest('li')!;
-    const removeBtn = within(itemLi).getByText('빼기');
-    await userEvent.click(removeBtn);
-
-    await waitFor(() => expect(mockedDeleteCart).toHaveBeenCalledWith(920));
-
-    await waitFor(() => expect(mockedGetCart).toHaveBeenCalledTimes(2));
-
-    const count1 = await screen.findByTestId('cart-count');
-    expect(count1).toHaveTextContent('1');
-  });
-
-  it('장바구니 추가 시 cart-count가 1 → 2로 증가한다', async () => {
-    mockedGetCart
-      .mockResolvedValueOnce({ content: [CART_DUMMY[0]] })
-      .mockResolvedValueOnce({ content: CART_DUMMY });
-
-    render(<App />);
-
-    const initialCount = await screen.findByTestId('cart-count');
-    expect(initialCount).toHaveTextContent('1');
-
-    const itemSpan = screen.getByText('부리부리 원형 테이블');
+    const itemSpan = screen.getByText(selectedProduct);
     const itemLi = itemSpan.closest('li')!;
     const addBtn = within(itemLi).getByText('담기');
+
     await userEvent.click(addBtn);
 
-    await waitFor(() => expect(mockedGetCart).toHaveBeenCalledTimes(2));
+    console.log('####################################');
+    screen.debug(itemLi);
+    console.log('####################################');
 
-    const updatedCount = await screen.findByTestId('cart-count');
-    expect(updatedCount).toHaveTextContent('2');
+    const increaseButton = await within(itemLi).findByTestId('increase-button');
+    await userEvent.click(increaseButton);
+
+    const updatedCountEl = await screen.findByTestId('cart-count');
+    expect(updatedCountEl.textContent).toEqual((originLength + 1).toString());
+  });
+
+  it('장바구니 수량 조절 버튼으로 담긴 물품의 개수를 0으로 만들면 장바구니에 담긴 물건 종류의 개수가 줄어든다.', async () => {
+    render(
+      <Provider>
+        <App />
+      </Provider>
+    );
+    const selectedProduct = productData.content[0].name;
+    const originLength = cartItem.content.length;
+
+    const initialCountEl = await screen.findByTestId('cart-count');
+    expect(initialCountEl.textContent).toEqual(originLength.toString());
+
+    const itemSpan = screen.getByText(selectedProduct);
+    const itemLi = itemSpan.closest('li')!;
+
+    const decreaseButton = await within(itemLi).findByTestId('decrease-button');
+    await userEvent.click(decreaseButton);
+
+    const updatedCountEl = await screen.findByTestId('cart-count');
+    expect(updatedCountEl.textContent).toEqual((originLength - 1).toString());
   });
 });

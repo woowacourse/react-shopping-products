@@ -1,5 +1,79 @@
 # react-shopping-products
 
+## 2단계 구현 기능 목록
+
+1. 상품 목록 섹션
+
+- [x] 상품 목록에서 담기 버튼 클릭시 수량 조절 기능 구현
+  - [x] 상품 목록에서 담기 버튼을 누르면 수량을 조절 UI가 나타난다.
+    - [x] 상품조절 컴포넌트 구현
+  - [x] 수량 조절 UI로 장바구니에 담을 수량을 조절할 수 있다.
+- [x] 상품의 수량이 0 이면, 품절 UI 를 보여준다.
+  - [x] 상품의 수량이 0이면 품절 이미지 표시 및 담기 버튼을 비활성화 한다.
+- [x] 상품의 현재 수량을 초과 시 제한 기능 구현
+  - step1 에서 구현해둔 에러 메시지를 표시하는 UI 를 그대로 활용하여 표시한다.
+
+2. 장바구니 모달
+
+- [x] 장바구니 버튼을 클릭하면 모달로 장바구니에 담은 목록을 확인할 수 있어야 한다.
+- [x] 모달에서 장바구니 수량을 조절할 수 있어야 한다.
+
+## 프로그래밍 요구사항
+
+1. Data fetching hook
+
+- 서버 API 통신 결과를 Single Source of Truth (SSOT) 원칙에 따라 관리할 수 있도록, 커스텀 훅을 직접 개발한다.
+- GET method 를 사용하는 모든 API 에 이 커스텀 훅을 적용한다.
+  - GET /cart-items , GET /products API 를 통일된 인터페이스로 data fetching 할 수 있어야 한다.
+  - ex) useData, useResource 등의 이름으로 선언할 수 있다.
+- 반환값에는 데이터, 로딩 여부, 에러 정보 등이 포함되어야 한다.
+- Context API 를 활용한다. 단, API 마다 Provider 를 따로 만들지 않고, 하나의 Context 에서 관리할 수 있어야 한다.
+  - Context API 사용으로 인한 렌더링 문제는 해결하지 않아도 된다. 문제점은 학습하여 인지하도록 한다.
+- 상용 라이브러리의 인터페이스를 그대로 모방하지 않는다. 구조를 직접 설계한다.
+
+2. MSW
+
+- 안정적인 테스트 환경을 만들기 위해 MSW 를 사용한다.
+  - 서버 API 의 다양한 케이스를 MSW 와 RTL 을 활용하여 테스트한다.
+- 서버 API 를 시뮬레이션 하기 위해 MSW 를 사용한다.
+  - 서버 API 에서 아직 구현되지 않은 부분을 MSW 를 통해 미리 테스트해본다. 서버와 협의했지만, 서버가 구현되지 않은 API 스펙은 다음과 같다.
+
+```
+1. 모든 API 의 상품 타입에 남은 수량(quantity) 필드 추가
+
+GET /products/{id}
+{
+  "id": 1,
+  "name": "에어포스",
+  "price": 100000
+  "imageUrl": "string",
+  "category": "string",
+  "quantity": 50
+}
+
+
+2. 재고를 초과하여 장바구니를 담으려고 하면 에러 발생
+
+POST /cart-items
+400 Bad Request
+Content-Type: application/json
+{
+  "errorCode": "OUT_OF_STOCK",
+  "message": "재고 수량을 초과하여 담을 수 없습니다.",
+}
+
+3. PATCH /cart-items/{id} 도 위와 동일
+```
+
+3. 배포
+
+- 리뷰어가 쉽게 확인할 수 있도록, 개발환경 뿐만 아니라, 프로덕션 환경에서도 MSW 를 start 한다.
+
+4. Library
+
+- 스타일링에는 CSS Module, styled-components, emotion 중 한 가지를 선택하여 사용한다.
+- 명시된 라이브러리 외에는 사용하지 않고 직접 구현한다.
+
 ## 구현 기능 목록
 
 ### 컴포넌트 구현

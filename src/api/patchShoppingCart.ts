@@ -1,18 +1,18 @@
-export default async function postShoppingCart(
+export default async function patchShoppingCart(
   productId: number,
   quantity: number
 ) {
   const token = import.meta.env.VITE_APP_TOKEN;
   const baseUrl = import.meta.env.VITE_BASE_URL;
 
-  const response = await fetch(`${baseUrl}/cart-items`, {
-    method: 'POST',
+  const response = await fetch(`${baseUrl}/cart-items/${productId}`, {
+    method: 'PATCH',
     headers: {
       Authorization: `Basic ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      productId,
+      id: productId,
       quantity,
     }),
   });
@@ -20,7 +20,7 @@ export default async function postShoppingCart(
   if (!response.ok) {
     const errorBody = await response.json();
     throw new Error(
-      errorBody.message ?? '장바구니 생성 중 오류가 발생했습니다.'
+      errorBody.message ?? '장바구니 수량 수정 중 오류가 발생했습니다.'
     );
   }
 }

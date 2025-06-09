@@ -1,31 +1,25 @@
 import styled from '@emotion/styled';
-import ProductItem from './ProductItem';
 import { ProductTypes } from '../../types/ProductTypes';
-import { CartItemTypes } from '../../types/CartItemType';
+import ProductListItem from './ProductListItem';
 
 interface ProductListProps {
   productList: ProductTypes[];
-  updateCartItems: () => void;
-  getMatchCartItem: (id: number) => CartItemTypes | undefined;
-  checkMax: () => boolean;
+  updateErrorMessage: (errorMessage: string) => void;
 }
 
 export default function ProductList({
   productList,
-  updateCartItems,
-  getMatchCartItem,
-  checkMax,
+  updateErrorMessage,
 }: ProductListProps) {
   return (
     <StyledUl>
       {productList.map((props) => (
-        <ProductItem
+        <ProductListItem
           {...props}
           id={props.id}
           key={props.id}
-          updateCartItems={updateCartItems}
-          getMatchCartItem={getMatchCartItem}
-          checkMax={checkMax}
+          isRow={false}
+          updateErrorMessage={updateErrorMessage}
         />
       ))}
     </StyledUl>

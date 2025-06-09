@@ -3,5 +3,5 @@ export type ProductTypes = {
   name: string;
   price: number;
   imageUrl: string;
-  isItemInCart: boolean;
+  quantity: number;
 };
