@@ -9,6 +9,8 @@ import {
 import { CartItem } from "../../../apis/types/response";
 import useFetch from "../../../shared/hooks/useFetch";
 import { CartItemsAPI } from "../apis/CartItemsAPI";
+import useToast from "../../../shared/hooks/useToast";
+import { TOAST_TYPES } from "../../../shared/config/toast";
 
 export interface CartContextType {
   cartItems: CartItem[];
@@ -33,6 +35,8 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
   const { data, loading, error, success, fetchData } = useFetch<CartItem[]>(
     () => CartItemsAPI.get()
   );
+
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (data && success) {
@@ -90,17 +94,37 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       const quantity = quantityByProductId(currentProductId.productId);
 
       if (quantity <= 1) {
-        await CartItemsAPI.delete(currentProductId.cartId);
-        // if (handleError(response)) return;
-        // handleSuccess(response, "상품이 장바구니에서 삭제되었습니다.");
+        try {
+          await CartItemsAPI.delete(currentProductId.cartId);
+
+          showToast({
+            message: "상품이 장바구니에서 삭제되었습니다.",
+            type: TOAST_TYPES.SUCCESS,
+          });
+        } catch (error) {
+          const message =
+            error instanceof Error
+              ? error.message
+              : "알 수 없는 오류가 발생했습니다.";
+
+          showToast({ message, type: TOAST_TYPES.ERROR });
+        }
       } else {
-        await CartItemsAPI.patch(currentProductId.cartId, quantity - 1);
-        // if (handleError(response)) return;
+        try {
+          await CartItemsAPI.patch(currentProductId.cartId, quantity - 1);
+        } catch (error) {
+          const message =
+            error instanceof Error
+              ? error.message
+              : "알 수 없는 오류가 발생했습니다.";
+
+          showToast({ message, type: TOAST_TYPES.ERROR });
+        }
       }
 
       fetchData();
     },
-    [cartItemIds, quantityByProductId, fetchData]
+    [cartItemIds, quantityByProductId, fetchData, showToast]
   );
 
   const increaseItemQuantity = useCallback(
@@ -111,47 +135,64 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
 
       if (!currentProductId) return;
 
-      await CartItemsAPI.patch(
-        currentProductId.cartId,
-        quantityByProductId(currentProductId.productId) + 1
-      );
+      try {
+        await CartItemsAPI.patch(
+          currentProductId.cartId,
+          quantityByProductId(currentProductId.productId) + 1
+        );
+        fetchData();
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "알 수 없는 오류가 발생했습니다.";
 
-      // if (handleError(response)) return;
-
-      fetchData();
+        showToast({ message, type: TOAST_TYPES.ERROR });
+      }
     },
-    [fetchData, cartItemIds, quantityByProductId]
+    [fetchData, cartItemIds, quantityByProductId, showToast]
   );
 
   const addProductInCart = useCallback(
     async (productId: number) => {
-      // try {
-      await CartItemsAPI.post(productId);
-      fetchData();
-      // } catch (error) {
-      // const message =
-      //   error instanceof Error
-      //     ? error.message
-      //     : "알 수 없는 오류가 발생했습니다.";
-      // showToast({ message, type: TOAST_TYPES.ERROR });
-      // }
+      try {
+        await CartItemsAPI.post(productId);
+        fetchData();
 
-      // if (handleError(response)) return;
-      // handleSuccess(response, "상품이 장바구니에 추가되었습니다.");
+        showToast({
+          message: "상품이 장바구니에 추가되었습니다.",
+          type: TOAST_TYPES.SUCCESS,
+        });
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "알 수 없는 오류가 발생했습니다.";
+        showToast({ message, type: TOAST_TYPES.ERROR });
+      }
     },
-    [fetchData]
+    [fetchData, showToast]
   );
 
   const deleteProductInCart = useCallback(
     async (cartId: number) => {
-      await CartItemsAPI.delete(cartId);
+      try {
+        await CartItemsAPI.delete(cartId);
+        fetchData();
 
-      // if (handleError(response)) return;
-      // handleSuccess(response, "상품이 장바구니에서 삭제되었습니다.");
-
-      fetchData();
+        showToast({
+          message: "상품이 장바구니에서 삭제되었습니다.",
+          type: TOAST_TYPES.SUCCESS,
+        });
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "알 수 없는 오류가 발생했습니다.";
+        showToast({ message, type: TOAST_TYPES.ERROR });
+      }
     },
-    [fetchData]
+    [fetchData, showToast]
   );
 
   const contextValue = useMemo(
