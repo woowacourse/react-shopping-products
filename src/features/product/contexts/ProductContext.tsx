@@ -18,9 +18,9 @@ type ProductParams = {
 };
 
 export interface ProductContextType {
-  products: Product[];
   refetch: () => Promise<void>;
   loading: boolean;
+  products: Product[];
 
   category: CategoryOptionsKey;
   setCategory: (newCategory: CategoryOptionsKey) => void;
@@ -82,9 +82,9 @@ export const ProductProvider = ({ children }: PropsWithChildren) => {
 
   const contextValue = useMemo(
     () => ({
-      products,
       refetch,
       loading,
+      products,
 
       category,
       setCategory,
@@ -93,9 +93,9 @@ export const ProductProvider = ({ children }: PropsWithChildren) => {
       setSortOption,
     }),
     [
-      products,
       refetch,
       loading,
+      products,
 
       category,
       setCategory,

@@ -12,9 +12,8 @@ import useMutation from "../../../shared/hooks/useMutation";
 import { CartItemsAPI } from "../apis/CartItemsAPI";
 
 export interface CartContextType {
-  cartItems: CartItem[];
   refetch: () => Promise<void>;
-  loading: boolean;
+  cartItems: CartItem[];
 
   cartItemsCount: number;
   totalPriceInCart: number;
@@ -30,7 +29,7 @@ export const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: PropsWithChildren) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const { data, loading, success, fetchData } = useFetch<CartItem[]>(() =>
+  const { data, success, fetchData } = useFetch<CartItem[]>(() =>
     CartItemsAPI.get()
   );
 
@@ -154,9 +153,8 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
 
   const contextValue = useMemo(
     () => ({
-      cartItems: cartItems || [],
       refetch,
-      loading,
+      cartItems: cartItems || [],
       cartItemsCount: cartItems?.length ?? 0,
       totalPriceInCart,
       quantityByProductId,
@@ -166,9 +164,8 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       deleteProductInCart,
     }),
     [
-      cartItems,
       refetch,
-      loading,
+      cartItems,
       totalPriceInCart,
       quantityByProductId,
       decreaseItemQuantity,
