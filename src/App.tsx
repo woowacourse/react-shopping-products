@@ -6,30 +6,48 @@ import "./app.css";
 import ProductItemsWithSkeleton from "./components/ProductItemsWithSkeleton";
 import ErrorMessage from "./components/ErrorMessage";
 import Select from "./components/Select";
-import useLoading from "./hooks/useLoading";
-import useCart from "./hooks/useCart";
 import useProducts from "./hooks/useProducts";
+import Modal from "./components/Modal/Modal";
+import CartItems from "./components/ProductItem/CartItems";
+import { APIProvider, APIContext } from "./contexts/DataContext";
+import { useAPI } from "./hooks/useApi";
+import getCartItems from "./api/getCartItems";
+import getProducts from "./api/getProducts";
+import { useContext } from "react";
 
-function App() {
-  const [errorMessage, setErrorMessage] = useState("");
-  const { isLoading, withLoading } = useLoading();
-  const { cart, addToCart, removeFromCart } = useCart({
-    setErrorMessage,
+function AppContent() {
+  const { errorMessage, setErrorMessage, isLoading } = useContext(APIContext);
+  useAPI({
+    fetcher: getCartItems,
+    name: "cartItems",
+  });
+
+  const { refetch: refetchProducts } = useAPI({
+    fetcher: () => {
+      return getProducts({
+        category: selectedCategory,
+        priceOrder: priceOrder,
+      });
+    },
+    name: "products",
   });
   const {
     handleCategoryChange,
     handlePriceOrderChange,
     selectedCategory,
     priceOrder,
-    products,
   } = useProducts({
-    withLoading,
     setErrorMessage,
+    refetchProducts,
   });
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const openCartModal = () => {
+    setIsCartModalOpen(true);
+  };
 
   return (
     <Layout>
-      <Header cartItemCount={cart.length} />
+      <Header openCartModal={openCartModal} />
       {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
       <ProductPageContainer>
         <ProductPageHeader>bppl 상품 목록</ProductPageHeader>
@@ -48,19 +66,29 @@ function App() {
           />
         </SelectContainer>
         <ProductListContainer>
-          <ProductItemsWithSkeleton
-            isLoading={isLoading}
-            products={products}
-            addToCart={addToCart}
-            removeFromCart={removeFromCart}
-            cart={cart}
-          />
+          <ProductItemsWithSkeleton isLoading={isLoading} />
         </ProductListContainer>
+        <Modal
+          isOpen={isCartModalOpen}
+          onClose={() => setIsCartModalOpen(false)}
+          size="medium"
+          position="bottom"
+          title="장바구니"
+        >
+          <CartItems />
+        </Modal>
       </ProductPageContainer>
     </Layout>
   );
 }
 
+function App() {
+  return (
+    <APIProvider>
+      <AppContent />
+    </APIProvider>
+  );
+}
 const Layout = styled.div`
   width: 500px;
   height: 100vh;
@@ -73,8 +101,7 @@ const ProductPageContainer = styled.div`
   flex-direction: column;
   gap: 30px;
   margin: 30px 25px;
-  height: calc(100vh - 64px - 60px);};
-
+  height: calc(100vh - 64px - 60px);
 `;
 
 const ProductPageHeader = styled.div`

@@ -1,39 +1,29 @@
-import { CartItem, Product } from "../types/productType";
+import { Product } from "../types/productType";
 import ProductItem from "./ProductItem/ProductItem";
 import ProductItemSkeleton from "./ProductItem/ProductItemSkeleton";
 import { PRODUCT_TYPE_COUNT } from "../hooks/useProducts";
+import { useAPIData } from "../hooks/useApi";
+import { PRODUCTS_KEY } from "../constants/dataKey";
 
 type ProductItemWithSkeletonProps = {
   isLoading: boolean;
-  products: Product[];
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
-  cart: CartItem[];
-};
-
-const isInCart = (cartItem: CartItem[], id: number) => {
-  return cartItem.some((item) => item.product.id === id);
 };
 
 const ProductItemsWithSkeleton = ({
   isLoading,
-  products,
-  addToCart,
-  removeFromCart,
-  cart,
 }: ProductItemWithSkeletonProps) => {
+  const productData = useAPIData<{ data: { content: Product[] } }>(
+    PRODUCTS_KEY
+  );
+  const products = productData?.data.content;
+
   return isLoading ? (
     <ProductItemSkeletons />
   ) : (
-    products.map((product) => (
-      <ProductItem
-        key={product.id}
-        product={product}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-        isInCart={isInCart(cart, product.id)}
-      />
-    ))
+    products &&
+      products.map((product) => (
+        <ProductItem key={product.id} product={product} />
+      ))
   );
 };
 
