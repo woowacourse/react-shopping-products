@@ -3,12 +3,12 @@ import { useProduct } from "../../../../features/product/hooks/useProduct";
 import SelectBox from "../../../../shared/ui/SelectBox/SelectBox";
 
 const CategoryFilter = () => {
-  const { category, setCategory } = useProduct();
+  const { category } = useProduct();
 
   return (
     <SelectBox
-      value={category}
-      onChange={setCategory}
+      value={category.value}
+      onChange={category.set}
       options={categoryOptions}
     />
   );

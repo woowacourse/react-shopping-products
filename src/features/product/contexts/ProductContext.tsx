@@ -22,11 +22,15 @@ export interface ProductContextType {
   loading: boolean;
   products: Product[];
 
-  category: CategoryOptionsKey;
-  setCategory: (newCategory: CategoryOptionsKey) => void;
+  category: {
+    value: CategoryOptionsKey;
+    set: (newCategory: CategoryOptionsKey) => void;
+  };
 
-  sortOption: SortOptionsKey;
-  setSortOption: (newSort: SortOptionsKey) => void;
+  sort: {
+    value: SortOptionsKey;
+    set: (newSort: SortOptionsKey) => void;
+  };
 }
 
 export const ProductContext = createContext<ProductContextType | null>(null);
@@ -86,11 +90,15 @@ export const ProductProvider = ({ children }: PropsWithChildren) => {
       loading,
       products,
 
-      category,
-      setCategory,
+      category: {
+        value: category,
+        set: setCategory,
+      },
 
-      sortOption,
-      setSortOption,
+      sort: {
+        value: sortOption,
+        set: setSortOption,
+      },
     }),
     [
       refetch,
