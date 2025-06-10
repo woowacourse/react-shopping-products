@@ -15,8 +15,11 @@ const Modal = ({ open, onClose, children }: Props) => {
     <>
       {open && (
         <Portal>
-          <S.ModalBackdrop onClick={onClose}>
-            <S.ModalContainer onClick={stopPropagation}>
+          <S.ModalBackdrop onClick={onClose} data-testid="modal-backdrop">
+            <S.ModalContainer
+              onClick={stopPropagation}
+              data-testid="modal-container"
+            >
               <S.ModalContent>{children}</S.ModalContent>
             </S.ModalContainer>
           </S.ModalBackdrop>
