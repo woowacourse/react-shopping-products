@@ -4,9 +4,11 @@ import react from "@vitejs/plugin-react-swc";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: "/react-shopping-products/",
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: ["./src/__test__/setupTests.ts"],
+    setupFiles: ["./src/__tests__/setupTests.ts"],
+    restoreMocks: true,
   },
 });
