@@ -10,7 +10,9 @@ interface Props {
 const Toast = ({ message, type }: Props) => {
   return (
     <Portal>
-      <S.Toast $type={type}>{message}</S.Toast>
+      <S.Toast $type={type} data-testid="toast">
+        {message}
+      </S.Toast>
     </Portal>
   );
 };

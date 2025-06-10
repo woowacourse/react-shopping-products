@@ -13,7 +13,7 @@ function TestComponent() {
   );
 }
 
-describe("ModalContext & ModalProvider 테스트", () => {
+describe("ModalProvider & useModal 테스트", () => {
   it("openModal이 호출되면 모달 콘텐츠를 보여준다.", () => {
     render(
       <ModalProvider>
