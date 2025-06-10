@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import { TOAST_TYPES } from "../../shared/config/toast";
-import { ToastProvider } from "../../shared/contexts/ToastContext";
-import useToast from "../../shared/hooks/useToast";
+import { TOAST_TYPES } from "../shared/config/toast";
+import { ToastProvider } from "../shared/contexts/ToastContext";
+import useToast from "../shared/hooks/useToast";
 
 const toastMessage = "토스트 테스트용 메시지";
 const duration = 4000;
@@ -22,7 +22,7 @@ function TestComponent() {
   );
 }
 
-describe("ToastProvider & useToast 테스트", () => {
+describe("ToastContext 테스트", () => {
   it("showToast가 호출되면 토스트를 보여준다.", async () => {
     render(
       <ToastProvider>

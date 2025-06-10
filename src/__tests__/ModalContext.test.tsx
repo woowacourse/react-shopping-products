@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import { ModalProvider } from "../../shared/contexts/ModalContext";
-import useModal from "../../shared/hooks/useModal";
+import { ModalProvider } from "../shared/contexts/ModalContext";
+import useModal from "../shared/hooks/useModal";
 
 function TestComponent() {
   const { openModal, closeModal } = useModal();
@@ -13,7 +13,7 @@ function TestComponent() {
   );
 }
 
-describe("ModalProvider & useModal 테스트", () => {
+describe("ModalContext 테스트", () => {
   it("openModal이 호출되면 모달 콘텐츠를 보여준다.", () => {
     render(
       <ModalProvider>

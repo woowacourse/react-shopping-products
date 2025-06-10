@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import Modal from "../../shared/ui/Modal/Modal";
+import Modal from "../shared/ui/Modal/Modal";
 
 describe("Modal 테스트", () => {
   const modalText = "모달 테스트용 텍스트";
