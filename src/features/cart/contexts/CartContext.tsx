@@ -13,16 +13,20 @@ import { CartItemsAPI } from "../apis/CartItemsAPI";
 
 export interface CartContextType {
   refetch: () => Promise<void>;
-  cartItems: CartItem[];
-
-  cartItemsCount: number;
-  totalPriceInCart: number;
-
-  quantityByProductId: (productId: number) => number;
-  decreaseItemQuantity: (productId: number) => Promise<void>;
-  increaseItemQuantity: (productId: number) => Promise<void>;
-  addProductInCart: (productId: number) => Promise<void>;
-  deleteProductInCart: (cartId: number) => Promise<void>;
+  cart: {
+    items: CartItem[];
+    count: number;
+    totalPrice: number;
+  };
+  product: {
+    add: (productId: number) => Promise<void>;
+    delete: (cartId: number) => Promise<void>;
+    quantity: {
+      get: (productId: number) => number;
+      increase: (productId: number) => Promise<void>;
+      decrease: (productId: number) => Promise<void>;
+    };
+  };
 }
 
 export const CartContext = createContext<CartContextType | null>(null);
@@ -154,14 +158,20 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
   const contextValue = useMemo(
     () => ({
       refetch,
-      cartItems: cartItems || [],
-      cartItemsCount: cartItems?.length ?? 0,
-      totalPriceInCart,
-      quantityByProductId,
-      decreaseItemQuantity,
-      increaseItemQuantity,
-      addProductInCart,
-      deleteProductInCart,
+      cart: {
+        items: cartItems,
+        count: cartItems?.length ?? 0,
+        totalPrice: totalPriceInCart,
+      },
+      product: {
+        add: addProductInCart,
+        delete: deleteProductInCart,
+        quantity: {
+          get: quantityByProductId,
+          increase: increaseItemQuantity,
+          decrease: decreaseItemQuantity,
+        },
+      },
     }),
     [
       refetch,

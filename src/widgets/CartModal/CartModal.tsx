@@ -5,20 +5,20 @@ import * as S from "./CartModal.styles";
 
 const CartModal = () => {
   const { closeModal } = useModal();
-  const { cartItems, totalPriceInCart } = useCart();
+  const { cart } = useCart();
 
   return (
     <S.CartModal>
       <S.Title>장바구니</S.Title>
       <S.ScrollContainer>
-        {cartItems?.map((productInfo) => {
+        {cart.items?.map((productInfo) => {
           return <CartItem key={productInfo.id} {...productInfo} />;
         })}
       </S.ScrollContainer>
       <S.TotalPriceContainer>
         <S.TotalPriceLabel>총 결제 금액</S.TotalPriceLabel>
         <S.TotalPriceValue>
-          {totalPriceInCart.toLocaleString()}원
+          {cart.totalPrice.toLocaleString()}원
         </S.TotalPriceValue>
       </S.TotalPriceContainer>
       <S.CloseButton onClick={closeModal}>닫기</S.CloseButton>

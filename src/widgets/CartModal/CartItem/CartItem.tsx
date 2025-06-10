@@ -8,8 +8,7 @@ const CartItem = ({
   quantity: currentQuantity,
   product: { id: productId, name, price, imageUrl, quantity: maxQuantity },
 }: CartItemType) => {
-  const { increaseItemQuantity, decreaseItemQuantity, deleteProductInCart } =
-    useCart();
+  const { product } = useCart();
 
   return (
     <S.CartItem>
@@ -20,12 +19,12 @@ const CartItem = ({
           <S.CartItemPrice>{price.toLocaleString()}원</S.CartItemPrice>
           <QuantitySelector
             quantity={currentQuantity}
-            onIncrease={() => increaseItemQuantity(productId)}
-            onDecrease={() => decreaseItemQuantity(productId)}
+            onIncrease={() => product.quantity.increase(productId)}
+            onDecrease={() => product.quantity.decrease(productId)}
             increaseDisabled={currentQuantity >= maxQuantity}
           />
         </S.CartItemInfo>
-        <S.DeleteButton onClick={() => deleteProductInCart(cartId)}>
+        <S.DeleteButton onClick={() => product.delete(cartId)}>
           삭제
         </S.DeleteButton>
       </S.CartItemWrapper>

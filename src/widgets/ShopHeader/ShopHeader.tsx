@@ -6,7 +6,7 @@ import * as S from "./ShopHeader.styles";
 import Cart from "/cart.svg";
 
 const ShopHeader = () => {
-  const { cartItemsCount } = useCart();
+  const { cart } = useCart();
   const { openModal } = useModal();
 
   const handleOpenCart = () => openModal(<CartModal />);
@@ -16,9 +16,7 @@ const ShopHeader = () => {
       <S.Logo href={BASE_URL}>SHOP</S.Logo>
       <S.CartButton onClick={handleOpenCart}>
         <S.CartIcon src={Cart} alt="cart" />
-        {!!cartItemsCount && (
-          <S.CartItemsCount>{cartItemsCount}</S.CartItemsCount>
-        )}
+        {!!cart.count && <S.CartItemsCount>{cart.count}</S.CartItemsCount>}
       </S.CartButton>
     </S.ShopHeader>
   );

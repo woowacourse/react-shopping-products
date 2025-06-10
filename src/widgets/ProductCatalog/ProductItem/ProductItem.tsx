@@ -13,14 +13,9 @@ const ProductItem = ({
   imageUrl,
   quantity: maxQuantity,
 }: Product) => {
-  const {
-    quantityByProductId,
-    increaseItemQuantity,
-    decreaseItemQuantity,
-    addProductInCart,
-  } = useCart();
+  const { product } = useCart();
 
-  const currentQuantity = quantityByProductId(id);
+  const currentQuantity = product.quantity.get(id);
   const outOfStock = maxQuantity <= 0;
   const reachedMaxQuantity = currentQuantity >= maxQuantity;
   const existsInCart = currentQuantity >= CART_QUANTITY_THRESHOLD;
@@ -37,13 +32,13 @@ const ProductItem = ({
           {existsInCart ? (
             <QuantitySelector
               quantity={currentQuantity}
-              onIncrease={() => increaseItemQuantity(id)}
-              onDecrease={() => decreaseItemQuantity(id)}
+              onIncrease={() => product.quantity.increase(id)}
+              onDecrease={() => product.quantity.decrease(id)}
               increaseDisabled={reachedMaxQuantity}
             />
           ) : (
             <AddCartItemButton
-              onClick={() => addProductInCart(id)}
+              onClick={() => product.add(id)}
               disabled={reachedMaxQuantity}
             />
           )}
